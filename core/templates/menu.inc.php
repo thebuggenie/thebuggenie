@@ -49,10 +49,7 @@
 			</ul>
 		</div>
 		<?php if (BUGScontext::getCurrentProject() instanceof BUGSproject): ?>
-			<div class="menu_project_strip">
-				<div class="project_name"><?php echo BUGScontext::getCurrentProject()->getName(); ?></div>
-				<div class="project_stuff">Something | something | something else | another thing</div>
-			</div>
+			<?php include_template('main/project_menustrip', array('project' => BUGScontext::getCurrentProject())); ?>
 		<?php endif; ?>
 		<?php
 /*
