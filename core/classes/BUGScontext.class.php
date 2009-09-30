@@ -100,6 +100,13 @@
 		static protected $_request = null;
 		
 		/**
+		 * The response object
+		 * 
+		 * @var BUGSresponse
+		 */
+		static protected $_response = null;
+		
+		/**
 		 * The current scope object
 		 *
 		 * @var BUGSscope
@@ -459,6 +466,16 @@
 		public static function getRequest()
 		{
 			return self::$_request;
+		}
+		
+		/**
+		 * Returns the response object
+		 * 
+		 * @return BUGSresponse
+		 */
+		public static function getResponse()
+		{
+			return self::$_response;
 		}
 		
 		/**
@@ -1253,6 +1270,7 @@
 			$actionToRunName = 'run' . ucfirst($method);
 			$preActionToRunName = 'pre' . ucfirst($method);
 			$responseObject = new BUGSresponse();
+			self::$_response = $responseObject;
 			$actionObject = new $actionClassName($responseObject);
 			$responseObject->setTemplate(strtolower($method) . '.php');
 			$responseObject->setDecoration(BUGSresponse::DECORATE_BOTH, array('header' => self::getIncludePath() . 'core/templates/header.inc.php', 'footer' => self::getIncludePath() . 'core/templates/footer.inc.php'));

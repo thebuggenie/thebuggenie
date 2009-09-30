@@ -87,6 +87,11 @@
 			$bugs_request = BUGScontext::getRequest();
 			
 			/**
+			 * @global BUGSresponse The response object
+			 */
+			$bugs_response = BUGScontext::getResponse();
+			
+			/**
 			 * @global BUGSuser The user object
 			 */
 			$bugs_user = BUGScontext::getUser();
