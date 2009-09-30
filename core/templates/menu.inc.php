@@ -48,7 +48,7 @@
 				?>
 			</ul>
 		</div>
-		<?php if ($bugs_response->getPage() != 'config'): ?>
+		<?php if (!in_array($bugs_response->getPage(), array('config', 'index', 'dashboard'))): ?>
 			<?php include_template('main/project_menustrip', array('project' => BUGScontext::getCurrentProject())); ?>
 		<?php endif; ?>
 		<?php
