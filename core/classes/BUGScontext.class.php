@@ -107,6 +107,13 @@
 		static protected $_scope = null;
 		
 		/**
+		 * The currently selected project, if any
+		 * 
+		 * @var BUGSproject
+		 */
+		static protected $_selected_project = null;
+		
+		/**
 		 * Used to determine when the b2 engine started loading
 		 * 
 		 * @var integer
@@ -1133,6 +1140,26 @@
 		public static function getScope()
 		{
 			return self::$_scope;
+		}
+		
+		/**
+		 * Set the currently selected project
+		 * 
+		 * @param BUGSproject $project The project, or null if none
+		 */
+		public static function setCurrentProject($project)
+		{
+			self::$_selected_project = $project;
+		}
+		
+		/**
+		 * Return the currently selected project if any, or null
+		 * 
+		 * @return BUGSproject
+		 */
+		public static function getCurrentProject()
+		{
+			return self::$_selected_project;
 		}
 		
 		/**

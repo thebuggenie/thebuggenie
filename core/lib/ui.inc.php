@@ -367,30 +367,23 @@
 	function bugs_successStrip($title, $content = '', $id = '', $start_hidden = false, $multiline = true)
 	{
 		$retval = '';
-		$retval .= '<table style="margin-top: 5px; margin-bottom: 10px; width: 100%;';
+		$retval .= '<div class="medium_transparent" style="margin: 0; position: fixed; top: 0; left: 0; width: 100%; padding: 10px 0 10px 0; background-color: #45E845; font-size: 14px; color: #000; border-bottom: 1px solid #555;';
 		if ($start_hidden) $retval .= ' display: none;';
-		$retval .= '" cellpadding=0 cellspacing=0';
+		$retval .= '"';
 		if ($id != '') $retval .= " id=\"{$id}\"";
 		$retval .= '>';
-		$retval .= '<tr>';
-		$retval .= '<td style="padding-right: 10px;">';
-		$retval .= '<table style="width: 700px; background-color: #CFE8CF; border: 1px solid #AAC6AA;" cellpadding=0 cellspacing=0>';
-		$retval .= '<tr>';
-		$retval .= '<td style="padding: 3px; width: 20px;">' . image_tag('action_ok.png') . '</td>';
-		$retval .= '</td>';
 		if ($multiline)
 		{
-			$retval .= '<td style="padding: 3px;"><div style="color: #333; font-weight: bold;" id="'.$id.'_title">' . $title . '</div><div id="'.$id.'_content">' . $content . '</div></td>';
+			$retval .= '<div style="color: #000; font-weight: bold;" id="'.$id.'_title">' . $title . '</div><div id="'.$id.'_content">' . $content . '</div>';
 		}
 		else
 		{
-			$retval .= '<td style="padding: 3px;"><span style="color: #333; font-weight: bold; margin-right: 10px;" id="'.$id.'_title">' . $title . '</span><span id="'.$id.'_content">' . $content . '</span></td>';
+			$retval .= '<span style="color: #000; font-weight: bold; margin-right: 10px;" id="'.$id.'_title">' . $title . '</span><span id="'.$id.'_content">' . $content . '</span>';
 		}
+		$retval .= '</div>';
+		/*$retval .= '</td>';
 		$retval .= '</tr>';
-		$retval .= '</table>';
-		$retval .= '</td>';
-		$retval .= '</tr>';
-		$retval .= '</table>';
+		$retval .= '</table>';*/
 		
 		return $retval;
 	}
@@ -411,24 +404,14 @@
 	function bugs_failureStrip($title, $content = '', $id = '', $start_hidden = false)
 	{
 		$retval = '';
-		$retval .= '<table style="margin-top: 5px; margin-bottom: 10px; width: 100%;';
+		$retval .= '<div class="medium_transparent" style="margin: 0; position: fixed; top: 0; left: 0; width: 100%; padding: 10px 0 10px 0; background-color: #E84545; font-size: 14px; color: #000; border-bottom: 1px solid #555;';
 		if ($start_hidden) $retval .= ' display: none;';
-		$retval .= '" cellpadding=0 cellspacing=0';
+		$retval .= '"';
 		if ($id != '') $retval .= " id=\"{$id}\"";
 		$retval .= '>';
-		$retval .= '<tr>';
-		$retval .= '<td style="padding-right: 10px;">';
-		$retval .= '<table style="width: 700px; background-color: #E8CFCF; border: 1px solid #C6AAAA;" cellpadding=0 cellspacing=0>';
-		$retval .= '<tr>';
-		$retval .= '<td style="padding: 3px; width: 20px;">' . image_tag('icon_error.png') . '</td>';
-		$retval .= '</td>';
-		$retval .= '<td style="padding: 3px;"><div style="color: #333; font-weight: bold;" id="'.$id.'_title">' . $title . '</div><div id="'.$id.'_content">' . $content . '</div></td>';
-		$retval .= '</tr>';
-		$retval .= '</table>';
-		$retval .= '</td>';
-		$retval .= '</tr>';
-		$retval .= '</table>';
-		
+		$retval .= '<div style="color: #333; font-weight: bold;" id="'.$id.'_title">' . $title . '</div><div id="'.$id.'_content">' . $content . '</div>';
+		$retval .= '</div>';
+				
 		return $retval;
 	}
 	

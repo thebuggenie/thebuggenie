@@ -6,7 +6,7 @@
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
 	$routes[] = array('login', '/login', 'main', 'login');
 	$routes[] = array('logout', '/logout', 'main', 'logout');
-	$routes[] = array('viewissue', '/issue/:issue_no', 'main', 'viewIssue');
+	$routes[] = array('viewissue', '/:project_key/issue/:issue_no', 'main', 'viewIssue');
 	$routes[] = array('saveissue', '/issue/:issue_no', 'main', 'viewIssue');
 	$routes[] = array('closeissue', '/issue/:issue_id/close', 'main', 'closeIssue');
 	$routes[] = array('openissue', '/issue/:issue_id/open', 'main', 'reopenIssue');
@@ -16,7 +16,7 @@
 	$routes[] = array('issue_stopworking', '/issue/:issue_id/stopworking/*', 'main', 'issueStopWorking');
 	$routes[] = array('main_find_identifiable', '/find/identifiable/by/*', 'main', 'findIdentifiable');
 	$routes[] = array('toggle_favourite_issue', '/toggle_favourite_issue/:issue_id', 'main', 'toggleFavouriteIssue');
-	$routes[] = array('project_reportissue', '/reportissue/for/:project_name/:project_id/*', 'main', 'reportIssue');
+	$routes[] = array('project_reportissue', '/:project_key/reportissue/*', 'main', 'reportIssue');
 	$routes[] = array('getreportissuefields', '/reportissue/get/fields/for/project/*', 'main', 'reportIssueGetFields');
 	$routes[] = array('reportissue', '/reportissue/*', 'main', 'reportIssue');
 	$routes[] = array('search', '/issues', 'search', 'findIssues');

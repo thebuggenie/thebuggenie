@@ -3,7 +3,7 @@
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px 10px 5px 10px;">
 		<div style="padding: 3px; font-size: 14px;">
-			<strong><?php echo $project->getName(); ?></strong>
+			<strong><?php echo $project->getName(); ?></strong>&nbsp;(<?php echo $project->getKey(); ?>)
 			<?php if ($project->usePrefix()): ?>
 				&nbsp;-&nbsp;<i><?php echo $project->getPrefix(); ?></i>
 			<?php endif; ?>

@@ -33,7 +33,7 @@
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222;">
 				<strong><?php echo __('The following issue was reported'); ?>:</strong> 
-				<?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo())), __('%issue_no% - %issue_title%', array('%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()))); ?><br>
+				<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), __('%issue_no% - %issue_title%', array('%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()))); ?><br>
 				<?php echo __('Click the link to visit the reported issue'); ?>
 			</div>
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
@@ -44,16 +44,19 @@
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 				<?php if (count($projects) > 0): ?>
-					<p>
-						<?php echo __('Please select the project you are filing an issue for, as well as what kind of issue you are filing'); ?>.
-					</p>
+					<?php if (!$selected_project instanceof BUGSproject): ?>
+						<p><?php echo __('Please select the project you are filing an issue for, as well as what kind of issue you are filing'); ?>.</p>
+					<?php endif; ?>
 					<div style="margin: 10px 0 0 0; clear: both; height: 25px;">
 						<div style="float: left;">
-							<label for="project_id" style="margin-right: 20px;"><?php echo __('Select project'); ?></label>
-							<select name="project_id" id="project_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>');">
+							<?php if ($selected_project instanceof BUGSproject): ?>
+								<span style="font-size: 14px;"><?php echo __('Reporting an issue for %project_name%', array('%project_name%' => '<b>' . $selected_project->getName() . '</b>'))?></span>
+							<?php endif; ?>
+							<label for="project_id" style="margin-right: 20px;<?php if ($selected_project instanceof BUGSproject): ?> display: none;<?php endif; ?>"><?php echo __('Select project'); ?></label>
+							<select name="project_id" id="project_id" style="min-width: 300px; height: 25px;<?php if ($selected_project instanceof BUGSproject): ?> display: none;<?php endif; ?>" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>');">
 								<option value="0"><?php echo __('Please select a project from this list'); ?>...</option>
 								<?php foreach ($projects as $project): ?>
-									<option value="<?php echo $project->getID(); ?>"<?php if ($selected_project && $selected_project->getID() == $project->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
+									<option value="<?php echo $project->getID(); ?>"<?php if ($selected_project instanceof BUGSproject && $selected_project->getID() == $project->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</div>

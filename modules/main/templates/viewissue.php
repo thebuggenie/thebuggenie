@@ -97,7 +97,7 @@
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="vertical-align: middle; padding: 0;">
 				<?php echo image_tag('icon_info_big.png'); ?>
-				<div class="viewissue_info_header"><?php echo __('This issue is a duplicate of Issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('issue_no' => $theIssue->getDuplicateOf()->getFormattedIssueNo())), $theIssue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $theIssue->getDuplicateOf()->getTitle() . '"')); ?></div>
+				<div class="viewissue_info_header"><?php echo __('This issue is a duplicate of Issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getDuplicateOf()->getFormattedIssueNo())), $theIssue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $theIssue->getDuplicateOf()->getTitle() . '"')); ?></div>
 				<div class="viewissue_info_content"><?php echo __('For more information you should visit the issue mentioned above, as this issue is not likely to be updated'); ?></div>
 			</div>
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
@@ -364,7 +364,7 @@
 								<?php endif; ?>
 							</td>
 							<td style="font-size: 19px; width: auto; padding: 0; padding-left: 7px;">
-								<b><?php echo __('Issue %issue_no%', array('%issue_no%' => link_tag(make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true)))); ?>&nbsp;&nbsp;-&nbsp;&nbsp;<span id="issue_title"><?php echo $theIssue->getTitle(); ?></span></b><br>
+								<b><?php echo __('Issue %issue_no%', array('%issue_no%' => link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true)))); ?>&nbsp;&nbsp;-&nbsp;&nbsp;<span id="issue_title"><?php echo $theIssue->getTitle(); ?></span></b><br>
 								<div style="font-size: 13px;">
 									<?php echo '<b>' . __('Posted %posted_at_time% - updated %last_updated_at_time%', array('%posted_at_time%' => '</b><i>' . bugs_formatTime($theIssue->getPosted(), 12) . '</i><b>', '%last_updated_at_time%' => '</b><i>' . bugs_formatTime($theIssue->getLastUpdatedTime(), 12) . '</i>')); ?>
 								</div>

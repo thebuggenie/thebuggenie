@@ -13,9 +13,23 @@
 		public function runViewIssue($request)
 		{
 			BUGSlogging::log('Loading issue');
+			if ($project_key = $request->getParameter('project_key'))
+			{
+				try
+				{
+					$selected_project = BUGSproject::getByKey($project_key);
+					BUGScontext::setCurrentProject($selected_project);
+					$this->selected_project = $selected_project;
+				}
+				catch (Exception $e) {}
+			}
 			if ($issue_no = BUGScontext::getRequest()->getParameter('issue_no'))
 			{
 				$issue = BUGSissue::getIssueFromLink($issue_no);
+				if (!$selected_project instanceof BUGSproject || $issue->getProjectID() != $selected_project->getID())
+				{
+					$issue = null;
+				}
 			}
 			BUGSlogging::log('done (Loading issue)');
 			$this->getResponse()->setPage('viewissue');
@@ -34,7 +48,7 @@
 								{
 									$issue->save();
 									BUGScontext::setMessage('issue_saved');
-									$this->forward(BUGScontext::getRouting()->generate('viewissue', array('issue_no' => $issue->getFormattedIssueNo())));
+									$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 								}
 								catch (Exception $e)
 								{
@@ -48,7 +62,7 @@
 						}
 						else
 						{
-							$this->forward(BUGScontext::getRouting()->generate('viewissue', array('issue_no' => $issue->getFormattedIssueNo())));
+							$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 						}
 						break;
 				}
@@ -298,7 +312,15 @@
 			$errors = array();
 			$this->getResponse()->setPage('reportissue');
 			$this->default_title = $i18n->__('Enter a short, but descriptive summary of the issue here');
-			if ($project_id = $request->getParameter('project_id'))
+			if ($project_key = $request->getParameter('project_key'))
+			{
+				try
+				{
+					$this->selected_project = BUGSproject::getByKey($project_key);
+				}
+				catch (Exception $e) {}
+			}
+			elseif ($project_id = $request->getParameter('project_id'))
 			{
 				try
 				{
@@ -308,7 +330,11 @@
 			}
 			if ($this->selected_project instanceof BUGSproject)
 			{
-				$this->issuetypes = BUGSissuetype::getAllApplicableToProject($project_id);
+				BUGScontext::setCurrentProject($this->selected_project);
+			}
+			if ($this->selected_project instanceof BUGSproject)
+			{
+				$this->issuetypes = BUGSissuetype::getAllApplicableToProject($this->selected_project->getID());
 			}
 			else
 			{
@@ -460,7 +486,7 @@
 							if (isset($fields_array['component']) && $this->selected_component instanceof BUGScomponent) $issue->addAffectedComponent($this->selected_component);
 							if ($this->selected_issuetype->getRedirectAfterReporting())
 							{
-								$this->forward(BUGScontext::getRouting()->generate('viewissue', array('issue_no' => $issue->getFormattedIssueNo())), 303);
+								$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 303);
 							}
 							else
 							{
@@ -921,7 +947,7 @@
 			}
 			$issue->startWorkingOnIssue(BUGScontext::getUser());
 			$issue->save();
-			$this->forward(BUGScontext::getRouting()->generate('viewissue', array('issue_no' => $issue->getFormattedIssueNo())));
+			$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		}
 		
 		/**
@@ -951,20 +977,20 @@
 			{
 				$issue->clearUserWorkingOnIssue();
 				$issue->save();
-				$this->forward(BUGScontext::getRouting()->generate('viewissue', array('issue_no' => $issue->getFormattedIssueNo())));
+				$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 			}
 			elseif ($request->hasParameter('perform_action') && $request->getParameter('perform_action') == 'grab')
 			{
 				$issue->clearUserWorkingOnIssue();
 				$issue->startWorkingOnIssue(BUGScontext::getUser());
 				$issue->save();
-				$this->forward(BUGScontext::getRouting()->generate('viewissue', array('issue_no' => $issue->getFormattedIssueNo())));
+				$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 			}
 			else
 			{
 				$issue->stopWorkingOnIssue();
 				$issue->save();
-				$this->forward(BUGScontext::getRouting()->generate('viewissue', array('issue_no' => $issue->getFormattedIssueNo())));
+				$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 			}
 		}
 
@@ -992,7 +1018,7 @@
 			}
 			$issue->open();
 			$issue->save();
-			$this->forward(BUGScontext::getRouting()->generate('viewissue', array('issue_no' => $issue->getFormattedIssueNo())));
+			$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		}
 		
 		/**
@@ -1031,7 +1057,7 @@
 			}
 			$issue->close();
 			$issue->save();
-			$this->forward(BUGScontext::getRouting()->generate('viewissue', array('issue_no' => $issue->getFormattedIssueNo())));
+			$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		}
 		
 		/**

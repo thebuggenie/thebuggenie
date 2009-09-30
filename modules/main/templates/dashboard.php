@@ -55,7 +55,7 @@
 						<?php foreach ($bugs_user->getUserAssignedIssues() as $theIssue): ?>
 							<tr class="<?php if ($theIssue->getState() == BUGSissue::STATE_CLOSED): ?>issue_closed<?php else: ?>issue_open<?php endif; ?> <?php if ($theIssue->isBlocking()): ?>issue_blocking<?php endif; ?>">
 								<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-								<td><?php echo link_tag(make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
+								<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
 							</tr>
 							<tr>
 								<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
@@ -82,7 +82,7 @@
 							<?php foreach ($bugs_user->getUserTeamAssignedIssues($tid) as $theIssue): ?>
 								<tr class="<?php if ($theIssue->getState() == BUGSissue::STATE_CLOSED) echo 'issue_closed'; if ($theIssue->isBlocking()) echo ' issue_blocking'; ?>">
 									<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-									<td><?php echo link_tag(make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
+									<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
 								</tr>
 								<tr>
 									<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
@@ -112,7 +112,7 @@
 						<?php foreach ($bugs_user->getIssuesPendingChanges() as $theIssue): ?>
 							<tr class="<?php if ($theIssue->getState() == BUGSissue::STATE_CLOSED): ?>issue_closed<?php else: ?>issue_open<?php endif; ?> <?php if ($theIssue->isBlocking()): ?>issue_blocking<?php endif; ?>">
 								<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-								<td><?php echo link_tag(make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
+								<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
 							</tr>
 							<tr>
 								<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
@@ -141,7 +141,7 @@
 									<?php echo image_tag('star_faded_small.png', array('id' => 'issue_favourite_faded_'.$theIssue->getID(), 'style' => 'cursor: pointer; display: none;', 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $theIssue->getID()))."', ".$theIssue->getID().");")); ?>
 									<?php echo image_tag('star_small.png', array('id' => 'issue_favourite_normal_'.$theIssue->getID(), 'style' => 'cursor: pointer;', 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $theIssue->getID()))."', ".$theIssue->getID().");")); ?>
 								</td>
-								<td><?php echo link_tag(make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
+								<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
 							</tr>
 							<tr>
 								<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
@@ -180,7 +180,7 @@
 									<tr>
 										<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 										<td style="padding-bottom: 5px;">
-											<?php echo link_tag(make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle(), array('class' => (($action['change_type'] == B2tLog::LOG_ISSUE_CLOSE) ? 'issue_closed' : 'issue_open'))); ?>
+											<?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle(), array('class' => (($action['change_type'] == B2tLog::LOG_ISSUE_CLOSE) ? 'issue_closed' : 'issue_open'))); ?>
 											<?php
 				
 												switch ($action['change_type'])

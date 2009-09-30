@@ -23,7 +23,7 @@
 			<div style="text-align: right; font-size: 13px; font-weight: normal; padding-top: 3px;">
 				<a href="#" class="faded_medium"><?php echo __('Planning'); ?></a>&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="#" class="faded_medium"><?php echo __('Overview'); ?></a>
-				<form action="<?php echo make_url('project_reportissue', array('project_name' => $aProject->getName(), 'project_id' => $aProject->getID())); ?>" method="get" style="clear: none; display: inline; width: 160px;">
+				<form action="<?php echo make_url('project_reportissue', array('project_key' => $aProject->getKey())); ?>" method="get" style="clear: none; display: inline; width: 160px;">
 					<div class="report_button" style="width: 150px;"><input type="submit" value="<?php echo __('Report an issue'); ?>"></div>
 				</form>
 			</div>

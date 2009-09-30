@@ -100,6 +100,12 @@
 		 */
 		protected $_enablecomponents = null;
 		
+		/**
+		 * Project key
+		 *
+		 * @var string
+		 */
+		protected $_key = null;
 		
 		/**
 		 * List of editions for this project
@@ -283,6 +289,15 @@
 			return true;
 		}
 		
+		static public function getByKey($key)
+		{
+			if ($project_row = B2DB::getTable('B2tProjects')->getByKey($key))
+			{
+				return BUGSfactory::projectLab($project_row->get(B2tProjects::ID), $project_row);
+			}
+			return null;
+		}
+		
 		/**
 		 * Populates the projects array
 		 */
@@ -395,6 +410,7 @@
 			if ($row instanceof B2DBRow)
 			{
 				$this->_name 					= $row->get(B2tProjects::NAME);
+				$this->_key 					= $row->get(B2tProjects::KEY);
 				$this->_prefix 					= $row->get(B2tProjects::PREFIX);
 				$this->_locked 					= (bool) $row->get(B2tProjects::LOCKED);
 				$this->_useprefix 				= (bool) $row->get(B2tProjects::USE_PREFIX);
@@ -483,7 +499,6 @@
 			return true;
 		}
 
-
 		/**
 		 * Set the project name
 		 *
@@ -492,6 +507,17 @@
 		public function setName($name)
 		{
 			$this->_name = $name;
+			$this->_key = strtolower(str_replace(' ', '', $name));
+		}
+		
+		/**
+		 * Return project key
+		 * 
+		 * @return string
+		 */
+		public function getKey()
+		{
+			return $this->_key;
 		}
 		
 		/**
@@ -1423,6 +1449,7 @@
 			$crit->addUpdate(B2tProjects::ENABLE_TASKS, $this->_enabletasks);
 			$crit->addUpdate(B2tProjects::VOTES, $this->_enablevotes);
 			$crit->addUpdate(B2tProjects::NAME, $this->_name);
+			$crit->addUpdate(B2tProjects::KEY, $this->_key);
 			$crit->addUpdate(B2tProjects::RELEASED, $this->_isreleased);
 			$crit->addUpdate(B2tProjects::PLANNED_RELEASE, $this->_isplannedreleased);
 			$crit->addUpdate(B2tProjects::IS_DEFAULT, $this->_isdefault);

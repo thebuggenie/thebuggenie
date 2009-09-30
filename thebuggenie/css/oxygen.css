@@ -30,6 +30,9 @@ TABLE, IMG { border: 0; }
 .semi_transparent { filter:alpha(opacity=40); -moz-opacity:.40; opacity:.40; text-align: center; }
 .semi_transparent img { vertical-align: middle; }
 
+.medium_transparent { filter:alpha(opacity=70); -moz-opacity:.70; opacity:.70; text-align: center; }
+.medium_transparent img { vertical-align: middle; }
+
 A { color: #00A400; text-decoration: none; }
 A.image:hover { border: 0px; }
 A.issue_closed { text-decoration: line-through; }
@@ -1152,6 +1155,9 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .header_menu li:hover a { color: #FFF; }
 .header_menu li.nohover:hover a { padding: 4px 6px 3px 7px; color: #FFF; font-size: 13px; }
 .header_menu li a { border-top: 0; padding: 4px 6px 5px 6px; color: #FFF; font-size: 13px; }
+.menu_project_strip { font-size: 13px; background-color: #FFF;/*D4E5FF*/ border-bottom: 1px solid #A4B1C5; padding: 0; height: 33px; color: #444; width: 100%; }
+.menu_project_strip .project_name { font-size: 14px; font-weight: bold; padding: 8px; background-color: #D4E5FF; height: 17px; float: left; margin-right: 6px; }
+.menu_project_strip .project_stuff { padding: 8px 0 8px 0; height: 17px; }
 #account_info { z-index: 100; }
 #account_info ul { list-style: none; position: relative; }
 #account_info li { display: block; float: none; text-align: left; background-color: #FFF; border: 0px; padding: 3px; min-height: 16px; }

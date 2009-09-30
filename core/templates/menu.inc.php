@@ -5,9 +5,9 @@
 		?>
 		<div class="tab_menu header_menu">
 			<ul>
-				<li<?php if ($bugs_response->getPage() == 'index'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png', array('style' => 'float: left;')).__('Frontpage')); ?></li>
+				<?php /*?><li<?php if ($bugs_response->getPage() == 'index'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png', array('style' => 'float: left;')).__('Frontpage')); ?></li> */ ?>
 				<?php if (!BUGScontext::getUser()->isThisGuest()): ?>
-					<li<?php if ($bugs_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png', array('style' => 'float: left;')).__('Dashboard')); ?></li>
+					<li<?php if ($bugs_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png', array('style' => 'float: left;')).__('My dashboard')); ?></li>
 				<?php endif; ?>
 				<?php if (BUGScontext::getUser()->hasPermission("b2canreportissues")): ?>
 					<li<?php if ($bugs_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('reportissue'), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
@@ -48,6 +48,12 @@
 				?>
 			</ul>
 		</div>
+		<?php if (BUGScontext::getCurrentProject() instanceof BUGSproject): ?>
+			<div class="menu_project_strip">
+				<div class="project_name"><?php echo BUGScontext::getCurrentProject()->getName(); ?></div>
+				<div class="project_stuff">Something | something | something else | another thing</div>
+			</div>
+		<?php endif; ?>
 		<?php
 /*
 		if (!BUGScontext::getUser()->isThisGuest())

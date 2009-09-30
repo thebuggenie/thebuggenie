@@ -22,6 +22,7 @@
 		const ID = 'bugs2_projects.id';
 		const SCOPE = 'bugs2_projects.scope';
 		const NAME = 'bugs2_projects.name';
+		const KEY = 'bugs2_projects.key';
 		const PREFIX = 'bugs2_projects.prefix';
 		const USE_PREFIX = 'bugs2_projects.use_prefix';
 		const HOMEPAGE = 'bugs2_projects.homepage';
@@ -55,6 +56,7 @@
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 100);
+			parent::_addVarchar(self::KEY, 100);
 			parent::_addVarchar(self::PREFIX, 5, '');
 			parent::_addBoolean(self::USE_PREFIX);
 			parent::_addVarchar(self::HOMEPAGE, 200, '');
@@ -109,6 +111,7 @@
 				$crit->addInsert(self::ID, $p_id);
 			}
 			$crit->addInsert(self::NAME, $name);
+			$crit->addInsert(self::KEY, strtolower(str_replace(' ', '', $name)));
 			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			return $res->getInsertID();
@@ -150,4 +153,12 @@
 			return $row;
 		}
 		
+		public function getByKey($key)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::KEY, $key);
+			$row = $this->doSelectOne($crit);
+			return $row;
+		}
 	}
