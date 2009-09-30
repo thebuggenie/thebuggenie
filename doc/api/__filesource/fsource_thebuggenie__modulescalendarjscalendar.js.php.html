@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>File Source for calendar.js.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+											</head>
+		<body>
+						<h1>Source for file calendar.js.php</h1>
+<p>Documentation is available at <a href="../thebuggenie/_modules---calendar---js---calendar.js.php.html">calendar.js.php</a></p>
+<div class="src-code">
+<div class="src-code"><ol><li><div class="src-line"><a name="a1"></a>&lt;script&nbsp;type=&quot;text/javascript&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a2"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a3"></a>function&nbsp;getMonth(month,&nbsp;year,&nbsp;mode)</div></li>
+<li><div class="src-line"><a name="a4"></a>{</div></li>
+<li><div class="src-line"><a name="a5"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('calendar_'&nbsp;+&nbsp;mode&nbsp;+&nbsp;'_container',&nbsp;'calendar_actions.inc.php?get_month=true&amp;month='&nbsp;+&nbsp;month&nbsp;+&nbsp;'&amp;year='&nbsp;+&nbsp;year&nbsp;+&nbsp;'&amp;mode='&nbsp;+&nbsp;mode,&nbsp;{</div></li>
+<li><div class="src-line"><a name="a6"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a7"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;get&quot;</div></li>
+<li><div class="src-line"><a name="a8"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a9"></a>}</div></li>
+<li><div class="src-line"><a name="a10"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a11"></a>function&nbsp;getWeek(day,&nbsp;month,&nbsp;year)</div></li>
+<li><div class="src-line"><a name="a12"></a>{</div></li>
+<li><div class="src-line"><a name="a13"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('calendar_full_container',&nbsp;'calendar_actions.inc.php?get_week=true&amp;day='&nbsp;+&nbsp;day&nbsp;+&nbsp;'&amp;month='&nbsp;+&nbsp;month&nbsp;+&nbsp;'&amp;year='&nbsp;+&nbsp;year,&nbsp;{</div></li>
+<li><div class="src-line"><a name="a14"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a15"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;get&quot;</div></li>
+<li><div class="src-line"><a name="a16"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a17"></a>}</div></li>
+<li><div class="src-line"><a name="a18"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a19"></a>function&nbsp;getOverview(day,&nbsp;month,&nbsp;year)</div></li>
+<li><div class="src-line"><a name="a20"></a>{</div></li>
+<li><div class="src-line"><a name="a21"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('calendar_full_container',&nbsp;'calendar_actions.inc.php?get_day=true&amp;day='&nbsp;+&nbsp;day&nbsp;+&nbsp;'&amp;month='&nbsp;+&nbsp;month&nbsp;+&nbsp;'&amp;year='&nbsp;+&nbsp;year,&nbsp;{</div></li>
+<li><div class="src-line"><a name="a22"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a23"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;get&quot;</div></li>
+<li><div class="src-line"><a name="a24"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a25"></a>}</div></li>
+<li><div class="src-line"><a name="a26"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a27"></a>&lt;/script&gt;</div></li>
+</ol></div>
+</div>
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:25:49 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

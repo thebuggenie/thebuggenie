@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>File Source for issue_affected_inline.inc.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+											</head>
+		<body>
+						<h1>Source for file issue_affected_inline.inc.php</h1>
+<p>Documentation is available at <a href="../thebuggenie/_core---issue_affected_inline.inc.php.html">issue_affected_inline.inc.php</a></p>
+<div class="src-code">
+<div class="src-code"><ol><li><div class="src-line"><a name="a1"></a>&lt;table&nbsp;style=&quot;table-layout:&nbsp;fixed;&nbsp;width:&nbsp;100%;&nbsp;background-color:&nbsp;#FFF;&quot;&nbsp;cellpadding=0&nbsp;cellspacing=0&nbsp;border=0&gt;</div></li>
+<li><div class="src-line"><a name="a2"></a>&lt;tr&gt;</div></li>
+<li><div class="src-line"><a name="a3"></a>&lt;td&nbsp;style=&quot;font-size:&nbsp;11px;&nbsp;font-weight:&nbsp;bold;&nbsp;width:&nbsp;auto;&nbsp;padding:&nbsp;3px;&nbsp;border-bottom:&nbsp;1px&nbsp;solid&nbsp;#DDD;&quot;&gt;&lt;b&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Affected&nbsp;by&nbsp;this&nbsp;issue'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/b&gt;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a4"></a>&lt;td&nbsp;style=&quot;width:&nbsp;200px;&nbsp;font-size:&nbsp;10px;&nbsp;font-weight:&nbsp;bold;&nbsp;padding:&nbsp;3px;&nbsp;border-bottom:&nbsp;1px&nbsp;solid&nbsp;#DDD;&nbsp;text-align:&nbsp;left;&quot;&gt;&lt;b&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Status'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/b&gt;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a5"></a>&lt;td&nbsp;style=&quot;width:&nbsp;60px;&nbsp;font-size:&nbsp;10px;&nbsp;font-weight:&nbsp;bold;&nbsp;padding:&nbsp;3px;&nbsp;border-bottom:&nbsp;1px&nbsp;solid&nbsp;#DDD;&nbsp;text-align:&nbsp;center;&quot;&gt;&lt;b&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Confirmed'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/b&gt;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a6"></a>&lt;/tr&gt;</div></li>
+<li><div class="src-line"><a name="a7"></a>&lt;/table&gt;</div></li>
+<li><div class="src-line"><a name="a8"></a>&lt;table&nbsp;style=&quot;table-layout:&nbsp;fixed;&nbsp;width:&nbsp;100%;&nbsp;background-color:&nbsp;#FFF;&quot;&nbsp;cellpadding=0&nbsp;cellspacing=0&nbsp;border=0&nbsp;id=&quot;issue_affected_inline&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a9"></a><span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a10"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a11"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">foreach&nbsp;</span><span class="src-sym">(</span><a href="http://www.php.net/array_merge">array_merge</a><span class="src-sym">(</span><span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getBuilds</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getComponents</span><span class="src-sym">(</span><span class="src-sym">))&nbsp;</span><span class="src-key">as&nbsp;</span><span class="src-var">$anAffected</span><span class="src-sym">)</span></div></li>
+<li><div class="src-line"><a name="a12"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a13"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;require&nbsp;<span class="src-id">BUGScontext</span><span class="src-sym">::</span><span class="src-id">getIncludePath</span><span class="src-sym">(</span><span class="src-sym">)&nbsp;</span>.&nbsp;<span class="src-str">'include/issue_affected_itemline.inc.php'</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a14"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a15"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a16"></a><span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a17"></a>&lt;/table&gt;</div></li>
+</ol></div>
+</div>
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:26:03 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

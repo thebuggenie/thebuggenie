@@ -1,0 +1,1584 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>Docs For Class BaseB2DBTable</title>
+			<link rel="stylesheet" href="../../media/stylesheet.css" />
+						<script src="../../media/lib/classTree.js"></script>
+												<script language="javascript" type="text/javascript">
+				var imgPlus = new Image();
+				var imgMinus = new Image();
+				imgPlus.src = "../../media/images/plus.png";
+				imgMinus.src = "../../media/images/minus.png";
+				
+				function showNode(Node){
+							switch(navigator.family){
+								case 'nn4':
+									// Nav 4.x code fork...
+							var oTable = document.layers["span" + Node];
+							var oImg = document.layers["img" + Node];
+									break;
+								case 'ie4':
+									// IE 4/5 code fork...
+							var oTable = document.all["span" + Node];
+							var oImg = document.all["img" + Node];
+									break;
+								case 'gecko':
+									// Standards Compliant code fork...
+							var oTable = document.getElementById("span" + Node);
+							var oImg = document.getElementById("img" + Node);
+									break;
+							}
+					oImg.src = imgMinus.src;
+					oTable.style.display = "block";
+				}
+				
+				function hideNode(Node){
+							switch(navigator.family){
+								case 'nn4':
+									// Nav 4.x code fork...
+							var oTable = document.layers["span" + Node];
+							var oImg = document.layers["img" + Node];
+									break;
+								case 'ie4':
+									// IE 4/5 code fork...
+							var oTable = document.all["span" + Node];
+							var oImg = document.all["img" + Node];
+									break;
+								case 'gecko':
+									// Standards Compliant code fork...
+							var oTable = document.getElementById("span" + Node);
+							var oImg = document.getElementById("img" + Node);
+									break;
+							}
+					oImg.src = imgPlus.src;
+					oTable.style.display = "none";
+				}
+				
+				function nodeIsVisible(Node){
+							switch(navigator.family){
+								case 'nn4':
+									// Nav 4.x code fork...
+							var oTable = document.layers["span" + Node];
+									break;
+								case 'ie4':
+									// IE 4/5 code fork...
+							var oTable = document.all["span" + Node];
+									break;
+								case 'gecko':
+									// Standards Compliant code fork...
+							var oTable = document.getElementById("span" + Node);
+									break;
+							}
+					return (oTable && oTable.style.display == "block");
+				}
+				
+				function toggleNodeVisibility(Node){
+					if (nodeIsVisible(Node)){
+						hideNode(Node);
+					}else{
+						showNode(Node);
+					}
+				}
+			</script>
+					</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name"><img src="../../media/images/AbstractClass_logo.png"
+														alt="Abstract Class"
+														title="Abstract Class"
+														style="vertical-align: middle"> BaseB2DBTable</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+							<a href="#sec-descendents">Descendents</a>
+			|											<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">B2DB Table Base class</p>
+	<ul class="tags">
+				<li><span class="field">abstract:</span> </li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_core---B2DB---classes---BaseB2DBTable.class.php.html">/core/B2DB/classes/BaseB2DBTable.class.php</a> (line <span class="field">19</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+	<a name="sec-descendents"></a>
+	<div class="info-box">
+		<div class="info-box-title">Direct descendents</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+			<span class="disabled">Descendents</span>
+			|												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+								|															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em; white-space: nowrap">
+						<img src="../../media/images/Class.png"
+								 alt=" class"
+								 title=" class"
+								 style="vertical-align: center"/>
+						
+					</td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+							</table>
+		</div>
+	</div>
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendants</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																																								<div class="var-title">
+					<img src="../../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$b2db_alias" title="details" class="var-name">$b2db_alias</a>
+				</div>
+																<div class="var-title">
+					<img src="../../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$b2db_name" title="details" class="var-name">$b2db_name</a>
+				</div>
+																<div class="var-title">
+					<img src="../../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$id_column" title="details" class="var-name">$id_column</a>
+				</div>
+																<div class="var-title">
+					<img src="../../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$_autoincrement_start_at" title="details" class="var-name">$_autoincrement_start_at</a>
+				</div>
+																<div class="var-title">
+					<img src="../../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$_charset" title="details" class="var-name">$_charset</a>
+				</div>
+																<div class="var-title">
+					<img src="../../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$_columns" title="details" class="var-name">$_columns</a>
+				</div>
+																<div class="var-title">
+					<img src="../../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$_foreigntables" title="details" class="var-name">$_foreigntables</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendants</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																																																																																																																																																																							
+				<div class="method-definition">
+					<img src="../../media/images/Constructor.png" alt=" "/>
+											<span class="method-result">BaseB2DBTable</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$b2db_name</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$id_column</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+										<a href="#create" title="details" class="method-name">create</a>
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$debug</span> = <span class="var-default">false</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">integer</span>
+										<a href="#doCount" title="details" class="method-name">doCount</a>
+											(<span class="var-type"><a href="../../B2DB/mysqli/B2DBCriteria.html">B2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+										<a href="#doDelete" title="details" class="method-name">doDelete</a>
+											(<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+										<a href="#doDeleteById" title="details" class="method-name">doDeleteById</a>
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+										<a href="#doInsert" title="details" class="method-name">doInsert</a>
+											(<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+										<a href="#doSelect" title="details" class="method-name">doSelect</a>
+											([<span class="var-type"><a href="../../B2DB/mysqli/B2DBCriteria.html">B2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$join</span> = <span class="var-default">'all'</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+										<a href="#doSelectAll" title="details" class="method-name">doSelectAll</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+										<a href="#doSelectById" title="details" class="method-name">doSelectById</a>
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$id</span>, [<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span> = <span class="var-default">null</span>], [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$selects</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$join</span> = <span class="var-default">'all'</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../../B2DB/mysqli/B2DBRow.html">B2DBRow</a></span>
+										<a href="#doSelectOne" title="details" class="method-name">doSelectOne</a>
+											(<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$join</span> = <span class="var-default">'all'</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+										<a href="#doUpdate" title="details" class="method-name">doUpdate</a>
+											(<span class="var-type"><a href="../../B2DB/mysqli/B2DBCriteria.html">B2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+										<a href="#doUpdateById" title="details" class="method-name">doUpdateById</a>
+											(<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">null</span>
+										<a href="#drop" title="details" class="method-name">drop</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#getAliasColumns" title="details" class="method-name">getAliasColumns</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">string</span>
+										<a href="#getB2DBAlias" title="details" class="method-name">getB2DBAlias</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">string</span>
+										<a href="#getB2DBName" title="details" class="method-name">getB2DBName</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#getColumn" title="details" class="method-name">getColumn</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#getColumns" title="details" class="method-name">getColumns</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">array</span>
+										<a href="#getForeignTable" title="details" class="method-name">getForeignTable</a>
+											(<span class="var-type"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span>&nbsp;<span class="var-name">$table</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#getForeignTables" title="details" class="method-name">getForeignTables</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">string</span>
+										<a href="#getIdColumn" title="details" class="method-name">getIdColumn</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#setAutoIncrementStart" title="details" class="method-name">setAutoIncrementStart</a>
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$start_at</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#setCharset" title="details" class="method-name">setCharset</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$charset</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#_addBoolean" title="details" class="method-name">_addBoolean</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$default_value</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$not_null</span> = <span class="var-default">true</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#_addForeignKeyColumn" title="details" class="method-name">_addForeignKeyColumn</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, <span class="var-type"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span>&nbsp;<span class="var-name">$table</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#_addInteger" title="details" class="method-name">_addInteger</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$length</span> = <span class="var-default">10</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$default_value</span> = <span class="var-default">0</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$not_null</span> = <span class="var-default">true</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$auto_inc</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$unsigned</span> = <span class="var-default">false</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#_addText" title="details" class="method-name">_addText</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$not_null</span> = <span class="var-default">true</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#_addVarchar" title="details" class="method-name">_addVarchar</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$length</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$default_value</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$not_null</span> = <span class="var-default">true</span>])
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#_getRealColumnFieldName" title="details" class="method-name">_getRealColumnFieldName</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#__clone" title="details" class="method-name">__clone</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#__toString" title="details" class="method-name">__toString</a>
+										()
+									</div>
+											</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			
+<a name="var$b2db_alias" id="$b2db_alias"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$b2db_alias</span>
+						(line <span class="line-number">23</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$b2db_name" id="$b2db_name"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$b2db_name</span>
+						(line <span class="line-number">21</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$id_column" id="$id_column"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$id_column</span>
+						(line <span class="line-number">22</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_autoincrement_start_at" id="$_autoincrement_start_at"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_autoincrement_start_at</span>
+			 = <span class="var-default"> 1</span>			(line <span class="line-number">26</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_charset" id="$_charset"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_charset</span>
+			 = <span class="var-default"> 'latin1'</span>			(line <span class="line-number">25</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_columns" id="$_columns"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_columns</span>
+						(line <span class="line-number">24</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_foreigntables" id="$_foreigntables"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_foreigntables</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">27</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Constructor.png" />
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">34</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">BaseB2DBTable</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$b2db_name</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$id_column</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$b2db_name</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$id_column</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreate" id="create"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">create</span> (line <span class="line-number">651</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">creates the table by executing the sql create statement</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+		<span class="method-name">
+			create
+		</span>
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$debug</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$debug</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddoCount" id="doCount"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">doCount</span> (line <span class="line-number">281</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Counts rows</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">integer</span>
+		<span class="method-name">
+			doCount
+		</span>
+					(<span class="var-type"><a href="../../B2DB/mysqli/B2DBCriteria.html">B2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../B2DB/mysqli/B2DBCriteria.html">B2DBCriteria</a></span>
+				<span class="var-name">$crit</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddoDelete" id="doDelete"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">doDelete</span> (line <span class="line-number">505</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Perform an SQL delete</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+		<span class="method-name">
+			doDelete
+		</span>
+					(<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>
+				<span class="var-name">$crit</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$returncrit</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddoDeleteById" id="doDeleteById"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">doDeleteById</span> (line <span class="line-number">540</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Perform an SQL delete by an id</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+		<span class="method-name">
+			doDeleteById
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$returncrit</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddoInsert" id="doInsert"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">doInsert</span> (line <span class="line-number">394</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Inserts a row into the table</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+		<span class="method-name">
+			doInsert
+		</span>
+					(<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>
+				<span class="var-name">$crit</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$returncrit</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddoSelect" id="doSelect"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">doSelect</span> (line <span class="line-number">315</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Selects rows based on given criteria</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+		<span class="method-name">
+			doSelect
+		</span>
+					([<span class="var-type"><a href="../../B2DB/mysqli/B2DBCriteria.html">B2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$join</span> = <span class="var-default">'all'</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../B2DB/mysqli/B2DBCriteria.html">B2DBCriteria</a></span>
+				<span class="var-name">$crit</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$returncrit</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$join</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddoSelectAll" id="doSelectAll"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">doSelectAll</span> (line <span class="line-number">194</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Selects all records in this table</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+		<span class="method-name">
+			doSelectAll
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methoddoSelectById" id="doSelectById"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">doSelectById</span> (line <span class="line-number">229</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns one row from the current table based on a given id</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+		<span class="method-name">
+			doSelectById
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$id</span>, [<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span> = <span class="var-default">null</span>], [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$selects</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$join</span> = <span class="var-default">'all'</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$id</span>			</li>
+					<li>
+				<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>
+				<span class="var-name">$crit</span>			</li>
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$selects</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$returncrit</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$join</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddoSelectOne" id="doSelectOne"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">doSelectOne</span> (line <span class="line-number">356</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Selects one row from the table based on the given criteria</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../../B2DB/mysqli/B2DBRow.html">B2DBRow</a></span>
+		<span class="method-name">
+			doSelectOne
+		</span>
+					(<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$join</span> = <span class="var-default">'all'</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>
+				<span class="var-name">$crit</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$returncrit</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$join</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddoUpdate" id="doUpdate"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">doUpdate</span> (line <span class="line-number">430</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Perform an SQL update</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+		<span class="method-name">
+			doUpdate
+		</span>
+					(<span class="var-type"><a href="../../B2DB/mysqli/B2DBCriteria.html">B2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>
+				<span class="var-name">$crit</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$returncrit</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddoUpdateById" id="doUpdateById"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">doUpdateById</span> (line <span class="line-number">467</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Perform an SQL update</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../../B2DB/mysqli/B2DBResultset.html">B2DBResultset</a></span>
+		<span class="method-name">
+			doUpdateById
+		</span>
+					(<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>&nbsp;<span class="var-name">$crit</span>, <span class="var-type">integer</span>&nbsp;<span class="var-name">$id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$returncrit</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span>
+				<span class="var-name">$crit</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$returncrit</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddrop" id="drop"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">drop</span> (line <span class="line-number">678</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Drops a table</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">null</span>
+		<span class="method-name">
+			drop
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetAliasColumns" id="getAliasColumns"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">getAliasColumns</span> (line <span class="line-number">178</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getAliasColumns
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetB2DBAlias" id="getB2DBAlias"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">getB2DBAlias</span> (line <span class="line-number">131</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the shortname / prefix of the table</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getB2DBAlias
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetB2DBName" id="getB2DBName"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">getB2DBName</span> (line <span class="line-number">121</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the table name</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getB2DBName
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetColumn" id="getColumn"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">getColumn</span> (line <span class="line-number">168</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getColumn
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$column</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetColumns" id="getColumns"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">getColumns</span> (line <span class="line-number">163</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getColumns
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetForeignTable" id="getForeignTable"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">getForeignTable</span> (line <span class="line-number">148</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns a foreign table</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getForeignTable
+		</span>
+					(<span class="var-type"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span>&nbsp;<span class="var-name">$table</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span>
+				<span class="var-name">$table</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetForeignTables" id="getForeignTables"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">getForeignTables</span> (line <span class="line-number">136</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getForeignTables
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetIdColumn" id="getIdColumn"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">getIdColumn</span> (line <span class="line-number">158</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the id column for this table</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getIdColumn
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodsetAutoIncrementStart" id="setAutoIncrementStart"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">setAutoIncrementStart</span> (line <span class="line-number">111</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sets the initial auto_increment value to something else than 1</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			setAutoIncrementStart
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$start_at</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$start_at</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetCharset" id="setCharset"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">setCharset</span> (line <span class="line-number">101</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sets the charset to something other than &quot;latin1&quot; which is the default</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			setCharset
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$charset</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$charset</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method_addBoolean" id="_addBoolean"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">_addBoolean</span> (line <span class="line-number">57</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_addBoolean
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$default_value</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$not_null</span> = <span class="var-default">true</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$column</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$default_value</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$not_null</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method_addForeignKeyColumn" id="_addForeignKeyColumn"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">_addForeignKeyColumn</span> (line <span class="line-number">69</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Adds a foreign table</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_addForeignKeyColumn
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, <span class="var-type"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span>&nbsp;<span class="var-name">$table</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$column</span>			</li>
+					<li>
+				<span class="var-type"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span>
+				<span class="var-name">$table</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$key</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method_addInteger" id="_addInteger"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">_addInteger</span> (line <span class="line-number">42</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_addInteger
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$length</span> = <span class="var-default">10</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$default_value</span> = <span class="var-default">0</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$not_null</span> = <span class="var-default">true</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$auto_inc</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$unsigned</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$column</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$length</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$default_value</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$not_null</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$auto_inc</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$unsigned</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method_addText" id="_addText"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">_addText</span> (line <span class="line-number">52</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_addText
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$not_null</span> = <span class="var-default">true</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$column</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$not_null</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method_addVarchar" id="_addVarchar"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">_addVarchar</span> (line <span class="line-number">47</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_addVarchar
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$length</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$default_value</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$not_null</span> = <span class="var-default">true</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$column</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$length</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$default_value</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$not_null</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method_getRealColumnFieldName" id="_getRealColumnFieldName"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">_getRealColumnFieldName</span> (line <span class="line-number">173</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_getRealColumnFieldName
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$column</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method__clone" id="__clone"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">__clone</span> (line <span class="line-number">29</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			__clone
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method__toString" id="__toString"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">__toString</span> (line <span class="line-number">91</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			__toString
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+	
+	<p class="notes" id="credit">
+		Documentation generated on Wed, 15 Jul 2009 00:28:11 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</div></body>
+</html>

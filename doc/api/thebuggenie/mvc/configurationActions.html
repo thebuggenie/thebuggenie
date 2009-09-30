@@ -1,0 +1,1098 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>Docs For Class configurationActions</title>
+			<link rel="stylesheet" href="../../media/stylesheet.css" />
+						<script src="../../media/lib/classTree.js"></script>
+												<script language="javascript" type="text/javascript">
+				var imgPlus = new Image();
+				var imgMinus = new Image();
+				imgPlus.src = "../../media/images/plus.png";
+				imgMinus.src = "../../media/images/minus.png";
+				
+				function showNode(Node){
+							switch(navigator.family){
+								case 'nn4':
+									// Nav 4.x code fork...
+							var oTable = document.layers["span" + Node];
+							var oImg = document.layers["img" + Node];
+									break;
+								case 'ie4':
+									// IE 4/5 code fork...
+							var oTable = document.all["span" + Node];
+							var oImg = document.all["img" + Node];
+									break;
+								case 'gecko':
+									// Standards Compliant code fork...
+							var oTable = document.getElementById("span" + Node);
+							var oImg = document.getElementById("img" + Node);
+									break;
+							}
+					oImg.src = imgMinus.src;
+					oTable.style.display = "block";
+				}
+				
+				function hideNode(Node){
+							switch(navigator.family){
+								case 'nn4':
+									// Nav 4.x code fork...
+							var oTable = document.layers["span" + Node];
+							var oImg = document.layers["img" + Node];
+									break;
+								case 'ie4':
+									// IE 4/5 code fork...
+							var oTable = document.all["span" + Node];
+							var oImg = document.all["img" + Node];
+									break;
+								case 'gecko':
+									// Standards Compliant code fork...
+							var oTable = document.getElementById("span" + Node);
+							var oImg = document.getElementById("img" + Node);
+									break;
+							}
+					oImg.src = imgPlus.src;
+					oTable.style.display = "none";
+				}
+				
+				function nodeIsVisible(Node){
+							switch(navigator.family){
+								case 'nn4':
+									// Nav 4.x code fork...
+							var oTable = document.layers["span" + Node];
+									break;
+								case 'ie4':
+									// IE 4/5 code fork...
+							var oTable = document.all["span" + Node];
+									break;
+								case 'gecko':
+									// Standards Compliant code fork...
+							var oTable = document.getElementById("span" + Node);
+									break;
+							}
+					return (oTable && oTable.style.display == "block");
+				}
+				
+				function toggleNodeVisibility(Node){
+					if (nodeIsVisible(Node)){
+						hideNode(Node);
+					}else{
+						showNode(Node);
+					}
+				}
+			</script>
+					</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name"><img src="../../media/images/Class_logo.png"
+														alt=" Class"
+														title=" Class"
+														style="vertical-align: middle"> configurationActions</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-vars">Vars</a>
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+											<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+						
+			</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Action class used in the MVC part of the framework</p>
+		<p class="notes">
+			Located in <a class="field" href="_modules---configuration---classes---actions.class.php.html">/modules/configuration/classes/actions.class.php</a> (line <span class="field">3</span>)
+		</p>
+		
+				
+		<pre><a href="../../thebuggenie/mvc/BUGSparameterholder.html">BUGSparameterholder</a>
+   |
+   --<a href="../../thebuggenie/mvc/BUGSaction.html">BUGSaction</a>
+      |
+      --configurationActions</pre>
+	
+			</div>
+</div>
+
+
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Constants</span> (<a href="#sec-consts">details</a>)
+												<a href="#sec-vars">Vars</a>
+				 
+				|
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ACCESS_FULL" title="details" class="const-name">ACCESS_FULL</a> = 					<span class="var-type"> 2</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ACCESS_READ" title="details" class="const-name">ACCESS_READ</a> = 					<span class="var-type"> 1</span>
+
+				</div>
+							</div>
+		</div>
+	</div>
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+															<a href="#sec-vars">Vars</a>
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																																																																															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#getAccessLevel" title="details" class="method-name">getAccessLevel</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$section</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$module</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#preExecute" title="details" class="method-name">preExecute</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$action</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runAddBuild" title="details" class="method-name">runAddBuild</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runAddComponent" title="details" class="method-name">runAddComponent</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runAddEdition" title="details" class="method-name">runAddEdition</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runAddProduct" title="details" class="method-name">runAddProduct</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runAssignToProduct" title="details" class="method-name">runAssignToProduct</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runBuildAction" title="details" class="method-name">runBuildAction</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runConfigureProductDevelopers" title="details" class="method-name">runConfigureProductDevelopers</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runConfigureProductEdition" title="details" class="method-name">runConfigureProductEdition</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runConfigureProductEditionsAndComponents" title="details" class="method-name">runConfigureProductEditionsAndComponents</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runConfigureProductOther" title="details" class="method-name">runConfigureProductOther</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runConfigureProducts" title="details" class="method-name">runConfigureProducts</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runConfigureProductSettings" title="details" class="method-name">runConfigureProductSettings</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runConfigureProductUpdateOther" title="details" class="method-name">runConfigureProductUpdateOther</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runEditComponent" title="details" class="method-name">runEditComponent</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runEditEditionComponent" title="details" class="method-name">runEditEditionComponent</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runFindAssignee" title="details" class="method-name">runFindAssignee</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runIndex" title="details" class="method-name">runIndex</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#runSettings" title="details" class="method-name">runSettings</a>
+											(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+									</div>
+											</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			
+							<h4>Inherited Variables</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../../thebuggenie/mvc/BUGSaction.html">BUGSaction</a></span></p>
+					<blockquote>
+													<img src="../../media/images/Variable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/mvc/BUGSaction.html#var$_headers">BUGSaction::$_headers</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/mvc/BUGSaction.html#var$_http_status">BUGSaction::$_http_status</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/mvc/BUGSaction.html#var$_template">BUGSaction::$_template</a></span><br>
+							</span>
+											</blockquote> 
+									<p>Inherited from <span class="classname"><a href="../../thebuggenie/mvc/BUGSparameterholder.html">BUGSparameterholder</a></span></p>
+					<blockquote>
+													<img src="../../media/images/Variable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/mvc/BUGSparameterholder.html#var$_property_list">BUGSparameterholder::$_property_list</a></span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-vars">Vars</a>
+																			<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+										<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodgetAccessLevel" id="getAccessLevel"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">getAccessLevel</span> (line <span class="line-number">730</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getAccessLevel
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$section</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$module</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$section</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$module</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodpreExecute" id="preExecute"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">preExecute</span> (line <span class="line-number">14</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Pre-execute function</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			preExecute
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$action</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$action</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../thebuggenie/mvc/BUGSaction.html#methodpreExecute">BUGSaction::preExecute()</a></dt>
+					</dl>
+			
+	</div>
+<a name="methodrunAddBuild" id="runAddBuild"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runAddBuild</span> (line <span class="line-number">569</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a build (AJAX call)</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runAddBuild
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunAddComponent" id="runAddComponent"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runAddComponent</span> (line <span class="line-number">626</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a component (AJAX call)</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runAddComponent
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunAddEdition" id="runAddEdition"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runAddEdition</span> (line <span class="line-number">430</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add an edition (AJAX call)</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runAddEdition
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunAddProduct" id="runAddProduct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runAddProduct</span> (line <span class="line-number">407</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a product (AJAX call)</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runAddProduct
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunAssignToProduct" id="runAssignToProduct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runAssignToProduct</span> (line <span class="line-number">143</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Adds a user, team or a customer to a product / project</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runAssignToProduct
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunBuildAction" id="runBuildAction"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runBuildAction</span> (line <span class="line-number">475</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Perform actions on a build (AJAX call)</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runBuildAction
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunConfigureProductDevelopers" id="runConfigureProductDevelopers"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runConfigureProductDevelopers</span> (line <span class="line-number">299</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Configure product builds</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runConfigureProductDevelopers
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunConfigureProductEdition" id="runConfigureProductEdition"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runConfigureProductEdition</span> (line <span class="line-number">361</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Configure a product edition with builds and settings</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runConfigureProductEdition
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunConfigureProductEditionsAndComponents" id="runConfigureProductEditionsAndComponents"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runConfigureProductEditionsAndComponents</span> (line <span class="line-number">228</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Configure product editions and components</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runConfigureProductEditionsAndComponents
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunConfigureProductOther" id="runConfigureProductOther"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runConfigureProductOther</span> (line <span class="line-number">244</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Configure product data types</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runConfigureProductOther
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunConfigureProducts" id="runConfigureProducts"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runConfigureProducts</span> (line <span class="line-number">100</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Configure products</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runConfigureProducts
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunConfigureProductSettings" id="runConfigureProductSettings"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runConfigureProductSettings</span> (line <span class="line-number">315</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Configure product settings</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runConfigureProductSettings
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunConfigureProductUpdateOther" id="runConfigureProductUpdateOther"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runConfigureProductUpdateOther</span> (line <span class="line-number">260</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Updates visible issue types</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runConfigureProductUpdateOther
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunEditComponent" id="runEditComponent"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runEditComponent</span> (line <span class="line-number">703</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Edit a component</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runEditComponent
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunEditEditionComponent" id="runEditEditionComponent"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runEditEditionComponent</span> (line <span class="line-number">671</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add or remove a component to/from an edition (AJAX call)</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runEditEditionComponent
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunFindAssignee" id="runFindAssignee"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runFindAssignee</span> (line <span class="line-number">119</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Find users and show selection box</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runFindAssignee
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunIndex" id="runIndex"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runIndex</span> (line <span class="line-number">31</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Configuration main page</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runIndex
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodrunSettings" id="runSettings"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">runSettings</span> (line <span class="line-number">65</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Configure general and server settings</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			runSettings
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>&nbsp;<span class="var-name">$request</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/mvc/BUGSrequest.html">BUGSrequest</a></span>
+				<span class="var-name">$request</span><span class="var-description">: The request object</span>			</li>
+				</ul>
+		
+			
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../thebuggenie/mvc/BUGSaction.html">BUGSaction</a></span></p>
+					<blockquote>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodaddHeader">BUGSaction::addHeader()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodclearHeaders">BUGSaction::clearHeaders()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodforward">BUGSaction::forward()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodforward403">BUGSaction::forward403()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodforward403unless">BUGSaction::forward403unless()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodgetTemplate">BUGSaction::getTemplate()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodheaderRedirect">BUGSaction::headerRedirect()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodmetaForward">BUGSaction::metaForward()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodpreExecute">BUGSaction::preExecute()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodredirect">BUGSaction::redirect()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodrenderComponent">BUGSaction::renderComponent()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodrenderHeaders">BUGSaction::renderHeaders()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodrenderTemplate">BUGSaction::renderTemplate()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodrenderText">BUGSaction::renderText()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodsetHttpStatus">BUGSaction::setHttpStatus()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSaction.html#methodsetTemplate">BUGSaction::setTemplate()</a></span><br>
+											</blockquote>
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../thebuggenie/mvc/BUGSparameterholder.html">BUGSparameterholder</a></span></p>
+					<blockquote>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSparameterholder.html#methodgetParameterHolder">BUGSparameterholder::getParameterHolder()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSparameterholder.html#methodhasParameter">BUGSparameterholder::hasParameter()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSparameterholder.html#method__get">BUGSparameterholder::__get()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSparameterholder.html#method__set">BUGSparameterholder::__set()</a></span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Constants</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-vars">Vars</a>
+														| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="constACCESS_FULL" id="ACCESS_FULL"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ACCESS_FULL</span>
+			 = <span class="const-default"> 2</span>
+			(line <span class="line-number">6</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constACCESS_READ" id="ACCESS_READ"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ACCESS_READ</span>
+			 = <span class="const-default"> 1</span>
+			(line <span class="line-number">5</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+							<h4>Inherited Constants</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../../thebuggenie/mvc/BUGSaction.html">BUGSaction</a></span></p>
+					<blockquote>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../thebuggenie/mvc/BUGSaction.html#constFORWARD_HEADER">BUGSaction::FORWARD_HEADER</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../thebuggenie/mvc/BUGSaction.html#constFORWARD_META">BUGSaction::FORWARD_META</a></span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+	
+	<p class="notes" id="credit">
+		Documentation generated on Wed, 15 Jul 2009 00:27:59 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</div></body>
+</html>

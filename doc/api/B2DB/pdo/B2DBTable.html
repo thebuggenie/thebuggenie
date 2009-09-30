@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>Docs For Class B2DBTable</title>
+			<link rel="stylesheet" href="../../media/stylesheet.css" />
+						<script src="../../media/lib/classTree.js"></script>
+												<script language="javascript" type="text/javascript">
+				var imgPlus = new Image();
+				var imgMinus = new Image();
+				imgPlus.src = "../../media/images/plus.png";
+				imgMinus.src = "../../media/images/minus.png";
+				
+				function showNode(Node){
+							switch(navigator.family){
+								case 'nn4':
+									// Nav 4.x code fork...
+							var oTable = document.layers["span" + Node];
+							var oImg = document.layers["img" + Node];
+									break;
+								case 'ie4':
+									// IE 4/5 code fork...
+							var oTable = document.all["span" + Node];
+							var oImg = document.all["img" + Node];
+									break;
+								case 'gecko':
+									// Standards Compliant code fork...
+							var oTable = document.getElementById("span" + Node);
+							var oImg = document.getElementById("img" + Node);
+									break;
+							}
+					oImg.src = imgMinus.src;
+					oTable.style.display = "block";
+				}
+				
+				function hideNode(Node){
+							switch(navigator.family){
+								case 'nn4':
+									// Nav 4.x code fork...
+							var oTable = document.layers["span" + Node];
+							var oImg = document.layers["img" + Node];
+									break;
+								case 'ie4':
+									// IE 4/5 code fork...
+							var oTable = document.all["span" + Node];
+							var oImg = document.all["img" + Node];
+									break;
+								case 'gecko':
+									// Standards Compliant code fork...
+							var oTable = document.getElementById("span" + Node);
+							var oImg = document.getElementById("img" + Node);
+									break;
+							}
+					oImg.src = imgPlus.src;
+					oTable.style.display = "none";
+				}
+				
+				function nodeIsVisible(Node){
+							switch(navigator.family){
+								case 'nn4':
+									// Nav 4.x code fork...
+							var oTable = document.layers["span" + Node];
+									break;
+								case 'ie4':
+									// IE 4/5 code fork...
+							var oTable = document.all["span" + Node];
+									break;
+								case 'gecko':
+									// Standards Compliant code fork...
+							var oTable = document.getElementById("span" + Node);
+									break;
+							}
+					return (oTable && oTable.style.display == "block");
+				}
+				
+				function toggleNodeVisibility(Node){
+					if (nodeIsVisible(Node)){
+						hideNode(Node);
+					}else{
+						showNode(Node);
+					}
+				}
+			</script>
+					</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name"><img src="../../media/images/Class_logo.png"
+														alt=" Class"
+														title=" Class"
+														style="vertical-align: middle"> B2DBTable</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-vars">Vars</a>
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">PDO table class</p>
+		<p class="notes">
+			Located in <a class="field" href="_core---B2DB---PDO---classes---B2DBTable.class.php.html">/core/B2DB/PDO/classes/B2DBTable.class.php</a> (line <span class="field"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DBTable.class.php.html#a19">19</a></span>)
+		</p>
+		
+				
+		<pre><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a>
+   |
+   --B2DBTable</pre>
+	
+			</div>
+</div>
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-vars">Vars</a>
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																							
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#getQC" title="details" class="method-name">getQC</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#_createToSQL" title="details" class="method-name">_createToSQL</a>
+										()
+									</div>
+															
+				<div class="method-definition">
+					<img src="../../media/images/Method.png" alt=" "/>
+											<span class="method-result">void</span>
+										<a href="#_dropToSQL" title="details" class="method-name">_dropToSQL</a>
+										()
+									</div>
+											</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			
+							<h4>Inherited Variables</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span></p>
+					<blockquote>
+													<img src="../../media/images/Variable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$b2db_alias">BaseB2DBTable::$b2db_alias</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$b2db_name">BaseB2DBTable::$b2db_name</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$id_column">BaseB2DBTable::$id_column</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_autoincrement_start_at">BaseB2DBTable::$_autoincrement_start_at</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_charset">BaseB2DBTable::$_charset</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_columns">BaseB2DBTable::$_columns</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_foreigntables">BaseB2DBTable::$_foreigntables</a></span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-vars">Vars</a>
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodgetQC" id="getQC"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">getQC</span> (line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DBTable.class.php.html#a22">22</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getQC
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method_createToSQL" id="_createToSQL"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">_createToSQL</span> (line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DBTable.class.php.html#a34">34</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_createToSQL
+		</span>
+				()
+			</div>
+	
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../B2DB/core/BaseB2DBTable.html#method_createToSQL">BaseB2DBTable::_createToSQL()</a></dt>
+					</dl>
+			
+	</div>
+<a name="method_dropToSQL" id="_dropToSQL"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<img src="../../media/images/Method.png" />
+		<span class="method-title">_dropToSQL</span> (line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DBTable.class.php.html#a104">104</a></span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_dropToSQL
+		</span>
+				()
+			</div>
+	
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../B2DB/core/BaseB2DBTable.html#method_dropToSQL">BaseB2DBTable::_dropToSQL()</a></dt>
+					</dl>
+			
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span></p>
+					<blockquote>
+													<img src="../../media/images/Constructor.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__construct">BaseB2DBTable::__construct()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodcreate">BaseB2DBTable::create()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoCount">BaseB2DBTable::doCount()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoDelete">BaseB2DBTable::doDelete()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoDeleteById">BaseB2DBTable::doDeleteById()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoInsert">BaseB2DBTable::doInsert()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelect">BaseB2DBTable::doSelect()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectAll">BaseB2DBTable::doSelectAll()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectById">BaseB2DBTable::doSelectById()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectOne">BaseB2DBTable::doSelectOne()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoUpdate">BaseB2DBTable::doUpdate()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoUpdateById">BaseB2DBTable::doUpdateById()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddrop">BaseB2DBTable::drop()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetAliasColumns">BaseB2DBTable::getAliasColumns()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetB2DBAlias">BaseB2DBTable::getB2DBAlias()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetB2DBName">BaseB2DBTable::getB2DBName()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetColumn">BaseB2DBTable::getColumn()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetColumns">BaseB2DBTable::getColumns()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTable">BaseB2DBTable::getForeignTable()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTables">BaseB2DBTable::getForeignTables()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetIdColumn">BaseB2DBTable::getIdColumn()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodsetAutoIncrementStart">BaseB2DBTable::setAutoIncrementStart()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodsetCharset">BaseB2DBTable::setCharset()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addBoolean">BaseB2DBTable::_addBoolean()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addForeignKeyColumn">BaseB2DBTable::_addForeignKeyColumn()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addInteger">BaseB2DBTable::_addInteger()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addText">BaseB2DBTable::_addText()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addVarchar">BaseB2DBTable::_addVarchar()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_createToSQL">BaseB2DBTable::_createToSQL()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_dropToSQL">BaseB2DBTable::_dropToSQL()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_getRealColumnFieldName">BaseB2DBTable::_getRealColumnFieldName()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__clone">BaseB2DBTable::__clone()</a></span><br>
+													<img src="../../media/images/Method.png" alt=" "/>
+							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__toString">BaseB2DBTable::__toString()</a></span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+	
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:25:09 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</div></body>
+</html>

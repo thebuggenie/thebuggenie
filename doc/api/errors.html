@@ -1,0 +1,1614 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>phpDocumentor Parser Errors and Warnings</title>
+			<link rel="stylesheet" href="media/stylesheet.css" />
+											</head>
+		<body>
+						<a href="#Post-parsing">Post-parsing</a><br>
+<a href="#about.php">about.php</a><br>
+<a href="#account.inc.php">account.inc.php</a><br>
+<a href="#account_actions.inc.php">account_actions.inc.php</a><br>
+<a href="#actioncomponents.class.php">actioncomponents.class.php</a><br>
+<a href="#actions.class.php">actions.class.php</a><br>
+<a href="#addbuild.php">addbuild.php</a><br>
+<a href="#articles.php">articles.php</a><br>
+<a href="#articles_logic.inc.php">articles_logic.inc.php</a><br>
+<a href="#b2.js.php">b2.js.php</a><br>
+<a href="#B2tArticles.class.php">B2tArticles.class.php</a><br>
+<a href="#B2tArticleViews.class.php">B2tArticleViews.class.php</a><br>
+<a href="#B2tBillboardPosts.class.php">B2tBillboardPosts.class.php</a><br>
+<a href="#B2tCalendars.class.php">B2tCalendars.class.php</a><br>
+<a href="#B2tCalendarTasks.class.php">B2tCalendarTasks.class.php</a><br>
+<a href="#B2tMessageFolders.class.php">B2tMessageFolders.class.php</a><br>
+<a href="#B2tMessages.class.php">B2tMessages.class.php</a><br>
+<a href="#B2tSavedSearches.class.php">B2tSavedSearches.class.php</a><br>
+<a href="#B2tSavedSearchOrder.class.php">B2tSavedSearchOrder.class.php</a><br>
+<a href="#B2tSearchFields.class.php">B2tSearchFields.class.php</a><br>
+<a href="#B2tSearchFilters.class.php">B2tSearchFilters.class.php</a><br>
+<a href="#B2tSearchLayoutFields.class.php">B2tSearchLayoutFields.class.php</a><br>
+<a href="#B2tSearchLayouts.class.php">B2tSearchLayouts.class.php</a><br>
+<a href="#B2tSVNintegration.class.php">B2tSVNintegration.class.php</a><br>
+<a href="#b2_engine.inc.php">b2_engine.inc.php</a><br>
+<a href="#billboard.php">billboard.php</a><br>
+<a href="#billboard_logic.inc.php">billboard_logic.inc.php</a><br>
+<a href="#blocks.inc.php">blocks.inc.php</a><br>
+<a href="#BUGScalendar.class.php">BUGScalendar.class.php</a><br>
+<a href="#BUGScalendarCalendar.class.php">BUGScalendarCalendar.class.php</a><br>
+<a href="#BUGScalendarEvent.class.php">BUGScalendarEvent.class.php</a><br>
+<a href="#BUGSmailnotification.class.php">BUGSmailnotification.class.php</a><br>
+<a href="#BUGSmessages.class.php">BUGSmessages.class.php</a><br>
+<a href="#BUGSmimemail.class.php">BUGSmimemail.class.php</a><br>
+<a href="#BUGSpublish.class.php">BUGSpublish.class.php</a><br>
+<a href="#BUGSsearch.class.php">BUGSsearch.class.php</a><br>
+<a href="#BUGSsvnintegration.class.php">BUGSsvnintegration.class.php</a><br>
+<a href="#buildaction.php">buildaction.php</a><br>
+<a href="#buildselection.inc.php">buildselection.inc.php</a><br>
+<a href="#calendar.js.php">calendar.js.php</a><br>
+<a href="#calendar.php">calendar.php</a><br>
+<a href="#calendar_actions.inc.php">calendar_actions.inc.php</a><br>
+<a href="#categoryselection.inc.php">categoryselection.inc.php</a><br>
+<a href="#checkcookie.inc.php">checkcookie.inc.php</a><br>
+<a href="#comments.inc.php">comments.inc.php</a><br>
+<a href="#comment_box.inc.php">comment_box.inc.php</a><br>
+<a href="#common_functions.inc.php">common_functions.inc.php</a><br>
+<a href="#componentselection.inc.php">componentselection.inc.php</a><br>
+<a href="#config.inc.php">config.inc.php</a><br>
+<a href="#configureproductdevelopers.php">configureproductdevelopers.php</a><br>
+<a href="#configureproductedition.php">configureproductedition.php</a><br>
+<a href="#configureproducteditionsandcomponents.php">configureproducteditionsandcomponents.php</a><br>
+<a href="#configureproductother.php">configureproductother.php</a><br>
+<a href="#configureproducts.php">configureproducts.php</a><br>
+<a href="#configureproductsettings.php">configureproductsettings.php</a><br>
+<a href="#config_products.inc.php">config_products.inc.php</a><br>
+<a href="#dashboard.php">dashboard.php</a><br>
+<a href="#datatypes.inc.php">datatypes.inc.php</a><br>
+<a href="#datatypes_actions.inc.php">datatypes_actions.inc.php</a><br>
+<a href="#datatypes_categories.inc.php">datatypes_categories.inc.php</a><br>
+<a href="#datatypes_datatypebox.inc.php">datatypes_datatypebox.inc.php</a><br>
+<a href="#datatypes_issuetypes.inc.php">datatypes_issuetypes.inc.php</a><br>
+<a href="#datatypes_prioritylevels.inc.php">datatypes_prioritylevels.inc.php</a><br>
+<a href="#datatypes_reproductionlevels.inc.php">datatypes_reproductionlevels.inc.php</a><br>
+<a href="#datatypes_resolutiontypes.inc.php">datatypes_resolutiontypes.inc.php</a><br>
+<a href="#datatypes_severitylevels.inc.php">datatypes_severitylevels.inc.php</a><br>
+<a href="#datatypes_statustypes.inc.php">datatypes_statustypes.inc.php</a><br>
+<a href="#datatypes_userstatebox.inc.php">datatypes_userstatebox.inc.php</a><br>
+<a href="#datatypes_userstates.inc.php">datatypes_userstates.inc.php</a><br>
+<a href="#editionselection.inc.php">editionselection.inc.php</a><br>
+<a href="#filelist.inc.php">filelist.inc.php</a><br>
+<a href="#files.inc.php">files.inc.php</a><br>
+<a href="#findassignee.php">findassignee.php</a><br>
+<a href="#footer.inc.php">footer.inc.php</a><br>
+<a href="#general.inc.php">general.inc.php</a><br>
+<a href="#generics.class.php">generics.class.php</a><br>
+<a href="#header.inc.php">header.inc.php</a><br>
+<a href="#howto.inc.php">howto.inc.php</a><br>
+<a href="#import.inc.php">import.inc.php</a><br>
+<a href="#index.inc.php">index.inc.php</a><br>
+<a href="#index.php">index.php</a><br>
+<a href="#initialize.inc.php">initialize.inc.php</a><br>
+<a href="#inputdescription.inc.php">inputdescription.inc.php</a><br>
+<a href="#inputrepro.inc.php">inputrepro.inc.php</a><br>
+<a href="#inputsummary.inc.php">inputsummary.inc.php</a><br>
+<a href="#installintro.php">installintro.php</a><br>
+<a href="#installstep1.php">installstep1.php</a><br>
+<a href="#installstep2.php">installstep2.php</a><br>
+<a href="#installstep3.php">installstep3.php</a><br>
+<a href="#installstep4.php">installstep4.php</a><br>
+<a href="#installstep5.php">installstep5.php</a><br>
+<a href="#installstep6.php">installstep6.php</a><br>
+<a href="#install_fixtures.inc.php">install_fixtures.inc.php</a><br>
+<a href="#issuetypeselection.inc.php">issuetypeselection.inc.php</a><br>
+<a href="#issue_affected_build_menu.inc.php">issue_affected_build_menu.inc.php</a><br>
+<a href="#issue_affected_component_menu.inc.php">issue_affected_component_menu.inc.php</a><br>
+<a href="#issue_affected_edition_menu.inc.php">issue_affected_edition_menu.inc.php</a><br>
+<a href="#issue_affected_inline.inc.php">issue_affected_inline.inc.php</a><br>
+<a href="#issue_affected_itemline.inc.php">issue_affected_itemline.inc.php</a><br>
+<a href="#issue_affected_status.inc.php">issue_affected_status.inc.php</a><br>
+<a href="#issue_taskbox.inc.php">issue_taskbox.inc.php</a><br>
+<a href="#linklist.inc.php">linklist.inc.php</a><br>
+<a href="#loadtables.inc.php">loadtables.inc.php</a><br>
+<a href="#load_routes.inc.php">load_routes.inc.php</a><br>
+<a href="#logic.inc.php">logic.inc.php</a><br>
+<a href="#login.inc.php">login.inc.php</a><br>
+<a href="#login.php">login.php</a><br>
+<a href="#main.inc.php">main.inc.php</a><br>
+<a href="#menu.inc.php">menu.inc.php</a><br>
+<a href="#menustrip.inc.php">menustrip.inc.php</a><br>
+<a href="#messages.php">messages.php</a><br>
+<a href="#messages_actions.inc.php">messages_actions.inc.php</a><br>
+<a href="#milestones.inc.php">milestones.inc.php</a><br>
+<a href="#milestones_actions.inc.php">milestones_actions.inc.php</a><br>
+<a href="#milestones_milestonebox.inc.php">milestones_milestonebox.inc.php</a><br>
+<a href="#modules.inc.php">modules.inc.php</a><br>
+<a href="#modulesections.inc.php">modulesections.inc.php</a><br>
+<a href="#modulestrip.inc.php">modulestrip.inc.php</a><br>
+<a href="#modules_logic.inc.php">modules_logic.inc.php</a><br>
+<a href="#myaccount.php">myaccount.php</a><br>
+<a href="#newmessage.php">newmessage.php</a><br>
+<a href="#newmessage_logic.inc.php">newmessage_logic.inc.php</a><br>
+<a href="#opensearch.xml.php">opensearch.xml.php</a><br>
+<a href="#parameters.inc.php">parameters.inc.php</a><br>
+<a href="#permissions.inc.php">permissions.inc.php</a><br>
+<a href="#permissions_config_access.inc.php">permissions_config_access.inc.php</a><br>
+<a href="#permissions_general.inc.php">permissions_general.inc.php</a><br>
+<a href="#permissions_module_config.inc.php">permissions_module_config.inc.php</a><br>
+<a href="#post-commit.php">post-commit.php</a><br>
+<a href="#prefix.inc.php">prefix.inc.php</a><br>
+<a href="#products.inc.php">products.inc.php</a><br>
+<a href="#productselection.inc.php">productselection.inc.php</a><br>
+<a href="#products_actions.inc.php">products_actions.inc.php</a><br>
+<a href="#products_assigneebox.inc.php">products_assigneebox.inc.php</a><br>
+<a href="#products_buildbox.inc.php">products_buildbox.inc.php</a><br>
+<a href="#products_componentbox.inc.php">products_componentbox.inc.php</a><br>
+<a href="#products_editbuilds.inc.php">products_editbuilds.inc.php</a><br>
+<a href="#products_editeditions.inc.php">products_editeditions.inc.php</a><br>
+<a href="#products_editionbox.inc.php">products_editionbox.inc.php</a><br>
+<a href="#products_editsettings.inc.php">products_editsettings.inc.php</a><br>
+<a href="#products_productbox.inc.php">products_productbox.inc.php</a><br>
+<a href="#publish.js.php">publish.js.php</a><br>
+<a href="#publish.php">publish.php</a><br>
+<a href="#PublishArticle.class.php">PublishArticle.class.php</a><br>
+<a href="#PublishBillboardPost.class.php">PublishBillboardPost.class.php</a><br>
+<a href="#PublishFactory.class.php">PublishFactory.class.php</a><br>
+<a href="#publish_logic.inc.php">publish_logic.inc.php</a><br>
+<a href="#reportissue.inc.php">reportissue.inc.php</a><br>
+<a href="#reportissue_addfile.inc.php">reportissue_addfile.inc.php</a><br>
+<a href="#reportissue_addlink.inc.php">reportissue_addlink.inc.php</a><br>
+<a href="#reportissue_addscreenshot.inc.php">reportissue_addscreenshot.inc.php</a><br>
+<a href="#reportissue_build.inc.php">reportissue_build.inc.php</a><br>
+<a href="#reportissue_category.inc.php">reportissue_category.inc.php</a><br>
+<a href="#reportissue_component.inc.php">reportissue_component.inc.php</a><br>
+<a href="#reportissue_description.inc.php">reportissue_description.inc.php</a><br>
+<a href="#reportissue_edition.inc.php">reportissue_edition.inc.php</a><br>
+<a href="#reportissue_issuetype.inc.php">reportissue_issuetype.inc.php</a><br>
+<a href="#reportissue_product.inc.php">reportissue_product.inc.php</a><br>
+<a href="#reportissue_reproduction.inc.php">reportissue_reproduction.inc.php</a><br>
+<a href="#reportissue_severity.inc.php">reportissue_severity.inc.php</a><br>
+<a href="#reportissue_summary.inc.php">reportissue_summary.inc.php</a><br>
+<a href="#scopes.inc.php">scopes.inc.php</a><br>
+<a href="#scopes_logic.inc.php">scopes_logic.inc.php</a><br>
+<a href="#search.js.php">search.js.php</a><br>
+<a href="#search.php">search.php</a><br>
+<a href="#search_button.inc.php">search_button.inc.php</a><br>
+<a href="#search_filters.inc.php">search_filters.inc.php</a><br>
+<a href="#search_logic.inc.php">search_logic.inc.php</a><br>
+<a href="#search_stripped.php">search_stripped.php</a><br>
+<a href="#server.inc.php">server.inc.php</a><br>
+<a href="#settings.php">settings.php</a><br>
+<a href="#setup_build.inc.php">setup_build.inc.php</a><br>
+<a href="#setup_editions.inc.php">setup_editions.inc.php</a><br>
+<a href="#setup_product.inc.php">setup_product.inc.php</a><br>
+<a href="#setup_productassign.inc.php">setup_productassign.inc.php</a><br>
+<a href="#severityselection.inc.php">severityselection.inc.php</a><br>
+<a href="#show_event.php">show_event.php</a><br>
+<a href="#simple_productsetup.inc.php">simple_productsetup.inc.php</a><br>
+<a href="#step1.inc.php">step1.inc.php</a><br>
+<a href="#step1_help.inc.php">step1_help.inc.php</a><br>
+<a href="#step2.inc.php">step2.inc.php</a><br>
+<a href="#step2_button.inc.php">step2_button.inc.php</a><br>
+<a href="#step2_help.inc.php">step2_help.inc.php</a><br>
+<a href="#step3.inc.php">step3.inc.php</a><br>
+<a href="#step3_button.inc.php">step3_button.inc.php</a><br>
+<a href="#step3_help.inc.php">step3_help.inc.php</a><br>
+<a href="#step4.inc.php">step4.inc.php</a><br>
+<a href="#step4_help.inc.php">step4_help.inc.php</a><br>
+<a href="#step5.inc.php">step5.inc.php</a><br>
+<a href="#step5_help.inc.php">step5_help.inc.php</a><br>
+<a href="#success.inc.php">success.inc.php</a><br>
+<a href="#teamgroups.inc.php">teamgroups.inc.php</a><br>
+<a href="#teamgroups_groupbox.inc.php">teamgroups_groupbox.inc.php</a><br>
+<a href="#teamgroups_logic.inc.php">teamgroups_logic.inc.php</a><br>
+<a href="#teamgroups_teambox.inc.php">teamgroups_teambox.inc.php</a><br>
+<a href="#users.inc.php">users.inc.php</a><br>
+<a href="#users_logic.inc.php">users_logic.inc.php</a><br>
+<a href="#viewissue.inc.php">viewissue.inc.php</a><br>
+<a href="#viewissue.php">viewissue.php</a><br>
+<a href="#viewissue_actions.inc.php">viewissue_actions.inc.php</a><br>
+<a href="#viewissue_admin.inc.php">viewissue_admin.inc.php</a><br>
+<a href="#viewissue_ajax.js.php">viewissue_ajax.js.php</a><br>
+<a href="#viewissue_menu.inc.php">viewissue_menu.inc.php</a><br>
+<a href="#viewproduct.inc.php">viewproduct.inc.php</a><br>
+<a href="#viewproduct_logic.inc.php">viewproduct_logic.inc.php</a><br>
+<a href="#welcome.inc.php">welcome.inc.php</a><br>
+<a href="#_accountsettingslist.inc.php">_accountsettingslist.inc.php</a><br>
+<a href="#_buildbox.inc.php">_buildbox.inc.php</a><br>
+<a href="#_builds.inc.php">_builds.inc.php</a><br>
+<a href="#_calendarsummary.inc.php">_calendarsummary.inc.php</a><br>
+<a href="#_componentbox.inc.php">_componentbox.inc.php</a><br>
+<a href="#_config_leftmenu.inc.php">_config_leftmenu.inc.php</a><br>
+<a href="#_editionbox.inc.php">_editionbox.inc.php</a><br>
+<a href="#_footer.inc.php">_footer.inc.php</a><br>
+<a href="#_general.inc.php">_general.inc.php</a><br>
+<a href="#_header.inc.php">_header.inc.php</a><br>
+<a href="#_identifiableselector.inc.php">_identifiableselector.inc.php</a><br>
+<a href="#_latestNewsBox.inc.php">_latestNewsBox.inc.php</a><br>
+<a href="#_main_help.inc.php">_main_help.inc.php</a><br>
+<a href="#_messagessummary.inc.php">_messagessummary.inc.php</a><br>
+<a href="#_myfriends.inc.php">_myfriends.inc.php</a><br>
+<a href="#_percentbar.inc.php">_percentbar.inc.php</a><br>
+<a href="#_productbox.inc.php">_productbox.inc.php</a><br>
+<a href="#_productoverview.inc.php">_productoverview.inc.php</a><br>
+<a href="#_products.inc.php">_products.inc.php</a><br>
+<a href="#_products_assignees.inc.php">_products_assignees.inc.php</a><br>
+<a href="#_product_header.inc.php">_product_header.inc.php</a><br>
+<a href="#_reglang.inc.php">_reglang.inc.php</a><br>
+<a href="#_server.inc.php">_server.inc.php</a><br>
+<a href="#_user.inc.php">_user.inc.php</a><br>
+<a href="#_userdropdown.inc.php">_userdropdown.inc.php</a><br>
+<a name="Post-parsing"></a>
+<h1>Post-parsing</h1>
+<h2>Warnings:</h2><br>
+<b>Warning</b> - Class B2tVisibleMilestones in file C:\dev\thebuggenie\core\classes\B2DB\B2tVisibleMilestones.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tVotes in file C:\dev\thebuggenie\core\classes\B2DB\B2tVotes.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tCalendars in file C:\dev\thebuggenie\modules\calendar\classes\B2DB\B2tCalendars.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tCalendarTasks in file C:\dev\thebuggenie\modules\calendar\classes\B2DB\B2tCalendarTasks.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tVisibleIssueTypes in file C:\dev\thebuggenie\core\classes\B2DB\B2tVisibleIssueTypes.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tUserState in file C:\dev\thebuggenie\core\classes\B2DB\B2tUserState.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tTeams in file C:\dev\thebuggenie\core\classes\B2DB\B2tTeams.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tUserIssues in file C:\dev\thebuggenie\core\classes\B2DB\B2tUserIssues.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tUsers in file C:\dev\thebuggenie\core\classes\B2DB\B2tUsers.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tMessageFolders in file C:\dev\thebuggenie\modules\messages\classes\B2DB\B2tMessageFolders.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tMessages in file C:\dev\thebuggenie\modules\messages\classes\B2DB\B2tMessages.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tSearchFields in file C:\dev\thebuggenie\modules\search\classes\B2DB\B2tSearchFields.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tSearchFilters in file C:\dev\thebuggenie\modules\search\classes\B2DB\B2tSearchFilters.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tSearchLayoutFields in file C:\dev\thebuggenie\modules\search\classes\B2DB\B2tSearchLayoutFields.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tSavedSearchOrder in file C:\dev\thebuggenie\modules\search\classes\B2DB\B2tSavedSearchOrder.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tSavedSearches in file C:\dev\thebuggenie\modules\search\classes\B2DB\B2tSavedSearches.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tArticles in file C:\dev\thebuggenie\modules\publish\classes\B2DB\B2tArticles.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tArticleViews in file C:\dev\thebuggenie\modules\publish\classes\B2DB\B2tArticleViews.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tBillboardPosts in file C:\dev\thebuggenie\modules\publish\classes\B2DB\B2tBillboardPosts.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tIssueAffectsBuild in file C:\dev\thebuggenie\core\classes\B2DB\B2tIssueAffectsBuild.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tIssueAffectsComponent in file C:\dev\thebuggenie\core\classes\B2DB\B2tIssueAffectsComponent.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tMilestones in file C:\dev\thebuggenie\core\classes\B2DB\B2tMilestones.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tModulePermissions in file C:\dev\thebuggenie\core\classes\B2DB\B2tModulePermissions.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tModules in file C:\dev\thebuggenie\core\classes\B2DB\B2tModules.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tModuleSections in file C:\dev\thebuggenie\core\classes\B2DB\B2tModuleSections.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tLog in file C:\dev\thebuggenie\core\classes\B2DB\B2tLog.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tListTypes in file C:\dev\thebuggenie\core\classes\B2DB\B2tListTypes.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tIssueTasks in file C:\dev\thebuggenie\core\classes\B2DB\B2tIssueTasks.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tIssueTypes in file C:\dev\thebuggenie\core\classes\B2DB\B2tIssueTypes.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tLinks in file C:\dev\thebuggenie\core\classes\B2DB\B2tLinks.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tNotifications in file C:\dev\thebuggenie\core\classes\B2DB\B2tNotifications.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tPermissions in file C:\dev\thebuggenie\core\classes\B2DB\B2tPermissions.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tTeamMembers in file C:\dev\thebuggenie\core\classes\B2DB\B2tTeamMembers.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tIssueRelations in file C:\dev\thebuggenie\core\classes\B2DB\B2tIssueRelations.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tIssueAffectsEdition in file C:\dev\thebuggenie\core\classes\B2DB\B2tIssueAffectsEdition.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tSettings in file C:\dev\thebuggenie\core\classes\B2DB\B2tSettings.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tScopes in file C:\dev\thebuggenie\core\classes\B2DB\B2tScopes.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tPermissionsList in file C:\dev\thebuggenie\core\classes\B2DB\B2tPermissionsList.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tProductAssignees in file C:\dev\thebuggenie\core\classes\B2DB\B2tProductAssignees.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tProducts in file C:\dev\thebuggenie\core\classes\B2DB\B2tProducts.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tSearchLayouts in file C:\dev\thebuggenie\modules\search\classes\B2DB\B2tSearchLayouts.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tSVNintegration in file C:\dev\thebuggenie\modules\svn_integration\classes\B2DB\B2tSVNintegration.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\svn_integration\post-commit.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - Class B2tGroups in file C:\dev\thebuggenie\core\classes\B2DB\B2tGroups.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tFiles in file C:\dev\thebuggenie\core\classes\B2DB\B2tFiles.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\search\search_stripped.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - Class B2tIssues in file C:\dev\thebuggenie\core\classes\B2DB\B2tIssues.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\publish\publish.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\search\opensearch.xml.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - Class B2tEditions in file C:\dev\thebuggenie\core\classes\B2DB\B2tEditions.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tEditionComponents in file C:\dev\thebuggenie\core\classes\B2DB\B2tEditionComponents.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tComments in file C:\dev\thebuggenie\core\classes\B2DB\B2tComments.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tBuilds in file C:\dev\thebuggenie\core\classes\B2DB\B2tBuilds.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tBuddies in file C:\dev\thebuggenie\core\classes\B2DB\B2tBuddies.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tComponentAssignees in file C:\dev\thebuggenie\core\classes\B2DB\B2tComponentAssignees.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tComponents in file C:\dev\thebuggenie\core\classes\B2DB\B2tComponents.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tEditionAssignees in file C:\dev\thebuggenie\core\classes\B2DB\B2tEditionAssignees.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class B2tCustomers in file C:\dev\thebuggenie\core\classes\B2DB\B2tCustomers.class.php has multiple possible parents named B2DBTable.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\publish\billboard.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\search\search.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "B2DBRow" in file C:\dev\thebuggenie\core\B2DB\PDO\classes\B2DBRow.class.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "B2DBStatement" in file C:\dev\thebuggenie\core\B2DB\PDO\classes\B2DBStatement.class.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "B2DBTable" in file C:\dev\thebuggenie\core\B2DB\PDO\classes\B2DBTable.class.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "B2DBResultset" in file C:\dev\thebuggenie\core\B2DB\PDO\classes\B2DBResultset.class.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "B2DBCriterion" in file C:\dev\thebuggenie\core\B2DB\PDO\classes\B2DBCriterion.class.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "B2DB" in file C:\dev\thebuggenie\core\B2DB\PDO\classes\B2DB.class.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "B2DBCriteria" in file C:\dev\thebuggenie\core\B2DB\PDO\classes\B2DBCriteria.class.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate class element "B2DBTransaction" in file C:\dev\thebuggenie\core\B2DB\PDO\classes\B2DBTransaction.class.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\publish\articles.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\core\viewissue_actions.inc.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\calendar\calendar_actions.inc.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\messages\messages.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\calendar\calendar.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\index.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\messages\newmessage.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\calendar\show_event.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<a name="about.inc.php"></a>
+<h1>about.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - File "C:\dev\thebuggenie\i18n\de_DE\about.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 10</b> - File "C:\dev\thebuggenie\i18n\sv_se\about.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 10</b> - File "C:\dev\thebuggenie\i18n\es_ES\about.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 10</b> - File "C:\dev\thebuggenie\i18n\fr_FR\about.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 10</b> - File "C:\dev\thebuggenie\i18n\no_NB\about.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="about.php"></a>
+<h1>about.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - File "C:\dev\thebuggenie\modules\main\templates\about.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="account.inc.php"></a>
+<h1>account.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 35</b> - File "C:\dev\thebuggenie\i18n\no_NB\account.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 36</b> - File "C:\dev\thebuggenie\i18n\de_DE\account.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 36</b> - File "C:\dev\thebuggenie\i18n\es_ES\account.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 36</b> - File "C:\dev\thebuggenie\i18n\sv_se\account.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 37</b> - File "C:\dev\thebuggenie\i18n\fr_FR\account.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="account_actions.inc.php"></a>
+<h1>account_actions.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 118</b> - File "C:\dev\thebuggenie\core\account_actions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="actioncomponents.class.php"></a>
+<h1>actioncomponents.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class publishActionComponents<br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class mainActionComponents<br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class calendarActionComponents<br>
+<b>Warning on line 11</b> - File "C:\dev\thebuggenie\modules\calendar\classes\actioncomponents.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 14</b> - File "C:\dev\thebuggenie\modules\publish\classes\actioncomponents.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 37</b> - File "C:\dev\thebuggenie\modules\main\classes\actioncomponents.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="actions.class.php"></a>
+<h1>actions.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 0</b> - File "C:\dev\thebuggenie\modules\calendar\classes\actions.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class mainActions<br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class installationActions<br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class configurationActions<br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class publishActions<br>
+<b>Warning on line 5</b> - File "C:\dev\thebuggenie\modules\publish\classes\actions.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 218</b> - File "C:\dev\thebuggenie\modules\main\classes\actions.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 335</b> - File "C:\dev\thebuggenie\modules\installation\classes\actions.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 737</b> - File "C:\dev\thebuggenie\modules\configuration\classes\actions.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="addbuild.php"></a>
+<h1>addbuild.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - File "C:\dev\thebuggenie\modules\configuration\templates\addbuild.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="articles.php"></a>
+<h1>articles.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 318</b> - File "C:\dev\thebuggenie\modules\publish\articles.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="articles_logic.inc.php"></a>
+<h1>articles_logic.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 143</b> - File "C:\dev\thebuggenie\modules\publish\articles_logic.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="b2.js.php"></a>
+<h1>b2.js.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 368</b> - File "C:\dev\thebuggenie\js\b2.js.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tArticles.class.php"></a>
+<h1>B2tArticles.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tArticles<br>
+<b>Warning on line 42</b> - File "C:\dev\thebuggenie\modules\publish\classes\B2DB\B2tArticles.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tArticleViews.class.php"></a>
+<h1>B2tArticleViews.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tArticleViews<br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\modules\publish\classes\B2DB\B2tArticleViews.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tBillboardPosts.class.php"></a>
+<h1>B2tBillboardPosts.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tBillboardPosts<br>
+<b>Warning on line 31</b> - File "C:\dev\thebuggenie\modules\publish\classes\B2DB\B2tBillboardPosts.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tCalendars.class.php"></a>
+<h1>B2tCalendars.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tCalendars<br>
+<b>Warning on line 27</b> - File "C:\dev\thebuggenie\modules\calendar\classes\B2DB\B2tCalendars.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tCalendarTasks.class.php"></a>
+<h1>B2tCalendarTasks.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tCalendarTasks<br>
+<b>Warning on line 31</b> - File "C:\dev\thebuggenie\modules\calendar\classes\B2DB\B2tCalendarTasks.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tMessageFolders.class.php"></a>
+<h1>B2tMessageFolders.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tMessageFolders<br>
+<b>Warning on line 21</b> - File "C:\dev\thebuggenie\modules\messages\classes\B2DB\B2tMessageFolders.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tMessages.class.php"></a>
+<h1>B2tMessages.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tMessages<br>
+<b>Warning on line 37</b> - File "C:\dev\thebuggenie\modules\messages\classes\B2DB\B2tMessages.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tSavedSearches.class.php"></a>
+<h1>B2tSavedSearches.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tSavedSearches<br>
+<b>Warning on line 29</b> - File "C:\dev\thebuggenie\modules\search\classes\B2DB\B2tSavedSearches.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tSavedSearchOrder.class.php"></a>
+<h1>B2tSavedSearchOrder.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tSavedSearchOrder<br>
+<b>Warning on line 21</b> - File "C:\dev\thebuggenie\modules\search\classes\B2DB\B2tSavedSearchOrder.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tSearchFields.class.php"></a>
+<h1>B2tSearchFields.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tSearchFields<br>
+<b>Warning on line 23</b> - File "C:\dev\thebuggenie\modules\search\classes\B2DB\B2tSearchFields.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tSearchFilters.class.php"></a>
+<h1>B2tSearchFilters.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tSearchFilters<br>
+<b>Warning on line 52</b> - File "C:\dev\thebuggenie\modules\search\classes\B2DB\B2tSearchFilters.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tSearchLayoutFields.class.php"></a>
+<h1>B2tSearchLayoutFields.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tSearchLayoutFields<br>
+<b>Warning on line 42</b> - File "C:\dev\thebuggenie\modules\search\classes\B2DB\B2tSearchLayoutFields.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tSearchLayouts.class.php"></a>
+<h1>B2tSearchLayouts.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tSearchLayouts<br>
+<b>Warning on line 18</b> - File "C:\dev\thebuggenie\modules\search\classes\B2DB\B2tSearchLayouts.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="B2tSVNintegration.class.php"></a>
+<h1>B2tSVNintegration.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class B2tSVNintegration<br>
+<b>Warning on line 27</b> - File "C:\dev\thebuggenie\modules\svn_integration\classes\B2DB\B2tSVNintegration.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="b2_engine.inc.php"></a>
+<h1>b2_engine.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 262</b> - File "C:\dev\thebuggenie\core\b2_engine.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="billboard.php"></a>
+<h1>billboard.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 265</b> - File "C:\dev\thebuggenie\modules\publish\billboard.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="billboard_logic.inc.php"></a>
+<h1>billboard_logic.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 43</b> - File "C:\dev\thebuggenie\modules\publish\billboard_logic.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="blocks.inc.php"></a>
+<h1>blocks.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - File "C:\dev\thebuggenie\i18n\de_DE\blocks.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 7</b> - File "C:\dev\thebuggenie\i18n\es_ES\blocks.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 7</b> - File "C:\dev\thebuggenie\i18n\sv_se\blocks.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 7</b> - File "C:\dev\thebuggenie\i18n\no_NB\blocks.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 8</b> - File "C:\dev\thebuggenie\i18n\fr_FR\blocks.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="BUGScalendar.class.php"></a>
+<h1>BUGScalendar.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class BUGScalendar<br>
+<b>Warning on line 674</b> - File "C:\dev\thebuggenie\modules\calendar\classes\BUGScalendar.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="BUGScalendarCalendar.class.php"></a>
+<h1>BUGScalendarCalendar.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class BUGScalendarCalendar<br>
+<b>Warning on line 58</b> - File "C:\dev\thebuggenie\modules\calendar\classes\BUGScalendarCalendar.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="BUGScalendarEvent.class.php"></a>
+<h1>BUGScalendarEvent.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class BUGScalendarEvent<br>
+<b>Warning on line 168</b> - File "C:\dev\thebuggenie\modules\calendar\classes\BUGScalendarEvent.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="BUGSmailnotification.class.php"></a>
+<h1>BUGSmailnotification.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class BUGSmailnotification<br>
+<b>Warning on line 462</b> - File "C:\dev\thebuggenie\modules\mailnotification\classes\BUGSmailnotification.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="BUGSmessages.class.php"></a>
+<h1>BUGSmessages.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class BUGSmessages<br>
+<b>Warning on line 580</b> - File "C:\dev\thebuggenie\modules\messages\classes\BUGSmessages.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="BUGSmimemail.class.php"></a>
+<h1>BUGSmimemail.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - no @package tag was used in a DocBlock for class BUGSmimemail<br>
+<b>Warning on line 396</b> - File "C:\dev\thebuggenie\modules\mailnotification\classes\BUGSmimemail.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="BUGSpublish.class.php"></a>
+<h1>BUGSpublish.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class BUGSpublish<br>
+<b>Warning on line 470</b> - File "C:\dev\thebuggenie\modules\publish\classes\BUGSpublish.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="BUGSsearch.class.php"></a>
+<h1>BUGSsearch.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class BUGSsearch<br>
+<b>Warning on line 1648</b> - File "C:\dev\thebuggenie\modules\search\classes\BUGSsearch.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="BUGSsvnintegration.class.php"></a>
+<h1>BUGSsvnintegration.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class BUGSsvnintegration<br>
+<b>Warning on line 225</b> - File "C:\dev\thebuggenie\modules\svn_integration\classes\BUGSsvnintegration.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="buildaction.php"></a>
+<h1>buildaction.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - File "C:\dev\thebuggenie\modules\configuration\templates\buildaction.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="buildselection.inc.php"></a>
+<h1>buildselection.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 68</b> - File "C:\dev\thebuggenie\core\report_issue\buildselection.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="calendar.js.php"></a>
+<h1>calendar.js.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 26</b> - File "C:\dev\thebuggenie\modules\calendar\js\calendar.js.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="calendar.php"></a>
+<h1>calendar.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 135</b> - File "C:\dev\thebuggenie\modules\calendar\calendar.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="calendar_actions.inc.php"></a>
+<h1>calendar_actions.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 40</b> - File "C:\dev\thebuggenie\modules\calendar\calendar_actions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="categoryselection.inc.php"></a>
+<h1>categoryselection.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 81</b> - File "C:\dev\thebuggenie\core\report_issue\categoryselection.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="checkcookie.inc.php"></a>
+<h1>checkcookie.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - File "C:\dev\thebuggenie\core\checkcookie.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="comments.inc.php"></a>
+<h1>comments.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 26</b> - File "C:\dev\thebuggenie\core\comments.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="comment_box.inc.php"></a>
+<h1>comment_box.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 91</b> - File "C:\dev\thebuggenie\core\comment_box.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="common_functions.inc.php"></a>
+<h1>common_functions.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 406</b> - File "C:\dev\thebuggenie\core\common_functions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="componentselection.inc.php"></a>
+<h1>componentselection.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 79</b> - File "C:\dev\thebuggenie\core\report_issue\componentselection.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="config.inc.php"></a>
+<h1>config.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - File "C:\dev\thebuggenie\modules\calendar\config.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 62</b> - File "C:\dev\thebuggenie\modules\messages\config.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 115</b> - File "C:\dev\thebuggenie\modules\svn_integration\config.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 122</b> - File "C:\dev\thebuggenie\modules\publish\config.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 166</b> - File "C:\dev\thebuggenie\modules\mailnotification\config.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 282</b> - File "C:\dev\thebuggenie\modules\search\config.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 341</b> - File "C:\dev\thebuggenie\i18n\sv_se\config.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 342</b> - File "C:\dev\thebuggenie\i18n\no_NB\config.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 344</b> - File "C:\dev\thebuggenie\i18n\fr_FR\config.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 350</b> - File "C:\dev\thebuggenie\i18n\de_DE\config.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 353</b> - File "C:\dev\thebuggenie\i18n\es_ES\config.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="configureproductdevelopers.php"></a>
+<h1>configureproductdevelopers.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 47</b> - File "C:\dev\thebuggenie\modules\configuration\templates\configureproductdevelopers.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="configureproductedition.php"></a>
+<h1>configureproductedition.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 291</b> - File "C:\dev\thebuggenie\modules\configuration\templates\configureproductedition.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="configureproducteditionsandcomponents.php"></a>
+<h1>configureproducteditionsandcomponents.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 94</b> - File "C:\dev\thebuggenie\modules\configuration\templates\configureproducteditionsandcomponents.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="configureproductother.php"></a>
+<h1>configureproductother.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 56</b> - File "C:\dev\thebuggenie\modules\configuration\templates\configureproductother.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="configureproducts.php"></a>
+<h1>configureproducts.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 55</b> - File "C:\dev\thebuggenie\modules\configuration\templates\configureproducts.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="configureproductsettings.php"></a>
+<h1>configureproductsettings.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 338</b> - File "C:\dev\thebuggenie\modules\configuration\templates\configureproductsettings.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="config_products.inc.php"></a>
+<h1>config_products.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\config_products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 27</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\config_products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 28</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\config_products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 28</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\config_products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 28</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\config_products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 28</b> - File "C:\dev\thebuggenie\i18n\en_US\help\config_products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 110</b> - File "C:\dev\thebuggenie\i18n\no_NB\config_products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 111</b> - File "C:\dev\thebuggenie\i18n\sv_se\config_products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 112</b> - File "C:\dev\thebuggenie\i18n\fr_FR\config_products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 112</b> - File "C:\dev\thebuggenie\i18n\es_ES\config_products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 113</b> - File "C:\dev\thebuggenie\i18n\de_DE\config_products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="dashboard.php"></a>
+<h1>dashboard.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 127</b> - File "C:\dev\thebuggenie\modules\main\templates\dashboard.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="datatypes.inc.php"></a>
+<h1>datatypes.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 72</b> - File "C:\dev\thebuggenie\core\config\datatypes.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="datatypes_actions.inc.php"></a>
+<h1>datatypes_actions.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 250</b> - File "C:\dev\thebuggenie\core\config\datatypes_actions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="datatypes_categories.inc.php"></a>
+<h1>datatypes_categories.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 40</b> - File "C:\dev\thebuggenie\core\config\datatypes_categories.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="datatypes_datatypebox.inc.php"></a>
+<h1>datatypes_datatypebox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 104</b> - File "C:\dev\thebuggenie\core\config\datatypes_datatypebox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="datatypes_issuetypes.inc.php"></a>
+<h1>datatypes_issuetypes.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 50</b> - File "C:\dev\thebuggenie\core\config\datatypes_issuetypes.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="datatypes_prioritylevels.inc.php"></a>
+<h1>datatypes_prioritylevels.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 42</b> - File "C:\dev\thebuggenie\core\config\datatypes_prioritylevels.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="datatypes_reproductionlevels.inc.php"></a>
+<h1>datatypes_reproductionlevels.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 40</b> - File "C:\dev\thebuggenie\core\config\datatypes_reproductionlevels.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="datatypes_resolutiontypes.inc.php"></a>
+<h1>datatypes_resolutiontypes.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 40</b> - File "C:\dev\thebuggenie\core\config\datatypes_resolutiontypes.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="datatypes_severitylevels.inc.php"></a>
+<h1>datatypes_severitylevels.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 40</b> - File "C:\dev\thebuggenie\core\config\datatypes_severitylevels.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="datatypes_statustypes.inc.php"></a>
+<h1>datatypes_statustypes.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 51</b> - File "C:\dev\thebuggenie\core\config\datatypes_statustypes.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="datatypes_userstatebox.inc.php"></a>
+<h1>datatypes_userstatebox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\core\config\datatypes_userstatebox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="datatypes_userstates.inc.php"></a>
+<h1>datatypes_userstates.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 118</b> - File "C:\dev\thebuggenie\core\config\datatypes_userstates.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="editionselection.inc.php"></a>
+<h1>editionselection.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 62</b> - File "C:\dev\thebuggenie\core\report_issue\editionselection.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="filelist.inc.php"></a>
+<h1>filelist.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 41</b> - File "C:\dev\thebuggenie\core\report_issue\filelist.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="files.inc.php"></a>
+<h1>files.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 105</b> - File "C:\dev\thebuggenie\core\config\files.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="findassignee.php"></a>
+<h1>findassignee.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 116</b> - File "C:\dev\thebuggenie\modules\configuration\templates\findassignee.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="footer.inc.php"></a>
+<h1>footer.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 70</b> - File "C:\dev\thebuggenie\core\templates\footer.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="general.inc.php"></a>
+<h1>general.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 29</b> - File "C:\dev\thebuggenie\i18n\sv_se\svn_integration\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 31</b> - File "C:\dev\thebuggenie\i18n\de_DE\svn_integration\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 32</b> - File "C:\dev\thebuggenie\i18n\no_NB\svn_integration\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 32</b> - File "C:\dev\thebuggenie\i18n\fr_FR\svn_integration\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 32</b> - File "C:\dev\thebuggenie\i18n\es_ES\svn_integration\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 33</b> - File "C:\dev\thebuggenie\i18n\en_US\svn_integration\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 34</b> - File "C:\dev\thebuggenie\i18n\sv_se\mailnotification\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 35</b> - File "C:\dev\thebuggenie\i18n\fr_FR\mailnotification\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 41</b> - File "C:\dev\thebuggenie\i18n\en_US\mailnotification\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 43</b> - File "C:\dev\thebuggenie\i18n\no_NB\mailnotification\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 44</b> - File "C:\dev\thebuggenie\i18n\no_NB\calendar\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 44</b> - File "C:\dev\thebuggenie\i18n\fr_FR\calendar\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 44</b> - File "C:\dev\thebuggenie\i18n\sv_se\calendar\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 44</b> - File "C:\dev\thebuggenie\i18n\es_ES\calendar\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 45</b> - File "C:\dev\thebuggenie\i18n\de_DE\calendar\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 45</b> - File "C:\dev\thebuggenie\i18n\en_US\calendar\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 45</b> - File "C:\dev\thebuggenie\i18n\es_ES\mailnotification\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 47</b> - File "C:\dev\thebuggenie\i18n\de_DE\mailnotification\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 67</b> - File "C:\dev\thebuggenie\i18n\fr_FR\messages\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 67</b> - File "C:\dev\thebuggenie\i18n\sv_se\messages\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 68</b> - File "C:\dev\thebuggenie\i18n\no_NB\messages\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 68</b> - File "C:\dev\thebuggenie\i18n\es_ES\messages\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 68</b> - File "C:\dev\thebuggenie\i18n\de_DE\messages\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 69</b> - File "C:\dev\thebuggenie\i18n\en_US\messages\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 120</b> - File "C:\dev\thebuggenie\i18n\no_NB\publish\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 120</b> - File "C:\dev\thebuggenie\i18n\de_DE\publish\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 120</b> - File "C:\dev\thebuggenie\i18n\sv_se\publish\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 120</b> - File "C:\dev\thebuggenie\i18n\es_ES\publish\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 122</b> - File "C:\dev\thebuggenie\i18n\en_US\publish\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 125</b> - File "C:\dev\thebuggenie\i18n\fr_FR\publish\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 224</b> - File "C:\dev\thebuggenie\i18n\sv_se\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 226</b> - File "C:\dev\thebuggenie\i18n\en_US\search\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 227</b> - File "C:\dev\thebuggenie\i18n\de_DE\search\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 228</b> - File "C:\dev\thebuggenie\i18n\sv_se\search\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 228</b> - File "C:\dev\thebuggenie\i18n\no_NB\search\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 228</b> - File "C:\dev\thebuggenie\i18n\es_ES\search\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 234</b> - File "C:\dev\thebuggenie\i18n\fr_FR\search\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 250</b> - File "C:\dev\thebuggenie\i18n\no_NB\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 251</b> - File "C:\dev\thebuggenie\i18n\es_ES\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 251</b> - File "C:\dev\thebuggenie\i18n\de_DE\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 256</b> - File "C:\dev\thebuggenie\i18n\fr_FR\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 366</b> - File "C:\dev\thebuggenie\core\config\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 1220</b> - File "C:\dev\thebuggenie\i18n\en_US\general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="generics.class.php"></a>
+<h1>generics.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class PublishGenericContent<br>
+<b>Warning on line 80</b> - File "C:\dev\thebuggenie\modules\publish\classes\generics.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="header.inc.php"></a>
+<h1>header.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 129</b> - File "C:\dev\thebuggenie\core\templates\header.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="howto.inc.php"></a>
+<h1>howto.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\svn_integration\howto.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 18</b> - File "C:\dev\thebuggenie\i18n\en_US\help\svn_integration\howto.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 18</b> - File "C:\dev\thebuggenie\modules\svn_integration\help\howto.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 18</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\svn_integration\howto.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 18</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\svn_integration\howto.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 18</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\svn_integration\howto.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="import.inc.php"></a>
+<h1>import.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 487</b> - File "C:\dev\thebuggenie\core\config\import.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="index.inc.php"></a>
+<h1>index.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\no_NB\index.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\sv_se\index.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\es_ES\index.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\fr_FR\index.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\de_DE\index.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="index.php"></a>
+<h1>index.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - File "C:\dev\thebuggenie\index.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 72</b> - File "C:\dev\thebuggenie\modules\main\templates\index.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 196</b> - File "C:\dev\thebuggenie\modules\configuration\templates\index.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="initialize.inc.php"></a>
+<h1>initialize.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\modules\mailnotification\initialize.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\modules\calendar\initialize.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\modules\messages\initialize.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\modules\publish\initialize.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\modules\svn_integration\initialize.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="inputdescription.inc.php"></a>
+<h1>inputdescription.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - File "C:\dev\thebuggenie\core\report_issue\inputdescription.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="inputrepro.inc.php"></a>
+<h1>inputrepro.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 37</b> - File "C:\dev\thebuggenie\core\report_issue\inputrepro.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="inputsummary.inc.php"></a>
+<h1>inputsummary.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 40</b> - File "C:\dev\thebuggenie\core\report_issue\inputsummary.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="installintro.php"></a>
+<h1>installintro.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 30</b> - File "C:\dev\thebuggenie\modules\installation\templates\installintro.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="installstep1.php"></a>
+<h1>installstep1.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 92</b> - File "C:\dev\thebuggenie\modules\installation\templates\installstep1.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="installstep2.php"></a>
+<h1>installstep2.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 84</b> - File "C:\dev\thebuggenie\modules\installation\templates\installstep2.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="installstep3.php"></a>
+<h1>installstep3.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 100</b> - File "C:\dev\thebuggenie\modules\installation\templates\installstep3.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="installstep4.php"></a>
+<h1>installstep4.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 79</b> - File "C:\dev\thebuggenie\modules\installation\templates\installstep4.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="installstep5.php"></a>
+<h1>installstep5.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 51</b> - File "C:\dev\thebuggenie\modules\installation\templates\installstep5.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="installstep6.php"></a>
+<h1>installstep6.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - File "C:\dev\thebuggenie\modules\installation\templates\installstep6.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="install_fixtures.inc.php"></a>
+<h1>install_fixtures.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 72</b> - File "C:\dev\thebuggenie\i18n\de_DE\install_fixtures.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 73</b> - File "C:\dev\thebuggenie\i18n\no_NB\install_fixtures.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 73</b> - File "C:\dev\thebuggenie\i18n\fr_FR\install_fixtures.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 75</b> - File "C:\dev\thebuggenie\i18n\es_ES\install_fixtures.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="issuetypeselection.inc.php"></a>
+<h1>issuetypeselection.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 79</b> - File "C:\dev\thebuggenie\core\report_issue\issuetypeselection.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="issue_affected_build_menu.inc.php"></a>
+<h1>issue_affected_build_menu.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\core\issue_affected_build_menu.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="issue_affected_component_menu.inc.php"></a>
+<h1>issue_affected_component_menu.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\core\issue_affected_component_menu.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="issue_affected_edition_menu.inc.php"></a>
+<h1>issue_affected_edition_menu.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\core\issue_affected_edition_menu.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="issue_affected_inline.inc.php"></a>
+<h1>issue_affected_inline.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 16</b> - File "C:\dev\thebuggenie\core\issue_affected_inline.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="issue_affected_itemline.inc.php"></a>
+<h1>issue_affected_itemline.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - File "C:\dev\thebuggenie\core\issue_affected_itemline.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="issue_affected_status.inc.php"></a>
+<h1>issue_affected_status.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 52</b> - File "C:\dev\thebuggenie\core\issue_affected_status.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="issue_taskbox.inc.php"></a>
+<h1>issue_taskbox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 185</b> - File "C:\dev\thebuggenie\core\issue_taskbox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="linklist.inc.php"></a>
+<h1>linklist.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 41</b> - File "C:\dev\thebuggenie\core\report_issue\linklist.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="loadtables.inc.php"></a>
+<h1>loadtables.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 38</b> - File "C:\dev\thebuggenie\core\loadtables.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="load_routes.inc.php"></a>
+<h1>load_routes.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 68</b> - File "C:\dev\thebuggenie\core\load_routes.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="logic.inc.php"></a>
+<h1>logic.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 491</b> - File "C:\dev\thebuggenie\core\report_issue\logic.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="login.inc.php"></a>
+<h1>login.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 36</b> - File "C:\dev\thebuggenie\i18n\fr_FR\login.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 36</b> - File "C:\dev\thebuggenie\i18n\sv_se\login.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 41</b> - File "C:\dev\thebuggenie\i18n\de_DE\login.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 42</b> - File "C:\dev\thebuggenie\i18n\no_NB\login.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 42</b> - File "C:\dev\thebuggenie\i18n\es_ES\login.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="login.php"></a>
+<h1>login.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 406</b> - File "C:\dev\thebuggenie\modules\main\templates\login.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="main.inc.php"></a>
+<h1>main.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\modules\svn_integration\help\main.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\svn_integration\main.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\i18n\en_US\help\svn_integration\main.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\svn_integration\main.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\svn_integration\main.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 29</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\svn_integration\main.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="menu.inc.php"></a>
+<h1>menu.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 161</b> - File "C:\dev\thebuggenie\core\templates\menu.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 213</b> - File "C:\dev\thebuggenie\core\menu.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="menustrip.inc.php"></a>
+<h1>menustrip.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\core\menustrip.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="messages.php"></a>
+<h1>messages.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 376</b> - File "C:\dev\thebuggenie\modules\messages\messages.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="messages_actions.inc.php"></a>
+<h1>messages_actions.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 120</b> - File "C:\dev\thebuggenie\modules\messages\messages_actions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="milestones.inc.php"></a>
+<h1>milestones.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 199</b> - File "C:\dev\thebuggenie\core\config\milestones.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="milestones_actions.inc.php"></a>
+<h1>milestones_actions.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 64</b> - File "C:\dev\thebuggenie\core\config\milestones_actions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="milestones_milestonebox.inc.php"></a>
+<h1>milestones_milestonebox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 108</b> - File "C:\dev\thebuggenie\core\config\milestones_milestonebox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="modules.inc.php"></a>
+<h1>modules.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 143</b> - File "C:\dev\thebuggenie\core\config\modules.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="modulesections.inc.php"></a>
+<h1>modulesections.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 25</b> - File "C:\dev\thebuggenie\core\config\modulesections.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="modulestrip.inc.php"></a>
+<h1>modulestrip.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 42</b> - File "C:\dev\thebuggenie\core\config\modulestrip.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="modules_logic.inc.php"></a>
+<h1>modules_logic.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 59</b> - File "C:\dev\thebuggenie\core\config\modules_logic.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="myaccount.php"></a>
+<h1>myaccount.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 365</b> - File "C:\dev\thebuggenie\modules\main\templates\myaccount.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="newmessage.php"></a>
+<h1>newmessage.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 161</b> - File "C:\dev\thebuggenie\modules\messages\newmessage.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="newmessage_logic.inc.php"></a>
+<h1>newmessage_logic.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 32</b> - File "C:\dev\thebuggenie\modules\messages\newmessage_logic.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="opensearch.xml.php"></a>
+<h1>opensearch.xml.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 31</b> - File "C:\dev\thebuggenie\modules\search\opensearch.xml.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="parameters.inc.php"></a>
+<h1>parameters.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - File "C:\dev\thebuggenie\modules\search\parameters.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="permissions.inc.php"></a>
+<h1>permissions.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - File "C:\dev\thebuggenie\modules\search\permissions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 37</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\permissions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 37</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\permissions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 37</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\permissions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 37</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\permissions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 37</b> - File "C:\dev\thebuggenie\i18n\en_US\help\permissions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 54</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\permissions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 834</b> - File "C:\dev\thebuggenie\core\permissions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="permissions_config_access.inc.php"></a>
+<h1>permissions_config_access.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 102</b> - File "C:\dev\thebuggenie\core\permissions_config_access.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="permissions_general.inc.php"></a>
+<h1>permissions_general.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 106</b> - File "C:\dev\thebuggenie\core\permissions_general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="permissions_module_config.inc.php"></a>
+<h1>permissions_module_config.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 104</b> - File "C:\dev\thebuggenie\core\permissions_module_config.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="post-commit.php"></a>
+<h1>post-commit.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - 
+duplicate define element "BUGS2_INCLUDE_PATH" in file C:\dev\thebuggenie\modules\svn_integration\post-commit.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning on line 87</b> - File "C:\dev\thebuggenie\modules\svn_integration\post-commit.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="prefix.inc.php"></a>
+<h1>prefix.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\prefix.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\prefix.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\prefix.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\en_US\help\prefix.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\prefix.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 22</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\prefix.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="products.inc.php"></a>
+<h1>products.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 150</b> - File "C:\dev\thebuggenie\core\config\products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="productselection.inc.php"></a>
+<h1>productselection.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 68</b> - File "C:\dev\thebuggenie\core\report_issue\productselection.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="products_actions.inc.php"></a>
+<h1>products_actions.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 524</b> - File "C:\dev\thebuggenie\core\config\products_actions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="products_assigneebox.inc.php"></a>
+<h1>products_assigneebox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 90</b> - File "C:\dev\thebuggenie\core\config\products_assigneebox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="products_buildbox.inc.php"></a>
+<h1>products_buildbox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 202</b> - File "C:\dev\thebuggenie\core\config\products_buildbox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="products_componentbox.inc.php"></a>
+<h1>products_componentbox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 30</b> - File "C:\dev\thebuggenie\core\config\products_componentbox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="products_editbuilds.inc.php"></a>
+<h1>products_editbuilds.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 74</b> - File "C:\dev\thebuggenie\core\config\products_editbuilds.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="products_editeditions.inc.php"></a>
+<h1>products_editeditions.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 425</b> - File "C:\dev\thebuggenie\core\config\products_editeditions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="products_editionbox.inc.php"></a>
+<h1>products_editionbox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\core\config\products_editionbox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="products_editsettings.inc.php"></a>
+<h1>products_editsettings.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 355</b> - File "C:\dev\thebuggenie\core\config\products_editsettings.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="products_productbox.inc.php"></a>
+<h1>products_productbox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 88</b> - File "C:\dev\thebuggenie\core\config\products_productbox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="publish.js.php"></a>
+<h1>publish.js.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 63</b> - File "C:\dev\thebuggenie\modules\publish\js\publish.js.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="publish.php"></a>
+<h1>publish.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 310</b> - File "C:\dev\thebuggenie\modules\publish\publish.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="PublishArticle.class.php"></a>
+<h1>PublishArticle.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class PublishArticle<br>
+<b>Warning on line 201</b> - File "C:\dev\thebuggenie\modules\publish\classes\PublishArticle.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="PublishBillboardPost.class.php"></a>
+<h1>PublishBillboardPost.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class PublishBillboardPost<br>
+<b>Warning on line 58</b> - File "C:\dev\thebuggenie\modules\publish\classes\PublishBillboardPost.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="PublishFactory.class.php"></a>
+<h1>PublishFactory.class.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - no @package tag was used in a DocBlock for class PublishFactory<br>
+<b>Warning on line 31</b> - File "C:\dev\thebuggenie\modules\publish\classes\PublishFactory.class.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="publish_logic.inc.php"></a>
+<h1>publish_logic.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 66</b> - File "C:\dev\thebuggenie\modules\publish\publish_logic.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue.inc.php"></a>
+<h1>reportissue.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 124</b> - File "C:\dev\thebuggenie\i18n\de_DE\reportissue.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 124</b> - File "C:\dev\thebuggenie\i18n\sv_se\reportissue.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 127</b> - File "C:\dev\thebuggenie\i18n\no_NB\reportissue.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 127</b> - File "C:\dev\thebuggenie\i18n\fr_FR\reportissue.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 127</b> - File "C:\dev\thebuggenie\i18n\es_ES\reportissue.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_addfile.inc.php"></a>
+<h1>reportissue_addfile.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_addfile.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_addfile.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_addfile.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_addfile.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_addfile.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 21</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_addfile.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_addlink.inc.php"></a>
+<h1>reportissue_addlink.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_addlink.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 9</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_addlink.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 9</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_addlink.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 9</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_addlink.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 9</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_addlink.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 10</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_addlink.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_addscreenshot.inc.php"></a>
+<h1>reportissue_addscreenshot.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_addscreenshot.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 8</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_addscreenshot.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 8</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_addscreenshot.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 8</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_addscreenshot.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 8</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_addscreenshot.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 9</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_addscreenshot.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_build.inc.php"></a>
+<h1>reportissue_build.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_build.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 22</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_build.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 22</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_build.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 22</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_build.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 22</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_build.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 25</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_build.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_category.inc.php"></a>
+<h1>reportissue_category.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_category.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 13</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_category.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 13</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_category.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 13</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_category.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 13</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_category.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 16</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_category.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_component.inc.php"></a>
+<h1>reportissue_component.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_component.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_component.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_component.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_component.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_component.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 21</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_component.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_description.inc.php"></a>
+<h1>reportissue_description.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_description.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 14</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_description.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 14</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_description.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 14</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_description.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 14</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_description.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 14</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_description.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_edition.inc.php"></a>
+<h1>reportissue_edition.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_edition.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 12</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_edition.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 13</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_edition.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 13</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_edition.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 13</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_edition.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_edition.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_issuetype.inc.php"></a>
+<h1>reportissue_issuetype.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_issuetype.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_issuetype.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_issuetype.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_issuetype.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_issuetype.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 23</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_issuetype.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_product.inc.php"></a>
+<h1>reportissue_product.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_product.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_product.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_product.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_product.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 15</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_product.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 18</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_product.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_reproduction.inc.php"></a>
+<h1>reportissue_reproduction.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_reproduction.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 20</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_reproduction.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 20</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_reproduction.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 20</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_reproduction.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 20</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_reproduction.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 25</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_reproduction.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_severity.inc.php"></a>
+<h1>reportissue_severity.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_severity.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_severity.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_severity.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_severity.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 17</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_severity.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 25</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_severity.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="reportissue_summary.inc.php"></a>
+<h1>reportissue_summary.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\reportissue_summary.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 21</b> - File "C:\dev\thebuggenie\i18n\en_US\help\reportissue_summary.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 21</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\reportissue_summary.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 21</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\reportissue_summary.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 21</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\reportissue_summary.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 23</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\reportissue_summary.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="scopes.inc.php"></a>
+<h1>scopes.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 424</b> - File "C:\dev\thebuggenie\core\config\scopes.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="scopes_logic.inc.php"></a>
+<h1>scopes_logic.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 188</b> - File "C:\dev\thebuggenie\core\config\scopes_logic.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="search.js.php"></a>
+<h1>search.js.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 67</b> - File "C:\dev\thebuggenie\modules\search\js\search.js.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="search.php"></a>
+<h1>search.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 470</b> - File "C:\dev\thebuggenie\modules\search\search.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="search_button.inc.php"></a>
+<h1>search_button.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 29</b> - File "C:\dev\thebuggenie\modules\search\search_button.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="search_filters.inc.php"></a>
+<h1>search_filters.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 423</b> - File "C:\dev\thebuggenie\modules\search\search_filters.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="search_logic.inc.php"></a>
+<h1>search_logic.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 452</b> - File "C:\dev\thebuggenie\modules\search\search_logic.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="search_stripped.php"></a>
+<h1>search_stripped.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 173</b> - File "C:\dev\thebuggenie\modules\search\search_stripped.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="server.inc.php"></a>
+<h1>server.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 72</b> - File "C:\dev\thebuggenie\core\config\server.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="settings.php"></a>
+<h1>settings.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 46</b> - File "C:\dev\thebuggenie\modules\configuration\templates\settings.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="setup_build.inc.php"></a>
+<h1>setup_build.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\setup_build.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 12</b> - File "C:\dev\thebuggenie\i18n\en_US\help\setup_build.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 12</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\setup_build.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 12</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\setup_build.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 12</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\setup_build.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 18</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\setup_build.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="setup_editions.inc.php"></a>
+<h1>setup_editions.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\setup_editions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 29</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\setup_editions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 29</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\setup_editions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 29</b> - File "C:\dev\thebuggenie\i18n\en_US\help\setup_editions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 29</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\setup_editions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 49</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\setup_editions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="setup_product.inc.php"></a>
+<h1>setup_product.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\setup_product.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 48</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\setup_product.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 49</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\setup_product.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 49</b> - File "C:\dev\thebuggenie\i18n\en_US\help\setup_product.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 49</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\setup_product.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 86</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\setup_product.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="setup_productassign.inc.php"></a>
+<h1>setup_productassign.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\setup_productassign.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 6</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\setup_productassign.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 6</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\setup_productassign.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 6</b> - File "C:\dev\thebuggenie\i18n\en_US\help\setup_productassign.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 6</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\setup_productassign.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 8</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\setup_productassign.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="severityselection.inc.php"></a>
+<h1>severityselection.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 81</b> - File "C:\dev\thebuggenie\core\report_issue\severityselection.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="show_event.php"></a>
+<h1>show_event.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 226</b> - File "C:\dev\thebuggenie\modules\calendar\show_event.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="simple_productsetup.inc.php"></a>
+<h1>simple_productsetup.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\simple_productsetup.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\simple_productsetup.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 2</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\simple_productsetup.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="step1.inc.php"></a>
+<h1>step1.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 21</b> - File "C:\dev\thebuggenie\core\report_issue\step1.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="step1_help.inc.php"></a>
+<h1>step1_help.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - File "C:\dev\thebuggenie\core\report_issue\step1_help.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="step2.inc.php"></a>
+<h1>step2.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - File "C:\dev\thebuggenie\core\report_issue\step2.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="step2_button.inc.php"></a>
+<h1>step2_button.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 16</b> - File "C:\dev\thebuggenie\core\report_issue\step2_button.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="step2_help.inc.php"></a>
+<h1>step2_help.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 14</b> - File "C:\dev\thebuggenie\core\report_issue\step2_help.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="step3.inc.php"></a>
+<h1>step3.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - File "C:\dev\thebuggenie\core\report_issue\step3.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="step3_button.inc.php"></a>
+<h1>step3_button.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 14</b> - File "C:\dev\thebuggenie\core\report_issue\step3_button.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="step3_help.inc.php"></a>
+<h1>step3_help.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - File "C:\dev\thebuggenie\core\report_issue\step3_help.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="step4.inc.php"></a>
+<h1>step4.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 117</b> - File "C:\dev\thebuggenie\core\report_issue\step4.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="step4_help.inc.php"></a>
+<h1>step4_help.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - File "C:\dev\thebuggenie\core\report_issue\step4_help.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="step5.inc.php"></a>
+<h1>step5.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 52</b> - File "C:\dev\thebuggenie\core\report_issue\step5.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="step5_help.inc.php"></a>
+<h1>step5_help.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 74</b> - File "C:\dev\thebuggenie\core\report_issue\step5_help.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="success.inc.php"></a>
+<h1>success.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 33</b> - File "C:\dev\thebuggenie\core\report_issue\success.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="teamgroups.inc.php"></a>
+<h1>teamgroups.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 200</b> - File "C:\dev\thebuggenie\core\config\teamgroups.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="teamgroups_groupbox.inc.php"></a>
+<h1>teamgroups_groupbox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - File "C:\dev\thebuggenie\core\config\teamgroups_groupbox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="teamgroups_logic.inc.php"></a>
+<h1>teamgroups_logic.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 114</b> - File "C:\dev\thebuggenie\core\config\teamgroups_logic.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="teamgroups_teambox.inc.php"></a>
+<h1>teamgroups_teambox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - File "C:\dev\thebuggenie\core\config\teamgroups_teambox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="users.inc.php"></a>
+<h1>users.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 579</b> - File "C:\dev\thebuggenie\core\config\users.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="users_logic.inc.php"></a>
+<h1>users_logic.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 175</b> - File "C:\dev\thebuggenie\core\config\users_logic.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="viewissue.inc.php"></a>
+<h1>viewissue.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 108</b> - File "C:\dev\thebuggenie\i18n\de_DE\viewissue.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 109</b> - File "C:\dev\thebuggenie\i18n\sv_se\viewissue.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 109</b> - File "C:\dev\thebuggenie\i18n\no_NB\viewissue.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 109</b> - File "C:\dev\thebuggenie\i18n\es_ES\viewissue.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 110</b> - File "C:\dev\thebuggenie\i18n\fr_FR\viewissue.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="viewissue.php"></a>
+<h1>viewissue.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 945</b> - File "C:\dev\thebuggenie\modules\main\templates\viewissue.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="viewissue_actions.inc.php"></a>
+<h1>viewissue_actions.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 1786</b> - File "C:\dev\thebuggenie\core\viewissue_actions.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="viewissue_admin.inc.php"></a>
+<h1>viewissue_admin.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 106</b> - File "C:\dev\thebuggenie\i18n\fr_FR\viewissue_admin.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 106</b> - File "C:\dev\thebuggenie\i18n\de_DE\viewissue_admin.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 106</b> - File "C:\dev\thebuggenie\i18n\no_NB\viewissue_admin.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 106</b> - File "C:\dev\thebuggenie\i18n\es_ES\viewissue_admin.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 106</b> - File "C:\dev\thebuggenie\i18n\sv_se\viewissue_admin.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="viewissue_ajax.js.php"></a>
+<h1>viewissue_ajax.js.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 792</b> - File "C:\dev\thebuggenie\js\viewissue_ajax.js.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="viewissue_menu.inc.php"></a>
+<h1>viewissue_menu.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 573</b> - File "C:\dev\thebuggenie\modules\main\templates\viewissue_menu.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 573</b> - File "C:\dev\thebuggenie\core\viewissue_menu.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="viewproduct.inc.php"></a>
+<h1>viewproduct.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 43</b> - File "C:\dev\thebuggenie\i18n\no_NB\viewproduct.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 43</b> - File "C:\dev\thebuggenie\i18n\fr_FR\viewproduct.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 43</b> - File "C:\dev\thebuggenie\i18n\es_ES\viewproduct.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 43</b> - File "C:\dev\thebuggenie\i18n\sv_se\viewproduct.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 43</b> - File "C:\dev\thebuggenie\i18n\de_DE\viewproduct.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="viewproduct_logic.inc.php"></a>
+<h1>viewproduct_logic.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 46</b> - File "C:\dev\thebuggenie\core\viewproduct_logic.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="welcome.inc.php"></a>
+<h1>welcome.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 1</b> - File "C:\dev\thebuggenie\i18n\sv_se\help\welcome.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 1</b> - File "C:\dev\thebuggenie\i18n\fr_FR\help\welcome.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 47</b> - File "C:\dev\thebuggenie\i18n\en_US\help\welcome.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 47</b> - File "C:\dev\thebuggenie\i18n\de_DE\help\welcome.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 47</b> - File "C:\dev\thebuggenie\i18n\no_NB\help\welcome.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 47</b> - File "C:\dev\thebuggenie\i18n\es_ES\help\welcome.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_accountsettingslist.inc.php"></a>
+<h1>_accountsettingslist.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 3</b> - File "C:\dev\thebuggenie\modules\mailnotification\templates\_accountsettingslist.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 3</b> - File "C:\dev\thebuggenie\modules\calendar\templates\_accountsettingslist.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 3</b> - File "C:\dev\thebuggenie\modules\messages\templates\_accountsettingslist.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_buildbox.inc.php"></a>
+<h1>_buildbox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 147</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_buildbox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_builds.inc.php"></a>
+<h1>_builds.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 29</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_builds.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_calendarsummary.inc.php"></a>
+<h1>_calendarsummary.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 36</b> - File "C:\dev\thebuggenie\modules\calendar\templates\_calendarsummary.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_componentbox.inc.php"></a>
+<h1>_componentbox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 26</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_componentbox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_config_leftmenu.inc.php"></a>
+<h1>_config_leftmenu.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 57</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_config_leftmenu.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_editionbox.inc.php"></a>
+<h1>_editionbox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_editionbox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_footer.inc.php"></a>
+<h1>_footer.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - File "C:\dev\thebuggenie\modules\installation\templates\_footer.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_general.inc.php"></a>
+<h1>_general.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 64</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_general.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_header.inc.php"></a>
+<h1>_header.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 63</b> - File "C:\dev\thebuggenie\modules\installation\templates\_header.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_identifiableselector.inc.php"></a>
+<h1>_identifiableselector.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 113</b> - File "C:\dev\thebuggenie\modules\main\templates\_identifiableselector.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_latestNewsBox.inc.php"></a>
+<h1>_latestNewsBox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 24</b> - File "C:\dev\thebuggenie\modules\publish\templates\_latestNewsBox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_main_help.inc.php"></a>
+<h1>_main_help.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 31</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_main_help.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_messagessummary.inc.php"></a>
+<h1>_messagessummary.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 19</b> - File "C:\dev\thebuggenie\modules\messages\templates\_messagessummary.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_myfriends.inc.php"></a>
+<h1>_myfriends.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - File "C:\dev\thebuggenie\modules\main\templates\_myfriends.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_percentbar.inc.php"></a>
+<h1>_percentbar.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - File "C:\dev\thebuggenie\modules\main\templates\_percentbar.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_productbox.inc.php"></a>
+<h1>_productbox.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 57</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_productbox.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_productoverview.inc.php"></a>
+<h1>_productoverview.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 50</b> - File "C:\dev\thebuggenie\modules\main\templates\_productoverview.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_products.inc.php"></a>
+<h1>_products.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 185</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_products.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_products_assignees.inc.php"></a>
+<h1>_products_assignees.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 153</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_products_assignees.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_product_header.inc.php"></a>
+<h1>_product_header.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 50</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_product_header.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_reglang.inc.php"></a>
+<h1>_reglang.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 38</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_reglang.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_server.inc.php"></a>
+<h1>_server.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_server.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_user.inc.php"></a>
+<h1>_user.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 130</b> - File "C:\dev\thebuggenie\modules\configuration\templates\_user.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="_userdropdown.inc.php"></a>
+<h1>_userdropdown.inc.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 64</b> - File "C:\dev\thebuggenie\modules\main\templates\_userdropdown.inc.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+	<p class="notes" id="credit">
+		Documentation generated on Wed, 15 Jul 2009 00:28:23 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

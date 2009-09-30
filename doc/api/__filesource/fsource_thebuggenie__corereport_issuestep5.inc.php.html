@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>File Source for step5.inc.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+											</head>
+		<body>
+						<h1>Source for file step5.inc.php</h1>
+<p>Documentation is available at <a href="../thebuggenie/_core---report_issue---step5.inc.php.html">step5.inc.php</a></p>
+<div class="src-code">
+<div class="src-code"><ol><li><div class="src-line"><a name="a1"></a>&lt;div&nbsp;style=&quot;background-color:&nbsp;#F5F5F5;&nbsp;padding:&nbsp;5px;&nbsp;width:&nbsp;auto;&nbsp;border-bottom:&nbsp;1px&nbsp;solid&nbsp;#DDD;&quot;&gt;&lt;b&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'DOUBLE-CHECK&nbsp;AND&nbsp;POST&nbsp;IT!'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/b&gt;&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a2"></a>&lt;div&nbsp;id=&quot;step5_main_content&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a3"></a><span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a4"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a5"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">if&nbsp;</span><span class="src-sym">(</span><span class="src-var">$step5_set&nbsp;</span>==&nbsp;<span class="src-id">false&nbsp;</span>||&nbsp;<span class="src-sym">((</span><span class="src-var">$step5_set&nbsp;</span>==&nbsp;<span class="src-id">true</span><span class="src-sym">)&nbsp;</span>&amp;&amp;&nbsp;<span class="src-sym">(</span><span class="src-var">$step1_set&nbsp;</span>==&nbsp;<span class="src-id">false&nbsp;</span>||&nbsp;<span class="src-var">$step2_set&nbsp;</span>==&nbsp;<span class="src-id">false&nbsp;</span>||&nbsp;<span class="src-var">$step3_set&nbsp;</span>==&nbsp;<span class="src-id">false&nbsp;</span>||&nbsp;<span class="src-var">$step4_set&nbsp;</span>==&nbsp;<span class="src-id">false</span><span class="src-sym">)))</span></div></li>
+<li><div class="src-line"><a name="a6"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a7"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">if&nbsp;</span><span class="src-sym">(</span><span class="src-var">$step1_set&nbsp;</span>==&nbsp;<span class="src-id">true&nbsp;</span>&amp;&amp;&nbsp;<span class="src-var">$step2_set&nbsp;</span>==&nbsp;<span class="src-id">true&nbsp;</span>&amp;&amp;&nbsp;<span class="src-var">$step3_set&nbsp;</span>==&nbsp;<span class="src-id">true&nbsp;</span>&amp;&amp;&nbsp;<span class="src-var">$step4_set&nbsp;</span>==&nbsp;<span class="src-id">true</span><span class="src-sym">)</span></div></li>
+<li><div class="src-line"><a name="a8"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a9"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a10"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&nbsp;style=&quot;padding:&nbsp;10px;&nbsp;padding-right:&nbsp;5px;&quot;&nbsp;id=&quot;step5_main_content_message&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Please&nbsp;read&nbsp;the&nbsp;instructions&nbsp;to&nbsp;the&nbsp;left'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a11"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script&nbsp;type=&quot;text/javascript&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a12"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect.Pulsate('step5_main_content_message',&nbsp;{&nbsp;pulses:&nbsp;8,&nbsp;duration:&nbsp;5&nbsp;});</div></li>
+<li><div class="src-line"><a name="a13"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/script&gt;</div></li>
+<li><div class="src-line"><a name="a14"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a15"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a16"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">else</span></div></li>
+<li><div class="src-line"><a name="a17"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a18"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">?&gt;</span>&lt;div&nbsp;style=&quot;padding:&nbsp;5px;&nbsp;background-color:&nbsp;#F9F9F9;&nbsp;text-align:&nbsp;left;&nbsp;color:&nbsp;#AAA;&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Please&nbsp;complete&nbsp;all&nbsp;the&nbsp;above&nbsp;steps&nbsp;first'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a19"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a20"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a21"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a22"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">else</span></div></li>
+<li><div class="src-line"><a name="a23"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a24"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a25"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&nbsp;style=&quot;padding:&nbsp;10px;&nbsp;text-align:&nbsp;center;&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a26"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&nbsp;style=&quot;width:&nbsp;330px;&nbsp;margin-left:&nbsp;auto;&nbsp;margin-right:&nbsp;auto;&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a27"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&nbsp;style=&quot;display:&nbsp;inline;&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a28"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;form&nbsp;accept-charset=&quot;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-id"><a href="../thebuggenie/core/BUGScontext.html">BUGScontext</a></span><span class="src-sym">::</span><a href="../thebuggenie/core/BUGScontext.html#methodgetI18n">getI18n</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">-&gt;</span><span class="src-id">getCharset</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&quot;&nbsp;action=&quot;reportissue.php&quot;&nbsp;enctype=&quot;multipart/form-data&quot;&nbsp;method=&quot;post&quot;&nbsp;name=&quot;rni_report_issue&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a29"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;</div></li>
+<li><div class="src-line"><a name="a30"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type=&quot;hidden&quot;&nbsp;name=&quot;rni_report_issue&quot;&nbsp;value=&quot;true&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a31"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type=&quot;submit&quot;&nbsp;value=&quot;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Report&nbsp;this&nbsp;issue'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&quot;&nbsp;style=&quot;font-weight:&nbsp;bold;&nbsp;font-size:&nbsp;18px;&nbsp;height:&nbsp;40px;&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a32"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a33"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/form&gt;</div></li>
+<li><div class="src-line"><a name="a34"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a35"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&nbsp;style=&quot;padding-top:&nbsp;5px;&nbsp;padding-bottom:&nbsp;5px;&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'(or&nbsp;if&nbsp;you&nbsp;also&nbsp;want&nbsp;to&nbsp;report&nbsp;another&nbsp;issue&nbsp;similar&nbsp;to&nbsp;this&nbsp;one)'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a36"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&nbsp;style=&quot;display:&nbsp;inline;&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a37"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;form&nbsp;accept-charset=&quot;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-id"><a href="../thebuggenie/core/BUGScontext.html">BUGScontext</a></span><span class="src-sym">::</span><a href="../thebuggenie/core/BUGScontext.html#methodgetI18n">getI18n</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">-&gt;</span><span class="src-id">getCharset</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&quot;&nbsp;action=&quot;reportissue.php&quot;&nbsp;enctype=&quot;multipart/form-data&quot;&nbsp;method=&quot;post&quot;&nbsp;name=&quot;rni_report_issue&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a38"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;</div></li>
+<li><div class="src-line"><a name="a39"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type=&quot;hidden&quot;&nbsp;name=&quot;rni_report_issue&quot;&nbsp;value=&quot;true&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a40"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type=&quot;hidden&quot;&nbsp;name=&quot;rni_preserve_info&quot;&nbsp;value=&quot;true&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a41"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type=&quot;submit&quot;&nbsp;value=&quot;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Report&nbsp;this&nbsp;issue&nbsp;and&nbsp;start&nbsp;reporting&nbsp;a&nbsp;similar&nbsp;one'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&quot;&nbsp;style=&quot;font-weight:&nbsp;bold;&nbsp;font-size:&nbsp;12px;&nbsp;height:&nbsp;25px;&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a42"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a43"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/form&gt;</div></li>
+<li><div class="src-line"><a name="a44"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div></li>
+<li><div class="src-line"><a name="a45"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a46"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&nbsp;style=&quot;padding-top:&nbsp;5px;&nbsp;padding-bottom:&nbsp;5px;&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'(or&nbsp;if&nbsp;you&nbsp;changed&nbsp;your&nbsp;mind)'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a47"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;a&nbsp;href=&quot;reportissue.php?restart=true&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Cancel,&nbsp;do&nbsp;not&nbsp;report'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/a&gt;&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a48"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a49"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a50"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a51"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a52"></a><span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a53"></a>&lt;/div&gt;</div></li>
+</ol></div>
+</div>
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:26:21 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

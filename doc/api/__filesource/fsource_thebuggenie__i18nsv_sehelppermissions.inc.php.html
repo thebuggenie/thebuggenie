@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>File Source for permissions.inc.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+											</head>
+		<body>
+						<h1>Source for file permissions.inc.php</h1>
+<p>Documentation is available at <a href="../thebuggenie/_i18n---sv_se---help---permissions.inc.php.html">permissions.inc.php</a></p>
+<div class="src-code">
+<div class="src-code"><ol><li><div class="src-line"><a name="a1"></a>Contrary&nbsp;to&nbsp;BUGS,&nbsp;BUGS&nbsp;2&nbsp;has&nbsp;a&nbsp;very&nbsp;powerful&nbsp;permissions&nbsp;system.&nbsp;Easy&nbsp;to&nbsp;use&nbsp;and&nbsp;get&nbsp;familiar&nbsp;with,&nbsp;still&nbsp;very&nbsp;flexible.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a2"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a3"></a>Permissions&nbsp;in&nbsp;BUGS&nbsp;2&nbsp;is&nbsp;set&nbsp;on&nbsp;4&nbsp;levels&nbsp;(in&nbsp;order&nbsp;of&nbsp;importance):</div></li>
+<li><div class="src-line"><a name="a4"></a>&lt;ul&gt;</div></li>
+<li><div class="src-line"><a name="a5"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;For&nbsp;a&nbsp;specific&nbsp;user&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a6"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;For&nbsp;team&nbsp;members&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a7"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;For&nbsp;members&nbsp;of&nbsp;groups&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a8"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;For&nbsp;everyone&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a9"></a>&lt;/ul&gt;</div></li>
+<li><div class="src-line"><a name="a10"></a>Permissions&nbsp;are&nbsp;defined&nbsp;first&nbsp;for&nbsp;&quot;everyone&quot;,&nbsp;then&nbsp;for&nbsp;a&nbsp;group,&nbsp;then&nbsp;a&nbsp;team,&nbsp;and&nbsp;then&nbsp;for&nbsp;a&nbsp;specific&nbsp;user.&nbsp;Usually,&nbsp;the&nbsp;first&nbsp;two&nbsp;will&nbsp;be&nbsp;enough&nbsp;-&nbsp;however,&nbsp;it&nbsp;is&nbsp;important&nbsp;to&nbsp;know&nbsp;in&nbsp;what&nbsp;order&nbsp;permissions&nbsp;are&nbsp;applied:</div></li>
+<li><div class="src-line"><a name="a11"></a>&lt;ul&gt;</div></li>
+<li><div class="src-line"><a name="a12"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;User&nbsp;permissions&nbsp;override&nbsp;anything&nbsp;else,&nbsp;since&nbsp;this&nbsp;is&nbsp;user-specific&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a13"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Team&nbsp;permissions&nbsp;override&nbsp;group&nbsp;permissions&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a14"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Group&nbsp;permissions&nbsp;override&nbsp;the&nbsp;&quot;Everyone&quot;&nbsp;permissions&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a15"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;The&nbsp;&quot;Everyone&quot;&nbsp;permission&nbsp;is&nbsp;the&nbsp;basic&nbsp;permission&nbsp;set,&nbsp;and&nbsp;is&nbsp;overriden&nbsp;by&nbsp;anything&nbsp;else&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a16"></a>&lt;/ul&gt;</div></li>
+<li><div class="src-line"><a name="a17"></a>When&nbsp;defining&nbsp;permissions,&nbsp;you&nbsp;have&nbsp;a&nbsp;colored&nbsp;&quot;buttons&quot;&nbsp;that&nbsp;tell&nbsp;you&nbsp;what&nbsp;permission&nbsp;is&nbsp;granted&nbsp;for&nbsp;that&nbsp;specific&nbsp;item:</div></li>
+<li><div class="src-line"><a name="a18"></a>&lt;div&nbsp;style=&quot;padding:&nbsp;10px;&nbsp;margin-left:&nbsp;15px;&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a19"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;img&nbsp;src=&quot;themes/default/led_green.png&quot;&gt;&nbsp;-&nbsp;Full&nbsp;access&nbsp;to&nbsp;that&nbsp;specific&nbsp;item.&nbsp;For&nbsp;items&nbsp;with&nbsp;read/write&nbsp;access,&nbsp;green&nbsp;means&nbsp;you&nbsp;have&nbsp;read&nbsp;and&nbsp;write&nbsp;access.&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a20"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;img&nbsp;src=&quot;themes/default/led_yellow.png&quot;&gt;&nbsp;-&nbsp;Limited&nbsp;access&nbsp;to&nbsp;that&nbsp;specific&nbsp;item&nbsp;-&nbsp;only&nbsp;for&nbsp;items&nbsp;with&nbsp;read/write&nbsp;access&nbsp;-&nbsp;means&nbsp;you&nbsp;have&nbsp;only&nbsp;read&nbsp;access.&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a21"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;img&nbsp;src=&quot;themes/default/led_red.png&quot;&gt;&nbsp;-&nbsp;No&nbsp;access&nbsp;to&nbsp;that&nbsp;specific&nbsp;item.&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a22"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;img&nbsp;src=&quot;themes/default/led_lightblue.png&quot;&gt;&nbsp;-&nbsp;Permission&nbsp;not&nbsp;explicitly&nbsp;granted&nbsp;for&nbsp;this&nbsp;user/team/group.&nbsp;When&nbsp;you&nbsp;have&nbsp;a&nbsp;blue&nbsp;icon,&nbsp;access&nbsp;is&nbsp;defined&nbsp;on&nbsp;a&nbsp;lower&nbsp;level.&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a23"></a>&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a24"></a>First,&nbsp;you&nbsp;want&nbsp;to&nbsp;set&nbsp;up&nbsp;what&nbsp;&quot;Everyone&quot;&nbsp;can&nbsp;do.&nbsp;You&nbsp;can&nbsp;do&nbsp;this&nbsp;from&nbsp;&lt;b&gt;Configuration&nbsp;center&nbsp;&amp;ndash;&amp;gt;&nbsp;Manage&nbsp;teams&nbsp;&amp;amp;&nbsp;groups&lt;/b&gt;.&nbsp;The&nbsp;permissions&nbsp;set&nbsp;in&nbsp;the&nbsp;&quot;Everyone&quot;&nbsp;group&nbsp;initially&nbsp;defines&nbsp;what&nbsp;a&nbsp;user&nbsp;can&nbsp;do&nbsp;or&nbsp;have&nbsp;access&nbsp;to.&nbsp;After&nbsp;defining&nbsp;what&nbsp;&quot;Everyone&quot;&nbsp;can&nbsp;do,&nbsp;you&nbsp;move&nbsp;on&nbsp;to&nbsp;what&nbsp;users&nbsp;of&nbsp;the&nbsp;different&nbsp;groups&nbsp;should&nbsp;be&nbsp;able&nbsp;to&nbsp;do.&nbsp;By&nbsp;default,&nbsp;you&nbsp;have&nbsp;one&nbsp;&quot;Admin&quot;-group,&nbsp;one&nbsp;&quot;Guest&quot;-group&nbsp;and&nbsp;one&nbsp;&quot;Users&quot;-group.&nbsp;Select&nbsp;one&nbsp;of&nbsp;these&nbsp;groups&nbsp;to&nbsp;set&nbsp;permissions&nbsp;for&nbsp;users&nbsp;in&nbsp;this&nbsp;group.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a25"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a26"></a>Individual&nbsp;user&nbsp;permissions&nbsp;are&nbsp;set&nbsp;via&nbsp;&lt;b&gt;Configuration&nbsp;center&nbsp;&amp;ndash;&amp;gt;&nbsp;Manage&nbsp;users&lt;/b&gt;.&nbsp;Find&nbsp;a&nbsp;user,&nbsp;and&nbsp;click&nbsp;the&nbsp;&quot;Permissions&quot;&nbsp;link&nbsp;on&nbsp;that&nbsp;user.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a27"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a28"></a>&lt;b&gt;Now,&nbsp;let's&nbsp;use&nbsp;an&nbsp;example&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a29"></a>Users&nbsp;in&nbsp;the&nbsp;&quot;Admin&quot;-group&nbsp;should&nbsp;have&nbsp;access&nbsp;to&nbsp;the&nbsp;Configuration&nbsp;section.&nbsp;Select&nbsp;the&nbsp;&quot;Admin&quot;&nbsp;group,&nbsp;then&nbsp;click&nbsp;on&nbsp;the&nbsp;blue&nbsp;&quot;Configuration&nbsp;center&quot;&nbsp;icon.&nbsp;This&nbsp;grants&nbsp;all&nbsp;users&nbsp;in&nbsp;the&nbsp;&quot;Admin&quot;-group&nbsp;access&nbsp;to&nbsp;the&nbsp;Configuration&nbsp;center&nbsp;link&nbsp;in&nbsp;the&nbsp;top&nbsp;menu,&nbsp;and&nbsp;the&nbsp;Configuration&nbsp;center&nbsp;page.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a30"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a31"></a>Now,&nbsp;move&nbsp;on&nbsp;to&nbsp;giving&nbsp;access&nbsp;to&nbsp;different&nbsp;Configuration&nbsp;sections,&nbsp;by&nbsp;clicking&nbsp;on&nbsp;Configuration&nbsp;center.&nbsp;Now&nbsp;click&nbsp;the&nbsp;blue&nbsp;buttons&nbsp;for&nbsp;each&nbsp;section&nbsp;you&nbsp;want&nbsp;to&nbsp;provide&nbsp;&lt;i&gt;read&lt;/i&gt;&nbsp;access&nbsp;to.&nbsp;Clicking&nbsp;the&nbsp;(now&nbsp;yellow)&nbsp;button&nbsp;again,&nbsp;also&nbsp;provides&nbsp;&lt;i&gt;write&lt;/i&gt;&nbsp;access&nbsp;to&nbsp;that&nbsp;section.&nbsp;Clicking&nbsp;the&nbsp;(now&nbsp;green)&nbsp;button&nbsp;explicitly&nbsp;denies&nbsp;that&nbsp;user&nbsp;access&nbsp;to&nbsp;the&nbsp;specified&nbsp;section&nbsp;(this&nbsp;is&nbsp;usually&nbsp;only&nbsp;necessary&nbsp;when&nbsp;access&nbsp;is&nbsp;already&nbsp;given&nbsp;on&nbsp;a&nbsp;lower&nbsp;level).&nbsp;Do&nbsp;this&nbsp;for&nbsp;the&nbsp;&quot;Manage&nbsp;users&quot;&nbsp;and&nbsp;&quot;Scopes&quot;&nbsp;section.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a32"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a33"></a>Say&nbsp;you&nbsp;want&nbsp;to&nbsp;only&nbsp;provide&nbsp;user&nbsp;and&nbsp;scope&nbsp;administration&nbsp;capabilities&nbsp;to&nbsp;&quot;Staff&nbsp;members&quot;.&nbsp;Make&nbsp;sure&nbsp;you&nbsp;haven't&nbsp;specifically&nbsp;granted&nbsp;access&nbsp;to&nbsp;&quot;Configuration&nbsp;center&quot;&nbsp;-&gt;&nbsp;&quot;Manage&nbsp;users&quot;&nbsp;to&nbsp;any&nbsp;group&nbsp;(including&nbsp;the&nbsp;&quot;Everyone&quot;&nbsp;group)&nbsp;or&nbsp;user.&nbsp;Now,&nbsp;create&nbsp;a&nbsp;&quot;Staff&nbsp;members&quot;&nbsp;&lt;i&gt;team&lt;/i&gt;,&nbsp;and&nbsp;select&nbsp;it&nbsp;by&nbsp;clicking&nbsp;on&nbsp;it.&nbsp;Now,&nbsp;select&nbsp;the&nbsp;Configuration&nbsp;center&nbsp;subsection&nbsp;by&nbsp;clicking&nbsp;on&nbsp;it&nbsp;(the&nbsp;buttons&nbsp;should&nbsp;be&nbsp;all&nbsp;blue).&nbsp;Now&nbsp;click&nbsp;the&nbsp;&quot;Manage&nbsp;users&quot;&nbsp;permission&nbsp;icon&nbsp;twice,&nbsp;which&nbsp;turns&nbsp;it&nbsp;green.&nbsp;Do&nbsp;the&nbsp;same&nbsp;for&nbsp;&quot;Scopes&quot;.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a34"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a35"></a>&lt;b&gt;Congratulations!&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a36"></a>Now,&nbsp;users&nbsp;in&nbsp;the&nbsp;admin&nbsp;group&nbsp;have&nbsp;access&nbsp;to&nbsp;all&nbsp;sections&nbsp;in&nbsp;the&nbsp;Configuration&nbsp;center,&nbsp;except&nbsp;&quot;Manage&nbsp;users&quot;&nbsp;and&nbsp;&quot;Scopes&quot;,&nbsp;which&nbsp;is&nbsp;only&nbsp;L�gg&nbsp;till&nbsp;�rende&nbsp;to&nbsp;users&nbsp;in&nbsp;the&nbsp;&quot;Staff&nbsp;members&quot;&nbsp;team.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a37"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a38"></a>Remember&nbsp;-&nbsp;users&nbsp;can&nbsp;only&nbsp;be&nbsp;part&nbsp;of&nbsp;one&nbsp;group,&nbsp;but&nbsp;can&nbsp;be&nbsp;part&nbsp;of&nbsp;several&nbsp;teams.&nbsp;Also&nbsp;remember&nbsp;that&nbsp;&quot;deny&quot;&nbsp;access&nbsp;settings&nbsp;only&nbsp;applies&nbsp;unless&nbsp;&quot;allow&quot;&nbsp;access&nbsp;is&nbsp;given&nbsp;on&nbsp;the&nbsp;same,&nbsp;or&nbsp;a&nbsp;higher&nbsp;level.&nbsp;You&nbsp;can&nbsp;read&nbsp;more&nbsp;about&nbsp;permission&nbsp;levels&nbsp;and&nbsp;permission&nbsp;overriding&nbsp;in&nbsp;the&nbsp;beginning&nbsp;of&nbsp;this&nbsp;help&nbsp;topic.</div></li>
+</ol></div>
+</div>
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:26:10 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

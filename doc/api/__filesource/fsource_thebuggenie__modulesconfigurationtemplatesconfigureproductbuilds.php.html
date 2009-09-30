@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>File Source for configureproductbuilds.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+											</head>
+		<body>
+						<h1>Source for file configureproductbuilds.php</h1>
+<p>Documentation is available at <a href="../thebuggenie/_modules---configuration---templates---configureproductbuilds.php.html">configureproductbuilds.php</a></p>
+<div class="src-code">
+<div class="src-code"><ol><li><div class="src-line"><a name="a1"></a><span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a2"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a3"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id"><a href="../thebuggenie/core/BUGScontext.html">BUGScontext</a></span><span class="src-sym">::</span><a href="../thebuggenie/core/BUGScontext.html#methodsetPage">setPage</a><span class="src-sym">(</span><span class="src-str">'config'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a4"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id"><a href="../thebuggenie/core/BUGScontext.html">BUGScontext</a></span><span class="src-sym">::</span><a href="../thebuggenie/core/BUGScontext.html#methodsetTitle">setTitle</a><span class="src-sym">(</span><a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Manage&nbsp;products'</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a5"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-id"><a href="../thebuggenie/core/BUGScontext.html">BUGScontext</a></span><span class="src-sym">::</span><a href="../thebuggenie/core/BUGScontext.html#methodloadLibrary">loadLibrary</a><span class="src-sym">(</span><span class="src-str">'ui'</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a6"></a>&nbsp;&nbsp;&nbsp;&nbsp;</div></li>
+<li><div class="src-line"><a name="a7"></a><span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a8"></a>&lt;table&nbsp;style=&quot;table-layout:&nbsp;fixed;&nbsp;width:&nbsp;100%&quot;&nbsp;cellpadding=0&nbsp;cellspacing=0&nbsp;border=0&gt;</div></li>
+<li><div class="src-line"><a name="a9"></a>&lt;tr&gt;</div></li>
+<li><div class="src-line"><a name="a10"></a><span class="src-php">&lt;?php&nbsp;</span><a href="../thebuggenie/_core---lib---ui.inc.php.html#functioninclude_template">include_template</a><span class="src-sym">(</span><span class="src-str">'config_leftmenu'</span><span class="src-sym">,&nbsp;</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'selected_section'&nbsp;</span>=&gt;&nbsp;<span class="src-num">10</span><span class="src-sym">))</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a11"></a>&lt;td&nbsp;valign=&quot;top&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a12"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">&lt;?php&nbsp;</span><a href="../thebuggenie/_core---lib---ui.inc.php.html#functioninclude_template">include_template</a><span class="src-sym">(</span><span class="src-str">'configuration/product_header'</span><span class="src-sym">,&nbsp;</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'theProduct'&nbsp;</span>=&gt;&nbsp;<span class="src-var">$theProduct</span><span class="src-sym">,&nbsp;</span><span class="src-str">'mode'&nbsp;</span>=&gt;&nbsp;<span class="src-num">6</span><span class="src-sym">))</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a13"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;table&nbsp;style=&quot;width:&nbsp;700px;&nbsp;margin-top:&nbsp;10px;&quot;&nbsp;cellpadding=0&nbsp;cellspacing=0&nbsp;border=0&nbsp;class=&quot;padded_table&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a14"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;</div></li>
+<li><div class="src-line"><a name="a15"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;</div></li>
+<li><div class="src-line"><a name="a16"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">&lt;?php&nbsp;</span><span class="src-key">if&nbsp;</span><span class="src-sym">(</span><span class="src-var">$theProduct</span><span class="src-sym">-&gt;</span><span class="src-id">isBuildsEnabled</span><span class="src-sym">(</span><span class="src-sym">))</span>:&nbsp;<span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a17"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">&lt;?php&nbsp;</span><a href="../thebuggenie/_core---lib---ui.inc.php.html#functioninclude_template">include_template</a><span class="src-sym">(</span><span class="src-str">'builds'</span><span class="src-sym">,&nbsp;</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'parent'&nbsp;</span>=&gt;&nbsp;<span class="src-var">$theProduct</span><span class="src-sym">,&nbsp;</span><span class="src-str">'access_level'&nbsp;</span>=&gt;&nbsp;<span class="src-var">$access_level</span><span class="src-sym">))</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a18"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">&lt;?php&nbsp;</span><span class="src-key">else</span>:&nbsp;<span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a19"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&nbsp;style=&quot;padding:&nbsp;2px&nbsp;5px&nbsp;5px&nbsp;5px;&quot;&nbsp;class=&quot;faded_medium&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'This&nbsp;product&nbsp;does&nbsp;not&nbsp;use&nbsp;builds&nbsp;/&nbsp;releases'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>.&lt;br&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Builds&nbsp;/&nbsp;releases&nbsp;can&nbsp;be&nbsp;enabled&nbsp;in&nbsp;product&nbsp;settings'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>.&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a20"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">&lt;?php&nbsp;</span><span class="src-key">endif</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a21"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a22"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;</div></li>
+<li><div class="src-line"><a name="a23"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;</div></li>
+<li><div class="src-line"><a name="a24"></a>&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a25"></a>&lt;/tr&gt;</div></li>
+<li><div class="src-line"><a name="a26"></a>&lt;/table&gt;</div></li>
+</ol></div>
+</div>
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:25:52 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

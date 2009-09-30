@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<definitions name="Thebuggenie" 
+ targetNamespace="urn:ThebuggenieService"
+ xmlns:tns="urn:ThebuggenieService"   
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+ xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+ xmlns="http://schemas.xmlsoap.org/wsdl/">
+ <message name="getIssueRequest">
+  <part name="issue_id" type="xsd:string"/>
+ </message>
+ <message name="getIssueResponse">
+  <part name="title" type="xsd:string"/>
+ </message>
+ <portType name="ThebuggeniePortType">
+  <operation name="getIssue">
+   <input message="tns:getIssueRequest"/>
+   <output message="tns:getIssueResponse"/>
+  </operation>
+ </portType>
+ <binding name="ThebuggenieBinding" type="tns:ThebuggeniePortType">
+  <soap:binding style="rpc"
+   transport="http://schemas.xmlsoap.org/soap/http"/>
+  <operation name="getIssue">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:body use="encoded"
+     namespace="urn:xmethods-Issues-Get"
+     encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+   </input>
+   <output>
+    <soap:body use="encoded"
+     namespace="urn:xmethods-Issues-Get"
+     encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+   </output>
+  </operation>
+ </binding>
+ <service name="ThebuggenieService">
+  <documentation>Communicates with the bug genie
+  </documentation>
+  <port name="ThebuggeniePort" binding="tns:ThebuggenieBinding">
+   <soap:address
+  location="http://localhost/dev/b3/soapmeup"/>
+  </port>
+ </service>
+</definitions>

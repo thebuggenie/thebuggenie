@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>File Source for config_products.inc.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+											</head>
+		<body>
+						<h1>Source for file config_products.inc.php</h1>
+<p>Documentation is available at <a href="../thebuggenie/_i18n---es_ES---help---config_products.inc.php.html">config_products.inc.php</a></p>
+<div class="src-code">
+<div class="src-code"><ol><li><div class="src-line"><a name="a1"></a>&lt;div&nbsp;style=&quot;margin-top:&nbsp;5px;&nbsp;border:&nbsp;1px&nbsp;solid&nbsp;#DDD;&nbsp;padding:&nbsp;5px;&quot;&gt;&lt;b&gt;Nota:&lt;/b&gt;&amp;nbsp;Además&nbsp;de&nbsp;leer&nbsp;esto,&nbsp;también&nbsp;debería&nbsp;comprender&nbsp;básicamente&nbsp;el&nbsp;sistema&nbsp;de&nbsp;permisos&nbsp;en&nbsp;BUGS.&nbsp;Consulte&nbsp;la&nbsp;sección&nbsp;&lt;a&nbsp;href=&quot;help.php?topic=permissions&amp;amp;prev_topic=config_products&quot;&gt;&lt;b&gt;Permisos&lt;/b&gt;&lt;/a&gt;&nbsp;de&nbsp;esta&nbsp;ayuda&nbsp;en&nbsp;línea&nbsp;para&nbsp;mayor&nbsp;información.&lt;/div&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a2"></a>&lt;b&gt;Visión&nbsp;general&nbsp;del&nbsp;producto&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a3"></a>Para&nbsp;entender&nbsp;mejor&nbsp;como&nbsp;está&nbsp;hecho&nbsp;un&nbsp;producto,&nbsp;comencemos&nbsp;con&nbsp;un&nbsp;ejemplo,&nbsp;el&nbsp;cual&nbsp;llamaremos&nbsp;&lt;i&gt;&quot;Mi&nbsp;Sistema&nbsp;Operativo&quot;&lt;/i&gt;.&nbsp;Buenísimo,&nbsp;un&nbsp;sistema&nbsp;opeartivo.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a4"></a>&lt;i&gt;&quot;Mi&nbsp;Sistema&nbsp;Operativo&quot;&lt;/i&gt;&nbsp;viene&nbsp;en&nbsp;varias&nbsp;ediciones&nbsp;diferentes:&nbsp;&lt;i&gt;&quot;Ultimate&nbsp;edition&quot;&lt;/i&gt;,&nbsp;&lt;i&gt;&quot;Home&nbsp;edition&quot;&lt;/i&gt;&nbsp;y&nbsp;así&nbsp;sucesivamente.&nbsp;Tomemos&nbsp;esto&nbsp;para&nbsp;el&nbsp;ejemplo.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a5"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a6"></a>&lt;i&gt;&quot;Mi&nbsp;Sistema&nbsp;Operativo&quot;&lt;/i&gt;&nbsp;está&nbsp;hecho&nbsp;con&nbsp;varios&nbsp;componentes,&nbsp;tales&nbsp;como&nbsp;el&nbsp;&nbsp;&lt;i&gt;&quot;Kernel&quot;&lt;/i&gt;,&nbsp;&lt;i&gt;&quot;Drivers&quot;&lt;/i&gt;,&nbsp;&lt;i&gt;&quot;Aplicaciones&quot;&lt;/i&gt;&nbsp;y&nbsp;quizás&nbsp;algunos&nbsp;más.&nbsp;Además,&nbsp;la&nbsp;&lt;i&gt;&quot;Ultimate&nbsp;Edition&quot;&lt;/i&gt;&nbsp;también&nbsp;tiene&nbsp;un&nbsp;componente&nbsp;de&nbsp;&lt;i&gt;&quot;Aplicaciones&nbsp;Extra&quot;&lt;/i&gt;,&nbsp;las&nbsp;cuales&nbsp;no&nbsp;están&nbsp;disponibles&nbsp;en&nbsp;la&nbsp;&lt;i&gt;&quot;Home&nbsp;Edition&quot;&lt;/i&gt;.&nbsp;Esto&nbsp;es&nbsp;mejor&nbsp;para&nbsp;los&nbsp;usuarios&nbsp;de&nbsp;Home.&nbsp;Seguro.&nbsp;De&nbsp;todas&nbsp;maneras,&nbsp;esto&nbsp;es&nbsp;lo&nbsp;que&nbsp;se&nbsp;decidió.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a7"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a8"></a>Todavía&nbsp;con&nbsp;nosotros?&nbsp;&lt;b&gt;Excelente!&lt;/b&gt;&nbsp;Sigamos.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a9"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a10"></a>&lt;b&gt;Compilaciones&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a11"></a>A&nbsp;medida&nbsp;que&nbsp;desarrolle&nbsp;&lt;i&gt;&quot;Mi&nbsp;Sistema&nbsp;Operativo&quot;&lt;/i&gt;,&nbsp;necesitará&nbsp;liberar&nbsp;algunas&nbsp;versiones&nbsp;aquí&nbsp;y&nbsp;allá,&nbsp;solo&nbsp;para&nbsp;comprobar&nbsp;que&nbsp;todo&nbsp;funciona.&nbsp;Quizás&nbsp;tenga&nbsp;usuarios&nbsp;impacientes,&nbsp;deseosos&nbsp;de&nbsp;comprobar&nbsp;el&nbsp;progreso&nbsp;realizado&nbsp;desde&nbsp;ayer.&nbsp;Estas&nbsp;&quot;versiones&quot;&nbsp;son&nbsp;llamadas&nbsp;&quot;compilaciones&quot;.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a12"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a13"></a>Una&nbsp;compilación&nbsp;tiene&nbsp;un&nbsp;número&nbsp;de&nbsp;versión,&nbsp;que&nbsp;nos&nbsp;dice&nbsp;en&nbsp;que&nbsp;parte&nbsp;del&nbsp;ciclo&nbsp;esa&nbsp;compilación&nbsp;fue&nbsp;liberada.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a14"></a>&lt;b&gt;¿Qué&nbsp;se&nbsp;necesita&nbsp;para&nbsp;un&nbsp;producto?&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a15"></a>Como&nbsp;se&nbsp;puede&nbsp;ver&nbsp;abajo,&nbsp;BUGS&nbsp;2&nbsp;soporta&nbsp;todas&nbsp;estas&nbsp;partes.&nbsp;Esto&nbsp;es&nbsp;lo&nbsp;necesario&nbsp;para&nbsp;informar&nbsp;un&nbsp;problema:</div></li>
+<li><div class="src-line"><a name="a16"></a>&lt;ul&gt;</div></li>
+<li><div class="src-line"><a name="a17"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Uno&nbsp;o&nbsp;más&nbsp;productos&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a18"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Los&nbsp;productos&nbsp;deben&nbsp;tener&nbsp;al&nbsp;menos&nbsp;una&nbsp;edición&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a19"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;La&nbsp;edición&nbsp;debe&nbsp;tener&nbsp;al&nbsp;menos&nbsp;un&nbsp;componente&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a20"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;La&nbsp;edición&nbsp;debe&nbsp;tener&nbsp;al&nbsp;menos&nbsp;una&nbsp;liberación&nbsp;(compilación)&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a21"></a>&lt;/ul&gt;</div></li>
+<li><div class="src-line"><a name="a22"></a>Entonces,&nbsp;todo&nbsp;esto&nbsp;está&nbsp;muy&nbsp;bien,&nbsp;pero&nbsp;¿cómo&nbsp;configuro&nbsp;todo&nbsp;esto?&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a23"></a>&lt;b&gt;Gracias&nbsp;por&nbsp;preguntar.&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a24"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a25"></a>Aprenda&nbsp;más&nbsp;acerca&nbsp;de&nbsp;&lt;a&nbsp;href=&quot;help.php?topic=setup_product&quot;&gt;&lt;b&gt;Creación&nbsp;de&nbsp;productos&nbsp;con&nbsp;componentes&amp;nbsp;&amp;gt;&amp;gt;&lt;/b&gt;&lt;/a&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a26"></a>Aprenda&nbsp;más&nbsp;acerca&nbsp;de&nbsp;&lt;a&nbsp;href=&quot;help.php?topic=setup_editions&quot;&gt;&lt;b&gt;Creación&nbsp;de&nbsp;ediciones&nbsp;y&nbsp;selección&nbsp;de&nbsp;componentes&amp;nbsp;&amp;gt;&amp;gt;&lt;/b&gt;&lt;/a&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a27"></a>Aprenda&nbsp;más&nbsp;acerca&nbsp;de&nbsp;&lt;a&nbsp;href=&quot;help.php?topic=setup_builds&quot;&gt;&lt;b&gt;Creación&nbsp;y&nbsp;liberación&nbsp;de&nbsp;compilaciones&amp;nbsp;&amp;gt;&amp;gt;&lt;/b&gt;&lt;/a&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a28"></a>Aprenda&nbsp;más&nbsp;acerca&nbsp;de&nbsp;&lt;a&nbsp;href=&quot;help.php?topic=setup_productassign&quot;&gt;&lt;b&gt;Asignación&nbsp;de&nbsp;desarrolladores&nbsp;a&nbsp;productos/ediciones/componentes&amp;nbsp;&amp;gt;&amp;gt;&lt;/b&gt;&lt;/a&gt;&lt;br&gt;</div></li>
+</ol></div>
+</div>
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:25:54 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

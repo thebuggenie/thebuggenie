@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>File Source for permissions.inc.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+											</head>
+		<body>
+						<h1>Source for file permissions.inc.php</h1>
+<p>Documentation is available at <a href="../thebuggenie/_i18n---de_DE---help---permissions.inc.php.html">permissions.inc.php</a></p>
+<div class="src-code">
+<div class="src-code"><ol><li><div class="src-line"><a name="a1"></a>Im&nbsp;Gegensatz&nbsp;zu&nbsp;BUGS&nbsp;besitzt&nbsp;BUGS&nbsp;2&nbsp;ein&nbsp;sehr&nbsp;leistungsstarkes&nbsp;Zugriffsrechte-System.&nbsp;Einfach&nbsp;zu&nbsp;verstehen&nbsp;und&nbsp;zu&nbsp;bedienen,&nbsp;jedoch&nbsp;sehr&nbsp;flexibel.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a2"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a3"></a>Die&nbsp;Zugriffsrechte&nbsp;in&nbsp;BUGS&nbsp;2&nbsp;basieren&nbsp;auf&nbsp;4&nbsp;Stufen&nbsp;(sortiert&nbsp;nach&nbsp;Wichtigkeit):</div></li>
+<li><div class="src-line"><a name="a4"></a>&lt;ul&gt;</div></li>
+<li><div class="src-line"><a name="a5"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Für&nbsp;einen&nbsp;bestimmten&nbsp;Benutzer&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a6"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Für&nbsp;Mitglieder&nbsp;eines&nbsp;Teams&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a7"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Für&nbsp;Mitglieder&nbsp;einer&nbsp;Gruppe&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a8"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Für&nbsp;jeden&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a9"></a>&lt;/ul&gt;</div></li>
+<li><div class="src-line"><a name="a10"></a>Die&nbsp;Zugriffsrechte&nbsp;sind&nbsp;zuerst&nbsp;definiert&nbsp;für&nbsp;&quot;Jeder&quot;,&nbsp;dann&nbsp;eine&nbsp;Gruppe,&nbsp;dann&nbsp;ein&nbsp;Team,&nbsp;und&nbsp;dann&nbsp;für&nbsp;einen&nbsp;bestimmten&nbsp;Benutzer.&nbsp;Normalerweise&nbsp;sind&nbsp;die&nbsp;ersten&nbsp;beiden&nbsp;genug.&nbsp;Wie&nbsp;auch&nbsp;immer,&nbsp;es&nbsp;ist&nbsp;wichtig&nbsp;zu&nbsp;wissen&nbsp;in&nbsp;welcher&nbsp;Reihenfolge&nbsp;die&nbsp;Zugriffsrechte&nbsp;angewendet&nbsp;werden:</div></li>
+<li><div class="src-line"><a name="a11"></a>&lt;ul&gt;</div></li>
+<li><div class="src-line"><a name="a12"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Benutzer-Rechte&nbsp;überscheiben&nbsp;alles,&nbsp;sofern&nbsp;es&nbsp;benutzerspezifisch&nbsp;ist&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a13"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Team-Rechte&nbsp;überschreiben&nbsp;Gruppen-Rechte&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a14"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Gruppen-Rechte&nbsp;überschreiben&nbsp;&quot;Jeder&quot;-Rechte&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a15"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Das&nbsp;&quot;Jeder&quot;-Recht&nbsp;ist&nbsp;das&nbsp;Standard-Recht&nbsp;und&nbsp;wird&nbsp;von&nbsp;allen&nbsp;überschrieben&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a16"></a>&lt;/ul&gt;</div></li>
+<li><div class="src-line"><a name="a17"></a>Wenn&nbsp;Sie&nbsp;die&nbsp;Zugriffsrechte&nbsp;festlegen,&nbsp;erscheinen&nbsp;farbige&nbsp;Symbole,&nbsp;die&nbsp;Ihnen&nbsp;zeigen,&nbsp;welche&nbsp;Zugriffsrechte&nbsp;für&nbsp;das&nbsp;angegebene&nbsp;Objekt&nbsp;erteilt&nbsp;wurden:</div></li>
+<li><div class="src-line"><a name="a18"></a>&lt;div&nbsp;style=&quot;padding:&nbsp;10px;&nbsp;margin-left:&nbsp;15px;&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a19"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;img&nbsp;src=&quot;themes/default/led_green.png&quot;&gt;&nbsp;-&nbsp;Voller&nbsp;Zugriff&nbsp;auf&nbsp;Objekt.&nbsp;Für&nbsp;Objekte&nbsp;mit&nbsp;Lese-&nbsp;/&nbsp;Schreibzugriff&nbsp;bedeutet&nbsp;grün&nbsp;voller&nbsp;Lese-&nbsp;/&nbsp;Schreibzugriff.&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a20"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;img&nbsp;src=&quot;themes/default/led_yellow.png&quot;&gt;&nbsp;-&nbsp;Begrenzter&nbsp;Zugriff&nbsp;auf&nbsp;angegebenes&nbsp;Objekt&nbsp;-&nbsp;bei&nbsp;Objekten&nbsp;mit&nbsp;Lese-&nbsp;/&nbsp;Schreibzugriff&nbsp;haben&nbsp;Sie&nbsp;nur&nbsp;Lesezugriff.&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a21"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;img&nbsp;src=&quot;themes/default/led_red.png&quot;&gt;&nbsp;-&nbsp;Kein&nbsp;Zugriff&nbsp;auf&nbsp;angegebenes&nbsp;Objekt.&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a22"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;img&nbsp;src=&quot;themes/default/led_lightblue.png&quot;&gt;&nbsp;-&nbsp;Keine&nbsp;Zugriffsrechte&nbsp;für&nbsp;Benutzer/Team/Gruppe&nbsp;erteilt.&nbsp;Wenn&nbsp;ein&nbsp;blaues&nbsp;Symbol&nbsp;erscheint,&nbsp;wurde&nbsp;der&nbsp;Zugriff&nbsp;über&nbsp;eine&nbsp;untere&nbsp;Stufe&nbsp;erteilt.&lt;/p&gt;</div></li>
+<li><div class="src-line"><a name="a23"></a>&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a24"></a>Wenn&nbsp;Sie&nbsp;festlegen&nbsp;wollen,&nbsp;was&nbsp;&quot;Jeder&quot;&nbsp;machen&nbsp;darf,&nbsp;können&nbsp;Sie&nbsp;das&nbsp;unter&nbsp;&lt;b&gt;Einstellungen&nbsp;&amp;ndash;&amp;gt;&nbsp;Teams&nbsp;&amp;amp;&nbsp;Gruppen&nbsp;verwalten&lt;/b&gt;.</div></li>
+<li><div class="src-line"><a name="a25"></a>Die&nbsp;Zugriffsrechte,&nbsp;die&nbsp;in&nbsp;der&nbsp;Gruppe&nbsp;&quot;Jeder&quot;&nbsp;erteilt&nbsp;werden,&nbsp;gibt&nbsp;an,&nbsp;was&nbsp;ein&nbsp;Benutzer&nbsp;darf&nbsp;oder&nbsp;worauf&nbsp;er&nbsp;Zugriff&nbsp;hat.&nbsp;Nachdem&nbsp;Sie&nbsp;festgelegt&nbsp;haben&nbsp;was&nbsp;&quot;Jeder&quot;&nbsp;darf,</div></li>
+<li><div class="src-line"><a name="a26"></a>können&nbsp;Sie&nbsp;festlegen&nbsp;was&nbsp;Benutzer&nbsp;der&nbsp;verschiedenen&nbsp;Gruppen&nbsp;dürfen.&nbsp;Standardmäßig&nbsp;existieren&nbsp;eine&nbsp;&quot;Administrator&quot;-Gruppe,&nbsp;eine&nbsp;&quot;Gast&quot;-Gruppe&nbsp;und&nbsp;eine&nbsp;&quot;Benutzer&quot;-Gruppe.</div></li>
+<li><div class="src-line"><a name="a27"></a>Wählen&nbsp;Sie&nbsp;eine&nbsp;dieser&nbsp;Gruppen&nbsp;aus&nbsp;um&nbsp;die&nbsp;Zugriffsrechte&nbsp;für&nbsp;die&nbsp;Benutzer&nbsp;ein&nbsp;dieser&nbsp;Gruppe&nbsp;festzulegen.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a28"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a29"></a>Individuelle&nbsp;Benutzer-Rechte&nbsp;werden&nbsp;über&nbsp;&lt;b&gt;Einstellungen&nbsp;&amp;ndash;&amp;gt;&nbsp;Benutzer&nbsp;verwalten&lt;/b&gt;&nbsp;festgelegt.</div></li>
+<li><div class="src-line"><a name="a30"></a>Suche&nbsp;Sie&nbsp;einen&nbsp;Benutzer&nbsp;und&nbsp;klicken&nbsp;Sie&nbsp;auf&nbsp;&quot;Berechtigungen&nbsp;setzen&quot;&nbsp;bei&nbsp;diesem&nbsp;Benutzer.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a31"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a32"></a>&lt;b&gt;Jetzt&nbsp;schauen&nbsp;wir&nbsp;uns&nbsp;das&nbsp;mal&nbsp;an&nbsp;einem&nbsp;Beispiel&nbsp;an&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a33"></a>Benutzer&nbsp;in&nbsp;der&nbsp;&quot;Administrator&quot;-Gruppe&nbsp;soll&nbsp;Zugriff&nbsp;zu&nbsp;den&nbsp;&quot;Einstellungen&quot;&nbsp;haben.&nbsp;Wählen&nbsp;Sie&nbsp;die&nbsp;&quot;Administrator&quot;&nbsp;Gruppe&nbsp;aus&nbsp;und&nbsp;klicken&nbsp;Sie</div></li>
+<li><div class="src-line"><a name="a34"></a>auf&nbsp;das&nbsp;blaue&nbsp;&quot;Einstellungen&quot;&nbsp;Symbol.&nbsp;Dies&nbsp;berechtigt&nbsp;allen&nbsp;Benutzern&nbsp;in&nbsp;der&nbsp;&quot;Administrator&quot;-Gruppe&nbsp;den&nbsp;Zugriff&nbsp;auf&nbsp;den&nbsp;&quot;Einstellungen&quot;&nbsp;Verweis</div></li>
+<li><div class="src-line"><a name="a35"></a>im&nbsp;oberen&nbsp;Menü,&nbsp;sowie&nbsp;auf&nbsp;die&nbsp;Einstellungen-Seite.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a36"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a37"></a>Jetzt&nbsp;geben&nbsp;wir&nbsp;den&nbsp;verschiedenen&nbsp;Modulen&nbsp;unter&nbsp;den&nbsp;&quot;Einstellungen&quot;,&nbsp;durch&nbsp;das&nbsp;Klicken&nbsp;auf&nbsp;&quot;Einstellungen&quot;,&nbsp;die&nbsp;Zugriffsrechte.</div></li>
+<li><div class="src-line"><a name="a38"></a>Jetzt&nbsp;Klicken&nbsp;Sie&nbsp;auf&nbsp;die&nbsp;blauen&nbsp;Symbole&nbsp;für&nbsp;jedes&nbsp;Modul,&nbsp;dem&nbsp;Sie&nbsp;&lt;i&gt;Lesezugriff&lt;/i&gt;&nbsp;geben&nbsp;wollen.</div></li>
+<li><div class="src-line"><a name="a39"></a>Durch&nbsp;nochmaliges&nbsp;Anklicken&nbsp;des&nbsp;(jetzt&nbsp;gelben)&nbsp;Symbols&nbsp;erteilen&nbsp;Sie&nbsp;diesem&nbsp;Modul&nbsp;ebenfalls&nbsp;&lt;i&gt;Schreibzugriff&lt;/i&gt;.</div></li>
+<li><div class="src-line"><a name="a40"></a>Durch&nbsp;weiteres&nbsp;Anklicken&nbsp;des&nbsp;(jetzt&nbsp;grünen)&nbsp;Symbols&nbsp;verweigert&nbsp;diesem&nbsp;Benutzer&nbsp;Zugriff&nbsp;zu&nbsp;diesem&nbsp;Modul&nbsp;(das&nbsp;ist&nbsp;normalerweise&nbsp;nur&nbsp;nötig,&nbsp;wenn</div></li>
+<li><div class="src-line"><a name="a41"></a>der&nbsp;Zugriff&nbsp;bereits&nbsp;anhand&nbsp;einer&nbsp;unteren&nbsp;Stufe&nbsp;erteilt&nbsp;wurde).&nbsp;Erledigen&nbsp;Sie&nbsp;dies&nbsp;für&nbsp;die&nbsp;Module&nbsp;&quot;Benutzer&nbsp;verwalten&quot;&nbsp;sowie&nbsp;für&nbsp;&quot;BUGS&nbsp;2&nbsp;Bereiche&quot;.</div></li>
+<li><div class="src-line"><a name="a42"></a>&lt;br&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a43"></a>Nehmen&nbsp;wir&nbsp;an,&nbsp;dass&nbsp;Sie&nbsp;die&nbsp;Benutzer-&nbsp;und&nbsp;Bereichsverwaltung&nbsp;nur&nbsp;für&nbsp;&quot;Mitarbeiter&quot;&nbsp;zugänglich&nbsp;machen&nbsp;wollen.&nbsp;Stellen&nbsp;Sie&nbsp;sicher,&nbsp;dass&nbsp;Sie</div></li>
+<li><div class="src-line"><a name="a44"></a>den&nbsp;Zugriff&nbsp;auf&nbsp;&quot;Einstellungen&quot;&nbsp;-&gt;&nbsp;&quot;Benutzer&nbsp;verwalten&quot;&nbsp;keiner&nbsp;Gruppe&nbsp;(inkl.&nbsp;der&nbsp;&quot;Jeder&quot;&nbsp;Gruppe)&nbsp;oder&nbsp;keinem&nbsp;Benutzer&nbsp;gewährt&nbsp;haben.</div></li>
+<li><div class="src-line"><a name="a45"></a>Jetzt&nbsp;erstellen&nbsp;Sie&nbsp;ein&nbsp;&lt;i&gt;Team&lt;/i&gt;&nbsp;&quot;Mitarbeiter&quot;&nbsp;und&nbsp;wählen&nbsp;es&nbsp;durch&nbsp;Anklicken&nbsp;aus.&nbsp;Jetzt&nbsp;wählen&nbsp;Sie&nbsp;das&nbsp;Modul&nbsp;&quot;Einstellungen&quot;</div></li>
+<li><div class="src-line"><a name="a46"></a>durch&nbsp;Anklicken&nbsp;aus&nbsp;(alle&nbsp;Symbole&nbsp;sollten&nbsp;blau&nbsp;sein).&nbsp;Jetzt&nbsp;klicken&nbsp;Sie&nbsp;auf&nbsp;doppelt&nbsp;auf&nbsp;das&nbsp;&quot;Benutzer&nbsp;verwalten&quot;&nbsp;Zugriffs-Symbol,&nbsp;damit&nbsp;es&nbsp;grün&nbsp;wird.</div></li>
+<li><div class="src-line"><a name="a47"></a>Führen&nbsp;Sie&nbsp;die&nbsp;selbe&nbsp;Aktion&nbsp;für&nbsp;&quot;BUGS&nbsp;2&nbsp;Bereiche&quot;&nbsp;aus.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a48"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a49"></a>&lt;b&gt;Glückwunsch!&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a50"></a>Jetzt&nbsp;haben&nbsp;alle&nbsp;Benutzer&nbsp;in&nbsp;der&nbsp;Administrator-Gruppe&nbsp;Zugriff&nbsp;auf&nbsp;alle&nbsp;Module&nbsp;unter&nbsp;Einstellungen,&nbsp;außer&nbsp;&quot;Benutzer&nbsp;verwalten&quot;&nbsp;und&nbsp;&quot;BUGS&nbsp;2&nbsp;Bereiche&quot;,</div></li>
+<li><div class="src-line"><a name="a51"></a>welche&nbsp;nur&nbsp;für&nbsp;Benutzer,&nbsp;die&nbsp;Mitglieder&nbsp;des&nbsp;Team&nbsp;&quot;Mitarbeiter&quot;&nbsp;sind,&nbsp;zugänglich&nbsp;sind.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a52"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a53"></a>Bedenken&nbsp;Sie,&nbsp;dass&nbsp;Benutzer&nbsp;nur&nbsp;einer&nbsp;Gruppe&nbsp;angehören&nbsp;können,&nbsp;jedoch&nbsp;verschiedenen&nbsp;Teams&nbsp;angehören&nbsp;können.&nbsp;Denken&nbsp;Sie&nbsp;ebenfalls&nbsp;daran,&nbsp;dass</div></li>
+<li><div class="src-line"><a name="a54"></a>die&nbsp;Einstellung&nbsp;Zugriff&nbsp;&quot;verweigern&quot;&nbsp;nur&nbsp;gültig&nbsp;ist,&nbsp;solange&nbsp;nicht&nbsp;Zugriff&nbsp;&quot;erlauben&quot;&nbsp;auf&nbsp;der&nbsp;selben&nbsp;Ebene&nbsp;oder&nbsp;einer&nbsp;Ebene&nbsp;höher&nbsp;gewählt&nbsp;wurde.</div></li>
+<li><div class="src-line"><a name="a55"></a>Mehr&nbsp;über&nbsp;die&nbsp;Stufen&nbsp;des&nbsp;Zugriffs&nbsp;sowie&nbsp;über&nbsp;das&nbsp;Überschreiben&nbsp;von&nbsp;Zugriffsrechten&nbsp;erfahren&nbsp;Sie&nbsp;am&nbsp;Anfang&nbsp;dieses&nbsp;Hilfethemas.</div></li>
+</ol></div>
+</div>
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:26:10 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

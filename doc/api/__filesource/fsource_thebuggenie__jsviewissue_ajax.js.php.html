@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>File Source for viewissue_ajax.js.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+											</head>
+		<body>
+						<h1>Source for file viewissue_ajax.js.php</h1>
+<p>Documentation is available at <a href="../thebuggenie/_js---viewissue_ajax.js.php.html">viewissue_ajax.js.php</a></p>
+<div class="src-code">
+<div class="src-code"><ol><li><div class="src-line"><a name="a1"></a>&lt;script&nbsp;type=&quot;text/javascript&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a2"></a>function&nbsp;submitNewTitle()</div></li>
+<li><div class="src-line"><a name="a3"></a>{</div></li>
+<li><div class="src-line"><a name="a4"></a>&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;params&nbsp;=&nbsp;Form.serialize('issue_edit_title');</div></li>
+<li><div class="src-line"><a name="a5"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_title',&nbsp;'include/viewissue_actions.inc.php',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a6"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a7"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a8"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;params,</div></li>
+<li><div class="src-line"><a name="a9"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a10"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_title');</div></li>
+<li><div class="src-line"><a name="a11"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('edit_issue');</div></li>
+<li><div class="src-line"><a name="a12"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('edit_issue_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a13"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a14"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a15"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a16"></a>}</div></li>
+<li><div class="src-line"><a name="a17"></a>function&nbsp;getIssueTypes()</div></li>
+<li><div class="src-line"><a name="a18"></a>{</div></li>
+<li><div class="src-line"><a name="a19"></a>&nbsp;&nbsp;&nbsp;&nbsp;Element.show('edit_issuetype');</div></li>
+<li><div class="src-line"><a name="a20"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issuetype_table',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getissuetypes=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a21"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a22"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a23"></a>}</div></li>
+<li><div class="src-line"><a name="a24"></a>function&nbsp;setIssueType(tid)</div></li>
+<li><div class="src-line"><a name="a25"></a>{</div></li>
+<li><div class="src-line"><a name="a26"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_type',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a27"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a28"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a29"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;setissuetype:&nbsp;tid&nbsp;},</div></li>
+<li><div class="src-line"><a name="a30"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a31"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_issuetype');</div></li>
+<li><div class="src-line"><a name="a32"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('edit_issue');</div></li>
+<li><div class="src-line"><a name="a33"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('edit_issue_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a34"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a35"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a36"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a37"></a>}</div></li>
+<li><div class="src-line"><a name="a38"></a>function&nbsp;submitNewDescription()</div></li>
+<li><div class="src-line"><a name="a39"></a>{</div></li>
+<li><div class="src-line"><a name="a40"></a>&nbsp;&nbsp;&nbsp;&nbsp;tinyMCE.triggerSave();</div></li>
+<li><div class="src-line"><a name="a41"></a>&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;params&nbsp;=&nbsp;Form.serialize('issue_edit_description');</div></li>
+<li><div class="src-line"><a name="a42"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_description',&nbsp;'include/viewissue_actions.inc.php',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a43"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a44"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a45"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;params,</div></li>
+<li><div class="src-line"><a name="a46"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a47"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_description');</div></li>
+<li><div class="src-line"><a name="a48"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('edit_issue');</div></li>
+<li><div class="src-line"><a name="a49"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('edit_issue_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a50"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a51"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a52"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a53"></a>}</div></li>
+<li><div class="src-line"><a name="a54"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a55"></a>function&nbsp;submitNewDescriptionInline()</div></li>
+<li><div class="src-line"><a name="a56"></a>{</div></li>
+<li><div class="src-line"><a name="a57"></a>&nbsp;&nbsp;&nbsp;&nbsp;tinyMCE.triggerSave();</div></li>
+<li><div class="src-line"><a name="a58"></a>&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;params&nbsp;=&nbsp;Form.serialize('issue_edit_description_inline');</div></li>
+<li><div class="src-line"><a name="a59"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_description',&nbsp;'include/viewissue_actions.inc.php',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a60"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a61"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a62"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;params,</div></li>
+<li><div class="src-line"><a name="a63"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a64"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_description_inline');</div></li>
+<li><div class="src-line"><a name="a65"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.show('issue_description');</div></li>
+<li><div class="src-line"><a name="a66"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a67"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a68"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a69"></a>}</div></li>
+<li><div class="src-line"><a name="a70"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a71"></a>function&nbsp;submitNewRepro()</div></li>
+<li><div class="src-line"><a name="a72"></a>{</div></li>
+<li><div class="src-line"><a name="a73"></a>&nbsp;&nbsp;&nbsp;&nbsp;tinyMCE.triggerSave();</div></li>
+<li><div class="src-line"><a name="a74"></a>&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;params&nbsp;=&nbsp;Form.serialize('issue_edit_repro');</div></li>
+<li><div class="src-line"><a name="a75"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_repro',&nbsp;'include/viewissue_actions.inc.php',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a76"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a77"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a78"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;params,</div></li>
+<li><div class="src-line"><a name="a79"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a80"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_repro');</div></li>
+<li><div class="src-line"><a name="a81"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('edit_issue');</div></li>
+<li><div class="src-line"><a name="a82"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('edit_issue_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a83"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a84"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a85"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a86"></a>}</div></li>
+<li><div class="src-line"><a name="a87"></a>function&nbsp;getCategories()</div></li>
+<li><div class="src-line"><a name="a88"></a>{</div></li>
+<li><div class="src-line"><a name="a89"></a>&nbsp;&nbsp;&nbsp;&nbsp;Element.show('edit_category');</div></li>
+<li><div class="src-line"><a name="a90"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('categories_table',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getcategories=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a91"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a92"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a93"></a>}</div></li>
+<li><div class="src-line"><a name="a94"></a>function&nbsp;setCategory(cid)</div></li>
+<li><div class="src-line"><a name="a95"></a>{</div></li>
+<li><div class="src-line"><a name="a96"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_category',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a97"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a98"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a99"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;setcategory:&nbsp;cid&nbsp;},</div></li>
+<li><div class="src-line"><a name="a100"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a101"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_category');</div></li>
+<li><div class="src-line"><a name="a102"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('edit_issue');</div></li>
+<li><div class="src-line"><a name="a103"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('edit_issue_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a104"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a105"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a106"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a107"></a>}</div></li>
+<li><div class="src-line"><a name="a108"></a>function&nbsp;getRepros()</div></li>
+<li><div class="src-line"><a name="a109"></a>{</div></li>
+<li><div class="src-line"><a name="a110"></a>&nbsp;&nbsp;&nbsp;&nbsp;Element.show('edit_reproducability');</div></li>
+<li><div class="src-line"><a name="a111"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('repros_table',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getrepros=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a112"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a113"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a114"></a>}</div></li>
+<li><div class="src-line"><a name="a115"></a>function&nbsp;setReproID(rid)</div></li>
+<li><div class="src-line"><a name="a116"></a>{</div></li>
+<li><div class="src-line"><a name="a117"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_reproducability',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a118"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a119"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a120"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;setreproid:&nbsp;rid&nbsp;},</div></li>
+<li><div class="src-line"><a name="a121"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a122"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_reproducability');</div></li>
+<li><div class="src-line"><a name="a123"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('edit_issue');</div></li>
+<li><div class="src-line"><a name="a124"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('edit_issue_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a125"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a126"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a127"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a128"></a>}</div></li>
+<li><div class="src-line"><a name="a129"></a>function&nbsp;getEditions()</div></li>
+<li><div class="src-line"><a name="a130"></a>{</div></li>
+<li><div class="src-line"><a name="a131"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('editions_table',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;geteditions=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a132"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a133"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a134"></a>}</div></li>
+<li><div class="src-line"><a name="a135"></a>function&nbsp;getBuilds()</div></li>
+<li><div class="src-line"><a name="a136"></a>{</div></li>
+<li><div class="src-line"><a name="a137"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('builds_table',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getbuilds=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a138"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a139"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a140"></a>}</div></li>
+<li><div class="src-line"><a name="a141"></a>function&nbsp;getComponents()</div></li>
+<li><div class="src-line"><a name="a142"></a>{</div></li>
+<li><div class="src-line"><a name="a143"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('components_table',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getcomponents=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a144"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a145"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a146"></a>}</div></li>
+<li><div class="src-line"><a name="a147"></a>function&nbsp;getBuildsInline()</div></li>
+<li><div class="src-line"><a name="a148"></a>{</div></li>
+<li><div class="src-line"><a name="a149"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('builds_table_inline',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getbuilds=true&amp;inline=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a150"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a151"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a152"></a>}</div></li>
+<li><div class="src-line"><a name="a153"></a>function&nbsp;getComponentsInline()</div></li>
+<li><div class="src-line"><a name="a154"></a>{</div></li>
+<li><div class="src-line"><a name="a155"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('components_table_inline',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getcomponents=true&amp;inline=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a156"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a157"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a158"></a>}</div></li>
+<li><div class="src-line"><a name="a159"></a>function&nbsp;addBuild(bid)</div></li>
+<li><div class="src-line"><a name="a160"></a>{</div></li>
+<li><div class="src-line"><a name="a161"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('affected_builds_menu',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;issue_addaffects=1',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a162"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:false,</div></li>
+<li><div class="src-line"><a name="a163"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a164"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{build:&nbsp;bid},</div></li>
+<li><div class="src-line"><a name="a165"></a>&nbsp;&nbsp;&nbsp;&nbsp;insertion:&nbsp;'bottom',</div></li>
+<li><div class="src-line"><a name="a166"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(addBuildSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a167"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('affects_no_builds_menu').hide();</div></li>
+<li><div class="src-line"><a name="a168"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getBuilds();</div></li>
+<li><div class="src-line"><a name="a169"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getBuildInline(bid);</div></li>
+<li><div class="src-line"><a name="a170"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a171"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a172"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a173"></a>}</div></li>
+<li><div class="src-line"><a name="a174"></a>function&nbsp;addComponent(cid)</div></li>
+<li><div class="src-line"><a name="a175"></a>{</div></li>
+<li><div class="src-line"><a name="a176"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('affected_components_menu',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;issue_addaffects=1',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a177"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:false,</div></li>
+<li><div class="src-line"><a name="a178"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a179"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{component:&nbsp;cid},</div></li>
+<li><div class="src-line"><a name="a180"></a>&nbsp;&nbsp;&nbsp;&nbsp;insertion:&nbsp;'bottom',</div></li>
+<li><div class="src-line"><a name="a181"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(addComponentSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a182"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('affects_no_components_menu').hide();</div></li>
+<li><div class="src-line"><a name="a183"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComponents();</div></li>
+<li><div class="src-line"><a name="a184"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComponentInline(cid);</div></li>
+<li><div class="src-line"><a name="a185"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a186"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a187"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a188"></a>}</div></li>
+<li><div class="src-line"><a name="a189"></a>function&nbsp;addEdition(eid)</div></li>
+<li><div class="src-line"><a name="a190"></a>{</div></li>
+<li><div class="src-line"><a name="a191"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('affected_editions_menu',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;issue_addaffects=1',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a192"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:false,</div></li>
+<li><div class="src-line"><a name="a193"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a194"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{edition:&nbsp;eid},</div></li>
+<li><div class="src-line"><a name="a195"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(addEditionSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a196"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('affects_no_editions_inline').hide();</div></li>
+<li><div class="src-line"><a name="a197"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getAffectedEditionsInMenu();</div></li>
+<li><div class="src-line"><a name="a198"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getAffectedEditionsInline();</div></li>
+<li><div class="src-line"><a name="a199"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getEditions();</div></li>
+<li><div class="src-line"><a name="a200"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getBuilds();</div></li>
+<li><div class="src-line"><a name="a201"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComponents();</div></li>
+<li><div class="src-line"><a name="a202"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a203"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a204"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a205"></a>}</div></li>
+<li><div class="src-line"><a name="a206"></a>function&nbsp;removeAffected(aid,&nbsp;atype)</div></li>
+<li><div class="src-line"><a name="a207"></a>{</div></li>
+<li><div class="src-line"><a name="a208"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Request('include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a209"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:false,</div></li>
+<li><div class="src-line"><a name="a210"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a211"></a>&nbsp;&nbsp;&nbsp;&nbsp;evalScripts:&nbsp;true,</div></li>
+<li><div class="src-line"><a name="a212"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{issue_removeaffects:&nbsp;aid,&nbsp;issue_removeaffects_type:&nbsp;atype},</div></li>
+<li><div class="src-line"><a name="a213"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(removeAffectedSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a214"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('issue_affected_'&nbsp;+&nbsp;atype&nbsp;+&nbsp;'_'&nbsp;+&nbsp;aid&nbsp;+&nbsp;'_inline').hide();</div></li>
+<li><div class="src-line"><a name="a215"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('issue_affected_'&nbsp;+&nbsp;atype&nbsp;+&nbsp;'_'&nbsp;+&nbsp;aid&nbsp;+&nbsp;'_menu').hide();</div></li>
+<li><div class="src-line"><a name="a216"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(atype&nbsp;==&nbsp;'edition')</div></li>
+<li><div class="src-line"><a name="a217"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</div></li>
+<li><div class="src-line"><a name="a218"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getEditions();</div></li>
+<li><div class="src-line"><a name="a219"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getBuilds();</div></li>
+<li><div class="src-line"><a name="a220"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComponents();</div></li>
+<li><div class="src-line"><a name="a221"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a222"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;if&nbsp;(atype&nbsp;==&nbsp;'build')</div></li>
+<li><div class="src-line"><a name="a223"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</div></li>
+<li><div class="src-line"><a name="a224"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getBuilds();</div></li>
+<li><div class="src-line"><a name="a225"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a226"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;if&nbsp;(atype&nbsp;==&nbsp;'component')</div></li>
+<li><div class="src-line"><a name="a227"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</div></li>
+<li><div class="src-line"><a name="a228"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComponents();</div></li>
+<li><div class="src-line"><a name="a229"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a230"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a231"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a232"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a233"></a>}</div></li>
+<li><div class="src-line"><a name="a234"></a>function&nbsp;setAffectedConfirmed(cfmd,&nbsp;aid,&nbsp;atype)</div></li>
+<li><div class="src-line"><a name="a235"></a>{</div></li>
+<li><div class="src-line"><a name="a236"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('affected_confirmed_'&nbsp;+&nbsp;aid&nbsp;+&nbsp;'_'&nbsp;+&nbsp;atype,&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;issue_setconfirmed=1',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a237"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a238"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a239"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{a_id:&nbsp;aid,&nbsp;confirmed:&nbsp;cfmd,&nbsp;a_type:&nbsp;atype},</div></li>
+<li><div class="src-line"><a name="a240"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a241"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a242"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a243"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a244"></a>}</div></li>
+<li><div class="src-line"><a name="a245"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a246"></a>function&nbsp;getAffectedInMenu()</div></li>
+<li><div class="src-line"><a name="a247"></a>{</div></li>
+<li><div class="src-line"><a name="a248"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('affectslist_menu',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getaffected=1&amp;menu=1',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a249"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a250"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a251"></a>&nbsp;&nbsp;&nbsp;&nbsp;evalScripts:&nbsp;true</div></li>
+<li><div class="src-line"><a name="a252"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a253"></a>}</div></li>
+<li><div class="src-line"><a name="a254"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a255"></a>function&nbsp;getAffectedEditionsInMenu()</div></li>
+<li><div class="src-line"><a name="a256"></a>{</div></li>
+<li><div class="src-line"><a name="a257"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('affected_editions_menu',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getaffectededitions=1',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a258"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a259"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a260"></a>&nbsp;&nbsp;&nbsp;&nbsp;evalScripts:&nbsp;true</div></li>
+<li><div class="src-line"><a name="a261"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a262"></a>}</div></li>
+<li><div class="src-line"><a name="a263"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a264"></a>function&nbsp;getAffectedEditionsInline()</div></li>
+<li><div class="src-line"><a name="a265"></a>{</div></li>
+<li><div class="src-line"><a name="a266"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_editions',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;geteditionsinline=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a267"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a268"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a269"></a>&nbsp;&nbsp;&nbsp;&nbsp;evalScripts:&nbsp;true</div></li>
+<li><div class="src-line"><a name="a270"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a271"></a>}</div></li>
+<li><div class="src-line"><a name="a272"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a273"></a>function&nbsp;getComponentInline(cid)</div></li>
+<li><div class="src-line"><a name="a274"></a>{</div></li>
+<li><div class="src-line"><a name="a275"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_affected_inline',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getaffectedcomponentinline=true&amp;c_id='&nbsp;+&nbsp;cid,&nbsp;{</div></li>
+<li><div class="src-line"><a name="a276"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a277"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a278"></a>&nbsp;&nbsp;&nbsp;&nbsp;evalScripts:&nbsp;true,</div></li>
+<li><div class="src-line"><a name="a279"></a>&nbsp;&nbsp;&nbsp;&nbsp;insertion:&nbsp;'bottom'</div></li>
+<li><div class="src-line"><a name="a280"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a281"></a>}</div></li>
+<li><div class="src-line"><a name="a282"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a283"></a>function&nbsp;getBuildInline(bid)</div></li>
+<li><div class="src-line"><a name="a284"></a>{</div></li>
+<li><div class="src-line"><a name="a285"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_affected_inline',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getaffectedbuildinline=true&amp;b_id='&nbsp;+&nbsp;bid,&nbsp;{</div></li>
+<li><div class="src-line"><a name="a286"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a287"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a288"></a>&nbsp;&nbsp;&nbsp;&nbsp;evalScripts:&nbsp;true,</div></li>
+<li><div class="src-line"><a name="a289"></a>&nbsp;&nbsp;&nbsp;&nbsp;insertion:&nbsp;'top'</div></li>
+<li><div class="src-line"><a name="a290"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a291"></a>}</div></li>
+<li><div class="src-line"><a name="a292"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a293"></a>function&nbsp;getDuplicateOf()</div></li>
+<li><div class="src-line"><a name="a294"></a>{</div></li>
+<li><div class="src-line"><a name="a295"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('duplicate_issue_menu',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getduplicateof=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a296"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a297"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a298"></a>}</div></li>
+<li><div class="src-line"><a name="a299"></a>function&nbsp;getDuplicateSearchBox()</div></li>
+<li><div class="src-line"><a name="a300"></a>{</div></li>
+<li><div class="src-line"><a name="a301"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('duplicate_issues_search',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getduplicatesearchbox=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a302"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a303"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a304"></a>}</div></li>
+<li><div class="src-line"><a name="a305"></a>function&nbsp;findDuplicatedIssue()</div></li>
+<li><div class="src-line"><a name="a306"></a>{</div></li>
+<li><div class="src-line"><a name="a307"></a>&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;params&nbsp;=&nbsp;Form.serialize('issue_find_duplicated_form');</div></li>
+<li><div class="src-line"><a name="a308"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('duplicate_issues_search',&nbsp;'include/viewissue_actions.inc.php',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a309"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a310"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a311"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;params</div></li>
+<li><div class="src-line"><a name="a312"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a313"></a>}</div></li>
+<li><div class="src-line"><a name="a314"></a>function&nbsp;markAsDuplicateOf(did)</div></li>
+<li><div class="src-line"><a name="a315"></a>{</div></li>
+<li><div class="src-line"><a name="a316"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('duplicate_span',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;markasduplicate=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a317"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a318"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a319"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{d_id:&nbsp;did},</div></li>
+<li><div class="src-line"><a name="a320"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a321"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getDuplicateOf();</div></li>
+<li><div class="src-line"><a name="a322"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getDuplicateSearchBox();</div></li>
+<li><div class="src-line"><a name="a323"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a324"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a325"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a326"></a>}</div></li>
+<li><div class="src-line"><a name="a327"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a328"></a>function&nbsp;submitNewPercent()</div></li>
+<li><div class="src-line"><a name="a329"></a>{</div></li>
+<li><div class="src-line"><a name="a330"></a>&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;params&nbsp;=&nbsp;Form.serialize('issue_edit_percent');</div></li>
+<li><div class="src-line"><a name="a331"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_percent',&nbsp;'include/viewissue_actions.inc.php',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a332"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a333"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a334"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;params,</div></li>
+<li><div class="src-line"><a name="a335"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a336"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_percent');</div></li>
+<li><div class="src-line"><a name="a337"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('progress_tracking');</div></li>
+<li><div class="src-line"><a name="a338"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('progress_tracking_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a339"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a340"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a341"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a342"></a>}</div></li>
+<li><div class="src-line"><a name="a343"></a>function&nbsp;submitNewEstimatedTime()</div></li>
+<li><div class="src-line"><a name="a344"></a>{</div></li>
+<li><div class="src-line"><a name="a345"></a>&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;params&nbsp;=&nbsp;Form.serialize('issue_edit_estimated');</div></li>
+<li><div class="src-line"><a name="a346"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_estimated',&nbsp;'include/viewissue_actions.inc.php',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a347"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a348"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a349"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;params,</div></li>
+<li><div class="src-line"><a name="a350"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a351"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_estimated');</div></li>
+<li><div class="src-line"><a name="a352"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('progress_tracking');</div></li>
+<li><div class="src-line"><a name="a353"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('progress_tracking_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a354"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a355"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a356"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a357"></a>}</div></li>
+<li><div class="src-line"><a name="a358"></a>function&nbsp;submitNewElapsedTime()</div></li>
+<li><div class="src-line"><a name="a359"></a>{</div></li>
+<li><div class="src-line"><a name="a360"></a>&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;params&nbsp;=&nbsp;Form.serialize('issue_edit_elapsed');</div></li>
+<li><div class="src-line"><a name="a361"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_elapsed',&nbsp;'include/viewissue_actions.inc.php',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a362"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a363"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a364"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;params,</div></li>
+<li><div class="src-line"><a name="a365"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a366"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_elapsed');</div></li>
+<li><div class="src-line"><a name="a367"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('progress_tracking');</div></li>
+<li><div class="src-line"><a name="a368"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('progress_tracking_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a369"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a370"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a371"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a372"></a>}</div></li>
+<li><div class="src-line"><a name="a373"></a>function&nbsp;getRelatedIssuesInMenu()</div></li>
+<li><div class="src-line"><a name="a374"></a>{</div></li>
+<li><div class="src-line"><a name="a375"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('related_p_issues_menu',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getrelatedissues=1&amp;p_issues=1',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a376"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a377"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a378"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a379"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('related_c_issues_menu',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getrelatedissues=1&amp;c_issues=1',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a380"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a381"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a382"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a383"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Draggable('edit_dependant');</div></li>
+<li><div class="src-line"><a name="a384"></a>}</div></li>
+<li><div class="src-line"><a name="a385"></a>function&nbsp;getRelatedIssuesInline()</div></li>
+<li><div class="src-line"><a name="a386"></a>{</div></li>
+<li><div class="src-line"><a name="a387"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('related_p_issues_inline',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getrelatedissuesinline=true&amp;p_issues=1',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a388"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a389"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a390"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a391"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('related_c_issues_inline',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getrelatedissuesinline=true&amp;c_issues=1',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a392"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a393"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a394"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a395"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Draggable('edit_dependant');</div></li>
+<li><div class="src-line"><a name="a396"></a>}</div></li>
+<li><div class="src-line"><a name="a397"></a>function&nbsp;getRelatedIssuesSearchBox(ps,&nbsp;cs)</div></li>
+<li><div class="src-line"><a name="a398"></a>{</div></li>
+<li><div class="src-line"><a name="a399"></a>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(ps&nbsp;==&nbsp;true)</div></li>
+<li><div class="src-line"><a name="a400"></a>&nbsp;&nbsp;&nbsp;&nbsp;{</div></li>
+<li><div class="src-line"><a name="a401"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('related_p_issues_search',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getrelatedissues_searchform=1&amp;this_depends=1',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a402"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a403"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a404"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a405"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a406"></a>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(cs&nbsp;==&nbsp;true)</div></li>
+<li><div class="src-line"><a name="a407"></a>&nbsp;&nbsp;&nbsp;&nbsp;{</div></li>
+<li><div class="src-line"><a name="a408"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('related_c_issues_search',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getrelatedissues_searchform=1&amp;this_depends=0',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a409"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a410"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a411"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a412"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a413"></a>}</div></li>
+<li><div class="src-line"><a name="a414"></a>function&nbsp;findRelatedIssue(depends,&nbsp;form_name,&nbsp;div_name)</div></li>
+<li><div class="src-line"><a name="a415"></a>{</div></li>
+<li><div class="src-line"><a name="a416"></a>&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;params&nbsp;=&nbsp;Form.serialize(form_name);</div></li>
+<li><div class="src-line"><a name="a417"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater(div_name,&nbsp;'include/viewissue_actions.inc.php',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a418"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a419"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a420"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;params</div></li>
+<li><div class="src-line"><a name="a421"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a422"></a>}</div></li>
+<li><div class="src-line"><a name="a423"></a>function&nbsp;addRelatedIssue(depends,&nbsp;i_id)</div></li>
+<li><div class="src-line"><a name="a424"></a>{</div></li>
+<li><div class="src-line"><a name="a425"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Request('include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;add_dependant_issue=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a426"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a427"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a428"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{d_id:&nbsp;i_id,&nbsp;this_depends:&nbsp;depends},</div></li>
+<li><div class="src-line"><a name="a429"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(addRelatedSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a430"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getRelatedIssuesInMenu();</div></li>
+<li><div class="src-line"><a name="a431"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getRelatedIssuesInline();</div></li>
+<li><div class="src-line"><a name="a432"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a433"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a434"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a435"></a>}</div></li>
+<li><div class="src-line"><a name="a436"></a>function&nbsp;removeRelatedIssue(d_id)</div></li>
+<li><div class="src-line"><a name="a437"></a>{</div></li>
+<li><div class="src-line"><a name="a438"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Request('include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;remove_depends=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a439"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a440"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a441"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{p_id:&nbsp;d_id},</div></li>
+<li><div class="src-line"><a name="a442"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(addRelatedSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a443"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getRelatedIssuesInMenu();</div></li>
+<li><div class="src-line"><a name="a444"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getRelatedIssuesInline();</div></li>
+<li><div class="src-line"><a name="a445"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a446"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a447"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a448"></a>}</div></li>
+<li><div class="src-line"><a name="a449"></a>function&nbsp;getMilestones()</div></li>
+<li><div class="src-line"><a name="a450"></a>{</div></li>
+<li><div class="src-line"><a name="a451"></a>&nbsp;&nbsp;&nbsp;&nbsp;getMilestonesInMenu();</div></li>
+<li><div class="src-line"><a name="a452"></a>&nbsp;&nbsp;&nbsp;&nbsp;getMilestonesInView();</div></li>
+<li><div class="src-line"><a name="a453"></a>}</div></li>
+<li><div class="src-line"><a name="a454"></a>function&nbsp;getMilestonesInView()</div></li>
+<li><div class="src-line"><a name="a455"></a>{</div></li>
+<li><div class="src-line"><a name="a456"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_assigned_milestones',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getassignedmilestones=true&amp;nolink=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a457"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a458"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a459"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a460"></a>}</div></li>
+<li><div class="src-line"><a name="a461"></a>function&nbsp;getMilestonesInMenu()</div></li>
+<li><div class="src-line"><a name="a462"></a>{</div></li>
+<li><div class="src-line"><a name="a463"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_assigned_milestones_menu',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getassignedmilestones=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a464"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a465"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a466"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a467"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_available_milestones_menu',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getavailablemilestones=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a468"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a469"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a470"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a471"></a>}</div></li>
+<li><div class="src-line"><a name="a472"></a>function&nbsp;addMilestone(mid)</div></li>
+<li><div class="src-line"><a name="a473"></a>{</div></li>
+<li><div class="src-line"><a name="a474"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Request('include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;issue_addmilestone=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a475"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a476"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a477"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{m_id:&nbsp;mid},</div></li>
+<li><div class="src-line"><a name="a478"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(addMilestoneSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a479"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getMilestones();</div></li>
+<li><div class="src-line"><a name="a480"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a481"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a482"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a483"></a>}</div></li>
+<li><div class="src-line"><a name="a484"></a>function&nbsp;removeMilestone(mid)</div></li>
+<li><div class="src-line"><a name="a485"></a>{</div></li>
+<li><div class="src-line"><a name="a486"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Request('include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;issue_removemilestone=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a487"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a488"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a489"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{m_id:&nbsp;mid},</div></li>
+<li><div class="src-line"><a name="a490"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(removeMilestoneSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a491"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getMilestones();</div></li>
+<li><div class="src-line"><a name="a492"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a493"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a494"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a495"></a>}</div></li>
+<li><div class="src-line"><a name="a496"></a>function&nbsp;getStatusList()</div></li>
+<li><div class="src-line"><a name="a497"></a>{</div></li>
+<li><div class="src-line"><a name="a498"></a>&nbsp;&nbsp;&nbsp;&nbsp;Element.show('edit_status');</div></li>
+<li><div class="src-line"><a name="a499"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_status_menu',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getstatuslist=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a500"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a501"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a502"></a>}</div></li>
+<li><div class="src-line"><a name="a503"></a>function&nbsp;setStatus(sid)</div></li>
+<li><div class="src-line"><a name="a504"></a>{</div></li>
+<li><div class="src-line"><a name="a505"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_status',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a506"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a507"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a508"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;setstatus:&nbsp;sid&nbsp;},</div></li>
+<li><div class="src-line"><a name="a509"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a510"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_status');</div></li>
+<li><div class="src-line"><a name="a511"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('workflow_actions');</div></li>
+<li><div class="src-line"><a name="a512"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('workflow_actions_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a513"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a514"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a515"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a516"></a>}</div></li>
+<li><div class="src-line"><a name="a517"></a>function&nbsp;getResolutions()</div></li>
+<li><div class="src-line"><a name="a518"></a>{</div></li>
+<li><div class="src-line"><a name="a519"></a>&nbsp;&nbsp;&nbsp;&nbsp;Element.show('edit_resolution');</div></li>
+<li><div class="src-line"><a name="a520"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('resolutions_table',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getresolutions=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a521"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a522"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a523"></a>}</div></li>
+<li><div class="src-line"><a name="a524"></a>function&nbsp;setResolution(rid)</div></li>
+<li><div class="src-line"><a name="a525"></a>{</div></li>
+<li><div class="src-line"><a name="a526"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_resolution',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a527"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a528"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a529"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;setresolution:&nbsp;rid&nbsp;},</div></li>
+<li><div class="src-line"><a name="a530"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a531"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_resolution');</div></li>
+<li><div class="src-line"><a name="a532"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('workflow_actions');</div></li>
+<li><div class="src-line"><a name="a533"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('workflow_actions_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a534"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a535"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a536"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a537"></a>}</div></li>
+<li><div class="src-line"><a name="a538"></a>function&nbsp;getSeverities()</div></li>
+<li><div class="src-line"><a name="a539"></a>{</div></li>
+<li><div class="src-line"><a name="a540"></a>&nbsp;&nbsp;&nbsp;&nbsp;Element.show('edit_severity');</div></li>
+<li><div class="src-line"><a name="a541"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('severities_table',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getseverities=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a542"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a543"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a544"></a>}</div></li>
+<li><div class="src-line"><a name="a545"></a>function&nbsp;setSeverity(sid)</div></li>
+<li><div class="src-line"><a name="a546"></a>{</div></li>
+<li><div class="src-line"><a name="a547"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_severity',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a548"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a549"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a550"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;setseverity:&nbsp;sid&nbsp;},</div></li>
+<li><div class="src-line"><a name="a551"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a552"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_severity');</div></li>
+<li><div class="src-line"><a name="a553"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('workflow_actions');</div></li>
+<li><div class="src-line"><a name="a554"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('workflow_actions_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a555"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a556"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a557"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a558"></a>}</div></li>
+<li><div class="src-line"><a name="a559"></a>function&nbsp;getPriorities()</div></li>
+<li><div class="src-line"><a name="a560"></a>{</div></li>
+<li><div class="src-line"><a name="a561"></a>&nbsp;&nbsp;&nbsp;&nbsp;Element.show('edit_priority');</div></li>
+<li><div class="src-line"><a name="a562"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('priorities_table',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getpriorities=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a563"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a564"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a565"></a>}</div></li>
+<li><div class="src-line"><a name="a566"></a>function&nbsp;setPriority(pid)</div></li>
+<li><div class="src-line"><a name="a567"></a>{</div></li>
+<li><div class="src-line"><a name="a568"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_priority',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a569"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a570"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a571"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;setpriority:&nbsp;pid&nbsp;},</div></li>
+<li><div class="src-line"><a name="a572"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a573"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('edit_priority');</div></li>
+<li><div class="src-line"><a name="a574"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('workflow_actions');</div></li>
+<li><div class="src-line"><a name="a575"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('workflow_actions_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a576"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a577"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a578"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a579"></a>}</div></li>
+<li><div class="src-line"><a name="a580"></a>function&nbsp;setBlocking(blocks)</div></li>
+<li><div class="src-line"><a name="a581"></a>{</div></li>
+<li><div class="src-line"><a name="a582"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('blocking_span',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a583"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a584"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a585"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;setblocking:&nbsp;blocks&nbsp;},</div></li>
+<li><div class="src-line"><a name="a586"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a587"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('blocking_menu',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;updateblockingmenu=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a588"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a589"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a590"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showMenu('workflow_actions');</div></li>
+<li><div class="src-line"><a name="a591"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;menuUnhover('workflow_actions_actions',&nbsp;'');</div></li>
+<li><div class="src-line"><a name="a592"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a593"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a594"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a595"></a>}</div></li>
+<li><div class="src-line"><a name="a596"></a>function&nbsp;addTask()</div></li>
+<li><div class="src-line"><a name="a597"></a>{</div></li>
+<li><div class="src-line"><a name="a598"></a>&nbsp;&nbsp;&nbsp;&nbsp;tinyMCE.triggerSave();</div></li>
+<li><div class="src-line"><a name="a599"></a>&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;params&nbsp;=&nbsp;Form.serialize('issue_add_task');</div></li>
+<li><div class="src-line"><a name="a600"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Request('include/viewissue_actions.inc.php',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a601"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a602"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a603"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;params,</div></li>
+<li><div class="src-line"><a name="a604"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(addTaskSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a605"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_tasks',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;gettasks=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a606"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a607"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a608"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evalScripts:&nbsp;true</div></li>
+<li><div class="src-line"><a name="a609"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a610"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Element.hide('new_task');</div></li>
+<li><div class="src-line"><a name="a611"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Form.reset('issue_add_task');</div></li>
+<li><div class="src-line"><a name="a612"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a613"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a614"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a615"></a>}</div></li>
+<li><div class="src-line"><a name="a616"></a>function&nbsp;updateTask(tid)</div></li>
+<li><div class="src-line"><a name="a617"></a>{</div></li>
+<li><div class="src-line"><a name="a618"></a>&nbsp;&nbsp;&nbsp;&nbsp;tinyMCE.triggerSave();</div></li>
+<li><div class="src-line"><a name="a619"></a>&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;params&nbsp;=&nbsp;Form.serialize('edit_task_'&nbsp;+&nbsp;tid&nbsp;+&nbsp;'_form');</div></li>
+<li><div class="src-line"><a name="a620"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Request('include/viewissue_actions.inc.php',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a621"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a622"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a623"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;params,</div></li>
+<li><div class="src-line"><a name="a624"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(updateTaskSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a625"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('task_'&nbsp;+&nbsp;tid&nbsp;+&nbsp;'_title',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;gettask_title=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a626"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a627"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a628"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;t_id:&nbsp;tid&nbsp;}</div></li>
+<li><div class="src-line"><a name="a629"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a630"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('task_'&nbsp;+&nbsp;tid&nbsp;+&nbsp;'_description',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;gettask_description=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a631"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a632"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a633"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;t_id:&nbsp;tid&nbsp;}</div></li>
+<li><div class="src-line"><a name="a634"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a635"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getTaskLastUpdated(tid);</div></li>
+<li><div class="src-line"><a name="a636"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect.Fade('edit_task_'&nbsp;+&nbsp;tid&nbsp;+&nbsp;'_details');</div></li>
+<li><div class="src-line"><a name="a637"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a638"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a639"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a640"></a>}</div></li>
+<li><div class="src-line"><a name="a641"></a>function&nbsp;getTaskLastUpdated(tid)</div></li>
+<li><div class="src-line"><a name="a642"></a>{</div></li>
+<li><div class="src-line"><a name="a643"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('task_'&nbsp;+&nbsp;tid&nbsp;+&nbsp;'_lastupdated',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;gettask_lastupdated=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a644"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a645"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a646"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;t_id:&nbsp;tid&nbsp;}</div></li>
+<li><div class="src-line"><a name="a647"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a648"></a>}</div></li>
+<li><div class="src-line"><a name="a649"></a>function&nbsp;deleteTask(tid)</div></li>
+<li><div class="src-line"><a name="a650"></a>{</div></li>
+<li><div class="src-line"><a name="a651"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('task_status_list_'&nbsp;+&nbsp;tid,&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;deletetask=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a652"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a653"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a654"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;t_id:&nbsp;tid&nbsp;},</div></li>
+<li><div class="src-line"><a name="a655"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(deleteTaskSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a656"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect.Fade('issuetask_'&nbsp;+&nbsp;tid,&nbsp;{&nbsp;duration:&nbsp;0.5&nbsp;});</div></li>
+<li><div class="src-line"><a name="a657"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a658"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a659"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a660"></a>}</div></li>
+<li><div class="src-line"><a name="a661"></a>function&nbsp;promoteTask(tid)</div></li>
+<li><div class="src-line"><a name="a662"></a>{</div></li>
+<li><div class="src-line"><a name="a663"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('task_status_list_'&nbsp;+&nbsp;tid,&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;promotetask=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a664"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a665"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a666"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;t_id:&nbsp;tid&nbsp;},</div></li>
+<li><div class="src-line"><a name="a667"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(promoteTaskSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a668"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect.Fade('issuetask_'&nbsp;+&nbsp;tid,&nbsp;{&nbsp;duration:&nbsp;0.5&nbsp;});</div></li>
+<li><div class="src-line"><a name="a669"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getRelatedIssuesInline();</div></li>
+<li><div class="src-line"><a name="a670"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a671"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a672"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a673"></a>}</div></li>
+<li><div class="src-line"><a name="a674"></a>function&nbsp;getTaskStatusList(tid)</div></li>
+<li><div class="src-line"><a name="a675"></a>{</div></li>
+<li><div class="src-line"><a name="a676"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('task_status_list_'&nbsp;+&nbsp;tid,&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getstatuslisttask=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a677"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a678"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a679"></a>&nbsp;&nbsp;&nbsp;&nbsp;evalScripts:&nbsp;true,</div></li>
+<li><div class="src-line"><a name="a680"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;t_id:&nbsp;tid&nbsp;}&nbsp;});</div></li>
+<li><div class="src-line"><a name="a681"></a>}</div></li>
+<li><div class="src-line"><a name="a682"></a>function&nbsp;setTaskStatus(tid,&nbsp;sid)</div></li>
+<li><div class="src-line"><a name="a683"></a>{</div></li>
+<li><div class="src-line"><a name="a684"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('task_status_inline_'&nbsp;+&nbsp;tid,&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;settaskstatus=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a685"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a686"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a687"></a>&nbsp;&nbsp;&nbsp;&nbsp;evalScripts:&nbsp;true,</div></li>
+<li><div class="src-line"><a name="a688"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;t_id:&nbsp;tid,&nbsp;status:&nbsp;sid&nbsp;},</div></li>
+<li><div class="src-line"><a name="a689"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(setTaskStatusSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a690"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect.Fade('task_status_'&nbsp;+&nbsp;tid,&nbsp;{&nbsp;duration:&nbsp;0.5&nbsp;});</div></li>
+<li><div class="src-line"><a name="a691"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getTaskLastUpdated(tid);</div></li>
+<li><div class="src-line"><a name="a692"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a693"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a694"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a695"></a>}</div></li>
+<li><div class="src-line"><a name="a696"></a>function&nbsp;setTaskClosed(tid,&nbsp;clsd)</div></li>
+<li><div class="src-line"><a name="a697"></a>{</div></li>
+<li><div class="src-line"><a name="a698"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('task_closed_'&nbsp;+&nbsp;tid,&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;task_setclosed=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a699"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a700"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a701"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{t_id:&nbsp;tid,&nbsp;closed:&nbsp;clsd},</div></li>
+<li><div class="src-line"><a name="a702"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a703"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a704"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a705"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a706"></a>}</div></li>
+<li><div class="src-line"><a name="a707"></a>function&nbsp;submitVote()</div></li>
+<li><div class="src-line"><a name="a708"></a>{</div></li>
+<li><div class="src-line"><a name="a709"></a>&nbsp;&nbsp;&nbsp;&nbsp;var&nbsp;params&nbsp;=&nbsp;Form.serialize('issue_vote_form');</div></li>
+<li><div class="src-line"><a name="a710"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_vote_status',&nbsp;'include/viewissue_actions.inc.php',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a711"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a712"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a713"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;params,</div></li>
+<li><div class="src-line"><a name="a714"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(submitVote)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a715"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_votes',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getvotes=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a716"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a717"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a718"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a719"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a720"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a721"></a>}</div></li>
+<li><div class="src-line"><a name="a722"></a>function&nbsp;getAffectedStatusList(aid,&nbsp;atype)</div></li>
+<li><div class="src-line"><a name="a723"></a>{</div></li>
+<li><div class="src-line"><a name="a724"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('affected_status_list_'&nbsp;+&nbsp;aid&nbsp;+&nbsp;'_'&nbsp;+&nbsp;atype,&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getstatuslistaffected=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a725"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a726"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a727"></a>&nbsp;&nbsp;&nbsp;&nbsp;evalScripts:&nbsp;true,</div></li>
+<li><div class="src-line"><a name="a728"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;a_id:&nbsp;aid,&nbsp;a_type:&nbsp;atype&nbsp;}&nbsp;});</div></li>
+<li><div class="src-line"><a name="a729"></a>}</div></li>
+<li><div class="src-line"><a name="a730"></a>function&nbsp;setAffectedStatus(aid,&nbsp;atype,&nbsp;sid)</div></li>
+<li><div class="src-line"><a name="a731"></a>{</div></li>
+<li><div class="src-line"><a name="a732"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('affected_status_inline_'&nbsp;+&nbsp;aid&nbsp;+&nbsp;'_'&nbsp;+&nbsp;atype,&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;setaffectedstatus=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a733"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a734"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a735"></a>&nbsp;&nbsp;&nbsp;&nbsp;evalScripts:&nbsp;true,</div></li>
+<li><div class="src-line"><a name="a736"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{&nbsp;a_id:&nbsp;aid,&nbsp;status:&nbsp;sid,&nbsp;a_type:&nbsp;atype&nbsp;},</div></li>
+<li><div class="src-line"><a name="a737"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(something)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a738"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Effect.Fade('affected_status_'&nbsp;+&nbsp;aid&nbsp;+&nbsp;'_'&nbsp;+&nbsp;atype,&nbsp;{&nbsp;duration:&nbsp;0.5&nbsp;});</div></li>
+<li><div class="src-line"><a name="a739"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getComments('core',&nbsp;1,&nbsp;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>);</div></li>
+<li><div class="src-line"><a name="a740"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a741"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a742"></a>}</div></li>
+<li><div class="src-line"><a name="a743"></a>function&nbsp;getLogEntries()</div></li>
+<li><div class="src-line"><a name="a744"></a>{</div></li>
+<li><div class="src-line"><a name="a745"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('log_actions',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getlogentries=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a746"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a747"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a748"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a749"></a>}</div></li>
+<li><div class="src-line"><a name="a750"></a>function&nbsp;removeUserIssue()</div></li>
+<li><div class="src-line"><a name="a751"></a>{</div></li>
+<li><div class="src-line"><a name="a752"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('userissue_status',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;watchlist=true&amp;action=remove',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a753"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a754"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a755"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a756"></a>}</div></li>
+<li><div class="src-line"><a name="a757"></a>function&nbsp;addUserIssue()</div></li>
+<li><div class="src-line"><a name="a758"></a>{</div></li>
+<li><div class="src-line"><a name="a759"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('userissue_status',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;watchlist=true&amp;action=add',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a760"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a761"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a762"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a763"></a>}</div></li>
+<li><div class="src-line"><a name="a764"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a765"></a>function&nbsp;deletePermission(pid)</div></li>
+<li><div class="src-line"><a name="a766"></a>{</div></li>
+<li><div class="src-line"><a name="a767"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Request('include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;deleteaccess=1',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a768"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a769"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;,</div></li>
+<li><div class="src-line"><a name="a770"></a>&nbsp;&nbsp;&nbsp;&nbsp;parameters:&nbsp;{id:&nbsp;pid},</div></li>
+<li><div class="src-line"><a name="a771"></a>&nbsp;&nbsp;&nbsp;&nbsp;onSuccess:&nbsp;function&nbsp;(deletePermissionSuccess)&nbsp;{</div></li>
+<li><div class="src-line"><a name="a772"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getHiddenFrom();</div></li>
+<li><div class="src-line"><a name="a773"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;getAvailableTo();</div></li>
+<li><div class="src-line"><a name="a774"></a>&nbsp;&nbsp;&nbsp;&nbsp;}</div></li>
+<li><div class="src-line"><a name="a775"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a776"></a>}</div></li>
+<li><div class="src-line"><a name="a777"></a>function&nbsp;getHiddenFrom()</div></li>
+<li><div class="src-line"><a name="a778"></a>{</div></li>
+<li><div class="src-line"><a name="a779"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_hiddenfrom',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;gethiddenfrom=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a780"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a781"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a782"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a783"></a>}</div></li>
+<li><div class="src-line"><a name="a784"></a>function&nbsp;getAvailableTo()</div></li>
+<li><div class="src-line"><a name="a785"></a>{</div></li>
+<li><div class="src-line"><a name="a786"></a>&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;Ajax.Updater('issue_availableto',&nbsp;'include/viewissue_actions.inc.php?issue_no=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$theIssue</span><span class="src-sym">-&gt;</span><span class="src-id">getFormattedIssueNo</span><span class="src-sym">(</span><span class="src-id">true</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;getavailableto=true',&nbsp;{</div></li>
+<li><div class="src-line"><a name="a787"></a>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous:true,</div></li>
+<li><div class="src-line"><a name="a788"></a>&nbsp;&nbsp;&nbsp;&nbsp;method:&nbsp;&quot;post&quot;</div></li>
+<li><div class="src-line"><a name="a789"></a>&nbsp;&nbsp;&nbsp;&nbsp;});</div></li>
+<li><div class="src-line"><a name="a790"></a>}</div></li>
+<li><div class="src-line"><a name="a791"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a792"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a793"></a>&lt;/script&gt;</div></li>
+</ol></div>
+</div>
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:26:30 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

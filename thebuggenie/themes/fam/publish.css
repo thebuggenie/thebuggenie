@@ -1,0 +1,71 @@
+
+.billboarddiv
+{
+	padding: 3px;
+	background-color: #F1F1F1;
+	border: 1px solid #DDD;
+}
+
+.billboardinfo
+{
+	width: 100%;
+	background-color: #FFF;
+	font-size: 10px;
+	height: 12px;
+	padding-bottom: 3px;
+	margin-bottom: 2px;
+	border-bottom: 1px solid #DDD;
+}
+
+.billboardpostdiv
+{
+	margin-top: 0px;
+	padding: 5px;
+	background-color: #FFF;
+}
+
+.billboardpost
+{
+	text-align: right;
+	width: 100%;
+	float: right;
+}
+
+.billboardtable
+{
+	table-layout: auto;
+	width: 100%;
+	background-color: #FFF;
+	margin-top: 0px;
+	margin-bottom: 10px;
+	padding: 0px;
+}
+
+.bbfirsttd
+{
+	width: auto;
+	padding: 0px;
+}
+
+.bbspacingtd
+{
+	width: 10px;
+}
+
+.bbteamtd
+{
+	width: 325px;
+	padding: 0px;
+}
+
+#article_list, .billboard_list
+{
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+#article_list li
+{
+	cursor: move;
+}

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>File Source for setup_product.inc.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+											</head>
+		<body>
+						<h1>Source for file setup_product.inc.php</h1>
+<p>Documentation is available at <a href="../thebuggenie/_i18n---de_DE---help---setup_product.inc.php.html">setup_product.inc.php</a></p>
+<div class="src-code">
+<div class="src-code"><ol><li><div class="src-line"><a name="a1"></a>&lt;b&gt;Einrichten&nbsp;eines&nbsp;Produktes&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a2"></a>Bevor&nbsp;Sie&nbsp;Sachverhalte&nbsp;melden&nbsp;können,&nbsp;benötigen&nbsp;Sie&nbsp;mindestens&nbsp;ein&nbsp;Produkt.&nbsp;Oder&nbsp;Projekt.&nbsp;In&nbsp;BUGS&nbsp;2&nbsp;nennen&nbsp;wir&nbsp;die&nbsp;</div></li>
+<li><div class="src-line"><a name="a3"></a>oberste&nbsp;Ebene&nbsp;ein&nbsp;&lt;b&gt;Produkt&lt;/b&gt;.&nbsp;Das&nbsp;heißt&nbsp;nicht,&nbsp;dass&nbsp;Sie&nbsp;BUGS&nbsp;2&nbsp;für&nbsp;Projekte&nbsp;oder&nbsp;andere&nbsp;Sachen&nbsp;benutzen&nbsp;können,&nbsp;</div></li>
+<li><div class="src-line"><a name="a4"></a>aber&nbsp;es&nbsp;ist&nbsp;gut&nbsp;zu&nbsp;wissen,&nbsp;wovon&nbsp;wir&nbsp;reden.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a5"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a6"></a>Nun&nbsp;brauchen&nbsp;wir&nbsp;also&nbsp;ein&nbsp;Produkt.&nbsp;Falls&nbsp;Sie&nbsp;noch&nbsp;nicht&nbsp;auf&nbsp;dieser&nbsp;Seite&nbsp;sind,&nbsp;klicken&nbsp;Sie&nbsp;auf&lt;br&gt;&nbsp;</div></li>
+<li><div class="src-line"><a name="a7"></a>&lt;span&nbsp;style=&quot;display:&nbsp;float;&quot;&gt;&lt;img&nbsp;src=&quot;themes/oxygen/cfg_icon_products.png&quot;&gt;&amp;nbsp;&lt;b&gt;Produkt&nbsp;verwalten&lt;/b&gt;&lt;/span&gt;.</div></li>
+<li><div class="src-line"><a name="a8"></a>Hier&nbsp;erscheint&nbsp;eine&nbsp;Liste&nbsp;aller&nbsp;Produkte&nbsp;in&nbsp;BUGS&nbsp;2&nbsp;(auf&nbsp;die&nbsp;Sie&nbsp;Zugriff&nbsp;haben),&nbsp;und&nbsp;Sie&nbsp;können&nbsp;hier&nbsp;auch&nbsp;neue&nbsp;</div></li>
+<li><div class="src-line"><a name="a9"></a>Produkte&nbsp;erstellen.&nbsp;Sie&nbsp;können&nbsp;ebenfalls&nbsp;einstellen,&nbsp;welches&nbsp;Produkt&nbsp;standardmäßig&nbsp;als&nbsp;Produkt&nbsp;eingestellt&nbsp;ist,&nbsp;wenn&nbsp;</div></li>
+<li><div class="src-line"><a name="a10"></a>Sie&nbsp;Sachverhalte&nbsp;melden.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a11"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a12"></a>Um&nbsp;ein&nbsp;neues&nbsp;Produkt&nbsp;zu&nbsp;erstellen,&nbsp;geben&nbsp;Sie&nbsp;in&nbsp;dem&nbsp;Feld&nbsp;&lt;b&gt;&quot;Produkt&nbsp;hinzufügen&quot;&lt;/b&gt;&nbsp;den&nbsp;Produkt-&nbsp;oder&nbsp;Projektnamen&nbsp;ein&nbsp;</div></li>
+<li><div class="src-line"><a name="a13"></a>und&nbsp;klicken&nbsp;Sie&nbsp;anschließend&nbsp;den&nbsp;&lt;b&gt;Hinzufügen&lt;/b&gt;-Button&nbsp;mit&nbsp;dem&nbsp;Plus-Zeichen&nbsp;neben&nbsp;dem&nbsp;Eingabefeld.&nbsp;</div></li>
+<li><div class="src-line"><a name="a14"></a>So&nbsp;einfach&nbsp;ist&nbsp;es&nbsp;ein&nbsp;Produkt&nbsp;zu&nbsp;erstellen!</div></li>
+<li><div class="src-line"><a name="a15"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a16"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a17"></a>&lt;b&gt;WICHTIGT:&nbsp;Denken&nbsp;Sie&nbsp;daran&nbsp;anderen&nbsp;Benutzern&nbsp;Zugriffsrechte&nbsp;auf&nbsp;das&nbsp;Produkt&nbsp;zu&nbsp;geben.&lt;/b&gt;</div></li>
+<li><div class="src-line"><a name="a18"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a19"></a>Zugriff&nbsp;erhält&nbsp;automatisch&nbsp;die&nbsp;Gruppe,&nbsp;in&nbsp;der&nbsp;Sie&nbsp;sind.&nbsp;Aber&nbsp;denken&nbsp;Sie&nbsp;daran,&nbsp;ebenfalls&nbsp;anderen&nbsp;Gruppen&nbsp;und&nbsp;Benutzern&nbsp;</div></li>
+<li><div class="src-line"><a name="a20"></a>Zugriff&nbsp;zu&nbsp;gewähren.</div></li>
+<li><div class="src-line"><a name="a21"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a22"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a23"></a>Das&nbsp;ist&nbsp;natürlich&nbsp;nicht&nbsp;alles,&nbsp;was&nbsp;Sie&nbsp;mit&nbsp;den&nbsp;Produkten&nbsp;in&nbsp;BUGS&nbsp;2&nbsp;machen&nbsp;können.&nbsp;Schauen&nbsp;wir&nbsp;uns&nbsp;die&nbsp;verschiedenen&nbsp;</div></li>
+<li><div class="src-line"><a name="a24"></a>Einstellungen&nbsp;genauer&nbsp;an.&nbsp;Klicken&nbsp;Sie&nbsp;auf&nbsp;den&nbsp;Verweis&nbsp;</div></li>
+<li><div class="src-line"><a name="a25"></a>&lt;span&nbsp;style=&quot;display:&nbsp;float;&quot;&gt;&lt;img&nbsp;src=&quot;themes/oxygen/cfg_icon_productsettings.png&quot;&gt;&amp;nbsp;&lt;b&gt;Information&nbsp;&amp;amp;&nbsp;Einstellungen&lt;/b&gt;&lt;/span&gt;.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a26"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a27"></a>&lt;b&gt;Information&nbsp;&amp;amp;&nbsp;Einstellungen&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a28"></a>Die&nbsp;ersten&nbsp;vier&nbsp;Eingabefelder&nbsp;sind&nbsp;für&nbsp;den&nbsp;Name,&nbsp;Beschreibung,&nbsp;Homepage&nbsp;und&nbsp;Dokumentation&nbsp;für&nbsp;Ihr&nbsp;Produkt:</div></li>
+<li><div class="src-line"><a name="a29"></a>&lt;ul&gt;</div></li>
+<li><div class="src-line"><a name="a30"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Beschreibung&lt;/b&gt;&lt;br&gt;Wird&nbsp;auf&nbsp;der&nbsp;Übersichts-Seite&nbsp;für&nbsp;Ihr&nbsp;Produkt&nbsp;erscheinen,&nbsp;welche&nbsp;Sie&nbsp;über&nbsp;die&nbsp;</div></li>
+<li><div class="src-line"><a name="a31"></a>&nbsp;&nbsp;&nbsp;&nbsp;Hauptseite&nbsp;erreichen.&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a32"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Homepage&lt;/b&gt;&lt;br&gt;Wird&nbsp;als&nbsp;Verweis&nbsp;uf&nbsp;der&nbsp;Übersichts-Seite&nbsp;erscheinen&nbsp;(siehe&nbsp;&lt;i&gt;Beschreibung&lt;/i&gt;)&nbsp;und&nbsp;in&nbsp;</div></li>
+<li><div class="src-line"><a name="a33"></a>&nbsp;&nbsp;&nbsp;&nbsp;dem&nbsp;Produkt-Block&nbsp;auf&nbsp;der&nbsp;Hauptseite.&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a34"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Dokumentation&lt;/b&gt;&lt;br&gt;Wird&nbsp;als&nbsp;Verweis&nbsp;&quot;Produkt&nbsp;Dokumentation&quot;&nbsp;auf&nbsp;der&nbsp;Übersichts-Seite&nbsp;sowie&nbsp;auf&nbsp;der&nbsp;</div></li>
+<li><div class="src-line"><a name="a35"></a>&nbsp;&nbsp;&nbsp;&nbsp;Hauptseite&nbsp;erscheinen.&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a36"></a>&lt;/ul&gt;</div></li>
+<li><div class="src-line"><a name="a37"></a>Sie&nbsp;haben&nbsp;ebenfalls&nbsp;die&nbsp;Einstellung&nbsp;&quot;Präfix&quot;.&nbsp;Sie&nbsp;sollten&nbsp;dieses&nbsp;Präfix&nbsp;benutzen&nbsp;-&nbsp;es&nbsp;erleichtert&nbsp;vieles.&nbsp;Mehr&nbsp;Informationen&nbsp;über&nbsp;die&nbsp;Benutzung&nbsp;von&nbsp;</div></li>
+<li><div class="src-line"><a name="a38"></a>Präfix&nbsp;finden&nbsp;Sie&nbsp;hier:&nbsp;&lt;a&nbsp;href=&quot;?topic=prefix&amp;prev_topic=setup_product&quot;&gt;&lt;b&gt;Was&nbsp;ist&nbsp;ein&nbsp;Präfix?&lt;/b&gt;&lt;/a&gt;</div></li>
+<li><div class="src-line"><a name="a39"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a40"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a41"></a>Außerdem&nbsp;gibt&nbsp;es&nbsp;noch&nbsp;weitere&nbsp;Produkt&nbsp;Einstellungen:</div></li>
+<li><div class="src-line"><a name="a42"></a>&lt;ul&gt;</div></li>
+<li><div class="src-line"><a name="a43"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Leitung&nbsp;von&lt;/b&gt;</div></li>
+<li><div class="src-line"><a name="a44"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;Wer&nbsp;ist&nbsp;für&nbsp;dieses&nbsp;Produkt&nbsp;verantwortlich.&nbsp;Dies&nbsp;kann&nbsp;ein&nbsp;Team&nbsp;oder&nbsp;ein&nbsp;Benutzer&nbsp;sein.&nbsp;Der&nbsp;Benutzer&nbsp;/&nbsp;das&nbsp;Team&nbsp;</div></li>
+<li><div class="src-line"><a name="a45"></a>&nbsp;&nbsp;&nbsp;&nbsp;wird&nbsp;bei&nbsp;neuen&nbsp;Sachverhalten&nbsp;benachichtigt&nbsp;und&nbsp;der&nbsp;Benutzer&nbsp;/&nbsp;das&nbsp;Team&nbsp;wird&nbsp;in&nbsp;dem&nbsp;Info&nbsp;Block&nbsp;des&nbsp;Produktes&nbsp;auf&nbsp;</div></li>
+<li><div class="src-line"><a name="a46"></a>&nbsp;&nbsp;&nbsp;&nbsp;der&nbsp;Hauptseite&nbsp;erscheinen.&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a47"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;QS&nbsp;von&lt;/b&gt;&lt;br&gt;Siehe&nbsp;oben,&nbsp;nur&nbsp;für&nbsp;Qualitätssicherung&nbsp;(QS).&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a48"></a>&lt;/ul&gt;</div></li>
+<li><div class="src-line"><a name="a49"></a>Sie&nbsp;können&nbsp;Entwickler&nbsp;zu&nbsp;verschiedenen&nbsp;Teilen&nbsp;Ihres&nbsp;Produktes&nbsp;zuweisen&nbsp;-&nbsp;mehr&nbsp;darüber&nbsp;finden&nbsp;Sie&nbsp;im&nbsp;nächsten&nbsp;Abschnitt</div></li>
+<li><div class="src-line"><a name="a50"></a>(siehe&nbsp;&quot;Einrichten&nbsp;einer&nbsp;Edition&nbsp;und&nbsp;Auswählen&nbsp;einer&nbsp;Komponente&quot;)&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a51"></a>&lt;ul&gt;</div></li>
+<li><div class="src-line"><a name="a52"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Benutze&nbsp;Aufgaben&nbsp;in&nbsp;Sachverhalten&lt;/b&gt;</div></li>
+<li><div class="src-line"><a name="a53"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a54"></a>&nbsp;&nbsp;&nbsp;&nbsp;Wenn&nbsp;&quot;ja&quot;,&nbsp;können&nbsp;Sie&nbsp;Aufgaben&nbsp;zu&nbsp;Sachverhalten&nbsp;hinzufügen.&nbsp;Aufgaben&nbsp;können&nbsp;den&nbsp;Sachverhalt&nbsp;in&nbsp;kleinere&nbsp;Teile&nbsp;</div></li>
+<li><div class="src-line"><a name="a55"></a>&nbsp;&nbsp;&nbsp;&nbsp;aufteilen&nbsp;und&nbsp;können&nbsp;individuell&nbsp;verfolgt&nbsp;werden.&nbsp;Aufgaben&nbsp;bestitzen&nbsp;ebenfalls&nbsp;einen&nbsp;Status&nbsp;und&nbsp;eine&nbsp;zugewiesene&nbsp;</div></li>
+<li><div class="src-line"><a name="a56"></a>&nbsp;&nbsp;&nbsp;&nbsp;Person&nbsp;und&nbsp;Sie&nbsp;können&nbsp;auch&nbsp;zu&nbsp;eigenen&nbsp;Sachverhalten&nbsp;&quot;aufsteigen&quot;,&nbsp;falls&nbsp;dies&nbsp;nötig&nbsp;wird.&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a57"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Abstimmung&nbsp;für&nbsp;Sachverhalte&nbsp;erlauben&lt;/b&gt;</div></li>
+<li><div class="src-line"><a name="a58"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a59"></a>&nbsp;&nbsp;&nbsp;&nbsp;Erlaubt&nbsp;den&nbsp;Benutzern&nbsp;für&nbsp;Sachverhalte&nbsp;zu&nbsp;stimmen,&nbsp;wodurch&nbsp;die&nbsp;Entwickler&nbsp;wissen,&nbsp;welche&nbsp;Sachverhalte&nbsp;zu&nbsp;bevorzugen&nbsp;</div></li>
+<li><div class="src-line"><a name="a60"></a>&nbsp;&nbsp;&nbsp;&nbsp;sind.&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a61"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Zeitmessung&lt;/b&gt;</div></li>
+<li><div class="src-line"><a name="a62"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a63"></a>&nbsp;&nbsp;&nbsp;&nbsp;Gibt&nbsp;an,&nbsp;wie&nbsp;die&nbsp;Zeit&nbsp;für&nbsp;den&nbsp;Sachverhalt&nbsp;gemessen&nbsp;werden&nbsp;soll.&nbsp;Sachverhalte&nbsp;können&nbsp;&quot;geschätzte&quot;&nbsp;und&nbsp;&quot;vergangene&quot;&nbsp;</div></li>
+<li><div class="src-line"><a name="a64"></a>&nbsp;&nbsp;&nbsp;&nbsp;Zeit&nbsp;haben.&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a65"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Stunden&nbsp;pro&nbsp;Tag&lt;/b&gt;</div></li>
+<li><div class="src-line"><a name="a66"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a67"></a>&nbsp;&nbsp;&nbsp;&nbsp;Wird&nbsp;in&nbsp;Verbindung&nbsp;mit&nbsp;der&nbsp;vorherigen&nbsp;Einstellung&nbsp;benutzt&nbsp;(wenn&nbsp;entwas&nbsp;mit&nbsp;Tagen&nbsp;eingestellt&nbsp;wurde)&nbsp;-&nbsp;aus&nbsp;wieviel&nbsp;</div></li>
+<li><div class="src-line"><a name="a68"></a>&nbsp;&nbsp;&nbsp;&nbsp;Stunden&nbsp;besteht&nbsp;ein&nbsp;Tag.&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a69"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Geplanter&nbsp;Release&lt;/b&gt;</div></li>
+<li><div class="src-line"><a name="a70"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a71"></a>&nbsp;&nbsp;&nbsp;&nbsp;Wählen&nbsp;Sie,&nbsp;ob&nbsp;es&nbsp;ein&nbsp;geplantes&nbsp;Release&nbsp;Datum&nbsp;existiert&nbsp;und&nbsp;wann&nbsp;dies&nbsp;sein&nbsp;soll.&nbsp;Es&nbsp;wird&nbsp;oben&nbsp;in&nbsp;der&nbsp;</div></li>
+<li><div class="src-line"><a name="a72"></a>&nbsp;&nbsp;&nbsp;&nbsp;Produkt-Übersicht&nbsp;angezeigt.&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a73"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Veröffentlicht&lt;/b&gt;</div></li>
+<li><div class="src-line"><a name="a74"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;Gibt&nbsp;an,&nbsp;ob&nbsp;das&nbsp;Produkt&nbsp;veröffentlicht&nbsp;ist&nbsp;oder&nbsp;nicht.&nbsp;Es&nbsp;erschein&nbsp;ebenfalls&nbsp;in&nbsp;der&nbsp;Produkt-Übersicht&lt;/li&gt;&nbsp;</div></li>
+<li><div class="src-line"><a name="a75"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Erlaube&nbsp;Sachverhalte&nbsp;zu&nbsp;melden.&lt;/b&gt;</div></li>
+<li><div class="src-line"><a name="a76"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a77"></a>&nbsp;&nbsp;&nbsp;&nbsp;Ist&nbsp;jawohl&nbsp;selbsterklärend&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a78"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Benutze&nbsp;Builds&lt;/b&gt;</div></li>
+<li><div class="src-line"><a name="a79"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a80"></a>&nbsp;&nbsp;&nbsp;&nbsp;Gibt&nbsp;an,&nbsp;ob&nbsp;Builds&nbsp;benutzt&nbsp;werden&nbsp;oder&nbsp;nicht.&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a81"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Standard&nbsp;Status&nbsp;für&nbsp;neue&nbsp;Sachverhalte&lt;/b&gt;</div></li>
+<li><div class="src-line"><a name="a82"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a83"></a>&nbsp;&nbsp;&nbsp;&nbsp;Welchen&nbsp;Status&nbsp;neue&nbsp;Sachverhalte&nbsp;automatisch&nbsp;bekommen.&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a84"></a>&lt;/ul&gt;</div></li>
+<li><div class="src-line"><a name="a85"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a86"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a87"></a>Weiter&nbsp;zu&nbsp;&lt;a&nbsp;href=&quot;help.php?topic=setup_editions&amp;prev_topic=config_products&quot;&gt;&lt;b&gt;Einrichten&nbsp;einer&nbsp;Edition&nbsp;und&nbsp;Auswählen&nbsp;einer&nbsp;Komponente&amp;nbsp;&amp;gt;&amp;gt;&lt;/b&gt;&lt;/a&gt;&lt;br&gt;</div></li>
+</ol></div>
+</div>
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:26:20 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

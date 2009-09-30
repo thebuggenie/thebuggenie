@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>File Source for products_productbox.inc.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+											</head>
+		<body>
+						<h1>Source for file products_productbox.inc.php</h1>
+<p>Documentation is available at <a href="../thebuggenie/_core---config---products_productbox.inc.php.html">products_productbox.inc.php</a></p>
+<div class="src-code">
+<div class="src-code"><ol><li><div class="src-line"><a name="a1"></a><span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a2"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a3"></a><span class="src-key">if&nbsp;</span><span class="src-sym">(</span><span class="src-sym">!</span><span class="src-var">$aProduct&nbsp;</span>instanceof&nbsp;<span class="src-id"><a href="../thebuggenie/main/BUGSproduct.html">BUGSproduct</a></span><span class="src-sym">)</span></div></li>
+<li><div class="src-line"><a name="a4"></a><span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a5"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-key">exit</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a6"></a><span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a7"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a8"></a><span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a9"></a>&lt;tr&gt;</div></li>
+<li><div class="src-line"><a name="a10"></a>&lt;td&nbsp;style=&quot;border:&nbsp;1px&nbsp;solid&nbsp;#DDD;&nbsp;padding:&nbsp;3px;&nbsp;margin-bottom:&nbsp;5px;&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a11"></a>&lt;div&nbsp;style=&quot;padding:&nbsp;3px;&quot;&gt;&lt;b&nbsp;style=&quot;font-size:&nbsp;13px;&quot;&gt;&lt;a&nbsp;href=&quot;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-id"><a href="../thebuggenie/core/BUGScontext.html">BUGScontext</a></span><span class="src-sym">::</span><a href="../thebuggenie/core/BUGScontext.html#methodgetB2path">getB2path</a><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>viewproduct.php?product_id=<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&quot;&nbsp;target=&quot;_blank&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>print&nbsp;<span class="src-var">$aProduct</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/a&gt;&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a12"></a><span class="src-php">&lt;?php&nbsp;</span>print&nbsp;<span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getDescription</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a13"></a>&lt;div&nbsp;style=&quot;border-top:&nbsp;1px&nbsp;solid&nbsp;#DDD;&nbsp;background-color:&nbsp;#F5F5F5;&nbsp;padding-top:&nbsp;3px;&nbsp;padding-bottom:&nbsp;3px;&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a14"></a>&lt;table&nbsp;cellpadding=0&nbsp;cellspacing=0&nbsp;border=0&nbsp;style=&quot;width:&nbsp;100%;&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a15"></a>&lt;tr&gt;</div></li>
+<li><div class="src-line"><a name="a16"></a>&lt;td&nbsp;style=&quot;width:&nbsp;130px;&nbsp;padding-left:&nbsp;3px;&quot;&gt;&lt;b&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Lead&nbsp;by:&nbsp;%user_or_team%'</span><span class="src-sym">,&nbsp;</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'%user_or_team%'&nbsp;</span>=&gt;&nbsp;<span class="src-str">''</span><span class="src-sym">))</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/b&gt;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a17"></a>&lt;td&gt;</div></li>
+<li><div class="src-line"><a name="a18"></a><span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a19"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a20"></a><span class="src-key">if&nbsp;</span><span class="src-sym">(</span><span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getLeadBy</span><span class="src-sym">(</span><span class="src-sym">)&nbsp;</span>!=&nbsp;<span class="src-id">null</span><span class="src-sym">)</span></div></li>
+<li><div class="src-line"><a name="a21"></a><span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a22"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a23"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;table&nbsp;cellpadding=0&nbsp;cellspacing=0&nbsp;border=0&nbsp;width=&quot;100%&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a24"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a25"></a>&nbsp;&nbsp;&nbsp;&nbsp;</div></li>
+<li><div class="src-line"><a name="a26"></a>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;<span class="src-sym">(</span><span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getLeadType</span><span class="src-sym">(</span><span class="src-sym">)&nbsp;</span>==&nbsp;<span class="src-id"><a href="../thebuggenie/core/BUGSidentifiableclass.html">BUGSidentifiableclass</a></span><span class="src-sym">::</span><span class="src-id">TYPE_USER</span><span class="src-sym">)&nbsp;</span>?&nbsp;<a href="../thebuggenie/_core---lib---ui.inc.php.html#functionbugs_userDropdown">bugs_userDropdown</a><span class="src-sym">(</span><span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getLeadBy</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">))&nbsp;</span>:&nbsp;<a href="../thebuggenie/_core---lib---ui.inc.php.html#functionbugs_teamDropdown">bugs_teamDropdown</a><span class="src-sym">(</span><span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getLeadBy</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a27"></a>&nbsp;&nbsp;&nbsp;&nbsp;</div></li>
+<li><div class="src-line"><a name="a28"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a29"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;</div></li>
+<li><div class="src-line"><a name="a30"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a31"></a><span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a32"></a><span class="src-key">else</span></div></li>
+<li><div class="src-line"><a name="a33"></a><span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a34"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">?&gt;</span>&lt;div&nbsp;style=&quot;color:&nbsp;#AAA;&nbsp;padding:&nbsp;2px;&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'None'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/div&gt;<span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a35"></a><span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a36"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a37"></a><span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a38"></a>&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a39"></a>&lt;td&nbsp;style=&quot;width:&nbsp;auto;&quot;&gt;&amp;nbsp;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a40"></a>&lt;td&nbsp;style=&quot;width:&nbsp;250px;&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a41"></a>&lt;table&nbsp;cellpadding=0&nbsp;cellspacing=0&nbsp;border=0&nbsp;width=&quot;100%&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a42"></a>&lt;tr&gt;</div></li>
+<li><div class="src-line"><a name="a43"></a>&lt;td&nbsp;style=&quot;width:&nbsp;20px;&quot;&gt;&lt;a&nbsp;class=&quot;image&quot;&nbsp;href=&quot;config.php?module=core&amp;amp;section=10&amp;amp;p_id=<span class="src-php">&lt;?php&nbsp;</span>print&nbsp;<span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;amp;edit_settings=true&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---lib---ui.inc.php.html#functionimage_tag">image_tag</a><span class="src-sym">(</span><span class="src-str">'cfg_icon_productsettings.png'</span><span class="src-sym">,&nbsp;</span><span class="src-str">''</span><span class="src-sym">,&nbsp;</span><a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Edit&nbsp;settings'</span><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Edit&nbsp;settings'</span><span class="src-sym">))</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/a&gt;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a44"></a>&lt;td&gt;&lt;a&nbsp;href=&quot;config.php?module=core&amp;amp;section=10&amp;amp;p_id=<span class="src-php">&lt;?php&nbsp;</span>print&nbsp;<span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;amp;edit_settings=true&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Information&nbsp;&amp;amp;&nbsp;settings'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/a&gt;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a45"></a>&lt;/tr&gt;</div></li>
+<li><div class="src-line"><a name="a46"></a>&lt;/table&gt;</div></li>
+<li><div class="src-line"><a name="a47"></a>&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a48"></a>&lt;/tr&gt;</div></li>
+<li><div class="src-line"><a name="a49"></a>&lt;tr&gt;</div></li>
+<li><div class="src-line"><a name="a50"></a>&lt;td&nbsp;style=&quot;width:&nbsp;80px;&nbsp;padding-left:&nbsp;3px;&quot;&gt;&lt;b&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'QA&nbsp;Manager:&nbsp;%user_or_team%'</span><span class="src-sym">,&nbsp;</span><span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'%user_or_team%'&nbsp;</span>=&gt;&nbsp;<span class="src-str">''</span><span class="src-sym">))</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/b&gt;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a51"></a>&lt;td&gt;</div></li>
+<li><div class="src-line"><a name="a52"></a><span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a53"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a54"></a><span class="src-key">if&nbsp;</span><span class="src-sym">(</span><span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getQA</span><span class="src-sym">(</span><span class="src-sym">)&nbsp;</span>!=&nbsp;<span class="src-id">null</span><span class="src-sym">)</span></div></li>
+<li><div class="src-line"><a name="a55"></a><span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a56"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a57"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;table&nbsp;cellpadding=0&nbsp;cellspacing=0&nbsp;border=0&nbsp;width=&quot;100%&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a58"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a59"></a>&nbsp;&nbsp;&nbsp;&nbsp;</div></li>
+<li><div class="src-line"><a name="a60"></a>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;<span class="src-sym">(</span><span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getQAType</span><span class="src-sym">(</span><span class="src-sym">)&nbsp;</span>==&nbsp;<span class="src-id"><a href="../thebuggenie/core/BUGSidentifiableclass.html">BUGSidentifiableclass</a></span><span class="src-sym">::</span><span class="src-id">TYPE_USER</span><span class="src-sym">)&nbsp;</span>?&nbsp;<a href="../thebuggenie/_core---lib---ui.inc.php.html#functionbugs_userDropdown">bugs_userDropdown</a><span class="src-sym">(</span><span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getQA</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">))&nbsp;</span>:&nbsp;<a href="../thebuggenie/_core---lib---ui.inc.php.html#functionbugs_teamDropdown">bugs_teamDropdown</a><span class="src-sym">(</span><span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getQA</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">))</span><span class="src-sym">;</span></div></li>
+<li><div class="src-line"><a name="a61"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a62"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a63"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;</div></li>
+<li><div class="src-line"><a name="a64"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a65"></a><span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a66"></a><span class="src-key">else</span></div></li>
+<li><div class="src-line"><a name="a67"></a><span class="src-sym">{</span></div></li>
+<li><div class="src-line"><a name="a68"></a>&nbsp;&nbsp;&nbsp;&nbsp;<span class="src-php">?&gt;</span>&lt;div&nbsp;style=&quot;color:&nbsp;#AAA;&nbsp;padding:&nbsp;2px;&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'None'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/div&gt;<span class="src-php">&lt;?php</span></div></li>
+<li><div class="src-line"><a name="a69"></a><span class="src-sym">}</span></div></li>
+<li><div class="src-line"><a name="a70"></a>&nbsp;</div></li>
+<li><div class="src-line"><a name="a71"></a><span class="src-php">?&gt;</span></div></li>
+<li><div class="src-line"><a name="a72"></a>&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a73"></a>&lt;td&nbsp;style=&quot;width:&nbsp;auto;&quot;&gt;&amp;nbsp;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a74"></a>&lt;td&gt;</div></li>
+<li><div class="src-line"><a name="a75"></a>&lt;table&nbsp;cellpadding=0&nbsp;cellspacing=0&nbsp;border=0&nbsp;width=&quot;100%&quot;&gt;</div></li>
+<li><div class="src-line"><a name="a76"></a>&lt;tr&gt;</div></li>
+<li><div class="src-line"><a name="a77"></a>&lt;td&nbsp;style=&quot;width:&nbsp;20px;&quot;&gt;&lt;a&nbsp;class=&quot;image&quot;&nbsp;href=&quot;config.php?module=core&amp;amp;section=10&amp;amp;p_id=<span class="src-php">&lt;?php&nbsp;</span>print&nbsp;<span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;amp;edit_editions=true&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<a href="../thebuggenie/_core---lib---ui.inc.php.html#functionimage_tag">image_tag</a><span class="src-sym">(</span><span class="src-str">'cfg_icon_producteditionsbuilds.png'</span><span class="src-sym">,&nbsp;</span><span class="src-str">''</span><span class="src-sym">,&nbsp;</span><a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Edit&nbsp;editions&nbsp;and&nbsp;builds'</span><span class="src-sym">)</span><span class="src-sym">,&nbsp;</span><a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Edit&nbsp;editions&nbsp;and&nbsp;builds'</span><span class="src-sym">))</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/a&gt;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a78"></a>&lt;td&gt;&lt;a&nbsp;href=&quot;config.php?module=core&amp;amp;section=10&amp;amp;p_id=<span class="src-php">&lt;?php&nbsp;</span>print&nbsp;<span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">getID</span><span class="src-sym">(</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&amp;amp;edit_editions=true&quot;&gt;<span class="src-php">&lt;?php&nbsp;</span>echo&nbsp;<span class="src-sym">(</span><span class="src-var">$aProduct</span><span class="src-sym">-&gt;</span><span class="src-id">isBuildsEnabled</span><span class="src-sym">(</span><span class="src-sym">))&nbsp;</span>?&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Editions,&nbsp;builds&nbsp;and&nbsp;components'</span><span class="src-sym">)&nbsp;</span>:&nbsp;<a href="../thebuggenie/_core---common_functions.inc.php.html#function__">__</a><span class="src-sym">(</span><span class="src-str">'Editions&nbsp;and&nbsp;components'</span><span class="src-sym">)</span><span class="src-sym">;&nbsp;</span><span class="src-php">?&gt;</span>&lt;/a&gt;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a79"></a>&lt;/tr&gt;</div></li>
+<li><div class="src-line"><a name="a80"></a>&lt;/table&gt;</div></li>
+<li><div class="src-line"><a name="a81"></a>&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a82"></a>&lt;/tr&gt;</div></li>
+<li><div class="src-line"><a name="a83"></a>&lt;/table&gt;</div></li>
+<li><div class="src-line"><a name="a84"></a>&lt;/div&gt;</div></li>
+<li><div class="src-line"><a name="a85"></a>&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a86"></a>&lt;/tr&gt;</div></li>
+<li><div class="src-line"><a name="a87"></a>&lt;tr&gt;</div></li>
+<li><div class="src-line"><a name="a88"></a>&lt;td&nbsp;style=&quot;height:&nbsp;5px;&nbsp;font-size:&nbsp;1px;&quot;&gt;&amp;nbsp;&lt;/td&gt;</div></li>
+<li><div class="src-line"><a name="a89"></a>&lt;/tr&gt;</div></li>
+</ol></div>
+</div>
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:26:14 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

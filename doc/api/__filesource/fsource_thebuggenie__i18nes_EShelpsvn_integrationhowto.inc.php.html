@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>File Source for howto.inc.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+											</head>
+		<body>
+						<h1>Source for file howto.inc.php</h1>
+<p>Documentation is available at <a href="../thebuggenie/_i18n---es_ES---help---svn_integration---howto.inc.php.html">howto.inc.php</a></p>
+<div class="src-code">
+<div class="src-code"><ol><li><div class="src-line"><a name="a1"></a>&lt;b&gt;Configuración&nbsp;para&nbsp;la&nbsp;integración&nbsp;con&nbsp;SVN&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a2"></a>Para&nbsp;configurar&nbsp;la&nbsp;integración&nbsp;con&nbsp;SVN,&nbsp;siga&nbsp;estos&nbsp;tres&nbsp;pasos:</div></li>
+<li><div class="src-line"><a name="a3"></a>&lt;ul&gt;</div></li>
+<li><div class="src-line"><a name="a4"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Agregue&nbsp;un&nbsp;gancho&nbsp;post-commit&nbsp;al&nbsp;repositorio&nbsp;SVN&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a5"></a>&nbsp;&nbsp;&nbsp;&nbsp;En&nbsp;el&nbsp;directorio&nbsp;module,&nbsp;hay&nbsp;un&nbsp;ejecutable&nbsp;post-commit.sh&nbsp;que&nbsp;necesita&nbsp;ser&nbsp;ejecutado&nbsp;al&nbsp;efectuar&nbsp;un&nbsp;commit&nbsp;en&nbsp;SVN.&nbsp;Si&nbsp;no&nbsp;utiliza&nbsp;otro&nbsp;gancho&nbsp;commit,&nbsp;este&nbsp;ejecutable&nbsp;puede&nbsp;reemplazar&nbsp;al&nbsp;ejecutable&nbsp;por&nbsp;defecto&nbsp;post-commit.&nbsp;Si&nbsp;ya&nbsp;está&nbsp;trabajando&nbsp;con&nbsp;post-commit.sh,&nbsp;copie&nbsp;el&nbsp;contenido&nbsp;del&nbsp;archivo&nbsp;en&nbsp;su&nbsp;post-commit.sh.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a6"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;b&gt;Recuerde&nbsp;eliminar&nbsp;post-commit.sh&nbsp;de&nbsp;la&nbsp;carpeta&nbsp;module,&nbsp;o&nbsp;hágalo&nbsp;inaccesible&nbsp;desde&nbsp;la&nbsp;web&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a7"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a8"></a>&nbsp;&nbsp;&nbsp;&nbsp;Si&nbsp;no&nbsp;sabe&nbsp;como&nbsp;configurarlo,&nbsp;consulte&nbsp;el&nbsp;manual&nbsp;de&nbsp;SVN,&nbsp;por&nbsp;favor.&lt;br&gt;&lt;br&gt;&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a9"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Edite&nbsp;el&nbsp;ejecutable&nbsp;post-commit&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a10"></a>&nbsp;&nbsp;&nbsp;&nbsp;Asegurese&nbsp;que&nbsp;edita&nbsp;el&nbsp;ejecutable&nbsp;correcto.&nbsp;Si&nbsp;va&nbsp;a&nbsp;usar&nbsp;la&nbsp;actualización&nbsp;web,&nbsp;asegurese&nbsp;que&nbsp;la&nbsp;configuracón&nbsp;en&nbsp;el&nbsp;archivo&nbsp;coincide&nbsp;con&nbsp;la&nbsp;confuguración&nbsp;de&nbsp;SVN&nbsp;en&nbsp;la&nbsp;página&nbsp;de&nbsp;configuración&nbsp;de&nbsp;integración.&lt;br&gt;&lt;br&gt;&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a11"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Configure&nbsp;ViewVC&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a12"></a>&nbsp;&nbsp;&nbsp;&nbsp;ViewVC&nbsp;es&nbsp;una&nbsp;interfaz&nbsp;web&nbsp;para&nbsp;navegar&nbsp;repositorios.&nbsp;Para&nbsp;utilizarlo,&nbsp;por&nbsp;favor&nbsp;siga&nbsp;las&nbsp;instrucciones&nbsp;del&nbsp;&lt;a&nbsp;href=&quot;http://www.viewvc.org&quot;&nbsp;target=&quot;_blank&quot;&gt;sitio&nbsp;web&nbsp;ViewVC&lt;/a&gt;.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a13"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a14"></a>&nbsp;&nbsp;&nbsp;&nbsp;Cuando&nbsp;ViewVC&nbsp;esté&nbsp;listo,&nbsp;asegurese&nbsp;de&nbsp;poner&nbsp;las&nbsp;URLs&nbsp;a&nbsp;ViewVC&nbsp;en&nbsp;el&nbsp;panel&nbsp;de&nbsp;configuración&nbsp;de&nbsp;integración&nbsp;SVN.</div></li>
+<li><div class="src-line"><a name="a15"></a>&lt;/ul&gt;</div></li>
+<li><div class="src-line"><a name="a16"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a17"></a>Si&nbsp;Ud.&nbsp;siguió&nbsp;los&nbsp;tres&nbsp;pasos&nbsp;de&nbsp;arriba,&nbsp;estará&nbsp;listo&nbsp;para&nbsp;utilizar&nbsp;el&nbsp;módulo&nbsp;de&nbsp;integración&nbsp;SVN.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a18"></a>&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a19"></a>Para&nbsp;aprender&nbsp;más&nbsp;acerca&nbsp;de&nbsp;como&nbsp;utilizar&nbsp;la&nbsp;integración&nbsp;SVN&nbsp;apropiadamente,&nbsp;por&nbsp;favor&nbsp;vea&nbsp;&lt;a&nbsp;href=&quot;help.php?topic=svn_integration/main&quot;&gt;&lt;b&gt;Uso&nbsp;de&nbsp;la&nbsp;integración&nbsp;SVN&lt;/b&gt;&lt;/a&gt;.</div></li>
+</ol></div>
+</div>
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:26:01 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

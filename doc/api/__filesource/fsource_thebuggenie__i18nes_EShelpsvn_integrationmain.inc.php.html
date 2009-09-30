@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos  -->
+			<title>File Source for main.inc.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+											</head>
+		<body>
+						<h1>Source for file main.inc.php</h1>
+<p>Documentation is available at <a href="../thebuggenie/_i18n---es_ES---help---svn_integration---main.inc.php.html">main.inc.php</a></p>
+<div class="src-code">
+<div class="src-code"><ol><li><div class="src-line"><a name="a1"></a>Si&nbsp;no&nbsp;ha&nbsp;configurado&nbsp;SVN&nbsp;correctamente,&lt;br&gt;por&nbsp;favor&nbsp;vea&nbsp;&lt;a&nbsp;href=&quot;help.php?topic=svn_integration/howto&quot;&gt;&lt;b&gt;Configuración&nbsp;para&nbsp;la&nbsp;integración&nbsp;con&nbsp;SVN&lt;/b&gt;&lt;/a&gt;&lt;br&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a2"></a>&lt;b&gt;Uso&nbsp;de&nbsp;la&nbsp;integración&nbsp;SVN&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a3"></a>EL&nbsp;módulo&nbsp;de&nbsp;integración&nbsp;SVN&nbsp;se&nbsp;utiliza&nbsp;en&nbsp;varios&nbsp;lugares:</div></li>
+<li><div class="src-line"><a name="a4"></a>&lt;ul&gt;</div></li>
+<li><div class="src-line"><a name="a5"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Transacciones&nbsp;SVN&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a6"></a>&nbsp;&nbsp;&nbsp;&nbsp;Cuando&nbsp;esté&nbsp;enviando,&nbsp;la&nbsp;integración&nbsp;SVN&nbsp;verá&nbsp;dentro&nbsp;del&nbsp;comentario&nbsp;y&nbsp;actualizará&nbsp;cualquier&nbsp;problema&nbsp;referenciado.&lt;br&gt;&lt;br&gt;El&nbsp;módulo&nbsp;buscará&nbsp;las&nbsp;siguientes&nbsp;palabras:&nbsp;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a7"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;i&gt;fix,&nbsp;fixes,&nbsp;fixed,&nbsp;fixing,&nbsp;applies&nbsp;to,&nbsp;close,&nbsp;closes,&nbsp;references,&nbsp;ref,&nbsp;addresses,&nbsp;re,&nbsp;see,&nbsp;according&nbsp;to&lt;/i&gt;,&nbsp;seguido&nbsp;por&nbsp;un&nbsp;&lt;b&gt;#&lt;/b&gt;&nbsp;y&nbsp;el&nbsp;número&nbsp;de&nbsp;problema.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a8"></a>&nbsp;&nbsp;&nbsp;&nbsp;(Puede&nbsp;referenciar&nbsp;a&nbsp;tanntos&nbsp;problemas&nbsp;como&nbsp;quiera&nbsp;en&nbsp;el&nbsp;comentario&nbsp;del&nbsp;commit.)&lt;br&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a9"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;b&gt;Ejemplo&nbsp;de&nbsp;comentariod&nbsp;de&nbsp;commit:&nbsp;&lt;/b&gt;&lt;i&gt;Fixing&nbsp;#B2-12,&nbsp;#B2-11&nbsp;y&nbsp;#B2-10.&nbsp;También&nbsp;vea&nbsp;#B2-14.&lt;/i&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a10"></a>&nbsp;&nbsp;&nbsp;&nbsp;Este&nbsp;comentario&nbsp;actualizará&nbsp;los&nbsp;cuatro&nbsp;problemas&nbsp;con&nbsp;la&nbsp;informació&nbsp;desde&nbsp;el&nbsp;commit,&nbsp;y&nbsp;publica&nbsp;los&nbsp;comentarios&nbsp;en&nbsp;todos&nbsp;los&nbsp;problemas.&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a11"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a12"></a>&nbsp;&nbsp;&nbsp;&nbsp;El&nbsp;m&amp;acute;dulo&nbsp;de&nbsp;integración&nbsp;&lt;i&gt;no&nbsp;cierra&lt;/i&gt;&nbsp;problemas&nbsp;automáticamente.&lt;br&gt;&lt;br&gt;&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a13"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;Registro&nbsp;de&nbsp;commit&nbsp;SVN&nbsp;en&nbsp;problemas&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a14"></a>&nbsp;&nbsp;&nbsp;&nbsp;Al&nbsp;ver&nbsp;los&nbsp;problemas,&nbsp;todos&nbsp;las&nbsp;transacciones&nbsp;de&nbsp;SVN&nbsp;estarán&nbsp;visibles&nbsp;al&nbsp;final&nbsp;del&nbsp;resumen,&nbsp;con&nbsp;enlaces&nbsp;al&nbsp;registro,&nbsp;diff&nbsp;y&nbsp;al&nbsp;archivo&nbsp;directamente&nbsp;(si&nbsp;ViewVC&nbsp;está&nbsp;configurado).&lt;br&gt;&lt;br&gt;&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a15"></a>&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;b&gt;&quot;Ver&nbsp;código&quot;&lt;/b&gt;&lt;br&gt;</div></li>
+<li><div class="src-line"><a name="a16"></a>&nbsp;&nbsp;&nbsp;&nbsp;La&nbsp;página&nbsp;resumen&nbsp;del&nbsp;producto&nbsp;tendrá&nbsp;un&nbsp;enlace&nbsp;&quot;ver&nbsp;código&quot;&nbsp;en&nbsp;la&nbsp;esquina&nbsp;superior&nbsp;derecha.&lt;br&gt;&lt;br&gt;&lt;/li&gt;</div></li>
+<li><div class="src-line"><a name="a17"></a>&lt;/ul&gt;</div></li>
+<li><div class="src-line"><a name="a18"></a>Si&nbsp;tiene&nbsp;sugerencias&nbsp;sobre&nbsp;como&nbsp;utilizar&nbsp;el&nbsp;módulo&nbsp;de&nbsp;integración&nbsp;SVN,&nbsp;háganoslo&nbsp;saber!</div></li>
+</ol></div>
+</div>
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 19:26:06 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+	</p>
+	</body>
+</html>

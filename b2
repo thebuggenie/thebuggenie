@@ -1,0 +1,527 @@
+#!/usr/bin/php
+<?php
+
+	define ('BUGS2_INCLUDE_PATH', '');
+	function formatText($text, $color = 'white', $style = 'bold')
+	{
+		$fg_colors = array('black' => 29, 'red' => 31, 'green' => 32, 'yellow' => 33, 'blue' => 34, 'magenta' => 35, 'cyan' => 36, 'white' => 37);
+		$op_format = array('bold' => 1, 'underline' => 4, 'blink' => 5, 'reverse' => 7, 'conceal' => 8);
+	
+		$return_text = "\033[" . $fg_colors[$color];
+		$return_text .= ($style != '') ? ";" . $op_format[$style] : '';
+		$return_text .= "m" . $text . "\033[0m";
+		
+		return $return_text;
+	}
+	
+	$core_commands = array();
+	$core_commands['help'] = array('command' => 'help', 'params' => '', 'optional' => false, 'description' => "\tDisplays this output and exits", 'help' => 'This command displays a list of available commands, and a brief description of what each command does.');	
+	$core_commands['explain'] = array('command' => 'explain', 'params' => 'command', 'description' => "Explains any <command> in more detail", 'help' => "If you didn't know what this command does, how would you be reading this?");
+	$core_commands['license'] = array('command' => 'license', 'params' => 'print', 'optional' => true, 'description' => "Gives more information the BUGS 2 license", 'help' => 'This command prints the complete BUGS 2 license for you to read. Enjoy!');
+	$core_commands['upgrade'] = array('command' => 'upgrade', 'params' => '', 'description' => "Launches the upgrade wizard", 'help' => "Launches the upgrade wizard");
+	
+	if (!file_exists('installed'))
+	{
+		//$core_commands['install'] = array('command' => 'install', 'params' => 'db_type db_host db_username db_password db_name', 'description' => "Installs BUGS 2", 'help' => "\nInstalls BUGS 2.\n" . formatText("Parameters:\n", 'white', 'bold') . formatText('db_type', 'magenta') . " (required)\nThe type of database you are installing to.\nFor a list of available B2DB engines, run " . formatText($argv[0], 'white', 'bold') . ' ' . formatText('list_db_types', 'green', 'bold') . ".\n\n" . formatText('db_host', 'magenta') . " (required)\nThe hostname of the SQL server you are installing to.\n\n" . formatText('db_username', 'magenta') . " (required)\nThe username for the database account you are connecting with.\n\n" . formatText('db_password', 'magenta') . "\nLeave out this if you are using an SQL account that doesn't\nrequire a password. (not recommended)\n\n" . formatText('db_name', 'magenta') . "\nIf installing into an existing database, this is the\nname of the database to use.\nDefault is " . formatText('bugs2_db', 'cyan', 'bold') . ".");
+		$core_commands['install'] = array('command' => 'install', 'params' => '', 'description' => "Launches the installation wizard", 'help' => "Launches the installation wizard");
+	}
+	else
+	{
+		require_once 'include/b2_engine.inc.php';
+		$module_commands = array();
+		
+		foreach (BUGScontext::getModules() as $aModule)
+		{
+			if (method_exists($aModule, 'getAvailableCommandLineCommands'))
+			{
+				foreach ($aModule->getAvailableCommandLineCommands() as $aCommand)
+				{
+					$module_commands[$aModule->getName()][$aCommand['command']] = $aCommand;
+				}
+			}
+		}
+	}
+	
+	if ($argc < 2 || in_array($argv[1], array('help', '--help', '-help', '-h', '-?')))
+	{
+		echo "BUGS 2 command line tool\n";
+		echo formatText("Usage: ", 'black', 'bold') . $argv[0] . ' [' . formatText('command', 'green', 'bold') . "]\n";
+		if (in_array($argv[1], array('help', '--help', '-help', '-h', '-?')))
+		{
+			echo "\n";
+			foreach ($core_commands as $aCommand)
+			{
+				echo formatText($aCommand['command'], 'green', 'bold') . ' ';
+				echo "\t" . $aCommand['description'] . "\n";
+			}
+			echo "\n";
+			if (isset($module_commands))
+			{
+				echo "Available module commands: (invoked by using " . formatText('module_name:command', 'green', 'bold') . ")\n";
+				$cc = 0;
+				foreach ($module_commands as $module => $commands)
+				{
+					echo "\n";
+					echo formatText($module . ":\n", 'green', 'bold');
+					foreach ($commands as $command)
+					{
+						echo formatText($command['command'], 'green', 'bold') . ' ';
+						echo "\t" . $command['description'] . "\n";
+						$cc++;
+					}
+					if (empty($commands))
+					{
+						echo "This module does not have any commands\n";
+					}
+					echo "\n";
+				}
+				if ($cc == 0)
+				{
+					echo "There are no module commands\n\n";
+				}
+			}
+		}
+		else
+		{
+			echo "\nType " . $argv[0] . ' ' . formatText('help', 'green', 'bold') . "\033[0m for more information.\n";
+		}
+	}
+	else
+	{
+		switch ($argv[1])
+		{
+			case "explain":
+				if (isset($argv[2]))
+				{
+					$tmpvar = explode(':', $argv[2]);
+					if (isset($core_commands[$argv[2]]))
+					{
+						echo "\n";
+						echo formatText('Usage: ', 'black', 'bold') . $argv[0];
+						echo ' ' . formatText($core_commands[$argv[2]]['command'], 'green', 'bold') . ' ';
+						echo ($core_commands[$argv[2]]['optional']) ? '[' : '';
+						echo formatText($core_commands[$argv[2]]['params'], 'magenta', '');
+						echo ($core_commands[$argv[2]]['optional']) ? ']' : '';
+						echo "\n";
+						echo $core_commands[$argv[2]]['help'];
+						echo "\n\n";
+					}
+					elseif (is_array($tmpvar) && isset($module_commands[$tmpvar[0]]) && isset($module_commands[$tmpvar[0]][$tmpvar[1]]))
+					{
+						echo "\n";
+						echo formatText('Usage: ', 'black', 'bold') . $argv[0];
+						echo ' ' . formatText($module_commands[$tmpvar[0]][$tmpvar[1]]['command'], 'green', 'bold') . ' ';
+						echo ($module_commands[$tmpvar[0]][$tmpvar[1]]['optional']) ? '[' : '';
+						echo formatText($module_commands[$tmpvar[0]][$tmpvar[1]]['params'], 'magenta', '');
+						echo ($module_commands[$tmpvar[0]][$tmpvar[1]]['optional']) ? ']' : '';
+						echo "\n";
+						echo $module_commands[$tmpvar[0]][$tmpvar[1]]['help'];
+						echo "\n\n";
+					}
+					else
+					{
+						echo formatText('That command is unknown. I can\'t explain it.', 'red', '') . "\n";
+						return false;
+					}
+				}
+				else
+				{
+					echo formatText('Please tell me what to explain.', 'red', '') . "\n";
+					return false;
+				}
+				break;
+			case "license":
+				if ($argv[2] == 'print')
+				{
+					$thelicense = file_get_contents('LICENSE.TXT');
+					echo $thelicense . "\n";
+				}
+				else
+				{
+					echo 'BUGS 2 is released under the MPL 1.1 only. You can read the license at: ' . "\n";
+					echo formatText('http://www.opensource.org/licenses/mozilla1.1.php', 'blue', 'underline') . '.';
+					echo "\n\n" . 'To print the license, type: ' . $argv[0] . formatText(' license', 'green', 'bold') . formatText(' print', 'magenta', ''); 
+					echo "\n\nResistance is futile.\n\n";
+				}
+				break;
+			case "upgrade":
+				echo "Upgrading is not implemented from command line yet\n";
+				break;
+			case "install":
+				echo formatText("\nWelcome to the \"BUGS 2\" installation wizard!\n");
+				echo "This wizard will take you through the installation of BUGS 2.\nRemember that you can also install BUGS 2 from your web-browser.\n";
+				echo "Simply point your web-browser to the BUGS 2 subdirectory on your web server,\nand the installation will start.\n\n";
+				echo formatText("Remember that this is a pre-release version,\nwhich is not yet recommended for production use!\n\n");
+				echo "Press ENTER to continue with the installation: ";
+				try
+				{
+					if (strtolower(trim(fgets(STDIN))) != '') throw new Exception();
+					
+					echo "\n";
+					echo formatText("How to support future development\n", 'green', 'bold');
+					echo "Even though this software has been provided to you free of charge,\ndeveloping it would not have been possible without support from our users.\n";
+					echo "By making a donation, or buying a support contract you can help us continue development.\n\n";
+					echo formatText("If this software is valuable to you - please consider supporting it.\n\n");
+					echo "More information about supporting BUGS' development can be found here:\n";
+					echo formatText("http://www.thebuggenie.com/giving_back.php\n\n", 'blue', 'underline');
+					echo "Press ENTER to continue: ";
+					
+					if (strtolower(trim(fgets(STDIN))) != '') throw new Exception();
+					
+					echo "\n";
+					echo formatText("License information\n", 'green', 'bold');
+					echo "This software is Open Source Initiative approved Open Source Software.\nOpen Source Initiative Approved is a trademark of the Open Source Initiative.\n\n";
+					echo "True to the the Open Source Definition, BUGS - the Bug Genie is released\nunder the MPL 1.1 only. You can read the full license here:\n";
+					echo formatText("http://www.opensource.org/licenses/mozilla1.1.php\n\n", 'blue', 'underline');
+					echo "Before you can continue the installation, you need to confirm that you \nagree to be bound by the terms in this license.\n\n";
+					echo "Do you agree to be bound by the terms in the MPL 1.1 license?\n(type \"yes\" to agree, anything else aborts the installation): ";
+					
+					if (strtolower(trim(fgets(STDIN))) != 'yes') throw new Exception(formatText('You need to accept the license to continue', 'red', 'bold'));
+					
+					echo formatText("\nThis is the fourth BUGS 2 beta release, named \"Yasmine\"\n");
+					echo formatText("Yasmine is a beautiful flower in the olive family.\nUnlike other flowers in its family who only has four \"petals\",\nthe Yasmine often have five or six.\n\n", 'white', '');
+					
+					$not_well = array();
+					if (!is_writable('include/B2DB/'))
+					{
+						$not_well[] = 'b2db_perm';
+					}
+					if (!is_writable(substr(__FILE__, 0, strripos(__FILE__, DIRECTORY_SEPARATOR) + 1)))
+					{
+						$not_well[] = 'root';
+					}
+					
+					if (count($not_well) > 0)
+					{ 
+						foreach ($not_well as $afail)
+						{
+							switch ($not_well)
+							{
+								case 'b2db_perm':
+									echo formatText("Could not write to the B2DB directory\n", 'red', 'bold');
+									echo 'The ' . formatText('include/B2DB') . ' folder needs to be writable';
+									break;
+								case 'root':
+									echo formatText("Could not write to the BUGS 2 directory\n", 'red', 'bold');
+									echo 'The BUGS 2 folder must be writable during installation';
+									break;
+							}
+						}
+			
+						throw new Exception("\n\nYou need to correct the above errors before the installation can continue.\n");
+					}
+					else
+					{
+						echo formatText("Step 1 - database information\n");
+						if (file_exists('include/B2DB/sql_parameters.inc.php'))
+						{
+							echo "You seem to already have completed this step successfully.\nDo you want to use the stored settings?\n";
+							echo "\nType \"no\" to enter new settings, press ENTER to use existing: ";
+							$use_existing = strtolower(trim(fgets(STDIN)));
+							$use_existing_db_info = ($use_existing == 'no') ? false : true;
+							echo "\n";
+						}
+						else
+						{
+							$use_existing_db_info = false;
+						}
+						if (!$use_existing_db_info)
+						{
+							echo "BUGS uses a database to store information. To be able to connect\nto your database, BUGS needs some information, such as\ndatabase type, username, password, etc.\n\n";
+							echo "Please select what kind of database you are installing BUGS on:\n";
+					  	define ('B2DB_BASEPATH', BUGS2_INCLUDE_PATH . 'include/B2DB/');
+							define ('B2DB_SQLTYPE', 'mysql');
+							define ('B2DB_DONTINITIALIZE', true);
+							require 'include/B2DB/B2DBinitialize.inc.php';
+							B2DB::setHTMLException(false);
+							$db_types = array();
+							foreach (B2DB::getDBtypes() as $db_type => $db_desc)
+							{
+								$db_types[] = $db_type;
+								echo formatText(count($db_types) . ': ' . $db_desc . "\n");
+							}
+							do
+							{
+								echo formatText('Enter the corresponding number for the database (1-' . count($db_types) . '): ', 'white', '');
+								$db_selection = strtolower(trim(fgets(STDIN)));
+								if (!isset($db_types[((int) $db_selection - 1)])) throw new Exception($db_selection . ' is not a valid database type selection');
+								$db_type = $db_types[((int) $db_selection - 1)];
+								echo "Selected database type: " . formatText($db_type . "\n\n");
+								echo "Please enter the database hostname: \n";
+								echo formatText('Database hostname: ');
+								$db_hostname = trim(fgets(STDIN));
+								echo "\nPlease enter the username BUGS will use to connect to the database: \n";
+								echo formatText('Database username: ');
+								$db_username = trim(fgets(STDIN));
+								echo formatText("Database password (press ENTER if blank): ");
+								$db_password = trim(fgets(STDIN));
+								echo "\nPlease enter the database BUGS will use.\nIf it does not exist, BUGS will create it for you.\n(the default database name is ";
+								echo formatText("bugs2_db");
+								echo " - press ENTER to use that):\n";
+								echo formatText('Database name: ');
+								$db_name = trim(fgets(STDIN));
+								$db_name = ($db_name == '') ? 'bugs2_db' : $db_name;
+								echo "\n";
+								echo "The following settings will be used:\n";
+								echo formatText("Database type: \t\t") . $db_type . "\n";
+								echo formatText("Database hostname: \t") . $db_hostname . "\n";
+								echo formatText("Database username: \t") . $db_username . "\n";
+								echo formatText("Database password: \t") . $db_password . "\n";
+								echo formatText("Database name: \t\t") . $db_name . "\n";
+								
+								echo "\nIf these settings are ok, press ENTER, or anything else to retry: ";
+								
+								$e_ok = (strtolower(trim(fgets(STDIN))) == 'no') ? false : true;
+							}
+							while (!$e_ok);
+							try
+							{
+								B2DB::setHost($db_hostname);
+								B2DB::setUname($db_username);
+								B2DB::setPasswd($db_password);
+								B2DB::setDBname('');
+								B2DB::doConnect();
+								B2DB::createDatabase($db_name);
+							}
+							catch (Exception $e)
+							{
+								throw new Exception("Could not connect to the database:\n" . $e->getMessage());
+							}
+							B2DB::setDBname($db_name);
+							B2DB::doSelectDB();
+							echo formatText("\nSuccessfully connected to the database.\n", 'green', '');
+							echo "Press ENTER to continue ... ";
+							fgets(STDIN);
+							echo "\n\n";
+							echo formatText("Saving database connection information ... ");
+							$fp = fopen('include/B2DB/sql_type.inc.php', 'w');
+							fwrite($fp, $db_type);
+							fclose($fp);
+							
+							$connection_params = file_get_contents('include/B2DB/sql_parameters_template.inc.php');
+							$search = array('--db_hostname--', '--db_username--', '--db_password--', '--db_name--');
+							$replace = array($db_hostname);
+							$replace[] = $db_username;
+							$replace[] = $db_password;
+							$replace[] = $db_name;
+	
+							$connection_params = str_replace($search, $replace, $connection_params);
+	
+							file_put_contents('include/B2DB/sql_parameters.inc.php', $connection_params);
+						}
+						else
+						{
+							define ('B2DB_BASEPATH', BUGS2_INCLUDE_PATH . 'include/B2DB/');
+							require 'include/B2DB/B2DBinitialize.inc.php';
+							echo formatText("Successfully connected to the database.\n", 'green', '');
+							echo "Press ENTER to continue ... ";
+							fgets(STDIN);
+						}
+						echo "\nBUGS needs some server settings to function properly...\n\n";
+						
+						do
+						{
+							echo formatText('Web server root URL') . "\nThis is the root of the Web server where BUGS will be running\nex: http://www.mycompany.com\n";
+							echo 'Enter the web URL ' . formatText('without') . " any ending slashes\n\n";
+							echo formatText('Web server root URL: ');
+							$url_host = trim(fgets(STDIN));
+							echo "\n";
+							
+							echo formatText('BUGS 2 subdir') . "\nThis is the sub-path of the Web server where BUGS will be located.\n" . formatText('Start and end this with a forward slash') . ". (ex: \"/bugs/\")\nIf BUGS is running at root, just type \"/\" (without the quotes)\n\n";
+							echo formatText('BUGS 2 subdir: ');
+							$url_subdir = trim(fgets(STDIN));
+							echo "\n";
+							
+							echo "BUGS 2 will now be accessible at\n" . formatText($url_host . $url_subdir . 'index.php');
+							echo "\nPress ENTER if ok, or \"no\" to try again: ";
+							$e_ok = (trim(fgets(STDIN)) == '') ? true : false;
+							echo "\n";
+						}
+						while (!$e_ok);
+						
+						$local_path = str_ireplace('\\', '/', substr(__FILE__, 0, strripos(__FILE__, DIRECTORY_SEPARATOR) + 1));
+						echo formatText('BUGS 2 server path') . "\nThis is the local path of the BUGS 2 directory\n";
+						echo "If the default value is not correct, remember to use " . formatText('forward') . "\nslashes in the new path - even on Windows systems.\nAlso, remember to " . formatText("end the path with a forward slash\n\n");
+
+						do
+						{
+							if (isset($tmp_path))
+							{
+								echo formatText("Could not find BUGS in the path you defined.\nPlease try again\n\n", 'red', 'bold');
+							}
+							$local_path = str_ireplace('\\', '/', substr(__FILE__, 0, strripos(__FILE__, DIRECTORY_SEPARATOR) + 1));
+							echo "Default: " . $local_path . ", press ENTER to accept default\n";
+							echo formatText('Web server root URL: ');
+							$tmp_path = trim(fgets(STDIN));
+							$local_path = ($tmp_path != '') ? $tmp_path : $local_path;
+							echo "\n";
+						}
+						while (!file_exists($local_path . 'b2'));
+						
+						echo "You will now get a list of available modules.\nTo enable the module after installation, just press ENTER.\nIf you don't want to enable the module, type \"no\".\nRemember that all these modules can be enabled after installation.\n\n";
+						echo formatText("Enable Search? ") . '(yes): ';
+						$enable_search_module = (trim(fgets(STDIN)) == '') ? true : false;
+						echo formatText("Enable Email notification? ") . '(yes): ';
+						$enable_mailnotification_module = (trim(fgets(STDIN)) == '') ? true : false;
+						echo formatText("Enable News & articles? ") . '(yes): ';
+						$enable_publish_module = (trim(fgets(STDIN)) == '') ? true : false;
+						echo formatText("Enable Messaging? ") . '(yes): ';
+						$enable_messages_module = (trim(fgets(STDIN)) == '') ? true : false;
+						echo formatText("Enable Calendar? ") . '(yes): ';
+						$enable_calendar_module = (trim(fgets(STDIN)) == '') ? true : false;
+						echo formatText("Enable Subversion integration? ") . '(yes): ';
+						$enable_svnintegration_module = (trim(fgets(STDIN)) == '') ? true : false;
+						
+						echo "Creating tables ...\n";
+						b2db_autoload(BUGS2_INCLUDE_PATH . 'include/classes/B2DB/');
+						b2db_autoload(BUGS2_INCLUDE_PATH . 'include/classes/');
+						require_once BUGS2_INCLUDE_PATH . 'include/loadtables.inc.php';
+						
+						foreach (B2DB::getTables() as $aTable)
+						{
+							echo $aTable->getB2DBName();
+							$res = $aTable->create();
+							echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
+						}
+						
+						echo formatText("\nCreated tables successfully ...\n\n", 'green');
+
+						echo "Loading fixtures ... ";
+						
+						$_REQUEST['default_theme'] = 'fam';
+						$_REQUEST['url_host'] = $url_host;
+						$_REQUEST['url_subdir'] = $url_subdir;
+						$_REQUEST['local_path'] = $local_path;
+						$_REQUEST['language'] = 'en_US';
+						$_REQUEST['requirelogin'] = 0;
+						$_REQUEST['defaultisguest'] = 1;
+						$_REQUEST['showloginbox'] = 1;
+						$_REQUEST['allowreg'] = 1;
+						
+	          BUGScontext::reinitializeI18n('en_US');
+	          BUGScontext::getI18n()->loadStrings('install_fixtures');
+						require_once 'include/common_functions.inc.php';
+						require_once 'install_load_fixtures.inc.php';
+						
+						echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
+						
+						echo "Saving settings ... ";
+						BUGScontext::setScope(1);
+						require_once 'install_save_settings.inc.php';
+						echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
+						
+						BUGSsettings::get('language');
+						require BUGS2_INCLUDE_PATH . "include/b2_engine.inc.php";
+						
+		  				$current_module = '';
+		  				try
+		  				{
+		  					if ($enable_search_module)
+			  				{
+								echo "Installing Search module ... ";
+			  					$current_module = 'search';
+			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/search/classes/B2DB/');
+			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/search/classes/');
+			  					BUGSsearch::install(1);
+			  					echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
+			  				}
+		  					if ($enable_mailnotification_module)
+			  				{
+			  					echo "Installing Mail notification module ... ";
+			  					$current_module = 'mailnotification';
+			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/mailnotification/classes/B2DB/');
+			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/mailnotification/classes/');
+			  					BUGSmailnotification::install(1);
+			  					echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
+			  				}
+		  					if ($enable_messages_module)
+			  				{
+			  					echo "Installing Messaging module ... ";
+			  					$current_module = 'messages';
+			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/messages/classes/B2DB/');
+			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/messages/classes/');
+			  					BUGSmessages::install(1);
+			  					echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
+			  				}
+		  					if ($enable_publish_module)
+			  				{
+			  					echo "Installing News & articles module ... ";
+			  					$current_module = 'publish';
+			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/publish/classes/B2DB/');
+			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/publish/classes/');
+			  					BUGSpublish::install(1);
+			  					echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
+			  				}
+		  					if ($enable_svnintegration_module)
+			  				{
+			  					echo "Installing Subversion integration module ... ";
+			  					$current_module = 'svn_integration';
+			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/svn_integration/classes/B2DB/');
+			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/svn_integration/classes/');
+			  					BUGSsvnintegration::install(1);
+			  					echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
+			  				}
+		  					if ($enable_svnintegration_module)
+			  				{
+			  					echo "Installing Calendar module ... ";
+			  					$current_module = 'calendar';
+			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/calendar/classes/B2DB/');
+			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/calendar/classes/');
+			  					BUGScalendar::install(1);
+			  					echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
+			  				}
+			  				
+			  				$fp = fopen('installed', 'w');
+							fwrite($fp, 'installed');
+							fclose($fp);
+			  				
+			  				echo formatText("\nThe installation was completed successfully!\n", 'green', 'bold');
+			  				echo "\nTo use BUGS 2, access " . $url_host . $url_subdir . "index.php with a web-browser.\n";
+			  				echo "The default username is " . formatText('Administrator') . ' and the password is ' . formatText('admin');
+			  				echo formatText("\n\nThank you for trying this BUGS 2 test release!\n");
+			  				echo "\nRemember to file any bugs you find at " . formatText('http://b2.thebuggenie.com/', 'bold', 'underline');
+			  				echo "\n";
+		  				}
+						catch (Exception $e)
+						{
+							throw new Exception("Could not install the $current_module module:\n" . $e->getMessage());
+						}
+						
+					}
+				}
+				catch (Exception $e)
+				{
+					echo formatText("\n\nThe installation was interrupted\n", 'red');
+					echo $e->getMessage() . "\n";
+				}
+				echo "\n";
+				break;
+			default:
+				if (stristr($argv[1], ':') != '')
+				{
+					$tmpvar = explode(':', $argv[1]);
+					$module = $tmpvar[0];
+					$command = $tmpvar[1];
+					if (isset($module_commands[$module]))
+					{
+						if (isset($module_commands[$module][$command]))
+						{
+							call_user_func(array(BUGScontext::getModule($module), $module_commands[$module][$command]['function']), $argv); 
+						}
+					}
+					else
+					{
+						echo formatText('Unknown command', 'red', '') . "\n";
+					}
+				}
+				else
+				{
+					echo formatText('Unknown command', 'red', '') . "\n";
+				}
+				break;
+		}
+	}
+
+	return true;
+
+?>

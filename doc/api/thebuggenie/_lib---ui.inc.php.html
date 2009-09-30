@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs for page ui.inc.php</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="file-name">/lib/ui.inc.php</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+															<a href="#sec-functions">Functions</a>
+			</div>
+	<div class="info-box-body">	
+		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">UI functions</p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Daniel Andre Eikeland &lt;<a href="mailto:zegenie@zegeniestudios.net">zegenie@zegeniestudios.net</a>&gt;</li>
+				<li><span class="field">version:</span> 2.0</li>
+				<li><span class="field">license:</span> <a href="http://www.opensource.org/licenses/mozilla1.1.php">Mozilla Public License 1.1 (MPL 1.1)</a></li>
+			</ul>
+		
+			</div>
+</div>
+		
+
+	
+	
+	
+	<a name="sec-functions"></a>	
+	<div class="info-box">
+		<div class="info-box-title">Functions</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<span class="disabled">Functions</span>
+		</div>
+		<div class="info-box-body">	
+			<a name="functionbugs_AJAXuserteamselector" id="functionbugs_AJAXuserteamselector"><!-- --></a>
+<div class="evenrow">
+	
+	<div>
+		<span class="method-title">bugs_AJAXuserteamselector</span> (line <span class="line-number">29</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">deprecated:</span> Use include_template('main/identifiableselector', $options) instead</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">unknown_type</span>
+		<span class="method-name">
+			bugs_AJAXuserteamselector
+		</span>
+					(<span class="var-type">$user_title</span>&nbsp;<span class="var-name">$user_title</span>, <span class="var-type">$team_title</span>&nbsp;<span class="var-name">$team_title</span>, <span class="var-type">$setuser_url</span>&nbsp;<span class="var-name">$setuser_url</span>, <span class="var-type">$setteam_url</span>&nbsp;<span class="var-name">$setteam_url</span>, <span class="var-type">$setuser_update_div</span>&nbsp;<span class="var-name">$setuser_update_div</span>, <span class="var-type">$setuser_update_url</span>&nbsp;<span class="var-name">$setuser_update_url</span>, <span class="var-type">$setteam_update_div</span>&nbsp;<span class="var-name">$setteam_update_div</span>, <span class="var-type">$setteam_update_url</span>&nbsp;<span class="var-name">$setteam_update_url</span>, <span class="var-type">$container_span</span>&nbsp;<span class="var-name">$container_span</span>, [<span class="var-type">$group_title</span>&nbsp;<span class="var-name">$group_title</span> = <span class="var-default">&#039;&#039;</span>], [<span class="var-type">$setgroup_url</span>&nbsp;<span class="var-name">$setgroup_url</span> = <span class="var-default">&#039;&#039;</span>], [<span class="var-type">$setgroup_update_div</span>&nbsp;<span class="var-name">$setgroup_update_div</span> = <span class="var-default">&#039;&#039;</span>], [<span class="var-type">$setgroup_update_url</span>&nbsp;<span class="var-name">$setgroup_update_url</span> = <span class="var-default">&#039;&#039;</span>], [<span class="var-type">$noteams</span>&nbsp;<span class="var-name">$noteams</span> = <span class="var-default">false</span>])
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$user_title</span>
+				<span class="var-name">$user_title</span>			</li>
+					<li>
+				<span class="var-type">$team_title</span>
+				<span class="var-name">$team_title</span>			</li>
+					<li>
+				<span class="var-type">$setuser_url</span>
+				<span class="var-name">$setuser_url</span>			</li>
+					<li>
+				<span class="var-type">$setteam_url</span>
+				<span class="var-name">$setteam_url</span>			</li>
+					<li>
+				<span class="var-type">$setuser_update_div</span>
+				<span class="var-name">$setuser_update_div</span>			</li>
+					<li>
+				<span class="var-type">$setuser_update_url</span>
+				<span class="var-name">$setuser_update_url</span>			</li>
+					<li>
+				<span class="var-type">$setteam_update_div</span>
+				<span class="var-name">$setteam_update_div</span>			</li>
+					<li>
+				<span class="var-type">$setteam_update_url</span>
+				<span class="var-name">$setteam_update_url</span>			</li>
+					<li>
+				<span class="var-type">$container_span</span>
+				<span class="var-name">$container_span</span>			</li>
+					<li>
+				<span class="var-type">$group_title</span>
+				<span class="var-name">$group_title</span>			</li>
+					<li>
+				<span class="var-type">$setgroup_url</span>
+				<span class="var-name">$setgroup_url</span>			</li>
+					<li>
+				<span class="var-type">$setgroup_update_div</span>
+				<span class="var-name">$setgroup_update_div</span>			</li>
+					<li>
+				<span class="var-type">$setgroup_update_url</span>
+				<span class="var-name">$setgroup_update_url</span>			</li>
+					<li>
+				<span class="var-type">$noteams</span>
+				<span class="var-name">$noteams</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionbugs_customerDropdown" id="functionbugs_customerDropdown"><!-- --></a>
+<div class="oddrow">
+	
+	<div>
+		<span class="method-title">bugs_customerDropdown</span> (line <span class="line-number">276</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Prints a customer dropdown menu inside a table (must be there)</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../thebuggenie/_lib---ui.inc.php.html#functionbugs_userDropdown">bugs_userDropdown()</a></li>
+				<li><span class="field">see:</span> <a href="../thebuggenie/_lib---ui.inc.php.html#functionbugs_teamDropdown">bugs_teamDropdown()</a></li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			bugs_customerDropdown
+		</span>
+					(<span class="var-type"><a href="../thebuggenie/main/BUGScustomer.html">BUGScustomer</a></span>&nbsp;<span class="var-name">$cid</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$dontclose</span> = <span class="var-default">0</span>])
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../thebuggenie/main/BUGScustomer.html">BUGScustomer</a></span>
+				<span class="var-name">$cid</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$dontclose</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionbugs_failureStrip" id="functionbugs_failureStrip"><!-- --></a>
+<div class="evenrow">
+	
+	<div>
+		<span class="method-title">bugs_failureStrip</span> (line <span class="line-number">508</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns a red box with a &quot;failure&quot; look</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../thebuggenie/_lib---ui.inc.php.html#functionbugs_successStrip">bugs_successStrip()</a></li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			bugs_failureStrip
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$title</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$content</span> = <span class="var-default">&#039;&#039;</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$id</span> = <span class="var-default">&#039;&#039;</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$start_hidden</span> = <span class="var-default">false</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$content[optional]</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$id[optional]</span>, <span class="var-type">bool</span>&nbsp;<span class="var-name">$start_hidden[optional]</span>, <span class="var-type">bool</span>&nbsp;<span class="var-name">$multiline[optional]</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$title</span><span class="var-description">: the title inside the box</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$content[optional]</span><span class="var-description">: the content of the box</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$id[optional]</span><span class="var-description">: the html id for the box</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$start_hidden[optional]</span><span class="var-description">: whether or not to start hidden</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$multiline[optional]</span><span class="var-description">: whether or not the box is multiline</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$content</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$start_hidden</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionbugs_helpBrowserHelper" id="functionbugs_helpBrowserHelper"><!-- --></a>
+<div class="oddrow">
+	
+	<div>
+		<span class="method-title">bugs_helpBrowserHelper</span> (line <span class="line-number">136</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns an &lt;a&gt; tag linking to a specified topic in the online help</p>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			bugs_helpBrowserHelper
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$topic</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$linktext</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$topic</span><span class="var-description">: the topic</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$linktext</span><span class="var-description">: the text to display in the tag</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionbugs_issueLinkHelper" id="functionbugs_issueLinkHelper"><!-- --></a>
+<div class="evenrow">
+	
+	<div>
+		<span class="method-title">bugs_issueLinkHelper</span> (line <span class="line-number">58</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Used in the automatic text parsing function, returns an &lt;a&gt; tag linking to a specified issue</p>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			bugs_issueLinkHelper
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$issue</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$text</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$issue</span><span class="var-description">: issue number</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$text</span><span class="var-description">: text to display</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionbugs_printColorOptions" id="functionbugs_printColorOptions"><!-- --></a>
+<div class="oddrow">
+	
+	<div>
+		<span class="method-title">bugs_printColorOptions</span> (line <span class="line-number">41</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns an &lt;option&gt; element for a given color</p>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			bugs_printColorOptions
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$color</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$data</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$color</span><span class="var-description">: HTML color code</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$data</span><span class="var-description">: the name to display</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionbugs_printMilestones" id="functionbugs_printMilestones"><!-- --></a>
+<div class="evenrow">
+	
+	<div>
+		<span class="method-title">bugs_printMilestones</span> (line <span class="line-number">386</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Prints a list of milestones for a given product</p>
+	
+	<div class="method-signature">
+		<span class="method-result">null</span>
+		<span class="method-name">
+			bugs_printMilestones
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$product_id</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$product_id</span><span class="var-description">: the id for the product you want to show milestones for</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionbugs_printmodeStrip" id="functionbugs_printmodeStrip"><!-- --></a>
+<div class="oddrow">
+	
+	<div>
+		<span class="method-title">bugs_printmodeStrip</span> (line <span class="line-number">540</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Prints out the print mode strip displayed at the top when in print mode</p>
+	
+	<div class="method-signature">
+		<span class="method-result">null</span>
+		<span class="method-name">
+			bugs_printmodeStrip
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$normalmode_link</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$title</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$title</span><span class="var-description">: the link back to normal mode</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$normalmode_link</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionbugs_printPercentBar" id="functionbugs_printPercentBar"><!-- --></a>
+<div class="evenrow">
+	
+	<div>
+		<span class="method-title">bugs_printPercentBar</span> (line <span class="line-number">435</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns a percentage bar</p>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			bugs_printPercentBar
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$percent</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$size</span> = <span class="var-default">16</span>], <span class="var-type">integer</span>&nbsp;<span class="var-name">$size[optional]</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$percent</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$size[optional]</span><span class="var-description">: the height of the percent bar</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$size</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionbugs_successStrip" id="functionbugs_successStrip"><!-- --></a>
+<div class="oddrow">
+	
+	<div>
+		<span class="method-title">bugs_successStrip</span> (line <span class="line-number">464</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns a green box with a &quot;succesful&quot; look</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../thebuggenie/_lib---ui.inc.php.html#functionbugs_failureStrip">bugs_failureStrip()</a></li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			bugs_successStrip
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$title</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$content</span> = <span class="var-default">&#039;&#039;</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$id</span> = <span class="var-default">&#039;&#039;</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$start_hidden</span> = <span class="var-default">false</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$multiline</span> = <span class="var-default">true</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$content[optional]</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$id[optional]</span>, <span class="var-type">bool</span>&nbsp;<span class="var-name">$start_hidden[optional]</span>, <span class="var-type">bool</span>&nbsp;<span class="var-name">$multiline[optional]</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$title</span><span class="var-description">: the title inside the box</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$content[optional]</span><span class="var-description">: the content of the box</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$id[optional]</span><span class="var-description">: the html id for the box</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$start_hidden[optional]</span><span class="var-description">: whether or not to start hidden</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$multiline[optional]</span><span class="var-description">: whether or not the box is multiline</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$content</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$start_hidden</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$multiline</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionbugs_teamDropdown" id="functionbugs_teamDropdown"><!-- --></a>
+<div class="evenrow">
+	
+	<div>
+		<span class="method-title">bugs_teamDropdown</span> (line <span class="line-number">292</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Prints a team dropdown menu inside a table (must be there)</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../thebuggenie/_lib---ui.inc.php.html#functionbugs_userDropdown">bugs_userDropdown()</a></li>
+				<li><span class="field">see:</span> <a href="../thebuggenie/_lib---ui.inc.php.html#functionbugs_customerDropdown">bugs_customerDropdown()</a></li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			bugs_teamDropdown
+		</span>
+					(<span class="var-type"><a href="../thebuggenie/main/BUGSteam.html">BUGSteam</a></span>&nbsp;<span class="var-name">$tid</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$dontclose</span> = <span class="var-default">0</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$is_customer</span> = <span class="var-default">false</span>])
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../thebuggenie/main/BUGSteam.html">BUGSteam</a></span>
+				<span class="var-name">$tid</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$dontclose</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$is_customer</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionbugs_userDropdown" id="functionbugs_userDropdown"><!-- --></a>
+<div class="oddrow">
+	
+	<div>
+		<span class="method-title">bugs_userDropdown</span> (line <span class="line-number">152</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Prints a user dropdown menu inside a table (must be there)</p>
+	<ul class="tags">
+				<li><span class="field">see:</span> <a href="../thebuggenie/_lib---ui.inc.php.html#functionbugs_teamDropdown">bugs_teamDropdown()</a></li>
+				<li><span class="field">see:</span> <a href="../thebuggenie/_lib---ui.inc.php.html#functionbugs_customerDropdown">bugs_customerDropdown()</a></li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			bugs_userDropdown
+		</span>
+					(<span class="var-type"><a href="../thebuggenie/core/BUGSuser.html">BUGSuser</a></span>&nbsp;<span class="var-name">$uid</span>, [<span class="var-type">bool</span>&nbsp;<span class="var-name">$dontclose</span> = <span class="var-default">0</span>])
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../thebuggenie/core/BUGSuser.html">BUGSuser</a></span>
+				<span class="var-name">$uid</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$dontclose</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionimage_submit_tag" id="functionimage_submit_tag"><!-- --></a>
+<div class="evenrow">
+	
+	<div>
+		<span class="method-title">image_submit_tag</span> (line <span class="line-number">122</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns an &lt;input type=&quot;image&quot;&gt; tag</p>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			image_submit_tag
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$image</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$notheme</span> = <span class="var-default">false</span>], <span class="var-type">array</span>&nbsp;<span class="var-name">$params[optional]</span>, <span class="var-type">bool</span>&nbsp;<span class="var-name">$notheme[optional]</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$image</span><span class="var-description">: image source</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params[optional]</span><span class="var-description">: html parameters</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$notheme[optional]</span><span class="var-description">: whether this is a themed image or a top level path</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$params</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$notheme</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionimage_tag" id="functionimage_tag"><!-- --></a>
+<div class="oddrow">
+	
+	<div>
+		<span class="method-title">image_tag</span> (line <span class="line-number">88</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns an &lt;img&gt; tag with a specified image</p>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			image_tag
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$image</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$notheme</span> = <span class="var-default">false</span>], <span class="var-type">array</span>&nbsp;<span class="var-name">$params[optional]</span>, <span class="var-type">bool</span>&nbsp;<span class="var-name">$notheme[optional]</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$image</span><span class="var-description">: image source</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params[optional]</span><span class="var-description">: html parameters</span>			</li>
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$notheme[optional]</span><span class="var-description">: whether this is a themed image or a top level path</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$params</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$notheme</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functioninclude_template" id="functioninclude_template"><!-- --></a>
+<div class="evenrow">
+	
+	<div>
+		<span class="method-title">include_template</span> (line <span class="line-number">560</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Loads a template with specified parameters</p>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			include_template
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$template</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$template</span><span class="var-description">: name of template to load, or module/template to load</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: key =&gt; value pairs of parameters for the template</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionlink_tag" id="functionlink_tag"><!-- --></a>
+<div class="oddrow">
+	
+	<div>
+		<span class="method-title">link_tag</span> (line <span class="line-number">107</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns an &lt;a&gt; tag linking to a specified url</p>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			link_tag
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$link_text</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>], <span class="var-type">array</span>&nbsp;<span class="var-name">$params[optional]</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$url</span><span class="var-description">: link target</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$link_text</span><span class="var-description">: the text displayed in the tag</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params[optional]</span><span class="var-description">: html parameters</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$params</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionmake_url" id="functionmake_url"><!-- --></a>
+<div class="evenrow">
+	
+	<div>
+		<span class="method-title">make_url</span> (line <span class="line-number">573</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate a url based on a route</p>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			make_url
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span><span class="var-description">: The route key</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: key =&gt; value pairs of route parameters</span>			</li>
+				</ul>
+		
+	
+</div>
+<a name="functionparseHTMLoptions" id="functionparseHTMLoptions"><!-- --></a>
+<div class="oddrow">
+	
+	<div>
+		<span class="method-title">parseHTMLoptions</span> (line <span class="line-number">585</span>)
+	</div> 
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns a string with html options based on an array</p>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			parseHTMLoptions
+		</span>
+					(<span class="var-type">array</span>&nbsp;<span class="var-name">$options</span>)
+			</div>
+
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$options</span><span class="var-description">: an array of options</span>			</li>
+				</ul>
+		
+	
+</div>
+		</div>
+	</div>
+	
+	<p class="notes" id="credit">
+		Documentation generated on Sat, 20 Jun 2009 18:32:48 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.2</a>
+	</p>
+	</div></body>
+</html>
