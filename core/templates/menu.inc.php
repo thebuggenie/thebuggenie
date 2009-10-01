@@ -49,7 +49,7 @@
 			</ul>
 		</div>
 		<?php if (!in_array($bugs_response->getPage(), array('config', 'index', 'dashboard'))): ?>
-			<?php include_template('main/project_menustrip', array('project' => BUGScontext::getCurrentProject())); ?>
+			<div id="project_menustrip"><?php include_template('main/project_menustrip', array('project' => BUGScontext::getCurrentProject())); ?></div>
 		<?php endif; ?>
 		<?php
 /*

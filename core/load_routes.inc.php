@@ -6,6 +6,7 @@
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
 	$routes[] = array('login', '/login', 'main', 'login');
 	$routes[] = array('logout', '/logout', 'main', 'logout');
+	$routes[] = array('getprojectmenustrip', '/getprojectmenustrip/on/page/:page', 'main', 'getProjectMenustrip');
 	$routes[] = array('viewissue', '/:project_key/issue/:issue_no', 'main', 'viewIssue');
 	$routes[] = array('saveissue', '/issue/:issue_no', 'main', 'viewIssue');
 	$routes[] = array('closeissue', '/issue/:issue_id/close', 'main', 'closeIssue');

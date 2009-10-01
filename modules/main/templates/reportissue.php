@@ -53,7 +53,7 @@
 								<span style="font-size: 14px;"><?php echo __('Reporting an issue for %project_name%', array('%project_name%' => '<b>' . $selected_project->getName() . '</b>'))?></span>
 							<?php endif; ?>
 							<label for="project_id" style="margin-right: 20px;<?php if ($selected_project instanceof BUGSproject): ?> display: none;<?php endif; ?>"><?php echo __('Select project'); ?></label>
-							<select name="project_id" id="project_id" style="min-width: 300px; height: 25px;<?php if ($selected_project instanceof BUGSproject): ?> display: none;<?php endif; ?>" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>');">
+							<select name="project_id" id="project_id" style="min-width: 300px; height: 25px;<?php if ($selected_project instanceof BUGSproject): ?> display: none;<?php endif; ?>" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');">
 								<option value="0"><?php echo __('Please select a project from this list'); ?>...</option>
 								<?php foreach ($projects as $project): ?>
 									<option value="<?php echo $project->getID(); ?>"<?php if ($selected_project instanceof BUGSproject && $selected_project->getID() == $project->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
@@ -62,7 +62,7 @@
 						</div>
 						<div style="float: right;<?php if (!$selected_issuetype instanceof BUGSissuetype): ?> display: none;<?php endif; ?>" id="issuetype_dropdown">
 							<label for="issuetype_id" style="margin-right: 20px;"><?php echo __('Select issue type'); ?></label>
-							<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>');">
+							<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '');">
 								<option value="0"><?php echo __('Please select an issue type from this list'); ?>...</option>
 								<?php foreach ($issuetypes as $issue_type): ?>
 									<option value="<?php echo $issue_type->getID(); ?>"<?php if ($selected_issuetype instanceof BUGSissuetype && $selected_issuetype->getID() == $issue_type->getID()): ?> selected<?php endif; ?>><?php echo $issue_type->getName(); ?></option>
