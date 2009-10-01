@@ -95,7 +95,7 @@
 		{
 			if ($module != 'core' && !file_exists(BUGScontext::getIncludePath() . 'themes/' . BUGSsettings::getThemeName() . "/{$module}/" . $image))
 			{
-				$params['src'] = BUGScontext::getTBGPath() . "modules/{$module}/themes/" . BUGSsettings::getThemeName() . '/' . $image;
+				$params['src'] = BUGScontext::getTBGPath() . "themes/modules/{$module}/" . BUGSsettings::getThemeName() . '/' . $image;
 			}
 			elseif ($module != 'core')
 			{
