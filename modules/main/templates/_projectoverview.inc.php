@@ -2,11 +2,7 @@
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="vertical-align: middle; padding: 0 5px 0 5px;">
 			<div style="float: left; font-weight: normal; font-size: 14px;">
-				<?php if ($has_icon): ?>
-					<?php echo image_tag('files/projects/' . $aProject->getID() . '.png', array('style' => 'float: left; margin-right: 5px;'), true); ?>
-				<?php else: ?>
-					<?php echo image_tag('icon_project.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-				<?php endif; ?>
+				<?php echo image_tag($aProject->getIcon(), array('style' => 'float: left; margin-right: 5px;'), $aProject->hasIcon()); ?>
 				<b><?php echo $aProject->getName(); ?> <?php if ($aProject->usePrefix()): ?>(<?php echo strtoupper($aProject->getPrefix()); ?>)<?php endif; ?></b><br>
 				<?php if ($aProject->hasHomepage()): ?>
 					<a href="<?php echo $aProject->getHomepage(); ?>" style="font-size: 13px;" target="_blank"><?php echo $aProject->getHomepage(); ?></a>

@@ -1091,6 +1091,7 @@
 			$this->forward403unless($request->isMethod(BUGSrequest::POST) && $request->hasParameter('project_id'));
 			$project = null;
 			$hide_button = ($request->getParameter('page') == 'reportissue') ? true : false;
+			$this->getResponse()->setPage($request->getParameter('page'));
 			
 			try
 			{

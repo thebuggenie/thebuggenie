@@ -2074,4 +2074,14 @@
 			return BUGScontext::getUser()->hasPermission('b2projectaccess', $this->getID(), 'core');			
 		}
 		
+		public function hasIcon()
+		{
+			return (bool) (file_exists(BUGScontext::getIncludePath() . 'files/projects/' . $this->getID() . '.png'));			
+		}
+		
+		public function getIcon()
+		{
+			return ($this->hasIcon()) ? 'files/projects/' . $this->getID() . '.png' : 'icon_project.png';			
+		}
+		
 	}

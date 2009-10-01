@@ -7,20 +7,7 @@ function updateFields(url, projectmenustripurl)
 	}
 	if (projectmenustripurl != '')
 	{
-		new Ajax.Updater('project_menustrip', projectmenustripurl, {
-			asynchronous: true,
-			parameters: { project_id: $('project_id').getValue() },
-			evalScripts: true,
-			method: "post",
-			onLoading: function(transport) {
-				$('project_menustrip_indicator').show();
-				$('project_menustrip_name').hide();
-			},
-			onComplete: function(transport) {
-				$('project_menustrip_indicator').hide();
-				$('project_menustrip_name').show();
-			}				
-		});
+		updateProjectMenuStrip(projectmenustripurl, $('project_id').getValue());
 	}
 	if ($('project_id').getValue() != 0 && $('issuetype_id').getValue() != 0)
 	{

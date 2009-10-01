@@ -62,11 +62,6 @@
 		
 		public function componentProjectoverview()
 		{
-			$this->has_icon = false;
-			if (file_exists(BUGScontext::getIncludePath() . 'files/projects/' . $this->aProject->getID() . '.png'))
-			{
-				$this->has_icon = true;
-			}
 		}
 		
 		public function componentIssuedetailslistEditable()

@@ -1,9 +1,40 @@
 <div class="menu_project_strip tab_menu">
+	<div class="project_name<?php if (!$project instanceof BUGSproject): ?> faded_dark<?php endif; ?>">
+		<?php echo image_tag('spinning_32.gif', array('id' => 'project_menustrip_indicator', 'style' => 'display: none;')); ?>
+		<span id="project_menustrip_name">
+			<?php if ($bugs_response->getPage() != 'reportissue'): ?>
+				<a href="javascript:void(0);" onclick="$('project_menustrip_change').toggle();" style="float: right; margin-left: 10px;" class="image"><?php echo image_tag('expand.png'); ?></a>
+			<?php endif; ?>
+			<?php if (!$project instanceof BUGSproject): ?>
+				<?php echo __('There is no project selected'); ?>
+			<?php else: ?>
+				<?php echo $project->getName(); ?>
+			<?php endif; ?>
+		</span>
+		<?php if ($bugs_response->getPage() != 'reportissue'): ?>
+			<div class="rounded_box white" id="project_menustrip_change" style="position: absolute; display: none; width: 324px; top: 34px;">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="padding: 5px;">
+					<div class="dropdown_header"><?php echo __('Select a different project'); ?></div>
+					<div class="dropdown_content">
+						<?php echo __('Choose a project from the list below'); ?>:<br>
+						<table cellpadding="0" cellspacing="0">
+							<?php foreach (BUGSproject::getAll() as $aProject): ?>
+								<tr>
+									<td style="width: 16px;"><?php echo image_tag($aProject->getIcon(), array('style' => 'float: left; margin-right: 5px;'), $aProject->hasIcon()); ?></td>
+									<td style="padding-left: 5px; font-size: 13px;"><a href="javascript:void(0);" onclick="updateProjectMenuStrip('<?php echo make_url('getprojectmenustrip', array('page' => $bugs_response->getPage())); ?>', <?php echo $aProject->getID(); ?>);"><?php echo $aProject->getName(); ?></a></td>
+								</tr>
+							<?php endforeach; ?>
+						</table>
+						<div id="issuetype_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+					</div>
+					<div id="issuetype_change_error" class="error_message" style="display: none;"></div>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div>
+		<?php endif; ?>
+	</div>
 	<?php if ($project instanceof BUGSproject): ?>
-		<div class="project_name">
-			<?php echo image_tag('spinning_32.gif', array('id' => 'project_menustrip_indicator', 'style' => 'display: none;')); ?>
-			<span id="project_menustrip_name"><?php echo $project->getName(); ?></span>
-		</div>
 		<div class="project_stuff">
 		<ul>
 			<li><a href="#" class="faded_medium">Project dashboard</a></li>
@@ -17,10 +48,5 @@
 				<div class="report_button" style="width: 150px;"><input type="submit" value="<?php echo __('Report an issue'); ?>"></div>
 			</form>
 		<?php endif; ?>
-	<?php else: ?>
-		<div class="project_name faded_dark">
-			<?php echo image_tag('spinning_32.gif', array('id' => 'project_menustrip_indicator', 'style' => 'display: none;')); ?>
-			<span id="project_menustrip_name"><?php echo __('There is no project selected'); ?></span>
-		</div>
 	<?php endif; ?>
 </div>
