@@ -21,9 +21,9 @@
 		<link rel="stylesheet" type="text/css" href="<?php print BUGScontext::getTBGPath(); ?>css/<?php print BUGSsettings::getThemeName(); ?>.css">
 		<?php foreach (BUGScontext::getModules() as $module): ?>
 			<?php if ($module->hasAccess()): ?>
-				<?php $css_name = BUGScontext::getTBGPath() . "css/" . BUGSsettings::getThemeName() . "_" . $module->getName() . ".css"; ?>
-				<?php if (file_exists($css_name)): ?>
-					<link rel="stylesheet" type="text/css" href="<?php echo $css_name; ?>">
+				<?php $css_name = "css/" . BUGSsettings::getThemeName() . "_" . $module->getName() . ".css"; ?>
+				<?php if (file_exists(BUGScontext::getIncludePath() . 'thebuggenie' . DIRECTORY_SEPARATOR . $css_name)): ?>
+					<link rel="stylesheet" type="text/css" href="<?php echo BUGScontext::getTBGPath() . $css_name; ?>">
 				<?php endif; ?>
 			<?php endif; ?>
 		<?php endforeach; ?>
