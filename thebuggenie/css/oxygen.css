@@ -1157,7 +1157,10 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .header_menu li a { border-top: 0; padding: 4px 6px 5px 6px; color: #FFF; font-size: 13px; }
 .menu_project_strip { position: relative; font-size: 13px; background-color: #FFF;/*D4E5FF*/ border-bottom: 1px solid #D9D9BB; border-top: 1px solid #D9D9BB; padding: 0; margin-top: 10px; height: 33px; color: #444; width: 100%; background-color: #FFFBE2; }
 .menu_project_strip .project_name { font-size: 14px; font-weight: bold; padding: 8px; background-color: #F4EC8B; height: 17px; float: left; margin-right: 6px; }
-.menu_project_strip .project_stuff { padding: 8px 0 8px 0; height: 17px; }
+.menu_project_strip .project_stuff { float: left; position: relative; height: 33px; min-width: 500px; }
+.menu_project_strip .project_stuff ul li a { font-size: 13px; border-color: #FFFBE2; padding-bottom: 8px; }
+.menu_project_strip .project_stuff ul li { border-color: #FFFBE2 #FFFBE2 #D9D9BB #FFFBE2; background-color: #FFFBE2; }
+.menu_project_strip .project_stuff ul li.selected { border-color: #D9D9BB #D9D9BB #FFF #D9D9BB; background-color: #FFF; }
 .menu_project_strip .faded_dark { color: #B0AA64; }
 #account_info { z-index: 100; }
 #account_info ul { list-style: none; position: relative; }
