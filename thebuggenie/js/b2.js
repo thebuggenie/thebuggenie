@@ -30,13 +30,13 @@ function updateProjectMenuStrip(url, project_id)
 		evalScripts: true,
 		method: "post",
 		onLoading: function(transport) {
+			$('project_menustrip_change').hide();
 			$('project_menustrip_indicator').show();
 			$('project_menustrip_name').hide();
 		},
 		onComplete: function(transport) {
 			$('project_menustrip_indicator').hide();
 			$('project_menustrip_name').show();
-			$('project_menustrip_change').hide();
 		}				
 	});
 }

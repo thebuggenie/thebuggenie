@@ -13,6 +13,8 @@
 		public function runViewIssue($request)
 		{
 			BUGSlogging::log('Loading issue');
+			$selected_project = null;
+			
 			if ($project_key = $request->getParameter('project_key'))
 			{
 				try
