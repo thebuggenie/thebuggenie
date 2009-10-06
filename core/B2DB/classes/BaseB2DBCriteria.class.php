@@ -304,7 +304,12 @@
 		{
 			return $this->jointables;
 		}
-		
+
+		/**
+		 * Returns the table the criteria applies to
+		 *
+		 * @return B2DBTable
+		 */
 		public function getTable()
 		{
 			return $this->fromtable;
@@ -495,6 +500,7 @@
 			}
 			$this->values = array();
 			$this->sql = '';
+			$this->action = 'select';
 			$sql = $this->_generateSelectSQL();
 			$sql .= $this->_generateJoinSQL();
 			if (!$all)
@@ -503,7 +509,6 @@
 			}
 
 			$this->sql = $sql;
-			$this->action = 'select';
 		}
 
 		public function generateCountSQL()
@@ -514,12 +519,12 @@
 			}
 			$this->values = array();
 			$this->sql = '';
+			$this->action = 'count';
 			$sql = $this->_generateCountSQL();
 			$sql .= $this->_generateJoinSQL();
 			$sql .= $this->_generateWhereSQL();
 
 			$this->sql = $sql;
-			$this->action = 'count';
 		}
 		
 		protected function _addValue($value)
@@ -535,11 +540,11 @@
 			}
 			$this->values = array();
 			$this->sql = '';
+			$this->action = 'update';
 			$sql = $this->_generateUpdateSQL();
 			$sql .= $this->_generateWhereSQL(true);
 
 			$this->sql = $sql;
-			$this->action = 'update';
 		}
 
 		public function generateInsertSQL()
@@ -557,10 +562,10 @@
 			}
 			$this->values = array();
 			$this->sql = '';
+			$this->action = 'insert';
 			$sql = $this->_generateInsertSQL();
 	
 			$this->sql = $sql;
-			$this->action = 'insert';
 		}
 
 		public function generateDeleteSQL()
@@ -571,11 +576,11 @@
 			}
 			$this->values = array();
 			$this->sql = '';
+			$this->action = 'delete';
 			$sql = $this->_generateDeleteSQL();
 			$sql .= $this->_generateWhereSQL(true);
 
 			$this->sql = $sql;
-			$this->action = 'delete';
 			return $sql;
 		}
 
@@ -596,9 +601,11 @@
 			foreach ($this->criterias as $a_crit)
 			{
 				$sql .= (!$first_ins) ? ', ' : '';
-				$sql .= '`';
+                                if (B2DB::getDBtype() == 'pgsql') $sql .= '"';
+				elseif (B2DB::getDBtype() == 'mysql') $sql .= '`';
 				$sql .= substr($a_crit['column'], strpos($a_crit['column'], '.') + 1);
-				$sql .= '`';
+                                if (B2DB::getDBtype() == 'pgsql') $sql .= '"';
+				elseif (B2DB::getDBtype() == 'mysql') $sql .= '`';
 				$first_ins = false;
 			}
 			$sql .= ') values (';
@@ -631,7 +638,11 @@
 			foreach ($this->updates as $an_upd)
 			{
 				$sql .= (!$first_upd) ? ', ' : '';
-				$sql .= '`' . substr($an_upd['column'], strpos($an_upd['column'], '.') + 1) . '`';
+                                //if (B2DB::getDBtype() == 'pgsql') $sql .= '"';
+				if (B2DB::getDBtype() == 'mysql') $sql .= '`';
+                                $sql .= substr($an_upd['column'], strpos($an_upd['column'], '.') + 1);
+                                //if (B2DB::getDBtype() == 'pgsql') $sql .= '"';
+				if (B2DB::getDBtype() == 'mysql') $sql .= '`';
 				$sql .= self::DB_EQUALS;
 				$sql .= '?';
 				$this->_addValue($an_upd['value']);
@@ -921,7 +932,7 @@
 					$first_crit = false;
 				}
 			}
-			if ($this->limit > 0)
+			if ($this->limit > 0 && $this->action != 'update')
 			{
 				$sql .= ' LIMIT ' . $this->limit;
 			}

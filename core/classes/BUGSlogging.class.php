@@ -24,8 +24,8 @@
 		
 		protected static $_logging = true;
 		
-		//protected static $_logfile;
-		protected static $_logfile = '/var/www/dev/thebuggenie/b2.log';
+		protected static $_logfile;
+		//protected static $_logfile = '/var/www/dev/thebuggenie/b2.log';
 		
 		protected static $_logonajaxcalls = true;
 		

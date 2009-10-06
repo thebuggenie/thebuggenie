@@ -66,6 +66,7 @@
 				{
 					BUGSlogging::log($this->printSQL(), 'B2DB');
 				}
+				BUGSlogging::log(print_r($values));
 				if (!$res = $this->statement->execute($values))
 				{
 					$error = $this->statement->errorInfo();
@@ -75,7 +76,15 @@
 				B2DB::sqlHit();
 				if ($this->getCriteria() instanceof BaseB2DBCriteria && $this->getCriteria()->action == 'insert')
 				{
-					$this->insert_id = B2DB::getDBLink()->lastInsertId();
+					if (B2DB::getDBtype() == 'mysql')
+					{
+						$this->insert_id = B2DB::getDBLink()->lastInsertId();
+					}
+					elseif (B2DB::getDBtype() == 'pgsql')
+					{
+						BUGSlogging::log('sequence: ' . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq', 'b2db');
+						$this->insert_id = B2DB::getDBLink()->lastInsertId($this->getCriteria()->getTable()->getB2DBName() . '_id_seq');
+					}
 				}
 				$action = ($this->getCriteria() instanceof B2DBCriteria) ? $this->getCriteria()->action : '';
 				return parent::performQuery();

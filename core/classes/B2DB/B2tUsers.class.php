@@ -78,7 +78,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(B2tUsers::UNAME, $username);
 			$crit->addWhere(B2tUsers::PASSWD, $password);
-			$crit->addWhere(B2tUsers::DELETED, 0);
+			$crit->addWhere(B2tUsers::DELETED, false);
 			return B2DB::getTable('B2tUsers')->doSelectOne($crit);
 		}
 		

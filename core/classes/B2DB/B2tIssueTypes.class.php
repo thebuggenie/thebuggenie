@@ -37,7 +37,7 @@
 			parent::_addInteger(self::APPLIES_TO, 10);
 			parent::_addInteger(self::APPLIES_TYPE, 3);
 			parent::_addVarchar(self::ICON, 20, 'bug_report');
-			parent::_addText(self::DESCRIPTION);
+			parent::_addText(self::DESCRIPTION, false);
 			parent::_addBoolean(self::IS_TASK);
 			parent::_addBoolean(self::REDIRECT_AFTER_REPORTING, true);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);

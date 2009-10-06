@@ -209,6 +209,7 @@
 			catch (Exception $e)
 			{
 				$this->error = $e->getMessage();
+                                throw $e;
 			}
 		}
 		

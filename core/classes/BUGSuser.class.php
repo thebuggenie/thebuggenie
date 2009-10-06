@@ -1331,15 +1331,15 @@
 				{
 					if ($row = B2DB::getTable('B2tUsers')->getByUsernameAndPassword($username, $password))
 					{
-						if ($row->get(B2tScopes::ENABLED) == 0)
+						if (!$row->get(B2tScopes::ENABLED))
 						{
 							throw new Exception('This account belongs to a scope that is not active');
 						}
-						elseif ($row->get(B2tUsers::ACTIVATED) == 0)
+						elseif (!$row->get(B2tUsers::ACTIVATED))
 						{
 							throw new Exception('This account has not been activated yet');
 						}
-						elseif ($row->get(B2tUsers::ENABLED) == 0)
+						elseif (!$row->get(B2tUsers::ENABLED))
 						{
 							throw new Exception('This account has been suspended');
 						}

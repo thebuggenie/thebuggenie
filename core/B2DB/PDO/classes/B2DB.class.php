@@ -42,15 +42,16 @@
 					{
 						$dsn .= ';port=' . self::getPort();
 					}
-					switch (self::getDBtype())
+					/*switch (self::getDBtype())
 					{
 						case 'pgsql':
-							$dsn .= ";dbname='" . self::getDBname() . "'";
+							$dsn .= ";dbname=" . self::getDBname() . "\'";
 							break;
 						default:
 							$dsn .= ';dbname='.self::getDBname();
 							break;
-					}
+					}*/
+                                        $dsn .= ';dbname='.self::getDBname();
 					self::$_dsn = $dsn;
 				}
 				self::$_db_connection = new PDO(self::getDSN(), $uname, $pwd);
