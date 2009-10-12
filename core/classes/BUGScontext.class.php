@@ -1419,6 +1419,10 @@
 					} 
 					if (is_dir(self::getIncludePath() . 'modules/' . $route['module']))
 					{
+						if (!file_exists(self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actions.class.php'))
+						{
+							throw new BUGSActionNotFoundException('The ' . $route['module'] . ' module is missing the classes/actions.class.php file, containing all the module actions');
+						}
 						require self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actions.class.php';
 						if (file_exists(self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actioncomponents.class.php'))
 						{

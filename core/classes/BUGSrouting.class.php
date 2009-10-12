@@ -22,11 +22,6 @@
 		protected $current_route_name = null;
 		protected $current_route_module = null;
 		protected $current_route_action = null;
-		
-		public function __construct()
-		{
-			
-		}
 
 		/**
 		 * Set all routes manually (used by cache functions)
@@ -128,7 +123,13 @@
 			}
 		}
 
-		
+		/**
+		 * Get route details from a given url
+		 *
+		 * @param string $url The url to retrieve details from
+		 * 
+		 * @return array Route details
+		 */
 		public function getRouteFromUrl($url)
 		{
 			BUGSlogging::log('URL is ' . $url, 'routing');
@@ -232,7 +233,7 @@
 					if ($break)
 					{
 						// we store route name
-						$this->setCurrentRouteDetails($route_name, $out['module'], $out['action']);
+						$this->_setCurrentRouteDetails($route_name, $out['module'], $out['action']);
 	
 						BUGSlogging::log('match route ['.$route_name.'] "'.$route.'"', 'routing');
 	
@@ -257,13 +258,39 @@
 
 		}
 
-		public function setCurrentRouteDetails($name, $module, $action)
+		/**
+		 * Set the route details for the current route
+		 * 
+		 * @param string $name Current route name
+		 * @param string $module Current route module
+		 * @param string $action Current route action
+		 */
+		protected function _setCurrentRouteDetails($name, $module, $action)
 		{
 			$this->current_route_name = $name;
 			$this->current_route_module = $module;
 			$this->current_route_action = $action;
 		}
+
+		/**
+		 * Returns the current route name
+		 * 
+		 * @return string The current route name
+		 */
+		public function getCurrentRouteName()
+		{
+			if ($this->current_route_name === null)
+			{
+				$this->getRouteFromUrl(BUGScontext::getRequest()->getParameter('url', null, false));
+			}
+			return $this->current_route_name;
+		}
 		
+		/**
+		 * Returns the current route module
+		 *
+		 * @return string The current route module
+		 */
 		public function getCurrentRouteModule()
 		{
 			if ($this->current_route_module === null)
@@ -273,6 +300,11 @@
 			return $this->current_route_module;
 		}
 
+		/**
+		 * Returns the current route action
+		 *
+		 * @return string The current route action
+		 */
 		public function getCurrentRouteAction()
 		{
 			if ($this->current_route_module === null)
@@ -346,11 +378,6 @@
 			{
 				$real_url = rtrim($real_url, $divider);
 			}
-	
-			/*if ($real_url != '/')
-			{
-				//$real_url .= $suffix;
-			}*/
 	
 			return BUGScontext::getStrippedTBGPath() . $real_url;
 		}

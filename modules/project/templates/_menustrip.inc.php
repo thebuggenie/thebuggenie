@@ -37,7 +37,7 @@
 	<?php if ($project instanceof BUGSproject): ?>
 		<div class="project_stuff">
 		<ul>
-			<li><a href="#" class="faded_medium">Project dashboard</a></li>
+			<li<?php if ($bugs_response->getPage() == 'project_dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Project dashboard')); ?></li>
 			<li><a href="#" class="faded_medium">Planning</a></li>
 			<li><a href="#" class="faded_medium">Issues</a></li>
 			<li><a href="#" class="faded_medium">Team</a></li>

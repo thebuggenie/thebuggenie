@@ -1,5 +1,8 @@
 <?php 
 
+	/**
+	 * Main action components
+	 */
 	class mainActionComponents extends BUGSactioncomponent
 	{
 		
@@ -58,10 +61,6 @@
 		public function componentMyfriends()
 		{
 			$this->friends = BUGScontext::getUser()->getFriends();
-		}
-		
-		public function componentProjectoverview()
-		{
 		}
 		
 		public function componentIssuedetailslistEditable()

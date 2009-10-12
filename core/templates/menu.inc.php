@@ -48,8 +48,8 @@
 				?>
 			</ul>
 		</div>
-		<?php if (!in_array($bugs_response->getPage(), array('config', 'index', 'dashboard'))): ?>
-			<div id="project_menustrip"><?php include_template('main/project_menustrip', array('project' => BUGScontext::getCurrentProject())); ?></div>
+		<?php if (!in_array($bugs_response->getPage(), array('config', 'index', 'dashboard', 'account', 'login'))): ?>
+			<div id="project_menustrip"><?php include_template('project/menustrip', array('project' => BUGScontext::getCurrentProject())); ?></div>
 		<?php endif; ?>
 		<?php
 /*

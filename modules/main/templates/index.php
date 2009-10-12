@@ -47,7 +47,7 @@
 					<?php if (count(BUGSproject::getAll()) > 0): ?>
 						<ul class="project_list">
 						<?php foreach (BUGSproject::getAll() as $aProject): ?>
-							<li><?php include_component('projectoverview', array('aProject' => $aProject)); ?></li>
+							<li><?php include_component('project/overview', array('project' => $aProject)); ?></li>
 						<?php endforeach; ?>
 						</ul>
 					<?php else: ?>
