@@ -509,6 +509,7 @@
 						}
 						catch (Exception $e)
 						{
+							throw $e;
 							$errors[] = $e->getMessage();
 						}
 					}

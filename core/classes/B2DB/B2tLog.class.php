@@ -75,8 +75,8 @@
 			parent::_addInteger(self::TARGET_TYPE, 3);
 			parent::_addInteger(self::CHANGE_TYPE, 3);
 			parent::_addText(self::TEXT, false);
-			parent::_addText(self::PREVIOUS_VALUE);
-			parent::_addText(self::CURRENT_VALUE);
+			parent::_addText(self::PREVIOUS_VALUE, false);
+			parent::_addText(self::CURRENT_VALUE, false);
 			parent::_addInteger(self::TIME, 10);
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('B2tUsers'), B2tUsers::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);

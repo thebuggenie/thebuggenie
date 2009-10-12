@@ -182,8 +182,9 @@
 			$crit2->addWhere(self::PROJECT_ID, $p_id);
 			
 			$crit2->addSelectionColumn(self::ISSUE_NO, '', B2DBCriteria::DB_MAX);
-			$crit2->addSelectionColumn(B2tProjects::DEFAULT_STATUS);
-			$row = $this->doSelectOne($crit2);
+			//$crit2->addSelectionColumn(B2tProjects::DEFAULT_STATUS);
+			$row = $this->doSelectOne($crit2, 'none');
+			$status_id = (int) BUGSfactory::projectLab($p_id)->getDefaultStatusID();
 			
 			$crit = $this->getCriteria();
 			$posted = $_SERVER["REQUEST_TIME"];
@@ -200,7 +201,7 @@
 			$crit->addInsert(self::LONG_DESCRIPTION, $description);
 			$crit->addInsert(self::ISSUE_TYPE, $issue_type);
 			$crit->addInsert(self::POSTED_BY, BUGScontext::getUser()->getUID());
-			$crit->addInsert(self::STATUS, $row->get(B2tProjects::DEFAULT_STATUS));
+			$crit->addInsert(self::STATUS, $status_id);
 			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			$trans->commitAndEnd();

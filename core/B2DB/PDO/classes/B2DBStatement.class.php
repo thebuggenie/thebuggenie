@@ -66,7 +66,7 @@
 				{
 					BUGSlogging::log($this->printSQL(), 'B2DB');
 				}
-				BUGSlogging::log(print_r($values));
+				//BUGSlogging::log(print_r($values));
 				if (!$res = $this->statement->execute($values))
 				{
 					$error = $this->statement->errorInfo();
