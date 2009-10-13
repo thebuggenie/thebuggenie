@@ -44,7 +44,33 @@
 		 */
 		public function runDashboard($request)
 		{
-			$this->getResponse()->setPage('project_dashboard');
+		}
+
+		/**
+		 * The project planning page
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runPlanning($request)
+		{
+		}
+
+		/**
+		 * The project issue list page
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runIssues($request)
+		{
+		}
+
+		/**
+		 * The project team page
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runTeam($request)
+		{
 		}
 
 		/**

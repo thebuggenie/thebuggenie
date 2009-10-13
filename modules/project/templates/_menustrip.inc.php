@@ -38,9 +38,9 @@
 		<div class="project_stuff">
 		<ul>
 			<li<?php if ($bugs_response->getPage() == 'project_dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Project dashboard')); ?></li>
-			<li><a href="#" class="faded_medium">Planning</a></li>
-			<li><a href="#" class="faded_medium">Issues</a></li>
-			<li><a href="#" class="faded_medium">Team</a></li>
+			<li<?php if ($bugs_response->getPage() == 'project_planning'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning')); ?></li>
+			<li<?php if ($bugs_response->getPage() == 'project_issues'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?></li>
+			<li<?php if ($bugs_response->getPage() == 'project_team'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_team', array('project_key' => $project->getKey())), __('Team')); ?></li>
 		</ul> 
 		</div>
 		<?php if ($bugs_response->getPage() != 'reportissue' && (!isset($hide_button) || (isset($hide_button) && $hide_button == false))): ?>

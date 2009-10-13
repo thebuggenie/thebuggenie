@@ -1230,27 +1230,33 @@
 		}
 
 		/**
-		 * Loads a library
+		 * Loads a function library
 		 * 
 		 * @param string $lib_name The name of the library
 		 */
 		public static function loadLibrary($lib_name)
 		{
+			// Skip the library if it already exists
 			if (!array_key_exists($lib_name, self::$_libs))
 			{
 				$lib_file_name = "{$lib_name}.inc.php";
+
 				if (file_exists(self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/' . $lib_file_name))
 				{
+					// Include the library from the current module if it exists
 					require self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/' . $lib_file_name;
 					self::$_libs[$lib_name] = self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/' . $lib_file_name;
 				}
 				elseif (file_exists(self::getIncludePath() . "core/lib/" . $lib_file_name))
 				{
+					// Include the library from the global library directory if it exists
 					require self::getIncludePath() . "core/lib/" . $lib_file_name;
 					self::$_libs[$lib_name] = self::getIncludePath() . "core/lib/" . $lib_file_name;
 				}
 				else
 				{
+					// Throw an exception if the library can't be found in any of
+					// the above directories
 					BUGSlogging::log("The \"{$lib_name}\" library does not exist in either " . self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/ or ' . self::getIncludePath() . "core/lib/", 'core', BUGSlogging::LEVEL_FATAL);
 					throw new BUGSLibraryNotFoundException("The \"{$lib_name}\" library does not exist in either " . self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/ or ' . self::getIncludePath() . "core/lib/");
 				}
@@ -1265,36 +1271,62 @@
 		 */
 		public static function performAction($action, $method)
 		{
+			// Set the template to be used when rendering the html (or other) output
 			$templatePath = self::getIncludePath() . 'modules/' . $action . '/templates/';
+
+			// Construct the action class and method name, including any pre- action(s)
 			$actionClassName = $action.'Actions';
 			$actionToRunName = 'run' . ucfirst($method);
 			$preActionToRunName = 'pre' . ucfirst($method);
+
+			// Set up the response object, responsible for controlling any output
 			$responseObject = new BUGSresponse();
 			self::$_response = $responseObject;
-			$actionObject = new $actionClassName($responseObject);
+			$responseObject->setPage(self::getRouting()->getCurrentRouteName());
 			$responseObject->setTemplate(strtolower($method) . '.php');
 			$responseObject->setDecoration(BUGSresponse::DECORATE_BOTH, array('header' => self::getIncludePath() . 'core/templates/header.inc.php', 'footer' => self::getIncludePath() . 'core/templates/footer.inc.php'));
+
+			// Set up the action object
+			$actionObject = new $actionClassName($responseObject);
+
+			// Run the specified action method set if it exists
 			if (method_exists($actionObject, $actionToRunName))
 			{
 				BUGSlogging::log('Running main pre-execute action');
+				// Running any overridden preExecute() method defined for that module
+				// or the default empty one provided by BUGSaction
 				$actionObject->preExecute(self::getRequest(), $method);
+
+				// Checking for and running action-specific preExecute() function if
+				// it exists
 				if (method_exists($actionObject, $preActionToRunName))
 				{
 					BUGSlogging::log('Running custom pre-execute action');
 					$actionObject->$preActionToRunName(self::getRequest(), $method);
 				}
-				BUGSlogging::log('Running route action '.$actionToRunName.'()');
+				
+				// Turning on output buffering
 				ob_start();
 				ob_implicit_flush(0);
+
+				// Running main route action
+				BUGSlogging::log('Running route action '.$actionToRunName.'()');
 				if ($action_retval = $actionObject->$actionToRunName(self::getRequest()))
 				{
+					// If the action returns *any* output, we're done, and collect the
+					// output to a variable to be outputted in context later
 					$content = ob_get_clean();
 					BUGSlogging::log('...done');
 				}
 				else
 				{
+					// If the action doesn't return any output (which it usually doesn't)
+					// we continue on to rendering the template file for that specific action
 					BUGSlogging::log('...done');
 					BUGSlogging::log('Displaying template');
+
+					// Check to see if the template has been changed, and whether it's in a
+					// different module, specified by "module/templatename"
 					if (strpos($responseObject->getTemplate(), '/'))
 					{
 						$newPath = explode('/', $responseObject->getTemplate());
@@ -1304,11 +1336,16 @@
 					{
 						$templateName = $templatePath . $responseObject->getTemplate();
 					}
+
+					// Check to see if the template exists and throw an exception otherwise
 					if (!file_exists($templateName))
 					{
 						BUGSlogging::log('The template file for the ' . $method . ' action ("'.$responseObject->getTemplate().'") does not exist', 'core', BUGSlogging::LEVEL_FATAL);
 						throw new BUGSTemplateNotFoundException('The template file for the ' . $method . ' action ("'.$responseObject->getTemplate().'") does not exist');
 					}
+
+					// Make all template variables available to the template, including the
+					// main ones like request, user, action and response
 					BUGSlogging::log('configuring variables');
 					foreach ($actionObject->getParameterHolder() as $key => $val)
 					{
@@ -1333,14 +1370,19 @@
 					 * @global BUGSresponse The action object
 					 */
 					$bugs_response = $responseObject;
-					
+
+					// Load the "ui" library, since this is used a lot
 					self::loadLibrary('ui');
-					BUGSlogging::log('buffering output');
+
+					// Include the template, buffer the output and store it in a variable
+					// to be outputted in context later
+					BUGSlogging::log('rendering template and buffering output');
 					require $templateName;
 					$content = ob_get_clean();
 					BUGSlogging::log('...completed');
 				}
-				$responseObject->renderHeaders();
+
+				// Render header template if any, and store the output in a variable
 				ob_start();
 				ob_implicit_flush(0);
 				if (!self::getRequest()->isAjaxCall() && $responseObject->doDecorateHeader())
@@ -1349,6 +1391,8 @@
 					require $responseObject->getHeaderDecoration(); 
 					$decoration_header = ob_get_clean();
 				}
+
+				// Set up the run summary, and store it in a variable
 				ob_start();
 				ob_implicit_flush(0);
 				$load_time = self::getLoadtime();
@@ -1360,6 +1404,8 @@
 				{
 					$run_summary = self::getI18n()->__('Page load time: %load_time%.', array('%load_time%' => ($load_time >= 1) ? __('%num_seconds% seconds', array('%num_seconds%' => round($load_time, 2))) : __('%num_milliseconds% ms', array('%num_milliseconds%' => round($load_time * 1000, 1)))));
 				}
+
+				// Render footer template if any, and store the output in a variable
 				if (!self::getRequest()->isAjaxCall() && $responseObject->doDecorateFooter())
 				{
 					BUGSlogging::log('decorating with footer');
@@ -1368,6 +1414,10 @@
 				}
 				BUGSlogging::log('...done');
 				BUGSlogging::log('rendering content');
+
+				// Render output in correct order
+				$responseObject->renderHeaders();
+
 				if (isset($decoration_header))
 				{
 					echo $decoration_header;
