@@ -36,7 +36,7 @@
 		
 			while ($row = $res->getNextRow())
 			{
-				$teams[] = array('id' => $row->get(B2tTeams::ID));
+				$teams[$row->get(B2tTeams::ID)] = BUGSfactory::teamLab($row->get(B2tTeams::ID), $row);
 			}
 		
 			return $teams;

@@ -1321,38 +1321,38 @@
 						$username = BUGScontext::getRequest()->getCookie('b2_username');
 						$password = BUGScontext::getRequest()->getCookie('b2_password');
 					}
-					elseif (!BUGSsettings::get('requirelogin'))
-					{
-						$username = BUGSsettings::get('defaultuname');
-						$password = BUGSsettings::get('defaultpwd');
-					}
 				}
 				if ($username !== null && $password !== null)
 				{
-					if ($row = B2DB::getTable('B2tUsers')->getByUsernameAndPassword($username, $password))
+					$row = B2DB::getTable('B2tUsers')->getByUsernameAndPassword($username, $password);
+				}
+				elseif (!BUGSsettings::isLoginRequired())
+				{
+					$row = B2DB::getTable('B2tUsers')->getByUserID(BUGSsettings::getDefaultUserID());
+				}
+				if ($row)
+				{
+					if (!$row->get(B2tScopes::ENABLED))
 					{
-						if (!$row->get(B2tScopes::ENABLED))
-						{
-							throw new Exception('This account belongs to a scope that is not active');
-						}
-						elseif (!$row->get(B2tUsers::ACTIVATED))
-						{
-							throw new Exception('This account has not been activated yet');
-						}
-						elseif (!$row->get(B2tUsers::ENABLED))
-						{
-							throw new Exception('This account has been suspended');
-						}
-						$user = BUGSfactory::userLab($row->get(B2tUsers::ID), $row);
+						throw new Exception('This account belongs to a scope that is not active');
 					}
-					else
+					elseif (!$row->get(B2tUsers::ACTIVATED))
 					{
-						throw new Exception('No such login');
+						throw new Exception('This account has not been activated yet');
 					}
+					elseif (!$row->get(B2tUsers::ENABLED))
+					{
+						throw new Exception('This account has been suspended');
+					}
+					$user = BUGSfactory::userLab($row->get(B2tUsers::ID), $row);
+				}
+				elseif (BUGSsettings::isLoginRequired())
+				{
+					throw new Exception('Login required');
 				}
 				else
 				{
-					throw new Exception('Login required');
+					throw new Exception('No such login');
 				}
 			}
 			catch (Exception $e)

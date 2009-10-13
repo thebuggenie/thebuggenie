@@ -1,10 +1,10 @@
 <table style="clear: both; width: 700px; margin-top: 5px;" class="padded_table" cellpadding=0 cellspacing=0>
 	<tr>
 		<td style="width: 200px;"><label for="url_host"><?php echo __('Server URL'); ?></label></td>
-		<td style="width: auto;"><input type="text" name="url_host" id="url_host" value="<?php echo BUGSsettings::getURLhost(); ?>" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>></td>
+		<td style="width: auto; font-size: 13px;"><?php echo BUGSsettings::getURLhost(); ?></td>
 	</tr>
 	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('The full url to this bug genie installation, without the trailing slash.') ?><br>(<i><?php echo __('ex: http://localhost'); ?></i>)</td>
+		<td class="config_explanation" colspan="2"><?php echo __('The full url to this bug genie installation') ?></td>
 	</tr>
 	<tr>
 		<td><label for="url_subdir"><?php echo __('URL subdirectory'); ?></label></td>

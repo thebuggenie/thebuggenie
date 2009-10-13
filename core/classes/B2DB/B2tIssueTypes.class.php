@@ -42,5 +42,54 @@
 			parent::_addBoolean(self::REDIRECT_AFTER_REPORTING, true);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
+
+		public function loadFixtures($scope)
+		{
+			$i18n = BUGScontext::getI18n();
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::NAME, $i18n->__('Bug report'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$crit->addInsert(self::ICON, 'bug_report');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Have you discovered a bug in the application, or is something not working as expected?'));
+			$res = $this->doInsert($crit);
+			$issue_type_bug_report_id = $res->getInsertID();
+			BUGSsettings::saveSetting('defaultissuetypefornewissues', $issue_type_bug_report_id, 'core', $scope);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::NAME, $i18n->__('Feature request'));
+			$crit->addInsert(self::ICON, 'feature_request');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Are you missing some specific feature, or is your favourite part of the application a bit lacking?'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$res = $this->doInsert($crit);
+			$issue_type_feature_request_id = $res->getInsertID();
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::NAME, $i18n->__('Enhancement'));
+			$crit->addInsert(self::ICON, 'enhancement');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Have you found something that is working in a way that could be improved?'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$res = $this->doInsert($crit);
+			$issue_type_enhancement_id = $res->getInsertID();
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::NAME, $i18n->__('Task'));
+			$crit->addInsert(self::ICON, 'task');
+			$crit->addInsert(self::IS_TASK, 1);
+			$crit->addInsert(self::SCOPE, $scope);
+			$res = $this->doInsert($crit);
+			$issue_type_task_id = $res->getInsertID();
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::NAME, $i18n->__('User story'));
+			$crit->addInsert(self::ICON, 'developer_report');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Doing it Scrum-style. Issue type perfectly suited for entering user stories'));
+			$crit->addInsert(self::REDIRECT_AFTER_REPORTING, false);
+			$crit->addInsert(self::SCOPE, $scope);
+			$res = $this->doInsert($crit);
+			$issue_type_user_story_id = $res->getInsertID();
+
+			B2DB::getTable('B2tIssueFields')->loadFixtures($scope, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id);
+		}
 		
 	}

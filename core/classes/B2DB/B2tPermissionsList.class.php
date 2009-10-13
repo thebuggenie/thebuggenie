@@ -53,5 +53,145 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
+
+		public function loadFixtures($scope)
+		{
+			$basecrit = $this->getCriteria();
+			$basecrit->addInsert(self::SCOPE, $scope);
+			$i18n = BUGScontext::getI18n();
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'user');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2canonlyviewownissues');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can only view issues reported by the user'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'general');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2canreadallcomments');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can view comments that are not public'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'general');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2addlinks');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can add links to issue reports'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'general');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2uploadfiles');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can add files to issue reports'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'general');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2canfindissues');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can search for issues'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'projects');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2canvote');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can vote for issues'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'projects');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2candeleteissues');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can delete issues'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'projects');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2caneditissuefields');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can update issue details'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'projects');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2caneditissueusers');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can assign issues'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'projects');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2caneditissuetext');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can edit issue text'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 4);
+			$crit->addInsert(self::APPLIES_TO, 'projects');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2caneditcomments');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can edit all comments'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 4);
+			$crit->addInsert(self::APPLIES_TO, 'projects');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2canaddcomments');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can add comments'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 4);
+			$crit->addInsert(self::APPLIES_TO, 'projects');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2canviewcomments');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can view comments'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'issues');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2noteditcomments');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can not edit comments'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'issues');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2notaddcomments');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can not add comments'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'issues');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2hidecomments');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Hide comments'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'issues');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2cantvote');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Restrict voting'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'projects');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2canaddbuilds');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can add builds to list of affected builds'));
+			$this->doInsert($crit);
+
+			$crit = clone $basecrit;
+			$crit->addInsert(self::LEVELS, 2);
+			$crit->addInsert(self::APPLIES_TO, 'projects');
+			$crit->addInsert(self::PERMISSION_NAME, 'b2canaddcomponents');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Can add components to list of affected components'));
+			$this->doInsert($crit);
+		}
 		
 	}

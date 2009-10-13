@@ -22,23 +22,16 @@
 		<td>
 			<select name="requirelogin" id="requirelogin" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
 				<option value=1<?php if (BUGSsettings::isLoginRequired()): ?> selected<?php endif; ?>><?php echo __('You need a valid user account to access any content'); ?></option>
-				<option value=0<?php if (!BUGSsettings::isLoginRequired()): ?> selected<?php endif; ?>><?php echo __('Use the default user provided below'); ?></option>
+				<option value=0<?php if (!BUGSsettings::isLoginRequired()): ?> selected<?php endif; ?>><?php echo __('Use the guest user account'); ?></option>
 			</select>
 		</td>
 	</tr>
 	<tr>
-		<td><label for="defaultuname"><?php echo __('Default user'); ?></label></td>
-		<td><input type="text" name="defaultuname" id="defaultuname" <?php echo (BUGSsettings::get('requirelogin') == 1 || $access_level != configurationActions::ACCESS_FULL) ? ' disabled' : ''; ?> value="<?php echo BUGSsettings::get('defaultuname'); ?>" style="width: 100%;" ></td>
-	</tr>
-	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('When you\'re not logged in, you will be "logged in" with this username'); ?></td>
-	</tr>
-	<tr>
-		<td><label for="defaultisguest"><?php echo __('Default user is guest'); ?></label></td>
+		<td><label for="defaultisguest"><?php echo __('Guest user is authenticated'); ?></label></td>
 		<td>
 			<select name="defaultisguest" id="defaultisguest" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
-				<option value=1<?php if (BUGSsettings::isDefaultUserGuest()): ?> selected<?php endif; ?>><?php echo __('Yes, the default user is a guest account'); ?></option>
-				<option value=0<?php if (!BUGSsettings::isDefaultUserGuest()): ?> selected<?php endif; ?>><?php echo __('No, the default user is a normal account'); ?></option>
+				<option value=1<?php if (BUGSsettings::isDefaultUserGuest()): ?> selected<?php endif; ?>><?php echo __('No, the default user is a guest account'); ?></option>
+				<option value=0<?php if (!BUGSsettings::isDefaultUserGuest()): ?> selected<?php endif; ?>><?php echo __('Yes, the default user is a normal account'); ?></option>
 			</select>
 		</td>
 	</tr>

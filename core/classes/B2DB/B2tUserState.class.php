@@ -43,5 +43,100 @@
 			parent::_addVarchar(self::COLOR, 7, '');
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
+
+		public function loadFixtures($scope)
+		{
+			$i18n = BUGScontext::getI18n();
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::STATE_NAME, $i18n->__('Available'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$crit->addInsert(self::UNAVAILABLE, 0);
+			$crit->addInsert(self::BUSY, 0);
+			$crit->addInsert(self::ONLINE, 1);
+			$crit->addInsert(self::MEETING, 0);
+			$crit->addInsert(self::ABSENT, 0);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::STATE_NAME, $i18n->__('Offline'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$crit->addInsert(self::UNAVAILABLE, 1);
+			$crit->addInsert(self::BUSY, 0);
+			$crit->addInsert(self::ONLINE, 0);
+			$crit->addInsert(self::MEETING, 0);
+			$crit->addInsert(self::ABSENT, 0);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::STATE_NAME, $i18n->__('Busy'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$crit->addInsert(self::UNAVAILABLE, 0);
+			$crit->addInsert(self::BUSY, 1);
+			$crit->addInsert(self::ONLINE, 1);
+			$crit->addInsert(self::MEETING, 0);
+			$crit->addInsert(self::ABSENT, 0);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::STATE_NAME, $i18n->__('Unavailable'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$crit->addInsert(self::UNAVAILABLE, 1);
+			$crit->addInsert(self::BUSY, 0);
+			$crit->addInsert(self::ONLINE, 1);
+			$crit->addInsert(self::MEETING, 0);
+			$crit->addInsert(self::ABSENT, 0);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::STATE_NAME, $i18n->__('In a meeting'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$crit->addInsert(self::UNAVAILABLE, 1);
+			$crit->addInsert(self::BUSY, 1);
+			$crit->addInsert(self::ONLINE, 1);
+			$crit->addInsert(self::MEETING, 1);
+			$crit->addInsert(self::ABSENT, 0);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::STATE_NAME, $i18n->__('Coding'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$crit->addInsert(self::UNAVAILABLE, 0);
+			$crit->addInsert(self::BUSY, 1);
+			$crit->addInsert(self::ONLINE, 1);
+			$crit->addInsert(self::MEETING, 0);
+			$crit->addInsert(self::ABSENT, 0);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::STATE_NAME, $i18n->__('On coffee break'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$crit->addInsert(self::UNAVAILABLE, 1);
+			$crit->addInsert(self::BUSY, 1);
+			$crit->addInsert(self::ONLINE, 1);
+			$crit->addInsert(self::MEETING, 0);
+			$crit->addInsert(self::ABSENT, 0);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::STATE_NAME, $i18n->__('Away'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$crit->addInsert(self::UNAVAILABLE, 1);
+			$crit->addInsert(self::BUSY, 1);
+			$crit->addInsert(self::ONLINE, 1);
+			$crit->addInsert(self::MEETING, 0);
+			$crit->addInsert(self::ABSENT, 1);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::STATE_NAME, $i18n->__('On vacation'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$crit->addInsert(self::UNAVAILABLE, 1);
+			$crit->addInsert(self::BUSY, 1);
+			$crit->addInsert(self::ONLINE, 0);
+			$crit->addInsert(self::MEETING, 0);
+			$crit->addInsert(self::ABSENT, 1);
+			$this->doInsert($crit);
+		}
 		
 	}

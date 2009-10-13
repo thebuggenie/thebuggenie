@@ -45,5 +45,53 @@
 			$row = $this->doSelectOne($crit);
 			return $row;
 		}
+
+		public function getSettingsForEnabledScope($scope)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(B2tScopes::ENABLED, true);
+			$crit->addWhere(self::SCOPE, $scope);
+			$res = $this->doSelect($crit);
+			return $res;
+		}
+
+		public function saveSetting($name, $module, $value, $uid, $scope)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::NAME, $name);
+			$crit->addWhere(self::MODULE, $module);
+			$crit->addWhere(self::UID, $uid);
+			$crit->addWhere(self::SCOPE, $scope);
+			$res = $this->doSelectOne($crit);
+
+			if ($res instanceof B2DBRow)
+			{
+				$theID = $res->get(self::ID);
+				$crit2 = new B2DBCriteria();
+				$crit2->addWhere(self::NAME, $name);
+				$crit2->addWhere(self::MODULE, $module);
+				$crit2->addWhere(self::UID, $uid);
+				$crit2->addWhere(self::SCOPE, $scope);
+				$crit2->addWhere(self::ID, $theID, B2DBCriteria::DB_NOT_EQUALS);
+				$res2 = $this->doDelete($crit2);
+				
+				$crit = $this->getCriteria();
+				$crit->addUpdate(self::NAME, $name);
+				$crit->addUpdate(self::MODULE, $module);
+				$crit->addUpdate(self::UID, $uid);
+				$crit->addUpdate(self::VALUE, $value);
+				$this->doUpdateById($crit, $theID);
+			}
+			else
+			{
+				$crit = $this->getCriteria();
+				$crit->addInsert(self::NAME, $name);
+				$crit->addInsert(self::MODULE, $module);
+				$crit->addInsert(self::VALUE, $value);
+				$crit->addInsert(self::SCOPE, $scope);
+				$crit->addInsert(self::UID, $uid);
+				$this->doInsert($crit);
+			}
+		}
 		
 	}

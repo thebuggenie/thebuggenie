@@ -92,5 +92,32 @@
 			$crit->addWhere(self::ID, $link_id);
 			$res = $this->doDelete($crit);
 		}
+
+		public function loadFixtures($scope)
+		{
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::URL, 'http://www.thebuggenie.com');
+			$crit->addInsert(self::DESCRIPTION, 'The Bug Genie homepage');
+			$crit->addInsert(self::LINK_ORDER, 1);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::URL, 'http://www.thebuggenie.com/forum');
+			$crit->addInsert(self::DESCRIPTION, 'The Bug Genie forums');
+			$crit->addInsert(self::LINK_ORDER, 2);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::URL, '');
+			$crit->addInsert(self::DESCRIPTION, '');
+			$crit->addInsert(self::LINK_ORDER, 3);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::URL, 'http://www.thebuggenie.com/b2');
+			$crit->addInsert(self::DESCRIPTION, 'Online issue tracker');
+			$crit->addInsert(self::LINK_ORDER, 4);
+			$this->doInsert($crit);
+		}
 		
 	}

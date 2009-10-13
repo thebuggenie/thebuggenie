@@ -123,7 +123,7 @@
 		
 				while ($row = $res->getNextRow())
 				{
-					$groups[$row->get(B2tGroups::ID)] = BUGSfactory::groupLab($row->get(B2tGroups::GNAME), $row);
+					$groups[$row->get(B2tGroups::ID)] = BUGSfactory::groupLab($row->get(B2tGroups::ID), $row);
 				}
 				self::$_groups = $groups;
 			}

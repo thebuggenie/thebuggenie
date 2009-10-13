@@ -76,10 +76,17 @@
 		public function getByUsernameAndPassword($username, $password)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(B2tUsers::UNAME, $username);
-			$crit->addWhere(B2tUsers::PASSWD, $password);
-			$crit->addWhere(B2tUsers::DELETED, false);
+			$crit->addWhere(self::UNAME, $username);
+			$crit->addWhere(self::PASSWD, $password);
+			$crit->addWhere(self::DELETED, false);
 			return B2DB::getTable('B2tUsers')->doSelectOne($crit);
 		}
-		
+
+		public function getByUserID($userid)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
+			return B2DB::getTable('B2tUsers')->doSelectById($userid, $crit);
+		}
+
 	}

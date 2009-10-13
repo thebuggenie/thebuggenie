@@ -123,7 +123,7 @@
 		
 				while ($row = $res->getNextRow())
 				{
-					$customers[$row->get(B2tCustomers::ID)] = BUGSfactory::customerLab($row->get(B2tCustomers::NAME), $row);
+					$customers[$row->get(B2tCustomers::ID)] = BUGSfactory::customerLab($row->get(B2tCustomers::ID), $row);
 				}
 				self::$_customers = $customers;
 			}

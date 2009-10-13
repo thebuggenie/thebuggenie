@@ -66,7 +66,7 @@
 		{
 			if (BUGScontext::getRequest()->isMethod(BUGSrequest::POST))
 			{
-				$settings = array('theme_name', 'user_themes', 'onlinestate', 'offlinestate', 'awaystate', 'url_host', 
+				$settings = array('theme_name', 'user_themes', 'onlinestate', 'offlinestate', 'awaystate', 
 									'requirelogin', 'allowreg', 'defaultgroup', 'returnfromlogin', 'returnfromlogout', 
 									'showloginbox', 'limit_registration', 'showprojectsoverview', 'showprojectsoverview', 
 									'cleancomments', 'b2_name', 'b2_tagline', 'url_subdir', 'local_path', 'server_timezone');
@@ -100,16 +100,6 @@
 		public function runConfigureProjects($request)
 		{
 			$this->allProjects = BUGSproject::getAll();
-			$this->defaultProject = BUGSproject::getDefaultProject();
-			if ($this->defaultProject != 0)
-			{
-				$this->defaultProject = BUGSfactory::projectLab($this->defaultProject);
-			}
-			elseif (!empty($this->allProjects))
-			{
-				$this->defaultProject = BUGSfactory::projectLab($this->allProjects[0]['id']);
-			}
-			
 		}
 		
 		/**

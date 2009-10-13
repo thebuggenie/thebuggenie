@@ -244,8 +244,7 @@
 			$crit->addInsert(B2tTeams::SCOPE, 1);
 			B2DB::getTable('B2tTeams')->doInsert($crit);
 				
-			BUGSsettings::saveSetting('defaultuname', 'guest');
-			BUGSsettings::saveSetting('defaultpwd', md5('password'));
+			BUGSsettings::saveSetting('defaultuserid', $guestuser->getID());
 			
 			$crit = new B2DBCriteria();
 			$crit->addInsert(B2tPermissions::ALLOWED, 1);
