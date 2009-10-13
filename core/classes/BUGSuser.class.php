@@ -563,7 +563,7 @@
 		 */
 		public function isGuest()
 		{
-			return (bool) ($this->getUsername() == BUGSsettings::getDefaultUsername() && BUGSsettings::isDefaultUserGuest());
+			return (bool) ($this->getID() == BUGSsettings::getDefaultUserID() && BUGSsettings::isDefaultUserGuest());
 		}
 	
 		/**
