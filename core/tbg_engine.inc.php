@@ -236,19 +236,6 @@
 		require BUGS2_INCLUDE_PATH . 'core/common_functions.inc.php';
 		
 		BUGSlogging::log('B2 framework loaded');
-		BUGSlogging::log('Loading routes', 'routing');
-		if (!($routes = BUGScache::get('routes')))
-		{
-			BUGSlogging::log('generating routes', 'routing');
-			require BUGS2_INCLUDE_PATH . 'core/load_routes.inc.php';
-			BUGScache::add('routes', BUGScontext::getRouting()->getRoutes());
-		}
-		else
-		{
-			BUGSlogging::log('loading routes from cache', 'routing');
-			BUGScontext::getRouting()->setRoutes($routes);
-		}
-		BUGSlogging::log('...done', 'routing');
 	}
 	catch (Exception $e)
 	{

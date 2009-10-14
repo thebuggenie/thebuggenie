@@ -190,7 +190,7 @@
 		 * @param string $url the url to forward to
 		 * @param integer $code HTTP status code
 		 */
-		public function headerRedirect($url, $code)
+		public function headerRedirect($url, $code = 302)
 		{
 			BUGSlogging::log('Running header redirect function');
 			$this->clearHeaders();

@@ -23,23 +23,6 @@
 		const FORWARD_META = 2;
 		
 		/**
-		 * The response object
-		 * 
-		 * @var BUGSresponse
-		 */
-		protected $_response;
-		
-		/**
-		 * Constructor
-		 * 
-		 * @param BUGSresponse $response The response object
-		 */
-		public function __construct($response)
-		{
-			$this->_response = $response;
-		}
-		
-		/**
 		 * Forward the user to a specified url
 		 * 
 		 * @param string $url The URL to forward to
@@ -124,7 +107,7 @@
 		 */
 		protected function getResponse()
 		{
-			return $this->_response;
+			return BUGScontext::getResponse();
 		}
 		
 		/**

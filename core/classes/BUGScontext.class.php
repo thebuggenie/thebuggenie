@@ -387,6 +387,21 @@
 				{
 					throw new Exception('The Bug Genie seems installed, but B2DB isn\'t configured. This usually indicates an error with the installation. Try removing the file ' . BUGS2_INCLUDE_PATH . 'installed and try again.');
 				}
+				
+				BUGSlogging::log('Loading routes', 'routing');
+				if (!($routes = BUGScache::get('routes')))
+				{
+					BUGSlogging::log('generating routes', 'routing');
+					require BUGS2_INCLUDE_PATH . 'core/load_routes.inc.php';
+					BUGScache::add('routes', self::getRouting()->getRoutes());
+				}
+				else
+				{
+					BUGSlogging::log('loading routes from cache', 'routing');
+					self::getRouting()->setRoutes($routes);
+				}
+				BUGSlogging::log('...done', 'routing');
+
 				BUGSlogging::log("Setting current scope");
 				self::setScope();
 				BUGSlogging::log("...done");
@@ -394,6 +409,8 @@
 				BUGSlogging::log("Loading settings");
 				BUGSsettings::loadSettings();
 				BUGSlogging::log("...done");
+
+				self::$_response = new BUGSresponse();
 			
 				$load_modules = true;
 				BUGSlogging::log('Loading user');
@@ -421,7 +438,7 @@
 					BUGSlogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', BUGSlogging::LEVEL_WARNING);
 					if (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'login')
 					{
-						BUGSaction::forward(self::getRouting()->generate('login'));
+						self::getResponse()->headerRedirect(self::getRouting()->generate('login'));
 					}
 					else
 					{
@@ -1280,14 +1297,12 @@
 			$preActionToRunName = 'pre' . ucfirst($method);
 
 			// Set up the response object, responsible for controlling any output
-			$responseObject = new BUGSresponse();
-			self::$_response = $responseObject;
-			$responseObject->setPage(self::getRouting()->getCurrentRouteName());
-			$responseObject->setTemplate(strtolower($method) . '.php');
-			$responseObject->setDecoration(BUGSresponse::DECORATE_BOTH, array('header' => self::getIncludePath() . 'core/templates/header.inc.php', 'footer' => self::getIncludePath() . 'core/templates/footer.inc.php'));
+			self::getResponse()->setPage(self::getRouting()->getCurrentRouteName());
+			self::getResponse()->setTemplate(strtolower($method) . '.php');
+			self::getResponse()->setDecoration(BUGSresponse::DECORATE_BOTH, array('header' => self::getIncludePath() . 'core/templates/header.inc.php', 'footer' => self::getIncludePath() . 'core/templates/footer.inc.php'));
 
 			// Set up the action object
-			$actionObject = new $actionClassName($responseObject);
+			$actionObject = new $actionClassName();
 
 			// Run the specified action method set if it exists
 			if (method_exists($actionObject, $actionToRunName))
@@ -1327,21 +1342,21 @@
 
 					// Check to see if the template has been changed, and whether it's in a
 					// different module, specified by "module/templatename"
-					if (strpos($responseObject->getTemplate(), '/'))
+					if (strpos(self::getResponse()->getTemplate(), '/'))
 					{
-						$newPath = explode('/', $responseObject->getTemplate());
+						$newPath = explode('/', self::getResponse()->getTemplate());
 						$templateName = self::getIncludePath() . 'modules/' . $newPath[0] . '/templates/' . $newPath[1];
 					}
 					else
 					{
-						$templateName = $templatePath . $responseObject->getTemplate();
+						$templateName = $templatePath . self::getResponse()->getTemplate();
 					}
 
 					// Check to see if the template exists and throw an exception otherwise
 					if (!file_exists($templateName))
 					{
-						BUGSlogging::log('The template file for the ' . $method . ' action ("'.$responseObject->getTemplate().'") does not exist', 'core', BUGSlogging::LEVEL_FATAL);
-						throw new BUGSTemplateNotFoundException('The template file for the ' . $method . ' action ("'.$responseObject->getTemplate().'") does not exist');
+						BUGSlogging::log('The template file for the ' . $method . ' action ("'.self::getResponse()->getTemplate().'") does not exist', 'core', BUGSlogging::LEVEL_FATAL);
+						throw new BUGSTemplateNotFoundException('The template file for the ' . $method . ' action ("'.self::getResponse()->getTemplate().'") does not exist');
 					}
 
 					// Make all template variables available to the template, including the
@@ -1369,7 +1384,7 @@
 					/**
 					 * @global BUGSresponse The action object
 					 */
-					$bugs_response = $responseObject;
+					$bugs_response = self::getResponse();
 
 					// Load the "ui" library, since this is used a lot
 					self::loadLibrary('ui');
@@ -1385,10 +1400,10 @@
 				// Render header template if any, and store the output in a variable
 				ob_start();
 				ob_implicit_flush(0);
-				if (!self::getRequest()->isAjaxCall() && $responseObject->doDecorateHeader())
+				if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateHeader())
 				{
 					BUGSlogging::log('decorating with header');
-					require $responseObject->getHeaderDecoration(); 
+					require self::getResponse()->getHeaderDecoration();
 					$decoration_header = ob_get_clean();
 				}
 
@@ -1406,17 +1421,17 @@
 				}
 
 				// Render footer template if any, and store the output in a variable
-				if (!self::getRequest()->isAjaxCall() && $responseObject->doDecorateFooter())
+				if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateFooter())
 				{
 					BUGSlogging::log('decorating with footer');
-					require $responseObject->getFooterDecoration(); 
+					require self::getResponse()->getFooterDecoration();
 					$decoration_footer = ob_get_clean();
 				}
 				BUGSlogging::log('...done');
 				BUGSlogging::log('rendering content');
 
 				// Render output in correct order
-				$responseObject->renderHeaders();
+				self::getResponse()->renderHeaders();
 
 				if (isset($decoration_header))
 				{
