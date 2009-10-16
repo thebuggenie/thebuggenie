@@ -18,7 +18,6 @@
 	$routes[] = array('main_find_identifiable', '/find/identifiable/by/*', 'main', 'findIdentifiable');
 	$routes[] = array('toggle_favourite_issue', '/toggle_favourite_issue/:issue_id', 'main', 'toggleFavouriteIssue');
 	$routes[] = array('project_reportissue', '/:project_key/reportissue/*', 'main', 'reportIssue');
-	$routes[] = array('project_dashboard', '/:project_key/dashboard', 'project', 'dashboard');
 	$routes[] = array('project_planning', '/:project_key/planning', 'project', 'planning');
 	$routes[] = array('project_issues', '/:project_key/issues', 'project', 'issues');
 	$routes[] = array('project_team', '/:project_key/team', 'project', 'team');
@@ -71,6 +70,7 @@
 	$routes[] = array('configure_teams_groups', '/configure/teams_and_groups', 'configuration', 'index', array('config_module' => 'core', 'section' => 1));
 	$routes[] = array('configure_modules', '/configure/modules', 'configuration', 'index', array('config_module' => 'core', 'section' => 15));
 	$routes[] = array('configure_module', '/configure/module/:config_module', 'configuration', 'index');
+	$routes[] = array('project_dashboard', '/:project_key', 'project', 'dashboard');
 	
 	foreach ($routes as $route)
 	{

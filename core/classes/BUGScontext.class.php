@@ -377,6 +377,7 @@
 			{
 				BUGSlogging::log('Loading request');
 				self::$_request = new BUGSrequest();
+				self::$_response = new BUGSresponse();
 				BUGSlogging::log('...done');
 				if (!is_readable(BUGS2_INCLUDE_PATH . 'installed') && !isset($argc))
 				{
@@ -410,8 +411,6 @@
 				BUGSsettings::loadSettings();
 				BUGSlogging::log("...done");
 
-				self::$_response = new BUGSresponse();
-			
 				$load_modules = true;
 				BUGSlogging::log('Loading user');
 				try
@@ -1300,7 +1299,7 @@
 			self::getResponse()->setPage(self::getRouting()->getCurrentRouteName());
 			self::getResponse()->setTemplate(strtolower($method) . '.php');
 			self::getResponse()->setDecoration(BUGSresponse::DECORATE_BOTH, array('header' => self::getIncludePath() . 'core/templates/header.inc.php', 'footer' => self::getIncludePath() . 'core/templates/footer.inc.php'));
-
+			
 			// Set up the action object
 			$actionObject = new $actionClassName();
 
@@ -1476,7 +1475,7 @@
 			BUGSlogging::log('Dispatching');
 			try
 			{
-				if ($route = self::getRouting()->getRouteFromUrl(self::getRequest()->getParameter('url')))
+				if (($route = self::getRouting()->getRouteFromUrl(self::getRequest()->getParameter('url')))  || self::isInstallmode())
 				{
 					if (self::isInstallmode())
 					{
@@ -1521,7 +1520,7 @@
 			catch (BUGSActionNotFoundException $e)
 			{
 				header("HTTP/1.0 404 Not Found", true, 404);
-				tbg_exception('Module action does not exist', $e);
+				tbg_exception('Module action does not exist for module "' . $route['module'] . '"', $e);
 				exit();				
 			}
 			catch (Exception $e)

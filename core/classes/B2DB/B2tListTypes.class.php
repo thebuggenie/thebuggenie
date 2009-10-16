@@ -76,7 +76,7 @@
 			}
 		}
 
-		public function loadFixtures($scopes)
+		public function loadFixtures($scope)
 		{
 			$i18n = BUGScontext::getI18n();
 			
@@ -161,7 +161,7 @@
 				$res = $this->doInsert($crit);
 				if ($cc == 3)
 				{
-					self::saveSetting('defaultseverityfornewissues', $res->getInsertID(), 'core', $scope);
+					BUGSsettings::saveSetting('defaultseverityfornewissues', $res->getInsertID(), 'core', $scope);
 				}
 			}
 
