@@ -21,6 +21,7 @@
 	$routes[] = array('project_planning', '/:project_key/planning', 'project', 'planning');
 	$routes[] = array('project_issues', '/:project_key/issues', 'project', 'issues');
 	$routes[] = array('project_team', '/:project_key/team', 'project', 'team');
+	$routes[] = array('project_statistics', '/:project_key/statistics', 'project', 'statistics');
 	$routes[] = array('getreportissuefields', '/reportissue/get/fields/for/project/*', 'main', 'reportIssueGetFields');
 	$routes[] = array('reportissue', '/reportissue/*', 'main', 'reportIssue');
 	$routes[] = array('search', '/issues', 'search', 'findIssues');

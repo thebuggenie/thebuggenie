@@ -87,6 +87,18 @@
 			}
 			$this->_foreigntables[$addtable->getB2DBAlias()] = array('table' => $addtable, 'key' => $key, 'column' => $column);
 		}
+
+		public function getForeignTableByLocalColumn($column)
+		{
+			foreach ($this->_foreigntables as $foreign_table)
+			{
+				if ($foreign_table['column'] == $column)
+				{
+					return $foreign_table;
+				}
+			}
+			return null;
+		}
 		
 		public function __toString()
 		{

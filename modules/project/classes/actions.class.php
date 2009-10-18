@@ -74,6 +74,15 @@
 		}
 
 		/**
+		 * The project statistics page
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runStatistics($request)
+		{
+		}
+
+		/**
 		 * Return the project menu strip
 		 *
 		 * @param BUGSrequest $request The request object
@@ -91,7 +100,7 @@
 			}
 			catch (Exception $e) {}
 
-			return $this->renderTemplate('menustrip', array('project' => $project, 'hide_button' => $hide_button));
+			return $this->renderComponent('menustrip', array('project' => $project, 'hide_button' => $hide_button));
 		}
 
 	}

@@ -482,6 +482,7 @@
 			else
 			{
 				$issue_no = explode('-', strtoupper($issue_no));
+				BUGSlogging::log('exploding');
 				if (count($issue_no) == 2 && $row = B2DB::getTable('B2tIssues')->getByPrefixAndIssueNo($issue_no[0], $issue_no[1]))
 				{
 					$theIssue = BUGSfactory::BUGSissueLab($row->get(B2tIssues::ID), $row);
@@ -490,6 +491,7 @@
 						return null;
 					}
 				}
+				BUGSlogging::log('exploding done');
 			}
 		
 			return ($theIssue instanceof BUGSissue) ? $theIssue : null;
@@ -514,7 +516,7 @@
 			}
 			if ($row === null)
 			{
-				$row = B2DB::getTable('B2tIssues')->getByID($i_id);
+				$row = B2DB::getTable('B2tIssues')->getByID($i_id, false);
 			}
 	
 			if (!$row instanceof B2DBRow)

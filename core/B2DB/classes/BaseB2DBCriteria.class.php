@@ -483,10 +483,10 @@
 			}
 			elseif (is_array($join))
 			{
-				foreach ($join as $ajointable)
+				foreach ($join as $join_column)
 				{
-					$aForeign = $this->fromtable->getForeignTable($ajointable);
-					$this->addJoin($aForeign['table'], $aForeign['table']->getB2DBAlias() . '.' . $this->getColumnName($aForeign['key']), $this->fromtable->getB2DBAlias() . '.' . $this->getColumnName($aForeign['column']));
+					$foreign = $this->fromtable->getForeignTableByLocalColumn($join_column);
+					$this->addJoin($foreign['table'], $foreign['table']->getB2DBAlias() . '.' . $this->getColumnName($foreign['key']), $this->fromtable->getB2DBAlias() . '.' . $this->getColumnName($foreign['column']));
 				}
 			}
 			

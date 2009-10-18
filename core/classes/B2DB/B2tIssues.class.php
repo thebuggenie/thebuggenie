@@ -160,7 +160,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
-			$row = $this->doSelectById($id, $crit);
+			$row = $this->doSelectById($id, $crit, false);
 			return $row;
 		}
 		
@@ -237,7 +237,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(B2tProjects::PREFIX, $prefix);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
-			$row = $this->doSelectOne($crit);
+			$row = $this->doSelectOne($crit, array(self::PROJECT_ID));
 			return $row;
 		}
 		

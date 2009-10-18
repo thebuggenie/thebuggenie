@@ -149,7 +149,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
-			$row = $this->doSelectById($id, $crit);
+			$row = $this->doSelectById($id, $crit, false);
 			return $row;
 		}
 		
@@ -158,7 +158,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
 			$crit->addWhere(self::KEY, $key);
-			$row = $this->doSelectOne($crit);
+			$row = $this->doSelectOne($crit, false);
 			return $row;
 		}
 	}

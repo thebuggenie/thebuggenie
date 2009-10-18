@@ -1155,7 +1155,7 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .header_menu li:hover a { color: #FFF; }
 .header_menu li.nohover:hover a { padding: 4px 6px 3px 7px; color: #FFF; font-size: 13px; }
 .header_menu li a { border-top: 0; padding: 4px 6px 5px 6px; color: #FFF; font-size: 13px; }
-.menu_project_strip { position: relative; font-size: 13px; background-color: #FFF;/*D4E5FF*/ border-bottom: 1px solid #D9D9BB; border-top: 1px solid #D9D9BB; padding: 0; margin-top: 10px; height: 33px; color: #444; width: 100%; background-color: #FFFBE2; }
+.menu_project_strip { position: relative; font-size: 13px; background-color: #FFF;/*D4E5FF*/ border-bottom: 1px solid #D9D9BB; border-top: 1px solid #D9D9BB; padding: 0; margin-top: 5px; height: 33px; color: #444; width: 100%; background-color: #FFFBE2; }
 .menu_project_strip .project_name { font-size: 14px; font-weight: bold; padding: 8px; background-color: #F4EC8B; height: 17px; float: left; margin-right: 6px; }
 .menu_project_strip .project_stuff { float: left; position: relative; height: 33px; min-width: 500px; }
 .menu_project_strip .project_stuff ul li a { font-size: 13px; border-color: #FFFBE2; padding-bottom: 8px; }

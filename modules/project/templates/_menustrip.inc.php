@@ -2,7 +2,7 @@
 	<div class="project_name<?php if (!$project instanceof BUGSproject): ?> faded_dark<?php endif; ?>">
 		<?php echo image_tag('spinning_32.gif', array('id' => 'project_menustrip_indicator', 'style' => 'display: none;')); ?>
 		<span id="project_menustrip_name">
-			<?php if ($bugs_response->getPage() != 'reportissue'): ?>
+			<?php if ($show_report_button): ?>
 				<a href="javascript:void(0);" onclick="$('project_menustrip_change').toggle();" style="float: right; margin-left: 10px;" class="image"><?php echo image_tag('expand.png'); ?></a>
 			<?php endif; ?>
 			<?php if (!$project instanceof BUGSproject): ?>
@@ -37,10 +37,11 @@
 	<?php if ($project instanceof BUGSproject): ?>
 		<div class="project_stuff">
 		<ul>
-			<li<?php if ($bugs_response->getPage() == 'project_dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Project dashboard')); ?></li>
-			<li<?php if ($bugs_response->getPage() == 'project_planning'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning')); ?></li>
-			<li<?php if ($bugs_response->getPage() == 'project_issues'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?></li>
-			<li<?php if ($bugs_response->getPage() == 'project_team'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_team', array('project_key' => $project->getKey())), __('Team')); ?></li>
+			<li<?php if ($selected_tab == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Project dashboard')); ?></li>
+			<li<?php if ($selected_tab == 'planning'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning')); ?></li>
+			<li<?php if ($selected_tab == 'issues'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?></li>
+			<li<?php if ($selected_tab == 'team'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_team', array('project_key' => $project->getKey())), __('Team')); ?></li>
+			<li<?php if ($selected_tab == 'statistics'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_statistics', array('project_key' => $project->getKey())), __('Statistics')); ?></li>
 		</ul> 
 		</div>
 		<?php if ($bugs_response->getPage() != 'reportissue' && (!isset($hide_button) || (isset($hide_button) && $hide_button == false))): ?>

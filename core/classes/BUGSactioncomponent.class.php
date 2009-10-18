@@ -98,5 +98,10 @@
 			
 			require $template_file;
 		}
+
+		protected function getResponse()
+		{
+			return BUGScontext::getResponse();
+		}
 		
 	}
