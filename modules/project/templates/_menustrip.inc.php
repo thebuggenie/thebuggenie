@@ -39,6 +39,7 @@
 		<ul>
 			<li<?php if ($selected_tab == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Project dashboard')); ?></li>
 			<li<?php if ($selected_tab == 'planning'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning')); ?></li>
+			<li<?php if ($selected_tab == 'scrum'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_scrum', array('project_key' => $project->getKey())), __('Scrum')); ?></li>
 			<li<?php if ($selected_tab == 'issues'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?></li>
 			<li<?php if ($selected_tab == 'team'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_team', array('project_key' => $project->getKey())), __('Team')); ?></li>
 			<li<?php if ($selected_tab == 'statistics'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_statistics', array('project_key' => $project->getKey())), __('Statistics')); ?></li>

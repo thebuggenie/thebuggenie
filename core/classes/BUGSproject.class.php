@@ -143,12 +143,19 @@
 		protected $_components = null;
 		
 		/**
-		 * List of issues registered for this project
-		 * 
+		 * Count of issues registered for this project
+		 *
 		 * @var integer
 		 */
-		protected $_issues = null;
-		
+		protected $_issuecounts = null;
+
+		/**
+		 * Issues registered for this project with no milestone assigned
+		 *
+		 * @var array
+		 */
+		protected $_unassignedissues = null;
+
 		/**
 		 * The lead type for the project, BUGSidentifiableclass::TYPE_USER or BUGSidentifiableclass::TYPE_TEAM
 		 * 
@@ -1529,7 +1536,36 @@
 			$this->_populateIssuetypes();
 			return $this->_issuetypes;
 		}
-		
+
+		/**
+		 * Populates the internal array with unassigned issues
+		 */
+		protected function _populateUnassignedIssues()
+		{
+			if ($this->_unassignedissues == null)
+			{
+				$this->_unassignedissues = array();
+				if ($res = B2DB::getTable('B2tIssues')->getByProjectIDandNoMilestone($this->getID()))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$this->_unassignedissues[$row->get(B2tIssues::ID)] = BUGSfactory::BUGSissueLab($row->get(B2tIssues::ID));
+					}
+				}
+			}
+		}
+
+		/**
+		 * Returns an array with issues
+		 *
+		 * @return array
+		 */
+		public function getIssuesWithoutMilestone()
+		{
+			$this->_populateUnassignedIssues();
+			return $this->_unassignedissues;
+		}
+
 		/**
 		 * Populates visible milestones inside the project
 		 *
@@ -1612,49 +1648,49 @@
 		
 		protected function _populateIssueCounts()
 		{
-			if (!is_array($this->_issues))
+			if (!is_array($this->_issuecounts))
 			{
-				$this->_issues = array();
+				$this->_issuecounts = array();
 			}
-			if (!array_key_exists('all', $this->_issues))
+			if (!array_key_exists('all', $this->_issuecounts))
 			{
-				$this->_issues['all'] = array();
+				$this->_issuecounts['all'] = array();
 			}
-			if (empty($this->_issues['all']))
+			if (empty($this->_issuecounts['all']))
 			{
-				list ($this->_issues['all']['closed'], $this->_issues['all']['open']) = BUGSissue::getIssueCountsByProjectID($this->getID());
+				list ($this->_issuecounts['all']['closed'], $this->_issuecounts['all']['open']) = BUGSissue::getIssueCountsByProjectID($this->getID());
 			}
 		}
 		
 		protected function _populateIssueCountsByIssueType($issuetype_id)
 		{
-			if ($this->_issues === null)
+			if ($this->_issuecounts === null)
 			{
-				$this->_issues = array();
+				$this->_issuecounts = array();
 			}
-			if (!array_key_exists('issuetype', $this->_issues))
+			if (!array_key_exists('issuetype', $this->_issuecounts))
 			{
-				$this->_issues['issuetype'] = array();
+				$this->_issuecounts['issuetype'] = array();
 			}
-			if (!array_key_exists($issuetype_id, $this->_issues['issuetype']))
+			if (!array_key_exists($issuetype_id, $this->_issuecounts['issuetype']))
 			{
-				list ($this->_issues['issuetype'][$issuetype_id]['closed'], $this->_issues['issuetype'][$issuetype_id]['open']) = BUGSissue::getIssueCountsByProjectIDandIssuetype($this->getID(), $issuetype_id);
+				list ($this->_issuecounts['issuetype'][$issuetype_id]['closed'], $this->_issuecounts['issuetype'][$issuetype_id]['open']) = BUGSissue::getIssueCountsByProjectIDandIssuetype($this->getID(), $issuetype_id);
 			}
 		}
 
 		protected function _populateIssueCountsByMilestone($milestone_id)
 		{
-			if ($this->_issues === null)
+			if ($this->_issuecounts === null)
 			{
-				$this->_issues = array();
+				$this->_issuecounts = array();
 			}
-			if (!array_key_exists('milestone', $this->_issues))
+			if (!array_key_exists('milestone', $this->_issuecounts))
 			{
-				$this->_issues['milestone'] = array();
+				$this->_issuecounts['milestone'] = array();
 			}
-			if (!array_key_exists($milestone_id, $this->_issues['milestone']))
+			if (!array_key_exists($milestone_id, $this->_issuecounts['milestone']))
 			{
-				list ($this->_issues['milestone'][$milestone_id]['closed'], $this->_issues['milestone'][$milestone_id]['open']) = BUGSissue::getIssueCountsByProjectIDandMilestone($this->getID(), $milestone_id);
+				list ($this->_issuecounts['milestone'][$milestone_id]['closed'], $this->_issuecounts['milestone'][$milestone_id]['open']) = BUGSissue::getIssueCountsByProjectIDandMilestone($this->getID(), $milestone_id);
 			}
 		}
 
@@ -1736,7 +1772,7 @@
 		public function countAllIssues()
 		{
 			$this->_populateIssueCounts();
-			return $this->_issues['all']['closed'] + $this->_issues['all']['open'];
+			return $this->_issuecounts['all']['closed'] + $this->_issuecounts['all']['open'];
 		}
 		
 		/**
@@ -1749,7 +1785,7 @@
 		public function countIssuesByType($issuetype)
 		{
 			$this->_populateIssueCountsByIssueType($issuetype);
-			return $this->_issues['issuetype'][$issuetype]['closed'] + $this->_issues['issuetype'][$issuetype]['open'];
+			return $this->_issuecounts['issuetype'][$issuetype]['closed'] + $this->_issuecounts['issuetype'][$issuetype]['open'];
 		}
 
 		/**
@@ -1762,7 +1798,7 @@
 		public function countIssuesByMilestone($milestone)
 		{
 			$this->_populateIssueCountsByMilestone($milestone);
-			return $this->_issues['milestone'][$milestone]['closed'] + $this->_issues['milestone'][$milestone]['open'];
+			return $this->_issuecounts['milestone'][$milestone]['closed'] + $this->_issuecounts['milestone'][$milestone]['open'];
 		}
 		
 		/**
@@ -1773,7 +1809,7 @@
 		public function countAllOpenIssues()
 		{
 			$this->_populateIssueCounts();
-			return $this->_issues['all']['open'];
+			return $this->_issuecounts['all']['open'];
 		}
 		
 		/**
@@ -1786,7 +1822,7 @@
 		public function countOpenIssuesByType($issue_type)
 		{
 			$this->_populateIssueCountsByIssueType($issue_type);
-			return $this->_issues['issuetype'][$issue_type]['open'];
+			return $this->_issuecounts['issuetype'][$issue_type]['open'];
 		}
 
 		/**
@@ -1799,7 +1835,7 @@
 		public function countOpenIssuesByMilestone($milestone)
 		{
 			$this->_populateIssueCountsByMilestone($milestone);
-			return $this->_issues['milestone'][$milestone]['open'];
+			return $this->_issuecounts['milestone'][$milestone]['open'];
 		}
 		
 		/**
@@ -1810,7 +1846,7 @@
 		public function countAllClosedIssues()
 		{
 			$this->_populateIssueCounts();
-			return $this->_issues['all']['closed'];
+			return $this->_issuecounts['all']['closed'];
 		}
 		
 		/**
@@ -1823,7 +1859,7 @@
 		public function countClosedIssuesByType($issue_type)
 		{
 			$this->_populateIssueCountsByIssueType($issue_type);
-			return $this->_issues['issuetype'][$issue_type]['closed'];
+			return $this->_issuecounts['issuetype'][$issue_type]['closed'];
 		}
 
 		/**
@@ -1836,7 +1872,7 @@
 		public function countClosedIssuesByMilestone($milestone)
 		{
 			$this->_populateIssueCountsByMilestone($milestone);
-			return $this->_issues['milestone'][$milestone]['closed'];
+			return $this->_issuecounts['milestone'][$milestone]['closed'];
 		}
 		
 		/**

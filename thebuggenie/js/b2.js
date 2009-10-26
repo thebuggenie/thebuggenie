@@ -22,6 +22,14 @@ function hideBud(elem_id)
 	$('icon_' + elem_id).className = "imgtd_bud";
 }
 
+function failedMessage(title, content)
+{
+	$('message_failed_title').update(title);
+	$('message_failed_content').update(content);
+	$('message_failed').show();
+	new Effect.Pulsate('message_failed');
+}
+
 function updateProjectMenuStrip(url, project_id)
 {
 	new Ajax.Updater('project_menustrip', url, {

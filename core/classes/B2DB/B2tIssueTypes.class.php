@@ -55,6 +55,7 @@
 			$res = $this->doInsert($crit);
 			$issue_type_bug_report_id = $res->getInsertID();
 			BUGSsettings::saveSetting('defaultissuetypefornewissues', $issue_type_bug_report_id, 'core', $scope);
+			BUGSsettings::saveSetting('issuetype_bug_report', $issue_type_bug_report_id, 'core', $scope);
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, $i18n->__('Feature request'));
@@ -63,6 +64,7 @@
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_feature_request_id = $res->getInsertID();
+			BUGSsettings::saveSetting('issuetype_feature_request', $issue_type_feature_request_id, 'core', $scope);
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, $i18n->__('Enhancement'));
@@ -71,6 +73,7 @@
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_enhancement_id = $res->getInsertID();
+			BUGSsettings::saveSetting('issuetype_enhancement', $issue_type_enhancement_id, 'core', $scope);
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, $i18n->__('Task'));
@@ -79,6 +82,7 @@
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_task_id = $res->getInsertID();
+			BUGSsettings::saveSetting('issuetype_task', $issue_type_task_id, 'core', $scope);
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, $i18n->__('User story'));
@@ -88,8 +92,19 @@
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_user_story_id = $res->getInsertID();
+			BUGSsettings::saveSetting('issuetype_user_story', $issue_type_user_story_id, 'core', $scope);
 
-			B2DB::getTable('B2tIssueFields')->loadFixtures($scope, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id);
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::NAME, $i18n->__('Idea'));
+			$crit->addInsert(self::ICON, 'idea');
+			$crit->addInsert(self::DESCRIPTION, $i18n->__('Express yourself - share your ideas with the rest of the team!'));
+			$crit->addInsert(self::REDIRECT_AFTER_REPORTING, false);
+			$crit->addInsert(self::SCOPE, $scope);
+			$res = $this->doInsert($crit);
+			$issue_type_idea_id = $res->getInsertID();
+			BUGSsettings::saveSetting('issuetype_idea', $issue_type_idea_id, 'core', $scope);
+
+			B2DB::getTable('B2tIssueFields')->loadFixtures($scope, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id);
 		}
 		
 	}

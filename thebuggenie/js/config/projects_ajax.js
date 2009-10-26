@@ -316,14 +316,6 @@ function switchEditionTab(select_tab)
 	$('tab_edition_'+select_tab).addClassName('selected');
 }
 
-function failedMessage(title, content)
-{
-	$('message_failed_title').update(title);
-	$('message_failed_content').update(content);
-	$('message_failed').show();
-	new Effect.Pulsate('message_failed');
-}
-
 function addEdition(url)
 {
 	var params = Form.serialize('add_edition_form');

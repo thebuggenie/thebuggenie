@@ -5,6 +5,14 @@
 	 */
 	class mainActions extends BUGSaction
 	{
+
+		/**
+		 * The currently selected project in actions where there is one
+		 *
+		 * @access protected
+		 * @property BUGSproject $selected_project
+		 */
+
 		/**
 		 * View an issue
 		 * 
@@ -474,7 +482,8 @@
 					{
 						try
 						{
-							$issue = BUGSissue::createNew($this->title, $this->description, $issuetype_id, $project_id);
+							$issue = BUGSissue::createNew($this->title, $issuetype_id, $this->selected_project->getID());
+							if (isset($fields_array['description'])) $issue->setDescription($this->description);
 							if (isset($fields_array['reproduction_steps'])) $issue->setReproductionSteps($this->reproduction_steps);
 							if (isset($fields_array['category']) && $this->selected_category instanceof BUGSdatatype) $issue->setCategory($this->selected_category->getID());
 							if (isset($fields_array['status']) && $this->selected_status instanceof BUGSdatatype) $issue->setStatus($this->selected_status->getID());
@@ -486,6 +495,10 @@
 							if (isset($fields_array['edition']) && $this->selected_edition instanceof BUGSedition) $issue->addAffectedEdition($this->selected_edition);
 							if (isset($fields_array['build']) && $this->selected_build instanceof BUGSbuild) $issue->addAffectedBuild($this->selected_build);
 							if (isset($fields_array['component']) && $this->selected_component instanceof BUGScomponent) $issue->addAffectedComponent($this->selected_component);
+							if ($request->getParameter('return_format') == 'scrum')
+							{
+								return $this->renderJSON(array('failed' => false, 'story_id' => $issue->getID(), 'content' => $this->getComponentHTML('project/scrumcard', array('issue' => $issue))));
+							}
 							if ($this->selected_issuetype->getRedirectAfterReporting())
 							{
 								$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 303);
@@ -509,11 +522,18 @@
 						}
 						catch (Exception $e)
 						{
-							throw $e;
+							if ($request->getParameter('return_format') == 'scrum')
+							{
+								return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+							}
 							$errors[] = $e->getMessage();
 						}
 					}
 				}
+			}
+			if ($request->getParameter('return_format') == 'scrum')
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => join(', ', $errors)));
 			}
 			$this->errors = $errors;
 		}

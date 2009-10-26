@@ -217,6 +217,13 @@
 		protected $_severity;
 
 		/**
+		 * The scrum color
+		 *
+		 * @var string
+		 */
+		protected $_scrumcolor;
+
+		/**
 		 * The estimated time (months) to fix this issue
 		 * 
 		 * @var integer
@@ -313,7 +320,14 @@
 		 * @var array
 		 */
 		protected $_tasks;
-		
+
+		/**
+		 * List of tags for this issue
+		 *
+		 * @var array
+		 */
+		protected $_tags;
+
 		/**
 		 * List of related users
 		 * 
@@ -436,11 +450,11 @@
 		 * 
 		 * @return BUGSissue
 		 */
-		static function createNew($title, $description, $issuetype, $p_id, $issue_id = null)
+		static function createNew($title, $issuetype, $p_id, $issue_id = null)
 		{
 			try
 			{
-				$i_id = B2DB::getTable('B2tIssues')->createNewWithTransaction($title, $description, $issuetype, $p_id, $issue_id);
+				$i_id = B2DB::getTable('B2tIssues')->createNewWithTransaction($title, $issuetype, $p_id, $issue_id);
 				
 				$theIssue = BUGSfactory::BUGSissueLab($i_id);
 				$theIssue->addLogEntry(B2tLog::LOG_ISSUE_CREATED);
@@ -540,6 +554,7 @@
 			$this->_severity 				= $row->get(B2tIssues::SEVERITY);
 			$this->_category 				= $row->get(B2tIssues::CATEGORY);
 			$this->_reproducability 		= $row->get(B2tIssues::REPRODUCABILITY);
+			$this->_scrumcolor				= $row->get(B2tIssues::SCRUMCOLOR);
 			$this->_postedby 				= $row->get(B2tIssues::POSTED_BY);
 			$this->_ownedby 				= $row->get(B2tIssues::OWNED_BY);
 			$this->_ownedtype				= $row->get(B2tIssues::OWNED_TYPE);
@@ -1257,7 +1272,29 @@
 	
 			return $this->_tasks;
 		}
-	
+
+		/**
+		 * Returns an array of tags
+		 *
+		 * @return array
+		 */
+		public function getTags()
+		{
+			if ($this->_tags == null)
+			{
+				$this->_tags = array();
+				if ($res = B2DB::getTable('B2tIssueTags')->getByIssueID($this->getID()))
+				{
+					while ($row = $resultset->getNextRow())
+					{
+						$this->_tags[$row->get(B2tIssueTags::ID)] = $row->get(B2tIssueTags::TAG_NAME);
+					}
+				}
+			}
+
+			return $this->_tasks;
+		}
+
 		/**
 		 * Returns whether or not the issue has been deleted
 		 *
@@ -1424,37 +1461,37 @@
 			}
 			return $this->_priority;
 		}
-		
+
 		/**
 		 * Set the priority
-		 * 
+		 *
 		 * @param integer $priority_id The priority id to change to
 		 */
 		public function setPriority($priority_id)
 		{
 			$this->_addChangedProperty('_priority', $priority_id);
 		}
-	
-//		/**
-//		 * Check whether or not the priority is changed
-//		 * 
-//		 * @return boolean
-//		 */
-//		public function isPriorityChanged()
-//		{
-//			return $this->_isPropertyChanged('_priority');
-//		}
-//		
-//		/**
-//		 * Revert an unsaved resolution change
-//		 * 
-//		 * @return boolean
-//		 */
-//		public function revertPriority()
-//		{
-//			return $this->_revertPropertyChange('_priority');
-//		}
-		
+
+		/**
+		 * Returns the scrum color
+		 *
+		 * @return string
+		 */
+		public function getScrumColor()
+		{
+			return $this->_scrumcolor;
+		}
+
+		/**
+		 * Set the priority
+		 *
+		 * @param integer $priority_id The priority id to change to
+		 */
+		public function setScrumColor($color)
+		{
+			$this->_addChangedProperty('_scrumcolor', $color);
+		}
+
 		/**
 		 * Returns the assigned milestone if any
 		 *

@@ -40,6 +40,7 @@
 		const SEVERITY = 'bugs2_issues.severity';
 		const CATEGORY = 'bugs2_issues.category';
 		const REPRODUCABILITY = 'bugs2_issues.reproducability';
+		const SCRUMCOLOR = 'bugs2_issues.scrumcolor';
 		const ESTIMATED_MONTHS = 'bugs2_issues.estimated_months';
 		const ESTIMATED_WEEKS = 'bugs2_issues.estimated_weeks';
 		const ESTIMATED_DAYS = 'bugs2_issues.estimated_days';
@@ -81,6 +82,7 @@
 			parent::_addForeignKeyColumn(self::CATEGORY, B2DB::getTable('B2tListTypes'), B2tListTypes::ID);
 			parent::_addForeignKeyColumn(self::SEVERITY, B2DB::getTable('B2tListTypes'), B2tListTypes::ID);
 			parent::_addForeignKeyColumn(self::REPRODUCABILITY, B2DB::getTable('B2tListTypes'), B2tListTypes::ID);
+			parent::_addVarchar(self::SCRUMCOLOR, 6, 'FFFFFF');
 			parent::_addInteger(self::ESTIMATED_MONTHS, 10);
 			parent::_addInteger(self::ESTIMATED_WEEKS, 10);
 			parent::_addInteger(self::ESTIMATED_DAYS, 10);
@@ -172,7 +174,7 @@
 			return $res;
 		}
 		
-		public function createNewWithTransaction($title, $description, $issue_type, $p_id, $issue_id = null)
+		public function createNewWithTransaction($title, $issue_type, $p_id, $issue_id = null)
 		{
 			$trans = B2DB::startTransaction();
 			
@@ -198,7 +200,6 @@
 			$crit->addInsert(self::LAST_UPDATED, $posted);
 			$crit->addInsert(self::TITLE, $title);
 			$crit->addInsert(self::PROJECT_ID, $p_id);
-			$crit->addInsert(self::LONG_DESCRIPTION, $description);
 			$crit->addInsert(self::ISSUE_TYPE, $issue_type);
 			$crit->addInsert(self::POSTED_BY, BUGScontext::getUser()->getUID());
 			$crit->addInsert(self::STATUS, $status_id);
@@ -257,6 +258,16 @@
 			return $res;
 		}
 		
+		public function getByProjectIDandNoMilestone($project_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::MILESTONE, 0);
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addWhere(self::DELETED, 0);
+			$res = $this->doSelect($crit);
+			return $res;
+		}
+
 		public function clearMilestone($milestone_id)
 		{
 			$crit = $this->getCriteria();

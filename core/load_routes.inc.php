@@ -19,6 +19,7 @@
 	$routes[] = array('toggle_favourite_issue', '/toggle_favourite_issue/:issue_id', 'main', 'toggleFavouriteIssue');
 	$routes[] = array('project_reportissue', '/:project_key/reportissue/*', 'main', 'reportIssue');
 	$routes[] = array('project_planning', '/:project_key/planning', 'project', 'planning');
+	$routes[] = array('project_scrum', '/:project_key/scrum', 'project', 'scrum');
 	$routes[] = array('project_issues', '/:project_key/issues', 'project', 'issues');
 	$routes[] = array('project_team', '/:project_key/team', 'project', 'team');
 	$routes[] = array('project_statistics', '/:project_key/statistics', 'project', 'statistics');

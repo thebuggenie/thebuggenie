@@ -170,14 +170,16 @@
 			if ($this->_issues == null)
 			{
 				$this->_issues = array();
-				$res = B2DB::getTable('B2tIssues')->getByMilestone($this->getID());
-				while ($row = $res->getNextRow())
+				if ($res = B2DB::getTable('B2tIssues')->getByMilestone($this->getID()))
 				{
-					$theIssue = BUGSfactory::BUGSissueLab($row->get(B2tIssues::ID));
-					$this->_issues[$theIssue->getID()] = $theIssue;
-					if ($theIssue->getState() == BUGSissue::STATE_CLOSED)
+					while ($row = $res->getNextRow())
 					{
-						$this->_closed_issues++;
+						$theIssue = BUGSfactory::BUGSissueLab($row->get(B2tIssues::ID));
+						$this->_issues[$theIssue->getID()] = $theIssue;
+						if ($theIssue->getState() == BUGSissue::STATE_CLOSED)
+						{
+							$this->_closed_issues++;
+						}
 					}
 				}
 			}

@@ -407,5 +407,35 @@
 		{
 			return (bool) self::get('enable_uploads');
 		}
+
+		public static function getIssueTypeBugReport()
+		{
+			return self::get('issuetype_bug_report');
+		}
 		
+		public static function getIssueTypeFeatureRequest()
+		{
+			return self::get('issuetype_feature_request');
+		}
+
+		public static function getIssueTypeEnhancement()
+		{
+			return self::get('issuetype_enhancement');
+		}
+
+		public static function getIssueTypeTask()
+		{
+			return self::get('issuetype_task');
+		}
+
+		public static function getIssueTypeUserStory()
+		{
+			return self::get('issuetype_user_story');
+		}
+
+		public static function getIssueTypeIdea()
+		{
+			return self::get('issuetype_idea');
+		}
+
 	}

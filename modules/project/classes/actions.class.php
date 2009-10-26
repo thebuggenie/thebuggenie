@@ -7,6 +7,13 @@
 	{
 
 		/**
+		 * The currently selected project
+		 *
+		 * @access protected
+		 * @property BUGSproject $selected_project The currently selected project
+		 */
+
+		/**
 		 * Pre-execute function
 		 *
 		 * @param BUGSrequest 	$request
@@ -33,8 +40,8 @@
 			if ($this->selected_project instanceof BUGSproject)
 			{
 				BUGScontext::setCurrentProject($this->selected_project);
+				$this->project_key = $this->selected_project->getKey();
 			}
-			//$this->project
 		}
 
 		/**
@@ -53,6 +60,16 @@
 		 */
 		public function runPlanning($request)
 		{
+		}
+
+		/**
+		 * The project scrum page
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runScrum($request)
+		{
+			$this->unassigned_issues = $this->selected_project->getIssuesWithoutMilestone();
 		}
 
 		/**
