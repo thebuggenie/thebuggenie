@@ -44,10 +44,22 @@
 					BUGSlogging::log('Settings not cached. Retrieving from database');
 					if ($res = B2DB::getTable('B2tSettings')->getSettingsForEnabledScope(BUGScontext::getScope()->getID()))
 					{
+						$cc = 0;
 						while ($row = $res->getNextRow())
 						{
+							$cc++;
 							self::$_settings[$row->get(B2tSettings::MODULE)][$row->get(B2tSettings::NAME)][$row->get(B2tSettings::UID)] = $row->get(B2tSettings::VALUE);
 						}
+						if ($cc == 0)
+						{
+							BUGSlogging::log('There were no settings stored in the database!', 'main', BUGSlogging::LEVEL_FATAL);
+							throw new Exception('Could not retrieve settings from database');
+						}
+					}
+					else
+					{
+						BUGSlogging::log('Settings could not be retrieved from the database!', 'main', BUGSlogging::LEVEL_FATAL);
+						throw new Exception('Could not retrieve settings from database');
 					}
 					BUGSlogging::log('Retrieved');
 					BUGScache::add('settings', self::$_settings);
