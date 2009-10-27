@@ -182,6 +182,7 @@
 			}
 			catch (Exception $e)
 			{
+				throw $e;
 				$this->error = $e->getMessage();
 			}
 		}
@@ -198,8 +199,13 @@
 		{
 			try
 			{
-				BUGScontext::reinitializeI18n($request->getParameter('language'));
+				BUGSlogging::log('Initializing language support');
+				BUGScontext::reinitializeI18n($_REQUEST['language']);
+
+				BUGSlogging::log('Loading fixtures for default scope');
 				BUGSsettings::loadFixtures(1);
+
+				BUGSlogging::log('Setting up default users and groups');
 				$this->saveSettings();
 				BUGSsettings::saveSetting('language', $request->getParameter('language'), 'core', 1);
 				BUGScontext::getScope()->setHostname($request->getParameter('url_host'));

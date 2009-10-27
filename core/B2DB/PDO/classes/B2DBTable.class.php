@@ -21,7 +21,7 @@
 		
 		protected function getQC()
 		{
-			$qc = "`";
+			$qc = '`';
 			switch (B2DB::getDBtype())
 			{
 				case 'pgsql':

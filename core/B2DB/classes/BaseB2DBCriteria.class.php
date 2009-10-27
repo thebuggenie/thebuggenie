@@ -532,7 +532,14 @@
 			if (is_bool($value))
 			{
 				//var_dump($value);
-				$this->values[] = ($value) ? 'true' : 'false';
+				if (B2DB::getDBtype() == 'mysql')
+				{
+					$this->values[] = (int) $value;
+				}
+				elseif (B2DB::getDBtype() == 'pgsql')
+				{
+					$this->values[] = ($value) ? 'true' : 'false';
+				}
 			}
 			else
 			{
