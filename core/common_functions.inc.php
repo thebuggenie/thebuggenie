@@ -119,6 +119,10 @@
 				$date = date('G\h i\m', $tstamp);
 				date_default_timezone_set($old);
 				return $date;
+			case 19:
+				$tstring = strftime('%H:%M', $tstamp);
+				return $tstring;
+				break;
 			default:
 				return $tstamp;
 		}

@@ -28,6 +28,7 @@
 		const APPLIES_TYPE = 'bugs2_issuetypes.applies_type';
 		const ICON = 'bugs2_issuetypes.icon';
 		const IS_TASK = 'bugs2_issuetypes.is_task';
+		const IS_REPORTABLE = 'bugs2_issuetypes.is_reportable';
 		const REDIRECT_AFTER_REPORTING = 'bugs2_issuetypes.redirect_after_reporting';
 
 		public function __construct()
@@ -39,6 +40,7 @@
 			parent::_addVarchar(self::ICON, 20, 'bug_report');
 			parent::_addText(self::DESCRIPTION, false);
 			parent::_addBoolean(self::IS_TASK);
+			parent::_addBoolean(self::IS_REPORTABLE, true);
 			parent::_addBoolean(self::REDIRECT_AFTER_REPORTING, true);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
@@ -78,7 +80,8 @@
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, $i18n->__('Task'));
 			$crit->addInsert(self::ICON, 'task');
-			$crit->addInsert(self::IS_TASK, 1);
+			$crit->addInsert(self::IS_TASK, true);
+			$crit->addInsert(self::IS_REPORTABLE, false);
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_task_id = $res->getInsertID();
@@ -98,7 +101,7 @@
 			$crit->addInsert(self::NAME, $i18n->__('Idea'));
 			$crit->addInsert(self::ICON, 'idea');
 			$crit->addInsert(self::DESCRIPTION, $i18n->__('Express yourself - share your ideas with the rest of the team!'));
-			$crit->addInsert(self::REDIRECT_AFTER_REPORTING, false);
+			$crit->addInsert(self::IS_REPORTABLE, false);
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_idea_id = $res->getInsertID();

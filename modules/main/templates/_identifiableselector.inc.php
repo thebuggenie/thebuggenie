@@ -20,6 +20,8 @@
 			</div>
 		</form>
 		<div class="dropdown_content">
+			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), urlencode('%identifiable_value%')), array(1, $bugs_user->getID()), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $bugs_user->getUsername(); ?>)</a><br>
+			<br>
 			<?php if (count($bugs_user->getFriends()) == 0): ?>
 				<b class="faded_medium"><?php echo __("or - if you had any friends registered - you could've selected one from here"); ?></b>
 			<?php else: ?>

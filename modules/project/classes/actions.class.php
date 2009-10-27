@@ -51,6 +51,30 @@
 		 */
 		public function runDashboard($request)
 		{
+			$recent_activities = array();
+			foreach ($this->selected_project->getBuilds() as $build)
+			{
+				if ($build->isReleased() && $build->getReleaseDate() <= time())
+				{
+					if (!array_key_exists($build->getReleaseDate(), $recent_activities))
+					{
+						$recent_activities[$build->getReleaseDate()] = array();
+					}
+					$recent_activities[$build->getReleaseDate()][] = array('change_type' => 'build_release', 'info' => $build->getName());
+				}
+			}
+
+			foreach ($this->selected_project->getRecentLogItems() as $log_item)
+			{
+				if (!array_key_exists($log_item['timestamp'], $recent_activities))
+				{
+					$recent_activities[$log_item['timestamp']] = array();
+				}
+				$recent_activities[$log_item['timestamp']][] = $log_item;
+			}
+			krsort($recent_activities, SORT_NUMERIC);
+			$recent_activities = array_slice($recent_activities, 0, 20, true);
+			$this->recent_activities = $recent_activities;
 		}
 
 		/**

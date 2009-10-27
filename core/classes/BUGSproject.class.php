@@ -283,6 +283,13 @@
 		protected $_deleted = 0;
 
 		/**
+		 * Recent log items
+		 *
+		 * @var array
+		 */
+		protected $_logitems = null;
+
+		/**
 		 * Make a project default
 		 * 
 		 * @param $p_id integer The id for the default project
@@ -2118,6 +2125,26 @@
 		public function getIcon()
 		{
 			return ($this->hasIcon()) ? 'files/projects/' . $this->getID() . '.png' : 'icon_project.png';			
+		}
+
+		protected function _populateLogItems()
+		{
+			if ($this->_logitems === null)
+			{
+				$this->_logitems = array();
+				if ($res = B2DB::getTable('B2tLog')->getByProjectID($this->getID()))
+				{
+					$this->_logitems = $res;
+				}
+			}
+			
+			return $this->_logitems;
+		}
+
+		public function getRecentLogItems()
+		{
+			$this->_populateLogItems();
+			return $this->_logitems;
 		}
 		
 	}

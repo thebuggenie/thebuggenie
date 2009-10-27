@@ -78,11 +78,6 @@
 <div class="rounded_box mediumgrey_borderless" style="margin: 0;" id="viewissue_left_box_bottom">
 	<div class="xboxcontent" style="vertical-align: middle; padding: 0 10px 0 5px;">
 		<dl class="viewissue_list">
-			<dt><?php echo __('Project'); ?></dt>
-			<dd>
-				<?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?>
-				<?php echo $theIssue->getProject(); ?>
-			</dd>
 			<?php if ($theIssue->getProject()->isEditionsEnabled() && $theIssue->isEditionsVisible()): ?>
 				<dt><?php echo __('Edition(s)'); ?></dt>
 				<dd>

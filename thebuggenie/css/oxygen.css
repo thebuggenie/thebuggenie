@@ -1462,10 +1462,10 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #dashboard li.narrow { width: 300px; }
 #dashboard li.wide { width: 700px; }
 #dashboard li .header { margin: 2px 0 5px 0; padding: 3px 3px 3px 0; font-weight: bold; font-size: 13px; border-bottom: 1px solid #CCC; background-color: #FFF; }
-#dashboard .latest_action_dates { font-weight: bold; font-size: 13px; padding: 5px 0 5px 0; }
+#dashboard .latest_action_dates{ font-weight: bold; font-size: 13px; padding: 5px 0 5px 0; }
 
 #scrum td { vertical-align: top; }
-#scrum ul { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; min-height: 20px; }
+#scrum ul, #project_dashboard ul { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; min-height: 20px; }
 #scrum ul li { padding: 3px 3px 33px 8px; border: 1px solid #BBB; position: relative; margin-bottom: 10px; cursor: move; }
 #scrum ul li .header { font-size: 14px; font-weight: bold; }
 #scrum ul li .content { padding-top: 3px; line-height: 15px; font-size: 13px; font-weight: normal; margin-bottom: 12px; }
@@ -1480,3 +1480,9 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #scrum_unassigned label { float: left; padding-top: 4px; }
 #scrum_unassigned label, #scrum_unassigned input[type="submit"] { font-size: 12px; font-weight: bold; }
 #scrum_unassigned #story_title { width: 250px; }
+
+#project_dashboard #recent_activities td.latest_action_dates { font-size: 13px; font-weight: bold; padding: 10px 5px 2px 5px; }
+#project_dashboard td { vertical-align: top; }
+#project_dashboard #recent_activities td { font-size: 12px; }
+#project_dashboard #recent_activities td img { float: left; margin: 6px 6px 0 5px; }
+#project_dashboard #recent_activities td .time { float: left; font-size: 11px; color: #AAA; }

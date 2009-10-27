@@ -137,12 +137,6 @@
 </div>
 <div class="rounded_box mediumgrey_borderless" style="margin: 0;" id="viewissue_left_box_bottom">
 	<div class="xboxcontent" style="vertical-align: middle; padding: 0 10px 0 5px;">
-		<dl class="viewissue_list" id="project_dl">
-			<dt><?php echo __('Project'); ?></dt>
-			<dd>
-				<?php echo $issue->getProject()->getName(); ?>
-			</dd>
-		</dl>
 		<dl class="viewissue_list" id="edition_field"<?php if (!($issue->getProject()->isEditionsEnabled() && $issue->isEditionsVisible())): ?> style="display: none;"<?php endif; ?>>
 			<dt><?php echo __('Edition(s)'); ?></dt>
 			<dd>
