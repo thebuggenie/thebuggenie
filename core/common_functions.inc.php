@@ -123,6 +123,25 @@
 				$tstring = strftime('%H:%M', $tstamp);
 				return $tstring;
 				break;
+			case 20:
+				$tstring = '';
+				if (date('dmY', $tstamp) == date('dmY'))
+				{
+					$tstring .= __('Today') . ' (' . strftime('%H:%M', $tstamp) . ')';
+				}
+				elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
+				{
+					$tstring .= __('Yesterday') . ' (' . strftime('%H:%M', $tstamp) . ')';
+				}
+				elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
+				{
+					$tstring .= __('Tomorrow') . ' (' . strftime('%H:%M', $tstamp) . ')';
+				}
+				else
+				{
+					$tstring .= strftime("%b %d, ", $tstamp);
+				}
+				return $tstring;
 			default:
 				return $tstamp;
 		}

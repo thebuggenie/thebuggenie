@@ -301,6 +301,23 @@
 			
 			return $res;
 		}
+
+		public function getRecentByProjectIDandIssueType($project_id, $issuetypes, $limit = 5)
+		{
+			$crit = $this->getCriteria();
+			$crit->addJoin(B2DB::getTable('B2tIssueTypes'), B2tIssueTypes::ID, self::ISSUE_TYPE);
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addWhere(B2tIssueTypes::ICON, $issuetypes, B2DBCriteria::DB_IN);
+			$crit->addOrderBy(self::POSTED, B2DBCriteria::SORT_DESC);
+			if ($limit !== null)
+			{
+				$crit->setLimit($limit);
+			}
+
+			$res = $this->doSelect($crit);
+
+			return $res;
+		}
 				
 		
 	}

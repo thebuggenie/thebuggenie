@@ -3798,7 +3798,8 @@
 			$crit->addUpdate(B2tIssues::USER_WORKED_ON_SINCE, $this->_being_worked_on_since);
 			$crit->addUpdate(B2tIssues::MILESTONE, (is_object($this->_milestone)) ? $this->_milestone->getID() : $this->_milestone);
 			$res = B2DB::getTable('B2tIssues')->doUpdateById($crit, $this->getID());
-			
+			$this->getProject()->clearRecentActivities();
+
 			return true;
 		}
 

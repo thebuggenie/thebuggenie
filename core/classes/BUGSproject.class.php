@@ -287,7 +287,28 @@
 		 *
 		 * @var array
 		 */
-		protected $_logitems = null;
+		protected $_recentlogitems = null;
+
+		/**
+		 * Recent issues reported
+		 *
+		 * @var array
+		 */
+		protected $_recentissues = null;
+
+		/**
+		 * Recent new features / enhancements reported
+		 *
+		 * @var array
+		 */
+		protected $_recentfeatures = null;
+
+		/**
+		 * Recent activities
+		 *
+		 * @var array
+		 */
+		protected $_recentactivities = null;
 
 		/**
 		 * Make a project default
@@ -2129,22 +2150,135 @@
 
 		protected function _populateLogItems()
 		{
-			if ($this->_logitems === null)
+			if ($this->_recentlogitems === null)
 			{
-				$this->_logitems = array();
-				if ($res = B2DB::getTable('B2tLog')->getByProjectID($this->getID()))
+				$this->_recentlogitems = array();
+				if ($res = B2DB::getTable('B2tLog')->getImportantByProjectID($this->getID()))
 				{
-					$this->_logitems = $res;
+					$this->_recentlogitems = $res;
 				}
 			}
-			
-			return $this->_logitems;
 		}
 
+		/**
+		 * Return this projects most recent log items
+		 *
+		 * @return array A list of log items
+		 */
 		public function getRecentLogItems()
 		{
 			$this->_populateLogItems();
-			return $this->_logitems;
+			return $this->_recentlogitems;
+		}
+
+		protected function _populateRecentIssues()
+		{
+			if ($this->_recentissues === null)
+			{
+				$this->_recentissues = array();
+				if ($res = B2DB::getTable('B2tIssues')->getRecentByProjectIDandIssueType($this->getID(), array('bug_report')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$this->_recentissues[] = BUGSfactory::BUGSissueLab($row->get(B2tIssues::ID), $row);
+					}
+				}
+			}
+		}
+
+		protected function _populateRecentFeatures()
+		{
+			if ($this->_recentfeatures === null)
+			{
+				$this->_recentfeatures = array();
+				if ($res = B2DB::getTable('B2tIssues')->getRecentByProjectIDandIssueType($this->getID(), array('feature_request', 'enhancement')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$this->_recentfeatures[] = BUGSfactory::BUGSissueLab($row->get(B2tIssues::ID), $row);
+					}
+				}
+			}
+		}
+
+		/**
+		 * Return this projects 5 most recent issues
+		 *
+		 * @return array A list of BUGSissues
+		 */
+		public function getRecentIssues()
+		{
+			$this->_populateRecentIssues();
+			return $this->_recentissues;
+		}
+
+		/**
+		 * Return this projects 5 most recent feature requests / enhancements
+		 *
+		 * @return array A list of BUGSissues
+		 */
+		public function getRecentFeatures()
+		{
+			$this->_populateRecentFeatures();
+			return $this->_recentfeatures;
+		}
+
+		protected function _populateRecentActivities()
+		{
+			if ($this->_recentactivities === null)
+			{
+				$this->_recentactivities = array();
+				foreach ($this->getBuilds() as $build)
+				{
+					if ($build->isReleased() && $build->getReleaseDate() <= time())
+					{
+						if (!array_key_exists($build->getReleaseDate(), $this->_recentactivities))
+						{
+							$this->_recentactivities[$build->getReleaseDate()] = array();
+						}
+						$this->_recentactivities[$build->getReleaseDate()][] = array('change_type' => 'build_release', 'info' => $build->getName());
+					}
+				}
+
+				foreach ($this->getRecentLogItems() as $log_item)
+				{
+					if (!array_key_exists($log_item['timestamp'], $this->_recentactivities))
+					{
+						$this->_recentactivities[$log_item['timestamp']] = array();
+					}
+					$this->_recentactivities[$log_item['timestamp']][] = $log_item;
+				}
+				krsort($this->_recentactivities, SORT_NUMERIC);
+			}
+		}
+
+		/**
+		 * Return a list of recent activity for the project
+		 *
+		 * @param integer $limit Limit number of activities
+		 * @return array
+		 */
+		public function getRecentActivities($limit = null)
+		{
+			$this->_populateRecentActivities();
+			if ($limit !== null)
+			{
+				$recent_activities = array_slice($this->_recentactivities, 0, $limit, true);
+			}
+			else
+			{
+				$recent_activities = $this->_recentactivities;
+			}
+			
+			return $recent_activities;
+		}
+
+		public function clearRecentActivities()
+		{
+			$this->_recentactivities = null;
+			$this->_recentissues = null;
+			$this->_recentfeatures = null;
+			$this->_recentlogitems = null;
 		}
 		
 	}

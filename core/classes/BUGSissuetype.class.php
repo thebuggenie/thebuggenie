@@ -31,6 +31,8 @@
 		protected $_description;
 		
 		protected $_redirect_after_reporting = true;
+
+		protected $_reportable = null;
 		
 		static $_issuetypes = array();
 		
@@ -54,6 +56,7 @@
 					$this->_appliesto = ($row->get(B2tIssueTypes::APPLIES_TO) != 0) ? BUGSfactory::projectLab($row->get(B2tIssueTypes::APPLIES_TO)) : null;
 					$this->_itemdata = $row->get(B2tIssueTypes::ICON);
 					$this->_description = $row->get(B2tIssueTypes::DESCRIPTION);
+					$this->_reportable = (bool) $row->get(B2tIssueTypes::IS_REPORTABLE);
 					$this->_itemtype = BUGSdatatype::ISSUETYPE;
 					$this->_name = $row->get(B2tIssueTypes::NAME);
 					$this->_istask = (bool) $row->get(B2tIssueTypes::IS_TASK);
@@ -74,13 +77,22 @@
 		 * Returns whether or not this issue type is the default for promoting tasks to issues
 		 *
 		 * @return boolean
-		 * @access public
 		 */
 		public function isTask()
 		{
-			return $this->_istask;
+			return (bool) $this->_istask;
 		}
-		
+
+		/**
+		 * Returns whether or not this issue type is reportable
+		 *
+		 * @return boolean
+		 */
+		public function isReportable()
+		{
+			return (bool) $this->_reportable;
+		}
+
 		public function getIcon()
 		{
 			return $this->_itemdata;
