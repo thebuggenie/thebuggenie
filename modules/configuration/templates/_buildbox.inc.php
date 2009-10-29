@@ -101,7 +101,7 @@
 					<td style="width: auto;">
 						<select name="status" id="build_<?php echo $b_id; ?>_status">
 							<option value="" selected><?php echo __('All statuses'); ?></option>
-							<?php foreach (BUGSdatatype::getStatusTypes() as $aStatus): ?>
+							<?php foreach (BUGSstatus::getAll() as $aStatus): ?>
 								<option style="color: <?php echo $aStatus->getItemdata(); ?>" value=<?php echo $aStatus->getID(); ?>><?php echo $aStatus->getName(); ?></option>
 							<?php endforeach; ?>
 						</select>
@@ -110,7 +110,7 @@
 					<td style="width: auto;">
 						<select name="category" id="build_<?php echo $b_id; ?>_category">
 							<option value="" selected><?php echo __('All categories'); ?></option>
-							<?php foreach (BUGSdatatype::getCategories() as $aCategory): ?>
+							<?php foreach (BUGScategory::getAll() as $aCategory): ?>
 								<option value=<?php echo $aCategory->getID(); ?>><?php echo $aCategory->getName(); ?></option>
 							<?php endforeach; ?>
 						</select>

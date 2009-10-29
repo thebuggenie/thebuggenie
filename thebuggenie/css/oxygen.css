@@ -1326,6 +1326,8 @@ td.selected_red span	{ color: #FFF; }
 .noborder					{ border: 0; }
 .nobg						{ background-color: transparent; }
 
+.more_than_one_project_warning { color: #C55; }
+
 .transparent { filter:alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5; }
 .transparent_dark { filter:alpha(opacity=70); -moz-opacity:0.7; -khtml-opacity: 0.7; opacity: 0.7; }
 .transparent_light { filter:alpha(opacity=30); -moz-opacity:0.3; -khtml-opacity: 0.3; opacity: 0.3; }
@@ -1348,7 +1350,7 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .settings_list ul li { margin: 0 0 5px 0; font-size: 11px; font-weight: normal; clear: both; }
 .report_issue_header { margin: 10px auto 0 auto; font-size: 18px; font-weight: bold; padding: 2px 0 10px 0; width: 990px; }
 .issuetype_list { list-style-type: none; padding: 0; margin: 10px auto 0 auto; width: 1000px; clear: both; }
-.issuetype_list li { font-size: 11px; font-weight: normal; clear: none; margin: 5px 0 10px 0; width: 490px; text-align: left; float: left; }
+.issuetype_list li { font-size: 11px; font-weight: normal; clear: none; margin: 0 0 5px 0; width: 495px; text-align: left; float: left; }
 .issuetype_list li img { margin: 0 10px 0 0; float: left; }
 #report_issue_more_options_indicator { text-align: left; font-size: 13px; margin-top: 10px; }
 #reportissue_extrafields { list-style-type: none; padding: 0; margin: 10px 0 0 0; width: 1005px; clear: both; }
@@ -1486,3 +1488,6 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #project_dashboard .recent_activities td { font-size: 12px; }
 #project_dashboard .recent_activities td img { float: left; margin: 6px 6px 0 5px; }
 #project_dashboard .recent_activities td .time { float: left; font-size: 11px; color: #AAA; }
+#project_dashboard #project_header_container img { float: left; margin: 3px 5px 0 0; }
+#project_dashboard #project_name { font-size: 18px; font-weight: bold; margin: 5px 5px 5px 0; }
+#project_dashboard #project_description { font-size: 14px; font-weight: normal; color: #666; }

@@ -66,7 +66,7 @@
 		{
 			if (BUGScontext::getRequest()->isMethod(BUGSrequest::POST))
 			{
-				$settings = array('theme_name', 'user_themes', 'onlinestate', 'offlinestate', 'awaystate', 
+				$settings = array('theme_name', 'user_themes', 'onlinestate', 'offlinestate', 'awaystate', 'singleprojecttracker',
 									'requirelogin', 'allowreg', 'defaultgroup', 'returnfromlogin', 'returnfromlogout', 
 									'showloginbox', 'limit_registration', 'showprojectsoverview', 'showprojectsoverview', 
 									'cleancomments', 'b2_name', 'b2_tagline', 'url_subdir', 'local_path', 'server_timezone');

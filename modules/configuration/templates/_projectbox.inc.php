@@ -27,13 +27,13 @@
 		</tr>
 		<?php if ($project->hasDescription()): ?>
 			<tr>
-				<td colspan="2" style="padding: 3px;"><?php echo $project->getDescription(); ?></td>
+				<td colspan="2" style="padding: 3px;"><?php echo bugs_BBDecode($project->getDescription()); ?></td>
 			</tr>
 		<?php endif; ?>
 		<tr>
 			<td colspan="2" style="border-top: 1px solid #DDD; padding: 5px; background-color: #F9F9F9;">
 			<?php if (!$project->isEditionsEnabled() && $project->isBuildsEnabled()): ?>
-				<div style="float: right;"><span style="margin-right: 10px;"><strong><?php echo link_tag(make_url('configure_project_builds', array('project_id' => $project->getID())), image_tag('cfg_icon_builds.png', array('title' => __('Manage releases'), 'style' => 'float: left; margin-right: 5px;')) . __('Manage releases')); ?></strong></span></div>
+				<div style="float: right;"><span style="margin-right: 10px;"><strong><?php echo link_tag(make_url('configure_project_editions_components', array('project_id' => $project->getID())), image_tag('cfg_icon_builds.png', array('title' => __('Manage releases'), 'style' => 'float: left; margin-right: 5px;')) . __('Manage releases')); ?></strong></span></div>
 			<?php endif; ?>
 				<div style="float: right;"><span style="margin-right: 10px;"><strong><?php echo link_tag(make_url('configure_project_settings', array('project_id' => $project->getID())), image_tag('cfg_icon_projectsettings.png', array('title' => __('Edit project'), 'style' => 'float: left; margin-right: 5px;')) . __('Edit project')); ?></strong></span></div>
 				<div style="float: right;"><span style="margin-right: 10px;"><a href="javascript:void(0)" onClick="$('project_delete_confirm_<?php echo($project->getID()); ?>').show();"><?php echo image_tag('icon_delete.png', array('title' => __('Delete project'), 'style' => 'float: left; margin-right: 5px;')) . __('Delete');?></a></span></div>

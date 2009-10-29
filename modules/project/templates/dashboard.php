@@ -37,8 +37,19 @@
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
 		</td>
-		<td style="width: auto; padding-right: 5px;">
-			<div style="width: 300px; float: left; margin-right: 5px;">
+		<td style="width: auto; padding: 5px;">
+			<div style="clear: both; padding: 0 5px 5px 0;" id="project_header_container">
+				<?php echo image_tag($selected_project->getIcon()); ?>
+				<div id="project_name"><?php echo $selected_project->getName(); ?> (<?php echo $selected_project->getKey(); ?>)</div>
+				<div id="project_description"<?php if (!$selected_project->hasDescription()): ?> class="faded_dark"<?php endif; ?>>
+					<?php if ($selected_project->hasDescription()): ?>
+						<?php echo bugs_BBDecode($selected_project->getDescription()); ?>
+					<?php else: ?>
+						<?php echo __('This project has no description'); ?>
+					<?php endif; ?>
+				</div>
+			</div>
+			<div style="width: 305px; float: left; margin-right: 5px;">
 				<div class="header_div"><?php echo __('5 most recent issues / bugs'); ?></div>
 				<?php if (count($recent_issues) > 0): ?>
 					<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
@@ -68,7 +79,7 @@
 					<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No issues of this type posted'); ?></div>
 				<?php endif; ?>
 			</div>
-			<div style="width: 300px; float: left; margin-right: 5px;">
+			<div style="width: 305px; float: left; margin-right: 5px;">
 				<div class="header_div"><?php echo __('5 most recent feature requests'); ?></div>
 				<?php if (count($recent_features) > 0): ?>
 					<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">

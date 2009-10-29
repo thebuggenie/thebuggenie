@@ -91,6 +91,13 @@
 		 */
 		public function runIndex($request)
 		{
+			if (BUGSsettings::isSingleProjectTracker())
+			{
+				if (($projects = BUGSproject::getAll()) && $project = array_shift($projects))
+				{
+					$this->forward(BUGScontext::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())));
+				}
+			}
 			$this->getResponse()->setPage('index');
 			$this->showleftbar = false;
 			if (!BUGSuser::isThisGuest() && (BUGScontext::getUser()->showFollowUps() || BUGScontext::getUser()->showAssigned()))

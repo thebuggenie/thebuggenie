@@ -146,7 +146,7 @@
 			<td><label for="description"><?php echo __('Description'); ?></label></td>
 			<td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<input type="text" name="description" id="description" value="<?php print $theProject->getDescription(); ?>" style="width: 100%;">
+					<?php include_template('main/textarea', array('area_name' => 'description', 'height' => '75px', 'width' => '100%', 'value' => $theProject->getDescription(), 'hide_hint' => true)); ?>
 				<?php elseif ($theProject->hasDescription()): ?>
 					<?php echo $theProject->getDescription(); ?>
 				<?php else: ?>

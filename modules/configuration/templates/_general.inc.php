@@ -14,6 +14,24 @@
 		<td class="config_explanation" colspan="2"><?php echo __('This will appear beneath the name in the header on all pages'); ?> <i>(<?php echo __('HTML allowed'); ?>)</i></td>
 	</tr>
 	<tr>
+		<td><label for="singleprojecttracker"><?php echo __('Single project tracker mode'); ?></label></td>
+		<td>
+			<select name="singleprojecttracker" id="singleprojecttracker" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
+				<option value=1<?php if (BUGSsettings::isSingleProjectTracker()): ?> selected<?php endif; ?>><?php echo __('Behave as tracker for a single project'); ?></option>
+				<option value=0<?php if (!BUGSsettings::isSingleProjectTracker()): ?> selected<?php endif; ?>><?php echo __('No, use regular index page'); ?></option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="config_explanation" colspan="2">
+			<?php echo __('In single project tracker mode, The Bug Genie will display the homepage for the first project as the main page instead of the regular index page'); ?><br>
+			<?php if (count(BUGSproject::getAll()) > 1): ?>
+				<br>
+				<b class="more_than_one_project_warning"><?php echo __('More than one project exists. When in "single project" mode, accessing other projects than the first will become harder.'); ?></b>
+			<?php endif; ?>
+		</td>
+	</tr>
+	<tr>
 		<td><label for="showprojectsoverview"><?php echo __('Show projects overview'); ?></label></td>
 		<td>
 			<select name="showprojectsoverview" id="showprojectsoverview" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>

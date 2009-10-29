@@ -4,12 +4,12 @@
 	$bugs_response->addJavascript('reportissue.js');
 	
 ?>
-<div style="text-align: center;">
+<div style="text-align: center; margin-bottom: 10px;">
 	<div class="report_issue_header">
 		<?php echo __("What's the issue?"); ?>
 	</div>
 	<?php if (!empty($errors)): ?>
-		<div class="rounded_box report_issue_desc red_borderless" style="margin-bottom: 10px;">
+		<div class="rounded_box report_issue_desc red_borderless" style="margin-bottom: 5px;">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222;">
 				<strong><?php echo __('One or more errors occured when trying to file your issue'); ?>:</strong>
@@ -86,7 +86,7 @@
 				<?php if ($issuetype->isTask()) continue; ?>
 				<li class="rounded_box borderless" style="float: <?php if ($left): ?>left<?php else: ?>right<?php endif; ?>;">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent" style="vertical-align: middle; padding: 5px; min-height: 65px;">
+					<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 						<?php echo image_tag($issuetype->getIcon() . '.png'); ?>
 						<strong style="font-size: 14px;"><?php echo $issuetype->getName(); ?></strong><br>
 						<?php echo $issuetype->getDescription(); ?>

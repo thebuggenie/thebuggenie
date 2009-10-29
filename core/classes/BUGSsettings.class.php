@@ -276,7 +276,12 @@
 		{
 			return (bool) self::get('showprojectsoverview');
 		}
-		
+
+		public static function isSingleProjectTracker()
+		{
+			return (bool) self::get('singleprojecttracker');
+		}
+
 		public static function getThemeName()
 		{
 			return self::get('theme_name');

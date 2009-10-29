@@ -7,7 +7,7 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<title><?php echo ($bugs_response->hasTitle()) ? BUGSsettings::get('b2_name') . ' ~ ' . $bugs_response->getTitle() : BUGSsettings::get('b2_name'); ?></title>
+		<title><?php echo ($bugs_response->hasTitle()) ? strip_tags(BUGSsettings::get('b2_name') . ' ~ ' . $bugs_response->getTitle()) : strip_tags(BUGSsettings::get('b2_name')); ?></title>
 		<?php
 			
 			BUGScontext::trigger('core', 'header_begins');

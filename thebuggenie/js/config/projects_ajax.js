@@ -435,6 +435,7 @@ function addComponent(url)
 
 function submitProjectSettings(url)
 {
+	tinyMCE.triggerSave();
 	var params = Form.serialize('project_settings');
 	new Ajax.Request(url, {
 	asynchronous:true,
