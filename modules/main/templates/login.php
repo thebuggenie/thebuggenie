@@ -62,10 +62,8 @@
 	
 ?>
 <div class="logindiv">
-<table style="width: 900px;">
-<tr>
-<td valign="top">
-<div class="loginheader"><b><?php echo __('Welcome to'); ?> '<?php echo(BUGSsettings::getTBGname()); ?>'</b></div>
+
+<h1><?php echo __('Welcome to'); ?> <?php echo(BUGSsettings::getTBGname()); ?></h1>
 <?php echo __('Please fill in your username and password below, and press "Continue" to log in.'); ?>
 <?php if (BUGSsettings::get('allowreg') == true): ?> 
 	<?php echo __('If you have not already registered, please use the "Register new account" link. It is completely free and takes only a minute.'); ?>
@@ -73,57 +71,46 @@
 	<?php echo __('It is not possible to register new accounts from this page. To register a new account, please contact the administrator.'); ?>
 <?php endif; ?>
 <br><br>
-</td>
-</tr>
-</table>
-<table cellspacing=5 style="width: 900px;">
-<tr>
-<td style="width: auto;" valign="top">
+
 <form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" enctype="multipart/form-data" method="post" name="loginform">
 <?php if (isset($login_error)): ?>
-	<div class="login_error" style="margin-bottom: 5px; width: auto;">
-		<?php echo $login_error; ?>
+<div class="rounded_box red_borderless">
+	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+		<span style="font-size: larger; font-weight: bold;"><?php echo $login_error; ?></span>
 	</div>
+	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+</div>
+<br>
 <?php endif; ?>
-<table class="b2_section_loginframe" align="center" cellpadding=0 cellspacing=0 style="width: <?php echo (BUGSsettings::get('allowreg') == true) ? 100 : 50; ?>%;">
-<tr>
-<td class="b2_section_loginframe_header"><?php echo __('Log in to an existing account'); ?></td>
-</tr>
-<tr>
-<td style="padding: 5px;">
-<table align="center" style="width: 100%;">
-<tr>
-<td class="td1" style="width: 80px; text-align: center;"><b><?php echo __('Username'); ?></b></td>
-<td style="width: auto;"><input type="text" id="b2_username" name="b2_username" style="width: 200px;"></td>
-<td style="width: 30px;">&nbsp;</td>
-</tr>
-<tr>
-<td class="td1" style="width: 80px; text-align: center;"><b><?php echo __('Password'); ?></b></td>
-<td style="width: auto;"><input type="password" id="b2_password" name="b2_password" style="width: 200px;"></td>
-<td style="width: 30px;">&nbsp;</td>
-</tr>
-<tr>
-<td>&nbsp;</td>
-<td style="width: auto; text-align: right;" rowspan=2><input type="submit" id="login_button" value="<?php echo __('Continue'); ?>" style="border-bottom: 0px;"></td>
-<td style="width: 30px; text-align: center;" rowspan=2><a class="image" href="javascript:void(0);" onclick="javascript:document.loginform.submit();"><?php echo image_tag('forward.png'); ?></a></td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
+
+<div class="rounded_box green">
+	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+		<div style="font-size: large; font-weight: bold; padding-bottom: 10px;"><?php echo __('Log in to an existing account'); ?></div>
+		<div>
+			<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;"><?php echo __('Username'); ?></div>
+			<input type="text" id="b2_username" name="b2_username" style="width: 200px;"><br><br>
+			<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;"><?php echo __('Password'); ?></div>
+			<input type="password" id="b2_password" name="b2_password" style="width: 200px;"><br><br>
+
+			<input type="submit" id="login_button" value="<?php echo __('Continue'); ?>">
+		</div>
+	</div>
+	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+</div>
 </form>
-</td>
-<td style="width: 50%;" valign="top">
+
+<br>
+
+<div class="rounded_box gray">
+	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 	<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="login.php" enctype="multipart/form-data" method="post" name="lostpasswordform">
 	<input type="hidden" name="lostpassword" value="true">
-	<table class="b2_section_loginframe" align="center" cellpadding=0 cellspacing=0 style="width: 100%;">
-	<tr>
-	<td class="b2_section_loginframe_header"><?php echo __('Forgot password?'); ?></td>
-	</tr>
-	<tr>
-	<td style="padding: 5px;">
+		<div style="font-size: large; font-weight: bold; padding-bottom: 10px;"><?php echo __('Forgot password?'); ?></div>
 		<?php if (!isset($forgotten_user) && !isset($new_pass)): ?>
-			<div style="padding: 3px;">
+			<div style="padding-bottom: 10px;">
 			<?php echo __('If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your username'); ?>.
 			<?php if (BUGScontext::getRequest()->getParameter('forgot_password_username')): ?>
 				<div style="padding-top: 10px; padding-bottom: 10px; font-weight: bold; color: #B44;"><?php echo __('This username does not exist'); ?></div>
@@ -131,33 +118,33 @@
 				<div style="padding-top: 10px; padding-bottom: 10px; font-weight: bold; color: #B44;"><?php echo __('Please use the link in the email you received'); ?></div>
 			<?php endif; ?>
 			</div>
-			<table align="center" style="width: 100%;">
-			<tr>
-			<td class="td1" style="width: 120px; text-align: left;"><b><?php echo __('Username'); ?>:</b></td>
-			<td style="width: 200px;"><input type="text" id="forgot_password_username" name="forgot_password_username" style="width: 90%;"></td>
-			<td style="width: auto; text-align: right;"><input type="submit" id="login_button" value="<?php echo __('Send email'); ?>" style="border-bottom: 0px;"></td>
-			<td style="width: 30px; text-align: center;"><a class="image" href="javascript:void(0);" onclick="javascript:document.lostpasswordform.submit();"><?php echo image_tag('forward.png'); ?></a></td>
-			</tr>
-			</table>
+
+			<div>
+				<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;"><?php echo __('Username'); ?></div>
+				<input type="text" id="forgot_password_username" name="forgot_password_username" style="width: 200px"><br><br>
+			
+				<input type="submit" id="login_button" value="<?php echo __('Send email'); ?>">
+			</div>
+			
 		<?php elseif ($new_pass): ?>
 			<div style="padding: 3px;"><?php echo __('Your password has been reset, and an email has been sent to the email address you provided when you registered, with your new login details'); ?>.</div>
 		<?php else: ?>
 			<div style="padding: 3px;"><?php echo __('An email has been sent to the email address you provided when you registered, with instructions on how to reset your password'); ?>.</div>
 		<?php endif; ?>
-	</td>
-	</tr>
-	</table>
 	</form>
-	<br>
-	<?php if (BUGSsettings::get('allowreg')): ?>
+	</div>
+	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+</div>
+
+<br>
+
+<?php if (BUGSsettings::get('allowreg')): ?>
+<div class="rounded_box gray">
+	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+	<div class="xboxcontent" style="vertical-align: middle; padding: 10px;">
 		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="login.php" enctype="multipart/form-data" method="post" name="registerform">
 		<input type="hidden" name="register" value="true">
-		<table class="b2_section_loginframe" align="center" cellpadding=0 cellspacing=0 style="width: 100%;">
-		<tr>
-		<td class="b2_section_loginframe_header"><?php echo __('Register a new account'); ?></td>
-		</tr>
-		<tr>
-		<td style="padding: 5px;">
+			<div style="font-size: large; font-weight: bold; padding-bottom: 10px;"><?php echo __('Register a new account'); ?></div>
 		<?php
 		
 		if (isset($is_registering))
@@ -257,11 +244,7 @@
 				if ($hasregistered)
 				{
 					?>
-					<b><?php echo __('Thank you for registering!Thank you for registering!'); ?></b><br><?php echo __('The account has now been registered - check your email inbox for the activation email. Please be patient - this email can take up to two hours to arrive.'); ?>
-					<table align="center" style="width: 100%;">
-					<tr>
-					<td>
-					<?php
+					<b><?php echo __('Thank you for registering!Thank you for registering!'); ?></b><br><?php echo __('The account has now been registered - check your email inbox for the activation email. Please be patient - this email can take up to two hours to arrive.');
 				}
 				else
 				{
@@ -290,64 +273,34 @@
 						}
 	
 					?>
-					<table align="center" style="width: 100%;">
-					<tr>
-					<td style="width: 120px; text-align: left;"><b><?php echo __('Desired username'); ?>:</b></td>
-					<td style="width: auto;"><?php print BUGScontext::getRequest()->getParameter('desired_username'); ?></td>
-					<td style="width: 30px;"><a href="login.php" style="font-size: 9px;">Change</a></td>
-					</tr>
-					<tr>
-					<td colspan=3 style="padding: 5px; padding-left: 0px;"><?php echo __('The username you requested is available. To register it, please fill out the information below.'); ?> <i>(<?php echo __('Required information is marked with an asterisk'); ?>: <b>*</b>)</i></td>
-					</tr>
-					<tr>
-					<td style="text-align: left;"><b>*&nbsp;<?php echo __('Buddy name'); ?>:</b></td>
-					<td style="width: auto;" colspan=2><input type="text" id="buddyname" name="buddyname" value="<?php print BUGScontext::getRequest()->getParameter('buddyname'); ?>" style="width: 90%;<?php print (!$user_names) ? " background-color: #FBB;" : ""; ?>"></td>
-					</tr>
-					<tr>
-					<td style="text-align: left;">&nbsp;&nbsp;&nbsp;<?php echo __('Real name'); ?>:</td>
-					<td style="width: auto;" colspan=2><input type="text" id="realname" name="realname" value="<?php print BUGScontext::getRequest()->getParameter('realname'); ?>" style="width: 90%;"></td>
-					</tr>
-					<tr>
-					<td style="text-align: left;"><b>*&nbsp;<?php echo __('E-mail address'); ?>:</b></td>
-					<td style="width: auto;" colspan=2><input type="text" id="email_address" name="email_address" value="<?php print BUGScontext::getRequest()->getParameter('email_address'); ?>" style="width: 90%;<?php print (!$email_ok) ? " background-color: #FBB;" : ""; ?>"></td>
-					</tr>
-					<tr>
-					<td style="text-align: left;"><b>*&nbsp;<?php echo __('Confirm e-mail'); ?>:</b></td>
-					<td style="width: auto;" colspan=2><input type="text" id="email_confirm" name="email_confirm" value="<?php print BUGScontext::getRequest()->getParameter('email_confirm'); ?>" style="width: 90%;<?php print (!$email_ok) ? " background-color: #FBB;" : ""; ?>"></td>
-					</tr>
-					<tr id="continue_button_tr"<?php print (!$rnd_number) ? " style=\"display: none;\"" : ""; ?>>
-					<td>&nbsp;</td>
-					<td style="width: auto; text-align: right;"><input type="button" id="login_button" value="<?php echo __('Continue'); ?>" style="border-bottom: 0px;" onclick="javascript:showHide('continue_button_tr');showHide('register_button_tr');"></td>
-					<td style="text-align: center;"><a class="image" href="javascript:void(0);" onclick="javascript:showHide('register_button_tr');showHide('continue_button_tr');"><?php echo image_tag('forward.png'); ?></a></td>
-					</tr>
-					<tr id="register_button_tr"<?php print ($rnd_number) ? " style=\"display: none;\"" : ""; ?>>
-					<td colspan=3>
-					<table align="center" style="margin-top: 10px; width: 100%;">
-					<tr>
-					<td style="width: 120px;"><?php echo __('Enter this number'); ?>:</td>
-					<td style="width: auto;"><?php
+<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;"><?php echo __('Desired username'); ?></div>
+<?php print BUGScontext::getRequest()->getParameter('desired_username'); ?>
+<a href="login.php" style="font-size: 9px;">Change</a>
+	<?php echo __('The username you requested is available. To register it, please fill out the information below.'); ?> <i>(<?php echo __('Required information is marked with an asterisk'); ?>: <b>*</b>)</i></td>
+<b>*&nbsp;<?php echo __('Buddy name'); ?>:</b></td>
+<input type="text" id="buddyname" name="buddyname" value="<?php print BUGScontext::getRequest()->getParameter('buddyname'); ?>" style="width: 90%;<?php print (!$user_names) ? " background-color: #FBB;" : ""; ?>"></td>
+&nbsp;&nbsp;&nbsp;<?php echo __('Real name'); ?>:</td>
+<input type="text" id="realname" name="realname" value="<?php print BUGScontext::getRequest()->getParameter('realname'); ?>" style="width: 90%;"></td>
+<b>*&nbsp;<?php echo __('E-mail address'); ?>:</b></td>
+<input type="text" id="email_address" name="email_address" value="<?php print BUGScontext::getRequest()->getParameter('email_address'); ?>" style="width: 90%;<?php print (!$email_ok) ? " background-color: #FBB;" : ""; ?>"></td>
+<b>*&nbsp;<?php echo __('Confirm e-mail'); ?>:</b></td>
+<input type="text" id="email_confirm" name="email_confirm" value="<?php print BUGScontext::getRequest()->getParameter('email_confirm'); ?>" style="width: 90%;<?php print (!$email_ok) ? " background-color: #FBB;" : ""; ?>"></td>
+					<div id="continue_button_tr"<?php print (!$rnd_number) ? " style=\"display: none;\"" : ""; ?>>
+<input type="button" id="login_button" value="<?php echo __('Continue'); ?>" style="border-bottom: 0px;" onclick="javascript:showHide('continue_button_tr');showHide('register_button_tr');">
+<a class="image" href="javascript:void(0);" onclick="javascript:showHide('register_button_tr');showHide('continue_button_tr');"><?php echo image_tag('forward.png'); ?></a>
+					<div id="register_button_tr"<?php print ($rnd_number) ? " style=\"display: none;\"" : ""; ?>><?php echo __('Enter this number'); ?>:<?php
 	
 						$_SESSION['activation_number'] = bugs_printRandomNumber();
 	
-					?></td>
-					<td style="width: 30px;">&nbsp;</td>
-					</tr>
-					<tr>
-					<td style="text-align: left;"><b>*&nbsp;<?php echo __('%enter_number% in this box', array('%enter_number%' => '')); ?>:</b></td>
-					<td style="width: auto;" colspan=2><input type="text" onfocus="aB = document.getElementById('register_button'); aB.disabled = false;" id="verification_no" name="verification_no" style="width: 100px;<?php print (!$rnd_number) ? " background-color: #FBB;" : ""; ?>"></td>
-					</tr>
-					<tr>
-					<td>&nbsp;</td>
-					<td style="text-align: right;"><input type="submit" id="register_button" value="<?php echo __('Register'); ?>" style="border-bottom: 0px;" disabled></td>
-					<td style="text-align: center;"><a class="image" href="javascript:void(0);" onclick="javascript:document.registerform.submit();"><?php echo image_tag('forward.png'); ?></a></td>
-					</tr>
-					</table>
+					?><b>*&nbsp;<?php echo __('%enter_number% in this box', array('%enter_number%' => '')); ?>:</b>
+					<input type="text" onfocus="aB = document.getElementById('register_button'); aB.disabled = false;" id="verification_no" name="verification_no" style="width: 100px;<?php print (!$rnd_number) ? " background-color: #FBB;" : ""; ?>"></td>
+<input type="submit" id="register_button" value="<?php echo __('Register'); ?>" style="border-bottom: 0px;" disabled>
+<a class="image" href="javascript:void(0);" onclick="javascript:document.registerform.submit();"><?php echo image_tag('forward.png'); ?></a></div></div>
+
 					<?php
 				}
 			?>
-			</td>
-			</tr>
-			</table>
+
 			<?php
 		}
 		elseif (BUGScontext::getRequest()->getParameter('verify_user'))
@@ -372,21 +325,16 @@
 		else
 		{
 			?>
-			<table align="center" style="width: 100%;">
-			<tr>
-			<td class="td1" style="width: 120px; text-align: left;"><b><?php echo __('Desired username'); ?>:</b></td>
-			<td style="width: 200px;"><input type="text" id="desired_username" name="desired_username" style="width: 90%;"></td>
-			<td style="width: auto; text-align: right;"><input type="submit" id="login_button" value="<?php echo __('Check'); ?>" style="border-bottom: 0px;"></td>
-			<td style="width: 30px; text-align: center;"><a class="image" href="javascript:void(0);" onclick="javascript:document.registerform.submit();"><?php echo image_tag('forward.png'); ?></a></td>
-			</tr>
-			</table>
+			<div>
+				<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;"><?php echo __('Desired username'); ?></div>
+				<input type="text" id="desired_username" name="desired_username" style="width: 200px;"><br><br>
+			
+				<input type="submit" id="login_button" value="<?php echo __('Check'); ?>">
+			</div>
 			<?php
 		}
 		
 		?>
-		</td>
-		</tr>
-		</table>
 		</form>
 		<?php
 		
@@ -398,7 +346,7 @@
 		}
 	
 		?>
-	<?php endif; ?>
-</td>
-</tr>
-</table>
+	</div>
+	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+</div>
+<?php endif; ?>

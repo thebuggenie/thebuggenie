@@ -134,11 +134,9 @@ TEXTAREA
 
 INPUT#login_button, INPUT#register_button
 {
-	color: #00A400;
-	text-decoration: none;
-	border: 0px;
-	background-color: #FFF;
+	font-size: larger;
 	cursor: pointer;
+	font-weight: bold;
 }
 
 P
@@ -234,33 +232,8 @@ Custom classes
 	border: 0px;
 	padding: 10px;
 	width: auto;
-}
-
-.loginheader
-{
-	text-align: left;
-	font-size: 12px;
-	padding: 0px 0px 5px 0px;
-	margin-bottom: 7px;
-	color: #555;
-	border-bottom: 1px solid #B5B5B5;
-}
-
-.login_error
-{
-	background-color: #FDD;
-	border: 1px solid #FAA;
-	padding: 5px;
-}
-
-.loginbox
-{
-	font-size: 12px;
-	padding: 5px 4px 5px 4px;
-	text-align: left;
-	color: #555;
-	background-color: #FFF;
-	border: 0px;
+	text-align: center;
+	width: 500px;
 }
 
 .infoarea_header
