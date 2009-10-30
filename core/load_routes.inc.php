@@ -5,6 +5,7 @@
 	$routes[] = array('dashboard', '/dashboard', 'main', 'dashboard');
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
 	$routes[] = array('login', '/login', 'main', 'login');
+	$routes[] = array('forgot', '/forgot', 'main', 'forgot');
 	$routes[] = array('logout', '/logout', 'main', 'logout');
 	$routes[] = array('getprojectmenustrip', '/getprojectmenustrip/on/page/:page', 'project', 'getMenustrip');
 	$routes[] = array('viewissue', '/:project_key/issue/:issue_no', 'main', 'viewIssue');

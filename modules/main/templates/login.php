@@ -103,22 +103,36 @@
 
 <br>
 
+<?php if (BUGScontext::hasMessage('forgot_error')) { ?>
+<div class="rounded_box red_borderless">
+	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+		<span style="font-size: larger; font-weight: bold;"><?php echo BUGScontext::getMessageAndClear('forgot_error'); ?></span>
+	</div>
+	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+</div>
+<br>
+<?php } ?>
+
+<?php if (BUGScontext::hasMessage('forgot_success')) { ?>
+<div class="rounded_box green_borderless">
+	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+		<div style="font-size: large; font-weight: bold; padding-bottom: 10px;"><?php echo __('Forgot password?'); ?></div>
+		<span style="font-size: larger; font-weight: bold;"><?php echo BUGScontext::getMessageAndClear('forgot_success'); ?></span>
+	</div>
+	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+</div>
+<br>
+<?php } else { ?>
+
 <div class="rounded_box gray">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-	<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="login.php" enctype="multipart/form-data" method="post" name="lostpasswordform">
+	<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('forgot'); ?>" enctype="multipart/form-data" method="post" name="lostpasswordform">
 	<input type="hidden" name="lostpassword" value="true">
 		<div style="font-size: large; font-weight: bold; padding-bottom: 10px;"><?php echo __('Forgot password?'); ?></div>
-		<?php if (!isset($forgotten_user) && !isset($new_pass)): ?>
-			<div style="padding-bottom: 10px;">
 			<?php echo __('If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your username'); ?>.
-			<?php if (BUGScontext::getRequest()->getParameter('forgot_password_username')): ?>
-				<div style="padding-top: 10px; padding-bottom: 10px; font-weight: bold; color: #B44;"><?php echo __('This username does not exist'); ?></div>
-			<?php elseif (isset($reset_password)): ?>
-				<div style="padding-top: 10px; padding-bottom: 10px; font-weight: bold; color: #B44;"><?php echo __('Please use the link in the email you received'); ?></div>
-			<?php endif; ?>
-			</div>
-
 			<div>
 				<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;"><?php echo __('Username'); ?></div>
 				<input type="text" id="forgot_password_username" name="forgot_password_username" style="width: 200px"><br><br>
@@ -126,17 +140,17 @@
 				<input type="submit" id="login_button" value="<?php echo __('Send email'); ?>">
 			</div>
 			
-		<?php elseif ($new_pass): ?>
+		<?php if (false): ?>
 			<div style="padding: 3px;"><?php echo __('Your password has been reset, and an email has been sent to the email address you provided when you registered, with your new login details'); ?>.</div>
-		<?php else: ?>
 			<div style="padding: 3px;"><?php echo __('An email has been sent to the email address you provided when you registered, with instructions on how to reset your password'); ?>.</div>
 		<?php endif; ?>
 	</form>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
-
 <br>
+
+<?php } ?>
 
 <?php if (BUGSsettings::get('allowreg')): ?>
 <div class="rounded_box gray">

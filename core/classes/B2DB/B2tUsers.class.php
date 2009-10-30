@@ -72,7 +72,15 @@
 			parent::_addForeignKeyColumn(self::CUSTOMER_ID, B2DB::getTable('B2tCustomers'), B2tCustomers::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
-		
+
+		public function getByUsername($username)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::UNAME, $username);
+			$crit->addWhere(self::DELETED, false);
+			return B2DB::getTable('B2tUsers')->doSelectOne($crit);
+		}
+
 		public function getByUsernameAndPassword($username, $password)
 		{
 			$crit = $this->getCriteria();
