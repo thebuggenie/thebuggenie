@@ -10,7 +10,11 @@
 					<li<?php if ($bugs_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png', array('style' => 'float: left;')).__('My dashboard')); ?></li>
 				<?php endif; ?>
 				<?php if (BUGScontext::getUser()->hasPermission("b2canreportissues")): ?>
-					<li<?php if ($bugs_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('reportissue'), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
+					<?php if (BUGScontext::getCurrentProject() instanceof BUGSproject): ?>
+						<li<?php if ($bugs_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_reportissue', array('project_key' => BUGScontext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
+					<?php else: ?>
+						<li<?php if ($bugs_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('reportissue'), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
+					<?php endif; ?>
 				<?php endif; ?>
 				<?php if (BUGScontext::getUser()->hasPermission("b2canfindissues")): ?>
 					<li<?php if ($bugs_response->getPage() == 'search'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('search'), image_tag('tab_search.png', array('style' => 'float: left;')).__('Find issues')); ?></li>

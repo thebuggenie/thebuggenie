@@ -32,6 +32,8 @@
 								<?php $prev_date = $date; ?>
 							<?php endforeach; ?>
 						</table>
+					<?php else: ?>
+						<div class="faded_dark" style="font-size: 13px; padding-top: 3px;"><b><?php echo __('No recent activity registered for this project.'); ?></b><br><?php echo __('As soon as something important happens it will appear here.'); ?></div>
 					<?php endif; ?>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>

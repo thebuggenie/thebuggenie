@@ -20,9 +20,16 @@
 						<?php echo __('Choose a project from the list below'); ?>:<br>
 						<table cellpadding="0" cellspacing="0">
 							<?php foreach (BUGSproject::getAll() as $aProject): ?>
+								<?php if ($aProject->getID() == $project->getID()) continue; ?>
 								<tr>
 									<td style="width: 16px;"><?php echo image_tag($aProject->getIcon(), array('style' => 'float: left; margin-right: 5px;'), $aProject->hasIcon()); ?></td>
-									<td style="padding-left: 5px; font-size: 13px;"><a href="javascript:void(0);" onclick="updateProjectMenuStrip('<?php echo make_url('getprojectmenustrip', array('page' => $bugs_response->getPage())); ?>', <?php echo $aProject->getID(); ?>);"><?php echo $aProject->getName(); ?></a></td>
+									<td style="padding-left: 5px; font-size: 13px;">
+										<?php if (in_array($bugs_response->getPage(), array('project_dashboard', 'project_planning', 'project_scrum', 'project_issues', 'project_statistics', 'project_users'))): ?>
+											<?php echo link_tag(make_url($bugs_response->getPage(), array('project_key' => $aProject->getKey())), $aProject->getName()); ?>
+										<?php else: ?>
+											<a href="javascript:void(0);" onclick="updateProjectMenuStrip('<?php echo make_url('getprojectmenustrip', array('page' => $bugs_response->getPage())); ?>', <?php echo $aProject->getID(); ?>);"><?php echo $aProject->getName(); ?></a>
+										<?php endif; ?>
+									</td>
 								</tr>
 							<?php endforeach; ?>
 						</table>
