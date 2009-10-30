@@ -333,7 +333,144 @@
 				$this->forward('login');
 			}
 		}
-		
+
+		/**
+		 * Registration logic part 1 - check if username is free
+		 *  
+		 * @param BUGSrequest $request
+		 */
+		public function runRegister1($request)
+		{
+			$this->getResponse()->setPage('login');
+			try
+			{
+				if (BUGScontext::getRequest()->getMethod() == BUGSrequest::POST)
+				{
+					$username = BUGScontext::getRequest()->getParameter('desired_username');
+					if (!empty($username))
+					{
+						$exists = B2DB::getTable('B2tUsers')->getByUsername($username);
+						
+						if ($exists)
+						{
+							throw new Exception(__('This username is in use'));
+						}
+						else
+						{
+							bugscontext::setMessage('prereg_success', $username);
+							$this->forward('login');
+
+						}
+					}
+					else
+					{
+						throw new Exception(__('Please enter a username'));
+					}
+				}
+			}
+			catch (Exception $e)
+			{
+				bugscontext::setMessage('prereg_error', $e->getMessage());
+				$this->forward('login');
+			}
+		}
+
+		/**
+		 * Registration logic part 2 - add user data
+		 *  
+		 * @param BUGSrequest $request
+		 */
+		public function runRegister2($request)
+		{
+			$this->getResponse()->setPage('login');
+			try
+			{
+				if (BUGScontext::getRequest()->getMethod() == BUGSrequest::POST)
+				{
+					$username = BUGScontext::getRequest()->getParameter('username');
+					$buddyname = BUGScontext::getRequest()->getParameter('buddyname');
+					$email = BUGScontext::getRequest()->getParameter('email_address');
+					$confirmemail = BUGScontext::getRequest()->getParameter('email_confirm');
+					$security = BUGScontext::getRequest()->getParameter('verification_no');
+					$realname = BUGScontext::getRequest()->getParameter('realname');
+					if (!empty($buddyname) && !empty($email) && !empty($confirmemail) && !empty($security))
+					{
+						if ($email != $confirmemail)
+						{
+							throw new Exception(__('The email address must be valid, and must be typed twice.'));
+						}
+
+						if ($security != $_SESSION['activation_number'])
+						{
+							throw new Exception(__('To prevent automatic sign-ups, enter the verification number shown below.'));
+						}
+
+						$email_ok = false;
+						$valid_domain = false;
+
+						if ((!(stristr($email, "@") === false)) && (strripos($email, ".") > strripos($email, "@")))
+						{
+							$email_ok = true;
+						}
+						
+						if ($email_ok && BUGSsettings::get('limit_registration') != '')
+						{
+
+							$allowed_domains = explode(',', BUGSsettings::get('limit_registration'));
+							if (count($allowed_domains) > 0)
+							{
+								foreach ($allowed_domains as $allowed_domain)
+								{
+									$allowed_domain = '@' . trim($allowed_domain);
+									if (strpos($email, $allowed_domain) !== false ) //strpos checks if $to
+									{
+										$valid_domain = true;
+										break;
+									}
+								}
+							}
+							else
+							{
+								$valid_domain = true;
+							}
+						}
+						else
+						{
+							$valid_domain = true;
+						}
+						
+						if ($valid_domain == false)
+						{
+							throw new Exception(__('Email adresses from this domain can not be used.'));
+						}
+						
+						if($email_ok == false)
+						{
+							throw new Exception(__('The email address must be valid, and must be typed twice.'));
+						}
+						
+						if ($security != $_SESSION['activation_number'])
+						{
+							throw new Exception(__('To prevent automatic sign-ups, enter the verification number shown below.'));
+						}
+
+						bugscontext::setMessage('postreg_success', 'Incomplete');
+						$this->forward('login');
+					}
+					else
+					{
+						throw new Exception(__('You need to fill out all fields correctly.'));
+					}
+				}
+			}
+			catch (Exception $e)
+			{
+				bugscontext::setMessage('prereg_success', $username);
+				bugscontext::setMessage('postreg_error', $e->getMessage());
+				$this->forward('login');
+			}
+		}
+
 		/**
 		 * "My account" page
 		 *  
