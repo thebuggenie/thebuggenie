@@ -72,7 +72,7 @@
 		<td>
 			<select name="returnfromlogin" id="returnfromlogin" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
 				<?php $return_routes = array('home' => __('Frontpage'), 'account' => __('Account details')); ?>
-				<?php BUGScontext::trigger('core', 'setting_returnfromlogin', &$return_routes); ?>
+				<?php BUGScontext::trigger('core', 'setting_returnfromlogin', $return_routes); ?>
 				<?php foreach ($return_routes as $route => $description): ?> 
 					<option value="<?php echo $route; ?>"<?php if (BUGSsettings::getLoginReturnRoute() == $route): ?> selected<?php endif; ?>><?php echo $description; ?></option>
 				<?php endforeach; ?>
@@ -84,7 +84,7 @@
 		<td>
 			<select name="returnfromlogout" id="returnfromlogout" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
 				<?php $return_routes = array('home' => __('Frontpage'), 'account' => __('Account details')); ?>
-				<?php BUGScontext::trigger('core', 'setting_returnfromlogout', &$return_routes); ?>
+				<?php BUGScontext::trigger('core', 'setting_returnfromlogout', $return_routes); ?>
 				<?php foreach ($return_routes as $route => $description): ?> 
 					<option value="<?php echo $route; ?>"<?php if (BUGSsettings::getLogoutReturnRoute() == $route): ?> selected<?php endif; ?>><?php echo $description; ?></option>
 				<?php endforeach; ?>
