@@ -1200,9 +1200,13 @@
 		 * 
 		 * @param string $message The message
 		 */
-		public static function setMessage($message)
+		public static function setMessage($key, $message)
 		{
-			$_SESSION['tbg_message'] = $message;
+			if (!array_key_exists('tbg_message', $_SESSION))
+			{
+				$_SESSION['tbg_message'] = array();
+			}
+			$_SESSION['tbg_message'][$key] = $message;
 		}
 
 		/**
@@ -1210,9 +1214,16 @@
 		 * 
 		 * @return boolean
 		 */
-		public static function hasMessage()
+		public static function hasMessage($key)
 		{
-			return array_key_exists('tbg_message', $_SESSION);
+			if (!array_key_exists('tbg_message', $_SESSION))
+			{
+				return false;
+			}
+			else
+			{
+				return array_key_exists($key, $_SESSION['tbg_message']);
+			}
 		}
 		
 		/**
@@ -1220,17 +1231,20 @@
 		 * 
 		 * @return string
 		 */
-		public static function getMessage()
+		public static function getMessage($key)
 		{
-			return (self::hasMessage()) ? $_SESSION['tbg_message'] : false;
+			return (self::hasMessage($key)) ? $_SESSION['tbg_message'][$key] : false;
 		}
 		
 		/**
 		 * Clear the message
 		 */
-		public static function clearMessage()
+		public static function clearMessage($key)
 		{
-			unset($_SESSION['tbg_message']);
+			if (self::hasMessage($key))
+			{
+				unset($_SESSION['tbg_message'][$key]);
+			}
 		}
 
 		/**
@@ -1238,11 +1252,14 @@
 		 * 
 		 * @return string
 		 */
-		public static function getMessageAndClear()
+		public static function getMessageAndClear($key)
 		{
-			$message = self::getMessage();
-			self::clearMessage();
-			return $message;
+			if ($message = self::getMessage($key))
+			{
+				self::clearMessage($key);
+				return $message;
+			}
+			return null;
 		}
 
 		/**

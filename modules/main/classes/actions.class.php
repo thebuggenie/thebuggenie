@@ -43,7 +43,7 @@
 			}
 			BUGSlogging::log('done (Loading issue)');
 			$this->getResponse()->setPage('viewissue');
-			$message = BUGScontext::getMessageAndClear();
+			$message = BUGScontext::getMessageAndClear('issue_saved');
 			
 			if ($request->isMethod(BUGSrequest::POST) && $issue instanceof BUGSissue && $request->hasParameter('issue_action'))
 			{
@@ -57,7 +57,7 @@
 								try
 								{
 									$issue->save();
-									BUGScontext::setMessage('issue_saved');
+									BUGScontext::setMessage('issue_saved', true);
 									$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 								}
 								catch (Exception $e)
@@ -77,7 +77,7 @@
 						break;
 				}
 			}
-			elseif ($message == 'issue_saved')
+			elseif ($message == true)
 			{
 				$this->issue_saved = true;
 			}
@@ -210,7 +210,7 @@
 				{
 					$this->login_error = __('Please log in');
 				}
-				elseif (BUGScontext::hasMessage())
+				elseif (BUGScontext::hasMessage('forward'))
 				{
 					$this->login_error = BUGScontext::getMessageAndClear();
 				}

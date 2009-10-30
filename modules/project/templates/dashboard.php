@@ -56,21 +56,12 @@
 					<?php foreach ($recent_issues as $issue): ?>
 						<tr>
 							<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-							<td style="padding-bottom: 5px;">
+							<td style="padding-bottom: 15px;">
 								<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
 								<span class="faded_dark">
 									<?php echo bugs_formatTime($issue->getPosted(), 20); ?>,
 									<?php echo __('<strong>%status%</strong>', array('%status%' => (($issue->getStatus() instanceof BUGSdatatype) ? $issue->getStatus()->getName() : __('Status not determined')))); ?>
 								</span>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
-								<?php if ($issue->isAssigned()): ?>
-									<?php echo __('Assigned to %assignee%', array('%assignee%' => $issue->getAssignee()->getName())); ?>
-								<?php else: ?>
-									<?php echo __('Not assigned to anyone yet'); ?>
-								<?php endif; ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>
@@ -86,21 +77,12 @@
 					<?php foreach ($recent_features as $issue): ?>
 						<tr>
 							<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-							<td style="padding-bottom: 5px;">
+							<td style="padding-bottom: 15px;">
 								<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
 								<span class="faded_dark">
 									<?php echo bugs_formatTime($issue->getPosted(), 20); ?>,
 									<?php echo __('<strong>%status%</strong>', array('%status%' => (($issue->getStatus() instanceof BUGSdatatype) ? $issue->getStatus()->getName() : __('Status not determined')))); ?>
 								</span>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
-								<?php if ($issue->isAssigned()): ?>
-									<?php echo __('Assigned to %assignee%', array('%assignee%' => $issue->getAssignee()->getName())); ?>
-								<?php else: ?>
-									<?php echo __('Not assigned to anyone yet'); ?>
-								<?php endif; ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>

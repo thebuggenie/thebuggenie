@@ -17,7 +17,7 @@
 		<td><label for="singleprojecttracker"><?php echo __('Single project tracker mode'); ?></label></td>
 		<td>
 			<select name="singleprojecttracker" id="singleprojecttracker" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
-				<option value=1<?php if (BUGSsettings::isSingleProjectTracker()): ?> selected<?php endif; ?>><?php echo __('Behave as tracker for a single project'); ?></option>
+				<option value=1<?php if (BUGSsettings::isSingleProjectTracker()): ?> selected<?php endif; ?>><?php echo __('Yes, behave as tracker for a single project'); ?></option>
 				<option value=0<?php if (!BUGSsettings::isSingleProjectTracker()): ?> selected<?php endif; ?>><?php echo __('No, use regular index page'); ?></option>
 			</select>
 		</td>

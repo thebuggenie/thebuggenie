@@ -143,7 +143,7 @@
 		public function forward403unless($condition, $message = null)
 		{
 			$message = ($message === null) ? BUGScontext::getI18n()->__('Please log in to view this page') : $message;
-			BUGScontext::setMessage($message);
+			BUGScontext::setMessage('forward', $message);
 			
 			if (!$condition)
 			{
