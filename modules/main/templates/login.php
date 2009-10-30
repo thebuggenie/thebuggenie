@@ -2,64 +2,6 @@
 
 	BUGScontext::loadLibrary('ui');
 
-/*
-	$is_registering = false;
-	$does_exist = false;
-	$noreg = false;
-	$forgotten_user = null;
-	$new_pass = null;
-	$reset_password = false;
-
-	if (BUGScontext::getRequest()->getParameter('forgot_password_username'))
-	{
-		$crit = new B2DBCriteria();
-		$crit->addWhere(B2tUsers::UNAME, BUGScontext::getRequest()->getParameter('forgot_password_username'));
-		$crit->addWhere(B2tUsers::SCOPE, BUGScontext::getScope()->getID());
-		$forgotten_user = B2DB::getTable('B2tUsers')->doSelectOne($crit);
-		if ($forgotten_user instanceof B2DBRow)
-		{
-			BUGScontext::trigger('core', 'forgotten_password', $forgotten_user);
-		}
-	}
-	
-	if (BUGScontext::getRequest()->getParameter('reset_password'))
-	{
-		$reset_password = true;
-		$crit = new B2DBCriteria();
-		$crit->addWhere(B2tUsers::UNAME, BUGScontext::getRequest()->getParameter('username'));
-		$crit->addWhere(B2tUsers::PASSWD, BUGScontext::getRequest()->getParameter('key'));
-		$crit->addWhere(B2tUsers::SCOPE, BUGScontext::getScope()->getID());
-		$reset_pwd_user = B2DB::getTable('B2tUsers')->doSelectOne($crit);
-		if ($reset_pwd_user instanceof B2DBRow)
-		{
-			$reset_pwd_user = BUGSfactory::userLab($reset_pwd_user->get(B2tUsers::ID));
-			$new_pass = $reset_pwd_user->setRandomPassword();
-			BUGScontext::trigger('core', 'password_reset', array($reset_pwd_user, $new_pass));
-		}
-	}
-	
-	if (BUGScontext::getRequest()->getParameter('desired_username'))
-	{
-		if (BUGSsettings::get('allowreg') == true)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tUsers::UNAME, BUGScontext::getRequest()->getParameter('desired_username'));
-			$crit->addWhere(B2tUsers::SCOPE, BUGScontext::getScope()->getID());
-			if (B2DB::getTable('B2tUsers')->doCount($crit) == 0)
-			{
-				$is_registering = true;
-			}
-			else
-			{
-				$does_exist = true;
-			}
-		}
-		else
-		{
-			$noreg = true;
-		}
-	}*/
-	
 ?>
 <div class="logindiv">
 
@@ -77,7 +19,7 @@
 <div class="rounded_box red_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<span style="font-size: larger; font-weight: bold;"><?php echo $login_error; ?></span>
+		<span  class="login_fieldheader"><?php echo $login_error; ?></span>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
@@ -87,13 +29,19 @@
 <div class="rounded_box iceblue">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<div style="font-size: large; font-weight: bold; padding-bottom: 10px;"><?php echo __('Log in to an existing account'); ?></div>
+		<div class="login_boxheader"><?php echo __('Log in to an existing account'); ?></div>
 		<div>
-			<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;"><?php echo __('Username'); ?></div>
-			<input type="text" id="b2_username" name="b2_username" style="width: 200px;"><br><br>
-			<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;"><?php echo __('Password'); ?></div>
-			<input type="password" id="b2_password" name="b2_password" style="width: 200px;"><br><br>
-
+			<table border="0" class="login_fieldtable">
+				<tr>
+					<td><label class="login_fieldheader" for="b2_username"><?php echo __('Username'); ?></label></td>
+					<td><input type="text" id="b2_username" name="b2_username" style="width: 200px;"></td>
+				</tr>
+				<tr>
+					<td><label class="login_fieldheader" for="b2_password"><?php echo __('Password'); ?></label></td>
+					<td><input type="password" id="b2_password" name="b2_password" style="width: 200px;"></td>
+				</tr>
+			</table>
+			<br>
 			<input type="submit" id="login_button" value="<?php echo __('Continue'); ?>">
 		</div>
 	</div>
@@ -107,7 +55,7 @@
 <div class="rounded_box red_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<span style="font-size: larger; font-weight: bold;"><?php echo BUGScontext::getMessageAndClear('forgot_error'); ?></span>
+		<span class="login_fieldheader"><?php echo BUGScontext::getMessageAndClear('forgot_error'); ?></span>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
@@ -119,8 +67,8 @@ BUGScontext::clearMessage('forgot_success'); ?>
 <div class="rounded_box green_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<div style="font-size: large; font-weight: bold; padding-bottom: 10px;"><?php echo __('Forgot password?'); ?></div>
-		<span style="font-size: larger; font-weight: bold;"><?php echo BUGScontext::getMessageAndClear('forgot_success'); ?></span>
+		<div class="login_boxheader"><?php echo __('Forgot password?'); ?></div>
+		<span class="login_fieldheader"><?php echo BUGScontext::getMessageAndClear('forgot_success'); ?></span>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
@@ -132,10 +80,10 @@ BUGScontext::clearMessage('forgot_success'); ?>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 	<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('forgot'); ?>" enctype="multipart/form-data" method="post" name="lostpasswordform">
 	<input type="hidden" name="lostpassword" value="true">
-		<div style="font-size: large; font-weight: bold; padding-bottom: 10px;"><?php echo __('Forgot password?'); ?></div>
-			<?php echo __('If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your username'); ?>.
+		<div class="login_boxheader"><?php echo __('Forgot password?'); ?></div>
+			<p><?php echo __('If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your username'); ?>.</p><br>
 			<div>
-				<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;"><?php echo __('Username'); ?></div>
+				<label class="login_fieldheader" for="forgot_password_username"><?php echo __('Username'); ?></label>&nbsp;
 				<input type="text" id="forgot_password_username" name="forgot_password_username" style="width: 200px"><br><br>
 			
 				<input type="submit" id="login_button" value="<?php echo __('Send email'); ?>">
@@ -159,7 +107,7 @@ BUGScontext::clearMessage('forgot_success'); ?>
 <div class="rounded_box red_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<span style="font-size: larger; font-weight: bold;"><?php echo BUGScontext::getMessageAndClear('prereg_error'); ?></span>
+		<span class="login_fieldheader"><?php echo BUGScontext::getMessageAndClear('prereg_error'); ?></span>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
@@ -170,7 +118,7 @@ BUGScontext::clearMessage('forgot_success'); ?>
 <div class="rounded_box red_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<span style="font-size: larger; font-weight: bold;"><?php echo BUGScontext::getMessageAndClear('postreg_error'); ?></span>
+		<span class="login_fieldheader"><?php echo BUGScontext::getMessageAndClear('postreg_error'); ?></span>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
@@ -182,8 +130,8 @@ BUGScontext::clearMessage('postreg_success'); ?>
 <div class="rounded_box green_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<div style="font-size: large; font-weight: bold; padding-bottom: 10px;"><?php echo __('Register a new account'); ?></div>
-		<span style="font-size: larger; font-weight: bold;"><?php echo __('Thank you for registering!'); ?></span>
+		<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
+		<span class="login_fieldheader"><?php echo __('Thank you for registering!'); ?></span>
 		<p><?php echo __('The account has now been registered - check your email inbox for the activation email. Please be patient - this email can take up to two hours to arrive.'); ?></p>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
@@ -196,26 +144,41 @@ BUGScontext::clearMessage('prereg_success'); ?>
 		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register2'); ?>" enctype="multipart/form-data" method="post" name="registerform">
 		<input type="hidden" name="register" value="true">
 		<input type="hidden" name="username" value="<?php BUGScontext::getRequest()->getParameter('desired_username'); ?>">
-			<div style="font-size: large; font-weight: bold; padding-bottom: 10px;"><?php echo __('Register a new account'); ?></div>
+			<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
 			<div>
 				<?php echo __('The username you requested is available. To register it, please fill out the information below.'); ?>
-				<i>(<?php echo __('Required information is marked with an asterisk'); ?>: <b>*</b>)</i>
-				<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;">*&nbsp;<?php echo __('Buddy name'); ?></div>
-				<input type="text" id="buddyname" name="buddyname" value="<?php print BUGScontext::getRequest()->getParameter('buddyname'); ?>" style="width: 200px;"><br><br>
-				<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;"><?php echo __('Real name'); ?></div>
-				<input type="text" id="realname" name="realname" value="<?php print BUGScontext::getRequest()->getParameter('realname'); ?>" style="width: 200px;"><br><br>
-				<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;">*&nbsp;<?php echo __('E-mail address'); ?></div>
-				<input type="text" id="email_address" name="email_address" value="<?php print BUGScontext::getRequest()->getParameter('email_address'); ?>" style="width: 200px;"><br><br>
-				<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;">*&nbsp;<?php echo __('Confirm e-mail'); ?></div>
-				<input type="text" id="email_confirm" name="email_confirm" value="<?php print BUGScontext::getRequest()->getParameter('email_confirm'); ?>" style="width: 200px;"><br><br>
+				<i>(<?php echo __('Required information is marked with an asterisk'); ?>: <b>*</b>)</i><br><br>
+				<table border="0" class="login_fieldtable">
+					<tr>
+						<td><label class="login_fieldheader" for="buddyname">*&nbsp;<?php echo __('Buddy name'); ?></label></td>
+						<td><input type="text" id="buddyname" name="buddyname" value="<?php print BUGScontext::getRequest()->getParameter('buddyname'); ?>" style="width: 200px;"></td>
+					</tr>
+					<tr>
+						<td><label class="login_fieldheader" for="realname"><?php echo __('Real name'); ?></label></td>
+						<td><input type="text" id="realname" name="realname" value="<?php print BUGScontext::getRequest()->getParameter('realname'); ?>" style="width: 200px;"></td>
+					</tr>
+					<tr>
+						<td><label class="login_fieldheader" for="email_address">*&nbsp;<?php echo __('E-mail address'); ?></label></td>
+						<td><input type="text" id="email_address" name="email_address" value="<?php print BUGScontext::getRequest()->getParameter('email_address'); ?>" style="width: 200px;"></td>
+					</tr>
+					<tr>
+						<td><label class="login_fieldheader" for="email_confirm">*&nbsp;<?php echo __('Confirm e-mail'); ?></label></td>
+						<td><input type="text" id="email_confirm" name="email_confirm" value="<?php print BUGScontext::getRequest()->getParameter('email_confirm'); ?>" style="width: 200px;"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+				<br>
 
-				<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;">*&nbsp;<?php echo __('Security check'); ?></div>
+				<label class="login_fieldheader" for="verification_no">*&nbsp;<?php echo __('Security check'); ?></label><br><br>
 				<?php
 					$_SESSION['activation_number'] = bugs_printRandomNumber();
 				?>
 
 				<br><b><?php echo __('Enter the above number in this box'); ?></b><br><br>
-				<input type="text" onfocus="aB = document.getElementById('register_button'); aB.disabled = false;" id="verification_no" name="verification_no" style="width: 100px;<?php print (!true) ? " background-color: #FBB;" : ""; ?>"><br><br>
+				<input type="text" id="verification_no" name="verification_no" style="width: 100px;<?php print (!true) ? " background-color: #FBB;" : ""; ?>"><br><br>
 				<input type="submit" id="register_button" value="<?php echo __('Register'); ?>">
 			</div>
 		</form>
@@ -229,12 +192,12 @@ BUGScontext::clearMessage('prereg_success'); ?>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 10px;">
 		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register1'); ?>" enctype="multipart/form-data" method="post" name="registerform">
 		<input type="hidden" name="register" value="true">
-			<div style="font-size: large; font-weight: bold; padding-bottom: 10px;"><?php echo __('Register a new account'); ?></div>
+			<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
 			<div>
-				<div style="font-size: larger; font-weight: bold; padding-bottom: 5px;"><?php echo __('Desired username'); ?></div>
+				<label style="font-size: larger; font-weight: bold; padding-bottom: 5px;" for="desired_username"><?php echo __('Desired username'); ?></label>&nbsp;
 				<input type="text" id="desired_username" name="desired_username" style="width: 200px;"><br><br>
 			
-				<input type="submit" id="login_button" value="<?php echo __('Check'); ?>">
+				<input type="submit" id="login_button" value="<?php echo __('Check availability'); ?>">
 			</div>
 		</form>
 	</div>

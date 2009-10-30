@@ -236,6 +236,25 @@ Custom classes
 	width: 500px;
 }
 
+.login_boxheader
+{
+	font-size: large;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+.login_fieldheader
+{
+	font-size: larger;
+	font-weight: bold;
+}
+
+.login_fieldtable
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .infoarea_header
 {
 	padding: 4px;
