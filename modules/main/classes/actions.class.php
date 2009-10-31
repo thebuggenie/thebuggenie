@@ -313,6 +313,8 @@
 						
 						if ($exists)
 						{
+							/* FIXME SEND EMAIL */
+							
 							bugscontext::setMessage('forgot_success', __('Please use the link in the email you received'));
 							$this->forward('login');
 						}
@@ -393,6 +395,7 @@
 					$confirmemail = BUGScontext::getRequest()->getParameter('email_confirm');
 					$security = BUGScontext::getRequest()->getParameter('verification_no');
 					$realname = BUGScontext::getRequest()->getParameter('realname');
+					
 					if (!empty($buddyname) && !empty($email) && !empty($confirmemail) && !empty($security))
 					{
 						if ($email != $confirmemail)
@@ -454,7 +457,11 @@
 							throw new Exception(__('To prevent automatic sign-ups, enter the verification number shown below.'));
 						}
 
-						bugscontext::setMessage('postreg_success', 'Incomplete');
+						/* FIXME send email */
+
+						$user = BUGSuser::createNew($username, $realname, $buddyname, BUGScontext::getScope()->getID(), false, true, md5(bugs_createpassword()), $email, true);
+
+						bugscontext::setMessage('postreg_success', true);
 						$this->forward('login');
 					}
 					else
@@ -469,6 +476,39 @@
 				bugscontext::setMessage('postreg_error', $e->getMessage());
 				$this->forward('login');
 			}
+		}
+
+		/**
+		 * Activate newly registered account
+		 *  
+		 * @param BUGSrequest $request
+		 */
+		public function runActivate($request)
+		{
+			$this->getResponse()->setPage('../../login');
+			
+			$row = B2DB::getTable('B2tUsers')->getByUsername($request->getParameter('user'));
+			if ($row)
+			{
+				if ($row->get(B2tUsers::PASSWD) != $request->getParameter('key'))
+				{
+					bugscontext::setMessage('account_activate', true);
+					bugscontext::setMessage('activate_failure', true);
+				}
+				else
+				{
+					$user = new BUGSUser($row->get(B2tUsers::ID), $row);
+					$user->setValidated(1);
+					bugscontext::setMessage('account_activate', true);
+					bugscontext::setMessage('activate_success', true);
+				}
+			}
+			else
+			{
+				bugscontext::setMessage('account_activate', true);
+				bugscontext::setMessage('activate_failure', true);
+			}
+			$this->forward('../../login');
 		}
 
 		/**

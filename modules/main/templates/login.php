@@ -83,7 +83,7 @@ BUGScontext::clearMessage('forgot_success'); ?>
 		<div class="login_boxheader"><?php echo __('Forgot password?'); ?></div>
 			<p><?php echo __('If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your username'); ?>.</p><br>
 			<div>
-				<label class="login_fieldheader" for="forgot_password_username"><?php echo __('Username'); ?></label>&nbsp;
+				<label class="login_fieldheader" for="forgot_password_username"><?php echo __('Username'); ?></label>
 				<input type="text" id="forgot_password_username" name="forgot_password_username" style="width: 200px"><br><br>
 			
 				<input type="submit" id="login_button" value="<?php echo __('Send email'); ?>">
@@ -103,7 +103,41 @@ BUGScontext::clearMessage('forgot_success'); ?>
 
 <?php if (BUGSsettings::get('allowreg')): ?>
 
-<?php if (BUGScontext::hasMessage('prereg_error')) { ?>
+<?php if (BUGScontext::hasMessage('account_activate')) {
+BUGScontext::clearMessage('account_activate');
+
+if (BUGScontext::hasMessage('activate_success')) {
+BUGScontext::clearMessage('activate_success'); ?>
+
+<div class="rounded_box green_borderless">
+	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+		<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
+		<span class="login_fieldheader"><?php echo __('Thank you for registering!'); ?></span>
+		<p><?php echo __('Your account has now been activated. Please log in by entering your username and password in the fields above.'); ?></p>
+	</div>
+	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+</div>
+
+<?php } elseif (BUGScontext::hasMessage('activate_failure')) {
+BUGScontext::clearMessage('activate_success'); ?>
+	
+<div class="rounded_box red_borderless">
+	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+		<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
+		<span class="login_fieldheader"><?php echo __('There seems to be something wrong with your verification code.'); ?></span>
+		<p><?php echo __('Please copy and paste the link from the activation email into your browser address bar, and try again.'); ?></p>
+	</div>
+	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+</div>
+
+<?php }
+}
+else
+{
+
+if (BUGScontext::hasMessage('prereg_error')) { ?>
 <div class="rounded_box red_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
@@ -136,14 +170,13 @@ BUGScontext::clearMessage('postreg_success'); ?>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
-<?php } elseif (BUGScontext::hasMessage('prereg_success')) {
-BUGScontext::clearMessage('prereg_success'); ?>
+<?php } elseif (BUGScontext::hasMessage('prereg_success')) { ?>
 <div class="rounded_box gray">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 10px;">
 		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register2'); ?>" enctype="multipart/form-data" method="post" name="registerform">
 		<input type="hidden" name="register" value="true">
-		<input type="hidden" name="username" value="<?php BUGScontext::getRequest()->getParameter('desired_username'); ?>">
+		<input type="hidden" name="username" value="<?php echo BUGScontext::getMessageAndClear('prereg_success'); ?>">
 			<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
 			<div>
 				<?php echo __('The username you requested is available. To register it, please fill out the information below.'); ?>
@@ -203,4 +236,4 @@ BUGScontext::clearMessage('prereg_success'); ?>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
-<?php } endif; ?>
+<?php } } endif; ?>
