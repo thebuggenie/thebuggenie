@@ -1207,6 +1207,10 @@ li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 .mediumgrey_borderless .issue_detail_unmerged { background-color: #E0AC9C; }
 .mediumgrey_borderless .issue_detail_unmerged .faded_medium { color: #FFD9D6; }
 
+.mediumgrey_borderless.highlighted .xb2, .mediumgrey_borderless.highlighted .xb3, .mediumgrey_borderless.highlighted .xb4 { background-color: #FFF299; border-color: #FFF299; }
+.mediumgrey_borderless.highlighted .xb1, #scrum .mediumgrey_borderless.highlighted .sprint_header { background-color: #FFF299; }
+.mediumgrey_borderless.highlighted .xboxcontent { background-color: #FFF299; border-color: #FFF299; }
+
 .iceblue_borderless .xb2, .iceblue_borderless .xb3, .iceblue_borderless .xb4 { background-color: #D4E5FF; border-color: #D4E5FF; }
 .iceblue_borderless .xb1 { background-color: #D4E5FF; }
 .iceblue_borderless .xboxcontent { background-color: #D4E5FF; border-color: #D4E5FF; }
@@ -1471,9 +1475,9 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #scrum ul li .story_tags { padding-top: 3px; line-height: 15px; font-size: 13px; font-weight: normal; }
 #scrum ul li.story_card .story_tags, #scrum ul li.story_card .content { display: none; }
 /*#scrum ul li.story_card:hover .story_tags, */#scrum ul li.story_card:hover .content { display: inherit; }
-#scrum ul.highlighted { background-color: #F4EC8B; }
-#scrum_unassigned #add_story { text-align: right; margin-top: 3px; }
+#scrum_unassigned #add_story { text-align: right; padding-top: 3px; }
 #scrum_unassigned { width: 400px; padding-right: 5px; }
+#scrum_unassigned .header_div { border: 0; margin: 0; font-size: 15px; }
 #scrum_unassigned label { float: left; padding-top: 4px; }
 #scrum_unassigned label, #scrum_unassigned input[type="submit"] { font-size: 12px; font-weight: bold; }
 #scrum_unassigned #story_title { width: 250px; }

@@ -57,10 +57,10 @@ function assignStory(url, dragged, dropped)
 		{
 			$('message_failed').hide();
 			$(dropped.id + '_indicator').hide();
-			dropped.insert(Element.remove(dragged), { insertion: Insertion.Bottom, queue: 'end' });
+			$(dropped.id + '_list').insert(Element.remove(dragged), { insertion: Insertion.Bottom, queue: 'end' });
 			dragged.highlight({ queue: 'end' });
-			$('scrum_sprint_'+json.old_sprint_id+'_issues').update(json.old_issues);
-			$('scrum_sprint_'+json.new_sprint_id+'_issues').update(json.new_issues);
+			$('scrum_sprint_' + json.old_sprint_id + '_issues').update(json.old_issues);
+			$('scrum_sprint_' + json.new_sprint_id + '_issues').update(json.new_issues);
 			$('message_user_story_assigned').show();
 			new Effect.Fade('message_user_story_assigned', {delay: 20} );
 		}
