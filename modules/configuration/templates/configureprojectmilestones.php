@@ -24,11 +24,16 @@
 				</div>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_milestone', array('project_id' => $theProject->getID())); ?>" method="post" id="add_milestone_form" onsubmit="addMilestone('<?php echo make_url('configure_projects_add_milestone', array('project_id' => $theProject->getID())); ?>');return false;">
-					<table cellpadding=0 cellspacing=0 style="width: 500px;">
+					<div style="margin-top: 10px; padding: 3px; border-bottom: 1px solid #DDD;"><b><?php echo __('Add a milestone'); ?></b></div>
+					<table cellpadding=0 cellspacing=0>
 						<tr>
-							<td style="padding: 3px; border-bottom: 1px solid #DDD;" colspan=3><br><b><?php echo __('Add a milestone'); ?></b></td>
-						<tr>
-							<td style="width: 450px; padding: 2px;" colspan=2><input type="text" style="width: 445px;" name="name"></td>
+							<td style="width: 450px; padding: 2px;"><input type="text" style="width: 445px;" name="name"></td>
+							<td style="width: 100px; padding: 2px;">
+								<select name="milestone_type">
+									<option value="1"><?php echo __('Regular milestone'); ?></option>
+									<option value="2"><?php echo __('Scrum sprint'); ?></option>
+								</select>
+							</td>
 							<td style="padding: 0px; text-align: right;"><input type="submit" value="<?php echo __('Add'); ?>"></td>
 						</tr>
 					</table>

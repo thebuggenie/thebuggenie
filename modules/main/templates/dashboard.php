@@ -197,7 +197,7 @@
 			<?php if (count($bugs_user->getAssociatedProjects()) > 0): ?>
 				<?php $milestone_cc = 0; ?>
 				<?php foreach ($bugs_user->getAssociatedProjects() as $project): ?>
-					<?php foreach ($project->getUpcomingMilestones() as $milestone): ?>
+					<?php foreach ($project->getUpcomingMilestonesAndSprints() as $milestone): ?>
 						<?php if ($milestone->isVisible()): ?>
 							<div class="rounded_box <?php if ($milestone->isReached()): ?>green_borderless<?php elseif ($milestone->isOverdue()): ?>red_borderless<?php else: ?>iceblue_borderless<?php endif; ?> milestone_box">
 								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>

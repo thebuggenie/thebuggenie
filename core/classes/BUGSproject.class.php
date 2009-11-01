@@ -129,11 +129,25 @@
 		protected $_defaultstatus = 0;
 		
 		/**
+		 * List of milestones + sprints for this project
+		 *
+		 * @var array
+		 */
+		protected $_allmilestones = null;
+
+		/**
 		 * List of milestones for this project
 		 *
 		 * @var array
 		 */
 		protected $_milestones = null;
+
+		/**
+		 * List of sprints for this project
+		 *
+		 * @var array
+		 */
+		protected $_sprints = null;
 		
 		/**
 		 * List of components for this project
@@ -1278,9 +1292,43 @@
 			if ($this->_milestones === null)
 			{
 				$this->_milestones = array();
-				foreach (BUGSmilestone::getAllByProjectID($this->getID()) as $milestone)
+				foreach (BUGSmilestone::getMilestonesByProjectID($this->getID()) as $milestone)
 				{
 					$this->_milestones[$milestone->getID()] = $milestone;
+				}
+			}
+		}
+
+		/**
+		 * Populates the milestones + sprints array
+		 *
+		 * @return void
+		 */
+		protected function _populateAllMilestones()
+		{
+			if ($this->_allmilestones === null)
+			{
+				$this->_allmilestones = array();
+				foreach (BUGSmilestone::getAllByProjectID($this->getID()) as $milestone)
+				{
+					$this->_allmilestones[$milestone->getID()] = $milestone;
+				}
+			}
+		}
+
+		/**
+		 * Populates the sprints array
+		 *
+		 * @return void
+		 */
+		protected function _populateSprints()
+		{
+			if ($this->_sprints === null)
+			{
+				$this->_sprints = array();
+				foreach (BUGSmilestone::getSprintsByProjectID($this->getID()) as $sprint)
+				{
+					$this->_sprints[$sprint->getID()] = $sprint;
 				}
 			}
 		}
@@ -1291,10 +1339,10 @@
 		 * @param string $m_name
 		 * @return BUGSmilestone
 		 */
-		public function addMilestone($m_name)
+		public function addMilestone($m_name, $type)
 		{
 			$this->_milestones = null;
-			return BUGSmilestone::createNew($m_name, $this->getID());
+			return BUGSmilestone::createNew($m_name, $type, $this->getID());
 		}
 		
 		/**
@@ -1307,21 +1355,43 @@
 			$this->_populateMilestones();
 			return $this->_milestones;
 		}
-		
+
 		/**
-		 * Returns a list of upcoming milestones
+		 * Returns an array with all the milestones + sprints
+		 *
+		 * @return array
+		 */
+		public function getAllMilestones()
+		{
+			$this->_populateAllMilestones();
+			return $this->_allmilestones;
+		}
+
+		/**
+		 * Returns an array with all the sprints
+		 *
+		 * @return array
+		 */
+		public function getSprints()
+		{
+			$this->_populateSprints();
+			return $this->_sprints;
+		}
+
+		/**
+		 * Returns a list of upcoming milestones and sprints
 		 * 
 		 * @param integer $days[optional] Number of days, default 21 
 		 * 
 		 * @return array
 		 */
-		public function getUpcomingMilestones($days = 21)
+		public function getUpcomingMilestonesAndSprints($days = 21)
 		{
 			$ret_arr = array();
-			if ($milestones = $this->getMilestones())
+			if ($allmilestones = $this->getAllMilestones())
 			{
 				$curr_day = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
-				foreach ($milestones as $milestone)
+				foreach ($allmilestones as $milestone)
 				{
 					if (($milestone->getScheduledDate() >= $curr_day || $milestone->isOverdue()) && $milestone->getScheduledDate() <= ($curr_day + (86400 * $days)))
 					{
@@ -1592,6 +1662,25 @@
 		{
 			$this->_populateUnassignedIssues();
 			return $this->_unassignedissues;
+		}
+
+		/**
+		 * Returns an array with unassigned user stories
+		 *
+		 * @return array
+		 */
+		public function getUnassignedStories()
+		{
+			$issues = $this->getIssuesWithoutMilestone();
+			$unassigned_stories = array();
+			foreach ($issues as $issue)
+			{
+				if ($issue->getIssueType() instanceof BUGSissuetype && $issue->getIssueType()->getIcon() == 'developer_report')
+				{
+					$unassigned_stories[$issue->getID()] = $issue;
+				}
+			}
+			return $unassigned_stories;
 		}
 
 		/**

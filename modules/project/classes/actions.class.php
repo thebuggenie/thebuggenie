@@ -72,7 +72,35 @@
 		 */
 		public function runScrum($request)
 		{
-			$this->unassigned_issues = $this->selected_project->getIssuesWithoutMilestone();
+			$this->unassigned_issues = $this->selected_project->getUnassignedStories();
+		}
+
+		/**
+		 * Assign a user story to a milestone id
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runScrumAssignStory($request)
+		{
+			$issue = BUGSfactory::BUGSissueLab($request->getParameter('story_id'));
+			$new_sprint_id = (int) $request->getParameter('sprint_id');
+			$sprint = null;
+			try
+			{
+				$sprint = BUGSfactory::milestoneLab($new_sprint_id);
+			}
+			catch (Exception $e) {}
+			if ($issue instanceof BUGSissue)
+			{
+				$old_sprint = $issue->getMilestone();
+				$issue->setMilestone($new_sprint_id);
+				$issue->save();
+				$old_sprint_id = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->getID() : 0;
+				$old_issues = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->countIssues() : 0;
+				$new_issues = ($sprint instanceof BUGSmilestone) ? $sprint->countIssues() : 0;
+				return $this->renderJSON(array('failed' => false, 'issue_id' => $issue->getID(), 'old_sprint_id' => $old_sprint_id, 'old_issues' => $old_issues, 'new_sprint_id' => $new_sprint_id, 'new_issues' => $new_issues));
+			}
+			return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Invalid user story or sprint')));
 		}
 
 		/**

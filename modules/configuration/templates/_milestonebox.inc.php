@@ -2,12 +2,21 @@
 	<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'update')); ?>" method="post" id="edit_milestone_<?php echo $milestone->getID(); ?>" style="display: none;" onsubmit="updateMilestone('<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'update')); ?>', <?php echo $milestone->getID(); ?>);return false;">
 		<table style="width: 100%;" cellpadding=0 cellspacing=0>
 			<tr>
-				<td style="width: 60px; padding: 3px;"><b><?php echo __('Name:'); ?></b></td>
+				<td style="width: 100px; padding: 3px;"><b><?php echo __('Name:'); ?></b></td>
 				<td style="width: auto;"><input type="text" style="width: 100%;" value="<?php echo $milestone->getName(); ?>" name="name"></td>
 			</tr>
 			<tr>
-				<td style="width: 60px; padding: 3px;"><b><?php echo __('Description:'); ?></b></td>
+				<td style="padding: 3px;"><b><?php echo __('Description:'); ?></b></td>
 				<td style="width: auto;"><input type="text" style="width: 100%;" value="<?php echo $milestone->getDescription(); ?>" name="description"></td>
+			</tr>
+			<tr>
+				<td style="padding: 3px;"><b><?php echo __('Milestone type:'); ?></b></td>
+				<td style="width: auto;">
+					<select name="milestone_type">
+						<option value="1"<?php if ($milestone->getType() == 1): ?> selected<?php endif; ?>><?php echo __('Regular milestone'); ?></option>
+						<option value="2"<?php if ($milestone->getType() == 2): ?> selected<?php endif; ?>><?php echo __('Scrum sprint'); ?></option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td style="width: 120px;">

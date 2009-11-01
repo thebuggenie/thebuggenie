@@ -1,7 +1,8 @@
-<li id="scrum_story_<?php echo $issue->getID(); ?>" style="background: url('<?php echo BUGScontext::getTBGPath() . '/themes/' . BUGSsettings::getThemeName() . '/scrum_storycard.png'; ?>') repeat-x; background-color: #FFF;">
+<li class="story_card" id="scrum_story_<?php echo $issue->getID(); ?>" style="background: url('<?php echo BUGScontext::getTBGPath() . '/themes/' . BUGSsettings::getThemeName() . '/scrum_storycard.png'; ?>') repeat-x; background-color: #FFF;">
 	<div class="story_color" style="background-color: <?php echo '#' . $issue->getScrumColor(); ?>;">&nbsp;</div>
 	<div class="header"><?php echo $issue->getTitle(); ?></div>
 	<div class="story_no"><?php echo $issue->getIssueNo(); ?></div>
+	<input type="hidden" id="scrum_story_<?php echo $issue->getID(); ?>_id" value="<?php echo $issue->getIssueNo(); ?>">
 	<div class="content"><?php echo $issue->getDescription(); ?></div>
 	<div class="story_tags">
 		<b><?php echo __('Tags'); ?></b>:

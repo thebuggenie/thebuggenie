@@ -26,6 +26,7 @@
 		const PROJECT = 'bugs2_milestones.project';
 		const VISIBLE = 'bugs2_milestones.visible';
 		const DESCRIPTION = 'bugs2_milestones.description';
+		const MILESTONE_TYPE = 'bugs2_milestones.milestone_type';
 		const REACHED = 'bugs2_milestones.reached';
 		const SCHEDULED = 'bugs2_milestones.scheduled';
 		
@@ -36,15 +37,17 @@
 			parent::_addBoolean(self::VISIBLE, true);
 			parent::_addText(self::DESCRIPTION, false);
 			parent::_addInteger(self::REACHED, 10);
+			parent::_addInteger(self::MILESTONE_TYPE, 2);
 			parent::_addInteger(self::SCHEDULED, 10);
 			parent::_addForeignKeyColumn(self::PROJECT, B2DB::getTable('B2tProjects'), B2tProjects::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
 		
-		public function createNew($name, $project_id)
+		public function createNew($name, $type, $project_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, $name);
+			$crit->addInsert(self::MILESTONE_TYPE, $type);
 			$crit->addInsert(self::PROJECT, $project_id);
 			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
 			$res = $this->doInsert($crit);
@@ -52,7 +55,7 @@
 			return $res->getInsertID();
 		}
 		
-		public function getByProjectID($project_id)
+		public function getAllByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT, $project_id);
@@ -60,7 +63,27 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
-		
+
+		public function getMilestonesByProjectID($project_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PROJECT, $project_id);
+			$crit->addWhere(self::MILESTONE_TYPE, BUGSmilestone::TYPE_REGULAR);
+			$crit->addOrderBy(self::SCHEDULED, B2DBCriteria::SORT_ASC);
+			$res = $this->doSelect($crit);
+			return $res;
+		}
+
+		public function getSprintsByProjectID($project_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PROJECT, $project_id);
+			$crit->addWhere(self::MILESTONE_TYPE, BUGSmilestone::TYPE_SCRUMSPRINT);
+			$crit->addOrderBy(self::SCHEDULED, B2DBCriteria::SORT_ASC);
+			$res = $this->doSelect($crit);
+			return $res;
+		}
+
 		public function setReached($milestone_id)
 		{
 			$crit = $this->getCriteria();

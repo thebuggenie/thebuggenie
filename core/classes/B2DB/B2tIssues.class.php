@@ -252,7 +252,7 @@
 		public function getByMilestone($milestone_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::MILESTONE, $this->_itemid);
+			$crit->addWhere(self::MILESTONE, $milestone_id);
 			$crit->addWhere(self::DELETED, 0);
 			$res = $this->doSelect($crit);
 			return $res;

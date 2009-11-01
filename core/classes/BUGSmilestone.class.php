@@ -18,6 +18,10 @@
 	 */
 	class BUGSmilestone extends BUGSidentifiableclass implements BUGSidentifiable  
 	{
+
+		const TYPE_REGULAR = 1;
+		const TYPE_SCRUMSPRINT = 2;
+
 		/**
 		 * This components project
 		 *
@@ -75,26 +79,68 @@
 		protected $_closed_issues;
 		
 		/**
-		 * Get all milestones by a project id
-		 * 
+		 * Get milestones + sprints by a project id
+		 *
 		 * @param integer $project_id The project id
-		 * 
+		 *
 		 * @return array
 		 */
 		public static function getAllByProjectID($project_id)
 		{
 			$milestones = array();
-			if ($res = B2DB::getTable('B2tMilestones')->getByProjectID($project_id))
+			if ($res = B2DB::getTable('B2tMilestones')->getAllByProjectID($project_id))
 			{
 				while ($row = $res->getNextRow())
 				{
 					$milestone = BUGSfactory::milestoneLab($row->get(B2tMilestones::ID), $row);
-					$milestones[$milestone->getID()] = $milestone; 
+					$milestones[$milestone->getID()] = $milestone;
 				}
 			}
 			return $milestones;
 		}
-		
+
+		/**
+		 * Get regular milestones by a project id
+		 *
+		 * @param integer $project_id The project id
+		 *
+		 * @return array
+		 */
+		public static function getMilestonesByProjectID($project_id)
+		{
+			$milestones = array();
+			if ($res = B2DB::getTable('B2tMilestones')->getMilestonesByProjectID($project_id))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$milestone = BUGSfactory::milestoneLab($row->get(B2tMilestones::ID), $row);
+					$milestones[$milestone->getID()] = $milestone;
+				}
+			}
+			return $milestones;
+		}
+
+		/**
+		 * Get all sprints by a project id
+		 *
+		 * @param integer $project_id The project id
+		 *
+		 * @return array
+		 */
+		public static function getSprintsByProjectID($project_id)
+		{
+			$sprints = array();
+			if ($res = B2DB::getTable('B2tMilestones')->getSprintsByProjectID($project_id))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$sprint = BUGSfactory::milestoneLab($row->get(B2tMilestones::ID), $row);
+					$sprints[$sprint->getID()] = $sprint;
+				}
+			}
+			return $sprints;
+		}
+
 		/**
 		 * Create a new milestone and return it
 		 * 
@@ -103,9 +149,9 @@
 		 * 
 		 * @return BUGSmilestone
 		 */
-		static public function createNew($name, $project_id)
+		static public function createNew($name, $type, $project_id)
 		{
-			$m_id = B2DB::getTable('B2tMilestones')->createNew($name, $project_id);
+			$m_id = B2DB::getTable('B2tMilestones')->createNew($name, $type, $project_id);
 			BUGScontext::setPermission('b2milestoneaccess', $m_id, 'core', 0, BUGScontext::getUser()->getGroup()->getID(), 0, true);
 			return BUGSfactory::milestoneLab($m_id);
 		}
@@ -128,6 +174,7 @@
 			{
 				$this->_name = $row->get(B2tMilestones::NAME);
 				$this->_itemid = $row->get(B2tMilestones::ID);
+				$this->_itemtype = $row->get(B2tMilestones::MILESTONE_TYPE);
 				$this->_isvisible = (bool) $row->get(B2tMilestones::VISIBLE);
 				$this->_isscheduled = (bool) $row->get(B2tMilestones::SCHEDULED);
 				$this->_isreached = (bool) $row->get(B2tMilestones::REACHED);
@@ -160,6 +207,36 @@
 		{
 			$this->_populateIssues();
 			return $this->_issues;
+		}
+
+		/**
+		 * Return number of issues assigned to this milestone
+		 *
+		 * @return integer
+		 */
+		public function countIssues()
+		{
+			return $this->getProject()->countIssuesByMilestone($this->getID());
+		}
+
+		/**
+		 * Return number of open issues assigned to this milestone
+		 *
+		 * @return integer
+		 */
+		public function countOpenIssues()
+		{
+			return $this->getProject()->countOpenIssuesByMilestone($this->getID());
+		}
+
+		/**
+		 * Return number of closed issues assigned to this milestone
+		 *
+		 * @return integer
+		 */
+		public function countClosedIssues()
+		{
+			return $this->getProject()->countClosedIssuesByMilestone($this->getID());
 		}
 		
 		/**
@@ -243,6 +320,26 @@
 		public function setScheduled($scheduled = true)
 		{
 			$this->_isscheduled = $scheduled;
+		}
+
+		/**
+		 * Set the milestone type
+		 *
+		 * @param integer $type
+		 */
+		public function setType($type)
+		{
+			$this->_itemtype = $type;
+		}
+
+		/**
+		 * Get the milestone type
+		 *
+		 * @return integer
+		 */
+		public function getType()
+		{
+			return $this->_itemtype;
 		}
 
 		/**
@@ -519,6 +616,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(B2tMilestones::NAME, $this->_name);
+			$crit->addUpdate(B2tMilestones::MILESTONE_TYPE, $this->_itemtype);
 			$crit->addUpdate(B2tMilestones::DESCRIPTION, $this->_description);
 			if ($this->_isscheduled)
 			{

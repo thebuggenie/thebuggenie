@@ -740,7 +740,7 @@
 						if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
 						{
 							$theProject = BUGSfactory::projectLab($p_id);
-							$theMilestone = $theProject->addMilestone($m_name);
+							$theMilestone = $theProject->addMilestone($m_name, $request->getParameter('milestone_type', 1));
 							return $this->renderTemplate('milestonebox', array('milestone' => $theMilestone));
 						}
 						else
@@ -788,6 +788,7 @@
 									$theMilestone->setName($m_name);
 									$theMilestone->setScheduled((bool) $request->getParameter('is_scheduled'));
 									$theMilestone->setDescription($request->getParameter('description'));
+									$theMilestone->setType($request->getParameter('milestone_type', 1));
 									if ($theMilestone->isScheduled())
 									{
 										if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))

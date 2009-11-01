@@ -5,6 +5,7 @@
 
 ?>
 <?php echo bugs_successStrip(__('The user story has been added'), '', 'message_user_story_added', true); ?>
+<?php echo bugs_successStrip(__('The user story has been updated'), '', 'message_user_story_assigned', true); ?>
 <?php echo bugs_failureStrip('', '', 'message_failed', true); ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0" id="scrum">
 	<tr>
@@ -13,9 +14,31 @@
 		</td>
 		<td style="width: auto; padding-right: 5px;">
 			<div class="header_div"><?php echo __('Sprints overview'); ?></div>
-			<ul id="scrum_sprint_1">
-				
-			</ul>
+			<?php foreach ($selected_project->getSprints() as $sprint): ?>
+			<div class="rounded_box mediumgrey_borderless" style="margin-top: 5px;">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
+					<div class="sprint_header">
+						<a href="javascript: void(0);" onclick="$('scrum_sprint_<?php echo $sprint->getID(); ?>').toggle();"><?php echo $sprint->getName(); ?></a>
+						&nbsp;&nbsp;<?php echo __('%number_of% issue(s)', array('%number_of%' => '<span style="font-weight: bold;" id="scrum_sprint_'.$sprint->getID().'_issues">'.$sprint->countIssues().'</span>')); ?>&nbsp;
+						&nbsp;&nbsp;(<?php echo __('click to show/hide assigned issues'); ?>)
+					</div>
+					<ul id="scrum_sprint_<?php echo $sprint->getID(); ?>" style="display: none;">
+						<?php foreach ($sprint->getIssues() as $issue): ?>
+							<?php include_component('scrumcard', array('issue' => $issue)); ?>
+						<?php endforeach; ?>
+					</ul>
+					<input type="hidden" id="scrum_sprint_<?php echo $sprint->getID(); ?>_id" value="<?php echo $sprint->getID(); ?>">
+					<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="scrum_sprint_<?php echo $sprint->getID(); ?>_indicator">
+						<tr>
+							<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
+							<td style="padding: 0px; text-align: left; font-size: 13px;"><?php echo __('Reassigning, please wait'); ?>...</td>
+						</tr>
+					</table>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div>
+			<?php endforeach; ?>
 		</td>
 		<td id="scrum_unassigned">
 			<div class="header_div"><?php echo __('Unassigned items'); ?></div>
@@ -34,47 +57,31 @@
     				<td style="padding: 0px; text-align: left;"><?php echo __('Adding user story, please wait'); ?>...</td>
     			</tr>
     		</table>
+			<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="scrum_unassigned_list_indicator">
+				<tr>
+					<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
+					<td style="padding: 0px; text-align: left; font-size: 13px;"><?php echo __('Reassigning, please wait'); ?>...</td>
+				</tr>
+			</table>
 			<ul id="scrum_unassigned_list">
 				<?php foreach ($unassigned_issues as $issue): ?>
 					<?php include_component('scrumcard', array('issue' => $issue)); ?>
 				<?php endforeach; ?>
-				<?php /*<li id="scrum_story_1" style="background: url('<?php echo BUGScontext::getTBGPath() . '/themes/' . BUGSsettings::getThemeName() . '/scrum_storycard.png'; ?>') repeat-x; background-color: #FFF;">
-					<div class="story_color" style="background-color: #FFDD00;">&nbsp;</div>
-					<div class="header">Story 1</div>
-					<div class="story_no">1</div>
-					<div class="content">As user #1 I'd like to perform an action, obviously, so that I can be a performer of actions</div>
-					<div class="story_tags"><b><?php echo __('Tags'); ?></b>: permissions, actions</div>
-					<div class="story_owner faded_dark"><?php echo __('Not claimed'); ?></div>
-					<div class="story_estimate"><b><?php echo __('Estim'); ?>: </b>3</div>
-				</li>
-				<li id="scrum_story_2" style="background: url('<?php echo BUGScontext::getTBGPath() . '/themes/' . BUGSsettings::getThemeName() . '/scrum_storycard.png'; ?>') repeat-x; background-color: #FFF;">
-					<div class="story_color" style="background-color: #00BF00;">&nbsp;</div>
-					<div class="header">Story 2</div>
-					<div class="story_no">2</div>
-					<div class="content" style="display: none;">As user #2 I should not be able to perform actions, so no unprivileged users can perform actions</div>
-					<div class="story_tags" style="display: none;"><b><?php echo __('Tags'); ?></b>: security, login, permissions</div>
-					<div class="story_owner faded_dark"><?php echo __('Not claimed'); ?></div>
-					<div class="story_estimate"><b><?php echo __('Estim'); ?>: </b>3</div>
-				</li>
-				<li id="scrum_story_3" style="background: url('<?php echo BUGScontext::getTBGPath() . '/themes/' . BUGSsettings::getThemeName() . '/scrum_storycard.png'; ?>') repeat-x; background-color: #FFF;">
-					<div class="story_color" style="background-color: #80B3FF;">&nbsp;</div>
-					<div class="header">Story 3</div>
-					<div class="story_no">3</div>
-					<div class="content">As an admin I should be able to remove user #1 and user #2, in case they violate TOS</div>
-					<div class="story_tags"><b><?php echo __('Tags'); ?></b>: security, users, permissions</div>
-					<div class="story_owner faded_dark"><?php echo __('Not claimed'); ?></div>
-					<div class="story_estimate"><b><?php echo __('Estim'); ?>: </b>3</div>
-				</li> */ ?>
 			</ul>
+			<input type="hidden" id="scrum_unassigned_list_id" value="0">
+			<span id="scrum_sprint_0_issues" style="display: none;"></span>
 		</td>
 	</tr>
 </table>
 <script type="text/javascript">
-	<?php foreach ($selected_project->getMilestones() as $milestone): ?>
-	Droppables.add('scrum_sprint_<?php echo $milestone->getID(); ?>', { hoverclass: 'highlighted' });
+	<?php foreach ($selected_project->getSprints() as $sprint): ?>
+	Droppables.add('scrum_sprint_<?php echo $sprint->getID(); ?>', { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { assignStory('<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>', dragged, dropped)}});
+		<?php foreach ($sprint->getIssues() as $issue): ?>
+		new Draggable('scrum_story_<?php echo $issue->getID(); ?>', { revert: true });
+		<?php endforeach; ?>
 	<?php endforeach; ?>
-	<?php foreach ($selected_project->getIssuesWithoutMilestone() as $issue): ?>
+	<?php foreach ($unassigned_issues as $issue): ?>
 	new Draggable('scrum_story_<?php echo $issue->getID(); ?>', { revert: true });
 	<?php endforeach; ?>
-	Droppables.add('scrum_unassigned', { hoverclass: 'highlighted' });
+	Droppables.add('scrum_unassigned_list', { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { assignStory('<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>', dragged, dropped)}});
 </script>

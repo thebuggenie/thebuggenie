@@ -12,7 +12,9 @@
 		<?php foreach ($assignees['users'] as $u_id => $assigns): ?>
 			<tr>
 				<td style="vertical-align: top; width: 250px; border-bottom: 1px solid #F1F1F1;">
-					<table cellpadding=0 cellspacing=0 width="100%"><?php print bugs_userDropdown($u_id); ?></table>
+					<table cellpadding=0 cellspacing=0 width="100%">
+						<?php echo include_component('main/userdropdown', array('user' => $u_id)); ?>
+					</table>
 				</td>
 				<td style="vertical-align: top; padding-top: 3px; border-bottom: 1px solid #F1F1F1; padding-bottom: 7px;">
 					<?php if (array_key_exists('projects', $assigns)): ?>
@@ -62,7 +64,9 @@
 			<?php var_dump($c_id, $assigns); die(); ?>
 			<tr>
 				<td style="vertical-align: top; width: 250px; border-bottom: 1px solid #F1F1F1;">
-					<table cellpadding=0 cellspacing=0 width="100%"><?php print bugs_customerDropdown($c_id); ?></table>
+					<table cellpadding=0 cellspacing=0 width="100%">
+						<?php echo include_component('main/teamdropdown', array('team' => $c_id)); ?>
+					</table>
 				</td>
 				<td style="vertical-align: top; padding-top: 3px; border-bottom: 1px solid #F1F1F1; padding-bottom: 7px;">
 					<?php if (array_key_exists('projects', $assigns)): ?>
@@ -111,7 +115,9 @@
 		<?php foreach ($assignees['teams'] as $c_id => $assigns): ?>
 			<tr>
 				<td style="vertical-align: top; width: 250px; border-bottom: 1px solid #F1F1F1;">
-					<table cellpadding=0 cellspacing=0 width="100%"><?php print bugs_teamDropdown($c_id); ?></table>
+					<table cellpadding=0 cellspacing=0 width="100%">
+						<?php echo include_component('main/teamdropdown', array('team' => $c_id)); ?>
+					</table>
 				</td>
 				<td style="vertical-align: top; padding-top: 3px; border-bottom: 1px solid #F1F1F1; padding-bottom: 7px;">
 					<?php if (array_key_exists('projects', $assigns)): ?>
