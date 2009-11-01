@@ -3790,6 +3790,7 @@
 			$crit->addUpdate(B2tIssues::SPENT_DAYS, $this->_spentdays);
 			$crit->addUpdate(B2tIssues::SPENT_HOURS, $this->_spenthours);
 			$crit->addUpdate(B2tIssues::SPENT_POINTS, $this->_spentpoints);
+			$crit->addUpdate(B2tIssues::SCRUMCOLOR, $this->_scrumcolor);
 			$crit->addUpdate(B2tIssues::PERCENT_COMPLETE, $this->_percentcompleted);
 			$crit->addUpdate(B2tIssues::DUPLICATE, (is_object($this->_duplicateof)) ? $this->_duplicateof->getID() : $this->_duplicateof);
 			$crit->addUpdate(B2tIssues::DELETED, $this->_deleted);

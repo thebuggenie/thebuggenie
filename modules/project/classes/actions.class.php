@@ -76,6 +76,23 @@
 		}
 
 		/**
+		 * Set color on a user story
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runScrumSetStoryColor($request)
+		{
+			$issue = BUGSfactory::BUGSissueLab($request->getParameter('story_id'));
+			if ($issue instanceof BUGSissue)
+			{
+				$issue->setScrumColor($request->getParameter('color'));
+				$issue->save();
+				return $this->renderJSON(array('failed' => false));
+			}
+			return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Invalid user story or color')));
+		}
+
+		/**
 		 * Assign a user story to a milestone id
 		 *
 		 * @param BUGSrequest $request

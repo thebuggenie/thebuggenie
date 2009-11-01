@@ -82,7 +82,7 @@
 			parent::_addForeignKeyColumn(self::CATEGORY, B2DB::getTable('B2tListTypes'), B2tListTypes::ID);
 			parent::_addForeignKeyColumn(self::SEVERITY, B2DB::getTable('B2tListTypes'), B2tListTypes::ID);
 			parent::_addForeignKeyColumn(self::REPRODUCABILITY, B2DB::getTable('B2tListTypes'), B2tListTypes::ID);
-			parent::_addVarchar(self::SCRUMCOLOR, 6, 'FFFFFF');
+			parent::_addVarchar(self::SCRUMCOLOR, 7, '#FFFFFF');
 			parent::_addInteger(self::ESTIMATED_MONTHS, 10);
 			parent::_addInteger(self::ESTIMATED_WEEKS, 10);
 			parent::_addInteger(self::ESTIMATED_DAYS, 10);

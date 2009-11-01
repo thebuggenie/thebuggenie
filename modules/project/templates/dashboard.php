@@ -5,7 +5,7 @@
 ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0" id="project_dashboard">
 	<tr>
-		<td style="width: 375px; padding: 0 5px 0 5px;">
+		<td style="width: 365px; padding: 0 5px 0 5px;">
 			<div class="rounded_box mediumgrey_borderless" style="margin-top: 5px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 5px 5px 5px;">

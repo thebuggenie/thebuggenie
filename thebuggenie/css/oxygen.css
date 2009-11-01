@@ -1464,14 +1464,16 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 
 #scrum td { vertical-align: top; }
 #scrum ul, #project_dashboard ul { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; min-height: 20px; }
-#scrum ul { padding-bottom: 10px; }
-#scrum ul li { padding: 3px 3px 33px 8px; border: 1px solid #BBB; position: relative; margin-bottom: 10px; cursor: move; }
+#scrum ul { padding: 0; }
+#scrum ul li { padding: 3px 3px 33px 9px; border: 1px solid #BBB; position: relative; margin-bottom: 10px; cursor: move; }
 #scrum ul li .header { font-size: 14px; font-weight: bold; }
 #scrum ul li .content { padding-top: 3px; line-height: 15px; font-size: 13px; font-weight: normal; margin-bottom: 12px; }
-#scrum ul li .story_color { position: absolute; top: 0px; left: 0px; width: 4px; height: 50px; font-size: 1px; font-weight: normal; padding: 0; border-right: 1px solid #888; border-bottom: 1px solid #888; }
+#scrum ul li .story_color { position: absolute; top: 0px; left: 0px; width: 6px; height: 50px; font-size: 1px; font-weight: normal; padding: 0; border-right: 1px solid #888; border-bottom: 1px solid #888; }
+#scrum ul li .story_color_selector { position: absolute; top: 0px; left: 0px; width: 384px; height: 50px; z-index: 999; border: 1px solid #FFF; background-color: #FFF; }
+#scrum ul li .story_color_selector_item { cursor: pointer; float: left; width: 12px; height: 50px; font-size: 1px; font-weight: normal; padding: 0; border: 0; border-right: 1px solid #555; }
 #scrum ul li .story_no { position: absolute; top: 1px; right: 3px; font-size: 15px; font-weight: bold; font-style: italic; background-color: #FAFAFA; padding: 1px 4px 1px 4px; }
 #scrum ul li .story_estimate { position: absolute; bottom: 1px; right: 3px; font-size: 14px; font-weight: normal; padding: 1px 4px 1px 4px; }
-#scrum ul li .story_owner { position: absolute; bottom: 1px; left: 6px; font-size: 14px; font-weight: normal; padding: 1px 4px 1px 1px; }
+#scrum ul li .story_owner { position: absolute; bottom: 1px; left: 8px; font-size: 14px; font-weight: normal; padding: 1px 4px 1px 1px; }
 #scrum ul li .story_tags { padding-top: 3px; line-height: 15px; font-size: 13px; font-weight: normal; }
 #scrum ul li.story_card .story_tags, #scrum ul li.story_card .content { display: none; }
 /*#scrum ul li.story_card:hover .story_tags, */#scrum ul li.story_card:hover .content { display: inherit; }

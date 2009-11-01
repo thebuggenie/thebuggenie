@@ -257,7 +257,7 @@
 			catch (Exception $e) {}
 			
 			$this->forward403unless($this->theProject instanceof BUGSproject);
-			$this->milestones = $this->theProject->getMilestones();
+			$this->milestones = $this->theProject->getAllMilestones();
 		}
 		
 		/**

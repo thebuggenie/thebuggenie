@@ -23,7 +23,8 @@ function addUserStory(url)
 			$('message_failed').hide();
 			$('user_story_add_indicator').hide();
 			$('message_user_story_added').show();
-			$('scrum_unassigned_list').insert({bottom: json.content});
+			$('scrum_sprint_0_list').insert({bottom: json.content});
+			$('scrum_no_unassigned').hide();
 			new Draggable('scrum_story_' + json.story_id, { revert: true });
 			new Effect.Fade('message_user_story_added', {delay: 20} );
 		}
@@ -61,6 +62,7 @@ function assignStory(url, dragged, dropped)
 			dragged.highlight({ queue: 'end' });
 			$('scrum_sprint_' + json.old_sprint_id + '_issues').update(json.old_issues);
 			$('scrum_sprint_' + json.new_sprint_id + '_issues').update(json.new_issues);
+			($('scrum_sprint_0_list').childElements().size() == 0) ? $('scrum_no_unassigned').show() : $('scrum_no_unassigned').hide();
 			$('message_user_story_assigned').show();
 			new Effect.Fade('message_user_story_assigned', {delay: 20} );
 		}
@@ -70,4 +72,37 @@ function assignStory(url, dragged, dropped)
 	}
 	});
 	
+}
+
+function setStoryColor(url, story_id, color)
+{
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	parameters: { color: color },
+	onLoading: function (transport) {
+		$('color_selector_' + story_id + '_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+			$('color_selector_' + story_id + '_indicator').hide();
+			$('color_selector_' + story_id).hide();
+			$('message_failed').show();
+		}
+		else
+		{
+			$('message_failed').hide();
+			$('color_selector_' + story_id + '_indicator').hide();
+			$('color_selector_' + story_id).hide();
+			$('story_color_' + story_id).style.backgroundColor = color;
+		}
+	},
+	onFailure: function (transport) {
+		$('color_selector_' + story_id + '_indicator').hide();
+		$('color_selector_' + story_id).hide();
+	}
+	});
 }

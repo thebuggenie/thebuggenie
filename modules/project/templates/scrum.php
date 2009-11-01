@@ -77,6 +77,7 @@
 							<?php include_component('scrumcard', array('issue' => $issue)); ?>
 						<?php endforeach; ?>
 					</ul>
+					<div class="faded_medium" style="font-size: 13px;" id="scrum_no_unassigned"><?php echo __('There are no unassigned user stories'); ?></div>
 					<input type="hidden" id="scrum_sprint_0_id" value="0">
 					<span id="scrum_sprint_0_issues" style="display: none;"></span>
 				</div>
