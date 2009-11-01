@@ -139,7 +139,7 @@
 				}
 				else
 				{
-					$tstring .= strftime("%b %d, ", $tstamp);
+					$tstring .= strftime("%b %d, %Y", $tstamp);
 				}
 				return $tstring;
 			default:

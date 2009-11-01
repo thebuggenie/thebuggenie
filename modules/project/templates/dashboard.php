@@ -60,7 +60,7 @@
 							<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 							<td style="padding-bottom: 15px;">
 								<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
-								<span class="faded_dark">
+								<span class="faded_dark" style="font-size: 11px;">
 									<?php echo bugs_formatTime($issue->getPosted(), 20); ?>,
 									<?php echo __('<strong>%status%</strong>', array('%status%' => (($issue->getStatus() instanceof BUGSdatatype) ? $issue->getStatus()->getName() : __('Status not determined')))); ?>
 								</span>
@@ -81,7 +81,7 @@
 							<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 							<td style="padding-bottom: 15px;">
 								<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
-								<span class="faded_dark">
+								<span class="faded_dark" style="font-size: 11px;">
 									<?php echo bugs_formatTime($issue->getPosted(), 20); ?>,
 									<?php echo __('<strong>%status%</strong>', array('%status%' => (($issue->getStatus() instanceof BUGSdatatype) ? $issue->getStatus()->getName() : __('Status not determined')))); ?>
 								</span>
@@ -92,6 +92,14 @@
 				<?php else: ?>
 					<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No issues of this type posted'); ?></div>
 				<?php endif; ?>
+			</div>
+			<div class="rounded_box mediumgrey_borderless" style="margin-top: 5px; clear: both; width: 620px;">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-size: 13px;">
+					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('Show product issues'), array('style' => 'font-weight: bold; float: right;')); ?>
+					<?php echo __('See more issues for this product'); ?>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
 		</td>
 	</tr>
