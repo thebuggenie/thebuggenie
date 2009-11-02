@@ -30,6 +30,24 @@ function failedMessage(title, content)
 	new Effect.Pulsate('message_failed');
 }
 
+function hideInfobox(url, boxkey)
+{
+	if ($('close_me_' + boxkey).checked)
+	{
+		new Ajax.Request(url, {
+		asynchronous:true,
+		method: "post",
+		onLoading: function (transport) {
+			$('infobox_' + boxkey + '_indicator').show();
+		},
+		onComplete: function (transport) {
+			$('infobox_' + boxkey + '_indicator').hide();
+		}
+		});
+	}
+	$('infobox_' + boxkey).fade();
+}
+
 function updateProjectMenuStrip(url, project_id)
 {
 	new Ajax.Updater('project_menustrip', url, {

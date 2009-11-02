@@ -171,6 +171,10 @@
 			}
 			else
 			{
+				if (!array_key_exists($uid, self::$_settings[$module][$name]))
+				{
+					return null;
+				}
 				return self::$_settings[$module][$name][$uid];
 			}
 		}
@@ -197,7 +201,7 @@
 			return self::$_defaultscope;
 		}
 		
-		public static function deleteSetting($name, $module = 'core', $value, $scope = 0, $uid = 0)
+		public static function deleteSetting($name, $module = 'core', $value = '', $scope = 0, $uid = 0)
 		{
 			if ($scope == 0)
 			{
@@ -453,6 +457,21 @@
 		public static function getIssueTypeIdea()
 		{
 			return self::get('issuetype_idea');
+		}
+		
+		public static function isInfoBoxVisible($key)
+		{
+			return !(bool) self::get('hide_infobox_' . $key, 'core', BUGScontext::getScope()->getID(), BUGScontext::getUser()->getID());
+		}
+
+		public static function hideInfoBox($key)
+		{
+			self::saveSetting('hide_infobox_' . $key, 1, 'core', BUGScontext::getScope()->getID(), BUGScontext::getUser()->getID());
+		}
+		
+		public static function showInfoBox($key)
+		{
+			self::deleteSetting('hide_infobox_' . $key, 'core', '', BUGScontext::getScope()->getID(), BUGScontext::getUser()->getID());
 		}
 
 	}

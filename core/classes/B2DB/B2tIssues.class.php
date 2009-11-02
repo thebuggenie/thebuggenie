@@ -318,6 +318,21 @@
 
 			return $res;
 		}
+		
+		public function getTotalPointsByMilestoneID($milestone_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::ESTIMATED_POINTS, 'points', B2DBCriteria::DB_SUM);
+			$crit->addWhere(self::MILESTONE, $milestone_id);
+			if ($res = $this->doSelectOne($crit))
+			{
+				return $res->get('points');
+			}
+			else
+			{
+				return 0;
+			}
+		}
 				
 		
 	}

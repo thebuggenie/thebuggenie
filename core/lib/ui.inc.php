@@ -387,7 +387,7 @@
 		
 		return $retval;
 	}
-
+	
 	/**
 	 * Returns a red box with a "failure" look
 	 *

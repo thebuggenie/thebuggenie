@@ -11,6 +11,7 @@
 	$routes[] = array('activate', '/activate/:user/:key', 'main', 'activate');
 	$routes[] = array('logout', '/logout', 'main', 'logout');
 	$routes[] = array('getprojectmenustrip', '/getprojectmenustrip/on/page/:page', 'project', 'getMenustrip');
+	$routes[] = array('hide_infobox', '/hide/infobox/:key', 'main', 'hideInfobox');
 	$routes[] = array('viewissue', '/:project_key/issue/:issue_no', 'main', 'viewIssue');
 	$routes[] = array('saveissue', '/:project_key/issue/:issue_no', 'main', 'viewIssue');
 	$routes[] = array('closeissue', '/:project_key/issue/:issue_id/close', 'main', 'closeIssue');

@@ -80,6 +80,8 @@
 			{
 				$$key = $val;
 			}
+			if (array_key_exists('key', $params)) $key = $params['key'];
+			if (array_key_exists('val', $params)) $val = $params['val'];
 			
 			/**
 			 * @global BUGSrequest The request object

@@ -57,6 +57,7 @@
 		const DB_RIGHT_JOIN = 'RIGHT JOIN';
 		const DB_COUNT = 'COUNT';
 		const DB_MAX = 'MAX';
+		const DB_SUM = 'SUM';
 		const DB_CONCAT = 'CONCAT';
 		const DB_COUNT_DISTINCT = 'COUNT(DISTINCT';
 		

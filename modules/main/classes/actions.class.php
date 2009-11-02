@@ -1328,6 +1328,17 @@
 			return $this->renderComponent('identifiableselectorresults', array('users' => $this->users, 'callback' => $request->getParameter('callback')));
 		}
 		
+		/**
+		 * Hides an infobox with a specific key
+		 * 
+		 * @param BUGSrequest $request The request object
+		 */		
+		public function runHideInfobox($request)
+		{
+			BUGSsettings::hideInfoBox($request->getParameter('key'));
+			return $this->renderJSON(array('hidden' => true));
+		}
+		
 	}
 
 ?>

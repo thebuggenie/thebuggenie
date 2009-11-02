@@ -79,6 +79,13 @@
 		protected $_closed_issues;
 		
 		/**
+		 * Estimated points total
+		 * 
+		 * @var integer
+		 */
+		protected $_points;
+		
+		/**
 		 * Get milestones + sprints by a project id
 		 *
 		 * @param integer $project_id The project id
@@ -207,6 +214,20 @@
 		{
 			$this->_populateIssues();
 			return $this->_issues;
+		}
+		
+		public function _populatePoints()
+		{
+			if ($this->_points === null)
+			{
+				$this->_points = (int) B2DB::getTable('B2tIssues')->getTotalPointsByMilestoneID($this->getID());
+			}
+		}
+		
+		public function getPoints()
+		{
+			$this->_populatePoints();
+			return $this->_points;
 		}
 
 		/**

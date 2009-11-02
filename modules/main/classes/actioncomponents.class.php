@@ -78,6 +78,11 @@
 			
 			$this->fields_list = $fields_list;
 		}
+		
+		public function componentHideableInfoBox()
+		{
+			$this->show_box = BUGSsettings::isInfoBoxVisible($this->key);
+		}
 	}
 
 ?>

@@ -115,7 +115,9 @@
 				$old_sprint_id = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->getID() : 0;
 				$old_issues = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->countIssues() : 0;
 				$new_issues = ($sprint instanceof BUGSmilestone) ? $sprint->countIssues() : 0;
-				return $this->renderJSON(array('failed' => false, 'issue_id' => $issue->getID(), 'old_sprint_id' => $old_sprint_id, 'old_issues' => $old_issues, 'new_sprint_id' => $new_sprint_id, 'new_issues' => $new_issues));
+				$old_points = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->getPoints() : 0;
+				$new_points = ($sprint instanceof BUGSmilestone) ? $sprint->getPoints() : 0;
+				return $this->renderJSON(array('failed' => false, 'issue_id' => $issue->getID(), 'old_sprint_id' => $old_sprint_id, 'old_issues' => $old_issues, 'old_points' => $old_points, 'new_sprint_id' => $new_sprint_id, 'new_issues' => $new_issues, 'new_points' => $new_points));
 			}
 			return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Invalid user story or sprint')));
 		}
