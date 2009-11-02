@@ -36,6 +36,42 @@ function addUserStory(url)
 	});
 }
 
+function addSprint(url, assign_url)
+{
+	var params = Form.serialize('add_sprint_form');
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	evalScripts: true,
+	parameters: params,
+	onLoading: function (transport) {
+		$('sprint_add_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+			$('sprint_add_indicator').hide();
+			$('message_failed').show();
+		}
+		else
+		{
+			Form.reset('add_sprint_form');
+			$('message_failed').hide();
+			$('sprint_add_indicator').hide();
+			$('message_sprint_added').show();
+			$('scrum_sprints').insert({bottom: json.content});
+			Droppables.add('scrum_sprint_' + json.sprint_id, { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { assignStory(assign_url, dragged, dropped)}});
+		}
+	},
+	onFailure: function (transport) {
+		$('user_story_add_indicator').hide();
+	},
+	insertion: Insertion.Bottom
+	});
+}
+
 function assignStory(url, dragged, dropped)
 {
 	new Ajax.Request(url, {

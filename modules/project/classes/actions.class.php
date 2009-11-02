@@ -119,6 +119,21 @@
 			}
 			return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Invalid user story or sprint')));
 		}
+		
+		/**
+		 * Add a new sprint type milestone to a project
+		 *  
+		 * @param BUGSrequest $request
+		 */
+		public function runScrumAddSprint($request)
+		{
+			if (($sprint_name = $request->getParameter('sprint_name')) && trim($sprint_name) != '')
+			{
+				$sprint = BUGSmilestone::createNew($sprint_name, BUGSmilestone::TYPE_SCRUMSPRINT, $this->selected_project->getID());
+				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('sprintbox', array('sprint' => $sprint)), 'sprint_id' => $sprint->getID()));
+			}
+			return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please specify a sprint name')));
+		}
 
 		/**
 		 * The project issue list page

@@ -1,9 +1,10 @@
 <?php
 
 	$bugs_response->setTitle(__('"%project_name%" project planning', array('%project_name%' => $selected_project->getName())));
-	$bugs_response->addJavascript('scrum');
+	$bugs_response->addJavascript('scrum.js');
 
 ?>
+<?php echo bugs_successStrip(__('The sprint has been added'), '', 'message_sprint_added', true); ?>
 <?php echo bugs_successStrip(__('The user story has been added'), '', 'message_user_story_added', true); ?>
 <?php echo bugs_successStrip(__('The user story has been updated'), '', 'message_user_story_assigned', true); ?>
 <?php echo bugs_failureStrip('', '', 'message_failed', true); ?>
@@ -12,32 +13,29 @@
 		<td style="width: 210px; padding: 0 5px 0 5px;">
 			<div class="header_div"><?php echo __('Actions'); ?></div>
 		</td>
-		<td style="width: auto; padding-right: 5px;">
+		<td style="width: auto; padding-right: 5px;" id="scrum_sprints">
 			<div class="header_div"><?php echo __('Sprints overview'); ?></div>
-			<?php foreach ($selected_project->getSprints() as $sprint): ?>
-			<div class="rounded_box mediumgrey_borderless" style="margin-top: 5px;" id="scrum_sprint_<?php echo $sprint->getID(); ?>">
+			<div class="rounded_box lightgreen_borderless" style="margin-top: 5px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
-					<div class="sprint_header">
-						<a href="javascript: void(0);" onclick="$('scrum_sprint_<?php echo $sprint->getID(); ?>_list').toggle();"><?php echo $sprint->getName(); ?></a>
-						&nbsp;&nbsp;<?php echo __('%number_of% issue(s)', array('%number_of%' => '<span style="font-weight: bold;" id="scrum_sprint_'.$sprint->getID().'_issues">'.$sprint->countIssues().'</span>')); ?>&nbsp;
-						&nbsp;&nbsp;(<?php echo __('click to show/hide assigned issues'); ?>)
-					</div>
-					<ul id="scrum_sprint_<?php echo $sprint->getID(); ?>_list" style="display: none;">
-						<?php foreach ($sprint->getIssues() as $issue): ?>
-							<?php include_component('scrumcard', array('issue' => $issue)); ?>
-						<?php endforeach; ?>
-					</ul>
-					<input type="hidden" id="scrum_sprint_<?php echo $sprint->getID(); ?>_id" value="<?php echo $sprint->getID(); ?>">
-					<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="scrum_sprint_<?php echo $sprint->getID(); ?>_indicator">
-						<tr>
-							<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
-							<td style="padding: 0px; text-align: left; font-size: 13px;"><?php echo __('Reassigning, please wait'); ?>...</td>
-						</tr>
-					</table>
+					<form id="add_sprint_form" action="<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo BUGSsettings::getCharset(); ?>" onsubmit="addSprint('<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>', '<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>');return false;">
+						<div id="add_sprint">
+							<label for="sprint_name"><?php echo __('Add sprint'); ?></label>
+							<input type="text" id="sprint_name" name="sprint_name">
+							<input type="submit" value="<?php echo __('Add'); ?>">
+						</div>
+					</form>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
+			<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="sprint_add_indicator">
+				<tr>
+					<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
+					<td style="padding: 0px; text-align: left;"><?php echo __('Adding sprint, please wait'); ?>...</td>
+				</tr>
+			</table>
+			<?php foreach ($selected_project->getSprints() as $sprint): ?>
+				<?php include_template('sprintbox', array('sprint' => $sprint)); ?>
 			<?php endforeach; ?>
 		</td>
 		<td id="scrum_unassigned">
@@ -45,7 +43,7 @@
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
 					<div class="header_div"><?php echo __('Unassigned items'); ?></div>
-					<div class="rounded_box lightgreen_borderless" style="margin-top: 5px;" id="scrum_sprint_0">
+					<div class="rounded_box lightgreen_borderless" style="margin-top: 5px;">
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 						<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
 							<form id="add_user_story_form" action="<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo BUGSsettings::getCharset(); ?>" onsubmit="addUserStory('<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>');return false;">
@@ -77,7 +75,7 @@
 							<?php include_component('scrumcard', array('issue' => $issue)); ?>
 						<?php endforeach; ?>
 					</ul>
-					<div class="faded_medium" style="font-size: 13px;" id="scrum_no_unassigned"><?php echo __('There are no unassigned user stories'); ?></div>
+					<div class="faded_medium" style="font-size: 13px;<?php if (count($unassigned_issues) > 0): ?> display: none;<?php endif; ?>" id="scrum_no_unassigned"><?php echo __('There are no unassigned user stories'); ?></div>
 					<input type="hidden" id="scrum_sprint_0_id" value="0">
 					<span id="scrum_sprint_0_issues" style="display: none;"></span>
 				</div>

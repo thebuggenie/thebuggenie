@@ -197,5 +197,24 @@
 			echo $current_content;
 			return $component_content;
 		}
+
+		/**
+		 * Returns the HTML output from a template, but doesn't render it
+		 * 
+		 * @param string $template the template name
+		 * @param array $params template parameters
+		 * 
+		 * @return boolean
+		 */
+		public function getTemplateHTML($template, $params)
+		{
+			$current_content = ob_get_clean();
+			ob_start();
+			$this->renderTemplate($template, $params);
+			$template_content = ob_get_clean();
+			ob_start();
+			echo $current_content;
+			return $template_content;
+		}
 		
 	}

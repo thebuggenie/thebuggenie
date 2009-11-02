@@ -1477,12 +1477,13 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #scrum ul li .story_tags { padding-top: 3px; line-height: 15px; font-size: 13px; font-weight: normal; }
 #scrum ul li.story_card .story_tags, #scrum ul li.story_card .content { display: none; }
 /*#scrum ul li.story_card:hover .story_tags, */#scrum ul li.story_card:hover .content { display: inherit; }
-#scrum_unassigned #add_story { text-align: right; padding-top: 3px; }
+#scrum_unassigned #add_story, #scrum_sprints #add_sprint { text-align: right; padding-top: 3px; }
 #scrum_unassigned { width: 400px; padding-right: 5px; }
 #scrum_unassigned .header_div { border: 0; margin: 0; font-size: 15px; }
-#scrum_unassigned label { float: left; padding-top: 4px; }
-#scrum_unassigned label, #scrum_unassigned input[type="submit"] { font-size: 12px; font-weight: bold; }
+#scrum_unassigned label, #scrum_sprints label { float: left; padding-top: 4px; }
+#scrum_unassigned label, #scrum_unassigned input[type="submit"], #scrum_sprints label, #scrum_sprints input[type="submit"] { font-size: 12px; font-weight: bold; }
 #scrum_unassigned #story_title { width: 250px; }
+#scrum_sprints #sprint_name { width: 250px; }
 #scrum .sprint_header { background-color: #F5F5F5; padding: 3px; font-weight: normal; font-size: 11px; color: #888; }
 #scrum .sprint_header a { color: #555; text-decoration: none; border: 0; font-weight: bold; font-size: 13px; }
 #scrum .sprint_header a:hover { color: #888; text-decoration: none; border: 0; }
