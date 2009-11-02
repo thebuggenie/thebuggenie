@@ -8,7 +8,7 @@
 <?php echo bugs_successStrip(__('The user story has been added'), '', 'message_user_story_added', true); ?>
 <?php echo bugs_successStrip(__('The user story has been updated'), '', 'message_user_story_assigned', true); ?>
 <?php echo bugs_failureStrip('', '', 'message_failed', true); ?>
-<?php include_component('main/hideableInfoBox', array('key' => 'project_scrum_info', 'title' => __('Using the Scrum planning page'), 'content' => __('Something something'))); ?>
+<?php include_component('main/hideableInfoBox', array('key' => 'project_scrum_info', 'title' => __('Using the Scrum planning page'), 'content' => __('Administer your project backlog from this page.<br><ul><li>Create sprints from the "Add sprint" input area, or use the project "milestone" configuration page to add sprints</li><li>Use the "Add user story" input area to quickly add a user story to the backlog</li><li>The backlog will also display user stories entered via the "report issue"-wizard (use the wizard to add detailed user stories).</li><li>Drag user stories from the backlog to as sprint (or between sprints) to assign the user story there</li><li>Click the sprint header to show all stories in that sprint</li><li>Click the little square on the left side of the user story to colorize the story</li></ul>'))); ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0" id="scrum">
 	<tr>
 		<td style="width: 210px; padding: 0 5px 0 5px;">
@@ -22,7 +22,7 @@
 		</td>
 		<td style="width: auto; padding-right: 5px;" id="scrum_sprints">
 			<div class="header_div"><?php echo __('Sprints overview'); ?></div>
-			<div class="rounded_box lightgreen_borderless" style="margin-top: 5px;">
+			<div class="rounded_box lightyellow" style="margin-top: 5px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
 					<form id="add_sprint_form" action="<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo BUGSsettings::getCharset(); ?>" onsubmit="addSprint('<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>', '<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>');return false;">
@@ -50,7 +50,7 @@
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
 					<div class="header_div"><?php echo __('Unassigned items'); ?></div>
-					<div class="rounded_box lightgreen_borderless" style="margin-top: 5px;">
+					<div class="rounded_box white" style="margin-top: 5px;">
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 						<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
 							<form id="add_user_story_form" action="<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo BUGSsettings::getCharset(); ?>" onsubmit="addUserStory('<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>');return false;">
