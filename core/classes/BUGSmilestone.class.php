@@ -220,14 +220,31 @@
 		{
 			if ($this->_points === null)
 			{
-				$this->_points = (int) B2DB::getTable('B2tIssues')->getTotalPointsByMilestoneID($this->getID());
+				$this->_points = array();
+				list($this->_points['estimated'], $this->_points['spent']) = B2DB::getTable('B2tIssues')->getTotalPointsByMilestoneID($this->getID());
 			}
 		}
 		
-		public function getPoints()
+		/**
+		 * Get total estimated points for issues assigned to this milestone
+		 *  
+		 * @return integer
+		 */
+		public function getPointsEstimated()
 		{
 			$this->_populatePoints();
-			return $this->_points;
+			return (int) $this->_points['estimated'];
+		}
+
+		/**
+		 * Get total spent points for issues assigned to this milestone
+		 *  
+		 * @return integer
+		 */
+		public function getPointsSpent()
+		{
+			$this->_populatePoints();
+			return (int) $this->_points['spent'];
 		}
 
 		/**

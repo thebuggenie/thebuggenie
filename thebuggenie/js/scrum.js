@@ -98,8 +98,8 @@ function assignStory(url, dragged, dropped)
 			dragged.highlight({ queue: 'end' });
 			$('scrum_sprint_' + json.old_sprint_id + '_issues').update(json.old_issues);
 			$('scrum_sprint_' + json.new_sprint_id + '_issues').update(json.new_issues);
-			$('scrum_sprint_' + json.old_sprint_id + '_points').update(json.old_points);
-			$('scrum_sprint_' + json.new_sprint_id + '_points').update(json.new_points);
+			$('scrum_sprint_' + json.old_sprint_id + '_estimated_points').update(json.old_estimated_points);
+			$('scrum_sprint_' + json.new_sprint_id + '_estimated_points').update(json.new_estimated_points);
 			($('scrum_sprint_0_list').childElements().size() == 0) ? $('scrum_no_unassigned').show() : $('scrum_no_unassigned').hide();
 			$('message_user_story_assigned').show();
 			new Effect.Fade('message_user_story_assigned', {delay: 20} );

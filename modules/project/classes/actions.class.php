@@ -99,27 +99,36 @@
 		 */
 		public function runScrumAssignStory($request)
 		{
-			$issue = BUGSfactory::BUGSissueLab($request->getParameter('story_id'));
-			$new_sprint_id = (int) $request->getParameter('sprint_id');
-			$sprint = null;
 			try
 			{
-				$sprint = BUGSfactory::milestoneLab($new_sprint_id);
+				$issue = BUGSfactory::BUGSissueLab($request->getParameter('story_id'));
+				$new_sprint_id = (int) $request->getParameter('sprint_id');
+				$sprint = null;
+				try
+				{
+					$sprint = BUGSfactory::milestoneLab($new_sprint_id);
+				}
+				catch (Exception $e) {}
+				if ($issue instanceof BUGSissue)
+				{
+					$old_sprint = $issue->getMilestone();
+					$issue->setMilestone($new_sprint_id);
+					$issue->save();
+					$old_sprint_id = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->getID() : 0;
+					$old_issues = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->countIssues() : 0;
+					$new_issues = ($sprint instanceof BUGSmilestone) ? $sprint->countIssues() : 0;
+					$old_e_points = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->getPointsEstimated() : 0;
+					$new_e_points = ($sprint instanceof BUGSmilestone) ? $sprint->getPointsEstimated() : 0;
+					$old_s_points = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->getPointsSpent() : 0;
+					$new_s_points = ($sprint instanceof BUGSmilestone) ? $sprint->getPointsSpent() : 0;
+					return $this->renderJSON(array('failed' => false, 'issue_id' => $issue->getID(), 'old_sprint_id' => $old_sprint_id, 'old_issues' => $old_issues, 'old_estimated_points' => $old_e_points, 'old_spent_points' => $old_s_points, 'new_sprint_id' => $new_sprint_id, 'new_issues' => $new_issues, 'new_estimated_points' => $new_e_points, 'new_spent_points' => $new_s_points));
+				}
+				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Invalid user story or sprint')));
 			}
-			catch (Exception $e) {}
-			if ($issue instanceof BUGSissue)
+			catch (Exception $e)
 			{
-				$old_sprint = $issue->getMilestone();
-				$issue->setMilestone($new_sprint_id);
-				$issue->save();
-				$old_sprint_id = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->getID() : 0;
-				$old_issues = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->countIssues() : 0;
-				$new_issues = ($sprint instanceof BUGSmilestone) ? $sprint->countIssues() : 0;
-				$old_points = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->getPoints() : 0;
-				$new_points = ($sprint instanceof BUGSmilestone) ? $sprint->getPoints() : 0;
-				return $this->renderJSON(array('failed' => false, 'issue_id' => $issue->getID(), 'old_sprint_id' => $old_sprint_id, 'old_issues' => $old_issues, 'old_points' => $old_points, 'new_sprint_id' => $new_sprint_id, 'new_issues' => $new_issues, 'new_points' => $new_points));
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
 			}
-			return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Invalid user story or sprint')));
 		}
 		
 		/**

@@ -5,7 +5,7 @@
 			<a href="javascript: void(0);" onclick="$('scrum_sprint_<?php echo $sprint->getID(); ?>_list').toggle();"><?php echo $sprint->getName(); ?></a>
 			&nbsp;&nbsp;<?php echo __('%number_of% issue(s)', array('%number_of%' => '<span style="font-weight: bold;" id="scrum_sprint_'.$sprint->getID().'_issues">'.$sprint->countIssues().'</span>')); ?>&nbsp;
 			&nbsp;&nbsp;(<?php echo __('click to show/hide assigned issues'); ?>)
-			<span class="sprint_points"><?php echo __('%points% pts', array('%points%' => '<span id="scrum_sprint_'.$sprint->getID().'_points">' . $sprint->getPoints() . '</span>')); ?></span>
+			<span class="sprint_points"><?php echo __('%points% pts', array('%points%' => '<span id="scrum_sprint_'.$sprint->getID().'_estimated_points">' . $sprint->getPointsEstimated() . '</span>')); ?></span>
 		</div>
 		<ul id="scrum_sprint_<?php echo $sprint->getID(); ?>_list" style="display: none;">
 			<?php foreach ($sprint->getIssues() as $issue): ?>
