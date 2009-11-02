@@ -1338,6 +1338,16 @@
 		{
 			return $this->_description;
 		}
+		
+		/**
+		 * Return whether or not this issue has a description set
+		 * 
+		 * @return boolean
+		 */
+		public function hasDescription()
+		{
+			return (bool) (trim($this->getDescription()) != '');
+		}
 	
 		/**
 		 * Set the description

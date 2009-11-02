@@ -95,7 +95,6 @@ function assignStory(url, dragged, dropped)
 			$('message_failed').hide();
 			$(dropped.id + '_indicator').hide();
 			$(dropped.id + '_list').insert(Element.remove(dragged), { insertion: Insertion.Bottom, queue: 'end' });
-			dragged.highlight({ queue: 'end' });
 			$('scrum_sprint_' + json.old_sprint_id + '_issues').update(json.old_issues);
 			$('scrum_sprint_' + json.new_sprint_id + '_issues').update(json.new_issues);
 			$('scrum_sprint_' + json.old_sprint_id + '_estimated_points').update(json.old_estimated_points);

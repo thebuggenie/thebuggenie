@@ -38,7 +38,7 @@
 						<input type="text" name="searchfor" id="searchfor" value="<?php echo $quicksearch_title; ?>" style="width: 180px; padding: 1px 1px 1px;" onblur="if ($('searchfor').getValue() == '') { $('searchfor').value = '<?php echo $quicksearch_title; ?>'; $('searchfor').addClassName('faded_medium'); }" onfocus="if ($('searchfor').getValue() == '<?php echo $quicksearch_title; ?>') { $('searchfor').clear(); } $('searchfor').removeClassName('faded_medium');" class="faded_medium"><div id="searchfor_autocomplete_choices" class="autocomplete"></div>
 						<script type="text/javascript">
 			
-						new Ajax.Autocompleter("searchfor", "searchfor_autocomplete_choices", '<?php echo BUGScontext::getTBGPath(); ?>modules/search/search_stripped.php?scope=<?php echo BUGScontext::getScope()->getID(); ?>&output=ul', {paramName: "searchfor", minChars: 2});
+						new Ajax.Autocompleter("searchfor", "searchfor_autocomplete_choices", '<?php echo make_url('quicksearch'); ?>', {paramName: "searchfor", minChars: 2});
 			
 						</script>
 						<input type="submit" value="<?php echo BUGScontext::getI18n()->__('Find'); ?>" style="padding: 0 2px 0 2px;">
