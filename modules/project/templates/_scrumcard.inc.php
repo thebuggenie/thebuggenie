@@ -28,4 +28,9 @@
 			<?php echo __('%set% or %cancel%', array('%set%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'scrum_story_' . $issue->getID() . '_estimation\').toggle();">' . __('cancel') . '</a>')); ?>
 		</form>
 	</div>
+	<div class="actions">
+		<label><?php echo __('Actions'); ?>:</label>
+		<?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getIssueNo(), 'project_key' => $issue->getProject()->getKey())), image_tag('tab_new.png', array('title' => __('Open in new window'))), array('target' => '_blank')); ?>
+		<a href="javascript:void(0);" onclick="showUserStoryEdit('url', <?php echo $issue->getID(); ?>);"><?php echo image_tag('icon_edit.png', array('title' => __('Edit user story'))); ?></a>
+	</div>
 </li>
