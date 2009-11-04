@@ -108,7 +108,6 @@ function assignStory(url, dragged, dropped)
 		$(dropped.id + '_indicator').hide();
 	}
 	});
-	
 }
 
 function setStoryColor(url, story_id, color)
@@ -140,6 +139,41 @@ function setStoryColor(url, story_id, color)
 	onFailure: function (transport) {
 		$('color_selector_' + story_id + '_indicator').hide();
 		$('color_selector_' + story_id).hide();
+	}
+	});
+}
+
+function setStoryEstimatedPoints(url, story_id)
+{
+	points = $('scrum_story_' + story_id + '_points_input').getValue();
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	parameters: { estimated_points: points },
+	onLoading: function (transport) {
+		$('point_selector_' + story_id + '_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+			$('point_selector_' + story_id + '_indicator').hide();
+			$('scrum_story_' + story_id + '_estimation').hide();
+			$('message_failed').show();
+		}
+		else
+		{
+			$('message_failed').hide();
+			$('point_selector_' + story_id + '_indicator').hide();
+			$('scrum_story_' + story_id + '_estimation').hide();
+			$('scrum_story_' + story_id + '_points').update(json.points);
+			$('scrum_sprint_' + json.sprint_id + '_estimated_points').update(json.new_estimated_points);
+		}
+	},
+	onFailure: function (transport) {
+		$('point_selector_' + story_id + '_indicator').hide();
+		$('scrum_story_' + story_id + '_estimation').hide();
 	}
 	});
 }

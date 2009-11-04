@@ -44,6 +44,11 @@
 			$this->_columns[$column] = array('type' => 'integer', 'name' => $column, 'length' => $length, 'default_value' => $default_value, 'not_null' => $not_null, 'auto_inc' => $auto_inc, 'unsigned' => $unsigned);
 		}
 		
+		protected function _addFloat($column, $precision = 2, $default_value = 0, $not_null = true, $auto_inc = false, $unsigned = false)
+		{
+			$this->_columns[$column] = array('type' => 'float', 'name' => $column, 'precision' => $precision, 'default_value' => $default_value, 'not_null' => $not_null, 'auto_inc' => $auto_inc, 'unsigned' => $unsigned);
+		}
+		
 		protected function _addVarchar($column, $length = null, $default_value = null, $not_null = true)
 		{
 			$this->_columns[$column] = array('type' => 'varchar', 'name' => $column, 'length' => $length, 'default_value' => $default_value, 'not_null' => $not_null);
@@ -74,6 +79,9 @@
 			{
 				case 'integer':
 					$this->_addInteger($column, $foreign_column['length'], $foreign_column['default_value'], $foreign_column['not_null'], false, $foreign_column['unsigned']);
+					break;
+				case 'float':
+					$this->_addFloat($column, $foreign_column['precision'], $foreign_column['default_value'], $foreign_column['not_null'], false, $foreign_column['unsigned']);
 					break;
 				case 'varchar':
 					$this->_addVarchar($column, $foreign_column['length'], $foreign_column['default_value'], $foreign_column['not_null']);

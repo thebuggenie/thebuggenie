@@ -87,12 +87,12 @@
 			parent::_addInteger(self::ESTIMATED_WEEKS, 10);
 			parent::_addInteger(self::ESTIMATED_DAYS, 10);
 			parent::_addInteger(self::ESTIMATED_HOURS, 10);
-			parent::_addInteger(self::ESTIMATED_POINTS, 10);
+			parent::_addFloat(self::ESTIMATED_POINTS);
 			parent::_addInteger(self::SPENT_MONTHS, 10);
 			parent::_addInteger(self::SPENT_WEEKS, 10);
 			parent::_addInteger(self::SPENT_DAYS, 10);
 			parent::_addInteger(self::SPENT_HOURS, 10);
-			parent::_addInteger(self::SPENT_POINTS, 10);
+			parent::_addFloat(self::SPENT_POINTS);
 			parent::_addInteger(self::PERCENT_COMPLETE, 2);
 			parent::_addInteger(self::ASSIGNED_TYPE, 2);
 			parent::_addInteger(self::OWNED_TYPE, 2);

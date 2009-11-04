@@ -80,18 +80,30 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runScrumSetStoryColor($request)
+		public function runScrumSetStoryDetail($request)
 		{
 			$issue = BUGSfactory::BUGSissueLab($request->getParameter('story_id'));
 			if ($issue instanceof BUGSissue)
 			{
-				$issue->setScrumColor($request->getParameter('color'));
-				$issue->save();
-				return $this->renderJSON(array('failed' => false));
+				switch ($request->getParameter('detail'))
+				{
+					case 'color':
+						$issue->setScrumColor($request->getParameter('color'));
+						$issue->save();
+						return $this->renderJSON(array('failed' => false));
+						break;
+					case 'points':
+						$issue->setEstimatedPoints((int) $request->getParameter('estimated_points'));
+						$issue->save();
+						$sprint_id = ($issue->getMilestone() instanceof BUGSmilestone) ? $issue->getMilestone()->getID() : 0;
+						$new_sprint_points = ($sprint_id !== 0) ? $issue->getMilestone()->getPointsEstimated() : 0;
+						return $this->renderJSON(array('failed' => false, 'points' => $issue->getEstimatedPoints(), 'sprint_id' => $sprint_id, 'new_estimated_points' => $new_sprint_points));
+						break;
+				}
 			}
-			return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Invalid user story or color')));
+			return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Invalid user story')));
 		}
-
+		
 		/**
 		 * Assign a user story to a milestone id
 		 *

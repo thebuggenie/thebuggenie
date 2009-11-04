@@ -8,7 +8,7 @@
 <?php echo bugs_successStrip(__('The user story has been added'), '', 'message_user_story_added', true); ?>
 <?php echo bugs_successStrip(__('The user story has been updated'), '', 'message_user_story_assigned', true); ?>
 <?php echo bugs_failureStrip('', '', 'message_failed', true); ?>
-<?php include_component('main/hideableInfoBox', array('key' => 'project_scrum_info', 'title' => __('Using the Scrum planning page'), 'content' => __('Administer your project backlog from this page.<br><ul><li>Create sprints from the "Add sprint" input area, or use the project "milestone" configuration page to add sprints</li><li>Use the "Add user story" input area to quickly add a user story to the backlog</li><li>The backlog will also display user stories entered via the "report issue"-wizard (use the wizard to add detailed user stories).</li><li>Drag user stories from the backlog to as sprint (or between sprints) to assign the user story there</li><li>Click the sprint header to show all stories in that sprint</li><li>Pause the mouse over a user story to show more information like owner, description and tags</li><li>Click the little square on the left side of the user story to colorize the story</li></ul>'))); ?>
+<?php include_component('main/hideableInfoBox', array('key' => 'project_scrum_info', 'title' => __('Using the Scrum planning page'), 'content' => __('Administer your project backlog from this page.<br><ul><li>Create sprints from the "Add sprint" input area, or use the project "milestone" configuration page to add sprints</li><li>Use the "Add user story" input area to quickly add a user story to the backlog</li><li>The backlog will also display user stories entered via the "report issue"-wizard (use the wizard to add detailed user stories).</li><li>Drag user stories from the backlog to a sprint (or between sprints) to assign the user story there</li><li>Click the sprint header to show all stories in that sprint</li><li>Pause the mouse over a user story to show more information like owner, description and tags</li><li>Click the little square on the left side of the user story to colorize the story</li><li>To change estimated points for a user story, click the little card icon on the far right of the story</li></ul>'))); ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0" id="scrum">
 	<tr>
 		<td style="width: 210px; padding: 0 5px 0 5px;">
@@ -82,7 +82,7 @@
 							<?php include_component('scrumcard', array('issue' => $issue)); ?>
 						<?php endforeach; ?>
 					</ul>
-					<div class="faded_medium" style="font-size: 13px;<?php if (count($unassigned_issues) > 0): ?> display: none;<?php endif; ?>" id="scrum_no_unassigned"><?php echo __('There are no unassigned user stories'); ?></div>
+					<div class="faded_medium" style="font-size: 13px;<?php if (count($unassigned_issues) > 0): ?> display: none;<?php endif; ?>" id="scrum_no_unassigned"><?php echo __('There are no items in the project backlog'); ?></div>
 					<input type="hidden" id="scrum_sprint_0_id" value="0">
 					<span id="scrum_sprint_0_issues" style="display: none;"></span>
 					<span id="scrum_sprint_0_estimated_points" style="display: none;"></span>

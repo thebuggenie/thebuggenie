@@ -57,6 +57,10 @@
 					case 'varchar':
 						$fsql .= 'VARCHAR(' . $a_column['length'] . ')';
 						break;
+					case 'float':
+						$fsql .= 'FLOAT(' . $a_column['precision'] . ')';
+						if ($a_column['unsigned'] && B2DB::getDBtype() != 'pgsql') $fsql .= ' UNSIGNED';
+						break;
 					case 'text':
 						$fsql .= 'TEXT';
 						break;
