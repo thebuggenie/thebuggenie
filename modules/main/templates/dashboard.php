@@ -193,12 +193,41 @@
 			?>
 		</td>
 		<td id="dashboard_righthand">
-			<div class="left_menu_header" style="margin: 5px 5px 5px 0;"><?php echo __('Upcoming milestones'); ?></div>
+			<div class="left_menu_header" style="margin: 5px 5px 5px 0;"><?php echo __('Your projects'); ?></div>
+			<?php if (count($bugs_user->getAssociatedProjects()) > 0): ?>
+				<ul id="associated_projects">
+					<?php foreach ($bugs_user->getAssociatedProjects() as $project): ?>
+						<li style="text-align: right;">
+							<div class="rounded_box white">
+								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+								<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+									<div class="project_name">
+										<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?>
+									</div>
+								</div>
+							</div>
+							<div class="rounded_box lightgrey">
+								<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+									<div style="float: left; font-weight: bold;"><?php echo __('Go to'); ?>:</div>
+									<?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning')); ?>
+									|
+									<?php echo link_tag(make_url('project_scrum', array('project_key' => $project->getKey())), __('Scrum')); ?>
+									|
+									<?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?>
+								</div>
+								<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+							</div>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			<?php else: ?>
+			<?php endif; ?>
+			<div class="left_menu_header" style="margin: 5px 5px 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
 			<?php if (count($bugs_user->getAssociatedProjects()) > 0): ?>
 				<?php $milestone_cc = 0; ?>
 				<?php foreach ($bugs_user->getAssociatedProjects() as $project): ?>
 					<?php foreach ($project->getUpcomingMilestonesAndSprints() as $milestone): ?>
-						<?php if ($milestone->isVisible()): ?>
+						<?php if ($milestone->isVisible() && $milestone->isScheduled()): ?>
 							<div class="rounded_box <?php if ($milestone->isReached()): ?>green_borderless<?php elseif ($milestone->isOverdue()): ?>red_borderless<?php else: ?>iceblue_borderless<?php endif; ?> milestone_box">
 								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 								<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
@@ -210,9 +239,21 @@
 										<?php include_template('main/percentbar', array('percent' => $project->getClosedPercentageByMilestone($milestone->getID()), 'height' => 14)); ?>
 									</div>
 									<?php if ($milestone->isReached()): ?>
-										<div class="status"><?php echo __('This milestone has been reached'); ?></div>
+										<div class="status">
+											<?php if ($milestone->getType() == BUGSmilestone::TYPE_REGULAR): ?>
+												<?php echo __('This milestone has been reached'); ?>
+											<?php else: ?>
+												<?php echo __('This sprint is completed'); ?>
+											<?php endif; ?>
+										</div>
 									<?php elseif ($milestone->isOverdue()): ?>
-										<div class="status"><?php echo __('This milestone is overdue!'); ?></div>
+										<div class="status">
+											<?php if ($milestone->getType() == BUGSmilestone::TYPE_REGULAR): ?>
+												<?php echo __('This milestone is overdue'); ?>
+											<?php else: ?>
+												<?php echo __('This sprint is overdue'); ?>
+											<?php endif; ?>
+										</div>
 									<?php endif; ?>
 								</div>
 								<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>

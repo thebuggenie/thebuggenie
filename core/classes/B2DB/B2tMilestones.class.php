@@ -28,6 +28,7 @@
 		const DESCRIPTION = 'bugs2_milestones.description';
 		const MILESTONE_TYPE = 'bugs2_milestones.milestone_type';
 		const REACHED = 'bugs2_milestones.reached';
+		const STARTING = 'bugs2_milestones.starting';
 		const SCHEDULED = 'bugs2_milestones.scheduled';
 		
 		public function __construct()
@@ -38,6 +39,7 @@
 			parent::_addText(self::DESCRIPTION, false);
 			parent::_addInteger(self::REACHED, 10);
 			parent::_addInteger(self::MILESTONE_TYPE, 2);
+			parent::_addInteger(self::STARTING, 10);
 			parent::_addInteger(self::SCHEDULED, 10);
 			parent::_addForeignKeyColumn(self::PROJECT, B2DB::getTable('B2tProjects'), B2tProjects::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);

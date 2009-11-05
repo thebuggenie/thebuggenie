@@ -797,6 +797,8 @@
 											$theMilestone->setScheduledDate($scheduled_date);
 										}
 									}
+									$starting_date = mktime(0, 0, 0, BUGScontext::getRequest()->getParameter('starting_month'), BUGScontext::getRequest()->getParameter('starting_day'), BUGScontext::getRequest()->getParameter('starting_year'));
+									$theMilestone->setStartingDate($starting_date);
 									$theMilestone->save();
 									return $this->renderTemplate('milestonebox', array('milestone' => $theMilestone));
 								}

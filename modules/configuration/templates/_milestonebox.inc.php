@@ -2,19 +2,39 @@
 	<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'update')); ?>" method="post" id="edit_milestone_<?php echo $milestone->getID(); ?>" style="display: none;" onsubmit="updateMilestone('<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'update')); ?>', <?php echo $milestone->getID(); ?>);return false;">
 		<table style="width: 100%;" cellpadding=0 cellspacing=0>
 			<tr>
-				<td style="width: 100px; padding: 3px;"><b><?php echo __('Name:'); ?></b></td>
-				<td style="width: auto;"><input type="text" style="width: 100%;" value="<?php echo $milestone->getName(); ?>" name="name"></td>
+				<td style="width: 100px;"><label for="milestone_name_<?php echo $milestone->getID(); ?>"><?php echo __('Name:'); ?></label></td>
+				<td style="width: auto;"><input type="text" style="width: 100%;" value="<?php echo $milestone->getName(); ?>" name="name" id="milestone_name_<?php echo $milestone->getID(); ?>"></td>
 			</tr>
 			<tr>
-				<td style="padding: 3px;"><b><?php echo __('Description:'); ?></b></td>
-				<td style="width: auto;"><input type="text" style="width: 100%;" value="<?php echo $milestone->getDescription(); ?>" name="description"></td>
+				<td><label for="milestone_description_<?php echo $milestone->getID(); ?>"><?php echo __('Description:'); ?></label></td>
+				<td style="width: auto;"><input type="text" style="width: 100%;" value="<?php echo $milestone->getDescription(); ?>" name="description" id="milestone_description_<?php echo $milestone->getID(); ?>"></td>
 			</tr>
 			<tr>
-				<td style="padding: 3px;"><b><?php echo __('Milestone type:'); ?></b></td>
+				<td><label for="milestone_type_<?php echo $milestone->getID(); ?>"><?php echo __('Milestone type:'); ?></label></td>
 				<td style="width: auto;">
-					<select name="milestone_type">
+					<select name="milestone_type" id="milestone_type_<?php echo $milestone->getID(); ?>">
 						<option value="1"<?php if ($milestone->getType() == 1): ?> selected<?php endif; ?>><?php echo __('Regular milestone'); ?></option>
 						<option value="2"<?php if ($milestone->getType() == 2): ?> selected<?php endif; ?>><?php echo __('Scrum sprint'); ?></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding: 3px;"><b><?php echo __('Starting date'); ?></b></td>
+				<td style="width: auto;">
+					<select style="width: 85px;" name="starting_month" id="starting_month_<?php echo $milestone->getID(); ?>">
+					<?php for($cc = 1;$cc <= 12;$cc++): ?>
+						<option value=<?php echo $cc; ?><?php echo (($milestone->getStartingMonth() == $cc) ? " selected" : ""); ?>><?php echo bugs_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
+					<?php endfor; ?>
+					</select>
+					<select style="width: 40px;" name="starting_day" id="starting_day_<?php echo $milestone->getID(); ?>">
+					<?php for($cc = 1;$cc <= 31;$cc++): ?>
+						<option value=<?php echo $cc; ?><?php echo (($milestone->getStartingDay() == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
+					<?php endfor; ?>
+					</select>
+					<select style="width: 55px;" name="starting_year" id="starting_year_<?php echo $milestone->getID(); ?>">
+					<?php for($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
+						<option value=<?php echo $cc; ?><?php echo (($milestone->getStartingYear() == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
+					<?php endfor; ?>
 					</select>
 				</td>
 			</tr>

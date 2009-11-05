@@ -58,6 +58,13 @@
 		protected $_scheduleddate;
 		
 		/**
+		 * When the milestone is scheduled to start
+		 * 
+		 * @var integer
+		 */
+		protected $_startingdate;
+		
+		/**
 		 * The milestone description
 		 * 
 		 * @var string
@@ -186,6 +193,7 @@
 				$this->_isscheduled = (bool) $row->get(B2tMilestones::SCHEDULED);
 				$this->_isreached = (bool) $row->get(B2tMilestones::REACHED);
 				$this->_scheduleddate = $row->get(B2tMilestones::SCHEDULED);
+				$this->_startingdate = $row->get(B2tMilestones::STARTING);
 				$this->_reacheddate = $row->get(B2tMilestones::REACHED);
 				$this->_description = $row->get(B2tMilestones::DESCRIPTION);
 				$this->_project = $row->get(B2tMilestones::PROJECT);
@@ -486,6 +494,56 @@
 		}
 		
 		/**
+		 * Return when this milestone is starting
+		 * 
+		 * @return integer
+		 */
+		public function getStartingDate()
+		{
+			return $this->_startingdate;
+		}
+		
+		/**
+		 * Set this milestones starting date
+		 * 
+		 * @param integer $date The timestamp for the starting date
+		 */
+		public function setStartingDate($date)
+		{
+			$this->_startingdate = $date;
+		}
+
+		/**
+		 * Return the year the milestone is starting 
+		 * 
+		 * @return integer
+		 */
+		public function getStartingYear()
+		{
+			return date("Y", $this->_startingdate);
+		}
+		
+		/**
+		 * Return the month the milestone is starting
+		 * 
+		 * @return integer
+		 */
+		public function getStartingMonth()
+		{
+			return date("n", $this->_startingdate);
+		}
+
+		/**
+		 * Return the day the milestone is starting
+		 * 
+		 * @return integer
+		 */
+		public function getStartingDay()
+		{
+			return date("j", $this->_startingdate);
+		}
+		
+		/**
 		 * Return whether or not this milestone is visible
 		 * 
 		 * @return boolean
@@ -656,6 +714,7 @@
 			$crit->addUpdate(B2tMilestones::NAME, $this->_name);
 			$crit->addUpdate(B2tMilestones::MILESTONE_TYPE, $this->_itemtype);
 			$crit->addUpdate(B2tMilestones::DESCRIPTION, $this->_description);
+			$crit->addUpdate(B2tMilestones::STARTING, $this->_startingdate);
 			if ($this->_isscheduled)
 			{
 				$crit->addUpdate(B2tMilestones::SCHEDULED, $this->_scheduleddate);
