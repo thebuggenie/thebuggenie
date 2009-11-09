@@ -28,7 +28,7 @@
 	$routes[] = array('project_scrum_assign_story', '/:project_key/scrum/assign/story', 'project', 'scrumAssignStory');
 	$routes[] = array('project_scrum_add_sprint', '/:project_key/scrum/add/sprint', 'project', 'scrumAddSprint');
 	$routes[] = array('project_scrum_story_setcolor', '/:project_key/scrum/set/color/for/story/:story_id', 'project', 'scrumSetStoryDetail', array('detail' => 'color'));
-	$routes[] = array('project_scrum_story_setpoints', '/:project_key/scrum/set/points/for/story/:story_id', 'project', 'scrumSetStoryDetail', array('detail' => 'points'));
+	$routes[] = array('project_scrum_story_setestimates', '/:project_key/scrum/set/estimates/for/story/:story_id', 'project', 'scrumSetStoryDetail', array('detail' => 'estimates'));
 	$routes[] = array('project_issues', '/:project_key/issues', 'project', 'issues');
 	$routes[] = array('project_team', '/:project_key/team', 'project', 'team');
 	$routes[] = array('project_statistics', '/:project_key/statistics', 'project', 'statistics');

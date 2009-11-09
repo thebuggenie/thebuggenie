@@ -92,12 +92,14 @@
 						$issue->save();
 						return $this->renderJSON(array('failed' => false));
 						break;
-					case 'points':
+					case 'estimates':
 						$issue->setEstimatedPoints((int) $request->getParameter('estimated_points'));
+						$issue->setEstimatedHours((int) $request->getParameter('estimated_hours'));
 						$issue->save();
 						$sprint_id = ($issue->getMilestone() instanceof BUGSmilestone) ? $issue->getMilestone()->getID() : 0;
 						$new_sprint_points = ($sprint_id !== 0) ? $issue->getMilestone()->getPointsEstimated() : 0;
-						return $this->renderJSON(array('failed' => false, 'points' => $issue->getEstimatedPoints(), 'sprint_id' => $sprint_id, 'new_estimated_points' => $new_sprint_points));
+						$new_sprint_hours = ($sprint_id !== 0) ? $issue->getMilestone()->getHoursEstimated() : 0;
+						return $this->renderJSON(array('failed' => false, 'points' => $issue->getEstimatedPoints(), 'hours' => $issue->getEstimatedHours(), 'sprint_id' => $sprint_id, 'new_estimated_points' => $new_sprint_points, 'new_estimated_hours' => $new_sprint_hours));
 						break;
 				}
 			}
@@ -133,7 +135,11 @@
 					$new_e_points = ($sprint instanceof BUGSmilestone) ? $sprint->getPointsEstimated() : 0;
 					$old_s_points = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->getPointsSpent() : 0;
 					$new_s_points = ($sprint instanceof BUGSmilestone) ? $sprint->getPointsSpent() : 0;
-					return $this->renderJSON(array('failed' => false, 'issue_id' => $issue->getID(), 'old_sprint_id' => $old_sprint_id, 'old_issues' => $old_issues, 'old_estimated_points' => $old_e_points, 'old_spent_points' => $old_s_points, 'new_sprint_id' => $new_sprint_id, 'new_issues' => $new_issues, 'new_estimated_points' => $new_e_points, 'new_spent_points' => $new_s_points));
+					$old_e_hours = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->getHoursEstimated() : 0;
+					$new_e_hours = ($sprint instanceof BUGSmilestone) ? $sprint->getHoursEstimated() : 0;
+					$old_s_hours = ($old_sprint instanceof BUGSmilestone) ? $old_sprint->getHoursSpent() : 0;
+					$new_s_hours = ($sprint instanceof BUGSmilestone) ? $sprint->getHoursSpent() : 0;
+					return $this->renderJSON(array('failed' => false, 'issue_id' => $issue->getID(), 'old_sprint_id' => $old_sprint_id, 'old_issues' => $old_issues, 'old_estimated_points' => $old_e_points, 'old_spent_points' => $old_s_points, 'old_estimated_hours' => $old_e_hours, 'old_spent_hours' => $old_s_hours, 'new_sprint_id' => $new_sprint_id, 'new_issues' => $new_issues, 'new_estimated_points' => $new_e_points, 'new_spent_points' => $new_s_points, 'new_estimated_hours' => $new_e_hours, 'new_spent_hours' => $new_s_hours));
 				}
 				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Invalid user story or sprint')));
 			}

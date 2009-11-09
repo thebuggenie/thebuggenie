@@ -1515,7 +1515,7 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #scrum .sprint_date { font-size: 13
                                  px; font-weight: normal; color: #555; }
 #scrum .sprint_header { background-color: #F5F5F5; padding: 3px; font-weight: normal; font-size: 11px; color: #888; }
-#scrum .sprint_points { position: absolute; top: 8px; right: 8px; font-weight: bold; font-size: 13px; }
+#scrum .sprint_points { position: absolute; top: 8px; right: 8px; font-weight: bold; font-size: 13px; background-color: #FAFAFA; border: 1px solid #EAEAEA; padding: 2px 5px 2px 5px; }
 #scrum .sprint_header a { color: #555; text-decoration: none; border: 0; font-weight: bold; font-size: 13px; }
 #scrum .sprint_header a:hover { color: #888; text-decoration: none; border: 0; }
 

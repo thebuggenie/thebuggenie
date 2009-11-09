@@ -24,7 +24,7 @@ function addUserStory(url)
 			$('user_story_add_indicator').hide();
 			$('message_user_story_added').show();
 			$('scrum_sprint_0_list').insert({bottom: json.content});
-			$('scrum_no_unassigned').hide();
+			$('scrum_sprint_0_unassigned').hide();
 			new Draggable('scrum_story_' + json.story_id, { revert: true });
 			new Effect.Fade('message_user_story_added', {delay: 20} );
 		}
@@ -59,6 +59,7 @@ function addSprint(url, assign_url)
 		{
 			Form.reset('add_sprint_form');
 			$('message_failed').hide();
+			$('no_sprints').hide();
 			$('sprint_add_indicator').hide();
 			$('message_sprint_added').show();
 			$('scrum_sprints').insert({bottom: json.content});
@@ -99,7 +100,10 @@ function assignStory(url, dragged, dropped)
 			$('scrum_sprint_' + json.new_sprint_id + '_issues').update(json.new_issues);
 			$('scrum_sprint_' + json.old_sprint_id + '_estimated_points').update(json.old_estimated_points);
 			$('scrum_sprint_' + json.new_sprint_id + '_estimated_points').update(json.new_estimated_points);
-			($('scrum_sprint_0_list').childElements().size() == 0) ? $('scrum_no_unassigned').show() : $('scrum_no_unassigned').hide();
+			$('scrum_sprint_' + json.old_sprint_id + '_estimated_hours').update(json.old_estimated_hours);
+			$('scrum_sprint_' + json.new_sprint_id + '_estimated_hours').update(json.new_estimated_hours);
+			($('scrum_sprint_' + json.old_sprint_id + '_list').childElements().size() == 0) ? $('scrum_sprint_' + json.old_sprint_id + '_unassigned').show() : $('scrum_sprint_' + json.old_sprint_id + '_unassigned').hide();
+			($('scrum_sprint_' + json.new_sprint_id + '_list').childElements().size() == 0) ? $('scrum_sprint_' + json.new_sprint_id + '_unassigned').show() : $('scrum_sprint_' + json.new_sprint_id + '_unassigned').hide();
 			$('message_user_story_assigned').show();
 			new Effect.Fade('message_user_story_assigned', {delay: 20} );
 		}
@@ -143,13 +147,14 @@ function setStoryColor(url, story_id, color)
 	});
 }
 
-function setStoryEstimatedPoints(url, story_id)
+function setStoryEstimates(url, story_id)
 {
 	points = $('scrum_story_' + story_id + '_points_input').getValue();
+	hours = $('scrum_story_' + story_id + '_hours_input').getValue();
 	new Ajax.Request(url, {
 	asynchronous:true,
 	method: "post",
-	parameters: { estimated_points: points },
+	parameters: { estimated_points: points, estimated_hours: hours },
 	onLoading: function (transport) {
 		$('point_selector_' + story_id + '_indicator').show();
 	},
@@ -168,7 +173,9 @@ function setStoryEstimatedPoints(url, story_id)
 			$('point_selector_' + story_id + '_indicator').hide();
 			$('scrum_story_' + story_id + '_estimation').hide();
 			$('scrum_story_' + story_id + '_points').update(json.points);
+			$('scrum_story_' + story_id + '_hours').update(json.hours);
 			$('scrum_sprint_' + json.sprint_id + '_estimated_points').update(json.new_estimated_points);
+			$('scrum_sprint_' + json.sprint_id + '_estimated_hours').update(json.new_estimated_hours);
 		}
 	},
 	onFailure: function (transport) {

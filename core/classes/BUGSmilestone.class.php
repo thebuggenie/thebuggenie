@@ -87,11 +87,18 @@
 		
 		/**
 		 * Estimated points total
-		 * 
+		 *
 		 * @var integer
 		 */
 		protected $_points;
-		
+
+		/**
+		 * Estimated hours total
+		 *
+		 * @var integer
+		 */
+		protected $_hours;
+
 		/**
 		 * Get milestones + sprints by a project id
 		 *
@@ -224,7 +231,7 @@
 			return $this->_issues;
 		}
 		
-		public function _populatePoints()
+		protected function _populatePoints()
 		{
 			if ($this->_points === null)
 			{
@@ -253,6 +260,38 @@
 		{
 			$this->_populatePoints();
 			return (int) $this->_points['spent'];
+		}
+
+
+		protected function _populateHours()
+		{
+			if ($this->_hours === null)
+			{
+				$this->_hours = array();
+				list($this->_hours['estimated'], $this->_hours['spent']) = B2DB::getTable('B2tIssues')->getTotalHoursByMilestoneID($this->getID());
+			}
+		}
+
+		/**
+		 * Get total estimated hours for issues assigned to this milestone
+		 *
+		 * @return integer
+		 */
+		public function getHoursEstimated()
+		{
+			$this->_populateHours();
+			return (int) $this->_hours['estimated'];
+		}
+
+		/**
+		 * Get total spent hours for issues assigned to this milestone
+		 *
+		 * @return integer
+		 */
+		public function getHoursSpent()
+		{
+			$this->_populateHours();
+			return (int) $this->_hours['spent'];
 		}
 
 		/**

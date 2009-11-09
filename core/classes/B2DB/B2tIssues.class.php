@@ -334,6 +334,22 @@
 				return array(0, 0);
 			}
 		}
-				
+
+		public function getTotalHoursByMilestoneID($milestone_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours', B2DBCriteria::DB_SUM);
+			$crit->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', B2DBCriteria::DB_SUM);
+			$crit->addWhere(self::MILESTONE, $milestone_id);
+			if ($res = $this->doSelectOne($crit))
+			{
+				return array($res->get('estimated_hours'), $res->get('spent_hours'));
+			}
+			else
+			{
+				return array(0, 0);
+			}
+		}
+
 		
 	}

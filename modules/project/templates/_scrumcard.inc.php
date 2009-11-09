@@ -13,17 +13,18 @@
 	</div>
 	<div class="story_estimate">
 		<a href="javascript:void(0);" onclick="$('scrum_story_<?php echo $issue->getID(); ?>_estimation').toggle();" alt="<?php echo __('Change estimate'); ?>" title="<?php echo __('Change estimate'); ?>"><?php echo image_tag('scrum_estimate.png'); ?></a>
-		<span id="scrum_story_<?php echo $issue->getID(); ?>_points"><?php echo $issue->getEstimatedPoints(); ?></span>
+		<?php echo __('%hours%hr, %points%pt', array('%hours%' => '<span id="scrum_story_' . $issue->getID() . '_hours">' . $issue->getEstimatedHours() . '</span>', '%points%' => '<span id="scrum_story_' . $issue->getID() . '_points">' . $issue->getEstimatedPoints() . '</span>')); ?>
 	</div>
 	<div class="story_color" id="story_color_<?php echo $issue->getID(); ?>" onclick="$('color_selector_<?php echo $issue->getID(); ?>').toggle();" style="cursor: pointer; background-color: <?php echo $issue->getScrumColor(); ?>;">&nbsp;</div>
 	<div class="story_no"><?php echo $issue->getIssueNo(); ?></div>
 	<div class="story_title"><?php echo $issue->getTitle(); ?></div>
-	<input type="hidden" id="scrum_story_<?php echo $issue->getID(); ?>_id" value="<?php echo $issue->getIssueNo(); ?>">
+	<input type="hidden" id="scrum_story_<?php echo $issue->getID(); ?>_id" value="<?php echo $issue->getID(); ?>">
 	<div id="scrum_story_<?php echo $issue->getID(); ?>_estimation" class="story_estimation_div" style="display: none;">
-		<form id="scrum_story_<?php echo $issue->getID(); ?>_estimation_form" action="<?php echo make_url('project_scrum_story_setpoints', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo BUGSsettings::getCharset(); ?>" onsubmit="setStoryEstimatedPoints('<?php echo make_url('project_scrum_story_setpoints', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>);return false;">
+		<form id="scrum_story_<?php echo $issue->getID(); ?>_estimation_form" action="<?php echo make_url('project_scrum_story_setestimates', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo BUGSsettings::getCharset(); ?>" onsubmit="setStoryEstimates('<?php echo make_url('project_scrum_story_setestimates', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>);return false;">
 			<div class="header"><?php echo __('New story estimate'); ?></div>
-			<?php echo image_tag('spinning_20.gif', array('id' => 'point_selector_'.$issue->getID().'_indicator', 'style' => 'display: none;')); ?>
-			<input type="text" name="points" value="<?php echo $issue->getEstimatedPoints(); ?>" id="scrum_story_<?php echo $issue->getID(); ?>_points_input">
+			<?php echo image_tag('spinning_20.gif', array('id' => 'point_selector_'.$issue->getID().'_indicator', 'style' => 'display: none;')); ?><br>
+			<input type="text" name="hours" value="<?php echo $issue->getEstimatedHours(); ?>" id="scrum_story_<?php echo $issue->getID(); ?>_hours_input"> hrs
+			<input type="text" name="points" value="<?php echo $issue->getEstimatedPoints(); ?>" id="scrum_story_<?php echo $issue->getID(); ?>_points_input"> pts
 			<input type="submit" value="<?php echo __('Set'); ?>">
 			<?php echo __('%set% or %cancel%', array('%set%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'scrum_story_' . $issue->getID() . '_estimation\').toggle();">' . __('cancel') . '</a>')); ?>
 		</form>

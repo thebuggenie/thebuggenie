@@ -41,6 +41,7 @@
 					<td style="padding: 0px; text-align: left;"><?php echo __('Adding sprint, please wait'); ?>...</td>
 				</tr>
 			</table>
+			<div class="faded_medium" style="margin-top: 10px; font-size: 13px;<?php if (count($selected_project->getSprints()) > 0): ?> display: none;<?php endif; ?>" id="no_sprints"><?php echo __('No sprints have been defined for this project'); ?></div>
 			<?php foreach ($selected_project->getSprints() as $sprint): ?>
 				<?php include_template('sprintbox', array('sprint' => $sprint)); ?>
 			<?php endforeach; ?>
@@ -82,10 +83,11 @@
 							<?php include_component('scrumcard', array('issue' => $issue)); ?>
 						<?php endforeach; ?>
 					</ul>
-					<div class="faded_medium" style="font-size: 13px;<?php if (count($unassigned_issues) > 0): ?> display: none;<?php endif; ?>" id="scrum_no_unassigned"><?php echo __('There are no items in the project backlog'); ?></div>
+					<div class="faded_medium" style="font-size: 13px;<?php if (count($unassigned_issues) > 0): ?> display: none;<?php endif; ?>" id="scrum_sprint_0_unassigned"><?php echo __('There are no items in the project backlog'); ?></div>
 					<input type="hidden" id="scrum_sprint_0_id" value="0">
 					<span id="scrum_sprint_0_issues" style="display: none;"></span>
 					<span id="scrum_sprint_0_estimated_points" style="display: none;"></span>
+					<span id="scrum_sprint_0_estimated_hours" style="display: none;"></span>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
