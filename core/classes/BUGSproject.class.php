@@ -318,6 +318,13 @@
 		protected $_recentfeatures = null;
 
 		/**
+		 * Recent ideas suggested
+		 *
+		 * @var array
+		 */
+		protected $_recentideas = null;
+
+		/**
 		 * Recent activities
 		 *
 		 * @var array
@@ -2290,6 +2297,21 @@
 			}
 		}
 
+		protected function _populateRecentIdeas()
+		{
+			if ($this->_recentideas === null)
+			{
+				$this->_recentideas = array();
+				if ($res = B2DB::getTable('B2tIssues')->getRecentByProjectIDandIssueType($this->getID(), array('idea')))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$this->_recentideas[] = BUGSfactory::BUGSissueLab($row->get(B2tIssues::ID), $row);
+					}
+				}
+			}
+		}
+
 		/**
 		 * Return this projects 5 most recent issues
 		 *
@@ -2310,6 +2332,17 @@
 		{
 			$this->_populateRecentFeatures();
 			return $this->_recentfeatures;
+		}
+
+		/**
+		 * Return this projects 5 most recent ideas / suggestions
+		 *
+		 * @return array A list of BUGSissues
+		 */
+		public function getRecentIdeas()
+		{
+			$this->_populateRecentIdeas();
+			return $this->_recentideas;
 		}
 
 		protected function _populateRecentActivities()

@@ -63,14 +63,14 @@
 									<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
 									<span class="faded_dark" style="font-size: 11px;">
 										<?php echo bugs_formatTime($issue->getPosted(), 20); ?>,
-										<?php echo __('<strong>%status%</strong>', array('%status%' => (($issue->getStatus() instanceof BUGSdatatype) ? $issue->getStatus()->getName() : __('Status not determined')))); ?>
+										<strong><?php echo ($issue->getStatus() instanceof BUGSdatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
 									</span>
 								</td>
 							</tr>
 						<?php endforeach; ?>
 						</table>
 					<?php else: ?>
-						<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No issues of this type posted'); ?></div>
+						<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No issues, bugs or defects posted'); ?></div>
 					<?php endif; ?>
 				</div>
 				<div style="width: 305px; float: left; margin-right: 5px;">
@@ -84,23 +84,51 @@
 									<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
 									<span class="faded_dark" style="font-size: 11px;">
 										<?php echo bugs_formatTime($issue->getPosted(), 20); ?>,
-										<?php echo __('<strong>%status%</strong>', array('%status%' => (($issue->getStatus() instanceof BUGSdatatype) ? $issue->getStatus()->getName() : __('Status not determined')))); ?>
+										<strong><?php echo ($issue->getStatus() instanceof BUGSdatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
 									</span>
 								</td>
 							</tr>
 						<?php endforeach; ?>
 						</table>
 					<?php else: ?>
-						<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No issues of this type posted'); ?></div>
+						<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No feature requests posted yet'); ?></div>
 					<?php endif; ?>
 				</div>
 			</div>
 			<br style="clear: both;">
 			<div class="rounded_box mediumgrey_borderless" style="margin-top: 10px; clear: both; width: 620px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-				<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-size: 13px;">
+				<div class="xboxcontent" style="padding: 2px 5px 4px 5px; font-size: 13px;">
 					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('Show product issues'), array('style' => 'font-weight: bold; float: right;')); ?>
 					<?php echo __('See more issues for this product'); ?>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div>
+			<div style="clear: both; width: 615px; margin: 20px 5px 0 0;">
+				<div class="header_div"><?php echo __('Recent ideas'); ?></div>
+				<?php if (count($recent_ideas) > 0): ?>
+					<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
+					<?php foreach ($recent_ideas as $issue): ?>
+						<tr>
+							<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_small.png', array('style' => 'margin-top: 3px;')); ?></td>
+							<td style="padding-bottom: 15px;">
+								<?php echo __('%issue% (posted by %user%)', array('%issue%' => '<b>' . link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('style' => 'font-size: 13px;', 'class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))) . '</b>', '%user%' => '<b>' . $issue->getPostedBy()->getName() . '</b>')); ?><br>
+								<span class="faded_dark" style="font-size: 12px;">
+									<?php echo __('%number_of% comments, last updated %time%', array('%number_of%' => $issue->getCommentCount(), '%time%' => bugs_formatTime($issue->getPosted(), 20))); ?>
+								</span>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+					</table>
+				<?php else: ?>
+					<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No feature requests posted yet'); ?></div>
+				<?php endif; ?>
+			</div>
+			<div class="rounded_box mediumgrey_borderless" style="margin-top: 10px; clear: both; width: 620px;">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="padding: 2px 5px 4px 5px; font-size: 13px;">
+					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('Show product planning page'), array('style' => 'font-weight: bold; float: right;')); ?>
+					<?php echo __('Plan your project, discuss and throw ideas around'); ?>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>

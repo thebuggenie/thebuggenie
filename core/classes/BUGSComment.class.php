@@ -109,7 +109,7 @@
 		
 		static function countComments($target_id, $target_type, $module = 'core')
 		{
-			
+			return 0;
 		}
 		
 		static function getCommentForm($target_id, $target_type = 1, $module = 'core', $c_id = null)

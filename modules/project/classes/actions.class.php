@@ -54,6 +54,7 @@
 			$this->recent_activities = $this->selected_project->getRecentActivities(10);
 			$this->recent_issues = $this->selected_project->getRecentIssues();
 			$this->recent_features = $this->selected_project->getRecentFeatures();
+			$this->recent_ideas = $this->selected_project->getRecentIdeas();
 		}
 
 		/**
