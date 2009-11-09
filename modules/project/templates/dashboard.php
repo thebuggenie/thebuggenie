@@ -114,7 +114,7 @@
 							<td style="padding-bottom: 15px;">
 								<?php echo __('%issue% (posted by %user%)', array('%issue%' => '<b>' . link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('style' => 'font-size: 13px;', 'class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))) . '</b>', '%user%' => '<b>' . $issue->getPostedBy()->getName() . '</b>')); ?><br>
 								<span class="faded_dark" style="font-size: 12px;">
-									<?php echo __('%number_of% comments, last updated %time%', array('%number_of%' => $issue->getCommentCount(), '%time%' => bugs_formatTime($issue->getPosted(), 20))); ?>
+									<?php echo __('%number_of% comments, last updated %time%', array('%number_of%' => $issue->getCommentCount(), '%time%' => bugs_formatTime($issue->getLastUpdatedTime(), 20))); ?>
 								</span>
 							</td>
 						</tr>
