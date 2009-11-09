@@ -200,7 +200,7 @@
 			try
 			{
 				BUGSlogging::log('Initializing language support');
-				BUGScontext::reinitializeI18n($_REQUEST['language']);
+				BUGScontext::reinitializeI18n($request->getParameter('language'));
 
 				BUGSlogging::log('Loading fixtures for default scope');
 				BUGSsettings::loadFixtures(1);
