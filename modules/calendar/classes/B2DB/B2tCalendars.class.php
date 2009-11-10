@@ -2,15 +2,15 @@
 
 	class B2tCalendars extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_calendars';
-		const ID = 'bugs2_calendars.id';
-		const SCOPE = 'bugs2_calendars.scope';
-		const UID = 'bugs2_calendars.uid';
-		const GID = 'bugs2_calendars.gid';
-		const TID = 'bugs2_calendars.tid';
-		const EXCLUSIVE = 'bugs2_calendars.exclusive';
-		const SHARED = 'bugs2_calendars.shared';
-		const NAME = 'bugs2_calendars.name';
+		const B2DBNAME = 'calendars';
+		const ID = 'calendars.id';
+		const SCOPE = 'calendars.scope';
+		const UID = 'calendars.uid';
+		const GID = 'calendars.gid';
+		const TID = 'calendars.tid';
+		const EXCLUSIVE = 'calendars.exclusive';
+		const SHARED = 'calendars.shared';
+		const NAME = 'calendars.name';
 					
 		public function __construct()
 		{

@@ -32,7 +32,7 @@
 		 * 
 		 * @var array
 		 */
-		static protected $_modules = array();
+		static protected $_modules = null;
 		
 		/**
 		 * List of module permissions
@@ -460,13 +460,17 @@
 					self::$_i18n = $cached_i18n;
 				}
 				BUGSlogging::log('...done');
-				BUGSlogging::log('Loading modules');
 				if ($load_modules)
 				{
+					BUGSlogging::log('Loading modules');
 					self::loadModules();
+					BUGSlogging::log('...done');
 				}
-				BUGSlogging::log('...done');
-				
+				else
+				{
+					BUGSlogging::log('Not loading modules');
+				}
+				BUGSlogging::log('...done initializing');
 			}
 			catch (Exception $e)
 			{
@@ -578,99 +582,106 @@
 		 */
 		public static function loadModules()
 		{
-			self::$_modules = array();
-			$modules = array();
-			
-			if ($module_paths = BUGScache::get('module_paths'))
+			if (self::$_modules === null)
 			{
-				BUGSlogging::log('using cached modules');
-				foreach ($module_paths as $moduleClassPath)
+				self::$_modules = array();
+				$modules = array();
+
+				if ($module_paths = BUGScache::get('module_paths'))
 				{
-					try
+					BUGSlogging::log('using cached modules');
+					foreach ($module_paths as $moduleClassPath)
 					{
-						self::addClasspath($moduleClassPath);
-					}
-					catch (Exception $e) { } // ignore "dir not exists" errors
-				}
-				$modules = BUGScache::get('modules');
-				foreach ($modules as $module)
-				{
-					self::$_modules[$module] = unserialize(BUGScache::get("module_{$module}"));
-				}
-				BUGSlogging::log('done');
-			}
-			else
-			{
-				BUGSlogging::log('getting modules from database');
-				$module_paths = array();
-				
-				if ($res = B2DB::getTable('B2tModules')->getAll())
-				{
-					while ($moduleRow = $res->getNextRow())
-					{
-						$module_name = $moduleRow->get(B2tModules::MODULE_NAME);
-						$modules[$module_name] = $moduleRow;
-						$moduleClassPath = self::getIncludePath() . "modules/{$module_name}/classes/";
 						try
 						{
 							self::addClasspath($moduleClassPath);
-							$module_paths[] = $moduleClassPath;
-							self::addClasspath($moduleClassPath . 'B2DB/');
-							$module_paths[] = $moduleClassPath . 'B2DB/';
 						}
 						catch (Exception $e) { } // ignore "dir not exists" errors
 					}
-				}
-				BUGSlogging::log('done (getting modules from database)');
-				BUGScache::add('module_paths', $module_paths);
-				BUGScache::add('modules', array_keys($modules));
-				BUGSlogging::log('setting up module objects');
-				foreach ($modules as $module_name => $moduleRow)
-				{
-					$classname = ($moduleRow->get(B2tModules::CLASSNAME) != '') ? $moduleRow->get(B2tModules::CLASSNAME) : 'BUGSmodule';
-					if (class_exists($classname))
+					$modules = BUGScache::get('modules');
+					foreach ($modules as $module)
 					{
-						if ($classname != 'BUGSmodule')
+						self::$_modules[$module] = unserialize(BUGScache::get("module_{$module}"));
+					}
+					BUGSlogging::log('done');
+				}
+				else
+				{
+					BUGSlogging::log('getting modules from database');
+					$module_paths = array();
+
+					if ($res = B2DB::getTable('B2tModules')->getAll())
+					{
+						while ($moduleRow = $res->getNextRow())
 						{
-							self::getI18n()->loadModuleStrings($module_name);
-							self::$_modules[$module_name] = new $classname($moduleRow->get(B2tModules::ID), $moduleRow);
-							BUGScache::add("module_{$module_name}", serialize(self::$_modules[$module_name]));
+							$module_name = $moduleRow->get(B2tModules::MODULE_NAME);
+							$modules[$module_name] = $moduleRow;
+							$moduleClassPath = self::getIncludePath() . "modules/{$module_name}/classes/";
+							try
+							{
+								self::addClasspath($moduleClassPath);
+								$module_paths[] = $moduleClassPath;
+								self::addClasspath($moduleClassPath . 'B2DB/');
+								$module_paths[] = $moduleClassPath . 'B2DB/';
+							}
+							catch (Exception $e) { } // ignore "dir not exists" errors
+						}
+					}
+					BUGSlogging::log('done (getting modules from database)');
+					BUGScache::add('module_paths', $module_paths);
+					BUGScache::add('modules', array_keys($modules));
+					BUGSlogging::log('setting up module objects');
+					foreach ($modules as $module_name => $moduleRow)
+					{
+						$classname = $moduleRow->get(B2tModules::CLASSNAME);
+						if ($classname != '' && $classname != 'BUGSmodule')
+						{
+							if (class_exists($classname))
+							{
+								self::getI18n()->loadModuleStrings($module_name);
+								self::$_modules[$module_name] = new $classname($moduleRow->get(B2tModules::ID), $moduleRow);
+								BUGScache::add("module_{$module_name}", serialize(self::$_modules[$module_name]));
+							}
+							else
+							{
+								throw new Exception('Cannot load module "' . $module_name . '" as class "' . $classname . '", the class is not defined in the classpaths.');
+							}
 						}
 						else
 						{
 							throw new Exception('Cannot load module "' . $module_name . '" as class BUGSmodule - modules should extend the BUGSmodule class with their own class.');
 						}
 					}
-					else
-					{
-						throw new Exception('Cannot load module "' . $module_name . '" as class "' . $classname . '", the class is not defined in the classpaths.');
-					}
+					BUGSlogging::log('done (setting up module objects)');
+
+					BUGSlogging::log('caching module access permissions');
+					BUGSmodule::cacheAllAccessPermissions();
+					BUGSlogging::log('done (caching module access permissions)');
 				}
-				BUGSlogging::log('done (setting up module objects)');
-			
-				BUGSlogging::log('caching module access permissions');
-				BUGSmodule::cacheAllAccessPermissions();
-				BUGSlogging::log('done (caching module access permissions)');
-			}
-			
-			BUGSlogging::log('initializing modules');
-			if (!empty(self::$_modules))
-			{
-				BUGSmodule::populateSections(array_keys(self::$_modules));
-				foreach (self::$_modules as $module_name => $module)
+
+				BUGSlogging::log('initializing modules');
+				if (!empty(self::$_modules))
 				{
-					if ($module->isEnabled())
+					BUGSmodule::populateSections(array_keys(self::$_modules));
+					foreach (self::$_modules as $module_name => $module)
 					{
-						BUGSlogging::log("initializing {$module_name}");
-						$module->initialize();
-						BUGSlogging::log("done (initializing {$module_name})");
+						if ($module->isEnabled())
+						{
+							BUGSlogging::log("initializing {$module_name}");
+							$module->initialize();
+							BUGSlogging::log("done (initializing {$module_name})");
+						}
 					}
+					BUGSlogging::log('done (initializing modules)');
 				}
-				BUGSlogging::log('done (initializing modules)');
+				else
+				{
+					BUGSlogging::log('no modules found');
+				}
 			}
 			else
 			{
-				BUGSlogging::log('no modules found');
+				BUGSlogging::log('Modules already loaded', 'core', BUGSlogging::LEVEL_FATAL);
 			}
 		}
 		
@@ -681,6 +692,10 @@
 		 */
 		public static function addModule($module, $module_name)
 		{
+			if (self::$_modules === null)
+			{
+				self::$_modules = array();
+			}
 			self::$_modules[$module_name] = $module;
 		}
 		
@@ -762,7 +777,9 @@
 				{
 					try
 					{
+						BUGSlogging::log('Running callback function '.$trigger);
 						call_user_func($trigger, $params);
+						BUGSlogging::log('done (Running callback function '.$trigger.')');
 					}
 					catch (Exception $e)
 					{

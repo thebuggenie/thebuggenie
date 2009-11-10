@@ -71,6 +71,7 @@
 		public function runInstallStep2($request)
 		{
 			$this->preloaded = false;
+			$this->selected_connection_detail = 'dsn';
 			
 			if (!$this->error)
 			{
@@ -101,49 +102,61 @@
 		 */
 		public function runInstallStep3($request)
 		{
+			$this->selected_connection_detail = $request->getParameter('connection_type');
 			try
 			{
 				if ($this->username = $request->getParameter('db_username'))
 				{
 					BaseB2DB::setUname($this->username);
+					BaseB2DB::setTablePrefix($request->getParameter('db_prefix'));
 					if ($this->password = $request->getParameter('db_password'))
 					{
 						BaseB2DB::setPasswd($this->password);
 					}
-					
-					if (($this->dsn = $request->getParameter('db_dsn')) != '')
+
+					if ($this->selected_connection_detail == 'dsn')
 					{
-						BaseB2DB::setDSN($this->dsn);
-					}
-					elseif ($this->db_type = $request->getParameter('db_type'))
-					{
-						BaseB2DB::setDBtype($this->db_type);
-						if ($this->db_hostname = $request->getParameter('db_hostname'))
+						if (($this->dsn = $request->getParameter('db_dsn')) != '')
 						{
-							BaseB2DB::setHost($this->db_hostname);
+							BaseB2DB::setDSN($this->dsn);
 						}
 						else
 						{
-							throw new Exception('You must provide a database hostname');
-						}
-						
-						if ($this->db_port = $request->getParameter('db_port'))
-						{
-							BaseB2DB::setPort($this->db_port);
-						}
-						
-						if ($this->db_databasename = $request->getParameter('db_name'))
-						{
-							BaseB2DB::setDBname($this->db_databasename);
-						}
-						else
-						{
-							throw new Exception('You must provide a database to use');
+							throw new Exception('You must provide a valid DSN');
 						}
 					}
 					else
 					{
-						throw new Exception('You must provide a database type');
+						if ($this->db_type = $request->getParameter('db_type'))
+						{
+							BaseB2DB::setDBtype($this->db_type);
+							if ($this->db_hostname = $request->getParameter('db_hostname'))
+							{
+								BaseB2DB::setHost($this->db_hostname);
+							}
+							else
+							{
+								throw new Exception('You must provide a database hostname');
+							}
+
+							if ($this->db_port = $request->getParameter('db_port'))
+							{
+								BaseB2DB::setPort($this->db_port);
+							}
+
+							if ($this->db_databasename = $request->getParameter('db_name'))
+							{
+								BaseB2DB::setDBname($this->db_databasename);
+							}
+							else
+							{
+								throw new Exception('You must provide a database to use');
+							}
+						}
+						else
+						{
+							throw new Exception('You must provide a database type');
+						}
 					}
 					
 					BaseB2DB::initialize(true);
@@ -182,7 +195,7 @@
 			}
 			catch (Exception $e)
 			{
-				throw $e;
+				//throw $e;
 				$this->error = $e->getMessage();
 			}
 		}

@@ -2,16 +2,16 @@
 
 	class B2tSavedSearches extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_savedsearches';
-		const ID = 'bugs2_savedsearches.id';
-		const SCOPE = 'bugs2_savedsearches.scope';
-		const NAME = 'bugs2_savedsearches.name';
-		const LAYOUT = 'bugs2_savedsearches.layout';
-		const DESCRIPTION = 'bugs2_savedsearches.description';
-		const APPLIES_TO = 'bugs2_savedsearches.applies_to';
-		const IS_PUBLIC = 'bugs2_savedsearches.is_public';
-		const UID = 'bugs2_savedsearches.uid';
-		const GROUPBY = 'bugs2_savedsearches.groupby';
+		const B2DBNAME = 'savedsearches';
+		const ID = 'savedsearches.id';
+		const SCOPE = 'savedsearches.scope';
+		const NAME = 'savedsearches.name';
+		const LAYOUT = 'savedsearches.layout';
+		const DESCRIPTION = 'savedsearches.description';
+		const APPLIES_TO = 'savedsearches.applies_to';
+		const IS_PUBLIC = 'savedsearches.is_public';
+		const UID = 'savedsearches.uid';
+		const GROUPBY = 'savedsearches.groupby';
 
 		public function __construct()
 		{

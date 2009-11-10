@@ -19,17 +19,17 @@
 	class B2tIssueTypes extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_issuetypes';
-		const ID = 'bugs2_issuetypes.id';
-		const SCOPE = 'bugs2_issuetypes.scope';
-		const NAME = 'bugs2_issuetypes.name';
-		const DESCRIPTION = 'bugs2_issuetypes.description';
-		const APPLIES_TO = 'bugs2_issuetypes.applies_to';
-		const APPLIES_TYPE = 'bugs2_issuetypes.applies_type';
-		const ICON = 'bugs2_issuetypes.icon';
-		const IS_TASK = 'bugs2_issuetypes.is_task';
-		const IS_REPORTABLE = 'bugs2_issuetypes.is_reportable';
-		const REDIRECT_AFTER_REPORTING = 'bugs2_issuetypes.redirect_after_reporting';
+		const B2DBNAME = 'issuetypes';
+		const ID = 'issuetypes.id';
+		const SCOPE = 'issuetypes.scope';
+		const NAME = 'issuetypes.name';
+		const DESCRIPTION = 'issuetypes.description';
+		const APPLIES_TO = 'issuetypes.applies_to';
+		const APPLIES_TYPE = 'issuetypes.applies_type';
+		const ICON = 'issuetypes.icon';
+		const IS_TASK = 'issuetypes.is_task';
+		const IS_REPORTABLE = 'issuetypes.is_reportable';
+		const REDIRECT_AFTER_REPORTING = 'issuetypes.redirect_after_reporting';
 
 		public function __construct()
 		{

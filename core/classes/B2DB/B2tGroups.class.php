@@ -19,10 +19,10 @@
 	class B2tGroups extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_groups';
-		const ID = 'bugs2_groups.id';
-		const GNAME = 'bugs2_groups.gname';
-		const SCOPE = 'bugs2_groups.scope';
+		const B2DBNAME = 'groups';
+		const ID = 'groups.id';
+		const GNAME = 'groups.gname';
+		const SCOPE = 'groups.scope';
 
 		public function __construct()
 		{

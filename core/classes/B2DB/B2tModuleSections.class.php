@@ -18,14 +18,14 @@
 	 */
 	class B2tModuleSections extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_modulesections';
-		const ID = 'bugs2_modulesections.id';
-		const IDENTIFIER = 'bugs2_modulesections.identifier';
-		const MODULE = 'bugs2_modulesections.module';
-		const MODULE_NAME = 'bugs2_modulesections.module_name';
-		const ORDER = 'bugs2_modulesections.order';
-		const FUNCTION_NAME = 'bugs2_modulesections.function_name';
-		const SCOPE = 'bugs2_modulesections.scope';
+		const B2DBNAME = 'modulesections';
+		const ID = 'modulesections.id';
+		const IDENTIFIER = 'modulesections.identifier';
+		const MODULE = 'modulesections.module';
+		const MODULE_NAME = 'modulesections.module_name';
+		const ORDER = 'modulesections.order';
+		const FUNCTION_NAME = 'modulesections.function_name';
+		const SCOPE = 'modulesections.scope';
 
 		public function __construct()
 		{

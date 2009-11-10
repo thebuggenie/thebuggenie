@@ -19,13 +19,13 @@
 	class B2tIssueAffectsEdition extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_issueaffectsedition';
-		const ID = 'bugs2_issueaffectsedition.id';
-		const SCOPE = 'bugs2_issueaffectsedition.scope';
-		const ISSUE = 'bugs2_issueaffectsedition.issue';
-		const EDITION = 'bugs2_issueaffectsedition.edition';
-		const CONFIRMED = 'bugs2_issueaffectsedition.confirmed';
-		const STATUS = 'bugs2_issueaffectsedition.status';
+		const B2DBNAME = 'issueaffectsedition';
+		const ID = 'issueaffectsedition.id';
+		const SCOPE = 'issueaffectsedition.scope';
+		const ISSUE = 'issueaffectsedition.issue';
+		const EDITION = 'issueaffectsedition.edition';
+		const CONFIRMED = 'issueaffectsedition.confirmed';
+		const STATUS = 'issueaffectsedition.status';
 		
 		public function __construct()
 		{

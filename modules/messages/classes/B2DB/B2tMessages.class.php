@@ -2,20 +2,20 @@
 
 	class B2tMessages extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_messages';
-		const ID = 'bugs2_messages.id';
-		const FROM_USER = 'bugs2_messages.from_user';
-		const TO_USER = 'bugs2_messages.to_user';
-		const IS_READ = 'bugs2_messages.is_read';
-		const TITLE = 'bugs2_messages.title';
-		const BODY = 'bugs2_messages.body';
-		const TO_TEAM = 'bugs2_messages.to_team';
-		const URGENT = 'bugs2_messages.urgent';
-		const FOLDER = 'bugs2_messages.folder';
-		const DELETED = 'bugs2_messages.deleted';
-		const SENT = 'bugs2_messages.sent';
-		const DELETED_SENT = 'bugs2_messages.deleted_sent';
-		const SCOPE = 'bugs2_messages.scope';
+		const B2DBNAME = 'messages';
+		const ID = 'messages.id';
+		const FROM_USER = 'messages.from_user';
+		const TO_USER = 'messages.to_user';
+		const IS_READ = 'messages.is_read';
+		const TITLE = 'messages.title';
+		const BODY = 'messages.body';
+		const TO_TEAM = 'messages.to_team';
+		const URGENT = 'messages.urgent';
+		const FOLDER = 'messages.folder';
+		const DELETED = 'messages.deleted';
+		const SENT = 'messages.sent';
+		const DELETED_SENT = 'messages.deleted_sent';
+		const SCOPE = 'messages.scope';
 		
 		public function __construct()
 		{

@@ -146,7 +146,7 @@
 
 		protected function _addSelectionColumn($column, $alias = '', $special = '', $variable = '', $additional = '')
 		{
-			$this->selections[$column] = array('column' => $column, 'alias' => $alias, 'special' => $special, 'variable' => $variable, 'additional' => $additional);
+			$this->selections[B2DB::getTablePrefix() . $column] = array('column' => $column, 'alias' => $alias, 'special' => $special, 'variable' => $variable, 'additional' => $additional);
 		}
 		
 		/**
@@ -277,10 +277,10 @@
 		protected function _generateSelectAllSQL()
 		{
 			$sqls = array();
-			foreach ($this->getSelectionColumns() as $aColumn)
+			foreach ($this->getSelectionColumns() as $column_name => $column_data)
 			{
 				$str = '';
-				$str = $aColumn['column'] . ' AS ' . $this->getSelectionAlias($aColumn['column']);
+				$str = $column_data['column'] . ' AS ' . $this->getSelectionAlias($column_data['column']);
 				$sqls[] = $str;
 			}
 			return join(', ', $sqls);
@@ -603,7 +603,7 @@
 		protected function _generateDeleteSQL()
 		{
 			$sql = 'DELETE FROM ';
-			$sql .= $this->fromtable->getB2DBName();
+			$sql .= B2DB::getTablePrefix() . $this->fromtable->getB2DBName();
 
 			return $sql;
 		}
@@ -611,17 +611,29 @@
 		protected function _generateInsertSQL()
 		{
 			$sql = 'INSERT INTO ';
-			$sql .= $this->fromtable->getB2DBName();
+			$sql .= B2DB::getTablePrefix() . $this->fromtable->getB2DBName();
 			$sql .= '(';
 			$first_ins = true;
 			foreach ($this->criterias as $a_crit)
 			{
 				$sql .= (!$first_ins) ? ', ' : '';
-                                if (B2DB::getDBtype() == 'pgsql') $sql .= '"';
-				elseif (B2DB::getDBtype() == 'mysql') $sql .= '`';
+				if (B2DB::getDBtype() == 'pgsql')
+				{
+					$sql .= '"';
+				}
+				elseif (B2DB::getDBtype() == 'mysql')
+				{
+					$sql .= '`';
+				}
 				$sql .= substr($a_crit['column'], strpos($a_crit['column'], '.') + 1);
-                                if (B2DB::getDBtype() == 'pgsql') $sql .= '"';
-				elseif (B2DB::getDBtype() == 'mysql') $sql .= '`';
+				if (B2DB::getDBtype() == 'pgsql')
+				{
+					$sql .= '"';
+				}
+				elseif (B2DB::getDBtype() == 'mysql')
+				{
+					$sql .= '`';
+				}
 				$first_ins = false;
 			}
 			$sql .= ') values (';
@@ -648,16 +660,14 @@
 		protected function _generateUpdateSQL()
 		{
 			$sql = 'UPDATE ';
-			$sql .= $this->fromtable->getB2DBName();
+			$sql .= B2DB::getTablePrefix() . $this->fromtable->getB2DBName();
 			$sql .= ' SET ';
 			$first_upd = true;
 			foreach ($this->updates as $an_upd)
 			{
 				$sql .= (!$first_upd) ? ', ' : '';
-                                //if (B2DB::getDBtype() == 'pgsql') $sql .= '"';
 				if (B2DB::getDBtype() == 'mysql') $sql .= '`';
-                                $sql .= substr($an_upd['column'], strpos($an_upd['column'], '.') + 1);
-                                //if (B2DB::getDBtype() == 'pgsql') $sql .= '"';
+				$sql .= substr($an_upd['column'], strpos($an_upd['column'], '.') + 1);
 				if (B2DB::getDBtype() == 'mysql') $sql .= '`';
 				$sql .= self::DB_EQUALS;
 				$sql .= '?';
@@ -686,7 +696,7 @@
 						{
 							$sql .= ' @' . $a_sel['variable'] . ':=';
 						}
-						$sql .= strtoupper($a_sel['special']) . '(' . $column;
+						$sql .= strtoupper($a_sel['special']) . '(' . $a_sel['column'];
 						$sql .= ($a_sel['additional'] != '') ? ' ' . $a_sel['additional'] : '';
 						$sql .= ')';
 						if (strlen(stristr($a_sel['special'], '(')) > 0)
@@ -958,10 +968,10 @@
 
 		protected function _generateJoinSQL()
 		{
-			$sql = ' FROM ' . $this->fromtable->getB2DBName() . ' ' . $this->fromtable->getB2DBAlias();
+			$sql = ' FROM ' . B2DB::getTablePrefix() . $this->fromtable->getB2DBName() . ' ' . $this->fromtable->getB2DBAlias();
 			foreach ($this->jointables as $a_jt)
 			{
-				$sql .= ' ' . $a_jt['jointype'] . ' ' . $a_jt['jointable']->getB2DBName() . ' ' . $a_jt['jointable']->getB2DBAlias();
+				$sql .= ' ' . $a_jt['jointype'] . ' ' . B2DB::getTablePrefix() . $a_jt['jointable']->getB2DBName() . ' ' . $a_jt['jointable']->getB2DBAlias();
 				$sql .= ' ON (' . $a_jt['col1'] . self::DB_EQUALS . $a_jt['col2'];
 				foreach ($a_jt['criterias'] as $a_crit)
 				{

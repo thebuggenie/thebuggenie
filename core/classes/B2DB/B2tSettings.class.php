@@ -18,13 +18,13 @@
 	 */
 	class B2tSettings extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_settings';
-		const ID = 'bugs2_settings.id';
-		const SCOPE = 'bugs2_settings.scope';
-		const NAME = 'bugs2_settings.name';
-		const MODULE = 'bugs2_settings.module';
-		const VALUE = 'bugs2_settings.value';
-		const UID = 'bugs2_settings.uid';
+		const B2DBNAME = 'settings';
+		const ID = 'settings.id';
+		const SCOPE = 'settings.scope';
+		const NAME = 'settings.name';
+		const MODULE = 'settings.module';
+		const VALUE = 'settings.value';
+		const UID = 'settings.uid';
 
 		public function __construct()
 		{

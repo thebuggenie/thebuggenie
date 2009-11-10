@@ -19,11 +19,11 @@
 	class B2tEditionComponents extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_editioncomponents';
-		const ID = 'bugs2_editioncomponents.id';
-		const SCOPE = 'bugs2_editioncomponents.scope';
-		const EDITION = 'bugs2_editioncomponents.edition';
-		const COMPONENT = 'bugs2_editioncomponents.component';
+		const B2DBNAME = 'editioncomponents';
+		const ID = 'editioncomponents.id';
+		const SCOPE = 'editioncomponents.scope';
+		const EDITION = 'editioncomponents.edition';
+		const COMPONENT = 'editioncomponents.component';
 
 		public function __construct()
 		{

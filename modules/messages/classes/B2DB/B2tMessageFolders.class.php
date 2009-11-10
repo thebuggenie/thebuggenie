@@ -2,12 +2,12 @@
 
 	class B2tMessageFolders extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_messagefolders';
-		const ID = 'bugs2_messagefolders.id';
-		const UID = 'bugs2_messagefolders.uid';
-		const FOLDERNAME = 'bugs2_messagefolders.foldername';
-		const PARENT_FOLDER = 'bugs2_messagefolders.parent_folder';
-		const SCOPE = 'bugs2_messagefolders.scope';
+		const B2DBNAME = 'messagefolders';
+		const ID = 'messagefolders.id';
+		const UID = 'messagefolders.uid';
+		const FOLDERNAME = 'messagefolders.foldername';
+		const PARENT_FOLDER = 'messagefolders.parent_folder';
+		const SCOPE = 'messagefolders.scope';
 		
 		public function __construct()
 		{

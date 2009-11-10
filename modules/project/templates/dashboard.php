@@ -111,9 +111,9 @@
 					<?php foreach ($recent_ideas as $issue): ?>
 						<tr>
 							<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_small.png', array('style' => 'margin-top: 3px;')); ?></td>
-							<td style="padding-bottom: 15px;">
-								<?php echo __('%issue% (posted by %user%)', array('%issue%' => '<b>' . link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('style' => 'font-size: 13px;', 'class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))) . '</b>', '%user%' => '<b>' . $issue->getPostedBy()->getName() . '</b>')); ?><br>
-								<span class="faded_dark" style="font-size: 12px;">
+							<td style="padding-bottom: 15px; font-size: 13px;">
+								<?php echo __('%issue% (posted by %user%)', array('%issue%' => '<b>' . link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))) . '</b>', '%user%' => '<b>' . $issue->getPostedBy()->getName() . '</b>')); ?><br>
+								<span class="faded_dark">
 									<?php echo __('%number_of% comments, last updated %time%', array('%number_of%' => $issue->getCommentCount(), '%time%' => bugs_formatTime($issue->getLastUpdatedTime(), 20))); ?>
 								</span>
 							</td>
@@ -127,7 +127,7 @@
 			<div class="rounded_box mediumgrey_borderless" style="margin-top: 10px; clear: both; width: 620px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 2px 5px 4px 5px; font-size: 13px;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('Show product planning page'), array('style' => 'font-weight: bold; float: right;')); ?>
+					<?php echo link_tag(make_url('project_planning', array('project_key' => $selected_project->getKey())), __('Show product planning page'), array('style' => 'font-weight: bold; float: right;')); ?>
 					<?php echo __('Plan your project, discuss and throw ideas around'); ?>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>

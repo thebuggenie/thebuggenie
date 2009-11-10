@@ -19,11 +19,11 @@
 	class B2tVotes extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_votes';
-		const ID = 'bugs2_votes.id';
-		const SCOPE = 'bugs2_votes.scope';
-		const TARGET = 'bugs2_votes.target';
-		const UID = 'bugs2_votes.uid';
+		const B2DBNAME = 'votes';
+		const ID = 'votes.id';
+		const SCOPE = 'votes.scope';
+		const TARGET = 'votes.target';
+		const UID = 'votes.uid';
 
 		public function __construct()
 		{

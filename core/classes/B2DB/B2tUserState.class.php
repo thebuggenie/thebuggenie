@@ -19,16 +19,16 @@
 	class B2tUserState extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_userstate';
-		const ID = 'bugs2_userstate.id';
-		const SCOPE = 'bugs2_userstate.scope';
-		const STATE_NAME = 'bugs2_userstate.state_name';
-		const UNAVAILABLE = 'bugs2_userstate.unavailable';
-		const BUSY = 'bugs2_userstate.busy';
-		const ONLINE = 'bugs2_userstate.online';
-		const MEETING = 'bugs2_userstate.meeting';
-		const COLOR = 'bugs2_userstate.color';
-		const ABSENT = 'bugs2_userstate.absent';
+		const B2DBNAME = 'userstate';
+		const ID = 'userstate.id';
+		const SCOPE = 'userstate.scope';
+		const STATE_NAME = 'userstate.state_name';
+		const UNAVAILABLE = 'userstate.unavailable';
+		const BUSY = 'userstate.busy';
+		const ONLINE = 'userstate.online';
+		const MEETING = 'userstate.meeting';
+		const COLOR = 'userstate.color';
+		const ABSENT = 'userstate.absent';
 
 		public function __construct()
 		{

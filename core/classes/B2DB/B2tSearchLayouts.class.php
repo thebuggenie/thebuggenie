@@ -2,11 +2,11 @@
 
 	class B2tSearchLayouts extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_searchlayouts';
-		const ID = 'bugs2_searchlayouts.id';
-		const SCOPE = 'bugs2_searchlayouts.scope';
-		const NAME = 'bugs2_searchlayouts.name';
-		const WIDTH = 'bugs2_searchlayouts.width';
+		const B2DBNAME = 'searchlayouts';
+		const ID = 'searchlayouts.id';
+		const SCOPE = 'searchlayouts.scope';
+		const NAME = 'searchlayouts.name';
+		const WIDTH = 'searchlayouts.width';
 
 		public function __construct()
 		{

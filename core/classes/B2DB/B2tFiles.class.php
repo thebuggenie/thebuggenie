@@ -19,13 +19,13 @@
 	class B2tFiles extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_files';
-		const ID = 'bugs2_files.id';
-		const SCOPE = 'bugs2_files.scope';
-		const UID = 'bugs2_files.uid';
-		const ISSUE = 'bugs2_files.issue';
-		const FILENAME = 'bugs2_files.filename';
-		const DESCRIPTION = 'bugs2_files.description';
+		const B2DBNAME = 'files';
+		const ID = 'files.id';
+		const SCOPE = 'files.scope';
+		const UID = 'files.uid';
+		const ISSUE = 'files.issue';
+		const FILENAME = 'files.filename';
+		const DESCRIPTION = 'files.description';
 
 		public function __construct()
 		{

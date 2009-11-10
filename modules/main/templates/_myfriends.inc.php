@@ -6,5 +6,5 @@
 		<?php endforeach; ?>
 	</table>
 <?php else: ?>
-	<div class="faded_medium"><?php echo __('You haven\'t marked anyone as a friend'); ?></div>
+	<div class="faded_medium" style="padding: 0 0 0 5px;"><?php echo __('You haven\'t marked anyone as a friend'); ?></div>
 <?php endif; ?>

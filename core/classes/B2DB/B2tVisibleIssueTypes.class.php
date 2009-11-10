@@ -19,11 +19,11 @@
 	class B2tVisibleIssueTypes extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_visible_issue_types';
-		const ID = 'bugs2_visible_issue_types.id';
-		const SCOPE = 'bugs2_visible_issue_types.scope';
-		const PROJECT_ID = 'bugs2_visible_issue_types.project_id';
-		const ISSUETYPE_ID = 'bugs2_visible_issue_types.issuetype_id';
+		const B2DBNAME = 'visible_issue_types';
+		const ID = 'visible_issue_types.id';
+		const SCOPE = 'visible_issue_types.scope';
+		const PROJECT_ID = 'visible_issue_types.project_id';
+		const ISSUETYPE_ID = 'visible_issue_types.issuetype_id';
 		
 		public function __construct()
 		{

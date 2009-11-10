@@ -2,15 +2,15 @@
 
 	class B2tSVNintegration extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_svnintegration';
-		const ID = 'bugs2_svnintegration.id';
-		const SCOPE = 'bugs2_svnintegration.scope';
-		const ISSUE_NO = 'bugs2_svnintegration.issue_no';
-		const FILE_NAME = 'bugs2_svnintegration.file_name';
-		const OLD_REV = 'bugs2_svnintegration.old_rev';
-		const NEW_REV = 'bugs2_svnintegration.new_rev';
-		const AUTHOR = 'bugs2_svnintegration.author';
-		const DATE = 'bugs2_svnintegration.date';
+		const B2DBNAME = 'svnintegration';
+		const ID = 'svnintegration.id';
+		const SCOPE = 'svnintegration.scope';
+		const ISSUE_NO = 'svnintegration.issue_no';
+		const FILE_NAME = 'svnintegration.file_name';
+		const OLD_REV = 'svnintegration.old_rev';
+		const NEW_REV = 'svnintegration.new_rev';
+		const AUTHOR = 'svnintegration.author';
+		const DATE = 'svnintegration.date';
 					
 		public function __construct()
 		{

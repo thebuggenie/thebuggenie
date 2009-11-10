@@ -19,13 +19,13 @@
 	class B2tIssueCustomFields extends B2DBTable
 	{
 
-		const B2DBNAME = 'bugs2_issuecustomfields';
-		const ID = 'bugs2_issuecustomfields.id';
-		const SCOPE = 'bugs2_issuecustomfields.scope';
-		const ISSUE_ID = 'bugs2_issuecustomfields.issue_id';
-		const OPTION_VALUE = 'bugs2_issuecustomfields.option_value';
-		const CUSTOM_VALUE = 'bugs2_issuecustomfields.custom_value';
-		const CUSTOMFIELDS_ID = 'bugs2_issuecustomfields.customfields_id';
+		const B2DBNAME = 'issuecustomfields';
+		const ID = 'issuecustomfields.id';
+		const SCOPE = 'issuecustomfields.scope';
+		const ISSUE_ID = 'issuecustomfields.issue_id';
+		const OPTION_VALUE = 'issuecustomfields.option_value';
+		const CUSTOM_VALUE = 'issuecustomfields.custom_value';
+		const CUSTOMFIELDS_ID = 'issuecustomfields.customfields_id';
 
 		public function __construct()
 		{

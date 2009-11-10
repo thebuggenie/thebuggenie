@@ -21,6 +21,7 @@
 		static protected $_db_connection;
 		static protected $_db_host, $_db_uname, $_db_pwd, $_db_name, $_db_type, $_db_port = null;
 		static protected $_dsn = null;
+		static protected $_tableprefix = '';
 		static protected $_sqlhits;
 		static protected $_throwhtmlexception = false;
 		static protected $_aliases = array();
@@ -116,6 +117,7 @@
 			$string .= "\n";
 			$string .= "\tself::setUname('".self::getUname()."');\n";
 			$string .= "\tself::setPasswd('".self::getPasswd()."');\n";
+			$string .= "\tself::setTablePrefix('".self::getTablePrefix()."');\n";
 			$string .= "\n";
 			$string .= "\tself::setDSN('".self::getDSN()."');\n";
 			$string .= "\n";
@@ -261,6 +263,16 @@
 		static public function getUname()
 		{
 			return self::$_db_uname;
+		}
+
+		static public function setTablePrefix($prefix)
+		{
+			self::$_tableprefix = $prefix;
+		}
+
+		static public function getTablePrefix()
+		{
+			return self::$_tableprefix;
 		}
 
 		static public function setPasswd($upwd)

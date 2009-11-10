@@ -19,13 +19,13 @@
 	class B2tCustomFieldOptions extends B2DBTable
 	{
 
-		const B2DBNAME = 'bugs2_customfieldoptions';
-		const ID = 'bugs2_customfieldoptions.id';
-		const NAME = 'bugs2_customfieldoptions.cname';
-		const OPTION_VALUE = 'bugs2_customfieldoptions.option_value';
-		const SORT_ORDER = 'bugs2_customfieldoptions.sort_order';
-		const CUSTOMFIELDS_ID = 'bugs2_customfieldoptions.customfields_id';
-		const SCOPE = 'bugs2_customfieldoptions.scope';
+		const B2DBNAME = 'customfieldoptions';
+		const ID = 'customfieldoptions.id';
+		const NAME = 'customfieldoptions.cname';
+		const OPTION_VALUE = 'customfieldoptions.option_value';
+		const SORT_ORDER = 'customfieldoptions.sort_order';
+		const CUSTOMFIELDS_ID = 'customfieldoptions.customfields_id';
+		const SCOPE = 'customfieldoptions.scope';
 
 		public function __construct()
 		{

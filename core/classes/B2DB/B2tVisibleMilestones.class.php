@@ -19,11 +19,11 @@
 	class B2tVisibleMilestones extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_visible_milestones';
-		const ID = 'bugs2_visible_milestones.id';
-		const SCOPE = 'bugs2_visible_milestones.scope';
-		const PROJECT_ID = 'bugs2_visible_milestones.project_id';
-		const MILESTONE_ID = 'bugs2_visible_milestones.milestone_id';
+		const B2DBNAME = 'visible_milestones';
+		const ID = 'visible_milestones.id';
+		const SCOPE = 'visible_milestones.scope';
+		const PROJECT_ID = 'visible_milestones.project_id';
+		const MILESTONE_ID = 'visible_milestones.milestone_id';
 		
 		public function __construct()
 		{

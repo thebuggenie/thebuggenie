@@ -19,11 +19,11 @@
 	class B2tTeamMembers extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_teammembers';
-		const ID = 'bugs2_teammembers.id';
-		const SCOPE = 'bugs2_teammembers.scope';
-		const UID = 'bugs2_teammembers.uid';
-		const TID = 'bugs2_teammembers.tid';
+		const B2DBNAME = 'teammembers';
+		const ID = 'teammembers.id';
+		const SCOPE = 'teammembers.scope';
+		const UID = 'teammembers.uid';
+		const TID = 'teammembers.tid';
 		
 		public function __construct()
 		{

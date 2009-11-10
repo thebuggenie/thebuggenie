@@ -2,11 +2,11 @@
 
 	class B2tArticleViews extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_articleviews';
-		const ID = 'bugs2_articleviews.id';
-		const ARTICLE_ID = 'bugs2_articleviews.article_id';
-		const USER_ID = 'bugs2_articleviews.user_id';
-		const SCOPE = 'bugs2_articleviews.scope';
+		const B2DBNAME = 'articleviews';
+		const ID = 'articleviews.id';
+		const ARTICLE_ID = 'articleviews.article_id';
+		const USER_ID = 'articleviews.user_id';
+		const SCOPE = 'articleviews.scope';
 		
 		public function __construct()
 		{

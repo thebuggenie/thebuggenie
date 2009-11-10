@@ -19,20 +19,20 @@
 	class B2tIssueTasks extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_issuetasks';
-		const ID = 'bugs2_issuetasks.id';
-		const SCOPE = 'bugs2_issuetasks.scope';
-		const ISSUE = 'bugs2_issuetasks.issue';
-		const TITLE = 'bugs2_issuetasks.title';
-		const CONTENT = 'bugs2_issuetasks.content';
-		const STATUS = 'bugs2_issuetasks.status';
-		const ISSUE_STATUS = 'bugs2_issuetasks.issue_status';
-		const COMPLETED = 'bugs2_issuetasks.completed';
-		const ASSIGNED_TO = 'bugs2_issuetasks.assigned_to';
-		const ASSIGNED_TYPE = 'bugs2_issuetasks.assigned_type';
-		const POSTED = 'bugs2_issuetasks.posted';
-		const UPDATED = 'bugs2_issuetasks.updated';
-		const DUE = 'bugs2_issuetasks.due';
+		const B2DBNAME = 'issuetasks';
+		const ID = 'issuetasks.id';
+		const SCOPE = 'issuetasks.scope';
+		const ISSUE = 'issuetasks.issue';
+		const TITLE = 'issuetasks.title';
+		const CONTENT = 'issuetasks.content';
+		const STATUS = 'issuetasks.status';
+		const ISSUE_STATUS = 'issuetasks.issue_status';
+		const COMPLETED = 'issuetasks.completed';
+		const ASSIGNED_TO = 'issuetasks.assigned_to';
+		const ASSIGNED_TYPE = 'issuetasks.assigned_type';
+		const POSTED = 'issuetasks.posted';
+		const UPDATED = 'issuetasks.updated';
+		const DUE = 'issuetasks.due';
 		
 		public function __construct()
 		{

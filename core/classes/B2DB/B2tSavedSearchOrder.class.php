@@ -2,12 +2,12 @@
 
 	class B2tSavedSearchOrder extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_savedsearchorder';
-		const ID = 'bugs2_savedsearchorder.id';
-		const SCOPE = 'bugs2_savedsearchorder.scope';
-		const ORDER_BY = 'bugs2_savedsearchorder.order_by';
-		const ORDER = 'bugs2_savedsearchorder.order';
-		const SEARCH = 'bugs2_savedsearchorder.search';
+		const B2DBNAME = 'savedsearchorder';
+		const ID = 'savedsearchorder.id';
+		const SCOPE = 'savedsearchorder.scope';
+		const ORDER_BY = 'savedsearchorder.order_by';
+		const ORDER = 'savedsearchorder.order';
+		const SEARCH = 'savedsearchorder.search';
 
 		public function __construct()
 		{

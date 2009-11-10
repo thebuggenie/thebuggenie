@@ -19,13 +19,13 @@
 	class B2tPermissionsList extends B2DBTable 
 	{
 		
-		const B2DBNAME = 'bugs2_permissionslist';
-		const ID = 'bugs2_permissionslist.id';
-		const SCOPE = 'bugs2_permissionslist.scope';
-		const PERMISSION_NAME = 'bugs2_permissionslist.permission_name';
-		const LEVELS = 'bugs2_permissionslist.levels';
-		const DESCRIPTION = 'bugs2_permissionslist.description';
-		const APPLIES_TO = 'bugs2_permissionslist.applies_to';
+		const B2DBNAME = 'permissionslist';
+		const ID = 'permissionslist.id';
+		const SCOPE = 'permissionslist.scope';
+		const PERMISSION_NAME = 'permissionslist.permission_name';
+		const LEVELS = 'permissionslist.levels';
+		const DESCRIPTION = 'permissionslist.description';
+		const APPLIES_TO = 'permissionslist.applies_to';
 		
 		public function __construct()
 		{

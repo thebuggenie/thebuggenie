@@ -19,12 +19,12 @@
 	class B2tCustomFields extends B2DBTable
 	{
 
-		const B2DBNAME = 'bugs2_customfields';
-		const ID = 'bugs2_customfields.id';
-		const FIELD_NAME = 'bugs2_customfields.field_name';
-		const FIELD_KEY = 'bugs2_issuecustomfields.field_key';
-		const FIELD_TYPE = 'bugs2_customfields.field_type';
-		const SCOPE = 'bugs2_customfields.scope';
+		const B2DBNAME = 'customfields';
+		const ID = 'customfields.id';
+		const FIELD_NAME = 'customfields.field_name';
+		const FIELD_KEY = 'issuecustomfields.field_key';
+		const FIELD_TYPE = 'customfields.field_type';
+		const SCOPE = 'customfields.scope';
 
 		public function __construct()
 		{

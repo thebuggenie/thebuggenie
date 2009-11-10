@@ -18,19 +18,19 @@
 	 */
 	class B2tModules extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_modules';
-		const ID = 'bugs2_modules.id';
-		const MODULE_NAME = 'bugs2_modules.module_name';
-		const MODULE_LONGNAME = 'bugs2_modules.module_longname';
-		const DESC = 'bugs2_modules.module_desc';
-		const ENABLED = 'bugs2_modules.enabled';
-		const VERSION = 'bugs2_modules.version';
-		const SHOW_IN_MENU = 'bugs2_modules.show_in_menu';
-		const MODULE_TYPE = 'bugs2_modules.module_type';
-		const SHOW_IN_CONFIG = 'bugs2_modules.show_in_config';
-		const SHOW_IN_USERMENU = 'bugs2_modules.show_in_usermenu';
-		const CLASSNAME = 'bugs2_modules.classname';
-		const SCOPE = 'bugs2_modules.scope';
+		const B2DBNAME = 'modules';
+		const ID = 'modules.id';
+		const MODULE_NAME = 'modules.module_name';
+		const MODULE_LONGNAME = 'modules.module_longname';
+		const DESC = 'modules.module_desc';
+		const ENABLED = 'modules.enabled';
+		const VERSION = 'modules.version';
+		const SHOW_IN_MENU = 'modules.show_in_menu';
+		const MODULE_TYPE = 'modules.module_type';
+		const SHOW_IN_CONFIG = 'modules.show_in_config';
+		const SHOW_IN_USERMENU = 'modules.show_in_usermenu';
+		const CLASSNAME = 'modules.classname';
+		const SCOPE = 'modules.scope';
 		
 		public function __construct()
 		{

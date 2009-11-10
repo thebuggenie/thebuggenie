@@ -19,16 +19,16 @@
 	class B2tIssueFields extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_issuefields';
-		const ID = 'bugs2_issuefields.id';
-		const SCOPE = 'bugs2_issuefields.scope';
-		const PROJECT_ID = 'bugs2_issuefields.project_id';
-		const CATEGORY_ID = 'bugs2_issuefields.category_id';
-		const ADDITIONAL = 'bugs2_issuefields.is_additional';
-		const ISSUETYPE_ID = 'bugs2_issuefields.issuetype_id';
-		const FIELD_KEY = 'bugs2_issuefields.field_key';
-		const REPORTABLE = 'bugs2_issuefields.is_reportable';
-		const REQUIRED = 'bugs2_issuefields.required';
+		const B2DBNAME = 'issuefields';
+		const ID = 'issuefields.id';
+		const SCOPE = 'issuefields.scope';
+		const PROJECT_ID = 'issuefields.project_id';
+		const CATEGORY_ID = 'issuefields.category_id';
+		const ADDITIONAL = 'issuefields.is_additional';
+		const ISSUETYPE_ID = 'issuefields.issuetype_id';
+		const FIELD_KEY = 'issuefields.field_key';
+		const REPORTABLE = 'issuefields.is_reportable';
+		const REQUIRED = 'issuefields.required';
 
 		public function __construct()
 		{

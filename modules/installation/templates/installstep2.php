@@ -30,10 +30,17 @@
 					The password used to connect to the database
 				</dt>
 				<dd><input type="password" name="db_password" id="db_password"<?php if (isset($password)): ?> value="<?php echo $password; ?>"<?php endif; ?>></dd>
+				<dt>
+					<label for="db_name">Table prefix</label><br>
+					The table prefix used for all database tables
+				</dt>
+				<dd><input type="text" name="db_prefix" id="db_prefix" value="tbg3_"></dd>
 			</dl>
 		</fieldset>
-		<p>Now, please fill in either a DSN (if you have that available):</p> 
-		<fieldset title="DSN">
+		<p>Now, please fill in the connection information:</p>
+		<label for="connection_type_dsn">DSN</label><input type="radio" name="connection_type" value="dsn" id="connection_type_dsn"<?php if ($selected_connection_detail == 'dsn'): ?> checked<?php endif; ?> onclick="$('dsn_info').show();$('custom_info').hide()">&nbsp;&nbsp;
+		<label for="connection_type_custom">Custom</label><input type="radio" name="connection_type" value="custom" id="connection_type_custom"<?php if ($selected_connection_detail == 'custom'): ?> checked<?php endif; ?> onclick="$('dsn_info').hide();$('custom_info').show()">
+		<fieldset title="DSN"<?php if ($selected_connection_detail != 'dsn'): ?> style="display: none;"<?php endif; ?> id="dsn_info">
 			<legend>2: DSN</legend>
 			<dl class="install_list">
 				<dt>
@@ -43,8 +50,7 @@
 				<dd><input type="text" name="db_dsn" id="db_dsn"<?php if (isset($dsn)): ?> value="<?php echo $dsn; ?>"<?php endif; ?>></dd>
 			</dl>
 		</fieldset>
-		<p>or use the fields below to enter the information manually:</p>
-		<fieldset title="Connection information">
+		<fieldset title="Connection information"<?php if ($selected_connection_detail != 'custom'): ?> style="display: none;"<?php endif; ?> id="custom_info">
 			<legend>2: Connection information</legend>
 			<dl class="install_list">
 				<dt>
@@ -70,9 +76,9 @@
 				<dd><input type="text" name="db_port" id="db_port"></dd>
 				<dt>
 					<label for="db_name">Database name</label><br>
-					The database used to store the bug genie tables
+					The database used to store the bug genie tables <i>(must already exist!)</i>
 				</dt>
-				<dd><input type="text" name="db_name" id="db_name" value="bugs2_db"></dd>
+				<dd><input type="text" name="db_name" id="db_name" value="thebuggenie"></dd>
 			</dl>
 		</fieldset>
 		<div style="padding-top: 20px; clear: both; text-align: center;">

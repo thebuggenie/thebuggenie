@@ -19,10 +19,10 @@
 	class B2tCustomers extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_customers';
-		const ID = 'bugs2_customers.id';
-		const NAME = 'bugs2_customers.cname';
-		const SCOPE = 'bugs2_customers.scope';
+		const B2DBNAME = 'customers';
+		const ID = 'customers.id';
+		const NAME = 'customers.cname';
+		const SCOPE = 'customers.scope';
 
 		public function __construct()
 		{

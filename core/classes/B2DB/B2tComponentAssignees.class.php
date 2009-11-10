@@ -19,14 +19,14 @@
 	class B2tComponentAssignees extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_componentassignees';
-		const ID = 'bugs2_componentassignees.id';
-		const SCOPE = 'bugs2_componentassignees.scope';
-		const UID = 'bugs2_componentassignees.uid';
-		const CID = 'bugs2_componentassignees.cid';
-		const TID = 'bugs2_componentassignees.tid';
-		const COMPONENT_ID = 'bugs2_componentassignees.component_id';
-		const TARGET_TYPE = 'bugs2_componentassignees.target_type';
+		const B2DBNAME = 'componentassignees';
+		const ID = 'componentassignees.id';
+		const SCOPE = 'componentassignees.scope';
+		const UID = 'componentassignees.uid';
+		const CID = 'componentassignees.cid';
+		const TID = 'componentassignees.tid';
+		const COMPONENT_ID = 'componentassignees.component_id';
+		const TARGET_TYPE = 'componentassignees.target_type';
 		
 		public function __construct()
 		{

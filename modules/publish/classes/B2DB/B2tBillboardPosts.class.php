@@ -2,17 +2,17 @@
 
 	class B2tBillboardPosts extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_billboardposts';
-		const ID = 'bugs2_billboardposts.id';
-		const TITLE = 'bugs2_billboardposts.title';
-		const TARGET_BOARD = 'bugs2_billboardposts.target_board';
-		const ARTICLE_ID = 'bugs2_billboardposts.article_id';
-		const CONTENT = 'bugs2_billboardposts.content';
-		const LINK = 'bugs2_billboardposts.link';
-		const IS_DELETED = 'bugs2_billboardposts.is_deleted';
-		const DATE = 'bugs2_billboardposts.date';
-		const AUTHOR = 'bugs2_billboardposts.author';
-		const SCOPE = 'bugs2_billboardposts.scope';
+		const B2DBNAME = 'billboardposts';
+		const ID = 'billboardposts.id';
+		const TITLE = 'billboardposts.title';
+		const TARGET_BOARD = 'billboardposts.target_board';
+		const ARTICLE_ID = 'billboardposts.article_id';
+		const CONTENT = 'billboardposts.content';
+		const LINK = 'billboardposts.link';
+		const IS_DELETED = 'billboardposts.is_deleted';
+		const DATE = 'billboardposts.date';
+		const AUTHOR = 'billboardposts.author';
+		const SCOPE = 'billboardposts.scope';
 		
 		public function __construct()
 		{

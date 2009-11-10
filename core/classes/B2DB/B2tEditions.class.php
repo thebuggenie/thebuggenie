@@ -19,22 +19,22 @@
 	class B2tEditions extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_editions';
-		const ID = 'bugs2_editions.id';
-		const SCOPE = 'bugs2_editions.scope';
-		const NAME = 'bugs2_editions.name';
-		const DESCRIPTION = 'bugs2_editions.description';
-		const PROJECT = 'bugs2_editions.project';
-		const LEAD_BY = 'bugs2_editions.lead_by';
-		const LEAD_TYPE = 'bugs2_editions.lead_type';
-		const DOC_URL = 'bugs2_editions.doc_url';
-		const QA = 'bugs2_editions.qa';
-		const QA_TYPE = 'bugs2_editions.qa_type';
-		const IS_DEFAULT = 'bugs2_editions.is_default';
-		const RELEASED = 'bugs2_editions.released';
-		const PLANNED_RELEASED = 'bugs2_editions.planned_released';
-		const RELEASE_DATE = 'bugs2_editions.release_date';
-		const LOCKED = 'bugs2_editions.locked';
+		const B2DBNAME = 'editions';
+		const ID = 'editions.id';
+		const SCOPE = 'editions.scope';
+		const NAME = 'editions.name';
+		const DESCRIPTION = 'editions.description';
+		const PROJECT = 'editions.project';
+		const LEAD_BY = 'editions.lead_by';
+		const LEAD_TYPE = 'editions.lead_type';
+		const DOC_URL = 'editions.doc_url';
+		const QA = 'editions.qa';
+		const QA_TYPE = 'editions.qa_type';
+		const IS_DEFAULT = 'editions.is_default';
+		const RELEASED = 'editions.released';
+		const PLANNED_RELEASED = 'editions.planned_released';
+		const RELEASE_DATE = 'editions.release_date';
+		const LOCKED = 'editions.locked';
 		
 		public function __construct()
 		{

@@ -19,14 +19,14 @@
 	class B2tLinks extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_links';
-		const ID = 'bugs2_links.id';
-		const UID = 'bugs2_links.uid';
-		const URL = 'bugs2_links.url';
-		const LINK_ORDER = 'bugs2_links.link_order';
-		const DESCRIPTION = 'bugs2_links.description';
-		const ISSUE = 'bugs2_links.issue';
-		const SCOPE = 'bugs2_links.scope';
+		const B2DBNAME = 'links';
+		const ID = 'links.id';
+		const UID = 'links.uid';
+		const URL = 'links.url';
+		const LINK_ORDER = 'links.link_order';
+		const DESCRIPTION = 'links.description';
+		const ISSUE = 'links.issue';
+		const SCOPE = 'links.scope';
 
 		public function __construct()
 		{

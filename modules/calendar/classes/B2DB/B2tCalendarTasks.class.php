@@ -2,17 +2,17 @@
 
 	class B2tCalendarTasks extends B2DBTable
 	{
-		const B2DBNAME = 'bugs2_calendartasks';
-		const ID = 'bugs2_calendartasks.id';
-		const SCOPE = 'bugs2_calendartasks.scope';
-		const CALENDAR = 'bugs2_calendartasks.calendar';
-		const TITLE = 'bugs2_calendartasks.title';
-		const STARTS = 'bugs2_calendartasks.starts';
-		const ENDS = 'bugs2_calendartasks.ends';
-		const LOCATION = 'bugs2_calendartasks.location';
-		const ITEMTYPE = 'bugs2_calendartasks.itemtype';
-		const DESCRIPTION = 'bugs2_calendartasks.description';
-		const STATUS = 'bugs2_calendartasks.status';
+		const B2DBNAME = 'calendartasks';
+		const ID = 'calendartasks.id';
+		const SCOPE = 'calendartasks.scope';
+		const CALENDAR = 'calendartasks.calendar';
+		const TITLE = 'calendartasks.title';
+		const STARTS = 'calendartasks.starts';
+		const ENDS = 'calendartasks.ends';
+		const LOCATION = 'calendartasks.location';
+		const ITEMTYPE = 'calendartasks.itemtype';
+		const DESCRIPTION = 'calendartasks.description';
+		const STATUS = 'calendartasks.status';
 					
 		public function __construct()
 		{

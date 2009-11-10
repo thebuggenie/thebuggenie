@@ -2,23 +2,23 @@
 
 	class B2tArticles extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_articles';
-		const ID = 'bugs2_articles.id';
-		const TITLE = 'bugs2_articles.title';
-		const ARTICLE_NAME = 'bugs2_articles.article_name';
-		const CONTENT = 'bugs2_articles.content';
-		const IS_NEWS = 'bugs2_articles.is_news';
-		const LINK = 'bugs2_articles.link';
-		const DELETED = 'bugs2_articles.deleted';
-		const IS_PUBLISHED = 'bugs2_articles.is_published';
-		const DATE = 'bugs2_articles.date';
-		const INTRO_TEXT = 'bugs2_articles.intro_text';
-		const AUTHOR = 'bugs2_articles.author';
-		const ORDER = 'bugs2_articles.order';
-		const RELATED_PROJECT = 'bugs2_articles.related_project';
-		const RELATED_TEAM = 'bugs2_articles.related_team';
-		const ICON = 'bugs2_articles.icon';
-		const SCOPE = 'bugs2_articles.scope';
+		const B2DBNAME = 'articles';
+		const ID = 'articles.id';
+		const TITLE = 'articles.title';
+		const ARTICLE_NAME = 'articles.article_name';
+		const CONTENT = 'articles.content';
+		const IS_NEWS = 'articles.is_news';
+		const LINK = 'articles.link';
+		const DELETED = 'articles.deleted';
+		const IS_PUBLISHED = 'articles.is_published';
+		const DATE = 'articles.date';
+		const INTRO_TEXT = 'articles.intro_text';
+		const AUTHOR = 'articles.author';
+		const ORDER = 'articles.order';
+		const RELATED_PROJECT = 'articles.related_project';
+		const RELATED_TEAM = 'articles.related_team';
+		const ICON = 'articles.icon';
+		const SCOPE = 'articles.scope';
 		
 		public function __construct()
 		{

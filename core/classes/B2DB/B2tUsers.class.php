@@ -19,31 +19,31 @@
 	class B2tUsers extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_users';
-		const ID = 'bugs2_users.id';
-		const SCOPE = 'bugs2_users.scope';
-		const UNAME = 'bugs2_users.uname';
-		const PASSWD = 'bugs2_users.passwd';
-		const BUDDYNAME = 'bugs2_users.buddyname';
-		const REALNAME = 'bugs2_users.realname';
-		const CALENDAR = 'bugs2_users.calendar';
-		const EMAIL = 'bugs2_users.email';
-		const STATE = 'bugs2_users.state';
-		const HOMEPAGE = 'bugs2_users.homepage';
-		const LASTSEEN = 'bugs2_users.lastseen';
-		const LASTLOGIN = 'bugs2_users.lastlogin';
-		const QUOTA = 'bugs2_users.quota';
-		const ACTIVATED = 'bugs2_users.activated';
-		const ENABLED = 'bugs2_users.enabled';
-		const DELETED = 'bugs2_users.deleted';
-		const SHOWFOLLOWUPS = 'bugs2_users.showfollowups';
-		const SHOWASSIGNED = 'bugs2_users.showassigned';
-		const AVATAR = 'bugs2_users.avatar';
-		const USE_GRAVATAR = 'bugs2_users.use_gravatar';
-		const PRIVATE_EMAIL = 'bugs2_users.private_email';
-		const JOINED = 'bugs2_users.joined';
-		const GROUP_ID = 'bugs2_users.group_id';
-		const CUSTOMER_ID = 'bugs2_users.customer_id';
+		const B2DBNAME = 'users';
+		const ID = 'users.id';
+		const SCOPE = 'users.scope';
+		const UNAME = 'users.uname';
+		const PASSWD = 'users.passwd';
+		const BUDDYNAME = 'users.buddyname';
+		const REALNAME = 'users.realname';
+		const CALENDAR = 'users.calendar';
+		const EMAIL = 'users.email';
+		const STATE = 'users.state';
+		const HOMEPAGE = 'users.homepage';
+		const LASTSEEN = 'users.lastseen';
+		const LASTLOGIN = 'users.lastlogin';
+		const QUOTA = 'users.quota';
+		const ACTIVATED = 'users.activated';
+		const ENABLED = 'users.enabled';
+		const DELETED = 'users.deleted';
+		const SHOWFOLLOWUPS = 'users.showfollowups';
+		const SHOWASSIGNED = 'users.showassigned';
+		const AVATAR = 'users.avatar';
+		const USE_GRAVATAR = 'users.use_gravatar';
+		const PRIVATE_EMAIL = 'users.private_email';
+		const JOINED = 'users.joined';
+		const GROUP_ID = 'users.group_id';
+		const CUSTOMER_ID = 'users.customer_id';
 		
 		public function __construct()
 		{

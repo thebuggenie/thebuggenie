@@ -19,14 +19,14 @@
 	class B2tEditionAssignees extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_editionassignees';
-		const ID = 'bugs2_editionassignees.id';
-		const SCOPE = 'bugs2_editionassignees.scope';
-		const UID = 'bugs2_editionassignees.uid';
-		const CID = 'bugs2_editionassignees.cid';
-		const TID = 'bugs2_editionassignees.tid';
-		const EDITION_ID = 'bugs2_editionassignees.edition_id';
-		const TARGET_TYPE = 'bugs2_editionassignees.target_type';
+		const B2DBNAME = 'editionassignees';
+		const ID = 'editionassignees.id';
+		const SCOPE = 'editionassignees.scope';
+		const UID = 'editionassignees.uid';
+		const CID = 'editionassignees.cid';
+		const TID = 'editionassignees.tid';
+		const EDITION_ID = 'editionassignees.edition_id';
+		const TARGET_TYPE = 'editionassignees.target_type';
 		
 		public function __construct()
 		{

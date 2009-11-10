@@ -2,22 +2,22 @@
 
 	class B2tSearchLayoutFields extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_searchlayoutfields';
-		const ID = 'bugs2_searchlayoutfields.id';
-		const SCOPE = 'bugs2_searchlayoutfields.scope';
-		const FIELD = 'bugs2_searchlayoutfields.field';
-		const LENGTH = 'bugs2_searchlayoutfields.length';
-		const WIDTH = 'bugs2_searchlayoutfields.width';
-		const HEIGHT = 'bugs2_searchlayoutfields.height';
-		const ICON = 'bugs2_searchlayoutfields.icon';
-		const ORDER = 'bugs2_searchlayoutfields.order';
-		const LAYOUT = 'bugs2_searchlayoutfields.layout';
-		const FIELD_TYPE = 'bugs2_searchlayoutfields.field_type';
-		const ROW = 'bugs2_searchlayoutfields.row';
-		const SPAN_COLS = 'bugs2_searchlayoutfields.span_cols';
-		const SPAN_ROWS = 'bugs2_searchlayoutfields.span_rows';
-		const ALIGN = 'bugs2_searchlayoutfields.align';
-		const INCLUDE_DESC = 'bugs2_searchlayoutfields.include_desc';
+		const B2DBNAME = 'searchlayoutfields';
+		const ID = 'searchlayoutfields.id';
+		const SCOPE = 'searchlayoutfields.scope';
+		const FIELD = 'searchlayoutfields.field';
+		const LENGTH = 'searchlayoutfields.length';
+		const WIDTH = 'searchlayoutfields.width';
+		const HEIGHT = 'searchlayoutfields.height';
+		const ICON = 'searchlayoutfields.icon';
+		const ORDER = 'searchlayoutfields.order';
+		const LAYOUT = 'searchlayoutfields.layout';
+		const FIELD_TYPE = 'searchlayoutfields.field_type';
+		const ROW = 'searchlayoutfields.row';
+		const SPAN_COLS = 'searchlayoutfields.span_cols';
+		const SPAN_ROWS = 'searchlayoutfields.span_rows';
+		const ALIGN = 'searchlayoutfields.align';
+		const INCLUDE_DESC = 'searchlayoutfields.include_desc';
 
 		public function __construct()
 		{

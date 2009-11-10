@@ -19,13 +19,13 @@
 	class B2tIssueAffectsComponent extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_issueaffectscomponent';
-		const ID = 'bugs2_issueaffectscomponent.id';
-		const SCOPE = 'bugs2_issueaffectscomponent.scope';
-		const ISSUE = 'bugs2_issueaffectscomponent.issue';
-		const COMPONENT = 'bugs2_issueaffectscomponent.component';
-		const CONFIRMED = 'bugs2_issueaffectscomponent.confirmed';
-		const STATUS = 'bugs2_issueaffectscomponent.status';
+		const B2DBNAME = 'issueaffectscomponent';
+		const ID = 'issueaffectscomponent.id';
+		const SCOPE = 'issueaffectscomponent.scope';
+		const ISSUE = 'issueaffectscomponent.issue';
+		const COMPONENT = 'issueaffectscomponent.component';
+		const CONFIRMED = 'issueaffectscomponent.confirmed';
+		const STATUS = 'issueaffectscomponent.status';
 		
 		public function __construct()
 		{

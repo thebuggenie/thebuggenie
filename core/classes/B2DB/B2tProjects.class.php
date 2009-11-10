@@ -18,39 +18,39 @@
 	 */
 	class B2tProjects extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_projects';
-		const ID = 'bugs2_projects.id';
-		const SCOPE = 'bugs2_projects.scope';
-		const NAME = 'bugs2_projects.name';
-		const KEY = 'bugs2_projects.key';
-		const PREFIX = 'bugs2_projects.prefix';
-		const USE_PREFIX = 'bugs2_projects.use_prefix';
-		const HOMEPAGE = 'bugs2_projects.homepage';
-		const OWNED_BY = 'bugs2_projects.owned_by';
-		const OWNED_TYPE = 'bugs2_projects.owned_type';
-		const LEAD_BY = 'bugs2_projects.lead_by';
-		const LEAD_TYPE = 'bugs2_projects.lead_type';
-		const TIME_UNIT = 'bugs2_projects.time_unit';
-		const HRS_PR_DAY = 'bugs2_projects.hrs_pr_day';
-		const DESCRIPTION = 'bugs2_projects.description';
-		const DOC_URL = 'bugs2_projects.doc_url';
-		const ENABLE_TASKS = 'bugs2_projects.enable_tasks';
-		const IS_DEFAULT = 'bugs2_projects.is_default';
-		const DEFAULT_STATUS = 'bugs2_projects.default_status';
-		const ENABLE_BUILDS = 'bugs2_projects.enable_builds';
-		const ENABLE_EDITIONS = 'bugs2_projects.enable_editions';
-		const ENABLE_COMPONENTS = 'bugs2_projects.enable_components';
-		const SHOW_IN_SUMMARY = 'bugs2_projects.show_in_summary';
-		const SUMMARY_DISPLAY = 'bugs2_projects.summary_display';
-		const VOTES = 'bugs2_projects.votes';
-		const QA = 'bugs2_projects.qa';
-		const QA_TYPE = 'bugs2_projects.qa_type';
-		const RELEASED = 'bugs2_projects.released';
-		const RELEASE_DATE = 'bugs2_projects.release_date';
-		const LOCKED = 'bugs2_projects.locked';
-		const PLANNED_RELEASE = 'bugs2_projects.planned_release';
-		const DELETED = 'bugs2_projects.deleted';
-		const ALLOW_CHANGING_WITHOUT_WORKING = 'bugs2_projects.allow_changing_wo_working';
+		const B2DBNAME = 'projects';
+		const ID = 'projects.id';
+		const SCOPE = 'projects.scope';
+		const NAME = 'projects.name';
+		const KEY = 'projects.key';
+		const PREFIX = 'projects.prefix';
+		const USE_PREFIX = 'projects.use_prefix';
+		const HOMEPAGE = 'projects.homepage';
+		const OWNED_BY = 'projects.owned_by';
+		const OWNED_TYPE = 'projects.owned_type';
+		const LEAD_BY = 'projects.lead_by';
+		const LEAD_TYPE = 'projects.lead_type';
+		const TIME_UNIT = 'projects.time_unit';
+		const HRS_PR_DAY = 'projects.hrs_pr_day';
+		const DESCRIPTION = 'projects.description';
+		const DOC_URL = 'projects.doc_url';
+		const ENABLE_TASKS = 'projects.enable_tasks';
+		const IS_DEFAULT = 'projects.is_default';
+		const DEFAULT_STATUS = 'projects.default_status';
+		const ENABLE_BUILDS = 'projects.enable_builds';
+		const ENABLE_EDITIONS = 'projects.enable_editions';
+		const ENABLE_COMPONENTS = 'projects.enable_components';
+		const SHOW_IN_SUMMARY = 'projects.show_in_summary';
+		const SUMMARY_DISPLAY = 'projects.summary_display';
+		const VOTES = 'projects.votes';
+		const QA = 'projects.qa';
+		const QA_TYPE = 'projects.qa_type';
+		const RELEASED = 'projects.released';
+		const RELEASE_DATE = 'projects.release_date';
+		const LOCKED = 'projects.locked';
+		const PLANNED_RELEASE = 'projects.planned_release';
+		const DELETED = 'projects.deleted';
+		const ALLOW_CHANGING_WITHOUT_WORKING = 'projects.allow_changing_wo_working';
 		
 		public function __construct()
 		{

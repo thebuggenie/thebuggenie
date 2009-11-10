@@ -19,14 +19,14 @@
 	class B2tListTypes extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_listtypes';
-		const ID = 'bugs2_listtypes.id';
-		const SCOPE = 'bugs2_listtypes.scope';
-		const NAME = 'bugs2_listtypes.name';
-		const ITEMTYPE = 'bugs2_listtypes.itemtype';
-		const ITEMDATA = 'bugs2_listtypes.itemdata';
-		const APPLIES_TO = 'bugs2_listtypes.applies_to';
-		const APPLIES_TYPE = 'bugs2_listtypes.applies_type';
+		const B2DBNAME = 'listtypes';
+		const ID = 'listtypes.id';
+		const SCOPE = 'listtypes.scope';
+		const NAME = 'listtypes.name';
+		const ITEMTYPE = 'listtypes.itemtype';
+		const ITEMDATA = 'listtypes.itemdata';
+		const APPLIES_TO = 'listtypes.applies_to';
+		const APPLIES_TYPE = 'listtypes.applies_type';
 		
 		protected static $_item_cache = null;
 		

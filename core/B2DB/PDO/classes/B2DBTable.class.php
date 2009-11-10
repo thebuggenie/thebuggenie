@@ -35,7 +35,7 @@
 		{
 			$sql = '';
 			$qc = $this->getQC();
-			$sql .= "CREATE TABLE $qc" . $this->b2db_name . "$qc (\n";
+			$sql .= "CREATE TABLE $qc" . B2DB::getTablePrefix() . $this->b2db_name . "$qc (\n";
 			$field_sql = array();
 			foreach ($this->_columns as $a_column)
 			{
@@ -108,7 +108,7 @@
 		protected function _dropToSQL()
 		{
 			$sql = '';
-			$sql .= 'DROP TABLE IF EXISTS ' . $this->b2db_name;
+			$sql .= 'DROP TABLE IF EXISTS ' . B2DB::getTablePrefix() . $this->b2db_name;
 			return $sql;
 		}
 		

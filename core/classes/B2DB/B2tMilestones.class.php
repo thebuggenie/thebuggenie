@@ -19,17 +19,17 @@
 	class B2tMilestones extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_milestones';
-		const ID = 'bugs2_milestones.id';
-		const SCOPE = 'bugs2_milestones.scope';
-		const NAME = 'bugs2_milestones.name';
-		const PROJECT = 'bugs2_milestones.project';
-		const VISIBLE = 'bugs2_milestones.visible';
-		const DESCRIPTION = 'bugs2_milestones.description';
-		const MILESTONE_TYPE = 'bugs2_milestones.milestone_type';
-		const REACHED = 'bugs2_milestones.reached';
-		const STARTING = 'bugs2_milestones.starting';
-		const SCHEDULED = 'bugs2_milestones.scheduled';
+		const B2DBNAME = 'milestones';
+		const ID = 'milestones.id';
+		const SCOPE = 'milestones.scope';
+		const NAME = 'milestones.name';
+		const PROJECT = 'milestones.project';
+		const VISIBLE = 'milestones.visible';
+		const DESCRIPTION = 'milestones.description';
+		const MILESTONE_TYPE = 'milestones.milestone_type';
+		const REACHED = 'milestones.reached';
+		const STARTING = 'milestones.starting';
+		const SCHEDULED = 'milestones.scheduled';
 		
 		public function __construct()
 		{

@@ -19,14 +19,14 @@
 	class B2tProjectAssignees extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_projectassignees';
-		const ID = 'bugs2_projectassignees.id';
-		const SCOPE = 'bugs2_projectassignees.scope';
-		const UID = 'bugs2_projectassignees.uid';
-		const CID = 'bugs2_projectassignees.cid';
-		const TID = 'bugs2_projectassignees.tid';
-		const PROJECT_ID = 'bugs2_projectassignees.project_id';
-		const TARGET_TYPE = 'bugs2_projectassignees.target_type';
+		const B2DBNAME = 'projectassignees';
+		const ID = 'projectassignees.id';
+		const SCOPE = 'projectassignees.scope';
+		const UID = 'projectassignees.uid';
+		const CID = 'projectassignees.cid';
+		const TID = 'projectassignees.tid';
+		const PROJECT_ID = 'projectassignees.project_id';
+		const TARGET_TYPE = 'projectassignees.target_type';
 
 		const TYPE_DEVELOPER = 1;
 		const TYPE_PROJECTMANAGER = 2;

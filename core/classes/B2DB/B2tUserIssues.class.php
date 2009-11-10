@@ -19,11 +19,11 @@
 	class B2tUserIssues extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_userissues';
-		const ID = 'bugs2_userissues.id';
-		const SCOPE = 'bugs2_userissues.scope';
-		const ISSUE = 'bugs2_userissues.issue';
-		const UID = 'bugs2_userissues.uid';
+		const B2DBNAME = 'userissues';
+		const ID = 'userissues.id';
+		const SCOPE = 'userissues.scope';
+		const ISSUE = 'userissues.issue';
+		const UID = 'userissues.uid';
 
 		public function __construct()
 		{

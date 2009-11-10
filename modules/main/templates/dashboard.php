@@ -4,7 +4,7 @@
 	$bugs_response->addJavascript('dashboard.js');
 
 ?>
-<table style="margin-top: 0px; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
+<table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td id="dashboard_lefthand">
 			<div style="margin-top: 0px;">
@@ -48,10 +48,15 @@
 				
 			?>
 			<ul id="dashboard">
-				<li> 
-					<div class="header"><?php echo __('Open issues assigned to you'); ?></div>
+				<li>
+					<div class="rounded_box borderless" style="margin-top: 5px;">
+						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
+							<?php echo __('Open issues assigned to you'); ?>
+						</div>
+					</div>
 					<?php if (count($bugs_user->getUserAssignedIssues()) > 0): ?>
-						<table cellpadding=0 cellspacing=0>
+						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 						<?php foreach ($bugs_user->getUserAssignedIssues() as $theIssue): ?>
 							<tr class="<?php if ($theIssue->getState() == BUGSissue::STATE_CLOSED): ?>issue_closed<?php else: ?>issue_open<?php endif; ?> <?php if ($theIssue->isBlocking()): ?>issue_blocking<?php endif; ?>">
 								<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
@@ -65,7 +70,7 @@
 						<?php endforeach; ?>
 						</table>
 					<?php else: ?>
-						<div class="faded_medium" style="padding: 0 0 15px 0;"><?php echo __('No issues are assigned to you'); ?></div>
+						<div class="faded_medium" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues are assigned to you'); ?></div>
 					<?php endif; ?>
 					<?php 
 					
@@ -74,11 +79,16 @@
 					?>
 				</li>
 				<li>
-					<div class="header"><?php echo __('Open issues assigned to your teams'); ?></div>
+					<div class="rounded_box borderless" style="margin-top: 5px;">
+						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
+							<?php echo __('Open issues assigned to your teams'); ?>
+						</div>
+					</div>
 					<?php $team_issues_count = 0; ?>
 					<?php foreach ($bugs_user->getTeams() as $tid => $theTeam): ?>
 						<?php if (count($bugs_user->getUserTeamAssignedIssues($tid)) > 0): ?>
-							<table cellpadding=0 cellspacing=0>
+							<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 							<?php foreach ($bugs_user->getUserTeamAssignedIssues($tid) as $theIssue): ?>
 								<tr class="<?php if ($theIssue->getState() == BUGSissue::STATE_CLOSED) echo 'issue_closed'; if ($theIssue->isBlocking()) echo ' issue_blocking'; ?>">
 									<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
@@ -97,7 +107,7 @@
 						<?php endif; ?>
 					<?php endforeach; ?>
 					<?php if ($team_issues_count == 0): ?>
-						<div class="faded_medium" style="padding: 0 0 15px 0;"><?php echo __('No issues are assigned to any of your teams'); ?></div>
+						<div class="faded_medium" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues are assigned to any of your teams'); ?></div>
 					<?php endif; ?>
 					<?php 
 					
@@ -106,9 +116,14 @@
 					?>
 				</li>
 				<li style="clear: both;"> 
-					<div class="header"><?php echo __('Issues with pending changes'); ?></div>
+					<div class="rounded_box borderless" style="margin-top: 5px;">
+						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
+							<?php echo __('Issues with pending changes'); ?>
+						</div>
+					</div>
 					<?php if (count($bugs_user->getIssuesPendingChanges()) > 0): ?>
-						<table cellpadding=0 cellspacing=0>
+						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 						<?php foreach ($bugs_user->getIssuesPendingChanges() as $theIssue): ?>
 							<tr class="<?php if ($theIssue->getState() == BUGSissue::STATE_CLOSED): ?>issue_closed<?php else: ?>issue_open<?php endif; ?> <?php if ($theIssue->isBlocking()): ?>issue_blocking<?php endif; ?>">
 								<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
@@ -122,7 +137,7 @@
 						<?php endforeach; ?>
 						</table>
 					<?php else: ?>
-						<div class="faded_medium" style="padding: 0 0 15px 0;"><?php echo __('You have no issues with unsaved changes'); ?></div>
+						<div class="faded_medium" style="padding: 5px 5px 15px 5px;"><?php echo __('You have no issues with unsaved changes'); ?></div>
 					<?php endif; ?>
 					<?php 
 					
@@ -131,9 +146,14 @@
 					?>
 				</li>
 				<li> 
-					<div class="header"><?php echo __('Your starred issues'); ?></div>
+					<div class="rounded_box borderless" style="margin-top: 5px;">
+						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
+							<?php echo __('Your starred issues'); ?>
+						</div>
+					</div>
 					<?php if (count($bugs_user->getStarredIssues()) > 0): ?>
-						<table cellpadding=0 cellspacing=0>
+						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 						<?php foreach ($bugs_user->getStarredIssues() as $theIssue): ?>
 							<tr class="<?php if ($theIssue->getState() == BUGSissue::STATE_CLOSED) echo 'issue_closed'; if ($theIssue->isBlocking()) echo ' issue_blocking'; ?>">
 								<td class="imgtd">
@@ -156,7 +176,7 @@
 						<?php endforeach; ?>
 						</table>
 					<?php else: ?>
-						<div class="faded_medium" style="padding: 0 0 15px 0;"><?php echo __("You haven't starred any issues yet"); ?></div>
+						<div class="faded_medium" style="padding: 5px 5px 15px 5px;"><?php echo __("You haven't starred any issues yet"); ?></div>
 					<?php endif; ?>
 					<?php 
 					
@@ -165,9 +185,14 @@
 					?>
 				</li>
 				<li style="clear: both;"> 
-					<div class="header"><?php echo __("What you've done recently"); ?></div>
+					<div class="rounded_box borderless" style="margin-top: 5px;">
+						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
+							<?php echo __("What you've done recently"); ?>
+						</div>
+					</div>
 					<?php if (count($bugs_user->getLatestActions()) > 0): ?>
-						<table cellpadding=0 cellspacing=0>
+						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 							<?php $prev_date = null; ?>
 							<?php foreach ($bugs_user->getLatestActions() as $action): ?>
 								<?php $date = bugs_formatTime($action['timestamp'], 5); ?>
@@ -181,7 +206,7 @@
 							<?php endforeach; ?>
 						</table>
 					<?php else: ?>
-						<div class="faded_medium" style="padding: 0 0 15px 0;"><?php echo __("You haven't starred any issues yet"); ?></div>
+						<div class="faded_medium" style="padding: 5px 5px 15px 5px;"><?php echo __("You haven't done anything recently"); ?></div>
 					<?php endif; ?>
 				</li>
 			</ul>
@@ -193,7 +218,7 @@
 			?>
 		</td>
 		<td id="dashboard_righthand">
-			<div class="left_menu_header" style="margin: 5px 5px 5px 0;"><?php echo __('Your projects'); ?></div>
+			<div class="left_menu_header" style="margin: 7px 5px 5px 0;"><?php echo __('Your projects'); ?></div>
 			<?php if (count($bugs_user->getAssociatedProjects()) > 0): ?>
 				<ul id="associated_projects">
 					<?php foreach ($bugs_user->getAssociatedProjects() as $project): ?>
@@ -220,10 +245,7 @@
 						</li>
 					<?php endforeach; ?>
 				</ul>
-			<?php else: ?>
-			<?php endif; ?>
-			<div class="left_menu_header" style="margin: 5px 5px 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
-			<?php if (count($bugs_user->getAssociatedProjects()) > 0): ?>
+				<div class="left_menu_header" style="margin: 5px 5px 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
 				<?php $milestone_cc = 0; ?>
 				<?php foreach ($bugs_user->getAssociatedProjects() as $project): ?>
 					<?php foreach ($project->getUpcomingMilestonesAndSprints() as $milestone): ?>
@@ -266,7 +288,7 @@
 					<div class="faded_medium"><?php echo __('There are no upcoming milestones for any of your associated projects'); ?></div>
 				<?php endif; ?>
 			<?php else: ?>
-				<div class="faded_medium"><?php echo __('You are not associated with any projects'); ?></div>
+				<div class="faded_medium" style="padding: 0 0 0 5px;"><?php echo __('You are not associated with any projects'); ?></div>
 			<?php endif; ?>
 		</td>
 	</tr>

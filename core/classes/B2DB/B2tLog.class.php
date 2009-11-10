@@ -56,17 +56,17 @@
 		const LOG_ISSUE_OWNED = 34;
 		const LOG_ISSUE_POSTED = 35;
 		
-		const B2DBNAME = 'bugs2_log';
-		const ID = 'bugs2_log.id';
-		const SCOPE = 'bugs2_log.scope';
-		const TARGET = 'bugs2_log.target';
-		const TARGET_TYPE = 'bugs2_log.target_type';
-		const CHANGE_TYPE = 'bugs2_log.change_type';
-		const PREVIOUS_VALUE = 'bugs2_log.previous_value';
-		const CURRENT_VALUE = 'bugs2_log.current_value';
-		const TEXT = 'bugs2_log.text';
-		const TIME = 'bugs2_log.time';
-		const UID = 'bugs2_log.uid';
+		const B2DBNAME = 'log';
+		const ID = 'log.id';
+		const SCOPE = 'log.scope';
+		const TARGET = 'log.target';
+		const TARGET_TYPE = 'log.target_type';
+		const CHANGE_TYPE = 'log.change_type';
+		const PREVIOUS_VALUE = 'log.previous_value';
+		const CURRENT_VALUE = 'log.current_value';
+		const TEXT = 'log.text';
+		const TIME = 'log.time';
+		const UID = 'log.uid';
 
 		public function __construct()
 		{

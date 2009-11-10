@@ -19,14 +19,14 @@
 	class B2tScopes extends B2DBTable 
 	{
 		
-		const B2DBNAME = 'bugs2_scopes';
-		const ID = 'bugs2_scopes.id';
-		const NAME = 'bugs2_scopes.name';
-		const ENABLED = 'bugs2_scopes.enabled';
-		const SHORTNAME = 'bugs2_scopes.shortname';
-		const DESCRIPTION = 'bugs2_scopes.description';
-		const ADMIN = 'bugs2_scopes.admin';
-		const HOSTNAME = 'bugs2_scopes.hostname';
+		const B2DBNAME = 'scopes';
+		const ID = 'scopes.id';
+		const NAME = 'scopes.name';
+		const ENABLED = 'scopes.enabled';
+		const SHORTNAME = 'scopes.shortname';
+		const DESCRIPTION = 'scopes.description';
+		const ADMIN = 'scopes.admin';
+		const HOSTNAME = 'scopes.hostname';
 		
 		public function __construct()
 		{

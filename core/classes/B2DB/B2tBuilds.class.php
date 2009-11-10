@@ -19,20 +19,20 @@
 	class B2tBuilds extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_builds';
-		const ID = 'bugs2_builds.id';
-		const SCOPE = 'bugs2_builds.scope';
-		const NAME = 'bugs2_builds.name';
-		const VERSION_MAJOR = 'bugs2_builds.version_major';
-		const VERSION_MINOR = 'bugs2_builds.version_minor';
-		const VERSION_REVISION = 'bugs2_builds.version_revision';
-		const EDITION = 'bugs2_builds.edition';
-		const TIMESTAMP = 'bugs2_builds.timestamp';
-		const RELEASE_DATE = 'bugs2_builds.release_date';
-		const IS_DEFAULT = 'bugs2_builds.is_default';
-		const LOCKED = 'bugs2_builds.locked';
-		const PROJECT = 'bugs2_builds.project';
-		const RELEASED = 'bugs2_builds.released';
+		const B2DBNAME = 'builds';
+		const ID = 'builds.id';
+		const SCOPE = 'builds.scope';
+		const NAME = 'builds.name';
+		const VERSION_MAJOR = 'builds.version_major';
+		const VERSION_MINOR = 'builds.version_minor';
+		const VERSION_REVISION = 'builds.version_revision';
+		const EDITION = 'builds.edition';
+		const TIMESTAMP = 'builds.timestamp';
+		const RELEASE_DATE = 'builds.release_date';
+		const IS_DEFAULT = 'builds.is_default';
+		const LOCKED = 'builds.locked';
+		const PROJECT = 'builds.project';
+		const RELEASED = 'builds.released';
 		
 		public function __construct()
 		{

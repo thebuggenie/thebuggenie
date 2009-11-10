@@ -19,12 +19,12 @@
 	class B2tIssueTags extends B2DBTable
 	{
 
-		const B2DBNAME = 'bugs2_issuetags';
-		const ID = 'bugs2_issuetags.id';
-		const ISSUE_ID = 'bugs2_issuetags.issue_id';
-		const TAG_NAME = 'bugs2_issuetags.tag_name';
-		const ADDED = 'bugs2_issuetags.added';
-		const SCOPE = 'bugs2_issuetags.scope';
+		const B2DBNAME = 'issuetags';
+		const ID = 'issuetags.id';
+		const ISSUE_ID = 'issuetags.issue_id';
+		const TAG_NAME = 'issuetags.tag_name';
+		const ADDED = 'issuetags.added';
+		const SCOPE = 'issuetags.scope';
 		
 		public function __construct()
 		{

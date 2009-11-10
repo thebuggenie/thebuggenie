@@ -19,14 +19,14 @@
 	class B2tModulePermissions extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_modulepermissions';
-		const ID = 'bugs2_modulepermissions.id';
-		const SCOPE = 'bugs2_modulepermissions.scope';
-		const MODULE_NAME = 'bugs2_modulepermissions.module_name';
-		const UID = 'bugs2_modulepermissions.uid';
-		const GID = 'bugs2_modulepermissions.gid';
-		const TID = 'bugs2_modulepermissions.tid';
-		const ALLOWED = 'bugs2_modulepermissions.allowed';
+		const B2DBNAME = 'modulepermissions';
+		const ID = 'modulepermissions.id';
+		const SCOPE = 'modulepermissions.scope';
+		const MODULE_NAME = 'modulepermissions.module_name';
+		const UID = 'modulepermissions.uid';
+		const GID = 'modulepermissions.gid';
+		const TID = 'modulepermissions.tid';
+		const ALLOWED = 'modulepermissions.allowed';
 
 		public function __construct()
 		{

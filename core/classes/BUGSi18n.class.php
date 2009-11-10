@@ -94,6 +94,7 @@
 		
 		public function getCharset()
 		{
+			if (BUGScontext::isInstallmode()) return $this->_charset;
 			return (BUGSsettings::get('charset') != '') ? BUGSsettings::get('charset') : $this->_charset;
 		}
 		

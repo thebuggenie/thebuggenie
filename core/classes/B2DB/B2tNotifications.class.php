@@ -19,18 +19,18 @@
 	class B2tNotifications extends B2DBTable 
 	{
 		
-		const B2DBNAME = 'bugs2_notifications';
-		const ID = 'bugs2_notifications.id';
-		const SCOPE = 'bugs2_notifications.scope';
-		const MODULE_NAME = 'bugs2_notifications.module_name';
-		const NOTIFY_TYPE = 'bugs2_notifications.notify_type';
-		const TARGET_ID = 'bugs2_notifications.target_id';
-		const UID = 'bugs2_notifications.uid';
-		const GID = 'bugs2_notifications.gid';
-		const TID = 'bugs2_notifications.tid';
-		const TITLE = 'bugs2_notifications.title';
-		const CONTENTS = 'bugs2_notifications.contents';
-		const STATUS = 'bugs2_notifications.status';
+		const B2DBNAME = 'notifications';
+		const ID = 'notifications.id';
+		const SCOPE = 'notifications.scope';
+		const MODULE_NAME = 'notifications.module_name';
+		const NOTIFY_TYPE = 'notifications.notify_type';
+		const TARGET_ID = 'notifications.target_id';
+		const UID = 'notifications.uid';
+		const GID = 'notifications.gid';
+		const TID = 'notifications.tid';
+		const TITLE = 'notifications.title';
+		const CONTENTS = 'notifications.contents';
+		const STATUS = 'notifications.status';
 
 		public function __construct()
 		{

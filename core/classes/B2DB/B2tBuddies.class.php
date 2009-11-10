@@ -19,11 +19,11 @@
 	class B2tBuddies extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_buddies';
-		const ID = 'bugs2_buddies.id';
-		const SCOPE = 'bugs2_buddies.scope';
-		const UID = 'bugs2_buddies.uid';
-		const BID = 'bugs2_buddies.bid';
+		const B2DBNAME = 'buddies';
+		const ID = 'buddies.id';
+		const SCOPE = 'buddies.scope';
+		const UID = 'buddies.uid';
+		const BID = 'buddies.bid';
 
 		public function __construct()
 		{

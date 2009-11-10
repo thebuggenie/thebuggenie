@@ -19,12 +19,12 @@
 	class B2tIssueRelations extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_issuerelations';
-		const ID = 'bugs2_issuerelations.id';
-		const SCOPE = 'bugs2_issuerelations.scope';
-		const PARENT_ID = 'bugs2_issuerelations.parent_id';
-		const CHILD_ID = 'bugs2_issuerelations.child_id';
-		const MUSTFIX = 'bugs2_issuerelations.mustfix';
+		const B2DBNAME = 'issuerelations';
+		const ID = 'issuerelations.id';
+		const SCOPE = 'issuerelations.scope';
+		const PARENT_ID = 'issuerelations.parent_id';
+		const CHILD_ID = 'issuerelations.child_id';
+		const MUSTFIX = 'issuerelations.mustfix';
 
 		public function __construct()
 		{

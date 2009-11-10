@@ -19,14 +19,14 @@
 	class B2tComponents extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_components';
-		const ID = 'bugs2_components.id';
-		const SCOPE = 'bugs2_components.scope';
-		const NAME = 'bugs2_components.name';
-		const VERSION_MAJOR = 'bugs2_components.version_major';
-		const VERSION_MINOR = 'bugs2_components.version_minor';
-		const VERSION_REVISION = 'bugs2_components.version_revision';
-		const PROJECT = 'bugs2_components.project';
+		const B2DBNAME = 'components';
+		const ID = 'components.id';
+		const SCOPE = 'components.scope';
+		const NAME = 'components.name';
+		const VERSION_MAJOR = 'components.version_major';
+		const VERSION_MINOR = 'components.version_minor';
+		const VERSION_REVISION = 'components.version_revision';
+		const PROJECT = 'components.project';
 
 		public function __construct()
 		{

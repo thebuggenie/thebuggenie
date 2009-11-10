@@ -2,27 +2,27 @@
 
 	class B2tSearchFilters extends B2DBTable 
 	{
-		const B2DBNAME = 'bugs2_searchfilters';
-		const ID = 'bugs2_searchfilters.id';
-		const FILTER_TABLE = 'bugs2_searchfilters.filter_table';
-		const FILTER_TYPE = 'bugs2_searchfilters.filter_type';
-		const VALUES_FROM = 'bugs2_searchfilters.values_from';
-		const SHORT_NAME = 'bugs2_searchfilters.short_name';
-		const DESCRIPTION = 'bugs2_searchfilters.description';
-		const FILTER_FIELD = 'bugs2_searchfilters.filter_field';
-		const VALUE_FROM_FIELD = 'bugs2_searchfilters.value_from_field';
-		const NAME_FROM_FIELD = 'bugs2_searchfilters.name_from_field';
-		const FROM_TBL_CRIT_FIELD = 'bugs2_searchfilters.from_tbl_crit_field';
-		const FROM_TBL_CRIT_VALUE = 'bugs2_searchfilters.from_tbl_crit_value';
-		const FILTER_UNIQUE = 'bugs2_searchfilters.filter_unique';
-		const REQ_VALUE = 'bugs2_searchfilters.req_value';
-		const REQ_VALUE_FIELD = 'bugs2_searchfilters.req_value_field';
-		const VALUE_LENGTH = 'bugs2_searchfilters.value_length';
-		const VALUE_TYPE = 'bugs2_searchfilters.value_type';
-		const INCLUDES_NOTSET = 'bugs2_searchfilters.includes_notset';
-		const NOTSET_DESCRIPTION = 'bugs2_searchfilters.notset_description';
-		const NOTSET_VALUE = 'bugs2_searchfilters.notset_value';
-		const JOIN_ISSUES_ON = 'bugs2_searchfilters.join_issues_on';
+		const B2DBNAME = 'searchfilters';
+		const ID = 'searchfilters.id';
+		const FILTER_TABLE = 'searchfilters.filter_table';
+		const FILTER_TYPE = 'searchfilters.filter_type';
+		const VALUES_FROM = 'searchfilters.values_from';
+		const SHORT_NAME = 'searchfilters.short_name';
+		const DESCRIPTION = 'searchfilters.description';
+		const FILTER_FIELD = 'searchfilters.filter_field';
+		const VALUE_FROM_FIELD = 'searchfilters.value_from_field';
+		const NAME_FROM_FIELD = 'searchfilters.name_from_field';
+		const FROM_TBL_CRIT_FIELD = 'searchfilters.from_tbl_crit_field';
+		const FROM_TBL_CRIT_VALUE = 'searchfilters.from_tbl_crit_value';
+		const FILTER_UNIQUE = 'searchfilters.filter_unique';
+		const REQ_VALUE = 'searchfilters.req_value';
+		const REQ_VALUE_FIELD = 'searchfilters.req_value_field';
+		const VALUE_LENGTH = 'searchfilters.value_length';
+		const VALUE_TYPE = 'searchfilters.value_type';
+		const INCLUDES_NOTSET = 'searchfilters.includes_notset';
+		const NOTSET_DESCRIPTION = 'searchfilters.notset_description';
+		const NOTSET_VALUE = 'searchfilters.notset_value';
+		const JOIN_ISSUES_ON = 'searchfilters.join_issues_on';
 		
 		public function __construct()
 		{

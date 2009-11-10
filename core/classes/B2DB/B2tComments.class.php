@@ -19,21 +19,21 @@
 	class B2tComments extends B2DBTable 
 	{
 
-		const B2DBNAME = 'bugs2_comments';
-		const ID = 'bugs2_comments.id';
-		const SCOPE = 'bugs2_comments.scope';
-		const TARGET_ID = 'bugs2_comments.target_id';
-		const TARGET_TYPE = 'bugs2_comments.target_type';
-		const TITLE = 'bugs2_comments.title';
-		const CONTENT = 'bugs2_comments.content';
-		const IS_PUBLIC = 'bugs2_comments.is_public';
-		const POSTED_BY = 'bugs2_comments.posted_by';
-		const POSTED = 'bugs2_comments.posted';
-		const UPDATED_BY = 'bugs2_comments.updated_by';
-		const UPDATED = 'bugs2_comments.updated';
-		const DELETED = 'bugs2_comments.deleted';
-		const MODULE = 'bugs2_comments.module';
-		const SYSTEM_COMMENT = 'bugs2_comments.system_comment';
+		const B2DBNAME = 'comments';
+		const ID = 'comments.id';
+		const SCOPE = 'comments.scope';
+		const TARGET_ID = 'comments.target_id';
+		const TARGET_TYPE = 'comments.target_type';
+		const TITLE = 'comments.title';
+		const CONTENT = 'comments.content';
+		const IS_PUBLIC = 'comments.is_public';
+		const POSTED_BY = 'comments.posted_by';
+		const POSTED = 'comments.posted';
+		const UPDATED_BY = 'comments.updated_by';
+		const UPDATED = 'comments.updated';
+		const DELETED = 'comments.deleted';
+		const MODULE = 'comments.module';
+		const SYSTEM_COMMENT = 'comments.system_comment';
 
 		public function __construct()
 		{
