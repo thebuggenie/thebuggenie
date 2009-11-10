@@ -222,6 +222,14 @@
 		}
 		
 		/**
+		 * Get the HTTP status code
+		 */
+		public function getHttpStatus()
+		{
+			return $this->_http_status;
+		}
+
+		/**
 		 * Whether we're decorating with the header or not
 		 * 
 		 * @return string

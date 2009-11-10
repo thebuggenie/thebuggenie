@@ -1321,6 +1321,9 @@
 		 */
 		public static function performAction($action, $method)
 		{
+			// Set content variable
+			$content = null;
+			
 			// Set the template to be used when rendering the html (or other) output
 			$templatePath = self::getIncludePath() . 'modules/' . $action . '/templates/';
 
@@ -1340,94 +1343,104 @@
 			// Run the specified action method set if it exists
 			if (method_exists($actionObject, $actionToRunName))
 			{
-				BUGSlogging::log('Running main pre-execute action');
-				// Running any overridden preExecute() method defined for that module
-				// or the default empty one provided by BUGSaction
-				$actionObject->preExecute(self::getRequest(), $method);
-
-				// Checking for and running action-specific preExecute() function if
-				// it exists
-				if (method_exists($actionObject, $preActionToRunName))
-				{
-					BUGSlogging::log('Running custom pre-execute action');
-					$actionObject->$preActionToRunName(self::getRequest(), $method);
-				}
-				
 				// Turning on output buffering
 				ob_start();
 				ob_implicit_flush(0);
 
-				// Running main route action
-				BUGSlogging::log('Running route action '.$actionToRunName.'()');
-				if ($action_retval = $actionObject->$actionToRunName(self::getRequest()))
+				BUGSlogging::log('Running main pre-execute action');
+				// Running any overridden preExecute() method defined for that module
+				// or the default empty one provided by BUGSaction
+				if ($pre_action_retval = $actionObject->preExecute(self::getRequest(), $method))
 				{
-					// If the action returns *any* output, we're done, and collect the
-					// output to a variable to be outputted in context later
 					$content = ob_get_clean();
-					BUGSlogging::log('...done');
+					BUGSlogging::log('preexecute method returned something, skipping further action');
 				}
-				else
-				{
-					// If the action doesn't return any output (which it usually doesn't)
-					// we continue on to rendering the template file for that specific action
-					BUGSlogging::log('...done');
-					BUGSlogging::log('Displaying template');
 
-					// Check to see if the template has been changed, and whether it's in a
-					// different module, specified by "module/templatename"
-					if (strpos(self::getResponse()->getTemplate(), '/'))
+				if ($content === null)
+				{
+					if (self::getResponse()->getHttpStatus() == 200)
 					{
-						$newPath = explode('/', self::getResponse()->getTemplate());
-						$templateName = self::getIncludePath() . 'modules/' . $newPath[0] . '/templates/' . $newPath[1];
+						// Checking for and running action-specific preExecute() function if
+						// it exists
+						if (method_exists($actionObject, $preActionToRunName))
+						{
+							BUGSlogging::log('Running custom pre-execute action');
+							$actionObject->$preActionToRunName(self::getRequest(), $method);
+						}
+					}
+
+					// Running main route action
+					if (self::getResponse()->getHttpStatus() == 200 && ($action_retval = $actionObject->$actionToRunName(self::getRequest())))
+					{
+						BUGSlogging::log('Running route action '.$actionToRunName.'()');
+						// If the action returns *any* output, we're done, and collect the
+						// output to a variable to be outputted in context later
+						$content = ob_get_clean();
+						BUGSlogging::log('...done');
 					}
 					else
 					{
-						$templateName = $templatePath . self::getResponse()->getTemplate();
+						// If the action doesn't return any output (which it usually doesn't)
+						// we continue on to rendering the template file for that specific action
+						BUGSlogging::log('...done');
+						BUGSlogging::log('Displaying template');
+
+						// Check to see if the template has been changed, and whether it's in a
+						// different module, specified by "module/templatename"
+						if (strpos(self::getResponse()->getTemplate(), '/'))
+						{
+							$newPath = explode('/', self::getResponse()->getTemplate());
+							$templateName = self::getIncludePath() . 'modules/' . $newPath[0] . '/templates/' . $newPath[1];
+						}
+						else
+						{
+							$templateName = $templatePath . self::getResponse()->getTemplate();
+						}
+
+						// Check to see if the template exists and throw an exception otherwise
+						if (!file_exists($templateName))
+						{
+							BUGSlogging::log('The template file for the ' . $method . ' action ("'.self::getResponse()->getTemplate().'") does not exist', 'core', BUGSlogging::LEVEL_FATAL);
+							throw new BUGSTemplateNotFoundException('The template file for the ' . $method . ' action ("'.self::getResponse()->getTemplate().'") does not exist');
+						}
+
+						// Make all template variables available to the template, including the
+						// main ones like request, user, action and response
+						BUGSlogging::log('configuring variables');
+						foreach ($actionObject->getParameterHolder() as $key => $val)
+						{
+							$$key = $val;
+						}
+						/**
+						 * @global BUGSrequest The request object
+						 */
+						$bugs_request = self::getRequest();
+
+						/**
+						 * @global BUGSuser The user object
+						 */
+						$bugs_user = self::getUser();
+
+						/**
+						 * @global BUGSaction The action object
+						 */
+						$bugs_action = $actionObject;
+
+						/**
+						 * @global BUGSresponse The action object
+						 */
+						$bugs_response = self::getResponse();
+
+						// Load the "ui" library, since this is used a lot
+						self::loadLibrary('ui');
+
+						// Include the template, buffer the output and store it in a variable
+						// to be outputted in context later
+						BUGSlogging::log('rendering template and buffering output');
+						require $templateName;
+						$content = ob_get_clean();
+						BUGSlogging::log('...completed');
 					}
-
-					// Check to see if the template exists and throw an exception otherwise
-					if (!file_exists($templateName))
-					{
-						BUGSlogging::log('The template file for the ' . $method . ' action ("'.self::getResponse()->getTemplate().'") does not exist', 'core', BUGSlogging::LEVEL_FATAL);
-						throw new BUGSTemplateNotFoundException('The template file for the ' . $method . ' action ("'.self::getResponse()->getTemplate().'") does not exist');
-					}
-
-					// Make all template variables available to the template, including the
-					// main ones like request, user, action and response
-					BUGSlogging::log('configuring variables');
-					foreach ($actionObject->getParameterHolder() as $key => $val)
-					{
-						$$key = $val;
-					}
-					/**
-					 * @global BUGSrequest The request object
-					 */
-					$bugs_request = self::getRequest();
-					
-					/**
-					 * @global BUGSuser The user object
-					 */
-					$bugs_user = self::getUser();
-					
-					/**
-					 * @global BUGSaction The action object
-					 */
-					$bugs_action = $actionObject;
-
-					/**
-					 * @global BUGSresponse The action object
-					 */
-					$bugs_response = self::getResponse();
-
-					// Load the "ui" library, since this is used a lot
-					self::loadLibrary('ui');
-
-					// Include the template, buffer the output and store it in a variable
-					// to be outputted in context later
-					BUGSlogging::log('rendering template and buffering output');
-					require $templateName;
-					$content = ob_get_clean();
-					BUGSlogging::log('...completed');
 				}
 
 				// Render header template if any, and store the output in a variable

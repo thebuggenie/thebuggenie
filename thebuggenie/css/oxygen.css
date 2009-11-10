@@ -1526,4 +1526,5 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #project_dashboard .recent_activities td .time { float: left; font-size: 11px; color: #AAA; }
 #project_dashboard #project_header_container img { float: left; margin: 3px 5px 0 0; }
 #project_dashboard #project_name { font-size: 18px; font-weight: bold; margin: 5px 5px 5px 0; }
+#project_dashboard #project_team { font-size: 13px; font-weight: normal; margin: 5px 5px 5px 0; width: 615px; }
 #project_dashboard #project_description { font-size: 14px; font-weight: normal; color: #666; }

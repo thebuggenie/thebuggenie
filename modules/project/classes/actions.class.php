@@ -42,6 +42,10 @@
 				BUGScontext::setCurrentProject($this->selected_project);
 				$this->project_key = $this->selected_project->getKey();
 			}
+			else
+			{
+				$this->return404(BUGScontext::getI18n()->__('This project does not exist'));
+			}
 		}
 
 		/**
@@ -55,6 +59,7 @@
 			$this->recent_issues = $this->selected_project->getRecentIssues();
 			$this->recent_features = $this->selected_project->getRecentFeatures();
 			$this->recent_ideas = $this->selected_project->getRecentIdeas();
+			$this->assignees = $this->selected_project->getAssignees();
 		}
 
 		/**

@@ -2,7 +2,7 @@
 	<div class="project_name<?php if (!$project instanceof BUGSproject): ?> faded_dark<?php endif; ?>">
 		<?php echo image_tag('spinning_32.gif', array('id' => 'project_menustrip_indicator', 'style' => 'display: none;')); ?>
 		<span id="project_menustrip_name">
-			<?php if ($show_report_button): ?>
+			<?php if ($show_report_button && count(BUGSproject::getAll()) > 1): ?>
 				<a href="javascript:void(0);" onclick="$('project_menustrip_change').toggle();" style="float: right; margin-left: 10px;" class="image"><?php echo image_tag('expand.png'); ?></a>
 			<?php endif; ?>
 			<?php if (!$project instanceof BUGSproject): ?>
@@ -11,7 +11,7 @@
 				<?php echo $project->getName(); ?>
 			<?php endif; ?>
 		</span>
-		<?php if ($bugs_response->getPage() != 'reportissue'): ?>
+		<?php if ($bugs_response->getPage() != 'reportissue' && count(BUGSproject::getAll()) > 1): ?>
 			<div class="rounded_box white" id="project_menustrip_change" style="position: absolute; display: none; width: 324px; top: 34px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 5px;">
