@@ -121,7 +121,7 @@
 					<?php endforeach; ?>
 					</table>
 				<?php else: ?>
-					<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No feature requests posted yet'); ?></div>
+					<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No ideas suggested yet'); ?></div>
 				<?php endif; ?>
 			</div>
 			<div class="rounded_box mediumgrey_borderless" style="margin-top: 10px; clear: both; width: 620px;">
