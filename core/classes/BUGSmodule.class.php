@@ -37,6 +37,7 @@
 		protected $_availablepermissions = array();
 		protected $_availablesections = array();
 		protected $_settings = array();
+		protected $_routes = array();
 		
 		static protected $_permissions = array();
 		
@@ -336,38 +337,6 @@
 			}
 		}
 		
-		/*public function setPermission($uid, $gid, $tid, $allowed, $insertdeny = false, $scope = 0)
-		{
-			if ($scope == 0)
-			{
-				$scope = BUGScontext::getScope()->getID();
-			}
-			if (is_bool($allowed))
-			{
-				$allowed = ($allowed) ? 1 : 0;
-			}
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tModulePermissions::UID, $uid);
-			$crit->addWhere(B2tModulePermissions::TID, $tid);
-			$crit->addWhere(B2tModulePermissions::GID, $gid);
-			$crit->addWhere(B2tModulePermissions::MODULE_NAME, $this->_name);
-			$crit->addWhere(B2tModulePermissions::SCOPE, $scope);
-			B2DB::getTable('B2tModulePermissions')->doDelete($crit);
-	
-			if ($allowed == 1 || $insertdeny == 1)
-			{
-				$crit = new B2DBCriteria();
-				$crit->addInsert(B2tModulePermissions::UID, $uid);
-				$crit->addInsert(B2tModulePermissions::TID, $tid);
-				$crit->addInsert(B2tModulePermissions::GID, $gid);
-				$crit->addInsert(B2tModulePermissions::MODULE_NAME, $this->_name);
-				$crit->addInsert(B2tModulePermissions::SCOPE, $scope);
-				$crit->addInsert(B2tModulePermissions::ALLOWED, $allowed);
-				$res = B2DB::getTable('B2tModulePermissions')->doInsert($crit);
-			}
-			$this->rebuildAccessPermissionCache();
-		}*/
-	
 		static public function rebuildAccessPermissionCache()
 		{
 			self::$_permissions = array();
@@ -556,6 +525,28 @@
 		public function initialize()
 		{
 			
+		}
+
+		public function addRoute($key, $url, $function, $params = array())
+		{
+			$this->_routes[] = array($key, $url, $this->getName(), $function, $params);
+		}
+
+		public function loadRoutes()
+		{
+			foreach ($this->_routes as $route)
+			{
+				$this->log('adding route ' . $route[0]);
+				if (isset($route[4]) && !empty($route[4]))
+				{
+					BUGScontext::getRouting()->addRoute($route[0], $route[1], $route[2], $route[3], $route[4]);
+				}
+				else
+				{
+					BUGScontext::getRouting()->addRoute($route[0], $route[1], $route[2], $route[3]);
+				}
+				$this->log('done (adding route ' . $route[0] . ')');
+			}
 		}
 		
 		public function activate()

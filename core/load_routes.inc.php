@@ -5,33 +5,12 @@
 	$routes[] = array('dashboard', '/dashboard', 'main', 'dashboard');
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
 	$routes[] = array('login', '/login', 'main', 'login');
-	$routes[] = array('forgot', '/forgot', 'main', 'forgot');
 	$routes[] = array('register1', '/register1', 'main', 'register1');
 	$routes[] = array('register2', '/register2', 'main', 'register2');
 	$routes[] = array('activate', '/activate/:user/:key', 'main', 'activate');
 	$routes[] = array('logout', '/logout', 'main', 'logout');
 	$routes[] = array('getprojectmenustrip', '/getprojectmenustrip/on/page/:page', 'project', 'getMenustrip');
 	$routes[] = array('hide_infobox', '/hide/infobox/:key', 'main', 'hideInfobox');
-	$routes[] = array('viewissue', '/:project_key/issue/:issue_no', 'main', 'viewIssue');
-	$routes[] = array('saveissue', '/:project_key/issue/:issue_no', 'main', 'viewIssue');
-	$routes[] = array('closeissue', '/:project_key/issue/:issue_id/close', 'main', 'closeIssue');
-	$routes[] = array('openissue', '/:project_key/issue/:issue_id/open', 'main', 'reopenIssue');
-	$routes[] = array('issue_setfield', '/:project_key/issue/:issue_id/set/:field/*', 'main', 'issueSetField');
-	$routes[] = array('issue_revertfield', '/:project_key/issue/:issue_id/revert/:field', 'main', 'issueRevertField');
-	$routes[] = array('issue_startworking', '/:project_key/issue/:issue_id/startworking', 'main', 'issueStartWorking');
-	$routes[] = array('issue_stopworking', '/:project_key/issue/:issue_id/stopworking/*', 'main', 'issueStopWorking');
-	$routes[] = array('main_find_identifiable', '/find/identifiable/by/*', 'main', 'findIdentifiable');
-	$routes[] = array('toggle_favourite_issue', '/toggle_favourite_issue/:issue_id', 'main', 'toggleFavouriteIssue');
-	$routes[] = array('project_reportissue', '/:project_key/reportissue/*', 'main', 'reportIssue');
-	$routes[] = array('project_planning', '/:project_key/planning', 'project', 'planning');
-	$routes[] = array('project_scrum', '/:project_key/scrum', 'project', 'scrum');
-	$routes[] = array('project_scrum_assign_story', '/:project_key/scrum/assign/story', 'project', 'scrumAssignStory');
-	$routes[] = array('project_scrum_add_sprint', '/:project_key/scrum/add/sprint', 'project', 'scrumAddSprint');
-	$routes[] = array('project_scrum_story_setcolor', '/:project_key/scrum/set/color/for/story/:story_id', 'project', 'scrumSetStoryDetail', array('detail' => 'color'));
-	$routes[] = array('project_scrum_story_setestimates', '/:project_key/scrum/set/estimates/for/story/:story_id', 'project', 'scrumSetStoryDetail', array('detail' => 'estimates'));
-	$routes[] = array('project_issues', '/:project_key/issues', 'project', 'issues');
-	$routes[] = array('project_team', '/:project_key/team', 'project', 'team');
-	$routes[] = array('project_statistics', '/:project_key/statistics', 'project', 'statistics');
 	$routes[] = array('getreportissuefields', '/reportissue/get/fields/for/project/*', 'main', 'reportIssueGetFields');
 	$routes[] = array('reportissue', '/reportissue/*', 'main', 'reportIssue');
 	$routes[] = array('search', '/issues', 'search', 'findIssues');
@@ -82,11 +61,10 @@
 	$routes[] = array('configure_teams_groups', '/configure/teams_and_groups', 'configuration', 'index', array('config_module' => 'core', 'section' => 1));
 	$routes[] = array('configure_modules', '/configure/modules', 'configuration', 'index', array('config_module' => 'core', 'section' => 15));
 	$routes[] = array('configure_module', '/configure/module/:config_module', 'configuration', 'index');
-	$routes[] = array('project_dashboard', '/:project_key', 'project', 'dashboard');
 	
 	foreach ($routes as $route)
 	{
-		if (isset($route[4]))
+		if (isset($route[4]) && !empty($route[4]))
 		{
 			BUGScontext::getRouting()->addRoute($route[0], $route[1], $route[2], $route[3], $route[4]);
 		}

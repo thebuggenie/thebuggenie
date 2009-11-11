@@ -254,11 +254,23 @@
 								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 								<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 									<div class="header"><?php echo $milestone->getProject()->getName(); ?> - <?php echo $milestone->getName(); ?></div>
-									<div class="date"><?php echo __('Scheduled for %scheduled_date%', array('%scheduled_date%' => bugs_formatTime($milestone->getScheduledDate(), 14))); ?></div>
+									<div class="date">
+										<?php if ($milestone->getStartingDate()): ?>
+											<?php echo bugs_formatTime($milestone->getStartingDate(), 20) . ' - ' . bugs_formatTime($milestone->getScheduledDate(), 20); ?>
+										<?php else: ?>
+											<?php echo __('Scheduled for %scheduled_date%', array('%scheduled_date%' => bugs_formatTime($milestone->getScheduledDate(), 20))); ?>
+										<?php endif; ?>
+									</div>
 									<!-- <span class="faded_medium"><?php echo $milestone->getDescription(); ?></span>  -->
 									<div class="percentage">
-										<div class="numbers"><?php echo __('%closed% closed of %issues% assigned', array('%closed%' => '<b>'.$project->countClosedIssuesByMilestone($milestone->getID()).'</b>', '%issues%' => '<b>'.$project->countIssuesByMilestone($milestone->getID()).'</b>')); ?></div>
-										<?php include_template('main/percentbar', array('percent' => $project->getClosedPercentageByMilestone($milestone->getID()), 'height' => 14)); ?>
+										<div class="numbers">
+											<?php if ($milestone->getType() == BUGSmilestone::TYPE_REGULAR): ?>
+												<?php echo __('%closed% closed of %issues% assigned', array('%closed%' => '<b>'.$milestone->countClosedIssues().'</b>', '%issues%' => '<b>'.$milestone->countOpenIssues().'</b>')); ?>
+											<?php else: ?>
+												<?php echo __('%points_spent% pts spent of %points_estimated% pts estimated', array('%points_spent%' => '<b>'.$milestone->getPointsSpent().'</b>', '%points_estimated%' => '<b>'.$milestone->getPointsEstimated().'</b>')); ?>
+											<?php endif; ?>
+										</div>
+										<?php include_template('main/percentbar', array('percent' => $milestone->getPercentComplete(), 'height' => 14)); ?>
 									</div>
 									<?php if ($milestone->isReached()): ?>
 										<div class="status">

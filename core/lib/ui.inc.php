@@ -122,9 +122,10 @@
 	 * 
 	 * @return string
 	 */
-	function link_tag($url, $link_text, $params = array())
+	function link_tag($url, $link_text = null, $params = array())
 	{
 		$params['href'] = $url;
+		if ($link_text === null) $link_text = $url;
 		return "<a " . parseHTMLoptions($params) . ">{$link_text}</a>";
 	}
 	

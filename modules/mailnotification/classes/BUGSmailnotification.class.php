@@ -2,9 +2,9 @@
 
 	class BUGSmailnotification extends BUGSmodule 
 	{
-		const BUGS_MAIL_LOGO = 1; // add The Bug Genie logo at top
-		const BUGS_MAIL_FOOT = 2; // add The Bug Genie footer
-		const BUGS_MAIL_TO_HTML = 4; // Try to convert plain text to HTML
+
+		const MAIL_TYPE_PHP = 1;
+		const MAIL_TYPE_B2M = 2;
 		
 		public function __construct($m_id, $res = null)
 		{
@@ -22,6 +22,11 @@
 			$this->addAvailableSection('core', 'account_settings', BUGScontext::getI18n()->__('"My account" settings'));
 			$this->addAvailableSection('core', 'account_settingslist', BUGScontext::getI18n()->__('"My account" drop-down settings'));
 			BUGScontext::listenToTrigger('core', 'viewissue_top', array($this, 'section_issueTop'));
+			BUGScontext::listenToTrigger('core', 'login_middle', array($this, 'section_loginMiddle'));
+
+			// No, I didn't forget the parameters, but what else would you call
+			// it when it's about retrieving a forgotten password?
+			$this->addRoute('forgot', '/forgot', 'forgot');
 		}
 		
 		static public function install($scope = null)
@@ -131,18 +136,9 @@
 		{
 			$user = array_shift($vars);
 			$password = array_shift($vars);
+			$subject = BUGScontext::getI18n()->__('User account registered with The Bug Genie');
+			$message = BUGSaction::returnTemplateHTML('mailnotification/registeruser', array('user' => $user, 'password' => $password));
 	
-			/* subject */
-			$subject = "User account registered with BUGS 2";
-	
-			/* message */
-			$message = "Hi, " . $user->getBuddyname() . "!<br>Someone registered the username '" . $user->getUname() . "' with BUGS 2.<br>";
-			$message .= "Before you can use the new account, you need to confirm it, by visiting the following link:<br><a style=\"color: #00A400; text-decoration: none;\" href=\"" . BUGSsettings::get('url_host') . BUGSsettings::get('url_subdir') . "login.php?verify_user=true&amp;uname=" . $user->getUname() . "&amp;verification_code=" . $user->getMD5Password() . "\">" . BUGSsettings::get('url_host') . BUGSsettings::get('url_subdir') . "login.php?verify_user=true&amp;uname=" . $user->getUname() . "&amp;verification_code=" . $user->getMD5Password() . "</a><br><br>Your password is:<br><b>" . $password . "</b><br>and you can log in with this password from the link specified above.<br><br>(This email has been sent upon request to an email address specified by someone. If you did not register this username, or think you've received this email in error, please delete it. We are sorry for the inconvenience.)";
-	
-			// add nice font
-			$message = "<div style=\"font-family: \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-size: 11px; color: #646464;\">".$message."</div>";
-	
-			// and now mail it
 			try
 			{
 				$this->sendMail($user->getBuddyname(), $user->getEmail(), $subject, $message);
@@ -152,92 +148,39 @@
 				throw $e;
 			}
 		}
-		
+
+		public function section_loginMiddle()
+		{
+			BUGSactioncomponent::includeComponent('mailnotification/forgotPasswordBlock');
+		}
 		
 		public function section_passwordReset($vars)
 		{
 			$to_users = array(array('id' => $vars[0]->getID()));
 			$new_pwd = $vars[1];
-			$subject = 'Password reset';
-			$message = '<b>Your new password has been saved</b><br>Hi, %user_buddyname%!<br>A request was made to reset your password for your user account at %bugs_url%.<br>';
-			$message .= 'The new password has been saved. Click this link:<br><a href="%bugs_url%">%bugs_url%</a><br>';
-			$message .= 'and log in with the username <b>%user_username%</b>, and the password <b>' . $new_pwd . '</b>.';
-
-			$message = "<div style=\"font-family: \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-size: 11px; color: #646464;\">".$message."</div>";
+			$subject = BUGScontext::getI18n()->__('Password reset');
+			$message = BUGSaction::returnTemplateHTML('mailnotification/passwordreset', array('password' => $new_pwd));
 			$this->sendToUsers($to_users, $subject, $message);
 		}
 		
-		public function section_forgottenPassword($user)
+		public function sendforgottenPasswordEmail($user)
 		{
-			$to_users = array(array('id' => $user->get(B2tUsers::ID)));
-			$subject = 'Forgot your password?';
-			$message = '<b>Forgot your password?</b><br>Hi, %user_buddyname%!<br>A request was made to reset your password for your user account at %bugs_url%.<br>';
-			$message .= 'To change your password, click the following link:<br><a href="%link_to_reset_password%">%link_to_reset_password%</a><br>';
-			$message .= "<br><i>If you didn't request this email, just disregard it. Nothing will be done unless you click the link in this email.";
-
-			$message = "<div style=\"font-family: \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-size: 11px; color: #646464;\">".$message."</div>";
-			$this->sendToUsers($to_users, $subject, $message);
+			$to_users = array($user);
+			$subject = BUGScontext::getI18n()->__('Forgot your password?');
+			$html_message = BUGSaction::returnTemplateHTML('mailnotification/forgottenpassword.html');
+			$plain_message = BUGSaction::returnTemplateHTML('mailnotification/forgottenpassword.text');
+			$this->sendToUsers($to_users, $subject, $html_message, $plain_message);
 		}
 		
-		public function section_accountSettings($module)
-		{
-			if ($module != $this->getName()) return;
-			if (BUGScontext::getRequest()->getParameter('forcenotification'))
-			{
-				BUGScontext::getModule('mailnotification')->saveSetting('forcenotification', BUGScontext::getRequest()->getParameter('forcenotification'), BUGScontext::getUser()->getUID());
-			}
-			if (BUGScontext::getRequest()->getParameter('hold_email_on_issue_update'))
-			{
-				BUGScontext::getModule('mailnotification')->saveSetting('hold_email_on_issue_update', BUGScontext::getRequest()->getParameter('hold_email_on_issue_update'), BUGScontext::getUser()->getUID());
-			}
-			
-			?>
-			<table style="table-layout: fixed; width: 100%; background-color: #F1F1F1; margin-top: 15px; border: 1px solid #DDD;" cellpadding=0 cellspacing=0>
-			<tr>
-			<td style="padding-left: 4px; width: 20px;"><?php echo image_tag('cfg_icon_mailnotification.png'); ?></td>
-			<td style="border: 0px; width: auto; padding: 3px; padding-left: 7px;"><b><?php echo BUGScontext::getI18n()->__('Notification settings'); ?></b></td>
-			</tr>
-			</table>
-			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="account.php" method="post">
-			<input type="hidden" name="settings" value="<?php echo $this->getName(); ?>">
-			<table class="b2_section_miniframe" cellpadding=0 cellspacing=0>
-			<tr>
-			<td style="width: 200px;"><b><?php echo BUGScontext::getI18n()->__('Notification on own changes'); ?></b></td>
-			<td style="width: 300px;"><select name="forcenotification" style="width: 100%;">
-			<option value=1 <?php if (BUGSsettings::get('forcenotification', 'mailnotification', null, BUGScontext::getUser()->getUID()) == 1) echo ' selected'; ?>><?php echo BUGScontext::getI18n()->__('Send notification email on my own changes'); ?></option>
-			<option value=2 <?php if (BUGSsettings::get('forcenotification', 'mailnotification', null, BUGScontext::getUser()->getUID()) == 2) echo ' selected'; ?>><?php echo BUGScontext::getI18n()->__('Only notify me when others are committing changes'); ?></option>
-			</select>
-			</td>
-			</tr>
-			<tr>
-			<td style="width: 200px;"><b><?php echo BUGScontext::getI18n()->__('Always notify'); ?></b></td>
-			<td style="width: 300px;"><select name="hold_email_on_issue_update" style="width: 100%;">
-			<option value=0 <?php if (BUGSsettings::get('hold_email_on_issue_update', 'mailnotification', null, BUGScontext::getUser()->getUID()) == 0) echo ' selected'; ?>><?php echo BUGScontext::getI18n()->__('Always send me an email whenever an issue changes'); ?></option>
-			<option value=1 <?php if (BUGSsettings::get('hold_email_on_issue_update', 'mailnotification', null, BUGScontext::getUser()->getUID()) == 1) echo ' selected'; ?>><?php echo BUGScontext::getI18n()->__('Stop sending emails until I open the issue'); ?></option>
-			</select>
-			</td>
-			</tr>
-			<tr>
-			<td colspan=2 style="text-align: right;"><input type="submit" value="<?php echo BUGScontext::getI18n()->__('Save'); ?>"></td>
-			</tr>
-			</table>
-			</form>
-			<?php
-		}
-
 		public function section_issueCreate(BUGSissue $theIssue)
 		{
 			if ($theIssue instanceof BUGSissue)
 			{
 				$to_users = $theIssue->getRelatedUIDs();
-				$subject = 'New issue reported: ' . $theIssue->getFormattedIssueNo(false) . ' - ' . $theIssue->getTitle();
-				$message = 'Hi, %user_buddyname%!<br>This email is to notify you that issue ' . $theIssue->getFormattedIssueNo(false) . ', "' . $theIssue->getTitle() . '" has been created.<br>';
-				$message .= '<br><b>The issue was created with the following description:</b>';
-				$message .= bugs_BBDecode($theIssue->getDescription());
-				$message .= '<br><br>You can open the issue by clicking the following link:<br><a href="%link_to_issue%' . $theIssue->getFormattedIssueNo(true) . '">%link_to_issue%' . $theIssue->getFormattedIssueNo(true) . '</a>';
-	
-				$message = "<div style=\"font-family: \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-size: 11px; color: #646464;\">".$message."</div>";
-				$this->sendToUsers($to_users, $subject, $message);
+				$subject = BUGScontext::getI18n()->__('New issue reported: %issue_no% - %issue_title%', array('%issue_no%' => $theIssue->getFormattedIssueNo(false), '%issue_title%' => $theIssue->getTitle()));
+				$html_message = BUGSaction::returnTemplateHTML('mailnotification/issuecreate.html');
+				$plain_message = BUGSaction::returnTemplateHTML('mailnotification/issuecreate.text');
+				$this->sendToUsers($to_users, $subject, $html_message, $plain_message);
 			}
 		}
 		
@@ -250,38 +193,35 @@
 			}
 			else
 			{
-				if ($this->getSetting('notified_issue_'.$issue_id, $user_id))
-				{
-					return false;
-				}
-				else
-				{
-					return true;
-				}
+				return !(bool) $this->getSetting('notified_issue_'.$issue_id, $user_id);
 			}
 		}
 		
-		public function sendToUsers($to_users, $subject, $message)
+		public function sendToUsers($to_users, $subject, $orig_message_html, $orig_message_plain = null)
 		{
-			foreach ($to_users as $a_user)
+			foreach ($to_users as $user)
 			{
-				if ($a_user != BUGScontext::getUser()->getUID() || BUGScontext::getModule('mailnotification')->getSetting('forcenotification', BUGScontext::getUser()->getUID()) == 1)
+				if ($user->getID() != BUGScontext::getUser()->getUID())
 				{
-					if (is_array($a_user) && isset($a_user['id'])) $a_user = $a_user['id'];
-					if (is_array($a_user)) continue;
-					$ntfyUser = BUGSfactory::userLab($a_user);
-					if ($ntfyUser->isEnabled() && $ntfyUser->isActivated() && !$ntfyUser->isDeleted() && !$ntfyUser->isGuest())
+					if ($user->isEnabled() && $user->isActivated() && !$user->isDeleted() && !$user->isGuest())
 					{
-						$to = $ntfyUser->getEmail();
-						$message = str_replace('%user_buddyname%', $ntfyUser->getBuddyname(), $message);
-						$message = str_replace('%user_username%', $ntfyUser->getUsername(), $message);
-						$message = str_replace('%bugs_url%', BUGSsettings::get('url_host') . BUGSsettings::get('url_subdir'), $message);
-						$message = str_replace('%link_to_issue%', BUGSsettings::get('url_host') . BUGSsettings::get('url_subdir') . 'viewissue.php?issue_no=', $message);
-						$message = str_replace('%link_to_reset_password%', BUGSsettings::get('url_host') . BUGSsettings::get('url_subdir') . 'login.php?reset_password=true&username='.$ntfyUser->getUsername().'&key='.$ntfyUser->getPasswordMD5(), $message);
+						$patterns = array('%user_buddyname%', '%user_username%', '%thebuggenie_url%');
+						$replacements = array($user->getBuddyname(), $user->getUsername(), BUGScontext::getRouting()->generate('home'));
+						$html_message = str_replace($patterns, $replacements, $orig_message_html);
+						if ($orig_message_plain !== null)
+						{
+							$text_message = str_replace($patterns, $replacements, $orig_message_plain);
+						}
+						else
+						{
+							$text_message = null;
+						}
+
+						//var_dump($user);die();
 						
 						try
 						{
-							$this->sendMail($ntfyUser->getBuddyname(), $to, $subject, $message);
+							$this->sendMail($user->getBuddyname(), $user->getEmail(), $subject, $html_message, $text_message);
 						}
 						catch (Exception $e) 
 						{
@@ -346,7 +286,7 @@
 					$cc++;
 				}
 				
-				$subject = 'Issue ' . $theIssue->getFormattedIssueNo(false) . ' - ' . $theIssue->getTitle() . ' updated';
+				$subject = BUGScontext::getI18n()->__('Issue ' . $theIssue->getFormattedIssueNo(false) . ' - ' . $theIssue->getTitle() . ' updated');
 				$message = 'Hi, %user_buddyname%!<br>You are receiving this update because you are subscribing for updates.<br>This email is an update for issue ' . $theIssue->getFormattedIssueNo(false) . ' - ' . $theIssue->getTitle();
 				$message .= '<br><br><b>' . $title . '</b>';
 				$message .= '<br>' . bugs_BBDecode($content);
@@ -357,103 +297,142 @@
 			}
 		}
 		
-		public function sendMail($to_name, $to_addr, $subject, $message, $options = 3, $cc = '', $bcc = '', $attachments = array(), $debug = false)
+		public function sendMail($to_name, $to_email, $subject, $message_html, $message_plain = null, $cc = '', $bcc = '', $attachments = array(), $debug = false)
 		{
-			$smtp_host = BUGScontext::getModule('mailnotification')->getSetting('smtp_host');
-			$smtp_port = BUGScontext::getModule('mailnotification')->getSetting('smtp_port');
-			$smtp_user = BUGScontext::getModule('mailnotification')->getSetting('smtp_user');
-			$smtp_pwd = BUGScontext::getModule('mailnotification')->getSetting('smtp_pwd');
 
-			$headcharset = BUGScontext::getModule('mailnotification')->getSetting('headcharset');
-	   		
-			$name = BUGScontext::getModule('mailnotification')->getSetting('from_name');
-	   		$addr = BUGScontext::getModule('mailnotification')->getSetting('from_addr');
-	
-	   		if ($smtp_host == '' || $smtp_port == '' || $name == '' || $addr == '')
-	   		{
-	   			$e_msg = 'Please configure the mail notification module before trying to send an email';
-	   			if ($smtp_host == '') $e_msg .= "\nMissing SMTP hostname";
-	   			if ($smtp_port == '') $e_msg .= "\nMissing SMTP port (usually 25)";
-	   			if ($name == '') $e_msg .= "\nMissing email \"From\"-name";
-	   			if ($addr == '') $e_msg .= "\nMissing email \"From\"-address";
-	   			throw new Exception($e_msg);
-	   		}
-	
-		   	if ($options & 4)
-		   	{
-		   		$message = nl2br($message);
-		   	}
-	
-		   	$buf = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>';
-		   	$buf .= '<head><meta http-equiv=Content-Type content="text/html; charset='.$headcharset.'"><title>BUGS 2 Automailer</title></head><body>';
-	
-		   	if ($options & 1)
-		   	{
-				$buf .= '<table cellpadding=0 cellspacing=0 width="100%" style="background-color: #381499; color: #FFF;table-layout: fixed;">';
-				$buf .= '<tr>';
-				$buf .= '<td style="width: 70px; height: 65px;" align="center" valign="middle">';
-				$buf .= '<img src="' . BUGSsettings::get('url_host') . BUGSsettings::get('url_subdir') . 'themes/' . BUGSsettings::getThemeName() . '/logo_48.png">';
-				$buf .= '</td>';
-				$buf .= '<td align="left" valign="middle" style="width: 300px;"><div style="font: 20px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-weight: bold; color: #FFF;">' . BUGSsettings::get('b2_name') . '</div><div style="font: 11px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; color: #FFF;">' . BUGSsettings::get('b2_tagline') . '</div></td>';
-				$buf .= '<td style="width: auto;">&nbsp;</td>';
-				$buf .= '</tr>';
-				$buf .= '</table><br>';
-		   	}
-	
-		   	$buf .= $message;
-	
-		   	if ($options & 2)
-		   	{
-				$buf .= '<br><table cellpadding=0 cellspacing=0 style="table-layout: auto; background-color: #FFF; width: 100%; color: #999; border-top: 1px solid #DDD;" align="center">';
-				$buf .= '<tr>';
-				$buf .= '<td style="width: 30px; text-align: right; padding: 5px;">';
-				$buf .= '<img src="' . BUGSsettings::get('url_host') . BUGSsettings::get('url_subdir') . 'themes/' . BUGSsettings::getThemeName() . '/footer_logo.png">';
-				$bug .= '</td>';
-				$buf .= '<td style="width: auto;"><div style="padding: 8px 0px 0px 0px; font: 11px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif;"><a style="color: #00A400; text-decoration: none;" href="http://www.thebuggenie.net/" target="_blank">BUGS - The Bug Genie</a>, Copyright 2002 &copy; 09 <a style="color: #00A400; text-decoration: none;" href="http://www.zegeniestudios.net" target="_blank">zegenie Studios</a></div><div style="padding: 0px 0px 0px 0px; font: 10px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif;">Released under the MPL 1.1 only. Read the license at <a style="color: #00A400; text-decoration: none;" href="http://www.opensource.org/licenses/mozilla1.1.php" target="_blank">www.opensource.org</a>. Resistance is futile.</div>';
-				$buf .= '</td>';
-				$buf .= '</tr>';
-				$buf .= '</table>';
-		   	}
-	
-			$buf .= '</body></html>';
-	
-			$br_codes = array("<br>","<br>","<br>","<br>");
-			$buf = str_replace($br_codes,"<br>\r\n",$buf);
-	
-			$mail = new BUGSmimemail($smtp_host, $smtp_port, $smtp_user, $smtp_pwd); // $name, $addr, $to_name, $to_addr, $subject, $buf);
-			$mail->setDebug($debug);
-			
-			$mail->setFrom($name, $addr);
-			$mail->addTo($to_name, $to_addr);
-			$mail->setSubject($subject);
-			$mail->setMessage($buf);
-			
-			if ($cc != '')
+			$pre_html_message = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>';
+			$pre_html_message .= '<head><meta http-equiv=Content-Type content="text/html; charset=utf-8"><title>The Bug Genie automailer</title></head><body>';
+			$post_html_message = '</body></html>';
+
+			$from_name = $this->getSetting('email_from_name');
+			$from_email = $this->getSetting('email_from_email');
+			if (!$from_name && $from_email)
 			{
-				$mail->addCC($cc);
+				return false;
 			}
-			
-			if ($bcc != '')
+			if ($this->getSetting('mail_type') != self::MAIL_TYPE_B2M)
 			{
-				$mail->addBCC($bcc);
-			}
-			
-			if (count($attachments) > 0)
-			{
-				foreach ($attachments as $attachment)
+				$boundary = md5(date('U'));
+
+				$to = "{$to_name} <{$to_email}>";
+				$headers = "From: {$from_name} <{$from_email}>\r\n";
+				$headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+				$headers .= "MIME-Version: 1.0\r\n";
+				$headers .= "Content-Type: multipart/alternative; boundary={$boundary}\r\n";
+				$headers .= "Content-Transfer-Encoding: 7bit\r\n";
+
+				if ($message_plain === null)
 				{
-					$mail->addAttachment($attachment['type'], $attachment['filename']);
+					$message_plain = strip_tags(str_replace(array('<br>', '<br />'), array("\n", "\n"), $message_plain));
 				}
+
+				$message = "Multipart Message coming up\r\n\r\n";
+				$message .= "--{$boundary}\r\n";
+				$message .= "Content-Type: text/plain; charset=\"utf-8\"\r\n";
+				$message .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+				$message .= $message_plain . "\r\n\r\n";
+				$message .= "--{$boundary}\r\n";
+				$message .= "Content-Type: text/html; charset=\"utf-8\"\r\n";
+				$message .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+				$message .= $pre_html_message . $message_html . $post_html_message . "\r\n";
+				$message .= "--{$boundary}--";
+
+				$retval = mail($to, $subject, $message, $headers, '-f'.$from_email);
+
 			}
-			
-			$mail->setCharset($headcharset);
-			try
+			else
 			{
-				$retval = $mail->sendMail();
-			}
-			catch (Exception $e)
-			{
-				throw $e;
+				$smtp_host = $this->getSetting('smtp_host');
+				$smtp_port = $this->getSetting('smtp_port');
+				$smtp_user = $this->getSetting('smtp_user');
+				$smtp_pwd = $this->getSetting('smtp_pwd');
+
+				$headcharset = $this->getSetting('headcharset');
+
+				$name = $this->getSetting('from_name');
+				$addr = $this->getSetting('from_addr');
+
+				if ($smtp_host == '' || $smtp_port == '' || $name == '' || $addr == '')
+				{
+					$e_msg = 'Please configure the mail notification module before trying to send an email';
+					if ($smtp_host == '') $e_msg .= "\nMissing SMTP hostname";
+					if ($smtp_port == '') $e_msg .= "\nMissing SMTP port (usually 25)";
+					if ($name == '') $e_msg .= "\nMissing email \"From\"-name";
+					if ($addr == '') $e_msg .= "\nMissing email \"From\"-address";
+					throw new Exception($e_msg);
+				}
+
+				$buf = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>';
+				$buf .= '<head><meta http-equiv=Content-Type content="text/html; charset='.$headcharset.'"><title>BUGS 2 Automailer</title></head><body>';
+
+				if ($options & 1)
+				{
+					$buf .= '<table cellpadding=0 cellspacing=0 width="100%" style="background-color: #381499; color: #FFF;table-layout: fixed;">';
+					$buf .= '<tr>';
+					$buf .= '<td style="width: 70px; height: 65px;" align="center" valign="middle">';
+					$buf .= '<img src="' . BUGSsettings::get('url_host') . BUGSsettings::get('url_subdir') . 'themes/' . BUGSsettings::getThemeName() . '/logo_48.png">';
+					$buf .= '</td>';
+					$buf .= '<td align="left" valign="middle" style="width: 300px;"><div style="font: 20px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-weight: bold; color: #FFF;">' . BUGSsettings::get('b2_name') . '</div><div style="font: 11px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; color: #FFF;">' . BUGSsettings::get('b2_tagline') . '</div></td>';
+					$buf .= '<td style="width: auto;">&nbsp;</td>';
+					$buf .= '</tr>';
+					$buf .= '</table><br>';
+				}
+
+				$buf .= $message;
+
+				if ($options & 2)
+				{
+					$buf .= '<br><table cellpadding=0 cellspacing=0 style="table-layout: auto; background-color: #FFF; width: 100%; color: #999; border-top: 1px solid #DDD;" align="center">';
+					$buf .= '<tr>';
+					$buf .= '<td style="width: 30px; text-align: right; padding: 5px;">';
+					$buf .= '<img src="' . BUGSsettings::get('url_host') . BUGSsettings::get('url_subdir') . 'themes/' . BUGSsettings::getThemeName() . '/footer_logo.png">';
+					$bug .= '</td>';
+					$buf .= '<td style="width: auto;"><div style="padding: 8px 0px 0px 0px; font: 11px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif;"><a style="color: #00A400; text-decoration: none;" href="http://www.thebuggenie.net/" target="_blank">BUGS - The Bug Genie</a>, Copyright 2002 &copy; 09 <a style="color: #00A400; text-decoration: none;" href="http://www.zegeniestudios.net" target="_blank">zegenie Studios</a></div><div style="padding: 0px 0px 0px 0px; font: 10px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif;">Released under the MPL 1.1 only. Read the license at <a style="color: #00A400; text-decoration: none;" href="http://www.opensource.org/licenses/mozilla1.1.php" target="_blank">www.opensource.org</a>. Resistance is futile.</div>';
+					$buf .= '</td>';
+					$buf .= '</tr>';
+					$buf .= '</table>';
+				}
+
+				$buf .= '</body></html>';
+
+				$br_codes = array("<br>","<br>","<br>","<br>");
+				$buf = str_replace($br_codes,"<br>\r\n",$buf);
+
+				$mail = new BUGSmimemail($smtp_host, $smtp_port, $smtp_user, $smtp_pwd); // $name, $addr, $to_name, $to_addr, $subject, $buf);
+				$mail->setDebug($debug);
+
+				$mail->setFrom($name, $addr);
+				$mail->addTo($to_name, $to_addr);
+				$mail->setSubject($subject);
+				$mail->setMessage($buf);
+
+				if ($cc != '')
+				{
+					$mail->addCC($cc);
+				}
+
+				if ($bcc != '')
+				{
+					$mail->addBCC($bcc);
+				}
+
+				if (count($attachments) > 0)
+				{
+					foreach ($attachments as $attachment)
+					{
+						$mail->addAttachment($attachment['type'], $attachment['filename']);
+					}
+				}
+
+				$mail->setCharset($headcharset);
+				try
+				{
+					$retval = $mail->sendMail();
+				}
+				catch (Exception $e)
+				{
+					throw $e;
+				}
 			}
 			return $retval;
 		}

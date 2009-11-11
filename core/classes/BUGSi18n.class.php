@@ -178,7 +178,28 @@
 			
 			return $retarr;
 		}
-		
+
+		public function hasTranslatedTemplate($template, $is_component = false)
+		{
+			$basepath = BUGScontext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->getCurrentLanguage() . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR;
+			if (strpos($template, '/'))
+			{
+				$templateinfo = explode('/', $template);
+				$module = $templateinfo[0];
+				$templatefile = ($is_component) ? '_' . $templateinfo[1] . '.inc.php' : $templateinfo[1] . '.php';
+			}
+			else
+			{
+				$module = BUGScontext::getRouting()->getCurrentRouteModule();
+				$templatefile = ($is_component) ? '_' . $template . '.inc.php' : $template;
+			}
+			if (file_exists($basepath . $module . DIRECTORY_SEPARATOR . $templatefile))
+			{
+				return $basepath . $module . DIRECTORY_SEPARATOR . $templatefile;
+			}
+			return false;
+		}
+
 		public function __($text, $replacements = array())
 		{
 			if (isset($this->_strings[$text]))

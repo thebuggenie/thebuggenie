@@ -1400,7 +1400,7 @@
 				$curr_day = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 				foreach ($allmilestones as $milestone)
 				{
-					if (($milestone->getScheduledDate() >= $curr_day || $milestone->isOverdue()) && $milestone->getScheduledDate() <= ($curr_day + (86400 * $days)))
+					if (($milestone->getScheduledDate() >= $curr_day || $milestone->isOverdue()) && (($milestone->getScheduledDate() <= ($curr_day + (86400 * $days))) || ($milestone->getType() == BUGSmilestone::TYPE_SCRUMSPRINT && $milestone->isCurrent())))
 					{
 						$ret_arr[$milestone->getID()] = $milestone;
 					}

@@ -389,17 +389,17 @@
 					throw new Exception('The Bug Genie seems installed, but B2DB isn\'t configured. This usually indicates an error with the installation. Try removing the file ' . BUGS2_INCLUDE_PATH . 'installed and try again.');
 				}
 				
-				BUGSlogging::log('Loading routes', 'routing');
-				if (!($routes = BUGScache::get('routes')))
+				BUGSlogging::log('Loading first batch of routes', 'routing');
+				if (!($routes_1 = BUGScache::get('routes_1')))
 				{
 					BUGSlogging::log('generating routes', 'routing');
 					require BUGS2_INCLUDE_PATH . 'core/load_routes.inc.php';
-					BUGScache::add('routes', self::getRouting()->getRoutes());
+					BUGScache::add('routes_1', self::getRouting()->getRoutes());
 				}
 				else
 				{
 					BUGSlogging::log('loading routes from cache', 'routing');
-					self::getRouting()->setRoutes($routes);
+					self::getRouting()->setRoutes($routes_1);
 				}
 				BUGSlogging::log('...done', 'routing');
 
@@ -470,6 +470,21 @@
 				{
 					BUGSlogging::log('Not loading modules');
 				}
+
+				BUGSlogging::log('Loading last batch of routes', 'routing');
+				if (!($routes = BUGScache::get('routes_2')))
+				{
+					BUGSlogging::log('generating routes', 'routing');
+					require BUGS2_INCLUDE_PATH . 'core/load_routes_postmodules.inc.php';
+					BUGScache::add('routes_2', self::getRouting()->getRoutes());
+				}
+				else
+				{
+					BUGSlogging::log('loading routes from cache', 'routing');
+					self::getRouting()->setRoutes($routes);
+				}
+				BUGSlogging::log('...done', 'routing');
+
 				BUGSlogging::log('...done initializing');
 			}
 			catch (Exception $e)
@@ -670,6 +685,9 @@
 							BUGSlogging::log("initializing {$module_name}");
 							$module->initialize();
 							BUGSlogging::log("done (initializing {$module_name})");
+							BUGSlogging::log("loading module routes for {$module_name}", 'routing');
+							$module->loadRoutes();
+							BUGSlogging::log("done (loading module routes)", 'routing');
 						}
 					}
 					BUGSlogging::log('done (initializing modules)');
@@ -1385,16 +1403,20 @@
 						BUGSlogging::log('...done');
 						BUGSlogging::log('Displaying template');
 
-						// Check to see if the template has been changed, and whether it's in a
-						// different module, specified by "module/templatename"
-						if (strpos(self::getResponse()->getTemplate(), '/'))
+						// Check to see if we have a translated version of the template
+						if (($templateName = self::getI18n()->hasTranslatedTemplate(self::getResponse()->getTemplate())) === false)
 						{
-							$newPath = explode('/', self::getResponse()->getTemplate());
-							$templateName = self::getIncludePath() . 'modules/' . $newPath[0] . '/templates/' . $newPath[1];
-						}
-						else
-						{
-							$templateName = $templatePath . self::getResponse()->getTemplate();
+							// Check to see if the template has been changed, and whether it's in a
+							// different module, specified by "module/templatename"
+							if (strpos(self::getResponse()->getTemplate(), '/'))
+							{
+								$newPath = explode('/', self::getResponse()->getTemplate());
+								$templateName = self::getIncludePath() . 'modules/' . $newPath[0] . '/templates/' . $newPath[1] . '.php';
+							}
+							else
+							{
+								$templateName = $templatePath . self::getResponse()->getTemplate();
+							}
 						}
 
 						// Check to see if the template exists and throw an exception otherwise
@@ -1534,8 +1556,11 @@
 						{
 							throw new BUGSActionNotFoundException('The ' . $route['module'] . ' module is missing the classes/actions.class.php file, containing all the module actions');
 						}
-						require self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actions.class.php';
-						if (file_exists(self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actioncomponents.class.php'))
+						if (!class_exists($route['module'].'Actions'))
+						{
+							require self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actions.class.php';
+						}
+						if (file_exists(self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actioncomponents.class.php') && !class_exists($route['module'].'ActionComponents'))
 						{
 							require self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actioncomponents.class.php';
 						}

@@ -33,7 +33,7 @@
 			return array('module' => $module, 'file' => $template);
 		}
 		
-		public static function includeComponent($template, $params)
+		public static function includeComponent($template, $params = array())
 		{
 			BUGScontext::loadLibrary('ui');
 			$module_file = self::getModuleAndTemplate($template);
@@ -62,11 +62,14 @@
 			self::presentTemplate($template_name, $actionClass->getParameterHolder());
 		}
 		
-		public static function includeTemplate($template, $params)
+		public static function includeTemplate($template, $params = array())
 		{
 			BUGScontext::loadLibrary('ui');
 			$module_file = self::getModuleAndTemplate($template);
-			$template_name = BUGScontext::getIncludePath() . "modules/{$module_file['module']}/templates/_{$module_file['file']}.inc.php";
+			if (($template_name = BUGScontext::getI18n()->hasTranslatedTemplate($template, true)) === false)
+			{
+				$template_name = BUGScontext::getIncludePath() . "modules/{$module_file['module']}/templates/_{$module_file['file']}.inc.php";
+			}
 			if (!file_exists($template_name))
 			{
 				throw new BUGSTemplateNotFoundException("The template file <b>_{$module_file['file']}.inc.php</b> cannot be found in the template directory for module \"" . BUGScontext::getRouting()->getCurrentRouteModule() . '"');
@@ -74,7 +77,7 @@
 			self::presentTemplate($template_name, $params);
 		}
 		
-		protected static function presentTemplate($template_file, $params)
+		protected static function presentTemplate($template_file, $params = array())
 		{
 			foreach ($params as $key => $val)
 			{

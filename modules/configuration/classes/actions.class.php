@@ -787,6 +787,7 @@
 								{
 									$theMilestone->setName($m_name);
 									$theMilestone->setScheduled((bool) $request->getParameter('is_scheduled'));
+									$theMilestone->setStarting((bool) $request->getParameter('is_starting'));
 									$theMilestone->setDescription($request->getParameter('description'));
 									$theMilestone->setType($request->getParameter('milestone_type', 1));
 									if ($theMilestone->isScheduled())
@@ -797,8 +798,14 @@
 											$theMilestone->setScheduledDate($scheduled_date);
 										}
 									}
-									$starting_date = mktime(0, 0, 0, BUGScontext::getRequest()->getParameter('starting_month'), BUGScontext::getRequest()->getParameter('starting_day'), BUGScontext::getRequest()->getParameter('starting_year'));
-									$theMilestone->setStartingDate($starting_date);
+									if ($theMilestone->isStarting())
+									{
+										if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
+										{
+											$starting_date = mktime(0, 0, 0, BUGScontext::getRequest()->getParameter('starting_month'), BUGScontext::getRequest()->getParameter('starting_day'), BUGScontext::getRequest()->getParameter('starting_year'));
+											$theMilestone->setStartingDate($starting_date);
+										}
+									}
 									$theMilestone->save();
 									return $this->renderTemplate('milestonebox', array('milestone' => $theMilestone));
 								}

@@ -58,6 +58,13 @@
 		protected $_scheduleddate;
 		
 		/**
+		 * Whether the milestone has been scheduled for start
+		 *
+		 * @var boolean
+		 */
+		protected $_isstarting;
+
+		/**
 		 * When the milestone is scheduled to start
 		 * 
 		 * @var integer
@@ -200,6 +207,7 @@
 				$this->_isscheduled = (bool) $row->get(B2tMilestones::SCHEDULED);
 				$this->_isreached = (bool) $row->get(B2tMilestones::REACHED);
 				$this->_scheduleddate = $row->get(B2tMilestones::SCHEDULED);
+				$this->_isstarting = (bool) $row->get(B2tMilestones::STARTING);
 				$this->_startingdate = $row->get(B2tMilestones::STARTING);
 				$this->_reacheddate = $row->get(B2tMilestones::REACHED);
 				$this->_description = $row->get(B2tMilestones::DESCRIPTION);
@@ -465,7 +473,7 @@
 		 */
 		public function isOverdue()
 		{
-			return ($this->getScheduledDate() < mktime(0, 0, 0, date('m'), date('d'), date('Y')) && !$this->isReached()) ? true : false;
+			return ($this->getScheduledDate() < time() && !$this->isReached()) ? true : false;
 		}
 		
 		/**
@@ -550,6 +558,16 @@
 		public function setStartingDate($date)
 		{
 			$this->_startingdate = $date;
+		}
+
+		/**
+		 * Set whether or not the milestone is scheduled for start
+		 *
+		 * @param boolean $starting[optional] starting or not (default true)
+		 */
+		public function setStarting($starting = true)
+		{
+			$this->_isstarting = $starting;
 		}
 
 		/**
@@ -717,14 +735,29 @@
 		 */
 		public function getPercentComplete()
 		{
-			if (count($this->getIssues()) > 0)
+			if ($this->getType() == self::TYPE_REGULAR)
 			{
-				$multiplier = 100 / count($this->getIssues());
-				$pct = $this->_closed_issues * $multiplier;
+				if (count($this->getIssues()) > 0)
+				{
+					$multiplier = 100 / count($this->getIssues());
+					$pct = $this->getClosedIssues() * $multiplier;
+				}
+				else
+				{
+					$pct = 0;
+				}
 			}
 			else
 			{
-				$pct = 0;
+				if ($this->getPointsEstimated() > 0)
+				{
+					$multiplier = 100 / $this->getPointsEstimated();
+					$pct = $this->getPointsSpent() * $multiplier;
+				}
+				else
+				{
+					$pct = 0;
+				}
 			}
 			return $pct;
 		}
@@ -761,6 +794,16 @@
 			else
 			{
 				$crit->addUpdate(B2tMilestones::SCHEDULED, 0);
+				$this->_scheduleddate = 0;
+			}
+			if ($this->_isstarting)
+			{
+				$crit->addUpdate(B2tMilestones::STARTING, $this->_startingdate);
+			}
+			else
+			{
+				$crit->addUpdate(B2tMilestones::STARTING, 0);
+				$this->_startingdate = 0;
 			}
 			$res = B2DB::getTable('B2tMilestones')->doUpdateById($crit, $this->getID());
 		}
@@ -783,5 +826,38 @@
 		{
 			return BUGScontext::getUser()->hasPermission("b2milestoneaccess", $this->getID(), "core");			
 		}
+
+		/**
+		 * Whether or not the milestone is ongoing
+		 *
+		 * @return boolean
+		 */
+		public function isCurrent()
+		{
+			if (!$this->getStartingDate() || !$this->isScheduled()) return false;
+			if ($this->getStartingDate() <= time() && $this->getScheduledDate() >= time()) return true;
+			return $this->isOverdue();
+		}
+
+		/**
+		 * Whether or not this milestone has starting date set
+		 *
+		 * @return boolean
+		 */
+		public function hasStartingDate()
+		{
+			return (bool) $this->getStartingDate();
+		}
+
+		/**
+		 * Whether or not this milestone has starting date set
+		 *
+		 * @return boolean
+		 */
+		public function isStarting()
+		{
+			return $this->_isstarting;
+		}
+
 	}
 	

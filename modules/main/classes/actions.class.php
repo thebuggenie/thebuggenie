@@ -295,48 +295,6 @@
 		}
 		
 		/**
-		 * Forgotten password logic
-		 *  
-		 * @param BUGSrequest $request
-		 */
-		public function runForgot($request)
-		{
-			$this->getResponse()->setPage('login');
-			try
-			{
-				if (BUGScontext::getRequest()->getMethod() == BUGSrequest::POST)
-				{
-					$username = BUGScontext::getRequest()->getParameter('forgot_password_username');
-					if (!empty($username))
-					{
-						$exists = B2DB::getTable('B2tUsers')->getByUsername($username);
-						
-						if ($exists)
-						{
-							/* FIXME SEND EMAIL */
-							
-							bugscontext::setMessage('forgot_success', __('Please use the link in the email you received'));
-							$this->forward('login');
-						}
-						else
-						{
-							throw new Exception(__('This username does not exist'));
-						}
-					}
-					else
-					{
-						throw new Exception(__('Please enter a username'));
-					}
-				}
-			}
-			catch (Exception $e)
-			{
-				bugscontext::setMessage('forgot_error', $e->getMessage());
-				$this->forward('login');
-			}
-		}
-
-		/**
 		 * Registration logic part 1 - check if username is free
 		 *  
 		 * @param BUGSrequest $request

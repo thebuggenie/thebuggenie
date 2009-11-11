@@ -160,7 +160,7 @@
 		 * 
 		 * @return boolean 
 		 */
-		public function renderTemplate($template, $params)
+		public function renderTemplate($template, $params = array())
 		{
 			echo BUGSactioncomponent::includeTemplate($template, $params);
 			return true;
@@ -174,7 +174,7 @@
 		 * 
 		 * @return boolean
 		 */
-		public function renderComponent($template, $params)
+		public function renderComponent($template, $params = array())
 		{
 			echo BUGSactioncomponent::includeComponent($template, $params);
 			return true;
@@ -188,7 +188,7 @@
 		 * 
 		 * @return boolean
 		 */
-		public function getComponentHTML($template, $params)
+		public function getComponentHTML($template, $params = array())
 		{
 			$current_content = ob_get_clean();
 			ob_start();
@@ -207,7 +207,7 @@
 		 * 
 		 * @return boolean
 		 */
-		public function getTemplateHTML($template, $params)
+		public function getTemplateHTML($template, $params = array())
 		{
 			$current_content = ob_get_clean();
 			ob_start();
@@ -218,4 +218,23 @@
 			return $template_content;
 		}
 		
+		/**
+		 * Returns the HTML output from a template, but doesn't render it
+		 *
+		 * @param string $template the template name
+		 * @param array $params template parameters
+		 *
+		 * @return boolean
+		 */
+		public static function returnTemplateHTML($template, $params = array())
+		{
+			$current_content = ob_get_clean();
+			ob_start();
+			echo BUGSactioncomponent::includeTemplate($template, $params);
+			$template_content = ob_get_clean();
+			ob_start();
+			echo $current_content;
+			return $template_content;
+		}
+
 	}

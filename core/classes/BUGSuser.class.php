@@ -245,6 +245,22 @@
 			}
 			return $users;
 		}
+
+		/**
+		 * Retrieve a user by username
+		 *
+		 * @param string $username
+		 *
+		 * @return BUGSuser
+		 */
+		static function getByUsername($username)
+		{
+			if ($row = B2DB::getTable('B2tUsers')->getByUsername($username))
+			{
+				return BUGSfactory::userLab($row->get(B2tUsers::ID), $row);
+			}
+			return null;
+		}
 		
 		static function getUsers($details, $noScope = false, $unique = false)
 		{
