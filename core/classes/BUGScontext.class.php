@@ -636,8 +636,11 @@
 							{
 								self::addClasspath($moduleClassPath);
 								$module_paths[] = $moduleClassPath;
-								self::addClasspath($moduleClassPath . 'B2DB/');
-								$module_paths[] = $moduleClassPath . 'B2DB/';
+								if (file_exists($moduleClassPath . 'B2DB/'))
+								{
+									self::addClasspath($moduleClassPath . 'B2DB/');
+									$module_paths[] = $moduleClassPath . 'B2DB/';
+								}
 							}
 							catch (Exception $e) { } // ignore "dir not exists" errors
 						}
