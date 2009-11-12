@@ -52,14 +52,14 @@
 				</div>
 				<div id="project_team">
 					<div style="font-weight: bold; float: left; padding: 8px 0 0 0; margin: 0 10px 0 0;"><?php echo __('Team'); ?>:</div>
-					<?php if (count($assignees) > 0): ?>
+					<?php if (count($assignees['users']) > 0): ?>
 						<?php foreach ($assignees['users'] as $user_id => $info): ?>
 							<table cellpadding=0 cellspacing=0 style="width: auto; display: inline; clear: none; margin: 0 10px 0 0;">
 								<?php echo include_component('main/userdropdown', array('user' => $user_id)); ?>
 							</table>
 						<?php endforeach; ?>
 					<?php else: ?>
-						<span class="faded_medium"><?php echo __('No users or teams assigned'); ?></span>
+						<div class="faded_medium" style="font-weight: normal; padding: 8px 0 0 0;"><?php echo __('No users or teams assigned'); ?></span>
 					<?php endif; ?>
 				</div>
 			</div>

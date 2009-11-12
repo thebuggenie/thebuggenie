@@ -9,7 +9,7 @@
 # rewrite rules
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /dev/thebuggenie/thebuggenie
+  RewriteBase /
 
   # skip all hidden files (starting with a .)
   RewriteCond %{REQUEST_URI} \..+$

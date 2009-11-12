@@ -14,14 +14,14 @@
 			{
 				$this->addAvailablePermission('b2cancreatepublicsearches', 'Can create public searches', 1);
 				$this->addAvailablePermission('b2searchmaster', 'Search administrator', 1);
-				$this->addAvailableSection('core', 'header_ends', 'OpenSearch integration, read more <a href="http://en.wikipedia.org/wiki/Opensearch" target="_blank">here</a>');			
-				$this->addAvailableSection('core', 'header_right', 'Header "Quick search"');
-				$this->addAvailableSection('core', 'index_right_middle_bottom', 'Frontpage searches');
-				$this->addAvailableSection('core', 'index_left_myissues', 'Frontpage "My issues"');
-				$this->addAvailableSection('core', 'useractions_bottom', '"More issue by this user" in user drop-down menu');
-				$this->addAvailableSection('core', 'viewissue_top', '"View issue" top navigation bar');
-				$this->addAvailableSection('core', 'viewissue_left_middle_top', '"View issue" left-hand link to own issues');
-				$this->addAvailableSection('core', 'BUGSProject::createNew', 'Automatically set up quick-searches for new projects');
+				$this->addAvailableListener('core', 'header_ends', 'OpenSearch integration, read more <a href="http://en.wikipedia.org/wiki/Opensearch" target="_blank">here</a>');			
+				$this->addAvailableListener('core', 'header_right', 'Header "Quick search"');
+				$this->addAvailableListener('core', 'index_right_middle_bottom', 'Frontpage searches');
+				$this->addAvailableListener('core', 'index_left_myissues', 'Frontpage "My issues"');
+				$this->addAvailableListener('core', 'useractions_bottom', '"More issue by this user" in user drop-down menu');
+				$this->addAvailableListener('core', 'viewissue_top', '"View issue" top navigation bar');
+				$this->addAvailableListener('core', 'viewissue_left_middle_top', '"View issue" left-hand link to own issues');
+				$this->addAvailableListener('core', 'BUGSProject::createNew', 'Automatically set up quick-searches for new projects');
 			}
 		}
 		
@@ -1613,7 +1613,7 @@
 					$function_name = 'section_bugsProject_createNew';
 					break;
 			}
-			if ($function_name != '') parent::createSection($module, $identifier, $function_name, $scope);
+			if ($function_name != '') parent::registerPermanentTriggerListener($module, $identifier, $function_name, $scope);
 		}
 		
 	}

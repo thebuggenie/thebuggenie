@@ -680,7 +680,7 @@
 				BUGSlogging::log('initializing modules');
 				if (!empty(self::$_modules))
 				{
-					BUGSmodule::populateSections(array_keys(self::$_modules));
+					BUGSmodule::loadModuleListeners(array_keys(self::$_modules));
 					foreach (self::$_modules as $module_name => $module)
 					{
 						if ($module->isEnabled())

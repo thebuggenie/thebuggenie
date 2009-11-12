@@ -97,4 +97,12 @@
 			return B2DB::getTable('B2tUsers')->doSelectById($userid, $crit);
 		}
 
+		public function getByUserIDs($userids)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ID, $userids, B2DBCriteria::DB_IN);
+			$crit->addWhere(self::DELETED, false);
+			return B2DB::getTable('B2tUsers')->doSelect($crit);
+		}
+
 	}

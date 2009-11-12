@@ -13,12 +13,17 @@
 			if ($this->_enabled)
 			{
 				//B2DB::loadNewTable(new B2tSVNintegration());
-				$this->addAvailableSection('core', 'viewissue_right_middle', 'List of updated files for an issue');
+				$this->addAvailableListener('core', 'viewissue_right_middle', 'section_viewissueRightMiddle', 'List of updated files for an issue');
 				$this->addAvailablePermission('core', 'viewissue_right_middle', 'List of updated files when viewing an issue');
 				$this->addAvailablePermission('core', 'viewproject_right_top', '"View code" link in project overview');
 			}
 		}
-		
+
+		public function initialize()
+		{
+
+		}
+
 		static public function install($scope = null)
 		{
   			if ($scope === null)
@@ -95,7 +100,7 @@
 					$function_name = 'section_viewProject_viewCode';
 					break;
 			}
-			if ($function_name != '') parent::createSection($module, $identifier, $function_name, $scope);
+			if ($function_name != '') parent::registerPermanentTriggerListener($module, $identifier, $function_name, $scope);
 		}
 		
 		public function section_viewissueRightMiddle($theIssue)

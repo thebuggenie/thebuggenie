@@ -13,20 +13,25 @@
 			$this->_module_config_title = BUGScontext::getI18n()->__("Mail notification");
 			$this->_module_config_description = BUGScontext::getI18n()->__('Set up email- and user notifications from this section.');
 			$this->_module_version = "0.9";
-			$this->addAvailableSection('core', 'user_registration', BUGScontext::getI18n()->__('Email when user registers'));
-			$this->addAvailableSection('core', 'forgotten_password', BUGScontext::getI18n()->__('Email to reset password'));
-			$this->addAvailableSection('core', 'password_reset', BUGScontext::getI18n()->__('Email when password is reset'));
-			$this->addAvailableSection('core', 'BUGSIssue::update', BUGScontext::getI18n()->__('Email on issue update'));
-			$this->addAvailableSection('core', 'BUGSIssue::createNew', BUGScontext::getI18n()->__('Email on new issues'));
-			$this->addAvailableSection('core', 'BUGSComment::createNew', BUGScontext::getI18n()->__('Email when comments are posted'));
-			$this->addAvailableSection('core', 'account_settings', BUGScontext::getI18n()->__('"My account" settings'));
-			$this->addAvailableSection('core', 'account_settingslist', BUGScontext::getI18n()->__('"My account" drop-down settings'));
-			BUGScontext::listenToTrigger('core', 'viewissue_top', array($this, 'section_issueTop'));
-			BUGScontext::listenToTrigger('core', 'login_middle', array($this, 'section_loginMiddle'));
+			$this->_has_account_settings = true;
+			$this->addAvailableListener('core', 'user_registration', 'listen_issueCreate', BUGScontext::getI18n()->__('Email when user registers'));
+			$this->addAvailableListener('core', 'forgotten_password', 'listen_forgottenPassword', BUGScontext::getI18n()->__('Email to reset password'));
+			$this->addAvailableListener('core', 'password_reset', 'listen_passwordReset', BUGScontext::getI18n()->__('Email when password is reset'));
+			$this->addAvailableListener('core', 'BUGSIssue::update', 'listen_issueUpdate', BUGScontext::getI18n()->__('Email on issue update'));
+			$this->addAvailableListener('core', 'BUGSIssue::createNew', 'listen_issueCreate', BUGScontext::getI18n()->__('Email on new issues'));
+			$this->addAvailableListener('core', 'BUGSComment::createNew', 'listen_bugsComment_createNew', BUGScontext::getI18n()->__('Email when comments are posted'));
+			BUGScontext::listenToTrigger('core', 'viewissue_top', array($this, 'listen_issueTop'));
+			BUGScontext::listenToTrigger('core', 'login_middle', array($this, 'listen_loginMiddle'));
+			BUGScontext::listenToTrigger('core', 'user_registration', array($this, 'listen_registerUser'));
 
 			// No, I didn't forget the parameters, but what else would you call
 			// it when it's about retrieving a forgotten password?
 			$this->addRoute('forgot', '/forgot', 'forgot');
+		}
+
+		public function initialize()
+		{
+			
 		}
 		
 		static public function install($scope = null)
@@ -57,31 +62,11 @@
 			$module->saveSetting('smtp_user', '');
 			$module->saveSetting('smtp_pwd', '');
 			$module->saveSetting('headcharset', 'utf-8');
-			$module->saveSetting('from_name', 'BUGS 2 Automailer');
+			$module->saveSetting('from_name', 'The Bug Genie Automailer');
 			$module->saveSetting('from_addr', '');
 			$module->saveSetting('ehlo', 1);
-			
-			try
-			{
-				self::loadFixtures($scope);
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-			
-		}
-		
-		static function loadFixtures($scope)
-		{
-			/*try
-			{
-				
-			}
-			catch (Exception $e)
-			{
-				
-			}*/
+
+			return true;
 		}
 		
 		public function uninstall($scope)
@@ -91,57 +76,24 @@
 					
 		public function getCommentAccess($target_type, $target_id, $type = 'view')
 		{
-			
 		}		
-
-		public function enableSection($module, $identifier, $scope)
-		{
-			$function_name = '';
-			switch ($module . '_' . $identifier)
-			{
-				case 'core_forgotten_password':
-					$function_name = 'section_forgottenPassword';
-					break;
-				case 'core_password_reset':
-					$function_name = 'section_passwordReset';
-					break;
-				case 'core_account_settingslist':
-					$function_name = 'section_accountSettingsList';
-					break;
-				case 'core_user_registration':
-					$function_name = 'section_registerUser';
-					break;
-				case 'core_account_settings':
-					$function_name = 'section_accountSettings';
-					break;
-				case 'core_BUGSIssue::createNew':
-					$function_name = 'section_issueCreate';
-					break;
-				case 'core_BUGSIssue::update':
-					$function_name = 'section_issueUpdate';
-					break;
-				case 'core_BUGSComment::createNew':
-					$function_name = 'section_bugsComment_createNew';
-					break;
-			}
-			if ($function_name != '') parent::createSection($module, $identifier, $function_name, $scope);
-		}
 		
-		public function section_accountSettingsList()
+		public function listen_accountSettingsList()
 		{
 			include_template('mailnotification/accountsettingslist');
 		}
 		
-		public function section_registerUser($vars)
+		public function listen_registerUser($vars)
 		{
 			$user = array_shift($vars);
 			$password = array_shift($vars);
 			$subject = BUGScontext::getI18n()->__('User account registered with The Bug Genie');
-			$message = BUGSaction::returnTemplateHTML('mailnotification/registeruser', array('user' => $user, 'password' => $password));
+			$html_message = BUGSaction::returnTemplateHTML('mailnotification/registeruser.html', array('user' => $user, 'password' => $password));
+			$plain_message = BUGSaction::returnTemplateHTML('mailnotification/registeruser.text', array('user' => $user, 'password' => $password));
 	
 			try
 			{
-				$this->sendMail($user->getBuddyname(), $user->getEmail(), $subject, $message);
+				$this->sendMail($user->getBuddyname(), $user->getEmail(), $subject, $html_message, $plain_message);
 			}
 			catch (Exception $e)
 			{
@@ -149,12 +101,12 @@
 			}
 		}
 
-		public function section_loginMiddle()
+		public function listen_loginMiddle()
 		{
 			BUGSactioncomponent::includeComponent('mailnotification/forgotPasswordBlock');
 		}
 		
-		public function section_passwordReset($vars)
+		public function listen_passwordReset($vars)
 		{
 			$to_users = array(array('id' => $vars[0]->getID()));
 			$new_pwd = $vars[1];
@@ -172,14 +124,14 @@
 			$this->sendToUsers($to_users, $subject, $html_message, $plain_message);
 		}
 		
-		public function section_issueCreate(BUGSissue $theIssue)
+		public function listen_issueCreate(BUGSissue $issue)
 		{
-			if ($theIssue instanceof BUGSissue)
+			if ($issue instanceof BUGSissue)
 			{
-				$to_users = $theIssue->getRelatedUIDs();
-				$subject = BUGScontext::getI18n()->__('New issue reported: %issue_no% - %issue_title%', array('%issue_no%' => $theIssue->getFormattedIssueNo(false), '%issue_title%' => $theIssue->getTitle()));
-				$html_message = BUGSaction::returnTemplateHTML('mailnotification/issuecreate.html');
-				$plain_message = BUGSaction::returnTemplateHTML('mailnotification/issuecreate.text');
+				$to_users = $issue->getRelatedUsers();
+				$subject = BUGScontext::getI18n()->__('New issue reported: %issue_no% - %issue_title%', array('%issue_no%' => $issue->getFormattedIssueNo(false), '%issue_title%' => $issue->getTitle()));
+				$html_message = BUGSaction::returnTemplateHTML('mailnotification/issuecreate.html', array('issue' => $issue));
+				$plain_message = BUGSaction::returnTemplateHTML('mailnotification/issuecreate.text', array('issue' => $issue));
 				$this->sendToUsers($to_users, $subject, $html_message, $plain_message);
 			}
 		}
@@ -216,8 +168,6 @@
 						{
 							$text_message = null;
 						}
-
-						//var_dump($user);die();
 						
 						try
 						{
@@ -225,15 +175,14 @@
 						}
 						catch (Exception $e) 
 						{
-							BUGSlogging::log('There was an error when trying to send email to ' . $to . ":\n" . $e->getMessage());
-							throw $e;
+							$this->log('There was an error when trying to send email to ' . $to . ":\n" . $e->getMessage(), BUGSlogging::LEVEL_NOTICE);
 						}
 					}
 				}
 			}
 		}
 		
-		public function section_bugsComment_createNew($comment)
+		public function listen_bugsComment_createNew($comment)
 		{
 			if ($comment instanceof BUGSComment && $comment->getTargetType() == 1)
 			{
@@ -242,7 +191,7 @@
 					$theIssue = BUGSfactory::BUGSissueLab($comment->getTargetID());
 					$title = $comment->getTitle();
 					$content = $comment->getContent();
-					$this->section_issueUpdate(array($theIssue, $title, $content, null, null));
+					$this->listen_issueUpdate(array($theIssue, $title, $content, null, null));
 				}
 				catch (Exception $e)
 				{
@@ -251,12 +200,12 @@
 			}
 		}
 		
-		public function section_issueTop($theIssue)
+		public function listen_issueTop($theIssue)
 		{
 			BUGSsettings::deleteSetting('notified_issue_'.$theIssue->getId(), 'mailnotification', '', 0, BUGScontext::getUser()->getId());
 		}
 		
-		public function section_issueUpdate($vars)
+		public function listen_issueUpdate($vars)
 		{
 			$theIssue = array_shift($vars);
 			$title = array_shift($vars);
@@ -314,7 +263,7 @@
 			{
 				$boundary = md5(date('U'));
 
-				$to = "{$to_name} <{$to_email}>";
+				$to = "$to_email";
 				$headers = "From: {$from_name} <{$from_email}>\r\n";
 				$headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
 				$headers .= "MIME-Version: 1.0\r\n";
@@ -338,6 +287,14 @@
 				$message .= "--{$boundary}--";
 
 				$retval = mail($to, $subject, $message, $headers, '-f'.$from_email);
+				if ($retval)
+				{
+					$this->log("Sending email to {$to} accepted for delivery OK");
+				}
+				else
+				{
+					$this->log("Sending email to {$to} not accepted for delivery", BUGSlogging::LEVEL_NOTICE);
+				}
 
 			}
 			else

@@ -14,8 +14,13 @@
 			$this->addAvailablePermission('manage_billboard', 'Can delete billboard posts');
 			$this->addAvailablePermission('publish_postonglobalbillboard', 'Can post articles on global billboard');
 			$this->addAvailablePermission('publish_postonteambillboard', 'Can post articles on team billboard');
-			$this->addAvailableSection('core', 'index_left_middle', 'Frontpage "Last news items"');
-			$this->addAvailableSection('core', 'index_right_middle', 'Frontpage billboard overview');
+			$this->addAvailableListener('core', 'index_left_middle', 'section_latestNewsBox', 'Frontpage "Last news items"');
+			$this->addAvailableListener('core', 'index_right_middle', 'section_latestNews', 'Frontpage billboard overview');
+		}
+
+		public function initialize()
+		{
+
 		}
 
 		static public function install($scope = null)
@@ -466,7 +471,7 @@
 					$function_name = 'section_latestNews';
 					break;
 			}
-			if ($function_name != '') parent::createSection($module, $identifier, $function_name, $scope);
+			if ($function_name != '') parent::registerPermanentTriggerListener($module, $identifier, $function_name, $scope);
 		}
 		
 	}

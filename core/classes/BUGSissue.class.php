@@ -2999,6 +2999,33 @@
 			}
 			return $this->_related_users;
 		}
+
+		/**
+		 * Return a list of users which have some kind of connection to this issue
+		 *
+		 * @return array
+		 */
+		public function getRelatedUsers()
+		{
+			$users = array();
+			if (count($this->getRelatedUIDs()) > 0)
+			{
+				if ($res = B2DB::getTable('B2tUsers')->getByUserIDs($this->getRelatedUIDs()))
+				{
+					while ($row = $res->getNextRow())
+					{
+						try
+						{
+							$user = BUGSfactory::userLab($row->get(B2tUsers::ID), $row);
+							$users[$user->getID()] = $user;
+						}
+						catch (Exception $e) { }
+					}
+				}
+			}
+
+			return $users;
+		}
 		
 		/**
 		 * Retrieves all users related to this issue:
@@ -3042,7 +3069,7 @@
 			}
 			
 			// Add all users assigned to a project
-			$uids = array_merge($uids, $this->getProject()->getAssignees());
+			$uids = array_merge($uids, $this->getProject()->getAssignedUserIDs());
 			
 			// Add all users in the team who leads the project, if valid
 			// or add the user who leads the project, if valid

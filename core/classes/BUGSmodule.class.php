@@ -33,11 +33,11 @@
 		protected $_module_config_title = '';
 		protected $_module_config_description = '';
 		protected $_module_version = '';
-		protected $_enabledsections = array();
 		protected $_availablepermissions = array();
-		protected $_availablesections = array();
+		protected $_listeners = array();
 		protected $_settings = array();
 		protected $_routes = array();
+		protected $_has_account_settings = false;
 		
 		static protected $_permissions = array();
 		
@@ -67,9 +67,9 @@
 			$this->_version = $row->get(B2tModules::VERSION);
 		}
 		
-		public function log($message)
+		public function log($message, $level = 1)
 		{
-			BUGSlogging::log($message, $this->getName());
+			BUGSlogging::log($message, $this->getName(), $level);
 		}
 		
 		public function disable()
@@ -129,9 +129,9 @@
 			$crit->addWhere(B2tModules::SCOPE, $scope);
 			$res = B2DB::getTable('B2tModules')->doDelete($crit);
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tModuleSections::MODULE_NAME, $this->_name);
-			$crit->addWhere(B2tModuleSections::SCOPE, $scope);
-			$res = B2DB::getTable('B2tModuleSections')->doDelete($crit);
+			$crit->addWhere(B2tEnabledModuleListeners::MODULE_NAME, $this->_name);
+			$crit->addWhere(B2tEnabledModuleListeners::SCOPE, $scope);
+			$res = B2DB::getTable('B2tEnabledModuleListeners')->doDelete($crit);
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tSettings::MODULE, $this->_name);
 			$crit->addWhere(B2tSettings::SCOPE, $scope);
@@ -218,45 +218,13 @@
 			return $this->_classname;
 		}
 		
-		public function createSection($module, $identifier, $function_name, $scope)
+		public function disableListener($module, $identifier, $scope)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tModuleSections::IDENTIFIER, $identifier);
-			$crit->addWhere(B2tModuleSections::MODULE, $module);
-			$crit->addWhere(B2tModuleSections::FUNCTION_NAME, $function_name);
-			$crit->addWhere(B2tModuleSections::MODULE_NAME, $this->_name);
-			$crit->addWhere(B2tModuleSections::SCOPE, $scope);
-			$res = B2DB::getTable('B2tModuleSections')->doSelectOne($crit);
-			if (!$res instanceof B2DBRow)
+			if (array_key_exists($module . '_' . $identifier, $this->_listeners))
 			{
-				$crit = new B2DBCriteria();
-				$crit->addInsert(B2tModuleSections::IDENTIFIER, $identifier);
-				$crit->addInsert(B2tModuleSections::MODULE, $module);
-				$crit->addInsert(B2tModuleSections::FUNCTION_NAME, $function_name);
-				$crit->addInsert(B2tModuleSections::MODULE_NAME, $this->_name);
-				$crit->addInsert(B2tModuleSections::SCOPE, $scope);
-				$res = B2DB::getTable('B2tModuleSections')->doInsert($crit);
-				BUGScontext::listenToTrigger($module, $identifier, array($this, $function_name));
-				$this->setSectionEnabled($module, $identifier);
+				$this->_listeners[$module . '_' . $identifier]['enabled'] = false;
+				B2DB::getTable('B2tEnabledModuleListeners')->removePermanentListener($module, $identifier, $this->getName());
 			}
-			return true;
-		}
-		
-		public function disableSection($module, $identifier, $scope)
-		{
-			unset($this->_enabledsections[$module . '_' . $identifier]);
-			return $this->removeSection($module, $identifier, $scope);
-		}
-		
-		public function removeSection($module, $identifier, $scope)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tModuleSections::IDENTIFIER, $identifier);
-			$crit->addWhere(B2tModuleSections::MODULE, $module);
-			$crit->addWhere(B2tModuleSections::MODULE_NAME, $this->_name);
-			$crit->addWhere(B2tModuleSections::SCOPE, $scope);
-			$res = B2DB::getTable('B2tModuleSections')->doDelete($crit);
-			return true;
 		}
 		
 		public function __toString()
@@ -299,14 +267,14 @@
 			return $this->_availablepermissions;
 		}
 		
-		public function addAvailableSection($module, $identifier, $description)
+		public function addAvailableListener($module, $identifier, $callback_function, $description)
 		{
-			$this->_availablesections[] = array('module' => $module, 'identifier' => $identifier, 'description' => $description);
+			$this->_listeners[$module . '_' . $identifier] = array('callback_function' => $callback_function, 'description' => $description, 'enabled' => false);
 		}
 		
-		public function getAvailableSections()
+		public function getAvailableListeners()
 		{
-			return $this->_availablesections;
+			return $this->_listeners;
 		}
 		
 		static public function cacheAllAccessPermissions()
@@ -415,29 +383,30 @@
 			return false;
 		}
 				
-		static function populateSections($module_names)
+		static function loadModuleListeners($module_names)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tModuleSections::MODULE_NAME, $module_names, B2DBCriteria::DB_IN);
-			$crit->addWhere(B2tModuleSections::SCOPE, BUGScontext::getScope()->getID());
-			$crit->addWhere(B2tModules::SCOPE, BUGScontext::getScope()->getID());
-			$crit->addOrderBy(B2tModuleSections::ORDER, 'asc');
-			$resultset = B2DB::getTable('B2tModuleSections')->doSelect($crit);
-			
-			while ($row = $resultset->getNextRow())
+			if ($res = B2DB::getTable('B2tEnabledModuleListeners')->getAll($module_names))
 			{
-				$module = BUGScontext::getModule($row->get(B2tModuleSections::MODULE_NAME));
-				if ($module->hasAccess() && $module->isEnabled())
+				while ($row = $res->getNextRow())
 				{
-					BUGScontext::listenToTrigger($row->get(B2tModuleSections::MODULE), $row->get(B2tModuleSections::IDENTIFIER), array(BUGScontext::getModule($row->get(B2tModuleSections::MODULE_NAME)), $row->get(B2tModuleSections::FUNCTION_NAME)));
-					BUGScontext::getModule($row->get(B2tModuleSections::MODULE_NAME))->setSectionEnabled($row->get(B2tModuleSections::MODULE), $row->get(B2tModuleSections::IDENTIFIER));
+					$module = BUGScontext::getModule($row->get(B2tEnabledModuleListeners::MODULE_NAME));
+					if ($module->hasAccess() && $module->isEnabled())
+					{
+						$module->enableListener($row->get(B2tEnabledModuleListeners::MODULE), $row->get(B2tEnabledModuleListeners::IDENTIFIER));
+					}
 				}
 			}
 		}
 		
-		public function setSectionEnabled($module, $identifier)
+		public function enableListener($module, $identifier)
 		{
-			$this->_enabledsections[$module . '_' . $identifier] = true;
+			if (array_key_exists($module . '_' . $identifier, $this->_listeners))
+			{
+				$listener = &$this->_listeners[$module . '_' . $identifier];
+				BUGScontext::listenToTrigger($module, $identifier, array($this, $listener['callback_function']));
+				B2DB::getTable('B2tEnabledModuleListeners')->savePermanentListener($module, $identifier, $this->getName());
+				$listener['enabled'] = true;
+			}
 		}
 		
 		public function getConfigTitle()
@@ -513,19 +482,16 @@
 			return $this->_enabled;
 		}
 		
-		public function isSectionEnabled($module, $identifier)
+		public function isListening($module, $identifier)
 		{
-			if ($this->_enabled && isset($this->_enabledsections[$module . '_' . $identifier]))
+			if ($this->_enabled && array_key_exists($module . '_' . $identifier, $this->_listeners))
 			{
-				return true;
+				return $this->_listeners[$module . '_' . $identifier]['enabled'];
 			}
 			return false;
 		}
 
-		public function initialize()
-		{
-			
-		}
+		abstract public function initialize();
 
 		public function addRoute($key, $url, $function, $params = array())
 		{
@@ -615,6 +581,11 @@
 		public function getRoute()
 		{
 			return 'login';
+		}
+
+		public function hasAccountSettings()
+		{
+			return $this->_has_account_settings;
 		}
 		
 	}

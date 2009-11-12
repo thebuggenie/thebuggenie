@@ -10,7 +10,7 @@
 <table style="border-bottom: 1px solid #DDD; width: 740px; background-color: #F5F5F5;" cellpadding=0 cellspacing=0>
 <?php
 
-foreach ($module->getAvailableSections() as $section)
+foreach ($module->getAvailableListeners() as $section)
 {
 	$base_url = 'config.php?module=core&amp;section=15&amp;subsection=2&amp;module_name=' . $module->getName() . '&amp;section_module=' . $section['module'] . '&amp;identifier=' . $section['identifier'] . '&amp;';
 	$section_enabled = $module->isSectionEnabled($section['module'], $section['identifier']);

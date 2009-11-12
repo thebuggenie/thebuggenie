@@ -33,5 +33,22 @@
 			parent::_addForeignKeyColumn(self::TID, B2DB::getTable('B2tTeams'), B2tTeams::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
+
+		public function getUIDsForTeamID($team_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::TID, $team_id);
+
+			$uids = array();
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$uids[$row->get(self::UID)] = $row->get(self::UID);
+				}
+			}
+
+			return $uids;
+		}
 		
 	}

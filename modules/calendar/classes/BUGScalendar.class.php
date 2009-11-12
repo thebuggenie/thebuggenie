@@ -15,12 +15,15 @@
 				//B2DB::loadNewTable(new B2tCalendars());
 				//B2DB::loadNewTable(new B2tCalendarTasks());
 			}
-			$this->addAvailableSection('core', 'dashboard_left_top', 'Dashboard calendar summary');
-			$this->addAvailableSection('core', 'account_settings', '"My account" settings');
-			$this->addAvailableSection('core', 'account_settingslist', '"My account" drop-down settings');
-			$this->addAvailableSection('core', 'BUGSUser::getState', 'Automatic user-state change');
+			$this->addAvailableListener('core', 'dashboard_left_top', 'section_calendarSummary', 'Dashboard calendar summary');
+			$this->addAvailableListener('core', 'BUGSUser::getState', 'section_bugsuser_getState', 'Automatic user-state change');
 		}
-		
+
+		public function initialize()
+		{
+
+		}
+
 		public function getCommentAccess($target_type, $target_id, $type = 'view')
 		{
 			
@@ -44,7 +47,7 @@
 					$function_name = 'section_calendarSummary';
 					break;
 			}
-			if ($function_name != '') parent::createSection($module, $identifier, $function_name, $scope);
+			if ($function_name != '') parent::registerPermanentTriggerListener($module, $identifier, $function_name, $scope);
 		}
 		
 		static public function install($scope = null)

@@ -1446,7 +1446,7 @@
 		{
 			if ($this->_assignees === null)
 			{
-				$this->_assignees = array('users' => array(), 'customers' => array(), 'teams' => array());
+				$this->_assignees = array('uids' => array(), 'users' => array(), 'customers' => array(), 'teams' => array());
 		
 				if ($res = B2DB::getTable('B2tProjectAssignees')->getByProjectID($this->getID()))
 				{
@@ -1456,12 +1456,17 @@
 						{
 							case ($row->get(B2tProjectAssignees::UID) != 0):
 								$this->_assignees['users'][$row->get(B2tProjectAssignees::UID)]['projects'][$this->getID()][$row->get(B2tProjectAssignees::TARGET_TYPE)] = true;
+								$this->_assignees['uids'][$row->get(B2tProjectAssignees::UID)] = $row->get(B2tProjectAssignees::UID);
 								break;
 							case ($row->get(B2tProjectAssignees::CID) != 0):
 								$this->_assignees['customers'][$row->get(B2tProjectAssignees::CID)]['projects'][$this->getID()][$row->get(B2tProjectAssignees::TARGET_TYPE)] = true;
 								break;
 							case ($row->get(B2tProjectAssignees::TID) != 0):
 								$this->_assignees['teams'][$row->get(B2tProjectAssignees::TID)]['projects'][$this->getID()][$row->get(B2tProjectAssignees::TARGET_TYPE)] = true;
+								foreach (B2DB::getTable('B2tTeamMembers')->getUIDsForTeamID($row->get(B2tProjectAssignees::TID)) as $uid)
+								{
+									$this->_assignees['uids'][$uid] = $uid;
+								}
 								break;
 						}
 					}
@@ -1477,12 +1482,17 @@
 							{
 								case ($row->get(B2tEditionAssignees::UID) != 0):
 									$this->_assignees['users'][$row->get(B2tEditionAssignees::UID)]['editions'][$row->get(B2tEditionAssignees::EDITION_ID)][$row->get(B2tEditionAssignees::TARGET_TYPE)] = true;
+									$this->_assignees['uids'][$row->get(B2tEditionAssignees::UID)] = $row->get(B2tEditionAssignees::UID);
 									break;
 								case ($row->get(B2tEditionAssignees::CID) != 0):
 									$this->_assignees['customers'][$row->get(B2tEditionAssignees::CID)]['editions'][$row->get(B2tEditionAssignees::EDITION_ID)][$row->get(B2tEditionAssignees::TARGET_TYPE)] = true;
 									break;
 								case ($row->get(B2tEditionAssignees::TID) != 0):
 									$this->_assignees['teams'][$row->get(B2tEditionAssignees::TID)]['editions'][$row->get(B2tEditionAssignees::EDITION_ID)][$row->get(B2tEditionAssignees::TARGET_TYPE)] = true;
+									foreach (B2DB::getTable('B2tTeamMembers')->getUIDsForTeamID($row->get(B2tEditionAssignees::TID)) as $uid)
+									{
+										$this->_assignees['uids'][$uid] = $uid;
+									}
 									break;
 							}
 						}
@@ -1499,12 +1509,17 @@
 							{
 								case ($row->get(B2tComponentAssignees::UID) != 0):
 									$this->_assignees['users'][$row->get(B2tComponentAssignees::UID)]['components'][$row->get(B2tComponentAssignees::COMPONENT_ID)][$row->get(B2tComponentAssignees::TARGET_TYPE)] = true;
+									$this->_assignees['uids'][$row->get(B2tComponentAssignees::UID)] = $row->get(B2tComponentAssignees::UID);
 									break;
 								case ($row->get(B2tComponentAssignees::CID) != 0):
 									$this->_assignees['customers'][$row->get(B2tComponentAssignees::CID)]['components'][$row->get(B2tComponentAssignees::COMPONENT_ID)][$row->get(B2tComponentAssignees::TARGET_TYPE)] = true;
 									break;
 								case ($row->get(B2tComponentAssignees::TID) != 0):
 									$this->_assignees['teams'][$row->get(B2tComponentAssignees::TID)]['components'][$row->get(B2tComponentAssignees::COMPONENT_ID)][$row->get(B2tComponentAssignees::TARGET_TYPE)] = true;
+									foreach (B2DB::getTable('B2tTeamMembers')->getUIDsForTeamID($row->get(B2tComponentAssignees::TID)) as $uid)
+									{
+										$this->_assignees['uids'][$uid] = $uid;
+									}
 									break;
 							}
 						}
@@ -1522,6 +1537,17 @@
 		{
 			$this->_populateAssignees();
 			return $this->_assignees;
+		}
+
+		/**
+		 * Return a list of user ids for all users assigned to this project
+		 *
+		 * @return array
+		 */
+		public function getAssignedUserIDs()
+		{
+			$this->_populateAssignees();
+			return array_keys($this->_assignees['uids']);
 		}
 		
 		/**

@@ -14,13 +14,16 @@
 			$this->_module_config_title = BUGScontext::getI18n()->__("Messages");
 			$this->_module_config_description = BUGScontext::getI18n()->__('Set up the messaging module from this section.');
 			$this->_module_version = "1.0";
-			$this->addAvailableSection('core', 'dashboard_left_top', 'Dashboard message summary');
-			$this->addAvailableSection('core', 'useractions_bottom', '"Send message" in user drop-down menu');
-			$this->addAvailableSection('core', 'teamactions_bottom', '"Send message" in team drop-down menu');
-			$this->addAvailableSection('core', 'account_settings', '"My account" settings');
-			$this->addAvailableSection('core', 'account_settingslist', '"My account" drop-down settings');
+			$this->addAvailableListener('core', 'dashboard_left_top', 'section_messagesBox', 'Dashboard message summary');
+			$this->addAvailableListener('core', 'useractions_bottom', 'section_useractionsBottom', '"Send message" in user drop-down menu');
+			$this->addAvailableListener('core', 'teamactions_bottom', 'section_teamactionsBottom', '"Send message" in team drop-down menu');
 		}
-		
+
+		public function initialize()
+		{
+
+		}
+
 		static public function install($scope = null)
 		{
   			if ($scope === null)
@@ -107,7 +110,7 @@
 					$function_name = 'section_messagesSummary';
 					break;
 			}
-			if ($function_name != '') parent::createSection($module, $identifier, $function_name, $scope);
+			if ($function_name != '') parent::registerPermanentTriggerListener($module, $identifier, $function_name, $scope);
 		}
 		
 		public function getMessages($gettype, $uid = 0, $folder = 0, $msg = 0, $tid = 0)
