@@ -43,8 +43,6 @@
 			BUGScontext::setPermission('publish_postonglobalbillboard', 0, 'publish', 0, 1, 0, true, $scope);
 			BUGScontext::setPermission('publish_postonteambillboard', 0, 'publish', 0, 1, 0, true, $scope);
 			BUGScontext::setPermission('manage_billboard', 0, 'publish', 0, 1, 0, true, $scope);
-			$module->enableSection('core', 'index_left_middle', $scope);
-			$module->enableSection('core', 'index_right_middle', $scope);
 			$module->saveSetting('enablebillboards', 1);
 			$module->saveSetting('enableteambillboards', 1);
 			$module->saveSetting('featured_article', 1);

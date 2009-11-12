@@ -398,14 +398,17 @@
 			}
 		}
 		
-		public function enableListener($module, $identifier)
+		public function enableListener($module, $identifier, $scope = null)
 		{
-			if (array_key_exists($module . '_' . $identifier, $this->_listeners))
+			if (array_key_exists($module . '_' . $identifier, $this->_listeners) && !$this->_listeners[$module . '_' . $identifier]['enabled'])
 			{
-				$listener = &$this->_listeners[$module . '_' . $identifier];
-				BUGScontext::listenToTrigger($module, $identifier, array($this, $listener['callback_function']));
-				B2DB::getTable('B2tEnabledModuleListeners')->savePermanentListener($module, $identifier, $this->getName());
-				$listener['enabled'] = true;
+				if ($scope === null || $scope == BUGScontext::getScope()->getID())
+				{
+					$listener = &$this->_listeners[$module . '_' . $identifier];
+					BUGScontext::listenToTrigger($module, $identifier, array($this, $listener['callback_function']));
+					$listener['enabled'] = true;
+				}
+				B2DB::getTable('B2tEnabledModuleListeners')->savePermanentListener($module, $identifier, $this->getName(), $scope);
 			}
 		}
 		

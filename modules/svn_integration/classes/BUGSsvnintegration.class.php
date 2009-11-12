@@ -10,13 +10,9 @@
 			$this->_module_config_title = BUGScontext::getI18n()->__("SVN integration");
 			$this->_module_config_description = BUGScontext::getI18n()->__('Configure source code integration from this section.');
 			$this->_module_version = "1.0";
-			if ($this->_enabled)
-			{
-				//B2DB::loadNewTable(new B2tSVNintegration());
-				$this->addAvailableListener('core', 'viewissue_right_middle', 'section_viewissueRightMiddle', 'List of updated files for an issue');
-				$this->addAvailablePermission('core', 'viewissue_right_middle', 'List of updated files when viewing an issue');
-				$this->addAvailablePermission('core', 'viewproject_right_top', '"View code" link in project overview');
-			}
+			$this->addAvailableListener('core', 'viewissue_right_middle', 'section_viewissueRightMiddle', 'List of updated files for an issue');
+			$this->addAvailablePermission('core', 'viewissue_right_middle', 'List of updated files when viewing an issue');
+			$this->addAvailablePermission('core', 'viewproject_right_top', '"View code" link in project overview');
 		}
 
 		public function initialize()
@@ -40,8 +36,6 @@
   									  $scope);
 
 			$module->setPermission(0, 0, 0, true, $scope);
-			$module->enableSection('core', 'viewissue_right_middle', $scope);
-			$module->enableSection('core', 'viewproject_right_top', $scope);
 
 			if ($scope == BUGScontext::getScope()->getID())
 			{

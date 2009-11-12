@@ -49,31 +49,33 @@
 			return $res;
 		}
 
-		public function savePermanentListener($module, $identifier, $module_name)
+		public function savePermanentListener($module, $identifier, $module_name, $scope = null)
 		{
+			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::IDENTIFIER, $identifier);
 			$crit->addWhere(self::MODULE, $module);
 			$crit->addWhere(self::MODULE_NAME, $module_name);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, $scope);
 			if (!($res = $this->doSelectOne($crit)))
 			{
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::IDENTIFIER, $identifier);
 				$crit->addInsert(self::MODULE, $module);
 				$crit->addInsert(self::MODULE_NAME, $module_name);
-				$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+				$crit->addInsert(self::SCOPE, $scope);
 				$res = $this->doInsert($crit);
 			}
 		}
 
-		public function removePermanentListener($module, $identifier, $module_name)
+		public function removePermanentListener($module, $identifier, $module_name, $scope)
 		{
+			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::IDENTIFIER, $identifier);
 			$crit->addWhere(self::MODULE, $module);
 			$crit->addWhere(self::MODULE_NAME, $module_name);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, $scope);
 			$res = $this->doDelete($crit);
 		}
 		

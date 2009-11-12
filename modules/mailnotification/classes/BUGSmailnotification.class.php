@@ -14,15 +14,17 @@
 			$this->_module_config_description = BUGScontext::getI18n()->__('Set up email- and user notifications from this section.');
 			$this->_module_version = "0.9";
 			$this->_has_account_settings = true;
-			$this->addAvailableListener('core', 'user_registration', 'listen_issueCreate', BUGScontext::getI18n()->__('Email when user registers'));
+			$this->addAvailableListener('core', 'user_registration', 'listen_registerUser', BUGScontext::getI18n()->__('Email when user registers'));
 			$this->addAvailableListener('core', 'forgotten_password', 'listen_forgottenPassword', BUGScontext::getI18n()->__('Email to reset password'));
+			$this->addAvailableListener('core', 'viewissue_top', 'listen_issueTop', BUGScontext::getI18n()->__('Email when user registers'));
+			$this->addAvailableListener('core', 'login_middle', 'listen_loginMiddle', BUGScontext::getI18n()->__('Email to reset password'));
 			$this->addAvailableListener('core', 'password_reset', 'listen_passwordReset', BUGScontext::getI18n()->__('Email when password is reset'));
 			$this->addAvailableListener('core', 'BUGSIssue::update', 'listen_issueUpdate', BUGScontext::getI18n()->__('Email on issue update'));
 			$this->addAvailableListener('core', 'BUGSIssue::createNew', 'listen_issueCreate', BUGScontext::getI18n()->__('Email on new issues'));
 			$this->addAvailableListener('core', 'BUGSComment::createNew', 'listen_bugsComment_createNew', BUGScontext::getI18n()->__('Email when comments are posted'));
-			BUGScontext::listenToTrigger('core', 'viewissue_top', array($this, 'listen_issueTop'));
-			BUGScontext::listenToTrigger('core', 'login_middle', array($this, 'listen_loginMiddle'));
-			BUGScontext::listenToTrigger('core', 'user_registration', array($this, 'listen_registerUser'));
+			$this->enableListener('core', 'user_registration');
+			$this->enableListener('core', 'viewissue_top');
+			$this->enableListener('core', 'login_middle');
 
 			// No, I didn't forget the parameters, but what else would you call
 			// it when it's about retrieving a forgotten password?
@@ -31,7 +33,6 @@
 
 		public function initialize()
 		{
-			
 		}
 		
 		static public function install($scope = null)
@@ -48,15 +49,16 @@
   									  '0.9',
   									  true,
   									  $scope);
+								  
 			$module->setPermission(0, 0, 0, true, $scope);
-			$module->enableSection('core', 'user_registration', $scope);
-			$module->enableSection('core', 'forgotten_password', $scope);
-			$module->enableSection('core', 'password_reset', $scope);
-			$module->enableSection('core', 'BUGSIssue::update', $scope);
-			$module->enableSection('core', 'BUGSIssue::createNew', $scope);
-			$module->enableSection('core', 'BUGSComment::createNew', $scope);
-			$module->enableSection('core', 'account_settings', $scope);
-			$module->enableSection('core', 'account_settingslist', $scope);
+			$module->enableListener('core', 'user_registration', $scope);
+			$module->enableListener('core', 'forgotten_password', $scope);
+			$module->enableListener('core', 'password_reset', $scope);
+			$module->enableListener('core', 'BUGSIssue::update', $scope);
+			$module->enableListener('core', 'BUGSIssue::createNew', $scope);
+			$module->enableListener('core', 'BUGSComment::createNew', $scope);
+			$module->enableListener('core', 'account_settings', $scope);
+			$module->enableListener('core', 'account_settingslist', $scope);
 			$module->saveSetting('smtp_host', '');
 			$module->saveSetting('smtp_port', 25);
 			$module->saveSetting('smtp_user', '');
