@@ -6,13 +6,14 @@
 		public function __construct($m_id, $res = null)
 		{
 			parent::__construct($m_id, $res);
-			$this->_module_menu_title = BUGScontext::getI18n()->__("SVN integration");
-			$this->_module_config_title = BUGScontext::getI18n()->__("SVN integration");
-			$this->_module_config_description = BUGScontext::getI18n()->__('Configure source code integration from this section.');
-			$this->_module_version = "1.0";
+			$this->_module_version = '1.0';
+			$this->setLongName(BUGScontext::getI18n()->__('SVN integration'));
+			$this->setMenuTitle(BUGScontext::getI18n()->__('SVN integration'));
+			$this->setConfigTitle(BUGScontext::getI18n()->__('SVN integration'));
+			$this->setDescription(BUGScontext::getI18n()->__('Enables integration with SVN'));
+			$this->setConfigDescription(BUGScontext::getI18n()->__('Configure source code integration from this section'));
 			$this->addAvailableListener('core', 'viewissue_right_middle', 'section_viewissueRightMiddle', 'List of updated files for an issue');
-			$this->addAvailablePermission('core', 'viewissue_right_middle', 'List of updated files when viewing an issue');
-			$this->addAvailablePermission('core', 'viewproject_right_top', '"View code" link in project overview');
+			$this->addAvailableListener('core', 'viewproject_right_top', 'section_viewProject_viewCode', '"View code" link in project overview');
 		}
 
 		public function initialize()
@@ -22,50 +23,23 @@
 
 		static public function install($scope = null)
 		{
-  			if ($scope === null)
-  			{
-  				$scope = BUGScontext::getScope()->getID();
-  			}
-			$module = parent::_install('svn_integration', 
-  									  'SVN integration', 
-  									  'Enables integration with SVN',
-  									  'BUGSsvnintegration',
-  									  true, false, false,
-  									  '1.0',
-  									  true,
-  									  $scope);
+  			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			
+			$module = parent::_install('svn_integration', 'BUGSsvnintegration', '1.0', true, false, false, $scope);
 
-			$module->setPermission(0, 0, 0, true, $scope);
+			$module->enableListener('core', 'viewissue_right_middle');
+			$module->enableListener('core', 'viewproject_right_top');
 
 			if ($scope == BUGScontext::getScope()->getID())
 			{
-				B2DB::loadNewTable(new B2tSVNintegration());
 				B2DB::getTable('B2tSVNintegration')->create();
 			}
-			
-			try
-			{
-				self::loadFixtures($scope);
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-		}
-		
-		static function loadFixtures($scope)
-		{
 		}
 					
 		public function uninstall($scope)
 		{
 			B2DB::getTable('B2tSVNintegration')->drop();
 			parent::uninstall($scope);
-		}
-		
-		public function getCommentAccess($target_type, $target_id, $type = 'view')
-		{
-			
 		}
 		
 		public function loadHelpTitle($topic)

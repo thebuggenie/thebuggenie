@@ -66,6 +66,15 @@
 				}
 			}
 		}
+
+		public static function deleteModuleSettings($module_name)
+		{
+			if (array_key_exists($module_name, self::$_settings))
+			{
+				unset(self::$_settings[$module_name]);
+			}
+			B2DB::getTable('B2tSettings')->deleteModuleSettings($module_name, BUGScontext::getScope()->getID());
+		}
 		
 		public static function loadFixtures($scope = 1)
 		{

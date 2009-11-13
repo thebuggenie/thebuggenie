@@ -27,6 +27,19 @@
 			parent::_addForeignKeyColumn(self::AUTHOR, B2DB::getTable('B2tUsers'), B2tUsers::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
+
+		public function loadFixtures($scope)
+		{
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ARTICLE_ID, 1);
+			$crit->addInsert(self::AUTHOR, 1);
+			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
+			$crit->addInsert(self::SCOPE, $scope);
+			$crit->addInsert(self::TITLE, 'Welcome to the billboards!');
+			$crit->addInsert(self::TARGET_BOARD, 0);
+			$crit->addInsert(self::CONTENT, '[p]This is a post on the billboards - a place where users and developers can share comments, ideas, links, etc. There is a global billboard, and each team has its own billboard.[/p]');
+			$res = $this->doInsert($crit);
+		}
 	}
 
 ?>

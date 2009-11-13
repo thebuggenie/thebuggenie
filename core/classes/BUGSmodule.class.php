@@ -23,7 +23,6 @@
 		protected $_description = '';
 		protected $_enabled = false;
 		protected $_longname = '';
-		protected $_moduletype = 0;
 		protected $_showinconfig = false;
 		protected $_showinmenu = false;
 		protected $_showinusermenu = false;
@@ -49,21 +48,18 @@
 		 */
 		public function __construct($m_id, $row = null)
 		{
-			if ($row == null)
+			if ($row === null)
 			{
 				$row = B2DB::getTable('B2tModules')->doSelectById($m_id);
 			}
 			$this->_itemid = $m_id;
 			$this->_name = $row->get(B2tModules::MODULE_NAME);
 			$this->_classname = $row->get(B2tModules::CLASSNAME);
-			$this->_description = $row->get(B2tModules::DESC);
-			$this->_enabled = ($row->get(B2tModules::ENABLED) == 1) ? true : false;
-			$this->_longname = $row->get(B2tModules::MODULE_LONGNAME);
-			$this->_moduletype = $row->get(B2tModules::MODULE_TYPE);
+			$this->_enabled = (bool) $row->get(B2tModules::ENABLED);
 			$this->_shortname = $row->get(B2tModules::MODULE_NAME);
-			$this->_showinconfig = ($row->get(B2tModules::SHOW_IN_CONFIG) == 1) ? true : false;
-			$this->_showinmenu = ($row->get(B2tModules::SHOW_IN_MENU) == 1) ? true : false;
-			$this->_showinusermenu = ($row->get(B2tModules::SHOW_IN_USERMENU) == 1) ? true : false;
+			$this->_showinconfig = (bool) $row->get(B2tModules::SHOW_IN_CONFIG);
+			$this->_showinmenu = (bool) $row->get(B2tModules::SHOW_IN_MENU);
+			$this->_showinusermenu = (bool) $row->get(B2tModules::SHOW_IN_USERMENU);
 			$this->_version = $row->get(B2tModules::VERSION);
 		}
 		
@@ -111,7 +107,7 @@
 			B2DB::getTable('B2tModules')->doUpdateById($crit, $this->getID());
 			$this->_showinusermenu = true;
 		}
-		
+
 		public function hideFromUserMenu()
 		{
 			$crit = new B2DBCriteria();
@@ -120,30 +116,13 @@
 			$this->_showinusermenu = false;
 		}
 		
-		abstract public function getCommentAccess($target_type, $target_id, $type = 'view');
-		
-		protected function uninstall($scope)
+		protected function _uninstall()
 		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tModules::MODULE_NAME, $this->_name);
-			$crit->addWhere(B2tModules::SCOPE, $scope);
-			$res = B2DB::getTable('B2tModules')->doDelete($crit);
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tEnabledModuleListeners::MODULE_NAME, $this->_name);
-			$crit->addWhere(B2tEnabledModuleListeners::SCOPE, $scope);
-			$res = B2DB::getTable('B2tEnabledModuleListeners')->doDelete($crit);
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tSettings::MODULE, $this->_name);
-			$crit->addWhere(B2tSettings::SCOPE, $scope);
-			$res = B2DB::getTable('B2tSettings')->doDelete($crit);
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tPermissions::MODULE, $this->_name);
-			$crit->addWhere(B2tPermissions::SCOPE, $scope);
-			$res = B2DB::getTable('B2tPermissions')->doDelete($crit);
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tComments::MODULE, $this->_name);
-			$crit->addWhere(B2tComments::SCOPE, $scope);
-			$res = B2DB::getTable('B2tComments')->doDelete($crit);
+			$scope = BUGScontext::getScope()->getID();
+			B2DB::getTable('B2tModules')->doDeleteById($this->getID());
+			B2DB::getTable('B2tEnabledModuleListeners')->removeAllModuleListeners($this->getName(), $scope);
+			BUGSsettings::deleteModuleSettings($module_name);
+			BUGScontext::deleteModulePermissions($this->getName());
 		}
 		
 		/**
@@ -162,55 +141,28 @@
 		 * 
 		 * @return BUGSmodule
 		 */
-		static protected function _install($identifier, $longname, $description, $classname, $show_in_config, $show_in_menu, $show_in_usermenu, $version, $enabled, $scope)
+		static protected function _install($identifier, $classname, $version, $show_in_config, $show_in_menu, $show_in_usermenu, $scope)
 		{
-			BUGSlogging::log('installing ' . $identifier . ', ' . $longname);
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tModules::CLASSNAME, $classname);
-  			$crit->addWhere(B2tModules::MODULE_NAME, $identifier);
-  			$res = B2DB::getTable('B2tModules')->doSelectOne($crit);
-  			if (!$res instanceof B2DBRow)
-  			{
-				$crit = new B2DBCriteria();
-	  			$crit->addInsert(B2tModules::CLASSNAME, $classname);
-	  			$crit->addInsert(B2tModules::DESC, $description);
-	  			$crit->addInsert(B2tModules::ENABLED, ($enabled) ? 1 : 0);
-	  			$crit->addInsert(B2tModules::MODULE_LONGNAME, $longname);
-	  			$crit->addInsert(B2tModules::MODULE_NAME, $identifier);
-	  			$crit->addInsert(B2tModules::VERSION, $version);
-	  			$crit->addInsert(B2tModules::SHOW_IN_CONFIG, ($show_in_config) ? 1 : 0);
-	  			$crit->addInsert(B2tModules::SHOW_IN_MENU, ($show_in_menu) ? 1 : 0);
-	  			$crit->addInsert(B2tModules::SHOW_IN_USERMENU, ($show_in_usermenu) ? 1 : 0);
-	  			$crit->addInsert(B2tModules::SCOPE, $scope);
-	  			$res = B2DB::getTable('B2tModules')->doInsert($crit);
-	  			$m_id = $res->getInsertID();
-	  			$res = B2DB::getTable('B2tModules')->doSelectById($m_id);
-  			}
-  			else
-  			{
-	  			$m_id = $res->get(B2tModules::ID);
-  			}
-  			
   			if (!BUGScontext::getScope() instanceof BUGSscope) throw new Exception('No scope??');
 
-  			if ($scope == BUGScontext::getScope()->getID())
-  			{
-	  			if (class_exists($classname))
-	  			{
-		  			$module = new $classname($m_id, $res);
-		  			BUGScontext::addModule($module, $identifier);
-		  			return $module;
-	  			}
-	  			else
-	  			{
-	  				throw new Exception('Can not load new instance of type ' . $classname . ', is not loaded');
-	  			}
-  			}
-  			else
-  			{
-	  			$module = new $classname($m_id, $res);
-	  			return $module;
-  			}
+			BUGSlogging::log('installing module' . $identifier);
+			$module_id = B2DB::getTable('B2tModules')->installModule($identifier, $classname, $version, $show_in_config, $show_in_menu, $show_in_usermenu, $scope);
+  			
+			if (class_exists($classname))
+			{
+				$module = new $classname($module_id);
+				if ($scope == BUGScontext::getScope()->getID())
+				{
+					BUGScontext::addModule($module, $identifier);
+				}
+				$module->setPermission(0, 0, 0, true, $scope);
+			}
+			else
+			{
+				throw new Exception('Can not load new instance of type ' . $classname . ', is not loaded');
+			}
+
+			return $module;
 		}
 		
 		public function getClassname()
@@ -246,10 +198,20 @@
 		{
 			return $this->_name;
 		}
-		
-		public function getLongname()
+
+		public function setLongName($name)
+		{
+			$this->_longname = $name;
+		}
+
+		public function getLongName()
 		{
 			return $this->_longname;
+		}
+
+		public function setMenuTitle($title)
+		{
+			$this->_module_menu_title = $title;
 		}
 		
 		public function getMenuTitle()
@@ -411,10 +373,20 @@
 				B2DB::getTable('B2tEnabledModuleListeners')->savePermanentListener($module, $identifier, $this->getName(), $scope);
 			}
 		}
-		
+
+		public function setConfigTitle($title)
+		{
+			$this->_module_config_title = $title;
+		}
+
 		public function getConfigTitle()
 		{
 			return $this->_module_config_title;
+		}
+
+		public function setConfigDescription($description)
+		{
+			$this->_module_config_description;
 		}
 		
 		public function getConfigDescription()
@@ -440,9 +412,10 @@
 			return BUGSsettings::get($setting, $this->getName(), BUGScontext::getScope()->getID(), $uid);
 		}
 		
-		public function saveSetting($setting, $value, $uid = 0)
+		public function saveSetting($setting, $value, $uid = 0, $scope = null)
 		{
-			return BUGSsettings::saveSetting($setting, $value, $this->getName(), BUGScontext::getScope()->getID(), $uid);
+			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			return BUGSsettings::saveSetting($setting, $value, $this->getName(), $scope, $uid);
 		}
 		
 		/**
@@ -527,6 +500,11 @@
 			}
 		}
 		
+		public function setDescription($description)
+		{
+			$this->_description = $description;
+		}
+
 		public function getDescription()
 		{
 			return $this->_description;
@@ -584,6 +562,11 @@
 		public function getRoute()
 		{
 			return 'login';
+		}
+
+		public function setHasAccountSettings($val = true)
+		{
+			$this->_has_account_settings = (bool) $val;
 		}
 
 		public function hasAccountSettings()

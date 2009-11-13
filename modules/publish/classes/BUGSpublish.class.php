@@ -6,10 +6,13 @@
 		public function __construct($m_id, $res = null)
 		{
 			parent::__construct($m_id, $res);
-			$this->_module_menu_title = BUGScontext::getI18n()->__("News &amp; Articles");
-			$this->_module_config_title = BUGScontext::getI18n()->__("News &amp; Articles");
-			$this->_module_config_description = BUGScontext::getI18n()->__('Set up the News &amp; Articles module from this section.');
-			$this->_module_version = "1.0";
+			$this->_module_version = '1.0';
+			$this->setLongName(BUGScontext::getI18n()->__('News &amp; Articles'));
+			$this->setMenuTitle(BUGScontext::getI18n()->__('News &amp; Articles'));
+			$this->setConfigTitle(BUGScontext::getI18n()->__('News &amp; Articles'));
+			$this->setDescription(BUGScontext::getI18n()->__('Enables articles, news and billboards'));
+			$this->setConfigDescription(BUGScontext::getI18n()->__('Set up the News &amp; Articles module from this section'));
+			
 			$this->addAvailablePermission('article_management', 'Can create and manage articles');
 			$this->addAvailablePermission('manage_billboard', 'Can delete billboard posts');
 			$this->addAvailablePermission('publish_postonglobalbillboard', 'Can post articles on global billboard');
@@ -25,20 +28,10 @@
 
 		static public function install($scope = null)
 		{
-  			if ($scope === null)
-  			{
-  				$scope = BUGScontext::getScope()->getID();
-  			}
-			$module = parent::_install('publish', 
-  									  'Publishing tools', 
-  									  'Enables articles, news and billboards',
-  									  'BUGSpublish',
-  									  true, true, false,
-  									  '1.0',
-  									  true,
-  									  $scope);
+  			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
 
-			$module->setPermission(0, 0, 0, true, $scope);
+			$module = parent::_install('publish', 'BUGSpublish','1.0', true, true, false, $scope);
+
 			BUGScontext::setPermission('article_management', 0, 'publish', 0, 1, 0, true, $scope);
 			BUGScontext::setPermission('publish_postonglobalbillboard', 0, 'publish', 0, 1, 0, true, $scope);
 			BUGScontext::setPermission('publish_postonteambillboard', 0, 'publish', 0, 1, 0, true, $scope);
@@ -46,6 +39,8 @@
 			$module->saveSetting('enablebillboards', 1);
 			$module->saveSetting('enableteambillboards', 1);
 			$module->saveSetting('featured_article', 1);
+			$module->enableListener('core', 'index_left_middle');
+			$module->enableListener('core', 'index_right_middle');
   									  
 			if ($scope == BUGScontext::getScope()->getID())
 			{
@@ -69,37 +64,13 @@
 		{
 			try
 			{
-				$crit = new B2DBCriteria();
-				$crit->addInsert(B2tArticles::TITLE, 'Welcome to The Bug Genie');
-				$crit->addInsert(B2tArticles::AUTHOR, 1);
-				$crit->addInsert(B2tArticles::DATE, $_SERVER["REQUEST_TIME"]);
-				$crit->addInsert(B2tArticles::ICON, 'install');
-				$crit->addInsert(B2tArticles::INTRO_TEXT, '[p]This is a test article to display the article module.[/p]');
-				$crit->addInsert(B2tArticles::CONTENT, '[p]"BUGS" has been reworked, rewritten and rebuilt from scratch to make your development life easier. Several new features has been added to make BUGS 2 the most powerful and versatile solution for software developers. [/p][p]
-	[/p][p]In addition to these features, BUGS 2\'s now has a module-based architecture as well as our new B2DB PHP database ORM. This makes extending and improving the functionality in BUGS 2 much easier than before. [/p][p]
-	[/p][p]BUGS 2 comes with an extensive online help system, which makes using BUGS 2 easier than with it\'s predecessor. Online help links are included in several places, and will give you helpful tips & guides where you need them. [/p][p]
-	[/p][p][b]Highlights includes:[/b]
-	[/p][list][*]Improved user management with detailed access control[*]Improved search functionality with grouping support[*]Improved messaging functionality with folders and search[*]Improved issue reporting wizard with automated duplicate search[*][b]New[/b]: Articles & news[*][b]New[/b]: Subversion integration[*][b]New[/b]: Calendars with events, meetings and todo\'s[*][b]New[/b]: Global and team billboards[*][b]New: [/b]Project dashboard with live statistics and overview[*][b]New: [/b]Automated roadmap generation[*][b]New: [/b]Support for issue sub-tasks[*][b]New: [/b]Support for related issues[*][b]New: [/b]Voting[/list][p]We\'re very happy with how BUGS 2 has turned out, so try out the new features, build, extend and improve upon the functionality already in BUGS 2, and see how your life as a developer will be a lot easier![/p]');
-				$crit->addInsert(B2tArticles::IS_NEWS, 1);
-				$crit->addInsert(B2tArticles::IS_PUBLISHED, 1);
-				$crit->addInsert(B2tBillboardPosts::SCOPE, $scope);
-				$res = B2DB::getTable('B2tArticles')->doInsert($crit);
-				
-				$crit = new B2DBCriteria();
-				$crit->addInsert(B2tBillboardPosts::ARTICLE_ID, 1);
-				$crit->addInsert(B2tBillboardPosts::AUTHOR, 1);
-				$crit->addInsert(B2tBillboardPosts::DATE, $_SERVER["REQUEST_TIME"]);
-				$crit->addInsert(B2tBillboardPosts::SCOPE, $scope);
-				$crit->addInsert(B2tBillboardPosts::TITLE, 'Welcome to the billboards!');
-				$crit->addInsert(B2tBillboardPosts::TARGET_BOARD, 0);
-				$crit->addInsert(B2tBillboardPosts::CONTENT, '[p]This is a post on the billboards - a place where users and developers can share comments, ideas, links, etc. There is a global billboard, and each team has its own billboard.[/p]');
-				$res = B2DB::getTable('B2tBillboardPosts')->doInsert($crit);
+				B2DB::getTable('B2tArticles')->loadFixtures($scope);
+				B2DB::getTable('B2tBillboardPosts')->loadFixtures($scope);
 			}
 			catch (Exception $e)
 			{
 				throw $e;
 			}
-
 		}
 		
 		public function uninstall($scope)
@@ -450,26 +421,6 @@
 				</table>
 				<?php
 			}
-		}
-	
-		public function getCommentAccess($target_type, $target_id, $type = 'view')
-		{
-			
-		}		
-		
-		public function enableSection($module, $identifier, $scope)
-		{
-			$function_name = '';
-			switch ($module . '_' . $identifier)
-			{
-				case 'core_index_left_middle':
-					$function_name = 'section_latestNewsBox';
-					break;
-				case 'core_index_right_middle':
-					$function_name = 'section_latestNews';
-					break;
-			}
-			if ($function_name != '') parent::registerPermanentTriggerListener($module, $identifier, $function_name, $scope);
 		}
 		
 	}

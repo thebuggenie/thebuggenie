@@ -80,5 +80,13 @@
 			$res = $this->doInsert($crit);
 			return $res->getInsertID();
 		}
+
+		public function deleteModulePermissions($module_name, $scope)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::MODULE, $module_name);
+			$crit->addWhere(self::SCOPE, $scope);
+			$this->doDelete($crit);
+		}
 		
 	}

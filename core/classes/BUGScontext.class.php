@@ -193,6 +193,7 @@
 		 */
 		public static function addClasspath($classpath)
 		{
+			if (!file_exists($classpath)) throw new Exception("Cannot add {$classpath} to classpaths, since it doesn't exist");
 			if ($classpath[strlen($classpath) - 1] != DIRECTORY_SEPARATOR)
 			{
 				BUGSlogging::log('Invalid classpath, appending directory separator', 'main', BUGSlogging::LEVEL_WARNING);
@@ -636,7 +637,7 @@
 							{
 								self::addClasspath($moduleClassPath);
 								$module_paths[] = $moduleClassPath;
-								if (file_exists($moduleClassPath . 'B2DB/'))
+								if (file_exists($moduleClassPath . 'B2DB'))
 								{
 									self::addClasspath($moduleClassPath . 'B2DB/');
 									$module_paths[] = $moduleClassPath . 'B2DB/';
@@ -908,6 +909,18 @@
 				}
 			}
 			BUGSlogging::log('done (starting to cache access permissions)');
+		}
+
+		public static function deleteModulePermissions($module_name)
+		{
+			foreach (self::$_permissions as $key => $values)
+			{
+				if ($values['module_name'] == $module_name)
+				{
+					unset(self::$_permissions[$key]);
+				}
+			}
+			B2DB::getTable('B2tPermissions')->deleteModulePermissions($module_name, self::getScope()->getID());
 		}
 
 		/**

@@ -333,8 +333,11 @@
 					{
 						if ((bool) $install && file_exists(BUGScontext::getIncludePath() . "modules/{$module}/module"))
 						{
-							BUGScontext::addClasspath(BUGScontext::getIncludePath() . "modules/{$module}/classes/B2DB/");
 							BUGScontext::addClasspath(BUGScontext::getIncludePath() . "modules/{$module}/classes/");
+							if (file_exists(BUGScontext::getIncludePath() . "modules/{$module}/classes/B2DB/"))
+							{
+								BUGScontext::addClasspath(BUGScontext::getIncludePath() . "modules/{$module}/classes/B2DB/");
+							}
 							$classname = file_get_contents(BUGScontext::getIncludePath() . "modules/{$module}/class");
 							call_user_func(array($classname, 'install'), 1);
 						}

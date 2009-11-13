@@ -63,9 +63,9 @@
 						<label for="url_subdir">Url subdirectory</label><br>
 						The Bug Genie subdirectory part of the url
 					</dt>
-					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_subdir" id="url_subdir" value="<?php echo dirname($_SERVER['PHP_SELF']); ?>/"></dd>
+					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_subdir" id="url_subdir" value="<?php echo (dirname($_SERVER['PHP_SELF']) != '/') ? dirname($_SERVER['PHP_SELF']) . '/' : dirname($_SERVER['PHP_SELF']); ?>"></dd>
 					<dt style="padding-top: 5px;"><b>According to the information above,</b> The Bug Genie will be accessible at</dt>
-					<dd id="url_preview">http://<?php echo $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']); ?>/</dd>
+					<dd id="url_preview">http://<?php echo $_SERVER['SERVER_NAME'] . ((dirname($_SERVER['PHP_SELF']) != '/') ? dirname($_SERVER['PHP_SELF']) . '/' : dirname($_SERVER['PHP_SELF'])); ?></dd>
 				</dl>
 			</fieldset>
 			<div class="error" id="continue_error" style="display: none;"> </div>

@@ -9,22 +9,21 @@
 		public function __construct($m_id, $res = null)
 		{
 			parent::__construct($m_id, $res);
-			$this->_module_menu_title = BUGScontext::getI18n()->__("Mail notification");
-			$this->_module_config_title = BUGScontext::getI18n()->__("Mail notification");
-			$this->_module_config_description = BUGScontext::getI18n()->__('Set up email- and user notifications from this section.');
-			$this->_module_version = "0.9";
-			$this->_has_account_settings = true;
+			$this->_module_version = '1.0';
+			$this->setLongName(BUGScontext::getI18n()->__('Mail notification'));
+			$this->setMenuTitle(BUGScontext::getI18n()->__('Mail notification'));
+			$this->setConfigTitle(BUGScontext::getI18n()->__('Mail notification'));
+			$this->setDescription(BUGScontext::getI18n()->__('Enables email notification functionality'));
+			$this->setConfigDescription(BUGScontext::getI18n()->__('Set up email- and user notifications from this section'));
+			$this->setHasAccountSettings();
 			$this->addAvailableListener('core', 'user_registration', 'listen_registerUser', BUGScontext::getI18n()->__('Email when user registers'));
-			$this->addAvailableListener('core', 'forgotten_password', 'listen_forgottenPassword', BUGScontext::getI18n()->__('Email to reset password'));
+			$this->addAvailableListener('core', 'password_reset', 'listen_forgottenPassword', BUGScontext::getI18n()->__('Email to reset password'));
 			$this->addAvailableListener('core', 'viewissue_top', 'listen_issueTop', BUGScontext::getI18n()->__('Email when user registers'));
 			$this->addAvailableListener('core', 'login_middle', 'listen_loginMiddle', BUGScontext::getI18n()->__('Email to reset password'));
 			$this->addAvailableListener('core', 'password_reset', 'listen_passwordReset', BUGScontext::getI18n()->__('Email when password is reset'));
 			$this->addAvailableListener('core', 'BUGSIssue::update', 'listen_issueUpdate', BUGScontext::getI18n()->__('Email on issue update'));
 			$this->addAvailableListener('core', 'BUGSIssue::createNew', 'listen_issueCreate', BUGScontext::getI18n()->__('Email on new issues'));
 			$this->addAvailableListener('core', 'BUGSComment::createNew', 'listen_bugsComment_createNew', BUGScontext::getI18n()->__('Email when comments are posted'));
-			$this->enableListener('core', 'user_registration');
-			$this->enableListener('core', 'viewissue_top');
-			$this->enableListener('core', 'login_middle');
 
 			// No, I didn't forget the parameters, but what else would you call
 			// it when it's about retrieving a forgotten password?
@@ -37,28 +36,16 @@
 		
 		static public function install($scope = null)
 		{
-  			if ($scope === null)
-  			{
-  				$scope = BUGScontext::getScope()->getID();
-  			}
-			$module = parent::_install('mailnotification', 
-  									  'Mail notification', 
-  									  'Enables email notification functionality',
-  									  'BUGSmailnotification',
-  									  true, false, false,
-  									  '0.9',
-  									  true,
-  									  $scope);
+  			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			
+			$module = parent::_install('mailnotification', 'BUGSmailnotification', '1.0', true, false, false, $scope);
 								  
-			$module->setPermission(0, 0, 0, true, $scope);
 			$module->enableListener('core', 'user_registration', $scope);
-			$module->enableListener('core', 'forgotten_password', $scope);
+			$module->enableListener('core', 'login_middle', $scope);
 			$module->enableListener('core', 'password_reset', $scope);
 			$module->enableListener('core', 'BUGSIssue::update', $scope);
 			$module->enableListener('core', 'BUGSIssue::createNew', $scope);
 			$module->enableListener('core', 'BUGSComment::createNew', $scope);
-			$module->enableListener('core', 'account_settings', $scope);
-			$module->enableListener('core', 'account_settingslist', $scope);
 			$module->saveSetting('smtp_host', '');
 			$module->saveSetting('smtp_port', 25);
 			$module->saveSetting('smtp_user', '');
@@ -71,15 +58,11 @@
 			return true;
 		}
 		
-		public function uninstall($scope)
+		public function uninstall()
 		{
-			parent::uninstall($scope);
+			$this->_uninstall();
 		}
 					
-		public function getCommentAccess($target_type, $target_id, $type = 'view')
-		{
-		}		
-		
 		public function listen_accountSettingsList()
 		{
 			include_template('mailnotification/accountsettingslist');
@@ -114,7 +97,7 @@
 			$new_pwd = $vars[1];
 			$subject = BUGScontext::getI18n()->__('Password reset');
 			$message = BUGSaction::returnTemplateHTML('mailnotification/passwordreset', array('password' => $new_pwd));
-			$this->sendToUsers($to_users, $subject, $message);
+			$this->_sendToUsers($to_users, $subject, $message);
 		}
 		
 		public function sendforgottenPasswordEmail($user)
@@ -123,7 +106,7 @@
 			$subject = BUGScontext::getI18n()->__('Forgot your password?');
 			$html_message = BUGSaction::returnTemplateHTML('mailnotification/forgottenpassword.html');
 			$plain_message = BUGSaction::returnTemplateHTML('mailnotification/forgottenpassword.text');
-			$this->sendToUsers($to_users, $subject, $html_message, $plain_message);
+			$this->_sendToUsers($to_users, $subject, $html_message, $plain_message);
 		}
 		
 		public function listen_issueCreate(BUGSissue $issue)
@@ -134,11 +117,11 @@
 				$subject = BUGScontext::getI18n()->__('New issue reported: %issue_no% - %issue_title%', array('%issue_no%' => $issue->getFormattedIssueNo(false), '%issue_title%' => $issue->getTitle()));
 				$html_message = BUGSaction::returnTemplateHTML('mailnotification/issuecreate.html', array('issue' => $issue));
 				$plain_message = BUGSaction::returnTemplateHTML('mailnotification/issuecreate.text', array('issue' => $issue));
-				$this->sendToUsers($to_users, $subject, $html_message, $plain_message);
+				$this->_sendToUsers($to_users, $subject, $html_message, $plain_message);
 			}
 		}
 		
-		public function mustNotifyUserForIssue($issue_id, $user_id)
+		protected function _mustNotifyUserForIssue($issue_id, $user_id)
 		{
 			$dont_want_forced_notifications = $this->getSetting('hold_email_on_issue_update', $user_id);
 			if (!$dont_want_forced_notifications)
@@ -151,7 +134,7 @@
 			}
 		}
 		
-		public function sendToUsers($to_users, $subject, $orig_message_html, $orig_message_plain = null)
+		protected function _sendToUsers($to_users, $subject, $orig_message_html, $orig_message_plain = null)
 		{
 			foreach ($to_users as $user)
 			{
@@ -223,7 +206,7 @@
 				foreach ($to_users as &$a_user)
 				{
 					if (is_array($a_user) && isset($a_user['id'])) $a_user = $a_user['id'];
-					if ($this->mustNotifyUserForIssue($theIssue->getID(), $a_user))
+					if ($this->_mustNotifyUserForIssue($theIssue->getID(), $a_user))
 					{
 						if ($this->getSetting('hold_email_on_issue_update', $a_user) == 1)
 						{
@@ -244,7 +227,7 @@
 				$message .= '<br><br>You can open the issue by clicking the following link:<br><a href="%link_to_issue%' . $theIssue->getFormattedIssueNo(true) . '">%link_to_issue%' . $theIssue->getFormattedIssueNo(true) . '</a>';				
 	
 				$message = "<div style=\"font-family: \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-size: 11px; color: #646464;\">".$message."</div>";
-				$this->sendToUsers($to_users, $subject, $message);
+				$this->_sendToUsers($to_users, $subject, $message);
 			}
 		}
 		

@@ -6,108 +6,49 @@
 		public function __construct($m_id, $res = null)
 		{
 			parent::__construct($m_id, $res);
-			$this->_module_menu_title = BUGScontext::getI18n()->__("Calendar");
-			$this->_module_config_title = BUGScontext::getI18n()->__("Calendar");
-			$this->_module_config_description = BUGScontext::getI18n()->__('Configure the Calendar module in this section.');
-			$this->_module_version = "1.0";
-			if ($this->_enabled)
-			{
-				//B2DB::loadNewTable(new B2tCalendars());
-				//B2DB::loadNewTable(new B2tCalendarTasks());
-			}
+			$this->_module_version = '1.0';
+			$this->setLongName(BUGScontext::getI18n()->__('Calendar'));
+			$this->setMenuTitle(BUGScontext::getI18n()->__('Calendar'));
+			$this->setConfigTitle(BUGScontext::getI18n()->__('Calendar'));
+			$this->setDescription(BUGScontext::getI18n()->__('Enables calendars, todos and meetings'));
+			$this->setConfigDescription(BUGScontext::getI18n()->__('Configure the Calendar module in this section'));
+			$this->setHasAccountSettings();
 			$this->addAvailableListener('core', 'dashboard_left_top', 'section_calendarSummary', 'Dashboard calendar summary');
 			$this->addAvailableListener('core', 'BUGSUser::getState', 'section_bugsuser_getState', 'Automatic user-state change');
 		}
 
 		public function initialize()
 		{
-
 		}
 
-		public function getCommentAccess($target_type, $target_id, $type = 'view')
-		{
-			
-		}
-		
-		public function enableSection($module, $identifier, $scope)
-		{
-			$function_name = '';
-			switch ($module . '_' . $identifier)
-			{
-				case 'core_account_settingslist':
-					$function_name = 'section_accountSettingsList';
-					break;
-				case 'core_BUGSUser::getState':
-					$function_name = 'section_bugsuser_getState';
-					break;
-				case 'core_account_settings':
-					$function_name = 'section_accountSettings';
-					break;
-				case 'core_dashboard_left_top':
-					$function_name = 'section_calendarSummary';
-					break;
-			}
-			if ($function_name != '') parent::registerPermanentTriggerListener($module, $identifier, $function_name, $scope);
-		}
-		
 		static public function install($scope = null)
 		{
-  			if ($scope === null)
-  			{
-  				$scope = BUGScontext::getScope()->getID();
-  			}
-			$module = parent::_install('calendar', 
-  									  'Calendar', 
-  									  'Enables calendar, todo\'s and meetings',
-  									  'BUGScalendar',
-  									  true, false, true,
-  									  '1.0',
-  									  true,
-  									  $scope);
-
-			$module->setPermission(0, 0, 0, true, $scope);
-			$module->enableSection('core', 'dashboard_left_top', $scope);
-			$module->enableSection('core', 'account_settings', $scope);
-			$module->enableSection('core', 'account_settingslist', $scope);
-			$module->enableSection('core', 'BUGSUser::getState', $scope);
+  			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
 			
+			$module = parent::_install('calendar', 'BUGScalendar', '1.0', true, false, true, $scope);
+
+			$module->enableListener('core', 'dashboard_left_top', $scope);
+			$module->enableListener('core', 'account_settings', $scope);
+			$module->enableListener('core', 'account_settingslist', $scope);
+			$module->enableListener('core', 'BUGSUser::getState', $scope);
+			
+			$module->setPermission(0, 3, 0, false, $scope);
+
+			$module->saveSetting('weekstart', 1, 0, $scope);
+
 			if ($scope == BUGScontext::getScope()->getID())
 			{
-				$module->setPermission(0, 3, 0, false, $scope);
-				//B2DB::loadNewTable(new B2tCalendars());
-				//B2DB::loadNewTable(new B2tCalendarTasks());
 				B2DB::getTable('B2tCalendars')->create();
 				B2DB::getTable('B2tCalendarTasks')->create();
-			}
-			
-			try
-			{
-				self::loadFixtures($scope, $module);
-			}
-			catch (Exception $e)
-			{
-				throw $e;
 			}
 			
 		}
 		
 		public function uninstall($scope)
 		{
+			parent::uninstall($scope);
 			B2DB::getTable('B2tCalendars')->drop();
 			B2DB::getTable('B2tCalendarTasks')->drop();
-			parent::uninstall($scope);
-		}
-
-		static function loadFixtures($scope, $module)
-		{
-			try
-			{
-				$module->saveSetting('weekstart', 1);
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
 		}
 
 		/**

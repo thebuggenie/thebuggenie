@@ -78,5 +78,13 @@
 			$crit->addWhere(self::SCOPE, $scope);
 			$res = $this->doDelete($crit);
 		}
-		
+
+		public function removeAllModuleListeners($module_name, $scope)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::MODULE_NAME, $module_name);
+			$crit->addWhere(self::SCOPE, $scope);
+			$res = $this->doDelete($crit);
+		}
+
 	}

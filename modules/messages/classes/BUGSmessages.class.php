@@ -10,10 +10,13 @@
 		public function __construct($m_id, $res = null)
 		{
 			parent::__construct($m_id, $res);
-			$this->_module_menu_title = BUGScontext::getI18n()->__("Messages");
-			$this->_module_config_title = BUGScontext::getI18n()->__("Messages");
-			$this->_module_config_description = BUGScontext::getI18n()->__('Set up the messaging module from this section.');
-			$this->_module_version = "1.0";
+			$this->_module_version = '1.0';
+			$this->setLongName(BUGScontext::getI18n()->__('Messages'));
+			$this->setMenuTitle(BUGScontext::getI18n()->__('Messages'));
+			$this->setConfigTitle(BUGScontext::getI18n()->__('Messages'));
+			$this->setDescription(BUGScontext::getI18n()->__('Enables messaging functionality'));
+			$this->setConfigDescription(BUGScontext::getI18n()->__('Set up the messaging module from this section'));
+			$this->setHasAccountSettings();
 			$this->addAvailableListener('core', 'dashboard_left_top', 'section_messagesBox', 'Dashboard message summary');
 			$this->addAvailableListener('core', 'useractions_bottom', 'section_useractionsBottom', '"Send message" in user drop-down menu');
 			$this->addAvailableListener('core', 'teamactions_bottom', 'section_teamactionsBottom', '"Send message" in team drop-down menu');
@@ -26,26 +29,14 @@
 
 		static public function install($scope = null)
 		{
-  			if ($scope === null)
-  			{
-  				$scope = BUGScontext::getScope()->getID();
-  			}
-			$module = parent::_install('messages', 
-  									  'Messages', 
-  									  'Enables messaging functionality',
-  									  'BUGSmessages',
-  									  true, false, true,
-  									  '1.0',
-  									  true,
-  									  $scope);
+  			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			
+			$module = parent::_install('messages', 'BUGSmessages', '1.0', true, false, true, $scope);
 
-			$module->setPermission(0, 0, 0, true, $scope);
-			$module->enableSection('core', 'dashboard_left_top', $scope);
-			$module->enableSection('core', 'useractions_bottom', $scope);
-			$module->enableSection('core', 'teamactions_bottom', $scope);
-			$module->enableSection('core', 'account_settings', $scope);
-			$module->enableSection('core', 'account_settingslist', $scope);
-			$module->saveSetting('viewmode', 1);
+			$module->saveSetting('viewmode', 1, 0, $scope);
+			$module->enableListener('core', 'dashboard_left_top', $scope);
+			$module->enableListener('core', 'useractions_bottom', $scope);
+			$module->enableListener('core', 'teamactions_bottom', $scope);
 
 			if ($scope == BUGScontext::getScope()->getID())
 			{
@@ -53,28 +44,6 @@
 				B2DB::getTable('B2tMessageFolders')->create();
 				B2DB::getTable('B2tMessages')->create();
 			}
-			
-			try
-			{
-				self::loadFixtures($scope);
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-			
-		}
-		
-		static function loadFixtures($scope)
-		{
-			/*try
-			{
-				
-			}
-			catch (Exception $e)
-			{
-				
-			}*/
 		}
 		
 		public function uninstall($scope)
