@@ -24,7 +24,7 @@
 						<li<?php if ($bugs_response->getPage() == $module->getName()): ?> class="selected"<?php endif; ?>><?php echo link_tag(BUGScontext::getTBGPath() . "modules/" . $module->getName() . "/" . $module->getName().'.php', image_tag('tab_' . $module->getName() . '.png', array('style' => 'float: left;'), false, $module->getName()).$module->getMenuTitle()); ?></li>
 					<?php endif; ?>
 				<?php endforeach; ?>
-				<?php if (BUGScontext::getUser()->hasPermission("b2viewconfig")): ?>
+				<?php if (BUGScontext::getUser()->hasPermission("b2viewconfig", 0, 'core', true)): ?>
 					<li<?php if ($bugs_response->getPage() == 'config'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure'), image_tag('tab_config.png', array('style' => 'float: left;')).__('Configure')); ?></li>
 				<?php endif; ?>
 				<?php /*?><li<?php if ($bugs_response->getPage() == 'about'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('about'), image_tag('tab_about.png', array('style' => 'float: left;')).__('About')); ?></li> */ ?>

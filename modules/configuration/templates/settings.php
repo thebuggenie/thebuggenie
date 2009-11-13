@@ -23,7 +23,7 @@
 		<li class="selected" id="tab_general_settings"><a onclick="switchTab('general');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General'); ?></a></li>
 		<li id="tab_server_settings"><a onclick="switchTab('server');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_server.png', array('style' => 'float: left;')).__('Server'); ?></a></li>
 		<li id="tab_reglang_settings"><a onclick="switchTab('reglang');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_reglang.png', array('style' => 'float: left;')).__('Regional &amp; language'); ?></a></li>
-		<li id="tab_user_settings"><a onclick="switchTab('user');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('User'); ?></a></li>
+		<li id="tab_user_settings"><a onclick="switchTab('user');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Users &amp; security'); ?></a></li>
 	</ul>
 </div>
 <div id="general_settings"><?php include_template('general', array('access_level' => $access_level, 'themes' => $themes)); ?></div>

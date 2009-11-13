@@ -386,7 +386,7 @@
 
 		public function setConfigDescription($description)
 		{
-			$this->_module_config_description;
+			$this->_module_config_description = $description;
 		}
 		
 		public function getConfigDescription()

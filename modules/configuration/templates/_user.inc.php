@@ -39,6 +39,18 @@
 		<td class="config_explanation" colspan="2"><?php echo __('Select if the default user is a guest user or a normal user'); ?></td>
 	</tr>
 	<tr>
+		<td><label for="permissive"><?php echo __('Security policy'); ?></label></td>
+		<td>
+			<select name="permissive" id="permissive" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
+				<option value=1<?php if (BUGSsettings::isPermissive()): ?> selected<?php endif; ?>><?php echo __('Permissive'); ?></option>
+				<option value=0<?php if (!BUGSsettings::isPermissive()): ?> selected<?php endif; ?>><?php echo __('Restrictive'); ?></option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="config_explanation" colspan="2"><?php echo __('Whether to assume you have access / are restricted as default'); ?></td>
+	</tr>
+	<tr>
 		<td><label for="allowreg"><?php echo __('New user accounts'); ?></label></td>
 		<td>
 			<select name="allowreg" id="allowreg" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>

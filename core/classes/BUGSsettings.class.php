@@ -483,4 +483,9 @@
 			self::deleteSetting('hide_infobox_' . $key, 'core', '', BUGScontext::getScope()->getID(), BUGScontext::getUser()->getID());
 		}
 
+		public static function isPermissive()
+		{
+			return (bool) self::get('permissive');
+		}
+
 	}

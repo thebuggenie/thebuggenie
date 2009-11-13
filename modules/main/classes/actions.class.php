@@ -212,7 +212,7 @@
 				}
 				elseif (BUGScontext::hasMessage('forward'))
 				{
-					$this->login_error = BUGScontext::getMessageAndClear();
+					$this->login_error = BUGScontext::getMessageAndClear('forward');
 				}
 			}
 			catch (Exception $e)

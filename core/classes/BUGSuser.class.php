@@ -533,7 +533,7 @@
 		{
 			if (count($this->teams) == 0)
 			{
-				$this->populateTeams();
+				$this->_populateTeams();
 			}
 			if ($teamid != 0)
 			{
@@ -546,7 +546,7 @@
 		 * Populates team array when needed
 		 *
 		 */
-		protected function populateTeams()
+		protected function _populateTeams()
 		{
 			$this->teams = array();
 			$crit = new B2DBCriteria();
@@ -557,7 +557,7 @@
 				$res = B2DB::getTable('B2tTeamMembers')->doSelect($crit);
 				while ($row = $res->getNextRow())
 				{
-					$this->teams[] = BUGSfactory::teamLab($row->get(B2tTeams::ID), $row);
+					$this->teams[$row->get(B2tTeams::ID)] = BUGSfactory::teamLab($row->get(B2tTeams::ID), $row);
 				}
 			}
 		}
@@ -947,7 +947,7 @@
 		{
 			if ($this->teams === null)
 			{
-				$this->populateTeams();
+				$this->_populateTeams();
 			}
 			return $this->teams;
 		}
@@ -1302,9 +1302,9 @@
 			return $retarr;
 		}
 	
-		public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $uid = null, $gid = null, $tid = null, $all = null)
+		public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $explicit = false)
 		{
-			return BUGScontext::checkPermission($permission_type, $target_id, $module_name, $uid, $gid, $tid, $all);
+			return BUGScontext::checkPermission($permission_type, $this->getID(), $this->getGroup()->getID(), $this->getTeams(), $target_id, $module_name, $explicit);
 		}
 		
 		public function hasModuleAccess($module)

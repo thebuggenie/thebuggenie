@@ -14,8 +14,8 @@
 		public function preExecute($request, $action)
 		{
 			// forward 403 if you're not allowed here
-			$this->forward403unless(BUGScontext::getUser()->hasPermission("b2saveconfig") ||
-									BUGScontext::getUser()->hasPermission("b2viewconfig"));
+			$this->forward403unless(BUGScontext::getUser()->hasPermission("b2saveconfig", 0, 'core', true) ||
+									BUGScontext::getUser()->hasPermission("b2viewconfig", 0, 'core', true));
 			
 			$this->access_level = $this->getAccessLevel($request->getParameter('section'), 'core');
 			
@@ -67,7 +67,7 @@
 			if (BUGScontext::getRequest()->isMethod(BUGSrequest::POST))
 			{
 				$settings = array('theme_name', 'user_themes', 'onlinestate', 'offlinestate', 'awaystate', 'singleprojecttracker',
-									'requirelogin', 'allowreg', 'defaultgroup', 'returnfromlogin', 'returnfromlogout', 
+									'requirelogin', 'allowreg', 'defaultgroup', 'returnfromlogin', 'returnfromlogout', 'permissive',
 									'showloginbox', 'limit_registration', 'showprojectsoverview', 'showprojectsoverview', 
 									'cleancomments', 'b2_name', 'b2_tagline', 'url_subdir', 'local_path', 'server_timezone');
 				

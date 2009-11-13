@@ -905,7 +905,19 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					self::$_permissions[] = array('module_name' => $row->get(B2tPermissions::MODULE), 'permission_type' => $row->get(B2tPermissions::PERMISSION_TYPE), 'target_id' => $row->get(B2tPermissions::TARGET_ID), 'uid' => $row->get(B2tPermissions::UID), 'gid' => $row->get(B2tPermissions::GID), 'tid' => $row->get(B2tPermissions::TID), 'allowed' => ($row->get(B2tPermissions::ALLOWED) == 0) ? false : true);
+					if (!array_key_exists($row->get(B2tPermissions::MODULE), self::$_permissions))
+					{
+						self::$_permissions[$row->get(B2tPermissions::MODULE)] = array();
+					}
+					if (!array_key_exists($row->get(B2tPermissions::PERMISSION_TYPE), self::$_permissions[$row->get(B2tPermissions::MODULE)]))
+					{
+						self::$_permissions[$row->get(B2tPermissions::MODULE)][$row->get(B2tPermissions::PERMISSION_TYPE)] = array();
+					}
+					if (!array_key_exists($row->get(B2tPermissions::TARGET_ID), self::$_permissions[$row->get(B2tPermissions::MODULE)][$row->get(B2tPermissions::PERMISSION_TYPE)]))
+					{
+						self::$_permissions[$row->get(B2tPermissions::MODULE)][$row->get(B2tPermissions::PERMISSION_TYPE)][$row->get(B2tPermissions::TARGET_ID)] = array();
+					}
+					self::$_permissions[$row->get(B2tPermissions::MODULE)][$row->get(B2tPermissions::PERMISSION_TYPE)][$row->get(B2tPermissions::TARGET_ID)][] = array('uid' => $row->get(B2tPermissions::UID), 'gid' => $row->get(B2tPermissions::GID), 'tid' => $row->get(B2tPermissions::TID), 'allowed' => (bool) $row->get(B2tPermissions::ALLOWED));
 				}
 			}
 			BUGSlogging::log('done (starting to cache access permissions)');
@@ -913,12 +925,9 @@
 
 		public static function deleteModulePermissions($module_name)
 		{
-			foreach (self::$_permissions as $key => $values)
+			if (array_key_exists($module_name, self::$_permissions))
 			{
-				if ($values['module_name'] == $module_name)
-				{
-					unset(self::$_permissions[$key]);
-				}
+				unset(self::$_permissions[$module_name]);
 			}
 			B2DB::getTable('B2tPermissions')->deleteModulePermissions($module_name, self::getScope()->getID());
 		}
@@ -982,87 +991,67 @@
 		 * @param string $permission_type The permission type 
 		 * @param mixed $target_id The target id
 		 * @param string $module_name The name of the module for which the permission is valid
-		 * @param integer $uid The user id for which the permission is valid, 0 for none
-		 * @param integer $gid The group id for which the permission is valid, 0 for none
-		 * @param integer $tid The team id for which the permission is valid, 0 for none
+		 * @param integer $uid The user id for which the permission is valid, 0 for all
+		 * @param integer $gid The group id for which the permission is valid, 0 for all
+		 * @param integer $tid The team id for which the permission is valid, 0 for all
 		 * @param $all
 		 * @return unknown_type
 		 */
-		public static function checkPermission($permission_type, $target_id = 0, $module_name = 'core', $uid = null, $gid = null, $tid = null, $all = null)
+		public static function checkPermission($permission_type, $uid, $gid, $tid, $target_id = 0, $module_name = 'core', $explicit = false)
 		{
-			$debug = false;
-			if ($all === null || $all == 0)
+			if (array_key_exists($module_name, self::$_permissions) &&
+				array_key_exists($permission_type, self::$_permissions[$module_name]) &&
+				array_key_exists($target_id, self::$_permissions[$module_name][$permission_type]))
 			{
-				$uid = ($uid === null) ? self::getUser()->getUID() : $uid;
-				$tid = ($tid === null) ? self::getUser()->getTeams() : $tid;
-				if (self::getUser()->getGroup() instanceof BUGSgroup)
+				if ($uid != 0 || $gid != 0 && $tid != 0)
 				{
-					$gid = ($gid === null) ? self::getUser()->getGroup()->getID() : $gid;
-				}
-				
-				echo ($debug) ? 'checking ' . $permission_type . ', target: ' . $target_id : '';
-				foreach (self::$_permissions as $aPerm)
-				{
-					if ($aPerm['permission_type'] == $permission_type && $aPerm['target_id'] == $target_id && $aPerm['module_name'] == $module_name)
+					if ($uid != 0)
 					{
-						echo ($debug) ? '<br>' : '';
-						echo ($debug) ? 'hit: ' . $permission_type . ', u:' . $uid . '?' . $aPerm['uid'] . ', g:' . $gid . '?' . $aPerm['gid'] . ', t:' . $tid . '?' . $aPerm['tid'] : '';
-						if ($aPerm['uid'] == $uid && $uid != 0)
+						foreach (self::$_permissions[$module_name][$permission_type][$target_id] as $permission)
 						{
-							echo ($debug) ? 'returnfromuid: ' . var_dump($aPerm['allowed']) : '';
-							echo ($debug) ? '<br>' : '';
-							return $aPerm['allowed'];
+							if ($permission['uid'] == $uid)
+							{
+								return $permission['allowed'];
+							}
+						}
+					}
+
+					if (is_array($tid) || $tid != 0)
+					{
+						foreach (self::$_permissions[$module_name][$permission_type][$target_id] as $permission)
+						{
+							if ((is_array($tid) && in_array($permission['tid'], array_keys($tid))) || $permission['tid'] == $tid)
+							{
+								return $permission['allowed'];
+							}
+						}
+					}
+
+					if ($gid != 0)
+					{
+						foreach (self::$_permissions[$module_name][$permission_type][$target_id] as $permission)
+						{
+							if ($permission['gid'] == $gid)
+							{
+								return $permission['allowed'];
+							}
 						}
 					}
 				}
-				
-				foreach (self::$_permissions as $aPerm)
+
+				foreach (self::$_permissions[$module_name][$permission_type][$target_id] as $permission)
 				{
-					if ($aPerm['permission_type'] == $permission_type && $aPerm['target_id'] == $target_id && $aPerm['module_name'] == $module_name)
+					if ($permission['uid'] + $permission['gid'] + $permission['tid'] == 0)
 					{
-						echo ($debug) ? '<br>' : '';
-						echo ($debug) ? 'hit: ' . $permission_type . ', u:' . $uid . '?' . $aPerm['uid'] . ', g:' . $gid . '?' . $aPerm['gid'] . ', t:' . $tid . '?' . $aPerm['tid'] : '';
-						if (((is_array($tid) && in_array($aPerm['tid'], $tid)) || (is_array($tid) == false && $aPerm['tid'] == $tid)) && $tid != 0)
-						{
-							echo ($debug) ? 'returnfromtid: ' . var_dump($aPerm['allowed']) : '';
-							echo ($debug) ? '<br>' : '';
-							return $aPerm['allowed'];
-						}
+						return $permission['allowed'];
 					}
 				}
-	
-				foreach (self::$_permissions as $aPerm)
-				{
-					if ($aPerm['permission_type'] == $permission_type && $aPerm['target_id'] == $target_id && $aPerm['module_name'] == $module_name)
-					{
-						echo ($debug) ? '<br>' : '';
-						echo ($debug) ? 'hit: ' . $permission_type . ', u:' . $uid . '?' . $aPerm['uid'] . ', g:' . $gid . '?' . $aPerm['gid'] . ', t:' . $tid . '?' . $aPerm['tid'] : '';
-						if ($aPerm['gid'] == $gid && $gid != 0)
-						{
-							echo ($debug) ? 'returnfromgid: ' . var_dump($aPerm['allowed']) : '';
-							echo ($debug) ? '<br>' : '';
-							return $aPerm['allowed'];
-						}
-					}
-				}
+
 			}
+
+			if ($explicit) return false;
 			
-			foreach (self::$_permissions as $aPerm)
-			{
-				if ($aPerm['permission_type'] == $permission_type && $aPerm['target_id'] == $target_id && $aPerm['module_name'] == $module_name && ($aPerm['uid'] + $aPerm['gid'] + $aPerm['tid']) == 0)
-				{
-					echo ($debug) ? '<br>' : '';
-					echo ($debug) ? 'checking ' . $permission_type . ', target: ' . $target_id : '';
-					echo ($debug) ? '<br>' : '';
-					echo ($debug) ? 'returnfromfail: ' . $aPerm['allowed'] : '';
-					echo ($debug) ? '<br>' : '';
-					return $aPerm['allowed'];
-				}
-			}
-			echo ($debug) ? 'checking ' . $permission_type . ', target: ' . $target_id : '';
-			echo ($debug) ? '<br>' : '';
-			echo ($debug) ? 'returnfromnothing: ' . false : '';
-			return false;
+			return BUGSsettings::isPermissive();
 		}
 		
 		protected static function _cacheAvailablePermissions()
