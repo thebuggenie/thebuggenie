@@ -17,7 +17,7 @@
 			$this->setDescription(BUGScontext::getI18n()->__('Enables messaging functionality'));
 			$this->setConfigDescription(BUGScontext::getI18n()->__('Set up the messaging module from this section'));
 			$this->setHasAccountSettings();
-			$this->addAvailableListener('core', 'dashboard_left_top', 'section_messagesBox', 'Dashboard message summary');
+			$this->addAvailableListener('core', 'dashboard_left_top', 'section_messagesSummary', 'Dashboard message summary');
 			$this->addAvailableListener('core', 'useractions_bottom', 'section_useractionsBottom', '"Send message" in user drop-down menu');
 			$this->addAvailableListener('core', 'teamactions_bottom', 'section_teamactionsBottom', '"Send message" in team drop-down menu');
 		}
