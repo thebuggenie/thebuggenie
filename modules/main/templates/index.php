@@ -44,28 +44,28 @@
 				BUGScontext::trigger('core', 'index_right_middle_top');
 				
 			?>
-			<div class="project_overview">
-				<div class="header"><?php echo __('Projects'); ?></div>
-				<?php if (BUGSsettings::isProjectOverviewEnabled()): ?>
-					<?php if (count(BUGSproject::getAll()) > 0): ?>
-						<ul class="project_list">
-						<?php foreach (BUGSproject::getAll() as $aProject): ?>
-							<li><?php include_component('project/overview', array('project' => $aProject)); ?></li>
-						<?php endforeach; ?>
-						</ul>
-					<?php else: ?>
-						<p class="content"><?php echo __('There are no projects'); ?>.
-							<?php if ($bugs_user->hasPermission("b2saveconfig", 10, "core")): ?>
-								<br>
-								<?php echo image_tag('cfg_icon_projects.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-								<b><?php echo link_tag(make_url('configure_projects'), __('Click here to go to project management'), array('target' => '_blank')); ?></b>
-							<?php else: ?>
-								<?php echo __('Projects can only be created by an administrator'); ?>.
-							<?php endif; ?>
-						</p>
-					<?php endif; ?>
-				<?php endif; ?>
-			</div>
+			<?php if (BUGSsettings::isProjectOverviewEnabled()): ?>
+				<div class="project_overview">
+					<div class="header"><?php echo __('Projects'); ?></div>
+						<?php if (count(BUGSproject::getAll()) > 0): ?>
+							<ul class="project_list">
+							<?php foreach (BUGSproject::getAll() as $aProject): ?>
+								<li><?php include_component('project/overview', array('project' => $aProject)); ?></li>
+							<?php endforeach; ?>
+							</ul>
+						<?php else: ?>
+							<p class="content"><?php echo __('There are no projects'); ?>.
+								<?php if ($bugs_user->hasPermission("b2saveconfig", 10, "core")): ?>
+									<br>
+									<?php echo image_tag('cfg_icon_projects.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+									<b><?php echo link_tag(make_url('configure_projects'), __('Click here to go to project management'), array('target' => '_blank')); ?></b>
+								<?php else: ?>
+									<?php echo __('Projects can only be created by an administrator'); ?>.
+								<?php endif; ?>
+							</p>
+						<?php endif; ?>
+				</div>
+			<?php endif; ?>
 			<?php 
 			
 				BUGScontext::trigger('core', 'index_right_middle_bottom');
