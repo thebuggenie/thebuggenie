@@ -5,7 +5,7 @@
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 <tr>
-<?php include_template('config_leftmenu', array('selected_section' => 10)); ?>
+<?php include_component('configleftmenu', array('selected_section' => 10)); ?>
 <td valign="top">
 <script type="text/javascript" src="<?php echo BUGScontext::getTBGPath(); ?>js/config/projects_ajax.js"></script>
 	<table style="width: 100%" cellpadding=0 cellspacing=0>

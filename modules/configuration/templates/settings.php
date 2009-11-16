@@ -6,7 +6,7 @@
 <script type="text/javascript" src="<?php echo BUGScontext::getTBGPath(); ?>js/config/settings.js"></script>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 <tr>
-<?php include_template('config_leftmenu', array('selected_section' => 12)); ?>
+<?php include_component('configleftmenu', array('selected_section' => 12)); ?>
 <td valign="top">
 <div class="configheader" style="width: 750px;"><?php echo __('Configure settings'); ?></div>
 <p style="padding-top: 5px;"><?php echo __('This section lets you configure all of the different settings in The Bug Genie'); ?>.<br>

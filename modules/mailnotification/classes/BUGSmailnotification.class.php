@@ -16,6 +16,7 @@
 			$this->setDescription(BUGScontext::getI18n()->__('Enables email notification functionality'));
 			$this->setConfigDescription(BUGScontext::getI18n()->__('Set up email- and user notifications from this section'));
 			$this->setHasAccountSettings();
+			$this->setHasConfigSettings();
 			$this->addAvailableListener('core', 'user_registration', 'listen_registerUser', BUGScontext::getI18n()->__('Email when user registers'));
 			$this->addAvailableListener('core', 'password_reset', 'listen_forgottenPassword', BUGScontext::getI18n()->__('Email to reset password'));
 			$this->addAvailableListener('core', 'viewissue_top', 'listen_issueTop', BUGScontext::getI18n()->__('Email when user registers'));
@@ -40,12 +41,12 @@
 			
 			$module = parent::_install('mailnotification', 'BUGSmailnotification', '1.0', true, false, false, $scope);
 								  
-			$module->enableListener('core', 'user_registration', $scope);
-			$module->enableListener('core', 'login_middle', $scope);
-			$module->enableListener('core', 'password_reset', $scope);
-			$module->enableListener('core', 'BUGSIssue::update', $scope);
-			$module->enableListener('core', 'BUGSIssue::createNew', $scope);
-			$module->enableListener('core', 'BUGSComment::createNew', $scope);
+			$module->enableListenerSaved('core', 'user_registration', $scope);
+			$module->enableListenerSaved('core', 'login_middle', $scope);
+			$module->enableListenerSaved('core', 'password_reset', $scope);
+			$module->enableListenerSaved('core', 'BUGSIssue::update', $scope);
+			$module->enableListenerSaved('core', 'BUGSIssue::createNew', $scope);
+			$module->enableListenerSaved('core', 'BUGSComment::createNew', $scope);
 			$module->saveSetting('smtp_host', '');
 			$module->saveSetting('smtp_port', 25);
 			$module->saveSetting('smtp_user', '');

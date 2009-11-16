@@ -12,7 +12,7 @@
 			$this->setConfigTitle(BUGScontext::getI18n()->__('News &amp; Articles'));
 			$this->setDescription(BUGScontext::getI18n()->__('Enables articles, news and billboards'));
 			$this->setConfigDescription(BUGScontext::getI18n()->__('Set up the News &amp; Articles module from this section'));
-			
+			$this->setHasConfigSettings();
 			$this->addAvailablePermission('article_management', 'Can create and manage articles');
 			$this->addAvailablePermission('manage_billboard', 'Can delete billboard posts');
 			$this->addAvailablePermission('publish_postonglobalbillboard', 'Can post articles on global billboard');
@@ -39,8 +39,8 @@
 			$module->saveSetting('enablebillboards', 1);
 			$module->saveSetting('enableteambillboards', 1);
 			$module->saveSetting('featured_article', 1);
-			$module->enableListener('core', 'index_left_middle');
-			$module->enableListener('core', 'index_right_middle');
+			$module->enableListenerSaved('core', 'index_left_middle');
+			$module->enableListenerSaved('core', 'index_right_middle');
   									  
 			if ($scope == BUGScontext::getScope()->getID())
 			{
@@ -57,7 +57,8 @@
 			{
 				throw $e;
 			}
-			
+
+			return true;
 		}
 		
 		static function loadFixtures($scope)
@@ -73,11 +74,14 @@
 			}
 		}
 		
-		public function uninstall($scope)
+		public function uninstall()
 		{
-			B2DB::getTable('B2tArticles')->drop();
-			B2DB::getTable('B2tBillboardPosts')->drop();
-			parent::uninstall($scope);
+			if (BUGScontext::getScope()->getID() == 1)
+			{
+				B2DB::getTable('B2tArticles')->drop();
+				B2DB::getTable('B2tBillboardPosts')->drop();
+			}
+			parent::_uninstall();
 		}
 		
 		public function getBillboardPosts($target_board = 0, $posts = 5)

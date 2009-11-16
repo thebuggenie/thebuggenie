@@ -37,6 +37,7 @@
 		protected $_settings = array();
 		protected $_routes = array();
 		protected $_has_account_settings = false;
+		protected $_has_config_settings = false;
 		
 		static protected $_permissions = array();
 		
@@ -115,13 +116,15 @@
 			B2DB::getTable('B2tModules')->doUpdateById($crit, $this->getID());
 			$this->_showinusermenu = false;
 		}
+
+		abstract public function uninstall();
 		
 		protected function _uninstall()
 		{
 			$scope = BUGScontext::getScope()->getID();
 			B2DB::getTable('B2tModules')->doDeleteById($this->getID());
 			B2DB::getTable('B2tEnabledModuleListeners')->removeAllModuleListeners($this->getName(), $scope);
-			BUGSsettings::deleteModuleSettings($module_name);
+			BUGSsettings::deleteModuleSettings($this->getName());
 			BUGScontext::deleteModulePermissions($this->getName());
 		}
 		
@@ -370,8 +373,13 @@
 					BUGScontext::listenToTrigger($module, $identifier, array($this, $listener['callback_function']));
 					$listener['enabled'] = true;
 				}
-				B2DB::getTable('B2tEnabledModuleListeners')->savePermanentListener($module, $identifier, $this->getName(), $scope);
 			}
+		}
+
+		public function enableListenerSaved($module, $identifier, $scope = null)
+		{
+			$this->enableListener($module, $identifier, $scope);
+			B2DB::getTable('B2tEnabledModuleListeners')->savePermanentListener($module, $identifier, $this->getName(), $scope);
 		}
 
 		public function setConfigTitle($title)
@@ -573,5 +581,15 @@
 		{
 			return $this->_has_account_settings;
 		}
-		
+
+		public function setHasConfigSettings($val = true)
+		{
+			$this->_has_config_settings = (bool) $val;
+		}
+
+		public function hasConfigSettings()
+		{
+			return $this->_has_config_settings;
+		}
+
 	}

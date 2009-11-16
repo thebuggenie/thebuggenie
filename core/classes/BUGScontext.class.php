@@ -552,7 +552,7 @@
 		 */
 		static public function getThemes()
 		{
-			$theme_path = BUGSsettings::get('local_path') . 'themes/';
+			$theme_path = self::getIncludePath() . 'thebuggenie/themes/';
 			$theme_path_handle = opendir($theme_path);
 			$themes = array();
 			while ($theme = readdir($theme_path_handle))
@@ -729,6 +729,27 @@
 		public static function getModules()
 		{
 			return self::$_modules;
+		}
+
+		/**
+		 * Get uninstalled modules
+		 *
+		 * @return array
+		 */
+		static public function getUninstalledModules()
+		{
+			$module_path = self::getIncludePath() . 'modules/';
+			$module_path_handle = opendir($module_path);
+			$modules = array();
+			while ($module_name = readdir($module_path_handle))
+			{
+				if (is_dir($module_path . $module_name) && file_exists($module_path . $module_name . '/module'))
+				{
+					if (self::isModuleLoaded($module_name)) continue;
+					$modules[$module_name] = file_get_contents($module_path . $module_name . '/module');
+				}
+			}
+			return $modules;
 		}
 		
 		/**
@@ -1058,13 +1079,26 @@
 		{
 			if (self::$_available_permissions === null)
 			{
-				self::$_available_permissions = array();
-				$res = B2DB::getTable('B2tPermissionsList')->getAll();
-				while ($row = $res->getNextRow())
-				{
-					self::$_available_permissions[$row->get(B2tPermissionsList::APPLIES_TO)][] = array('permission_name' => $row->get(B2tPermissionsList::PERMISSION_NAME), 'description' => $row->get(B2tPermissionsList::DESCRIPTION), 'levels' => $row->get(B2tPermissionsList::LEVELS));
-				}
-			}			
+				$i18n = self::getI18n();
+				self::$_available_permissions = array('user' => array(), 'general' => array(), 'project' => array());
+
+				self::$_available_permissions['user']['b2canonlyviewownissues'] = array('description' => $i18n->__('Can only view issues reported by the user'), 'levels' => 2);
+				self::$_available_permissions['general']['b2canreadallcomments'] = array('description' => $i18n->__('Can view comments that are not public'), 'levels' => 2);
+				self::$_available_permissions['general']['b2addlinks'] = array('description' => $i18n->__('Can add links to issue reports'), 'levels' => 2);
+				self::$_available_permissions['general']['b2uploadfiles'] = array('description' => $i18n->__('Can add files to issues reported by the user'), 'levels' => 2);
+				self::$_available_permissions['general']['b2canfindissues'] = array('description' => $i18n->__('Can search for issues '), 'levels' => 2);
+				self::$_available_permissions['general']['b2canvote'] = array('description' => $i18n->__('Can vote for issues'), 'levels' => 2);
+				self::$_available_permissions['general']['b2candeleteissues'] = array('description' => $i18n->__('Can delete issues'), 'levels' => 2);
+				self::$_available_permissions['project']['b2caneditissuefields'] = array('description' => $i18n->__('Can update issue details'), 'levels' => 2);
+				self::$_available_permissions['project']['b2caneditissueusers'] = array('description' => $i18n->__('Can assign issues'), 'levels' => 2);
+				self::$_available_permissions['project']['b2caneditissuetext'] = array('description' => $i18n->__('Can edit issue text'), 'levels' => 2);
+				self::$_available_permissions['project']['b2caneditcomments'] = array('description' => $i18n->__('Can edit comments'), 'levels' => 4);
+				self::$_available_permissions['project']['b2canaddcomments'] = array('description' => $i18n->__('Can add comments'), 'levels' => 4);
+				self::$_available_permissions['project']['b2canviewcomments'] = array('description' => $i18n->__('Can view comments'), 'levels' => 4);
+				self::$_available_permissions['project']['b2canaddbuilds'] = array('description' => $i18n->__('Can add versions to list of affected versions'), 'levels' => 2);
+				self::$_available_permissions['project']['b2canaddcomponents'] = array('description' => $i18n->__('Can add components to list of affected components'), 'levels' => 2);
+				self::$_available_permissions['project']['b2canaddeditions'] = array('description' => $i18n->__('Can add editions to list of affected editions'), 'levels' => 2);
+			}
 		}
 		
 		/**
@@ -1108,100 +1142,34 @@
 		{
 			if ($scope !== null)
 			{
-				BUGSlogging::log("\t\tSetting scope from function parameter");
+				BUGSlogging::log("Setting scope from function parameter");
 				$theScope = BUGSfactory::scopeLab((int) $scope);
-				//$_SESSION['b2_scope'] = (int) $scope;
 				self::$_scope = $theScope;
-				BUGSlogging::log("\t\t...done");
+				BUGSlogging::log("...done (Setting scope from function parameter)");
 				return true;
 			}
 	
 			try
 			{
 				$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http://' : 'https://';
-				BUGSlogging::log("\t\tChecking if scope can be set from hostname (".$hostprefix.$_SERVER['HTTP_HOST'].")");
+				BUGSlogging::log("Checking if scope can be set from hostname (".$hostprefix.$_SERVER['HTTP_HOST'].")");
 				$row = B2DB::getTable('B2tScopes')->getByHostname($hostprefix . $_SERVER['HTTP_HOST']);
 				if ($row instanceof B2DBRow)
 				{
-					BUGSlogging::log("\t\tIt could");
-					BUGSlogging::log("\t\tSetting scope from hostname");
+					BUGSlogging::log("It could");
+					BUGSlogging::log("Setting scope from hostname");
 					$theScope = BUGSfactory::scopeLab($row->get(B2tScopes::ID), $row);
-					//$_SESSION['b2_scope'] = $theScope->getID();
 					self::$_scope = $theScope;
-					BUGSlogging::log("\t\t...done");
+					BUGSlogging::log("...done (Setting scope from hostname)");
 					return true;
 				}
-				BUGSlogging::log("\t\tIt couldn't");
-			}
-			catch (Exception $e) { }
-	
-			/*if (isset($_REQUEST['scope']))
-			{
-				BUGSlogging::log("\t\tSetting scope from request parameter");
-				try
-				{
-					$theScope = BUGSfactory::scopeLab($_REQUEST['scope']);
-					$_SESSION['b2_scope'] = $theScope->getID();
-					self::$_scope = $theScope;
-					BUGSlogging::log("\t\t...done");
-					return true;
-				}
-				catch (Exception $e) { die($e); }
-			}
-			
-			if (isset($_REQUEST['issue_no']))
-			{
-				BUGSlogging::log("\t\tSetting scope from requested issue");
-				try
-				{
-					$theIssue = new BUGSissue(BUGSissue::getIssueIDfromLink($_REQUEST['issue_no']));
-					$_SESSION['b2_scope'] = $theIssue->getScope()->getID();
-					self::$_scope = $theIssue->getScope();
-					BUGSlogging::log("\t\t...done");
-					return true;
-				}
-				catch (Exception $e) 
-				{ 
-					BUGSlogging::log("\t\tCouldn't find a valid issue");
-				}
-			}*/
-	
-			/*if (isset($_SESSION['b2_scope']) && $_SESSION['b2_scope'] != "")
-			{
-				BUGSlogging::log("\t\tSetting scope from session");
-				try
-				{
-					$theScope = BUGSfactory::scopeLab($_SESSION['b2_scope']);
-					$_SESSION['b2_scope'] = $theScope->getID();
-					self::$_scope = $theScope;
-					BUGSlogging::log("\t\t...done");
-					return true;
-				}
-				catch (Exception $e) 
-				{ 
-					BUGSlogging::log("\t\tOops, couldn't set scope from session");
-				}
-			}*/
-
-			BUGSlogging::log("\t\tMust ... get ... default ... scope");
-			try
-			{
-				BUGSlogging::log("\t\tSetting scope to default scope");
-				$theScope = BUGSsettings::getDefaultScope();
-				if (!$theScope instanceof BUGSscope)
-				{
-					throw new Exception('');
-				}
-				$_SESSION['b2_scope'] = $theScope->getID();
-				self::$_scope = $theScope;
-				BUGSlogging::log("\t\t...done");
-				return true;
+				BUGSlogging::log("It couldn't", 'main', BUGSlogging::LEVEL_WARNING);
 			}
 			catch (Exception $e)
 			{
-				BUGSlogging::log("\t\tCouldn't find a default scope");
-				echo $e->getMessage();
-				throw new Exception('Could not load default scope. This is usually because the fixtures has not been added correctly.');
+				BUGSlogging::log("Couldn't find a scope for hostname ".$hostprefix . $_SERVER['HTTP_HOST'], 'main', BUGSlogging::LEVEL_FATAL);
+				BUGSlogging::log($e->getMessage(), 'main', BUGSlogging::LEVEL_FATAL);
+				throw new Exception("Could not load scope. This is usually because the scopes table doesn't have a scope for this hostname");
 			}
 		}
 
@@ -1393,9 +1361,9 @@
 					}
 
 					// Running main route action
+					BUGSlogging::log('Running route action '.$actionToRunName.'()');
 					if (self::getResponse()->getHttpStatus() == 200 && ($action_retval = $actionObject->$actionToRunName(self::getRequest())))
 					{
-						BUGSlogging::log('Running route action '.$actionToRunName.'()');
 						// If the action returns *any* output, we're done, and collect the
 						// output to a variable to be outputted in context later
 						$content = ob_get_clean();

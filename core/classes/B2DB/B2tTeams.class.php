@@ -31,5 +31,25 @@
 			parent::_addVarchar(self::TEAMNAME, 50);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
+
+		public function loadFixtures($scope_id)
+		{
+			$i18n = BUGScontext::getI18n();
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(B2tTeams::TEAMNAME, $i18n->__('Staff members'));
+			$crit->addInsert(B2tTeams::SCOPE, $scope_id);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(B2tTeams::TEAMNAME, $i18n->__('Developers'));
+			$crit->addInsert(B2tTeams::SCOPE, $scope_id);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(B2tTeams::TEAMNAME, $i18n->__('Team leaders'));
+			$crit->addInsert(B2tTeams::SCOPE, $scope_id);
+			$this->doInsert($crit);
+		}
 		
 	}

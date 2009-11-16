@@ -125,7 +125,7 @@ div.autocomplete ul li:first-line
 }
 
 input[type="text"], input[type="password"] { font-size: 13px; padding: 2px; }
-select { font-size: 12px; padding: 2px; height: 22px; }
+select { font-size: 13px; padding: 2px; height: 22px; }
 
 TEXTAREA
 {
@@ -1229,10 +1229,6 @@ li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 .iceblue_borderless .issue_detail_unmerged { background-color: #E0AC9C; }
 .iceblue_borderless .issue_detail_unmerged .faded_medium { color: #FFD9D6; }
 
-.white .xb2, .white .xb3, .white .xb4 { background-color: #FFF; border-color: #CCC; }
-.white .xb1 { background-color: #CCC; }
-.white .xboxcontent { background-color: #FFF; border-color: #CCC; }
-
 .white_borderless .xb2, .white_borderless .xb3, .white_borderless .xb4 { background-color: #FFF; border-color: #FFF; }
 .white_borderless .xb1 { background-color: #FFF; }
 .white_borderless .xboxcontent { background-color: #FFF; border-color: #FFF; }
@@ -1261,6 +1257,15 @@ li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 .borderless .xb2, .borderless .xb3, .borderless .xb4 { background-color: #EEE; border-color: #EEE; }
 .borderless .xb1 { background-color: #EEE; }
 .borderless .xboxcontent { background-color: #EEE; border-color: #EEE; }
+
+.lightgreen .xb2, .lightgreen .xb3, .lightgreen .xb4 { background-color: #BDF4AA; border-color: #AAC6AA; }
+.lightgreen .xb1 { background-color: #AAC6AA; }
+.lightgreen .xboxcontent { background-color: #BDF4AA; border-color: #AAC6AA; }
+.lightgreen .faded_medium { color: #7B7; }
+
+.white .xb2, .white .xb3, .white .xb4 { background-color: #FFF; border-color: #CCC; }
+.white .xb1 { background-color: #CCC; }
+.white .xboxcontent { background-color: #FFF; border-color: #CCC; }
 
 .lightgreen_borderless .xb2, .lightgreen_borderless .xb3, .lightgreen_borderless .xb4 { background-color: #BDF4AA; border-color: #BDF4AA; }
 .lightgreen_borderless .xb1 { background-color: #BDF4AA; }
@@ -1349,6 +1354,10 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .project_overview { clear: both; font-size: 12px; }
 .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-weight: bold; font-size: 13px; }
 .project_overview .content { padding-left: 5px; }
+#config_modules {  font-size: 13px; }
+#config_modules .header { font-weight: bold; font-size: 13px; text-align: left; }
+#config_modules .header .module_shortname { font-weight: normal; font-size: 12px; }
+#config_modules .content { padding-top: 5px; text-align: left; }
 
 .settings_list ul { list-style-type: none; padding: 0; margin: 5px 0 5px 5px; }
 .settings_list ul li { margin: 0 0 5px 0; font-size: 11px; font-weight: normal; clear: both; }

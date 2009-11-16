@@ -101,5 +101,31 @@
 			$crit->addWhere(self::SCOPE, $scope);
 			$this->doDelete($crit);
 		}
+
+		public function loadFixtures($scope)
+		{
+			$i18n = BUGScontext::getI18n();
+
+			$settings = array();
+			$settings['theme_name'] = 'oxygen';
+			$settings['requirelogin'] = 0;
+			$settings['defaultisguest'] = 1;
+			$settings['showloginbox'] = 1;
+			$settings['allowreg'] = 1;
+			$settings['returnfromlogin'] = 'dashboard';
+			$settings['returnfromlogout'] = 'home';
+			$settings['onlinestate'] = 1;
+			$settings['offlinestate'] = 2;
+			$settings['awaystate'] = 8;
+			$settings['showprojectsoverview'] = 1;
+			$settings['userthemes'] = 0;
+			$settings['b2_name'] = 'The Bug Genie';
+			$settings['b2_tagline'] = $i18n->__('<b>Friendly</b> issue tracking and project management');
+
+			foreach ($settings as $settings_name => $settings_val)
+			{
+				$this->saveSetting($settings_name, 'core', $settings_val, 0, $scope);
+			}
+		}
 		
 	}

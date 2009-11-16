@@ -15,7 +15,6 @@
 			$this->setMenuTitle(BUGScontext::getI18n()->__('Messages'));
 			$this->setConfigTitle(BUGScontext::getI18n()->__('Messages'));
 			$this->setDescription(BUGScontext::getI18n()->__('Enables messaging functionality'));
-			$this->setConfigDescription(BUGScontext::getI18n()->__('Set up the messaging module from this section'));
 			$this->setHasAccountSettings();
 			$this->addAvailableListener('core', 'dashboard_left_top', 'section_messagesSummary', 'Dashboard message summary');
 			$this->addAvailableListener('core', 'useractions_bottom', 'section_useractionsBottom', '"Send message" in user drop-down menu');
@@ -34,9 +33,9 @@
 			$module = parent::_install('messages', 'BUGSmessages', '1.0', true, false, true, $scope);
 
 			$module->saveSetting('viewmode', 1, 0, $scope);
-			$module->enableListener('core', 'dashboard_left_top', $scope);
-			$module->enableListener('core', 'useractions_bottom', $scope);
-			$module->enableListener('core', 'teamactions_bottom', $scope);
+			$module->enableListenerSaved('core', 'dashboard_left_top', $scope);
+			$module->enableListenerSaved('core', 'useractions_bottom', $scope);
+			$module->enableListenerSaved('core', 'teamactions_bottom', $scope);
 
 			if ($scope == BUGScontext::getScope()->getID())
 			{
@@ -44,13 +43,18 @@
 				B2DB::getTable('B2tMessageFolders')->create();
 				B2DB::getTable('B2tMessages')->create();
 			}
+
+			return true;
 		}
 		
-		public function uninstall($scope)
+		public function uninstall()
 		{
-			B2DB::getTable('B2tMessageFolders')->drop();
-			B2DB::getTable('B2tMessages')->drop();
-			parent::uninstall($scope);
+			if (BUGScontext::getScope()->getID() == 1)
+			{
+				B2DB::getTable('B2tMessageFolders')->drop();
+				B2DB::getTable('B2tMessages')->drop();
+			}
+			parent::_uninstall();
 		}
 				
 		public function getCommentAccess($target_type, $target_id, $type = 'view')

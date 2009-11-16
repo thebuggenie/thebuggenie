@@ -20,8 +20,8 @@
 	$routes[] = array('wsdl', '/thebuggenie.wsdl', 'soap', 'getWSDL');
 	$routes[] = array('account', '/my_account/*', 'main', 'myAccount');
 	$routes[] = array('configure', '/configure', 'configuration', 'index', array('section' => 0));
-	$routes[] = array('configure_projects_add_project', '/configure/projects/add/new', 'configuration', 'addProject', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_projects', '/configure/projects', 'configuration', 'configureProjects', array('config_module' => 'core', 'section' => 10));
+	$routes[] = array('configure_projects_add_project', '/configure/projects/add/new', 'configuration', 'addProject', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_project_settings', '/configure/project/:project_id/settings', 'configuration', 'configureProjectSettings', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_project_delete', '/configure/project/:project_id/delete', 'configuration', 'deleteProject', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_project_developers', '/configure/project/:project_id/developers', 'configuration', 'configureProjectDevelopers', array('config_module' => 'core', 'section' => 10));
@@ -59,8 +59,12 @@
 	$routes[] = array('configure_user_states', '/configure/user_states', 'configuration', 'index', array('config_module' => 'core', 'section' => 4, 'subsection' => 1));
 	$routes[] = array('configure_users', '/configure/users', 'configuration', 'index', array('config_module' => 'core', 'section' => 2));
 	$routes[] = array('configure_teams_groups', '/configure/teams_and_groups', 'configuration', 'index', array('config_module' => 'core', 'section' => 1));
-	$routes[] = array('configure_modules', '/configure/modules', 'configuration', 'index', array('config_module' => 'core', 'section' => 15));
-	$routes[] = array('configure_module', '/configure/module/:config_module', 'configuration', 'index');
+	$routes[] = array('configure_modules', '/configure/modules', 'configuration', 'configureModules', array('config_module' => 'core', 'section' => 15));
+	$routes[] = array('configure_disable_module', '/configure/modules/disable/:module_key', 'configuration', 'moduleAction', array('config_module' => 'core', 'section' => 15, 'mode' => 'disable'));
+	$routes[] = array('configure_enable_module', '/configure/modules/enable/:module_key', 'configuration', 'moduleAction', array('config_module' => 'core', 'section' => 15, 'mode' => 'enable'));
+	$routes[] = array('configure_uninstall_module', '/configure/modules/uninstall/:module_key', 'configuration', 'moduleAction', array('config_module' => 'core', 'section' => 15, 'mode' => 'uninstall'));
+	$routes[] = array('configure_install_module', '/configure/modules/install', 'configuration', 'moduleAction', array('config_module' => 'core', 'section' => 15, 'mode' => 'install'));
+	$routes[] = array('configure_module', '/configure/module/:config_module', 'configuration', 'configureModule', array('config_module' => 'core', 'section' => 15));
 	
 	foreach ($routes as $route)
 	{

@@ -364,10 +364,9 @@
 			{
 				$crit->addInsert(B2tUsers::PASSWD, md5($password));
 			}
-			$crit->addInsert(B2tUsers::STATE, BUGSsettings::get('offlinestate'));
 			$crit->addInsert(B2tUsers::SCOPE, $scope);
-			$crit->addInsert(B2tUsers::ACTIVATED, ($activated) ? 1 : 0);
-			$crit->addInsert(B2tUsers::ENABLED, ($enabled) ? 1 : 0);
+			$crit->addInsert(B2tUsers::ACTIVATED, $activated);
+			$crit->addInsert(B2tUsers::ENABLED, $enabled);
 			$crit->addInsert(B2tUsers::JOINED, $_SERVER["REQUEST_TIME"]);
 			$crit->addInsert(B2tUsers::AVATAR, 'smiley');
 			$res = B2DB::getTable('B2tUsers')->doInsert($crit);

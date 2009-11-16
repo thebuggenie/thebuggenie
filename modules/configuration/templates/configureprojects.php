@@ -7,7 +7,7 @@
 <tr>
 <?php 
 
-include_template('config_leftmenu', array('selected_section' => 10));
+include_component('configleftmenu', array('selected_section' => 10));
 
 ?>
 <td valign="top">

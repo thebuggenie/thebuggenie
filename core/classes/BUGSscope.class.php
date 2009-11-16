@@ -54,18 +54,7 @@
 			{
 				if ($row === null)
 				{
-					try
-					{
-						$row = B2DB::getTable('B2tScopes')->doSelectById((int) $id);
-					}
-					catch (Exception $e) {}
-				}
-				
-				if (!$row)
-				{
-					$crit = new B2DBCriteria();
-					$crit->addWhere(B2tScopes::SHORTNAME, $id);
-					$row = B2DB::getTable('B2tScopes')->doSelectOne($crit);
+					$row = B2DB::getTable('B2tScopes')->doSelectById($id);
 				}
 			}
 			catch (Exception $e)
@@ -79,10 +68,8 @@
 			}
 			
 			$this->_itemid = $row->get(B2tScopes::ID);
-			$this->_name = $row->get(B2tScopes::NAME);
 			$this->_description = $row->get(B2tScopes::DESCRIPTION);
 			$this->_is_enabled = ($row->get(B2tScopes::ENABLED) == 1) ? true : false;
-			$this->_shortname = $row->get(B2tScopes::SHORTNAME);
 			$this->_hostname = $row->get(B2tScopes::HOSTNAME);
 			$this->_administrator = $row->get(B2tScopes::ADMIN);
 		}
@@ -202,22 +189,40 @@
 				$aTeam->removeMember($adminuser->getID());
 			}
 		}
-		
-		public static function setupInitialScope()
+
+		public static function createNew($scope_name, $hostname)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tScopes::ADMIN, 1);
-			$crit->addInsert(B2tScopes::ID, 1);
-			$crit->addInsert(B2tScopes::DESCRIPTION, __('The default scope'));
-			$crit->addInsert(B2tScopes::ENABLED, 1);
-			$crit->addInsert(B2tScopes::NAME, 'default');
-			$crit->addInsert(B2tScopes::SHORTNAME, 'default');
-			$crit->addInsert(B2tScopes::HOSTNAME, '');
-			$res = B2DB::getTable('B2tScopes')->doInsert($crit);
-		
-			BUGSsettings::saveSetting('defaultscope', 1, 'core', 0);
+			$scope_id = B2DB::getTable('B2tScopes')->createNew($scope_name, $hostname);
+			self::loadFixtures($scope_id);
+			return BUGSfactory::scopeLab($scope_id);
 		}
 		
+		public static function loadFixtures($scope_id)
+		{
+			$i18n = BUGScontext::getI18n();
+			list ($admin_group_id, $users_group_id, $guest_group_id) = B2DB::getTable('B2tGroups')->loadFixtures($scope_id);
+
+			$adminuser = BUGSuser::createNew('administrator', $i18n->__('Administrator'), $i18n->__('Admin'), $scope_id, true, true);
+			$adminuser->setGroup($admin_group_id);
+			$adminuser->changePassword('admin');
+			$adminuser->setAvatar('admin');
+			
+			$guestuser = BUGSuser::createNew('guest', $i18n->__('Guest user'), $i18n->__('Guest user'), $scope_id, true, true);
+			$guestuser->setGroup($guest_group_id);
+
+			B2DB::getTable('B2tSettings')->loadFixtures($scope_id);
+			BUGSsettings::saveSetting('defaultgroup', $users_group_id, 'core', $scope_id);
+			BUGSsettings::saveSetting('defaultuserid', $guestuser->getID(), 'core', $scope_id);
+
+			B2DB::getTable('B2tTeams')->loadFixtures($scope_id);
+			B2DB::getTable('B2tPermissions')->loadFixtures($scope_id, $admin_group_id, $guest_group_id);
+
+			B2DB::getTable('B2tUserState')->loadFixtures($scope_id);
+			B2DB::getTable('B2tIssueTypes')->loadFixtures($scope_id);
+			B2DB::getTable('B2tListTypes')->loadFixtures($scope_id);
+			B2DB::getTable('B2tLinks')->loadFixtures($scope_id);
+		}
+
 		public function save()
 		{
 			$crit = new B2DBCriteria();
@@ -236,7 +241,7 @@
 		 * 
 		 * @return BUGSscope
 		 */
-		public static function createNew($scopeShortname, $scopeName, $scopeEnabled, $scopeDescription, $scopeHostname)
+		public static function createNewOld($scopeShortname, $scopeName, $scopeEnabled, $scopeDescription, $scopeHostname)
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tScopes::SHORTNAME, $scopeShortname);

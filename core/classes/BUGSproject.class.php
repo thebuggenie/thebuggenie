@@ -422,12 +422,12 @@
 			
 			BUGScontext::setPermission("b2projectaccess", $p_id, "core", 0, BUGScontext::getUser()->getGroup()->getID(), 0, true);
 			
-			if ($res = B2DB::getTable('B2tPermissionsList')->getByAppliesTo('projects'))
+			if ($permissions = BUGScontext::getAvailablePermissions('project'))
 			{
-				while ($row = $res->getNextRow())
+				foreach($permissions as $permission_name => $permission_details)
 				{
-					$target_id = ($row->get(B2tPermissionsList::LEVELS) == 4) ? '1:'.$p_id : $p_id;
-					BUGScontext::setPermission($row->get(B2tPermissionsList::PERMISSION_NAME), $target_id, "core", 0, BUGScontext::getUser()->getGroup()->getID(), 0, true);
+					$target_id = ($permission_details['levels'] == 4) ? '1:'.$p_id : $p_id;
+					BUGScontext::setPermission($permission_name, $target_id, "core", 0, BUGScontext::getUser()->getGroup()->getID(), 0, true);
 				}
 			}
 			

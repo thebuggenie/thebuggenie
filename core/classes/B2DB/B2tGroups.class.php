@@ -31,5 +31,27 @@
 			parent::_addVarchar(self::GNAME, 50);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
+
+		public function loadFixtures($scope)
+		{
+			$i18n = BUGScontext::getI18n();
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::GNAME, $i18n->__('Administrators'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$admin_group_id = $this->doInsert($crit)->getInsertID();
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::GNAME, $i18n->__('Regular users'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$users_group_id = $this->doInsert($crit)->getInsertID();
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::GNAME, $i18n->__('Guests'));
+			$crit->addInsert(self::SCOPE, $scope);
+			$guest_group_id = $this->doInsert($crit)->getInsertID();
+
+			return array($admin_group_id, $users_group_id, $guest_group_id);
+		}
 		
 	}

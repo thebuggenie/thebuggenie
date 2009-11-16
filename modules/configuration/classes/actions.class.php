@@ -35,7 +35,7 @@
 			$module_config_sections = array();
 			$general_config_sections[12] = array('route' => 'configure_settings', 'description' => __('Settings'), 'icon' => 'general', 'details' => __('Every setting in the bug genie can be adjusted in this section.'));
 			$general_config_sections[3] = array('route' => 'configure_files', 'description' => __('Uploads &amp; attachments'), 'icon' => 'files', 'details' => __('All settings related to file uploads are controlled from this section.'));
-			if (BUGScontext::getUser()->getScope()->getID() == BUGSsettings::getDefaultScope()->getID())
+			if (BUGScontext::getUser()->getScope()->getID() == 1)
 			{
 				$general_config_sections[14] = array('route' => 'configure_scopes', 'description' => __('Scopes'), 'icon' => 'scopes', 'details' => __('Scopes are self-contained Bug Genie environments. Configure them here.'));
 				$data_config_sections[16] = array('route' => 'configure_import', 'description' => __('Import data'), 'icon' => 'import', 'details' => __('Upgrading from an older version? Import your data from here.'));
@@ -102,6 +102,15 @@
 			$this->allProjects = BUGSproject::getAll();
 		}
 		
+		/**
+		 * Configure modules
+		 *
+		 * @param BUGSrequest $request The request object
+		 */
+		public function runConfigureModules($request)
+		{
+		}
+
 		/**
 		 * Find users and show selection box
 		 * 
@@ -917,11 +926,94 @@
 				return $this->renderJSON(array('deleted' => false));
 			}
 		}
+
+		/**
+		 * Perform an action on a module
+		 *
+		 * @param BUGSrequest $request The request object
+		 */
+		public function runModuleAction($request)
+		{
+			try
+			{
+				if ($request->getParameter('mode') == 'install' && file_exists(BUGScontext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/module'))
+				{
+					BUGScontext::addClasspath(BUGScontext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/classes');
+					if (is_dir(BUGScontext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/classes/B2DB'))
+					{
+						BUGScontext::addClasspath(BUGScontext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/classes/B2DB');
+					}
+					$classname = file_get_contents(BUGScontext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/class');
+
+					if (call_user_func(array($classname, 'install')))
+					{
+						BUGScontext::setMessage('module_message', BUGScontext::getI18n()->__('The module "%module_name%" was installed successfully', array('%module_name%' => $request->getParameter('module_key'))));
+					}
+					else
+					{
+						BUGScontext::setMessage('module_error', BUGScontext::getI18n()->__('There was an error install the module %module_name%', array('%module_name%' => $request->getParameter('module_key'))));
+					}
+				}
+				else
+				{
+					$module = BUGScontext::getModule($request->getParameter('module_key'));
+					switch ($request->getParameter('mode'))
+					{
+						case 'disable':
+							$module->disable();
+							break;
+						case 'enable':
+							$module->enable();
+							break;
+						case 'uninstall':
+							$module->uninstall();
+							break;
+					}
+				}
+			}
+			catch (Exception $e)
+			{
+				BUGSlogging::log('Trying to run action ' . $request->getParameter('mode') . ' on module ' . $request->getParameter('module_key') . ' which is an invalid module', 'main', BUGSlogging::LEVEL_FATAL);
+				BUGScontext::setMessage('module_error', BUGScontext::getI18n()->__('This module (%module_name%) does not exist', array('%module_name%' => $request->getParameter('module_key'))));
+			}
+			$this->forward(BUGScontext::getRouting()->generate('configure_modules'));
+		}
 		
-		
+		/**
+		 * Configure a module
+		 *
+		 * @param BUGSrequest $request The request object
+		 */
+		public function runConfigureModule($request)
+		{
+			try
+			{
+				$module = BUGScontext::getModule($request->getParameter('config_module'));
+				if (!$module->hasConfigSettings())
+				{
+					throw new Exception('module not configurable');
+				}
+				else
+				{
+					if ($request->isMethod(BUGSrequest::POST))
+					{
+						$module->postConfigSettings();
+						$this->forward(BUGScontext::getRouting()->generate('configure_module', array('config_module' => $request->getParameter('config_module'))));
+					}
+					$this->module = $module;
+				}
+			}
+			catch (Exception $e)
+			{
+				BUGSlogging::log('Trying to configure module ' . $request->getParameter('config_module') . " which isn't configurable", 'main', BUGSlogging::LEVEL_FATAL);
+				BUGScontext::setMessage('module_error', BUGScontext::getI18n()->__('The module "%module_name%" is not configurable', array('%module_name%' => $request->getParameter('config_module'))));
+				$this->forward(BUGScontext::getRouting()->generate('configure_modules'));
+			}
+		}
+
 		public function getAccessLevel($section, $module)
 		{
-			return (BUGScontext::getUser()->hasPermission("b2saveconfig", $section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;
+			return (BUGScontext::getUser()->hasPermission("b2saveconfig", $section, $module, true)) ? self::ACCESS_FULL : self::ACCESS_READ;
 		}
 
 		

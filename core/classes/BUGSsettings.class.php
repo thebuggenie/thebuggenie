@@ -76,44 +76,6 @@
 			B2DB::getTable('B2tSettings')->deleteModuleSettings($module_name, BUGScontext::getScope()->getID());
 		}
 		
-		public static function loadFixtures($scope = 1)
-		{
-			$i18n = BUGScontext::getI18n();
-			
-			$b2_settings = array('theme_name' => 'oxygen', 
-								'url_subdir' => '', 
-								'requirelogin' => 0,
-								'defaultisguest' => 1,
-								'showloginbox' => 1,
-								'allowreg' => 1,
-								'returnfromlogin' => 'dashboard',
-								'returnfromlogout' => 'home', 
-								'onlinestate' => 1, 
-								'offlinestate' => 2,
-								'awaystate' => 8, 
-								'showprojectsoverview' => 1, 
-								'userthemes' => 0, 
-								'b2_name' => 'The Bug Genie',
-								'b2_tagline' => $i18n->__('<b>Friendly</b> issue tracking and project management'));
-			
-			if ($scope == 1)
-			{
-				$b2_settings['defaultgroup'] = 2;
-			}
-			
-			foreach ($b2_settings as $b2_settings_name => $b2_settings_val)
-			{
-				self::saveSetting($b2_settings_name, $b2_settings_val, 'core', $scope);
-			}
-
-			B2DB::getTable('B2tPermissionsList')->loadFixtures($scope);
-			B2DB::getTable('B2tUserState')->loadFixtures($scope);
-			B2DB::getTable('B2tIssueTypes')->loadFixtures($scope);
-			B2DB::getTable('B2tListTypes')->loadFixtures($scope);
-			B2DB::getTable('B2tLinks')->loadFixtures($scope);
-			
-		}
-	
 		public static function saveSetting($name, $value, $module = 'core', $scope = 0, $uid = 0)
 		{
 			if ($scope == 0 && $name != 'defaultscope' && $module == 'core')
@@ -202,6 +164,7 @@
 		 */
 		public static function getDefaultScope()
 		{
+			throw new Exception("This function is deprecated. Default scope is always 1");
 			if (self::$_defaultscope === null)
 			{
 				$row = B2DB::getTable('B2tSettings')->getDefaultScope();

@@ -16,7 +16,7 @@
 			
 			if (($step = $request->getParameter('step')) && $step >= 1 && $step <= 6)
 			{
-				if ($step >= 4)
+				if ($step >= 5)
 				{
 					BUGScontext::setScope(1);
 				}
@@ -190,7 +190,7 @@
 				sort($tables_created);
 				$this->tables_created = $tables_created;
 				
-				BUGSscope::setupInitialScope();
+				//BUGSscope::setupInitialScope();
 				
 			}
 			catch (Exception $e)
@@ -216,13 +216,12 @@
 				BUGScontext::reinitializeI18n($request->getParameter('language'));
 
 				BUGSlogging::log('Loading fixtures for default scope');
-				BUGSsettings::loadFixtures(1);
+				$scope = BUGSscope::createNew('The default scope', '');
 
 				BUGSlogging::log('Setting up default users and groups');
-				$this->saveSettings();
 				BUGSsettings::saveSetting('language', $request->getParameter('language'), 'core', 1);
-				BUGScontext::getScope()->setHostname($request->getParameter('url_host'));
-				BUGScontext::getScope()->save();
+				$scope->setHostname($request->getParameter('url_host'));
+				$scope->save();
 				BUGSsettings::saveSetting('url_subdir', $request->getParameter('url_subdir'), 'core', 1);
 			}
 			catch (Exception $e)
@@ -232,88 +231,6 @@
 			}
 		}
 		
-		protected function saveSettings()
-		{
-			$i18n = BUGScontext::getI18n();
-			
-			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tGroups::GNAME, $i18n->__('Administrators'));
-			$crit->addInsert(B2tGroups::ID, 1);
-			$crit->addInsert(B2tGroups::SCOPE, 1);
-			B2DB::getTable('B2tGroups')->doInsert($crit);
-			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tGroups::ID, 2);
-			$crit->addInsert(B2tGroups::GNAME, $i18n->__('Regular users'));
-			$crit->addInsert(B2tGroups::SCOPE, 1);
-			B2DB::getTable('B2tGroups')->doInsert($crit);
-			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tGroups::ID, 3);
-			$crit->addInsert(B2tGroups::GNAME, $i18n->__('Guests'));
-			$crit->addInsert(B2tGroups::SCOPE, 1);
-			B2DB::getTable('B2tGroups')->doInsert($crit);
-			$adminuser = BUGSuser::createNew('administrator', $i18n->__('BUGS 2 Administrator'), $i18n->__('Admin'), 1, true, true);
-			$adminuser->setGroup(1);
-			$adminuser->changePassword('admin');
-			$adminuser->setAvatar('admin');
-			$guestuser = BUGSuser::createNew('guest', $i18n->__('Guest user'), $i18n->__('Guest user'), 1, true, true);
-			$guestuser->setGroup(3);
-			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tTeams::ID, 1);
-			$crit->addInsert(B2tTeams::TEAMNAME, $i18n->__('Staff members'));
-			$crit->addInsert(B2tTeams::SCOPE, 1);
-			B2DB::getTable('B2tTeams')->doInsert($crit);
-				
-			BUGSsettings::saveSetting('defaultuserid', $guestuser->getID());
-			
-			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tPermissions::ALLOWED, 1);
-			$crit->addInsert(B2tPermissions::SCOPE, 1);
-			$crit->addInsert(B2tPermissions::PERMISSION_TYPE, 'b2viewconfig');
-			$crit->addInsert(B2tPermissions::TARGET_ID, 0);
-			$crit->addInsert(B2tPermissions::GID, 1);
-			$crit->addInsert(B2tPermissions::MODULE, 'core');
-			B2DB::getTable('B2tPermissions')->doInsert($crit);
-					
-			for ($cc = 1; $cc <= 16; $cc++)
-			{
-				if ($cc == 13) continue;
-				$crit = new B2DBCriteria();
-				$crit->addInsert(B2tPermissions::ALLOWED, 1);
-				$crit->addInsert(B2tPermissions::SCOPE, 1);
-				$crit->addInsert(B2tPermissions::PERMISSION_TYPE, 'b2saveconfig');
-				$crit->addInsert(B2tPermissions::TARGET_ID, $cc);
-				$crit->addInsert(B2tPermissions::GID, 1);
-				$crit->addInsert(B2tPermissions::MODULE, 'core');
-				B2DB::getTable('B2tPermissions')->doInsert($crit);		
-			}
-			
-			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tPermissions::ALLOWED, 1);
-			$crit->addInsert(B2tPermissions::SCOPE, 1);
-			$crit->addInsert(B2tPermissions::PERMISSION_TYPE, 'b2noaccountaccess');
-			$crit->addInsert(B2tPermissions::TARGET_ID, 0);
-			$crit->addInsert(B2tPermissions::GID, 3);
-			$crit->addInsert(B2tPermissions::MODULE, 'core');
-			B2DB::getTable('B2tPermissions')->doInsert($crit);
-		
-			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tPermissions::ALLOWED, 1);
-			$crit->addInsert(B2tPermissions::SCOPE, 1);
-			$crit->addInsert(B2tPermissions::TARGET_ID, 0);
-			$crit->addInsert(B2tPermissions::PERMISSION_TYPE, 'b2canreportissues');
-			$crit->addInsert(B2tPermissions::MODULE, 'core');
-			B2DB::getTable('B2tPermissions')->doInsert($crit);	
-
-			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tPermissions::ALLOWED, 1);
-			$crit->addInsert(B2tPermissions::SCOPE, 1);
-			$crit->addInsert(B2tPermissions::TARGET_ID, 0);
-			$crit->addInsert(B2tPermissions::PERMISSION_TYPE, 'b2canfindissues');
-			$crit->addInsert(B2tPermissions::MODULE, 'core');
-			B2DB::getTable('B2tPermissions')->doInsert($crit);	
-			
-		}
-
 		/**
 		 * Runs the action for the fifth step of the installation
 		 * where it enables modules on demand

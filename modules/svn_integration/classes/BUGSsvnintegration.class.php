@@ -11,6 +11,7 @@
 			$this->setMenuTitle(BUGScontext::getI18n()->__('SVN integration'));
 			$this->setConfigTitle(BUGScontext::getI18n()->__('SVN integration'));
 			$this->setDescription(BUGScontext::getI18n()->__('Enables integration with SVN'));
+			$this->setHasConfigSettings();
 			$this->setConfigDescription(BUGScontext::getI18n()->__('Configure source code integration from this section'));
 			$this->addAvailableListener('core', 'viewissue_right_middle', 'section_viewissueRightMiddle', 'List of updated files for an issue');
 			$this->addAvailableListener('core', 'viewproject_right_top', 'section_viewProject_viewCode', '"View code" link in project overview');
@@ -27,19 +28,24 @@
 			
 			$module = parent::_install('svn_integration', 'BUGSsvnintegration', '1.0', true, false, false, $scope);
 
-			$module->enableListener('core', 'viewissue_right_middle');
-			$module->enableListener('core', 'viewproject_right_top');
+			$module->enableListenerSaved('core', 'viewissue_right_middle');
+			$module->enableListenerSaved('core', 'viewproject_right_top');
 
 			if ($scope == BUGScontext::getScope()->getID())
 			{
 				B2DB::getTable('B2tSVNintegration')->create();
 			}
+
+			return true;
 		}
 					
-		public function uninstall($scope)
+		public function uninstall()
 		{
-			B2DB::getTable('B2tSVNintegration')->drop();
-			parent::uninstall($scope);
+			if (BUGScontext::getScope()->getID() == 1)
+			{
+				B2DB::getTable('B2tSVNintegration')->drop();
+			}
+			parent::_uninstall();
 		}
 		
 		public function loadHelpTitle($topic)

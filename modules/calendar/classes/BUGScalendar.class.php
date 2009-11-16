@@ -11,7 +11,6 @@
 			$this->setMenuTitle(BUGScontext::getI18n()->__('Calendar'));
 			$this->setConfigTitle(BUGScontext::getI18n()->__('Calendar'));
 			$this->setDescription(BUGScontext::getI18n()->__('Enables calendars, todos and meetings'));
-			$this->setConfigDescription(BUGScontext::getI18n()->__('Configure the Calendar module in this section'));
 			$this->setHasAccountSettings();
 			$this->addAvailableListener('core', 'dashboard_left_top', 'section_calendarSummary', 'Dashboard calendar summary');
 			$this->addAvailableListener('core', 'BUGSUser::getState', 'section_bugsuser_getState', 'Automatic user-state change');
@@ -27,10 +26,10 @@
 			
 			$module = parent::_install('calendar', 'BUGScalendar', '1.0', true, false, true, $scope);
 
-			$module->enableListener('core', 'dashboard_left_top', $scope);
-			$module->enableListener('core', 'account_settings', $scope);
-			$module->enableListener('core', 'account_settingslist', $scope);
-			$module->enableListener('core', 'BUGSUser::getState', $scope);
+			$module->enableListenerSaved('core', 'dashboard_left_top', $scope);
+			$module->enableListenerSaved('core', 'account_settings', $scope);
+			$module->enableListenerSaved('core', 'account_settingslist', $scope);
+			$module->enableListenerSaved('core', 'BUGSUser::getState', $scope);
 			
 			$module->setPermission(0, 3, 0, false, $scope);
 
@@ -41,14 +40,18 @@
 				B2DB::getTable('B2tCalendars')->create();
 				B2DB::getTable('B2tCalendarTasks')->create();
 			}
-			
+
+			return true;
 		}
 		
-		public function uninstall($scope)
+		public function uninstall()
 		{
-			parent::uninstall($scope);
-			B2DB::getTable('B2tCalendars')->drop();
-			B2DB::getTable('B2tCalendarTasks')->drop();
+			if (BUGScontext::getScope()->getID() == 1)
+			{
+				B2DB::getTable('B2tCalendars')->drop();
+				B2DB::getTable('B2tCalendarTasks')->drop();
+			}
+			parent::_uninstall();
 		}
 
 		/**
