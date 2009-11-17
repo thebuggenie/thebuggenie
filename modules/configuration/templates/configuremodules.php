@@ -15,25 +15,25 @@ include_component('configleftmenu', array('selected_section' => 15));
 		<div class="configheader"><?php echo __('Configure modules'); ?></div>
 		<div class="header"><?php echo __('Installed modules'); ?></div>
 		<div class="content"><?php echo __('This is a list of all modules that are installed on this system'); ?></div>
-		<?php if (BUGScontext::hasMessage('module_error')): ?>
+		<?php if ($module_error !== null): ?>
 			<div class="rounded_box red_borderless" style="margin: 5px 0px 5px 0px; width: 750px;" id="module_error">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="vertical-align: middle; color: #FFF;">
-					<div class="header"><?php echo BUGScontext::getMessageAndClear('module_error'); ?></div>
+					<div class="header"><?php echo $module_error; ?></div>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
 		<?php endif; ?>
-		<?php if (BUGScontext::hasMessage('module_message')): ?>
+		<?php if ($module_message !== null): ?>
 			<div class="rounded_box green_borderless" style="margin: 5px 0px 5px 0px; width: 750px;" id="module_message">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="vertical-align: middle;">
-					<div class="header"><?php echo BUGScontext::getMessageAndClear('module_message'); ?></div>
+					<div class="header"><?php echo $module_message; ?></div>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
 		<?php endif; ?>
-		<?php foreach (BUGScontext::getModules() as $module_key => $module): ?>
+		<?php foreach ($modules as $module_key => $module): ?>
 			<?php include_template('modulebox', array('module' => $module)); ?>
 		<?php endforeach; ?>
 		<div class="header" style="margin-top: 15px;"><?php echo __('Uninstalled modules'); ?></div>

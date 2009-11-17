@@ -9,7 +9,11 @@
 		public function componentForgotPasswordBlock()
 		{
 		}
-		
+
+		public function componentSettings()
+		{
+			
+		}
 	}
 
 ?>

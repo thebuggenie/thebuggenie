@@ -29,6 +29,7 @@
 			// No, I didn't forget the parameters, but what else would you call
 			// it when it's about retrieving a forgotten password?
 			$this->addRoute('forgot', '/forgot', 'forgot');
+			$this->addRoute('mailnotification_test_email', '/mailnotification/test', 'testEmail');
 		}
 
 		public function initialize()
@@ -62,6 +63,21 @@
 		public function uninstall()
 		{
 			$this->_uninstall();
+		}
+
+		public function postConfigSettings()
+		{
+			$settings = array('smtp_host', 'smtp_port', 'smtp_user', 'timeout', 'mail_type',
+								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo',
+								'returnfromlogin', 'returnfromlogout', 'showloginbox', 'limit_registration',
+								'showprojectsoverview', 'showprojectsoverview', 'cleancomments');
+			foreach ($settings as $setting)
+			{
+				if (BUGScontext::getRequest()->getParameter($setting) !== null)
+				{
+					$this->saveSetting($setting, BUGScontext::getRequest()->getParameter($setting));
+				}
+			}
 		}
 					
 		public function listen_accountSettingsList()

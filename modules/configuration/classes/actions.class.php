@@ -109,6 +109,9 @@
 		 */
 		public function runConfigureModules($request)
 		{
+			$this->module_message = BUGScontext::getMessageAndClear('module_message');
+			$this->module_error = BUGScontext::getMessageAndClear('module_error');
+			$this->modules = BUGScontext::getModules();
 			$this->uninstalled_modules = BUGScontext::getUninstalledModules();
 		}
 
@@ -977,6 +980,7 @@
 							break;
 						case 'uninstall':
 							$module->uninstall();
+							BUGScontext::setMessage('module_message', BUGScontext::getI18n()->__('The module "%module_name%" was uninstalled successfully', array('%module_name%' => $module->getName())));
 							break;
 					}
 				}
@@ -1005,9 +1009,17 @@
 				}
 				else
 				{
-					if ($request->isMethod(BUGSrequest::POST))
+					if ($request->isMethod(BUGSrequest::POST) && $this->access_level == self::ACCESS_FULL)
 					{
-						$module->postConfigSettings();
+						try
+						{
+							$module->postConfigSettings();
+							BUGScontext::setMessage('module_message', BUGScontext::getI18n()->__('Settings saved successfully'));
+						}
+						catch (Exception $e)
+						{
+							BUGScontext::setMessage('module_error', $e->getMessage());
+						}
 						$this->forward(BUGScontext::getRouting()->generate('configure_module', array('config_module' => $request->getParameter('config_module'))));
 					}
 					$this->module = $module;
@@ -1019,6 +1031,8 @@
 				BUGScontext::setMessage('module_error', BUGScontext::getI18n()->__('The module "%module_name%" is not configurable', array('%module_name%' => $request->getParameter('config_module'))));
 				$this->forward(BUGScontext::getRouting()->generate('configure_modules'));
 			}
+			$this->module_message = BUGScontext::getMessageAndClear('module_message');
+			$this->module_error = BUGScontext::getMessageAndClear('module_error');
 		}
 
 		public function getAccessLevel($section, $module)
