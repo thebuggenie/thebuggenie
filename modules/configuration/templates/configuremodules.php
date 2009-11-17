@@ -37,22 +37,26 @@ include_component('configleftmenu', array('selected_section' => 15));
 			<?php include_template('modulebox', array('module' => $module)); ?>
 		<?php endforeach; ?>
 		<div class="header" style="margin-top: 15px;"><?php echo __('Uninstalled modules'); ?></div>
-		<form action="<?php echo make_url('configure_install_module'); ?>" method="post" accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>">
-			<div class="rounded_box" style="margin: 5px 0px 5px 0px; width: 750px;" id="module_error">
-				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-				<div class="xboxcontent" style="vertical-align: middle; text-align: right;">
-					<div class="content"><?php echo __('This is a list of modules available, but not installed on this system.'); ?>
-					<?php echo __('To install a module, select it from the dropdown list and press the %install%-button', array('%install%' => '<b>' . __('Install') . '</b>')); ?></div>
-					<select name="module_key" style="margin-top: 5px; width: 100%;">
-					<?php foreach (BUGScontext::getUninstalledModules() as $module_key => $description): ?>
-						<option value="<?php echo $module_key; ?>"><?php echo $description; ?></option>
-					<?php endforeach; ?>
-					</select><br>
-					<input type="submit" value="<?php echo __('Install'); ?>" style="font-weight: bold; margin: 5px 0 10px 0;">
+		<?php if (count($uninstalled_modules) == 0): ?>
+			<div class="faded_medium" style="margin-top: 5px;"><?php echo __('There are no uninstalled modules available'); ?></div>
+		<?php else: ?>
+			<form action="<?php echo make_url('configure_install_module'); ?>" method="post" accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>">
+				<div class="rounded_box" style="margin: 5px 0px 5px 0px; width: 750px;" id="module_error">
+					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+					<div class="xboxcontent" style="vertical-align: middle; text-align: right;">
+						<div class="content"><?php echo __('This is a list of modules available, but not installed on this system.'); ?>
+						<?php echo __('To install a module, select it from the dropdown list and press the %install%-button', array('%install%' => '<b>' . __('Install') . '</b>')); ?></div>
+						<select name="module_key" style="margin-top: 5px; width: 100%;">
+						<?php foreach ($uninstalled_modules as $module_key => $description): ?>
+							<option value="<?php echo $module_key; ?>"><?php echo $description; ?></option>
+						<?php endforeach; ?>
+						</select><br>
+						<input type="submit" value="<?php echo __('Install'); ?>" style="font-weight: bold; margin: 5px 0 10px 0;">
+					</div>
+					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</div>
-				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-			</div>
-		</form>
+			</form>
+		<?php endif; ?>
 	</div>
 </td>
 </tr>

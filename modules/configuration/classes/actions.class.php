@@ -109,6 +109,7 @@
 		 */
 		public function runConfigureModules($request)
 		{
+			$this->uninstalled_modules = BUGScontext::getUninstalledModules();
 		}
 
 		/**
