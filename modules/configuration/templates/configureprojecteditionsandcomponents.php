@@ -17,8 +17,8 @@
 				<div class="faded_medium" id="no_editions" style="padding: 5px;<?php if (count($theProject->getEditions()) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no editions'); ?></div>
 				<table cellpadding=0 cellspacing=0 style="width: 100%;">
 					<tbody id="edition_table">
-					<?php foreach ($theProject->getEditions() as $anEdition): ?>
-						<?php include_template('editionbox', array('theProject' => $theProject, 'anEdition' => $anEdition)); ?>
+					<?php foreach ($theProject->getEditions() as $edition): ?>
+						<?php include_template('editionbox', array('theProject' => $theProject, 'edition' => $edition)); ?>
 					<?php endforeach; ?>
 					</tbody>
 				</table>
@@ -51,8 +51,8 @@
 				<div class="faded_medium" id="no_components" style="padding: 5px;<?php if (count($theProject->getComponents()) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no components'); ?></div>
 				<table cellpadding=0 cellspacing=0 style="width: 100%;">
 					<tbody id="component_table">
-					<?php foreach ($theProject->getComponents() as $aComponent): ?>
-						<?php include_template('componentbox', array('aComponent' => $aComponent)); ?>
+					<?php foreach ($theProject->getComponents() as $component): ?>
+						<?php include_template('componentbox', array('component' => $component)); ?>
 					<?php endforeach; ?>
 					</tbody>
 				</table>

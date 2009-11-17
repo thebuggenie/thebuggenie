@@ -280,36 +280,46 @@
 			{
 				$this->theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
 			}
-			catch (Exception $e) {}
+			catch (Exception $e)
+			{
+				return $this->renderJSON(array('saved' => false, 'error' => BUGScontext::getI18n()->__('This project does not exist')));
+			}
 			
 			$this->forward403unless($this->theProject instanceof BUGSproject && $request->hasParameter('milestones_or_issuetypes'));
 
-			switch ($request->getParameter('milestones_or_issuetypes'))
+			try
 			{
-				case 'issuetypes':
-					$this->theProject->setFrontpageSummaryType('issuetypes');
-					$this->theProject->save();
-					$this->theProject->clearVisibleIssuetypes();
-					foreach ($request->getParameter('showissuetype', array()) as $issuetype_id)
-					{
-						$this->theProject->addVisibleIssuetype($issuetype_id);
-					}
-					break;
-				case 'milestones':
-					$this->theProject->setFrontpageSummaryType('milestones');
-					$this->theProject->save();
-					$this->theProject->clearVisibleMilestones();
-					foreach ($request->getParameter('showmilestone', array()) as $milestone_id)
-					{
-						$this->theProject->addVisibleMilestone($milestone_id);
-					}
-					break;
-				case '':
-					$this->theProject->setFrontpageSummaryType('');
-					$this->theProject->save();
-					break;
+				switch ($request->getParameter('milestones_or_issuetypes'))
+				{
+					case 'issuetypes':
+						$this->theProject->setFrontpageSummaryType('issuetypes');
+						$this->theProject->save();
+						$this->theProject->clearVisibleIssuetypes();
+						foreach ($request->getParameter('showissuetype', array()) as $issuetype_id)
+						{
+							$this->theProject->addVisibleIssuetype($issuetype_id);
+						}
+						break;
+					case 'milestones':
+						$this->theProject->setFrontpageSummaryType('milestones');
+						$this->theProject->save();
+						$this->theProject->clearVisibleMilestones();
+						foreach ($request->getParameter('showmilestone', array()) as $milestone_id)
+						{
+							$this->theProject->addVisibleMilestone($milestone_id);
+						}
+						break;
+					case '':
+						$this->theProject->setFrontpageSummaryType('');
+						$this->theProject->save();
+						break;
+				}
+				return $this->renderJSON(array('saved' => true, 'title' => BUGScontext::getI18n()->__('Your changes has been saved'), 'message' => ''));
 			}
-			return $this->renderJSON(array('saved' => true));
+			catch (Exception $e)
+			{
+				return $this->renderJSON(array('saved' => false, 'error' => BUGScontext::getI18n()->__('An error occured'), 'message' => $e->getMessage()));
+			}
 		}
 
 		/**
@@ -432,7 +442,7 @@
 				$this->theProject->setComponentsEnabled((bool) $request->getParameter('enable_components'));
 				$this->theProject->setChangeIssuesWithoutWorkingOnThem((bool) $request->getParameter('allow_changing_without_working'));
 				$this->theProject->save();
-				return $this->renderJSON(array('saved' => true));
+				return $this->renderJSON(array('saved' => true, 'title' => BUGScontext::getI18n()->__('Your changes has been saved'), 'message' => ''));
 			}
 		}
 		
@@ -489,15 +499,16 @@
 		public function runAddProject($request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$i18n = BUGScontext::getI18n();
 
 			if ($p_name = $request->getParameter('p_name'))
 			{
 				$aProject = BUGSproject::createNew($p_name);
-				return $this->renderTemplate('projectbox', array('project' => $aProject));
+				return $this->renderJSON(array('title' => $i18n->__('The project has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('projectbox', array('project' => $aProject))));
 			}
 			else
 			{
-				return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('The project could not be added')."', '".BUGScontext::getI18n()->__('Please specify a project name')));
+				return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The project could not be added')."', '".$i18n->__('Please specify a project name')));
 			}
 		}
 		
@@ -509,6 +520,7 @@
 		public function runAddEdition($request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$i18n = BUGScontext::getI18n();
 
 			try
 			{
@@ -518,28 +530,28 @@
 					{
 						if ($e_name = $request->getParameter('e_name'))
 						{
-							$theProject = BUGSfactory::projectLab($p_id);
-							$theEdition = $theProject->addEdition($e_name);
-							return $this->renderTemplate('editionbox', array('anEdition' => $theEdition));
+							$project = BUGSfactory::projectLab($p_id);
+							$edition = $project->addEdition($e_name);
+							return $this->renderJSON(array('title' => $i18n->__('The edition has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('editionbox', array('edition' => $edition))));
 						}
 						else
 						{
-							throw new Exception(BUGScontext::getI18n()->__('You need to specify a name for the new edition'));
+							throw new Exception($i18n->__('You need to specify a name for the new edition'));
 						}
 					}
 					else
 					{
-						throw new Exception(BUGScontext::getI18n()->__('You do not have access to this project'));
+						throw new Exception($i18n->__('You do not have access to this project'));
 					}
 				}
 				else
 				{
-					throw new Exception(BUGScontext::getI18n()->__('You need to specify a project id'));
+					throw new Exception($i18n->__('You need to specify a project id'));
 				}
 			}
 			catch (Exception $e) 
 			{
-				return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('The edition could not be added').", ".$e->getMessage()));
+				return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The edition could not be added').", ".$e->getMessage()));
 			}
 		}
 
@@ -558,56 +570,56 @@
 				{
 					if (BUGScontext::getUser()->hasPermission('b2buildaccess', $b_id))
 					{
-						$theBuild = BUGSfactory::buildLab($b_id);
+						$build = BUGSfactory::buildLab($b_id);
 						switch ($request->getParameter('build_action'))
 						{
 							case 'markdefault':
-								$theBuild->setDefault();
+								$build->setDefault();
 								$this->show_mode = 'all';
 								break;
 							case 'delete':
-								$theBuild->delete();
+								$build->delete();
 								return $this->renderJSON(array('deleted' => true));
 								break;
 							case 'addtoopen':
-								$theBuild->addToOpenParentIssues((int) $request->getParameter('status'), (int) $request->getParameter('category'), (int) $request->getParameter('issuetype'));
-								return $this->renderJSON(array('saved' => true));
+								$build->addToOpenParentIssues((int) $request->getParameter('status'), (int) $request->getParameter('category'), (int) $request->getParameter('issuetype'));
+								return $this->renderJSON(array('saved' => true, 'title' => BUGScontext::getI18n()->__('The selected build has been added to open issues based on your selections'), 'message' => ''));
 								break;
 							case 'release':
-								$theBuild->setReleased(true);
-								$theBuild->setReleaseDate();
-								$theBuild->save();
+								$build->setReleased(true);
+								$build->setReleaseDate();
+								$build->save();
 								$this->show_mode = 'one';
 								break;
 							case 'retract':
-								$theBuild->setReleased(false);
-								$theBuild->setReleaseDate(0);
-								$theBuild->save();
+								$build->setReleased(false);
+								$build->setReleaseDate(0);
+								$build->save();
 								$this->show_mode = 'one';
 								break;
 							case 'lock':
-								$theBuild->setLocked(true);
-								$theBuild->save();
+								$build->setLocked(true);
+								$build->save();
 								$this->show_mode = 'one';
 								break;
 							case 'unlock':
-								$theBuild->setLocked(false);
-								$theBuild->save();
+								$build->setLocked(false);
+								$build->save();
 								$this->show_mode = 'one';
 								break;
 							case 'update':
 								if ($b_name = $request->getParameter('build_name'))
 								{
-									$theBuild->setName($b_name);
-									$theBuild->setVersionMajor($request->getParameter('ver_mj'));
-									$theBuild->setVersionMinor($request->getParameter('ver_mn'));
-									$theBuild->setVersionRevision($request->getParameter('ver_rev'));
+									$build->setName($b_name);
+									$build->setVersionMajor($request->getParameter('ver_mj'));
+									$build->setVersionMinor($request->getParameter('ver_mn'));
+									$build->setVersionRevision($request->getParameter('ver_rev'));
 									if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
 									{
 										$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
-										$theBuild->setReleaseDate($release_date);
+										$build->setReleaseDate($release_date);
 									}
-									$theBuild->save();
+									$build->save();
 								}
 								else
 								{
@@ -632,7 +644,7 @@
 				return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('Could not update the build / release').", ".$e->getMessage()));
 			}
 			
-			$this->theBuild = $theBuild;
+			$this->build = $build;
 		}
 		
 		/**
@@ -643,6 +655,7 @@
 		public function runAddBuild($request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$i18n = BUGScontext::getI18n();
 
 			try
 			{
@@ -656,36 +669,37 @@
 							{
 								if (BUGScontext::getUser()->hasPermission('b2editionaccess', $e_id))
 								{
-									$this->theBuild = BUGSbuild::createNew($b_name, null, $e_id, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
+									$build = BUGSbuild::createNew($b_name, null, $e_id, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
 								}
 								else
 								{
-									throw new Exception(BUGScontext::getI18n()->__('You do not have access to this edition'));
+									throw new Exception($i18n->__('You do not have access to this edition'));
 								}
 							}
 							else
 							{
-								$this->theBuild = BUGSbuild::createNew($b_name, $p_id, null, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
+								$build = BUGSbuild::createNew($b_name, $p_id, null, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
 							}
+							return $this->renderJSON(array('title' => $i18n->__('The build has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('buildbox', array('build' => $build, 'access_level' => $this->access_level))));
 						}
 						else
 						{
-							throw new Exception(BUGScontext::getI18n()->__('You need to specify a name for the new build'));
+							throw new Exception($i18n->__('You need to specify a name for the new build'));
 						}
 					}
 					else
 					{
-						throw new Exception(BUGScontext::getI18n()->__('You do not have access to this project'));
+						throw new Exception($i18n->__('You do not have access to this project'));
 					}
 				}
 				else
 				{
-					throw new Exception(BUGScontext::getI18n()->__('You need to specify a project id'));
+					throw new Exception($i18n->__('You need to specify a project id'));
 				}
 			}
 			catch (Exception $e) 
 			{
-				return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('The build could not be added').", ".$e->getMessage()));
+				return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The build could not be added').", ".$e->getMessage()));
 			}
 		}
 		
@@ -697,6 +711,7 @@
 		public function runAddComponent($request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$i18n = BUGScontext::getI18n();
 
 			try
 			{
@@ -706,28 +721,28 @@
 					{
 						if ($c_name = $request->getParameter('c_name'))
 						{
-							$theProject = BUGSfactory::projectLab($p_id);
-							$theComponent = $theProject->addComponent($c_name);
-							return $this->renderTemplate('componentbox', array('aComponent' => $theComponent));
+							$project = BUGSfactory::projectLab($p_id);
+							$component = $project->addComponent($c_name);
+							return $this->renderJSON(array('title' => $i18n->__('The component has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('componentbox', array('component' => $component))));
 						}
 						else
 						{
-							throw new Exception(BUGScontext::getI18n()->__('You need to specify a name for the new component'));
+							throw new Exception($i18n->__('You need to specify a name for the new component'));
 						}
 					}
 					else
 					{
-						throw new Exception(BUGScontext::getI18n()->__('You do not have access to this project'));
+						throw new Exception($i18n->__('You do not have access to this project'));
 					}
 				}
 				else
 				{
-					throw new Exception(BUGScontext::getI18n()->__('You need to specify a project id'));
+					throw new Exception($i18n->__('You need to specify a project id'));
 				}
 			}
 			catch (Exception $e) 
 			{
-				return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('The component could not be added').", ".$e->getMessage()));
+				return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The component could not be added').", ".$e->getMessage()));
 			}
 		}
 
@@ -739,6 +754,7 @@
 		public function runAddMilestone($request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$i18n = BUGScontext::getI18n();
 
 			try
 			{
@@ -750,26 +766,26 @@
 						{
 							$theProject = BUGSfactory::projectLab($p_id);
 							$theMilestone = $theProject->addMilestone($m_name, $request->getParameter('milestone_type', 1));
-							return $this->renderTemplate('milestonebox', array('milestone' => $theMilestone));
+							return $this->renderJSON(array('title' => $i18n->__('The milestone has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('milestonebox', array('milestone' => $theMilestone))));
 						}
 						else
 						{
-							throw new Exception(BUGScontext::getI18n()->__('You need to specify a name for the new milestone'));
+							throw new Exception($i18n->__('You need to specify a name for the new milestone'));
 						}
 					}
 					else
 					{
-						throw new Exception(BUGScontext::getI18n()->__('You do not have access to this project'));
+						throw new Exception($i18n->__('You do not have access to this project'));
 					}
 				}
 				else
 				{
-					throw new Exception(BUGScontext::getI18n()->__('You need to specify a project id'));
+					throw new Exception($i18n->__('You need to specify a project id'));
 				}
 			}
 			catch (Exception $e) 
 			{
-				return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('The milestone could not be added').", ".$e->getMessage()));
+				return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The milestone could not be added').", ".$e->getMessage()));
 			}
 		}
 		
@@ -938,14 +954,7 @@
 			{
 				if ($request->getParameter('mode') == 'install' && file_exists(BUGScontext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/module'))
 				{
-					BUGScontext::addClasspath(BUGScontext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/classes');
-					if (is_dir(BUGScontext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/classes/B2DB'))
-					{
-						BUGScontext::addClasspath(BUGScontext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/classes/B2DB');
-					}
-					$classname = file_get_contents(BUGScontext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/class');
-
-					if (call_user_func(array($classname, 'install')))
+					if (BUGSmodule::installModule($request->getParameter('module_key')))
 					{
 						BUGScontext::setMessage('module_message', BUGScontext::getI18n()->__('The module "%module_name%" was installed successfully', array('%module_name%' => $request->getParameter('module_key'))));
 					}

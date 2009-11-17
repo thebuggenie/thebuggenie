@@ -11,21 +11,18 @@ function addProject(url)
 	},
 	onSuccess: function (transport) {
 		var json = transport.responseJSON;
-		if (json != null)
+		if (json.error)
 		{
 			failedMessage(json.error);
 			$('project_add_indicator').hide();
-			$('message_failed').show();
 		}
 		else
 		{
 			Form.reset('add_project_form');
 			$('noprojects_tr').hide();
-			$('message_failed').hide();
 			$('project_add_indicator').hide();
-			$('message_project_added').show();
-			$('project_table').update($('project_table').innerHTML + transport.responseText);
-			new Effect.Fade('message_project_added', {delay: 20} );
+			successMessage(json.title, json.message);
+			$('project_table').update($('project_table').innerHTML + json.html);
 		}
 	},
 	onFailure: function (transport) {
@@ -83,7 +80,7 @@ function addMilestone(url)
 	},
 	onSuccess: function (transport) {
 		var json = transport.responseJSON;
-		if (json != null)
+		if (json.error)
 		{
 			failedMessage(json.error);
 			$('milestone_add_indicator').hide();
@@ -92,11 +89,9 @@ function addMilestone(url)
 		{
 			Form.reset('add_milestone_form');
 			$('no_milestones').hide();
-			$('message_failed').hide();
 			$('milestone_add_indicator').hide();
-			$('milestone_list').update($('milestone_list').innerHTML + transport.responseText);
-			$('message_milestone_added').show();
-			new Effect.Fade('message_milestone_added', {delay: 20} );
+			successMessage(json.title, json.message);
+			$('milestone_list').update($('milestone_list').innerHTML + json.html);
 		}
 	},
 	onFailure: function (transport) {
@@ -126,7 +121,6 @@ function doBuildAction(url, bid, action, update)
 			}
 			else
 			{
-				$('message_failed').hide();
 				$('build_'+bid+'_indicator').hide();
 				$('build_'+bid+'_info').show();
 				if (update == 'all')
@@ -137,9 +131,6 @@ function doBuildAction(url, bid, action, update)
 				{
 					$('build_list_' + bid).update(transport.responseText);
 				}
-				var message_div = 'message_build_'+action;
-				$(message_div).show();
-				new Effect.Fade(message_div, {delay: 5} );
 			}
 		},
 		onFailure: function (transport) {
@@ -171,16 +162,12 @@ function updateBuild(url, bid)
 			}
 			else
 			{
-				$('message_failed').hide();
 				$('build_'+bid+'_indicator').hide();
 				$('build_'+bid+'_info').show();
-				$('message_build_details_updated').show();
 				$('build_list_' + bid).update(transport.responseText);
-				new Effect.Fade('message_build_details_updated', {delay: 5} );
 			}
 		},
 		onFailure: function (transport) {
-			failedMessage(json.error);
 			$('build_'+bid+'_indicator').hide();
 			$('build_'+bid+'_info').show();
 		}
@@ -205,13 +192,12 @@ function saveProjectOther(url)
 			{
 				$('message_failed').hide();
 				$('settings_save_indicator').hide();
-				$('message_changes_saved').show();
-				new Effect.Fade('message_changes_saved', {delay: 5} );
+				successMessage(json.title, json.message);
 			}
 			else
 			{
 				$('settings_save_indicator').hide();
-				$('message_failed').show();
+				failedMessage(json.error);
 			}	
 		},
 		onFailure: function (transport) {
@@ -238,18 +224,17 @@ function addToOpenBuild(url, bid)
 			var json = transport.responseJSON;
 			if (json.saved)
 			{
-				$('message_failed').hide();
 				$('build_'+bid+'_indicator').hide();
 				$('build_'+bid+'_info').show();
 				$('addtoopen_build_'+bid).hide();
-				$('message_build_added_to_open_issues').show();
-				new Effect.Fade('message_build_added_to_open_issues', {delay: 5} );
+				successMessage(json.title, json.message);
 			}
 			else
 			{
 				$('build_'+bid+'_indicator').hide();
 				$('build_'+bid+'_info').show();
 				$('addtoopen_build_'+bid).hide();
+				failedMessage(json.title, json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -329,7 +314,7 @@ function addEdition(url)
 	},
 	onSuccess: function (transport) {
 		var json = transport.responseJSON;
-		if (json != null)
+		if (json.error)
 		{
 			failedMessage(json.error);
 			$('edition_add_indicator').hide();
@@ -338,9 +323,8 @@ function addEdition(url)
 		{
 			Form.reset('add_edition_form');
 			$('edition_add_indicator').hide();
-			$('message_edition_added').show();
-			$('edition_table').update($('edition_table').innerHTML + transport.responseText);
-			new Effect.Fade('message_edition_added', {delay: 20} );
+			successMessage(json.title, json.message);
+			$('edition_table').update($('edition_table').innerHTML + json.html);
 		}
 	},
 	onFailure: function (transport) {
@@ -361,17 +345,16 @@ function addBuild(url)
 	},
 	onSuccess: function (transport) {
 		var json = transport.responseJSON;
-		if (json != null)
+		if (json.error)
 		{
 			failedMessage(json.error);
 			$('build_add_indicator').hide();
 		}
 		else
 		{
-			$('build_table').update($('build_table').innerHTML + transport.responseText);
+			$('build_table').update($('build_table').innerHTML + json.html);
 			$('build_add_indicator').hide();
-			$('message_build_added').show();
-			new Effect.Fade('message_build_added', {delay: 20} );
+			successMessage(json.title, json.message);
 		}
 	},
 	onFailure: function (transport) {
@@ -410,20 +393,18 @@ function addComponent(url)
 	},
 	onSuccess: function (transport) {
 		var json = transport.responseJSON;
-		if (json != null)
+		if (json.error)
 		{
 			failedMessage(json.error);
 			$('project_add_indicator').hide();
-			$('message_failed').show();
 		}
 		else
 		{
 			Form.reset('add_component_form');
 			$('component_add_indicator').hide();
-			$('message_component_added').show();
+			successMessage(json.title, json.message);
 			$('no_components').hide();
-			$('component_table').update($('component_table').innerHTML + transport.responseText);
-			new Effect.Fade('message_component_added', {delay: 20} );
+			$('component_table').update($('component_table').innerHTML + json.html);
 		}
 	},
 	onFailure: function (transport) {
@@ -450,13 +431,13 @@ function submitProjectSettings(url)
 		if (json.saved)
 		{
 			$('project_save_indicator').hide();
-			$('message_changes_saved').show();
 			$('project_name_span').update($('project_name').getValue());
-			new Effect.Fade('message_changes_saved', {delay: 20} );
+			successMessage(json.title, json.message);
 		}
 		else
 		{
 			$('project_save_indicator').hide();
+			failedMessage(json.error);
 		}
 	},
 	onFailure: function (transport) {

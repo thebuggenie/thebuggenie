@@ -1,4 +1,4 @@
-<div class="rounded_box<?php if ($module->isEnabled()): ?> lightgreen<?php endif; ?>" style="margin: 5px 0px 5px 0px; width: 750px;" id="module_<?php echo $module->getID(); ?>">
+<div class="rounded_box<?php if ($module->isEnabled()): ?> iceblue_borderless<?php endif; ?>" style="margin: 5px 0px 5px 0px; width: 750px;" id="module_<?php echo $module->getID(); ?>">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; text-align: right; min-height: 40px;">
 		<div style="float: left;">

@@ -24,10 +24,40 @@ function hideBud(elem_id)
 
 function failedMessage(title, content)
 {
-	$('message_failed_title').update(title);
-	$('message_failed_content').update(content);
-	$('message_failed').show();
-	new Effect.Pulsate('message_failed');
+	$('thebuggenie_failuremessage_title').update(title);
+	$('thebuggenie_failuremessage_content').update(content);
+	if ($('thebuggenie_successmessage').visible())
+	{
+		new Effect.SlideUp('thebuggenie_successmessage', { duration: 0.5 });
+	}
+	if ($('thebuggenie_failuremessage').visible())
+	{
+		new Effect.Pulsate('thebuggenie_failuremessage');
+	}
+	else
+	{
+		new Effect.SlideDown('thebuggenie_failuremessage', { duration: 1 });
+	}
+	new Effect.SlideUp('thebuggenie_failuremessage', { delay: 10 });
+}
+
+function successMessage(title, content)
+{
+	$('thebuggenie_successmessage_title').update(title);
+	$('thebuggenie_successmessage_content').update(content);
+	if ($('thebuggenie_failuremessage').visible())
+	{
+		new Effect.SlideUp('thebuggenie_failuremessage', { duration: 0.5 });
+	}
+	if ($('thebuggenie_failuremessage').visible())
+	{
+		new Effect.Pulsate('thebuggenie_successmessage');
+	}
+	else
+	{
+		new Effect.SlideDown('thebuggenie_successmessage', { duration: 1 });
+	}
+	new Effect.SlideUp('thebuggenie_successmessage', { delay: 10 });
 }
 
 function hideInfobox(url, boxkey)

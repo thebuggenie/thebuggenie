@@ -22,9 +22,9 @@
 </form>
 <div class="config_header nobg" style="margin-top: 20px;"><b><?php echo __('Existing builds / releases'); ?></b></div>
 <span id="build_table">
-<?php foreach ($parent->getBuilds() as $aBuild): ?>
-	<span id="build_list_<?php echo $aBuild->getID(); ?>">
-		<?php include_template('buildbox', array('aBuild' => $aBuild, 'access_level' => $access_level)); ?>
+<?php foreach ($parent->getBuilds() as $build): ?>
+	<span id="build_list_<?php echo $build->getID(); ?>">
+		<?php include_template('buildbox', array('build' => $build, 'access_level' => $access_level)); ?>
 	</span>
 <?php endforeach; ?>
 </span>

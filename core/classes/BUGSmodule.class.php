@@ -40,6 +40,24 @@
 		protected $_has_config_settings = false;
 		
 		static protected $_permissions = array();
+
+		/**
+		 * Installs a module
+		 * 
+		 * @param string $module_name the module key
+		 * @return boolean Whether the install succeeded or not
+		 */
+		static public function installModule($module_name)
+		{
+			BUGScontext::addClasspath(BUGScontext::getIncludePath() . 'modules/' . $module_name . '/classes');
+			if (is_dir(BUGScontext::getIncludePath() . 'modules/' . $module_name . '/classes/B2DB'))
+			{
+				BUGScontext::addClasspath(BUGScontext::getIncludePath() . 'modules/' . $module_name . '/classes/B2DB');
+			}
+			$classname = file_get_contents(BUGScontext::getIncludePath() . 'modules/' . $module_name . '/class');
+
+			return (call_user_func(array($classname, 'install')));
+		}
 		
 		/**
 		 * Class constructor

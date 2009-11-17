@@ -4,11 +4,8 @@
 		<td style="padding-right: 10px;">
 			<div class="configheader" style="width: 750px;"><?php echo __('Configure projects'); ?></div>
             <div style="height: 60px; position: absolute;">
-            	<?php echo bugs_successStrip(__('The project has been added'), __('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'message_project_added', true); ?>
+            	<?php /*echo bugs_successStrip(__('The project has been added'), __('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'message_project_added', true); ?>
             	<?php echo bugs_failureStrip('', '', 'message_failed', true); ?>
-            	<?php echo bugs_successStrip(__('The edition has been added'), __('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'message_edition_added', true); ?>
-            	<?php echo bugs_successStrip(__('The component has been added'), '', 'message_component_added', true); ?>
-            	<?php echo bugs_successStrip(__('The build has been added'), __('Remember to give other users/groups permission access to it if necessary.'), 'message_build_added', true, false); ?>
             	<?php echo bugs_successStrip(__('The build details has been updated'), '', 'message_build_details_updated', true); ?>
             	<?php echo bugs_successStrip(__('The selected build has been deleted'), '', 'message_build_deleted', true); ?>
             	<?php echo bugs_successStrip(__('The selected build has been added to open issues based on your selections'), '', 'message_build_added_to_open_issues', true); ?>
@@ -17,7 +14,7 @@
             	<?php echo bugs_successStrip(__('The selected build is now locked for new issue reports'), '', 'message_build_lock', true); ?>
             	<?php echo bugs_successStrip(__('The selected build is no longer locked for new issue reports'), '', 'message_build_unlock', true); ?>
             	<?php echo bugs_successStrip(__('The selected build is now the initial default when reporting new issues for this project'), '', 'message_build_markdefault', true); ?>
-            	<?php echo bugs_successStrip(__('Your changes has been saved'), '', 'message_changes_saved', true); ?>
+            	<?php echo bugs_successStrip(__('Your changes has been saved'), '', 'message_changes_saved', true); */ ?>
             </div>
 			<p style="padding-top: 5px;">
 				<?php if (BUGScontext::getRequest()->getParameter('edit_settings')): ?>
