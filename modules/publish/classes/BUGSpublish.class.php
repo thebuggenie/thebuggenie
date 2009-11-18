@@ -19,6 +19,8 @@
 			$this->addAvailablePermission('publish_postonteambillboard', 'Can post articles on team billboard');
 			$this->addAvailableListener('core', 'index_left_middle', 'section_latestNewsBox', 'Frontpage "Last news items"');
 			$this->addAvailableListener('core', 'index_right_middle', 'section_latestNews', 'Frontpage billboard overview');
+
+			$this->addRoute('publish', '/articles', 'index');
 		}
 
 		public function initialize()
@@ -83,7 +85,12 @@
 			}
 			parent::_uninstall();
 		}
-		
+
+		public function getRoute()
+		{
+			return BUGScontext::getRouting()->generate('publish');
+		}
+
 		public function getBillboardPosts($target_board = 0, $posts = 5)
 		{
 			$sql = "";

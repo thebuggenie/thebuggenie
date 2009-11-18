@@ -69,3 +69,8 @@
 {
 	cursor: move;
 }
+
+.news_list { list-style-type: none; margin: 5px 0 0 5px; padding: 0; font-size: 13px; }
+.news_list img { float: left; margin-right: 5px; }
+.news_list span { font-size: 10px; }
+.news_list .more_news { margin: 10px 0 0 0; }

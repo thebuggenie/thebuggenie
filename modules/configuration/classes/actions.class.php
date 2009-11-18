@@ -20,6 +20,7 @@
 			$this->access_level = $this->getAccessLevel($request->getParameter('section'), 'core');
 			
 			$this->getResponse()->setPage('config');
+			$this->getResponse()->setProjectMenuStripHidden();
 			
 		}
 		
@@ -35,6 +36,7 @@
 			$module_config_sections = array();
 			$general_config_sections[12] = array('route' => 'configure_settings', 'description' => __('Settings'), 'icon' => 'general', 'details' => __('Every setting in the bug genie can be adjusted in this section.'));
 			$general_config_sections[3] = array('route' => 'configure_files', 'description' => __('Uploads &amp; attachments'), 'icon' => 'files', 'details' => __('All settings related to file uploads are controlled from this section.'));
+			$general_config_sections[5] = array('route' => 'configure_permissions', 'description' => __('Permissions'), 'icon' => 'permissions', 'details' => __('Configure permissions in this section'));
 			if (BUGScontext::getUser()->getScope()->getID() == 1)
 			{
 				$general_config_sections[14] = array('route' => 'configure_scopes', 'description' => __('Scopes'), 'icon' => 'scopes', 'details' => __('Scopes are self-contained Bug Genie environments. Configure them here.'));
@@ -1033,6 +1035,7 @@
 			}
 			$this->module_message = BUGScontext::getMessageAndClear('module_message');
 			$this->module_error = BUGScontext::getMessageAndClear('module_error');
+			$this->module_error_details = BUGScontext::getMessageAndClear('module_error_details');
 		}
 
 		public function getAccessLevel($section, $module)

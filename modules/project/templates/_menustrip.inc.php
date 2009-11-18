@@ -21,7 +21,7 @@
 							<?php echo __('Choose a project from the list below'); ?>:<br>
 							<table cellpadding="0" cellspacing="0">
 								<?php foreach (BUGSproject::getAll() as $aProject): ?>
-									<?php if ($aProject->getID() == $project->getID()) continue; ?>
+									<?php if ($project instanceof BUGSproject && $aProject->getID() == $project->getID()) continue; ?>
 									<tr>
 										<td style="width: 16px;"><?php echo image_tag($aProject->getIcon(), array('style' => 'float: left; margin-right: 5px;'), $aProject->hasIcon()); ?></td>
 										<td style="padding-left: 5px; font-size: 13px;">

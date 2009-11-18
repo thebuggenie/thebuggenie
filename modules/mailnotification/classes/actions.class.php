@@ -48,5 +48,30 @@
 			}
 		}
 
+		/**
+		 * Send a test email
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runTestEmail($request)
+		{
+			if ($email_to = $request->getParameter('test_email_to'))
+			{
+				if (BUGScontext::getModule('mailnotification')->sendTestEmail($email_to))
+				{
+					BUGScontext::setMessage('module_message', BUGScontext::getI18n()->__('The email was successfully accepted for delivery'));
+				}
+				else
+				{
+					BUGScontext::setMessage('module_error', BUGScontext::getI18n()->__('The email was not sent'));
+					BUGScontext::setMessage('module_error_details', BUGSlogging::getMessagesForCategory('mailnotification', BUGSlogging::LEVEL_NOTICE));
+				}
+			}
+			else
+			{
+				BUGScontext::setMessage('module_error', BUGScontext::getI18n()->__('Please specify an email address'));
+			}
+			$this->forward(BUGScontext::getRouting()->generate('configure_module', array('config_module' => 'mailnotification')));
+		}
 
 	}

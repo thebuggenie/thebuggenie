@@ -161,7 +161,7 @@
 		 * @var BUGSrouting
 		 */
 		static protected $_routing = null;
-		
+
 		/**
 		 * Returns the Database object
 		 *
@@ -1578,6 +1578,11 @@
 		
 			BUGScontext::setLoadedAt();
 		}
-		
+
+		public static function getURLhost()
+		{
+			return self::getScope()->getHostname();
+		}
+
 	}
 	

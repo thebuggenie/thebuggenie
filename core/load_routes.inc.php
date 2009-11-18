@@ -44,6 +44,7 @@
 	$routes[] = array('configure_settings', '/configure/settings', 'configuration', 'settings', array('config_module' => 'core', 'section' => 12));
 	$routes[] = array('configure_scopes', '/configure/scopes', 'configuration', 'index', array('config_module' => 'core', 'section' => 14));
 	$routes[] = array('configure_files', '/configure/files', 'configuration', 'index', array('config_module' => 'core', 'section' => 3));
+	$routes[] = array('configure_permissions', '/configure/permissions', 'configuration', 'index', array('config_module' => 'core', 'section' => 5));
 	$routes[] = array('configure_import', '/configure/import', 'configuration', 'index', array('config_module' => 'core', 'section' => 16));
 	$routes[] = array('configure_project_milestones', '/configure/milestones/for/project/:project_id', 'configuration', 'configureProjectMilestones', array('config_module' => 'core', 'section' => 9));
 	$routes[] = array('configure_projects_add_milestone', '/configure/project/:project_id/add/milestone', 'configuration', 'addMilestone', array('config_module' => 'core', 'section' => 10));
@@ -65,6 +66,7 @@
 	$routes[] = array('configure_uninstall_module', '/configure/modules/uninstall/:module_key', 'configuration', 'moduleAction', array('config_module' => 'core', 'section' => 15, 'mode' => 'uninstall'));
 	$routes[] = array('configure_install_module', '/configure/modules/install', 'configuration', 'moduleAction', array('config_module' => 'core', 'section' => 15, 'mode' => 'install'));
 	$routes[] = array('configure_module', '/configure/module/:config_module', 'configuration', 'configureModule', array('config_module' => 'core', 'section' => 15));
+	$routes[] = array('configure_get_permissions', '/configure/permissions/:permissions_type/for/:permissions_target_type/:permissions_target', 'configuration', 'getPermissions', array('config_module' => 'core', 'section' => 5));
 	
 	foreach ($routes as $route)
 	{

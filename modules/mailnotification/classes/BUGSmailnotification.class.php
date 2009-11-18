@@ -79,7 +79,17 @@
 				}
 			}
 		}
+
+		public function getEmailFromAddress()
+		{
+			return $this->getSetting('from_addr');
+		}
 					
+		public function getEmailFromName()
+		{
+			return $this->getSetting('from_name');
+		}
+
 		public function listen_accountSettingsList()
 		{
 			include_template('mailnotification/accountsettingslist');
@@ -126,6 +136,14 @@
 			$this->_sendToUsers($to_users, $subject, $html_message, $plain_message);
 		}
 		
+		public function sendTestEmail($email_address)
+		{
+			$subject = BUGScontext::getI18n()->__('Test email');
+			$html_message = BUGSaction::returnTemplateHTML('mailnotification/testemail.html');
+			$plain_message = BUGSaction::returnTemplateHTML('mailnotification/testemail.text');
+			return $this->sendMail($email_address, $email_address, $subject, $html_message, $plain_message);
+		}
+
 		public function listen_issueCreate(BUGSissue $issue)
 		{
 			if ($issue instanceof BUGSissue)
@@ -159,8 +177,8 @@
 				{
 					if ($user->isEnabled() && $user->isActivated() && !$user->isDeleted() && !$user->isGuest())
 					{
-						$patterns = array('%user_buddyname%', '%user_username%', '%thebuggenie_url%');
-						$replacements = array($user->getBuddyname(), $user->getUsername(), BUGScontext::getRouting()->generate('home'));
+						$patterns = array('%user_buddyname%', '%user_username%');
+						$replacements = array($user->getBuddyname(), $user->getUsername());
 						$html_message = str_replace($patterns, $replacements, $orig_message_html);
 						if ($orig_message_plain !== null)
 						{
@@ -254,9 +272,11 @@
 			$pre_html_message = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>';
 			$pre_html_message .= '<head><meta http-equiv=Content-Type content="text/html; charset=utf-8"><title>The Bug Genie automailer</title></head><body>';
 			$post_html_message = '</body></html>';
+			$message_html = str_replace('%thebuggenie_url%', BUGScontext::getRouting()->generate('home', array(), false), $message_html);
+			$message_plain = str_replace('%thebuggenie_url%', BUGScontext::getRouting()->generate('home', array(), false), $message_plain);
 
-			$from_name = $this->getSetting('email_from_name');
-			$from_email = $this->getSetting('email_from_email');
+			$from_name = $this->getEmailFromName();
+			$from_email = $this->getEmailFromAddress();
 			if (!$from_name && $from_email)
 			{
 				return false;

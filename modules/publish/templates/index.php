@@ -1,20 +1,3 @@
-<?php
-
-	$page = 'publish';
-	define ('BUGS2_INCLUDE_PATH', '../../');
-	
-	require BUGS2_INCLUDE_PATH . 'include/checkcookie.inc.php';
-	require BUGS2_INCLUDE_PATH . "include/b2_engine.inc.php";
-	
-	require BUGScontext::getIncludePath() . "include/ui_functions.inc.php";
-
-	BUGScontext::getModule('publish')->activate();
-	
-	require BUGScontext::getIncludePath() . "modules/publish/publish_logic.inc.php";
-	require BUGScontext::getIncludePath() . "include/header.inc.php";
-	require BUGScontext::getIncludePath() . "include/menu.inc.php";
-	
-?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
 		<td style="width: 255px;" valign="top">
@@ -223,7 +206,7 @@
 				{
 					?>
 					<div style="width: auto; border: 1px solid #DDD; padding: 5px;">
-					<?php echo image_tag('publish/' . $f_article->getIcon() . '.png', ' style="float: left; margin-right: 5px;"') ?>
+					<?php echo image_tag('publish/' . $f_article->getIcon() . '.png', array('style' => "float: left; margin-right: 5px;")); ?>
 					<b style="font-size: 14px;"><?php echo $f_article->getTitle(); ?></b><br>
 					<div style="color: #AAA;"><b><?php print bugs_formatTime($f_article->getPostedDate(), 3); ?></b> by <b><?php echo $f_article->getAuthor(); ?></b></div>
 					<div style="padding-top: 5px; font-size: 11.5px; padding-bottom: 5px; font-weight: bold;"><?php echo bugs_BBDecode($f_article->getIntro()); ?></div>
@@ -307,8 +290,3 @@
 		</td>
 	</tr>
 </table>
-<?php
-
-	require_once BUGScontext::getIncludePath() . "include/footer.inc.php";
-
-?>

@@ -468,9 +468,9 @@
 	 * 
 	 * @return string
 	 */
-	function make_url($name, $params = array())
+	function make_url($name, $params = array(), $relative = true)
 	{
-		return BUGScontext::getRouting()->generate($name, $params);
+		return BUGScontext::getRouting()->generate($name, $params, $relative);
 	}
 	
 	/**

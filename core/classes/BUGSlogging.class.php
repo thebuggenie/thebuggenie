@@ -26,8 +26,8 @@
 		
 		protected static $_logging = true;
 		
-		protected static $_logfile;
-		//protected static $_logfile = '/var/www/dev/thebuggenie/b2.log';
+		//protected static $_logfile;
+		protected static $_logfile = '/var/www/dev/thebuggenie/thebuggenie.log';
 		
 		protected static $_logonajaxcalls = true;
 		
@@ -94,7 +94,33 @@
 		{
 			return self::$_entries;
 		}
+
+		public static function getEntriesForCategory($category, $min_level = 1)
+		{
+			$retval = array();
+			foreach (self::$_entries as $entry)
+			{
+				if ($entry['category'] == $category && $entry['level'] >= $min_level)
+				{
+					$retval[] = $entry;
+				}
+			}
+			return $retval;
+		}
 		
+		public static function getMessagesForCategory($category, $min_level = 1)
+		{
+			$retval = array();
+			foreach (self::$_entries as $entry)
+			{
+				if ($entry['category'] == $category && $entry['level'] >= $min_level)
+				{
+					$retval[] = $entry['message'];
+				}
+			}
+			return $retval;
+		}
+
 		public static function isEnabled()
 		{
 			return self::$_logging;

@@ -322,7 +322,7 @@
 		 * 
 		 * @return string
 		 */
-		public function generate($name, $params = array(), $querydiv = '/', $divider = '/', $equals = '/')
+		public function generate($name, $params = array(), $relative = true, $querydiv = '/', $divider = '/', $equals = '/')
 		{
 			if (!isset($this->routes[$name]))
 			{
@@ -378,7 +378,11 @@
 			{
 				$real_url = rtrim($real_url, $divider);
 			}
-	
+
+			if (!$relative)
+			{
+				return BUGScontext::getURLhost() . BUGScontext::getStrippedTBGPath() . $real_url;
+			}
 			return BUGScontext::getStrippedTBGPath() . $real_url;
 		}
 		

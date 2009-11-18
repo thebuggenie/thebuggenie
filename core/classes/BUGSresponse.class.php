@@ -95,6 +95,13 @@
 		protected $_decor_footer = null;
 		
 		/**
+		 * Whether to show the project menu strip or not
+		 *
+		 * @var boolean
+		 */
+		protected $_project_menu_strip_visible = true;
+
+		/**
 		 * Set the template
 		 * 
 		 * @param string $template The template name
@@ -362,5 +369,14 @@
 			
 		}
 
+		public function setProjectMenuStripHidden($val = true)
+		{
+			$this->_project_menu_strip_visible = !(bool) $val;
+		}
+
+		public function isProjectMenuStripVisible()
+		{
+			return $this->_project_menu_strip_visible;
+		}
 		
 	}

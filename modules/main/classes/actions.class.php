@@ -99,6 +99,7 @@
 				}
 			}
 			$this->getResponse()->setPage('index');
+			$this->getResponse()->setProjectMenuStripHidden();
 			$this->showleftbar = false;
 			if (!BUGSuser::isThisGuest() && (BUGScontext::getUser()->showFollowUps() || BUGScontext::getUser()->showAssigned()))
 			{
@@ -129,7 +130,7 @@
 			{
 				$this->forward403();
 			}
-			$this->getResponse()->setPage('dashboard');
+			$this->getResponse()->setProjectMenuStripHidden();
 		}
 		
 		/**
@@ -139,7 +140,7 @@
 		 */
 		public function runAbout($request)
 		{
-			$this->getResponse()->setPage('about');
+			$this->getResponse()->setProjectMenuStripHidden();
 		}
 		
 		/**
@@ -177,6 +178,7 @@
 		public function runLogin($request)
 		{
 			$this->getResponse()->setPage('login');
+			$this->getResponse()->setProjectMenuStripHidden();
 			try
 			{
 				if (BUGScontext::getRequest()->getMethod() == BUGSrequest::POST)
@@ -478,6 +480,7 @@
 		{
 			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('account'));
 			$this->getResponse()->setPage('account');
+			$this->getResponse()->setProjectMenuStripHidden();
 		}
 		
 		/**

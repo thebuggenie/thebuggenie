@@ -28,7 +28,7 @@
 		<?php endif; ?>
 		<?php foreach (BUGScontext::getModules() as $module): ?>
 			<?php if ($module->hasAccess() && $module->isVisibleInMenu() && $module->isEnabled()): ?>
-				<li<?php if ($bugs_response->getPage() == $module->getName()): ?> class="selected"<?php endif; ?>><?php echo link_tag(BUGScontext::getTBGPath() . "modules/" . $module->getName() . "/" . $module->getName().'.php', image_tag('tab_' . $module->getName() . '.png', array('style' => 'float: left;'), false, $module->getName()).$module->getMenuTitle()); ?></li>
+				<li<?php if ($bugs_response->getPage() == $module->getName()): ?> class="selected"<?php endif; ?>><?php echo link_tag($module->getRoute(), image_tag('tab_' . $module->getName() . '.png', array('style' => 'float: left;'), false, $module->getName()).$module->getMenuTitle()); ?></li>
 			<?php endif; ?>
 		<?php endforeach; ?>
 		<?php if (BUGScontext::getUser()->hasPermission("b2viewconfig", 0, 'core', true)): ?>
@@ -59,7 +59,7 @@
 		?>
 	</ul>
 </div>
-<?php if (!in_array($bugs_response->getPage(), array('config', 'index', 'dashboard', 'account', 'login'))): ?>
+<?php if ($bugs_response->isProjectMenuStripVisible()): ?>
 	<div id="project_menustrip"><?php include_component('project/menustrip', array('project' => BUGScontext::getCurrentProject())); ?></div>
 <?php endif; ?>
 <?php
