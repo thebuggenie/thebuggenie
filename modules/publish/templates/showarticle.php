@@ -11,7 +11,12 @@
 			<?php else: ?>
 				<div class="header" style="padding: 5px;">
 					<?php echo link_tag(make_url('publish_article', array('article_name' => 'IndexMessage')), __('Front page article'), array('class' => (($article_name == 'IndexMessage') ? 'faded_medium' : ''), 'style' => 'float: right; margin-right: 15px;')); ?>
-					<?php echo get_spaced_name($article_name); ?>
+					<?php if (BUGScontext::getCurrentProject() instanceof BUGSproject && strpos($article_name, ucfirst(BUGScontext::getCurrentProject()->getKey())) == 0): ?>
+						<?php $article_name = substr($article_name, strlen(BUGScontext::getCurrentProject()->getKey())+1); ?>
+						<span class="faded_dark"><?php echo ucfirst(BUGScontext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($article_name); ?>
+					<?php else: ?>
+						<?php echo get_spaced_name($article_name); ?>
+					<?php endif; ?>
 				</div>
 				<div style="font-size: 14px;">
 					<?php echo __('This is a placeholder for an article that has not been created yet. You can create it by clicking %create_this_article% below.', array('%create_this_article%' => '<b>'.__('Create this article').'</b>')); ?>
