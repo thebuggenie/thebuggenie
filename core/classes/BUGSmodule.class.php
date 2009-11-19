@@ -615,4 +615,9 @@
 			return false;
 		}
 
+		public function getTabKey()
+		{
+			return $this->getName();
+		}
+
 	}

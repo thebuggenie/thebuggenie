@@ -22,7 +22,6 @@
 			$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
 			$this->addAvailableListener('core', 'project_menustrip_item_links', 'listen_projectMenustripLinks', 'Project menustrip links');
 
-$this->enableListenerSaved('core', 'project_menustrip_item_links');
 			$this->addRoute('publish', '/wiki', 'showArticle', array('article_name' => 'MainPage'));
 			$this->addRoute('publish_article', '/wiki/:article_name', 'showArticle');
 			$this->addRoute('publish_article_edit', '/wiki/:article_name/edit', 'editArticle');
@@ -336,6 +335,11 @@ $this->enableListenerSaved('core', 'project_menustrip_item_links');
 		public function listen_projectMenustripLinks($params)
 		{
 			BUGSactioncomponent::includeTemplate('publish/projectmenustriplinks', $params);
+		}
+
+		public function getTabKey()
+		{
+			return (BUGScontext::getCurrentProject() instanceof BUGSproject) ? parent::getTabKey() : 'wiki';
 		}
 
 	}
