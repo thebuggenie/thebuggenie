@@ -71,7 +71,7 @@ class WikiParser {
 			$this->toc[] = array('level' => $level, 'content' => $content, 'id' => $id);
 			$retval .= " id=\"{$id}\"";
 		}
-		$retval .= ">{$content}</h{$level}>\n";
+		$retval .= ">{$content}&nbsp;<a href=\"#top\">&uArr;&nbsp;".__('top')."</a></h{$level}>\n";
 
 		return $retval;
 	}

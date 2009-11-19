@@ -5,6 +5,7 @@
 			<?php include_component('leftmenu', array('article' => $article)); ?>
 		</td>
 		<td class="main_area article">
+			<a name="top"></a>
 			<?php if ($article instanceof PublishArticle): ?>
 				<?php include_component('articledisplay', array('article' => $article)); ?>
 			<?php else: ?>
