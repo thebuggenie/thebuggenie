@@ -115,6 +115,11 @@
 .article .publish_article_actions input[type="submit"] { padding: 3px; font-weight: bold; font-size: 12px; }
 .article .publish_article_actions input[type="submit"]:hover { background-color: #F1F1F1; cursor: pointer; }
 
+.article.edit label { font-size: 15px; }
+.article.edit label.small { font-size: 13px; }
+.article.edit input[type="text"] { font-size: 15px; padding: 5px; }
+.article.edit textarea { font-family: "Droid Sans Mono", monospace; }
+
 #wiki_menu .header { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
 #wiki_menu .content ul { list-style-type: none; margin: 0; padding: 0; }
 #wiki_menu .content ul li { font-size: 12px; }

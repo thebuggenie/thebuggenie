@@ -249,6 +249,13 @@ class WikiParser {
 			return image_tag($href, array('alt' => $title)); // $this->handle_image($href,$title,$options);
 		}
 
+		if ($namespace=='Wikipedia') {
+			$options = explode('|',$title);
+			$title = array_pop($options);
+
+			return link_tag('http://wikipedia.org/wiki/'.$href, $title); // $this->handle_image($href,$title,$options);
+		}
+
 		if ($namespace=='TBG') {
 			$options = explode('|',$title);
 			$title = array_pop($options);

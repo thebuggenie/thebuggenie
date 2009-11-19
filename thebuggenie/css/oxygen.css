@@ -1226,6 +1226,7 @@ li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 .iceblue_borderless .percent_filled { background-color: #88C; }
 .iceblue_borderless .percent_unfilled { background-color: #AAF; }
 .iceblue_borderless .faded_medium { color: #99C; }
+.iceblue_borderless .faded_dark { color: #77C; }
 .iceblue_borderless .issue_detail_changed { background-color: #FFF299; }
 .iceblue_borderless .issue_detail_unmerged { background-color: #E0AC9C; }
 .iceblue_borderless .issue_detail_unmerged .faded_medium { color: #FFD9D6; }

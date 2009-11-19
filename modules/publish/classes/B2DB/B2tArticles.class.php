@@ -92,10 +92,9 @@ Wiki formatting is well explained in the [http://en.wikipedia.org/wiki/Help:Wiki
 We will show you the most common syntax below.
 
 == Creating links between documents ==
-Traditionally, wikis have used something called [http://en.wikipedia.org/wiki/!CamelCase CamelCasing] to create links between documents. !CamelCasing means that you put any word or combination of words as a !CamelCased word, and then the wiki will create a link to the document with that name for you automatically. If the page you are trying to link to isn't yet created, the link will still be displayed, and you can click it to start editing the new article.
+Traditionally, wikis have used something called [http://en.wikipedia.org/wiki/CamelCase Camel Casing] to create links between documents. CamelCasing means that you put any word or combination of words as a \"'''camel cased'''\" word, and then the wiki will create a link to the document with that name for you automatically. If the page you are trying to link to isn't yet created, the link will still be displayed, and you can click it to start editing the new article.
 
-If you want to write a word with more than one capital letter, use an exclamation mark infront of it - that will stop it from being turned into a link automatically.
-!CamelCasing can be turned off in the wiki settings.
+If you want to write a word with more than one capital letter, use an exclamation mark infront of it - that will stop it from being turned into a link automatically. The support for \"camel casing\" can be turned off in the wiki settings.
 
 You can also use the double square bracket link format to link to internal pages, if you don't want to use the CamelCasing style:
   [[InternalPage]]
@@ -114,6 +113,8 @@ Unfortunately, the list of routes used in The Bug Genie is quite long, but a few
 [[TBG:configure_projects|Configure projects]]
   [[TBG:configure_modules|Modules configuration]]
 [[TBG:configure_modules|Modules configuration]]
+
+'''Remember - if all this sound complicated, you can always just use CamelCasing (provided it's not disabled)'''
 
 == Links ==
 In addition to linking between internal pages with double square brackets, you can link to external pages with single square brackets. Links inside your text will not automatically be turned into clickable links, but simply putting a pair of square brackets around the link makes it clickable. In addition, you can add a title if you want to:
@@ -230,6 +231,24 @@ If you want to put some text on the page that shouldn't be interpreted (like the
 			$crit->addInsert(self::IS_PUBLISHED, true);
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ARTICLE_NAME, 'CamelCasing');
+			$crit->addInsert(self::TITLE, 'What is Camel Casing?');
+			$crit->addInsert(self::AUTHOR, 0);
+			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
+			$crit->addInsert(self::INTRO_TEXT, '');
+			$crit->addInsert(self::CONTENT, "'''!CamelCase''' (also spelled \"camel case\") or ''medial capitals'' is the practice of writing compound words or phrases in which the elements are joined without spaces, with each element's initial letter capitalized within the compound, and the first letter can be upper or lower case — as in !LaBelle, !BackColor, !MacGyver, or iPod.
+
+The name comes from the uppercase \"bumps\" in the middle of the compound word, suggestive of the humps of a camel.
+
+The practice is also known by many other names, such as '''!BumpCaps''', '''!BeefCaps''', '''!CapWords''' and '''!WikiWords'''.
+
+'''This is a short introduction to the subject, based on the [[Wikipedia:CamelCase|Wikipedia article]] about camel case.");
+			$crit->addInsert(self::IS_PUBLISHED, true);
+			$crit->addInsert(self::SCOPE, $scope);
+			$res = $this->doInsert($crit);
+
 
 		}
 
