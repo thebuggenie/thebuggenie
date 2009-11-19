@@ -12,8 +12,8 @@
 				<div class="header" style="padding: 5px;">
 					<?php echo link_tag(make_url('publish_article', array('article_name' => 'IndexMessage')), __('Front page article'), array('class' => (($article_name == 'IndexMessage') ? 'faded_medium' : ''), 'style' => 'float: right; margin-right: 15px;')); ?>
 					<?php if (BUGScontext::getCurrentProject() instanceof BUGSproject && strpos($article_name, ucfirst(BUGScontext::getCurrentProject()->getKey())) == 0): ?>
-						<?php $article_name = substr($article_name, strlen(BUGScontext::getCurrentProject()->getKey())+1); ?>
-						<span class="faded_dark"><?php echo ucfirst(BUGScontext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($article_name); ?>
+						<?php $project_article_name = substr($article_name, strlen(BUGScontext::getCurrentProject()->getKey())+1); ?>
+						<span class="faded_dark"><?php echo ucfirst(BUGScontext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
 					<?php else: ?>
 						<?php echo get_spaced_name($article_name); ?>
 					<?php endif; ?>
