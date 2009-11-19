@@ -77,7 +77,7 @@ class WikiParser {
 
 		$this->stop = true;
 		// avoid accidental run-on emphasis
-		return $this->emphasize_off() . "<br>";
+		return $this->emphasize_off() . "<br><br>";
 	}
 
 	function handle_list($matches,$close=false) {
@@ -88,13 +88,19 @@ class WikiParser {
 		);
 
 		$output = "";
-		if (!is_array($matches)) return $output;
 
 		$newlevel = ($close) ? 0 : strlen($matches[1]);
 
 		while ($this->list_level!=$newlevel) {
 			$listchar = substr($matches[1],-1);
-			$listtype = $listtypes[$listchar];
+			if (is_string($listchar) || is_numeric($listchar))
+			{
+				$listtype = $listtypes[$listchar];
+			}
+			else
+			{
+				$listtype = 'ul';
+			}
 
 			//$output .= "[".$this->list_level."->".$newlevel."]";
 
@@ -166,6 +172,10 @@ class WikiParser {
 
 	function handle_horizontalrule($matches) {
 		return "<hr />";
+	}
+
+	function handle_underline($matches) {
+		return "<u>".$matches[1]."</u>";
 	}
 
 	function wiki_link($topic) {
@@ -339,6 +349,7 @@ class WikiParser {
 			case 'NUMBEROFARTICLES': return 0;
 			case 'PAGENAME': return BUGScontext::getResponse()->getPage();
 			case 'NAMESPACE': return 'None';
+			case 'TOC': return '{{TOC}}';
 			case 'SITENAME': return BUGSsettings::getTBGname();
 			case 'SITETAGLINE': return BUGSsettings::getTBGtagline();
 			default: return '';
@@ -347,7 +358,7 @@ class WikiParser {
 
 	function parse_line($line) {
 		$line_regexes = array(
-			'preformat'=>'^\s(.*?)$',
+			'preformat'=>'^\s{2}(.*?)$',
 			'definitionlist'=>'^([\;\:])\s*(.*?)$',
 			'newline'=>'^$',
 			'list'=>'^([\*\#]+)(.*?)$',
@@ -406,14 +417,14 @@ class WikiParser {
 
 		// suppress linebreaks for the next line if we just displayed one; otherwise re-enable them
 		if ($isline) $this->suppress_linebreaks = (array_key_exists('newline', $called) || array_key_exists('sections', $called));
-		if ($isline) $line .= $this->handle_newline(array());
+		//if ($isline) $line .= $this->handle_newline(array());
 
 		return $line;
 	}
 
 	function test() {
 		$text = "WikiParser stress tester. <br /> Testing...
-__TOC__
+{{TOC}}
 
 == Nowiki test ==
 <nowiki>[[wooticles|narf]] and '''test''' and stuff.</nowiki>
@@ -506,7 +517,7 @@ Done.
 			$output .= $line;
 		}
 
-		$output = preg_replace_callback('/__TOC__/',array($this,"handle_add_toc"), $output);
+		$output = preg_replace_callback('/{{TOC}}/',array($this,"handle_add_toc"), $output);
 
 		$output = preg_replace_callback('/<nowiki><\/nowiki>/i',array($this,"handle_restore_nowiki"),$output);
 

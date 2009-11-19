@@ -66,10 +66,9 @@
 						</ul>
 					<?php else: ?>
 						<p class="content"><?php echo __('There are no projects'); ?>.
-							<?php if ($bugs_user->hasPermission("b2saveconfig", 10, "core")): ?>
+							<?php if ($bugs_user->hasPermission('b2viewconfig', 10) || $bugs_user->hasPermission('b2saveconfig', 10)): ?>
 								<br>
-								<?php echo image_tag('cfg_icon_projects.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-								<b><?php echo link_tag(make_url('configure_projects'), __('Click here to go to project management'), array('target' => '_blank')); ?></b>
+								<b><?php echo __('Click the icon in the header above to go to project management'); ?></b>
 							<?php else: ?>
 								<?php echo __('Projects can only be created by an administrator'); ?>.
 							<?php endif; ?>

@@ -235,7 +235,6 @@
 							{
 								?>
 								<div style="width: auto; padding: 5px;">
-								<?php echo image_tag('publish/' . $article->getIcon() . '.png', ' style="float: left; margin-right: 5px;"') ?>
 								<b style="font-size: 13px;"><?php echo $article->getTitle(); ?></b><br>
 								<div style="color: #AAA;"><?php print bugs_formatTime($article->getPostedDate(), 3); ?> by <?php echo $article->getAuthor(); ?></div>
 								<div style="padding-top: 5px; font-size: 11px; padding-bottom: 5px;"><?php echo bugs_BBDecode($article->getIntro()); ?></div>

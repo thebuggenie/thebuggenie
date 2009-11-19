@@ -22,6 +22,7 @@
 
 			$this->addRoute('publish', '/wiki', 'index');
 			$this->addRoute('publish_article', '/wiki/:article_name', 'showArticle');
+			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'showArticle');
 		}
 
 		public function initialize()
@@ -39,9 +40,8 @@
 			BUGScontext::setPermission('publish_postonglobalbillboard', 0, 'publish', 0, 1, 0, true, $scope);
 			BUGScontext::setPermission('publish_postonteambillboard', 0, 'publish', 0, 1, 0, true, $scope);
 			BUGScontext::setPermission('manage_billboard', 0, 'publish', 0, 1, 0, true, $scope);
-			$module->saveSetting('enablebillboards', 1);
-			$module->saveSetting('enableteambillboards', 1);
-			$module->saveSetting('featured_article', 1);
+			$module->saveSetting('allow_camelcase_links', 1);
+
 			$module->enableListenerSaved('core', 'index_left_middle');
 			$module->enableListenerSaved('core', 'index_right_middle');
   									  
@@ -98,6 +98,36 @@
 			return BUGScontext::getRouting()->generate('publish');
 		}
 
+		public function postConfigSettings()
+		{
+			$settings = array('allow_camelcase_links', 'menu_title');
+			foreach ($settings as $setting)
+			{
+				if (BUGScontext::getRequest()->hasParameter($setting))
+				{
+					$this->saveSetting($setting, BUGScontext::getRequest()->getParameter($setting));
+				}
+			}
+		}
+
+		public function getMenuTitle()
+		{
+			if (($menu_title = $this->getSetting('menu_title')) !== null)
+			{
+				$i18n = BUGScontext::getI18n();
+				switch ($menu_title)
+				{
+					case 5: return $i18n->__('Archive');
+					case 3: return $i18n->__('Documentation');
+					case 4: return $i18n->__('Documents');
+					case 2: return $i18n->__('Help');
+					case 1: return $i18n->__('Wiki');
+				}
+
+			}
+			return parent::getMenuTitle();
+		}
+
 		public function getBillboardPosts($target_board = 0, $posts = 5)
 		{
 			$crit = new B2DBCriteria();
@@ -149,19 +179,8 @@
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tArticles::SCOPE, BUGScontext::getScope()->getID());
 			
-			$crit->addOrderBy(B2tArticles::ORDER, 'asc');
 			$crit->addOrderBy(B2tArticles::DATE, 'desc');
 			
-			if ($news)
-			{
-				$crit->addWhere(B2tArticles::IS_NEWS, 1);
-			}
-			else
-			{
-				$crit->addWhere(B2tArticles::INTRO_TEXT, '', B2DBCriteria::DB_NOT_EQUALS);
-				$crit->addWhere(B2tArticles::TITLE, '', B2DBCriteria::DB_NOT_EQUALS);
-				$crit->addWhere(B2tArticles::LINK, null, B2DBCriteria::DB_IS_NULL);
-			}
 			if ($published) $crit->addWhere(B2tArticles::IS_PUBLISHED, 1);
 	
 			$articles = array();
@@ -281,7 +300,7 @@
 			$index_article = $this->getIndexMessage();
 			if ($index_article instanceof PublishArticle)
 			{
-				BUGSactioncomponent::includeComponent('publish/articledisplay', array('article' => $index_article, 'show_title' => true, 'show_details' => false, 'show_intro' => false));
+				BUGSactioncomponent::includeComponent('publish/articledisplay', array('article' => $index_article, 'show_title' => true, 'show_details' => false, 'show_intro' => false, 'show_actions' => false));
 			}
 		}
 		

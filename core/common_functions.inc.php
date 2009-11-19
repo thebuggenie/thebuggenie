@@ -188,6 +188,16 @@
 		}
 	}
 
+	function common_text_replacements($text)
+	{
+		$preg = array('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#ie' => 'bugs_issueLinkHelper( "\\3", "\\1" )');
+
+		/*,
+		'/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9$_+!*();\/?:~-]))/' => '<a href="\\0">\\0</a>');*/
+
+		return preg_replace(array_keys($preg), array_values($preg), $text);
+	}
+
 	/**
 	 *
 	 * Performs BB-tags formatting of a given string into html-formatted text

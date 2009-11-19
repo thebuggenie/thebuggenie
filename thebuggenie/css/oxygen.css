@@ -1118,7 +1118,8 @@ dd { margin-left: 0px; margin-bottom: 15px; vertical-align: middle; }
 tr.selected_green span.faded_medium { color: #F1F1F1; }
 tr.selected_red span.faded_medium { color: #F1F1F1; }
 .faded_dark { color: #999; }
-.padded_table td.config_explanation, .config_explanation { color: #AAA; padding: 5px 0 10px 5px; }
+.padded_table td.config_explanation, .config_explanation { color: #999; padding: 5px 0 10px 5px; }
+.config_explanation a { color: #549D54; font-weight: bold; }
 
 #myacct { z-index: 100; }
 
@@ -1351,7 +1352,7 @@ td.selected_red span	{ color: #FFF; }
 
 ul.project_list { list-style-type: none; padding: 0; margin: 5px 0 0 0; }
 ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5px; margin-bottom: 10px; clear: both; }
-.project_overview { clear: both; font-size: 12px; }
+.project_overview { clear: both; font-size: 13px; }
 .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-weight: bold; font-size: 14px; }
 .project_overview .content { padding-left: 5px; }
 #config_modules {  font-size: 13px; }

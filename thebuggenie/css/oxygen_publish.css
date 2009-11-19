@@ -75,8 +75,7 @@
 .news_list span { font-size: 10px; }
 .news_list .more_news { margin: 10px 0 0 0; }
 
-.toc .header { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 15px; border-bottom: 1px solid #99C; }
-.toc .publish_toc_1 { margin: 0 0 3px 0; font-size: 14px; }
+.toc .publish_toc_1 { margin: 15px 0 3px 0; font-size: 14px; font-weight: bold; }
 .toc .publish_toc_2 { margin: 0 0 3px 4px; font-size: 13px; }
 .toc .publish_toc_3 { margin: 0 0 3px 7px; font-size: 12.5px; }
 .toc .publish_toc_4 { margin: 0 0 3px 10px; font-size: 12px; }
@@ -84,16 +83,22 @@
 .toc .publish_toc_6 { margin: 0 0 3px 16px; font-size: 11px; }
 
 .article .header { margin: 0 0 5px 0; padding: 3px; font-weight: bold; font-size: 17px; border-bottom: 1px solid #CCC; }
+.article .header a { font-size: 13px; }
 
-.article h1 { padding: 3px; }
+.toc .header { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 15px; border-bottom: 1px solid #99C; }
+.toc .header a { color: #555; font-size: 16px; }
+
+.article h1 { padding: 3px 3px 3px 0; }
 .article h1:target { color: #77B; background-color: #F6F6F6; }
-.article h2 { padding: 3px; }
+.article h2 { padding: 3px 3px 3px 0; }
 .article h2:target { color: #77B; background-color: #F6F6F6; }
-.article h3 { padding: 3px; }
+.article h3 { padding: 3px 3px 3px 0; }
 .article h3:target { color: #77B; background-color: #F6F6F6; }
-.article h4 { padding: 3px; }
+.article h4 { padding: 3px 3px 3px 0; }
 .article h4:target { color: #77B; background-color: #F6F6F6; }
-.article h5 { padding: 3px; }
+.article h5 { padding: 3px 3px 3px 0; }
 .article h5:target { color: #77B; background-color: #F6F6F6; }
-.article h6 { padding: 3px; }
+.article h6 { padding: 3px 3px 3px 0; }
 .article h6:target { color: #77B; background-color: #F6F6F6; }
+
+.article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "Droid Sans Mono", monospace; font-size: 12px; }

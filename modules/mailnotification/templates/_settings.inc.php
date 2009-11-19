@@ -119,21 +119,3 @@
 		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 	</div>
 </form>
-<?php if (BUGScontext::getRequest()->getParameter('test_email')): ?>
-	<p><b><?php echo __('Test email output'); ?></b></p>
-	<?php
-
-		try
-		{
-			$debug = (BUGScontext::getRequest()->getParameter('debug')) ? true : false;
-			$module->sendMail(BUGScontext::getRequest()->getParameter('test_email'), BUGScontext::getRequest()->getParameter('test_email'), 'Test email', 'Test successful!', 3, '', '', array(), $debug);
-			echo 'Email sent!';
-		}
-		catch (Exception $e)
-		{
-			echo nl2br($e->getMessage()) . '<br>';
-			if ($debug) echo nl2br($e->getTraceAsString());
-		}
-	
-	?>
-<?php endif; ?>

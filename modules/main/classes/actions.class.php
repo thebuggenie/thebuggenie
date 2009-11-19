@@ -141,6 +141,8 @@
 		public function runAbout($request)
 		{
 			$this->getResponse()->setProjectMenuStripHidden();
+			B2DB::getTable('B2tArticles')->create();
+			B2DB::getTable('B2tArticles')->loadFixtures(1);
 		}
 		
 		/**

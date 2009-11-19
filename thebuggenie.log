@@ -22873,3 +22873,220 @@ INFO [i18n] The text "Page load time: %load_time%, with %num_queries% queries. S
 INFO [main] ...done
 INFO [main] rendering content
 INFO [main] ...done (rendering content)
+INFO [main] Initializing B2 framework
+INFO [main] Cache is not enabled
+INFO [main] Loading B2DB
+INFO [main] Adding B2DB classes to autoload path
+INFO [main] ...done (Adding B2DB classes to autoload path)
+INFO [main] Initializing B2DB
+INFO [main] ...done (Initializing B2DB)
+INFO [main] Database connection details found, connecting
+INFO [main] ...done (Database connection details found, connecting)
+INFO [main] Adding B2DB table classpath to autoload path
+INFO [main] ...done
+INFO [main] Initializing context
+INFO [main] Loading request
+INFO [main] ...done
+INFO [routing] Loading first batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] Setting current scope
+INFO [main] Checking if scope can be set from hostname (http://thebuggenie)
+INFO [B2DB] executing PDO query (0)
+INFO [B2DB] SELECT scopes1738.id AS scopes1738_id, scopes1738.enabled AS scopes1738_enabled, scopes1738.description AS scopes1738_description, scopes1738.admin AS scopes1738_admin, scopes1738.hostname AS scopes1738_hostname FROM tbg3_scopes scopes1738 WHERE (scopes1738.hostname = 'http://thebuggenie') LIMIT 1
+INFO [B2DB] done
+INFO [main] It could
+INFO [main] Setting scope from hostname
+INFO [main] ...done (Setting scope from hostname)
+INFO [main] ...done
+INFO [main] Loading settings
+INFO [main] Loading all settings
+INFO [main] Settings not cached. Retrieving from database
+INFO [B2DB] executing PDO query (1)
+INFO [B2DB] SELECT settings2363.id AS settings2363_id, settings2363.name AS settings2363_name, settings2363.module AS settings2363_module, settings2363.value AS settings2363_value, settings2363.uid AS settings2363_uid, settings2363.scope AS settings2363_scope, scopes114.id AS scopes114_id, scopes114.enabled AS scopes114_enabled, scopes114.description AS scopes114_description, scopes114.admin AS scopes114_admin, scopes114.hostname AS scopes114_hostname FROM tbg3_settings settings2363 LEFT JOIN tbg3_scopes scopes114 ON (scopes114.id=settings2363.scope) WHERE (scopes114.enabled = '1') AND (settings2363.scope = '1')
+INFO [B2DB] done
+INFO [main] Retrieved
+INFO [main] ...done
+INFO [main] Loading user
+INFO [main] is this logout?
+INFO [main] no
+INFO [main] sets up user object
+INFO [B2DB] executing PDO query (2)
+INFO [B2DB] SELECT users1642.id AS users1642_id, users1642.uname AS users1642_uname, users1642.passwd AS users1642_passwd, users1642.buddyname AS users1642_buddyname, users1642.realname AS users1642_realname, users1642.email AS users1642_email, users1642.state AS users1642_state, users1642.homepage AS users1642_homepage, users1642.lastseen AS users1642_lastseen, users1642.lastlogin AS users1642_lastlogin, users1642.quota AS users1642_quota, users1642.activated AS users1642_activated, users1642.enabled AS users1642_enabled, users1642.deleted AS users1642_deleted, users1642.showfollowups AS users1642_showfollowups, users1642.showassigned AS users1642_showassigned, users1642.avatar AS users1642_avatar, users1642.use_gravatar AS users1642_use_gravatar, users1642.private_email AS users1642_private_email, users1642.joined AS users1642_joined, users1642.group_id AS users1642_group_id, users1642.customer_id AS users1642_customer_id, users1642.scope AS users1642_scope, userstate179.id AS userstate179_id, userstate179.state_name AS userstate179_state_name, userstate179.unavailable AS userstate179_unavailable, userstate179.busy AS userstate179_busy, userstate179.online AS userstate179_online, userstate179.meeting AS userstate179_meeting, userstate179.absent AS userstate179_absent, userstate179.color AS userstate179_color, userstate179.scope AS userstate179_scope, groups2399.id AS groups2399_id, groups2399.gname AS groups2399_gname, groups2399.scope AS groups2399_scope, customers1160.id AS customers1160_id, customers1160.cname AS customers1160_cname, customers1160.scope AS customers1160_scope, scopes1938.id AS scopes1938_id, scopes1938.enabled AS scopes1938_enabled, scopes1938.description AS scopes1938_description, scopes1938.admin AS scopes1938_admin, scopes1938.hostname AS scopes1938_hostname FROM tbg3_users users1642 LEFT JOIN tbg3_userstate userstate179 ON (userstate179.id=users1642.state) LEFT JOIN tbg3_groups groups2399 ON (groups2399.id=users1642.group_id) LEFT JOIN tbg3_customers customers1160 ON (customers1160.id=users1642.customer_id) LEFT JOIN tbg3_scopes scopes1938 ON (scopes1938.id=users1642.scope) WHERE (users1642.uname = 'Administrator') AND (users1642.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users1642.deleted = '0') LIMIT 1
+INFO [B2DB] done
+INFO [main] User with id 1 set up successfully
+INFO [B2DB] executing PDO query (3)
+INFO [B2DB] UPDATE tbg3_users SET `lastseen`='1258614786' WHERE (id = '1')
+INFO [B2DB] done
+INFO [main] loaded
+INFO [main] caches permissions
+INFO [main] starting to cache access permissions
+INFO [B2DB] executing PDO query (4)
+INFO [B2DB] SELECT permissions1459.id AS permissions1459_id, permissions1459.permission_type AS permissions1459_permission_type, permissions1459.target_id AS permissions1459_target_id, permissions1459.allowed AS permissions1459_allowed, permissions1459.module AS permissions1459_module, permissions1459.uid AS permissions1459_uid, permissions1459.gid AS permissions1459_gid, permissions1459.tid AS permissions1459_tid, permissions1459.scope AS permissions1459_scope, users855.id AS users855_id, users855.uname AS users855_uname, users855.passwd AS users855_passwd, users855.buddyname AS users855_buddyname, users855.realname AS users855_realname, users855.email AS users855_email, users855.state AS users855_state, users855.homepage AS users855_homepage, users855.lastseen AS users855_lastseen, users855.lastlogin AS users855_lastlogin, users855.quota AS users855_quota, users855.activated AS users855_activated, users855.enabled AS users855_enabled, users855.deleted AS users855_deleted, users855.showfollowups AS users855_showfollowups, users855.showassigned AS users855_showassigned, users855.avatar AS users855_avatar, users855.use_gravatar AS users855_use_gravatar, users855.private_email AS users855_private_email, users855.joined AS users855_joined, users855.group_id AS users855_group_id, users855.customer_id AS users855_customer_id, users855.scope AS users855_scope, groups2108.id AS groups2108_id, groups2108.gname AS groups2108_gname, groups2108.scope AS groups2108_scope, teams2727.id AS teams2727_id, teams2727.teamname AS teams2727_teamname, teams2727.scope AS teams2727_scope, scopes1775.id AS scopes1775_id, scopes1775.enabled AS scopes1775_enabled, scopes1775.description AS scopes1775_description, scopes1775.admin AS scopes1775_admin, scopes1775.hostname AS scopes1775_hostname FROM tbg3_permissions permissions1459 LEFT JOIN tbg3_users users855 ON (users855.id=permissions1459.uid) LEFT JOIN tbg3_groups groups2108 ON (groups2108.id=permissions1459.gid) LEFT JOIN tbg3_teams teams2727 ON (teams2727.id=permissions1459.tid) LEFT JOIN tbg3_scopes scopes1775 ON (scopes1775.id=permissions1459.scope) WHERE (permissions1459.scope = '1')
+INFO [B2DB] done
+INFO [main] done (starting to cache access permissions)
+INFO [main] ...cached
+INFO [main] ...done
+INFO [main] Loading i18n strings
+INFO [main] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [main] ...done
+INFO [main] Loading modules
+INFO [main] getting modules from database
+INFO [B2DB] executing PDO query (5)
+INFO [B2DB] SELECT modules1462.id AS modules1462_id, modules1462.module_name AS modules1462_module_name, modules1462.enabled AS modules1462_enabled, modules1462.version AS modules1462_version, modules1462.classname AS modules1462_classname, modules1462.show_in_config AS modules1462_show_in_config, modules1462.show_in_menu AS modules1462_show_in_menu, modules1462.show_in_usermenu AS modules1462_show_in_usermenu, modules1462.scope AS modules1462_scope, scopes2084.id AS scopes2084_id, scopes2084.enabled AS scopes2084_enabled, scopes2084.description AS scopes2084_description, scopes2084.admin AS scopes2084_admin, scopes2084.hostname AS scopes2084_hostname FROM tbg3_modules modules1462 LEFT JOIN tbg3_scopes scopes2084 ON (scopes2084.id=modules1462.scope) WHERE (modules1462.scope = '1')
+INFO [B2DB] done
+INFO [main] done (getting modules from database)
+INFO [main] setting up module objects
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [main] done (setting up module objects)
+INFO [main] caching module access permissions
+INFO [B2DB] executing PDO query (6)
+INFO [B2DB] SELECT modulepermissions2997.id AS modulepermissions2997_id, modulepermissions2997.module_name AS modulepermissions2997_module_name, modulepermissions2997.allowed AS modulepermissions2997_allowed, modulepermissions2997.uid AS modulepermissions2997_uid, modulepermissions2997.gid AS modulepermissions2997_gid, modulepermissions2997.tid AS modulepermissions2997_tid, modulepermissions2997.scope AS modulepermissions2997_scope, users2238.id AS users2238_id, users2238.uname AS users2238_uname, users2238.passwd AS users2238_passwd, users2238.buddyname AS users2238_buddyname, users2238.realname AS users2238_realname, users2238.email AS users2238_email, users2238.state AS users2238_state, users2238.homepage AS users2238_homepage, users2238.lastseen AS users2238_lastseen, users2238.lastlogin AS users2238_lastlogin, users2238.quota AS users2238_quota, users2238.activated AS users2238_activated, users2238.enabled AS users2238_enabled, users2238.deleted AS users2238_deleted, users2238.showfollowups AS users2238_showfollowups, users2238.showassigned AS users2238_showassigned, users2238.avatar AS users2238_avatar, users2238.use_gravatar AS users2238_use_gravatar, users2238.private_email AS users2238_private_email, users2238.joined AS users2238_joined, users2238.group_id AS users2238_group_id, users2238.customer_id AS users2238_customer_id, users2238.scope AS users2238_scope, groups1458.id AS groups1458_id, groups1458.gname AS groups1458_gname, groups1458.scope AS groups1458_scope, teams538.id AS teams538_id, teams538.teamname AS teams538_teamname, teams538.scope AS teams538_scope, scopes420.id AS scopes420_id, scopes420.enabled AS scopes420_enabled, scopes420.description AS scopes420_description, scopes420.admin AS scopes420_admin, scopes420.hostname AS scopes420_hostname FROM tbg3_modulepermissions modulepermissions2997 LEFT JOIN tbg3_users users2238 ON (users2238.id=modulepermissions2997.uid) LEFT JOIN tbg3_groups groups1458 ON (groups1458.id=modulepermissions2997.gid) LEFT JOIN tbg3_teams teams538 ON (teams538.id=modulepermissions2997.tid) LEFT JOIN tbg3_scopes scopes420 ON (scopes420.id=modulepermissions2997.scope) WHERE (modulepermissions2997.scope = '1')
+INFO [B2DB] done
+INFO [main] done (caching module access permissions)
+INFO [main] initializing modules
+INFO [B2DB] executing PDO query (7)
+INFO [B2DB] SELECT enabledmodulelisteners2630.id AS enabledmodulelisteners2630_id, enabledmodulelisteners2630.module AS enabledmodulelisteners2630_module, enabledmodulelisteners2630.identifier AS enabledmodulelisteners2630_identifier, enabledmodulelisteners2630.order AS enabledmodulelisteners2630_order, enabledmodulelisteners2630.module_name AS enabledmodulelisteners2630_module_name, enabledmodulelisteners2630.scope AS enabledmodulelisteners2630_scope, modules1462.id AS modules1462_id, modules1462.module_name AS modules1462_module_name, modules1462.enabled AS modules1462_enabled, modules1462.version AS modules1462_version, modules1462.classname AS modules1462_classname, modules1462.show_in_config AS modules1462_show_in_config, modules1462.show_in_menu AS modules1462_show_in_menu, modules1462.show_in_usermenu AS modules1462_show_in_usermenu, modules1462.scope AS modules1462_scope, modules555.id AS modules555_id, modules555.module_name AS modules555_module_name, modules555.enabled AS modules555_enabled, modules555.version AS modules555_version, modules555.classname AS modules555_classname, modules555.show_in_config AS modules555_show_in_config, modules555.show_in_menu AS modules555_show_in_menu, modules555.show_in_usermenu AS modules555_show_in_usermenu, modules555.scope AS modules555_scope, scopes2107.id AS scopes2107_id, scopes2107.enabled AS scopes2107_enabled, scopes2107.description AS scopes2107_description, scopes2107.admin AS scopes2107_admin, scopes2107.hostname AS scopes2107_hostname FROM tbg3_enabledmodulelisteners enabledmodulelisteners2630 LEFT JOIN tbg3_modules modules1462 ON (modules1462.module_name=enabledmodulelisteners2630.module_name) LEFT JOIN tbg3_modules modules555 ON (modules555.module_name=enabledmodulelisteners2630.module_name) LEFT JOIN tbg3_scopes scopes2107 ON (scopes2107.id=enabledmodulelisteners2630.scope) WHERE (enabledmodulelisteners2630.module_name IN ('mailnotification', 'messages', 'calendar', 'publish', 'svn_integration')) AND (enabledmodulelisteners2630.scope = '1') AND (modules1462.scope = '1') ORDER BY enabledmodulelisteners2630.order asc
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (8)
+INFO [B2DB] SELECT COUNT(teammembers1367.id) as num_col FROM tbg3_teammembers teammembers1367 WHERE (teammembers1367.uid = '1')
+INFO [B2DB] done
+INFO [main] initializing mailnotification
+INFO [main] done (initializing mailnotification)
+INFO [routing] loading module routes for mailnotification
+INFO [mailnotification] adding route forgot
+INFO [mailnotification] done (adding route forgot)
+INFO [mailnotification] adding route mailnotification_test_email
+INFO [mailnotification] done (adding route mailnotification_test_email)
+INFO [routing] done (loading module routes)
+INFO [main] initializing messages
+INFO [main] done (initializing messages)
+INFO [routing] loading module routes for messages
+INFO [routing] done (loading module routes)
+INFO [main] initializing calendar
+INFO [main] done (initializing calendar)
+INFO [routing] loading module routes for calendar
+INFO [routing] done (loading module routes)
+INFO [main] initializing publish
+INFO [main] done (initializing publish)
+INFO [routing] loading module routes for publish
+INFO [publish] adding route publish
+INFO [publish] done (adding route publish)
+INFO [routing] done (loading module routes)
+INFO [main] initializing svn_integration
+INFO [main] done (initializing svn_integration)
+INFO [routing] loading module routes for svn_integration
+INFO [routing] done (loading module routes)
+INFO [main] done (initializing modules)
+INFO [main] ...done
+INFO [routing] Loading last batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] ...done initializing
+INFO [main] ...done
+INFO [main] B2 framework loaded
+INFO [main] Dispatching
+INFO [routing] URL is 
+INFO [routing] URL is now /
+INFO [routing] match route [home] "/"
+INFO [main] Running main pre-execute action
+INFO [main] Running route action runIndex()
+INFO [B2DB] executing PDO query (9)
+INFO [B2DB] SELECT links1630.id AS links1630_id, links1630.url AS links1630_url, links1630.link_order AS links1630_link_order, links1630.description AS links1630_description, links1630.uid AS links1630_uid, links1630.issue AS links1630_issue, links1630.scope AS links1630_scope, users542.id AS users542_id, users542.uname AS users542_uname, users542.passwd AS users542_passwd, users542.buddyname AS users542_buddyname, users542.realname AS users542_realname, users542.email AS users542_email, users542.state AS users542_state, users542.homepage AS users542_homepage, users542.lastseen AS users542_lastseen, users542.lastlogin AS users542_lastlogin, users542.quota AS users542_quota, users542.activated AS users542_activated, users542.enabled AS users542_enabled, users542.deleted AS users542_deleted, users542.showfollowups AS users542_showfollowups, users542.showassigned AS users542_showassigned, users542.avatar AS users542_avatar, users542.use_gravatar AS users542_use_gravatar, users542.private_email AS users542_private_email, users542.joined AS users542_joined, users542.group_id AS users542_group_id, users542.customer_id AS users542_customer_id, users542.scope AS users542_scope, issues1383.id AS issues1383_id, issues1383.issue_no AS issues1383_issue_no, issues1383.title AS issues1383_title, issues1383.posted AS issues1383_posted, issues1383.last_updated AS issues1383_last_updated, issues1383.project_id AS issues1383_project_id, issues1383.long_description AS issues1383_long_description, issues1383.state AS issues1383_state, issues1383.posted_by AS issues1383_posted_by, issues1383.owned_by AS issues1383_owned_by, issues1383.assigned_to AS issues1383_assigned_to, issues1383.reproduction AS issues1383_reproduction, issues1383.resolution AS issues1383_resolution, issues1383.issue_type AS issues1383_issue_type, issues1383.status AS issues1383_status, issues1383.priority AS issues1383_priority, issues1383.category AS issues1383_category, issues1383.severity AS issues1383_severity, issues1383.reproducability AS issues1383_reproducability, issues1383.scrumcolor AS issues1383_scrumcolor, issues1383.estimated_months AS issues1383_estimated_months, issues1383.estimated_weeks AS issues1383_estimated_weeks, issues1383.estimated_days AS issues1383_estimated_days, issues1383.estimated_hours AS issues1383_estimated_hours, issues1383.estimated_points AS issues1383_estimated_points, issues1383.spent_months AS issues1383_spent_months, issues1383.spent_weeks AS issues1383_spent_weeks, issues1383.spent_days AS issues1383_spent_days, issues1383.spent_hours AS issues1383_spent_hours, issues1383.spent_points AS issues1383_spent_points, issues1383.percent_complete AS issues1383_percent_complete, issues1383.assigned_type AS issues1383_assigned_type, issues1383.owned_type AS issues1383_owned_type, issues1383.duplicate AS issues1383_duplicate, issues1383.deleted AS issues1383_deleted, issues1383.blocking AS issues1383_blocking, issues1383.user_working_on AS issues1383_user_working_on, issues1383.user_worked_on_since AS issues1383_user_worked_on_since, issues1383.milestone AS issues1383_milestone, issues1383.scope AS issues1383_scope, scopes225.id AS scopes225_id, scopes225.enabled AS scopes225_enabled, scopes225.description AS scopes225_description, scopes225.admin AS scopes225_admin, scopes225.hostname AS scopes225_hostname FROM tbg3_links links1630 LEFT JOIN tbg3_users users542 ON (users542.id=links1630.uid) LEFT JOIN tbg3_issues issues1383 ON (issues1383.id=links1630.issue) LEFT JOIN tbg3_scopes scopes225 ON (scopes225.id=links1630.scope) WHERE (links1630.issue = '0') ORDER BY links1630.link_order asc
+INFO [B2DB] done
+INFO [main] ...done
+INFO [main] Displaying template
+INFO [main] configuring variables
+INFO [main] rendering template and buffering output
+INFO [B2DB] executing PDO query (10)
+INFO [B2DB] SELECT projects2304.id AS projects2304_id, projects2304.name AS projects2304_name, projects2304.key AS projects2304_key, projects2304.prefix AS projects2304_prefix, projects2304.use_prefix AS projects2304_use_prefix, projects2304.homepage AS projects2304_homepage, projects2304.owned_by AS projects2304_owned_by, projects2304.owned_type AS projects2304_owned_type, projects2304.lead_by AS projects2304_lead_by, projects2304.lead_type AS projects2304_lead_type, projects2304.time_unit AS projects2304_time_unit, projects2304.hrs_pr_day AS projects2304_hrs_pr_day, projects2304.description AS projects2304_description, projects2304.doc_url AS projects2304_doc_url, projects2304.enable_tasks AS projects2304_enable_tasks, projects2304.is_default AS projects2304_is_default, projects2304.allow_changing_wo_working AS projects2304_allow_changing_wo_working, projects2304.default_status AS projects2304_default_status, projects2304.enable_builds AS projects2304_enable_builds, projects2304.enable_editions AS projects2304_enable_editions, projects2304.enable_components AS projects2304_enable_components, projects2304.show_in_summary AS projects2304_show_in_summary, projects2304.summary_display AS projects2304_summary_display, projects2304.votes AS projects2304_votes, projects2304.qa AS projects2304_qa, projects2304.qa_type AS projects2304_qa_type, projects2304.released AS projects2304_released, projects2304.release_date AS projects2304_release_date, projects2304.locked AS projects2304_locked, projects2304.planned_release AS projects2304_planned_release, projects2304.scope AS projects2304_scope, projects2304.deleted AS projects2304_deleted, listtypes918.id AS listtypes918_id, listtypes918.name AS listtypes918_name, listtypes918.itemtype AS listtypes918_itemtype, listtypes918.itemdata AS listtypes918_itemdata, listtypes918.applies_to AS listtypes918_applies_to, listtypes918.applies_type AS listtypes918_applies_type, listtypes918.scope AS listtypes918_scope, scopes516.id AS scopes516_id, scopes516.enabled AS scopes516_enabled, scopes516.description AS scopes516_description, scopes516.admin AS scopes516_admin, scopes516.hostname AS scopes516_hostname FROM tbg3_projects projects2304 LEFT JOIN tbg3_listtypes listtypes918 ON (listtypes918.id=projects2304.default_status) LEFT JOIN tbg3_scopes scopes516 ON (scopes516.id=projects2304.scope) WHERE (projects2304.scope = '1') ORDER BY projects2304.name asc
+INFO [B2DB] done
+INFO [main] Triggering core - index_left_top
+INFO [main] done (Triggering core - index_left_top)
+INFO [main] Triggering core - index_left_middle
+INFO [main] Running callback function Array
+INFO [publish] retrieving news items
+INFO [B2DB] executing PDO query (11)
+INFO [B2DB] SELECT articles2666.id AS articles2666_id, articles2666.title AS articles2666_title, articles2666.intro_text AS articles2666_intro_text, articles2666.content AS articles2666_content, articles2666.is_news AS articles2666_is_news, articles2666.link AS articles2666_link, articles2666.is_published AS articles2666_is_published, articles2666.deleted AS articles2666_deleted, articles2666.date AS articles2666_date, articles2666.order AS articles2666_order, articles2666.icon AS articles2666_icon, articles2666.author AS articles2666_author, articles2666.related_project AS articles2666_related_project, articles2666.related_team AS articles2666_related_team, articles2666.scope AS articles2666_scope, users603.id AS users603_id, users603.uname AS users603_uname, users603.passwd AS users603_passwd, users603.buddyname AS users603_buddyname, users603.realname AS users603_realname, users603.email AS users603_email, users603.state AS users603_state, users603.homepage AS users603_homepage, users603.lastseen AS users603_lastseen, users603.lastlogin AS users603_lastlogin, users603.quota AS users603_quota, users603.activated AS users603_activated, users603.enabled AS users603_enabled, users603.deleted AS users603_deleted, users603.showfollowups AS users603_showfollowups, users603.showassigned AS users603_showassigned, users603.avatar AS users603_avatar, users603.use_gravatar AS users603_use_gravatar, users603.private_email AS users603_private_email, users603.joined AS users603_joined, users603.group_id AS users603_group_id, users603.customer_id AS users603_customer_id, users603.scope AS users603_scope, projects233.id AS projects233_id, projects233.name AS projects233_name, projects233.key AS projects233_key, projects233.prefix AS projects233_prefix, projects233.use_prefix AS projects233_use_prefix, projects233.homepage AS projects233_homepage, projects233.owned_by AS projects233_owned_by, projects233.owned_type AS projects233_owned_type, projects233.lead_by AS projects233_lead_by, projects233.lead_type AS projects233_lead_type, projects233.time_unit AS projects233_time_unit, projects233.hrs_pr_day AS projects233_hrs_pr_day, projects233.description AS projects233_description, projects233.doc_url AS projects233_doc_url, projects233.enable_tasks AS projects233_enable_tasks, projects233.is_default AS projects233_is_default, projects233.allow_changing_wo_working AS projects233_allow_changing_wo_working, projects233.default_status AS projects233_default_status, projects233.enable_builds AS projects233_enable_builds, projects233.enable_editions AS projects233_enable_editions, projects233.enable_components AS projects233_enable_components, projects233.show_in_summary AS projects233_show_in_summary, projects233.summary_display AS projects233_summary_display, projects233.votes AS projects233_votes, projects233.qa AS projects233_qa, projects233.qa_type AS projects233_qa_type, projects233.released AS projects233_released, projects233.release_date AS projects233_release_date, projects233.locked AS projects233_locked, projects233.planned_release AS projects233_planned_release, projects233.scope AS projects233_scope, projects233.deleted AS projects233_deleted, teams1295.id AS teams1295_id, teams1295.teamname AS teams1295_teamname, teams1295.scope AS teams1295_scope, scopes1144.id AS scopes1144_id, scopes1144.enabled AS scopes1144_enabled, scopes1144.description AS scopes1144_description, scopes1144.admin AS scopes1144_admin, scopes1144.hostname AS scopes1144_hostname FROM tbg3_articles articles2666 LEFT JOIN tbg3_users users603 ON (users603.id=articles2666.author) LEFT JOIN tbg3_projects projects233 ON (projects233.id=articles2666.related_project) LEFT JOIN tbg3_teams teams1295 ON (teams1295.id=articles2666.related_team) LEFT JOIN tbg3_scopes scopes1144 ON (scopes1144.id=articles2666.scope) WHERE (articles2666.scope = '1') AND (articles2666.is_news = '1') AND (articles2666.is_published = '1') ORDER BY articles2666.order asc, articles2666.date desc
+INFO [B2DB] done
+INFO [publish] done (retrieving news items)
+INFO [main] done (Running callback function Array)
+INFO [main] done (Triggering core - index_left_middle)
+INFO [main] Triggering core - index_left_bottom
+INFO [main] done (Triggering core - index_left_bottom)
+INFO [main] Triggering core - index_right_top
+INFO [main] done (Triggering core - index_right_top)
+INFO [main] Triggering core - index_right_middle
+INFO [main] Running callback function Array
+INFO [B2DB] executing PDO query (12)
+INFO [B2DB] SELECT articles2666.id AS articles2666_id, articles2666.title AS articles2666_title, articles2666.intro_text AS articles2666_intro_text, articles2666.content AS articles2666_content, articles2666.is_news AS articles2666_is_news, articles2666.link AS articles2666_link, articles2666.is_published AS articles2666_is_published, articles2666.deleted AS articles2666_deleted, articles2666.date AS articles2666_date, articles2666.order AS articles2666_order, articles2666.icon AS articles2666_icon, articles2666.author AS articles2666_author, articles2666.related_project AS articles2666_related_project, articles2666.related_team AS articles2666_related_team, articles2666.scope AS articles2666_scope, users603.id AS users603_id, users603.uname AS users603_uname, users603.passwd AS users603_passwd, users603.buddyname AS users603_buddyname, users603.realname AS users603_realname, users603.email AS users603_email, users603.state AS users603_state, users603.homepage AS users603_homepage, users603.lastseen AS users603_lastseen, users603.lastlogin AS users603_lastlogin, users603.quota AS users603_quota, users603.activated AS users603_activated, users603.enabled AS users603_enabled, users603.deleted AS users603_deleted, users603.showfollowups AS users603_showfollowups, users603.showassigned AS users603_showassigned, users603.avatar AS users603_avatar, users603.use_gravatar AS users603_use_gravatar, users603.private_email AS users603_private_email, users603.joined AS users603_joined, users603.group_id AS users603_group_id, users603.customer_id AS users603_customer_id, users603.scope AS users603_scope, projects233.id AS projects233_id, projects233.name AS projects233_name, projects233.key AS projects233_key, projects233.prefix AS projects233_prefix, projects233.use_prefix AS projects233_use_prefix, projects233.homepage AS projects233_homepage, projects233.owned_by AS projects233_owned_by, projects233.owned_type AS projects233_owned_type, projects233.lead_by AS projects233_lead_by, projects233.lead_type AS projects233_lead_type, projects233.time_unit AS projects233_time_unit, projects233.hrs_pr_day AS projects233_hrs_pr_day, projects233.description AS projects233_description, projects233.doc_url AS projects233_doc_url, projects233.enable_tasks AS projects233_enable_tasks, projects233.is_default AS projects233_is_default, projects233.allow_changing_wo_working AS projects233_allow_changing_wo_working, projects233.default_status AS projects233_default_status, projects233.enable_builds AS projects233_enable_builds, projects233.enable_editions AS projects233_enable_editions, projects233.enable_components AS projects233_enable_components, projects233.show_in_summary AS projects233_show_in_summary, projects233.summary_display AS projects233_summary_display, projects233.votes AS projects233_votes, projects233.qa AS projects233_qa, projects233.qa_type AS projects233_qa_type, projects233.released AS projects233_released, projects233.release_date AS projects233_release_date, projects233.locked AS projects233_locked, projects233.planned_release AS projects233_planned_release, projects233.scope AS projects233_scope, projects233.deleted AS projects233_deleted, teams1295.id AS teams1295_id, teams1295.teamname AS teams1295_teamname, teams1295.scope AS teams1295_scope, scopes1144.id AS scopes1144_id, scopes1144.enabled AS scopes1144_enabled, scopes1144.description AS scopes1144_description, scopes1144.admin AS scopes1144_admin, scopes1144.hostname AS scopes1144_hostname FROM tbg3_articles articles2666 LEFT JOIN tbg3_users users603 ON (users603.id=articles2666.author) LEFT JOIN tbg3_projects projects233 ON (projects233.id=articles2666.related_project) LEFT JOIN tbg3_teams teams1295 ON (teams1295.id=articles2666.related_team) LEFT JOIN tbg3_scopes scopes1144 ON (scopes1144.id=articles2666.scope) WHERE (articles2666.scope = '1') AND (articles2666.intro_text != '') AND (articles2666.title != '') AND (articles2666.link IS NULL ) AND (articles2666.is_published = '1') ORDER BY articles2666.order asc, articles2666.date desc
+INFO [B2DB] done
+INFO [main] done (Running callback function Array)
+INFO [main] done (Triggering core - index_right_middle)
+INFO [main] Triggering core - index_right_middle_top
+INFO [main] done (Triggering core - index_right_middle_top)
+INFO [B2DB] executing PDO query (13)
+INFO [B2DB] SELECT visible_issue_types599.id AS visible_issue_types599_id, visible_issue_types599.issuetype_id AS visible_issue_types599_issuetype_id, visible_issue_types599.project_id AS visible_issue_types599_project_id, visible_issue_types599.scope AS visible_issue_types599_scope, issuetypes119.id AS issuetypes119_id, issuetypes119.name AS issuetypes119_name, issuetypes119.applies_to AS issuetypes119_applies_to, issuetypes119.applies_type AS issuetypes119_applies_type, issuetypes119.icon AS issuetypes119_icon, issuetypes119.description AS issuetypes119_description, issuetypes119.is_task AS issuetypes119_is_task, issuetypes119.is_reportable AS issuetypes119_is_reportable, issuetypes119.redirect_after_reporting AS issuetypes119_redirect_after_reporting, issuetypes119.scope AS issuetypes119_scope, projects5.id AS projects5_id, projects5.name AS projects5_name, projects5.key AS projects5_key, projects5.prefix AS projects5_prefix, projects5.use_prefix AS projects5_use_prefix, projects5.homepage AS projects5_homepage, projects5.owned_by AS projects5_owned_by, projects5.owned_type AS projects5_owned_type, projects5.lead_by AS projects5_lead_by, projects5.lead_type AS projects5_lead_type, projects5.time_unit AS projects5_time_unit, projects5.hrs_pr_day AS projects5_hrs_pr_day, projects5.description AS projects5_description, projects5.doc_url AS projects5_doc_url, projects5.enable_tasks AS projects5_enable_tasks, projects5.is_default AS projects5_is_default, projects5.allow_changing_wo_working AS projects5_allow_changing_wo_working, projects5.default_status AS projects5_default_status, projects5.enable_builds AS projects5_enable_builds, projects5.enable_editions AS projects5_enable_editions, projects5.enable_components AS projects5_enable_components, projects5.show_in_summary AS projects5_show_in_summary, projects5.summary_display AS projects5_summary_display, projects5.votes AS projects5_votes, projects5.qa AS projects5_qa, projects5.qa_type AS projects5_qa_type, projects5.released AS projects5_released, projects5.release_date AS projects5_release_date, projects5.locked AS projects5_locked, projects5.planned_release AS projects5_planned_release, projects5.scope AS projects5_scope, projects5.deleted AS projects5_deleted, scopes1516.id AS scopes1516_id, scopes1516.enabled AS scopes1516_enabled, scopes1516.description AS scopes1516_description, scopes1516.admin AS scopes1516_admin, scopes1516.hostname AS scopes1516_hostname FROM tbg3_visible_issue_types visible_issue_types599 LEFT JOIN tbg3_issuetypes issuetypes119 ON (issuetypes119.id=visible_issue_types599.issuetype_id) LEFT JOIN tbg3_projects projects5 ON (projects5.id=visible_issue_types599.project_id) LEFT JOIN tbg3_scopes scopes1516 ON (scopes1516.id=visible_issue_types599.scope) WHERE (visible_issue_types599.project_id = '9') ORDER BY issuetypes119.name asc
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (14)
+INFO [B2DB] SELECT visible_issue_types599.id AS visible_issue_types599_id, visible_issue_types599.issuetype_id AS visible_issue_types599_issuetype_id, visible_issue_types599.project_id AS visible_issue_types599_project_id, visible_issue_types599.scope AS visible_issue_types599_scope, issuetypes119.id AS issuetypes119_id, issuetypes119.name AS issuetypes119_name, issuetypes119.applies_to AS issuetypes119_applies_to, issuetypes119.applies_type AS issuetypes119_applies_type, issuetypes119.icon AS issuetypes119_icon, issuetypes119.description AS issuetypes119_description, issuetypes119.is_task AS issuetypes119_is_task, issuetypes119.is_reportable AS issuetypes119_is_reportable, issuetypes119.redirect_after_reporting AS issuetypes119_redirect_after_reporting, issuetypes119.scope AS issuetypes119_scope, projects5.id AS projects5_id, projects5.name AS projects5_name, projects5.key AS projects5_key, projects5.prefix AS projects5_prefix, projects5.use_prefix AS projects5_use_prefix, projects5.homepage AS projects5_homepage, projects5.owned_by AS projects5_owned_by, projects5.owned_type AS projects5_owned_type, projects5.lead_by AS projects5_lead_by, projects5.lead_type AS projects5_lead_type, projects5.time_unit AS projects5_time_unit, projects5.hrs_pr_day AS projects5_hrs_pr_day, projects5.description AS projects5_description, projects5.doc_url AS projects5_doc_url, projects5.enable_tasks AS projects5_enable_tasks, projects5.is_default AS projects5_is_default, projects5.allow_changing_wo_working AS projects5_allow_changing_wo_working, projects5.default_status AS projects5_default_status, projects5.enable_builds AS projects5_enable_builds, projects5.enable_editions AS projects5_enable_editions, projects5.enable_components AS projects5_enable_components, projects5.show_in_summary AS projects5_show_in_summary, projects5.summary_display AS projects5_summary_display, projects5.votes AS projects5_votes, projects5.qa AS projects5_qa, projects5.qa_type AS projects5_qa_type, projects5.released AS projects5_released, projects5.release_date AS projects5_release_date, projects5.locked AS projects5_locked, projects5.planned_release AS projects5_planned_release, projects5.scope AS projects5_scope, projects5.deleted AS projects5_deleted, scopes1516.id AS scopes1516_id, scopes1516.enabled AS scopes1516_enabled, scopes1516.description AS scopes1516_description, scopes1516.admin AS scopes1516_admin, scopes1516.hostname AS scopes1516_hostname FROM tbg3_visible_issue_types visible_issue_types599 LEFT JOIN tbg3_issuetypes issuetypes119 ON (issuetypes119.id=visible_issue_types599.issuetype_id) LEFT JOIN tbg3_projects projects5 ON (projects5.id=visible_issue_types599.project_id) LEFT JOIN tbg3_scopes scopes1516 ON (scopes1516.id=visible_issue_types599.scope) WHERE (visible_issue_types599.project_id = '3') ORDER BY issuetypes119.name asc
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (15)
+INFO [B2DB] SELECT COUNT(issues187.id) as num_col FROM tbg3_issues issues187 WHERE (issues187.project_id = '3') AND (issues187.deleted = '0') AND (issues187.scope = '1') AND (issues187.issue_type = '1') AND (issues187.state = '1')
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (16)
+INFO [B2DB] SELECT COUNT(issues187.id) as num_col FROM tbg3_issues issues187 WHERE (issues187.project_id = '3') AND (issues187.deleted = '0') AND (issues187.scope = '1') AND (issues187.issue_type = '1') AND (issues187.state = '0')
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (17)
+INFO [B2DB] SELECT COUNT(issues187.id) as num_col FROM tbg3_issues issues187 WHERE (issues187.project_id = '3') AND (issues187.deleted = '0') AND (issues187.scope = '1') AND (issues187.issue_type = '2') AND (issues187.state = '1')
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (18)
+INFO [B2DB] SELECT COUNT(issues187.id) as num_col FROM tbg3_issues issues187 WHERE (issues187.project_id = '3') AND (issues187.deleted = '0') AND (issues187.scope = '1') AND (issues187.issue_type = '2') AND (issues187.state = '0')
+INFO [B2DB] done
+INFO [main] Triggering core - index_right_middle_bottom
+INFO [main] done (Triggering core - index_right_middle_bottom)
+INFO [main] Triggering core - index_right_bottom
+INFO [main] done (Triggering core - index_right_bottom)
+INFO [main] ...completed
+INFO [main] decorating with header
+INFO [main] Triggering core - header_begins
+INFO [main] done (Triggering core - header_begins)
+INFO [main] Triggering core - header_ends
+INFO [main] done (Triggering core - header_ends)
+INFO [main] Triggering core - header_end
+INFO [main] done (Triggering core - header_end)
+INFO [main] Triggering core - header_right
+INFO [main] done (Triggering core - header_right)
+INFO [main] decorating with footer
+INFO [main] Triggering core - footer_begin
+INFO [main] done (Triggering core - footer_begin)
+INFO [main] Triggering core - footer_end
+INFO [main] done (Triggering core - footer_end)
+INFO [i18n] The text "Enables email notification functionality" does not exist in list of translated strings.
+INFO [i18n] The text "Set up email- and user notifications from this section" does not exist in list of translated strings.
+INFO [i18n] The text "Enables messaging functionality" does not exist in list of translated strings.
+INFO [i18n] The text "Enables calendars, todos and meetings" does not exist in list of translated strings.
+INFO [i18n] The text "Enables articles, news and billboards" does not exist in list of translated strings.
+INFO [i18n] The text "Set up the News &amp; Articles module from this section" does not exist in list of translated strings.
+INFO [i18n] The text "Enables integration with SVN" does not exist in list of translated strings.
+INFO [i18n] The text "Configure source code integration from this section" does not exist in list of translated strings.
+INFO [i18n] The text "Quick links" does not exist in list of translated strings.
+INFO [i18n] The text "No documentation URL provided" does not exist in list of translated strings.
+INFO [i18n] The text "Overview" does not exist in list of translated strings.
+INFO [i18n] The text "Planning" does not exist in list of translated strings.
+INFO [i18n] The text "Logged in as %name%" does not exist in list of translated strings.
+INFO [i18n] The text "Logout" does not exist in list of translated strings.
+INFO [i18n] The text "My dashboard" does not exist in list of translated strings.
+INFO [i18n] The text "Find issues" does not exist in list of translated strings.
+INFO [i18n] The text "Quick search" does not exist in list of translated strings.
+INFO [i18n] The text "Search for anything here" does not exist in list of translated strings.
+INFO [i18n] The text "%num_milliseconds% ms" does not exist in list of translated strings.
+INFO [i18n] The text "Page load time: %load_time%, with %num_queries% queries. Scope ID: %scope_id%." does not exist in list of translated strings.
+INFO [main] ...done
+INFO [main] rendering content
+INFO [main] ...done (rendering content)
