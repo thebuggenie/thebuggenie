@@ -24,6 +24,7 @@
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::TITLE, 255);
+			parent::_addVarchar(self::ARTICLE_NAME, 255);
 			parent::_addText(self::INTRO_TEXT, false);
 			parent::_addText(self::CONTENT, false);
 			parent::_addBoolean(self::IS_NEWS);
@@ -42,20 +43,32 @@
 		public function loadFixtures($scope)
 		{
 			$crit = $this->getCriteria();
+
+			$crit->addInsert(self::ARTICLE_NAME, 'IndexMessage');
 			$crit->addInsert(self::TITLE, 'Welcome to The Bug Genie');
-			$crit->addInsert(self::AUTHOR, 1);
+			$crit->addInsert(self::AUTHOR, 0);
 			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
-			$crit->addInsert(self::ICON, 'install');
-			$crit->addInsert(self::INTRO_TEXT, '[p]This is a test article to display the article module.[/p]');
-			$crit->addInsert(self::CONTENT, '[p]"BUGS" has been reworked, rewritten and rebuilt from scratch to make your development life easier. Several new features has been added to make BUGS 2 the most powerful and versatile solution for software developers. [/p][p]
-[/p][p]In addition to these features, BUGS 2\'s now has a module-based architecture as well as our new B2DB PHP database ORM. This makes extending and improving the functionality in BUGS 2 much easier than before. [/p][p]
-[/p][p]BUGS 2 comes with an extensive online help system, which makes using BUGS 2 easier than with it\'s predecessor. Online help links are included in several places, and will give you helpful tips & guides where you need them. [/p][p]
-[/p][p][b]Highlights includes:[/b]
-[/p][list][*]Improved user management with detailed access control[*]Improved search functionality with grouping support[*]Improved messaging functionality with folders and search[*]Improved issue reporting wizard with automated duplicate search[*][b]New[/b]: Articles & news[*][b]New[/b]: Subversion integration[*][b]New[/b]: Calendars with events, meetings and todo\'s[*][b]New[/b]: Global and team billboards[*][b]New: [/b]Project dashboard with live statistics and overview[*][b]New: [/b]Automated roadmap generation[*][b]New: [/b]Support for issue sub-tasks[*][b]New: [/b]Support for related issues[*][b]New: [/b]Voting[/list][p]We\'re very happy with how BUGS 2 has turned out, so try out the new features, build, extend and improve upon the functionality already in BUGS 2, and see how your life as a developer will be a lot easier![/p]');
+			$crit->addInsert(self::INTRO_TEXT, '');
+			$crit->addInsert(self::CONTENT, "Thank you for installing The Bug Genie!
+ 
+Please take a few moments setting up your new issue tracker, by clicking the [[TBG_ROUTE:configure|Configure]] menu option in the top menu.
+From this page you can configure The Bug Genie the way you want.
+
+For more information on getting started, have a look at GettingStarted, ConfiguringTheBugGenie and CreatingIssues.");
 			$crit->addInsert(self::IS_NEWS, 1);
 			$crit->addInsert(self::IS_PUBLISHED, 1);
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
+		}
+
+		public function getArticleByName($name)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ARTICLE_NAME, $name);
+			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$row = $this->doSelectOne($crit);
+
+			return $row;
 		}
 
 	}

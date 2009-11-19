@@ -1,79 +1,109 @@
 <?php
 
-	class PublishArticle extends PublishGenericContent 
+	class PublishArticle extends BUGSidentifiableclass implements BUGSidentifiable
 	{
-		
-		const ARTICLE_NORMAL = 1;
-		const ARTICLE_NEWS = 2;
-		const ARTICLE_LINK = 3;
+
+		/**
+		 * The article author
+		 *
+		 * @var BUGSuser
+		 */
+		protected $_author = null;
+
+		/**
+		 * When the article was posted
+		 *
+		 * @var integer
+		 */
+		protected $_posted_date = null;
+
+		/**
+		 * The article name
+		 *
+		 * @var string
+		 */
+		protected $_name = null;
+
+		/**
+		 * The article title
+		 * 
+		 * @var string
+		 */
+		protected $_title = null;
+
+		/**
+		 * The article intro
+		 *
+		 * @var string
+		 */
+		protected $_intro_text = null;
+
+		/**
+		 * The article content
+		 *
+		 * @var string
+		 */
+		protected $_content = null;
+
+		/**
+		 * Whether the article is published or not
+		 * @var boolean
+		 */
+		protected $_is_published = false;
 		
 		/**
-		 * related project
+		 * Article constructor
 		 *
-		 * @var BUGSproject
+		 * @param integer $id
+		 * @param B2DBrow $row[optional]
 		 */
-		protected $related_project = null;
-		
-		/**
-		 * related team
-		 *
-		 * @var BUGSteam
-		 */
-		protected $related_team = null;
-		
-		protected $intro_text = '';
-		protected $is_news = false;
-		protected $icon = '';
-		protected $_order = 0;
-		protected $allowed = true;
-		
-		/**
-		 * Article constructor. Takes integer $id or b2dbrow $id
-		 *
-		 * @param integer|B2DBrow $id
-		 */
-		public function __construct($id)
+		public function __construct($id, $row = null)
 		{
-			try
+			if ($row === null)
 			{
-				if (!$id instanceof B2DBRow)
-				{
-					$id = B2DB::getTable('B2tArticles')->doSelectById($id);
-				}
+				$row = B2DB::getTable('B2tArticles')->doSelectById($id);
 			}
-			catch (Exception $e)
+
+			if ($row instanceof B2DBRow)
+			{
+				$this->_itemid = $row->get(B2tArticles::ID);
+
+				$this->_name = $row->get(B2tArticles::ARTICLE_NAME);
+
+				$this->_title = $row->get(B2tArticles::TITLE);
+				$this->_intro_text = $row->get(B2tArticles::INTRO_TEXT);
+				$this->_content = $row->get(B2tArticles::CONTENT);
+				$this->_posted_date = $row->get(B2tArticles::DATE);
+				$this->_author = $row->get(B2tArticles::AUTHOR);
+
+				$this->_is_published = ($row->get(B2tArticles::IS_PUBLISHED) == 1) ? true : false;
+			}
+			else
 			{
 				throw new Exception('This article does not exist');
 			}
-			$this->_itemid = $id->get(B2tArticles::ID);
-			
-			$this->_name = $id->get(B2tArticles::ARTICLE_NAME);
-			$this->_order = $id->get(B2tArticles::ORDER);
-			
-			$this->title = $id->get(B2tArticles::TITLE);
-			$this->intro_text = $id->get(B2tArticles::INTRO_TEXT);
-			$this->content = $id->get(B2tArticles::CONTENT);
-			$this->posted_date = $id->get(B2tArticles::DATE);
-			$this->author = $id->get(B2tArticles::AUTHOR);
-			
-			$this->is_news = ($id->get(B2tArticles::IS_NEWS) == 1) ? true : false;
-			$this->is_published = ($id->get(B2tArticles::IS_PUBLISHED) == 1) ? true : false;
-			$this->link_url = $id->get(B2tArticles::LINK);
-			$this->icon = $id->get(B2tArticles::ICON);
-			
-			if ($id->get(B2tArticles::RELATED_PROJECT) != 0) $this->related_project = BUGSfactory::projectLab($id->get(B2tArticles::RELATED_PROJECT));
-			if ($id->get(B2tArticles::RELATED_TEAM) != 0) $this->related_team = BUGSfactory::teamLab($id->get(B2tArticles::RELATED_TEAM));
-
-			if ($this->related_project !== null && BUGScontext::getUser()->hasPermission('b2projectaccess', $this->related_project->getID(), 'core') == false)
-			{
-				$this->allowed = false;
-			}
-			elseif ($this->related_team !== null && BUGScontext::getUser()->isMemberOf($this->related_team->getID()) == false) 
-			{
-				$this->allowed = false;
-			}
 		}
-		
+
+		public function __toString()
+		{
+			return $this->_content;
+		}
+
+		public function getTitle()
+		{
+			return $this->_title;
+		}
+
+		public function hasContent()
+		{
+			return ($this->_content != '') ? true : false;
+		}
+
+		public function getContent()
+		{
+			return $this->_content;
+		}
+
 		public function retract()
 		{
 			$crit = new B2DBCriteria();
@@ -90,20 +120,6 @@
 			$this->is_published = true;
 		}
 		
-		public function setOrder($val)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tArticles::ORDER, (int) $val);
-			
-			$res = B2DB::getTable('B2tArticles')->doUpdateById($crit, $this->_itemid);
-			$this->_order = (int) $val;
-		}
-		
-		public function getOrder()
-		{
-			return $this->_order;
-		}
-
 		public function showInNews()
 		{
 			$crit = new B2DBCriteria();
@@ -142,25 +158,9 @@
 			return B2DB::getTable('B2tArticleViews')->doCount($crit);
 		}
 		
-		public function getArticleType()
-		{
-			if ($this->hasAnyContent())
-			{
-				return 1;
-			}
-			if ($this->isLink())
-			{
-				return 3;
-			}
-			else
-			{
-				return 2;
-			}
-		}
-		
 		public function hasIntro()
 		{
-			return ($this->intro_text != '') ? true : false;
+			return ($this->_intro_text != '') ? true : false;
 		}
 		
 		public function hasAnyContent()
@@ -174,29 +174,46 @@
 		
 		public function getIntro()
 		{
-			return $this->intro_text;
-		}
-		
-		public function isNews()
-		{
-			return $this->is_news;
-		}
-		
-		public function hasIcon()
-		{
-			return ($this->icon != '') ? true : false;
-		}
-		
-		public function getIcon()
-		{
-			return $this->icon;
+			return $this->_intro_text;
 		}
 		
 		public function canRead()
 		{
-			return $this->allowed;
+			return true;
 		}
-		
+
+		public function isPublished()
+		{
+			return $this->_is_published;
+		}
+
+		public function getPostedDate()
+		{
+			return $this->_posted_date;
+		}
+
+		/**
+		 * REturns the author
+		 *
+		 * @return BUGSuser
+		 */
+		public function getAuthor()
+		{
+			if (is_numeric($this->_author))
+			{
+				try
+				{
+					$this->_author = BUGSfactory::userLab($this->_author);
+				}
+				catch (Exception $e)
+				{
+					$this->_author = null;
+				}
+			}
+			return $this->_author;
+		}
+
+
 	}
 
 ?>

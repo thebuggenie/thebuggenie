@@ -1280,9 +1280,19 @@
 			// Skip the library if it already exists
 			if (!array_key_exists($lib_name, self::$_libs))
 			{
+				if (strpos($lib_name, '/') !== false)
+				{
+					list ($module, $lib_name) = explode('/', $lib_name);
+				}
+
 				$lib_file_name = "{$lib_name}.inc.php";
 
-				if (file_exists(self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/' . $lib_file_name))
+				if (isset($module) && file_exists(self::getIncludePath() . "modules/{$module}/lib/{$lib_file_name}"))
+				{
+					require self::getIncludePath() . "modules/{$module}/lib/" . $lib_file_name;
+					self::$_libs[$module.'/'.$lib_name] = self::getIncludePath() . "modules/{$module}/lib/{$lib_file_name}";
+				}
+				elseif (file_exists(self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/' . $lib_file_name))
 				{
 					// Include the library from the current module if it exists
 					require self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/' . $lib_file_name;

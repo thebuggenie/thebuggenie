@@ -17,14 +17,7 @@
 		{
 			if (!isset(self::$_articles[$a_id]))
 			{
-				if ($row instanceof B2DBRow)
-				{
-					self::$_articles[$a_id] = new PublishArticle($row);
-				}
-				else
-				{
-					self::$_articles[$a_id] = new PublishArticle($a_id);
-				}
+				self::$_articles[$a_id] = new PublishArticle($a_id, $row);
 			}
 			return self::$_articles[$a_id];
 		}

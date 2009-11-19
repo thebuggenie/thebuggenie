@@ -80,7 +80,7 @@
 				}
 			}
 						
-			BUGScontext::getModule('publish')->section_latestNewsBox();
+			BUGScontext::getModule('publish')->listen_latestArticles();
 			
 			?>
 		</td>
@@ -206,7 +206,6 @@
 				{
 					?>
 					<div style="width: auto; border: 1px solid #DDD; padding: 5px;">
-					<?php echo image_tag('publish/' . $f_article->getIcon() . '.png', array('style' => "float: left; margin-right: 5px;")); ?>
 					<b style="font-size: 14px;"><?php echo $f_article->getTitle(); ?></b><br>
 					<div style="color: #AAA;"><b><?php print bugs_formatTime($f_article->getPostedDate(), 3); ?></b> by <b><?php echo $f_article->getAuthor(); ?></b></div>
 					<div style="padding-top: 5px; font-size: 11.5px; padding-bottom: 5px; font-weight: bold;"><?php echo bugs_BBDecode($f_article->getIntro()); ?></div>
@@ -224,6 +223,8 @@
 					<td style="width: auto; padding-right: 5px; padding-top: 5px; vertical-align: top;">
 					<div style="background-color: #EEE; padding: 5px; font-weight: bold; font-size: 13px;"><?php echo __('Recent articles'); ?></div>
 					<?php
+
+					$cc = 0;
 	
 					if (count($previous_articles) > 0)
 					{

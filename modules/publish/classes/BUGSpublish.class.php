@@ -7,20 +7,21 @@
 		{
 			parent::__construct($m_id, $res);
 			$this->_module_version = '1.0';
-			$this->setLongName(BUGScontext::getI18n()->__('News &amp; Articles'));
-			$this->setMenuTitle(BUGScontext::getI18n()->__('News &amp; Articles'));
-			$this->setConfigTitle(BUGScontext::getI18n()->__('News &amp; Articles'));
-			$this->setDescription(BUGScontext::getI18n()->__('Enables articles, news and billboards'));
-			$this->setConfigDescription(BUGScontext::getI18n()->__('Set up the News &amp; Articles module from this section'));
+			$this->setLongName(BUGScontext::getI18n()->__('Wiki'));
+			$this->setMenuTitle(BUGScontext::getI18n()->__('Wiki'));
+			$this->setConfigTitle(BUGScontext::getI18n()->__('Wiki'));
+			$this->setDescription(BUGScontext::getI18n()->__('Enables Wiki-functionality'));
+			$this->setConfigDescription(BUGScontext::getI18n()->__('Set up the Wiki module from this section'));
 			$this->setHasConfigSettings();
 			$this->addAvailablePermission('article_management', 'Can create and manage articles');
 			$this->addAvailablePermission('manage_billboard', 'Can delete billboard posts');
 			$this->addAvailablePermission('publish_postonglobalbillboard', 'Can post articles on global billboard');
 			$this->addAvailablePermission('publish_postonteambillboard', 'Can post articles on team billboard');
-			$this->addAvailableListener('core', 'index_left_middle', 'section_latestNewsBox', 'Frontpage "Last news items"');
-			$this->addAvailableListener('core', 'index_right_middle', 'section_latestNews', 'Frontpage billboard overview');
+			$this->addAvailableListener('core', 'index_left_middle', 'listen_latestArticles', 'Frontpage "Last news items"');
+			$this->addAvailableListener('core', 'index_right_middle', 'listen_indexMessage', 'Frontpage article');
 
-			$this->addRoute('publish', '/articles', 'index');
+			$this->addRoute('publish', '/wiki', 'index');
+			$this->addRoute('publish_article', '/wiki/:article_name', 'showArticle');
 		}
 
 		public function initialize()
@@ -50,6 +51,12 @@
 				B2DB::getTable('B2tArticleViews')->create();
 				B2DB::getTable('B2tBillboardPosts')->create();
 			}
+
+			/*function fu($string)
+			{
+				return '{link:'.$string.'}';
+			}
+			echo preg_replace('/(?<!\!)\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/e', 'fu("\\0")', $text);*/
 			
 			try
 			{
@@ -93,8 +100,6 @@
 
 		public function getBillboardPosts($target_board = 0, $posts = 5)
 		{
-			$sql = "";
-			
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tBillboardPosts::SCOPE, BUGScontext::getScope()->getID());
 			$crit->addWhere(B2tBillboardPosts::IS_DELETED, 0);
@@ -120,9 +125,9 @@
 			return $posts;
 		}
 		
-		public function getNews($num_news = 5)
+		public function getLatestArticles($limit = 5)
 		{
-			return $this->getArticles($num_news, true);
+			return $this->getArticles($limit, true);
 		}
 	
 		public function getAllArticles()
@@ -182,63 +187,6 @@
 			}
 	
 			return $articles;
-		}
-		
-		public function getIcons()
-		{
-			$arr = array('abiword_abi'		=> 'Writing',
-						 'applix'			=> 'Style',
-						 'bc'				=> 'Books',
-						 'cdimage'			=> 'Release',
-						 'cdtrack'			=> 'Audio CD',
-						 'core'				=> 'Bugs and issues',
-						 'encrypted'		=> 'Lock',
-						 'exec_wine'		=> 'Leisure',
-						 'file_temporary'	=> 'History',
-						 'gettext'			=> 'Font',
-						 'html'				=> 'Internet',
-						 'image_gimp'		=> 'Painting',
-						 'info'				=> 'Information',
-						 'install'			=> 'Software',
-						 'kchart_chrt'		=> 'Statistics',
-						 'kformula_kfo'		=> 'Math',
-						 'kget_list'		=> 'Download',
-						 'kpresenter_kpr'	=> 'Presentation',
-						 'krec_filerec'		=> 'Record',
-						 'krita_kra'		=> 'Crayons',
-						 'kspread_ksp'		=> 'Accounting',
-						 'log'				=> 'Stocks',
-						 'man'				=> 'Rescue',
-						 'message'			=> 'Email',
-						 'pdf'				=> 'PDF',
-						 'postscript'		=> 'Printing',
-						 'readme'			=> 'Notification',
-						 'recycled'			=> 'Recycle',
-						 'sound'			=> 'Sound',
-						 'source'			=> 'Source',
-						 'source_c'			=> 'Source C',
-						 'source_cpp'		=> 'Source C++',
-						 'source_css'		=> 'Source CSS',
-						 'source_f'			=> 'Source F',
-						 'source_h'			=> 'Source H',
-						 'source_j'			=> 'Source J',
-						 'source_o'			=> 'Source O',
-						 'source_p'			=> 'Source P',
-						 'source_php'		=> 'Source PHP',
-						 'source_pl'		=> 'Source Perl',
-						 'source_py'		=> 'Source Python',
-						 'source_s'			=> 'Source S',
-						 'source_y'			=> 'Source Y',
-						 'source_java'		=> 'Coffee',
-						 'source_moc'		=> 'Components',
-						 'txt'				=> 'Draft',
-						 'vcalendar'		=> 'Calendar',
-						 'vcard'			=> 'Card',
-						 'video'			=> 'Video and animation',
-						 'wordprocessing'	=> 'Article',
-			);
-			asort($arr);
-			return $arr;
 		}
 		
 		/**
@@ -318,120 +266,28 @@
 			}
 			echo '</li>';
 		}
-		
-		public function section_latestNews()
-		{
-			//echo '<div style="background-color: #EEE; padding: 5px; font-weight: bold; font-size: 13px;">' . BUGScontext::getI18n()->__('Recent articles') . '</div>';
 
-			$previous_articles = BUGScontext::getModule('publish')->getArticles(3);
-			if (count($previous_articles) > 0)
+		public function getIndexMessage()
+		{
+			if ($row = B2DB::getTable('B2tArticles')->getArticleByName('IndexMessage'))
 			{
-				foreach ($previous_articles as $article)
-				{ 
-					?>
-					<div style="width: auto; padding: 5px;">
-					<?php echo image_tag('publish/' . $article->getIcon() . '.png', array('style' => "float: left; margin-right: 5px;")); ?>
-					<b style="font-size: 13px;"><?php echo $article->getTitle(); ?></b><br>
-					<div style="color: #AAA;"><?php print bugs_formatTime($article->getPostedDate(), 3); ?> by <?php echo $article->getAuthor(); ?></div>
-					<div style="padding-top: 5px; font-size: 11px; padding-bottom: 5px;"><?php echo bugs_BBDecode($article->getIntro()); ?></div>
-					<div style="text-align: right;"><a href="<?php echo BUGScontext::getTBGPath(); ?>modules/publish/articles.php?article_id=<?php echo $article->getID(); ?>"><?php echo BUGScontext::getI18n()->__('Read more'); ?></a></div>
-					</div>
-					<?php
-				}
+				return PublishFactory::articleLab($row->get(B2tArticles::ID), $row);
 			}
-			if (count($previous_articles) == 0)
-			{
-				?><div style="color: #AAA; padding: 5px;"><?php echo BUGScontext::getI18n()->__('There are no recent articles'); ?></div><?php
-			}
-			
+			return null;
 		}
 		
-		public function section_latestNewsBox()
+		public function listen_indexMessage()
 		{
-			include_component('publish/latestNewsBox');
-			return;
-			if (BUGScontext::getModule('publish')->hasAccess() && BUGScontext::getModule('publish')->getSetting('showlastarticlesonfrontpage') == 1)
+			$index_article = $this->getIndexMessage();
+			if ($index_article instanceof PublishArticle)
 			{
-				?>
-				<table class="b2_section_miniframe" cellpadding=0 cellspacing=0>
-				<tr>
-				<td class="b2_section_miniframe_header"><?php echo BUGScontext::getI18n()->__('Latest news'); ?></td>
-				</tr>
-				<tr>
-				<td class="td1">
-				<table cellpadding=0 cellspacing=0 style="width: 100%;">
-				<?php
-	
-					$news = array();
-					$this->log('retrieving news items');
-					if ($bugs_response->getPage() == 'publish')
-					{
-						$news = $this->getNews(10);
-					}
-					else
-					{
-						$news = $this->getNews();
-					}
-					$this->log('done');
-	
-					foreach($news as $anews)
-					{
-						?>
-						<tr>
-						<td class="imgtd">
-						<?php
-						
-						if ($anews->isLink())
-						{
-							?>
-							<?php echo image_tag('news_link.png') ?></td>
-							<td><a href="<?php print $anews->getLinkURL(); ?>" target="_blank"><?php print $anews->getTitle(); ?></a><br>
-							<?php
-						}
-						elseif ($anews->hasAnyContent())
-						{
-							?>
-							<?php echo image_tag('news_item.png') ?></td>
-							<td><a href="<?php print BUGScontext::getTBGPath(); ?>modules/publish/articles.php?article_id=<?php print $anews->getID(); ?>"><?php print $anews->getTitle(); ?></a><br>
-							<?php
-						}
-						else
-						{
-							?>
-							<?php echo image_tag('news_item.png') ?></td>
-							<td><?php print $anews->getTitle(); ?><br>
-							<?php
-						}
-
-						?>
-						<div style="font-size: 7pt;"><?php print bugs_formatTime($anews->getPostedDate(), 3); ?></div></td>
-						</tr>
-						<?php
-					}
-	
-					if (count($news) >= 1 && $bugs_response->getPage() != 'publish')
-					{
-						?>
-						<tr>
-						<td class="imgtd" style="padding-top: 10px;"><?php echo image_tag('news_item.png') ?></td>
-						<td style="padding-top: 10px;"><a href="<?php print BUGScontext::getTBGPath(); ?>modules/publish/publish.php"><?php echo BUGScontext::getI18n()->__('Click to read more news'); ?></a></td>
-						</tr>
-						<?php
-					}
-					elseif (count($news) == 0)
-					{
-						?>
-						<tr><td style="color: #AAA;"><?php echo BUGScontext::getI18n()->__('There are no news published'); ?></td></tr>
-						<?php
-					}
-	
-				?>
-				</table>
-				</td>
-				</tr>
-				</table>
-				<?php
+				BUGSactioncomponent::includeComponent('publish/articledisplay', array('article' => $index_article, 'show_title' => true, 'show_details' => false, 'show_intro' => false));
 			}
+		}
+		
+		public function listen_latestArticles()
+		{
+			BUGSactioncomponent::includeComponent('publish/latestArticles');
 		}
 		
 	}
