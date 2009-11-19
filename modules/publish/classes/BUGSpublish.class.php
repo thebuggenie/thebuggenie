@@ -46,7 +46,9 @@
 			$module->saveSetting('allow_camelcase_links', 1);
 
 			$module->enableListenerSaved('core', 'index_left_middle');
-			$module->enableListenerSaved('core', 'index_right_middle');
+			$module->enableListenerSaved('core', 'index_left_middle');
+			$module->enableListenerSaved('core', 'project_overview_item_links');
+			$module->enableListenerSaved('core', 'project_menustrip_item_links');
   									  
 			if ($scope == BUGScontext::getScope()->getID())
 			{
