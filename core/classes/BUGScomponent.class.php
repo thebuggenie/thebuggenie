@@ -25,13 +25,13 @@
 		 */
 		protected $_project;
 		
-		static public function createNew($name, $project_id)
+		public static function createNew($name, $project_id)
 		{
 			$c_id = B2DB::getTable('B2tComponents')->createNew($name, $project_id);
 			return BUGSfactory::componentLab($c_id);
 		}
 		
-		static public function getAllByProjectID($project_id)
+		public static function getAllByProjectID($project_id)
 		{
 			$retval = array();
 			if ($res = B2DB::getTable('B2tComponents')->getByProjectID($project_id))

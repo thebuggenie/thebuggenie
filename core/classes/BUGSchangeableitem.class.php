@@ -59,7 +59,7 @@
 		 * 
 		 * @return array
 		 */
-		static public function getChangedItems($class)
+		public static function getChangedItems($class)
 		{
 			$retarr = array();
 			if (isset($_SESSION['changeableitems'][$class]) && is_array($_SESSION['changeableitems'][$class]))

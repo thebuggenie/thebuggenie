@@ -177,7 +177,7 @@
 		 * 
 		 * @return BUGSmilestone
 		 */
-		static public function createNew($name, $type, $project_id)
+		public static function createNew($name, $type, $project_id)
 		{
 			$m_id = B2DB::getTable('B2tMilestones')->createNew($name, $type, $project_id);
 			BUGScontext::setPermission('b2milestoneaccess', $m_id, 'core', 0, BUGScontext::getUser()->getGroup()->getID(), 0, true);

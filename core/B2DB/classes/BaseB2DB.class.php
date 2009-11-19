@@ -36,23 +36,23 @@
 		 * 
 		 * @return B2DBtable
 		 */
-		static public function loadNewTable(BaseB2DBtable $table)
+		public static function loadNewTable(BaseB2DBtable $table)
 		{
 			self::$_tables[get_class($table)] = $table;
 			return $table;
 		}
 		
-		static public function setDebugMode($debug_mode)
+		public static function setDebugMode($debug_mode)
 		{
 			self::$_debug_mode = $debug_mode;
 		}
 		
-		static public function isDebugMode()
+		public static function isDebugMode()
 		{
 			return self::$_debug_mode;
 		}
 		
-		static public function addAlias()
+		public static function addAlias()
 		{
 			$rnd_no = rand(1, 3000);
 			while (in_array($rnd_no, self::$_aliases))
@@ -63,7 +63,7 @@
 			return $rnd_no;
 		}
 		
-		static public function initialize($dont_load_params = false)
+		public static function initialize($dont_load_params = false)
 		{
 			if (!defined('B2DB_BASEPATH'))
 			{
@@ -102,7 +102,7 @@
 			
 		}
 		
-		static public function saveConnectionParameters()
+		public static function saveConnectionParameters()
 		{
 			$string = "<?php\n";
 			$string .= "\t/**\n";
@@ -142,7 +142,7 @@
 		 * 
 		 * @return BaseB2DBTable
 		 */
-		static public function getTable($tbl_name)
+		public static function getTable($tbl_name)
 		{
 			if (!isset(self::$_tables[$tbl_name]))
 			{
@@ -166,32 +166,32 @@
 			return self::$_tables[$tbl_name];
 		}
 
-		static public function getTables()
+		public static function getTables()
 		{
 			return self::$_tables;
 		}
 
-		static public function setTables($tables)
+		public static function setTables($tables)
 		{
 			self::$_tables = $tables;
 		}
 		
-		static public function sqlHit()
+		public static function sqlHit()
 		{
 			self::$_sqlhits++;
 		}
 
-		static public function getSQLHits()
+		public static function getSQLHits()
 		{
 			return (int) self::$_sqlhits;
 		}
 
-		static public function getDBlink()
+		public static function getDBlink()
 		{
 			return self::$_db_connection;
 		}
 
-		static public function setDSN($dsn)
+		public static function setDSN($dsn)
 		{
 			$dsn_details = parse_url($dsn);
 			if (!array_key_exists('scheme', $dsn_details))
@@ -230,72 +230,72 @@
 			self::$_dsn = $dsn;
 		}
 		
-		static public function getDSN()
+		public static function getDSN()
 		{
 			return self::$_dsn;
 		}
 		
-		static public function setHost($host)
+		public static function setHost($host)
 		{
 			self::$_db_host = $host;
 		}
 		
-		static public function getHost()
+		public static function getHost()
 		{
 			return self::$_db_host;
 		}
 		
-		static public function getPort()
+		public static function getPort()
 		{
 			return self::$_db_port;
 		}
 		
-		static public function setPort($port)
+		public static function setPort($port)
 		{
 			self::$_db_port = $port;
 		}
 
-		static public function setUname($uname)
+		public static function setUname($uname)
 		{
 			self::$_db_uname = $uname;
 		}
 
-		static public function getUname()
+		public static function getUname()
 		{
 			return self::$_db_uname;
 		}
 
-		static public function setTablePrefix($prefix)
+		public static function setTablePrefix($prefix)
 		{
 			self::$_tableprefix = $prefix;
 		}
 
-		static public function getTablePrefix()
+		public static function getTablePrefix()
 		{
 			return self::$_tableprefix;
 		}
 
-		static public function setPasswd($upwd)
+		public static function setPasswd($upwd)
 		{
 			self::$_db_pwd = $upwd;
 		}
 
-		static public function getPasswd()
+		public static function getPasswd()
 		{
 			return self::$_db_pwd;
 		}
 		
-		static public function setDBname($dbname)
+		public static function setDBname($dbname)
 		{
 			self::$_db_name = $dbname;
 		}
 
-		static public function getDBname()
+		public static function getDBname()
 		{
 			return self::$_db_name;
 		}
 
-		static public function setDBtype($dbtype)
+		public static function setDBtype($dbtype)
 		{
 			if (self::hasDBEngine($dbtype) == false)
 			{
@@ -304,7 +304,7 @@
 			self::$_db_type = $dbtype;
 		}
 
-		static public function getDBtype()
+		public static function getDBtype()
 		{
 			if (!self::$_db_type && defined('B2DB_SQLTYPE'))
 			{
@@ -313,12 +313,12 @@
 			return self::$_db_type;
 		}
 
-		static public function doConnect()
+		public static function doConnect()
 		{
 			self::$_db_connection = b2db_sql_connect(self::$_db_host, self::$_db_uname, self::$_db_pwd) or die(b2db_sql_fatal_error(1));
 		}
 
-		static public function doSelectDB($db_name = null)
+		public static function doSelectDB($db_name = null)
 		{
 			if ($db_name == null)
 			{
@@ -334,7 +334,7 @@
 		 * 
 		 * @return B2DBStatement
 		 */
-		static public function prepareStatement($crit)
+		public static function prepareStatement($crit)
 		{
 			try
 			{
@@ -348,7 +348,7 @@
 			return $statement;
 		}
 
-		static public function closeDBLink()
+		public static function closeDBLink()
 		{
 			if (self::$_transaction_active)
 			{
@@ -357,7 +357,7 @@
 			b2db_sql_close(self::$_db_connection);
 		}
 		
-		static public function setTransaction($state)
+		public static function setTransaction($state)
 		{
 			self::$_transaction_active = $state;
 		}
@@ -365,7 +365,7 @@
 		/**
 		 * Starts a new transaction
 		 */
-		static public function startTransaction()
+		public static function startTransaction()
 		{
 			return new B2DBTransaction();
 		}
@@ -375,7 +375,7 @@
 		 *  
 		 * @param B2DBException $exception
 		 */
-		static public function fatalError(B2DBException $exception)
+		public static function fatalError(B2DBException $exception)
 		{
 			$ob_status = ob_get_status();
 			if (!empty($ob_status) && $ob_status['status'] != PHP_OUTPUT_HANDLER_END)
@@ -463,17 +463,17 @@
 			}
 		}
 		
-		static public function setHTMLException($val)
+		public static function setHTMLException($val)
 		{
 			self::$_throwhtmlexception = $val;
 		}
 		
-		static public function throwExceptionAsHTML()
+		public static function throwExceptionAsHTML()
 		{
 			return self::$_throwhtmlexception;
 		}
 		
-		static public function getDBtypes()
+		public static function getDBtypes()
 		{
 			$retarr = array();
 			
@@ -494,7 +494,7 @@
 			return $retarr;
 		}
 		
-		static public function hasDBEngine($engine)
+		public static function hasDBEngine($engine)
 		{
 			return array_key_exists($engine, self::getDBtypes());
 		}

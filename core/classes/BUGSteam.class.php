@@ -21,7 +21,7 @@
 		
 		protected $_members = null;
 		
-		static public function getAll($searchfor = "")
+		public static function getAll($searchfor = "")
 		{
 		
 			$crit = new B2DBCriteria();
@@ -167,7 +167,7 @@
 			$res = B2DB::getTable('B2tTeamMembers')->doDelete($crit);
 		}
 		
-		static public function findTeams($details)
+		public static function findTeams($details)
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tTeams::TEAMNAME, "%$details%", B2DBCriteria::DB_LIKE);

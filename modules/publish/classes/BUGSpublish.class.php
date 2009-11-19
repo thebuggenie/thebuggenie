@@ -33,7 +33,7 @@
 
 		}
 
-		static public function install($scope = null)
+		public static function install($scope = null)
 		{
   			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
 
@@ -224,6 +224,33 @@
 		public function getMenuItems()
 		{
 			return array();
+		}
+
+		public function getUserDrafts()
+		{
+			$articles = array();
+
+			if ($res = B2DB::getTable('B2tArticles')->getUnpublishedArticlesByUser(BUGScontext::getUser()->getID()))
+			{
+				while ($row = $res->getNextRow())
+				{
+					try
+					{
+						$article = PublishFactory::articleLab($row->get(B2tArticles::ID), $row);
+					}
+					catch (Exception $e)
+					{
+						continue;
+					}
+
+					if ($article->canRead())
+					{
+						$articles[] = $article;
+					}
+				}
+			}
+
+			return $articles;
 		}
 		
 		/**

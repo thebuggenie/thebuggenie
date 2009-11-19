@@ -29,7 +29,7 @@
 		 * @param integer $uid
 		 * @return BUGScalendarCalendar
 		 */
-		static public function createNew($uid)
+		public static function createNew($uid)
 		{
 			$crit = new B2DBCriteria();
 			$crit->addInsert(B2tCalendars::UID, $uid);

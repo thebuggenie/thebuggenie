@@ -372,7 +372,7 @@
 		 * 
 		 * @return null
 		 */
-		static public function initialize()
+		public static function initialize()
 		{
 			try
 			{
@@ -519,7 +519,7 @@
 		 * 
 		 * @param string $language The language code to change to
 		 */
-		static public function reinitializeI18n($language = null) 
+		public static function reinitializeI18n($language = null) 
 		{
 			if (!$language)
 			{
@@ -536,7 +536,7 @@
 		 *
 		 * @return BUGSi18n
 		 */
-		static public function getI18n()
+		public static function getI18n()
 		{
 			if (!self::$_i18n instanceof BUGSi18n)
 			{
@@ -550,7 +550,7 @@
 		 * 
 		 * @return array
 		 */
-		static public function getThemes()
+		public static function getThemes()
 		{
 			$theme_path = self::getIncludePath() . 'thebuggenie/themes/';
 			$theme_path_handle = opendir($theme_path);
@@ -736,7 +736,7 @@
 		 *
 		 * @return array
 		 */
-		static public function getUninstalledModules()
+		public static function getUninstalledModules()
 		{
 			$module_path = self::getIncludePath() . 'modules/';
 			$module_path_handle = opendir($module_path);

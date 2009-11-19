@@ -25,7 +25,7 @@
 			}
 		}
 		
-		static public function install($scope = null)
+		public static function install($scope = null)
 		{
   			if ($scope === null)
   			{

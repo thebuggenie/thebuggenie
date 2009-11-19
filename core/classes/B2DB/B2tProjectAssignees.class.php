@@ -45,7 +45,7 @@
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
 		
-		static public function getTypes()
+		public static function getTypes()
 		{
 			return array(self::TYPE_DEVELOPER => BUGScontext::getI18n()->__('Developer'), 
 						self::TYPE_PROJECTMANAGER => BUGScontext::getI18n()->__('Project manager'),
@@ -54,7 +54,7 @@
 						self::TYPE_CUSTOMER => BUGScontext::getI18n()->__('Customer'));
 		}
 		
-		static public function getTypeName($type)
+		public static function getTypeName($type)
 		{
 			$types = self::getTypes();
 			return $types[$type];

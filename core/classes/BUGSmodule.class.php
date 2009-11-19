@@ -47,7 +47,7 @@
 		 * @param string $module_name the module key
 		 * @return boolean Whether the install succeeded or not
 		 */
-		static public function installModule($module_name)
+		public static function installModule($module_name)
 		{
 			BUGScontext::addClasspath(BUGScontext::getIncludePath() . 'modules/' . $module_name . '/classes');
 			if (is_dir(BUGScontext::getIncludePath() . 'modules/' . $module_name . '/classes/B2DB'))
@@ -260,7 +260,7 @@
 			return $this->_listeners;
 		}
 		
-		static public function cacheAllAccessPermissions()
+		public static function cacheAllAccessPermissions()
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tModulePermissions::SCOPE, BUGScontext::getScope()->getID());
@@ -272,7 +272,7 @@
 			}
 		}
 
-		static public function cacheAccessPermission($module_name, $uid, $gid, $tid, $all, $allowed)
+		public static function cacheAccessPermission($module_name, $uid, $gid, $tid, $all, $allowed)
 		{
 			self::$_permissions[$module_name][] = array('uid' => $uid, 'gid' => $gid, 'tid' => $tid, 'all' => $all, 'allowed' => $allowed); 
 		}
@@ -288,13 +288,13 @@
 			}
 		}
 		
-		static public function rebuildAccessPermissionCache()
+		public static function rebuildAccessPermissionCache()
 		{
 			self::$_permissions = array();
 			self::cacheAllAccessPermissions();
 		}
 		
-		static public function getAccessPermissionList()
+		public static function getAccessPermissionList()
 		{
 			if (self::$_permissions === null)
 			{
@@ -536,7 +536,7 @@
 			return $this->_description;
 		}
 		
-		static public function getAllModulePermissions($module, $uid, $tid, $gid)
+		public static function getAllModulePermissions($module, $uid, $tid, $gid)
 		{
 	
 			$crit = new B2DBCriteria();

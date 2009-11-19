@@ -341,7 +341,7 @@
 		 * 
 		 * @return BUGSuser
 		 */
-		static public function createNew($username, $realname, $buddyname, $scope, $activated = false, $enabled = false, $password = 'password', $email = '', $pass_is_md5 = false, $u_id = null, $lastseen = null)
+		public static function createNew($username, $realname, $buddyname, $scope, $activated = false, $enabled = false, $password = 'password', $email = '', $pass_is_md5 = false, $u_id = null, $lastseen = null)
 		{
 			$crit = new B2DBCriteria();
 			if ($u_id !== null)

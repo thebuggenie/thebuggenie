@@ -338,14 +338,14 @@
 		 * 
 		 * @return boolean
 		 */
-		static public function setDefault($p_id)
+		public static function setDefault($p_id)
 		{
 			B2DB::getTable('B2tProjects')->clearDefaults();
 			B2DB::getTable('B2tProjects')->setDefaultProject($p_id);
 			return true;
 		}
 		
-		static public function getByKey($key)
+		public static function getByKey($key)
 		{
 			if ($project_row = B2DB::getTable('B2tProjects')->getByKey($key))
 			{
@@ -381,7 +381,7 @@
 		 * 
 		 * @return array
 		 */
-		static public function getAll()
+		public static function getAll()
 		{
 			self::_populateProjects();
 			return self::$_projects;
@@ -416,7 +416,7 @@
 		 * 
 		 * @return BUGSproject
 		 */
-		static public function createNew($name)
+		public static function createNew($name)
 		{
 			$p_id = B2DB::getTable('B2tProjects')->createNew($name);
 			

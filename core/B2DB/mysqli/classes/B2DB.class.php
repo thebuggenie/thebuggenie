@@ -25,7 +25,7 @@
 		 */
 		static $_db_connection = null;
 		
-		static public function doConnect()
+		public static function doConnect()
 		{
 			if (!class_exists('mysqli'))
 			{
@@ -45,12 +45,12 @@
 			}
 		}
 		
-		static public function createDatabase($db_name)
+		public static function createDatabase($db_name)
 		{
 			self::$_db_connection->query('create schema if not exists ' . $db_name);
 		}
 		
-		static public function doSelectDB($db = null)
+		public static function doSelectDB($db = null)
 		{
 			if ($db === null)
 			{
@@ -59,7 +59,7 @@
 			return self::$_db_connection->select_db($db);
 		}
 		
-		static public function closeDBLink()
+		public static function closeDBLink()
 		{
 			self::$_db_connection->close();
 		}
@@ -69,7 +69,7 @@
 		 *
 		 * @return mysqli
 		 */
-		static public function getDBLink()
+		public static function getDBLink()
 		{
 			return parent::getDBlink();
 		}
@@ -79,7 +79,7 @@
 		 *
 		 * @param string $sql
 		 */
-		static public function simpleQuery($sql)
+		public static function simpleQuery($sql)
 		{
 			self::$_sqlhits++;
 			$res = self::getDBLink()->query($sql);

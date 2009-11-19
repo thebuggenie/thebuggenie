@@ -61,7 +61,7 @@ To learn more about the wiki formatting used in The Bug Genie, check out WikiFor
 [http://www.thebuggenie.com]
 
 ");
-			$crit->addInsert(self::IS_PUBLISHED, 1);
+			$crit->addInsert(self::IS_PUBLISHED, true);
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 
@@ -210,7 +210,7 @@ If you want to put some text on the page that shouldn't be interpreted (like the
     I'm an example because I have two spaces in front of me (actually I have four, but that's just so you can see the two spaces)
     This is a second line
 ");
-			$crit->addInsert(self::IS_PUBLISHED, 1);
+			$crit->addInsert(self::IS_PUBLISHED, true);
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 
@@ -224,6 +224,17 @@ If you want to put some text on the page that shouldn't be interpreted (like the
 			$row = $this->doSelectOne($crit);
 
 			return $row;
+		}
+
+		public function getUnpublishedArticlesByUser($user_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::IS_PUBLISHED, false);
+			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+
+			$res = $this->doSelect($crit);
+
+			return $res;
 		}
 
 	}

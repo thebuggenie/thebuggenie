@@ -130,7 +130,7 @@
 			return self::$_customers;
 		}
 
-		static public function findCustomers($details)
+		public static function findCustomers($details)
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tCustomers::NAME, "%$details%", B2DBCriteria::DB_LIKE);

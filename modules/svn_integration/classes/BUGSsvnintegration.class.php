@@ -22,7 +22,7 @@
 
 		}
 
-		static public function install($scope = null)
+		public static function install($scope = null)
 		{
   			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
 			

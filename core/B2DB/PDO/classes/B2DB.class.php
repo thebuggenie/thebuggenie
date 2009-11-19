@@ -25,7 +25,7 @@
 		 */
 		static $_db_connection = null;
 		
-		static public function doConnect()
+		public static function doConnect()
 		{
 			if (!class_exists('PDO'))
 			{
@@ -70,17 +70,17 @@
 			}
 		}
 		
-		static public function createDatabase($db_name)
+		public static function createDatabase($db_name)
 		{
 			$res = self::getDBLink()->query('create database ' . $db_name);
 		}
 		
-		static public function doSelectDB($db = null)
+		public static function doSelectDB($db = null)
 		{
 			return true;
 		}
 		
-		static public function closeDBLink()
+		public static function closeDBLink()
 		{
 			self::$_db_connection = null;
 		}
@@ -90,7 +90,7 @@
 		 *
 		 * @return PDO
 		 */
-		static public function getDBLink()
+		public static function getDBLink()
 		{
 			return self::$_db_connection;
 		}
@@ -100,7 +100,7 @@
 		 *
 		 * @param string $sql
 		 */
-		static public function simpleQuery($sql)
+		public static function simpleQuery($sql)
 		{
 			self::$_sqlhits++;
 			try
