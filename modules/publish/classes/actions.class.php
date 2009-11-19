@@ -11,6 +11,7 @@
 		public function preExecute($request, $action)
 		{
 			$this->getResponse()->setProjectMenuStripHidden();
+			$this->getResponse()->setPage('wiki');
 			if ($request->hasParameter('article_name') && count(explode(':', $request->getParameter('article_name'))) > 1)
 			{
 				$article_name = explode(':', $request->getParameter('article_name'));

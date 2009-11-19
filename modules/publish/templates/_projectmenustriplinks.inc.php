@@ -1,0 +1,1 @@
+<li<?php if ($selected_tab == 'wiki'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article', array('article_name' => ucfirst($project->getKey()).':MainPage')), __('Wiki')); ?></li>
