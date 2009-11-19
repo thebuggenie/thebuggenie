@@ -227,7 +227,19 @@ class WikiParser {
 		$newwindow = false;
 
 		$href = $matches[4];
-		$title = (isset($matches[6]) && $matches[6]) ? $matches[6] : $href.(isset($matches[7]) ? $matches[7] : '');
+		//var_dump($href);
+		if (isset($matches[6]) && $matches[6])
+		{
+			$title = $matches[6];
+		}
+		else
+		{
+			$title = $href;
+			if (isset($matches[7]) && $matches[7])
+			{
+				$title .= $matches[7];
+			}
+		}
 		$namespace = $matches[3];
 
 		if ($namespace=='Image') {
@@ -237,14 +249,14 @@ class WikiParser {
 			return image_tag($href, array('alt' => $title)); // $this->handle_image($href,$title,$options);
 		}
 
-		if ($namespace=='TBG_ROUTE') {
+		if ($namespace=='TBG') {
 			$options = explode('|',$title);
 			$title = array_pop($options);
 
 			return link_tag(make_url($href), $title); // $this->handle_image($href,$title,$options);
 		}
 
-		if ($namespace=='TBG_PLAIN') {
+		if ($namespace=='LOCAL') {
 			$options = explode('|',$title);
 			$title = array_pop($options);
 
@@ -256,14 +268,8 @@ class WikiParser {
 
 		if (!$namespace)
 		{
-			if (BUGScontext::getCurrentProject() instanceof BUGSproject)
-			{
-				$href = BUGScontext::getRouting()->generate('publish_project_article', array('article_name' => $this->wiki_link($href), 'project_key' => BUGScontext::getCurrentProject()->getKey()));
-			}
-			else
-			{
-				$href = BUGScontext::getRouting()->generate('publish_article', array('article_name' => $this->wiki_link($href)));
-			}
+			//var_dump($href);
+			$href = BUGScontext::getRouting()->generate('publish_article', array('article_name' => $this->wiki_link($href)));
 		}
 		else
 		{
@@ -273,6 +279,12 @@ class WikiParser {
 		if ($nolink) return $title;
 
 		$options = ($newwindow) ? array('target' => "_blank") : array();
+		/*if (strlen($href) > 18)
+		{
+			var_dump($href);var_dump($title);var_dump($options);
+			var_dump(link_tag($href, $title, $options));
+			die();
+		}*/
 		return link_tag($href, $title, $options);
 
 		/*return sprintf(

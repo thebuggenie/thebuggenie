@@ -47,7 +47,7 @@
 By using The Bug Genie, we want to make your development environment a whole lot less cumbersome.<br>
 Project management, issue tracking, source code control, fully editable wiki for all your documenation needs, and more.
  
-Please take a few moments setting up your new issue tracker, by clicking the [[TBG_ROUTE:configure|Configure]] menu option in the top menu.<br>
+Please take a few moments setting up your new issue tracker, by clicking the [[TBG:configure|Configure]] menu option in the top menu.<br>
 From this page you can configure The Bug Genie the way you want.
 
 For more information on getting started, have a look at GettingStarted, ConfiguringTheBugGenie and CreatingIssues.
@@ -95,11 +95,28 @@ We will show you the most common syntax below.
 Traditionally, wikis have used something called [http://en.wikipedia.org/wiki/!CamelCase CamelCasing] to create links between documents. !CamelCasing means that you put any word or combination of words as a !CamelCased word, and then the wiki will create a link to the document with that name for you automatically. If the page you are trying to link to isn't yet created, the link will still be displayed, and you can click it to start editing the new article.
 
 If you want to write a word with more than one capital letter, use an exclamation mark infront of it - that will stop it from being turned into a link automatically.
-
 !CamelCasing can be turned off in the wiki settings.
 
+You can also use the double square bracket link format to link to internal pages, if you don't want to use the CamelCasing style:
+  [[InternalPage]]
+[[InternalPage]]
+  [[InternalPage Internal|Page]]
+[[InternalPage Internal|Page]]
+
+With this method you can also link to internal pages in The Bug Genie, by either using the LOCAL namespace and specifying the relative url (like \"/configure\" points to the configuration page and \"/wiki\" points to the wiki), or use the internal route namespace \"TBG:\" (this has the added benefit of being safe if the link ever changes in a future release).
+Unfortunately, the list of routes used in The Bug Genie is quite long, but a few examples are listed below:
+
+  [[LOCAL:/about|About The Bug Genie]]
+[[LOCAL:/about|About The Bug Genie]]
+  [[LOCAL:/logout|Log out]]
+[[LOCAL:/logout|Log out]]
+  [[TBG:configure_projects|Configure projects]]
+[[TBG:configure_projects|Configure projects]]
+  [[TBG:configure_modules|Modules configuration]]
+[[TBG:configure_modules|Modules configuration]]
+
 == Links ==
-In addition to linking between pages with camelcasing, you can either just write the link (it will be automatically turned into a link if it is one) or use square brackets around the link to either specify it, or put a link title in:
+In addition to linking between internal pages with double square brackets, you can link to external pages with single square brackets. Links inside your text will not automatically be turned into clickable links, but simply putting a pair of square brackets around the link makes it clickable. In addition, you can add a title if you want to:
 
   http://www.thebuggenie.com
 http://www.thebuggenie.com
