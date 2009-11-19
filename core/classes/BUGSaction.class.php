@@ -119,8 +119,8 @@
 		{
 			$this->message = $message;
 			$this->getResponse()->setHttpStatus(404);
-			BUGScontext::
-			$this->getResponse()->setTemplate('main/notfound.php');
+			//BUGScontext::get
+			$this->getResponse()->setTemplate('main/notfound');
 			return;
 		}
 		

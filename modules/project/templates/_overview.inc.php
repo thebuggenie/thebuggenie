@@ -18,7 +18,8 @@
 			</div>
 			<div style="text-align: right; font-size: 13px; font-weight: normal; padding-top: 3px;">
 				<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Overview')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
-				<?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning')); ?>
+				<?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+				<?php BUGScontext::trigger('core', 'project_overview_item_links', array('project' => $project)); ?>
 				<form action="<?php echo make_url('project_reportissue', array('project_key' => $project->getKey())); ?>" method="get" style="clear: none; display: inline; width: 160px;">
 					<div class="report_button" style="width: 150px;"><input type="submit" value="<?php echo __('Report an issue'); ?>"></div>
 				</form>

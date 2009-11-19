@@ -54,16 +54,26 @@ For more information on getting started, have a look at GettingStarted, Configur
 
 To learn more about the wiki formatting used in The Bug Genie, check out WikiFormatting.
 
-
+<br>
 '''Enjoy The Bug Genie!'''
 
-''-The Bug Genie development team''
+''-The Bug Genie development team''<br>
 [http://www.thebuggenie.com]
 
 ");
 			$crit->addInsert(self::IS_PUBLISHED, 1);
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ARTICLE_NAME, 'MainPage');
+			$crit->addInsert(self::TITLE, 'Wiki home');
+			$crit->addInsert(self::AUTHOR, 0);
+			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
+			$crit->addInsert(self::INTRO_TEXT, '');
+			$crit->addInsert(self::CONTENT, "This is the main wiki homepage!
+
+");
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ARTICLE_NAME, 'WikiFormatting');

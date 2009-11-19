@@ -25,4 +25,11 @@
 		{
 			
 		}
+
+		public function componentLeftmenu()
+		{
+			$this->show_article_options = (bool) ($this->article instanceof PublishArticle);
+			$this->links = BUGScontext::getModule('publish')->getMenuItems();
+		}
+
 	}

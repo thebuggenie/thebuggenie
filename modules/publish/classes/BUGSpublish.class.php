@@ -19,9 +19,11 @@
 			$this->addAvailablePermission('publish_postonteambillboard', 'Can post articles on team billboard');
 			$this->addAvailableListener('core', 'index_left_middle', 'listen_latestArticles', 'Frontpage "Last news items"');
 			$this->addAvailableListener('core', 'index_right_middle', 'listen_indexMessage', 'Frontpage article');
+			$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
 
-			$this->addRoute('publish', '/wiki', 'index');
+			$this->addRoute('publish', '/wiki', 'showArticle', array('article_name' => 'MainPage'));
 			$this->addRoute('publish_article', '/wiki/:article_name', 'showArticle');
+			$this->addRoute('publish_article_edit', '/wiki/:article_name/edit', 'editArticle');
 			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'showArticle');
 		}
 
@@ -96,6 +98,16 @@
 		public function getRoute()
 		{
 			return BUGScontext::getRouting()->generate('publish');
+		}
+
+		public function hasProjectAwareRoute()
+		{
+			return true;
+		}
+
+		public function getProjectAwareRoute($project_key)
+		{
+			return BUGScontext::getRouting()->generate('publish_article', array('article_name' => ucfirst($project_key).":MainPage"));
 		}
 
 		public function postConfigSettings()
@@ -207,6 +219,11 @@
 	
 			return $articles;
 		}
+
+		public function getMenuItems()
+		{
+			return array();
+		}
 		
 		/**
 		 * Prints a billboard post
@@ -303,10 +320,15 @@
 				BUGSactioncomponent::includeComponent('publish/articledisplay', array('article' => $index_article, 'show_title' => true, 'show_details' => false, 'show_intro' => false, 'show_actions' => false));
 			}
 		}
-		
+
 		public function listen_latestArticles()
 		{
 			BUGSactioncomponent::includeComponent('publish/latestArticles');
+		}
+
+		public function listen_projectLinks($params)
+		{
+			BUGSactioncomponent::includeTemplate('publish/projectlinks', $params);
 		}
 		
 	}

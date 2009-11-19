@@ -1,0 +1,1 @@
+<?php echo link_tag(make_url('publish_article', array('article_name' => ucfirst($project->getKey()).':MainPage')), __('Wiki')); ?>&nbsp;&nbsp;&nbsp;&nbsp;

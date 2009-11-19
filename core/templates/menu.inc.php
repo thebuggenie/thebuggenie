@@ -28,7 +28,8 @@
 		<?php endif; ?>
 		<?php foreach (BUGScontext::getModules() as $module): ?>
 			<?php if ($module->hasAccess() && $module->isVisibleInMenu() && $module->isEnabled()): ?>
-				<li<?php if ($bugs_response->getPage() == $module->getName()): ?> class="selected"<?php endif; ?>><?php echo link_tag($module->getRoute(), image_tag('tab_' . $module->getName() . '.png', array('style' => 'float: left;'), false, $module->getName()).$module->getMenuTitle()); ?></li>
+				<?php $module_route = (BUGScontext::getCurrentProject() instanceof BUGSproject && $module->hasProjectAwareRoute()) ? $module->getProjectAwareRoute(BUGScontext::getCurrentProject()->getKey()) : $module->getRoute(); ?>
+				<li<?php if ($bugs_response->getPage() == $module->getName()): ?> class="selected"<?php endif; ?>><?php echo link_tag($module_route, image_tag('tab_' . $module->getName() . '.png', array('style' => 'float: left;'), false, $module->getName()).$module->getMenuTitle()); ?></li>
 			<?php endif; ?>
 		<?php endforeach; ?>
 		<?php if (BUGScontext::getUser()->hasPermission("b2viewconfig", 0, 'core', true)): ?>

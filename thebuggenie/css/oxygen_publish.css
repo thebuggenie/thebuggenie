@@ -88,6 +88,10 @@
 .toc .header { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 15px; border-bottom: 1px solid #99C; }
 .toc .header a { color: #555; font-size: 16px; }
 
+.toc .content { display: none; }
+.toc .faded_medium { font-size: 11px; margin-bottom: 10px; }
+.toc:hover .content { display: inherit; }
+
 .article h1 { padding: 3px 3px 3px 0; }
 .article h1:target { color: #77B; background-color: #F6F6F6; }
 .article h2 { padding: 3px 3px 3px 0; }
@@ -102,3 +106,13 @@
 .article h6:target { color: #77B; background-color: #F6F6F6; }
 
 .article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "Droid Sans Mono", monospace; font-size: 12px; }
+
+.article .publish_article_actions { margin-top: 20px; }
+.article .publish_article_actions .sub_header { font-size: 13px; font-weight: bold; padding: 5px 5px 5px 0; }
+.article .publish_article_actions input[type="submit"] { padding: 3px; font-weight: bold; font-size: 12px; }
+.article .publish_article_actions input[type="submit"]:hover { background-color: #F1F1F1; cursor: pointer; }
+
+#wiki_menu .header { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+#wiki_menu .content ul { list-style-type: none; margin: 0; padding: 0; }
+#wiki_menu .content ul li { font-size: 12px; }
+#wiki_menu .content ul li a { font-weight: bold; }

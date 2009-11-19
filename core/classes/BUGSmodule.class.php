@@ -610,4 +610,9 @@
 			return $this->_has_config_settings;
 		}
 
+		public function hasProjectAwareRoute()
+		{
+			return false;
+		}
+
 	}

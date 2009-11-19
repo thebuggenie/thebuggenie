@@ -46,6 +46,10 @@ class WikiParser {
 	function __construct($use_toc = false, $base_id = null) {
 		$this->use_toc = $use_toc;
 		$this->base_id = $base_id;
+		if (BUGScontext::getCurrentProject() instanceof BUGSproject)
+		{
+			$this->namespace = BUGScontext::getCurrentProject()->getKey();
+		}
 		$this->reference_wiki = 'http://thebuggenie/';
 		$this->image_uri = '';
 		$this->ignore_images = true;
@@ -252,11 +256,18 @@ class WikiParser {
 
 		if (!$namespace)
 		{
-			$href = BUGScontext::getRouting()->generate('publish_article', array('article_name' => $this->wiki_link($href)));
+			if (BUGScontext::getCurrentProject() instanceof BUGSproject)
+			{
+				$href = BUGScontext::getRouting()->generate('publish_project_article', array('article_name' => $this->wiki_link($href), 'project_key' => BUGScontext::getCurrentProject()->getKey()));
+			}
+			else
+			{
+				$href = BUGScontext::getRouting()->generate('publish_article', array('article_name' => $this->wiki_link($href)));
+			}
 		}
 		else
 		{
-			$href = ($namespace?$namespace.':':'').$this->wiki_link($href);
+			$href = $namespace.':'.$this->wiki_link($href);
 		}
 
 		if ($nolink) return $title;

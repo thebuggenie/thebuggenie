@@ -21,7 +21,7 @@
 									<?php if ($link['url'] == ''): ?>
 										<li>&nbsp;</li>
 									<?php else: ?>
-										<li style="font-size: 12px;"><a href="<?php echo $link['url']; ?>" title="<?php echo $link['url']; ?>"><?php echo $link['description']; ?></a></li>
+										<li style="font-size: 12px;"><?php echo link_tag($link['url'], $link['description'], array('title' => $link['url'])); ?></a></li>
 									<?php endif; ?>
 								<?php endforeach; ?>
 							</ul>
