@@ -102,13 +102,13 @@ You can also use the double square bracket link format to link to internal pages
   [[Myproject:MainPage|Myproject wiki frontpage]]
 [[Myproject:MainPage|Myproject wiki frontpage]]
 
-With this method you can also link to internal pages in The Bug Genie, by either using the LOCAL namespace and specifying the relative url (like \"/configure\" points to the configuration page and \"/wiki\" points to the wiki), or use the internal route namespace \"TBG:\" (this has the added benefit of being safe if the link ever changes in a future release).
+With this method you can also link to internal pages in The Bug Genie, by either specifying the relative url (like \"/configure\" points to the configuration page and \"/wiki\" points to the wiki), or use the internal route namespace \"TBG:\" (this has the added benefit of being safe if the link ever changes in a future release).
 Unfortunately, the list of routes used in The Bug Genie is quite long, but a few examples are listed below:
 
-  [[LOCAL:/about|About The Bug Genie]]
-[[LOCAL:/about|About The Bug Genie]]
-  [[LOCAL:/logout|Log out]]
-[[LOCAL:/logout|Log out]]
+  [[/about|About The Bug Genie]]
+[[/about|About The Bug Genie]]
+  [[/logout|Log out]]
+[[/logout|Log out]]
   [[TBG:configure_projects|Configure projects]]
 [[TBG:configure_projects|Configure projects]]
   [[TBG:configure_modules|Modules configuration]]

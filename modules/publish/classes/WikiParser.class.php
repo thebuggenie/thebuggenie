@@ -263,7 +263,7 @@ class WikiParser {
 			return link_tag(make_url($href), $title); // $this->handle_image($href,$title,$options);
 		}
 
-		if ($namespace=='LOCAL') {
+		if (substr($href, 0, 1) == '/') {
 			$options = explode('|',$title);
 			$title = array_pop($options);
 
