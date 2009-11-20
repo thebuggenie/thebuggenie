@@ -92,15 +92,15 @@ Wiki formatting is well explained in the [http://en.wikipedia.org/wiki/Help:Wiki
 We will show you the most common syntax below.
 
 == Creating links between documents ==
-Traditionally, wikis have used something called [http://en.wikipedia.org/wiki/CamelCase Camel Casing] to create links between documents. CamelCasing means that you put any word or combination of words as a \"'''camel cased'''\" word, and then the wiki will create a link to the document with that name for you automatically. If the page you are trying to link to isn't yet created, the link will still be displayed, and you can click it to start editing the new article.
+Traditionally, wikis have used something called [[WIKIPEDIA:CamelCase|Camel Casing]] to create links between documents. CamelCasing means that you put any word or combination of words as a \"'''camel cased'''\" word, and then the wiki will create a link to the document with that name for you automatically. If the page you are trying to link to isn't yet created, the link will still be displayed, and you can click it to start editing the new article.
 
 If you want to write a word with more than one capital letter, use an exclamation mark infront of it - that will stop it from being turned into a link automatically. The support for \"camel casing\" can be turned off in the wiki settings.
 
 You can also use the double square bracket link format to link to internal pages, if you don't want to use the CamelCasing style:
   [[InternalPage]]
 [[InternalPage]]
-  [[InternalPage Internal|Page]]
-[[InternalPage Internal|Page]]
+  [[Myproject:MainPage|Myproject wiki frontpage]]
+[[Myproject:MainPage|Myproject wiki frontpage]]
 
 With this method you can also link to internal pages in The Bug Genie, by either using the LOCAL namespace and specifying the relative url (like \"/configure\" points to the configuration page and \"/wiki\" points to the wiki), or use the internal route namespace \"TBG:\" (this has the added benefit of being safe if the link ever changes in a future release).
 Unfortunately, the list of routes used in The Bug Genie is quite long, but a few examples are listed below:
@@ -113,6 +113,13 @@ Unfortunately, the list of routes used in The Bug Genie is quite long, but a few
 [[TBG:configure_projects|Configure projects]]
   [[TBG:configure_modules|Modules configuration]]
 [[TBG:configure_modules|Modules configuration]]
+
+The Bug Genie wiki also lets you link directly to [http://www.wikipedia.org Wikipedia] articles by using the WIKIPEDIA namespace:
+
+  [[WIKIPEDIA:CamelCase]]
+[[WIKIPEDIA:CamelCase]]
+  [[WIKIPEDIA:CamelCase|Wikipedia article]]
+[[WIKIPEDIA:CamelCase|Wikipedia article]]
 
 '''Remember - if all this sound complicated, you can always just use CamelCasing (provided it's not disabled)'''
 

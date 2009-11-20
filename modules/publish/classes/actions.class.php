@@ -58,6 +58,11 @@
 				$this->article_content = $this->article->getContent();
 				$this->article_intro = $this->article->getIntro();
 			}
+			else
+			{
+				BUGScontext::loadLibrary('publish');
+				$this->article_title = str_replace(array(':', '_'), array(' ', ' '), get_spaced_name($this->article_name));
+			}
 		}
 
 	}

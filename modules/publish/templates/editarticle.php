@@ -9,7 +9,7 @@
 			<div class="rounded_box iceblue_borderless" style="margin: 0 0 5px 0; width: 740px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent faded_dark" style="padding: 3px; font-size: 14px;">
-					<?php echo __('If you cannot see the "%save%"-button, scroll further down', array('%save%' => __('Save'))); ?>
+					<?php echo __('If you cannot see the "%save%"-button, scroll all the way down', array('%save%' => __('Save'))); ?>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>

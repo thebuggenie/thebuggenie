@@ -249,7 +249,7 @@ class WikiParser {
 			return image_tag($href, array('alt' => $title)); // $this->handle_image($href,$title,$options);
 		}
 
-		if ($namespace=='Wikipedia') {
+		if (strtolower($namespace) == 'wikipedia') {
 			$options = explode('|',$title);
 			$title = array_pop($options);
 
@@ -273,9 +273,9 @@ class WikiParser {
 		$title = preg_replace('/\(.*?\)/','',$title);
 		$title = preg_replace('/^.*?\:/','',$title);
 
-		if (!$namespace)
+		if (!$namespace || !array_key_exists($namespace, array('ftp', 'http', 'https', 'gopher', 'mailto', 'news', 'nntp', 'telnet', 'wais', 'file', 'prospero', 'aim', 'webcal')))
 		{
-			//var_dump($href);
+			if ($namespace) $href = $namespace . ':' . $href;
 			$href = BUGScontext::getRouting()->generate('publish_article', array('article_name' => $this->wiki_link($href)));
 		}
 		else

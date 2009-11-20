@@ -1289,8 +1289,11 @@
 
 				if (isset($module) && file_exists(self::getIncludePath() . "modules/{$module}/lib/{$lib_file_name}"))
 				{
-					require self::getIncludePath() . "modules/{$module}/lib/" . $lib_file_name;
-					self::$_libs[$module.'/'.$lib_name] = self::getIncludePath() . "modules/{$module}/lib/{$lib_file_name}";
+					if (!array_key_exists($module.'/'.$lib_name, self::$_libs))
+					{
+						require self::getIncludePath() . "modules/{$module}/lib/" . $lib_file_name;
+						self::$_libs[$module.'/'.$lib_name] = self::getIncludePath() . "modules/{$module}/lib/{$lib_file_name}";
+					}
 				}
 				elseif (file_exists(self::getIncludePath() . 'modules/' . self::getRouting()->getCurrentRouteModule() . '/lib/' . $lib_file_name))
 				{
