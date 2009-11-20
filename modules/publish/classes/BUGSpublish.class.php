@@ -23,8 +23,10 @@
 			$this->addAvailableListener('core', 'project_menustrip_item_links', 'listen_projectMenustripLinks', 'Project menustrip links');
 
 			$this->addRoute('publish', '/wiki', 'showArticle', array('article_name' => 'MainPage'));
+			$this->addRoute('publish_article_new', '/wiki/new', 'editArticle', array('article_name' => 'NewArticle'));
 			$this->addRoute('publish_article', '/wiki/:article_name', 'showArticle');
 			$this->addRoute('publish_article_edit', '/wiki/:article_name/edit', 'editArticle');
+			$this->addRoute('publish_article_save', '/wiki/savearticle', 'saveArticle');
 			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'showArticle');
 		}
 

@@ -39,6 +39,7 @@
 		 */
 		public function runShowArticle($request)
 		{
+			$this->message = BUGScontext::getMessageAndClear('publish_article_message');
 		}
 
 		/**
@@ -48,6 +49,44 @@
 		 */
 		public function runEditArticle($request)
 		{
+			if ($request->isMethod(BUGSrequest::POST))
+			{
+				if ($request->hasParameter('new_article_name') && $request->getParameter('new_article_name') != '')
+				{
+					if ($request->getParameter('article_id') != 0 && ($article = PublishFactory::articleLab($request->getParameter('article_id'))) && $article instanceof PublishArticle)
+					{
+						if ($article->getLastUpdatedDate() != $request->getParameter('last_modified'))
+						{
+							$this->error = BUGScontext::getI18n()->__('The file has been modified since you last opened it');
+						}
+						else
+						{
+							try
+							{
+								$article->setTitle($request->getParameter('new_article_title'));
+								$article->setName($request->getParameter('new_article_name'));
+								$article->setContent($request->getParameter('new_article_content'));
+								$article->save();
+								BUGScontext::setMessage('publish_article_message', BUGScontext::getI18n()->__('The article was saved'));
+								$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $article->getName())));
+							}
+							catch (Exception $e)
+							{
+								$this->error = $e->getMessage();
+							}
+						}
+					}
+					if (($article = PublishArticle::getByName($request->getParameter('new_article_name'))) && $article instanceof PublishArticle)
+					{
+						$this->error = BUGScontext::getI18n()->__('An article with that name already exists. Please choose a different article name');
+					}
+					else
+					{
+						PublishArticle::createNew($request->getParameter('new_article_name'), $request->getParameter('new_article_title'), $request->getParameter('new_article_content'), true);
+						$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $request->getParameter('new_article_name'))));
+					}
+				}
+			}
 			$this->article_title = null;
 			$this->article_content = null;
 			$this->article_intro = null;

@@ -91,6 +91,43 @@ The Bug Genie wiki tries to stay as close to the !MediaWiki syntax as possible, 
 Wiki formatting is well explained in the [http://en.wikipedia.org/wiki/Help:Wikitext_examples Wikipedia help article], but can be easily summarized as a simple method of formatting your text by placing certain characters.
 We will show you the most common syntax below.
 
+== Line breaks and text formatting ==
+You can use line breaks to space out the text and make it more readable in the editor. One line break will not be transformed into a line break when the page is
+displayed. A blank line makes a new paragraph. You can put &lt;br&gt; to make a hard line break, but be careful with this as it might break layout.
+  This text is easy to &amp;nbsp;
+  read because it is &amp;nbsp;
+  split into several lines
+  (put &amp;nbsp; at the end of each line if you don't want the text to run together)
+This text is easy to &nbsp;
+read because it is &nbsp;
+split into several lines
+
+Text can be formatted by putting '-characters around the text you want to format. Here are some examples:
+
+  ''this is some italic text''
+''this is some italic text''
+  '''this is some bold text'''
+'''this is some bold text'''
+  '''''this is some bold and italic text'''''
+'''''this is some bold and italic text'''''
+
+You can also use simple html formatting for things like underlined and strikethrough:
+
+  &lt;strike&gt;strikethrough&lt;/strike&gt;
+<strike>strikethrough</strike>
+  &lt;u&gt;underlined&lt;/u&gt;
+<u>underlined</u>
+
+== Table of contents ==
+You can get a table of content on your page (like the one in the top right on this page) by using the TOC variable the same way as the \"normal\" variables above. It doesn't matter where you put this variable in your document, it will always be displayed in the top right corner.
+
+== Headings ==
+To specify headings, use equals-character around the line you want to be a heading. The number of equals-characters you put around the line decides how big the heading is (1 is biggest, 6 is lowest).
+  = I'm a big header =
+  == I'm a fairly big header ==
+  ===== I'm a very small header =====
+Headings will automatically appear in the table of contents (if you have one).
+
 == Creating links between documents ==
 Traditionally, wikis have used something called [[WIKIPEDIA:CamelCase|Camel Casing]] to create links between documents. CamelCasing means that you put any word or combination of words as a \"'''camel cased'''\" word, and then the wiki will create a link to the document with that name for you automatically. If the page you are trying to link to isn't yet created, the link will still be displayed, and you can click it to start editing the new article.
 
@@ -132,43 +169,6 @@ http://www.thebuggenie.com
 [http://www.thebuggenie.com]
   [http://www.thebuggenie.com The Bug Genie website]
 [http://www.thebuggenie.com The Bug Genie website]
-
-== Line breaks and text formatting ==
-You can use line breaks to space out the text and make it more readable in the editor. One line break will not be transformed into a line break when the page is
-displayed. A blank line makes a new paragraph. You can put &lt;br&gt; to make a hard line break, but be careful with this as it might break layout.
-  This text is easy to &amp;nbsp;
-  read because it is &amp;nbsp;
-  split into several lines
-  (put &amp;nbsp; at the end of each line if you don't want the text to run together)
-This text is easy to &nbsp;
-read because it is &nbsp;
-split into several lines
-
-Text can be formatted by putting '-characters around the text you want to format. Here are some examples:
-
-  ''this is some italic text''
-''this is some italic text''
-  '''this is some bold text'''
-'''this is some bold text'''
-  '''''this is some bold and italic text'''''
-'''''this is some bold and italic text'''''
-
-You can also use simple html formatting for things like underlined and strikethrough:
-
-  &lt;strike&gt;strikethrough&lt;/strike&gt;
-<strike>strikethrough</strike>
-  &lt;u&gt;underlined&lt;/u&gt;
-<u>underlined</u>
-
-== Table of contents ==
-You can get a table of content on your page (like the one in the top right on this page) by using the TOC variable the same way as the \"normal\" variables above. It doesn't matter where you put this variable in your document, it will always be displayed in the top right corner.
-
-== Headings ==
-To specify headings, use equals-character around the line you want to be a heading. The number of equals-characters you put around the line decides how big the heading is (1 is biggest, 6 is lowest).
-  = I'm a big header =
-  == I'm a fairly big header ==
-  ===== I'm a very small header =====
-Headings will automatically appear in the table of contents (if you have one).
 
 == Horizontal line ==
 If you want to put a horizontal line in the document, use four dashes:
@@ -269,6 +269,15 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 			return $row;
 		}
 
+		public function getArticleByID($article_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$row = $this->doSelectByID($article_id, $crit);
+
+			return $row;
+		}
+
 		public function getUnpublishedArticlesByUser($user_id)
 		{
 			$crit = $this->getCriteria();
@@ -278,6 +287,43 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 			$res = $this->doSelect($crit);
 
 			return $res;
+		}
+
+		public function doesNameConflictExist($name, $id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ARTICLE_NAME, $name);
+			$crit->addWhere(self::ID, $id, B2DBCriteria::DB_NOT_EQUALS);
+
+			return (bool) ($res = $this->doSelect($crit));
+		}
+
+		public function save($name, $title, $content, $published, $author, $id = null)
+		{
+			$crit = $this->getCriteria();
+			if ($id == null)
+			{
+				$crit->addInsert(self::ARTICLE_NAME, $name);
+				$crit->addInsert(self::TITLE, $title);
+				$crit->addInsert(self::CONTENT, $content);
+				$crit->addInsert(self::IS_PUBLISHED, (bool) $published);
+				$crit->addInsert(self::AUTHOR, $author);
+				$crit->addInsert(self::DATE, time());
+				$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+				$res = $this->doInsert($crit);
+				return $res->getInsertID();
+			}
+			else
+			{
+				$crit->addUpdate(self::ARTICLE_NAME, $name);
+				$crit->addUpdate(self::TITLE, $title);
+				$crit->addUpdate(self::CONTENT, $content);
+				$crit->addUpdate(self::IS_PUBLISHED, (bool) $published);
+				$crit->addUpdate(self::AUTHOR, $author);
+				$crit->addUpdate(self::DATE, time());
+				$res = $this->doUpdateById($crit, $id);
+				return $res;
+			}
 		}
 
 	}

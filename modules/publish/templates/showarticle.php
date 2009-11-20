@@ -6,6 +6,15 @@
 		</td>
 		<td class="main_area article">
 			<a name="top"></a>
+			<?php if ($message): ?>
+				<div class="rounded_box green_borderless" style="margin: 0 0 5px 5px;">
+					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+					<div class="xboxcontent" style="padding: 3px; font-size: 14px;">
+						<b><?php echo $message; ?></b>
+					</div>
+					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+				</div>
+			<?php endif; ?>
 			<?php if ($article instanceof PublishArticle): ?>
 				<?php include_component('articledisplay', array('article' => $article)); ?>
 			<?php else: ?>

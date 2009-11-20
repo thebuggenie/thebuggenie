@@ -84,6 +84,21 @@
 			}
 		}
 
+		public static function getByName($article_name)
+		{
+			if ($row = B2DB::getTable('B2tArticles')->getArticleByName($article_name))
+			{
+				return PublishFactory::articleLab($row->get(B2tArticles::ID), $row);
+			}
+			return null;
+		}
+
+		public static function createNew($name, $title, $content, $published)
+		{
+			$article_id = B2DB::getTable('B2tArticles')->save($name, $title, $content, $published, BUGScontext::getUser()->getID());
+			return $article_id;
+		}
+
 		public function __toString()
 		{
 			return $this->_content;
@@ -94,6 +109,11 @@
 			return $this->_title;
 		}
 
+		public function setTitle($title)
+		{
+			$this->_title = $title;
+		}
+
 		public function hasContent()
 		{
 			return ($this->_content != '') ? true : false;
@@ -102,6 +122,31 @@
 		public function getContent()
 		{
 			return $this->_content;
+		}
+
+		public function setContent($content)
+		{
+			$this->_content = $content;
+		}
+
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
+		public function getLastUpdatedDate()
+		{
+			return $this->getPostedDate();
+		}
+
+		public function save()
+		{
+			if (B2DB::getTable('B2tArticles')->doesNameConflictExist($this->_name, $this->_itemid))
+			{
+				throw new Exception(BUGScontext::getI18n()->__('Another article with this name already exists'));
+			}
+			B2DB::getTable('B2tArticles')->save($this->_name, $this->_title, $this->_content, $this->_is_published, BUGScontext::getUser()->getID(), $this->_itemid);
+			return true;
 		}
 
 		public function retract()
