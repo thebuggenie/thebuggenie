@@ -298,13 +298,12 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 			return (bool) ($res = $this->doSelect($crit));
 		}
 
-		public function save($name, $title, $content, $published, $author, $id = null)
+		public function save($name, $content, $published, $author, $id = null)
 		{
 			$crit = $this->getCriteria();
 			if ($id == null)
 			{
 				$crit->addInsert(self::ARTICLE_NAME, $name);
-				$crit->addInsert(self::TITLE, $title);
 				$crit->addInsert(self::CONTENT, $content);
 				$crit->addInsert(self::IS_PUBLISHED, (bool) $published);
 				$crit->addInsert(self::AUTHOR, $author);
@@ -316,7 +315,6 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 			else
 			{
 				$crit->addUpdate(self::ARTICLE_NAME, $name);
-				$crit->addUpdate(self::TITLE, $title);
 				$crit->addUpdate(self::CONTENT, $content);
 				$crit->addUpdate(self::IS_PUBLISHED, (bool) $published);
 				$crit->addUpdate(self::AUTHOR, $author);
