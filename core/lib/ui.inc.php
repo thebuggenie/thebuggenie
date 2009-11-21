@@ -58,6 +58,7 @@
 	function bugs_issueLinkHelper($issue, $text)
 	{
 		$theIssue = BUGSissue::getIssueFromLink($issue);
+		$theProject = new BUGSproject($issue);
 		$retval = '';
 		$classname = '';
 		if ($theIssue instanceof BUGSissue && ($theIssue->isClosed() || $theIssue->isDeleted()))
@@ -66,7 +67,7 @@
 		}
 		if ($theIssue instanceof BUGSissue)
 		{
-			$retval .= '<a href="' . BUGScontext::getTBGPath(). 'viewissue.php?issue_no=' . $issue . '" class="inline_issue_link ' . $classname . '" title="';
+			$retval .= '<a href="' . BUGScontext::getTBGPath(). $theProject->getName(). '/issue/' . $issue . '" class="inline_issue_link ' . $classname . '" title="';
 			$retval .= $theIssue->getFormattedIssueNo() . ' - ' . BUGScontext::getRequest()->sanitize_input($theIssue->getTitle()) . '">' . $text . ': ' . BUGScontext::getRequest()->sanitize_input($theIssue->getTitle()) . '</a>';
 		}
 		else

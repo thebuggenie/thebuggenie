@@ -432,7 +432,7 @@
 				$this->theProject->setName($request->getParameter('project_name'));
 				$this->theProject->setUsePrefix((bool) $request->getParameter('use_prefix'));
 				$this->theProject->setPrefix($request->getParameter('prefix'));
-				$this->theProject->setDescription($request->getParameter('description'));
+				$this->theProject->setDescription($request->getParameter('description', null, false));
 				$this->theProject->setHomepage($request->getParameter('homepage'));
 				$this->theProject->setDocumentationURL($request->getParameter('doc_url'));
 				$this->theProject->setDefaultStatus($request->getParameter('defaultstatus'));
@@ -477,7 +477,7 @@
 				}
 
 				$this->theEdition->setName($request->getParameter('edition_name'));
-				$this->theEdition->setDescription($request->getParameter('description'));
+				$this->theEdition->setDescription($request->getParameter('description', null, false));
 				$this->theEdition->setDocumentationURL($request->getParameter('doc_url'));
 				$this->theEdition->setPlannedReleased($request->getParameter('planned_release'));
 				$this->theEdition->setReleased((int) $request->getParameter('released'));
@@ -819,7 +819,7 @@
 									$theMilestone->setName($m_name);
 									$theMilestone->setScheduled((bool) $request->getParameter('is_scheduled'));
 									$theMilestone->setStarting((bool) $request->getParameter('is_starting'));
-									$theMilestone->setDescription($request->getParameter('description'));
+									$theMilestone->setDescription($request->getParameter('description', null, false));
 									$theMilestone->setType($request->getParameter('milestone_type', 1));
 									if ($theMilestone->isScheduled())
 									{

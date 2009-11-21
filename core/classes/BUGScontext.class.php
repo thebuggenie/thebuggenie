@@ -451,6 +451,7 @@
 				if (!$cached_i18n = BUGScache::get('i18n_'.BUGSsettings::get('language')))
 				{
 					BUGSlogging::log('Loading strings from file');
+					BUGSlogging::log(BUGSsettings::get('language'));
 					self::$_i18n = new BUGSi18n(BUGSsettings::get('language'));
 					self::$_i18n->initialize();
 					BUGScache::add('i18n_'.BUGSsettings::get('language'), self::$_i18n);

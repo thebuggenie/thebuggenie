@@ -190,76 +190,38 @@
 
 	function common_text_replacements($text)
 	{
-		$preg = array('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#ie' => 'bugs_issueLinkHelper( "\\3", "\\1" )');
-
-		/*,
-		'/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9$_+!*();\/?:~-]))/' => '<a href="\\0">\\0</a>');*/
+		$preg = array('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#ie' => 'bugs_issueLinkHelper( "\\3", "\\1" )',
+		'/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9$_+!*();\/?:~-]))/' => '<a href="\\0">\\0</a>');
 
 		return preg_replace(array_keys($preg), array_values($preg), $text);
 	}
 
 	/**
 	 *
-	 * Performs BB-tags formatting of a given string into html-formatted text
+	 * Performs formatting of the HTML fields used in TBG. <code> and <blockquote> tags are updated to use the proper box styles, forbidden tags are removed,
+	 * FONT tags are replaced by SPANs (we do this here so people cant manipulate a span tag), smileys are decoded and links are added.
 	 *
 	 */
-	function bugs_BBDecode($text, $formatting = true)
+	function bugs_processhtml($text, $formatting = true)
 	{
 		if ($formatting)
 		{
+			$text = strip_tags($text, '<b><i><u><p><font><a><blockquote><code><ul><ol><li><br>');
 			$text = bugs_smileydecode($text);
+			
+			/* Convert some elements to proper formatting */
 			$preg = array(
-				'/(?<!\\\\)\[color(?::\w+)?=(.*?)\](.*?)\[\/color(?::\w+)?\]/si'	=> "<span style=\"color:\\1\">\\2</span>",
-				'/(?<!\\\\)\[size(?::\w+)?=(.*?)\](.*?)\[\/size(?::\w+)?\]/si'		=> "<span style=\"font-size:\\1\">\\2</span>",
-				'/(?<!\\\\)\[font(?::\w+)?=(.*?)\](.*?)\[\/font(?::\w+)?\]/si'	 	=> "<span style=\"font-family:\\1\">\\2</span>",
-				'/(?<!\\\\)\[align(?::\w+)?=(.*?)\](.*?)\[\/align(?::\w+)?\]/si'   	=> "<div style=\"text-align:\\1\">\\2</div>",
-				'/(?<!\\\\)\[b(?::\w+)?\](.*?)\[\/b(?::\w+)?\]/si'				 	=> "<span style=\"font-weight:bold\">\\1</span>",
-				'/(?<!\\\\)\[p(?::\w+)?\](.*?)\[\/p(?::\w+)?\]/si'				 	=> "<p>\\1</p>",
-				'/(?<!\\\\)\[s(?::\w+)?\](.*?)\[\/s(?::\w+)?\]/si'				 	=> "<span style=\"text-decoration:line-through\">\\1</span>",
-				'/(?<!\\\\)\[i(?::\w+)?\](.*?)\[\/i(?::\w+)?\]/si'				 	=> "<span style=\"font-style:italic\">\\1</span>",
-				'/(?<!\\\\)\[u(?::\w+)?\](.*?)\[\/u(?::\w+)?\]/si'				 	=> "<span style=\"text-decoration:underline\">\\1</span>",
-				'/(?<!\\\\)\[center(?::\w+)?\](.*?)\[\/center(?::\w+)?\]/si'	   	=> "<div style=\"text-align:center\">\\1</div>",
-				'#((bug|issue)\s\#?(([A-Z0-9]+\-)?\d+))#ie' 						=> 'bugs_issueLinkHelper( "\\3", "\\1" )',
-				// [code]
-				'/(?<!\\\\)\[code(?::\w+)?\](.*?)\[\/code(?::\w+)?\]/si'		   	=> "<div class=\"bb_code\">Code:<br>\\1</div>",
-				// [email]
-				'/(?<!\\\\)\[email(?::\w+)?\](.*?)\[\/email(?::\w+)?\]/si'		 	=> "<a href=\"mailto:\\1\">\\1</a>",
-				'/(?<!\\\\)\[email(?::\w+)?=(.*?)\](.*?)\[\/email(?::\w+)?\]/si'   	=> "<a href=\"mailto:\\1\">\\2</a>",
-				// [url]
-				'/(?<!\\\\)\[url(?::\w+)?\]www\.(.*?)\[\/url(?::\w+)?\]/si'			=> "<a href=\"http://www.\\1\" target=\"_blank\">\\1</a>",
-				'/(?<!\\\\)\[url(?::\w+)?\](.*?)\[\/url(?::\w+)?\]/si'			 	=> "<a href=\"\\1\" target=\"_blank\">\\1</a>",
-				'/(?<!\\\\)\[url(?::\w+)?=(.*?)?\](.*?)\[\/url(?::\w+)?\]/si'	  	=> "<a href=\"\\1\" target=\"_blank\">\\2</a>",
-				// [img]
-				'/(?<!\\\\)\[img(?::\w+)?\](.*?)\[\/img(?::\w+)?\]/sie'			 	=> "image_tag('\\1', '', '\\1', '\\1')",
-				'/(?<!\\\\)\[img(?::\w+)?=(.*?)x(.*?)\](.*?)\[\/img(?::\w+)?\]/sie' => "image_tag('\\3', '', '\\3', '\\3', 0, \\1, \\2)",
-				// [quote]
-				'/(?<!\\\\)\[quote(?::\w+)?\](.*?)\[\/quote(?::\w+)?\]/si'		 	=> "<div class=\"bb_quote\">Quote: <br>\\1</div>",
-				'/(?<!\\\\)\[quote(?::\w+)?=(?:&quot;|"|\')?(.*?)["\']?(?:&quot;|"|\')?\](.*?)\[\/quote\]/si'   => "<div class=\"bb_quote\">Quote \\1:<br>\\2</div>",
-				// [list]
-				'/\[\*\](.*?)\[\/\*\]/si' 	=> "<li class=\"bb-listitem\">\\1</li>",
-				'/(?<!\\\\)(?:\s*<br\s*\/?>\s*)?\[\/list(:(?!u|o)\w+)?\](?:<br\s*\/?>)?/si'												=> "</ul>",
-				'/(?<!\\\\)(?:\s*<br\s*\/?>\s*)?\[\/list:u(:\w+)?\](?:<br\s*\/?>)?/si'		 											=> "</ul>",
-				'/(?<!\\\\)(?:\s*<br\s*\/?>\s*)?\[\/list:o(:\w+)?\](?:<br\s*\/?>)?/si'													=> "</ol>",
-				'/(?<!\\\\)(?:\s*<br\s*\/?>\s*)?\[list(:(?!u|o)\w+)?\]\s*(?:<br\s*\/?>)?/si'											=> "<ul class=\"bb-list-unordered\">",
-				'/(?<!\\\\)(?:\s*<br\s*\/?>\s*)?\[list:u(:\w+)?\]\s*(?:<br\s*\/?>)?/si'													=> "<ul class=\"bb-list-unordered\">",
-				'/(?<!\\\\)(?:\s*<br\s*\/?>\s*)?\[list:o(:\w+)?\]\s*(?:<br\s*\/?>)?/si'													=> "<ol class=\"bb-list-ordered\">",
-	
-				'/(?<!\\\\)(?:\s*<br\s*\/?>\s*)?\[list(?::o)?(:\w+)?=1\]\s*(?:<br\s*\/?>)?/si' => "<ol class=\"bb-list-ordered,bb-list-ordered-d\">",
-				'/(?<!\\\\)(?:\s*<br\s*\/?>\s*)?\[list(?::o)?(:\w+)?=i\]\s*(?:<br\s*\/?>)?/s'  => "<ol class=\"bb-list-ordered,bb-list-ordered-lr\">",
-				'/(?<!\\\\)(?:\s*<br\s*\/?>\s*)?\[list(?::o)?(:\w+)?=I\]\s*(?:<br\s*\/?>)?/s'  => "<ol class=\"bb-list-ordered,bb-list-ordered-ur\">",
-				'/(?<!\\\\)(?:\s*<br\s*\/?>\s*)?\[list(?::o)?(:\w+)?=a\]\s*(?:<br\s*\/?>)?/s'  => "<ol class=\"bb-list-ordered,bb-list-ordered-la\">",
-				'/(?<!\\\\)(?:\s*<br\s*\/?>\s*)?\[list(?::o)?(:\w+)?=A\]\s*(?:<br\s*\/?>)?/s'  => "<ol class=\"bb-list-ordered,bb-list-ordered-ua\">",
-				// escaped tags like \[b], \[color], \[url], ...
-				'/\\\\(\[\/?\w+(?::\w+)*\])/'									  => "\\1",
-				// Found this on truerwords.net, thank you Seth Dillingham
-				'/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9$_+!*();\/?:~-]))/' => '<a href="\\0">\\0</a>'
+				'/(?<!\\\\)\<code\>(.*?)\<\/code\>/si'		   				=> "<div class=\"bb_code\"><b>Code:</b><br>\\1</div>",
+				'/(?<!\\\\)\<blockquote\>(.*?)<\/blockquote\>/si'		 	=> "<div class=\"bb_quote\"><b>Quote:</b><br>\\1</div>",
+				'/(?<!\\\\)\<font color="(.*?)\>(.*?)<\/font\>/si'			=> "<span style=\"color: \\1\">\\2</span>"
 			);
 			$text    = preg_replace(array_keys($preg), array_values($preg), $text);
-			$text = nl2br($text);
+			$text	 = common_text_replacements($text);
 		}
 		else
 		{
 			$text = bugs_sanitize_string($text);
+			$text = strip_tags($text, '<b><i><u><p><font><a><blockquote><code><ul><ol><li><br>');
 		}
 		
 		return $text;	

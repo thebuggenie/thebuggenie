@@ -563,8 +563,8 @@
 					$fields_array = $this->selected_project->getReportableFieldsArray($issuetype_id);
 					
 					$this->title = $request->getParameter('title');
-					$this->description = $request->getParameter('description');
-					$this->reproduction_steps = $request->getParameter('reproduction_steps');
+					$this->description = $request->getParameter('description', null, false);
+					$this->reproduction_steps = $request->getParameter('reproduction_steps', null, false);
 					
 					if ($edition_id = (int) $request->getParameter('edition_id'))
 					{

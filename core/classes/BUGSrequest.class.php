@@ -356,4 +356,15 @@
 			return htmlspecialchars($string, ENT_QUOTES, $charset);
 		}
 		
+		/**
+		 * Wrapper around __sanitize_string method
+		 *
+		 * @param string $string The string to sanitize
+		 *
+		 * @return string the sanitized string
+		 */
+		public function sanitize_input($string)
+		{
+			return $this->__sanitize_string($string);
+		}
 	}
