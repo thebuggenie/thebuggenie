@@ -9,7 +9,7 @@
 			<?php if (isset($error)): ?>
 				<div class="rounded_box red_borderless" style="margin: 0 0 5px 0; width: 740px;">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent faded_dark" style="padding: 3px; font-size: 14px;">
+					<div class="xboxcontent" style="padding: 3px; font-size: 14px; color: #FFF;">
 						<?php echo $error; ?>
 					</div>
 					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
@@ -28,13 +28,9 @@
 				<input type="hidden" name="last_modified" value="<?php echo ($article instanceof PublishArticle) ? $article->getPostedDate() : 0; ?>">
 				<table style="width: 740px;" class="padded_table" cellpadding=0 cellspacing=0>
 					<tr>
-						<td style="width: 175px; padding: 5px;"><label for="article_title"><?php echo __('Article title'); ?></label></td>
-						<td style="width: auto;"><input type="text" name="new_article_title" id="article_title" value="<?php echo $article_title; ?>" style="width: 555px;"></td>
-					</tr>
-					<tr>
-						<td style="padding: 5px;"><label for="article_name" class="small"><?php echo __('Article name'); ?></label></td>
+						<td style="padding: 5px;"><label for="article_name"><?php echo __('Article name'); ?></label></td>
 						<td>
-							<input type="text" name="new_article_name" id="article_name" value="<?php echo $article_name; ?>">
+							<input type="text" name="new_article_name" id="article_name" value="<?php echo $article_name; ?>" style="width: 250px;">
 							&nbsp;<span style="font-size: 13px;" class="faded_medium"><?php echo __('This is the name you use when you link to this article'); ?></span>
 						</td>
 					</tr>

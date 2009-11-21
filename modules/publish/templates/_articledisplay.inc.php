@@ -6,7 +6,12 @@
 				<?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), __('History'), array('style' => 'float: right;')); ?>
 				<?php echo link_tag(make_url('publish_article', array('article_name' => 'IndexMessage')), __('Front page article'), array('class' => (($article->getName() == 'IndexMessage') ? 'faded_medium' : ''), 'style' => 'float: right; margin-right: 15px;')); ?>
 			<?php endif; ?>
-			<?php echo $article->getTitle(); ?>
+			<?php if (BUGScontext::getCurrentProject() instanceof BUGSproject && strpos($article->getName(), ucfirst(BUGScontext::getCurrentProject()->getKey())) == 0): ?>
+				<?php $project_article_name = substr($article->getName(), strlen(BUGScontext::getCurrentProject()->getKey())+1); ?>
+				<span class="faded_dark"><?php echo ucfirst(BUGScontext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
+			<?php else: ?>
+				<?php echo get_spaced_name($article->getName()); ?>
+			<?php endif; ?>
 		</div>
 	<?php endif; ?>
 	<?php if ($show_details): ?>

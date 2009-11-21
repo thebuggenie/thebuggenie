@@ -63,7 +63,6 @@
 						{
 							try
 							{
-								$article->setTitle($request->getParameter('new_article_title'));
 								$article->setName($request->getParameter('new_article_name'));
 								$article->setContent($request->getParameter('new_article_content'));
 								$article->save();
@@ -82,9 +81,13 @@
 					}
 					else
 					{
-						PublishArticle::createNew($request->getParameter('new_article_name'), $request->getParameter('new_article_title'), $request->getParameter('new_article_content'), true);
+						PublishArticle::createNew($request->getParameter('new_article_name'), $request->getParameter('new_article_content'), true);
 						$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $request->getParameter('new_article_name'))));
 					}
+				}
+				else
+				{
+					$this->error = BUGScontext::getI18n()->__('You need to specify the article name');
 				}
 			}
 			$this->article_title = null;

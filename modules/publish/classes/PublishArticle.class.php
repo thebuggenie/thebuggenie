@@ -95,7 +95,7 @@
 
 		public static function createNew($name, $title, $content, $published)
 		{
-			$article_id = B2DB::getTable('B2tArticles')->save($name, $title, $content, $published, BUGScontext::getUser()->getID());
+			$article_id = B2DB::getTable('B2tArticles')->save($name, $content, $published, BUGScontext::getUser()->getID());
 			return $article_id;
 		}
 
@@ -106,7 +106,7 @@
 
 		public function getTitle()
 		{
-			return $this->_title;
+			return $this->getName();
 		}
 
 		public function setTitle($title)
@@ -145,7 +145,7 @@
 			{
 				throw new Exception(BUGScontext::getI18n()->__('Another article with this name already exists'));
 			}
-			B2DB::getTable('B2tArticles')->save($this->_name, $this->_title, $this->_content, $this->_is_published, BUGScontext::getUser()->getID(), $this->_itemid);
+			B2DB::getTable('B2tArticles')->save($this->_name, $this->_content, $this->_is_published, BUGScontext::getUser()->getID(), $this->_itemid);
 			return true;
 		}
 
