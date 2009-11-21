@@ -1,18 +1,23 @@
 var tinymce = {
 	majorVersion : '3',
-	minorVersion : '2.5',
-	releaseDate : '2009-06-29',
+	minorVersion : '2.7',
+	releaseDate : '2009-09-22',
 
 	_init : function() {
 		var t = this, d = document, w = window, na = navigator, ua = na.userAgent, i, nl, n, base, p, v;
 
-		// Browser checks
 		t.isOpera = w.opera && opera.buildNumber;
+
 		t.isWebKit = /WebKit/.test(ua);
+
 		t.isIE = !t.isWebKit && !t.isOpera && (/MSIE/gi).test(ua) && (/Explorer/gi).test(na.appName);
+
 		t.isIE6 = t.isIE && /MSIE [56]/.test(ua);
+
 		t.isGecko = !t.isWebKit && /Gecko/.test(ua);
+
 		t.isMac = ua.indexOf('Mac') != -1;
+
 		t.isAir = /adobeair/i.test(ua);
 
 		// TinyMCE .NET webcontrol might be setting the values for TinyMCE
@@ -49,7 +54,9 @@ var tinymce = {
 				t.baseURL = n.src.substring(0, n.src.lastIndexOf('/'));
 
 				// If path to script is relative and a base href was found add that one infront
-				if (base && t.baseURL.indexOf('://') == -1)
+				// the src property will always be an absolute one on non IE browsers and IE 8
+				// so this logic will basically only be executed on older IE versions
+				if (base && t.baseURL.indexOf('://') == -1 && t.baseURL.indexOf('/') !== 0)
 					t.baseURL = base + t.baseURL;
 
 				return t.baseURL;
@@ -90,7 +97,6 @@ var tinymce = {
 		return n == t;
 	},
 
-
 	each : function(o, cb, s) {
 		var n, l;
 
@@ -117,6 +123,7 @@ var tinymce = {
 
 		return 1;
 	},
+
 
 	map : function(a, f) {
 		var o = [];
@@ -296,7 +303,7 @@ var tinymce = {
 		o = o || window;
 
 		n = n.split('.');
-		for (i=0, l = n.length; i<l; i++) {
+		for (i = 0, l = n.length; i < l; i++) {
 			o = o[n[i]];
 
 			if (!o)
@@ -490,7 +497,7 @@ tinymce.create('tinymce.util.Dispatcher', {
 			s = t.settings = s || {};
 
 			// Strange app protocol or local anchor
-			if (/^(mailto|tel|news|javascript|about):/i.test(u) || /^\s*#/.test(u)) {
+			if (/^(mailto|tel|news|javascript|about|data):/i.test(u) || /^\s*#/.test(u)) {
 				t.source = u;
 				return;
 			}
@@ -578,7 +585,7 @@ tinymce.create('tinymce.util.Dispatcher', {
 		toAbsolute : function(u, nh) {
 			var u = new tinymce.util.URI(u, {base_uri : this});
 
-			return u.getURI(this.host == u.host ? nh : 0);
+			return u.getURI(this.host == u.host && this.protocol == u.protocol ? nh : 0);
 		},
 
 		toRelPath : function(base, path) {
@@ -624,7 +631,7 @@ tinymce.create('tinymce.util.Dispatcher', {
 		},
 
 		toAbsPath : function(base, path) {
-			var i, nb = 0, o = [], tr;
+			var i, nb = 0, o = [], tr, outPath;
 
 			// Split paths
 			tr = /\/$/.test(path) ? '/' : '';
@@ -664,9 +671,19 @@ tinymce.create('tinymce.util.Dispatcher', {
 
 			// If /a/b/c or /
 			if (i <= 0)
-				return '/' + o.reverse().join('/') + tr;
+				outPath = o.reverse().join('/');
+			else
+				outPath = base.slice(0, i).join('/') + '/' + o.reverse().join('/');
 
-			return '/' + base.slice(0, i).join('/') + '/' + o.reverse().join('/') + tr;
+			// Add front / if it's needed
+			if (outPath.indexOf('/') !== 0)
+				outPath = '/' + outPath;
+
+			// Add traling / if it's needed
+			if (tr && outPath.lastIndexOf('/') !== outPath.length - 1)
+				outPath += tr;
+
+			return outPath;
 		},
 
 		getURI : function(nh) {
@@ -704,8 +721,7 @@ tinymce.create('tinymce.util.Dispatcher', {
 
 			return t.source;
 		}
-
-		});
+	});
 })();
 (function() {
 	var each = tinymce.each;
@@ -775,8 +791,7 @@ tinymce.create('tinymce.util.Dispatcher', {
 
 			this.set(n, '', d, p, d);
 		}
-
-		});
+	});
 })();
 tinymce.create('static tinymce.util.JSON', {
 	serialize : function(o) {
@@ -863,6 +878,8 @@ tinymce.create('static tinymce.util.XHR', {
 			if (o.content_type)
 				x.setRequestHeader('Content-Type', o.content_type);
 
+			x.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
 			x.send(o.data);
 
 			function ready() {
@@ -884,8 +901,7 @@ tinymce.create('static tinymce.util.XHR', {
 			// Wait for response, onReadyStateChange can not be used since it leaks memory in IE
 			t = w.setTimeout(ready, 10);
 		}
-
-		}
+	}
 });
 (function() {
 	var extend = tinymce.extend, JSON = tinymce.util.JSON, XHR = tinymce.util.XHR;
@@ -938,8 +954,7 @@ tinymce.create('static tinymce.util.XHR', {
 				return new tinymce.util.JSONRequest().send(o);
 			}
 		}
-
-		});
+	});
 }());(function(tinymce) {
 	// Shorten names
 	var each = tinymce.each, is = tinymce.is;
@@ -1108,6 +1123,14 @@ tinymce.create('static tinymce.util.XHR', {
 			}
 
 			return e;
+		},
+
+		getNext : function(node, selector) {
+			return this._findSib(node, selector, 'nextSibling');
+		},
+
+		getPrev : function(node, selector) {
+			return this._findSib(node, selector, 'previousSibling');
 		},
 
 
@@ -1392,6 +1415,18 @@ tinymce.create('static tinymce.util.XHR', {
 
 			if (!v)
 				v = e.getAttribute(n, 2);
+
+			// Check boolean attribs
+			if (/^(checked|compact|declare|defer|disabled|ismap|multiple|nohref|noshade|nowrap|readonly|selected)$/.test(n)) {
+				if (e[t.props[n]] === true && v === '')
+					return n;
+
+				return v ? n : '';
+			}
+
+			// Inner input elements will override attributes on form elements
+			if (e.nodeName === "FORM" && e.getAttributeNode(n))
+				return e.getAttributeNode(n).nodeValue;
 
 			if (n === 'style') {
 				v = v || e.style.cssText;
@@ -1790,7 +1825,7 @@ tinymce.create('static tinymce.util.XHR', {
 					if (x) {
 						// So if we replace the p elements with divs and mark them and then replace them back to paragraphs
 						// after we use innerHTML we can fix the DOM tree
-						h = h.replace(/<p ([^>]+)>|<p>/g, '<div $1 mce_tmp="1">');
+						h = h.replace(/<p ([^>]+)>|<p>/ig, '<div $1 mce_tmp="1">');
 						h = h.replace(/<\/p>/g, '</div>');
 
 						// Set the new HTML with DIVs
@@ -1841,7 +1876,7 @@ tinymce.create('static tinymce.util.XHR', {
 		},
 
 		processHTML : function(h) {
-			var t = this, s = t.settings;
+			var t = this, s = t.settings, codeBlocks = [];
 
 			if (!s.process_html)
 				return h;
@@ -1861,7 +1896,7 @@ tinymce.create('static tinymce.util.XHR', {
 			// Store away src and href in mce_src and mce_href since browsers mess them up
 			if (s.keep_values) {
 				// Wrap scripts and styles in comments for serialization purposes
-				if (/<script|noscript|style/.test(h)) {
+				if (/<script|noscript|style/i.test(h)) {
 					function trim(s) {
 						// Remove prefix and suffix code for element
 						s = s.replace(/(<!--\[CDATA\[|\]\]-->)/g, '\n');
@@ -1873,14 +1908,13 @@ tinymce.create('static tinymce.util.XHR', {
 					};
 
 					// Wrap the script contents in CDATA and keep them from executing
-					h = h.replace(/<script([^>]+|)>([\s\S]*?)<\/script>/g, function(v, attribs, text) {
+					h = h.replace(/<script([^>]+|)>([\s\S]*?)<\/script>/gi, function(v, attribs, text) {
 						// Force type attribute
 						if (!attribs)
 							attribs = ' type="text/javascript"';
 
-						// Prefix script type/language attribute values with mce- to prevent it from executing
-						attribs = attribs.replace(/(type|language)=\"?/, '$&mce-');
-						attribs = attribs.replace(/src=\"([^\"]+)\"?/, function(a, url) {
+						// Convert the src attribute of the scripts
+						attribs = attribs.replace(/src=\"([^\"]+)\"?/i, function(a, url) {
 							if (s.url_converter)
 								url = t.encode(s.url_converter.call(s.url_converter_scope || t, t.decode(url), 'src', 'script'));
 
@@ -1888,17 +1922,21 @@ tinymce.create('static tinymce.util.XHR', {
 						});
 
 						// Wrap text contents
-						if (tinymce.trim(text))
-							text = '<!--\n' + trim(text) + '\n// -->';
+						if (tinymce.trim(text)) {
+							codeBlocks.push(trim(text));
+							text = '<!--\nMCE_SCRIPT:' + (codeBlocks.length - 1) + '\n// -->';
+						}
 
 						return '<mce:script' + attribs + '>' + text + '</mce:script>';
 					});
 
 					// Wrap style elements
-					h = h.replace(/<style([^>]+|)>([\s\S]*?)<\/style>/g, function(v, attribs, text) {
+					h = h.replace(/<style([^>]+|)>([\s\S]*?)<\/style>/gi, function(v, attribs, text) {
 						// Wrap text contents
-						if (text)
-							text = '<!--\n' + trim(text) + '\n-->';
+						if (text) {
+							codeBlocks.push(trim(text));
+							text = '<!--\nMCE_SCRIPT:' + (codeBlocks.length - 1) + '\n-->';
+						}
 
 						return '<mce:style' + attribs + '>' + text + '</mce:style><style ' + attribs + ' mce_bogus="1">' + text + '</style>';
 					});
@@ -1910,6 +1948,24 @@ tinymce.create('static tinymce.util.XHR', {
 				}
 
 				h = h.replace(/<!\[CDATA\[([\s\S]+)\]\]>/g, '<!--[CDATA[$1]]-->');
+
+				// Remove false bool attributes and force attributes into xhtml style attr="attr"
+				h = h.replace(/<([\w:]+) [^>]*(checked|compact|declare|defer|disabled|ismap|multiple|nohref|noshade|nowrap|readonly|selected)[^>]*>/gi, function(val) {
+					function handle(val, name, value) {
+						// Remove false/0 attribs
+						if (value === 'false' || value === '0')
+							return '';
+
+						return ' ' + name + '="' + name + '"';
+					};
+
+					val = val.replace(/ (checked|compact|declare|defer|disabled|ismap|multiple|nohref|noshade|nowrap|readonly|selected)=[\"]([^\"]+)[\"]/gi, handle); // W3C
+					val = val.replace(/ (checked|compact|declare|defer|disabled|ismap|multiple|nohref|noshade|nowrap|readonly|selected)=[\']([^\']+)[\']/gi, handle); // W3C
+					val = val.replace(/ (checked|compact|declare|defer|disabled|ismap|multiple|nohref|noshade|nowrap|readonly|selected)=([^\s\"\'>]+)/gi, handle); // IE
+					val = val.replace(/ (checked|compact|declare|defer|disabled|ismap|multiple|nohref|noshade|nowrap|readonly|selected)([\s>])/gi, ' $1="$1"$2'); // Force attr="attr"
+
+					return val;
+				});
 
 				// Process all tags with src, href or style
 				h = h.replace(/<([\w:]+) [^>]*(src|href|style|shape|coords)[^>]*>/gi, function(a, n) {
@@ -1925,17 +1981,8 @@ tinymce.create('static tinymce.util.XHR', {
 							if (t._isRes(c))
 								return m;
 
-							if (s.hex_colors) {
-								u = u.replace(/rgb\([^\)]+\)/g, function(v) {
-									return t.toHex(v);
-								});
-							}
-
-							if (s.url_converter) {
-								u = u.replace(/url\([\'\"]?([^\)\'\"]+)\)/g, function(x, c) {
-									return 'url(' + t.encode(s.url_converter.call(s.url_converter_scope || t, t.decode(c), b, n)) + ')';
-								});
-							}
+							// Parse and serialize the style to convert for example uppercase styles like "BORDER: 1px"
+							u = t.encode(t.serializeStyle(t.parseStyle(u)));
 						} else if (b != 'coords' && b != 'shape') {
 							if (s.url_converter)
 								u = t.encode(s.url_converter.call(s.url_converter_scope || t, t.decode(c), b, n));
@@ -1948,6 +1995,11 @@ tinymce.create('static tinymce.util.XHR', {
 					a = a.replace(/ (src|href|style|coords|shape)=[\']([^\']+)[\']/gi, handle); // W3C
 
 					return a.replace(/ (src|href|style|coords|shape)=([^\s\"\'>]+)/gi, handle); // IE
+				});
+
+				// Restore script blocks
+				h = h.replace(/MCE_SCRIPT:([0-9]+)/g, function(val, idx) {
+					return codeBlocks[idx];
 				});
 			}
 
@@ -1974,25 +2026,41 @@ tinymce.create('static tinymce.util.XHR', {
 		setOuterHTML : function(e, h, d) {
 			var t = this;
 
-			return this.run(e, function(e) {
+			function setHTML(e, h, d) {
 				var n, tp;
+				
+				tp = d.createElement("body");
+				tp.innerHTML = h;
 
+				n = tp.lastChild;
+				while (n) {
+					t.insertAfter(n.cloneNode(true), e);
+					n = n.previousSibling;
+				}
+
+				t.remove(e);
+			};
+
+			return this.run(e, function(e) {
 				e = t.get(e);
-				d = d || e.ownerDocument || t.doc;
 
-				if (isIE && e.nodeType == 1)
-					e.outerHTML = h;
-				else {
-					tp = d.createElement("body");
-					tp.innerHTML = h;
+				// Only set HTML on elements
+				if (e.nodeType == 1) {
+					d = d || e.ownerDocument || t.doc;
 
-					n = tp.lastChild;
-					while (n) {
-						t.insertAfter(n.cloneNode(true), e);
-						n = n.previousSibling;
-					}
-
-					t.remove(e);
+					if (isIE) {
+						try {
+							// Try outerHTML for IE it sometimes produces an unknown runtime error
+							if (isIE && e.nodeType == 1)
+								e.outerHTML = h;
+							else
+								setHTML(e, h, d);
+						} catch (ex) {
+							// Fix for unknown runtime error
+							setHTML(e, h, d);
+						}
+					} else
+						setHTML(e, h, d);
 				}
 			});
 		},
@@ -2066,7 +2134,7 @@ tinymce.create('static tinymce.util.XHR', {
 
 			n = n.nodeName || n;
 
-			return /^(H[1-6]|HR|P|DIV|ADDRESS|PRE|FORM|TABLE|LI|OL|UL|TR|TD|CAPTION|BLOCKQUOTE|CENTER|DL|DT|DD|DIR|FIELDSET|NOSCRIPT|NOFRAMES|MENU|ISINDEX|SAMP)$/.test(n);
+			return /^(H[1-6]|HR|P|DIV|ADDRESS|PRE|FORM|TABLE|LI|OL|UL|TH|TBODY|TR|TD|CAPTION|BLOCKQUOTE|CENTER|DL|DT|DD|DIR|FIELDSET|NOSCRIPT|NOFRAMES|MENU|ISINDEX|SAMP)$/.test(n);
 		},
 
 		replace : function(n, o, k) {
@@ -2237,9 +2305,13 @@ tinymce.create('static tinymce.util.XHR', {
 				if (n.nodeName == 'OBJECT')
 					return n.attributes;
 
+				// IE doesn't keep the selected attribute if you clone option elements
+				if (n.nodeName === 'OPTION' && this.getAttrib(n, 'selected'))
+					o.push({specified : 1, nodeName : 'selected'});
+
 				// It's crazy that this is faster in IE but it's because it returns all attributes all the time
-				n.cloneNode(false).outerHTML.replace(/([a-z0-9\:\-_]+)=/gi, function(a, b) {
-					o.push({specified : 1, nodeName : b});
+				n.cloneNode(false).outerHTML.replace(/<\/?[\w:]+ ?|=[\"][^\"]+\"|=\'[^\']+\'|=\w+|>/gi, '').replace(/[\w:]+/gi, function(a) {
+					o.push({specified : 1, nodeName : a});
 				});
 
 				return o;
@@ -2293,16 +2365,29 @@ tinymce.create('static tinymce.util.XHR', {
 				return n.replace(/[ \t\r\n]+|&nbsp;|&#160;/g, '') == '';
 			};
 
+			// Added until Gecko can create real HTML documents using implementation.createHTMLDocument
+			// this is to future proof it if Gecko decides to implement the error checking for range methods.
+			function nodeIndex(n) {
+				var i = 0;
+
+				while (n.previousSibling) {
+					i++;
+					n = n.previousSibling;
+				}
+
+				return i;
+			};
+
 			if (pe && e) {
 				// Get before chunk
-				r.setStartBefore(pe);
-				r.setEndBefore(e);
+				r.setStart(pe.parentNode, nodeIndex(pe));
+				r.setEnd(e.parentNode, nodeIndex(e));
 				bef = r.extractContents();
 
 				// Get after chunk
 				r = t.createRng();
-				r.setStartAfter(e);
-				r.setEndAfter(pe);
+				r.setStart(e.parentNode, nodeIndex(e) + 1);
+				r.setEnd(pe.parentNode, nodeIndex(pe) + 1);
 				aft = r.extractContents();
 
 				// Insert chunks and remove parent
@@ -2350,6 +2435,27 @@ tinymce.create('static tinymce.util.XHR', {
 		},
 
 
+		_findSib : function(node, selector, name) {
+			var t = this, f = selector;
+
+			if (node) {
+				// If expression make a function of it using is
+				if (is(f, 'string')) {
+					f = function(node) {
+						return t.is(node, selector);
+					};
+				}
+
+				// Loop all siblings
+				for (node = node[name]; node; node = node[name]) {
+					if (f(node))
+						return node;
+				}
+			}
+
+			return null;
+		},
+
 		_isRes : function(c) {
 			// Is live resizble element
 			return /^(top|left|bottom|right|width|height)/i.test(c) || /;\s*(top|left|bottom|right|width|height)/i.test(c);
@@ -2384,10 +2490,8 @@ tinymce.create('static tinymce.util.XHR', {
 			return s;
 		}
 		*/
+	});
 
-		});
-
-	// Setup page DOM
 	tinymce.DOM = new tinymce.dom.DOMUtils(document, {process_html : 0});
 })(tinymce);
 (function(ns) {
@@ -3296,6 +3400,7 @@ tinymce.create('static tinymce.util.XHR', {
 				if (sc == ec && sc.nodeType == 3) {
 					startPos = getCharPos(sc, so);
 
+					ieRng = body.createTextRange();
 					ieRng.move('character', startPos);
 					ieRng.moveEnd('character', eo - so);
 					ieRng.select();
@@ -4597,10 +4702,8 @@ window.tinymce.dom.Sizzle = Sizzle;
 				this.cancelBubble = true;
 			}
 		}
+	});
 
-		});
-
-	// Shorten name and setup global instance
 	Event = tinymce.dom.Event = new tinymce.dom.EventUtils();
 
 	// Dispatch DOM content loaded event for IE and Safari
@@ -4734,8 +4837,7 @@ window.tinymce.dom.Sizzle = Sizzle;
 				dom.setStyle(b, 'zIndex', parseInt(t.getStyle('zIndex', 1) || 0) - 1);
 			}
 		}
-
-		});
+	});
 })(tinymce);
 (function(tinymce) {
 	function trimNl(s) {
@@ -5075,6 +5177,8 @@ window.tinymce.dom.Sizzle = Sizzle;
 
 			// Handle explorer
 			if (isIE) {
+				t.tridentSel.destroy();
+
 				// Handle simple
 				if (r = b.rng) {
 					try {
@@ -5373,8 +5477,7 @@ window.tinymce.dom.Sizzle = Sizzle;
 			if (!s)
 				tinymce.removeUnload(t.destroy);
 		}
-
-		});
+	});
 })(tinymce);
 (function(tinymce) {
 	tinymce.create('tinymce.dom.XMLWriter', {
@@ -5465,8 +5568,7 @@ window.tinymce.dom.Sizzle = Sizzle;
 
 			return h;
 		}
-
-		});
+	});
 })(tinymce);
 (function(tinymce) {
 	tinymce.create('tinymce.dom.StringWriter', {
@@ -5592,8 +5694,7 @@ window.tinymce.dom.Sizzle = Sizzle;
 
 			return true;
 		}
-
-		});
+	});
 })(tinymce);
 (function(tinymce) {
 	// Shorten names
@@ -5628,7 +5729,6 @@ window.tinymce.dom.Sizzle = Sizzle;
 				closed : /^(br|hr|input|meta|img|link|param|area)$/,
 				entity_encoding : 'named',
 				entities : '160,nbsp,161,iexcl,162,cent,163,pound,164,curren,165,yen,166,brvbar,167,sect,168,uml,169,copy,170,ordf,171,laquo,172,not,173,shy,174,reg,175,macr,176,deg,177,plusmn,178,sup2,179,sup3,180,acute,181,micro,182,para,183,middot,184,cedil,185,sup1,186,ordm,187,raquo,188,frac14,189,frac12,190,frac34,191,iquest,192,Agrave,193,Aacute,194,Acirc,195,Atilde,196,Auml,197,Aring,198,AElig,199,Ccedil,200,Egrave,201,Eacute,202,Ecirc,203,Euml,204,Igrave,205,Iacute,206,Icirc,207,Iuml,208,ETH,209,Ntilde,210,Ograve,211,Oacute,212,Ocirc,213,Otilde,214,Ouml,215,times,216,Oslash,217,Ugrave,218,Uacute,219,Ucirc,220,Uuml,221,Yacute,222,THORN,223,szlig,224,agrave,225,aacute,226,acirc,227,atilde,228,auml,229,aring,230,aelig,231,ccedil,232,egrave,233,eacute,234,ecirc,235,euml,236,igrave,237,iacute,238,icirc,239,iuml,240,eth,241,ntilde,242,ograve,243,oacute,244,ocirc,245,otilde,246,ouml,247,divide,248,oslash,249,ugrave,250,uacute,251,ucirc,252,uuml,253,yacute,254,thorn,255,yuml,402,fnof,913,Alpha,914,Beta,915,Gamma,916,Delta,917,Epsilon,918,Zeta,919,Eta,920,Theta,921,Iota,922,Kappa,923,Lambda,924,Mu,925,Nu,926,Xi,927,Omicron,928,Pi,929,Rho,931,Sigma,932,Tau,933,Upsilon,934,Phi,935,Chi,936,Psi,937,Omega,945,alpha,946,beta,947,gamma,948,delta,949,epsilon,950,zeta,951,eta,952,theta,953,iota,954,kappa,955,lambda,956,mu,957,nu,958,xi,959,omicron,960,pi,961,rho,962,sigmaf,963,sigma,964,tau,965,upsilon,966,phi,967,chi,968,psi,969,omega,977,thetasym,978,upsih,982,piv,8226,bull,8230,hellip,8242,prime,8243,Prime,8254,oline,8260,frasl,8472,weierp,8465,image,8476,real,8482,trade,8501,alefsym,8592,larr,8593,uarr,8594,rarr,8595,darr,8596,harr,8629,crarr,8656,lArr,8657,uArr,8658,rArr,8659,dArr,8660,hArr,8704,forall,8706,part,8707,exist,8709,empty,8711,nabla,8712,isin,8713,notin,8715,ni,8719,prod,8721,sum,8722,minus,8727,lowast,8730,radic,8733,prop,8734,infin,8736,ang,8743,and,8744,or,8745,cap,8746,cup,8747,int,8756,there4,8764,sim,8773,cong,8776,asymp,8800,ne,8801,equiv,8804,le,8805,ge,8834,sub,8835,sup,8836,nsub,8838,sube,8839,supe,8853,oplus,8855,otimes,8869,perp,8901,sdot,8968,lceil,8969,rceil,8970,lfloor,8971,rfloor,9001,lang,9002,rang,9674,loz,9824,spades,9827,clubs,9829,hearts,9830,diams,338,OElig,339,oelig,352,Scaron,353,scaron,376,Yuml,710,circ,732,tilde,8194,ensp,8195,emsp,8201,thinsp,8204,zwnj,8205,zwj,8206,lrm,8207,rlm,8211,ndash,8212,mdash,8216,lsquo,8217,rsquo,8218,sbquo,8220,ldquo,8221,rdquo,8222,bdquo,8224,dagger,8225,Dagger,8240,permil,8249,lsaquo,8250,rsaquo,8364,euro',
-				bool_attrs : /(checked|disabled|readonly|selected|nowrap)/,
 				valid_elements : '*[*]',
 				extended_valid_elements : 0,
 				valid_child_elements : 0,
@@ -5712,14 +5812,21 @@ window.tinymce.dom.Sizzle = Sizzle;
 
 			if (s.fix_table_elements) {
 				t.onPreProcess.add(function(se, o) {
-					each(t.dom.select('p table', o.node), function(n) {
-						// IE has a odd bug where tables inside paragraphs sometimes gets wrapped in a BODY and documentFragement element
-						// This hack seems to resolve that issue. This will normally not happed since your contents should be valid in the first place
-						if (isIE)
-							n.outerHTML = n.outerHTML;
+					// Since Opera will crash if you attach the node to a dynamic document we need to brrowser sniff a specific build
+					// so Opera users with an older version will have to live with less compaible output not much we can do here
+					if (!tinymce.isOpera || opera.buildNumber() >= 1767) {
+						each(t.dom.select('p table', o.node).reverse(), function(n) {
+							var parent = t.dom.getParent(n.parentNode, 'table,p');
 
-						t.dom.split(t.dom.getParent(n, 'p'), n);
-					});
+							if (parent.nodeName != 'TABLE') {
+								try {
+									t.dom.split(parent, n);
+								} catch (ex) {
+									// IE can sometimes fire an unknown runtime error so we just ignore it
+								}
+							}
+						});
+					}
 				});
 			}
 		},
@@ -6035,18 +6142,56 @@ window.tinymce.dom.Sizzle = Sizzle;
 		},
 
 		serialize : function(n, o) {
-			var h, t = this, doc;
+			var h, t = this, doc, oldDoc, impl, selected;
 
 			t._setup();
 			o = o || {};
 			o.format = o.format || 'html';
-			n = n.cloneNode(true);
 			t.processObj = o;
 
-			// Nodes needs to be attached to something in WebKit due to a bug https://bugs.webkit.org/show_bug.cgi?id=25571
-			if (tinymce.isWebKit) {
-				doc = n.ownerDocument.implementation.createHTMLDocument("");
-				doc.body.appendChild(n);
+			// IE looses the selected attribute on option elements so we need to store it
+			// See: http://support.microsoft.com/kb/829907
+			if (isIE) {
+				selected = [];
+				each(n.getElementsByTagName('option'), function(n) {
+					var v = t.dom.getAttrib(n, 'selected');
+
+					selected.push(v ? v : null);
+				});
+			}
+
+			n = n.cloneNode(true);
+
+			// IE looses the selected attribute on option elements so we need to restore it
+			if (isIE) {
+				each(n.getElementsByTagName('option'), function(n, i) {
+					t.dom.setAttrib(n, 'selected', selected[i]);
+				});
+			}
+
+			// Nodes needs to be attached to something in WebKit/Opera
+			// Older builds of Opera crashes if you attach the node to an document created dynamically
+			// and since we can't feature detect a crash we need to sniff the acutal build number
+			// This fix will make DOM ranges and make Sizzle happy!
+			impl = n.ownerDocument.implementation;
+			if (impl.createHTMLDocument && (tinymce.isOpera && opera.buildNumber() >= 1767)) {
+				// Create an empty HTML document
+				doc = impl.createHTMLDocument("");
+
+				// Add the element or it's children if it's a body element to the new document
+				each(n.nodeName == 'BODY' ? n.childNodes : [n], function(node) {
+					doc.body.appendChild(doc.importNode(node, true));
+				});
+
+				// Grab first child or body element for serialization
+				if (n.nodeName != 'BODY')
+					n = doc.body.firstChild;
+				else
+					n = doc.body;
+
+				// set the new document in DOMUtils so createElement etc works
+				oldDoc = t.dom.doc;
+				t.dom.doc = doc;
 			}
 
 			t.key = '' + (parseInt(t.key) + 1);
@@ -6063,6 +6208,10 @@ window.tinymce.dom.Sizzle = Sizzle;
 
 			// Post process
 			o.content = t.writer.getContent();
+
+			// Restore the old document if it was changed
+			if (oldDoc)
+				t.dom.doc = oldDoc;
 
 			if (!o.no_events)
 				t.onPostProcess.dispatch(t, o);
@@ -6133,9 +6282,6 @@ window.tinymce.dom.Sizzle = Sizzle;
 
 				// Restore CDATA sections
 				h = h.replace(/<!--\[CDATA\[([\s\S]+)\]\]-->/g, '<![CDATA[$1]]>');
-
-				// Restore scripts
-				h = h.replace(/(type|language)=\"mce-/g, '$1="');
 
 				// Restore the \u00a0 character if raw mode is enabled
 				if (s.entity_encoding == 'raw')
@@ -6440,16 +6586,6 @@ window.tinymce.dom.Sizzle = Sizzle;
 
 			v = this.dom.getAttrib(n, na);
 
-			// Bool attr
-			if (this.settings.bool_attrs.test(na) && v) {
-				v = ('' + v).toLowerCase();
-
-				if (v === 'false' || v === '0')
-					return null;
-
-				v = na;
-			}
-
 			switch (na) {
 				case 'rowspan':
 				case 'colspan':
@@ -6492,8 +6628,7 @@ window.tinymce.dom.Sizzle = Sizzle;
 
 			return v;
 		}
-
-		});
+	});
 })(tinymce);
 (function(tinymce) {
 	var each = tinymce.each, Event = tinymce.dom.Event;
@@ -6765,8 +6900,7 @@ window.tinymce.dom.Sizzle = Sizzle;
 				}
 			}
 		}
-
-		});
+	});
 
 	// Global script loader
 	tinymce.ScriptLoader = new tinymce.dom.ScriptLoader();
@@ -6870,12 +7004,13 @@ window.tinymce.dom.Sizzle = Sizzle;
 		destroy : function() {
 			tinymce.dom.Event.clear(this.id);
 		}
-
-		});
+	});
 })(tinymce);tinymce.create('tinymce.ui.Container:tinymce.ui.Control', {
 	Container : function(id, s) {
 		this.parent(id, s);
+
 		this.controls = [];
+
 		this.lookup = {};
 	},
 
@@ -6889,8 +7024,7 @@ window.tinymce.dom.Sizzle = Sizzle;
 	get : function(n) {
 		return this.lookup[n];
 	}
-
-	});
+});
 
 tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 	Separator : function(id, s) {
@@ -6901,8 +7035,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 	renderHTML : function() {
 		return tinymce.DOM.createHTML('span', {'class' : this.classPrefix});
 	}
-
-	});
+});
 (function(tinymce) {
 	var is = tinymce.is, DOM = tinymce.DOM, each = tinymce.each, walk = tinymce.walk;
 
@@ -6930,8 +7063,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 			if (is(t.selected))
 				t.setSelected(t.selected);
 		}
-
-		});
+	});
 })(tinymce);
 (function(tinymce) {
 	var is = tinymce.is, DOM = tinymce.DOM, each = tinymce.each, walk = tinymce.walk;
@@ -7029,8 +7161,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 
 			return m;
 		}
-
-		});
+	});
 })(tinymce);(function(tinymce) {
 	var is = tinymce.is, DOM = tinymce.DOM, each = tinymce.each, Event = tinymce.dom.Event, Element = tinymce.dom.Element;
 
@@ -7357,8 +7488,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 
 			DOM.addClass(ro, 'mceLast');
 		}
-
-		});
+	});
 })(tinymce);(function(tinymce) {
 	var DOM = tinymce.DOM;
 
@@ -7390,8 +7520,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 					return s.onclick.call(s.scope, e);
 			});
 		}
-
-		});
+	});
 })(tinymce);
 (function(tinymce) {
 	var DOM = tinymce.DOM, Event = tinymce.dom.Event, each = tinymce.each, Dispatcher = tinymce.util.Dispatcher;
@@ -7401,11 +7530,17 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 			var t = this;
 
 			t.parent(id, s);
+
 			t.items = [];
+
 			t.onChange = new Dispatcher(t);
+
 			t.onPostRender = new Dispatcher(t);
+
 			t.onAdd = new Dispatcher(t);
+
 			t.onRenderMenu = new tinymce.util.Dispatcher(this);
+
 			t.classPrefix = 'mceListBox';
 		},
 
@@ -7643,8 +7778,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 			Event.clear(this.id + '_text');
 			Event.clear(this.id + '_open');
 		}
-
-		});
+	});
 })(tinymce);(function(tinymce) {
 	var DOM = tinymce.DOM, Event = tinymce.dom.Event, each = tinymce.each, Dispatcher = tinymce.util.Dispatcher;
 
@@ -7772,15 +7906,16 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 
 			t.onPostRender.dispatch(t, DOM.get(t.id));
 		}
-
-		});
+	});
 })(tinymce);(function(tinymce) {
 	var DOM = tinymce.DOM, Event = tinymce.dom.Event, each = tinymce.each;
 
 	tinymce.create('tinymce.ui.MenuButton:tinymce.ui.Button', {
 		MenuButton : function(id, s) {
 			this.parent(id, s);
+
 			this.onRenderMenu = new tinymce.util.Dispatcher(this);
+
 			s.menu_container = s.menu_container || DOM.doc.body;
 		},
 
@@ -7859,8 +7994,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 				}
 			});
 		}
-
-		});
+	});
 })(tinymce);
 (function(tinymce) {
 	var DOM = tinymce.DOM, Event = tinymce.dom.Event, each = tinymce.each;
@@ -7925,8 +8059,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 			Event.clear(this.id + '_action');
 			Event.clear(this.id + '_open');
 		}
-
-		});
+	});
 })(tinymce);
 (function(tinymce) {
 	var DOM = tinymce.DOM, Event = tinymce.dom.Event, is = tinymce.is, each = tinymce.each;
@@ -7944,6 +8077,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 			}, t.settings);
 
 			t.onShowMenu = new tinymce.util.Dispatcher(t);
+
 			t.onHideMenu = new tinymce.util.Dispatcher(t);
 
 			t.value = s.default_color;
@@ -8091,8 +8225,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 			Event.clear(this.id + '_more');
 			DOM.remove(this.id + '_menu');
 		}
-
-		});
+	});
 })(tinymce);
 tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 	renderHTML : function() {
@@ -8155,8 +8288,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 
 		return dom.createHTML('table', {id : t.id, 'class' : 'mceToolbar' + (s['class'] ? ' ' + s['class'] : ''), cellpadding : '0', cellspacing : '0', align : t.settings.align || ''}, '<tbody><tr>' + h + '</tr></tbody>');
 	}
-
-	});
+});
 (function(tinymce) {
 	var Dispatcher = tinymce.util.Dispatcher, each = tinymce.each;
 
@@ -8164,6 +8296,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 		items : [],
 		urls : {},
 		lookup : {},
+
 		onAdd : new Dispatcher(this),
 
 		get : function(n) {
@@ -8203,19 +8336,22 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 			t.urls[n] = u.substring(0, u.lastIndexOf('/'));
 			tinymce.ScriptLoader.add(u, cb, s);
 		}
-
-		});
+	});
 
 	// Create plugin and theme managers
 	tinymce.PluginManager = new tinymce.AddOnManager();
 	tinymce.ThemeManager = new tinymce.AddOnManager();
-}(tinymce));(function(tinymce) {
+}(tinymce));
+
+(function(tinymce) {
 	// Shorten names
 	var each = tinymce.each, extend = tinymce.extend, DOM = tinymce.DOM, Event = tinymce.dom.Event, ThemeManager = tinymce.ThemeManager, PluginManager = tinymce.PluginManager, explode = tinymce.explode;
 
 	tinymce.create('static tinymce.EditorManager', {
 		editors : {},
+
 		i18n : {},
+	
 		activeEditor : null,
 
 		preInit : function() {
@@ -8279,10 +8415,6 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 				// Load plugins
 				if (s.plugins) {
 					pl = explode(s.plugins);
-
-					// Load compat2x first
-					if (tinymce.inArray(pl, 'compat2x') != -1)
-						PluginManager.load('compat2x', 'plugins/compat2x/editor_plugin' + tinymce.suffix + '.js');
 
 					// Load rest if plugins
 					each(pl, function(v) {
@@ -8578,13 +8710,11 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 		_setActive : function(e) {
 			this.selectedInstance = this.activeEditor = e;
 		}
-
-		});
+	});
 
 	tinymce.EditorManager.preInit();
 })(tinymce);
 
-// Short for editor manager window.tinyMCE is needed when TinyMCE gets loaded though a XHR call
 var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 (function(tinymce) {
 	var DOM = tinymce.DOM, Event = tinymce.dom.Event, extend = tinymce.extend, Dispatcher = tinymce.util.Dispatcher;
@@ -8597,53 +8727,90 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 			var t = this;
 
 			t.id = t.editorId = id;
+
 			t.execCommands = {};
 			t.queryStateCommands = {};
 			t.queryValueCommands = {};
+
+			t.isNotDirty = false;
+
 			t.plugins = {};
 
 			// Add events to the editor
 			each([
 				'onPreInit',
+
 				'onBeforeRenderUI',
+
 				'onPostRender',
+
 				'onInit',
+
 				'onRemove',
+
 				'onActivate',
+
 				'onDeactivate',
+
 				'onClick',
+
 				'onEvent',
+
 				'onMouseUp',
+
 				'onMouseDown',
+
 				'onDblClick',
+
 				'onKeyDown',
+
 				'onKeyUp',
+
 				'onKeyPress',
+
 				'onContextMenu',
+
 				'onSubmit',
+
 				'onReset',
+
 				'onPaste',
+
 				'onPreProcess',
+
 				'onPostProcess',
+
 				'onBeforeSetContent',
+
 				'onBeforeGetContent',
+
 				'onSetContent',
+
 				'onGetContent',
+
 				'onLoadContent',
+
 				'onSaveContent',
+
 				'onNodeChange',
+
 				'onChange',
+
 				'onBeforeExecCommand',
+
 				'onExecCommand',
+
 				'onUndo',
+
 				'onRedo',
+
 				'onVisualAid',
+
 				'onSetProgressState'
 			], function(e) {
 				t[e] = new Dispatcher(t);
 			});
 
-			// Default editor config
 			t.settings = s = extend({
 				id : id,
 				language : 'en',
@@ -8678,7 +8845,7 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 				apply_source_formatting : 1,
 				directionality : 'ltr',
 				forced_root_block : 'p',
-				valid_elements : '@[id|class|style|title|dir<ltr?rtl|lang|xml::lang|onclick|ondblclick|onmousedown|onmouseup|onmouseover|onmousemove|onmouseout|onkeypress|onkeydown|onkeyup],a[rel|rev|charset|hreflang|tabindex|accesskey|type|name|href|target|title|class|onfocus|onblur],strong/b,em/i,strike,u,#p[align],-ol[type|compact],-ul[type|compact],-li,br,img[longdesc|usemap|src|border|alt=|title|hspace|vspace|width|height|align],-sub,-sup,-blockquote[cite],-table[border=0|cellspacing|cellpadding|width|frame|rules|height|align|summary|bgcolor|background|bordercolor],-tr[rowspan|width|height|align|valign|bgcolor|background|bordercolor],tbody,thead,tfoot,#td[colspan|rowspan|width|height|align|valign|bgcolor|background|bordercolor|scope],#th[colspan|rowspan|width|height|align|valign|scope],caption,-div,-span,-code,-pre,address,-h1,-h2,-h3,-h4,-h5,-h6,hr[size|noshade],-font[face|size|color],dd,dl,dt,cite,abbr,acronym,del[datetime|cite],ins[datetime|cite],object[classid|width|height|codebase|*],param[name|value],embed[type|width|height|src|*],script[src|type],map[name],area[shape|coords|href|alt|target],bdo,button,col[align|char|charoff|span|valign|width],colgroup[align|char|charoff|span|valign|width],dfn,fieldset,form[action|accept|accept-charset|enctype|method],input[accept|alt|checked|disabled|maxlength|name|readonly|size|src|type|value|tabindex|accesskey],kbd,label[for],legend,noscript,optgroup[label|disabled],option[disabled|label|selected|value],q[cite],samp,select[disabled|multiple|name|size],small,textarea[cols|rows|disabled|name|readonly],tt,var,big',
+				valid_elements : '@[id|class|style|title|dir<ltr?rtl|lang|xml::lang|onclick|ondblclick|onmousedown|onmouseup|onmouseover|onmousemove|onmouseout|onkeypress|onkeydown|onkeyup],a[rel|rev|charset|hreflang|tabindex|accesskey|type|name|href|target|title|class|onfocus|onblur],strong/b,em/i,strike,u,#p,-ol[type|compact],-ul[type|compact],-li,br,img[longdesc|usemap|src|border|alt=|title|hspace|vspace|width|height|align],-sub,-sup,-blockquote[cite],-table[border|cellspacing|cellpadding|width|frame|rules|height|align|summary|bgcolor|background|bordercolor],-tr[rowspan|width|height|align|valign|bgcolor|background|bordercolor],tbody,thead,tfoot,#td[colspan|rowspan|width|height|align|valign|bgcolor|background|bordercolor|scope],#th[colspan|rowspan|width|height|align|valign|scope],caption,-div,-span,-code,-pre,address,-h1,-h2,-h3,-h4,-h5,-h6,hr[size|noshade],-font[face|size|color],dd,dl,dt,cite,abbr,acronym,del[datetime|cite],ins[datetime|cite],object[classid|width|height|codebase|*],param[name|value],embed[type|width|height|src|*],script[src|type],map[name],area[shape|coords|href|alt|target],bdo,button,col[align|char|charoff|span|valign|width],colgroup[align|char|charoff|span|valign|width],dfn,fieldset,form[action|accept|accept-charset|enctype|method],input[accept|alt|checked|disabled|maxlength|name|readonly|size|src|type|value|tabindex|accesskey],kbd,label[for],legend,noscript,optgroup[label|disabled],option[disabled|label|selected|value],q[cite],samp,select[disabled|multiple|name|size],small,textarea[cols|rows|disabled|name|readonly],tt,var,big',
 				hidden_input : 1,
 				padd_empty_editor : 1,
 				render_ui : 1,
@@ -8690,10 +8857,10 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 				removeformat_selector : 'span,b,strong,em,i,font,u,strike'
 			}, s);
 
-			// Setup URIs
 			t.documentBaseURI = new tinymce.util.URI(s.document_base_url || tinymce.documentBaseURL, {
 				base_uri : tinyMCE.baseURI
 			});
+
 			t.baseURI = EditorManager.baseURI;
 
 			// Call setup
@@ -8811,12 +8978,7 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 				});
 			};
 
-			// Load compat2x first
-			if (s.plugins.indexOf('compat2x') != -1) {
-				PluginManager.load('compat2x', 'plugins/compat2x/editor_plugin' + tinymce.suffix + '.js');
-				sl.loadQueue(loadScripts);
-			} else
-				loadScripts();
+			loadScripts();
 		},
 
 		init : function() {
@@ -8824,7 +8986,6 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 
 			EditorManager.add(t);
 
-			// Create theme
 			if (s.theme) {
 				s.theme = s.theme.replace(/-/, '');
 				o = ThemeManager.get(s.theme);
@@ -8859,8 +9020,8 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 			if (s.popup_css_add)
 				s.popup_css += ',' + t.documentBaseURI.toAbsolute(s.popup_css_add);
 
-			// Setup control factory
 			t.controlManager = new tinymce.ControlManager(t);
+
 			t.undoManager = new tinymce.UndoManager(t);
 
 			// Pass through
@@ -9034,8 +9195,7 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 				DOM.show(b);
 			}
 
-			// Setup objects
-			t.dom = new tinymce.DOM.DOMUtils(t.getDoc(), {
+			t.dom = new tinymce.dom.DOMUtils(t.getDoc(), {
 				keep_values : true,
 				url_converter : t.convertURL,
 				url_converter_scope : t,
@@ -9045,26 +9205,13 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 				fix_ie_paragraphs : 1
 			});
 
-			t.serializer = new tinymce.dom.Serializer({
-				entity_encoding : s.entity_encoding,
-				entities : s.entities,
+			t.serializer = new tinymce.dom.Serializer(extend(s, {
 				valid_elements : s.verify_html === false ? '*[*]' : s.valid_elements,
-				extended_valid_elements : s.extended_valid_elements,
-				valid_child_elements : s.valid_child_elements,
-				invalid_elements : s.invalid_elements,
-				fix_table_elements : s.fix_table_elements,
-				fix_list_elements : s.fix_list_elements,
-				fix_content_duplication : s.fix_content_duplication,
-				convert_fonts_to_spans : s.convert_fonts_to_spans,
-				font_size_classes  : s.font_size_classes,
-				font_size_style_values : s.font_size_style_values,
-				apply_source_formatting : s.apply_source_formatting,
-				remove_linebreaks : s.remove_linebreaks,
-				element_format : s.element_format,
 				dom : t.dom
-			});
+			}));
 
 			t.selection = new tinymce.dom.Selection(t.dom, t.getWin(), t.serializer);
+
 			t.forceBlocks = new tinymce.ForceBlocks(t, {
 				forced_root_block : s.forced_root_block
 			});
@@ -10468,8 +10615,7 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 
 			return s;
 		}
-
-		});
+	});
 })(tinymce);
 (function(tinymce) {
 	var each = tinymce.each, isIE = tinymce.isIE, isGecko = tinymce.isGecko, isOpera = tinymce.isOpera, isWebKit = tinymce.isWebKit;
@@ -11523,8 +11669,7 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 		hasRedo : function() {
 			return this.index < this.data.length - 1;
 		}
-
-		});
+	});
 })(tinymce);
 (function(tinymce) {
 	// Shorten names
@@ -11536,6 +11681,17 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 	isOpera = tinymce.isOpera;
 	each = tinymce.each;
 	extend = tinymce.extend;
+
+	// Checks if the selection/caret is at the end of the specified block element
+	function isAtEnd(rng, par) {
+		var rng2 = par.ownerDocument.createRange();
+
+		rng2.setStart(rng.endContainer, rng.endOffset);
+		rng2.setEndAfter(par);
+
+		// Get number of characters to the right of the cursor if it's zero then we are at the end and need to merge the next block element
+		return rng2.cloneContents().textContent.length == 0;
+	};
 
 	function isEmpty(n) {
 		n = n.innerHTML;
@@ -11735,7 +11891,7 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 				nx = nl[i];
 
 				// Is text or non block element
-				if (nx.nodeType == 3 || (!t.dom.isBlock(nx) && nx.nodeType != 8)) {
+				if (nx.nodeType === 3 || (!t.dom.isBlock(nx) && nx.nodeType !== 8 && !/^(script|mce:script|style|mce:style)$/i.test(nx.nodeName))) {
 					if (!bl) {
 						// Create new block but ignore whitespace
 						if (nx.nodeType != 3 || /[^\s]/g.test(nx.nodeValue)) {
@@ -11775,9 +11931,11 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 								}
 							}
 
+							// Uses replaceChild instead of cloneNode since it removes selected attribute from option elements on IE
+							// See: http://support.microsoft.com/kb/829907
 							bl = ed.dom.create(ed.settings.forced_root_block);
-							bl.appendChild(nx.cloneNode(1));
 							nx.parentNode.replaceChild(bl, nx);
+							bl.appendChild(nx);
 						}
 					} else {
 						if (bl.hasChildNodes())
@@ -11950,7 +12108,7 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 			aft.removeAttribute('id');
 
 			// Is header and cursor is at the end, then force paragraph under
-			if (/^(H[1-6])$/.test(bn) && sn.nodeValue && so == sn.nodeValue.length)
+			if (/^(H[1-6])$/.test(bn) && isAtEnd(r, sb))
 				aft = ed.dom.create(se.element);
 
 			// Find start chop node
@@ -12095,7 +12253,46 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 		},
 
 		backspaceDelete : function(e, bs) {
-			var t = this, ed = t.editor, b = ed.getBody(), n, se = ed.selection, r = se.getRng(), sc = r.startContainer, n, w, tn;
+			var t = this, ed = t.editor, b = ed.getBody(), dom = ed.dom, n, se = ed.selection, r = se.getRng(), sc = r.startContainer, n, w, tn;
+
+			/*
+			var par, rng, nextBlock;
+
+			// Delete key will not merge paragraphs on Gecko so we need to do this manually
+			// Hitting the delete key at the following caret position doesn't merge the elements <p>A|</p><p>B</p>
+			// This logic will merge them into this: <p>A|B</p>
+			if (e.keyCode == 46) {
+				if (r.collapsed) {
+					par = dom.getParent(sc, 'p,h1,h2,h3,h4,h5,h6,div');
+
+					if (par) {
+						rng = dom.createRng();
+
+						rng.setStart(sc, r.startOffset);
+						rng.setEndAfter(par);
+
+						// Get number of characters to the right of the cursor if it's zero then we are at the end and need to merge the next block element
+						if (dom.getOuterHTML(rng.cloneContents()).replace(/<[^>]+>/g, '').length == 0) {
+							nextBlock = dom.getNext(par, 'p,h1,h2,h3,h4,h5,h6,div');
+
+							// Copy all children from next sibling block and remove it
+							if (nextBlock) {
+								each(nextBlock.childNodes, function(node) {
+									par.appendChild(node.cloneNode(true));
+								});
+
+								dom.remove(nextBlock);
+							}
+
+							// Block the default even since the Gecko team might eventually fix this
+							// We will remove this logic once they do we can't feature detect this one
+							e.preventDefault();
+							return;
+						}
+					}
+				}
+			}
+			*/
 
 			// The caret sometimes gets stuck in Gecko if you delete empty paragraphs
 			// This workaround removes the element by hand and moves the caret to the previous element
@@ -12510,7 +12707,7 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 		setControlType : function(n, c) {
 			return this._cls[n.toLowerCase()] = c;
 		},
-
+	
 		destroy : function() {
 			each(this.controls, function(c) {
 				c.destroy();
@@ -12518,8 +12715,7 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 
 			this.controls = null;
 		}
-
-		});
+	});
 })(tinymce);
 (function(tinymce) {
 	var Dispatcher = tinymce.util.Dispatcher, each = tinymce.each, isIE = tinymce.isIE, isOpera = tinymce.isOpera;
@@ -12630,8 +12826,7 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 		_decode : function(s) {
 			return tinymce.DOM.decode(s).replace(/\\n/g, '\n');
 		}
-
-		});
+	});
 }(tinymce));(function(tinymce) {
 	tinymce.CommandManager = function() {
 		var execCommands = {}, queryStateCommands = {}, queryValueCommands = {};
@@ -12981,10 +13176,16 @@ var tinyMCE = window.tinyMCE = tinymce.EditorManager;
 				doc.execCommand(cmd, false, null);
 
 				// On WebKit the command will just be ignored if it's not enabled
-				if (!doc.queryCommandSupported(cmd))
+				if (!doc.queryCommandEnabled(cmd))
 					throw 'Error';
 			} catch (ex) {
-				ed.windowManager.alert(ed.getLang('clipboard_no_support'));
+				if (tinymce.isGecko) {
+					ed.windowManager.confirm(ed.getLang('clipboard_msg'), function(s) {
+						if (s)
+							open('http://www.mozilla.org/editor/midasdemo/securityprefs.html', '_blank');
+					});
+				} else
+					ed.windowManager.alert(ed.getLang('clipboard_no_support'));
 			}
 		});
 	});
