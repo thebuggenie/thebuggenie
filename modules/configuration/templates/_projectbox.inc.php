@@ -27,7 +27,7 @@
 		</tr>
 		<?php if ($project->hasDescription()): ?>
 			<tr>
-				<td colspan="2" style="padding: 3px;"><?php echo bugs_processhtml($project->getDescription()); ?></td>
+				<td colspan="2" style="padding: 3px;"><?php echo tbg_parse_text($project->getDescription()); ?></td>
 			</tr>
 		<?php endif; ?>
 		<tr>

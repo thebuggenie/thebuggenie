@@ -1,7 +1,4 @@
 <textarea name="<?php echo $area_name; ?>" id="<?php echo $area_name; ?>" style="height: <?php echo $height; ?>; width: <?php echo $width; ?>;"><?php echo $value; ?></textarea>
-<script type="text/javascript">
-	tinyMCE.execCommand('mceAddControl', false, '<?php echo $area_name; ?>');
-</script>
 <?php if (!isset($hide_hint) || $hide_hint == false): ?>
 	<div class="textarea_hint">
 		<div class="header"><?php echo __('Formatting tips'); ?></div>

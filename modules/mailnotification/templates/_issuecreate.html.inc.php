@@ -3,7 +3,7 @@
 	This email is to notify you that issue <?php echo $issue->getFormattedIssueNo() . ' - ' . $issue->getTitle(); ?> has been created.<br>
 	<br>
 	<b>The issue was created with the following description:</b><br>
-	<?php echo bugs_processhtml($issue->getDescription()); ?><br>
+	<?php echo tbg_parse_text($issue->getDescription()); ?><br>
 	<br>
 	You can open the issue by clicking the following link:<br>
 	<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo(true)))); ?>

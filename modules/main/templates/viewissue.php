@@ -310,7 +310,7 @@
 									<?php foreach ($bugs_user->getUserAssignedIssues() as $anIssue): ?>
 										<tr class="<?php if ($savedIssue->getState() == BUGSissue::STATE_CLOSED) echo 'issue_closed'; if ($savedIssue->isBlocking()) echo ' issue_blocking'; ?>">
 											<td class="imgtd"><?php echo image_tag('assigned_bugs.png'); ?></td>
-											<td><a href="viewissue.php?issue_no=<?php print $savedIssue->getFormattedIssueNo(true); ?>"><?php print $savedIssue->getFormattedIssueNo(); ?></a> - <?php print (strlen($savedIssue->getTitle()) > 26) ? bugs_processhtml(rtrim(substr($savedIssue->getTitle(), 0, 24)), false) . "..." : bugs_processhtml($savedIssue->getTitle(), false); ?></td>
+											<td><a href="viewissue.php?issue_no=<?php print $savedIssue->getFormattedIssueNo(true); ?>"><?php print $savedIssue->getFormattedIssueNo(); ?></a> - <?php print (strlen($savedIssue->getTitle()) > 26) ? rtrim(substr($savedIssue->getTitle(), 0, 24), false) . "..." : $savedIssue->getTitle(); ?></td>
 										</tr>
 									<?php endforeach; ?>
 								</table>
@@ -328,7 +328,7 @@
 										<?php foreach ($bugs_user->getUserTeamAssignedIssues($tid) as $anIssue): ?>
 											<tr class="<?php if ($savedIssue->getState() == BUGSissue::STATE_CLOSED) echo 'issue_closed'; if ($savedIssue->isBlocking()) echo ' issue_blocking'; ?>">
 												<td class="imgtd"><?php echo image_tag('assigned_bugs.png'); ?></td>
-												<td><a href="viewissue.php?issue_no=<?php print $savedIssue->getFormattedIssueNo(true); ?>"><?php print $savedIssue->getFormattedIssueNo(); ?></a> - <?php print (strlen($savedIssue->getTitle()) > 26) ? bugs_BBDecode(rtrim(substr($savedIssue->getTitle(), 0, 24))) . "..." : bugs_BBDecode($savedIssue->getTitle()); ?></td>
+												<td><a href="viewissue.php?issue_no=<?php print $savedIssue->getFormattedIssueNo(true); ?>"><?php print $savedIssue->getFormattedIssueNo(); ?></a> - <?php print (strlen($savedIssue->getTitle()) > 26) ? rtrim(substr($savedIssue->getTitle(), 0, 24)) . "..." : $savedIssue->getTitle(); ?></td>
 											</tr>
 										<?php endforeach; ?>
 									</table>
@@ -380,7 +380,7 @@
 						<?php if ($theIssue->getDescription() == ''): ?>
 							<div class="faded_medium"><?php echo __('Nothing entered.'); ?></div>
 						<?php else: ?>
-							<?php echo bugs_processhtml($theIssue->getDescription()); ?>
+							<?php echo tbg_parse_text($theIssue->getDescription()); ?>
 						<?php endif; ?>
 					</div>
 					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
@@ -392,7 +392,7 @@
 						<?php if ($theIssue->getReproductionSteps() == ''): ?>
 							<div class="faded_medium"><?php echo __('Nothing entered.'); ?></div>
 						<?php else: ?>
-							<?php echo bugs_processhtml($theIssue->getReproductionSteps()); ?>
+							<?php echo tbg_parse_text($theIssue->getReproductionSteps()); ?>
 						<?php endif; ?>
 					</div>
 					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>

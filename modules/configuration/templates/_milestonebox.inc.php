@@ -102,6 +102,6 @@
 				<?php echo __('This milestone is starting %starting_date%', array('%starting_date%' => bugs_formatTime($milestone->getStartingDate(), 5))); ?>
 			<?php endif;?>
 		</div>
-		<div style="padding: 5px 0 10px 0;"><?php echo bugs_processhtml($milestone->getDescription()); ?></div>
+		<div style="padding: 5px 0 10px 0;"><?php echo $milestone->getDescription(); ?></div>
 	</div>
 </div>

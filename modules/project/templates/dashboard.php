@@ -45,7 +45,7 @@
 				<div id="project_name"><?php echo $selected_project->getName(); ?> (<?php echo $selected_project->getKey(); ?>)</div>
 				<div id="project_description"<?php if (!$selected_project->hasDescription()): ?> class="faded_dark"<?php endif; ?>>
 					<?php if ($selected_project->hasDescription()): ?>
-						<?php echo bugs_processhtml($selected_project->getDescription()); ?>
+						<?php echo tbg_parse_text($selected_project->getDescription()); ?>
 					<?php else: ?>
 						<?php echo __('This project has no description'); ?>
 					<?php endif; ?>
