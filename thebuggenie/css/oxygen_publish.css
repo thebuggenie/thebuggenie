@@ -92,7 +92,7 @@
 .toc .faded_medium { font-size: 11px; margin-bottom: 10px; }
 .toc:hover .content { display: inherit; }
 
-.article .article a { border-bottom: 1px dotter #CCC; }
+.article .article a { border-bottom: 1px dotted #CCC; }
 .article h1 { padding: 3px 3px 3px 0; }
 .article h1:target { color: #77B; background-color: #F6F6F6; }
 .article h1 a, .article h2 a, .article h3 a { font-size: 12px; }

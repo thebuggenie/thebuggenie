@@ -36,7 +36,7 @@
 					<li>
 						<div>
 							<?php echo image_tag('news_item.png', array('style' => 'float: left;'), false, 'publish'); ?>
-							<?php echo link_tag(make_url('publish_article', array('article_name' => $linking_article->getName())), $linking_article->getTitle()); ?>
+							<?php echo link_tag(make_url('publish_article', array('article_name' => $linking_article->getName())), get_spaced_name($linking_article->getTitle())); ?>
 							<br>
 							<span><?php print bugs_formatTime($linking_article->getPostedDate(), 3); ?></span>
 						</div>
@@ -53,7 +53,7 @@
 	<?php if (count($user_drafts) > 0): ?>
 		<ul class="article_list">
 			<?php foreach ($user_drafts as $article): ?>
-				<li><?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), $article->getTitle()); ?></li>
+			<li><?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), get_spaced_name($article->getTitle())); ?></li>
 			<?php endforeach; ?>
 		</ul>
 	<?php else: ?>
