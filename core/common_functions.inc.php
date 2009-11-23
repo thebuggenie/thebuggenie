@@ -147,47 +147,6 @@
 		}
 	}
 
-	/**
-	 *
-	 * Turn smileys into img tags except in code blocks
-	 *
-	 */
-	function bugs_smileydecode($text)
-	{
-		$smileys = '\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:D|\:-D|\:P|\:-P|\(\!\)|\(\?\)';
-		$code_tag = '\[code\].*\[\/code\]';
-		$end_code_tag = '\[\/code\]';
-
-		return preg_replace("/($smileys)((?=.*$code_tag)|(?!.*$end_code_tag))/ei",'bugs_showsmiley("$1");',$text);
-	}
-
-	/**
-	 *
-	 * Return a smiley img tag for a specific smiley
-	 *
-	 */
-	function bugs_showsmiley($smiley_code)
-	{
-	        switch ($smiley_code)
-	        {
-			case ":(": return(image_tag('smileys/4.png'));
-			case ":-(": return(image_tag('smileys/4.png'));
-			case ":)": return(image_tag('smileys/2.png'));
-			case ":-)": return(image_tag('smileys/2.png'));
-			case "8)": return(image_tag('smileys/3.png'));
-			case "8-)": return(image_tag('smileys/3.png'));
-			case "B)": return(image_tag('smileys/3.png'));
-			case "B-)": return(image_tag('smileys/3.png'));
-			case ":-/": return(image_tag('smileys/10.png'));
-			case ":D": return(image_tag('smileys/5.png'));
-			case ":-D": return(image_tag('smileys/5.png'));
-			case ":P": return(image_tag('smileys/6.png'));
-			case ":-P": return(image_tag('smileys/6.png'));
-			case "(!)": return(image_tag('smileys/8.png'));
-			case "(?)": return(image_tag('smileys/9.png'));
-		}
-	}
-
 	function tbg_parse_text($text, $toc = false, $article_id = null, $options = array())
 	{
 		// Perform wiki parsing
@@ -199,38 +158,6 @@
 		$text = $wiki_parser->getParsedText();
 
 		return $text;
-	}
-	
-	/**
-	 *
-	 * Performs formatting of the HTML fields used in TBG. <code> and <blockquote> tags are updated to use the proper box styles, forbidden tags are removed,
-	 * FONT tags are replaced by SPANs (we do this here so people cant manipulate a span tag), smileys are decoded and links are added.
-	 *
-	 */
-	function bugs_processhtml($text, $formatting = true)
-	{
-		if ($formatting)
-		{
-			$text = strip_tags($text, '<b><i><u><p><font><a><blockquote><code><ul><ol><li><br>');
-			$text = bugs_smileydecode($text);
-			
-			/* Convert some elements to proper formatting */
-			$preg = array(
-				'/(?<!\\\\)\<code\>(.*?)\<\/code\>/si'		   				=> "<div class=\"bb_code\"><b>Code:</b><br>\\1</div>",
-				'/(?<!\\\\)\<blockquote\>(.*?)<\/blockquote\>/si'		 	=> "<div class=\"bb_quote\"><b>Quote:</b><br>\\1</div>",
-				'/(?<!\\\\)\<font color="(.*?)\>(.*?)<\/font\>/si'			=> "<span style=\"color: \\1\">\\2</span>"
-			);
-			$text    = preg_replace(array_keys($preg), array_values($preg), $text);
-			$text	 = common_text_replacements($text);
-		}
-		else
-		{
-			$text = bugs_sanitize_string($text);
-			$text = strip_tags($text, '<b><i><u><p><font><a><blockquote><code><ul><ol><li><br>');
-		}
-		
-		return $text;	
-		
 	}
 
 	function bugs_getTaskIssueType()
@@ -304,20 +231,6 @@
 		$crit->addWhere(B2tNotifications::TARGET_ID, $issue_id);
 		
 		$res = B2DB::getTable('B2tNotifications')->doDelete($crit);
-	}
-
-
-	function bugs_newTextArea($area_name, $height, $width, $value = '')
-	{
-		$retval = '';
-		$retval .= '<textarea name="' . $area_name . '" id="' . $area_name . '" style="height: ' . $height . '; width: ' . $width . ';">' . $value . '</textarea>';
-		$retval .= '<script type="text/javascript">';
-		$retval .= 'tinyMCE.execCommand(\'mceAddControl\', false, \'' . $area_name . '\');';
-		$retval .= '</script>';
-		$retval .= '<p>';
-		$retval .= __('To link to an existing issue, write "issue" followed by the issue number.');
-		$retval .= '</p>';
-		return $retval;
 	}
 
 	function bugs_createPassword($len = 8)

@@ -445,6 +445,7 @@
 			$char_regexes[] = array('/(__NOTOC__|__NOEDITSECTION__)/i', array($this, '_parse_eliminate'));
 			$char_regexes[] = array('/(\{\{([^\}]*?)\}\})/i', array($this, '_parse_variable'));
 			$char_regexes[] = array('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, '_parse_issuelink'));
+			$char_regexes[] = array('/(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:D|\:-D|\:P|\:-P|\(\!\)|\(\?\))/i', array($this, '_getsmiley'));
 			$char_regexes[] = array('/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9$_+!*();\/?:~-]))/', array($this, '_parse_autosensedlink'));
 			foreach (self::getRegexes() as $regex)
 			{
@@ -491,6 +492,28 @@
 			BUGSlogging::log($line);
 
 			return $line;
+		}
+		
+		private function _getsmiley($smiley_code)
+		{
+			switch ($smiley_code[1])
+	        {
+				case ":(": return(image_tag('smileys/4.png'));
+				case ":-(": return(image_tag('smileys/4.png'));
+				case ":)": return(image_tag('smileys/2.png'));
+				case ":-)": return(image_tag('smileys/2.png'));
+				case "8)": return(image_tag('smileys/3.png'));
+				case "8-)": return(image_tag('smileys/3.png'));
+				case "B)": return(image_tag('smileys/3.png'));
+				case "B-)": return(image_tag('smileys/3.png'));
+				case ":-/": return(image_tag('smileys/10.png'));
+				case ":D": return(image_tag('smileys/5.png'));
+				case ":-D": return(image_tag('smileys/5.png'));
+				case ":P": return(image_tag('smileys/6.png'));
+				case ":-P": return(image_tag('smileys/6.png'));
+				case "(!)": return(image_tag('smileys/8.png'));
+				case "(?)": return(image_tag('smileys/9.png'));
+			}
 		}
 
 		protected function _test()
