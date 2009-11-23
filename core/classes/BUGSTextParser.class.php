@@ -24,6 +24,7 @@
 		protected static $current_parser = null;
 
 		protected $preformat = null;
+		protected $options = array();
 		protected $use_toc = false;
 		protected $toc_base_id = null;
 		protected $openblocks = array();
@@ -75,7 +76,7 @@
 			(!array_key_exists($article_name, $this->internallinks)) ? $this->internallinks[$article_name] = 1 : $this->internallinks[$article_name]++;
 		}
 
-		protected function _parse_sections($matches)
+		protected function _parse_headers($matches)
 		{
 			$level = strlen($matches[1]);
 			$content = $matches[2];
@@ -92,7 +93,12 @@
 				$this->toc[] = array('level' => $level, 'content' => $content, 'id' => $id);
 				$retval .= " id=\"{$id}\"";
 			}
-			$retval .= ">{$content}&nbsp;<a href=\"#top\">&uArr;&nbsp;".__('top')."</a></h{$level}>\n";
+			$retval .= ">" . $content;
+			if (!isset($this->options['embedded']) || $this->options['embedded'] == false)
+			{
+				$retval .= "&nbsp;<a href=\"#top\">&uArr;&nbsp;".__('top')."</a>";
+			}
+			$retval .= "</h{$level}>\n";
 
 			return $retval;
 		}
@@ -428,7 +434,7 @@
 			$line_regexes['definitionlist'] = '^([\;\:])\s*(.*?)$';
 			$line_regexes['newline'] = '^$';
 			$line_regexes['list'] = '^([\*\#]+)(.*?)$';
-			$line_regexes['sections'] = '^(={1,6})(.*?)(={1,6})$';
+			$line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
 			$line_regexes['horizontalrule'] = '^----$';
 
 			$char_regexes = array();
@@ -479,7 +485,7 @@
 			if ($this->preformat && !array_key_exists('preformat', $called)) $line = $this->_parse_preformat(false,true) . $line;
 
 			// suppress linebreaks for the next line if we just displayed one; otherwise re-enable them
-			if ($isline) $this->ignore_newline = (array_key_exists('newline', $called) || array_key_exists('sections', $called));
+			if ($isline) $this->ignore_newline = (array_key_exists('newline', $called) || array_key_exists('headers', $called));
 
 			BUGSlogging::log($line);
 
@@ -618,4 +624,10 @@
 		{
 			return $this->internallinks;
 		}
+
+		public function setOption($option, $value)
+		{
+			$this->options[$option] = $value;
+		}
+
 	}

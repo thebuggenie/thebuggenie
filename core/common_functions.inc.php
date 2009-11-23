@@ -188,10 +188,14 @@
 		}
 	}
 
-	function tbg_parse_text($text, $toc = false, $article_id = null)
+	function tbg_parse_text($text, $toc = false, $article_id = null, $options = array())
 	{
 		// Perform wiki parsing
 		$wiki_parser = new BUGSTextParser($text, $toc, 'article_' . $article_id);
+		foreach ($options as $option => $value)
+		{
+			$wiki_parser->setOption($option, $value);
+		}
 		$text = $wiki_parser->getParsedText();
 
 		return $text;

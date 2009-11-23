@@ -42,7 +42,7 @@
 			$crit->addInsert(self::AUTHOR, 0);
 			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
 			$crit->addInsert(self::INTRO_TEXT, '');
-			$crit->addInsert(self::CONTENT, "Thank you for installing The Bug Genie!
+			$crit->addInsert(self::CONTENT, "== Thank you for installing The Bug Genie! ==
 
 By using The Bug Genie, we want to make your development environment a whole lot less cumbersome.<br>
 Project management, issue tracking, source code control, fully editable wiki for all your documenation needs, and more.

@@ -18,7 +18,7 @@
 			$this->addAvailablePermission('publish_postonglobalbillboard', 'Can post articles on global billboard');
 			$this->addAvailablePermission('publish_postonteambillboard', 'Can post articles on team billboard');
 			$this->addAvailableListener('core', 'index_left_middle', 'listen_latestArticles', 'Frontpage "Last news items"');
-			$this->addAvailableListener('core', 'index_right_middle', 'listen_FrontpageArticle', 'Frontpage article');
+			$this->addAvailableListener('core', 'index_right_middle', 'listen_frontpageArticle', 'Frontpage article');
 			$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
 			$this->addAvailableListener('core', 'project_menustrip_item_links', 'listen_projectMenustripLinks', 'Project menustrip links');
 
@@ -56,7 +56,7 @@
 			$module->saveSetting('allow_camelcase_links', 1);
 
 			$module->enableListenerSaved('core', 'index_left_middle');
-			$module->enableListenerSaved('core', 'index_left_middle');
+			$module->enableListenerSaved('core', 'index_right_middle');
 			$module->enableListenerSaved('core', 'project_overview_item_links');
 			$module->enableListenerSaved('core', 'project_menustrip_item_links');
   									  
@@ -373,12 +373,12 @@
 			return null;
 		}
 		
-		public function listen_FrontpageArticle()
+		public function listen_frontpageArticle()
 		{
 			$index_article = $this->getFrontpageArticle();
 			if ($index_article instanceof PublishArticle)
 			{
-				BUGSactioncomponent::includeComponent('publish/articledisplay', array('article' => $index_article, 'show_title' => true, 'show_details' => false, 'show_intro' => false, 'show_actions' => false));
+				BUGSactioncomponent::includeComponent('publish/articledisplay', array('article' => $index_article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true));
 			}
 		}
 

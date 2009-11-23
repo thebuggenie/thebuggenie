@@ -19,6 +19,7 @@
 			$this->show_link = (isset($this->show_link)) ? $this->show_link : false;
 			$this->show_intro = (isset($this->show_intro)) ? $this->show_intro : true;
 			$this->show_actions = (isset($this->show_actions)) ? $this->show_actions : true;
+			$this->embedded = (isset($this->embedded)) ? $this->embedded : false;
 		}
 
 		public function componentSettings()
