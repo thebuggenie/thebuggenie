@@ -308,6 +308,7 @@
 			{
 				if ($namespace) $href = $namespace . ':' . $href;
 				$href = $this->_wiki_link($href);
+				$title = $href;
 				$this->addInternalLinkOccurrence($href);
 				$href = BUGScontext::getRouting()->generate('publish_article', array('article_name' => $href));
 			}
