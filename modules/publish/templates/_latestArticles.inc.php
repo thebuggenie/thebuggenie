@@ -1,6 +1,6 @@
 <div style="margin: 10px 5px 10px 10px;">
 	<div class="left_menu_header"><?php echo __('Latest articles'); ?></div>
-	<ul class="news_list">
+	<ul class="article_list">
 	<?php if (count($latest_articles) >= 1): ?>
 		<?php foreach($latest_articles as $article): ?>
 			<li>

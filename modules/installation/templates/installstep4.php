@@ -45,8 +45,8 @@
 						<input type="radio" name="modules[calendar]" value="0" id="modules_calendar_no"><label for="modules_calendar_no">No</label>
 					</dd>
 					<dt>
-						<strong>Enable articles &amp; billboards</strong><br>
-						Enables functionality that lets you create articles and billboards 
+						<strong>Enable Wiki</strong><br>
+						Enables functionality that lets you create wiki articles
 					</dt>
 					<dd>
 						<input type="radio" name="modules[publish]" value="1" id="modules_publish_yes" checked="checked"><label for="modules_publish_yes" style="margin-right: 5px;">Yes</label>

@@ -32,7 +32,15 @@
 			return self::$_articles[$a_id];
 		}
 
-		static function articleNameLab($article_name, $row)
+		/**
+		 * Returns a publish article
+		 *
+		 * @param $a_id
+		 * @param $row
+		 *
+		 * @return PublishArticle
+		 */
+		static function articleNameLab($article_name, $row = null)
 		{
 			if (!isset(self::$_article_names[$article_name]))
 			{

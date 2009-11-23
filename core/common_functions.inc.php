@@ -188,14 +188,15 @@
 		}
 	}
 
-	function common_text_replacements($text)
+	function tbg_parse_text($text, $toc = false, $article_id = null)
 	{
-		$preg = array('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#ie' => 'bugs_issueLinkHelper( "\\3", "\\1" )',
-		'/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9$_+!*();\/?:~-]))/' => '<a href="\\0">\\0</a>');
+		// Perform wiki parsing
+		$wiki_parser = new BUGSTextParser($text, $toc, 'article_' . $article_id);
+		$text = $wiki_parser->getParsedText();
 
-		return preg_replace(array_keys($preg), array_values($preg), $text);
+		return $text;
 	}
-
+	
 	/**
 	 *
 	 * Performs formatting of the HTML fields used in TBG. <code> and <blockquote> tags are updated to use the proper box styles, forbidden tags are removed,

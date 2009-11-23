@@ -37,7 +37,7 @@
 		public function loadFixtures($scope)
 		{
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ARTICLE_NAME, 'IndexMessage');
+			$crit->addInsert(self::ARTICLE_NAME, 'FrontpageArticle');
 			$crit->addInsert(self::TITLE, 'Welcome to The Bug Genie');
 			$crit->addInsert(self::AUTHOR, 0);
 			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
@@ -118,9 +118,6 @@ You can also use simple html formatting for things like underlined and strikethr
   &lt;u&gt;underlined&lt;/u&gt;
 <u>underlined</u>
 
-== Table of contents ==
-You can get a table of content on your page (like the one in the top right on this page) by using the TOC variable the same way as the \"normal\" variables above. It doesn't matter where you put this variable in your document, it will always be displayed in the top right corner.
-
 == Headings ==
 To specify headings, use equals-character around the line you want to be a heading. The number of equals-characters you put around the line decides how big the heading is (1 is biggest, 6 is lowest).
   = I'm a big header =
@@ -161,7 +158,7 @@ The Bug Genie wiki also lets you link directly to [http://www.wikipedia.org Wiki
 '''Remember - if all this sound complicated, you can always just use CamelCasing (provided it's not disabled)'''
 
 == Links ==
-In addition to linking between internal pages with double square brackets, you can link to external pages with single square brackets. Links inside your text will not automatically be turned into clickable links, but simply putting a pair of square brackets around the link makes it clickable. In addition, you can add a title if you want to:
+In addition to linking between internal pages with double square brackets, you can link to external pages with single square brackets. Any URLs inside your text will also automatically be turned into clickable links, but you can also put a pair of square brackets around the link to make it clickable. In addition, you can add a title if you want to:
 
   http://www.thebuggenie.com
 http://www.thebuggenie.com
@@ -184,7 +181,7 @@ You can show uploaded images by using the same notation as for links:
 
 == Completely unparsed text ==
 If you have some text that you don't want to be automatically parsed at all, put them inside &lt;nowiki&gt;&lt;/nowiki&gt; tags:
-  &lt;nowiki&gt;some text that shouldn't be parsed [[a|link]] and '''bold text'''&lt;/nowiki&gt;
+  &lt;nowiki&gt;<nowiki>some text that shouldn't be parsed [[a|link]] and '''bold text'''</nowiki>&lt;/nowiki&gt;
 <nowiki>some text that shouldn't be parsed [[a|link]] and '''bold text'''</nowiki>
 
 == Lists ==
@@ -218,6 +215,9 @@ There are some shortcuts available for outputting special data such as the curre
 {{SITENAME}}
 
 The following keywords are available for automatic substitution: CURRENTMONTH, CURRENTMONTHNAMEGEN, CURRENTMONTHNAME, CURRENTDAY, CURRENTDAYNAME, CURRENTYEAR, CURRENTTIME, NUMBEROFARTICLES, PAGENAME, NAMESPACE, SITENAME, SITETAGLINE.
+
+== Table of contents ==
+You can get a table of content on your page (like the one in the top right on this page) by using the TOC variable the same way as the \"normal\" variables above. It doesn't matter where you put this variable in your document, it will always be displayed in the top right corner.
 
 == Linking to issues ==
 If you want to link to an issue, use one of the following keywords: '''bug''', '''issue''', '''ticket''', '''story''', followed by the issue number:

@@ -1350,6 +1350,8 @@ td.selected_red span	{ color: #FFF; }
 .error:first-line, .ok:first-line { font-weight: bold; }
 
 .left_menu_header { margin: 2px 0 5px 0; padding: 3px 3px 3px 5px; font-weight: bold; font-size: 13px; border-bottom: 1px solid #CCC; background-color: #FFF; }
+.left_menu_content { padding: 0 0 3px 5px; font-size: 12px; }
+.left_menu_list { list-style-type: none; padding: 0; margin: 5px 0 0 0; }
 
 ul.project_list { list-style-type: none; padding: 0; margin: 5px 0 0 0; }
 ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5px; margin-bottom: 10px; clear: both; }

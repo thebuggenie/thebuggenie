@@ -48,36 +48,6 @@
 	}
 	
 	/**
-	 * Used in the automatic text parsing function, returns an <a> tag linking to a specified issue
-	 * 
-	 * @param string $issue issue number
-	 * @param string $text text to display
-	 * 
-	 * @return string
-	 */
-	function bugs_issueLinkHelper($issue, $text)
-	{
-		$theIssue = BUGSissue::getIssueFromLink($issue);
-		$retval = '';
-		$classname = '';
-		if ($theIssue instanceof BUGSissue && ($theIssue->isClosed() || $theIssue->isDeleted()))
-		{
-			$classname = 'closed';
-		}
-		if ($theIssue instanceof BUGSissue)
-		{
-			$retval = link_tag(make_url('viewissue', array('issue_no' => $theIssue->getIssueNo(true), 'project_key' => $theIssue->getProject()->getKey())), $theIssue->getFormattedIssueNo() . ' - ' . $theIssue->getTitle(), array('class' => $classname));
-			/*$retval .= '<a href="' . BUGScontext::getTBGPath(). $theProject->getName(). '/issue/' . $issue . '" class="inline_issue_link ' . $classname . '" title="';
-			$retval .= $theIssue->getFormattedIssueNo() . ' - ' . BUGScontext::getRequest()->sanitize_input($theIssue->getTitle()) . '">' . $text . ': ' . BUGScontext::getRequest()->sanitize_input($theIssue->getTitle()) . '</a>';*/
-		}
-		else
-		{
-			$retval = $text;
-		}
-		return $retval;
-	}
-	
-	/**
 	 * Returns an <img> tag with a specified image
 	 * 
 	 * @param string $image image source

@@ -31,6 +31,7 @@
 			$this->show_article_options = (bool) ($this->article instanceof PublishArticle);
 			$this->links = BUGScontext::getModule('publish')->getMenuItems();
 			$this->user_drafts = BUGScontext::getModule('publish')->getUserDrafts();
+			$this->whatlinkshere = ($this->article instanceof PublishArticle) ? $this->article->getLinkingArticles() : null;
 		}
 
 	}

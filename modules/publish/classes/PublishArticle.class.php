@@ -50,6 +50,13 @@
 		 * @var boolean
 		 */
 		protected $_is_published = false;
+
+		/**
+		 * A list of articles that links to this article
+		 *
+		 * @var array
+		 */
+		protected $_linking_articles = null;
 		
 		/**
 		 * Article constructor
@@ -84,9 +91,13 @@
 			}
 		}
 
-		public static function getByName($article_name)
+		public static function getByName($article_name, $row = null)
 		{
-			if ($row = B2DB::getTable('B2tArticles')->getArticleByName($article_name))
+			if ($row === null)
+			{
+				$row = B2DB::getTable('B2tArticles')->getArticleByName($article_name);
+			}
+			if ($row instanceof B2DBRow)
 			{
 				return PublishFactory::articleLab($row->get(B2tArticles::ID), $row);
 			}
@@ -138,6 +149,34 @@
 		{
 			return $this->getPostedDate();
 		}
+		
+		protected function _populateLinkingArticles()
+		{
+			if ($this->_linking_articles === null)
+			{
+				$this->_linking_articles = array();
+				if ($res = B2DB::getTable('B2tArticleLinks')->getLinkingArticles($this->getName()))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$this->_linking_articles[$row->get(B2tArticleLinks::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(B2tArticleLinks::ARTICLE_NAME));
+					}
+				}
+			}
+		}
+
+		public function getLinkingArticles()
+		{
+			$this->_populateLinkingArticles();
+			return $this->_linking_articles;
+		}
+
+		protected function _retrieveInternalLinksFromContent()
+		{
+			$parser = new BUGSTextParser(html_entity_decode($this->_content));
+			$parser->doParse();
+			return $parser->getInternalLinks();
+		}
 
 		public function save()
 		{
@@ -146,6 +185,12 @@
 				throw new Exception(BUGScontext::getI18n()->__('Another article with this name already exists'));
 			}
 			B2DB::getTable('B2tArticles')->save($this->_name, $this->_content, $this->_is_published, BUGScontext::getUser()->getID(), $this->_itemid);
+			B2DB::getTable('B2tArticleLinks')->deleteLinksByArticle($this->_name);
+			foreach ($this->_retrieveInternalLinksFromContent() as $link => $occurrences)
+			{
+				B2DB::getTable('B2tArticleLinks')->addArticleLink($this->_name, $link);
+			}
+
 			return true;
 		}
 

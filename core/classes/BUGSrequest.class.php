@@ -224,11 +224,11 @@
 		 * @see getParameter
 		 *
 		 * @param string $key The parameter you want to retrieve
-		 * @param mixed $default_value The value to return if it doesn't exist
+		 * @param mixed $default_value[optional] The value to return if it doesn't exist
 		 *
 		 * @return mixed
 		 */
-		public function getRawParameter($key, $default_value)
+		public function getRawParameter($key, $default_value = null)
 		{
 			return $this->getParameter($key, $default_value, false);
 		}

@@ -64,7 +64,7 @@
 							try
 							{
 								$article->setName($request->getParameter('new_article_name'));
-								$article->setContent($request->getParameter('new_article_content'));
+								$article->setContent($request->getRawParameter('new_article_content'));
 								$article->save();
 								BUGScontext::setMessage('publish_article_message', BUGScontext::getI18n()->__('The article was saved'));
 								$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $article->getName())));
@@ -81,7 +81,7 @@
 					}
 					else
 					{
-						PublishArticle::createNew($request->getParameter('new_article_name'), $request->getParameter('new_article_content'), true);
+						PublishArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content'), true);
 						$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $request->getParameter('new_article_name'))));
 					}
 				}

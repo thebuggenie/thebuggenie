@@ -18,7 +18,7 @@
 			$this->addAvailablePermission('publish_postonglobalbillboard', 'Can post articles on global billboard');
 			$this->addAvailablePermission('publish_postonteambillboard', 'Can post articles on team billboard');
 			$this->addAvailableListener('core', 'index_left_middle', 'listen_latestArticles', 'Frontpage "Last news items"');
-			$this->addAvailableListener('core', 'index_right_middle', 'listen_indexMessage', 'Frontpage article');
+			$this->addAvailableListener('core', 'index_right_middle', 'listen_FrontpageArticle', 'Frontpage article');
 			$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
 			$this->addAvailableListener('core', 'project_menustrip_item_links', 'listen_projectMenustripLinks', 'Project menustrip links');
 
@@ -28,6 +28,13 @@
 			$this->addRoute('publish_article_edit', '/wiki/:article_name/edit', 'editArticle');
 			$this->addRoute('publish_article_save', '/wiki/savearticle', 'saveArticle');
 			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'showArticle');
+
+			if ($this->getSetting('allow_camelcase_links'))
+			{
+				BUGSTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));
+				BUGSTextParser::addRegex('/(?<!")\![A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'stripExclamationMark'));
+			}
+
 		}
 
 		public function initialize()
@@ -56,6 +63,7 @@
 			{
 				B2DB::getTable('B2tArticles')->create();
 				B2DB::getTable('B2tArticleViews')->create();
+				B2DB::getTable('B2tArticleLinks')->create();
 				B2DB::getTable('B2tBillboardPosts')->create();
 			}
 
@@ -144,6 +152,26 @@
 			}
 			return parent::getMenuTitle();
 		}
+
+		public function getSpacedName($camelcased)
+		{
+			return preg_replace('/(?<=[a-z])(?=[A-Z])/',' ', $camelcased);
+		}
+
+		public function stripExclamationMark($matches)
+		{
+			return substr($matches[0], 1);
+		}
+
+		public function getArticleLinkTag($matches)
+		{
+			BUGScontext::loadLibrary('ui');
+			$article_name = $matches[0];
+			BUGSTextParser::getCurrentParser()->addInternalLinkOccurrence($article_name);
+			$article_name = $this->getSpacedName($matches[0]);
+			return link_tag(make_url('publish_article', array('article_name' => $matches[0])), $article_name);
+		}
+
 
 		public function getBillboardPosts($target_board = 0, $posts = 5)
 		{
@@ -335,18 +363,18 @@
 			echo '</li>';
 		}
 
-		public function getIndexMessage()
+		public function getFrontpageArticle()
 		{
-			if ($row = B2DB::getTable('B2tArticles')->getArticleByName('IndexMessage'))
+			if ($row = B2DB::getTable('B2tArticles')->getArticleByName('FrontpageArticle'))
 			{
 				return PublishFactory::articleLab($row->get(B2tArticles::ID), $row);
 			}
 			return null;
 		}
 		
-		public function listen_indexMessage()
+		public function listen_FrontpageArticle()
 		{
-			$index_article = $this->getIndexMessage();
+			$index_article = $this->getFrontpageArticle();
 			if ($index_article instanceof PublishArticle)
 			{
 				BUGSactioncomponent::includeComponent('publish/articledisplay', array('article' => $index_article, 'show_title' => true, 'show_details' => false, 'show_intro' => false, 'show_actions' => false));
