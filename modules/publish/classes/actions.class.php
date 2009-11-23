@@ -40,6 +40,22 @@
 		public function runShowArticle($request)
 		{
 			$this->message = BUGScontext::getMessageAndClear('publish_article_message');
+			$this->error = BUGScontext::getMessageAndClear('publish_article_error');
+		}
+
+		/**
+		 * Delete an article
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runDeleteArticle($request)
+		{
+			if ($article_name = $request->getParameter('article_name'))
+			{
+				PublishArticle::deleteByName($article_name);
+				BUGScontext::setMessage('publish_article_error', BUGScontext::getI18n()->__('The article was deleted'));
+				$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $article_name)));
+			}
 		}
 
 		/**
@@ -81,7 +97,7 @@
 					}
 					else
 					{
-						PublishArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content'), true);
+						PublishArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content', ''), true);
 						$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $request->getParameter('new_article_name'))));
 					}
 				}

@@ -104,7 +104,13 @@
 			return null;
 		}
 
-		public static function createNew($name, $title, $content, $published)
+		public static function deleteByName($article_name)
+		{
+			B2DB::getTable('B2tArticles')->deleteArticleByName($article_name);
+			B2DB::getTable('B2tArticleLinks')->deleteLinksByArticle($article_name);
+		}
+
+		public static function createNew($name, $content, $published)
 		{
 			$article_id = B2DB::getTable('B2tArticles')->save($name, $content, $published, BUGScontext::getUser()->getID());
 			return $article_id;

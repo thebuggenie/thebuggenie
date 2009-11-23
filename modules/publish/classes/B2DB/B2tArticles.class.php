@@ -269,6 +269,17 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 			return $row;
 		}
 
+		public function deleteArticleByName($name)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ARTICLE_NAME, $name);
+			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->setLimit(1);
+			$row = $this->doDelete($crit);
+
+			return $row;
+		}
+
 		public function getArticleByID($article_id)
 		{
 			$crit = $this->getCriteria();
