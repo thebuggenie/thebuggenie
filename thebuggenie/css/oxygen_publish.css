@@ -82,16 +82,6 @@
 .toc .publish_toc_5 { margin: 0 0 3px 13px; font-size: 11.5px; }
 .toc .publish_toc_6 { margin: 0 0 3px 16px; font-size: 11px; }
 
-.article .header { margin: 0 0 5px 0; padding: 3px; font-weight: bold; font-size: 17px; border-bottom: 1px solid #CCC; }
-.article .header a { font-size: 13px; }
-
-.toc .header { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 15px; border-bottom: 1px solid #99C; }
-.toc .header a { color: #555; font-size: 16px; }
-
-.toc .content { display: none; }
-.toc .faded_medium { font-size: 11px; margin-bottom: 10px; }
-.toc:hover .content { display: inherit; }
-
 .article .article a { border-bottom: 1px dotted #CCC; }
 .article h1 { padding: 3px 3px 3px 0; }
 .article h1:target { color: #77B; background-color: #F6F6F6; }
@@ -120,6 +110,17 @@
 .article.edit label.small { font-size: 13px; }
 .article.edit input[type="text"] { font-size: 15px; padding: 5px; }
 .article.edit textarea { font-family: "Droid Sans Mono", monospace; }
+
+.article .header { margin: 0 0 5px 0; padding: 3px; font-weight: bold; font-size: 17px; border-bottom: 1px solid #CCC; }
+.article .header a { font-size: 13px; }
+
+.article .toc .header { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 15px; border-bottom: 1px solid #99C; }
+.article .toc .header a { color: #555; font-size: 16px; }
+
+.article .toc .content { display: none; }
+.article .toc .faded_medium { font-size: 11px; margin-bottom: 10px; }
+.article .toc:hover .content { display: inherit; }
+.article .toc a, .article .toc a:hover { border-bottom: 0; }
 
 #wiki_menu .header { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
 #wiki_menu .content ul { list-style-type: none; margin: 0; padding: 0; }
