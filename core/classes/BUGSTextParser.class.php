@@ -432,7 +432,7 @@
 			$line_regexes = array();
 			
 			$line_regexes['preformat'] = '^\s{2}(.*?)$';
-			$line_regexes['definitionlist'] = '^([\;\:])\s*(.*?)$';
+			$line_regexes['definitionlist'] = '^([\;\:])(?!\-?[\(\)\D\/P])\s*(.*?)$';
 			$line_regexes['newline'] = '^$';
 			$line_regexes['list'] = '^([\*\#]+)(.*?)$';
 			$line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
