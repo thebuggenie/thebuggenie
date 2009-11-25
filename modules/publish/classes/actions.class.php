@@ -16,10 +16,18 @@
 			$this->article = null;
 			$this->article_name = $request->getParameter('article_name');
 
-			if ($request->hasParameter('article_name') && count(explode(':', $request->getParameter('article_name'))) > 1)
+			if ($request->hasParameter('article_name') && strpos($request->getParameter('article_name'), ':') !== false)
 			{
-				$article_name = explode(':', $request->getParameter('article_name'));
-				if (($project = BUGSproject::getByKey($article_name[0])) instanceof BUGSproject)
+				$namespace = substr($this->article_name, 0, strpos($this->article_name, ':'));
+				$article_name = substr($this->article_name, strpos($this->article_name, ':') + 1);
+
+				if ($namespace == 'Category')
+				{
+					$namespace = substr($article_name, 0, strpos($article_name, ':'));
+					$article_name = substr($article_name, strpos($article_name, ':') + 1);
+				}
+				
+				if (($project = BUGSproject::getByKey($namespace)) instanceof BUGSproject)
 				{
 					BUGScontext::setCurrentProject($project);
 					$this->getResponse()->setProjectMenuStripHidden(false);
