@@ -75,9 +75,11 @@
 			<?php else: ?>
 				<div class="header" style="padding: 5px;">
 					<?php echo link_tag(make_url('publish_article', array('article_name' => 'FrontpageArticle')), __('Front page article'), array('class' => (($article_name == 'FrontpageArticle') ? 'faded_medium' : ''), 'style' => 'float: right; margin-right: 15px;')); ?>
-					<?php if (BUGScontext::getCurrentProject() instanceof BUGSproject && (strpos($article_name, ucfirst(BUGScontext::getCurrentProject()->getKey())) == 0) || ((substr($article_name, 0, 8) == 'Category') && strpos($article_name, ucfirst(BUGScontext::getCurrentProject()->getKey())) == 9)): ?>
-						<?php $project_article_name = substr($article_name, ((substr($article_name, 0, 8) == 'Category') * 9) + strlen(BUGScontext::getCurrentProject()->getKey())+1); ?>
-						<?php if (substr($article_name, 0, 8) == 'Category'): ?>Category:<?php endif; ?><span class="faded_dark"><?php echo ucfirst(BUGScontext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
+					<?php if (BUGScontext::getCurrentProject() instanceof BUGSproject): ?>
+						<?php if ((strpos($article_name, ucfirst(BUGScontext::getCurrentProject()->getKey())) == 0) || ((substr($article_name, 0, 8) == 'Category') && strpos($article_name, ucfirst(BUGScontext::getCurrentProject()->getKey())) == 9)): ?>
+							<?php $project_article_name = substr($article_name, ((substr($article_name, 0, 8) == 'Category') * 9) + strlen(BUGScontext::getCurrentProject()->getKey())+1); ?>
+							<?php if (substr($article_name, 0, 8) == 'Category'): ?>Category:<?php endif; ?><span class="faded_dark"><?php echo ucfirst(BUGScontext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
+						<?php endif; ?>
 					<?php else: ?>
 						<?php echo get_spaced_name($article_name); ?>
 					<?php endif; ?>
