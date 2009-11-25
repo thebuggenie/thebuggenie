@@ -122,6 +122,10 @@
 .article .toc:hover .content { display: inherit; }
 .article .toc a, .article .toc a:hover { border-bottom: 0; }
 
+.category_list { padding: 0; margin: 0 0 10px 10px; width: 100%; }
+.category_list li { margin-left: 10px; float: left; font-size: 13px; width: 33%; }
+.category_list div { font-size: 13px; }
+
 #wiki_menu .header { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
 #wiki_menu .content ul { list-style-type: none; margin: 0; padding: 0; }
 #wiki_menu .content ul li { font-size: 12px; }

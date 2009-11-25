@@ -65,6 +65,7 @@
 				B2DB::getTable('B2tArticles')->create();
 				B2DB::getTable('B2tArticleViews')->create();
 				B2DB::getTable('B2tArticleLinks')->create();
+				B2DB::getTable('B2tArticleCategories')->create();
 				B2DB::getTable('B2tBillboardPosts')->create();
 			}
 

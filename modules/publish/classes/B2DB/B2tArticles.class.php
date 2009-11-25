@@ -173,7 +173,22 @@ If you want to put a horizontal line in the document, use four dashes:
   ----
 ----
 
-= Advanced formatting =
+= Advanced usage =
+
+== Categories ==
+Your article can be in none, one or more categories. You specify which category your article is in by using the Category namespace link:
+  [[Category:Mycategory]]
+
+This won't show up on the page, and you usually place this at the very end of your wiki page when you edit it. Categories will show up in the \"Categories\" area at the bottom of the article.
+
+If you want to link to a Category, instead of put your article '''in''' a category, put a colon in front of the word \"Category\":
+  [[:Category:Mycategory]]
+[[:Category:Mycategory]]
+
+A category can have one or more ''subcategories''. You put one category in another category by putting the Category keyword ''inside the subcategory article''.
+
+Before you can see the content of a category - its subcategories or pages in that category, the category must be created. To create a category, put an article in a category, click the category link at the bottom of the article, and create the page.
+A category page is in essence just any other wiki article, but with the list of subcategories (if any) and pages in that article.
 
 == Images ==
 You can show uploaded images by using the same notation as for links:

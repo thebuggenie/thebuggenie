@@ -31,6 +31,7 @@
 		protected $nowikis = array();
 		protected $linknumber = 0;
 		protected $internallinks = array();
+		protected $categories = array();
 		protected $ignore_newline = false;
 		protected $parsed_text = null;
 		protected $toc = array();
@@ -74,6 +75,11 @@
 		public function addInternalLinkOccurrence($article_name)
 		{
 			(!array_key_exists($article_name, $this->internallinks)) ? $this->internallinks[$article_name] = 1 : $this->internallinks[$article_name]++;
+		}
+
+		public function addCategorizer($category)
+		{
+			$this->categories[$category] = true;
 		}
 
 		protected function _parse_headers($matches)
@@ -280,6 +286,15 @@
 				return image_tag($href, array('alt' => $title)); // $this->parse_image($href,$title,$options);
 			}
 
+			if ($namespace == 'Category')
+			{
+				if (substr($matches[2], 0, 1) != ':')
+				{
+					$this->addCategorizer($href);
+					return ' '; //.$href;
+				}
+			}
+
 			if (strtolower($namespace) == 'wikipedia') {
 				$options = explode('|',$title);
 				$title = array_pop($options);
@@ -346,7 +361,7 @@
 
 			// handle cases where bold/italic words ends with an apostrophe, eg: ''somethin'''
 			// should read <em>somethin'</em> instead of <em>somethin<strong>
-			if ((!isset($this->openblocks[$level]) || (isset($this->openblocks[$level]) && !$this->openblocks[$level])) && (isset($this->openblocks[$level]) && $this->openblocks[$level - 1]))
+			if ((!isset($this->openblocks[$level]) || (isset($this->openblocks[$level]) && !$this->openblocks[$level])) && (isset($this->openblocks[$level - 1]) && $this->openblocks[$level - 1]))
 			{
 				$level--;
 				$output = "'";
@@ -439,13 +454,13 @@
 			$line_regexes['horizontalrule'] = '^----$';
 
 			$char_regexes = array();
-			$char_regexes[] = array('/(\[\[(([^\]]*?)\:)?([^\]]*?)(\|([^\]]*?))?\]\]([a-z]+)?)/i', array($this, '_parse_internallink'));
+			$char_regexes[] = array('/(\[\[(\:?([^\]]*?)\:)?([^\]]*?)(\|([^\]]*?))?\]\]([a-z]+)?)/i', array($this, '_parse_internallink'));
 			$char_regexes[] = array('/(\[([^\]]*?)(\s+[^\]]*?)?\])/i', array($this, '_parse_externallink'));
 			$char_regexes[] = array('/(\'{2,5})/i', array($this, '_parse_emphasize'));
 			$char_regexes[] = array('/(__NOTOC__|__NOEDITSECTION__)/i', array($this, '_parse_eliminate'));
 			$char_regexes[] = array('/(\{\{([^\}]*?)\}\})/i', array($this, '_parse_variable'));
 			$char_regexes[] = array('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, '_parse_issuelink'));
-			$char_regexes[] = array('/(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:D|\:-D|\:P|\:-P|\(\!\)|\(\?\))/i', array($this, '_getsmiley'));
+			$char_regexes[] = array('/(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))/i', array($this, '_getsmiley'));
 			$char_regexes[] = array('/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9$_+!*();\/?:~-]))/', array($this, '_parse_autosensedlink'));
 			foreach (self::getRegexes() as $regex)
 			{
@@ -647,6 +662,11 @@
 		public function getInternalLinks()
 		{
 			return $this->internallinks;
+		}
+
+		public function getCategories()
+		{
+			return $this->categories;
 		}
 
 		public function setOption($option, $value)

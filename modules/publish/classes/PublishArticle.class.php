@@ -57,7 +57,37 @@
 		 * @var array
 		 */
 		protected $_linking_articles = null;
-		
+
+		/**
+		 * A list of categories this article is in
+		 *
+		 * @var array
+		 */
+		protected $_categories = null;
+
+		/**
+		 * A list of subcategories for this category
+		 *
+		 * @var array
+		 */
+		protected $_subcategories = null;
+
+		/**
+		 * A list of page in this category
+		 *
+		 * @var array
+		 */
+		protected $_category_articles = null;
+
+		/**
+		 * Whether or not this page is a category page
+		 *
+		 * @var boolean
+		 */
+		protected $_is_category = null;
+
+		protected $_category_name = null;
+
 		/**
 		 * Article constructor
 		 *
@@ -177,11 +207,100 @@
 			return $this->_linking_articles;
 		}
 
-		protected function _retrieveInternalLinksFromContent()
+		protected function _populateSubCategories()
+		{
+			if ($this->_subcategories === null)
+			{
+				$this->_subcategories = array();
+				if ($res = B2DB::getTable('B2tArticleCategories')->getSubCategories($this->getCategoryName()))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$this->_subcategories[$row->get(B2tArticleCategories::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(B2tArticleCategories::ARTICLE_NAME));
+					}
+				}
+			}
+		}
+
+		public function getSubCategories()
+		{
+			$this->_populateSubCategories();
+			return $this->_subcategories;
+		}
+
+		protected function _populateCategoryArticles()
+		{
+			if ($this->_category_articles === null)
+			{
+				$this->_category_articles = array();
+				if ($res = B2DB::getTable('B2tArticleCategories')->getCategoryArticles($this->getCategoryName()))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$this->_category_articles[$row->get(B2tArticleCategories::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(B2tArticleCategories::ARTICLE_NAME));
+					}
+				}
+			}
+		}
+
+		public function getCategoryArticles()
+		{
+			$this->_populateCategoryArticles();
+			return $this->_category_articles;
+		}
+
+		protected function _populateCategories()
+		{
+			if ($this->_categories === null)
+			{
+				$this->_categories = array();
+				if ($res = B2DB::getTable('B2tArticleCategories')->getArticleCategories($this->getName()))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$this->_categories[] = $row->get(B2tArticleCategories::CATEGORY_NAME);
+					}
+				}
+			}
+		}
+
+		public function getCategories()
+		{
+			$this->_populateCategories();
+			return $this->_categories;
+		}
+
+		protected function _retrieveLinksAndCategoriesFromContent()
 		{
 			$parser = new BUGSTextParser(html_entity_decode($this->_content));
 			$parser->doParse();
-			return $parser->getInternalLinks();
+			return array($parser->getInternalLinks(), $parser->getCategories());
+		}
+
+		public function isCategory()
+		{
+			if ($this->_is_category === null)
+			{
+				$names = explode(':', $this->_name);
+				if (count($names) > 0)
+				{
+					$this->_is_category = (bool) ($names[0] == 'Category');
+				}
+				else
+				{
+					$this->_is_category = false;
+				}
+			}
+			return $this->_is_category;
+		}
+
+		public function getCategoryName()
+		{
+			if ($this->_category_name === null)
+			{
+				$this->_category_name = substr($this->_name, strpos($this->_name, ':') + 1);
+			}
+			return $this->_category_name;
 		}
 
 		public function save()
@@ -191,10 +310,20 @@
 				throw new Exception(BUGScontext::getI18n()->__('Another article with this name already exists'));
 			}
 			B2DB::getTable('B2tArticles')->save($this->_name, $this->_content, $this->_is_published, BUGScontext::getUser()->getID(), $this->_itemid);
+
 			B2DB::getTable('B2tArticleLinks')->deleteLinksByArticle($this->_name);
-			foreach ($this->_retrieveInternalLinksFromContent() as $link => $occurrences)
+			B2DB::getTable('B2tArticleCategories')->deleteCategoriesByArticle($this->_name);
+
+			list ($links, $categories) = $this->_retrieveLinksAndCategoriesFromContent();
+
+			foreach ($links as $link => $occurrences)
 			{
 				B2DB::getTable('B2tArticleLinks')->addArticleLink($this->_name, $link);
+			}
+
+			foreach ($categories as $category => $occurrences)
+			{
+				B2DB::getTable('B2tArticleCategories')->addArticleCategory($this->_name, $category, $this->isCategory());
 			}
 
 			return true;

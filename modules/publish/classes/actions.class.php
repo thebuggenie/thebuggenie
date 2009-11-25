@@ -69,35 +69,44 @@
 			{
 				if ($request->hasParameter('new_article_name') && $request->getParameter('new_article_name') != '')
 				{
-					if ($request->getParameter('article_id') != 0 && ($article = PublishFactory::articleLab($request->getParameter('article_id'))) && $article instanceof PublishArticle)
+					try
 					{
-						if ($article->getLastUpdatedDate() != $request->getParameter('last_modified'))
+						if ($request->getParameter('article_id') != 0 && ($article = PublishFactory::articleLab($request->getParameter('article_id'))) && $article instanceof PublishArticle)
 						{
-							$this->error = BUGScontext::getI18n()->__('The file has been modified since you last opened it');
-						}
-						else
-						{
-							try
+							if ($article->getLastUpdatedDate() != $request->getParameter('last_modified'))
 							{
-								$article->setName($request->getParameter('new_article_name'));
-								$article->setContent($request->getRawParameter('new_article_content'));
-								$article->save();
-								BUGScontext::setMessage('publish_article_message', BUGScontext::getI18n()->__('The article was saved'));
-								$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $article->getName())));
+								$this->error = BUGScontext::getI18n()->__('The file has been modified since you last opened it');
 							}
-							catch (Exception $e)
+							else
 							{
-								$this->error = $e->getMessage();
+								try
+								{
+									$article->setName($request->getParameter('new_article_name'));
+									$article->setContent($request->getRawParameter('new_article_content'));
+									$article->save();
+									BUGScontext::setMessage('publish_article_message', BUGScontext::getI18n()->__('The article was saved'));
+									$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $article->getName())));
+								}
+								catch (Exception $e)
+								{
+									$this->error = $e->getMessage();
+								}
 							}
 						}
 					}
+					catch (Exception $e) {}
+					
 					if (($article = PublishArticle::getByName($request->getParameter('new_article_name'))) && $article instanceof PublishArticle)
 					{
 						$this->error = BUGScontext::getI18n()->__('An article with that name already exists. Please choose a different article name');
 					}
 					else
 					{
-						PublishArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content', ''), true);
+						$article_id = PublishArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content', ''), true);
+
+						// Trigger this once so it saves categories, links, etc.
+						PublishFactory::articleLab($article_id)->save();
+						
 						$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $request->getParameter('new_article_name'))));
 					}
 				}
