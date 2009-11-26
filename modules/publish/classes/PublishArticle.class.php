@@ -309,7 +309,8 @@
 			{
 				throw new Exception(BUGScontext::getI18n()->__('Another article with this name already exists'));
 			}
-			B2DB::getTable('B2tArticles')->save($this->_name, $this->_content, $this->_is_published, BUGScontext::getUser()->getID(), $this->_itemid);
+			$user_id = (BUGScontext::getUser() instanceof BUGSuser) ? BUGScontext::getUser()->getID() : 0;
+			B2DB::getTable('B2tArticles')->save($this->_name, $this->_content, $this->_is_published, $user_id, $this->_itemid);
 
 			B2DB::getTable('B2tArticleLinks')->deleteLinksByArticle($this->_name);
 			B2DB::getTable('B2tArticleCategories')->deleteCategoriesByArticle($this->_name);

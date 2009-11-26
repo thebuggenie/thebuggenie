@@ -51,6 +51,8 @@
 		const DB_IS_NOT_NULL = 'IS NOT NULL';
 		const DB_LIKE = 'LIKE';
 		const DB_ILIKE = 'ILIKE';
+		const DB_NOT_LIKE = 'NOT LIKE';
+		const DB_NOT_ILIKE = 'NOT ILIKE';
 		const DB_IN = 'IN';
 		const DB_NOT_IN = 'NOT IN';
 		const DB_LEFT_JOIN = 'LEFT JOIN';

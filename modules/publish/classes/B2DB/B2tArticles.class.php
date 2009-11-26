@@ -38,10 +38,8 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ARTICLE_NAME, 'FrontpageArticle');
-			$crit->addInsert(self::TITLE, 'Welcome to The Bug Genie');
 			$crit->addInsert(self::AUTHOR, 0);
 			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
-			$crit->addInsert(self::INTRO_TEXT, '');
 			$crit->addInsert(self::CONTENT, "== Thank you for installing The Bug Genie! ==
 
 By using The Bug Genie, we want to make your development environment a whole lot less cumbersome.<br>
@@ -63,24 +61,23 @@ To learn more about the wiki formatting used in The Bug Genie, check out WikiFor
 ");
 			$crit->addInsert(self::IS_PUBLISHED, true);
 			$crit->addInsert(self::SCOPE, $scope);
-			$res = $this->doInsert($crit);
+			$a_id = $this->doInsert($crit)->getInsertID();
+			PublishFactory::articleLab($a_id)->save();
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ARTICLE_NAME, 'MainPage');
-			$crit->addInsert(self::TITLE, 'Wiki home');
 			$crit->addInsert(self::AUTHOR, 0);
 			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
-			$crit->addInsert(self::INTRO_TEXT, '');
-			$crit->addInsert(self::CONTENT, "This is the main wiki homepage!
-
-");
+			$crit->addInsert(self::CONTENT, "This is the main wiki homepage!");
+			$crit->addInsert(self::IS_PUBLISHED, true);
+			$crit->addInsert(self::SCOPE, $scope);
+			$a_id = $this->doInsert($crit)->getInsertID();
+			PublishFactory::articleLab($a_id)->save();
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ARTICLE_NAME, 'WikiFormatting');
-			$crit->addInsert(self::TITLE, 'Writing wiki articles with wiki formatting');
 			$crit->addInsert(self::AUTHOR, 0);
 			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
-			$crit->addInsert(self::INTRO_TEXT, '');
 			$crit->addInsert(self::CONTENT, "{{TOC}}
 This article will try to explain how to write pages in The Bug Genie wiki.
 
@@ -249,28 +246,50 @@ The links will automatically include things such as the title, and a strikethrou
 If you want to put some text on the page that shouldn't be interpreted (like the examples above), put two spaces in front of each line.
     I'm an example because I have two spaces in front of me (actually I have four, but that's just so you can see the two spaces)
     This is a second line
+
+[[Category:Help]][[Category:HowTo]]
 ");
 			$crit->addInsert(self::IS_PUBLISHED, true);
 			$crit->addInsert(self::SCOPE, $scope);
-			$res = $this->doInsert($crit);
+			$a_id = $this->doInsert($crit)->getInsertID();
+			PublishFactory::articleLab($a_id)->save();
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ARTICLE_NAME, 'CamelCasing');
-			$crit->addInsert(self::TITLE, 'What is Camel Casing?');
 			$crit->addInsert(self::AUTHOR, 0);
 			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
-			$crit->addInsert(self::INTRO_TEXT, '');
 			$crit->addInsert(self::CONTENT, "'''!CamelCase''' (also spelled \"camel case\") or ''medial capitals'' is the practice of writing compound words or phrases in which the elements are joined without spaces, with each element's initial letter capitalized within the compound, and the first letter can be upper or lower case — as in !LaBelle, !BackColor, !MacGyver, or iPod.
 
 The name comes from the uppercase \"bumps\" in the middle of the compound word, suggestive of the humps of a camel.
 
 The practice is also known by many other names, such as '''!BumpCaps''', '''!BeefCaps''', '''!CapWords''' and '''!WikiWords'''.
 
-'''This is a short introduction to the subject, based on the [[Wikipedia:CamelCase|Wikipedia article]] about camel case.");
+'''This is a short introduction to the subject, based on the [[Wikipedia:CamelCase|Wikipedia article]] about camel case.
+[[Category:Help]]");
 			$crit->addInsert(self::IS_PUBLISHED, true);
 			$crit->addInsert(self::SCOPE, $scope);
-			$res = $this->doInsert($crit);
+			$a_id = $this->doInsert($crit)->getInsertID();
+			PublishFactory::articleLab($a_id)->save();
 
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ARTICLE_NAME, 'Category:Help');
+			$crit->addInsert(self::AUTHOR, 0);
+			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
+			$crit->addInsert(self::CONTENT, "");
+			$crit->addInsert(self::IS_PUBLISHED, true);
+			$crit->addInsert(self::SCOPE, $scope);
+			$a_id = $this->doInsert($crit)->getInsertID();
+			PublishFactory::articleLab($a_id)->save();
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ARTICLE_NAME, 'Category:HowTo');
+			$crit->addInsert(self::AUTHOR, 0);
+			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
+			$crit->addInsert(self::CONTENT, "[[Category:Help]]");
+			$crit->addInsert(self::IS_PUBLISHED, true);
+			$crit->addInsert(self::SCOPE, $scope);
+			$a_id = $this->doInsert($crit)->getInsertID();
+			PublishFactory::articleLab($a_id)->save();
 
 		}
 

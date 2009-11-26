@@ -24,7 +24,7 @@
 		const LEVEL_WARNING_RISK = 15;
 		const LEVEL_FATAL = 20;
 		
-		protected static $_logging = true;
+		protected static $_logging_enabled = false;
 		
 		protected static $_logfile;
 		//protected static $_logfile = '/var/www/dev/thebuggenie/thebuggenie.log';
@@ -33,12 +33,12 @@
 		
 		protected static $_entries = array();
 
-		protected static $_loglevel = 1;
+		protected static $_loglevel = 5;
 		
 		public static function log($message, $category = 'main', $level = 1)
 		{
 			BUGScontext::ping();
-			if (!self::$_logging) return false;
+			if (!self::$_logging_enabled) return false;
 			if (self::$_loglevel > $level) return false;
 			if (self::$_logonajaxcalls || !(isset($_SERVER["HTTP_X_REQUESTED_WITH"]) || (isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && $_SERVER["HTTP_X_REQUESTED_WITH"] == '')))
 			{
@@ -123,7 +123,7 @@
 
 		public static function isEnabled()
 		{
-			return self::$_logging;
+			return self::$_logging_enabled;
 		}
 		
 	}

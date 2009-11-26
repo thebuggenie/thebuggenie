@@ -348,10 +348,8 @@
 		 */
 		public static function ping()
 		{
-			$endtime = microtime();
-			$endtime = explode(' ', $endtime);
-			$endtime = $endtime[1] + $endtime[0];
-			self::$_loadend = $endtime;
+			$endtime = explode(' ', microtime());
+			self::$_loadend = $endtime[1] + $endtime[0];
 		}
 
 		/**
@@ -364,7 +362,6 @@
 		{
 			self::ping();
 			return round((self::$_loadend - self::$_loadstart), $precision);
-			//return round(round((self::$_loadend - self::$_loadstart), $precision) * 1000, 0);
 		}
 		
 		/**
@@ -383,7 +380,6 @@
 				if (!is_readable(BUGS2_INCLUDE_PATH . 'installed') && !isset($argc))
 				{
 					self::$_installmode = true;
-					return true;
 				}
 				elseif (!class_exists('B2DB'))
 				{
@@ -403,6 +399,7 @@
 					self::getRouting()->setRoutes($routes_1);
 				}
 				BUGSlogging::log('...done', 'routing');
+				if (self::$_installmode) return true;
 
 				BUGSlogging::log("Setting current scope");
 				self::setScope();
@@ -553,9 +550,9 @@
 		 */
 		public static function getThemes()
 		{
-			$theme_path = self::getIncludePath() . 'thebuggenie/themes/';
-			$theme_path_handle = opendir($theme_path);
+			$theme_path_handle = opendir(self::getIncludePath() . 'thebuggenie/themes/');
 			$themes = array();
+			
 			while ($theme = readdir($theme_path_handle))
 			{
 				if (strstr($theme, '.') == '') 
@@ -563,6 +560,7 @@
 					$themes[] = $theme; 
 				}
 			}
+			
 			return $themes;
 		}
 		
@@ -854,29 +852,29 @@
 			}
 		}
 
-		//TODO: reimplement
 		/**
 		 * Return all permissions available
+		 * 
 		 * @param string $type
-		 * @param $uid
-		 * @param $tid
-		 * @param $gid
-		 * @param $target_id
-		 * @param $all
-		 * @return unknown_type
+		 * @param integer $uid
+		 * @param integer $tid
+		 * @param integer $gid
+		 * @param integer $target_id[optional]
+		 * @param boolean $all[optional]
+		 *
+		 * @return array
 		 */
 		public static function getAllPermissions($type, $uid, $tid, $gid, $target_id = null, $all = false)
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tPermissions::SCOPE, self::getScope()->getID());
 			$crit->addWhere(B2tPermissions::PERMISSION_TYPE, $type);
-			//$sql = "select b2pt.permission_type as p_type, b2pt.target_id, b2pt.allowed from bugs2_permissions b2pt where b2pt.permission_type = '$type'";
+
 			if (($uid + $tid + $gid) == 0 && !$all)
 			{
 				$crit->addWhere(B2tPermissions::UID, $uid);
 				$crit->addWhere(B2tPermissions::TID, $tid);
 				$crit->addWhere(B2tPermissions::GID, $gid);
-				//$sql .= " and uid = $uid and tid = $tid and gid = $gid";
 			}
 			else
 			{
@@ -884,32 +882,25 @@
 				{
 					case ($uid != 0):
 						$crit->addWhere(B2tPermissions::UID, $uid);
-						//$sql .= " and uid = $uid";
 					case ($tid != 0):
 						$crit->addWhere(B2tPermissions::TID, $tid);
-						//$sql .= " and tid = $tid";
 					case ($gid != 0):
 						$crit->addWhere(B2tPermissions::GID, $gid);
-						//$sql .= " and gid = $gid";
 				}
 			}
 			if ($target_id != null)
 			{
 				$crit->addWhere(B2tPermissions::TARGET_ID, $target_id);
-				//$sql .= " and b2pt.target_id = $target_id";
 			}
 	
-			//$res = b2db_sql_query($sql, B2DB::getDBlink());
-			$res = B2DB::getTable('B2tPermissions')->doSelect($crit);
-			//echo $res->printSQL();
-	
-			#print $sql;
-	
 			$permissions = array();
-	
-			while ($row = $res->getNextRow())
+
+			if ($res = B2DB::getTable('B2tPermissions')->doSelect($crit))
 			{
-				$permissions[] = array('p_type' => $row->get(B2tPermissions::PERMISSION_TYPE), 'target_id' => $row->get(B2tPermissions::TARGET_ID), 'allowed' => $row->get(B2tPermissions::ALLOWED), 'uid' => $row->get(B2tPermissions::UID), 'gid' => $row->get(B2tPermissions::GID), 'tid' => $row->get(B2tPermissions::TID), 'id' => $row->get(B2tPermissions::ID));
+				while ($row = $res->getNextRow())
+				{
+					$permissions[] = array('p_type' => $row->get(B2tPermissions::PERMISSION_TYPE), 'target_id' => $row->get(B2tPermissions::TARGET_ID), 'allowed' => $row->get(B2tPermissions::ALLOWED), 'uid' => $row->get(B2tPermissions::UID), 'gid' => $row->get(B2tPermissions::GID), 'tid' => $row->get(B2tPermissions::TID), 'id' => $row->get(B2tPermissions::ID));
+				}
 			}
 	
 			return $permissions;

@@ -22,13 +22,7 @@
 			$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
 			$this->addAvailableListener('core', 'project_menustrip_item_links', 'listen_projectMenustripLinks', 'Project menustrip links');
 
-			$this->addRoute('publish', '/wiki', 'showArticle', array('article_name' => 'MainPage'));
-			$this->addRoute('publish_article_new', '/wiki/new', 'editArticle', array('article_name' => 'NewArticle'));
-			$this->addRoute('publish_article', '/wiki/:article_name', 'showArticle');
-			$this->addRoute('publish_article_edit', '/wiki/:article_name/edit', 'editArticle');
-			$this->addRoute('publish_article_delete', '/wiki/:article_name/delete', 'deleteArticle');
-			$this->addRoute('publish_article_save', '/wiki/savearticle', 'saveArticle');
-			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'showArticle');
+			$this->_addRoutes();
 
 			if ($this->getSetting('allow_camelcase_links'))
 			{
@@ -41,6 +35,17 @@
 		public function initialize()
 		{
 
+		}
+
+		protected function _addRoutes()
+		{
+			$this->addRoute('publish', '/wiki', 'showArticle', array('article_name' => 'MainPage'));
+			$this->addRoute('publish_article_new', '/wiki/new', 'editArticle', array('article_name' => 'NewArticle'));
+			$this->addRoute('publish_article', '/wiki/:article_name', 'showArticle');
+			$this->addRoute('publish_article_edit', '/wiki/:article_name/edit', 'editArticle');
+			$this->addRoute('publish_article_delete', '/wiki/:article_name/delete', 'deleteArticle');
+			$this->addRoute('publish_article_save', '/wiki/savearticle', 'saveArticle');
+			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'showArticle');
 		}
 
 		public static function install($scope = null)
@@ -69,14 +74,9 @@
 				B2DB::getTable('B2tBillboardPosts')->create();
 			}
 
-			/*function fu($string)
-			{
-				return '{link:'.$string.'}';
-			}
-			echo preg_replace('/(?<!\!)\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/e', 'fu("\\0")', $text);*/
-			
 			try
 			{
+				BUGScontext::getRouting()->addRoute('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
 				self::loadFixtures($scope);
 			}
 			catch (Exception $e)
@@ -225,6 +225,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tArticles::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(B2tArticles::ARTICLE_NAME, 'Category:%', B2DBCriteria::DB_NOT_LIKE);
 			
 			$crit->addOrderBy(B2tArticles::DATE, 'desc');
 			
@@ -287,84 +288,6 @@
 			return $articles;
 		}
 		
-		/**
-		 * Prints a billboard post
-		 *
-		 * @param PublishBillboardPost $billboardpost
-		 */
-		protected function _printBillboardPost($billboardpost)
-		{
-			if ($billboardpost->isLink())
-			{
-				?><div class="billboardpostdiv">
-				<b><?php 
-				print '<a href="' . $billboardpost->getLinkURL() . '" target="_blank">' . $billboardpost->getTitle() . '</a>';
-				?></b>
-				<div class="billboardinfo"><?php print bugs_formatTime($billboardpost->getPostedDate(), 3); ?></div>
-				<div class="billboardpost"><?php
-			}
-			else
-			{
-				?><div class="billboardpostdiv">
-				<b><?php echo $billboardpost->getTitle(); ?></b>
-				<div class="billboardinfo"><?php print bugs_formatTime($billboardpost->getPostedDate(), 3); ?></div>
-				<?php if ($billboardpost->getTargetBoard() == 0): ?>
-					<?php print bugs_BBDecode($billboardpost->getContent()); ?>
-				<?php endif; ?>
-				<div class="billboardpost"><?php
-			}
-			
-			if ($billboardpost->isLinkToArticle())
-			{
-				print '<a href="' . BUGScontext::getTBGPath() . 'modules/publish/articles.php?article_id=' . $billboardpost->getRelatedArticleID() . '">' . BUGScontext::getI18n()->__('Click here to go to this article') . '</a>';
-			}
-			elseif (!$billboardpost->isLink())
-			{
-				print '<a href="' . BUGScontext::getTBGPath() . 'modules/publish/billboard.php?billboard=' . $billboardpost->getTargetBoard() . '&amp;post_id=' . $billboardpost->getID() . '">' . BUGScontext::getI18n()->__('Open this board') . '</a>';
-			}
-			?></div>
-			</div>
-			<?php			
-		}
-		
-		/**
-		 * Prints a billboard post
-		 *
-		 * @param PublishBillboardPost $billboardpost
-		 */
-		public function printBillboardPostOnBillboard($billboardpost)
-		{
-			echo '<li style="padding: 5px; margin: 2px; position relative; margin-bottom: 5px; border: 1px solid #DDD; background-color: #F9F9F9;" id="billboardpost_' . $billboardpost->getID() . '">';
-			if (BUGScontext::getUser()->hasPermission('manage_billboard', 0, 'publish'))
-			{
-				echo '<div style="position: relative;">';
-				echo '<a class="image" href="javascript:void(0);" style="position: absolute; top: 2px; right: 2px;" onclick="removeBillboardPost(' . $billboardpost->getID() . ');">' . image_tag('action_cancel_small.png') . '</a>';
-				echo '</div>';
-			}
-			if ($billboardpost->isLink())
-			{
-				echo '<b><a href="' . $billboardpost->getLinkURL() . '" target="_blank">' . $billboardpost->getTitle() . '</a></b>';
-			}
-			else
-			{
-				?><b><?php echo $billboardpost->getTitle(); ?></b><?php
-			}
-
-			?><div class="billboardinfo" style="background-color: #F9F9F9;"><?php
-			echo $billboardpost->getAuthor() . ' - ' . bugs_formatTime($billboardpost->getPostedDate(), 3); ?></div><?php
-			
-			if ($billboardpost->isLinkToArticle())
-			{
-				print '<div style="padding: 2px; padding-top: 7px; padding-bottom: 7px; border: 1px solid #EEE; background-color: #FFF;">' . bugs_BBDecode($billboardpost->getContent()) . '</div>';
-				print '<div style="text-align: right;"><a href="' . BUGScontext::getTBGPath() . 'modules/publish/articles.php?article_id=' . $billboardpost->getRelatedArticleID() . '">' . BUGScontext::getI18n()->__('Click here to go to this article') . '</a></div>';
-			}
-			elseif (!$billboardpost->isLink())
-			{
-				print '<div style="padding: 2px; padding-top: 7px; padding-bottom: 7px; border: 1px solid #EEE; background-color: #FFF;">' . bugs_BBDecode($billboardpost->getContent()) . '</div>';
-			}
-			echo '</li>';
-		}
-
 		public function getFrontpageArticle()
 		{
 			if ($row = B2DB::getTable('B2tArticles')->getArticleByName('FrontpageArticle'))
