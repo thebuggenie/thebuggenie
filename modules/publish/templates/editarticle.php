@@ -33,7 +33,7 @@
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
 			<?php if ($preview && $article instanceof PublishArticle): ?>
-				<?php include_component('articledisplay', array('article' => $article, 'show_category_contains' => false)); ?>
+				<?php include_component('articledisplay', array('article' => $article, 'show_category_contains' => false, 'show_actions' => false)); ?>
 			<?php endif; ?>
 			<a name="edit_article"></a>
 			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="post"
