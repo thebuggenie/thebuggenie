@@ -55,11 +55,17 @@
 					<textarea id="article_content" name="new_article_content" style="width: 100%; margin: 0; font-size: 12px; height: 350px;"><?php echo $article_content; ?></textarea>
 				</div>
 				<div class="faded_dark" style="padding: 5px; font-size: 13px;"><?php echo __('For help and tips on how to format your article, see %wiki_formatting%', array('%wiki_formatting%' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting', array('target' => '_new')))); ?></div>
-				<div class="publish_article_actions">
-					<div class="sub_header"><?php echo __('Actions available'); ?></div>
-					<input type="submit" value="<?php echo ($article instanceof PublishArticle) ? __('Save changes') : __('Create article'); ?>" style="float: left;">
-					<input type="submit" onclick="$('article_preview').value = 1;" value="<?php echo ($article instanceof PublishArticle) ? __('Preview changes') : __('Preview article'); ?>" style="float: left; margin-left: 10px;">
-					<?php echo link_tag((($article instanceof PublishArticle) ? make_url('publish_article', array('article_name' => $article_name)) : make_url('publish')), __('Cancel'), array('style' => 'float: left; font-size: 13px; margin: 5px 0 0 10px;')); ?>
+				<div class="rounded_box lightgrey_borderless" style="margin: 0 5px 5px 5px;">
+					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+					<div class="xboxcontent" style="padding: 3px; min-height: 27px;">
+						<div class="publish_article_actions">
+							<div class="sub_header"><?php echo __('Actions available'); ?></div>
+							<input type="submit" value="<?php echo ($article instanceof PublishArticle) ? __('Save changes') : __('Create article'); ?>" style="float: left;">
+							<input type="submit" onclick="$('article_preview').value = 1;" value="<?php echo ($article instanceof PublishArticle) ? __('Preview changes') : __('Preview article'); ?>" style="float: left; margin-left: 10px;">
+							<?php echo link_tag((($article instanceof PublishArticle) ? make_url('publish_article', array('article_name' => $article_name)) : make_url('publish')), __('Cancel'), array('style' => 'float: left; font-size: 13px; margin: 5px 0 0 10px;')); ?>
+						</div>
+					</div>
+					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</div>
 				<br style="clear: both;">
 			</form>
