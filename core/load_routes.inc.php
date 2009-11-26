@@ -13,8 +13,9 @@
 	$routes[] = array('hide_infobox', '/hide/infobox/:key', 'main', 'hideInfobox');
 	$routes[] = array('getreportissuefields', '/reportissue/get/fields/for/project/*', 'main', 'reportIssueGetFields');
 	$routes[] = array('reportissue', '/reportissue/*', 'main', 'reportIssue');
-	$routes[] = array('search', '/issues', 'search', 'findIssues');
-	$routes[] = array('quicksearch', '/quicksearch', 'search', 'quickSearch');
+	$routes[] = array('findthis', '/issues/find/:searchfor/*', 'search', 'findIssues');
+	$routes[] = array('search', '/issues/*', 'search', 'findIssues');
+	$routes[] = array('quicksearch', '/quicksearch/*', 'search', 'quickSearch');
 	$routes[] = array('about', '/about', 'main', 'about');
 	$routes[] = array('soap', '/soapmeup', 'soap', 'soapHandler');
 	$routes[] = array('wsdl', '/thebuggenie.wsdl', 'soap', 'getWSDL');

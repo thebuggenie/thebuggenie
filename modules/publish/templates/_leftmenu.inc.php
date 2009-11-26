@@ -11,7 +11,7 @@
 						<b><?php echo __('Wiki Frontpage'); ?></b>
 					<?php endif; ?>
 				</li>
-				<?php if (BUGScontext::getCurrentProject() instanceof BUGSproject): ?>
+				<?php if (BUGScontext::isProjectContext()): ?>
 					<li>
 						<?php echo link_tag(make_url('publish_article', array('article_name' => ucfirst(BUGScontext::getCurrentProject()->getKey()) .':MainPage')), __('Project Wiki Frontpage')); ?>
 					</li>

@@ -17,7 +17,7 @@
 			<li<?php if ($bugs_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png', array('style' => 'float: left;')).__('My dashboard')); ?></li>
 		<?php endif; ?>
 		<?php if (BUGScontext::getUser()->hasPermission("b2canreportissues")): ?>
-			<?php if (BUGScontext::getCurrentProject() instanceof BUGSproject): ?>
+			<?php if (BUGScontext::isProjectContext()): ?>
 				<li<?php if ($bugs_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_reportissue', array('project_key' => BUGScontext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
 			<?php else: ?>
 				<li<?php if ($bugs_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('reportissue'), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
@@ -38,14 +38,14 @@
 	</ul>
 	<ul class="right">
 		<li style="height: 24px;" class="nohover">
-			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php print BUGScontext::getTBGPath(); ?>modules/search/search.php" enctype="multipart/form-data" method="post" name="quicksearchform">
+			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo (BUGScontext::isProjectContext()) ? make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'quicksearch' => 'true')) : make_url('search', array('quicksearch' => 'true')); ?>" method="post" name="quicksearchform">
 				<div style="width: auto; padding: 0; text-align: right; position: relative;">
 				<label for="searchfor"><?php echo __('Quick search'); ?></label>
 				<?php $quicksearch_title = __('Search for anything here'); ?>
-				<input type="text" name="searchfor" id="searchfor" value="<?php echo $quicksearch_title; ?>" style="width: 180px; padding: 1px 1px 1px;" onblur="if ($('searchfor').getValue() == '') { $('searchfor').value = '<?php echo $quicksearch_title; ?>'; $('searchfor').addClassName('faded_medium'); }" onfocus="if ($('searchfor').getValue() == '<?php echo $quicksearch_title; ?>') { $('searchfor').clear(); } $('searchfor').removeClassName('faded_medium');" class="faded_medium"><div id="searchfor_autocomplete_choices" class="autocomplete"></div>
+				<input type="text" name="searchfor" id="searchfor" value="<?php echo $quicksearch_title; ?>" style="width: 220px; padding: 1px 1px 1px;" onblur="if ($('searchfor').getValue() == '') { $('searchfor').value = '<?php echo $quicksearch_title; ?>'; $('searchfor').addClassName('faded_medium'); }" onfocus="if ($('searchfor').getValue() == '<?php echo $quicksearch_title; ?>') { $('searchfor').clear(); } $('searchfor').removeClassName('faded_medium');" class="faded_medium"><div id="searchfor_autocomplete_choices" class="autocomplete"></div>
 				<script type="text/javascript">
 
-				new Ajax.Autocompleter("searchfor", "searchfor_autocomplete_choices", '<?php echo make_url('quicksearch'); ?>', {paramName: "searchfor", minChars: 2});
+				new Ajax.Autocompleter("searchfor", "searchfor_autocomplete_choices", '<?php echo (BUGScontext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>', {paramName: "searchfor", minChars: 2});
 
 				</script>
 				<input type="submit" value="<?php echo BUGScontext::getI18n()->__('Find'); ?>" style="padding: 0 2px 0 2px;">

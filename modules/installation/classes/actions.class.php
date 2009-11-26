@@ -10,7 +10,7 @@
 		 * 
 		 * @return null
 		 */
-		public function runInstallIntro($request)
+		public function runInstallIntro(BUGSrequest $request)
 		{
 			$this->getResponse()->setDecoration(BUGSresponse::DECORATE_NONE);
 			
@@ -31,7 +31,7 @@
 		 * 
 		 * @return null
 		 */
-		public function runInstallStep1($request)
+		public function runInstallStep1(BUGSrequest $request)
 		{
 			$this->all_well = true;
 			$this->b2db_folder_perm_ok = true;
@@ -68,7 +68,7 @@
 		 * 
 		 * @return null
 		 */
-		public function runInstallStep2($request)
+		public function runInstallStep2(BUGSrequest $request)
 		{
 			$this->preloaded = false;
 			$this->selected_connection_detail = 'dsn';
@@ -100,7 +100,7 @@
 		 * 
 		 * @return null
 		 */
-		public function runInstallStep3($request)
+		public function runInstallStep3(BUGSrequest $request)
 		{
 			$this->selected_connection_detail = $request->getParameter('connection_type');
 			try
@@ -208,7 +208,7 @@
 		 * 
 		 * @return null
 		 */
-		public function runInstallStep4($request)
+		public function runInstallStep4(BUGSrequest $request)
 		{
 			try
 			{
@@ -239,7 +239,7 @@
 		 * 
 		 * @return null
 		 */
-		public function runInstallStep5($request)
+		public function runInstallStep5(BUGSrequest $request)
 		{
 			$this->sample_data = false;
 			try
@@ -280,7 +280,7 @@
 		 * 
 		 * @return null
 		 */
-		public function runInstallStep6($request)
+		public function runInstallStep6(BUGSrequest $request)
 		{
 			if (file_put_contents(BUGScontext::getIncludePath() . 'installed', '2.1, installed ' . date('d.m.Y H:i')) === false)
 			{

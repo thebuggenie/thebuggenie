@@ -29,6 +29,7 @@
 		protected $toc_base_id = null;
 		protected $openblocks = array();
 		protected $nowikis = array();
+		protected $codeblocks = array();
 		protected $linknumber = 0;
 		protected $internallinks = array();
 		protected $categories = array();
@@ -65,7 +66,7 @@
 			$this->use_toc = $use_toc;
 			$this->toc_base_id = $toc_base_id;
 
-			if (BUGScontext::getCurrentProject() instanceof BUGSproject)
+			if (BUGScontext::isProjectContext())
 			{
 				$this->namespace = BUGScontext::getCurrentProject()->getKey();
 			}
@@ -84,6 +85,10 @@
 
 		protected function _parse_headers($matches)
 		{
+			if (array_key_exists('headers', $this->options) && !$this->options['headers'])
+			{
+				return $matches[0] . "\n";
+			}
 			$level = strlen($matches[1]);
 			$content = $matches[2];
 
@@ -611,6 +616,7 @@
 			$text = $this->text;
 
 			$text = preg_replace_callback('/<nowiki>(.*?)<\/nowiki>/i', array($this, "_parse_save_nowiki"), $text);
+			$text = preg_replace_callback('/<code>(.*?)<\/code>/i', array($this, "_parse_save_code"), $text);
 
 			$lines = explode("\n",$text);
 			foreach ($lines as $line)
@@ -620,6 +626,7 @@
 
 			$output = preg_replace_callback('/{{TOC}}/', array($this, "_parse_add_toc"), $output);
 			$output = preg_replace_callback('/\|\|\|NOWIKI\|\|\|/i', array($this, "_parse_restore_nowiki"), $output);
+			$output = preg_replace_callback('/\|\|\|CODE\|\|\|/i', array($this, "_parse_restore_code"), $output);
 
 			self::$current_parser = null;
 
@@ -650,13 +657,30 @@
 
 		protected function _parse_save_nowiki($matches)
 		{
-			array_push($this->nowikis,$matches[1]);
+			array_push($this->nowikis, $matches[1]);
 			return "|||NOWIKI|||";
 		}
 
 		protected function _parse_restore_nowiki($matches)
 		{
 			return array_pop($this->nowikis);
+		}
+
+		protected function _parse_save_code($matches)
+		{
+			array_push($this->codeblocks, $matches[1]);
+			return "|||CODE|||";
+		}
+
+		protected function _geshify($codeblock)
+		{
+			// run $codeblock through geshi parser here
+			return '<code>' . $codeblock . '</code>';
+		}
+
+		protected function _parse_restore_code($matches)
+		{
+			return array_pop($this->_geshify($this->codeblocks));
 		}
 
 		public function getInternalLinks()

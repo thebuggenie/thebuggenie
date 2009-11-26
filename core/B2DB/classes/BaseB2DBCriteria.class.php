@@ -36,7 +36,9 @@
 		 * @var BaseB2DBTable
 		 */
 		protected $fromtable;
-		protected $limit, $offset = '';
+
+		protected $limit = null;
+		protected $offset = null;
 		protected $customsel = false;
 		public $action;
 		protected $sql;
@@ -75,8 +77,6 @@
 		 */
 		public function __construct($table = null)
 		{
-			$this->limit = 0;
-			$this->offset = 0;
 			if ($table !== null)
 			{
 				$this->setFromTable($table);
@@ -429,7 +429,7 @@
 		 */
 		public function setLimit($limit)
 		{
-			$this->limit = intval($limit);
+			$this->limit = (int) $limit;
 			return $this;
 		}
 		
@@ -457,9 +457,17 @@
 			return $this;
 		}
 		
+		/**
+		 * Offset the query
+		 *
+		 * @param integer $offset The number to offset by
+		 *
+		 * @return Base2DBCriteria
+		 */
 		public function setOffset($offset)
 		{
-			throw new Exception('Not implemented yet');
+			$this->offset = (int) $offset;
+			return $this;
 		}
 
 		/**
@@ -960,9 +968,13 @@
 					$first_crit = false;
 				}
 			}
-			if ($this->limit > 0 && $this->action != 'update')
+			if ($this->limit != null && $this->action != 'update')
 			{
-				$sql .= ' LIMIT ' . $this->limit;
+				$sql .= ' LIMIT ' . (int) $this->limit;
+			}
+			if ($this->offset != null && $this->action != 'update')
+			{
+				$sql .= ' OFFSET ' . (int) $this->offset;
 			}
 
 			return $sql;

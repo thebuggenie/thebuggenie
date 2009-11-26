@@ -8,7 +8,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function preExecute($request, $action)
+		public function preExecute(BUGSrequest $request, $action)
 		{
 			$this->getResponse()->setProjectMenuStripHidden();
 			$this->getResponse()->setPage('wiki');
@@ -45,7 +45,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runShowArticle($request)
+		public function runShowArticle(BUGSrequest $request)
 		{
 			$this->message = BUGScontext::getMessageAndClear('publish_article_message');
 			$this->error = BUGScontext::getMessageAndClear('publish_article_error');
@@ -56,7 +56,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runDeleteArticle($request)
+		public function runDeleteArticle(BUGSrequest $request)
 		{
 			if ($article_name = $request->getParameter('article_name'))
 			{
@@ -71,7 +71,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runEditArticle($request)
+		public function runEditArticle(BUGSrequest $request)
 		{
 			if ($request->isMethod(BUGSrequest::POST))
 			{

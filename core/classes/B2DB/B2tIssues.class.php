@@ -351,5 +351,51 @@
 			}
 		}
 
+		public function findIssues($searchterm, $results_per_page = 30, $offset = 0, $filters = array(), $groupby = null)
+		{
+			$crit = $this->getCriteria();
+			if ($searchterm != '')
+			{
+				$searchterm = (strpos($searchterm, '%') !== false) ? $searchterm : "%{$searchterm}%";
+				$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_LIKE);
+				$ctn->addOr(self::LONG_DESCRIPTION, $searchterm, B2DBCriteria::DB_LIKE);
+				$ctn->addOr(self::REPRODUCTION, $searchterm, B2DBCriteria::DB_LIKE);
+				$crit->addWhere($ctn);
+			}
+
+			if (count($filters) > 0)
+			{
+				foreach ($filters as $filter => $value)
+				{
+					if (in_array($filter, array_keys($this->getColumns())))
+					{
+						$crit->addWhere($filter, $value);
+					}
+				}
+			}
+
+			if ($groupby !== null)
+			{
+				
+			}
+
+			$crit2 = clone $crit;
+			$count = $this->doCount($crit2);
+
+			if ($results_per_page != 0)
+			{
+				$crit->setLimit($results_per_page);
+			}
+
+			if ($offset != 0)
+			{
+				$crit->setOffset($offset);
+			}
+
+			$res = $this->doSelect($crit);
+
+			return array($res, $count);
+
+		}
 		
 	}

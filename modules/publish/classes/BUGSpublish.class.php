@@ -29,12 +29,10 @@
 				BUGSTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));
 				BUGSTextParser::addRegex('/(?<!")\![A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'stripExclamationMark'));
 			}
-
 		}
 
 		public function initialize()
 		{
-
 		}
 
 		protected function _addRoutes()
@@ -92,7 +90,7 @@
 			try
 			{
 				$article_name = 'FrontpageArticle';
-				$content = "== Thank you for installing The Bug Genie! ==
+				$content = "== Thank you for installing this preview release of The Bug Genie! ==
 
 By using The Bug Genie, we want to make your development environment a whole lot less cumbersome.<br>
 Project management, issue tracking, source code control, fully editable wiki for all your documenation needs, and more.
@@ -222,10 +220,14 @@ If you want to link to a Category, instead of put your article '''in''' a catego
   [[:Category:Mycategory]]
 [[:Category:Mycategory]]
 
-A category can have one or more ''subcategories''. You put one category in another category by putting the Category keyword ''inside the subcategory article''.
+A category can have one or more ''subcategories''. You put one category in another category by putting the Category link shown above ''inside the subcategory article''. 
+
+'''Ex:''' after having created the page [[:Category:Actors]], create the page [[:Category:MaleActors]], and at the bottom of that article, put:
+  [[Category:Actors]]
+This will make [[:Category:MaleActors]] a subcategory of [[:Category:Actors]]. That means [[:Category:MaleActors]] will show up in the \"Subcategories\" list on the [[:Category:Actors]] page.
 
 Before you can see the content of a category - its subcategories or pages in that category, the category must be created. To create a category, put an article in a category, click the category link at the bottom of the article, and create the page.
-A category page is in essence just any other wiki article, but with the list of subcategories (if any) and pages in that article.
+A category page is in essence just any other wiki article, but with the list of subcategories (if any) and pages in that category.
 
 == Images ==
 You can show uploaded images by using the same notation as for links:
@@ -540,7 +542,7 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 
 		public function getTabKey()
 		{
-			return (BUGScontext::getCurrentProject() instanceof BUGSproject) ? parent::getTabKey() : 'wiki';
+			return (BUGScontext::isProjectContext()) ? parent::getTabKey() : 'wiki';
 		}
 
 	}

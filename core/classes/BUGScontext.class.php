@@ -1194,6 +1194,16 @@
 		{
 			return self::$_selected_project;
 		}
+
+		/**
+		 * Return whether current project is set
+		 *
+		 * @return boolean
+		 */
+		public static function isProjectContext()
+		{
+			return (bool) (self::getCurrentProject() instanceof BUGSproject);
+		}
 		
 		/**
 		 * Set a message to be retrieved in the next request

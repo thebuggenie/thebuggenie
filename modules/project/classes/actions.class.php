@@ -19,7 +19,7 @@
 		 * @param BUGSrequest 	$request
 		 * @param string		$action
 		 */
-		public function preExecute($request, $action)
+		public function preExecute(BUGSrequest $request, $action)
 		{
 			if ($project_key = $request->getParameter('project_key'))
 			{
@@ -53,7 +53,7 @@
 		 * 
 		 * @param BUGSrequest $request
 		 */
-		public function runDashboard($request)
+		public function runDashboard(BUGSrequest $request)
 		{
 			$this->recent_activities = $this->selected_project->getRecentActivities(10);
 			$this->recent_issues = $this->selected_project->getRecentIssues();
@@ -67,7 +67,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runPlanning($request)
+		public function runPlanning(BUGSrequest $request)
 		{
 		}
 
@@ -76,7 +76,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runScrum($request)
+		public function runScrum(BUGSrequest $request)
 		{
 			$this->unassigned_issues = $this->selected_project->getUnassignedStories();
 		}
@@ -86,7 +86,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runScrumSetStoryDetail($request)
+		public function runScrumSetStoryDetail(BUGSrequest $request)
 		{
 			$issue = BUGSfactory::BUGSissueLab($request->getParameter('story_id'));
 			if ($issue instanceof BUGSissue)
@@ -117,7 +117,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runScrumAssignStory($request)
+		public function runScrumAssignStory(BUGSrequest $request)
 		{
 			try
 			{
@@ -160,7 +160,7 @@
 		 *  
 		 * @param BUGSrequest $request
 		 */
-		public function runScrumAddSprint($request)
+		public function runScrumAddSprint(BUGSrequest $request)
 		{
 			if (($sprint_name = $request->getParameter('sprint_name')) && trim($sprint_name) != '')
 			{
@@ -175,7 +175,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runIssues($request)
+		public function runIssues(BUGSrequest $request)
 		{
 		}
 
@@ -184,7 +184,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runTeam($request)
+		public function runTeam(BUGSrequest $request)
 		{
 		}
 
@@ -193,7 +193,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runStatistics($request)
+		public function runStatistics(BUGSrequest $request)
 		{
 		}
 
@@ -202,7 +202,7 @@
 		 *
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runGetMenustrip($request)
+		public function runGetMenustrip(BUGSrequest $request)
 		{
 			$this->forward403unless($request->isMethod(BUGSrequest::POST) && $request->hasParameter('project_id'));
 			$project = null;

@@ -17,7 +17,10 @@
 	$routes[] = array('project_scrum_add_sprint', '/:project_key/scrum/add/sprint', 'project', 'scrumAddSprint');
 	$routes[] = array('project_scrum_story_setcolor', '/:project_key/scrum/set/color/for/story/:story_id', 'project', 'scrumSetStoryDetail', array('detail' => 'color'));
 	$routes[] = array('project_scrum_story_setestimates', '/:project_key/scrum/set/estimates/for/story/:story_id', 'project', 'scrumSetStoryDetail', array('detail' => 'estimates'));
-	$routes[] = array('project_issues', '/:project_key/issues', 'project', 'issues');
+	$routes[] = array('project_issues', '/:project_key/issues', 'search', 'findIssues');
+	$routes[] = array('project_issues', '/:project_key/issues/*', 'search', 'findIssues');
+	$routes[] = array('project_findthis', '/:project_key/issues/find/:searchfor/*', 'search', 'findIssues');
+	$routes[] = array('project_quicksearch', '/:project_key/quicksearch/*', 'search', 'quickSearch');
 	$routes[] = array('project_team', '/:project_key/team', 'project', 'team');
 	$routes[] = array('project_statistics', '/:project_key/statistics', 'project', 'statistics');
 	$routes[] = array('project_dashboard', '/:project_key', 'project', 'dashboard');

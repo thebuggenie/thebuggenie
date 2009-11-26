@@ -3,7 +3,7 @@
 	class soapActions extends BUGSaction
 	{
 		
-		public function preExecute($request, $action)
+		public function preExecute(BUGSrequest $request, $action)
 		{
 			$this->getResponse()->setContentType('application/xml');
 			$this->getResponse()->setDecoration(BUGSresponse::DECORATE_NONE);
@@ -21,12 +21,12 @@
 			return 'fu';
 		}
 		
-		public function runGetWSDL($request)
+		public function runGetWSDL(BUGSrequest $request)
 		{
 			$this->getResponse()->setTemplate('thebuggenie.wsdl');
 		}
 		
-		public function runSoapHandler($request)
+		public function runSoapHandler(BUGSrequest $request)
 		{
 			$this->server->handle();
 			exit();

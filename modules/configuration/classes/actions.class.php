@@ -11,7 +11,7 @@
 		 * @param BUGSrequest 	$request
 		 * @param string		$action
 		 */
-		public function preExecute($request, $action)
+		public function preExecute(BUGSrequest $request, $action)
 		{
 			// forward 403 if you're not allowed here
 			$this->forward403unless(BUGScontext::getUser()->hasPermission("b2saveconfig", 0, 'core', true) ||
@@ -29,7 +29,7 @@
 		 * 
 		 * @param BUGSrequest $request
 		 */
-		public function runIndex($request)
+		public function runIndex(BUGSrequest $request)
 		{
 			$general_config_sections = array();
 			$data_config_sections = array();
@@ -64,7 +64,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runSettings($request)
+		public function runSettings(BUGSrequest $request)
 		{
 			if (BUGScontext::getRequest()->isMethod(BUGSrequest::POST))
 			{
@@ -99,7 +99,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runConfigureProjects($request)
+		public function runConfigureProjects(BUGSrequest $request)
 		{
 			$this->allProjects = BUGSproject::getAll();
 		}
@@ -109,7 +109,7 @@
 		 *
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runConfigureModules($request)
+		public function runConfigureModules(BUGSrequest $request)
 		{
 			$this->module_message = BUGScontext::getMessageAndClear('module_message');
 			$this->module_error = BUGScontext::getMessageAndClear('module_error');
@@ -122,7 +122,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */		
-		public function runFindAssignee($request)
+		public function runFindAssignee(BUGSrequest $request)
 		{
 			$this->forward403unless($request->isMethod(BUGSrequest::POST));
 
@@ -146,7 +146,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runAssignToProject($request)
+		public function runAssignToProject(BUGSrequest $request)
 		{
 			$this->forward403unless($request->isMethod(BUGSrequest::POST));
 									
@@ -231,7 +231,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runConfigureProjectEditionsAndComponents($request)
+		public function runConfigureProjectEditionsAndComponents(BUGSrequest $request)
 		{
 			try
 			{
@@ -247,7 +247,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runConfigureProjectOther($request)
+		public function runConfigureProjectOther(BUGSrequest $request)
 		{
 			try
 			{
@@ -263,7 +263,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runConfigureProjectMilestones($request)
+		public function runConfigureProjectMilestones(BUGSrequest $request)
 		{
 			try
 			{
@@ -280,7 +280,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runConfigureProjectUpdateOther($request)
+		public function runConfigureProjectUpdateOther(BUGSrequest $request)
 		{
 			try
 			{
@@ -333,7 +333,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runConfigureProjectDevelopers($request)
+		public function runConfigureProjectDevelopers(BUGSrequest $request)
 		{
 			try
 			{
@@ -349,7 +349,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runSetProjectLead($request)
+		public function runSetProjectLead(BUGSrequest $request)
 		{
 			try
 			{
@@ -410,7 +410,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runConfigureProjectSettings($request)
+		public function runConfigureProjectSettings(BUGSrequest $request)
 		{
 			try
 			{
@@ -457,7 +457,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runConfigureProjectEdition($request)
+		public function runConfigureProjectEdition(BUGSrequest $request)
 		{
 			try
 			{
@@ -502,7 +502,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runAddProject($request)
+		public function runAddProject(BUGSrequest $request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
@@ -523,7 +523,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runAddEdition($request)
+		public function runAddEdition(BUGSrequest $request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
@@ -566,7 +566,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runBuildAction($request)
+		public function runBuildAction(BUGSrequest $request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
 
@@ -658,7 +658,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runAddBuild($request)
+		public function runAddBuild(BUGSrequest $request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
@@ -714,7 +714,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runAddComponent($request)
+		public function runAddComponent(BUGSrequest $request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
@@ -757,7 +757,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runAddMilestone($request)
+		public function runAddMilestone(BUGSrequest $request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
@@ -800,7 +800,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runMilestoneAction($request)
+		public function runMilestoneAction(BUGSrequest $request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
 
@@ -874,7 +874,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runEditEditionComponent($request)
+		public function runEditEditionComponent(BUGSrequest $request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
 			
@@ -903,7 +903,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runEditComponent($request)
+		public function runEditComponent(BUGSrequest $request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
 			
@@ -931,7 +931,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runDeleteProject($request)
+		public function runDeleteProject(BUGSrequest $request)
 		{
 			$this->forward403unless($this->access_level = self::ACCESS_FULL);
 			
@@ -954,7 +954,7 @@
 		 *
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runModuleAction($request)
+		public function runModuleAction(BUGSrequest $request)
 		{
 			try
 			{
@@ -1000,7 +1000,7 @@
 		 *
 		 * @param BUGSrequest $request The request object
 		 */
-		public function runConfigureModule($request)
+		public function runConfigureModule(BUGSrequest $request)
 		{
 			try
 			{

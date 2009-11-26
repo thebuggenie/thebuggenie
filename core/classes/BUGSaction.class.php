@@ -52,7 +52,7 @@
 		 * @param BUGSrequest $request The request object
 		 * @param string $action The action that is being triggered
 		 */
-		public function preExecute($request, $action)
+		public function preExecute(BUGSrequest $request, $action)
 		{
 			
 		}

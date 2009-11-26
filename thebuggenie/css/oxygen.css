@@ -78,52 +78,6 @@ table.helptable td
 	padding-bottom: 1px;
 }
 
-div.autocomplete 
-{
-	position:absolute;
-	width:250px;
-	background-color:white;
-	border:1px solid #888;
-	margin:0px;
-	padding:0px;
-}
-
-div.autocomplete ul 
-{
-	list-style-type:none;
-	margin:0px;
-	padding:0px;
-}
-
-div.autocomplete ul li.selected 
-{ 
-	background-color: #DDD;
-	text-align: left;
-	font-weight: normal;
-	border: 0px;
-}
-
-div.autocomplete ul li.selected:first-line 
-{ 
-	font-weight: bold;
-}
-
-div.autocomplete ul li 
-{
-	list-style-type:none;
-	display:block;
-	margin:0;
-	padding:2px;
-	height:32px;
-	cursor:pointer;
-	font-weight: normal;
-}
-
-div.autocomplete ul li:first-line
-{
-	font-weight: bold;
-}
-
 input[type="text"], input[type="password"] { font-size: 13px; padding: 2px; }
 select { font-size: 13px; padding: 2px; height: 22px; }
 
@@ -1546,3 +1500,25 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #project_dashboard #project_name { font-size: 18px; font-weight: bold; margin: 5px 5px 5px 0; }
 #project_dashboard #project_team { font-size: 13px; font-weight: normal; margin: 5px 5px 5px 0; width: 615px; }
 #project_dashboard #project_description { font-size: 14px; font-weight: normal; color: #666; }
+
+div.autocomplete { position: absolute; z-index: 200000; background-color: white; border: 0; padding: 0px; }
+div.autocomplete ul { list-style-type: none; margin: 0px; width: 220px; padding: 0px; border: 0; }
+div.autocomplete ul li.selected, div.autocomplete ul li.selected:hover { background-color: #DDD; text-align: left; font-weight: normal; border: 0px; color: #333; text-align: left; }
+div.autocomplete ul li.selected:first-line, div.autocomplete ul li.selected:hover:first-line { font-weight: bold; }
+div.autocomplete ul li span { font-size: 11px; }
+div.autocomplete ul li { list-style-type: none; display: block; width: 100%; margin: 0; padding: 2px; height: 32px; cursor: pointer; font-weight: normal; text-align: left; background-color: #FFF; color: #555; }
+div.autocomplete ul li:first-line { font-weight: bold; }
+
+#find_issues .main_header { font-weight: bold; font-size: 14px; padding: 5px 0 3px 2px; border-bottom: 1px solid #AAA; color: #333; background-color: transparent; }
+#find_issues .main_header .searchterm { font-weight: normal; font-style: italic; }
+#find_issues .main_header .faded_medium { font-weight: normal; }
+#find_issues .main_content { font-size: 12px; font-weight: normal; padding: 3px; }
+#find_issues #no_issues { font-size: 13px; padding: 4px; }
+#find_issues #search_results { margin: 0 0 5px 0; }
+#find_issues #search_results th { background-color: #F5F5F5; padding: 3px 3px 3px 0; }
+#find_issues #search_results td { font-size: 12px; padding: 3px 3px 3px 0; }
+#find_issues #search_results tbody tr:hover { background-color: #F1F1F1; }
+#find_issues #search_results td.result_issue_no a { font-weight: bold; }
+#find_issues #search_results td.result_issue_title a { font-weight: bold; color: #333; }
+#find_issues #search_results td.result_issue_title a:hover { font-weight: bold; color: #555; }
+#find_issues #search_results td.smaller { font-size: 10px; }

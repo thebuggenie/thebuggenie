@@ -18,7 +18,7 @@
 		 * 
 		 * @param BUGSrequest $request
 		 */
-		public function runViewIssue($request)
+		public function runViewIssue(BUGSrequest $request)
 		{
 			BUGSlogging::log('Loading issue');
 			$selected_project = null;
@@ -89,7 +89,7 @@
 		 *  
 		 * @param BUGSrequest $request
 		 */
-		public function runIndex($request)
+		public function runIndex(BUGSrequest $request)
 		{
 			if (BUGSsettings::isSingleProjectTracker())
 			{
@@ -124,7 +124,7 @@
 		 *  
 		 * @param BUGSrequest $request
 		 */
-		public function runDashboard($request)
+		public function runDashboard(BUGSrequest $request)
 		{
 			if (BUGScontext::getUser()->isThisGuest())
 			{
@@ -138,7 +138,7 @@
 		 *  
 		 * @param BUGSrequest $request
 		 */
-		public function runAbout($request)
+		public function runAbout(BUGSrequest $request)
 		{
 			$this->getResponse()->setProjectMenuStripHidden();
 		}
@@ -148,7 +148,7 @@
 		 * 
 		 * @param BUGSrequest $request
 		 */
-		public function runNotFound($request)
+		public function runNotFound(BUGSrequest $request)
 		{
 			$this->getResponse()->setHttpStatus(404);
 			$message = null;
@@ -159,7 +159,7 @@
 		 * 
 		 * @param BUGSrequest $request
 		 */
-		public function runLogout($request)
+		public function runLogout(BUGSrequest $request)
 		{
 			if (BUGScontext::getUser() instanceof BUGSuser)
 			{
@@ -175,7 +175,7 @@
 		 *  
 		 * @param BUGSrequest $request
 		 */
-		public function runLogin($request)
+		public function runLogin(BUGSrequest $request)
 		{
 			$this->getResponse()->setPage('login');
 			$this->getResponse()->setProjectMenuStripHidden();
@@ -301,7 +301,7 @@
 		 *  
 		 * @param BUGSrequest $request
 		 */
-		public function runRegister1($request)
+		public function runRegister1(BUGSrequest $request)
 		{
 			$this->getResponse()->setPage('login');
 			try
@@ -342,7 +342,7 @@
 		 *  
 		 * @param BUGSrequest $request
 		 */
-		public function runRegister2($request)
+		public function runRegister2(BUGSrequest $request)
 		{
 			$this->getResponse()->setPage('login');
 			try
@@ -443,7 +443,7 @@
 		 *  
 		 * @param BUGSrequest $request
 		 */
-		public function runActivate($request)
+		public function runActivate(BUGSrequest $request)
 		{
 			$this->getResponse()->setPage('../../login');
 			
@@ -476,7 +476,7 @@
 		 *  
 		 * @param BUGSrequest $request
 		 */
-		public function runMyAccount($request)
+		public function runMyAccount(BUGSrequest $request)
 		{
 			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('account'));
 			$this->getResponse()->setPage('account');
@@ -488,7 +488,7 @@
 		 *  
 		 * @param BUGSrequest $request
 		 */
-		public function runReportIssue($request)
+		public function runReportIssue(BUGSrequest $request)
 		{
 			$i18n = BUGScontext::getI18n();
 			$this->selected_project = null;
@@ -728,7 +728,7 @@
 		 *  
 		 * @param BUGSrequest $request
 		 */
-		public function runReportIssueGetFields($request)
+		public function runReportIssueGetFields(BUGSrequest $request)
 		{
 			if ($project_id = $request->getParameter('project_id'))
 			{
@@ -755,7 +755,7 @@
 		 *  
 		 * @param BUGSrequest $request
 		 */
-		public function runToggleFavouriteIssue($request)
+		public function runToggleFavouriteIssue(BUGSrequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
@@ -790,7 +790,7 @@
 		 * 
 		 * @param BUGSrequest $request
 		 */
-		public function runIssueSetField($request)
+		public function runIssueSetField(BUGSrequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
@@ -1036,7 +1036,7 @@
 		 * 
 		 * @param BUGSrequest $request
 		 */
-		public function runIssueRevertField($request)
+		public function runIssueRevertField(BUGSrequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
@@ -1136,7 +1136,7 @@
 		 * 
 		 * @param BUGSrequest $request
 		 */
-		public function runIssueStartWorking($request)
+		public function runIssueStartWorking(BUGSrequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
@@ -1163,7 +1163,7 @@
 		 * 
 		 * @param BUGSrequest $request
 		 */
-		public function runIssueStopWorking($request)
+		public function runIssueStopWorking(BUGSrequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
@@ -1207,7 +1207,7 @@
 		 * 
 		 * @param BUGSrequest $request
 		 */
-		public function runReopenIssue($request)
+		public function runReopenIssue(BUGSrequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
@@ -1234,7 +1234,7 @@
 		 * 
 		 * @param BUGSrequest $request
 		 */
-		public function runCloseIssue($request)
+		public function runCloseIssue(BUGSrequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
@@ -1273,7 +1273,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */		
-		public function runFindIdentifiable($request)
+		public function runFindIdentifiable(BUGSrequest $request)
 		{
 			$this->forward403unless($request->isMethod(BUGSrequest::POST));
 			$this->users = array();
@@ -1294,7 +1294,7 @@
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */		
-		public function runHideInfobox($request)
+		public function runHideInfobox(BUGSrequest $request)
 		{
 			BUGSsettings::hideInfoBox($request->getParameter('key'));
 			return $this->renderJSON(array('hidden' => true));

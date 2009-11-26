@@ -8,7 +8,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runForgot($request)
+		public function runForgot(BUGSrequest $request)
 		{
 			try
 			{
@@ -53,7 +53,7 @@
 		 *
 		 * @param BUGSrequest $request
 		 */
-		public function runTestEmail($request)
+		public function runTestEmail(BUGSrequest $request)
 		{
 			if ($email_to = $request->getParameter('test_email_to'))
 			{

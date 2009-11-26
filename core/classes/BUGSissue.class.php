@@ -478,6 +478,12 @@
 		static function getIssueFromLink($issue_no)
 		{
 			$theIssue = null;
+			$issue_no = strtolower($issue_no);
+			if (strpos($issue_no, ' ') !== false)
+			{
+				$issue_no = substr($issue_no, strpos($issue_no, ' ') + 1);
+			}
+			if (substr($issue_no, 0, 1) == '#') $issue_no = substr($issue_no, 1);
 			if (is_numeric($issue_no))
 			{
 				try
@@ -509,6 +515,21 @@
 			}
 		
 			return ($theIssue instanceof BUGSissue) ? $theIssue : null;
+		}
+
+		public static function findIssues($searchterm, $results_per_page = 30, $offset = 0, $filters = array(), $groupby = null)
+		{
+			$issues = array();
+			list ($res, $count) = B2DB::getTable('B2tIssues')->findIssues($searchterm, $results_per_page, $offset, $filters, $groupby);
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$issue = BUGSfactory::BUGSissueLab($row->get(B2tIssues::ID), $row);
+					$issues[] = $issue;
+				}
+			}
+			return array($issues, $count);
 		}
 		
 		public function __call($method, $parameters = null)

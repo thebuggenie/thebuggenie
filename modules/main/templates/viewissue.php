@@ -380,7 +380,7 @@
 						<?php if ($theIssue->getDescription() == ''): ?>
 							<div class="faded_medium"><?php echo __('Nothing entered.'); ?></div>
 						<?php else: ?>
-							<?php echo tbg_parse_text($theIssue->getDescription()); ?>
+							<?php echo tbg_parse_text($theIssue->getDescription(), false, null, array('headers' => false)); ?>
 						<?php endif; ?>
 					</div>
 					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
@@ -392,7 +392,7 @@
 						<?php if ($theIssue->getReproductionSteps() == ''): ?>
 							<div class="faded_medium"><?php echo __('Nothing entered.'); ?></div>
 						<?php else: ?>
-							<?php echo tbg_parse_text($theIssue->getReproductionSteps()); ?>
+							<?php echo tbg_parse_text($theIssue->getReproductionSteps(), false, null, array('headers' => false)); ?>
 						<?php endif; ?>
 					</div>
 					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
