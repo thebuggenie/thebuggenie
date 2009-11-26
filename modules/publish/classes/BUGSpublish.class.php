@@ -92,7 +92,7 @@
 				$article_name = 'FrontpageArticle';
 				$content = "== Thank you for installing this preview release of The Bug Genie! ==
 
-By using The Bug Genie, we want to make your development environment a whole lot less cumbersome.<br>
+We want to make your development environment a lot easier and manageable. You get:<br>
 Project management, issue tracking, source code control, fully editable wiki for all your documenation needs, and more.
 
 Please take a few moments setting up your new issue tracker, by clicking the [[TBG:configure|Configure]] menu option in the top menu.<br>
@@ -108,6 +108,27 @@ To learn more about the wiki formatting used in The Bug Genie, check out WikiFor
 ''-The Bug Genie development team''<br>
 [http://www.thebuggenie.com]
 
+''ps: this page can be edited from [[FrontpageArticle]]''
+";
+				PublishArticle::createNew($article_name, $content, true, $scope);
+
+				$article_name = 'GettingStarted';
+				$content = "= Getting started with The Bug Genie =
+{{TOC}}
+== Name, slogan and other settings ==
+You might want to set the name and slogan, or change some of the other default settings. You can do this from [[TBG:configure_settings|Configure -> Settings]], where you have all the main settings available.
+
+== Your first project ==
+The first thing you want to do is set up your project. Although The Bug Genie can be used without any projects, it's mainly an issue tracker, and that's where it excels.
+
+To add a project, log in as an admin, and either click the little configuration icon next to the project list on the frontpage, or click [[TBG:configure_projects|Configure -> projects]]. This will take you to the projects list. To create a project from here, simply enter the project name in the text box and click \"Add\" or press Enter.
+
+The Bug Genie is now ready to be used for issue reporting with your new project. However, you might want to set up more information about the project. Click the \"Edit project\" link on the project and change any settings in here. From that page you can also add a project description, release date and more information about your project. This is also where you set up editions, components, releases, milestones, and more.
+
+=== Project team ===
+Someone is usually working on your project. You should add developers working on The Bug Genie to your project. (This of course requires that your developers have user accounts). Click the \"Edit project\" icon on your project, and then open up the '''Related users''' tab. Add developers, project managers, testers and documentors from this page.
+
+[[Category:Help]][[Category:HowTo]]
 ";
 				PublishArticle::createNew($article_name, $content, true, $scope);
 
