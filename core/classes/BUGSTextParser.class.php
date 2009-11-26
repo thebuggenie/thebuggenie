@@ -291,7 +291,7 @@
 				if (substr($matches[2], 0, 1) != ':')
 				{
 					$this->addCategorizer($href);
-					return ' '; //.$href;
+					return '';
 				}
 			}
 

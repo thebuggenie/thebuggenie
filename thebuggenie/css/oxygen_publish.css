@@ -118,8 +118,9 @@
 .article .toc .header a { color: #555; font-size: 16px; }
 
 .article .toc .content { display: none; }
-.article .toc .faded_medium { font-size: 11px; margin-bottom: 10px; }
+.article .toc .faded_medium { font-size: 11px; margin-bottom: 0; display: inherit; }
 .article .toc:hover .content { display: inherit; }
+.article .toc:hover .faded_medium { display: none; }
 .article .toc a, .article .toc a:hover { border-bottom: 0; }
 
 .category_list { padding: 0; margin: 0 0 10px 10px; width: 100%; }

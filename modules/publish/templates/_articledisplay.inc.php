@@ -4,7 +4,7 @@
 		<div class="header">
 			<?php if ($show_actions): ?>
 				<?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), __('History'), array('style' => 'float: right;')); ?>
-				<?php echo link_tag(make_url('publish_article', array('article_name' => 'FrontpageArticle')), __('Front page article'), array('class' => (($article->getName() == 'FrontpageArticle') ? 'faded_medium' : ''), 'style' => 'float: right; margin-right: 15px;')); ?>
+				<?php echo link_tag(make_url('publish_article_edit', array('article_name' => $article->getName())), __('Edit'), array('style' => 'float: right; margin-right: 15px;')); ?>
 			<?php endif; ?>
 			<?php if (BUGScontext::getCurrentProject() instanceof BUGSproject): ?>
 				<?php if ((strpos($article->getName(), ucfirst(BUGScontext::getCurrentProject()->getKey())) == 0) || ($article->isCategory() && strpos($article->getName(), ucfirst(BUGScontext::getCurrentProject()->getKey())) == 9)): ?>

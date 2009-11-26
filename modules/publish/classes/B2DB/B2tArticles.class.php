@@ -189,7 +189,7 @@ A category page is in essence just any other wiki article, but with the list of 
 
 == Images ==
 You can show uploaded images by using the same notation as for links:
-  [[Image:bao1.jpg]]
+  [[Image:image1.png]]
 
 == Completely unparsed text ==
 If you have some text that you don't want to be automatically parsed at all, put them inside &lt;nowiki&gt;&lt;/nowiki&gt; tags:

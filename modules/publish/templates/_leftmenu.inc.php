@@ -4,15 +4,25 @@
 		<div class="header"><?php echo __('Wiki menu'); ?></div>
 		<div class="content">
 			<ul>
-				<li><?php echo link_tag(make_url('publish_article', array('article_name' => 'MainPage')), __('Wiki Frontpage')); ?></li>
+				<li>
+					<?php if (!$article instanceof PublishArticle || $article->getName() != 'MainPage'): ?>
+						<?php echo link_tag(make_url('publish_article', array('article_name' => 'MainPage')), __('Wiki Frontpage')); ?>
+					<?php else: ?>
+						<b><?php echo __('Wiki Frontpage'); ?></b>
+					<?php endif; ?>
+				</li>
 				<?php if (BUGScontext::getCurrentProject() instanceof BUGSproject): ?>
 					<li>
 						<?php echo link_tag(make_url('publish_article', array('article_name' => ucfirst(BUGScontext::getCurrentProject()->getKey()) .':MainPage')), __('Project Wiki Frontpage')); ?>
 					</li>
 				<?php endif; ?>
-				<?php if (!$article instanceof PublishArticle || $article->getName() != 'WikiFormatting'): ?>
-					<li><?php echo link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), __('Formatting help')); ?></li>
-				<?php endif; ?>
+				<li>
+					<?php if (!$article instanceof PublishArticle || $article->getName() != 'WikiFormatting'): ?>
+						<?php echo link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), __('Formatting help')); ?>
+					<?php else: ?>
+						<b><?php echo __('Formatting help'); ?></b>
+					<?php endif; ?>
+				</li>
 				<?php if (count($links) > 0): ?>
 					<?php foreach ($links as $link): ?>
 						<?php if ($link['url'] == ''): ?>
