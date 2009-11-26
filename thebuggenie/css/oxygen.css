@@ -130,6 +130,8 @@ select { font-size: 13px; padding: 2px; height: 22px; }
 TEXTAREA
 {
 	padding: 2px;
+	font-size: 13px;
+	font-family: "Droid Sans Mono", "Liberation Mono", "Courier New", monospace;
 }
 
 INPUT#login_button, INPUT#register_button
