@@ -177,6 +177,9 @@
 		public function setContent($content)
 		{
 			$this->_content = $content;
+			$parser = new BUGSTextParser($content);
+			$parser->doParse();
+			$this->_populateCategories($parser->getCategories());
 		}
 
 		public function setName($name)
@@ -252,16 +255,26 @@
 			return $this->_category_articles;
 		}
 
-		protected function _populateCategories()
+		protected function _populateCategories($categories = null)
 		{
-			if ($this->_categories === null)
+			if ($this->_categories === null || $categories !== null)
 			{
 				$this->_categories = array();
-				if ($res = B2DB::getTable('B2tArticleCategories')->getArticleCategories($this->getName()))
+				if ($categories === null)
 				{
-					while ($row = $res->getNextRow())
+					if ($res = B2DB::getTable('B2tArticleCategories')->getArticleCategories($this->getName()))
 					{
-						$this->_categories[] = $row->get(B2tArticleCategories::CATEGORY_NAME);
+						while ($row = $res->getNextRow())
+						{
+							$this->_categories[] = $row->get(B2tArticleCategories::CATEGORY_NAME);
+						}
+					}
+				}
+				else
+				{
+					foreach ($categories as $category => $occurrences)
+					{
+						$this->_categories[] = $category;
 					}
 				}
 			}
