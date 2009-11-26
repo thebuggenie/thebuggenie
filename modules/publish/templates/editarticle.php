@@ -15,6 +15,16 @@
 					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</div>
 			<?php endif; ?>
+			<?php if ($preview): ?>
+				<div class="rounded_box yellow_borderless" style="margin: 0 5px 5px 5px;">
+					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+					<div class="xboxcontent" style="padding: 3px; font-size: 14px;">
+						<?php echo __('This is a preview of the article'); ?><br>
+						<b><?php echo __('The article has not been saved yet'); ?>&nbsp;&nbsp;</b>[<a href="#edit_article"><?php echo __('Continue editing'); ?></a>]
+					</div>
+					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+				</div>
+			<?php endif; ?>
 			<div class="rounded_box iceblue_borderless" style="margin: 0 5px 5px 5px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent faded_dark" style="padding: 3px; font-size: 14px;">
@@ -22,8 +32,12 @@
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
+			<?php if ($preview && $article instanceof PublishArticle): ?>
+				<?php include_component('articledisplay', array('article' => $article, 'show_category_contains' => false)); ?>
+			<?php endif; ?>
+			<a name="edit_article"></a>
 			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="post"
-				<input type="hidden" name="preview" value="0">
+				<input type="hidden" name="preview" value="0" id="article_preview">
 				<input type="hidden" name="article_id" value="<?php echo ($article instanceof PublishArticle) ? $article->getID() : 0; ?>">
 				<input type="hidden" name="last_modified" value="<?php echo ($article instanceof PublishArticle) ? $article->getPostedDate() : 0; ?>">
 				<table style="margin-right: 5px;" class="padded_table" cellpadding=0 cellspacing=0>
@@ -44,6 +58,7 @@
 				<div class="publish_article_actions">
 					<div class="sub_header"><?php echo __('Actions available'); ?></div>
 					<input type="submit" value="<?php echo ($article instanceof PublishArticle) ? __('Save changes') : __('Create article'); ?>" style="float: left;">
+					<input type="submit" onclick="$('article_preview').value = 1;" value="<?php echo ($article instanceof PublishArticle) ? __('Preview changes') : __('Preview article'); ?>" style="float: left; margin-left: 10px;">
 					<?php echo link_tag((($article instanceof PublishArticle) ? make_url('publish_article', array('article_name' => $article_name)) : make_url('publish')), __('Cancel'), array('style' => 'float: left; font-size: 13px; margin: 5px 0 0 10px;')); ?>
 				</div>
 				<br style="clear: both;">

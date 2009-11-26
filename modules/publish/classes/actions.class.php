@@ -79,43 +79,63 @@
 				{
 					try
 					{
-						if ($request->getParameter('article_id') != 0 && ($article = PublishFactory::articleLab($request->getParameter('article_id'))) && $article instanceof PublishArticle)
+						if ($request->getParameter('article_id'))
 						{
-							if ($article->getLastUpdatedDate() != $request->getParameter('last_modified'))
+							if (($article = PublishFactory::articleLab($request->getParameter('article_id'))) && $article instanceof PublishArticle)
 							{
-								$this->error = BUGScontext::getI18n()->__('The file has been modified since you last opened it');
-							}
-							else
-							{
-								try
+								if ($article->getLastUpdatedDate() != $request->getParameter('last_modified'))
 								{
-									$article->setName($request->getParameter('new_article_name'));
-									$article->setContent($request->getRawParameter('new_article_content'));
-									$article->save();
-									BUGScontext::setMessage('publish_article_message', BUGScontext::getI18n()->__('The article was saved'));
-									$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $article->getName())));
+									$this->error = BUGScontext::getI18n()->__('The file has been modified since you last opened it');
 								}
-								catch (Exception $e)
+								else
 								{
-									$this->error = $e->getMessage();
+									try
+									{
+										$article->setName($request->getParameter('new_article_name'));
+										$article->setContent($request->getRawParameter('new_article_content'));
+										if ($request->getParameter('preview'))
+										{
+											$this->article = $article;
+										}
+										else
+										{
+											$article->save();
+											BUGScontext::setMessage('publish_article_message', BUGScontext::getI18n()->__('The article was saved'));
+											$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $article->getName())));
+										}
+									}
+									catch (Exception $e)
+									{
+										$this->error = $e->getMessage();
+									}
 								}
 							}
 						}
 					}
 					catch (Exception $e) {}
 					
-					if (($article = PublishArticle::getByName($request->getParameter('new_article_name'))) && $article instanceof PublishArticle)
+					if (($article = PublishArticle::getByName($request->getParameter('new_article_name'))) && $article instanceof PublishArticle && $article->getID() != $request->getParameter('article_id'))
 					{
 						$this->error = BUGScontext::getI18n()->__('An article with that name already exists. Please choose a different article name');
 					}
-					else
+					elseif (!$article instanceof PublishArticle)
 					{
-						$article_id = PublishArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content', ''), true);
+						if ($request->getParameter('preview'))
+						{
+							$article = new PublishArticle();
+							$article->setContent($request->getRawParameter('new_article_content'));
+							$article->setName($request->getParameter('new_article_name'));
+							$this->article = $article;
+						}
+						else
+						{
+							$article_id = PublishArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content', ''), true);
+							// Trigger this once so it saves categories, links, etc.
+							PublishFactory::articleLab($article_id)->save();
 
-						// Trigger this once so it saves categories, links, etc.
-						PublishFactory::articleLab($article_id)->save();
-						
-						$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $request->getParameter('new_article_name'))));
+							$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $request->getParameter('new_article_name'))));
+						}
+
 					}
 				}
 				else
@@ -123,6 +143,7 @@
 					$this->error = BUGScontext::getI18n()->__('You need to specify the article name');
 				}
 			}
+			$this->preview = (bool) $request->getParameter('preview');
 			$this->article_title = null;
 			$this->article_content = null;
 			$this->article_intro = null;

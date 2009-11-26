@@ -94,30 +94,33 @@
 		 * @param integer $id
 		 * @param B2DBrow $row[optional]
 		 */
-		public function __construct($id, $row = null)
+		public function __construct($id = null, $row = null)
 		{
-			if ($row === null)
+			if ($id !== null)
 			{
-				$row = B2DB::getTable('B2tArticles')->doSelectById($id);
-			}
+				if ($row === null)
+				{
+					$row = B2DB::getTable('B2tArticles')->doSelectById($id);
+				}
 
-			if ($row instanceof B2DBRow)
-			{
-				$this->_itemid = $row->get(B2tArticles::ID);
+				if ($row instanceof B2DBRow)
+				{
+					$this->_itemid = $row->get(B2tArticles::ID);
 
-				$this->_name = $row->get(B2tArticles::ARTICLE_NAME);
+					$this->_name = $row->get(B2tArticles::ARTICLE_NAME);
 
-				$this->_title = $row->get(B2tArticles::TITLE);
-				$this->_intro_text = $row->get(B2tArticles::INTRO_TEXT);
-				$this->_content = $row->get(B2tArticles::CONTENT);
-				$this->_posted_date = $row->get(B2tArticles::DATE);
-				$this->_author = $row->get(B2tArticles::AUTHOR);
+					$this->_title = $row->get(B2tArticles::TITLE);
+					$this->_intro_text = $row->get(B2tArticles::INTRO_TEXT);
+					$this->_content = $row->get(B2tArticles::CONTENT);
+					$this->_posted_date = $row->get(B2tArticles::DATE);
+					$this->_author = $row->get(B2tArticles::AUTHOR);
 
-				$this->_is_published = ($row->get(B2tArticles::IS_PUBLISHED) == 1) ? true : false;
-			}
-			else
-			{
-				throw new Exception('This article does not exist');
+					$this->_is_published = ($row->get(B2tArticles::IS_PUBLISHED) == 1) ? true : false;
+				}
+				else
+				{
+					throw new Exception('This article does not exist');
+				}
 			}
 		}
 
@@ -344,14 +347,6 @@
 			$crit->addUpdate(B2tArticles::IS_PUBLISHED, 1);
 			$res = B2DB::getTable('B2tArticles')->doUpdateById($crit, $this->_itemid);
 			$this->is_published = true;
-		}
-		
-		public function showInNews()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tArticles::IS_NEWS, 1);
-			$res = B2DB::getTable('B2tArticles')->doUpdateById($crit, $this->_itemid);
-			$this->is_news = true;
 		}
 
 		public function hideFromNews()
