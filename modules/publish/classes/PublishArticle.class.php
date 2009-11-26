@@ -143,9 +143,11 @@
 			B2DB::getTable('B2tArticleLinks')->deleteLinksByArticle($article_name);
 		}
 
-		public static function createNew($name, $content, $published)
+		public static function createNew($name, $content, $published, $scope = null)
 		{
-			$article_id = B2DB::getTable('B2tArticles')->save($name, $content, $published, BUGScontext::getUser()->getID());
+			$user_id = (BUGScontext::getUser() instanceof BUGSuser) ? BUGScontext::getUser()->getID() : 0;
+			$article_id = B2DB::getTable('B2tArticles')->save($name, $content, $published, $user_id, null, $scope);
+			PublishFactory::articleLab($article_id)->save();
 			return $article_id;
 		}
 

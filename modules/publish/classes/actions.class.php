@@ -130,8 +130,6 @@
 						else
 						{
 							$article_id = PublishArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content', ''), true);
-							// Trigger this once so it saves categories, links, etc.
-							PublishFactory::articleLab($article_id)->save();
 
 							$this->forward(BUGScontext::getRouting()->generate('publish_article', array('article_name' => $request->getParameter('new_article_name'))));
 						}
