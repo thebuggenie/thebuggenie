@@ -44,6 +44,10 @@
 			{
 				BUGScontext::addClasspath(BUGScontext::getIncludePath() . 'modules/' . $module_file['module'] . '/classes/');
 			}
+			if (!class_exists($actionClassName))
+			{
+				throw new BUGSComponentNotFoundException('The component class ' . $actionClassName . ' could not be found');
+			}
 			$actionClass = new $actionClassName();
 			if (!method_exists($actionClass, $actionToRunName))
 			{

@@ -55,6 +55,41 @@
 			$this->results = $results;
 		}
 
+		protected function _getSearchDetailsFromRequest(BUGSrequest $request)
+		{
+			$this->searchterm = $request->getParameter('searchfor');
+			$this->ipp = $request->getParameter('issues_per_page', 30);
+			$this->offset = $request->getParameter('offset', 0);
+			$this->filters = $request->getParameter('filters', array());
+			$this->groupby = $request->getParameter('groupby');
+		}
+
+		protected function doSearch()
+		{
+			preg_replace_callback('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, 'extractIssues'), $this->searchterm);
+
+			if (count($this->foundissues) == 0)
+			{
+				$filters = array();
+				if (BUGScontext::isProjectContext())
+				{
+					$filters[B2tIssues::PROJECT_ID] = BUGScontext::getCurrentProject()->getID();
+				}
+				list ($this->foundissues, $this->resultcount) = BUGSissue::findIssues($this->searchterm, $this->ipp, $this->offset, $filters, null);
+			}
+			elseif (count($this->foundissues) == 1 && $request->getParameter('quicksearch'))
+			{
+				$issue = array_shift($this->foundissues);
+				$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+			}
+			elseif ($request->hasParameter('sortby'))
+			{
+
+			}
+
+			$this->templatename = 'results_normal';
+		}
+
 		/**
 		 * Performs the "find issues" action
 		 *
@@ -63,34 +98,22 @@
 		public function runFindIssues(BUGSrequest $request)
 		{
 			$this->show_results = $request->hasParameter('searchfor');
-			$this->searchterm = $request->getParameter('searchfor');
-			$this->ipp = $request->getParameter('issues_per_page', 30);
-			$this->offset = $request->getParameter('offset', 0);
+			$this->_getSearchDetailsFromRequest($request);
 
 			if ($request->hasParameter('searchfor'))
 			{
-				preg_replace_callback('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, 'extractIssues'), $this->searchterm);
+				$this->doSearch();
+				$this->issues = $this->foundissues;
+			}
+		}
 
-				if (count($this->foundissues) == 0)
-				{
-					$filters = array();
-					if (BUGScontext::isProjectContext())
-					{
-						$filters[B2tIssues::PROJECT_ID] = BUGScontext::getCurrentProject()->getID();
-					}
-					list ($this->foundissues, $this->resultcount) = BUGSissue::findIssues($this->searchterm, $this->ipp, $this->offset, $filters, null);
-				}
-				elseif (count($this->foundissues) == 1 && $request->getParameter('quicksearch'))
-				{
-					$issue = array_shift($this->foundissues);
-					$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
-				}
-				elseif ($request->hasParameter('sortby'))
-				{
+		public function runFindIssuesPaginated(BUGSrequest $request)
+		{
+			$this->_getSearchDetailsFromRequest($request);
 
-				}
-
-				$this->templatename = 'results_normal';
+			if ($request->hasParameter('searchfor'))
+			{
+				$this->doSearch();
 				$this->issues = $this->foundissues;
 			}
 		}

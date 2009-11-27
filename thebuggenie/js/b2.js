@@ -97,6 +97,19 @@ function updateProjectMenuStrip(url, project_id)
 	});
 }
 
+function searchPage(url, offset)
+{
+	var params = Form.serialize('find_issues_form');
+	params += '&offset=' + offset;
+	new Ajax.Updater('search_results', url, {
+	asynchronous: true,
+	method: "post",
+	parameters: params,
+	onLoading: function () { $('paging_spinning').show(); },
+	onComplete: function () { $('paging_spinning').hide(); }
+	});
+}
+
 tinyMCE.init({
 	theme : "advanced",
 	mode : "none",

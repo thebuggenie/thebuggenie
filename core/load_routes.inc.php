@@ -14,6 +14,7 @@
 	$routes[] = array('getreportissuefields', '/reportissue/get/fields/for/project/*', 'main', 'reportIssueGetFields');
 	$routes[] = array('reportissue', '/reportissue/*', 'main', 'reportIssue');
 	$routes[] = array('findthis', '/issues/find/:searchfor/*', 'search', 'findIssues');
+	$routes[] = array('search_paginated', '/issues/paginated/*', 'search', 'findIssuesPaginated');
 	$routes[] = array('search', '/issues/*', 'search', 'findIssues');
 	$routes[] = array('quicksearch', '/quicksearch/*', 'search', 'quickSearch');
 	$routes[] = array('about', '/about', 'main', 'about');

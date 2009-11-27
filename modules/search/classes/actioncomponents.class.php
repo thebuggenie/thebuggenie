@@ -1,0 +1,14 @@
+<?php
+
+	class searchActionComponents extends BUGSactioncomponent
+	{
+
+		public function componentPagination()
+		{
+			$this->currentpage = ceil($this->offset / $this->ipp) + 1;
+			$this->pagecount = ceil($this->resultcount / $this->ipp);
+			$this->filters = serialize($this->filters);
+			$this->route = (BUGScontext::isProjectContext()) ? BUGScontext::getRouting()->generate('project_search_paginated', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : BUGScontext::getRouting()->generate('search_paginated');
+		}
+
+	}
