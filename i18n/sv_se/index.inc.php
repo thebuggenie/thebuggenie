@@ -1,16 +1,16 @@
 <?php			
 			
-	if (!defined('BUGS2_INCLUDE_PATH')) exit();		
+	if (!defined('THEBUGGENIE_PATH')) exit();		
 			
 			
-	$strings['Issues to follow up'] = 'Ärenden att följa upp';
-	$strings['You don\'t have any issues on your list'] = 'Du har inga ärenden på din lista';
+	$strings['Issues to follow up'] = 'ï¿½renden att fï¿½lja upp';
+	$strings['You don\'t have any issues on your list'] = 'Du har inga ï¿½renden pï¿½ din lista';
 	$strings['Not logged in'] = 'Inte inloggad';
-	$strings['Click here to log in'] = 'Klicka här för att logga in';
+	$strings['Click here to log in'] = 'Klicka hï¿½r fï¿½r att logga in';
 	$strings['%click_to_login% or %create_account%'] = '%click_to_login% eller %create_account%';
 	$strings['create an account'] = 'Skapa konto';
-	$strings['%number% issues are nominated for review'] = '%number% ärenden inlagda för översyn';
-	$strings['Click here to view them'] = 'Klicka här för att visa dem';
-	$strings['%number% issues have tasks which require your attention'] = '%number% ärenden har moment som kräver din uppmärksamhet';
+	$strings['%number% issues are nominated for review'] = '%number% ï¿½renden inlagda fï¿½r ï¿½versyn';
+	$strings['Click here to view them'] = 'Klicka hï¿½r fï¿½r att visa dem';
+	$strings['%number% issues have tasks which require your attention'] = '%number% ï¿½renden har moment som krï¿½ver din uppmï¿½rksamhet';
 			
 ?>

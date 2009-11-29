@@ -1,6 +1,6 @@
 <?php
 
-        if (!defined('BUGS2_INCLUDE_PATH')) exit();
+        if (!defined('THEBUGGENIE_PATH')) exit();
 
         $strings['Search'] = 'Suche';
         $strings['BUGS 2 Search'] = 'BUGS 2-Suche';

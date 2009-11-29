@@ -32,6 +32,7 @@
 								<?php $prev_date = $date; ?>
 							<?php endforeach; ?>
 						</table>
+					<div class="timeline_link"><?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey())), image_tag('view_timeline.png', array('style' => 'float: right; margin-left: 5px;')) . __('Show complete timeline')); ?></div>
 					<?php else: ?>
 						<div class="faded_dark" style="font-size: 13px; padding-top: 3px;"><b><?php echo __('No recent activity registered for this project.'); ?></b><br><?php echo __('As soon as something important happens it will appear here.'); ?></div>
 					<?php endif; ?>

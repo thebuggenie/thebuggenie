@@ -1,6 +1,6 @@
 <?php
 
-	if (!defined('BUGS2_INCLUDE_PATH')) exit();
+	if (!defined('THEBUGGENIE_PATH')) exit();
 
 	
 	$strings['News &amp; Articles'] = 'Noticias y artículos';

@@ -377,20 +377,20 @@
 				self::$_request = new BUGSrequest();
 				self::$_response = new BUGSresponse();
 				BUGSlogging::log('...done');
-				if (!is_readable(BUGS2_INCLUDE_PATH . 'installed') && !isset($argc))
+				if (!is_readable(THEBUGGENIE_PATH . 'installed') && !isset($argc))
 				{
 					self::$_installmode = true;
 				}
 				elseif (!class_exists('B2DB'))
 				{
-					throw new Exception('The Bug Genie seems installed, but B2DB isn\'t configured. This usually indicates an error with the installation. Try removing the file ' . BUGS2_INCLUDE_PATH . 'installed and try again.');
+					throw new Exception('The Bug Genie seems installed, but B2DB isn\'t configured. This usually indicates an error with the installation. Try removing the file ' . THEBUGGENIE_PATH . 'installed and try again.');
 				}
 				
 				BUGSlogging::log('Loading first batch of routes', 'routing');
 				if (!($routes_1 = BUGScache::get('routes_1')))
 				{
 					BUGSlogging::log('generating routes', 'routing');
-					require BUGS2_INCLUDE_PATH . 'core/load_routes.inc.php';
+					require THEBUGGENIE_PATH . 'core/load_routes.inc.php';
 					BUGScache::add('routes_1', self::getRouting()->getRoutes());
 				}
 				else
@@ -474,7 +474,7 @@
 				if (!($routes = BUGScache::get('routes_2')))
 				{
 					BUGSlogging::log('generating routes', 'routing');
-					require BUGS2_INCLUDE_PATH . 'core/load_routes_postmodules.inc.php';
+					require THEBUGGENIE_PATH . 'core/load_routes_postmodules.inc.php';
 					BUGScache::add('routes_2', self::getRouting()->getRoutes());
 				}
 				else

@@ -1,6 +1,6 @@
 <?php
 	
-	if (!defined('BUGS2_INCLUDE_PATH')) exit();
+	if (!defined('THEBUGGENIE_PATH')) exit();
 	
 	if (BUGScontext::getUser()->hasPermission('manage_billboard', 0, 'publish') && BUGScontext::getRequest()->isAjaxCall() && BUGScontext::getRequest()->getParameter('p_id'))
 	{

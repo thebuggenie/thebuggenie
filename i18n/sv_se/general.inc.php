@@ -1,6 +1,6 @@
 <?php			
 			
-	if (!defined('BUGS2_INCLUDE_PATH')) exit();		
+	if (!defined('THEBUGGENIE_PATH')) exit();		
 			
 	BUGScontext::getI18n()->setCharset('iso-8859-1');		
 	setlocale(LC_ALL, array('sv_SE@euro', 'sv_SE', 'se'));

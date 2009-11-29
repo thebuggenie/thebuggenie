@@ -72,6 +72,15 @@
 		}
 
 		/**
+		 * The project planning page
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runTimeline(BUGSrequest $request)
+		{
+		}
+
+		/**
 		 * The project scrum page
 		 *
 		 * @param BUGSrequest $request

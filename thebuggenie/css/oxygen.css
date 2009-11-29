@@ -1106,7 +1106,7 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .header_menu li a { border-top: 0; padding: 4px 6px 5px 6px; color: #FFF; font-size: 13px; }
 .menu_project_strip { position: relative; font-size: 13px; background-color: #FFF;/*D4E5FF*/ border-bottom: 1px solid #D9D9BB; border-top: 1px solid #D9D9BB; padding: 0; margin-top: 5px; height: 33px; color: #444; width: 100%; background-color: #FFFBE2; }
 .menu_project_strip .project_name { font-size: 14px; font-weight: bold; padding: 8px; background-color: #F4EC8B; height: 17px; float: left; margin-right: 6px; }
-.menu_project_strip .project_stuff { float: left; position: relative; height: 33px; min-width: 500px; }
+.menu_project_strip .project_stuff { float: left; position: relative; height: 33px; min-width: 650px; }
 .menu_project_strip .project_stuff ul li a { font-size: 13px; border-color: #FFFBE2; padding-bottom: 8px; }
 .menu_project_strip .project_stuff ul li { border: 0; border-bottom: 1px #D9D9BB solid; background-color: #FFFBE2; }
 .menu_project_strip .project_stuff ul li.selected { border-width: 1px; border-style: solid; border-color: #D9D9BB #D9D9BB #FFF #D9D9BB; background-color: #FFF; }
@@ -1492,6 +1492,7 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #scrum .sprint_header a:hover { color: #888; text-decoration: none; border: 0; }
 
 #project_dashboard .recent_activities td.latest_action_dates { font-size: 13px; font-weight: bold; padding: 10px 5px 2px 5px; }
+#project_dashboard .timeline_link { font-size: 13px; text-align: right; padding: 5px; }
 #project_dashboard td { vertical-align: top; }
 #project_dashboard .recent_activities td { font-size: 12px; }
 #project_dashboard .recent_activities td img { float: left; margin: 6px 6px 0 5px; }

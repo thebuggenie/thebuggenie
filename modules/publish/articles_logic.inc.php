@@ -1,6 +1,6 @@
 <?php
 
-	if (!defined('BUGS2_INCLUDE_PATH')) exit();
+	if (!defined('THEBUGGENIE_PATH')) exit();
 	
 	if (BUGScontext::getRequest()->getParameter('create_new') && BUGScontext::getUser()->hasPermission('article_management', 0, 'publish'))
 	{

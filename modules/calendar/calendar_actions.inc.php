@@ -1,10 +1,10 @@
 <?php
 
-	define ('BUGS2_INCLUDE_PATH', '../../');
+	define ('THEBUGGENIE_PATH', '../../');
 	$page = 'calendar';
 	
-	require_once(BUGS2_INCLUDE_PATH . 'include/checkcookie.inc.php');
-	require_once(BUGS2_INCLUDE_PATH . 'include/b2_engine.inc.php');
+	require_once(THEBUGGENIE_PATH . 'include/checkcookie.inc.php');
+	require_once(THEBUGGENIE_PATH . 'include/b2_engine.inc.php');
 	require_once(BUGScontext::getIncludePath() . 'include/ui_functions.inc.php');
 
 	BUGScontext::getModule('calendar')->activate();

@@ -1,12 +1,12 @@
 <?php
 
-	if (!defined('BUGS2_INCLUDE_PATH'))
+	if (!defined('THEBUGGENIE_PATH'))
 	{
-		define ('BUGS2_INCLUDE_PATH', '../');
+		define ('THEBUGGENIE_PATH', '../');
 	}
 	
-	require_once(BUGS2_INCLUDE_PATH . 'include/checkcookie.inc.php');
-	require_once(BUGS2_INCLUDE_PATH . 'include/b2_engine.inc.php');
+	require_once(THEBUGGENIE_PATH . 'include/checkcookie.inc.php');
+	require_once(THEBUGGENIE_PATH . 'include/b2_engine.inc.php');
 	require_once(BUGScontext::getIncludePath() . 'include/ui_functions.inc.php');
 	
 	if (BUGScontext::getRequest()->getParameter('issue_no'))
@@ -869,7 +869,7 @@
 					}
 					if (BUGScontext::getRequest()->getParameter('getaffectedinline'))
 					{
-						require BUGS2_INCLUDE_PATH . 'include/issue_affected_inline.inc.php';
+						require THEBUGGENIE_PATH . 'include/issue_affected_inline.inc.php';
 					}
 					if (BUGScontext::getRequest()->getParameter('getaffectedbuildinline') && is_numeric(BUGScontext::getRequest()->getParameter('b_id')))
 					{

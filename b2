@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-	define ('BUGS2_INCLUDE_PATH', '');
+	define ('THEBUGGENIE_PATH', '');
 	function formatText($text, $color = 'white', $style = 'bold')
 	{
 		$fg_colors = array('black' => 29, 'red' => 31, 'green' => 32, 'yellow' => 33, 'blue' => 34, 'magenta' => 35, 'cyan' => 36, 'white' => 37);
@@ -229,7 +229,7 @@
 						{
 							echo "BUGS uses a database to store information. To be able to connect\nto your database, BUGS needs some information, such as\ndatabase type, username, password, etc.\n\n";
 							echo "Please select what kind of database you are installing BUGS on:\n";
-					  	define ('B2DB_BASEPATH', BUGS2_INCLUDE_PATH . 'include/B2DB/');
+					  	define ('B2DB_BASEPATH', THEBUGGENIE_PATH . 'include/B2DB/');
 							define ('B2DB_SQLTYPE', 'mysql');
 							define ('B2DB_DONTINITIALIZE', true);
 							require 'include/B2DB/B2DBinitialize.inc.php';
@@ -311,7 +311,7 @@
 						}
 						else
 						{
-							define ('B2DB_BASEPATH', BUGS2_INCLUDE_PATH . 'include/B2DB/');
+							define ('B2DB_BASEPATH', THEBUGGENIE_PATH . 'include/B2DB/');
 							require 'include/B2DB/B2DBinitialize.inc.php';
 							echo formatText("Successfully connected to the database.\n", 'green', '');
 							echo "Press ENTER to continue ... ";
@@ -373,9 +373,9 @@
 						$enable_svnintegration_module = (trim(fgets(STDIN)) == '') ? true : false;
 						
 						echo "Creating tables ...\n";
-						b2db_autoload(BUGS2_INCLUDE_PATH . 'include/classes/B2DB/');
-						b2db_autoload(BUGS2_INCLUDE_PATH . 'include/classes/');
-						require_once BUGS2_INCLUDE_PATH . 'include/loadtables.inc.php';
+						b2db_autoload(THEBUGGENIE_PATH . 'include/classes/B2DB/');
+						b2db_autoload(THEBUGGENIE_PATH . 'include/classes/');
+						require_once THEBUGGENIE_PATH . 'include/loadtables.inc.php';
 						
 						foreach (B2DB::getTables() as $aTable)
 						{
@@ -411,7 +411,7 @@
 						echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
 						
 						BUGSsettings::get('language');
-						require BUGS2_INCLUDE_PATH . "include/b2_engine.inc.php";
+						require THEBUGGENIE_PATH . "include/b2_engine.inc.php";
 						
 		  				$current_module = '';
 		  				try
@@ -420,8 +420,8 @@
 			  				{
 								echo "Installing Search module ... ";
 			  					$current_module = 'search';
-			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/search/classes/B2DB/');
-			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/search/classes/');
+			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/search/classes/B2DB/');
+			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/search/classes/');
 			  					BUGSsearch::install(1);
 			  					echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
 			  				}
@@ -429,8 +429,8 @@
 			  				{
 			  					echo "Installing Mail notification module ... ";
 			  					$current_module = 'mailnotification';
-			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/mailnotification/classes/B2DB/');
-			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/mailnotification/classes/');
+			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/mailnotification/classes/B2DB/');
+			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/mailnotification/classes/');
 			  					BUGSmailnotification::install(1);
 			  					echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
 			  				}
@@ -438,8 +438,8 @@
 			  				{
 			  					echo "Installing Messaging module ... ";
 			  					$current_module = 'messages';
-			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/messages/classes/B2DB/');
-			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/messages/classes/');
+			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/messages/classes/B2DB/');
+			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/messages/classes/');
 			  					BUGSmessages::install(1);
 			  					echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
 			  				}
@@ -447,8 +447,8 @@
 			  				{
 			  					echo "Installing News & articles module ... ";
 			  					$current_module = 'publish';
-			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/publish/classes/B2DB/');
-			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/publish/classes/');
+			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/publish/classes/B2DB/');
+			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/publish/classes/');
 			  					BUGSpublish::install(1);
 			  					echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
 			  				}
@@ -456,8 +456,8 @@
 			  				{
 			  					echo "Installing Subversion integration module ... ";
 			  					$current_module = 'svn_integration';
-			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/svn_integration/classes/B2DB/');
-			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/svn_integration/classes/');
+			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/svn_integration/classes/B2DB/');
+			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/svn_integration/classes/');
 			  					BUGSsvnintegration::install(1);
 			  					echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
 			  				}
@@ -465,8 +465,8 @@
 			  				{
 			  					echo "Installing Calendar module ... ";
 			  					$current_module = 'calendar';
-			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/calendar/classes/B2DB/');
-			  					b2db_autoload(BUGS2_INCLUDE_PATH . 'modules/calendar/classes/');
+			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/calendar/classes/B2DB/');
+			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/calendar/classes/');
 			  					BUGScalendar::install(1);
 			  					echo ' [' . formatText('OK', 'green', 'bold') . "]\n";
 			  				}

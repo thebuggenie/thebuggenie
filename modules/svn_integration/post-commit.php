@@ -2,7 +2,7 @@
 	
 	if (isset($argc))
 	{
-		define('BUGS2_INCLUDE_PATH', '/var/www/dev/b2/');
+		define('THEBUGGENIE_PATH', '/var/www/dev/b2/');
 		$author = $argv[1];
 		$commit_msg = $argv[3];
 		$new_rev = $argv[2];
@@ -11,7 +11,7 @@
 	}
 	else
 	{
-		define('BUGS2_INCLUDE_PATH', '../../');
+		define('THEBUGGENIE_PATH', '../../');
 		$commit_msg = urldecode($_REQUEST['commit_msg']);
 		$new_rev = $_REQUEST['rev'];
 		$old_rev = $new_rev - 1;
@@ -20,8 +20,8 @@
 		$passkey = $_REQUEST['passkey'];
 	}
 	
-	require BUGS2_INCLUDE_PATH . 'include/b2_engine.inc.php';
-	require BUGS2_INCLUDE_PATH . 'include/ui_functions.inc.php';
+	require THEBUGGENIE_PATH . 'include/b2_engine.inc.php';
+	require THEBUGGENIE_PATH . 'include/ui_functions.inc.php';
 	
 	if (!isset($argc))
 	{

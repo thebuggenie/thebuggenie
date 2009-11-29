@@ -1,6 +1,6 @@
 <?php
 
-	if (!defined('BUGS2_INCLUDE_PATH')) exit();
+	if (!defined('THEBUGGENIE_PATH')) exit();
 
 	$strings['Configure projects'] = 'Configuración de projectos';
 	$strings['This page gives you full control over your projects - each projects specific settings, as well as its editions and builds.'] = 'Esta página le da el control completo sobre sus projectos, ajustes específicos de cada projecto, como as&iacute también de sus ediciones y compilaciones.';

@@ -153,9 +153,9 @@
 	
 	set_error_handler('b2_error_handler');
 
-	if (!defined('BUGS2_INCLUDE_PATH'))
+	if (!defined('THEBUGGENIE_PATH'))
 	{
-		bugs_msgbox(true, 'BUGS2_INCLUDE_PATH not defined', 'You must define the BUGS2_INCLUDE_PATH constant so we can find the files we need');
+		bugs_msgbox(true, 'THEBUGGENIE_PATH not defined', 'You must define the THEBUGGENIE_PATH constant so we can find the files we need');
 	}
 
 	session_name("THEBUGGENIE");
@@ -183,28 +183,28 @@
 		date_default_timezone_set('Europe/London');
 		
 		// Load the context class, which controls most of things
-		require BUGS2_INCLUDE_PATH . 'core/classes/BUGScontext.class.php';
+		require THEBUGGENIE_PATH . 'core/classes/BUGScontext.class.php';
 
 		// Load the logging class so we can log stuff
-		require BUGS2_INCLUDE_PATH . 'core/classes/BUGSlogging.class.php';
+		require THEBUGGENIE_PATH . 'core/classes/BUGSlogging.class.php';
 		
 		// Set the start time
 		BUGScontext::setLoadStart($starttime[1] + $starttime[0]);
 		BUGSlogging::log('Initializing B2 framework');
 		
 		// Set the include path
-		BUGScontext::setIncludePath(BUGS2_INCLUDE_PATH);
+		BUGScontext::setIncludePath(THEBUGGENIE_PATH);
 
 		// Add classpath so we can find the BUGS* classes
-		BUGScontext::addClasspath(BUGS2_INCLUDE_PATH . 'core/classes/');
+		BUGScontext::addClasspath(THEBUGGENIE_PATH . 'core/classes/');
 		BUGSlogging::log((BUGScache::isEnabled()) ? 'Cache is enabled' : 'Cache is not enabled');
 		
 		BUGSlogging::log('Loading B2DB');
 		try
 		{
 			BUGSlogging::log('Adding B2DB classes to autoload path');
-			define ('B2DB_BASEPATH', BUGS2_INCLUDE_PATH . 'core/B2DB/');
-			BUGScontext::addClasspath(BUGS2_INCLUDE_PATH . 'core/B2DB/classes/');
+			define ('B2DB_BASEPATH', THEBUGGENIE_PATH . 'core/B2DB/');
+			BUGScontext::addClasspath(THEBUGGENIE_PATH . 'core/B2DB/classes/');
 			BUGSlogging::log('...done (Adding B2DB classes to autoload path)');
 
 			BUGSlogging::log('Initializing B2DB');
@@ -218,7 +218,7 @@
 				B2DB::doConnect();
 				BUGSlogging::log('...done (Database connection details found, connecting)');
 				BUGSlogging::log('Adding B2DB table classpath to autoload path');
-				BUGScontext::addClasspath(BUGS2_INCLUDE_PATH . 'core/classes/B2DB/');
+				BUGScontext::addClasspath(THEBUGGENIE_PATH . 'core/classes/B2DB/');
 			}
 			
 		}
@@ -233,7 +233,7 @@
 		BUGScontext::initialize();
 		BUGSlogging::log('...done');
 		
-		require BUGS2_INCLUDE_PATH . 'core/common_functions.inc.php';
+		require THEBUGGENIE_PATH . 'core/common_functions.inc.php';
 		
 		BUGSlogging::log('B2 framework loaded');
 	}

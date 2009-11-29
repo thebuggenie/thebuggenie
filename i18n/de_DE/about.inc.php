@@ -1,5 +1,5 @@
 <?php
-        if (!defined('BUGS2_INCLUDE_PATH')) exit();
+        if (!defined('THEBUGGENIE_PATH')) exit();
 
         $strings['About BUGS - the Bug Genie 2'] = 'Über BUGS - the Bug Genie 2';
         $strings['Loaded modules: %list_of_modules%'] = 'Geladene Module: %list_of_modules%';

@@ -1,6 +1,6 @@
 <?php
 
-        if (!defined('BUGS2_INCLUDE_PATH')) exit();
+        if (!defined('THEBUGGENIE_PATH')) exit();
 
         
         $strings['Welcome to BUGS 2!'] = 'Willkommen bei BUGS 2!';

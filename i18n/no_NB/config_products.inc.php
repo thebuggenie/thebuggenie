@@ -1,6 +1,6 @@
 <?php
 
-	if (!defined('BUGS2_INCLUDE_PATH')) exit();
+	if (!defined('THEBUGGENIE_PATH')) exit();
 
 	$strings['Configure projects'] = 'Redigere produkter';
 	$strings['This page gives you full control over your projects - each projects specific settings, as well as its editions and builds.'] = 'Denne siden gir deg full kontroll over dine produkter - hvert produkts innstillinger, i tillegg til utgaver og versjoner.';

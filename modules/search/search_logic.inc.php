@@ -1,6 +1,6 @@
 <?php
 
-	if (!defined('BUGS2_INCLUDE_PATH')) exit();
+	if (!defined('THEBUGGENIE_PATH')) exit();
 	
 	$matchfor = BUGScontext::getRequest()->getParameter('searchfor');
 	$matchfor = (substr($matchfor, 0, 6) == 'Issue ') ? substr($matchfor, 6) : $matchfor;	

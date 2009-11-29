@@ -1,6 +1,6 @@
 <?php
 
-	if (!defined('BUGS2_INCLUDE_PATH')) exit();
+	if (!defined('THEBUGGENIE_PATH')) exit();
 
 	
 	$strings['Add this issue to the watchlist'] = 'Agregar este problema a la lista de seguimiento';

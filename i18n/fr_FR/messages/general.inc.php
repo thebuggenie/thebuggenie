@@ -1,6 +1,6 @@
 <?php
 
-	if (!defined('BUGS2_INCLUDE_PATH')) exit();
+	if (!defined('THEBUGGENIE_PATH')) exit();
 
 	
 	$strings['Messages'] = 'Messages';
@@ -19,7 +19,7 @@
 	$strings['%teamname%: %number_of% new'] = '%teamname%: %number_of% nouveau(x)';
 	$strings['Write a new message'] = 'Ecrire un nouveau message';
 	$strings['Folders'] = 'Dossiers';
-	$strings['Opens up a new window, where you can compose a new message'] = 'Ouvre une nouvelle fenêtre pour &eacute;crire le message';
+	$strings['Opens up a new window, where you can compose a new message'] = 'Ouvre une nouvelle fenï¿½tre pour &eacute;crire le message';
 	$strings['New message'] = 'Nouveau message';
 	$strings['New folder'] = 'Nouveau dossier';
 	$strings['Add folder'] = 'Ajouter un dossier';

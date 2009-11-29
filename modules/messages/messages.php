@@ -4,10 +4,10 @@
 	// TODO: (AJAX) Regularly updating information in message central (front page)	
 
 	$page = 'messages';
-	define('BUGS2_INCLUDE_PATH', '../../');
+	define('THEBUGGENIE_PATH', '../../');
 	
-	require BUGS2_INCLUDE_PATH . 'include/checkcookie.inc.php';
-	require BUGS2_INCLUDE_PATH . "include/b2_engine.inc.php";
+	require THEBUGGENIE_PATH . 'include/checkcookie.inc.php';
+	require THEBUGGENIE_PATH . "include/b2_engine.inc.php";
 	
 	require BUGScontext::getIncludePath() . "include/ui_functions.inc.php";
 

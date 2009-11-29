@@ -175,7 +175,7 @@
 				}
 				
 				// Add table classes to classpath 
-				$tables_path = BUGS2_INCLUDE_PATH . 'core/classes/B2DB/';
+				$tables_path = THEBUGGENIE_PATH . 'core/classes/B2DB/';
 				BUGScontext::addClasspath($tables_path);
 				$tables_path_handle = opendir($tables_path);
 				$tables_created = array();

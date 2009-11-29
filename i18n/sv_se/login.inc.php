@@ -1,37 +1,37 @@
 <?php			
 			
-	if (!defined('BUGS2_INCLUDE_PATH')) exit();		
+	if (!defined('THEBUGGENIE_PATH')) exit();		
 			
 			
-	$strings['Welcome to BUGS 2!'] = 'Välkommen till produkts ärendesystem!';
-	$strings['Please fill in your username and password below, and press "Continue" to log in.'] = 'Fyll i ditt användarnamn och lösenord nedan och tryck på "Fortsätt" för att logga in';
-	$strings['If you have not already registered, please use the "Register new account" link. It is completely free and takes only a minute.'] = 'Om du inte redan har registrerat kan du använda "Registrera nytt konto" länken. Det är helt gratis och tar bara en minut.';
-	$strings['It is not possible to register new accounts from this page. To register a new account, please contact the BUGS 2 administrator.'] = 'Det är inte möjligt att registrera nya konton från denna sida. Att registrera ett nytt konto, kontakta BUGS 2 administratör.';
+	$strings['Welcome to BUGS 2!'] = 'Vï¿½lkommen till produkts ï¿½rendesystem!';
+	$strings['Please fill in your username and password below, and press "Continue" to log in.'] = 'Fyll i ditt anvï¿½ndarnamn och lï¿½senord nedan och tryck pï¿½ "Fortsï¿½tt" fï¿½r att logga in';
+	$strings['If you have not already registered, please use the "Register new account" link. It is completely free and takes only a minute.'] = 'Om du inte redan har registrerat kan du anvï¿½nda "Registrera nytt konto" lï¿½nken. Det ï¿½r helt gratis och tar bara en minut.';
+	$strings['It is not possible to register new accounts from this page. To register a new account, please contact the BUGS 2 administrator.'] = 'Det ï¿½r inte mï¿½jligt att registrera nya konton frï¿½n denna sida. Att registrera ett nytt konto, kontakta BUGS 2 administratï¿½r.';
 	$strings['- the BUGS team'] = '# Namn?';
-	$strings['Log in to an existing account'] = 'Logga in på ett befintligt konto';
-	$strings['Username'] = 'Användarnamn';
-	$strings['Password'] = 'Lösenord';
-	$strings['Register a new account'] = 'Bli användare';
-	$strings['Thank you for registering!'] = 'Tack för din registrering!';
-	$strings['The account has now been registered - check your email inbox for the activation email. Please be patient - this email can take up to two hours to arrive.'] = 'Kontot har nu registrerats - Leta i din inkorg för aktivering e-post. Ha tålamod - det här mailet kan ta upp till två timmar att komma fram.';
-	$strings['You need to fill out all fields correctly.'] = 'Du måste fylla i alla fält korrekt.';
-	$strings['Remember to fill out the "Buddy name" field.'] = 'Kom ihåg att fylla i fältet för "kortnamn"';
-	$strings['The email address must be valid, and must be typed twice.'] = 'E-postkandidaten måste vara giltig och måste skrivas två gånger.';
-	$strings['Email kandidates from this domain can not be used.'] = 'E-postkandidater från detta produkt kan inte användas.';
-	$strings['To prevent automatic sign-ups, enter the verification number shown below.'] = 'För att förhindra automatiska registreringar måste du ange numret som visas nedan.';
-	$strings['Desired username'] = 'Önskat användarnamn';
-	$strings['The username you requested is Lägg till ärende. To register it, please fill out the information below.'] = 'Användarnamnet som du begärde är ledigt. Fyll i informationen nedan för att registrera.';
-	$strings['Required information is marked with an asterisk'] = 'Obligatoriska uppgifter är markerade med en asterisk';
+	$strings['Log in to an existing account'] = 'Logga in pï¿½ ett befintligt konto';
+	$strings['Username'] = 'Anvï¿½ndarnamn';
+	$strings['Password'] = 'Lï¿½senord';
+	$strings['Register a new account'] = 'Bli anvï¿½ndare';
+	$strings['Thank you for registering!'] = 'Tack fï¿½r din registrering!';
+	$strings['The account has now been registered - check your email inbox for the activation email. Please be patient - this email can take up to two hours to arrive.'] = 'Kontot har nu registrerats - Leta i din inkorg fï¿½r aktivering e-post. Ha tï¿½lamod - det hï¿½r mailet kan ta upp till tvï¿½ timmar att komma fram.';
+	$strings['You need to fill out all fields correctly.'] = 'Du mï¿½ste fylla i alla fï¿½lt korrekt.';
+	$strings['Remember to fill out the "Buddy name" field.'] = 'Kom ihï¿½g att fylla i fï¿½ltet fï¿½r "kortnamn"';
+	$strings['The email address must be valid, and must be typed twice.'] = 'E-postkandidaten mï¿½ste vara giltig och mï¿½ste skrivas tvï¿½ gï¿½nger.';
+	$strings['Email kandidates from this domain can not be used.'] = 'E-postkandidater frï¿½n detta produkt kan inte anvï¿½ndas.';
+	$strings['To prevent automatic sign-ups, enter the verification number shown below.'] = 'Fï¿½r att fï¿½rhindra automatiska registreringar mï¿½ste du ange numret som visas nedan.';
+	$strings['Desired username'] = 'ï¿½nskat anvï¿½ndarnamn';
+	$strings['The username you requested is Lï¿½gg till ï¿½rende. To register it, please fill out the information below.'] = 'Anvï¿½ndarnamnet som du begï¿½rde ï¿½r ledigt. Fyll i informationen nedan fï¿½r att registrera.';
+	$strings['Required information is marked with an asterisk'] = 'Obligatoriska uppgifter ï¿½r markerade med en asterisk';
 	$strings['Buddy name'] = 'kortnamn';
 	$strings['Real name'] = 'Riktiga namn';
 	$strings['E-mail address'] = 'E-postkandidat';
-	$strings['Confirm e-mail'] = 'Bekräfta e-post';
+	$strings['Confirm e-mail'] = 'Bekrï¿½fta e-post';
 	$strings['Enter this number'] = 'Ange detta nummer';
-	$strings['%enter_number% in this box'] = '%enter_number% i detta fält';
+	$strings['%enter_number% in this box'] = '%enter_number% i detta fï¿½lt';
 	$strings['Register'] = 'Registrera';
-	$strings['Your account has now been activated. Please log in by entering your username and password in the fields to the left.'] = 'Ditt konto är nu aktiverat. Logga in genom att ange ditt användarnamn och lösenord i fälten till vänster.';
-	$strings['There seems to be something wrong with your verification code.'] = 'Det verkar vara något fel med verifieringskoden.';
-	$strings['Please copy and paste the link from the activation email into your browser address bar, and try again.'] = 'Kopiera och klistra in länken från e-postaktivering i webbläsarens kandidatfält, och försök igen.';
-	$strings['The desired username is not Lägg till ärende. Please try again.'] = 'Önskat användarnamn är inte tillgänglig. Försök igen.';
+	$strings['Your account has now been activated. Please log in by entering your username and password in the fields to the left.'] = 'Ditt konto ï¿½r nu aktiverat. Logga in genom att ange ditt anvï¿½ndarnamn och lï¿½senord i fï¿½lten till vï¿½nster.';
+	$strings['There seems to be something wrong with your verification code.'] = 'Det verkar vara nï¿½got fel med verifieringskoden.';
+	$strings['Please copy and paste the link from the activation email into your browser address bar, and try again.'] = 'Kopiera och klistra in lï¿½nken frï¿½n e-postaktivering i webblï¿½sarens kandidatfï¿½lt, och fï¿½rsï¿½k igen.';
+	$strings['The desired username is not Lï¿½gg till ï¿½rende. Please try again.'] = 'ï¿½nskat anvï¿½ndarnamn ï¿½r inte tillgï¿½nglig. Fï¿½rsï¿½k igen.';
 			
 ?>			

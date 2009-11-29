@@ -1,6 +1,6 @@
 <?php
 
-        if (!defined('BUGS2_INCLUDE_PATH')) exit();
+        if (!defined('THEBUGGENIE_PATH')) exit();
 
         BUGScontext::getI18n()->setCharset('utf-8'); //ISO-8859-15
         

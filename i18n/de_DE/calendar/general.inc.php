@@ -1,6 +1,6 @@
 <?php
 
-        if (!defined('BUGS2_INCLUDE_PATH')) exit();
+        if (!defined('THEBUGGENIE_PATH')) exit();
     
         setlocale(LC_ALL, array('de_DE@euro', 'de_DE', 'de', 'deu_deu'));
     
