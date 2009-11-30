@@ -1535,12 +1535,12 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 #find_issues #search_results td.result_issue a:hover .issue_title { color: #555; }
 #find_issues #search_results td.result_issue a, #find_issues #search_results td.result_issue a:hover { font-weight: bold; }
 #find_issues #search_results td.smaller { font-size: 10px; }
-#find_issues #search_filters ul { list-style-type: none; margin: 0 0 0 5px; padding: 0; }
+#find_issues #search_filters ul { list-style-type: none; margin: 0; padding: 0; }
 #find_issues #search_filters ul li { margin: 0; padding: 0; }
 #find_issues #search_filters { font-size: 13px; }
 #find_issues #add_filter_form label { font-size: 13px; display: inline-block; min-width: 200px; }
 #find_issues #search_filters label { display: inline-block; min-width: 200px; font-size: 13px; }
-#find_issues #add_filter_form { margin-left: 10px; }
+#find_issues #add_filter_form { margin-left: 7px; }
 
 #scrum #scrum_menu .header { font-size: 13px; font-weight: bold; margin-bottom: 5px; }
 #scrum #scrum_menu a { font-size: 12px; }

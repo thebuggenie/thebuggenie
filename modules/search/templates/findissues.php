@@ -22,15 +22,34 @@
 					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo (BUGScontext::isProjectContext()) ? make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" id="find_issues_form">
 						<a href="#" onclick="$('search_filters').toggle();$('add_filter_form').toggle();" style="float: right; margin-top: 3px;"><b><?php echo __('More'); ?></b></a>
 						<label for="issues_searchfor"><?php echo __('Search for'); ?></label>
-						<input type="text" name="searchfor" value="<?php echo $searchterm; ?>" id="issues_searchfor" style="width: 300px;">
-						<select name="issues_per_page">
-							<?php foreach (array(15, 30, 50, 100) as $cc): ?>
-								<option value="<?php echo $cc; ?>"<?php if ($ipp == $cc): ?> selected<?php endif; ?>><?php echo __('%number_of_issues% issues per page', array('%number_of_issues%' => $cc)); ?></option>
-							<?php endforeach; ?>
-							<option value="0"<?php if ($ipp == 0): ?> selected<?php endif; ?>><?php echo __('All results on one page'); ?></option>
-						</select>
+						<input type="text" name="searchfor" value="<?php echo $searchterm; ?>" id="issues_searchfor" style="width: 450px;">
 						<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top">
 						<div style="<?php if (count($appliedfilters) <= (int) BUGScontext::isProjectContext()): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
+							<label for="issues_per_page"><?php echo __('Issues per page'); ?></label>
+							<select name="issues_per_page" id="issues_per_page">
+								<?php foreach (array(15, 30, 50, 100) as $cc): ?>
+									<option value="<?php echo $cc; ?>"<?php if ($ipp == $cc): ?> selected<?php endif; ?>><?php echo __('%number_of_issues% issues per page', array('%number_of_issues%' => $cc)); ?></option>
+								<?php endforeach; ?>
+								<option value="0"<?php if ($ipp == 0): ?> selected<?php endif; ?>><?php echo __('All results on one page'); ?></option>
+							</select><br>
+							<label for="groupby"><?php echo __('Group results by'); ?></label>
+							<select name="groupby" id="groupby">
+								<option value=""><?php echo __('No grouping'); ?></option>
+								<?php if (!BUGScontext::isProjectContext()): ?>
+									<option disabled value="project_id"<?php if ($groupby == 'project_id'): ?> selected<?php endif; ?>><?php echo __('Project'); ?></option>
+								<?php endif; ?>
+								<option disabled value="milestone"<?php if ($groupby == 'milestone'): ?> selected<?php endif; ?>><?php echo __('Milestone'); ?></option>
+								<option disabled value="assignee"<?php if ($groupby == 'assignee'): ?> selected<?php endif; ?>><?php echo __("Who's assigned"); ?></option>
+								<option disabled value="state"<?php if ($groupby == 'state'): ?> selected<?php endif; ?>><?php echo __('State (open or closed)'); ?></option>
+								<option disabled value="severity"<?php if ($groupby == 'severity'): ?> selected<?php endif; ?>><?php echo __('Severity'); ?></option>
+								<option disabled value="category"<?php if ($groupby == 'category'): ?> selected<?php endif; ?>><?php echo __('Category'); ?></option>
+								<option disabled value="resolution"<?php if ($groupby == 'resolution'): ?> selected<?php endif; ?>><?php echo __('Resolution'); ?></option>
+								<option disabled value="issuetype"<?php if ($groupby == 'issuetype'): ?> selected<?php endif; ?>><?php echo __('Issue type'); ?></option>
+								<option disabled value="priority"<?php if ($groupby == 'priority'): ?> selected<?php endif; ?>><?php echo __('Priority'); ?></option>
+								<option disabled value="edition"<?php if ($groupby == 'edition'): ?> selected<?php endif; ?>><?php echo __('Edition'); ?></option>
+								<option disabled value="build"<?php if ($groupby == 'build'): ?> selected<?php endif; ?>><?php echo __('Version'); ?></option>
+								<option disabled value="component"<?php if ($groupby == 'component'): ?> selected<?php endif; ?>><?php echo __('Component'); ?></option>
+							</select><br>
 							<ul id="search_filters_list">
 								<?php foreach ($appliedfilters as $filter => $filter_info): ?>
 									<?php if (array_key_exists('value', $filter_info)): ?>
@@ -54,9 +73,12 @@
 							<?php if (!BUGScontext::isProjectContext()): ?>
 								<option value="project_id"><?php echo __('Project'); ?></option>
 							<?php endif; ?>
-							<option value="state"><?php echo __('Issue state'); ?></option>
-							<option value="status"><?php echo __('Status'); ?></option>
-							<option value="resolution"><?php echo __('Resolution'); ?></option>
+							<option value="state"><?php echo __('Issue state - whether an issue is open or closed'); ?></option>
+							<option value="status"><?php echo __('Status - what status an issue has'); ?></option>
+							<option value="resolution"><?php echo __("Resolution - the issue's resolution"); ?></option>
+							<option value="category" disabled><?php echo __("Category - which category an issue is in"); ?></option>
+							<option value="priority" disabled><?php echo __("Priority - how high the issue is prioritised"); ?></option>
+							<option value="severity" disabled><?php echo __("Severity - how serious the issue is"); ?></option>
 						</select>
 						<?php echo image_submit_tag('action_add_small.png'); ?>
 						<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'add_filter_indicator')); ?>
