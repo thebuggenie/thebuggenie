@@ -112,8 +112,8 @@
 			<div class="rounded_box mediumgrey_borderless" style="margin-top: 10px; clear: both; width: 620px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 2px 5px 4px 5px; font-size: 13px;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('Show product issues'), array('style' => 'font-weight: bold; float: right;')); ?>
-					<?php echo __('See more issues for this product'); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('Show project issues'), array('style' => 'font-weight: bold; float: right;')); ?>
+					<?php echo __('See more issues for this project'); ?>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
@@ -140,7 +140,7 @@
 			<div class="rounded_box mediumgrey_borderless" style="margin-top: 10px; clear: both; width: 620px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 2px 5px 4px 5px; font-size: 13px;">
-					<?php echo link_tag(make_url('project_planning', array('project_key' => $selected_project->getKey())), __('Show product planning page'), array('style' => 'font-weight: bold; float: right;')); ?>
+					<?php echo link_tag(make_url('project_planning', array('project_key' => $selected_project->getKey())), __('Show project planning page'), array('style' => 'font-weight: bold; float: right;')); ?>
 					<?php echo __('Plan your project, discuss and throw ideas around'); ?>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
