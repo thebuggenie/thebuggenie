@@ -1,6 +1,6 @@
 <?php
 
-	$bugs_response->setTitle(__('Find issues'));
+	$bugs_response->setTitle((BUGScontext::isProjectContext()) ? __('Find issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : __('Find issues'));
 
 ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0">
