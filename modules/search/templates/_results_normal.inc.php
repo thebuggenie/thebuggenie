@@ -13,7 +13,7 @@
 	</thead>
 	<tbody>
 		<?php foreach ($issues as $issue): ?>
-			<tr>
+			<tr class="<?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?>">
 				<?php if (!BUGScontext::isProjectContext()): ?>
 					<td style="padding-left: 5px;"><?php echo $issue->getProject()->getName(); ?></td>
 				<?php endif; ?>
