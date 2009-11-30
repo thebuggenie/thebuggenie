@@ -103,6 +103,10 @@
 			{
 
 			}
+			else
+			{
+				$this->resultcount = count($this->foundissues);
+			}
 
 			$this->templatename = 'results_normal';
 		}
