@@ -42,9 +42,9 @@
 									<?php endif; ?>
 								<?php endforeach; ?>
 							</ul>
-						</div>
-						<div style="text-align: right;">
-							<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top">
+							<div style="text-align: right;">
+								<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top">
+							</div>
 						</div>
 					</form>
 					<input type="hidden" id="max_filters" name="max_filters" value="<?php echo count($appliedfilters); ?>">
