@@ -24,7 +24,7 @@
 		const LEVEL_WARNING_RISK = 15;
 		const LEVEL_FATAL = 20;
 		
-		protected static $_logging_enabled = false;
+		protected static $_logging_enabled = true;
 		
 		protected static $_logfile;
 		//protected static $_logfile = '/var/www/dev/thebuggenie/thebuggenie.log';
@@ -33,7 +33,7 @@
 		
 		protected static $_entries = array();
 
-		protected static $_loglevel = 5;
+		protected static $_loglevel = 1;
 		
 		public static function log($message, $category = 'main', $level = 1)
 		{

@@ -5,16 +5,22 @@
 ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0">
 	<tr>
-		<td style="width: 300px; padding: 5px 5px 0 5px; vertical-align: top;">
-			<div class="left_menu_header"><?php echo __('Saved searches'); ?></div>
-			or something else
+		<td class="saved_searches">
+			<?php if (BUGScontext::isProjectContext()): ?>
+				<div class="left_menu_header"><?php echo __('Predefined searches'); ?></div>
+				<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => 1, 'search' => true)), __('Open issues for this project')); ?><br>
+				<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => 2, 'search' => true)), __('Closed issues for this project')); ?>
+			<?php else: ?>
+				<div class="left_menu_header"><?php echo __('Saved searches'); ?></div>
+				or something else
+			<?php endif; ?>
 		</td>
 		<td style="width: auto; padding: 5px; vertical-align: top;" id="find_issues">
 			<div class="rounded_box iceblue_borderless" style="margin: 5px 0 5px 0;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
 					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo (BUGScontext::isProjectContext()) ? make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" id="find_issues_form">
-						<a href="#" onclick="$('search_filters').toggle();" style="float: right; margin-top: 3px;"><?php echo __('More'); ?></a>
+						<a href="#" onclick="$('search_filters').toggle();$('add_filter_form').toggle();" style="float: right; margin-top: 3px;"><b><?php echo __('More'); ?></b></a>
 						<label for="issues_searchfor"><?php echo __('Search for'); ?></label>
 						<input type="text" name="searchfor" value="<?php echo $searchterm; ?>" id="issues_searchfor" style="width: 300px;">
 						<select name="issues_per_page">
@@ -23,26 +29,68 @@
 							<?php endforeach; ?>
 							<option value="0"<?php if ($ipp == 0): ?> selected<?php endif; ?>><?php echo __('All results on one page'); ?></option>
 						</select>
-						<input type="submit" value="<?php echo __('Search'); ?>">
-						<div style="display: none; padding: 5px;" id="search_filters">
-							you will be able to choose from filters here
-							<?php foreach ($filters as $filter => $value): ?>
-								<input type="hidden" name="filter[<?php echo $filter; ?>]" value="<?php echo $value; ?>">
-							<?php endforeach; ?>
+						<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top">
+						<div style="<?php if (count($appliedfilters) <= (int) BUGScontext::isProjectContext()): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
+							<ul id="search_filters_list">
+								<?php foreach ($appliedfilters as $filter => $filter_info): ?>
+									<?php if (array_key_exists('value', $filter_info)): ?>
+										<?php include_component('search/filter', array('filter' => $filter, 'selected_operator' => $filter_info['operator'], 'selected_value' => $filter_info['value'], 'key' => 0)); ?>
+									<?php else: ?>
+										<?php foreach ($filter_info as $k => $single_filter): ?>
+											<?php include_component('search/filter', array('filter' => $filter, 'selected_operator' => $single_filter['operator'], 'selected_value' => $single_filter['value'], 'key' => $k)); ?>
+										<?php endforeach; ?>
+									<?php endif; ?>
+								<?php endforeach; ?>
+							</ul>
 						</div>
+						<div style="text-align: right;">
+							<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top">
+						</div>
+					</form>
+					<input type="hidden" id="max_filters" name="max_filters" value="<?php echo count($appliedfilters); ?>">
+					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo (BUGScontext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>" method="post" id="add_filter_form"<?php if (count($appliedfilters) <= (int) BUGScontext::isProjectContext()): ?> style="display: none;"<?php endif; ?> onsubmit="addSearchFilter('<?php echo (BUGScontext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>');return false;">
+						<label for="add_filter"><?php echo __('Add filter'); ?></label>
+						<select name="filter_name">
+							<?php if (!BUGScontext::isProjectContext()): ?>
+								<option value="project_id"><?php echo __('Project'); ?></option>
+							<?php endif; ?>
+							<option value="state"><?php echo __('Issue state'); ?></option>
+							<option value="status"><?php echo __('Status'); ?></option>
+							<option value="resolution"><?php echo __('Resolution'); ?></option>
+						</select>
+						<?php echo image_submit_tag('action_add_small.png'); ?>
+						<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'add_filter_indicator')); ?>
 					</form>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
 			<?php if ($show_results): ?>
 				<div class="main_header">
-					<?php echo __('Search results for %search_term%', array('%search_term%' => '<span class="searchterm">"' . $searchterm . '"</span>')); ?>
+					<?php if ($predefined_search === false): ?>
+						<?php echo __('Search results for %search_term%', array('%search_term%' => '<span class="searchterm">"' . $searchterm . '"</span>')); ?>
+					<?php else: ?>
+						<?php
+
+							switch ((int) $predefined_search)
+							{
+								case 1:
+									echo (BUGScontext::isProjectContext()) ? __('Open issues for this project') : __('All open issues');
+									break;
+								case 2:
+									echo (BUGScontext::isProjectContext()) ? __('Closed issues for this project') : __('All closed issues');
+									break;
+							}
+
+						?>
+					<?php endif; ?>
 					&nbsp;&nbsp;<span class="faded_medium"><?php echo __('%number_of% issue(s)', array('%number_of%' => $resultcount)); ?></span>
 				</div>
 				<?php if (count($issues) > 0): ?>
 					<div id="search_results">
 						<?php include_template("search/{$templatename}", array('issues' => $issues)); ?>
-						<?php include_component('search/pagination', array('searchterm' => $searchterm, 'filters' => $filters, 'groupby' => $groupby, 'resultcount' => $resultcount, 'ipp' => $ipp, 'offset' => $offset)); ?>
+						<?php if ($ipp > 0): ?>
+							<?php include_component('search/pagination', array('searchterm' => $searchterm, 'filters' => $appliedfilters, 'groupby' => $groupby, 'resultcount' => $resultcount, 'ipp' => $ipp, 'offset' => $offset)); ?>
+						<?php endif; ?>
 					</div>
 				<?php else: ?>
 					<div class="faded_medium" id="no_issues"><?php echo __('No issues were found'); ?></div>

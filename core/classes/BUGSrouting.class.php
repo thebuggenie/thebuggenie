@@ -355,9 +355,9 @@
 	
 					if (is_array($value))
 					{
-						foreach ($value as $v)
+						foreach ($value as $k => $v)
 						{
-							$tmp[] = $key.$equals.urlencode($v);
+							$tmp[] = "{$key}[{$k}]".$equals.urlencode($v);
 						}
 					}
 					else

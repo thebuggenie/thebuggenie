@@ -2270,12 +2270,12 @@
 			return ($this->hasIcon()) ? 'files/projects/' . $this->getID() . '.png' : 'icon_project.png';			
 		}
 
-		protected function _populateLogItems()
+		protected function _populateLogItems($limit = null)
 		{
 			if ($this->_recentlogitems === null)
 			{
 				$this->_recentlogitems = array();
-				if ($res = B2DB::getTable('B2tLog')->getImportantByProjectID($this->getID()))
+				if ($res = B2DB::getTable('B2tLog')->getImportantByProjectID($this->getID(), $limit))
 				{
 					$this->_recentlogitems = $res;
 				}
@@ -2287,9 +2287,9 @@
 		 *
 		 * @return array A list of log items
 		 */
-		public function getRecentLogItems()
+		public function getRecentLogItems($limit = null)
 		{
-			$this->_populateLogItems();
+			$this->_populateLogItems($limit);
 			return $this->_recentlogitems;
 		}
 
@@ -2371,7 +2371,7 @@
 			return $this->_recentideas;
 		}
 
-		protected function _populateRecentActivities()
+		protected function _populateRecentActivities($limit = null)
 		{
 			if ($this->_recentactivities === null)
 			{
@@ -2388,7 +2388,7 @@
 					}
 				}
 
-				foreach ($this->getRecentLogItems() as $log_item)
+				foreach ($this->getRecentLogItems($limit) as $log_item)
 				{
 					if (!array_key_exists($log_item['timestamp'], $this->_recentactivities))
 					{
@@ -2408,7 +2408,7 @@
 		 */
 		public function getRecentActivities($limit = null)
 		{
-			$this->_populateRecentActivities();
+			$this->_populateRecentActivities($limit);
 			if ($limit !== null)
 			{
 				$recent_activities = array_slice($this->_recentactivities, 0, $limit, true);

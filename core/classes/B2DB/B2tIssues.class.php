@@ -104,7 +104,12 @@
 			parent::_addForeignKeyColumn(self::MILESTONE, B2DB::getTable('B2tMilestones'), B2tMilestones::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
-		
+
+		public static function getValidSearchFilters()
+		{
+			return array('project_id', 'state', 'status', 'resolution');
+		}
+
 		public function getCountsByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
@@ -365,11 +370,30 @@
 
 			if (count($filters) > 0)
 			{
-				foreach ($filters as $filter => $value)
+				foreach ($filters as $filter => $filter_info)
 				{
-					if (in_array($filter, array_keys($this->getColumns())))
+					if (in_array($filter, self::getValidSearchFilters()))
 					{
-						$crit->addWhere($filter, $value);
+						if (array_key_exists('value', $filter_info) && in_array($filter_info['operator'], array('=', '!=', '<=', '>=', '<', '>')))
+						{
+							$crit->addWhere($this->getB2DBName().'.'.$filter, $filter_info['value'], $filter_info['operator']);
+						}
+						else
+						{
+							$first_val = array_shift($filter_info);
+							$ctn = $crit->returnCriterion($this->getB2DBName().'.'.$filter, $first_val['value'], $first_val['operator']);
+							if (count($filter_info) > 0)
+							{
+								foreach ($filter_info as $single_filter)
+								{
+									if (in_array($single_filter['operator'], array('=', '!=', '<=', '>=', '<', '>')))
+									{
+										$ctn->addWhere($this->getB2DBName().'.'.$filter, $single_filter['value'], $single_filter['operator']);
+									}
+								}
+							}
+							$crit->addWhere($ctn);
+						}
 					}
 				}
 			}

@@ -31,8 +31,7 @@ function addUserStory(url)
 	},
 	onFailure: function (transport) {
 		$('user_story_add_indicator').hide();
-	},
-	insertion: Insertion.Bottom
+	}
 	});
 }
 

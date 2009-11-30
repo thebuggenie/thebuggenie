@@ -78,6 +78,7 @@
 		 */
 		public function runTimeline(BUGSrequest $request)
 		{
+			$this->recent_activities = $this->selected_project->getRecentActivities();
 		}
 
 		/**

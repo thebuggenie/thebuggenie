@@ -10,6 +10,47 @@ function findIdentifiable(url, field)
 	});
 }
 
+function addSearchFilter(url)
+{
+	var params = Form.serialize('add_filter_form');
+	params += '&key=' + $('max_filters').value;
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	evalScripts: true,
+	parameters: params,
+	onLoading: function (transport) {
+		$('add_filter_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+			$('add_filter_indicator').hide();
+		}
+		else
+		{
+			$('add_filter_indicator').hide();
+			$('search_filters_list').insert({bottom: json.content});
+			$('max_filters').value++;
+		}
+	},
+	onFailure: function (transport) {
+		$('add_filter_indicator').hide();
+	}
+	});
+}
+
+function removeSearchFilter(key)
+{
+	$('filter_' + key).remove();
+	if ($('search_filters_list').childElements().size() == 0)
+	{
+		$('max_filters').value = 0;
+	}
+}
+
 function showBud(elem_id)
 {
 	$('bud_' + elem_id).show();

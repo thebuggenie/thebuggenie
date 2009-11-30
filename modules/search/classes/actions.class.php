@@ -7,7 +7,8 @@
 	{
 
 		protected $foundissues = array();
-		
+		protected $filters = array();
+
 		/**
 		 * Pre-execute function for search functions
 		 *
@@ -57,25 +58,41 @@
 
 		protected function _getSearchDetailsFromRequest(BUGSrequest $request)
 		{
-			$this->searchterm = $request->getParameter('searchfor');
+			$this->searchterm = $request->getParameter('searchfor', false);
 			$this->ipp = $request->getParameter('issues_per_page', 30);
 			$this->offset = $request->getParameter('offset', 0);
 			$this->filters = $request->getParameter('filters', array());
 			$this->groupby = $request->getParameter('groupby');
+			$this->predefined_search = $request->getParameter('predefined_search', false);
+			//var_dump($this->filters);die();
 		}
 
-		protected function doSearch()
+		protected function doSearch(BUGSrequest $request)
 		{
-			preg_replace_callback('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, 'extractIssues'), $this->searchterm);
+			if ($this->searchterm)
+			{
+				preg_replace_callback('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, 'extractIssues'), $this->searchterm);
+			}
 
 			if (count($this->foundissues) == 0)
 			{
-				$filters = array();
 				if (BUGScontext::isProjectContext())
 				{
-					$filters[B2tIssues::PROJECT_ID] = BUGScontext::getCurrentProject()->getID();
+					$this->filters['project_id'][0] = array('operator' => '=', 'value' => BUGScontext::getCurrentProject()->getID());
 				}
-				list ($this->foundissues, $this->resultcount) = BUGSissue::findIssues($this->searchterm, $this->ipp, $this->offset, $filters, null);
+				if ($request->hasParameter('predefined_search'))
+				{
+					switch ((int) $request->getParameter('predefined_search'))
+					{
+						case 1:
+							$this->filters['state'] = array('operator' => '=', 'value' => BUGSissue::STATE_OPEN);
+							break;
+						case 2:
+							$this->filters['state'] = array('operator' => '=', 'value' => BUGSissue::STATE_CLOSED);
+							break;
+					}
+				}
+				list ($this->foundissues, $this->resultcount) = BUGSissue::findIssues($this->searchterm, $this->ipp, $this->offset, $this->filters, null);
 			}
 			elseif (count($this->foundissues) == 1 && $request->getParameter('quicksearch'))
 			{
@@ -97,14 +114,15 @@
 		 */
 		public function runFindIssues(BUGSrequest $request)
 		{
-			$this->show_results = $request->hasParameter('searchfor');
+			$this->show_results = ($request->hasParameter('searchfor') || $request->getParameter('search', false)) ? true : false;
 			$this->_getSearchDetailsFromRequest($request);
 
-			if ($request->hasParameter('searchfor'))
+			if ($this->show_results)
 			{
-				$this->doSearch();
+				$this->doSearch($request);
 				$this->issues = $this->foundissues;
 			}
+			$this->appliedfilters = $this->filters;
 		}
 
 		public function runFindIssuesPaginated(BUGSrequest $request)
@@ -113,8 +131,21 @@
 
 			if ($request->hasParameter('searchfor'))
 			{
-				$this->doSearch();
+				$this->doSearch($request);
 				$this->issues = $this->foundissues;
+			}
+			$this->appliedfilters = $this->filters;
+		}
+
+		public function runAddFilter(BUGSrequest $request)
+		{
+			if (in_array($request->getParameter('filter_name'), B2tIssues::getValidSearchFilters()))
+			{
+				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('search/filter', array('filter' => $request->getParameter('filter_name'), 'key' => $request->getParameter('key', 0)))));
+			}
+			else
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('This is not a valid search field')));
 			}
 		}
 

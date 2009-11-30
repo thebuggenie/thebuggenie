@@ -5,6 +5,7 @@
 				<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
 			<?php endif; ?>
 			<th<?php if (BUGScontext::isProjectContext()): ?> style="padding-left: 3px;"<?php endif; ?>><?php echo __('Issue'); ?></th>
+			<th><?php echo __('Assigned to'); ?></th>
 			<th><?php echo __('Status'); ?></th>
 			<th><?php echo __('Resolution'); ?></th>
 			<th><?php echo __('Last updated'); ?></th>
@@ -18,6 +19,19 @@
 				<?php endif; ?>
 				<td class="result_issue"<?php if (BUGScontext::isProjectContext()): ?> style="padding-left: 3px;"<?php endif; ?>>
 					<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<span class="issue_no">' . $issue->getFormattedIssueNo(true) . '</span> - <span class="issue_title">' . $issue->getTitle() . '</span>'); ?>
+				</td>
+				<td<?php if (!$issue->isAssigned()): ?> class="faded_medium"<?php endif; ?>>
+					<?php if ($issue->isAssigned()): ?>
+						<table style="display: inline;" cellpadding=0 cellspacing=0>
+							<?php if ($issue->getAssigneeType() == BUGSidentifiableclass::TYPE_USER): ?>
+								<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
+							<?php else: ?>
+								<?php echo include_component('main/teamdropdown', array('user' => $issue->getAssignee())); ?>
+							<?php endif; ?>
+						</table>
+					<?php else: ?>
+						-
+					<?php endif; ?>
 				</td>
 				<td<?php if (!$issue->getStatus() instanceof BUGSdatatype): ?> class="faded_medium"<?php endif; ?>>
 					<?php if ($issue->getStatus() instanceof BUGSdatatype): ?>
