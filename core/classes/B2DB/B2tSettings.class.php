@@ -120,7 +120,7 @@
 			$settings['showprojectsoverview'] = 1;
 			$settings['userthemes'] = 0;
 			$settings['b2_name'] = 'The Bug Genie';
-			$settings['b2_tagline'] = $i18n->__('<b>Friendly</b> issue tracking and project management');
+			$settings['b2_tagline'] = '<b>Friendly</b> issue tracking and project management';
 
 			foreach ($settings as $settings_name => $settings_val)
 			{

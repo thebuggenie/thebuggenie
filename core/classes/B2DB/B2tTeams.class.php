@@ -37,17 +37,17 @@
 			$i18n = BUGScontext::getI18n();
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(B2tTeams::TEAMNAME, $i18n->__('Staff members'));
+			$crit->addInsert(B2tTeams::TEAMNAME, 'Staff members');
 			$crit->addInsert(B2tTeams::SCOPE, $scope_id);
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(B2tTeams::TEAMNAME, $i18n->__('Developers'));
+			$crit->addInsert(B2tTeams::TEAMNAME, 'Developers');
 			$crit->addInsert(B2tTeams::SCOPE, $scope_id);
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(B2tTeams::TEAMNAME, $i18n->__('Team leaders'));
+			$crit->addInsert(B2tTeams::TEAMNAME, 'Team leaders');
 			$crit->addInsert(B2tTeams::SCOPE, $scope_id);
 			$this->doInsert($crit);
 		}

@@ -41,56 +41,61 @@
 		If you think this is a bug, please report it in our <a href="http://b2.thebuggenie.com" target="_new">online bug tracker</a>.</div>
 	<?php else: ?>
 		<div class="ok">
-			All tables were created successfully
+			All tables were created successfully, and the database connection details have been saved<br>
+			If you need to restart the installation, you won't have to enter these details again
 		</div>
-		<div class="ok">
-			Database connection details have been saved<br>
-			If you need to restart the installation, the database details will be reused
+		<div class="features">
+			<div class="feature" style="margin-bottom: 5px;">
+				<b>EXAMPLE #1:</b> <i>The Bug Genie is installed in <i>/var/www/thebuggenie</i>, and I want to set up a virtual host for The Bug Genie.</i><br>
+				<br>
+				<b>Apache setup:</b> Set up the virtual host as usual, but point the <u>DocumentRoot</u> for The Bug Genie to the <i>thebuggenie/</i> subfolder <i>inside</i> the main folder. Make sure the apache virtual host setup has <u>AllowOverride All</u> for the folder where The Bug Genie is located, and make sure the .htaccess file inside the <i>thebuggenie/</i>-folder is accessible to Apache.<br>
+				<br>
+				<b>The Bug Genie setup:</b> Set the <u>hostname</u> below to the public hostname where you plan to access The Bug Genie. With this setup, The Bug Genie will be located at the top level, so set the <u>URL subdirectory</u> below to "/", which means "top level".
+			</div>
+			<div class="feature" style="margin-bottom: 5px;">
+				<b>EXAMPLE #2:</b> <i>The Bug Genie is installed in <i>/var/www/thebuggenie</i>, and I want to access it as a subfolder of the DocumentRoot, which is /var/www</i><br>
+				<br>
+				<b>Apache setup:</b> Make sure the apache host setup has <u>AllowOverride All</u> for the folder thebuggenie is located, and make sure the .htaccess file inside the <i>thebuggenie/</i>-folder is accessible to Apache. You may want to copy the main folder content to a folder one level up (extract the main content of the top <i>thebuggenie/</i>-folder directly to /var/www), so that the <i>thebuggenie/</i>-folder inside the main folder is accessible as /var/www/thebuggenie.<br>
+				<br>
+				<b>The Bug Genie setup:</b> Set the <u>hostname</u> below to the public hostname where you plan to access The Bug Genie. With this setup, The Bug Genie will be located at either <i>http://hostname/thebuggenie/thebuggenie/</i> or <i>http://hostname/thebuggenie/</i> (see above), so set the <u>URL subdirectory</u> below to "/", which means "top level".
+			</div>
+			<div class="feature">
+				<b>See more information and examples at <a href="http://www.thebuggenie.com">www.thebuggenie.com</a></b>
+			</div>
 		</div>
-		<h2 style="margin-top: 10px;">Basic information</h2>
-		We need some basic information before the installation can continue. Please provide the following information, and press "Continue":
+		<h2 style="margin-top: 10px;">Server / URL information</h2>
+		The Bug Genie uses URL rewriting to make URLs look more readable. URL rewriting is what makes it possible to, instead of <u><i>viewissue.php?project_key=projectname&amp;issue_id=123</i></u>, use URLs such as <u><i>/projectname/issue/123</i></u>.<br>
+		<br><b>It is important that The Bug Genie and your web server is correctly set up with url rewriting enabled for this to work.</b><br>
+		<br>
+		<b>You can read more about setting up URL rewriting, here:</b><br>
+		<a href="http://httpd.apache.org/docs/2.2/mod/mod_rewrite.html">http://httpd.apache.org/docs/2.2/mod/mod_rewrite.html</a> (Apache)<br>
+		<a href="http://support.microsoft.com/kb/324000/">http://support.microsoft.com/kb/324000/</a> (IIS)<br>
+		<br>
+		For Apache, it is enough that the rewrite module (mod_rewrite) is installed and enabled, and that the virtual host setup has set <b>AllowOverride All</b> for the folder The Bug Genie is located.<br>
+		With this setup, Apache should use the <i>.htaccess</i> file located inside the <i>thebuggenie/</i> folder.<br>
+		<br>
+		If you for any reason cannot turn on <b>AllowOverride All</b> for that folder, look at the .htaccess file The Bug Genie bundles (located inside the <i>thebuggenie/</i> folder, and copy the necessary lines to your virtual host definition.<br>
+		<br>
 		<form accept-charset="utf-8" action="index.php" method="post" id="bugs_settings">
 			<input type="hidden" name="step" value="4">
 			<fieldset>
 				<legend>The Bug Genie URL information</legend>
 				<dl class="install_list">
-					<dt>
-						<label for="url_host">Server url</label><br>
-						The url of the server The Bug Genie is hosted on <b>without the trailing slash</b>
+					<dt style="width: 500px;">
+						<label for="url_host">Server host</label> <span class="faded_medium">The url of the server The Bug Genie is hosted on <b>without the trailing slash</b></span>
 					</dt>
 					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_host" id="url_host" value="http://<?php echo $_SERVER['SERVER_NAME']; ?>"></dd>
-					<dt>
-						<label for="url_subdir">Url subdirectory</label><br>
-						The Bug Genie subdirectory part of the url
+					<dt style="width: 500px;">
+						<label for="url_subdir">Url subdirectory</label> <span class="faded_medium">The Bug Genie subdirectory part of the url</span>
 					</dt>
 					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_subdir" id="url_subdir" value="<?php echo (dirname($_SERVER['PHP_SELF']) != '/') ? dirname($_SERVER['PHP_SELF']) . '/' : dirname($_SERVER['PHP_SELF']); ?>"></dd>
-					<dt style="padding-top: 5px;"><b>According to the information above,</b> The Bug Genie will be accessible at</dt>
+					<dt style="width: 500px;"><b>According to the information above,</b> The Bug Genie will be accessible at</dt><br>
 					<dd id="url_preview">http://<?php echo $_SERVER['SERVER_NAME'] . ((dirname($_SERVER['PHP_SELF']) != '/') ? dirname($_SERVER['PHP_SELF']) . '/' : dirname($_SERVER['PHP_SELF'])); ?></dd>
 				</dl>
+				<div style="padding: 0 5px 10px 0;"><b>IMPORTANT: </b>Open up the <i>.htaccess</i> file located inside the <i>thebuggenie/</i> subfolder, and change the <u>RewriteBase</u> path to be identical to the <u>URL subdirectory</u>.</div>
 			</fieldset>
 			<div class="error" id="continue_error" style="display: none;"> </div>
-			<div class="ok" id="important_info" style="font-size: 13px;">
-				Make sure that the Url subdirectory path is set in the .htaccess file!<br>
-				The .htaccess file found in the top level folder makes The Bug Genie function properly.<br><u>You must make sure that the <i>.htaccess</i> file has its <i><b>RewriteBase</b></i> setting set to the same as the <i><b>Url subdirectory</b></i> value</u>.
-			</div>
-			<fieldset>
-				<legend>Default settings</legend>
-				<dl class="install_list">
-					<dt>
-						<label for="language">Language</label><br>
-						The language used in The Bug Genie
-					</dt>
-					<dd>
-						<select name="language" id="language">
-						<?php foreach (BUGSi18n::getLanguages() as $lang_code => $lang_desc): ?>
-							<option value="<?php echo $lang_code; ?>"<?php if ($lang_code == 'en_US'): ?> selected<?php endif; ?>><?php echo $lang_desc; ?></option>
-						<?php endforeach; ?>
-						</select>
-					</dd>
-				</dl>
-				<p style="margin-bottom: 15px;">The selected language will also be used to load the default settings, and fixtures such as issue types, status values, etc.<br>
-				This setting can be changed at any time from the Configuration center, after the installation is completed.</p> 
-			</fieldset>
+			<br style="clear: both;">
 			<div style="padding-top: 20px; clear: both; text-align: center;">
 				<label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and load the necessary default settings</label>
 				<input type="submit" id="continue_button" value="Continue">

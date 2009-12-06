@@ -22,7 +22,7 @@
 	<br>
 	<form accept-charset="utf-8" action="index.php" method="post">
 		<input type="hidden" name="step" value="1">
-		<input type="checkbox" name="agree_license" id="agree_license" onclick="$('start_installation').enable();">
+		<input type="checkbox" name="agree_license" id="agree_license" onclick="($('agree_license').checked) ? $('start_installation').enable() : $('start_installation').disable();">
 		<label for="agree_license" style="font-weight: bold; font-size: 14px;">I agree to be bound by the terms in the MPL 1.1 license</label>&nbsp;&nbsp;<br>
 		<input type="submit" style="margin-top: 15px;" value="Continue" id="start_installation" disabled="disabled">
 	</form>

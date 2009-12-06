@@ -17,8 +17,8 @@
 	First of all, we need the database username and password:
 	<form accept-charset="utf-8" action="index.php" method="post" id="database_connection">
 		<input type="hidden" name="step" value="3">
-		<fieldset title="DSN">
-			<legend>1: Username and password</legend>
+		<fieldset title="Username, password and table prefix">
+			<legend>1: Username, password and table prefix</legend>
 			<dl class="install_list">
 				<dt>
 					<label for="db_username">Username</label><br>
@@ -43,9 +43,10 @@
 		<fieldset title="DSN"<?php if ($selected_connection_detail != 'dsn'): ?> style="display: none;"<?php endif; ?> id="dsn_info">
 			<legend>2: DSN</legend>
 			<dl class="install_list">
-				<dt>
+				<dt style="padding-bottom: 10px;">
 					<label for="db_dsn">DSN</label><br>
-					 The Data Source Name required to connect to the database 
+					 The Data Source Name required to connect to the database<br>
+					 <i><a href="http://www.php.net/manual/en/pdo.construct.php" style="font-size: 11px;" target="_blank">What is a DSN?</a></i>
 				</dt>
 				<dd><input type="text" name="db_dsn" id="db_dsn"<?php if (isset($dsn)): ?> value="<?php echo $dsn; ?>"<?php endif; ?>></dd>
 			</dl>

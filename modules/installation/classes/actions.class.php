@@ -213,13 +213,13 @@
 			try
 			{
 				BUGSlogging::log('Initializing language support');
-				BUGScontext::reinitializeI18n($request->getParameter('language'));
+				BUGScontext::reinitializeI18n('en_US');
 
 				BUGSlogging::log('Loading fixtures for default scope');
 				$scope = BUGSscope::createNew('The default scope', '');
 
 				BUGSlogging::log('Setting up default users and groups');
-				BUGSsettings::saveSetting('language', $request->getParameter('language'), 'core', 1);
+				BUGSsettings::saveSetting('language', 'en_US', 'core', 1);
 				$scope->setHostname($request->getParameter('url_host'));
 				$scope->save();
 				BUGSsettings::saveSetting('url_subdir', $request->getParameter('url_subdir'), 'core', 1);

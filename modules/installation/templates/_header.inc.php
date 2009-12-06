@@ -54,7 +54,7 @@
 					</div>
 					<div style="text-align: left; padding: 0px;">
 						<?php if ($step >= 1): ?>
-							<div style="text-align: center; width: 100%; margin-top: 5px;">
+							<div style="text-align: center; width: 100%; margin-top: 5px; font-size: 12px;">
 								<b>Installation progress</b><br>
 								<table style="width: 700px; margin: 5px auto 0 auto;" cellpadding="0" cellspacing="0" border="0">
 									<td style="background-color: #91CC87; width: <?php echo (($step - 1) * 20); ?>%; height: 10px; font-size: 1px;">&nbsp;</td>

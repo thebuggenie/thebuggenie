@@ -202,12 +202,12 @@
 			$i18n = BUGScontext::getI18n();
 			list ($admin_group_id, $users_group_id, $guest_group_id) = B2DB::getTable('B2tGroups')->loadFixtures($scope_id);
 
-			$adminuser = BUGSuser::createNew('administrator', $i18n->__('Administrator'), $i18n->__('Admin'), $scope_id, true, true);
+			$adminuser = BUGSuser::createNew('administrator', 'Administrator', 'Admin', $scope_id, true, true);
 			$adminuser->setGroup($admin_group_id);
 			$adminuser->changePassword('admin');
 			$adminuser->setAvatar('admin');
 			
-			$guestuser = BUGSuser::createNew('guest', $i18n->__('Guest user'), $i18n->__('Guest user'), $scope_id, true, true);
+			$guestuser = BUGSuser::createNew('guest', 'Guest user', 'Guest user', $scope_id, true, true);
 			$guestuser->setGroup($guest_group_id);
 
 			B2DB::getTable('B2tSettings')->loadFixtures($scope_id);

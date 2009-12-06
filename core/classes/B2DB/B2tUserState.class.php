@@ -49,7 +49,7 @@
 			$i18n = BUGScontext::getI18n();
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, $i18n->__('Available'));
+			$crit->addInsert(self::STATE_NAME, 'Available');
 			$crit->addInsert(self::SCOPE, $scope);
 			$crit->addInsert(self::UNAVAILABLE, 0);
 			$crit->addInsert(self::BUSY, 0);
@@ -59,7 +59,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, $i18n->__('Offline'));
+			$crit->addInsert(self::STATE_NAME, 'Offline');
 			$crit->addInsert(self::SCOPE, $scope);
 			$crit->addInsert(self::UNAVAILABLE, 1);
 			$crit->addInsert(self::BUSY, 0);
@@ -69,7 +69,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, $i18n->__('Busy'));
+			$crit->addInsert(self::STATE_NAME, 'Busy');
 			$crit->addInsert(self::SCOPE, $scope);
 			$crit->addInsert(self::UNAVAILABLE, 0);
 			$crit->addInsert(self::BUSY, 1);
@@ -79,7 +79,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, $i18n->__('Unavailable'));
+			$crit->addInsert(self::STATE_NAME, 'Unavailable');
 			$crit->addInsert(self::SCOPE, $scope);
 			$crit->addInsert(self::UNAVAILABLE, 1);
 			$crit->addInsert(self::BUSY, 0);
@@ -89,7 +89,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, $i18n->__('In a meeting'));
+			$crit->addInsert(self::STATE_NAME, 'In a meeting');
 			$crit->addInsert(self::SCOPE, $scope);
 			$crit->addInsert(self::UNAVAILABLE, 1);
 			$crit->addInsert(self::BUSY, 1);
@@ -99,7 +99,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, $i18n->__('Coding'));
+			$crit->addInsert(self::STATE_NAME, 'Coding');
 			$crit->addInsert(self::SCOPE, $scope);
 			$crit->addInsert(self::UNAVAILABLE, 0);
 			$crit->addInsert(self::BUSY, 1);
@@ -109,7 +109,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, $i18n->__('On coffee break'));
+			$crit->addInsert(self::STATE_NAME, 'On coffee break');
 			$crit->addInsert(self::SCOPE, $scope);
 			$crit->addInsert(self::UNAVAILABLE, 1);
 			$crit->addInsert(self::BUSY, 1);
@@ -119,7 +119,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, $i18n->__('Away'));
+			$crit->addInsert(self::STATE_NAME, 'Away');
 			$crit->addInsert(self::SCOPE, $scope);
 			$crit->addInsert(self::UNAVAILABLE, 1);
 			$crit->addInsert(self::BUSY, 1);
@@ -129,7 +129,7 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, $i18n->__('On vacation'));
+			$crit->addInsert(self::STATE_NAME, 'On vacation');
 			$crit->addInsert(self::SCOPE, $scope);
 			$crit->addInsert(self::UNAVAILABLE, 1);
 			$crit->addInsert(self::BUSY, 1);

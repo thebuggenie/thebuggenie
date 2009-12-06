@@ -1,24 +1,26 @@
 <?php include_template('installation/header'); ?>
 <div class="installation_box">
 	<div class="features">
-		Even if you haven't used The Bug Genie before, you will soon notice that it comes <b>packed</b> with features, such as:
-		<ul>
-			<li>Great user management through permissions, groups and teams</li>
-			<li>Highly configurable and easy to use search, with grouping capabilities</li>
-			<li>Articles &amp; news, lets you publish articles, news and links</li>
-			<li>SVN integration</li>
-			<li>Global and team billboards</li>
-			<li>Great messaging functionality</li>
-			<li>Issue tasks and issue dependancies</li>
-			<li>"Report issue" wizard, with help panels</li>
-			<li>Project dashboard, with detailed breakdowns and statistics</li>
-			<li>Automated roadmap generation</li>
-			<li>Voting system</li>
-			<li>Module based architecture which lets you extend and improve it</li>
-		</ul>
-		With technologies such as the B2 framework and the B2DB database support system, extending and integrating your ticketing system has never been easier.<br>	
-		<br>
-		For more information, refer to <a href="http://doc.thebuggenie.com" target="_blank">The Bug Genie online manual</a>.<br>
+		<div class="feature">
+			Even if you haven't used The Bug Genie before, you will soon notice that it comes <b>packed</b> with features, such as:
+			<ul>
+				<li>Great user management through permissions, groups and teams</li>
+				<li>Highly configurable and easy to use search, with grouping capabilities</li>
+				<li>Integrated wiki for all your documentation, news and article needs</li>
+				<li>SVN integration</li>
+				<li>Great messaging functionality</li>
+				<li>Issue tasks and issue dependancies</li>
+				<li>Project dashboard, with detailed breakdowns and statistics</li>
+				<li>Automated roadmap generation</li>
+				<li>Voting system</li>
+				<li>Extensible module based framework</li>
+			</ul>
+			For more information, refer to <a href="http://doc.thebuggenie.com" target="_blank">The Bug Genie online manual</a>.<br>
+		</div>
+		<div class="feature">
+			<h4 style="padding-top: 0; margin-top: 0;">UPGRADING FROM A PREVIOUS VERSION?</h4>
+			If you are upgrading from version 2.x, use the "Import data from version 2"-wizard, available from the Configuration page after installation. Upgrading from version 1 is not supported.
+		</div>
 	</div>
 	<h2 style="margin-top: 0px;">Welcome to The Bug Genie</h2>
 	<p>
@@ -34,15 +36,13 @@
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can save database connection details ...</div>
 	<?php endif; ?>
 	<?php if ($all_well): ?>
-		<div style="margin-top: 10px;">
-			Before you continue, please make sure that you have the following information available:
+		<div style="margin-top: 20px;">
+			Please make sure that you have the following information available:
 			<ul class="outlined">
-				<li>Database information (hostname, port, username, password and database)</li>
-				<li>File system path to installation</li>
+				<li>Database connection details</li>
 				<li>Server url</li>
 			</ul>
-			<h4>UPGRADING FROM VERSION 1?</h4>
-			If you are upgrading from version 1.9, use the "Import data from version 1.9"-wizard, available from the Configuration center after installation.
+			<br>
 		</div>
 		<div style="clear: both; padding-top: 20px; text-align: center;">
 			<form accept-charset="utf-8" action="index.php" method="post">
