@@ -683,7 +683,7 @@
 			
 			$codeblock = $geshi->parse_code();
 			unset($geshi);
-			return '<code>k' . $codeblock . 'k</code>';
+			return '<code>' . $codeblock . '</code>';
 		}
 
 		protected function _parse_restore_code($matches)
