@@ -672,9 +672,17 @@
 			return "|||CODE|||";
 		}
 
-		protected function _geshify($codeblock)
+		protected function _geshify($codeblock, $language = 'xml', $numbering = true, $numbering_startfrom = 1)
 		{
-			// run $codeblock through geshi parser here
+			$geshi = new GeSHi($codeblock, $language);
+			if ($numbering === true)
+			{
+				$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, 10);
+				$geshi->start_line_numbers_at($numbering_startfrom);
+			}
+			
+			$codeblock = $geshi->parse_code();
+			unset($geshi);
 			return '<code>' . $codeblock . '</code>';
 		}
 

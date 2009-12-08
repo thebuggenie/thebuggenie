@@ -234,6 +234,7 @@
 		BUGSlogging::log('...done');
 		
 		require THEBUGGENIE_PATH . 'core/common_functions.inc.php';
+		require THEBUGGENIE_PATH . 'core/geshi/geshi.php';
 		
 		BUGSlogging::log('B2 framework loaded');
 	}
