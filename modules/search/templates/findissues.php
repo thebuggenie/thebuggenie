@@ -76,9 +76,9 @@
 							<option value="state"><?php echo __('Issue state - whether an issue is open or closed'); ?></option>
 							<option value="status"><?php echo __('Status - what status an issue has'); ?></option>
 							<option value="resolution"><?php echo __("Resolution - the issue's resolution"); ?></option>
-							<option value="category" disabled><?php echo __("Category - which category an issue is in"); ?></option>
-							<option value="priority" disabled><?php echo __("Priority - how high the issue is prioritised"); ?></option>
-							<option value="severity" disabled><?php echo __("Severity - how serious the issue is"); ?></option>
+							<option value="category"><?php echo __("Category - which category an issue is in"); ?></option>
+							<option value="priority"><?php echo __("Priority - how high the issue is prioritised"); ?></option>
+							<option value="severity"><?php echo __("Severity - how serious the issue is"); ?></option>
 						</select>
 						<?php echo image_submit_tag('action_add_small.png'); ?>
 						<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'add_filter_indicator')); ?>
