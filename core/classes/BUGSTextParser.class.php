@@ -680,7 +680,7 @@
 
 		protected function _parse_restore_code($matches)
 		{
-			return array_pop($this->_geshify($this->codeblocks));
+			return $this->_geshify(array_pop($this->codeblocks));
 		}
 
 		public function getInternalLinks()
