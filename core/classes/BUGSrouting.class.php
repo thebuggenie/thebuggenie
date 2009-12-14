@@ -357,7 +357,17 @@
 					{
 						foreach ($value as $k => $v)
 						{
-							$tmp[] = "{$key}[{$k}]".$equals.urlencode($v);
+							if (is_array($v))
+							{
+								foreach ($v as $vk => $vv)
+								{
+									$tmp[] = "{$key}[{$k}][{$vk}]".$equals.urlencode($vv);
+								}
+							}
+							else
+							{
+								$tmp[] = "{$key}[{$k}]".$equals.urlencode($v);
+							}
 						}
 					}
 					else

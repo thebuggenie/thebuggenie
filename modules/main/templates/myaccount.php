@@ -1,4 +1,48 @@
-<script type="text/javascript" src="<?php echo BUGScontext::getTBGPath(); ?>js/account.js"></script>
+<?php
+
+	$bugs_response->setTitle('My account');
+
+?>
+<table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
+	<tr>
+		<td id="account_lefthand" style="vertical-align: top; width: 350px;">
+			<?php BUGScontext::trigger('core', 'account_left_top'); ?>
+			<div class="rounded_box iceblue_borderless" style="margin: 10px 0px 10px 10px;">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="vertical-align: middle; padding: 5px 10px 5px 10px; font-size: 14px;">
+					<?php echo image_tag($bugs_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;'), true); ?>
+					<strong><?php echo $bugs_user->getRealname(); ?></strong>
+					<br />
+					<span style="font-size: 12px;">
+						(<?php echo $bugs_user->getUsername(); ?>)<br>
+						<?php echo '<b>' . __('Status: %status%', array('%status%' => '</b>' . (($bugs_user->getState() instanceof BUGSuserstate) ? $bugs_user->getState()->getName() : '<span class="faded_medium">' . __('Unknown') . '</span>'))); ?>
+					</span>
+					<br />
+					<div style="font-size: 13px;">
+						<div style="clear: both; margin-top: 15px;">
+							<?php echo image_tag('icon_dashboard_small.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+							<?php echo link_tag(make_url('dashboard'), __('Go to my dashboard')); ?>
+						</div>
+						<div style="clear: both; margin-top: 3px;">
+							<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+							<?php echo link_tag(make_url('search', array('searchfor' => '%%', 'issues_per_page' => 30, 'filters' => array('posted_by' => array('value' => $bugs_user->getID(), 'operator' => '=')))), __("Show a list of all issues I've reported")); ?>
+						</div>
+					</div>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div>
+			<div style="margin: 10px 0 10px 10px;">
+				<?php include_component('main/myfriends'); ?>
+			</div>
+			<?php BUGScontext::trigger('core', 'account_left_bottom'); ?>
+		</td>
+		<td valign="top" align="left" style="padding-right: 10px;">
+		</td>
+	</tr>
+</table>
+<?php
+
+/*<script type="text/javascript" src="<?php echo BUGScontext::getTBGPath(); ?>js/account.js"></script>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 <tr>
 <td style="width: 225px;" valign="top">
@@ -213,4 +257,4 @@
 ?>
 </td>
 </tr>
-</table>
+</table>*/

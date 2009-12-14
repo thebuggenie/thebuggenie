@@ -107,7 +107,7 @@
 
 		public static function getValidSearchFilters()
 		{
-			return array('project_id', 'state', 'status', 'resolution', 'category', 'severity', 'priority');
+			return array('project_id', 'state', 'status', 'resolution', 'category', 'severity', 'priority', 'posted_by');
 		}
 
 		public function getCountsByProjectID($project_id)
