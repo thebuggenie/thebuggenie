@@ -20,8 +20,8 @@
 					<br />
 					<div style="font-size: 13px;">
 						<div style="clear: both; margin-top: 15px;">
-							<?php echo image_tag('icon_dashboard_small.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-							<?php echo link_tag(make_url('dashboard'), __('Go to my dashboard')); ?>
+							<?php echo image_tag('icon_change_password.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+							<?php echo link_tag('#', __('Change my password')); ?>
 						</div>
 						<div style="clear: both; margin-top: 3px;">
 							<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
