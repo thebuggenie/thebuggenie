@@ -19,9 +19,6 @@
 	class BUGSaction extends BUGSparameterholder
 	{
 		
-		const FORWARD_HEADER = 1;
-		const FORWARD_META = 2;
-		
 		/**
 		 * Forward the user to a specified url
 		 * 
@@ -29,21 +26,21 @@
 		 * @param integer $code[optional] HTTP status code
 		 * @param integer $method[optional] 2 for meta redirect instead of header
 		 */
-		public function forward($url, $code = 200, $method = null)
+		public function forward($url, $code = 200)
 		{
+			if (BUGScontext::getRequest()->isAjaxCall())
+			{
+				ob_clean();
+				$this->getResponse()->setContentType('application/json');
+				$this->getResponse()->setHttpStatus($code);
+				$this->getResponse()->renderHeaders();
+				echo json_encode(array('error' => BUGScontext::getMessageAndClear('forward')));
+				die();
+			}
 			BUGSlogging::log("Forwarding to url {$url}");
-			$method = ($method === null) ? self::FORWARD_HEADER : $method;
 			
-			if ($method == self::FORWARD_HEADER)
-			{
-				BUGSlogging::log('Triggering header redirect function');
-				$this->getResponse()->headerRedirect($url, $code);
-			}
-			elseif ($method == self::FORWARD_META)
-			{
-				throw new Exception('Not implemented yet');
-				//self::metaForward($url, $code);
-			}
+			BUGSlogging::log('Triggering header redirect function');
+			$this->getResponse()->headerRedirect($url, $code);
 		}
 
 		/**

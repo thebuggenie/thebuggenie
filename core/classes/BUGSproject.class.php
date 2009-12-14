@@ -2136,12 +2136,22 @@
 
 		/**
 		 * Checks to see if issue types are shown in the frontpage summary
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isIssuetypesVisibleInFrontpageSummary()
 		{
 			return ($this->getFrontpageSummaryType() == 'issuetypes') ? true : false;
+		}
+
+		/**
+		 * Checks to see if a list of issues is shown in the frontpage summary
+		 *
+		 * @return boolean
+		 */
+		public function isIssuelistVisibleInFrontpageSummary()
+		{
+			return ($this->getFrontpageSummaryType() == 'issuelist') ? true : false;
 		}
 
 		/**

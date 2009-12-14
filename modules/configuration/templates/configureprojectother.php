@@ -15,12 +15,21 @@
 				<?php echo __('Select what to show on the frontpage project overview'); ?>. (<?php echo __('This will not affect the separate project overview page'); ?>)
 				<form action="<?php echo make_url('configure_project_updateother', array('project_id' => $theProject->getID())); ?>" method="post" style="margin-top: 10px;" onsubmit="saveProjectOther('<?php echo make_url('configure_project_updateother', array('project_id' => $theProject->getID())); ?>');return false;" id="project_other">
 					<label for="milestones_or_issuetypes"><?php echo __('On the frontpage summary, show'); ?></label> 
-					<select name="milestones_or_issuetypes" id="milestones_or_issuetypes" onchange="$('checkboxes_issuetypes').hide();$('checkboxes_milestones').hide();$('checkboxes_'+this.getValue()).show();">
+					<select name="frontpage_summary" id="frontpage_summary" onchange="$('checkboxes_issuetypes').hide();$('checkboxes_milestones').hide();$('checkboxes_'+this.getValue()).show();">
 						<option value=""<?php if (!$theProject->isAnythingVisibleInFrontpageSummary()): ?> selected<?php endif; ?>><?php echo __('only project information'); ?></option>
 						<option value="milestones"<?php if ($theProject->isMilestonesVisibleInFrontpageSummary()): ?> selected<?php endif; ?>><?php echo __('status per milestone'); ?></option>
 						<option value="issuetypes"<?php if ($theProject->isIssuetypesVisibleInFrontpageSummary()): ?> selected<?php endif; ?>><?php echo __('status per issue types'); ?></option>
+						<option value="issuelist"<?php if ($theProject->isIssuelistVisibleInFrontpageSummary()): ?> selected<?php endif; ?>><?php echo __('list of open issues'); ?></option>
 					</select>
 					<div id="checkboxes_issuetypes" style="margin-top: 5px;<?php if (!$theProject->isIssuetypesVisibleInFrontpageSummary()): ?> display: none;<?php endif;?>">
+						<?php foreach ($theProject->getIssueTypes() as $issuetype): ?>
+							<div style="clear: both; font-size: 12px;">
+								<input type="checkbox" name="showissuetype[<?php echo $issuetype->getID(); ?>]" value="<?php echo $issuetype->getID(); ?>"<?php if ($theProject->isIssuetypeVisible($issuetype->getID())): ?> checked<?php endif; ?> id="showissuetype_<?php echo $issuetype->getID(); ?>" style="float: left;">
+								<label for="showissuetype_<?php echo $issuetype->getID(); ?>"><?php echo __('Show %issuetype%', array('%issuetype%' => $issuetype->getName())); ?></label>
+							</div>
+						<?php endforeach; ?>
+					</div>
+					<div id="checkboxes_issuelist" style="margin-top: 5px;<?php if (!$theProject->isIssuelistVisibleInFrontpageSummary()): ?> display: none;<?php endif;?>">
 						<?php foreach ($theProject->getIssueTypes() as $issuetype): ?>
 							<div style="clear: both; font-size: 12px;">
 								<input type="checkbox" name="showissuetype[<?php echo $issuetype->getID(); ?>]" value="<?php echo $issuetype->getID(); ?>"<?php if ($theProject->isIssuetypeVisible($issuetype->getID())): ?> checked<?php endif; ?> id="showissuetype_<?php echo $issuetype->getID(); ?>" style="float: left;">
