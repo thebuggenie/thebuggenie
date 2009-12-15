@@ -479,6 +479,21 @@
 		public function runMyAccount(BUGSrequest $request)
 		{
 			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('account'));
+			if ($request->isMethod(BUGSrequest::POST))
+			{
+				BUGScontext::getUser()->setBuddyname($request->getParameter('buddyname'));
+				BUGScontext::getUser()->setRealname($request->getParameter('realname'));
+				BUGScontext::getUser()->setUsesGravatar((bool) $request->getParameter('use_gravatar'));
+				BUGScontext::getUser()->setEmailPrivate((bool) $request->getParameter('email_private'));
+				BUGScontext::getUser()->save();
+
+				if (BUGScontext::getUser()->getEmail() != $request->getParameter('email'))
+				{
+					// Send off an email to the new address with a "confirm" link to change the email address
+				}
+
+				return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Profile information saved'), 'content' => ''));
+			}
 			$this->getResponse()->setPage('account');
 			$this->getResponse()->setProjectMenuStripHidden();
 		}

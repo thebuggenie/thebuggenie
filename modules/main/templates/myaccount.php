@@ -36,7 +36,86 @@
 			</div>
 			<?php BUGScontext::trigger('core', 'account_left_bottom'); ?>
 		</td>
-		<td valign="top" align="left" style="padding-right: 10px;">
+		<td valign="top" align="left" style="padding: 0 10px 0 5px;">
+			<div style="margin: 10px 0 0 0; clear: both; height: 30px;" class="tab_menu">
+				<ul id="account_tabs">
+					<li class="selected" id="tab_profile"><a onclick="switchSubmenuTab('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('My profile'); ?></a></li>
+					<li id="tab_settings"><a onclick="switchSubmenuTab('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('Settings'); ?></a></li>
+				</ul>
+			</div>
+			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account'); ?>" onsubmit="updateProfile('<?php echo make_url('account'); ?>'); return false;" method="post" id="profile_form">
+				<div class="rounded_box borderless" style="margin: 5px 0 0 0; width: 700px;">
+					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+					<div class="xboxcontent" style="padding: 5px;" id="account_tabs_panes">
+						<div id="tab_profile_pane">
+							<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
+								<tr>
+									<td style="width: 200px; padding: 5px;"><label for="profile_buddyname"><?php echo __('"Friendly" name / nickname'); ?></label></td>
+									<td>
+										<input name="buddyname" id="profile_buddyname" value="<?php echo $bugs_user->getBuddyname(); ?>" style="width: 200px;">
+									</td>
+								</tr>
+								<tr>
+									<td class="config_explanation" colspan="2"><?php echo __('This is the name used across the site for your profile.'); ?></td>
+								</tr>
+								<tr>
+									<td style="padding: 5px;"><label for="profile_realname"><?php echo __('Full name'); ?></label></td>
+									<td>
+										<input name="realname" id="profile_realname" value="<?php echo $bugs_user->getRealname(); ?>" style="width: 300px;">
+									</td>
+								</tr>
+								<tr>
+									<td class="config_explanation" colspan="2"><?php echo __('This is your real name, mostly used in communication with you, and rarely shown to others'); ?></td>
+								</tr>
+								<tr>
+									<td style="padding: 5px;"><label for="profile_email"><?php echo __('Email address'); ?></label></td>
+									<td>
+										<input name="email" id="profile_email" value="<?php echo $bugs_user->getEmail(); ?>" style="width: 300px;">
+									</td>
+								</tr>
+								<tr>
+									<td style="padding: 5px;"><label for="profile_email_private_yes"><?php echo __('Show my email address to others'); ?></label></td>
+									<td>
+										<input type="radio" name="email_private" value="1" id="profile_email_private_yes"<?php if ($bugs_user->isEmailPrivate()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_yes"><?php echo __('No'); ?></label><br>
+										<input type="radio" name="email_private" value="0" id="profile_email_private_no"<?php if ($bugs_user->isEmailPublic()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_no"><?php echo __('Yes'); ?></label><br>
+									</td>
+								</tr>
+								<tr>
+									<td class="config_explanation" colspan="2"><?php echo __('Whether your email address is visible to other users in your profile information card. The email address is always visible to admins.'); ?></td>
+								</tr>
+								<tr>
+									<td colspan="2" style="padding: 5px; text-align: right;">&nbsp;</td>
+								</tr>
+							</table>
+						</div>
+						<div id="tab_settings_pane" style="display: none;">
+							<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
+								<tr>
+									<td style="width: 200px; padding: 5px;"><label for="profile_use_gravatar_yes"><?php echo __('Use Gravatar avatar'); ?></label></td>
+									<td>
+										<input type="radio" name="use_gravatar" value="1" id="profile_use_gravatar_yes"<?php if ($bugs_user->usesGravatar()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_use_gravatar_yes"><?php echo __('Yes'); ?></label><br>
+										<input type="radio" name="use_gravatar" value="0" id="profile_use_gravatar_no"<?php if (!$bugs_user->usesGravatar()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_use_gravatar_no"><?php echo __('No'); ?></label><br>
+									</td>
+								</tr>
+								<tr>
+									<td class="config_explanation" colspan="2"><?php echo __("The Bug Genie can use your <a href=\"http://www.gravatar.com\" target=\"_blank\">Gravatar</a> profile picture, if you have one. If you don't have one but still want to use Gravatar for profile pictures, The Bug Genie will use a Gravatar <a href=\"http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/\" target=\"_blank\">auto-generated image unique for your email address</a>."); ?></td>
+								</tr>
+								<tr>
+									<td colspan="2" style="padding: 5px; text-align: right;">&nbsp;</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="rounded_box iceblue_borderless" style="margin: 0 0 5px 0; width: 700px;">
+					<div class="xboxcontent" style="padding: 8px 5px 2px 5px; height: 23px;">
+						<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save your profile settings', array('%save%' => __('Save'))); ?></div>
+						<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+						<span id="profile_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+					</div>
+					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+				</div>
+			</form>
 		</td>
 	</tr>
 </table>

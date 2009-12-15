@@ -1,3 +1,42 @@
+
+function failedMessage(title, content)
+{
+	$('thebuggenie_failuremessage_title').update(title);
+	$('thebuggenie_failuremessage_content').update(content);
+	if ($('thebuggenie_successmessage').visible())
+	{
+		new Effect.SlideUp('thebuggenie_successmessage', {duration: 0.5});
+	}
+	if ($('thebuggenie_failuremessage').visible())
+	{
+		new Effect.Pulsate('thebuggenie_failuremessage');
+	}
+	else
+	{
+		new Effect.SlideDown('thebuggenie_failuremessage', {duration: 1});
+	}
+	new Effect.SlideUp('thebuggenie_failuremessage', {delay: 10});
+}
+
+function successMessage(title, content)
+{
+	$('thebuggenie_successmessage_title').update(title);
+	$('thebuggenie_successmessage_content').update(content);
+	if ($('thebuggenie_failuremessage').visible())
+	{
+		new Effect.SlideUp('thebuggenie_failuremessage', {duration: 0.5});
+	}
+	if ($('thebuggenie_failuremessage').visible())
+	{
+		new Effect.Pulsate('thebuggenie_successmessage');
+	}
+	else
+	{
+		new Effect.SlideDown('thebuggenie_successmessage', {duration: 1});
+	}
+	new Effect.SlideUp('thebuggenie_successmessage', {delay: 10});
+}
+
 function findIdentifiable(url, field)
 {
 	var params = Form.serialize(field + '_form');
@@ -5,9 +44,17 @@ function findIdentifiable(url, field)
 	asynchronous: true,
 	method: "post",
 	parameters: params,
-	onLoading: function () { $(field + '_spinning').show(); },
-	onComplete: function () { $(field + '_spinning').hide(); }
+	onLoading: function () {$(field + '_spinning').show();},
+	onComplete: function () {$(field + '_spinning').hide();}
 	});
+}
+
+function switchSubmenuTab(visibletab, menu)
+{
+  $(menu).childElements().each(function(item){item.removeClassName('selected');});
+  $(visibletab).addClassName('selected');
+  $(menu + '_panes').childElements().each(function(item){item.hide();});
+  $(visibletab + '_pane').show();
 }
 
 function addSearchFilter(url)
@@ -63,42 +110,34 @@ function hideBud(elem_id)
 	$('icon_' + elem_id).className = "imgtd_bud";
 }
 
-function failedMessage(title, content)
+function updateProfile(url)
 {
-	$('thebuggenie_failuremessage_title').update(title);
-	$('thebuggenie_failuremessage_content').update(content);
-	if ($('thebuggenie_successmessage').visible())
-	{
-		new Effect.SlideUp('thebuggenie_successmessage', { duration: 0.5 });
+	var params = Form.serialize('profile_form');
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	evalScripts: true,
+	parameters: params,
+	onLoading: function (transport) {
+		$('profile_save_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+			$('profile_save_indicator').hide();
+		}
+		else
+		{
+			$('profile_save_indicator').hide();
+			successMessage(json.title, json.content);
+		}
+	},
+	onFailure: function (transport) {
+		$('profile_save_indicator').hide();
 	}
-	if ($('thebuggenie_failuremessage').visible())
-	{
-		new Effect.Pulsate('thebuggenie_failuremessage');
-	}
-	else
-	{
-		new Effect.SlideDown('thebuggenie_failuremessage', { duration: 1 });
-	}
-	new Effect.SlideUp('thebuggenie_failuremessage', { delay: 10 });
-}
-
-function successMessage(title, content)
-{
-	$('thebuggenie_successmessage_title').update(title);
-	$('thebuggenie_successmessage_content').update(content);
-	if ($('thebuggenie_failuremessage').visible())
-	{
-		new Effect.SlideUp('thebuggenie_failuremessage', { duration: 0.5 });
-	}
-	if ($('thebuggenie_failuremessage').visible())
-	{
-		new Effect.Pulsate('thebuggenie_successmessage');
-	}
-	else
-	{
-		new Effect.SlideDown('thebuggenie_successmessage', { duration: 1 });
-	}
-	new Effect.SlideUp('thebuggenie_successmessage', { delay: 10 });
+	});
 }
 
 function hideInfobox(url, boxkey)
@@ -123,7 +162,7 @@ function updateProjectMenuStrip(url, project_id)
 {
 	new Ajax.Updater('project_menustrip', url, {
 		asynchronous: true,
-		parameters: { project_id: project_id },
+		parameters: {project_id: project_id},
 		evalScripts: true,
 		method: "post",
 		onLoading: function(transport) {
@@ -146,8 +185,8 @@ function searchPage(url, offset)
 	asynchronous: true,
 	method: "post",
 	parameters: params,
-	onLoading: function () { $('paging_spinning').show(); },
-	onComplete: function () { $('paging_spinning').hide(); }
+	onLoading: function () {$('paging_spinning').show();},
+	onComplete: function () {$('paging_spinning').hide();}
 	});
 }
 
@@ -282,7 +321,7 @@ function getComments(modl, t_type, t_id)
 	asynchronous:true,
 	method: "post",
 	evalScripts: true,
-	parameters: { target_id: t_id, target_type: t_type, module: modl },
+	parameters: {target_id: t_id, target_type: t_type, module: modl},
 	insertion: Insertion.Top
 	});
 }
@@ -293,7 +332,7 @@ function editComment(cid, modl, t_type, t_id)
 	asynchronous:true,
 	method: "post",
 	evalScripts: true,
-	parameters: { comment_id: cid, target_id: t_id, target_type: t_type, module: modl } });
+	parameters: {comment_id: cid, target_id: t_id, target_type: t_type, module: modl}});
 }
 
 function getComment(cid, modl, t_type, t_id)
@@ -302,7 +341,7 @@ function getComment(cid, modl, t_type, t_id)
 	asynchronous:true,
 	method: "post",
 	evalScripts: true,
-	parameters: { comment_id: cid, target_id: t_id, target_type: t_type, module: modl } });
+	parameters: {comment_id: cid, target_id: t_id, target_type: t_type, module: modl}});
 }
 
 function updateComment(cid, modl, t_type, t_id)
@@ -329,7 +368,7 @@ function deleteComment(cid, modl, t_type, t_id)
 	asynchronous:true,
 	method: "post",
 	evalScripts: true,
-	parameters: { comment_id: cid, target_id: t_id, target_type: t_type, module: modl } });
+	parameters: {comment_id: cid, target_id: t_id, target_type: t_type, module: modl}});
 	Element.hide('commentheader_' + cid);
 	Element.hide('commentbody_' + cid);
 	Element.show('deletedcomment_' + cid);

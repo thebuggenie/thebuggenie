@@ -42,7 +42,7 @@
 <?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 	<div class="rounded_box iceblue_borderless" style="margin: 0 0 5px 0; width: 700px;">
 		<div class="xboxcontent" style="padding: 8px 5px 2px 5px; height: 23px;">
-			<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save email notification settings', array('%save%' => __('Save'))); ?></div>
+			<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save wiki settings', array('%save%' => __('Save'))); ?></div>
 			<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 		</div>
 		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>

@@ -1317,9 +1317,10 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-weight: bold; font-size: 14px; }
 .project_overview .content { padding-left: 5px; }
 #config_modules {  font-size: 13px; }
-#config_modules .header { font-weight: bold; font-size: 13px; text-align: left; }
+#config_modules .header, #account_tabs_panes .header { font-weight: bold; font-size: 13px; text-align: left; }
 #config_modules .header .module_shortname { font-weight: normal; font-size: 12px; }
-#config_modules .content { padding-top: 5px; text-align: left; }
+#config_modules .content, #account_tabs_panes .content { padding-top: 5px; text-align: left; }
+#account_tabs_panes .content { padding-left: 5px; font-size: 12px; }
 
 .settings_list ul { list-style-type: none; padding: 0; margin: 5px 0 5px 5px; }
 .settings_list ul li { margin: 0 0 5px 0; font-size: 11px; font-weight: normal; clear: both; }

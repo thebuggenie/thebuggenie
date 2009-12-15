@@ -89,7 +89,7 @@
 			<?php if ($show_results): ?>
 				<div class="main_header">
 					<?php if ($predefined_search === false): ?>
-						<?php echo __('Search results for %search_term%', array('%search_term%' => '<span class="searchterm">"' . $searchterm . '"</span>')); ?>
+						<?php echo __('Search results'); ?>
 					<?php else: ?>
 						<?php
 
