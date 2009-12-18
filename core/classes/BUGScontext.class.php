@@ -810,7 +810,7 @@
 		 * 
 		 * @return unknown_type
 		 */
-		public static function trigger($module, $identifier, $params = array())
+		public static function trigger($module, $identifier, $params = array(), $return_when_true = false)
 		{
 			BUGSlogging::log("Triggering $module - $identifier");
 			if (isset(self::$_registeredlisteners[$module][$identifier]))
@@ -820,7 +820,11 @@
 					try
 					{
 						BUGSlogging::log('Running callback function '.$trigger);
-						call_user_func($trigger, $params);
+						$retval = call_user_func($trigger, $params);
+						if ($return_when_true && $retval === true)
+						{
+							return true;
+						}
 						BUGSlogging::log('done (Running callback function '.$trigger.')');
 					}
 					catch (Exception $e)
@@ -1564,6 +1568,7 @@
 				{
 					//header("HTTP/1.0 404 Not Found", true, 404);
 					//bugs_msgbox(true, 'Can\'t find the page you\'re looking for.', '404');
+
 					require self::getIncludePath() . 'modules/main/classes/actions.class.php';
 					self::performAction('main', 'notFound');
 				}
@@ -1577,7 +1582,7 @@
 			catch (BUGSActionNotFoundException $e)
 			{
 				header("HTTP/1.0 404 Not Found", true, 404);
-				tbg_exception('Module action does not exist for module "' . $route['module'] . '"', $e);
+				tbg_exception('Module action "' . $route['action'] . '" does not exist for module "' . $route['module'] . '"', $e);
 				exit();				
 			}
 			catch (Exception $e)

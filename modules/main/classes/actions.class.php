@@ -485,17 +485,58 @@
 				BUGScontext::getUser()->setRealname($request->getParameter('realname'));
 				BUGScontext::getUser()->setUsesGravatar((bool) $request->getParameter('use_gravatar'));
 				BUGScontext::getUser()->setEmailPrivate((bool) $request->getParameter('email_private'));
-				BUGScontext::getUser()->save();
 
 				if (BUGScontext::getUser()->getEmail() != $request->getParameter('email'))
 				{
-					// Send off an email to the new address with a "confirm" link to change the email address
+					if (BUGScontext::trigger('core', 'changeEmail', array('email' => $request->getParameter('email')), true) !== true)
+					{
+						BUGScontext::getUser()->setEmail($request->getParameter('email'));
+					}
 				}
 
+				BUGScontext::getUser()->save();
+				
 				return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Profile information saved'), 'content' => ''));
 			}
 			$this->getResponse()->setPage('account');
 			$this->getResponse()->setProjectMenuStripHidden();
+		}
+
+		/**
+		 * Change password ajax action
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runAccountChangePassword(BUGSrequest $request)
+		{
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('account'));
+			if ($request->isMethod(BUGSrequest::POST))
+			{
+				if (!$request->hasParameter('current_password') || !$request->getParameter('current_password'))
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please enter your current password')));
+				}
+				if (!$request->hasParameter('new_password_1') || !$request->getParameter('new_password_1'))
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please enter a new password')));
+				}
+				if (!$request->hasParameter('new_password_2') || !$request->getParameter('new_password_2'))
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please enter the new password twice')));
+				}
+				if (!BUGScontext::getUser()->hasPassword($request->getParameter('current_password')))
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please enter your current password')));
+				}
+				if ($request->getParameter('new_password_1') != $request->getParameter('new_password_2'))
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please enter the new password twice')));
+				}
+				BUGScontext::getUser()->changePassword($request->getParameter('new_password_1'));
+				BUGScontext::getUser()->save();
+				$this->getResponse()->setCookie('b2_password', BUGScontext::getUser()->getPasswordMD5());
+				return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Your new password was changed')));
+			}
 		}
 		
 		/**

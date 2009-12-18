@@ -101,6 +101,20 @@
 		 */
 		protected $_project_menu_strip_visible = true;
 
+		public function ajaxResponseText($code, $error)
+		{
+			$ob_status = ob_get_status();
+			if (!empty($ob_status) && $ob_status['status'] != PHP_OUTPUT_HANDLER_END)
+			{
+				ob_end_clean();
+			}
+			$this->setContentType('application/json');
+			$this->setHttpStatus($code);
+			$this->renderHeaders();
+			echo json_encode(array('error' => $error));
+			die();
+		}
+
 		/**
 		 * Set the template
 		 * 
@@ -294,7 +308,7 @@
 		 */
 		public function setCookie($key, $value, $expiration = 864000)
 		{
-			setcookie($key, $value, $_SERVER["REQUEST_TIME"] + $expiration);
+			setcookie($key, $value, $_SERVER["REQUEST_TIME"] + $expiration, BUGScontext::getTBGPath());
 			return true;
 		}
 		
@@ -307,7 +321,7 @@
 		 */
 		public function deleteCookie($key)
 		{
-			setcookie($key, '', $_SERVER["REQUEST_TIME"] - 36000);
+			setcookie($key, '', $_SERVER["REQUEST_TIME"] - 36000, BUGScontext::getTBGPath());
 			return true;
 		}		
 

@@ -19,14 +19,16 @@
 		<meta http-equiv="Content-Type" content="<?php echo $bugs_response->getContentType(); ?> charset=<?php echo BUGScontext::getI18n()->getCharset(); ?>">
 		<link rel="shortcut icon" href="<?php print BUGScontext::getTBGPath(); ?>themes/<?php print BUGSsettings::getThemeName(); ?>/favicon.png">
 		<link rel="stylesheet" type="text/css" href="<?php print BUGScontext::getTBGPath(); ?>css/<?php print BUGSsettings::getThemeName(); ?>.css">
-		<?php foreach (BUGScontext::getModules() as $module): ?>
-			<?php if ($module->hasAccess()): ?>
-				<?php $css_name = "css/" . BUGSsettings::getThemeName() . "_" . $module->getName() . ".css"; ?>
-				<?php if (file_exists(BUGScontext::getIncludePath() . 'thebuggenie' . DIRECTORY_SEPARATOR . $css_name)): ?>
-					<link rel="stylesheet" type="text/css" href="<?php echo BUGScontext::getTBGPath() . $css_name; ?>">
+		<?php if (count(BUGScontext::getModules())): ?>
+			<?php foreach (BUGScontext::getModules() as $module): ?>
+				<?php if ($module->hasAccess()): ?>
+					<?php $css_name = "css/" . BUGSsettings::getThemeName() . "_" . $module->getName() . ".css"; ?>
+					<?php if (file_exists(BUGScontext::getIncludePath() . 'thebuggenie' . DIRECTORY_SEPARATOR . $css_name)): ?>
+						<link rel="stylesheet" type="text/css" href="<?php echo BUGScontext::getTBGPath() . $css_name; ?>">
+					<?php endif; ?>
 				<?php endif; ?>
-			<?php endif; ?>
-		<?php endforeach; ?>
+			<?php endforeach; ?>
+		<?php endif; ?>
 		<script type="text/javascript" src="<?php print BUGScontext::getTBGPath(); ?>js/prototype.js"></script>
 		<script type="text/javascript" src="<?php print BUGScontext::getTBGPath(); ?>js/scriptaculous.js"></script>
 		<script type="text/javascript" src="<?php print BUGScontext::getTBGPath(); ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>

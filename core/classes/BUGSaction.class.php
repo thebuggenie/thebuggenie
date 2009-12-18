@@ -30,12 +30,7 @@
 		{
 			if (BUGScontext::getRequest()->isAjaxCall())
 			{
-				ob_clean();
-				$this->getResponse()->setContentType('application/json');
-				$this->getResponse()->setHttpStatus($code);
-				$this->getResponse()->renderHeaders();
-				echo json_encode(array('error' => BUGScontext::getMessageAndClear('forward')));
-				die();
+				$this->getResponse()->ajaxResponseText($code, BUGScontext::getMessageAndClear('forward'));
 			}
 			BUGSlogging::log("Forwarding to url {$url}");
 			
@@ -114,6 +109,11 @@
 		 */
 		public function return404($message = null)
 		{
+			if (BUGScontext::getRequest()->isAjaxCall())
+			{
+				$this->getResponse()->ajaxResponseText(404, $message);
+			}
+
 			$this->message = $message;
 			$this->getResponse()->setHttpStatus(404);
 			//BUGScontext::get

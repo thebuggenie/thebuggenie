@@ -37,6 +37,48 @@ function successMessage(title, content)
 	new Effect.SlideUp('thebuggenie_successmessage', {delay: 10});
 }
 
+function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done)
+{
+	var params = Form.serialize(formname);
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	evalScripts: true,
+	parameters: params,
+	onLoading: function (transport) {
+		$(indicator).show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+			$(indicator).hide();
+		}
+		else
+		{
+			$(indicator).hide();
+			successMessage(json.title, json.content);
+			if (hide_div_when_done != '')
+			{
+				$(hide_div_when_done).hide();
+			}
+		}
+	},
+	onFailure: function (transport) {
+		$(indicator).hide();
+		if (transport.responseJSON)
+		{
+			failedMessage(transport.responseJSON.error);
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+	}
+	});
+}
+
 function findIdentifiable(url, field)
 {
 	var params = Form.serialize(field + '_form');
@@ -112,32 +154,22 @@ function hideBud(elem_id)
 
 function updateProfile(url)
 {
-	var params = Form.serialize('profile_form');
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: "post",
-	evalScripts: true,
-	parameters: params,
-	onLoading: function (transport) {
-		$('profile_save_indicator').show();
-	},
-	onSuccess: function (transport) {
-		var json = transport.responseJSON;
-		if (json.failed)
-		{
-			failedMessage(json.error);
-			$('profile_save_indicator').hide();
-		}
-		else
-		{
-			$('profile_save_indicator').hide();
-			successMessage(json.title, json.content);
-		}
-	},
-	onFailure: function (transport) {
-		$('profile_save_indicator').hide();
+	_postFormWithJSONFeedback(url, 'profile_form', 'profile_save_indicator');
+	if ($('profile_use_gravatar_yes').checked)
+	{
+		$('gravatar_change').show();
 	}
-	});
+	else
+	{
+		$('gravatar_change').hide();
+	}
+	return true;
+}
+
+function changePassword(url)
+{
+	_postFormWithJSONFeedback(url, 'change_password_form', 'change_password_indicator', 'change_password_form');
+	return true;
 }
 
 function hideInfobox(url, boxkey)

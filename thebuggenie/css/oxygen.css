@@ -1078,6 +1078,7 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .faded_dark { color: #999; }
 .padded_table td.config_explanation, .config_explanation { color: #999; padding: 5px 0 10px 5px; }
 .config_explanation a { color: #549D54; font-weight: bold; }
+.faded_medium a { color: #549D54; }
 
 #myacct { z-index: 100; }
 
@@ -1394,7 +1395,7 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 
 #issue_lefthand { width: 340px; padding: 5px 5px 0 5px; vertical-align: top; }
 .header_div { border-bottom: 1px solid #DDD; padding: 3px; font-size: 13px; margin-top: 5px; font-weight: bold; }
-.header_div.smaller { font-size: 12px; }
+.header_div.smaller, label.smaller, div.smaller { font-size: 12px; }
 .no_items { color: #AAA; font-size: 12px; padding: 5px; }
 .percent_filled { background-color: #8C8; }
 .percent_unfilled { background-color: #AFA; }

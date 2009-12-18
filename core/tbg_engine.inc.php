@@ -4,29 +4,6 @@
 	error_reporting(E_ALL | E_STRICT);
 
 	/**
-	 * Message box function to show "nice" error message if anything goes wrong
-	 * 
-	 * @param $top boolean whether to show it at the top of the page or where the error occurs
-	 * @param $title string the title of the message
-	 * @param $message string the body of the message
-	 */
-	function bugs_msgbox($top, $title, $message)
-	{
-		print "<div style=\"margin: 5px; ";
-		if ($top)
-		{
-			print "position: absolute; top: 40px; left: 70px;";
-		}
-		else
-		{
-			print "padding-top: 5px;";
-		}
-		print "\">";
-		if ($title != "") { print '<div style="width: 500px; text-align: left; font: 11px \'Droid Sans\', \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-weight: bold; padding: 2px 4px 2px 4px; color: #555; background-color: #FAFAD6; border: 1px solid #BBB;">' . $title . '</div>'; }
-		print '<div style="width: 500px; text-align: left; font: 11px \'Droid Sans\', \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; padding: 5px 4px 5px 4px; color: #555; background-color: #FFF; border: 1px solid #BBB;">' . $message . '</div></div>';
-	}
-	
-	/**
 	 * Displays a nicely formatted exception message
 	 *  
 	 * @param string $title
@@ -34,6 +11,10 @@
 	 */
 	function tbg_exception($title, $exception)
 	{
+		if (BUGScontext::getRequest() instanceof BUGSrequest && BUGScontext::getRequest()->isAjaxCall())
+		{
+			BUGScontext::getResponse()->ajaxResponseText(404, $title);
+		}
 		$ob_status = ob_get_status();
 		if (!empty($ob_status) && $ob_status['status'] != PHP_OUTPUT_HANDLER_END)
 		{

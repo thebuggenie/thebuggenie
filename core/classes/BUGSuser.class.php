@@ -847,26 +847,10 @@
 		 * Change the password to a new password
 		 *
 		 * @param string $newpassword
-		 * @return nothing
 		 */
 		public function changePassword($newpassword)
 		{
 			$this->pwd = md5($newpassword);
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::PASSWD, $this->pwd);
-			$crit->addWhere(B2tUsers::ID, $this->uid);
-			
-			B2DB::getTable('B2tUsers')->doUpdate($crit);
-	
-			if (BUGSsettings::get('defaultuname') == $this->getUname())
-			{
-				BUGSsettings::saveSetting("defaultpwd", $md5newPass);
-			}
-			
-			if (BUGScontext::getUser() instanceof BUGSuser && $this->getID() == BUGScontext::getUser()->getID())
-			{
-				setcookie("b2_upwd", $this->pwd, $_SERVER["REQUEST_TIME"] + 3600);
-			}
 		}
 		
 		public function setRandomPassword()
@@ -968,15 +952,10 @@
 		 * Set whether or not the email address is hidden for normal users
 		 *
 		 * @param boolean $val
-		 * @return boolean
 		 */
-		public function setEmailPrivacy($val)
+		public function setEmailPrivate($val)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::PRIVATE_EMAIL, intval($val));
-			B2DB::getTable('B2tUsers')->doUpdateById($crit, $this->uid);
-			$this->private_email = ($val == 1) ? true : false;
-			return true;
+			$this->private_email = (bool) $val;
 		}
 		
 		/**
@@ -984,16 +963,21 @@
 		 *
 		 * @return boolean
 		 */
-		public function getEmailPrivacy()
-		{
-			return $this->private_email;
-		}
-		
 		public function isEmailPrivate()
 		{
 			return $this->private_email;
 		}
-		
+
+		/**
+		 * Returns whether or not the email address is public
+		 *
+		 * @return boolean
+		 */
+		public function isEmailPublic()
+		{
+			return !$this->private_email;
+		}
+
 		public function getPasswordMD5()
 		{
 			return $this->pwd;
@@ -1081,7 +1065,31 @@
 		{
 			return $this->pwd;
 		}
-		
+
+		/**
+		 * Return whether or not the users password is this
+		 *
+		 * @param string $password Unhashed password
+		 *
+		 * @return boolean
+		 */
+		public function hasPassword($password)
+		{
+			return $this->hasPasswordMD5(md5($password));
+		}
+
+		/**
+		 * Return whether or not the users password is this
+		 *
+		 * @param string $password MD5-hashed password
+		 *
+		 * @return boolean
+		 */
+		public function hasPasswordMD5($password)
+		{
+			return (bool) ($password == $this->getMD5Password());
+		}
+
 		/**
 		 * Returns the real name (full name) of the user
 		 *
@@ -1204,15 +1212,47 @@
 			if ($email !== null) $this->email = $email;
 			if ($uname !== null) $this->uname = $uname;
 		}
-		
+
+		/**
+		 * Set the users email address
+		 *
+		 * @param string $email A valid email address
+		 */
 		public function setEmail($email)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::EMAIL, $email);
-			B2DB::getTable('B2tUsers')->doUpdateById($crit, $this->getID());
 			$this->email = $email;
 		}
-	
+
+		/**
+		 * Set the users realname
+		 *
+		 * @param string $realname
+		 */
+		public function setRealname($realname)
+		{
+			$this->realname = $realname;
+		}
+
+		/**
+		 * Set the users buddyname
+		 *
+		 * @param string $buddyname
+		 */
+		public function setBuddyname($buddyname)
+		{
+			$this->buddyname = $buddyname;
+		}
+
+		/**
+		 * Set whether the user uses gravatar
+		 *
+		 * @param string $val
+		 */
+		public function setUsesGravatar($val)
+		{
+			$this->_use_gravatar = (bool) $val;
+		}
+
 		public function setEnabled($val)
 		{
 			$crit = new B2DBCriteria();
@@ -1314,6 +1354,26 @@
 		public function hasPageAccess($page)
 		{
 			return !$this->hasPermission("b2no{$page}access", 0, "core");
+		}
+
+		/**
+		 * Save changes made to the user object
+		 *
+		 * @return BUGSuser The user object
+		 */
+		public function save()
+		{
+			$crit = B2DB::getTable('B2tUsers')->getCriteria();
+			$crit->addUpdate(B2tUsers::REALNAME, $this->realname);
+			$crit->addUpdate(B2tUsers::BUDDYNAME, $this->buddyname);
+			$crit->addUpdate(B2tUsers::USE_GRAVATAR, (bool) $this->_use_gravatar);
+			$crit->addUpdate(B2tUsers::PRIVATE_EMAIL, (bool) $this->private_email);
+			$crit->addUpdate(B2tUsers::PASSWD, $this->pwd);
+			$crit->addUpdate(B2tUsers::EMAIL, $this->email);
+
+			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, $this->getID());
+
+			return true;
 		}
 		
 		

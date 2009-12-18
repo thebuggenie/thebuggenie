@@ -21,7 +21,34 @@
 					<div style="font-size: 13px;">
 						<div style="clear: both; margin-top: 15px;">
 							<?php echo image_tag('icon_change_password.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-							<?php echo link_tag('#', __('Change my password')); ?>
+							<a href="javascript:void(0);" onclick="$('change_password_form').toggle();"><?php echo __('Change my password'); ?></a>
+						</div>
+						<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form" style="display: none;">
+							<div class="rounded_box white" style="margin: 10px 0 10px 0;" id="change_password_div">
+								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+								<div class="xboxcontent" style="vertical-align: middle; padding: 5px 10px 5px 10px; font-size: 14px;">
+									<b><?php echo __('Changing your password'); ?></b><br>
+									<div style="font-size: 13px; margin-bottom: 10px;"><?php echo __('Enter your current password in the first box, then enter your new password twice (to prevent you from typing mistakes).'); ?><br>
+										<br><?php echo __('Click "%change_password%" to change it.', array('%change_password%' => __('Change password'))); ?></div>
+										<label for="current_password" class="smaller"><?php echo __('Current password'); ?></label><br>
+										<input type="password" name="current_password" id="current_password" value="" style="width: 200px;"><br>
+										<br>
+										<label for="new_password_1" class="smaller"><?php echo __('New password'); ?></label><br>
+										<input type="password" name="new_password_1" id="new_password_1" value="" style="width: 200px;"><br>
+										<label for="new_password_2" class="smaller"><?php echo __('New password (repeat it)'); ?></label><br>
+										<input type="password" name="new_password_2" id="new_password_2" value="" style="width: 200px;"><br>
+										<div class="smaller" style="text-align: right; margin: 10px 2px 5px 0; height: 23px;">
+											<div style="float: right; padding: 3px;"><?php echo __('%change_password% or %cancel%', array('%change_password%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'change_password_form\').hide();"><b>' . __('cancel') . '</b></a>')); ?></div>
+											<input type="submit" value="<?php echo __('Change password'); ?>" style="font-weight: bold; float: right;">
+											<span id="change_password_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+										</div>
+								</div>
+								<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+							</div>
+						</form>
+						<div style="<?php if (!$bugs_user->usesGravatar()): ?>display: none; <?php endif; ?>clear: both; margin: 3px 0 15px 0;" id="gravatar_change">
+							<?php echo image_tag('icon_change_avatar.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+							<?php echo link_tag('http://en.gravatar.com/emails/', __('Change my profile picture / avatar'), array('target' => '_blank')); ?>
 						</div>
 						<div style="clear: both; margin-top: 3px;">
 							<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
@@ -52,7 +79,7 @@
 								<tr>
 									<td style="width: 200px; padding: 5px;"><label for="profile_buddyname"><?php echo __('"Friendly" name / nickname'); ?></label></td>
 									<td>
-										<input name="buddyname" id="profile_buddyname" value="<?php echo $bugs_user->getBuddyname(); ?>" style="width: 200px;">
+										<input type="text" name="buddyname" id="profile_buddyname" value="<?php echo $bugs_user->getBuddyname(); ?>" style="width: 200px;">
 									</td>
 								</tr>
 								<tr>
@@ -61,7 +88,7 @@
 								<tr>
 									<td style="padding: 5px;"><label for="profile_realname"><?php echo __('Full name'); ?></label></td>
 									<td>
-										<input name="realname" id="profile_realname" value="<?php echo $bugs_user->getRealname(); ?>" style="width: 300px;">
+										<input type="text" name="realname" id="profile_realname" value="<?php echo $bugs_user->getRealname(); ?>" style="width: 300px;">
 									</td>
 								</tr>
 								<tr>
@@ -70,7 +97,7 @@
 								<tr>
 									<td style="padding: 5px;"><label for="profile_email"><?php echo __('Email address'); ?></label></td>
 									<td>
-										<input name="email" id="profile_email" value="<?php echo $bugs_user->getEmail(); ?>" style="width: 300px;">
+										<input type="text" name="email" id="profile_email" value="<?php echo $bugs_user->getEmail(); ?>" style="width: 300px;">
 									</td>
 								</tr>
 								<tr>
@@ -98,7 +125,11 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="config_explanation" colspan="2"><?php echo __("The Bug Genie can use your <a href=\"http://www.gravatar.com\" target=\"_blank\">Gravatar</a> profile picture, if you have one. If you don't have one but still want to use Gravatar for profile pictures, The Bug Genie will use a Gravatar <a href=\"http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/\" target=\"_blank\">auto-generated image unique for your email address</a>."); ?></td>
+									<td class="config_explanation" colspan="2">
+										<?php echo __("The Bug Genie can use your <a href=\"http://www.gravatar.com\" target=\"_blank\">Gravatar</a> profile picture, if you have one. If you don't have one but still want to use Gravatar for profile pictures, The Bug Genie will use a Gravatar <a href=\"http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/\" target=\"_blank\">auto-generated image unique for your email address</a>."); ?><br>
+										<br>
+										<?php echo __("Don't have a Gravatar yet? %link_to_get_one_now%", array('%link_to_get_one_now%' => link_tag('http://en.gravatar.com/site/signup/'.urlencode($bugs_user->getEmail()), __('Get one now!'), array('target' => '_blank')))); ?>
+									</td>
 								</tr>
 								<tr>
 									<td colspan="2" style="padding: 5px; text-align: right;">&nbsp;</td>

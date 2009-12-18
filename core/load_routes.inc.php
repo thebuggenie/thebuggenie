@@ -21,6 +21,7 @@
 	$routes[] = array('about', '/about', 'main', 'about');
 	$routes[] = array('soap', '/soapmeup', 'soap', 'soapHandler');
 	$routes[] = array('wsdl', '/thebuggenie.wsdl', 'soap', 'getWSDL');
+	$routes[] = array('account_change_password', '/my_account/change/password', 'main', 'accountChangePassword');
 	$routes[] = array('account', '/my_account/*', 'main', 'myAccount');
 	$routes[] = array('configure', '/configure', 'configuration', 'index', array('section' => 0));
 	$routes[] = array('configure_projects', '/configure/projects', 'configuration', 'configureProjects', array('config_module' => 'core', 'section' => 10));
