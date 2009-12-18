@@ -479,26 +479,37 @@
 		public function runMyAccount(BUGSrequest $request)
 		{
 			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('account'));
-			if ($request->isMethod(BUGSrequest::POST))
+			if ($request->isMethod(BUGSrequest::POST) && $request->hasParameter('mode'))
 			{
-				BUGScontext::getUser()->setBuddyname($request->getParameter('buddyname'));
-				BUGScontext::getUser()->setRealname($request->getParameter('realname'));
-				BUGScontext::getUser()->setHomepage($request->getParameter('homepage'));
-				BUGScontext::getUser()->setUsesGravatar((bool) $request->getParameter('use_gravatar'));
-				BUGScontext::getUser()->setEmailPrivate((bool) $request->getParameter('email_private'));
-				BUGScontext::getUser()->setTimezone($request->getParameter('timezone'));
-
-				if (BUGScontext::getUser()->getEmail() != $request->getParameter('email'))
+				switch ($request->getParameter('mode'))
 				{
-					if (BUGScontext::trigger('core', 'changeEmail', array('email' => $request->getParameter('email')), true) !== true)
-					{
-						BUGScontext::getUser()->setEmail($request->getParameter('email'));
-					}
-				}
+					case 'information':
+						BUGScontext::getUser()->setBuddyname($request->getParameter('buddyname'));
+						BUGScontext::getUser()->setRealname($request->getParameter('realname'));
+						BUGScontext::getUser()->setHomepage($request->getParameter('homepage'));
+						BUGScontext::getUser()->setEmailPrivate((bool) $request->getParameter('email_private'));
 
-				BUGScontext::getUser()->save();
-				
-				return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Profile information saved'), 'content' => ''));
+						if (BUGScontext::getUser()->getEmail() != $request->getParameter('email'))
+						{
+							if (BUGScontext::trigger('core', 'changeEmail', array('email' => $request->getParameter('email')), true) !== true)
+							{
+								BUGScontext::getUser()->setEmail($request->getParameter('email'));
+							}
+						}
+
+						BUGScontext::getUser()->save();
+
+						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Account information saved'), 'content' => ''));
+						break;
+					case 'settings':
+						BUGScontext::getUser()->setUsesGravatar((bool) $request->getParameter('use_gravatar'));
+						BUGScontext::getUser()->setTimezone($request->getParameter('timezone'));
+
+						BUGScontext::getUser()->save();
+
+						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Profile settings saved'), 'content' => ''));
+						break;
+				}
 			}
 			$this->getResponse()->setPage('account');
 			$this->getResponse()->setProjectMenuStripHidden();

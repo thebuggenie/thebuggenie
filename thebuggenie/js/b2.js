@@ -152,9 +152,15 @@ function hideBud(elem_id)
 	$('icon_' + elem_id).className = "imgtd_bud";
 }
 
-function updateProfile(url)
+function updateProfileInformation(url)
 {
-	_postFormWithJSONFeedback(url, 'profile_form', 'profile_save_indicator');
+	_postFormWithJSONFeedback(url, 'profile_information_form', 'profile_save_indicator');
+	return true;
+}
+
+function updateProfileSettings(url)
+{
+	_postFormWithJSONFeedback(url, 'profile_settings_form', 'profile_settings_save_indicator');
 	if ($('profile_use_gravatar_yes').checked)
 	{
 		$('gravatar_change').show();

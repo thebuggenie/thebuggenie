@@ -15,7 +15,7 @@
 									<?php echo image_tag('footer_logo.png', array('alt' => $run_summary, 'title' => $run_summary, 'onclick' => (BUGSlogging::isEnabled()) ? "\$('log_messages').toggle();" : '')); ?>
 								</td>
 								<td style="width: auto;">
-									<div class="footer_text_firstline"><a href="http://www.thebuggenie.com">The Bug Genie</a>, <b>friendly</b> issue tracking since 2002</div><div class="footer_text_secondline"><?php echo __('Licensed under the MPL 1.1 only, read it at %link_to_MPL%', array('%link_to_MPL%' => '<a href="http://www.opensource.org/licenses/mozilla1.1.php">opensource.org</a>')); ?></div>
+									<div class="footer_text_firstline"><?php echo link_tag(make_url('about'), 'The Bug Genie') ?>, <b>friendly</b> issue tracking since 2002</div><div class="footer_text_secondline"><?php echo __('Licensed under the MPL 1.1 only, read it at %link_to_MPL%', array('%link_to_MPL%' => '<a href="http://www.opensource.org/licenses/mozilla1.1.php">opensource.org</a>')); ?></div>
 								</td>
 								<td style="width: 100px; text-align: center;"><a href="http://validator.w3.org/check?uri=referer" class="image"><img src="<?php echo BUGScontext::getTBGPath(); ?>valid-html401.png" alt="Valid HTML 4.01 Transitional" height="31" width="88"></a></td>
 							</tr>
