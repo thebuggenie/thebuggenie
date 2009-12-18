@@ -483,8 +483,10 @@
 			{
 				BUGScontext::getUser()->setBuddyname($request->getParameter('buddyname'));
 				BUGScontext::getUser()->setRealname($request->getParameter('realname'));
+				BUGScontext::getUser()->setHomepage($request->getParameter('homepage'));
 				BUGScontext::getUser()->setUsesGravatar((bool) $request->getParameter('use_gravatar'));
 				BUGScontext::getUser()->setEmailPrivate((bool) $request->getParameter('email_private'));
+				BUGScontext::getUser()->setTimezone($request->getParameter('timezone'));
 
 				if (BUGScontext::getUser()->getEmail() != $request->getParameter('email'))
 				{

@@ -47,7 +47,7 @@
 							</div>
 						</form>
 						<div style="<?php if (!$bugs_user->usesGravatar()): ?>display: none; <?php endif; ?>clear: both; margin: 3px 0 15px 0;" id="gravatar_change">
-							<?php echo image_tag('icon_change_avatar.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+							<?php echo image_tag('gravatar.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 							<?php echo link_tag('http://en.gravatar.com/emails/', __('Change my profile picture / avatar'), array('target' => '_blank')); ?>
 						</div>
 						<div style="clear: both; margin-top: 3px;">
@@ -75,9 +75,10 @@
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent" style="padding: 5px;" id="account_tabs_panes">
 						<div id="tab_profile_pane">
+							<p class="content"><?php echo __('Edit your profile details here, including additional information.'); ?><br><?php echo __('Required fields are marked with a little star.'); ?></p>
 							<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
 								<tr>
-									<td style="width: 200px; padding: 5px;"><label for="profile_buddyname"><?php echo __('"Friendly" name / nickname'); ?></label></td>
+									<td style="padding: 5px;"><label for="profile_buddyname">* <?php echo __('"Friendly" name / nickname'); ?></label></td>
 									<td>
 										<input type="text" name="buddyname" id="profile_buddyname" value="<?php echo $bugs_user->getBuddyname(); ?>" style="width: 200px;">
 									</td>
@@ -95,20 +96,26 @@
 									<td class="config_explanation" colspan="2"><?php echo __('This is your real name, mostly used in communication with you, and rarely shown to others'); ?></td>
 								</tr>
 								<tr>
-									<td style="padding: 5px;"><label for="profile_email"><?php echo __('Email address'); ?></label></td>
+									<td style="padding: 5px;"><label for="profile_email">* <?php echo __('Email address'); ?></label></td>
 									<td>
 										<input type="text" name="email" id="profile_email" value="<?php echo $bugs_user->getEmail(); ?>" style="width: 300px;">
 									</td>
 								</tr>
 								<tr>
-									<td style="padding: 5px;"><label for="profile_email_private_yes"><?php echo __('Show my email address to others'); ?></label></td>
+									<td style="padding: 5px;"><label for="profile_email_private_yes">* <?php echo __('Show my email address to others'); ?></label></td>
 									<td>
-										<input type="radio" name="email_private" value="1" id="profile_email_private_yes"<?php if ($bugs_user->isEmailPrivate()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_yes"><?php echo __('No'); ?></label><br>
-										<input type="radio" name="email_private" value="0" id="profile_email_private_no"<?php if ($bugs_user->isEmailPublic()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_no"><?php echo __('Yes'); ?></label><br>
+										<input type="radio" name="email_private" value="1" id="profile_email_private_yes"<?php if ($bugs_user->isEmailPrivate()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_yes"><?php echo __('No'); ?></label>&nbsp;&nbsp;
+										<input type="radio" name="email_private" value="0" id="profile_email_private_no"<?php if ($bugs_user->isEmailPublic()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_no"><?php echo __('Yes'); ?></label>
 									</td>
 								</tr>
 								<tr>
 									<td class="config_explanation" colspan="2"><?php echo __('Whether your email address is visible to other users in your profile information card. The email address is always visible to admins.'); ?></td>
+								</tr>
+								<tr>
+									<td style="padding: 5px;"><label for="profile_homepage"><?php echo __('Homepage'); ?></label></td>
+									<td>
+										<input type="text" name="homepage" id="profile_homepage" value="<?php echo $bugs_user->getHomepage(); ?>" style="width: 300px;">
+									</td>
 								</tr>
 								<tr>
 									<td colspan="2" style="padding: 5px; text-align: right;">&nbsp;</td>
@@ -129,6 +136,25 @@
 										<?php echo __("The Bug Genie can use your <a href=\"http://www.gravatar.com\" target=\"_blank\">Gravatar</a> profile picture, if you have one. If you don't have one but still want to use Gravatar for profile pictures, The Bug Genie will use a Gravatar <a href=\"http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/\" target=\"_blank\">auto-generated image unique for your email address</a>."); ?><br>
 										<br>
 										<?php echo __("Don't have a Gravatar yet? %link_to_get_one_now%", array('%link_to_get_one_now%' => link_tag('http://en.gravatar.com/site/signup/'.urlencode($bugs_user->getEmail()), __('Get one now!'), array('target' => '_blank')))); ?>
+									</td>
+								</tr>
+								<tr>
+									<td style="width: 200px; padding: 5px;"><label for="profile_timezone"><?php echo __('Current timezone'); ?></label></td>
+									<td>
+										<select name="timezone" id="profile_timezone" style="width: 150px;">
+											<?php for ($cc = 12;$cc >= 1;$cc--): ?>
+												<option value="-<?php echo $cc; ?>"<?php if ($bugs_user->getTimezone() == -$cc): ?> selected<?php endif; ?>>GMT -<?php echo $cc; ?></option>
+											<?php endfor; ?>
+											<option value="0"<?php if ($bugs_user->getTimezone() == 0): ?> selected<?php endif; ?>>GMT/UTC</option>
+											<?php for ($cc = 1;$cc <= 12;$cc++): ?>
+												<option value="<?php echo $cc; ?>"<?php if ($bugs_user->getTimezone() == $cc): ?> selected<?php endif; ?>>GMT +<?php echo $cc; ?></option>
+											<?php endfor; ?>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td class="config_explanation" colspan="2">
+										<?php echo __('This setting is used to display issues, comments and more in your local timezone.'); ?><br>
 									</td>
 								</tr>
 								<tr>

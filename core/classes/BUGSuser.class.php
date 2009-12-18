@@ -210,6 +210,14 @@
 		 * @var integer
 		 */
 		protected $lastseen = 0;
+
+		/**
+		 * The timezone this user is in
+		 *
+		 * @var integer
+		 */
+		protected $_timezone = null;
+
 		protected $row = null;
 		protected $_joined = 0;
 		protected $_friends = null;
@@ -447,6 +455,7 @@
 					$this->_isactivated = ($row->get(B2tUsers::ACTIVATED) == 1) ? true : false;
 					$this->_isenabled = ($row->get(B2tUsers::ENABLED) == 1) ? true : false;
 					$this->_isdeleted = ($row->get(B2tUsers::DELETED) == 1) ? true : false;
+					$this->_timezone = BUGSsettings::get('timezone', 'core', null, $uid);
 				}
 				catch (Exception $e)
 				{
@@ -1129,6 +1138,16 @@
 		{
 			return $this->homepage;
 		}
+
+		/**
+		 * Set this users homepage
+		 *
+		 * @param string $homepage
+		 */
+		public function setHomepage($homepage)
+		{
+			$this->homepage = $homepage;
+		}
 		
 		/**
 		 * Set the avatar image
@@ -1370,12 +1389,34 @@
 			$crit->addUpdate(B2tUsers::PRIVATE_EMAIL, (bool) $this->private_email);
 			$crit->addUpdate(B2tUsers::PASSWD, $this->pwd);
 			$crit->addUpdate(B2tUsers::EMAIL, $this->email);
+			$crit->addUpdate(B2tUsers::HOMEPAGE, $this->homepage);
 
 			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, $this->getID());
 
+			BUGSsettings::saveSetting('timezone', $this->_timezone, 'core', null, $this->getID());
+
 			return true;
 		}
-		
+
+		/**
+		 * Get this users timezone
+		 *
+		 * @return mixed
+		 */
+		public function getTimezone()
+		{
+			return $this->_timezone;
+		}
+
+		/**
+		 * Set this users timezone
+		 *
+		 * @param integer $timezone
+		 */
+		public function setTimezone($timezone)
+		{
+			$this->_timezone = $timezone;
+		}
 		
 		/**
 		 * Returns the logged in user, or default user if not logged in

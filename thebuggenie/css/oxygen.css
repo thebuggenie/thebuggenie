@@ -221,84 +221,10 @@ Custom classes
 	border-bottom: 1px solid #BBB;
 }
 
-.accountdiv
-{
-	margin-left: auto;
-	margin-right: auto;
-	text-align: left;
-	border: 0px;
-	margin-top: 10px;
-	padding-bottom: 3px;
-	width: 600px;
-}
-
-.accountdiv #avatarimg
-{
-	border: 1px solid #BBB;
-	width: 70px;
-	height: 70px;
-	text-align: center;
-}
-
 #headerdiv, #settingsdiv
 {
 	margin-top: 15px;
 	border-bottom: 1px solid #BBB;
-}
-
-.accountdiv DIV#avatardiv
-{
-	width: 330px;
-	text-align: left;
-	border: 0px;
-	float: left;
-}
-
-.accountdiv DIV#actionsdiv
-{
-	width: 250px;
-	text-align: right;
-	border: 0px;
-	float: right;
-}
-
-.accountdiv TD
-{
-	text-align: right;
-	font-weight: bold;
-}
-
-.accountdiv B#welcome
-{
-	font-size: 1.2em;
-}
-
-.accountdetailscontainer
-{
-	margin-left: auto;
-	margin-right: auto;
-	text-align: left;
-	border: 0px;
-	margin-top: 10px;
-	padding-bottom: 3px;
-	width: 600px;
-}
-
-.accountcategory
-{
-	width: 60px;
-	text-align: left;
-	background-color: #FFF;
-	border: 0px;
-	float: left;
-}
-
-.accountdetails
-{
-	width: 520px;
-	text-align: left;
-	border: 0px;
-	float: right;
 }
 
 .bug_list TD.small
@@ -1321,7 +1247,7 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 #config_modules .header, #account_tabs_panes .header { font-weight: bold; font-size: 13px; text-align: left; }
 #config_modules .header .module_shortname { font-weight: normal; font-size: 12px; }
 #config_modules .content, #account_tabs_panes .content { padding-top: 5px; text-align: left; }
-#account_tabs_panes .content { padding-left: 5px; font-size: 12px; }
+#account_tabs_panes .content { padding: 5px 0 15px 5px; font-size: 12px; }
 
 .settings_list ul { list-style-type: none; padding: 0; margin: 5px 0 5px 5px; }
 .settings_list ul li { margin: 0 0 5px 0; font-size: 11px; font-weight: normal; clear: both; }
