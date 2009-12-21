@@ -6,8 +6,27 @@
 		<div style="font-size: 13px;">An error occured and the installation has been stopped. Please try to fix the error based on the information above, then click back, and try again.<br>
 		If you think this is a bug, please report it in our <a href="http://b2.thebuggenie.com" target="_new">online bug tracker</a>.</div>
 	<?php else: ?>
+		<?php if ($htaccess_error !== false): ?>
+			<div class="error">
+				The installation routine could not setup your .htaccess file automatically.<br>
+				<?php if (!is_bool($htaccess_error)): ?>
+					<br>
+					<b><?php echo $htaccess_error; ?></b><br>
+				<?php endif; ?>
+				<br>
+				Either fix the problem above (if any details are mentioned), <b>click "Back"</b> and try again - or follow these simple steps:
+				<ul style="font-size: 11px;">
+					<li>Rename or copy the <i>[main folder]/thebuggenie/htaccess.template</i> file to <i>[main folder]/thebuggenie/.htaccess</i></li>
+					<li>Open up the <i>[main folder]/thebuggenie/.htaccess</i> file, and change the <u>RewriteBase</u> path to be identical to the <u>URL subdirectory</u>.
+				</ul>
+			</div>
+		<?php elseif ($htaccess_ok): ?>
+			<div class="ok">
+				Apache .htaccess auto-setup completed successfully
+			</div>
+		<?php endif; ?>
 		<div class="ok">
-			All settings were loaded successfully
+			All settings were stored. Default data and settings loaded successfully
 		</div>
 		<h2 style="margin-top: 10px;">Enabling functionality</h2>
 		The Bug Genie consists of the B2 framework, and a set of modules. Some modules are used for "core" functionality, such as searching, email notifications, and messaging - while

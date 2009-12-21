@@ -45,19 +45,31 @@
 			If you need to restart the installation, you won't have to enter these details again
 		</div>
 		<div class="features">
-			<div class="feature" style="margin-bottom: 5px;">
-				<b>EXAMPLE #1:</b> <i>The Bug Genie is installed in <i>/var/www/thebuggenie</i>, and I want to set up a virtual host for The Bug Genie.</i><br>
-				<br>
-				<b>Apache setup:</b> Set up the virtual host as usual, but point the <u>DocumentRoot</u> for The Bug Genie to the <i>thebuggenie/</i> subfolder <i>inside</i> the main folder. Make sure the apache virtual host setup has <u>AllowOverride All</u> for the folder where The Bug Genie is located, and make sure the .htaccess file inside the <i>thebuggenie/</i>-folder is accessible to Apache.<br>
-				<br>
-				<b>The Bug Genie setup:</b> Set the <u>hostname</u> below to the public hostname where you plan to access The Bug Genie. With this setup, The Bug Genie will be located at the top level, so set the <u>URL subdirectory</u> below to "/", which means "top level".
+			<div class="tab_menu" style="margin-top: 20px;">
+				<ul>
+					<li id="example_1_link" class="selected"><a href="javascript:void(0);" onclick="$('example_1_link').addClassName('selected');$('example_2_link').removeClassName('selected');$('example_2').hide();$('example_1').show();">Apache vhost example</a></li>
+					<li id="example_2_link"><a href="javascript:void(0);" onclick="$('example_2_link').addClassName('selected');$('example_1_link').removeClassName('selected');$('example_1').hide();$('example_2').show();">Apache subdirectory example</a></li>
+				</ul>
 			</div>
-			<div class="feature" style="margin-bottom: 5px;">
-				<b>EXAMPLE #2:</b> <i>The Bug Genie is installed in <i>/var/www/thebuggenie</i>, and I want to access it as a subfolder of the DocumentRoot, which is /var/www</i><br>
-				<br>
-				<b>Apache setup:</b> Make sure the apache host setup has <u>AllowOverride All</u> for the folder thebuggenie is located, and make sure the .htaccess file inside the <i>thebuggenie/</i>-folder is accessible to Apache. You may want to copy the main folder content to a folder one level up (extract the main content of the top <i>thebuggenie/</i>-folder directly to /var/www), so that the <i>thebuggenie/</i>-folder inside the main folder is accessible as /var/www/thebuggenie.<br>
-				<br>
-				<b>The Bug Genie setup:</b> Set the <u>hostname</u> below to the public hostname where you plan to access The Bug Genie. With this setup, The Bug Genie will be located at either <i>http://hostname/thebuggenie/thebuggenie/</i> or <i>http://hostname/thebuggenie/</i> (see above), so set the <u>URL subdirectory</u> below to "/", which means "top level".
+			<div class="feature" style="border-top: 0; padding: 0; border-color: #BBB; margin-bottom: 5px;" id="example_1">
+				<div class="description">
+					<b>EXAMPLE #1:</b> <i>The Bug Genie is installed in <i>/var/www/thebuggenie</i>, and I want to set up a virtual host for The Bug Genie.</i>
+				</div>
+				<div class="content">
+					<b>Apache setup:</b> Set up the virtual host as usual, but point the <u>DocumentRoot</u> for The Bug Genie to the <i>thebuggenie/</i> subfolder <i>inside</i> the main folder. Make sure the apache virtual host setup has <u>AllowOverride All</u> for the folder where The Bug Genie is located, and make sure the .htaccess file inside the <i>thebuggenie/</i>-folder is accessible to Apache.<br>
+					<br>
+					<b>The Bug Genie setup:</b> Set the <u>hostname</u> below to the public hostname where you plan to access The Bug Genie. With this setup, The Bug Genie will be located at the top level, so set the <u>URL subdirectory</u> below to "/", which means "top level".
+				</div>
+			</div>
+			<div class="feature" style="border-top: 0; padding: 0; margin-bottom: 5px; display: none;" id="example_2">
+				<div class="description">
+					<b>EXAMPLE #2:</b> <i>The Bug Genie is installed in <i>/var/www/thebuggenie</i>, and I want to access it as a subfolder of the DocumentRoot, which is /var/www</i>
+				</div>
+				<div class="content">
+					<b>Apache setup:</b> Make sure the apache host setup has <u>AllowOverride All</u> for the folder thebuggenie is located, and make sure the .htaccess file inside the <i>thebuggenie/</i>-folder is accessible to Apache. You may want to copy the main folder content to a folder one level up (extract the main content of the top <i>thebuggenie/</i>-folder directly to /var/www), so that the <i>thebuggenie/</i>-folder inside the main folder is accessible as /var/www/thebuggenie.<br>
+					<br>
+					<b>The Bug Genie setup:</b> Set the <u>hostname</u> below to the public hostname where you plan to access The Bug Genie. With this setup, The Bug Genie will be located at either <i>http://hostname/thebuggenie/thebuggenie/</i> or <i>http://hostname/thebuggenie/</i> (see above), so set the <u>URL subdirectory</u> below to "/", which means "top level".
+				</div>
 			</div>
 			<div class="feature">
 				<b>See more information and examples at <a href="http://www.thebuggenie.com">www.thebuggenie.com</a></b>
@@ -76,26 +88,40 @@
 		<br>
 		If you for any reason cannot turn on <b>AllowOverride All</b> for that folder, look at the .htaccess file The Bug Genie bundles (located inside the <i>thebuggenie/</i> folder, and copy the necessary lines to your virtual host definition.<br>
 		<br>
-		<form accept-charset="utf-8" action="index.php" method="post" id="bugs_settings">
+		<form accept-charset="utf-8" action="index.php" method="post" id="bugs_settings" style="clear: both;">
 			<input type="hidden" name="step" value="4">
 			<fieldset>
 				<legend>The Bug Genie URL information</legend>
 				<dl class="install_list">
 					<dt style="width: 500px;">
 						<label for="url_host">Server host</label> <span class="faded_medium">The url of the server The Bug Genie is hosted on <b>without the trailing slash</b></span>
-					</dt>
+					</dt><br>
 					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_host" id="url_host" value="http://<?php echo $_SERVER['SERVER_NAME']; ?>"></dd>
 					<dt style="width: 500px;">
 						<label for="url_subdir">Url subdirectory</label> <span class="faded_medium">The Bug Genie subdirectory part of the url</span>
-					</dt>
+					</dt><br>
 					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_subdir" id="url_subdir" value="<?php echo (dirname($_SERVER['PHP_SELF']) != '/') ? dirname($_SERVER['PHP_SELF']) . '/' : dirname($_SERVER['PHP_SELF']); ?>"></dd>
 					<dt style="width: 500px;"><b>According to the information above,</b> The Bug Genie will be accessible at</dt><br>
 					<dd id="url_preview">http://<?php echo $_SERVER['SERVER_NAME'] . ((dirname($_SERVER['PHP_SELF']) != '/') ? dirname($_SERVER['PHP_SELF']) . '/' : dirname($_SERVER['PHP_SELF'])); ?></dd>
+					<dt style="width: 500px;">
+						<label for="apache_autosetup_yes">Set up my .htaccess file automatically</label> <span class="faded_medium">Check this if you're using an Apache web server</span>
+					</dt><br>
+					<dd>
+						<input type="radio" name="apache_autosetup" id="apache_autosetup_yes" value="1" checked><label for="apachec_autosetup_yes">Yes</label>&nbsp;
+						<input type="radio" name="apache_autosetup" id="apache_autosetup_no" value="0"><label for="apachec_autosetup_no">No</label>
+					</dd>
 				</dl>
-				<div style="padding: 0 5px 10px 0;"><b>IMPORTANT: </b>Open up the <i>.htaccess</i> file located inside the <i>thebuggenie/</i> subfolder, and change the <u>RewriteBase</u> path to be identical to the <u>URL subdirectory</u>.</div>
 			</fieldset>
 			<div class="error" id="continue_error" style="display: none;"> </div>
 			<br style="clear: both;">
+			<div class="ok">
+				<b style="font-size: 14px;">IMPORTANT: </b><br>
+				The installation routine will try to set up the initial .htaccess file for you. <b>If that fails for some reason</b>:
+				<ul style="font-size: 11px;">
+					<li>Rename or copy the <i>thebuggenie/htaccess.template</i> file to <i>thebuggenie/.htaccess</i></li>
+					<li>Open up the <i>.htaccess</i> file, and change the <u>RewriteBase</u> path to be identical to the <u>URL subdirectory</u>.
+				</ul>
+			</div>
 			<div style="padding-top: 20px; clear: both; text-align: center;">
 				<label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and load the necessary default settings</label>
 				<input type="submit" id="continue_button" value="Continue">

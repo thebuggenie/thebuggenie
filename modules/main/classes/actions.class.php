@@ -187,7 +187,7 @@
 					{
 						$username = BUGScontext::getRequest()->getParameter('b2_username');
 						$password = BUGScontext::getRequest()->getParameter('b2_password');
-						$user = BUGSuser::loginCheck($username, md5($password));
+						$user = BUGSuser::loginCheck($username, md5($password), true);
 						$this->getResponse()->setCookie('b2_username', $username);
 						$this->getResponse()->setCookie('b2_password', md5($password));
 						if (BUGScontext::getRequest()->hasParameter('return_to')) 

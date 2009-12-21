@@ -84,6 +84,10 @@
 				{
 					$scope = $scope->getID();
 				}
+				elseif (BUGScontext::isInstallmode())
+				{
+					$scope = 1;
+				}
 				else
 				{
 					throw new Exception('No scope loaded, cannot autoload it');

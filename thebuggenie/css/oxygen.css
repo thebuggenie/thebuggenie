@@ -968,6 +968,8 @@ Custom classes
 .grey_box { border: 1px solid #DDD; background-color: #F5F5F5; }
 .command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: monospace; width: 500px; margin-top: 5px; }
 .feature { border: 1px solid #DDD; background-color: #F5F5F5; padding: 10px; margin-bottom: 5px; }
+.feature .description { background-color: #FFF; padding: 10px; }
+.feature .content { background-color: transparent; padding: 10px; border-top: 1px solid #EEE; }
 .features { width: 400px; float: right; margin-left: 10px; }
 
 fieldset { border: 1px solid #DDD; margin: 10px 0 10px 0; background-color: #F5F5F5; padding: 0 0 0 8px; }

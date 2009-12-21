@@ -455,7 +455,7 @@
 					$this->_isactivated = ($row->get(B2tUsers::ACTIVATED) == 1) ? true : false;
 					$this->_isenabled = ($row->get(B2tUsers::ENABLED) == 1) ? true : false;
 					$this->_isdeleted = ($row->get(B2tUsers::DELETED) == 1) ? true : false;
-					$this->_timezone = BUGSsettings::get('timezone', 'core', null, $uid);
+					$this->_timezone = (int) BUGSsettings::get('timezone', 'core', null, $uid);
 				}
 				catch (Exception $e)
 				{
@@ -1426,7 +1426,7 @@
 		 * 
 		 * @return BUGSuser
 		 */
-		static function loginCheck($username = null, $password = null)
+		public static function loginCheck($username = null, $password = null)
 		{
 			try
 			{

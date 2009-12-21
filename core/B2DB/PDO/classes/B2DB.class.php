@@ -23,7 +23,7 @@
 		 *
 		 * @var PDO
 		 */
-		static $_db_connection = null;
+		protected static $_db_connection = null;
 		
 		public static function doConnect()
 		{
@@ -51,7 +51,7 @@
 							$dsn .= ';dbname='.self::getDBname();
 							break;
 					}*/
-                                        $dsn .= ';dbname='.self::getDBname();
+					$dsn .= ';dbname='.self::getDBname();
 					self::$_dsn = $dsn;
 				}
 				self::$_db_connection = new PDO(self::getDSN(), $uname, $pwd);

@@ -206,9 +206,11 @@
 			$adminuser->setGroup($admin_group_id);
 			$adminuser->changePassword('admin');
 			$adminuser->setAvatar('admin');
+			$adminuser->save();
 			
 			$guestuser = BUGSuser::createNew('guest', 'Guest user', 'Guest user', $scope_id, true, true);
 			$guestuser->setGroup($guest_group_id);
+			$adminuser->save();
 
 			B2DB::getTable('B2tSettings')->loadFixtures($scope_id);
 			BUGSsettings::saveSetting('defaultgroup', $users_group_id, 'core', $scope_id);
