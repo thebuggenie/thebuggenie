@@ -9,7 +9,11 @@
 # rewrite rules
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /dev/thebuggenie/thebuggenie
+  RewriteBase ###PUT URL SUBDIRECTORY HERE###
+# Example:
+# RewriteBase /
+# or
+# RewriteBase /dev/thebuggenie
 
   # skip all hidden files (starting with a .)
   RewriteCond %{REQUEST_URI} \..+$
