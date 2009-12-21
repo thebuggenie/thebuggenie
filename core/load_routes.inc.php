@@ -55,15 +55,8 @@
 	$routes[] = array('configure_project_milestones', '/configure/milestones/for/project/:project_id', 'configuration', 'configureProjectMilestones', array('config_module' => 'core', 'section' => 9));
 	$routes[] = array('configure_projects_add_milestone', '/configure/project/:project_id/add/milestone', 'configuration', 'addMilestone', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_project_milestone_action', '/configure/project/:project_id/milestone/:milestone_id/do/:milestone_action', 'configuration', 'milestoneAction', array('config_module' => 'core', 'section' => 10));
-	$routes[] = array('configure_custom_types', '/configure/custom_types', 'configuration', 'index', array('config_module' => 'core', 'section' => 4, 'subsection' => 9));
-	$routes[] = array('configure_issue_types', '/configure/issue_types', 'configuration', 'index', array('config_module' => 'core', 'section' => 4, 'subsection' => 8));
-	$routes[] = array('configure_resolution_types', '/configure/resolution_types', 'configuration', 'index', array('config_module' => 'core', 'section' => 4, 'subsection' => 7));
-	$routes[] = array('configure_priority_levels', '/configure/priority_levels', 'configuration', 'index', array('config_module' => 'core', 'section' => 4, 'subsection' => 6));
-	$routes[] = array('configure_categories', '/configure/categories', 'configuration', 'index', array('config_module' => 'core', 'section' => 4, 'subsection' => 5));
-	$routes[] = array('configure_reproduction_levels', '/configure/reproduction_levels', 'configuration', 'index', array('config_module' => 'core', 'section' => 4, 'subsection' => 4));
-	$routes[] = array('configure_status_types', '/configure/status_types', 'configuration', 'index', array('config_module' => 'core', 'section' => 4, 'subsection' => 3));
-	$routes[] = array('configure_severity_levels', '/configure/severity_levels', 'configuration', 'index', array('config_module' => 'core', 'section' => 4, 'subsection' => 2));
-	$routes[] = array('configure_user_states', '/configure/user_states', 'configuration', 'index', array('config_module' => 'core', 'section' => 4, 'subsection' => 1));
+	$routes[] = array('configure_issuefields', '/configure/issuefields', 'configuration', 'configureIssuefields', array('config_module' => 'core', 'section' => 4));
+	$routes[] = array('configure_issuefields_getoptions', '/configure/issuefields/get/options/for/:type', 'configuration', 'configureIssuefieldsGetOptions', array('config_module' => 'core', 'section' => 4));
 	$routes[] = array('configure_users', '/configure/users', 'configuration', 'index', array('config_module' => 'core', 'section' => 2));
 	$routes[] = array('configure_teams_groups', '/configure/teams_and_groups', 'configuration', 'index', array('config_module' => 'core', 'section' => 1));
 	$routes[] = array('configure_modules', '/configure/modules', 'configuration', 'configureModules', array('config_module' => 'core', 'section' => 15));

@@ -16,7 +16,7 @@
 			$config_sections[3] = array('route' => 'configure_files', 'description' => __('Uploads &amp; attachments'), 'icon' => 'files', 'module' => 'core');
 			$config_sections[10] = array('route' => 'configure_projects', 'description' => __('Projects'), 'icon' => 'projects', 'module' => 'core');
 			#$config_sections[9] = array('route' => 'configure_milestones', 'description' => __('Milestones'), 'icon' => 'builds');
-			$config_sections[4] = array('icon' => 'resolutiontypes', 'description' => __('Data types'), 'route' => 'configure_resolution_types', 'module' => 'core');
+			$config_sections[4] = array('icon' => 'resolutiontypes', 'description' => __('Issue fields'), 'route' => 'configure_issuefields', 'module' => 'core');
 			/*$config_sections[4][] = array('icon' => 'issuetypes', 'description' => __('Issue types'), 'route' => 'configure_issue_types');
 			$config_sections[4][] = array('icon' => 'resolutiontypes', 'description' => __('Resolution types'), 'route' => 'configure_resolution_types');
 			$config_sections[4][] = array('icon' => 'priorities', 'description' => __('Priority levels'), 'route' => 'configure_priority_levels');
@@ -48,6 +48,17 @@
 				}
 			}
 
+		}
+
+		public function componentIssueField_BuiltIn()
+		{
+			$this->items = array();
+			switch ($this->type)
+			{
+				case 'status':
+					$this->items = BUGSstatus::getAll();
+					break;
+			}
 		}
 
 	}

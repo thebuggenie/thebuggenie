@@ -44,7 +44,7 @@
 			}
 			
 			$data_config_sections[10] = array('route' => 'configure_projects', 'description' => __('Projects'), 'icon' => 'projects', 'details' => __('Set up all projects in this configuration section.'));
-			$data_config_sections[4] = array('icon' => 'resolutiontypes', 'description' => __('Data types'), 'route' => 'configure_resolution_types', 'details' => __('Status types, resolution types, categories, custom types, etc. are configurable from this section.'));
+			$data_config_sections[4] = array('icon' => 'resolutiontypes', 'description' => __('Issue fields'), 'route' => 'configure_issuefields', 'details' => __('Status types, resolution types, categories, custom fields, etc. are configurable from this section.'));
 			$data_config_sections[2] = array('route' => 'configure_users', 'description' => __('Users, teams &amp; groups'), 'icon' => 'users', 'details' => __('Manage users, user groups and user teams from this section.'));
 			$module_config_sections[15][] = array('route' => 'configure_modules', 'description' => __('Module settings'), 'icon' => 'modules', 'details' => __('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
 			foreach (BUGScontext::getModules() as $module)
@@ -104,6 +104,35 @@
 			$this->allProjects = BUGSproject::getAll();
 		}
 		
+		/**
+		 * Configure issue fields
+		 *
+		 * @param BUGSrequest $request The request object
+		 */
+		public function runConfigureIssuefields(BUGSrequest $request)
+		{
+			$i18n = BUGScontext::getI18n();
+			$builtin_types = array();
+			$builtin_types['status'] = $i18n->__('Status types');
+			$builtin_types['resolution'] = $i18n->__('Resolution types');
+			$builtin_types['priority'] = $i18n->__('Priority levels');
+			$builtin_types['severity'] = $i18n->__('Severity levels');
+			$builtin_types['category'] = $i18n->__('Categories');
+			$builtin_types['reproducability'] = $i18n->__('Reproducability grades');
+
+			$this->builtin_types = $builtin_types;
+		}
+
+		/**
+		 * Get issue fields list for a specific issue type
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runConfigureIssuefieldsGetOptions(BUGSrequest $request)
+		{
+			return $this->renderComponent('issuefield_builtin', array('type' => $request->getParameter('type')));
+		}
+
 		/**
 		 * Configure modules
 		 *
