@@ -27,6 +27,19 @@
 		}
 
 		/**
+		 * Create a new resolution
+		 *
+		 * @param string $name The status description
+		 *
+		 * @return BUGSresolution
+		 */
+		public static function createNew($name)
+		{
+			$res = parent::_createNew($name, self::SEVERITY);
+			return BUGSfactory::BUGSseverityLab($res->getInsertID());
+		}
+
+		/**
 		 * Delete a severity id
 		 *
 		 * @param integer $id

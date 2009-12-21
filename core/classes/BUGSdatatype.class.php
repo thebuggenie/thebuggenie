@@ -141,7 +141,7 @@
 		 */
 		protected static function _createNew($name, $itemtype, $itemdata = null)
 		{
-			$res = B2DB::getTable('B2tListTypes')->createNew($itemdata, $itemtype, $name);
+			$res = B2DB::getTable('B2tListTypes')->createNew($name, $itemtype, $itemdata);
 			return $res;
 		}
 

@@ -25,7 +25,20 @@
 			}
 			return self::$_items;
 		}
-		
+
+		/**
+		 * Create a new resolution
+		 *
+		 * @param string $name The status description
+		 *
+		 * @return BUGSresolution
+		 */
+		public static function createNew($name)
+		{
+			$res = parent::_createNew($name, self::RESOLUTION);
+			return BUGSfactory::BUGSresolutionLab($res->getInsertID());
+		}
+
 		/**
 		 * Delete a resolution id
 		 *

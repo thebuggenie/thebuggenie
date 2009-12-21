@@ -27,6 +27,19 @@
 		}
 
 		/**
+		 * Create a new resolution
+		 *
+		 * @param string $name The status description
+		 *
+		 * @return BUGSresolution
+		 */
+		public static function createNew($name)
+		{
+			$res = parent::_createNew($name, self::CATEGORY);
+			return BUGSfactory::BUGScategoryLab($res->getInsertID());
+		}
+
+		/**
 		 * Delete a category id
 		 *
 		 * @param integer $id

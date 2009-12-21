@@ -76,14 +76,17 @@
 			}
 		}
 
-		public function createNew($itemdata, $itemtype, $name, $scope = null)
+		public function createNew($name, $itemtype, $itemdata = null, $scope = null)
 		{
 			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ITEMDATA, $itemdata);
-			$crit->addInsert(self::ITEMTYPE, $itemtype);
 			$crit->addInsert(self::NAME, $name);
+			$crit->addInsert(self::ITEMTYPE, $itemtype);
+			if ($itemdata !== null)
+			{
+				$crit->addInsert(self::ITEMDATA, $itemdata);
+			}
 			$crit->addInsert(self::SCOPE, $scope);
 			
 			return $this->doInsert($crit);
