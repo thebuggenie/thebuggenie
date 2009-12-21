@@ -130,7 +130,29 @@
 		 */
 		public function runConfigureIssuefieldsGetOptions(BUGSrequest $request)
 		{
-			return $this->renderComponent('issuefield_builtin', array('type' => $request->getParameter('type')));
+			return $this->renderComponent('issuefields_builtin', array('type' => $request->getParameter('type')));
+		}
+
+		/**
+		 * Add an issue field
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runConfigureIssuefieldsAdd(BUGSrequest $request)
+		{
+			if ($request->getParameter('name'))
+			{
+				switch ($request->getParameter('type'))
+				{
+					case 'status':
+						$item = BUGSstatus::createNew($request->getParameter('name'), $request->getParameter('color'));
+						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield_builtin', array('item' => $item))));
+				}
+			}
+			else
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
+			}
 		}
 
 		/**

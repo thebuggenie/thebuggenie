@@ -76,117 +76,92 @@
 			}
 		}
 
+		public function createNew($itemdata, $itemtype, $name, $scope = null)
+		{
+			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ITEMDATA, $itemdata);
+			$crit->addInsert(self::ITEMTYPE, $itemtype);
+			$crit->addInsert(self::NAME, $name);
+			$crit->addInsert(self::SCOPE, $scope);
+			
+			return $this->doInsert($crit);
+		}
+
 		public function loadFixtures($scope)
 		{
-			$i18n = BUGScontext::getI18n();
-			
-			$b2_categories = array();
-			$b2_categories['General category'] = '';
+			$_categories = array();
+			$_categories['General category'] = '';
 
-			foreach ($b2_categories as $list_name => $list_data)
+			foreach ($_categories as $name => $itemdata)
 			{
-				$crit = $this->getCriteria();
-				$crit->addInsert(self::ITEMDATA, $list_data);
-				$crit->addInsert(self::ITEMTYPE, 'b2_categories');
-				$crit->addInsert(self::NAME, $list_name);
-				$crit->addInsert(self::SCOPE, $scope);
-				$this->doInsert($crit);
+				$this->createNew($itemdata, BUGSdatatype::CATEGORY, $name, $scope);
 			}
 
-			$b2_prioritytypes = array();
-			$b2_prioritytypes['Critical'] = 1;
-			$b2_prioritytypes['Needs to be fixed'] = 2;
-			$b2_prioritytypes['Must fix before next release'] = 3;
-			$b2_prioritytypes['Low'] = 4;
-			$b2_prioritytypes['Normal'] = 5;
+			$priorities = array();
+			$priorities['Critical'] = 1;
+			$priorities['Needs to be fixed'] = 2;
+			$priorities['Must fix before next release'] = 3;
+			$priorities['Low'] = 4;
+			$priorities['Normal'] = 5;
 
-			foreach ($b2_prioritytypes as $list_name => $list_data)
+			foreach ($priorities as $name => $itemdata)
 			{
-				$crit = $this->getCriteria();
-				$crit->addInsert(self::ITEMDATA, $list_data);
-				$crit->addInsert(self::ITEMTYPE, 'b2_prioritytypes');
-				$crit->addInsert(self::NAME, $list_name);
-				$crit->addInsert(self::SCOPE, $scope);
-				$this->doInsert($crit);
+				$this->createNew($itemdata, BUGSdatatype::PRIORITY, $name, $scope);
 			}
 
-			$b2_reprotypes = array();
-			$b2_reprotypes["Can't reproduce"] = '';
-			$b2_reprotypes['Rarely'] = '';
-			$b2_reprotypes['Often'] = '';
-			$b2_reprotypes['Always'] = '';
+			$reproducabilities = array();
+			$reproducabilities["Can't reproduce"] = '';
+			$reproducabilities['Rarely'] = '';
+			$reproducabilities['Often'] = '';
+			$reproducabilities['Always'] = '';
 
-			foreach ($b2_reprotypes as $list_name => $list_data)
+			foreach ($reproducabilities as $name => $itemdata)
 			{
-				$crit = $this->getCriteria();
-				$crit->addInsert(self::ITEMDATA, $list_data);
-				$crit->addInsert(self::ITEMTYPE, 'b2_reprotypes');
-				$crit->addInsert(self::NAME, $list_name);
-				$crit->addInsert(self::SCOPE, $scope);
-				$this->doInsert($crit);
+				$this->createNew($itemdata, BUGSdatatype::REPRODUCABILITY, $name, $scope);
 			}
 
-			$b2_resolutiontypes = array();
-			$b2_resolutiontypes["CAN'T REPRODUCE"] = '';
-			$b2_resolutiontypes["WON'T FIX"] = '';
-			$b2_resolutiontypes["NOT AN ISSUE"] = '';
-			$b2_resolutiontypes["WILL FIX IN NEXT RELEASE"] = '';
-			$b2_resolutiontypes["RESOLVED"] = '';
-			$b2_resolutiontypes["CAN'T FIX"] = '';
+			$resolutions = array();
+			$resolutions["CAN'T REPRODUCE"] = '';
+			$resolutions["WON'T FIX"] = '';
+			$resolutions["NOT AN ISSUE"] = '';
+			$resolutions["WILL FIX IN NEXT RELEASE"] = '';
+			$resolutions["RESOLVED"] = '';
+			$resolutions["CAN'T FIX"] = '';
 
-			foreach ($b2_resolutiontypes as $list_name => $list_data)
+			foreach ($resolutions as $name => $itemdata)
 			{
-				$crit = $this->getCriteria();
-				$crit->addInsert(self::ITEMDATA, $list_data);
-				$crit->addInsert(self::ITEMTYPE, 'b2_resolutiontypes');
-				$crit->addInsert(self::NAME, $list_name);
-				$crit->addInsert(self::SCOPE, $scope);
-				$this->doInsert($crit);
+				$this->createNew($itemdata, BUGSdatatype::RESOLUTION, $name, $scope);
 			}
 
-			$b2_severitylevels = array();
-			$b2_severitylevels['Low'] = '';
-			$b2_severitylevels['Normal'] = '';
-			$b2_severitylevels['Critical'] = '';
+			$severities = array();
+			$severities['Low'] = '';
+			$severities['Normal'] = '';
+			$severities['Critical'] = '';
 
-			$cc = 0;
-			foreach ($b2_severitylevels as $list_name => $list_data)
+			foreach ($severities as $name => $itemdata)
 			{
-				$cc++;
-				$crit = $this->getCriteria();
-				$crit->addInsert(self::ITEMDATA, $list_data);
-				$crit->addInsert(self::ITEMTYPE, 'b2_severitylevels');
-				$crit->addInsert(self::NAME, $list_name);
-				$crit->addInsert(self::SCOPE, $scope);
-				$res = $this->doInsert($crit);
-				if ($cc == 3)
-				{
-					BUGSsettings::saveSetting('defaultseverityfornewissues', $res->getInsertID(), 'core', $scope);
-				}
+				$this->createNew($itemdata, BUGSdatatype::SEVERITY, $name, $scope);
 			}
 
-			$b2_statustypes = array();
-			$b2_statustypes['Not reviewed'] = '#FFF';
-			$b2_statustypes['Collecting information'] = '#C2F533';
-			$b2_statustypes['Confirmed'] = '#FF55AA';
-			$b2_statustypes['Not a bug'] = '#44FC1D';
-			$b2_statustypes['Being worked on'] = '#5C5';
-			$b2_statustypes['Near completion'] = '#7D3';
-			$b2_statustypes['Ready for QA'] = '#55C';
-			$b2_statustypes['Testing / QA'] = '#77C';
-			$b2_statustypes['Closed'] = '#C2F588';
-			$b2_statustypes['Postponed'] = '#FA5';
-			$b2_statustypes['Done'] = '#7D3';
-			$b2_statustypes['Fixed'] = '#5C5';
+			$statuses = array();
+			$statuses['Not reviewed'] = '#FFF';
+			$statuses['Collecting information'] = '#C2F533';
+			$statuses['Confirmed'] = '#FF55AA';
+			$statuses['Not a bug'] = '#44FC1D';
+			$statuses['Being worked on'] = '#5C5';
+			$statuses['Near completion'] = '#7D3';
+			$statuses['Ready for QA'] = '#55C';
+			$statuses['Testing / QA'] = '#77C';
+			$statuses['Closed'] = '#C2F588';
+			$statuses['Postponed'] = '#FA5';
+			$statuses['Done'] = '#7D3';
+			$statuses['Fixed'] = '#5C5';
 
-			foreach ($b2_statustypes as $list_name => $list_data)
+			foreach ($statuses as $name => $itemdata)
 			{
-				$crit = $this->getCriteria();
-				$crit->addInsert(self::ITEMDATA, $list_data);
-				$crit->addInsert(self::ITEMTYPE, 'b2_statustypes');
-				$crit->addInsert(self::NAME, $list_name);
-				$crit->addInsert(self::SCOPE, $scope);
-				$this->doInsert($crit);
+				$this->createNew($itemdata, BUGSdatatype::STATUS, $name, $scope);
 			}
 		}
 		

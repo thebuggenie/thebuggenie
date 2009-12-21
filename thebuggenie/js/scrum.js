@@ -15,12 +15,10 @@ function addUserStory(url)
 		{
 			failedMessage(json.error);
 			$('user_story_add_indicator').hide();
-			$('message_failed').show();
 		}
 		else
 		{
 			Form.reset('add_user_story_form');
-			$('message_failed').hide();
 			$('user_story_add_indicator').hide();
 			$('message_user_story_added').show();
 			$('scrum_sprint_0_list').insert({bottom: json.content});

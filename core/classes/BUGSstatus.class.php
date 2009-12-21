@@ -25,6 +25,26 @@
 			}
 			return self::$_items;
 		}
+
+		/**
+		 * Create a new status
+		 *
+		 * @param string $name The status description
+		 * @param string $itemdata[optional] The color if any (default FFF)
+		 *
+		 * @return BUGSstatus
+		 */
+		public static function createNew($name, $itemdata = null)
+		{
+			$itemdata = ($itemdata === null || trim($itemdata) == '') ? '#FFF' : $itemdata;
+			if (substr($itemdata, 0, 1) != '#')
+			{
+				$itemdata = '#'.$itemdata;
+			}
+			
+			$res = parent::_createNew($name, self::STATUS, $itemdata);
+			return BUGSfactory::BUGSstatusLab($res->getInsertID());
+		}
 		
 		/**
 		 * Constructor

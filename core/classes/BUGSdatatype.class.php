@@ -47,49 +47,49 @@
 		 * Item type status
 		 *
 		 */
-		const STATUS = 'b2_statustypes';
+		const STATUS = 'status';
 		
 		/**
 		 * Item type priority
 		 *
 		 */
-		const PRIORITY = 'b2_prioritytypes';
+		const PRIORITY = 'priority';
 		
 		/**
 		 * Item type reproducability
 		 *
 		 */
-		const REPRODUCABILITY = 'b2_reprotypes';
+		const REPRODUCABILITY = 'reproducability';
 		
 		/**
 		 * Item type resolution
 		 *
 		 */
-		const RESOLUTION = 'b2_resolutiontypes';
+		const RESOLUTION = 'resolution';
 		
 		/**
 		 * Item type severity
 		 *
 		 */
-		const SEVERITY = 'b2_severitylevels';
+		const SEVERITY = 'severity';
 		
 		/**
 		 * Item type issue type
 		 *
 		 */
-		const ISSUETYPE = 'b2_issuetype';
+		const ISSUETYPE = 'issuetype';
 		
 		/**
 		 * Item type category
 		 *
 		 */
-		const CATEGORY = 'b2_categories';
+		const CATEGORY = 'category';
 		
 		/**
 		 * Item type user state 
 		 *
 		 */
-		const USERSTATE = 'b2_userstates';
+		const USERSTATE = 'userstate';
 		
 		abstract function __construct($item_id, $row = null);
 		
@@ -128,6 +128,21 @@
 				throw new Exception('This data type does not exist');
 			}
 			
+		}
+
+		/**
+		 * Create a new field option and return the row
+		 *
+		 * @param string $name
+		 * @param string $itemtype
+		 * @param mixed $itemdata
+		 *
+		 * @return B2DBResultset
+		 */
+		protected static function _createNew($name, $itemtype, $itemdata = null)
+		{
+			$res = B2DB::getTable('B2tListTypes')->createNew($itemdata, $itemtype, $name);
+			return $res;
 		}
 		
 		public function getName()

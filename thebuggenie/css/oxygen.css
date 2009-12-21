@@ -1479,3 +1479,5 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 
 .saved_searches { padding: 2px 2px 5px 5px; width: 300px; vertical-align: top; }
 .saved_searches a { font-size: 12px; font-weight: bold; padding-left: 3px; }
+
+thead.borderless th { border: 0; }

@@ -50,7 +50,7 @@
 
 		}
 
-		public function componentIssueField_BuiltIn()
+		public function componentIssueFields_BuiltIn()
 		{
 			$this->items = array();
 			switch ($this->type)

@@ -58,6 +58,7 @@
 	$routes[] = array('configure_issuefields', '/configure/issuefields', 'configuration', 'configureIssuefields', array('config_module' => 'core', 'section' => 4));
 	$routes[] = array('configure_issuefields_getoptions', '/configure/issuefields/get/options/for/:type', 'configuration', 'configureIssuefieldsGetOptions', array('config_module' => 'core', 'section' => 4));
 	$routes[] = array('configure_issuefields_getedit', '/configure/issuefields/edit/:type/:id', 'configuration', 'configureIssuefieldsGetEdit', array('config_module' => 'core', 'section' => 4));
+	$routes[] = array('configure_issuefields_add', '/configure/issuefields/add/:type', 'configuration', 'configureIssuefieldsAdd', array('config_module' => 'core', 'section' => 4));
 	$routes[] = array('configure_issuefields_getpermissions', '/configure/issuefields/get/permissions/for/:type/:id', 'configuration', 'configureIssuefieldsGetPermissions', array('config_module' => 'core', 'section' => 4));
 	$routes[] = array('configure_users', '/configure/users', 'configuration', 'index', array('config_module' => 'core', 'section' => 2));
 	$routes[] = array('configure_teams_groups', '/configure/teams_and_groups', 'configuration', 'index', array('config_module' => 'core', 'section' => 1));
