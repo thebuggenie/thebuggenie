@@ -24,6 +24,7 @@
 			</div>
 		<?php endforeach; ?>
 		<div class="header_div" style="margin-top: 20px;"><?php echo __('Custom issue fields'); ?></div>
+		<div class="faded_medium" style="padding: 3px; font-size: 13px;"><?php echo __('Not implemented yet'); ?></div>
 	</div>
 </td>
 </tr>
