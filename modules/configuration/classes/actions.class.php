@@ -134,7 +134,7 @@
 		}
 
 		/**
-		 * Add an issue field
+		 * Add an issue field option
 		 *
 		 * @param BUGSrequest $request
 		 */
@@ -146,13 +146,34 @@
 				{
 					case 'status':
 						$item = BUGSstatus::createNew($request->getParameter('name'), $request->getParameter('color'));
-						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield_builtin', array('item' => $item))));
+						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield_builtin', array('item' => $item, 'type' => $request->getParameter('type')))));
 				}
 			}
 			else
 			{
 				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
 			}
+		}
+
+		/**
+		 * Delete an issue field option
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runConfigureIssuefieldsDelete(BUGSrequest $request)
+		{
+			$i18n = BUGScontext::getI18n();
+			if ($request->hasParameter('id'))
+			{
+				$types = BUGSdatatype::getTypes();
+
+				if (array_key_exists($request->getParameter('type'), $types))
+				{
+					call_user_func(array($types[$request->getParameter('type')], 'delete'), (int) $request->getParameter('id'));
+					return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The option was deleted')));
+				}
+			}
+			return $this->renderJSON(array('failed' => true, 'error' => $i18n->__('Invalid id or type')));
 		}
 
 		/**

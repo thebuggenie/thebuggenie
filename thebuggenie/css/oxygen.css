@@ -1118,10 +1118,6 @@ li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 .iceblue_borderless .issue_detail_unmerged { background-color: #E0AC9C; }
 .iceblue_borderless .issue_detail_unmerged .faded_medium { color: #FFD9D6; }
 
-.white_borderless .xb2, .white_borderless .xb3, .white_borderless .xb4 { background-color: #FFF; border-color: #FFF; }
-.white_borderless .xb1 { background-color: #FFF; }
-.white_borderless .xboxcontent { background-color: #FFF; border-color: #FFF; }
-
 .lightgrey .xb2, .lightgrey .xb3, .lightgrey .xb4 { background-color: #F1F1F1; border-color: #DDD; }
 .lightgrey .xb1 { background-color: #DDD; }
 .lightgrey .xboxcontent { background-color: #F1F1F1; border-color: #DDD; }
@@ -1155,6 +1151,10 @@ li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 .white .xb2, .white .xb3, .white .xb4 { background-color: #FFF; border-color: #CCC; }
 .white .xb1 { background-color: #CCC; }
 .white .xboxcontent { background-color: #FFF; border-color: #CCC; }
+
+.white_borderless .xb2, .white_borderless .xb3, .white_borderless .xb4 { background-color: #FFF; border-color: #FFF; }
+.white_borderless .xb1 { background-color: #FFF; }
+.white_borderless .xboxcontent { background-color: #FFF; border-color: #FFF; }
 
 .lightgreen_borderless .xb2, .lightgreen_borderless .xb3, .lightgreen_borderless .xb4 { background-color: #BDF4AA; border-color: #BDF4AA; }
 .lightgreen_borderless .xb1 { background-color: #BDF4AA; }

@@ -44,7 +44,8 @@
 			<input type="hidden" name="step" value="6">
 			<div style="padding-top: 20px; clear: both; text-align: center;">
 				<label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button when you're done, and ready to use The Bug Genie</label>
-				<input type="submit" id="continue_button" value="Finalize installation">
+				<img src="themes/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
+				<input type="submit" id="continue_button" onclick="$('continue_button').hide();$('next_indicator').show();" value="Finalize installation">
 			</div>
 		</form>
 	</div>

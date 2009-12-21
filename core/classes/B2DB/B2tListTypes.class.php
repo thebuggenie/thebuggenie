@@ -164,5 +164,15 @@
 				$this->createNew($itemdata, BUGSdatatype::STATUS, $name, $scope);
 			}
 		}
+
+		public function deleteByTypeAndId($type, $id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ITEMTYPE, $type);
+			$crit->addWhere(self::ID, $id);
+			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+
+			$res = $this->doDelete($crit);
+		}
 		
 	}

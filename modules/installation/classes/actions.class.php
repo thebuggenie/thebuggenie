@@ -230,13 +230,16 @@
 				{
 					if (!is_writable(BUGScontext::getIncludePath() . 'thebuggenie/') || (file_exists(BUGScontext::getIncludePath() . 'thebuggenie/.htaccess') && !is_writable(BUGScontext::getIncludePath() . 'thebuggenie/.htaccess')))
 					{
-						$this->htaccess_error = 'Permission denied when trying to save the .htaccess file inside [main folder]/thebuggenie/';
+						$this->htaccess_error = 'Permission denied when trying to save the [main folder]/thebuggenie/.htaccess';
 					}
-					$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $request->getParameter('url_subdir'), file_get_contents(BUGScontext::getIncludePath() . 'thebuggenie/htaccess.template'));
-					file_put_contents(BUGScontext::getIncludePath() . 'thebuggenie/.htaccess', $content);
-					if (file_get_contents(BUGScontext::getIncludePath() . 'thebuggenie/.htaccess') != $content)
+					else
 					{
-						$this->htaccess_error = true;
+						$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $request->getParameter('url_subdir'), file_get_contents(BUGScontext::getIncludePath() . 'thebuggenie/htaccess.template'));
+						file_put_contents(BUGScontext::getIncludePath() . 'thebuggenie/.htaccess', $content);
+						if (file_get_contents(BUGScontext::getIncludePath() . 'thebuggenie/.htaccess') != $content)
+						{
+							$this->htaccess_error = true;
+						}
 					}
 				}
 			}

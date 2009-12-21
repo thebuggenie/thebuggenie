@@ -45,6 +45,16 @@
 			$res = parent::_createNew($name, self::STATUS, $itemdata);
 			return BUGSfactory::BUGSstatusLab($res->getInsertID());
 		}
+
+		/**
+		 * Delete a status id
+		 *
+		 * @param integer $id
+		 */
+		public static function delete($id)
+		{
+			B2DB::getTable('B2tListTypes')->deleteByTypeAndId(self::STATUS, $id);
+		}
 		
 		/**
 		 * Constructor

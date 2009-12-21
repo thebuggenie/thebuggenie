@@ -27,6 +27,16 @@
 		}
 
 		/**
+		 * Delete a severity id
+		 *
+		 * @param integer $id
+		 */
+		public static function delete($id)
+		{
+			B2DB::getTable('B2tListTypes')->deleteByTypeAndId(self::SEVERITY, $id);
+		}
+
+		/**
 		 * Constructor
 		 * 
 		 * @param integer $item_id The item id

@@ -144,6 +144,19 @@
 			$res = B2DB::getTable('B2tListTypes')->createNew($itemdata, $itemtype, $name);
 			return $res;
 		}
+
+		public static function getTypes()
+		{
+			$types = array();
+			$types['status'] = 'BUGSstatus';
+			$types['priority'] = 'BUGSpriority';
+			$types['category'] = 'BUGScategory';
+			$types['severity'] = 'BUGSseverity';
+			$types['reproducability'] = 'BUGSreproducability';
+			$types['resolution'] = 'BUGSresolution';
+			
+			return $types;
+		}
 		
 		public function getName()
 		{
@@ -154,7 +167,7 @@
 		{
 			return $this->_itemid;
 		}
-		
+
 		/**
 		 * Returns the itemdata associated with the datatype (if any)
 		 *

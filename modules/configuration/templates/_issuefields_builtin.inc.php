@@ -1,15 +1,18 @@
 <div class="header_div" style="margin-top: 15px;">
 	<?php echo __('Existing choices'); ?>
 </div>
-<table style="width: 100%;" cellpadding="0" cellspacing="0">
-	<tbody id="<?php echo $type; ?>_list">
-		<?php foreach ($items as $item): ?>
-			<?php include_template('issuefield_builtin', array('item' => $item)); ?>
-		<?php endforeach; ?>
-	</tbody>
-</table>
+<?php if (count($items) > 0): ?>
+	<table style="width: 100%;" cellpadding="0" cellspacing="0">
+		<tbody id="<?php echo $type; ?>_list">
+			<?php foreach ($items as $item): ?>
+				<?php include_template('issuefield_builtin', array('item' => $item, 'type' => $type)); ?>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+<?php endif; ?>
+<div class="faded_dark" id="no_<?php echo $type; ?>_items" style="<?php if (count($items) > 0): ?>display: none; <?php endif; ?>padding: 3px;"><?php echo __('There are no items'); ?></div>
 <div class="header_div" style="margin-top: 15px;"><?php echo __('Add another'); ?></div>
-<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>" onsubmit="addIssuefield('<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>', '<?php echo $type; ?>');return false;" id="add_<?php echo $type; ?>_form">
+<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>" onsubmit="addIssuefieldOption('<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>', '<?php echo $type; ?>');return false;" id="add_<?php echo $type; ?>_form">
 	<table style="width: 100%;" cellpadding="0" cellspacing="0">
 		<thead class="borderless">
 			<tr>

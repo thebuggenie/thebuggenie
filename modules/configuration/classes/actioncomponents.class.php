@@ -53,13 +53,7 @@
 		public function componentIssueFields_BuiltIn()
 		{
 			$this->items = array();
-			$types = array();
-			$types['status'] = 'BUGSstatus';
-			$types['priority'] = 'BUGSpriority';
-			$types['category'] = 'BUGScategory';
-			$types['severity'] = 'BUGSseverity';
-			$types['reproducability'] = 'BUGSreproducability';
-			$types['resolution'] = 'BUGSresolution';
+			$types = BUGSdatatype::getTypes();
 
 			if (array_key_exists($this->type, $types))
 			{

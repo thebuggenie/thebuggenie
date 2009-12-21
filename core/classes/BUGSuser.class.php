@@ -587,7 +587,7 @@
 		 */
 		public function isGuest()
 		{
-			return (bool) ($this->getID() == BUGSsettings::getDefaultUserID() && BUGSsettings::isDefaultUserGuest());
+			return (bool) (!$this->isLoggedIn() || ($this->getID() == BUGSsettings::getDefaultUserID() && BUGSsettings::isDefaultUserGuest()));
 		}
 	
 		/**
@@ -1362,7 +1362,8 @@
 	
 		public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $explicit = false)
 		{
-			return BUGScontext::checkPermission($permission_type, $this->getID(), $this->getGroup()->getID(), $this->getTeams(), $target_id, $module_name, $explicit);
+			$group_id = ($this->getGroup() instanceof BUGSgroup) ? $this->getGroup()->getID() : 0;
+			return BUGScontext::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $explicit);
 		}
 		
 		public function hasModuleAccess($module)
@@ -1436,6 +1437,13 @@
 					{
 						$username = BUGScontext::getRequest()->getCookie('b2_username');
 						$password = BUGScontext::getRequest()->getCookie('b2_password');
+						$row = B2DB::getTable('B2tUsers')->getByUsernameAndPassword($username, $password);
+						if (!$row)
+						{
+							BUGScontext::getResponse()->deleteCookie('b2_username');
+							BUGScontext::getResponse()->deleteCookie('b2_password');
+							BUGScontext::getResponse()->headerRedirect(BUGScontext::getRouting()->generate('login'));
+						}
 					}
 				}
 				if ($username !== null && $password !== null)

@@ -25,7 +25,17 @@
 			}
 			return self::$_items;
 		}
-		
+
+		/**
+		 * Delete a category id
+		 *
+		 * @param integer $id
+		 */
+		public static function delete($id)
+		{
+			B2DB::getTable('B2tListTypes')->deleteByTypeAndId(self::CATEGORY, $id);
+		}
+
 		/**
 		 * Constructor
 		 * 
