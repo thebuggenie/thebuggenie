@@ -154,6 +154,23 @@
 							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield_builtin', array('item' => $item, 'type' => $request->getParameter('type')))));
 						}
 						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
+					case 'edit':
+						if ($request->getParameter('name'))
+						{
+							$item = call_user_func(array('BUGSfactory', $types[$request->getParameter('type')].'Lab'), $request->getParameter('id'));
+							if ($item instanceof BUGSdatatype && $item->getItemtype() == $item->getType())
+							{
+								$item->setName($request->getParameter('name'));
+								$item->setItemdata($request->getParameter('itemdata'));
+								$item->save();
+								return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was updated')));
+							}
+							else
+							{
+								return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid id')));
+							}
+						}
+						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
 					case 'delete':
 						if ($request->hasParameter('id'))
 						{

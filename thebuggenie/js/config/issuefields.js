@@ -77,6 +77,51 @@ function addIssuefieldOption(url, type)
 	});
 }
 
+function editIssuefieldOption(url, type, id)
+{
+	var params = Form.serialize('edit_' + type + '_' + id + '_form');
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	evalScripts: true,
+	parameters: params,
+	onLoading: function (transport) {
+		$('edit_' + type + '_' + id + '_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+			$('edit_' + type + '_' + id + '_indicator').hide();
+		}
+		else
+		{
+			$('edit_' + type + '_' + id + '_indicator').hide();
+			successMessage(json.title, '');
+			$(type + '_' + id + '_name').update($(type + '_' + id + '_name_input').getValue());
+			if (type == 'status')
+			{
+				$(type + '_' + id + '_itemdata').update($(type + '_' + id + '_itemdata_input').getValue());
+			}
+			$('item_' + type + '_' + id).show();
+			$('edit_item_' + id).hide();
+		}
+	},
+	onFailure: function (transport) {
+		$('edit_' + type + '_' + id + '_indicator').hide();
+		if (transport.responseJSON)
+		{
+			failedMessage(transport.responseJSON.error);
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+	}
+	});
+}
+
 function deleteIssuefieldOption(url, type, id)
 {
 	new Ajax.Request(url, {

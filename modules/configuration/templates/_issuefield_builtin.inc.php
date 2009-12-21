@@ -1,13 +1,36 @@
 <tr class="canhover_light" id="item_<?php echo $type; ?>_<?php echo $item->getID(); ?>">
 	<?php if ($type == 'status'): ?>
-		<td style="width: 30px;"><div style="border: 0; background-color: <?php echo $item->getColor(); ?>; font-size: 1px; width: 25px; height: 8px; margin-right: 2px;">&nbsp;</div></td>
+		<td style="width: 30px;"><div style="border: 0; background-color: <?php echo $item->getColor(); ?>; font-size: 1px; width: 25px; height: 8px; margin-right: 2px;" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata">&nbsp;</div></td>
 	<?php endif; ?>
-	<td style="padding: 2px; font-size: 12px;"><?php echo $item->getName(); ?></td>
+	<td style="padding: 2px; font-size: 12px;" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_name"><?php echo $item->getName(); ?></td>
 	<td style="width: 60px; padding: 2px; text-align: right;">
-		<a href="javascript:void(0);" onclick="getIssuefieldEdit('<?php echo make_url('configure_issuefields_getedit', array('type' => 'status', 'id' => $item->getID())); ?>', <?php echo $item->getID(); ?>);" class="image" title="<?php echo __('Edit this item'); ?>"><?php echo image_tag('icon_edit.png'); ?></a>
-		<a href="javascript:void(0);" onclick="getIssuefieldPermissionsEditor('<?php echo make_url('configure_issuefields_getpermissions', array('type' => 'status', 'id' => $item->getID())); ?>', <?php echo $item->getID(); ?>);" class="image" title="<?php echo __('Set permissions for this item'); ?>" style="margin-right: 5px;"><?php echo image_tag('cfg_icon_permissions.png'); ?></a>
+		<a href="javascript:void(0);" onclick="$('item_<?php echo $type; ?>_<?php echo $item->getID(); ?>').hide();$('edit_item_<?php echo $item->getID(); ?>').show();$('<?php echo $type; ?>_<?php echo $item->getID(); ?>_name_input').focus();" class="image" title="<?php echo __('Edit this item'); ?>"><?php echo image_tag('icon_edit.png'); ?></a>
+		<a href="javascript:void(0);" onclick="failedMessage('This link doesn\'t do anything yet');" class="image" title="<?php echo __('Set permissions for this item'); ?>" style="margin-right: 5px;"><?php echo image_tag('cfg_icon_permissions.png'); ?></a>
 		<a href="javascript:void(0);" onclick="$('delete_item_<?php echo $item->getID(); ?>').toggle();" class="image" id="delete_<?php echo $item->getID(); ?>_link"><?php echo image_tag('icon_delete.png'); ?></a>
 		<?php echo image_tag('spinning_16.gif', array('id' => 'delete_' . $type . '_' . $item->getID() . '_indicator', 'style' => 'display: none;')); ?>
+	</td>
+</tr>
+<tr id="edit_item_<?php echo $item->getID(); ?>" style="display: none;">
+	<td colspan="3">
+		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>" onsubmit="editIssuefieldOption('<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>', '<?php echo $type; ?>', <?php echo $item->getID(); ?>);return false;" id="edit_<?php echo $type; ?>_<?php echo $item->getID(); ?>_form">
+			<table style="width: 100%;" cellpadding="0" cellspacing="0">
+				<tr>
+					<?php if ($type == 'status'): ?>
+						<td style="font-size: 14px; width: 70px;">
+							<input type="text" name="itemdata" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata_input" style="width: 45px;" value="<?php echo $item->getColor(); ?>">
+						</td>
+					<?php endif; ?>
+					<td>
+						<input type="text" name="name" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_name_input" style="width: 400px;" value="<?php echo $item->getName(); ?>">
+					</td>
+					<td style="text-align: right; width: 150px;">
+						<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'edit_' . $type . '_' . $item->getID() . '_indicator')); ?>
+						<input type="submit" value="<?php echo __('Update'); ?>" style="margin-right: 5px; font-weight: bold;">
+						<?php echo __('%update% or %cancel%', array('%update%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'item_'.$type.'_'.$item->getID().'\').show();$(\'edit_item_'.$item->getID().'\').hide();"><b>' . __('cancel') . '</b></a>')); ?>
+					</td>
+				</tr>
+			</table>
+		</form>
 	</td>
 </tr>
 <tr id="delete_item_<?php echo $item->getID(); ?>" style="display: none;">

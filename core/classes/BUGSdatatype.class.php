@@ -163,9 +163,29 @@
 			return $this->_name;
 		}
 		
+		/**
+		 * Set the datatype name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 		public function getID()
 		{
 			return $this->_itemid;
+		}
+
+		/**
+		 * Save name and itemdata
+		 *
+		 * @return boolean
+		 */
+		public function save()
+		{
+			B2DB::getTable('B2tListTypes')->saveById($this->_name, $this->_itemdata, $this->_itemid);
 		}
 
 		/**
@@ -177,6 +197,16 @@
 		public function getItemdata()
 		{
 			return $this->_itemdata;
+		}
+
+		/**
+		 * Set the itemdata
+		 *
+		 * @param string $itemdata
+		 */
+		public function setItemdata($itemdata)
+		{
+			$this->_itemdata = $itemdata;
 		}
 		
 		/**

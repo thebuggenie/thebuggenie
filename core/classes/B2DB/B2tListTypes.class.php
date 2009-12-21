@@ -168,6 +168,15 @@
 			}
 		}
 
+		public function saveById($name, $itemdata, $id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addUpdate(self::NAME, $name);
+			$crit->addUpdate(self::ITEMDATA, $itemdata);
+
+			$res = $this->doUpdateById($crit, $id);
+		}
+
 		public function deleteByTypeAndId($type, $id)
 		{
 			$crit = $this->getCriteria();

@@ -57,7 +57,7 @@
 	$routes[] = array('configure_project_milestone_action', '/configure/project/:project_id/milestone/:milestone_id/do/:milestone_action', 'configuration', 'milestoneAction', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_issuefields', '/configure/issuefields', 'configuration', 'configureIssuefields', array('config_module' => 'core', 'section' => 4));
 	$routes[] = array('configure_issuefields_getoptions', '/configure/issuefields/get/options/for/:type', 'configuration', 'configureIssuefieldsGetOptions', array('config_module' => 'core', 'section' => 4));
-	$routes[] = array('configure_issuefields_getedit', '/configure/issuefields/edit/:type/:id', 'configuration', 'configureIssuefieldsGetEdit', array('config_module' => 'core', 'section' => 4));
+	$routes[] = array('configure_issuefields_edit', '/configure/issuefields/edit/:type/:id', 'configuration', 'configureIssuefieldsAction', array('config_module' => 'core', 'section' => 4, 'mode' => 'edit'));
 	$routes[] = array('configure_issuefields_add', '/configure/issuefields/add/:type', 'configuration', 'configureIssuefieldsAction', array('config_module' => 'core', 'section' => 4, 'mode' => 'add'));
 	$routes[] = array('configure_issuefields_delete', '/configure/issuefields/delete/:type/:id', 'configuration', 'configureIssuefieldsAction', array('config_module' => 'core', 'section' => 4, 'mode' => 'delete'));
 	$routes[] = array('configure_issuefields_getpermissions', '/configure/issuefields/get/permissions/for/:type/:id', 'configuration', 'configureIssuefieldsGetPermissions', array('config_module' => 'core', 'section' => 4));
