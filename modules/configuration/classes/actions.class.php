@@ -118,7 +118,7 @@
 			$builtin_types['priority'] = array('description' => $i18n->__('Priority levels'), 'key' => 'priority');
 			$builtin_types['severity'] = array('description' => $i18n->__('Severity levels'), 'key' => 'severity');
 			$builtin_types['category'] = array('description' => $i18n->__('Categories'), 'key' => 'category');
-			$builtin_types['reproducability'] = array('description' => $i18n->__('Reproducability grades'), 'key' => 'reproducability');
+			$builtin_types['reproducability'] = array('description' => $i18n->__('Reproducability'), 'key' => 'reproducability');
 
 			$this->builtin_types = $builtin_types;
 			$this->custom_types = BUGScustomdatatype::getAll();
@@ -219,6 +219,22 @@
 							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The custom type was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
 						}
 						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('You need to provide a unique custom type name (key already exists)')));
+					}
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
+					break;
+				case 'update':
+					if ($request->getParameter('name') != '')
+					{
+						$customtype = BUGScustomdatatype::getByKey($request->getParameter('type'));
+						if ($customtype instanceof BUGScustomdatatype)
+						{
+							$customtype->setDescription($request->getParameter('description'));
+							$customtype->setInstructions($request->getParameter('instructions'));
+							$customtype->setName($request->getParameter('name'));
+							$customtype->save();
+							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The custom type was added'), 'description' => $customtype->getDescription(), 'instructions' => $customtype->getInstructions(), 'name' => $customtype->getName()));
+						}
+						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('You need to provide a custom type key that already exists')));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
 					break;

@@ -1,0 +1,725 @@
+INFO [main] Initializing B2 framework
+INFO [main] Cache is not enabled
+INFO [main] Loading B2DB
+INFO [main] Adding B2DB classes to autoload path
+INFO [main] ...done (Adding B2DB classes to autoload path)
+INFO [main] Initializing B2DB
+INFO [main] ...done (Initializing B2DB)
+INFO [main] Database connection details found, connecting
+INFO [main] ...done (Database connection details found, connecting)
+INFO [main] Adding B2DB table classpath to autoload path
+INFO [main] ...done
+INFO [main] Initializing context
+INFO [main] Loading request
+INFO [main] ...done
+INFO [routing] Loading first batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] Setting current scope
+INFO [main] Checking if scope can be set from hostname (http://thebuggenie)
+INFO [B2DB] executing PDO query (0)
+INFO [B2DB] SELECT scopes1017.id AS scopes1017_id, scopes1017.enabled AS scopes1017_enabled, scopes1017.description AS scopes1017_description, scopes1017.admin AS scopes1017_admin, scopes1017.hostname AS scopes1017_hostname FROM tbg3_scopes scopes1017 WHERE (scopes1017.hostname = 'http://thebuggenie') LIMIT 1
+INFO [B2DB] done
+INFO [main] It could
+INFO [main] Setting scope from hostname
+INFO [main] ...done (Setting scope from hostname)
+INFO [main] ...done
+INFO [main] Loading settings
+INFO [main] Loading all settings
+INFO [main] Settings not cached. Retrieving from database
+INFO [B2DB] executing PDO query (1)
+INFO [B2DB] SELECT settings475.id AS settings475_id, settings475.name AS settings475_name, settings475.module AS settings475_module, settings475.value AS settings475_value, settings475.uid AS settings475_uid, settings475.scope AS settings475_scope, scopes240.id AS scopes240_id, scopes240.enabled AS scopes240_enabled, scopes240.description AS scopes240_description, scopes240.admin AS scopes240_admin, scopes240.hostname AS scopes240_hostname FROM tbg3_settings settings475 LEFT JOIN tbg3_scopes scopes240 ON (scopes240.id=settings475.scope) WHERE (scopes240.enabled = '1') AND (settings475.scope = '1')
+INFO [B2DB] done
+INFO [main] Retrieved
+INFO [main] ...done
+INFO [main] Loading user
+INFO [main] is this logout?
+INFO [main] no
+INFO [main] sets up user object
+INFO [B2DB] executing PDO query (2)
+INFO [B2DB] SELECT users2291.id AS users2291_id, users2291.uname AS users2291_uname, users2291.passwd AS users2291_passwd, users2291.buddyname AS users2291_buddyname, users2291.realname AS users2291_realname, users2291.email AS users2291_email, users2291.state AS users2291_state, users2291.homepage AS users2291_homepage, users2291.lastseen AS users2291_lastseen, users2291.lastlogin AS users2291_lastlogin, users2291.quota AS users2291_quota, users2291.activated AS users2291_activated, users2291.enabled AS users2291_enabled, users2291.deleted AS users2291_deleted, users2291.showfollowups AS users2291_showfollowups, users2291.showassigned AS users2291_showassigned, users2291.avatar AS users2291_avatar, users2291.use_gravatar AS users2291_use_gravatar, users2291.private_email AS users2291_private_email, users2291.joined AS users2291_joined, users2291.group_id AS users2291_group_id, users2291.customer_id AS users2291_customer_id, users2291.scope AS users2291_scope, userstate1874.id AS userstate1874_id, userstate1874.state_name AS userstate1874_state_name, userstate1874.unavailable AS userstate1874_unavailable, userstate1874.busy AS userstate1874_busy, userstate1874.online AS userstate1874_online, userstate1874.meeting AS userstate1874_meeting, userstate1874.absent AS userstate1874_absent, userstate1874.color AS userstate1874_color, userstate1874.scope AS userstate1874_scope, groups1209.id AS groups1209_id, groups1209.gname AS groups1209_gname, groups1209.scope AS groups1209_scope, customers2406.id AS customers2406_id, customers2406.cname AS customers2406_cname, customers2406.scope AS customers2406_scope, scopes1709.id AS scopes1709_id, scopes1709.enabled AS scopes1709_enabled, scopes1709.description AS scopes1709_description, scopes1709.admin AS scopes1709_admin, scopes1709.hostname AS scopes1709_hostname FROM tbg3_users users2291 LEFT JOIN tbg3_userstate userstate1874 ON (userstate1874.id=users2291.state) LEFT JOIN tbg3_groups groups1209 ON (groups1209.id=users2291.group_id) LEFT JOIN tbg3_customers customers2406 ON (customers2406.id=users2291.customer_id) LEFT JOIN tbg3_scopes scopes1709 ON (scopes1709.id=users2291.scope) WHERE (users2291.uname = 'administrator') AND (users2291.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users2291.deleted = '0') LIMIT 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (3)
+INFO [B2DB] SELECT users2291.id AS users2291_id, users2291.uname AS users2291_uname, users2291.passwd AS users2291_passwd, users2291.buddyname AS users2291_buddyname, users2291.realname AS users2291_realname, users2291.email AS users2291_email, users2291.state AS users2291_state, users2291.homepage AS users2291_homepage, users2291.lastseen AS users2291_lastseen, users2291.lastlogin AS users2291_lastlogin, users2291.quota AS users2291_quota, users2291.activated AS users2291_activated, users2291.enabled AS users2291_enabled, users2291.deleted AS users2291_deleted, users2291.showfollowups AS users2291_showfollowups, users2291.showassigned AS users2291_showassigned, users2291.avatar AS users2291_avatar, users2291.use_gravatar AS users2291_use_gravatar, users2291.private_email AS users2291_private_email, users2291.joined AS users2291_joined, users2291.group_id AS users2291_group_id, users2291.customer_id AS users2291_customer_id, users2291.scope AS users2291_scope, userstate1874.id AS userstate1874_id, userstate1874.state_name AS userstate1874_state_name, userstate1874.unavailable AS userstate1874_unavailable, userstate1874.busy AS userstate1874_busy, userstate1874.online AS userstate1874_online, userstate1874.meeting AS userstate1874_meeting, userstate1874.absent AS userstate1874_absent, userstate1874.color AS userstate1874_color, userstate1874.scope AS userstate1874_scope, groups1209.id AS groups1209_id, groups1209.gname AS groups1209_gname, groups1209.scope AS groups1209_scope, customers2406.id AS customers2406_id, customers2406.cname AS customers2406_cname, customers2406.scope AS customers2406_scope, scopes1709.id AS scopes1709_id, scopes1709.enabled AS scopes1709_enabled, scopes1709.description AS scopes1709_description, scopes1709.admin AS scopes1709_admin, scopes1709.hostname AS scopes1709_hostname FROM tbg3_users users2291 LEFT JOIN tbg3_userstate userstate1874 ON (userstate1874.id=users2291.state) LEFT JOIN tbg3_groups groups1209 ON (groups1209.id=users2291.group_id) LEFT JOIN tbg3_customers customers2406 ON (customers2406.id=users2291.customer_id) LEFT JOIN tbg3_scopes scopes1709 ON (scopes1709.id=users2291.scope) WHERE (users2291.uname = 'administrator') AND (users2291.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users2291.deleted = '0') LIMIT 1
+INFO [B2DB] done
+INFO [main] User with id 1 set up successfully
+INFO [B2DB] executing PDO query (4)
+INFO [B2DB] UPDATE tbg3_users SET `lastseen`='1261482126' WHERE (id = '1')
+INFO [B2DB] done
+INFO [main] loaded
+INFO [main] caches permissions
+INFO [main] starting to cache access permissions
+INFO [B2DB] executing PDO query (5)
+INFO [B2DB] SELECT permissions1284.id AS permissions1284_id, permissions1284.permission_type AS permissions1284_permission_type, permissions1284.target_id AS permissions1284_target_id, permissions1284.allowed AS permissions1284_allowed, permissions1284.module AS permissions1284_module, permissions1284.uid AS permissions1284_uid, permissions1284.gid AS permissions1284_gid, permissions1284.tid AS permissions1284_tid, permissions1284.scope AS permissions1284_scope, users1921.id AS users1921_id, users1921.uname AS users1921_uname, users1921.passwd AS users1921_passwd, users1921.buddyname AS users1921_buddyname, users1921.realname AS users1921_realname, users1921.email AS users1921_email, users1921.state AS users1921_state, users1921.homepage AS users1921_homepage, users1921.lastseen AS users1921_lastseen, users1921.lastlogin AS users1921_lastlogin, users1921.quota AS users1921_quota, users1921.activated AS users1921_activated, users1921.enabled AS users1921_enabled, users1921.deleted AS users1921_deleted, users1921.showfollowups AS users1921_showfollowups, users1921.showassigned AS users1921_showassigned, users1921.avatar AS users1921_avatar, users1921.use_gravatar AS users1921_use_gravatar, users1921.private_email AS users1921_private_email, users1921.joined AS users1921_joined, users1921.group_id AS users1921_group_id, users1921.customer_id AS users1921_customer_id, users1921.scope AS users1921_scope, groups519.id AS groups519_id, groups519.gname AS groups519_gname, groups519.scope AS groups519_scope, teams358.id AS teams358_id, teams358.teamname AS teams358_teamname, teams358.scope AS teams358_scope, scopes1669.id AS scopes1669_id, scopes1669.enabled AS scopes1669_enabled, scopes1669.description AS scopes1669_description, scopes1669.admin AS scopes1669_admin, scopes1669.hostname AS scopes1669_hostname FROM tbg3_permissions permissions1284 LEFT JOIN tbg3_users users1921 ON (users1921.id=permissions1284.uid) LEFT JOIN tbg3_groups groups519 ON (groups519.id=permissions1284.gid) LEFT JOIN tbg3_teams teams358 ON (teams358.id=permissions1284.tid) LEFT JOIN tbg3_scopes scopes1669 ON (scopes1669.id=permissions1284.scope) WHERE (permissions1284.scope = '1')
+INFO [B2DB] done
+INFO [main] done (starting to cache access permissions)
+INFO [main] ...cached
+INFO [main] ...done
+INFO [main] Loading i18n strings
+INFO [main] Loading strings from file
+INFO [main] en_US
+INFO [i18n] Loading strings from file
+INFO [main] ...done
+INFO [main] Loading modules
+INFO [main] getting modules from database
+INFO [B2DB] executing PDO query (6)
+INFO [B2DB] SELECT modules2457.id AS modules2457_id, modules2457.module_name AS modules2457_module_name, modules2457.enabled AS modules2457_enabled, modules2457.version AS modules2457_version, modules2457.classname AS modules2457_classname, modules2457.show_in_config AS modules2457_show_in_config, modules2457.show_in_menu AS modules2457_show_in_menu, modules2457.show_in_usermenu AS modules2457_show_in_usermenu, modules2457.scope AS modules2457_scope, scopes2103.id AS scopes2103_id, scopes2103.enabled AS scopes2103_enabled, scopes2103.description AS scopes2103_description, scopes2103.admin AS scopes2103_admin, scopes2103.hostname AS scopes2103_hostname FROM tbg3_modules modules2457 LEFT JOIN tbg3_scopes scopes2103 ON (scopes2103.id=modules2457.scope) WHERE (modules2457.scope = '1')
+INFO [B2DB] done
+INFO [main] done (getting modules from database)
+INFO [main] setting up module objects
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [main] done (setting up module objects)
+INFO [main] caching module access permissions
+INFO [B2DB] executing PDO query (7)
+INFO [B2DB] SELECT modulepermissions2083.id AS modulepermissions2083_id, modulepermissions2083.module_name AS modulepermissions2083_module_name, modulepermissions2083.allowed AS modulepermissions2083_allowed, modulepermissions2083.uid AS modulepermissions2083_uid, modulepermissions2083.gid AS modulepermissions2083_gid, modulepermissions2083.tid AS modulepermissions2083_tid, modulepermissions2083.scope AS modulepermissions2083_scope, users140.id AS users140_id, users140.uname AS users140_uname, users140.passwd AS users140_passwd, users140.buddyname AS users140_buddyname, users140.realname AS users140_realname, users140.email AS users140_email, users140.state AS users140_state, users140.homepage AS users140_homepage, users140.lastseen AS users140_lastseen, users140.lastlogin AS users140_lastlogin, users140.quota AS users140_quota, users140.activated AS users140_activated, users140.enabled AS users140_enabled, users140.deleted AS users140_deleted, users140.showfollowups AS users140_showfollowups, users140.showassigned AS users140_showassigned, users140.avatar AS users140_avatar, users140.use_gravatar AS users140_use_gravatar, users140.private_email AS users140_private_email, users140.joined AS users140_joined, users140.group_id AS users140_group_id, users140.customer_id AS users140_customer_id, users140.scope AS users140_scope, groups2209.id AS groups2209_id, groups2209.gname AS groups2209_gname, groups2209.scope AS groups2209_scope, teams1402.id AS teams1402_id, teams1402.teamname AS teams1402_teamname, teams1402.scope AS teams1402_scope, scopes2287.id AS scopes2287_id, scopes2287.enabled AS scopes2287_enabled, scopes2287.description AS scopes2287_description, scopes2287.admin AS scopes2287_admin, scopes2287.hostname AS scopes2287_hostname FROM tbg3_modulepermissions modulepermissions2083 LEFT JOIN tbg3_users users140 ON (users140.id=modulepermissions2083.uid) LEFT JOIN tbg3_groups groups2209 ON (groups2209.id=modulepermissions2083.gid) LEFT JOIN tbg3_teams teams1402 ON (teams1402.id=modulepermissions2083.tid) LEFT JOIN tbg3_scopes scopes2287 ON (scopes2287.id=modulepermissions2083.scope) WHERE (modulepermissions2083.scope = '1')
+INFO [B2DB] done
+INFO [main] done (caching module access permissions)
+INFO [main] initializing modules
+INFO [B2DB] executing PDO query (8)
+INFO [B2DB] SELECT enabledmodulelisteners671.id AS enabledmodulelisteners671_id, enabledmodulelisteners671.module AS enabledmodulelisteners671_module, enabledmodulelisteners671.identifier AS enabledmodulelisteners671_identifier, enabledmodulelisteners671.order AS enabledmodulelisteners671_order, enabledmodulelisteners671.module_name AS enabledmodulelisteners671_module_name, enabledmodulelisteners671.scope AS enabledmodulelisteners671_scope, modules2457.id AS modules2457_id, modules2457.module_name AS modules2457_module_name, modules2457.enabled AS modules2457_enabled, modules2457.version AS modules2457_version, modules2457.classname AS modules2457_classname, modules2457.show_in_config AS modules2457_show_in_config, modules2457.show_in_menu AS modules2457_show_in_menu, modules2457.show_in_usermenu AS modules2457_show_in_usermenu, modules2457.scope AS modules2457_scope, modules2561.id AS modules2561_id, modules2561.module_name AS modules2561_module_name, modules2561.enabled AS modules2561_enabled, modules2561.version AS modules2561_version, modules2561.classname AS modules2561_classname, modules2561.show_in_config AS modules2561_show_in_config, modules2561.show_in_menu AS modules2561_show_in_menu, modules2561.show_in_usermenu AS modules2561_show_in_usermenu, modules2561.scope AS modules2561_scope, scopes2703.id AS scopes2703_id, scopes2703.enabled AS scopes2703_enabled, scopes2703.description AS scopes2703_description, scopes2703.admin AS scopes2703_admin, scopes2703.hostname AS scopes2703_hostname FROM tbg3_enabledmodulelisteners enabledmodulelisteners671 LEFT JOIN tbg3_modules modules2457 ON (modules2457.module_name=enabledmodulelisteners671.module_name) LEFT JOIN tbg3_modules modules2561 ON (modules2561.module_name=enabledmodulelisteners671.module_name) LEFT JOIN tbg3_scopes scopes2703 ON (scopes2703.id=enabledmodulelisteners671.scope) WHERE (enabledmodulelisteners671.module_name IN ('mailnotification', 'messages', 'calendar', 'publish', 'svn_integration')) AND (enabledmodulelisteners671.scope = '1') AND (modules2457.scope = '1') ORDER BY enabledmodulelisteners671.order asc
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (9)
+INFO [B2DB] SELECT COUNT(teammembers1688.id) as num_col FROM tbg3_teammembers teammembers1688 WHERE (teammembers1688.uid = '1')
+INFO [B2DB] done
+INFO [main] initializing mailnotification
+INFO [main] done (initializing mailnotification)
+INFO [routing] loading module routes for mailnotification
+INFO [mailnotification] adding route forgot
+INFO [mailnotification] done (adding route forgot)
+INFO [mailnotification] adding route mailnotification_test_email
+INFO [mailnotification] done (adding route mailnotification_test_email)
+INFO [routing] done (loading module routes)
+INFO [main] initializing messages
+INFO [main] done (initializing messages)
+INFO [routing] loading module routes for messages
+INFO [routing] done (loading module routes)
+INFO [main] initializing calendar
+INFO [main] done (initializing calendar)
+INFO [routing] loading module routes for calendar
+INFO [routing] done (loading module routes)
+INFO [main] initializing publish
+INFO [main] done (initializing publish)
+INFO [routing] loading module routes for publish
+INFO [publish] adding route publish
+INFO [publish] done (adding route publish)
+INFO [publish] adding route publish_article_new
+INFO [publish] done (adding route publish_article_new)
+INFO [publish] adding route publish_article
+INFO [publish] done (adding route publish_article)
+INFO [publish] adding route publish_article_edit
+INFO [publish] done (adding route publish_article_edit)
+INFO [publish] adding route publish_article_delete
+INFO [publish] done (adding route publish_article_delete)
+INFO [publish] adding route publish_article_save
+INFO [publish] done (adding route publish_article_save)
+INFO [publish] adding route publish_article_history
+INFO [publish] done (adding route publish_article_history)
+INFO [routing] done (loading module routes)
+INFO [main] initializing svn_integration
+INFO [main] done (initializing svn_integration)
+INFO [routing] loading module routes for svn_integration
+INFO [routing] done (loading module routes)
+INFO [main] done (initializing modules)
+INFO [main] ...done
+INFO [routing] Loading last batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] ...done initializing
+INFO [main] ...done
+INFO [main] B2 framework loaded
+INFO [main] Dispatching
+INFO [routing] URL is configure/issuefields
+INFO [routing] URL is now /configure/issuefields
+INFO [routing] match route [configure_issuefields] "/configure/issuefields"
+INFO [main] Running main pre-execute action
+INFO [main] Running route action runConfigureIssuefields()
+INFO [B2DB] executing PDO query (10)
+INFO [B2DB] SELECT customfields957.id AS customfields957_id, customfields957.field_name AS customfields957_field_name, customfields957.field_key AS customfields957_field_key, customfields957.field_description AS customfields957_field_description, customfields957.field_instructions AS customfields957_field_instructions, customfields957.field_type AS customfields957_field_type, customfields957.scope AS customfields957_scope, scopes106.id AS scopes106_id, scopes106.enabled AS scopes106_enabled, scopes106.description AS scopes106_description, scopes106.admin AS scopes106_admin, scopes106.hostname AS scopes106_hostname FROM tbg3_customfields customfields957 LEFT JOIN tbg3_scopes scopes106 ON (scopes106.id=customfields957.scope) WHERE (customfields957.scope = '1')
+INFO [B2DB] done
+INFO [main] ...done
+INFO [main] Displaying template
+INFO [main] configuring variables
+INFO [main] rendering template and buffering output
+INFO [main] ...completed
+INFO [main] decorating with header
+INFO [main] Triggering core - header_begins
+INFO [main] done (Triggering core - header_begins)
+INFO [main] Triggering core - header_ends
+INFO [main] done (Triggering core - header_ends)
+INFO [main] Triggering core - header_end
+INFO [main] done (Triggering core - header_end)
+INFO [main] Triggering core - header_right
+INFO [main] done (Triggering core - header_right)
+INFO [main] decorating with footer
+INFO [main] Triggering core - footer_begin
+INFO [main] done (Triggering core - footer_begin)
+INFO [main] Triggering core - footer_end
+INFO [main] done (Triggering core - footer_end)
+INFO [i18n] The text "Enables email notification functionality" does not exist in list of translated strings.
+INFO [i18n] The text "Set up email- and user notifications from this section" does not exist in list of translated strings.
+INFO [i18n] The text "Enables messaging functionality" does not exist in list of translated strings.
+INFO [i18n] The text "Enables calendars, todos and meetings" does not exist in list of translated strings.
+INFO [i18n] The text "Wiki" does not exist in list of translated strings.
+INFO [i18n] The text "Enables Wiki-functionality" does not exist in list of translated strings.
+INFO [i18n] The text "Set up the Wiki module from this section" does not exist in list of translated strings.
+INFO [i18n] The text "Enables integration with SVN" does not exist in list of translated strings.
+INFO [i18n] The text "Configure source code integration from this section" does not exist in list of translated strings.
+INFO [i18n] The text "You don't have access to this page" does not exist in list of translated strings.
+INFO [i18n] The text "Configure data types" does not exist in list of translated strings.
+INFO [i18n] The text "Permissions" does not exist in list of translated strings.
+INFO [i18n] The text "Import data" does not exist in list of translated strings.
+INFO [i18n] The text "Uploads &amp; attachments" does not exist in list of translated strings.
+INFO [i18n] The text "Issue fields" does not exist in list of translated strings.
+INFO [i18n] The text "Users, teams &amp; groups" does not exist in list of translated strings.
+INFO [i18n] The text "Modules" does not exist in list of translated strings.
+INFO [i18n] The text "Configuration sections" does not exist in list of translated strings.
+INFO [i18n] The text "Configure issue fields" does not exist in list of translated strings.
+INFO [i18n] The text "Edit built-in and custom issue fields and values here" does not exist in list of translated strings.
+INFO [i18n] The text "Built-in issue fields" does not exist in list of translated strings.
+INFO [i18n] The text "Custom issue fields" does not exist in list of translated strings.
+INFO [i18n] The text "Add new custom field" does not exist in list of translated strings.
+INFO [i18n] The text "Enter a name for the field (only used here, same as ex. "%resolution_types%" above), then click %add%" does not exist in list of translated strings.
+INFO [i18n] The text "Field name" does not exist in list of translated strings.
+INFO [i18n] The text "Dropdown list with custom text choices" does not exist in list of translated strings.
+INFO [i18n] The text "Dropdown list with custom colored text choices" does not exist in list of translated strings.
+INFO [i18n] The text "Dropdown list with custom color and text choices" does not exist in list of translated strings.
+INFO [i18n] The text "Dropdown list with custom text choices and icons" does not exist in list of translated strings.
+INFO [i18n] The text "Single line text input" does not exist in list of translated strings.
+INFO [i18n] The text "Textarea in issue main area" does not exist in list of translated strings.
+INFO [i18n] The text "Textarea (small) in issue details list" does not exist in list of translated strings.
+INFO [i18n] The text "Radio choices" does not exist in list of translated strings.
+INFO [i18n] The text "Checkbox choices" does not exist in list of translated strings.
+INFO [i18n] The text "Add one or more releases from the list of available releases" does not exist in list of translated strings.
+INFO [i18n] The text "Select a release from the list of available releases" does not exist in list of translated strings.
+INFO [i18n] The text "Add one or more components from the list of available components" does not exist in list of translated strings.
+INFO [i18n] The text "Select a component from the list of available components" does not exist in list of translated strings.
+INFO [i18n] The text "Add one or more editions from the list of available editions" does not exist in list of translated strings.
+INFO [i18n] The text "Select a edition from the list of available editions" does not exist in list of translated strings.
+INFO [i18n] The text "Dropdown list with statuses" does not exist in list of translated strings.
+INFO [i18n] The text "Find and pick a user" does not exist in list of translated strings.
+INFO [i18n] The text "Find and pick a team" does not exist in list of translated strings.
+INFO [i18n] The text "Find and pick a customer" does not exist in list of translated strings.
+INFO [i18n] The text "Find and pick a user or a team" does not exist in list of translated strings.
+INFO [i18n] The text "Logged in as %name%" does not exist in list of translated strings.
+INFO [i18n] The text "Logout" does not exist in list of translated strings.
+INFO [i18n] The text "My dashboard" does not exist in list of translated strings.
+INFO [i18n] The text "Find issues" does not exist in list of translated strings.
+INFO [i18n] The text "Quick search" does not exist in list of translated strings.
+INFO [i18n] The text "Search for anything here" does not exist in list of translated strings.
+INFO [i18n] The text "%num_milliseconds% ms" does not exist in list of translated strings.
+INFO [i18n] The text "Page load time: %load_time%, with %num_queries% queries. Scope ID: %scope_id%." does not exist in list of translated strings.
+INFO [main] ...done
+INFO [main] rendering content
+INFO [main] ...done (rendering content)
+INFO [main] Initializing B2 framework
+INFO [main] Cache is not enabled
+INFO [main] Loading B2DB
+INFO [main] Adding B2DB classes to autoload path
+INFO [main] ...done (Adding B2DB classes to autoload path)
+INFO [main] Initializing B2DB
+INFO [main] ...done (Initializing B2DB)
+INFO [main] Database connection details found, connecting
+INFO [main] ...done (Database connection details found, connecting)
+INFO [main] Adding B2DB table classpath to autoload path
+INFO [main] ...done
+INFO [main] Initializing context
+INFO [main] Loading request
+INFO [main] ...done
+INFO [routing] Loading first batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] Setting current scope
+INFO [main] Checking if scope can be set from hostname (http://thebuggenie)
+INFO [B2DB] executing PDO query (0)
+INFO [B2DB] SELECT scopes2852.id AS scopes2852_id, scopes2852.enabled AS scopes2852_enabled, scopes2852.description AS scopes2852_description, scopes2852.admin AS scopes2852_admin, scopes2852.hostname AS scopes2852_hostname FROM tbg3_scopes scopes2852 WHERE (scopes2852.hostname = 'http://thebuggenie') LIMIT 1
+INFO [B2DB] done
+INFO [main] It could
+INFO [main] Setting scope from hostname
+INFO [main] ...done (Setting scope from hostname)
+INFO [main] ...done
+INFO [main] Loading settings
+INFO [main] Loading all settings
+INFO [main] Settings not cached. Retrieving from database
+INFO [B2DB] executing PDO query (1)
+INFO [B2DB] SELECT settings1389.id AS settings1389_id, settings1389.name AS settings1389_name, settings1389.module AS settings1389_module, settings1389.value AS settings1389_value, settings1389.uid AS settings1389_uid, settings1389.scope AS settings1389_scope, scopes2445.id AS scopes2445_id, scopes2445.enabled AS scopes2445_enabled, scopes2445.description AS scopes2445_description, scopes2445.admin AS scopes2445_admin, scopes2445.hostname AS scopes2445_hostname FROM tbg3_settings settings1389 LEFT JOIN tbg3_scopes scopes2445 ON (scopes2445.id=settings1389.scope) WHERE (scopes2445.enabled = '1') AND (settings1389.scope = '1')
+INFO [B2DB] done
+INFO [main] Retrieved
+INFO [main] ...done
+INFO [main] Loading user
+INFO [main] is this logout?
+INFO [main] no
+INFO [main] sets up user object
+INFO [B2DB] executing PDO query (2)
+INFO [B2DB] SELECT users1061.id AS users1061_id, users1061.uname AS users1061_uname, users1061.passwd AS users1061_passwd, users1061.buddyname AS users1061_buddyname, users1061.realname AS users1061_realname, users1061.email AS users1061_email, users1061.state AS users1061_state, users1061.homepage AS users1061_homepage, users1061.lastseen AS users1061_lastseen, users1061.lastlogin AS users1061_lastlogin, users1061.quota AS users1061_quota, users1061.activated AS users1061_activated, users1061.enabled AS users1061_enabled, users1061.deleted AS users1061_deleted, users1061.showfollowups AS users1061_showfollowups, users1061.showassigned AS users1061_showassigned, users1061.avatar AS users1061_avatar, users1061.use_gravatar AS users1061_use_gravatar, users1061.private_email AS users1061_private_email, users1061.joined AS users1061_joined, users1061.group_id AS users1061_group_id, users1061.customer_id AS users1061_customer_id, users1061.scope AS users1061_scope, userstate466.id AS userstate466_id, userstate466.state_name AS userstate466_state_name, userstate466.unavailable AS userstate466_unavailable, userstate466.busy AS userstate466_busy, userstate466.online AS userstate466_online, userstate466.meeting AS userstate466_meeting, userstate466.absent AS userstate466_absent, userstate466.color AS userstate466_color, userstate466.scope AS userstate466_scope, groups2387.id AS groups2387_id, groups2387.gname AS groups2387_gname, groups2387.scope AS groups2387_scope, customers2695.id AS customers2695_id, customers2695.cname AS customers2695_cname, customers2695.scope AS customers2695_scope, scopes600.id AS scopes600_id, scopes600.enabled AS scopes600_enabled, scopes600.description AS scopes600_description, scopes600.admin AS scopes600_admin, scopes600.hostname AS scopes600_hostname FROM tbg3_users users1061 LEFT JOIN tbg3_userstate userstate466 ON (userstate466.id=users1061.state) LEFT JOIN tbg3_groups groups2387 ON (groups2387.id=users1061.group_id) LEFT JOIN tbg3_customers customers2695 ON (customers2695.id=users1061.customer_id) LEFT JOIN tbg3_scopes scopes600 ON (scopes600.id=users1061.scope) WHERE (users1061.uname = 'administrator') AND (users1061.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users1061.deleted = '0') LIMIT 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (3)
+INFO [B2DB] SELECT users1061.id AS users1061_id, users1061.uname AS users1061_uname, users1061.passwd AS users1061_passwd, users1061.buddyname AS users1061_buddyname, users1061.realname AS users1061_realname, users1061.email AS users1061_email, users1061.state AS users1061_state, users1061.homepage AS users1061_homepage, users1061.lastseen AS users1061_lastseen, users1061.lastlogin AS users1061_lastlogin, users1061.quota AS users1061_quota, users1061.activated AS users1061_activated, users1061.enabled AS users1061_enabled, users1061.deleted AS users1061_deleted, users1061.showfollowups AS users1061_showfollowups, users1061.showassigned AS users1061_showassigned, users1061.avatar AS users1061_avatar, users1061.use_gravatar AS users1061_use_gravatar, users1061.private_email AS users1061_private_email, users1061.joined AS users1061_joined, users1061.group_id AS users1061_group_id, users1061.customer_id AS users1061_customer_id, users1061.scope AS users1061_scope, userstate466.id AS userstate466_id, userstate466.state_name AS userstate466_state_name, userstate466.unavailable AS userstate466_unavailable, userstate466.busy AS userstate466_busy, userstate466.online AS userstate466_online, userstate466.meeting AS userstate466_meeting, userstate466.absent AS userstate466_absent, userstate466.color AS userstate466_color, userstate466.scope AS userstate466_scope, groups2387.id AS groups2387_id, groups2387.gname AS groups2387_gname, groups2387.scope AS groups2387_scope, customers2695.id AS customers2695_id, customers2695.cname AS customers2695_cname, customers2695.scope AS customers2695_scope, scopes600.id AS scopes600_id, scopes600.enabled AS scopes600_enabled, scopes600.description AS scopes600_description, scopes600.admin AS scopes600_admin, scopes600.hostname AS scopes600_hostname FROM tbg3_users users1061 LEFT JOIN tbg3_userstate userstate466 ON (userstate466.id=users1061.state) LEFT JOIN tbg3_groups groups2387 ON (groups2387.id=users1061.group_id) LEFT JOIN tbg3_customers customers2695 ON (customers2695.id=users1061.customer_id) LEFT JOIN tbg3_scopes scopes600 ON (scopes600.id=users1061.scope) WHERE (users1061.uname = 'administrator') AND (users1061.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users1061.deleted = '0') LIMIT 1
+INFO [B2DB] done
+INFO [main] User with id 1 set up successfully
+INFO [B2DB] executing PDO query (4)
+INFO [B2DB] UPDATE tbg3_users SET `lastseen`='1261482131' WHERE (id = '1')
+INFO [B2DB] done
+INFO [main] loaded
+INFO [main] caches permissions
+INFO [main] starting to cache access permissions
+INFO [B2DB] executing PDO query (5)
+INFO [B2DB] SELECT permissions2659.id AS permissions2659_id, permissions2659.permission_type AS permissions2659_permission_type, permissions2659.target_id AS permissions2659_target_id, permissions2659.allowed AS permissions2659_allowed, permissions2659.module AS permissions2659_module, permissions2659.uid AS permissions2659_uid, permissions2659.gid AS permissions2659_gid, permissions2659.tid AS permissions2659_tid, permissions2659.scope AS permissions2659_scope, users2152.id AS users2152_id, users2152.uname AS users2152_uname, users2152.passwd AS users2152_passwd, users2152.buddyname AS users2152_buddyname, users2152.realname AS users2152_realname, users2152.email AS users2152_email, users2152.state AS users2152_state, users2152.homepage AS users2152_homepage, users2152.lastseen AS users2152_lastseen, users2152.lastlogin AS users2152_lastlogin, users2152.quota AS users2152_quota, users2152.activated AS users2152_activated, users2152.enabled AS users2152_enabled, users2152.deleted AS users2152_deleted, users2152.showfollowups AS users2152_showfollowups, users2152.showassigned AS users2152_showassigned, users2152.avatar AS users2152_avatar, users2152.use_gravatar AS users2152_use_gravatar, users2152.private_email AS users2152_private_email, users2152.joined AS users2152_joined, users2152.group_id AS users2152_group_id, users2152.customer_id AS users2152_customer_id, users2152.scope AS users2152_scope, groups2703.id AS groups2703_id, groups2703.gname AS groups2703_gname, groups2703.scope AS groups2703_scope, teams1911.id AS teams1911_id, teams1911.teamname AS teams1911_teamname, teams1911.scope AS teams1911_scope, scopes143.id AS scopes143_id, scopes143.enabled AS scopes143_enabled, scopes143.description AS scopes143_description, scopes143.admin AS scopes143_admin, scopes143.hostname AS scopes143_hostname FROM tbg3_permissions permissions2659 LEFT JOIN tbg3_users users2152 ON (users2152.id=permissions2659.uid) LEFT JOIN tbg3_groups groups2703 ON (groups2703.id=permissions2659.gid) LEFT JOIN tbg3_teams teams1911 ON (teams1911.id=permissions2659.tid) LEFT JOIN tbg3_scopes scopes143 ON (scopes143.id=permissions2659.scope) WHERE (permissions2659.scope = '1')
+INFO [B2DB] done
+INFO [main] done (starting to cache access permissions)
+INFO [main] ...cached
+INFO [main] ...done
+INFO [main] Loading i18n strings
+INFO [main] Loading strings from file
+INFO [main] en_US
+INFO [i18n] Loading strings from file
+INFO [main] ...done
+INFO [main] Loading modules
+INFO [main] getting modules from database
+INFO [B2DB] executing PDO query (6)
+INFO [B2DB] SELECT modules1578.id AS modules1578_id, modules1578.module_name AS modules1578_module_name, modules1578.enabled AS modules1578_enabled, modules1578.version AS modules1578_version, modules1578.classname AS modules1578_classname, modules1578.show_in_config AS modules1578_show_in_config, modules1578.show_in_menu AS modules1578_show_in_menu, modules1578.show_in_usermenu AS modules1578_show_in_usermenu, modules1578.scope AS modules1578_scope, scopes2582.id AS scopes2582_id, scopes2582.enabled AS scopes2582_enabled, scopes2582.description AS scopes2582_description, scopes2582.admin AS scopes2582_admin, scopes2582.hostname AS scopes2582_hostname FROM tbg3_modules modules1578 LEFT JOIN tbg3_scopes scopes2582 ON (scopes2582.id=modules1578.scope) WHERE (modules1578.scope = '1')
+INFO [B2DB] done
+INFO [main] done (getting modules from database)
+INFO [main] setting up module objects
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [main] done (setting up module objects)
+INFO [main] caching module access permissions
+INFO [B2DB] executing PDO query (7)
+INFO [B2DB] SELECT modulepermissions1280.id AS modulepermissions1280_id, modulepermissions1280.module_name AS modulepermissions1280_module_name, modulepermissions1280.allowed AS modulepermissions1280_allowed, modulepermissions1280.uid AS modulepermissions1280_uid, modulepermissions1280.gid AS modulepermissions1280_gid, modulepermissions1280.tid AS modulepermissions1280_tid, modulepermissions1280.scope AS modulepermissions1280_scope, users1269.id AS users1269_id, users1269.uname AS users1269_uname, users1269.passwd AS users1269_passwd, users1269.buddyname AS users1269_buddyname, users1269.realname AS users1269_realname, users1269.email AS users1269_email, users1269.state AS users1269_state, users1269.homepage AS users1269_homepage, users1269.lastseen AS users1269_lastseen, users1269.lastlogin AS users1269_lastlogin, users1269.quota AS users1269_quota, users1269.activated AS users1269_activated, users1269.enabled AS users1269_enabled, users1269.deleted AS users1269_deleted, users1269.showfollowups AS users1269_showfollowups, users1269.showassigned AS users1269_showassigned, users1269.avatar AS users1269_avatar, users1269.use_gravatar AS users1269_use_gravatar, users1269.private_email AS users1269_private_email, users1269.joined AS users1269_joined, users1269.group_id AS users1269_group_id, users1269.customer_id AS users1269_customer_id, users1269.scope AS users1269_scope, groups2739.id AS groups2739_id, groups2739.gname AS groups2739_gname, groups2739.scope AS groups2739_scope, teams1223.id AS teams1223_id, teams1223.teamname AS teams1223_teamname, teams1223.scope AS teams1223_scope, scopes2247.id AS scopes2247_id, scopes2247.enabled AS scopes2247_enabled, scopes2247.description AS scopes2247_description, scopes2247.admin AS scopes2247_admin, scopes2247.hostname AS scopes2247_hostname FROM tbg3_modulepermissions modulepermissions1280 LEFT JOIN tbg3_users users1269 ON (users1269.id=modulepermissions1280.uid) LEFT JOIN tbg3_groups groups2739 ON (groups2739.id=modulepermissions1280.gid) LEFT JOIN tbg3_teams teams1223 ON (teams1223.id=modulepermissions1280.tid) LEFT JOIN tbg3_scopes scopes2247 ON (scopes2247.id=modulepermissions1280.scope) WHERE (modulepermissions1280.scope = '1')
+INFO [B2DB] done
+INFO [main] done (caching module access permissions)
+INFO [main] initializing modules
+INFO [B2DB] executing PDO query (8)
+INFO [B2DB] SELECT enabledmodulelisteners695.id AS enabledmodulelisteners695_id, enabledmodulelisteners695.module AS enabledmodulelisteners695_module, enabledmodulelisteners695.identifier AS enabledmodulelisteners695_identifier, enabledmodulelisteners695.order AS enabledmodulelisteners695_order, enabledmodulelisteners695.module_name AS enabledmodulelisteners695_module_name, enabledmodulelisteners695.scope AS enabledmodulelisteners695_scope, modules1578.id AS modules1578_id, modules1578.module_name AS modules1578_module_name, modules1578.enabled AS modules1578_enabled, modules1578.version AS modules1578_version, modules1578.classname AS modules1578_classname, modules1578.show_in_config AS modules1578_show_in_config, modules1578.show_in_menu AS modules1578_show_in_menu, modules1578.show_in_usermenu AS modules1578_show_in_usermenu, modules1578.scope AS modules1578_scope, modules1328.id AS modules1328_id, modules1328.module_name AS modules1328_module_name, modules1328.enabled AS modules1328_enabled, modules1328.version AS modules1328_version, modules1328.classname AS modules1328_classname, modules1328.show_in_config AS modules1328_show_in_config, modules1328.show_in_menu AS modules1328_show_in_menu, modules1328.show_in_usermenu AS modules1328_show_in_usermenu, modules1328.scope AS modules1328_scope, scopes2098.id AS scopes2098_id, scopes2098.enabled AS scopes2098_enabled, scopes2098.description AS scopes2098_description, scopes2098.admin AS scopes2098_admin, scopes2098.hostname AS scopes2098_hostname FROM tbg3_enabledmodulelisteners enabledmodulelisteners695 LEFT JOIN tbg3_modules modules1578 ON (modules1578.module_name=enabledmodulelisteners695.module_name) LEFT JOIN tbg3_modules modules1328 ON (modules1328.module_name=enabledmodulelisteners695.module_name) LEFT JOIN tbg3_scopes scopes2098 ON (scopes2098.id=enabledmodulelisteners695.scope) WHERE (enabledmodulelisteners695.module_name IN ('mailnotification', 'messages', 'calendar', 'publish', 'svn_integration')) AND (enabledmodulelisteners695.scope = '1') AND (modules1578.scope = '1') ORDER BY enabledmodulelisteners695.order asc
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (9)
+INFO [B2DB] SELECT COUNT(teammembers773.id) as num_col FROM tbg3_teammembers teammembers773 WHERE (teammembers773.uid = '1')
+INFO [B2DB] done
+INFO [main] initializing mailnotification
+INFO [main] done (initializing mailnotification)
+INFO [routing] loading module routes for mailnotification
+INFO [mailnotification] adding route forgot
+INFO [mailnotification] done (adding route forgot)
+INFO [mailnotification] adding route mailnotification_test_email
+INFO [mailnotification] done (adding route mailnotification_test_email)
+INFO [routing] done (loading module routes)
+INFO [main] initializing messages
+INFO [main] done (initializing messages)
+INFO [routing] loading module routes for messages
+INFO [routing] done (loading module routes)
+INFO [main] initializing calendar
+INFO [main] done (initializing calendar)
+INFO [routing] loading module routes for calendar
+INFO [routing] done (loading module routes)
+INFO [main] initializing publish
+INFO [main] done (initializing publish)
+INFO [routing] loading module routes for publish
+INFO [publish] adding route publish
+INFO [publish] done (adding route publish)
+INFO [publish] adding route publish_article_new
+INFO [publish] done (adding route publish_article_new)
+INFO [publish] adding route publish_article
+INFO [publish] done (adding route publish_article)
+INFO [publish] adding route publish_article_edit
+INFO [publish] done (adding route publish_article_edit)
+INFO [publish] adding route publish_article_delete
+INFO [publish] done (adding route publish_article_delete)
+INFO [publish] adding route publish_article_save
+INFO [publish] done (adding route publish_article_save)
+INFO [publish] adding route publish_article_history
+INFO [publish] done (adding route publish_article_history)
+INFO [routing] done (loading module routes)
+INFO [main] initializing svn_integration
+INFO [main] done (initializing svn_integration)
+INFO [routing] loading module routes for svn_integration
+INFO [routing] done (loading module routes)
+INFO [main] done (initializing modules)
+INFO [main] ...done
+INFO [routing] Loading last batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] ...done initializing
+INFO [main] ...done
+INFO [main] B2 framework loaded
+INFO [main] Dispatching
+INFO [routing] URL is configure/issuefields/get/options/for/operatingsystem
+INFO [routing] URL is now /configure/issuefields/get/options/for/operatingsystem
+INFO [routing] match route [configure_issuefields_getoptions] "/configure/issuefields/get/options/for/:type"
+INFO [main] Running main pre-execute action
+INFO [main] Running route action runConfigureIssuefieldsGetOptions()
+INFO [B2DB] executing PDO query (10)
+INFO [B2DB] SELECT customfields624.id AS customfields624_id, customfields624.field_name AS customfields624_field_name, customfields624.field_key AS customfields624_field_key, customfields624.field_description AS customfields624_field_description, customfields624.field_instructions AS customfields624_field_instructions, customfields624.field_type AS customfields624_field_type, customfields624.scope AS customfields624_scope, scopes2822.id AS scopes2822_id, scopes2822.enabled AS scopes2822_enabled, scopes2822.description AS scopes2822_description, scopes2822.admin AS scopes2822_admin, scopes2822.hostname AS scopes2822_hostname FROM tbg3_customfields customfields624 LEFT JOIN tbg3_scopes scopes2822 ON (scopes2822.id=customfields624.scope) WHERE (customfields624.field_key = 'operatingsystem') AND (customfields624.scope = '1') LIMIT 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (11)
+INFO [B2DB] SELECT customfieldoptions223.id AS customfieldoptions223_id, customfieldoptions223.cname AS customfieldoptions223_cname, customfieldoptions223.option_value AS customfieldoptions223_option_value, customfieldoptions223.itemdata AS customfieldoptions223_itemdata, customfieldoptions223.sort_order AS customfieldoptions223_sort_order, customfieldoptions223.customfields_key AS customfieldoptions223_customfields_key, customfieldoptions223.scope AS customfieldoptions223_scope, customfields11.id AS customfields11_id, customfields11.field_name AS customfields11_field_name, customfields11.field_key AS customfields11_field_key, customfields11.field_description AS customfields11_field_description, customfields11.field_instructions AS customfields11_field_instructions, customfields11.field_type AS customfields11_field_type, customfields11.scope AS customfields11_scope, scopes64.id AS scopes64_id, scopes64.enabled AS scopes64_enabled, scopes64.description AS scopes64_description, scopes64.admin AS scopes64_admin, scopes64.hostname AS scopes64_hostname FROM tbg3_customfieldoptions customfieldoptions223 LEFT JOIN tbg3_customfields customfields11 ON (customfields11.field_key=customfieldoptions223.customfields_key) LEFT JOIN tbg3_scopes scopes64 ON (scopes64.id=customfieldoptions223.scope) WHERE (customfieldoptions223.customfields_key = 'operatingsystem') AND (customfieldoptions223.scope = '1')
+INFO [B2DB] done
+INFO [main] Initializing B2 framework
+INFO [main] Cache is not enabled
+INFO [main] Loading B2DB
+INFO [main] Adding B2DB classes to autoload path
+INFO [main] ...done (Adding B2DB classes to autoload path)
+INFO [main] Initializing B2DB
+INFO [main] ...done (Initializing B2DB)
+INFO [main] Database connection details found, connecting
+INFO [main] ...done (Database connection details found, connecting)
+INFO [main] Adding B2DB table classpath to autoload path
+INFO [main] ...done
+INFO [main] Initializing context
+INFO [main] Loading request
+INFO [main] ...done
+INFO [routing] Loading first batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] Setting current scope
+INFO [main] Checking if scope can be set from hostname (http://thebuggenie)
+INFO [B2DB] executing PDO query (0)
+INFO [B2DB] SELECT scopes1714.id AS scopes1714_id, scopes1714.enabled AS scopes1714_enabled, scopes1714.description AS scopes1714_description, scopes1714.admin AS scopes1714_admin, scopes1714.hostname AS scopes1714_hostname FROM tbg3_scopes scopes1714 WHERE (scopes1714.hostname = 'http://thebuggenie') LIMIT 1
+INFO [B2DB] done
+INFO [main] It could
+INFO [main] Setting scope from hostname
+INFO [main] ...done (Setting scope from hostname)
+INFO [main] ...done
+INFO [main] Loading settings
+INFO [main] Loading all settings
+INFO [main] Settings not cached. Retrieving from database
+INFO [B2DB] executing PDO query (1)
+INFO [B2DB] SELECT settings2633.id AS settings2633_id, settings2633.name AS settings2633_name, settings2633.module AS settings2633_module, settings2633.value AS settings2633_value, settings2633.uid AS settings2633_uid, settings2633.scope AS settings2633_scope, scopes2991.id AS scopes2991_id, scopes2991.enabled AS scopes2991_enabled, scopes2991.description AS scopes2991_description, scopes2991.admin AS scopes2991_admin, scopes2991.hostname AS scopes2991_hostname FROM tbg3_settings settings2633 LEFT JOIN tbg3_scopes scopes2991 ON (scopes2991.id=settings2633.scope) WHERE (scopes2991.enabled = '1') AND (settings2633.scope = '1')
+INFO [B2DB] done
+INFO [main] Retrieved
+INFO [main] ...done
+INFO [main] Loading user
+INFO [main] is this logout?
+INFO [main] no
+INFO [main] sets up user object
+INFO [B2DB] executing PDO query (2)
+INFO [B2DB] SELECT users185.id AS users185_id, users185.uname AS users185_uname, users185.passwd AS users185_passwd, users185.buddyname AS users185_buddyname, users185.realname AS users185_realname, users185.email AS users185_email, users185.state AS users185_state, users185.homepage AS users185_homepage, users185.lastseen AS users185_lastseen, users185.lastlogin AS users185_lastlogin, users185.quota AS users185_quota, users185.activated AS users185_activated, users185.enabled AS users185_enabled, users185.deleted AS users185_deleted, users185.showfollowups AS users185_showfollowups, users185.showassigned AS users185_showassigned, users185.avatar AS users185_avatar, users185.use_gravatar AS users185_use_gravatar, users185.private_email AS users185_private_email, users185.joined AS users185_joined, users185.group_id AS users185_group_id, users185.customer_id AS users185_customer_id, users185.scope AS users185_scope, userstate1358.id AS userstate1358_id, userstate1358.state_name AS userstate1358_state_name, userstate1358.unavailable AS userstate1358_unavailable, userstate1358.busy AS userstate1358_busy, userstate1358.online AS userstate1358_online, userstate1358.meeting AS userstate1358_meeting, userstate1358.absent AS userstate1358_absent, userstate1358.color AS userstate1358_color, userstate1358.scope AS userstate1358_scope, groups2087.id AS groups2087_id, groups2087.gname AS groups2087_gname, groups2087.scope AS groups2087_scope, customers1123.id AS customers1123_id, customers1123.cname AS customers1123_cname, customers1123.scope AS customers1123_scope, scopes813.id AS scopes813_id, scopes813.enabled AS scopes813_enabled, scopes813.description AS scopes813_description, scopes813.admin AS scopes813_admin, scopes813.hostname AS scopes813_hostname FROM tbg3_users users185 LEFT JOIN tbg3_userstate userstate1358 ON (userstate1358.id=users185.state) LEFT JOIN tbg3_groups groups2087 ON (groups2087.id=users185.group_id) LEFT JOIN tbg3_customers customers1123 ON (customers1123.id=users185.customer_id) LEFT JOIN tbg3_scopes scopes813 ON (scopes813.id=users185.scope) WHERE (users185.uname = 'administrator') AND (users185.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users185.deleted = '0') LIMIT 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (3)
+INFO [B2DB] SELECT users185.id AS users185_id, users185.uname AS users185_uname, users185.passwd AS users185_passwd, users185.buddyname AS users185_buddyname, users185.realname AS users185_realname, users185.email AS users185_email, users185.state AS users185_state, users185.homepage AS users185_homepage, users185.lastseen AS users185_lastseen, users185.lastlogin AS users185_lastlogin, users185.quota AS users185_quota, users185.activated AS users185_activated, users185.enabled AS users185_enabled, users185.deleted AS users185_deleted, users185.showfollowups AS users185_showfollowups, users185.showassigned AS users185_showassigned, users185.avatar AS users185_avatar, users185.use_gravatar AS users185_use_gravatar, users185.private_email AS users185_private_email, users185.joined AS users185_joined, users185.group_id AS users185_group_id, users185.customer_id AS users185_customer_id, users185.scope AS users185_scope, userstate1358.id AS userstate1358_id, userstate1358.state_name AS userstate1358_state_name, userstate1358.unavailable AS userstate1358_unavailable, userstate1358.busy AS userstate1358_busy, userstate1358.online AS userstate1358_online, userstate1358.meeting AS userstate1358_meeting, userstate1358.absent AS userstate1358_absent, userstate1358.color AS userstate1358_color, userstate1358.scope AS userstate1358_scope, groups2087.id AS groups2087_id, groups2087.gname AS groups2087_gname, groups2087.scope AS groups2087_scope, customers1123.id AS customers1123_id, customers1123.cname AS customers1123_cname, customers1123.scope AS customers1123_scope, scopes813.id AS scopes813_id, scopes813.enabled AS scopes813_enabled, scopes813.description AS scopes813_description, scopes813.admin AS scopes813_admin, scopes813.hostname AS scopes813_hostname FROM tbg3_users users185 LEFT JOIN tbg3_userstate userstate1358 ON (userstate1358.id=users185.state) LEFT JOIN tbg3_groups groups2087 ON (groups2087.id=users185.group_id) LEFT JOIN tbg3_customers customers1123 ON (customers1123.id=users185.customer_id) LEFT JOIN tbg3_scopes scopes813 ON (scopes813.id=users185.scope) WHERE (users185.uname = 'administrator') AND (users185.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users185.deleted = '0') LIMIT 1
+INFO [B2DB] done
+INFO [main] User with id 1 set up successfully
+INFO [B2DB] executing PDO query (4)
+INFO [B2DB] UPDATE tbg3_users SET `lastseen`='1261482212' WHERE (id = '1')
+INFO [B2DB] done
+INFO [main] loaded
+INFO [main] caches permissions
+INFO [main] starting to cache access permissions
+INFO [B2DB] executing PDO query (5)
+INFO [B2DB] SELECT permissions1153.id AS permissions1153_id, permissions1153.permission_type AS permissions1153_permission_type, permissions1153.target_id AS permissions1153_target_id, permissions1153.allowed AS permissions1153_allowed, permissions1153.module AS permissions1153_module, permissions1153.uid AS permissions1153_uid, permissions1153.gid AS permissions1153_gid, permissions1153.tid AS permissions1153_tid, permissions1153.scope AS permissions1153_scope, users2813.id AS users2813_id, users2813.uname AS users2813_uname, users2813.passwd AS users2813_passwd, users2813.buddyname AS users2813_buddyname, users2813.realname AS users2813_realname, users2813.email AS users2813_email, users2813.state AS users2813_state, users2813.homepage AS users2813_homepage, users2813.lastseen AS users2813_lastseen, users2813.lastlogin AS users2813_lastlogin, users2813.quota AS users2813_quota, users2813.activated AS users2813_activated, users2813.enabled AS users2813_enabled, users2813.deleted AS users2813_deleted, users2813.showfollowups AS users2813_showfollowups, users2813.showassigned AS users2813_showassigned, users2813.avatar AS users2813_avatar, users2813.use_gravatar AS users2813_use_gravatar, users2813.private_email AS users2813_private_email, users2813.joined AS users2813_joined, users2813.group_id AS users2813_group_id, users2813.customer_id AS users2813_customer_id, users2813.scope AS users2813_scope, groups2108.id AS groups2108_id, groups2108.gname AS groups2108_gname, groups2108.scope AS groups2108_scope, teams1470.id AS teams1470_id, teams1470.teamname AS teams1470_teamname, teams1470.scope AS teams1470_scope, scopes635.id AS scopes635_id, scopes635.enabled AS scopes635_enabled, scopes635.description AS scopes635_description, scopes635.admin AS scopes635_admin, scopes635.hostname AS scopes635_hostname FROM tbg3_permissions permissions1153 LEFT JOIN tbg3_users users2813 ON (users2813.id=permissions1153.uid) LEFT JOIN tbg3_groups groups2108 ON (groups2108.id=permissions1153.gid) LEFT JOIN tbg3_teams teams1470 ON (teams1470.id=permissions1153.tid) LEFT JOIN tbg3_scopes scopes635 ON (scopes635.id=permissions1153.scope) WHERE (permissions1153.scope = '1')
+INFO [B2DB] done
+INFO [main] done (starting to cache access permissions)
+INFO [main] ...cached
+INFO [main] ...done
+INFO [main] Loading i18n strings
+INFO [main] Loading strings from file
+INFO [main] en_US
+INFO [i18n] Loading strings from file
+INFO [main] ...done
+INFO [main] Loading modules
+INFO [main] getting modules from database
+INFO [B2DB] executing PDO query (6)
+INFO [B2DB] SELECT modules428.id AS modules428_id, modules428.module_name AS modules428_module_name, modules428.enabled AS modules428_enabled, modules428.version AS modules428_version, modules428.classname AS modules428_classname, modules428.show_in_config AS modules428_show_in_config, modules428.show_in_menu AS modules428_show_in_menu, modules428.show_in_usermenu AS modules428_show_in_usermenu, modules428.scope AS modules428_scope, scopes1094.id AS scopes1094_id, scopes1094.enabled AS scopes1094_enabled, scopes1094.description AS scopes1094_description, scopes1094.admin AS scopes1094_admin, scopes1094.hostname AS scopes1094_hostname FROM tbg3_modules modules428 LEFT JOIN tbg3_scopes scopes1094 ON (scopes1094.id=modules428.scope) WHERE (modules428.scope = '1')
+INFO [B2DB] done
+INFO [main] done (getting modules from database)
+INFO [main] setting up module objects
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [main] done (setting up module objects)
+INFO [main] caching module access permissions
+INFO [B2DB] executing PDO query (7)
+INFO [B2DB] SELECT modulepermissions887.id AS modulepermissions887_id, modulepermissions887.module_name AS modulepermissions887_module_name, modulepermissions887.allowed AS modulepermissions887_allowed, modulepermissions887.uid AS modulepermissions887_uid, modulepermissions887.gid AS modulepermissions887_gid, modulepermissions887.tid AS modulepermissions887_tid, modulepermissions887.scope AS modulepermissions887_scope, users1706.id AS users1706_id, users1706.uname AS users1706_uname, users1706.passwd AS users1706_passwd, users1706.buddyname AS users1706_buddyname, users1706.realname AS users1706_realname, users1706.email AS users1706_email, users1706.state AS users1706_state, users1706.homepage AS users1706_homepage, users1706.lastseen AS users1706_lastseen, users1706.lastlogin AS users1706_lastlogin, users1706.quota AS users1706_quota, users1706.activated AS users1706_activated, users1706.enabled AS users1706_enabled, users1706.deleted AS users1706_deleted, users1706.showfollowups AS users1706_showfollowups, users1706.showassigned AS users1706_showassigned, users1706.avatar AS users1706_avatar, users1706.use_gravatar AS users1706_use_gravatar, users1706.private_email AS users1706_private_email, users1706.joined AS users1706_joined, users1706.group_id AS users1706_group_id, users1706.customer_id AS users1706_customer_id, users1706.scope AS users1706_scope, groups2791.id AS groups2791_id, groups2791.gname AS groups2791_gname, groups2791.scope AS groups2791_scope, teams223.id AS teams223_id, teams223.teamname AS teams223_teamname, teams223.scope AS teams223_scope, scopes1078.id AS scopes1078_id, scopes1078.enabled AS scopes1078_enabled, scopes1078.description AS scopes1078_description, scopes1078.admin AS scopes1078_admin, scopes1078.hostname AS scopes1078_hostname FROM tbg3_modulepermissions modulepermissions887 LEFT JOIN tbg3_users users1706 ON (users1706.id=modulepermissions887.uid) LEFT JOIN tbg3_groups groups2791 ON (groups2791.id=modulepermissions887.gid) LEFT JOIN tbg3_teams teams223 ON (teams223.id=modulepermissions887.tid) LEFT JOIN tbg3_scopes scopes1078 ON (scopes1078.id=modulepermissions887.scope) WHERE (modulepermissions887.scope = '1')
+INFO [B2DB] done
+INFO [main] done (caching module access permissions)
+INFO [main] initializing modules
+INFO [B2DB] executing PDO query (8)
+INFO [B2DB] SELECT enabledmodulelisteners295.id AS enabledmodulelisteners295_id, enabledmodulelisteners295.module AS enabledmodulelisteners295_module, enabledmodulelisteners295.identifier AS enabledmodulelisteners295_identifier, enabledmodulelisteners295.order AS enabledmodulelisteners295_order, enabledmodulelisteners295.module_name AS enabledmodulelisteners295_module_name, enabledmodulelisteners295.scope AS enabledmodulelisteners295_scope, modules428.id AS modules428_id, modules428.module_name AS modules428_module_name, modules428.enabled AS modules428_enabled, modules428.version AS modules428_version, modules428.classname AS modules428_classname, modules428.show_in_config AS modules428_show_in_config, modules428.show_in_menu AS modules428_show_in_menu, modules428.show_in_usermenu AS modules428_show_in_usermenu, modules428.scope AS modules428_scope, modules2197.id AS modules2197_id, modules2197.module_name AS modules2197_module_name, modules2197.enabled AS modules2197_enabled, modules2197.version AS modules2197_version, modules2197.classname AS modules2197_classname, modules2197.show_in_config AS modules2197_show_in_config, modules2197.show_in_menu AS modules2197_show_in_menu, modules2197.show_in_usermenu AS modules2197_show_in_usermenu, modules2197.scope AS modules2197_scope, scopes1696.id AS scopes1696_id, scopes1696.enabled AS scopes1696_enabled, scopes1696.description AS scopes1696_description, scopes1696.admin AS scopes1696_admin, scopes1696.hostname AS scopes1696_hostname FROM tbg3_enabledmodulelisteners enabledmodulelisteners295 LEFT JOIN tbg3_modules modules428 ON (modules428.module_name=enabledmodulelisteners295.module_name) LEFT JOIN tbg3_modules modules2197 ON (modules2197.module_name=enabledmodulelisteners295.module_name) LEFT JOIN tbg3_scopes scopes1696 ON (scopes1696.id=enabledmodulelisteners295.scope) WHERE (enabledmodulelisteners295.module_name IN ('mailnotification', 'messages', 'calendar', 'publish', 'svn_integration')) AND (enabledmodulelisteners295.scope = '1') AND (modules428.scope = '1') ORDER BY enabledmodulelisteners295.order asc
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (9)
+INFO [B2DB] SELECT COUNT(teammembers2009.id) as num_col FROM tbg3_teammembers teammembers2009 WHERE (teammembers2009.uid = '1')
+INFO [B2DB] done
+INFO [main] initializing mailnotification
+INFO [main] done (initializing mailnotification)
+INFO [routing] loading module routes for mailnotification
+INFO [mailnotification] adding route forgot
+INFO [mailnotification] done (adding route forgot)
+INFO [mailnotification] adding route mailnotification_test_email
+INFO [mailnotification] done (adding route mailnotification_test_email)
+INFO [routing] done (loading module routes)
+INFO [main] initializing messages
+INFO [main] done (initializing messages)
+INFO [routing] loading module routes for messages
+INFO [routing] done (loading module routes)
+INFO [main] initializing calendar
+INFO [main] done (initializing calendar)
+INFO [routing] loading module routes for calendar
+INFO [routing] done (loading module routes)
+INFO [main] initializing publish
+INFO [main] done (initializing publish)
+INFO [routing] loading module routes for publish
+INFO [publish] adding route publish
+INFO [publish] done (adding route publish)
+INFO [publish] adding route publish_article_new
+INFO [publish] done (adding route publish_article_new)
+INFO [publish] adding route publish_article
+INFO [publish] done (adding route publish_article)
+INFO [publish] adding route publish_article_edit
+INFO [publish] done (adding route publish_article_edit)
+INFO [publish] adding route publish_article_delete
+INFO [publish] done (adding route publish_article_delete)
+INFO [publish] adding route publish_article_save
+INFO [publish] done (adding route publish_article_save)
+INFO [publish] adding route publish_article_history
+INFO [publish] done (adding route publish_article_history)
+INFO [routing] done (loading module routes)
+INFO [main] initializing svn_integration
+INFO [main] done (initializing svn_integration)
+INFO [routing] loading module routes for svn_integration
+INFO [routing] done (loading module routes)
+INFO [main] done (initializing modules)
+INFO [main] ...done
+INFO [routing] Loading last batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] ...done initializing
+INFO [main] ...done
+INFO [main] B2 framework loaded
+INFO [main] Dispatching
+INFO [routing] URL is configure/issuefields
+INFO [routing] URL is now /configure/issuefields
+INFO [routing] match route [configure_issuefields] "/configure/issuefields"
+INFO [main] Running main pre-execute action
+INFO [main] Running route action runConfigureIssuefields()
+INFO [B2DB] executing PDO query (10)
+INFO [B2DB] SELECT customfields2497.id AS customfields2497_id, customfields2497.field_name AS customfields2497_field_name, customfields2497.field_key AS customfields2497_field_key, customfields2497.field_description AS customfields2497_field_description, customfields2497.field_instructions AS customfields2497_field_instructions, customfields2497.field_type AS customfields2497_field_type, customfields2497.scope AS customfields2497_scope, scopes1308.id AS scopes1308_id, scopes1308.enabled AS scopes1308_enabled, scopes1308.description AS scopes1308_description, scopes1308.admin AS scopes1308_admin, scopes1308.hostname AS scopes1308_hostname FROM tbg3_customfields customfields2497 LEFT JOIN tbg3_scopes scopes1308 ON (scopes1308.id=customfields2497.scope) WHERE (customfields2497.scope = '1')
+INFO [B2DB] done
+INFO [main] ...done
+INFO [main] Displaying template
+INFO [main] configuring variables
+INFO [main] rendering template and buffering output
+INFO [main] ...completed
+INFO [main] decorating with header
+INFO [main] Triggering core - header_begins
+INFO [main] done (Triggering core - header_begins)
+INFO [main] Triggering core - header_ends
+INFO [main] done (Triggering core - header_ends)
+INFO [main] Triggering core - header_end
+INFO [main] done (Triggering core - header_end)
+INFO [main] Triggering core - header_right
+INFO [main] done (Triggering core - header_right)
+INFO [main] decorating with footer
+INFO [main] Triggering core - footer_begin
+INFO [main] done (Triggering core - footer_begin)
+INFO [main] Triggering core - footer_end
+INFO [main] done (Triggering core - footer_end)
+INFO [i18n] The text "Enables email notification functionality" does not exist in list of translated strings.
+INFO [i18n] The text "Set up email- and user notifications from this section" does not exist in list of translated strings.
+INFO [i18n] The text "Enables messaging functionality" does not exist in list of translated strings.
+INFO [i18n] The text "Enables calendars, todos and meetings" does not exist in list of translated strings.
+INFO [i18n] The text "Wiki" does not exist in list of translated strings.
+INFO [i18n] The text "Enables Wiki-functionality" does not exist in list of translated strings.
+INFO [i18n] The text "Set up the Wiki module from this section" does not exist in list of translated strings.
+INFO [i18n] The text "Enables integration with SVN" does not exist in list of translated strings.
+INFO [i18n] The text "Configure source code integration from this section" does not exist in list of translated strings.
+INFO [i18n] The text "You don't have access to this page" does not exist in list of translated strings.
+INFO [i18n] The text "Configure data types" does not exist in list of translated strings.
+INFO [i18n] The text "Permissions" does not exist in list of translated strings.
+INFO [i18n] The text "Import data" does not exist in list of translated strings.
+INFO [i18n] The text "Uploads &amp; attachments" does not exist in list of translated strings.
+INFO [i18n] The text "Issue fields" does not exist in list of translated strings.
+INFO [i18n] The text "Users, teams &amp; groups" does not exist in list of translated strings.
+INFO [i18n] The text "Modules" does not exist in list of translated strings.
+INFO [i18n] The text "Configuration sections" does not exist in list of translated strings.
+INFO [i18n] The text "Configure issue fields" does not exist in list of translated strings.
+INFO [i18n] The text "Edit built-in and custom issue fields and values here" does not exist in list of translated strings.
+INFO [i18n] The text "Built-in issue fields" does not exist in list of translated strings.
+INFO [i18n] The text "Custom issue fields" does not exist in list of translated strings.
+INFO [i18n] The text "Add new custom field" does not exist in list of translated strings.
+INFO [i18n] The text "Enter a name for the field (only used here, same as ex. "%resolution_types%" above), then click %add%" does not exist in list of translated strings.
+INFO [i18n] The text "Field name" does not exist in list of translated strings.
+INFO [i18n] The text "Dropdown list with custom text choices" does not exist in list of translated strings.
+INFO [i18n] The text "Dropdown list with custom colored text choices" does not exist in list of translated strings.
+INFO [i18n] The text "Dropdown list with custom color and text choices" does not exist in list of translated strings.
+INFO [i18n] The text "Dropdown list with custom text choices and icons" does not exist in list of translated strings.
+INFO [i18n] The text "Single line text input" does not exist in list of translated strings.
+INFO [i18n] The text "Textarea in issue main area" does not exist in list of translated strings.
+INFO [i18n] The text "Textarea (small) in issue details list" does not exist in list of translated strings.
+INFO [i18n] The text "Radio choices" does not exist in list of translated strings.
+INFO [i18n] The text "Checkbox choices" does not exist in list of translated strings.
+INFO [i18n] The text "Add one or more releases from the list of available releases" does not exist in list of translated strings.
+INFO [i18n] The text "Select a release from the list of available releases" does not exist in list of translated strings.
+INFO [i18n] The text "Add one or more components from the list of available components" does not exist in list of translated strings.
+INFO [i18n] The text "Select a component from the list of available components" does not exist in list of translated strings.
+INFO [i18n] The text "Add one or more editions from the list of available editions" does not exist in list of translated strings.
+INFO [i18n] The text "Select a edition from the list of available editions" does not exist in list of translated strings.
+INFO [i18n] The text "Dropdown list with statuses" does not exist in list of translated strings.
+INFO [i18n] The text "Find and pick a user" does not exist in list of translated strings.
+INFO [i18n] The text "Find and pick a team" does not exist in list of translated strings.
+INFO [i18n] The text "Find and pick a customer" does not exist in list of translated strings.
+INFO [i18n] The text "Find and pick a user or a team" does not exist in list of translated strings.
+INFO [i18n] The text "Logged in as %name%" does not exist in list of translated strings.
+INFO [i18n] The text "Logout" does not exist in list of translated strings.
+INFO [i18n] The text "My dashboard" does not exist in list of translated strings.
+INFO [i18n] The text "Find issues" does not exist in list of translated strings.
+INFO [i18n] The text "Quick search" does not exist in list of translated strings.
+INFO [i18n] The text "Search for anything here" does not exist in list of translated strings.
+INFO [i18n] The text "%num_milliseconds% ms" does not exist in list of translated strings.
+INFO [i18n] The text "Page load time: %load_time%, with %num_queries% queries. Scope ID: %scope_id%." does not exist in list of translated strings.
+INFO [main] ...done
+INFO [main] rendering content
+INFO [main] ...done (rendering content)
+INFO [main] Initializing B2 framework
+INFO [main] Cache is not enabled
+INFO [main] Loading B2DB
+INFO [main] Adding B2DB classes to autoload path
+INFO [main] ...done (Adding B2DB classes to autoload path)
+INFO [main] Initializing B2DB
+INFO [main] ...done (Initializing B2DB)
+INFO [main] Database connection details found, connecting
+INFO [main] ...done (Database connection details found, connecting)
+INFO [main] Adding B2DB table classpath to autoload path
+INFO [main] ...done
+INFO [main] Initializing context
+INFO [main] Loading request
+INFO [main] ...done
+INFO [routing] Loading first batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] Setting current scope
+INFO [main] Checking if scope can be set from hostname (http://thebuggenie)
+INFO [B2DB] executing PDO query (0)
+INFO [B2DB] SELECT scopes1962.id AS scopes1962_id, scopes1962.enabled AS scopes1962_enabled, scopes1962.description AS scopes1962_description, scopes1962.admin AS scopes1962_admin, scopes1962.hostname AS scopes1962_hostname FROM tbg3_scopes scopes1962 WHERE (scopes1962.hostname = 'http://thebuggenie') LIMIT 1
+INFO [B2DB] done
+INFO [main] It could
+INFO [main] Setting scope from hostname
+INFO [main] ...done (Setting scope from hostname)
+INFO [main] ...done
+INFO [main] Loading settings
+INFO [main] Loading all settings
+INFO [main] Settings not cached. Retrieving from database
+INFO [B2DB] executing PDO query (1)
+INFO [B2DB] SELECT settings369.id AS settings369_id, settings369.name AS settings369_name, settings369.module AS settings369_module, settings369.value AS settings369_value, settings369.uid AS settings369_uid, settings369.scope AS settings369_scope, scopes1211.id AS scopes1211_id, scopes1211.enabled AS scopes1211_enabled, scopes1211.description AS scopes1211_description, scopes1211.admin AS scopes1211_admin, scopes1211.hostname AS scopes1211_hostname FROM tbg3_settings settings369 LEFT JOIN tbg3_scopes scopes1211 ON (scopes1211.id=settings369.scope) WHERE (scopes1211.enabled = '1') AND (settings369.scope = '1')
+INFO [B2DB] done
+INFO [main] Retrieved
+INFO [main] ...done
+INFO [main] Loading user
+INFO [main] is this logout?
+INFO [main] no
+INFO [main] sets up user object
+INFO [B2DB] executing PDO query (2)
+INFO [B2DB] SELECT users2376.id AS users2376_id, users2376.uname AS users2376_uname, users2376.passwd AS users2376_passwd, users2376.buddyname AS users2376_buddyname, users2376.realname AS users2376_realname, users2376.email AS users2376_email, users2376.state AS users2376_state, users2376.homepage AS users2376_homepage, users2376.lastseen AS users2376_lastseen, users2376.lastlogin AS users2376_lastlogin, users2376.quota AS users2376_quota, users2376.activated AS users2376_activated, users2376.enabled AS users2376_enabled, users2376.deleted AS users2376_deleted, users2376.showfollowups AS users2376_showfollowups, users2376.showassigned AS users2376_showassigned, users2376.avatar AS users2376_avatar, users2376.use_gravatar AS users2376_use_gravatar, users2376.private_email AS users2376_private_email, users2376.joined AS users2376_joined, users2376.group_id AS users2376_group_id, users2376.customer_id AS users2376_customer_id, users2376.scope AS users2376_scope, userstate2504.id AS userstate2504_id, userstate2504.state_name AS userstate2504_state_name, userstate2504.unavailable AS userstate2504_unavailable, userstate2504.busy AS userstate2504_busy, userstate2504.online AS userstate2504_online, userstate2504.meeting AS userstate2504_meeting, userstate2504.absent AS userstate2504_absent, userstate2504.color AS userstate2504_color, userstate2504.scope AS userstate2504_scope, groups1689.id AS groups1689_id, groups1689.gname AS groups1689_gname, groups1689.scope AS groups1689_scope, customers2214.id AS customers2214_id, customers2214.cname AS customers2214_cname, customers2214.scope AS customers2214_scope, scopes2310.id AS scopes2310_id, scopes2310.enabled AS scopes2310_enabled, scopes2310.description AS scopes2310_description, scopes2310.admin AS scopes2310_admin, scopes2310.hostname AS scopes2310_hostname FROM tbg3_users users2376 LEFT JOIN tbg3_userstate userstate2504 ON (userstate2504.id=users2376.state) LEFT JOIN tbg3_groups groups1689 ON (groups1689.id=users2376.group_id) LEFT JOIN tbg3_customers customers2214 ON (customers2214.id=users2376.customer_id) LEFT JOIN tbg3_scopes scopes2310 ON (scopes2310.id=users2376.scope) WHERE (users2376.uname = 'administrator') AND (users2376.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users2376.deleted = '0') LIMIT 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (3)
+INFO [B2DB] SELECT users2376.id AS users2376_id, users2376.uname AS users2376_uname, users2376.passwd AS users2376_passwd, users2376.buddyname AS users2376_buddyname, users2376.realname AS users2376_realname, users2376.email AS users2376_email, users2376.state AS users2376_state, users2376.homepage AS users2376_homepage, users2376.lastseen AS users2376_lastseen, users2376.lastlogin AS users2376_lastlogin, users2376.quota AS users2376_quota, users2376.activated AS users2376_activated, users2376.enabled AS users2376_enabled, users2376.deleted AS users2376_deleted, users2376.showfollowups AS users2376_showfollowups, users2376.showassigned AS users2376_showassigned, users2376.avatar AS users2376_avatar, users2376.use_gravatar AS users2376_use_gravatar, users2376.private_email AS users2376_private_email, users2376.joined AS users2376_joined, users2376.group_id AS users2376_group_id, users2376.customer_id AS users2376_customer_id, users2376.scope AS users2376_scope, userstate2504.id AS userstate2504_id, userstate2504.state_name AS userstate2504_state_name, userstate2504.unavailable AS userstate2504_unavailable, userstate2504.busy AS userstate2504_busy, userstate2504.online AS userstate2504_online, userstate2504.meeting AS userstate2504_meeting, userstate2504.absent AS userstate2504_absent, userstate2504.color AS userstate2504_color, userstate2504.scope AS userstate2504_scope, groups1689.id AS groups1689_id, groups1689.gname AS groups1689_gname, groups1689.scope AS groups1689_scope, customers2214.id AS customers2214_id, customers2214.cname AS customers2214_cname, customers2214.scope AS customers2214_scope, scopes2310.id AS scopes2310_id, scopes2310.enabled AS scopes2310_enabled, scopes2310.description AS scopes2310_description, scopes2310.admin AS scopes2310_admin, scopes2310.hostname AS scopes2310_hostname FROM tbg3_users users2376 LEFT JOIN tbg3_userstate userstate2504 ON (userstate2504.id=users2376.state) LEFT JOIN tbg3_groups groups1689 ON (groups1689.id=users2376.group_id) LEFT JOIN tbg3_customers customers2214 ON (customers2214.id=users2376.customer_id) LEFT JOIN tbg3_scopes scopes2310 ON (scopes2310.id=users2376.scope) WHERE (users2376.uname = 'administrator') AND (users2376.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users2376.deleted = '0') LIMIT 1
+INFO [B2DB] done
+INFO [main] User with id 1 set up successfully
+INFO [B2DB] executing PDO query (4)
+INFO [B2DB] UPDATE tbg3_users SET `lastseen`='1261482214' WHERE (id = '1')
+INFO [B2DB] done
+INFO [main] loaded
+INFO [main] caches permissions
+INFO [main] starting to cache access permissions
+INFO [B2DB] executing PDO query (5)
+INFO [B2DB] SELECT permissions773.id AS permissions773_id, permissions773.permission_type AS permissions773_permission_type, permissions773.target_id AS permissions773_target_id, permissions773.allowed AS permissions773_allowed, permissions773.module AS permissions773_module, permissions773.uid AS permissions773_uid, permissions773.gid AS permissions773_gid, permissions773.tid AS permissions773_tid, permissions773.scope AS permissions773_scope, users802.id AS users802_id, users802.uname AS users802_uname, users802.passwd AS users802_passwd, users802.buddyname AS users802_buddyname, users802.realname AS users802_realname, users802.email AS users802_email, users802.state AS users802_state, users802.homepage AS users802_homepage, users802.lastseen AS users802_lastseen, users802.lastlogin AS users802_lastlogin, users802.quota AS users802_quota, users802.activated AS users802_activated, users802.enabled AS users802_enabled, users802.deleted AS users802_deleted, users802.showfollowups AS users802_showfollowups, users802.showassigned AS users802_showassigned, users802.avatar AS users802_avatar, users802.use_gravatar AS users802_use_gravatar, users802.private_email AS users802_private_email, users802.joined AS users802_joined, users802.group_id AS users802_group_id, users802.customer_id AS users802_customer_id, users802.scope AS users802_scope, groups1974.id AS groups1974_id, groups1974.gname AS groups1974_gname, groups1974.scope AS groups1974_scope, teams1459.id AS teams1459_id, teams1459.teamname AS teams1459_teamname, teams1459.scope AS teams1459_scope, scopes1050.id AS scopes1050_id, scopes1050.enabled AS scopes1050_enabled, scopes1050.description AS scopes1050_description, scopes1050.admin AS scopes1050_admin, scopes1050.hostname AS scopes1050_hostname FROM tbg3_permissions permissions773 LEFT JOIN tbg3_users users802 ON (users802.id=permissions773.uid) LEFT JOIN tbg3_groups groups1974 ON (groups1974.id=permissions773.gid) LEFT JOIN tbg3_teams teams1459 ON (teams1459.id=permissions773.tid) LEFT JOIN tbg3_scopes scopes1050 ON (scopes1050.id=permissions773.scope) WHERE (permissions773.scope = '1')
+INFO [B2DB] done
+INFO [main] done (starting to cache access permissions)
+INFO [main] ...cached
+INFO [main] ...done
+INFO [main] Loading i18n strings
+INFO [main] Loading strings from file
+INFO [main] en_US
+INFO [i18n] Loading strings from file
+INFO [main] ...done
+INFO [main] Loading modules
+INFO [main] getting modules from database
+INFO [B2DB] executing PDO query (6)
+INFO [B2DB] SELECT modules829.id AS modules829_id, modules829.module_name AS modules829_module_name, modules829.enabled AS modules829_enabled, modules829.version AS modules829_version, modules829.classname AS modules829_classname, modules829.show_in_config AS modules829_show_in_config, modules829.show_in_menu AS modules829_show_in_menu, modules829.show_in_usermenu AS modules829_show_in_usermenu, modules829.scope AS modules829_scope, scopes2162.id AS scopes2162_id, scopes2162.enabled AS scopes2162_enabled, scopes2162.description AS scopes2162_description, scopes2162.admin AS scopes2162_admin, scopes2162.hostname AS scopes2162_hostname FROM tbg3_modules modules829 LEFT JOIN tbg3_scopes scopes2162 ON (scopes2162.id=modules829.scope) WHERE (modules829.scope = '1')
+INFO [B2DB] done
+INFO [main] done (getting modules from database)
+INFO [main] setting up module objects
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [main] done (setting up module objects)
+INFO [main] caching module access permissions
+INFO [B2DB] executing PDO query (7)
+INFO [B2DB] SELECT modulepermissions2177.id AS modulepermissions2177_id, modulepermissions2177.module_name AS modulepermissions2177_module_name, modulepermissions2177.allowed AS modulepermissions2177_allowed, modulepermissions2177.uid AS modulepermissions2177_uid, modulepermissions2177.gid AS modulepermissions2177_gid, modulepermissions2177.tid AS modulepermissions2177_tid, modulepermissions2177.scope AS modulepermissions2177_scope, users1194.id AS users1194_id, users1194.uname AS users1194_uname, users1194.passwd AS users1194_passwd, users1194.buddyname AS users1194_buddyname, users1194.realname AS users1194_realname, users1194.email AS users1194_email, users1194.state AS users1194_state, users1194.homepage AS users1194_homepage, users1194.lastseen AS users1194_lastseen, users1194.lastlogin AS users1194_lastlogin, users1194.quota AS users1194_quota, users1194.activated AS users1194_activated, users1194.enabled AS users1194_enabled, users1194.deleted AS users1194_deleted, users1194.showfollowups AS users1194_showfollowups, users1194.showassigned AS users1194_showassigned, users1194.avatar AS users1194_avatar, users1194.use_gravatar AS users1194_use_gravatar, users1194.private_email AS users1194_private_email, users1194.joined AS users1194_joined, users1194.group_id AS users1194_group_id, users1194.customer_id AS users1194_customer_id, users1194.scope AS users1194_scope, groups1359.id AS groups1359_id, groups1359.gname AS groups1359_gname, groups1359.scope AS groups1359_scope, teams918.id AS teams918_id, teams918.teamname AS teams918_teamname, teams918.scope AS teams918_scope, scopes2966.id AS scopes2966_id, scopes2966.enabled AS scopes2966_enabled, scopes2966.description AS scopes2966_description, scopes2966.admin AS scopes2966_admin, scopes2966.hostname AS scopes2966_hostname FROM tbg3_modulepermissions modulepermissions2177 LEFT JOIN tbg3_users users1194 ON (users1194.id=modulepermissions2177.uid) LEFT JOIN tbg3_groups groups1359 ON (groups1359.id=modulepermissions2177.gid) LEFT JOIN tbg3_teams teams918 ON (teams918.id=modulepermissions2177.tid) LEFT JOIN tbg3_scopes scopes2966 ON (scopes2966.id=modulepermissions2177.scope) WHERE (modulepermissions2177.scope = '1')
+INFO [B2DB] done
+INFO [main] done (caching module access permissions)
+INFO [main] initializing modules
+INFO [B2DB] executing PDO query (8)
+INFO [B2DB] SELECT enabledmodulelisteners1204.id AS enabledmodulelisteners1204_id, enabledmodulelisteners1204.module AS enabledmodulelisteners1204_module, enabledmodulelisteners1204.identifier AS enabledmodulelisteners1204_identifier, enabledmodulelisteners1204.order AS enabledmodulelisteners1204_order, enabledmodulelisteners1204.module_name AS enabledmodulelisteners1204_module_name, enabledmodulelisteners1204.scope AS enabledmodulelisteners1204_scope, modules829.id AS modules829_id, modules829.module_name AS modules829_module_name, modules829.enabled AS modules829_enabled, modules829.version AS modules829_version, modules829.classname AS modules829_classname, modules829.show_in_config AS modules829_show_in_config, modules829.show_in_menu AS modules829_show_in_menu, modules829.show_in_usermenu AS modules829_show_in_usermenu, modules829.scope AS modules829_scope, modules211.id AS modules211_id, modules211.module_name AS modules211_module_name, modules211.enabled AS modules211_enabled, modules211.version AS modules211_version, modules211.classname AS modules211_classname, modules211.show_in_config AS modules211_show_in_config, modules211.show_in_menu AS modules211_show_in_menu, modules211.show_in_usermenu AS modules211_show_in_usermenu, modules211.scope AS modules211_scope, scopes1439.id AS scopes1439_id, scopes1439.enabled AS scopes1439_enabled, scopes1439.description AS scopes1439_description, scopes1439.admin AS scopes1439_admin, scopes1439.hostname AS scopes1439_hostname FROM tbg3_enabledmodulelisteners enabledmodulelisteners1204 LEFT JOIN tbg3_modules modules829 ON (modules829.module_name=enabledmodulelisteners1204.module_name) LEFT JOIN tbg3_modules modules211 ON (modules211.module_name=enabledmodulelisteners1204.module_name) LEFT JOIN tbg3_scopes scopes1439 ON (scopes1439.id=enabledmodulelisteners1204.scope) WHERE (enabledmodulelisteners1204.module_name IN ('mailnotification', 'messages', 'calendar', 'publish', 'svn_integration')) AND (enabledmodulelisteners1204.scope = '1') AND (modules829.scope = '1') ORDER BY enabledmodulelisteners1204.order asc
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (9)
+INFO [B2DB] SELECT COUNT(teammembers165.id) as num_col FROM tbg3_teammembers teammembers165 WHERE (teammembers165.uid = '1')
+INFO [B2DB] done
+INFO [main] initializing mailnotification
+INFO [main] done (initializing mailnotification)
+INFO [routing] loading module routes for mailnotification
+INFO [mailnotification] adding route forgot
+INFO [mailnotification] done (adding route forgot)
+INFO [mailnotification] adding route mailnotification_test_email
+INFO [mailnotification] done (adding route mailnotification_test_email)
+INFO [routing] done (loading module routes)
+INFO [main] initializing messages
+INFO [main] done (initializing messages)
+INFO [routing] loading module routes for messages
+INFO [routing] done (loading module routes)
+INFO [main] initializing calendar
+INFO [main] done (initializing calendar)
+INFO [routing] loading module routes for calendar
+INFO [routing] done (loading module routes)
+INFO [main] initializing publish
+INFO [main] done (initializing publish)
+INFO [routing] loading module routes for publish
+INFO [publish] adding route publish
+INFO [publish] done (adding route publish)
+INFO [publish] adding route publish_article_new
+INFO [publish] done (adding route publish_article_new)
+INFO [publish] adding route publish_article
+INFO [publish] done (adding route publish_article)
+INFO [publish] adding route publish_article_edit
+INFO [publish] done (adding route publish_article_edit)
+INFO [publish] adding route publish_article_delete
+INFO [publish] done (adding route publish_article_delete)
+INFO [publish] adding route publish_article_save
+INFO [publish] done (adding route publish_article_save)
+INFO [publish] adding route publish_article_history
+INFO [publish] done (adding route publish_article_history)
+INFO [routing] done (loading module routes)
+INFO [main] initializing svn_integration
+INFO [main] done (initializing svn_integration)
+INFO [routing] loading module routes for svn_integration
+INFO [routing] done (loading module routes)
+INFO [main] done (initializing modules)
+INFO [main] ...done
+INFO [routing] Loading last batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] ...done initializing
+INFO [main] ...done
+INFO [main] B2 framework loaded
+INFO [main] Dispatching
+INFO [routing] URL is configure/issuefields/get/options/for/operatingsystem
+INFO [routing] URL is now /configure/issuefields/get/options/for/operatingsystem
+INFO [routing] match route [configure_issuefields_getoptions] "/configure/issuefields/get/options/for/:type"
+INFO [main] Running main pre-execute action
+INFO [main] Running route action runConfigureIssuefieldsGetOptions()
+INFO [B2DB] executing PDO query (10)
+INFO [B2DB] SELECT customfields870.id AS customfields870_id, customfields870.field_name AS customfields870_field_name, customfields870.field_key AS customfields870_field_key, customfields870.field_description AS customfields870_field_description, customfields870.field_instructions AS customfields870_field_instructions, customfields870.field_type AS customfields870_field_type, customfields870.scope AS customfields870_scope, scopes46.id AS scopes46_id, scopes46.enabled AS scopes46_enabled, scopes46.description AS scopes46_description, scopes46.admin AS scopes46_admin, scopes46.hostname AS scopes46_hostname FROM tbg3_customfields customfields870 LEFT JOIN tbg3_scopes scopes46 ON (scopes46.id=customfields870.scope) WHERE (customfields870.field_key = 'operatingsystem') AND (customfields870.scope = '1') LIMIT 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (11)
+INFO [B2DB] SELECT customfieldoptions2044.id AS customfieldoptions2044_id, customfieldoptions2044.cname AS customfieldoptions2044_cname, customfieldoptions2044.option_value AS customfieldoptions2044_option_value, customfieldoptions2044.itemdata AS customfieldoptions2044_itemdata, customfieldoptions2044.sort_order AS customfieldoptions2044_sort_order, customfieldoptions2044.customfields_key AS customfieldoptions2044_customfields_key, customfieldoptions2044.scope AS customfieldoptions2044_scope, customfields2260.id AS customfields2260_id, customfields2260.field_name AS customfields2260_field_name, customfields2260.field_key AS customfields2260_field_key, customfields2260.field_description AS customfields2260_field_description, customfields2260.field_instructions AS customfields2260_field_instructions, customfields2260.field_type AS customfields2260_field_type, customfields2260.scope AS customfields2260_scope, scopes1108.id AS scopes1108_id, scopes1108.enabled AS scopes1108_enabled, scopes1108.description AS scopes1108_description, scopes1108.admin AS scopes1108_admin, scopes1108.hostname AS scopes1108_hostname FROM tbg3_customfieldoptions customfieldoptions2044 LEFT JOIN tbg3_customfields customfields2260 ON (customfields2260.field_key=customfieldoptions2044.customfields_key) LEFT JOIN tbg3_scopes scopes1108 ON (scopes1108.id=customfieldoptions2044.scope) WHERE (customfieldoptions2044.customfields_key = 'operatingsystem') AND (customfieldoptions2044.scope = '1')
+INFO [B2DB] done
+FATAL [routing] The route 'configure_issuefields_update_customtype' does not exist

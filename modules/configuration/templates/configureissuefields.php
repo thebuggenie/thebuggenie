@@ -29,7 +29,7 @@
 			<div class="xboxcontent" style="padding: 3px; font-size: 12px;">
 				<div class="header"><?php echo __('Add new custom field'); ?></div>
 				<div class="content" style="padding: 2px; margin-bottom: 15px;">
-					<?php echo __('Enter a name for the field (only used here, same as ex. "%reproducability_grades%" above), then click %add%', array('%reproducability_grades%' => __('Reproducability grades'), '%add%' => '<b>' . __('Add') . '</b>')); ?>
+					<?php echo __('Enter a name for the field (only used here, same as ex. "%resolution_types%" above), then click %add%', array('%resolution_types%' => __('Resolution types'), '%add%' => '<b>' . __('Add') . '</b>')); ?>
 				</div>
 				<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add_customtype'); ?>" onsubmit="addIssuefieldCustom('<?php echo make_url('configure_issuefields_add_customtype'); ?>');return false;" id="add_custom_type_form">
 					<label for="new_custom_field_name"><?php echo __('Field name'); ?></label>

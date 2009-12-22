@@ -22,6 +22,8 @@
 		const B2DBNAME = 'customfields';
 		const ID = 'customfields.id';
 		const FIELD_NAME = 'customfields.field_name';
+		const FIELD_DESCRIPTION = 'customfields.field_description';
+		const FIELD_INSTRUCTIONS = 'customfields.field_instructions';
 		const FIELD_KEY = 'customfields.field_key';
 		const FIELD_TYPE = 'customfields.field_type';
 		const SCOPE = 'customfields.scope';
@@ -29,8 +31,10 @@
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addVarchar(self::FIELD_NAME, 50);
-			parent::_addVarchar(self::FIELD_KEY, 50);
+			parent::_addVarchar(self::FIELD_NAME, 100);
+			parent::_addVarchar(self::FIELD_KEY, 100);
+			parent::_addVarchar(self::FIELD_DESCRIPTION, 200);
+			parent::_addText(self::FIELD_INSTRUCTIONS);
 			parent::_addInteger(self::FIELD_TYPE);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
@@ -83,6 +87,16 @@
 			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
 
 			return $this->doSelectOne($crit);
+		}
+
+		public function saveById($name, $description, $instructions, $id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addUpdate(self::FIELD_NAME, $name);
+			$crit->addUpdate(self::FIELD_DESCRIPTION, $description);
+			$crit->addUpdate(self::FIELD_INSTRUCTIONS, $instructions);
+
+			$res = $this->doUpdateById($crit, $id);
 		}
 
 	}

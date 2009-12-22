@@ -87,5 +87,4 @@
 			$res = $this->doUpdateById($crit, $id);
 		}
 
-
 	}

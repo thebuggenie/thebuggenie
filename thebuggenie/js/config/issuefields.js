@@ -80,6 +80,59 @@ function addIssuefieldCustom(url)
 	});
 }
 
+function updateIssuefieldCustom(url, type)
+{
+	var params = Form.serialize('edit_custom_type_' + type + '_form');
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	evalScripts: true,
+	parameters: params,
+	onLoading: function (transport) {
+		$('edit_custom_type_' + type + '_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+			$('edit_custom_type_' + type + '_indicator').hide();
+		}
+		else
+		{
+			$('edit_custom_type_' + type + '_indicator').hide();
+			$('edit_custom_type_' + type + '_form').hide();
+			$('custom_type_' + type + '_description_span').update(json.description);
+			$('custom_type_' + type + '_instructions_span').update(json.instructions);
+			if (json.instructions != '')
+			{
+				$('custom_type_' + type + '_instructions_div').show();
+				$('custom_type_' + type + '_no_instructions_div').hide();
+			}
+			else
+			{
+				$('custom_type_' + type + '_instructions_div').hide();
+				$('custom_type_' + type + '_no_instructions_div').show();
+			}
+			$('custom_type_' + type + '_name_link').update(json.name);
+			$('custom_type_' + type + '_info').show();
+			successMessage(json.title, '');
+		}
+	},
+	onFailure: function (transport) {
+		$('edit_custom_type_' + type + '_indicator').hide();
+		if (transport.responseJSON)
+		{
+			failedMessage(transport.responseJSON.error);
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+	}
+	});
+}
+
 function addIssuefieldOption(url, type)
 {
 	var params = Form.serialize('add_' + type + '_form');

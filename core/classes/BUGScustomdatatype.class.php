@@ -41,6 +41,20 @@
 		protected $_key = null;
 
 		/**
+		 * The custom types description
+		 *
+		 * @var string
+		 */
+		protected $_description = null;
+
+		/**
+		 * The custom types instructions
+		 *
+		 * @var string
+		 */
+		protected $_instructions = null;
+
+		/**
 		 * Returns all custom types available
 		 * 
 		 * @return array 
@@ -158,6 +172,8 @@
 				$this->_itemtype = $row->get(B2tCustomFields::FIELD_TYPE);
 				$this->_name = $row->get(B2tCustomFields::FIELD_NAME);
 				$this->_key = $row->get(B2tCustomFields::FIELD_KEY);
+				$this->_instructions = $row->get(B2tCustomFields::FIELD_INSTRUCTIONS);
+				$this->_description = ($row->get(B2tCustomFields::FIELD_DESCRIPTION) != '') ? $row->get(B2tCustomFields::FIELD_DESCRIPTION) : $this->_name;
 			}
 			else
 			{
@@ -216,7 +232,73 @@
 		{
 			return (bool) in_array($this->getType(), self::getChoiceFieldsAsArray());
 		}
+
+		/**
+		 * Get the custom types description
+		 */
+		public function getDescription()
+		{
+			return $this->_description;
+		}
+
+		/**
+		 * Set the custom types description
+		 *
+		 * @param string $description
+		 */
+		public function setDescription($description)
+		{
+			$this->_description = $description;
+		}
 		
+		/**
+		 * Get the custom types instructions
+		 */
+		public function getInstructions()
+		{
+			return $this->_instructions;
+		}
+
+		/**
+		 * Set the custom types instructions
+		 *
+		 * @param string $instructions
+		 */
+		public function setInstructions($instructions)
+		{
+			$this->_instructions = $instructions;
+		}
+
+		/**
+		 * Whether or not this custom type has any instructions
+		 *
+		 * @return boolean
+		 */
+		public function hasInstructions()
+		{
+			return (bool) $this->_instructions;
+		}
+
+		/**
+		 * Set the custom type name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
+		/**
+		 * Save name, itemdata and value
+		 *
+		 * @return boolean
+		 */
+		public function save()
+		{
+			B2DB::getTable('B2tCustomFields')->saveById($this->_name, $this->_description, $this->_instructions, $this->_itemid);
+		}
+
 	}
 
 ?>

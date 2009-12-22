@@ -326,6 +326,7 @@
 		{
 			if (!isset($this->routes[$name]))
 			{
+				BUGSlogging::log("The route '$name' does not exist", 'routing', BUGSlogging::LEVEL_FATAL);
 				throw new Exception("The route '$name' does not exist");
 			}
 

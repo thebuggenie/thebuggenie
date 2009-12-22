@@ -54,6 +54,7 @@
 		{
 			$this->items = array();
 			$this->showitems = true;
+			$this->iscustom = false;
 			$types = BUGSdatatype::getTypes();
 
 			if (array_key_exists($this->type, $types))
@@ -64,10 +65,12 @@
 			{
 				$customtype = BUGScustomdatatype::getByKey($this->type);
 				$this->showitems = $customtype->hasCustomOptions();
+				$this->iscustom = true;
 				if ($this->showitems)
 				{
 					$this->items = $customtype->getOptions();
 				}
+				$this->customtype = $customtype;
 			}
 		}
 
