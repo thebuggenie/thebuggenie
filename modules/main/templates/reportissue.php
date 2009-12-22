@@ -256,7 +256,7 @@
 				</table>
 				<table cellpadding="0" cellspacing="0" id="severity_div" style="display: none;">
 					<tr>
-						<td style="width: 150px; padding-top: 20px;"><label for="severity_id" id="severity_label"><?php echo __('severity'); ?></label></td>
+						<td style="width: 150px; padding-top: 20px;"><label for="severity_id" id="severity_label"><?php echo __('Severity'); ?></label></td>
 						<td style="padding-top: 20px;" class="report_issue_help faded_dark"><?php echo __("Choose a severity for this issue"); ?></td>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
@@ -269,6 +269,22 @@
 						</td>
 					</tr>
 				</table>
+				<?php foreach (BUGScustomdatatype::getAll() as $customdatatype): ?>
+					<table cellpadding="0" cellspacing="0" id="<?php echo $customdatatype->getKey(); ?>_div" style="display: none;">
+						<tr>
+							<td style="width: 150px; padding-top: 20px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><?php echo __($customdatatype->getDescription()); ?></label></td>
+							<td style="padding-top: 20px;" class="report_issue_help faded_dark"><?php echo __($customdatatype->getInstructions()); ?></td>
+						<tr>
+							<td colspan="2" style="padding-top: 5px;">
+								<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
+									<?php foreach ($customdatatype->getOptions() as $option): ?>
+									<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+									<?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+					</table>
+				<?php endforeach; ?>
 				<?php if ($selected_issuetype != null && $selected_project != null): ?>
 					<script type="text/javascript">updateFields('<?php echo make_url('getreportissuefields'); ?>');</script>
 				<?php endif; ?>
@@ -368,6 +384,20 @@
 									<a href="javascript:void(0);" class="img" onclick="$('severity_link').show();$('severity_additional_div').hide();$('severity_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a> 
 								</div>
 							</li>
+							<?php foreach (BUGScustomdatatype::getAll() as $customdatatype): ?>
+								<li id="<?php echo $customdatatype->getKey(); ?>_additional" style="display: none;">
+									<?php echo image_tag('icon_customdatatype.png'); ?>
+									<div id="<?php echo $customdatatype->getKey(); ?>_link"><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
+									<div id="<?php echo $customdatatype->getKey(); ?>_additional_div" style="display: none;">
+										<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
+											<?php foreach ($customdatatype->getOptions() as $option): ?>
+												<option value="<?php echo $option->getValue(); ?>"><?php echo $option->getName(); ?></option>
+											<?php endforeach; ?>
+										</select>
+										<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+									</div>
+								</li>
+							<?php endforeach; ?>
 							<li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_dark"><?php echo __('Set assignee'); ?></a></li>
 							<li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_dark"><?php echo __('Set owner'); ?></a></li>
 							<?php

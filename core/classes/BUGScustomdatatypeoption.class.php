@@ -69,6 +69,24 @@
 		{
 			B2DB::getTable('B2tCustomFieldOptions')->doDeleteById($id);
 		}
+
+		/**
+		 * Return a custom data type option by value and key
+		 *
+		 * @param string|integer $value
+		 * @param string $key
+		 *
+		 * @return BUGScustomdatatypeoption
+		 */
+		public static function getByValueAndKey($value, $key)
+		{
+			$row = B2DB::getTable('B2tCustomFieldOptions')->getByValueAndKey($value, $key);
+			if ($row)
+			{
+				return BUGSfactory::BUGScustomdatatypeoptionLab($row->get(B2tCustomFieldOptions::ID), $row);
+			}
+			return null;
+		}
 		
 		/**
 		 * Constructor

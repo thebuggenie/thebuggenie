@@ -571,6 +571,12 @@
 			$this->selected_priority = null;
 			$this->selected_reproducability = null;
 			$this->selected_severity = null;
+			$selected_customdatatype = array();
+			foreach (BUGScustomdatatype::getAll() as $customdatatype)
+			{
+				$selected_customdatatype[$customdatatype->getKey()] = null;
+			}
+			$this->selected_customdatatype = $selected_customdatatype;
 			$this->issuetypes = array();
 			$this->issue = null;
 			$errors = array();
@@ -731,6 +737,20 @@
 					}
 					if (isset($fields_array['priority']) && $fields_array['priority']['required'] && $this->selected_priority === null)
 						$errors['priority'] = $i18n->__('You have to specify a priority');
+
+					foreach (BUGScustomdatatype::getAll() as $customdatatype)
+					{
+						$customdatatype_id = $customdatatype->getKey() . '_id';
+						if ($$customdatatype_id = $request->getParameter($customdatatype_id))
+						{
+							$selected_customdatatype[$customdatatype->getKey()] = BUGScustomdatatypeoption::getByValueAndKey($$customdatatype_id, $customdatatype->getKey());
+							if ($selected_customdatatype[$customdatatype->getKey()] === null)
+								$errors[$customdatatype->getKey()] = $i18n->__('Invalid field: %custom_datatype_field_description%', array($customdatatype->getDescription()));
+						}
+						if (isset($fields_array[$customdatatype->getKey()]) && $fields_array[$customdatatype->getKey()]['required'] && $selected_customdatatype[$customdatatype->getKey()] === null)
+							$errors[$customdatatype->getKey()] = $i18n->__('Required field: %custom_datatype_field_description%', array($customdatatype->getDescription()));
+					}
+					$this->selected_customdatatype = $selected_customdatatype;
 						
 					if (empty($errors))
 					{

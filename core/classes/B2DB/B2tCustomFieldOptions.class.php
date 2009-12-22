@@ -77,6 +77,18 @@
 			return $retval;
 		}
 
+		public function getByValueAndKey($value, $key)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
+			$crit->addWhere(self::OPTION_VALUE, $value);
+			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+
+			$row = $this->doSelectOne($crit);
+
+			return $row;
+		}
+
 		public function saveById($name, $value, $itemdata, $id)
 		{
 			$crit = $this->getCriteria();

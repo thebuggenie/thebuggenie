@@ -103,7 +103,11 @@
 
 		public static function getAvailableFields()
 		{
-			return array('description', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'editions', 'builds', 'components', 'estimated_time', 'elapsed_time', 'milestone');
+			$builtin_types = array('description', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'editions', 'builds', 'components', 'estimated_time', 'elapsed_time', 'milestone');
+			$customtypes = BUGScustomdatatype::getAll();
+
+			$types = array_merge($builtin_types, array_keys($customtypes));
+			return $types;
 		}
 
 

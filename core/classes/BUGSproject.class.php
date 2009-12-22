@@ -2219,40 +2219,40 @@
 					{
 						if ($this->isEditionsEnabled() && array_key_exists('edition', $retval))
 						{
-							$retval['edition']['editions'] = array();
+							$retval['edition']['values'] = array();
 							foreach ($this->getEditions() as $edition)
 							{
-								$retval['edition']['editions'][$edition->getID()] = $edition->getName();
+								$retval['edition']['values'][$edition->getID()] = $edition->getName();
 							}
 						}
 					}
-					if (!$this->isEditionsEnabled() || empty($retval['edition']['editions'])) unset($retval['edition']);
+					if (!$this->isEditionsEnabled() || empty($retval['edition']['values'])) unset($retval['edition']);
 		
 					if ($reportable)
 					{
 						if ($this->isBuildsEnabled() && array_key_exists('build', $retval))
 						{
-							$retval['build']['builds'] = array();
+							$retval['build']['values'] = array();
 							foreach ($this->getBuilds() as $build)
 							{
-								$retval['build']['builds'][$build->getID()] = $build->getName();
+								$retval['build']['values'][$build->getID()] = $build->getName();
 							}
 						}
 					}
-					if (!$this->isBuildsEnabled() || empty($retval['build']['builds'])) unset($retval['build']);
+					if (!$this->isBuildsEnabled() || empty($retval['build']['values'])) unset($retval['build']);
 					
 					if ($reportable)
 					{
 						if ($this->isComponentsEnabled() && array_key_exists('component', $retval))
 						{
-							$retval['component']['components'] = array();
+							$retval['component']['values'] = array();
 							foreach ($this->getComponents() as $component)
 							{
-								$retval['component']['components'][$component->getID()] = $component->getName();
+								$retval['component']['values'][$component->getID()] = $component->getName();
 							}
 						}
 					}
-					if (!$this->isComponentsEnabled() || empty($retval['component']['components'])) unset($retval['component']);
+					if (!$this->isComponentsEnabled() || empty($retval['component']['values'])) unset($retval['component']);
 				}
 				$this->_fieldsarrays[$issue_type][(int) $reportable] = $retval;
 			}
