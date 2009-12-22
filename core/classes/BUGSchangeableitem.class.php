@@ -104,7 +104,14 @@
 		 */
 		protected function _addChangedProperty($property, $value)
 		{
-			if (is_object($this->$property) && method_exists($this->$property, 'getID')) $this->$property = $this->$property->getID();
+			if (property_exists($this, $property))
+			{
+				if (is_object($this->$property) && method_exists($this->$property, 'getID')) $this->$property = $this->$property->getID();
+			}
+			else
+			{
+				$this->$property = null;
+			}
 			if ($this->$property != $value)
 			{
 				if (array_key_exists($property, $this->_changed_items))

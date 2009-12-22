@@ -1503,6 +1503,11 @@
 			$this->_addChangedProperty('_priority', $priority_id);
 		}
 
+		public function setCustomField($key, $value)
+		{
+			$this->_addChangedProperty('_'.$key, $value);
+		}
+
 		/**
 		 * Returns the scrum color
 		 *

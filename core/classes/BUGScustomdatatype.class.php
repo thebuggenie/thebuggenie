@@ -80,9 +80,9 @@
 			$i18n = BUGScontext::getI18n();
 			$types = array();
 			$types[self::DROPDOWN_CHOICE_TEXT] = $i18n->__('Dropdown list with custom text choices');
-			$types[self::DROPDOWN_CHOICE_TEXT_COLORED] = $i18n->__('Dropdown list with custom colored text choices');
+			/*$types[self::DROPDOWN_CHOICE_TEXT_COLORED] = $i18n->__('Dropdown list with custom colored text choices');
 			$types[self::DROPDOWN_CHOICE_TEXT_COLOR] = $i18n->__('Dropdown list with custom color and text choices');
-			$types[self::DROPDOWN_CHOICE_TEXT_ICON] = $i18n->__('Dropdown list with custom text choices and icons');
+			$types[self::DROPDOWN_CHOICE_TEXT_ICON] = $i18n->__('Dropdown list with custom text choices and icons');*/
 			$types[self::INPUT_TEXT] = $i18n->__('Single line text input');
 			$types[self::INPUT_TEXTAREA_MAIN] = $i18n->__('Textarea in issue main area');
 			$types[self::INPUT_TEXTAREA_SMALL] = $i18n->__('Textarea (small) in issue details list');

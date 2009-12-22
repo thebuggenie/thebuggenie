@@ -769,6 +769,14 @@
 							if (isset($fields_array['edition']) && $this->selected_edition instanceof BUGSedition) $issue->addAffectedEdition($this->selected_edition);
 							if (isset($fields_array['build']) && $this->selected_build instanceof BUGSbuild) $issue->addAffectedBuild($this->selected_build);
 							if (isset($fields_array['component']) && $this->selected_component instanceof BUGScomponent) $issue->addAffectedComponent($this->selected_component);
+							foreach (BUGScustomdatatype::getAll() as $customdatatype)
+							{
+								if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption)
+								{
+									$selected_option = $this->selected_customdatatype[$customdatatype->getKey()];
+									$issue->setCustomField($customdatatype->getKey(), $selected_option->getValue());
+								}
+							}
 							if ($request->getParameter('return_format') == 'scrum')
 							{
 								return $this->renderJSON(array('failed' => false, 'story_id' => $issue->getID(), 'content' => $this->getComponentHTML('project/scrumcard', array('issue' => $issue))));
