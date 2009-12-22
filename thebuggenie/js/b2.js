@@ -5,13 +5,15 @@ function failedMessage(title, content)
 	$('thebuggenie_failuremessage_content').update(content);
 	if ($('thebuggenie_successmessage').visible())
 	{
+		var success_queue = Effect.Queues.get('successmessage');
+		success_queue.each(function(effect) { effect.cancel(); });
 		new Effect.SlideUp('thebuggenie_successmessage', { queue: { position: 'end', scope: 'successmessage', limit: 2 }, duration: 0.5 });
 	}
 	if ($('thebuggenie_failuremessage').visible())
 	{
+		var failed_queue = Effect.Queues.get('failedmessage');
+		failed_queue.each(function(effect) { effect.cancel(); });
 		new Effect.Pulsate('thebuggenie_failuremessage');
-		var queue = Effect.Queues.get('failedmessage');
-		queue.each(function(effect) { effect.cancel(); });
 	}
 	else
 	{
@@ -26,13 +28,15 @@ function successMessage(title, content)
 	$('thebuggenie_successmessage_content').update(content);
 	if ($('thebuggenie_failuremessage').visible())
 	{
+		var failed_queue = Effect.Queues.get('failedmessage');
+		failed_queue.each(function(effect) { effect.cancel(); });
 		new Effect.SlideUp('thebuggenie_failuremessage', { queue: { position: 'end', scope: 'failedmessage', limit: 2 }, duration: 0.5 });
 	}
 	if ($('thebuggenie_successmessage').visible())
 	{
+		var success_queue = Effect.Queues.get('successmessage');
+		success_queue.each(function(effect) { effect.cancel(); });
 		new Effect.Pulsate('thebuggenie_successmessage');
-		var queue = Effect.Queues.get('successmessage');
-		queue.each(function(effect) { effect.cancel(); });
 	}
 	else
 	{
