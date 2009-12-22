@@ -100,5 +100,11 @@
 		{
 			return $this->_itemtype;
 		}
-		
+
+		public static function getAvailableFields()
+		{
+			return array('description', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'editions', 'builds', 'components', 'estimated_time', 'elapsed_time', 'milestone');
+		}
+
+
 	}

@@ -816,7 +816,7 @@
 			}
 			
 			$fields_array = $selected_project->getReportableFieldsArray($request->getParameter('issuetype_id'));
-			return $this->renderJSON($fields_array);
+			return $this->renderJSON(array('available_fields' => BUGSdatatypebase::getAvailableFields(), 'fields' => $fields_array));
 		}
 
 		/**

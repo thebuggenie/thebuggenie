@@ -21,7 +21,40 @@ function updateFields(url, projectmenustripurl)
 			requestHeaders: {Accept: 'application/json'},
 			onSuccess: function(transport) {
 				var json = transport.responseJSON;
-				if (Object.isUndefined(json.description) == false)
+				available_fields = json.available_fields;
+				fields = json.fields;
+				available_fields.each(function (key, index)
+				{
+					if ($(key + '_div'))
+					{
+						if (fields[key])
+						{
+							if (fields[key].additional && $(key + '_additional'))
+							{
+								$(key + '_additional').show();
+								$(key + '_div').hide();
+								if ($(key + '_id_additional')) $(key + '_id_additional').enable();
+								if ($(key + '_id')) $(key + '_id').disable();
+							}
+							else
+							{
+								$(key + '_div').show();
+								if ($(key + '_id')) $(key + '_id').enable();
+								if ($(key + '_additional')) $(key + '_additional').hide();
+								if ($(key + '_id_additional')) $(key + '_id_additional').disable();
+							}
+							(fields[key].required) ? $(key + '_label').addClassName('required') : $(key + '_label').removeClassName('required');
+						}
+						else
+						{
+							$(key + '_div').hide();
+							if ($(key + '_id')) $(key + '_id').disable();
+							if ($(key + '_additional')) $(key + '_additional').hide();
+							if ($(key + '_id_additional')) $(key + '_id_additional').disable();
+						}
+					}
+				});
+				/*if (Object.isUndefined(json.description) == false)
 				{
 					$('description_div').show();
 					(json.description.required) ? $('description_label').addClassName('required') : $('description_label').removeClassName('required');
@@ -234,7 +267,7 @@ function updateFields(url, projectmenustripurl)
 				{
 					$('status_additional').hide();
 					$('status_div').hide();
-				}
+				}*/
 				
 				$('report_issue_more_options_indicator').hide();
 			},
