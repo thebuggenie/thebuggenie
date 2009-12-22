@@ -99,7 +99,7 @@
 
 			foreach ($_categories as $name => $itemdata)
 			{
-				$this->createNew($itemdata, BUGSdatatype::CATEGORY, $name, $scope);
+				$this->createNew($name, BUGSdatatype::CATEGORY, $itemdata, $scope);
 			}
 
 			$priorities = array();
@@ -111,7 +111,7 @@
 
 			foreach ($priorities as $name => $itemdata)
 			{
-				$this->createNew($itemdata, BUGSdatatype::PRIORITY, $name, $scope);
+				$this->createNew($name, BUGSdatatype::PRIORITY, $itemdata, $scope);
 			}
 
 			$reproducabilities = array();
@@ -122,7 +122,7 @@
 
 			foreach ($reproducabilities as $name => $itemdata)
 			{
-				$this->createNew($itemdata, BUGSdatatype::REPRODUCABILITY, $name, $scope);
+				$this->createNew($name, BUGSdatatype::REPRODUCABILITY, $itemdata, $scope);
 			}
 
 			$resolutions = array();
@@ -135,7 +135,7 @@
 
 			foreach ($resolutions as $name => $itemdata)
 			{
-				$this->createNew($itemdata, BUGSdatatype::RESOLUTION, $name, $scope);
+				$this->createNew($name, BUGSdatatype::RESOLUTION, $itemdata, $scope);
 			}
 
 			$severities = array();
@@ -145,7 +145,7 @@
 
 			foreach ($severities as $name => $itemdata)
 			{
-				$this->createNew($itemdata, BUGSdatatype::SEVERITY, $name, $scope);
+				$this->createNew($name, BUGSdatatype::SEVERITY, $itemdata, $scope);
 			}
 
 			$statuses = array();
@@ -164,7 +164,7 @@
 
 			foreach ($statuses as $name => $itemdata)
 			{
-				$this->createNew($itemdata, BUGSdatatype::STATUS, $name, $scope);
+				$this->createNew($name, BUGSdatatype::STATUS, $itemdata, $scope);
 			}
 		}
 

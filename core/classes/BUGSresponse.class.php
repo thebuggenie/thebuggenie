@@ -103,7 +103,7 @@
 
 		public function ajaxResponseText($code, $error)
 		{
-			//return true;
+			return true;
 			$ob_status = ob_get_status();
 			if (!empty($ob_status) && $ob_status['status'] != PHP_OUTPUT_HANDLER_END)
 			{

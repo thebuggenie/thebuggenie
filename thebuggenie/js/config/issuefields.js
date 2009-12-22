@@ -36,6 +36,50 @@ function showIssuefieldOptions(url, field)
 	}
 }
 
+function addIssuefieldCustom(url)
+{
+	var params = Form.serialize('add_custom_type_form');
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	evalScripts: true,
+	parameters: params,
+	onLoading: function (transport) {
+		$('add_custom_type_indicator').show();
+		$('add_custom_type_button').hide();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+			$('add_custom_type_button').show();
+			$('add_custom_type_indicator').hide();
+		}
+		else
+		{
+			$('add_custom_type_indicator').hide();
+			$('add_custom_type_button').show();
+			$('add_custom_type_form').reset();
+			successMessage(json.title, '');
+			$('custom_types_list').insert({bottom: json.content});
+		}
+	},
+	onFailure: function (transport) {
+		$('add_custom_type_indicator').hide();
+		$('add_custom_type_button').show();
+		if (transport.responseJSON)
+		{
+			failedMessage(transport.responseJSON.error);
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+	}
+	});
+}
+
 function addIssuefieldOption(url, type)
 {
 	var params = Form.serialize('add_' + type + '_form');

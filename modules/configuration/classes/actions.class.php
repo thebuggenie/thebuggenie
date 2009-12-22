@@ -113,14 +113,15 @@
 		{
 			$i18n = BUGScontext::getI18n();
 			$builtin_types = array();
-			$builtin_types['status'] = $i18n->__('Status types');
-			$builtin_types['resolution'] = $i18n->__('Resolution types');
-			$builtin_types['priority'] = $i18n->__('Priority levels');
-			$builtin_types['severity'] = $i18n->__('Severity levels');
-			$builtin_types['category'] = $i18n->__('Categories');
-			$builtin_types['reproducability'] = $i18n->__('Reproducability grades');
+			$builtin_types['status'] = array('description' => $i18n->__('Status types'), 'key' => 'status');
+			$builtin_types['resolution'] = array('description' => $i18n->__('Resolution types'), 'key' => 'resolution');
+			$builtin_types['priority'] = array('description' => $i18n->__('Priority levels'), 'key' => 'priority');
+			$builtin_types['severity'] = array('description' => $i18n->__('Severity levels'), 'key' => 'severity');
+			$builtin_types['category'] = array('description' => $i18n->__('Categories'), 'key' => 'category');
+			$builtin_types['reproducability'] = array('description' => $i18n->__('Reproducability grades'), 'key' => 'reproducability');
 
 			$this->builtin_types = $builtin_types;
+			$this->custom_types = BUGScustomdatatype::getAll();
 		}
 
 		/**
@@ -130,7 +131,7 @@
 		 */
 		public function runConfigureIssuefieldsGetOptions(BUGSrequest $request)
 		{
-			return $this->renderComponent('issuefields_builtin', array('type' => $request->getParameter('type')));
+			return $this->renderComponent('issuefields', array('type' => $request->getParameter('type')));
 		}
 
 		/**
@@ -143,43 +144,84 @@
 			$i18n = BUGScontext::getI18n();
 			$types = BUGSdatatype::getTypes();
 
-			if (array_key_exists($request->getParameter('type'), $types))
+			switch ($request->getParameter('mode'))
 			{
-				switch ($request->getParameter('mode'))
-				{
-					case 'add':
-						if ($request->getParameter('name'))
+				case 'add':
+					if ($request->getParameter('name'))
+					{
+						if (array_key_exists($request->getParameter('type'), $types))
 						{
 							$item = call_user_func(array($types[$request->getParameter('type')], 'createNew'), $request->getParameter('name'), $request->getParameter('itemdata'));
-							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield_builtin', array('item' => $item, 'type' => $request->getParameter('type')))));
 						}
-						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
-					case 'edit':
-						if ($request->getParameter('name'))
+						else
+						{
+							$customtype = BUGScustomdatatype::getByKey($request->getParameter('type'));
+							$item = $customtype->createNewOption($request->getParameter('name'), $request->getParameter('value'), $request->getParameter('itemdata'));
+						}
+						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield', array('item' => $item, 'type' => $request->getParameter('type')))));
+					}
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
+				case 'edit':
+					if ($request->getParameter('name'))
+					{
+						if (array_key_exists($request->getParameter('type'), $types))
 						{
 							$item = call_user_func(array('BUGSfactory', $types[$request->getParameter('type')].'Lab'), $request->getParameter('id'));
-							if ($item instanceof BUGSdatatype && $item->getItemtype() == $item->getType())
-							{
-								$item->setName($request->getParameter('name'));
-								$item->setItemdata($request->getParameter('itemdata'));
-								$item->save();
-								return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was updated')));
-							}
-							else
-							{
-								return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid id')));
-							}
 						}
-						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
-					case 'delete':
-						if ($request->hasParameter('id'))
+						else
 						{
-							call_user_func(array($types[$request->getParameter('type')], 'delete'), (int) $request->getParameter('id'));
-							return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The option was deleted')));
+							$customtype = BUGScustomdatatype::getByKey($request->getParameter('type'));
+							$item = BUGSfactory::BUGScustomdatatypeoptionLab($request->getParameter('id'));
 						}
-						return $this->renderJSON(array('failed' => true, 'error' => $i18n->__('Invalid id or type')));
-						break;
-				}
+						if ($item instanceof BUGSdatatypebase && $item->getItemtype() == $item->getType())
+						{
+							$item->setName($request->getParameter('name'));
+							$item->setItemdata($request->getParameter('itemdata'));
+							if (!$item->isBuiltin())
+							{
+								$item->setValue($request->getParameter('value'));
+							}
+							$item->save();
+							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was updated')));
+						}
+						else
+						{
+							return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid id')));
+						}
+					}
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
+				case 'delete':
+					if ($request->hasParameter('id'))
+					{
+						call_user_func(array($types[$request->getParameter('type')], 'delete'), (int) $request->getParameter('id'));
+						return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The option was deleted')));
+					}
+					return $this->renderJSON(array('failed' => true, 'error' => $i18n->__('Invalid id or type')));
+					break;
+			}
+		}
+
+		/**
+		 * Add or delete a custom type
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runConfigureIssuefieldsCustomTypeAction(BUGSrequest $request)
+		{
+			switch ($request->getParameter('mode'))
+			{
+				case 'add':
+					if ($request->getParameter('name') != '')
+					{
+						if (!BUGScustomdatatype::doesKeyExist($request->getParameter('name')))
+						{
+							$customtype = BUGScustomdatatype::createNew($request->getParameter('name'), $request->getParameter('field_type'));
+							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The custom type was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
+						}
+						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('You need to provide a unique custom type name (key already exists)')));
+					}
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
+					break;
 			}
 		}
 

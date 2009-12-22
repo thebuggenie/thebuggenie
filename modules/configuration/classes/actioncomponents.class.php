@@ -50,15 +50,30 @@
 
 		}
 
-		public function componentIssueFields_BuiltIn()
+		public function componentIssueFields()
 		{
 			$this->items = array();
+			$this->showitems = true;
 			$types = BUGSdatatype::getTypes();
 
 			if (array_key_exists($this->type, $types))
 			{
 				$this->items = call_user_func(array($types[$this->type], 'getAll'));
 			}
+			else
+			{
+				$customtype = BUGScustomdatatype::getByKey($this->type);
+				$this->showitems = $customtype->hasCustomOptions();
+				if ($this->showitems)
+				{
+					$this->items = $customtype->getOptions();
+				}
+			}
+		}
+
+		public function componentIssueFields_CustomType()
+		{
+			
 		}
 
 	}

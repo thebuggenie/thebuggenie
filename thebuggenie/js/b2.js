@@ -19,7 +19,7 @@ function failedMessage(title, content)
 	{
 		new Effect.SlideDown('thebuggenie_failuremessage', { queue: { position: 'end', scope: 'failedmessage', limit: 2 }, duration: 1 });
 	}
-	new Effect.SlideUp('thebuggenie_failuremessage', { queue: { position: 'end', scope: 'failedmessage', limit: 2 }, delay: 10 });
+	new Effect.SlideUp('thebuggenie_failuremessage', { queue: { position: 'end', scope: 'failedmessage', limit: 2 }, delay: 30 });
 }
 
 function successMessage(title, content)

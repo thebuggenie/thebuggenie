@@ -27,6 +27,8 @@
 		static protected $_groups = array();
 		static protected $_customers = array();
 		static protected $_statuses = array();
+		static protected $_customtypes = array();
+		static protected $_customtypeoptions = array();
 		static protected $_priorities = array();
 		static protected $_resolutions = array();
 		static protected $_reproducabilities = array();
@@ -243,11 +245,61 @@
 		}
 		
 		/**
+		 * Returns a BUGScustomdatatype
+		 *
+		 * @param integer $i_id The item id
+		 * @param B2DBrow $row[optional] a row to use
+		 *
+		 * @return BUGScustomdatatype
+		 */
+		public static function BUGScustomdatatypeLab($i_id, $row = null)
+		{
+			if ((int) $i_id == 0) throw new Exception('Invalid id');
+			if (!isset(self::$_customtypes[$i_id]))
+			{
+				try
+				{
+					self::$_customtypes[$i_id] = new BUGScustomdatatype($i_id, $row);
+				}
+				catch (Exception $e)
+				{
+					throw $e;
+				}
+			}
+			return self::$_customtypes[$i_id];
+		}
+
+		/**
+		 * Returns a BUGScustomdatatypeoption
+		 *
+		 * @param integer $i_id The item id
+		 * @param B2DBrow $row[optional] a row to use
+		 *
+		 * @return BUGScustomdatatypeoption
+		 */
+		public static function BUGScustomdatatypeoptionLab($i_id, $row = null)
+		{
+			if ((int) $i_id == 0) throw new Exception('Invalid id');
+			if (!isset(self::$_customtypeoptions[$i_id]))
+			{
+				try
+				{
+					self::$_customtypeoptions[$i_id] = new BUGScustomdatatypeoption($i_id, $row);
+				}
+				catch (Exception $e)
+				{
+					throw $e;
+				}
+			}
+			return self::$_customtypeoptions[$i_id];
+		}
+
+		/**
 		 * Returns a BUGSstatus
 		 *
 		 * @param integer $i_id The item id
 		 * @param B2DBrow $row[optional] a row to use
-		 * 
+		 *
 		 * @return BUGSstatus
 		 */
 		public static function BUGSstatusLab($i_id, $row = null)
@@ -266,7 +318,7 @@
 			}
 			return self::$_statuses[$i_id];
 		}
-		
+
 		/**
 		 * Returns a BUGSpriority
 		 *
