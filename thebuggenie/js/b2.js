@@ -5,17 +5,19 @@ function failedMessage(title, content)
 	$('thebuggenie_failuremessage_content').update(content);
 	if ($('thebuggenie_successmessage').visible())
 	{
-		new Effect.SlideUp('thebuggenie_successmessage', {duration: 0.5});
+		new Effect.SlideUp('thebuggenie_successmessage', { queue: { position: 'end', scope: 'successmessage', limit: 2 }, duration: 0.5 });
 	}
 	if ($('thebuggenie_failuremessage').visible())
 	{
 		new Effect.Pulsate('thebuggenie_failuremessage');
+		var queue = Effect.Queues.get('failedmessage');
+		queue.each(function(effect) { effect.cancel(); });
 	}
 	else
 	{
-		new Effect.SlideDown('thebuggenie_failuremessage', {duration: 1});
+		new Effect.SlideDown('thebuggenie_failuremessage', { queue: { position: 'end', scope: 'failedmessage', limit: 2 }, duration: 1 });
 	}
-	new Effect.SlideUp('thebuggenie_failuremessage', {delay: 10});
+	new Effect.SlideUp('thebuggenie_failuremessage', { queue: { position: 'end', scope: 'failedmessage', limit: 2 }, delay: 10 });
 }
 
 function successMessage(title, content)
@@ -24,17 +26,19 @@ function successMessage(title, content)
 	$('thebuggenie_successmessage_content').update(content);
 	if ($('thebuggenie_failuremessage').visible())
 	{
-		new Effect.SlideUp('thebuggenie_failuremessage', {duration: 0.5});
+		new Effect.SlideUp('thebuggenie_failuremessage', { queue: { position: 'end', scope: 'failedmessage', limit: 2 }, duration: 0.5 });
 	}
-	if ($('thebuggenie_failuremessage').visible())
+	if ($('thebuggenie_successmessage').visible())
 	{
 		new Effect.Pulsate('thebuggenie_successmessage');
+		var queue = Effect.Queues.get('successmessage');
+		queue.each(function(effect) { effect.cancel(); });
 	}
 	else
 	{
-		new Effect.SlideDown('thebuggenie_successmessage', {duration: 1});
+		new Effect.SlideDown('thebuggenie_successmessage', { queue: { position: 'end', scope: 'successmessage', limit: 2 }, duration: 1 });
 	}
-	new Effect.SlideUp('thebuggenie_successmessage', {delay: 10});
+	new Effect.SlideUp('thebuggenie_successmessage', { queue: { position: 'end', scope: 'successmessage', limit: 2 }, delay: 10 });
 }
 
 function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done)
