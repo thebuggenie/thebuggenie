@@ -78,8 +78,9 @@
 		public function componentIssueTypes()
 		{
 			$this->issuetype = BUGSfactory::BUGSissuetypeLab($this->id);
-			//$this->items = $this->issuetype->ge
-
+			$this->builtinfields = BUGSdatatype::getAvailableFields(true);
+			$this->customtypes = BUGScustomdatatype::getAll();
+			$this->visiblefields = B2DB::getTable('B2tIssueFields')->getVisibleFieldsArrayByIssuetypeID($this->issuetype->getID());
 		}
 
 		public function componentIssueFields_CustomType()

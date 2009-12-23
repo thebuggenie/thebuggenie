@@ -16,10 +16,6 @@ function showIssuetypeOptions(url, id)
 			{
 				failedMessage(json.error);
 			}
-			else
-			{
-				successMessage(json.title, json.content);
-			}
 		},
 		onFailure: function (transport) {
 			$('issuetype_' + id + '_indicator').hide();
@@ -60,12 +56,61 @@ function updateIssuetype(url, id)
 			$('edit_issuetype_' + id + '_form').hide();
 			$('issuetype_' + id + '_description_span').update(json.description);
 			$('issuetype_' + id + '_name_link').update(json.name);
+			if (json.reportable)
+			{
+				$('issuetype_' + id + '_box').removeClassName('borderless');
+				$('issuetype_' + id + '_box').addClassName('iceblue_borderless');
+			}
+			else
+			{
+				$('issuetype_' + id + '_box').addClassName('borderless');
+				$('issuetype_' + id + '_box').removeClassName('iceblue_borderless');
+			}
 			$('issuetype_' + id + '_info').show();
 			successMessage(json.title, '');
 		}
 	},
 	onFailure: function (transport) {
 		$('edit_issuetype_' + id + '_indicator').hide();
+		if (transport.responseJSON)
+		{
+			failedMessage(transport.responseJSON.error);
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+	}
+	});
+}
+
+function updateIssuetypeChoices(url, id)
+{
+	var params = Form.serialize('update_' + id + '_choices_form');
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	evalScripts: true,
+	parameters: params,
+	onLoading: function (transport) {
+		$('update_' + id + '_choices_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+			$('update_' + id + '_choices_indicator').hide();
+		}
+		else
+		{
+			$('update_' + id + '_choices_indicator').hide();
+			$('issuetype_' + id + '_content').hide();
+			successMessage(json.title, '');
+		}
+	},
+	onFailure: function (transport) {
+		$('update_' + id + '_choices_indicator').hide();
 		if (transport.responseJSON)
 		{
 			failedMessage(transport.responseJSON.error);

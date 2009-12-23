@@ -752,6 +752,7 @@
 				if (isset($fields_array['priority']) && $fields_array['priority']['required'] && $this->selected_priority === null)
 					$errors['priority'] = $i18n->__('You have to specify a priority');
 
+				$selected_customdatatype = array();
 				foreach (BUGScustomdatatype::getAll() as $customdatatype)
 				{
 					$customdatatype_id = $customdatatype->getKey() . '_id';

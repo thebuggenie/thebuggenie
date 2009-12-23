@@ -65,12 +65,7 @@ input[type="image"]
 	height: 16px;
 }
 
-TH
-{
-	font-weight: bold;
-	border-bottom: 1px solid #DDD;
-	padding-bottom: 2px;
-}
+th { font-weight: bold; border-bottom: 1px solid #DDD; padding-bottom: 2px; }
 
 input[type="text"], input[type="password"] { font-size: 13px; padding: 2px; }
 select { font-size: 13px; padding: 2px; height: 22px; }
@@ -1031,6 +1026,29 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .green .xb1 { background-color: #AAC6AA; }
 .green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 
+.iceblue .xb2, .iceblue .xb3, .iceblue .xb4 { background-color: #D4E5FF; border-color: #B1B8E9; }
+.iceblue .xb1 { background-color: #B1B8E9; }
+.iceblue .xboxcontent { background-color: #D4E5FF; border-color: #B1B8E9; }
+.iceblue .percent_filled { background-color: #88C; }
+.iceblue .percent_unfilled { background-color: #AAF; }
+
+li.green .xb2, li.green .xb3, li.green .xb4 { background-color: #CFE8CF; border-color: #AAC6AA; }
+li.green .xb1 { background-color: #AAC6AA; }
+li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
+
+.iceblue_borderless .xb2, .iceblue_borderless .xb3, .iceblue_borderless .xb4 { background-color: #D4E5FF; border-color: #D4E5FF; }
+.iceblue_borderless .xb1 { background-color: #D4E5FF; }
+.iceblue_borderless .xboxcontent { background-color: #D4E5FF; border-color: #D4E5FF; }
+.iceblue_borderless .percent_filled { background-color: #88C; }
+.iceblue_borderless .percent_unfilled { background-color: #AAF; }
+.iceblue_borderless .faded_medium { color: #99C; }
+.iceblue_borderless .faded_dark { color: #77C; }
+.iceblue_borderless .issue_detail_changed { background-color: #FFF299; }
+.iceblue_borderless .issue_detail_unmerged { background-color: #E0AC9C; }
+.iceblue_borderless .issue_detail_unmerged .faded_medium { color: #FFD9D6; }
+.iceblue_borderless th { border-color: #A0ADC0; background-color: #C1D1E8; }
+.iceblue_borderless .header_div { border-color: #A0ADC0; }
+
 .yellow .xb2, .yellow .xb3, .yellow .xb4 { background-color: #FAFAD6; border-color: #D9D9BB; }
 .yellow .xb1 { background-color: #D9D9BB; }
 .yellow .xboxcontent { background-color: #FAFAD6; border-color: #D9D9BB; }
@@ -1047,16 +1065,6 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .lightyellow_borderless .xb1 { background-color: #FFF8C9; }
 .lightyellow_borderless .xboxcontent { background-color: #FFF8C9; border-color: #FFF8C9; }
 
-.iceblue .xb2, .iceblue .xb3, .iceblue .xb4 { background-color: #D4E5FF; border-color: #B1B8E9; }
-.iceblue .xb1 { background-color: #B1B8E9; }
-.iceblue .xboxcontent { background-color: #D4E5FF; border-color: #B1B8E9; }
-.iceblue .percent_filled { background-color: #88C; }
-.iceblue .percent_unfilled { background-color: #AAF; }
-
-li.green .xb2, li.green .xb3, li.green .xb4 { background-color: #CFE8CF; border-color: #AAC6AA; }
-li.green .xb1 { background-color: #AAC6AA; }
-li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
-
 .mediumgrey_borderless .xb2, .mediumgrey_borderless .xb3, .mediumgrey_borderless .xb4 { background-color: #F3F3F3; border-color: #F3F3F3; }
 .mediumgrey_borderless .xb1 { background-color: #F3F3F3; }
 .mediumgrey_borderless .xboxcontent { background-color: #F3F3F3; border-color: #F3F3F3; }
@@ -1067,17 +1075,6 @@ li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 .mediumgrey_borderless.highlighted .xb2, .mediumgrey_borderless.highlighted .xb3, .mediumgrey_borderless.highlighted .xb4 { background-color: #FFF299; border-color: #FFF299; }
 .mediumgrey_borderless.highlighted .xb1, #scrum .mediumgrey_borderless.highlighted .sprint_header { background-color: #FFF299; }
 .mediumgrey_borderless.highlighted .xboxcontent { background-color: #FFF299; border-color: #FFF299; }
-
-.iceblue_borderless .xb2, .iceblue_borderless .xb3, .iceblue_borderless .xb4 { background-color: #D4E5FF; border-color: #D4E5FF; }
-.iceblue_borderless .xb1 { background-color: #D4E5FF; }
-.iceblue_borderless .xboxcontent { background-color: #D4E5FF; border-color: #D4E5FF; }
-.iceblue_borderless .percent_filled { background-color: #88C; }
-.iceblue_borderless .percent_unfilled { background-color: #AAF; }
-.iceblue_borderless .faded_medium { color: #99C; }
-.iceblue_borderless .faded_dark { color: #77C; }
-.iceblue_borderless .issue_detail_changed { background-color: #FFF299; }
-.iceblue_borderless .issue_detail_unmerged { background-color: #E0AC9C; }
-.iceblue_borderless .issue_detail_unmerged .faded_medium { color: #FFD9D6; }
 
 .lightgrey .xb2, .lightgrey .xb3, .lightgrey .xb4 { background-color: #F1F1F1; border-color: #DDD; }
 .lightgrey .xb1 { background-color: #DDD; }
@@ -1112,10 +1109,12 @@ li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 .white .xb2, .white .xb3, .white .xb4 { background-color: #FFF; border-color: #CCC; }
 .white .xb1 { background-color: #CCC; }
 .white .xboxcontent { background-color: #FFF; border-color: #CCC; }
+.white th { font-weight: bold; background-color: #F1F1F1; border-bottom: 1px solid #DDD; padding-bottom: 2px; }
 
 .white_borderless .xb2, .white_borderless .xb3, .white_borderless .xb4 { background-color: #FFF; border-color: #FFF; }
 .white_borderless .xb1 { background-color: #FFF; }
 .white_borderless .xboxcontent { background-color: #FFF; border-color: #FFF; }
+.white_borderless th { font-weight: bold; background-color: #F1F1F1; border-bottom: 1px solid #DDD; padding-bottom: 2px; }
 
 .lightgreen_borderless .xb2, .lightgreen_borderless .xb3, .lightgreen_borderless .xb4 { background-color: #BDF4AA; border-color: #BDF4AA; }
 .lightgreen_borderless .xb1 { background-color: #BDF4AA; }

@@ -141,6 +141,11 @@
 			$this->_redirect_after_reporting = (bool) $val;
 		}
 
+		public function clearAvailableFields()
+		{
+			B2DB::getTable('B2tIssueFields')->deleteByIssuetypeID($this->getID());
+		}
+
 		public function save()
 		{
 			B2DB::getTable('B2tIssueTypes')->saveDetails($this);

@@ -176,7 +176,7 @@
 							$issuetype->setIsReportable($request->getParameter('reportable'));
 							$issuetype->setRedirectAfterReporting($request->getParameter('redirect_after_reporting'));
 							$issuetype->save();
-							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The issue type was updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName()));
+							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The issue type was updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName(), 'reportable' => $issuetype->isReportable()));
 						}
 						else
 						{
@@ -185,8 +185,22 @@
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid issue type')));
 					break;
+				case 'updatechoices':
+					if (($issuetype = BUGSfactory::BUGSissuetypeLab($request->getParameter('id'))) instanceof BUGSissuetype)
+					{
+						$issuetype->clearAvailableFields();
+						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Avilable choices updated')));
+					}
+					else
+					{
+						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid issue type')));
+					}
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Not implemented yet')));
+					break;
 				case 'delete':
 					break;
+				default:
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid action for this issue type')));
 			}
 		}
 

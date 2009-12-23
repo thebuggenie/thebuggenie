@@ -57,6 +57,7 @@
 	$routes[] = array('configure_project_milestone_action', '/configure/project/:project_id/milestone/:milestone_id/do/:milestone_action', 'configuration', 'milestoneAction', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_issuetypes', '/configure/issuetypes', 'configuration', 'configureIssuetypes', array('config_module' => 'core', 'section' => 6));
 	$routes[] = array('configure_issuetypes_getoptions', '/configure/issuetypes/get/options/for/:id', 'configuration', 'configureIssuetypesGetOptions', array('config_module' => 'core', 'section' => 6));
+	$routes[] = array('configure_issuetypes_update_choices', '/configure/issuetypes/update/choices/for/:id', 'configuration', 'configureIssuetypesAction', array('config_module' => 'core', 'section' => 6, 'mode' => 'updatechoices'));
 	$routes[] = array('configure_issuetypes_update_issuetype', '/configure/issuefields/update/issuetype/:id', 'configuration', 'configureIssuetypesAction', array('config_module' => 'core', 'section' => 6, 'mode' => 'update'));
 	$routes[] = array('configure_issuefields', '/configure/issuefields', 'configuration', 'configureIssuefields', array('config_module' => 'core', 'section' => 4));
 	$routes[] = array('configure_issuefields_getoptions', '/configure/issuefields/get/options/for/:type', 'configuration', 'configureIssuefieldsGetOptions', array('config_module' => 'core', 'section' => 4));

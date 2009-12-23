@@ -13,7 +13,7 @@
 		<div class="content"><?php echo __('Edit issue types and their settings here.'); ?></div>
 		<div class="header_div" style="margin-top: 15px;"><?php echo __('Issue types'); ?></div>
 		<?php foreach ($issue_types as $type): ?>
-			<div class="rounded_box borderless" style="margin: 5px 0 0 0;">
+			<div class="rounded_box <?php if ($type->isReportable()): ?>iceblue_borderless<?php else: ?>borderless<?php endif; ?>" style="margin: 5px 0 0 0;" id="issuetype_<?php echo $type->getID(); ?>_box">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 5px; font-size: 12px;">
 					<?php echo image_tag('spinning_32.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => 'issuetype_' . $type->getID() . '_indicator')); ?>

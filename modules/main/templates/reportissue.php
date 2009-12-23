@@ -65,6 +65,7 @@
 							<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '');">
 								<option value="0"><?php echo __('Please select an issue type from this list'); ?>...</option>
 								<?php foreach ($issuetypes as $issue_type): ?>
+									<?php if (!$issue_type->isReportable()) continue; ?>
 									<option value="<?php echo $issue_type->getID(); ?>"<?php if ($selected_issuetype instanceof BUGSissuetype && $selected_issuetype->getID() == $issue_type->getID()): ?> selected<?php endif; ?>><?php echo $issue_type->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
@@ -83,7 +84,7 @@
 			<ul class="issuetype_list" id="issuetype_list"<?php if ($selected_issuetype instanceof BUGSissuetype): ?> style="display: none;"<?php endif; ?>>
 			<?php $left = true; ?>
 			<?php foreach ($issuetypes as $issuetype): ?>
-				<?php if ($issuetype->isTask()) continue; ?>
+				<?php if (!$issuetype->isReportable()) continue; ?>
 				<li class="rounded_box borderless" style="float: <?php if ($left): ?>left<?php else: ?>right<?php endif; ?>;">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">

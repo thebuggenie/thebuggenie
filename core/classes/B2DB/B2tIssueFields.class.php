@@ -52,11 +52,34 @@
 			return $res;
 		}
 
+		public function getVisibleFieldsArrayByIssuetypeID($issuetype_id)
+		{
+			$res = $this->getByIssuetypeID($issuetype_id);
+			$retval = array();
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$retval[$row->get(B2tIssueFields::FIELD_KEY)] = array('required' => (bool) $row->get(B2tIssueFields::REQUIRED), 'reportable' => (bool) $row->get(B2tIssueFields::REPORTABLE), 'additional' => (bool) $row->get(B2tIssueFields::ADDITIONAL));
+				}
+			}
+			return $retval;
+		}
+
+		public function deleteByIssuetypeID($issuetype_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
+			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$res = $this->doDelete($crit);
+		}
+
 		public function getByIssuetypeID($issuetype_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, 0);
 			$crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
+			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
 			$res = $this->doSelect($crit);
 			return $res;
 		}

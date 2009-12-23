@@ -1,39 +1,39 @@
-<div class="rounded_box borderless" style="margin: 5px 0 0 0;">
-	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-	<div class="xboxcontent" style="padding: 3px; font-size: 12px;">
-		<?php echo image_tag('spinning_32.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => $type_key . '_indicator')); ?>
-		<div class="header"><a href="javascript:void(0);" onclick="showIssuefieldOptions('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');" id="custom_type_<?php echo $type_key; ?>_name_link"><?php echo $type->getName(); ?></a>&nbsp;<span class="faded_dark" style="font-weight: normal; font-size: 12px;"><?php echo $type_key; ?></span></div>
-		<div class="content">
-			<a title="<?php echo __('Edit this custom type'); ?>" href="javascript:void(0);" onclick="$('edit_custom_type_<?php echo $type_key; ?>_form').toggle();$('custom_type_<?php echo $type_key; ?>_info').toggle();" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('icon_edit.png'); ?></a>
-			<a title="<?php echo __('Show and edit available choices'); ?>" href="javascript:void(0);" onclick="showIssuefieldOptions('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('action_dropdown_small.png'); ?></a>
-			<b><?php echo __('Type'); ?>:</b>&nbsp;<?php echo $type->getTypeDescription(); ?>
-		</div>
-		<div id="custom_type_<?php echo $type_key; ?>_info">
-			<b><?php echo __('Label'); ?>:</b>&nbsp;<span id="custom_type_<?php echo $type_key; ?>_description_span"><?php echo $type->getDescription(); ?></span><br>
-			<span id="custom_type_<?php echo $type_key; ?>_instructions_div"<?php if (!$type->hasInstructions()): ?> style="display: none;"<?php endif; ?>>
-				<b><?php echo __('Instructions'); ?>:</b>&nbsp;<span id="custom_type_<?php echo $type_key; ?>_instructions_span"><?php echo $type->getInstructions(); ?></span>
-			</span>
-			<span id="custom_type_<?php echo $type_key; ?>_no_instructions_div" class="faded_dark"<?php if ($type->hasInstructions()): ?> style="display: none;"<?php endif; ?>><?php echo __("This custom type doesn't have any instructions"); ?></span>
-		</div>
-		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_update_customtype', array('type' => $type_key)); ?>" onsubmit="updateIssuefieldCustom('<?php echo make_url('configure_issuefields_update_customtype', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');return false;" id="edit_custom_type_<?php echo $type_key; ?>_form" style="display: none;">
-			<div class="rounded_box white" style="margin: 5px 0 0 0;">
-				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-				<div class="xboxcontent" style="padding: 3px; font-size: 12px;">
-					<label for="custom_type_<?php echo $type_key; ?>_name"><?php echo __('Name'); ?></label>
-					<input type="text" name="name" id="custom_type_<?php echo $type_key; ?>_name" value="<?php echo $type->getName(); ?>" style="width: 250px;">
-					<label for="custom_type_<?php echo $type_key; ?>_description"><?php echo __('Label'); ?></label>
-					<input type="text" name="description" id="custom_type_<?php echo $type_key; ?>_description" value="<?php echo $type->getDescription(); ?>" style="width: 250px;"><br>
-					<div class="faded_medium" style="margin-bottom: 10px; padding: 2px;"><?php echo __('Users see the label, not the name'); ?></div>
-					<label for="custom_type_<?php echo $type_key; ?>_instructions"><?php echo __('Instructions'); ?></label>&nbsp;<span class="faded_medium"><?php echo __('Optional instruction that will be displayed to users'); ?></span><br>
-					<textarea name="instructions" id="custom_type_<?php echo $type_key; ?>_instructions" style="width: 500px; height: 70px;" cols="70" rows="5"><?php echo $type->getInstructions(); ?></textarea><br>
-					<input type="submit" value="<?php echo __('Update details'); ?>" style="font-weight: bold; font-size: 13px;">
-					<?php echo __('%update_details% or %cancel%', array('%update_details%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'edit_custom_type_' . $type_key . '_form\').toggle();$(\'custom_type_' . $type_key . '_info\').toggle();"><b>' . __('cancel') . '</b></a>')); ?>
-					<?php echo image_tag('spinning_20.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'edit_custom_type_' . $type_key . '_indicator')); ?>
-				</div>
-				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_update_choices', array('id' => $issuetype->getID())); ?>" onsubmit="updateIssuetypeChoices('<?php echo make_url('configure_issuetypes_update_choices', array('id' => $issuetype->getID())); ?>', <?php echo $issuetype->getID(); ?>);return false;" id="update_<?php echo $issuetype->getID(); ?>_choices_form">
+	<div class="rounded_box white_borderless" style="margin: 5px 0 0 0;">
+		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+		<div class="xboxcontent" style="padding: 3px; font-size: 12px;">
+			<div class="header_div" style="margin-top: 15px;">
+				<?php echo __('Available issue fields'); ?>
 			</div>
-		</form>
-		<div class="content" id="<?php echo $type_key; ?>_content" style="display: none;"> </div>
+			<table style="width: 100%;" cellpadding="0" cellspacing="0">
+				<thead>
+					<tr>
+						<th style="padding: 2px;"><?php echo __('Field'); ?></th>
+						<th style="padding: 2px; text-align: center;"><?php echo __('Visible'); ?></th>
+						<th style="padding: 2px; text-align: center;"><?php echo __('Reportable'); ?></th>
+						<th style="padding: 2px; text-align: center;"><?php echo __('Additional'); ?></th>
+						<th style="padding: 2px; text-align: center;"><?php echo __('Required'); ?></th>
+					</tr>
+				</thead>
+				<tbody id="<?php echo $issuetype->getID(); ?>_list">
+					<?php foreach ($builtinfields as $item): ?>
+						<?php include_template('issuetype', array('issuetype' => $issuetype, 'key' => $item, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
+					<?php endforeach; ?>
+					<?php if (count($customtypes) > 0): ?>
+						<?php foreach ($customtypes as $key => $item): ?>
+							<?php include_template('issuetype', array('issuetype' => $issuetype, 'key' => $key, 'item' => $item->getDescription(), 'visiblefields' => $visiblefields)); ?>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-</div>
+	<div class="rounded_box yellow_borderless" style="margin: 0;">
+		<div class="xboxcontent" style="padding: 5px; font-size: 12px; height: 25px;">
+			<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "Save" to save your changes'); ?></div>
+			<input type="submit" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+			<span id="update_<?php echo $issuetype->getID(); ?>_choices_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+		</div>
+		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+	</div>
+</form>

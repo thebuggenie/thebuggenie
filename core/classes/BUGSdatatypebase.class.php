@@ -101,12 +101,15 @@
 			return $this->_itemtype;
 		}
 
-		public static function getAvailableFields()
+		public static function getAvailableFields($builtin_only = false)
 		{
 			$builtin_types = array('description', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'editions', 'builds', 'components', 'estimated_time', 'elapsed_time', 'milestone');
-			$customtypes = BUGScustomdatatype::getAll();
+			
+			if ($builtin_only) return $builtin_types;
 
+			$customtypes = BUGScustomdatatype::getAll();
 			$types = array_merge($builtin_types, array_keys($customtypes));
+			
 			return $types;
 		}
 
