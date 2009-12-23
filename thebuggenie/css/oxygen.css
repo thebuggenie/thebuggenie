@@ -72,12 +72,6 @@ TH
 	padding-bottom: 2px;
 }
 
-table.helptable td
-{
-	padding-top: 1px;
-	padding-bottom: 1px;
-}
-
 input[type="text"], input[type="password"] { font-size: 13px; padding: 2px; }
 select { font-size: 13px; padding: 2px; height: 22px; }
 
@@ -137,25 +131,6 @@ Custom classes
 .footer_text_secondline { padding: 0px 0px 8px 0px; font-size: 0.9em; }
 .footer_text_firstline { padding: 8px 0px 0px 0px; font-size: 1em; }
 
-/*.selected
-{
-	border-bottom: 0px;
-	border-left: 1px solid #CCC;
-	border-right: 1px solid #CCC;
-	border-top: 1px solid #CCC;
-	background-color: #FFF;
-	padding-top: 0px;
-	padding-left: 2px;
-	padding-right: 2px;
-	text-align: center;
-	width: auto;
-}
-
-.selected TD
-{
-	font-weight: bold;
-}*/
-
 .configstrip
 {
 	table-layout: fixed;
@@ -164,21 +139,7 @@ Custom classes
 	margin-top: 10px;
 }
 
-.configheader
-{
-	margin: 5px 0px 5px 0px;
-	background-color: #FFF;
-	font-weight: bold;
-	border: 0px;
-	padding: 7px 0px 3px 0px;
-	border-bottom: 1px solid #DDD;
-	font-size: 15px;
-}
-
-.cdesc
-{
-	padding: 5px;
-}
+.configheader { margin: 5px 0px 5px 0px; background-color: #FFF; font-weight: bold; border: 0px; padding: 7px 0px 3px 0px; border-bottom: 1px solid #DDD; font-size: 15px; }
 
 .logindiv
 {
@@ -1246,7 +1207,7 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-weight: bold; font-size: 14px; }
 .project_overview .content { padding-left: 5px; }
 #config_modules {  font-size: 13px; }
-#config_modules .header, #account_tabs_panes .header, #config_issuefields .xboxcontent .header { font-weight: bold; font-size: 13px; text-align: left; }
+#config_modules .header, #account_tabs_panes .header, #config_issuefields .xboxcontent .header, #config_issuetypes .xboxcontent .header { font-weight: bold; font-size: 13px; text-align: left; }
 #config_modules .header .module_shortname { font-weight: normal; font-size: 12px; }
 #config_modules .content, #account_tabs_panes .content { padding-top: 5px; text-align: left; }
 #account_tabs_panes .content { padding: 5px 0 15px 5px; font-size: 12px; }

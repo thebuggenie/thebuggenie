@@ -45,6 +45,18 @@
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
 
+		public function saveDetails(BUGSissuetype $issuetype)
+		{
+			$crit = $this->getCriteria();
+			$crit->addUpdate(self::NAME, $issuetype->getName());
+			$crit->addUpdate(self::ICON, $issuetype->getIcon());
+			$crit->addUpdate(self::DESCRIPTION, $issuetype->getDescription());
+			$crit->addUpdate(self::REDIRECT_AFTER_REPORTING, $issuetype->getRedirectAfterReporting());
+			$crit->addUpdate(self::IS_REPORTABLE, $issuetype->isReportable());
+
+			$res = $this->doUpdateById($crit, $issuetype->getID());
+		}
+
 		public function loadFixtures($scope)
 		{
 			$i18n = BUGScontext::getI18n();

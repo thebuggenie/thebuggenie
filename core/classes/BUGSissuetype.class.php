@@ -84,12 +84,30 @@
 		}
 
 		/**
-		 * Returns whether or not this issue type is reportable
+		 * Set whether or not this issue type is reportable
+		 *
+		 * @param boolean $val
 		 *
 		 * @return boolean
 		 */
-		public function isReportable()
+		public function setIsReportable($val)
 		{
+			$this->_reportable = (bool) $val;
+		}
+
+		/**
+		 * Returns or set whether or not this issue type is reportable
+		 *
+		 * @param boolean[optional] $val Provide a value to set it
+		 *
+		 * @return boolean
+		 */
+		public function isReportable($val = null)
+		{
+			if ($val !== null)
+			{
+				$this->setIsReportable($val);
+			}
 			return (bool) $this->_reportable;
 		}
 
@@ -97,15 +115,35 @@
 		{
 			return $this->_itemdata;
 		}
+
+		public function setIcon($icon)
+		{
+			$this->_itemdata = $icon;
+		}
 		
 		public function getDescription()
 		{
 			return $this->_description;
 		}
+
+		public function setDescription($description)
+		{
+			$this->_description = $description;
+		}
 		
 		public function getRedirectAfterReporting()
 		{
 			return $this->_redirect_after_reporting;
+		}
+
+		public function setRedirectAfterReporting($val)
+		{
+			$this->_redirect_after_reporting = (bool) $val;
+		}
+
+		public function save()
+		{
+			B2DB::getTable('B2tIssueTypes')->saveDetails($this);
 		}
 
 		static function getTask()
@@ -143,11 +181,6 @@
 			return ($this->_appliesto == null) ? false : true;
 		}
 		
-		public function isDefaultForIssues()
-		{
-			return (BUGSsettings::get('defaultissuetypefornewissues') == $this->getID()) ? true : false;
-		}
-
 		public static function getAllApplicableToProject($p_id)
 		{
 			return self::getAll($p_id);

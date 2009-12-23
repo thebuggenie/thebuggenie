@@ -39,11 +39,12 @@
 			$general_config_sections[5] = array('route' => 'configure_permissions', 'description' => __('Permissions'), 'icon' => 'permissions', 'details' => __('Configure permissions in this section'));
 			if (BUGScontext::getUser()->getScope()->getID() == 1)
 			{
-				$general_config_sections[14] = array('route' => 'configure_scopes', 'description' => __('Scopes'), 'icon' => 'scopes', 'details' => __('Scopes are self-contained Bug Genie environments. Configure them here.'));
-				$data_config_sections[16] = array('route' => 'configure_import', 'description' => __('Import data'), 'icon' => 'import', 'details' => __('Upgrading from an older version? Import your data from here.'));
+				//$general_config_sections[14] = array('route' => 'configure_scopes', 'description' => __('Scopes'), 'icon' => 'scopes', 'details' => __('Scopes are self-contained Bug Genie environments. Configure them here.'));
+				//$data_config_sections[16] = array('route' => 'configure_import', 'description' => __('Import data'), 'icon' => 'import', 'details' => __('Upgrading from an older version? Import your data from here.'));
 			}
 			
 			$data_config_sections[10] = array('route' => 'configure_projects', 'description' => __('Projects'), 'icon' => 'projects', 'details' => __('Set up all projects in this configuration section.'));
+			$data_config_sections[6] = array('icon' => 'issuetypes', 'description' => __('Issue types'), 'route' => 'configure_issuetypes', 'details' => __('Manage issue types and configure issue fields for each issue type here'));
 			$data_config_sections[4] = array('icon' => 'resolutiontypes', 'description' => __('Issue fields'), 'route' => 'configure_issuefields', 'details' => __('Status types, resolution types, categories, custom fields, etc. are configurable from this section.'));
 			$data_config_sections[2] = array('route' => 'configure_users', 'description' => __('Users, teams &amp; groups'), 'icon' => 'users', 'details' => __('Manage users, user groups and user teams from this section.'));
 			$module_config_sections[15][] = array('route' => 'configure_modules', 'description' => __('Module settings'), 'icon' => 'modules', 'details' => __('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
@@ -125,7 +126,72 @@
 		}
 
 		/**
-		 * Get issue fields list for a specific issue type
+		 * Configure issue fields
+		 *
+		 * @param BUGSrequest $request The request object
+		 */
+		public function runConfigureIssuetypes(BUGSrequest $request)
+		{
+			$i18n = BUGScontext::getI18n();
+			$this->issue_types = BUGSissuetype::getAll();
+			$icons = array();
+			$icons['bug_report'] = $i18n->__('Bug report');
+			$icons['feature_request'] = $i18n->__('Feature request');
+			$icons['enhancement'] = $i18n->__('Enhancement');
+			$icons['developer_report'] = $i18n->__('User story');
+			$icons['idea'] = $i18n->__('Idea');
+			$icons['task'] = $i18n->__('Task');
+			$this->icons = $icons;
+		}
+
+		/**
+		 * Get issue type options for a specific issue type
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runConfigureIssuetypesGetOptions(BUGSrequest $request)
+		{
+			return $this->renderComponent('issuetypes', array('id' => $request->getParameter('id')));
+		}
+
+		/**
+		 * Perform an action on an issue type
+		 * 
+		 * @param BUGSrequest $request 
+		 */
+		public function runConfigureIssuetypesAction(BUGSrequest $request)
+		{
+			switch ($request->getParameter('mode'))
+			{
+				case 'add':
+					break;
+				case 'update':
+					if (($issuetype = BUGSfactory::BUGSissuetypeLab($request->getParameter('id'))) instanceof BUGSissuetype)
+					{
+						if ($request->getParameter('name'))
+						{
+							$issuetype->setDescription($request->getParameter('description'));
+							$issuetype->setName($request->getParameter('name'));
+							$issuetype->setIcon($request->getParameter('icon'));
+							$issuetype->setIsReportable($request->getParameter('reportable'));
+							$issuetype->setRedirectAfterReporting($request->getParameter('redirect_after_reporting'));
+							$issuetype->save();
+							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The issue type was updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName()));
+						}
+						else
+						{
+							return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name for the issue type')));
+						}
+					}
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid issue type')));
+					break;
+				case 'delete':
+					break;
+			}
+		}
+
+		/**
+		 * Get issue fields list for a specific field type
 		 *
 		 * @param BUGSrequest $request
 		 */
