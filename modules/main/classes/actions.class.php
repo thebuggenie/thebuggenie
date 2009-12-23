@@ -551,15 +551,9 @@
 				return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Your new password was changed')));
 			}
 		}
-		
-		/**
-		 * "Report issue" page
-		 *  
-		 * @param BUGSrequest $request
-		 */
-		public function runReportIssue(BUGSrequest $request)
+
+		protected function _setupReportIssueProperties()
 		{
-			$i18n = BUGScontext::getI18n();
 			$this->selected_project = null;
 			$this->selected_issuetype = null;
 			$this->selected_edition = null;
@@ -578,10 +572,35 @@
 			}
 			$this->selected_customdatatype = $selected_customdatatype;
 			$this->issuetypes = array();
+			$this->issuetype_id = null;
 			$this->issue = null;
-			$errors = array();
-			$this->getResponse()->setPage('reportissue');
-			$this->default_title = $i18n->__('Enter a short, but descriptive summary of the issue here');
+			$this->categories = BUGScategory::getAll();
+			$this->severities = BUGSseverity::getAll();
+			$this->priorities = BUGSpriority::getAll();
+			$this->reproducabilities = BUGSreproducability::getAll();
+			$this->resolutions = BUGSresolution::getAll();
+			$this->statuses = BUGSstatus::getAll();
+			$this->projects = BUGSproject::getAll();
+		}
+
+		protected function _clearReportIssueProperties()
+		{
+			$this->title = null;
+			$this->description = null;
+			$this->reproduction_steps = null;
+			$this->selected_category = null;
+			$this->selected_status = null;
+			$this->selected_reproducability = null;
+			$this->selected_resolution = null;
+			$this->selected_severity = null;
+			$this->selected_priority = null;
+			$this->selected_edition = null;
+			$this->selected_build = null;
+			$this->selected_component = null;
+		}
+
+		protected function _loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction(BUGSrequest $request)
+		{
 			if ($project_key = $request->getParameter('project_key'))
 			{
 				try
@@ -610,206 +629,217 @@
 			{
 				$this->issuetypes = BUGSissuetype::getAll();
 			}
-			$this->categories = BUGScategory::getAll();
-			$this->severities = BUGSseverity::getAll();
-			$this->priorities = BUGSpriority::getAll();
-			$this->reproducabilities = BUGSreproducability::getAll();
-			$this->resolutions = BUGSresolution::getAll();
-			$this->statuses = BUGSstatus::getAll();
-			$this->projects = BUGSproject::getAll();
-			
-			if ($issuetype_id = $request->getParameter('issuetype_id'))
+
+			$this->issuetype_id = $request->getParameter('issuetype_id');
+			if ($this->issuetype_id)
 			{
 				try
 				{
-					$this->selected_issuetype = BUGSfactory::BUGSissuetypeLab($issuetype_id);
+					$this->selected_issuetype = BUGSfactory::BUGSissuetypeLab($this->issuetype_id);
 				}
 				catch (Exception $e) {}
 			}
-			
+		}
+
+		protected function _postIssueValidation(BUGSrequest $request, &$errors)
+		{
+			if (!$this->selected_project instanceof BUGSproject) $errors['project'] = $i18n->__('You have to select a valid project');
+			if (!$this->selected_issuetype instanceof BUGSissuetype) $errors['issuetype'] = $i18n->__('You have to select a valid issue type');
+			if (empty($errors))
+			{
+				$fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
+
+				$this->title = $request->getParameter('title');
+				$this->description = $request->getParameter('description', null, false);
+				$this->reproduction_steps = $request->getParameter('reproduction_steps', null, false);
+
+				if ($edition_id = (int) $request->getParameter('edition_id'))
+				{
+					$this->selected_edition = BUGSfactory::editionLab($edition_id);
+				}
+				if ($build_id = (int) $request->getParameter('build_id'))
+				{
+					$this->selected_build = BUGSfactory::buildLab($build_id);
+				}
+				if ($component_id = (int) $request->getParameter('component_id'))
+				{
+					$this->selected_component = BUGSfactory::componentLab($component_id);
+				}
+
+				if (trim($this->title) == '') $errors['title'] = $i18n->__('You have to specify a title');
+				if ($this->title == $this->default_title) $errors['title'] = $i18n->__('You have to specify a title');
+
+				if (isset($fields_array['description']) && $fields_array['description']['required'] && trim($this->description) == '')
+					$errors['description'] = $i18n->__('You have to enter something in the "%description%" field', array('%description%' => $i18n->__('Description')));
+				if (isset($fields_array['reproduction_steps']) && $fields_array['reproduction_steps']['required'] && trim($this->reproduction_steps) == '')
+					$errors['reproduction_steps'] = $i18n->__('You have to enter something in the "%reproduction_steps%" field', array('%reproduction_steps%' => $i18n->__('Reproduction steps')));
+
+				if (isset($fields_array['edition']))
+				{
+					if ($fields_array['edition']['required'] && !$edition_id)
+						$errors['edition'] = $i18n->__('You have to specify an edition');
+					if ($edition_id && !in_array($edition_id, array_keys($fields_array['edition']['editions'])))
+						$errors['edition'] = $i18n->__('The edition you specified is invalid');
+				}
+
+				if (isset($fields_array['build']))
+				{
+					if ($fields_array['build']['required'] && !$build_id)
+						$errors['build'] = $i18n->__('You have to specify a release');
+					if ($build_id && !in_array($build_id, array_keys($fields_array['build']['builds'])))
+						$errors['build'] = $i18n->__('The release you specified is invalid');
+				}
+
+				if (isset($fields_array['component']))
+				{
+					if ($fields_array['component']['required'] && !$component_id)
+						$errors['component'] = $i18n->__('You have to specify a component');
+					if ($component_id && !in_array($component_id, array_keys($fields_array['component']['components'])))
+						$errors['component'] = $i18n->__('The component you specified is invalid');
+				}
+
+				if ($category_id = (int) $request->getParameter('category_id'))
+				{
+					$this->selected_category = BUGSfactory::BUGScategoryLab($category_id);
+					if ($this->selected_category === null)
+						$errors['category'] = $i18n->__('You have specified an invalid category');
+				}
+				if (isset($fields_array['category']) && $fields_array['category']['required'] && $this->selected_category === null)
+					$errors['category'] = $i18n->__('You have to specify a category');
+
+				if ($status_id = (int) $request->getParameter('status_id'))
+				{
+					$this->selected_status = BUGSfactory::BUGSstatusLab($status_id);
+					if ($this->selected_status === null)
+						$errors['status'] = $i18n->__('You have specified an invalid status');
+				}
+				if (isset($fields_array['status']) && $fields_array['status']['required'] && $this->selected_status === null)
+					$errors['status'] = $i18n->__('You have to specify a status');
+
+				if ($reproducability_id = (int) $request->getParameter('reproducability_id'))
+				{
+					$this->selected_reproducability = BUGSfactory::BUGSreproducabilityLab($reproducability_id);
+					if ($this->selected_reproducability === null)
+						$errors['reproducability'] = $i18n->__('You have specified an invalid reproducability');
+				}
+				if (isset($fields_array['reproducability']) && $fields_array['reproducability']['required'] && $this->selected_reproducability === null)
+					$errors['reproducability'] = $i18n->__('You have to specify a reproducability');
+
+				if ($resolution_id = (int) $request->getParameter('resolution_id'))
+				{
+					$this->selected_resolution = BUGSfactory::BUGSresolutionLab($resolution_id);
+					if ($this->selected_resolution === null)
+						$errors['resolution'] = $i18n->__('You have specified an invalid resolution');
+				}
+				if (isset($fields_array['resolution']) && $fields_array['resolution']['required'] && $this->selected_resolution === null)
+					$errors['resolution'] = $i18n->__('You have to specify a resolution');
+
+				if ($severity_id = (int) $request->getParameter('severity_id'))
+				{
+					$this->selected_severity = BUGSfactory::BUGSseverityLab($severity_id);
+					if ($this->selected_severity === null)
+						$errors['severity'] = $i18n->__('You have specified an invalid severity');
+				}
+				if (isset($fields_array['severity']) && $fields_array['severity']['required'] && $this->selected_severity === null)
+					$errors['severity'] = $i18n->__('You have to specify a severity');
+
+				if ($priority_id = (int) $request->getParameter('priority_id'))
+				{
+					$this->selected_priority = BUGSfactory::BUGSpriorityLab($priority_id);
+					if ($this->selected_priority === null)
+						$errors['priority'] = $i18n->__('You have specified an invalid priority');
+				}
+				if (isset($fields_array['priority']) && $fields_array['priority']['required'] && $this->selected_priority === null)
+					$errors['priority'] = $i18n->__('You have to specify a priority');
+
+				foreach (BUGScustomdatatype::getAll() as $customdatatype)
+				{
+					$customdatatype_id = $customdatatype->getKey() . '_id';
+					if ($$customdatatype_id = $request->getParameter($customdatatype_id))
+					{
+						$selected_customdatatype[$customdatatype->getKey()] = BUGScustomdatatypeoption::getByValueAndKey($$customdatatype_id, $customdatatype->getKey());
+						if ($selected_customdatatype[$customdatatype->getKey()] === null)
+							$errors[$customdatatype->getKey()] = $i18n->__('Invalid field: %custom_datatype_field_description%', array($customdatatype->getDescription()));
+					}
+					if (isset($fields_array[$customdatatype->getKey()]) && $fields_array[$customdatatype->getKey()]['required'] && $selected_customdatatype[$customdatatype->getKey()] === null)
+						$errors[$customdatatype->getKey()] = $i18n->__('Required field: %custom_datatype_field_description%', array($customdatatype->getDescription()));
+				}
+				$this->selected_customdatatype = $selected_customdatatype;
+			}
+			return !(bool) count($errors);
+		}
+
+		protected function _postIssue()
+		{
+			$fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
+			$issue = BUGSissue::createNew($this->title, $this->issuetype_id, $this->selected_project->getID());
+			if (isset($fields_array['description'])) $issue->setDescription($this->description);
+			if (isset($fields_array['reproduction_steps'])) $issue->setReproductionSteps($this->reproduction_steps);
+			if (isset($fields_array['category']) && $this->selected_category instanceof BUGSdatatype) $issue->setCategory($this->selected_category->getID());
+			if (isset($fields_array['status']) && $this->selected_status instanceof BUGSdatatype) $issue->setStatus($this->selected_status->getID());
+			if (isset($fields_array['reproducability']) && $this->selected_reproducability instanceof BUGSdatatype) $issue->setReproducability($this->selected_reproducability->getID());
+			if (isset($fields_array['resolution']) && $this->selected_resolution instanceof BUGSdatatype) $issue->setResolution($this->selected_resolution->getID());
+			if (isset($fields_array['severity']) && $this->selected_severity instanceof BUGSdatatype) $issue->setSeverity($this->selected_severity->getID());
+			if (isset($fields_array['priority']) && $this->selected_priority instanceof BUGSdatatype) $issue->setPriority($this->selected_priority->getID());
+			foreach (BUGScustomdatatype::getAll() as $customdatatype)
+			{
+				if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption)
+				{
+					$selected_option = $this->selected_customdatatype[$customdatatype->getKey()];
+					$issue->setCustomField($customdatatype->getKey(), $selected_option->getValue());
+				}
+			}
+			$issue->save();
+			if (isset($fields_array['edition']) && $this->selected_edition instanceof BUGSedition) $issue->addAffectedEdition($this->selected_edition);
+			if (isset($fields_array['build']) && $this->selected_build instanceof BUGSbuild) $issue->addAffectedBuild($this->selected_build);
+			if (isset($fields_array['component']) && $this->selected_component instanceof BUGScomponent) $issue->addAffectedComponent($this->selected_component);
+
+			return $issue;
+		}
+		
+		/**
+		 * "Report issue" page
+		 *  
+		 * @param BUGSrequest $request
+		 */
+		public function runReportIssue(BUGSrequest $request)
+		{
+			$i18n = BUGScontext::getI18n();
+			$this->_setupReportIssueProperties();
+			$errors = array();
+			$this->getResponse()->setPage('reportissue');
+			$this->default_title = $i18n->__('Enter a short, but descriptive summary of the issue here');
+
+			$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
+
 			if ($request->isMethod(BUGSrequest::POST))
 			{
-				if (!$this->selected_project instanceof BUGSproject) $errors['project'] = $i18n->__('You have to select a valid project');
-				if (!$this->selected_issuetype instanceof BUGSissuetype) $errors['issuetype'] = $i18n->__('You have to select a valid issue type');
-				if (empty($errors))
+				if ($this->_postIssueValidation($request, $errors))
 				{
-					$fields_array = $this->selected_project->getReportableFieldsArray($issuetype_id);
-					
-					$this->title = $request->getParameter('title');
-					$this->description = $request->getParameter('description', null, false);
-					$this->reproduction_steps = $request->getParameter('reproduction_steps', null, false);
-					
-					if ($edition_id = (int) $request->getParameter('edition_id'))
+					try
 					{
-						$this->selected_edition = BUGSfactory::editionLab($edition_id);
-					}
-					if ($build_id = (int) $request->getParameter('build_id'))
-					{
-						$this->selected_build = BUGSfactory::buildLab($build_id);
-					}
-					if ($component_id = (int) $request->getParameter('component_id'))
-					{
-						$this->selected_component = BUGSfactory::componentLab($component_id);
-					}
-					
-					if (trim($this->title) == '') $errors['title'] = $i18n->__('You have to specify a title');
-					if ($this->title == $this->default_title) $errors['title'] = $i18n->__('You have to specify a title');
-
-					if (isset($fields_array['description']) && $fields_array['description']['required'] && trim($this->description) == '')
-						$errors['description'] = $i18n->__('You have to enter something in the "%description%" field', array('%description%' => $i18n->__('Description')));
-					if (isset($fields_array['reproduction_steps']) && $fields_array['reproduction_steps']['required'] && trim($this->reproduction_steps) == '')
-						$errors['reproduction_steps'] = $i18n->__('You have to enter something in the "%reproduction_steps%" field', array('%reproduction_steps%' => $i18n->__('Reproduction steps')));
-					
-					if (isset($fields_array['edition']))
-					{
-						if ($fields_array['edition']['required'] && !$edition_id)
-							$errors['edition'] = $i18n->__('You have to specify an edition');
-						if ($edition_id && !in_array($edition_id, array_keys($fields_array['edition']['editions'])))
-							$errors['edition'] = $i18n->__('The edition you specified is invalid');
-					}
-					
-					if (isset($fields_array['build']))
-					{
-						if ($fields_array['build']['required'] && !$build_id)
-							$errors['build'] = $i18n->__('You have to specify a release');
-						if ($build_id && !in_array($build_id, array_keys($fields_array['build']['builds'])))
-							$errors['build'] = $i18n->__('The release you specified is invalid');
-					}
-
-					if (isset($fields_array['component']))
-					{
-						if ($fields_array['component']['required'] && !$component_id)
-							$errors['component'] = $i18n->__('You have to specify a component');
-						if ($component_id && !in_array($component_id, array_keys($fields_array['component']['components'])))
-							$errors['component'] = $i18n->__('The component you specified is invalid');
-					}
-					
-					if ($category_id = (int) $request->getParameter('category_id'))
-					{
-						$this->selected_category = BUGSfactory::BUGScategoryLab($category_id);
-						if ($this->selected_category === null) 
-							$errors['category'] = $i18n->__('You have specified an invalid category');
-					}
-					if (isset($fields_array['category']) && $fields_array['category']['required'] && $this->selected_category === null)
-						$errors['category'] = $i18n->__('You have to specify a category');
-				
-					if ($status_id = (int) $request->getParameter('status_id'))
-					{
-						$this->selected_status = BUGSfactory::BUGSstatusLab($status_id);
-						if ($this->selected_status === null) 
-							$errors['status'] = $i18n->__('You have specified an invalid status');
-					}
-					if (isset($fields_array['status']) && $fields_array['status']['required'] && $this->selected_status === null)
-						$errors['status'] = $i18n->__('You have to specify a status');
-				
-					if ($reproducability_id = (int) $request->getParameter('reproducability_id'))
-					{
-						$this->selected_reproducability = BUGSfactory::BUGSreproducabilityLab($reproducability_id);
-						if ($this->selected_reproducability === null) 
-							$errors['reproducability'] = $i18n->__('You have specified an invalid reproducability');
-					}
-					if (isset($fields_array['reproducability']) && $fields_array['reproducability']['required'] && $this->selected_reproducability === null)
-						$errors['reproducability'] = $i18n->__('You have to specify a reproducability');
-						
-					if ($resolution_id = (int) $request->getParameter('resolution_id'))
-					{
-						$this->selected_resolution = BUGSfactory::BUGSresolutionLab($resolution_id);
-						if ($this->selected_resolution === null) 
-							$errors['resolution'] = $i18n->__('You have specified an invalid resolution');
-					}
-					if (isset($fields_array['resolution']) && $fields_array['resolution']['required'] && $this->selected_resolution === null)
-						$errors['resolution'] = $i18n->__('You have to specify a resolution');
-
-					if ($severity_id = (int) $request->getParameter('severity_id'))
-					{
-						$this->selected_severity = BUGSfactory::BUGSseverityLab($severity_id);
-						if ($this->selected_severity === null) 
-							$errors['severity'] = $i18n->__('You have specified an invalid severity');
-					}
-					if (isset($fields_array['severity']) && $fields_array['severity']['required'] && $this->selected_severity === null)
-						$errors['severity'] = $i18n->__('You have to specify a severity');
-
-					if ($priority_id = (int) $request->getParameter('priority_id'))
-					{
-						$this->selected_priority = BUGSfactory::BUGSpriorityLab($priority_id);
-						if ($this->selected_priority === null) 
-							$errors['priority'] = $i18n->__('You have specified an invalid priority');
-					}
-					if (isset($fields_array['priority']) && $fields_array['priority']['required'] && $this->selected_priority === null)
-						$errors['priority'] = $i18n->__('You have to specify a priority');
-
-					foreach (BUGScustomdatatype::getAll() as $customdatatype)
-					{
-						$customdatatype_id = $customdatatype->getKey() . '_id';
-						if ($$customdatatype_id = $request->getParameter($customdatatype_id))
+						$issue = $this->_postIssue();
+						if ($request->getParameter('return_format') == 'scrum')
 						{
-							$selected_customdatatype[$customdatatype->getKey()] = BUGScustomdatatypeoption::getByValueAndKey($$customdatatype_id, $customdatatype->getKey());
-							if ($selected_customdatatype[$customdatatype->getKey()] === null)
-								$errors[$customdatatype->getKey()] = $i18n->__('Invalid field: %custom_datatype_field_description%', array($customdatatype->getDescription()));
+							return $this->renderJSON(array('failed' => false, 'story_id' => $issue->getID(), 'content' => $this->getComponentHTML('project/scrumcard', array('issue' => $issue))));
 						}
-						if (isset($fields_array[$customdatatype->getKey()]) && $fields_array[$customdatatype->getKey()]['required'] && $selected_customdatatype[$customdatatype->getKey()] === null)
-							$errors[$customdatatype->getKey()] = $i18n->__('Required field: %custom_datatype_field_description%', array($customdatatype->getDescription()));
+						if ($this->selected_issuetype->getRedirectAfterReporting())
+						{
+							$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 303);
+						}
+						else
+						{
+							$this->_clearReportIssueProperties();
+							$this->issue = $issue;
+						}
 					}
-					$this->selected_customdatatype = $selected_customdatatype;
-						
-					if (empty($errors))
+					catch (Exception $e)
 					{
-						try
+						if ($request->getParameter('return_format') == 'scrum')
 						{
-							$issue = BUGSissue::createNew($this->title, $issuetype_id, $this->selected_project->getID());
-							if (isset($fields_array['description'])) $issue->setDescription($this->description);
-							if (isset($fields_array['reproduction_steps'])) $issue->setReproductionSteps($this->reproduction_steps);
-							if (isset($fields_array['category']) && $this->selected_category instanceof BUGSdatatype) $issue->setCategory($this->selected_category->getID());
-							if (isset($fields_array['status']) && $this->selected_status instanceof BUGSdatatype) $issue->setStatus($this->selected_status->getID());
-							if (isset($fields_array['reproducability']) && $this->selected_reproducability instanceof BUGSdatatype) $issue->setReproducability($this->selected_reproducability->getID());
-							if (isset($fields_array['resolution']) && $this->selected_resolution instanceof BUGSdatatype) $issue->setResolution($this->selected_resolution->getID());
-							if (isset($fields_array['severity']) && $this->selected_severity instanceof BUGSdatatype) $issue->setSeverity($this->selected_severity->getID());
-							if (isset($fields_array['priority']) && $this->selected_priority instanceof BUGSdatatype) $issue->setPriority($this->selected_priority->getID());
-							$issue->save();
-							if (isset($fields_array['edition']) && $this->selected_edition instanceof BUGSedition) $issue->addAffectedEdition($this->selected_edition);
-							if (isset($fields_array['build']) && $this->selected_build instanceof BUGSbuild) $issue->addAffectedBuild($this->selected_build);
-							if (isset($fields_array['component']) && $this->selected_component instanceof BUGScomponent) $issue->addAffectedComponent($this->selected_component);
-							foreach (BUGScustomdatatype::getAll() as $customdatatype)
-							{
-								if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption)
-								{
-									$selected_option = $this->selected_customdatatype[$customdatatype->getKey()];
-									$issue->setCustomField($customdatatype->getKey(), $selected_option->getValue());
-								}
-							}
-							if ($request->getParameter('return_format') == 'scrum')
-							{
-								return $this->renderJSON(array('failed' => false, 'story_id' => $issue->getID(), 'content' => $this->getComponentHTML('project/scrumcard', array('issue' => $issue))));
-							}
-							if ($this->selected_issuetype->getRedirectAfterReporting())
-							{
-								$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 303);
-							}
-							else
-							{
-								$this->title = null;
-								$this->description = null;
-								$this->reproduction_steps = null;
-								$this->selected_category = null;
-								$this->selected_status = null;
-								$this->selected_reproducability = null;
-								$this->selected_resolution = null;
-								$this->selected_severity = null;
-								$this->selected_priority = null;
-								$this->selected_edition = null;
-								$this->selected_build = null;
-								$this->selected_component = null;
-								$this->issue = $issue;
-							}
+							return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
 						}
-						catch (Exception $e)
-						{
-							if ($request->getParameter('return_format') == 'scrum')
-							{
-								return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
-							}
-							$errors[] = $e->getMessage();
-						}
+						$errors[] = $e->getMessage();
 					}
 				}
 			}
@@ -1122,6 +1152,25 @@
 					$this->getResponse()->setHttpStatus(400);
 					return $this->renderJSON(array('error' => BUGScontext::getI18n()->__('No valid field value specified')));
 					break;
+				default:
+					if ($customdatatype = BUGScustomdatatype::getByKey($request->getParameter('field')))
+					{
+						$key = $customdatatype->getKey();
+						if ($request->hasParameter("{$key}_value"))
+						{
+							$customdatatypeoption_value = $request->getParameter("{$key}_value");
+							if ($customdatatypeoption_value && ($customdatatypeoption = BUGScustomdatatypeoption::getByValueAndKey($customdatatypeoption_value, $key)) instanceof BUGScustomdatatypeoption)
+							{
+								$issue->setCustomField($key, $customdatatypeoption->getValue());
+								$changed_methodname = "isCustomfield{$key}Changed";
+								if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
+								return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $customdatatypeoption_value, 'name' => $customdatatypeoption->getName())));
+							}
+						}
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('error' => BUGScontext::getI18n()->__('No valid field value specified')));
+					}
+					break;
 			}
 			
 			$this->getResponse()->setHttpStatus(400);
@@ -1214,6 +1263,15 @@
 				case 'posted_by':
 					$issue->revertPostedBy();
 					return $this->renderJSON(array('changed' => $issue->isPostedByChanged(), 'field' => array('id' => $issue->getPostedByID(), 'name' => $this->getComponentHTML('main/userdropdown', array('user' => $issue->getPostedBy())))));
+					break;
+				default:
+					if ($customdatatype = BUGScustomdatatype::getByKey($request->getParameter('field')))
+					{
+						$key = $customdatatype->getKey();
+						$revert_methodname = "revertCustomfield{$key}";
+						$issue->$revert_methodname();
+						$field = ($issue->getCustomField($key) instanceof BUGScustomdatatypeoption) ? array('value' => $issue->getCustomField($key)->getValue(), 'name' => $issue->getCustomField($key)->getName()) : array('id' => 0);
+					}
 					break;
 			}
 			

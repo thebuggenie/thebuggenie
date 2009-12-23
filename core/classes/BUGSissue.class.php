@@ -397,6 +397,13 @@
 		 * @var array
 		 */
 		protected $_log_entries;
+
+		/**
+		 * All custom data type properties
+		 *
+		 * @property $_customfield*
+		 * @var mixed
+		 */
 		
 		/**
 		 * Count the number of open and closed issues for a specific project id
@@ -598,7 +605,8 @@
 			$this->_being_worked_on_by		= $row->get(B2tIssues::USER_WORKING_ON);
 			$this->_being_worked_on_since	= $row->get(B2tIssues::USER_WORKED_ON_SINCE);
 			$this->_deleted 				= (bool) $row->get(B2tIssues::DELETED);
-			
+
+			$this->_populateCustomfields();
 			$this->_mergeChangedProperties();
 		}
 		
@@ -695,6 +703,26 @@
 		{
 			$project = $this->getProject();
 			return ($project instanceof BUGSproject) ? $project->getID() : null;
+		}
+
+		/**
+		 * Populates all the custom field values
+		 */
+		protected function _populateCustomfields()
+		{
+			foreach (BUGScustomdatatype::getAll() as $key => $customdatatype)
+			{
+				$var_name = "_customfield".$key;
+				$this->$var_name = null;
+			}
+			if ($res = B2DB::getTable('B2tIssueCustomFields')->getAllValuesByIssueID($this->getID()))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$var_name = "_customfield".$row->get(B2tCustomFields::FIELD_KEY);
+					$this->$var_name = $row->get(B2tCustomFieldOptions::OPTION_VALUE);
+				}
+			}
 		}
 		
 		/**
@@ -1503,9 +1531,48 @@
 			$this->_addChangedProperty('_priority', $priority_id);
 		}
 
+		/**
+		 * Get all custom fields and their values
+		 *
+		 * @return array
+		 */
+		public function getCustomFields()
+		{
+			$retarr = array();
+			foreach (BUGScustomdatatype::getAll() as $key => $customdatatype)
+			{
+				$var_name = '_customfield'.$key;
+				$retarr[$key] = $this->$var_name;
+			}
+			return $retarr;
+		}
+
+		/**
+		 * Set the value of a custom field
+		 *
+		 * @param string $key
+		 * @param mixed $value
+		 */
 		public function setCustomField($key, $value)
 		{
-			$this->_addChangedProperty('_'.$key, $value);
+			$this->_addChangedProperty('_customfield'.$key, $value);
+		}
+
+		/**
+		 * Return the value of a custom field
+		 *
+		 * @param string $key
+		 * 
+		 * @return mixed
+		 */
+		public function getCustomField($key)
+		{
+			$var_name = "_customfield{$key}";
+			if (!is_object($this->$var_name) && !is_null($this->$var_name))
+			{
+				$this->$var_name = BUGScustomdatatypeoption::getByValueAndKey($this->$var_name, $key);
+			}
+			return $this->$var_name;
 		}
 
 		/**
@@ -3565,7 +3632,16 @@
 			
 			$row = $res->getNextRow();
 			return($row->get(B2tLog::TIME));
-		}	
+		}
+
+		protected function _saveCustomFieldValues()
+		{
+			foreach (BUGScustomdatatype::getAll() as $key => $customdatatype)
+			{
+				$option_id = ($this->getCustomField($key) instanceof BUGScustomdatatypeoption) ? $this->getCustomField($key)->getID() : null;
+				B2DB::getTable('B2tIssueCustomFields')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
+			}
+		}
 		
 		/**
 		 * Save changes made to the issue since last time
@@ -3820,6 +3896,17 @@
 								$comment_lines[] = __("This issue has been reopened");
 							}
 							break;
+						default:
+							if (substr($property, 0, 12) == '_customfield')
+							{
+								$key = substr($property, 12);
+								$customdatatype = BUGScustomdatatype::getByKey($key);
+								$old_value = ($old_item = BUGScustomdatatypeoption::getByValueAndKey($value['original_value'], $key)) ? $old_item->getName() : __('Unknown');
+								$new_value = ($this->getCustomField($key) instanceof BUGScustomdatatypeoption) ? $this->getCustomField($key)->getName() : __('Unknown');
+								$this->addLogEntry(B2tLog::LOG_ISSUE_CUSTOMFIELD_CHANGED, $old_value . ' &rArr; ' . $new_value);
+								$comment_lines[] = __("The custom field %customfield_name% has been updated, from <b>%previous_value%</b> to <b>%new_value%</b>.", array('%customfield_name%' => $customdatatype->getDescription(), '%previous_value%' => $old_value, '%new_value%' => $new_value));
+							}
+							break;
 					}
 				}
 			}
@@ -3862,6 +3949,8 @@
 			$crit->addUpdate(B2tIssues::USER_WORKED_ON_SINCE, $this->_being_worked_on_since);
 			$crit->addUpdate(B2tIssues::MILESTONE, (is_object($this->_milestone)) ? $this->_milestone->getID() : $this->_milestone);
 			$res = B2DB::getTable('B2tIssues')->doUpdateById($crit, $this->getID());
+
+			$this->_saveCustomFieldValues();
 			$this->getProject()->clearRecentActivities();
 
 			return true;

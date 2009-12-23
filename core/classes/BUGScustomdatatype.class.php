@@ -299,6 +299,18 @@
 			B2DB::getTable('B2tCustomFields')->saveById($this->_name, $this->_description, $this->_instructions, $this->_itemid);
 		}
 
+		/**
+		 * Whether or not this custom data type is visible for this issue type
+		 *
+		 * @param integer $issuetype_id
+		 *
+		 * @return bool
+		 */
+		public function isVisibleForIssuetype($issuetype_id)
+		{
+			return true;
+		}
+
 	}
 
 ?>

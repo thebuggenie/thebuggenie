@@ -626,9 +626,9 @@
 		 * 
 		 * @return B2DBCriteria
 		 */
-		public function getCriteria()
+		public function getCriteria($setupjointables = false)
 		{
-			$crit = new B2DBCriteria($this);
+			$crit = new B2DBCriteria($this, $setupjointables);
 			return $crit;
 		}
 

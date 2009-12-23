@@ -105,7 +105,7 @@ function updateDualFieldFromJSON(dualfield, field)
 
 function updateFieldFromObject(object, field)
 {
-	if (object.id == 0)
+	if ((object.id && object.id == 0) || (object.value && object.value == ''))
 	{
 		$(field + '_name').hide();
 		$('no_' + field).show();

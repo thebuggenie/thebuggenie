@@ -17,8 +17,14 @@
 					case B2tLog::LOG_ISSUE_REOPEN:
 						echo '<br><i>' . __('Issue reopened') . '</i>';
 						break;
+					case B2tLog::LOG_ISSUE_UPDATE:
+						echo '<br><i>' . $action['text'] . '</i>';
+						break;
 					case B2tLog::LOG_ISSUE_CATEGORY:
 						echo '<br><i>' . __('Category changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						break;
+					case B2tLog::LOG_ISSUE_CUSTOMFIELD_CHANGED:
+						echo '<br><i>' . __('Custom field changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case B2tLog::LOG_ISSUE_STATUS:
 						echo '<br><i>' . __('Status changed: %text%', array('%text%' => $action['text'])) . '</i>';

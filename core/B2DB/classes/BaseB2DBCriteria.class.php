@@ -75,11 +75,11 @@
 		 * 
 		 * @return Base2DBCriteria 
 		 */
-		public function __construct($table = null)
+		public function __construct($table = null, $setupjointable = false)
 		{
 			if ($table !== null)
 			{
-				$this->setFromTable($table);
+				$this->setFromTable($table, $setupjointable);
 			}
 			return $this;
 		}

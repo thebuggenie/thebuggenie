@@ -55,6 +55,7 @@
 		const LOG_ISSUE_ASSIGNED = 33;
 		const LOG_ISSUE_OWNED = 34;
 		const LOG_ISSUE_POSTED = 35;
+		const LOG_ISSUE_CUSTOMFIELD_CHANGED = 36;
 		
 		const B2DBNAME = 'log';
 		const ID = 'log.id';

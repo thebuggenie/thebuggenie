@@ -316,6 +316,44 @@
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
 		<?php endforeach; ?>
+		<?php foreach ($customfields_list as $field => $info): ?>
+			<dl class="viewissue_list" id="<?php echo $field; ?>_field"<?php if (!$info['visible']): ?> style="display: none;"<?php endif; ?>>
+				<dt id="<?php echo $field; ?>_header" class="<?php if ($info['changed']): ?>issue_detail_changed<?php endif; ?><?php if (!$info['merged']): ?> issue_detail_unmerged<?php endif; ?>">
+					<?php echo $info['title']; ?>
+				</dt>
+				<dd id="<?php echo $field; ?>_content" class="<?php if ($info['changed']): ?>issue_detail_changed<?php endif; ?><?php if (!$info['merged']): ?> issue_detail_unmerged<?php endif; ?>">
+					<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+					<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field . '_undo_spinning')); ?>
+					<a href="javascript:void(0);" onclick="$('<?php echo $field; ?>_change').toggle();" title="<?php echo $info['change_tip']; ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+					<?php echo image_tag('icon_customdatatype.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+					<span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $info['name']; ?></span>
+					<span class="faded_medium" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span>
+				</dd>
+			</dl>
+			<div style="clear: both;"> </div>
+			<div class="rounded_box white" id="<?php echo $field; ?>_change" style="display: none; clear: both; width: 322px; margin: 5px 0 5px 0;">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="padding: 5px;">
+					<div class="dropdown_header"><?php echo $info['change_header']; ?></div>
+					<div class="dropdown_content">
+						<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => 0)); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+					</div>
+					<div class="dropdown_content">
+						<?php echo $info['select']; ?>:<br>
+						<ul class="choices">
+							<?php foreach ($info['choices'] as $choice): ?>
+								<li>
+									<?php echo image_tag('icon_customdatatype.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getValue())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+						<div id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+					</div>
+					<div id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></div>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div>
+		<?php endforeach; ?>
 		<div style="clear: both; margin-bottom: 5px;"> </div>
 	</div>
 </div>
