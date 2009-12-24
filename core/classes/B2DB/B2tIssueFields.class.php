@@ -74,6 +74,28 @@
 			$res = $this->doDelete($crit);
 		}
 
+		public function addFieldAndDetailsByIssuetypeID($issuetype_id, $key, $details)
+		{
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
+			$crit->addInsert(self::FIELD_KEY, $key);
+			if (array_key_exists('reportable', $details))
+			{
+				$crit->addInsert(self::REPORTABLE, true);
+			}
+			if (array_key_exists('additional', $details))
+			{
+				$crit->addInsert(self::ADDITIONAL, true);
+			}
+			if (array_key_exists('required', $details))
+			{
+				$crit->addInsert(self::REQUIRED, true);
+			}
+
+			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$this->doInsert($crit);
+		}
+
 		public function getByIssuetypeID($issuetype_id)
 		{
 			$crit = $this->getCriteria();

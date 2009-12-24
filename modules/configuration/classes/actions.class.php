@@ -189,6 +189,10 @@
 					if (($issuetype = BUGSfactory::BUGSissuetypeLab($request->getParameter('id'))) instanceof BUGSissuetype)
 					{
 						$issuetype->clearAvailableFields();
+						foreach ($request->getParameter('field', array()) as $key => $details)
+						{
+							$issuetype->setFieldAvailable($key, $details);
+						}
 						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Avilable choices updated')));
 					}
 					else

@@ -146,6 +146,11 @@
 			B2DB::getTable('B2tIssueFields')->deleteByIssuetypeID($this->getID());
 		}
 
+		public function setFieldAvailable($key, $details)
+		{
+			B2DB::getTable('B2tIssueFields')->addFieldAndDetailsByIssuetypeID($this->getID(), $key, $details);
+		}
+
 		public function save()
 		{
 			B2DB::getTable('B2tIssueTypes')->saveDetails($this);
