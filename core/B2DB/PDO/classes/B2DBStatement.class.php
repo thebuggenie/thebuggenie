@@ -82,8 +82,9 @@
 					}
 					elseif (B2DB::getDBtype() == 'pgsql')
 					{
-						BUGSlogging::log('sequence: ' . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq', 'b2db');
-						$this->insert_id = B2DB::getDBLink()->lastInsertId($this->getCriteria()->getTable()->getB2DBName() . '_id_seq');
+						BUGSlogging::log('sequence: ' . B2DB::getTablePrefix() . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq', 'b2db');
+						$this->insert_id = B2DB::getDBLink()->lastInsertId(B2DB::getTablePrefix() . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq');
+						BUGSlogging::log('id is: ' . $this->insert_id, 'b2db');
 					}
 				}
 				$action = ($this->getCriteria() instanceof B2DBCriteria) ? $this->getCriteria()->action : '';

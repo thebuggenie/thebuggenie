@@ -67,7 +67,7 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done)
 		{
 			$(indicator).hide();
 			successMessage(json.title, json.content);
-			if (hide_div_when_done != '')
+			if (hide_div_when_done != '' && $(hide_div_when_done))
 			{
 				$(hide_div_when_done).hide();
 			}
