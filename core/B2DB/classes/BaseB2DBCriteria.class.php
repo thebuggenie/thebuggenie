@@ -58,6 +58,7 @@
 		const DB_IN = 'IN';
 		const DB_NOT_IN = 'NOT IN';
 		const DB_LEFT_JOIN = 'LEFT JOIN';
+		const DB_INNER_JOIN = 'INNER JOIN';
 		const DB_RIGHT_JOIN = 'RIGHT JOIN';
 		const DB_COUNT = 'COUNT';
 		const DB_MAX = 'MAX';

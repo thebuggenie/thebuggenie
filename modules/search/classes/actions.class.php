@@ -143,7 +143,7 @@
 
 		public function runAddFilter(BUGSrequest $request)
 		{
-			if (in_array($request->getParameter('filter_name'), B2tIssues::getValidSearchFilters()))
+			if (in_array($request->getParameter('filter_name'), B2tIssues::getValidSearchFilters()) || BUGScustomdatatype::doesKeyExist($request->getParameter('filter_name')))
 			{
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('search/filter', array('filter' => $request->getParameter('filter_name'), 'key' => $request->getParameter('key', 0)))));
 			}

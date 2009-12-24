@@ -4,7 +4,8 @@
 			<?php if (!BUGScontext::isProjectContext()): ?>
 				<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
 			<?php endif; ?>
-			<th<?php if (BUGScontext::isProjectContext()): ?> style="padding-left: 3px;"<?php endif; ?>><?php echo __('Issue'); ?></th>
+			<th style="width: 16px; text-align: right; padding: 0;<?php if (BUGScontext::isProjectContext()): ?> padding-left: 3px;<?php endif; ?>">&nbsp;</th>
+			<th><?php echo __('Issue'); ?></th>
 			<th><?php echo __('Assigned to'); ?></th>
 			<th><?php echo __('Status'); ?></th>
 			<th><?php echo __('Resolution'); ?></th>
@@ -17,6 +18,9 @@
 				<?php if (!BUGScontext::isProjectContext()): ?>
 					<td style="padding-left: 5px;"><?php echo $issue->getProject()->getName(); ?></td>
 				<?php endif; ?>
+				<td>
+					<?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?>
+				</td>
 				<td class="result_issue"<?php if (BUGScontext::isProjectContext()): ?> style="padding-left: 3px;"<?php endif; ?>>
 					<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<span class="issue_no">' . $issue->getFormattedIssueNo(true) . '</span> - <span class="issue_title">' . $issue->getTitle() . '</span>'); ?>
 				</td>

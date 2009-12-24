@@ -1,5 +1,5 @@
-<?php if (in_array($filter, B2tIssues::getValidSearchFilters())): ?>
-	<li id="filter_<?php echo $key; ?>">
+<li id="filter_<?php echo $key; ?>">
+	<?php if (in_array($filter, B2tIssues::getValidSearchFilters())): ?>
 		<?php if ($filter == 'project_id' && !BUGScontext::isProjectContext()): ?>
 			<label<?php if (!BUGScontext::isProjectContext()): ?> for="filter_project_id_<?php echo $key; ?>"<?php endif; ?>><?php echo __('Project'); ?></label>
 			<?php if (BUGScontext::isProjectContext()): ?>
@@ -93,5 +93,18 @@
 			</select>
 			<a class="image" href="javascript:void(0);" onclick="removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
 		<?php endif; ?>
-	</li>
-<?php endif; ?>
+	<?php else: ?>
+		<?php $customdatatype = BUGScustomdatatype::getByKey($filter); ?>
+		<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo __($customdatatype->getDescription()); ?></label>
+		<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
+			<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is provided and is %value%', array('%field%' => '', '%value%' => '')); ?></option>
+			<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is provided and is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
+		</select>
+		<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>">
+			<?php foreach ($customdatatype->getOptions() as $option): ?>
+				<option value="<?php echo $option->getID(); ?>"<?php if ($selected_value == $option->getID()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+			<?php endforeach; ?>
+		</select>
+		<a class="image" href="javascript:void(0);" onclick="removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
+	<?php endif; ?>
+</li>

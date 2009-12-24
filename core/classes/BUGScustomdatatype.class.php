@@ -129,10 +129,15 @@
 			B2DB::getTable('B2tCustomFields')->doDeleteById($id);
 		}
 
-		public static function doesKeyExist($name)
+		public static function isNameValid($name)
 		{
 			$key = strtolower(str_replace(' ', '', $name));
 			return (bool) B2DB::getTable('B2tCustomFields')->countByKey($key);
+		}
+
+		public static function doesKeyExist($key)
+		{
+			return array_key_exists($key, self::getAll());
 		}
 
 		/**

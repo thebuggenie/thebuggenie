@@ -79,6 +79,9 @@
 							<option value="category"><?php echo __("Category - which category an issue is in"); ?></option>
 							<option value="priority"><?php echo __("Priority - how high the issue is prioritised"); ?></option>
 							<option value="severity"><?php echo __("Severity - how serious the issue is"); ?></option>
+							<?php foreach (BUGScustomdatatype::getAll() as $customdatatype): ?>
+								<option value="<?php echo $customdatatype->getKey(); ?>"><?php echo __($customdatatype->getDescription()); ?></option>
+							<?php endforeach; ?>
 						</select>
 						<?php echo image_submit_tag('action_add_small.png'); ?>
 						<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'add_filter_indicator')); ?>

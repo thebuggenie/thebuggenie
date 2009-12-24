@@ -372,13 +372,32 @@
 			{
 				foreach ($filters as $filter => $filter_info)
 				{
-					if (in_array($filter, self::getValidSearchFilters()))
+					if (!in_array($filter, self::getValidSearchFilters()))
 					{
-						if (array_key_exists('value', $filter_info) && in_array($filter_info['operator'], array('=', '!=', '<=', '>=', '<', '>')))
+						$crit->addJoin(B2DB::getTable('B2tIssueCustomFields'), B2tIssueCustomFields::ISSUE_ID, B2tIssues::ID);
+						break;
+					}
+				}
+
+				foreach ($filters as $filter => $filter_info)
+				{
+					if (array_key_exists('value', $filter_info) && in_array($filter_info['operator'], array('=', '!=', '<=', '>=', '<', '>')))
+					{
+						if (in_array($filter, self::getValidSearchFilters()))
 						{
 							$crit->addWhere($this->getB2DBName().'.'.$filter, $filter_info['value'], $filter_info['operator']);
 						}
-						else
+						elseif (BUGScustomdatatype::doesKeyExist($filter))
+						{
+							$customdatatype = BUGScustomdatatype::getByKey($filter);
+							$ctn = $crit->returnCriterion(B2tIssueCustomFields::CUSTOMFIELDS_ID, $customdatatype->getID());
+							$ctn->addWhere(B2tIssueCustomFields::OPTION_VALUE, $filter_info['value'], $filter_info['operator']);
+							$crit->addWhere($ctn);
+						}
+					}
+					else
+					{
+						if (in_array($filter, self::getValidSearchFilters()))
 						{
 							$first_val = array_shift($filter_info);
 							$ctn = $crit->returnCriterion($this->getB2DBName().'.'.$filter, $first_val['value'], $first_val['operator']);
@@ -389,6 +408,24 @@
 									if (in_array($single_filter['operator'], array('=', '!=', '<=', '>=', '<', '>')))
 									{
 										$ctn->addWhere($this->getB2DBName().'.'.$filter, $single_filter['value'], $single_filter['operator']);
+									}
+								}
+							}
+							$crit->addWhere($ctn);
+						}
+						elseif (BUGScustomdatatype::doesKeyExist($filter))
+						{
+							$customdatatype = BUGScustomdatatype::getByKey($filter);
+							$first_val = array_shift($filter_info);
+							$ctn = $crit->returnCriterion(B2tIssueCustomFields::CUSTOMFIELDS_ID, $customdatatype->getID());
+							$ctn->addWhere(B2tIssueCustomFields::OPTION_VALUE, $first_val['value'], $first_val['operator']);
+							if (count($filter_info) > 0)
+							{
+								foreach ($filter_info as $single_filter)
+								{
+									if (in_array($single_filter['operator'], array('=', '!=', '<=', '>=', '<', '>')))
+									{
+										$ctn->addWhere(B2tIssueCustomFields::OPTION_VALUE, $single_filter['value'], $single_filter['operator']);
 									}
 								}
 							}

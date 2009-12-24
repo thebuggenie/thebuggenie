@@ -295,7 +295,7 @@
 				case 'add':
 					if ($request->getParameter('name') != '')
 					{
-						if (!BUGScustomdatatype::doesKeyExist($request->getParameter('name')))
+						if (!BUGScustomdatatype::isNameValid($request->getParameter('name')))
 						{
 							$customtype = BUGScustomdatatype::createNew($request->getParameter('name'), $request->getParameter('field_type'));
 							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The custom type was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
