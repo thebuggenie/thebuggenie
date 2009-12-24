@@ -132,16 +132,8 @@
 		 */
 		public function runConfigureIssuetypes(BUGSrequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
 			$this->issue_types = BUGSissuetype::getAll();
-			$icons = array();
-			$icons['bug_report'] = $i18n->__('Bug report');
-			$icons['feature_request'] = $i18n->__('Feature request');
-			$icons['enhancement'] = $i18n->__('Enhancement');
-			$icons['developer_report'] = $i18n->__('User story');
-			$icons['idea'] = $i18n->__('Idea');
-			$icons['task'] = $i18n->__('Task');
-			$this->icons = $icons;
+			$this->icons = BUGSissuetype::getIcons();
 		}
 
 		/**
@@ -151,7 +143,7 @@
 		 */
 		public function runConfigureIssuetypesGetOptions(BUGSrequest $request)
 		{
-			return $this->renderComponent('issuetypes', array('id' => $request->getParameter('id')));
+			return $this->renderComponent('issuetypeoptions', array('id' => $request->getParameter('id')));
 		}
 
 		/**
@@ -164,6 +156,12 @@
 			switch ($request->getParameter('mode'))
 			{
 				case 'add':
+					if ($request->getParameter('name'))
+					{
+						$issuetype = BUGSissuetype::createNew($request->getParameter('name'), $request->getParameter('icon'));
+						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Issue type created'), 'content' => $this->getComponentHTML('issuetype', array('type' => $issuetype))));
+					}
+					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name for the issue type')));
 					break;
 				case 'update':
 					if (($issuetype = BUGSfactory::BUGSissuetypeLab($request->getParameter('id'))) instanceof BUGSissuetype)

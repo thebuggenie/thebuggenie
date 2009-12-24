@@ -17,22 +17,20 @@
 				</thead>
 				<tbody id="<?php echo $issuetype->getID(); ?>_list">
 					<?php foreach ($builtinfields as $item): ?>
-						<?php include_template('issuetype', array('issuetype' => $issuetype, 'key' => $item, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
+						<?php include_template('issuetypeoption', array('issuetype' => $issuetype, 'key' => $item, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
 					<?php endforeach; ?>
 					<?php if (count($customtypes) > 0): ?>
 						<?php foreach ($customtypes as $key => $item): ?>
-							<?php include_template('issuetype', array('issuetype' => $issuetype, 'key' => $key, 'item' => $item->getDescription(), 'visiblefields' => $visiblefields)); ?>
+							<?php include_template('issuetypeoption', array('issuetype' => $issuetype, 'key' => $key, 'item' => $item->getDescription(), 'visiblefields' => $visiblefields)); ?>
 						<?php endforeach; ?>
 					<?php endif; ?>
 				</tbody>
 			</table>
-		</div>
-	</div>
-	<div class="rounded_box yellow_borderless" style="margin: 0;">
-		<div class="xboxcontent" style="padding: 5px; font-size: 12px; height: 25px;">
-			<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "Save" to save your changes'); ?></div>
-			<input type="submit" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
-			<span id="update_<?php echo $issuetype->getID(); ?>_choices_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+			<div style="margin: 10px 0 0 0; height: 25px;">
+				<div style="float: left; font-size: 13px; padding-top: 2px; font-weight: bold;"><?php echo __('Click "Save" to save your changes'); ?></div>
+				<input type="submit" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+				<span id="update_<?php echo $issuetype->getID(); ?>_choices_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+			</div>
 		</div>
 		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 	</div>

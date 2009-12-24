@@ -45,6 +45,18 @@
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
 
+		public function createNew($name, $icon = 'bug_report')
+		{
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::NAME, $name);
+			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::ICON, $icon);
+			$crit->addInsert(self::DESCRIPTION, $name);
+			$res = $this->doInsert($crit);
+
+			return $res;
+		}
+
 		public function saveDetails(BUGSissuetype $issuetype)
 		{
 			$crit = $this->getCriteria();

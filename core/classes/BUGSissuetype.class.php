@@ -35,7 +35,42 @@
 		protected $_reportable = null;
 		
 		static $_issuetypes = array();
-		
+
+		protected $_visiblefields = null;
+
+		/**
+		 * Create a new issue type and return it
+		 *
+		 * @param string $name
+		 * @param string $icon
+		 *
+		 * @return BUGSissuetype
+		 */
+		public static function createNew($name, $icon = 'bug_report')
+		{
+			$res = B2DB::getTable('B2tIssueTypes')->createNew($name, $icon);
+			return BUGSfactory::BUGSissuetypeLab($res->getInsertID());
+		}
+
+		/**
+		 * Return an array of available icons
+		 *
+		 * @return array
+		 */
+		public static function getIcons()
+		{
+			$i18n = BUGScontext::getI18n();
+			$icons = array();
+			$icons['bug_report'] = $i18n->__('Bug report');
+			$icons['feature_request'] = $i18n->__('Feature request');
+			$icons['enhancement'] = $i18n->__('Enhancement');
+			$icons['developer_report'] = $i18n->__('User story');
+			$icons['idea'] = $i18n->__('Idea');
+			$icons['task'] = $i18n->__('Task');
+			
+			return $icons;
+		}
+
 		/**
 		 * Constructor function
 		 *
@@ -71,6 +106,33 @@
 			{
 				throw $e;
 			}
+		}
+
+		protected function _populateVisibleFields()
+		{
+			if ($this->_visiblefields === null)
+			{
+				$this->_visiblefields = B2DB::getTable('B2tIssueFields')->getVisibleFieldsArrayByIssuetypeID($this->getID());
+			}
+		}
+
+		public function getVisibleFields()
+		{
+			$this->_populateVisibleFields();
+			return $this->_visiblefields;
+		}
+
+		/**
+		 * Whether a field is visible for this issue type
+		 *
+		 * @param string $key
+		 *
+		 * @return boolean
+		 */
+		public function isFieldVisible($key)
+		{
+			$visiblefields = $this->getVisibleFields();
+			return array_key_exists($key, $visiblefields);
 		}
 		
 		/**

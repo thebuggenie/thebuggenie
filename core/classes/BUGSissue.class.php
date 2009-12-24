@@ -3552,7 +3552,7 @@
 		 */
 		public function isEstimatedTimeVisible()
 		{
-			return (bool) ($this->isFieldVisible('estimated_time') || $this->getEstimatedTime() > 0);
+			return (bool) ($this->isFieldVisible('estimated_time') || $this->hasEstimatedTime());
 		} 
 		
 		/**
@@ -3562,7 +3562,7 @@
 		 */
 		public function isSpentTimeVisible()
 		{
-			return (bool) ($this->isFieldVisible('spent_time') || $this->getSpentTime() > 0);
+			return (bool) ($this->isFieldVisible('spent_time') || $this->hasSpentTime());
 		} 
 		
 		/**
