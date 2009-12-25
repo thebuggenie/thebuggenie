@@ -62,11 +62,13 @@
 			$i18n = BUGScontext::getI18n();
 			$icons = array();
 			$icons['bug_report'] = $i18n->__('Bug report');
-			$icons['feature_request'] = $i18n->__('Feature request');
+			$icons['documentation_request'] = $i18n->__('Documentation request');
 			$icons['enhancement'] = $i18n->__('Enhancement');
-			$icons['developer_report'] = $i18n->__('User story');
+			$icons['feature_request'] = $i18n->__('Feature request');
 			$icons['idea'] = $i18n->__('Idea');
+			$icons['support_request'] = $i18n->__('Support request');
 			$icons['task'] = $i18n->__('Task');
+			$icons['developer_report'] = $i18n->__('User story');
 			
 			return $icons;
 		}

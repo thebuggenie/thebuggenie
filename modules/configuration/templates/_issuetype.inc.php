@@ -25,7 +25,7 @@
 										<option value="<?php echo $icon; ?>"<?php if ($type->getIcon() == $icon): ?> selected<?php endif; ?>><?php echo $description; ?></option>
 									<?php endforeach; ?>
 								</select>
-								<div class="faded_medium" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether to forward the user to the reported issue after it has been reported'); ?>.</div>
+								<div class="faded_medium" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('What kind of issue type this is'); ?>.</div>
 							</td>
 						</tr>
 						<tr>
@@ -35,7 +35,7 @@
 									<option value="1"<?php if ($type->isReportable()): ?> selected<?php endif; ?>><?php echo __('Users can report new issues with this issue type'); ?></option>
 									<option value="0"<?php if (!$type->isReportable()): ?> selected<?php endif; ?>><?php echo __('Users cannot report new issues with this issue type'); ?></option>
 								</select>
-								<div class="faded_medium" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether to forward the user to the reported issue after it has been reported'); ?>.</div>
+								<div class="faded_medium" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether this issue type is enabled for reporting or not'); ?>.</div>
 							</td>
 						</tr>
 						<tr>

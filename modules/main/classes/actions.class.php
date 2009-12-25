@@ -643,6 +643,7 @@
 
 		protected function _postIssueValidation(BUGSrequest $request, &$errors)
 		{
+			$i18n = BUGScontext::getI18n();
 			if (!$this->selected_project instanceof BUGSproject) $errors['project'] = $i18n->__('You have to select a valid project');
 			if (!$this->selected_issuetype instanceof BUGSissuetype) $errors['issuetype'] = $i18n->__('You have to select a valid issue type');
 			if (empty($errors))
@@ -755,6 +756,7 @@
 				$selected_customdatatype = array();
 				foreach (BUGScustomdatatype::getAll() as $customdatatype)
 				{
+					$selected_customdatatype[$customdatatype->getKey()] = null;
 					$customdatatype_id = $customdatatype->getKey() . '_id';
 					if ($$customdatatype_id = $request->getParameter($customdatatype_id))
 					{

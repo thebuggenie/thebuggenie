@@ -2,7 +2,7 @@
 	<div class="rounded_box white_borderless" style="margin: 5px 0 0 0;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 3px; font-size: 12px;">
-			<div class="header_div" style="margin-top: 15px;">
+			<div class="header_div" style="margin-top: 0;">
 				<?php echo __('Available issue fields'); ?>
 			</div>
 			<table style="width: 100%;" cellpadding="0" cellspacing="0">

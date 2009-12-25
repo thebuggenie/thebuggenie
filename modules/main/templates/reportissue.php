@@ -189,7 +189,7 @@
 							<select name="status_id" id="status_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($statuses as $status): ?>
-									<option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof BUGSdatatype && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
+									<option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof BUGSstatus && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -204,7 +204,7 @@
 							<select name="category_id" id="category_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($categories as $category): ?>
-									<option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof BUGSdatatype && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
+									<option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof BUGScategory && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -219,7 +219,7 @@
 							<select name="resolution_id" id="resolution_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($resolutions as $resolution): ?>
-									<option value="<?php echo $resolution->getID(); ?>"<?php if ($selected_resolution instanceof BUGSdatatype && $selected_resolution->getID() == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
+									<option value="<?php echo $resolution->getID(); ?>"<?php if ($selected_resolution instanceof BUGSresolution && $selected_resolution->getID() == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -234,7 +234,7 @@
 							<select name="reproducability_id" id="reproducability_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($reproducabilities as $reproducability): ?>
-									<option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof BUGSdatatype && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
+									<option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof BUGSreproducability && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -249,7 +249,7 @@
 							<select name="priority_id" id="priority_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($priorities as $priority): ?>
-									<option value="<?php echo $priority->getID(); ?>"<?php if ($selected_priority instanceof BUGSdatatype && $selected_priority->getID() == $priority->getID()): ?> selected<?php endif; ?>><?php echo $priority->getName(); ?></option>
+									<option value="<?php echo $priority->getID(); ?>"<?php if ($selected_priority instanceof BUGSpriority && $selected_priority->getID() == $priority->getID()): ?> selected<?php endif; ?>><?php echo $priority->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -264,7 +264,7 @@
 							<select name="severity_id" id="severity_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($severities as $severity): ?>
-									<option value="<?php echo $severity->getID(); ?>"<?php if ($selected_severity instanceof BUGSdatatype && $selected_severity->getID() == $severity->getID()): ?> selected<?php endif; ?>><?php echo $severity->getName(); ?></option>
+									<option value="<?php echo $severity->getID(); ?>"<?php if ($selected_severity instanceof BUGSseverity && $selected_severity->getID() == $severity->getID()): ?> selected<?php endif; ?>><?php echo $severity->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -305,22 +305,22 @@
 						<ul id="reportissue_extrafields">
 							<li><?php echo image_tag('icon_file.png'); ?><a href="#" class="faded_dark"><?php echo __('Attach a file'); ?></a></li>
 							<li><?php echo image_tag('icon_link.png'); ?><a href="#" class="faded_dark"><?php echo __('Add a link'); ?></a></li>
-							<li id="status_additional">
+							<li id="status_additional" style="display: none;">
 								<?php echo image_tag('icon_status.png'); ?>
-								<div id="status_link"><a href="javascript:void(0);" onclick="$('status_link').hide();$('status_div').show();"><?php echo __('Set initial status'); ?></a></div>
-								<div id="status_div" style="display: none;">
+								<div id="status_link"<?php if ($selected_status instanceof BUGSstatus): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('status_link').hide();$('status_additional_div').show();"><?php echo __('Set initial status'); ?></a></div>
+								<div id="status_additional_div"<?php if ($selected_status === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="status_id" id="status_id_additional">
 										<option value="0"><?php echo __('Not specified'); ?></option>
 										<?php foreach ($statuses as $status): ?>
-											<option value="<?php echo $status->getID(); ?>"><?php echo $status->getName(); ?></option>
+											<option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof BUGSdatatype && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
 										<?php endforeach; ?>
 									</select>
-									<a href="javascript:void(0);" class="img" onclick="$('status_link').show();$('status_div').hide();$('status').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a> 
+									<a href="javascript:void(0);" class="img" onclick="$('status_link').show();$('status_additional_div').hide();$('status_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
 								</div>
 							</li>
 							<li id="category_additional" style="display: none;">
 								<?php echo image_tag('icon_category.png'); ?>
-								<div id="category_link"<?php if ($selected_category instanceof BUGSdatatype): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('category_link').hide();$('category_additional_div').show();"><?php echo __('Specify category'); ?></a></div>
+								<div id="category_link"<?php if ($selected_category instanceof BUGScategory): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('category_link').hide();$('category_additional_div').show();"><?php echo __('Specify category'); ?></a></div>
 								<div id="category_additional_div"<?php if ($selected_category === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="category_id" id="category_id_additional">
 										<option value="0"><?php echo __('Not specified'); ?></option>
@@ -335,8 +335,8 @@
 							<li><?php echo image_tag('icon_percent.png'); ?><a href="#" class="faded_dark"><?php echo __('Set percent completed'); ?></a></li>
 							<li id="priority_additional">
 								<?php echo image_tag('icon_priority.png'); ?>
-								<div id="priority_link"><a href="javascript:void(0);" onclick="$('priority_link').hide();$('priority_additional_div').show();"><?php echo __('Set priority'); ?></a></div>
-								<div id="priority_additional_div" style="display: none;">
+								<div id="priority_link"<?php if ($selected_priority instanceof BUGSpriority): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('priority_link').hide();$('priority_additional_div').show();"><?php echo __('Set priority'); ?></a></div>
+								<div id="priority_additional_div"<?php if ($selected_priority === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="priority_id" id="priority_id_additional">
 										<option value="0"><?php echo __('Not specified'); ?></option>
 										<?php foreach ($priorities as $priority): ?>
@@ -348,7 +348,7 @@
 							</li>
 							<li id="reproducability_additional" style="display: none;">
 								<?php echo image_tag('icon_repro.png'); ?>
-								<div id="reproducability_link"<?php if ($selected_reproducability instanceof BUGSdatatype): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('reproducability_link').hide();$('reproducability_additional_div').show();"><?php echo __('Set reproducability'); ?></a></div>
+								<div id="reproducability_link"<?php if ($selected_reproducability instanceof BUGSreproducability): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('reproducability_link').hide();$('reproducability_additional_div').show();"><?php echo __('Set reproducability'); ?></a></div>
 								<div id="reproducability_additional_div"<?php if ($selected_reproducability === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="reproducability_id" id="reproducability_id_additional">
 										<option value="0"><?php echo __('Not specified'); ?></option>
@@ -361,8 +361,8 @@
 							</li>
 							<li id="resolution_additional" style="display: none;">
 								<?php echo image_tag('icon_resolution.png'); ?>
-								<div id="resolution_link"><a href="javascript:void(0);" onclick="$('resolution_link').hide();$('resolution_additional_div').show();"><?php echo __('Set resolution'); ?></a></div>
-								<div id="resolution_additional_div" style="display: none;">
+								<div id="resolution_link"<?php if ($selected_resolution instanceof BUGSresolution): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('resolution_link').hide();$('resolution_additional_div').show();"><?php echo __('Set resolution'); ?></a></div>
+								<div id="resolution_additional_div"<?php if ($selected_resolution === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="resolution_id" id="resolution_id_additional">
 										<option value="0"><?php echo __('Not specified'); ?></option>
 										<?php foreach ($resolutions as $resolution): ?>
@@ -374,8 +374,8 @@
 							</li>
 							<li id="severity_additional" style="display: none;">
 								<?php echo image_tag('icon_severity.png'); ?>
-								<div id="severity_link"><a href="javascript:void(0);" onclick="$('severity_link').hide();$('severity_additional_div').show();"><?php echo __('Set severity'); ?></a></div>
-								<div id="severity_additional_div" style="display: none;">
+								<div id="severity_link"<?php if ($selected_severity instanceof BUGSseverity): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('severity_link').hide();$('severity_additional_div').show();"><?php echo __('Set severity'); ?></a></div>
+								<div id="severity_additional_div"<?php if ($selected_severity === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="severity_id" id="severity_id_additional">
 										<option value="0"><?php echo __('Not specified'); ?></option>
 										<?php foreach ($severities as $severity): ?>
@@ -388,11 +388,11 @@
 							<?php foreach (BUGScustomdatatype::getAll() as $customdatatype): ?>
 								<li id="<?php echo $customdatatype->getKey(); ?>_additional" style="display: none;">
 									<?php echo image_tag('icon_customdatatype.png'); ?>
-									<div id="<?php echo $customdatatype->getKey(); ?>_link"><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
-									<div id="<?php echo $customdatatype->getKey(); ?>_additional_div" style="display: none;">
+									<div id="<?php echo $customdatatype->getKey(); ?>_link"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
+									<div id="<?php echo $customdatatype->getKey(); ?>_additional_div"<?php if ($selected_customdatatype[$customdatatype->getKey()] === null): ?> style="display: none;"<?php endif; ?>>
 										<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
 											<?php foreach ($customdatatype->getOptions() as $option): ?>
-												<option value="<?php echo $option->getValue(); ?>"><?php echo $option->getName(); ?></option>
+											<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
 											<?php endforeach; ?>
 										</select>
 										<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
