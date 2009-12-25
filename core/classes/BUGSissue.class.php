@@ -1981,7 +1981,7 @@
 		 */
 		public function setPercentCompleted($percentage)
 		{
-			$this->_addChangedProperty('_percentcompleted', $percentage);
+			$this->_addChangedProperty('_percentcompleted', (int) $percentage);
 		}
 	
 		/**

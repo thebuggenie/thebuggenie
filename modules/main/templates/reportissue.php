@@ -119,6 +119,7 @@
 					<tr>
 						<td style="width: 150px; padding-top: 15px;"><label for="description" id="description_label" class="required"><?php echo __('Description'); ?></label></td>
 						<td style="padding-top: 15px;" class="report_issue_help faded_dark"><?php echo __('Describe the issue in as much detail as possible. More is better.'); ?></td>
+					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<?php include_template('main/textarea', array('area_name' => 'description', 'height' => '250px', 'width' => '990px', 'value' => ((isset($description)) ? $description : null))); ?>
@@ -129,6 +130,7 @@
 					<tr>
 						<td style="width: 150px; padding-top: 20px;"><label for="reproduction_steps" id="reproduction_steps_label"><?php echo __('Reproduction steps'); ?></label></td>
 						<td style="padding-top: 20px;" class="report_issue_help faded_dark"><?php echo __('Enter the steps necessary to reproduce the issue, as detailed as possible.'); ?></td>
+					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<?php include_template('textarea', array('area_name' => 'reproduction_steps', 'height' => '250px', 'width' => '990px', 'value' => ((isset($reproduction_steps)) ? $reproduction_steps : null))); ?>
@@ -139,6 +141,7 @@
 					<tr>
 						<td style="width: 150px; padding-top: 20px;"><label for="edition_id" id="edition_label"><?php echo __('Edition'); ?></label></td>
 						<td style="padding-top: 20px;" class="report_issue_help faded_dark"><?php echo __("Select which edition of the product you're using"); ?></td>
+					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="edition_id" id="edition_id" style="width: 100%;">
@@ -154,6 +157,7 @@
 					<tr>
 						<td style="width: 150px; padding-top: 20px;"><label for="build_id" id="build_label"><?php echo __('Release'); ?></label></td>
 						<td style="padding-top: 20px;" class="report_issue_help faded_dark"><?php echo __("Select which release you're using"); ?></td>
+					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="build_id" id="build_id" style="width: 100%;">
@@ -169,6 +173,7 @@
 					<tr>
 						<td style="width: 150px; padding-top: 20px;"><label for="component_id" id="component_label"><?php echo __('Component'); ?></label></td>
 						<td style="padding-top: 20px;" class="report_issue_help faded_dark"><?php echo __("Choose the component affected by this issue"); ?></td>
+					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="component_id" id="component_id" style="width: 100%;">
@@ -180,10 +185,35 @@
 						</td>
 					</tr>
 				</table>
+				<table cellpadding="0" cellspacing="0" id="estimated_time_div" style="display: none; margin-top: 15px;">
+					<tr>
+						<td style="width: 150px;"><label for="estimated_time_id" id="estimated_time_label"><?php echo __('Estimate'); ?></label></td>
+						<td style="text-align: left;"><input type="text" name="estimated_time" id="estimated_time_id" style="width: 810px;" <?php if (($selected_estimated_time !== null && $selected_estimated_time == $default_estimated_time) || $selected_estimated_time === null): ?> class="faded_medium"<?php endif; ?> value="<?php echo ($selected_estimated_time !== null) ? $selected_estimated_time : $default_estimated_time; ?>" onblur="if ($('estimated_time_id').getValue() == '') { $('estimated_time_id').value = '<?php echo $default_estimated_time; ?>'; $('estimated_time_id').addClassName('faded_medium'); }" onfocus="if ($('estimated_time_id').getValue() == '<?php echo $default_estimated_time; ?>') { $('estimated_time_id').clear(); } $('estimated_time_id').removeClassName('faded_medium');"></td>
+					</tr>
+					<tr>
+						<td style="padding-top: 5px;" class="report_issue_help faded_dark" colspan="2"><?php echo __('Type in your estimate here. Use keywords such as "points", "hours", "days", "weeks" and "months" to describe your estimate'); ?></td>
+					</tr>
+				</table>
+				<table cellpadding="0" cellspacing="0" id="elapsed_time_div" style="display: none; margin-top: 15px;">
+					<tr>
+						<td style="width: 150px;"><label for="elapsed_time_id" id="elapsed_time_label"><?php echo __('Time spent'); ?></label></td>
+						<td style="text-align: left;"><input type="text" name="elapsed_time" id="elapsed_time_id" style="width: 810px;" <?php if (($selected_elapsed_time !== null && $selected_elapsed_time == $default_elapsed_time) || $selected_elapsed_time === null): ?> class="faded_medium"<?php endif; ?> value="<?php echo ($selected_elapsed_time !== null) ? $selected_elapsed_time : $default_elapsed_time; ?>" onblur="if ($('elapsed_time_id').getValue() == '') { $('elapsed_time_id').value = '<?php echo $default_elapsed_time; ?>'; $('elapsed_time_id').addClassName('faded_medium'); }" onfocus="if ($('elapsed_time_id').getValue() == '<?php echo $default_elapsed_time; ?>') { $('elapsed_time_id').clear(); } $('elapsed_time_id').removeClassName('faded_medium');"></td>
+					</tr>
+					<tr>
+						<td style="padding-top: 5px;" class="report_issue_help faded_dark" colspan="2"><?php echo __('Enter time spent on this issue here. Use keywords such as "points", "hours", "days", "weeks" and "months" to describe your estimate'); ?></td>
+					</tr>
+				</table>
+				<table cellpadding="0" cellspacing="0" id="percent_complete_div" style="display: none; margin-top: 15px;">
+					<tr>
+						<td style="width: 150px;"><label for="percent_complete_id" id="percent_complete_label"><?php echo __('% completed'); ?></label></td>
+						<td style="text-align: left;"><input type="text" name="percent_complete" id="percent_complete_id" style="width: 50px;"<?php if ($selected_percent_complete !== null): ?> value="<?php echo $selected_percent_complete; ?>"<?php endif; ?>></td>
+					</tr>
+				</table>
 				<table cellpadding="0" cellspacing="0" id="status_div" style="display: none;">
 					<tr>
 						<td style="width: 150px; padding-top: 20px;"><label for="status_id" id="status_label"><?php echo __('Status'); ?></label></td>
 						<td style="padding-top: 20px;" class="report_issue_help faded_dark"><?php echo __("Choose a status for this issue"); ?></td>
+					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="status_id" id="status_id" style="width: 100%;">
@@ -199,6 +229,7 @@
 					<tr>
 						<td style="width: 150px; padding-top: 20px;"><label for="category_id" id="category_label"><?php echo __('Category'); ?></label></td>
 						<td style="padding-top: 20px;" class="report_issue_help faded_dark"><?php echo __("Choose a category for this issue"); ?></td>
+					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="category_id" id="category_id" style="width: 100%;">
@@ -331,8 +362,30 @@
 									<a href="javascript:void(0);" class="img" onclick="$('category_link').show();$('category_additional_div').hide();$('category_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a> 
 								</div>
 							</li>
-							<li><?php echo image_tag('icon_time.png'); ?><a href="#" class="faded_dark"><?php echo __('Estimate time to fix'); ?></a></li>
-							<li><?php echo image_tag('icon_percent.png'); ?><a href="#" class="faded_dark"><?php echo __('Set percent completed'); ?></a></li>
+							<li id="estimated_time_additional" style="display: none;">
+								<?php echo image_tag('icon_time.png'); ?>
+								<div id="estimated_time_link"<?php if ($selected_estimated_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('estimated_time_link').hide();$('estimated_time_additional_div').show();"><?php echo __('Estimate time to fix'); ?></a></div>
+								<div id="estimated_time_additional_div"<?php if ($selected_estimated_time === null): ?> style="display: none;"<?php endif; ?>>
+									<input name="estimated_time" id="estimated_time_id_additional" style="width: 100px;">
+									<a href="javascript:void(0);" class="img" onclick="$('estimated_time_link').show();$('estimated_time_additional_div').hide();$('estimated_time_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+								</div>
+							</li>
+							<li id="elapsed_time_additional" style="display: none;">
+								<?php echo image_tag('icon_time.png'); ?>
+								<div id="elapsed_time_link"<?php if ($selected_elapsed_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('elapsed_time_link').hide();$('elapsed_time_additional_div').show();"><?php echo __('Estimate time to fix'); ?></a></div>
+								<div id="elapsed_time_additional_div"<?php if ($selected_elapsed_time === null): ?> style="display: none;"<?php endif; ?>>
+									<input name="elapsed_time" id="elapsed_time_id_additional" style="width: 100px;">
+									<a href="javascript:void(0);" class="img" onclick="$('elapsed_time_link').show();$('elapsed_time_additional_div').hide();$('elapsed_time_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+								</div>
+							</li>
+							<li id="percent_complete_additional" style="display: none;">
+								<?php echo image_tag('icon_percent.png'); ?>
+								<div id="percent_complete_link"<?php if ($selected_percent_complete != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('percent_complete_link').hide();$('percent_complete_additional_div').show();"><?php echo __('Set percent completed'); ?></a></div>
+								<div id="percent_complete_additional_div"<?php if ($selected_percent_complete === null): ?> style="display: none;"<?php endif; ?>>
+									<input name="percent_complete" id="percent_complete_id_additional" style="width: 30px;"<?php if ($selected_percent_complete !== null): ?> value="<?php echo $selected_percent_complete; ?>"<?php endif; ?>>
+									<a href="javascript:void(0);" class="img" onclick="$('percent_complete_link').show();$('percent_complete_additional_div').hide();$('percent_complete_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+								</div>
+							</li>
 							<li id="priority_additional">
 								<?php echo image_tag('icon_priority.png'); ?>
 								<div id="priority_link"<?php if ($selected_priority instanceof BUGSpriority): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('priority_link').hide();$('priority_additional_div').show();"><?php echo __('Set priority'); ?></a></div>

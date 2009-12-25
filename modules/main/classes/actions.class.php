@@ -565,6 +565,9 @@
 			$this->selected_priority = null;
 			$this->selected_reproducability = null;
 			$this->selected_severity = null;
+			$this->selected_estimated_time = null;
+			$this->selected_elapsed_time = null;
+			$this->selected_percent_complete = null;
 			$selected_customdatatype = array();
 			foreach (BUGScustomdatatype::getAll() as $customdatatype)
 			{
@@ -597,6 +600,9 @@
 			$this->selected_edition = null;
 			$this->selected_build = null;
 			$this->selected_component = null;
+			$this->selected_estimated_time = null;
+			$this->selected_elapsed_time = null;
+			$this->selected_percent_complete = null;
 		}
 
 		protected function _loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction(BUGSrequest $request)
@@ -753,6 +759,27 @@
 				if (isset($fields_array['priority']) && $fields_array['priority']['required'] && $this->selected_priority === null)
 					$errors['priority'] = $i18n->__('You have to specify a priority');
 
+				if ($request->getParameter('estimated_time'))
+				{
+					$this->selected_estimated_time = $request->getParameter('estimated_time');
+				}
+				if (isset($fields_array['estimated_time']) && $fields_array['estimated_time']['required'] && $this->selected_estimated_time === null)
+					$errors['estimated_time'] = $i18n->__('You have to provide an estimate');
+
+				if ($request->getParameter('elapsed_time'))
+				{
+					$this->selected_elapsed_time = $request->getParameter('elapsed_time');
+				}
+				if (isset($fields_array['elapsed_time']) && $fields_array['elapsed_time']['required'] && $this->selected_elapsed_time === null)
+					$errors['elapsed_time'] = $i18n->__('You have to provide an estimate');
+
+				if (is_numeric($request->getParameter('percent_complete')))
+				{
+					$this->selected_percent_complete = (int) $request->getParameter('percent_complete');
+				}
+				if (isset($fields_array['percent_complete']) && $fields_array['percent_complete']['required'] && $this->selected_percent_complete === null)
+					$errors['percent_complete'] = $i18n->__('You have to set percent completed');
+
 				$selected_customdatatype = array();
 				foreach (BUGScustomdatatype::getAll() as $customdatatype)
 				{
@@ -784,6 +811,9 @@
 			if (isset($fields_array['resolution']) && $this->selected_resolution instanceof BUGSdatatype) $issue->setResolution($this->selected_resolution->getID());
 			if (isset($fields_array['severity']) && $this->selected_severity instanceof BUGSdatatype) $issue->setSeverity($this->selected_severity->getID());
 			if (isset($fields_array['priority']) && $this->selected_priority instanceof BUGSdatatype) $issue->setPriority($this->selected_priority->getID());
+			if (isset($fields_array['estimated_time'])) $issue->setEstimatedTime($this->selected_estimated_time);
+			if (isset($fields_array['elapsed_time'])) $issue->setSpentTime($this->selected_elapsed_time);
+			if (isset($fields_array['percent_complete'])) $issue->setPercentCompleted($this->selected_percent_complete);
 			foreach (BUGScustomdatatype::getAll() as $customdatatype)
 			{
 				if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption)
@@ -812,6 +842,8 @@
 			$errors = array();
 			$this->getResponse()->setPage('reportissue');
 			$this->default_title = $i18n->__('Enter a short, but descriptive summary of the issue here');
+			$this->default_estimated_time = $i18n->__('Enter an estimate here');
+			$this->default_elapsed_time = $i18n->__('Enter time spent here');
 
 			$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
 
