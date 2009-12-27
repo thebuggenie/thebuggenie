@@ -1231,7 +1231,9 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 #report_form table { width: 990px; margin: 0 auto; }
 #report_form table table { width: auto; }
 #report_form label { font-size: 14px; padding: 3px 0 3px 0; font-weight: normal; }
+#report_form label span { display: none; }
 #report_form label.required { font-weight: bold; }
+#report_form label.required span { display: inline; }
 #report_form input[type="text"] { font-size: 16px; padding: 4px; height: 20px; text-align: left; width: 100%; }
 #report_form input#title { width: 840px; }
 #report_form select { font-size: 14px; padding: 2px; height: 24px; text-align: left; width: 100%; }
@@ -1240,6 +1242,10 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 #report_form .textarea_hint { color: #AAA; font-size: 13px; font-weight: normal; padding: 5px 0 0 0; }
 #report_form .textarea_hint .header { font-weight: bold; }
 #report_form .textarea_hint .example { font-style: italic; }
+.reportissue_error tr { background-color: #FEE; }
+.reportissue_error tr td input, .reportissue_error tr td textarea, .reportissue_error tr td select { background-color: #FEE; border-color: #B77; }
+.reportissue_error label { color: #955; }
+.reportissue_error .faded_dark { color: #AA8D8D; }
 
 .report_button              { padding: 0px; color: #FFF; border: 0; position: relative; display: inline; text-align: center; margin-left: 10px; }
 .report_button input        { border: 0; border-top: 1px solid #9D9; color: #FFF; padding: 3px; font-weight: bold; background-color: #5A5; cursor: pointer; }

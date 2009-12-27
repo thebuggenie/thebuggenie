@@ -673,112 +673,70 @@
 					$this->selected_component = BUGSfactory::componentLab($component_id);
 				}
 
-				if (trim($this->title) == '') $errors['title'] = $i18n->__('You have to specify a title');
-				if ($this->title == $this->default_title) $errors['title'] = $i18n->__('You have to specify a title');
+				if (trim($this->title) == '' || $this->title == $this->default_title) $errors['title'] = true; //$i18n->__('You have to specify a title');
 
-				if (isset($fields_array['description']) && $fields_array['description']['required'] && trim($this->description) == '')
-					$errors['description'] = $i18n->__('You have to enter something in the "%description%" field', array('%description%' => $i18n->__('Description')));
-				if (isset($fields_array['reproduction_steps']) && $fields_array['reproduction_steps']['required'] && trim($this->reproduction_steps) == '')
-					$errors['reproduction_steps'] = $i18n->__('You have to enter something in the "%reproduction_steps%" field', array('%reproduction_steps%' => $i18n->__('Reproduction steps')));
-
-				if (isset($fields_array['edition']))
+				if (isset($fields_array['editions']))
 				{
-					if ($fields_array['edition']['required'] && !$edition_id)
-						$errors['edition'] = $i18n->__('You have to specify an edition');
-					if ($edition_id && !in_array($edition_id, array_keys($fields_array['edition']['editions'])))
-						$errors['edition'] = $i18n->__('The edition you specified is invalid');
+					if ($edition_id && !in_array($edition_id, array_keys($fields_array['editions']['values'])))
+						$errors['editions'] = true; // $i18n->__('The edition you specified is invalid');
 				}
 
-				if (isset($fields_array['build']))
+				if (isset($fields_array['builds']))
 				{
-					if ($fields_array['build']['required'] && !$build_id)
-						$errors['build'] = $i18n->__('You have to specify a release');
-					if ($build_id && !in_array($build_id, array_keys($fields_array['build']['builds'])))
-						$errors['build'] = $i18n->__('The release you specified is invalid');
+					if ($build_id && !in_array($build_id, array_keys($fields_array['builds']['values'])))
+						$errors['builds'] = true; //$i18n->__('The release you specified is invalid');
 				}
 
 				if (isset($fields_array['component']))
 				{
-					if ($fields_array['component']['required'] && !$component_id)
-						$errors['component'] = $i18n->__('You have to specify a component');
 					if ($component_id && !in_array($component_id, array_keys($fields_array['component']['components'])))
-						$errors['component'] = $i18n->__('The component you specified is invalid');
+						$errors['components'] = true; //$i18n->__('The component you specified is invalid');
 				}
 
 				if ($category_id = (int) $request->getParameter('category_id'))
 				{
 					$this->selected_category = BUGSfactory::BUGScategoryLab($category_id);
-					if ($this->selected_category === null)
-						$errors['category'] = $i18n->__('You have specified an invalid category');
 				}
-				if (isset($fields_array['category']) && $fields_array['category']['required'] && $this->selected_category === null)
-					$errors['category'] = $i18n->__('You have to specify a category');
 
 				if ($status_id = (int) $request->getParameter('status_id'))
 				{
 					$this->selected_status = BUGSfactory::BUGSstatusLab($status_id);
-					if ($this->selected_status === null)
-						$errors['status'] = $i18n->__('You have specified an invalid status');
 				}
-				if (isset($fields_array['status']) && $fields_array['status']['required'] && $this->selected_status === null)
-					$errors['status'] = $i18n->__('You have to specify a status');
 
 				if ($reproducability_id = (int) $request->getParameter('reproducability_id'))
 				{
 					$this->selected_reproducability = BUGSfactory::BUGSreproducabilityLab($reproducability_id);
-					if ($this->selected_reproducability === null)
-						$errors['reproducability'] = $i18n->__('You have specified an invalid reproducability');
 				}
-				if (isset($fields_array['reproducability']) && $fields_array['reproducability']['required'] && $this->selected_reproducability === null)
-					$errors['reproducability'] = $i18n->__('You have to specify a reproducability');
 
 				if ($resolution_id = (int) $request->getParameter('resolution_id'))
 				{
 					$this->selected_resolution = BUGSfactory::BUGSresolutionLab($resolution_id);
-					if ($this->selected_resolution === null)
-						$errors['resolution'] = $i18n->__('You have specified an invalid resolution');
 				}
-				if (isset($fields_array['resolution']) && $fields_array['resolution']['required'] && $this->selected_resolution === null)
-					$errors['resolution'] = $i18n->__('You have to specify a resolution');
 
 				if ($severity_id = (int) $request->getParameter('severity_id'))
 				{
 					$this->selected_severity = BUGSfactory::BUGSseverityLab($severity_id);
-					if ($this->selected_severity === null)
-						$errors['severity'] = $i18n->__('You have specified an invalid severity');
 				}
-				if (isset($fields_array['severity']) && $fields_array['severity']['required'] && $this->selected_severity === null)
-					$errors['severity'] = $i18n->__('You have to specify a severity');
 
 				if ($priority_id = (int) $request->getParameter('priority_id'))
 				{
 					$this->selected_priority = BUGSfactory::BUGSpriorityLab($priority_id);
-					if ($this->selected_priority === null)
-						$errors['priority'] = $i18n->__('You have specified an invalid priority');
 				}
-				if (isset($fields_array['priority']) && $fields_array['priority']['required'] && $this->selected_priority === null)
-					$errors['priority'] = $i18n->__('You have to specify a priority');
 
 				if ($request->getParameter('estimated_time'))
 				{
 					$this->selected_estimated_time = $request->getParameter('estimated_time');
 				}
-				if (isset($fields_array['estimated_time']) && $fields_array['estimated_time']['required'] && $this->selected_estimated_time === null)
-					$errors['estimated_time'] = $i18n->__('You have to provide an estimate');
 
 				if ($request->getParameter('elapsed_time'))
 				{
 					$this->selected_elapsed_time = $request->getParameter('elapsed_time');
 				}
-				if (isset($fields_array['elapsed_time']) && $fields_array['elapsed_time']['required'] && $this->selected_elapsed_time === null)
-					$errors['elapsed_time'] = $i18n->__('You have to provide an estimate');
 
 				if (is_numeric($request->getParameter('percent_complete')))
 				{
 					$this->selected_percent_complete = (int) $request->getParameter('percent_complete');
 				}
-				if (isset($fields_array['percent_complete']) && $fields_array['percent_complete']['required'] && $this->selected_percent_complete === null)
-					$errors['percent_complete'] = $i18n->__('You have to set percent completed');
 
 				$selected_customdatatype = array();
 				foreach (BUGScustomdatatype::getAll() as $customdatatype)
@@ -788,13 +746,22 @@
 					if ($$customdatatype_id = $request->getParameter($customdatatype_id))
 					{
 						$selected_customdatatype[$customdatatype->getKey()] = BUGScustomdatatypeoption::getByValueAndKey($$customdatatype_id, $customdatatype->getKey());
-						if ($selected_customdatatype[$customdatatype->getKey()] === null)
-							$errors[$customdatatype->getKey()] = $i18n->__('Invalid field: %custom_datatype_field_description%', array($customdatatype->getDescription()));
 					}
-					if (isset($fields_array[$customdatatype->getKey()]) && $fields_array[$customdatatype->getKey()]['required'] && $selected_customdatatype[$customdatatype->getKey()] === null)
-						$errors[$customdatatype->getKey()] = $i18n->__('Required field: %custom_datatype_field_description%', array($customdatatype->getDescription()));
 				}
 				$this->selected_customdatatype = $selected_customdatatype;
+
+				foreach ($fields_array as $field => $info)
+				{
+					if ($info['required'])
+					{
+						$var_name = "selected_{$field}";
+						if ((in_array($field, BUGSdatatype::getAvailableFields(true)) && $this->$var_name === null) || (!in_array($field, BUGSdatatype::getAvailableFields(true)) && $selected_customdatatype[$field] === null))
+						{
+							$errors[$field] = true;
+						}
+					}
+				}
+
 			}
 			return !(bool) count($errors);
 		}

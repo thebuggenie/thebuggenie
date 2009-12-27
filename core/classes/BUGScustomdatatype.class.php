@@ -150,7 +150,11 @@
 		public static function getByKey($key)
 		{
 			$row = B2DB::getTable('B2tCustomFields')->getByKey($key);
-			return BUGSfactory::BUGScustomdatatypeLab($row->get(B2tCustomFields::ID), $row);
+			if ($row)
+			{
+				return BUGSfactory::BUGScustomdatatypeLab($row->get(B2tCustomFields::ID), $row);
+			}
+			return null;
 		}
 
 		public static function getChoiceFieldsAsArray()
