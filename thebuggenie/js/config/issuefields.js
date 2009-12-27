@@ -16,10 +16,6 @@ function showIssuefieldOptions(url, field)
 			{
 				failedMessage(json.error);
 			}
-			else
-			{
-				successMessage(json.title, json.content);
-			}
 		},
 		onFailure: function (transport) {
 			$(field + '_indicator').hide();
