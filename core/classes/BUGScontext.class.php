@@ -1010,15 +1010,24 @@
 			{
 				if ($type == 'group')
 				{
-					return (array_key_exists($id, self::$_permissions[$module_name][$permission_type][$target_id]['gid'])) ? self::$_permissions[$module_name][$permission_type][$target_id]['gid'][$id] : null;
+					foreach (self::$_permissions[$module_name][$permission_key][$target_id] as $permission)
+					{
+						if ($permission['gid'] == $id) return $permission['allowed'];
+					}
 				}
 				if ($type == 'user')
 				{
-					return (array_key_exists($id, self::$_permissions[$module_name][$permission_type][$target_id]['uid'])) ? self::$_permissions[$module_name][$permission_type][$target_id]['uid'][$id] : null;
+					foreach (self::$_permissions[$module_name][$permission_key][$target_id] as $permission)
+					{
+						if ($permission['uid'] == $id) return $permission['allowed'];
+					}
 				}
 				if ($type == 'team')
 				{
-					return (array_key_exists($id, self::$_permissions[$module_name][$permission_type][$target_id]['tid'])) ? self::$_permissions[$module_name][$permission_type][$target_id]['tid'][$id] : null;
+					foreach (self::$_permissions[$module_name][$permission_key][$target_id] as $permission)
+					{
+						if ($permission['uid'] == $id) return $permission['allowed'];
+					}
 				}
 				if ($type == 'everyone')
 				{
@@ -1046,7 +1055,7 @@
 		 * @param $all
 		 * @return unknown_type
 		 */
-		public static function checkPermission($permission_type, $uid, $gid, $tid, $target_id = 0, $module_name = 'core', $explicit = false)
+		public static function checkPermission($permission_type, $uid, $gid, $tid, $target_id = 0, $module_name = 'core', $explicit = false, $permissive = false)
 		{
 			if (array_key_exists($module_name, self::$_permissions) &&
 				array_key_exists($permission_type, self::$_permissions[$module_name]) &&
@@ -1098,7 +1107,7 @@
 
 			}
 
-			if ($explicit) return false;
+			if ($explicit) return $permissive;
 			
 			return BUGSsettings::isPermissive();
 		}

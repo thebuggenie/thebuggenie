@@ -67,6 +67,7 @@
 					<?php echo __('%clear_the_status% or click to select a new status', array('%clear_the_status%' => '')); ?>:<br>
 					<table cellpadding="0" cellspacing="0">
 						<?php foreach ($statuses as $status): ?>
+							<?php if (!$status->canUserSet($bugs_user)) continue; ?>
 							<tr>
 								<td style="width: 16px;"><div style="border: 1px solid #AAA; background-color: <?php echo $status->getColor(); ?>; font-size: 1px; width: 16px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
 								<td style="padding-left: 5px;"><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => $status->getID())); ?>', 'status');"><?php echo $status->getName(); ?></a></td>
@@ -304,6 +305,7 @@
 						<?php echo $info['select']; ?>:<br>
 						<ul class="choices">
 							<?php foreach ($info['choices'] as $choice): ?>
+								<?php if (!$choice->canUserSet($bugs_user)) continue; ?>
 								<li>
 									<?php echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
 								</li>
@@ -342,6 +344,7 @@
 						<?php echo $info['select']; ?>:<br>
 						<ul class="choices">
 							<?php foreach ($info['choices'] as $choice): ?>
+								<?php if (!$choice->canUserSet($bugs_user)) continue; ?>
 								<li>
 									<?php echo image_tag('icon_customdatatype.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getValue())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
 								</li>

@@ -1225,6 +1225,39 @@
 		{
 			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('permissionsinfo', array('key' => $request->getParameter('key'), 'access_level' => $this->access_level))));
 		}
+
+		public function runSetPermission(BUGSrequest $request)
+		{
+			$uid = 0;
+			$gid = 0;
+			$tid = 0;
+			switch ($request->getParameter('target_type'))
+			{
+				case 'user':
+					$uid = $request->getParameter('item_id');
+					break;
+				case 'group':
+					$gid = $request->getParameter('item_id');
+					break;
+				case 'team':
+					$tid = $request->getParameter('item_id');
+					break;
+			}
+
+			switch ($request->getParameter('mode'))
+			{
+				case 'allowed':
+					BUGScontext::setPermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid, true);
+					break;
+				case 'denied':
+					BUGScontext::setPermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid, false);
+					break;
+				case 'unset':
+					BUGScontext::removePermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid);
+					break;
+			}
+			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsinfoitem', array('key' => $request->getParameter('key'), 'target_id' => $request->getParameter('target_id'), 'type' => $request->getParameter('target_type'), 'mode' => $request->getParameter('template_mode'), 'item_id' => $request->getParameter('item_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
+		}
 		
 		/**
 		 * Configure a module

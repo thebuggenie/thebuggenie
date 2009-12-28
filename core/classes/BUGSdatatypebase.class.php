@@ -115,7 +115,12 @@
 
 		public function getPermissionsKey()
 		{
-			return 'set_datatype_' . $this->getID();
+			return 'set_datatype_' . $this->_itemtype;
+		}
+
+		public function canUserSet(BUGSuser $user)
+		{
+			return $user->hasPermission($this->getPermissionsKey(), $this->getID(), 'core', true, true);
 		}
 
 	}

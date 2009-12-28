@@ -6,20 +6,20 @@ function failedMessage(title, content)
 	if ($('thebuggenie_successmessage').visible())
 	{
 		var success_queue = Effect.Queues.get('successmessage');
-		success_queue.each(function(effect) { effect.cancel(); });
-		new Effect.SlideUp('thebuggenie_successmessage', { queue: { position: 'end', scope: 'successmessage', limit: 2 }, duration: 0.5 });
+		success_queue.each(function(effect) {effect.cancel();});
+		new Effect.SlideUp('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, duration: 0.5});
 	}
 	if ($('thebuggenie_failuremessage').visible())
 	{
 		var failed_queue = Effect.Queues.get('failedmessage');
-		failed_queue.each(function(effect) { effect.cancel(); });
+		failed_queue.each(function(effect) {effect.cancel();});
 		new Effect.Pulsate('thebuggenie_failuremessage');
 	}
 	else
 	{
-		new Effect.SlideDown('thebuggenie_failuremessage', { queue: { position: 'end', scope: 'failedmessage', limit: 2 }, duration: 1 });
+		new Effect.SlideDown('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'failedmessage', limit: 2}, duration: 1});
 	}
-	new Effect.SlideUp('thebuggenie_failuremessage', { queue: { position: 'end', scope: 'failedmessage', limit: 2 }, delay: 30 });
+	new Effect.SlideUp('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'failedmessage', limit: 2}, delay: 30});
 }
 
 function successMessage(title, content)
@@ -29,20 +29,20 @@ function successMessage(title, content)
 	if ($('thebuggenie_failuremessage').visible())
 	{
 		var failed_queue = Effect.Queues.get('failedmessage');
-		failed_queue.each(function(effect) { effect.cancel(); });
-		new Effect.SlideUp('thebuggenie_failuremessage', { queue: { position: 'end', scope: 'failedmessage', limit: 2 }, duration: 0.5 });
+		failed_queue.each(function(effect) {effect.cancel();});
+		new Effect.SlideUp('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'failedmessage', limit: 2}, duration: 0.5});
 	}
 	if ($('thebuggenie_successmessage').visible())
 	{
 		var success_queue = Effect.Queues.get('successmessage');
-		success_queue.each(function(effect) { effect.cancel(); });
+		success_queue.each(function(effect) {effect.cancel();});
 		new Effect.Pulsate('thebuggenie_successmessage');
 	}
 	else
 	{
-		new Effect.SlideDown('thebuggenie_successmessage', { queue: { position: 'end', scope: 'successmessage', limit: 2 }, duration: 1 });
+		new Effect.SlideDown('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, duration: 1});
 	}
-	new Effect.SlideUp('thebuggenie_successmessage', { queue: { position: 'end', scope: 'successmessage', limit: 2 }, delay: 10 });
+	new Effect.SlideUp('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, delay: 10});
 }
 
 function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done)
@@ -219,7 +219,43 @@ function updateProjectMenuStrip(url, project_id)
 		onComplete: function(transport) {
 			$('project_menustrip_indicator').hide();
 			$('project_menustrip_name').show();
-		}				
+		}
+	});
+}
+
+function setPermission(url, field)
+{
+	new Ajax.Request(url, {
+		asynchronous: true,
+		evalScripts: true,
+		method: "post",
+		onLoading: function(transport) {
+			//if (!$(field + '_indicator')) window.alert(field);
+			$(field + '_indicator').show();
+		},
+		onSuccess: function (transport) {
+			var json = transport.responseJSON;
+			$(field + '_indicator').hide();
+			if (json && json.failed)
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				$(field).update(json.content);
+			}
+		},
+		onFailure: function (transport) {
+			$(field + '_indicator').hide();
+			if (transport.responseJSON)
+			{
+				failedMessage(transport.responseJSON.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+		}
 	});
 }
 

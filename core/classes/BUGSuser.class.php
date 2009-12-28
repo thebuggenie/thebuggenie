@@ -1360,10 +1360,10 @@
 			return $retarr;
 		}
 	
-		public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $explicit = false)
+		public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $explicit = false, $permissive = false)
 		{
 			$group_id = ($this->getGroup() instanceof BUGSgroup) ? $this->getGroup()->getID() : 0;
-			return BUGScontext::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $explicit);
+			return BUGScontext::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $explicit, $permissive);
 		}
 		
 		public function hasModuleAccess($module)
