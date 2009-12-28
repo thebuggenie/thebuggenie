@@ -1,3 +1,4 @@
+<div class="content"><?php echo tbg_parse_text(__('Please see [[ConfigurePermissions]] for more information about how permissions work')); ?></div>
 <div class="header_div light smaller"><?php echo __('Global permission'); ?></div>
 <table cellpadding="0" cellspacing="0" style="width: 100%;">
 	<thead class="light">
