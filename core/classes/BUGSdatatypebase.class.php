@@ -113,5 +113,9 @@
 			return $types;
 		}
 
+		public function getPermissionsKey()
+		{
+			return 'set_datatype_' . $this->getID();
+		}
 
 	}

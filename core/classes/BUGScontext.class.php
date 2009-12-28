@@ -1001,6 +1001,38 @@
 			
 			self::cacheAllPermissions();
 		}
+
+		public static function isPermissionSet($type, $permission_key, $id, $target_id = 0, $module_name = 'core')
+		{
+			if (array_key_exists($module_name, self::$_permissions) &&
+				array_key_exists($permission_key, self::$_permissions[$module_name]) &&
+				array_key_exists($target_id, self::$_permissions[$module_name][$permission_key]))
+			{
+				if ($type == 'group')
+				{
+					return (array_key_exists($id, self::$_permissions[$module_name][$permission_type][$target_id]['gid'])) ? self::$_permissions[$module_name][$permission_type][$target_id]['gid'][$id] : null;
+				}
+				if ($type == 'user')
+				{
+					return (array_key_exists($id, self::$_permissions[$module_name][$permission_type][$target_id]['uid'])) ? self::$_permissions[$module_name][$permission_type][$target_id]['uid'][$id] : null;
+				}
+				if ($type == 'team')
+				{
+					return (array_key_exists($id, self::$_permissions[$module_name][$permission_type][$target_id]['tid'])) ? self::$_permissions[$module_name][$permission_type][$target_id]['tid'][$id] : null;
+				}
+				if ($type == 'everyone')
+				{
+					foreach (self::$_permissions[$module_name][$permission_key][$target_id] as $permission)
+					{
+						if ($permission['uid'] + $permission['gid'] + $permission['tid'] == 0)
+						{
+							return $permission['allowed'];
+						}
+					}
+				}
+			}
+			return null;
+		}
 	
 		/**
 		 * Check to see if a specified user/group/team has access

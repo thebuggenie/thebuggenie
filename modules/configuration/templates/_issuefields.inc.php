@@ -6,7 +6,7 @@
 		<tbody id="<?php echo $type; ?>_list">
 			<?php if (count($items) > 0): ?>
 				<?php foreach ($items as $item): ?>
-					<?php include_template('issuefield', array('item' => $item, 'type' => $type)); ?>
+					<?php include_template('issuefield', array('item' => $item, 'type' => $type, 'access_level' => $access_level)); ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		</tbody>

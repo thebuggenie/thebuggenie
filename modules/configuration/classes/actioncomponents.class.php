@@ -93,4 +93,19 @@
 			
 		}
 
+		public function componentPermissionsinfo()
+		{
+			switch ($this->mode)
+			{
+				case 'datatype':
+					
+					break;
+			}
+		}
+
+		public function componentPermissionsinfoitem()
+		{
+			
+		}
+
 	}

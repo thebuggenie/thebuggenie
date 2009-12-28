@@ -153,6 +153,7 @@
 		 */
 		public function runConfigureIssuetypesAction(BUGSrequest $request)
 		{
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			switch ($request->getParameter('mode'))
 			{
 				case 'add':
@@ -213,7 +214,7 @@
 		 */
 		public function runConfigureIssuefieldsGetOptions(BUGSrequest $request)
 		{
-			return $this->renderComponent('issuefields', array('type' => $request->getParameter('type')));
+			return $this->renderComponent('issuefields', array('type' => $request->getParameter('type'), 'access_level' => $this->access_level));
 		}
 
 		/**
@@ -224,6 +225,7 @@
 		public function runConfigureIssuefieldsAction(BUGSrequest $request)
 		{
 			$i18n = BUGScontext::getI18n();
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			$types = BUGSdatatype::getTypes();
 
 			switch ($request->getParameter('mode'))
@@ -240,7 +242,7 @@
 							$customtype = BUGScustomdatatype::getByKey($request->getParameter('type'));
 							$item = $customtype->createNewOption($request->getParameter('name'), $request->getParameter('value'), $request->getParameter('itemdata'));
 						}
-						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield', array('item' => $item, 'type' => $request->getParameter('type')))));
+						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield', array('item' => $item, 'access_level' => $this->access_level, 'type' => $request->getParameter('type')))));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
 				case 'edit':
@@ -1212,6 +1214,16 @@
 				BUGScontext::setMessage('module_error', BUGScontext::getI18n()->__('This module (%module_name%) does not exist', array('%module_name%' => $request->getParameter('module_key'))));
 			}
 			$this->forward(BUGScontext::getRouting()->generate('configure_modules'));
+		}
+
+		/**
+		 * Get permissions info for a single permission key
+		 *
+		 * @param BUGSrequest $request
+		 */
+		public function runGetPermissionsInfo(BUGSrequest $request)
+		{
+			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('permissionsinfo', array('key' => $request->getParameter('key'), 'access_level' => $this->access_level))));
 		}
 		
 		/**

@@ -1049,22 +1049,6 @@ li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 .iceblue_borderless th { border-color: #A0ADC0; background-color: #C1D1E8; }
 .iceblue_borderless .header_div { border-color: #A0ADC0; }
 
-.yellow .xb2, .yellow .xb3, .yellow .xb4 { background-color: #FAFAD6; border-color: #D9D9BB; }
-.yellow .xb1 { background-color: #D9D9BB; }
-.yellow .xboxcontent { background-color: #FAFAD6; border-color: #D9D9BB; }
-
-.yellow_borderless .xb2, .yellow_borderless .xb3, .yellow_borderless .xb4 { background-color: #FFF299; border-color: #FFF299; }
-.yellow_borderless .xb1 { background-color: #FFF299; }
-.yellow_borderless .xboxcontent { background-color: #FFF299; border-color: #FFF299; }
-
-.lightyellow .xb2, .lightyellow .xb3, .lightyellow .xb4 { background-color: #FFFBE2; border-color: #D9D9BB; }
-.lightyellow .xb1 { background-color: #D9D9BB; }
-.lightyellow .xboxcontent { background-color: #FFFBE2; border-color: #D9D9BB; }
-
-.lightyellow_borderless .xb2, .lightyellow_borderless .xb3, .lightyellow_borderless .xb4 { background-color: #FFF8C9; border-color: #FFF8C9; }
-.lightyellow_borderless .xb1 { background-color: #FFF8C9; }
-.lightyellow_borderless .xboxcontent { background-color: #FFF8C9; border-color: #FFF8C9; }
-
 .mediumgrey_borderless .xb2, .mediumgrey_borderless .xb3, .mediumgrey_borderless .xb4 { background-color: #F3F3F3; border-color: #F3F3F3; }
 .mediumgrey_borderless .xb1 { background-color: #F3F3F3; }
 .mediumgrey_borderless .xboxcontent { background-color: #F3F3F3; border-color: #F3F3F3; }
@@ -1101,6 +1085,22 @@ li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 .borderless .xb1 { background-color: #EEE; }
 .borderless .xboxcontent { background-color: #EEE; border-color: #EEE; }
 
+.yellow .xb2, .yellow .xb3, .yellow .xb4 { background-color: #FAFAD6; border-color: #D9D9BB; }
+.yellow .xb1 { background-color: #D9D9BB; }
+.yellow .xboxcontent { background-color: #FAFAD6; border-color: #D9D9BB; }
+
+.yellow_borderless .xb2, .yellow_borderless .xb3, .yellow_borderless .xb4 { background-color: #FFF299; border-color: #FFF299; }
+.yellow_borderless .xb1 { background-color: #FFF299; }
+.yellow_borderless .xboxcontent { background-color: #FFF299; border-color: #FFF299; }
+
+.lightyellow .xb2, .lightyellow .xb3, .lightyellow .xb4 { background-color: #FFFBE2; border-color: #D9D9BB; }
+.lightyellow .xb1 { background-color: #D9D9BB; }
+.lightyellow .xboxcontent { background-color: #FFFBE2; border-color: #D9D9BB; }
+
+.lightyellow_borderless .xb2, .lightyellow_borderless .xb3, .lightyellow_borderless .xb4 { background-color: #FFF8C9; border-color: #FFF8C9; }
+.lightyellow_borderless .xb1 { background-color: #FFF8C9; }
+.lightyellow_borderless .xboxcontent { background-color: #FFF8C9; border-color: #FFF8C9; }
+
 .lightgreen .xb2, .lightgreen .xb3, .lightgreen .xb4 { background-color: #BDF4AA; border-color: #AAC6AA; }
 .lightgreen .xb1 { background-color: #AAC6AA; }
 .lightgreen .xboxcontent { background-color: #BDF4AA; border-color: #AAC6AA; }
@@ -1110,6 +1110,7 @@ li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 .white .xb1 { background-color: #CCC; }
 .white .xboxcontent { background-color: #FFF; border-color: #CCC; }
 .white th { font-weight: bold; background-color: #F1F1F1; border-bottom: 1px solid #DDD; padding-bottom: 2px; }
+.white thead.light th { background-color: #F9F9F9; border-color: #EEE; }
 
 .white_borderless .xb2, .white_borderless .xb3, .white_borderless .xb4 { background-color: #FFF; border-color: #FFF; }
 .white_borderless .xb1 { background-color: #FFF; }
@@ -1290,6 +1291,7 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #issue_lefthand { width: 340px; padding: 5px 5px 0 5px; vertical-align: top; }
 .header_div { border-bottom: 1px solid #DDD; padding: 3px; font-size: 13px; margin-top: 5px; font-weight: bold; }
 .header_div.smaller, label.smaller, div.smaller { font-size: 12px; }
+.header_div.light { border-color: #EEE; }
 .no_items { color: #AAA; font-size: 12px; padding: 5px; }
 .percent_filled { background-color: #8C8; }
 .percent_unfilled { background-color: #AFA; }
