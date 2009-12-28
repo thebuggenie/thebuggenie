@@ -66,6 +66,7 @@
 			<div class="xboxcontent" style="padding: 3px; font-size: 12px;">
 				<div class="header"><?php echo __('Permission details for "%itemname%"', array('%itemname%' => $item->getName())); ?></div>
 				<div class="content">
+					<?php echo __('Specify who can set this value for issues'); ?>.
 					<?php include_component('configuration/permissionsinfo', array('key' => $item->getPermissionsKey(), 'mode' => 'datatype', 'target_id' => $item->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
 				</div>
 			</div>
