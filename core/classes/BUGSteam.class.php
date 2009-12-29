@@ -21,25 +21,22 @@
 		
 		protected $_members = null;
 		
-		public static function getAll($searchfor = "")
+		protected static $_teams = null;
+		
+		public static function getAll()
 		{
-		
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tTeams::SCOPE, BUGScontext::getScope()->getID());
-			if ($searchfor != "")
+			if (self::$_teams === null)
 			{
-				$crit->addWhere(B2tTeams::TEAMNAME, "%$searchfor%", B2DBCriteria::DB_LIKE);
+				self::$_teams = array();
+				if ($res = B2DB::getTable('B2tTeams')->getAll())
+				{
+					while ($row = $res->getNextRow())
+					{
+						self::$_teams[$row->get(B2tTeams::ID)] = BUGSfactory::teamLab($row->get(B2tTeams::ID), $row);
+					}
+				}
 			}
-		
-			$res = B2DB::getTable('B2tTeams')->doSelect($crit);
-			$teams = array();
-		
-			while ($row = $res->getNextRow())
-			{
-				$teams[$row->get(B2tTeams::ID)] = BUGSfactory::teamLab($row->get(B2tTeams::ID), $row);
-			}
-		
-			return $teams;
+			return self::$_teams;
 		}
 		
 		/**

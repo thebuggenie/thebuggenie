@@ -54,4 +54,15 @@
 			return array($admin_group_id, $users_group_id, $guest_group_id);
 		}
 		
+		public function getAll($scope = null)
+		{
+			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, $scope);
+			
+			$res = $this->doSelect($crit);
+			
+			return $res;
+		}
+		
 	}

@@ -107,5 +107,34 @@
 		{
 			
 		}
+		
+		protected function _getPermissionListFromKey($key, $permissions = null)
+		{
+			//echo "finding $key";
+			if ($permissions == null)
+			{
+				$permissions = BUGScontext::getAvailablePermissions();
+			}
+			foreach ($permissions as $pkey => $permission)
+			{
+				if ($pkey == $key)
+				{
+					return (array_key_exists('details', $permission)) ? $permission['details'] : array();
+				}
+				elseif (array_key_exists('details', $permission) && ($plist = $this->_getPermissionListFromKey($pkey, $permission['details'])))
+				{
+					return $plist;
+				}
+			}
+			return array();
+		}
+		
+		public function componentPermissionsblock()
+		{
+			if (!is_array($this->permissions_list))
+			{
+				$this->permissions_list = $this->_getPermissionListFromKey($this->permissions_list);
+			}
+		}
 
 	}

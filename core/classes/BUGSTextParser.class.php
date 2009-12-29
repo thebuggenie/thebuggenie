@@ -509,7 +509,7 @@
 			// suppress linebreaks for the next line if we just displayed one; otherwise re-enable them
 			if ($isline) $this->ignore_newline = (array_key_exists('newline', $called) || array_key_exists('headers', $called));
 
-			BUGSlogging::log($line);
+			//BUGSlogging::log($line);
 
 			return $line;
 		}

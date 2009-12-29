@@ -1121,45 +1121,66 @@
 				$i18n = self::getI18n();
 				self::$_available_permissions = array('user' => array(), 'general' => array(), 'project' => array());
 
-				self::$_available_permissions['user']['canonlyviewownissues'] = array('description' => $i18n->__('Can only see issues reported by the user'), 'levels' => 2);
-				self::$_available_permissions['general']['canreadallcomments'] = array('description' => $i18n->__('Can see comments that are not public'), 'levels' => 2);
-				self::$_available_permissions['general']['addlinksuser'] = array('description' => $i18n->__('Can add links to issues reported by the user'), 'levels' => 2);
-				self::$_available_permissions['general']['addlinksother'] = array('description' => $i18n->__('Can add links to issues reported by anyone'), 'levels' => 2);
-				self::$_available_permissions['general']['uploadfilesuser'] = array('description' => $i18n->__('Can add files to issues reported by the user'), 'levels' => 2);
-				self::$_available_permissions['general']['uploadfilesother'] = array('description' => $i18n->__('Can add files to issues reported by anyone'), 'levels' => 2);
-				self::$_available_permissions['general']['canfindissues'] = array('description' => $i18n->__('Can search for issues'), 'levels' => 2);
-				self::$_available_permissions['general']['cancreatesavedsearches'] = array('description' => $i18n->__('Can create saved searches'), 'levels' => 2);
-				self::$_available_permissions['general']['canvote'] = array('description' => $i18n->__('Can vote for issues'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditlockedissues'] = array('description' => $i18n->__('Can lock and edit locked issues'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue'] = array('description' => $i18n->__('Can edit, delete, close, reopen and update any issue details and progress'), 'levels' => 2, 'details' => array());
-				self::$_available_permissions['project']['caneditissue']['details']['candeleteissues'] = array('description' => $i18n->__('Can delete issues'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['cancloseissues'] = array('description' => $i18n->__('Can close any issues'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['cancloseownissues'] = array('description' => $i18n->__('Can close issues reported by the user'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['canreopenissues'] = array('description' => $i18n->__('Can re-open any issues'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['canreopenownissues'] = array('description' => $i18n->__('Can re-open issues reported by the user'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissuetitle'] = array('description' => $i18n->__('Can edit issue titles'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissuedescription'] = array('description' => $i18n->__('Can edit issue descriptions'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissuetitleown'] = array('description' => $i18n->__('Can edit issue title on issues reported by the user'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissuedescriptionown'] = array('description' => $i18n->__('Can edit issue description on issues reported by the user'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissueposted_by'] = array('description' => $i18n->__('Can edit issue posted by'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissueowned_by'] = array('description' => $i18n->__('Can edit issue owned by'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissueassigned_to'] = array('description' => $i18n->__('Can edit issue assigned_to'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissuestatus'] = array('description' => $i18n->__('Can edit issue status'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissuecategory'] = array('description' => $i18n->__('Can edit issue category'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissuepriority'] = array('description' => $i18n->__('Can edit issue priority'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissueseverity'] = array('description' => $i18n->__('Can edit issue severity'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissuereproducability'] = array('description' => $i18n->__('Can edit issue reproducability'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissueresolution'] = array('description' => $i18n->__('Can edit issue resolution'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissueestimated_time'] = array('description' => $i18n->__('Can estimate issues'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissueelapsed_time'] = array('description' => $i18n->__('Can spend time working on issues'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissuepercent_complete'] = array('description' => $i18n->__('Can edit issue percent complete'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissue']['details']['caneditissuemilestone'] = array('description' => $i18n->__('Can set issue milestone'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditcomments'] = array('description' => $i18n->__('Can edit comments'), 'levels' => 4);
-				self::$_available_permissions['project']['canaddcomments'] = array('description' => $i18n->__('Can add comments'), 'levels' => 4);
-				self::$_available_permissions['project']['canviewcomments'] = array('description' => $i18n->__('Can view comments'), 'levels' => 4);
-				self::$_available_permissions['project']['canaddbuilds'] = array('description' => $i18n->__('Can add releases / versions to list of affected versions'), 'levels' => 2);
-				self::$_available_permissions['project']['canaddcomponents'] = array('description' => $i18n->__('Can add components to list of affected components'), 'levels' => 2);
-				self::$_available_permissions['project']['canaddeditions'] = array('description' => $i18n->__('Can add editions to list of affected editions'), 'levels' => 2);
+				self::$_available_permissions['user']['canonlyviewownissues'] = array('description' => $i18n->__('Can only see issues reported by the user'));
+				self::$_available_permissions['general']['canfindissues'] = array('description' => $i18n->__('Can search for issues'), 'details' => array());
+				self::$_available_permissions['general']['canfindissues']['details']['cancreatesavedsearches'] = array('description' => $i18n->__('Can create saved searches'));
+				self::$_available_permissions['project']['canseeproject'] = array('description' => $i18n->__('Can see this project'));
+				self::$_available_permissions['edition']['canseeedition'] = array('description' => $i18n->__('Can see this edition'));
+				self::$_available_permissions['component']['canseecomponent'] = array('description' => $i18n->__('Can see this component'));
+				self::$_available_permissions['build']['canseebuild'] = array('description' => $i18n->__('Can see this release'));
+				self::$_available_permissions['milestone']['canseemilestone'] = array('description' => $i18n->__('Can see this milestone'));
+				self::$_available_permissions['issues']['canvoteforissues'] = array('description' => $i18n->__('Can vote for issues'));
+				self::$_available_permissions['issues']['caneditlockedissues'] = array('description' => $i18n->__('Can lock and edit locked issues'));
+				self::$_available_permissions['issues']['caneditissuebasicown'] = array('description' => $i18n->__('Can edit title and description on issues reported by the user'), 'details' => array());
+				self::$_available_permissions['issues']['caneditissuebasicown']['details']['caneditissuetitleown'] = array('description' => $i18n->__('Can edit issue title on issues reported by the user'));
+				self::$_available_permissions['issues']['caneditissuebasicown']['details']['caneditissuedescriptionown'] = array('description' => $i18n->__('Can edit issue description on issues reported by the user'));
+				self::$_available_permissions['issues']['caneditissuebasic'] = array('description' => $i18n->__('Can edit title and description on any issues'), 'details' => array());
+				self::$_available_permissions['issues']['caneditissuebasic']['details']['caneditissuetitle'] = array('description' => $i18n->__('Can edit any issue title'));
+				self::$_available_permissions['issues']['caneditissuebasic']['details']['caneditissuedescription'] = array('description' => $i18n->__('Can edit any issue description'));
+				self::$_available_permissions['issues']['canclosereopenissueown'] = array('description' => $i18n->__('Can close and reopen issues reported by the user'), 'details' => array());
+				self::$_available_permissions['issues']['canclosereopenissueown']['details']['cancloseownissues'] = array('description' => $i18n->__('Can close issues reported by the user'));
+				self::$_available_permissions['issues']['canclosereopenissueown']['details']['canreopenownissues'] = array('description' => $i18n->__('Can re-open issues reported by the user'));
+				self::$_available_permissions['issues']['caneditissue'] = array('description' => $i18n->__('Can delete, close, reopen and update any issue details and progress'), 'details' => array());
+				self::$_available_permissions['issues']['caneditissue']['details']['candeleteissues'] = array('description' => $i18n->__('Can delete issues'));
+				self::$_available_permissions['issues']['caneditissue']['details']['cancloseissues'] = array('description' => $i18n->__('Can close any issues'));
+				self::$_available_permissions['issues']['caneditissue']['details']['canreopenissues'] = array('description' => $i18n->__('Can re-open any issues'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissueposted_by'] = array('description' => $i18n->__('Can edit issue posted by'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissueowned_by'] = array('description' => $i18n->__('Can edit issue owned by'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissueassigned_to'] = array('description' => $i18n->__('Can edit issue assigned_to'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissuestatus'] = array('description' => $i18n->__('Can edit issue status'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissuecategory'] = array('description' => $i18n->__('Can edit issue category'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissuepriority'] = array('description' => $i18n->__('Can edit issue priority'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissueseverity'] = array('description' => $i18n->__('Can edit issue severity'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissuereproducability'] = array('description' => $i18n->__('Can edit issue reproducability'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissueresolution'] = array('description' => $i18n->__('Can edit issue resolution'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissueestimated_time'] = array('description' => $i18n->__('Can estimate issues'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissueelapsed_time'] = array('description' => $i18n->__('Can spend time working on issues'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissuepercent_complete'] = array('description' => $i18n->__('Can edit issue percent complete'));
+				self::$_available_permissions['issues']['caneditissue']['details']['caneditissuemilestone'] = array('description' => $i18n->__('Can set issue milestone'));
+				self::$_available_permissions['issues']['caneditissuecustomfieldsown'] = array('description' => $i18n->__('Can change custom field values for issues reported by the user'), 'details' => array());
+				foreach (BUGScustomdatatype::getAll() as $cdf)
+				{
+					self::$_available_permissions['issues']['caneditissuecustomfieldsown']['details']['caneditissuecustomfieldsown_'.$cdf->getID()] = array('description' => $i18n->__('Can change custom field "%field_name%" for issues reported by the user', array('%field_name%' => $cdf->getDescription())));
+					self::$_available_permissions['issues']['caneditissuecustomfields']['details']['caneditissuecustomfields_'.$cdf->getID()] = array('description' => $i18n->__('Can change custom field "%field_name%" for any issues', array('%field_name%' => $cdf->getDescription())));
+				}
+				self::$_available_permissions['issues']['caneditissuecustomfields'] = array('description' => $i18n->__('Can change custom field values for any issues'), 'details' => array());
+				self::$_available_permissions['issues']['canaddextrainformationtoissues'] = array('description' => $i18n->__('Can add extra information (edition, component, release, links and files) to issues'), 'details' => array());
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddbuildsown'] = array('description' => $i18n->__('Can add releases / versions to list of affected versions for issues reported by the user'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddbuilds'] = array('description' => $i18n->__('Can add releases / versions to list of affected versions for any issues'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddcomponentsown'] = array('description' => $i18n->__('Can add components to list of affected components for issues reported by the user'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddcomponents'] = array('description' => $i18n->__('Can add components to list of affected components for any issues'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddeditionsown'] = array('description' => $i18n->__('Can add editions to list of affected editions for issues reported by the user'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddeditions'] = array('description' => $i18n->__('Can add editions to list of affected editions for any issues'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['addlinkstoissuesown'] = array('description' => $i18n->__('Can add links to issues reported by the user'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['addlinkstoissues'] = array('description' => $i18n->__('Can add links to any issues'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['addfilestoissuesown'] = array('description' => $i18n->__('Can add files to issues reported by the user'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['addfilestoissues'] = array('description' => $i18n->__('Can add files to any issues'));
+				self::$_available_permissions['issues']['canpostcomments'] = array('description' => $i18n->__('Can see public comments, post new, edit own and delete own comments'));
+				self::$_available_permissions['issues']['canpostcomments']['details']['canviewcomments'] = array('description' => $i18n->__('Can see public comments'));
+				self::$_available_permissions['issues']['canpostcomments']['details']['canpostcomments'] = array('description' => $i18n->__('Can post comments'));
+				self::$_available_permissions['issues']['canpostcomments']['details']['caneditowncomments'] = array('description' => $i18n->__('Can edit own comments'));
+				self::$_available_permissions['issues']['caneditallcomments'] = array('description' => $i18n->__('Can edit all comments'));
+				self::$_available_permissions['issues']['candeleteallcomments'] = array('description' => $i18n->__('Can delete any comments'));
 			}
 		}
 		
@@ -1170,9 +1191,22 @@
 		 * 
 		 * @return array
 		 */
-		public static function getAvailablePermissions($applies_to)
+		public static function getAvailablePermissions($applies_to = null)
 		{
 			self::_cacheAvailablePermissions();
+			if ($applies_to === null)
+			{
+				$list = self::$_available_permissions;
+				$retarr = array();
+				foreach ($list as $key => $details)
+				{
+					foreach ($details as $dkey => $dd)
+					{
+						$retarr[$dkey] = $dd;
+					}
+				}
+				return $retarr;
+			}
 			if (array_key_exists($applies_to, self::$_available_permissions))
 			{
 				return self::$_available_permissions[$applies_to];

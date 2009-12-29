@@ -34,7 +34,7 @@
 				<div style="font-size: 16px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;">Log messages</div>
 				<div style="height: 470px; overflow: auto;">
 				<?php foreach (BUGScontext::getI18n()->getMissingStrings() as $text => $t): ?>
-					<?php BUGSlogging::log('The text "' . $text . '" does not exist in list of translated strings.', 'i18n'); ?>
+					<?php BUGSlogging::log('The text "' . $text . '" does not exist in list of translated strings.', 'i18n', BUGSlogging::LEVEL_NOTICE); ?>
 				<?php endforeach; ?>
 				<?php foreach (BUGSlogging::getEntries() as $entry): ?>
 					<?php $color = BUGSlogging::getCategoryColor($entry['category']); ?>

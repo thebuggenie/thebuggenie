@@ -51,5 +51,16 @@
 			$crit->addInsert(B2tTeams::SCOPE, $scope_id);
 			$this->doInsert($crit);
 		}
+
+		public function getAll($scope = null)
+		{
+			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, $scope);
+			
+			$res = $this->doSelect($crit);
+			
+			return $res;
+		}
 		
 	}

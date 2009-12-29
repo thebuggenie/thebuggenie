@@ -18,7 +18,23 @@
 	 */
 	class BUGSgroup extends BUGSidentifiableclass implements BUGSidentifiable 
 	{
-		static $_groups = null;
+		protected static $_groups = null;
+
+		public static function getAll()
+		{
+			if (self::$_groups === null)
+			{
+				self::$_groups = array();
+				if ($res = B2DB::getTable('B2tGroups')->getAll())
+				{
+					while ($row = $res->getNextRow())
+					{
+						self::$_groups[$row->get(B2tGroups::ID)] = BUGSfactory::groupLab($row->get(B2tGroups::ID), $row);
+					}
+				}
+			}
+			return self::$_groups;
+		}
 		
 		/**
 		 * Class constructor
@@ -108,26 +124,6 @@
 			$crit->addWhere(B2tUsers::GROUP_ID, $this->getID());
 			$crit->addUpdate(B2tUsers::GROUP_ID, 0);
 			$res = B2DB::getTable('B2tUsers')->doUpdate($crit);
-		}
-
-		public static function getAll()
-		{
-			if (self::$_groups === null)
-			{
-				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tGroups::SCOPE, BUGScontext::getScope()->getID());
-				
-				$res = B2DB::getTable('B2tGroups')->doSelect($crit);
-		
-				$groups = array();
-		
-				while ($row = $res->getNextRow())
-				{
-					$groups[$row->get(B2tGroups::ID)] = BUGSfactory::groupLab($row->get(B2tGroups::ID), $row);
-				}
-				self::$_groups = $groups;
-			}
-			return self::$_groups;
 		}
 		
 	}

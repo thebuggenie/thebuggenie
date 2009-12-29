@@ -420,7 +420,7 @@
 		{
 			$p_id = B2DB::getTable('B2tProjects')->createNew($name);
 			
-			BUGScontext::setPermission("b2projectaccess", $p_id, "core", 0, BUGScontext::getUser()->getGroup()->getID(), 0, true);
+			BUGScontext::setPermission("canseeproject", $p_id, "core", 0, BUGScontext::getUser()->getGroup()->getID(), 0, true);
 			
 			if ($permissions = BUGScontext::getAvailablePermissions('project'))
 			{
@@ -2267,7 +2267,7 @@
 		 */
 		public function hasAccess()
 		{
-			return BUGScontext::getUser()->hasPermission('b2projectaccess', $this->getID(), 'core');			
+			return BUGScontext::getUser()->hasPermission('canseeproject', $this->getID(), 'core');			
 		}
 		
 		public function hasIcon()

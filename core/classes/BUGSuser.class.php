@@ -628,10 +628,7 @@
 		 */
 		public function isMemberOf($teamid)
 		{
-			if (count($this->teams) == 0)
-			{
-				$this->_populateTeams();
-			}
+			$this->_populateTeams();
 			if ($teamid != 0)
 			{
 				return in_array($teamid, $this->teams);
@@ -645,17 +642,22 @@
 		 */
 		protected function _populateTeams()
 		{
-			$this->teams = array();
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tTeamMembers::UID, $this->uid);
-	
-			if (B2DB::getTable('B2tTeamMembers')->doCount($crit) > 0)
+			if ($this->teams === null)
 			{
-				$res = B2DB::getTable('B2tTeamMembers')->doSelect($crit);
-				while ($row = $res->getNextRow())
+				$this->teams = array();
+				BUGSlogging::log('Populating user teams');
+				$crit = new B2DBCriteria();
+				$crit->addWhere(B2tTeamMembers::UID, $this->uid);
+		
+				if (B2DB::getTable('B2tTeamMembers')->doCount($crit) > 0)
 				{
-					$this->teams[$row->get(B2tTeams::ID)] = BUGSfactory::teamLab($row->get(B2tTeams::ID), $row);
+					$res = B2DB::getTable('B2tTeamMembers')->doSelect($crit);
+					while ($row = $res->getNextRow())
+					{
+						$this->teams[$row->get(B2tTeams::ID)] = BUGSfactory::teamLab($row->get(B2tTeams::ID), $row);
+					}
 				}
+				BUGSlogging::log('...done (Populating user teams)');
 			}
 		}
 	
@@ -1026,10 +1028,7 @@
 		 */
 		public function getTeams()
 		{
-			if ($this->teams === null)
-			{
-				$this->_populateTeams();
-			}
+			$this->_populateTeams();
 			return $this->teams;
 		}
 		
@@ -1432,8 +1431,12 @@
 		 */
 		public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $explicit = false, $permissive = false)
 		{
+			BUGSlogging::log('Checking permission '.$permission_type);
 			$group_id = ($this->getGroup() instanceof BUGSgroup) ? $this->getGroup()->getID() : 0;
-			return BUGScontext::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $explicit, $permissive);
+			$retval = BUGScontext::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $explicit, $permissive);
+			BUGSlogging::log('...done (Checking permissions '.$permission_type.')');
+			
+			return $retval;
 		}
 
 		/**

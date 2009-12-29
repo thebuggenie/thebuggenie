@@ -1223,7 +1223,8 @@
 		 */
 		public function runGetPermissionsInfo(BUGSrequest $request)
 		{
-			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('permissionsinfo', array('key' => $request->getParameter('key'), 'access_level' => $this->access_level))));
+			//var_dump(json_decode($request->getParameter('permissions_list')));die();
+			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsblock', array('base_id' => $request->getParameter('base_id'), 'permissions_list' => $request->getParameter('permissions_list'), 'mode' => $request->getParameter('mode'), 'target_id' => $request->getParameter('target_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
 		}
 
 		public function runSetPermission(BUGSrequest $request)
