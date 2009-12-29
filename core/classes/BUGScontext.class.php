@@ -1047,12 +1047,14 @@
 		 * Check to see if a specified user/group/team has access
 		 * 
 		 * @param string $permission_type The permission type 
-		 * @param mixed $target_id The target id
-		 * @param string $module_name The name of the module for which the permission is valid
 		 * @param integer $uid The user id for which the permission is valid, 0 for all
 		 * @param integer $gid The group id for which the permission is valid, 0 for all
 		 * @param integer $tid The team id for which the permission is valid, 0 for all
-		 * @param $all
+		 * @param integer $target_id[optional] The target id
+		 * @param string $module_name[optional] The name of the module for which the permission is valid
+		 * @param boolean $explicit[optional] whether to check for an explicit permission and return false if not set
+		 * @param boolean $permissive[optional] whether to return false or true when explicit fails
+		 * 
 		 * @return unknown_type
 		 */
 		public static function checkPermission($permission_type, $uid, $gid, $tid, $target_id = 0, $module_name = 'core', $explicit = false, $permissive = false)
@@ -1128,14 +1130,34 @@
 				self::$_available_permissions['general']['canfindissues'] = array('description' => $i18n->__('Can search for issues'), 'levels' => 2);
 				self::$_available_permissions['general']['cancreatesavedsearches'] = array('description' => $i18n->__('Can create saved searches'), 'levels' => 2);
 				self::$_available_permissions['general']['canvote'] = array('description' => $i18n->__('Can vote for issues'), 'levels' => 2);
-				self::$_available_permissions['general']['candeleteissues'] = array('description' => $i18n->__('Can delete issues'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissuefields'] = array('description' => $i18n->__('Can update issue details'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissueusers'] = array('description' => $i18n->__('Can assign issues'), 'levels' => 2);
-				self::$_available_permissions['project']['caneditissuetext'] = array('description' => $i18n->__('Can edit issue text'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditlockedissues'] = array('description' => $i18n->__('Can lock and edit locked issues'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue'] = array('description' => $i18n->__('Can edit, delete, close, reopen and update any issue details and progress'), 'levels' => 2, 'details' => array());
+				self::$_available_permissions['project']['caneditissue']['details']['candeleteissues'] = array('description' => $i18n->__('Can delete issues'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['cancloseissues'] = array('description' => $i18n->__('Can close any issues'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['cancloseownissues'] = array('description' => $i18n->__('Can close issues reported by the user'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['canreopenissues'] = array('description' => $i18n->__('Can re-open any issues'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['canreopenownissues'] = array('description' => $i18n->__('Can re-open issues reported by the user'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissuetitle'] = array('description' => $i18n->__('Can edit issue titles'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissuedescription'] = array('description' => $i18n->__('Can edit issue descriptions'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissuetitleown'] = array('description' => $i18n->__('Can edit issue title on issues reported by the user'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissuedescriptionown'] = array('description' => $i18n->__('Can edit issue description on issues reported by the user'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissueposted_by'] = array('description' => $i18n->__('Can edit issue posted by'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissueowned_by'] = array('description' => $i18n->__('Can edit issue owned by'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissueassigned_to'] = array('description' => $i18n->__('Can edit issue assigned_to'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissuestatus'] = array('description' => $i18n->__('Can edit issue status'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissuecategory'] = array('description' => $i18n->__('Can edit issue category'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissuepriority'] = array('description' => $i18n->__('Can edit issue priority'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissueseverity'] = array('description' => $i18n->__('Can edit issue severity'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissuereproducability'] = array('description' => $i18n->__('Can edit issue reproducability'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissueresolution'] = array('description' => $i18n->__('Can edit issue resolution'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissueestimated_time'] = array('description' => $i18n->__('Can estimate issues'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissueelapsed_time'] = array('description' => $i18n->__('Can spend time working on issues'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissuepercent_complete'] = array('description' => $i18n->__('Can edit issue percent complete'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissue']['details']['caneditissuemilestone'] = array('description' => $i18n->__('Can set issue milestone'), 'levels' => 2);
 				self::$_available_permissions['project']['caneditcomments'] = array('description' => $i18n->__('Can edit comments'), 'levels' => 4);
 				self::$_available_permissions['project']['canaddcomments'] = array('description' => $i18n->__('Can add comments'), 'levels' => 4);
 				self::$_available_permissions['project']['canviewcomments'] = array('description' => $i18n->__('Can view comments'), 'levels' => 4);
-				self::$_available_permissions['project']['canaddbuilds'] = array('description' => $i18n->__('Can add versions to list of affected versions'), 'levels' => 2);
+				self::$_available_permissions['project']['canaddbuilds'] = array('description' => $i18n->__('Can add releases / versions to list of affected versions'), 'levels' => 2);
 				self::$_available_permissions['project']['canaddcomponents'] = array('description' => $i18n->__('Can add components to list of affected components'), 'levels' => 2);
 				self::$_available_permissions['project']['canaddeditions'] = array('description' => $i18n->__('Can add editions to list of affected editions'), 'levels' => 2);
 			}

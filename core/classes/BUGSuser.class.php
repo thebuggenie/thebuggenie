@@ -226,7 +226,7 @@
 		protected $_isactivated = false;
 		protected $_isdeleted = false;
 		
-		static function getUsersByVerified($activated)
+		public static function getUsersByVerified($activated)
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tUsers::ACTIVATED, ($activated) ? 1 : 0);
@@ -240,7 +240,7 @@
 			return $users;
 		}
 
-		static function getUsersByEnabled($enabled)
+		public static function getUsersByEnabled($enabled)
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tUsers::ENABLED, ($enabled) ? 1 : 0);
@@ -261,7 +261,7 @@
 		 *
 		 * @return BUGSuser
 		 */
-		static function getByUsername($username)
+		public static function getByUsername($username)
 		{
 			if ($row = B2DB::getTable('B2tUsers')->getByUsername($username))
 			{
@@ -270,7 +270,7 @@
 			return null;
 		}
 		
-		static function getUsers($details, $noScope = false, $unique = false)
+		public static function getUsers($details, $noScope = false, $unique = false)
 		{
 			$users = array();
 			$crit = new B2DBCriteria();
@@ -338,6 +338,95 @@
 		}
 		
 		/**
+		 * Returns the logged in user, or default user if not logged in
+		 *
+		 * @param string $uname
+		 * @param string $upwd
+		 * 
+		 * @return BUGSuser
+		 */
+		public static function loginCheck($username = null, $password = null)
+		{
+			try
+			{
+				if ($username === null && $password === null)
+				{
+					if (BUGScontext::getRequest()->hasCookie('b2_username') && BUGScontext::getRequest()->hasCookie('b2_password'))
+					{
+						$username = BUGScontext::getRequest()->getCookie('b2_username');
+						$password = BUGScontext::getRequest()->getCookie('b2_password');
+						$row = B2DB::getTable('B2tUsers')->getByUsernameAndPassword($username, $password);
+						if (!$row)
+						{
+							BUGScontext::getResponse()->deleteCookie('b2_username');
+							BUGScontext::getResponse()->deleteCookie('b2_password');
+							BUGScontext::getResponse()->headerRedirect(BUGScontext::getRouting()->generate('login'));
+						}
+					}
+				}
+				if ($username !== null && $password !== null)
+				{
+					$row = B2DB::getTable('B2tUsers')->getByUsernameAndPassword($username, $password);
+				}
+				elseif (!BUGSsettings::isLoginRequired())
+				{
+					$row = B2DB::getTable('B2tUsers')->getByUserID(BUGSsettings::getDefaultUserID());
+				}
+				if ($row)
+				{
+					if (!$row->get(B2tScopes::ENABLED))
+					{
+						throw new Exception('This account belongs to a scope that is not active');
+					}
+					elseif (!$row->get(B2tUsers::ACTIVATED))
+					{
+						throw new Exception('This account has not been activated yet');
+					}
+					elseif (!$row->get(B2tUsers::ENABLED))
+					{
+						throw new Exception('This account has been suspended');
+					}
+					$user = BUGSfactory::userLab($row->get(B2tUsers::ID), $row);
+				}
+				elseif (BUGSsettings::isLoginRequired())
+				{
+					throw new Exception('Login required');
+				}
+				else
+				{
+					throw new Exception('No such login');
+				}
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
+	
+			try
+			{
+				if ($user->isAuthenticated())
+				{
+					$user->updateLastSeen();
+					if ($user->getScope() instanceof BUGSscope)
+					{
+						$_SESSION['b2_scope'] = $user->getScope()->getID();
+					}
+					if (!($user->getGroup() instanceof BUGSgroup))
+					{
+						throw new Exception('This user account belongs to a group that does not exist anymore. <br>Please contact the system administrator.');
+					}
+				}
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
+			
+			return $user;
+	
+		}
+		
+		/**
 		 * Creates a new user and returns it
 		 *
 		 * @param string $username
@@ -390,7 +479,7 @@
 		 * 
 		 * @return boolean
 		 */
-		static function isThisGuest()
+		public static function isThisGuest()
 		{
 			if (BUGScontext::getUser() instanceof BUGSuser)
 			{
@@ -1292,88 +1381,83 @@
 			$this->_isactivated = $val;
 		}
 		
-		static function findUser($details, $unique = true, $limit = null)
+		/**
+		 * Find one user based on details
+		 * 
+		 * @param string $details Any user detail (email, username, realname or buddyname)
+		 * 
+		 * @return BUGSuser
+		 */
+		public static function findUser($details)
 		{
-			$crit = new B2DBCriteria();
-			if (stristr($details, "@"))
+			$res = B2DB::getTable('B2tUsers')->getByDetails($details);
+			
+			if (!$res || $res->count() > 1) return false;
+			
+			return BUGSfactory::userLab($row->get(B2tUsers::ID), $row);
+		}
+
+		/**
+		 * Find users based on details
+		 * 
+		 * @param string $details Any user detail (email, username, realname or buddyname)
+		 * @param integer $limit[optional] an optional limit on the number of results
+		 * 
+		 * @return array
+		 */
+		public static function findUsers($details, $limit = null)
+		{
+			$retarr = array();
+			
+			if ($res = B2DB::getTable('B2tUsers')->getByDetails($details))
 			{
-				$crit->addWhere(B2tUsers::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
-			}
-			else
-			{
-				$crit->addWhere(B2tUsers::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
-			}
-	
-			if ($limit)
-			{
-				$crit->setLimit($limit);
-			}
-			if (!$res = B2DB::getTable('B2tUsers')->doSelect($crit))
-			{
-				$crit = new B2DBCriteria();
-				$crit->addWhere(b2tusers::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$crit->addOr(b2tusers::BUDDYNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$crit->addOr(b2tusers::REALNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$crit->addOr(b2tusers::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
-				if ($limit)
-				{
-					$crit->setLimit($limit);
-				}
-				$res = B2DB::getTable('B2tUsers')->doSelect($crit);
-			}
-	
-			if (!$res)
-			{
-				return false;
-			}
-			elseif ($res->count() == 1)
-			{
-				return BUGSfactory::userLab($res->getNextRow()->get(b2tusers::ID), $res->getCurrentRow());
-			}
-			elseif (!$unique)
-			{
-				$retarr = array();
 				while ($row = $res->getNextRow())
 				{
-					$retarr[] = BUGSfactory::userLab($res->getCurrentRow()->get(b2tusers::ID), $res->getCurrentRow());
+					$retarr[$row->get(B2tUsers::ID)] = BUGSfactory::userLab($row->get(B2tUsers::ID), $row);
 				}
-				return $retarr;
-			}
-			else
-			{
-				return false;
-			}
-	
-		}
-		
-		static function findUsers($details, $limit = null)
-		{
-			$retarr = self::findUser($details, false, $limit);
-			if ($retarr instanceof BUGSuser) 
-			{
-				$retarr = array($retarr);
-			}
-			elseif (!is_array($retarr))
-			{
-				$retarr = array();
 			}
 			return $retarr;
 		}
 	
+		/**
+		 * Perform a permission check on this user
+		 * 
+		 * @param string $permission_type The permission key
+		 * @param integer $target_id[optional] a target id if applicable
+		 * @param string $module_name[optional] the module for which the permission is valid
+		 * @param boolean $explicit[optional] whether to check for an explicit permission and return false if not set
+		 * @param boolean $permissive[optional] whether to return false or true when explicit fails
+		 * 
+		 * @return boolean
+		 */
 		public function hasPermission($permission_type, $target_id = 0, $module_name = 'core', $explicit = false, $permissive = false)
 		{
 			$group_id = ($this->getGroup() instanceof BUGSgroup) ? $this->getGroup()->getID() : 0;
 			return BUGScontext::checkPermission($permission_type, $this->getID(), $group_id, $this->getTeams(), $target_id, $module_name, $explicit, $permissive);
 		}
-		
+
+		/**
+		 * Whether this user can access the specified module
+		 * 
+		 * @param string $module The module key
+		 * 
+		 * @return boolean
+		 */
 		public function hasModuleAccess($module)
 		{
 			return BUGScontext::getModule($module)->hasAccess($this->getID());
 		}
 	
+		/**
+		 * Whether this user can access the specified page
+		 * 
+		 * @param string $page The page key
+		 * 
+		 * @return boolean
+		 */
 		public function hasPageAccess($page)
 		{
-			return !$this->hasPermission("b2no{$page}access", 0, "core");
+			return !$this->hasPermission("no{$page}access", 0, "core");
 		}
 
 		/**
@@ -1419,94 +1503,6 @@
 			$this->_timezone = $timezone;
 		}
 		
-		/**
-		 * Returns the logged in user, or default user if not logged in
-		 *
-		 * @param string $uname
-		 * @param string $upwd
-		 * 
-		 * @return BUGSuser
-		 */
-		public static function loginCheck($username = null, $password = null)
-		{
-			try
-			{
-				if ($username === null && $password === null)
-				{
-					if (BUGScontext::getRequest()->hasCookie('b2_username') && BUGScontext::getRequest()->hasCookie('b2_password'))
-					{
-						$username = BUGScontext::getRequest()->getCookie('b2_username');
-						$password = BUGScontext::getRequest()->getCookie('b2_password');
-						$row = B2DB::getTable('B2tUsers')->getByUsernameAndPassword($username, $password);
-						if (!$row)
-						{
-							BUGScontext::getResponse()->deleteCookie('b2_username');
-							BUGScontext::getResponse()->deleteCookie('b2_password');
-							BUGScontext::getResponse()->headerRedirect(BUGScontext::getRouting()->generate('login'));
-						}
-					}
-				}
-				if ($username !== null && $password !== null)
-				{
-					$row = B2DB::getTable('B2tUsers')->getByUsernameAndPassword($username, $password);
-				}
-				elseif (!BUGSsettings::isLoginRequired())
-				{
-					$row = B2DB::getTable('B2tUsers')->getByUserID(BUGSsettings::getDefaultUserID());
-				}
-				if ($row)
-				{
-					if (!$row->get(B2tScopes::ENABLED))
-					{
-						throw new Exception('This account belongs to a scope that is not active');
-					}
-					elseif (!$row->get(B2tUsers::ACTIVATED))
-					{
-						throw new Exception('This account has not been activated yet');
-					}
-					elseif (!$row->get(B2tUsers::ENABLED))
-					{
-						throw new Exception('This account has been suspended');
-					}
-					$user = BUGSfactory::userLab($row->get(B2tUsers::ID), $row);
-				}
-				elseif (BUGSsettings::isLoginRequired())
-				{
-					throw new Exception('Login required');
-				}
-				else
-				{
-					throw new Exception('No such login');
-				}
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-	
-			try
-			{
-				if ($user->isAuthenticated())
-				{
-					$user->updateLastSeen();
-					if ($user->getScope() instanceof BUGSscope)
-					{
-						$_SESSION['b2_scope'] = $user->getScope()->getID();
-					}
-					if (!($user->getGroup() instanceof BUGSgroup))
-					{
-						throw new Exception('This user account belongs to a group that does not exist anymore. <br>Please contact the system administrator.');
-					}
-				}
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-			
-			return $user;
-	
-		}
 		
 		/**
 		 * Return whether the user can vote on issues for a specific product

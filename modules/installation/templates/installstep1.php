@@ -29,6 +29,9 @@
 	<?php if ($base_folder_perm_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can write to The Bug Genie directory ...</div>
 	<?php endif; ?>
+	<?php if ($thebuggenie_folder_perm_ok): ?>
+		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can write to The Bug Genie public directory ...</div>
+	<?php endif; ?>
 	<?php if ($pdo_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP PDO installed and enabled ...</div>
 	<?php endif; ?>
@@ -81,6 +84,16 @@
 			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
 			chmod 777 <?php echo str_ireplace('\\', '/', substr(BUGScontext::getIncludePath(), 0, strripos(BUGScontext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>
+			</div>
+		<?php endif; ?>
+		<?php if (!$base_folder_perm_ok): ?>
+			<div class="installation_prerequisites prereq_fail">
+			<b>Could not write to The Bug Genie public directory</b><br>
+			The public folder for The Bug Genie should be writable during installation, since we need to store some information in it
+			</div>
+			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
+			<div class="command_box">
+			chmod 777 <?php echo str_ireplace('\\', '/', substr(BUGScontext::getIncludePath() . 'thebuggenie/', 0, strripos(BUGScontext::getIncludePath() . 'thebuggenie/', DIRECTORY_SEPARATOR) + 1)); ?>
 			</div>
 		<?php endif; ?>
 		<?php if (!$pdo_ok): ?>

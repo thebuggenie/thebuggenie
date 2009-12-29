@@ -1,5 +1,5 @@
 
- /* The Bug Genie 2 stylesheet
+ /* The Bug Genie stylesheet
  Released under the MPL v1.1 only */
 
 
@@ -1450,9 +1450,18 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 
 thead.borderless th { border: 0; }
 
-#config_permissions ul { list-style-type: none; padding: 0; margin: 0; }
+#config_permissions { font-size: 12px; }
+#config_permissions .faded_medium.smaller { font-size: 10px; padding-left: 10px; }
+#config_permissions ul { list-style-type: none; padding: 0; margin: 0; width: 750px; }
 #config_permissions ul li { margin: 0px; padding: 0; font-size: 13px; font-weight: normal; clear: both; }
-#config_permissions ul li { background-color: #FFF; }
+#config_permissions ul li { background-color: transparent; }
 #config_permissions ul li:hover { background-color: #FAFAFA; }
 #config_permissions ul li a { display: block; padding: 2px 0 2px 0; }
 #config_permissions ul li a:hover { border: 0; }
+#config_permissions ul li .content a { display: inline; }
+#config_permissions ul li ul { margin: 5px 10px 20px 10px; width: 730px; }
+#config_permissions ul li ul li { font-size: 12px; }
+#config_permissions ul li ul li:hover { background-color: #F1F1F1; }
+#config_permissions ul li ul li ul { margin: 10px 10px 25px 10px; width: 710px; }
+#config_permissions ul li ul li ul li { font-size: 11px; }
+#config_permissions ul li ul li ul li:hover { background-color: #E8E8E8; }

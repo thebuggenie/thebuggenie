@@ -105,4 +105,37 @@
 			return B2DB::getTable('B2tUsers')->doSelect($crit);
 		}
 
+		public function getByDetails($details)
+		{
+			$crit = $this->getCriteria();
+			if (stristr($details, "@"))
+			{
+				$crit->addWhere(B2tUsers::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
+			}
+			else
+			{
+				$crit->addWhere(B2tUsers::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
+			}
+	
+			if ($limit)
+			{
+				$crit->setLimit($limit);
+			}
+			if (!$res = $this->doSelect($crit))
+			{
+				$crit = $this->getCriteria();
+				$crit->addWhere(B2tUsers::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
+				$crit->addOr(B2tUsers::BUDDYNAME, "%$details%", B2DBCriteria::DB_LIKE);
+				$crit->addOr(B2tUsers::REALNAME, "%$details%", B2DBCriteria::DB_LIKE);
+				$crit->addOr(B2tUsers::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
+				if ($limit)
+				{
+					$crit->setLimit($limit);
+				}
+				$res = $this->doSelect($crit);
+			}
+			
+			return $res;
+		}
+		
 	}

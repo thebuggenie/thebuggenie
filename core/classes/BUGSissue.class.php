@@ -870,14 +870,51 @@
 			}
 			return $this->_duplicateof;
 		}
-
-		protected function _permissionCheck($key, $target_id = null)
+		
+		/**
+		 * Return or set whether the issue is locked
+		 * 
+		 * @param boolean $val[optional]
+		 * 
+		 * @return boolean
+		 */
+		public function isLocked($val = null)
 		{
-			//if (BUGScontext::getUser())
-			return (bool) (BUGScontext::getUser()->hasPermission($key, $this->getProjectID()) || BUGScontext::getUser()->hasPermission('caneditissue', $this->getProjectID()));
+			if ($val !== null)
+			{
+				$this->setLocked($val);
+			}
+			return (bool) $this->_locked;
+		}
+		
+		/**
+		 * Set whether the issue is locked
+		 * 
+		 * @param boolean $val[optional]
+		 */
+		public function setLocked($val = true)
+		{
+			$this->_locked = $val;
+		}
+		
+		/**
+		 * Set whether the issue is unlocked
+		 * 
+		 * @param boolean $val[optional]
+		 */
+		public function setUnlocked($val = true)
+		{
+			$this->_locked = !$val;
 		}
 
-		protected function _exclusivePermissionCheck($key, $target_id = null)
+		protected function _permissionCheck($key)
+		{
+			//if ($this-)
+			$retval = BUGScontext::getUser()->hasPermission($key, $this->getProjectID(), 'core', true, null);
+			return ($retval !== null) ? $retval : BUGScontext::getUser()->hasPermission('caneditissue', $this->getProjectID());
+		}
+
+		protected function _exclusivePermissionCheck($key)
 		{
 			return BUGScontext::getUser()->hasPermission($key, $this->getProjectID());
 		}
@@ -889,6 +926,10 @@
 		 */
 		public function canEditIssueDetails()
 		{
+			if ($this->isLocked())
+			{
+				return $this->_exclusivePermissionCheck('caneditlockedissues');
+			}
 			if (!$this->getProject()->canChangeIssuesWithoutWorkingOnThem())
 			{
 				if (!$this->isBeingWorkedOn())
@@ -899,6 +940,7 @@
 					
 				return false;
 			}
+			return true;
 		}
 		
 		/**

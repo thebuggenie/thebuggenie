@@ -36,6 +36,7 @@
 			$this->all_well = true;
 			$this->b2db_folder_perm_ok = true;
 			$this->base_folder_perm_ok = true;
+			$this->thebuggenie_folder_perm_ok = true;
 			$this->b2db_param_file_ok = true;
 			$this->pdo_ok = true;
 			if (!is_writable(BUGScontext::getIncludePath() . 'core/B2DB/'))
@@ -51,6 +52,11 @@
 			if (!is_writable(BUGScontext::getIncludePath()))
 			{
 				$this->base_folder_perm_ok = false;
+				$this->all_well = false;
+			}
+			if (!is_writable(BUGScontext::getIncludePath() . 'thebuggenie/'))
+			{
+				$this->thebuggenie_folder_perm_ok = false;
 				$this->all_well = false;
 			}
 			if (!class_exists('PDO'))

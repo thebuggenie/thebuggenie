@@ -4,7 +4,11 @@
 	<thead class="light">
 		<tr>
 			<th>&nbsp;</th>
-			<th style="width: 60px; text-align: center;"><?php echo __('Can set'); ?></th>
+			<?php if($mode == 'datatype'): ?>
+				<th style="width: 60px; text-align: center;"><?php echo __('Can set'); ?></th>
+			<?php elseif ($mode == 'general'): ?>
+				<th style="width: 60px; text-align: center;"><?php echo __('Can'); ?></th>
+			<?php endif; ?>
 		</tr>
 	</thead>
 	<tbody>
