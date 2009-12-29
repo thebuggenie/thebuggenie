@@ -50,7 +50,7 @@
 	$routes[] = array('configure_settings', '/configure/settings', 'configuration', 'settings', array('config_module' => 'core', 'section' => 12));
 	$routes[] = array('configure_scopes', '/configure/scopes', 'configuration', 'index', array('config_module' => 'core', 'section' => 14));
 	$routes[] = array('configure_files', '/configure/files', 'configuration', 'index', array('config_module' => 'core', 'section' => 3));
-	$routes[] = array('configure_permissions', '/configure/permissions', 'configuration', 'index', array('config_module' => 'core', 'section' => 5));
+	$routes[] = array('configure_permissions', '/configure/permissions', 'configuration', 'configurePermissions', array('config_module' => 'core', 'section' => 5));
 	$routes[] = array('configure_permissions_get_permissions', '/configure/permissions/get/permissions/for/:permission_key', 'configuration', 'getPermissionsInfo', array('config_module' => 'core', 'section' => 5));
 	$routes[] = array('permissions_set_denied', '/configure/permissions/set/permission/denied/for/:target_module/:key/:target_id/:target_type/:item_id/:template_mode', 'configuration', 'setPermission', array('config_module' => 'core', 'section' => 5, 'mode' => 'denied'));
 	$routes[] = array('permissions_set_allowed', '/configure/permissions/set/permission/allowed/for/:target_module/:key/:target_id/:target_type/:item_id/:template_mode', 'configuration', 'setPermission', array('config_module' => 'core', 'section' => 5, 'mode' => 'allowed'));

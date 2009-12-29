@@ -59,6 +59,7 @@
 		const DUPLICATE = 'issues.duplicate';
 		const DELETED = 'issues.deleted';
 		const BLOCKING = 'issues.blocking';
+		const LOCKED = 'issues.locked';
 		const MILESTONE = 'issues.milestone';
 
 		public function __construct()
@@ -99,6 +100,7 @@
 			parent::_addBoolean(self::DUPLICATE);
 			parent::_addBoolean(self::DELETED);
 			parent::_addBoolean(self::BLOCKING);
+			parent::_addBoolean(self::LOCKED);
 			parent::_addForeignKeyColumn(self::USER_WORKING_ON, B2DB::getTable('B2tUsers'), B2tUsers::ID);
 			parent::_addInteger(self::USER_WORKED_ON_SINCE, 10);
 			parent::_addForeignKeyColumn(self::MILESTONE, B2DB::getTable('B2tMilestones'), B2tMilestones::ID);

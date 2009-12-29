@@ -1302,11 +1302,15 @@
 			$this->module_error_details = BUGScontext::getMessageAndClear('module_error_details');
 		}
 
+		public function runConfigurePermissions(BUGSrequest $request)
+		{
+			
+		}
+
 		public function getAccessLevel($section, $module)
 		{
 			return (BUGScontext::getUser()->hasPermission("b2saveconfig", $section, $module, true)) ? self::ACCESS_FULL : self::ACCESS_READ;
 		}
-
 		
 	}
 

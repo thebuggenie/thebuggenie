@@ -1119,22 +1119,25 @@
 				$i18n = self::getI18n();
 				self::$_available_permissions = array('user' => array(), 'general' => array(), 'project' => array());
 
-				self::$_available_permissions['user']['b2canonlyviewownissues'] = array('description' => $i18n->__('Can only view issues reported by the user'), 'levels' => 2);
-				self::$_available_permissions['general']['b2canreadallcomments'] = array('description' => $i18n->__('Can view comments that are not public'), 'levels' => 2);
-				self::$_available_permissions['general']['b2addlinks'] = array('description' => $i18n->__('Can add links to issue reports'), 'levels' => 2);
-				self::$_available_permissions['general']['b2uploadfiles'] = array('description' => $i18n->__('Can add files to issues reported by the user'), 'levels' => 2);
-				self::$_available_permissions['general']['b2canfindissues'] = array('description' => $i18n->__('Can search for issues '), 'levels' => 2);
-				self::$_available_permissions['general']['b2canvote'] = array('description' => $i18n->__('Can vote for issues'), 'levels' => 2);
-				self::$_available_permissions['general']['b2candeleteissues'] = array('description' => $i18n->__('Can delete issues'), 'levels' => 2);
-				self::$_available_permissions['project']['b2caneditissuefields'] = array('description' => $i18n->__('Can update issue details'), 'levels' => 2);
-				self::$_available_permissions['project']['b2caneditissueusers'] = array('description' => $i18n->__('Can assign issues'), 'levels' => 2);
-				self::$_available_permissions['project']['b2caneditissuetext'] = array('description' => $i18n->__('Can edit issue text'), 'levels' => 2);
-				self::$_available_permissions['project']['b2caneditcomments'] = array('description' => $i18n->__('Can edit comments'), 'levels' => 4);
-				self::$_available_permissions['project']['b2canaddcomments'] = array('description' => $i18n->__('Can add comments'), 'levels' => 4);
-				self::$_available_permissions['project']['b2canviewcomments'] = array('description' => $i18n->__('Can view comments'), 'levels' => 4);
-				self::$_available_permissions['project']['b2canaddbuilds'] = array('description' => $i18n->__('Can add versions to list of affected versions'), 'levels' => 2);
-				self::$_available_permissions['project']['b2canaddcomponents'] = array('description' => $i18n->__('Can add components to list of affected components'), 'levels' => 2);
-				self::$_available_permissions['project']['b2canaddeditions'] = array('description' => $i18n->__('Can add editions to list of affected editions'), 'levels' => 2);
+				self::$_available_permissions['user']['canonlyviewownissues'] = array('description' => $i18n->__('Can only see issues reported by the user'), 'levels' => 2);
+				self::$_available_permissions['general']['canreadallcomments'] = array('description' => $i18n->__('Can see comments that are not public'), 'levels' => 2);
+				self::$_available_permissions['general']['addlinksuser'] = array('description' => $i18n->__('Can add links to issues reported by the user'), 'levels' => 2);
+				self::$_available_permissions['general']['addlinksother'] = array('description' => $i18n->__('Can add links to issues reported by anyone'), 'levels' => 2);
+				self::$_available_permissions['general']['uploadfilesuser'] = array('description' => $i18n->__('Can add files to issues reported by the user'), 'levels' => 2);
+				self::$_available_permissions['general']['uploadfilesother'] = array('description' => $i18n->__('Can add files to issues reported by anyone'), 'levels' => 2);
+				self::$_available_permissions['general']['canfindissues'] = array('description' => $i18n->__('Can search for issues'), 'levels' => 2);
+				self::$_available_permissions['general']['cancreatesavedsearches'] = array('description' => $i18n->__('Can create saved searches'), 'levels' => 2);
+				self::$_available_permissions['general']['canvote'] = array('description' => $i18n->__('Can vote for issues'), 'levels' => 2);
+				self::$_available_permissions['general']['candeleteissues'] = array('description' => $i18n->__('Can delete issues'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissuefields'] = array('description' => $i18n->__('Can update issue details'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissueusers'] = array('description' => $i18n->__('Can assign issues'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditissuetext'] = array('description' => $i18n->__('Can edit issue text'), 'levels' => 2);
+				self::$_available_permissions['project']['caneditcomments'] = array('description' => $i18n->__('Can edit comments'), 'levels' => 4);
+				self::$_available_permissions['project']['canaddcomments'] = array('description' => $i18n->__('Can add comments'), 'levels' => 4);
+				self::$_available_permissions['project']['canviewcomments'] = array('description' => $i18n->__('Can view comments'), 'levels' => 4);
+				self::$_available_permissions['project']['canaddbuilds'] = array('description' => $i18n->__('Can add versions to list of affected versions'), 'levels' => 2);
+				self::$_available_permissions['project']['canaddcomponents'] = array('description' => $i18n->__('Can add components to list of affected components'), 'levels' => 2);
+				self::$_available_permissions['project']['canaddeditions'] = array('description' => $i18n->__('Can add editions to list of affected editions'), 'levels' => 2);
 			}
 		}
 		

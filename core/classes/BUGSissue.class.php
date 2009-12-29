@@ -399,6 +399,13 @@
 		protected $_log_entries;
 
 		/**
+		 * Whether the issue is locked for changes
+		 *
+		 * @var boolean
+		 */
+		protected $_locked;
+
+		/**
 		 * All custom data type properties
 		 *
 		 * @property $_customfield*
@@ -577,6 +584,7 @@
 			$this->_last_updated 			= $row->get(B2tIssues::LAST_UPDATED);
 			$this->_resolution 				= $row->get(B2tIssues::RESOLUTION);
 			$this->_state 					= $row->get(B2tIssues::STATE);
+			$this->_locked 					= $row->get(B2tIssues::LOCKED);
 			$this->_status 					= $row->get(B2tIssues::STATUS);
 			$this->_priority 				= $row->get(B2tIssues::PRIORITY);
 			$this->_severity 				= $row->get(B2tIssues::SEVERITY);
@@ -862,9 +870,20 @@
 			}
 			return $this->_duplicateof;
 		}
-		
+
+		protected function _permissionCheck($key, $target_id = null)
+		{
+			//if (BUGScontext::getUser())
+			return (bool) (BUGScontext::getUser()->hasPermission($key, $this->getProjectID()) || BUGScontext::getUser()->hasPermission('caneditissue', $this->getProjectID()));
+		}
+
+		protected function _exclusivePermissionCheck($key, $target_id = null)
+		{
+			return BUGScontext::getUser()->hasPermission($key, $this->getProjectID());
+		}
+
 		/**
-		 * Check whether or not the user can edit issue details
+		 * Check whether or not this user can edit issue details
 		 * 
 		 * @return boolean
 		 */
@@ -889,6 +908,7 @@
 		 */
 		public function canEditTitle()
 		{
+			return $this->_permissionCheck('caneditissuetitle');
 		}
 
 		/**
@@ -898,6 +918,7 @@
 		 */
 		public function canEditDescription()
 		{
+			return $this->_permissionCheck('caneditissuedescription');
 		}
 		
 		/**
@@ -907,6 +928,7 @@
 		 */
 		public function canEditPostedBy()
 		{
+			return $this->_permissionCheck('caneditissueposted_by');
 		}
 
 		/**
@@ -916,6 +938,7 @@
 		 */
 		public function canEditAssignedTo()
 		{
+			return $this->_permissionCheck('caneditissueassigned_to');
 		}
 		
 		/**
@@ -925,6 +948,7 @@
 		 */
 		public function canEditOwnedBy()
 		{
+			return $this->_permissionCheck('caneditissueowned_by');
 		}
 		
 		/**
@@ -934,6 +958,7 @@
 		 */
 		public function canEditStatus()
 		{
+			return $this->_permissionCheck('caneditissuestatus');
 		}
 		
 		/**
@@ -943,6 +968,7 @@
 		 */
 		public function canEditCategory()
 		{
+			return $this->_permissionCheck('caneditissuecategory');
 		}
 		
 		/**
@@ -952,6 +978,7 @@
 		 */
 		public function canEditResolution()
 		{
+			return $this->_permissionCheck('caneditissueresolution');
 		}
 		
 		/**
@@ -961,6 +988,7 @@
 		 */
 		public function canEditReproducability()
 		{
+			return $this->_permissionCheck('caneditissuereproducability');
 		}
 		
 		/**
@@ -970,6 +998,7 @@
 		 */
 		public function canEditSeverity()
 		{
+			return $this->_permissionCheck('caneditissueseverity');
 		}
 		
 		/**
@@ -979,6 +1008,7 @@
 		 */
 		public function canEditPriority()
 		{
+			return $this->_permissionCheck('caneditissuepriority');
 		}
 		
 		/**
@@ -988,6 +1018,7 @@
 		 */
 		public function canEditEstimatedTime()
 		{
+			return $this->_permissionCheck('caneditissueestimated_time');
 		}
 		
 		/**
@@ -997,6 +1028,7 @@
 		 */
 		public function canEditSpentTime()
 		{
+			return $this->_permissionCheck('caneditissueelapsed_time');
 		}
 		
 		/**
@@ -1006,6 +1038,7 @@
 		 */
 		public function canEditPercentage()
 		{
+			return $this->_permissionCheck('caneditissuepercent_complete');
 		}
 
 		/**
@@ -1015,6 +1048,7 @@
 		 */
 		public function canEditMilestone()
 		{
+			return $this->_permissionCheck('caneditissuemilestone');
 		}
 		
 		/**
@@ -1024,6 +1058,7 @@
 		 */
 		public function canDeleteIssue()
 		{
+			return $this->_exclusivePermissionCheck('candeleteissues');
 		}
 		
 		/**

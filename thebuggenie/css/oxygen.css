@@ -1449,3 +1449,10 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 .saved_searches a { font-size: 12px; font-weight: bold; padding-left: 3px; }
 
 thead.borderless th { border: 0; }
+
+#config_permissions ul { list-style-type: none; padding: 0; margin: 0; }
+#config_permissions ul li { margin: 0px; padding: 0; font-size: 13px; font-weight: normal; clear: both; }
+#config_permissions ul li { background-color: #FFF; }
+#config_permissions ul li:hover { background-color: #FAFAFA; }
+#config_permissions ul li a { display: block; padding: 2px 0 2px 0; }
+#config_permissions ul li a:hover { border: 0; }
