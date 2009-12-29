@@ -10,7 +10,25 @@
 		<td valign="top">
 			<div style="width: 750px;" id="config_permissions">
 				<div class="configheader"><?php echo __('Configure permissions'); ?></div>
-				<div class="content"><?php echo __('Edit all global, group and team permissions from this page. User-specific permissions are handled from the user configuration page.'); ?></div>
+				<div class="rounded_box borderless" style="margin: 5px 0px 10px 0px; width: 750px;">
+					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+					<div class="xboxcontent" style="text-align: left; min-height: 85px;">
+						<div class="header_div smaller" style="margin: 0 0 5px 0;"><?php echo __('Icon legend:'); ?></div>
+						<div style="clear: both;">
+							<?php echo image_tag('permission_unset_ok.png', array('style' => 'float: left; margin: 0 5px 0 10px;')); ?><span style="float: left;"><?php echo __('Not set (permissive system setting)'); ?></span>
+							<?php echo image_tag('permission_unset_denied.png', array('style' => 'float: left; margin: 0 5px 0 10px;')); ?><span style="float: left;"><?php echo __('Not set (restrictive system setting)'); ?></span>
+							<?php echo image_tag('permission_set_unset.png', array('style' => 'float: left; margin: 0 5px 0 10px;')); ?><span style="float: left;"><?php echo __('Not set (uses global permission)'); ?></span>
+						</div>
+						<div style="clear: both;">
+							<?php echo image_tag('permission_set_ok.png', array('style' => 'float: left; margin: 0 5px 0 10px;')); ?><span style="float: left;"><?php echo __('Allowed'); ?></span>
+							<?php echo image_tag('permission_set_denied.png', array('style' => 'float: left; margin: 0 5px 0 10px;')); ?><span style="float: left;"><?php echo __('Denied'); ?></span>
+						</div>
+						<div style="clear: both; padding: 10px 0 5px 5px;">
+							<?php echo tbg_parse_text(__("Edit all global, group and team permissions from this page - user-specific permissions are handled from the user configuration page. The Bug Genie permissions are thoroughly explained in [[ConfigurePermissions]] in the wiki - look it up if you're ever stuck.")); ?>
+						</div>
+					</div>
+					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+				</div>
 				<div class="header_div" style="margin-top: 15px;"><?php echo __('General permissions'); ?></div>
 				<ul style="width: 750px;">
 					<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('general'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
