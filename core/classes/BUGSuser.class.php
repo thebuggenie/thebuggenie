@@ -1570,7 +1570,7 @@
 		 */
 		public function canAddBuildsToIssuesForProject($project_id)
 		{
-			return (bool) $bugs_user->hasPermission('b2canaddbuilds', $project_id);
+			return (bool) $this->hasPermission('b2canaddbuilds', $project_id);
 		}
 
 		/**
@@ -1582,9 +1582,58 @@
 		 */
 		public function canAddComponentsToIssuesForProject($project_id)
 		{
-			return (bool) $bugs_user->hasPermission('b2canaddcomponents', $project_id);
+			return (bool) $this->hasPermission('b2canaddcomponents', $project_id);
 		}
-		
+
+		/**
+		 * Return if the user can report new issues
+		 *
+		 * @param integer $product_id[optional] A product id
+		 * @return boolean
+		 */
+		public function canReportIssues($product_id = null)
+		{
+			$retval = null;
+			if ($product_id !== null)
+			{
+				$retval = $this->hasPermission('cancreateissues', $product_id, 'core', true, null);
+				$retval = ($retvall !== null) ? $retval : $this->hasPermission('cancreateandeditissues', $product_id, 'core', true, null);
+			}
+			return ($retval !== null) ? $retval : (bool) ($this->hasPermission('cancreateissues') || $this->hasPermission('cancreateandeditissues'));
+		}
+
+		/**
+		 * Return if the user can search for issues
+		 *
+		 * @return boolean
+		 */
+		public function canSearchForIssues()
+		{
+			return (bool) ($this->hasPermission('canfindissues') || $this->hasPermission('canfindissuesandsavesearches'));
+		}
+
+		/**
+		 * Return if the user can access configuration pages
+		 *
+		 * @param integer $section[optional] a section, or the configuration frontpage
+		 * 
+		 * @return boolean
+		 */
+		public function canAccessConfigurationPage($section = null)
+		{
+			return (bool) ($this->hasPermission('canviewconfig', $section, 'core', true) || $this->hasPermission('cansaveconfig', $section, 'core', true) || $this->hasPermission('canviewconfig', 0, 'core', true) || $this->hasPermission('cansaveconfig', 0, 'core', true));
+		}
+
+		/**
+		 * Return if the user can save configuration in a section
+		 *
+		 * @return boolean
+		 */
+		public function canSaveConfiguration($section, $module = 'core')
+		{
+			return (bool) ($this->hasPermission('cansaveconfig', $section, $module, true) || $this->hasPermission('cansaveconfig', 0, $module, true));
+		}
+
 		/**
 		 * Return a list of the users latest log items
 		 * 

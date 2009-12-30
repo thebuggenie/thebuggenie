@@ -27,6 +27,11 @@ function addProject(url)
 	},
 	onFailure: function (transport) {
 		$('project_add_indicator').hide();
+		var json = transport.responseJSON;
+		if (json && json.error)
+		{
+			failedMessage(json.error);
+		}
 	},
 	insertion: Insertion.Bottom
 	});

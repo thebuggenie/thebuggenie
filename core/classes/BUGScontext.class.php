@@ -181,7 +181,7 @@
 		{
 			return self::$_installmode;
 		}
-		
+
 		/**
 		 * Add a path to the list of searched paths in the autoloader
 		 * Class files must contain one class with the same name as the class
@@ -1061,49 +1061,84 @@
 		{
 			if (array_key_exists($module_name, self::$_permissions) &&
 				array_key_exists($permission_type, self::$_permissions[$module_name]) &&
-				array_key_exists($target_id, self::$_permissions[$module_name][$permission_type]))
+				(array_key_exists($target_id, self::$_permissions[$module_name][$permission_type]) || $target_id === null))
 			{
-				if ($uid != 0 || $gid != 0 && $tid != 0)
+				$permissions = ($target_id === null) ? self::$_permissions[$module_name][$permission_type] : self::$_permissions[$module_name][$permission_type][$target_id];
+				if ($uid != 0 || $gid != 0 || $tid != 0)
 				{
 					if ($uid != 0)
 					{
-						foreach (self::$_permissions[$module_name][$permission_type][$target_id] as $permission)
+						foreach ($permissions as $key => $permission)
 						{
-							if ($permission['uid'] == $uid)
+							if (!array_key_exists('uid', $permission))
 							{
-								return $permission['allowed'];
+								foreach ($permission as $pkey => $pp)
+								{
+									if ($pp['uid'] == $uid) return $pp['allowed'];
+								}
+							}
+							else
+							{
+								if ($permission['uid'] == $uid) return $permission['allowed'];
 							}
 						}
 					}
 
 					if (is_array($tid) || $tid != 0)
 					{
-						foreach (self::$_permissions[$module_name][$permission_type][$target_id] as $permission)
+						foreach ($permissions as $key => $permission)
 						{
-							if ((is_array($tid) && in_array($permission['tid'], array_keys($tid))) || $permission['tid'] == $tid)
+							if (!array_key_exists('uid', $permission))
 							{
-								return $permission['allowed'];
+								foreach ($permission as $pkey => $pp)
+								{
+									if ((is_array($tid) && in_array($pp['tid'], array_keys($tid))) || $pp['tid'] == $tid)
+									{
+										return $pp['allowed'];
+									}
+								}
+							}
+							else
+							{
+								if ((is_array($tid) && in_array($permission['tid'], array_keys($tid))) || $permission['tid'] == $tid)
+								{
+									return $permission['allowed'];
+								}
 							}
 						}
 					}
 
 					if ($gid != 0)
 					{
-						foreach (self::$_permissions[$module_name][$permission_type][$target_id] as $permission)
+						foreach ($permissions as $key => $permission)
 						{
-							if ($permission['gid'] == $gid)
+							if (!array_key_exists('gid', $permission))
 							{
-								return $permission['allowed'];
+								foreach ($permission as $pkey => $pp)
+								{
+									if ($pp['gid'] == $gid) return $pp['allowed'];
+								}
+							}
+							else
+							{
+								if ($permission['gid'] == $gid) return $permission['allowed'];
 							}
 						}
 					}
 				}
 
-				foreach (self::$_permissions[$module_name][$permission_type][$target_id] as $permission)
+				foreach ($permissions as $key => $permission)
 				{
-					if ($permission['uid'] + $permission['gid'] + $permission['tid'] == 0)
+					if (!array_key_exists('uid', $permission))
 					{
-						return $permission['allowed'];
+						foreach ($permission as $pkey => $pp)
+						{
+							if ($pp['uid'] + $pp['gid'] + $pp['tid'] == 0) return $permission['allowed'];
+						}
+					}
+					else
+					{
+						if ($permission['uid'] + $permission['gid'] + $permission['tid'] == 0) return $permission['allowed'];
 					}
 				}
 
@@ -1122,28 +1157,53 @@
 				self::$_available_permissions = array('user' => array(), 'general' => array(), 'project' => array());
 
 				self::$_available_permissions['user']['canonlyviewownissues'] = array('description' => $i18n->__('Can only see issues reported by the user'));
-				self::$_available_permissions['general']['canfindissues'] = array('description' => $i18n->__('Can search for issues'), 'details' => array());
-				self::$_available_permissions['general']['canfindissues']['details']['cancreatesavedsearches'] = array('description' => $i18n->__('Can create saved searches'));
+				self::$_available_permissions['configuration']['cansaveconfig'] = array('description' => $i18n->__('Can access configuration page and edit all configuration'), 'details' => array());
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Settings" configuration page'), 'target_id' => 12));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Settings" configuration page'), 'target_id' => 12));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Permissions" configuration page'), 'target_id' => 5));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Permissions" configuration page'), 'target_id' => 5));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Uploads" configuration page'), 'target_id' => 3));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Uploads" configuration page'), 'target_id' => 3));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Scopes" configuration page'), 'target_id' => 14));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Scopes" configuration page'), 'target_id' => 14));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Import" configuration page'), 'target_id' => 16));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Import" configuration page'), 'target_id' => 16));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Projects" configuration page'), 'target_id' => 10));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Projects" configuration page'), 'target_id' => 10));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Issue types" configuration page'), 'target_id' => 6));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Issue types" configuration page'), 'target_id' => 6));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Issue fields" configuration page'), 'target_id' => 4));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Issue fields" configuration page'), 'target_id' => 4));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Users, teams and groups" configuration page'), 'target_id' => 2));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Users, teams and groups" configuration page'), 'target_id' => 2));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Modules" and any module configuration page'), 'target_id' => 15));
+				self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('cansaveconfig' => array('description' => $i18n->__('Read + write access: "Modules" configuration page and any modules'), 'target_id' => 15));
+				self::$_available_permissions['general']['canfindissuesandsavesearches'] = array('description' => $i18n->__('Can search for issues and create saved searches'), 'details' => array());
+				self::$_available_permissions['general']['canfindissuesandsavesearches']['details']['canfindissues'] = array('description' => $i18n->__('Can search for issues'));
+				self::$_available_permissions['general']['canfindissuesandsavesearches']['details']['cancreatesavedsearches'] = array('description' => $i18n->__('Can create saved searches'));
 				self::$_available_permissions['project']['canseeproject'] = array('description' => $i18n->__('Can see this project'));
 				self::$_available_permissions['edition']['canseeedition'] = array('description' => $i18n->__('Can see this edition'));
 				self::$_available_permissions['component']['canseecomponent'] = array('description' => $i18n->__('Can see this component'));
 				self::$_available_permissions['build']['canseebuild'] = array('description' => $i18n->__('Can see this release'));
 				self::$_available_permissions['milestone']['canseemilestone'] = array('description' => $i18n->__('Can see this milestone'));
 				self::$_available_permissions['issues']['canvoteforissues'] = array('description' => $i18n->__('Can vote for issues'));
-				self::$_available_permissions['issues']['caneditlockedissues'] = array('description' => $i18n->__('Can lock and edit locked issues'));
-				self::$_available_permissions['issues']['caneditissuebasicown'] = array('description' => $i18n->__('Can edit title and description on issues reported by the user'), 'details' => array());
-				self::$_available_permissions['issues']['caneditissuebasicown']['details']['caneditissuetitleown'] = array('description' => $i18n->__('Can edit issue title on issues reported by the user'));
-				self::$_available_permissions['issues']['caneditissuebasicown']['details']['caneditissuedescriptionown'] = array('description' => $i18n->__('Can edit issue description on issues reported by the user'));
+				self::$_available_permissions['issues']['canlockandeditlockedissues'] = array('description' => $i18n->__('Can lock and edit locked issues'));
+				self::$_available_permissions['issues']['cancreateandeditissues'] = array('description' => $i18n->__('Can create issues, edit basic information on issues reported by the user and close/re-open them'), 'details' => array());
+				self::$_available_permissions['issues']['cancreateandeditissues']['details']['cancreateissues'] = array('description' => $i18n->__('Can create new issues'), 'details' => array());
+				self::$_available_permissions['issues']['cancreateandeditissues']['details']['caneditissuebasicown'] = array('description' => $i18n->__('Can edit title and description on issues reported by the user'), 'details' => array());
+				self::$_available_permissions['issues']['cancreateandeditissues']['details']['caneditissuebasicown']['details']['caneditissuetitleown'] = array('description' => $i18n->__('Can edit issue title on issues reported by the user'));
+				self::$_available_permissions['issues']['cancreateandeditissues']['details']['caneditissuebasicown']['details']['caneditissuedescriptionown'] = array('description' => $i18n->__('Can edit issue description on issues reported by the user'));
+				self::$_available_permissions['issues']['cancreateandeditissues']['details']['canclosereopenissuesown'] = array('description' => $i18n->__('Can close and reopen issues reported by the user'), 'details' => array());
+				self::$_available_permissions['issues']['cancreateandeditissues']['details']['canclosereopenissuesown']['details']['cancloseissuesown'] = array('description' => $i18n->__('Can close issues reported by the user'));
+				self::$_available_permissions['issues']['cancreateandeditissues']['details']['canclosereopenissuesown']['details']['canreopenissuesown'] = array('description' => $i18n->__('Can re-open issues reported by the user'));
 				self::$_available_permissions['issues']['caneditissuebasic'] = array('description' => $i18n->__('Can edit title and description on any issues'), 'details' => array());
 				self::$_available_permissions['issues']['caneditissuebasic']['details']['caneditissuetitle'] = array('description' => $i18n->__('Can edit any issue title'));
 				self::$_available_permissions['issues']['caneditissuebasic']['details']['caneditissuedescription'] = array('description' => $i18n->__('Can edit any issue description'));
-				self::$_available_permissions['issues']['canclosereopenissueown'] = array('description' => $i18n->__('Can close and reopen issues reported by the user'), 'details' => array());
-				self::$_available_permissions['issues']['canclosereopenissueown']['details']['cancloseownissues'] = array('description' => $i18n->__('Can close issues reported by the user'));
-				self::$_available_permissions['issues']['canclosereopenissueown']['details']['canreopenownissues'] = array('description' => $i18n->__('Can re-open issues reported by the user'));
 				self::$_available_permissions['issues']['caneditissue'] = array('description' => $i18n->__('Can delete, close, reopen and update any issue details and progress'), 'details' => array());
 				self::$_available_permissions['issues']['caneditissue']['details']['candeleteissues'] = array('description' => $i18n->__('Can delete issues'));
-				self::$_available_permissions['issues']['caneditissue']['details']['cancloseissues'] = array('description' => $i18n->__('Can close any issues'));
-				self::$_available_permissions['issues']['caneditissue']['details']['canreopenissues'] = array('description' => $i18n->__('Can re-open any issues'));
+				self::$_available_permissions['issues']['caneditissue']['details']['canclosereopenissues'] = array('description' => $i18n->__('Can close any issues'));
+				self::$_available_permissions['issues']['caneditissue']['details']['canclosereopenissues']['details']['cancloseissues'] = array('description' => $i18n->__('Can close any issues'));
+				self::$_available_permissions['issues']['caneditissue']['details']['canclosereopenissues']['details']['canreopenissues'] = array('description' => $i18n->__('Can re-open any issues'));
 				self::$_available_permissions['issues']['caneditissue']['details']['caneditissueposted_by'] = array('description' => $i18n->__('Can edit issue posted by'));
 				self::$_available_permissions['issues']['caneditissue']['details']['caneditissueowned_by'] = array('description' => $i18n->__('Can edit issue owned by'));
 				self::$_available_permissions['issues']['caneditissue']['details']['caneditissueassigned_to'] = array('description' => $i18n->__('Can edit issue assigned_to'));
@@ -1175,12 +1235,12 @@
 				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['addlinkstoissues'] = array('description' => $i18n->__('Can add links to any issues'));
 				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['addfilestoissuesown'] = array('description' => $i18n->__('Can add files to issues reported by the user'));
 				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['addfilestoissues'] = array('description' => $i18n->__('Can add files to any issues'));
-				self::$_available_permissions['issues']['canpostcomments'] = array('description' => $i18n->__('Can see public comments, post new, edit own and delete own comments'));
-				self::$_available_permissions['issues']['canpostcomments']['details']['canviewcomments'] = array('description' => $i18n->__('Can see public comments'));
-				self::$_available_permissions['issues']['canpostcomments']['details']['canpostcomments'] = array('description' => $i18n->__('Can post comments'));
-				self::$_available_permissions['issues']['canpostcomments']['details']['caneditowncomments'] = array('description' => $i18n->__('Can edit own comments'));
-				self::$_available_permissions['issues']['caneditallcomments'] = array('description' => $i18n->__('Can edit all comments'));
-				self::$_available_permissions['issues']['candeleteallcomments'] = array('description' => $i18n->__('Can delete any comments'));
+				self::$_available_permissions['issues']['canpostandeditcomments'] = array('description' => $i18n->__('Can see public comments, post new, edit own and delete own comments'));
+				self::$_available_permissions['issues']['canpostandeditcomments']['details']['canviewcomments'] = array('description' => $i18n->__('Can see public comments'));
+				self::$_available_permissions['issues']['canpostandeditcomments']['details']['canpostcomments'] = array('description' => $i18n->__('Can post comments'));
+				self::$_available_permissions['issues']['canpostandeditcomments']['details']['caneditcommentsown'] = array('description' => $i18n->__('Can edit own comments'));
+				self::$_available_permissions['issues']['caneditcomments'] = array('description' => $i18n->__('Can edit all comments'));
+				self::$_available_permissions['issues']['candeletecomments'] = array('description' => $i18n->__('Can delete any comments'));
 			}
 		}
 		

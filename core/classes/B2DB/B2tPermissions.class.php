@@ -94,7 +94,7 @@
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ALLOWED, true);
 			$crit->addInsert(self::SCOPE, $scope_id);
-			$crit->addInsert(self::PERMISSION_TYPE, 'b2viewconfig');
+			$crit->addInsert(self::PERMISSION_TYPE, 'canviewconfig');
 			$crit->addInsert(self::TARGET_ID, 0);
 			$crit->addInsert(self::GID, $admin_group_id);
 			$crit->addInsert(self::MODULE, 'core');
@@ -102,11 +102,10 @@
 
 			for ($cc = 1; $cc <= 16; $cc++)
 			{
-				if ($cc == 13) continue;
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::ALLOWED, 1);
 				$crit->addInsert(self::SCOPE, $scope_id);
-				$crit->addInsert(self::PERMISSION_TYPE, 'b2saveconfig');
+				$crit->addInsert(self::PERMISSION_TYPE, 'cansaveconfig');
 				$crit->addInsert(self::TARGET_ID, $cc);
 				$crit->addInsert(self::GID, $admin_group_id);
 				$crit->addInsert(self::MODULE, 'core');
@@ -116,7 +115,7 @@
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ALLOWED, 1);
 			$crit->addInsert(self::SCOPE, $scope_id);
-			$crit->addInsert(self::PERMISSION_TYPE, 'b2noaccountaccess');
+			$crit->addInsert(self::PERMISSION_TYPE, 'noaccountaccess');
 			$crit->addInsert(self::TARGET_ID, 0);
 			$crit->addInsert(self::GID, $guest_group_id);
 			$crit->addInsert(self::MODULE, 'core');
@@ -126,7 +125,7 @@
 			$crit->addInsert(self::ALLOWED, 1);
 			$crit->addInsert(self::SCOPE, $scope_id);
 			$crit->addInsert(self::TARGET_ID, 0);
-			$crit->addInsert(self::PERMISSION_TYPE, 'b2canreportissues');
+			$crit->addInsert(self::PERMISSION_TYPE, 'cancreateandeditissues');
 			$crit->addInsert(self::MODULE, 'core');
 			$this->doInsert($crit);
 
@@ -134,7 +133,23 @@
 			$crit->addInsert(self::ALLOWED, 1);
 			$crit->addInsert(self::SCOPE, $scope_id);
 			$crit->addInsert(self::TARGET_ID, 0);
-			$crit->addInsert(self::PERMISSION_TYPE, 'b2canfindissues');
+			$crit->addInsert(self::PERMISSION_TYPE, 'canfindissuesandsavesearches');
+			$crit->addInsert(self::MODULE, 'core');
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ALLOWED, 1);
+			$crit->addInsert(self::SCOPE, $scope_id);
+			$crit->addInsert(self::TARGET_ID, 0);
+			$crit->addInsert(self::PERMISSION_TYPE, 'caneditissuecustomfieldsown');
+			$crit->addInsert(self::MODULE, 'core');
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ALLOWED, 1);
+			$crit->addInsert(self::SCOPE, $scope_id);
+			$crit->addInsert(self::TARGET_ID, 0);
+			$crit->addInsert(self::PERMISSION_TYPE, 'canpostandeditcomments');
 			$crit->addInsert(self::MODULE, 'core');
 			$this->doInsert($crit);
 		}

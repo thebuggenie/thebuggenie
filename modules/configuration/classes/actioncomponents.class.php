@@ -110,8 +110,7 @@
 		
 		protected function _getPermissionListFromKey($key, $permissions = null)
 		{
-			//echo "finding $key";
-			if ($permissions == null)
+			if ($permissions === null)
 			{
 				$permissions = BUGScontext::getAvailablePermissions();
 			}
@@ -121,7 +120,7 @@
 				{
 					return (array_key_exists('details', $permission)) ? $permission['details'] : array();
 				}
-				elseif (array_key_exists('details', $permission) && ($plist = $this->_getPermissionListFromKey($pkey, $permission['details'])))
+				elseif (array_key_exists('details', $permission) && count($permission['details']) > 0 && ($plist = $this->_getPermissionListFromKey($key, $permission['details'])))
 				{
 					return $plist;
 				}

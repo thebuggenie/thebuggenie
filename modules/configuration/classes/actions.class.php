@@ -14,8 +14,7 @@
 		public function preExecute(BUGSrequest $request, $action)
 		{
 			// forward 403 if you're not allowed here
-			$this->forward403unless(BUGScontext::getUser()->hasPermission("b2saveconfig", 0, 'core', true) ||
-									BUGScontext::getUser()->hasPermission("b2viewconfig", 0, 'core', true));
+			$this->forward403unless(BUGScontext::getUser()->canAccessConfigurationPage());
 			
 			$this->access_level = $this->getAccessLevel($request->getParameter('section'), 'core');
 			
@@ -35,8 +34,8 @@
 			$data_config_sections = array();
 			$module_config_sections = array();
 			$general_config_sections[12] = array('route' => 'configure_settings', 'description' => __('Settings'), 'icon' => 'general', 'details' => __('Every setting in the bug genie can be adjusted in this section.'));
-			$general_config_sections[3] = array('route' => 'configure_files', 'description' => __('Uploads &amp; attachments'), 'icon' => 'files', 'details' => __('All settings related to file uploads are controlled from this section.'));
 			$general_config_sections[5] = array('route' => 'configure_permissions', 'description' => __('Permissions'), 'icon' => 'permissions', 'details' => __('Configure permissions in this section'));
+			$general_config_sections[3] = array('route' => 'configure_files', 'description' => __('Uploads &amp; attachments'), 'icon' => 'files', 'details' => __('All settings related to file uploads are controlled from this section.'));
 			if (BUGScontext::getUser()->getScope()->getID() == 1)
 			{
 				//$general_config_sections[14] = array('route' => 'configure_scopes', 'description' => __('Scopes'), 'icon' => 'scopes', 'details' => __('Scopes are self-contained Bug Genie environments. Configure them here.'));
@@ -371,7 +370,7 @@
 		{
 			$this->forward403unless($request->isMethod(BUGSrequest::POST));
 									
-			if ($this->access_level = self::ACCESS_FULL)
+			if ($this->access_level == self::ACCESS_FULL)
 			{
 				try
 				{
@@ -725,18 +724,26 @@
 		 */
 		public function runAddProject(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level = self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
 
-			if ($p_name = $request->getParameter('p_name'))
+			if ($this->access_level == self::ACCESS_FULL)
 			{
-				$aProject = BUGSproject::createNew($p_name);
-				return $this->renderJSON(array('title' => $i18n->__('The project has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('projectbox', array('project' => $aProject))));
+				if ($p_name = $request->getParameter('p_name'))
+				{
+					$aProject = BUGSproject::createNew($p_name);
+					if ($aProject instanceof BUGSproject)
+					{
+						return $this->renderJSON(array('title' => $i18n->__('The project has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('projectbox', array('project' => $aProject))));
+					}
+					else
+					{
+						return $this->renderJSON(array('failed' => true, "error" => $i18n->__('A project with the same key already exists')));
+					}
+				}
+
+				return $this->renderJSON(array('failed' => true, "error" => $i18n->__('Please specify a valid project name')));
 			}
-			else
-			{
-				return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The project could not be added')."', '".$i18n->__('Please specify a project name')));
-			}
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add projects")));
 		}
 		
 		/**
@@ -746,7 +753,7 @@
 		 */
 		public function runAddEdition(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
 
 			try
@@ -789,7 +796,7 @@
 		 */
 		public function runBuildAction(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 
 			try
 			{
@@ -881,7 +888,7 @@
 		 */
 		public function runAddBuild(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
 
 			try
@@ -937,7 +944,7 @@
 		 */
 		public function runAddComponent(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
 
 			try
@@ -980,7 +987,7 @@
 		 */
 		public function runAddMilestone(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
 
 			try
@@ -1023,7 +1030,7 @@
 		 */
 		public function runMilestoneAction(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 
 			try
 			{
@@ -1097,7 +1104,7 @@
 		 */
 		public function runEditEditionComponent(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			
 			try
 			{
@@ -1126,7 +1133,7 @@
 		 */
 		public function runEditComponent(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			
 			try
 			{
@@ -1154,7 +1161,7 @@
 		 */
 		public function runDeleteProject(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level = self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			
 			try
 			{
@@ -1310,7 +1317,7 @@
 
 		public function getAccessLevel($section, $module)
 		{
-			return (BUGScontext::getUser()->hasPermission("b2saveconfig", $section, $module, true)) ? self::ACCESS_FULL : self::ACCESS_READ;
+			return (BUGScontext::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;
 		}
 		
 	}

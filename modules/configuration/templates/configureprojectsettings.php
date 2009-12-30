@@ -183,16 +183,50 @@
 				<label for="time_unit"><?php echo __('Time measuring'); ?></label>
 			</td>
 			<td>
-				<select name="time_unit" id="time_unit" style="width: 300px;">
-					<option value=0<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_HOURS): ?> selected<?php endif; ?>><?php echo __('Hours only'); ?></option>
-					<option value=1<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_HOURS_DAYS): ?> selected<?php endif; ?>><?php echo __('Hours and days'); ?></option>
-					<option value=2<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_HOURS_DAYS_WEEKS): ?> selected<?php endif; ?>><?php echo __('Hours, days and weeks'); ?></option>
-					<option value=3<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_DAYS): ?> selected<?php endif; ?>><?php echo __('Days only'); ?></option>
-					<option value=4<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_DAYS_WEEKS): ?> selected<?php endif; ?>><?php echo __('Days and weeks'); ?></option>
-					<option value=5<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_WEEKS): ?> selected<?php endif; ?>><?php echo __('Weeks only'); ?></option>
-					<option value=6<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_POINTS): ?> selected<?php endif; ?>><?php echo __('Points only'); ?></option>
-					<option value=7<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_POINTS_HOURS): ?> selected<?php endif; ?>><?php echo __('Points for issues, hours for tasks'); ?></option>
-				</select>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="time_unit" id="time_unit" style="width: 300px;">
+						<option value=0<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_HOURS): ?> selected<?php endif; ?>><?php echo __('Hours only'); ?></option>
+						<option value=1<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_HOURS_DAYS): ?> selected<?php endif; ?>><?php echo __('Hours and days'); ?></option>
+						<option value=2<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_HOURS_DAYS_WEEKS): ?> selected<?php endif; ?>><?php echo __('Hours, days and weeks'); ?></option>
+						<option value=3<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_DAYS): ?> selected<?php endif; ?>><?php echo __('Days only'); ?></option>
+						<option value=4<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_DAYS_WEEKS): ?> selected<?php endif; ?>><?php echo __('Days and weeks'); ?></option>
+						<option value=5<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_WEEKS): ?> selected<?php endif; ?>><?php echo __('Weeks only'); ?></option>
+						<option value=6<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_POINTS): ?> selected<?php endif; ?>><?php echo __('Points only'); ?></option>
+						<option value=7<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_POINTS_HOURS): ?> selected<?php endif; ?>><?php echo __('Points for issues, hours for tasks'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php
+
+						switch ($theProject->getTimeUnit())
+						{
+							case BUGSproject::TIME_UNIT_HOURS:
+								echo __('Hours only');
+								break;
+							case BUGSproject::TIME_UNIT_HOURS_DAYS:
+								echo __('Hours and days');
+								break;
+							case BUGSproject::TIME_UNIT_HOURS_DAYS_WEEKS:
+								echo __('Hours, days and weeks');
+								break;
+							case BUGSproject::TIME_UNIT_DAYS:
+								echo __('Days only');
+								break;
+							case BUGSproject::TIME_UNIT_DAYS_WEEKS:
+								echo __('Days and weeks');
+								break;
+							case BUGSproject::TIME_UNIT_WEEKS:
+								echo __('Weeks only');
+								break;
+							case BUGSproject::TIME_UNIT_POINTS:
+								echo __('Points only');
+								break;
+							case BUGSproject::TIME_UNIT_POINTS_HOURS:
+								echo __('Points for issues, hours for tasks');
+								break;
+						}
+
+					?>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>
@@ -201,21 +235,29 @@
 		<tr>
 			<td><label for="defaultstatus"><?php echo __('Default status for new issues'); ?></label></td>
 			<td>
-				<select name="defaultstatus" id="defaultstatus" style="width: 200px;">
-					<option value="0"><?php echo __('Not determined'); ?></option>
-				<?php foreach ($statustypes as $aStatus): ?>
-					<option style="color: <?php echo $aStatus->getItemdata(); ?>" value=<?php echo $aStatus->getID(); ?><?php if ($theProject->getDefaultStatusID() == $aStatus->getID()): ?> selected<?php endif; ?>><?php echo $aStatus->getName(); ?></option>
-				<?php endforeach; ?>
-				</select>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="defaultstatus" id="defaultstatus" style="width: 200px;">
+						<option value="0"><?php echo __('Not determined'); ?></option>
+					<?php foreach ($statustypes as $aStatus): ?>
+						<option style="color: <?php echo $aStatus->getItemdata(); ?>" value=<?php echo $aStatus->getID(); ?><?php if ($theProject->getDefaultStatusID() == $aStatus->getID()): ?> selected<?php endif; ?>><?php echo $aStatus->getName(); ?></option>
+					<?php endforeach; ?>
+					</select>
+				<?php else: ?>
+					<?php echo ($theProject->getDefaultStatus() instanceof BUGSstatus) ? $theProject->getDefaultStatus()->getName() : __('Not determined'); ?>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="planned_release"><?php echo __('Allow freelancing'); ?></label></td>
 			<td>
-				<select name="allow_changing_without_working">
-					<option value=1<?php if ($theProject->canChangeIssuesWithoutWorkingOnThem()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-					<option value=0<?php if (!$theProject->canChangeIssuesWithoutWorkingOnThem()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-				</select>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="allow_changing_without_working">
+						<option value=1<?php if ($theProject->canChangeIssuesWithoutWorkingOnThem()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$theProject->canChangeIssuesWithoutWorkingOnThem()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($theProject->canChangeIssuesWithoutWorkingOnThem()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>
@@ -224,81 +266,115 @@
 		<tr>
 			<td><label for="hrs_pr_day"><?php echo __('Hours per day'); ?></label></td>
 			<td>
-				<input type="text" name="hrs_pr_day" id="hrs_pr_day" style="width: 50px;" value="<?php print $theProject->getHoursPerDay(); ?>">
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<input type="text" name="hrs_pr_day" id="hrs_pr_day" style="width: 50px;" value="<?php echo $theProject->getHoursPerDay(); ?>">
+				<?php else: ?>
+					<?php echo $theProject->getHoursPerDay(); ?>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="planned_release"><?php echo __('Planned release'); ?></label></td>
 			<td>
-				<select name="planned_release" id="planned_release" style="width: 70px;" onchange="bB = $('planned_release'); cB = $('release_day'); dB = $('release_month'); eB = $('release_year'); if (bB.value == '0') { cB.disabled = true; dB.disabled = true; eB.disabled = true; } else { cB.disabled = false; dB.disabled = false; eB.disabled = false; }">
-					<option value=1<?php if ($theProject->isPlannedReleased()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-					<option value=0<?php if (!$theProject->isPlannedReleased()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-				</select>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="planned_release" id="planned_release" style="width: 70px;" onchange="bB = $('planned_release'); cB = $('release_day'); dB = $('release_month'); eB = $('release_year'); if (bB.value == '0') { cB.disabled = true; dB.disabled = true; eB.disabled = true; } else { cB.disabled = false; dB.disabled = false; eB.disabled = false; }">
+						<option value=1<?php if ($theProject->isPlannedReleased()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$theProject->isPlannedReleased()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($theProject->isPlannedReleased()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="release_month"><?php echo __('Release date'); ?></label></td>
 			<td>
-				<select style="width: 85px;" name="release_month" id="release_month"<?php if (!$theProject->isPlannedReleased()): ?> disabled<?php endif; ?>>
-				<?php for ($cc = 1;$cc <= 12;$cc++): ?>
-					<option value=<?php print $cc; ?><?php echo (($theProject->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo bugs_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
-				<?php endfor; ?>
-				</select>
-				<select style="width: 40px;" name="release_day" id="release_day"<?php if (!$theProject->isPlannedReleased()): ?> disabled<?php endif; ?>>
-				<?php for ($cc = 1;$cc <= 31;$cc++): ?>
-					<option value=<?php print $cc; ?><?php echo (($theProject->getReleaseDateDay() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
-				<?php endfor; ?>
-				</select>
-				<select style="width: 55px;" name="release_year" id="release_year"<?php if (!$theProject->isPlannedReleased()): ?> disabled<?php endif; ?>>
-				<?php for ($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
-					<option value=<?php print $cc; ?><?php echo (($theProject->getReleaseDateYear() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
-				<?php endfor; ?>
-				</select>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select style="width: 85px;" name="release_month" id="release_month"<?php if (!$theProject->isPlannedReleased()): ?> disabled<?php endif; ?>>
+					<?php for ($cc = 1;$cc <= 12;$cc++): ?>
+						<option value=<?php print $cc; ?><?php echo (($theProject->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo bugs_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
+					<?php endfor; ?>
+					</select>
+					<select style="width: 40px;" name="release_day" id="release_day"<?php if (!$theProject->isPlannedReleased()): ?> disabled<?php endif; ?>>
+					<?php for ($cc = 1;$cc <= 31;$cc++): ?>
+						<option value=<?php print $cc; ?><?php echo (($theProject->getReleaseDateDay() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
+					<?php endfor; ?>
+					</select>
+					<select style="width: 55px;" name="release_year" id="release_year"<?php if (!$theProject->isPlannedReleased()): ?> disabled<?php endif; ?>>
+					<?php for ($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
+						<option value=<?php print $cc; ?><?php echo (($theProject->getReleaseDateYear() == $cc) ? " selected" : "") ?>><?php echo $cc; ?></option>
+					<?php endfor; ?>
+					</select>
+				<?php elseif ($theProject->isPlannedReleased()): ?>
+					<?php echo bugs_formatTime($theProject->getReleaseDate(), 14); ?>
+				<?php else: ?>
+					<span class="faded_medium"><?php echo __('No planned release date'); ?></span>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="released"><?php echo __('Released:'); ?></label></td>
 			<td>
-				<select name="released" id="released" style="width: 70px;">
-					<option value=1<?php if ($theProject->isReleased()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-					<option value=0<?php if (!$theProject->isReleased()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-				</select>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="released" id="released" style="width: 70px;">
+						<option value=1<?php if ($theProject->isReleased()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$theProject->isReleased()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($theProject->isReleased()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="locked"><?php echo __('Allow issues to be reported'); ?></label></td>
 			<td>
-				<select name="locked" id="locked" style="width: 70px;">
-					<option value=0<?php if (!$theProject->isLocked()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-					<option value=1<?php if ($theProject->isLocked()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-				</select>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="locked" id="locked" style="width: 70px;">
+						<option value=0<?php if (!$theProject->isLocked()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=1<?php if ($theProject->isLocked()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo (!$theProject->isLocked()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="enable_tasks"><?php echo __('Use tasks in issue reports'); ?></label></td>
 			<td>
-				<select name="enable_tasks" id="enable_tasks" style="width: 70px;">
-					<option value=1<?php if ($theProject->isTasksEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-					<option value=0<?php if (!$theProject->isTasksEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-				</select>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="enable_tasks" id="enable_tasks" style="width: 70px;">
+						<option value=1<?php if ($theProject->isTasksEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$theProject->isTasksEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($theProject->isTasksEnabled()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="votes"><?php echo __('Allow voting for issues'); ?></label></td>
 			<td>
-				<select name="votes" id="votes" style="width: 70px;">
-					<option value=1<?php if ($theProject->isVotesEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-					<option value=0<?php if (!$theProject->isVotesEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-				</select>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="votes" id="votes" style="width: 70px;">
+						<option value=1<?php if ($theProject->isVotesEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$theProject->isVotesEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($theProject->isVotesEnabled()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>
 			<td><label for="enable_builds"><?php echo __('Use builds'); ?></label></td>
 			<td>
-				<select name="enable_builds" id="enable_builds" style="width: 70px;">
-					<option value=1<?php if ($theProject->isBuildsEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-					<option value=0<?php if (!$theProject->isBuildsEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-				</select>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="enable_builds" id="enable_builds" style="width: 70px;">
+						<option value=1<?php if ($theProject->isBuildsEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$theProject->isBuildsEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($theProject->isBuildsEnabled()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>
@@ -307,10 +383,14 @@
 		<tr>
 			<td><label for="enable_editions"><?php echo __('Use editions'); ?></label></td>
 			<td>
-				<select name="enable_editions" id="enable_editions" style="width: 70px;">
-					<option value=1<?php if ($theProject->isEditionsEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-					<option value=0<?php if (!$theProject->isEditionsEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-				</select>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="enable_editions" id="enable_editions" style="width: 70px;">
+						<option value=1<?php if ($theProject->isEditionsEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$theProject->isEditionsEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($theProject->isEditionsEnabled()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>
@@ -319,10 +399,14 @@
 		<tr>
 			<td><label for="enable_components"><?php echo __('Use components'); ?></label></td>
 			<td>
-				<select name="enable_components" id="enable_components" style="width: 70px;">
-					<option value=1<?php if ($theProject->isComponentsEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-					<option value=0<?php if (!$theProject->isComponentsEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-				</select>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="enable_components" id="enable_components" style="width: 70px;">
+						<option value=1<?php if ($theProject->isComponentsEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$theProject->isComponentsEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($theProject->isComponentsEnabled()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
 			</td>
 		</tr>
 		<tr>

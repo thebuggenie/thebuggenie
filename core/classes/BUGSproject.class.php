@@ -418,14 +418,19 @@
 		 */
 		public static function createNew($name)
 		{
-			$p_id = B2DB::getTable('B2tProjects')->createNew($name);
-			
-			BUGScontext::setPermission("canseeproject", $p_id, "core", 0, BUGScontext::getUser()->getGroup()->getID(), 0, true);
-			
-			$theProject = BUGSfactory::projectLab($p_id);
-			BUGScontext::trigger('core', 'BUGSProject::createNew', $theProject);
-			
-			return $theProject;
+			$project = B2DB::getTable('B2tProjects')->getByKey(strtolower(str_replace(' ', '', $name)));
+			if ($project === null)
+			{
+				$p_id = B2DB::getTable('B2tProjects')->createNew($name);
+
+				BUGScontext::setPermission("canseeproject", $p_id, "core", 0, BUGScontext::getUser()->getGroup()->getID(), 0, true);
+
+				$theProject = BUGSfactory::projectLab($p_id);
+				BUGScontext::trigger('core', 'BUGSProject::createNew', $theProject);
+
+				return $theProject;
+			}
+			return null;
 		}
 		
 		/**
@@ -2441,166 +2446,6 @@
 			$retval = ($retval !== null) ? $retval : BUGScontext::getUser()->hasPermission($key);
 			
 			return $retval;
-		}
-
-		/**
-		 * Return if the user can edit title
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssueTitle()
-		{
-			return $this->permissionCheck('caneditissuetitle');
-		}
-
-		/**
-		 * Return if the user can edit description
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssueDescription()
-		{
-			return $this->permissionCheck('caneditissuedescription');
-		}
-
-		/**
-		 * Return if the user can edit posted by
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssuePostedBy()
-		{
-			return $this->permissionCheck('caneditissueposted_by');
-		}
-
-		/**
-		 * Return if the user can edit assigned to
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssueAssignedTo()
-		{
-			return $this->permissionCheck('caneditissueassigned_to');
-		}
-
-		/**
-		 * Return if the user can edit owned by
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssueOwnedBy()
-		{
-			return $this->permissionCheck('caneditissueowned_by');
-		}
-
-		/**
-		 * Return if the user can edit status
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssueStatus()
-		{
-			return $this->permissionCheck('caneditissuestatus');
-		}
-
-		/**
-		 * Return if the user can edit category
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssueCategory()
-		{
-			return $this->permissionCheck('caneditissuecategory');
-		}
-
-		/**
-		 * Return if the user can edit resolution
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssueResolution()
-		{
-			return $this->permissionCheck('caneditissueresolution');
-		}
-
-		/**
-		 * Return if the user can edit reproducability
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssueReproducability()
-		{
-			return $this->permissionCheck('caneditissuereproducability');
-		}
-
-		/**
-		 * Return if the user can edit severity
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssueSeverity()
-		{
-			return $this->permissionCheck('caneditissueseverity');
-		}
-
-		/**
-		 * Return if the user can edit priority
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssuePriority()
-		{
-			return $this->permissionCheck('caneditissuepriority');
-		}
-
-		/**
-		 * Return if the user can edit estimated time
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssueEstimatedTime()
-		{
-			return $this->permissionCheck('caneditissueestimated_time');
-		}
-
-		/**
-		 * Return if the user can edit spent time
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssueSpentTime()
-		{
-			return $this->permissionCheck('caneditissueelapsed_time');
-		}
-
-		/**
-		 * Return if the user can edit progress (percent)
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssuePercentage()
-		{
-			return $this->permissionCheck('caneditissuepercent_complete');
-		}
-
-		/**
-		 * Return if the user can edit milestone
-		 *
-		 * @return boolean
-		 */
-		public function canEditIssueMilestone()
-		{
-			return $this->permissionCheck('caneditissuemilestone');
-		}
-
-		/**
-		 * Return if the user can delete the issue
-		 *
-		 * @return boolean
-		 */
-		public function canDeleteIssue()
-		{
-			return $this->permissionCheck('candeleteissues');
 		}
 		
 	}

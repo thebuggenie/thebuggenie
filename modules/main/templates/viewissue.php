@@ -27,29 +27,35 @@
 		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 	</div>
 	<?php if ($theIssue->isBeingWorkedOn()): ?>
-	<form action="<?php echo make_url('issue_stopworking', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getFormattedIssueNo())); ?>" method="post">
-		<div class="rounded_box yellow_borderless" id="viewissue_being_worked_on">
-			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-			<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 13px;">
-				<?php echo image_tag('action_start_working.png', array('style' => 'float: left; margin: 0 10px 0 5px;')); ?>
-				<?php if ($theIssue->getUserWorkingOnIssue()->getID() == $bugs_user->getID()): ?>
-					<div class="viewissue_info_header"><?php echo __('You have been working on this issue since %time%', array('%time%' => bugs_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
-					<div class="viewissue_info_content">
-						<input type="submit" value="<?php echo __('Done'); ?>">
-						<?php echo __('When you are finished working on this issue, click the %done% button to the right', array('%done%' => '<b>' . __('Done') . '</b>')); ?>
-					</div>
-				<?php else: ?>
-					<div class="viewissue_info_header"><?php echo __('This issue has been worked on by %user% since %time%', array('%user%' => $theIssue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => bugs_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
-					<div class="viewissue_info_content">
-						<input type="hidden" name="perform_action" value="grab">
-						<input type="submit" value="<?php echo __('Take over'); ?>">
-						<?php echo __('If you want to start working on this issue instead, click the %take_over% button to the right', array('%take_over%' => '<b>' . __('Take over') . '</b>')); ?>
-					</div>
-				<?php endif; ?>
+		<?php if ($theIssue->canEditSpentTime()): ?>
+		<form action="<?php echo make_url('issue_stopworking', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getFormattedIssueNo())); ?>" method="post">
+		<?php endif; ?>
+			<div class="rounded_box yellow_borderless" id="viewissue_being_worked_on">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 13px;">
+					<?php echo image_tag('action_start_working.png', array('style' => 'float: left; margin: 0 10px 0 5px;')); ?>
+					<?php if ($theIssue->getUserWorkingOnIssue()->getID() == $bugs_user->getID()): ?>
+						<div class="viewissue_info_header"><?php echo __('You have been working on this issue since %time%', array('%time%' => bugs_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
+						<div class="viewissue_info_content">
+							<input type="submit" value="<?php echo __('Done'); ?>">
+							<?php echo __('When you are finished working on this issue, click the %done% button to the right', array('%done%' => '<b>' . __('Done') . '</b>')); ?>
+						</div>
+					<?php else: ?>
+						<div class="viewissue_info_header"><?php echo __('This issue has been worked on by %user% since %time%', array('%user%' => $theIssue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => bugs_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
+						<?php if ($theIssue->canEditSpentTime()): ?>
+							<div class="viewissue_info_content">
+								<input type="hidden" name="perform_action" value="grab">
+								<input type="submit" value="<?php echo __('Take over'); ?>">
+								<?php echo __('If you want to start working on this issue instead, click the %take_over% button to the right', array('%take_over%' => '<b>' . __('Take over') . '</b>')); ?>
+							</div>
+						<?php endif; ?>
+					<?php endif; ?>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
-			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-		</div>
-	</form>
+		<?php if ($theIssue->canEditSpentTime()): ?>
+		</form>
+		<?php endif; ?>
 	<?php endif; ?>
 	<form action="<?php echo make_url('saveissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())); ?>" method="post">
 		<div class="rounded_box yellow_borderless" id="viewissue_changed" <?php if (!$theIssue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
@@ -109,7 +115,15 @@
 			<div class="xboxcontent" style="vertical-align: middle; padding: 0;">
 				<?php echo image_tag('icon_info_big.png'); ?>
 				<div class="viewissue_info_header"><?php echo __('You reported this issue, and it was closed with status "%status_name%"', array('%status_name%' => (($theIssue->getStatus() instanceof BUGSdatatype) ? $theIssue->getStatus()->getName() : __('Not determined')))); ?></div>
-				<div class="viewissue_info_content"><?php echo __('If you have new information and you think this issue should be reopened, then %reopen_the_issue%', array('%reopen_the_issue%' => link_tag(make_url('openissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID())), __('reopen the issue')))); ?></div>
+				<div class="viewissue_info_content">
+				<?php if ($theIssue->canReopenIssue()): ?>
+					<?php echo __('If you have new information and you think this issue should be reopened, then %reopen_the_issue%', array('%reopen_the_issue%' => link_tag(make_url('openissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID())), __('reopen the issue')))); ?>
+				<?php elseif ($theIssue->canPostComments()): ?>
+					<?php echo __('If you have think this issue should be reopened, then post a comment in the comment area'); ?>
+				<?php else: ?>
+					<?php echo __('If anything new comes up, an administrator or developer will reopen this issue'); ?>
+				<?php endif; ?>
+				</div>
 			</div>
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>								
@@ -119,7 +133,15 @@
 			<div class="xboxcontent" style="vertical-align: middle; padding: 0;">
 				<?php echo image_tag('icon_info_big.png'); ?>
 				<div class="viewissue_info_header"><?php echo __('You reported this issue, and its status is currently "%status_name%"', array('%status_name%' => (($theIssue->getStatus() instanceof BUGSdatatype) ? $theIssue->getStatus()->getName() : __('Not determined')))) ?></div>
-				<div class="viewissue_info_content"><?php echo __('If you think this issue should be closed without further investigation, then %close_the_issue%', array('%close_the_issue%' => link_tag(make_url('closeissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID())), __('close the issue')))); ?></div>
+				<div class="viewissue_info_content">
+				<?php if ($theIssue->canReopenIssue()): ?>
+					<?php echo __('If you think this issue should be closed without further investigation, then %close_the_issue%', array('%close_the_issue%' => link_tag(make_url('closeissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID())), __('close the issue')))); ?>
+				<?php elseif ($theIssue->canPostComments()): ?>
+					<?php echo __('If you have think this issue should be closed, then post a comment in the comment area'); ?>
+				<?php else: ?>
+					<?php echo __('An administrator or developer may close this issue'); ?>
+				<?php endif; ?>
+				</div>
 			</div>
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>								
@@ -129,7 +151,15 @@
 			<div class="xboxcontent" style="vertical-align: middle; padding: 0;">
 				<?php echo image_tag('icon_info_big.png'); ?>
 				<div class="viewissue_info_header"><?php echo __('This issue has been closed with status: %status_name%.', array('%status_name%' => '<b style="color: ' . (($theIssue->getStatus() instanceof BUGSdatatype) ? $theIssue->getStatus()->getColor() : '#BBB') . '">' . (($theIssue->getStatus() instanceof BUGSdatatype) ? $theIssue->getStatus()->getName() : __('Not determined')) . '</b>')); ?></div>
-				<div class="viewissue_info_content"><?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%, or %report_a_new_issue%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $theIssue->getID() . '">' . __('posting a comment') . '</a>', '%report_a_new_issue%' => link_tag(make_url('reportissue'), __('report a new issue')))); ?></div>
+				<div class="viewissue_info_content">
+					<?php if ($theIssue->canPostComments() && $bugs_user->canReportIssues($theIssue->getProjectID())): ?>
+						<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%, or %report_a_new_issue%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $theIssue->getID() . '">' . __('posting a comment') . '</a>', '%report_a_new_issue%' => link_tag(make_url('reportissue'), __('report a new issue')))); ?>
+					<?php elseif ($theIssue->canPostComments()): ?>
+						<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $theIssue->getID() . '">' . __('posting a comment') . '</a>')); ?>
+					<?php elseif ($bugs_user->canReportIssues($theIssue->getProjectID())): ?>
+						<?php echo __('A closed issue will usually not be further updated - try %reporting_a_new_issue%', array('%reporting_a_new_issue%' => link_tag(make_url('reportissue'), __('reporting a new issue')))); ?>
+					<?php endif; ?>
+				</div>
 			</div>
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>								

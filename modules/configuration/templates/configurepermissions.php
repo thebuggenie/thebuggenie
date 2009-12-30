@@ -31,6 +31,7 @@
 				</div>
 				<div class="header_div" style="margin-top: 15px;"><?php echo __('General permissions'); ?></div>
 				<ul style="width: 750px;">
+					<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('configuration'), 'mode' => 'configuration', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
 					<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('general'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
 					<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
 				</ul>
@@ -41,8 +42,8 @@
 							<li>
 								<a href="javascript:void(0);" onclick="$('project_permission_details_<?php echo $project->getID(); ?>').toggle();"><?php echo image_tag('icon_project_permissions.png', array('style' => 'float: right;')); ?><?php echo $project->getName(); ?> <span class="faded_medium smaller"><?php echo $project->getKey(); ?></span></a>
 								<ul style="display: none;" id="project_permission_details_<?php echo $project->getID(); ?>">
-									<?php include_component('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
-									<?php include_component('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+									<?php include_template('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+									<?php include_template('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
 								</ul>
 							</li>
 						<?php endforeach; ?>

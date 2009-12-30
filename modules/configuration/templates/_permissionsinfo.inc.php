@@ -1,4 +1,7 @@
-<?php echo tbg_parse_text(__('Please see [[ConfigurePermissions]] for more information about how permissions work')); ?><br>
+<?php if ($mode == 'configuration'): ?>
+	<?php echo tbg_parse_text(__('Configuration access is always "Restrictive", regardless of the system settings.')); ?> 
+<?php endif; ?>
+<?php echo tbg_parse_text(__('Please see [[ConfigurePermissions]] for more information about how permissions work in general.')); ?><br>
 <table cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
 	<thead class="light">
 		<tr>
@@ -7,6 +10,8 @@
 				<th style="width: 60px; text-align: center;"><?php echo __('Can set'); ?></th>
 			<?php elseif ($mode == 'general'): ?>
 				<th style="width: 60px; text-align: center;"><?php echo __('Can'); ?></th>
+			<?php elseif ($mode == 'configuration'): ?>
+				<th style="width: 60px; text-align: center;"><?php echo __('Access'); ?></th>
 			<?php endif; ?>
 		</tr>
 	</thead>

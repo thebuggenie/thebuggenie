@@ -13,17 +13,17 @@
 <div class="tab_menu header_menu">
 	<ul>
 		<?php /*?><li<?php if ($bugs_response->getPage() == 'index'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png', array('style' => 'float: left;')).__('Frontpage')); ?></li> */ ?>
-		<?php if (!BUGScontext::getUser()->isThisGuest()): ?>
+		<?php if (!$bugs_user->isThisGuest()): ?>
 			<li<?php if ($bugs_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png', array('style' => 'float: left;')).__('My dashboard')); ?></li>
 		<?php endif; ?>
-		<?php if (BUGScontext::getUser()->hasPermission("b2canreportissues")): ?>
-			<?php if (BUGScontext::isProjectContext()): ?>
+		<?php if ($bugs_user->canReportIssues() || (BUGScontext::isProjectContext() && $bugs_user->canReportIssues(BUGScontext::getCurrentProject()->getID()))): ?>
+			<?php if (BUGScontext::isProjectContext() && $bugs_user->canReportIssues(BUGScontext::getCurrentProject()->getID())): ?>
 				<li<?php if ($bugs_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_reportissue', array('project_key' => BUGScontext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
-			<?php else: ?>
+			<?php elseif ($bugs_user->canReportIssues()): ?>
 				<li<?php if ($bugs_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('reportissue'), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
 			<?php endif; ?>
 		<?php endif; ?>
-		<?php if (BUGScontext::getUser()->hasPermission("b2canfindissues")): ?>
+		<?php if ($bugs_user->canSearchForIssues()): ?>
 			<li<?php if ($bugs_response->getPage() == 'search'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('search'), image_tag('tab_search.png', array('style' => 'float: left;')).__('Find issues')); ?></li>
 		<?php endif; ?>
 		<?php foreach (BUGScontext::getModules() as $module): ?>
@@ -31,7 +31,7 @@
 				<li<?php if ($bugs_response->getPage() == $module->getTabKey()): ?> class="selected"<?php endif; ?>><?php echo link_tag($module->getRoute(), image_tag('tab_' . $module->getName() . '.png', array('style' => 'float: left;'), false, $module->getName()).$module->getMenuTitle()); ?></li>
 			<?php endif; ?>
 		<?php endforeach; ?>
-		<?php if (BUGScontext::getUser()->hasPermission("b2viewconfig", 0, 'core', true)): ?>
+		<?php if ($bugs_user->canAccessConfigurationPage()): ?>
 			<li<?php if ($bugs_response->getPage() == 'config'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure'), image_tag('tab_config.png', array('style' => 'float: left;')).__('Configure')); ?></li>
 		<?php endif; ?>
 		<?php /*?><li<?php if ($bugs_response->getPage() == 'about'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('about'), image_tag('tab_about.png', array('style' => 'float: left;')).__('About')); ?></li> */ ?>
@@ -64,7 +64,7 @@
 <?php endif; ?>
 <?php
 /*
-		if (!BUGScontext::getUser()->isThisGuest())
+		if (!$bugs_user->isThisGuest())
 		{
 			if ($bugs_response->getPage() == "account")
 			{
@@ -77,7 +77,7 @@
 				?>
 				<td align="center" valign="middle" onmouseover="this.className='hover_unselected';" onmouseout="this.className='unselected';" class="unselected" style="width: 110px;"><table align="center"><tr><td><a href="javascript:void(0);" onclick="Effect.Appear('myacct', { duration: 0.5 });"><?php echo image_tag('tab_account.png'); ?></a></td><td><a href="javascript:void(0);" onclick="Effect.Appear('myacct', { duration: 0.5 });"><?php echo __('My account'); ?></a></td></tr></table>
 				<div style="display: none; position: absolute; right: 1px; width: 180px; padding: 5px; background-color: #FFF; border: 1px solid #DDD;" id="myacct">
-				<div style="text-align: left; padding-bottom: 2px; border-bottom: 1px solid #DDD; margin-bottom: 5px;"><b><?php echo BUGScontext::getUser()->getRealname(); ?></b></div>
+				<div style="text-align: left; padding-bottom: 2px; border-bottom: 1px solid #DDD; margin-bottom: 5px;"><b><?php echo $bugs_user->getRealname(); ?></b></div>
 				<div style="text-align: left; padding-bottom: 2px;"><b><?php echo __('Places'); ?></b></div>
 				<table style="width: 100%; table-layout: fixed;" cellpadding=0 cellspacing=2>
 				<?php

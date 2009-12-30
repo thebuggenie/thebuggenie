@@ -926,7 +926,7 @@
 		{
 			if ($this->isLocked())
 			{
-				return $this->_permissionCheck('caneditlockedissues');
+				return $this->_permissionCheck('canlockandeditlockedissues');
 			}
 			if (!$this->getProject()->canChangeIssuesWithoutWorkingOnThem())
 			{
@@ -948,7 +948,7 @@
 		 */
 		public function canEditTitle()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuetitle') || $this->_permissionCheck('caneditissuebasic'));
+			return (bool) ($this->_permissionCheck('caneditissuetitle') || $this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues'));
 		}
 
 		/**
@@ -958,7 +958,7 @@
 		 */
 		public function canEditDescription()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuedescription') || $this->_permissionCheck('caneditissuebasic'));
+			return (bool) ($this->_permissionCheck('caneditissuedescription') || $this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues'));
 		}
 		
 		/**
@@ -1102,12 +1102,44 @@
 		}
 		
 		/**
+		 * Return if the user can close the issue
+		 *
+		 * @return boolean
+		 */
+		public function canCloseIssue()
+		{
+			return (bool) ($this->_permissionCheck('cancloseissues') || $this->_permissionCheck('canclosereopenissues') || $this->_permissionCheck('caneditissue', true));
+		}
+
+		/**
+		 * Return if the user can close the issue
+		 *
+		 * @return boolean
+		 */
+		public function canReopenIssue()
+		{
+			return (bool) ($this->_permissionCheck('canreopenissues') || $this->_permissionCheck('canclosereopenissues') || $this->_permissionCheck('caneditissue', true));
+		}
+
+		/**
+		 * Return if the user can post comments on this issue
+		 *
+		 * @return boolean
+		 */
+		public function canPostComments()
+		{
+			return (bool) ($this->_permissionCheck('canpostcomments') || $this->_permissionCheck('canpostandeditcomments'));
+		}
+
+		/**
 		 * Return if the user can start working on the issue
 		 * 
 		 * @return boolean
 		 */
 		public function canStartWorkingOnIssue()
 		{
+			if ($this->isBeingWorkedOn()) return false;
+			return $this->canEditSpentTime();
 		}
 	
 		/**
