@@ -68,6 +68,7 @@
 		{
 			if (BUGScontext::getRequest()->isMethod(BUGSrequest::POST))
 			{
+				$this->forward403unless($this->access_level == self::ACCESS_FULL);
 				$settings = array('theme_name', 'user_themes', 'onlinestate', 'offlinestate', 'awaystate', 'singleprojecttracker',
 									'requirelogin', 'allowreg', 'defaultgroup', 'returnfromlogin', 'returnfromlogout', 'permissive',
 									'showloginbox', 'limit_registration', 'showprojectsoverview', 'showprojectsoverview', 
@@ -91,7 +92,6 @@
 			
 			$this->themes = BUGScontext::getThemes();
 			$this->languages = BUGSi18n::getLanguages();
-			
 		}
 
 		/**
@@ -443,6 +443,7 @@
 				
 				return $this->renderTemplate('projects_assignees', array('project' => $this->theProject));
 			}
+			return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__("You don't have access to save project settings")));
 			
 		}
 
@@ -508,43 +509,48 @@
 			}
 			catch (Exception $e)
 			{
-				return $this->renderJSON(array('saved' => false, 'error' => BUGScontext::getI18n()->__('This project does not exist')));
+				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('This project does not exist')));
 			}
 			
-			$this->forward403unless($this->theProject instanceof BUGSproject && $request->hasParameter('milestones_or_issuetypes'));
+			$this->forward403unless($this->theProject instanceof BUGSproject && $request->hasParameter('frontpage_summary'));
 
 			try
 			{
-				switch ($request->getParameter('milestones_or_issuetypes'))
+				if ($this->access_level == self::ACCESS_FULL)
 				{
-					case 'issuetypes':
-						$this->theProject->setFrontpageSummaryType('issuetypes');
-						$this->theProject->save();
-						$this->theProject->clearVisibleIssuetypes();
-						foreach ($request->getParameter('showissuetype', array()) as $issuetype_id)
-						{
-							$this->theProject->addVisibleIssuetype($issuetype_id);
-						}
-						break;
-					case 'milestones':
-						$this->theProject->setFrontpageSummaryType('milestones');
-						$this->theProject->save();
-						$this->theProject->clearVisibleMilestones();
-						foreach ($request->getParameter('showmilestone', array()) as $milestone_id)
-						{
-							$this->theProject->addVisibleMilestone($milestone_id);
-						}
-						break;
-					case '':
-						$this->theProject->setFrontpageSummaryType('');
-						$this->theProject->save();
-						break;
+					switch ($request->getParameter('frontpage_summary'))
+					{
+						case 'issuelist':
+						case 'issuetypes':
+							$this->theProject->setFrontpageSummaryType($request->getParameter('frontpage_summary'));
+							$this->theProject->save();
+							$this->theProject->clearVisibleIssuetypes();
+							foreach ($request->getParameter('showissuetype', array()) as $issuetype_id)
+							{
+								$this->theProject->addVisibleIssuetype($issuetype_id);
+							}
+							break;
+						case 'milestones':
+							$this->theProject->setFrontpageSummaryType('milestones');
+							$this->theProject->save();
+							$this->theProject->clearVisibleMilestones();
+							foreach ($request->getParameter('showmilestone', array()) as $milestone_id)
+							{
+								$this->theProject->addVisibleMilestone($milestone_id);
+							}
+							break;
+						case '':
+							$this->theProject->setFrontpageSummaryType('');
+							$this->theProject->save();
+							break;
+					}
+					return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Your changes has been saved'), 'message' => ''));
 				}
-				return $this->renderJSON(array('saved' => true, 'title' => BUGScontext::getI18n()->__('Your changes has been saved'), 'message' => ''));
+				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__("You don't have access to save project settings")));
 			}
 			catch (Exception $e)
 			{
-				return $this->renderJSON(array('saved' => false, 'error' => BUGScontext::getI18n()->__('An error occured'), 'message' => $e->getMessage()));
+				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('An error occured'), 'message' => $e->getMessage()));
 			}
 		}
 
@@ -581,27 +587,22 @@
 			
 			if ($request->hasParameter('value'))
 			{
-				BUGSlogging::log('has value');
+				$this->forward403unless($this->access_level == self::ACCESS_FULL);
 				if ($request->hasParameter('identifiable_type'))
 				{
-					BUGSlogging::log('has type');
 					if (in_array($request->getParameter('identifiable_type'), array(BUGSidentifiableclass::TYPE_USER, BUGSidentifiableclass::TYPE_TEAM)))
 					{
 						switch ($request->getParameter('identifiable_type'))
 						{
 							case BUGSidentifiableclass::TYPE_USER:
-								BUGSlogging::log('is user');
 								$identified = BUGSfactory::userLab($request->getParameter('value'));
 								break;
 							case BUGSidentifiableclass::TYPE_TEAM:
-								BUGSlogging::log('is team');
 								$identified = BUGSfactory::teamLab($request->getParameter('value'));
 								break;
 						}
-						BUGSlogging::log($request->getParameter('field'));
 						if ($identified instanceof BUGSidentifiableclass)
 						{
-							BUGSlogging::log('is identifiable');
 							if ($request->getParameter('field') == 'owned_by') $project->setOwner($identified);
 							elseif ($request->getParameter('field') == 'qa_by') $project->setQA($identified);
 							elseif ($request->getParameter('field') == 'lead_by') $project->setLeadBy($identified);
@@ -643,32 +644,36 @@
 			$this->statustypes = BUGSstatus::getAll();
 			if ($request->isAjaxCall())
 			{
-				if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
+				if ($this->access_level == self::ACCESS_FULL)
 				{
-					$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
-					$this->theProject->setReleaseDate($release_date);
-				}
+					if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
+					{
+						$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
+						$this->theProject->setReleaseDate($release_date);
+					}
 
-				$this->theProject->setName($request->getParameter('project_name'));
-				$this->theProject->setUsePrefix((bool) $request->getParameter('use_prefix'));
-				$this->theProject->setPrefix($request->getParameter('prefix'));
-				$this->theProject->setDescription($request->getParameter('description', null, false));
-				$this->theProject->setHomepage($request->getParameter('homepage'));
-				$this->theProject->setDocumentationURL($request->getParameter('doc_url'));
-				$this->theProject->setDefaultStatus($request->getParameter('defaultstatus'));
-				$this->theProject->setPlannedReleased($request->getParameter('planned_release'));
-				$this->theProject->setTasksEnabled((bool) $request->getParameter('enable_tasks'));
-				$this->theProject->setReleased((int) $request->getParameter('released'));
-				$this->theProject->setVotesEnabled((bool) $request->getParameter('votes'));
-				$this->theProject->setTimeUnit((int) $request->getParameter('time_unit'));
-				$this->theProject->setHoursPerDay($request->getParameter('hrs_pr_day'));
-				$this->theProject->setLocked((bool) $request->getParameter('locked'));
-				$this->theProject->setBuildsEnabled((bool) $request->getParameter('enable_builds'));
-				$this->theProject->setEditionsEnabled((bool) $request->getParameter('enable_editions'));
-				$this->theProject->setComponentsEnabled((bool) $request->getParameter('enable_components'));
-				$this->theProject->setChangeIssuesWithoutWorkingOnThem((bool) $request->getParameter('allow_changing_without_working'));
-				$this->theProject->save();
-				return $this->renderJSON(array('saved' => true, 'title' => BUGScontext::getI18n()->__('Your changes has been saved'), 'message' => ''));
+					$this->theProject->setName($request->getParameter('project_name'));
+					$this->theProject->setUsePrefix((bool) $request->getParameter('use_prefix'));
+					$this->theProject->setPrefix($request->getParameter('prefix'));
+					$this->theProject->setDescription($request->getParameter('description', null, false));
+					$this->theProject->setHomepage($request->getParameter('homepage'));
+					$this->theProject->setDocumentationURL($request->getParameter('doc_url'));
+					$this->theProject->setDefaultStatus($request->getParameter('defaultstatus'));
+					$this->theProject->setPlannedReleased($request->getParameter('planned_release'));
+					$this->theProject->setTasksEnabled((bool) $request->getParameter('enable_tasks'));
+					$this->theProject->setReleased((int) $request->getParameter('released'));
+					$this->theProject->setVotesEnabled((bool) $request->getParameter('votes'));
+					$this->theProject->setTimeUnit((int) $request->getParameter('time_unit'));
+					$this->theProject->setHoursPerDay($request->getParameter('hrs_pr_day'));
+					$this->theProject->setLocked((bool) $request->getParameter('locked'));
+					$this->theProject->setBuildsEnabled((bool) $request->getParameter('enable_builds'));
+					$this->theProject->setEditionsEnabled((bool) $request->getParameter('enable_editions'));
+					$this->theProject->setComponentsEnabled((bool) $request->getParameter('enable_components'));
+					$this->theProject->setChangeIssuesWithoutWorkingOnThem((bool) $request->getParameter('allow_changing_without_working'));
+					$this->theProject->save();
+					return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Your changes has been saved'), 'message' => ''));
+				}
+				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__("You don't have access to save settings")));
 			}
 		}
 		
@@ -703,7 +708,7 @@
 				$this->theEdition->setReleased((int) $request->getParameter('released'));
 				$this->theEdition->setLocked((bool) $request->getParameter('locked'));
 				$this->theEdition->save();
-				return $this->renderJSON(array('saved' => true));
+				return $this->renderJSON(array('failed' => false));
 			}
 			
 			switch ($request->getParameter('mode'))
@@ -733,7 +738,7 @@
 					$aProject = BUGSproject::createNew($p_name);
 					if ($aProject instanceof BUGSproject)
 					{
-						return $this->renderJSON(array('title' => $i18n->__('The project has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('projectbox', array('project' => $aProject))));
+						return $this->renderJSON(array('title' => $i18n->__('The project has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'content' => $this->getTemplateHTML('projectbox', array('project' => $aProject, 'access_level' => $this->access_level))));
 					}
 					else
 					{
@@ -753,40 +758,43 @@
 		 */
 		public function runAddEdition(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
 
-			try
+			if ($this->access_level == self::ACCESS_FULL)
 			{
-				if ($p_id = $request->getParameter('project_id'))
+				try
 				{
-					if (BUGScontext::getUser()->hasPermission('b2projectaccess', $p_id))
+					if ($p_id = $request->getParameter('project_id'))
 					{
-						if ($e_name = $request->getParameter('e_name'))
+						if (BUGScontext::getUser()->hasPermission('b2projectaccess', $p_id))
 						{
-							$project = BUGSfactory::projectLab($p_id);
-							$edition = $project->addEdition($e_name);
-							return $this->renderJSON(array('title' => $i18n->__('The edition has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('editionbox', array('edition' => $edition))));
+							if ($e_name = $request->getParameter('e_name'))
+							{
+								$project = BUGSfactory::projectLab($p_id);
+								$edition = $project->addEdition($e_name);
+								return $this->renderJSON(array('title' => $i18n->__('The edition has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('editionbox', array('edition' => $edition))));
+							}
+							else
+							{
+								throw new Exception($i18n->__('You need to specify a name for the new edition'));
+							}
 						}
 						else
 						{
-							throw new Exception($i18n->__('You need to specify a name for the new edition'));
+							throw new Exception($i18n->__('You do not have access to this project'));
 						}
 					}
 					else
 					{
-						throw new Exception($i18n->__('You do not have access to this project'));
+						throw new Exception($i18n->__('You need to specify a project id'));
 					}
 				}
-				else
+				catch (Exception $e)
 				{
-					throw new Exception($i18n->__('You need to specify a project id'));
+					return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The edition could not be added').", ".$e->getMessage()));
 				}
 			}
-			catch (Exception $e) 
-			{
-				return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The edition could not be added').", ".$e->getMessage()));
-			}
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add projects")));
 		}
 
 		/**
@@ -796,89 +804,96 @@
 		 */
 		public function runBuildAction(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
+			$i18n = BUGScontext::getI18n();
 
-			try
+			if ($this->access_level == self::ACCESS_FULL)
 			{
-				if ($b_id = $request->getParameter('build_id'))
+				try
 				{
-					if (BUGScontext::getUser()->hasPermission('b2buildaccess', $b_id))
+					if ($b_id = $request->getParameter('build_id'))
 					{
-						$build = BUGSfactory::buildLab($b_id);
-						switch ($request->getParameter('build_action'))
+						if (BUGScontext::getUser()->hasPermission('b2buildaccess', $b_id))
 						{
-							case 'markdefault':
-								$build->setDefault();
-								$this->show_mode = 'all';
-								break;
-							case 'delete':
-								$build->delete();
-								return $this->renderJSON(array('deleted' => true));
-								break;
-							case 'addtoopen':
-								$build->addToOpenParentIssues((int) $request->getParameter('status'), (int) $request->getParameter('category'), (int) $request->getParameter('issuetype'));
-								return $this->renderJSON(array('saved' => true, 'title' => BUGScontext::getI18n()->__('The selected build has been added to open issues based on your selections'), 'message' => ''));
-								break;
-							case 'release':
-								$build->setReleased(true);
-								$build->setReleaseDate();
-								$build->save();
-								$this->show_mode = 'one';
-								break;
-							case 'retract':
-								$build->setReleased(false);
-								$build->setReleaseDate(0);
-								$build->save();
-								$this->show_mode = 'one';
-								break;
-							case 'lock':
-								$build->setLocked(true);
-								$build->save();
-								$this->show_mode = 'one';
-								break;
-							case 'unlock':
-								$build->setLocked(false);
-								$build->save();
-								$this->show_mode = 'one';
-								break;
-							case 'update':
-								if ($b_name = $request->getParameter('build_name'))
-								{
-									$build->setName($b_name);
-									$build->setVersionMajor($request->getParameter('ver_mj'));
-									$build->setVersionMinor($request->getParameter('ver_mn'));
-									$build->setVersionRevision($request->getParameter('ver_rev'));
-									if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
-									{
-										$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
-										$build->setReleaseDate($release_date);
-									}
+							$build = BUGSfactory::buildLab($b_id);
+							switch ($request->getParameter('build_action'))
+							{
+								case 'markdefault':
+									$build->setDefault();
+									$this->show_mode = 'all';
+									break;
+								case 'delete':
+									$build->delete();
+									return $this->renderJSON(array('deleted' => true));
+									break;
+								case 'addtoopen':
+									$build->addToOpenParentIssues((int) $request->getParameter('status'), (int) $request->getParameter('category'), (int) $request->getParameter('issuetype'));
+									return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The selected build has been added to open issues based on your selections'), 'message' => ''));
+									break;
+								case 'release':
+									$build->setReleased(true);
+									$build->setReleaseDate();
 									$build->save();
-								}
-								else
-								{
-									throw new Exception(BUGScontext::getI18n()->__('The build / release needs to have a name'));
-								}
-								$this->show_mode = 'one';
-								break;
+									$this->show_mode = 'one';
+									break;
+								case 'retract':
+									$build->setReleased(false);
+									$build->setReleaseDate(0);
+									$build->save();
+									$this->show_mode = 'one';
+									break;
+								case 'lock':
+									$build->setLocked(true);
+									$build->save();
+									$this->show_mode = 'one';
+									break;
+								case 'unlock':
+									$build->setLocked(false);
+									$build->save();
+									$this->show_mode = 'one';
+									break;
+								case 'update':
+									if ($b_name = $request->getParameter('build_name'))
+									{
+										$build->setName($b_name);
+										$build->setVersionMajor($request->getParameter('ver_mj'));
+										$build->setVersionMinor($request->getParameter('ver_mn'));
+										$build->setVersionRevision($request->getParameter('ver_rev'));
+										if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
+										{
+											$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
+											$build->setReleaseDate($release_date);
+										}
+										$build->save();
+									}
+									else
+									{
+										throw new Exception($i18n->__('The build / release needs to have a name'));
+									}
+									$this->show_mode = 'one';
+									break;
+							}
+						}
+						else
+						{
+							throw new Exception($i18n->__('You do not have access to this build / release'));
 						}
 					}
 					else
 					{
-						throw new Exception(BUGScontext::getI18n()->__('You do not have access to this build / release'));
+						throw new Exception($i18n->__('You need to specify a build / release'));
 					}
 				}
-				else
+				catch (Exception $e)
 				{
-					throw new Exception(BUGScontext::getI18n()->__('You need to specify a build / release'));
+					return $this->renderJSON(array('failed' => true, "error" => $i18n->__('Could not update the build / release').", ".$e->getMessage()));
 				}
+
+				$this->build = $build;
 			}
-			catch (Exception $e)
+			else
 			{
-				return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('Could not update the build / release').", ".$e->getMessage()));
+				return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add editions")));
 			}
-			
-			$this->build = $build;
 		}
 		
 		/**
@@ -888,53 +903,56 @@
 		 */
 		public function runAddBuild(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
 
-			try
+			if ($this->access_level == self::ACCESS_FULL)
 			{
-				if ($p_id = $request->getParameter('project_id'))
+				try
 				{
-					if (BUGScontext::getUser()->hasPermission('b2projectaccess', $p_id))
+					if ($p_id = $request->getParameter('project_id'))
 					{
-						if ($b_name = $request->getParameter('build_name'))
+						if (BUGScontext::getUser()->hasPermission('b2projectaccess', $p_id))
 						{
-							if ($e_id = $request->getParameter('edition_id'))
+							if ($b_name = $request->getParameter('build_name'))
 							{
-								if (BUGScontext::getUser()->hasPermission('b2editionaccess', $e_id))
+								if ($e_id = $request->getParameter('edition_id'))
 								{
-									$build = BUGSbuild::createNew($b_name, null, $e_id, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
+									if (BUGScontext::getUser()->hasPermission('b2editionaccess', $e_id))
+									{
+										$build = BUGSbuild::createNew($b_name, null, $e_id, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
+									}
+									else
+									{
+										throw new Exception($i18n->__('You do not have access to this edition'));
+									}
 								}
 								else
 								{
-									throw new Exception($i18n->__('You do not have access to this edition'));
+									$build = BUGSbuild::createNew($b_name, $p_id, null, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
 								}
+								return $this->renderJSON(array('title' => $i18n->__('The release has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('buildbox', array('build' => $build, 'access_level' => $this->access_level))));
 							}
 							else
 							{
-								$build = BUGSbuild::createNew($b_name, $p_id, null, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
+								throw new Exception($i18n->__('You need to specify a name for the new release'));
 							}
-							return $this->renderJSON(array('title' => $i18n->__('The build has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('buildbox', array('build' => $build, 'access_level' => $this->access_level))));
 						}
 						else
 						{
-							throw new Exception($i18n->__('You need to specify a name for the new build'));
+							throw new Exception($i18n->__('You do not have access to this project'));
 						}
 					}
 					else
 					{
-						throw new Exception($i18n->__('You do not have access to this project'));
+						throw new Exception($i18n->__('You need to specify a project id'));
 					}
 				}
-				else
+				catch (Exception $e)
 				{
-					throw new Exception($i18n->__('You need to specify a project id'));
+					return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The build could not be added').", ".$e->getMessage()));
 				}
 			}
-			catch (Exception $e) 
-			{
-				return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The build could not be added').", ".$e->getMessage()));
-			}
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add releases")));
 		}
 		
 		/**
@@ -944,83 +962,89 @@
 		 */
 		public function runAddComponent(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
 
-			try
+			if ($this->access_level == self::ACCESS_FULL)
 			{
-				if ($p_id = $request->getParameter('project_id'))
+				try
 				{
-					if (BUGScontext::getUser()->hasPermission('b2projectaccess', $p_id))
+					if ($p_id = $request->getParameter('project_id'))
 					{
-						if ($c_name = $request->getParameter('c_name'))
+						if (BUGScontext::getUser()->hasPermission('b2projectaccess', $p_id))
 						{
-							$project = BUGSfactory::projectLab($p_id);
-							$component = $project->addComponent($c_name);
-							return $this->renderJSON(array('title' => $i18n->__('The component has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('componentbox', array('component' => $component))));
+							if ($c_name = $request->getParameter('c_name'))
+							{
+								$project = BUGSfactory::projectLab($p_id);
+								$component = $project->addComponent($c_name);
+								return $this->renderJSON(array('title' => $i18n->__('The component has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('componentbox', array('component' => $component))));
+							}
+							else
+							{
+								throw new Exception($i18n->__('You need to specify a name for the new component'));
+							}
 						}
 						else
 						{
-							throw new Exception($i18n->__('You need to specify a name for the new component'));
+							throw new Exception($i18n->__('You do not have access to this project'));
 						}
 					}
 					else
 					{
-						throw new Exception($i18n->__('You do not have access to this project'));
+						throw new Exception($i18n->__('You need to specify a project id'));
 					}
 				}
-				else
+				catch (Exception $e)
 				{
-					throw new Exception($i18n->__('You need to specify a project id'));
+					return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The component could not be added').", ".$e->getMessage()));
 				}
 			}
-			catch (Exception $e) 
-			{
-				return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The component could not be added').", ".$e->getMessage()));
-			}
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add releases")));
 		}
 
 		/**
-		 * Add a component (AJAX call)
+		 * Add a milestone (AJAX call)
 		 * 
 		 * @param BUGSrequest $request The request object
 		 */
 		public function runAddMilestone(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			$i18n = BUGScontext::getI18n();
 
-			try
+			if ($this->access_level == self::ACCESS_FULL)
 			{
-				if ($p_id = $request->getParameter('project_id'))
+				try
 				{
-					if (BUGScontext::getUser()->hasPermission('b2projectaccess', $p_id))
+					if ($p_id = $request->getParameter('project_id'))
 					{
-						if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
+						if (BUGScontext::getUser()->hasPermission('b2projectaccess', $p_id))
 						{
-							$theProject = BUGSfactory::projectLab($p_id);
-							$theMilestone = $theProject->addMilestone($m_name, $request->getParameter('milestone_type', 1));
-							return $this->renderJSON(array('title' => $i18n->__('The milestone has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('milestonebox', array('milestone' => $theMilestone))));
+							if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
+							{
+								$theProject = BUGSfactory::projectLab($p_id);
+								$theMilestone = $theProject->addMilestone($m_name, $request->getParameter('milestone_type', 1));
+								return $this->renderJSON(array('title' => $i18n->__('The milestone has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'content' => $this->getTemplateHTML('milestonebox', array('milestone' => $theMilestone))));
+							}
+							else
+							{
+								throw new Exception($i18n->__('You need to specify a name for the new milestone'));
+							}
 						}
 						else
 						{
-							throw new Exception($i18n->__('You need to specify a name for the new milestone'));
+							throw new Exception($i18n->__('You do not have access to this project'));
 						}
 					}
 					else
 					{
-						throw new Exception($i18n->__('You do not have access to this project'));
+						throw new Exception($i18n->__('You need to specify a project id'));
 					}
 				}
-				else
+				catch (Exception $e)
 				{
-					throw new Exception($i18n->__('You need to specify a project id'));
+					return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The milestone could not be added').", ".$e->getMessage()));
 				}
 			}
-			catch (Exception $e) 
-			{
-				return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The milestone could not be added').", ".$e->getMessage()));
-			}
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add milestones")));
 		}
 		
 		/**
@@ -1030,70 +1054,74 @@
 		 */
 		public function runMilestoneAction(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
+			$i18n = BUGScontext::getI18n();
 
-			try
+			if ($this->access_level == self::ACCESS_FULL)
 			{
-				if ($m_id = $request->getParameter('milestone_id'))
+				try
 				{
-					$theMilestone = BUGSfactory::milestoneLab($m_id);
-					if ($theMilestone->hasAccess())
+					if ($m_id = $request->getParameter('milestone_id'))
 					{
-						switch ($request->getParameter('milestone_action'))
+						$theMilestone = BUGSfactory::milestoneLab($m_id);
+						if ($theMilestone->hasAccess())
 						{
-							case 'update':
-								if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
-								{
-									$theMilestone->setName($m_name);
-									$theMilestone->setScheduled((bool) $request->getParameter('is_scheduled'));
-									$theMilestone->setStarting((bool) $request->getParameter('is_starting'));
-									$theMilestone->setDescription($request->getParameter('description', null, false));
-									$theMilestone->setType($request->getParameter('milestone_type', 1));
-									if ($theMilestone->isScheduled())
+							switch ($request->getParameter('milestone_action'))
+							{
+								case 'update':
+									if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
 									{
-										if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
+										$theMilestone->setName($m_name);
+										$theMilestone->setScheduled((bool) $request->getParameter('is_scheduled'));
+										$theMilestone->setStarting((bool) $request->getParameter('is_starting'));
+										$theMilestone->setDescription($request->getParameter('description', null, false));
+										$theMilestone->setType($request->getParameter('milestone_type', 1));
+										if ($theMilestone->isScheduled())
 										{
-											$scheduled_date = mktime(0, 0, 0, BUGScontext::getRequest()->getParameter('sch_month'), BUGScontext::getRequest()->getParameter('sch_day'), BUGScontext::getRequest()->getParameter('sch_year'));
-											$theMilestone->setScheduledDate($scheduled_date);
+											if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
+											{
+												$scheduled_date = mktime(0, 0, 0, BUGScontext::getRequest()->getParameter('sch_month'), BUGScontext::getRequest()->getParameter('sch_day'), BUGScontext::getRequest()->getParameter('sch_year'));
+												$theMilestone->setScheduledDate($scheduled_date);
+											}
 										}
+										if ($theMilestone->isStarting())
+										{
+											if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
+											{
+												$starting_date = mktime(0, 0, 0, BUGScontext::getRequest()->getParameter('starting_month'), BUGScontext::getRequest()->getParameter('starting_day'), BUGScontext::getRequest()->getParameter('starting_year'));
+												$theMilestone->setStartingDate($starting_date);
+											}
+										}
+										$theMilestone->save();
+										return $this->renderTemplate('milestonebox', array('milestone' => $theMilestone));
 									}
-									if ($theMilestone->isStarting())
+									else
 									{
-										if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
-										{
-											$starting_date = mktime(0, 0, 0, BUGScontext::getRequest()->getParameter('starting_month'), BUGScontext::getRequest()->getParameter('starting_day'), BUGScontext::getRequest()->getParameter('starting_year'));
-											$theMilestone->setStartingDate($starting_date);
-										}
+										throw new Exception(BUGScontext::getI18n()->__('The milestone needs to have a name'));
 									}
-									$theMilestone->save();
-									return $this->renderTemplate('milestonebox', array('milestone' => $theMilestone));
-								}
-								else
-								{
-									throw new Exception(BUGScontext::getI18n()->__('The milestone needs to have a name'));
-								}
-								break;
-							case 'delete':
-								$theMilestone->delete();
-								return $this->renderJSON(array('deleted' => true));
-								break;
+									break;
+								case 'delete':
+									$theMilestone->delete();
+									return $this->renderJSON(array('deleted' => true));
+									break;
+							}
+						}
+						else
+						{
+							throw new Exception(BUGScontext::getI18n()->__('You do not have access to this milestone'));
 						}
 					}
 					else
 					{
-						throw new Exception(BUGScontext::getI18n()->__('You do not have access to this milestone'));
+						throw new Exception(BUGScontext::getI18n()->__('You need to specify a milestone'));
 					}
 				}
-				else
+				catch (Exception $e)
 				{
-					throw new Exception(BUGScontext::getI18n()->__('You need to specify a milestone'));
+					return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('Could not update the milestone').", ".$e->getMessage()));
 				}
+				return $this->renderJSON(array('done' => true));
 			}
-			catch (Exception $e)
-			{
-				return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('Could not update the milestone').", ".$e->getMessage()));
-			}
-			return $this->renderJSON(array('done' => true));
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify milestones")));
 		}
 						
 		
@@ -1104,25 +1132,29 @@
 		 */
 		public function runEditEditionComponent(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
-			
-			try
+			$i18n = BUGScontext::getI18n();
+
+			if ($this->access_level == self::ACCESS_FULL)
 			{
-				$theEdition   = BUGSfactory::editionLab($request->getParameter('edition_id'));
-				if ($request->getParameter('mode') == 'add')
+				try
 				{
-					$theEdition->addComponent($request->getParameter('component_id'));
+					$theEdition   = BUGSfactory::editionLab($request->getParameter('edition_id'));
+					if ($request->getParameter('mode') == 'add')
+					{
+						$theEdition->addComponent($request->getParameter('component_id'));
+					}
+					elseif ($request->getParameter('mode') == 'remove')
+					{
+						$theEdition->removeComponent($request->getParameter('component_id'));
+					}
+					return $this->renderJSON(array('failed' => false));
 				}
-				elseif ($request->getParameter('mode') == 'remove')
+				catch (Exception $e)
 				{
-					$theEdition->removeComponent($request->getParameter('component_id'));
+					return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The component could not be added to this edition').", ".$e->getMessage()));
 				}
-				return $this->renderJSON(array('saved' => true));
 			}
-			catch (Exception $e) 
-			{
-				return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('The component could not be added to this edition').", ".$e->getMessage()));
-			}
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify components")));
 			
 		}
 
@@ -1133,25 +1165,29 @@
 		 */
 		public function runEditComponent(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
-			
-			try
+			$i18n = BUGScontext::getI18n();
+
+			if ($this->access_level == self::ACCESS_FULL)
 			{
-				$theComponent = BUGSfactory::componentLab($request->getParameter('component_id'));
-				if ($request->getParameter('mode') == 'update')
+				try
 				{
-					$theComponent->setName($request->getParameter('c_name', ''));
-					return $this->renderJSON(array('saved' => true, 'newname' => $theComponent->getName()));
+					$theComponent = BUGSfactory::componentLab($request->getParameter('component_id'));
+					if ($request->getParameter('mode') == 'update')
+					{
+						$theComponent->setName($request->getParameter('c_name', ''));
+						return $this->renderJSON(array('failed' => false, 'newname' => $theComponent->getName()));
+					}
+					elseif ($request->getParameter('mode') == 'delete')
+					{
+						$theComponent->delete();
+					}
 				}
-				elseif ($request->getParameter('mode') == 'delete')
+				catch (Exception $e)
 				{
-					$theComponent->delete();
+					return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('Could not edit this component').", ".$e->getMessage()));
 				}
 			}
-			catch (Exception $e) 
-			{
-				return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('Could not edit this component').", ".$e->getMessage()));
-			}
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify components")));
 		}
 		
 		/**
@@ -1161,20 +1197,23 @@
 		 */
 		public function runDeleteProject(BUGSrequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
-			
-			try
+			$i18n = BUGScontext::getI18n();
+
+			if ($this->access_level == self::ACCESS_FULL)
 			{
-				$theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
-				$theProject->delete();
-				$theProject->save();
-				return $this->renderJSON(array('deleted' => true));
+				try
+				{
+					$theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
+					$theProject->delete();
+					$theProject->save();
+					return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The project was deleted')));
+				}
+				catch (Exception $e)
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => $i18n->__('An error occured') . ': ' . $e->getMessage()));
+				}
 			}
-			catch (Exception $e) 
-			{
-				BUGScontext::loadLibrary('ui');
-				return $this->renderJSON(array('deleted' => false));
-			}
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to remove projects")));
 		}
 
 		/**
@@ -1184,6 +1223,8 @@
 		 */
 		public function runModuleAction(BUGSrequest $request)
 		{
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
+			
 			try
 			{
 				if ($request->getParameter('mode') == 'install' && file_exists(BUGScontext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/module'))
@@ -1230,41 +1271,52 @@
 		 */
 		public function runGetPermissionsInfo(BUGSrequest $request)
 		{
-			//var_dump(json_decode($request->getParameter('permissions_list')));die();
-			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsblock', array('base_id' => $request->getParameter('base_id'), 'permissions_list' => $request->getParameter('permissions_list'), 'mode' => $request->getParameter('mode'), 'target_id' => $request->getParameter('target_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
+			$i18n = BUGScontext::getI18n();
+
+			if ($this->access_level == self::ACCESS_FULL)
+			{
+				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsblock', array('base_id' => $request->getParameter('base_id'), 'permissions_list' => $request->getParameter('permissions_list'), 'mode' => $request->getParameter('mode'), 'target_id' => $request->getParameter('target_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
+			}
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify components")));
 		}
 
 		public function runSetPermission(BUGSrequest $request)
 		{
-			$uid = 0;
-			$gid = 0;
-			$tid = 0;
-			switch ($request->getParameter('target_type'))
-			{
-				case 'user':
-					$uid = $request->getParameter('item_id');
-					break;
-				case 'group':
-					$gid = $request->getParameter('item_id');
-					break;
-				case 'team':
-					$tid = $request->getParameter('item_id');
-					break;
-			}
+			$i18n = BUGScontext::getI18n();
 
-			switch ($request->getParameter('mode'))
+			if ($this->access_level == self::ACCESS_FULL)
 			{
-				case 'allowed':
-					BUGScontext::setPermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid, true);
-					break;
-				case 'denied':
-					BUGScontext::setPermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid, false);
-					break;
-				case 'unset':
-					BUGScontext::removePermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid);
-					break;
+				$uid = 0;
+				$gid = 0;
+				$tid = 0;
+				switch ($request->getParameter('target_type'))
+				{
+					case 'user':
+						$uid = $request->getParameter('item_id');
+						break;
+					case 'group':
+						$gid = $request->getParameter('item_id');
+						break;
+					case 'team':
+						$tid = $request->getParameter('item_id');
+						break;
+				}
+
+				switch ($request->getParameter('mode'))
+				{
+					case 'allowed':
+						BUGScontext::setPermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid, true);
+						break;
+					case 'denied':
+						BUGScontext::setPermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid, false);
+						break;
+					case 'unset':
+						BUGScontext::removePermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid);
+						break;
+				}
+				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsinfoitem', array('key' => $request->getParameter('key'), 'target_id' => $request->getParameter('target_id'), 'type' => $request->getParameter('target_type'), 'mode' => $request->getParameter('template_mode'), 'item_id' => $request->getParameter('item_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
 			}
-			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsinfoitem', array('key' => $request->getParameter('key'), 'target_id' => $request->getParameter('target_id'), 'type' => $request->getParameter('target_type'), 'mode' => $request->getParameter('template_mode'), 'item_id' => $request->getParameter('item_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify components")));
 		}
 		
 		/**
@@ -1274,6 +1326,8 @@
 		 */
 		public function runConfigureModule(BUGSrequest $request)
 		{
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
+			
 			try
 			{
 				$module = BUGScontext::getModule($request->getParameter('config_module'));
@@ -1312,7 +1366,7 @@
 
 		public function runConfigurePermissions(BUGSrequest $request)
 		{
-			
+			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 		}
 
 		public function getAccessLevel($section, $module)

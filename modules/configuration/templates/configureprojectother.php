@@ -18,8 +18,8 @@
 			<?php else: ?>
 				<div style="margin-bottom: 15px;"><?php echo __('This is what is shown on the frontpage project overview'); ?></div>
 			<?php endif; ?>
-					<label for="milestones_or_issuetypes"><?php echo __('On the frontpage summary, show'); ?></label> 
-					<select name="frontpage_summary" id="frontpage_summary" <?php if ($access_level == configurationActions::ACCESS_FULL): ?>onchange="$('checkboxes_issuetypes').hide();$('checkboxes_milestones').hide();$('checkboxes_'+this.getValue()).show();"<?php else: ?> disabled<?php endif; ?>>
+					<label for="frontpage_summary"><?php echo __('On the frontpage summary, show'); ?></label>
+					<select name="frontpage_summary" id="frontpage_summary" <?php if ($access_level == configurationActions::ACCESS_FULL): ?>onchange="$('checkboxes_issuetypes').hide();$('checkboxes_issuelist').hide();$('checkboxes_milestones').hide();if ($('checkboxes_'+this.getValue())) { $('checkboxes_'+this.getValue()).show(); }"<?php else: ?> disabled<?php endif; ?>>
 						<option value=""<?php if (!$theProject->isAnythingVisibleInFrontpageSummary()): ?> selected<?php endif; ?>><?php echo __('only project information'); ?></option>
 						<option value="milestones"<?php if ($theProject->isMilestonesVisibleInFrontpageSummary()): ?> selected<?php endif; ?>><?php echo __('status per milestone'); ?></option>
 						<option value="issuetypes"<?php if ($theProject->isIssuetypesVisibleInFrontpageSummary()): ?> selected<?php endif; ?>><?php echo __('status per issue types'); ?></option>

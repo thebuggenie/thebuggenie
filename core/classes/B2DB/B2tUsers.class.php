@@ -105,7 +105,7 @@
 			return B2DB::getTable('B2tUsers')->doSelect($crit);
 		}
 
-		public function getByDetails($details)
+		public function getByDetails($details, $limit = null)
 		{
 			$crit = $this->getCriteria();
 			if (stristr($details, "@"))
