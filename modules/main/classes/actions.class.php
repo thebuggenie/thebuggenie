@@ -647,7 +647,7 @@
 			}
 		}
 
-		protected function _postIssueValidation(BUGSrequest $request, &$errors)
+		protected function _postIssueValidation(BUGSrequest $request, &$errors, &$permission_errors)
 		{
 			$i18n = BUGScontext::getI18n();
 			if (!$this->selected_project instanceof BUGSproject) $errors['project'] = $i18n->__('You have to select a valid project');
@@ -760,10 +760,24 @@
 							$errors[$field] = true;
 						}
 					}
+					else
+					{
+						if (in_array($field, BUGSdatatype::getAvailableFields(true)))
+						{
+							if (!$this->selected_project->fieldPermissionCheck($field, true))
+							{
+								$permission_errors[$field] = true;
+							}
+						}
+						elseif (!$this->selected_project->fieldPermissionCheck($field, true, true))
+						{
+							$permission_errors[$field] = true;
+						}
+					}
 				}
 
 			}
-			return !(bool) count($errors);
+			return !(bool) (count($errors) + count($permission_errors));
 		}
 
 		protected function _postIssue()
@@ -807,6 +821,7 @@
 			$i18n = BUGScontext::getI18n();
 			$this->_setupReportIssueProperties();
 			$errors = array();
+			$permission_errors = array();
 			$this->getResponse()->setPage('reportissue');
 			$this->default_title = $i18n->__('Enter a short, but descriptive summary of the issue here');
 			$this->default_estimated_time = $i18n->__('Enter an estimate here');
@@ -816,7 +831,7 @@
 
 			if ($request->isMethod(BUGSrequest::POST))
 			{
-				if ($this->_postIssueValidation($request, $errors))
+				if ($this->_postIssueValidation($request, $errors, $permission_errors))
 				{
 					try
 					{
@@ -850,6 +865,7 @@
 				return $this->renderJSON(array('failed' => true, 'error' => join(', ', $errors)));
 			}
 			$this->errors = $errors;
+			$this->permission_errors = $permission_errors;
 		}
 		
 		/**

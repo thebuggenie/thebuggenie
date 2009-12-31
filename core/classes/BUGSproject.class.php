@@ -2029,7 +2029,7 @@
 		 * 
 		 * @return integer The percentage
 		 */
-		protected function getPercentage($num_1, $num_max)
+		protected function _getPercentage($num_1, $num_max)
 		{
 			$pct = 0;
 			
@@ -2049,7 +2049,7 @@
 		 */
 		public function getClosedPercentageForAllIssues()
 		{
-			return $this->getPercentage($this->countAllClosedIssues(), $this->countAllIssues());
+			return $this->_getPercentage($this->countAllClosedIssues(), $this->countAllIssues());
 		}
 		
 		/**
@@ -2061,7 +2061,7 @@
 		 */
 		public function getClosedPercentageByType($issue_type)
 		{
-			return $this->getPercentage($this->countClosedIssuesByType($issue_type), $this->countIssuesByType($issue_type));
+			return $this->_getPercentage($this->countClosedIssuesByType($issue_type), $this->countIssuesByType($issue_type));
 		}
 
 		/**
@@ -2073,7 +2073,7 @@
 		 */
 		public function getClosedPercentageByMilestone($milestone)
 		{
-			return $this->getPercentage($this->countClosedIssuesByMilestone($milestone), $this->countIssuesByMilestone($milestone));
+			return $this->_getPercentage($this->countClosedIssuesByMilestone($milestone), $this->countIssuesByMilestone($milestone));
 		}
 		
 		/**
@@ -2169,7 +2169,7 @@
 		 */
 		public function getReportableFieldsArray($issue_type)
 		{
-			return $this->getFieldsArray($issue_type, true);
+			return $this->_getFieldsArray($issue_type, true);
 		}
 
 		/**
@@ -2181,7 +2181,7 @@
 		 */
 		public function getVisibleFieldsArray($issue_type)
 		{
-			return $this->getFieldsArray($issue_type, false);
+			return $this->_getFieldsArray($issue_type, false);
 		}
 		
 		/**
@@ -2192,7 +2192,7 @@
 		 * 
 		 * @return array
 		 */
-		protected function getFieldsArray($issue_type, $reportable = true)
+		protected function _getFieldsArray($issue_type, $reportable = true)
 		{
 			if (!isset($this->_fieldsarrays[$issue_type][(int) $reportable]))
 			{
@@ -2209,8 +2209,8 @@
 						{
 							if ($reportable)
 							{
-								if (in_array($row->get(B2tIssueFields::FIELD_KEY), BUGSdatatype::getAvailableFields(true)) && !$this->permissionCheck('caneditissue'.$row->get(B2tIssueFields::FIELD_KEY))) continue;
-								elseif (!in_array($row->get(B2tIssueFields::FIELD_KEY), BUGSdatatype::getAvailableFields(true)) && !$this->permissionCheck('caneditissuecustomfields'.$row->get(B2tIssueFields::FIELD_KEY))) continue;
+								if (in_array($row->get(B2tIssueFields::FIELD_KEY), BUGSdatatype::getAvailableFields(true)) && (!$this->fieldPermissionCheck($row->get(B2tIssueFields::FIELD_KEY), $reportable) && !($row->get(B2tIssueFields::REQUIRED) && $reportable))) continue;
+								elseif (!in_array($row->get(B2tIssueFields::FIELD_KEY), BUGSdatatype::getAvailableFields(true)) && (!$this->fieldPermissionCheck($row->get(B2tIssueFields::FIELD_KEY), $reportable, true) && !($row->get(B2tIssueFields::REQUIRED) && $reportable))) continue;
 							}
 							$retval[$row->get(B2tIssueFields::FIELD_KEY)] = array('required' => (bool) $row->get(B2tIssueFields::REQUIRED), 'additional' => (bool) $row->get(B2tIssueFields::ADDITIONAL));
 						}
@@ -2446,6 +2446,27 @@
 			$retval = ($retval !== null) ? $retval : BUGScontext::getUser()->hasPermission($key);
 			
 			return $retval;
+		}
+
+		public function fieldPermissionCheck($field, $reportable, $custom = false)
+		{
+			if ($custom)
+			{
+				return (bool) ($this->permissionCheck('caneditcustomfields'.$field) || $this->permissionCheck('caneditissuecustomfields'));
+			}
+			elseif (in_array($field, array('title', 'description', 'reproduction_steps')))
+			{
+				return (bool) ($this->permissionCheck('caneditissue'.$field) || $this->permissionCheck('caneditissuebasic') || $this->permissionCheck('cancreateissues') || $this->permissionCheck('cancreateandeditissues'));
+			}
+			elseif (in_array($field, array('builds', 'editions', 'components', 'links', 'files')))
+			{
+				return (bool) ($this->permissionCheck('canadd'.$field) || $this->permissionCheck('canaddextrainformationtoissues'));
+			}
+			else
+			{
+				return (bool) ($this->permissionCheck('caneditissue'.$field) || $this->permissionCheck('caneditissue'));
+			}
+			return false;
 		}
 		
 	}

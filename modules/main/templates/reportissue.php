@@ -8,7 +8,7 @@
 	<div class="report_issue_header">
 		<?php echo __("What's the issue?"); ?>
 	</div>
-	<?php if (!empty($errors)): ?>
+	<?php if (!empty($errors) || !(empty($permission_errors))): ?>
 		<div class="rounded_box report_issue_desc red_borderless" style="margin-bottom: 5px;">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222;">
@@ -80,6 +80,71 @@
 							</li>
 						<?php else: ?>
 							<li><?php echo $error; ?></li>
+						<?php endif; ?>
+					<?php endforeach; ?>
+					<?php foreach ($permission_errors as $key => $p_error): ?>
+						<?php if (is_array($p_error)): ?>
+							<?php foreach ($p_error as $p_suberror): ?>
+								<li><?php echo $p_suberror; ?></li>
+							<?php endforeach; ?>
+						<?php elseif (is_bool($p_error)): ?>
+							<li>
+								<?php if (in_array($key, BUGSdatatype::getAvailableFields(true))): ?>
+									<?php
+
+										switch ($key)
+										{
+											case 'description':
+												echo __("You don't have access to enter a description");
+												break;
+											case 'reproduction_steps':
+												echo __("You don't have access to enter steps to reproduce");
+												break;
+											case 'edition':
+												echo __("You don't have access to add edition information");
+												break;
+											case 'builds':
+												echo __("You don't have access to enter release information");
+												break;
+											case 'components':
+												echo __("You don't have access to enter component information");
+												break;
+											case 'category':
+												echo __("You don't have access to specify a category");
+												break;
+											case 'status':
+												echo __("You don't have access to specify a status");
+												break;
+											case 'priority':
+												echo __("You don't have access to specify a priority");
+												break;
+											case 'reproducability':
+												echo __("You don't have access to specify reproducability");
+												break;
+											case 'severity':
+												echo __("You don't have access to specify a severity");
+												break;
+											case 'resolution':
+												echo __("You don't have access to specify a resolution");
+												break;
+											case 'estimated_time':
+												echo __("You don't have access to estimate the issue");
+												break;
+											case 'elapsed_time':
+												echo __("You don't have access to specify time already spent working on the issue");
+												break;
+											case 'percent_complete':
+												echo __("You don't have access to specify how many percent complete the issue is");
+												break;
+										}
+
+									?>
+								<?php else: ?>
+									<?php echo __('You don\'t have access to enter "%field_name%"', array('%field_name%' => BUGScustomdatatype::getByKey($key)->getDescription())); ?>
+								<?php endif; ?>
+							</li>
+						<?php else: ?>
+							<li><?php echo $p_error; ?></li>
 						<?php endif; ?>
 					<?php endforeach; ?>
 				</ul>

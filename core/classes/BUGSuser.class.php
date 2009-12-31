@@ -1597,7 +1597,7 @@
 			if ($product_id !== null)
 			{
 				$retval = $this->hasPermission('cancreateissues', $product_id, 'core', true, null);
-				$retval = ($retvall !== null) ? $retval : $this->hasPermission('cancreateandeditissues', $product_id, 'core', true, null);
+				$retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateandeditissues', $product_id, 'core', true, null);
 			}
 			return ($retval !== null) ? $retval : (bool) ($this->hasPermission('cancreateissues') || $this->hasPermission('cancreateandeditissues'));
 		}
