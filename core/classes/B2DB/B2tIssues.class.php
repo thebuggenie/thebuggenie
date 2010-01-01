@@ -409,7 +409,7 @@
 								{
 									if (in_array($single_filter['operator'], array('=', '!=', '<=', '>=', '<', '>')))
 									{
-										$ctn->addWhere($this->getB2DBName().'.'.$filter, $single_filter['value'], $single_filter['operator']);
+										$ctn->addOr($this->getB2DBName().'.'.$filter, $single_filter['value'], $single_filter['operator']);
 									}
 								}
 							}
@@ -427,7 +427,7 @@
 								{
 									if (in_array($single_filter['operator'], array('=', '!=', '<=', '>=', '<', '>')))
 									{
-										$ctn->addWhere(B2tIssueCustomFields::OPTION_VALUE, $single_filter['value'], $single_filter['operator']);
+										$ctn->addOr(B2tIssueCustomFields::OPTION_VALUE, $single_filter['value'], $single_filter['operator']);
 									}
 								}
 							}
