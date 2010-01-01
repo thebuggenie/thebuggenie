@@ -362,7 +362,7 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 				PublishArticle::createNew($article_name, $content, true, $scope);
 
 				$article_name = 'Category:Help';
-				$content = "";
+				$content = "This is a list of all the available help articles in The Bug Genie. If you are stuck, look here for help.";
 				PublishArticle::createNew($article_name, $content, true, $scope);
 
 				$article_name = 'Category:HowTo';

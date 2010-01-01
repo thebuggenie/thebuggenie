@@ -23,6 +23,13 @@
 						<b><?php echo __('Formatting help'); ?></b>
 					<?php endif; ?>
 				</li>
+				<li>
+					<?php if (!$article instanceof PublishArticle || $article->getName() != 'Category:Help'): ?>
+						<?php echo link_tag(make_url('publish_article', array('article_name' => 'Category:Help')), __('Help topics')); ?>
+					<?php else: ?>
+						<b><?php echo __('Help topics'); ?></b>
+					<?php endif; ?>
+				</li>
 				<?php if (count($links) > 0): ?>
 					<?php foreach ($links as $link): ?>
 						<?php if ($link['url'] == ''): ?>
