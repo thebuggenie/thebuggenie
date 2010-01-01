@@ -38,6 +38,7 @@
 				</div>
 				<div id="permissions_tabs_panes">
 					<div id="tab_general_pane" class="tab_pane">
+						<p><?php echo __('These permissions control what you can do in The Bug Genie. Some of these permissions are also available as project-specific permissions, from the "%project_specific_permissions%" tab.', array('%project_specific_permissions%' => '<i>'.__('Project-specific permissions').'</i>')); ?></p>
 						<ul>
 							<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('configuration'), 'mode' => 'configuration', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
 							<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('general'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
@@ -45,12 +46,14 @@
 						</ul>
 					</div>
 					<div id="tab_pages_pane" class="tab_pane" style="display: none;">
+						<p><?php echo __('These permissions control which pages you can access in The Bug Genie. Some of these permissions are also available as project-specific permissions, from the "%project_specific_permissions%" tab.', array('%project_specific_permissions%' => '<i>'.__('Project-specific permissions').'</i>')); ?></p>
 						<ul>
 							<?php include_template('configuration/permissionsblock', array('base_id' => 'page_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('pages'), 'mode' => 'pages', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
 							<?php include_template('configuration/permissionsblock', array('base_id' => 'page_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project_pages'), 'mode' => 'pages', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
 						</ul>
 					</div>
 					<div id="tab_projects_pane" class="tab_pane" style="display: none;">
+						<p><?php echo __('These permissions control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions, from the "%general_permissions%" tab.', array('%general_permissions%' => '<i>'.__('General permissions').'</i>')); ?></p>
 						<?php if (count(BUGSproject::getAll()) > 0): ?>
 							<ul>
 								<?php foreach (BUGSproject::getAll() as $project): ?>
