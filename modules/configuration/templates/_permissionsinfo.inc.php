@@ -10,7 +10,7 @@
 				<th style="width: 60px; text-align: center;"><?php echo __('Can set'); ?></th>
 			<?php elseif ($mode == 'general'): ?>
 				<th style="width: 60px; text-align: center;"><?php echo __('Can'); ?></th>
-			<?php elseif ($mode == 'configuration'): ?>
+			<?php elseif ($mode == 'configuration' || $mode == 'pages'): ?>
 				<th style="width: 60px; text-align: center;"><?php echo __('Access'); ?></th>
 			<?php endif; ?>
 		</tr>

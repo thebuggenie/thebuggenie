@@ -1458,9 +1458,17 @@
 		 * 
 		 * @return boolean
 		 */
-		public function hasPageAccess($page)
+		public function hasPageAccess($page, $target_id = null)
 		{
-			return !$this->hasPermission("no{$page}access", 0, "core");
+			if ($target_id === null)
+			{
+				return $this->hasPermission("page_{$page}_access", 0, "core", true, true);
+			}
+			else
+			{
+				$retval = $this->hasPermission("page_{$page}_access", $target_id, "core", true, null);
+				return ($retval === null) ? $this->hasPermission("page_{$page}_access", 0, "core", true, null) : $retval;
+			}
 		}
 
 		/**

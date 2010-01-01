@@ -29,28 +29,46 @@
 					</div>
 					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</div>
-				<div class="header_div" style="margin-top: 15px;"><?php echo __('General permissions'); ?></div>
-				<ul style="width: 750px;">
-					<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('configuration'), 'mode' => 'configuration', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
-					<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('general'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
-					<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
-				</ul>
-				<div class="header_div" style="margin-top: 15px;"><?php echo __('Project-specific permissions'); ?></div>
-				<?php if (count(BUGSproject::getAll()) > 0): ?>
-					<ul>
-						<?php foreach (BUGSproject::getAll() as $project): ?>
-							<li>
-								<a href="javascript:void(0);" onclick="$('project_permission_details_<?php echo $project->getID(); ?>').toggle();"><?php echo image_tag('icon_project_permissions.png', array('style' => 'float: right;')); ?><?php echo $project->getName(); ?> <span class="faded_medium smaller"><?php echo $project->getKey(); ?></span></a>
-								<ul style="display: none;" id="project_permission_details_<?php echo $project->getID(); ?>">
-									<?php include_template('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
-									<?php include_template('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
-								</ul>
-							</li>
-						<?php endforeach; ?>
+				<div style="margin: 10px 0 0 0; clear: both; height: 30px;" class="tab_menu">
+					<ul id="permissions_tabs">
+						<li class="selected" id="tab_general"><a onclick="switchSubmenuTab('tab_general', 'permissions_tabs');" href="javascript:void(0);"><?php echo __('General permissions'); ?></a></li>
+						<li id="tab_pages"><a onclick="switchSubmenuTab('tab_pages', 'permissions_tabs');" href="javascript:void(0);"><?php echo __('Page access permissions'); ?></a></li>
+						<li id="tab_projects"><a onclick="switchSubmenuTab('tab_projects', 'permissions_tabs');" href="javascript:void(0);"><?php echo __('Project-specific permissions'); ?></a></li>
 					</ul>
-				<?php else: ?>
-					<div class="faded_medium" style="padding: 2px;"><?php echo __('There are no projects'); ?></div>
-				<?php endif; ?>
+				</div>
+				<div id="permissions_tabs_panes">
+					<div id="tab_general_pane" class="tab_pane">
+						<ul>
+							<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('configuration'), 'mode' => 'configuration', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
+							<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('general'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
+							<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
+						</ul>
+					</div>
+					<div id="tab_pages_pane" class="tab_pane" style="display: none;">
+						<ul>
+							<?php include_template('configuration/permissionsblock', array('base_id' => 'page_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('pages'), 'mode' => 'pages', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
+							<?php include_template('configuration/permissionsblock', array('base_id' => 'page_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project_pages'), 'mode' => 'pages', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
+						</ul>
+					</div>
+					<div id="tab_projects_pane" class="tab_pane" style="display: none;">
+						<?php if (count(BUGSproject::getAll()) > 0): ?>
+							<ul>
+								<?php foreach (BUGSproject::getAll() as $project): ?>
+									<li>
+										<a href="javascript:void(0);" onclick="$('project_permission_details_<?php echo $project->getID(); ?>').toggle();"><?php echo image_tag('icon_project_permissions.png', array('style' => 'float: right;')); ?><?php echo $project->getName(); ?> <span class="faded_medium smaller"><?php echo $project->getKey(); ?></span></a>
+										<ul style="display: none;" id="project_permission_details_<?php echo $project->getID(); ?>">
+											<?php include_template('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_project_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+											<?php include_template('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_page_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project_pages'), 'mode' => 'pages', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+											<?php include_template('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_issue_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+										</ul>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						<?php else: ?>
+							<div class="faded_medium" style="padding: 2px;"><?php echo __('There are no projects'); ?></div>
+						<?php endif; ?>
+					</div>
+				</div>
 			</div>
 		</td>
 	</tr>

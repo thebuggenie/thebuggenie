@@ -91,16 +91,9 @@
 
 		public function loadFixtures($scope_id, $admin_group_id, $guest_group_id)
 		{
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::ALLOWED, true);
-			$crit->addInsert(self::SCOPE, $scope_id);
-			$crit->addInsert(self::PERMISSION_TYPE, 'canviewconfig');
-			$crit->addInsert(self::TARGET_ID, 0);
-			$crit->addInsert(self::GID, $admin_group_id);
-			$crit->addInsert(self::MODULE, 'core');
-			$this->doInsert($crit);
+			$this->setPermission(0, $admin_group_id, 0, true, 'core', 'cansaveconfig', 0, $scope_id);
 
-			for ($cc = 1; $cc <= 16; $cc++)
+			/*for ($cc = 1; $cc <= 16; $cc++)
 			{
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::ALLOWED, 1);
@@ -110,48 +103,14 @@
 				$crit->addInsert(self::GID, $admin_group_id);
 				$crit->addInsert(self::MODULE, 'core');
 				$this->doInsert($crit);
-			}
+			}*/
 
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::ALLOWED, 1);
-			$crit->addInsert(self::SCOPE, $scope_id);
-			$crit->addInsert(self::PERMISSION_TYPE, 'noaccountaccess');
-			$crit->addInsert(self::TARGET_ID, 0);
-			$crit->addInsert(self::GID, $guest_group_id);
-			$crit->addInsert(self::MODULE, 'core');
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::ALLOWED, 1);
-			$crit->addInsert(self::SCOPE, $scope_id);
-			$crit->addInsert(self::TARGET_ID, 0);
-			$crit->addInsert(self::PERMISSION_TYPE, 'cancreateandeditissues');
-			$crit->addInsert(self::MODULE, 'core');
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::ALLOWED, 1);
-			$crit->addInsert(self::SCOPE, $scope_id);
-			$crit->addInsert(self::TARGET_ID, 0);
-			$crit->addInsert(self::PERMISSION_TYPE, 'canfindissuesandsavesearches');
-			$crit->addInsert(self::MODULE, 'core');
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::ALLOWED, 1);
-			$crit->addInsert(self::SCOPE, $scope_id);
-			$crit->addInsert(self::TARGET_ID, 0);
-			$crit->addInsert(self::PERMISSION_TYPE, 'caneditissuecustomfieldsown');
-			$crit->addInsert(self::MODULE, 'core');
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::ALLOWED, 1);
-			$crit->addInsert(self::SCOPE, $scope_id);
-			$crit->addInsert(self::TARGET_ID, 0);
-			$crit->addInsert(self::PERMISSION_TYPE, 'canpostandeditcomments');
-			$crit->addInsert(self::MODULE, 'core');
-			$this->doInsert($crit);
+			$this->setPermission(0, $guest_group_id, 0, false, 'core', 'page_account_access', 0, $scope_id);
+			$this->setPermission(0, 0, 0, true, 'core', 'cancreateandeditissues', 0, $scope_id);
+			$this->setPermission(0, 0, 0, true, 'core', 'canfindissuesandsavesearches', 0, $scope_id);
+			$this->setPermission(0, 0, 0, true, 'core', 'caneditissuecustomfieldsown', 0, $scope_id);
+			$this->setPermission(0, 0, 0, true, 'core', 'canpostandeditcomments', 0, $scope_id);
+			
 		}
 		
 	}

@@ -98,7 +98,7 @@
 					$this->forward(BUGScontext::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())));
 				}
 			}
-			$this->getResponse()->setPage('index');
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('home'));
 			$this->getResponse()->setProjectMenuStripHidden();
 			$this->showleftbar = false;
 			if (!BUGSuser::isThisGuest() && (BUGScontext::getUser()->showFollowUps() || BUGScontext::getUser()->showAssigned()))
@@ -126,10 +126,7 @@
 		 */
 		public function runDashboard(BUGSrequest $request)
 		{
-			if (BUGScontext::getUser()->isThisGuest())
-			{
-				$this->forward403();
-			}
+			$this->forward403unless(!BUGScontext::getUser()->isThisGuest() && BUGScontext::getUser()->hasPageAccess('dashboard'));
 			$this->getResponse()->setProjectMenuStripHidden();
 		}
 		
@@ -140,6 +137,7 @@
 		 */
 		public function runAbout(BUGSrequest $request)
 		{
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('about'));
 			$this->getResponse()->setProjectMenuStripHidden();
 		}
 		
@@ -657,8 +655,8 @@
 				$fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
 
 				$this->title = $request->getParameter('title');
-				$this->description = $request->getParameter('description', null, false);
-				$this->reproduction_steps = $request->getParameter('reproduction_steps', null, false);
+				$this->selected_description = $request->getParameter('description', null, false);
+				$this->selected_reproduction_steps = $request->getParameter('reproduction_steps', null, false);
 
 				if ($edition_id = (int) $request->getParameter('edition_id'))
 				{
@@ -784,8 +782,8 @@
 		{
 			$fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
 			$issue = BUGSissue::createNew($this->title, $this->issuetype_id, $this->selected_project->getID());
-			if (isset($fields_array['description'])) $issue->setDescription($this->description);
-			if (isset($fields_array['reproduction_steps'])) $issue->setReproductionSteps($this->reproduction_steps);
+			if (isset($fields_array['description'])) $issue->setDescription($this->selected_description);
+			if (isset($fields_array['reproduction_steps'])) $issue->setReproductionSteps($this->selected_reproduction_steps);
 			if (isset($fields_array['category']) && $this->selected_category instanceof BUGSdatatype) $issue->setCategory($this->selected_category->getID());
 			if (isset($fields_array['status']) && $this->selected_status instanceof BUGSdatatype) $issue->setStatus($this->selected_status->getID());
 			if (isset($fields_array['reproducability']) && $this->selected_reproducability instanceof BUGSdatatype) $issue->setReproducability($this->selected_reproducability->getID());

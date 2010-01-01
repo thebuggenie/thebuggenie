@@ -16,6 +16,7 @@
 		 */
 		public function preExecute(BUGSrequest $request, $action)
 		{
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('search'));
 			if ($request->hasParameter('project_key'))
 			{
 				if (($project = BUGSproject::getByKey($request->getParameter('project_key'))) instanceof BUGSproject)
