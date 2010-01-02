@@ -164,7 +164,7 @@ BUGScontext::clearMessage('postreg_success'); ?>
 
 				<br><b><?php echo __('Enter the above number in this box'); ?></b><br><br>
 				<input type="text" id="verification_no" name="verification_no" style="width: 100px;<?php print (!true) ? " background-color: #FBB;" : ""; ?>"><br><br>
-				<input type="submit" id="register_button" value="<?php echo __('Register'); ?>">
+				<input type="submit" id="login_button" value="<?php echo __('Register'); ?>">
 			</div>
 		</form>
 	</div>

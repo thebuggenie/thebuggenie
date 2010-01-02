@@ -33,7 +33,7 @@
 						<label class="login_fieldheader" for="forgot_password_username"><?php echo __('Username'); ?></label>
 						<input type="text" id="forgot_password_username" name="forgot_password_username" style="width: 200px;"><br>
 						<br>
-						<input type="submit" id="forgot_password_button" value="<?php echo __('Send email'); ?>">
+						<input type="submit" id="login_button" value="<?php echo __('Send email'); ?>">
 					</div>
 			</form>
 		</div>
