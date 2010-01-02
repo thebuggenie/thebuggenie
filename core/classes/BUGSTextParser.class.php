@@ -614,10 +614,11 @@
 			
 			$output = "";
 			$text = $this->text;
-
+			
 			$text = preg_replace_callback('/<nowiki>(.*?)<\/nowiki>/i', array($this, "_parse_save_nowiki"), $text);
-			$text = preg_replace_callback('/<code(.*?)>(.*?)<\/code>/i', array($this, "_parse_save_code"), $text);
-
+			$text = preg_replace_callback('/(?<=<source)( [^\s]+(?:=".*?")?)*>(.*?)(?=<\/source>)/ism', array($this, "_parse_save_code"), $text);
+			// Thanks to Mike Smith (scgtrp) for the above regexp
+			
 			$lines = explode("\n",$text);
 			foreach ($lines as $line)
 			{
@@ -676,22 +677,22 @@
 		{
 			$codeblock = $matches[2];
 			$params = $matches[1];
-			
-			if(preg_match('nonumbers', $params) !== false) {
+
+			if(strstr($params, 'line="no"') !== false) {
 				$numbering = false;
 			} else {
 				$numbering = true;
 			}
 
 			$language = preg_match('/(?<=lang=")(.*)(?=")/', $params, $matches);
-			if($language !== false) {
+			if($language !== 0) {
 				$language = $matches[0];
 			} else {
-				$language = 'sgml';
+				$language = 'html4strict';
 			}
 			
-			$numbering_startfrom = preg_match('/(?<=firstline=")(.*)(?=")/', $params, $matches);
-			if($numbering_startfrom !== false) {
+			$numbering_startfrom = preg_match('/(?<=line start=)([0-9])+/', $params, $matches);
+			if($numbering_startfrom !== 0) {
 				$numbering_startfrom = (int)$matches[0];
 			} else {
 				$numbering_startfrom = 1;
