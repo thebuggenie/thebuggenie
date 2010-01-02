@@ -616,7 +616,7 @@
 			$text = $this->text;
 
 			$text = preg_replace_callback('/<nowiki>(.*?)<\/nowiki>/i', array($this, "_parse_save_nowiki"), $text);
-			$text = preg_replace_callback('/<code>(.*?)<\/code>/i', array($this, "_parse_save_code"), $text);
+			$text = preg_replace_callback('/<code(.*?)>(.*?)<\/code>/i', array($this, "_parse_save_code"), $text);
 
 			$lines = explode("\n",$text);
 			foreach ($lines as $line)
@@ -668,12 +668,35 @@
 
 		protected function _parse_save_code($matches)
 		{
-			array_push($this->codeblocks, $matches[1]);
+			array_push($this->codeblocks, $matches);
 			return "|||CODE|||";
 		}
 
-		protected function _geshify($codeblock, $language = 'xml', $numbering = true, $numbering_startfrom = 1)
+		protected function _geshify($matches)
 		{
+			$codeblock = $matches[2];
+			$params = $matches[1];
+			
+			if(preg_match('nonumbers', $params) !== false) {
+				$numbering = false;
+			} else {
+				$numbering = true;
+			}
+
+			$language = preg_match('/(?<=lang=")(.*)(?=")/', $params, $matches);
+			if($language !== false) {
+				$language = $matches[0];
+			} else {
+				$language = 'sgml';
+			}
+			
+			$numbering_startfrom = preg_match('/(?<=firstline=")(.*)(?=")/', $params, $matches);
+			if($numbering_startfrom !== false) {
+				$numbering_startfrom = (int)$matches[0];
+			} else {
+				$numbering_startfrom = 1;
+			}
+			
 			$geshi = new GeSHi($codeblock, $language);
 			if ($numbering === true)
 			{
