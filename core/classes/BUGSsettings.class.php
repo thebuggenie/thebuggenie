@@ -18,6 +18,18 @@
 	 */
 	final class BUGSsettings
 	{
+
+		const CONFIGURATION_SECTION_SETTINGS = 12;
+		const CONFIGURATION_SECTION_PROJECTS = 10;
+		const CONFIGURATION_SECTION_PERMISSIONS = 5;
+		const CONFIGURATION_SECTION_UPLOADS = 3;
+		const CONFIGURATION_SECTION_SCOPES = 14;
+		const CONFIGURATION_SECTION_IMPORT = 16;
+		const CONFIGURATION_SECTION_ISSUETYPES = 6;
+		const CONFIGURATION_SECTION_ISSUEFIELDS = 4;
+		const CONFIGURATION_SECTION_USERS = 2;
+		const CONFIGURATION_SECTION_MODULES = 15;
+
 		static protected $_ver_mj = null;
 		static protected $_ver_mn = null;
 		static protected $_ver_rev = null;

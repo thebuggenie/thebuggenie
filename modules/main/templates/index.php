@@ -53,7 +53,7 @@
 			<?php if (BUGSsettings::isProjectOverviewEnabled()): ?>
 				<div class="project_overview">
 					<div class="header">
-						<?php if ($bugs_user->hasPermission('b2viewconfig', 10) || $bugs_user->hasPermission('b2saveconfig', 10)): ?>
+						<?php if ($bugs_user->canAccessConfigurationPage(BUGSsettings::CONFIGURATION_SECTION_PROJECTS)): ?>
 							<?php echo link_tag(make_url('configure_projects'), image_tag('cfg_icon_projectheader.png', array('style' => 'float: left; margin-right: 5px;'))); ?>
 						<?php endif; ?>
 						<?php echo __('Projects'); ?>

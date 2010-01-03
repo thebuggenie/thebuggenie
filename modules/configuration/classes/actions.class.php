@@ -4,7 +4,7 @@
 	{
 		const ACCESS_READ = 1;
 		const ACCESS_FULL = 2;
-		
+
 		/**
 		 * Pre-execute function
 		 * 
@@ -33,25 +33,25 @@
 			$general_config_sections = array();
 			$data_config_sections = array();
 			$module_config_sections = array();
-			$general_config_sections[12] = array('route' => 'configure_settings', 'description' => __('Settings'), 'icon' => 'general', 'details' => __('Every setting in the bug genie can be adjusted in this section.'));
-			$general_config_sections[5] = array('route' => 'configure_permissions', 'description' => __('Permissions'), 'icon' => 'permissions', 'details' => __('Configure permissions in this section'));
-			$general_config_sections[3] = array('route' => 'configure_files', 'description' => __('Uploads &amp; attachments'), 'icon' => 'files', 'details' => __('All settings related to file uploads are controlled from this section.'));
+			$general_config_sections[BUGSsettings::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => __('Settings'), 'icon' => 'general', 'details' => __('Every setting in the bug genie can be adjusted in this section.'));
+			$general_config_sections[BUGSsettings::CONFIGURATION_SECTION_PERMISSIONS] = array('route' => 'configure_permissions', 'description' => __('Permissions'), 'icon' => 'permissions', 'details' => __('Configure permissions in this section'));
+			$general_config_sections[BUGSsettings::CONFIGURATION_SECTION_UPLOADS] = array('route' => 'configure_files', 'description' => __('Uploads &amp; attachments'), 'icon' => 'files', 'details' => __('All settings related to file uploads are controlled from this section.'));
 			if (BUGScontext::getUser()->getScope()->getID() == 1)
 			{
-				//$general_config_sections[14] = array('route' => 'configure_scopes', 'description' => __('Scopes'), 'icon' => 'scopes', 'details' => __('Scopes are self-contained Bug Genie environments. Configure them here.'));
-				//$data_config_sections[16] = array('route' => 'configure_import', 'description' => __('Import data'), 'icon' => 'import', 'details' => __('Upgrading from an older version? Import your data from here.'));
+				//$general_config_sections[BUGSsettings::CONFIGURATION_SECTION_SCOPES] = array('route' => 'configure_scopes', 'description' => __('Scopes'), 'icon' => 'scopes', 'details' => __('Scopes are self-contained Bug Genie environments. Configure them here.'));
+				//$data_config_sections[BUGSsettings::CONFIGURATION_SECTION_IMPORT] = array('route' => 'configure_import', 'description' => __('Import data'), 'icon' => 'import', 'details' => __('Upgrading from an older version? Import your data from here.'));
 			}
 			
-			$data_config_sections[10] = array('route' => 'configure_projects', 'description' => __('Projects'), 'icon' => 'projects', 'details' => __('Set up all projects in this configuration section.'));
-			$data_config_sections[6] = array('icon' => 'issuetypes', 'description' => __('Issue types'), 'route' => 'configure_issuetypes', 'details' => __('Manage issue types and configure issue fields for each issue type here'));
-			$data_config_sections[4] = array('icon' => 'resolutiontypes', 'description' => __('Issue fields'), 'route' => 'configure_issuefields', 'details' => __('Status types, resolution types, categories, custom fields, etc. are configurable from this section.'));
-			$data_config_sections[2] = array('route' => 'configure_users', 'description' => __('Users, teams &amp; groups'), 'icon' => 'users', 'details' => __('Manage users, user groups and user teams from this section.'));
-			$module_config_sections[15][] = array('route' => 'configure_modules', 'description' => __('Module settings'), 'icon' => 'modules', 'details' => __('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
+			$data_config_sections[BUGSsettings::CONFIGURATION_SECTION_PROJECTS] = array('route' => 'configure_projects', 'description' => __('Projects'), 'icon' => 'projects', 'details' => __('Set up all projects in this configuration section.'));
+			$data_config_sections[BUGSsettings::CONFIGURATION_SECTION_ISSUETYPES] = array('icon' => 'issuetypes', 'description' => __('Issue types'), 'route' => 'configure_issuetypes', 'details' => __('Manage issue types and configure issue fields for each issue type here'));
+			$data_config_sections[BUGSsettings::CONFIGURATION_SECTION_ISSUEFIELDS] = array('icon' => 'resolutiontypes', 'description' => __('Issue fields'), 'route' => 'configure_issuefields', 'details' => __('Status types, resolution types, categories, custom fields, etc. are configurable from this section.'));
+			$data_config_sections[BUGSsettings::CONFIGURATION_SECTION_USERS] = array('route' => 'configure_users', 'description' => __('Users, teams &amp; groups'), 'icon' => 'users', 'details' => __('Manage users, user groups and user teams from this section.'));
+			$module_config_sections[BUGSsettings::CONFIGURATION_SECTION_MODULES][] = array('route' => 'configure_modules', 'description' => __('Module settings'), 'icon' => 'modules', 'details' => __('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
 			foreach (BUGScontext::getModules() as $module)
 			{
 				if ($module->hasAccess() && $module->isVisibleInConfig())
 				{
-					$module_config_sections[15][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => $module->getConfigTitle(), 'icon' => $module->getName(), 'details' => $module->getConfigDescription(), 'module' => $module->getName());
+					$module_config_sections[BUGSsettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => $module->getConfigTitle(), 'icon' => $module->getName(), 'details' => $module->getConfigDescription(), 'module' => $module->getName());
 				}
 			}
 			$this->general_config_sections = $general_config_sections; 
