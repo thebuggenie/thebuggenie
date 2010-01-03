@@ -619,6 +619,7 @@
 			$text = preg_replace_callback('/<source( [^\s]+(?:=".*?")?)*>(.*?)<\/source>/ism', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 			
+			$text = str_replace('<br>', "\n", $text);
 			$text = htmlentities($text);
 			
 			$lines = explode("\n",$text);
