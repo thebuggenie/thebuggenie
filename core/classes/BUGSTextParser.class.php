@@ -616,7 +616,7 @@
 			$text = $this->text;
 			
 			$text = preg_replace_callback('/<nowiki>(.*)<\/nowiki>/im', array($this, "_parse_save_nowiki"), $text);
-			$text = preg_replace_callback('/<source( [^\s]+(?:=".*?")?)*>(.*?)<\/source>/ism', array($this, "_parse_save_code"), $text);
+			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*?")*)>\s*(.*?)\s*<\/source>/ism', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 			
 			$text = str_replace('<br>', "\n", $text);
@@ -683,7 +683,7 @@
 			$codeblock = $matches[2];
 			$params = $matches[1];
 
-			$language = preg_match('/(?<=lang=")(.*)(?=")/', $params, $matches);
+			$language = preg_match('/(?<=lang=")(.*?)(?=")/', $params, $matches);
 
 			if($language !== 0) {
 				$language = $matches[0];
@@ -691,7 +691,7 @@
 				$language = BUGSsettings::get('highlight_default_lang');
 			}
 			
-			$numbering_startfrom = preg_match('/(?<=line start=")(.*)(?=")/', $params, $matches);
+			$numbering_startfrom = preg_match('/(?<=line start=")(.*?)(?=")/', $params, $matches);
 			if($numbering_startfrom !== 0) {
 				$numbering_startfrom = (int)$matches[0];
 			} else {
@@ -700,14 +700,14 @@
 			
 			$geshi = new GeSHi($codeblock, $language);
 			
-			$highlighting = preg_match('/(?<=line=")(.*)(?=")/', $params, $matches);
+			$highlighting = preg_match('/(?<=line=")(.*?)(?=")/', $params, $matches);
 			if($highlighting !== 0) {
 				$highlighting = $matches[0];
 			} else {
 				$highlighting = false;
 			}
 			
-			$interval = preg_match('/(?<=highlight=")(.*)(?=")/', $params, $matches);
+			$interval = preg_match('/(?<=highlight=")(.*?)(?=")/', $params, $matches);
 			if($interval !== 0) {
 				$interval = $matches[0];
 			} else {
