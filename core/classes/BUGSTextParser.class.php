@@ -615,7 +615,7 @@
 			$output = "";
 			$text = $this->text;
 			
-			$text = preg_replace_callback('/<nowiki>(.*?)<\/nowiki>/i', array($this, "_parse_save_nowiki"), $text);
+			$text = preg_replace_callback('/(?<=<nowiki>)(.*?)(?=<\/nowiki>)/ism', array($this, "_parse_save_nowiki"), $text);
 			$text = preg_replace_callback('/(?<=<source)( [^\s]+(?:=".*?")?)*>(.*?)(?=<\/source>)/ism', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 			
@@ -678,20 +678,14 @@
 			$codeblock = $matches[2];
 			$params = $matches[1];
 
-			if(strstr($params, 'line="no"') !== false) {
-				$numbering = false;
-			} else {
-				$numbering = true;
-			}
-
 			$language = preg_match('/(?<=lang=")(.*)(?=")/', $params, $matches);
 			if($language !== 0) {
 				$language = $matches[0];
 			} else {
-				$language = 'html4strict';
+				$language = BUGSsettings::get('highlight_default_lang');
 			}
 			
-			$numbering_startfrom = preg_match('/(?<=line start=)([0-9])+/', $params, $matches);
+			$numbering_startfrom = preg_match('/(?<=line start=")(.*)(?=")/', $params, $matches);
 			if($numbering_startfrom !== 0) {
 				$numbering_startfrom = (int)$matches[0];
 			} else {
@@ -699,10 +693,56 @@
 			}
 			
 			$geshi = new GeSHi($codeblock, $language);
-			if ($numbering === true)
+			
+			$highlighting = preg_match('/(?<=line=")(.*)(?=")/', $params, $matches);
+			if($highlighting !== 0) {
+				$highlighting = $matches[0];
+			} else {
+				$highlighting = false;
+			}
+			
+			$interval = preg_match('/(?<=highlight=")(.*)(?=")/', $params, $matches);
+			if($interval !== 0) {
+				$interval = $matches[0];
+			} else {
+				$interval = BUGSsettings::get('highlight_default_interval');
+			}
+
+			if ($highlighting === false)
 			{
-				$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, 10);
-				$geshi->start_line_numbers_at($numbering_startfrom);
+				switch (BUGSsettings::get('highlight_default_numbering'))
+				{
+					case 1:
+						// Line numbering with a highloght every n rows
+						$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
+						$geshi->start_line_numbers_at($numbering_startfrom);
+						break;
+					case 2:
+						// Normal line numbering
+						$geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
+						$geshi->start_line_numbers_at($numbering_startfrom);
+						break;
+					case 3:
+						break; // No numbering
+				}
+			}
+			else
+			{
+				switch($highlighting)
+				{
+					case 'GESHI_FANCY_LINE_NUMBERS':
+						// Line numbering with a highloght every n rows
+						$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
+						$geshi->start_line_numbers_at($numbering_startfrom);
+						break;
+					case 'GESHI_NORMAL_LINE_NUMBERS':
+						// Normal line numbering
+						$geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
+						$geshi->start_line_numbers_at($numbering_startfrom);
+						break;
+					case 3:
+						break; // No numbering
+				}
 			}
 			
 			$codeblock = $geshi->parse_code();

@@ -72,7 +72,8 @@
 				$settings = array('theme_name', 'user_themes', 'onlinestate', 'offlinestate', 'awaystate', 'singleprojecttracker',
 									'requirelogin', 'allowreg', 'defaultgroup', 'returnfromlogin', 'returnfromlogout', 'permissive',
 									'showloginbox', 'limit_registration', 'showprojectsoverview', 'showprojectsoverview', 
-									'cleancomments', 'b2_name', 'b2_tagline', 'url_subdir', 'local_path', 'server_timezone');
+									'cleancomments', 'b2_name', 'b2_tagline', 'url_subdir', 'local_path', 'server_timezone',
+									'highlight_default_lang', 'highlight_default_interval', 'highlight_default_numbering');
 				
 				foreach ($settings as $setting)
 				{

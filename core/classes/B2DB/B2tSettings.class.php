@@ -120,7 +120,9 @@
 			$settings['showprojectsoverview'] = 1;
 			$settings['userthemes'] = 0;
 			$settings['b2_name'] = 'The Bug Genie';
-			$settings['b2_tagline'] = '<b>Friendly</b> issue tracking and project management';
+			$settings['highlight_default_lang'] = 'html4strict';
+			$settings['highlight_default_numbering'] = '3';
+			$settings['highlight_default_interval'] = '10';
 
 			foreach ($settings as $settings_name => $settings_val)
 			{

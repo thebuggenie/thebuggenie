@@ -80,4 +80,35 @@
 	<tr>
 		<td class="config_explanation" colspan="2"><?php echo __('Choose whether to display the login box on the front page or not'); ?></td>
 	</tr>
+	<tr>
+		<td><label for="highlight_default_lang"><?php echo __('Default code language'); ?></label></td>
+		<td>
+			<input type="text" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?> name="highlight_default_lang" id="highlight_default_lang" value="<?php echo (BUGSsettings::get('highlight_default_lang')); ?>" />
+		</td>
+	</tr>
+	<tr>
+		<td class="config_explanation" colspan="2"><?php echo __('Default language to highlight code samples with, if none is specified'); ?></td>
+	</tr>
+	<tr>
+		<td><label for="highlight_default_numbering"><?php echo __('Default numbering mode'); ?></label></td>
+		<td>
+			<select name="highlight_default_numbering" id="highlight_default_numbering" style="width: 400px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
+				<option value=1<?php if (BUGSsettings::get('highlight_default_numbering') == '1'): ?> selected<?php endif; ?>><?php echo __('Fancy numbering, with a highlighted row at regular intervals'); ?></option>
+				<option value=2<?php if (BUGSsettings::get('highlight_default_numbering') == '2'): ?> selected<?php endif; ?>><?php echo __('Normal numbering'); ?></option>
+				<option value=3<?php if (BUGSsettings::get('highlight_default_numbering') == '3'): ?> selected<?php endif; ?>><?php echo __('No numbering'); ?></option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="config_explanation" colspan="2"><?php echo __('Choose how code samples should be numbered, if not otherwise specified'); ?></td>
+	</tr>
+	<tr>
+		<td><label for="highlight_default_interval"><?php echo __('Default highlight interval'); ?></label></td>
+		<td>
+			<input type="text" style="width: 50px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?> name="highlight_default_interval" id="highlight_default_interval" value="<?php echo (BUGSsettings::get('highlight_default_interval')); ?>" />
+		</td>
+	</tr>
+	<tr>
+		<td class="config_explanation" colspan="2"><?php echo __('When using fancy highlighting, you can have a line highlighted at a regular interval. Set the default interval to use here, if not otherwise specified'); ?></td>
+	</tr>
 </table>
