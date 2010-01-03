@@ -346,14 +346,49 @@ If you want to put some text on the page that shouldn't be interpreted (like the
     I'm an example because I have two spaces in front of me (actually I have four, but that's just so you can see the two spaces)
     This is a second line
 
-== Source code highlighting ==
-If you want to add a snippet of source code to the page, you can pass it through a syntax highlighter. Doing this will add (optional) line numbers, and will add color to various elements to make it more readable.
+== Syntax highlighting ==
 
-Basic usage is to just append 'source' tags around your code snippet, which will add line numbers starting at 1, and will highlight it agains the 'html4strict' ruleset. For example, <nowiki><source><b>A test</b></source></nowiki> becomes <source><b>A test</b></source>
+If you have a code sample you want to place on a page, you can use syntax highlighting to place line numbers, and color the code depending on what language it is.
 
-If you want to turn off line numbering, simply append line=\"no\" the <source> tag, such as: <nowiki><source line=\"10\"><b>A test</b></source></nowiki>. Alternatively to start line numbering from a certain value, use <nowiki><source line=\"no\"><b>A test</b></source></nowiki>, to start numbering from line 10.
+To do this, surround your code in <nowiki><source></source></nowiki> tags. By default this will use the default language and line numbering settings set by the administrator. You can also override these parameters to match your code settings.
 
-Finally, to change the language, use <nowiki><source lang=\"php\"><b>A test</b></source></nowiki> to set the language to PHP. There are 138 language definitions available, so chances are putting in the name of the one you want will get the right answer. A few odd ones are '''html4strict''' for HTML and '''dos''' for DOS batch files.
+=== Code language ===
+
+To set the language of the code, simply specify it as a property of the source tag, such as <nowiki><source lang=\"php\">echo('hi');</source></nowiki>. If you specify an language that does not exist then no colors will be applied, but there are over 130 language definitions available so chances are you will find the right one. A few of the odd ones are '''html4strict''' for HTML code, and '''dos''' for a DOS batch file.
+
+=== Line numbering ===
+
+Three parameters are available to set the line numbering. The first of these is called '''line''', and it sets the style of numbering that is performed. The following styles are available:
+* '''GESHI_FANCY_LINE_NUMBERS''' or '''highlighted''' - Line numbering with a highlighted row at a regular interval (this interval is configurable)
+* '''GESHI_NORMAL_LINE_NUMBERS''' or '''normal''' - Normal line numbers with no highlighting
+* '''Anything else''' - No numbers
+You can also specify the number at which the numbers count from. This is useful if you have taken a snippet from line 1000 in a file, and you want to make the snippet show this so that its easier to match the two up. To do this, the parameter is '''line start=\"''number''\"''' (there is a space between line and start), and it will start counting from ''number''.
+
+Finally, if you choose '''GESHI_FANCY_LINE_NUMBERS''' or '''highlighted''', every ''n''th row is highlighted. To set a value for ''n'', you use the highlight property. For example if you set it to 10, then every 10th row will be highlighted.
+
+Below is an example of all of the properties in use.
+
+<nowiki>
+<source lang=\"php\" line=\"highlighted\" line start=\"54\" highlight=\"3\">
+<?php
+function do_something(\$stuff) {
+echo(\$stuff);
+\$mythings = array();
+\$mythings[] = \$stuff;
+}
+?>
+</source>
+</nowiki>
+
+<source lang=\"php\" line=\"highlighted\" line start=\"54\" highlight=\"3\">
+<?php
+function do_something(\$stuff) {
+echo(\$stuff);
+\$mythings = array();
+\$mythings[] = \$stuff;
+}
+?>
+</source>
 
 [[Category:Help]][[Category:HowTo]]
 ";

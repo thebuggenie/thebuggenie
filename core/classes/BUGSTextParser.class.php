@@ -615,12 +615,12 @@
 			$output = "";
 			$text = $this->text;
 			
-			$text = preg_replace_callback('/<nowiki>(.*)<\/nowiki>/', array($this, "_parse_save_nowiki"), $text);
+			$text = preg_replace_callback('/<nowiki>(.*)<\/nowiki>/im', array($this, "_parse_save_nowiki"), $text);
 			$text = preg_replace_callback('/<source( [^\s]+(?:=".*?")?)*>(.*?)<\/source>/ism', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 			
 			$text = str_replace('<br>', "\n", $text);
-			$text = htmlentities($text);
+			$text = htmlspecialchars($text);
 			
 			$lines = explode("\n",$text);
 			foreach ($lines as $line)
@@ -669,7 +669,7 @@
 
 		protected function _parse_restore_nowiki($matches)
 		{
-			return array_pop($this->nowikis);
+			return htmlspecialchars(array_pop($this->nowikis));
 		}
 
 		protected function _parse_save_code($matches)
@@ -684,6 +684,7 @@
 			$params = $matches[1];
 
 			$language = preg_match('/(?<=lang=")(.*)(?=")/', $params, $matches);
+
 			if($language !== 0) {
 				$language = $matches[0];
 			} else {
@@ -735,11 +736,13 @@
 			{
 				switch($highlighting)
 				{
+					case 'highlighted':
 					case 'GESHI_FANCY_LINE_NUMBERS':
 						// Line numbering with a highloght every n rows
 						$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
 						$geshi->start_line_numbers_at($numbering_startfrom);
 						break;
+					case 'normal':
 					case 'GESHI_NORMAL_LINE_NUMBERS':
 						// Normal line numbering
 						$geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
