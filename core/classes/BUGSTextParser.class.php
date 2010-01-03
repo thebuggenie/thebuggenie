@@ -752,7 +752,7 @@
 						break; // No numbering
 				}
 			}
-			
+
 			$codeblock = $geshi->parse_code();
 			unset($geshi);
 			return '<code>' . $codeblock . '</code>';
