@@ -619,11 +619,11 @@
 			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*?")*)>\s*(.*?)\s*<\/source>/ism', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 			
-			str_replace('<br>', '|||BR|||', $text); // Do not destroy <br>s
+			$text = str_replace('<br>', '|||BR|||', $text); // Do not destroy <br>s
 			
 			$text = htmlspecialchars($text);
 
-			str_replace('|||BR|||', '<br>', $text); // Do not destroy <br>s
+			$text = str_replace('|||BR|||', '<br>', $text); // Do not destroy <br>s
 
 			$lines = explode("\n",$text);
 			foreach ($lines as $line)
