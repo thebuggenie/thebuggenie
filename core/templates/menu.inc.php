@@ -36,28 +36,25 @@
 		<?php endif; ?>
 		<?php /*?><li<?php if ($bugs_response->getPage() == 'about'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('about'), image_tag('tab_about.png', array('style' => 'float: left;')).__('About')); ?></li> */ ?>
 	</ul>
-	<ul class="right">
-		<li style="height: 24px;" class="nohover">
-			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo (BUGScontext::isProjectContext()) ? make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'quicksearch' => 'true')) : make_url('search', array('quicksearch' => 'true')); ?>" method="post" name="quicksearchform">
-				<div style="width: auto; padding: 0; text-align: right; position: relative;">
-				<label for="searchfor"><?php echo __('Quick search'); ?></label>
-				<?php $quicksearch_title = __('Search for anything here'); ?>
-				<input type="text" name="searchfor" id="searchfor" value="<?php echo $quicksearch_title; ?>" style="width: 220px; padding: 1px 1px 1px;" onblur="if ($('searchfor').getValue() == '') { $('searchfor').value = '<?php echo $quicksearch_title; ?>'; $('searchfor').addClassName('faded_medium'); }" onfocus="if ($('searchfor').getValue() == '<?php echo $quicksearch_title; ?>') { $('searchfor').clear(); } $('searchfor').removeClassName('faded_medium');" class="faded_medium"><div id="searchfor_autocomplete_choices" class="autocomplete"></div>
-				<script type="text/javascript">
+	<?php if ($bugs_user->canSearchForIssues()): ?>
+		<ul class="right">
+			<li style="height: 24px;" class="nohover">
+				<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo (BUGScontext::isProjectContext()) ? make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'quicksearch' => 'true')) : make_url('search', array('quicksearch' => 'true')); ?>" method="post" name="quicksearchform">
+					<div style="width: auto; padding: 0; text-align: right; position: relative;">
+					<label for="searchfor"><?php echo __('Quick search'); ?></label>
+					<?php $quicksearch_title = __('Search for anything here'); ?>
+					<input type="text" name="searchfor" id="searchfor" value="<?php echo $quicksearch_title; ?>" style="width: 220px; padding: 1px 1px 1px;" onblur="if ($('searchfor').getValue() == '') { $('searchfor').value = '<?php echo $quicksearch_title; ?>'; $('searchfor').addClassName('faded_medium'); }" onfocus="if ($('searchfor').getValue() == '<?php echo $quicksearch_title; ?>') { $('searchfor').clear(); } $('searchfor').removeClassName('faded_medium');" class="faded_medium"><div id="searchfor_autocomplete_choices" class="autocomplete"></div>
+					<script type="text/javascript">
 
-				new Ajax.Autocompleter("searchfor", "searchfor_autocomplete_choices", '<?php echo (BUGScontext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>', {paramName: "searchfor", minChars: 2});
+					new Ajax.Autocompleter("searchfor", "searchfor_autocomplete_choices", '<?php echo (BUGScontext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>', {paramName: "searchfor", minChars: 2});
 
-				</script>
-				<input type="submit" value="<?php echo BUGScontext::getI18n()->__('Find'); ?>" style="padding: 0 2px 0 2px;">
-				</div>
-			</form>
-		</li>
-		<?php
-
-			BUGScontext::trigger('core', 'header_right');
-
-		?>
-	</ul>
+					</script>
+					<input type="submit" value="<?php echo BUGScontext::getI18n()->__('Find'); ?>" style="padding: 0 2px 0 2px;">
+					</div>
+				</form>
+			</li>
+		</ul>
+	<?php endif; ?>
 </div>
 <?php if ($bugs_response->isProjectMenuStripVisible()): ?>
 	<div id="project_menustrip"><?php include_component('project/menustrip', array('project' => BUGScontext::getCurrentProject())); ?></div>

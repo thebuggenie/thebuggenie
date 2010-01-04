@@ -48,11 +48,18 @@
 		
 		/**
 		 * List of javascripts
-		 * 
+		 *
 		 * @var array
 		 */
 		protected $_javascripts = array();
-		
+
+		/**
+		 * List of feeds
+		 *
+		 * @var array
+		 */
+		protected $_feeds = array();
+
 		/**
 		 * Current response status
 		 * 
@@ -197,14 +204,25 @@
 		
 		/**
 		 * Add a javascript
-		 * 
+		 *
 		 * @param string $javascript javascript name
 		 */
 		public function addJavascript($javascript)
 		{
 			$this->_javascripts[$javascript] = $javascript;
 		}
-		
+
+		/**
+		 * Add a feed
+		 *
+		 * @param string $url feed url
+		 * @param string $description feed description
+		 */
+		public function addFeed($url, $description)
+		{
+			$this->_feeds[$url] = $description;
+		}
+
 		/**
 		 * Forward the user to a different URL
 		 * 
@@ -366,12 +384,22 @@
 		
 		/**
 		 * Return all active javascripts
-		 * 
+		 *
 		 * @return array
 		 */
 		public function getJavascripts()
 		{
 			return $this->_javascripts;
+		}
+
+		/**
+		 * Return all available feeds
+		 *
+		 * @return array
+		 */
+		public function getFeeds()
+		{
+			return $this->_feeds;
 		}
 
 		/**

@@ -109,7 +109,31 @@
 				$this->resultcount = count($this->foundissues);
 			}
 
-			$this->templatename = 'results_normal';
+			$this->searchtitle = __('Search results');
+			if ($request->hasParameter('predefined_search'))
+			{
+				switch ((int) $request->getParameter('predefined_search'))
+				{
+					case 1:
+						$this->searchtitle = (BUGScontext::isProjectContext()) ? __('Open issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : __('All open issues');
+						break;
+					case 2:
+						$this->searchtitle = (BUGScontext::isProjectContext()) ? __('Closed issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : __('All closed issues');
+						break;
+				}
+			}
+
+		}
+
+		protected function getTemplates($display_only = true)
+		{
+			$templates = array();
+			$templates['results_normal'] = BUGScontext::getI18n()->__('Standard search results');
+			if (!$display_only)
+			{
+				$templates['results_rss'] = BUGScontext::getI18n()->__('RSS feed');
+			}
+			return $templates;
 		}
 
 		/**
@@ -128,6 +152,12 @@
 				$this->issues = $this->foundissues;
 			}
 			$this->appliedfilters = $this->filters;
+			$this->templates = $this->getTemplates();
+			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys($this->getTemplates(false)))) ? $request->getParameter('template') : 'results_normal';
+			if ($this->templatename == 'results_rss')
+			{
+				return $this->renderComponent('search/results_rss', array('issues' => $this->issues, 'searchtitle' => $this->searchtitle));
+			}
 		}
 
 		public function runFindIssuesPaginated(BUGSrequest $request)
@@ -140,6 +170,8 @@
 				$this->issues = $this->foundissues;
 			}
 			$this->appliedfilters = $this->filters;
+			$this->templates = $this->getTemplates();
+			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys($this->getTemplates()))) ? $request->getParameter('template') : 'results_normal';
 		}
 
 		public function runAddFilter(BUGSrequest $request)

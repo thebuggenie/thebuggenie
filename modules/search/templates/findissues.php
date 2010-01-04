@@ -1,6 +1,11 @@
 <?php
 
 	$bugs_response->setTitle((BUGScontext::isProjectContext()) ? __('Find issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : __('Find issues'));
+	if (BUGScontext::isProjectContext())
+	{
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => 1, 'search' => true, 'template' => 'results_rss')), __('Open issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())));
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => 2, 'search' => true, 'template' => 'results_rss')), __('Closed issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())));
+	}
 
 ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0">
@@ -8,8 +13,14 @@
 		<td class="saved_searches">
 			<?php if (BUGScontext::isProjectContext()): ?>
 				<div class="left_menu_header"><?php echo __('Predefined searches'); ?></div>
-				<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => 1, 'search' => true)), __('Open issues for this project')); ?><br>
-				<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => 2, 'search' => true)), __('Closed issues for this project')); ?>
+				<div style="clear: both;">
+					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => 1, 'search' => true, 'template' => 'results_rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => 1, 'search' => true)), __('Open issues for this project')); ?><br>
+				</div>
+				<div style="clear: both;">
+					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => 2, 'search' => true, 'template' => 'results_rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => 2, 'search' => true)), __('Closed issues for this project')); ?>
+				</div>
 			<?php else: ?>
 				<div class="left_menu_header"><?php echo __('Saved searches'); ?></div>
 				or something else
@@ -25,6 +36,12 @@
 						<input type="text" name="searchfor" value="<?php echo $searchterm; ?>" id="issues_searchfor" style="width: 450px;">
 						<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top">
 						<div style="<?php if (count($appliedfilters) <= (int) BUGScontext::isProjectContext()): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
+							<label for="result_template"><?php echo __('Display results as'); ?></label>
+							<select name="template" id="result_template">
+								<?php foreach ($templates as $template_name => $template_description): ?>
+									<option value="<?php echo $template_name; ?>"<?php if ($template_name == $templatename): ?> selected<?php endif; ?>><?php echo $template_description; ?></option>
+								<?php endforeach; ?>
+							</select><br>
 							<label for="issues_per_page"><?php echo __('Issues per page'); ?></label>
 							<select name="issues_per_page" id="issues_per_page">
 								<?php foreach (array(15, 30, 50, 100) as $cc): ?>
@@ -91,28 +108,12 @@
 			</div>
 			<?php if ($show_results): ?>
 				<div class="main_header">
-					<?php if ($predefined_search === false): ?>
-						<?php echo __('Search results'); ?>
-					<?php else: ?>
-						<?php
-
-							switch ((int) $predefined_search)
-							{
-								case 1:
-									echo (BUGScontext::isProjectContext()) ? __('Open issues for this project') : __('All open issues');
-									break;
-								case 2:
-									echo (BUGScontext::isProjectContext()) ? __('Closed issues for this project') : __('All closed issues');
-									break;
-							}
-
-						?>
-					<?php endif; ?>
+					<?php echo $searchtitle; ?>
 					&nbsp;&nbsp;<span class="faded_medium"><?php echo __('%number_of% issue(s)', array('%number_of%' => $resultcount)); ?></span>
 				</div>
 				<?php if (count($issues) > 0): ?>
 					<div id="search_results">
-						<?php include_template("search/{$templatename}", array('issues' => $issues)); ?>
+						<?php include_component("search/{$templatename}", array('issues' => $issues)); ?>
 						<?php if ($ipp > 0): ?>
 							<?php include_component('search/pagination', array('searchterm' => $searchterm, 'filters' => $appliedfilters, 'groupby' => $groupby, 'resultcount' => $resultcount, 'ipp' => $ipp, 'offset' => $offset)); ?>
 						<?php endif; ?>

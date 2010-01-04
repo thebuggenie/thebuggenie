@@ -108,6 +108,11 @@
 			require $template_file;
 		}
 
+		/**
+		 * Returns the response object
+		 *
+		 * @return BUGSresponse
+		 */
 		protected function getResponse()
 		{
 			return BUGScontext::getResponse();

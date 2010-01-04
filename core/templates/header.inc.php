@@ -19,6 +19,9 @@
 		<meta http-equiv="Content-Type" content="<?php echo $bugs_response->getContentType(); ?> charset=<?php echo BUGScontext::getI18n()->getCharset(); ?>">
 		<link rel="shortcut icon" href="<?php print BUGScontext::getTBGPath(); ?>themes/<?php print BUGSsettings::getThemeName(); ?>/favicon.png">
 		<link rel="stylesheet" type="text/css" href="<?php print BUGScontext::getTBGPath(); ?>css/<?php print BUGSsettings::getThemeName(); ?>.css">
+		<?php foreach ($bugs_response->getFeeds() as $feed_url => $feed_title): ?>
+			<link rel="alternate" type="application/rss+xml" title="<?php echo $feed_title; ?>" href="<?php echo $feed_url; ?>">
+		<?php endforeach; ?>
 		<?php if (count(BUGScontext::getModules())): ?>
 			<?php foreach (BUGScontext::getModules() as $module): ?>
 				<?php if ($module->hasAccess()): ?>

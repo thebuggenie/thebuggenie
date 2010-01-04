@@ -1186,13 +1186,14 @@
 				self::$_available_permissions['pages']['page_search_access'] = array('description' => $i18n->__('Can access the search page'));
 				self::$_available_permissions['pages']['page_about_access'] = array('description' => $i18n->__('Can access the "About" page'));
 				self::$_available_permissions['pages']['page_account_access'] = array('description' => $i18n->__('Can access the "My account" page'));
-				self::$_available_permissions['project_pages']['page_project_dashboard_access'] = array('description' => $i18n->__('Can access the project dashboard'));
-				self::$_available_permissions['project_pages']['page_project_planning_access'] = array('description' => $i18n->__('Can access the project planning page'));
-				self::$_available_permissions['project_pages']['page_project_scrum_access'] = array('description' => $i18n->__('Can access the project scrum page'));
-				self::$_available_permissions['project_pages']['page_project_issues_access'] = array('description' => $i18n->__('Can access the project dashboard'));
-				self::$_available_permissions['project_pages']['page_project_team_access'] = array('description' => $i18n->__('Can access the project team page'));
-				self::$_available_permissions['project_pages']['page_project_statistics_access'] = array('description' => $i18n->__('Can access the project statistics page'));
-				self::$_available_permissions['project_pages']['page_project_timeline_access'] = array('description' => $i18n->__('Can access the project timeline page'));
+				self::$_available_permissions['project_pages']['page_project_allpages_access'] = array('description' => $i18n->__('Can access all project pages'), 'details' => array());
+				self::$_available_permissions['project_pages']['page_project_allpages_access']['details']['page_project_dashboard_access'] = array('description' => $i18n->__('Can access the project dashboard'));
+				self::$_available_permissions['project_pages']['page_project_allpages_access']['details']['page_project_planning_access'] = array('description' => $i18n->__('Can access the project planning page'));
+				self::$_available_permissions['project_pages']['page_project_allpages_access']['details']['page_project_scrum_access'] = array('description' => $i18n->__('Can access the project scrum page'));
+				self::$_available_permissions['project_pages']['page_project_allpages_access']['details']['page_project_issues_access'] = array('description' => $i18n->__('Can access the project dashboard'));
+				self::$_available_permissions['project_pages']['page_project_allpages_access']['details']['page_project_team_access'] = array('description' => $i18n->__('Can access the project team page'));
+				self::$_available_permissions['project_pages']['page_project_allpages_access']['details']['page_project_statistics_access'] = array('description' => $i18n->__('Can access the project statistics page'));
+				self::$_available_permissions['project_pages']['page_project_allpages_access']['details']['page_project_timeline_access'] = array('description' => $i18n->__('Can access the project timeline page'));
 				self::$_available_permissions['project']['canseeproject'] = array('description' => $i18n->__('Can see this project'));
 				self::$_available_permissions['edition']['canseeedition'] = array('description' => $i18n->__('Can see this edition'));
 				self::$_available_permissions['component']['canseecomponent'] = array('description' => $i18n->__('Can see this component'));
@@ -1596,6 +1597,7 @@
 						{
 							$$key = $val;
 						}
+						
 						/**
 						 * @global BUGSrequest The request object
 						 */

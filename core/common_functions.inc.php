@@ -142,6 +142,13 @@
 					$tstring .= strftime("%b %d, %Y", $tstamp);
 				}
 				return $tstring;
+			case 21:
+				$time = strftime("%a, %d %b %Y %H:%M:%S GMT", $tstamp);
+				if (BUGScontext::getUser()->getTimezone() > 0) $time .= '+';
+				if (BUGScontext::getUser()->getTimezone() < 0) $time .= '-';
+				if (BUGScontext::getUser()->getTimezone() != 0) $time .= BUGScontext::getUser()->getTimezone();
+				return $time;
+				break;
 			default:
 				return $tstamp;
 		}

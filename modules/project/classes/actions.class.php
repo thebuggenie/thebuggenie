@@ -9,9 +9,10 @@
 		/**
 		 * The currently selected project
 		 * 
-		 * @var BUGSproject 
+		 * @var BUGSproject
+		 * @access protected
+		 * @property $selected_project
 		 */
-		protected $selected_project = null;
 
 		/**
 		 * Pre-execute function
@@ -55,7 +56,7 @@
 		 */
 		public function runDashboard(BUGSrequest $request)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_dashboard', $this->selected_project->getID()));
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_dashboard', $this->selected_project->getID()) || BUGScontext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			$this->recent_activities = $this->selected_project->getRecentActivities(10);
 			$this->recent_issues = $this->selected_project->getRecentIssues();
 			$this->recent_features = $this->selected_project->getRecentFeatures();
@@ -70,7 +71,7 @@
 		 */
 		public function runPlanning(BUGSrequest $request)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_planning', $this->selected_project->getID()));
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_planning', $this->selected_project->getID()) || BUGScontext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 		}
 
 		/**
@@ -80,7 +81,7 @@
 		 */
 		public function runTimeline(BUGSrequest $request)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_timeline', $this->selected_project->getID()));
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_timeline', $this->selected_project->getID()) || BUGScontext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			$this->recent_activities = $this->selected_project->getRecentActivities();
 		}
 
@@ -91,7 +92,7 @@
 		 */
 		public function runScrum(BUGSrequest $request)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()));
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || BUGScontext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			$this->unassigned_issues = $this->selected_project->getUnassignedStories();
 		}
 
@@ -102,7 +103,7 @@
 		 */
 		public function runScrumSetStoryDetail(BUGSrequest $request)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()));
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || BUGScontext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			$issue = BUGSfactory::BUGSissueLab($request->getParameter('story_id'));
 			if ($issue instanceof BUGSissue)
 			{
@@ -134,7 +135,7 @@
 		 */
 		public function runScrumAssignStory(BUGSrequest $request)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()));
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || BUGScontext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			try
 			{
 				$issue = BUGSfactory::BUGSissueLab($request->getParameter('story_id'));
@@ -178,7 +179,7 @@
 		 */
 		public function runScrumAddSprint(BUGSrequest $request)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()));
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || BUGScontext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			if (($sprint_name = $request->getParameter('sprint_name')) && trim($sprint_name) != '')
 			{
 				$sprint = BUGSmilestone::createNew($sprint_name, BUGSmilestone::TYPE_SCRUMSPRINT, $this->selected_project->getID());
@@ -194,7 +195,7 @@
 		 */
 		public function runIssues(BUGSrequest $request)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_issues', $this->selected_project->getID()));
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_issues', $this->selected_project->getID()) || BUGScontext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 		}
 
 		/**
@@ -204,7 +205,7 @@
 		 */
 		public function runTeam(BUGSrequest $request)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_team', $this->selected_project->getID()));
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_team', $this->selected_project->getID()) || BUGScontext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 		}
 
 		/**
@@ -214,7 +215,7 @@
 		 */
 		public function runStatistics(BUGSrequest $request)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_statistics', $this->selected_project->getID()));
+			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_statistics', $this->selected_project->getID()) || BUGScontext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 		}
 
 		/**
