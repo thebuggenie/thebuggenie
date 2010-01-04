@@ -92,8 +92,7 @@
 				$article_name = 'FrontpageArticle';
 				$content = "== Thank you for installing this preview release of The Bug Genie! ==
 
-We want to make your development environment a lot easier and manageable. You get:
-
+We want to make your development environment a lot easier and manageable. You get:<br>
 Project management, issue tracking, source code control, fully editable wiki for all your documenation needs, and more.
 
 Please take a few moments setting up your new issue tracker, by clicking the [[TBG:configure|Configure]] menu option in the top menu.
@@ -106,8 +105,7 @@ To learn more about the wiki formatting used in The Bug Genie, check out WikiFor
 
 '''Enjoy The Bug Genie!'''
 
-''-The Bug Genie development team''
-
+''-The Bug Genie development team''<br>
 [http://www.thebuggenie.com]
 
 ''ps: this page can be edited from [[FrontpageArticle]]''
