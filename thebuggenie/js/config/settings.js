@@ -5,29 +5,33 @@ function submitSettings(url)
 	asynchronous:true,
 	method: "post",
 	parameters: params,
-	onLoading: function (request) {
+	onLoading: function (transport) {
 		$('settings_save_indicator').show();
 		$('submit_settings_button').disable();
 	},
-	onSuccess: function (request) {
+	onSuccess: function (transport) {
 		$('settings_save_indicator').hide();
-		$('message_changes_saved').show();
-		new Effect.Fade('message_changes_saved', {delay: 20} );
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+		}
+		else
+		{
+			successMessage(json.title, json.message);
+		}
 		$('submit_settings_button').enable();
 	},
-	onFailure: function (request) {
+	onFailure: function (transport) {
 		$('settings_save_indicator').hide();
 		$('submit_settings_button').enable();
+		var json = transport.responseJSON;
+		if (json && json.failed)
+		{
+			failedMessage(json.error);
+		}
 	}
 	});
-}
-
-function failedMessage(title, content)
-{
-	$('message_failed_title').update(title);
-	$('message_failed_content').update(content);
-	$('message_failed').show();
-	new Effect.Pulsate('message_failed');
 }
 
 function switchTab(select_tab)

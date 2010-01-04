@@ -9,16 +9,10 @@
 <?php include_component('configleftmenu', array('selected_section' => 12)); ?>
 <td valign="top">
 <div class="configheader" style="width: 750px;"><?php echo __('Configure settings'); ?></div>
-<p style="padding-top: 5px;"><?php echo __('This section lets you configure all of the different settings in The Bug Genie'); ?>.<br>
-<?php echo __('Click on a header to look at or change the settings in that category'); ?>.</p>
-<div style="height: 60px; position: absolute;">
-	<?php echo bugs_failureStrip('', '', 'message_failed', true); ?>
-	<?php echo bugs_successStrip(__('Your changes has been saved'), '', 'message_changes_saved', true); ?>
-</div>
 <?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 	<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_settings'); ?>" method="post" onsubmit="submitSettings('<?php echo make_url('configure_settings'); ?>'); return false;" id="config_settings">
 <?php endif; ?>
-<div style="margin-top: 30px; width: 750px; clear: both; height: 30px;" class="tab_menu">
+<div style="margin-top: 5px; width: 750px; clear: both; height: 30px;" class="tab_menu">
 	<ul>
 		<li class="selected" id="tab_general_settings"><a onclick="switchTab('general');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General'); ?></a></li>
 		<li id="tab_server_settings"><a onclick="switchTab('server');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_server.png', array('style' => 'float: left;')).__('Server'); ?></a></li>

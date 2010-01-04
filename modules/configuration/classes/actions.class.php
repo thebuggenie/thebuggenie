@@ -89,6 +89,7 @@
 						}
 					}
 				}
+				return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('All settings saved')));
 			}
 			
 			$this->themes = BUGScontext::getThemes();
