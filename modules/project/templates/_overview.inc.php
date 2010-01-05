@@ -1,3 +1,8 @@
+<?php
+
+	$bugs_response->addFeed(make_url('project_timeline', array('project_key' => $project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $project->getName())));
+	
+?>
 <div class="rounded_box invisible">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="vertical-align: middle; padding: 0 5px 0 5px;">

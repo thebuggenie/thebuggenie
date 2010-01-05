@@ -24,7 +24,7 @@
 
 		public function componentResults_rss()
 		{
-			$this->getResponse()->setContentType('text/xml');
+			$this->getResponse()->setContentType('application/xml');
 			$this->getResponse()->setDecoration(BUGSresponse::DECORATE_NONE);
 		}
 	}

@@ -305,7 +305,7 @@
 						<?php echo $info['select']; ?>:<br>
 						<ul class="choices">
 							<?php foreach ($info['choices'] as $choice): ?>
-								<?php if (!$choice->canUserSet($bugs_user)) continue; ?>
+								<?php if ($choice instanceof BUGSdatatypebase && !$choice->canUserSet($bugs_user)) continue; ?>
 								<li>
 									<?php echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
 								</li>

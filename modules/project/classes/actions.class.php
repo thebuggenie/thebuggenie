@@ -83,6 +83,10 @@
 		{
 			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('project_timeline', $this->selected_project->getID()) || BUGScontext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			$this->recent_activities = $this->selected_project->getRecentActivities();
+			if ($request->getParameter('format') == 'rss')
+			{
+				return $this->renderComponent('project/timelinerss', array('recent_activities' => $this->recent_activities));
+			}
 		}
 
 		/**

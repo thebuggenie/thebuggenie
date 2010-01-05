@@ -1,8 +1,17 @@
 <?php
 
-	$bugs_response->setTitle(__('"%project_name%" project planning', array('%project_name%' => $selected_project->getName())));
+	$bugs_response->setTitle(__('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
+	$bugs_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
 
 ?>
+<div class="timeline_actions features">
+	<div class="feature" style="margin: 10px; padding-top: 0;">
+		<div class="header_div"><?php echo __('Timeline actions'); ?></div>
+		<div class="content">
+			<?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png', array('style' => 'float: left; margin-right: 5px;')) . __('Subscribe to updates')); ?>
+		</div>
+	</div>
+</div>
 <div id="timeline">
 	<?php if (count($recent_activities) > 0): ?>
 		<table cellpadding=0 cellspacing=0 class="recent_activities">

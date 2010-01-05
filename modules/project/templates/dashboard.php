@@ -1,6 +1,7 @@
 <?php
 
 	$bugs_response->setTitle(__('"%project_name%" project dashboard', array('%project_name%' => $selected_project->getName())));
+	$bugs_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
 
 ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0" id="project_dashboard">
@@ -9,6 +10,7 @@
 			<div class="rounded_box mediumgrey_borderless" style="margin-top: 5px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
+					<?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png', array('style' => 'float: right; margin: 5px;')), array('title' => __('Subscribe to updates'))); ?>
 					<?php if (count($recent_activities) > 0): ?>
 						<table cellpadding=0 cellspacing=0 class="recent_activities">
 							<?php $prev_date = null; ?>
@@ -32,7 +34,9 @@
 								<?php $prev_date = $date; ?>
 							<?php endforeach; ?>
 						</table>
-					<div class="timeline_link"><?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey())), image_tag('view_timeline.png', array('style' => 'float: right; margin-left: 5px;')) . __('Show complete timeline')); ?></div>
+					<div class="timeline_link">
+						<?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey())), image_tag('view_timeline.png', array('style' => 'float: right; margin-left: 5px;')) . __('Show complete timeline')); ?>
+					</div>
 					<?php else: ?>
 						<div class="faded_dark" style="font-size: 13px; padding-top: 3px;"><b><?php echo __('No recent activity registered for this project.'); ?></b><br><?php echo __('As soon as something important happens it will appear here.'); ?></div>
 					<?php endif; ?>

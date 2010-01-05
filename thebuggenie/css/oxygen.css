@@ -1404,6 +1404,7 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #timeline { padding: 5px 0 30px 15px; }
 #timeline .recent_activities, #timeline .recent_activities td { font-size: 13px; }
 #timeline .recent_activities td.latest_action_dates { font-size: 14px; }
+.timeline_actions a { font-weight: bold; font-size: 13px; }
 #project_dashboard #project_name { font-size: 18px; font-weight: bold; margin: 5px 5px 5px 0; }
 #project_dashboard #project_team { font-size: 13px; font-weight: normal; margin: 5px 5px 5px 0; width: 615px; }
 #project_dashboard #project_description { font-size: 14px; font-weight: normal; color: #666; }
