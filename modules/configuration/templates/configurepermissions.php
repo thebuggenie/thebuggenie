@@ -39,6 +39,7 @@
 						<li class="selected" id="tab_general"><a onclick="switchSubmenuTab('tab_general', 'permissions_tabs');" href="javascript:void(0);"><?php echo __('General permissions'); ?></a></li>
 						<li id="tab_pages"><a onclick="switchSubmenuTab('tab_pages', 'permissions_tabs');" href="javascript:void(0);"><?php echo __('Page access permissions'); ?></a></li>
 						<li id="tab_projects"><a onclick="switchSubmenuTab('tab_projects', 'permissions_tabs');" href="javascript:void(0);"><?php echo __('Project-specific permissions'); ?></a></li>
+						<li id="tab_modules"><a onclick="switchSubmenuTab('tab_modules', 'permissions_tabs');" href="javascript:void(0);"><?php echo __('Module-specific permissions'); ?></a></li>
 					</ul>
 				</div>
 				<div id="permissions_tabs_panes">
@@ -57,6 +58,9 @@
 							<?php include_template('configuration/permissionsblock', array('base_id' => 'page_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('pages'), 'mode' => 'pages', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
 							<?php include_template('configuration/permissionsblock', array('base_id' => 'project_page_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project_pages'), 'mode' => 'project_pages', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
 						</ul>
+					</div>
+					<div id="tab_modules_pane" class="tab_pane" style="display: none;">
+						<p><?php echo __('Module-specific permissions are available from the "%configure_modules%" configuration page', array('%configure_modules%' => link_tag(make_url('configure_modules'), __('Configure modules')))); ?></p>
 					</div>
 					<div id="tab_projects_pane" class="tab_pane" style="display: none;">
 						<p><?php echo __('These permissions control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions, from the "%general_permissions%" tab.', array('%general_permissions%' => '<i>'.__('General permissions').'</i>')); ?></p>

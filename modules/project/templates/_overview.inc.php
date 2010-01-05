@@ -1,6 +1,9 @@
 <?php
 
-	$bugs_response->addFeed(make_url('project_timeline', array('project_key' => $project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $project->getName())));
+	if ($bugs_user->hasPageAccess('project_timeline', $project->getID()) || $bugs_user->hasPageAccess('project_allpages', $project->getID()))
+	{
+		$bugs_response->addFeed(make_url('project_timeline', array('project_key' => $project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $project->getName())));
+	}
 	
 ?>
 <div class="rounded_box invisible">
@@ -22,8 +25,12 @@
 				<?php endif; ?>
 			</div>
 			<div style="text-align: right; font-size: 13px; font-weight: normal; padding-top: 3px;">
-				<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Overview')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
-				<?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+				<?php if ($bugs_user->hasPageAccess('project_dashboard', $project->getID()) || $bugs_user->hasPageAccess('project_allpages', $project->getID())): ?>
+					<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Overview')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+				<?php endif; ?>
+				<?php if ($bugs_user->canSearchForIssues() && ($bugs_user->hasPageAccess('project_issues', $project->getID()) || $bugs_user->hasPageAccess('project_allpages', $project->getID()))): ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+				<?php endif; ?>
 				<?php BUGScontext::trigger('core', 'project_overview_item_links', array('project' => $project)); ?>
 				<form action="<?php echo make_url('project_reportissue', array('project_key' => $project->getKey())); ?>" method="get" style="clear: none; display: inline; width: 160px;">
 					<div class="report_button" style="width: 150px;"><input type="submit" value="<?php echo __('Report an issue'); ?>"></div>
