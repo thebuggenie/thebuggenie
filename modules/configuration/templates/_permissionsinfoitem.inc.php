@@ -11,6 +11,8 @@
 		<?php $image_tag = image_tag('permission_unset_denied.png'); ?>
 	<?php elseif ($mode == 'pages' && $type == 'everyone'): ?>
 		<?php $image_tag = image_tag('permission_unset_ok.png'); ?>
+	<?php elseif ($mode == 'project_pages' && $type == 'everyone'): ?>
+		<?php $image_tag = image_tag('permission_unset_denied.png'); ?>
 	<?php else: ?>
 		<?php $image_tag = image_tag('permission_set_unset.png'); ?>
 	<?php endif; ?>

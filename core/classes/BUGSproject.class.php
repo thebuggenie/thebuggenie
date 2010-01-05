@@ -423,7 +423,15 @@
 			{
 				$p_id = B2DB::getTable('B2tProjects')->createNew($name);
 
-				BUGScontext::setPermission("canseeproject", $p_id, "core", 0, BUGScontext::getUser()->getGroup()->getID(), 0, true);
+				BUGScontext::setPermission("canseeproject", $p_id, "core", BUGScontext::getUser()->getID(), 0, 0, true);
+				BUGScontext::setPermission("page_project_allpages_access", $p_id, "core", BUGScontext::getUser()->getID(), 0, 0, true);
+				BUGScontext::setPermission("canvoteforissues", $p_id, "core", BUGScontext::getUser()->getID(), 0, 0, true);
+				BUGScontext::setPermission("canlockandeditlockedissues", $p_id, "core", BUGScontext::getUser()->getID(), 0, 0, true);
+				BUGScontext::setPermission("cancreateandeditissues", $p_id, "core", BUGScontext::getUser()->getID(), 0, 0, true);
+				BUGScontext::setPermission("caneditissue", $p_id, "core", BUGScontext::getUser()->getID(), 0, 0, true);
+				BUGScontext::setPermission("caneditissuecustomfields", $p_id, "core", BUGScontext::getUser()->getID(), 0, 0, true);
+				BUGScontext::setPermission("canaddextrainformationtoissues", $p_id, "core", BUGScontext::getUser()->getID(), 0, 0, true);
+				BUGScontext::setPermission("canpostseeandeditallcomments", $p_id, "core", BUGScontext::getUser()->getID(), 0, 0, true);
 
 				$theProject = BUGSfactory::projectLab($p_id);
 				BUGScontext::trigger('core', 'BUGSProject::createNew', $theProject);

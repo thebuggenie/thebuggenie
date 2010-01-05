@@ -238,6 +238,11 @@
 		{
 			return self::isRegistrationEnabled();
 		}
+
+		public static function getAdminGroup()
+		{
+			return BUGSfactory::groupLab((int) self::get('admingroup'));
+		}
 		
 		public static function isRegistrationEnabled()
 		{

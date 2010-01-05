@@ -948,7 +948,7 @@
 		 */
 		public function canEditTitle()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuetitle') || $this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues'));
+			return (bool) ($this->_permissionCheck('caneditissuetitle') || $this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
 		}
 
 		/**
@@ -958,9 +958,19 @@
 		 */
 		public function canEditDescription()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuedescription') || $this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues'));
+			return (bool) ($this->_permissionCheck('caneditissuedescription') || $this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
 		}
-		
+
+		/**
+		 * Return if the user can edit description
+		 *
+		 * @return boolean
+		 */
+		public function canEditReproductionSteps()
+		{
+			return (bool) ($this->_permissionCheck('caneditissuereproduction_steps') || $this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
+		}
+
 		/**
 		 * Return if the user can edit posted by
 		 *

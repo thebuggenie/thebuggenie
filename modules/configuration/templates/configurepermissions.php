@@ -49,7 +49,7 @@
 						<p><?php echo __('These permissions control which pages you can access in The Bug Genie. Some of these permissions are also available as project-specific permissions, from the "%project_specific_permissions%" tab.', array('%project_specific_permissions%' => '<i>'.__('Project-specific permissions').'</i>')); ?></p>
 						<ul>
 							<?php include_template('configuration/permissionsblock', array('base_id' => 'page_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('pages'), 'mode' => 'pages', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
-							<?php include_template('configuration/permissionsblock', array('base_id' => 'page_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project_pages'), 'mode' => 'pages', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
+							<?php include_template('configuration/permissionsblock', array('base_id' => 'project_page_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project_pages'), 'mode' => 'project_pages', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
 						</ul>
 					</div>
 					<div id="tab_projects_pane" class="tab_pane" style="display: none;">
@@ -61,7 +61,7 @@
 										<a href="javascript:void(0);" onclick="$('project_permission_details_<?php echo $project->getID(); ?>').toggle();"><?php echo image_tag('icon_project_permissions.png', array('style' => 'float: right;')); ?><?php echo $project->getName(); ?> <span class="faded_medium smaller"><?php echo $project->getKey(); ?></span></a>
 										<ul style="display: none;" id="project_permission_details_<?php echo $project->getID(); ?>">
 											<?php include_template('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_project_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
-											<?php include_template('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_page_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project_pages'), 'mode' => 'pages', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+											<?php include_template('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_page_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project_pages'), 'mode' => 'project_pages', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
 											<?php include_template('configuration/permissionsblock', array('base_id' => 'project_' . $project->getID() . '_issue_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
 										</ul>
 									</li>

@@ -40,6 +40,7 @@
 			$crit->addInsert(self::GNAME, $i18n->__('Administrators'));
 			$crit->addInsert(self::SCOPE, $scope);
 			$admin_group_id = $this->doInsert($crit)->getInsertID();
+			BUGSsettings::saveSetting('admingroup', $admin_group_id, 'core', $scope);
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::GNAME, $i18n->__('Regular users'));
