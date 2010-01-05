@@ -13,7 +13,12 @@
 				<div class="rounded_box borderless" style="margin: 5px 0px 10px 0px; width: 750px;">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent" style="text-align: left; min-height: 85px;">
-						<div class="header_div smaller" style="margin: 0 0 5px 0;"><?php echo __('Icon legend:'); ?></div>
+						<div class="header_div smaller" style="clear: both; margin: 0 0 5px 0;"><?php echo __('Icon legend:'); ?></div>
+						<div style="clear: both;">
+							<?php echo image_tag('icon_project_permissions.png', array('style' => 'float: left; margin: 0 5px 0 10px;')); ?><span style="float: left;"><?php echo __('Show more detailed permissions for this permission group'); ?></span>
+							<?php echo image_tag('cfg_icon_permissions.png', array('style' => 'float: left; margin: 0 5px 0 10px;')); ?><span style="float: left;"><?php echo __('Set permissions'); ?></span>
+						</div>
+						<div class="header_div smaller" style="clear: both; margin: 0 0 5px 0; padding-top: 10px;"><?php echo __('Permissions icon legend:'); ?></div>
 						<div style="clear: both;">
 							<?php echo image_tag('permission_unset_ok.png', array('style' => 'float: left; margin: 0 5px 0 10px;')); ?><span style="float: left;"><?php echo __('Not set (permissive system setting)'); ?></span>
 							<?php echo image_tag('permission_unset_denied.png', array('style' => 'float: left; margin: 0 5px 0 10px;')); ?><span style="float: left;"><?php echo __('Not set (restrictive system setting)'); ?></span>
@@ -40,9 +45,10 @@
 					<div id="tab_general_pane" class="tab_pane">
 						<p><?php echo __('These permissions control what you can do in The Bug Genie. Some of these permissions are also available as project-specific permissions, from the "%project_specific_permissions%" tab.', array('%project_specific_permissions%' => '<i>'.__('Project-specific permissions').'</i>')); ?></p>
 						<ul>
-							<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('configuration'), 'mode' => 'configuration', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
+							<?php include_template('configuration/permissionsblock', array('base_id' => 'configuration_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('configuration'), 'mode' => 'configuration', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
 							<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('general'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
-							<?php include_template('configuration/permissionsblock', array('base_id' => 'general_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
+							<?php include_template('configuration/permissionsblock', array('base_id' => 'issues_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
+							<?php include_template('configuration/permissionsblock', array('base_id' => 'project_permissions', 'permissions_list' => BUGScontext::getAvailablePermissions('project'), 'mode' => 'general', 'target_id' => 0, 'module' => 'core', 'access_level' => $access_level)); ?>
 						</ul>
 					</div>
 					<div id="tab_pages_pane" class="tab_pane" style="display: none;">
