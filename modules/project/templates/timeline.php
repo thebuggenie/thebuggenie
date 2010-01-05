@@ -8,7 +8,7 @@
 	<div class="feature" style="margin: 10px; padding-top: 0;">
 		<div class="header_div"><?php echo __('Timeline actions'); ?></div>
 		<div class="content">
-			<?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png', array('style' => 'float: left; margin-right: 5px;')) . __('Subscribe to updates')); ?>
+			<?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png', array('style' => 'float: left; margin-right: 5px;')) . __('Subscribe to updates via RSS')); ?>
 		</div>
 	</div>
 </div>

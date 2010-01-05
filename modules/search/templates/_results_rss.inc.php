@@ -13,8 +13,8 @@
 <?php foreach ($issues as $issue): ?>
 
 		<item>
-			<title><?php echo $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(); ?></title>
-			<description><?php echo tbg_parse_text($issue->getDescription()); ?></description>
+			<title><?php echo $issue->getFormattedIssueNo(true) . ' - ' . strip_tags($issue->getTitle()); ?></title>
+			<description><?php echo strip_tags($issue->getDescription()); ?></description>
 			<pubdate><?php echo bugs_formatTime($issue->getLastUpdatedTime(), 21); ?></pubdate>
 			<link><?php echo make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey()), false); ?></link>
 			<guid><?php echo make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey()), false); ?></guid>

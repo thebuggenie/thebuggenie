@@ -70,6 +70,7 @@
 
 		protected function doSearch(BUGSrequest $request)
 		{
+			$i18n = BUGScontext::getI18n();
 			if ($this->searchterm)
 			{
 				preg_replace_callback('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, 'extractIssues'), $this->searchterm);
@@ -85,11 +86,27 @@
 				{
 					switch ((int) $request->getParameter('predefined_search'))
 					{
-						case 1:
+						case BUGScontext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
 							$this->filters['state'] = array('operator' => '=', 'value' => BUGSissue::STATE_OPEN);
 							break;
-						case 2:
+						case BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
 							$this->filters['state'] = array('operator' => '=', 'value' => BUGSissue::STATE_CLOSED);
+							break;
+						case BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
+							$this->filters['posted_by'] = array('operator' => '=', 'value' => BUGScontext::getUser()->getID());
+							break;
+						case BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
+							$this->filters['state'] = array('operator' => '=', 'value' => BUGSissue::STATE_OPEN);
+							$this->filters['assigned_type'] = array('operator' => '=', 'value' => BUGSidentifiableclass::TYPE_USER);
+							$this->filters['assigned_to'] = array('operator' => '=', 'value' => BUGScontext::getUser()->getID());
+							break;
+						case BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
+							$this->filters['state'] = array('operator' => '=', 'value' => BUGSissue::STATE_OPEN);
+							$this->filters['assigned_type'] = array('operator' => '=', 'value' => BUGSidentifiableclass::TYPE_TEAM);
+							foreach (BUGScontext::getUser()->getTeams() as $team_id => $team)
+							{
+								$this->filters['assigned_to'][] = array('operator' => '=', 'value' => $team_id);
+							}
 							break;
 					}
 				}
@@ -114,11 +131,20 @@
 			{
 				switch ((int) $request->getParameter('predefined_search'))
 				{
-					case 1:
-						$this->searchtitle = (BUGScontext::isProjectContext()) ? __('Open issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : __('All open issues');
+					case BUGScontext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
+						$this->searchtitle = (BUGScontext::isProjectContext()) ? $i18n->__('Open issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : $i18n->__('All open issues');
 						break;
-					case 2:
-						$this->searchtitle = (BUGScontext::isProjectContext()) ? __('Closed issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : __('All closed issues');
+					case BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
+						$this->searchtitle = (BUGScontext::isProjectContext()) ? $i18n->__('Closed issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : $i18n->__('All closed issues');
+						break;
+					case BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
+						$this->searchtitle = $i18n->__('Open issues assigned to me');
+						break;
+					case BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
+						$this->searchtitle = $i18n->__('Open issues assigned to my teams');
+						break;
+					case BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
+						$this->searchtitle = $i18n->__('Issues reported by me');
 						break;
 				}
 			}
