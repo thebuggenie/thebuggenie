@@ -64,5 +64,3 @@
 	$strings['Vertical (preview pane to the right)'] = 'Vertikala (f�rhandsgranska i rutan till h�ger)';
 	$strings['Classical (preview pane at the bottom)'] = 'Klassisk (f�rhandsgranska i rutan l�ngst ner)';
 	$strings['The default view mode for the message list/preview pane'] = 'Standardvyn l�ge f�r meddelandelistan / f�rhandsgranskning';
-			
-?>			

@@ -41,5 +41,3 @@
 	$strings['Show as'] = 'Visa som';
 	$strings['When you are done, click "Save event" to save the event to your calendar'] = 'N�r du �r klar, klicka p� "Spara h�ndelse" f�r att spara h�ndelsen i din kalender';
 	$strings['Save event'] = 'Spara h�ndelse';
-			
-?>			

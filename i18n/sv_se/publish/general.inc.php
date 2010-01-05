@@ -117,5 +117,3 @@
 	$strings['Published'] = 'Publicerad';	
 	$strings['Published %at%, by %user%'] = 'Publicerad%at%, av%user%';	
 	$strings['This article has been read %number_of% times'] = 'Denna artikel har l�sts%number_of% g�nger';	
-
-?>				
