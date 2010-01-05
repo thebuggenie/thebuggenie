@@ -960,6 +960,7 @@ dd { margin-left: 0px; margin-bottom: 15px; vertical-align: middle; }
 tr.selected_green span.faded_medium { color: #F1F1F1; }
 tr.selected_red span.faded_medium { color: #F1F1F1; }
 .faded_dark { color: #999; }
+.faded_blue { color: #77C; }
 .padded_table td.config_explanation, .config_explanation { color: #999; padding: 5px 0 10px 5px; }
 .config_explanation a { color: #549D54; font-weight: bold; }
 .faded_medium a { color: #549D54; }

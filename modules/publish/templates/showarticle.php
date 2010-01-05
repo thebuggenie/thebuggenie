@@ -32,8 +32,11 @@
 					<?php if (BUGScontext::isProjectContext()): ?>
 						<?php if ((strpos($article_name, ucfirst(BUGScontext::getCurrentProject()->getKey())) == 0) || ((substr($article_name, 0, 8) == 'Category') && strpos($article_name, ucfirst(BUGScontext::getCurrentProject()->getKey())) == 9)): ?>
 							<?php $project_article_name = substr($article_name, ((substr($article_name, 0, 8) == 'Category') * 9) + strlen(BUGScontext::getCurrentProject()->getKey())+1); ?>
-							<?php if (substr($article_name, 0, 8) == 'Category'): ?>Category:<?php endif; ?><span class="faded_dark"><?php echo ucfirst(BUGScontext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
+							<?php if (substr($article_name, 0, 8) == 'Category'): ?><span class="faded_blue">Category:</span><?php endif; ?><span class="faded_dark"><?php echo ucfirst(BUGScontext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
 						<?php endif; ?>
+					<?php elseif (substr($article_name, 0, 9) == 'Category:'): ?>
+						<?php $display_article_name = substr($article_name, 9); ?>
+						<span class="faded_blue">Category:</span><?php echo get_spaced_name($display_article_name); ?>
 					<?php else: ?>
 						<?php echo get_spaced_name($article_name); ?>
 					<?php endif; ?>
