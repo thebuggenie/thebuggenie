@@ -230,6 +230,8 @@
 			$i18n = BUGScontext::getI18n();
 			$showtablestart = false;
 			$showheader = false;
+			$groupby_id = 0;
+			$groupby_description = '';
 			if ($cc == 1) $showtablestart = true;
 			if ($groupby != '')
 			{
@@ -343,8 +345,6 @@
 							$groupby_description = $i18n->__('Open');
 						}
 						break;
-					default:
-						$groupby_id = 0;
 				}
 				if ($groupby_id !== $prevgroup_id)
 				{
