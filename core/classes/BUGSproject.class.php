@@ -556,6 +556,7 @@
 		public function delete()
 		{
 			$this->_deleted = 1;
+			$this->_key = '';
 			return true;
 		}
 
