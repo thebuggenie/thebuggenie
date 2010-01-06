@@ -10,7 +10,7 @@
 	<tbody>
 		<?php foreach ($issues as $issue): ?>
 			<tr class="<?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?>">
-				<td style="padding-left: 3px;"><?php echo $issue->getTitle(); ?></td>
+				<td style="padding: 3px;"><?php echo $issue->getTitle(); ?></td>
 				<td style="text-align: center; background-color: <?php
 
 					switch (true)
@@ -36,7 +36,7 @@
 					}
 
 				?>; font-weight: bold;"><?php echo $issue->getPercentCompleted(); ?>%</td>
-				<td><?php echo $issue->getDescription(); ?></td>
+				<td style="padding: 3px;"><?php echo ($issue->getDescription() != '') ? $issue->getDescription() : '<span class="faded_medium">'.__('No description provided').'</span>'; ?></td>
 				<td class="result_issue"><?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true)); ?></td>
 			</tr>
 		<?php endforeach; ?>
