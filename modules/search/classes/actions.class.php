@@ -110,7 +110,7 @@
 							break;
 					}
 				}
-				list ($this->foundissues, $this->resultcount) = BUGSissue::findIssues($this->searchterm, $this->ipp, $this->offset, $this->filters, null);
+				list ($this->foundissues, $this->resultcount) = BUGSissue::findIssues($this->searchterm, $this->ipp, $this->offset, $this->filters, $request->getParameter('groupby'));
 			}
 			elseif (count($this->foundissues) == 1 && $request->getParameter('quicksearch'))
 			{
@@ -223,6 +223,137 @@
 					$this->foundissues[$issue->getID()] = $issue;
 				}
 			}
+		}
+
+		static function resultGrouping(BUGSissue $issue, $groupby, $cc, $prevgroup_id)
+		{
+			$i18n = BUGScontext::getI18n();
+			$showtablestart = false;
+			$showheader = false;
+			if ($cc == 1) $showtablestart = true;
+			if ($groupby != '')
+			{
+				switch ($groupby)
+				{
+					case 'category':
+						if ($issue->getCategory() instanceof BUGScategory)
+						{
+							$groupby_id = $issue->getCategory()->getID();
+							$groupby_description = $issue->getCategory()->getName();
+						}
+						else
+						{
+							$groupby_id = 0;
+							$groupby_description = $i18n->__('Unknown');
+						}
+						break;
+					case 'status':
+						if ($issue->getStatus() instanceof BUGSstatus)
+						{
+							$groupby_id = $issue->getStatus()->getID();
+							$groupby_description = $issue->getStatus()->getName();
+						}
+						else
+						{
+							$groupby_id = 0;
+							$groupby_description = $i18n->__('Unknown');
+						}
+						break;
+					case 'severity':
+						if ($issue->getSeverity() instanceof BUGSseverity)
+						{
+							$groupby_id = $issue->getSeverity()->getID();
+							$groupby_description = $issue->getSeverity()->getName();
+						}
+						else
+						{
+							$groupby_id = 0;
+							$groupby_description = $i18n->__('Unknown');
+						}
+						break;
+					case 'resolution':
+						if ($issue->getResolution() instanceof BUGSresolution)
+						{
+							$groupby_id = $issue->getResolution()->getID();
+							$groupby_description = $issue->getResolution()->getName();
+						}
+						else
+						{
+							$groupby_id = 0;
+							$groupby_description = $i18n->__('Unknown');
+						}
+						break;
+					case 'priority':
+						if ($issue->getPriority() instanceof BUGSpriority)
+						{
+							$groupby_id = $issue->getPriority()->getID();
+							$groupby_description = $issue->getPriority()->getName();
+						}
+						else
+						{
+							$groupby_id = 0;
+							$groupby_description = $i18n->__('Unknown');
+						}
+						break;
+					case 'issuetype':
+						if ($issue->getIssueType() instanceof BUGSissuetype)
+						{
+							$groupby_id = $issue->getIssueType()->getID();
+							$groupby_description = $issue->getIssueType()->getName();
+						}
+						else
+						{
+							$groupby_id = 0;
+							$groupby_description = $i18n->__('Unknown');
+						}
+						break;
+					case 'milestone':
+						if ($issue->getMilestone() instanceof BUGSmilestone)
+						{
+							$groupby_id = $issue->getMilestone()->getID();
+							$groupby_description = $issue->getMilestone()->getName();
+						}
+						else
+						{
+							$groupby_id = 0;
+							$groupby_description = $i18n->__('Not targetted');
+						}
+						break;
+					case 'assignee':
+						if ($issue->getAssignee() instanceof BUGSidentifiableclass)
+						{
+							$groupby_id = $issue->getAssigneeID();
+							$groupby_description = $issue->getAssignee()->getName();
+						}
+						else
+						{
+							$groupby_id = 0;
+							$groupby_description = $i18n->__('Not assigned');
+						}
+						break;
+					case 'state':
+						if ($issue->isClosed())
+						{
+							$groupby_id = BUGSissue::STATE_CLOSED;
+							$groupby_description = $i18n->__('Closed');
+						}
+						else
+						{
+							$groupby_id = BUGSissue::STATE_OPEN;
+							$groupby_description = $i18n->__('Open');
+						}
+						break;
+					default:
+						$groupby_id = 0;
+				}
+				if ($groupby_id !== $prevgroup_id)
+				{
+					$showtablestart = true;
+					$showheader = true;
+				}
+				$prevgroup_id = $groupby_id;
+			}
+			return array($showtablestart, $showheader, $prevgroup_id, $groupby_description);
 		}
 
 	}

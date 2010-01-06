@@ -439,7 +439,37 @@
 
 			if ($groupby !== null)
 			{
-				
+				switch ($groupby)
+				{
+					case 'category':
+						$crit->addOrderBy(self::CATEGORY);
+						break;
+					case 'status':
+						$crit->addOrderBy(self::STATUS);
+						break;
+					case 'milestone':
+						$crit->addOrderBy(self::MILESTONE);
+						break;
+					case 'assignee':
+						$crit->addOrderBy(self::ASSIGNED_TYPE);
+						$crit->addOrderBy(self::ASSIGNED_TO);
+						break;
+					case 'state':
+						$crit->addOrderBy(self::STATE);
+						break;
+					case 'severity':
+						$crit->addOrderBy(self::SEVERITY);
+						break;
+					case 'resolution':
+						$crit->addOrderBy(self::RESOLUTION);
+						break;
+					case 'priority':
+						$crit->addOrderBy(self::PRIORITY);
+						break;
+					case 'issuetype':
+						$crit->addOrderBy(self::ISSUE_TYPE);
+						break;
+				}
 			}
 
 			$crit2 = clone $crit;

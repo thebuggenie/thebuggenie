@@ -1,2 +1,1 @@
-<?php include_template("search/{$templatename}", array('issues' => $issues)); ?>
-<?php include_component('search/pagination', array('searchterm' => $searchterm, 'filters' => $appliedfilters, 'groupby' => $groupby, 'resultcount' => $resultcount, 'ipp' => $ipp, 'offset' => $offset)); ?>
+<?php include_template('search/issues_paginated', array('issues' => $issues, 'templatename' => $templatename, 'searchterm' => $searchterm, 'filters' => $appliedfilters, 'groupby' => $groupby, 'resultcount' => $resultcount, 'ipp' => $ipp, 'offset' => $offset, 'cc' => 1, 'prevgroup_id' => null)); ?>

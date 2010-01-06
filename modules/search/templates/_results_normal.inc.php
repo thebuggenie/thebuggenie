@@ -1,19 +1,28 @@
-<table style="width: 100%;" cellpadding="0" cellspacing="0">
-	<thead>
-		<tr>
-			<?php if (!BUGScontext::isProjectContext()): ?>
-				<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
-			<?php endif; ?>
-			<th style="width: 16px; text-align: right; padding: 0;<?php if (BUGScontext::isProjectContext()): ?> padding-left: 3px;<?php endif; ?>">&nbsp;</th>
-			<th><?php echo __('Issue'); ?></th>
-			<th><?php echo __('Assigned to'); ?></th>
-			<th><?php echo __('Status'); ?></th>
-			<th><?php echo __('Resolution'); ?></th>
-			<th><?php echo __('Last updated'); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php foreach ($issues as $issue): ?>
+<?php foreach ($issues as $issue): ?>
+	<?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $groupby, $cc, $prevgroup_id); ?>
+	<?php if ($showtablestart && $cc > 1): ?>
+		<?php echo '</tbody></table>'; ?>
+	<?php endif; ?>
+	<?php if ($showheader): ?>
+		<h3 style="margin-top: 20px;"><?php echo $groupby_description; ?></h3>
+	<?php endif; ?>
+	<?php if ($showtablestart): ?>
+		<table style="width: 100%;" cellpadding="0" cellspacing="0">
+			<thead>
+				<tr>
+					<?php if (!BUGScontext::isProjectContext()): ?>
+						<th style="padding-left: 3px;"><?php echo __('Project'); ?></th>
+					<?php endif; ?>
+					<th style="width: 16px; text-align: right; padding: 0;<?php if (BUGScontext::isProjectContext()): ?> padding-left: 3px;<?php endif; ?>">&nbsp;</th>
+					<th><?php echo __('Issue'); ?></th>
+					<th><?php echo __('Assigned to'); ?></th>
+					<th><?php echo __('Status'); ?></th>
+					<th><?php echo __('Resolution'); ?></th>
+					<th><?php echo __('Last updated'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+	<?php endif; ?>
 			<tr class="<?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?>">
 				<?php if (!BUGScontext::isProjectContext()): ?>
 					<td style="padding-left: 5px;"><?php echo $issue->getProject()->getName(); ?></td>
@@ -54,6 +63,9 @@
 				</td>
 				<td class="smaller"><?php echo bugs_formatTime($issue->getLastUpdatedTime(), 12); ?></td>
 			</tr>
-		<?php endforeach; ?>
-	</tbody>
-</table>
+	<?php if ($cc == count($issues)): ?>
+			</tbody>
+		</table>
+	<?php endif; ?>
+	<?php $cc++; ?>
+<?php endforeach; ?>
