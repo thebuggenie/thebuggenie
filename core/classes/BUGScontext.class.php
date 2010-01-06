@@ -1266,7 +1266,7 @@
 				self::$_available_permissions['issues']['canpostseeandeditallcomments']['details']['canseenonpubliccomments'] = array('description' => $i18n->__('Can see all comments including hidden'));
 				self::$_available_permissions['issues']['canpostseeandeditallcomments']['details']['caneditcomments'] = array('description' => $i18n->__('Can edit all comments'));
 				self::$_available_permissions['issues']['canpostseeandeditallcomments']['details']['candeletecomments'] = array('description' => $i18n->__('Can delete any comments'));
-				self::trigger('core', 'cachepermissions');
+				//self::trigger('core', 'cachepermissions', array('permissions' => &self::$_available_permissions));
 			}
 		}
 		
@@ -1291,11 +1291,27 @@
 						$retarr[$dkey] = $dd;
 					}
 				}
+				foreach (BUGScontext::getModules() as $module_key => $module)
+				{
+					$retarr['module_'.$module_key] = array();
+					foreach ($module->getAvailablePermissions() as $mpkey => $mp)
+					{
+						$retarr['module_'.$module_key][$mpkey] = $mp;
+					}
+				}
 				return $retarr;
 			}
 			if (array_key_exists($applies_to, self::$_available_permissions))
 			{
 				return self::$_available_permissions[$applies_to];
+			}
+			elseif (substr($applies_to, 0, 7) == 'module_')
+			{
+				$module_name = substr($applies_to, 7);
+				if (self::isModuleLoaded($module_name))
+				{
+					return self::getModule($module_name)->getAvailablePermissions();
+				}
 			}
 			else
 			{

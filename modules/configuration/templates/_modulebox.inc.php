@@ -17,13 +17,13 @@
 				<?php if ($module->hasConfigSettings()): ?>
 					<?php echo link_tag(make_url('configure_module', array('config_module' => $module->getName())), image_tag('action_configure_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Configure module'))), array('class' => 'image')); ?>
 				<?php endif; ?>
-				<a href="javascript:void(0);" class="image" onclick="showPermissions('url', 'module_permissions', '<?php echo $module->getName(); ?>');"><?php echo image_tag('action_edit_permissions.png', array('style' => 'margin-right: 5px;', 'title' => __('Edit permissions'))); ?></a>
+				<a href="javascript:void(0);" class="image" onclick="$('permissions_module_<?php echo($module->getID()); ?>').toggle();$('uninstall_module_<?php echo $module->getID(); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_edit_permissions.png', array('style' => 'margin-right: 5px;', 'title' => __('Edit permissions'))); ?></a>
 				<?php if ($module->isEnabled()): ?>
-					<a href="javascript:void(0);" class="image" onclick="$('disable_module_<?php echo $module->getID(); ?>').toggle();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_disable_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Disable module'))); ?></a>
+					<a href="javascript:void(0);" class="image" onclick="$('disable_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_disable_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Disable module'))); ?></a>
 				<?php else: ?>
-					<a href="javascript:void(0);" class="image" onclick="$('enable_module_<?php echo $module->getID(); ?>').toggle();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_enable_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Enable module'))) ?></a>
+					<a href="javascript:void(0);" class="image" onclick="$('enable_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_enable_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Enable module'))) ?></a>
 				<?php endif; ?>
-				<a href="javascript:void(0);" class="image" onclick="$('uninstall_module_<?php echo $module->getID(); ?>').toggle();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_uninstall_module.png', array('title' => __('Uinstall module'))); ?></a>
+				<a href="javascript:void(0);" class="image" onclick="$('uninstall_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_uninstall_module.png', array('title' => __('Uinstall module'))); ?></a>
 			</div>
 		</div>
 		<?php if ($module->isEnabled()): ?>
@@ -53,6 +53,16 @@
 				<h4><?php echo __('Really uninstall "%module_name%"?', array('%module_name%' => $module->getLongname())); ?></h4>
 				<span class="xboxlarge"><?php echo __('Uninstalling this module will permanently prevent users from accessing it or any associated data. If you just want to prevent access to the module temporarily, disable the module instead.'); ?></span><br>
 				<div style="text-align: right;" id="uninstall_module_controls_<?php echo $module->getID(); ?>"><?php echo link_tag(make_url('configure_uninstall_module', array('module_key' => $module->getName())), __('Yes'), array('class' => 'xboxlink')); ?> :: <a href="javascript:void(0)" class="xboxlink" onclick="$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo __('No'); ?></a></div>
+			</div>
+			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+		</div>
+		<div id="permissions_module_<?php echo($module->getID()); ?>" style="display: none; margin-top: 10px;" class="rounded_box white">
+			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+			<div class="xboxcontent permission_list" style="padding: 0 10px 5px 10px; text-align: left;">
+				<div class="header_div" style="margin-top: 0;"><?php echo __('Available permissions'); ?></div>
+				<ul id="module_permission_details_<?php echo $module->getName(); ?>">
+					<?php include_template('configuration/permissionsblock', array('base_id' => 'module_' . $module->getName() . '_permissions', 'permissions_list' => $module->getAvailablePermissions(), 'mode' => 'module_permissions', 'target_id' => 0, 'module' => $module->getName(), 'access_level' => (($bugs_user->canSaveConfiguration(BUGSsettings::CONFIGURATION_SECTION_PERMISSIONS) ? configurationActions::ACCESS_FULL : configurationActions::ACCESS_READ)))); ?>
+				</ul>
 			</div>
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>

@@ -14,7 +14,7 @@
 			$('upload_storage').enable();
 			if ($('upload_storage').getValue() == 'files')
 			{
-				$('upload_location').enable();
+				$('upload_localpath').enable();
 			}
 		}
 		else
@@ -22,7 +22,7 @@
 			$('upload_restriction_mode').disable();
 			$('upload_extensions_list').disable();
 			$('upload_storage').disable();
-			$('upload_location').disable();
+			$('upload_localpath').disable();
 		}
 	}
 
@@ -84,7 +84,7 @@
 						<tr>
 							<td><label for="upload_localpath"><?php echo __('Upload location'); ?></label></td>
 							<td>
-								<input type="text" name="upload_localpath" id="upload_localpath" style="width: 250px;" value="<?php echo BUGSsettings::getUploadsLocalpath(); ?>"<?php if (!BUGSsettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
+								<input type="text" name="upload_localpath" id="upload_localpath" style="width: 250px;" value="<?php echo (BUGSsettings::getUploadsLocalpath() != "") ? BUGSsettings::getUploadsLocalpath() : BUGScontext::getIncludePath() . 'files/'; ?>"<?php if (!BUGSsettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
 							</td>
 						</tr>
 						<tr>

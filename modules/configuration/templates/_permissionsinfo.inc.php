@@ -10,8 +10,10 @@
 				<th style="width: 60px; text-align: center;"><?php echo __('Can set'); ?></th>
 			<?php elseif ($mode == 'general'): ?>
 				<th style="width: 60px; text-align: center;"><?php echo __('Can'); ?></th>
-			<?php elseif ($mode == 'configuration' || $mode == 'pages' || $mode == 'project_pages'): ?>
+			<?php elseif (in_array($mode, array('configuration', 'pages', 'project_pages', 'module_permissions'))): ?>
 				<th style="width: 60px; text-align: center;"><?php echo __('Access'); ?></th>
+			<?php else: ?>
+				<th style="width: 60px;">&nbsp;</th>
 			<?php endif; ?>
 		</tr>
 	</thead>

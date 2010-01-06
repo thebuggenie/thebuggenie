@@ -8,9 +8,9 @@
 	<tr>
 		<?php include_component('configleftmenu', array('selected_section' => 5)); ?>
 		<td valign="top">
-			<div style="width: 750px;" id="config_permissions">
+			<div style="width: 740px;" id="config_permissions">
 				<div class="configheader"><?php echo __('Configure permissions'); ?></div>
-				<div class="rounded_box borderless" style="margin: 5px 0px 10px 0px; width: 750px;">
+				<div class="rounded_box borderless" style="margin: 5px 0px 10px 0px; width: 740px;">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent" style="text-align: left; min-height: 85px;">
 						<div class="header_div smaller" style="clear: both; margin: 0 0 5px 0;"><?php echo __('Icon legend:'); ?></div>
@@ -42,7 +42,7 @@
 						<li id="tab_modules"><a onclick="switchSubmenuTab('tab_modules', 'permissions_tabs');" href="javascript:void(0);"><?php echo __('Module-specific permissions'); ?></a></li>
 					</ul>
 				</div>
-				<div id="permissions_tabs_panes">
+				<div id="permissions_tabs_panes" class="permission_list">
 					<div id="tab_general_pane" class="tab_pane">
 						<p><?php echo __('These permissions control what you can do in The Bug Genie. Some of these permissions are also available as project-specific permissions, from the "%project_specific_permissions%" tab.', array('%project_specific_permissions%' => '<i>'.__('Project-specific permissions').'</i>')); ?></p>
 						<ul>
@@ -60,7 +60,17 @@
 						</ul>
 					</div>
 					<div id="tab_modules_pane" class="tab_pane" style="display: none;">
-						<p><?php echo __('Module-specific permissions are available from the "%configure_modules%" configuration page', array('%configure_modules%' => link_tag(make_url('configure_modules'), __('Configure modules')))); ?></p>
+						<p><?php echo __('Module-specific permissions are also available from the "%configure_modules%" configuration page', array('%configure_modules%' => link_tag(make_url('configure_modules'), __('Configure modules')))); ?></p>
+						<ul>
+						<?php foreach (BUGScontext::getModules() as $module_key => $module): ?>
+							<li>
+								<a href="javascript:void(0);" onclick="$('module_permission_details_<?php echo $module_key; ?>').toggle();"><?php echo image_tag('icon_project_permissions.png', array('style' => 'float: right;')); ?><?php echo $module->getLongName(); ?> <span class="faded_medium smaller"><?php echo $module_key; ?></span></a>
+								<ul style="display: none;" id="module_permission_details_<?php echo $module_key; ?>">
+									<?php include_template('configuration/permissionsblock', array('base_id' => 'module_' . $module_key . '_permissions', 'permissions_list' => $module->getAvailablePermissions(), 'mode' => 'module_permissions', 'target_id' => 0, 'module' => $module_key, 'access_level' => $access_level)); ?>
+								</ul>
+							</li>
+						<?php endforeach; ?>
+						</ul>
 					</div>
 					<div id="tab_projects_pane" class="tab_pane" style="display: none;">
 						<p><?php echo __('These permissions control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions, from the "%general_permissions%" tab.', array('%general_permissions%' => '<i>'.__('General permissions').'</i>')); ?></p>

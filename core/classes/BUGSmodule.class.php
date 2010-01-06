@@ -240,9 +240,9 @@
 			return $this->_module_menu_title;
 		}
 		
-		public function addAvailablePermission($permission_name, $description, $target = 0, $levels = 2)
+		public function addAvailablePermission($permission_name, $description, $target = 0)
 		{
-			$this->_availablepermissions[] = array('permission_name' => $permission_name, 'description' => $description, 'target' => $target, 'levels' => $levels);
+			$this->_availablepermissions[$permission_name] = array('description' => $description, 'target_id' => $target);
 		}
 		
 		public function getAvailablePermissions()

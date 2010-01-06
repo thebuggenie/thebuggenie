@@ -1454,20 +1454,20 @@ thead.borderless th { border: 0; }
 
 #config_permissions { font-size: 12px; }
 #config_permissions .faded_medium.smaller { font-size: 10px; padding-left: 10px; }
-#config_permissions #permissions_tabs_panes .tab_pane { border: 1px solid #AAA; border-top: 0; padding: 10px; }
-#config_permissions #permissions_tabs_panes .tab_pane p { margin-bottom: 15px; font-size: 13px; }
-#config_permissions #permissions_tabs_panes ul { list-style-type: none; padding: 0; margin: 0; width: 730px; }
-#config_permissions #permissions_tabs_panes ul li { margin: 0px; padding: 0; font-size: 13px; font-weight: normal; clear: both; background-color: transparent; }
-#config_permissions #permissions_tabs_panes ul li:hover { background-color: #FAFAFA; }
-#config_permissions #permissions_tabs_panes ul li a { display: block; padding: 2px 0 2px 0; }
-#config_permissions #permissions_tabs_panes ul li a.permission_description { display: block; width: 660px; }
-#config_permissions #permissions_tabs_panes ul li a:hover { border: 0; }
-#config_permissions #permissions_tabs_panes ul li .content a { display: inline; }
-#config_permissions #permissions_tabs_panes ul li ul { margin: 5px 10px 20px 10px; width: 710px; }
-#config_permissions #permissions_tabs_panes ul li ul li { font-size: 12px; }
-#config_permissions #permissions_tabs_panes ul li ul li:hover { background-color: #F1F1F1; }
-#config_permissions #permissions_tabs_panes ul li ul li a.permission_description { display: block; width: 595px; }
-#config_permissions #permissions_tabs_panes ul li ul li ul { margin: 10px 10px 25px 10px; width: 690px; }
-#config_permissions #permissions_tabs_panes ul li ul li ul li { font-size: 11px; }
-#config_permissions #permissions_tabs_panes ul li ul li ul li:hover { background-color: #E8E8E8; }
-#config_permissions #permissions_tabs_panes ul li ul li ul li a.permission_description { display: block; width: 530px; }
+#config_permissions .permission_list .tab_pane { border: 1px solid #AAA; border-top: 0; padding: 10px; }
+#config_permissions .permission_list .tab_pane p { margin-bottom: 15px; font-size: 13px; }
+.permission_list ul { list-style-type: none; padding: 0; margin: 0; width: 715px; }
+.permission_list ul li { margin: 0px; padding: 0; font-size: 13px; font-weight: normal; clear: both; background-color: transparent; }
+.permission_list ul li:hover { background-color: #FAFAFA; }
+.permission_list ul li a { display: block; padding: 2px 0 2px 0; }
+.permission_list ul li a.permission_description { display: block; width: 685px; }
+.permission_list ul li a:hover { border: 0; }
+.permission_list ul li .content a { display: inline; }
+.permission_list ul li ul { margin: 5px 10px 20px 10px; width: 675px; }
+.permission_list ul li ul li { font-size: 12px; }
+.permission_list ul li ul li:hover { background-color: #F1F1F1; }
+.permission_list ul li ul li a.permission_description { display: block; width: 580px; }
+.permission_list ul li ul li ul { margin: 10px 10px 25px 10px; width: 635px; }
+.permission_list ul li ul li ul li { font-size: 11px; }
+.permission_list ul li ul li ul li:hover { background-color: #E8E8E8; }
+.permission_list ul li ul li ul li a.permission_description { display: block; width: 540px; }
