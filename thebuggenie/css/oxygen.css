@@ -1331,7 +1331,7 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #dashboard_righthand .milestone_box .percentage .numbers { position: absolute; right: 2px; text-align: right; font-size: 11px; }
 #dashboard { list-style-type: none; padding: 0; margin: 0 5px 0 10px; clear: both; }
 #dashboard li { font-size: 12px; font-weight: normal; clear: none; margin: 5px 5px 5px 0; text-align: left; float: left; width: 460px; }
-#dashboard li table tr td { font-size: 12px; font-weight: normal; vertical-align: top; }
+#dashboard li table tr td { font-size: 13px; font-weight: normal; vertical-align: top; }
 #dashboard li table tr.issue_closed td { text-decoration: line-through; color: #AAA; }
 #dashboard li table tr.issue_closed td a { color: #88C688; }
 #dashboard li table tr td .issue_closed { text-decoration: line-through; }
@@ -1339,6 +1339,7 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #dashboard li.wide { width: 700px; }
 #dashboard li .header { margin: 2px 0 5px 0; padding: 3px 3px 3px 0; font-weight: bold; font-size: 13px; border-bottom: 1px solid #CCC; background-color: #FFF; }
 #dashboard .latest_action_dates{ font-weight: bold; font-size: 13px; padding: 5px 0 5px 0; }
+#dashboard .faded_medium.smaller { font-size: 11px; padding-right: 5px; }
 
 #scrum td { vertical-align: top; }
 #scrum ul, #project_dashboard ul, #dashboard_righthand #associated_projects { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; min-height: 20px; }

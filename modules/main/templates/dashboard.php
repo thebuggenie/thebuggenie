@@ -206,7 +206,7 @@
 										<td class="latest_action_dates" colspan="2"><?php echo $date; ?></td>
 									</tr>
 								<?php endif; ?>
-								<?php include_template('logitem', array('action' => $action)); ?>
+								<?php include_template('logitem', array('action' => $action, 'include_project' => true)); ?>
 								<?php $prev_date = $date; ?>
 							<?php endforeach; ?>
 						</table>
