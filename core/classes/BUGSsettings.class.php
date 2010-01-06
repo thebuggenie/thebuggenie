@@ -422,6 +422,26 @@
 			return (bool) self::get('enable_uploads');
 		}
 
+		public static function getUploadsRestrictionMode()
+		{
+			return self::get('upload_restriction_mode');
+		}
+
+		public static function getUploadsExtensionsList()
+		{
+			return self::get('upload_extensions_list');
+		}
+
+		public static function getUploadStorage()
+		{
+			return self::get('upload_storage');
+		}
+
+		public static function getUploadsLocalpath()
+		{
+			return self::get('upload_localpath');
+		}
+
 		public static function getIssueTypeBugReport()
 		{
 			return self::get('issuetype_bug_report');

@@ -1371,6 +1371,31 @@
 			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 		}
 
+		public function runConfigureUploads(BUGSrequest $request)
+		{
+			if ($request->isMethod(BUGSrequest::POST))
+			{
+				$this->forward403unless($this->access_level == self::ACCESS_FULL);
+				if ($request->getParameter('upload_storage') == 'files' && (bool) $request->getParameter('enable_uploads'))
+				{
+					if (!is_writable($request->getParameter('upload_localpath')))
+					{
+						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__("The upload path isn't writable")));
+					}
+				}
+				$settings = array('enable_uploads', 'upload_restriction_mode', 'upload_extensions_list', 'upload_storage', 'upload_localpath');
+
+				foreach ($settings as $setting)
+				{
+					if (BUGScontext::getRequest()->hasParameter($setting))
+					{
+						BUGSsettings::saveSetting($setting, BUGScontext::getRequest()->getParameter($setting));
+					}
+				}
+				return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('All settings saved')));
+			}
+		}
+
 		public function getAccessLevel($section, $module)
 		{
 			return (BUGScontext::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;

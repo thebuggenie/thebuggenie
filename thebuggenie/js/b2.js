@@ -99,6 +99,46 @@ function findIdentifiable(url, field)
 	});
 }
 
+function submitForm(url, form_id)
+{
+	var params = Form.serialize(form_id);
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	parameters: params,
+	onLoading: function (transport) {
+		$(form_id + '_indicator').show();
+		$(form_id + '_button').disable();
+	},
+	onSuccess: function (transport) {
+		$(form_id + '_indicator').hide();
+		var json = transport.responseJSON;
+		if (json && json.failed)
+		{
+			failedMessage(json.error);
+		}
+		else if (json && json.title)
+		{
+			successMessage(json.title, json.message);
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+		$(form_id + '_button').enable();
+	},
+	onFailure: function (transport) {
+		$(form_id + '_indicator').hide();
+		$(form_id + '_button').enable();
+		var json = transport.responseJSON;
+		if (json && json.failed)
+		{
+			failedMessage(json.error);
+		}
+	}
+	});
+}
+
 function switchSubmenuTab(visibletab, menu)
 {
   $(menu).childElements().each(function(item){item.removeClassName('selected');});
