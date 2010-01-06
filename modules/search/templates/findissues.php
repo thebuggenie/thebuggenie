@@ -3,17 +3,18 @@
 	$bugs_response->setTitle((BUGScontext::isProjectContext()) ? __('Find issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : __('Find issues'));
 	if (BUGScontext::isProjectContext())
 	{
-		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), __('Open issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())));
-		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true, 'template' => 'results_rss')), __('Closed issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())));
-		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'template' => 'results_rss')), __('Issues reported by me') . ' ('.BUGScontext::getCurrentProject()->getName().')');
-		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), __('Open issues assigned to me') . ' ('.BUGScontext::getCurrentProject()->getName().')');
-		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), __('Open issues assigned to my teams') . ' ('.BUGScontext::getCurrentProject()->getName().')');
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())));
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true, 'format' => 'rss')), __('Closed issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())));
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO, 'search' => true, 'format' => 'rss')), __('Milestone todo-list for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())));
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me') . ' ('.BUGScontext::getCurrentProject()->getName().')');
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to me') . ' ('.BUGScontext::getCurrentProject()->getName().')');
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to my teams') . ' ('.BUGScontext::getCurrentProject()->getName().')');
 	}
 	else
 	{
-		$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'template' => 'results_rss')), __('Issues reported by me'));
-		$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), __('Open issues assigned to you'));
-		$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), __('Open issues assigned to your teams'));
+		$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me'));
+		$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to you'));
+		$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to your teams'));
 	}
 
 ?>
@@ -23,36 +24,40 @@
 			<div class="left_menu_header" style="margin-top: 5px;"><?php echo __('Predefined searches'); ?></div>
 			<?php if (BUGScontext::isProjectContext()): ?>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
 					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true)), __('Open issues for this project')); ?><br>
 				</div>
 				<div style="clear: both; margin-bottom: 20px;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true, 'template' => 'results_rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
 					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true)), __('Closed issues for this project')); ?>
 				</div>
+				<div style="clear: both; margin-bottom: 20px;">
+					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO, 'search' => true)), __('Milestone todo-list for this project')); ?>
+				</div>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'template' => 'results_rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
 					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true)), __('Issues reported by me')); ?><br>
 				</div>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
 					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to me')); ?><br>
 				</div>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
 					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to my teams')); ?><br>
 				</div>
 			<?php else: ?>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'template' => 'results_rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
 					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true)), __('Issues reported by me')); ?><br>
 				</div>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
 					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to me')); ?><br>
 				</div>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
 					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to my teams')); ?><br>
 				</div>
 			<?php endif; ?>

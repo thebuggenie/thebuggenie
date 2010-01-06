@@ -65,7 +65,7 @@
 			$this->filters = $request->getParameter('filters', array());
 			$this->groupby = $request->getParameter('groupby');
 			$this->predefined_search = $request->getParameter('predefined_search', false);
-			//var_dump($this->filters);die();
+			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys($this->getTemplates(false)))) ? $request->getParameter('template') : 'results_normal';
 		}
 
 		protected function doSearch(BUGSrequest $request)
@@ -91,6 +91,9 @@
 							break;
 						case BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
 							$this->filters['state'] = array('operator' => '=', 'value' => BUGSissue::STATE_CLOSED);
+							break;
+						case BUGScontext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
+							$this->groupby = 'milestone';
 							break;
 						case BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
 							$this->filters['posted_by'] = array('operator' => '=', 'value' => BUGScontext::getUser()->getID());
@@ -137,6 +140,10 @@
 					case BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
 						$this->searchtitle = (BUGScontext::isProjectContext()) ? $i18n->__('Closed issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : $i18n->__('All closed issues');
 						break;
+					case BUGScontext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
+						$this->searchtitle = $i18n->__('Milestone todo-list for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName()));
+						$this->templatename = 'results_todo';
+						break;
 					case BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
 						$this->searchtitle = $i18n->__('Open issues assigned to me');
 						break;
@@ -180,8 +187,7 @@
 			}
 			$this->appliedfilters = $this->filters;
 			$this->templates = $this->getTemplates();
-			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys($this->getTemplates(false)))) ? $request->getParameter('template') : 'results_normal';
-			if ($this->templatename == 'results_rss')
+			if ($request->getParameter('format') == 'rss')
 			{
 				return $this->renderComponent('search/results_rss', array('issues' => $this->issues, 'searchtitle' => $this->searchtitle));
 			}

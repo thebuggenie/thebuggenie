@@ -2,9 +2,9 @@
 
 	$bugs_response->setTitle('Dashboard');
 	$bugs_response->addJavascript('dashboard.js');
-	$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'template' => 'results_rss')), __('Issues reported by me'));
-	$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), __('Open issues assigned to you'));
-	$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), __('Open issues assigned to your teams'));
+	$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me'));
+	$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to you'));
+	$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to your teams'));
 
 ?>
 <table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
@@ -55,7 +55,7 @@
 					<div class="rounded_box borderless" style="margin-top: 5px;">
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
-							<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
 							<?php echo __('Open issues assigned to you'); ?>
 						</div>
 					</div>
@@ -86,7 +86,7 @@
 					<div class="rounded_box borderless" style="margin-top: 5px;">
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
-							<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'template' => 'results_rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
 							<?php echo __('Open issues assigned to your teams'); ?>
 						</div>
 					</div>
