@@ -759,7 +759,7 @@
 					$pct = 0;
 				}
 			}
-			return $pct;
+			return (int) $pct;
 		}
 		
 		/**

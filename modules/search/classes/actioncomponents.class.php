@@ -19,7 +19,10 @@
 
 		public function componentResults_normal()
 		{
+		}
 
+		public function componentResults_todo()
+		{
 		}
 
 		public function componentResults_rss()

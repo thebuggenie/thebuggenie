@@ -155,6 +155,7 @@
 		{
 			$templates = array();
 			$templates['results_normal'] = BUGScontext::getI18n()->__('Standard search results');
+			$templates['results_todo'] = BUGScontext::getI18n()->__('Todo-list with progress indicator');
 			if (!$display_only)
 			{
 				$templates['results_rss'] = BUGScontext::getI18n()->__('RSS feed');
