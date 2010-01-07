@@ -204,7 +204,6 @@
 			}
 			$this->appliedfilters = $this->filters;
 			$this->templates = $this->getTemplates();
-			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys($this->getTemplates()))) ? $request->getParameter('template') : 'results_normal';
 		}
 
 		public function runAddFilter(BUGSrequest $request)

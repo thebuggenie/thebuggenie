@@ -161,19 +161,29 @@ function addSearchFilter(url)
 	},
 	onSuccess: function (transport) {
 		var json = transport.responseJSON;
-		if (json.failed)
+		if (json && (json.failed || json.error))
 		{
 			failedMessage(json.error);
 			$('add_filter_indicator').hide();
 		}
-		else
+		else if (json)
 		{
 			$('add_filter_indicator').hide();
 			$('search_filters_list').insert({bottom: json.content});
 			$('max_filters').value++;
 		}
+		else
+		{
+			failedMessage(transport.responseText);
+			$('add_filter_indicator').hide();
+		}
 	},
 	onFailure: function (transport) {
+		var json = transport.responseJSON;
+		if (json && (json.failed || json.error))
+		{
+			failedMessage(json.error);
+		}
 		$('add_filter_indicator').hide();
 	}
 	});

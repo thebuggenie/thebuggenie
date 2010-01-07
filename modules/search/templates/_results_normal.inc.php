@@ -28,7 +28,7 @@
 					<td style="padding-left: 5px;"><?php echo $issue->getProject()->getName(); ?></td>
 				<?php endif; ?>
 				<td>
-					<?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?>
+					<?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('title' => $issue->getIssueType()->getName())); ?>
 				</td>
 				<td class="result_issue"<?php if (BUGScontext::isProjectContext()): ?> style="padding-left: 3px;"<?php endif; ?>>
 					<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<span class="issue_no">' . $issue->getFormattedIssueNo(true) . '</span> - <span class="issue_title">' . $issue->getTitle() . '</span>'); ?>

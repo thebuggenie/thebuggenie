@@ -16,68 +16,16 @@
 				</select>
 				<a class="image" href="javascript:void(0);" onclick="removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
 			<?php endif; ?>
-		<?php elseif ($filter == 'status'): ?>
-			<label for="filter_status_<?php echo $key; ?>"><?php echo __('Status'); ?></label>
-			<select name="filters[status][<?php echo $key; ?>][operator]">
+		<?php elseif (in_array($filter, array_keys($filters))): ?>
+			<label for="filter_<?php echo $filter; ?>_<?php echo $key; ?>"><?php echo $filters[$filter]['description']; ?></label>
+			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][operator]">
 				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is %value%', array('%field%' => '', '%value%' => '')); ?></option>
 				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
 			</select>
-			<select name="filters[status][<?php echo $key; ?>][value]" id="filter_status_<?php echo $key; ?>">
+			<select name="filters[<?php echo $filter; ?>][<?php echo $key; ?>][value]" id="filter_<?php echo $filter; ?>_<?php echo $key; ?>">
 				<option value="0"> - </option>
-				<?php foreach (BUGSstatus::getAll() as $status): ?>
-					<option value="<?php echo $status->getID(); ?>"<?php if ($selected_value == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
-				<?php endforeach; ?>
-			</select>
-			<a class="image" href="javascript:void(0);" onclick="removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
-		<?php elseif ($filter == 'resolution'): ?>
-			<label for="filter_resolution_<?php echo $key; ?>"><?php echo __('Resolution'); ?></label>
-			<select name="filters[resolution][<?php echo $key; ?>][operator]">
-				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is %value%', array('%field%' => '', '%value%' => '')); ?></option>
-				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
-			</select>
-			<select name="filters[resolution][<?php echo $key; ?>][value]" id="filter_resolution_<?php echo $key; ?>">
-				<option value="0"> - </option>
-				<?php foreach (BUGSresolution::getAll() as $resolution): ?>
-					<option value="<?php echo $resolution->getID(); ?>"<?php if ($selected_value == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
-				<?php endforeach; ?>
-			</select>
-			<a class="image" href="javascript:void(0);" onclick="removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
-		<?php elseif ($filter == 'priority'): ?>
-			<label for="filter_priority_<?php echo $key; ?>"><?php echo __('Priority'); ?></label>
-			<select name="filters[priority][<?php echo $key; ?>][operator]">
-				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is %value%', array('%field%' => '', '%value%' => '')); ?></option>
-				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
-			</select>
-			<select name="filters[priority][<?php echo $key; ?>][value]" id="filter_priority_<?php echo $key; ?>">
-				<option value="0"> - </option>
-				<?php foreach (BUGSpriority::getAll() as $resolution): ?>
-					<option value="<?php echo $resolution->getID(); ?>"<?php if ($selected_value == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
-				<?php endforeach; ?>
-			</select>
-			<a class="image" href="javascript:void(0);" onclick="removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
-		<?php elseif ($filter == 'severity'): ?>
-			<label for="filter_severity_<?php echo $key; ?>"><?php echo __('Severity'); ?></label>
-			<select name="filters[severity][<?php echo $key; ?>][operator]">
-				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is %value%', array('%field%' => '', '%value%' => '')); ?></option>
-				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
-			</select>
-			<select name="filters[severity][<?php echo $key; ?>][value]" id="filter_severity_<?php echo $key; ?>">
-				<option value="0"> - </option>
-				<?php foreach (BUGSseverity::getAll() as $resolution): ?>
-					<option value="<?php echo $resolution->getID(); ?>"<?php if ($selected_value == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
-				<?php endforeach; ?>
-			</select>
-			<a class="image" href="javascript:void(0);" onclick="removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
-		<?php elseif ($filter == 'category'): ?>
-			<label for="filter_category_<?php echo $key; ?>"><?php echo __('Category'); ?></label>
-			<select name="filters[category][<?php echo $key; ?>][operator]">
-				<option value="="<?php if ($selected_operator == '='): ?> selected<?php endif; ?>><?php echo __('%field% is %value%', array('%field%' => '', '%value%' => '')); ?></option>
-				<option value="!="<?php if ($selected_operator == '!='): ?> selected<?php endif; ?>><?php echo __('%field% is not %value%', array('%field%' => '', '%value%' => '')); ?></option>
-			</select>
-			<select name="filters[category][<?php echo $key; ?>][value]" id="filter_category_<?php echo $key; ?>">
-				<option value="0"> - </option>
-				<?php foreach (BUGScategory::getAll() as $resolution): ?>
-					<option value="<?php echo $resolution->getID(); ?>"<?php if ($selected_value == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
+				<?php foreach ($filters[$filter]['options'] as $item): ?>
+					<option value="<?php echo $item->getID(); ?>"<?php if ($selected_value == $item->getID()): ?> selected<?php endif; ?>><?php echo $item->getName(); ?></option>
 				<?php endforeach; ?>
 			</select>
 			<a class="image" href="javascript:void(0);" onclick="removeSearchFilter(<?php echo $key; ?>);"><?php echo image_tag('action_remove_small.png', array('style' => 'margin-left: 5px;')); ?></a>
