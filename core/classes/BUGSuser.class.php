@@ -1621,6 +1621,18 @@
 		}
 
 		/**
+		 * Return whether the user can access a saved search
+		 *
+		 * @param B2DBrow $savedsearch
+		 * 
+		 * @return boolean
+		 */
+		public function canAccessSavedSearch($savedsearch)
+		{
+			return (bool) ($savedsearch->get(B2tSavedSearches::IS_PUBLIC) || $savedsearch->get(B2tSavedSearches::UID) == $this->getID());
+		}
+
+		/**
 		 * Return if the user can access configuration pages
 		 *
 		 * @param integer $section[optional] a section, or the configuration frontpage

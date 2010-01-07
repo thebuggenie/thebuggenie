@@ -24,6 +24,15 @@
 		$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to your teams'));
 	}
 
+	foreach ($savedsearches['user'] as $savedsearch)
+	{
+		$bugs_response->addFeed(make_url('search', array('saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), __($savedsearch->get(B2tSavedSearches::NAME)));
+	}
+	foreach ($savedsearches['public'] as $savedsearch)
+	{
+		$bugs_response->addFeed(make_url('search', array('saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), __($savedsearch->get(B2tSavedSearches::NAME)));
+	}
+
 ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0">
 	<tr>
@@ -68,7 +77,40 @@
 					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to my teams')); ?><br>
 				</div>
 			<?php endif; ?>
-			<div class="left_menu_header" style="margin-top: 15px;"><?php echo __('Saved searches'); ?></div>
+			<div class="left_menu_header" style="margin-top: 20px;"><?php echo (BUGScontext::isProjectContext()) ? __('Your saved searches for this project') : __('Your saved searches'); ?></div>
+			<?php if (count($savedsearches['user']) > 0): ?>
+				<?php foreach ($savedsearches['user'] as $savedsearch): ?>
+					<?php if (BUGScontext::isProjectContext()): ?>
+						<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+						<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($savedsearch->get(B2tSavedSearches::NAME))); ?><br>
+						<?php if ($row->get(B2tSavedSearches::DESCRIPTION) != ''): ?>
+							<div style="padding: 0 0 10px 3px;"><?php echo $row->get(B2tSavedSearches::DESCRIPTION); ?></div>
+						<?php endif; ?>
+					<?php else: ?>
+						<?php echo link_tag(make_url('search', array('saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+						<?php echo link_tag(make_url('search', array('saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($savedsearch->get(B2tSavedSearches::NAME))); ?><br>
+						<?php if ($row->get(B2tSavedSearches::DESCRIPTION) != ''): ?>
+							<div style="padding: 0 0 10px 3px;"><?php echo $row->get(B2tSavedSearches::DESCRIPTION); ?></div>
+						<?php endif; ?>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			<?php else: ?>
+				<div class="faded_medium" style="padding-left: 3px;" id="no_user_saved_searches"><?php echo (BUGScontext::isProjectContext()) ? __("You don't have any saved searches for this project") : __("You don't have any saved searches"); ?></div>
+			<?php endif; ?>
+			<div class="left_menu_header" style="margin-top: 20px;"><?php echo (BUGScontext::isProjectContext()) ? __('Public saved searches for this project') : __('Public saved searches'); ?></div>
+			<?php if (count($savedsearches['public']) > 0): ?>
+				<?php foreach ($savedsearches['public'] as $savedsearch): ?>
+					<?php if (BUGScontext::isProjectContext()): ?>
+						<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+						<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($savedsearch->get(B2tSavedSearches::NAME))); ?><br>
+					<?php else: ?>
+						<?php echo link_tag(make_url('search', array('saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+						<?php echo link_tag(make_url('search', array('saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($savedsearch->get(B2tSavedSearches::NAME))); ?><br>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			<?php else: ?>
+				<div class="faded_medium" style="padding-left: 3px;" id="no_public_saved_searches"><?php echo (BUGScontext::isProjectContext()) ? __("There are no saved searches for this project") : __("There are no public saved searches"); ?></div>
+			<?php endif; ?>
 		</td>
 		<td style="width: auto; padding: 5px; vertical-align: top;" id="find_issues">
 			<div class="rounded_box iceblue_borderless" style="margin: 5px 0 5px 0;">
@@ -153,6 +195,7 @@
 						</select>
 						<?php echo image_submit_tag('action_add_small.png'); ?>
 						<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'add_filter_indicator')); ?>
+						<div class="faded_medium" style="padding: 10px 0 5px 0;"><?php echo __('Please note that adding the same filter more than once means that any of the given values for that filter will return a match'); ?></div>
 					</form>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>

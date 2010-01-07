@@ -67,6 +67,21 @@
 			$this->grouporder = $request->getParameter('grouporder', 'asc');
 			$this->predefined_search = $request->getParameter('predefined_search', false);
 			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys($this->getTemplates(false)))) ? $request->getParameter('template') : 'results_normal';
+			$this->searchtitle = __('Search results');
+
+			if ($request->hasParameter('saved_search'))
+			{
+				$savedsearch = B2DB::getTable('B2tSavedSearches')->doSelectById($request->getParameter('saved_search'));
+				if ($savedsearch instanceof B2DBRow && BUGScontext::getUser()->canAccessSavedSearch($savedsearch))
+				{
+					$this->templatename = $savedsearch->get(B2tSavedSearches::TEMPLATE_NAME);
+					$this->groupby = $savedsearch->get(B2tSavedSearches::GROUPBY);
+					$this->grouporder = $savedsearch->get(B2tSavedSearches::GROUPORDER);
+					$this->ipp = $savedsearch->get(B2tSavedSearches::ISSUES_PER_PAGE);
+					$this->searchtitle = $savedsearch->get(B2tSavedSearches::NAME);
+					$this->filters = B2DB::getTable('B2tSavedSearchFilters')->getFiltersBySavedSearchID($savedsearch->get(B2tSavedSearches::ID));
+				}
+			}
 		}
 
 		protected function doSearch(BUGSrequest $request)
@@ -130,7 +145,6 @@
 				$this->resultcount = count($this->foundissues);
 			}
 
-			$this->searchtitle = __('Search results');
 			if ($request->hasParameter('predefined_search'))
 			{
 				switch ((int) $request->getParameter('predefined_search'))
@@ -188,6 +202,9 @@
 			}
 			$this->appliedfilters = $this->filters;
 			$this->templates = $this->getTemplates();
+			
+			$this->savedsearches = B2DB::getTable('B2tSavedSearches')->getAllSavedSearchesByUserIDAndPossiblyProjectID(BUGScontext::getUser()->getID(), (BUGScontext::isProjectContext()) ? BUGScontext::getCurrentProject()->getID() : null);
+			
 			if ($request->getParameter('format') == 'rss')
 			{
 				return $this->renderComponent('search/results_rss', array('issues' => $this->issues, 'searchtitle' => $this->searchtitle));
