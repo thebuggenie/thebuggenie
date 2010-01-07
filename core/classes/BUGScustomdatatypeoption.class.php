@@ -108,6 +108,7 @@
 				$this->_name = $row->get(B2tCustomFieldOptions::NAME);
 				$this->_key = $row->get(B2tCustomFieldOptions::CUSTOMFIELDS_KEY);
 				$this->_value = $row->get(B2tCustomFieldOptions::OPTION_VALUE);
+				$this->_sortorder = (int) $row->get(B2tCustomFieldOptions::SORT_ORDER);
 			}
 			else
 			{
@@ -157,7 +158,7 @@
 		 */
 		public function save()
 		{
-			B2DB::getTable('B2tCustomFieldOptions')->saveById($this->_name, $this->_value, $this->_itemdata, $this->_itemid);
+			B2DB::getTable('B2tCustomFieldOptions')->saveById($this->_name, $this->_value, $this->_itemdata, $this->_sortorder, $this->_itemid);
 		}
 
 	}

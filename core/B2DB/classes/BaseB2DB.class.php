@@ -24,7 +24,7 @@
 		static protected $_tableprefix = '';
 		static protected $_sqlhits;
 		static protected $_throwhtmlexception = false;
-		static protected $_aliases = array();
+		static protected $_aliascnt = 0;
 		static protected $_transaction_active = false;
 		static protected $_tables = array();
 		static protected $_debug_mode = true;
@@ -54,13 +54,7 @@
 		
 		public static function addAlias()
 		{
-			$rnd_no = rand(1, 3000);
-			while (in_array($rnd_no, self::$_aliases))
-			{
-				$rnd_no = rand(1, 3000);
-			}
-			self::$_aliases[] = $rnd_no;
-			return $rnd_no;
+			return self::$_aliascnt++;
 		}
 		
 		public static function initialize($dont_load_params = false)
@@ -477,11 +471,10 @@
 		{
 			$retarr = array();
 			
-			//$retarr['mysqli'] = 'MySQL (mysqli)';
 			if (class_exists('PDO'))
 			{
-				$retarr['mysql'] = 'MySQL (PDO - recommended)';
-				$retarr['pgsql'] = 'PostgreSQL (PDO - experimental)';
+				$retarr['mysql'] = 'MySQL';
+				$retarr['pgsql'] = 'PostgreSQL';
 				/*$retarr['mssql'] = 'MsSQL (PDO)';
 				$retarr['sybase'] = 'Sybase (PDO)';
 				$retarr['dblib'] = 'DBLib (PDO)';
@@ -489,6 +482,10 @@
 				$retarr['ibm'] = 'IBM (PDO)';
 				$retarr['oci'] = 'Oracle (PDO)';
 				$retarr['sqlite'] = 'SQLite (PDO)';*/
+			}
+			else
+			{
+				throw new B2DBException('You need to have PHP PDO installed to be able to use this software');
 			}
 			
 			return $retarr;

@@ -38,35 +38,7 @@
 			{
 				$this->_fields[$key] = $val;
 			}
-			//try
-			//{
-				$this->_statement = $statement;
-				/*$values = $this->_statement->getColumnValuesForCurrentRow();
-				var_dump($values);
-				$columns = $this->_statement->getCriteria()->getSelectionColumns();
-				$cc = 0;
-				foreach ($columns as $aColumn)
-				{
-					if ($aColumn['alias'] != '')
-					{
-						$this->_fields[$aColumn['alias']] = $values[$cc];
-					}
-					else
-					{
-						if (!array_key_exists($cc, $values))
-						{
-							die(var_dump($values, $columns));
-						}
-						$this->_fields[$this->_statement->getCriteria()->getSelectionAlias($aColumn['column'])] = $values[$cc]; 
-					}
-					$cc++;
-				}
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-			//var_dump($this->_fields);*/
+			$this->_statement = $statement;
 		}
 		
 		public function get($column, $foreign_key = null)

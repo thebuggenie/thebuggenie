@@ -185,14 +185,16 @@
 		{
 			$trans = B2DB::startTransaction();
 			
-			$crit2 = new B2DBCriteria();
-			$crit2->setFromTable($this, true);
-			//$crit2->addJoin(B2DB::getTable('B2tProjects'));
-			$crit2->addWhere(self::PROJECT_ID, $p_id);
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PROJECT_ID, $p_id);
+			var_dump($p_id);
+			$crit->addSelectionColumn(self::ISSUE_NO, 'issueno', B2DBCriteria::DB_MAX, '', '+1');
+			$row = $this->doSelectOne($crit, 'none');
+			//var_dump($row);
+			//var_dump($row);
+			$issue_no = $row->get('issueno');
+			//var_dump($issue_no);
 			
-			$crit2->addSelectionColumn(self::ISSUE_NO, '', B2DBCriteria::DB_MAX);
-			//$crit2->addSelectionColumn(B2tProjects::DEFAULT_STATUS);
-			$row = $this->doSelectOne($crit2, 'none');
 			$status_id = (int) BUGSfactory::projectLab($p_id)->getDefaultStatusID();
 			
 			$crit = $this->getCriteria();
@@ -202,7 +204,7 @@
 			{
 				$crit->addInsert(self::ID, $issue_id);
 			}
-			$crit->addInsert(self::ISSUE_NO, (int) $row->get(self::ISSUE_NO) + 1);
+			$crit->addInsert(self::ISSUE_NO, (int) $issue_no);
 			$crit->addInsert(self::POSTED, $posted);
 			$crit->addInsert(self::LAST_UPDATED, $posted);
 			$crit->addInsert(self::TITLE, $title);
@@ -213,30 +215,7 @@
 			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			$trans->commitAndEnd();
-			return ($issue_id === null) ? $res->getInsertID() : $issue_id;
-		}
-		
-		public function createNewInitialIssueForProject($title, $description, $issue_type, $p_id, $issue_id = null)
-		{
-			$project = BUGSfactory::projectLab($p_id);
-			$posted = $_SERVER["REQUEST_TIME"];
-			
-			$crit = $this->getCriteria();
-			if ($issue_id !== null)
-			{
-				$crit->addInsert(self::ID, $issue_id);
-			}
-			$crit->addInsert(self::ISSUE_NO, 1);
-			$crit->addInsert(self::POSTED, $posted);
-			$crit->addInsert(self::LAST_UPDATED, $posted);
-			$crit->addInsert(self::TITLE, $title);
-			$crit->addInsert(self::PROJECT_ID, $p_id);
-			$crit->addInsert(self::LONG_DESCRIPTION, $description);
-			$crit->addInsert(self::ISSUE_TYPE, $issue_type);
-			$crit->addInsert(self::POSTED_BY, BUGScontext::getUser()->getUID());
-			$crit->addInsert(self::STATUS, $row->get(B2tProjects::DEFAULT_STATUS));
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
-			$res = $this->doInsert($crit);
+			die();
 			return ($issue_id === null) ? $res->getInsertID() : $issue_id;
 		}
 		
@@ -248,7 +227,16 @@
 			$row = $this->doSelectOne($crit, array(self::PROJECT_ID));
 			return $row;
 		}
-		
+
+		public function getByProjectIDAndIssueNo($project_id, $issue_no)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addWhere(self::ISSUE_NO, $issue_no);
+			$row = $this->doSelectOne($crit);
+			return $row;
+		}
+
 		public function setDuplicate($issue_id, $duplicate_of)
 		{
 			$crit = $this->getCriteria();
@@ -358,7 +346,7 @@
 			}
 		}
 
-		public function findIssues($searchterm, $results_per_page = 30, $offset = 0, $filters = array(), $groupby = null)
+		public function findIssues($searchterm, $results_per_page = 30, $offset = 0, $filters = array(), $groupby = null, $grouporder = null)
 		{
 			$crit = $this->getCriteria();
 			if ($searchterm != '')
@@ -439,35 +427,36 @@
 
 			if ($groupby !== null)
 			{
+				$grouporder = ($grouporder !== null) ? (($grouporder == 'asc') ? B2DBCriteria::SORT_ASC : B2DBCriteria::SORT_DESC) : B2DBCriteria::SORT_ASC;
 				switch ($groupby)
 				{
 					case 'category':
-						$crit->addOrderBy(self::CATEGORY);
+						$crit->addOrderBy(B2tListTypes::CATEGORY, $grouporder);
 						break;
 					case 'status':
-						$crit->addOrderBy(self::STATUS);
+						$crit->addOrderBy(self::STATUS, $grouporder);
 						break;
 					case 'milestone':
-						$crit->addOrderBy(self::MILESTONE);
+						$crit->addOrderBy(self::MILESTONE, $grouporder);
 						break;
 					case 'assignee':
 						$crit->addOrderBy(self::ASSIGNED_TYPE);
-						$crit->addOrderBy(self::ASSIGNED_TO);
+						$crit->addOrderBy(self::ASSIGNED_TO, $grouporder);
 						break;
 					case 'state':
-						$crit->addOrderBy(self::STATE);
+						$crit->addOrderBy(self::STATE, $grouporder);
 						break;
 					case 'severity':
-						$crit->addOrderBy(self::SEVERITY);
+						$crit->addOrderBy(self::SEVERITY, $grouporder);
 						break;
 					case 'resolution':
-						$crit->addOrderBy(self::RESOLUTION);
+						$crit->addOrderBy(self::RESOLUTION, $grouporder);
 						break;
 					case 'priority':
-						$crit->addOrderBy(self::PRIORITY);
+						$crit->addOrderBy(self::PRIORITY, $grouporder);
 						break;
 					case 'issuetype':
-						$crit->addOrderBy(self::ISSUE_TYPE);
+						$crit->addOrderBy(self::ISSUE_TYPE, $grouporder);
 						break;
 				}
 			}

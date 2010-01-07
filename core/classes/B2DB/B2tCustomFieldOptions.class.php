@@ -43,15 +43,24 @@
 		{
 			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
 
+			$trans = B2DB::startTransaction();
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
+			$crit->addSelectionColumn(self::SORT_ORDER, 'sortorder', B2DBCriteria::DB_MAX, '', '+1');
+			$row = $this->doSelectOne($crit, 'none');
+			$sort_order = $row->get('sortorder');
+
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, $name);
 			$crit->addInsert(self::OPTION_VALUE, $value);
 			$crit->addInsert(self::CUSTOMFIELDS_KEY, $key);
+			$crit->addInsert(self::SORT_ORDER, $sort_order);
 			if ($itemdata !== null)
 			{
 				$crit->addInsert(self::ITEMDATA, $itemdata);
 			}
 			$crit->addInsert(self::SCOPE, $scope);
+			$trans->commitAndEnd();
 
 			return $this->doInsert($crit);
 		}
@@ -61,7 +70,8 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
 			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
-
+			$crit->addOrderBy(self::SORT_ORDER, B2DBCriteria::SORT_ASC);
+			
 			$res = $this->doSelect($crit);
 			
 			$retval = array();
@@ -89,12 +99,13 @@
 			return $row;
 		}
 
-		public function saveById($name, $value, $itemdata, $id)
+		public function saveById($name, $value, $itemdata, $sortorder, $id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addUpdate(self::NAME, $name);
 			$crit->addUpdate(self::OPTION_VALUE, $value);
 			$crit->addUpdate(self::ITEMDATA, $itemdata);
+			$crit->addUpdate(self::SORT_ORDER, $sortorder);
 
 			$res = $this->doUpdateById($crit, $id);
 		}

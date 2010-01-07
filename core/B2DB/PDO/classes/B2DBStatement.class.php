@@ -65,14 +65,17 @@
 				if (BaseB2DB::isDebugMode())
 				{
 					BUGSlogging::log($this->printSQL(), 'B2DB');
+					BUGSlogging::log('Values: ' . implode(', ', $values), 'B2DB');
 				}
-				//BUGSlogging::log(print_r($values));
 				if (!$res = $this->statement->execute($values))
 				{
 					$error = $this->statement->errorInfo();
 					throw new B2DBException($error[2], $this->printSQL());
 				}
-				BUGSlogging::log('done', 'B2DB');
+				if (BaseB2DB::isDebugMode())
+				{
+					BUGSlogging::log('done', 'B2DB');
+				}
 				B2DB::sqlHit();
 				if ($this->getCriteria() instanceof BaseB2DBCriteria && $this->getCriteria()->action == 'insert')
 				{

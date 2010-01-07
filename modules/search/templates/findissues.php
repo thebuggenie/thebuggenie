@@ -104,6 +104,10 @@
 								<option disabled value="edition"<?php if ($groupby == 'edition'): ?> selected<?php endif; ?>><?php echo __('Edition'); ?></option>
 								<option disabled value="build"<?php if ($groupby == 'build'): ?> selected<?php endif; ?>><?php echo __('Version'); ?></option>
 								<option disabled value="component"<?php if ($groupby == 'component'): ?> selected<?php endif; ?>><?php echo __('Component'); ?></option>
+							</select>
+							<select name="grouporder" id="grouporder">
+								<option value="asc"<?php if ($grouporder == 'asc'): ?> selected<?php endif; ?>><?php echo __('Ascending'); ?></option>
+								<option value="desc"<?php if ($grouporder == 'desc'): ?> selected<?php endif; ?>><?php echo __('Descending'); ?></option>
 							</select><br>
 							<ul id="search_filters_list">
 								<?php foreach ($appliedfilters as $filter => $filter_info): ?>

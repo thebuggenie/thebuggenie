@@ -43,6 +43,14 @@
 		 */
 		protected $_appliesto = null;
 
+		/**
+		 * Sort order of this item
+		 *
+		 * @var integer
+		 * @access protected
+		 */
+		protected $_sortorder = null;
+
 		abstract function __construct($item_id, $row = null);
 		
 		public function getName()
@@ -121,6 +129,16 @@
 		public function canUserSet(BUGSuser $user)
 		{
 			return $user->hasPermission($this->getPermissionsKey(), $this->getID(), 'core', true, true);
+		}
+
+		public function setOrder($order)
+		{
+			$this->_sortorder = $order;
+		}
+
+		public function getOrder()
+		{
+			return (int) $this->_sortorder;
 		}
 
 	}

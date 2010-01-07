@@ -96,6 +96,7 @@
 				$this->_appliesto = $row->get(B2tListTypes::APPLIES_TO);
 				$this->_itemdata = $row->get(B2tListTypes::ITEMDATA);
 				$this->_name = $row->get(B2tListTypes::NAME);
+				$this->_sortorder = (int) $row->get(B2tListTypes::ORDER);
 			}
 			else
 			{
@@ -139,7 +140,7 @@
 		 */
 		public function save()
 		{
-			B2DB::getTable('B2tListTypes')->saveById($this->_name, $this->_itemdata, $this->_itemid);
+			B2DB::getTable('B2tListTypes')->saveById($this->_name, $this->_itemdata, $this->_sortorder, $this->_itemid);
 		}
 
 		public function isBuiltin()

@@ -336,7 +336,7 @@
 			return $this->selections;
 		}
 		
-		public function getSelectionColumn($column)
+		public function getSelectionColumn($column, $join_column = null)
 		{
 			if ($column instanceof B2DBCriterion)
 			{
@@ -354,15 +354,18 @@
 					}
 				}
 				list($table_name, $column_name) = explode('.', $column);
-				if ($this->fromtable->getB2DBAlias() == $table_name || $this->fromtable->getB2DBName() == $table_name)
+				if ($join_column === null)
 				{
-					$retval = $this->fromtable->getB2DBAlias() . '.' . $column_name;
-					return $retval;
+					if ($this->fromtable->getB2DBAlias() == $table_name || $this->fromtable->getB2DBName() == $table_name)
+					{
+						$retval = $this->fromtable->getB2DBAlias() . '.' . $column_name;
+						return $retval;
+					}
+					if (isset($this->jointables[$table_name])) return $this->jointables[$table_name]['jointable']->getB2DBAlias() . '.' . $column_name;
 				}
-				if (isset($this->jointables[$table_name])) return $this->jointables[$table_name]['jointable']->getB2DBAlias() . '.' . $column_name; 
 				foreach ($this->jointables as $a_table)
 				{
-					if ($a_table['jointable']->getB2DBName() == $table_name)
+					if (($join_column !== null && $a_table['col2'] == $join_column) || ($join_column === null && $a_table['jointable']->getB2DBName() == $table_name))
 					{
 						$retval = $a_table['jointable']->getB2DBAlias() . '.' . $column_name;
 						return $retval;
@@ -405,8 +408,19 @@
 		 * 
 		 * @return Base2DBCriteria
 		 */
-		public function addOrderBy($column, $sort = null)
+		public function addOrderBy($column, $sort = null, $join_column = null)
 		{
+			if ($join_column !== null)
+			{
+				$column = null;
+				foreach ($this->jointables as $table_alias => $join_options)
+				{
+					if ($join_options['col2'] == $join_column)
+					{
+						$column = $join_options['jointable']->getSelectionAlias($column);
+					}
+				}
+			}
 			if (is_array($column))
 			{
 				foreach ($column as $a_sort)
@@ -707,9 +721,8 @@
 						{
 							$sql .= ' @' . $a_sel['variable'] . ':=';
 						}
-						$sql .= strtoupper($a_sel['special']) . '(' . $a_sel['column'];
-						$sql .= ($a_sel['additional'] != '') ? ' ' . $a_sel['additional'] : '';
-						$sql .= ')';
+						$sql .= strtoupper($a_sel['special']) . '(' . $a_sel['column'] . ')';
+						$sql .= ($a_sel['additional'] != '') ? ' ' . $a_sel['additional'] . ' ' : '';
 						if (strlen(stristr($a_sel['special'], '(')) > 0)
 						{
 							$sql .= ')';
@@ -854,6 +867,7 @@
 				{
 					$sql .= $this->_parseCriterion($a_crit['column']);
 				}
+				//var_dump($this->values);
 				$first_crit = false;
 			}
 			if (count($critn->wheres) > 0)

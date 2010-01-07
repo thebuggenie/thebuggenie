@@ -502,11 +502,9 @@
 			{
 				try
 				{
-					$theIssue = BUGSfactory::BUGSissueLab((int) $issue_no);
-					if ($theIssue->getProject()->usePrefix())
-					{
-						return null;
-					}
+					if (BUGScontext::getCurrentProject()->usePrefix()) return null;
+					if ($row = B2DB::getTable('B2tIssues')->getByProjectIDAndIssueNo(BUGScontext::getCurrentProject()->getID(), $issue_no))
+					$theIssue = BUGSfactory::BUGSissueLab($row->get(B2tIssues::ID), $row);
 				}
 				catch (Exception $e)
 				{
@@ -531,10 +529,10 @@
 			return ($theIssue instanceof BUGSissue) ? $theIssue : null;
 		}
 
-		public static function findIssues($searchterm, $results_per_page = 30, $offset = 0, $filters = array(), $groupby = null)
+		public static function findIssues($searchterm, $results_per_page = 30, $offset = 0, $filters = array(), $groupby = null, $grouporder = null)
 		{
 			$issues = array();
-			list ($res, $count) = B2DB::getTable('B2tIssues')->findIssues($searchterm, $results_per_page, $offset, $filters, $groupby);
+			list ($res, $count) = B2DB::getTable('B2tIssues')->findIssues($searchterm, $results_per_page, $offset, $filters, $groupby, $grouporder);
 			if ($res)
 			{
 				while ($row = $res->getNextRow())
@@ -1167,7 +1165,7 @@
 			}
 			else
 			{
-				return (($link_formatted) ? '#' : '') . $this->getID();
+				return (($link_formatted) ? '#' : '') . $this->getIssueNo();
 			}
 		}
 	

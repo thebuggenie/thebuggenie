@@ -64,6 +64,7 @@
 			$this->offset = $request->getParameter('offset', 0);
 			$this->filters = $request->getParameter('filters', array());
 			$this->groupby = $request->getParameter('groupby');
+			$this->grouporder = $request->getParameter('grouporder', 'asc');
 			$this->predefined_search = $request->getParameter('predefined_search', false);
 			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys($this->getTemplates(false)))) ? $request->getParameter('template') : 'results_normal';
 		}
@@ -113,7 +114,7 @@
 							break;
 					}
 				}
-				list ($this->foundissues, $this->resultcount) = BUGSissue::findIssues($this->searchterm, $this->ipp, $this->offset, $this->filters, $request->getParameter('groupby'));
+				list ($this->foundissues, $this->resultcount) = BUGSissue::findIssues($this->searchterm, $this->ipp, $this->offset, $this->filters, $this->groupby, $this->grouporder);
 			}
 			elseif (count($this->foundissues) == 1 && $request->getParameter('quicksearch'))
 			{

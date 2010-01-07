@@ -27,6 +27,7 @@
 		const ITEMDATA = 'listtypes.itemdata';
 		const APPLIES_TO = 'listtypes.applies_to';
 		const APPLIES_TYPE = 'listtypes.applies_type';
+		const ORDER = 'listtypes.order';
 		
 		protected static $_item_cache = null;
 		
@@ -37,7 +38,7 @@
 			parent::_addVarchar(self::ITEMTYPE, 25);
 			parent::_addText(self::ITEMDATA, false);
 			parent::_addInteger(self::APPLIES_TO, 10);
-			parent::_addInteger(self::APPLIES_TYPE, 3);
+			parent::_addInteger(self::ORDER, 3);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 		}
 		
@@ -53,6 +54,7 @@
 				self::$_item_cache = array();
 				$crit = $this->getCriteria();
 				$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+				$crit->addOrderBy(self::ORDER, B2DBCriteria::SORT_ASC);
 				if ($res = $this->doSelect($crit))
 				{
 					while ($row = $res->getNextRow())
@@ -80,16 +82,26 @@
 		{
 			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
 
+			$trans = B2DB::startTransaction();
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ITEMTYPE, $itemtype);
+			$crit->addSelectionColumn(self::ORDER, 'sortorder', B2DBCriteria::DB_MAX, '', '+1');
+			$row = $this->doSelectOne($crit, 'none');
+			$sort_order = $row->get('sortorder');
+
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, $name);
 			$crit->addInsert(self::ITEMTYPE, $itemtype);
+			$crit->addInsert(self::ORDER, $sort_order);
 			if ($itemdata !== null)
 			{
 				$crit->addInsert(self::ITEMDATA, $itemdata);
 			}
 			$crit->addInsert(self::SCOPE, $scope);
+			$res = $this->doInsert($crit);
+			$trans->commitAndEnd();
 			
-			return $this->doInsert($crit);
+			return $res;
 		}
 
 		public function loadFixtures($scope)
@@ -168,11 +180,12 @@
 			}
 		}
 
-		public function saveById($name, $itemdata, $id)
+		public function saveById($name, $itemdata, $order, $id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addUpdate(self::NAME, $name);
 			$crit->addUpdate(self::ITEMDATA, $itemdata);
+			$crit->addUpdate(self::ORDER, $order);
 
 			$res = $this->doUpdateById($crit, $id);
 		}
