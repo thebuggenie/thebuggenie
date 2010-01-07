@@ -3,7 +3,7 @@
 		<td style="width: 30px;"><div style="border: 0; background-color: <?php echo $item->getColor(); ?>; font-size: 1px; width: 25px; height: 8px; margin-right: 2px;" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata">&nbsp;</div></td>
 	<?php endif; ?>
 	<?php if (!$item->isBuiltin()): ?>
-		<td style="width: 50px;"><?php echo $item->getValue(); ?></td>
+		<td style="width: 50px;" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_value"><?php echo $item->getValue(); ?></td>
 	<?php endif; ?>
 	<td style="padding: 2px; font-size: 12px;" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_name"><?php echo $item->getName(); ?></td>
 	<td style="width: 60px; padding: 2px; text-align: right;">
@@ -25,7 +25,7 @@
 					<?php endif; ?>
 					<?php if (!array_key_exists($type, BUGSdatatype::getTypes())): ?>
 						<td style="font-size: 14px; width: 70px;">
-							<input type="text" name="value" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata_input" style="width: 45px;" value="<?php echo $item->getValue(); ?>">
+							<input type="text" name="value" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_value_input" style="width: 45px;" value="<?php echo $item->getValue(); ?>">
 						</td>
 					<?php endif; ?>
 					<td>

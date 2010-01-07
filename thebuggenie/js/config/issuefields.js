@@ -193,9 +193,13 @@ function editIssuefieldOption(url, type, id)
 			$('edit_' + type + '_' + id + '_indicator').hide();
 			successMessage(json.title, '');
 			$(type + '_' + id + '_name').update($(type + '_' + id + '_name_input').getValue());
-			if (type == 'status')
+			if ($(type + '_' + id + '_itemdata_input') && $(type + '_' + id + '_itemdata'))
 			{
-				$(type + '_' + id + '_itemdata').update($(type + '_' + id + '_itemdata_input').getValue());
+				$(type + '_' + id + '_itemdata').style.backgroundColor = $(type + '_' + id + '_itemdata_input').getValue();
+			}
+			if ($(type + '_' + id + '_value_input') && $(type + '_' + id + '_value'))
+			{
+				$(type + '_' + id + '_value').update($(type + '_' + id + '_value_input').getValue());
 			}
 			$('item_' + type + '_' + id).show();
 			$('edit_item_' + id).hide();
