@@ -11,7 +11,7 @@
 			<link><?php echo make_url('home', array(), false); ?></link>
 		</image>
 <?php foreach ($issues as $issue): ?>
-
+		
 		<item>
 			<title><?php echo $issue->getFormattedIssueNo(true) . ' - ' . strip_tags($issue->getTitle()); ?></title>
 			<description><?php echo strip_tags($issue->getDescription()); ?></description>

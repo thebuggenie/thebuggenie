@@ -1461,10 +1461,10 @@ thead.borderless th { border: 0; }
 .permission_list ul li { margin: 0px; padding: 0; font-size: 13px; font-weight: normal; clear: both; background-color: transparent; }
 .permission_list ul li:hover { background-color: #FAFAFA; }
 .permission_list ul li a { display: block; padding: 2px 0 2px 0; }
-.permission_list ul li a.permission_description { display: block; width: 685px; }
+.permission_list ul li a.permission_description { display: block; width: 670px; }
 .permission_list ul li a:hover { border: 0; }
 .permission_list ul li .content a { display: inline; }
-.permission_list ul li ul { margin: 5px 10px 20px 10px; width: 675px; }
+.permission_list ul li ul { margin: 5px 10px 20px 10px; width: 665px; }
 .permission_list ul li ul li { font-size: 12px; }
 .permission_list ul li ul li:hover { background-color: #F1F1F1; }
 .permission_list ul li ul li a.permission_description { display: block; width: 580px; }

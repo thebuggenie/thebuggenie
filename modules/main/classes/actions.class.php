@@ -43,6 +43,10 @@
 			}
 			BUGSlogging::log('done (Loading issue)');
 			$this->getResponse()->setPage('viewissue');
+			if ($issue instanceof BUGSissue && !$issue->hasAccess())
+			{
+				$issue = null;
+			}
 			$message = BUGScontext::getMessageAndClear('issue_saved');
 			
 			if ($request->isMethod(BUGSrequest::POST) && $issue instanceof BUGSissue && $request->hasParameter('issue_action'))

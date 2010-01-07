@@ -538,6 +538,7 @@
 				while ($row = $res->getNextRow())
 				{
 					$issue = BUGSfactory::BUGSissueLab($row->get(B2tIssues::ID), $row);
+					if (!$issue->hasAccess()) continue;
 					$issues[] = $issue;
 				}
 			}
@@ -644,36 +645,31 @@
 			BUGSlogging::log('checking access to issue ' . $this->getFormattedIssueNo());
 			$i_id = $this->getID();
 			$project_id = $this->getProjectID();
-			if (BUGScontext::getUser()->hasPermission("b2viewissue", $i_id) == true)
+			$specific_access = BUGScontext::getUser()->hasPermission("canviewissue", $i_id, 'core', true, null);
+			if ($specific_access !== null)
 			{
-				BUGSlogging::log('done checking, allowed');
+				BUGSlogging::log('done checking, returning specific access ' . (($specific_access) ? 'allowed' : 'denied'));
+				return $specific_access;
+			}
+			if ($this->getPostedByID() == BUGScontext::getUser()->getID())
+			{
+				BUGSlogging::log('done checking, allowed since this user posted it');
 				return true;
 			}
-			elseif (BUGScontext::getUser()->hasPermission("b2notviewissue", $i_id) == false)
+			if ($this->getOwnerType() == BUGSidentifiableclass::TYPE_USER && $this->getOwnerID() == BUGScontext::getUser()->getID())
 			{
-				if (BUGScontext::getUser()->hasPermission("b2projectaccess", $project_id))
-				{
-					if (BUGScontext::getUser()->hasPermission('b2canonlyviewownissues', 0) == false)
-					{
-						BUGSlogging::log('done checking, allowed');
-						return true;
-					}
-					if ($this->getPostedByID() == BUGScontext::getUser()->getID())
-					{
-						BUGSlogging::log('done checking, allowed');
-						return true;
-					}
-					if ($this->getOwnerType() == BUGSidentifiableclass::TYPE_USER && $this->getOwnerID() == BUGScontext::getUser()->getID())
-					{
-						BUGSlogging::log('done checking, allowed');
-						return true;
-					}
-					if ($this->getAssigneeType() == BUGSidentifiableclass::TYPE_USER && $this->getAssigneeID() == BUGScontext::getUser()->getID())
-					{
-						BUGSlogging::log('done checking, allowed');
-						return true;
-					}
-				}
+				BUGSlogging::log('done checking, allowed since this user owns it');
+				return true;
+			}
+			if ($this->getAssigneeType() == BUGSidentifiableclass::TYPE_USER && $this->getAssigneeID() == BUGScontext::getUser()->getID())
+			{
+				BUGSlogging::log('done checking, allowed since this user is assigned to it');
+				return true;
+			}
+			if (BUGScontext::getUser()->hasPermission("canseeproject", $project_id))
+			{
+				BUGSlogging::log('done checking, can access project, returning '. ((BUGScontext::getUser()->hasPermission("canseeallissues", $i_id, 'core', false, true)) ? 'allowed' : 'denied'));
+				return BUGScontext::getUser()->hasPermission("canseeallissues", $i_id, 'core', false, true);
 			}
 			BUGSlogging::log('done checking, denied');
 			return false;

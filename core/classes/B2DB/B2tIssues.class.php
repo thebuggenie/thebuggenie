@@ -187,13 +187,10 @@
 			
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $p_id);
-			var_dump($p_id);
 			$crit->addSelectionColumn(self::ISSUE_NO, 'issueno', B2DBCriteria::DB_MAX, '', '+1');
 			$row = $this->doSelectOne($crit, 'none');
-			//var_dump($row);
-			//var_dump($row);
 			$issue_no = $row->get('issueno');
-			//var_dump($issue_no);
+			if ($issue_no < 1) $issue_no = 1;
 			
 			$status_id = (int) BUGSfactory::projectLab($p_id)->getDefaultStatusID();
 			
@@ -215,7 +212,6 @@
 			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			$trans->commitAndEnd();
-			die();
 			return ($issue_id === null) ? $res->getInsertID() : $issue_id;
 		}
 		
