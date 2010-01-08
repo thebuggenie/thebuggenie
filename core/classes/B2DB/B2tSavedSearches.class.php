@@ -30,18 +30,14 @@
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('B2tUsers'), B2tUsers::ID);
 		}
 
-		public function getAllSavedSearchesByUserIDAndPossiblyProjectID($user_id, $project_id = null)
+		public function getAllSavedSearchesByUserIDAndPossiblyProjectID($user_id, $project_id = 0)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
 			$ctn = $crit->returnCriterion(self::UID, $user_id);
 			$ctn->addOr(self::UID, 0);
 			$crit->addWhere($ctn);
-			
-			if ($project_id !== null)
-			{
-				$crit->addWhere(self::APPLIES_TO_PROJECT, $project_id);
-			}
+			$crit->addWhere(self::APPLIES_TO_PROJECT, $project_id);
 
 			$retarr = array('user' => array(), 'public' => array());
 			
