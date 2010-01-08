@@ -150,6 +150,7 @@
 			
 			// we remove multiple /
 			$url = preg_replace('#/+#', '/', $url);
+			BUGSlogging::log('URL is now ' . $url, 'routing');
 			foreach ($this->routes as $route_name => $route)
 			{
 				$out = array();
@@ -362,7 +363,17 @@
 							{
 								foreach ($v as $vk => $vv)
 								{
-									$tmp[] = "{$key}[{$k}][{$vk}]".$equals.urlencode($vv);
+									if (is_array($vv))
+									{
+										foreach ($vv as $vvk => $vvv)
+										{
+											$tmp[] = "{$key}[{$k}][{$vk}][{$vvk}]".$equals.urlencode($vvv);
+										}
+									}
+									else
+									{
+										$tmp[] = "{$key}[{$k}][{$vk}]".$equals.urlencode($vv);
+									}
 								}
 							}
 							else

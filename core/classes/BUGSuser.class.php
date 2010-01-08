@@ -1621,6 +1621,16 @@
 		}
 
 		/**
+		 * Return if the user can create public saved searches
+		 *
+		 * @return boolean
+		 */
+		public function canCreatePublicSearches()
+		{
+			return (bool) ($this->hasPermission('cancreatepublicsearches') || $this->hasPermission('canfindissuesandsavesearches'));
+		}
+
+		/**
 		 * Return whether the user can access a saved search
 		 *
 		 * @param B2DBrow $savedsearch

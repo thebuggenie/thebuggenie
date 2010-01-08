@@ -63,17 +63,24 @@
 			$this->ipp = $request->getParameter('issues_per_page', 30);
 			$this->offset = $request->getParameter('offset', 0);
 			$this->filters = $request->getParameter('filters', array());
+			if (BUGScontext::isProjectContext())
+			{
+				$this->filters['project_id'][0] = array('operator' => '=', 'value' => BUGScontext::getCurrentProject()->getID());
+			}
 			$this->groupby = $request->getParameter('groupby');
 			$this->grouporder = $request->getParameter('grouporder', 'asc');
 			$this->predefined_search = $request->getParameter('predefined_search', false);
 			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys($this->getTemplates(false)))) ? $request->getParameter('template') : 'results_normal';
 			$this->searchtitle = __('Search results');
+			$this->issavedsearch = false;
 
 			if ($request->hasParameter('saved_search'))
 			{
 				$savedsearch = B2DB::getTable('B2tSavedSearches')->doSelectById($request->getParameter('saved_search'));
 				if ($savedsearch instanceof B2DBRow && BUGScontext::getUser()->canAccessSavedSearch($savedsearch))
 				{
+					$this->issavedsearch = true;
+					$this->savedsearch = $savedsearch;
 					$this->templatename = $savedsearch->get(B2tSavedSearches::TEMPLATE_NAME);
 					$this->groupby = $savedsearch->get(B2tSavedSearches::GROUPBY);
 					$this->grouporder = $savedsearch->get(B2tSavedSearches::GROUPORDER);
@@ -94,10 +101,6 @@
 
 			if (count($this->foundissues) == 0)
 			{
-				if (BUGScontext::isProjectContext())
-				{
-					$this->filters['project_id'][0] = array('operator' => '=', 'value' => BUGScontext::getCurrentProject()->getID());
-				}
 				if ($request->hasParameter('predefined_search'))
 				{
 					switch ((int) $request->getParameter('predefined_search'))
@@ -129,7 +132,7 @@
 							break;
 					}
 				}
-				list ($this->foundissues, $this->resultcount) = BUGSissue::findIssues($this->searchterm, $this->ipp, $this->offset, $this->filters, $this->groupby, $this->grouporder);
+				list ($this->foundissues, $this->resultcount) = BUGSissue::findIssues($this->filters, $this->ipp, $this->offset, $this->groupby, $this->grouporder);
 			}
 			elseif (count($this->foundissues) == 1 && $request->getParameter('quicksearch'))
 			{
@@ -192,18 +195,53 @@
 		 */
 		public function runFindIssues(BUGSrequest $request)
 		{
-			$this->show_results = ($request->hasParameter('searchfor') || $request->getParameter('search', false)) ? true : false;
+			$this->show_results = ($request->hasParameter('filters') || $request->getParameter('search', false)) ? true : false;
 			$this->_getSearchDetailsFromRequest($request);
 
-			if ($this->show_results)
+			if ($request->isMethod(BUGSrequest::POST))
+			{
+				if ($request->getParameter('saved_search_name') != '')
+				{
+					$project_id = (BUGScontext::isProjectContext()) ? BUGScontext::getCurrentProject()->getID() : 0;
+					B2DB::getTable('B2tSavedSearches')->saveSearch($request->getParameter('saved_search_name'), $request->getParameter('saved_search_description'), $request->getParameter('saved_search_public'), $this->filters, $this->groupby, $this->grouporder, $this->ipp, $this->templatename, $project_id, $request->getParameter('saved_search_id'));
+					if ($request->getParameter('saved_search_id'))
+					{
+						BUGScontext::setMessage('search_message', BUGScontext::getI18n()->__('The saved search was updated'));
+					}
+					else
+					{
+						BUGScontext::setMessage('search_message', BUGScontext::getI18n()->__('The saved search has been created'));
+					}
+					$params = array();
+				}
+				else
+				{
+					BUGScontext::setMessage('search_error', BUGScontext::getI18n()->__('You have to specify a name for the saved search'));
+					$params = array('filters' => $this->filters, 'groupby' => $this->groupby, 'grouporder' => $this->grouporder, 'templatename' => $this->templatename, 'saved_search' => $request->getParameter('saved_search_id'), 'issues_per_page' => $this->ipp);
+				}
+				if (BUGScontext::isProjectContext())
+				{
+					$route = 'project_issues';
+					$params['project_key'] = BUGScontext::getCurrentProject()->getKey();
+				}
+				else
+				{
+					$route = 'search';
+				}
+				//var_dump($params);die();
+				$this->forward(BUGScontext::getRouting()->generate($route, $params));
+			}
+			elseif ($this->show_results)
 			{
 				$this->doSearch($request);
 				$this->issues = $this->foundissues;
 			}
+			$this->search_error = BUGScontext::getMessageAndClear('search_error');
+			$this->search_message = BUGScontext::getMessageAndClear('search_message');
 			$this->appliedfilters = $this->filters;
 			$this->templates = $this->getTemplates();
 			
-			$this->savedsearches = B2DB::getTable('B2tSavedSearches')->getAllSavedSearchesByUserIDAndPossiblyProjectID(BUGScontext::getUser()->getID(), (BUGScontext::isProjectContext()) ? BUGScontext::getCurrentProject()->getID() : null);
+			$this->savedsearches = B2DB::getTable('B2tSavedSearches')->getAllSavedSearchesByUserIDAndPossiblyProjectID(BUGScontext::getUser()->getID(), (BUGScontext::isProjectContext()) ? BUGScontext::getCurrentProject()->getID() : 0);
 			
 			if ($request->getParameter('format') == 'rss')
 			{

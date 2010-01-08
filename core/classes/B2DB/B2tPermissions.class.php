@@ -109,6 +109,8 @@
 			$this->setPermission(0, $guest_group_id, 0, false, 'core', 'page_account_access', 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', 'cancreateandeditissues', 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', 'canfindissuesandsavesearches', 0, $scope_id);
+			$this->setPermission(0, 0, 0, false, 'core', 'cancreatepublicsearches', 0, $scope_id);
+			$this->setPermission(0, $admin_group_id, 0, true, 'core', 'cancreatepublicsearches', 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', 'caneditissuecustomfieldsown', 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', 'canpostandeditcomments', 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "canseeproject", 0, $scope_id);

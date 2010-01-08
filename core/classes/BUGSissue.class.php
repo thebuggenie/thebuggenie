@@ -529,10 +529,10 @@
 			return ($theIssue instanceof BUGSissue) ? $theIssue : null;
 		}
 
-		public static function findIssues($searchterm, $results_per_page = 30, $offset = 0, $filters = array(), $groupby = null, $grouporder = null)
+		public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null)
 		{
 			$issues = array();
-			list ($res, $count) = B2DB::getTable('B2tIssues')->findIssues($searchterm, $results_per_page, $offset, $filters, $groupby, $grouporder);
+			list ($res, $count) = B2DB::getTable('B2tIssues')->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder);
 			if ($res)
 			{
 				while ($row = $res->getNextRow())

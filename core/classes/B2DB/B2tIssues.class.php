@@ -109,7 +109,7 @@
 
 		public static function getValidSearchFilters()
 		{
-			return array('project_id', 'state', 'issue_type', 'status', 'resolution', 'category', 'severity', 'priority', 'posted_by', 'assigned_to', 'assigned_type');
+			return array('project_id', 'text', 'state', 'issue_type', 'status', 'resolution', 'category', 'severity', 'priority', 'posted_by', 'assigned_to', 'assigned_type');
 		}
 
 		public function getCountsByProjectID($project_id)
@@ -342,18 +342,9 @@
 			}
 		}
 
-		public function findIssues($searchterm, $results_per_page = 30, $offset = 0, $filters = array(), $groupby = null, $grouporder = null)
+		public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null)
 		{
 			$crit = $this->getCriteria();
-			if ($searchterm != '')
-			{
-				$searchterm = (strpos($searchterm, '%') !== false) ? $searchterm : "%{$searchterm}%";
-				$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_LIKE);
-				$ctn->addOr(self::LONG_DESCRIPTION, $searchterm, B2DBCriteria::DB_LIKE);
-				$ctn->addOr(self::REPRODUCTION, $searchterm, B2DBCriteria::DB_LIKE);
-				$crit->addWhere($ctn);
-			}
-
 			if (count($filters) > 0)
 			{
 				foreach ($filters as $filter => $filter_info)
@@ -369,7 +360,27 @@
 				{
 					if (array_key_exists('value', $filter_info) && in_array($filter_info['operator'], array('=', '!=', '<=', '>=', '<', '>')))
 					{
-						if (in_array($filter, self::getValidSearchFilters()))
+						if ($filter == 'text')
+						{
+							if ($filter_info['value'] != '')
+							{
+								$searchterm = (strpos($filter_info['value'], '%') !== false) ? $filter_info['value'] : "%{$filter_info['value']}%";
+								if ($filter_info['operator'] == '=')
+								{
+									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_LIKE);
+									$ctn->addOr(self::LONG_DESCRIPTION, $searchterm, B2DBCriteria::DB_LIKE);
+									$ctn->addOr(self::REPRODUCTION, $searchterm, B2DBCriteria::DB_LIKE);
+								}
+								else
+								{
+									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_NOT_LIKE);
+									$ctn->addWhere(self::LONG_DESCRIPTION, $searchterm, B2DBCriteria::DB_NOT_LIKE);
+									$ctn->addWhere(self::REPRODUCTION, $searchterm, B2DBCriteria::DB_NOT_LIKE);
+								}
+								$crit->addWhere($ctn);
+							}
+						}
+						elseif (in_array($filter, self::getValidSearchFilters()))
 						{
 							$crit->addWhere($this->getB2DBName().'.'.$filter, $filter_info['value'], $filter_info['operator']);
 						}
@@ -386,18 +397,42 @@
 						if (in_array($filter, self::getValidSearchFilters()))
 						{
 							$first_val = array_shift($filter_info);
-							$ctn = $crit->returnCriterion($this->getB2DBName().'.'.$filter, $first_val['value'], $first_val['operator']);
-							if (count($filter_info) > 0)
+							if ($filter == 'text')
 							{
-								foreach ($filter_info as $single_filter)
+								$filter_info = $first_val;
+								if ($filter_info['value'] != '')
 								{
-									if (in_array($single_filter['operator'], array('=', '!=', '<=', '>=', '<', '>')))
+									$searchterm = (strpos($filter_info['value'], '%') !== false) ? $filter_info['value'] : "%{$filter_info['value']}%";
+									if ($filter_info['operator'] == '=')
 									{
-										$ctn->addOr($this->getB2DBName().'.'.$filter, $single_filter['value'], $single_filter['operator']);
+										$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_LIKE);
+										$ctn->addOr(self::LONG_DESCRIPTION, $searchterm, B2DBCriteria::DB_LIKE);
+										$ctn->addOr(self::REPRODUCTION, $searchterm, B2DBCriteria::DB_LIKE);
 									}
+									else
+									{
+										$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_NOT_LIKE);
+										$ctn->addWhere(self::LONG_DESCRIPTION, $searchterm, B2DBCriteria::DB_NOT_LIKE);
+										$ctn->addWhere(self::REPRODUCTION, $searchterm, B2DBCriteria::DB_NOT_LIKE);
+									}
+									$crit->addWhere($ctn);
 								}
 							}
-							$crit->addWhere($ctn);
+							else
+							{
+								$ctn = $crit->returnCriterion($this->getB2DBName().'.'.$filter, $first_val['value'], $first_val['operator']);
+								if (count($filter_info) > 0)
+								{
+									foreach ($filter_info as $single_filter)
+									{
+										if (in_array($single_filter['operator'], array('=', '!=', '<=', '>=', '<', '>')))
+										{
+											$ctn->addOr($this->getB2DBName().'.'.$filter, $single_filter['value'], $single_filter['operator']);
+										}
+									}
+								}
+								$crit->addWhere($ctn);
+							}
 						}
 						elseif (BUGScustomdatatype::doesKeyExist($filter))
 						{

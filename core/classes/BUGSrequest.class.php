@@ -179,6 +179,7 @@
 				$this->_get_parameters[$key] = $value;
 				$this->_request_parameters[$key] = $value;
 			}
+			//var_dump($this->_request_parameters);die();
 			$this->_is_ajax_call = (array_key_exists("HTTP_X_REQUESTED_WITH", $_SERVER) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == 'xmlhttprequest');
 		}
 
@@ -199,7 +200,7 @@
 				{
 					return $this->__sanitize_string($this->_request_parameters[$key]);
 				}
-				elseif (is_string($this->_request_parameters[$key]))
+				elseif (is_string($this->_request_parameters[$key]) && $sanitized)
 				{
 					return $this->__strip_if_needed($this->_request_parameters[$key]);
 				}

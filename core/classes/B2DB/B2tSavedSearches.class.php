@@ -41,7 +41,7 @@
 
 			$retarr = array('user' => array(), 'public' => array());
 			
-			if ($res = $this->doSelect($crit))
+			if ($res = $this->doSelect($crit, 'none'))
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -50,6 +50,58 @@
 			}
 
 			return $retarr;
+		}
+
+		public function saveSearch($saved_search_name, $saved_search_description, $saved_search_public, $filters, $groupby, $grouporder, $ipp, $templatename, $project_id, $saved_search_id = null)
+		{
+			$crit = $this->getCriteria();
+			if ($saved_search_id !== null)
+			{
+				$crit->addUpdate(self::NAME, $saved_search_name);
+				$crit->addUpdate(self::DESCRIPTION, $saved_search_description);
+				$crit->addUpdate(self::TEMPLATE_NAME, $templatename);
+				$crit->addUpdate(self::GROUPBY, $groupby);
+				$crit->addUpdate(self::GROUPORDER, $grouporder);
+				$crit->addUpdate(self::ISSUES_PER_PAGE, $ipp);
+				$crit->addUpdate(self::APPLIES_TO_PROJECT, $project_id);
+				if (BUGScontext::getUser()->canCreatePublicSearches())
+				{
+					$crit->addUpdate(self::IS_PUBLIC, $saved_search_public);
+					$crit->addUpdate(self::UID, ((bool) $saved_search_public) ? 0 : BUGScontext::getUser()->getID());
+				}
+				else
+				{
+					$crit->addUpdate(self::IS_PUBLIC, 0);
+					$crit->addUpdate(self::UID, BUGScontext::getUser()->getID());
+				}
+				$crit->addUpdate(self::SCOPE, BUGScontext::getScope()->getID());
+				$this->doUpdateById($crit, $saved_search_id);
+			}
+			else
+			{
+				$crit->addInsert(self::NAME, $saved_search_name);
+				$crit->addInsert(self::DESCRIPTION, $saved_search_description);
+				$crit->addInsert(self::TEMPLATE_NAME, $templatename);
+				$crit->addInsert(self::GROUPBY, $groupby);
+				$crit->addInsert(self::GROUPORDER, $grouporder);
+				$crit->addInsert(self::ISSUES_PER_PAGE, $ipp);
+				$crit->addInsert(self::APPLIES_TO_PROJECT, $project_id);
+				if (BUGScontext::getUser()->canCreatePublicSearches())
+				{
+					$crit->addInsert(self::IS_PUBLIC, $saved_search_public);
+					$crit->addInsert(self::UID, ((bool) $saved_search_public) ? 0 : BUGScontext::getUser()->getID());
+				}
+				else
+				{
+					$crit->addInsert(self::IS_PUBLIC, 0);
+					$crit->addUpdate(self::UID, BUGScontext::getUser()->getID());
+				}
+				$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+				$saved_search_id = $this->doInsert($crit)->getInsertID();
+			}
+			B2DB::getTable('B2tSavedSearchFilters')->deleteBySearchID($saved_search_id);
+			B2DB::getTable('B2tSavedSearchFilters')->saveFiltersForSavedSearch($saved_search_id, $filters);
+			return $saved_search_id;
 		}
 
 	}

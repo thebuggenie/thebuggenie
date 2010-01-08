@@ -1,6 +1,6 @@
 <?php
 
-	if (isset($searchtitle))
+	if ($show_results)
 	{
 		$bugs_response->setTitle($searchtitle);
 	}
@@ -24,13 +24,13 @@
 		$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to your teams'));
 	}
 
-	foreach ($savedsearches['user'] as $savedsearch)
+	foreach ($savedsearches['user'] as $a_savedsearch)
 	{
-		$bugs_response->addFeed(make_url('search', array('saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), __($savedsearch->get(B2tSavedSearches::NAME)));
+		$bugs_response->addFeed(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), __($a_savedsearch->get(B2tSavedSearches::NAME)));
 	}
-	foreach ($savedsearches['public'] as $savedsearch)
+	foreach ($savedsearches['public'] as $a_savedsearch)
 	{
-		$bugs_response->addFeed(make_url('search', array('saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), __($savedsearch->get(B2tSavedSearches::NAME)));
+		$bugs_response->addFeed(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), __($a_savedsearch->get(B2tSavedSearches::NAME)));
 	}
 
 ?>
@@ -79,18 +79,22 @@
 			<?php endif; ?>
 			<div class="left_menu_header" style="margin-top: 20px;"><?php echo (BUGScontext::isProjectContext()) ? __('Your saved searches for this project') : __('Your saved searches'); ?></div>
 			<?php if (count($savedsearches['user']) > 0): ?>
-				<?php foreach ($savedsearches['user'] as $savedsearch): ?>
+				<?php foreach ($savedsearches['user'] as $a_savedsearch): ?>
 					<?php if (BUGScontext::isProjectContext()): ?>
-						<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-						<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($savedsearch->get(B2tSavedSearches::NAME))); ?><br>
-						<?php if ($row->get(B2tSavedSearches::DESCRIPTION) != ''): ?>
-							<div style="padding: 0 0 10px 3px;"><?php echo $row->get(B2tSavedSearches::DESCRIPTION); ?></div>
+						<div style="clear: both;">
+							<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
+						</div>
+						<?php if ($a_savedsearch->get(B2tSavedSearches::DESCRIPTION) != ''): ?>
+							<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(B2tSavedSearches::DESCRIPTION); ?></div>
 						<?php endif; ?>
 					<?php else: ?>
-						<?php echo link_tag(make_url('search', array('saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-						<?php echo link_tag(make_url('search', array('saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($savedsearch->get(B2tSavedSearches::NAME))); ?><br>
-						<?php if ($row->get(B2tSavedSearches::DESCRIPTION) != ''): ?>
-							<div style="padding: 0 0 10px 3px;"><?php echo $row->get(B2tSavedSearches::DESCRIPTION); ?></div>
+						<div style="clear: both;">
+							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
+						</div>
+						<?php if ($a_savedsearch->get(B2tSavedSearches::DESCRIPTION) != ''): ?>
+							<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(B2tSavedSearches::DESCRIPTION); ?></div>
 						<?php endif; ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
@@ -99,13 +103,18 @@
 			<?php endif; ?>
 			<div class="left_menu_header" style="margin-top: 20px;"><?php echo (BUGScontext::isProjectContext()) ? __('Public saved searches for this project') : __('Public saved searches'); ?></div>
 			<?php if (count($savedsearches['public']) > 0): ?>
-				<?php foreach ($savedsearches['public'] as $savedsearch): ?>
-					<?php if (BUGScontext::isProjectContext()): ?>
-						<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-						<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($savedsearch->get(B2tSavedSearches::NAME))); ?><br>
-					<?php else: ?>
-						<?php echo link_tag(make_url('search', array('saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-						<?php echo link_tag(make_url('search', array('saved_search' => $savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($savedsearch->get(B2tSavedSearches::NAME))); ?><br>
+				<?php foreach ($savedsearches['public'] as $a_savedsearch): ?>
+					<div style="clear: both;">
+						<?php if (BUGScontext::isProjectContext()): ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
+						<?php else: ?>
+							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
+						<?php endif; ?>
+					</div>
+					<?php if ($a_savedsearch->get(B2tSavedSearches::DESCRIPTION) != ''): ?>
+						<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(B2tSavedSearches::DESCRIPTION); ?></div>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php else: ?>
@@ -113,15 +122,37 @@
 			<?php endif; ?>
 		</td>
 		<td style="width: auto; padding: 5px; vertical-align: top;" id="find_issues">
+			<?php if ($search_error !== null): ?>
+				<div class="rounded_box red_borderless" style="margin: 0;" id="search_error">
+					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+					<div class="xboxcontent" style="vertical-align: middle;">
+						<div class="header"><?php echo $search_error; ?></div>
+					</div>
+					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+				</div>
+			<?php endif; ?>
+			<?php if ($search_message !== null): ?>
+				<div class="rounded_box green_borderless" style="margin: 0;" id="search_message">
+					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+					<div class="xboxcontent" style="vertical-align: middle;">
+						<div class="header"><?php echo $search_message; ?></div>
+					</div>
+					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+				</div>
+			<?php endif; ?>
 			<div class="rounded_box iceblue_borderless" style="margin: 5px 0 5px 0;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
 					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo (BUGScontext::isProjectContext()) ? make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" id="find_issues_form">
 						<a href="#" onclick="$('search_filters').toggle();$('add_filter_form').toggle();" style="float: right; margin-top: 3px;"><b><?php echo __('More'); ?></b></a>
 						<label for="issues_searchfor"><?php echo __('Search for'); ?></label>
-						<input type="text" name="searchfor" value="<?php echo $searchterm; ?>" id="issues_searchfor" style="width: 450px;">
-						<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top">
-						<div style="<?php if (count($appliedfilters) <= (int) BUGScontext::isProjectContext()): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
+						<select name="filters[text][operator]">
+							<option value="="<?php if (array_key_exists('text', $appliedfilters) && ((array_key_exists('operator', $appliedfilters['text']) && $appliedfilters['text']['operator'] == '=') || (!array_key_exists('operator', $appliedfilters['text']) && $appliedfilters['text'][0]['operator'] == '='))): ?> selected<?php endif; ?>><?php echo __('Issues containing'); ?></option>
+							<option value="!="<?php if (array_key_exists('text', $appliedfilters) && ((array_key_exists('operator', $appliedfilters['text']) && $appliedfilters['text']['operator'] == '!=') || (!array_key_exists('operator', $appliedfilters['text']) && $appliedfilters['text'][0]['operator'] == '!='))): ?> selected<?php endif; ?>><?php echo __('Issues not containing'); ?></option>
+						</select>
+						<input type="text" name="filters[text][value]" value="<?php if (array_key_exists('text', $appliedfilters)) echo (array_key_exists('value', $appliedfilters['text'])) ? $appliedfilters['text']['value'] : $appliedfilters['text'][0]['value']; ?>" id="issues_searchfor" style="width: 450px;">
+						<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top" onclick="$('save_search').disable();">
+						<div style="<?php if (count($appliedfilters) <= ((int) BUGScontext::isProjectContext() + (int) array_key_exists('text', $appliedfilters))): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
 							<label for="result_template"><?php echo __('Display results as'); ?></label>
 							<select name="template" id="result_template">
 								<?php foreach ($templates as $template_name => $template_description): ?>
@@ -160,9 +191,9 @@
 							</select><br>
 							<ul id="search_filters_list">
 								<?php foreach ($appliedfilters as $filter => $filter_info): ?>
-									<?php if (array_key_exists('value', $filter_info)): ?>
+									<?php if (array_key_exists('value', $filter_info) && $filter != 'text'): ?>
 										<?php include_component('search/filter', array('filter' => $filter, 'selected_operator' => $filter_info['operator'], 'selected_value' => $filter_info['value'], 'key' => 0)); ?>
-									<?php else: ?>
+									<?php elseif ($filter != 'text'): ?>
 										<?php foreach ($filter_info as $k => $single_filter): ?>
 											<?php include_component('search/filter', array('filter' => $filter, 'selected_operator' => $single_filter['operator'], 'selected_value' => $single_filter['value'], 'key' => $k)); ?>
 										<?php endforeach; ?>
@@ -170,12 +201,42 @@
 								<?php endforeach; ?>
 							</ul>
 							<div style="text-align: right;">
-								<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top">
+								<?php if ($issavedsearch): ?>
+									<button onclick="$('find_issues_form').method = 'post';$('saved_search_details').show();$('saved_search_name').enable();$('saved_search_description').enable();<?php if ($bugs_user->canCreatePublicSearches()): ?>$('saved_search_public').enable();<?php endif; ?>$('save_search').enable();$('search_button_bottom').disable();$('search_button_bottom').hide();$('search_button_top').disable();$('search_button_top').hide();$('saved_search_id').enable();$('search_button_save_new').hide();$('search_button_save').show();return false;"><?php echo __('Edit this saved search'); ?></button>
+									<button onclick="$('find_issues_form').method = 'post';$('save_search').enable();$('saved_search_name').enable();$('saved_search_description').enable();<?php if ($bugs_user->canCreatePublicSearches()): ?>$('saved_search_public').enable();<?php endif; ?>$('search_button_bottom').disable();$('search_button_bottom').hide();$('search_button_top').disable();$('search_button_top').hide();$('saved_search_id').disable();$('search_button_save_new').show();$('search_button_save').hide();if ($('saved_search_details').visible()) { return true; } else { $('saved_search_details').show(); return false; };"><?php echo __('Save as new saved search'); ?></button>
+								<?php else: ?>
+									<button onclick="$('find_issues_form').method = 'post';$('saved_search_details').show();$('saved_search_name').enable();$('saved_search_description').enable();<?php if ($bugs_user->canCreatePublicSearches()): ?>$('saved_search_public').enable();<?php endif; ?>$('save_search').enable();$('search_button_bottom').disable();$('search_button_bottom').hide();$('search_button_top').disable();$('search_button_save').hide();$('search_button_top').hide();return false;"><?php echo __('Create new saved search'); ?></button>
+								<?php endif; ?>
+								<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_bottom" onclick="$('save_search').disable();$('saved_search_name').disable();$('saved_search_description').disable();<?php if ($bugs_user->canCreatePublicSearches()): ?>$('saved_search_public').disable();<?php endif; ?>$('find_issues_form').method = 'get';">
+							</div>
+							<div class="rounded_box white_borderless" style="margin: 5px 0 5px 0; display: none;" id="saved_search_details">
+								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+								<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
+									<?php if ($issavedsearch): ?>
+										<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $savedsearch->get(B2tSavedSearches::ID); ?>">
+									<?php endif; ?>
+									<input type="hidden" name="save" value="1" id="save_search" disabled>
+									<label for="saved_search_name"><?php echo __('Saved search name'); ?></label>
+									<input type="text" name="saved_search_name" id="saved_search_name"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(B2tSavedSearches::NAME); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
+									<label for="saved_search_description"><?php echo __('Description'); ?> <span style="font-weight: normal;">(<?php echo __('Optional'); ?>)</span></label>
+									<input type="text" name="saved_search_description" id="saved_search_description"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(B2tSavedSearches::DESCRIPTION); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
+									<label for="saved_search_public"><?php echo __('Available to'); ?></label>
+									<select name="saved_search_public" id="saved_search_public" disabled<?php if (!$bugs_user->canCreatePublicSearches()): ?> style="display: none;"<?php endif; ?>>
+										<option value="0"<?php if ($issavedsearch && $savedsearch->get(B2tSavedSearches::IS_PUBLIC) == 0): ?> selected<?php endif; ?>><?php echo __('Only to me'); ?></option>
+										<option value="1"<?php if ($issavedsearch && $savedsearch->get(B2tSavedSearches::IS_PUBLIC) == 1): ?> selected<?php endif; ?>><?php echo __('To everyone'); ?></option>
+									</select>
+									<div style="text-align: right;">
+										<input type="submit" value="<?php echo __('Update this saved search'); ?>" id="search_button_save" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">
+										<input type="submit" value="<?php echo __('Save this search'); ?>" id="search_button_save_new" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">
+										<?php echo __('%update_or_save_search% or %cancel%', array('%update_or_save_search%' => '', '%cancel%' => "<a href=\"javascript:void('0');\" onclick=\"$('saved_search_details').hide();$('saved_search_name').disable();$('saved_search_description').disable();".(($bugs_user->canCreatePublicSearches()) ? "$('saved_search_public').disable();" : '')."$('search_button_bottom').enable();$('search_button_bottom').show();$('search_button_top').enable();$('search_button_top').show();\"><b>".__('cancel').'</b></a>')); ?>
+									</div>
+								</div>
+								<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 							</div>
 						</div>
 					</form>
 					<input type="hidden" id="max_filters" name="max_filters" value="<?php echo count($appliedfilters); ?>">
-					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo (BUGScontext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>" method="post" id="add_filter_form"<?php if (count($appliedfilters) <= (int) BUGScontext::isProjectContext()): ?> style="display: none;"<?php endif; ?> onsubmit="addSearchFilter('<?php echo (BUGScontext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>');return false;">
+					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo (BUGScontext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>" method="post" id="add_filter_form"<?php if (count($appliedfilters) <= ((int) BUGScontext::isProjectContext() + (int) array_key_exists('text', $appliedfilters))): ?> style="display: none;"<?php endif; ?> onsubmit="addSearchFilter('<?php echo (BUGScontext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>');return false;">
 						<label for="add_filter"><?php echo __('Add filter'); ?></label>
 						<select name="filter_name">
 							<?php if (!BUGScontext::isProjectContext()): ?>
