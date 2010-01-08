@@ -212,6 +212,9 @@
 							<div class="rounded_box white_borderless" style="margin: 5px 0 5px 0; display: none;" id="saved_search_details">
 								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 								<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
+									<?php if (BUGScontext::isProjectContext()): ?>
+										<p style="padding-bottom: 15px;" class="faded_medium"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
+									<?php endif; ?>
 									<?php if ($issavedsearch): ?>
 										<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $savedsearch->get(B2tSavedSearches::ID); ?>">
 									<?php endif; ?>
