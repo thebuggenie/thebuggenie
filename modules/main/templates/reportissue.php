@@ -432,11 +432,17 @@
 							<td class="report_issue_help faded_dark"><?php echo __($customdatatype->getInstructions()); ?></td>
 						<tr>
 							<td colspan="2" style="padding-top: 5px;">
-								<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
+								<?php if ($customdatatype->getType() == BUGScustomdatatype::DROPDOWN_CHOICE_TEXT) : ?>
+									<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
+										<?php foreach ($customdatatype->getOptions() as $option): ?>
+										<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+										<?php endforeach; ?>
+									</select>
+								<?php elseif ($customdatatype->getType() == BUGScustomdatatype::RADIO_CHOICE) : ?>
 									<?php foreach ($customdatatype->getOptions() as $option): ?>
-									<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+										<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
 									<?php endforeach; ?>
-								</select>
+								<?php endif; ?>
 							</td>
 						</tr>
 					</table>
@@ -567,11 +573,19 @@
 									<?php echo image_tag('icon_customdatatype.png'); ?>
 									<div id="<?php echo $customdatatype->getKey(); ?>_link"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
 									<div id="<?php echo $customdatatype->getKey(); ?>_additional_div"<?php if ($selected_customdatatype[$customdatatype->getKey()] === null): ?> style="display: none;"<?php endif; ?>>
-										<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
+										<?php if ($customdatatype->getType() == BUGScustomdatatype::DROPDOWN_CHOICE_TEXT) : ?>
+											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
+												<?php foreach ($customdatatype->getOptions() as $option): ?>
+												<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+												<?php endforeach; ?>
+											</select>
+										<?php elseif ($customdatatype->getType() == BUGScustomdatatype::RADIO_CHOICE) : ?>
+											<label for="<?php echo $customdatatype->getKey(); ?>_id_additional"><?php echo $customdatatype->getDescription(); ?></label>
+											<br>
 											<?php foreach ($customdatatype->getOptions() as $option): ?>
-											<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+												<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
 											<?php endforeach; ?>
-										</select>
+										<?php endif; ?>
 										<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
 									</div>
 								</li>
