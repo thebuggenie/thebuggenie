@@ -60,7 +60,7 @@
 						<tr>
 							<td><label for="upload_extensions_list"><?php echo __('Allowed / denied extensions'); ?></label></td>
 							<td>
-								<input type="text" name="upload_extensions_list" id="upload_extensions_list" style="width: 250px;" value="<?php echo BUGSsettings::getUploadsExtensionsList(); ?>"<?php if (!BUGSsettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
+								<input type="text" name="upload_extensions_list" id="upload_extensions_list" style="width: 250px;" value="<?php echo implode(',', BUGSsettings::getUploadsExtensionsList()); ?>"<?php if (!BUGSsettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
 							</td>
 						</tr>
 						<tr>

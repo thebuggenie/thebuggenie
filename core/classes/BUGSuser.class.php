@@ -1540,36 +1540,6 @@
 		}
 
 		/**
-		 * Return if the user can attach files
-		 *
-		 * @return boolean
-		 */
-		public function canAttachFiles()
-		{
-			return (bool) $this->hasPermission('b2uploadfiles');
-		}
-		
-		/**
-		 * Return if the user can attach links
-		 *
-		 * @return boolean
-		 */
-		public function canAttachLinks()
-		{
-			return (bool) $this->hasPermission('b2addlinks');
-		}
-		
-		/**
-		 * Return if the user can remove attachments
-		 *
-		 * @return boolean
-		 */
-		public function canRemoveAttachments()
-		{
-			return (bool) $this->hasPermission('b2removeattachments');
-		}
-		
-		/**
 		 * Return if the user can add builds to an issue for a given project
 		 * 
 		 * @param integer $project_id The project id

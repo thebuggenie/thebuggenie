@@ -92,6 +92,12 @@
 		{
 			$this->show_box = BUGSsettings::isInfoBoxVisible($this->key);
 		}
+
+		public function componentUploader()
+		{
+			
+		}
+
 	}
 
 ?>

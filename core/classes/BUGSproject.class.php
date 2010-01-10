@@ -2449,10 +2449,17 @@
 			$this->_recentlogitems = null;
 		}
 
-		public function permissionCheck($key)
+		public function permissionCheck($key, $explicit = false)
 		{
 			$retval = BUGScontext::getUser()->hasPermission($key, $this->getID(), 'core', true, null);
-			$retval = ($retval !== null) ? $retval : BUGScontext::getUser()->hasPermission($key);
+			if ($explicit)
+			{
+				$retval = ($retval !== null) ? $retval : BUGScontext::getUser()->hasPermission($key, 0, 'core', true, null);
+			}
+			else
+			{
+				$retval = ($retval !== null) ? $retval : BUGScontext::getUser()->hasPermission($key);
+			}
 			
 			return $retval;
 		}

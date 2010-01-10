@@ -24,6 +24,7 @@
 		const SCOPE = 'files.scope';
 		const UID = 'files.uid';
 		const ISSUE = 'files.issue';
+		const UPLOADED_AT = 'files.uploaded_at';
 		const FILENAME = 'files.filename';
 		const DESCRIPTION = 'files.description';
 
@@ -34,6 +35,7 @@
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
 			parent::_addForeignKeyColumn(self::ISSUE, B2DB::getTable('B2tIssues'), B2tIssues::ID);
 			parent::_addVarchar(self::FILENAME, 250);
+			parent::_addInteger(self::UPLOADED_AT, 10);
 			parent::_addText(self::DESCRIPTION, false);
 		}
 		
@@ -54,14 +56,17 @@
 		public function getByIssueID($issue_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE, $this->_issue_uniqueid);
+			$crit->addWhere(self::ISSUE, $issue_id);
 			$res = $this->doSelect($crit);
 			
 			$ret_arr = array();
-	
-			while ($row = $res->getNextRow())
+
+			if ($res)
 			{
-				$ret_arr[$row->get(B2tFiles::ID)] = array('filename' => $row->get(B2tFiles::FILENAME), 'description' => $row->get(B2tFiles::DESCRIPTION));
+				while ($row = $res->getNextRow())
+				{
+					$ret_arr[$row->get(B2tFiles::ID)] = array('filename' => $row->get(B2tFiles::FILENAME), 'description' => $row->get(B2tFiles::DESCRIPTION), 'timestamp' => $row->get(B2tFiles::UPLOADED_AT));
+				}
 			}
 			
 			return $ret_arr;

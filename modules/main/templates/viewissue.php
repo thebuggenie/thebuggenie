@@ -11,6 +11,27 @@
 //		require_once(BUGScontext::getIncludePath() . 'js/viewissue_ajax.js.php');
 
 	?>
+	<?php if ($theIssue->canAttachFiles()): ?>
+		<div id="attach_file" style="display: none; background-color: transparent; width: 100%; height: 100%; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center;">
+			<div class="rounded_box white_borderless" style="position: absolute; top: 50%; left: 50%; z-index: 100001; clear: both; width: 500px; margin: -200px 0 0 -250px;">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="padding: 0 5px 5px 5px; text-align: left; font-size: 12px;">
+					<div class="header_div bigger" style="padding-top: 5px; margin: 0 0 5px 0;"><?php echo __('Attach one or more file(s) to this issue'); ?></div>
+					<div class="content" style="padding: 0 5px 0 5px;"><?php echo __('To attach a file to this issue, click the "Browse" button next to the input below, select the file you want to attach, and then click "%attach_file%. After you have started uploading one file you can always add another file if you want to attach more than one file.', array('%attach_file%' => __('Attach file'))); ?></div>
+					<?php include_component('main/uploader', array('issue' => $theIssue)); ?>
+					<div class="header_div"><?php echo __('Files you have just attached'); ?></div>
+					<ul id="uploaded_files">
+						<li class="faded_medium" id="issue_no_uploaded_files"><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></li>
+					</ul>
+					<div style="text-align: center; font-size: 14px; padding: 10px; margin-top: 25px; background-color: #F1F1F1;">
+						<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').hide();"><b>'.__('Done').'</b></a>')); ?>
+					</div>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div>
+			<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent"> </div>
+		</div>
+	<?php endif; ?>
 	<div class="rounded_box red_borderless" id="viewissue_unsaved"<?php if (!isset($issue_unsaved)): ?> style="display: none;"<?php endif; ?>>
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 13px;">
@@ -176,99 +197,44 @@
 				<div style="clear: both; font-size: 1px;">&nbsp;</div>
 				<div id="viewissue_attached_information">
 					<div class="header_div">
+						<?php if ($theIssue->canAttachLinks() || (BUGSsettings::isUploadsEnabled() && $theIssue->canAttachFiles())): ?>
+							<?php if ($theIssue->canAttachLinks()): ?>
+								<a href="javascript:void(0);" onclick="$('attach_link').show();" title="<?php echo __('Attach a link'); ?>" style="float: right; margin-left: 5px;"><?php echo image_tag('action_add_link.png'); ?></a>
+							<?php endif; ?>
+							<?php if ($theIssue->canAttachFiles()): ?>
+								<a href="javascript:void(0);" onclick="$('attach_file').show();" title="<?php echo __('Attach a file'); ?>" style="float: right; margin-left: 5px;"><?php echo image_tag('action_add_file.png'); ?></a>
+							<?php endif; ?>
+						<?php endif; ?>
 						<?php echo __('Attached information'); ?>
 					</div>
 					<?php if (count($theIssue->getFiles()) + count($theIssue->getLinks()) == 0): ?>
 						<div class="no_items"><?php echo __('There is nothing attached to this issue'); ?></div>
 					<?php else: ?>
 						<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-							<?php foreach ($allLinks as $aLink): ?>
+							<?php foreach ($theIssue->getLinks() as $aLink): ?>
 								<tr>
 									<td class="imgtd" style="width: 20px;"><?php echo image_tag('icon_link.png'); ?></td>
 									<td><a href="<?php echo $aLink['url']; ?>" target="_blank"><?php echo $aLink['description']; ?></a></td>
-									<?php if ($bugs_user->canRemoveAttachments()): ?>
+									<?php if ($theIssue->canRemoveAttachments()): ?>
 										<td style="width: 15px;"><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;links=true&amp;action=remove&amp;l_id=<?php echo $aLink['id']; ?>" class="image"><?php echo image_tag('action_cancel_small.png'); ?></a></td>
 									<?php endif; ?>
 								</tr>
 							<?php endforeach; ?>
-							<?php foreach ($allFiles as $aFile): ?>
+							<?php foreach ($theIssue->getFiles() as $aFile): ?>
 								<tr>
-									<td class="imgtd" style="width: 20px;"><?php echo image_tag('icon_file.png'); ?></td>
-									<td><a href="<?php echo BUGScontext::getTBGPath() . 'files/' . $aFile['filename']; ?>" target="<?php echo $aFile['filename']; ?>"><?php echo $aFile['description']; ?></a></td>
-									<?php if ($bugs_user->canRemoveAttachments()): ?>
-										<td style="width: 15px;"><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;files=true&amp;action=remove&amp;f_id=<?php echo $aFile['id']; ?>" class="image"><?php echo image_tag('action_cancel_small.png'); ?></a></td>
+									<td class="imgtd" style="width: 22px; text-align: center; vertical-align: middle;"><?php echo image_tag('icon_file.png'); ?></td>
+									<td style="font-size: 13px; padding: 3px;">
+										<a href="<?php echo BUGScontext::getTBGPath() . 'files/' . $aFile['filename']; ?>" target="<?php echo $aFile['filename']; ?>"><?php echo ($aFile['description'] != '') ? $aFile['description'] : $aFile['filename']; ?></a><br>
+										<span class="faded_medium" style="font-size: 11px;"><?php echo bugs_formatTime($aFile['timestamp'], 13); ?></span>
+									</td>
+									<?php if ($theIssue->canRemoveAttachments()): ?>
+										<td style="width: 20px;"><a href="#" class="image"><?php echo image_tag('action_cancel_small.png'); ?></a></td>
 									<?php endif; ?>
 								</tr>
 							<?php endforeach; ?>
 						</table>
 					<?php endif; ?>
 				</div>
-				<?php if ($bugs_user->canAttachLinks()): ?>
-					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-						<tr>
-							<td class="issuedetailstopheaderleft"><b><?php echo __('Attach a link to this issue'); ?></b></td>
-							<td class="issuedetailstopheaderright" style="width: 15px; text-align: center;"><a class="image" href="javascript:void(0);" onclick="Element.show('attach_link');"><?php echo image_tag('icon_plus_tiny.png'); ?></a></td>
-						</tr>
-					</table>
-					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-						<tr>
-							<td class="issuedetailscontentsleft" style="padding-top: 5px; padding-bottom: 5px; display: none;" id="attach_link">
-								<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" name="issue_add_links">
-									<input type="hidden" name="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
-									<input type="hidden" name="links" value="true">
-									<input type="hidden" name="action" value="add">
-									<table cellpadding=0 cellspacing=0 style="width: 100%;">
-										<tr>
-											<td style="width: 45px;"><b style="font-size: 10px;"><?php echo __('Descr.:'); ?></b></td>
-											<td><input type="text" name="desc" value="" style="width: 100%;"></td>
-										</tr>
-									</table>
-									<table cellpadding=0 cellspacing=0 style="width: 100%;">
-										<tr>
-											<td style="width: 45px;"><b><?php echo __('URL:') ?></b></td>
-											<td><input type="text" name="url" value="" style="width: 100%;"></td>
-											<td style="width: 30px;"><input type="submit" value="<?php echo __('Add'); ?>" style="width: 100%;"></td>
-										</tr>
-									</table>
-								</form>
-							</td>
-						</tr>
-					</table>
-				<?php endif; ?>
-				<?php if (BUGSsettings::isUploadsEnabled() && $bugs_user->canAttachFiles()): ?>
-					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-						<tr>
-							<td class="issuedetailstopheaderleft"><b><?php echo __('Attach a file to this issue'); ?></b></td>
-							<td class="issuedetailstopheaderright" style="width: 15px; text-align: center;"><a href="javascript:void(0);" onclick="Element.show('attach_file');" class="image"><?php echo image_tag('icon_plus_tiny.png'); ?></a></td>
-						</tr>
-					</table>
-					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-						<tr>
-							<td class="issuedetailscontentsleft" style="padding-top: 5px; padding-bottom: 5px; display: none;" id="attach_file">
-								<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" name="issue_add_files">
-									<input type="hidden" name="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
-									<input type="hidden" name="files" value="true">
-									<input type="hidden" name="action" value="add">
-									<table cellpadding=0 cellspacing=0 style="width: 100%;">
-										<tr>
-											<td style="width: 45px;"><b style="font-size: 10px;"><?php echo __('Descr.:'); ?></b></td>
-											<td><input type="text" name="desc" value="" style="width: 100%;"></td>
-										</tr>
-									</table>
-									<table cellpadding=0 cellspacing=0 style="width: 100%;">
-										<tr>
-											<td style="width: 45px;"><b><?php echo __('File:') ?></b></td>
-											<td><input type="file" name="file" value="" style="width: 50px;"></td>
-										</tr>
-										<tr>
-											<td style="text-align: right;" colspan=2><input type="submit" value="<?php echo __('Add'); ?>" style="width: 30px;"></td>
-										</tr>
-									</table>
-								</form>
-							</td>
-						</tr>
-					</table>
-				<?php endif; ?>
 				<div class="header_div">
 					<?php echo __('Related issues'); ?>
 				</div>

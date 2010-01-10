@@ -38,14 +38,14 @@
 		 *
 		 * @var array
 		 */
-		protected $_links = array();
+		protected $_links = null;
 	
 		/**
 		 * Array of files attached to this issue
 		 *
 		 * @var array
 		 */
-		protected $_files = array();
+		protected $_files = null;
 		
 		/**
 		 * The issue title
@@ -906,7 +906,7 @@
 			$retval = null;
 			if ($this->getPostedByID() == BUGScontext::getUser()->getID() && !$exclusive)
 			{
-				$retval = $this->getProject()->permissionCheck($key.'own');
+				$retval = $this->getProject()->permissionCheck($key.'own', true);
 			}
 			return ($retval !== null) ? $retval : $this->getProject()->permissionCheck($key);
 		}
@@ -1133,6 +1133,36 @@
 		public function canPostComments()
 		{
 			return (bool) ($this->_permissionCheck('canpostcomments') || $this->_permissionCheck('canpostandeditcomments'));
+		}
+
+		/**
+		 * Return if the user can attach files
+		 *
+		 * @return boolean
+		 */
+		public function canAttachFiles()
+		{
+			return (bool) ($this->_permissionCheck('canaddfilestoissues') || $this->_permissionCheck('canaddextrainformationtoissues'));
+		}
+
+		/**
+		 * Return if the user can remove attachments
+		 *
+		 * @return boolean
+		 */
+		public function canRemoveAttachments()
+		{
+			return (bool) ($this->_permissionCheck('canremovefilesfromissues') || $this->_permissionCheck('canaddextrainformationtoissues'));
+		}
+
+		/**
+		 * Return if the user can attach links
+		 *
+		 * @return boolean
+		 */
+		public function canAttachLinks()
+		{
+			return (bool) ($this->_permissionCheck('canaddlinkstoissues') || $this->_permissionCheck('canaddextrainformationtoissues'));
 		}
 
 		/**

@@ -1248,17 +1248,19 @@
 					self::$_available_permissions['issues']['caneditissuecustomfieldsown']['details']['caneditissuecustomfields'.$cdf->getKey().'own'] = array('description' => $i18n->__('Can change custom field "%field_name%" for issues reported by the user', array('%field_name%' => $cdf->getDescription())));
 					self::$_available_permissions['issues']['caneditissuecustomfields']['details']['caneditissuecustomfields'.$cdf->getKey()] = array('description' => $i18n->__('Can change custom field "%field_name%" for any issues', array('%field_name%' => $cdf->getDescription())));
 				}
-				self::$_available_permissions['issues']['canaddextrainformationtoissues'] = array('description' => $i18n->__('Can add extra information (edition, component, release, links and files) to issues'), 'details' => array());
+				self::$_available_permissions['issues']['canaddextrainformationtoissues'] = array('description' => $i18n->__('Can add/remove extra information (edition, component, release, links and files) to issues'), 'details' => array());
 				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddbuildsown'] = array('description' => $i18n->__('Can add releases / versions to list of affected versions for issues reported by the user'));
 				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddbuilds'] = array('description' => $i18n->__('Can add releases / versions to list of affected versions for any issues'));
 				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddcomponentsown'] = array('description' => $i18n->__('Can add components to list of affected components for issues reported by the user'));
 				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddcomponents'] = array('description' => $i18n->__('Can add components to list of affected components for any issues'));
 				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddeditionsown'] = array('description' => $i18n->__('Can add editions to list of affected editions for issues reported by the user'));
 				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddeditions'] = array('description' => $i18n->__('Can add editions to list of affected editions for any issues'));
-				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['addlinkstoissuesown'] = array('description' => $i18n->__('Can add links to issues reported by the user'));
-				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['addlinkstoissues'] = array('description' => $i18n->__('Can add links to any issues'));
-				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['addfilestoissuesown'] = array('description' => $i18n->__('Can add files to issues reported by the user'));
-				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['addfilestoissues'] = array('description' => $i18n->__('Can add files to any issues'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddlinkstoissuesown'] = array('description' => $i18n->__('Can add links to issues reported by the user'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddlinkstoissues'] = array('description' => $i18n->__('Can add links to any issues'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddfilestoissuesown'] = array('description' => $i18n->__('Can add files to and remove own files from issues reported by the user'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canaddfilestoissues'] = array('description' => $i18n->__('Can add files to and remove own files from any issues'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canremovefilesfromissuesown'] = array('description' => $i18n->__('Can remove any attachments from issues reported by the user'));
+				self::$_available_permissions['issues']['canaddextrainformationtoissues']['details']['canremovefilesfromissues'] = array('description' => $i18n->__('Can remove any attachments from any issues'));
 				self::$_available_permissions['issues']['canpostandeditcomments'] = array('description' => $i18n->__('Can see public comments, post new, edit own and delete own comments'), 'details' => array());
 				self::$_available_permissions['issues']['canpostandeditcomments']['details']['canviewcomments'] = array('description' => $i18n->__('Can see public comments'));
 				self::$_available_permissions['issues']['canpostandeditcomments']['details']['canpostcomments'] = array('description' => $i18n->__('Can post comments'));
@@ -1657,6 +1659,32 @@
 						$content = ob_get_clean();
 						BUGSlogging::log('...completed');
 					}
+				}
+
+				if (!isset($bugs_response))
+				{
+					/**
+					 * @global BUGSrequest The request object
+					 */
+					$bugs_request = self::getRequest();
+
+					/**
+					 * @global BUGSuser The user object
+					 */
+					$bugs_user = self::getUser();
+
+					/**
+					 * @global BUGSaction The action object
+					 */
+					$bugs_action = $actionObject;
+
+					/**
+					 * @global BUGSresponse The action object
+					 */
+					$bugs_response = self::getResponse();
+
+					// Load the "ui" library, since this is used a lot
+					self::loadLibrary('ui');
 				}
 
 				// Render header template if any, and store the output in a variable

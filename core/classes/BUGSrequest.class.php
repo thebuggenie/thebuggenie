@@ -22,13 +22,16 @@
 		protected $_request_parameters = array();
 		protected $_post_parameters = array();
 		protected $_get_parameters = array();
+		protected $_files = array();
 		protected $_cookies = array();
+
+		protected $_hasfiles = false;
 		
 		protected $_is_ajax_call = false;
 		
 		const POST = 1;
 		const GET = 2; 
-		
+
 		/**
 		 * Handles an uploaded file, stores it to the correct folder, adds an entry
 		 * to the database and returns a BUGSfile object
@@ -37,97 +40,242 @@
 		 * 
 		 * @return BUGSfile The BUGSfile object
 		 */
-		static function handleUpload($thefile)
+		public function handleUpload($key, BUGSissue $issue)
 		{
-			if (BUGSsettings::get('enable_uploads'))
+            if (!array_key_exists($this->getParameter('APC_UPLOAD_PROGRESS'), $_SESSION['__upload_status'])) {
+                $_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')] = array(
+                    'id'       => $this->getParameter('APC_UPLOAD_PROGRESS'),
+                    'finished' => false,
+                    'percent'  => 0,
+                    'total'    => 0,
+                    'complete' => 0
+                );
+            }
+			try
 			{
-				if ($thefile['error'] == UPLOAD_ERR_OK)
+				if ($this->getUploadedFile($key) !== null)
 				{
-					if (filesize($thefile['tmp_name']) > (BUGSsettings::get('max_file_size') * 1024 * 1024))
+					$thefile = $this->getUploadedFile($key);
+					if (BUGSsettings::isUploadsEnabled())
 					{
-						throw new Exception(__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => BUGSsettings::get('max_file_size'))));
-					}
-					$extension = substr(basename($thefile['name']), strpos(basename($thefile['name']), '.'));
-					if ($extension == '')
-					{
-						throw new Exception(__('Could not determine filetype'));
-					}
-					else
-					{
-						$extension = substr($extension, 1);
-						$upload_extensions = explode(',', BUGSsettings::get('uploads_filetypes'));
-						if (BUGSsettings::get('uploads_blacklist'))
+						BUGSlogging::log('Uploads enabled');
+						if ($thefile['error'] == UPLOAD_ERR_OK)
 						{
-							foreach ($upload_extensions as $an_ext)
+							BUGSlogging::log('No upload errors');
+							if (filesize($thefile['tmp_name']) > BUGSsettings::getUploadsMaxSize(true) && BUGSsettings::getUploadsMaxSize() > 0)
 							{
-								if (strtolower(trim($extension)) == strtolower(trim($an_ext)))
+								throw new Exception(__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => BUGSsettings::getUploadsMaxSize())));
+							}
+							BUGSlogging::log('Upload filesize ok');
+							$extension = substr(basename($thefile['name']), strpos(basename($thefile['name']), '.'));
+							if ($extension == '')
+							{
+								BUGSlogging::log('OOps, could not determine upload filetype', 'main', BUGSlogging::LEVEL_WARNING_RISK);
+								throw new Exception(__('Could not determine filetype'));
+							}
+							else
+							{
+								BUGSlogging::log('Checking uploaded file extension');
+								$extension = substr($extension, 1);
+								$upload_extensions = BUGSsettings::getUploadsExtensionsList();
+								if (BUGSsettings::getUploadsRestrictionMode() == 'blacklist')
 								{
+									BUGSlogging::log('... using blacklist');
+									foreach ($upload_extensions as $an_ext)
+									{
+										if (strtolower(trim($extension)) == strtolower(trim($an_ext)))
+										{
+											BUGSlogging::log('Upload extension not ok');
+											throw new Exception(__('This filetype is not allowed'));
+										}
+									}
+									BUGSlogging::log('Upload extension ok');
+								}
+								else
+								{
+									BUGSlogging::log('... using whitelist');
+									$is_ok = false;
+									foreach ($upload_extensions as $an_ext)
+									{
+										if (strtolower(trim($extension)) == strtolower(trim($an_ext)))
+										{
+											BUGSlogging::log('Upload extension ok');
+											$is_ok = true;
+											break;
+										}
+									}
+									if (!$is_ok)
+									{
+										BUGSlogging::log('Upload extension not ok');
+										throw new Exception(__('This filetype is not allowed'));
+									}
+								}
+								if (in_array(strtolower(trim($extension)), array('php', 'asp')))
+								{
+									BUGSlogging::log('Upload extension is php or asp');
 									throw new Exception(__('This filetype is not allowed'));
 								}
 							}
-						}
-						else
-						{
-							$is_ok = false;
-							foreach ($upload_extensions as $an_ext)
+							if (is_uploaded_file($thefile['tmp_name']))
 							{
-								if (strtolower(trim($extension)) == strtolower(trim($an_ext)))
+								BUGSlogging::log('Uploaded file is uploaded');
+								$files_dir = BUGSsettings::getUploadsLocalpath();
+								$new_filename = BUGScontext::getUser()->getID() . '_' . $_SERVER["REQUEST_TIME"] . '_' . basename($thefile['name']);
+								BUGSlogging::log('Moving uploaded file to '.$new_filename);
+								if (!move_uploaded_file($thefile['tmp_name'], $files_dir . $new_filename))
 								{
-									$is_ok = true;
-									break;
+									BUGSlogging::log('Moving uploaded file failed!');
+									throw new Exception(__('An error occured when saving the file'));
+								}
+								else
+								{
+									BUGSlogging::log('Upload complete and ok, storing upload status and returning filename '.$new_filename);
+									$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')] = array(
+										'id'       => $this->getParameter('APC_UPLOAD_PROGRESS'),
+										'finished' => true,
+										'percent'  => 100,
+										'total'    => 0,
+										'complete' => 0,
+										'issue_id' => $issue->getID(),
+										'filename' => $new_filename
+									);
+									return $new_filename;
 								}
 							}
-							if (!$is_ok) throw new Exception(__('This filetype is not allowed'));
-						}
-						if (in_array(strtolower(trim($extension)), array('php', 'asp')))
-						{
-							throw new Exception(__('This filetype is not allowed'));
-						}
-					}
-					if (is_uploaded_file($thefile['tmp_name']))
-					{
-						$files_dir = self::getIncludePath() . 'files/';
-						$new_filename = self::getUser()->getID() . '_' . $_SERVER["REQUEST_TIME"] . '_' . basename($thefile['name']);
-						if (!move_uploaded_file($thefile['tmp_name'], $files_dir . $new_filename))
-						{
-							throw new Exception(__('An error occured when saving the file'));
+							else
+							{
+								BUGSlogging::log('Uploaded file was not uploaded correctly');
+								throw new Exception(__('The file was not uploaded correctly'));
+							}
 						}
 						else
 						{
-							return $new_filename;
+							BUGSlogging::log('Upload error: '.$thefile['error']);
+							switch ($thefile['error'])
+							{
+								case UPLOAD_ERR_INI_SIZE:
+								case UPLOAD_ERR_FORM_SIZE:
+									throw new Exception(__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => BUGSsettings::getUploadsMaxSize())));
+									break;
+								case UPLOAD_ERR_PARTIAL:
+									throw new Exception(__('The upload was interrupted, please try again'));
+									break;
+								case UPLOAD_ERR_NO_FILE:
+									throw new Exception(__('No file was uploaded'));
+									break;
+								default:
+									throw new Exception(__('An unhandled error occured') . ': ' . $thefile['error']);
+									break;
+							}
 						}
 					}
 					else
 					{
-						throw new Exception(__('The file was not uploaded correctly'));
+						BUGSlogging::log('Uploads not enabled');
+						throw new Exception(__('Uploads are not enabled'));
 					}
+					BUGSlogging::log('Uploaded file could not be uploaded');
+					throw new Exception(__('The file could not be uploaded'));
 				}
-				else
-				{
-					switch ($thefile['error'])
-					{
-						case UPLOAD_ERR_INI_SIZE:
-						case UPLOAD_ERR_FORM_SIZE:
-							throw new Exception(__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => BUGSsettings::get('max_file_size'))));
-							break;
-						case UPLOAD_ERR_PARTIAL:
-							throw new Exception(__('The upload was interrupted, please try again'));
-							break;
-						case UPLOAD_ERR_NO_FILE:
-							throw new Exception(__('No file was uploaded'));
-							break;
-						default:
-							throw new Exception(__('An unhandled error occured') . ': ' . $thefile['error']);
-							break;
-					}
-				}
+				BUGSlogging::log('Could not find uploaded file' . $key);
+				throw new Exception(__('Could not find the uploaded file. Please make sure that it is not too big.'));
 			}
-			else
+			catch (Exception $e)
 			{
-				throw new Exception(__('You are not allowed to upload files'));
+				BUGSlogging::log('Upload exception: '.$e->getMessage());
+				$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')]['error'] = $e->getMessage();
+				$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')]['finished'] = true;
+				$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')]['percent'] = 100;
+				throw $e;
 			}
-			throw new Exception(__('The file could not be uploaded'));
 		}
+
+        public static function CanGetUploadStatus()
+        {
+            if (!extension_loaded('apc'))
+                return false;
+
+            if (!function_exists('apc_fetch'))
+                return false;
+
+            return ini_get('apc.enabled') && ini_get('apc.rfc1867');
+        }
+
+		public function markUploadAsFinishedWithError($id, $error)
+		{
+			$_SESSION['__upload_status'][$id] = array(
+				'id'       => $id,
+				'finished' => true,
+				'percent'  => 100,
+				'total'    => 0,
+				'complete' => 0,
+				'error'    => $error
+			);
+		}
+
+        public function getUploadStatus($id)
+        {
+			BUGSlogging::log('sanitizing id');
+            // sanitize the ID value
+            $id = preg_replace('/[^a-z0-9]/i', '', $id);
+            if (strlen($id) == 0)
+			{
+				BUGSlogging::log('oops, invalid id '. $id);
+                return;
+			}
+
+            // ensure the uploaded status data exists in the session
+            if (!array_key_exists($id, $_SESSION['__upload_status'])) 
+			{
+				BUGSlogging::log('upload with this id ' .$id. ' is not in progress yet');
+                $_SESSION['__upload_status'][$id] = array(
+                    'id'       => $id,
+                    'finished' => false,
+                    'percent'  => 0,
+                    'total'    => 0,
+                    'complete' => 0
+                );
+            }
+
+            // retrieve the data from the session so it can be updated and returned
+            $ret = $_SESSION['__upload_status'][$id];
+
+            // if we can't retrieve the status or the upload has finished just return
+            if (!self::CanGetUploadStatus() || $ret['finished'])
+			{
+				BUGSlogging::log('upload either finished or we cant track it');
+                return $ret;
+			}
+
+            // retrieve the upload data from APC
+            $status = apc_fetch('upload_' . $id);
+
+            // false is returned if the data isn't found
+            if ($status) {
+                $ret['finished'] = (bool) $status['done'];
+                $ret['total']    = $status['total'];
+                $ret['complete'] = $status['current'];
+				if (array_key_exists('filename', $ret))
+				{
+					$status['filename'] = $ret['filename'];
+					$status['issue_id'] = $ret['issue_id'];
+				}
+				elseif (array_key_exists('error', $ret))
+				{
+					$status['error'] = $ret['error'];
+				}
+
+                // calculate the completed percentage
+                if ($ret['total'] > 0)
+                    $ret['percent'] = $ret['complete'] / $ret['total'] * 100;
+
+                // write the changed data back to the session
+                $_SESSION['__upload_status'][$id] = $ret;
+            }
+
+            return $ret;
+        }
+
 
 		/**
 		 * Sanitizes a given parameter and returns it
@@ -179,8 +327,33 @@
 				$this->_get_parameters[$key] = $value;
 				$this->_request_parameters[$key] = $value;
 			}
+			foreach ($_FILES as $key => $file)
+			{
+				$this->_files[$key] = $file;
+				$this->_hasfiles = true;
+			}
 			//var_dump($this->_request_parameters);die();
 			$this->_is_ajax_call = (array_key_exists("HTTP_X_REQUESTED_WITH", $_SERVER) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == 'xmlhttprequest');
+
+            if (!array_key_exists('__upload_status', $_SESSION))
+			{
+                $_SESSION['__upload_status'] = array();
+            }
+
+		}
+
+		public function hasFileUploads()
+		{
+			return (bool) $this->_hasfiles;
+		}
+
+		public function getUploadedFile($key)
+		{
+			if (isset($this->_files[$key]))
+			{
+				return $this->_files[$key];
+			}
+			return null;
 		}
 
 		/**

@@ -52,7 +52,7 @@ INPUT, SELECT, TEXTAREA, BUTTON
 	padding: 2px;
 }
 
-input[type="submit"], button
+input[type="submit"], button, input[type="file"]
 {
 	background-color: #E5E5E5;
 }
@@ -1292,6 +1292,7 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #issue_lefthand { width: 340px; padding: 5px 5px 0 5px; vertical-align: top; }
 .header_div { border-bottom: 1px solid #DDD; padding: 3px; font-size: 13px; margin-top: 5px; font-weight: bold; }
 .header_div.smaller, label.smaller, div.smaller { font-size: 12px; }
+.header_div.bigger, label.bigger, div.bigger { font-size: 15px; }
 .header_div.light { border-color: #EEE; }
 .no_items { color: #AAA; font-size: 12px; padding: 5px; }
 .percent_filled { background-color: #8C8; }
@@ -1474,3 +1475,5 @@ thead.borderless th { border: 0; }
 .permission_list ul li ul li ul li { font-size: 11px; }
 .permission_list ul li ul li ul li:hover { background-color: #E8E8E8; }
 .permission_list ul li ul li ul li a.permission_description { display: block; width: 540px; }
+
+ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }

@@ -422,6 +422,11 @@
 			return (bool) self::get('enable_uploads');
 		}
 
+		public static function getUploadsMaxSize($real = false)
+		{
+			return ($real) ? (int) (self::get('upload_max_file_size') * 1024 * 1024) : (int) self::get('upload_max_file_size');
+		}
+
 		public static function getUploadsRestrictionMode()
 		{
 			return self::get('upload_restriction_mode');
@@ -429,7 +434,19 @@
 
 		public static function getUploadsExtensionsList()
 		{
-			return self::get('upload_extensions_list');
+			$extensions = (string) self::get('upload_extensions_list');
+			$delimiter = ' ';
+
+			switch (true)
+			{
+				case (strpos(',', $extensions) !== false):
+					$delimiter = ',';
+					break;
+				case (strpos(';', $extensions) !== false):
+					$delimiter = ';';
+					break;
+			}
+			return explode($delimiter, $extensions);
 		}
 
 		public static function getUploadStorage()

@@ -1474,6 +1474,59 @@
 			BUGSsettings::hideInfoBox($request->getParameter('key'));
 			return $this->renderJSON(array('hidden' => true));
 		}
+
+		public function runGetUploadStatus(BUGSrequest $request)
+		{
+			$id = $request->getParameter('upload_id', 0);
+
+			BUGSlogging::log('requesting status for upload with id ' . $id);
+			$status = BUGScontext::getRequest()->getUploadStatus($id);
+			BUGSlogging::log('status was: ' . (int) $status['finished']. ', pct: '. (int) $status['percent']);
+			if (array_key_exists('filename', $status))
+			{
+				$status['content'] = $this->getTemplateHTML('attachedfile', array('issue_id' => $status['issue_id'], 'filename' => $status['filename']));
+			}
+			
+			return $this->renderJSON($status);
+		}
+
+		public function runUpload(BUGSrequest $request)
+		{
+			if (!$request->getParameter('APC_UPLOAD_PROGRESS'))
+			{
+				$request->setParameter('APC_UPLOAD_PROGRESS', $request->getParameter('upload_id'));
+			}
+			$this->getResponse()->setDecoration(BUGSresponse::DECORATE_NONE);
+			$issue = BUGSfactory::BUGSissueLab($request->getParameter('issue_id'));
+			if ($issue instanceof BUGSissue && $issue->hasAccess() && $issue->canAttachFiles())
+			{
+				try
+				{
+					//var_dump($_FILES);die();
+					$filename = BUGScontext::getRequest()->handleUpload('issue_file', $issue);
+					//var_dump($filename);die();
+					if ($filename != '')
+					{
+						$issue->attachFile($filename, $request->getParameter('description'));
+						return $this->renderText('ok');
+					}
+					$this->error = BUGScontext::getI18n()->__('An unhandled error occured with the upload');
+				}
+				catch (Exception $e)
+				{
+					$this->getResponse()->setHttpStatus(401);
+					$this->error = $e->getMessage();
+				}
+			}
+			else
+			{
+				$this->getResponse()->setHttpStatus(401);
+				$this->error = BUGScontext::getI18n()->__('You cannot attach files to this issue');
+			}
+			BUGSlogging::log('marking upload ' . $request->getParameter('APC_UPLOAD_PROGRESS') . ' as completed with error ' . $this->error);
+			$request->markUploadAsFinishedWithError($request->getParameter('APC_UPLOAD_PROGRESS'), $this->error);
+			return $this->renderText($request->getParameter('APC_UPLOAD_PROGRESS').': '.$this->error);
+		}
 		
 	}
 
