@@ -412,6 +412,36 @@
 		<tr>
 			<td class="config_explanation" colspan="2" style="padding-bottom: 10px;"><?php echo __('If the project consists of several easily identifiable sub-parts, you should enable components'); ?></td>
 		</tr>
+		<tr>
+			<td><label for="descr_template"><?php echo __('Description template'); ?></label></td>
+			<td>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<?php include_template('main/textarea', array('area_name' => 'descr_template', 'height' => '75px', 'width' => '100%', 'value' => ($theProject->getDescrTemplate()))); ?>
+				<?php elseif ($theProject->getDescrTemplate() != ''): ?>
+					<?php echo tbg_parse_text($theProject->getDescrTemplate()); ?>
+				<?php else: ?>
+					<span class="faded_light"><?php echo __('No template provided'); ?></span>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="config_explanation" colspan="2" style="padding-bottom: 10px;"><?php echo __('To help users structure the description field of their issue, enter some predefined content to appear in the field, acting as a template'); ?></td>
+		</tr>
+		<tr>
+			<td><label for="repro_template"><?php echo __('Reproduction steps template'); ?></label></td>
+			<td>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<?php include_template('main/textarea', array('area_name' => 'repro_template', 'height' => '75px', 'width' => '100%', 'value' => ($theProject->getReproTemplate()))); ?>
+				<?php elseif ($theProject->getReproTemplate() != ''): ?>
+					<?php echo tbg_parse_text($theProject->getReproTemplate()); ?>
+				<?php else: ?>
+					<span class="faded_light"><?php echo __('No template provided'); ?></span>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="config_explanation" colspan="2" style="padding-bottom: 10px;"><?php echo __('To help users structure the reproduction steps field of their issue, enter some predefined content to appear in the field, acting as a template'); ?></td>
+		</tr>
 	</table>
 	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 		<div class="rounded_box" style="margin: 5px 0px 5px 0px; width: 700px;">

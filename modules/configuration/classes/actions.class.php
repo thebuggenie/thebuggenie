@@ -672,6 +672,8 @@
 					$this->theProject->setEditionsEnabled((bool) $request->getParameter('enable_editions'));
 					$this->theProject->setComponentsEnabled((bool) $request->getParameter('enable_components'));
 					$this->theProject->setChangeIssuesWithoutWorkingOnThem((bool) $request->getParameter('allow_changing_without_working'));
+					$this->theProject->setDescrTemplate($request->getParameter('descr_template', null, false));
+					$this->theProject->setReproTemplate($request->getParameter('repro_template', null, false));
 					$this->theProject->save();
 					return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Your changes has been saved'), 'message' => ''));
 				}

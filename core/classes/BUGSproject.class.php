@@ -332,6 +332,20 @@
 		protected $_recentactivities = null;
 
 		/**
+		 * Template for description field
+		 *
+		 * @var string
+		 */
+		protected $_descr_template = null;
+
+		/**
+		 * Template for reproduction field
+		 *
+		 * @var string
+		 */
+		protected $_repro_template = null;
+
+		/**
 		 * Make a project default
 		 * 
 		 * @param $p_id integer The id for the default project
@@ -501,6 +515,8 @@
 				$this->_can_change_wo_working	= (bool) $row->get(B2tProjects::ALLOW_CHANGING_WITHOUT_WORKING);
 				$this->_summary_display			= $row->get(B2tProjects::SUMMARY_DISPLAY);
 				$this->_deleted					= $row->get(B2tProjects::DELETED);
+				$this->_descr_template			= $row->get(B2tProjects::DESCR_TEMPLATE);
+				$this->_repro_template			= $row->get(B2tProjects::REPRO_TEMPLATE);
 			}
 			else
 			{
@@ -1613,6 +1629,8 @@
 			$crit->addUpdate(B2tProjects::SUMMARY_DISPLAY, $this->_summary_display);
 			$crit->addUpdate(B2tProjects::ALLOW_CHANGING_WITHOUT_WORKING, $this->_can_change_wo_working);
 			$crit->addUpdate(B2tProjects::DELETED, $this->_deleted);
+			$crit->addUpdate(B2tProjects::DESCR_TEMPLATE, $this->_descr_template);
+			$crit->addUpdate(B2tProjects::REPRO_TEMPLATE, $this->_repro_template);
 			$res = B2DB::getTable('B2tProjects')->doUpdateById($crit, $this->getID());
 
 			return true;
@@ -2447,6 +2465,46 @@
 			$this->_recentissues = null;
 			$this->_recentfeatures = null;
 			$this->_recentlogitems = null;
+		}
+
+		/**
+		 * Return the issue description template
+		 * 
+		 * @return string
+		 */
+		public function getDescrTemplate()
+		{
+			return $this->_descr_template;
+		}
+		
+		/**
+		 * Return the issue reproduction template
+		 * 
+		 * @return string
+		 */
+		public function getReproTemplate()
+		{
+			return $this->_repro_template;
+		}
+
+		/**
+		 * Set the issue description template
+		 * 
+		 * @var string
+		 */
+		public function setDescrTemplate($data)
+		{
+			$this->_descr_template = $data;
+		}
+		
+		/**
+		 * Set the issue reproduction template
+		 * 
+		 * @var string
+		 */
+		public function setReproTemplate($data)
+		{
+			$this->_repro_template = $data;
 		}
 
 		public function permissionCheck($key, $explicit = false)

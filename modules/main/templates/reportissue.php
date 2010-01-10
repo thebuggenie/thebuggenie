@@ -227,6 +227,14 @@
 		<?php endif; ?>
 		<div style="clear: both;"></div>
 		<?php if (count($projects) > 0 && count($issuetypes) > 0): ?>
+			<?php if ($selected_project instanceof BUGSproject) : ?>
+				<?php if (!isset($description)) : ?>
+					<?php $description = $selected_project->getDescrTemplate(); ?>
+				<?php endif; ?>
+				<?php if (!isset($reproduction_steps)) : ?>
+					<?php $reproduction_steps = $selected_project->getReproTemplate(); ?>
+				<?php endif; ?>
+			<?php endif; ?>
 			<div id="report_more_here"<?php if ($selected_issuetype instanceof BUGSissuetype && $selected_project instanceof BUGSproject): ?> style="display: none;"<?php endif; ?>><?php echo __('More options will appear here as soon as you select a project and an issue type above'); ?>...</div>
 			<div class="report_form" id="report_form"<?php if (!$selected_project instanceof BUGSproject || !$selected_issuetype instanceof BUGSissuetype): ?> style="display: none;"<?php endif; ?>>
 				<table cellpadding="0" cellspacing="0"<?php if (array_key_exists('title', $errors)): ?> class="reportissue_error"<?php endif; ?>>
