@@ -62,10 +62,9 @@
 						if ($a_column['unsigned'] && B2DB::getDBtype() != 'pgsql') $fsql .= ' UNSIGNED';
 						break;
 					case 'text':
-						$fsql .= 'TEXT';
-						break;
+					case 'blob':
 					case 'boolean':
-						$fsql .= 'BOOLEAN';
+						$fsql .= strtoupper($a_column['type']);
 						break;
 				}
 				if ($a_column['not_null']) $fsql .= ' NOT NULL';
@@ -75,7 +74,7 @@
 					{
 						$fsql .= ' AUTO_INCREMENT';
 					}
-					elseif ($a_column['default_value'] !== null && !(isset($a_column['auto_inc']) && $a_column['auto_inc'] == true && B2DB::getDBtype() == 'pgsql'))
+					elseif (isset($a_column['default_value']) && $a_column['default_value'] !== null && !(isset($a_column['auto_inc']) && $a_column['auto_inc'] == true && B2DB::getDBtype() == 'pgsql'))
 					{
 						if (is_int($a_column['default_value']))
 						{

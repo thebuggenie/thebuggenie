@@ -23,9 +23,11 @@
 		const ID = 'files.id';
 		const SCOPE = 'files.scope';
 		const UID = 'files.uid';
-		const ISSUE = 'files.issue';
 		const UPLOADED_AT = 'files.uploaded_at';
-		const FILENAME = 'files.filename';
+		const REAL_FILENAME = 'files.real_filename';
+		const ORIGINAL_FILENAME = 'files.original_filename';
+		const CONTENT_TYPE = 'files.content_type';
+		const CONTENT = 'files.content';
 		const DESCRIPTION = 'files.description';
 
 		public function __construct()
@@ -33,54 +35,33 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('B2tUsers'), B2tUsers::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('B2tScopes'), B2tScopes::ID);
-			parent::_addForeignKeyColumn(self::ISSUE, B2DB::getTable('B2tIssues'), B2tIssues::ID);
-			parent::_addVarchar(self::FILENAME, 250);
+			parent::_addVarchar(self::REAL_FILENAME, 250);
+			parent::_addVarchar(self::CONTENT_TYPE, 250);
+			parent::_addVarchar(self::ORIGINAL_FILENAME, 250);
 			parent::_addInteger(self::UPLOADED_AT, 10);
+			parent::_addBlob(self::CONTENT);
 			parent::_addText(self::DESCRIPTION, false);
 		}
 		
-		public function addFileToIssue($issue_id, $filename, $description = null)
+		public function saveFile($real_filename, $original_filename, $content_type, $description = null, $content = null)
 		{
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::ISSUE, $issue_id);
 			$crit->addInsert(self::UID, BUGScontext::getUser()->getUID());
-			$crit->addInsert(self::FILENAME, $filename);
+			$crit->addInsert(self::REAL_FILENAME, $real_filename);
+			$crit->addInsert(self::ORIGINAL_FILENAME, $original_filename);
+			$crit->addInsert(self::CONTENT_TYPE, $content_type);
 			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
 			if ($description !== null)
 			{
 				$crit->addInsert(self::DESCRIPTION, $description);
 			}
+			if ($content !== null)
+			{
+				$crit->addInsert(self::CONTENT, $content);
+			}
 			$res = $this->doInsert($crit);
-		}
-		
-		public function getByIssueID($issue_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE, $issue_id);
-			$res = $this->doSelect($crit);
-			
-			$ret_arr = array();
 
-			if ($res)
-			{
-				while ($row = $res->getNextRow())
-				{
-					$ret_arr[$row->get(B2tFiles::ID)] = array('filename' => $row->get(B2tFiles::FILENAME), 'description' => $row->get(B2tFiles::DESCRIPTION), 'timestamp' => $row->get(B2tFiles::UPLOADED_AT));
-				}
-			}
-			
-			return $ret_arr;
+			return $res->getInsertID();
 		}
 
-		public function removeByIssueIDandFileID($issue_id, $file_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE, $issue_id);
-			if ($res = $this->doSelectById($file_id, $crit))
-			{
-				$this->doDelete($crit);
-			}
-			return $res;
-		}
-		
 	}

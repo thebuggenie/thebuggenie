@@ -64,6 +64,11 @@
 			$this->_addColumn($column, array('type' => 'text', 'name' => $column, 'not_null' => $not_null));
 		}
 
+		protected function _addBlob($column, $not_null = false)
+		{
+			$this->_addColumn($column, array('type' => 'blob', 'name' => $column, 'not_null' => $not_null));
+		}
+
 		protected function _addBoolean($column, $default_value = false, $not_null = false)
 		{
 			$this->_addColumn($column, array('type' => 'boolean', 'name' => $column, 'default_value' => ($default_value) ? 1 : 0, 'not_null' => $not_null));
@@ -95,8 +100,8 @@
 					$this->_addText($column, $foreign_column['default_value'], false);
 					break;
 				case 'boolean':
-					$this->_addBoolean($column, $foreign_column['length'], $foreign_column['default_value'], false);
-					break;
+				case 'blob':
+					throw new B2DBException('Cannot use a blob column as a foreign key');
 			}
 			$this->_foreigntables[$addtable->getB2DBAlias()] = array('table' => $addtable, 'key' => $key, 'column' => $column);
 		}

@@ -7,7 +7,7 @@
 				<dt style="width: 120px;"><label for="issue_file"><?php echo __('Select a file'); ?></label></dt>
 				<dd style="margin-bottom: 3px;"><input type="file" name="issue_file" id="issue_file"></dd>
 				<dt style="width: 120px;"><label for="upload_issue_file_description"><?php echo __('Describe the file'); ?></label></dt>
-				<dd style="margin-bottom: 3px;"><input type="text" name="description" id="upload_issue_file_description" style="width: 340px;"></dd>
+				<dd style="margin-bottom: 3px;"><input type="text" name="issue_file_description" id="upload_issue_file_description" style="width: 340px;"></dd>
 				<dd class="faded_medium"><?php echo __('Enter a few words about the file, so people can understand what it is/does'); ?></dd>
 				<dt style="width: 120px;"><label for="upload_issue_file_comment"><?php echo __('Comment'); ?></label> (<?php echo __('optional'); ?>)</dt><br>
 				<dd style="margin-bottom: 3px;"><textarea name="comment" cols="70" rows="3" id="upload_issue_file_comment" style="width: 460px; height: 50px;"></textarea></dd>
@@ -121,12 +121,14 @@
 			if (json.finished)
 			{
 				this.poller.stop();
-				if (json.filename)
+				if (json.file_id)
 				{
 					this.status.remove();
 					this.form.remove();
 					$('issue_no_uploaded_files').hide();
+					$('viewissue_no_uploaded_files').hide();
 					$('uploaded_files').insert({bottom: json.content});
+					$('viewissue_uploaded_files').insert({bottom: json.content});
 					this.error = false;
 				}
 				else if (json.error)

@@ -1834,5 +1834,20 @@
 			return self::getScope()->getHostname();
 		}
 
+		public static function getMimeType($filename)
+		{
+			if (function_exists('finfo_open'))
+			{
+				$finfo = finfo_open(FILEINFO_MIME_TYPE); // return mime type ala mimetype extension
+				$content_type = finfo_file($finfo, $filename);
+				finfo_close($finfo);
+			}
+			else
+			{
+				$content_type = mime_content_type($filename);
+			}
+			return $content_type;
+		}
+
 	}
 	

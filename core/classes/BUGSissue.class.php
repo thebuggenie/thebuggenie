@@ -1335,12 +1335,11 @@
 		/**
 		 * Attach a file to the issue
 		 * 
-		 * @param string $filename The filename (relative to the files/ subdirectory)
-		 * @param string $description[optional] a description
+		 * @param string $file_id The file id
 		 */
-		public function attachFile($filename, $description = null)
+		public function attachFile($file_id)
 		{
-			B2DB::getTable('B2tFiles')->addFileToIssue($this->getID(), $filename, $description);
+			B2DB::getTable('B2tIssueFiles')->addFileToIssue($this->getID(), $file_id);
 		}
 
 		/**
@@ -3467,7 +3466,7 @@
 		{
 			if ($this->_files === null)
 			{
-				$this->_files = B2DB::getTable('B2tFiles')->getByIssueID($this->getID());
+				$this->_files = B2DB::getTable('B2tIssueFiles')->getByIssueID($this->getID());
 			}
 		}
 		

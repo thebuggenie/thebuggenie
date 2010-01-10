@@ -122,6 +122,15 @@
 			die();
 		}
 
+		public function cleanBuffer()
+		{
+			$ob_status = ob_get_status();
+			if (!empty($ob_status) && $ob_status['status'] != PHP_OUTPUT_HANDLER_END)
+			{
+				ob_end_clean();
+			}
+		}
+
 		/**
 		 * Set the template
 		 * 

@@ -11,7 +11,7 @@
 //		require_once(BUGScontext::getIncludePath() . 'js/viewissue_ajax.js.php');
 
 	?>
-	<?php if ($theIssue->canAttachFiles()): ?>
+	<?php if (BUGSsettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>
 		<div id="attach_file" style="display: none; background-color: transparent; width: 100%; height: 100%; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center;">
 			<div class="rounded_box white_borderless" style="position: absolute; top: 50%; left: 50%; z-index: 100001; clear: both; width: 500px; margin: -200px 0 0 -250px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
@@ -20,9 +20,9 @@
 					<div class="content" style="padding: 0 5px 0 5px;"><?php echo __('To attach a file to this issue, click the "Browse" button next to the input below, select the file you want to attach, and then click "%attach_file%. After you have started uploading one file you can always add another file if you want to attach more than one file.', array('%attach_file%' => __('Attach file'))); ?></div>
 					<?php include_component('main/uploader', array('issue' => $theIssue)); ?>
 					<div class="header_div"><?php echo __('Files you have just attached'); ?></div>
-					<ul id="uploaded_files">
-						<li class="faded_medium" id="issue_no_uploaded_files"><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></li>
-					</ul>
+					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0 id="uploaded_files">
+					</table>
+					<div class="faded_medium" id="issue_no_uploaded_files"><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
 					<div style="text-align: center; font-size: 14px; padding: 10px; margin-top: 25px; background-color: #F1F1F1;">
 						<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').hide();"><b>'.__('Done').'</b></a>')); ?>
 					</div>
@@ -201,39 +201,36 @@
 							<?php if ($theIssue->canAttachLinks()): ?>
 								<a href="javascript:void(0);" onclick="$('attach_link').show();" title="<?php echo __('Attach a link'); ?>" style="float: right; margin-left: 5px;"><?php echo image_tag('action_add_link.png'); ?></a>
 							<?php endif; ?>
-							<?php if ($theIssue->canAttachFiles()): ?>
+							<?php if (BUGSsettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>
 								<a href="javascript:void(0);" onclick="$('attach_file').show();" title="<?php echo __('Attach a file'); ?>" style="float: right; margin-left: 5px;"><?php echo image_tag('action_add_file.png'); ?></a>
 							<?php endif; ?>
 						<?php endif; ?>
 						<?php echo __('Attached information'); ?>
 					</div>
-					<?php if (count($theIssue->getFiles()) + count($theIssue->getLinks()) == 0): ?>
-						<div class="no_items"><?php echo __('There is nothing attached to this issue'); ?></div>
-					<?php else: ?>
-						<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-							<?php foreach ($theIssue->getLinks() as $aLink): ?>
-								<tr>
-									<td class="imgtd" style="width: 20px;"><?php echo image_tag('icon_link.png'); ?></td>
-									<td><a href="<?php echo $aLink['url']; ?>" target="_blank"><?php echo $aLink['description']; ?></a></td>
-									<?php if ($theIssue->canRemoveAttachments()): ?>
-										<td style="width: 15px;"><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;links=true&amp;action=remove&amp;l_id=<?php echo $aLink['id']; ?>" class="image"><?php echo image_tag('action_cancel_small.png'); ?></a></td>
-									<?php endif; ?>
-								</tr>
-							<?php endforeach; ?>
-							<?php foreach ($theIssue->getFiles() as $aFile): ?>
-								<tr>
-									<td class="imgtd" style="width: 22px; text-align: center; vertical-align: middle;"><?php echo image_tag('icon_file.png'); ?></td>
-									<td style="font-size: 13px; padding: 3px;">
-										<a href="<?php echo BUGScontext::getTBGPath() . 'files/' . $aFile['filename']; ?>" target="<?php echo $aFile['filename']; ?>"><?php echo ($aFile['description'] != '') ? $aFile['description'] : $aFile['filename']; ?></a><br>
-										<span class="faded_medium" style="font-size: 11px;"><?php echo bugs_formatTime($aFile['timestamp'], 13); ?></span>
-									</td>
-									<?php if ($theIssue->canRemoveAttachments()): ?>
-										<td style="width: 20px;"><a href="#" class="image"><?php echo image_tag('action_cancel_small.png'); ?></a></td>
-									<?php endif; ?>
-								</tr>
-							<?php endforeach; ?>
-						</table>
-					<?php endif; ?>
+					<div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($theIssue->getFiles()) + count($theIssue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
+					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0 id="viewissue_uploaded_files">
+						<?php foreach ($theIssue->getLinks() as $aLink): ?>
+							<tr>
+								<td class="imgtd" style="width: 20px;"><?php echo image_tag('icon_link.png'); ?></td>
+								<td><a href="<?php echo $aLink['url']; ?>" target="_blank"><?php echo $aLink['description']; ?></a></td>
+								<?php if ($theIssue->canRemoveAttachments()): ?>
+									<td style="width: 15px;"><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;links=true&amp;action=remove&amp;l_id=<?php echo $aLink['id']; ?>" class="image"><?php echo image_tag('action_cancel_small.png'); ?></a></td>
+								<?php endif; ?>
+							</tr>
+						<?php endforeach; ?>
+						<?php foreach ($theIssue->getFiles() as $file_id => $aFile): ?>
+							<tr>
+								<td class="imgtd" style="width: 22px; text-align: center; vertical-align: middle;"><?php echo link_tag(make_url('downloadfile', array('id' => $file_id)), image_tag('icon_download.png')); ?></td>
+								<td style="font-size: 13px; padding: 3px;">
+									<?php echo link_tag(make_url('showfile', array('id' => $file_id)), (($aFile['description'] != '') ? $aFile['description'] : $aFile['filename'])); ?><br>
+									<span class="faded_medium" style="font-size: 11px;"><?php echo bugs_formatTime($aFile['timestamp'], 13); ?></span>
+								</td>
+								<?php if ($theIssue->canRemoveAttachments()): ?>
+									<td style="width: 20px;"><a href="#" class="image"><?php echo image_tag('action_cancel_small.png'); ?></a></td>
+								<?php endif; ?>
+							</tr>
+						<?php endforeach; ?>
+					</table>
 				</div>
 				<div class="header_div">
 					<?php echo __('Related issues'); ?>

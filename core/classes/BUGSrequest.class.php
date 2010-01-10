@@ -40,7 +40,7 @@
 		 * 
 		 * @return BUGSfile The BUGSfile object
 		 */
-		public function handleUpload($key, BUGSissue $issue)
+		public function handleUpload($key)
 		{
             if (!array_key_exists($this->getParameter('APC_UPLOAD_PROGRESS'), $_SESSION['__upload_status'])) {
                 $_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')] = array(
@@ -130,16 +130,17 @@
 								else
 								{
 									BUGSlogging::log('Upload complete and ok, storing upload status and returning filename '.$new_filename);
+									$content_type = BUGScontext::getMimeType($files_dir.$new_filename);
+									$file_id = B2DB::getTable('B2tFiles')->saveFile($new_filename, basename($thefile['name']), $content_type, $this->getParameter($key.'_description'), ((BUGSsettings::getUploadStorage() == 'database') ? file_get_content( $files_dir.$new_filename) : null));
 									$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')] = array(
 										'id'       => $this->getParameter('APC_UPLOAD_PROGRESS'),
 										'finished' => true,
 										'percent'  => 100,
 										'total'    => 0,
 										'complete' => 0,
-										'issue_id' => $issue->getID(),
-										'filename' => $new_filename
+										'file_id'  => $file_id
 									);
-									return $new_filename;
+									return $file_id;
 								}
 							}
 							else
@@ -255,13 +256,14 @@
                 $ret['finished'] = (bool) $status['done'];
                 $ret['total']    = $status['total'];
                 $ret['complete'] = $status['current'];
-				if (array_key_exists('filename', $ret))
+				if (array_key_exists('file_id', $ret))
 				{
-					$status['filename'] = $ret['filename'];
+					$status['file_id'] = $ret['file_id'];
 					$status['issue_id'] = $ret['issue_id'];
 				}
 				elseif (array_key_exists('error', $ret))
 				{
+					$status['failed'] = true;
 					$status['error'] = $ret['error'];
 				}
 

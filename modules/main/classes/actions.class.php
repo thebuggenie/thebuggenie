@@ -141,6 +141,8 @@
 		 */
 		public function runAbout(BUGSrequest $request)
 		{
+			B2DB::getTable('B2tFiles')->create();
+			B2DB::getTable('B2tIssueFiles')->create();
 			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('about'));
 			$this->getResponse()->setProjectMenuStripHidden();
 		}
@@ -1482,9 +1484,9 @@
 			BUGSlogging::log('requesting status for upload with id ' . $id);
 			$status = BUGScontext::getRequest()->getUploadStatus($id);
 			BUGSlogging::log('status was: ' . (int) $status['finished']. ', pct: '. (int) $status['percent']);
-			if (array_key_exists('filename', $status))
+			if (array_key_exists('file_id', $status) && array_key_exists('issue_id', $status))
 			{
-				$status['content'] = $this->getTemplateHTML('attachedfile', array('issue_id' => $status['issue_id'], 'filename' => $status['filename']));
+				$status['content'] = $this->getComponentHTML('main/attachedfile', array('issue_id' => $status['issue_id'], 'file_id' => $status['file_id']));
 			}
 			
 			return $this->renderJSON($status);
@@ -1503,11 +1505,12 @@
 				try
 				{
 					//var_dump($_FILES);die();
-					$filename = BUGScontext::getRequest()->handleUpload('issue_file', $issue);
+					$file_id = BUGScontext::getRequest()->handleUpload('issue_file', $issue);
 					//var_dump($filename);die();
-					if ($filename != '')
+					if ($file_id)
 					{
-						$issue->attachFile($filename, $request->getParameter('description'));
+						$issue->attachFile($file_id);
+						$_SESSION['__upload_status'][$request->getParameter('upload_id')]['issue_id'] = $issue->getID();
 						return $this->renderText('ok');
 					}
 					$this->error = BUGScontext::getI18n()->__('An unhandled error occured with the upload');
@@ -1526,6 +1529,25 @@
 			BUGSlogging::log('marking upload ' . $request->getParameter('APC_UPLOAD_PROGRESS') . ' as completed with error ' . $this->error);
 			$request->markUploadAsFinishedWithError($request->getParameter('APC_UPLOAD_PROGRESS'), $this->error);
 			return $this->renderText($request->getParameter('APC_UPLOAD_PROGRESS').': '.$this->error);
+		}
+
+		public function runGetFile(BUGSrequest $request)
+		{
+			$file = B2DB::getTable('B2tFiles')->doSelectById((int) $request->getParameter('id'));
+			if ($file instanceof B2DBRow)
+			{
+				$this->getResponse()->clearHeaders();
+				if ($request->getParameter('mode') == 'download')
+				{
+					$this->getResponse()->addHeader('Content-disposition: attachment; filename='.$file->get(B2tFiles::ORIGINAL_FILENAME));
+				}
+				$this->getResponse()->cleanBuffer();
+				$this->getResponse()->addHeader('Content-type: '.$file->get(B2tFiles::CONTENT_TYPE));
+				$this->getResponse()->renderHeaders();
+				echo fpassthru(fopen(BUGSsettings::getUploadsLocalpath().$file->get(B2tFiles::REAL_FILENAME), 'r'));
+				die();
+				//return true;
+			}
 		}
 		
 	}

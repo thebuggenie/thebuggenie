@@ -98,6 +98,13 @@
 			
 		}
 
+		public function componentAttachedfile()
+		{
+			$this->issue = BUGSfactory::BUGSissueLab($this->issue_id);
+			$file = B2DB::getTable('B2tFiles')->doSelectById($this->file_id);
+			$this->file = array('id' => $file->get(B2tFiles::ID), 'filename' => $file->get(B2tFiles::ORIGINAL_FILENAME), 'description' => $file->get(B2tFiles::DESCRIPTION), 'timestamp' => $file->get(B2tFiles::UPLOADED_AT));
+		}
+
 	}
 
 ?>
