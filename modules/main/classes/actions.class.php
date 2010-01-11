@@ -1536,6 +1536,7 @@
 			$file = B2DB::getTable('B2tFiles')->doSelectById((int) $request->getParameter('id'));
 			if ($file instanceof B2DBRow)
 			{
+				$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 				$this->getResponse()->clearHeaders();
 				if ($request->getParameter('mode') == 'download')
 				{
@@ -1544,9 +1545,16 @@
 				$this->getResponse()->cleanBuffer();
 				$this->getResponse()->addHeader('Content-type: '.$file->get(B2tFiles::CONTENT_TYPE));
 				$this->getResponse()->renderHeaders();
-				echo fpassthru(fopen(TBGSettings::getUploadsLocalpath().$file->get(B2tFiles::REAL_FILENAME), 'r'));
-				die();
-				//return true;
+				if (TBGSettings::getUploadStorage() == 'files')
+				{
+					echo fpassthru(fopen(TBGSettings::getUploadsLocalpath().$file->get(B2tFiles::REAL_FILENAME), 'r'));
+				}
+				else
+				{
+					echo $file->get(B2tFiles::CONTENT);
+				}
+				//die();
+				return true;
 			}
 		}
 		

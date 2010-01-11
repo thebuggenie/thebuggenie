@@ -61,8 +61,10 @@
 						$fsql .= 'FLOAT(' . $a_column['precision'] . ')';
 						if ($a_column['unsigned'] && B2DB::getDBtype() != 'pgsql') $fsql .= ' UNSIGNED';
 						break;
-					case 'text':
 					case 'blob':
+						$fsql = (B2DB::getDBtype() == 'mysql') ? 'LONGBLOB' : 'BLOB';
+						break;
+					case 'text':
 					case 'boolean':
 						$fsql .= strtoupper($a_column['type']);
 						break;

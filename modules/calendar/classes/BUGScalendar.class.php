@@ -187,7 +187,7 @@
 		
 		public function section_TBGUser_getState($theUser)
 		{
-			$theUser = $vars;
+			//$theUser = $vars;
 			$events = $this->getEvents($_SERVER["REQUEST_TIME"], $_SERVER["REQUEST_TIME"]);
 			foreach ($events as $anevent)
 			{
