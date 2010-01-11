@@ -12,29 +12,7 @@
 
 	?>
 	<?php if (TBGSettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>
-		<div id="attach_file" style="display: none;">
-			<div class="rounded_box white_borderless">
-				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-				<div class="xboxcontent">
-					<div class="header_div bigger"><?php echo __('Attach one or more file(s) to this issue'); ?></div>
-					<?php include_component('main/uploader', array('issue' => $theIssue)); ?>
-					<div class="header_div"><?php echo __('Files already attached'); ?></div>
-					<div id="uploaded_files_container">
-						<table cellpadding=0 cellspacing=0 id="uploaded_files">
-							<?php foreach ($theIssue->getFiles() as $file_id => $file): ?>
-								<?php include_template('attachedfile', array('issue' => $theIssue, 'file' => $file, 'file_id' => $file_id)); ?>
-							<?php endforeach; ?>
-						</table>
-					</div>
-					<div class="faded_medium" id="issue_no_uploaded_files"<?php if (count($theIssue->getFiles()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
-					<div id="done_div">
-						<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').fade({ duration: 0.5 });"><b>'.__('Done').'</b></a>')); ?>
-					</div>
-				</div>
-				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-			</div>
-			<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent"> </div>
-		</div>
+		<?php include_component('main/uploader', array('issue' => $theIssue, 'mode' => 'issue')); ?>
 	<?php endif; ?>
 	<div class="rounded_box red_borderless" id="viewissue_unsaved"<?php if (!isset($issue_unsaved)): ?> style="display: none;"<?php endif; ?>>
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
@@ -212,19 +190,25 @@
 						<?php echo __('Attached information'); ?>
 					</div>
 					<div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($theIssue->getFiles()) + count($theIssue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
-					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0 id="viewissue_uploaded_files">
-						<?php foreach ($theIssue->getLinks() as $aLink): ?>
-							<tr>
-								<td class="imgtd" style="width: 20px;"><?php echo image_tag('icon_link.png'); ?></td>
-								<td><a href="<?php echo $aLink['url']; ?>" target="_blank"><?php echo $aLink['description']; ?></a></td>
-								<?php if ($theIssue->canRemoveAttachments()): ?>
-									<td style="width: 15px;"><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;links=true&amp;action=remove&amp;l_id=<?php echo $aLink['id']; ?>" class="image"><?php echo image_tag('action_cancel_small.png'); ?></a></td>
-								<?php endif; ?>
-							</tr>
-						<?php endforeach; ?>
-						<?php foreach ($theIssue->getFiles() as $file_id => $file): ?>
-							<?php include_template('attachedfile', array('issue' => $theIssue, 'file' => $file, 'file_id' => $file_id)); ?>
-						<?php endforeach; ?>
+					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
+						<tbody id="viewissue_uploaded_links">
+							<?php foreach ($theIssue->getLinks() as $aLink): ?>
+								<tr>
+									<td class="imgtd" style="width: 20px;"><?php echo image_tag('icon_link.png'); ?></td>
+									<td><a href="<?php echo $aLink['url']; ?>" target="_blank"><?php echo $aLink['description']; ?></a></td>
+									<?php if ($theIssue->canRemoveAttachments()): ?>
+										<td style="width: 15px;"><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;links=true&amp;action=remove&amp;l_id=<?php echo $aLink['id']; ?>" class="image"><?php echo image_tag('action_cancel_small.png'); ?></a></td>
+									<?php endif; ?>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
+						<tbody id="viewissue_uploaded_files">
+							<?php foreach ($theIssue->getFiles() as $file_id => $file): ?>
+								<?php include_template('attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $theIssue, 'file' => $file, 'file_id' => $file_id)); ?>
+							<?php endforeach; ?>
+						</tbody>
 					</table>
 				</div>
 				<div class="header_div">

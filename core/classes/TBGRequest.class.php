@@ -259,7 +259,6 @@
 				if (array_key_exists('file_id', $ret))
 				{
 					$status['file_id'] = $ret['file_id'];
-					$status['issue_id'] = $ret['issue_id'];
 				}
 				elseif (array_key_exists('error', $ret))
 				{

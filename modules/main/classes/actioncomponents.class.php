@@ -95,12 +95,22 @@
 
 		public function componentUploader()
 		{
-			
+			switch ($this->mode)
+			{
+				case 'issue':
+					$this->form_action = make_url('issue_upload', array('issue_id' => $this->issue->getID()));
+					$this->poller_url = make_url('issue_upload_status', array('issue_id' => $this->issue->getID()));
+					$this->existing_files = $this->issue->getFiles();
+					break;
+			}
 		}
 
 		public function componentAttachedfile()
 		{
-			$this->issue = TBGFactory::TBGIssueLab($this->issue_id);
+			if ($this->mode == 'issue')
+			{
+				$this->issue = TBGFactory::TBGIssueLab($this->issue_id);
+			}
 			$file = B2DB::getTable('B2tFiles')->doSelectById($this->file_id);
 			$this->file = array('id' => $file->get(B2tFiles::ID), 'filename' => $file->get(B2tFiles::ORIGINAL_FILENAME), 'description' => $file->get(B2tFiles::DESCRIPTION), 'timestamp' => $file->get(B2tFiles::UPLOADED_AT));
 		}

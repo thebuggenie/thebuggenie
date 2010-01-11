@@ -1319,6 +1319,7 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #attach_file .rounded_box .xboxcontent #done_div { text-align: center; font-size: 14px; padding: 10px; margin-top: 5px; background-color: #F1F1F1; }
 #attach_file #uploaded_files_container { max-height: 160px; overflow: auto; }
 #attach_file #uploaded_files { table-layout: fixed; width: 100%; background-color: #FFF; }
+#uploader_no_uploaded_files { padding: 5px 0 15px 5px; }
 
 #issue_lefthand #more_actions { font-size: 13px; }
 #issue_lefthand #more_actions .xboxcontent { padding: 10px 5px 5px 10px; }

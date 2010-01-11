@@ -34,6 +34,76 @@ function toggleFavourite(url, issue_id)
 		},
 		onFailure: function(transport) {
 			$('issue_favourite_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && json.failed)
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+		}
+	});
+}
+
+function detachFileFromIssue(url, file_id)
+{
+	new Ajax.Request(url, {
+		method: 'post',
+		requestHeaders: {Accept: 'application/json'},
+		onLoading: function() {
+			$('viewissue_files_'+ file_id + '_remove_link').hide();
+			$('viewissue_files_'+ file_id + '_remove_indicator').show();
+			$('uploaded_files_'+ file_id + '_remove_link').hide();
+			$('uploaded_files_'+ file_id + '_remove_indicator').show();
+		},
+		onSuccess: function(transport) {
+			var json = transport.responseJSON;
+			if (json && json.failed == false)
+			{
+				$('viewissue_files_' + file_id).remove();
+				$('uploaded_files_' + file_id).remove();
+				window.alert($('viewissue_uploaded_files').childElements().size());
+				if ($('viewissue_uploaded_files').childElements().size() == 0)
+				{
+					$('uploader_no_uploaded_files').show();
+					if ($('viewissue_uploaded_links').childElements().size() == 0)
+					{
+						$('viewissue_no_uploaded_files').show();
+					}
+				}
+			}
+			else
+			{
+				if (json && json.failed)
+				{
+					failedMessage(json.error);
+				}
+				else
+				{
+					failedMessage(transport.responseText);
+				}
+				$('viewissue_files_'+ file_id + '_remove_link').show();
+				$('viewissue_files_'+ file_id + '_remove_indicator').hide();
+				$('uploaded_files_'+ file_id + '_remove_link').show();
+				$('uploaded_files_'+ file_id + '_remove_indicator').hide();
+			}
+		},
+		onFailure: function(transport) {
+			$('viewissue_files_'+ file_id + '_remove_link').show();
+			$('viewissue_files_'+ file_id + '_remove_indicator').hide();
+			$('uploaded_files_'+ file_id + '_remove_link').show();
+			$('uploaded_files_'+ file_id + '_remove_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && json.failed)
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
 		}
 	});
 }
@@ -82,6 +152,15 @@ function updatePercent(url, mode)
 		},
 		onFailure: function(transport) {
 			$('percent_spinning').hide();
+			var json = transport.responseJSON;
+			if (json && json.failed)
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
 		}
 	});
 }

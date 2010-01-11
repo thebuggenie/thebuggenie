@@ -1,37 +1,69 @@
-<div id="upload_forms">
-	<form method="post" action="<?php echo make_url('issue_upload', array('issue_id' => $issue->getID())); ?>" enctype="multipart/form-data" id="issue_upload_form" style="margin: 10px 0 0 5px; display: none;">
-		<input type="hidden" name ="MAX_FILE_SIZE" value="200000000">
-		<input type="hidden" name="APC_UPLOAD_PROGRESS" value="" />
-		<div>
-			<dl>
-				<dt style="width: 120px;"><label for="issue_file"><?php echo __('Select a file'); ?></label></dt>
-				<dd style="margin-bottom: 3px;"><input type="file" name="issue_file" id="issue_file"></dd>
-				<dt style="width: 120px;"><label for="upload_issue_file_description"><?php echo __('Describe the file'); ?></label></dt>
-				<dd style="margin-bottom: 3px;"><input type="text" name="issue_file_description" id="upload_issue_file_description" style="width: 340px;"></dd>
-				<dd class="faded_medium"><?php echo __('Enter a few words about the file, so people can understand what it is/does'); ?></dd>
-				<dt style="width: 120px;"><label for="upload_issue_file_comment"><?php echo __('Comment'); ?></label> (<?php echo __('optional'); ?>)</dt><br>
-				<dd style="margin-bottom: 3px;"><textarea name="comment" cols="70" rows="3" id="upload_issue_file_comment" style="width: 460px; height: 50px;"></textarea></dd>
-				<dd class="faded_medium" style="width: 440px;"><?php echo __('If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'); ?></dd>
-			</dl>
-			<div style="text-align: center; margin-top: 0;">
-				<p style="margin-bottom: 5px;"><?php echo __('Press the %upload_and_attach% button to attach the file to this issue', array('%upload_and_attach%' => '<i>'.__('Upload and attach').'</i>')); ?></p>
-				<input type="submit" name="submit" value="<?php echo __('Upload and attach'); ?>" style="font-weight: bold; font-size: 13px;">
+<div id="attach_file" style="display: none;">
+	<div class="rounded_box white_borderless">
+		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+		<div class="xboxcontent">
+			<div class="header_div bigger">
+				<?php if ($mode == 'issue'): ?>
+					<?php echo __('Attach one or more file(s) to this issue'); ?>
+				<?php endif; ?>
+			</div>
+			<div id="upload_forms">
+				<form method="post" action="<?php echo $form_action ?>" enctype="multipart/form-data" id="uploader_upload_form" style="margin: 10px 0 0 5px; display: none;">
+					<input type="hidden" name ="MAX_FILE_SIZE" value="200000000">
+					<input type="hidden" name="APC_UPLOAD_PROGRESS" value="" />
+					<div>
+						<dl>
+							<dt style="width: 120px;"><label for="uploader_file"><?php echo __('Select a file'); ?></label></dt>
+							<dd style="margin-bottom: 3px;"><input type="file" name="uploader_file" id="uploader_file"></dd>
+							<dt style="width: 120px;"><label for="upload_file_description"><?php echo __('Describe the file'); ?></label></dt>
+							<dd style="margin-bottom: 3px;"><input type="text" name="uploader_file_description" id="upload_file_description" style="width: 340px;"></dd>
+							<dd class="faded_medium"><?php echo __('Enter a few words about the file, so people can understand what it is/does'); ?></dd>
+							<?php if ($mode == 'issue'): ?>
+								<dt style="width: 120px;"><label for="upload_file_comment"><?php echo __('Comment'); ?></label> (<?php echo __('optional'); ?>)</dt><br>
+								<dd style="margin-bottom: 3px;"><textarea name="comment" cols="70" rows="3" id="upload_file_comment" style="width: 460px; height: 50px;"></textarea></dd>
+								<dd class="faded_medium" style="width: 440px;"><?php echo __('If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'); ?></dd>
+							<?php endif; ?>
+						</dl>
+						<div style="text-align: center; margin-top: 0;">
+							<p style="margin-bottom: 5px;"><?php echo __('Press the %upload_and_attach% button to upload and attach the file', array('%upload_and_attach%' => '<i>'.__('Upload and attach').'</i>')); ?></p>
+							<input type="submit" name="submit" value="<?php echo __('Upload and attach'); ?>" style="font-weight: bold; font-size: 13px;">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div id="uploader_upload_indicators">
+				<div id="uploader_upload_indicator" style="display: none;">
+					<?php echo image_tag('spinning_32.gif', array('style' => 'float: left;')); ?>&nbsp;<div style="float: left; font-size: 13px; padding: 1px;"><?php echo __('Uploading file, please wait'); ?>...</div>
+				</div>
+			</div>
+			<br style="clear: both;">
+			<div class="header_div"><?php echo __('Files already attached'); ?></div>
+			<div id="uploaded_files_container">
+				<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
+					<tbody id="uploaded_files">
+						<?php if ($mode == 'issue'): ?>
+							<?php foreach ($existing_files as $file_id => $file): ?>
+								<?php include_template('attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file, 'file_id' => $file_id)); ?>
+							<?php endforeach; ?>
+						<?php endif; ?>
+					</tbody>
+				</table>
+			</div>
+			<div class="faded_medium" id="uploader_no_uploaded_files"<?php if (count($existing_files) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
+			<div id="done_div">
+				<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').fade({ duration: 0.5 });"><b>'.__('Done').'</b></a>')); ?>
 			</div>
 		</div>
-	</form>
-</div>
-<div id="issue_upload_indicators">
-	<div id="issue_upload_indicator" style="display: none;">
-		<?php echo image_tag('spinning_32.gif', array('style' => 'float: left;')); ?>&nbsp;<div style="float: left; font-size: 13px; padding: 1px;"><?php echo __('Uploading file, please wait'); ?>...</div>
+		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 	</div>
+	<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent"> </div>
 </div>
-<br style="clear: both;">
 <script type="text/javascript">
 
 	var FileUploader = Class.create({
 
 		ID_KEY         : 'APC_UPLOAD_PROGRESS',
-		statusUrl      : '<?php echo make_url('issue_upload_status'); ?>',
+		pollerUrl      : '<?php echo $poller_url; ?>',
 		poller         : null,
 		error          : false,
 		form           : null, // HTML form element
@@ -42,7 +74,7 @@
 		initialize : function()
 		{
 			// initialize the form and observe the submit element
-			this.form = $('issue_upload_form').clone(true);
+			this.form = $('uploader_upload_form').clone(true);
 			this.form.id = this.form.id+this.generateId();
 			$('upload_forms').appendChild(this.form);
 			this.form.show();
@@ -59,8 +91,8 @@
 			this.idElement = this.form.getInputs(null, this.ID_KEY)[0];
 
 			// initialize the status container
-			this.status = $('issue_upload_indicator').clone(true);
-			$('issue_upload_indicators').appendChild(this.status);
+			this.status = $('uploader_upload_indicator').clone(true);
+			$('uploader_upload_indicators').appendChild(this.status);
 
 		},
 
@@ -106,7 +138,7 @@
 				onFailure  : this._onMonitorFailure.bind(this)
 			};
 
-			new Ajax.Request(this.statusUrl+'&upload_id='+this.idElement.value, options);
+			new Ajax.Request(this.pollerUrl+'&upload_id='+this.idElement.value, options);
 		},
 
 		_onMonitorLoading : function()
@@ -125,10 +157,12 @@
 				{
 					this.status.remove();
 					this.form.remove();
-					$('issue_no_uploaded_files').hide();
-					$('viewissue_no_uploaded_files').hide();
-					$('uploaded_files').insert({bottom: json.content});
-					$('viewissue_uploaded_files').insert({bottom: json.content});
+					$('uploader_no_uploaded_files').hide();
+					$('uploaded_files').insert({bottom: json.content_uploader});
+					<?php if ($mode == 'issue'): ?>
+						$('viewissue_no_uploaded_files').hide();
+						$('viewissue_uploaded_files').insert({bottom: json.content_inline});
+					<?php endif; ?>
 					this.error = false;
 				}
 				else if (json.error)

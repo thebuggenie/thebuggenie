@@ -1484,9 +1484,10 @@
 			TBGLogging::log('requesting status for upload with id ' . $id);
 			$status = TBGContext::getRequest()->getUploadStatus($id);
 			TBGLogging::log('status was: ' . (int) $status['finished']. ', pct: '. (int) $status['percent']);
-			if (array_key_exists('file_id', $status) && array_key_exists('issue_id', $status))
+			if (array_key_exists('file_id', $status) && $request->getParameter('mode') == 'issue')
 			{
-				$status['content'] = $this->getComponentHTML('main/attachedfile', array('issue_id' => $status['issue_id'], 'file_id' => $status['file_id']));
+				$status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue_id' => $request->getParameter('issue_id'), 'file_id' => $status['file_id']));
+				$status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue_id' => $request->getParameter('issue_id'), 'file_id' => $status['file_id']));
 			}
 			
 			return $this->renderJSON($status);
@@ -1499,18 +1500,28 @@
 				$request->setParameter('APC_UPLOAD_PROGRESS', $request->getParameter('upload_id'));
 			}
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
-			$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
-			if ($issue instanceof TBGIssue && $issue->hasAccess() && $issue->canAttachFiles())
+
+			$canupload = false;
+
+			if ($request->getParameter('mode') == 'issue')
+			{
+				$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+				$canupload = (bool) ($issue instanceof TBGIssue && $issue->hasAccess() && $issue->canAttachFiles());
+			}
+
+			if ($canupload)
 			{
 				try
 				{
 					//var_dump($_FILES);die();
-					$file_id = TBGContext::getRequest()->handleUpload('issue_file', $issue);
+					$file_id = TBGContext::getRequest()->handleUpload('uploader_file', $issue);
 					//var_dump($filename);die();
 					if ($file_id)
 					{
-						$issue->attachFile($file_id);
-						$_SESSION['__upload_status'][$request->getParameter('upload_id')]['issue_id'] = $issue->getID();
+						if ($request->getParameter('mode') == 'issue')
+						{
+							$issue->attachFile($file_id);
+						}
 						return $this->renderText('ok');
 					}
 					$this->error = TBGContext::getI18n()->__('An unhandled error occured with the upload');
@@ -1524,11 +1535,28 @@
 			else
 			{
 				$this->getResponse()->setHttpStatus(401);
-				$this->error = TBGContext::getI18n()->__('You cannot attach files to this issue');
+				$this->error = TBGContext::getI18n()->__('You are not allowed to attach files here');
 			}
 			TBGLogging::log('marking upload ' . $request->getParameter('APC_UPLOAD_PROGRESS') . ' as completed with error ' . $this->error);
 			$request->markUploadAsFinishedWithError($request->getParameter('APC_UPLOAD_PROGRESS'), $this->error);
 			return $this->renderText($request->getParameter('APC_UPLOAD_PROGRESS').': '.$this->error);
+		}
+
+		public function runDetachFile(TBGrequest $request)
+		{
+			switch ($request->getParameter('mode'))
+			{
+				case 'issue':
+					$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+					if ($issue->canRemoveAttachments() && (int) $request->getParameter('file_id', 0))
+					{
+						B2DB::getTable('B2tIssueFiles')->removeFileFromIssue($issue->getID(), (int) $request->getParameter('file_id'));
+						return $this->renderJSON(array('failed' => false, 'file_id' => $request->getParameter('file_id')));
+					}
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a valid issue')));
+					break;
+			}
+			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid mode')));
 		}
 
 		public function runGetFile(TBGRequest $request)
@@ -1536,13 +1564,10 @@
 			$file = B2DB::getTable('B2tFiles')->doSelectById((int) $request->getParameter('id'));
 			if ($file instanceof B2DBRow)
 			{
-				$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
-				$this->getResponse()->clearHeaders();
-				if ($request->getParameter('mode') == 'download')
-				{
-					$this->getResponse()->addHeader('Content-disposition: attachment; filename='.$file->get(B2tFiles::ORIGINAL_FILENAME));
-				}
 				$this->getResponse()->cleanBuffer();
+				$this->getResponse()->clearHeaders();
+				$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+				$this->getResponse()->addHeader('Content-disposition: '.(($request->getParameter('mode') == 'download') ? 'attachment' : 'inline').'; filename='.$file->get(B2tFiles::ORIGINAL_FILENAME));
 				$this->getResponse()->addHeader('Content-type: '.$file->get(B2tFiles::CONTENT_TYPE));
 				$this->getResponse()->renderHeaders();
 				if (TBGSettings::getUploadStorage() == 'files')

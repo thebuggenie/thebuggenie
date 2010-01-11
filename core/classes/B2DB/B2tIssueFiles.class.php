@@ -42,6 +42,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ISSUE_ID, $issue_id);
 			$crit->addWhere(self::FILE_ID, $file_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			if ($this->doCount($crit) == 0)
 			{
 				$crit = $this->getCriteria();
@@ -50,6 +51,23 @@
 				$crit->addInsert(self::ISSUE_ID, $issue_id);
 				$crit->addInsert(self::FILE_ID, $file_id);
 				$this->doInsert($crit);
+			}
+		}
+
+		public function removeFileFromIssue($issue_id, $file_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ISSUE_ID, $issue_id);
+			$crit->addWhere(self::FILE_ID, $file_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$this->doDelete($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::FILE_ID, $file_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			if ($this->doCount($crit) == 0)
+			{
+				B2DB::getTable('B2tFiles')->doDeleteById($file_id);
 			}
 		}
 		
