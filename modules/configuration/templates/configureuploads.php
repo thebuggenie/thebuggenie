@@ -86,8 +86,8 @@
 						<tr>
 							<td><label for="upload_storage"><?php echo __('File storage'); ?></label></td>
 							<td>
-								<select name="upload_storage" id="upload_storage"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
-									<option value="files"<?php if (TBGSettings::getUploadStorage() == 'files'): ?> selected<?php endif; ?> onchange="(this.value == 'files') ? $('upload_localpath').enable() : $('upload_localpath').disable();"><?php echo __('Store it in the folder specified below'); ?></option>
+								<select name="upload_storage" id="upload_storage"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?> onchange="(this.value == 'files') ? $('upload_localpath').enable() : $('upload_localpath').disable();">
+									<option value="files"<?php if (TBGSettings::getUploadStorage() == 'files'): ?> selected<?php endif; ?>><?php echo __('Store it in the folder specified below'); ?></option>
 									<option value="database"<?php if (TBGSettings::getUploadStorage() == 'database'): ?> selected<?php endif; ?>><?php echo __('Use the database to store files'); ?></option>
 								</select>
 							</td>
