@@ -58,7 +58,8 @@
 						</tr>
 						<tr>
 							<td class="config_explanation" colspan="2">
-								<?php echo __('Enter the maximum allowed file size for uploads here. Remember that this value cannot be higher than the current php max upload size, defined in php.ini. Currently, this value is %ini_max_file_size%.', array('%ini_max_file_size%' => '<b>'.(int) ini_get('upload_max_filesize').'MB</b>')); ?>
+								<?php echo __('Enter the maximum allowed file size for uploads here. Remember that this value cannot be higher than the current php max_upload_size or post_max_size, both defined in php.ini.'); ?> 
+								<u><?php echo __('Currently, these values are max_upload_size: %ini_max_upload_size% and post_max_size: %ini_post_max_size%.', array('%ini_max_upload_size%' => '<b>'.(int) ini_get('upload_max_filesize').'MB</b>', '%ini_post_max_size%' => '<b>'.(int) ini_get('post_max_size').'MB</b>')); ?></u>
 							</td>
 						</tr>
 						<tr>
