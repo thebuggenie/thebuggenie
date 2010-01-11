@@ -64,17 +64,17 @@
 		}
 		else
 		{
-			if ($module != 'core' && !file_exists(BUGScontext::getIncludePath() . 'themes/' . BUGSsettings::getThemeName() . "/{$module}/" . $image))
+			if ($module != 'core' && !file_exists(TBGContext::getIncludePath() . 'themes/' . TBGSettings::getThemeName() . "/{$module}/" . $image))
 			{
-				$params['src'] = BUGScontext::getTBGPath() . "themes/modules/{$module}/" . BUGSsettings::getThemeName() . '/' . $image;
+				$params['src'] = TBGContext::getTBGPath() . "themes/modules/{$module}/" . TBGSettings::getThemeName() . '/' . $image;
 			}
 			elseif ($module != 'core')
 			{
-				$params['src'] = BUGScontext::getTBGPath() . 'themes/' . BUGSsettings::getThemeName() . "/{$module}/" . $image;
+				$params['src'] = TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . "/{$module}/" . $image;
 			}
 			else
 			{
-				$params['src'] = BUGScontext::getTBGPath() . 'themes/' . BUGSsettings::getThemeName() . '/' . $image;
+				$params['src'] = TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/' . $image;
 			}
 		}
 		if (!isset($params['alt']))
@@ -111,7 +111,7 @@
 	 */
 	function image_submit_tag($image, $params = array(), $notheme = false)
 	{
-		$params['src'] = (!$notheme) ? BUGScontext::getTBGPath() . 'themes/' . BUGSsettings::getThemeName() . '/' . $image : $image;
+		$params['src'] = (!$notheme) ? TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/' . $image : $image;
 		return '<input type="image" ' . parseHTMLoptions($params) . ' />';
 	}
 	
@@ -131,7 +131,7 @@
 	/**
 	 * Prints a customer dropdown menu inside a table (must be there)
 	 *
-	 * @param BUGScustomer $cid
+	 * @param TBGCustomer $cid
 	 * @param bool $dontclose
 	 * 
 	 * @see bugs_teamDropdown
@@ -147,7 +147,7 @@
 	/**
 	 * Prints a team dropdown menu inside a table (must be there)
 	 *
-	 * @param BUGSteam $tid
+	 * @param TBGTeam $tid
 	 * @param bool $dontclose
 	 * 
 	 * @see bugs_customerDropdown
@@ -165,13 +165,13 @@
 		}
 		if (!$is_customer)
 		{
-			if ($tid instanceof BUGSteam)
+			if ($tid instanceof TBGTeam)
 			{
 				$aTeam = $tid;
 			}
 			else
 			{
-				$aTeam = BUGSfactory::teamLab($tid);
+				$aTeam = TBGFactory::teamLab($tid);
 			}
 			if ($aTeam->getID() == '')
 			{
@@ -180,13 +180,13 @@
 		}
 		else
 		{
-			if ($tid instanceof BUGScustomer)
+			if ($tid instanceof TBGCustomer)
 			{
 				$aTeam = $tid;
 			}
 			else
 			{
-				$aTeam = BUGSfactory::customerLab($tid);
+				$aTeam = TBGFactory::customerLab($tid);
 			}
 			if ($aTeam->getID() == '')
 			{
@@ -223,9 +223,9 @@
 		$the_tr .= '<div style="padding: 3px; margin-bottom: 2px;"><b>' . $aTeam->getName() . '</b></div>';
 
 		$trigger_name = (!$is_customer) ? 'teamactions' : 'customeractions';  
-		$the_tr .= BUGScontext::trigger('core', $trigger_name.'_top', array("tid" => $tid, "closemenustring" => $closemenu_string, 'retval' => &$the_tr));
+		$the_tr .= TBGContext::trigger('core', $trigger_name.'_top', array("tid" => $tid, "closemenustring" => $closemenu_string, 'retval' => &$the_tr));
 
-		$the_tr .= BUGScontext::trigger('core', $trigger_name.'_bottom', array("tid" => $tid, "closemenustring" => $closemenu_string));
+		$the_tr .= TBGContext::trigger('core', $trigger_name.'_bottom', array("tid" => $tid, "closemenustring" => $closemenu_string));
 
 		$the_tr .= '<div style="text-align: right; padding: 3px; font-size: 9px;"><a href="javascript:void(0);" onclick="' . $closemenu_string . '">' . __('Close this menu') . '</a></div>';
 		$the_tr .= '</td></tr>';
@@ -253,7 +253,7 @@
 	function bugs_printMilestones($project_id, $onlyVisible = true)
 	{
 
-		$milestones = BUGSfactory::projectLab($project_id)->getMilestones($onlyVisible);
+		$milestones = TBGFactory::projectLab($project_id)->getMilestones($onlyVisible);
 
 		?>
 		<table style="margin-top: 5px; width: 100%;" cellpadding=0 cellspacing=0>
@@ -261,7 +261,7 @@
 		$cc = 0;
 		foreach($milestones as $aMilestone)
 		{
-			$aMilestone = BUGSfactory::milestoneLab($aMilestone['id']);
+			$aMilestone = TBGFactory::milestoneLab($aMilestone['id']);
 			$cc++;
 			?><tr>
 			<td style="width: 50%; padding: 2px; padding-bottom: 10px;" valign="top">
@@ -402,7 +402,7 @@
 		<table style="width: 100%;">
 		<tr>
 		<td style="width: 50%; text-align: left;"><b><?php echo __('You are now in "print friendly" mode'); ?>&nbsp;</b>(<a href="<?php echo $normalmode_link; ?>"><?php echo __('Switch back to normal mode'); ?></a>)</td>
-		<td style="width: 50%; text-align: right;"><?php echo __('Logged in as %username%', array('%username%' => '<b>' . BUGScontext::getUser() . '</b>')); ?></td>
+		<td style="width: 50%; text-align: right;"><?php echo __('Logged in as %username%', array('%username%' => '<b>' . TBGContext::getUser() . '</b>')); ?></td>
 		</tr>
 		</table>
 		</div>
@@ -417,7 +417,7 @@
 	 */
 	function include_template($template, $params = array())
 	{
-		return BUGSactioncomponent::includeTemplate($template, $params);
+		return TBGActionComponent::includeTemplate($template, $params);
 	}
 	
 	/**
@@ -428,7 +428,7 @@
 	 */
 	function include_component($component, $params = array())
 	{
-		return BUGSactioncomponent::includeComponent($component, $params);
+		return TBGActionComponent::includeComponent($component, $params);
 	}
 	
 	/**
@@ -441,7 +441,7 @@
 	 */
 	function make_url($name, $params = array(), $relative = true)
 	{
-		return BUGScontext::getRouting()->generate($name, $params, $relative);
+		return TBGContext::getRouting()->generate($name, $params, $relative);
 	}
 	
 	/**

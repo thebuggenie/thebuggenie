@@ -96,7 +96,7 @@
 			$crit->addInsert(self::VERSION_MAJOR, $ver_mj);
 			$crit->addInsert(self::VERSION_MINOR, $ver_mn);
 			$crit->addInsert(self::VERSION_REVISION, $ver_rev);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			
 			return ($b_id !== null) ? $b_id : $res->getInsertID();
@@ -105,7 +105,7 @@
 		public function getByID($id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$row = $this->doSelectById($id, $crit);
 			return $row;
 		}
@@ -114,7 +114,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addUpdate(self::IS_DEFAULT, false);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::PROJECT, $project_id);
 			$res = $this->doUpdate($crit);
 		}
@@ -123,7 +123,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addUpdate(self::IS_DEFAULT, false);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::EDITION, $edition_id);
 			$res = $this->doUpdate($crit);
 		}

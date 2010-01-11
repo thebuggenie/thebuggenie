@@ -20,7 +20,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ARTICLE_NAME, $article_name);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doDelete($crit);
 		}
 
@@ -29,7 +29,7 @@
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ARTICLE_NAME, $article_name);
 			$crit->addInsert(self::LINK_ARTICLE_NAME, $linked_article_name);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 		}
 
@@ -37,7 +37,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ARTICLE_NAME, $article_name);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doSelect($crit);
 
 			return $res;
@@ -47,7 +47,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::LINK_ARTICLE_NAME, $linked_article_name);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doSelect($crit);
 
 			return $res;

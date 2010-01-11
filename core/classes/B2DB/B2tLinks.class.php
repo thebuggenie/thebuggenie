@@ -58,14 +58,14 @@
 		public function addLinkToIssue($issue_id, $url, $description = null)
 		{
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::UID, BUGScontext::getUser()->getID());
+			$crit->addInsert(self::UID, TBGContext::getUser()->getID());
 			$crit->addInsert(self::ISSUE, $issue_id);
 			$crit->addInsert(self::URL, $url);
 			if ($description !== null)
 			{
 				$crit->addInsert(self::DESCRIPTION, $description);
 			}
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 		}
 		

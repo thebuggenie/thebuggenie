@@ -1,4 +1,4 @@
-<?php BUGScontext::loadLibrary('ui'); ?>
+<?php TBGContext::loadLibrary('ui'); ?>
 <?php if ($message): ?>
 	<p class="faded_medium" style="padding: 5px;"><?php echo __('Please specify something to search for'); ?></p>
 <?php else: ?>

@@ -52,7 +52,7 @@
 			{
 				$crit->addWhere(B2tIssues::ISSUE_TYPE, $limit_issuetype);
 			}
-			$crit->addWhere(B2tIssues::STATE, BUGSissue::STATE_OPEN);
+			$crit->addWhere(B2tIssues::STATE, TBGIssue::STATE_OPEN);
 			$crit->addWhere(self::EDITION, $edition_id);
 			$res = $this->doSelect($crit);
 			return $res;
@@ -82,7 +82,7 @@
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::ISSUE, $issue_id);
 				$crit->addInsert(self::EDITION, $edition_id);
-				$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$this->doInsert($crit);
 				return true;
 			}

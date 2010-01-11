@@ -1,15 +1,15 @@
 <?php
 
-	if (($access_level != "full" && $access_level != "read") || BUGScontext::getRequest()->getParameter('access_level'))
+	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
 		bugs_msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
 		require 'teamgroups_logic.inc.php';
-		if (!BUGScontext::getRequest()->isAjaxCall())
+		if (!TBGContext::getRequest()->isAjaxCall())
 		{
-			?><script type="text/javascript" src="<?php echo BUGScontext::getTBGPath(); ?>js/config/teamgroups_ajax.js"></script><?php
+			?><script type="text/javascript" src="<?php echo TBGContext::getTBGPath(); ?>js/config/teamgroups_ajax.js"></script><?php
 			?>
 			<table style="width: 100%" cellpadding=0 cellspacing=0>
 				<tr>
@@ -26,9 +26,9 @@
 								
 								if ($access_level == "full")
 								{
-									if ($theGroup instanceof BUGSgroup && BUGScontext::getRequest()->getParameter('remove') && !BUGScontext::getRequest()->getParameter('confirm'))
+									if ($theGroup instanceof TBGGroup && TBGContext::getRequest()->getParameter('remove') && !TBGContext::getRequest()->getParameter('confirm'))
 									{
-										if ($theGroup->getID() == BUGScontext::getUser()->getGroup()->getID())
+										if ($theGroup->getID() == TBGContext::getUser()->getGroup()->getID())
 										{
 											?>
 											<div class="e_div" style="width: 400px; background: #FFF;">
@@ -37,7 +37,7 @@
 											</div>
 											<?php
 										}
-										elseif (BUGSsettings::get('defaultgroup') == $theGroup->getID())
+										elseif (TBGSettings::get('defaultgroup') == $theGroup->getID())
 										{
 											?>
 											<div class="e_div" style="width: 400px; background: #FFF;">
@@ -46,7 +46,7 @@
 											</div>
 											<?php
 										}
-										elseif (!BUGScontext::getRequest()->getParameter('confirm'))
+										elseif (!TBGContext::getRequest()->getParameter('confirm'))
 										{
 											?>
 											<div class="w_div" style="width: 450px; background: #FFF;">
@@ -57,7 +57,7 @@
 											<?php
 										}
 									}
-									elseif ($theTeam instanceof BUGSteam && BUGScontext::getRequest()->getParameter('remove') && !BUGScontext::getRequest()->getParameter('confirm'))
+									elseif ($theTeam instanceof TBGTeam && TBGContext::getRequest()->getParameter('remove') && !TBGContext::getRequest()->getParameter('confirm'))
 									{
 										?>
 										<div class="w_div" style="width: 450px; background: #FFF;">
@@ -79,7 +79,7 @@
 									<div style="border-bottom: 1px solid #DDD; font-weight: bold; font-size: 1.0em; width: auto;"><?php echo __('Available groups'); ?></div>
 									<div style="padding: 3px; padding-left: 0px; margin-bottom: 15px;">
 									<table class="grouplist" style="width: 100%; table-layout: auto; margin-top: 0px;" cellpadding=0 cellspacing=0>
-									<tr<?php (BUGScontext::getRequest()->hasParameter('group') && BUGScontext::getRequest()->getParameter('group') < 1) ? print " class=\"g_marked\"" : print ""; ?>>
+									<tr<?php (TBGContext::getRequest()->hasParameter('group') && TBGContext::getRequest()->getParameter('group') < 1) ? print " class=\"g_marked\"" : print ""; ?>>
 										<td style="width: auto;" valign="middle"><a href="config.php?module=core&amp;section=1&amp;group=0"><?php echo __('Everyone'); ?></a></td>
 										<td style="width: 18px; padding: 0px; text-align: center;">&nbsp;</td>
 									</tr>
@@ -88,9 +88,9 @@
 									<?php
 	
 									$include_table = true;
-									foreach (BUGSgroup::getAll() as $aGroup)
+									foreach (TBGGroup::getAll() as $aGroup)
 									{
-										require BUGScontext::getIncludePath() . 'include/config/teamgroups_groupbox.inc.php';
+										require TBGContext::getIncludePath() . 'include/config/teamgroups_groupbox.inc.php';
 									}
 									
 									?>
@@ -100,7 +100,7 @@
 									if ($access_level == "full")
 									{
 										?>
-										<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" id="add_group_form" onsubmit="return false;">
+										<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" id="add_group_form" onsubmit="return false;">
 										<input type="hidden" name="addgroup" value="true">
 										<table class="grouplist" style="width: 100%; table-layout: auto; margin-top: 0px;" cellpadding=0 cellspacing=0>
 										<tr>
@@ -120,17 +120,17 @@
 									<?php
 	
 									$include_table = true;
-									foreach (BUGSteam::getAll() as $aTeam)
+									foreach (TBGTeam::getAll() as $aTeam)
 									{
-										$aTeam = new BUGSteam($aTeam['id']);
-										require BUGScontext::getIncludePath() . 'include/config/teamgroups_teambox.inc.php';
+										$aTeam = new TBGTeam($aTeam['id']);
+										require TBGContext::getIncludePath() . 'include/config/teamgroups_teambox.inc.php';
 									}
 									
 									?>
 									</div>
 									<?php
 	
-									if (count(BUGSteam::getAll()) == 0)
+									if (count(TBGTeam::getAll()) == 0)
 									{
 										?>
 										<table class="teamlist" style="width: 100%; table-layout: auto; margin-top: 0px;" cellpadding=0 cellspacing=0>
@@ -144,7 +144,7 @@
 									if ($access_level == "full")
 									{
 										?>
-										<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" id="add_team_form" onsubmit="return false;">
+										<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" id="add_team_form" onsubmit="return false;">
 										<input type="hidden" name="addteam" value="true">
 										<table class="grouplist" style="width: 100%; table-layout: auto; margin-top: 5px;" cellpadding=0 cellspacing=0>
 										<tr>
@@ -163,23 +163,23 @@
 									<div style="border-bottom: 1px solid #DDD; font-weight: bold; font-size: 1.0em; width: auto;"><?php echo __('Permissions / restrictions'); ?></div>
 									<?php
 									
-									if (is_numeric(BUGScontext::getRequest()->getParameter('team')))
+									if (is_numeric(TBGContext::getRequest()->getParameter('team')))
 									{
 										$theuid = 0;
-										$tid = BUGScontext::getRequest()->getParameter('team');
+										$tid = TBGContext::getRequest()->getParameter('team');
 										$gid = 0;
 										$all = 0;
 										$thelink = "config.php?module=core&amp;section=1&amp;team=$tid";
-										require_once BUGScontext::getIncludePath() . 'include/permissions.inc.php';
+										require_once TBGContext::getIncludePath() . 'include/permissions.inc.php';
 									}
-									elseif (is_numeric(BUGScontext::getRequest()->getParameter('group')))
+									elseif (is_numeric(TBGContext::getRequest()->getParameter('group')))
 									{
 										$theuid = 0;
 										$tid = 0;
-										$gid = BUGScontext::getRequest()->getParameter('group');
+										$gid = TBGContext::getRequest()->getParameter('group');
 										($gid == 0) ? $all = 1 : $all = 0;
 										$thelink = "config.php?module=core&amp;section=1&amp;group=$gid";
-										require_once BUGScontext::getIncludePath() . 'include/permissions.inc.php';
+										require_once TBGContext::getIncludePath() . 'include/permissions.inc.php';
 									}
 									else
 									{

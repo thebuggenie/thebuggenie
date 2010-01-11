@@ -1,18 +1,18 @@
-<<?php ?>?xml version="1.0" encoding="<?php echo BUGScontext::getI18n()->getCharset(); ?>" ?>
+<<?php ?>?xml version="1.0" encoding="<?php echo TBGContext::getI18n()->getCharset(); ?>" ?>
 <rss version="2.0">
 	<channel>
-		<title><?php echo BUGSsettings::getTBGname() . ' ~ '. __('%project_name% project timeline', array('%project_name%' => BUGScontext::getCurrentProject()->getName())); ?></title>
-		<link><?php echo make_url('project_timeline', array('project_key' => BUGScontext::getCurrentProject()->getKey()), false); ?></link>
+		<title><?php echo TBGSettings::getTBGname() . ' ~ '. __('%project_name% project timeline', array('%project_name%' => TBGContext::getCurrentProject()->getName())); ?></title>
+		<link><?php echo make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey()), false); ?></link>
 		<description> </description>
-		<language><?php echo BUGScontext::getI18n()->getCurrentLanguage(); ?></language>
+		<language><?php echo TBGContext::getI18n()->getCurrentLanguage(); ?></language>
 		<image>
-			<url><?php print BUGScontext::getTBGPath(); ?>themes/<?php print BUGSsettings::getThemeName(); ?>/favicon.png</url>
-			<title><?php echo BUGSsettings::getTBGname() . ' ~ '. __('%project_name% project timeline', array('%project_name%' => BUGScontext::getCurrentProject()->getName())); ?></title>
-			<link><?php echo make_url('project_timeline', array('project_key' => BUGScontext::getCurrentProject()->getKey()), false); ?></link>
+			<url><?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png</url>
+			<title><?php echo TBGSettings::getTBGname() . ' ~ '. __('%project_name% project timeline', array('%project_name%' => TBGContext::getCurrentProject()->getName())); ?></title>
+			<link><?php echo make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey()), false); ?></link>
 		</image>
 <?php foreach ($recent_activities as $timestamp => $activities): ?>
 <?php foreach ($activities as $activity): ?>
-<?php if ($activity['target_type'] == 1 && ($issue = BUGSfactory::BUGSissueLab($activity['target'])) && $issue instanceof BUGSissue): ?>
+<?php if ($activity['target_type'] == 1 && ($issue = TBGFactory::TBGIssueLab($activity['target'])) && $issue instanceof TBGIssue): ?>
 
 		<item>
 			<title><?php

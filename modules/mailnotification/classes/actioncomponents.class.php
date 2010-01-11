@@ -3,7 +3,7 @@
 	/**
 	 * Main action components
 	 */
-	class mailnotificationActionComponents extends BUGSactioncomponent
+	class mailnotificationActionComponents extends TBGActionComponent
 	{
 		
 		public function componentForgotPasswordBlock()

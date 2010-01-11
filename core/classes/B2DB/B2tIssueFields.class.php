@@ -70,7 +70,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doDelete($crit);
 		}
 
@@ -92,7 +92,7 @@
 				$crit->addInsert(self::REQUIRED, true);
 			}
 
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$this->doInsert($crit);
 		}
 
@@ -101,7 +101,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, 0);
 			$crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doSelect($crit);
 			return $res;
 		}

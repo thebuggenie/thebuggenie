@@ -31,12 +31,12 @@
 				<div class="content" style="padding: 2px; margin-bottom: 15px;">
 					<?php echo __('Enter a name for the field (same as ex. "%resolution_types%" above), then click %add%', array('%resolution_types%' => __('Resolution types'), '%add%' => '<b>' . __('Add') . '</b>')); ?>
 				</div>
-				<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add_customtype'); ?>" onsubmit="addIssuefieldCustom('<?php echo make_url('configure_issuefields_add_customtype'); ?>');return false;" id="add_custom_type_form">
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add_customtype'); ?>" onsubmit="addIssuefieldCustom('<?php echo make_url('configure_issuefields_add_customtype'); ?>');return false;" id="add_custom_type_form">
 					<label for="new_custom_field_name"><?php echo __('Field name'); ?></label>
 					<input type="text" name="name" id="new_custom_field_name" style="width: 200px;">
 					<select id="new_custom_field_type" name="field_type" style="width: 375px;">
-						<?php foreach (BUGScustomdatatype::getFieldTypes() as $type => $description): ?>
-							<option value="<?php echo $type; ?>"<?php if ($type == BUGScustomdatatype::DROPDOWN_CHOICE_TEXT || $type == BUGScustomdatatype::RADIO_CHOICE): ?> selected<?php else: ?> disabled<?php endif; ?>><?php echo $description; ?></option>
+						<?php foreach (TBGCustomDatatype::getFieldTypes() as $type => $description): ?>
+							<option value="<?php echo $type; ?>"<?php if ($type == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT || $type == TBGCustomDatatype::RADIO_CHOICE): ?> selected<?php else: ?> disabled<?php endif; ?>><?php echo $description; ?></option>
 						<?php endforeach; ?>
 					</select>
 					<input type="submit" value="<?php echo __('Add'); ?>" style="font-weight: bold;" id="add_custom_type_button">

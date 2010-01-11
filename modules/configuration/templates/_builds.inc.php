@@ -1,9 +1,9 @@
-<?php if ($parent instanceof BUGSproject): ?>
+<?php if ($parent instanceof TBGProject): ?>
 	<?php $url = make_url('configure_projects_add_build', array('project_id' => $parent->getID())); ?>
 <?php else: ?>
 	<?php $url = make_url('configure_edition_add_build', array('project_id' => $parent->getProject()->getID(), 'edition_id' => $parent->getID())); ?>
 <?php endif; ?>
-<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo $url; ?>" method="post" id="add_build_form" onsubmit="addBuild('<?php echo $url; ?>');return false;">
+<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo $url; ?>" method="post" id="add_build_form" onsubmit="addBuild('<?php echo $url; ?>');return false;">
 	<table cellpadding=0 cellspacing=0 style="width: 100%;">
 		<tr>
 			<td style="width: 150px; text-align: left;"><label for="build_name"><?php echo __('Build / release name:'); ?></label></td>

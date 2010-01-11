@@ -9,13 +9,13 @@
 	require THEBUGGENIE_PATH . 'include/checkcookie.inc.php';
 	require THEBUGGENIE_PATH . "include/b2_engine.inc.php";
 	
-	require BUGScontext::getIncludePath() . "include/ui_functions.inc.php";
+	require TBGContext::getIncludePath() . "include/ui_functions.inc.php";
 
-	BUGScontext::getModule('messages')->activate();
+	TBGContext::getModule('messages')->activate();
 	
-	require BUGScontext::getIncludePath() . "modules/messages/messages_actions.inc.php";
-	require BUGScontext::getIncludePath() . "include/header.inc.php";
-	require BUGScontext::getIncludePath() . "include/menu.inc.php";
+	require TBGContext::getIncludePath() . "modules/messages/messages_actions.inc.php";
+	require TBGContext::getIncludePath() . "include/header.inc.php";
+	require TBGContext::getIncludePath() . "include/menu.inc.php";
 
 ?>
 <table style="width: 100%; table-layout: fixed;" cellpadding=0 cellspacing=0>
@@ -48,9 +48,9 @@
 </table>
 <div id="messages_newfolder" style="display: none; width: 215px; font-weight: normal; text-align: left; border: 1px solid #DDD; background-color: #F1F1F1; position: absolute; margin-top: 2px; margin-left: 150px;">
 <div style="background-color: #E5E5E5; margin: 2px; padding: 3px;"><b><?php echo __('Add folder'); ?></b></div>
-<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="messages.php" method="post">
+<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="messages.php" method="post">
 <input type="hidden" name="add_folder" value="true">
-<input type="hidden" name="select_folder" value="<?php print BUGScontext::getRequest()->getParameter('select_folder'); ?>">
+<input type="hidden" name="select_folder" value="<?php print TBGContext::getRequest()->getParameter('select_folder'); ?>">
 <table cellpadding=0 cellspacing=0 style="width: 210px; margin: 2px;">
 <tr><td style="width: 170px; padding: 3px;"><?php echo __('Enter the name of the new folder'); ?></td><td style="width: auto;">&nbsp;</td></tr>
 <tr><td style="width: 170px;"><input type="text" name="folder_name" value="" style="width: 100%;"></td><td style="width: auto; text-align: right;"><input type="submit" value="<?php echo __('Add'); ?>" style="width: 30px;"></td></tr>
@@ -62,8 +62,8 @@
 <table cellpadding=0 cellspacing=0 style="width: 100%;">
 <?php
 
-	$messagecnt = BUGScontext::getModule('messages')->countMessages(1);
-	$teammessagecnt = BUGScontext::getModule('messages')->countMessages(4);
+	$messagecnt = TBGContext::getModule('messages')->countMessages(1);
+	$teammessagecnt = TBGContext::getModule('messages')->countMessages(4);
 
 ?>
 <tr<?php print ($the_folder == 1) ? " style=\"background-color: #F5F5F5;\"" : ""; ?>>
@@ -71,7 +71,7 @@
 <td style="width: auto;<?php print ($the_folder == 1) ? " font-weight: bold;" : ""; ?>" colspan=2><a href="messages.php?select_folder=1"><?php echo __('Inbox'); ?></a></td>
 <td style="width: 40px; padding-right: 2px; text-align: right;"><?php print $messagecnt['total']; print ($messagecnt['unread'] >= 1) ? "<b> (" . $messagecnt['unread'] . ")</b>" : ""; ?></td>
 </tr>
-<?php if (count(BUGScontext::getUser()->getTeams()) > 0): ?>
+<?php if (count(TBGContext::getUser()->getTeams()) > 0): ?>
 <tr<?php print ($the_folder == 4 && $the_team == "") ? " style=\"background-color: #F5F5F5;\"" : ""; ?>>
 <td style="width: 20px; padding: 2px;"><?php echo image_tag('messages_folder_teaminbox.png'); ?></td>
 <td style="width: auto;<?php print ($the_folder == 4 && $the_team == "") ? " font-weight: bold;" : ""; ?>" colspan=2><a href="messages.php?select_folder=4&amp;team_id=0"><?php echo __('Team inbox'); ?></a></td>
@@ -80,10 +80,10 @@
 <?php endif; ?>
 <?php
 
-	foreach (BUGScontext::getUser()->getTeams() as $tid)
+	foreach (TBGContext::getUser()->getTeams() as $tid)
 	{
-		$thisteam = BUGSfactory::teamLab($tid);
-		$thisteammsgcnt = BUGScontext::getModule('messages')->countMessages(4, $tid);
+		$thisteam = TBGFactory::teamLab($tid);
+		$thisteammsgcnt = TBGContext::getModule('messages')->countMessages(4, $tid);
 
 		?>
 		<tr<?php print ($the_folder == 4 && $the_team == $tid) ? " style=\"background-color: #F5F5F5;\"" : ""; ?>>
@@ -105,7 +105,7 @@
 	foreach ($message_folders as $aFolder)
 	{
 		$messagecnt = array();
-		$messagecnt = BUGScontext::getModule('messages')->countMessages($aFolder['id']);
+		$messagecnt = TBGContext::getModule('messages')->countMessages($aFolder['id']);
 		?>
 		<tr<?php print ($the_folder == $aFolder['id']) ? " style=\"background-color: #F5F5F5;\"" : ""; ?>>
 		<td style="width: 20px; padding: 2px;"><?php echo image_tag('messages_folder.png'); ?></td>
@@ -145,19 +145,19 @@
 <td style="width: auto;">&nbsp;</td>
 <?php if ($messages_viewmode == 1): ?>
 	<td style="width: 460px;">
-	<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="messages.php" method="post">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="messages.php" method="post">
 	<input type="hidden" name="set_filter" value="true">
 	<table cellpadding=0 cellspacing=0 style="width: 100%;">
 	<tr>
 	<td style="width: 250px; text-align: right;"><b><?php echo __('Find message'); ?></b>&nbsp;(<?php echo __('subject, sender or content'); ?>):</td>
 	<td style="width: auto; padding-left: 5px; padding-right: 5px;"><input type="text" name="filter" value="<?php echo $applied_filter; ?>" style="width: 100%; <?php if ($applied_filter != '') echo ' background-color: #488; color: #FFF;' ?>"></td>
-	<td style="width: 20px;"><input type="image" src="<?php print BUGScontext::getTBGPath() . "themes/" . BUGSsettings::getThemeName(); ?>/messages_findmessage.png" style="width: 16px; height: 16px; border: 0px;"></td>
+	<td style="width: 20px;"><input type="image" src="<?php print TBGContext::getTBGPath() . "themes/" . TBGSettings::getThemeName(); ?>/messages_findmessage.png" style="width: 16px; height: 16px; border: 0px;"></td>
 	</tr>
 	</table>
 	</form>
 	</td>
 	<td style="width: 160px;">
-	<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="messages.php" method="post">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="messages.php" method="post">
 	<input type="hidden" name="set_unreadfilter" value="true">
 	<table cellpadding=0 cellspacing=0 style="width: 100%;">
 	<tr>
@@ -185,7 +185,7 @@
 <table cellpadding=0 cellspacing=0 style="width: 100%;">
 <?php
 
-	$all_messages = ($the_team == "") ? BUGScontext::getModule('messages')->getMessages("details", BUGScontext::getUser()->getUID(), $the_folder) : BUGScontext::getModule('messages')->getMessages("details", BUGScontext::getUser()->getUID(), $the_folder, 0, $the_team);
+	$all_messages = ($the_team == "") ? TBGContext::getModule('messages')->getMessages("details", TBGContext::getUser()->getUID(), $the_folder) : TBGContext::getModule('messages')->getMessages("details", TBGContext::getUser()->getUID(), $the_folder, 0, $the_team);
 	if (count($all_messages) > 0)
 	{
 		foreach ($all_messages as $aMessage)
@@ -277,19 +277,19 @@
 		<td style="width: auto;">&nbsp;</td>
 		<?php if ($messages_viewmode == 2): ?>
 			<td style="width: 460px;">
-			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="messages.php" method="post">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="messages.php" method="post">
 			<input type="hidden" name="set_filter" value="true">
 			<table cellpadding=0 cellspacing=0 style="width: 100%;">
 			<tr>
 			<td style="width: 250px; text-align: right;"><b><?php echo __('Find message'); ?></b>&nbsp;(<?php echo __('subject, sender or content'); ?>):</td>
 			<td style="width: auto; padding-left: 5px; padding-right: 5px;"><input type="text" name="filter" value="<?php echo $applied_filter; ?>" style="width: 100%; <?php if ($applied_filter != '') echo ' background-color: #488; color: #FFF;' ?>"></td>
-			<td style="width: 20px;"><input type="image" src="<?php print BUGScontext::getTBGPath() . "themes/" . BUGSsettings::getThemeName(); ?>/messages_findmessage.png" style="width: 16px; height: 16px; border: 0px;"></td>
+			<td style="width: 20px;"><input type="image" src="<?php print TBGContext::getTBGPath() . "themes/" . TBGSettings::getThemeName(); ?>/messages_findmessage.png" style="width: 16px; height: 16px; border: 0px;"></td>
 			</tr>
 			</table>
 			</form>
 			</td>
 			<td style="width: 160px;">
-			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="messages.php" method="post">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="messages.php" method="post">
 			<input type="hidden" name="set_unreadfilter" value="true">
 			<table cellpadding=0 cellspacing=0 style="width: 100%;">
 			<tr>
@@ -372,6 +372,6 @@
 
 <?php
 
-	require_once BUGScontext::getIncludePath() . "include/footer.inc.php";
+	require_once TBGContext::getIncludePath() . "include/footer.inc.php";
 
 ?>

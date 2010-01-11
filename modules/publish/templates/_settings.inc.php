@@ -1,6 +1,6 @@
 <div class="header"><?php echo __('Basic information'); ?></div>
 <div class="content"><?php echo __('This is the basic settings for the wiki'); ?></div>
-<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
+<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
 <div class="rounded_box borderless" style="margin: 10px 0 0 0; width: 700px;">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="padding: 5px;">

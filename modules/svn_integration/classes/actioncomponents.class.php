@@ -3,7 +3,7 @@
 	/**
 	 * Main action components
 	 */
-	class svn_integrationActionComponents extends BUGSactioncomponent
+	class svn_integrationActionComponents extends TBGActionComponent
 	{
 		
 		public function componentSettings()

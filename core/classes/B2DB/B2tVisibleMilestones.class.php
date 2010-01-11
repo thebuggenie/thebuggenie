@@ -56,7 +56,7 @@
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::PROJECT_ID, $project_id);
 			$crit->addInsert(self::MILESTONE_ID, $milestone_id);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			return true;
 		}

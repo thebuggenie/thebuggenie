@@ -3,7 +3,7 @@
 		<td style="width: 255px;" valign="top">
 			<?php
 			
-			if (BUGScontext::getUser()->hasPermission('article_management', 0, 'publish'))
+			if (TBGContext::getUser()->hasPermission('article_management', 0, 'publish'))
 			{
 				?>
 				<table class="b2_section_miniframe" cellpadding=0 cellspacing=0>
@@ -30,7 +30,7 @@
 								<tr><td colspan=2 style="padding-top: 10px; padding-bottom: 15px;"><?php echo __('To make an article a "Featured article" &ndash; which makes it appear on the top of this page &ndash; use the left-hand menu when viewing the article.'); ?></td></tr>
 								<?php 
 								
-								if (BUGScontext::getUser()->hasPermission('article_management', 0, 'publish') && BUGScontext::getRequest()->getParameter('manage'))
+								if (TBGContext::getUser()->hasPermission('article_management', 0, 'publish') && TBGContext::getRequest()->getParameter('manage'))
 								{
 									?>
 									<tr>
@@ -57,7 +57,7 @@
 				</table>
 				<?php 
 				
-				if (BUGScontext::getModule('publish')->getSetting('enablebillboards') == 1)
+				if (TBGContext::getModule('publish')->getSetting('enablebillboards') == 1)
 				{
 					?> 
 					<table class="b2_section_miniframe" cellpadding=0 cellspacing=0>
@@ -70,7 +70,7 @@
 								<table cellpadding=0 cellspacing=0 style="margin-top: 10px;">
 									<tr>
 										<td style="width: 20px; padding: 2px;"><?php echo image_tag('publish/icon_manage.png'); ?></td>
-										<td style="width: auto; padding: 2px;"><b><a href="<?php echo BUGScontext::getTBGPath(); ?>modules/publish/billboard.php"><?php echo __('Show billboard(s)'); ?></a></b></td>
+										<td style="width: auto; padding: 2px;"><b><a href="<?php echo TBGContext::getTBGPath(); ?>modules/publish/billboard.php"><?php echo __('Show billboard(s)'); ?></a></b></td>
 									</tr>
 								</table>
 							</td>
@@ -80,14 +80,14 @@
 				}
 			}
 						
-			BUGScontext::getModule('publish')->listen_latestArticles();
+			TBGContext::getModule('publish')->listen_latestArticles();
 			
 			?>
 		</td>
 		<td valign="top" align="left" style="padding-right: 10px; padding-top: 10px;">
 		<?php 
 		
-		if (BUGScontext::getRequest()->getParameter('manage') && BUGScontext::getUser()->hasPermission('article_management', 0, 'publish'))
+		if (TBGContext::getRequest()->getParameter('manage') && TBGContext::getUser()->hasPermission('article_management', 0, 'publish'))
 		{
 			?><div style="background-color: #EEE; padding: 5px; font-weight: bold; font-size: 13px;"><?php echo __('All articles'); ?></div>
 			<div style="padding: 3px; padding-bottom: 10px;"><?php echo __('This is where you can manage articles. Use the actions icons to change "published" status, and whether to show them in the "latest news" column. You can also drag articles up and down to change their order.'); ?><span id="article_order_saved" style="font-weight: bold; display: none;"><?php echo __('Article order saved!'); ?></span></div>
@@ -104,7 +104,7 @@
 			<ul id="article_list">
 				<?php 
 				
-				foreach (BUGScontext::getModule('publish')->getAllArticles() as $article)
+				foreach (TBGContext::getModule('publish')->getAllArticles() as $article)
 				{
 					?>
 					<li id="article_list_<?php echo $article->getID(); ?>">
@@ -197,7 +197,7 @@
 		}
 		else
 		{
-			$featured_article = BUGScontext::getModule('publish')->getSetting('featured_article');
+			$featured_article = TBGContext::getModule('publish')->getSetting('featured_article');
 			
 			if ($featured_article != '')
 			{
@@ -215,7 +215,7 @@
 				}
 			}
 			
-			$previous_articles = BUGScontext::getModule('publish')->getArticles(30);
+			$previous_articles = TBGContext::getModule('publish')->getArticles(30);
 					
 			?>
 			<table style="width: 100%;" cellpadding=0 cellspacing=0>

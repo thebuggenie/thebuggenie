@@ -6,40 +6,40 @@
 	require THEBUGGENIE_PATH . 'include/checkcookie.inc.php';
 	require THEBUGGENIE_PATH . 'include/b2_engine.inc.php';
 	
-	require BUGScontext::getIncludePath() . "include/ui_functions.inc.php";
+	require TBGContext::getIncludePath() . "include/ui_functions.inc.php";
 	
 	$noshow = true;
 	$noshowtitle = '';
-	require BUGScontext::getIncludePath() . "include/header.inc.php";
+	require TBGContext::getIncludePath() . "include/header.inc.php";
 	
-	BUGScontext::getModule('calendar')->activate();
+	TBGContext::getModule('calendar')->activate();
 
-	if (BUGScontext::getRequest()->getParameter('id'))
+	if (TBGContext::getRequest()->getParameter('id'))
 	{
 		try
 		{
-			$theEvent = new BUGScalendarEvent((int) BUGScontext::getRequest()->getParameter('id'));
+			$theEvent = new BUGScalendarEvent((int) TBGContext::getRequest()->getParameter('id'));
 		}
 		catch (Exception $e) {}
 	}
 	
-	if (BUGScontext::getRequest()->getParameter('title'))
+	if (TBGContext::getRequest()->getParameter('title'))
 	{
 		if ($theEvent instanceof BUGScalendarEvent)
 		{
-			$theEvent->setDescription(BUGScontext::getRequest()->getParameter('description'));
-			$theEvent->setTitle(BUGScontext::getRequest()->getParameter('title'));
-			$theEvent->setType((int) BUGScontext::getRequest()->getParameter('event_type'));
-			$theEvent->setUserStatus((int) BUGScontext::getRequest()->getParameter('status'));
-			$theEvent->setStartDate(mktime((int) BUGScontext::getRequest()->getParameter('start_at_hour'), (int) BUGScontext::getRequest()->getParameter('start_at_minute'), 0, (int) BUGScontext::getRequest()->getParameter('start_month'), (int) BUGScontext::getRequest()->getParameter('start_day'), (int) BUGScontext::getRequest()->getParameter('start_year')));
-			$theEvent->setEndDate(mktime((int) BUGScontext::getRequest()->getParameter('end_at_hour'), (int) BUGScontext::getRequest()->getParameter('end_at_minute'), 0, (int) BUGScontext::getRequest()->getParameter('end_month'), (int) BUGScontext::getRequest()->getParameter('end_day'), (int) BUGScontext::getRequest()->getParameter('end_year')));
+			$theEvent->setDescription(TBGContext::getRequest()->getParameter('description'));
+			$theEvent->setTitle(TBGContext::getRequest()->getParameter('title'));
+			$theEvent->setType((int) TBGContext::getRequest()->getParameter('event_type'));
+			$theEvent->setUserStatus((int) TBGContext::getRequest()->getParameter('status'));
+			$theEvent->setStartDate(mktime((int) TBGContext::getRequest()->getParameter('start_at_hour'), (int) TBGContext::getRequest()->getParameter('start_at_minute'), 0, (int) TBGContext::getRequest()->getParameter('start_month'), (int) TBGContext::getRequest()->getParameter('start_day'), (int) TBGContext::getRequest()->getParameter('start_year')));
+			$theEvent->setEndDate(mktime((int) TBGContext::getRequest()->getParameter('end_at_hour'), (int) TBGContext::getRequest()->getParameter('end_at_minute'), 0, (int) TBGContext::getRequest()->getParameter('end_month'), (int) TBGContext::getRequest()->getParameter('end_day'), (int) TBGContext::getRequest()->getParameter('end_year')));
 			$issaved = true;
 		}
 		else
 		{
-			$start_date = mktime((int) BUGScontext::getRequest()->getParameter('start_at_hour'), (int) BUGScontext::getRequest()->getParameter('start_at_minute'), 0, (int) BUGScontext::getRequest()->getParameter('start_month'), (int) BUGScontext::getRequest()->getParameter('start_day'), (int) BUGScontext::getRequest()->getParameter('start_year'));
-			$end_date = mktime((int) BUGScontext::getRequest()->getParameter('end_at_hour'), (int) BUGScontext::getRequest()->getParameter('end_at_minute'), 0, (int) BUGScontext::getRequest()->getParameter('end_month'), (int) BUGScontext::getRequest()->getParameter('end_day'), (int) BUGScontext::getRequest()->getParameter('end_year'));
-			$theEvent = BUGScalendarEvent::createNew(BUGScontext::getRequest()->getParameter('title'), (int) BUGScontext::getRequest()->getParameter('event_type'), BUGScontext::getRequest()->getParameter('description'), $start_date, $end_date, (int) BUGScontext::getRequest()->getParameter('status'), (int) BUGScontext::getModule('calendar')->getSetting('calendar', BUGScontext::getUser()->getUID()));
+			$start_date = mktime((int) TBGContext::getRequest()->getParameter('start_at_hour'), (int) TBGContext::getRequest()->getParameter('start_at_minute'), 0, (int) TBGContext::getRequest()->getParameter('start_month'), (int) TBGContext::getRequest()->getParameter('start_day'), (int) TBGContext::getRequest()->getParameter('start_year'));
+			$end_date = mktime((int) TBGContext::getRequest()->getParameter('end_at_hour'), (int) TBGContext::getRequest()->getParameter('end_at_minute'), 0, (int) TBGContext::getRequest()->getParameter('end_month'), (int) TBGContext::getRequest()->getParameter('end_day'), (int) TBGContext::getRequest()->getParameter('end_year'));
+			$theEvent = BUGScalendarEvent::createNew(TBGContext::getRequest()->getParameter('title'), (int) TBGContext::getRequest()->getParameter('event_type'), TBGContext::getRequest()->getParameter('description'), $start_date, $end_date, (int) TBGContext::getRequest()->getParameter('status'), (int) TBGContext::getModule('calendar')->getSetting('calendar', TBGContext::getUser()->getUID()));
 
 			?>
 			<div style="padding: 10px; text-align: center;"><b><?php echo __('The event has been saved in your calendar.'); ?></b>&nbsp;<?php echo __('What do you want to do next?'); ?><br>
@@ -50,7 +50,7 @@
 			</div>
 			<?php
 			
-			require_once BUGScontext::getIncludePath() . "include/footer.inc.php";
+			require_once TBGContext::getIncludePath() . "include/footer.inc.php";
 
 		}
 	}
@@ -61,7 +61,7 @@
 	
 ?>
 <div class="event_window" style="height: 100%;">
-<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" method="post" action="show_event.php">
+<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="show_event.php">
 <?php
 
 if ($theEvent instanceof BUGScalendarEvent)
@@ -200,9 +200,9 @@ if ($issaved)
 		<select name="status">
 		<?php  
 		
-		foreach (BUGScontext::getStates() as $aState)
+		foreach (TBGContext::getStates() as $aState)
 		{
-			$aState = BUGSfactory::userstateLab($aState);
+			$aState = TBGFactory::userstateLab($aState);
 			echo '<option value="' . $aState->getID() . '"';
 			if ($theEvent instanceof BUGScalendarEvent && $theEvent->getUserStatus() == $aState->getID()) echo ' selected';
 			echo '>' . $aState->getName() . '</option>';
@@ -222,6 +222,6 @@ if ($issaved)
 </div>
 <?php
 
-	require_once BUGScontext::getIncludePath() . "include/footer.inc.php";
+	require_once TBGContext::getIncludePath() . "include/footer.inc.php";
 
 ?>

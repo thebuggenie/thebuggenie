@@ -20,7 +20,7 @@ include_component('configleftmenu', array('selected_section' => 10));
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 						<div class="xboxcontent" style="vertical-align: middle; padding: 5px 10px 5px 10px;">
 							<div class="config_header nobg"><b><?php echo __('Assign developers'); ?></b></div>
-							<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_find_assignee', array('project_id' => $theProject->getID())); ?>" method="post" onsubmit="findDevs('<?php echo make_url('configure_project_find_assignee', array('project_id' => $theProject->getID())); ?>');return false;" id="find_dev_form">
+							<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_find_assignee', array('project_id' => $theProject->getID())); ?>" method="post" onsubmit="findDevs('<?php echo make_url('configure_project_find_assignee', array('project_id' => $theProject->getID())); ?>');return false;" id="find_dev_form">
 								<table style="width: 100%; margin-top: 3px;" cellpadding=0 cellspacing=0 id="find_user">
 									<tr>
 										<td style="width: 200px; padding: 2px; text-align: left;"><label for="find_by"><?php echo __('Find team, user or customer'); ?></label></td>

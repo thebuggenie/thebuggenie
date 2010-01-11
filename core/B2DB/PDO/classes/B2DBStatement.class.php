@@ -61,11 +61,11 @@
 			try
 			{
 				$values = ($this->getCriteria() instanceof BaseB2DBCriteria) ? $this->getCriteria()->getValues() : array();
-				BUGSlogging::log('executing PDO query (' . B2DB::getSQLHits() . ')', 'B2DB');
+				TBGLogging::log('executing PDO query (' . B2DB::getSQLHits() . ')', 'B2DB');
 				if (BaseB2DB::isDebugMode())
 				{
-					BUGSlogging::log($this->printSQL(), 'B2DB');
-					BUGSlogging::log('Values: ' . implode(', ', $values), 'B2DB');
+					TBGLogging::log($this->printSQL(), 'B2DB');
+					TBGLogging::log('Values: ' . implode(', ', $values), 'B2DB');
 				}
 				if (!$res = $this->statement->execute($values))
 				{
@@ -74,7 +74,7 @@
 				}
 				if (BaseB2DB::isDebugMode())
 				{
-					BUGSlogging::log('done', 'B2DB');
+					TBGLogging::log('done', 'B2DB');
 				}
 				B2DB::sqlHit();
 				if ($this->getCriteria() instanceof BaseB2DBCriteria && $this->getCriteria()->action == 'insert')
@@ -85,9 +85,9 @@
 					}
 					elseif (B2DB::getDBtype() == 'pgsql')
 					{
-						BUGSlogging::log('sequence: ' . B2DB::getTablePrefix() . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq', 'b2db');
+						TBGLogging::log('sequence: ' . B2DB::getTablePrefix() . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq', 'b2db');
 						$this->insert_id = B2DB::getDBLink()->lastInsertId(B2DB::getTablePrefix() . $this->getCriteria()->getTable()->getB2DBName() . '_id_seq');
-						BUGSlogging::log('id is: ' . $this->insert_id, 'b2db');
+						TBGLogging::log('id is: ' . $this->insert_id, 'b2db');
 					}
 				}
 				$action = ($this->getCriteria() instanceof B2DBCriteria) ? $this->getCriteria()->action : '';

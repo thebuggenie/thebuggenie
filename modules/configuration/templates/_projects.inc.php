@@ -1,4 +1,4 @@
-	<script type="text/javascript" src="<?php echo BUGScontext::getTBGPath(); ?>js/config/projects_ajax.js"></script>
+	<script type="text/javascript" src="<?php echo TBGContext::getTBGPath(); ?>js/config/projects_ajax.js"></script>
 	<table style="width: 100%" cellpadding=0 cellspacing=0>
 		<tr>
 		<td style="padding-right: 10px;">
@@ -10,7 +10,7 @@
 				<tr>
 					<td class="cdesc">
 					<?php echo __('This page gives you full control over your projects - each projects specific settings, as well as its editions and builds.'); ?><br>
-					<?php if (BUGScontext::getRequest()->getParameter('edit_settings')): ?>
+					<?php if (TBGContext::getRequest()->getParameter('edit_settings')): ?>
 						<?php $help_topic = 'setup_project'; ?>
 					<?php else: ?>
 						<?php $help_topic = 'config_projects'; ?>
@@ -18,11 +18,11 @@
 					<?php echo __('If you are unsure how to set up projects, editions, builds and components, have a look at the %bugs_online_help%.', array('%bugs_online_help%' => bugs_helpBrowserHelper($help_topic, __('The Bug Genie online help')))); ?>
 					<?php
 
-						if (!($theProject instanceof BUGSproject) && BUGScontext::getUser()->hasPermission("b2projectaccess", BUGScontext::getRequest()->getParameter('p_id'), "core") == true)
+						if (!($theProject instanceof TBGProject) && TBGContext::getUser()->hasPermission("b2projectaccess", TBGContext::getRequest()->getParameter('p_id'), "core") == true)
 						{
 							?><br><br><b><?php echo __('Please select a project from the list to view and edit its details.'); ?></b><br><br><?php
 						}
-						elseif (BUGScontext::getRequest()->getParameter('edit_settings'))
+						elseif (TBGContext::getRequest()->getParameter('edit_settings'))
 						{
 							?><br><br><?php echo __('View or edit details about the selected project below.'); ?>
 							<?php
@@ -39,7 +39,7 @@
 							<?php 
 							echo __('Manage editions, components and builds from here.'); 
 
-							if ($access_level == configurationActions::ACCESS_FULL && BUGScontext::getRequest()->getParameter('e_id'))
+							if ($access_level == configurationActions::ACCESS_FULL && TBGContext::getRequest()->getParameter('e_id'))
 							{
 								echo __('Click the "Save"-button below to update settings and details.');
 							}
@@ -56,20 +56,20 @@
 	<?php include_template('configuration/project_messages'); ?>
 	<?php
 
-	if ($theProject instanceof BUGSproject)
+	if ($theProject instanceof TBGProject)
 	{
-		?><div style="margin-bottom: 10px; padding: 5px;"><b><?php echo __('Selected project: %project_name%', array('%project_name%' => '')); ?></b><?php print $theProject; print ($theEdition instanceof BUGSedition) ? ' -&gt; ' . $theEdition : ''; ?><br>
+		?><div style="margin-bottom: 10px; padding: 5px;"><b><?php echo __('Selected project: %project_name%', array('%project_name%' => '')); ?></b><?php print $theProject; print ($theEdition instanceof TBGEdition) ? ' -&gt; ' . $theEdition : ''; ?><br>
 		<?php
 		
-		if (BUGScontext::getUser()->hasPermission('b2viewconfig', 9) || BUGScontext::getUser()->hasPermission('b2saveconfig', 9))
+		if (TBGContext::getUser()->hasPermission('b2viewconfig', 9) || TBGContext::getUser()->hasPermission('b2saveconfig', 9))
 		{
-			?><a href="<?php echo BUGScontext::getTBGPath() ?>config.php?section=9&amp;module=core&amp;p_id=<?php echo $theProject->getID() ?>"><?php echo __('Click here to configure milestones for this project'); ?></a><?php
+			?><a href="<?php echo TBGContext::getTBGPath() ?>config.php?section=9&amp;module=core&amp;p_id=<?php echo $theProject->getID() ?>"><?php echo __('Click here to configure milestones for this project'); ?></a><?php
 		}
 
 		?></div><?php
 	}
 	
-	if (!$theProject instanceof BUGSproject)
+	if (!$theProject instanceof TBGProject)
 	{
 		?>
 		<table style="width: 700px;" cellpadding=0 cellspacing=0>
@@ -98,7 +98,7 @@
 				if (count($allProjects) > 0)
 				{
 					?>
-					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" id="default_project_form" onsubmit="return false">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" id="default_project_form" onsubmit="return false">
 					<input type="hidden" name="module" value="core">
 					<input type="hidden" name="section" value="10">
 					<input type="hidden" name="setdefaultproject" value="true">
@@ -110,7 +110,7 @@
 								
 							foreach ($allProjects as $aProject)
 							{
-								$aProject = BUGSfactory::projectLab($aProject['id']);
+								$aProject = TBGFactory::projectLab($aProject['id']);
 								?>
 								<option value=<?php print $aProject->getID(); print ($defaultProject->getID() == $aProject->getID()) ? " selected" : ""; ?>><?php print $aProject; ?></option>
 								<?php
@@ -136,7 +136,7 @@
 			</td>
 			<td style="width: 50%;" valign="top">
 				<div style="background-color: #F2F2F2; padding: 3px; border-bottom: 1px solid #DDD; margin-left: 5px; margin-bottom: 5px; width: auto;"><b><?php echo __('ADD A PROJECT'); ?></b></div>
-				<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" method="post" id="add_project_form" onsubmit="addProject('<?php echo make_url('configure_projects_add_project'); ?>');return false;">
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" method="post" id="add_project_form" onsubmit="addProject('<?php echo make_url('configure_projects_add_project'); ?>');return false;">
 				<input type="hidden" name="add_project" value="true">
 				<table cellpadding=0 cellspacing=0 style="margin-left: 5px; width: auto;">
 				<tr>
@@ -164,7 +164,7 @@
 		{
 			foreach ($allProjects as $aProject)
 			{
-				$aProject = BUGSfactory::projectLab($aProject['id']);
+				$aProject = TBGFactory::projectLab($aProject['id']);
 				include_template('projectbox', array('project' => $aProject));
 			}
 		}
@@ -174,13 +174,13 @@
 		</table>
 		<?php
 	}
-	elseif ($theProject instanceof BUGSproject && BUGScontext::getRequest()->getParameter('edit_editions'))
+	elseif ($theProject instanceof TBGProject && TBGContext::getRequest()->getParameter('edit_editions'))
 	{
-		require BUGScontext::getIncludePath() . 'include/config/projects_editeditions.inc.php';
+		require TBGContext::getIncludePath() . 'include/config/projects_editeditions.inc.php';
 	}
-	elseif ($theProject instanceof BUGSproject && BUGScontext::getRequest()->getParameter('edit_settings'))
+	elseif ($theProject instanceof TBGProject && TBGContext::getRequest()->getParameter('edit_settings'))
 	{
-		require BUGScontext::getIncludePath() . 'include/config/projects_editsettings.inc.php';
+		require TBGContext::getIncludePath() . 'include/config/projects_editsettings.inc.php';
 	}
 
 ?>

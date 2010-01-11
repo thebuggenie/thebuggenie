@@ -1,6 +1,6 @@
 <?php
 
-	if (!($theTask instanceof BUGStask && $theIssue instanceof BUGSissue))
+	if (!($theTask instanceof TBGTask && $theIssue instanceof TBGIssue))
 	{
 		exit();
 	}
@@ -20,7 +20,7 @@ if ($theIssue->canEditTexts())
 	<td class="issuedetailscontentsleft" style="width: 25px;"><a href="javascript:void(0);" onclick="Effect.Appear('edit_task_<?php echo $theTask->getID(); ?>_details', { duration: 0.5 });" class="image"><?php echo image_tag('icon_title_small.png'); ?></a>
 	<br>
 	<div id="edit_task_<?php echo $theTask->getID(); ?>_details" style="position: absolute; padding: 5px; border: 1px solid #DDD; width: 500px; display: none; background-color: #F1F1F1;">
-	<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" id="edit_task_<?php echo $theTask->getID(); ?>_form" onsubmit="return false">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" id="edit_task_<?php echo $theTask->getID(); ?>_form" onsubmit="return false">
 	<input type="hidden" name="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
 	<input type="hidden" name="issue_update_task" value="1">
 	<input type="hidden" name="t_id" value="<?php echo $theTask->getID(); ?>">
@@ -84,7 +84,7 @@ else
 	if ($theTask->getAssignedType())
 	{
 		?><table style="width: 100%;" cellpadding=0 cellspacing=0><?php
-		if ($theTask->getAssignedType() == BUGSidentifiableclass::TYPE_USER)
+		if ($theTask->getAssignedType() == TBGIdentifiableClass::TYPE_USER)
 		{
 			if ($theIssue->canEditUsers())
 			{
@@ -149,9 +149,9 @@ else
 	<td style="width: 30px; text-align: right;">
 	<?php
 	if($theIssue->canEditTexts() ||
-		($theIssue->getPostedBy()->getID() == BUGScontext::getUser()->getID() && !BUGScontext::getUser()->isGuest()) ||
-		($theTask->getAssignedType() == BUGSidentifiableclass::TYPE_USER && $theTask->getAssignee()->getID() == BUGScontext::getUser()->getID() && !BUGScontext::getUser()->isGuest()) || 
-		($theTask->getAssignedType() == BUGSidentifiableclass::TYPE_TEAM && BUGScontext::getUser()->isMemberOf($theTask->getAssignee()->getID()) === true && !BUGScontext::getUser()->isGuest()))
+		($theIssue->getPostedBy()->getID() == TBGContext::getUser()->getID() && !TBGContext::getUser()->isGuest()) ||
+		($theTask->getAssignedType() == TBGIdentifiableClass::TYPE_USER && $theTask->getAssignee()->getID() == TBGContext::getUser()->getID() && !TBGContext::getUser()->isGuest()) || 
+		($theTask->getAssignedType() == TBGIdentifiableClass::TYPE_TEAM && TBGContext::getUser()->isMemberOf($theTask->getAssignee()->getID()) === true && !TBGContext::getUser()->isGuest()))
 	{
 		?><a href="javascript:void(0);" onclick="Effect.Appear('task_status_<?php echo $theTask->getID(); ?>', { duration: 0.5 });getTaskStatusList(<?php echo $theTask->getID(); ?>);" style="font-size: 9px;" class="image"><?php echo image_tag('icon_switchassignee.png'); ?></a><?php
 	}

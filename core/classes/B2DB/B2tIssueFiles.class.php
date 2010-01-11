@@ -45,7 +45,7 @@
 			if ($this->doCount($crit) == 0)
 			{
 				$crit = $this->getCriteria();
-				$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$crit->addInsert(self::ATTACHED_AT, time());
 				$crit->addInsert(self::ISSUE_ID, $issue_id);
 				$crit->addInsert(self::FILE_ID, $file_id);

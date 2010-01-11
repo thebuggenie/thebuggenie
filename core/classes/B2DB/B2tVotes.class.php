@@ -54,7 +54,7 @@
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::TARGET, $issue_id);
 			$crit->addInsert(self::UID, $user_id);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			return $res->getInsertID();
 		}

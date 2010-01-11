@@ -1,13 +1,13 @@
 <?php
 
-	if (($access_level != "full" && $access_level != "read") || BUGScontext::getRequest()->getParameter('access_level'))
+	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
 		bugs_msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
 		
-		require_once BUGScontext::getIncludePath() . 'include/config/users_logic.inc.php';
+		require_once TBGContext::getIncludePath() . 'include/config/users_logic.inc.php';
 		
 		?>
 		<table style="width: 100%" cellpadding=0 cellspacing=0>
@@ -52,31 +52,31 @@
 		<td style="width: 80px; text-align: center;"><a href="javascript:void(0);" onclick="javascript:$('add_user').toggle();$('add_user_link').toggle();"><b><?php echo __('Add user'); ?></b></a></td>
 		</tr>
 		</table>
-		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post">
 		<input type="hidden" name="module" value="core">
 		<input type="hidden" name="section" value=2>
 		<input type="hidden" name="adduser" value="true">
 		<table style="width: 100%; display: none;" cellpadding=0 cellspacing=0 id="add_user">
 		<tr>
 		<td style="padding: 5px; width: 100px;"><b><?php echo __('Username:'); ?></b></td>
-		<td style=""><input type="text" name="uname" value="<?php print BUGScontext::getRequest()->getParameter('uname'); ?>" style="width: 100%;"></td>
+		<td style=""><input type="text" name="uname" value="<?php print TBGContext::getRequest()->getParameter('uname'); ?>" style="width: 100%;"></td>
 		<td style="width: 70px; text-align: center;" rowspan=5><input type="submit" value="<?php echo __('Add user'); ?>"><br>
 		<br>
 		<a href="javascript:void(0);" onclick="javascript:$('add_user').toggle();$('add_user_link').toggle();" style="font-size: 9px;"><?php echo __('Cancel'); ?></a></td>
 		</tr>
 		<tr>
 		<td style="padding: 5px;"><b><?php echo __('Email address: %email_address%', array('%email_address%' => '')); ?></b></td>
-		<td><input type="text" name="email" value="<?php print BUGScontext::getRequest()->getParameter('email'); ?>" style="width: 100%;"></td>
+		<td><input type="text" name="email" value="<?php print TBGContext::getRequest()->getParameter('email'); ?>" style="width: 100%;"></td>
 		</tr>
 		<tr>
 		<td style="padding: 5px;"><b><?php echo __('In group(s):'); ?></b></td>
 		<td><select name="group" style="width: 100%;">
 		<?php
 
-			foreach (BUGSgroup::getAll() as $aGroup)
+			foreach (TBGGroup::getAll() as $aGroup)
 			{
 				?>
-				<option value=<?php print $aGroup->getID(); print ($aGroup->getID() == BUGScontext::getRequest()->getParameter('gid')) ? " selected" : ""; ?>><?php print $aGroup->getName(); ?></option>
+				<option value=<?php print $aGroup->getID(); print ($aGroup->getID() == TBGContext::getRequest()->getParameter('gid')) ? " selected" : ""; ?>><?php print $aGroup->getName(); ?></option>
 				<?php
 			}
 
@@ -84,17 +84,17 @@
 		</tr>
 		<tr>
 		<td style="padding: 5px;"><b><?php echo __('Real name: %real_name%', array('%real_name%' => '')); ?></b></td>
-		<td><input type="text" name="realname" value="<?php print BUGScontext::getRequest()->getParameter('realname'); ?>" style="width: 100%;"></td>
+		<td><input type="text" name="realname" value="<?php print TBGContext::getRequest()->getParameter('realname'); ?>" style="width: 100%;"></td>
 		</tr>
 		<tr>
 		<td style="padding: 5px;"><b><?php echo __('Friendly name: %buddy_name%', array('%buddy_name%' => '')); ?></b></td>
-		<td><input type="text" name="buddyname" value="<?php print BUGScontext::getRequest()->getParameter('buddyname'); ?>" style="width: 100%;"></td>
+		<td><input type="text" name="buddyname" value="<?php print TBGContext::getRequest()->getParameter('buddyname'); ?>" style="width: 100%;"></td>
 		</tr>
 		</table>
 		</form>
 		</div>
 		<br>
-		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" name="searchform">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" name="searchform">
 		<?php
 
 			if ($isSearching == true)
@@ -169,10 +169,10 @@
 
 			if ($isSearching == true)
 			{
-				if (BUGScontext::getRequest()->getParameter('getbyverified'))
+				if (TBGContext::getRequest()->getParameter('getbyverified'))
 				{
 				}
-				$matchUsers = BUGSuser::getUsers($searchTerm);
+				$matchUsers = TBGUser::getUsers($searchTerm);
 				$num_hits = (is_array($matchUsers)) ? count($matchUsers) : 0;
 				?>
 				<div style="padding-top: 5px; padding-bottom: 5px; background-color: #F1F1F1; border-top: 1px solid #DDD; border-bottom: 1px solid #DDD;">&nbsp;<b><?php echo __('Found %number_of% users', array('%number_of%' => $num_hits)); ?></b></div>
@@ -182,8 +182,8 @@
 				{
 					foreach ($matchUsers as $aUser)
 					{
-						$aUser = BUGSfactory::userLab($aUser['id']);
-						if ($aUser->getID() != BUGScontext::getRequest()->getParameter('uid') && BUGScontext::getRequest()->getParameter('permissions')) 
+						$aUser = TBGFactory::userLab($aUser['id']);
+						if ($aUser->getID() != TBGContext::getRequest()->getParameter('uid') && TBGContext::getRequest()->getParameter('permissions')) 
 						{
 							continue;
 						}
@@ -192,14 +192,14 @@
 							?><div style="color: #AAA;"><?php
 						}
 						?><a name="uid_<?php print $aUser->getID(); ?>"></a>
-						<div style="padding-top: 5px; padding-bottom: 5px; border-bottom: <?php print (BUGScontext::getRequest()->getParameter('permissions') == true) ? "0px" : "1px solid #DDD"; ?>;">
+						<div style="padding-top: 5px; padding-bottom: 5px; border-bottom: <?php print (TBGContext::getRequest()->getParameter('permissions') == true) ? "0px" : "1px solid #DDD"; ?>;">
 						<!-- <a href="config.php?module=core&amp;section=2&amp;searchfor=<?php print $searchTerm; ?>"><b><?php print $aUser->getName(); ?></b></a><br> -->
 						<?php
 	
-							if (BUGScontext::getRequest()->getParameter('edituname') == true && BUGScontext::getRequest()->getParameter('uid') == $aUser->getID())
+							if (TBGContext::getRequest()->getParameter('edituname') == true && TBGContext::getRequest()->getParameter('uid') == $aUser->getID())
 							{
 								?>
-								<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post">
+								<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post">
 								<input type="hidden" name="module" value="core">
 								<input type="hidden" name="section" value=2>
 								<input type="hidden" name="uid" value=<?php print $aUser->getID(); ?>>
@@ -222,7 +222,7 @@
 								<td style="background-color: #F1F1F1;"><select name="group" style="width: 100%;">
 								<?php
 	
-									foreach (BUGSgroup::getAll() as $aGroup)
+									foreach (TBGGroup::getAll() as $aGroup)
 									{
 										?>
 										<option value=<?php print $aGroup->getID(); print ($aGroup->getID() == $aUser->getGroup()->getID()) ? " selected" : ""; ?>><?php print $aGroup->getName(); ?></option>
@@ -242,7 +242,7 @@
 	
 										foreach($aUser->getTeams() as $aTeam)
 										{
-											$aTeam = BUGSfactory::teamLab($aTeam);
+											$aTeam = TBGFactory::teamLab($aTeam);
 											print (!$first) ? ", " : "";
 											print $aTeam->getName();
 											$first = false;
@@ -253,7 +253,7 @@
 										?><font style="color: #AAA;"><?php echo __('None'); ?></font><?php
 									}
 	
-									$teams = BUGSteam::getAll();
+									$teams = TBGTeam::getAll();
 	
 								?><br><a href="javascript:void(0);" onclick="$('addteam').toggle();" style="font-size: 10px;"><?php echo __('Add'); ?></a> | <a href="javascript:void(0);" onclick="$('removeteam').toggle();" style="font-size: 10px;"><?php echo __('Remove'); ?></a>
 								<div style="display: none; position: absolute; width: 200px; padding: 5px; border: 1px solid #DDD; background-color: #FFF;" id="addteam">
@@ -261,7 +261,7 @@
 	
 									foreach($teams as $aTeam)
 									{
-										$aTeam = BUGSfactory::teamLab($aTeam['id']);
+										$aTeam = TBGFactory::teamLab($aTeam['id']);
 										?><a href="config.php?module=core&amp;section=2&amp;searchfor=<?php print $searchTerm; ?>&amp;uid=<?php print $aUser->getID(); ?>&amp;edituname=true&amp;addteam=<?php print $aTeam->getID(); ?>#uid_<?php print $aUser->getID(); ?>"><?php print $aTeam->getName(); ?></a><br><?php
 									}
 	
@@ -274,7 +274,7 @@
 									{
 										foreach($aUser->getTeams() as $aTeam)
 										{
-											$aTeam = BUGSfactory::teamLab($aTeam);
+											$aTeam = TBGFactory::teamLab($aTeam);
 											?><a href="config.php?module=core&amp;section=2&amp;searchfor=<?php print $searchTerm; ?>&amp;uid=<?php print $aUser->getID(); ?>&amp;edituname=true&amp;removeteam=<?php print $aTeam->getID(); ?>#uid_<?php print $aUser->getID(); ?>"><?php print $aTeam->getName(); ?></a><br><?php
 										}
 									}
@@ -325,7 +325,7 @@
 								?>
 								<tr>
 								<td <?php print ($aUser->isDeleted()) ? " style=\"color: #AAA;\"" : ""; ?>>
-                  <?php if ($aUser->getGroup() instanceof BUGSgroup): ?>
+                  <?php if ($aUser->getGroup() instanceof TBGGroup): ?>
 								    <?php print $aUser->getGroup()->getName(); ?>
                   <?php else: ?>
                     <span style="color: #AAA;"><?php echo __('This user is a member of a deleted group'); ?></span>
@@ -345,7 +345,7 @@
 	
 										foreach($aUser->getTeams() as $aTeam)
 										{
-											$aTeam = BUGSfactory::teamLab($aTeam);
+											$aTeam = TBGFactory::teamLab($aTeam);
 											print (!$first) ? ", " : "";
 											print $aTeam->getName();
 											$first = false;
@@ -367,7 +367,7 @@
 	
 						?>
 						<tr>
-						<td style="color: #AAA;" colspan=<?php print (BUGScontext::getRequest()->getParameter('edituname') == true) ? 3 : 2; ?>>
+						<td style="color: #AAA;" colspan=<?php print (TBGContext::getRequest()->getParameter('edituname') == true) ? 3 : 2; ?>>
 						<?php
 	
 							if ($aUser->isDeleted())
@@ -392,7 +392,7 @@
 						</table>
 						<?php
 	
-							if (BUGScontext::getRequest()->getParameter('edituname') == true && BUGScontext::getRequest()->getParameter('uid') == $aUser->getID())
+							if (TBGContext::getRequest()->getParameter('edituname') == true && TBGContext::getRequest()->getParameter('uid') == $aUser->getID())
 							{
 								print "</form>";
 							}
@@ -416,17 +416,17 @@
 								{
 									?><a href="config.php?module=core&amp;section=2&amp;searchfor=<?php print $searchTerm; ?>&amp;uid=<?php print $aUser->getID(); ?>&amp;enable=true#uid_<?php print $aUser->getID(); ?>" style="font-size: 10px;"><?php echo __('RESTORE'); ?></a> | <?php
 								}
-								elseif ($aUser->getID() != BUGScontext::getUser()->getUID())
+								elseif ($aUser->getID() != TBGContext::getUser()->getUID())
 								{
 									?><a href="config.php?module=core&amp;section=2&amp;searchfor=<?php print $searchTerm; ?>&amp;uid=<?php print $aUser->getID(); ?>&amp;suspend=true#uid_<?php print $aUser->getID(); ?>" style="font-size: 10px;"><?php echo __('SUSPEND'); ?></a> | <?php
 								}
 	
-								if ($aUser->getID() != BUGScontext::getUser()->getUID())
+								if ($aUser->getID() != TBGContext::getUser()->getUID())
 								{
 									?><a href="javascript:void(0);" onclick="javascript:$('pwd_change_<?php print $aUser->getID(); ?>').toggle();" style="font-size: 10px;"><?php echo __('CHANGE PASSWORD'); ?></a> | <?php
 								}
 	
-								if (BUGScontext::getRequest()->getParameter('permissions') != "true")
+								if (TBGContext::getRequest()->getParameter('permissions') != "true")
 								{
 									?><a href="config.php?module=core&amp;section=2&amp;searchfor=<?php print $searchTerm; ?>&amp;uid=<?php print $aUser->getID(); ?>&amp;permissions=true#uid_<?php print $aUser->getID(); ?>" style="font-size: 10px;"><?php echo __('SET PERMISSIONS'); ?></a> | <?php
 								}
@@ -435,7 +435,7 @@
 									?><a href="config.php?module=core&amp;section=2&amp;searchfor=<?php print $searchTerm; ?>" style="font-size: 10px;"><?php echo __('BACK TO SEARCH RESULTS'); ?></a> | <?php
 								}
 	
-								if ($aUser->getID() != BUGScontext::getUser()->getUID())
+								if ($aUser->getID() != TBGContext::getUser()->getUID())
 								{
 									?><a href="javascript:void(0);" onclick="javascript:$('delete_<?php print $aUser->getID(); ?>').toggle();" style="font-size: 10px;"><?php echo __('DELETE'); ?></a><?php
 								}
@@ -444,14 +444,14 @@
 									?><font style="color: #AAA; font-size: 10px;"><?php echo __('THIS IS YOUR ACCOUNT'); ?></font><?php
 								}
 	
-								if (BUGScontext::getRequest()->getParameter('permissions') == true && BUGScontext::getRequest()->getParameter('uid') == $aUser->getID())
+								if (TBGContext::getRequest()->getParameter('permissions') == true && TBGContext::getRequest()->getParameter('uid') == $aUser->getID())
 								{
-									BUGScontext::getRequest()->setParameter('user', "true");
-									$theuid = BUGScontext::getRequest()->getParameter('uid');
+									TBGContext::getRequest()->setParameter('user', "true");
+									$theuid = TBGContext::getRequest()->getParameter('uid');
 									$tid = 0;
 									$gid = 0;
 									$thelink = "config.php?module=core&amp;section=2&amp;searchfor=$searchTerm&amp;uid=" . $aUser->getID() . "&amp;permissions=true";
-									require_once BUGScontext::getIncludePath() . 'include/permissions.inc.php';
+									require_once TBGContext::getIncludePath() . 'include/permissions.inc.php';
 								}
 							}
 	
@@ -459,7 +459,7 @@
 						</div>
 						<?php
 	
-							if ($md5newPass != "" && BUGScontext::getRequest()->getParameter('uid') == $aUser->getID())
+							if ($md5newPass != "" && TBGContext::getRequest()->getParameter('uid') == $aUser->getID())
 							{
 								?>
 								<div style="background-color: #F1F1F1; padding: 5px; border-bottom: 1px solid #DDD;" id="newPass">
@@ -523,7 +523,7 @@
 						</tr>
 						<tr>
 						<td style="padding: 5px;">
-						<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post">
+						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post">
 						<input type="hidden" name="module" value="core">
 						<input type="hidden" name="section" value=2>
 						<input type="hidden" name="uid" value=<?php print $aUser->getID(); ?>>
@@ -544,7 +544,7 @@
 						</form>
 						</td>
 						<td style="text-align: center;" valign="middle">
-						<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post">
+						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post">
 						<input type="hidden" name="module" value="core">
 						<input type="hidden" name="section" value=2>
 						<input type="hidden" name="uid" value=<?php print $aUser->getID(); ?>>

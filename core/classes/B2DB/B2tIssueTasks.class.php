@@ -68,7 +68,7 @@
 			$crit->addInsert(self::CONTENT, $content);
 			$crit->addInsert(self::POSTED, $_SERVER["REQUEST_TIME"]);
 			$crit->addInsert(self::UPDATED, $_SERVER["REQUEST_TIME"]);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			return $res->getInsertID();
 		}

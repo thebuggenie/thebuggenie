@@ -65,7 +65,7 @@
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::CHILD_ID, $issue_id);
 			$crit->addInsert(self::PARENT_ID, $parent_id);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			return $res;
 		}
@@ -75,7 +75,7 @@
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::PARENT_ID, $issue_id);
 			$crit->addInsert(self::CHILD_ID, $child_id);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			return $res;
 		}

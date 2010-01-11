@@ -7,5 +7,5 @@
 </tr>
 </table>
 </td>
-<?php require BUGScontext::getIncludePath() . 'include/issue_affected_status.inc.php'; ?>
+<?php require TBGContext::getIncludePath() . 'include/issue_affected_status.inc.php'; ?>
 </tr>

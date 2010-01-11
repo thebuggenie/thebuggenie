@@ -10,7 +10,7 @@
 
 	foreach (array_merge($theIssue->getBuilds(), $theIssue->getComponents()) as $anAffected)
 	{
-		require BUGScontext::getIncludePath() . 'include/issue_affected_itemline.inc.php';
+		require TBGContext::getIncludePath() . 'include/issue_affected_itemline.inc.php';
 	}
 
 ?>

@@ -49,7 +49,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addInsert(self::ICON, $icon);
 			$crit->addInsert(self::DESCRIPTION, $name);
 			$res = $this->doInsert($crit);
@@ -57,7 +57,7 @@
 			return $res;
 		}
 
-		public function saveDetails(BUGSissuetype $issuetype)
+		public function saveDetails(TBGIssuetype $issuetype)
 		{
 			$crit = $this->getCriteria();
 			$crit->addUpdate(self::NAME, $issuetype->getName());
@@ -71,7 +71,7 @@
 
 		public function loadFixtures($scope)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, 'Bug report');
@@ -80,8 +80,8 @@
 			$crit->addInsert(self::DESCRIPTION, 'Have you discovered a bug in the application, or is something not working as expected?');
 			$res = $this->doInsert($crit);
 			$issue_type_bug_report_id = $res->getInsertID();
-			BUGSsettings::saveSetting('defaultissuetypefornewissues', $issue_type_bug_report_id, 'core', $scope);
-			BUGSsettings::saveSetting('issuetype_bug_report', $issue_type_bug_report_id, 'core', $scope);
+			TBGSettings::saveSetting('defaultissuetypefornewissues', $issue_type_bug_report_id, 'core', $scope);
+			TBGSettings::saveSetting('issuetype_bug_report', $issue_type_bug_report_id, 'core', $scope);
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, 'Feature request');
@@ -90,7 +90,7 @@
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_feature_request_id = $res->getInsertID();
-			BUGSsettings::saveSetting('issuetype_feature_request', $issue_type_feature_request_id, 'core', $scope);
+			TBGSettings::saveSetting('issuetype_feature_request', $issue_type_feature_request_id, 'core', $scope);
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, 'Enhancement');
@@ -99,7 +99,7 @@
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_enhancement_id = $res->getInsertID();
-			BUGSsettings::saveSetting('issuetype_enhancement', $issue_type_enhancement_id, 'core', $scope);
+			TBGSettings::saveSetting('issuetype_enhancement', $issue_type_enhancement_id, 'core', $scope);
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, 'Task');
@@ -109,7 +109,7 @@
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_task_id = $res->getInsertID();
-			BUGSsettings::saveSetting('issuetype_task', $issue_type_task_id, 'core', $scope);
+			TBGSettings::saveSetting('issuetype_task', $issue_type_task_id, 'core', $scope);
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, 'User story');
@@ -119,7 +119,7 @@
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_user_story_id = $res->getInsertID();
-			BUGSsettings::saveSetting('issuetype_user_story', $issue_type_user_story_id, 'core', $scope);
+			TBGSettings::saveSetting('issuetype_user_story', $issue_type_user_story_id, 'core', $scope);
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, 'Idea');
@@ -129,7 +129,7 @@
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_idea_id = $res->getInsertID();
-			BUGSsettings::saveSetting('issuetype_idea', $issue_type_idea_id, 'core', $scope);
+			TBGSettings::saveSetting('issuetype_idea', $issue_type_idea_id, 'core', $scope);
 
 			B2DB::getTable('B2tIssueFields')->loadFixtures($scope, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id);
 		}

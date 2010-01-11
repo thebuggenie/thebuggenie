@@ -1,4 +1,4 @@
-<?php BUGScontext::loadLibrary('publish/publish'); ?>
+<?php TBGContext::loadLibrary('publish/publish'); ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
 		<td class="left_bar" style="width: 250px;">
@@ -36,7 +36,7 @@
 				<?php include_component('articledisplay', array('article' => $article, 'show_category_contains' => false, 'show_actions' => false)); ?>
 			<?php endif; ?>
 			<a name="edit_article"></a>
-			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="post"
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="post"
 				<input type="hidden" name="preview" value="0" id="article_preview">
 				<input type="hidden" name="article_id" value="<?php echo ($article instanceof PublishArticle) ? $article->getID() : 0; ?>">
 				<input type="hidden" name="last_modified" value="<?php echo ($article instanceof PublishArticle) ? $article->getPostedDate() : 0; ?>">

@@ -1,4 +1,4 @@
-<?php if ($theIssue instanceof BUGSissue): ?>
+<?php if ($theIssue instanceof TBGIssue): ?>
 	<?php
 
 		$bugs_response->addJavascript('viewissue.js');
@@ -7,11 +7,11 @@
 	?>
 	<?php 
 
-		BUGScontext::trigger('core', 'viewissue_top', $theIssue);
-//		require_once(BUGScontext::getIncludePath() . 'js/viewissue_ajax.js.php');
+		TBGContext::trigger('core', 'viewissue_top', $theIssue);
+//		require_once(TBGContext::getIncludePath() . 'js/viewissue_ajax.js.php');
 
 	?>
-	<?php if (BUGSsettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>
+	<?php if (TBGSettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>
 		<div id="attach_file" style="display: none; background-color: transparent; width: 100%; height: 100%; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center;">
 			<div class="rounded_box white_borderless" style="position: absolute; top: 50%; left: 50%; z-index: 100001; clear: both; width: 500px; margin: -200px 0 0 -250px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
@@ -133,12 +133,12 @@
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>								
 	<?php endif; ?>
-	<?php if ($theIssue->isClosed() && $theIssue->getPostedBy()->getID() == $bugs_user->getID() && !BUGSuser::isThisGuest()): ?>
+	<?php if ($theIssue->isClosed() && $theIssue->getPostedBy()->getID() == $bugs_user->getID() && !TBGUser::isThisGuest()): ?>
 		<div class="rounded_box iceblue_borderless" id="viewissue_closed_sameuser">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="vertical-align: middle; padding: 0;">
 				<?php echo image_tag('icon_info_big.png'); ?>
-				<div class="viewissue_info_header"><?php echo __('You reported this issue, and it was closed with status "%status_name%"', array('%status_name%' => (($theIssue->getStatus() instanceof BUGSdatatype) ? $theIssue->getStatus()->getName() : __('Not determined')))); ?></div>
+				<div class="viewissue_info_header"><?php echo __('You reported this issue, and it was closed with status "%status_name%"', array('%status_name%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Not determined')))); ?></div>
 				<div class="viewissue_info_content">
 				<?php if ($theIssue->canReopenIssue()): ?>
 					<?php echo __('If you have new information and you think this issue should be reopened, then %reopen_the_issue%', array('%reopen_the_issue%' => link_tag(make_url('openissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID())), __('reopen the issue')))); ?>
@@ -151,12 +151,12 @@
 			</div>
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>								
-	<?php elseif ($theIssue->isOpen() && $theIssue->getPostedBy()->getID() == $bugs_user->getID() && !BUGSuser::isThisGuest()): ?>
+	<?php elseif ($theIssue->isOpen() && $theIssue->getPostedBy()->getID() == $bugs_user->getID() && !TBGUser::isThisGuest()): ?>
 		<div class="rounded_box iceblue_borderless" id="viewissue_open_sameuser">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="vertical-align: middle; padding: 0;">
 				<?php echo image_tag('icon_info_big.png'); ?>
-				<div class="viewissue_info_header"><?php echo __('You reported this issue, and its status is currently "%status_name%"', array('%status_name%' => (($theIssue->getStatus() instanceof BUGSdatatype) ? $theIssue->getStatus()->getName() : __('Not determined')))) ?></div>
+				<div class="viewissue_info_header"><?php echo __('You reported this issue, and its status is currently "%status_name%"', array('%status_name%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Not determined')))) ?></div>
 				<div class="viewissue_info_content">
 				<?php if ($theIssue->canReopenIssue()): ?>
 					<?php echo __('If you think this issue should be closed without further investigation, then %close_the_issue%', array('%close_the_issue%' => link_tag(make_url('closeissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID())), __('close the issue')))); ?>
@@ -174,7 +174,7 @@
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="vertical-align: middle; padding: 0;">
 				<?php echo image_tag('icon_info_big.png'); ?>
-				<div class="viewissue_info_header"><?php echo __('This issue has been closed with status: %status_name%.', array('%status_name%' => '<b style="color: ' . (($theIssue->getStatus() instanceof BUGSdatatype) ? $theIssue->getStatus()->getColor() : '#BBB') . '">' . (($theIssue->getStatus() instanceof BUGSdatatype) ? $theIssue->getStatus()->getName() : __('Not determined')) . '</b>')); ?></div>
+				<div class="viewissue_info_header"><?php echo __('This issue has been closed with status: %status_name%.', array('%status_name%' => '<b style="color: ' . (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getColor() : '#BBB') . '">' . (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Not determined')) . '</b>')); ?></div>
 				<div class="viewissue_info_content">
 					<?php if ($theIssue->canPostComments() && $bugs_user->canReportIssues($theIssue->getProjectID())): ?>
 						<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%, or %report_a_new_issue%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $theIssue->getID() . '">' . __('posting a comment') . '</a>', '%report_a_new_issue%' => link_tag(make_url('reportissue'), __('report a new issue')))); ?>
@@ -193,18 +193,18 @@
 			<td id="issue_lefthand">
 				<?php
 				 
-					BUGScontext::trigger('core', 'viewissue_left_top', $theIssue);
+					TBGContext::trigger('core', 'viewissue_left_top', $theIssue);
 					
 				?>
 				<?php include_component('main/issuedetailslisteditable', array('issue' => $theIssue)); ?>
 				<div style="clear: both; font-size: 1px;">&nbsp;</div>
 				<div id="viewissue_attached_information">
 					<div class="header_div">
-						<?php if ($theIssue->canAttachLinks() || (BUGSsettings::isUploadsEnabled() && $theIssue->canAttachFiles())): ?>
+						<?php if ($theIssue->canAttachLinks() || (TBGSettings::isUploadsEnabled() && $theIssue->canAttachFiles())): ?>
 							<?php if ($theIssue->canAttachLinks()): ?>
 								<a href="javascript:void(0);" onclick="$('attach_link').show();" title="<?php echo __('Attach a link'); ?>" style="float: right; margin-left: 5px;"><?php echo image_tag('action_add_link.png'); ?></a>
 							<?php endif; ?>
-							<?php if (BUGSsettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>
+							<?php if (TBGSettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>
 								<a href="javascript:void(0);" onclick="$('attach_file').show();" title="<?php echo __('Attach a file'); ?>" style="float: right; margin-left: 5px;"><?php echo image_tag('action_add_file.png'); ?></a>
 							<?php endif; ?>
 						<?php endif; ?>
@@ -237,7 +237,7 @@
 								<tr>
 									<td style="width: 20px;"><div style="border: 1px solid #AAA; background-color: <?php echo $parent_issue->getStatus()->getColor(); ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo $parent_issue->getStatus()->getName(); ?>">&nbsp;</div></td>
 									<td style="padding: 1px; width: auto;" valign="middle"><a href="viewissue.php?issue_no=<?php echo $parent_issue->getFormattedIssueNo(true); ?>"><?php echo $parent_issue->getFormattedIssueNo(); ?></a> - <?php echo $parent_issue->getTitle(); ?></td>
-									<td style="padding: 1px; width: 20px;" valign="middle"><?php echo image_tag('action_' . (($parent_issue->getState() == BUGSissue::STATE_CLOSED) ? "ok" : "cancel") . '_small.png', '', __('All these issues must be fixed before the issue relation is solved')); ?></td>
+									<td style="padding: 1px; width: 20px;" valign="middle"><?php echo image_tag('action_' . (($parent_issue->getState() == TBGIssue::STATE_CLOSED) ? "ok" : "cancel") . '_small.png', '', __('All these issues must be fixed before the issue relation is solved')); ?></td>
 								</tr>
 							</table>
 							<?php $p_issues++; ?>
@@ -252,7 +252,7 @@
 								<tr>
 									<td style="width: 20px;"><div style="border: 1px solid #AAA; background-color: <?php echo $child_issue->getStatus()->getColor(); ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo $child_issue->getStatus()->getName(); ?>">&nbsp;</div></td>
 									<td style="padding: 1px; width: auto;" valign="middle"><a href="viewissue.php?issue_no=<?php echo $child_issue->getFormattedIssueNo(true); ?>"><?php echo $child_issue->getFormattedIssueNo(); ?></a> - <?php echo $child_issue->getTitle(); ?><br></td>
-									<td style="padding: 1px; width: 20px;" valign="middle"><?php echo image_tag('action_' . (($child_issue->getState() == BUGSissue::STATE_CLOSED) ? "ok" : "cancel") . '_small.png', '', __('All these issues must be fixed before the issue relation is solved')); ?></td>
+									<td style="padding: 1px; width: 20px;" valign="middle"><?php echo image_tag('action_' . (($child_issue->getState() == TBGIssue::STATE_CLOSED) ? "ok" : "cancel") . '_small.png', '', __('All these issues must be fixed before the issue relation is solved')); ?></td>
 								</tr>
 							</table>
 							<?php $c_issues++; ?>
@@ -264,7 +264,7 @@
 				<?php endif; ?>
 				<?php
 			
-					BUGScontext::trigger('core', 'viewissue_left_middle_top', $theIssue);
+					TBGContext::trigger('core', 'viewissue_left_middle_top', $theIssue);
 					
 				?>
 				<?php if (!$bugs_user->isGuest()): ?>
@@ -278,7 +278,7 @@
 							<div class="issuedetailscontentsleft" style="padding-top: 5px; padding-bottom: 5px;">
 								<table cellpadding=0 cellspacing=0>
 									<?php foreach ($bugs_user->getStarredIssues() as $anIssue): ?>
-										<tr class="<?php if ($anIssue->getState() == BUGSissue::STATE_CLOSED) echo 'issue_closed'; if ($anIssue->isBlocking()) echo ' issue_blocking'; ?>">
+										<tr class="<?php if ($anIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($anIssue->isBlocking()) echo ' issue_blocking'; ?>">
 											<td class="imgtd"><?php echo image_tag('assigned_bugs.png'); ?></td>
 											<td><a href="viewissue.php?issue_no=<?php echo $anIssue->getFormattedIssueNo(true); ?>"><?php echo $anIssue->getFormattedIssueNo(); ?></a> - <?php echo $anIssue->getTitle(); ?></td>
 										</tr>
@@ -295,7 +295,7 @@
 							<?php if (count($bugs_user->getUserAssignedIssues()) > 0): ?>
 								<table cellpadding=0 cellspacing=0>
 									<?php foreach ($bugs_user->getUserAssignedIssues() as $anIssue): ?>
-										<tr class="<?php if ($savedIssue->getState() == BUGSissue::STATE_CLOSED) echo 'issue_closed'; if ($savedIssue->isBlocking()) echo ' issue_blocking'; ?>">
+										<tr class="<?php if ($savedIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($savedIssue->isBlocking()) echo ' issue_blocking'; ?>">
 											<td class="imgtd"><?php echo image_tag('assigned_bugs.png'); ?></td>
 											<td><a href="viewissue.php?issue_no=<?php print $savedIssue->getFormattedIssueNo(true); ?>"><?php print $savedIssue->getFormattedIssueNo(); ?></a> - <?php print (strlen($savedIssue->getTitle()) > 26) ? rtrim(substr($savedIssue->getTitle(), 0, 24), false) . "..." : $savedIssue->getTitle(); ?></td>
 										</tr>
@@ -313,7 +313,7 @@
 								<?php if (count($bugs_user->getUserTeamAssignedIssues) > 0): ?>
 									<table cellpadding=0 cellspacing=0>
 										<?php foreach ($bugs_user->getUserTeamAssignedIssues($tid) as $anIssue): ?>
-											<tr class="<?php if ($savedIssue->getState() == BUGSissue::STATE_CLOSED) echo 'issue_closed'; if ($savedIssue->isBlocking()) echo ' issue_blocking'; ?>">
+											<tr class="<?php if ($savedIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($savedIssue->isBlocking()) echo ' issue_blocking'; ?>">
 												<td class="imgtd"><?php echo image_tag('assigned_bugs.png'); ?></td>
 												<td><a href="viewissue.php?issue_no=<?php print $savedIssue->getFormattedIssueNo(true); ?>"><?php print $savedIssue->getFormattedIssueNo(); ?></a> - <?php print (strlen($savedIssue->getTitle()) > 26) ? rtrim(substr($savedIssue->getTitle(), 0, 24)) . "..." : $savedIssue->getTitle(); ?></td>
 											</tr>
@@ -328,14 +328,14 @@
 				<?php endif; ?>
 				<?php
 			
-					BUGScontext::trigger('core', 'viewissue_left_bottom', $theIssue);
+					TBGContext::trigger('core', 'viewissue_left_bottom', $theIssue);
 			
 				?>
 			</td><?php /* end left column */ ?>
 			<td valign="top" align="left" style="padding-right: 5px;" id="issue_main">
 				<?php
 			
-					BUGScontext::trigger('core', 'viewissue_right_top', $theIssue);
+					TBGContext::trigger('core', 'viewissue_right_top', $theIssue);
 			
 				?>
 				<div style="vertical-align: middle; padding: 5px 0 0 5px;">
@@ -359,7 +359,7 @@
 						</tr>
 					</table>
 				</div>
-				<?php //TODO: require BUGScontext::getIncludePath() . 'include/issue_affected_inline.inc.php'; ?>
+				<?php //TODO: require TBGContext::getIncludePath() . 'include/issue_affected_inline.inc.php'; ?>
 				<div class="rounded_box invisible" id="description_field" style="margin: 5px 0 5px 0;<?php if (!$theIssue->isDescriptionVisible()): ?> display: none;<?php endif; ?>">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent viewissue_description">
@@ -396,7 +396,7 @@
 						</tr>
 					</table>
 					<div id="new_task" style="display: none;">
-						<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" id="issue_add_task" onsubmit="return false">
+						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" id="issue_add_task" onsubmit="return false">
 							<input type="hidden" name="issue_no" id="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
 							<input type="hidden" name="issue_new_task" id="issue_new_task" value="true">
 							<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0 id="taskslist">
@@ -422,33 +422,33 @@
 							<div class="faded_medium"><?php echo __('No tasks are specified for this issue'); ?></div>
 						<?php else: ?>
 							<?php foreach ($theIssue->getTasks() as $theTask): ?>
-								<?php require BUGScontext::getIncludePath() . 'include/issue_taskbox.inc.php'; ?>
+								<?php require TBGContext::getIncludePath() . 'include/issue_taskbox.inc.php'; ?>
 							<?php endforeach; ?>
 						<?php endif; ?>
 					</div>
 				<?php endif; ?>
 				<?php 
 				
-					//BUGScontext::trigger('core', 'viewissue_right_middle', $theIssue);
+					//TBGContext::trigger('core', 'viewissue_right_middle', $theIssue);
 					
 				?>
 				<div style="margin-top: 10px;">
 					<?php
 					
 					/*
-					$canViewComments = BUGSComment::getCommentAccess($theIssue->getID());
-					$canAddComments = BUGSComment::getCommentAccess($theIssue->getID(), 'add');
-					$canEditComments = BUGSComment::getCommentAccess($theIssue->getID(), 'edit');
+					$canViewComments = TBGComment::getCommentAccess($theIssue->getID());
+					$canAddComments = TBGComment::getCommentAccess($theIssue->getID(), 'add');
+					$canEditComments = TBGComment::getCommentAccess($theIssue->getID(), 'edit');
 					
 					if ($canViewComments || $canAddComments || $canEditComments)
 					{
 						if ($canAddComments)
 						{
-							echo BUGSComment::getCommentForm($theIssue->getID());
+							echo TBGComment::getCommentForm($theIssue->getID());
 						}
 						
 						?>
-						<div class="commentheadertop" style="clear: both;"><b><?php echo __('Comments and discussion'); ?></b><?php if (BUGSuser::isThisGuest() == false) { ?>&nbsp;&nbsp;(<a href="javascript:void(0);" onclick="Effect.Appear('filter_comments', { duration: 0.5 });" style="font-size: 10px;"><?php echo __('Filter comments'); ?></a><font style="font-size: 9px;">:<?php
+						<div class="commentheadertop" style="clear: both;"><b><?php echo __('Comments and discussion'); ?></b><?php if (TBGUser::isThisGuest() == false) { ?>&nbsp;&nbsp;(<a href="javascript:void(0);" onclick="Effect.Appear('filter_comments', { duration: 0.5 });" style="font-size: 10px;"><?php echo __('Filter comments'); ?></a><font style="font-size: 9px;">:<?php
 					
 							if ($doFilterSystemComments || $doFilterUserComments)
 							{
@@ -475,7 +475,7 @@
 						$target_id = $theIssue->getID();
 						$target_type = 1;
 						$module = 'core';
-						require BUGScontext::getIncludePath() . 'include/comments.inc.php';
+						require TBGContext::getIncludePath() . 'include/comments.inc.php';
 						echo '</span>';
 					}*/
 			

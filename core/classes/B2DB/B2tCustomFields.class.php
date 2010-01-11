@@ -41,7 +41,7 @@
 
 		public function createNew($name, $key, $fieldtype = 1, $scope = null)
 		{
-			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::FIELD_NAME, $name);
@@ -55,7 +55,7 @@
 		public function getAll()
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$res = $this->doSelect($crit);
 			$retval = array();
@@ -75,7 +75,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::FIELD_KEY, $key);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			return $this->doCount($crit);
 		}
@@ -84,7 +84,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::FIELD_KEY, $key);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			return $this->doSelectOne($crit);
 		}

@@ -1,12 +1,12 @@
 <?php
 
-	if (($access_level != "full" && $access_level != "read") || BUGScontext::getRequest()->getParameter('access_level'))
+	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
 		bugs_msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
-		require_once BUGScontext::getIncludePath() . 'include/config/scopes_logic.inc.php';
+		require_once TBGContext::getIncludePath() . 'include/config/scopes_logic.inc.php';
 		?>
 		<table style="width: 100%" cellpadding=0 cellspacing=0>
 			<tr>
@@ -32,7 +32,7 @@
 						<tr>
 							<td style="width: 300px; padding: 5px;" valign="top">
 								<div style="background-color: #F2F2F2; padding: 3px; border-bottom: 1px solid #DDD; margin-bottom: 5px;"><b><?php echo __('DEFAULT SCOPE'); ?></b></div>
-								<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" name="defaultscopeform">
+								<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" name="defaultscopeform">
 								<input type="hidden" name="module" value="core">
 								<input type="hidden" name="section" value="14">
 								<input type="hidden" name="setdefaultscope" value="true">
@@ -41,10 +41,10 @@
 										<td style="width: auto;"><select style="width: 240px;" name="defaultscope">
 										<?php
 	
-										foreach (BUGSscope::getAll() as $aScope)
+										foreach (TBGScope::getAll() as $aScope)
 										{
 											?>
-											<option value="<?php print $aScope->getID(); ?>"<?php if (BUGSsettings::getDefaultScope()->getID() == $aScope->getID()) { print " selected"; } ?>><?php print $aScope->getName(); ?></option>
+											<option value="<?php print $aScope->getID(); ?>"<?php if (TBGSettings::getDefaultScope()->getID() == $aScope->getID()) { print " selected"; } ?>><?php print $aScope->getName(); ?></option>
 											<?php
 										}
 	
@@ -64,13 +64,13 @@
 									<?php
 								}
 
-								foreach (BUGSscope::getAll() as $aScope)
+								foreach (TBGScope::getAll() as $aScope)
 								{
 									?>
-									<div style="border:<?php ($theScope instanceof BUGSscope && $theScope->getID() == $aScope->getID()) ? print "2px solid #9D9" : print "1px solid #DDD"; ?>; padding: 3px; width: auto;">
+									<div style="border:<?php ($theScope instanceof TBGScope && $theScope->getID() == $aScope->getID()) ? print "2px solid #9D9" : print "1px solid #DDD"; ?>; padding: 3px; width: auto;">
 										<a href="config.php?module=core&amp;section=14&amp;selectedscope=<?php print $aScope->getID(); ?>"><b><?php print $aScope->getName(); ?></b></a><?php if ($aScope->isEnabled() == 0) echo __('%scope_name% (disabled)', array('%scope_name%' => '')); ?><br>
 										<div style="padding: 3px; padding-left: 0px;">
-											<b><?php echo __('URL:'); ?></b><br><a href="<?php echo BUGSsettings::get('url_host') . BUGScontext::getTBGPath(); ?>?scope=<?php echo $aScope->getShortname(); ?>"><?php echo BUGSsettings::get('url_host') . BUGScontext::getTBGPath();?>?scope=<?php echo $aScope->getShortname(); ?></a>
+											<b><?php echo __('URL:'); ?></b><br><a href="<?php echo TBGSettings::get('url_host') . TBGContext::getTBGPath(); ?>?scope=<?php echo $aScope->getShortname(); ?>"><?php echo TBGSettings::get('url_host') . TBGContext::getTBGPath();?>?scope=<?php echo $aScope->getShortname(); ?></a>
 											<?php if ($aScope->getHostname() != ''): ?>
 												<?php echo __('%url_1% and %url_2%', array('%url_1%' => '', '%url_2%' => '<a href="' . $aScope->getHostname() . '">' . $aScope->getHostname() . '</a>')); ?>
 											<?php endif; ?>
@@ -99,7 +99,7 @@
 							<div style="width: 100%; padding: 3px; background-color: #F2F2F2; border-bottom: 1px solid #DDD; margin-bottom: 5px;"><b><?php echo __('SCOPE SETTINGS'); ?></b></div>
 							<?php
 
-							if ($theScope instanceof BUGSscope || $newScope)
+							if ($theScope instanceof TBGScope || $newScope)
 							{
 								if ($access_level == "full")
 								{
@@ -162,7 +162,7 @@
 															<table style="width: 200px;" cellpadding=0 cellspacing=0 id="scope_admin">
 															<?php
 															
-															if ($theScope->getScopeAdmin() instanceof BUGSuser)
+															if ($theScope->getScopeAdmin() instanceof TBGUser)
 															{
 																echo bugs_userDropdown($theScope->getScopeAdmin());
 															}
@@ -206,7 +206,7 @@
 									}
 
 									?>
-									<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" name="scopeform" id="scopeform">
+									<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" name="scopeform" id="scopeform">
 									<table cellpadding=0 cellspacing=0 style="width: 100%; table-layout: fixed;">
 										<tr>
 											<td style="padding-top: 5px; width: 150px;"><b><?php echo __('Scope name'); ?></b></td>
@@ -345,11 +345,11 @@
 									</div>
 									<?php 
 									
-									if ($theScope instanceof BUGSscope && $theScope->getID() != BUGSsettings::getDefaultScope()->getID() && !$newScope) 
+									if ($theScope instanceof TBGScope && $theScope->getID() != TBGSettings::getDefaultScope()->getID() && !$newScope) 
 									{
 										?>
 										<div style="width: 100%; padding: 3px; background-color: #F2F2F2; border-bottom: 1px solid #DDD; margin-top: 10px; margin-bottom: 5px;"><b><?php echo __('DELETE SCOPE'); ?></b></div>
-										<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" name="deletescopeform">
+										<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" name="deletescopeform">
 										<?php echo __('Click the "Delete scope" button below to delete the scope and all its contents. If you just want to disable the scope, use the above selector instead.'); ?><br>
 										<br><b><?php echo __('Warning:'); ?></b> <i><?php echo __('Deleting the scope is irreversible!'); ?></i>
 										<input type="hidden" name="module" value="core">

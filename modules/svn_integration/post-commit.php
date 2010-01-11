@@ -25,7 +25,7 @@
 	
 	if (!isset($argc))
 	{
-		if ($passkey != BUGScontext::getModule('svn_integration')->getSetting('svn_passkey'))
+		if ($passkey != TBGContext::getModule('svn_integration')->getSetting('svn_passkey'))
 		{
 			echo 'incorrect passkey';
 			exit();
@@ -54,8 +54,8 @@
    		
 	   	foreach ($f_issues as $issue_no)
 	   	{
-			$theIssue = BUGSissue::getIssueFromLink($issue_no, true);
-			if ($theIssue instanceof BUGSissue)
+			$theIssue = TBGIssue::getIssueFromLink($issue_no, true);
+			if ($theIssue instanceof TBGIssue)
 			{
                                 $uid = 0;
                                 $crit = new B2DBCriteria();
@@ -72,7 +72,7 @@
 					$crit->addInsert(B2tSVNintegration::OLD_REV, $old_rev);
 					$crit->addInsert(B2tSVNintegration::AUTHOR, $uid);
 					$crit->addInsert(B2tSVNintegration::DATE, $_SERVER["REQUEST_TIME"]);
-					$crit->addInsert(B2tSVNintegration::SCOPE, BUGScontext::getScope()->getID());
+					$crit->addInsert(B2tSVNintegration::SCOPE, TBGContext::getScope()->getID());
 					B2DB::getTable('B2tSVNintegration')->doInsert($crit);
 				}
 				echo 'Updated ' . $theIssue->getFormattedIssueNo() . "\n";

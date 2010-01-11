@@ -34,7 +34,7 @@
 
 		public function loadFixtures($scope_id)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(B2tTeams::TEAMNAME, 'Staff members');
@@ -54,7 +54,7 @@
 
 		public function getAll($scope = null)
 		{
-			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, $scope);
 			

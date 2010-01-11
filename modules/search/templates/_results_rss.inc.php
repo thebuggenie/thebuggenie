@@ -1,13 +1,13 @@
-<<?php ?>?xml version="1.0" encoding="<?php echo BUGScontext::getI18n()->getCharset(); ?>" ?>
+<<?php ?>?xml version="1.0" encoding="<?php echo TBGContext::getI18n()->getCharset(); ?>" ?>
 <rss version="2.0">
 	<channel>
-		<title><?php echo BUGSsettings::getTBGname() . ' ~ '. $searchtitle; ?></title>
+		<title><?php echo TBGSettings::getTBGname() . ' ~ '. $searchtitle; ?></title>
 		<link><?php echo make_url('home', array(), false); ?></link>
 		<description> </description>
-		<language><?php echo BUGScontext::getI18n()->getCurrentLanguage(); ?></language>
+		<language><?php echo TBGContext::getI18n()->getCurrentLanguage(); ?></language>
 		<image>
-			<url><?php print BUGScontext::getTBGPath(); ?>themes/<?php print BUGSsettings::getThemeName(); ?>/favicon.png</url>
-			<title><?php echo BUGSsettings::getTBGname() . ' ~ '. $searchtitle; ?></title>
+			<url><?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png</url>
+			<title><?php echo TBGSettings::getTBGname() . ' ~ '. $searchtitle; ?></title>
 			<link><?php echo make_url('home', array(), false); ?></link>
 		</image>
 <?php foreach ($issues as $issue): ?>

@@ -61,7 +61,7 @@
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::ISSUE, $issue_id);
 				$crit->addInsert(self::COMPONENT, $component_id);
-				$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$this->doInsert($crit);
 				return true;
 			}

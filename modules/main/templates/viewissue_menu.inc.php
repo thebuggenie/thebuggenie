@@ -1,21 +1,21 @@
 <div style="width: auto; padding: 5px; padding-top: 0px; padding-bottom: 0px;">
 <table style="border-bottom: 1px solid #DDD; width: 100%; background-color: #F5F5F5; padding: 1px;">
 <tr>
-<?php if ($theIssue->canEditTexts() || $theIssue->canEditFields() || ($theIssue->getPostedBy()->getID() == BUGScontext::getUser()->getID() && BUGScontext::getUser()->isGuest() == false))
+<?php if ($theIssue->canEditTexts() || $theIssue->canEditFields() || ($theIssue->getPostedBy()->getID() == TBGContext::getUser()->getID() && TBGContext::getUser()->isGuest() == false))
 {
 	?>
 	<td style="width: 70px;"><div id="edit_issue_menu" class="menu_item" onmouseover="menuHover('edit_issue_menu');" onmouseout="menuUnhover('edit_issue_actions','');" onclick="showMenu('edit_issue')"><?php echo __('Edit issue'); ?></div>
 	<div id="edit_issue_actions" style="display: none; width: 245px; background-color: #FFF; padding: 10px; border: 1px solid #DDD; position: absolute;">
 	<table cellpadding=0 cellspacing=0 class="td1"><?php
 	
-	if ($theIssue->canEditTexts() || ($theIssue->getPostedBy()->getID() == BUGScontext::getUser()->getID() && BUGScontext::getUser()->isGuest() == false))
+	if ($theIssue->canEditTexts() || ($theIssue->getPostedBy()->getID() == TBGContext::getUser()->getID() && TBGContext::getUser()->isGuest() == false))
 	{
 		?><tr>
 		<td class="imgtd" valign="middle"><?php echo image_tag('icon_title.png'); ?>
 		<br>
 		<div id="edit_title" style="position: absolute; padding: 5px; border: 1px solid #DDD; width: 400px; display: none; background-color: #F1F1F1;">
 		<div style="padding: 2px;"><?php echo __('Enter the new title here, and press "Save" when you are finished.'); ?></div>
-		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="viewissue_actions.php" enctype="multipart/form-data" method="post" name="issue_edit_title" id="issue_edit_title" onsubmit="return false">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="viewissue_actions.php" enctype="multipart/form-data" method="post" name="issue_edit_title" id="issue_edit_title" onsubmit="return false">
 		<input type="hidden" name="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
 		<table cellpadding=0 cellspacing=0 style="width: 100%;">
 		<tr>
@@ -51,7 +51,7 @@
 		<?php
 	}
 	
-	if ($theIssue->canEditTexts() || ($theIssue->getPostedBy()->getID() == BUGScontext::getUser()->getID() && BUGScontext::getUser()->isGuest() == false))
+	if ($theIssue->canEditTexts() || ($theIssue->getPostedBy()->getID() == TBGContext::getUser()->getID() && TBGContext::getUser()->isGuest() == false))
 	{
 		?>
 		<tr>
@@ -59,11 +59,11 @@
 		<br>
 		<div id="edit_description" style="position: absolute; padding: 5px; border: 1px solid #DDD; width: 600px; display: none; background-color: #F1F1F1;">
 		<div style="padding: 2px;"><?php echo __('Enter the new description here, and press "Save" when you are finished.'); ?></div>
-		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" name="issue_edit_description" id="issue_edit_description" onsubmit="return false">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" name="issue_edit_description" id="issue_edit_description" onsubmit="return false">
 		<input type="hidden" name="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
 		<table cellpadding=0 cellspacing=0 style="width: 100%;">
 		<tr>
-			<td style="width: auto; padding: 2px;"><?php echo bugs_newTextArea('issue_newdescription', '150px', '100%', BUGScontext::getRequest()->sanitize_input($theIssue->getDescription())); ?></td>
+			<td style="width: auto; padding: 2px;"><?php echo bugs_newTextArea('issue_newdescription', '150px', '100%', TBGContext::getRequest()->sanitize_input($theIssue->getDescription())); ?></td>
 			<td style="width: 40px; padding: 2px;" valign="top"><button style="width: 100%;" onclick="submitNewDescription();"><?php echo __('Save'); ?></button></td>
 		</tr>
 		<tr>
@@ -80,11 +80,11 @@
 		<br>
 		<div id="edit_repro" style="position: absolute; padding: 5px; border: 1px solid #DDD; width: 600px; display: none; background-color: #F1F1F1;">
 		<div style="padding: 2px;"><?php echo __('Enter the new reproduction steps here, and press "Save" when you are finished.'); ?></div>
-		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" name="issue_edit_repro" id="issue_edit_repro" onsubmit="return false">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" name="issue_edit_repro" id="issue_edit_repro" onsubmit="return false">
 		<input type="hidden" name="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
 		<table cellpadding=0 cellspacing=0 style="width: 100%;">
 		<tr>
-			<td style="width: auto; padding: 2px;"><?php echo bugs_newTextArea('issue_newrepro', '150px', '100%', BUGScontext::getRequest()->sanitize_input($theIssue->getReproduction())); ?></td>
+			<td style="width: auto; padding: 2px;"><?php echo bugs_newTextArea('issue_newrepro', '150px', '100%', TBGContext::getRequest()->sanitize_input($theIssue->getReproduction())); ?></td>
 			<td style="width: 40px; padding: 2px;" valign="top"><button style="width: 100%;" onclick="submitNewRepro();"><?php echo __('Save'); ?></button></td>
 		</tr>
 		<tr>
@@ -127,7 +127,7 @@
 		<tr>
 		<td class="imgtd" valign="middle"><?php echo image_tag('icon_edition.png'); ?>
 		<br>
-		<div id="edit_affects" style="position: absolute; padding: 5px; display: <?php echo (BUGScontext::getRequest()->getParameter('issue_addaffects')) ? "" : "none" ?>; border: 1px solid #DDD; width: 700px; background-color: #F1F1F1;">
+		<div id="edit_affects" style="position: absolute; padding: 5px; display: <?php echo (TBGContext::getRequest()->getParameter('issue_addaffects')) ? "" : "none" ?>; border: 1px solid #DDD; width: 700px; background-color: #F1F1F1;">
 		<div style="padding: 2px; border-bottom: 1px solid #DDD; width: auto;"><b><?php echo __('Affected edition(s) / build(s) / component(s)'); ?></b></div>
 		<span id="affectslist_menu"><?php echo __('Please wait, loading list'); ?> ...</span>
 		<table cellpadding=0 cellspacing=2 style="width: 100%;">
@@ -181,7 +181,7 @@ if ($theIssue->canEditFields())
 			<br>
 			<div id="edit_percent" style="position: absolute; padding: 5px; border: 1px solid #DDD; width: 150px; display: none; background-color: #F1F1F1;">
 			<div style="padding: 2px; border-bottom: 1px solid #DDD; width: auto;"><b><?php echo __('Set percent completed'); ?></b></div>
-			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" name="issue_edit_percent" id="issue_edit_percent" onsubmit="return false">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" name="issue_edit_percent" id="issue_edit_percent" onsubmit="return false">
 			<input type="hidden" name="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
 			<table cellpadding=0 cellspacing=0 style="width: 100%;" id="issue_edit_percent">
 			<tr>
@@ -202,7 +202,7 @@ if ($theIssue->canEditFields())
 			<br>
 			<div id="edit_estimated" style="position: absolute; padding: 5px; border: 1px solid #DDD; width: 260px; display: none; background-color: #F1F1F1;">
 			<div style="padding: 2px; width: auto;"><?php echo __('Enter how much time it will take to complete this issue'); ?></div>
-			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" name="issue_edit_estimated" id="issue_edit_estimated" onsubmit="return false">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" name="issue_edit_estimated" id="issue_edit_estimated" onsubmit="return false">
 			<input type="hidden" name="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
 			<table cellpadding=0 cellspacing=0 style="width: 100%; table-layout: auto;">
 			<tr>
@@ -232,7 +232,7 @@ if ($theIssue->canEditFields())
 			<br>
 			<div id="edit_elapsed" style="position: absolute; padding: 5px; border: 1px solid #DDD; width: 260px; display: none; background-color: #F1F1F1;">
 			<div style="padding: 2px; width: auto;"><?php echo __('Select how much time has been spent on this issue'); ?></div>
-			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" name="issue_edit_elapsed" id="issue_edit_elapsed" onsubmit="return false">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" name="issue_edit_elapsed" id="issue_edit_elapsed" onsubmit="return false">
 			<input type="hidden" name="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
 			<table cellpadding=0 cellspacing=0 style="width: 100%; table-layout: auto;">
 			<tr>
@@ -260,7 +260,7 @@ if ($theIssue->canEditFields())
 			<tr>
 			<td class="imgtd" valign="middle"><?php echo image_tag('issue_depend_add.png'); ?>
 			<br>
-			<div id="edit_dependant" style="position: absolute; padding: 5px; border: 1px solid #DDD; width: 700px; <?php echo (BUGScontext::getRequest()->getParameter('find_dependant_issue')) ? "" : "display: none;" ?> background-color: #F1F1F1;">
+			<div id="edit_dependant" style="position: absolute; padding: 5px; border: 1px solid #DDD; width: 700px; <?php echo (TBGContext::getRequest()->getParameter('find_dependant_issue')) ? "" : "display: none;" ?> background-color: #F1F1F1;">
 			<div style="padding: 2px; width: auto;"><?php echo __('Select whether or not this issue is dependant on other issues, or whether other issues depends on this issue'); ?></div>
 			<table style="table-layout: fixed; margin-top: 4px; width: 100%;" cellpadding=0 cellspacing=0>
 			<tr>
@@ -448,8 +448,8 @@ if ($theIssue->canEditFields() || $theIssue->canEditUsers())
 	
 			?>
 			<tr>
-			<td class="imgtd" valign="middle"><?php echo ($theIssue->getState() == BUGSissue::STATE_CLOSED) ? image_tag('icon_reopen.png') : image_tag('icon_close.png'); ?>&nbsp;</td>
-			<td><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;issue_setstate=<?php echo ($theIssue->isClosed()) ? BUGSissue::STATE_OPEN : BUGSissue::STATE_CLOSED; ?>"><?php echo ($theIssue->isClosed()) ? __('Reopen this issue') : __('Close this issue'); ?></a></td>
+			<td class="imgtd" valign="middle"><?php echo ($theIssue->getState() == TBGIssue::STATE_CLOSED) ? image_tag('icon_reopen.png') : image_tag('icon_close.png'); ?>&nbsp;</td>
+			<td><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;issue_setstate=<?php echo ($theIssue->isClosed()) ? TBGIssue::STATE_OPEN : TBGIssue::STATE_CLOSED; ?>"><?php echo ($theIssue->isClosed()) ? __('Reopen this issue') : __('Close this issue'); ?></a></td>
 			</tr>
 			<?php
 		}

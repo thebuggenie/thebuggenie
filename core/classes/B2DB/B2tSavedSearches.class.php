@@ -33,7 +33,7 @@
 		public function getAllSavedSearchesByUserIDAndPossiblyProjectID($user_id, $project_id = 0)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$ctn = $crit->returnCriterion(self::UID, $user_id);
 			$ctn->addOr(self::UID, 0);
 			$crit->addWhere($ctn);
@@ -64,17 +64,17 @@
 				$crit->addUpdate(self::GROUPORDER, $grouporder);
 				$crit->addUpdate(self::ISSUES_PER_PAGE, $ipp);
 				$crit->addUpdate(self::APPLIES_TO_PROJECT, $project_id);
-				if (BUGScontext::getUser()->canCreatePublicSearches())
+				if (TBGContext::getUser()->canCreatePublicSearches())
 				{
 					$crit->addUpdate(self::IS_PUBLIC, $saved_search_public);
-					$crit->addUpdate(self::UID, ((bool) $saved_search_public) ? 0 : BUGScontext::getUser()->getID());
+					$crit->addUpdate(self::UID, ((bool) $saved_search_public) ? 0 : TBGContext::getUser()->getID());
 				}
 				else
 				{
 					$crit->addUpdate(self::IS_PUBLIC, 0);
-					$crit->addUpdate(self::UID, BUGScontext::getUser()->getID());
+					$crit->addUpdate(self::UID, TBGContext::getUser()->getID());
 				}
-				$crit->addUpdate(self::SCOPE, BUGScontext::getScope()->getID());
+				$crit->addUpdate(self::SCOPE, TBGContext::getScope()->getID());
 				$this->doUpdateById($crit, $saved_search_id);
 			}
 			else
@@ -86,17 +86,17 @@
 				$crit->addInsert(self::GROUPORDER, $grouporder);
 				$crit->addInsert(self::ISSUES_PER_PAGE, $ipp);
 				$crit->addInsert(self::APPLIES_TO_PROJECT, $project_id);
-				if (BUGScontext::getUser()->canCreatePublicSearches())
+				if (TBGContext::getUser()->canCreatePublicSearches())
 				{
 					$crit->addInsert(self::IS_PUBLIC, $saved_search_public);
-					$crit->addInsert(self::UID, ((bool) $saved_search_public) ? 0 : BUGScontext::getUser()->getID());
+					$crit->addInsert(self::UID, ((bool) $saved_search_public) ? 0 : TBGContext::getUser()->getID());
 				}
 				else
 				{
 					$crit->addInsert(self::IS_PUBLIC, 0);
-					$crit->addUpdate(self::UID, BUGScontext::getUser()->getID());
+					$crit->addUpdate(self::UID, TBGContext::getUser()->getID());
 				}
-				$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$saved_search_id = $this->doInsert($crit)->getInsertID();
 			}
 			B2DB::getTable('B2tSavedSearchFilters')->deleteBySearchID($saved_search_id);

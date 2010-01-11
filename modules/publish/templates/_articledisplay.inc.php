@@ -1,4 +1,4 @@
-<?php BUGScontext::loadLibrary('publish/publish'); ?>
+<?php TBGContext::loadLibrary('publish/publish'); ?>
 <div class="article" style="width: auto; padding: 5px; position: relative;">
 	<?php if ($show_title): ?>
 		<div class="header">
@@ -6,10 +6,10 @@
 				<?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), __('History'), array('style' => 'float: right;')); ?>
 				<?php echo link_tag(make_url('publish_article_edit', array('article_name' => $article->getName())), __('Edit'), array('style' => 'float: right; margin-right: 15px;')); ?>
 			<?php endif; ?>
-			<?php if (BUGScontext::isProjectContext()): ?>
-				<?php if ((strpos($article->getName(), ucfirst(BUGScontext::getCurrentProject()->getKey())) == 0) || ($article->isCategory() && strpos($article->getName(), ucfirst(BUGScontext::getCurrentProject()->getKey())) == 9)): ?>
-					<?php $project_article_name = substr($article->getName(), ($article->isCategory() * 9) + strlen(BUGScontext::getCurrentProject()->getKey())+1); ?>
-					<?php if ($article->isCategory()): ?><span class="faded_blue">Category:</span><?php endif; ?><span class="faded_dark"><?php echo ucfirst(BUGScontext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
+			<?php if (TBGContext::isProjectContext()): ?>
+				<?php if ((strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 0) || ($article->isCategory() && strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 9)): ?>
+					<?php $project_article_name = substr($article->getName(), ($article->isCategory() * 9) + strlen(TBGContext::getCurrentProject()->getKey())+1); ?>
+					<?php if ($article->isCategory()): ?><span class="faded_blue">Category:</span><?php endif; ?><span class="faded_dark"><?php echo ucfirst(TBGContext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
 				<?php endif; ?>
 			<?php elseif (substr($article->getName(), 0, 9) == 'Category:'): ?>
 				<span class="faded_blue">Category:</span><?php echo get_spaced_name(substr($article->getName(), 9)); ?>
@@ -19,7 +19,7 @@
 		</div>
 	<?php endif; ?>
 	<?php if ($show_details): ?>
-		<div class="faded_medium" style="padding-bottom: 5px;"><?php echo __('Last updated at %time%, by %user%', array('%time%' => bugs_formatTime($article->getPostedDate(), 3), '%user%' => '<b>'.(($article->getAuthor() instanceof BUGSidentifiable) ? $article->getAuthor()->getName() : __('System')).'</b>')); ; ?></div>
+		<div class="faded_medium" style="padding-bottom: 5px;"><?php echo __('Last updated at %time%, by %user%', array('%time%' => bugs_formatTime($article->getPostedDate(), 3), '%user%' => '<b>'.(($article->getAuthor() instanceof TBGIdentifiable) ? $article->getAuthor()->getName() : __('System')).'</b>')); ; ?></div>
 	<?php endif; ?>
 	<div style="font-size: 13px; padding-bottom: 5px;"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded)); ?></div>
 </div>

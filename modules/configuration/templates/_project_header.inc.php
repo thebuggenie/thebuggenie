@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?php echo BUGScontext::getTBGPath(); ?>js/config/projects_ajax.js"></script>
+<script type="text/javascript" src="<?php echo TBGContext::getTBGPath(); ?>js/config/projects_ajax.js"></script>
 <table style="width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
 		<td style="padding-right: 10px;">
@@ -17,7 +17,7 @@
             	<?php echo bugs_successStrip(__('Your changes has been saved'), '', 'message_changes_saved', true); */ ?>
             </div>
 			<p style="padding-top: 5px;">
-				<?php if (BUGScontext::getRequest()->getParameter('edit_settings')): ?>
+				<?php if (TBGContext::getRequest()->getParameter('edit_settings')): ?>
 					<?php $help_topic = 'setup_project'; ?>
 				<?php else: ?>
 					<?php $help_topic = 'config_projects'; ?>

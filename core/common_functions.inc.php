@@ -6,7 +6,7 @@
 		{
 			$string = stripslashes($string);
 		}
-		return htmlspecialchars($string, ENT_QUOTES, BUGScontext::getI18n()->getCharset());
+		return htmlspecialchars($string, ENT_QUOTES, TBGContext::getI18n()->getCharset());
 	}
 	
 	/**
@@ -16,10 +16,10 @@
 	 */
 	function bugs_formatTime($tstamp, $format = 0, $skiptimestamp = 0)
 	{
-		if (BUGSsettings::getUserTimezone() !== null && $skiptimestamp == 0)
+		if (TBGSettings::getUserTimezone() !== null && $skiptimestamp == 0)
 		{
-			$tstamp += -(BUGSsettings::getGMToffset() * 60 * 60);
-			$tstamp += (BUGSsettings::getUserTimezone() * 60 * 60);
+			$tstamp += -(TBGSettings::getGMToffset() * 60 * 60);
+			$tstamp += (TBGSettings::getUserTimezone() * 60 * 60);
 		}
 		switch ($format)
 		{
@@ -144,9 +144,9 @@
 				return $tstring;
 			case 21:
 				$time = strftime("%a, %d %b %Y %H:%M:%S GMT", $tstamp);
-				if (BUGScontext::getUser()->getTimezone() > 0) $time .= '+';
-				if (BUGScontext::getUser()->getTimezone() < 0) $time .= '-';
-				if (BUGScontext::getUser()->getTimezone() != 0) $time .= BUGScontext::getUser()->getTimezone();
+				if (TBGContext::getUser()->getTimezone() > 0) $time .= '+';
+				if (TBGContext::getUser()->getTimezone() < 0) $time .= '-';
+				if (TBGContext::getUser()->getTimezone() != 0) $time .= TBGContext::getUser()->getTimezone();
 				return $time;
 				break;
 			default:
@@ -157,7 +157,7 @@
 	function tbg_parse_text($text, $toc = false, $article_id = null, $options = array())
 	{
 		// Perform wiki parsing
-		$wiki_parser = new BUGSTextParser($text, $toc, 'article_' . $article_id);
+		$wiki_parser = new TBGTextParser($text, $toc, 'article_' . $article_id);
 		foreach ($options as $option => $value)
 		{
 			$wiki_parser->setOption($option, $value);
@@ -172,7 +172,7 @@
 		try
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tIssueTypes::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(B2tIssueTypes::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(B2tIssueTypes::IS_TASK, 1);
 			return B2DB::getTable('B2tIssueTypes')->doSelect($crit)->get(B2tIssueTypes::ID);
 		}
@@ -188,11 +188,11 @@
 
 		if ($e_id != 0)
 		{
-			$sql = "select distinct b2ua.uid, b2ut.uname, b2ut.buddyname from bugs2_userassigns b2ua join bugs2_users b2ut on (b2ut.id = b2ua.uid) join bugs2_components b2ct on (b2ct.project = $p_id) join bugs2_scopes b2sc on (b2sc.id = b2ut.scope) where ((b2ua.target = $p_id and b2ua.target_type = 1) or (b2ua.target = $e_id and b2ua.target_type = 2) or (b2ua.target_type = 3)) and b2ut.scope = " . BUGScontext::getScope()->getID() . " and b2sc.enabled = 1 order by b2ut.buddyname asc";
+			$sql = "select distinct b2ua.uid, b2ut.uname, b2ut.buddyname from bugs2_userassigns b2ua join bugs2_users b2ut on (b2ut.id = b2ua.uid) join bugs2_components b2ct on (b2ct.project = $p_id) join bugs2_scopes b2sc on (b2sc.id = b2ut.scope) where ((b2ua.target = $p_id and b2ua.target_type = 1) or (b2ua.target = $e_id and b2ua.target_type = 2) or (b2ua.target_type = 3)) and b2ut.scope = " . TBGContext::getScope()->getID() . " and b2sc.enabled = 1 order by b2ut.buddyname asc";
 		}
 		else
 		{
-			$sql = "select distinct b2ua.uid, b2ut.uname, b2ut.buddyname from bugs2_userassigns b2ua join bugs2_editions b2et on (b2et.project = $p_id) join bugs2_users b2ut on (b2ut.id = b2ua.uid) join bugs2_components b2ct on (b2ct.project = $p_id) join bugs2_scopes b2sc on (b2sc.id = b2ut.scope) where ((b2ua.target = $p_id and b2ua.target_type = 1) or (b2ua.target = b2et.id and b2ua.target_type = 2) or (b2ua.target_type = 3 and b2ct.id = b2ua.target and b2ct.project = $p_id)) and b2ut.scope = " . BUGScontext::getScope()->getID() . " and b2sc.enabled = 1 order by b2ut.buddyname asc";
+			$sql = "select distinct b2ua.uid, b2ut.uname, b2ut.buddyname from bugs2_userassigns b2ua join bugs2_editions b2et on (b2et.project = $p_id) join bugs2_users b2ut on (b2ut.id = b2ua.uid) join bugs2_components b2ct on (b2ct.project = $p_id) join bugs2_scopes b2sc on (b2sc.id = b2ut.scope) where ((b2ua.target = $p_id and b2ua.target_type = 1) or (b2ua.target = b2et.id and b2ua.target_type = 2) or (b2ua.target_type = 3 and b2ct.id = b2ua.target and b2ct.project = $p_id)) and b2ut.scope = " . TBGContext::getScope()->getID() . " and b2sc.enabled = 1 order by b2ut.buddyname asc";
 			$sql_2 = "select distinct b2ua.target, b2ua.target_type from bugs2_userassigns b2ua join bugs2_editions b2et on (b2et.project = $p_id) join bugs2_components b2ct on (b2ct.project = $p_id) where ((b2ua.target = $p_id and b2ua.target_type = 1) or (b2ua.target = b2et.id and b2ua.target_type = 2) or (b2ua.target_type = 3)) and uid = ";
 		}
 
@@ -334,7 +334,7 @@
 		print $text . "</div></div>";
 		if ($fatal)
 		{
-			require_once BUGScontext::getIncludePath() . "/include/footer.inc.php";
+			require_once TBGContext::getIncludePath() . "/include/footer.inc.php";
 		}
 	}
 	
@@ -347,9 +347,9 @@
 	
 	function __($text, $replacements = array())
 	{
-		if (BUGScontext::getI18n() instanceof BUGSi18n)
+		if (TBGContext::getI18n() instanceof TBGI18n)
 		{
-			return BUGScontext::getI18n()->__($text, $replacements);
+			return TBGContext::getI18n()->__($text, $replacements);
 		}
 		else
 		{

@@ -3,7 +3,7 @@
 	/**
 	 * actions for the search module
 	 */
-	class searchActions extends BUGSaction
+	class searchActions extends TBGAction
 	{
 
 		protected $foundissues = array();
@@ -12,42 +12,42 @@
 		/**
 		 * Pre-execute function for search functions
 		 *
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function preExecute(BUGSrequest $request, $action)
+		public function preExecute(TBGRequest $request, $action)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('search'));
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('search'));
 			if ($request->hasParameter('project_key'))
 			{
-				if (($project = BUGSproject::getByKey($request->getParameter('project_key'))) instanceof BUGSproject)
+				if (($project = TBGProject::getByKey($request->getParameter('project_key'))) instanceof TBGProject)
 				{
-					BUGScontext::getResponse()->setPage('project_issues');
-					BUGScontext::setCurrentProject($project);
+					TBGContext::getResponse()->setPage('project_issues');
+					TBGContext::setCurrentProject($project);
 					$this->getResponse()->setProjectMenuStripHidden(false);
 				}
 			}
 			else
 			{
-				BUGScontext::getResponse()->setProjectMenuStripHidden();
+				TBGContext::getResponse()->setProjectMenuStripHidden();
 			}
 		}
 
 		/**
 		 * Performs quicksearch
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */		
-		public function runQuickSearch(BUGSrequest $request)
+		public function runQuickSearch(TBGRequest $request)
 		{
 			$this->searchterm = $request->getParameter('searchfor');
 			$results = array();
 
 			if ($this->searchterm != '')
 			{
-				$issue = BUGSissue::getIssueFromLink($this->searchterm);
-				if ($issue instanceof BUGSissue)
+				$issue = TBGIssue::getIssueFromLink($this->searchterm);
+				if ($issue instanceof TBGIssue)
 				{
-					if (!BUGScontext::isProjectContext() || (BUGScontext::isProjectContext() && $issue->getProjectID() == BUGScontext::getCurrentProject()->getID()))
+					if (!TBGContext::isProjectContext() || (TBGContext::isProjectContext() && $issue->getProjectID() == TBGContext::getCurrentProject()->getID()))
 					{
 						$results[] = $issue;
 					}
@@ -57,15 +57,15 @@
 			$this->results = $results;
 		}
 
-		protected function _getSearchDetailsFromRequest(BUGSrequest $request)
+		protected function _getSearchDetailsFromRequest(TBGRequest $request)
 		{
 			$this->searchterm = $request->getParameter('searchfor', false);
 			$this->ipp = $request->getParameter('issues_per_page', 30);
 			$this->offset = $request->getParameter('offset', 0);
 			$this->filters = $request->getParameter('filters', array());
-			if (BUGScontext::isProjectContext())
+			if (TBGContext::isProjectContext())
 			{
-				$this->filters['project_id'][0] = array('operator' => '=', 'value' => BUGScontext::getCurrentProject()->getID());
+				$this->filters['project_id'][0] = array('operator' => '=', 'value' => TBGContext::getCurrentProject()->getID());
 			}
 			$this->groupby = $request->getParameter('groupby');
 			$this->grouporder = $request->getParameter('grouporder', 'asc');
@@ -77,7 +77,7 @@
 			if ($request->hasParameter('saved_search'))
 			{
 				$savedsearch = B2DB::getTable('B2tSavedSearches')->doSelectById($request->getParameter('saved_search'));
-				if ($savedsearch instanceof B2DBRow && BUGScontext::getUser()->canAccessSavedSearch($savedsearch))
+				if ($savedsearch instanceof B2DBRow && TBGContext::getUser()->canAccessSavedSearch($savedsearch))
 				{
 					$this->issavedsearch = true;
 					$this->savedsearch = $savedsearch;
@@ -91,9 +91,9 @@
 			}
 		}
 
-		protected function doSearch(BUGSrequest $request)
+		protected function doSearch(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 			if ($this->searchterm)
 			{
 				preg_replace_callback('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, 'extractIssues'), $this->searchterm);
@@ -105,39 +105,39 @@
 				{
 					switch ((int) $request->getParameter('predefined_search'))
 					{
-						case BUGScontext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
-							$this->filters['state'] = array('operator' => '=', 'value' => BUGSissue::STATE_OPEN);
+						case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
+							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
 							break;
-						case BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
-							$this->filters['state'] = array('operator' => '=', 'value' => BUGSissue::STATE_CLOSED);
+						case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
+							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_CLOSED);
 							break;
-						case BUGScontext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
+						case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
 							$this->groupby = 'milestone';
 							break;
-						case BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
-							$this->filters['posted_by'] = array('operator' => '=', 'value' => BUGScontext::getUser()->getID());
+						case TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
+							$this->filters['posted_by'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
 							break;
-						case BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
-							$this->filters['state'] = array('operator' => '=', 'value' => BUGSissue::STATE_OPEN);
-							$this->filters['assigned_type'] = array('operator' => '=', 'value' => BUGSidentifiableclass::TYPE_USER);
-							$this->filters['assigned_to'] = array('operator' => '=', 'value' => BUGScontext::getUser()->getID());
+						case TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
+							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
+							$this->filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_USER);
+							$this->filters['assigned_to'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
 							break;
-						case BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
-							$this->filters['state'] = array('operator' => '=', 'value' => BUGSissue::STATE_OPEN);
-							$this->filters['assigned_type'] = array('operator' => '=', 'value' => BUGSidentifiableclass::TYPE_TEAM);
-							foreach (BUGScontext::getUser()->getTeams() as $team_id => $team)
+						case TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
+							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
+							$this->filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_TEAM);
+							foreach (TBGContext::getUser()->getTeams() as $team_id => $team)
 							{
 								$this->filters['assigned_to'][] = array('operator' => '=', 'value' => $team_id);
 							}
 							break;
 					}
 				}
-				list ($this->foundissues, $this->resultcount) = BUGSissue::findIssues($this->filters, $this->ipp, $this->offset, $this->groupby, $this->grouporder);
+				list ($this->foundissues, $this->resultcount) = TBGIssue::findIssues($this->filters, $this->ipp, $this->offset, $this->groupby, $this->grouporder);
 			}
 			elseif (count($this->foundissues) == 1 && $request->getParameter('quicksearch'))
 			{
 				$issue = array_shift($this->foundissues);
-				$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+				$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 			}
 			elseif ($request->hasParameter('sortby'))
 			{
@@ -152,23 +152,23 @@
 			{
 				switch ((int) $request->getParameter('predefined_search'))
 				{
-					case BUGScontext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
-						$this->searchtitle = (BUGScontext::isProjectContext()) ? $i18n->__('Open issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : $i18n->__('All open issues');
+					case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
+						$this->searchtitle = (TBGContext::isProjectContext()) ? $i18n->__('Open issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : $i18n->__('All open issues');
 						break;
-					case BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
-						$this->searchtitle = (BUGScontext::isProjectContext()) ? $i18n->__('Closed issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : $i18n->__('All closed issues');
+					case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
+						$this->searchtitle = (TBGContext::isProjectContext()) ? $i18n->__('Closed issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : $i18n->__('All closed issues');
 						break;
-					case BUGScontext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
-						$this->searchtitle = $i18n->__('Milestone todo-list for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName()));
+					case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
+						$this->searchtitle = $i18n->__('Milestone todo-list for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName()));
 						$this->templatename = 'results_todo';
 						break;
-					case BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
+					case TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
 						$this->searchtitle = $i18n->__('Open issues assigned to me');
 						break;
-					case BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
+					case TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
 						$this->searchtitle = $i18n->__('Open issues assigned to my teams');
 						break;
-					case BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
+					case TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
 						$this->searchtitle = $i18n->__('Issues reported by me');
 						break;
 				}
@@ -179,11 +179,11 @@
 		protected function getTemplates($display_only = true)
 		{
 			$templates = array();
-			$templates['results_normal'] = BUGScontext::getI18n()->__('Standard search results');
-			$templates['results_todo'] = BUGScontext::getI18n()->__('Todo-list with progress indicator');
+			$templates['results_normal'] = TBGContext::getI18n()->__('Standard search results');
+			$templates['results_todo'] = TBGContext::getI18n()->__('Todo-list with progress indicator');
 			if (!$display_only)
 			{
-				$templates['results_rss'] = BUGScontext::getI18n()->__('RSS feed');
+				$templates['results_rss'] = TBGContext::getI18n()->__('RSS feed');
 			}
 			return $templates;
 		}
@@ -191,57 +191,57 @@
 		/**
 		 * Performs the "find issues" action
 		 *
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runFindIssues(BUGSrequest $request)
+		public function runFindIssues(TBGRequest $request)
 		{
 			$this->show_results = ($request->hasParameter('filters') || $request->getParameter('search', false)) ? true : false;
 			$this->_getSearchDetailsFromRequest($request);
 
-			if ($request->isMethod(BUGSrequest::POST))
+			if ($request->isMethod(TBGRequest::POST))
 			{
 				if ($request->getParameter('saved_search_name') != '')
 				{
-					$project_id = (BUGScontext::isProjectContext()) ? BUGScontext::getCurrentProject()->getID() : 0;
+					$project_id = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0;
 					B2DB::getTable('B2tSavedSearches')->saveSearch($request->getParameter('saved_search_name'), $request->getParameter('saved_search_description'), $request->getParameter('saved_search_public'), $this->filters, $this->groupby, $this->grouporder, $this->ipp, $this->templatename, $project_id, $request->getParameter('saved_search_id'));
 					if ($request->getParameter('saved_search_id'))
 					{
-						BUGScontext::setMessage('search_message', BUGScontext::getI18n()->__('The saved search was updated'));
+						TBGContext::setMessage('search_message', TBGContext::getI18n()->__('The saved search was updated'));
 					}
 					else
 					{
-						BUGScontext::setMessage('search_message', BUGScontext::getI18n()->__('The saved search has been created'));
+						TBGContext::setMessage('search_message', TBGContext::getI18n()->__('The saved search has been created'));
 					}
 					$params = array();
 				}
 				else
 				{
-					BUGScontext::setMessage('search_error', BUGScontext::getI18n()->__('You have to specify a name for the saved search'));
+					TBGContext::setMessage('search_error', TBGContext::getI18n()->__('You have to specify a name for the saved search'));
 					$params = array('filters' => $this->filters, 'groupby' => $this->groupby, 'grouporder' => $this->grouporder, 'templatename' => $this->templatename, 'saved_search' => $request->getParameter('saved_search_id'), 'issues_per_page' => $this->ipp);
 				}
-				if (BUGScontext::isProjectContext())
+				if (TBGContext::isProjectContext())
 				{
 					$route = 'project_issues';
-					$params['project_key'] = BUGScontext::getCurrentProject()->getKey();
+					$params['project_key'] = TBGContext::getCurrentProject()->getKey();
 				}
 				else
 				{
 					$route = 'search';
 				}
 				//var_dump($params);die();
-				$this->forward(BUGScontext::getRouting()->generate($route, $params));
+				$this->forward(TBGContext::getRouting()->generate($route, $params));
 			}
 			elseif ($this->show_results)
 			{
 				$this->doSearch($request);
 				$this->issues = $this->foundissues;
 			}
-			$this->search_error = BUGScontext::getMessageAndClear('search_error');
-			$this->search_message = BUGScontext::getMessageAndClear('search_message');
+			$this->search_error = TBGContext::getMessageAndClear('search_error');
+			$this->search_message = TBGContext::getMessageAndClear('search_message');
 			$this->appliedfilters = $this->filters;
 			$this->templates = $this->getTemplates();
 			
-			$this->savedsearches = B2DB::getTable('B2tSavedSearches')->getAllSavedSearchesByUserIDAndPossiblyProjectID(BUGScontext::getUser()->getID(), (BUGScontext::isProjectContext()) ? BUGScontext::getCurrentProject()->getID() : 0);
+			$this->savedsearches = B2DB::getTable('B2tSavedSearches')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID(), (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0);
 			
 			if ($request->getParameter('format') == 'rss')
 			{
@@ -249,7 +249,7 @@
 			}
 		}
 
-		public function runFindIssuesPaginated(BUGSrequest $request)
+		public function runFindIssuesPaginated(TBGRequest $request)
 		{
 			$this->_getSearchDetailsFromRequest($request);
 
@@ -262,33 +262,33 @@
 			$this->templates = $this->getTemplates();
 		}
 
-		public function runAddFilter(BUGSrequest $request)
+		public function runAddFilter(TBGRequest $request)
 		{
-			if (in_array($request->getParameter('filter_name'), B2tIssues::getValidSearchFilters()) || BUGScustomdatatype::doesKeyExist($request->getParameter('filter_name')))
+			if (in_array($request->getParameter('filter_name'), B2tIssues::getValidSearchFilters()) || TBGCustomDatatype::doesKeyExist($request->getParameter('filter_name')))
 			{
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('search/filter', array('filter' => $request->getParameter('filter_name'), 'key' => $request->getParameter('key', 0)))));
 			}
 			else
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('This is not a valid search field')));
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This is not a valid search field')));
 			}
 		}
 
 		protected function extractIssues($matches)
 		{
-			$issue = BUGSissue::getIssueFromLink($matches[0]);
-			if ($issue instanceof BUGSissue)
+			$issue = TBGIssue::getIssueFromLink($matches[0]);
+			if ($issue instanceof TBGIssue)
 			{
-				if (!BUGScontext::isProjectContext() || (BUGScontext::isProjectContext() && $issue->getProjectID() == BUGScontext::getCurrentProject()->getID()))
+				if (!TBGContext::isProjectContext() || (TBGContext::isProjectContext() && $issue->getProjectID() == TBGContext::getCurrentProject()->getID()))
 				{
 					$this->foundissues[$issue->getID()] = $issue;
 				}
 			}
 		}
 
-		static function resultGrouping(BUGSissue $issue, $groupby, $cc, $prevgroup_id)
+		static function resultGrouping(TBGIssue $issue, $groupby, $cc, $prevgroup_id)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 			$showtablestart = false;
 			$showheader = false;
 			$groupby_id = 0;
@@ -299,7 +299,7 @@
 				switch ($groupby)
 				{
 					case 'category':
-						if ($issue->getCategory() instanceof BUGScategory)
+						if ($issue->getCategory() instanceof TBGCategory)
 						{
 							$groupby_id = $issue->getCategory()->getID();
 							$groupby_description = $issue->getCategory()->getName();
@@ -311,7 +311,7 @@
 						}
 						break;
 					case 'status':
-						if ($issue->getStatus() instanceof BUGSstatus)
+						if ($issue->getStatus() instanceof TBGStatus)
 						{
 							$groupby_id = $issue->getStatus()->getID();
 							$groupby_description = $issue->getStatus()->getName();
@@ -323,7 +323,7 @@
 						}
 						break;
 					case 'severity':
-						if ($issue->getSeverity() instanceof BUGSseverity)
+						if ($issue->getSeverity() instanceof TBGSeverity)
 						{
 							$groupby_id = $issue->getSeverity()->getID();
 							$groupby_description = $issue->getSeverity()->getName();
@@ -335,7 +335,7 @@
 						}
 						break;
 					case 'resolution':
-						if ($issue->getResolution() instanceof BUGSresolution)
+						if ($issue->getResolution() instanceof TBGResolution)
 						{
 							$groupby_id = $issue->getResolution()->getID();
 							$groupby_description = $issue->getResolution()->getName();
@@ -347,7 +347,7 @@
 						}
 						break;
 					case 'priority':
-						if ($issue->getPriority() instanceof BUGSpriority)
+						if ($issue->getPriority() instanceof TBGPriority)
 						{
 							$groupby_id = $issue->getPriority()->getID();
 							$groupby_description = $issue->getPriority()->getName();
@@ -359,7 +359,7 @@
 						}
 						break;
 					case 'issuetype':
-						if ($issue->getIssueType() instanceof BUGSissuetype)
+						if ($issue->getIssueType() instanceof TBGIssuetype)
 						{
 							$groupby_id = $issue->getIssueType()->getID();
 							$groupby_description = $issue->getIssueType()->getName();
@@ -371,7 +371,7 @@
 						}
 						break;
 					case 'milestone':
-						if ($issue->getMilestone() instanceof BUGSmilestone)
+						if ($issue->getMilestone() instanceof TBGMilestone)
 						{
 							$groupby_id = $issue->getMilestone()->getID();
 							$groupby_description = $issue->getMilestone()->getName();
@@ -383,7 +383,7 @@
 						}
 						break;
 					case 'assignee':
-						if ($issue->getAssignee() instanceof BUGSidentifiableclass)
+						if ($issue->getAssignee() instanceof TBGIdentifiableClass)
 						{
 							$groupby_id = $issue->getAssigneeID();
 							$groupby_description = $issue->getAssignee()->getName();
@@ -397,12 +397,12 @@
 					case 'state':
 						if ($issue->isClosed())
 						{
-							$groupby_id = BUGSissue::STATE_CLOSED;
+							$groupby_id = TBGIssue::STATE_CLOSED;
 							$groupby_description = $i18n->__('Closed');
 						}
 						else
 						{
-							$groupby_id = BUGSissue::STATE_OPEN;
+							$groupby_id = TBGIssue::STATE_OPEN;
 							$groupby_description = $i18n->__('Open');
 						}
 						break;

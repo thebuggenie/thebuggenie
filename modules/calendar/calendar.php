@@ -6,12 +6,12 @@
 	require THEBUGGENIE_PATH . 'include/checkcookie.inc.php';
 	require THEBUGGENIE_PATH . 'include/b2_engine.inc.php';
 	
-	require BUGScontext::getIncludePath() . "include/ui_functions.inc.php";
+	require TBGContext::getIncludePath() . "include/ui_functions.inc.php";
 	
-	require BUGScontext::getIncludePath() . "include/header.inc.php";
-	require BUGScontext::getIncludePath() . "include/menu.inc.php";
+	require TBGContext::getIncludePath() . "include/header.inc.php";
+	require TBGContext::getIncludePath() . "include/menu.inc.php";
 	
-	BUGScontext::getModule('calendar')->activate();
+	TBGContext::getModule('calendar')->activate();
 	
 	$month = date('m');
 	$year = date('Y');
@@ -24,7 +24,7 @@
 	<div id="calendar_mini_container">
 	<?php 
 
-	echo BUGScontext::getModule('calendar')->html_calendar($year, $month, 'mini'); 
+	echo TBGContext::getModule('calendar')->html_calendar($year, $month, 'mini'); 
 	
 	?>
 	</div>
@@ -33,7 +33,7 @@
 	<table cellpadding=0 cellspacing=0 style="width: 100%;" id="today_list">
 	<?php
 
-	$events = BUGScontext::getModule('calendar')->getEvents(mktime(0, 0, 0), mktime(23, 59, 59));
+	$events = TBGContext::getModule('calendar')->getEvents(mktime(0, 0, 0), mktime(23, 59, 59));
 	foreach ($events as $anevent)
 	{
 		?>
@@ -100,25 +100,25 @@
 		</table>
 		<table cellpadding=0 cellspacing=0>
 			<tr>
-				<td><a href="javascript:void(0);" class="image" onclick="window.open('<?php echo BUGScontext::getTBGPath(); ?>modules/calendar/show_event.php','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');"><?php echo image_tag('calendar/newtodo.png'); ?></a></td>
-				<td class="text"><a href="javascript:void(0);" onclick="window.open('<?php echo BUGScontext::getTBGPath(); ?>modules/calendar/show_event.php','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');"><?php echo __('New calendar entry'); ?></a></td>
+				<td><a href="javascript:void(0);" class="image" onclick="window.open('<?php echo TBGContext::getTBGPath(); ?>modules/calendar/show_event.php','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');"><?php echo image_tag('calendar/newtodo.png'); ?></a></td>
+				<td class="text"><a href="javascript:void(0);" onclick="window.open('<?php echo TBGContext::getTBGPath(); ?>modules/calendar/show_event.php','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');"><?php echo __('New calendar entry'); ?></a></td>
 			</tr>
 		</table>
 	</div>
 	<div id="calendar_full_container">
 	<?php 
 	
-	switch (BUGScontext::getModule('calendar')->getSetting('calendarstartup', BUGScontext::getUser()->getUID()))
+	switch (TBGContext::getModule('calendar')->getSetting('calendarstartup', TBGContext::getUser()->getUID()))
 	{
 		case 'week':
-			echo BUGScontext::getModule('calendar')->html_week(date('d'), $month, $year);
+			echo TBGContext::getModule('calendar')->html_week(date('d'), $month, $year);
 			break;
 		case 'day':
-			echo BUGScontext::getModule('calendar')->html_day(date('d'), $month, $year);
+			echo TBGContext::getModule('calendar')->html_day(date('d'), $month, $year);
 			break;
 		case 'month':
 		default:
-			echo BUGScontext::getModule('calendar')->html_calendar($year, $month, 'full');
+			echo TBGContext::getModule('calendar')->html_calendar($year, $month, 'full');
 			break;
 	}
 	
@@ -131,6 +131,6 @@
 
 <?php
 
-	require_once BUGScontext::getIncludePath() . "include/footer.inc.php";
+	require_once TBGContext::getIncludePath() . "include/footer.inc.php";
 
 ?>

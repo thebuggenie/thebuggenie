@@ -2,50 +2,50 @@
 
 	if (!defined('THEBUGGENIE_PATH')) exit();
 	
-	if (BUGScontext::getRequest()->getParameter('searchfor') || BUGScontext::getRequest()->getParameter('adduser'))
+	if (TBGContext::getRequest()->getParameter('searchfor') || TBGContext::getRequest()->getParameter('adduser'))
 	{
-		if (BUGScontext::getRequest()->getParameter('validate') && is_numeric(BUGScontext::getRequest()->getParameter('uid')))
+		if (TBGContext::getRequest()->getParameter('validate') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(B2tUsers::ACTIVATED, 1);
-			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, BUGScontext::getRequest()->getParameter('uid'));
+			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, TBGContext::getRequest()->getParameter('uid'));
 		}
-		if (BUGScontext::getRequest()->getParameter('unvalidate') && is_numeric(BUGScontext::getRequest()->getParameter('uid')))
+		if (TBGContext::getRequest()->getParameter('unvalidate') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(B2tUsers::ACTIVATED, 0);
-			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, BUGScontext::getRequest()->getParameter('uid'));
+			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, TBGContext::getRequest()->getParameter('uid'));
 		}
 
-		if (BUGScontext::getRequest()->getParameter('suspend') && is_numeric(BUGScontext::getRequest()->getParameter('uid')))
+		if (TBGContext::getRequest()->getParameter('suspend') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(B2tUsers::ENABLED, 0);
-			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, BUGScontext::getRequest()->getParameter('uid'));
+			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, TBGContext::getRequest()->getParameter('uid'));
 		}
-		if (BUGScontext::getRequest()->getParameter('enable') && is_numeric(BUGScontext::getRequest()->getParameter('uid')))
+		if (TBGContext::getRequest()->getParameter('enable') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(B2tUsers::ENABLED, 1);
-			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, BUGScontext::getRequest()->getParameter('uid'));
+			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, TBGContext::getRequest()->getParameter('uid'));
 		}
 
-		if (BUGScontext::getRequest()->getParameter('addteam') != "" && is_numeric(BUGScontext::getRequest()->getParameter('uid')) && is_numeric(BUGScontext::getRequest()->getParameter('addteam')))
+		if (TBGContext::getRequest()->getParameter('addteam') != "" && is_numeric(TBGContext::getRequest()->getParameter('uid')) && is_numeric(TBGContext::getRequest()->getParameter('addteam')))
 		{
-			$addtoTeam = BUGSfactory::teamLab(BUGScontext::getRequest()->getParameter('addteam'));
-			$addtoTeam->addMember(BUGScontext::getRequest()->getParameter('uid'));
+			$addtoTeam = TBGFactory::teamLab(TBGContext::getRequest()->getParameter('addteam'));
+			$addtoTeam->addMember(TBGContext::getRequest()->getParameter('uid'));
 		}
-		if (BUGScontext::getRequest()->getParameter('removeteam') != "" && is_numeric(BUGScontext::getRequest()->getParameter('uid')) && is_numeric(BUGScontext::getRequest()->getParameter('removeteam')))
+		if (TBGContext::getRequest()->getParameter('removeteam') != "" && is_numeric(TBGContext::getRequest()->getParameter('uid')) && is_numeric(TBGContext::getRequest()->getParameter('removeteam')))
 		{
-			$addtoTeam = BUGSfactory::teamLab(BUGScontext::getRequest()->getParameter('removeteam'));
-			$addtoTeam->removeMember(BUGScontext::getRequest()->getParameter('uid'));
+			$addtoTeam = TBGFactory::teamLab(TBGContext::getRequest()->getParameter('removeteam'));
+			$addtoTeam->removeMember(TBGContext::getRequest()->getParameter('uid'));
 		}
 
-		if (BUGScontext::getRequest()->getParameter('delete') && is_numeric(BUGScontext::getRequest()->getParameter('uid')))
+		if (TBGContext::getRequest()->getParameter('delete') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
-			$uid = BUGScontext::getRequest()->getParameter('uid');
+			$uid = TBGContext::getRequest()->getParameter('uid');
 			$row = B2DB::getTable('B2tUsers')->doSelectById($uid);
-			if (BUGSsettings::get('defaultuname') == $row->get(B2tUsers::UNAME))
+			if (TBGSettings::get('defaultuname') == $row->get(B2tUsers::UNAME))
 			{
 				$theMessage = __('This is the default user account. You cannot delete this');
 			}
@@ -56,24 +56,24 @@
 				B2DB::getTable('B2tUsers')->doUpdateById($crit, $uid);
 			}
 		}
-		if (BUGScontext::getRequest()->getParameter('restore') && is_numeric(BUGScontext::getRequest()->getParameter('uid')))
+		if (TBGContext::getRequest()->getParameter('restore') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(B2tUsers::ENABLED, 0);
 			$crit->addUpdate(B2tUsers::DELETED, 0);
-			$res = B2DB::getTable('B2tUsers')->doUpdateById(BUGScontext::getRequest()->getParameter('uid'));
+			$res = B2DB::getTable('B2tUsers')->doUpdateById(TBGContext::getRequest()->getParameter('uid'));
 		}
 
-		if (BUGScontext::getRequest()->getParameter('purge') && is_numeric(BUGScontext::getRequest()->getParameter('uid')))
+		if (TBGContext::getRequest()->getParameter('purge') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
-			B2DB::getTable('B2tUsers')->doDeleteById(BUGScontext::getRequest()->getParameter('uid'));
-			$uid = BUGScontext::getRequest()->getParameter('uid');
+			B2DB::getTable('B2tUsers')->doDeleteById(TBGContext::getRequest()->getParameter('uid'));
+			$uid = TBGContext::getRequest()->getParameter('uid');
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tIssues::POSTED_BY, BUGScontext::getRequest()->getParameter('uid'));
+			$crit->addWhere(B2tIssues::POSTED_BY, TBGContext::getRequest()->getParameter('uid'));
 			B2DB::getTable('B2tIssues')->doDelete($crit);
 			
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tComments::POSTED_BY, BUGScontext::getRequest()->getParameter('uid'));
+			$crit->addWhere(B2tComments::POSTED_BY, TBGContext::getRequest()->getParameter('uid'));
 			B2DB::getTable('B2tComments')->doDelete($crit);
 
 			$crit = new B2DBCriteria();
@@ -90,17 +90,17 @@
 			B2DB::getTable('B2tPermissions')->doDelete($crit);				
 		}
 
-		if (BUGScontext::getRequest()->getParameter('pwd_1') != "" && is_numeric(BUGScontext::getRequest()->getParameter('uid')))
+		if (TBGContext::getRequest()->getParameter('pwd_1') != "" && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
-			if (BUGScontext::getRequest()->getParameter('pwd_1') != "" && BUGScontext::getRequest()->getParameter('pwd_2') == BUGScontext::getRequest()->getParameter('pwd_1'))
+			if (TBGContext::getRequest()->getParameter('pwd_1') != "" && TBGContext::getRequest()->getParameter('pwd_2') == TBGContext::getRequest()->getParameter('pwd_1'))
 			{
-				$newPass = BUGScontext::getRequest()->getParameter('pwd_1', null, false);
+				$newPass = TBGContext::getRequest()->getParameter('pwd_1', null, false);
 				$md5newPass = md5($newPass);
-				$theUser = BUGSfactory::userLab(BUGScontext::getRequest()->getParameter('uid'));
+				$theUser = TBGFactory::userLab(TBGContext::getRequest()->getParameter('uid'));
 				$theUser->changePassword($newPass);
-				if (BUGSsettings::get('defaultuname') == $theUser->getName())
+				if (TBGSettings::get('defaultuname') == $theUser->getName())
 				{
-					BUGSsettings::saveSetting("defaultpwd", $md5newPass);
+					TBGSettings::saveSetting("defaultpwd", $md5newPass);
 				}
 			}
 			else
@@ -109,23 +109,23 @@
 			}
 		}
 
-		if (BUGScontext::getRequest()->getParameter('randompassword') && is_numeric(BUGScontext::getRequest()->getParameter('uid')))
+		if (TBGContext::getRequest()->getParameter('randompassword') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
 			$newPass = bugs_createPassword();
 			$md5newPass = md5($newPass);
-			$theUser = BUGSfactory::userLab(BUGScontext::getRequest()->getParameter('uid'));
+			$theUser = TBGFactory::userLab(TBGContext::getRequest()->getParameter('uid'));
 			$theUser->changePassword($newPass);
 		}
 
-		if (BUGScontext::getRequest()->getParameter('saveedituname') && is_numeric(BUGScontext::getRequest()->getParameter('uid')))
+		if (TBGContext::getRequest()->getParameter('saveedituname') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
-			$newUname = BUGScontext::getRequest()->getParameter('uname');
-			$newEmail = BUGScontext::getRequest()->getParameter('email');
-			$newRealname = BUGScontext::getRequest()->getParameter('realname');
-			$newBuddyname = BUGScontext::getRequest()->getParameter('buddyname');
-			$newGroup = (int) BUGScontext::getRequest()->getParameter('group');
+			$newUname = TBGContext::getRequest()->getParameter('uname');
+			$newEmail = TBGContext::getRequest()->getParameter('email');
+			$newRealname = TBGContext::getRequest()->getParameter('realname');
+			$newBuddyname = TBGContext::getRequest()->getParameter('buddyname');
+			$newGroup = (int) TBGContext::getRequest()->getParameter('group');
 			
-			$theUser = BUGSfactory::userLab((int) BUGScontext::getRequest()->getParameter('uid'));
+			$theUser = TBGFactory::userLab((int) TBGContext::getRequest()->getParameter('uid'));
 			$theUser->updateUserDetails($newRealname, $newBuddyname, $theUser->getHomepage(), $newEmail, $newUname);
 			
 			if ($theUser->getGroup()->getID() != $newGroup)
@@ -135,15 +135,15 @@
 		}
 
 		$isSearching = true;
-		$searchTerm = BUGScontext::getRequest()->getParameter('searchfor');
+		$searchTerm = TBGContext::getRequest()->getParameter('searchfor');
 
-		if (BUGScontext::getRequest()->getParameter('adduser'))
+		if (TBGContext::getRequest()->getParameter('adduser'))
 		{
-			$newUname = BUGScontext::getRequest()->getParameter('uname');
-			$newEmail = BUGScontext::getRequest()->getParameter('email');
-			$newRealname = BUGScontext::getRequest()->getParameter('realname');
-			$newBuddyname = BUGScontext::getRequest()->getParameter('buddyname');
-			$newGroup = (int) BUGScontext::getRequest()->getParameter('group');
+			$newUname = TBGContext::getRequest()->getParameter('uname');
+			$newEmail = TBGContext::getRequest()->getParameter('email');
+			$newRealname = TBGContext::getRequest()->getParameter('realname');
+			$newBuddyname = TBGContext::getRequest()->getParameter('buddyname');
+			$newGroup = (int) TBGContext::getRequest()->getParameter('group');
 
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tUsers::UNAME, $newUname);
@@ -157,12 +157,12 @@
 			{
 				$newPass = bugs_createPassword();
 				$md5newPass = md5($newPass);
-				$theUser = BUGSuser::createNew($newUname, $newRealname, $newBuddyname, BUGScontext::getScope()->getID());
+				$theUser = TBGUser::createNew($newUname, $newRealname, $newBuddyname, TBGContext::getScope()->getID());
 				$theUser->setEmail($newEmail);
 				$theUser->setGroup($newGroup);
 				$theUser->setEnabled(true);
 				$theUser->setValidated(true);
-				BUGScontext::getRequest()->setParameter('uid', $theUser->getUID());
+				TBGContext::getRequest()->setParameter('uid', $theUser->getUID());
 				$searchTerm = $newUname;
 			}
 		}

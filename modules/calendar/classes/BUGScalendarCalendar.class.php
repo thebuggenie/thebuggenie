@@ -1,6 +1,6 @@
 <?php
 
-	class BUGScalendarCalendar extends BUGSidentifiableclass implements BUGSidentifiable
+	class BUGScalendarCalendar extends TBGIdentifiableClass implements TBGIdentifiable
 	{
 		protected $_user = null;
 		protected $_exclusive = false;
@@ -19,7 +19,7 @@
 			$this->_itemid = $id->get(B2tCalendars::ID);
 			$this->_name = $id->get(B2tCalendars::NAME);
 			$this->_itemtype = 0;
-			$this->_user = BUGSfactory::userLab($id->get(B2tCalendars::UID));
+			$this->_user = TBGFactory::userLab($id->get(B2tCalendars::UID));
 			$this->_exclusive = ($id->get(B2tCalendars::EXCLUSIVE) == 1) ? true : false;
 		}
 		

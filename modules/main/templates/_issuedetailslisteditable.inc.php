@@ -13,13 +13,13 @@
 				<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype')); ?>', 'issuetype');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 				<?php echo image_tag('spinning_20.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'issuetype_undo_spinning')); ?>
 				<a href="javascript:void(0);" onclick="$('issuetype_change').toggle();" title="<?php echo __('Click to change issue type'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
-				<table cellpadding=0 cellspacing=0 id="issuetype_table"<?php if (!$issue->getIssueType() instanceof BUGSdatatype): ?> style="display: none;"<?php endif; ?>>
+				<table cellpadding=0 cellspacing=0 id="issuetype_table"<?php if (!$issue->getIssueType() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>>
 					<tr>
 						<td style="width: 24px; padding: 2px 0 0 0;"><?php echo image_tag($issue->getIssueType()->getIcon() . '_small.png', array('id' => 'issuetype_image')); ?></td>
 						<td style="padding: 0 0 0 5px;" id="issuetype_content"><?php echo $issue->getIssueType()->getName(); ?></td>
 					</tr>
 				</table>
-				<div class="faded_medium" id="no_issuetype"<?php if ($issue->getIssueType() instanceof BUGSdatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Unknown issue type'); ?></div>
+				<div class="faded_medium" id="no_issuetype"<?php if ($issue->getIssueType() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Unknown issue type'); ?></div>
 			</div>
 		</div>
 		<div class="rounded_box white" id="issuetype_change" style="display: none; clear: both; width: 324px; margin: 5px 0 5px 0;">
@@ -47,13 +47,13 @@
 				<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status')); ?>', 'status');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 				<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'status_undo_spinning')); ?>
 				<a href="javascript:void(0);" onclick="$('status_change').toggle();" title="<?php echo __('Click to change status'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
-				<table style="table-layout: auto; width: 250px;<?php if (!$issue->getStatus() instanceof BUGSdatatype): ?> display: none;<?php endif; ?>" cellpadding=0 cellspacing=0 id="status_table">
+				<table style="table-layout: auto; width: 250px;<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> display: none;<?php endif; ?>" cellpadding=0 cellspacing=0 id="status_table">
 					<tr>
-						<td style="width: 24px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof BUGSdatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 2px;" id="status_color">&nbsp;</div></td>
-						<td style="padding-left: 5px;" id="status_content" class="<?php if ($issue->isStatusChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isStatusMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php if ($issue->getStatus() instanceof BUGSdatatype) echo $issue->getStatus()->getName(); ?></td>
+						<td style="width: 24px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 2px;" id="status_color">&nbsp;</div></td>
+						<td style="padding-left: 5px;" id="status_content" class="<?php if ($issue->isStatusChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isStatusMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php if ($issue->getStatus() instanceof TBGDatatype) echo $issue->getStatus()->getName(); ?></td>
 					</tr>
 				</table>
-				<span class="faded_medium" id="no_status"<?php if ($issue->getStatus() instanceof BUGSdatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Status not determined'); ?></span>
+				<span class="faded_medium" id="no_status"<?php if ($issue->getStatus() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Status not determined'); ?></span>
 			</div>
 		</div>
 		<div class="rounded_box white" id="status_change" style="display: none; clear: both; width: 324px; margin: 5px 0 5px 0;">
@@ -87,9 +87,9 @@
 				<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'assigned_to_undo_spinning')); ?>
 				<a href="javascript:void(0);" onclick="$('assigned_to_change').toggle();" title="<?php echo __('Click to change assignee'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
 				<table style="width: 170px; display: <?php if ($issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="assigned_to_name">
-					<?php if ($issue->getAssigneeType() == BUGSidentifiableclass::TYPE_USER): ?>
+					<?php if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
 						<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
-					<?php elseif ($issue->getAssigneeType() == BUGSidentifiableclass::TYPE_TEAM): ?>
+					<?php elseif ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM): ?>
 						<?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
 					<?php endif; ?>
 				</table>
@@ -176,9 +176,9 @@
 				<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'owned_by_undo_spinning')); ?>
 				<a href="javascript:void(0);" onclick="$('owned_by_change').toggle();" title="<?php echo __('Click to change owner'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
 				<table style="width: 170px; display: <?php if ($issue->isOwned()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="owned_by_name">
-					<?php if ($issue->getOwnerType() == BUGSidentifiableclass::TYPE_USER): ?>
+					<?php if ($issue->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
 						<?php echo include_component('main/userdropdown', array('user' => $issue->getOwner())); ?>
-					<?php elseif ($issue->getOwnerType() == BUGSidentifiableclass::TYPE_TEAM): ?>
+					<?php elseif ($issue->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
 						<?php echo include_component('main/teamdropdown', array('team' => $issue->getOwner())); ?>
 					<?php endif; ?>
 				</table>
@@ -206,7 +206,7 @@
 		<div class="rounded_box white" id="estimated_time_change" style="clear: both; display: none; width: 324px; margin: 5px 0 5px 0;">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="padding: 5px;">
-				<form id="estimated_time_form" method="post" accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="" onsubmit="setTimeField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time')); ?>', 'estimated_time');return false;">
+				<form id="estimated_time_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="setTimeField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time')); ?>', 'estimated_time');return false;">
 					<div class="dropdown_header"><?php echo __('Estimate this issue'); ?></div>
 					<div class="dropdown_content">
 						<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time', 'value' => 0)); ?>', 'estimated_time');"><?php echo __('Clear current estimate'); ?></a><br>
@@ -248,7 +248,7 @@
 		<div class="rounded_box white" id="spent_time_change" style="clear: both; display: none; width: 324px; margin: 5px 0 5px 0;">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="padding: 5px;">
-				<form id="spent_time_form" method="post" accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="" onsubmit="setTimeField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time')); ?>', 'spent_time');return false;">
+				<form id="spent_time_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="setTimeField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time')); ?>', 'spent_time');return false;">
 					<div class="dropdown_header"><?php echo __('Set time spent on this issue'); ?></div>
 					<div class="dropdown_content">
 						<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time', 'value' => 0)); ?>', 'spent_time');"><?php echo __('Clear time spent on this issue'); ?></a><br>
@@ -305,7 +305,7 @@
 						<?php echo $info['select']; ?>:<br>
 						<ul class="choices">
 							<?php foreach ($info['choices'] as $choice): ?>
-								<?php if ($choice instanceof BUGSdatatypebase && !$choice->canUserSet($bugs_user)) continue; ?>
+								<?php if ($choice instanceof TBGDatatypeBase && !$choice->canUserSet($bugs_user)) continue; ?>
 								<li>
 									<?php echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
 								</li>
@@ -395,7 +395,7 @@
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 5px; text-align: left; font-size: 13px;">
 			<div class="viewissue_info_header"><?php echo __('Close this issue'); ?></div>
-			<form action="<?php echo make_url('closeissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>">
+			<form action="<?php echo make_url('closeissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 				<div class="viewissue_info_content">
 					<?php echo __('Do you want to change some of these values as well?'); ?>
 					<input type="hidden" name="issue_action" value="close">

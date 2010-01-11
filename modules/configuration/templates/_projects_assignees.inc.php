@@ -1,6 +1,6 @@
 <?php 
 
-	BUGScontext::loadLibrary('ui'); 
+	TBGContext::loadLibrary('ui'); 
 	$assignees = $project->getAssignees(); 
 
 ?>
@@ -20,7 +20,7 @@
 					<?php if (array_key_exists('projects', $assigns)): ?>
 						<?php foreach ($assigns['projects'] as $p_id => $types): ?>
 							<?php $types_array = array(); ?>
-							<?php $theProject = BUGSfactory::projectLab($p_id); ?>
+							<?php $theProject = TBGFactory::projectLab($p_id); ?>
 							<b><?php echo $theProject->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
 								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
@@ -31,7 +31,7 @@
 					<?php if (array_key_exists('editions', $assigns)): ?>
 						<?php foreach ($assigns['editions'] as $e_id => $types): ?>
 							<?php $types_array = array(); ?>
-							<?php $theEdition = BUGSfactory::editionLab($e_id); ?>
+							<?php $theEdition = TBGFactory::editionLab($e_id); ?>
 							<b><?php echo $theEdition->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
 								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
@@ -42,7 +42,7 @@
 					<?php if (array_key_exists('components', $assigns)): ?>
 						<?php foreach ($assigns['components'] as $cp_id => $types): ?>
 							<?php $types_array = array(); ?>
-							<?php $theComponent = BUGSfactory::componentLab($cp_id); ?>
+							<?php $theComponent = TBGFactory::componentLab($cp_id); ?>
 							<b><?php echo $theComponent->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
 								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
@@ -72,7 +72,7 @@
 					<?php if (array_key_exists('projects', $assigns)): ?>
 						<?php foreach ($assigns['projects'] as $p_id => $types): ?>
 							<?php $types_array = array(); ?>
-							<?php $theProject = BUGSfactory::projectLab($p_id); ?>
+							<?php $theProject = TBGFactory::projectLab($p_id); ?>
 							<b><?php echo $theProject->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
 								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
@@ -83,7 +83,7 @@
 					<?php if (array_key_exists('editions', $assigns)): ?>
 						<?php foreach ($assigns['editions'] as $e_id => $types): ?>
 							<?php $types_array = array(); ?>
-							<?php $theEdition = BUGSfactory::editionLab($e_id); ?>
+							<?php $theEdition = TBGFactory::editionLab($e_id); ?>
 							<b><?php echo $theEdition->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
 								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
@@ -94,7 +94,7 @@
 					<?php if (array_key_exists('components', $assigns)): ?>
 						<?php foreach ($assigns['components'] as $cp_id => $types): ?>
 							<?php $types_array = array(); ?>
-							<?php $theComponent = BUGSfactory::componentLab($cp_id); ?>
+							<?php $theComponent = TBGFactory::componentLab($cp_id); ?>
 							<b><?php echo $theComponent->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
 								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
@@ -123,7 +123,7 @@
 					<?php if (array_key_exists('projects', $assigns)): ?>
 						<?php foreach ($assigns['projects'] as $p_id => $types): ?>
 							<?php $types_array = array(); ?>
-							<?php $theProject = BUGSfactory::projectLab($p_id); ?>
+							<?php $theProject = TBGFactory::projectLab($p_id); ?>
 							<b><?php echo $theProject->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
 								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
@@ -134,7 +134,7 @@
 					<?php if (array_key_exists('editions', $assigns)): ?>
 						<?php foreach ($assigns['editions'] as $e_id => $types): ?>
 							<?php $types_array = array(); ?>
-							<?php $theEdition = BUGSfactory::editionLab($e_id); ?>
+							<?php $theEdition = TBGFactory::editionLab($e_id); ?>
 							<b><?php echo $theEdition->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
 								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
@@ -145,7 +145,7 @@
 					<?php if (array_key_exists('components', $assigns)): ?>
 						<?php foreach ($assigns['components'] as $cp_id => $types): ?>
 							<?php $types_array = array(); ?>
-							<?php $theComponent = BUGSfactory::componentLab($cp_id); ?>
+							<?php $theComponent = TBGFactory::componentLab($cp_id); ?>
 							<b><?php echo $theComponent->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
 								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>

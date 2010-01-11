@@ -3,7 +3,7 @@
 	/**
 	 * Project action components
 	 */
-	class projectActionComponents extends BUGSactioncomponent
+	class projectActionComponents extends TBGActionComponent
 	{
 
 		public function componentOverview()
@@ -24,7 +24,7 @@
 		public function componentTimelinerss()
 		{
 			$this->getResponse()->setContentType('application/xml');
-			$this->getResponse()->setDecoration(BUGSresponse::DECORATE_NONE);
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 		}
 
 	}

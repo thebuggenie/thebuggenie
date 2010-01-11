@@ -1,7 +1,7 @@
 <div class="rounded_box white" id="<?php echo $html_id; ?>" style="clear: both; display: none; width: 324px; margin: 5px 0 5px 0;<?php if (isset($style)): foreach ($style as $key => $val): echo ' ' . $key . ': ' . $val . ';'; endforeach; endif; ?>">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="padding: 5px;">
-		<form id="<?php echo $base_id; ?>_form" accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" method="post" action="" onsubmit="findIdentifiable('<?php echo make_url('main_find_identifiable'); ?>', '<?php echo $base_id; ?>');return false;">
+		<form id="<?php echo $base_id; ?>_form" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="" onsubmit="findIdentifiable('<?php echo make_url('main_find_identifiable'); ?>', '<?php echo $base_id; ?>');return false;">
 			<div class="dropdown_header"><?php echo $header; ?></div>
 			<?php if ($allow_clear): ?>
 				<div class="dropdown_content">

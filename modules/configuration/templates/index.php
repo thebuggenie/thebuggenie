@@ -58,7 +58,7 @@
 	<?php foreach ($module_config_sections as $section => $config_info): ?>
   		<?php if (array_key_exists('icon', $config_info)) $config_info = array($config_info); ?>
   		<?php foreach ($config_info as $info): ?>
-			<?php if ($info['module'] != 'core' && !BUGScontext::getModule($info['module'])->hasConfigSettings()) continue; ?>
+			<?php if ($info['module'] != 'core' && !TBGContext::getModule($info['module'])->hasConfigSettings()) continue; ?>
   			<li>
   			<?php if (is_array($info['route'])): ?>
   				<?php $url = make_url($info['route'][0], $info['route'][1]); ?>
@@ -88,23 +88,23 @@
 
 <?php 
 
-/*	if (BUGScontext::getRequest()->getParameter('config_module'))
+/*	if (TBGContext::getRequest()->getParameter('config_module'))
 	{
 		?>
 		<td valign="top">
 		<?php
 	
-		if (BUGScontext::getRequest()->getParameter('config_module') == "core")
+		if (TBGContext::getRequest()->getParameter('config_module') == "core")
 		{
-			if (is_numeric(BUGScontext::getRequest()->getParameter('section')))
+			if (is_numeric(TBGContext::getRequest()->getParameter('section')))
 			{
 				$access_section = false;
-				if (BUGScontext::getUser()->hasPermission("b2saveconfig", BUGScontext::getRequest()->getParameter('section'), "core"))
+				if (TBGContext::getUser()->hasPermission("b2saveconfig", TBGContext::getRequest()->getParameter('section'), "core"))
 				{
 					$access_section = true;
 					$access_level = configurationActions::ACCESS_FULL;
 				}
-				elseif (BUGScontext::getUser()->hasPermission("b2viewconfig", BUGScontext::getRequest()->getParameter('section'), "core"))
+				elseif (TBGContext::getUser()->hasPermission("b2viewconfig", TBGContext::getRequest()->getParameter('section'), "core"))
 				{
 					$access_section = true;
 					$access_level = "read";
@@ -112,7 +112,7 @@
 				
 				if ($access_section == true)
 				{
-					switch (BUGScontext::getRequest()->getParameter('section'))
+					switch (TBGContext::getRequest()->getParameter('section'))
 					{
 						case 1:
 							$section_name = "teamgroups";
@@ -142,13 +142,13 @@
 							$section_name = "wizard";
 							break;
 						case 14:
-							if (BUGScontext::getUser()->getScope()->getID() == BUGSsettings::getDefaultScope()->getID()) $section_name = "scopes";
+							if (TBGContext::getUser()->getScope()->getID() == TBGSettings::getDefaultScope()->getID()) $section_name = "scopes";
 							break;
 						case 15:
 							$section_name = "modules";
 							break;
 						case 16:
-							if (BUGScontext::getUser()->getScope()->getID() == BUGSsettings::getDefaultScope()->getID()) $section_name = "import";
+							if (TBGContext::getUser()->getScope()->getID() == TBGSettings::getDefaultScope()->getID()) $section_name = "import";
 							break;
 					}
 					if ($section_name != "")
@@ -166,20 +166,20 @@
 		{
 			$access_section = false;
 	
-			if (BUGScontext::getUser()->hasPermission("b2saveconfig", 15, "core"))
+			if (TBGContext::getUser()->hasPermission("b2saveconfig", 15, "core"))
 			{
 				$access_section = true;
 				$access_level = configurationActions::ACCESS_FULL;
 			}
-			elseif (BUGScontext::getUser()->hasPermission("b2viewconfig", 15, "core"))
+			elseif (TBGContext::getUser()->hasPermission("b2viewconfig", 15, "core"))
 			{
 				$access_section = true;
 				$access_level = "read";
 			}
 	
-			if (BUGScontext::getModule(BUGScontext::getRequest()->getParameter('config_module')) instanceof BUGSmodule && BUGScontext::getModule(BUGScontext::getRequest()->getParameter('config_module'))->hasAccess() && $access_section)
+			if (TBGContext::getModule(TBGContext::getRequest()->getParameter('config_module')) instanceof TBGModule && TBGContext::getModule(TBGContext::getRequest()->getParameter('config_module'))->hasAccess() && $access_section)
 			{
-				require_once "modules/" . strtolower(BUGScontext::getRequest()->getParameter('config_module')) . "/config.inc.php";
+				require_once "modules/" . strtolower(TBGContext::getRequest()->getParameter('config_module')) . "/config.inc.php";
 			}
 			else
 			{

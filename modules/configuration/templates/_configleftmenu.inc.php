@@ -4,7 +4,7 @@
 <?php foreach ($config_sections as $section => $config_info): ?>
 	<?php if (array_key_exists('icon', $config_info)) $config_info = array($config_info); ?>
 	<?php foreach ($config_info as $info): ?>
-		<?php if ($info['module'] != 'core' && !BUGScontext::getModule($info['module'])->hasConfigSettings()) continue; ?>
+		<?php if ($info['module'] != 'core' && !TBGContext::getModule($info['module'])->hasConfigSettings()) continue; ?>
 		<li<?php if (($selected_section == 15 && $selected_subsection == $info['module'] && $section == 15) || ($selected_section != 15 && $selected_section == $section)): ?> class="config_selected"<?php endif; ?>>
   			<?php if (is_array($info['route'])): ?>
   				<?php $url = make_url($info['route'][0], $info['route'][1]); ?>

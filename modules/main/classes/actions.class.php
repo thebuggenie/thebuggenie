@@ -3,53 +3,53 @@
 	/**
 	 * actions for the main module
 	 */
-	class mainActions extends BUGSaction
+	class mainActions extends TBGAction
 	{
 
 		/**
 		 * The currently selected project in actions where there is one
 		 *
 		 * @access protected
-		 * @property BUGSproject $selected_project
+		 * @property TBGProject $selected_project
 		 */
 
 		/**
 		 * View an issue
 		 * 
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runViewIssue(BUGSrequest $request)
+		public function runViewIssue(TBGRequest $request)
 		{
-			BUGSlogging::log('Loading issue');
+			TBGLogging::log('Loading issue');
 			$selected_project = null;
 			
 			if ($project_key = $request->getParameter('project_key'))
 			{
 				try
 				{
-					$selected_project = BUGSproject::getByKey($project_key);
-					BUGScontext::setCurrentProject($selected_project);
+					$selected_project = TBGProject::getByKey($project_key);
+					TBGContext::setCurrentProject($selected_project);
 					$this->selected_project = $selected_project;
 				}
 				catch (Exception $e) {}
 			}
-			if ($issue_no = BUGScontext::getRequest()->getParameter('issue_no'))
+			if ($issue_no = TBGContext::getRequest()->getParameter('issue_no'))
 			{
-				$issue = BUGSissue::getIssueFromLink($issue_no);
-				if (!$selected_project instanceof BUGSproject || $issue->getProjectID() != $selected_project->getID())
+				$issue = TBGIssue::getIssueFromLink($issue_no);
+				if (!$selected_project instanceof TBGProject || $issue->getProjectID() != $selected_project->getID())
 				{
 					$issue = null;
 				}
 			}
-			BUGSlogging::log('done (Loading issue)');
+			TBGLogging::log('done (Loading issue)');
 			$this->getResponse()->setPage('viewissue');
-			if ($issue instanceof BUGSissue && !$issue->hasAccess())
+			if ($issue instanceof TBGIssue && !$issue->hasAccess())
 			{
 				$issue = null;
 			}
-			$message = BUGScontext::getMessageAndClear('issue_saved');
+			$message = TBGContext::getMessageAndClear('issue_saved');
 			
-			if ($request->isMethod(BUGSrequest::POST) && $issue instanceof BUGSissue && $request->hasParameter('issue_action'))
+			if ($request->isMethod(TBGRequest::POST) && $issue instanceof TBGIssue && $request->hasParameter('issue_action'))
 			{
 				switch ($request->getParameter('issue_action'))
 				{
@@ -61,8 +61,8 @@
 								try
 								{
 									$issue->save();
-									BUGScontext::setMessage('issue_saved', true);
-									$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+									TBGContext::setMessage('issue_saved', true);
+									$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 								}
 								catch (Exception $e)
 								{
@@ -76,7 +76,7 @@
 						}
 						else
 						{
-							$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+							$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 						}
 						break;
 				}
@@ -91,68 +91,68 @@
 		/**
 		 * Frontpage
 		 *  
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runIndex(BUGSrequest $request)
+		public function runIndex(TBGRequest $request)
 		{
-			if (BUGSsettings::isSingleProjectTracker())
+			if (TBGSettings::isSingleProjectTracker())
 			{
-				if (($projects = BUGSproject::getAll()) && $project = array_shift($projects))
+				if (($projects = TBGProject::getAll()) && $project = array_shift($projects))
 				{
-					$this->forward(BUGScontext::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())));
+					$this->forward(TBGContext::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())));
 				}
 			}
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('home'));
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('home'));
 			$this->getResponse()->setProjectMenuStripHidden();
 			$this->showleftbar = false;
-			if (!BUGSuser::isThisGuest() && (BUGScontext::getUser()->showFollowUps() || BUGScontext::getUser()->showAssigned()))
+			if (!TBGUser::isThisGuest() && (TBGContext::getUser()->showFollowUps() || TBGContext::getUser()->showAssigned()))
 			{
 				$this->showleftbar = true;
 			}
-			if (BUGSsettings::showLoginBox() && BUGSuser::isThisGuest())
+			if (TBGSettings::showLoginBox() && TBGUser::isThisGuest())
 			{
 				$this->showleftbar = true;
 			}
-			if (BUGScontext::isHookedInto('core', 'index_left_top') || BUGScontext::isHookedInto('core', 'index_left_middle') || BUGScontext::isHookedInto('core', 'index_left_bottom')) 
+			if (TBGContext::isHookedInto('core', 'index_left_top') || TBGContext::isHookedInto('core', 'index_left_middle') || TBGContext::isHookedInto('core', 'index_left_bottom')) 
 			{
 				$this->showleftbar = true;
 			}
 			if ($this->showleftbar)
 			{
-				$this->links = BUGScontext::getMainLinks();
+				$this->links = TBGContext::getMainLinks();
 			}
 		}
 
 		/**
 		 * Developer dashboard
 		 *  
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runDashboard(BUGSrequest $request)
+		public function runDashboard(TBGRequest $request)
 		{
-			$this->forward403unless(!BUGScontext::getUser()->isThisGuest() && BUGScontext::getUser()->hasPageAccess('dashboard'));
+			$this->forward403unless(!TBGContext::getUser()->isThisGuest() && TBGContext::getUser()->hasPageAccess('dashboard'));
 			$this->getResponse()->setProjectMenuStripHidden();
 		}
 		
 		/**
 		 * About page
 		 *  
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runAbout(BUGSrequest $request)
+		public function runAbout(TBGRequest $request)
 		{
 			B2DB::getTable('B2tFiles')->create();
 			B2DB::getTable('B2tIssueFiles')->create();
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('about'));
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('about'));
 			$this->getResponse()->setProjectMenuStripHidden();
 		}
 		
 		/**
 		 * 404 not found page
 		 * 
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runNotFound(BUGSrequest $request)
+		public function runNotFound(TBGRequest $request)
 		{
 			$this->getResponse()->setHttpStatus(404);
 			$message = null;
@@ -161,46 +161,46 @@
 		/**
 		 * Logs the user out
 		 * 
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runLogout(BUGSrequest $request)
+		public function runLogout(TBGRequest $request)
 		{
-			if (BUGScontext::getUser() instanceof BUGSuser)
+			if (TBGContext::getUser() instanceof TBGUser)
 			{
-				BUGSlogging::log('Setting user logout state');
-				BUGScontext::getUser()->setState(BUGSsettings::get('offlinestate'));
+				TBGLogging::log('Setting user logout state');
+				TBGContext::getUser()->setState(TBGSettings::get('offlinestate'));
 			}
-			BUGScontext::logout();
-			$this->forward(BUGScontext::getRouting()->generate(BUGSsettings::getLogoutReturnRoute()));
+			TBGContext::logout();
+			$this->forward(TBGContext::getRouting()->generate(TBGSettings::getLogoutReturnRoute()));
 		}
 		
 		/**
 		 * Login page
 		 *  
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runLogin(BUGSrequest $request)
+		public function runLogin(TBGRequest $request)
 		{
 			$this->getResponse()->setPage('login');
 			$this->getResponse()->setProjectMenuStripHidden();
 			try
 			{
-				if (BUGScontext::getRequest()->getMethod() == BUGSrequest::POST)
+				if (TBGContext::getRequest()->getMethod() == TBGRequest::POST)
 				{
-					if (BUGScontext::getRequest()->hasParameter('b2_username') && BUGScontext::getRequest()->hasParameter('b2_password'))
+					if (TBGContext::getRequest()->hasParameter('b2_username') && TBGContext::getRequest()->hasParameter('b2_password'))
 					{
-						$username = BUGScontext::getRequest()->getParameter('b2_username');
-						$password = BUGScontext::getRequest()->getParameter('b2_password');
-						$user = BUGSuser::loginCheck($username, md5($password), true);
+						$username = TBGContext::getRequest()->getParameter('b2_username');
+						$password = TBGContext::getRequest()->getParameter('b2_password');
+						$user = TBGUser::loginCheck($username, md5($password), true);
 						$this->getResponse()->setCookie('b2_username', $username);
 						$this->getResponse()->setCookie('b2_password', md5($password));
-						if (BUGScontext::getRequest()->hasParameter('return_to')) 
+						if (TBGContext::getRequest()->hasParameter('return_to')) 
 						{
-							$this->forward(BUGScontext::getRequest()->getParameter('return_to'));
+							$this->forward(TBGContext::getRequest()->getParameter('return_to'));
 						}
 						else
 						{
-							$this->forward(BUGScontext::getRouting()->generate(BUGSsettings::get('returnfromlogin')));
+							$this->forward(TBGContext::getRouting()->generate(TBGSettings::get('returnfromlogin')));
 						}
 					}
 					else
@@ -208,17 +208,17 @@
 						throw new Exception(__('Please enter a username and password'));
 					}
 				}
-				elseif (!BUGScontext::getUser()->isAuthenticated() && BUGSsettings::get('requirelogin'))
+				elseif (!TBGContext::getUser()->isAuthenticated() && TBGSettings::get('requirelogin'))
 				{
 					$this->login_error = __('You need to log in to access this site');
 				}
-				elseif (!BUGScontext::getUser()->isAuthenticated())
+				elseif (!TBGContext::getUser()->isAuthenticated())
 				{
 					$this->login_error = __('Please log in');
 				}
-				elseif (BUGScontext::hasMessage('forward'))
+				elseif (TBGContext::hasMessage('forward'))
 				{
-					$this->login_error = BUGScontext::getMessageAndClear('forward');
+					$this->login_error = TBGContext::getMessageAndClear('forward');
 				}
 			}
 			catch (Exception $e)
@@ -227,34 +227,34 @@
 			}
 			
 			/*
-			elseif (BUGScontext::getRequest()->getParameter('switch_user'))
+			elseif (TBGContext::getRequest()->getParameter('switch_user'))
 			{
-				if (BUGScontext::getRequest()->getParameter('new_user'))
+				if (TBGContext::getRequest()->getParameter('new_user'))
 				{
-					$BUGS_user = BUGScontext::loginCheck($_SESSION['b2_username'], $_SESSION['b2_password']);
+					$BUGS_user = TBGContext::loginCheck($_SESSION['b2_username'], $_SESSION['b2_password']);
 					if ($BUGS_user->getUID() != 0)
 					{
 						$crit = new B2DBCriteria();
-						$crit->addWhere(B2tUsers::UNAME, BUGScontext::getRequest()->getParameter('new_user'));
+						$crit->addWhere(B2tUsers::UNAME, TBGContext::getRequest()->getParameter('new_user'));
 						$crit->addSelectionColumn(B2tUsers::ID);
 						$row = B2DB::getTable('B2tUsers')->doSelectOne($crit);
 						if ($row instanceof B2DBRow)
 						{
-							$newUser = new BUGSuser($row->get(B2tUsers::ID));
-							BUGScontext::setScope(1);
-							BUGScontext::cacheAllPermissions();
-							if ((BUGScontext::getUser()->hasPermission("b2saveconfig", 14, "core") && $newUser->getScope()->getID() != BUGScontext::getScope()->getID()) || BUGScontext::getUser()->hasPermission("b2saveconfig", 2, "core"))
+							$newUser = new TBGUser($row->get(B2tUsers::ID));
+							TBGContext::setScope(1);
+							TBGContext::cacheAllPermissions();
+							if ((TBGContext::getUser()->hasPermission("b2saveconfig", 14, "core") && $newUser->getScope()->getID() != TBGContext::getScope()->getID()) || TBGContext::getUser()->hasPermission("b2saveconfig", 2, "core"))
 							{
 								$pre_uname = $BUGS_user->getUname();
 								$pre_pwd = $BUGS_user->getMD5Password();
-								$BUGS_user = BUGScontext::loginCheck($newUser->getUname(), $newUser->getMD5Password());
+								$BUGS_user = TBGContext::loginCheck($newUser->getUname(), $newUser->getMD5Password());
 								if ($BUGS_user->getLoginError() == '')
 								{
 									setcookie("b2_username_preswitch", $pre_uname, $_SERVER["REQUEST_TIME"] + 432000);
 									setcookie("b2_password_preswitch", $pre_pwd, $_SERVER["REQUEST_TIME"] + 432000);
 									setcookie("b2_uname", $newUser->getUname(), $_SERVER["REQUEST_TIME"] + 432000);
 									setcookie("b2_upwd", $newUser->getMD5Password(), $_SERVER["REQUEST_TIME"] + 432000);
-									bugs_moveTo(BUGSsettings::get('returnfromlogin'));
+									bugs_moveTo(TBGSettings::get('returnfromlogin'));
 								}
 								else
 								{
@@ -272,18 +272,18 @@
 				}
 				else
 				{
-					$BUGS_user = BUGScontext::loginCheck($_COOKIE['b2_username_preswitch'], $_COOKIE['b2_password_preswitch']);
+					$BUGS_user = TBGContext::loginCheck($_COOKIE['b2_username_preswitch'], $_COOKIE['b2_password_preswitch']);
 					setcookie("b2_uname", $BUGS_user->getUname(), $_SERVER["REQUEST_TIME"] + 432000);
 					setcookie("b2_upwd", $BUGS_user->getMD5Password(), $_SERVER["REQUEST_TIME"] + 432000);
 					setcookie("b2_username_preswitch", '', $_SERVER["REQUEST_TIME"] - 432000);
 					setcookie("b2_password_preswitch", '', $_SERVER["REQUEST_TIME"] - 432000);
-					bugs_moveTo(BUGSsettings::get('returnfromlogin'));
+					bugs_moveTo(TBGSettings::get('returnfromlogin'));
 					exit;
 				}
 			}
 			else
 			{
-				$BUGS_user = new BUGSuser();
+				$BUGS_user = new TBGUser();
 				$BUGS_user->setLoginError('Please enter a username and password');
 			}
 			
@@ -303,16 +303,16 @@
 		/**
 		 * Registration logic part 1 - check if username is free
 		 *  
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runRegister1(BUGSrequest $request)
+		public function runRegister1(TBGRequest $request)
 		{
 			$this->getResponse()->setPage('login');
 			try
 			{
-				if (BUGScontext::getRequest()->getMethod() == BUGSrequest::POST)
+				if (TBGContext::getRequest()->getMethod() == TBGRequest::POST)
 				{
-					$username = BUGScontext::getRequest()->getParameter('desired_username');
+					$username = TBGContext::getRequest()->getParameter('desired_username');
 					if (!empty($username))
 					{
 						$exists = B2DB::getTable('B2tUsers')->getByUsername($username);
@@ -323,7 +323,7 @@
 						}
 						else
 						{
-							bugscontext::setMessage('prereg_success', $username);
+							TBGContext::setMessage('prereg_success', $username);
 							$this->forward('login');
 
 						}
@@ -336,7 +336,7 @@
 			}
 			catch (Exception $e)
 			{
-				bugscontext::setMessage('prereg_error', $e->getMessage());
+				TBGContext::setMessage('prereg_error', $e->getMessage());
 				$this->forward('login');
 			}
 		}
@@ -344,21 +344,21 @@
 		/**
 		 * Registration logic part 2 - add user data
 		 *  
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runRegister2(BUGSrequest $request)
+		public function runRegister2(TBGRequest $request)
 		{
 			$this->getResponse()->setPage('login');
 			try
 			{
-				if (BUGScontext::getRequest()->getMethod() == BUGSrequest::POST)
+				if (TBGContext::getRequest()->getMethod() == TBGRequest::POST)
 				{
-					$username = BUGScontext::getRequest()->getParameter('username');
-					$buddyname = BUGScontext::getRequest()->getParameter('buddyname');
-					$email = BUGScontext::getRequest()->getParameter('email_address');
-					$confirmemail = BUGScontext::getRequest()->getParameter('email_confirm');
-					$security = BUGScontext::getRequest()->getParameter('verification_no');
-					$realname = BUGScontext::getRequest()->getParameter('realname');
+					$username = TBGContext::getRequest()->getParameter('username');
+					$buddyname = TBGContext::getRequest()->getParameter('buddyname');
+					$email = TBGContext::getRequest()->getParameter('email_address');
+					$confirmemail = TBGContext::getRequest()->getParameter('email_confirm');
+					$security = TBGContext::getRequest()->getParameter('verification_no');
+					$realname = TBGContext::getRequest()->getParameter('realname');
 					
 					if (!empty($buddyname) && !empty($email) && !empty($confirmemail) && !empty($security))
 					{
@@ -380,10 +380,10 @@
 							$email_ok = true;
 						}
 						
-						if ($email_ok && BUGSsettings::get('limit_registration') != '')
+						if ($email_ok && TBGSettings::get('limit_registration') != '')
 						{
 
-							$allowed_domains = explode(',', BUGSsettings::get('limit_registration'));
+							$allowed_domains = explode(',', TBGSettings::get('limit_registration'));
 							if (count($allowed_domains) > 0)
 							{
 								foreach ($allowed_domains as $allowed_domain)
@@ -423,9 +423,9 @@
 
 						/* FIXME send email */
 
-						$user = BUGSuser::createNew($username, $realname, $buddyname, BUGScontext::getScope()->getID(), false, true, md5(bugs_createpassword()), $email, true);
+						$user = TBGUser::createNew($username, $realname, $buddyname, TBGContext::getScope()->getID(), false, true, md5(bugs_createpassword()), $email, true);
 
-						bugscontext::setMessage('postreg_success', true);
+						TBGContext::setMessage('postreg_success', true);
 						$this->forward('login');
 					}
 					else
@@ -436,8 +436,8 @@
 			}
 			catch (Exception $e)
 			{
-				bugscontext::setMessage('prereg_success', $username);
-				bugscontext::setMessage('postreg_error', $e->getMessage());
+				TBGContext::setMessage('prereg_success', $username);
+				TBGContext::setMessage('postreg_error', $e->getMessage());
 				$this->forward('login');
 			}
 		}
@@ -445,9 +445,9 @@
 		/**
 		 * Activate newly registered account
 		 *  
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runActivate(BUGSrequest $request)
+		public function runActivate(TBGRequest $request)
 		{
 			$this->getResponse()->setPage('../../login');
 			
@@ -456,21 +456,21 @@
 			{
 				if ($row->get(B2tUsers::PASSWD) != $request->getParameter('key'))
 				{
-					bugscontext::setMessage('account_activate', true);
-					bugscontext::setMessage('activate_failure', true);
+					TBGContext::setMessage('account_activate', true);
+					TBGContext::setMessage('activate_failure', true);
 				}
 				else
 				{
-					$user = new BUGSUser($row->get(B2tUsers::ID), $row);
+					$user = new TBGUser($row->get(B2tUsers::ID), $row);
 					$user->setValidated(1);
-					bugscontext::setMessage('account_activate', true);
-					bugscontext::setMessage('activate_success', true);
+					TBGContext::setMessage('account_activate', true);
+					TBGContext::setMessage('activate_success', true);
 				}
 			}
 			else
 			{
-				bugscontext::setMessage('account_activate', true);
-				bugscontext::setMessage('activate_failure', true);
+				TBGContext::setMessage('account_activate', true);
+				TBGContext::setMessage('activate_failure', true);
 			}
 			$this->forward('../../login');
 		}
@@ -478,40 +478,40 @@
 		/**
 		 * "My account" page
 		 *  
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runMyAccount(BUGSrequest $request)
+		public function runMyAccount(TBGRequest $request)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('account'));
-			if ($request->isMethod(BUGSrequest::POST) && $request->hasParameter('mode'))
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('account'));
+			if ($request->isMethod(TBGRequest::POST) && $request->hasParameter('mode'))
 			{
 				switch ($request->getParameter('mode'))
 				{
 					case 'information':
-						BUGScontext::getUser()->setBuddyname($request->getParameter('buddyname'));
-						BUGScontext::getUser()->setRealname($request->getParameter('realname'));
-						BUGScontext::getUser()->setHomepage($request->getParameter('homepage'));
-						BUGScontext::getUser()->setEmailPrivate((bool) $request->getParameter('email_private'));
+						TBGContext::getUser()->setBuddyname($request->getParameter('buddyname'));
+						TBGContext::getUser()->setRealname($request->getParameter('realname'));
+						TBGContext::getUser()->setHomepage($request->getParameter('homepage'));
+						TBGContext::getUser()->setEmailPrivate((bool) $request->getParameter('email_private'));
 
-						if (BUGScontext::getUser()->getEmail() != $request->getParameter('email'))
+						if (TBGContext::getUser()->getEmail() != $request->getParameter('email'))
 						{
-							if (BUGScontext::trigger('core', 'changeEmail', array('email' => $request->getParameter('email')), true) !== true)
+							if (TBGContext::trigger('core', 'changeEmail', array('email' => $request->getParameter('email')), true) !== true)
 							{
-								BUGScontext::getUser()->setEmail($request->getParameter('email'));
+								TBGContext::getUser()->setEmail($request->getParameter('email'));
 							}
 						}
 
-						BUGScontext::getUser()->save();
+						TBGContext::getUser()->save();
 
-						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Account information saved'), 'content' => ''));
+						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Account information saved'), 'content' => ''));
 						break;
 					case 'settings':
-						BUGScontext::getUser()->setUsesGravatar((bool) $request->getParameter('use_gravatar'));
-						BUGScontext::getUser()->setTimezone($request->getParameter('timezone'));
+						TBGContext::getUser()->setUsesGravatar((bool) $request->getParameter('use_gravatar'));
+						TBGContext::getUser()->setTimezone($request->getParameter('timezone'));
 
-						BUGScontext::getUser()->save();
+						TBGContext::getUser()->save();
 
-						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Profile settings saved'), 'content' => ''));
+						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Profile settings saved'), 'content' => ''));
 						break;
 				}
 			}
@@ -522,37 +522,37 @@
 		/**
 		 * Change password ajax action
 		 *
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runAccountChangePassword(BUGSrequest $request)
+		public function runAccountChangePassword(TBGRequest $request)
 		{
-			$this->forward403unless(BUGScontext::getUser()->hasPageAccess('account'));
-			if ($request->isMethod(BUGSrequest::POST))
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('account'));
+			if ($request->isMethod(TBGRequest::POST))
 			{
 				if (!$request->hasParameter('current_password') || !$request->getParameter('current_password'))
 				{
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please enter your current password')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please enter your current password')));
 				}
 				if (!$request->hasParameter('new_password_1') || !$request->getParameter('new_password_1'))
 				{
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please enter a new password')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please enter a new password')));
 				}
 				if (!$request->hasParameter('new_password_2') || !$request->getParameter('new_password_2'))
 				{
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please enter the new password twice')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please enter the new password twice')));
 				}
-				if (!BUGScontext::getUser()->hasPassword($request->getParameter('current_password')))
+				if (!TBGContext::getUser()->hasPassword($request->getParameter('current_password')))
 				{
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please enter your current password')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please enter your current password')));
 				}
 				if ($request->getParameter('new_password_1') != $request->getParameter('new_password_2'))
 				{
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please enter the new password twice')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please enter the new password twice')));
 				}
-				BUGScontext::getUser()->changePassword($request->getParameter('new_password_1'));
-				BUGScontext::getUser()->save();
-				$this->getResponse()->setCookie('b2_password', BUGScontext::getUser()->getPasswordMD5());
-				return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Your new password was changed')));
+				TBGContext::getUser()->changePassword($request->getParameter('new_password_1'));
+				TBGContext::getUser()->save();
+				$this->getResponse()->setCookie('b2_password', TBGContext::getUser()->getPasswordMD5());
+				return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Your new password was changed')));
 			}
 		}
 
@@ -573,7 +573,7 @@
 			$this->selected_elapsed_time = null;
 			$this->selected_percent_complete = null;
 			$selected_customdatatype = array();
-			foreach (BUGScustomdatatype::getAll() as $customdatatype)
+			foreach (TBGCustomDatatype::getAll() as $customdatatype)
 			{
 				$selected_customdatatype[$customdatatype->getKey()] = null;
 			}
@@ -581,13 +581,13 @@
 			$this->issuetypes = array();
 			$this->issuetype_id = null;
 			$this->issue = null;
-			$this->categories = BUGScategory::getAll();
-			$this->severities = BUGSseverity::getAll();
-			$this->priorities = BUGSpriority::getAll();
-			$this->reproducabilities = BUGSreproducability::getAll();
-			$this->resolutions = BUGSresolution::getAll();
-			$this->statuses = BUGSstatus::getAll();
-			$this->projects = BUGSproject::getAll();
+			$this->categories = TBGCategory::getAll();
+			$this->severities = TBGSeverity::getAll();
+			$this->priorities = TBGPriority::getAll();
+			$this->reproducabilities = TBGReproducability::getAll();
+			$this->resolutions = TBGResolution::getAll();
+			$this->statuses = TBGStatus::getAll();
+			$this->projects = TBGProject::getAll();
 		}
 
 		protected function _clearReportIssueProperties()
@@ -609,13 +609,13 @@
 			$this->selected_percent_complete = null;
 		}
 
-		protected function _loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction(BUGSrequest $request)
+		protected function _loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction(TBGRequest $request)
 		{
 			if ($project_key = $request->getParameter('project_key'))
 			{
 				try
 				{
-					$this->selected_project = BUGSproject::getByKey($project_key);
+					$this->selected_project = TBGProject::getByKey($project_key);
 				}
 				catch (Exception $e) {}
 			}
@@ -623,21 +623,21 @@
 			{
 				try
 				{
-					$this->selected_project = BUGSfactory::projectLab($project_id);
+					$this->selected_project = TBGFactory::projectLab($project_id);
 				}
 				catch (Exception $e) {}
 			}
-			if ($this->selected_project instanceof BUGSproject)
+			if ($this->selected_project instanceof TBGProject)
 			{
-				BUGScontext::setCurrentProject($this->selected_project);
+				TBGContext::setCurrentProject($this->selected_project);
 			}
-			if ($this->selected_project instanceof BUGSproject)
+			if ($this->selected_project instanceof TBGProject)
 			{
-				$this->issuetypes = BUGSissuetype::getAllApplicableToProject($this->selected_project->getID());
+				$this->issuetypes = TBGIssuetype::getAllApplicableToProject($this->selected_project->getID());
 			}
 			else
 			{
-				$this->issuetypes = BUGSissuetype::getAll();
+				$this->issuetypes = TBGIssuetype::getAll();
 			}
 
 			$this->issuetype_id = $request->getParameter('issuetype_id');
@@ -645,17 +645,17 @@
 			{
 				try
 				{
-					$this->selected_issuetype = BUGSfactory::BUGSissuetypeLab($this->issuetype_id);
+					$this->selected_issuetype = TBGFactory::TBGIssuetypeLab($this->issuetype_id);
 				}
 				catch (Exception $e) {}
 			}
 		}
 
-		protected function _postIssueValidation(BUGSrequest $request, &$errors, &$permission_errors)
+		protected function _postIssueValidation(TBGRequest $request, &$errors, &$permission_errors)
 		{
-			$i18n = BUGScontext::getI18n();
-			if (!$this->selected_project instanceof BUGSproject) $errors['project'] = $i18n->__('You have to select a valid project');
-			if (!$this->selected_issuetype instanceof BUGSissuetype) $errors['issuetype'] = $i18n->__('You have to select a valid issue type');
+			$i18n = TBGContext::getI18n();
+			if (!$this->selected_project instanceof TBGProject) $errors['project'] = $i18n->__('You have to select a valid project');
+			if (!$this->selected_issuetype instanceof TBGIssuetype) $errors['issuetype'] = $i18n->__('You have to select a valid issue type');
 			if (empty($errors))
 			{
 				$fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
@@ -666,15 +666,15 @@
 
 				if ($edition_id = (int) $request->getParameter('edition_id'))
 				{
-					$this->selected_edition = BUGSfactory::editionLab($edition_id);
+					$this->selected_edition = TBGFactory::editionLab($edition_id);
 				}
 				if ($build_id = (int) $request->getParameter('build_id'))
 				{
-					$this->selected_build = BUGSfactory::buildLab($build_id);
+					$this->selected_build = TBGFactory::buildLab($build_id);
 				}
 				if ($component_id = (int) $request->getParameter('component_id'))
 				{
-					$this->selected_component = BUGSfactory::componentLab($component_id);
+					$this->selected_component = TBGFactory::componentLab($component_id);
 				}
 
 				if (trim($this->title) == '' || $this->title == $this->default_title) $errors['title'] = true; //$i18n->__('You have to specify a title');
@@ -699,32 +699,32 @@
 
 				if ($category_id = (int) $request->getParameter('category_id'))
 				{
-					$this->selected_category = BUGSfactory::BUGScategoryLab($category_id);
+					$this->selected_category = TBGFactory::TBGCategoryLab($category_id);
 				}
 
 				if ($status_id = (int) $request->getParameter('status_id'))
 				{
-					$this->selected_status = BUGSfactory::BUGSstatusLab($status_id);
+					$this->selected_status = TBGFactory::TBGStatusLab($status_id);
 				}
 
 				if ($reproducability_id = (int) $request->getParameter('reproducability_id'))
 				{
-					$this->selected_reproducability = BUGSfactory::BUGSreproducabilityLab($reproducability_id);
+					$this->selected_reproducability = TBGFactory::TBGReproducabilityLab($reproducability_id);
 				}
 
 				if ($resolution_id = (int) $request->getParameter('resolution_id'))
 				{
-					$this->selected_resolution = BUGSfactory::BUGSresolutionLab($resolution_id);
+					$this->selected_resolution = TBGFactory::TBGResolutionLab($resolution_id);
 				}
 
 				if ($severity_id = (int) $request->getParameter('severity_id'))
 				{
-					$this->selected_severity = BUGSfactory::BUGSseverityLab($severity_id);
+					$this->selected_severity = TBGFactory::TBGSeverityLab($severity_id);
 				}
 
 				if ($priority_id = (int) $request->getParameter('priority_id'))
 				{
-					$this->selected_priority = BUGSfactory::BUGSpriorityLab($priority_id);
+					$this->selected_priority = TBGFactory::TBGPriorityLab($priority_id);
 				}
 
 				if ($request->getParameter('estimated_time'))
@@ -743,13 +743,13 @@
 				}
 
 				$selected_customdatatype = array();
-				foreach (BUGScustomdatatype::getAll() as $customdatatype)
+				foreach (TBGCustomDatatype::getAll() as $customdatatype)
 				{
 					$selected_customdatatype[$customdatatype->getKey()] = null;
 					$customdatatype_id = $customdatatype->getKey() . '_id';
 					if ($$customdatatype_id = $request->getParameter($customdatatype_id))
 					{
-						$selected_customdatatype[$customdatatype->getKey()] = BUGScustomdatatypeoption::getByValueAndKey($$customdatatype_id, $customdatatype->getKey());
+						$selected_customdatatype[$customdatatype->getKey()] = TBGCustomDatatypeoption::getByValueAndKey($$customdatatype_id, $customdatatype->getKey());
 					}
 				}
 				$this->selected_customdatatype = $selected_customdatatype;
@@ -759,14 +759,14 @@
 					if ($info['required'])
 					{
 						$var_name = "selected_{$field}";
-						if ((in_array($field, BUGSdatatype::getAvailableFields(true)) && $this->$var_name === null) || (!in_array($field, BUGSdatatype::getAvailableFields(true)) && $selected_customdatatype[$field] === null))
+						if ((in_array($field, TBGDatatype::getAvailableFields(true)) && $this->$var_name === null) || (!in_array($field, TBGDatatype::getAvailableFields(true)) && $selected_customdatatype[$field] === null))
 						{
 							$errors[$field] = true;
 						}
 					}
 					else
 					{
-						if (in_array($field, BUGSdatatype::getAvailableFields(true)))
+						if (in_array($field, TBGDatatype::getAvailableFields(true)))
 						{
 							if (!$this->selected_project->fieldPermissionCheck($field, true))
 							{
@@ -787,30 +787,30 @@
 		protected function _postIssue()
 		{
 			$fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
-			$issue = BUGSissue::createNew($this->title, $this->issuetype_id, $this->selected_project->getID());
+			$issue = TBGIssue::createNew($this->title, $this->issuetype_id, $this->selected_project->getID());
 			if (isset($fields_array['description'])) $issue->setDescription($this->selected_description);
 			if (isset($fields_array['reproduction_steps'])) $issue->setReproductionSteps($this->selected_reproduction_steps);
-			if (isset($fields_array['category']) && $this->selected_category instanceof BUGSdatatype) $issue->setCategory($this->selected_category->getID());
-			if (isset($fields_array['status']) && $this->selected_status instanceof BUGSdatatype) $issue->setStatus($this->selected_status->getID());
-			if (isset($fields_array['reproducability']) && $this->selected_reproducability instanceof BUGSdatatype) $issue->setReproducability($this->selected_reproducability->getID());
-			if (isset($fields_array['resolution']) && $this->selected_resolution instanceof BUGSdatatype) $issue->setResolution($this->selected_resolution->getID());
-			if (isset($fields_array['severity']) && $this->selected_severity instanceof BUGSdatatype) $issue->setSeverity($this->selected_severity->getID());
-			if (isset($fields_array['priority']) && $this->selected_priority instanceof BUGSdatatype) $issue->setPriority($this->selected_priority->getID());
+			if (isset($fields_array['category']) && $this->selected_category instanceof TBGDatatype) $issue->setCategory($this->selected_category->getID());
+			if (isset($fields_array['status']) && $this->selected_status instanceof TBGDatatype) $issue->setStatus($this->selected_status->getID());
+			if (isset($fields_array['reproducability']) && $this->selected_reproducability instanceof TBGDatatype) $issue->setReproducability($this->selected_reproducability->getID());
+			if (isset($fields_array['resolution']) && $this->selected_resolution instanceof TBGDatatype) $issue->setResolution($this->selected_resolution->getID());
+			if (isset($fields_array['severity']) && $this->selected_severity instanceof TBGDatatype) $issue->setSeverity($this->selected_severity->getID());
+			if (isset($fields_array['priority']) && $this->selected_priority instanceof TBGDatatype) $issue->setPriority($this->selected_priority->getID());
 			if (isset($fields_array['estimated_time'])) $issue->setEstimatedTime($this->selected_estimated_time);
 			if (isset($fields_array['elapsed_time'])) $issue->setSpentTime($this->selected_elapsed_time);
 			if (isset($fields_array['percent_complete'])) $issue->setPercentCompleted($this->selected_percent_complete);
-			foreach (BUGScustomdatatype::getAll() as $customdatatype)
+			foreach (TBGCustomDatatype::getAll() as $customdatatype)
 			{
-				if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption)
+				if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeoption)
 				{
 					$selected_option = $this->selected_customdatatype[$customdatatype->getKey()];
 					$issue->setCustomField($customdatatype->getKey(), $selected_option->getValue());
 				}
 			}
 			$issue->save();
-			if (isset($fields_array['edition']) && $this->selected_edition instanceof BUGSedition) $issue->addAffectedEdition($this->selected_edition);
-			if (isset($fields_array['build']) && $this->selected_build instanceof BUGSbuild) $issue->addAffectedBuild($this->selected_build);
-			if (isset($fields_array['component']) && $this->selected_component instanceof BUGScomponent) $issue->addAffectedComponent($this->selected_component);
+			if (isset($fields_array['edition']) && $this->selected_edition instanceof TBGEdition) $issue->addAffectedEdition($this->selected_edition);
+			if (isset($fields_array['build']) && $this->selected_build instanceof TBGBuild) $issue->addAffectedBuild($this->selected_build);
+			if (isset($fields_array['component']) && $this->selected_component instanceof TBGComponent) $issue->addAffectedComponent($this->selected_component);
 
 			return $issue;
 		}
@@ -818,11 +818,11 @@
 		/**
 		 * "Report issue" page
 		 *  
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runReportIssue(BUGSrequest $request)
+		public function runReportIssue(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 			$this->_setupReportIssueProperties();
 			$errors = array();
 			$permission_errors = array();
@@ -833,7 +833,7 @@
 
 			$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
 
-			if ($request->isMethod(BUGSrequest::POST))
+			if ($request->isMethod(TBGRequest::POST))
 			{
 				if ($this->_postIssueValidation($request, $errors, $permission_errors))
 				{
@@ -846,7 +846,7 @@
 						}
 						if ($this->selected_issuetype->getRedirectAfterReporting())
 						{
-							$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 303);
+							$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 303);
 						}
 						else
 						{
@@ -875,15 +875,15 @@
 		/**
 		 * Retrieves the fields which are valid for that product and issue type combination
 		 *  
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runReportIssueGetFields(BUGSrequest $request)
+		public function runReportIssueGetFields(TBGRequest $request)
 		{
 			if ($project_id = $request->getParameter('project_id'))
 			{
 				try
 				{
-					$selected_project = BUGSfactory::projectLab($project_id);
+					$selected_project = TBGFactory::projectLab($project_id);
 				}
 				catch (Exception $e)
 				{
@@ -896,21 +896,21 @@
 			}
 			
 			$fields_array = $selected_project->getReportableFieldsArray($request->getParameter('issuetype_id'));
-			return $this->renderJSON(array('available_fields' => BUGSdatatypebase::getAvailableFields(), 'fields' => $fields_array));
+			return $this->renderJSON(array('available_fields' => TBGDatatypeBase::getAvailableFields(), 'fields' => $fields_array));
 		}
 
 		/**
 		 * Retrieves the fields which are valid for that product and issue type combination
 		 *  
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runToggleFavouriteIssue(BUGSrequest $request)
+		public function runToggleFavouriteIssue(TBGRequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
 				try
 				{
-					$issue = BUGSfactory::BUGSissueLab($issue_id);
+					$issue = TBGFactory::TBGIssueLab($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -922,13 +922,13 @@
 				return $this->renderText('no issue');
 			}
 			
-			if (BUGScontext::getUser()->isIssueStarred($issue_id))
+			if (TBGContext::getUser()->isIssueStarred($issue_id))
 			{
-				$retval = !BUGScontext::getUser()->removeStarredIssue($issue_id);
+				$retval = !TBGContext::getUser()->removeStarredIssue($issue_id);
 			}
 			else
 			{
-				$retval = BUGScontext::getUser()->addStarredIssue($issue_id);
+				$retval = TBGContext::getUser()->addStarredIssue($issue_id);
 			}
 			$this->getResponse()->setContentType('application/json');
 			return $this->renderText(json_encode(array('starred' => $retval)));
@@ -937,15 +937,15 @@
 		/**
 		 * Sets an issue field to a specified value
 		 * 
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runIssueSetField(BUGSrequest $request)
+		public function runIssueSetField(TBGRequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
 				try
 				{
-					$issue = BUGSfactory::BUGSissueLab($issue_id);
+					$issue = TBGFactory::TBGIssueLab($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -973,7 +973,7 @@
 					}
 					break;
 				case 'estimated_time':
-					if ($request->getParameter('estimated_time') != BUGScontext::getI18n()->__('Enter your estimate here') && $request->getParameter('estimated_time'))
+					if ($request->getParameter('estimated_time') != TBGContext::getI18n()->__('Enter your estimate here') && $request->getParameter('estimated_time'))
 					{
 						$issue->setEstimatedTime($request->getParameter('estimated_time'));
 					}
@@ -998,18 +998,18 @@
 					{
 						if ($request->hasParameter('identifiable_type'))
 						{
-							if (in_array($request->getParameter('identifiable_type'), array(BUGSidentifiableclass::TYPE_USER, BUGSidentifiableclass::TYPE_TEAM)))
+							if (in_array($request->getParameter('identifiable_type'), array(TBGIdentifiableClass::TYPE_USER, TBGIdentifiableClass::TYPE_TEAM)))
 							{
 								switch ($request->getParameter('identifiable_type'))
 								{
-									case BUGSidentifiableclass::TYPE_USER:
-										$identified = BUGSfactory::userLab($request->getParameter('value'));
+									case TBGIdentifiableClass::TYPE_USER:
+										$identified = TBGFactory::userLab($request->getParameter('value'));
 										break;
-									case BUGSidentifiableclass::TYPE_TEAM:
-										$identified = BUGSfactory::teamLab($request->getParameter('value'));
+									case TBGIdentifiableClass::TYPE_TEAM:
+										$identified = TBGFactory::teamLab($request->getParameter('value'));
 										break;
 								}
-								if ($identified instanceof BUGSidentifiableclass)
+								if ($identified instanceof TBGIdentifiableClass)
 								{
 									if ($request->getParameter('field') == 'owned_by') $issue->setOwner($identified);
 									elseif ($request->getParameter('field') == 'assigned_to') $issue->setAssignee($identified);
@@ -1023,22 +1023,22 @@
 						}
 						elseif ($request->getParameter('field') == 'posted_by')
 						{
-							$identified = BUGSfactory::userLab($request->getParameter('value'));
-							if ($identified instanceof BUGSidentifiableclass)
+							$identified = TBGFactory::userLab($request->getParameter('value'));
+							if ($identified instanceof TBGIdentifiableClass)
 							{
 								$issue->setPostedBy($identified);
 							}
 						}
 						if ($request->getParameter('field') == 'owned_by')
-							return $this->renderJSON(array('changed' => $issue->isOwnedByChanged(), 'field' => (($issue->isOwned()) ? array('id' => $issue->getOwnerID(), 'name' => (($issue->getOwnerType() == BUGSidentifiableclass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getOwner())))) : array('id' => 0))));
+							return $this->renderJSON(array('changed' => $issue->isOwnedByChanged(), 'field' => (($issue->isOwned()) ? array('id' => $issue->getOwnerID(), 'name' => (($issue->getOwnerType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getOwner())))) : array('id' => 0))));
 						if ($request->getParameter('field') == 'posted_by')
 							return $this->renderJSON(array('changed' => $issue->isPostedByChanged(), 'field' => array('id' => $issue->getPostedByID(), 'name' => $this->getComponentHTML('main/userdropdown', array('user' => $issue->getPostedBy())))));
 						if ($request->getParameter('field') == 'assigned_to')
-							return $this->renderJSON(array('changed' => $issue->isAssignedToChanged(), 'field' => (($issue->isAssigned()) ? array('id' => $issue->getAssigneeID(), 'name' => (($issue->getAssigneeType() == BUGSidentifiableclass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getAssignee())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getAssignee())))) : array('id' => 0))));
+							return $this->renderJSON(array('changed' => $issue->isAssignedToChanged(), 'field' => (($issue->isAssigned()) ? array('id' => $issue->getAssigneeID(), 'name' => (($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getAssignee())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getAssignee())))) : array('id' => 0))));
 					}
 					break;
 				case 'spent_time':
-					if ($request->getParameter('spent_time') != BUGScontext::getI18n()->__('Enter time spent here') && $request->getParameter('spent_time'))
+					if ($request->getParameter('spent_time') != TBGContext::getI18n()->__('Enter time spent here') && $request->getParameter('spent_time'))
 					{
 						if ($request->hasParameter('spent_time_added_text'))
 						{
@@ -1087,7 +1087,7 @@
 						if ($request->hasParameter('category_id') && $request->getParameter('field') == 'category')
 						{
 							$category_id = $request->getParameter('category_id');
-							if ($category_id == 0 || ($category_id !== 0 && ($category = BUGSfactory::BUGScategoryLab($category_id)) instanceof BUGScategory))
+							if ($category_id == 0 || ($category_id !== 0 && ($category = TBGFactory::TBGCategoryLab($category_id)) instanceof TBGCategory))
 							{
 								$issue->setCategory($category_id);
 								if (!$issue->isCategoryChanged()) return $this->renderJSON(array('changed' => false));
@@ -1097,7 +1097,7 @@
 						elseif ($request->hasParameter('resolution_id') && $request->getParameter('field') == 'resolution')
 						{
 							$resolution_id = $request->getParameter('resolution_id');
-							if ($resolution_id == 0 || ($resolution_id !== 0 && ($resolution = BUGSfactory::BUGSresolutionLab($resolution_id)) instanceof BUGSresolution))
+							if ($resolution_id == 0 || ($resolution_id !== 0 && ($resolution = TBGFactory::TBGResolutionLab($resolution_id)) instanceof TBGResolution))
 							{
 								$issue->setResolution($resolution_id);
 								if (!$issue->isResolutionChanged()) return $this->renderJSON(array('changed' => false));
@@ -1107,18 +1107,18 @@
 						elseif ($request->hasParameter('issuetype_id') && $request->getParameter('field') == 'issuetype')
 						{
 							$issuetype_id = $request->getParameter('issuetype_id');
-							if ($issuetype_id == 0 || ($issuetype_id !== 0 && ($issuetype = BUGSfactory::BUGSissuetypeLab($issuetype_id)) instanceof BUGSissuetype))
+							if ($issuetype_id == 0 || ($issuetype_id !== 0 && ($issuetype = TBGFactory::TBGIssuetypeLab($issuetype_id)) instanceof TBGIssuetype))
 							{
 								$issue->setIssuetype($issuetype_id);
 								if (!$issue->isIssuetypeChanged()) return $this->renderJSON(array('changed' => false));
 								$visible_fields = ($issuetype_id != 0) ? $issue->getProject()->getVisibleFieldsArray($issuetype_id) : array();
-								return ($issuetype_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'visible_fields' => $visible_fields)) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $issuetype_id, 'name' => $issuetype->getName(), 'src' => htmlspecialchars(BUGSsettings::getURLsubdir() . 'themes/' . BUGSsettings::getThemeName() . '/' . $issuetype->getIcon() . '_small.png')), 'visible_fields' => $visible_fields)); 
+								return ($issuetype_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'visible_fields' => $visible_fields)) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $issuetype_id, 'name' => $issuetype->getName(), 'src' => htmlspecialchars(TBGSettings::getURLsubdir() . 'themes/' . TBGSettings::getThemeName() . '/' . $issuetype->getIcon() . '_small.png')), 'visible_fields' => $visible_fields)); 
 							}
 						}
 						elseif ($request->hasParameter('severity_id') && $request->getParameter('field') == 'severity')
 						{
 							$severity_id = $request->getParameter('severity_id');
-							if ($severity_id == 0 || ($severity_id !== 0 && ($severity = BUGSfactory::BUGSseverityLab($severity_id)) instanceof BUGSseverity))
+							if ($severity_id == 0 || ($severity_id !== 0 && ($severity = TBGFactory::TBGSeverityLab($severity_id)) instanceof TBGSeverity))
 							{
 								$issue->setSeverity($severity_id);
 								if (!$issue->isSeverityChanged()) return $this->renderJSON(array('changed' => false));
@@ -1128,7 +1128,7 @@
 						elseif ($request->hasParameter('reproducability_id') && $request->getParameter('field') == 'reproducability')
 						{
 							$reproducability_id = $request->getParameter('reproducability_id');
-							if ($reproducability_id == 0 || ($reproducability_id !== 0 && ($reproducability = BUGSfactory::BUGSreproducabilityLab($reproducability_id)) instanceof BUGSreproducability))
+							if ($reproducability_id == 0 || ($reproducability_id !== 0 && ($reproducability = TBGFactory::TBGReproducabilityLab($reproducability_id)) instanceof TBGReproducability))
 							{
 								$issue->setReproducability($reproducability_id);
 								if (!$issue->isReproducabilityChanged()) return $this->renderJSON(array('changed' => false));
@@ -1138,7 +1138,7 @@
 						elseif ($request->hasParameter('priority_id') && $request->getParameter('field') == 'priority')
 						{
 							$priority_id = $request->getParameter('priority_id');
-							if ($priority_id == 0 || ($priority_id !== 0 && ($priority = BUGSfactory::BUGSpriorityLab($priority_id)) instanceof BUGSpriority))
+							if ($priority_id == 0 || ($priority_id !== 0 && ($priority = TBGFactory::TBGPriorityLab($priority_id)) instanceof TBGPriority))
 							{
 								$issue->setPriority($priority_id);
 								if (!$issue->isPriorityChanged()) return $this->renderJSON(array('changed' => false));
@@ -1148,7 +1148,7 @@
 						elseif ($request->hasParameter('status_id') && $request->getParameter('field') == 'status')
 						{
 							$status_id = $request->getParameter('status_id');
-							if ($status_id == 0 || ($status_id !== 0 && ($status = BUGSfactory::BUGSstatusLab($status_id)) instanceof BUGSstatus))
+							if ($status_id == 0 || ($status_id !== 0 && ($status = TBGFactory::TBGStatusLab($status_id)) instanceof TBGStatus))
 							{
 								$issue->setStatus($status_id);
 								if (!$issue->isStatusChanged()) return $this->renderJSON(array('changed' => false));
@@ -1158,7 +1158,7 @@
 						elseif ($request->hasParameter('milestone_id') && $request->getParameter('field') == 'milestone')
 						{
 							$milestone_id = $request->getParameter('milestone_id');
-							if ($milestone_id == 0 || ($milestone_id !== 0 && ($milestone = BUGSfactory::milestoneLab($milestone_id)) instanceof BUGSmilestone))
+							if ($milestone_id == 0 || ($milestone_id !== 0 && ($milestone = TBGFactory::milestoneLab($milestone_id)) instanceof TBGMilestone))
 							{
 								$issue->setMilestone($milestone_id);
 								if (!$issue->isMilestoneChanged()) return $this->renderJSON(array('changed' => false));
@@ -1172,16 +1172,16 @@
 						return $this->renderJSON(array('error' => $e->getMessage()));
 					}
 					$this->getResponse()->setHttpStatus(400);
-					return $this->renderJSON(array('error' => BUGScontext::getI18n()->__('No valid field value specified')));
+					return $this->renderJSON(array('error' => TBGContext::getI18n()->__('No valid field value specified')));
 					break;
 				default:
-					if ($customdatatype = BUGScustomdatatype::getByKey($request->getParameter('field')))
+					if ($customdatatype = TBGCustomDatatype::getByKey($request->getParameter('field')))
 					{
 						$key = $customdatatype->getKey();
 						if ($request->hasParameter("{$key}_value"))
 						{
 							$customdatatypeoption_value = $request->getParameter("{$key}_value");
-							if ($customdatatypeoption_value && ($customdatatypeoption = BUGScustomdatatypeoption::getByValueAndKey($customdatatypeoption_value, $key)) instanceof BUGScustomdatatypeoption)
+							if ($customdatatypeoption_value && ($customdatatypeoption = TBGCustomDatatypeoption::getByValueAndKey($customdatatypeoption_value, $key)) instanceof TBGCustomDatatypeoption)
 							{
 								$issue->setCustomField($key, $customdatatypeoption->getValue());
 								$changed_methodname = "isCustomfield{$key}Changed";
@@ -1190,27 +1190,27 @@
 							}
 						}
 						$this->getResponse()->setHttpStatus(400);
-						return $this->renderJSON(array('error' => BUGScontext::getI18n()->__('No valid field value specified')));
+						return $this->renderJSON(array('error' => TBGContext::getI18n()->__('No valid field value specified')));
 					}
 					break;
 			}
 			
 			$this->getResponse()->setHttpStatus(400);
-			return $this->renderJSON(array('error' => BUGScontext::getI18n()->__('No valid field specified (%field%)', array('%field%' => $request->getParameter('field')))));
+			return $this->renderJSON(array('error' => TBGContext::getI18n()->__('No valid field specified (%field%)', array('%field%' => $request->getParameter('field')))));
 		}
 
 		/**
 		 * Reverts an issue field back to the original value
 		 * 
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runIssueRevertField(BUGSrequest $request)
+		public function runIssueRevertField(TBGRequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
 				try
 				{
-					$issue = BUGSfactory::BUGSissueLab($issue_id);
+					$issue = TBGFactory::TBGIssueLab($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1230,23 +1230,23 @@
 			{
 				case 'category':
 					$issue->revertCategory();
-					$field = ($issue->getCategory() instanceof BUGScategory) ? array('id' => $issue->getCategory()->getID(), 'name' => $issue->getCategory()->getName()) : array('id' => 0);
+					$field = ($issue->getCategory() instanceof TBGCategory) ? array('id' => $issue->getCategory()->getID(), 'name' => $issue->getCategory()->getName()) : array('id' => 0);
 					break;
 				case 'resolution':
 					$issue->revertResolution();
-					$field = ($issue->getResolution() instanceof BUGSresolution) ? array('id' => $issue->getResolution()->getID(), 'name' => $issue->getResolution()->getName()) : array('id' => 0);
+					$field = ($issue->getResolution() instanceof TBGResolution) ? array('id' => $issue->getResolution()->getID(), 'name' => $issue->getResolution()->getName()) : array('id' => 0);
 					break;
 				case 'severity':
 					$issue->revertSeverity();
-					$field = ($issue->getSeverity() instanceof BUGSseverity) ? array('id' => $issue->getSeverity()->getID(), 'name' => $issue->getSeverity()->getName()) : array('id' => 0);
+					$field = ($issue->getSeverity() instanceof TBGSeverity) ? array('id' => $issue->getSeverity()->getID(), 'name' => $issue->getSeverity()->getName()) : array('id' => 0);
 					break;
 				case 'reproducability':
 					$issue->revertReproducability();
-					$field = ($issue->getReproducability() instanceof BUGSreproducability) ? array('id' => $issue->getReproducability()->getID(), 'name' => $issue->getReproducability()->getName()) : array('id' => 0);
+					$field = ($issue->getReproducability() instanceof TBGReproducability) ? array('id' => $issue->getReproducability()->getID(), 'name' => $issue->getReproducability()->getName()) : array('id' => 0);
 					break;
 				case 'priority':
 					$issue->revertPriority();
-					$field = ($issue->getPriority() instanceof BUGSpriority) ? array('id' => $issue->getPriority()->getID(), 'name' => $issue->getPriority()->getName()) : array('id' => 0);
+					$field = ($issue->getPriority() instanceof TBGPriority) ? array('id' => $issue->getPriority()->getID(), 'name' => $issue->getPriority()->getName()) : array('id' => 0);
 					break;
 				case 'percent':
 					$issue->revertPercentCompleted();
@@ -1254,17 +1254,17 @@
 					break;
 				case 'status':
 					$issue->revertStatus();
-					$field = ($issue->getStatus() instanceof BUGSstatus) ? array('id' => $issue->getStatus()->getID(), 'name' => $issue->getStatus()->getName(), 'color' => $issue->getStatus()->getColor()) : array('id' => 0);
+					$field = ($issue->getStatus() instanceof TBGStatus) ? array('id' => $issue->getStatus()->getID(), 'name' => $issue->getStatus()->getName(), 'color' => $issue->getStatus()->getColor()) : array('id' => 0);
 					break;
 				case 'issuetype':
 					$issue->revertIssuetype();
-					$field = ($issue->getIssuetype() instanceof BUGSissuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(BUGSsettings::getURLsubdir() . 'themes/' . BUGSsettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
-					$visible_fields = ($issue->getIssuetype() instanceof BUGSissuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
+					$field = ($issue->getIssuetype() instanceof TBGIssuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(TBGSettings::getURLsubdir() . 'themes/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
+					$visible_fields = ($issue->getIssuetype() instanceof TBGIssuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
 					return $this->renderJSON(array('ok' => true, 'field' => $field, 'visible_fields' => $visible_fields));
 					break;
 				case 'milestone':
 					$issue->revertMilestone();
-					$field = ($issue->getMilestone() instanceof BUGSmilestone) ? array('id' => $issue->getMilestone()->getID(), 'name' => $issue->getMilestone()->getName()) : array('id' => 0);
+					$field = ($issue->getMilestone() instanceof TBGMilestone) ? array('id' => $issue->getMilestone()->getID(), 'name' => $issue->getMilestone()->getName()) : array('id' => 0);
 					break;
 				case 'estimated_time':
 					$issue->revertEstimatedTime();
@@ -1276,23 +1276,23 @@
 					break;
 				case 'owned_by':
 					$issue->revertOwnedBy();
-					return $this->renderJSON(array('changed' => $issue->isOwnedByChanged(), 'field' => (($issue->isOwned()) ? array('id' => $issue->getOwnerID(), 'name' => (($issue->getOwnerType() == BUGSidentifiableclass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getOwner())))) : array('id' => 0))));
+					return $this->renderJSON(array('changed' => $issue->isOwnedByChanged(), 'field' => (($issue->isOwned()) ? array('id' => $issue->getOwnerID(), 'name' => (($issue->getOwnerType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getOwner())))) : array('id' => 0))));
 					break;
 				case 'assigned_to':
 					$issue->revertAssignedTo();
-					return $this->renderJSON(array('changed' => $issue->isAssignedToChanged(), 'field' => (($issue->isAssigned()) ? array('id' => $issue->getAssigneeID(), 'name' => (($issue->getAssigneeType() == BUGSidentifiableclass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getAssignee())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getAssignee())))) : array('id' => 0))));
+					return $this->renderJSON(array('changed' => $issue->isAssignedToChanged(), 'field' => (($issue->isAssigned()) ? array('id' => $issue->getAssigneeID(), 'name' => (($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $issue->getAssignee())) : $this->getComponentHTML('main/teamdropdown', array('team' => $issue->getAssignee())))) : array('id' => 0))));
 					break;
 				case 'posted_by':
 					$issue->revertPostedBy();
 					return $this->renderJSON(array('changed' => $issue->isPostedByChanged(), 'field' => array('id' => $issue->getPostedByID(), 'name' => $this->getComponentHTML('main/userdropdown', array('user' => $issue->getPostedBy())))));
 					break;
 				default:
-					if ($customdatatype = BUGScustomdatatype::getByKey($request->getParameter('field')))
+					if ($customdatatype = TBGCustomDatatype::getByKey($request->getParameter('field')))
 					{
 						$key = $customdatatype->getKey();
 						$revert_methodname = "revertCustomfield{$key}";
 						$issue->$revert_methodname();
-						$field = ($issue->getCustomField($key) instanceof BUGScustomdatatypeoption) ? array('value' => $issue->getCustomField($key)->getValue(), 'name' => $issue->getCustomField($key)->getName()) : array('id' => 0);
+						$field = ($issue->getCustomField($key) instanceof TBGCustomDatatypeoption) ? array('value' => $issue->getCustomField($key)->getValue(), 'name' => $issue->getCustomField($key)->getName()) : array('id' => 0);
 					}
 					break;
 			}
@@ -1304,129 +1304,129 @@
 			else
 			{
 				$this->getResponse()->setHttpStatus(400);
-				return $this->renderJSON(array('error' => BUGScontext::getI18n()->__('No valid field specified (%field%)', array('%field%' => $request->getParameter('field')))));
+				return $this->renderJSON(array('error' => TBGContext::getI18n()->__('No valid field specified (%field%)', array('%field%' => $request->getParameter('field')))));
 			}
 		}
 		
 		/**
 		 * Marks this issue as being worked on by the current user
 		 * 
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runIssueStartWorking(BUGSrequest $request)
+		public function runIssueStartWorking(TBGRequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
 				try
 				{
-					$issue = BUGSfactory::BUGSissueLab($issue_id);
+					$issue = TBGFactory::TBGIssueLab($issue_id);
 				}
 				catch (Exception $e)
 				{
-					return $this->return404(BUGScontext::getI18n()->__('This issue does not exist'));
+					return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
 				}
 			}
 			else
 			{
-				return $this->return404(BUGScontext::getI18n()->__('This issue does not exist'));
+				return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
 			}
-			$issue->startWorkingOnIssue(BUGScontext::getUser());
+			$issue->startWorkingOnIssue(TBGContext::getUser());
 			$issue->save();
-			$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		}
 		
 		/**
 		 * Marks this issue as being completed work on by the current user
 		 * 
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runIssueStopWorking(BUGSrequest $request)
+		public function runIssueStopWorking(TBGRequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
 				try
 				{
-					$issue = BUGSfactory::BUGSissueLab($issue_id);
+					$issue = TBGFactory::TBGIssueLab($issue_id);
 				}
 				catch (Exception $e)
 				{
-					return $this->return404(BUGScontext::getI18n()->__('This issue does not exist'));
+					return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
 				}
 			}
 			else
 			{
-				return $this->return404(BUGScontext::getI18n()->__('This issue does not exist'));
+				return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
 			}
 			
 			if ($request->hasParameter('did') && $request->getParameter('did') == 'nothing')
 			{
 				$issue->clearUserWorkingOnIssue();
 				$issue->save();
-				$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+				$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 			}
 			elseif ($request->hasParameter('perform_action') && $request->getParameter('perform_action') == 'grab')
 			{
 				$issue->clearUserWorkingOnIssue();
-				$issue->startWorkingOnIssue(BUGScontext::getUser());
+				$issue->startWorkingOnIssue(TBGContext::getUser());
 				$issue->save();
-				$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+				$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 			}
 			else
 			{
 				$issue->stopWorkingOnIssue();
 				$issue->save();
-				$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+				$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 			}
 		}
 
 		/**
 		 * Reopen the issue
 		 * 
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runReopenIssue(BUGSrequest $request)
+		public function runReopenIssue(TBGRequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
 				try
 				{
-					$issue = BUGSfactory::BUGSissueLab($issue_id);
+					$issue = TBGFactory::TBGIssueLab($issue_id);
 				}
 				catch (Exception $e)
 				{
-					return $this->return404(BUGScontext::getI18n()->__('This issue does not exist'));
+					return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
 				}
 			}
 			else
 			{
-				return $this->return404(BUGScontext::getI18n()->__('This issue does not exist'));
+				return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
 			}
 			$issue->open();
 			$issue->save();
-			$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		}
 		
 		/**
 		 * Close the issue
 		 * 
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runCloseIssue(BUGSrequest $request)
+		public function runCloseIssue(TBGRequest $request)
 		{
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
 				try
 				{
-					$issue = BUGSfactory::BUGSissueLab($issue_id);
+					$issue = TBGFactory::TBGIssueLab($issue_id);
 				}
 				catch (Exception $e)
 				{
-					return $this->return404(BUGScontext::getI18n()->__('This issue does not exist'));
+					return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
 				}
 			}
 			else
 			{
-				return $this->return404(BUGScontext::getI18n()->__('This issue does not exist'));
+				return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
 			}
 			if ($request->hasParameter('set_status'))
 			{
@@ -1438,29 +1438,29 @@
 			}
 			if (trim($request->getParameter('close_comment')) != '')
 			{
-				$issue->addSystemComment(BUGScontext::getI18n()->__('Issue closed'), $request->getParameter('close_comment'), BUGScontext::getUser()->getID());
+				$issue->addSystemComment(TBGContext::getI18n()->__('Issue closed'), $request->getParameter('close_comment'), TBGContext::getUser()->getID());
 			}
 			$issue->close();
 			$issue->save();
-			$this->forward(BUGScontext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		}
 		
 		/**
 		 * Find users and show selection links
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */		
-		public function runFindIdentifiable(BUGSrequest $request)
+		public function runFindIdentifiable(TBGRequest $request)
 		{
-			$this->forward403unless($request->isMethod(BUGSrequest::POST));
+			$this->forward403unless($request->isMethod(TBGRequest::POST));
 			$this->users = array();
 			
 			if ($find_identifiable_by = $request->getParameter('find_identifiable_by'))
 			{
-				$this->users = BUGSuser::findUsers($find_identifiable_by, 10);
+				$this->users = TBGUser::findUsers($find_identifiable_by, 10);
 				if ($request->getParameter('include_teams'))
 				{
-					$this->teams = BUGSteam::findTeams($find_identifiable_by);
+					$this->teams = TBGTeam::findTeams($find_identifiable_by);
 				}
 			}
 			return $this->renderComponent('identifiableselectorresults', array('users' => $this->users, 'callback' => $request->getParameter('callback')));
@@ -1469,21 +1469,21 @@
 		/**
 		 * Hides an infobox with a specific key
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */		
-		public function runHideInfobox(BUGSrequest $request)
+		public function runHideInfobox(TBGRequest $request)
 		{
-			BUGSsettings::hideInfoBox($request->getParameter('key'));
+			TBGSettings::hideInfoBox($request->getParameter('key'));
 			return $this->renderJSON(array('hidden' => true));
 		}
 
-		public function runGetUploadStatus(BUGSrequest $request)
+		public function runGetUploadStatus(TBGRequest $request)
 		{
 			$id = $request->getParameter('upload_id', 0);
 
-			BUGSlogging::log('requesting status for upload with id ' . $id);
-			$status = BUGScontext::getRequest()->getUploadStatus($id);
-			BUGSlogging::log('status was: ' . (int) $status['finished']. ', pct: '. (int) $status['percent']);
+			TBGLogging::log('requesting status for upload with id ' . $id);
+			$status = TBGContext::getRequest()->getUploadStatus($id);
+			TBGLogging::log('status was: ' . (int) $status['finished']. ', pct: '. (int) $status['percent']);
 			if (array_key_exists('file_id', $status) && array_key_exists('issue_id', $status))
 			{
 				$status['content'] = $this->getComponentHTML('main/attachedfile', array('issue_id' => $status['issue_id'], 'file_id' => $status['file_id']));
@@ -1492,20 +1492,20 @@
 			return $this->renderJSON($status);
 		}
 
-		public function runUpload(BUGSrequest $request)
+		public function runUpload(TBGRequest $request)
 		{
 			if (!$request->getParameter('APC_UPLOAD_PROGRESS'))
 			{
 				$request->setParameter('APC_UPLOAD_PROGRESS', $request->getParameter('upload_id'));
 			}
-			$this->getResponse()->setDecoration(BUGSresponse::DECORATE_NONE);
-			$issue = BUGSfactory::BUGSissueLab($request->getParameter('issue_id'));
-			if ($issue instanceof BUGSissue && $issue->hasAccess() && $issue->canAttachFiles())
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+			$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+			if ($issue instanceof TBGIssue && $issue->hasAccess() && $issue->canAttachFiles())
 			{
 				try
 				{
 					//var_dump($_FILES);die();
-					$file_id = BUGScontext::getRequest()->handleUpload('issue_file', $issue);
+					$file_id = TBGContext::getRequest()->handleUpload('issue_file', $issue);
 					//var_dump($filename);die();
 					if ($file_id)
 					{
@@ -1513,7 +1513,7 @@
 						$_SESSION['__upload_status'][$request->getParameter('upload_id')]['issue_id'] = $issue->getID();
 						return $this->renderText('ok');
 					}
-					$this->error = BUGScontext::getI18n()->__('An unhandled error occured with the upload');
+					$this->error = TBGContext::getI18n()->__('An unhandled error occured with the upload');
 				}
 				catch (Exception $e)
 				{
@@ -1524,14 +1524,14 @@
 			else
 			{
 				$this->getResponse()->setHttpStatus(401);
-				$this->error = BUGScontext::getI18n()->__('You cannot attach files to this issue');
+				$this->error = TBGContext::getI18n()->__('You cannot attach files to this issue');
 			}
-			BUGSlogging::log('marking upload ' . $request->getParameter('APC_UPLOAD_PROGRESS') . ' as completed with error ' . $this->error);
+			TBGLogging::log('marking upload ' . $request->getParameter('APC_UPLOAD_PROGRESS') . ' as completed with error ' . $this->error);
 			$request->markUploadAsFinishedWithError($request->getParameter('APC_UPLOAD_PROGRESS'), $this->error);
 			return $this->renderText($request->getParameter('APC_UPLOAD_PROGRESS').': '.$this->error);
 		}
 
-		public function runGetFile(BUGSrequest $request)
+		public function runGetFile(TBGRequest $request)
 		{
 			$file = B2DB::getTable('B2tFiles')->doSelectById((int) $request->getParameter('id'));
 			if ($file instanceof B2DBRow)
@@ -1544,7 +1544,7 @@
 				$this->getResponse()->cleanBuffer();
 				$this->getResponse()->addHeader('Content-type: '.$file->get(B2tFiles::CONTENT_TYPE));
 				$this->getResponse()->renderHeaders();
-				echo fpassthru(fopen(BUGSsettings::getUploadsLocalpath().$file->get(B2tFiles::REAL_FILENAME), 'r'));
+				echo fpassthru(fopen(TBGSettings::getUploadsLocalpath().$file->get(B2tFiles::REAL_FILENAME), 'r'));
 				die();
 				//return true;
 			}

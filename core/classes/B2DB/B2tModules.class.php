@@ -48,7 +48,7 @@
 		public function getAll()
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doSelect($crit);
 			return $res;
 		}

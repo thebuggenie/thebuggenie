@@ -5,40 +5,40 @@
 
 	if ($access_level == "full")
 	{
-		if (BUGScontext::getRequest()->getParameter('setconfigaccess') && is_numeric(BUGScontext::getRequest()->getParameter('allowed')) && BUGScontext::getRequest()->getParameter('config_no') == $configno)
+		if (TBGContext::getRequest()->getParameter('setconfigaccess') && is_numeric(TBGContext::getRequest()->getParameter('allowed')) && TBGContext::getRequest()->getParameter('config_no') == $configno)
 		{
-			switch (BUGScontext::getRequest()->getParameter('allowed'))
+			switch (TBGContext::getRequest()->getParameter('allowed'))
 			{
 				case 0:
-					BUGScontext::removePermission("b2readconfig", $configno, "core", $theuid, $gid, $tid);
-					BUGScontext::removePermission("b2saveconfig", $configno, "core", $theuid, $gid, $tid);
-					if (BUGScontext::getRequest()->getParameter('insertdeny') == 1)
+					TBGContext::removePermission("b2readconfig", $configno, "core", $theuid, $gid, $tid);
+					TBGContext::removePermission("b2saveconfig", $configno, "core", $theuid, $gid, $tid);
+					if (TBGContext::getRequest()->getParameter('insertdeny') == 1)
 					{
-						BUGScontext::setPermission("b2readconfig", $configno, "core", $theuid, $gid, $tid, 0, 1);
-						BUGScontext::setPermission("b2saveconfig", $configno, "core", $theuid, $gid, $tid, 0, 1);
+						TBGContext::setPermission("b2readconfig", $configno, "core", $theuid, $gid, $tid, 0, 1);
+						TBGContext::setPermission("b2saveconfig", $configno, "core", $theuid, $gid, $tid, 0, 1);
 					}
 					break;
 				case 1:
-					BUGScontext::removePermission("b2readconfig", $configno, "core", $theuid, $gid, $tid);
-					if (BUGScontext::getUser()->hasPermission("b2saveconfig", $configno, "core") == true)
+					TBGContext::removePermission("b2readconfig", $configno, "core", $theuid, $gid, $tid);
+					if (TBGContext::getUser()->hasPermission("b2saveconfig", $configno, "core") == true)
 					{
-						BUGScontext::setPermission("b2saveconfig", $configno, "core", $theuid, $gid, $tid, 1, 0);
+						TBGContext::setPermission("b2saveconfig", $configno, "core", $theuid, $gid, $tid, 1, 0);
 					}
 					break;
 				case 2:
-					BUGScontext::removePermission("b2saveconfig", $configno, "core", $theuid, $gid, $tid);
-					if (BUGScontext::getUser()->hasPermission("b2readconfig", $configno, "core") == true || BUGScontext::getUser()->hasPermission("b2saveconfig", $configno, "core") == true)
+					TBGContext::removePermission("b2saveconfig", $configno, "core", $theuid, $gid, $tid);
+					if (TBGContext::getUser()->hasPermission("b2readconfig", $configno, "core") == true || TBGContext::getUser()->hasPermission("b2saveconfig", $configno, "core") == true)
 					{
-						BUGScontext::setPermission("b2readconfig", $configno, "core", $theuid, $gid, $tid, 1, 0);
+						TBGContext::setPermission("b2readconfig", $configno, "core", $theuid, $gid, $tid, 1, 0);
 					}
 					break;
 			}
 		}
-		$light = (BUGScontext::getUser()->hasPermission("b2saveconfig", $configno, "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : ((BUGScontext::getUser()->hasPermission("b2readconfig", $configno, "core", $theuid, $gid, $tid, $all) == true) ? "yellow" : "red");
+		$light = (TBGContext::getUser()->hasPermission("b2saveconfig", $configno, "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : ((TBGContext::getUser()->hasPermission("b2readconfig", $configno, "core", $theuid, $gid, $tid, $all) == true) ? "yellow" : "red");
 		if ($gid != 0)
 		{
-			$blue = BUGScontext::getAllPermissions("b2readconfig", $theuid, $tid, $gid, $configno);
-			$blue = (count($blue) == 0) ? BUGScontext::getAllPermissions("b2saveconfig", $theuid, $tid, $gid, $configno) : $blue;
+			$blue = TBGContext::getAllPermissions("b2readconfig", $theuid, $tid, $gid, $configno);
+			$blue = (count($blue) == 0) ? TBGContext::getAllPermissions("b2saveconfig", $theuid, $tid, $gid, $configno) : $blue;
 			$light = (count($blue) == 0) ? "lightblue" : $light;
 			$lightaccess = ($light == "lightblue") ? 2 : (($light == "yellow") ? 1 : 0);
 			$insertdeny = ($light == "mediumgreen") ? 1 : 0;
@@ -51,14 +51,14 @@
 		$canlink = false;
 		if ($lightaccess == 2)
 		{
-			if (BUGScontext::getUser()->hasPermission("b2readconfig", $configno, "core") == true || BUGScontext::getUser()->hasPermission("b2saveconfig", $configno, "core") == true)
+			if (TBGContext::getUser()->hasPermission("b2readconfig", $configno, "core") == true || TBGContext::getUser()->hasPermission("b2saveconfig", $configno, "core") == true)
 			{
 				$canlink = true;
 			}
 		}
 		elseif ($lightaccess == 1)
 		{
-			if (BUGScontext::getUser()->hasPermission("b2saveconfig", $configno, "core") == true)
+			if (TBGContext::getUser()->hasPermission("b2saveconfig", $configno, "core") == true)
 			{
 				$canlink = true;
 			}
@@ -89,11 +89,11 @@
 	}
 	else
 	{
-		$light = (BUGScontext::getUser()->hasPermission("b2saveconfig", $configno, "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : ((BUGScontext::getUser()->hasPermission("b2readconfig", $configno, "core", $theuid, $gid, $tid, $all) == true) ? "yellow" : "red");
+		$light = (TBGContext::getUser()->hasPermission("b2saveconfig", $configno, "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : ((TBGContext::getUser()->hasPermission("b2readconfig", $configno, "core", $theuid, $gid, $tid, $all) == true) ? "yellow" : "red");
 		if ($gid != 0)
 		{
-			$blue = BUGScontext::getAllPermissions("b2readconfig", $theuid, $tid, $gid, 0);
-			$blue = (count($blue) == 0) ? BUGScontext::getAllPermissions("b2saveconfig", $theuid, $tid, $gid, 0) : $blue;
+			$blue = TBGContext::getAllPermissions("b2readconfig", $theuid, $tid, $gid, 0);
+			$blue = (count($blue) == 0) ? TBGContext::getAllPermissions("b2saveconfig", $theuid, $tid, $gid, 0) : $blue;
 			$light = (count($blue) == 0) ? "lightblue" : $light;
 		}
 		?>

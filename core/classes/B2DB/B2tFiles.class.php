@@ -46,11 +46,11 @@
 		public function saveFile($real_filename, $original_filename, $content_type, $description = null, $content = null)
 		{
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::UID, BUGScontext::getUser()->getUID());
+			$crit->addInsert(self::UID, TBGContext::getUser()->getUID());
 			$crit->addInsert(self::REAL_FILENAME, $real_filename);
 			$crit->addInsert(self::ORIGINAL_FILENAME, $original_filename);
 			$crit->addInsert(self::CONTENT_TYPE, $content_type);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			if ($description !== null)
 			{
 				$crit->addInsert(self::DESCRIPTION, $description);

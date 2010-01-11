@@ -96,7 +96,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addUpdate(self::IS_DEFAULT, false);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doUpdate($crit);
 		}
 		
@@ -116,7 +116,7 @@
 			}
 			$crit->addInsert(self::NAME, $name);
 			$crit->addInsert(self::KEY, strtolower(str_replace(' ', '', $name)));
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			return $res->getInsertID();
 		}
@@ -125,7 +125,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PREFIX, $prefix);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$row = B2DB::getTable('B2tProjects')->doSelectOne($crit);
 			return $row;
 		}
@@ -134,7 +134,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addOrderBy(self::NAME, B2DBCriteria::SORT_ASC);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doSelect($crit);
 			return $res;
 		}
@@ -152,7 +152,7 @@
 		public function getByID($id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$row = $this->doSelectById($id, $crit, false);
 			return $row;
 		}
@@ -160,7 +160,7 @@
 		public function getByKey($key)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::KEY, $key);
 			$row = $this->doSelectOne($crit, false);
 			return $row;

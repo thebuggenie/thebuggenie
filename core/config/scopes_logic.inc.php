@@ -1,14 +1,14 @@
 <?php
 
-	if (($access_level != "full" && $access_level != "read") || BUGScontext::getRequest()->getParameter('access_level'))
+	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
 		bugs_msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
-		if (BUGScontext::getRequest()->getParameter('selectedscope'))
+		if (TBGContext::getRequest()->getParameter('selectedscope'))
 		{
-			$theScope = BUGSfactory::scopeLab((int) BUGScontext::getRequest()->getParameter('selectedscope'));
+			$theScope = TBGFactory::scopeLab((int) TBGContext::getRequest()->getParameter('selectedscope'));
 		}
 		else
 		{
@@ -17,13 +17,13 @@
 
 		if ($access_level == "full")
 		{
-			if (BUGScontext::getRequest()->isAjaxCall())
+			if (TBGContext::getRequest()->isAjaxCall())
 			{
-				if (BUGScontext::getRequest()->getParameter('setscopeadmin'))
+				if (TBGContext::getRequest()->getParameter('setscopeadmin'))
 				{
-					$theScope->setScopeAdmin(BUGScontext::getRequest()->getParameter('id'));
+					$theScope->setScopeAdmin(TBGContext::getRequest()->getParameter('id'));
 				}
-				if (BUGScontext::getRequest()->getParameter('getscopeadmin'))
+				if (TBGContext::getRequest()->getParameter('getscopeadmin'))
 				{
 					echo bugs_userDropdown($theScope->getScopeAdmin());
 				}
@@ -31,13 +31,13 @@
 				exit();
 			}
 			
-			if (BUGScontext::getRequest()->getParameter('setdefaultscope'))
+			if (TBGContext::getRequest()->getParameter('setdefaultscope'))
 			{
-				$defaultscope = BUGScontext::getRequest()->getParameter('defaultscope');
-				BUGSsettings::saveSetting('defaultscope' , $defaultscope);
+				$defaultscope = TBGContext::getRequest()->getParameter('defaultscope');
+				TBGSettings::saveSetting('defaultscope' , $defaultscope);
 			}
 			
-			if (BUGScontext::getRequest()->getParameter('createnewscope'))
+			if (TBGContext::getRequest()->getParameter('createnewscope'))
 			{
 				$newScope = true;
 			}
@@ -46,18 +46,18 @@
 				$newScope = false;
 			}
 	
-			if (BUGScontext::getRequest()->getParameter('createscope'))
+			if (TBGContext::getRequest()->getParameter('createscope'))
 			{
 				$theErr = "";
 				$theErr2 = "";
 				$isUpdated = false;
 				$newScope = true;
 	
-				$scopeShortname = BUGScontext::getRequest()->getParameter('shortname');
-				$scopeHostname = BUGScontext::getRequest()->getParameter('hostname');
-				$scopeName = BUGScontext::getRequest()->getParameter('scopename');
-				$scopeEnabled = (BUGScontext::getRequest()->getParameter('enabled') == "1") ? 1 : 0;
-				$scopeDescription = BUGScontext::getRequest()->getParameter('description');
+				$scopeShortname = TBGContext::getRequest()->getParameter('shortname');
+				$scopeHostname = TBGContext::getRequest()->getParameter('hostname');
+				$scopeName = TBGContext::getRequest()->getParameter('scopename');
+				$scopeEnabled = (TBGContext::getRequest()->getParameter('enabled') == "1") ? 1 : 0;
+				$scopeDescription = TBGContext::getRequest()->getParameter('description');
 	
 				if ($scopeName != "")
 				{
@@ -65,7 +65,7 @@
 					{
 						try
 						{
-							$theScope = BUGSscope::createNew($scopeShortname, $scopeName, $scopeEnabled, $scopeDescription, $scopeHostname);
+							$theScope = TBGScope::createNew($scopeShortname, $scopeName, $scopeEnabled, $scopeDescription, $scopeHostname);
 							$isAdded = true;
 							$newScope = false;
 						}
@@ -85,7 +85,7 @@
 				}
 			}
 	
-			if (BUGScontext::getRequest()->getParameter('deletescope') && $theScope->getID() != BUGSsettings::getDefaultScope()->getID())
+			if (TBGContext::getRequest()->getParameter('deletescope') && $theScope->getID() != TBGSettings::getDefaultScope()->getID())
 			{
 				
 				$crit = new B2DBCriteria();
@@ -146,21 +146,21 @@
 				
 				B2DB::getTable('B2tScopes')->doDeleteById($theScope->getID());
 				
-				BUGScontext::trigger('core', 'delete_scope', $theScope);
+				TBGContext::trigger('core', 'delete_scope', $theScope);
 				
 				$theScope = null;
 			}
 	
-			if (BUGScontext::getRequest()->getParameter('savescopesettings'))
+			if (TBGContext::getRequest()->getParameter('savescopesettings'))
 			{
 				$theErr = "";
 				$isUpdated = false;
 	
-				$scopeShortname = BUGScontext::getRequest()->getParameter('shortname');
-				$scopeName = BUGScontext::getRequest()->getParameter('scopename');
-				$scopeHostname = BUGScontext::getRequest()->getParameter('hostname');
-				$scopeEnabled = (BUGScontext::getRequest()->getParameter('enabled') == "1") ? 1 : 0;
-				$scopeDescription = BUGScontext::getRequest()->getParameter('description');
+				$scopeShortname = TBGContext::getRequest()->getParameter('shortname');
+				$scopeName = TBGContext::getRequest()->getParameter('scopename');
+				$scopeHostname = TBGContext::getRequest()->getParameter('hostname');
+				$scopeEnabled = (TBGContext::getRequest()->getParameter('enabled') == "1") ? 1 : 0;
+				$scopeDescription = TBGContext::getRequest()->getParameter('description');
 	
 				if ($scopeName != "")
 				{

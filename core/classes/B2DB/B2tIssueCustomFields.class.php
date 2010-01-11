@@ -39,7 +39,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ISSUE_ID, $issue_id);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$res = $this->doSelect($crit);
 
@@ -51,7 +51,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ISSUE_ID, $issue_id);
 			$crit->addWhere(self::CUSTOMFIELDS_ID, $customdatatype_id);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$row = $this->doSelectOne($crit);
 
@@ -78,7 +78,7 @@
 				$crit->addInsert(self::ISSUE_ID, $issue_id);
 				$crit->addInsert(self::OPTION_VALUE, $option_id);
 				$crit->addInsert(self::CUSTOMFIELDS_ID, $customdatatype_id);
-				$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$res = $this->doInsert($crit);
 			}
 		}

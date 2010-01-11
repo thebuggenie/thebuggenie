@@ -3,7 +3,7 @@
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 5px 5px 15px 5px; font-size: 13px;">
 			<h1 style="margin-bottom: 0px;">The Bug Genie</h1>
-			<?php echo __('Version %thebuggenie_version%', array('%thebuggenie_version%' => BUGSsettings::getVersion(true))); ?><br>
+			<?php echo __('Version %thebuggenie_version%', array('%thebuggenie_version%' => TBGSettings::getVersion(true))); ?><br>
 			<br>
 			<div style="text-align: left; padding: 10px;">
 				<?php echo __('The Bug Genie is an issue tracking system with a strong focus on being friendly &ndash; both for regular users and power users'); ?>.<br>

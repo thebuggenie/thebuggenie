@@ -7,7 +7,7 @@
 <tr>
 <?php include_component('configleftmenu', array('selected_section' => 10)); ?>
 <td valign="top">
-<script type="text/javascript" src="<?php echo BUGScontext::getTBGPath(); ?>js/config/projects_ajax.js"></script>
+<script type="text/javascript" src="<?php echo TBGContext::getTBGPath(); ?>js/config/projects_ajax.js"></script>
 	<table style="width: 100%" cellpadding=0 cellspacing=0>
 		<tr>
 			<td style="padding-right: 10px;">
@@ -152,7 +152,7 @@
 			<tr>
 				<td style="width: auto; padding-right: 5px; vertical-align: top;">
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_edition', array('project_id' => $theEdition->getProject()->getID(), 'edition_id' => $theEdition->getID(), 'mode' => 'general')); ?>" method="post" id="edition_settings" onsubmit="submitEditionSettings('<?php echo make_url('configure_project_edition', array('project_id' => $theEdition->getProject()->getID(), 'edition_id' => $theEdition->getID(), 'mode' => 'general')); ?>');return false;">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_edition', array('project_id' => $theEdition->getProject()->getID(), 'edition_id' => $theEdition->getID(), 'mode' => 'general')); ?>" method="post" id="edition_settings" onsubmit="submitEditionSettings('<?php echo make_url('configure_project_edition', array('project_id' => $theEdition->getProject()->getID(), 'edition_id' => $theEdition->getID(), 'mode' => 'general')); ?>');return false;">
 					<table cellpadding=0 cellspacing=0 style="width: 100%; margin-top: 5px;">
 						<tr>
 							<td style="width: 120px;"><label for="edition_name"><?php echo __('Name:') ?></label></td>

@@ -1,15 +1,15 @@
 <?php
 
-	if (($access_level != "full" && $access_level != "read") || BUGScontext::getRequest()->getParameter('access_level'))
+	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
 		bugs_msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
-		$charset = BUGScontext::getI18n()->getCharset();
-		if (BUGScontext::getRequest()->getParameter('step'))
+		$charset = TBGContext::getI18n()->getCharset();
+		if (TBGContext::getRequest()->getParameter('step'))
 		{
-			switch (BUGScontext::getRequest()->getParameter('step'))
+			switch (TBGContext::getRequest()->getParameter('step'))
 			{
 				case 1:
 					?>
@@ -33,10 +33,10 @@
 					<div style="padding: 5px; width: 450px;">
 					<?php
 					
-					$b1_hostname = BUGScontext::getRequest()->getParameter('b1_hostname', null, false);
-					$b1_database = BUGScontext::getRequest()->getParameter('b1_database', null, false);
-					$b1_username = BUGScontext::getRequest()->getParameter('b1_username', null, false);
-					$b1_password = BUGScontext::getRequest()->getParameter('b1_password', null, false);
+					$b1_hostname = TBGContext::getRequest()->getParameter('b1_hostname', null, false);
+					$b1_database = TBGContext::getRequest()->getParameter('b1_database', null, false);
+					$b1_username = TBGContext::getRequest()->getParameter('b1_username', null, false);
+					$b1_password = TBGContext::getRequest()->getParameter('b1_password', null, false);
 					
 					B2DB::closeDBLink();
 					B2DB::setHost($b1_hostname);
@@ -121,14 +121,14 @@
 					$orig_password = B2DB::getPasswd();
 					$orig_dbtype = B2DB::getDBtype();
 
-					$b1_hostname = BUGScontext::getRequest()->getParameter('b1_hostname', null, false);
-					$b1_database = BUGScontext::getRequest()->getParameter('b1_database', null, false);
-					$b1_username = BUGScontext::getRequest()->getParameter('b1_username', null, false);
-					$b1_password = BUGScontext::getRequest()->getParameter('b1_password', null, false);
+					$b1_hostname = TBGContext::getRequest()->getParameter('b1_hostname', null, false);
+					$b1_database = TBGContext::getRequest()->getParameter('b1_database', null, false);
+					$b1_username = TBGContext::getRequest()->getParameter('b1_username', null, false);
+					$b1_password = TBGContext::getRequest()->getParameter('b1_password', null, false);
 					
 					//var_dump($b1_hostname, $b1_database, $b1_username, $b1_password);
 					
-					if (BUGScontext::getRequest()->getParameter('import_inactive_users') || BUGScontext::getRequest()->getParameter('import_active_users'))
+					if (TBGContext::getRequest()->getParameter('import_inactive_users') || TBGContext::getRequest()->getParameter('import_active_users'))
 					{
 						echo __('Importing users') . ' ... ';
 						flush();
@@ -153,15 +153,15 @@
 						while ($row = $res->fetch_array())
 						{
 							B2DB::getTable('B2tUsers')->doDeleteById($row['id']);
-							if ($row['activated'] == 1 && BUGScontext::getRequest()->getParameter('import_active_users'))
+							if ($row['activated'] == 1 && TBGContext::getRequest()->getParameter('import_active_users'))
 							{
-								$user = BUGSuser::createNew($row['uname'], $row['realname'], $row['realname'], BUGScontext::getScope()->getID(), true, true, $row['passwd'], $row['email'], true, $row['id'], $row['last_seen']);
-								$user->setGroup(BUGSsettings::get('defaultgroup'));
+								$user = TBGUser::createNew($row['uname'], $row['realname'], $row['realname'], TBGContext::getScope()->getID(), true, true, $row['passwd'], $row['email'], true, $row['id'], $row['last_seen']);
+								$user->setGroup(TBGSettings::get('defaultgroup'));
 							}
-							elseif ($row['activated'] == 0 && BUGScontext::getRequest()->getParameter('import_inactive_users'))
+							elseif ($row['activated'] == 0 && TBGContext::getRequest()->getParameter('import_inactive_users'))
 							{
-								$user = BUGSuser::createNew($row['uname'], $row['realname'], $row['realname'], BUGScontext::getScope()->getID(), false, false, $row['passwd'], $row['email'], true, $row['id']);
-								$user->setGroup(BUGSsettings::get('defaultgroup'));
+								$user = TBGUser::createNew($row['uname'], $row['realname'], $row['realname'], TBGContext::getScope()->getID(), false, false, $row['passwd'], $row['email'], true, $row['id']);
+								$user->setGroup(TBGSettings::get('defaultgroup'));
 							}
 						}
 						echo __('done') . '<br>';
@@ -195,7 +195,7 @@
 							B2DB::getTable('B2tListTypes')->doDeleteById($row['id']);
 							$crit = new B2DBCriteria();
 							$crit->addInsert(B2tListTypes::ID, $row['id']);
-							$crit->addInsert(B2tListTypes::ITEMTYPE, BUGSdatatype::STATUS);
+							$crit->addInsert(B2tListTypes::ITEMTYPE, TBGDatatype::STATUS);
 							$crit->addInsert(B2tListTypes::ITEMDATA, $row['status_color']);
 							$crit->addInsert(B2tListTypes::NAME, $row['status_desc']);
 							B2DB::getTable('B2tListTypes')->doInsert($crit);
@@ -208,7 +208,7 @@
 							B2DB::getTable('B2tListTypes')->doDeleteById($row['id']);
 							$crit = new B2DBCriteria();
 							$crit->addInsert(B2tListTypes::ID, $row['id']);
-							$crit->addInsert(B2tListTypes::ITEMTYPE, BUGSdatatype::SEVERITY);
+							$crit->addInsert(B2tListTypes::ITEMTYPE, TBGDatatype::SEVERITY);
 							$crit->addInsert(B2tListTypes::ITEMDATA, $row['sev_no']);
 							$crit->addInsert(B2tListTypes::NAME, $row['sev_desc']);
 							B2DB::getTable('B2tListTypes')->doInsert($crit);
@@ -221,18 +221,18 @@
 							B2DB::getTable('B2tListTypes')->doDeleteById($row['id']);
 							$crit = new B2DBCriteria();
 							$crit->addInsert(B2tListTypes::ID, $row['id']);
-							$crit->addInsert(B2tListTypes::ITEMTYPE, BUGSdatatype::PRIORITY);
+							$crit->addInsert(B2tListTypes::ITEMTYPE, TBGDatatype::PRIORITY);
 							$crit->addInsert(B2tListTypes::ITEMDATA, $row['prio_no']);
 							$crit->addInsert(B2tListTypes::NAME, $row['prio_desc']);
 							B2DB::getTable('B2tListTypes')->doInsert($crit);
 						}
 					}
 					echo __('done') . '<br>';
-					if (BUGScontext::getRequest()->getParameter('projects'))
+					if (TBGContext::getRequest()->getParameter('projects'))
 					{
 						try
 						{
-							foreach (BUGScontext::getRequest()->getParameter('projects') as $p_id => $import_data)
+							foreach (TBGContext::getRequest()->getParameter('projects') as $p_id => $import_data)
 							{
 								B2DB::closeDBLink();
 								B2DB::setHost($b1_hostname);
@@ -314,9 +314,9 @@
 														$crit->addInsert(B2tIssues::POSTED_BY, $row['uname']);
 														$crit->addInsert(B2tIssues::STATUS, $row['status']);
 														$crit->addInsert(B2tIssues::CATEGORY, 0);
-														$crit->addInsert(B2tIssues::STATE, (($row['closed'] == 1) ? BUGSissue::STATE_CLOSED : BUGSissue::STATE_OPEN));
+														$crit->addInsert(B2tIssues::STATE, (($row['closed'] == 1) ? TBGIssue::STATE_CLOSED : TBGIssue::STATE_OPEN));
 														$crit->addInsert(B2tIssues::SEVERITY, $row['severity']);
-														$crit->addInsert(B2tIssues::SCOPE, BUGScontext::getScope()->getID());
+														$crit->addInsert(B2tIssues::SCOPE, TBGContext::getScope()->getID());
 														B2DB::getTable('B2tIssues')->doInsert($crit);
 														if (isset($import_data['import_editions']))
 														{
@@ -328,7 +328,7 @@
 																	$crit->addInsert(B2tIssueAffectsBuild::BUILD, $issue_affects['build_no']);
 																	$crit->addInsert(B2tIssueAffectsBuild::ISSUE, $bug_id);
 																	$crit->addInsert(B2tIssueAffectsBuild::CONFIRMED, $issue_affects['confirmed']);
-																	$crit->addInsert(B2tIssueAffectsBuild::SCOPE, BUGScontext::getScope()->getID());
+																	$crit->addInsert(B2tIssueAffectsBuild::SCOPE, TBGContext::getScope()->getID());
 																	B2DB::getTable('B2tIssueAffectsBuild')->doInsert($crit);
 																}
 																else
@@ -336,7 +336,7 @@
 																	$crit->addInsert(B2tIssueAffectsEdition::EDITION, $issue_affects['edition']);
 																	$crit->addInsert(B2tIssueAffectsEdition::ISSUE, $bug_id);
 																	$crit->addInsert(B2tIssueAffectsEdition::CONFIRMED, $issue_affects['confirmed']);
-																	$crit->addInsert(B2tIssueAffectsEdition::SCOPE, BUGScontext::getScope()->getID());
+																	$crit->addInsert(B2tIssueAffectsEdition::SCOPE, TBGContext::getScope()->getID());
 																	B2DB::getTable('B2tIssueAffectsEdition')->doInsert($crit);
 																}
 															}
@@ -349,7 +349,7 @@
 															$bug_id = $row['bug_id'];
 															if (is_numeric($row['uname']))
 															{
-																BUGSComment::createNew($row['title'], $row['comment'], $row['uname'], $bug_id, 1, 'core', (((int) $row['nda_comment'] == 1) ? 0 : 1), 0, false);
+																TBGComment::createNew($row['title'], $row['comment'], $row['uname'], $bug_id, 1, 'core', (((int) $row['nda_comment'] == 1) ? 0 : 1), 0, false);
 															}
 														}
 													}
@@ -376,7 +376,7 @@
 									echo __('Importing the project') . ' ... ';
 									flush();
 									B2DB::getTable('B2tProjects')->doDeleteById($p_id);
-									BUGSproject::createNew($project['project']['pak_desc'], $p_id);
+									TBGProject::createNew($project['project']['pak_desc'], $p_id);
 									echo __('done') . '<br>';
 									if (isset($import_data['import_editions']))
 									{
@@ -385,7 +385,7 @@
 										foreach ($project['editions'] as $e_id => $e_data)
 										{
 											B2DB::getTable('B2tEditions')->doDeleteById($e_id);
-											BUGSedition::createNew($e_data['edition']['ed_desc'], $p_id, $e_id);
+											TBGEdition::createNew($e_data['edition']['ed_desc'], $p_id, $e_id);
 											foreach ($e_data['builds'] as $b_id => $b_data)
 											{
 												B2DB::getTable('B2tBuilds')->doDeleteById($b_id);
@@ -396,7 +396,7 @@
 												{
 													list ($b_major, $b_minor, $b_rev) = explode('.', $b_data['build']['build_no']);
 												}
-												BUGSbuild::createNew($b_data['build']['build_desc'], $e_id, $b_major, $b_minor, $b_rev, $b_id);
+												TBGBuild::createNew($b_data['build']['build_desc'], $e_id, $b_major, $b_minor, $b_rev, $b_id);
 											}
 										}
 										echo __('done') . '<br>';
@@ -453,19 +453,19 @@
 			<table style="width: 500px;" cellpadding=0 cellspacing=0>
 				<tr>
 					<td style="width: 150px; padding: 5px;"><b><?php echo __('Hostname'); ?></b></td>
-					<td style="width: auto;"><input type="text" name="b1_hostname" value="<?php echo (BUGScontext::getRequest()->getParameter('b1_hostname')) ? BUGScontext::getRequest()->getParameter('b1_hostname') : ''; ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
+					<td style="width: auto;"><input type="text" name="b1_hostname" value="<?php echo (TBGContext::getRequest()->getParameter('b1_hostname')) ? TBGContext::getRequest()->getParameter('b1_hostname') : ''; ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
 				</tr>
 				<tr>
 					<td style="padding: 5px;"><b><?php echo __('Username'); ?></b></td>
-					<td><input type="text" name="b1_username" value="<?php echo (BUGScontext::getRequest()->getParameter('b1_username')) ? BUGScontext::getRequest()->getParameter('b1_username') : ''; ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
+					<td><input type="text" name="b1_username" value="<?php echo (TBGContext::getRequest()->getParameter('b1_username')) ? TBGContext::getRequest()->getParameter('b1_username') : ''; ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
 				</tr>
 				<tr>
 					<td style="padding: 5px;"><b><?php echo __('Password'); ?></b></td>
-					<td><input type="password" name="b1_password" value="<?php echo (BUGScontext::getRequest()->getParameter('b1_password')) ? BUGScontext::getRequest()->getParameter('b1_password') : ''; ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
+					<td><input type="password" name="b1_password" value="<?php echo (TBGContext::getRequest()->getParameter('b1_password')) ? TBGContext::getRequest()->getParameter('b1_password') : ''; ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
 				</tr>
 				<tr>
 					<td style="padding: 5px;"><b><?php echo __('Database name'); ?></b></td>
-					<td><input type="text" name="b1_database" value="<?php echo (BUGScontext::getRequest()->getParameter('b1_database')) ? BUGScontext::getRequest()->getParameter('b1_database') : 'bugs_db'; ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
+					<td><input type="text" name="b1_database" value="<?php echo (TBGContext::getRequest()->getParameter('b1_database')) ? TBGContext::getRequest()->getParameter('b1_database') : 'bugs_db'; ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
 				</tr>
 			<?php 
 			

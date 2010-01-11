@@ -41,7 +41,7 @@
 
 		public function createNew($key, $name, $value, $itemdata = null, $scope = null)
 		{
-			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 
 			$trans = B2DB::startTransaction();
 			$crit = $this->getCriteria();
@@ -69,7 +69,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addOrderBy(self::SORT_ORDER, B2DBCriteria::SORT_ASC);
 			
 			$res = $this->doSelect($crit);
@@ -92,7 +92,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
 			$crit->addWhere(self::OPTION_VALUE, $value);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$row = $this->doSelectOne($crit);
 

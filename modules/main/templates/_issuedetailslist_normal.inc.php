@@ -2,7 +2,7 @@
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="padding: 5px;">
 		<div id="viewissue_left_box_issuetype">
-			<?php if ($theIssue->getIssueType() instanceof BUGSdatatype): ?>
+			<?php if ($theIssue->getIssueType() instanceof TBGDatatype): ?>
 				<table cellpadding=0 cellspacing=0>
 					<tr>
 						<td style="width: 24px; padding: 2px 0 0 0;"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_small.png'); ?></td>
@@ -13,11 +13,11 @@
 				<div class="faded_medium"><?php echo __('Unknown issue type'); ?></div>
 			<?php endif; ?>
 		</div>
-		<div id="viewissue_left_box_status" <?php if (!$theIssue->getStatus() instanceof BUGSdatatype): ?>class="faded_medium"<?php endif; ?>>
-			<?php if ($theIssue->getStatus() instanceof BUGSdatatype): ?>
+		<div id="viewissue_left_box_status" <?php if (!$theIssue->getStatus() instanceof TBGDatatype): ?>class="faded_medium"<?php endif; ?>>
+			<?php if ($theIssue->getStatus() instanceof TBGDatatype): ?>
 				<table style="table-layout: auto; width: auto;" cellpadding=0 cellspacing=0>
 					<tr>
-						<td style="width: 24px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($theIssue->getStatus() instanceof BUGSdatatype) ? $theIssue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
+						<td style="width: 24px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
 						<td style="padding-left: 5px;"><?php echo $theIssue->getStatus()->getName(); ?></td>
 					</tr>
 				</table>
@@ -31,7 +31,7 @@
 				<?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?>
 				<?php if ($theIssue->isAssigned()): ?>
 					<table style="width: 200px; display: inline;" cellpadding=0 cellspacing=0>
-						<?php if ($theIssue->getAssigneeType() == BUGSidentifiableclass::TYPE_USER): ?>
+						<?php if ($theIssue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
 							<?php echo include_component('main/userdropdown', array('user' => $theIssue->getAssignee())); ?>
 						<?php else: ?>
 							<?php echo include_component('main/teamdropdown', array('user' => $theIssue->getAssignee())); ?>
@@ -102,7 +102,7 @@
 				<?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?>
 				<?php if ($theIssue->isOwned()): ?>
 					<table style="width: 200px; display: inline;" cellpadding=0 cellspacing=0>
-						<?php if ($theIssue->getOwnerType() == BUGSidentifiableclass::TYPE_USER): ?>
+						<?php if ($theIssue->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
 							<?php echo include_component('main/userdropdown', array('user' => $theIssue->getOwner())); ?>
 						<?php else: ?>
 							<?php echo include_component('main/teamdropdown', array('user' => $theIssue->getOwner())); ?>
@@ -118,8 +118,8 @@
 					</dt>
 					<dd id="category_content"<?php if ($theIssue->isCategoryChanged()): ?> class="issue_detail_changed"<?php endif; ?>>
 						<a href="javascript:void(0);" onclick="$('category_change').toggle();" title="<?php echo __('Click to change category'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
-						<span id="category_name"<?php if (!$theIssue->getCategory() instanceof BUGSdatatype): ?> style="display: none;"<?php endif; ?>><?php if ($theIssue->getCategory() instanceof BUGSdatatype) echo $theIssue->getCategory()->getName(); ?></span>
-						<span class="faded_medium" id="no_category"<?php if ($theIssue->getCategory() instanceof BUGSdatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span>
+						<span id="category_name"<?php if (!$theIssue->getCategory() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php if ($theIssue->getCategory() instanceof TBGDatatype) echo $theIssue->getCategory()->getName(); ?></span>
+						<span class="faded_medium" id="no_category"<?php if ($theIssue->getCategory() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span>
 					</dd>
 				</dl>
 				<div style="clear: both;"> </div>
@@ -133,7 +133,7 @@
 						<div class="dropdown_content">
 							<?php echo __('%clear_the_category% or click to select a new category', array('%clear_the_category%' => '')); ?>:<br>
 							<ul>
-								<?php foreach (BUGSdatatype::getCategories() as $category): ?>
+								<?php foreach (TBGDatatype::getCategories() as $category): ?>
 									<li>
 										<a href="javascript:void(0);" onclick="setCategory('<?php echo make_url('issue_setcategory', array('issue_id' => $theIssue->getID(), 'category_id' => $category->getID())); ?>');"><?php echo $category->getName(); ?></a>
 									</li>
@@ -151,7 +151,7 @@
 				<dt><?php echo __('Resolution'); ?></dt>
 				<dd>
 					<?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?>
-					<?php if ($theIssue->getResolution() instanceof BUGSdatatype): ?>
+					<?php if ($theIssue->getResolution() instanceof TBGDatatype): ?>
 						<?php echo $theIssue->getResolution()->getName(); ?>
 					<?php else: ?>
 						<span class="faded_medium"><?php echo __('Not determined'); ?></span>
@@ -162,7 +162,7 @@
 				<dt><?php echo __('Reproducability'); ?></dt>
 				<dd>
 					<?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?>
-					<?php if ($theIssue->getReproducability() instanceof BUGSdatatype): ?>
+					<?php if ($theIssue->getReproducability() instanceof TBGDatatype): ?>
 						<?php echo $theIssue->getReproducability()->getName(); ?>
 					<?php else: ?>
 						<span class="faded_medium"><?php echo __('Not determined'); ?></span>
@@ -173,7 +173,7 @@
 				<dt><?php echo __('Severity'); ?></dt>
 				<dd>
 					<?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?>
-					<?php if ($theIssue->getSeverity() instanceof BUGSdatatype): ?>
+					<?php if ($theIssue->getSeverity() instanceof TBGDatatype): ?>
 						<?php echo $theIssue->getSeverity()->getName(); ?>
 					<?php else: ?>
 						<span class="faded_medium"><?php echo __('Not determined'); ?></span>
@@ -184,7 +184,7 @@
 				<dt><?php echo __('Priority'); ?></dt>
 				<dd>
 					<?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?>
-					<?php if ($theIssue->getPriority() instanceof BUGSdatatype): ?>
+					<?php if ($theIssue->getPriority() instanceof TBGDatatype): ?>
 						<?php echo $theIssue->getPriority()->getName(); ?>
 					<?php else: ?>
 						<span class="faded_medium"><?php echo __('Not determined'); ?></span>
@@ -217,7 +217,7 @@
 				<dt><?php echo __('Targetted for'); ?></dt>
 				<dd id="issue_assigned_milestones">
 					<?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?>
-					<?php if($theIssue->getMilestone() instanceof BUGSmilestone): ?>
+					<?php if($theIssue->getMilestone() instanceof TBGMilestone): ?>
 						<?php echo image_tag('icon_milestones.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 						<?php echo $theIssue->getMilestone()->getName(); ?>
 					<?php else: ?>

@@ -104,7 +104,7 @@
 
 		public function loadFixtures($scope)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			$settings = array();
 			$settings['theme_name'] = 'oxygen';
@@ -123,7 +123,7 @@
 			$settings['upload_restriction_mode'] = 'blacklist';
 			$settings['upload_extensions_list'] = 'exe,bat,php,asp,jsp';
 			$settings['upload_storage'] = 'files';
-			$settings['upload_localpath'] = BUGScontext::getIncludePath() . 'files/';
+			$settings['upload_localpath'] = TBGContext::getIncludePath() . 'files/';
 			$settings['b2_name'] = 'The Bug Genie';
 			$settings['b2_tagline'] = '<b>Friendly</b> issue tracking and project management';
 			$settings['highlight_default_lang'] = 'html4strict';

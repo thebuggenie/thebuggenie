@@ -51,7 +51,7 @@
 			$crit->addInsert(self::NAME, $name);
 			$crit->addInsert(self::MILESTONE_TYPE, $type);
 			$crit->addInsert(self::PROJECT, $project_id);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			
 			return $res->getInsertID();
@@ -70,7 +70,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT, $project_id);
-			$crit->addWhere(self::MILESTONE_TYPE, BUGSmilestone::TYPE_REGULAR);
+			$crit->addWhere(self::MILESTONE_TYPE, TBGMilestone::TYPE_REGULAR);
 			$crit->addOrderBy(self::SCHEDULED, B2DBCriteria::SORT_ASC);
 			$res = $this->doSelect($crit);
 			return $res;
@@ -80,7 +80,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT, $project_id);
-			$crit->addWhere(self::MILESTONE_TYPE, BUGSmilestone::TYPE_SCRUMSPRINT);
+			$crit->addWhere(self::MILESTONE_TYPE, TBGMilestone::TYPE_SCRUMSPRINT);
 			$crit->addOrderBy(self::SCHEDULED, B2DBCriteria::SORT_ASC);
 			$res = $this->doSelect($crit);
 			return $res;

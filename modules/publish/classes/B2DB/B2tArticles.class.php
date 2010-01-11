@@ -38,7 +38,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ARTICLE_NAME, $name);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$row = $this->doSelectOne($crit);
 
 			return $row;
@@ -48,7 +48,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ARTICLE_NAME, $name);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->setLimit(1);
 			$row = $this->doDelete($crit);
 
@@ -58,7 +58,7 @@
 		public function getArticleByID($article_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$row = $this->doSelectByID($article_id, $crit);
 
 			return $row;
@@ -68,7 +68,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::IS_PUBLISHED, false);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$res = $this->doSelect($crit);
 
@@ -86,7 +86,7 @@
 
 		public function save($name, $content, $published, $author, $id = null, $scope = null)
 		{
-			$scope = ($scope !== null) ? $scope : BUGScontext::getScope()->getID();
+			$scope = ($scope !== null) ? $scope : TBGContext::getScope()->getID();
 			$crit = $this->getCriteria();
 			if ($id == null)
 			{

@@ -2,7 +2,7 @@
 
         if (!defined('THEBUGGENIE_PATH')) exit();
 
-        BUGScontext::getI18n()->setCharset('utf-8'); //ISO-8859-15
+        TBGContext::getI18n()->setCharset('utf-8'); //ISO-8859-15
         
         $strings['%copyright_ruffdogs%, developed by %zegenie_studios%'] = '%copyright_ruffdogs%, entwickelt von %zegenie_studios%';
         $strings['Released under the MPL 1.1 only. Read the license at %link_to_MPL%'] = 'Freigegeben nur unter der MPL 1.1. Die Lizenz finden Sie unter %link_to_MPL%';

@@ -2,41 +2,41 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<title><?php echo ($bugs_response->hasTitle()) ? strip_tags(BUGSsettings::get('b2_name') . ' ~ ' . $bugs_response->getTitle()) : strip_tags(BUGSsettings::get('b2_name')); ?></title>
+		<title><?php echo ($bugs_response->hasTitle()) ? strip_tags(TBGSettings::get('b2_name') . ' ~ ' . $bugs_response->getTitle()) : strip_tags(TBGSettings::get('b2_name')); ?></title>
 		<?php
 			
-			BUGScontext::trigger('core', 'header_begins');
+			TBGContext::trigger('core', 'header_begins');
 				
 		?>
 		<meta name="description" content="The bug genie, friendly issue tracking">
 		<meta name="keywords" content="thebuggenie friendly issue tracking">
 		<meta name="author" content="thebuggenie.com">
-		<meta http-equiv="Content-Type" content="<?php echo $bugs_response->getContentType(); ?> charset=<?php echo BUGScontext::getI18n()->getCharset(); ?>">
-		<link rel="shortcut icon" href="<?php print BUGScontext::getTBGPath(); ?>themes/<?php print BUGSsettings::getThemeName(); ?>/favicon.png">
-		<link rel="stylesheet" type="text/css" href="<?php print BUGScontext::getTBGPath(); ?>css/<?php print BUGSsettings::getThemeName(); ?>.css">
+		<meta http-equiv="Content-Type" content="<?php echo $bugs_response->getContentType(); ?> charset=<?php echo TBGContext::getI18n()->getCharset(); ?>">
+		<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
+		<link rel="stylesheet" type="text/css" href="<?php print TBGContext::getTBGPath(); ?>css/<?php print TBGSettings::getThemeName(); ?>.css">
 		<?php foreach ($bugs_response->getFeeds() as $feed_url => $feed_title): ?>
 			<link rel="alternate" type="application/rss+xml" title="<?php echo $feed_title; ?>" href="<?php echo $feed_url; ?>">
 		<?php endforeach; ?>
-		<?php if (count(BUGScontext::getModules())): ?>
-			<?php foreach (BUGScontext::getModules() as $module): ?>
+		<?php if (count(TBGContext::getModules())): ?>
+			<?php foreach (TBGContext::getModules() as $module): ?>
 				<?php if ($module->hasAccess()): ?>
-					<?php $css_name = "css/" . BUGSsettings::getThemeName() . "_" . $module->getName() . ".css"; ?>
-					<?php if (file_exists(BUGScontext::getIncludePath() . 'thebuggenie' . DIRECTORY_SEPARATOR . $css_name)): ?>
-						<link rel="stylesheet" type="text/css" href="<?php echo BUGScontext::getTBGPath() . $css_name; ?>">
+					<?php $css_name = "css/" . TBGSettings::getThemeName() . "_" . $module->getName() . ".css"; ?>
+					<?php if (file_exists(TBGContext::getIncludePath() . 'thebuggenie' . DIRECTORY_SEPARATOR . $css_name)): ?>
+						<link rel="stylesheet" type="text/css" href="<?php echo TBGContext::getTBGPath() . $css_name; ?>">
 					<?php endif; ?>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		<?php endif; ?>
-		<script type="text/javascript" src="<?php print BUGScontext::getTBGPath(); ?>js/prototype.js"></script>
-		<script type="text/javascript" src="<?php print BUGScontext::getTBGPath(); ?>js/scriptaculous.js"></script>
-		<script type="text/javascript" src="<?php print BUGScontext::getTBGPath(); ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-		<script type="text/javascript" src="<?php print BUGScontext::getTBGPath(); ?>js/b2.js"></script>
+		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/prototype.js"></script>
+		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/scriptaculous.js"></script>
+		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/b2.js"></script>
 		<?php foreach ($bugs_response->getJavascripts() as $javascript): ?>
-			<script type="text/javascript" src="<?php print BUGScontext::getTBGPath() . 'js/' . $javascript; ?>"></script>
+			<script type="text/javascript" src="<?php print TBGContext::getTBGPath() . 'js/' . $javascript; ?>"></script>
 		<?php endforeach;?>
 		<?php 
 			
-			BUGScontext::trigger('core', 'header_ends');
+			TBGContext::trigger('core', 'header_ends');
 		
 		?>
 	</head>
@@ -47,9 +47,9 @@
 					<table class="main_header<?php if (isset($print_friendly) && $print_friendly) { echo '_print'; } ?>" cellpadding=0 cellspacing=0 width="100%" style="table-layout: fixed;">
 						<tr>
 							<td align="left" valign="middle" style="width: 500px;" id="logo_td">
-								<a href="<?php print BUGScontext::getTBGPath(); ?>"><?php echo image_tag('logo_48.png', array('alt' => '[LOGO]', 'title' => '[LOGO]')) ; ?></a>
-								<div class="logo_large"><?php echo BUGSsettings::get('b2_name'); ?></div>
-								<div class="logo_small"><?php echo BUGSsettings::get('b2_tagline'); ?></div>
+								<a href="<?php print TBGContext::getTBGPath(); ?>"><?php echo image_tag('logo_48.png', array('alt' => '[LOGO]', 'title' => '[LOGO]')) ; ?></a>
+								<div class="logo_large"><?php echo TBGSettings::get('b2_name'); ?></div>
+								<div class="logo_small"><?php echo TBGSettings::get('b2_tagline'); ?></div>
 							</td>
 							<td style="width: auto;">
 								<div class="rounded_box blue" id="header_userinfo">
@@ -63,12 +63,12 @@
 											</div>
 											<div style="text-align: right;">
 												<?php echo link_tag(make_url('login'), __('Login')); ?>
-												<?php if (BUGSsettings::isRegistrationAllowed()): ?>
+												<?php if (TBGSettings::isRegistrationAllowed()): ?>
 													<?php echo __('%login% or %register%', array('%login%' => '', '%register%' => link_tag(make_url('login'), __('Register')))); ?>
 												<?php endif; ?> 
 											</div>
 										<?php else: ?>
-											<div class="header_username"><?php echo '<strong>' . __('Logged in as %name%', array('%name%' => '</strong><br>' . BUGScontext::getUser()->getRealname())); ?></div>
+											<div class="header_username"><?php echo '<strong>' . __('Logged in as %name%', array('%name%' => '</strong><br>' . TBGContext::getUser()->getRealname())); ?></div>
 											<div style="text-align: right;">
 												<?php echo link_tag(make_url('account'), __('My account')); ?> | <?php echo link_tag(make_url('logout'), __('Logout')); ?> 
 											</div>
@@ -81,7 +81,7 @@
 					</table>
 					<?php
 				
-						BUGScontext::trigger('core', 'header_end');
-						require BUGScontext::getIncludePath() . 'core/templates/menu.inc.php';
+						TBGContext::trigger('core', 'header_end');
+						require TBGContext::getIncludePath() . 'core/templates/menu.inc.php';
 						
 					?>

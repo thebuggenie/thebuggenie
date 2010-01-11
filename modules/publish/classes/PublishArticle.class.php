@@ -1,12 +1,12 @@
 <?php
 
-	class PublishArticle extends BUGSidentifiableclass implements BUGSidentifiable
+	class PublishArticle extends TBGIdentifiableClass implements TBGIdentifiable
 	{
 
 		/**
 		 * The article author
 		 *
-		 * @var BUGSuser
+		 * @var TBGUser
 		 */
 		protected $_author = null;
 
@@ -145,7 +145,7 @@
 
 		public static function createNew($name, $content, $published, $scope = null)
 		{
-			$user_id = (BUGScontext::getUser() instanceof BUGSuser) ? BUGScontext::getUser()->getID() : 0;
+			$user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
 			$article_id = B2DB::getTable('B2tArticles')->save($name, $content, $published, $user_id, null, $scope);
 			PublishFactory::articleLab($article_id)->save();
 			return $article_id;
@@ -179,7 +179,7 @@
 		public function setContent($content)
 		{
 			$this->_content = $content;
-			$parser = new BUGSTextParser($content);
+			$parser = new TBGTextParser($content);
 			$parser->doParse();
 			$this->_populateCategories($parser->getCategories());
 		}
@@ -290,7 +290,7 @@
 
 		protected function _retrieveLinksAndCategoriesFromContent()
 		{
-			$parser = new BUGSTextParser(html_entity_decode($this->_content));
+			$parser = new TBGTextParser(html_entity_decode($this->_content));
 			$parser->doParse();
 			return array($parser->getInternalLinks(), $parser->getCategories());
 		}
@@ -325,9 +325,9 @@
 		{
 			if (B2DB::getTable('B2tArticles')->doesNameConflictExist($this->_name, $this->_itemid))
 			{
-				throw new Exception(BUGScontext::getI18n()->__('Another article with this name already exists'));
+				throw new Exception(TBGContext::getI18n()->__('Another article with this name already exists'));
 			}
-			$user_id = (BUGScontext::getUser() instanceof BUGSuser) ? BUGScontext::getUser()->getID() : 0;
+			$user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
 			B2DB::getTable('B2tArticles')->save($this->_name, $this->_content, $this->_is_published, $user_id, $this->_itemid);
 
 			B2DB::getTable('B2tArticleLinks')->deleteLinksByArticle($this->_name);
@@ -376,13 +376,13 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tArticleViews::ARTICLE_ID, $this->getID());
-			$crit->addWhere(B2tArticleViews::USER_ID, BUGScontext::getUser()->getID());
+			$crit->addWhere(B2tArticleViews::USER_ID, TBGContext::getUser()->getID());
 			if (B2DB::getTable('B2tArticleViews')->doCount($crit) == 0)
 			{
 				$crit = new B2DBCriteria();
 				$crit->addInsert(B2tArticleViews::ARTICLE_ID, $this->getID());
-				$crit->addInsert(B2tArticleViews::USER_ID, BUGScontext::getUser()->getID());
-				$crit->addInsert(B2tArticleViews::SCOPE, BUGScontext::getScope()->getID());
+				$crit->addInsert(B2tArticleViews::USER_ID, TBGContext::getUser()->getID());
+				$crit->addInsert(B2tArticleViews::SCOPE, TBGContext::getScope()->getID());
 				B2DB::getTable('B2tArticleViews')->doInsert($crit);
 			}
 		}
@@ -431,7 +431,7 @@
 		/**
 		 * REturns the author
 		 *
-		 * @return BUGSuser
+		 * @return TBGUser
 		 */
 		public function getAuthor()
 		{
@@ -439,7 +439,7 @@
 			{
 				try
 				{
-					$this->_author = BUGSfactory::userLab($this->_author);
+					$this->_author = TBGFactory::userLab($this->_author);
 				}
 				catch (Exception $e)
 				{

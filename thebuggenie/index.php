@@ -6,4 +6,4 @@
 	// Include the "engine" script, which initializes and sets up stuff
 	require THEBUGGENIE_PATH . 'core/tbg_engine.inc.php';
 	// Trigger the framework's start function
-	BUGScontext::go();
+	TBGContext::go();

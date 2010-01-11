@@ -1,14 +1,14 @@
 <?php
 
-	class BUGSsearch extends BUGSmodule 
+	class BUGSsearch extends TBGModule 
 	{
 		
 		public function __construct($m_id, $res = null)
 		{
 			parent::__construct($m_id, $res);
-			$this->_module_menu_title = BUGScontext::getI18n()->__("Find issues");
-			$this->_module_config_title = BUGScontext::getI18n()->__("Search");
-			$this->_module_config_description = BUGScontext::getI18n()->__('Configure the search module, including OpenSearch from this section.');
+			$this->_module_menu_title = TBGContext::getI18n()->__("Find issues");
+			$this->_module_config_title = TBGContext::getI18n()->__("Search");
+			$this->_module_config_description = TBGContext::getI18n()->__('Configure the search module, including OpenSearch from this section.');
 			$this->_module_version = "1.0";
 			if ($this->_enabled)
 			{
@@ -21,7 +21,7 @@
 				$this->addAvailableListener('core', 'useractions_bottom', '"More issue by this user" in user drop-down menu');
 				$this->addAvailableListener('core', 'viewissue_top', '"View issue" top navigation bar');
 				$this->addAvailableListener('core', 'viewissue_left_middle_top', '"View issue" left-hand link to own issues');
-				$this->addAvailableListener('core', 'BUGSProject::createNew', 'Automatically set up quick-searches for new projects');
+				$this->addAvailableListener('core', 'TBGProject::createNew', 'Automatically set up quick-searches for new projects');
 			}
 		}
 		
@@ -29,9 +29,9 @@
 		{
   			if ($scope === null)
   			{
-  				$scope = BUGScontext::getScope()->getID();
+  				$scope = TBGContext::getScope()->getID();
   			}
-  			BUGSlogging::log("Installing search module", 'search');
+  			TBGLogging::log("Installing search module", 'search');
   			$module = parent::_install('search', 
   									  'Search', 
   									  'Enables search functionality',
@@ -48,9 +48,9 @@
 			$module->enableSection('core', 'useractions_bottom', $scope);
 			$module->enableSection('core', 'viewissue_top', $scope);
 			$module->enableSection('core', 'viewissue_left_middle_top', $scope);
-			$module->enableSection('core', 'BUGSProject::createNew', $scope);
+			$module->enableSection('core', 'TBGProject::createNew', $scope);
 			$module->setPermission(0, 0, 0, true, $scope);
-			BUGScontext::setPermission('b2searchmaster', 1, 'search', 0, 1, 0, true, $scope);
+			TBGContext::setPermission('b2searchmaster', 1, 'search', 0, 1, 0, true, $scope);
 			$module->saveSetting('indexshowsavedsearches', 1);
 			$module->saveSetting('indexsearches', '1');
 			$module->saveSetting('enable_opensearch', 1);
@@ -63,7 +63,7 @@
 			$module->saveSetting('showindexsummarydetails', 0);
 			$module->saveSetting('indexshowtitle', 0);
 
-			if ($scope == BUGScontext::getScope()->getID())
+			if ($scope == TBGContext::getScope()->getID())
 			{
 				B2DB::getTable('B2tSavedSearches')->create();
 				B2DB::getTable('B2tSavedSearchOrder')->create();
@@ -81,7 +81,7 @@
 			{
 				throw $e;
 			}
-			BUGSlogging::log('done (installing search module)', 'search');
+			TBGLogging::log('done (installing search module)', 'search');
 		}
 		
 		static function loadFixtures($scope, $module)
@@ -222,7 +222,7 @@
 				
 				$module->saveSetting('defaultsearchlayout', $layout_4);
 				$values = array();
-				$values[] = array('value' => BUGSissue::STATE_OPEN, 'operator' => 'B2DBCriteria::DB_EQUALS', 'filter' => 1);
+				$values[] = array('value' => TBGIssue::STATE_OPEN, 'operator' => 'B2DBCriteria::DB_EQUALS', 'filter' => 1);
 				self::createSearch('All open issues by project', $layout_4, 0, 1, 1, 'project', $scope, $values);
 				
 			}
@@ -309,7 +309,7 @@
 			$groupby = '';
 			if ($search_row instanceof B2DBRow)
 			{ 
-				if ($overridepermissions || (($search_row->get(B2tSavedSearches::IS_PUBLIC) == 1 || $search_row->get(B2tSavedSearches::UID) == BUGScontext::getUser()->getUID()) && (BUGScontext::getUser()->hasPermission('b2projectaccess', $search_row->get(B2tSavedSearches::APPLIES_TO), 'core') == true || $search_row->get(B2tSavedSearches::APPLIES_TO) == 0)))
+				if ($overridepermissions || (($search_row->get(B2tSavedSearches::IS_PUBLIC) == 1 || $search_row->get(B2tSavedSearches::UID) == TBGContext::getUser()->getUID()) && (TBGContext::getUser()->hasPermission('b2projectaccess', $search_row->get(B2tSavedSearches::APPLIES_TO), 'core') == true || $search_row->get(B2tSavedSearches::APPLIES_TO) == 0)))
 				{
 					$searchtitle = $search_row->get(B2tSavedSearches::NAME);
 					if ($search_row->get(B2tSavedSearches::GROUPBY) != '')
@@ -371,15 +371,15 @@
 						break;
 				}
 			}
-			if (BUGScontext::getRequest()->getParameter('sort_column') && defined(BUGScontext::getRequest()->getParameter('sort_column')))
+			if (TBGContext::getRequest()->getParameter('sort_column') && defined(TBGContext::getRequest()->getParameter('sort_column')))
 			{
-				if (BUGScontext::getRequest()->getParameter('sort') == 'asc')
+				if (TBGContext::getRequest()->getParameter('sort') == 'asc')
 				{
-					$crit->addOrderBy(constant(BUGScontext::getRequest()->getParameter('sort_column')), 'asc');
+					$crit->addOrderBy(constant(TBGContext::getRequest()->getParameter('sort_column')), 'asc');
 				}
 				else
 				{
-					$crit->addOrderBy(constant(BUGScontext::getRequest()->getParameter('sort_column')), 'desc');
+					$crit->addOrderBy(constant(TBGContext::getRequest()->getParameter('sort_column')), 'desc');
 				}
 			}
 			else
@@ -416,7 +416,7 @@
 				}
 				$crit->addWhere($critn);
 			}
-			$crit->addWhere(B2tIssues::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(B2tIssues::SCOPE, TBGContext::getScope()->getID());
 			$this->log('done');
 			
 			$this->log('retrieving search results from database');
@@ -429,7 +429,7 @@
 			{
 				while ($row = $resultset->getNextRow())
 				{
-					$theissue = BUGSfactory::BUGSissueLab($row->get(B2tIssues::ID), $row);
+					$theissue = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID), $row);
 					if ($theissue->hasAccess())
 					{
 						$searchresults[$theissue->getID()] = $theissue;
@@ -467,14 +467,14 @@
 		public function getNumberOfLayouts()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tSearchLayouts::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(B2tSearchLayouts::SCOPE, TBGContext::getScope()->getID());
 			return B2DB::getTable('B2tSearchLayouts')->doCount($crit);
 		}
 		
 		public function getLayouts()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tSearchLayouts::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(B2tSearchLayouts::SCOPE, TBGContext::getScope()->getID());
 			$results = B2DB::getTable('B2tSearchLayouts')->doSelect($crit);
 			$layouts = array();
 			
@@ -567,7 +567,7 @@
 					B2DB::getTable('B2tSearchLayoutFields')->doInsert($inscrit);
 				}
 			}
-			BUGSsettings::saveSetting('defaultsearchlayout', BUGSsettings::get('defaultsearchlayout'), 'search', $newScope);
+			TBGSettings::saveSetting('defaultsearchlayout', TBGSettings::get('defaultsearchlayout'), 'search', $newScope);
 			return true;
 		}
 		
@@ -611,7 +611,7 @@
 				echo '<div class="searchtitleheader">' . $searchtitle;
 				if (!($bugs_response->getPage() == 'index' && $this->getSetting('showindexsummary') == 0))
 				{
-					echo '&nbsp;&nbsp;&nbsp;<span style="display: inline;">(' . BUGScontext::getI18n()->__('%number_of% matches', array('%number_of%' => count($searchresult))) . ')</span>';
+					echo '&nbsp;&nbsp;&nbsp;<span style="display: inline;">(' . TBGContext::getI18n()->__('%number_of% matches', array('%number_of%' => count($searchresult))) . ')</span>';
 				}
 				echo '</div>';
 			}
@@ -634,7 +634,7 @@
 					switch ($groupby)
 					{
 						case 'milestone':
-							if ($theIssue->getMilestone() instanceof BUGSmilestone)
+							if ($theIssue->getMilestone() instanceof TBGMilestone)
 							{
 								$this_groupby = $theIssue->getMilestone()->getID();
 							}
@@ -644,39 +644,39 @@
 							}
 							if ($this_groupby != 0)
 							{
-								$grouptitle = BUGScontext::getI18n()->__('Issues targetted for %milestone%', array('%milestone%' => $theIssue->getMilestone()));
+								$grouptitle = TBGContext::getI18n()->__('Issues targetted for %milestone%', array('%milestone%' => $theIssue->getMilestone()));
 							}
 							else
 							{
-								$grouptitle = BUGScontext::getI18n()->__('Issues not targetted for any milestones'); 
+								$grouptitle = TBGContext::getI18n()->__('Issues not targetted for any milestones'); 
 							}
 							break;
 						case 'project':
 							$this_groupby = $theIssue->getProject()->getID();
-							$grouptitle = BUGScontext::getI18n()->__('Issues for %item%', array('%item%' => $theIssue->getProject()->getName()));
+							$grouptitle = TBGContext::getI18n()->__('Issues for %item%', array('%item%' => $theIssue->getProject()->getName()));
 							break;
 						case 'edition':
-							if ($theIssue->getEdition() instanceof BUGSedition)
+							if ($theIssue->getEdition() instanceof TBGEdition)
 							{
 								$this_groupby = $theIssue->getEdition()->getID();
-								$grouptitle = BUGScontext::getI18n()->__('Issues for %item%', array('%item%' => $theIssue->getEdition()->getName()));
+								$grouptitle = TBGContext::getI18n()->__('Issues for %item%', array('%item%' => $theIssue->getEdition()->getName()));
 							}
 							else
 							{
 								$this_groupby = 0;
-								$grouptitle = BUGScontext::getI18n()->__('Unknown edition');
+								$grouptitle = TBGContext::getI18n()->__('Unknown edition');
 							}
 							break;
 						case 'component':
-							if ($theIssue->getComponent() instanceof BUGScomponent)
+							if ($theIssue->getComponent() instanceof TBGComponent)
 							{
 								$this_groupby = $theIssue->getComponent()->getID();
-								$grouptitle = BUGScontext::getI18n()->__('Issues for %item%', array('%item%' => $theIssue->getComponent()->getName()));
+								$grouptitle = TBGContext::getI18n()->__('Issues for %item%', array('%item%' => $theIssue->getComponent()->getName()));
 							}
 							else
 							{
 								$this_groupby = 0;
-								$grouptitle = BUGScontext::getI18n()->__('Unknown component');
+								$grouptitle = TBGContext::getI18n()->__('Unknown component');
 							}
 							break;
 						case 'issuetype':
@@ -685,7 +685,7 @@
 							break;
 						case 'state':
 							$this_groupby = $theIssue->getState();
-							$grouptitle = ($theIssue->getState() == BUGSissue::STATE_OPEN) ? BUGScontext::getI18n()->__('Open issues') : BUGScontext::getI18n()->__('Closed issues');
+							$grouptitle = ($theIssue->getState() == TBGIssue::STATE_OPEN) ? TBGContext::getI18n()->__('Open issues') : TBGContext::getI18n()->__('Closed issues');
 							break;
 						case 'severity':
 							if ($theIssue->getSeverity()->getID() != 0)
@@ -696,7 +696,7 @@
 							else
 							{
 								$this_groupby = 0;
-								$grouptitle = BUGScontext::getI18n()->__('Isses without any severity set');
+								$grouptitle = TBGContext::getI18n()->__('Isses without any severity set');
 							}
 							break;
 						case 'priority':
@@ -708,19 +708,19 @@
 							else
 							{
 								$this_groupby = 0;
-								$grouptitle = BUGScontext::getI18n()->__('Isses that have not been prioritized');
+								$grouptitle = TBGContext::getI18n()->__('Isses that have not been prioritized');
 							}
 							break;
 						case 'assignee':
 							if ($theIssue->getAssignee() != null)
 							{
 								$this_groupby = $theIssue->getAssignee()->getID();
-								$grouptitle = BUGScontext::getI18n()->__('Issues assigned to %assignee%', array('%assignee%' => $theIssue->getAssignee()));
+								$grouptitle = TBGContext::getI18n()->__('Issues assigned to %assignee%', array('%assignee%' => $theIssue->getAssignee()));
 							}
 							else
 							{
 								$this_groupby = 0;
-								$grouptitle = BUGScontext::getI18n()->__('Unassigned issues');
+								$grouptitle = TBGContext::getI18n()->__('Unassigned issues');
 							}
 							break;
 						default:
@@ -731,7 +731,7 @@
 						echo "</table>\n";
 						if ($group_cc > 0 && (!($bugs_response->getPage() == 'index' && $this->getSetting('showindexsummarydetails') == 0)))
 						{
-							echo '<div style="color: #AAA; font-size: 12px; border-bottom: 1px solid #DDD;">' . BUGScontext::getI18n()->__('%count% matches in this group', array('%count%' => $group_cc)) . '</div>';
+							echo '<div style="color: #AAA; font-size: 12px; border-bottom: 1px solid #DDD;">' . TBGContext::getI18n()->__('%count% matches in this group', array('%count%' => $group_cc)) . '</div>';
 						}
 						echo '<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0 class="bug_list">' . "\n";
 						if ($search_hits > 0) 
@@ -773,7 +773,7 @@
 								echo ($aLayoutField['width'] == "0") ? "auto" : $aLayoutField['width'] . 'px';
 								echo '; font-weight: bold; font-size: 10px; border-bottom: ';
 								echo ($Rcc + $aLayoutField['span_rows'] == $layoutrows) ? '1px solid #E5E5E5;' : '0px;';
-								echo (BUGScontext::getRequest()->getParameter('sort_column') == $aLayoutField['field']) ? ' border-bottom: 2px solid #CCC;' : '';
+								echo (TBGContext::getRequest()->getParameter('sort_column') == $aLayoutField['field']) ? ' border-bottom: 2px solid #CCC;' : '';
 								echo '"';
 								if ($aLayoutField['span_cols'] > 0)
 								{
@@ -784,9 +784,9 @@
 									 echo ' rowspan=' . $aLayoutField['span_rows'];
 								}
 								echo '>';
-								if (BUGScontext::getRequest()->getParameter('sort_column') == $aLayoutField['field'])
+								if (TBGContext::getRequest()->getParameter('sort_column') == $aLayoutField['field'])
 								{
-									if (BUGScontext::getRequest()->getParameter('sort') == 'desc')
+									if (TBGContext::getRequest()->getParameter('sort') == 'desc')
 									{
 										echo image_tag('sort_desc.png', ' align="left"');
 									}
@@ -797,9 +797,9 @@
 								}
 								if ($bugs_response->getPage() == 'search')
 								{
-									echo '<a href="' . BUGScontext::getTBGPath() . 'modules/search/search.php?perform_search=true';
-									echo (BUGScontext::getRequest()->getParameter('s_id')) ? '&amp;saved_search=true&amp;s_id=' . BUGScontext::getRequest()->getParameter('s_id') : '&amp;custom_search=true';
-									echo (BUGScontext::getRequest()->getParameter('sort') == 'asc') ? '&amp;sort=desc' : '&amp;sort=asc';
+									echo '<a href="' . TBGContext::getTBGPath() . 'modules/search/search.php?perform_search=true';
+									echo (TBGContext::getRequest()->getParameter('s_id')) ? '&amp;saved_search=true&amp;s_id=' . TBGContext::getRequest()->getParameter('s_id') : '&amp;custom_search=true';
+									echo (TBGContext::getRequest()->getParameter('sort') == 'asc') ? '&amp;sort=desc' : '&amp;sort=asc';
 									echo '&amp;sort_column=' . $aLayoutField['field'] . '">';
 								}
 								switch($aLayoutField['field'])
@@ -807,39 +807,39 @@
 									case 'B2tIssues::STATUS':
 										if ($aLayoutField['field_type'] > 1)
 										{
-											echo BUGScontext::getI18n()->__('Status');
+											echo TBGContext::getI18n()->__('Status');
 										}
 										else
 										{
-											echo '<div style="font-size: 9px;">' . BUGScontext::getI18n()->__('Stat') . '</div>';
+											echo '<div style="font-size: 9px;">' . TBGContext::getI18n()->__('Stat') . '</div>';
 										}
 										break;
 									case 'B2tIssues::ISSUE_NO':
-										echo '<div style="font-size: 9px;">' . BUGScontext::getI18n()->__('Issue #') . '</div>';
+										echo '<div style="font-size: 9px;">' . TBGContext::getI18n()->__('Issue #') . '</div>';
 										break;
 									case 'B2tIssues::TITLE':
-										echo BUGScontext::getI18n()->__('Title');
+										echo TBGContext::getI18n()->__('Title');
 										break;
 									case 'B2tIssueAffectsComponent::COMPONENT':
-										echo BUGScontext::getI18n()->__('Component(s)');
+										echo TBGContext::getI18n()->__('Component(s)');
 										break;
 									case 'B2tIssues::ASSIGNED_TO':
-										echo BUGScontext::getI18n()->__('Assignee');
+										echo TBGContext::getI18n()->__('Assignee');
 										break;
 									case 'B2tIssues::SEVERITY':
-										echo BUGScontext::getI18n()->__('Severity');
+										echo TBGContext::getI18n()->__('Severity');
 										break;
 									case 'B2tIssues::LAST_UPDATED':
-										echo '<div style="font-size: 9px;">' . BUGScontext::getI18n()->__('Updated') . '</div>';
+										echo '<div style="font-size: 9px;">' . TBGContext::getI18n()->__('Updated') . '</div>';
 										break;
 									case 'B2tMilestones::NAME':
-										echo BUGScontext::getI18n()->__('Milestone');
+										echo TBGContext::getI18n()->__('Milestone');
 										break;
 									case 'B2tIssues::PERCENT_COMPLETE':
-										echo BUGScontext::getI18n()->__('% complete');
+										echo TBGContext::getI18n()->__('% complete');
 										break;
 									case 'B2tIssues::DESCRIPTION':
-										echo BUGScontext::getI18n()->__('Description');
+										echo TBGContext::getI18n()->__('Description');
 										break;
 									case 'B2tComments::ID':
 										echo ($bugs_response->getPage() == 'search') ? '</a>&nbsp;<a>' : '&nbsp;';
@@ -865,7 +865,7 @@
 				while ($Rcc <= $layoutrows)
 				{
 					echo '<tr class="issue_';
-					echo ($theIssue->getState() == BUGSissue::STATE_OPEN) ? 'open' : 'closed';
+					echo ($theIssue->getState() == TBGIssue::STATE_OPEN) ? 'open' : 'closed';
 					echo ($theIssue->isBlocking()) ? ' issue_blocker' : ' search_results';
 					echo "\">\n";
 					foreach ($layoutfields as $aLayoutField)
@@ -898,7 +898,7 @@
 									elseif ($aLayoutField['field_type'] == 2)
 									{
 										echo '<b>';
-										echo ($aLayoutField['include_desc'] == 1) ? BUGScontext::getI18n()->__('Stat') . ':&nbsp;' : '';
+										echo ($aLayoutField['include_desc'] == 1) ? TBGContext::getI18n()->__('Stat') . ':&nbsp;' : '';
 										echo '</b>';
 										echo $theIssue->getStatus();
 									}
@@ -1005,7 +1005,7 @@
 										 echo ' rowspan=' . $aLayoutField['span_rows'];
 									}
 									echo '>';
-									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . BUGScontext::getI18n()->__('Title') . ':&nbsp;</b>' : '';
+									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . TBGContext::getI18n()->__('Title') . ':&nbsp;</b>' : '';
 									if ($aLayoutField['field_type'] == 1)
 									{
 										echo '<a href="';
@@ -1037,7 +1037,7 @@
 										 echo ' rowspan=' . $aLayoutField['span_rows'];
 									}
 									echo ' class="small">';
-									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . BUGScontext::getI18n()->__('Comp') . ':&nbsp;</b>' : '';
+									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . TBGContext::getI18n()->__('Comp') . ':&nbsp;</b>' : '';
 									$firstComponent = true;
 									foreach ($theIssue->getComponents() as $anAffects)
 									{
@@ -1067,7 +1067,7 @@
 										 echo ' rowspan=' . $aLayoutField['span_rows'];
 									}
 									echo ' class="small">';
-									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . BUGScontext::getI18n()->__('Cat') . ':&nbsp;</b>' : '';
+									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . TBGContext::getI18n()->__('Cat') . ':&nbsp;</b>' : '';
 									echo $theIssue->getCategory()->getName() . '&nbsp;';
 									echo '</td>';
 									break;
@@ -1091,8 +1091,8 @@
 									echo '<div';
 									echo ($theIssue->getSeverity() === null) ? ' class="issue_not_assigned"' : '';
 									echo '>';
-									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . BUGScontext::getI18n()->__('Sev') . ':&nbsp;</b>' : '';
-									echo ($theIssue->getSeverity() instanceof BUGSdatatype) ? $theIssue->getSeverity()->getName() : __('Not determined'); 
+									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . TBGContext::getI18n()->__('Sev') . ':&nbsp;</b>' : '';
+									echo ($theIssue->getSeverity() instanceof TBGDatatype) ? $theIssue->getSeverity()->getName() : __('Not determined'); 
 									echo '&nbsp;';
 									echo '</div>';
 									echo '</td>';
@@ -1116,13 +1116,13 @@
 									echo ' class="small">';
 									if ($aLayoutField['include_desc'] == 1)
 									{
-										if ($theIssue->getAssigneeType() == BUGSidentifiableclass::TYPE_USER)
+										if ($theIssue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER)
 										{
 											echo '<table>';
 											echo bugs_userDropdown($theIssue->getAssignee());
 											echo '</table>';
 										}
-										elseif ($theIssue->getAssigneeType() == BUGSidentifiableclass::TYPE_TEAM)
+										elseif ($theIssue->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM)
 										{
 											echo '<table>';
 											echo bugs_teamDropdown($theIssue->getAssignee());
@@ -1130,18 +1130,18 @@
 										}
 										else
 										{
-											echo '<div class="issue_not_assigned">' . BUGScontext::getI18n()->__('Not assigned') . '</div>';
+											echo '<div class="issue_not_assigned">' . TBGContext::getI18n()->__('Not assigned') . '</div>';
 										}
 									}
 									else
 									{
-										if ($theIssue->getAssigneeType() == BUGSidentifiableclass::TYPE_USER || $theIssue->getAssigneeType() == BUGSidentifiableclass::TYPE_TEAM)
+										if ($theIssue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER || $theIssue->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM)
 										{
 											echo $theIssue->getAssignee();
 										}
 										else
 										{
-											echo '<div class="issue_not_assigned">' . BUGScontext::getI18n()->__('Not assigned') . '</div>';
+											echo '<div class="issue_not_assigned">' . TBGContext::getI18n()->__('Not assigned') . '</div>';
 										}
 									}
 									echo '</td>';
@@ -1167,13 +1167,13 @@
 									echo ' class="small">';
 									if ($aLayoutField['include_desc'] == 1)
 									{
-										if ($theIssue->getOwnerType() == BUGSidentifiableclass::TYPE_USER)
+										if ($theIssue->getOwnerType() == TBGIdentifiableClass::TYPE_USER)
 										{
 											echo '<table>';
 											echo bugs_userDropdown($theIssue->getOwner());
 											echo '</table>';
 										}
-										elseif ($theIssue->getOwnerType() == BUGSidentifiableclass::TYPE_TEAM)
+										elseif ($theIssue->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM)
 										{
 											echo '<table>';
 											echo bugs_teamDropdown($theIssue->getOwner()->getID());
@@ -1181,18 +1181,18 @@
 										}
 										else
 										{
-											echo '<div class="issue_not_assigned">' . BUGScontext::getI18n()->__('Not owned'). '</div>';
+											echo '<div class="issue_not_assigned">' . TBGContext::getI18n()->__('Not owned'). '</div>';
 										}
 									}
 									else
 									{
-										if ($theIssue->getOwnerType() == BUGSidentifiableclass::TYPE_USER || $theIssue->getOwnerType() == BUGSidentifiableclass::TYPE_TEAM)
+										if ($theIssue->getOwnerType() == TBGIdentifiableClass::TYPE_USER || $theIssue->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM)
 										{
 											echo $theIssue->getOwner();
 										}
 										else
 										{
-											echo '<div class="issue_not_assigned">' . BUGScontext::getI18n()->__('Not owned'). '</div>';
+											echo '<div class="issue_not_assigned">' . TBGContext::getI18n()->__('Not owned'). '</div>';
 										}
 									}
 									echo '</td>';
@@ -1214,7 +1214,7 @@
 										 echo ' rowspan=' . $aLayoutField['span_rows'];
 									}
 									echo ' class="small">';
-									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . BUGScontext::getI18n()->__('Sev') . ':&nbsp;</b>' : '';
+									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . TBGContext::getI18n()->__('Sev') . ':&nbsp;</b>' : '';
 									echo ($theIssue->getSeverity()->getID() != '') ? $theIssue->getSeverity()->getName() : '<span style="color: #AAA;">' . $theIssue->getSeverity()->getName() . '</span>';
 									echo '&nbsp;';
 									echo '</td>';
@@ -1236,7 +1236,7 @@
 										 echo ' rowspan=' . $aLayoutField['span_rows'];
 									}
 									echo ' class="small">';
-									echo ($theIssue->getMilestone() instanceof BUGSmilestone) ? $theIssue->getMilestone()->getName() : '<span style="color: #AAA;">' . BUGScontext::getI18n()->__('No milestone set') . '</span>';
+									echo ($theIssue->getMilestone() instanceof TBGMilestone) ? $theIssue->getMilestone()->getName() : '<span style="color: #AAA;">' . TBGContext::getI18n()->__('No milestone set') . '</span>';
 									echo '&nbsp;';
 									echo '</td>';
 									break;
@@ -1277,7 +1277,7 @@
 										 echo ' rowspan=' . $aLayoutField['span_rows'];
 									}
 									echo ' class="small">';
-									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . BUGScontext::getI18n()->__('Upd') . ':&nbsp;</b>' : '';
+									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . TBGContext::getI18n()->__('Upd') . ':&nbsp;</b>' : '';
 									if ($aLayoutField['field_type'] == 1)
 									{
 										echo bugs_formatTime($theIssue->getLastUpdatedTime(), 14);
@@ -1372,7 +1372,7 @@
 			echo "</table>\n";
 			if (!($bugs_response->getPage() == 'index' && $this->getSetting('showindexsummarydetails') == 0))
 			{
-				echo '<div style="color: #AAA; font-size: 12px; border-bottom: 1px solid #DDD;">' . BUGScontext::getI18n()->__('%count% matches in this group', array('%count%' => $group_cc)) . '</div>';
+				echo '<div style="color: #AAA; font-size: 12px; border-bottom: 1px solid #DDD;">' . TBGContext::getI18n()->__('%count% matches in this group', array('%count%' => $group_cc)) . '</div>';
 			}
 		}
 		
@@ -1386,10 +1386,10 @@
 		{
 			$crit = new B2DBCriteria();
 			$ctn = $crit->returnCriterion(B2tSavedSearches::IS_PUBLIC, 1);
-			$ctn->addOr(B2tSavedSearches::UID, BUGScontext::getUser()->getUID());
+			$ctn->addOr(B2tSavedSearches::UID, TBGContext::getUser()->getUID());
 			$crit->addWhere($ctn);
 			$crit->addWhere(B2tSavedSearches::APPLIES_TO, $applies_to);
-			$crit->addWhere(B2tSavedSearches::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(B2tSavedSearches::SCOPE, TBGContext::getScope()->getID());
 			$crit->addOrderBy(B2tSavedSearches::ID, B2DBCriteria::SORT_ASC);
 			$res = B2DB::getTable('B2tSavedSearches')->doSelect($crit);
 			
@@ -1405,7 +1405,7 @@
 		{
 			if ($this->hasAccess())
 			{
-				print '<link rel="search" type="application/opensearchdescription+xml" title="' . BUGSsettings::getTBGname() . '" href="' . BUGSsettings::get('url_host') . '' . BUGSsettings::get('url_subdir') . 'modules/search/opensearch.xml.php">';
+				print '<link rel="search" type="application/opensearchdescription+xml" title="' . TBGSettings::getTBGname() . '" href="' . TBGSettings::get('url_host') . '' . TBGSettings::get('url_subdir') . 'modules/search/opensearch.xml.php">';
 			}
 		}
 		
@@ -1422,47 +1422,47 @@
 		public function section_viewissueTop($theIssue)
 		{
 			$url_options = '';
-			if (BUGScontext::getRequest()->getParameter('search_queue')) 
+			if (TBGContext::getRequest()->getParameter('search_queue')) 
 			{
-				$_SESSION['search_queue'] = BUGScontext::getRequest()->getParameter('search_queue');
-				$url_options = '&amp;search_queue=' . BUGScontext::getRequest()->getParameter('search_queue');
+				$_SESSION['search_queue'] = TBGContext::getRequest()->getParameter('search_queue');
+				$url_options = '&amp;search_queue=' . TBGContext::getRequest()->getParameter('search_queue');
 			}
 			
 			?>
 			<div style="width: auto; padding: 5px; padding-bottom: 0px;">
 			<table style="border: 0px; width: 100%; padding: 2px;">
 			<tr>
-			<td style="width: 20px;" valign="middle"><a href="modules/search/search.php?previous_issue=true&amp;open=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>" class="image"><?php echo image_tag('search_go_prev2.png', '', BUGScontext::getI18n()->__('Previous open issue'), BUGScontext::getI18n()->__('Previous open issue')); ?></a></td>
-			<td style="width: 160px;" valign="middle"><a href="modules/search/search.php?previous_issue=true&amp;open=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>"><b><?php echo BUGScontext::getI18n()->__('Go to previous open issue'); ?></b></a></td>
-			<td style="width: 20px;" valign="middle"><a href="modules/search/search.php?previous_issue=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>" class="image"><?php echo image_tag('search_go_prev.png', '', BUGScontext::getI18n()->__('Previous issue'), BUGScontext::getI18n()->__('Previous issue')); ?></a></td>
-			<td style="width: 110px;" valign="middle"><a href="modules/search/search.php?previous_issue=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>"><?php echo BUGScontext::getI18n()->__('Go to previous issue'); ?></a></td>
+			<td style="width: 20px;" valign="middle"><a href="modules/search/search.php?previous_issue=true&amp;open=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>" class="image"><?php echo image_tag('search_go_prev2.png', '', TBGContext::getI18n()->__('Previous open issue'), TBGContext::getI18n()->__('Previous open issue')); ?></a></td>
+			<td style="width: 160px;" valign="middle"><a href="modules/search/search.php?previous_issue=true&amp;open=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>"><b><?php echo TBGContext::getI18n()->__('Go to previous open issue'); ?></b></a></td>
+			<td style="width: 20px;" valign="middle"><a href="modules/search/search.php?previous_issue=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>" class="image"><?php echo image_tag('search_go_prev.png', '', TBGContext::getI18n()->__('Previous issue'), TBGContext::getI18n()->__('Previous issue')); ?></a></td>
+			<td style="width: 110px;" valign="middle"><a href="modules/search/search.php?previous_issue=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>"><?php echo TBGContext::getI18n()->__('Go to previous issue'); ?></a></td>
 			<td style="text-align: center;">&nbsp;</td>
-			<td style="width: 110px; text-align: right;" valign="middle"><a href="modules/search/search.php?next_issue=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>"><?php echo BUGScontext::getI18n()->__('Go to next issue'); ?></a></td>
-			<td style="width: 20px;" valign="middle"><a href="modules/search/search.php?next_issue=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>" class="image"><?php echo image_tag('search_go_next.png', '', BUGScontext::getI18n()->__('Next issue'), BUGScontext::getI18n()->__('Next issue')); ?></a></td>
-			<td style="width: 140px; text-align: right;" valign="middle"><a href="modules/search/search.php?next_issue=true&amp;open=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>"><b><?php echo BUGScontext::getI18n()->__('Go to next open issue'); ?></b></a></td>
-			<td style="width: 20px;" valign="middle"><a href="modules/search/search.php?next_issue=true&amp;open=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>" class="image"><?php echo image_tag('search_go_next2.png', '', BUGScontext::getI18n()->__('Next open issue'), BUGScontext::getI18n()->__('Next open issue')); ?></a></td>
+			<td style="width: 110px; text-align: right;" valign="middle"><a href="modules/search/search.php?next_issue=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>"><?php echo TBGContext::getI18n()->__('Go to next issue'); ?></a></td>
+			<td style="width: 20px;" valign="middle"><a href="modules/search/search.php?next_issue=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>" class="image"><?php echo image_tag('search_go_next.png', '', TBGContext::getI18n()->__('Next issue'), TBGContext::getI18n()->__('Next issue')); ?></a></td>
+			<td style="width: 140px; text-align: right;" valign="middle"><a href="modules/search/search.php?next_issue=true&amp;open=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>"><b><?php echo TBGContext::getI18n()->__('Go to next open issue'); ?></b></a></td>
+			<td style="width: 20px;" valign="middle"><a href="modules/search/search.php?next_issue=true&amp;open=true&amp;current=<?php echo $theIssue->getFormattedIssueNo(true) . $url_options; ?>" class="image"><?php echo image_tag('search_go_next2.png', '', TBGContext::getI18n()->__('Next open issue'), TBGContext::getI18n()->__('Next open issue')); ?></a></td>
 			</tr>
 			</table>
 			<?php
 	
-				if (BUGScontext::getRequest()->getParameter('search_message'))
+				if (TBGContext::getRequest()->getParameter('search_message'))
 				{
 					?>
 					<div style="padding: 5px; border: 0px; background-color: #FFF;">
 					<?php
-					switch (BUGScontext::getRequest()->getParameter('search_message'))
+					switch (TBGContext::getRequest()->getParameter('search_message'))
 					{
 						case 1:
-							echo '<b>' . BUGScontext::getI18n()->__('This is the last issue in this queue') . '</b>';
+							echo '<b>' . TBGContext::getI18n()->__('This is the last issue in this queue') . '</b>';
 							break;
 						case 2:
-							echo '<b>' . BUGScontext::getI18n()->__('This is the last open issue in this queue') . '</b>';
+							echo '<b>' . TBGContext::getI18n()->__('This is the last open issue in this queue') . '</b>';
 							break;
 						case 3:
-							echo '<b>' . BUGScontext::getI18n()->__('This is the first issue in this queue') . '</b>';
+							echo '<b>' . TBGContext::getI18n()->__('This is the first issue in this queue') . '</b>';
 							break;
 						case 4:
-							echo '<b>' . BUGScontext::getI18n()->__('This is the first open issue in this queue') . '</b>';
+							echo '<b>' . TBGContext::getI18n()->__('This is the first open issue in this queue') . '</b>';
 							break;
 					}
 					?>
@@ -1480,14 +1480,14 @@
 			?>
 			<div style="margin-top: 10px; margin-bottom: 0px; border: 0px;">
 				<div style="border-bottom: 1px solid #DDD; padding: 3px; font-size: 12px;">
-				<b><?php echo BUGScontext::getI18n()->__('Reports'); ?></b>
+				<b><?php echo TBGContext::getI18n()->__('Reports'); ?></b>
 				</div>
 				<div class="issuedetailscontentsleft" style="padding-top: 5px; padding-bottom: 5px;" id="svn_checkins">
 					<table cellpadding=0 cellspacing=0>
-					<?php if (BUGSuser::isThisGuest() == false): ?>
+					<?php if (TBGUser::isThisGuest() == false): ?>
 						<tr>
 						<td class="imgtd"><?php echo image_tag('assigned_bugs.png'); ?></td>
-						<td><a href="<?php print BUGScontext::getTBGPath(); ?>modules/search/search.php?custom_search=true&amp;clear_filters=true&amp;perform_search=true&amp;groupby=state&amp;add_filter=5&amp;filter_cc=0&amp;operator=B2DBCriteria::DB_EQUALS&amp;value=<?php print BUGScontext::getUser()->getUID(); ?>"><?php echo BUGScontext::getI18n()->__('View issues filed by you'); ?></a></td>
+						<td><a href="<?php print TBGContext::getTBGPath(); ?>modules/search/search.php?custom_search=true&amp;clear_filters=true&amp;perform_search=true&amp;groupby=state&amp;add_filter=5&amp;filter_cc=0&amp;operator=B2DBCriteria::DB_EQUALS&amp;value=<?php print TBGContext::getUser()->getUID(); ?>"><?php echo TBGContext::getI18n()->__('View issues filed by you'); ?></a></td>
 						</tr>
 					<?php endif; ?>
 					</table>
@@ -1498,17 +1498,17 @@
 		
 		public function section_useractionsBottom($vars)
 		{
-			return '<div style="padding: 2px;"><a target="_blank" href="' . BUGScontext::getTBGPath() . 'modules/search/search.php?custom_search=true&amp;clear_filters=true&amp;groupby=state&amp;perform_search=true&amp;add_filter=5&amp;filter_cc=0&amp;operator=B2DBCriteria::DB_EQUALS&amp;value=' . $vars['user']->getID() . '" onclick="' . $vars['closemenustring'] . '">' . BUGScontext::getI18n()->__('View more issues from this user') . '</a></div>';			
+			return '<div style="padding: 2px;"><a target="_blank" href="' . TBGContext::getTBGPath() . 'modules/search/search.php?custom_search=true&amp;clear_filters=true&amp;groupby=state&amp;perform_search=true&amp;add_filter=5&amp;filter_cc=0&amp;operator=B2DBCriteria::DB_EQUALS&amp;value=' . $vars['user']->getID() . '" onclick="' . $vars['closemenustring'] . '">' . TBGContext::getI18n()->__('View more issues from this user') . '</a></div>';			
 		}
 		
 		public function section_indexLeftMyIssues($issues)
 		{
-			if (!BUGScontext::getUser()->isGuest() && $issues > 0)
+			if (!TBGContext::getUser()->isGuest() && $issues > 0)
 			{
 				?>
 				<tr>
 				<td class="imgtd"><?php echo image_tag('assigned_bugs.png'); ?></td>
-				<td><a target="_blank" href="<?php echo BUGScontext::getTBGPath(); ?>modules/search/search.php?custom_search=true&amp;clear_filters=true&amp;perform_search=true&amp;groupby=state&amp;add_filter=5&amp;filter_cc=0&amp;operator=B2DBCriteria::DB_EQUALS&amp;value=<?php echo BUGScontext::getUser()->getUID(); ?>"><?php echo BUGScontext::getI18n()->__('View all issues filed by you'); ?></a></td>
+				<td><a target="_blank" href="<?php echo TBGContext::getTBGPath(); ?>modules/search/search.php?custom_search=true&amp;clear_filters=true&amp;perform_search=true&amp;groupby=state&amp;add_filter=5&amp;filter_cc=0&amp;operator=B2DBCriteria::DB_EQUALS&amp;value=<?php echo TBGContext::getUser()->getUID(); ?>"><?php echo TBGContext::getI18n()->__('View all issues filed by you'); ?></a></td>
 				</tr>
 				<?php
 			}			
@@ -1526,7 +1526,7 @@
 				foreach($searches as $aSearch)
 				{
 					$search = B2DB::getTable('B2tSavedSearches')->doSelectById($aSearch);
-					if ($search instanceof B2DBRow && (BUGScontext::getUser()->hasPermission("b2projectaccess", $search->get(B2tSavedSearches::APPLIES_TO), "core") || $search->get(B2tSavedSearches::APPLIES_TO) == 0))
+					if ($search instanceof B2DBRow && (TBGContext::getUser()->hasPermission("b2projectaccess", $search->get(B2tSavedSearches::APPLIES_TO), "core") || $search->get(B2tSavedSearches::APPLIES_TO) == 0))
 					{
 						echo '<br>';
 						$this->log("running search with id $aSearch");
@@ -1556,19 +1556,19 @@
 			}
 		}
 		
-		public function section_bugsProject_createNew($theProject)
+		public function section_TBGProject_createNew($theProject)
 		{
 			$layouts = $this->getLayouts();
-			$scope = BUGScontext::getScope()->getID();
+			$scope = TBGContext::getScope()->getID();
 
 			$values = array();
 			$values[] = array('value' => $theProject->getID(), 'operator' => 'B2DBCriteria::DB_EQUALS', 'filter' => 2);
 			
 			$values2 = $values;
-			$values2[] = array('value' => BUGSissue::STATE_CLOSED, 'operator' => 'B2DBCriteria::DB_EQUALS', 'filter' => 1);
+			$values2[] = array('value' => TBGIssue::STATE_CLOSED, 'operator' => 'B2DBCriteria::DB_EQUALS', 'filter' => 1);
 
 			$values3 = $values;
-			$values3[] = array('value' => BUGSissue::STATE_OPEN, 'operator' => 'B2DBCriteria::DB_EQUALS', 'filter' => 1);
+			$values3[] = array('value' => TBGIssue::STATE_OPEN, 'operator' => 'B2DBCriteria::DB_EQUALS', 'filter' => 1);
 			
 			self::createSearch(__('All issues for %project%', array('%project%' => $theProject->getName())), $layouts[3]['id'], $theProject->getID(), 1, 1, 'state', $scope, $values);
 			self::createSearch(__('Open issues for %project%', array('%project%' => $theProject->getName())), $layouts[3]['id'], $theProject->getID(), 1, 1, '', $scope, $values3);
@@ -1609,8 +1609,8 @@
 				case 'core_index_right_middle_bottom':
 					$function_name = 'section_indexRightMiddleBottom';
 					break;
-				case 'core_BUGSProject::createNew':
-					$function_name = 'section_bugsProject_createNew';
+				case 'core_TBGProject::createNew':
+					$function_name = 'section_TBGProject_createNew';
 					break;
 			}
 			if ($function_name != '') parent::registerPermanentTriggerListener($module, $identifier, $function_name, $scope);

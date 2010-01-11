@@ -34,13 +34,13 @@
 
 		public function loadFixtures($scope)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::GNAME, $i18n->__('Administrators'));
 			$crit->addInsert(self::SCOPE, $scope);
 			$admin_group_id = $this->doInsert($crit)->getInsertID();
-			BUGSsettings::saveSetting('admingroup', $admin_group_id, 'core', $scope);
+			TBGSettings::saveSetting('admingroup', $admin_group_id, 'core', $scope);
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::GNAME, $i18n->__('Regular users'));
@@ -57,7 +57,7 @@
 		
 		public function getAll($scope = null)
 		{
-			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, $scope);
 			

@@ -23,7 +23,7 @@
 					<?php endforeach; ?>
 				</div>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_milestone', array('project_id' => $theProject->getID())); ?>" method="post" id="add_milestone_form" onsubmit="addMilestone('<?php echo make_url('configure_projects_add_milestone', array('project_id' => $theProject->getID())); ?>');return false;">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_milestone', array('project_id' => $theProject->getID())); ?>" method="post" id="add_milestone_form" onsubmit="addMilestone('<?php echo make_url('configure_projects_add_milestone', array('project_id' => $theProject->getID())); ?>');return false;">
 					<div style="margin-top: 10px; padding: 3px; border-bottom: 1px solid #DDD;"><b><?php echo __('Add a milestone'); ?></b></div>
 					<table cellpadding=0 cellspacing=0>
 						<tr>

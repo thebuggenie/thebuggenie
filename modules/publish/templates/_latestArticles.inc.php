@@ -1,4 +1,4 @@
-<?php BUGScontext::loadLibrary('publish/publish'); ?>
+<?php TBGContext::loadLibrary('publish/publish'); ?>
 <div style="margin: 10px 5px 10px 10px;">
 	<div class="left_menu_header"><?php echo __('Latest articles'); ?></div>
 	<ul class="article_list">

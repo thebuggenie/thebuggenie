@@ -1,18 +1,18 @@
 <?php
 
-	class BUGSsvnintegration extends BUGSmodule 
+	class BUGSsvnintegration extends TBGModule 
 	{
 		
 		public function __construct($m_id, $res = null)
 		{
 			parent::__construct($m_id, $res);
 			$this->_module_version = '1.0';
-			$this->setLongName(BUGScontext::getI18n()->__('SVN integration'));
-			$this->setMenuTitle(BUGScontext::getI18n()->__('SVN integration'));
-			$this->setConfigTitle(BUGScontext::getI18n()->__('SVN integration'));
-			$this->setDescription(BUGScontext::getI18n()->__('Enables integration with SVN'));
+			$this->setLongName(TBGContext::getI18n()->__('SVN integration'));
+			$this->setMenuTitle(TBGContext::getI18n()->__('SVN integration'));
+			$this->setConfigTitle(TBGContext::getI18n()->__('SVN integration'));
+			$this->setDescription(TBGContext::getI18n()->__('Enables integration with SVN'));
 			$this->setHasConfigSettings();
-			$this->setConfigDescription(BUGScontext::getI18n()->__('Configure source code integration from this section'));
+			$this->setConfigDescription(TBGContext::getI18n()->__('Configure source code integration from this section'));
 			$this->addAvailableListener('core', 'viewissue_right_middle', 'section_viewissueRightMiddle', 'List of updated files for an issue');
 			$this->addAvailableListener('core', 'viewproject_right_top', 'section_viewProject_viewCode', '"View code" link in project overview');
 		}
@@ -24,14 +24,14 @@
 
 		public static function install($scope = null)
 		{
-  			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+  			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			
 			$module = parent::_install('svn_integration', 'BUGSsvnintegration', '1.0', true, false, false, $scope);
 
 			$module->enableListenerSaved('core', 'viewissue_right_middle');
 			$module->enableListenerSaved('core', 'viewproject_right_top');
 
-			if ($scope == BUGScontext::getScope()->getID())
+			if ($scope == TBGContext::getScope()->getID())
 			{
 				B2DB::getTable('B2tSVNintegration')->create();
 			}
@@ -41,7 +41,7 @@
 					
 		public function uninstall()
 		{
-			if (BUGScontext::getScope()->getID() == 1)
+			if (TBGContext::getScope()->getID() == 1)
 			{
 				B2DB::getTable('B2tSVNintegration')->drop();
 			}
@@ -53,10 +53,10 @@
 			switch ($topic)
 			{
 				case 'main':
-					return BUGScontext::getI18n()->__('Main');
+					return TBGContext::getI18n()->__('Main');
 					break;
 				case 'howto':
-					return BUGScontext::getI18n()->__('How to set up SVN integration');
+					return TBGContext::getI18n()->__('How to set up SVN integration');
 					break;
 			}
 			return parent::loadHelpTitle($topic);
@@ -82,7 +82,7 @@
 			?>
 			<div style="margin-top: 10px; margin-bottom: 0px; border: 0px;">
 				<div style="border-bottom: 1px solid #DDD; padding: 3px; font-size: 12px;">
-				<b><?php echo BUGScontext::getI18n()->__('Subversion checkins'); ?></b>
+				<b><?php echo TBGContext::getI18n()->__('Subversion checkins'); ?></b>
 				</div>
 				<div style="padding-top: 5px; padding-bottom: 5px;" id="svn_checkins">
 				<?php
@@ -93,12 +93,12 @@
 					if ($results = B2DB::getTable('B2tSVNintegration')->doSelect($crit))
 					{
 						$vvcpath_setting = 'viewvc_path_' . $theIssue->getProject()->getID();
-						$viewvc_path = BUGScontext::getModule('svn_integration')->getSetting($vvcpath_setting);
+						$viewvc_path = TBGContext::getModule('svn_integration')->getSetting($vvcpath_setting);
 						
 						echo '<table cellpadding=0 cellspacing=0 style="width: 100%;">';
 						while ($results->next())
 						{
-							$theUser = BUGSfactory::userLab($results->get(B2tSVNintegration::AUTHOR));
+							$theUser = TBGFactory::userLab($results->get(B2tSVNintegration::AUTHOR));
 							echo '<tr>';
 							echo '<td class="issuedetailscontentsleft" style="border-bottom: 0px; padding-right: 20px;">';
 							echo '<span style="font-size: 10px;">[rev <b>'.$results->get(B2tSVNintegration::NEW_REV).'</b>] </span>';
@@ -113,15 +113,15 @@
 							echo '</td>';
 							if ($viewvc_path)
 							{
-								echo '<td class="issuedetailscontentscenter" style="border-bottom: 0px; padding-right: 10px;"><a href="' . $viewvc_path . $results->get(B2tSVNintegration::FILE_NAME) . '?r1=' . $results->get(B2tSVNintegration::OLD_REV) . '&amp;r2=' . $results->get(B2tSVNintegration::NEW_REV) . '" target="_blank""><b>' . BUGScontext::getI18n()->__('Diff') . '</b></a></td>';
-								echo '<td class="issuedetailscontentscenter" style="border-bottom: 0px; padding-right: 10px;"><a href="' . $viewvc_path . $results->get(B2tSVNintegration::FILE_NAME) . '?revision=' . $results->get(B2tSVNintegration::NEW_REV) . '&amp;view=markup" target="_blank""><b>' . BUGScontext::getI18n()->__('View') . '</b></a></td>';
+								echo '<td class="issuedetailscontentscenter" style="border-bottom: 0px; padding-right: 10px;"><a href="' . $viewvc_path . $results->get(B2tSVNintegration::FILE_NAME) . '?r1=' . $results->get(B2tSVNintegration::OLD_REV) . '&amp;r2=' . $results->get(B2tSVNintegration::NEW_REV) . '" target="_blank""><b>' . TBGContext::getI18n()->__('Diff') . '</b></a></td>';
+								echo '<td class="issuedetailscontentscenter" style="border-bottom: 0px; padding-right: 10px;"><a href="' . $viewvc_path . $results->get(B2tSVNintegration::FILE_NAME) . '?revision=' . $results->get(B2tSVNintegration::NEW_REV) . '&amp;view=markup" target="_blank""><b>' . TBGContext::getI18n()->__('View') . '</b></a></td>';
 							}
 							echo '</tr>';
 						}
 					}
 					else
 					{
-						echo '<tr><td style="border-bottom: 0px; padding-left: 5px; color: #AAA;">' . BUGScontext::getI18n()->__('There are no SVN checkins for this issue') . '</td></tr>';
+						echo '<tr><td style="border-bottom: 0px; padding-left: 5px; color: #AAA;">' . TBGContext::getI18n()->__('There are no SVN checkins for this issue') . '</td></tr>';
 					}
 					echo '</table>';
 				
@@ -134,13 +134,13 @@
 		public function section_viewProject_viewCode($theProject)
 		{
 			$vvcpath_setting = 'viewvc_path_' . $theProject->getID();
-			$viewvc_path = BUGScontext::getModule('svn_integration')->getSetting($vvcpath_setting);
+			$viewvc_path = TBGContext::getModule('svn_integration')->getSetting($vvcpath_setting);
 			if ($viewvc_path != '')
 			{
 				echo '<tr>';
 				echo '<td class="imgtd" style="padding: 2px;">' . image_tag('svn_integration/icon_view_code.png') . '</td>';
 				echo '<td style="padding: 2px;">';
-				echo '<a href="' . $viewvc_path . '" target="_blank"><b>'. BUGScontext::getI18n()->__('View code') . '</b></a>';
+				echo '<a href="' . $viewvc_path . '" target="_blank"><b>'. TBGContext::getI18n()->__('View code') . '</b></a>';
 				echo '</td>';
 				echo '</tr>';
 			}
@@ -173,7 +173,7 @@
 		{
 			if (count($argv) == 5)
 			{
-				$issue_uniqueid = BUGSissue::getIssueIDfromLink($argv[2]); 
+				$issue_uniqueid = TBGIssue::getIssueIDfromLink($argv[2]); 
 				
 				if ($issue_uniqueid != 0)
 				{
@@ -182,7 +182,7 @@
 					$crit->addInsert(B2tSVNintegration::FILE_NAME, $argv[3]); 
 					$crit->addInsert(B2tSVNintegration::NEW_REV, $argv[5]);
 					$crit->addInsert(B2tSVNintegration::DATE, $_SERVER["REQUEST_TIME"]);
-					$crit->addInsert(B2tSVNintegration::SCOPE, BUGScontext::getScope());
+					$crit->addInsert(B2tSVNintegration::SCOPE, TBGContext::getScope());
 					B2DB::getTable('B2tSVNintegration')->doInsert($crit);
 					return true;
 				}

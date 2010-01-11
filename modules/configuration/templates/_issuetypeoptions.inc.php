@@ -1,4 +1,4 @@
-<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_update_choices', array('id' => $issuetype->getID())); ?>" onsubmit="updateIssuetypeChoices('<?php echo make_url('configure_issuetypes_update_choices', array('id' => $issuetype->getID())); ?>', <?php echo $issuetype->getID(); ?>);return false;" id="update_<?php echo $issuetype->getID(); ?>_choices_form">
+<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_update_choices', array('id' => $issuetype->getID())); ?>" onsubmit="updateIssuetypeChoices('<?php echo make_url('configure_issuetypes_update_choices', array('id' => $issuetype->getID())); ?>', <?php echo $issuetype->getID(); ?>);return false;" id="update_<?php echo $issuetype->getID(); ?>_choices_form">
 	<div class="rounded_box white_borderless" style="margin: 5px 0 0 0;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 3px; font-size: 12px;">

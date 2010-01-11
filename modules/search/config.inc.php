@@ -1,6 +1,6 @@
 <?php
 
-	if (($access_level != "full" && $access_level != "read") || BUGScontext::getRequest()->getParameter('access_level'))
+	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
 		bugs_msgbox(false, "", __('You do not have access to this section'));
 	}
@@ -13,26 +13,26 @@
 								  'showindexsummarydetails', 'indexshowsavedsearches');
 			foreach ($settings_arr as $setting)
 			{
-				if (BUGScontext::getRequest()->getParameter($setting))
+				if (TBGContext::getRequest()->getParameter($setting))
 				{
-					BUGScontext::getModule('search')->saveSetting($setting, BUGScontext::getRequest()->getParameter($setting));
+					TBGContext::getModule('search')->saveSetting($setting, TBGContext::getRequest()->getParameter($setting));
 				}
 			}
 			
-			if (BUGScontext::getRequest()->getParameter('addsavedsearch'))
+			if (TBGContext::getRequest()->getParameter('addsavedsearch'))
 			{
-				$tmpsavedsearches = BUGScontext::getModule('search')->getSetting('indexsearches');
-				$tmpsavedsearches .= ';' . BUGScontext::getRequest()->getParameter('addsavedsearch');
-				BUGScontext::getModule('search')->saveSetting('indexsearches', $tmpsavedsearches); 
+				$tmpsavedsearches = TBGContext::getModule('search')->getSetting('indexsearches');
+				$tmpsavedsearches .= ';' . TBGContext::getRequest()->getParameter('addsavedsearch');
+				TBGContext::getModule('search')->saveSetting('indexsearches', $tmpsavedsearches); 
 			}
-			if (is_numeric(BUGScontext::getRequest()->getParameter('removesavedsearch')))
+			if (is_numeric(TBGContext::getRequest()->getParameter('removesavedsearch')))
 			{
-				$tmpsavedsearches = explode(';', BUGScontext::getModule('search')->getSetting('indexsearches'));
+				$tmpsavedsearches = explode(';', TBGContext::getModule('search')->getSetting('indexsearches'));
 				$newsavedsearches = '';
 				$firstsearch = true;
 				foreach ($tmpsavedsearches as $aSavedsearch)
 				{
-					if ($aSavedsearch != BUGScontext::getRequest()->getParameter('removesavedsearch'))
+					if ($aSavedsearch != TBGContext::getRequest()->getParameter('removesavedsearch'))
 					{
 						if (!$firstsearch)
 						{
@@ -42,27 +42,27 @@
 						$firstsearch = false;
 					}
 				}
-				BUGScontext::getModule('search')->saveSetting('indexsearches', $newsavedsearches); 
+				TBGContext::getModule('search')->saveSetting('indexsearches', $newsavedsearches); 
 			}
 		}
 
-		$showsearches = BUGScontext::getModule('search')->getSetting('indexshowsavedsearches');
-		$savedsearches = explode(";", BUGScontext::getModule('search')->getSetting('indexsearches'));
+		$showsearches = TBGContext::getModule('search')->getSetting('indexshowsavedsearches');
+		$savedsearches = explode(";", TBGContext::getModule('search')->getSetting('indexsearches'));
 		$searchdetails = array();
 		foreach ($savedsearches as $aSavedsearch)
 		{
 			if (trim($aSavedsearch) != '')
 			{
-				$searchdetails[] = array('id' => $aSavedsearch, 'name' => BUGScontext::getModule('search')->getSavedSearchName($aSavedsearch), 'public' => (BUGScontext::getModule('search')->getSavedSearchPublic($aSavedsearch) == 1) ? true : false);
+				$searchdetails[] = array('id' => $aSavedsearch, 'name' => TBGContext::getModule('search')->getSavedSearchName($aSavedsearch), 'public' => (TBGContext::getModule('search')->getSavedSearchPublic($aSavedsearch) == 1) ? true : false);
 			}
 		}
-		$searchlayouts = BUGScontext::getModule('search')->getLayouts();
+		$searchlayouts = TBGContext::getModule('search')->getLayouts();
 		$availablesearches = array();
 		$crit = new B2DBCriteria();
-		$crit->addWhere(B2tSavedSearches::SCOPE, BUGScontext::getScope()->getID());
+		$crit->addWhere(B2tSavedSearches::SCOPE, TBGContext::getScope()->getID());
 		$crit->addWhere(B2tSavedSearches::APPLIES_TO, 0);
 		$criterion = $crit->returnCriterion(B2tSavedSearches::IS_PUBLIC, 1);
-		$criterion->addOr(B2tSavedSearches::UID, BUGScontext::getUser()->getUID());
+		$criterion->addOr(B2tSavedSearches::UID, TBGContext::getUser()->getUID());
 		$crit->addWhere($criterion);
 		$resultset = B2DB::getTable('B2tSavedSearches')->doSelect($crit);
 		while ($row = $resultset->getNextRow())
@@ -70,13 +70,13 @@
 			$availablesearches[] = array('id' => $row->get(B2tSavedSearches::ID), 'name' => $row->get(B2tSavedSearches::NAME));
 		}
 		
-		foreach (BUGSproject::getAll() as $aProject)
+		foreach (TBGProject::getAll() as $aProject)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tSavedSearches::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(B2tSavedSearches::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(B2tSavedSearches::APPLIES_TO, $aProject['id']);
 			$criterion = $crit->returnCriterion(B2tSavedSearches::IS_PUBLIC, 1);
-			$criterion->addOr(B2tSavedSearches::UID, BUGScontext::getUser()->getUID());
+			$criterion->addOr(B2tSavedSearches::UID, TBGContext::getUser()->getUID());
 			$crit->addWhere($criterion);
 			$resultset = B2DB::getTable('B2tSavedSearches')->doSelect($crit);
 			while ($row = $resultset->getNextRow())
@@ -103,7 +103,7 @@
 				</td>
 			</tr>
 		</table>
-		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" name="defaultscopeform">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" name="defaultscopeform">
 		<input type="hidden" name="module" value="search">
 		<div style="margin-top: 15px; margin-bottom: 5px; padding: 2px; background-color: #F5F5F5; border-bottom: 1px solid #DDD; font-weight: bold; font-size: 1.0em; width: auto;"><?php echo __('OpenSearch settings'); ?></div>
 		<div style="padding: 5px; margin-bottom: 5px;"><?php echo __('OpenSearch is an open standard for integrating search functionality.'); ?> <?php echo __('By enabling OpenSearch functionality, you can search BUGS 2 issues from directly in your browsers search area.'); ?> <?php echo __('OpenSearch is supported by most major browsers, including %firefox% and Internet Explorer.', array('%firefox%' => '<a href="http://www.mozilla.com" target="_blank">Firefox</a>')); ?><br>
@@ -113,30 +113,30 @@
 				<td style="width: 160px; padding: 5px;"><b><?php echo __('Enable OpenSearch'); ?></b></td>
 				<td style="width: 250px;">
 					<select name="enable_opensearch" style="width: 100%"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>>
-						<option value=1 <?php echo (BUGScontext::getModule('search')->getSetting('enable_opensearch') == 1) ? ' selected' : ''; ?>><?php echo __('Yes'); ?></option>
-						<option value=0 <?php echo (BUGScontext::getModule('search')->getSetting('enable_opensearch') == 0) ? ' selected' : ''; ?>><?php echo __('No'); ?></option>
+						<option value=1 <?php echo (TBGContext::getModule('search')->getSetting('enable_opensearch') == 1) ? ' selected' : ''; ?>><?php echo __('Yes'); ?></option>
+						<option value=0 <?php echo (TBGContext::getModule('search')->getSetting('enable_opensearch') == 0) ? ' selected' : ''; ?>><?php echo __('No'); ?></option>
 					</select>
 				</td>
 				<td style="width: auto; padding: 5px;"><?php echo __('Select whether to enable OpenSearch functionality'); ?></td>
 			</tr>
 			<tr>
 				<td style="width: 160px; padding: 5px;"><b><?php echo __('OpenSearch title'); ?></b></td>
-				<td style="width: 250px;"><input type="text" name="opensearch_title" value="<?php echo BUGScontext::getModule('search')->getSetting('opensearch_title'); ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
+				<td style="width: 250px;"><input type="text" name="opensearch_title" value="<?php echo TBGContext::getModule('search')->getSetting('opensearch_title'); ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
 				<td style="width: auto; padding: 5px;"><?php echo __('The OpenSearch title'); ?></td>
 			</tr>
 			<tr>
 				<td style="width: 160px; padding: 5px;"><b><?php echo __('OpenSearch title (long)'); ?></b></td>
-				<td style="width: 250px;"><input type="text" name="opensearch_longname" value="<?php echo BUGScontext::getModule('search')->getSetting('opensearch_longname'); ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
+				<td style="width: 250px;"><input type="text" name="opensearch_longname" value="<?php echo TBGContext::getModule('search')->getSetting('opensearch_longname'); ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
 				<td style="width: auto; padding: 5px;"><?php echo __('The OpenSearch title (long version)'); ?></td>
 			</tr>
 			<tr>
 				<td style="width: 160px; padding: 5px;"><b><?php echo __('OpenSearch description'); ?></b></td>
-				<td style="width: 250px;"><input type="text" name="opensearch_description" value="<?php echo BUGScontext::getModule('search')->getSetting('opensearch_description'); ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
+				<td style="width: 250px;"><input type="text" name="opensearch_description" value="<?php echo TBGContext::getModule('search')->getSetting('opensearch_description'); ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
 				<td style="width: auto; padding: 5px;"><?php echo __('The OpenSearch description'); ?></td>
 			</tr>
 			<tr>
 				<td style="width: 160px; padding: 5px;"><b><?php echo __('OpenSearch contact'); ?></b></td>
-				<td style="width: 250px;"><input type="text" name="opensearch_contact" value="<?php echo BUGScontext::getModule('search')->getSetting('opensearch_contact'); ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
+				<td style="width: 250px;"><input type="text" name="opensearch_contact" value="<?php echo TBGContext::getModule('search')->getSetting('opensearch_contact'); ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
 				<td style="width: auto; padding: 5px;"><?php echo __('The OpenSearch contact email address'); ?></td>
 			</tr>
 		</table>
@@ -148,7 +148,7 @@
 				<td style="width: 250px;">
 					<select name="defaultsearchlayout" style="width: 100%"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>>
 					<?php foreach ($searchlayouts as $aSearchlayout): ?>
-						<option value=<?php echo $aSearchlayout['id']; ?> <?php echo (BUGScontext::getModule('search')->getSetting('defaultsearchlayout') == $aSearchlayout['id']) ? ' selected' : ''; ?>><?php echo __($aSearchlayout['name']); ?></option>
+						<option value=<?php echo $aSearchlayout['id']; ?> <?php echo (TBGContext::getModule('search')->getSetting('defaultsearchlayout') == $aSearchlayout['id']) ? ' selected' : ''; ?>><?php echo __($aSearchlayout['name']); ?></option>
 					<?php endforeach; ?>
 					</select>
 				</td>
@@ -158,8 +158,8 @@
 				<td style="width: 160px; padding: 5px;"><b><?php echo __('Show searches on the front page'); ?></b></td>
 				<td style="width: 250px;">
 					<select name="indexshowsavedsearches" style="width: 100%"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>>
-						<option value=1 <?php echo (BUGScontext::getModule('search')->getSetting('indexshowsavedsearches') == 1) ? ' selected' : ''; ?>><?php echo __('Yes'); ?></option>
-						<option value=0 <?php echo (BUGScontext::getModule('search')->getSetting('indexshowsavedsearches') == 0) ? ' selected' : ''; ?>><?php echo __('No'); ?></option>
+						<option value=1 <?php echo (TBGContext::getModule('search')->getSetting('indexshowsavedsearches') == 1) ? ' selected' : ''; ?>><?php echo __('Yes'); ?></option>
+						<option value=0 <?php echo (TBGContext::getModule('search')->getSetting('indexshowsavedsearches') == 0) ? ' selected' : ''; ?>><?php echo __('No'); ?></option>
 					</select>
 				</td>
 				<td style="width: auto; padding: 5px;"><?php echo __('Select whether or not to show saved searches on the front page'); ?></td>
@@ -168,8 +168,8 @@
 				<td style="width: 160px; padding: 5px;"><b><?php echo __('Show search titles on the front page'); ?></b></td>
 				<td style="width: 250px;">
 					<select name="indexshowtitle" style="width: 100%"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>>
-						<option value=1 <?php echo (BUGScontext::getModule('search')->getSetting('indexshowtitle') == 1) ? ' selected' : ''; ?>><?php echo __('Yes'); ?></option>
-						<option value=0 <?php echo (BUGScontext::getModule('search')->getSetting('indexshowtitle') == 0) ? ' selected' : ''; ?>><?php echo __('No'); ?></option>
+						<option value=1 <?php echo (TBGContext::getModule('search')->getSetting('indexshowtitle') == 1) ? ' selected' : ''; ?>><?php echo __('Yes'); ?></option>
+						<option value=0 <?php echo (TBGContext::getModule('search')->getSetting('indexshowtitle') == 0) ? ' selected' : ''; ?>><?php echo __('No'); ?></option>
 					</select>
 				</td>
 				<td style="width: auto; padding: 5px;"><?php echo __('Select whether or not to show title for saved searches on the front page'); ?></td>
@@ -178,8 +178,8 @@
 				<td style="width: 160px; padding: 5px;"><b><?php echo __('Show search hit summary on the front page'); ?></b></td>
 				<td style="width: 250px;">
 					<select name="showindexsummary" style="width: 100%"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>>
-						<option value=1 <?php echo (BUGScontext::getModule('search')->getSetting('showindexsummary') == 1) ? ' selected' : ''; ?>><?php echo __('Yes'); ?></option>
-						<option value=0 <?php echo (BUGScontext::getModule('search')->getSetting('showindexsummary') == 0) ? ' selected' : ''; ?>><?php echo __('No'); ?></option>
+						<option value=1 <?php echo (TBGContext::getModule('search')->getSetting('showindexsummary') == 1) ? ' selected' : ''; ?>><?php echo __('Yes'); ?></option>
+						<option value=0 <?php echo (TBGContext::getModule('search')->getSetting('showindexsummary') == 0) ? ' selected' : ''; ?>><?php echo __('No'); ?></option>
 					</select>
 				</td>
 				<td style="width: auto; padding: 5px;"><?php echo __('Select whether or not to show the number of hits with the saved searches on the front page'); ?></td>
@@ -188,8 +188,8 @@
 				<td style="width: 160px; padding: 5px;"><b><?php echo __('Show search hit details on the front page'); ?></b></td>
 				<td style="width: 250px;">
 					<select name="showindexsummarydetails" style="width: 100%"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>>
-						<option value=1 <?php echo (BUGScontext::getModule('search')->getSetting('showindexsummarydetails') == 1) ? ' selected' : ''; ?>><?php echo __('Yes'); ?></option>
-						<option value=0 <?php echo (BUGScontext::getModule('search')->getSetting('showindexsummarydetails') == 0) ? ' selected' : ''; ?>><?php echo __('No'); ?></option>
+						<option value=1 <?php echo (TBGContext::getModule('search')->getSetting('showindexsummarydetails') == 1) ? ' selected' : ''; ?>><?php echo __('Yes'); ?></option>
+						<option value=0 <?php echo (TBGContext::getModule('search')->getSetting('showindexsummarydetails') == 0) ? ' selected' : ''; ?>><?php echo __('No'); ?></option>
 					</select>
 				</td>
 				<td style="width: auto; padding: 5px;"><?php echo __('Select whether or not to show the detailed count numbers with the saved searches on the front page for grouped searches'); ?></td>
@@ -200,7 +200,7 @@
 					<select name="frontpagelayout" style="width: 100%"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>>
 					<option value=0><?php echo __('Use the layout saved with the search'); ?></option>
 					<?php foreach ($searchlayouts as $aSearchlayout): ?>
-						<option value=<?php echo $aSearchlayout['id']; ?> <?php echo (BUGScontext::getModule('search')->getSetting('frontpagelayout') == $aSearchlayout['id']) ? ' selected' : ''; ?>><?php echo __($aSearchlayout['name']); ?></option>
+						<option value=<?php echo $aSearchlayout['id']; ?> <?php echo (TBGContext::getModule('search')->getSetting('frontpagelayout') == $aSearchlayout['id']) ? ' selected' : ''; ?>><?php echo __($aSearchlayout['name']); ?></option>
 					<?php endforeach; ?>
 					</select>
 				</td>
@@ -213,7 +213,7 @@
 			<?php endif; ?>
 		</table>
 		</form>
-		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" name="defaultscopeform">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" enctype="multipart/form-data" method="post" name="defaultscopeform">
 		<input type="hidden" name="module" value="search">
 		<table style="width: auto" cellpadding=0 cellspacing=0>
 			<tr>
@@ -237,7 +237,7 @@
 							if (!$aSavedsearch['public'])
 							{
 								echo '<div style="font-size: 10px;">' . __('This saved search is not public, and while users may be able to see it, errors may occur.') . '<br>';
-								echo __('You should either %make_it_public%, or select another one.', array('%make_it_public%' => '<a href="' . BUGScontext::getTBGPath() . 'modules/search/search.php?saved_search=true&amp;s_id=' . $aSavedsearch['id'] . '&amp;make_public=true" target="_blank">' . __('make this saved search public') . '</a>')) . '</div>';
+								echo __('You should either %make_it_public%, or select another one.', array('%make_it_public%' => '<a href="' . TBGContext::getTBGPath() . 'modules/search/search.php?saved_search=true&amp;s_id=' . $aSavedsearch['id'] . '&amp;make_public=true" target="_blank">' . __('make this saved search public') . '</a>')) . '</div>';
 							} 
 							
 							?></td>

@@ -2,9 +2,9 @@
 
 	$bugs_response->setTitle('Dashboard');
 	$bugs_response->addJavascript('dashboard.js');
-	$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me'));
-	$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to you'));
-	$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to your teams'));
+	$bugs_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me'));
+	$bugs_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to you'));
+	$bugs_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to your teams'));
 
 ?>
 <table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
@@ -13,7 +13,7 @@
 			<div style="margin-top: 0px;">
 			<?php
 			
-				BUGScontext::trigger('core', 'dashboard_left_top');
+				TBGContext::trigger('core', 'dashboard_left_top');
 			
 			?>
 			</div>
@@ -22,15 +22,15 @@
 			</div>
 			<?php 
 		
-				BUGScontext::trigger('core', 'dashboard_left_middle');
-				BUGScontext::trigger('core', 'dashboard_left_bottom');
+				TBGContext::trigger('core', 'dashboard_left_middle');
+				TBGContext::trigger('core', 'dashboard_left_bottom');
 			
 			?>
 		</td>
 		<td valign="top" align="left" style="padding-right: 10px;">
 			<?php
 			
-				BUGScontext::trigger('core', 'dashboard_right_top');
+				TBGContext::trigger('core', 'dashboard_right_top');
 			
 			/*?>
 			<table cellpadding=0 cellspacing=0>
@@ -46,8 +46,8 @@
 			</table>
 			<?php*/
 			
-				BUGScontext::trigger('core', 'dashboard_right_middle');
-				BUGScontext::trigger('core', 'dashboard_right_middle_top');
+				TBGContext::trigger('core', 'dashboard_right_middle');
+				TBGContext::trigger('core', 'dashboard_right_middle_top');
 				
 			?>
 			<ul id="dashboard">
@@ -55,20 +55,20 @@
 					<div class="rounded_box borderless" style="margin-top: 5px;">
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
-							<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
 							<?php echo __('Open issues assigned to you'); ?>
 						</div>
 					</div>
 					<?php if (count($bugs_user->getUserAssignedIssues()) > 0): ?>
 						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 						<?php foreach ($bugs_user->getUserAssignedIssues() as $theIssue): ?>
-							<tr class="<?php if ($theIssue->getState() == BUGSissue::STATE_CLOSED): ?>issue_closed<?php else: ?>issue_open<?php endif; ?> <?php if ($theIssue->isBlocking()): ?>issue_blocking<?php endif; ?>">
+							<tr class="<?php if ($theIssue->getState() == TBGIssue::STATE_CLOSED): ?>issue_closed<?php else: ?>issue_open<?php endif; ?> <?php if ($theIssue->isBlocking()): ?>issue_blocking<?php endif; ?>">
 								<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 								<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
 							</tr>
 							<tr>
 								<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
-									<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof BUGSdatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => bugs_formatTime($theIssue->getLastUpdatedTime(), 12))); ?>
+									<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => bugs_formatTime($theIssue->getLastUpdatedTime(), 12))); ?>
 								</td>
 							</tr>
 						<?php endforeach; ?>
@@ -78,7 +78,7 @@
 					<?php endif; ?>
 					<?php 
 					
-					BUGScontext::trigger('core', 'dashboard_main_myassignedissues');
+					TBGContext::trigger('core', 'dashboard_main_myassignedissues');
 					
 					?>
 				</li>
@@ -86,7 +86,7 @@
 					<div class="rounded_box borderless" style="margin-top: 5px;">
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
-							<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
 							<?php echo __('Open issues assigned to your teams'); ?>
 						</div>
 					</div>
@@ -95,14 +95,14 @@
 						<?php if (count($bugs_user->getUserTeamAssignedIssues($tid)) > 0): ?>
 							<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 							<?php foreach ($bugs_user->getUserTeamAssignedIssues($tid) as $theIssue): ?>
-								<tr class="<?php if ($theIssue->getState() == BUGSissue::STATE_CLOSED) echo 'issue_closed'; if ($theIssue->isBlocking()) echo ' issue_blocking'; ?>">
+								<tr class="<?php if ($theIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($theIssue->isBlocking()) echo ' issue_blocking'; ?>">
 									<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 									<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
 								</tr>
 								<tr>
 									<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
 										<?php echo (int) $theIssue->isAssigned();?>
-										<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof BUGSdatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => bugs_formatTime($theIssue->getLastUpdatedTime(), 12))); ?><br>
+										<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => bugs_formatTime($theIssue->getLastUpdatedTime(), 12))); ?><br>
 										<?php echo __('Assigned to %assignee%', array('%assignee%' => $theIssue->getAssignee()->getName())); ?>
 									</td>
 								</tr>
@@ -116,7 +116,7 @@
 					<?php endif; ?>
 					<?php 
 					
-					BUGScontext::trigger('core', 'dashboard_main_teamassignedissues');
+					TBGContext::trigger('core', 'dashboard_main_teamassignedissues');
 					
 					?>
 				</li>
@@ -130,7 +130,7 @@
 					<?php if (count($bugs_user->getIssuesPendingChanges()) > 0): ?>
 						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 						<?php foreach ($bugs_user->getIssuesPendingChanges() as $theIssue): ?>
-							<tr class="<?php if ($theIssue->getState() == BUGSissue::STATE_CLOSED): ?>issue_closed<?php else: ?>issue_open<?php endif; ?> <?php if ($theIssue->isBlocking()): ?>issue_blocking<?php endif; ?>">
+							<tr class="<?php if ($theIssue->getState() == TBGIssue::STATE_CLOSED): ?>issue_closed<?php else: ?>issue_open<?php endif; ?> <?php if ($theIssue->isBlocking()): ?>issue_blocking<?php endif; ?>">
 								<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 								<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
 							</tr>
@@ -146,7 +146,7 @@
 					<?php endif; ?>
 					<?php 
 					
-					BUGScontext::trigger('core', 'dashboard_main_pendingissues');
+					TBGContext::trigger('core', 'dashboard_main_pendingissues');
 					
 					?>
 				</li>
@@ -160,7 +160,7 @@
 					<?php if (count($bugs_user->getStarredIssues()) > 0): ?>
 						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 						<?php foreach ($bugs_user->getStarredIssues() as $theIssue): ?>
-							<tr class="<?php if ($theIssue->getState() == BUGSissue::STATE_CLOSED) echo 'issue_closed'; if ($theIssue->isBlocking()) echo ' issue_blocking'; ?>">
+							<tr class="<?php if ($theIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($theIssue->isBlocking()) echo ' issue_blocking'; ?>">
 								<td class="imgtd">
 									<?php echo image_tag('spinning_16.gif', array('id' => 'issue_favourite_indicator_'.$theIssue->getID(), 'style' => 'display: none;')); ?>
 									<?php echo image_tag('star_faded_small.png', array('id' => 'issue_favourite_faded_'.$theIssue->getID(), 'style' => 'cursor: pointer; display: none;', 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $theIssue->getID()))."', ".$theIssue->getID().");")); ?>
@@ -170,7 +170,7 @@
 							</tr>
 							<tr>
 								<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
-									<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof BUGSdatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => bugs_formatTime($theIssue->getLastUpdatedTime(), 12))); ?><br>
+									<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => bugs_formatTime($theIssue->getLastUpdatedTime(), 12))); ?><br>
 									<?php if ($theIssue->isAssigned()): ?>
 										<?php echo __('Assigned to %assignee%', array('%assignee%' => $theIssue->getAssignee()->getName())); ?>
 									<?php else: ?>
@@ -185,7 +185,7 @@
 					<?php endif; ?>
 					<?php 
 					
-					BUGScontext::trigger('core', 'dashboard_main_mystarredissues');
+					TBGContext::trigger('core', 'dashboard_main_mystarredissues');
 					
 					?>
 				</li>
@@ -217,8 +217,8 @@
 			</ul>
 			<?php 
 			
-				BUGScontext::trigger('core', 'dashboard_right_middle_bottom');
-				BUGScontext::trigger('core', 'dashboard_right_bottom');
+				TBGContext::trigger('core', 'dashboard_right_middle_bottom');
+				TBGContext::trigger('core', 'dashboard_right_bottom');
 			
 			?>
 		</td>
@@ -269,7 +269,7 @@
 									<!-- <span class="faded_medium"><?php echo $milestone->getDescription(); ?></span>  -->
 									<div class="percentage">
 										<div class="numbers">
-											<?php if ($milestone->getType() == BUGSmilestone::TYPE_REGULAR): ?>
+											<?php if ($milestone->getType() == TBGMilestone::TYPE_REGULAR): ?>
 												<?php echo __('%closed% closed of %issues% assigned', array('%closed%' => '<b>'.$milestone->countClosedIssues().'</b>', '%issues%' => '<b>'.$milestone->countOpenIssues().'</b>')); ?>
 											<?php else: ?>
 												<?php echo __('%points_spent% pts spent of %points_estimated% pts estimated', array('%points_spent%' => '<b>'.$milestone->getPointsSpent().'</b>', '%points_estimated%' => '<b>'.$milestone->getPointsEstimated().'</b>')); ?>
@@ -279,7 +279,7 @@
 									</div>
 									<?php if ($milestone->isReached()): ?>
 										<div class="status">
-											<?php if ($milestone->getType() == BUGSmilestone::TYPE_REGULAR): ?>
+											<?php if ($milestone->getType() == TBGMilestone::TYPE_REGULAR): ?>
 												<?php echo __('This milestone has been reached'); ?>
 											<?php else: ?>
 												<?php echo __('This sprint is completed'); ?>
@@ -287,7 +287,7 @@
 										</div>
 									<?php elseif ($milestone->isOverdue()): ?>
 										<div class="status">
-											<?php if ($milestone->getType() == BUGSmilestone::TYPE_REGULAR): ?>
+											<?php if ($milestone->getType() == TBGMilestone::TYPE_REGULAR): ?>
 												<?php echo __('This milestone is overdue'); ?>
 											<?php else: ?>
 												<?php echo __('This sprint is overdue'); ?>

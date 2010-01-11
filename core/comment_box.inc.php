@@ -1,13 +1,13 @@
 <?php
 
-	if (!$aComment instanceof BUGSComment)
+	if (!$aComment instanceof TBGComment)
 	{
 		exit();
 	}
 
 	$notFiltered = true;
 	$theTitle = ($aComment->getTitle() != "") ? $aComment->getTitle() : substr($aComment->getContent(), 0, 45);
-	$viewuser_string = "window.open('" . BUGScontext::getTBGPath() . "viewuser.php?uid=" . $aComment->getPostedBy()->getUname() . "','mywindow','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');";
+	$viewuser_string = "window.open('" . TBGContext::getTBGPath() . "viewuser.php?uid=" . $aComment->getPostedBy()->getUname() . "','mywindow','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');";
 	if ($canEditComments && !$aComment->isSystemComment() && !$doFilterUserComments)
 	{
 		?>

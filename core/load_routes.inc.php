@@ -90,10 +90,10 @@
 	{
 		if (isset($route[4]) && !empty($route[4]))
 		{
-			BUGScontext::getRouting()->addRoute($route[0], $route[1], $route[2], $route[3], $route[4]);
+			TBGContext::getRouting()->addRoute($route[0], $route[1], $route[2], $route[3], $route[4]);
 		}
 		else
 		{
-			BUGScontext::getRouting()->addRoute($route[0], $route[1], $route[2], $route[3]);
+			TBGContext::getRouting()->addRoute($route[0], $route[1], $route[2], $route[3]);
 		}
 	}

@@ -46,7 +46,7 @@
 
 		public function loadFixtures($scope)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::STATE_NAME, 'Available');

@@ -23,7 +23,7 @@
 					</tbody>
 				</table>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_edition', array('project_id' => $theProject->getID())); ?>" method="post" id="add_edition_form" onsubmit="addEdition('<?php echo make_url('configure_projects_add_edition', array('project_id' => $theProject->getID())); ?>');return false;">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_edition', array('project_id' => $theProject->getID())); ?>" method="post" id="add_edition_form" onsubmit="addEdition('<?php echo make_url('configure_projects_add_edition', array('project_id' => $theProject->getID())); ?>');return false;">
 					<table cellpadding=0 cellspacing=0 style="width: 100%;">
 					<tr>
 					<td style="padding: 3px; border-bottom: 1px solid #DDD;" colspan=3><br><b><?php echo __('Add an edition'); ?></b></td>
@@ -57,7 +57,7 @@
 					</tbody>
 				</table>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_component', array('project_id' => $theProject->getID())); ?>" method="post" id="add_component_form" onsubmit="addComponent('<?php echo make_url('configure_projects_add_component', array('project_id' => $theProject->getID())); ?>');return false;">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_component', array('project_id' => $theProject->getID())); ?>" method="post" id="add_component_form" onsubmit="addComponent('<?php echo make_url('configure_projects_add_component', array('project_id' => $theProject->getID())); ?>');return false;">
 					<table cellpadding=0 cellspacing=0 style="width: 100%;">
 					<tr>
 					<td style="padding: 3px; border-bottom: 1px solid #DDD;" colspan=3><br><b><?php echo __('Add a component'); ?></b></td>

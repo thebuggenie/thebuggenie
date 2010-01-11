@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	interface BUGSidentifiable
+	interface TBGIdentifiable
 	{
 		/**
 		 * Returns the id of the item
@@ -57,7 +57,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	interface BUGSassignable extends BUGSidentifiable
+	interface TBGAssignable extends TBGIdentifiable
 	{
 		/**
 		 * Returns the assigned type
@@ -69,7 +69,7 @@
 		/**
 		 * Returns the assignee
 		 *
-		 * @return BUGSidentifiable
+		 * @return TBGIdentifiable
 		 */
 		public function getAssignee();
 		

@@ -1,6 +1,6 @@
 <?php
 
-	class configurationActions extends BUGSaction
+	class configurationActions extends TBGAction
 	{
 		const ACCESS_READ = 1;
 		const ACCESS_FULL = 2;
@@ -8,13 +8,13 @@
 		/**
 		 * Pre-execute function
 		 * 
-		 * @param BUGSrequest 	$request
+		 * @param TBGRequest 	$request
 		 * @param string		$action
 		 */
-		public function preExecute(BUGSrequest $request, $action)
+		public function preExecute(TBGRequest $request, $action)
 		{
 			// forward 403 if you're not allowed here
-			$this->forward403unless(BUGScontext::getUser()->canAccessConfigurationPage());
+			$this->forward403unless(TBGContext::getUser()->canAccessConfigurationPage());
 			
 			$this->access_level = $this->getAccessLevel($request->getParameter('section'), 'core');
 			
@@ -26,32 +26,32 @@
 		/**
 		 * Configuration main page
 		 * 
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runIndex(BUGSrequest $request)
+		public function runIndex(TBGRequest $request)
 		{
 			$general_config_sections = array();
 			$data_config_sections = array();
 			$module_config_sections = array();
-			$general_config_sections[BUGSsettings::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => __('Settings'), 'icon' => 'general', 'details' => __('Every setting in the bug genie can be adjusted in this section.'));
-			$general_config_sections[BUGSsettings::CONFIGURATION_SECTION_PERMISSIONS] = array('route' => 'configure_permissions', 'description' => __('Permissions'), 'icon' => 'permissions', 'details' => __('Configure permissions in this section'));
-			$general_config_sections[BUGSsettings::CONFIGURATION_SECTION_UPLOADS] = array('route' => 'configure_files', 'description' => __('Uploads &amp; attachments'), 'icon' => 'files', 'details' => __('All settings related to file uploads are controlled from this section.'));
-			if (BUGScontext::getUser()->getScope()->getID() == 1)
+			$general_config_sections[TBGSettings::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => __('Settings'), 'icon' => 'general', 'details' => __('Every setting in the bug genie can be adjusted in this section.'));
+			$general_config_sections[TBGSettings::CONFIGURATION_SECTION_PERMISSIONS] = array('route' => 'configure_permissions', 'description' => __('Permissions'), 'icon' => 'permissions', 'details' => __('Configure permissions in this section'));
+			$general_config_sections[TBGSettings::CONFIGURATION_SECTION_UPLOADS] = array('route' => 'configure_files', 'description' => __('Uploads &amp; attachments'), 'icon' => 'files', 'details' => __('All settings related to file uploads are controlled from this section.'));
+			if (TBGContext::getUser()->getScope()->getID() == 1)
 			{
-				//$general_config_sections[BUGSsettings::CONFIGURATION_SECTION_SCOPES] = array('route' => 'configure_scopes', 'description' => __('Scopes'), 'icon' => 'scopes', 'details' => __('Scopes are self-contained Bug Genie environments. Configure them here.'));
-				//$data_config_sections[BUGSsettings::CONFIGURATION_SECTION_IMPORT] = array('route' => 'configure_import', 'description' => __('Import data'), 'icon' => 'import', 'details' => __('Upgrading from an older version? Import your data from here.'));
+				//$general_config_sections[TBGSettings::CONFIGURATION_SECTION_SCOPES] = array('route' => 'configure_scopes', 'description' => __('Scopes'), 'icon' => 'scopes', 'details' => __('Scopes are self-contained Bug Genie environments. Configure them here.'));
+				//$data_config_sections[TBGSettings::CONFIGURATION_SECTION_IMPORT] = array('route' => 'configure_import', 'description' => __('Import data'), 'icon' => 'import', 'details' => __('Upgrading from an older version? Import your data from here.'));
 			}
 			
-			$data_config_sections[BUGSsettings::CONFIGURATION_SECTION_PROJECTS] = array('route' => 'configure_projects', 'description' => __('Projects'), 'icon' => 'projects', 'details' => __('Set up all projects in this configuration section.'));
-			$data_config_sections[BUGSsettings::CONFIGURATION_SECTION_ISSUETYPES] = array('icon' => 'issuetypes', 'description' => __('Issue types'), 'route' => 'configure_issuetypes', 'details' => __('Manage issue types and configure issue fields for each issue type here'));
-			$data_config_sections[BUGSsettings::CONFIGURATION_SECTION_ISSUEFIELDS] = array('icon' => 'resolutiontypes', 'description' => __('Issue fields'), 'route' => 'configure_issuefields', 'details' => __('Status types, resolution types, categories, custom fields, etc. are configurable from this section.'));
-			$data_config_sections[BUGSsettings::CONFIGURATION_SECTION_USERS] = array('route' => 'configure_users', 'description' => __('Users, teams &amp; groups'), 'icon' => 'users', 'details' => __('Manage users, user groups and user teams from this section.'));
-			$module_config_sections[BUGSsettings::CONFIGURATION_SECTION_MODULES][] = array('route' => 'configure_modules', 'description' => __('Module settings'), 'icon' => 'modules', 'details' => __('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
-			foreach (BUGScontext::getModules() as $module)
+			$data_config_sections[TBGSettings::CONFIGURATION_SECTION_PROJECTS] = array('route' => 'configure_projects', 'description' => __('Projects'), 'icon' => 'projects', 'details' => __('Set up all projects in this configuration section.'));
+			$data_config_sections[TBGSettings::CONFIGURATION_SECTION_ISSUETYPES] = array('icon' => 'issuetypes', 'description' => __('Issue types'), 'route' => 'configure_issuetypes', 'details' => __('Manage issue types and configure issue fields for each issue type here'));
+			$data_config_sections[TBGSettings::CONFIGURATION_SECTION_ISSUEFIELDS] = array('icon' => 'resolutiontypes', 'description' => __('Issue fields'), 'route' => 'configure_issuefields', 'details' => __('Status types, resolution types, categories, custom fields, etc. are configurable from this section.'));
+			$data_config_sections[TBGSettings::CONFIGURATION_SECTION_USERS] = array('route' => 'configure_users', 'description' => __('Users, teams &amp; groups'), 'icon' => 'users', 'details' => __('Manage users, user groups and user teams from this section.'));
+			$module_config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => 'configure_modules', 'description' => __('Module settings'), 'icon' => 'modules', 'details' => __('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
+			foreach (TBGContext::getModules() as $module)
 			{
 				if ($module->hasAccess() && $module->isVisibleInConfig())
 				{
-					$module_config_sections[BUGSsettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => $module->getConfigTitle(), 'icon' => $module->getName(), 'details' => $module->getConfigDescription(), 'module' => $module->getName());
+					$module_config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => $module->getConfigTitle(), 'icon' => $module->getName(), 'details' => $module->getConfigDescription(), 'module' => $module->getName());
 				}
 			}
 			$this->general_config_sections = $general_config_sections; 
@@ -62,11 +62,11 @@
 		/**
 		 * Configure general and server settings
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runSettings(BUGSrequest $request)
+		public function runSettings(TBGRequest $request)
 		{
-			if (BUGScontext::getRequest()->isMethod(BUGSrequest::POST))
+			if (TBGContext::getRequest()->isMethod(TBGRequest::POST))
 			{
 				$this->forward403unless($this->access_level == self::ACCESS_FULL);
 				$settings = array('theme_name', 'user_themes', 'onlinestate', 'offlinestate', 'awaystate', 'singleprojecttracker',
@@ -77,43 +77,43 @@
 				
 				foreach ($settings as $setting)
 				{
-					if (BUGScontext::getRequest()->getParameter($setting) !== null)
+					if (TBGContext::getRequest()->getParameter($setting) !== null)
 					{
 						if ($setting == 'b2_name' || $setting == 'b2_tagline')
 						{
-							BUGSsettings::saveSetting($setting, BUGScontext::getRequest()->getParameter($setting, null, false));
+							TBGSettings::saveSetting($setting, TBGContext::getRequest()->getParameter($setting, null, false));
 						}
 						else
 						{
-							BUGSsettings::saveSetting($setting, BUGScontext::getRequest()->getParameter($setting));
+							TBGSettings::saveSetting($setting, TBGContext::getRequest()->getParameter($setting));
 						}
 					}
 				}
-				return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('All settings saved')));
+				return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('All settings saved')));
 			}
 			
-			$this->themes = BUGScontext::getThemes();
-			$this->languages = BUGSi18n::getLanguages();
+			$this->themes = TBGContext::getThemes();
+			$this->languages = TBGI18n::getLanguages();
 		}
 
 		/**
 		 * Configure projects
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runConfigureProjects(BUGSrequest $request)
+		public function runConfigureProjects(TBGRequest $request)
 		{
-			$this->allProjects = BUGSproject::getAll();
+			$this->allProjects = TBGProject::getAll();
 		}
 		
 		/**
 		 * Configure issue fields
 		 *
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runConfigureIssuefields(BUGSrequest $request)
+		public function runConfigureIssuefields(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 			$builtin_types = array();
 			$builtin_types['status'] = array('description' => $i18n->__('Status types'), 'key' => 'status');
 			$builtin_types['resolution'] = array('description' => $i18n->__('Resolution types'), 'key' => 'resolution');
@@ -123,26 +123,26 @@
 			$builtin_types['reproducability'] = array('description' => $i18n->__('Reproducability'), 'key' => 'reproducability');
 
 			$this->builtin_types = $builtin_types;
-			$this->custom_types = BUGScustomdatatype::getAll();
+			$this->custom_types = TBGCustomDatatype::getAll();
 		}
 
 		/**
 		 * Configure issue fields
 		 *
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runConfigureIssuetypes(BUGSrequest $request)
+		public function runConfigureIssuetypes(TBGRequest $request)
 		{
-			$this->issue_types = BUGSissuetype::getAll();
-			$this->icons = BUGSissuetype::getIcons();
+			$this->issue_types = TBGIssuetype::getAll();
+			$this->icons = TBGIssuetype::getIcons();
 		}
 
 		/**
 		 * Get issue type options for a specific issue type
 		 *
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runConfigureIssuetypesGetOptions(BUGSrequest $request)
+		public function runConfigureIssuetypesGetOptions(TBGRequest $request)
 		{
 			return $this->renderComponent('issuetypeoptions', array('id' => $request->getParameter('id')));
 		}
@@ -150,9 +150,9 @@
 		/**
 		 * Perform an action on an issue type
 		 * 
-		 * @param BUGSrequest $request 
+		 * @param TBGRequest $request 
 		 */
-		public function runConfigureIssuetypesAction(BUGSrequest $request)
+		public function runConfigureIssuetypesAction(TBGRequest $request)
 		{
 			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			switch ($request->getParameter('mode'))
@@ -160,13 +160,13 @@
 				case 'add':
 					if ($request->getParameter('name'))
 					{
-						$issuetype = BUGSissuetype::createNew($request->getParameter('name'), $request->getParameter('icon'));
-						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Issue type created'), 'content' => $this->getComponentHTML('issuetype', array('type' => $issuetype))));
+						$issuetype = TBGIssuetype::createNew($request->getParameter('name'), $request->getParameter('icon'));
+						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Issue type created'), 'content' => $this->getComponentHTML('issuetype', array('type' => $issuetype))));
 					}
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name for the issue type')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name for the issue type')));
 					break;
 				case 'update':
-					if (($issuetype = BUGSfactory::BUGSissuetypeLab($request->getParameter('id'))) instanceof BUGSissuetype)
+					if (($issuetype = TBGFactory::TBGIssuetypeLab($request->getParameter('id'))) instanceof TBGIssuetype)
 					{
 						if ($request->getParameter('name'))
 						{
@@ -176,44 +176,44 @@
 							$issuetype->setIsReportable($request->getParameter('reportable'));
 							$issuetype->setRedirectAfterReporting($request->getParameter('redirect_after_reporting'));
 							$issuetype->save();
-							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The issue type was updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName(), 'reportable' => $issuetype->isReportable()));
+							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The issue type was updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName(), 'reportable' => $issuetype->isReportable()));
 						}
 						else
 						{
-							return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name for the issue type')));
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name for the issue type')));
 						}
 					}
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid issue type')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid issue type')));
 					break;
 				case 'updatechoices':
-					if (($issuetype = BUGSfactory::BUGSissuetypeLab($request->getParameter('id'))) instanceof BUGSissuetype)
+					if (($issuetype = TBGFactory::TBGIssuetypeLab($request->getParameter('id'))) instanceof TBGIssuetype)
 					{
 						$issuetype->clearAvailableFields();
 						foreach ($request->getParameter('field', array()) as $key => $details)
 						{
 							$issuetype->setFieldAvailable($key, $details);
 						}
-						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Avilable choices updated')));
+						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Avilable choices updated')));
 					}
 					else
 					{
-						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid issue type')));
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid issue type')));
 					}
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Not implemented yet')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Not implemented yet')));
 					break;
 				case 'delete':
 					break;
 				default:
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid action for this issue type')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid action for this issue type')));
 			}
 		}
 
 		/**
 		 * Get issue fields list for a specific field type
 		 *
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runConfigureIssuefieldsGetOptions(BUGSrequest $request)
+		public function runConfigureIssuefieldsGetOptions(TBGRequest $request)
 		{
 			return $this->renderComponent('issuefields', array('type' => $request->getParameter('type'), 'access_level' => $this->access_level));
 		}
@@ -221,13 +221,13 @@
 		/**
 		 * Add or delete an issue field option
 		 *
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runConfigureIssuefieldsAction(BUGSrequest $request)
+		public function runConfigureIssuefieldsAction(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 			$this->forward403unless($this->access_level == self::ACCESS_FULL);
-			$types = BUGSdatatype::getTypes();
+			$types = TBGDatatype::getTypes();
 
 			switch ($request->getParameter('mode'))
 			{
@@ -240,25 +240,25 @@
 						}
 						else
 						{
-							$customtype = BUGScustomdatatype::getByKey($request->getParameter('type'));
+							$customtype = TBGCustomDatatype::getByKey($request->getParameter('type'));
 							$item = $customtype->createNewOption($request->getParameter('name'), $request->getParameter('value'), $request->getParameter('itemdata'));
 						}
-						return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield', array('item' => $item, 'access_level' => $this->access_level, 'type' => $request->getParameter('type')))));
+						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The option was added'), 'content' => $this->getTemplateHTML('issuefield', array('item' => $item, 'access_level' => $this->access_level, 'type' => $request->getParameter('type')))));
 					}
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name')));
 				case 'edit':
 					if ($request->getParameter('name'))
 					{
 						if (array_key_exists($request->getParameter('type'), $types))
 						{
-							$item = call_user_func(array('BUGSfactory', $types[$request->getParameter('type')].'Lab'), $request->getParameter('id'));
+							$item = call_user_func(array('TBGFactory', $types[$request->getParameter('type')].'Lab'), $request->getParameter('id'));
 						}
 						else
 						{
-							$customtype = BUGScustomdatatype::getByKey($request->getParameter('type'));
-							$item = BUGSfactory::BUGScustomdatatypeoptionLab($request->getParameter('id'));
+							$customtype = TBGCustomDatatype::getByKey($request->getParameter('type'));
+							$item = TBGFactory::TBGCustomDatatypeoptionLab($request->getParameter('id'));
 						}
-						if ($item instanceof BUGSdatatypebase && $item->getItemtype() == $item->getType())
+						if ($item instanceof TBGDatatypeBase && $item->getItemtype() == $item->getType())
 						{
 							$item->setName($request->getParameter('name'));
 							$item->setItemdata($request->getParameter('itemdata'));
@@ -267,14 +267,14 @@
 								$item->setValue($request->getParameter('value'));
 							}
 							$item->save();
-							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The option was updated')));
+							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The option was updated')));
 						}
 						else
 						{
-							return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid id')));
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid id')));
 						}
 					}
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name')));
 				case 'delete':
 					if ($request->hasParameter('id'))
 					{
@@ -289,39 +289,39 @@
 		/**
 		 * Add or delete a custom type
 		 *
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runConfigureIssuefieldsCustomTypeAction(BUGSrequest $request)
+		public function runConfigureIssuefieldsCustomTypeAction(TBGRequest $request)
 		{
 			switch ($request->getParameter('mode'))
 			{
 				case 'add':
 					if ($request->getParameter('name') != '')
 					{
-						if (!BUGScustomdatatype::isNameValid($request->getParameter('name')))
+						if (!TBGCustomDatatype::isNameValid($request->getParameter('name')))
 						{
-							$customtype = BUGScustomdatatype::createNew($request->getParameter('name'), $request->getParameter('field_type'));
-							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The custom type was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
+							$customtype = TBGCustomDatatype::createNew($request->getParameter('name'), $request->getParameter('field_type'));
+							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom type was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
 						}
-						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('You need to provide a unique custom type name (key already exists)')));
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a unique custom type name (key already exists)')));
 					}
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name')));
 					break;
 				case 'update':
 					if ($request->getParameter('name') != '')
 					{
-						$customtype = BUGScustomdatatype::getByKey($request->getParameter('type'));
-						if ($customtype instanceof BUGScustomdatatype)
+						$customtype = TBGCustomDatatype::getByKey($request->getParameter('type'));
+						if ($customtype instanceof TBGCustomDatatype)
 						{
 							$customtype->setDescription($request->getParameter('description'));
 							$customtype->setInstructions($request->getParameter('instructions'));
 							$customtype->setName($request->getParameter('name'));
 							$customtype->save();
-							return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('The custom type was added'), 'description' => $customtype->getDescription(), 'instructions' => $customtype->getInstructions(), 'name' => $customtype->getName()));
+							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom type was added'), 'description' => $customtype->getDescription(), 'instructions' => $customtype->getInstructions(), 'name' => $customtype->getName()));
 						}
-						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('You need to provide a custom type key that already exists')));
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a custom type key that already exists')));
 					}
-					return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('Please provide a valid name')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name')));
 					break;
 			}
 		}
@@ -329,33 +329,33 @@
 		/**
 		 * Configure modules
 		 *
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runConfigureModules(BUGSrequest $request)
+		public function runConfigureModules(TBGRequest $request)
 		{
-			$this->module_message = BUGScontext::getMessageAndClear('module_message');
-			$this->module_error = BUGScontext::getMessageAndClear('module_error');
-			$this->modules = BUGScontext::getModules();
-			$this->uninstalled_modules = BUGScontext::getUninstalledModules();
+			$this->module_message = TBGContext::getMessageAndClear('module_message');
+			$this->module_error = TBGContext::getMessageAndClear('module_error');
+			$this->modules = TBGContext::getModules();
+			$this->uninstalled_modules = TBGContext::getUninstalledModules();
 		}
 
 		/**
 		 * Find users and show selection box
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */		
-		public function runFindAssignee(BUGSrequest $request)
+		public function runFindAssignee(TBGRequest $request)
 		{
-			$this->forward403unless($request->isMethod(BUGSrequest::POST));
+			$this->forward403unless($request->isMethod(TBGRequest::POST));
 
 			$this->message = false;
 			
 			if ($request->getParameter('find_by'))
 			{
-				$this->theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
-				$this->users = BUGSuser::findUsers($request->getParameter('find_by'), 10);
-				$this->teams = BUGSteam::findTeams($request->getParameter('find_by'));
-				$this->customers = BUGScustomer::findCustomers($request->getParameter('find_by'));
+				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
+				$this->users = TBGUser::findUsers($request->getParameter('find_by'), 10);
+				$this->teams = TBGTeam::findTeams($request->getParameter('find_by'));
+				$this->customers = TBGCustomer::findCustomers($request->getParameter('find_by'));
 			}
 			else
 			{
@@ -366,21 +366,21 @@
 		/**
 		 * Adds a user, team or a customer to a project
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runAssignToProject(BUGSrequest $request)
+		public function runAssignToProject(TBGRequest $request)
 		{
-			$this->forward403unless($request->isMethod(BUGSrequest::POST));
+			$this->forward403unless($request->isMethod(TBGRequest::POST));
 									
 			if ($this->access_level == self::ACCESS_FULL)
 			{
 				try
 				{
-					$this->theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
+					$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
 				}
 				catch (Exception $e) {}
 				
-				$this->forward403unless($this->theProject instanceof BUGSproject);
+				$this->forward403unless($this->theProject instanceof TBGProject);
 				
 				$assignee_type = $request->getParameter('assignee_type');
 				$assignee_id = $request->getParameter('assignee_id');
@@ -390,13 +390,13 @@
 					switch ($assignee_type)
 					{
 						case 'user':
-							$assignee = BUGSfactory::userLab($assignee_id);
+							$assignee = TBGFactory::userLab($assignee_id);
 							break;
 						case 'team':
-							$assignee = BUGSfactory::teamLab($assignee_id);
+							$assignee = TBGFactory::teamLab($assignee_id);
 							break;
 						case 'customer':
-							$assignee = BUGSfactory::customerLab($assignee_id);
+							$assignee = TBGFactory::customerLab($assignee_id);
 							break;
 						default:
 							$this->forward403();
@@ -445,76 +445,76 @@
 				
 				return $this->renderTemplate('projects_assignees', array('project' => $this->theProject));
 			}
-			return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__("You don't have access to save project settings")));
+			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("You don't have access to save project settings")));
 			
 		}
 
 		/**
 		 * Configure project editions and components
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runConfigureProjectEditionsAndComponents(BUGSrequest $request)
+		public function runConfigureProjectEditionsAndComponents(TBGRequest $request)
 		{
 			try
 			{
-				$this->theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
+				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 			
-			$this->forward403unless($this->theProject instanceof BUGSproject);
+			$this->forward403unless($this->theProject instanceof TBGProject);
 		}
 
 		/**
 		 * Configure project data types
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runConfigureProjectOther(BUGSrequest $request)
+		public function runConfigureProjectOther(TBGRequest $request)
 		{
 			try
 			{
-				$this->theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
+				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 			
-			$this->forward403unless($this->theProject instanceof BUGSproject);
+			$this->forward403unless($this->theProject instanceof TBGProject);
 		}
 
 		/**
 		 * Configure project data types
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runConfigureProjectMilestones(BUGSrequest $request)
+		public function runConfigureProjectMilestones(TBGRequest $request)
 		{
 			try
 			{
-				$this->theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
+				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 			
-			$this->forward403unless($this->theProject instanceof BUGSproject);
+			$this->forward403unless($this->theProject instanceof TBGProject);
 			$this->milestones = $this->theProject->getAllMilestones();
 		}
 		
 		/**
 		 * Updates visible issue types
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runConfigureProjectUpdateOther(BUGSrequest $request)
+		public function runConfigureProjectUpdateOther(TBGRequest $request)
 		{
 			try
 			{
-				$this->theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
+				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
 			}
 			catch (Exception $e)
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('This project does not exist')));
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This project does not exist')));
 			}
 			
-			$this->forward403unless($this->theProject instanceof BUGSproject && $request->hasParameter('frontpage_summary'));
+			$this->forward403unless($this->theProject instanceof TBGProject && $request->hasParameter('frontpage_summary'));
 
 			try
 			{
@@ -546,64 +546,64 @@
 							$this->theProject->save();
 							break;
 					}
-					return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Your changes has been saved'), 'message' => ''));
+					return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Your changes has been saved'), 'message' => ''));
 				}
-				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__("You don't have access to save project settings")));
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("You don't have access to save project settings")));
 			}
 			catch (Exception $e)
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__('An error occured'), 'message' => $e->getMessage()));
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('An error occured'), 'message' => $e->getMessage()));
 			}
 		}
 
 		/**
 		 * Configure project builds
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runConfigureProjectDevelopers(BUGSrequest $request)
+		public function runConfigureProjectDevelopers(TBGRequest $request)
 		{
 			try
 			{
-				$this->theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
+				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 			
-			$this->forward403unless($this->theProject instanceof BUGSproject);
+			$this->forward403unless($this->theProject instanceof TBGProject);
 		}
 		
 		/**
 		 * Configure project leaders
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runSetProjectLead(BUGSrequest $request)
+		public function runSetProjectLead(TBGRequest $request)
 		{
 			try
 			{
-				$project = BUGSfactory::projectLab($request->getParameter('project_id'));
+				$project = TBGFactory::projectLab($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 			
-			$this->forward403unless($project instanceof BUGSproject);
+			$this->forward403unless($project instanceof TBGProject);
 			
 			if ($request->hasParameter('value'))
 			{
 				$this->forward403unless($this->access_level == self::ACCESS_FULL);
 				if ($request->hasParameter('identifiable_type'))
 				{
-					if (in_array($request->getParameter('identifiable_type'), array(BUGSidentifiableclass::TYPE_USER, BUGSidentifiableclass::TYPE_TEAM)))
+					if (in_array($request->getParameter('identifiable_type'), array(TBGIdentifiableClass::TYPE_USER, TBGIdentifiableClass::TYPE_TEAM)))
 					{
 						switch ($request->getParameter('identifiable_type'))
 						{
-							case BUGSidentifiableclass::TYPE_USER:
-								$identified = BUGSfactory::userLab($request->getParameter('value'));
+							case TBGIdentifiableClass::TYPE_USER:
+								$identified = TBGFactory::userLab($request->getParameter('value'));
 								break;
-							case BUGSidentifiableclass::TYPE_TEAM:
-								$identified = BUGSfactory::teamLab($request->getParameter('value'));
+							case TBGIdentifiableClass::TYPE_TEAM:
+								$identified = TBGFactory::teamLab($request->getParameter('value'));
 								break;
 						}
-						if ($identified instanceof BUGSidentifiableclass)
+						if ($identified instanceof TBGIdentifiableClass)
 						{
 							if ($request->getParameter('field') == 'owned_by') $project->setOwner($identified);
 							elseif ($request->getParameter('field') == 'qa_by') $project->setQA($identified);
@@ -620,30 +620,30 @@
 					}
 				}
 				if ($request->getParameter('field') == 'owned_by')
-					return $this->renderJSON(array('field' => (($project->hasOwner()) ? array('id' => $project->getOwnerID(), 'name' => (($project->getOwnerType() == BUGSidentifiableclass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $project->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $project->getOwner())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($project->hasOwner()) ? array('id' => $project->getOwnerID(), 'name' => (($project->getOwnerType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $project->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $project->getOwner())))) : array('id' => 0))));
 				elseif ($request->getParameter('field') == 'lead_by')
-					return $this->renderJSON(array('field' => (($project->hasLeader()) ? array('id' => $project->getLeaderID(), 'name' => (($project->getLeaderType() == BUGSidentifiableclass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $project->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $project->getLeader())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($project->hasLeader()) ? array('id' => $project->getLeaderID(), 'name' => (($project->getLeaderType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $project->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $project->getLeader())))) : array('id' => 0))));
 				elseif ($request->getParameter('field') == 'qa_by')
-					return $this->renderJSON(array('field' => (($project->hasQA()) ? array('id' => $project->getQAID(), 'name' => (($project->getQAType() == BUGSidentifiableclass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $project->getQA())) : $this->getComponentHTML('main/teamdropdown', array('team' => $project->getQA())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($project->hasQA()) ? array('id' => $project->getQAID(), 'name' => (($project->getQAType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $project->getQA())) : $this->getComponentHTML('main/teamdropdown', array('team' => $project->getQA())))) : array('id' => 0))));
 			}
 		}
 		
 		/**
 		 * Configure project settings
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runConfigureProjectSettings(BUGSrequest $request)
+		public function runConfigureProjectSettings(TBGRequest $request)
 		{
 			try
 			{
-				$this->theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
+				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 			
-			if (!$this->theProject instanceof BUGSproject) return $this->return404(BUGScontext::getI18n()->__("This project doesn't exist"));
+			if (!$this->theProject instanceof TBGProject) return $this->return404(TBGContext::getI18n()->__("This project doesn't exist"));
 			
-			$this->statustypes = BUGSstatus::getAll();
+			$this->statustypes = TBGStatus::getAll();
 			if ($request->isAjaxCall())
 			{
 				if ($this->access_level == self::ACCESS_FULL)
@@ -675,27 +675,27 @@
 					$this->theProject->setDescrTemplate($request->getParameter('descr_template', null, false));
 					$this->theProject->setReproTemplate($request->getParameter('repro_template', null, false));
 					$this->theProject->save();
-					return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('Your changes has been saved'), 'message' => ''));
+					return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Your changes has been saved'), 'message' => ''));
 				}
-				return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__("You don't have access to save settings")));
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("You don't have access to save settings")));
 			}
 		}
 		
 		/**
 		 * Configure a project edition with builds and settings
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runConfigureProjectEdition(BUGSrequest $request)
+		public function runConfigureProjectEdition(TBGRequest $request)
 		{
 			try
 			{
-				$this->theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
-				$this->theEdition = BUGSfactory::editionLab($request->getParameter('edition_id'));
+				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
+				$this->theEdition = TBGFactory::editionLab($request->getParameter('edition_id'));
 			}
 			catch (Exception $e) {}
 			
-			$this->forward403unless($this->theProject instanceof BUGSproject && $this->theEdition instanceof BUGSedition);
+			$this->forward403unless($this->theProject instanceof TBGProject && $this->theEdition instanceof TBGEdition);
 			
 			if ($request->isAjaxCall())
 			{
@@ -729,18 +729,18 @@
 		/**
 		 * Add a project (AJAX call)
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runAddProject(BUGSrequest $request)
+		public function runAddProject(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
 				if ($p_name = $request->getParameter('p_name'))
 				{
-					$aProject = BUGSproject::createNew($p_name);
-					if ($aProject instanceof BUGSproject)
+					$aProject = TBGProject::createNew($p_name);
+					if ($aProject instanceof TBGProject)
 					{
 						return $this->renderJSON(array('title' => $i18n->__('The project has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'content' => $this->getTemplateHTML('projectbox', array('project' => $aProject, 'access_level' => $this->access_level))));
 					}
@@ -758,11 +758,11 @@
 		/**
 		 * Add an edition (AJAX call)
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runAddEdition(BUGSrequest $request)
+		public function runAddEdition(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
@@ -770,11 +770,11 @@
 				{
 					if ($p_id = $request->getParameter('project_id'))
 					{
-						if (BUGScontext::getUser()->hasPermission('b2projectaccess', $p_id))
+						if (TBGContext::getUser()->hasPermission('b2projectaccess', $p_id))
 						{
 							if ($e_name = $request->getParameter('e_name'))
 							{
-								$project = BUGSfactory::projectLab($p_id);
+								$project = TBGFactory::projectLab($p_id);
 								$edition = $project->addEdition($e_name);
 								return $this->renderJSON(array('title' => $i18n->__('The edition has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('editionbox', array('edition' => $edition))));
 							}
@@ -804,11 +804,11 @@
 		/**
 		 * Perform actions on a build (AJAX call)
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runBuildAction(BUGSrequest $request)
+		public function runBuildAction(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
@@ -816,9 +816,9 @@
 				{
 					if ($b_id = $request->getParameter('build_id'))
 					{
-						if (BUGScontext::getUser()->hasPermission('b2buildaccess', $b_id))
+						if (TBGContext::getUser()->hasPermission('b2buildaccess', $b_id))
 						{
-							$build = BUGSfactory::buildLab($b_id);
+							$build = TBGFactory::buildLab($b_id);
 							switch ($request->getParameter('build_action'))
 							{
 								case 'markdefault':
@@ -903,11 +903,11 @@
 		/**
 		 * Add a build (AJAX call)
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runAddBuild(BUGSrequest $request)
+		public function runAddBuild(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
@@ -915,15 +915,15 @@
 				{
 					if ($p_id = $request->getParameter('project_id'))
 					{
-						if (BUGScontext::getUser()->hasPermission('b2projectaccess', $p_id))
+						if (TBGContext::getUser()->hasPermission('b2projectaccess', $p_id))
 						{
 							if ($b_name = $request->getParameter('build_name'))
 							{
 								if ($e_id = $request->getParameter('edition_id'))
 								{
-									if (BUGScontext::getUser()->hasPermission('b2editionaccess', $e_id))
+									if (TBGContext::getUser()->hasPermission('b2editionaccess', $e_id))
 									{
-										$build = BUGSbuild::createNew($b_name, null, $e_id, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
+										$build = TBGBuild::createNew($b_name, null, $e_id, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
 									}
 									else
 									{
@@ -932,7 +932,7 @@
 								}
 								else
 								{
-									$build = BUGSbuild::createNew($b_name, $p_id, null, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
+									$build = TBGBuild::createNew($b_name, $p_id, null, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
 								}
 								return $this->renderJSON(array('title' => $i18n->__('The release has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('buildbox', array('build' => $build, 'access_level' => $this->access_level))));
 							}
@@ -962,11 +962,11 @@
 		/**
 		 * Add a component (AJAX call)
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runAddComponent(BUGSrequest $request)
+		public function runAddComponent(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
@@ -974,11 +974,11 @@
 				{
 					if ($p_id = $request->getParameter('project_id'))
 					{
-						if (BUGScontext::getUser()->hasPermission('b2projectaccess', $p_id))
+						if (TBGContext::getUser()->hasPermission('b2projectaccess', $p_id))
 						{
 							if ($c_name = $request->getParameter('c_name'))
 							{
-								$project = BUGSfactory::projectLab($p_id);
+								$project = TBGFactory::projectLab($p_id);
 								$component = $project->addComponent($c_name);
 								return $this->renderJSON(array('title' => $i18n->__('The component has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('componentbox', array('component' => $component))));
 							}
@@ -1008,11 +1008,11 @@
 		/**
 		 * Add a milestone (AJAX call)
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runAddMilestone(BUGSrequest $request)
+		public function runAddMilestone(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
@@ -1020,11 +1020,11 @@
 				{
 					if ($p_id = $request->getParameter('project_id'))
 					{
-						if (BUGScontext::getUser()->hasPermission('b2projectaccess', $p_id))
+						if (TBGContext::getUser()->hasPermission('b2projectaccess', $p_id))
 						{
 							if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
 							{
-								$theProject = BUGSfactory::projectLab($p_id);
+								$theProject = TBGFactory::projectLab($p_id);
 								$theMilestone = $theProject->addMilestone($m_name, $request->getParameter('milestone_type', 1));
 								return $this->renderJSON(array('title' => $i18n->__('The milestone has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'content' => $this->getTemplateHTML('milestonebox', array('milestone' => $theMilestone))));
 							}
@@ -1054,11 +1054,11 @@
 		/**
 		 * Perform actions on a build (AJAX call)
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runMilestoneAction(BUGSrequest $request)
+		public function runMilestoneAction(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
@@ -1066,7 +1066,7 @@
 				{
 					if ($m_id = $request->getParameter('milestone_id'))
 					{
-						$theMilestone = BUGSfactory::milestoneLab($m_id);
+						$theMilestone = TBGFactory::milestoneLab($m_id);
 						if ($theMilestone->hasAccess())
 						{
 							switch ($request->getParameter('milestone_action'))
@@ -1083,7 +1083,7 @@
 										{
 											if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
 											{
-												$scheduled_date = mktime(0, 0, 0, BUGScontext::getRequest()->getParameter('sch_month'), BUGScontext::getRequest()->getParameter('sch_day'), BUGScontext::getRequest()->getParameter('sch_year'));
+												$scheduled_date = mktime(0, 0, 0, TBGContext::getRequest()->getParameter('sch_month'), TBGContext::getRequest()->getParameter('sch_day'), TBGContext::getRequest()->getParameter('sch_year'));
 												$theMilestone->setScheduledDate($scheduled_date);
 											}
 										}
@@ -1091,7 +1091,7 @@
 										{
 											if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
 											{
-												$starting_date = mktime(0, 0, 0, BUGScontext::getRequest()->getParameter('starting_month'), BUGScontext::getRequest()->getParameter('starting_day'), BUGScontext::getRequest()->getParameter('starting_year'));
+												$starting_date = mktime(0, 0, 0, TBGContext::getRequest()->getParameter('starting_month'), TBGContext::getRequest()->getParameter('starting_day'), TBGContext::getRequest()->getParameter('starting_year'));
 												$theMilestone->setStartingDate($starting_date);
 											}
 										}
@@ -1100,7 +1100,7 @@
 									}
 									else
 									{
-										throw new Exception(BUGScontext::getI18n()->__('The milestone needs to have a name'));
+										throw new Exception(TBGContext::getI18n()->__('The milestone needs to have a name'));
 									}
 									break;
 								case 'delete':
@@ -1111,17 +1111,17 @@
 						}
 						else
 						{
-							throw new Exception(BUGScontext::getI18n()->__('You do not have access to this milestone'));
+							throw new Exception(TBGContext::getI18n()->__('You do not have access to this milestone'));
 						}
 					}
 					else
 					{
-						throw new Exception(BUGScontext::getI18n()->__('You need to specify a milestone'));
+						throw new Exception(TBGContext::getI18n()->__('You need to specify a milestone'));
 					}
 				}
 				catch (Exception $e)
 				{
-					return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('Could not update the milestone').", ".$e->getMessage()));
+					return $this->renderJSON(array('failed' => true, "error" => TBGContext::getI18n()->__('Could not update the milestone').", ".$e->getMessage()));
 				}
 				return $this->renderJSON(array('done' => true));
 			}
@@ -1132,17 +1132,17 @@
 		/**
 		 * Add or remove a component to/from an edition (AJAX call)
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runEditEditionComponent(BUGSrequest $request)
+		public function runEditEditionComponent(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
 				try
 				{
-					$theEdition   = BUGSfactory::editionLab($request->getParameter('edition_id'));
+					$theEdition   = TBGFactory::editionLab($request->getParameter('edition_id'));
 					if ($request->getParameter('mode') == 'add')
 					{
 						$theEdition->addComponent($request->getParameter('component_id'));
@@ -1165,17 +1165,17 @@
 		/**
 		 * Edit a component
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runEditComponent(BUGSrequest $request)
+		public function runEditComponent(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
 				try
 				{
-					$theComponent = BUGSfactory::componentLab($request->getParameter('component_id'));
+					$theComponent = TBGFactory::componentLab($request->getParameter('component_id'));
 					if ($request->getParameter('mode') == 'update')
 					{
 						$theComponent->setName($request->getParameter('c_name', ''));
@@ -1188,7 +1188,7 @@
 				}
 				catch (Exception $e)
 				{
-					return $this->renderJSON(array('failed' => true, "error" => BUGScontext::getI18n()->__('Could not edit this component').", ".$e->getMessage()));
+					return $this->renderJSON(array('failed' => true, "error" => TBGContext::getI18n()->__('Could not edit this component').", ".$e->getMessage()));
 				}
 			}
 			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify components")));
@@ -1197,17 +1197,17 @@
 		/**
 		 * Delete a project
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runDeleteProject(BUGSrequest $request)
+		public function runDeleteProject(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
 				try
 				{
-					$theProject = BUGSfactory::projectLab($request->getParameter('project_id'));
+					$theProject = TBGFactory::projectLab($request->getParameter('project_id'));
 					$theProject->delete();
 					$theProject->save();
 					return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The project was deleted')));
@@ -1223,28 +1223,28 @@
 		/**
 		 * Perform an action on a module
 		 *
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runModuleAction(BUGSrequest $request)
+		public function runModuleAction(TBGRequest $request)
 		{
 			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			
 			try
 			{
-				if ($request->getParameter('mode') == 'install' && file_exists(BUGScontext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/module'))
+				if ($request->getParameter('mode') == 'install' && file_exists(TBGContext::getIncludePath() . 'modules/' . $request->getParameter('module_key') . '/module'))
 				{
-					if (BUGSmodule::installModule($request->getParameter('module_key')))
+					if (TBGModule::installModule($request->getParameter('module_key')))
 					{
-						BUGScontext::setMessage('module_message', BUGScontext::getI18n()->__('The module "%module_name%" was installed successfully', array('%module_name%' => $request->getParameter('module_key'))));
+						TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was installed successfully', array('%module_name%' => $request->getParameter('module_key'))));
 					}
 					else
 					{
-						BUGScontext::setMessage('module_error', BUGScontext::getI18n()->__('There was an error install the module %module_name%', array('%module_name%' => $request->getParameter('module_key'))));
+						TBGContext::setMessage('module_error', TBGContext::getI18n()->__('There was an error install the module %module_name%', array('%module_name%' => $request->getParameter('module_key'))));
 					}
 				}
 				else
 				{
-					$module = BUGScontext::getModule($request->getParameter('module_key'));
+					$module = TBGContext::getModule($request->getParameter('module_key'));
 					switch ($request->getParameter('mode'))
 					{
 						case 'disable':
@@ -1255,27 +1255,27 @@
 							break;
 						case 'uninstall':
 							$module->uninstall();
-							BUGScontext::setMessage('module_message', BUGScontext::getI18n()->__('The module "%module_name%" was uninstalled successfully', array('%module_name%' => $module->getName())));
+							TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The module "%module_name%" was uninstalled successfully', array('%module_name%' => $module->getName())));
 							break;
 					}
 				}
 			}
 			catch (Exception $e)
 			{
-				BUGSlogging::log('Trying to run action ' . $request->getParameter('mode') . ' on module ' . $request->getParameter('module_key') . ' which is an invalid module', 'main', BUGSlogging::LEVEL_FATAL);
-				BUGScontext::setMessage('module_error', BUGScontext::getI18n()->__('This module (%module_name%) does not exist', array('%module_name%' => $request->getParameter('module_key'))));
+				TBGLogging::log('Trying to run action ' . $request->getParameter('mode') . ' on module ' . $request->getParameter('module_key') . ' which is an invalid module', 'main', TBGLogging::LEVEL_FATAL);
+				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('This module (%module_name%) does not exist', array('%module_name%' => $request->getParameter('module_key'))));
 			}
-			$this->forward(BUGScontext::getRouting()->generate('configure_modules'));
+			$this->forward(TBGContext::getRouting()->generate('configure_modules'));
 		}
 
 		/**
 		 * Get permissions info for a single permission key
 		 *
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runGetPermissionsInfo(BUGSrequest $request)
+		public function runGetPermissionsInfo(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
@@ -1284,9 +1284,9 @@
 			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify components")));
 		}
 
-		public function runSetPermission(BUGSrequest $request)
+		public function runSetPermission(TBGRequest $request)
 		{
-			$i18n = BUGScontext::getI18n();
+			$i18n = TBGContext::getI18n();
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
@@ -1309,13 +1309,13 @@
 				switch ($request->getParameter('mode'))
 				{
 					case 'allowed':
-						BUGScontext::setPermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid, true);
+						TBGContext::setPermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid, true);
 						break;
 					case 'denied':
-						BUGScontext::setPermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid, false);
+						TBGContext::setPermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid, false);
 						break;
 					case 'unset':
-						BUGScontext::removePermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid);
+						TBGContext::removePermission($request->getParameter('key'), $request->getParameter('target_id'), $request->getParameter('target_module'), $uid, $gid, $tid);
 						break;
 				}
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsinfoitem', array('key' => $request->getParameter('key'), 'target_id' => $request->getParameter('target_id'), 'type' => $request->getParameter('target_type'), 'mode' => $request->getParameter('template_mode'), 'item_id' => $request->getParameter('item_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
@@ -1326,81 +1326,81 @@
 		/**
 		 * Configure a module
 		 *
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 */
-		public function runConfigureModule(BUGSrequest $request)
+		public function runConfigureModule(TBGRequest $request)
 		{
 			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 			
 			try
 			{
-				$module = BUGScontext::getModule($request->getParameter('config_module'));
+				$module = TBGContext::getModule($request->getParameter('config_module'));
 				if (!$module->hasConfigSettings())
 				{
 					throw new Exception('module not configurable');
 				}
 				else
 				{
-					if ($request->isMethod(BUGSrequest::POST) && $this->access_level == self::ACCESS_FULL)
+					if ($request->isMethod(TBGRequest::POST) && $this->access_level == self::ACCESS_FULL)
 					{
 						try
 						{
 							$module->postConfigSettings();
-							BUGScontext::setMessage('module_message', BUGScontext::getI18n()->__('Settings saved successfully'));
+							TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Settings saved successfully'));
 						}
 						catch (Exception $e)
 						{
-							BUGScontext::setMessage('module_error', $e->getMessage());
+							TBGContext::setMessage('module_error', $e->getMessage());
 						}
-						$this->forward(BUGScontext::getRouting()->generate('configure_module', array('config_module' => $request->getParameter('config_module'))));
+						$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => $request->getParameter('config_module'))));
 					}
 					$this->module = $module;
 				}
 			}
 			catch (Exception $e)
 			{
-				BUGSlogging::log('Trying to configure module ' . $request->getParameter('config_module') . " which isn't configurable", 'main', BUGSlogging::LEVEL_FATAL);
-				BUGScontext::setMessage('module_error', BUGScontext::getI18n()->__('The module "%module_name%" is not configurable', array('%module_name%' => $request->getParameter('config_module'))));
-				$this->forward(BUGScontext::getRouting()->generate('configure_modules'));
+				TBGLogging::log('Trying to configure module ' . $request->getParameter('config_module') . " which isn't configurable", 'main', TBGLogging::LEVEL_FATAL);
+				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The module "%module_name%" is not configurable', array('%module_name%' => $request->getParameter('config_module'))));
+				$this->forward(TBGContext::getRouting()->generate('configure_modules'));
 			}
-			$this->module_message = BUGScontext::getMessageAndClear('module_message');
-			$this->module_error = BUGScontext::getMessageAndClear('module_error');
-			$this->module_error_details = BUGScontext::getMessageAndClear('module_error_details');
+			$this->module_message = TBGContext::getMessageAndClear('module_message');
+			$this->module_error = TBGContext::getMessageAndClear('module_error');
+			$this->module_error_details = TBGContext::getMessageAndClear('module_error_details');
 		}
 
-		public function runConfigurePermissions(BUGSrequest $request)
+		public function runConfigurePermissions(TBGRequest $request)
 		{
 			$this->forward403unless($this->access_level == self::ACCESS_FULL);
 		}
 
-		public function runConfigureUploads(BUGSrequest $request)
+		public function runConfigureUploads(TBGRequest $request)
 		{
-			if ($request->isMethod(BUGSrequest::POST))
+			if ($request->isMethod(TBGRequest::POST))
 			{
 				$this->forward403unless($this->access_level == self::ACCESS_FULL);
 				if ($request->getParameter('upload_storage') == 'files' && (bool) $request->getParameter('enable_uploads'))
 				{
 					if (!is_writable($request->getParameter('upload_localpath')))
 					{
-						return $this->renderJSON(array('failed' => true, 'error' => BUGScontext::getI18n()->__("The upload path isn't writable")));
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("The upload path isn't writable")));
 					}
 				}
 				$settings = array('enable_uploads', 'upload_restriction_mode', 'upload_extensions_list', 'upload_storage', 'upload_localpath');
 
 				foreach ($settings as $setting)
 				{
-					if (BUGScontext::getRequest()->hasParameter($setting))
+					if (TBGContext::getRequest()->hasParameter($setting))
 					{
-						BUGSsettings::saveSetting($setting, BUGScontext::getRequest()->getParameter($setting));
+						TBGSettings::saveSetting($setting, TBGContext::getRequest()->getParameter($setting));
 					}
 				}
-				return $this->renderJSON(array('failed' => false, 'title' => BUGScontext::getI18n()->__('All settings saved')));
+				return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('All settings saved')));
 			}
 		}
 
 		public function getAccessLevel($section, $module)
 		{
-			return (BUGScontext::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;
+			return (TBGContext::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;
 		}
 		
 	}

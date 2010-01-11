@@ -1,11 +1,11 @@
 <?php
 
-	class publishActionComponents extends BUGSactioncomponent
+	class publishActionComponents extends TBGActionComponent
 	{
 		
 		public function componentLatestArticles()
 		{
-			$publish_module = BUGScontext::getModule('publish');
+			$publish_module = TBGContext::getModule('publish');
 			$publish_module->log('retrieving latest articles');
 			
 			$this->latest_articles = $publish_module->getLatestArticles();
@@ -31,8 +31,8 @@
 		public function componentLeftmenu()
 		{
 			$this->show_article_options = (bool) ($this->article instanceof PublishArticle);
-			$this->links = BUGScontext::getModule('publish')->getMenuItems();
-			$this->user_drafts = BUGScontext::getModule('publish')->getUserDrafts();
+			$this->links = TBGContext::getModule('publish')->getMenuItems();
+			$this->user_drafts = TBGContext::getModule('publish')->getUserDrafts();
 			$this->whatlinkshere = ($this->article instanceof PublishArticle) ? $this->article->getLinkingArticles() : null;
 		}
 

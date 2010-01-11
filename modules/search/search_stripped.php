@@ -7,14 +7,14 @@
 	require THEBUGGENIE_PATH . 'include/checkcookie.inc.php';
 	require THEBUGGENIE_PATH . 'include/b2_engine.inc.php';
 
-	BUGScontext::getModule('search')->activate();
+	TBGContext::getModule('search')->activate();
 	
-	$output_format = BUGScontext::getRequest()->getParameter('output');
+	$output_format = TBGContext::getRequest()->getParameter('output');
 	
 	switch ($output_format)
 	{
 		case 'json':
-			$output = '["' . BUGScontext::getRequest()->getParameter('searchfor', null, false) . '", ';
+			$output = '["' . TBGContext::getRequest()->getParameter('searchfor', null, false) . '", ';
 			break;
 		case 'ul':
 			$output = '<ul>';
@@ -23,39 +23,39 @@
 	
 	if ($output_format == 'ul')
 	{
-		$output .= '<li>' . BUGScontext::getRequest()->getParameter('searchfor');
+		$output .= '<li>' . TBGContext::getRequest()->getParameter('searchfor');
 		$output .= '<br><span class="informal"><i>' . __('Press enter twice to search') . ' ...</i></span>';
 		$output .= '</li>';
 	}
 	
-	//TODO: use static function to retrieve issue from parameter in BUGSissue instead
-	if (is_numeric(BUGScontext::getRequest()->getParameter('searchfor')))
+	//TODO: use static function to retrieve issue from parameter in TBGIssue instead
+	if (is_numeric(TBGContext::getRequest()->getParameter('searchfor')))
 	{
-		if (BUGSissue::hasPrefix(BUGScontext::getRequest()->getParameter('searchfor')) == false)
+		if (TBGIssue::hasPrefix(TBGContext::getRequest()->getParameter('searchfor')) == false)
 		{
-			$issue_uniqueid = BUGScontext::getRequest()->getParameter('searchfor');
+			$issue_uniqueid = TBGContext::getRequest()->getParameter('searchfor');
 			$issue_prefix = "";
-			if (BUGScontext::getUser()->hasPermission("b2viewissue", $issue_uniqueid, "core") == true)
+			if (TBGContext::getUser()->hasPermission("b2viewissue", $issue_uniqueid, "core") == true)
 			{
 				$explicit = true;
 			}
 			else
 			{
-				$theIssue = BUGSfactory::BUGSissueLab($issue_uniqueid);
-				if (BUGScontext::getUser()->hasPermission("b2notviewissue", $theIssue->getID(), "core") == false)
+				$theIssue = TBGFactory::TBGIssueLab($issue_uniqueid);
+				if (TBGContext::getUser()->hasPermission("b2notviewissue", $theIssue->getID(), "core") == false)
 				{
-					if (BUGScontext::getUser()->hasPermission("b2projectaccess", $theIssue->getProject()->getID(), "core"))
+					if (TBGContext::getUser()->hasPermission("b2projectaccess", $theIssue->getProject()->getID(), "core"))
 					{
 						switch ($output_format)
 						{
 							case 'json':
 								$output .= '["';
-								$output .= __('Issue #') . BUGScontext::getRequest()->getParameter('searchfor') . ' - ' . html_entity_decode($theIssue->getTitle());
+								$output .= __('Issue #') . TBGContext::getRequest()->getParameter('searchfor') . ' - ' . html_entity_decode($theIssue->getTitle());
 								$output .= '"]';
 								break;
 							case 'ul':
 								$output = '<li>';
-								$output .= __('Issue #') . BUGScontext::getRequest()->getParameter('searchfor') . ' - ' . addslashes($theIssue->getTitle());
+								$output .= __('Issue #') . TBGContext::getRequest()->getParameter('searchfor') . ' - ' . addslashes($theIssue->getTitle());
 								$output .= '<br><span class="informal">' . __('Last updated') . ' ' . bugs_formatTime($theIssue->getLastUpdatedTime(), 6) . '</span>';
 								$output = '</li>';
 								break;
@@ -69,10 +69,10 @@
 	{
 		$issue_no = array();
 		$output_done = false;
-		if (BUGScontext::getRequest()->getParameter('searchfor') && strstr(BUGScontext::getRequest()->getParameter('searchfor'), "-"))
+		if (TBGContext::getRequest()->getParameter('searchfor') && strstr(TBGContext::getRequest()->getParameter('searchfor'), "-"))
 		{
-			$theIssue = BUGSissue::getIssueFromLink(BUGScontext::getRequest()->getParameter('searchfor'));
-			if ($theIssue instanceof BUGSissue)
+			$theIssue = TBGIssue::getIssueFromLink(TBGContext::getRequest()->getParameter('searchfor'));
+			if ($theIssue instanceof TBGIssue)
 			{
 				switch ($output_format)
 				{
@@ -93,14 +93,14 @@
 			}
 			else
 			{
-				BUGScontext::getRequest()->setParameter('simplesearch', "true");
-				BUGScontext::getRequest()->setParameter('lookthrough', "all");
+				TBGContext::getRequest()->setParameter('simplesearch', "true");
+				TBGContext::getRequest()->setParameter('lookthrough', "all");
 			}
 		}
-		elseif (BUGScontext::getRequest()->getParameter('searchfor'))
+		elseif (TBGContext::getRequest()->getParameter('searchfor'))
 		{
-			BUGScontext::getRequest()->setParameter('simplesearch', "true");
-			BUGScontext::getRequest()->setParameter('lookthrough', "all");
+			TBGContext::getRequest()->setParameter('simplesearch', "true");
+			TBGContext::getRequest()->setParameter('lookthrough', "all");
 		}
 
 		if ($output_done == false)
@@ -108,13 +108,13 @@
 			$_SESSION['searchfields'] = array();
 	
 			unset($_SESSION['simplefilters']);
-			$appliedFilters = BUGScontext::getModule('search')->getSearchFields();
+			$appliedFilters = TBGContext::getModule('search')->getSearchFields();
 	
-			$_SESSION['simplefilters'][] = array("id" => 0, "filter_field" => B2tIssues::TITLE, "value" => '%'.BUGScontext::getRequest()->getParameter('searchfor').'%', "operator" => B2DBCriteria::DB_LIKE, "filter_type" => '', "values_from" => '', "value_from_field" => '', "name_from_field" => '', "from_tbl_crit_field" => '', "from_tbl_crit_value" => '');
-			$_SESSION['simplefilters'][] = array("id" => 0, "filter_field" => B2tIssues::LONG_DESCRIPTION, "value" => '%'.BUGScontext::getRequest()->getParameter('searchfor').'%', "operator" => B2DBCriteria::DB_LIKE, "filter_type" => '', "values_from" => '', "value_from_field" => '', "name_from_field" => '', "from_tbl_crit_field" => '', "from_tbl_crit_value" => '');
-			$_SESSION['simplefilters'][] = array("id" => 0, "filter_field" => B2tComments::CONTENT, "value" => '%'.BUGScontext::getRequest()->getParameter('searchfor').'%', "operator" => B2DBCriteria::DB_LIKE, "filter_type" => '', "values_from" => '', "value_from_field" => '', "name_from_field" => '', "from_tbl_crit_field" => '', "from_tbl_crit_value" => '');
+			$_SESSION['simplefilters'][] = array("id" => 0, "filter_field" => B2tIssues::TITLE, "value" => '%'.TBGContext::getRequest()->getParameter('searchfor').'%', "operator" => B2DBCriteria::DB_LIKE, "filter_type" => '', "values_from" => '', "value_from_field" => '', "name_from_field" => '', "from_tbl_crit_field" => '', "from_tbl_crit_value" => '');
+			$_SESSION['simplefilters'][] = array("id" => 0, "filter_field" => B2tIssues::LONG_DESCRIPTION, "value" => '%'.TBGContext::getRequest()->getParameter('searchfor').'%', "operator" => B2DBCriteria::DB_LIKE, "filter_type" => '', "values_from" => '', "value_from_field" => '', "name_from_field" => '', "from_tbl_crit_field" => '', "from_tbl_crit_value" => '');
+			$_SESSION['simplefilters'][] = array("id" => 0, "filter_field" => B2tComments::CONTENT, "value" => '%'.TBGContext::getRequest()->getParameter('searchfor').'%', "operator" => B2DBCriteria::DB_LIKE, "filter_type" => '', "values_from" => '', "value_from_field" => '', "name_from_field" => '', "from_tbl_crit_field" => '', "from_tbl_crit_value" => '');
 	
-			$searchmatches = BUGScontext::getModule('search')->doSearch(0, false, true, false, ((count($_SESSION['simplefilters']) > 0) ? true : false));
+			$searchmatches = TBGContext::getModule('search')->doSearch(0, false, true, false, ((count($_SESSION['simplefilters']) > 0) ? true : false));
 			$searchmatches = $searchmatches['issues'];
 			
 			#print $searchmatches->count();
@@ -127,9 +127,9 @@
 			$firstres = true;
 			foreach ($searchmatches as $theIssue)
 			{
-				if (BUGScontext::getUser()->hasPermission("b2notviewissue", $theIssue->getID(), "core") == false)
+				if (TBGContext::getUser()->hasPermission("b2notviewissue", $theIssue->getID(), "core") == false)
 				{
-					if (BUGScontext::getUser()->hasPermission("b2projectaccess", $theIssue->getProject()->getID(), "core"))
+					if (TBGContext::getUser()->hasPermission("b2projectaccess", $theIssue->getProject()->getID(), "core"))
 					{
 						switch ($output_format)
 						{

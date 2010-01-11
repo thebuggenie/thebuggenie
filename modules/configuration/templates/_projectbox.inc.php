@@ -1,4 +1,4 @@
-<?php BUGScontext::loadLibrary('ui'); ?>
+<?php TBGContext::loadLibrary('ui'); ?>
 <div class="rounded_box round_canhover" style="margin: 10px 0px 10px 0px; width: 700px;" id="project_box_<?php echo $project->getID();?>">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px 10px 5px 10px;">
@@ -14,9 +14,9 @@
 		<td style="padding-left: 3px; width: auto;">
 			<?php if ($project->getOwner() != null): ?>
 				<table cellpadding=0 cellspacing=0 width="100%">
-					<?php if ($project->getOwnerType() == BUGSidentifiableclass::TYPE_USER): ?>
+					<?php if ($project->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
 						<?php echo include_component('main/userdropdown', array('user' => $project->getOwner())); ?>
-					<?php elseif ($project->getOwnerType() == BUGSidentifiableclass::TYPE_TEAM): ?>
+					<?php elseif ($project->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
 						<?php echo include_component('main/teamdropdown', array('team' => $project->getOwner())); ?>
 					<?php endif; ?>
 				</table>
@@ -77,6 +77,6 @@
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
-<?php if (BUGScontext::getRequest()->isAjaxCall()): ?>
+<?php if (TBGContext::getRequest()->isAjaxCall()): ?>
 	<script type="text/javascript">new Effect.Pulsate('project_box_<?php echo $project->getID(); ?>');</script>
 <?php endif; ?>

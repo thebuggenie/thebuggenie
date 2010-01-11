@@ -1,12 +1,12 @@
 	<div style="padding: 5px;<?php print ($theuid != 0) ? "padding-left: 0px;" : ""; ?>">
-	A blue icon means the selected <?php (BUGScontext::getRequest()->getParameter('group')) ? print "group" : ((BUGScontext::getRequest()->getParameter('user')) ? print "user" : print "team"); ?> has the access specified by the "Everyone" group. A green icon means it has full access to the specified section. For sections where you can have three levels of access, read-access is marked with a yellow icon. A red icon means it does not have access to that section. <?php if ($access_level == "full") { ?>Click the icon to change permissions for that section.<?php } ?>
+	A blue icon means the selected <?php (TBGContext::getRequest()->getParameter('group')) ? print "group" : ((TBGContext::getRequest()->getParameter('user')) ? print "user" : print "team"); ?> has the access specified by the "Everyone" group. A green icon means it has full access to the specified section. For sections where you can have three levels of access, read-access is marked with a yellow icon. A red icon means it does not have access to that section. <?php if ($access_level == "full") { ?>Click the icon to change permissions for that section.<?php } ?>
 	<table style="width: 100%; padding-top: 5px;" cellpadding=0 cellspacing=0>
 		<tr>
 			<td style="width: 50%; padding: 5px; padding-left: 0px;" align="left" valign="top">
 				<?php if ($theuid != 0): ?>
 					<div style="border-bottom: 1px solid #DDD;"><b>User-specific permissions</b> (click link to edit)</div>
 					<table style="width: 100%; margin-top: 3px; table-layout: fixed;" cellpadding=0 cellspacing=0>
-						<tr<?php if (BUGScontext::getRequest()->getParameter('user_perm') == 1) { print " class=\"p_sel\""; } ?>>
+						<tr<?php if (TBGContext::getRequest()->getParameter('user_perm') == 1) { print " class=\"p_sel\""; } ?>>
 							<td style="width: 20px; padding: 1px;" align="left" valign="middle"><?php echo image_tag('cfg_icon_general.png'); ?></td>
 							<td style="width: auto; padding: 1px;" align="left" valign="middle"><a href="<?php print $thelink; ?>&amp;user_perm=1" style="font-weight: bold;">User-specific permissions</a></td>
 						</tr>
@@ -15,7 +15,7 @@
 				<?php endif; ?>
 				<div style="border-bottom: 1px solid #DDD;"><b>General access permissions</b> (click link to edit)</div>
 				<table style="width: 100%; margin-top: 3px; table-layout: fixed;" cellpadding=0 cellspacing=0>
-					<tr<?php if (BUGScontext::getRequest()->getParameter('general_perm') == 1) { print " class=\"p_sel\""; } ?>>
+					<tr<?php if (TBGContext::getRequest()->getParameter('general_perm') == 1) { print " class=\"p_sel\""; } ?>>
 						<td style="width: 20px; padding: 1px;" align="left" valign="middle"><?php echo image_tag('cfg_icon_general.png'); ?></td>
 						<td style="width: auto; padding: 1px;" align="left" valign="middle"><a href="<?php print $thelink; ?>&amp;general_perm=1" style="font-weight: bold;">General permissions</a></td>
 					</tr>
@@ -24,24 +24,24 @@
 				<table style="width: 100%; margin-top: 3px; table-layout: fixed;" cellpadding=0 cellspacing=0>
 					<?php
 					
-					foreach (BUGSproject::getAll() as $aProject)
+					foreach (TBGProject::getAll() as $aProject)
 					{
-						$aProject = new BUGSproject($aProject['id']);
+						$aProject = new TBGProject($aProject['id']);
 						?>
-						<tr<?php if (BUGScontext::getRequest()->getParameter('p_id') == $aProject->getID()) { print " class=\"p_sel\""; } ?>>
+						<tr<?php if (TBGContext::getRequest()->getParameter('p_id') == $aProject->getID()) { print " class=\"p_sel\""; } ?>>
 							<td style="width: 20px; padding: 1px;" align="left" valign="middle"><?php echo image_tag('icon_project.png'); ?></td>
 							<td style="width: auto; padding: 1px; font-weight: bold;" align="left" valign="middle"><a href="<?php print $thelink . "&amp;p_id=" . $aProject->getID(); ?>"><?php print $aProject->getName(); ?></a></td>
 							<?php
 							if ($access_level == "full")
 							{
-								if (BUGScontext::getRequest()->getParameter('setprojectaccess') && BUGScontext::getRequest()->getParameter('p_id') == $aProject->getID() && is_numeric(BUGScontext::getRequest()->getParameter('allowed')))
+								if (TBGContext::getRequest()->getParameter('setprojectaccess') && TBGContext::getRequest()->getParameter('p_id') == $aProject->getID() && is_numeric(TBGContext::getRequest()->getParameter('allowed')))
 								{
-									BUGScontext::setPermission("b2projectaccess", $aProject->getID(), "core", $theuid, $gid, $tid, BUGScontext::getRequest()->getParameter('allowed'), BUGScontext::getRequest()->getParameter('insertdeny'));
+									TBGContext::setPermission("b2projectaccess", $aProject->getID(), "core", $theuid, $gid, $tid, TBGContext::getRequest()->getParameter('allowed'), TBGContext::getRequest()->getParameter('insertdeny'));
 								}
-								$light = (BUGScontext::getUser()->hasPermission("b2projectaccess", $aProject->getID(), "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+								$light = (TBGContext::getUser()->hasPermission("b2projectaccess", $aProject->getID(), "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 								if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 								{
-									$blue = BUGScontext::getAllPermissions("b2projectaccess", $theuid, $tid, $gid, $aProject->getID());
+									$blue = TBGContext::getAllPermissions("b2projectaccess", $theuid, $tid, $gid, $aProject->getID());
 									$light = (count($blue) == 0) ? "lightblue" : $light;
 									$lightaccess = ($light == "lightblue") ? 1 : 0;
 									$insertdeny = ($light == "mediumgreen") ? 1 : 0;
@@ -58,10 +58,10 @@
 							}
 							else
 							{
-								$light = (BUGScontext::getUser()->hasPermission("b2projectaccess", $aProject->getID(), "core", 0, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+								$light = (TBGContext::getUser()->hasPermission("b2projectaccess", $aProject->getID(), "core", 0, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 								if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 								{
-									$blue = BUGScontext::getAllPermissions("b2projectaccess", $theuid, $tid, $gid, $aProject->getID());
+									$blue = TBGContext::getAllPermissions("b2projectaccess", $theuid, $tid, $gid, $aProject->getID());
 									$light = (count($blue) == 0) ? "lightblue" : $light;
 								}
 								?>
@@ -72,7 +72,7 @@
 						</tr>
 						<?php
 					}
-					if (count(BUGSproject::getAll()) == 0)
+					if (count(TBGProject::getAll()) == 0)
 					{
 						?>
 						<tr><td style="color: #C5C5C5;">(There are no projects)</td></tr>
@@ -87,14 +87,14 @@
 								<?php
 								if ($access_level == "full")
 								{
-									if (BUGScontext::getRequest()->getParameter('setreportissueaccess') && is_numeric(BUGScontext::getRequest()->getParameter('allowed')))
+									if (TBGContext::getRequest()->getParameter('setreportissueaccess') && is_numeric(TBGContext::getRequest()->getParameter('allowed')))
 									{
-										BUGScontext::setPermission('b2canreportissues', 0, "core", $theuid, $gid, $tid, BUGScontext::getRequest()->getParameter('allowed'), BUGScontext::getRequest()->getParameter('insertdeny'));
+										TBGContext::setPermission('b2canreportissues', 0, "core", $theuid, $gid, $tid, TBGContext::getRequest()->getParameter('allowed'), TBGContext::getRequest()->getParameter('insertdeny'));
 									}
-									$light = (BUGScontext::getUser()->hasPermission('b2canreportissues', 0, "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+									$light = (TBGContext::getUser()->hasPermission('b2canreportissues', 0, "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 									if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 									{
-										$blue = BUGScontext::getAllPermissions('b2canreportissues', $theuid, $tid, $gid);
+										$blue = TBGContext::getAllPermissions('b2canreportissues', $theuid, $tid, $gid);
 										$light = (count($blue) == 0) ? "lightblue" : $light;
 										$lightaccess = ($light == "lightblue") ? 1 : 0;
 										$insertdeny = ($light == "mediumgreen") ? 1 : 0;
@@ -110,10 +110,10 @@
 								}
 								else
 								{
-									$light = (BUGScontext::getUser()->hasPermission('b2canreportissues', 0, "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+									$light = (TBGContext::getUser()->hasPermission('b2canreportissues', 0, "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 									if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 									{
-										$blue = BUGScontext::getAllPermissions('b2canreportissues', $theuid, $tid, $gid);
+										$blue = TBGContext::getAllPermissions('b2canreportissues', $theuid, $tid, $gid);
 										$light = (count($blue) == 0) ? "lightblue" : $light;
 									}
 									?>
@@ -122,7 +122,7 @@
 								}
 								?>
 						</tr>
-						<tr<?php if (is_numeric(BUGScontext::getRequest()->getParameter('issuespermrest'))) { print " class=\"p_sel\""; } ?>>
+						<tr<?php if (is_numeric(TBGContext::getRequest()->getParameter('issuespermrest'))) { print " class=\"p_sel\""; } ?>>
 							<td style="width: 20px; padding: 1px;" align="left" valign="middle"><?php echo image_tag('icon_issuespermrest.png'); ?></td>
 							<td style="width: auto; padding: 1px; font-weight: normal;" colspan=2 align="left" valign="middle"><a href="<?php print $thelink . "&amp;issuespermrest=1"; ?>">Issue-specific access privileges</a></td>
 						</tr>
@@ -135,10 +135,10 @@
 				<?php
 
 					//$bugs_modules = bugs_getModules("",array("id", "module_longname", "module_name"),"");
-					foreach (BUGScontext::getModules() as $aModule)
+					foreach (TBGContext::getModules() as $aModule)
 					{
 						// if (bugs_getModulePermissions($aModule['module_name']) == true)
-						//$aModule = new BUGSmodule(1);
+						//$aModule = new TBGModule(1);
 						if ($aModule->hasAccess() == true)
 						{
 							//$module_name = $aModule->getName();
@@ -162,9 +162,9 @@
 								<?php
 									if ($access_level == "full")
 									{
-										if (BUGScontext::getRequest()->getParameter('setmoduleaccess') && BUGScontext::getRequest()->getParameter('module_name') == $aModule->getName() && is_numeric(BUGScontext::getRequest()->getParameter('allowed')))
+										if (TBGContext::getRequest()->getParameter('setmoduleaccess') && TBGContext::getRequest()->getParameter('module_name') == $aModule->getName() && is_numeric(TBGContext::getRequest()->getParameter('allowed')))
 										{
-											BUGScontext::getModule(BUGScontext::getRequest()->getParameter('module_name'))->setPermission($theuid, $gid, $tid, BUGScontext::getRequest()->getParameter('allowed'), BUGScontext::getRequest()->getParameter('insertdeny'));
+											TBGContext::getModule(TBGContext::getRequest()->getParameter('module_name'))->setPermission($theuid, $gid, $tid, TBGContext::getRequest()->getParameter('allowed'), TBGContext::getRequest()->getParameter('insertdeny'));
 										}
 										// $light = (bugs_getModulePermissions($aModule['module_name'], $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 										$light = ($aModule->hasAccess($theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
@@ -190,7 +190,7 @@
 										$light = ($aModule->hasAccess($theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 										if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 										{
-											$blue = BUGSmodule::getAllModulePermissions($aModule->getName(), $theuid, $tid, $gid);
+											$blue = TBGModule::getAllModulePermissions($aModule->getName(), $theuid, $tid, $gid);
 											$light = (count($blue) == 0) ? "lightblue" : $light;
 										}
 										?>
@@ -202,7 +202,7 @@
 							<?php
 						}
 					}
-					if (count(BUGScontext::getModules()) == 0)
+					if (count(TBGContext::getModules()) == 0)
 					{
 						?>
 						<tr><td>&nbsp;</td><td colspan=2 style="color: #C5C5C5;">(There are no modules)</td></tr>
@@ -232,26 +232,26 @@
 							$pagename = $aPage[0];
 							if ($access_level == "full")
 							{
-								if (BUGScontext::getRequest()->getParameter('setpageaccess') && BUGScontext::getRequest()->getParameter('page') == $pagename && is_numeric(BUGScontext::getRequest()->getParameter('allowed')))
+								if (TBGContext::getRequest()->getParameter('setpageaccess') && TBGContext::getRequest()->getParameter('page') == $pagename && is_numeric(TBGContext::getRequest()->getParameter('allowed')))
 								{
-									if (BUGScontext::getRequest()->getParameter('allowed') == 1 && BUGScontext::getRequest()->getParameter('insertdeny') == 1)
+									if (TBGContext::getRequest()->getParameter('allowed') == 1 && TBGContext::getRequest()->getParameter('insertdeny') == 1)
 									{
-										BUGScontext::removePermission("b2no${pagename}access", 0, "core", $theuid, $gid, $tid);
+										TBGContext::removePermission("b2no${pagename}access", 0, "core", $theuid, $gid, $tid);
 									}
 									else
 									{
-										if (BUGScontext::getUser()->hasPermission("b2no${pagename}access", 0, "core", BUGScontext::getUser()->getUID(), $gid, $tid) == false)
+										if (TBGContext::getUser()->hasPermission("b2no${pagename}access", 0, "core", TBGContext::getUser()->getUID(), $gid, $tid) == false)
 										{
 											#print "fu";
-											BUGScontext::setPermission("b2no${pagename}access", 0, "core", $theuid, $gid, $tid, BUGScontext::getRequest()->getParameter('allowed'), BUGScontext::getRequest()->getParameter('insertdeny'));
+											TBGContext::setPermission("b2no${pagename}access", 0, "core", $theuid, $gid, $tid, TBGContext::getRequest()->getParameter('allowed'), TBGContext::getRequest()->getParameter('insertdeny'));
 										}
 									}
 								}
-								$light = (BUGScontext::getUser()->hasPermission("b2no${pagename}access", 0, "core", $theuid, $gid, $tid, $all) == false) ? "mediumgreen" : "red";
+								$light = (TBGContext::getUser()->hasPermission("b2no${pagename}access", 0, "core", $theuid, $gid, $tid, $all) == false) ? "mediumgreen" : "red";
 								#print $light;
 								if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 								{
-									$blue = BUGScontext::getAllPermissions("b2no${pagename}access", $theuid, $tid, $gid, 0);
+									$blue = TBGContext::getAllPermissions("b2no${pagename}access", $theuid, $tid, $gid, 0);
 									$light = (count($blue) == 0) ? "lightblue" : $light;
 									$lightaccess = ($light == "lightblue") ? 0 : 1;
 									$insertdeny = ($light == "mediumgreen") ? 0 : 1;
@@ -265,7 +265,7 @@
 								$canlink = false;
 								if ($lightaccess == 1)
 								{
-									if (BUGScontext::getUser()->hasPermission("b2no${pagename}access", 0, "core", BUGScontext::getUser()->getUID(), $gid, $tid) == false)
+									if (TBGContext::getUser()->hasPermission("b2no${pagename}access", 0, "core", TBGContext::getUser()->getUID(), $gid, $tid) == false)
 									{
 										$canlink = true;
 									}
@@ -292,10 +292,10 @@
 							}
 							else
 							{
-								$light = (BUGScontext::getUser()->hasPermission("b2no${pagename}access", 0, "core", 0, $gid, $tid, $all) == false) ? "mediumgreen" : "red";
+								$light = (TBGContext::getUser()->hasPermission("b2no${pagename}access", 0, "core", 0, $gid, $tid, $all) == false) ? "mediumgreen" : "red";
 								if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 								{
-									$blue = BUGScontext::getAllPermissions("b2no${pagename}access", $theuid, $tid, $gid, 0);
+									$blue = TBGContext::getAllPermissions("b2no${pagename}access", $theuid, $tid, $gid, 0);
 									$light = (count($blue) == 0) ? "lightblue" : $light;
 								}
 								?>
@@ -310,24 +310,24 @@
 				</table>
 				<div style="padding-top: 10px; border-bottom: 1px solid #DDD;"><b>Configuration</b></div>
 				<table style="width: 100%; margin-top: 3px; table-layout: fixed;" cellpadding=0 cellspacing=0>
-					<tr<?php if (BUGScontext::getRequest()->getParameter('config') == 1) { print " class=\"p_sel\""; } ?>>
+					<tr<?php if (TBGContext::getRequest()->getParameter('config') == 1) { print " class=\"p_sel\""; } ?>>
 						<td style="width: 20px; padding: 1px;" align="left" valign="middle"><?php echo image_tag('tab_config.png'); ?></td>
 						<td style="width: auto; padding: 1px; font-weight: normal;" align="left" valign="middle"><a href="<?php print $thelink . "&amp;config=1"; ?>">Access to the configuration page</a></td>
 						<?php
 						if ($access_level == "full")
 						{
-							if (BUGScontext::getRequest()->getParameter('setconfigaccess') && is_numeric(BUGScontext::getRequest()->getParameter('allowed')) && BUGScontext::getRequest()->getParameter('config_no') == 0)
+							if (TBGContext::getRequest()->getParameter('setconfigaccess') && is_numeric(TBGContext::getRequest()->getParameter('allowed')) && TBGContext::getRequest()->getParameter('config_no') == 0)
 							{
-								//if (BUGScontext::getRequest()->getParameter('allowed') == 0 || BUGScontext::getUser()->hasPermission("b2viewconfig", 0, "core", $theuid, $gid, $tid) || BUGScontext::getUser()->hasPermission("b2saveconfig", 0, "core", $theuid, $gid, $tid))
+								//if (TBGContext::getRequest()->getParameter('allowed') == 0 || TBGContext::getUser()->hasPermission("b2viewconfig", 0, "core", $theuid, $gid, $tid) || TBGContext::getUser()->hasPermission("b2saveconfig", 0, "core", $theuid, $gid, $tid))
 								//{
 								//	echo 'fds';
-									BUGScontext::setPermission("b2viewconfig", 0, "core", $theuid, $gid, $tid, BUGScontext::getRequest()->getParameter('allowed'), BUGScontext::getRequest()->getParameter('insertdeny'));
+									TBGContext::setPermission("b2viewconfig", 0, "core", $theuid, $gid, $tid, TBGContext::getRequest()->getParameter('allowed'), TBGContext::getRequest()->getParameter('insertdeny'));
 								//}
 							}
-							$light = (BUGScontext::getUser()->hasPermission("b2viewconfig", 0, "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+							$light = (TBGContext::getUser()->hasPermission("b2viewconfig", 0, "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 							if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 							{
-								$blue = BUGScontext::getAllPermissions("b2viewconfig", $theuid, $tid, $gid, 0);
+								$blue = TBGContext::getAllPermissions("b2viewconfig", $theuid, $tid, $gid, 0);
 								$light = (count($blue) == 0) ? "lightblue" : $light;
 								$lightaccess = ($light == "lightblue") ? 1 : 0;
 								$insertdeny = ($light == "mediumgreen") ? 1 : 0;
@@ -339,7 +339,7 @@
 							}
 
 							$canlink = false;
-							if ($lightaccess == 0 || BUGScontext::getUser()->hasPermission("b2viewconfig", 0, "core", BUGScontext::getUser()->getUID()) == true)
+							if ($lightaccess == 0 || TBGContext::getUser()->hasPermission("b2viewconfig", 0, "core", TBGContext::getUser()->getUID()) == true)
 							{
 								$canlink = true;
 							}
@@ -359,10 +359,10 @@
 						}
 						else
 						{
-							$light = (BUGScontext::getUser()->hasPermission("b2viewconfig", 0, "core", 0, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+							$light = (TBGContext::getUser()->hasPermission("b2viewconfig", 0, "core", 0, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 							if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 							{
-								$blue = BUGScontext::getAllPermissions("b2viewconfig", $theuid, $tid, $gid, 0);
+								$blue = TBGContext::getAllPermissions("b2viewconfig", $theuid, $tid, $gid, 0);
 								$light = (count($blue) == 0) ? "lightblue" : $light;
 							}
 							?>
@@ -375,9 +375,9 @@
 			</td>
 			<td style="width: 50%; padding: 5px;" align="left" valign="top">
 				<?php
-				if (BUGScontext::getRequest()->getParameter('general_perm') == 1)
+				if (TBGContext::getRequest()->getParameter('general_perm') == 1)
 				{
-					$all_permissions = BUGScontext::getAvailablePermissions('general');
+					$all_permissions = TBGContext::getAvailablePermissions('general');
 					?>
 					<div style="border-bottom: 1px solid #DDD;"><b>General permissions</b></div>
 					<table style="width: 100%; margin-top: 3px; table-layout: fixed;" cellpadding=0 cellspacing=0>
@@ -408,9 +408,9 @@
 					</table>
 					<?php
 				}
-				elseif (BUGScontext::getRequest()->getParameter('user_perm') == 1)
+				elseif (TBGContext::getRequest()->getParameter('user_perm') == 1)
 				{
-					$all_permissions = BUGScontext::getAvailablePermissions('user');
+					$all_permissions = TBGContext::getAvailablePermissions('user');
 					?>
 					<div style="border-bottom: 1px solid #DDD;"><b>User-specific permissions</b></div>
 					<table style="width: 100%; margin-top: 3px; table-layout: fixed;" cellpadding=0 cellspacing=0>
@@ -441,10 +441,10 @@
 					</table>
 					<?php
 				}
-				elseif (is_numeric(BUGScontext::getRequest()->getParameter('p_id')))
+				elseif (is_numeric(TBGContext::getRequest()->getParameter('p_id')))
 				{
-					$theProject = new BUGSproject(BUGScontext::getRequest()->getParameter('p_id'));
-					$all_permissions = BUGScontext::getAvailablePermissions('projects', $theProject->getID());
+					$theProject = new TBGProject(TBGContext::getRequest()->getParameter('p_id'));
+					$all_permissions = TBGContext::getAvailablePermissions('projects', $theProject->getID());
 					//echo $theProject->getID();
 
 					?>
@@ -452,7 +452,7 @@
 					<table style="width: 100%; margin-top: 3px; table-layout: fixed;" cellpadding=0 cellspacing=0>
 					<?php
 
-						$perm_link = $thelink . "&amp;p_id=" . BUGScontext::getRequest()->getParameter('p_id');
+						$perm_link = $thelink . "&amp;p_id=" . TBGContext::getRequest()->getParameter('p_id');
 						$target_type = 1;
 
 						foreach ($all_permissions as &$aPerm)
@@ -481,7 +481,7 @@
 
 						foreach ($theProject->getMilestones() as $aMilestone)
 						{
-							$aMilestone = new BUGSmilestone($aMilestone['id']);
+							$aMilestone = new TBGMilestone($aMilestone['id']);
 							?>
 							<tr>
 								<td style="width: 20px; padding: 1px;" align="left" valign="middle"><?php echo image_tag('icon_milestones.png'); ?></td>
@@ -489,14 +489,14 @@
 								<?php
 								if ($access_level == "full")
 								{
-									if (BUGScontext::getRequest()->getParameter('setmilestoneaccess') && BUGScontext::getRequest()->getParameter('milestoneid') == $aMilestone->getID() && is_numeric(BUGScontext::getRequest()->getParameter('allowed')))
+									if (TBGContext::getRequest()->getParameter('setmilestoneaccess') && TBGContext::getRequest()->getParameter('milestoneid') == $aMilestone->getID() && is_numeric(TBGContext::getRequest()->getParameter('allowed')))
 									{
-										BUGScontext::setPermission("b2milestoneaccess", $aMilestone->getID(), "core", $theuid, $gid, $tid, BUGScontext::getRequest()->getParameter('allowed'), BUGScontext::getRequest()->getParameter('insertdeny'));
+										TBGContext::setPermission("b2milestoneaccess", $aMilestone->getID(), "core", $theuid, $gid, $tid, TBGContext::getRequest()->getParameter('allowed'), TBGContext::getRequest()->getParameter('insertdeny'));
 									}
-									$light = (BUGScontext::getUser()->hasPermission("b2milestoneaccess", $aMilestone->getID(), "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+									$light = (TBGContext::getUser()->hasPermission("b2milestoneaccess", $aMilestone->getID(), "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 									if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 									{
-										$blue = BUGScontext::getAllPermissions("b2milestoneaccess", $theuid, $tid, $gid, $aMilestone->getID());
+										$blue = TBGContext::getAllPermissions("b2milestoneaccess", $theuid, $tid, $gid, $aMilestone->getID());
 										$light = (count($blue) == 0) ? "lightblue" : $light;
 										$lightaccess = ($light == "lightblue") ? 1 : 0;
 										$insertdeny = ($light == "mediumgreen") ? 1 : 0;
@@ -507,15 +507,15 @@
 										$insertdeny = ($light == "mediumgreen") ? 1 : 0;
 									}
 									?>
-									<td style="width: 20px; padding: 1px;" align="left" valign="middle"><a class="image" href="<?php print $thelink . "&amp;p_id=" . BUGScontext::getRequest()->getParameter('p_id') . "&amp;setmilestoneaccess=true&amp;allowed=" . $lightaccess . "&amp;milestoneid=" . $aMilestone->getID() . "&amp;insertdeny=" . $insertdeny; ?>"><?php echo image_tag('led_' . $light . '.png'); ?></a></td>
+									<td style="width: 20px; padding: 1px;" align="left" valign="middle"><a class="image" href="<?php print $thelink . "&amp;p_id=" . TBGContext::getRequest()->getParameter('p_id') . "&amp;setmilestoneaccess=true&amp;allowed=" . $lightaccess . "&amp;milestoneid=" . $aMilestone->getID() . "&amp;insertdeny=" . $insertdeny; ?>"><?php echo image_tag('led_' . $light . '.png'); ?></a></td>
 									<?php
 								}
 								else
 								{
-									$light = (BUGScontext::getUser()->hasPermission("b2milestoneaccess", $aMilestone->getID(), "core", 0, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+									$light = (TBGContext::getUser()->hasPermission("b2milestoneaccess", $aMilestone->getID(), "core", 0, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 									if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 									{
-										$blue = BUGScontext::getAllPermissions("b2milestoneaccess", $theuid, $tid, $gid, $aMilestone->getID());
+										$blue = TBGContext::getAllPermissions("b2milestoneaccess", $theuid, $tid, $gid, $aMilestone->getID());
 										$light = (count($blue) == 0) ? "lightblue" : $light;
 									}
 									?>
@@ -547,14 +547,14 @@
 							<?php
 							if ($access_level == "full")
 							{
-								if (BUGScontext::getRequest()->getParameter('seteditionaccess') && BUGScontext::getRequest()->getParameter('e_id') == $anEdition->getID() && is_numeric(BUGScontext::getRequest()->getParameter('allowed')))
+								if (TBGContext::getRequest()->getParameter('seteditionaccess') && TBGContext::getRequest()->getParameter('e_id') == $anEdition->getID() && is_numeric(TBGContext::getRequest()->getParameter('allowed')))
 								{
-									BUGScontext::setPermission("b2editionaccess", $anEdition->getID(), "core", $theuid, $gid, $tid, BUGScontext::getRequest()->getParameter('allowed'), BUGScontext::getRequest()->getParameter('insertdeny'));
+									TBGContext::setPermission("b2editionaccess", $anEdition->getID(), "core", $theuid, $gid, $tid, TBGContext::getRequest()->getParameter('allowed'), TBGContext::getRequest()->getParameter('insertdeny'));
 								}
-								$light = (BUGScontext::getUser()->hasPermission("b2editionaccess", $anEdition->getID(), "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+								$light = (TBGContext::getUser()->hasPermission("b2editionaccess", $anEdition->getID(), "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 								if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 								{
-									$blue = BUGScontext::getAllPermissions("b2editionaccess", $theuid, $tid, $gid, $anEdition->getID());
+									$blue = TBGContext::getAllPermissions("b2editionaccess", $theuid, $tid, $gid, $anEdition->getID());
 									$light = (count($blue) == 0) ? "lightblue" : $light;
 									$lightaccess = ($light == "lightblue") ? 1 : 0;
 									$insertdeny = ($light == "mediumgreen") ? 1 : 0;
@@ -565,15 +565,15 @@
 									$insertdeny = ($light == "mediumgreen") ? 1 : 0;
 								}
 								?>
-								<td style="width: 20px; padding: 1px;" align="left" valign="middle"><a class="image" href="<?php print $thelink . "&amp;p_id=" . BUGScontext::getRequest()->getParameter('p_id') . "&amp;seteditionaccess=true&amp;allowed=" . $lightaccess . "&amp;e_id=" . $anEdition->getID() . "&amp;insertdeny=" . $insertdeny; ?>"><?php echo image_tag('led_' . $light . '.png'); ?></a></td>
+								<td style="width: 20px; padding: 1px;" align="left" valign="middle"><a class="image" href="<?php print $thelink . "&amp;p_id=" . TBGContext::getRequest()->getParameter('p_id') . "&amp;seteditionaccess=true&amp;allowed=" . $lightaccess . "&amp;e_id=" . $anEdition->getID() . "&amp;insertdeny=" . $insertdeny; ?>"><?php echo image_tag('led_' . $light . '.png'); ?></a></td>
 								<?php
 							}
 							else
 							{
-								$light = (BUGScontext::getUser()->hasPermission("b2editionaccess", $anEdition->getID(), "core", 0, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+								$light = (TBGContext::getUser()->hasPermission("b2editionaccess", $anEdition->getID(), "core", 0, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 								if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 								{
-									$blue = BUGScontext::getAllPermissions("b2editionaccess", $theuid, $tid, $gid, $anEdition->getID());
+									$blue = TBGContext::getAllPermissions("b2editionaccess", $theuid, $tid, $gid, $anEdition->getID());
 									$light = (count($blue) == 0) ? "lightblue" : $light;
 								}
 								?>
@@ -594,14 +594,14 @@
 								<?php
 								if ($access_level == "full")
 								{
-									if (BUGScontext::getRequest()->getParameter('setbuildaccess') && BUGScontext::getRequest()->getParameter('b_id') == $aBuild->getID() && is_numeric(BUGScontext::getRequest()->getParameter('allowed')))
+									if (TBGContext::getRequest()->getParameter('setbuildaccess') && TBGContext::getRequest()->getParameter('b_id') == $aBuild->getID() && is_numeric(TBGContext::getRequest()->getParameter('allowed')))
 									{
-										BUGScontext::setPermission("b2buildaccess", $aBuild->getID(), "core", $theuid, $gid, $tid, BUGScontext::getRequest()->getParameter('allowed'), BUGScontext::getRequest()->getParameter('insertdeny'));
+										TBGContext::setPermission("b2buildaccess", $aBuild->getID(), "core", $theuid, $gid, $tid, TBGContext::getRequest()->getParameter('allowed'), TBGContext::getRequest()->getParameter('insertdeny'));
 									}
-									$light = (BUGScontext::getUser()->hasPermission("b2buildaccess", $aBuild->getID(), "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+									$light = (TBGContext::getUser()->hasPermission("b2buildaccess", $aBuild->getID(), "core", $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 									if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 									{
-										$blue = BUGScontext::getAllPermissions("b2buildaccess", $theuid, $tid, $gid, $aBuild->getID());
+										$blue = TBGContext::getAllPermissions("b2buildaccess", $theuid, $tid, $gid, $aBuild->getID());
 										$light = (count($blue) == 0) ? "lightblue" : $light;
 										$lightaccess = ($light == "lightblue") ? 1 : 0;
 										$insertdeny = ($light == "mediumgreen") ? 1 : 0;
@@ -612,15 +612,15 @@
 										$insertdeny = ($light == "mediumgreen") ? 1 : 0;
 									}
 									?>
-									<td style="width: 20px; padding: 1px;" align="left" valign="middle"><a class="image" href="<?php print $thelink . "&amp;p_id=" . BUGScontext::getRequest()->getParameter('p_id') . "&amp;setbuildaccess=true&amp;allowed=" . $lightaccess . "&amp;b_id=" . $aBuild->getID() . "&amp;insertdeny=" . $insertdeny; ?>"><?php echo image_tag('led_' . $light . '.png'); ?></a></td>
+									<td style="width: 20px; padding: 1px;" align="left" valign="middle"><a class="image" href="<?php print $thelink . "&amp;p_id=" . TBGContext::getRequest()->getParameter('p_id') . "&amp;setbuildaccess=true&amp;allowed=" . $lightaccess . "&amp;b_id=" . $aBuild->getID() . "&amp;insertdeny=" . $insertdeny; ?>"><?php echo image_tag('led_' . $light . '.png'); ?></a></td>
 									<?php
 								}
 								else
 								{
-									$light = (BUGScontext::getUser()->hasPermission("b2buildaccess", $aBuild->getID(), "core", 0, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+									$light = (TBGContext::getUser()->hasPermission("b2buildaccess", $aBuild->getID(), "core", 0, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 									if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 									{
-										$blue = BUGScontext::getAllPermissions("b2buildaccess", $theuid, $tid, $gid, $aBuild->getID());
+										$blue = TBGContext::getAllPermissions("b2buildaccess", $theuid, $tid, $gid, $aBuild->getID());
 										$light = (count($blue) == 0) ? "lightblue" : $light;
 									}
 									?>
@@ -648,15 +648,15 @@
 					</table>
 					<?php
 				}
-				elseif (is_numeric(BUGScontext::getRequest()->getParameter('issuespermrest')))
+				elseif (is_numeric(TBGContext::getRequest()->getParameter('issuespermrest')))
 				{
 					?>
 					<div style="border-bottom: 1px solid #DDD;"><b>Issue-specific access privileges</b></div>
 					<table style="width: 100%; margin-top: 3px; table-layout: fixed;" cellpadding=0 cellspacing=0>
 					<?php
 
-						$restrictions = BUGScontext::getAllPermissions("b2notviewissue", $theuid, $tid, $gid);
-						$restrictions2 = BUGScontext::getAllPermissions("b2viewissue", $theuid, $tid, $gid);
+						$restrictions = TBGContext::getAllPermissions("b2notviewissue", $theuid, $tid, $gid);
+						$restrictions2 = TBGContext::getAllPermissions("b2viewissue", $theuid, $tid, $gid);
 						foreach ($restrictions2 as $aRest2)
 						{
 							$restrictions[] = $aRest2;
@@ -667,7 +667,7 @@
 							foreach ($restrictions as $aRest)
 							{
 								//$prefix = bugs_getIssuePrefix($aRest['target_id']);
-								$restIssue = BUGSfactory::BUGSissueLab($aRest['target_id']);
+								$restIssue = TBGFactory::TBGIssueLab($aRest['target_id']);
 								if ($aRest['p_type'] == "b2notviewissue")
 								{
 									?>
@@ -701,9 +701,9 @@
 					</table>
 					<?php
 				}
-				elseif (BUGScontext::getRequest()->getParameter('module_perm') && !is_numeric(BUGScontext::getRequest()->getParameter('module_perm')))
+				elseif (TBGContext::getRequest()->getParameter('module_perm') && !is_numeric(TBGContext::getRequest()->getParameter('module_perm')))
 				{
-					$theModule = BUGScontext::getModule(BUGScontext::getRequest()->getParameter('module_perm'));
+					$theModule = TBGContext::getModule(TBGContext::getRequest()->getParameter('module_perm'));
 					?>
 					<div style="border-bottom: 1px solid #DDD;"><b>Module specific permissions</b></div>
 					<table style="width: 100%; margin-top: 3px; table-layout: fixed;" cellpadding=0 cellspacing=0>
@@ -716,7 +716,7 @@
 								<td style="width: 20px; padding: 1px;" align="left" valign="middle"><?php echo image_tag('cfg_icon_moduleperm.png'); ?></td>
 								<td style="width: auto; padding: 1px; font-weight: normal;" align="left" valign="middle"><?php print $aPerm['description'] ?></td>
 								<?php
-									require BUGScontext::getIncludePath() . 'include/permissions_module_config.inc.php';
+									require TBGContext::getIncludePath() . 'include/permissions_module_config.inc.php';
 								?>
 							</tr>
 							<?php
@@ -726,7 +726,7 @@
 					</table>
 					<?php
 				}
-				elseif (BUGScontext::getRequest()->getParameter('config') == 1)
+				elseif (TBGContext::getRequest()->getParameter('config') == 1)
 				{
 					?>
 					<div style="border-bottom: 1px solid #DDD;"><b>Configuration page access</b></div>

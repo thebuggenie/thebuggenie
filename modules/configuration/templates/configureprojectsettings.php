@@ -27,9 +27,9 @@
 					</td>
 					<td style="<?php if (!$theProject->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
 						<table style="width: 270px; display: <?php if ($theProject->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="owned_by_name">
-							<?php if ($theProject->getOwnerType() == BUGSidentifiableclass::TYPE_USER): ?>
+							<?php if ($theProject->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
 								<?php echo include_component('main/userdropdown', array('user' => $theProject->getOwner())); ?>
-							<?php elseif ($theProject->getOwnerType() == BUGSidentifiableclass::TYPE_TEAM): ?>
+							<?php elseif ($theProject->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
 								<?php echo include_component('main/teamdropdown', array('team' => $theProject->getOwner())); ?>
 							<?php endif; ?>
 						</table>
@@ -56,9 +56,9 @@
 					</td>
 					<td style="<?php if (!$theProject->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
 						<table style="width: 270px; display: <?php if ($theProject->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="lead_by_name">
-							<?php if ($theProject->getLeaderType() == BUGSidentifiableclass::TYPE_USER): ?>
+							<?php if ($theProject->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
 								<?php echo include_component('main/userdropdown', array('user' => $theProject->getLeader())); ?>
-							<?php elseif ($theProject->getLeaderType() == BUGSidentifiableclass::TYPE_TEAM): ?>
+							<?php elseif ($theProject->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM): ?>
 								<?php echo include_component('main/teamdropdown', array('team' => $theProject->getLeader())); ?>
 							<?php endif; ?>
 						</table>
@@ -84,9 +84,9 @@
 					</td>
 					<td style="<?php if (!$theProject->hasQA()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
 						<table style="width: 270px; display: <?php if ($theProject->hasQA()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="qa_by_name">
-							<?php if ($theProject->getQAType() == BUGSidentifiableclass::TYPE_USER): ?>
+							<?php if ($theProject->getQAType() == TBGIdentifiableClass::TYPE_USER): ?>
 								<?php echo include_component('main/userdropdown', array('user' => $theProject->getQA())); ?>
-							<?php elseif ($theProject->getQAType() == BUGSidentifiableclass::TYPE_TEAM): ?>
+							<?php elseif ($theProject->getQAType() == TBGIdentifiableClass::TYPE_TEAM): ?>
 								<?php echo include_component('main/teamdropdown', array('team' => $theProject->getQA())); ?>
 							<?php endif; ?>
 						</table>
@@ -104,7 +104,7 @@
 	</div>
 
 	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $theProject->getID())); ?>" method="post" onsubmit="submitProjectSettings('<?php echo make_url('configure_project_settings', array('project_id' => $theProject->getID())); ?>'); return false;" id="project_settings">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $theProject->getID())); ?>" method="post" onsubmit="submitProjectSettings('<?php echo make_url('configure_project_settings', array('project_id' => $theProject->getID())); ?>'); return false;" id="project_settings">
 	<?php endif; ?>
 	<table style="clear: both; width: 700px;" class="padded_table" cellpadding=0 cellspacing=0>
 		<tr>
@@ -185,42 +185,42 @@
 			<td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 					<select name="time_unit" id="time_unit" style="width: 300px;">
-						<option value=0<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_HOURS): ?> selected<?php endif; ?>><?php echo __('Hours only'); ?></option>
-						<option value=1<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_HOURS_DAYS): ?> selected<?php endif; ?>><?php echo __('Hours and days'); ?></option>
-						<option value=2<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_HOURS_DAYS_WEEKS): ?> selected<?php endif; ?>><?php echo __('Hours, days and weeks'); ?></option>
-						<option value=3<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_DAYS): ?> selected<?php endif; ?>><?php echo __('Days only'); ?></option>
-						<option value=4<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_DAYS_WEEKS): ?> selected<?php endif; ?>><?php echo __('Days and weeks'); ?></option>
-						<option value=5<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_WEEKS): ?> selected<?php endif; ?>><?php echo __('Weeks only'); ?></option>
-						<option value=6<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_POINTS): ?> selected<?php endif; ?>><?php echo __('Points only'); ?></option>
-						<option value=7<?php if ($theProject->getTimeUnit() == BUGSproject::TIME_UNIT_POINTS_HOURS): ?> selected<?php endif; ?>><?php echo __('Points for issues, hours for tasks'); ?></option>
+						<option value=0<?php if ($theProject->getTimeUnit() == TBGProject::TIME_UNIT_HOURS): ?> selected<?php endif; ?>><?php echo __('Hours only'); ?></option>
+						<option value=1<?php if ($theProject->getTimeUnit() == TBGProject::TIME_UNIT_HOURS_DAYS): ?> selected<?php endif; ?>><?php echo __('Hours and days'); ?></option>
+						<option value=2<?php if ($theProject->getTimeUnit() == TBGProject::TIME_UNIT_HOURS_DAYS_WEEKS): ?> selected<?php endif; ?>><?php echo __('Hours, days and weeks'); ?></option>
+						<option value=3<?php if ($theProject->getTimeUnit() == TBGProject::TIME_UNIT_DAYS): ?> selected<?php endif; ?>><?php echo __('Days only'); ?></option>
+						<option value=4<?php if ($theProject->getTimeUnit() == TBGProject::TIME_UNIT_DAYS_WEEKS): ?> selected<?php endif; ?>><?php echo __('Days and weeks'); ?></option>
+						<option value=5<?php if ($theProject->getTimeUnit() == TBGProject::TIME_UNIT_WEEKS): ?> selected<?php endif; ?>><?php echo __('Weeks only'); ?></option>
+						<option value=6<?php if ($theProject->getTimeUnit() == TBGProject::TIME_UNIT_POINTS): ?> selected<?php endif; ?>><?php echo __('Points only'); ?></option>
+						<option value=7<?php if ($theProject->getTimeUnit() == TBGProject::TIME_UNIT_POINTS_HOURS): ?> selected<?php endif; ?>><?php echo __('Points for issues, hours for tasks'); ?></option>
 					</select>
 				<?php else: ?>
 					<?php
 
 						switch ($theProject->getTimeUnit())
 						{
-							case BUGSproject::TIME_UNIT_HOURS:
+							case TBGProject::TIME_UNIT_HOURS:
 								echo __('Hours only');
 								break;
-							case BUGSproject::TIME_UNIT_HOURS_DAYS:
+							case TBGProject::TIME_UNIT_HOURS_DAYS:
 								echo __('Hours and days');
 								break;
-							case BUGSproject::TIME_UNIT_HOURS_DAYS_WEEKS:
+							case TBGProject::TIME_UNIT_HOURS_DAYS_WEEKS:
 								echo __('Hours, days and weeks');
 								break;
-							case BUGSproject::TIME_UNIT_DAYS:
+							case TBGProject::TIME_UNIT_DAYS:
 								echo __('Days only');
 								break;
-							case BUGSproject::TIME_UNIT_DAYS_WEEKS:
+							case TBGProject::TIME_UNIT_DAYS_WEEKS:
 								echo __('Days and weeks');
 								break;
-							case BUGSproject::TIME_UNIT_WEEKS:
+							case TBGProject::TIME_UNIT_WEEKS:
 								echo __('Weeks only');
 								break;
-							case BUGSproject::TIME_UNIT_POINTS:
+							case TBGProject::TIME_UNIT_POINTS:
 								echo __('Points only');
 								break;
-							case BUGSproject::TIME_UNIT_POINTS_HOURS:
+							case TBGProject::TIME_UNIT_POINTS_HOURS:
 								echo __('Points for issues, hours for tasks');
 								break;
 						}
@@ -243,7 +243,7 @@
 					<?php endforeach; ?>
 					</select>
 				<?php else: ?>
-					<?php echo ($theProject->getDefaultStatus() instanceof BUGSstatus) ? $theProject->getDefaultStatus()->getName() : __('Not determined'); ?>
+					<?php echo ($theProject->getDefaultStatus() instanceof TBGStatus) ? $theProject->getDefaultStatus()->getName() : __('Not determined'); ?>
 				<?php endif; ?>
 			</td>
 		</tr>

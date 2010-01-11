@@ -11,9 +11,9 @@
 						<b><?php echo __('Wiki Frontpage'); ?></b>
 					<?php endif; ?>
 				</li>
-				<?php if (BUGScontext::isProjectContext()): ?>
+				<?php if (TBGContext::isProjectContext()): ?>
 					<li>
-						<?php echo link_tag(make_url('publish_article', array('article_name' => ucfirst(BUGScontext::getCurrentProject()->getKey()) .':MainPage')), __('Project Wiki Frontpage')); ?>
+						<?php echo link_tag(make_url('publish_article', array('article_name' => ucfirst(TBGContext::getCurrentProject()->getKey()) .':MainPage')), __('Project Wiki Frontpage')); ?>
 					</li>
 				<?php endif; ?>
 				<li>

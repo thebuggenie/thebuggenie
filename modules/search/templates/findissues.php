@@ -6,22 +6,22 @@
 	}
 	else
 	{
-		$bugs_response->setTitle((BUGScontext::isProjectContext()) ? __('Find issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())) : __('Find issues'));
+		$bugs_response->setTitle((TBGContext::isProjectContext()) ? __('Find issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : __('Find issues'));
 	}
-	if (BUGScontext::isProjectContext())
+	if (TBGContext::isProjectContext())
 	{
-		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())));
-		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true, 'format' => 'rss')), __('Closed issues for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())));
-		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO, 'search' => true, 'format' => 'rss')), __('Milestone todo-list for %project_name%', array('%project_name%' => BUGScontext::getCurrentProject()->getName())));
-		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me') . ' ('.BUGScontext::getCurrentProject()->getName().')');
-		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to me') . ' ('.BUGScontext::getCurrentProject()->getName().')');
-		$bugs_response->addFeed(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to my teams') . ' ('.BUGScontext::getCurrentProject()->getName().')');
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true, 'format' => 'rss')), __('Closed issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO, 'search' => true, 'format' => 'rss')), __('Milestone todo-list for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())));
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me') . ' ('.TBGContext::getCurrentProject()->getName().')');
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to me') . ' ('.TBGContext::getCurrentProject()->getName().')');
+		$bugs_response->addFeed(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to my teams') . ' ('.TBGContext::getCurrentProject()->getName().')');
 	}
 	else
 	{
-		$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me'));
-		$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to you'));
-		$bugs_response->addFeed(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to your teams'));
+		$bugs_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me'));
+		$bugs_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to you'));
+		$bugs_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to your teams'));
 	}
 
 	foreach ($savedsearches['user'] as $a_savedsearch)
@@ -38,52 +38,52 @@
 	<tr>
 		<td class="saved_searches">
 			<div class="left_menu_header" style="margin-top: 5px;"><?php echo __('Predefined searches'); ?></div>
-			<?php if (BUGScontext::isProjectContext()): ?>
+			<?php if (TBGContext::isProjectContext()): ?>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true)), __('Open issues for this project')); ?><br>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true)), __('Open issues for this project')); ?><br>
 				</div>
 				<div style="clear: both; margin-bottom: 20px;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true)), __('Closed issues for this project')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true)), __('Closed issues for this project')); ?>
 				</div>
 				<div style="clear: both; margin-bottom: 20px;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO, 'search' => true)), __('Milestone todo-list for this project')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO, 'search' => true)), __('Milestone todo-list for this project')); ?>
 				</div>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true)), __('Issues reported by me')); ?><br>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true)), __('Issues reported by me')); ?><br>
 				</div>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to me')); ?><br>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to me')); ?><br>
 				</div>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-					<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to my teams')); ?><br>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to my teams')); ?><br>
 				</div>
 			<?php else: ?>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true)), __('Issues reported by me')); ?><br>
+					<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true)), __('Issues reported by me')); ?><br>
 				</div>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to me')); ?><br>
+					<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to me')); ?><br>
 				</div>
 				<div style="clear: both;">
-					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-					<?php echo link_tag(make_url('search', array('predefined_search' => BUGScontext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to my teams')); ?><br>
+					<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+					<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to my teams')); ?><br>
 				</div>
 			<?php endif; ?>
-			<div class="left_menu_header" style="margin-top: 20px;"><?php echo (BUGScontext::isProjectContext()) ? __('Your saved searches for this project') : __('Your saved searches'); ?></div>
+			<div class="left_menu_header" style="margin-top: 20px;"><?php echo (TBGContext::isProjectContext()) ? __('Your saved searches for this project') : __('Your saved searches'); ?></div>
 			<?php if (count($savedsearches['user']) > 0): ?>
 				<?php foreach ($savedsearches['user'] as $a_savedsearch): ?>
-					<?php if (BUGScontext::isProjectContext()): ?>
+					<?php if (TBGContext::isProjectContext()): ?>
 						<div style="clear: both;">
-							<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-							<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
 						</div>
 						<?php if ($a_savedsearch->get(B2tSavedSearches::DESCRIPTION) != ''): ?>
 							<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(B2tSavedSearches::DESCRIPTION); ?></div>
@@ -99,15 +99,15 @@
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php else: ?>
-				<div class="faded_medium" style="padding-left: 3px;" id="no_user_saved_searches"><?php echo (BUGScontext::isProjectContext()) ? __("You don't have any saved searches for this project") : __("You don't have any saved searches"); ?></div>
+				<div class="faded_medium" style="padding-left: 3px;" id="no_user_saved_searches"><?php echo (TBGContext::isProjectContext()) ? __("You don't have any saved searches for this project") : __("You don't have any saved searches"); ?></div>
 			<?php endif; ?>
-			<div class="left_menu_header" style="margin-top: 20px;"><?php echo (BUGScontext::isProjectContext()) ? __('Public saved searches for this project') : __('Public saved searches'); ?></div>
+			<div class="left_menu_header" style="margin-top: 20px;"><?php echo (TBGContext::isProjectContext()) ? __('Public saved searches for this project') : __('Public saved searches'); ?></div>
 			<?php if (count($savedsearches['public']) > 0): ?>
 				<?php foreach ($savedsearches['public'] as $a_savedsearch): ?>
 					<div style="clear: both;">
-						<?php if (BUGScontext::isProjectContext()): ?>
-							<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-							<?php echo link_tag(make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
+						<?php if (TBGContext::isProjectContext()): ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
 						<?php else: ?>
 							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
 							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
@@ -118,7 +118,7 @@
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php else: ?>
-				<div class="faded_medium" style="padding-left: 3px;" id="no_public_saved_searches"><?php echo (BUGScontext::isProjectContext()) ? __("There are no saved searches for this project") : __("There are no public saved searches"); ?></div>
+				<div class="faded_medium" style="padding-left: 3px;" id="no_public_saved_searches"><?php echo (TBGContext::isProjectContext()) ? __("There are no saved searches for this project") : __("There are no public saved searches"); ?></div>
 			<?php endif; ?>
 		</td>
 		<td style="width: auto; padding: 5px; vertical-align: top;" id="find_issues">
@@ -143,7 +143,7 @@
 			<div class="rounded_box iceblue_borderless" style="margin: 5px 0 5px 0;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
-					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo (BUGScontext::isProjectContext()) ? make_url('project_issues', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" id="find_issues_form">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" id="find_issues_form">
 						<a href="#" onclick="$('search_filters').toggle();$('add_filter_form').toggle();" style="float: right; margin-top: 3px;"><b><?php echo __('More'); ?></b></a>
 						<label for="issues_searchfor"><?php echo __('Search for'); ?></label>
 						<select name="filters[text][operator]">
@@ -152,7 +152,7 @@
 						</select>
 						<input type="text" name="filters[text][value]" value="<?php if (array_key_exists('text', $appliedfilters)) echo (array_key_exists('value', $appliedfilters['text'])) ? $appliedfilters['text']['value'] : $appliedfilters['text'][0]['value']; ?>" id="issues_searchfor" style="width: 450px;">
 						<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top" onclick="$('save_search').disable();">
-						<div style="<?php if (count($appliedfilters) <= ((int) BUGScontext::isProjectContext() + (int) array_key_exists('text', $appliedfilters))): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
+						<div style="<?php if (count($appliedfilters) <= ((int) TBGContext::isProjectContext() + (int) array_key_exists('text', $appliedfilters))): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
 							<label for="result_template"><?php echo __('Display results as'); ?></label>
 							<select name="template" id="result_template">
 								<?php foreach ($templates as $template_name => $template_description): ?>
@@ -169,7 +169,7 @@
 							<label for="groupby"><?php echo __('Group results by'); ?></label>
 							<select name="groupby" id="groupby">
 								<option value=""><?php echo __('No grouping'); ?></option>
-								<?php if (!BUGScontext::isProjectContext()): ?>
+								<?php if (!TBGContext::isProjectContext()): ?>
 									<option disabled value="project_id"<?php if ($groupby == 'project_id'): ?> selected<?php endif; ?>><?php echo __('Project'); ?></option>
 								<?php endif; ?>
 								<option value="milestone"<?php if ($groupby == 'milestone'): ?> selected<?php endif; ?>><?php echo __('Milestone'); ?></option>
@@ -212,7 +212,7 @@
 							<div class="rounded_box white_borderless" style="margin: 5px 0 5px 0; display: none;" id="saved_search_details">
 								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 								<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
-									<?php if (BUGScontext::isProjectContext()): ?>
+									<?php if (TBGContext::isProjectContext()): ?>
 										<p style="padding-bottom: 15px;" class="faded_medium"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
 									<?php endif; ?>
 									<?php if ($issavedsearch): ?>
@@ -239,10 +239,10 @@
 						</div>
 					</form>
 					<input type="hidden" id="max_filters" name="max_filters" value="<?php echo count($appliedfilters); ?>">
-					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo (BUGScontext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>" method="post" id="add_filter_form"<?php if (count($appliedfilters) <= ((int) BUGScontext::isProjectContext() + (int) array_key_exists('text', $appliedfilters))): ?> style="display: none;"<?php endif; ?> onsubmit="addSearchFilter('<?php echo (BUGScontext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => BUGScontext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>');return false;">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>" method="post" id="add_filter_form"<?php if (count($appliedfilters) <= ((int) TBGContext::isProjectContext() + (int) array_key_exists('text', $appliedfilters))): ?> style="display: none;"<?php endif; ?> onsubmit="addSearchFilter('<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>');return false;">
 						<label for="add_filter"><?php echo __('Add filter'); ?></label>
 						<select name="filter_name">
-							<?php if (!BUGScontext::isProjectContext()): ?>
+							<?php if (!TBGContext::isProjectContext()): ?>
 								<option value="project_id"><?php echo __('Project'); ?></option>
 							<?php endif; ?>
 							<option value="state"><?php echo __('Issue state - whether an issue is open or closed'); ?></option>
@@ -253,7 +253,7 @@
 							<option value="severity"><?php echo __("Severity - how serious the issue is"); ?></option>
 							<option value="reproducability"><?php echo __("Reproducability - how often you can reproduce the issue"); ?></option>
 							<option value="issue_type"><?php echo __("Issue type - what kind of issue it is"); ?></option>
-							<?php foreach (BUGScustomdatatype::getAll() as $customdatatype): ?>
+							<?php foreach (TBGCustomDatatype::getAll() as $customdatatype): ?>
 								<option value="<?php echo $customdatatype->getKey(); ?>"><?php echo __($customdatatype->getDescription()); ?></option>
 							<?php endforeach; ?>
 						</select>

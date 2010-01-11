@@ -117,12 +117,12 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::DELETED, false);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			
 			$crit2 = clone $crit;
 			
-			$crit->addWhere(self::STATE, BUGSissue::STATE_CLOSED);
-			$crit2->addWhere(self::STATE, BUGSissue::STATE_OPEN);
+			$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
+			$crit2->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			return array($this->doCount($crit), $this->doCount($crit2));
 		}
 		
@@ -131,13 +131,13 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::DELETED, false);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::ISSUE_TYPE, $issuetype_id);
 			
 			$crit2 = clone $crit;
 			
-			$crit->addWhere(self::STATE, BUGSissue::STATE_CLOSED);
-			$crit2->addWhere(self::STATE, BUGSissue::STATE_OPEN);
+			$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
+			$crit2->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			return array($this->doCount($crit), $this->doCount($crit2));
 		}
 		
@@ -146,20 +146,20 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::DELETED, false);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::MILESTONE, $milestone_id);
 			
 			$crit2 = clone $crit;
 			
-			$crit->addWhere(self::STATE, BUGSissue::STATE_CLOSED);
-			$crit2->addWhere(self::STATE, BUGSissue::STATE_OPEN);
+			$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
+			$crit2->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			return array($this->doCount($crit), $this->doCount($crit2));
 		}
 
 		public function getOpenAffectedIssuesByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::STATE, BUGSissue::STATE_OPEN);
+			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$res = $this->doSelect($crit);
 			return $res;
@@ -168,7 +168,7 @@
 		public function getByID($id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$row = $this->doSelectById($id, $crit, false);
 			return $row;
 		}
@@ -192,7 +192,7 @@
 			$issue_no = $row->get('issueno');
 			if ($issue_no < 1) $issue_no = 1;
 			
-			$status_id = (int) BUGSfactory::projectLab($p_id)->getDefaultStatusID();
+			$status_id = (int) TBGFactory::projectLab($p_id)->getDefaultStatusID();
 			
 			$crit = $this->getCriteria();
 			$posted = $_SERVER["REQUEST_TIME"];
@@ -207,9 +207,9 @@
 			$crit->addInsert(self::TITLE, $title);
 			$crit->addInsert(self::PROJECT_ID, $p_id);
 			$crit->addInsert(self::ISSUE_TYPE, $issue_type);
-			$crit->addInsert(self::POSTED_BY, BUGScontext::getUser()->getUID());
+			$crit->addInsert(self::POSTED_BY, TBGContext::getUser()->getUID());
 			$crit->addInsert(self::STATUS, $status_id);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			$trans->commitAndEnd();
 			return ($issue_id === null) ? $res->getInsertID() : $issue_id;
@@ -271,8 +271,8 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ASSIGNED_TO, $team_id);
-			$crit->addWhere(self::ASSIGNED_TYPE, BUGSidentifiableclass::TYPE_TEAM);
-			$crit->addWhere(self::STATE, BUGSissue::STATE_OPEN);
+			$crit->addWhere(self::ASSIGNED_TYPE, TBGIdentifiableClass::TYPE_TEAM);
+			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			$crit->addWhere(self::DELETED, 0);
 			
 			$res = $this->doSelect($crit);
@@ -284,8 +284,8 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ASSIGNED_TO, $user_id);
-			$crit->addWhere(self::ASSIGNED_TYPE, BUGSidentifiableclass::TYPE_USER);
-			$crit->addWhere(self::STATE, BUGSissue::STATE_OPEN);
+			$crit->addWhere(self::ASSIGNED_TYPE, TBGIdentifiableClass::TYPE_USER);
+			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			$crit->addWhere(self::DELETED, 0);
 			
 			$res = $this->doSelect($crit);
@@ -384,9 +384,9 @@
 						{
 							$crit->addWhere($this->getB2DBName().'.'.$filter, $filter_info['value'], $filter_info['operator']);
 						}
-						elseif (BUGScustomdatatype::doesKeyExist($filter))
+						elseif (TBGCustomDatatype::doesKeyExist($filter))
 						{
-							$customdatatype = BUGScustomdatatype::getByKey($filter);
+							$customdatatype = TBGCustomDatatype::getByKey($filter);
 							$ctn = $crit->returnCriterion(B2tIssueCustomFields::CUSTOMFIELDS_ID, $customdatatype->getID());
 							$ctn->addWhere(B2tIssueCustomFields::OPTION_VALUE, $filter_info['value'], $filter_info['operator']);
 							$crit->addWhere($ctn);
@@ -434,9 +434,9 @@
 								$crit->addWhere($ctn);
 							}
 						}
-						elseif (BUGScustomdatatype::doesKeyExist($filter))
+						elseif (TBGCustomDatatype::doesKeyExist($filter))
 						{
-							$customdatatype = BUGScustomdatatype::getByKey($filter);
+							$customdatatype = TBGCustomDatatype::getByKey($filter);
 							$first_val = array_shift($filter_info);
 							$ctn = $crit->returnCriterion(B2tIssueCustomFields::CUSTOMFIELDS_ID, $customdatatype->getID());
 							$ctn->addWhere(B2tIssueCustomFields::OPTION_VALUE, $first_val['value'], $first_val['operator']);

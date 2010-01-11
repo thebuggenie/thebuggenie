@@ -1,20 +1,20 @@
 <?php
 
-	BUGScontext::loadLibrary('ui');
+	TBGContext::loadLibrary('ui');
 
 ?>
 <div class="logindiv">
 
-<h1><?php echo __('Welcome to'); ?> <?php echo(BUGSsettings::getTBGname()); ?></h1>
+<h1><?php echo __('Welcome to'); ?> <?php echo(TBGSettings::getTBGname()); ?></h1>
 <?php echo __('Please fill in your username and password below, and press "Continue" to log in.'); ?>
-<?php if (BUGSsettings::get('allowreg') == true): ?> 
+<?php if (TBGSettings::get('allowreg') == true): ?> 
 	<?php echo __('If you have not already registered, please use the "Register new account" link. It is completely free and takes only a minute.'); ?>
 <?php else: ?>
 	<?php echo __('It is not possible to register new accounts from this page. To register a new account, please contact the administrator.'); ?>
 <?php endif; ?>
 <br><br>
 
-<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" enctype="multipart/form-data" method="post" name="loginform">
+<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" enctype="multipart/form-data" method="post" name="loginform">
 <?php if (isset($login_error)): ?>
 <div class="rounded_box red_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
@@ -51,15 +51,15 @@
 
 <br>
 
-<?php BUGScontext::trigger('core', 'login_middle'); ?>
+<?php TBGContext::trigger('core', 'login_middle'); ?>
 
-<?php if (BUGSsettings::get('allowreg')): ?>
+<?php if (TBGSettings::get('allowreg')): ?>
 
-<?php if (BUGScontext::hasMessage('account_activate')) {
-BUGScontext::clearMessage('account_activate');
+<?php if (TBGContext::hasMessage('account_activate')) {
+TBGContext::clearMessage('account_activate');
 
-if (BUGScontext::hasMessage('activate_success')) {
-BUGScontext::clearMessage('activate_success'); ?>
+if (TBGContext::hasMessage('activate_success')) {
+TBGContext::clearMessage('activate_success'); ?>
 
 <div class="rounded_box green_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
@@ -71,8 +71,8 @@ BUGScontext::clearMessage('activate_success'); ?>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
 
-<?php } elseif (BUGScontext::hasMessage('activate_failure')) {
-BUGScontext::clearMessage('activate_success'); ?>
+<?php } elseif (TBGContext::hasMessage('activate_failure')) {
+TBGContext::clearMessage('activate_success'); ?>
 	
 <div class="rounded_box red_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
@@ -89,30 +89,30 @@ BUGScontext::clearMessage('activate_success'); ?>
 else
 {
 
-if (BUGScontext::hasMessage('prereg_error')) { ?>
+if (TBGContext::hasMessage('prereg_error')) { ?>
 <div class="rounded_box red_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<span class="login_fieldheader"><?php echo BUGScontext::getMessageAndClear('prereg_error'); ?></span>
+		<span class="login_fieldheader"><?php echo TBGContext::getMessageAndClear('prereg_error'); ?></span>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
 <br>
 <?php } ?>
 
-<?php if (BUGScontext::hasMessage('postreg_error')) { ?>
+<?php if (TBGContext::hasMessage('postreg_error')) { ?>
 <div class="rounded_box red_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<span class="login_fieldheader"><?php echo BUGScontext::getMessageAndClear('postreg_error'); ?></span>
+		<span class="login_fieldheader"><?php echo TBGContext::getMessageAndClear('postreg_error'); ?></span>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
 <br>
 <?php } ?>
 
-<?php if (BUGScontext::hasMessage('postreg_success')) {
-BUGScontext::clearMessage('postreg_success'); ?>
+<?php if (TBGContext::hasMessage('postreg_success')) {
+TBGContext::clearMessage('postreg_success'); ?>
 <div class="rounded_box green_borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
@@ -122,13 +122,13 @@ BUGScontext::clearMessage('postreg_success'); ?>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
-<?php } elseif (BUGScontext::hasMessage('prereg_success')) { ?>
+<?php } elseif (TBGContext::hasMessage('prereg_success')) { ?>
 <div class="rounded_box gray">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 10px;">
-		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register2'); ?>" enctype="multipart/form-data" method="post" name="registerform">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register2'); ?>" enctype="multipart/form-data" method="post" name="registerform">
 		<input type="hidden" name="register" value="true">
-		<input type="hidden" name="username" value="<?php echo BUGScontext::getMessageAndClear('prereg_success'); ?>">
+		<input type="hidden" name="username" value="<?php echo TBGContext::getMessageAndClear('prereg_success'); ?>">
 			<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
 			<div>
 				<?php echo __('The username you requested is available. To register it, please fill out the information below.'); ?>
@@ -136,19 +136,19 @@ BUGScontext::clearMessage('postreg_success'); ?>
 				<table border="0" class="login_fieldtable">
 					<tr>
 						<td><label class="login_fieldheader" for="buddyname">*&nbsp;<?php echo __('Buddy name'); ?></label></td>
-						<td><input type="text" id="buddyname" name="buddyname" value="<?php print BUGScontext::getRequest()->getParameter('buddyname'); ?>" style="width: 200px;"></td>
+						<td><input type="text" id="buddyname" name="buddyname" value="<?php print TBGContext::getRequest()->getParameter('buddyname'); ?>" style="width: 200px;"></td>
 					</tr>
 					<tr>
 						<td><label class="login_fieldheader" for="realname"><?php echo __('Real name'); ?></label></td>
-						<td><input type="text" id="realname" name="realname" value="<?php print BUGScontext::getRequest()->getParameter('realname'); ?>" style="width: 200px;"></td>
+						<td><input type="text" id="realname" name="realname" value="<?php print TBGContext::getRequest()->getParameter('realname'); ?>" style="width: 200px;"></td>
 					</tr>
 					<tr>
 						<td><label class="login_fieldheader" for="email_address">*&nbsp;<?php echo __('E-mail address'); ?></label></td>
-						<td><input type="text" id="email_address" name="email_address" value="<?php print BUGScontext::getRequest()->getParameter('email_address'); ?>" style="width: 200px;"></td>
+						<td><input type="text" id="email_address" name="email_address" value="<?php print TBGContext::getRequest()->getParameter('email_address'); ?>" style="width: 200px;"></td>
 					</tr>
 					<tr>
 						<td><label class="login_fieldheader" for="email_confirm">*&nbsp;<?php echo __('Confirm e-mail'); ?></label></td>
-						<td><input type="text" id="email_confirm" name="email_confirm" value="<?php print BUGScontext::getRequest()->getParameter('email_confirm'); ?>" style="width: 200px;"></td>
+						<td><input type="text" id="email_confirm" name="email_confirm" value="<?php print TBGContext::getRequest()->getParameter('email_confirm'); ?>" style="width: 200px;"></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -175,7 +175,7 @@ BUGScontext::clearMessage('postreg_success'); ?>
 <div class="rounded_box gray">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 10px;">
-		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register1'); ?>" enctype="multipart/form-data" method="post" name="registerform">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register1'); ?>" enctype="multipart/form-data" method="post" name="registerform">
 		<input type="hidden" name="register" value="true">
 			<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
 			<div>

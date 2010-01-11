@@ -31,7 +31,7 @@
 			<div class="rounded_box lightyellow" style="margin-top: 5px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
-					<form id="add_sprint_form" action="<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo BUGSsettings::getCharset(); ?>" onsubmit="addSprint('<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>', '<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>');return false;">
+					<form id="add_sprint_form" action="<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addSprint('<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>', '<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>');return false;">
 						<div id="add_sprint">
 							<label for="sprint_name"><?php echo __('Add sprint'); ?></label>
 							<input type="text" id="sprint_name" name="sprint_name">
@@ -60,10 +60,10 @@
 					<div class="rounded_box white" style="margin-top: 5px;">
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 						<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
-							<form id="add_user_story_form" action="<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo BUGSsettings::getCharset(); ?>" onsubmit="addUserStory('<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>');return false;">
+							<form id="add_user_story_form" action="<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStory('<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>');return false;">
 								<div id="add_story">
 									<label for="story_title"><?php echo __('Add user story'); ?></label>
-									<input type="hidden" name="issuetype_id" value="<?php echo BUGSsettings::getIssueTypeUserStory(); ?>">
+									<input type="hidden" name="issuetype_id" value="<?php echo TBGSettings::getIssueTypeUserStory(); ?>">
 									<input type="hidden" name="return_format" value="scrum">
 									<input type="text" id="story_title" name="title">
 									<input type="submit" value="<?php echo __('Add'); ?>">

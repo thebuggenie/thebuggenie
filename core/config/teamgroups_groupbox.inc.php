@@ -7,7 +7,7 @@
 	
 ?>
 <table class="grouplist" style="width: 100%; table-layout: auto; margin-top: 0px;" cellpadding=0 cellspacing=0>
-<tr<?php ($theGroup instanceof BUGSgroup && $theGroup->getID() == $aGroup->getID() && !BUGScontext::getRequest()->getParameter('remove')) ? print " class=\"g_marked\"" : (($theGroup instanceof BUGSgroup && $theGroup->getID() == $aGroup->getID() && BUGScontext::getRequest()->getParameter('remove')) ? print " class=\"g_marked_red\"" : print "" ); ?>>
+<tr<?php ($theGroup instanceof TBGGroup && $theGroup->getID() == $aGroup->getID() && !TBGContext::getRequest()->getParameter('remove')) ? print " class=\"g_marked\"" : (($theGroup instanceof TBGGroup && $theGroup->getID() == $aGroup->getID() && TBGContext::getRequest()->getParameter('remove')) ? print " class=\"g_marked_red\"" : print "" ); ?>>
 	<td style="width: auto;" valign="middle"><a href="config.php?module=core&amp;section=1&amp;group=<?php print $aGroup->getID(); ?>"><?php print $aGroup->getName() ; ?></a></td>
 	<?php
 		if ($access_level == "full")

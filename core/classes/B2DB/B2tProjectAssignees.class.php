@@ -47,11 +47,11 @@
 		
 		public static function getTypes()
 		{
-			return array(self::TYPE_DEVELOPER => BUGScontext::getI18n()->__('Developer'), 
-						self::TYPE_PROJECTMANAGER => BUGScontext::getI18n()->__('Project manager'),
-						self::TYPE_DOCUMENTOR => BUGScontext::getI18n()->__('Documentation editor'),
-						self::TYPE_TESTER => BUGScontext::getI18n()->__('Tester'),
-						self::TYPE_CUSTOMER => BUGScontext::getI18n()->__('Customer'));
+			return array(self::TYPE_DEVELOPER => TBGContext::getI18n()->__('Developer'), 
+						self::TYPE_PROJECTMANAGER => TBGContext::getI18n()->__('Project manager'),
+						self::TYPE_DOCUMENTOR => TBGContext::getI18n()->__('Documentation editor'),
+						self::TYPE_TESTER => TBGContext::getI18n()->__('Tester'),
+						self::TYPE_CUSTOMER => TBGContext::getI18n()->__('Customer'));
 		}
 		
 		public static function getTypeName($type)
@@ -84,7 +84,7 @@
 			$crit->addInsert(self::PROJECT_ID, $project_id);
 			$crit->addInsert(self::TARGET_TYPE, $role);
 			$crit->addInsert(self::UID, $user_id);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			return $res;
 		}
@@ -105,7 +105,7 @@
 			$crit->addInsert(self::PROJECT_ID, $project_id);
 			$crit->addInsert(self::TARGET_TYPE, $role);
 			$crit->addInsert(self::TID, $team_id);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			return $res;
 		}
@@ -126,7 +126,7 @@
 			$crit->addInsert(self::PROJECT_ID, $project_id);
 			$crit->addInsert(self::TARGET_TYPE, $role);
 			$crit->addInsert(self::CID, $customer_id);
-			$crit->addInsert(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			return $res;
 		}
@@ -141,7 +141,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$projects[$row->get(self::PROJECT_ID)] = BUGSfactory::projectLab($row->get(self::PROJECT_ID), $row); 
+					$projects[$row->get(self::PROJECT_ID)] = TBGFactory::projectLab($row->get(self::PROJECT_ID), $row); 
 				}
 			}
 			return $projects;

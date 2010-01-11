@@ -101,7 +101,7 @@
 		{
 			if ($this->int_ptr == 0)
 			{
-				BUGSlogging::log('This is not a valid row');
+				TBGLogging::log('This is not a valid row');
 			}
 			if (isset($this->rows[($this->int_ptr - 1)]))
 			{

@@ -1,12 +1,12 @@
 <?php echo image_tag('spinning_16.gif', array('id' => 'permissions_' . $key . '_' . $target_id . '_' . $type . '_' . $item_id . '_indicator', 'style' => 'display: none;')); ?>
 <span id="permissions_<?php echo $key; ?>_<?php echo $target_id; ?>_<?php echo $type; ?>_<?php echo $item_id; ?>">
-	<?php $val = BUGScontext::isPermissionSet($type, $key, $item_id, $target_id, $module); ?>
+	<?php $val = TBGContext::isPermissionSet($type, $key, $item_id, $target_id, $module); ?>
 	<?php if (is_bool($val)): ?>
 		<?php $image_tag = ($val) ? image_tag('permission_set_ok.png') : image_tag('permission_set_denied.png'); ?>
 	<?php elseif ($mode == 'datatype'): ?>
 		<?php $image_tag = image_tag('permission_set_unset.png'); ?>
 	<?php elseif ($mode == 'general' && $type == 'everyone'): ?>
-		<?php $image_tag = (BUGSsettings::isPermissive()) ? image_tag('permission_unset_ok.png') : image_tag('permission_unset_denied.png'); ?>
+		<?php $image_tag = (TBGSettings::isPermissive()) ? image_tag('permission_unset_ok.png') : image_tag('permission_unset_denied.png'); ?>
 	<?php elseif ($mode == 'configuration' && $type == 'everyone'): ?>
 		<?php $image_tag = image_tag('permission_unset_denied.png'); ?>
 	<?php elseif ($mode == 'pages' && $type == 'everyone'): ?>

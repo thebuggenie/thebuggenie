@@ -40,7 +40,7 @@ include_component('configleftmenu', array('selected_section' => 15));
 		<?php if (count($uninstalled_modules) == 0): ?>
 			<div class="faded_medium" style="margin-top: 5px;"><?php echo __('There are no uninstalled modules available'); ?></div>
 		<?php else: ?>
-			<form action="<?php echo make_url('configure_install_module'); ?>" method="post" accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>">
+			<form action="<?php echo make_url('configure_install_module'); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 				<div class="rounded_box" style="margin: 5px 0px 5px 0px; width: 750px;" id="module_error">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent" style="vertical-align: middle; text-align: right;">

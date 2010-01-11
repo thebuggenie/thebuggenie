@@ -57,7 +57,7 @@
 			{
 				foreach ($res->getNextRow() as $row)
 				{
-					$projects[$row->get(B2tComponents::PROJECT)] = BUGSfactory::projectLab($row->get(B2tComponents::PROJECT)); 
+					$projects[$row->get(B2tComponents::PROJECT)] = TBGFactory::projectLab($row->get(B2tComponents::PROJECT)); 
 				}
 			}
 			return $projects;

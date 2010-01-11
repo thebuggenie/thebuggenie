@@ -1,16 +1,16 @@
 <?php
 
-	$theGroup = (is_numeric(BUGScontext::getRequest()->getParameter('group')) && BUGScontext::getRequest()->getParameter('group') > 0) ? BUGSfactory::groupLab(BUGScontext::getRequest()->getParameter('group')): null;
-	$theTeam = (is_numeric(BUGScontext::getRequest()->getParameter('team')) && BUGScontext::getRequest()->getParameter('team') > 0) ? BUGSfactory::teamLab(BUGScontext::getRequest()->getParameter('team')) : null;
+	$theGroup = (is_numeric(TBGContext::getRequest()->getParameter('group')) && TBGContext::getRequest()->getParameter('group') > 0) ? TBGFactory::groupLab(TBGContext::getRequest()->getParameter('group')): null;
+	$theTeam = (is_numeric(TBGContext::getRequest()->getParameter('team')) && TBGContext::getRequest()->getParameter('team') > 0) ? TBGFactory::teamLab(TBGContext::getRequest()->getParameter('team')) : null;
 
-	if ($access_level == "full" && !BUGScontext::getRequest()->hasParameter('access_level'))
+	if ($access_level == "full" && !TBGContext::getRequest()->hasParameter('access_level'))
 	{
-		if (BUGScontext::getRequest()->getParameter('get_editgroup') && $theGroup instanceof BUGSgroup)
+		if (TBGContext::getRequest()->getParameter('get_editgroup') && $theGroup instanceof TBGGroup)
 		{
 			$retval = '';
 			if ($access_level == "full")
 			{
-				$retval .= '<form accept-charset="' . BUGScontext::getI18n()->getCharset() . '" action="config.php" method="post" id="edit_group_' . $theGroup->getID() . '_form" onsubmit="return false">';
+				$retval .= '<form accept-charset="' . TBGContext::getI18n()->getCharset() . '" action="config.php" method="post" id="edit_group_' . $theGroup->getID() . '_form" onsubmit="return false">';
 				$retval .= '<input type="hidden" name="group" value=' . $theGroup->getID() . '>';
 				$retval .= '<input type="hidden" name="updatename" value="true">';
 				$retval .= '<table style="width: 100%;" cellpadding=0 cellspacing=0>';
@@ -30,22 +30,22 @@
 			$theGroup->setName(trim($_POST['groupname']));
 		}
 		
-		if ((BUGScontext::getRequest()->getParameter('get_showgroup') || BUGScontext::getRequest()->getParameter('updatename')) && $theGroup instanceof BUGSgroup)
+		if ((TBGContext::getRequest()->getParameter('get_showgroup') || TBGContext::getRequest()->getParameter('updatename')) && $theGroup instanceof TBGGroup)
 		{
 			$include_table = false;
 			$aGroup = $theGroup;
 			unset($theGroup);
-			require BUGScontext::getIncludePath() . 'include/config/teamgroups_groupbox.inc.php';
+			require TBGContext::getIncludePath() . 'include/config/teamgroups_groupbox.inc.php';
 			$theGroup = $aGroup;
 			unset($aGroup);
 		}
 
-		if (BUGScontext::getRequest()->getParameter('get_editteam') && $theTeam instanceof BUGSteam)
+		if (TBGContext::getRequest()->getParameter('get_editteam') && $theTeam instanceof TBGTeam)
 		{
 			$retval = '';
 			if ($access_level == "full")
 			{
-				$retval .= '<form accept-charset="' . BUGScontext::getI18n()->getCharset() . '" action="config.php" method="post" id="edit_team_' . $theTeam->getID() . '_form" onsubmit="return false">';
+				$retval .= '<form accept-charset="' . TBGContext::getI18n()->getCharset() . '" action="config.php" method="post" id="edit_team_' . $theTeam->getID() . '_form" onsubmit="return false">';
 				$retval .= '<input type="hidden" name="team" value=' . $theTeam->getID() . '>';
 				$retval .= '<input type="hidden" name="updatename" value="true">';
 				$retval .= '<table style="width: 100%;" cellpadding=0 cellspacing=0>';
@@ -65,49 +65,49 @@
 			$theTeam->setName(trim($_POST['teamname']));
 		}
 		
-		if ((BUGScontext::getRequest()->getParameter('get_showteam') || BUGScontext::getRequest()->getParameter('updatename')) && $theTeam instanceof BUGSteam)
+		if ((TBGContext::getRequest()->getParameter('get_showteam') || TBGContext::getRequest()->getParameter('updatename')) && $theTeam instanceof TBGTeam)
 		{
 			$include_table = false;
 			$aTeam = $theTeam;
 			unset($theTeam);
-			require BUGScontext::getIncludePath() . 'include/config/teamgroups_teambox.inc.php';
+			require TBGContext::getIncludePath() . 'include/config/teamgroups_teambox.inc.php';
 			$theTeam = $aTeam;
 			unset($aTeam);
 		}
 		
-		if (BUGScontext::getRequest()->hasParameter('addgroup') && trim(BUGScontext::getRequest()->getParameter('groupname')) != "")
+		if (TBGContext::getRequest()->hasParameter('addgroup') && trim(TBGContext::getRequest()->getParameter('groupname')) != "")
 		{
-			$groupname = trim(BUGScontext::getRequest()->getParameter('groupname'));
-			$aGroup = BUGSgroup::createNew($groupname);
+			$groupname = trim(TBGContext::getRequest()->getParameter('groupname'));
+			$aGroup = TBGGroup::createNew($groupname);
 			$include_table = true;
-			require BUGScontext::getIncludePath() . 'include/config/teamgroups_groupbox.inc.php';
+			require TBGContext::getIncludePath() . 'include/config/teamgroups_groupbox.inc.php';
 		}
 	
-		if (BUGScontext::getRequest()->hasParameter('addteam') && trim(BUGScontext::getRequest()->getParameter('teamname')) != "")
+		if (TBGContext::getRequest()->hasParameter('addteam') && trim(TBGContext::getRequest()->getParameter('teamname')) != "")
 		{
-			$teamname = trim(BUGScontext::getRequest()->getParameter('teamname'));
-			$aTeam = BUGSteam::createNew($teamname);
+			$teamname = trim(TBGContext::getRequest()->getParameter('teamname'));
+			$aTeam = TBGTeam::createNew($teamname);
 			$include_table = true;
-			require BUGScontext::getIncludePath() . 'include/config/teamgroups_teambox.inc.php';
+			require TBGContext::getIncludePath() . 'include/config/teamgroups_teambox.inc.php';
 		}
 		
-		if ($theGroup instanceof BUGSgroup)
+		if ($theGroup instanceof TBGGroup)
 		{
-			if (BUGScontext::getRequest()->getParameter('remove') && BUGScontext::getRequest()->getParameter('confirm'))
+			if (TBGContext::getRequest()->getParameter('remove') && TBGContext::getRequest()->getParameter('confirm'))
 			{
 				$theGroup->delete();
 				$theGroup = null;
-				BUGScontext::getRequest()->setParameter('group', null);
+				TBGContext::getRequest()->setParameter('group', null);
 			}
 		}
 		
-		if ($theTeam instanceof BUGSteam)
+		if ($theTeam instanceof TBGTeam)
 		{
-			if (BUGScontext::getRequest()->getParameter('remove') && BUGScontext::getRequest()->getParameter('confirm'))
+			if (TBGContext::getRequest()->getParameter('remove') && TBGContext::getRequest()->getParameter('confirm'))
 			{
 				$theTeam->delete();
 				$theTeam = null;
-				BUGScontext::getRequest()->setParameter('team', null);
+				TBGContext::getRequest()->setParameter('team', null);
 			}
 		}
 	}

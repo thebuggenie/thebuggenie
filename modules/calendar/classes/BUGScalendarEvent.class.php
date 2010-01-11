@@ -1,6 +1,6 @@
 <?php
 
-	class BUGScalendarEvent extends BUGSidentifiableclass implements BUGSidentifiable
+	class BUGScalendarEvent extends TBGIdentifiableClass implements TBGIdentifiable
 	{
 		
 		const EVENT = 1;
@@ -55,7 +55,7 @@
 			$crit->addInsert(B2tCalendarTasks::STATUS, $userstatus);
 			$crit->addInsert(B2tCalendarTasks::CALENDAR, $calendar);
 			$crit->addInsert(B2tCalendarTasks::LOCATION, 0);
-			$crit->addInsert(B2tCalendarTasks::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addInsert(B2tCalendarTasks::SCOPE, TBGContext::getScope()->getID());
 			$res = B2DB::getTable('B2tCalendarTasks')->doInsert($crit);
 			return new BUGScalendarEvent($res->getInsertID());
 		}

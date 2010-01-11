@@ -41,8 +41,8 @@
 			$crit = $this->getCriteria();
 			$crit->addJoin(B2DB::getTable('B2tModules'), B2tModules::MODULE_NAME, self::MODULE_NAME);
 			$crit->addWhere(self::MODULE_NAME, $module_names, B2DBCriteria::DB_IN);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
-			$crit->addWhere(B2tModules::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(B2tModules::SCOPE, TBGContext::getScope()->getID());
 			$crit->addOrderBy(self::ORDER, 'asc');
 			$res = $this->doSelect($crit);
 
@@ -51,7 +51,7 @@
 
 		public function savePermanentListener($module, $identifier, $module_name, $scope = null)
 		{
-			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::IDENTIFIER, $identifier);
 			$crit->addWhere(self::MODULE, $module);
@@ -70,7 +70,7 @@
 
 		public function removePermanentListener($module, $identifier, $module_name, $scope)
 		{
-			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::IDENTIFIER, $identifier);
 			$crit->addWhere(self::MODULE, $module);

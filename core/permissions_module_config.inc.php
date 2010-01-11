@@ -5,47 +5,47 @@
 
 	if ($access_level == "full")
 	{
-		if (BUGScontext::getRequest()->getParameter('setmodulepermaccess') && is_numeric(BUGScontext::getRequest()->getParameter('allowed')) && BUGScontext::getRequest()->getParameter('module_perm_name') == $aPerm['permission_name'])
+		if (TBGContext::getRequest()->getParameter('setmodulepermaccess') && is_numeric(TBGContext::getRequest()->getParameter('allowed')) && TBGContext::getRequest()->getParameter('module_perm_name') == $aPerm['permission_name'])
 		{
 			if ($aPerm['levels'] == 3)
 			{
-				switch (BUGScontext::getRequest()->getParameter('allowed'))
+				switch (TBGContext::getRequest()->getParameter('allowed'))
 				{
 					case 0:
-						BUGScontext::removePermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid);
-						if (BUGScontext::getRequest()->getParameter('insertdeny') == 1)
+						TBGContext::removePermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid);
+						if (TBGContext::getRequest()->getParameter('insertdeny') == 1)
 						{
-							BUGScontext::setPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, 0, 1);
+							TBGContext::setPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, 0, 1);
 						}
 						break;
 					case 1:
-						BUGScontext::removePermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid);
-						if (BUGScontext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName()) == true)
+						TBGContext::removePermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid);
+						if (TBGContext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName()) == true)
 						{
-							BUGScontext::setPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, 1, 0);
+							TBGContext::setPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, 1, 0);
 						}
 						break;
 					case 2:
-						BUGScontext::removePermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid);
-						if (BUGScontext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName()) == true || BUGScontext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName()) == true)
+						TBGContext::removePermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid);
+						if (TBGContext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName()) == true || TBGContext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName()) == true)
 						{
-							BUGScontext::setPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, 1, 0);
+							TBGContext::setPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, 1, 0);
 						}
 						break;
 				}
 			}
 			else
 			{
-				BUGScontext::setPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, BUGScontext::getRequest()->getParameter('allowed'), BUGScontext::getRequest()->getParameter('insertdeny'));
+				TBGContext::setPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, TBGContext::getRequest()->getParameter('allowed'), TBGContext::getRequest()->getParameter('insertdeny'));
 			}
 		}
 
 		if ($aPerm['levels'] == 2)
 		{
-			$light = (BUGScontext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+			$light = (TBGContext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 			if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 			{
-				$blue = BUGScontext::getAllPermissions($aPerm['permission_name'], $theuid, $tid, $gid, $aPerm['target']);
+				$blue = TBGContext::getAllPermissions($aPerm['permission_name'], $theuid, $tid, $gid, $aPerm['target']);
 				$light = (count($blue) == 0) ? "lightblue" : $light;
 				$lightaccess = ($light == "lightblue") ? 1 : 0;
 				$insertdeny = ($light == "mediumgreen") ? 1 : 0;
@@ -58,11 +58,11 @@
 		}
 		else
 		{
-			$light = (BUGScontext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : ((BUGScontext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, $all) == true) ? "yellow" : "red");
+			$light = (TBGContext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : ((TBGContext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, $all) == true) ? "yellow" : "red");
 			if ($gid != 0)
 			{
-				$blue = BUGScontext::getAllPermissions($aPerm['permission_name'], $theuid, $tid, $gid, $aPerm['target']);
-				$blue = (count($blue) == 0) ? BUGScontext::getAllPermissions($aPerm['permission_name'], $theuid, $tid, $gid, $aPerm['target']) : $blue;
+				$blue = TBGContext::getAllPermissions($aPerm['permission_name'], $theuid, $tid, $gid, $aPerm['target']);
+				$blue = (count($blue) == 0) ? TBGContext::getAllPermissions($aPerm['permission_name'], $theuid, $tid, $gid, $aPerm['target']) : $blue;
 				$light = (count($blue) == 0) ? "lightblue" : $light;
 				$lightaccess = ($light == "lightblue") ? 2 : (($light == "yellow") ? 1 : 0);
 				$insertdeny = ($light == "mediumgreen") ? 1 : 0;
@@ -91,11 +91,11 @@
 	}
 	else
 	{
-		$light = (BUGScontext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : ((BUGScontext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, $all) == true) ? "yellow" : "red");
+		$light = (TBGContext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : ((TBGContext::getUser()->hasPermission($aPerm['permission_name'], $aPerm['target'], $theModule->getName(), $theuid, $gid, $tid, $all) == true) ? "yellow" : "red");
 		if ($gid != 0)
 		{
-			$blue = BUGScontext::getAllPermissions($aPerm['permission_name'], $theuid, $tid, $gid, 0);
-			$blue = (count($blue) == 0) ? BUGScontext::getAllPermissions($aPerm['permission_name'], $theuid, $tid, $gid, 0) : $blue;
+			$blue = TBGContext::getAllPermissions($aPerm['permission_name'], $theuid, $tid, $gid, 0);
+			$blue = (count($blue) == 0) ? TBGContext::getAllPermissions($aPerm['permission_name'], $theuid, $tid, $gid, 0) : $blue;
 			$light = (count($blue) == 0) ? "lightblue" : $light;
 		}
 		?>

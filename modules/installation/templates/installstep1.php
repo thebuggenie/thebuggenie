@@ -63,7 +63,7 @@
 			</div>
 			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod 777 <?php echo str_ireplace('\\', '/', substr(BUGScontext::getIncludePath(), 0, strripos(BUGScontext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/B2DB
+			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/B2DB
 			</div>
 		<?php endif; ?>
 		<?php if (!$b2db_param_file_ok): ?>
@@ -73,7 +73,7 @@
 			</div>
 			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod 777 <?php echo str_ireplace('\\', '/', substr(BUGScontext::getIncludePath(), 0, strripos(BUGScontext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/B2DB/sql_parameters.inc.php
+			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/B2DB/sql_parameters.inc.php
 			</div>
 		<?php endif; ?>
 		<?php if (!$base_folder_perm_ok): ?>
@@ -83,7 +83,7 @@
 			</div>
 			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod 777 <?php echo str_ireplace('\\', '/', substr(BUGScontext::getIncludePath(), 0, strripos(BUGScontext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>
+			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>
 			</div>
 		<?php endif; ?>
 		<?php if (!$base_folder_perm_ok): ?>
@@ -93,7 +93,7 @@
 			</div>
 			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod 777 <?php echo str_ireplace('\\', '/', substr(BUGScontext::getIncludePath() . 'thebuggenie/', 0, strripos(BUGScontext::getIncludePath() . 'thebuggenie/', DIRECTORY_SEPARATOR) + 1)); ?>
+			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath() . 'thebuggenie/', 0, strripos(TBGContext::getIncludePath() . 'thebuggenie/', DIRECTORY_SEPARATOR) + 1)); ?>
 			</div>
 		<?php endif; ?>
 		<?php if (!$pdo_ok): ?>

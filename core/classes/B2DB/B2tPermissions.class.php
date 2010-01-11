@@ -45,7 +45,7 @@
 		
 		public function getAll($scope_id = null)
 		{
-			$scope_id = ($scope_id === null) ? BUGScontext::getScope()->getID() : $scope_id;
+			$scope_id = ($scope_id === null) ? TBGContext::getScope()->getID() : $scope_id;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, $scope_id);
 			$res = $this->doSelect($crit);

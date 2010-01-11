@@ -1,6 +1,6 @@
 <?php 
 
-	BUGScontext::loadLibrary('ui');
+	TBGContext::loadLibrary('ui');
 
 ?>
 <tr id="show_component_<?php print $component->getID(); ?>">
@@ -19,7 +19,7 @@
 		<?php echo image_tag('icon_components.png', array('id' => 'component_'.$component->getID().'_icon')); ?>
 	</td>
 	<td style="width: auto; padding: 0px; position: relative;" colspan="2">
-		<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_update_component', array('component_id' => $component->getID())); ?>" method="post" id="edit_component_<?php echo $component->getID(); ?>_form" onsubmit="updateComponent('<?php echo make_url('configure_update_component', array('component_id' => $component->getID())); ?>', <?php echo $component->getID(); ?>);return false;">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_update_component', array('component_id' => $component->getID())); ?>" method="post" id="edit_component_<?php echo $component->getID(); ?>_form" onsubmit="updateComponent('<?php echo make_url('configure_update_component', array('component_id' => $component->getID())); ?>', <?php echo $component->getID(); ?>);return false;">
 			<input type="submit" value="<?php echo __('Save'); ?>" style="float: right;">
 			<input type="text" name="c_name" id="c_name_<?php echo $component->getID(); ?>" value="<?php print $component->getName(); ?>" style="width: 260px;">
 		</form>

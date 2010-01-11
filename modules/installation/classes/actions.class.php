@@ -1,24 +1,24 @@
 <?php
 
-	class installationActions extends BUGSaction
+	class installationActions extends TBGAction
 	{
 		
 		/**
 		 * Runs the installation action
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 * 
 		 * @return null
 		 */
-		public function runInstallIntro(BUGSrequest $request)
+		public function runInstallIntro(TBGRequest $request)
 		{
-			$this->getResponse()->setDecoration(BUGSresponse::DECORATE_NONE);
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			
 			if (($step = $request->getParameter('step')) && $step >= 1 && $step <= 6)
 			{
 				if ($step >= 5)
 				{
-					BUGScontext::setScope(1);
+					TBGContext::setScope(1);
 				}
 				return $this->redirect('installStep'.$step);
 			}
@@ -27,11 +27,11 @@
 		/**
 		 * Runs the action for the first step of the installation
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 * 
 		 * @return null
 		 */
-		public function runInstallStep1(BUGSrequest $request)
+		public function runInstallStep1(TBGRequest $request)
 		{
 			$this->all_well = true;
 			$this->b2db_folder_perm_ok = true;
@@ -39,22 +39,22 @@
 			$this->thebuggenie_folder_perm_ok = true;
 			$this->b2db_param_file_ok = true;
 			$this->pdo_ok = true;
-			if (!is_writable(BUGScontext::getIncludePath() . 'core/B2DB/'))
+			if (!is_writable(TBGContext::getIncludePath() . 'core/B2DB/'))
 			{
 				$this->b2db_folder_perm_ok = false;
 				$this->all_well = false;
 			}
-			if (file_exists(BUGScontext::getIncludePath() . 'core/B2DB/sql_parameters.inc.php') && !is_writable(BUGScontext::getIncludePath() . 'core/B2DB/sql_parameters.inc.php'))
+			if (file_exists(TBGContext::getIncludePath() . 'core/B2DB/sql_parameters.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/B2DB/sql_parameters.inc.php'))
 			{
 				$this->b2db_param_file_ok = false;
 				$this->all_well = false;
 			}
-			if (!is_writable(BUGScontext::getIncludePath()))
+			if (!is_writable(TBGContext::getIncludePath()))
 			{
 				$this->base_folder_perm_ok = false;
 				$this->all_well = false;
 			}
-			if (!is_writable(BUGScontext::getIncludePath() . 'thebuggenie/'))
+			if (!is_writable(TBGContext::getIncludePath() . 'thebuggenie/'))
 			{
 				$this->thebuggenie_folder_perm_ok = false;
 				$this->all_well = false;
@@ -70,11 +70,11 @@
 		 * Runs the action for the second step of the installation
 		 * where you enter database information
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 * 
 		 * @return null
 		 */
-		public function runInstallStep2(BUGSrequest $request)
+		public function runInstallStep2(TBGRequest $request)
 		{
 			$this->preloaded = false;
 			$this->selected_connection_detail = 'dsn';
@@ -102,11 +102,11 @@
 		 * Runs the action for the third step of the installation
 		 * where it tests the connection, sets up the database and the initial scope
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 * 
 		 * @return null
 		 */
-		public function runInstallStep3(BUGSrequest $request)
+		public function runInstallStep3(TBGRequest $request)
 		{
 			$this->selected_connection_detail = $request->getParameter('connection_type');
 			try
@@ -182,7 +182,7 @@
 				
 				// Add table classes to classpath 
 				$tables_path = THEBUGGENIE_PATH . 'core/classes/B2DB/';
-				BUGScontext::addClasspath($tables_path);
+				TBGContext::addClasspath($tables_path);
 				$tables_path_handle = opendir($tables_path);
 				$tables_created = array();
 				while ($table_class_file = readdir($tables_path_handle))
@@ -196,7 +196,7 @@
 				sort($tables_created);
 				$this->tables_created = $tables_created;
 				
-				//BUGSscope::setupInitialScope();
+				//TBGScope::setupInitialScope();
 				
 			}
 			catch (Exception $e)
@@ -210,39 +210,39 @@
 		 * Runs the action for the fourth step of the installation
 		 * where it loads fixtures and saves settings for url
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 * 
 		 * @return null
 		 */
-		public function runInstallStep4(BUGSrequest $request)
+		public function runInstallStep4(TBGRequest $request)
 		{
 			try
 			{
-				BUGSlogging::log('Initializing language support');
-				BUGScontext::reinitializeI18n('en_US');
+				TBGLogging::log('Initializing language support');
+				TBGContext::reinitializeI18n('en_US');
 
-				BUGSlogging::log('Loading fixtures for default scope');
-				$scope = BUGSscope::createNew('The default scope', '');
+				TBGLogging::log('Loading fixtures for default scope');
+				$scope = TBGScope::createNew('The default scope', '');
 
-				BUGSlogging::log('Setting up default users and groups');
-				BUGSsettings::saveSetting('language', 'en_US', 'core', 1);
+				TBGLogging::log('Setting up default users and groups');
+				TBGSettings::saveSetting('language', 'en_US', 'core', 1);
 				$scope->setHostname($request->getParameter('url_host'));
 				$scope->save();
-				BUGSsettings::saveSetting('url_subdir', $request->getParameter('url_subdir'), 'core', 1);
+				TBGSettings::saveSetting('url_subdir', $request->getParameter('url_subdir'), 'core', 1);
 				$this->htaccess_error = false;
 				$this->htaccess_ok = (bool) $request->getParameter('apache_autosetup');
 
 				if ($request->getParameter('apache_autosetup'))
 				{
-					if (!is_writable(BUGScontext::getIncludePath() . 'thebuggenie/') || (file_exists(BUGScontext::getIncludePath() . 'thebuggenie/.htaccess') && !is_writable(BUGScontext::getIncludePath() . 'thebuggenie/.htaccess')))
+					if (!is_writable(TBGContext::getIncludePath() . 'thebuggenie/') || (file_exists(TBGContext::getIncludePath() . 'thebuggenie/.htaccess') && !is_writable(TBGContext::getIncludePath() . 'thebuggenie/.htaccess')))
 					{
 						$this->htaccess_error = 'Permission denied when trying to save the [main folder]/thebuggenie/.htaccess';
 					}
 					else
 					{
-						$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $request->getParameter('url_subdir'), file_get_contents(BUGScontext::getIncludePath() . 'thebuggenie/htaccess.template'));
-						file_put_contents(BUGScontext::getIncludePath() . 'thebuggenie/.htaccess', $content);
-						if (file_get_contents(BUGScontext::getIncludePath() . 'thebuggenie/.htaccess') != $content)
+						$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $request->getParameter('url_subdir'), file_get_contents(TBGContext::getIncludePath() . 'thebuggenie/htaccess.template'));
+						file_put_contents(TBGContext::getIncludePath() . 'thebuggenie/.htaccess', $content);
+						if (file_get_contents(TBGContext::getIncludePath() . 'thebuggenie/.htaccess') != $content)
 						{
 							$this->htaccess_error = true;
 						}
@@ -260,11 +260,11 @@
 		 * Runs the action for the fifth step of the installation
 		 * where it enables modules on demand
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 * 
 		 * @return null
 		 */
-		public function runInstallStep5(BUGSrequest $request)
+		public function runInstallStep5(TBGRequest $request)
 		{
 			$this->sample_data = false;
 			try
@@ -273,14 +273,14 @@
 				{
 					foreach ($request->getParameter('modules', array()) as $module => $install)
 					{
-						if ((bool) $install && file_exists(BUGScontext::getIncludePath() . "modules/{$module}/module"))
+						if ((bool) $install && file_exists(TBGContext::getIncludePath() . "modules/{$module}/module"))
 						{
-							BUGScontext::addClasspath(BUGScontext::getIncludePath() . "modules/{$module}/classes/");
-							if (file_exists(BUGScontext::getIncludePath() . "modules/{$module}/classes/B2DB/"))
+							TBGContext::addClasspath(TBGContext::getIncludePath() . "modules/{$module}/classes/");
+							if (file_exists(TBGContext::getIncludePath() . "modules/{$module}/classes/B2DB/"))
 							{
-								BUGScontext::addClasspath(BUGScontext::getIncludePath() . "modules/{$module}/classes/B2DB/");
+								TBGContext::addClasspath(TBGContext::getIncludePath() . "modules/{$module}/classes/B2DB/");
 							}
-							$classname = file_get_contents(BUGScontext::getIncludePath() . "modules/{$module}/class");
+							$classname = file_get_contents(TBGContext::getIncludePath() . "modules/{$module}/class");
 							call_user_func(array($classname, 'install'), 1);
 						}
 					}
@@ -301,13 +301,13 @@
 		 * Runs the action for the sixth step of the installation
 		 * where it finalizes the installation
 		 * 
-		 * @param BUGSrequest $request The request object
+		 * @param TBGRequest $request The request object
 		 * 
 		 * @return null
 		 */
-		public function runInstallStep6(BUGSrequest $request)
+		public function runInstallStep6(TBGRequest $request)
 		{
-			if (file_put_contents(BUGScontext::getIncludePath() . 'installed', '2.1, installed ' . date('d.m.Y H:i')) === false)
+			if (file_put_contents(TBGContext::getIncludePath() . 'installed', '2.1, installed ' . date('d.m.Y H:i')) === false)
 			{
 				$this->error = "Couldn't write to the main directory";
 			}

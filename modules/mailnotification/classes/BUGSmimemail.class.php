@@ -31,12 +31,12 @@
 		{
 			$this->server = $server;
 			$this->port = $port;
-			if ($timeout = BUGScontext::getModule('mailnotification')->getSetting('timeout'))
+			if ($timeout = TBGContext::getModule('mailnotification')->getSetting('timeout'))
 			{
 				$this->timeout = $timeout;
 			}
 			
-			if (BUGScontext::getModule('mailnotification')->getSetting('ehlo') == 1)
+			if (TBGContext::getModule('mailnotification')->getSetting('ehlo') == 1)
 			{
 				$this->ehlo = true;
 			}

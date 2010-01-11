@@ -1,4 +1,4 @@
-<?php BUGScontext::loadLibrary('ui'); ?>
+<?php TBGContext::loadLibrary('ui'); ?>
 <tr id="edition_box_<?php echo $edition->getID(); ?>" class="canhover_light">
 	<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_edition.png'); ?></td>
 	<td style="width: auto; padding: 2px;"><?php echo link_tag(make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')), '<b>'.$edition->getName().'</b>'); ?><?php if ($edition->isDefault()): echo __('%edition_name% (default)', array('%edition_name%' => '')); endif; ?></td>
@@ -13,7 +13,7 @@
 	<?php if ($edition->hasDescription()): ?>
 		<div style="padding-bottom: 10px; color: #AAA;"><?php print $edition->getDescription(); ?></div>
 	<?php endif; ?>
-	<?php if (BUGScontext::getRequest()->isAjaxCall()): ?>
+	<?php if (TBGContext::getRequest()->isAjaxCall()): ?>
 		<script type="text/javascript">new Effect.Pulsate('edition_box_<?php echo $edition->getID(); ?>');</script>
 	<?php endif; ?>	
 	</td>

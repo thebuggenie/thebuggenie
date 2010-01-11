@@ -86,7 +86,7 @@
 						$b2db_engine_path = B2DB_BASEPATH . 'PDO';
 					}
 					
-					BUGScontext::addClasspath($b2db_engine_path . '/classes/');
+					TBGContext::addClasspath($b2db_engine_path . '/classes/');
 				}
 			}
 			catch (Exception $e)
@@ -144,7 +144,7 @@
 				{
 					if (!class_exists($tbl_name))
 					{
-						throw new B2DBException("Class $tbl_name does not exist, cannot load it".print_r(get_declared_classes()).print_r(BUGScontext::getClasspaths()));
+						throw new B2DBException("Class $tbl_name does not exist, cannot load it".print_r(get_declared_classes()).print_r(TBGContext::getClasspaths()));
 					}
 					self::loadNewTable(new $tbl_name());
 				}
@@ -402,7 +402,7 @@
 				<div class=\"rounded_box white\" style=\"margin: 30px auto 0 auto; width: 600px;\">
 					<b class=\"xtop\"><b class=\"xb1\"></b><b class=\"xb2\"></b><b class=\"xb3\"></b><b class=\"xb4\"></b></b>
 					<div class=\"xboxcontent\" style=\"vertical-align: middle; padding: 10px 10px 10px 15px;\">
-					<img style=\"float: left; margin-right: 10px;\" src=\"".BUGScontext::getTBGPath()."messagebox_warning.png\"><h1>An error occured in the B2DB database framework</h1>
+					<img style=\"float: left; margin-right: 10px;\" src=\"".TBGContext::getTBGPath()."messagebox_warning.png\"><h1>An error occured in the B2DB database framework</h1>
 					<h2>The following error occured:</h2>
 					<i>".$exception->getMessage()."</i><br>
 					";

@@ -21,7 +21,7 @@
 		<div class="rounded_box lightyellow_borderless" style="margin: 5px 0 0 0;">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="padding: 3px; font-size: 12px;">
-				<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="addIssuetype('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_add'); ?>" onsubmit="addIssuetype('<?php echo make_url('configure_issuetypes_add'); ?>');return false;" id="add_issuetype_form">
 					<label for="new_issuetype_name"><?php echo __('Issue type name'); ?></label>
 					<input type="text" name="name" id="new_issuetype_name" style="width: 200px;">
 					<label for="new_issuetype_icon"><?php echo __('Type'); ?></label>

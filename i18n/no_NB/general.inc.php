@@ -2,7 +2,7 @@
 
 	if (!defined('THEBUGGENIE_PATH')) exit();
 
-	BUGScontext::getI18n()->setCharset('iso-8859-15');
+	TBGContext::getI18n()->setCharset('iso-8859-15');
 	setlocale(LC_ALL, array('no_NB@euro', 'no_NB', 'no'));
 	
 	$strings['Released under the MPL 1.1 only. Read the license at %link_to_MPL%'] = 'Utgitt eksklusivt under MPL 1.1. Les lisensen hos %link_to_MPL%';

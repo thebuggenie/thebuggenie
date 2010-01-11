@@ -1,4 +1,4 @@
-<?php if ($action['target_type'] == 1 && ($theIssue = BUGSfactory::BUGSissueLab($action['target'])) && $theIssue instanceof BUGSissue): ?>
+<?php if ($action['target_type'] == 1 && ($theIssue = TBGFactory::TBGIssueLab($action['target'])) && $theIssue instanceof TBGIssue): ?>
 	<tr>
 		<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 		<td style="padding-bottom: <?php if (isset($extra_padding) && $extra_padding == true): ?>10<?php else: ?>5<?php endif; ?>px;">

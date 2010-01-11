@@ -11,9 +11,9 @@
 	 */
 	function tbg_exception($title, $exception)
 	{
-		if (BUGScontext::getRequest() instanceof BUGSrequest && BUGScontext::getRequest()->isAjaxCall())
+		if (TBGContext::getRequest() instanceof TBGRequest && TBGContext::getRequest()->isAjaxCall())
 		{
-			BUGScontext::getResponse()->ajaxResponseText(404, $title);
+			TBGContext::getResponse()->ajaxResponseText(404, $title);
 		}
 		$ob_status = ob_get_status();
 		if (!empty($ob_status) && $ob_status['status'] != PHP_OUTPUT_HANDLER_END)
@@ -44,14 +44,14 @@
 		<div class=\"rounded_box white\" style=\"margin: 30px auto 0 auto; width: 700px;\">
 			<b class=\"xtop\"><b class=\"xb1\"></b><b class=\"xb2\"></b><b class=\"xb3\"></b><b class=\"xb4\"></b></b>
 			<div class=\"xboxcontent\" style=\"vertical-align: middle; padding: 10px 10px 10px 15px;\">
-			<img style=\"float: left; margin-right: 10px;\" src=\"".BUGScontext::getTBGPath()."messagebox_warning.png\"><h1>{$title}</h1>";
+			<img style=\"float: left; margin-right: 10px;\" src=\"".TBGContext::getTBGPath()."messagebox_warning.png\"><h1>{$title}</h1>";
 			if ($exception instanceof Exception)
 			{
-				if ($exception instanceof BUGSActionNotFoundException)
+				if ($exception instanceof TBGActionNotFoundException)
 				{
 					echo "<h2>Could not find the specified action</h2>";
 				}
-				elseif ($exception instanceof BUGSTemplateNotFoundException)
+				elseif ($exception instanceof TBGTemplateNotFoundException)
 				{
 					echo "<h2>Could not find the template file for the specified action</h2>";
 				}
@@ -114,10 +114,10 @@
 				</ul>";
 			}
 			echo "<h2>Log messages:</h2>";
-			foreach (BUGSlogging::getEntries() as $entry)
+			foreach (TBGLogging::getEntries() as $entry)
 			{
-				$color = BUGSlogging::getCategoryColor($entry['category']);
-				$lname = BUGSlogging::getLevelName($entry['level']);
+				$color = TBGLogging::getCategoryColor($entry['category']);
+				$lname = TBGLogging::getLevelName($entry['level']);
 				echo "<div class=\"log_{$entry['category']}\"><strong>{$lname}</strong> <strong style=\"color: #{$color}\">[{$entry['category']}]</strong> <span style=\"color: #555; font-size: 10px; font-style: italic;\">{$entry['time']}</span>&nbsp;&nbsp;{$entry['message']}</div>";
 			}
 			echo "</div>
@@ -149,7 +149,7 @@
 	 */
 	function __autoload($classname)
 	{
-		$classes = BUGScontext::getClasspaths();
+		$classes = TBGContext::getClasspaths();
 		
 		if (isset($classes[$classname]))
 		{
@@ -164,42 +164,42 @@
 		date_default_timezone_set('Europe/London');
 		
 		// Load the context class, which controls most of things
-		require THEBUGGENIE_PATH . 'core/classes/BUGScontext.class.php';
+		require THEBUGGENIE_PATH . 'core/classes/TBGContext.class.php';
 
 		// Load the logging class so we can log stuff
-		require THEBUGGENIE_PATH . 'core/classes/BUGSlogging.class.php';
+		require THEBUGGENIE_PATH . 'core/classes/TBGLogging.class.php';
 		
 		// Set the start time
-		BUGScontext::setLoadStart($starttime[1] + $starttime[0]);
-		BUGSlogging::log('Initializing B2 framework');
+		TBGContext::setLoadStart($starttime[1] + $starttime[0]);
+		TBGLogging::log('Initializing B2 framework');
 		
 		// Set the include path
-		BUGScontext::setIncludePath(THEBUGGENIE_PATH);
+		TBGContext::setIncludePath(THEBUGGENIE_PATH);
 
 		// Add classpath so we can find the BUGS* classes
-		BUGScontext::addClasspath(THEBUGGENIE_PATH . 'core/classes/');
-		BUGSlogging::log((BUGScache::isEnabled()) ? 'Cache is enabled' : 'Cache is not enabled');
+		TBGContext::addClasspath(THEBUGGENIE_PATH . 'core/classes/');
+		TBGLogging::log((TBGCache::isEnabled()) ? 'Cache is enabled' : 'Cache is not enabled');
 		
-		BUGSlogging::log('Loading B2DB');
+		TBGLogging::log('Loading B2DB');
 		try
 		{
-			BUGSlogging::log('Adding B2DB classes to autoload path');
+			TBGLogging::log('Adding B2DB classes to autoload path');
 			define ('B2DB_BASEPATH', THEBUGGENIE_PATH . 'core/B2DB/');
-			BUGScontext::addClasspath(THEBUGGENIE_PATH . 'core/B2DB/classes/');
-			BUGSlogging::log('...done (Adding B2DB classes to autoload path)');
+			TBGContext::addClasspath(THEBUGGENIE_PATH . 'core/B2DB/classes/');
+			TBGLogging::log('...done (Adding B2DB classes to autoload path)');
 
-			BUGSlogging::log('Initializing B2DB');
+			TBGLogging::log('Initializing B2DB');
 			if (!isset($argc)) BaseB2DB::setHTMLException(true);
 			BaseB2DB::initialize();
-			BUGSlogging::log('...done (Initializing B2DB)');
+			TBGLogging::log('...done (Initializing B2DB)');
 			
 			if (class_exists('B2DB'))
 			{
-				BUGSlogging::log('Database connection details found, connecting');
+				TBGLogging::log('Database connection details found, connecting');
 				B2DB::doConnect();
-				BUGSlogging::log('...done (Database connection details found, connecting)');
-				BUGSlogging::log('Adding B2DB table classpath to autoload path');
-				BUGScontext::addClasspath(THEBUGGENIE_PATH . 'core/classes/B2DB/');
+				TBGLogging::log('...done (Database connection details found, connecting)');
+				TBGLogging::log('Adding B2DB table classpath to autoload path');
+				TBGContext::addClasspath(THEBUGGENIE_PATH . 'core/classes/B2DB/');
 			}
 			
 		}
@@ -208,16 +208,16 @@
 			tbg_exception('Could not load and initiate the B2DB subsystem', $e);
 			exit();
 		}
-		BUGSlogging::log('...done');
+		TBGLogging::log('...done');
 		
-		BUGSlogging::log('Initializing context');
-		BUGScontext::initialize();
-		BUGSlogging::log('...done');
+		TBGLogging::log('Initializing context');
+		TBGContext::initialize();
+		TBGLogging::log('...done');
 		
 		require THEBUGGENIE_PATH . 'core/common_functions.inc.php';
 		require THEBUGGENIE_PATH . 'core/geshi/geshi.php';
 		
-		BUGSlogging::log('B2 framework loaded');
+		TBGLogging::log('B2 framework loaded');
 	}
 	catch (Exception $e)
 	{

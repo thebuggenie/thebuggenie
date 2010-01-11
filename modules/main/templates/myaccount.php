@@ -6,7 +6,7 @@
 <table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td id="account_lefthand" style="vertical-align: top; width: 350px;">
-			<?php BUGScontext::trigger('core', 'account_left_top'); ?>
+			<?php TBGContext::trigger('core', 'account_left_top'); ?>
 			<div class="rounded_box iceblue_borderless" style="margin: 10px 0px 10px 10px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="vertical-align: middle; padding: 5px 10px 5px 10px; font-size: 14px;">
@@ -15,7 +15,7 @@
 					<br />
 					<span style="font-size: 12px;">
 						(<?php echo $bugs_user->getUsername(); ?>)<br>
-						<?php echo '<b>' . __('Status: %status%', array('%status%' => '</b>' . (($bugs_user->getState() instanceof BUGSuserstate) ? $bugs_user->getState()->getName() : '<span class="faded_medium">' . __('Unknown') . '</span>'))); ?>
+						<?php echo '<b>' . __('Status: %status%', array('%status%' => '</b>' . (($bugs_user->getState() instanceof TBGUserstate) ? $bugs_user->getState()->getName() : '<span class="faded_medium">' . __('Unknown') . '</span>'))); ?>
 					</span>
 					<br />
 					<div style="font-size: 13px;">
@@ -23,7 +23,7 @@
 							<?php echo image_tag('icon_change_password.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 							<a href="javascript:void(0);" onclick="$('change_password_form').toggle();"><?php echo __('Change my password'); ?></a>
 						</div>
-						<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form" style="display: none;">
+						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form" style="display: none;">
 							<div class="rounded_box white" style="margin: 10px 0 10px 0;" id="change_password_div">
 								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 								<div class="xboxcontent" style="vertical-align: middle; padding: 5px 10px 5px 10px; font-size: 14px;">
@@ -61,19 +61,19 @@
 			<div style="margin: 10px 0 10px 10px;">
 				<?php include_component('main/myfriends'); ?>
 			</div>
-			<?php BUGScontext::trigger('core', 'account_left_bottom'); ?>
+			<?php TBGContext::trigger('core', 'account_left_bottom'); ?>
 		</td>
 		<td valign="top" align="left" style="padding: 0 10px 0 5px;">
 			<div style="margin: 10px 0 0 0; clear: both; height: 30px;" class="tab_menu">
 				<ul id="account_tabs">
 					<li class="selected" id="tab_profile"><a onclick="switchSubmenuTab('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('My profile'); ?></a></li>
 					<li id="tab_settings"><a onclick="switchSubmenuTab('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('Settings'); ?></a></li>
-					<?php BUGScontext::trigger('core', 'account_tabs'); ?>
+					<?php TBGContext::trigger('core', 'account_tabs'); ?>
 				</ul>
 			</div>
 			<div id="account_tabs_panes">
 				<div id="tab_profile_pane">
-					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="updateProfileInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="updateProfileInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
 						<div class="rounded_box borderless" style="margin: 5px 0 0 0; width: 700px;">
 							<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 							<div class="xboxcontent" style="padding: 5px;">
@@ -136,7 +136,7 @@
 					</form>
 				</div>
 				<div id="tab_settings_pane" style="display: none;">
-					<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="updateProfileSettings('<?php echo make_url('account_save_settings'); ?>'); return false;" method="post" id="profile_settings_form">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="updateProfileSettings('<?php echo make_url('account_save_settings'); ?>'); return false;" method="post" id="profile_settings_form">
 						<div class="rounded_box borderless" style="margin: 5px 0 0 0; width: 700px;">
 							<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 							<div class="xboxcontent" style="padding: 5px;">
@@ -190,19 +190,19 @@
 						</div>
 					</form>
 				</div>
-				<?php BUGScontext::trigger('core', 'account_tab_panes'); ?>
+				<?php TBGContext::trigger('core', 'account_tab_panes'); ?>
 			</div>
 		</td>
 	</tr>
 </table>
 <?php
 
-/*<script type="text/javascript" src="<?php echo BUGScontext::getTBGPath(); ?>js/account.js"></script>
+/*<script type="text/javascript" src="<?php echo TBGContext::getTBGPath(); ?>js/account.js"></script>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 <tr>
 <td style="width: 225px;" valign="top">
 <div style="margin-top: 0px;">
-	<?php BUGScontext::trigger('core', 'account_left_top'); ?>
+	<?php TBGContext::trigger('core', 'account_left_top'); ?>
 	<table class="b2_section_microframe" cellpadding=0 cellspacing=0>
 	<tr>
 	<td class="b2_section_microframe_header"><?php echo __('Common actions'); ?></td>
@@ -228,7 +228,7 @@
 	<tr><td colspan=2><span id="password_changed_span"></span></td></tr>
 	<tr id="newPass" style="display: none;"><td colspan=2>
 	<div style="padding: 2px;"><?php echo __('Enter your current password, and your new pasword twice to change'); ?>:<br>
-	<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="account.php" method="post" id="changepassword_form" onsubmit="return false">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="account.php" method="post" id="changepassword_form" onsubmit="return false">
 	<table style="width: 100%;" cellpadding=0 cellspacing=0>
 	<tr><td style="width: 50px;"><b style="font-size: 10px;"><?php echo __('Current: %password%', array('%password%' => '')); ?></b></td><td style="width: auto;"><input type="password" class="text" name="old_pass" style="width: 100%;"></td></tr>
 	<tr><td style="width: 50px;"><b style="font-size: 10px;"><?php echo __('New: %password%', array('%password%' => '')); ?></b></td><td style="width: auto;"><input type="password" class="text" name="new_pass1" style="width: 100%;"></td></tr>
@@ -240,13 +240,13 @@
 	<div align="right" class="small"><a href="javascript:void(0);" onclick="$('newPass').toggle();"><?php echo __('Cancel'); ?></a></div>
 	</td>
 	</tr>
-	<?php if (!BUGScontext::getRequest()->hasParameter('settings')): ?>
+	<?php if (!TBGContext::getRequest()->hasParameter('settings')): ?>
 		<tr>
 		<td class="imgtd"><?php echo image_tag('icon_edit.png'); ?></td>
 		<td><a href="javascript:void(0);" onclick="getEditAccount();"><?php echo __('Edit my account details'); ?></a></td>
 		</tr>
 	<?php endif; ?>
-	<?php if (BUGScontext::getRequest()->hasCookie('b2_username_preswitch')): ?>
+	<?php if (TBGContext::getRequest()->hasCookie('b2_username_preswitch')): ?>
 		<tr>
 		<td class="imgtd"><?php echo image_tag('switchuser.png'); ?></td>
 		<td style="text-align: left;"><a href="login_validate.inc.php?switch_user=true"><?php echo __('Switch back to original user'); ?></a></td>
@@ -266,7 +266,7 @@
 	<table cellpadding=0 cellspacing=0 width="100%">
 	<?php
 
-		foreach (BUGScontext::getModules() as $module)
+		foreach (TBGContext::getModules() as $module)
 		{
 			if ($module->isEnabled() && $module->hasAccess())
 			{
@@ -275,7 +275,7 @@
 					?>
 					<tr>
 					<td class="imgtd"><?php echo image_tag('tab_' . $module->getName() . '.png', array(), false, $module->getName()); ?></td>
-					<td><a href="<?php print BUGScontext::getTBGPath() . "modules/" . $module->getName() . "/" . $module->getName(); ?>.php"><?php print $module->getMenuTitle(); ?></a></td>
+					<td><a href="<?php print TBGContext::getTBGPath() . "modules/" . $module->getName() . "/" . $module->getName(); ?>.php"><?php print $module->getMenuTitle(); ?></a></td>
 					</tr>
 					<?php
 				}
@@ -297,9 +297,9 @@
 		<ul>
 			<li>
 				<?php echo image_tag('tab_account.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-				<a href="<?php print BUGScontext::getTBGPath(); ?>account.php"><?php echo __('Account details'); ?></a>
+				<a href="<?php print TBGContext::getTBGPath(); ?>account.php"><?php echo __('Account details'); ?></a>
 			</li>
-			<?php BUGScontext::trigger('core', 'account_settingslist'); ?>
+			<?php TBGContext::trigger('core', 'account_settingslist'); ?>
 		</ul>
 	</td>
 	</tr>
@@ -310,12 +310,12 @@
 		<table cellpadding=0 cellspacing=0 width="100%">
 		<?php
 	
-			foreach (BUGScontext::getUser()->getFriends() as $friend)
+			foreach (TBGContext::getUser()->getFriends() as $friend)
 			{
 				echo include_component('main/userdropdown', array('user' => $friend));
 			}
 	
-			if (count(BUGScontext::getUser()->getFriends()) == 0)
+			if (count(TBGContext::getUser()->getFriends()) == 0)
 			{
 				?><tr><td><?php echo __('Friends will appear here'); ?></td></tr><?php
 			}
@@ -324,28 +324,28 @@
 	</div>
 	<?php
 
-	BUGScontext::trigger('core', 'account_left_middle');
-	BUGScontext::trigger('core', 'account_left_bottom');
+	TBGContext::trigger('core', 'account_left_middle');
+	TBGContext::trigger('core', 'account_left_bottom');
 
 	?>
 	</td>
 	<td valign="top" align="left" style="padding-right: 10px;">
 	<?php
 
-	if (BUGScontext::getRequest()->getParameter('settings'))
+	if (TBGContext::getRequest()->getParameter('settings'))
 	{
-		BUGScontext::trigger('core', 'account_settings', BUGScontext::getRequest()->getParameter('settings'));
+		TBGContext::trigger('core', 'account_settings', TBGContext::getRequest()->getParameter('settings'));
 	}
 	else
 	{
-		BUGScontext::trigger('core', 'account_right_top');
+		TBGContext::trigger('core', 'account_right_top');
 	
 		?>
 		<span id="account_main">
 		<table style="table-layout: fixed; width: 100%; background-color: #F1F1F1; margin-top: 10px; border: 1px solid #DDD;" cellpadding=0 cellspacing=0>
 		<tr>
-		<td style="border: 0px; width: auto; padding: 3px; padding-left: 7px;"><b><?php echo __('Welcome, %username%', array('%username%' => BUGScontext::getUser()->getRealname())); ?></b></td>
-		<td style="background: url('<?php print "themes/" .  BUGSsettings::getThemeName(); ?>/clock.png') no-repeat right; text-align: right; padding: 3px; padding-right: 25px;"><?php print bugs_formatTime($_SERVER["REQUEST_TIME"], 3); ?></td>
+		<td style="border: 0px; width: auto; padding: 3px; padding-left: 7px;"><b><?php echo __('Welcome, %username%', array('%username%' => TBGContext::getUser()->getRealname())); ?></b></td>
+		<td style="background: url('<?php print "themes/" .  TBGSettings::getThemeName(); ?>/clock.png') no-repeat right; text-align: right; padding: 3px; padding-right: 25px;"><?php print bugs_formatTime($_SERVER["REQUEST_TIME"], 3); ?></td>
 		<td style="width: 7px;">&nbsp;</td>
 		</tr>
 		</table>
@@ -353,24 +353,24 @@
 		<tr>
 		<td style="padding: 0px; height: 70px; width: 70px; border: 1px solid #DDD; text-align: center;" align="right" valign="middle" id="avatar_td"><?php echo image_tag($bugs_user->getAvatarURL(false), array(), true); ?></td>
 		<td style="padding-left: 10px; width: 250px;" valign="top">
-		<b><?php echo __('Real name: %real_name%', array('%real_name%' => '')); ?></b> <?php print BUGScontext::getUser()->getRealname(); ?><br>
-		<b><?php echo __('People see you as: %buddy_name%', array('%buddy_name%' => '')); ?></b> <?php print BUGScontext::getUser()->getBuddyname(); ?><br>
+		<b><?php echo __('Real name: %real_name%', array('%real_name%' => '')); ?></b> <?php print TBGContext::getUser()->getRealname(); ?><br>
+		<b><?php echo __('People see you as: %buddy_name%', array('%buddy_name%' => '')); ?></b> <?php print TBGContext::getUser()->getBuddyname(); ?><br>
 		<br>
-		<?php echo __('You are currently: %user_state%', array('%user_state%' => '<b>' . BUGScontext::getUser()->getState()->getName() . '</b>')); ?>
+		<?php echo __('You are currently: %user_state%', array('%user_state%' => '<b>' . TBGContext::getUser()->getState()->getName() . '</b>')); ?>
 		</td>
 		<td style="width: 40px; text-align: left;" valign="middle"><a href="javascript:void(0);" onclick="getEditAccount();" style="font-size: 9px;">Edit</a></td>
 		<td style="padding-left: 10px; width: auto;" valign="top">
-		<?php if (BUGScontext::getUser()->getHomepage() != ""): ?>
-			<b><?php echo __('Homepage: %link_to_homepage%', array('%link_to_homepage%' => '')); ?></b><a href="<?php echo BUGScontext::getUser()->getHomepage(); ?>" target="_blank"><?php echo BUGScontext::getUser()->getHomepage(); ?></a><br>
+		<?php if (TBGContext::getUser()->getHomepage() != ""): ?>
+			<b><?php echo __('Homepage: %link_to_homepage%', array('%link_to_homepage%' => '')); ?></b><a href="<?php echo TBGContext::getUser()->getHomepage(); ?>" target="_blank"><?php echo TBGContext::getUser()->getHomepage(); ?></a><br>
 		<?php endif; ?>
-		<?php if (BUGScontext::getUser()->getEmail() != ''): ?>
-			<b><?php echo __('Email address: %email_address%', array('%email_address%' => '')); ?></b><a href="mailto:<?php print BUGScontext::getUser()->getEmail(); ?>"><?php print BUGScontext::getUser()->getEmail(); ?></a><br>
+		<?php if (TBGContext::getUser()->getEmail() != ''): ?>
+			<b><?php echo __('Email address: %email_address%', array('%email_address%' => '')); ?></b><a href="mailto:<?php print TBGContext::getUser()->getEmail(); ?>"><?php print TBGContext::getUser()->getEmail(); ?></a><br>
 		<?php else: ?>
 			<b style="color: #AAA;"><?php echo __('Email address not provided'); ?></b>
 		<?php endif; ?>
 		<div style="padding-top: 5px;" id="account_email">
-		<?php echo (BUGScontext::getUser()->isEmailPrivate()) ? __('Your email-address is currently private, which means only you and staff members can view it.') : __('Your email-address is currently public, which means anyone can view it.'); ?><br>
-		<a href="javascript:void(0);" onclick="setEmailPrivacy(<?php print (BUGScontext::getUser()->getEmailPrivacy()) ? 0 : 1; ?>);"><?php echo (BUGScontext::getUser()->getEmailPrivacy()) ? __('Make my email-address public') : __('Make my email-address private'); ?></a>
+		<?php echo (TBGContext::getUser()->isEmailPrivate()) ? __('Your email-address is currently private, which means only you and staff members can view it.') : __('Your email-address is currently public, which means anyone can view it.'); ?><br>
+		<a href="javascript:void(0);" onclick="setEmailPrivacy(<?php print (TBGContext::getUser()->getEmailPrivacy()) ? 0 : 1; ?>);"><?php echo (TBGContext::getUser()->getEmailPrivacy()) ? __('Make my email-address public') : __('Make my email-address private'); ?></a>
 		</div> 
 		</td>
 		</tr>
@@ -384,7 +384,7 @@
 		<table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
 		<?php
 			
-		$avatar_path = BUGSsettings::get('local_path') . 'avatars/';
+		$avatar_path = TBGSettings::get('local_path') . 'avatars/';
 		$avatar_path_handle = opendir($avatar_path);
 		$avatars = array();
 		while ($avatar = readdir($avatar_path_handle))
@@ -406,7 +406,7 @@
 		</div>
 		<?php
 	
-		BUGScontext::trigger('core', 'account_right_bottom');
+		TBGContext::trigger('core', 'account_right_bottom');
 	}
 
 ?>

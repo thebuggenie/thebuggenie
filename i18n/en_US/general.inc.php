@@ -1,6 +1,6 @@
 <?php
 
-	BUGScontext::getI18n()->setCharset('utf-8');
+	TBGContext::getI18n()->setCharset('utf-8');
 	setlocale(LC_ALL, array('en_US@euro', 'en_US', 'en'));
 	
 	$strings['Licensed under the MPL 1.1 only, read it at %link_to_MPL%'] = 'Licensed under the MPL 1.1 only, read it at %link_to_MPL%';

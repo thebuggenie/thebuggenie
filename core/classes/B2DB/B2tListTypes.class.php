@@ -53,7 +53,7 @@
 			{
 				self::$_item_cache = array();
 				$crit = $this->getCriteria();
-				$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 				$crit->addOrderBy(self::ORDER, B2DBCriteria::SORT_ASC);
 				if ($res = $this->doSelect($crit))
 				{
@@ -80,7 +80,7 @@
 
 		public function createNew($name, $itemtype, $itemdata = null, $scope = null)
 		{
-			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 
 			$trans = B2DB::startTransaction();
 			$crit = $this->getCriteria();
@@ -111,7 +111,7 @@
 
 			foreach ($_categories as $name => $itemdata)
 			{
-				$this->createNew($name, BUGSdatatype::CATEGORY, $itemdata, $scope);
+				$this->createNew($name, TBGDatatype::CATEGORY, $itemdata, $scope);
 			}
 
 			$priorities = array();
@@ -123,7 +123,7 @@
 
 			foreach ($priorities as $name => $itemdata)
 			{
-				$this->createNew($name, BUGSdatatype::PRIORITY, $itemdata, $scope);
+				$this->createNew($name, TBGDatatype::PRIORITY, $itemdata, $scope);
 			}
 
 			$reproducabilities = array();
@@ -134,7 +134,7 @@
 
 			foreach ($reproducabilities as $name => $itemdata)
 			{
-				$this->createNew($name, BUGSdatatype::REPRODUCABILITY, $itemdata, $scope);
+				$this->createNew($name, TBGDatatype::REPRODUCABILITY, $itemdata, $scope);
 			}
 
 			$resolutions = array();
@@ -147,7 +147,7 @@
 
 			foreach ($resolutions as $name => $itemdata)
 			{
-				$this->createNew($name, BUGSdatatype::RESOLUTION, $itemdata, $scope);
+				$this->createNew($name, TBGDatatype::RESOLUTION, $itemdata, $scope);
 			}
 
 			$severities = array();
@@ -157,7 +157,7 @@
 
 			foreach ($severities as $name => $itemdata)
 			{
-				$this->createNew($name, BUGSdatatype::SEVERITY, $itemdata, $scope);
+				$this->createNew($name, TBGDatatype::SEVERITY, $itemdata, $scope);
 			}
 
 			$statuses = array();
@@ -176,7 +176,7 @@
 
 			foreach ($statuses as $name => $itemdata)
 			{
-				$this->createNew($name, BUGSdatatype::STATUS, $itemdata, $scope);
+				$this->createNew($name, TBGDatatype::STATUS, $itemdata, $scope);
 			}
 		}
 
@@ -195,7 +195,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ITEMTYPE, $type);
 			$crit->addWhere(self::ID, $id);
-			$crit->addWhere(self::SCOPE, BUGScontext::getScope()->getID());
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$res = $this->doDelete($crit);
 		}

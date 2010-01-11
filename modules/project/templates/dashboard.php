@@ -80,7 +80,7 @@
 									<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
 									<span class="faded_dark" style="font-size: 11px;">
 										<?php echo bugs_formatTime($issue->getPosted(), 20); ?>,
-										<strong><?php echo ($issue->getStatus() instanceof BUGSdatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
+										<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
 									</span>
 								</td>
 							</tr>
@@ -101,7 +101,7 @@
 									<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
 									<span class="faded_dark" style="font-size: 11px;">
 										<?php echo bugs_formatTime($issue->getPosted(), 20); ?>,
-										<strong><?php echo ($issue->getStatus() instanceof BUGSdatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
+										<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
 									</span>
 								</td>
 							</tr>

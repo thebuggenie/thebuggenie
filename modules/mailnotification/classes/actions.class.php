@@ -1,77 +1,77 @@
 <?php
 
-	class mailnotificationActions extends BUGSaction
+	class mailnotificationActions extends TBGAction
 	{
 
 		/**
 		 * Forgotten password logic
 		 *
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runForgot(BUGSrequest $request)
+		public function runForgot(TBGRequest $request)
 		{
 			try
 			{
-				if (BUGScontext::getRequest()->getMethod() == BUGSrequest::POST)
+				if (TBGContext::getRequest()->getMethod() == TBGRequest::POST)
 				{
-					$username = BUGScontext::getRequest()->getParameter('forgot_password_username');
+					$username = TBGContext::getRequest()->getParameter('forgot_password_username');
 					if (!empty($username))
 					{
-						if (($user = BUGSuser::getByUsername($username)) instanceof BUGSuser)
+						if (($user = TBGUser::getByUsername($username)) instanceof TBGUser)
 						{
 							if ($user->getEmail())
 							{
-								BUGScontext::getModule('mailnotification')->sendForgottenPasswordEmail($user);
-								BUGScontext::setMessage('forgot_success', BUGScontext::getI18n()->__('Please use the link in the email you received'));
-								$this->forward(BUGScontext::getRouting()->generate('login'));
+								TBGContext::getModule('mailnotification')->sendForgottenPasswordEmail($user);
+								TBGContext::setMessage('forgot_success', TBGContext::getI18n()->__('Please use the link in the email you received'));
+								$this->forward(TBGContext::getRouting()->generate('login'));
 							}
 							else
 							{
-								throw new Exception(BUGScontext::getI18n()->__('Cannot find an email address for this user'));
+								throw new Exception(TBGContext::getI18n()->__('Cannot find an email address for this user'));
 							}
 						}
 						else
 						{
-							throw new Exception(BUGScontext::getI18n()->__('This username does not exist'));
+							throw new Exception(TBGContext::getI18n()->__('This username does not exist'));
 						}
 					}
 					else
 					{
-						throw new Exception(BUGScontext::getI18n()->__('Please enter a username'));
+						throw new Exception(TBGContext::getI18n()->__('Please enter a username'));
 					}
 				}
 			}
 			catch (Exception $e)
 			{
-				BUGScontext::setMessage('forgot_error', $e->getMessage());
-				$this->forward(BUGScontext::getRouting()->generate('login'));
+				TBGContext::setMessage('forgot_error', $e->getMessage());
+				$this->forward(TBGContext::getRouting()->generate('login'));
 			}
 		}
 
 		/**
 		 * Send a test email
 		 *
-		 * @param BUGSrequest $request
+		 * @param TBGRequest $request
 		 */
-		public function runTestEmail(BUGSrequest $request)
+		public function runTestEmail(TBGRequest $request)
 		{
 			if ($email_to = $request->getParameter('test_email_to'))
 			{
-				if (BUGScontext::getModule('mailnotification')->sendTestEmail($email_to))
+				if (TBGContext::getModule('mailnotification')->sendTestEmail($email_to))
 				{
-					BUGScontext::setMessage('module_message', BUGScontext::getI18n()->__('The email was successfully accepted for delivery'));
+					TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The email was successfully accepted for delivery'));
 				}
 				else
 				{
-					BUGScontext::setMessage('module_error', BUGScontext::getI18n()->__('The email was not sent'));
-					BUGScontext::setMessage('module_error_details', BUGSlogging::getMessagesForCategory('mailnotification', BUGSlogging::LEVEL_NOTICE));
+					TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The email was not sent'));
+					TBGContext::setMessage('module_error_details', TBGLogging::getMessagesForCategory('mailnotification', TBGLogging::LEVEL_NOTICE));
 				}
 			}
 			else
 			{
-				BUGScontext::setMessage('module_error', BUGScontext::getI18n()->__('Please specify an email address'));
+				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Please specify an email address'));
 			}
-			$this->forward(BUGScontext::getRouting()->generate('configure_module', array('config_module' => 'mailnotification')));
+			$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'mailnotification')));
 		}
 
 	}

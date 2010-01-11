@@ -2,5 +2,5 @@
 
 	function get_spaced_name($camelcased)
 	{
-		return BUGScontext::getModule('publish')->getSpacedName($camelcased);
+		return TBGContext::getModule('publish')->getSpacedName($camelcased);
 	}

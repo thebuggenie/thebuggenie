@@ -24,7 +24,7 @@
 				<?php include_component('configuration/permissionsinfoitem', array('key' => $key, 'target_id' => $target_id, 'type' => 'everyone', 'mode' => $mode, 'item_id' => 0, 'module' => $module, 'access_level' => $access_level)); ?>
 			</td>
 		</tr>
-		<?php $groups = BUGSgroup::getAll(); ?>
+		<?php $groups = TBGGroup::getAll(); ?>
 		<?php $gcount = count($groups); $cc = 1; ?>
 		<?php foreach ($groups as $group): ?>
 			<tr class="canhover_light">
@@ -35,7 +35,7 @@
 			</tr>
 			<?php $cc++; ?>
 		<?php endforeach; ?>
-		<?php $teams = BUGSteam::getAll(); ?>
+		<?php $teams = TBGTeam::getAll(); ?>
 		<?php foreach ($teams as $team): ?>
 			<tr class="canhover_light">
 				<td style="padding: 2px;"><?php echo '<b>'.__('Team: %team_name%', array('%team_name%' => '</b>'.$team->getName())); ?></td>

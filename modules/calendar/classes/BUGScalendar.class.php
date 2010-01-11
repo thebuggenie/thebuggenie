@@ -1,19 +1,19 @@
 <?php
 
-	class BUGScalendar extends BUGSmodule 
+	class BUGScalendar extends TBGModule 
 	{
 		
 		public function __construct($m_id, $res = null)
 		{
 			parent::__construct($m_id, $res);
 			$this->_module_version = '1.0';
-			$this->setLongName(BUGScontext::getI18n()->__('Calendar'));
-			$this->setMenuTitle(BUGScontext::getI18n()->__('Calendar'));
-			$this->setConfigTitle(BUGScontext::getI18n()->__('Calendar'));
-			$this->setDescription(BUGScontext::getI18n()->__('Enables calendars, todos and meetings'));
+			$this->setLongName(TBGContext::getI18n()->__('Calendar'));
+			$this->setMenuTitle(TBGContext::getI18n()->__('Calendar'));
+			$this->setConfigTitle(TBGContext::getI18n()->__('Calendar'));
+			$this->setDescription(TBGContext::getI18n()->__('Enables calendars, todos and meetings'));
 			$this->setHasAccountSettings();
 			$this->addAvailableListener('core', 'dashboard_left_top', 'section_calendarSummary', 'Dashboard calendar summary');
-			$this->addAvailableListener('core', 'BUGSUser::getState', 'section_bugsuser_getState', 'Automatic user-state change');
+			$this->addAvailableListener('core', 'TBGUser::getState', 'section_TBGUser_getState', 'Automatic user-state change');
 		}
 
 		public function initialize()
@@ -22,20 +22,20 @@
 
 		public static function install($scope = null)
 		{
-  			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+  			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			
 			$module = parent::_install('calendar', 'BUGScalendar', '1.0', true, false, true, $scope);
 
 			$module->enableListenerSaved('core', 'dashboard_left_top', $scope);
 			$module->enableListenerSaved('core', 'account_settings', $scope);
 			$module->enableListenerSaved('core', 'account_settingslist', $scope);
-			$module->enableListenerSaved('core', 'BUGSUser::getState', $scope);
+			$module->enableListenerSaved('core', 'TBGUser::getState', $scope);
 			
 			$module->setPermission(0, 3, 0, false, $scope);
 
 			$module->saveSetting('weekstart', 1, 0, $scope);
 
-			if ($scope == BUGScontext::getScope()->getID())
+			if ($scope == TBGContext::getScope()->getID())
 			{
 				B2DB::getTable('B2tCalendars')->create();
 				B2DB::getTable('B2tCalendarTasks')->create();
@@ -46,7 +46,7 @@
 		
 		public function uninstall()
 		{
-			if (BUGScontext::getScope()->getID() == 1)
+			if (TBGContext::getScope()->getID() == 1)
 			{
 				B2DB::getTable('B2tCalendars')->drop();
 				B2DB::getTable('B2tCalendarTasks')->drop();
@@ -68,15 +68,15 @@
 		{
 			if ($uid === null)
 			{
-				$uid = BUGScontext::getUser()->getUID();
+				$uid = TBGContext::getUser()->getUID();
 			}
 			if ($calendar == null)
 			{
-				$calendar = BUGScontext::getModule('calendar')->getSetting('calendar', $uid);
+				$calendar = TBGContext::getModule('calendar')->getSetting('calendar', $uid);
 				if ($calendar === null)
 				{
 					$calendar = BUGScalendarCalendar::createNew($uid)->getID();
-					BUGScontext::getModule('calendar')->saveSetting('calendar', $calendar, $uid);
+					TBGContext::getModule('calendar')->saveSetting('calendar', $calendar, $uid);
 				}
 			}
 			
@@ -127,65 +127,65 @@
 		public function section_accountSettings($module)
 		{
 			if ($module != $this->getName()) return;
-			if (BUGScontext::getRequest()->getParameter('weekstart'))
+			if (TBGContext::getRequest()->getParameter('weekstart'))
 			{
-				BUGScontext::getModule('calendar')->saveSetting('weekstart', BUGScontext::getRequest()->getParameter('weekstart'), BUGScontext::getUser()->getUID());
+				TBGContext::getModule('calendar')->saveSetting('weekstart', TBGContext::getRequest()->getParameter('weekstart'), TBGContext::getUser()->getUID());
 			}
-			if (BUGScontext::getRequest()->getParameter('calendarstartup'))
+			if (TBGContext::getRequest()->getParameter('calendarstartup'))
 			{
-				BUGScontext::getModule('calendar')->saveSetting('calendarstartup', BUGScontext::getRequest()->getParameter('calendarstartup'), BUGScontext::getUser()->getUID());
+				TBGContext::getModule('calendar')->saveSetting('calendarstartup', TBGContext::getRequest()->getParameter('calendarstartup'), TBGContext::getUser()->getUID());
 			}
-			if (BUGScontext::getRequest()->getParameter('hideweekends'))
+			if (TBGContext::getRequest()->getParameter('hideweekends'))
 			{
-				BUGScontext::getModule('calendar')->saveSetting('hideweekends', BUGScontext::getRequest()->getParameter('hideweekends'), BUGScontext::getUser()->getUID());
+				TBGContext::getModule('calendar')->saveSetting('hideweekends', TBGContext::getRequest()->getParameter('hideweekends'), TBGContext::getUser()->getUID());
 			}
 			?>
 			<table style="table-layout: fixed; width: 100%; background-color: #F1F1F1; margin-top: 15px; border: 1px solid #DDD;" cellpadding=0 cellspacing=0>
 			<tr>
 			<td style="padding-left: 4px; width: 20px;"><?php echo image_tag('tab_calendar.png'); ?></td>
-			<td style="border: 0px; width: auto; padding: 3px; padding-left: 7px;"><b><?php echo BUGScontext::getI18n()->__('Calendar settings'); ?></b></td>
+			<td style="border: 0px; width: auto; padding: 3px; padding-left: 7px;"><b><?php echo TBGContext::getI18n()->__('Calendar settings'); ?></b></td>
 			</tr>
 			</table>
-			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="account.php" method="post">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="account.php" method="post">
 			<input type="hidden" name="settings" value="<?php echo $this->getName(); ?>">
 			<table class="b2_section_miniframe" cellpadding=0 cellspacing=0>
 			<tr>
-			<td style="width: 150px;"><b><?php echo BUGScontext::getI18n()->__('Week starts on'); ?></b></td>
+			<td style="width: 150px;"><b><?php echo TBGContext::getI18n()->__('Week starts on'); ?></b></td>
 			<td style="width: 300px;"><select name="weekstart" style="width: 100%;">
-			<option value=1 <?php if (BUGScontext::getModule('calendar')->getSetting('weekstart', BUGScontext::getUser()->getUID()) == 1) echo ' selected'; ?>><?php echo BUGScontext::getI18n()->__('Monday'); ?></option>
-			<option value=0 <?php if (BUGScontext::getModule('calendar')->getSetting('weekstart', BUGScontext::getUser()->getUID()) == 0) echo ' selected'; ?>><?php echo BUGScontext::getI18n()->__('Sunday'); ?></option>
+			<option value=1 <?php if (TBGContext::getModule('calendar')->getSetting('weekstart', TBGContext::getUser()->getUID()) == 1) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Monday'); ?></option>
+			<option value=0 <?php if (TBGContext::getModule('calendar')->getSetting('weekstart', TBGContext::getUser()->getUID()) == 0) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Sunday'); ?></option>
 			</select>
 			</td>
 			</tr>
 			<tr>
-			<td style="width: 150px;"><b><?php echo BUGScontext::getI18n()->__('Show only workdays'); ?></b></td>
+			<td style="width: 150px;"><b><?php echo TBGContext::getI18n()->__('Show only workdays'); ?></b></td>
 			<td style="width: 300px;"><select name="hideweekends" style="width: 100%;">
-			<option value=1 <?php if (BUGScontext::getModule('calendar')->getSetting('hideweekends', BUGScontext::getUser()->getUID()) == 1) echo ' selected'; ?>><?php echo BUGScontext::getI18n()->__('Yes, only show workdays'); ?></option>
-			<option value=0 <?php if (BUGScontext::getModule('calendar')->getSetting('hideweekends', BUGScontext::getUser()->getUID()) == 0) echo ' selected'; ?>><?php echo BUGScontext::getI18n()->__('No, show the whole week in week overview'); ?></option>
+			<option value=1 <?php if (TBGContext::getModule('calendar')->getSetting('hideweekends', TBGContext::getUser()->getUID()) == 1) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Yes, only show workdays'); ?></option>
+			<option value=0 <?php if (TBGContext::getModule('calendar')->getSetting('hideweekends', TBGContext::getUser()->getUID()) == 0) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('No, show the whole week in week overview'); ?></option>
 			</select>
 			</td>
 			</tr>
 			<tr>
-			<td style="width: 150px;"><b><?php echo BUGScontext::getI18n()->__('Calendar display'); ?></b></td>
+			<td style="width: 150px;"><b><?php echo TBGContext::getI18n()->__('Calendar display'); ?></b></td>
 			<td style="width: 300px;"><select name="calendarstartup" style="width: 100%;">
-			<option value="month" <?php if (BUGScontext::getModule('calendar')->getSetting('calendarstartup', BUGScontext::getUser()->getUID()) == "month") echo ' selected'; ?>><?php echo BUGScontext::getI18n()->__('Show the current month'); ?></option>
-			<option value="week" <?php if (BUGScontext::getModule('calendar')->getSetting('calendarstartup', BUGScontext::getUser()->getUID()) == "week") echo ' selected'; ?>><?php echo BUGScontext::getI18n()->__('Show current week'); ?></option>
-			<option value="day" <?php if (BUGScontext::getModule('calendar')->getSetting('calendarstartup', BUGScontext::getUser()->getUID()) == "day") echo ' selected'; ?>><?php echo BUGScontext::getI18n()->__('Show todays overview'); ?></option>
+			<option value="month" <?php if (TBGContext::getModule('calendar')->getSetting('calendarstartup', TBGContext::getUser()->getUID()) == "month") echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Show the current month'); ?></option>
+			<option value="week" <?php if (TBGContext::getModule('calendar')->getSetting('calendarstartup', TBGContext::getUser()->getUID()) == "week") echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Show current week'); ?></option>
+			<option value="day" <?php if (TBGContext::getModule('calendar')->getSetting('calendarstartup', TBGContext::getUser()->getUID()) == "day") echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Show todays overview'); ?></option>
 			</select>
 			</td>
 			</tr>
 			<tr>
-			<td colspan=2><?php echo BUGScontext::getI18n()->__('Select what to show by default when you go to your calendar'); ?></td>
+			<td colspan=2><?php echo TBGContext::getI18n()->__('Select what to show by default when you go to your calendar'); ?></td>
 			</tr>
 			<tr>
-			<td colspan=2 style="text-align: right;"><input type="submit" value="<?php echo BUGScontext::getI18n()->__('Save'); ?>"></td>
+			<td colspan=2 style="text-align: right;"><input type="submit" value="<?php echo TBGContext::getI18n()->__('Save'); ?>"></td>
 			</tr>
 			</table>
 			</form>
 			<?php
 		}
 		
-		public function section_bugsuser_getState($theUser)
+		public function section_TBGUser_getState($theUser)
 		{
 			$theUser = $vars;
 			$events = $this->getEvents($_SERVER["REQUEST_TIME"], $_SERVER["REQUEST_TIME"]);
@@ -202,12 +202,12 @@
 		
 		public function section_indexLeftTop()
 		{
-			if (BUGScontext::getUser()->getUID() != 0)
+			if (TBGContext::getUser()->getUID() != 0)
 			{
 				?>
 				<table class="b2_section_miniframe" cellpadding=0 cellspacing=0>
 				<tr>
-				<td class="b2_section_miniframe_header"><?php echo BUGScontext::getI18n()->__('Calendar items and tasks'); ?></td>
+				<td class="b2_section_miniframe_header"><?php echo TBGContext::getI18n()->__('Calendar items and tasks'); ?></td>
 				</tr>
 				<tr>
 				<td class="td1">
@@ -242,7 +242,7 @@
 									break;
 							}
 							?>
-							<td><a href="javascript:void(0);" onclick="window.open('<?php echo BUGScontext::getTBGPath(); ?>modules/calendar/show_event.php?id=<?php echo $anevent->getID(); ?>','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');"><?php echo $anevent->getTitle(); ?></a><br>
+							<td><a href="javascript:void(0);" onclick="window.open('<?php echo TBGContext::getTBGPath(); ?>modules/calendar/show_event.php?id=<?php echo $anevent->getID(); ?>','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');"><?php echo $anevent->getTitle(); ?></a><br>
 							<div><?php echo bugs_formatTime($anevent->getStartDate(), 12); ?> - <?php echo bugs_formatTime($anevent->getEndDate(), 12); ?></div></td>
 							</tr>
 							<?php
@@ -251,7 +251,7 @@
 					else
 					{
 						?>
-						<div style="padding: 2px;"><?php echo BUGScontext::getI18n()->__('You have nothing scheduled for today'); ?></div>
+						<div style="padding: 2px;"><?php echo TBGContext::getI18n()->__('You have nothing scheduled for today'); ?></div>
 						<table cellpadding=0 cellspacing=0 style="width: 100%;">
 						<?php
 					}
@@ -263,7 +263,7 @@
 					</tr>
 					<tr>
 					<td class="imgtd"><?php echo image_tag('tab_calendar.png'); ?></td>
-					<td><a href="modules/calendar/calendar.php"><i><?php echo BUGScontext::getI18n()->__('Go to my calendar'); ?></i></a></td>
+					<td><a href="modules/calendar/calendar.php"><i><?php echo TBGContext::getI18n()->__('Go to my calendar'); ?></i></a></td>
 					</tr>
 					</table>
 				</td>
@@ -278,7 +278,7 @@
 			$daystart = mktime(0, 0, 0, $month, $day, $year);
 			$dayend = ($daystart + 86400);
 			
-			$events = BUGScontext::getModule('calendar')->getEvents($daystart, $dayend);
+			$events = TBGContext::getModule('calendar')->getEvents($daystart, $dayend);
 
 			$retval = '<table class="calendar_day" cellpadding=0 cellspacing=0>';
 			$retval .= '<caption class="calendar-day-big">';
@@ -298,7 +298,7 @@
 			foreach ($events as $anevent)
 			{
 				$retval .= '<div class="calendar_event"';
-				$retval .= " onclick=\"window.open('" . BUGScontext::getTBGPath() . "modules/calendar/show_event.php?id=" . $anevent->getID() . "','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');\"";
+				$retval .= " onclick=\"window.open('" . TBGContext::getTBGPath() . "modules/calendar/show_event.php?id=" . $anevent->getID() . "','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');\"";
 				$retval .= '>';
 				switch ($anevent->getType())
 				{
@@ -327,15 +327,15 @@
 			$given_day = mktime(0, 0, 0, $month, $day, $year);
 
 			//echo $day . ',' . $month . ',' . $year;
-			$week_offset = BUGScontext::getModule('calendar')->getSetting('weekstart', BUGScontext::getUser()->getUID());
-			$hideweekend = BUGScontext::getModule('calendar')->getSetting('hideweekends', BUGScontext::getUser()->getUID());
+			$week_offset = TBGContext::getModule('calendar')->getSetting('weekstart', TBGContext::getUser()->getUID());
+			$hideweekend = TBGContext::getModule('calendar')->getSetting('hideweekends', TBGContext::getUser()->getUID());
 			$weekday = date('w', $given_day) - $week_offset;
 			if ($weekday < 0) $weekday = 6;
 
 			$first_of_week = mktime(0, 0, 0, $month, ($day - $weekday), $year);
 			$last_of_week = ($first_of_week + (86400 * 7));
 			
-			$events = BUGScontext::getModule('calendar')->getEvents($first_of_week, $last_of_week);
+			$events = TBGContext::getModule('calendar')->getEvents($first_of_week, $last_of_week);
 
 			$day_names = array();
 			for($n = 0, $t = $first_of_week; $n < 7; $n++, $t += 86400)
@@ -375,7 +375,7 @@
 						if ($anevent->isOnDate($day, ($day + 86400)))
 						{
 							$retval .= '<div class="calendar_event"';
-							$retval .= " onclick=\"window.open('" . BUGScontext::getTBGPath() . "modules/calendar/show_event.php?id=" . $anevent->getID() . "','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');\"";
+							$retval .= " onclick=\"window.open('" . TBGContext::getTBGPath() . "modules/calendar/show_event.php?id=" . $anevent->getID() . "','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');\"";
 							$retval .= '>';
 							switch ($anevent->getType())
 							{
@@ -408,12 +408,12 @@
 			/**
 			 * Original code by Keith Devens (keithdevens.com)
 			 */
-			$week_offset = BUGScontext::getModule('calendar')->getSetting('weekstart', BUGScontext::getUser()->getUID());
+			$week_offset = TBGContext::getModule('calendar')->getSetting('weekstart', TBGContext::getUser()->getUID());
 			$first_of_month = mktime(0, 0, 0, $month, 1, $year);
 			$last_of_month = mktime(23, 59, 59, $month, date('t', $first_of_month), $year);
 			
 			//echo $first_of_month . '-' . $last_of_month;
-			$events = BUGScontext::getModule('calendar')->getEvents($first_of_month, $last_of_month);
+			$events = TBGContext::getModule('calendar')->getEvents($first_of_month, $last_of_month);
 			
 			$prev_month_days = (date('t', $first_of_month - 1) + 1);
 			$prev_month = date('m', $first_of_month - 1);
@@ -581,7 +581,7 @@
 						if ($anevent->isOnDate($daystart, $dayend))
 						{
 							$retval .= '<div class="calendar_event"';
-							$retval .= " onclick=\"window.open('" . BUGScontext::getTBGPath() . "modules/calendar/show_event.php?id=" . $anevent->getID() . "','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');\"";
+							$retval .= " onclick=\"window.open('" . TBGContext::getTBGPath() . "modules/calendar/show_event.php?id=" . $anevent->getID() . "','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');\"";
 							$retval .= '>';
 							switch ($anevent->getType())
 							{

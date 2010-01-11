@@ -21,7 +21,7 @@
 							<?php endforeach; ?>
 						<?php elseif (is_bool($error)): ?>
 							<li>
-								<?php if ($key == 'title' || in_array($key, BUGSdatatype::getAvailableFields(true))): ?>
+								<?php if ($key == 'title' || in_array($key, TBGDatatype::getAvailableFields(true))): ?>
 									<?php
 
 										switch ($key)
@@ -75,7 +75,7 @@
 
 									?>
 								<?php else: ?>
-									<?php echo __('Required field "%field_name%" is missing or invalid', array('%field_name%' => BUGScustomdatatype::getByKey($key)->getDescription())); ?>
+									<?php echo __('Required field "%field_name%" is missing or invalid', array('%field_name%' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
 								<?php endif; ?>
 							</li>
 						<?php else: ?>
@@ -89,7 +89,7 @@
 							<?php endforeach; ?>
 						<?php elseif (is_bool($p_error)): ?>
 							<li>
-								<?php if (in_array($key, BUGSdatatype::getAvailableFields(true))): ?>
+								<?php if (in_array($key, TBGDatatype::getAvailableFields(true))): ?>
 									<?php
 
 										switch ($key)
@@ -140,7 +140,7 @@
 
 									?>
 								<?php else: ?>
-									<?php echo __('You don\'t have access to enter "%field_name%"', array('%field_name%' => BUGScustomdatatype::getByKey($key)->getDescription())); ?>
+									<?php echo __('You don\'t have access to enter "%field_name%"', array('%field_name%' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
 								<?php endif; ?>
 							</li>
 						<?php else: ?>
@@ -152,7 +152,7 @@
 			</div>
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>
-	<?php elseif ($issue instanceof BUGSissue): ?>
+	<?php elseif ($issue instanceof TBGIssue): ?>
 		<div class="rounded_box report_issue_desc green_borderless" style="margin-bottom: 10px;">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222;">
@@ -168,29 +168,29 @@
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 				<?php if (count($projects) > 0): ?>
-					<?php if (!$selected_project instanceof BUGSproject): ?>
+					<?php if (!$selected_project instanceof TBGProject): ?>
 						<p><?php echo __('Please select the project you are filing an issue for, as well as what kind of issue you are filing'); ?>.</p>
 					<?php endif; ?>
 					<div style="margin: 10px 0 0 0; clear: both; height: 25px;">
 						<div style="float: left;">
-							<?php if ($selected_project instanceof BUGSproject): ?>
+							<?php if ($selected_project instanceof TBGProject): ?>
 								<span style="font-size: 14px;"><?php echo __('Reporting an issue for %project_name%', array('%project_name%' => '<b>' . $selected_project->getName() . '</b>'))?></span>
 							<?php endif; ?>
-							<label for="project_id" style="margin-right: 20px;<?php if ($selected_project instanceof BUGSproject): ?> display: none;<?php endif; ?>"><?php echo __('Select project'); ?></label>
-							<select name="project_id" id="project_id" style="min-width: 300px; height: 25px;<?php if ($selected_project instanceof BUGSproject): ?> display: none;<?php endif; ?>" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');">
+							<label for="project_id" style="margin-right: 20px;<?php if ($selected_project instanceof TBGProject): ?> display: none;<?php endif; ?>"><?php echo __('Select project'); ?></label>
+							<select name="project_id" id="project_id" style="min-width: 300px; height: 25px;<?php if ($selected_project instanceof TBGProject): ?> display: none;<?php endif; ?>" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');">
 								<option value="0"><?php echo __('Please select a project from this list'); ?>...</option>
 								<?php foreach ($projects as $project): ?>
-									<option value="<?php echo $project->getID(); ?>"<?php if ($selected_project instanceof BUGSproject && $selected_project->getID() == $project->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
+									<option value="<?php echo $project->getID(); ?>"<?php if ($selected_project instanceof TBGProject && $selected_project->getID() == $project->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</div>
-						<div style="float: right;<?php if (!$selected_issuetype instanceof BUGSissuetype): ?> display: none;<?php endif; ?>" id="issuetype_dropdown">
+						<div style="float: right;<?php if (!$selected_issuetype instanceof TBGIssuetype): ?> display: none;<?php endif; ?>" id="issuetype_dropdown">
 							<label for="issuetype_id" style="margin-right: 20px;"><?php echo __('Select issue type'); ?></label>
 							<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '');">
 								<option value="0"><?php echo __('Please select an issue type from this list'); ?>...</option>
 								<?php foreach ($issuetypes as $issue_type): ?>
 									<?php if (!$issue_type->isReportable()) continue; ?>
-									<option value="<?php echo $issue_type->getID(); ?>"<?php if ($selected_issuetype instanceof BUGSissuetype && $selected_issuetype->getID() == $issue_type->getID()): ?> selected<?php endif; ?>><?php echo $issue_type->getName(); ?></option>
+									<option value="<?php echo $issue_type->getID(); ?>"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_issuetype->getID() == $issue_type->getID()): ?> selected<?php endif; ?>><?php echo $issue_type->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</div>
@@ -205,7 +205,7 @@
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>
 		<?php if (count($projects) > 0 && count($issuetypes) > 0): ?>
-			<ul class="issuetype_list" id="issuetype_list"<?php if ($selected_issuetype instanceof BUGSissuetype): ?> style="display: none;"<?php endif; ?>>
+			<ul class="issuetype_list" id="issuetype_list"<?php if ($selected_issuetype instanceof TBGIssuetype): ?> style="display: none;"<?php endif; ?>>
 			<?php $left = true; ?>
 			<?php foreach ($issuetypes as $issuetype): ?>
 				<?php if (!$issuetype->isReportable()) continue; ?>
@@ -227,7 +227,7 @@
 		<?php endif; ?>
 		<div style="clear: both;"></div>
 		<?php if (count($projects) > 0 && count($issuetypes) > 0): ?>
-			<?php if ($selected_project instanceof BUGSproject) : ?>
+			<?php if ($selected_project instanceof TBGProject) : ?>
 				<?php if (!isset($description)) : ?>
 					<?php $description = $selected_project->getDescrTemplate(); ?>
 				<?php endif; ?>
@@ -235,8 +235,8 @@
 					<?php $reproduction_steps = $selected_project->getReproTemplate(); ?>
 				<?php endif; ?>
 			<?php endif; ?>
-			<div id="report_more_here"<?php if ($selected_issuetype instanceof BUGSissuetype && $selected_project instanceof BUGSproject): ?> style="display: none;"<?php endif; ?>><?php echo __('More options will appear here as soon as you select a project and an issue type above'); ?>...</div>
-			<div class="report_form" id="report_form"<?php if (!$selected_project instanceof BUGSproject || !$selected_issuetype instanceof BUGSissuetype): ?> style="display: none;"<?php endif; ?>>
+			<div id="report_more_here"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_project instanceof TBGProject): ?> style="display: none;"<?php endif; ?>><?php echo __('More options will appear here as soon as you select a project and an issue type above'); ?>...</div>
+			<div class="report_form" id="report_form"<?php if (!$selected_project instanceof TBGProject || !$selected_issuetype instanceof TBGPssuetype): ?> style="display: none;"<?php endif; ?>>
 				<table cellpadding="0" cellspacing="0"<?php if (array_key_exists('title', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="title" class="required"><span>* </span><?php echo __('Short summary'); ?></label></td>
@@ -278,7 +278,7 @@
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="edition_id" id="edition_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
-								<?php if ($selected_edition instanceof BUGSedition): ?>
+								<?php if ($selected_edition instanceof TBGEdition): ?>
 									<option value="<?php echo $selected_edition->getID(); ?>"><?php echo $selected_edition->getName(); ?></option>
 								<?php endif; ?>
 							</select>
@@ -294,7 +294,7 @@
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="build_id" id="build_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
-								<?php if ($selected_build instanceof BUGSbuild): ?>
+								<?php if ($selected_build instanceof TBGBuild): ?>
 									<option value="<?php echo $selected_build->getID(); ?>"><?php echo $selected_build->getName(); ?></option>
 								<?php endif; ?>
 							</select>
@@ -310,7 +310,7 @@
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="component_id" id="component_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
-								<?php if ($selected_component instanceof BUGScomponent): ?>
+								<?php if ($selected_component instanceof TBGComponent): ?>
 									<option value="<?php echo $selected_component->getID(); ?>"><?php echo $selected_component->getName(); ?></option>
 								<?php endif; ?>
 							</select>
@@ -351,7 +351,7 @@
 							<select name="status_id" id="status_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($statuses as $status): ?>
-									<option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof BUGSstatus && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
+									<option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof TBGStatus && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -367,7 +367,7 @@
 							<select name="category_id" id="category_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($categories as $category): ?>
-									<option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof BUGScategory && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
+									<option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof TBGCategory && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -382,7 +382,7 @@
 							<select name="resolution_id" id="resolution_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($resolutions as $resolution): ?>
-									<option value="<?php echo $resolution->getID(); ?>"<?php if ($selected_resolution instanceof BUGSresolution && $selected_resolution->getID() == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
+									<option value="<?php echo $resolution->getID(); ?>"<?php if ($selected_resolution instanceof TBGResolution && $selected_resolution->getID() == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -397,7 +397,7 @@
 							<select name="reproducability_id" id="reproducability_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($reproducabilities as $reproducability): ?>
-									<option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof BUGSreproducability && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
+									<option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof TBGReproducability && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -412,7 +412,7 @@
 							<select name="priority_id" id="priority_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($priorities as $priority): ?>
-									<option value="<?php echo $priority->getID(); ?>"<?php if ($selected_priority instanceof BUGSpriority && $selected_priority->getID() == $priority->getID()): ?> selected<?php endif; ?>><?php echo $priority->getName(); ?></option>
+									<option value="<?php echo $priority->getID(); ?>"<?php if ($selected_priority instanceof TBGPriority && $selected_priority->getID() == $priority->getID()): ?> selected<?php endif; ?>><?php echo $priority->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -427,28 +427,28 @@
 							<select name="severity_id" id="severity_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
 								<?php foreach ($severities as $severity): ?>
-									<option value="<?php echo $severity->getID(); ?>"<?php if ($selected_severity instanceof BUGSseverity && $selected_severity->getID() == $severity->getID()): ?> selected<?php endif; ?>><?php echo $severity->getName(); ?></option>
+									<option value="<?php echo $severity->getID(); ?>"<?php if ($selected_severity instanceof TBGSeverity && $selected_severity->getID() == $severity->getID()): ?> selected<?php endif; ?>><?php echo $severity->getName(); ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
 					</tr>
 				</table>
-				<?php foreach (BUGScustomdatatype::getAll() as $customdatatype): ?>
+				<?php foreach (TBGCustomDatatype::getAll() as $customdatatype): ?>
 					<table cellpadding="0" cellspacing="0" id="<?php echo $customdatatype->getKey(); ?>_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists($customdatatype->getKey(), $errors)): ?> class="reportissue_error"<?php endif; ?>>
 						<tr>
 							<td style="width: 150px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><span>* </span><?php echo __($customdatatype->getDescription()); ?></label></td>
 							<td class="report_issue_help faded_dark"><?php echo __($customdatatype->getInstructions()); ?></td>
 						<tr>
 							<td colspan="2" style="padding-top: 5px;">
-								<?php if ($customdatatype->getType() == BUGScustomdatatype::DROPDOWN_CHOICE_TEXT) : ?>
+								<?php if ($customdatatype->getType() == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT) : ?>
 									<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
 										<?php foreach ($customdatatype->getOptions() as $option): ?>
-										<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+										<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
 										<?php endforeach; ?>
 									</select>
-								<?php elseif ($customdatatype->getType() == BUGScustomdatatype::RADIO_CHOICE) : ?>
+								<?php elseif ($customdatatype->getType() == TBGCustomDatatype::RADIO_CHOICE) : ?>
 									<?php foreach ($customdatatype->getOptions() as $option): ?>
-										<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
+										<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
 									<?php endforeach; ?>
 								<?php endif; ?>
 							</td>
@@ -476,12 +476,12 @@
 							<li><?php echo image_tag('icon_link.png'); ?><a href="#" class="faded_dark"><?php echo __('Add a link'); ?></a></li>
 							<li id="status_additional" style="display: none;">
 								<?php echo image_tag('icon_status.png'); ?>
-								<div id="status_link"<?php if ($selected_status instanceof BUGSstatus): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('status_link').hide();$('status_additional_div').show();"><?php echo __('Set initial status'); ?></a></div>
+								<div id="status_link"<?php if ($selected_status instanceof TBGStatus): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('status_link').hide();$('status_additional_div').show();"><?php echo __('Set initial status'); ?></a></div>
 								<div id="status_additional_div"<?php if ($selected_status === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="status_id" id="status_id_additional">
 										<option value="0"><?php echo __('Not specified'); ?></option>
 										<?php foreach ($statuses as $status): ?>
-											<option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof BUGSdatatype && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
+											<option value="<?php echo $status->getID(); ?>"<?php if ($selected_status instanceof TBGDatatype && $selected_status->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
 										<?php endforeach; ?>
 									</select>
 									<a href="javascript:void(0);" class="img" onclick="$('status_link').show();$('status_additional_div').hide();$('status_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
@@ -489,12 +489,12 @@
 							</li>
 							<li id="category_additional" style="display: none;">
 								<?php echo image_tag('icon_category.png'); ?>
-								<div id="category_link"<?php if ($selected_category instanceof BUGScategory): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('category_link').hide();$('category_additional_div').show();"><?php echo __('Specify category'); ?></a></div>
+								<div id="category_link"<?php if ($selected_category instanceof TBGCategory): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('category_link').hide();$('category_additional_div').show();"><?php echo __('Specify category'); ?></a></div>
 								<div id="category_additional_div"<?php if ($selected_category === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="category_id" id="category_id_additional">
 										<option value="0"><?php echo __('Not specified'); ?></option>
 										<?php foreach ($categories as $category): ?>
-											<option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof BUGSdatatype && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
+											<option value="<?php echo $category->getID(); ?>"<?php if ($selected_category instanceof TBGDatatype && $selected_category->getID() == $category->getID()): ?> selected<?php endif; ?>><?php echo $category->getName(); ?></option>
 										<?php endforeach; ?>
 									</select>
 									<a href="javascript:void(0);" class="img" onclick="$('category_link').show();$('category_additional_div').hide();$('category_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a> 
@@ -526,7 +526,7 @@
 							</li>
 							<li id="priority_additional">
 								<?php echo image_tag('icon_priority.png'); ?>
-								<div id="priority_link"<?php if ($selected_priority instanceof BUGSpriority): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('priority_link').hide();$('priority_additional_div').show();"><?php echo __('Set priority'); ?></a></div>
+								<div id="priority_link"<?php if ($selected_priority instanceof TBGPriority): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('priority_link').hide();$('priority_additional_div').show();"><?php echo __('Set priority'); ?></a></div>
 								<div id="priority_additional_div"<?php if ($selected_priority === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="priority_id" id="priority_id_additional">
 										<option value="0"><?php echo __('Not specified'); ?></option>
@@ -539,12 +539,12 @@
 							</li>
 							<li id="reproducability_additional" style="display: none;">
 								<?php echo image_tag('icon_repro.png'); ?>
-								<div id="reproducability_link"<?php if ($selected_reproducability instanceof BUGSreproducability): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('reproducability_link').hide();$('reproducability_additional_div').show();"><?php echo __('Set reproducability'); ?></a></div>
+								<div id="reproducability_link"<?php if ($selected_reproducability instanceof TBGReproducability): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('reproducability_link').hide();$('reproducability_additional_div').show();"><?php echo __('Set reproducability'); ?></a></div>
 								<div id="reproducability_additional_div"<?php if ($selected_reproducability === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="reproducability_id" id="reproducability_id_additional">
 										<option value="0"><?php echo __('Not specified'); ?></option>
 										<?php foreach ($reproducabilities as $reproducability): ?>
-											<option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof BUGSdatatype && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
+											<option value="<?php echo $reproducability->getID(); ?>"<?php if ($selected_reproducability instanceof TBGDatatype && $selected_reproducability->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
 										<?php endforeach; ?>
 									</select>
 									<a href="javascript:void(0);" class="img" onclick="$('reproducability_link').show();$('reproducability_additional_div').hide();$('reproducability_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a> 
@@ -552,7 +552,7 @@
 							</li>
 							<li id="resolution_additional" style="display: none;">
 								<?php echo image_tag('icon_resolution.png'); ?>
-								<div id="resolution_link"<?php if ($selected_resolution instanceof BUGSresolution): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('resolution_link').hide();$('resolution_additional_div').show();"><?php echo __('Set resolution'); ?></a></div>
+								<div id="resolution_link"<?php if ($selected_resolution instanceof TBGResolution): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('resolution_link').hide();$('resolution_additional_div').show();"><?php echo __('Set resolution'); ?></a></div>
 								<div id="resolution_additional_div"<?php if ($selected_resolution === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="resolution_id" id="resolution_id_additional">
 										<option value="0"><?php echo __('Not specified'); ?></option>
@@ -565,7 +565,7 @@
 							</li>
 							<li id="severity_additional" style="display: none;">
 								<?php echo image_tag('icon_severity.png'); ?>
-								<div id="severity_link"<?php if ($selected_severity instanceof BUGSseverity): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('severity_link').hide();$('severity_additional_div').show();"><?php echo __('Set severity'); ?></a></div>
+								<div id="severity_link"<?php if ($selected_severity instanceof TBGSeverity): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('severity_link').hide();$('severity_additional_div').show();"><?php echo __('Set severity'); ?></a></div>
 								<div id="severity_additional_div"<?php if ($selected_severity === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="severity_id" id="severity_id_additional">
 										<option value="0"><?php echo __('Not specified'); ?></option>
@@ -576,22 +576,22 @@
 									<a href="javascript:void(0);" class="img" onclick="$('severity_link').show();$('severity_additional_div').hide();$('severity_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a> 
 								</div>
 							</li>
-							<?php foreach (BUGScustomdatatype::getAll() as $customdatatype): ?>
+							<?php foreach (TBGCustomDatatype::getAll() as $customdatatype): ?>
 								<li id="<?php echo $customdatatype->getKey(); ?>_additional" style="display: none;">
 									<?php echo image_tag('icon_customdatatype.png'); ?>
-									<div id="<?php echo $customdatatype->getKey(); ?>_link"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
+									<div id="<?php echo $customdatatype->getKey(); ?>_link"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeoption): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
 									<div id="<?php echo $customdatatype->getKey(); ?>_additional_div"<?php if ($selected_customdatatype[$customdatatype->getKey()] === null): ?> style="display: none;"<?php endif; ?>>
-										<?php if ($customdatatype->getType() == BUGScustomdatatype::DROPDOWN_CHOICE_TEXT) : ?>
+										<?php if ($customdatatype->getType() == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT) : ?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
 												<?php foreach ($customdatatype->getOptions() as $option): ?>
-												<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+												<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
 												<?php endforeach; ?>
 											</select>
-										<?php elseif ($customdatatype->getType() == BUGScustomdatatype::RADIO_CHOICE) : ?>
+										<?php elseif ($customdatatype->getType() == TBGCustomDatatype::RADIO_CHOICE) : ?>
 											<label for="<?php echo $customdatatype->getKey(); ?>_id_additional"><?php echo $customdatatype->getDescription(); ?></label>
 											<br>
 											<?php foreach ($customdatatype->getOptions() as $option): ?>
-												<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof BUGScustomdatatypeoption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
+												<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
 											<?php endforeach; ?>
 										<?php endif; ?>
 										<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
@@ -602,7 +602,7 @@
 							<li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_dark"><?php echo __('Set owner'); ?></a></li>
 							<?php
 		
-								BUGScontext::trigger('core', 'reportissue.listfields');
+								TBGContext::trigger('core', 'reportissue.listfields');
 							
 							?>
 						</ul>

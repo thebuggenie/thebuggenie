@@ -29,19 +29,19 @@
 </script>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
-		<?php include_component('configleftmenu', array('selected_section' => BUGSsettings::CONFIGURATION_SECTION_UPLOADS)); ?>
+		<?php include_component('configleftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_UPLOADS)); ?>
 		<td valign="top">
 			<div class="configheader" style="width: 750px;"><?php echo __('Configure uploads &amp; attachments'); ?></div>
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-				<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="submitForm('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="submitForm('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
 			<?php endif; ?>
 					<table style="clear: both; width: 700px; margin-top: 5px;" class="padded_table" cellpadding=0 cellspacing=0>
 						<tr>
 							<td style="width: 200px;"><label for="enable_uploads_yes"><?php echo __('Enable uploads'); ?></label></td>
 							<td style="width: auto;">
 								<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-									<input type="radio" name="enable_uploads" value="1" id="enable_uploads_yes"<?php if (BUGSsettings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="enable_uploads_yes"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
-									<input type="radio" name="enable_uploads" value="0" id="enable_uploads_no"<?php if (!BUGSsettings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="enable_uploads_no"><?php echo __('No'); ?></label>
+									<input type="radio" name="enable_uploads" value="1" id="enable_uploads_yes"<?php if (TBGSettings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="enable_uploads_yes"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
+									<input type="radio" name="enable_uploads" value="0" id="enable_uploads_no"<?php if (!TBGSettings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="enable_uploads_no"><?php echo __('No'); ?></label>
 								<?php endif; ?>
 							</td>
 						</tr>
@@ -51,16 +51,16 @@
 						<tr>
 							<td><label for="upload_restriction_mode"><?php echo __('Upload restrictions'); ?></label></td>
 							<td>
-								<select name="upload_restriction_mode" id="upload_restriction_mode"<?php if (!BUGSsettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
-									<option value="whitelist"<?php if (BUGSsettings::getUploadsRestrictionMode() == 'whitelist'): ?> selected<?php endif; ?>><?php echo __('Use a whitelist (only allow the following of extensions)'); ?></option>
-									<option value="blacklist"<?php if (BUGSsettings::getUploadsRestrictionMode() == 'blacklist'): ?> selected<?php endif; ?>><?php echo __('Use a blacklist (allow everything except the following extensions)'); ?></option>
+								<select name="upload_restriction_mode" id="upload_restriction_mode"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
+									<option value="whitelist"<?php if (TBGSettings::getUploadsRestrictionMode() == 'whitelist'): ?> selected<?php endif; ?>><?php echo __('Use a whitelist (only allow the following of extensions)'); ?></option>
+									<option value="blacklist"<?php if (TBGSettings::getUploadsRestrictionMode() == 'blacklist'): ?> selected<?php endif; ?>><?php echo __('Use a blacklist (allow everything except the following extensions)'); ?></option>
 								</select>
 							</td>
 						</tr>
 						<tr>
 							<td><label for="upload_extensions_list"><?php echo __('Allowed / denied extensions'); ?></label></td>
 							<td>
-								<input type="text" name="upload_extensions_list" id="upload_extensions_list" style="width: 250px;" value="<?php echo implode(',', BUGSsettings::getUploadsExtensionsList()); ?>"<?php if (!BUGSsettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
+								<input type="text" name="upload_extensions_list" id="upload_extensions_list" style="width: 250px;" value="<?php echo implode(',', TBGSettings::getUploadsExtensionsList()); ?>"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
 							</td>
 						</tr>
 						<tr>
@@ -72,9 +72,9 @@
 						<tr>
 							<td><label for="upload_storage"><?php echo __('File storage'); ?></label></td>
 							<td>
-								<select name="upload_storage" id="upload_storage"<?php if (!BUGSsettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
-									<option value="files"<?php if (BUGSsettings::getUploadStorage() == 'files'): ?> selected<?php endif; ?> onchange="(this.value == 'files') ? $('upload_location').enable() : $('upload_location').disable();"><?php echo __('Store it in the folder specified below'); ?></option>
-									<option value="database" disabled<?php if (BUGSsettings::getUploadStorage() == 'database'): ?> selected<?php endif; ?>><?php echo __('Use the database to store files'); ?></option>
+								<select name="upload_storage" id="upload_storage"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
+									<option value="files"<?php if (TBGSettings::getUploadStorage() == 'files'): ?> selected<?php endif; ?> onchange="(this.value == 'files') ? $('upload_location').enable() : $('upload_location').disable();"><?php echo __('Store it in the folder specified below'); ?></option>
+									<option value="database" disabled<?php if (TBGSettings::getUploadStorage() == 'database'): ?> selected<?php endif; ?>><?php echo __('Use the database to store files'); ?></option>
 								</select>
 							</td>
 						</tr>
@@ -84,7 +84,7 @@
 						<tr>
 							<td><label for="upload_localpath"><?php echo __('Upload location'); ?></label></td>
 							<td>
-								<input type="text" name="upload_localpath" id="upload_localpath" style="width: 250px;" value="<?php echo (BUGSsettings::getUploadsLocalpath() != "") ? BUGSsettings::getUploadsLocalpath() : BUGScontext::getIncludePath() . 'files/'; ?>"<?php if (!BUGSsettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
+								<input type="text" name="upload_localpath" id="upload_localpath" style="width: 250px;" value="<?php echo (TBGSettings::getUploadsLocalpath() != "") ? TBGSettings::getUploadsLocalpath() : TBGContext::getIncludePath() . 'files/'; ?>"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
 							</td>
 						</tr>
 						<tr>

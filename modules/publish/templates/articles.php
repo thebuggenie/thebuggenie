@@ -6,13 +6,13 @@
 	require THEBUGGENIE_PATH . 'include/checkcookie.inc.php';
 	require THEBUGGENIE_PATH . "include/b2_engine.inc.php";
 	
-	require BUGScontext::getIncludePath() . "include/ui_functions.inc.php";
+	require TBGContext::getIncludePath() . "include/ui_functions.inc.php";
 
-	BUGScontext::getModule('publish')->activate();
+	TBGContext::getModule('publish')->activate();
 	
-	require BUGScontext::getIncludePath() . "modules/publish/articles_logic.inc.php";
-	require BUGScontext::getIncludePath() . "include/header.inc.php";
-	require BUGScontext::getIncludePath() . "include/menu.inc.php";
+	require TBGContext::getIncludePath() . "modules/publish/articles_logic.inc.php";
+	require TBGContext::getIncludePath() . "include/header.inc.php";
+	require TBGContext::getIncludePath() . "include/menu.inc.php";
 
 ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -44,7 +44,7 @@
 								<td><a href="#"><?php echo __('Send this article to a friend'); ?></a></td>
 							</tr>
 							<?php */ ?>
-							<?php if ((BUGScontext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish") || BUGScontext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish")) && $article->getArticleType() == PublishArticle::ARTICLE_NORMAL): ?>
+							<?php if ((TBGContext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish") || TBGContext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish")) && $article->getArticleType() == PublishArticle::ARTICLE_NORMAL): ?>
 								<tr><td colspan=2>&nbsp;</td></tr>
 								<tr>
 									<td style="width: 20px;"><?php echo image_tag('publish/icon_new_link.png') ?></td>
@@ -55,19 +55,19 @@
 								<?php endif; ?>
 							<?php endif; ?>
 						</table>
-						<?php if (BUGScontext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish") || BUGScontext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish")): ?>
+						<?php if (TBGContext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish") || TBGContext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish")): ?>
 							<div id="post_on_billboard" style="position: absolute; display: none; width: 250px; padding: 5px; background-color: #FFF; border: 1px solid #DDD;">
 							<?php echo __('Please select which billboard you would like to post this article to:'); ?><br>
-							<?php if (BUGScontext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish")): ?>
+							<?php if (TBGContext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish")): ?>
 								<a href="articles.php?article_id=<?php echo $article->getID(); ?>&amp;post_on_billboard=true&amp;billboard=0"><?php echo __('Post on global billboard'); ?></a><br>
 							<?php endif; ?>
 							<?php 
 							
-								if (BUGScontext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish"))
+								if (TBGContext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish"))
 								{
-									foreach (BUGScontext::getUser()->getTeams() as $aTeamID)
+									foreach (TBGContext::getUser()->getTeams() as $aTeamID)
 									{
-										$aTeam = BUGSfactory::teamLab($aTeamID);
+										$aTeam = TBGFactory::teamLab($aTeamID);
 										?><a href="articles.php?article_id=<?php echo $article->getID(); ?>&amp;post_on_billboard=true&amp;billboard=<?php echo $aTeamID ?>"><?php echo __('Post on %teamname% billboard', array('%teamname' => $aTeam->getName())); ?></a><br><?php
 									}
 								}
@@ -80,7 +80,7 @@
 			</table> 
 			<?php
 			
-			if (BUGScontext::getUser()->hasPermission('article_management', 0, 'publish'))
+			if (TBGContext::getUser()->hasPermission('article_management', 0, 'publish'))
 			{
 				?>
 				<table class="b2_section_miniframe" cellpadding=0 cellspacing=0>
@@ -91,7 +91,7 @@
 						<td class="td1">
 							<div style="padding-bottom: 5px;"><?php echo __('As a publisher, you can perform different actions related to article management.'); ?><br>
 							<br>
-							<?php if (!BUGScontext::getRequest()->getParameter('edit')): ?>
+							<?php if (!TBGContext::getRequest()->getParameter('edit')): ?>
 								<i><?php echo __('If you want to edit this article, please choose from any of the available actions below.'); ?></i></div>
 							<?php endif; ?>
 							<table cellpadding=0 cellspacing=0>
@@ -101,7 +101,7 @@
 								</tr>
 								<?php 
 								
-								if (BUGScontext::getRequest()->getParameter('edit'))
+								if (TBGContext::getRequest()->getParameter('edit'))
 								{  
 									?>
 									<tr>
@@ -138,7 +138,7 @@
 										<?php
 									}
 	
-									if (BUGScontext::getModule('publish')->getSetting('featured_article') != $article->getID())
+									if (TBGContext::getModule('publish')->getSetting('featured_article') != $article->getID())
 									{  
 										?>
 										<tr>
@@ -167,7 +167,7 @@
 		<td valign="top" align="left" style="padding-right: 10px; padding-top: 10px;">
 			<?php
 			
-			if (BUGScontext::getRequest()->getParameter('edit') && BUGScontext::getUser()->hasPermission('article_management', 0, 'publish'))
+			if (TBGContext::getRequest()->getParameter('edit') && TBGContext::getUser()->hasPermission('article_management', 0, 'publish'))
 			{
 				?>
 				<div style="font-size: 13px; background-color: #EEE; padding: 4px; margin-bottom: 5px;"><?php echo __('Editing article with id %id%', array('%id%' => $article->getID())); ?></div>
@@ -186,7 +186,7 @@
 
 					function updateIcon()
 					{
-						$('article_icon').src = '<?php echo BUGSsettings::get('url_subdir') ?>themes/<?php echo BUGSsettings::getThemeName() ?>/publish/large/' + $('icon_select').value + '.png';
+						$('article_icon').src = '<?php echo TBGSettings::get('url_subdir') ?>themes/<?php echo TBGSettings::getThemeName() ?>/publish/large/' + $('icon_select').value + '.png';
 					}
 					
 					function updateArticleType()
@@ -209,7 +209,7 @@
 					}
 
 				</script>
-				<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="articles.php" method="post">
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="articles.php" method="post">
 					<div style="background-color: #EEE; width: 730px; padding: 5px; border: 1px solid #DDD;">
 					<input type="hidden" name="article_id" value="<?php echo $article->getID(); ?>" >
 					<input type="hidden" name="submit_article_changes" value="true" >
@@ -228,7 +228,7 @@
 						</div>
 						<br style="clear: both;">
 						<select name="icon_select" id="icon_select" onchange="updateIcon()" style="margin-left: 85px; width: 136px;">
-							<?php foreach (BUGScontext::getModule('publish')->getIcons() as $key => $value): ?>
+							<?php foreach (TBGContext::getModule('publish')->getIcons() as $key => $value): ?>
 								<option value="<?php echo $key; ?>" <?php if ($article->getIcon() == $key) echo 'selected'; ?>><?php echo $value; ?></option>
 							<?php endforeach; ?>
 						</select>
@@ -314,6 +314,6 @@
 </table>
 <?php
 
-	require_once BUGScontext::getIncludePath() . "include/footer.inc.php";
+	require_once TBGContext::getIncludePath() . "include/footer.inc.php";
 
 ?>		

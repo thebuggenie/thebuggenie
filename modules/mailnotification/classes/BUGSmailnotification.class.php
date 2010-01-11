@@ -1,6 +1,6 @@
 <?php
 
-	class BUGSmailnotification extends BUGSmodule 
+	class BUGSmailnotification extends TBGModule 
 	{
 
 		const MAIL_TYPE_PHP = 1;
@@ -10,21 +10,21 @@
 		{
 			parent::__construct($m_id, $res);
 			$this->_module_version = '1.0';
-			$this->setLongName(BUGScontext::getI18n()->__('Mail notification'));
-			$this->setMenuTitle(BUGScontext::getI18n()->__('Mail notification'));
-			$this->setConfigTitle(BUGScontext::getI18n()->__('Mail notification'));
-			$this->setDescription(BUGScontext::getI18n()->__('Enables email notification functionality'));
-			$this->setConfigDescription(BUGScontext::getI18n()->__('Set up email- and user notifications from this section'));
+			$this->setLongName(TBGContext::getI18n()->__('Mail notification'));
+			$this->setMenuTitle(TBGContext::getI18n()->__('Mail notification'));
+			$this->setConfigTitle(TBGContext::getI18n()->__('Mail notification'));
+			$this->setDescription(TBGContext::getI18n()->__('Enables email notification functionality'));
+			$this->setConfigDescription(TBGContext::getI18n()->__('Set up email- and user notifications from this section'));
 			$this->setHasAccountSettings();
 			$this->setHasConfigSettings();
-			$this->addAvailableListener('core', 'user_registration', 'listen_registerUser', BUGScontext::getI18n()->__('Email when user registers'));
-			$this->addAvailableListener('core', 'password_reset', 'listen_forgottenPassword', BUGScontext::getI18n()->__('Email to reset password'));
-			$this->addAvailableListener('core', 'viewissue_top', 'listen_issueTop', BUGScontext::getI18n()->__('Email when user registers'));
-			$this->addAvailableListener('core', 'login_middle', 'listen_loginMiddle', BUGScontext::getI18n()->__('Email to reset password'));
-			$this->addAvailableListener('core', 'password_reset', 'listen_passwordReset', BUGScontext::getI18n()->__('Email when password is reset'));
-			$this->addAvailableListener('core', 'BUGSIssue::update', 'listen_issueUpdate', BUGScontext::getI18n()->__('Email on issue update'));
-			$this->addAvailableListener('core', 'BUGSIssue::createNew', 'listen_issueCreate', BUGScontext::getI18n()->__('Email on new issues'));
-			$this->addAvailableListener('core', 'BUGSComment::createNew', 'listen_bugsComment_createNew', BUGScontext::getI18n()->__('Email when comments are posted'));
+			$this->addAvailableListener('core', 'user_registration', 'listen_registerUser', TBGContext::getI18n()->__('Email when user registers'));
+			$this->addAvailableListener('core', 'password_reset', 'listen_forgottenPassword', TBGContext::getI18n()->__('Email to reset password'));
+			$this->addAvailableListener('core', 'viewissue_top', 'listen_issueTop', TBGContext::getI18n()->__('Email when user registers'));
+			$this->addAvailableListener('core', 'login_middle', 'listen_loginMiddle', TBGContext::getI18n()->__('Email to reset password'));
+			$this->addAvailableListener('core', 'password_reset', 'listen_passwordReset', TBGContext::getI18n()->__('Email when password is reset'));
+			$this->addAvailableListener('core', 'TBGIssue::update', 'listen_issueUpdate', TBGContext::getI18n()->__('Email on issue update'));
+			$this->addAvailableListener('core', 'TBGIssue::createNew', 'listen_issueCreate', TBGContext::getI18n()->__('Email on new issues'));
+			$this->addAvailableListener('core', 'TBGComment::createNew', 'listen_TBGComment_createNew', TBGContext::getI18n()->__('Email when comments are posted'));
 
 			// No, I didn't forget the parameters, but what else would you call
 			// it when it's about retrieving a forgotten password?
@@ -38,16 +38,16 @@
 		
 		public static function install($scope = null)
 		{
-  			$scope = ($scope === null) ? BUGScontext::getScope()->getID() : $scope;
+  			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			
 			$module = parent::_install('mailnotification', 'BUGSmailnotification', '1.0', true, false, false, $scope);
 								  
 			$module->enableListenerSaved('core', 'user_registration', $scope);
 			$module->enableListenerSaved('core', 'login_middle', $scope);
 			$module->enableListenerSaved('core', 'password_reset', $scope);
-			$module->enableListenerSaved('core', 'BUGSIssue::update', $scope);
-			$module->enableListenerSaved('core', 'BUGSIssue::createNew', $scope);
-			$module->enableListenerSaved('core', 'BUGSComment::createNew', $scope);
+			$module->enableListenerSaved('core', 'TBGIssue::update', $scope);
+			$module->enableListenerSaved('core', 'TBGIssue::createNew', $scope);
+			$module->enableListenerSaved('core', 'TBGComment::createNew', $scope);
 			$module->saveSetting('smtp_host', '');
 			$module->saveSetting('smtp_port', 25);
 			$module->saveSetting('smtp_user', '');
@@ -73,9 +73,9 @@
 								'showprojectsoverview', 'showprojectsoverview', 'cleancomments');
 			foreach ($settings as $setting)
 			{
-				if (BUGScontext::getRequest()->getParameter($setting) !== null)
+				if (TBGContext::getRequest()->getParameter($setting) !== null)
 				{
-					$this->saveSetting($setting, BUGScontext::getRequest()->getParameter($setting));
+					$this->saveSetting($setting, TBGContext::getRequest()->getParameter($setting));
 				}
 			}
 		}
@@ -99,9 +99,9 @@
 		{
 			$user = array_shift($vars);
 			$password = array_shift($vars);
-			$subject = BUGScontext::getI18n()->__('User account registered with The Bug Genie');
-			$html_message = BUGSaction::returnTemplateHTML('mailnotification/registeruser.html', array('user' => $user, 'password' => $password));
-			$plain_message = BUGSaction::returnTemplateHTML('mailnotification/registeruser.text', array('user' => $user, 'password' => $password));
+			$subject = TBGContext::getI18n()->__('User account registered with The Bug Genie');
+			$html_message = TBGAction::returnTemplateHTML('mailnotification/registeruser.html', array('user' => $user, 'password' => $password));
+			$plain_message = TBGAction::returnTemplateHTML('mailnotification/registeruser.text', array('user' => $user, 'password' => $password));
 	
 			try
 			{
@@ -115,43 +115,43 @@
 
 		public function listen_loginMiddle()
 		{
-			BUGSactioncomponent::includeComponent('mailnotification/forgotPasswordBlock');
+			TBGActionComponent::includeComponent('mailnotification/forgotPasswordBlock');
 		}
 		
 		public function listen_passwordReset($vars)
 		{
 			$to_users = array(array('id' => $vars[0]->getID()));
 			$new_pwd = $vars[1];
-			$subject = BUGScontext::getI18n()->__('Password reset');
-			$message = BUGSaction::returnTemplateHTML('mailnotification/passwordreset', array('password' => $new_pwd));
+			$subject = TBGContext::getI18n()->__('Password reset');
+			$message = TBGAction::returnTemplateHTML('mailnotification/passwordreset', array('password' => $new_pwd));
 			$this->_sendToUsers($to_users, $subject, $message);
 		}
 		
 		public function sendforgottenPasswordEmail($user)
 		{
 			$to_users = array($user);
-			$subject = BUGScontext::getI18n()->__('Forgot your password?');
-			$html_message = BUGSaction::returnTemplateHTML('mailnotification/forgottenpassword.html');
-			$plain_message = BUGSaction::returnTemplateHTML('mailnotification/forgottenpassword.text');
+			$subject = TBGContext::getI18n()->__('Forgot your password?');
+			$html_message = TBGAction::returnTemplateHTML('mailnotification/forgottenpassword.html');
+			$plain_message = TBGAction::returnTemplateHTML('mailnotification/forgottenpassword.text');
 			$this->_sendToUsers($to_users, $subject, $html_message, $plain_message);
 		}
 		
 		public function sendTestEmail($email_address)
 		{
-			$subject = BUGScontext::getI18n()->__('Test email');
-			$html_message = BUGSaction::returnTemplateHTML('mailnotification/testemail.html');
-			$plain_message = BUGSaction::returnTemplateHTML('mailnotification/testemail.text');
+			$subject = TBGContext::getI18n()->__('Test email');
+			$html_message = TBGAction::returnTemplateHTML('mailnotification/testemail.html');
+			$plain_message = TBGAction::returnTemplateHTML('mailnotification/testemail.text');
 			return $this->sendMail($email_address, $email_address, $subject, $html_message, $plain_message);
 		}
 
-		public function listen_issueCreate(BUGSissue $issue)
+		public function listen_issueCreate(TBGIssue $issue)
 		{
-			if ($issue instanceof BUGSissue)
+			if ($issue instanceof TBGIssue)
 			{
 				$to_users = $issue->getRelatedUsers();
-				$subject = BUGScontext::getI18n()->__('New issue reported: %issue_no% - %issue_title%', array('%issue_no%' => $issue->getFormattedIssueNo(false), '%issue_title%' => $issue->getTitle()));
-				$html_message = BUGSaction::returnTemplateHTML('mailnotification/issuecreate.html', array('issue' => $issue));
-				$plain_message = BUGSaction::returnTemplateHTML('mailnotification/issuecreate.text', array('issue' => $issue));
+				$subject = TBGContext::getI18n()->__('New issue reported: %issue_no% - %issue_title%', array('%issue_no%' => $issue->getFormattedIssueNo(false), '%issue_title%' => $issue->getTitle()));
+				$html_message = TBGAction::returnTemplateHTML('mailnotification/issuecreate.html', array('issue' => $issue));
+				$plain_message = TBGAction::returnTemplateHTML('mailnotification/issuecreate.text', array('issue' => $issue));
 				$this->_sendToUsers($to_users, $subject, $html_message, $plain_message);
 			}
 		}
@@ -173,7 +173,7 @@
 		{
 			foreach ($to_users as $user)
 			{
-				if ($user->getID() != BUGScontext::getUser()->getUID())
+				if ($user->getID() != TBGContext::getUser()->getUID())
 				{
 					if ($user->isEnabled() && $user->isActivated() && !$user->isDeleted() && !$user->isGuest())
 					{
@@ -195,20 +195,20 @@
 						}
 						catch (Exception $e) 
 						{
-							$this->log('There was an error when trying to send email to ' . $to . ":\n" . $e->getMessage(), BUGSlogging::LEVEL_NOTICE);
+							$this->log('There was an error when trying to send email to ' . $to . ":\n" . $e->getMessage(), TBGLogging::LEVEL_NOTICE);
 						}
 					}
 				}
 			}
 		}
 		
-		public function listen_bugsComment_createNew($comment)
+		public function listen_TBGComment_createNew($comment)
 		{
-			if ($comment instanceof BUGSComment && $comment->getTargetType() == 1)
+			if ($comment instanceof TBGComment && $comment->getTargetType() == 1)
 			{
 				try
 				{
-					$theIssue = BUGSfactory::BUGSissueLab($comment->getTargetID());
+					$theIssue = TBGFactory::TBGIssueLab($comment->getTargetID());
 					$title = $comment->getTitle();
 					$content = $comment->getContent();
 					$this->listen_issueUpdate(array($theIssue, $title, $content, null, null));
@@ -222,7 +222,7 @@
 		
 		public function listen_issueTop($theIssue)
 		{
-			BUGSsettings::deleteSetting('notified_issue_'.$theIssue->getId(), 'mailnotification', '', 0, BUGScontext::getUser()->getId());
+			TBGSettings::deleteSetting('notified_issue_'.$theIssue->getId(), 'mailnotification', '', 0, TBGContext::getUser()->getId());
 		}
 		
 		public function listen_issueUpdate($vars)
@@ -234,7 +234,7 @@
 			$system = array_shift($vars);
 			$to_users = array();
 	
-			if ($theIssue instanceof BUGSissue)
+			if ($theIssue instanceof TBGIssue)
 			{
 				$to_users = $theIssue->getRelatedUIDs();
 				$cc = 0;
@@ -255,7 +255,7 @@
 					$cc++;
 				}
 				
-				$subject = BUGScontext::getI18n()->__('Issue ' . $theIssue->getFormattedIssueNo(false) . ' - ' . $theIssue->getTitle() . ' updated');
+				$subject = TBGContext::getI18n()->__('Issue ' . $theIssue->getFormattedIssueNo(false) . ' - ' . $theIssue->getTitle() . ' updated');
 				$message = 'Hi, %user_buddyname%!<br>You are receiving this update because you are subscribing for updates.<br>This email is an update for issue ' . $theIssue->getFormattedIssueNo(false) . ' - ' . $theIssue->getTitle();
 				$message .= '<br><br><b>' . $title . '</b>';
 				$message .= '<br>' . bugs_BBDecode($content);
@@ -272,8 +272,8 @@
 			$pre_html_message = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>';
 			$pre_html_message .= '<head><meta http-equiv=Content-Type content="text/html; charset=utf-8"><title>The Bug Genie automailer</title></head><body>';
 			$post_html_message = '</body></html>';
-			$message_html = str_replace('%thebuggenie_url%', BUGScontext::getRouting()->generate('home', array(), false), $message_html);
-			$message_plain = str_replace('%thebuggenie_url%', BUGScontext::getRouting()->generate('home', array(), false), $message_plain);
+			$message_html = str_replace('%thebuggenie_url%', TBGContext::getRouting()->generate('home', array(), false), $message_html);
+			$message_plain = str_replace('%thebuggenie_url%', TBGContext::getRouting()->generate('home', array(), false), $message_plain);
 
 			$from_name = $this->getEmailFromName();
 			$from_email = $this->getEmailFromAddress();
@@ -315,7 +315,7 @@
 				}
 				else
 				{
-					$this->log("Sending email to {$to} not accepted for delivery", BUGSlogging::LEVEL_NOTICE);
+					$this->log("Sending email to {$to} not accepted for delivery", TBGLogging::LEVEL_NOTICE);
 				}
 
 			}
@@ -349,9 +349,9 @@
 					$buf .= '<table cellpadding=0 cellspacing=0 width="100%" style="background-color: #381499; color: #FFF;table-layout: fixed;">';
 					$buf .= '<tr>';
 					$buf .= '<td style="width: 70px; height: 65px;" align="center" valign="middle">';
-					$buf .= '<img src="' . BUGSsettings::get('url_host') . BUGSsettings::get('url_subdir') . 'themes/' . BUGSsettings::getThemeName() . '/logo_48.png">';
+					$buf .= '<img src="' . TBGSettings::get('url_host') . TBGSettings::get('url_subdir') . 'themes/' . TBGSettings::getThemeName() . '/logo_48.png">';
 					$buf .= '</td>';
-					$buf .= '<td align="left" valign="middle" style="width: 300px;"><div style="font: 20px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-weight: bold; color: #FFF;">' . BUGSsettings::get('b2_name') . '</div><div style="font: 11px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; color: #FFF;">' . BUGSsettings::get('b2_tagline') . '</div></td>';
+					$buf .= '<td align="left" valign="middle" style="width: 300px;"><div style="font: 20px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-weight: bold; color: #FFF;">' . TBGSettings::get('b2_name') . '</div><div style="font: 11px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; color: #FFF;">' . TBGSettings::get('b2_tagline') . '</div></td>';
 					$buf .= '<td style="width: auto;">&nbsp;</td>';
 					$buf .= '</tr>';
 					$buf .= '</table><br>';
@@ -364,7 +364,7 @@
 					$buf .= '<br><table cellpadding=0 cellspacing=0 style="table-layout: auto; background-color: #FFF; width: 100%; color: #999; border-top: 1px solid #DDD;" align="center">';
 					$buf .= '<tr>';
 					$buf .= '<td style="width: 30px; text-align: right; padding: 5px;">';
-					$buf .= '<img src="' . BUGSsettings::get('url_host') . BUGSsettings::get('url_subdir') . 'themes/' . BUGSsettings::getThemeName() . '/footer_logo.png">';
+					$buf .= '<img src="' . TBGSettings::get('url_host') . TBGSettings::get('url_subdir') . 'themes/' . TBGSettings::getThemeName() . '/footer_logo.png">';
 					$bug .= '</td>';
 					$buf .= '<td style="width: auto;"><div style="padding: 8px 0px 0px 0px; font: 11px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif;"><a style="color: #00A400; text-decoration: none;" href="http://www.thebuggenie.net/" target="_blank">BUGS - The Bug Genie</a>, Copyright 2002 &copy; 09 <a style="color: #00A400; text-decoration: none;" href="http://www.zegeniestudios.net" target="_blank">zegenie Studios</a></div><div style="padding: 0px 0px 0px 0px; font: 10px \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif;">Released under the MPL 1.1 only. Read the license at <a style="color: #00A400; text-decoration: none;" href="http://www.opensource.org/licenses/mozilla1.1.php" target="_blank">www.opensource.org</a>. Resistance is futile.</div>';
 					$buf .= '</td>';

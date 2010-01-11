@@ -6,13 +6,13 @@
 	require THEBUGGENIE_PATH . 'include/checkcookie.inc.php';
 	require THEBUGGENIE_PATH . "include/b2_engine.inc.php";
 	
-	require BUGScontext::getIncludePath() . "include/ui_functions.inc.php";
+	require TBGContext::getIncludePath() . "include/ui_functions.inc.php";
 
-	BUGScontext::getModule('publish')->activate();
+	TBGContext::getModule('publish')->activate();
 	
-	require BUGScontext::getIncludePath() . "modules/publish/billboard_logic.inc.php";
-	require BUGScontext::getIncludePath() . "include/header.inc.php";
-	require BUGScontext::getIncludePath() . "include/menu.inc.php";
+	require TBGContext::getIncludePath() . "modules/publish/billboard_logic.inc.php";
+	require TBGContext::getIncludePath() . "include/header.inc.php";
+	require TBGContext::getIncludePath() . "include/menu.inc.php";
 
 ?>
 <div style="text-align: left; width: 100%;">
@@ -23,24 +23,24 @@
 				<table style="width: 100%; margin-bottom: 10px;" cellpadding=0 cellspacing=0>
 					<tr>
 						<td style="width: 20px; padding: 2px;"><?php echo image_tag('news_item.png'); ?></td>
-						<td style="width: auto; padding: 2px;"><b><a href="<?php echo BUGScontext::getTBGPath(); ?>modules/publish/publish.php"><?php echo __('Visit News &amp; Articles center'); ?></a></b></td>
+						<td style="width: auto; padding: 2px;"><b><a href="<?php echo TBGContext::getTBGPath(); ?>modules/publish/publish.php"><?php echo __('Visit News &amp; Articles center'); ?></a></b></td>
 					</tr>
 				</table>
 				<?php echo __('The billboard is a place where users and developers can share ideas, links or interesting articles.'); ?>
 				<table style="width: 100%;" cellpadding=0 cellspacing=0>
 					<?php 
 					
-					if (BUGScontext::getRequest()->getParameter('billboard'))
+					if (TBGContext::getRequest()->getParameter('billboard'))
 					{
 						?>
 						<tr>
 							<td style="width: 20px; padding: 2px;"><?php echo image_tag('publish/icon_manage.png'); ?></td>
-							<td style="width: auto; padding: 2px;"><b><a href="<?php echo BUGScontext::getTBGPath(); ?>modules/publish/billboard.php"><?php echo __('Show all billboards'); ?></a></b></td>
+							<td style="width: auto; padding: 2px;"><b><a href="<?php echo TBGContext::getTBGPath(); ?>modules/publish/billboard.php"><?php echo __('Show all billboards'); ?></a></b></td>
 						</tr>
 						<?php 
 					}
 
-					if (BUGScontext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish") || BUGScontext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish"))
+					if (TBGContext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish") || TBGContext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish"))
 					{
 						?>
 						<tr><td colspan=2>&nbsp;</td></tr>
@@ -59,7 +59,7 @@
 				</table>
 				<?php 
 				
-				if (BUGScontext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish") || BUGScontext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish"))
+				if (TBGContext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish") || TBGContext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish"))
 				{
 					?>
 					<div style="padding: 3px;"><i><?php echo __('To post an article on a billboard, visit the article and select "post on a billboard" from the left menu'); ?></i></div>
@@ -73,7 +73,7 @@
 			<div style="padding: 3px; position: absolute; width: 222px; background-color: #F9F9F9; border: 1px solid #DDD; display: none;" id="post_new_link">
 			<div style="border-bottom: 1px solid #DDD;"><b><?php echo __('Post a new link'); ?></b></div>
 			<div style="padding-top: 5px;"><?php echo __('Enter the URL and a description here:'); ?><br>
-			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="billboard.php" method="post" name="add_new_link_form" id="add_new_link_form" onsubmit="return false">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="billboard.php" method="post" name="add_new_link_form" id="add_new_link_form" onsubmit="return false">
 			<input type="hidden" name="billboard_post_new_link" value="true">
 			<b><?php echo __('URL:'); ?></b><br>
 			<input type="text" name="post_link_url" value="" style="width: 100%;">
@@ -83,18 +83,18 @@
 			<select name="post_link_billboard" id="post_link_billboard" style="width: 100%;">
 				<?php 
 				
-				if (BUGScontext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish"))
+				if (TBGContext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish"))
 				{
 					?>
 					<option value="0"><?php echo __('Global billboard'); ?></option>
 					<?php 
 				}
 
-				if (BUGScontext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish"))
+				if (TBGContext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish"))
 				{
-					foreach (BUGScontext::getUser()->getTeams() as $aTeamID)
+					foreach (TBGContext::getUser()->getTeams() as $aTeamID)
 					{
-						$theTeam = BUGSfactory::teamLab($aTeamID);
+						$theTeam = TBGFactory::teamLab($aTeamID);
 						?><option value="<?php echo $aTeamID; ?>"><?php echo $theTeam->getName(); ?></option><?php
 					}
 				}
@@ -107,7 +107,7 @@
 			<div style="padding: 3px; position: absolute; width: 262px; background-color: #F9F9F9; border: 1px solid #DDD; display: none;" id="post_new_text">
 			<div style="border-bottom: 1px solid #DDD;"><b><?php echo __('Post a new text'); ?></b></div>
 			<div style="padding-top: 5px;"><?php echo __('Enter a title and the content here:'); ?><br>
-			<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="billboard.php" method="post" name="add_new_post_form" id="add_new_post_form" onsubmit="return false">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="billboard.php" method="post" name="add_new_post_form" id="add_new_post_form" onsubmit="return false">
 			<input type="hidden" name="billboard_post_new_text" value="true">
 			<b><?php echo __('Title:'); ?></b><br>
 			<input type="text" name="post_text_title" value="" style="width: 100%;">
@@ -117,18 +117,18 @@
 			<select name="post_text_billboard" id="post_text_billboard" style="width: 100%;">
 				<?php 
 				
-				if (BUGScontext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish"))
+				if (TBGContext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish"))
 				{
 					?>
 					<option value="0"><?php echo __('Global billboard'); ?></option>
 					<?php 
 				}
 
-				if (BUGScontext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish"))
+				if (TBGContext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish"))
 				{
-					foreach (BUGScontext::getUser()->getTeams() as $aTeamID)
+					foreach (TBGContext::getUser()->getTeams() as $aTeamID)
 					{
-						$theTeam = BUGSfactory::teamLab($aTeamID);
+						$theTeam = TBGFactory::teamLab($aTeamID);
 						?><option value="<?php echo $aTeamID; ?>"><?php echo $theTeam->getName(); ?></option><?php
 					}
 				}
@@ -143,13 +143,13 @@
 	<div style="margin-left: 255px; margin-right: 10px; text-align: left; padding-top: 10px;">
 	<?php 
 		
-	if (!BUGScontext::getRequest()->getParameter('billboard'))
+	if (!TBGContext::getRequest()->getParameter('billboard'))
 	{
 		?>
-		<div style="border-bottom: 1px solid #DDD; padding: 3px; font-size: 13px;"><b><a href="<?php echo BUGScontext::getTBGPath(); ?>modules/publish/billboard.php?billboard=0"><?php echo __('Global billboard'); ?></a></b> <span style="display: inline; font-weight: normal; font-size: 11px;"></span></div>
+		<div style="border-bottom: 1px solid #DDD; padding: 3px; font-size: 13px;"><b><a href="<?php echo TBGContext::getTBGPath(); ?>modules/publish/billboard.php?billboard=0"><?php echo __('Global billboard'); ?></a></b> <span style="display: inline; font-weight: normal; font-size: 11px;"></span></div>
 		<?php
 		
-			$billboardposts = BUGScontext::getModule('publish')->getBillboardPosts(0, 9);
+			$billboardposts = TBGContext::getModule('publish')->getBillboardPosts(0, 9);
 
 			for ($cc = 1; $cc <= 3; $cc++) 
 			{
@@ -163,7 +163,7 @@
 								if (!empty($billboardposts))
 								{
 									$billboardpost = array_shift($billboardposts);
-									BUGScontext::getModule('publish')->printBillboardPostOnBillboard($billboardpost); 
+									TBGContext::getModule('publish')->printBillboardPostOnBillboard($billboardpost); 
 								}
 							}
 							
@@ -176,13 +176,13 @@
 		?><div style="clear: both;">&nbsp;</div>
 		<?php
 
-		if (BUGScontext::getModule('publish')->getSetting('enableteambillboards') == 1)
+		if (TBGContext::getModule('publish')->getSetting('enableteambillboards') == 1)
 		{
-			foreach (BUGScontext::getUser()->getTeams() as $aTeamID) 
+			foreach (TBGContext::getUser()->getTeams() as $aTeamID) 
 			{
-				$billboardposts = BUGScontext::getModule('publish')->getBillboardPosts($aTeamID, 9);
-				$aTeam = BUGSfactory::teamLab($aTeamID);
-				?><div style="border-bottom: 1px solid #DDD; padding: 3px; font-size: 13px;"><b><a href="<?php echo BUGScontext::getTBGPath(); ?>modules/publish/billboard.php?billboard=<?php echo $aTeam->getID(); ?>"><?php echo __('%teamname% billboard', array('%teamname%' => $aTeam->getName())); ?></a></b> <span style="display: inline; font-weight: normal; font-size: 11px;">(<?php echo __('available only to team members'); ?>)</span></div>
+				$billboardposts = TBGContext::getModule('publish')->getBillboardPosts($aTeamID, 9);
+				$aTeam = TBGFactory::teamLab($aTeamID);
+				?><div style="border-bottom: 1px solid #DDD; padding: 3px; font-size: 13px;"><b><a href="<?php echo TBGContext::getTBGPath(); ?>modules/publish/billboard.php?billboard=<?php echo $aTeam->getID(); ?>"><?php echo __('%teamname% billboard', array('%teamname%' => $aTeam->getName())); ?></a></b> <span style="display: inline; font-weight: normal; font-size: 11px;">(<?php echo __('available only to team members'); ?>)</span></div>
 				<?php
 				for ($cc = 1; $cc <= 3; $cc++) 
 				{
@@ -196,7 +196,7 @@
 									if (!empty($billboardposts))
 									{
 										$billboardpost = array_shift($billboardposts);
-										BUGScontext::getModule('publish')->printBillboardPostOnBillboard($billboardpost);
+										TBGContext::getModule('publish')->printBillboardPostOnBillboard($billboardpost);
 									}
 								}
 								
@@ -215,15 +215,15 @@
 	{
 		$billboardtitle = null;
 		
-		if ((int) BUGScontext::getRequest()->getParameter('billboard') == 0)
+		if ((int) TBGContext::getRequest()->getParameter('billboard') == 0)
 		{
-			$billboardposts = BUGScontext::getModule('publish')->getBillboardPosts(0, 30);
+			$billboardposts = TBGContext::getModule('publish')->getBillboardPosts(0, 30);
 			$billboardtitle = 'Global billboard';
 		}
-		elseif (in_array((int) BUGScontext::getRequest()->getParameter('billboard'), BUGScontext::getUser()->getTeams()))
+		elseif (in_array((int) TBGContext::getRequest()->getParameter('billboard'), TBGContext::getUser()->getTeams()))
 		{
-			$billboardposts = BUGScontext::getModule('publish')->getBillboardPosts(BUGScontext::getRequest()->getParameter('billboard'), 30);
-			$billboardtitle = BUGSfactory::teamLab(BUGScontext::getRequest()->getParameter('billboard'))->getName() . ' billboard';
+			$billboardposts = TBGContext::getModule('publish')->getBillboardPosts(TBGContext::getRequest()->getParameter('billboard'), 30);
+			$billboardtitle = TBGFactory::teamLab(TBGContext::getRequest()->getParameter('billboard'))->getName() . ' billboard';
 		}
 			
 		if ($billboardtitle !== null)
@@ -234,7 +234,7 @@
 			{
 				?>
 				<div style="width: 30%; float: left;">
-					<ul style="list-style-type: none; padding: 0px; margin: 0px;" id="billboard_<?php echo (int) BUGScontext::getRequest()->getParameter('billboard'); ?>">
+					<ul style="list-style-type: none; padding: 0px; margin: 0px;" id="billboard_<?php echo (int) TBGContext::getRequest()->getParameter('billboard'); ?>">
 						<?php 
 						
 							for ($cc2 = 1; $cc2 <= 10; $cc2++) 
@@ -242,7 +242,7 @@
 								if (!empty($billboardposts))
 								{
 									$billboardpost = array_shift($billboardposts);
-									BUGScontext::getModule('publish')->printBillboardPostOnBillboard($billboardpost);
+									TBGContext::getModule('publish')->printBillboardPostOnBillboard($billboardpost);
 								}
 							}
 							
@@ -261,6 +261,6 @@
 </div>
 <?php
 
-	require_once BUGScontext::getIncludePath() . "include/footer.inc.php";
+	require_once TBGContext::getIncludePath() . "include/footer.inc.php";
 
 ?>

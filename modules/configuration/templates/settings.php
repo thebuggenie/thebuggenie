@@ -9,7 +9,7 @@
 <td valign="top">
 <div class="configheader" style="width: 750px;"><?php echo __('Configure settings'); ?></div>
 <?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-	<form accept-charset="<?php echo BUGScontext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_settings'); ?>" method="post" onsubmit="submitForm('<?php echo make_url('configure_settings'); ?>', 'config_settings'); return false;" id="config_settings">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_settings'); ?>" method="post" onsubmit="submitForm('<?php echo make_url('configure_settings'); ?>', 'config_settings'); return false;" id="config_settings">
 <?php endif; ?>
 <div style="margin-top: 5px; width: 750px; clear: both; height: 30px;" class="tab_menu">
 	<ul id="settings_menu">
