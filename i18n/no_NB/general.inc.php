@@ -219,7 +219,7 @@
 	$strings['config_projects'] = 'Produkter, utgaver, versjoner og komponenter';
 	$strings['permissions'] = 'Tilganger';
 	$strings['This is the The Bug Genie online help system'] = 'Dette er hjelpesystemet for BUGS 2';
-	$strings['For other support options - or if you need more information - please refer to the support section of the BUGS website: %tbg__help%'] = 'For andre support-alternativer - eller hvis du trenger mer informasjon - vennligst bes�k support-seksjonen p� v�rt nettsted: %tbg__help%';
+	$strings['For other support options - or if you need more information - please refer to the support section of the BUGS website: %tbg_help%'] = 'For andre support-alternativer - eller hvis du trenger mer informasjon - vennligst bes�k support-seksjonen p� v�rt nettsted: %tbg_help%';
 	$strings['Go to the Frontpage'] = 'G� til forsiden';
 	$strings['Also remember that you can not upload these filetypes: %list%'] = 'Husk ogs� at du ikke kan laste opp f�lgende filtyper: %list%';
 	$strings['Also remember that the only allowed filetypes are: %list%'] = 'Husk ogs� at de eneste tillatte filtypene er: %list%';

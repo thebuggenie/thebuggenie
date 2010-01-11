@@ -65,7 +65,7 @@
 		</dl>
 		<?php if ($theIssue->getProject()->isVotesEnabled()): ?>
 			<?php //TODO: Add a vote counter, and a "plus" button? ?>
-			<?php if ($tbg__user->canVoteOnIssuesForProduct($theIssue->getProject()->getID()) && $tbg__user->canVoteForIssue($theIssue->getID())): /* ?>
+			<?php if ($tbg_user->canVoteOnIssuesForProduct($theIssue->getProject()->getID()) && $tbg_user->canVoteForIssue($theIssue->getID())): /* ?>
 				<div style="border-bottom: 1px solid #DDD; padding: 3px; font-size: 12px; margin-top: 5px;">
 					<b>VOTE!</b>
 				</div>

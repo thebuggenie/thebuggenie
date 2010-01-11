@@ -2,7 +2,7 @@
 
 	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
-		tbg__msgbox(false, "", __('You do not have access to this section'));
+		tbg_msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
@@ -23,7 +23,7 @@
 						<?php echo __('From here you can manage users, as well as their individual permissions.'); ?><br>
 						<?php echo __('User-related settings are available from the %general_settings% page.', array('%general_settings%' => '<span style="display: float;">' . image_tag('cfg_icon_general.png') . '&nbsp;<a href="config.php?module=core&amp;section=12"><b>' . __('General settings') . '</b></a></span>')) ?>
 						<br>
-						<?php echo __('To learn more about this configuration page, please refer to the %tbg__online_help%.', array('%tbg__online_help%' => tbg__helpBrowserHelper('usersettings', 'The Bug Genie online help'))); ?>
+						<?php echo __('To learn more about this configuration page, please refer to the %tbg_online_help%.', array('%tbg_online_help%' => tbg_helpBrowserHelper('usersettings', 'The Bug Genie online help'))); ?>
 						</td>
 					</tr>
 				</table>
@@ -333,7 +333,7 @@
                 </td>
 								</tr>
 								<tr>
-								<td><?php echo ($aUser->getLastSeen() != 0) ? __('Joined %joined_date%, last online %last_online_date%', array('%joined_date%' => tbg__formatTime($aUser->getJoinedDate(), 9), '%last_online_date%' => tbg__formatTime($aUser->getLastSeen(), 9))) : __('Joined %joined_date%, has not logged in yet.', array('%joined_date%' => tbg__formatTime($aUser->getJoinedDate(), 9))); ?></td>
+								<td><?php echo ($aUser->getLastSeen() != 0) ? __('Joined %joined_date%, last online %last_online_date%', array('%joined_date%' => tbg_formatTime($aUser->getJoinedDate(), 9), '%last_online_date%' => tbg_formatTime($aUser->getLastSeen(), 9))) : __('Joined %joined_date%, has not logged in yet.', array('%joined_date%' => tbg_formatTime($aUser->getJoinedDate(), 9))); ?></td>
 								</tr>
 								<tr>
 								<td <?php print ($aUser->isDeleted()) ? " style=\"color: #AAA;\"" : ""; ?>><?php echo __('Team membership:'); ?>&nbsp;

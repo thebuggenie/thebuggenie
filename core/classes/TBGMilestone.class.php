@@ -689,11 +689,11 @@
 				}
 				elseif ($this->_reacheddate <= $this->_scheduleddate)
 				{
-					return array('color' => '3A3', 'status' => '<b>Reached: </b> ' . tbg__formatTime($this->_reacheddate, 6));
+					return array('color' => '3A3', 'status' => '<b>Reached: </b> ' . tbg_formatTime($this->_reacheddate, 6));
 				}
 				else
 				{
-					$ret_text = '<b>Reached: </b> ' . tbg__formatTime($this->_reacheddate, 6) . ', ';
+					$ret_text = '<b>Reached: </b> ' . tbg_formatTime($this->_reacheddate, 6) . ', ';
 					for ($dcc = 1;$dcc <= 7;$dcc++)
 					{
 						if ($this->_reacheddate < ($this->_scheduleddate + (86400 * $dcc)))

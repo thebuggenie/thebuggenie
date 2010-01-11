@@ -61,7 +61,7 @@
 			<div class="xboxcontent permission_list" style="padding: 0 10px 5px 10px; text-align: left;">
 				<div class="header_div" style="margin-top: 0;"><?php echo __('Available permissions'); ?></div>
 				<ul id="module_permission_details_<?php echo $module->getName(); ?>">
-					<?php include_template('configuration/permissionsblock', array('base_id' => 'module_' . $module->getName() . '_permissions', 'permissions_list' => $module->getAvailablePermissions(), 'mode' => 'module_permissions', 'target_id' => 0, 'module' => $module->getName(), 'access_level' => (($tbg__user->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PERMISSIONS) ? configurationActions::ACCESS_FULL : configurationActions::ACCESS_READ)))); ?>
+					<?php include_template('configuration/permissionsblock', array('base_id' => 'module_' . $module->getName() . '_permissions', 'permissions_list' => $module->getAvailablePermissions(), 'mode' => 'module_permissions', 'target_id' => 0, 'module' => $module->getName(), 'access_level' => (($tbg_user->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PERMISSIONS) ? configurationActions::ACCESS_FULL : configurationActions::ACCESS_READ)))); ?>
 				</ul>
 			</div>
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>

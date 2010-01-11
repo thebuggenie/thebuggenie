@@ -63,7 +63,7 @@
 		<input type="hidden" name="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
 		<table cellpadding=0 cellspacing=0 style="width: 100%;">
 		<tr>
-			<td style="width: auto; padding: 2px;"><?php echo tbg__newTextArea('issue_newdescription', '150px', '100%', TBGContext::getRequest()->sanitize_input($theIssue->getDescription())); ?></td>
+			<td style="width: auto; padding: 2px;"><?php echo tbg_newTextArea('issue_newdescription', '150px', '100%', TBGContext::getRequest()->sanitize_input($theIssue->getDescription())); ?></td>
 			<td style="width: 40px; padding: 2px;" valign="top"><button style="width: 100%;" onclick="submitNewDescription();"><?php echo __('Save'); ?></button></td>
 		</tr>
 		<tr>
@@ -84,7 +84,7 @@
 		<input type="hidden" name="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
 		<table cellpadding=0 cellspacing=0 style="width: 100%;">
 		<tr>
-			<td style="width: auto; padding: 2px;"><?php echo tbg__newTextArea('issue_newrepro', '150px', '100%', TBGContext::getRequest()->sanitize_input($theIssue->getReproduction())); ?></td>
+			<td style="width: auto; padding: 2px;"><?php echo tbg_newTextArea('issue_newrepro', '150px', '100%', TBGContext::getRequest()->sanitize_input($theIssue->getReproduction())); ?></td>
 			<td style="width: 40px; padding: 2px;" valign="top"><button style="width: 100%;" onclick="submitNewRepro();"><?php echo __('Save'); ?></button></td>
 		</tr>
 		<tr>
@@ -316,7 +316,7 @@ if ($theIssue->canEditFields() || $theIssue->canEditUsers())
 			<td class="imgtd" valign="middle" ><?php echo image_tag('icon_user.png'); ?>
 			<br>
 			<span id="edit_owner" style="display: none;">
-			<?php tbg__AJAXuserteamselector(__('Set owned by a user'), 
+			<?php tbg_AJAXuserteamselector(__('Set owned by a user'), 
 											__('Set owned by a team'),
 											'include/viewissue_actions.inc.php?issue_no=' . $theIssue->getFormattedIssueNo(true) . '&setowner=true&owned_type=1', 
 											'include/viewissue_actions.inc.php?issue_no=' . $theIssue->getFormattedIssueNo(true) . '&setowner=true&owned_type=2',
@@ -334,7 +334,7 @@ if ($theIssue->canEditFields() || $theIssue->canEditUsers())
 			<td class="imgtd" valign="middle"><?php echo image_tag('icon_user.png'); ?>
 			<br>
 			<span id="edit_assignee" style="display: none;">
-			<?php tbg__AJAXuserteamselector(__('Assign to a user'), 
+			<?php tbg_AJAXuserteamselector(__('Assign to a user'), 
 											__('Assign to a team'),
 											'include/viewissue_actions.inc.php?issue_no=' . $theIssue->getFormattedIssueNo(true) . '&setassignee=true&assigned_type=1', 
 											'include/viewissue_actions.inc.php?issue_no=' . $theIssue->getFormattedIssueNo(true) . '&setassignee=true&assigned_type=2',
@@ -483,7 +483,7 @@ if ($theIssue->canEditUsers() || $theIssue->canDeleteIssue())
 		<b><?php echo __('This issue is hidden from'); ?></b><br>
 		<div id="issue_hiddenfrom"><?php echo __('Please wait, loading list'); ?> ...</div>
 		<span id="edit_hideissueselector" style="display: none; position: absolute;">
-		<?php tbg__AJAXuserteamselector(__('Hide issue from a user'), 
+		<?php tbg_AJAXuserteamselector(__('Hide issue from a user'), 
 										__('Hide issue from a team'),
 										'include/viewissue_actions.inc.php?issue_no=' . $theIssue->getFormattedIssueNo(true) . '&sethidden=true&hidden_type=1', 
 										'include/viewissue_actions.inc.php?issue_no=' . $theIssue->getFormattedIssueNo(true) . '&sethidden=true&hidden_type=2',
@@ -503,7 +503,7 @@ if ($theIssue->canEditUsers() || $theIssue->canDeleteIssue())
 		<b><?php echo __('This issue is explicitly available to'); ?></b><br>
 		<div id="issue_availableto"><?php echo __('Please wait, loading list'); ?> ...</div>
 		<span id="edit_viewissueselector" style="display: none; position: absolute;">
-		<?php tbg__AJAXuserteamselector(__('Grant explicit access to a user'), 
+		<?php tbg_AJAXuserteamselector(__('Grant explicit access to a user'), 
 										__('Grant explicit access to a team'),
 										'include/viewissue_actions.inc.php?issue_no=' . $theIssue->getFormattedIssueNo(true) . '&setvisible=true&visible_type=1', 
 										'include/viewissue_actions.inc.php?issue_no=' . $theIssue->getFormattedIssueNo(true) . '&setvisible=true&visible_type=2',

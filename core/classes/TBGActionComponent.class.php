@@ -93,17 +93,17 @@
 			/**
 			 * @global TBGRequest The request object
 			 */
-			$tbg__request = TBGContext::getRequest();
+			$tbg_request = TBGContext::getRequest();
 			
 			/**
 			 * @global TBGResponse The response object
 			 */
-			$tbg__response = TBGContext::getResponse();
+			$tbg_response = TBGContext::getResponse();
 			
 			/**
 			 * @global TBGUser The user object
 			 */
-			$tbg__user = TBGContext::getUser();
+			$tbg_user = TBGContext::getUser();
 			
 			require $template_file;
 		}

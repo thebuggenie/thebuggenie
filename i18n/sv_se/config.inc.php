@@ -56,7 +56,7 @@
 	$strings['From here you can manage all data types L�gg till �rende in BUGS, which relates to issues.'] = 'H�rifr�n kan du hantera alla datatyper som finns i �rendesystemet, som r�r fr�gor.';
 	$strings['Several of these data types have some kind of setting associated with them, which you can set in the corresponding subsection.'] = 'Flera av dessa datatyper har n�gon typ av inst�llning �r associerade med dem, som du kan st�lla in i motsvarande avsnitt.';
 	$strings['From here you can manage common The Bug Genie settings.'] = 'H�rifr�n kan du hantera de allm�nna BUGGAR inst�llningar.';
-	$strings['To find out more about what each setting does, please refer to the %tbg__online_help%'] = 'Om du vill veta mer om vad varje inst�llning g�r, h�nvisar vi till %tbg__online_help%';
+	$strings['To find out more about what each setting does, please refer to the %tbg_online_help%'] = 'Om du vill veta mer om vad varje inst�llning g�r, h�nvisar vi till %tbg_online_help%';
 	$strings['Could not find this username. Please type the username of an existing, enabled user.'] = 'Kunde inte hitta detta anv�ndarnamn. Var god ange ett anv�ndarnamn av en befintlig, gjort det m�jligt f�r anv�ndaren.';
 	$strings['Interface language'] = 'Spr�k';
 	$strings['The default language in BUGS 2'] = 'Standardspr�ket i �rendehanteraren';
@@ -154,7 +154,7 @@
 	$strings['Edit settings'] = 'Redigera inst�llningar';
 	$strings['Configure L�gg till �rende scopes'] = 'Konfigurera tillg�ngliga omfattningar';
 	$strings['Scopes are individual BUGS 2 environments, fully functional, but invisible to eachother.'] = 'Omfattningar �r enskilda �rendehanteraren milj�er, fullt fungerande, men osynliga f�r varandra.';
-	$strings['You can learn more about scopes in the %tbg__online_help%.'] = 'Du kan l�sa mer om omfattningar i %tbg__online_help%.';
+	$strings['You can learn more about scopes in the %tbg_online_help%.'] = 'Du kan l�sa mer om omfattningar i %tbg_online_help%.';
 	$strings['Click on a scope to view its details and/or change its settings.'] = 'Klicka p� en m�jlighet att se mer information och / eller �ndra dess inst�llningar.';
 	$strings['Click here to create a new scope'] = 'Klicka h�r f�r att skapa en ny r�ckvidd';
 	$strings['DEFAULT SCOPE'] = 'F�RINST�LLD OMFATTNING';
@@ -205,7 +205,7 @@
 	$strings['always use forward slashes, even if installed on Windows-systems'] = 'alltid anv�nda snedstreck, �ven om de installeras p� Windows-system';
 	$strings['Configure teams &amp; groups'] = 'Konfigurera team & grupper';
 	$strings['From here you can manage L�gg till �rende teams and groups, as well as their permissions.'] = 'H�rifr�n kan du hantera tillg�ngliga team och grupper, samt deras beh�righeter.';
-	$strings['Please read more about applying permissions in the %tbg__online_help% before using this section.'] = 'L�s mer om till�mpning av beh�righeter i %tbg__online_help% innan du b�rjar anv�nda detta avsnitt.';
+	$strings['Please read more about applying permissions in the %tbg_online_help% before using this section.'] = 'L�s mer om till�mpning av beh�righeter i %tbg_online_help% innan du b�rjar anv�nda detta avsnitt.';
 	$strings['You can not remove the "%group_name%" group'] = 'Du kan inte ta bort den "%group_name%" grupp';
 	$strings['You are a member of this group, and can therefore not remove it. You must change your user settings before you can remove this group.'] = 'Du �r medlem i denna grupp, och kan d�rf�r inte ta bort den. Du m�ste �ndra ditt anv�ndarnamn inst�llningar innan du kan ta bort denna grupp.';
 	$strings['This group is the default user group and can not be removed.'] = 'Denna grupp �r standard begr�nsad grupp och kan inte tas bort.';
@@ -229,7 +229,7 @@
 	$strings['From here you can manage users, as well as their individual permissions.'] = 'H�rifr�n kan du hantera anv�ndare, samt deras individuella beh�righeter.';
 	$strings['To add a user, click the "Add user" link'] = 'Om du vill l�gga till en anv�ndare klickar du p� "L�gg till anv�ndare" l�nk';
 	$strings['User-related settings are L�gg till �rende from the %general_settings% page.'] = 'User-relaterade inst�llningar �r tillg�ngliga fr�n %general_settings% sida.';
-	$strings['To learn more about this configuration page, please refer to the %tbg__online_help%.'] = 'Om du vill veta mer om den h�r konfigurationen sida h�nvisar vi till %tbg__online_help%.';
+	$strings['To learn more about this configuration page, please refer to the %tbg_online_help%.'] = 'Om du vill veta mer om den h�r konfigurationen sida h�nvisar vi till %tbg_online_help%.';
 	$strings['Add user'] = 'L�gg till anv�ndare';
 	$strings['Username:'] = 'Anv�ndarnamn:';
 	$strings['In group(s):'] = 'I grupp (er):';
@@ -291,7 +291,7 @@
 	$strings['Charset'] = 'Teckenupps�ttning';
 	$strings['Configure file upload settings'] = 'Konfigurera filen uppladdningsgr�ns';
 	$strings['From here you can manage file uploads.'] = 'H�rifr�n kan du hantera fil�verf�ring.';
-	$strings['To find out more about what each setting does, please refer to the %tbg__online_help%'] = 'Om du vill veta mer om vad varje inst�llning g�r, h�nvisar vi till %tbg__online_help%';
+	$strings['To find out more about what each setting does, please refer to the %tbg_online_help%'] = 'Om du vill veta mer om vad varje inst�llning g�r, h�nvisar vi till %tbg_online_help%';
 	$strings['Allow file uploads'] = 'Till�t fil�verf�ring';
 	$strings['Yes, allow file uploads'] = 'Ja, l�t fil�verf�ring';
 	$strings['No, don\'t allow file uploads'] = 'Nej, m�jligg�r inte fil�verf�ring';
@@ -313,7 +313,7 @@
 	$strings['Scripts (php, asp, etc.) are never allowed'] = 'Skript (php, asp, etc.) �r aldrig till�tet';
 	$strings['Import data from version 1.9'] = 'Importera data fr�n gammal databas';
 	$strings['To start importing data from your BUGS 1.9 installation, please enter the connection details below.'] = 'F�r att b�rja importera data fr�n din gamla databas s� anger du databasinformationen nedan.';
-	$strings['After pressing "Next", you will be presented with several options related to the import. More information is L�gg till �rende in the %tbg__online_help%'] = 'Efter att trycka p� "N�sta" kommer du att bli presenterad med flera alternativ i fr�ga om import. Mer information finns i %tbg__online_help%';
+	$strings['After pressing "Next", you will be presented with several options related to the import. More information is L�gg till �rende in the %tbg_online_help%'] = 'Efter att trycka p� "N�sta" kommer du att bli presenterad med flera alternativ i fr�ga om import. Mer information finns i %tbg_online_help%';
 	$strings['Connection settings'] = 'Anslutningsinst�llningar';
 	$strings['Hostname'] = 'V�rdnamn';
 	$strings['Database name'] = 'Databasens namn';

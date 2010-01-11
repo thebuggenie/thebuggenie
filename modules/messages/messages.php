@@ -195,7 +195,7 @@
 			<td style="text-align: center;<?php print ($sel_msg_id == $aMessage->get(B2tMessages::ID)) ? " background-color: #F5F5F5;" : ""; ?> width: 28px; padding: 2px; border-bottom: 1px solid #F1F1F1;"><a class="image" href="messages.php?set_read=<?php print ($aMessage->get(B2tMessages::IS_READ) == 0) ? 1 : 0; ?>&amp;the_msg=<?php print $aMessage->get(B2tMessages::ID); ?>"><?php echo image_tag('messages_' . (($aMessage->get(B2tTeams::TEAMNAME) != '') ? "team" : "user") . '_msg_' . (($aMessage->get(B2tMessages::IS_READ) == 0) ? "un" : "") . 'read.png'); ?></a></td>
 			<td style="<?php print ($sel_msg_id == $aMessage->get(B2tMessages::ID)) ? "background-color: #F5F5F5;" : ""; ?>">
 			<a name="msg<?php print $aMessage->get(B2tMessages::ID); ?>"></a>
-			<div style="padding: 2px; border-bottom: 1px solid #F1F1F1;"><a href="messages.php?msg_id=<?php print $aMessage->get(B2tMessages::ID); ?>#msg<?php print $aMessage->get(B2tMessages::ID); ?>"><?php print ($aMessage->get(B2tMessages::IS_READ) == 0) ? "<b>" : ""; print tbg__BBDecode($aMessage->get(B2tMessages::TITLE)); print ($aMessage->get(B2tMessages::IS_READ) == 0) ? "</b>" : ""; ?></a>
+			<div style="padding: 2px; border-bottom: 1px solid #F1F1F1;"><a href="messages.php?msg_id=<?php print $aMessage->get(B2tMessages::ID); ?>#msg<?php print $aMessage->get(B2tMessages::ID); ?>"><?php print ($aMessage->get(B2tMessages::IS_READ) == 0) ? "<b>" : ""; print tbg_BBDecode($aMessage->get(B2tMessages::TITLE)); print ($aMessage->get(B2tMessages::IS_READ) == 0) ? "</b>" : ""; ?></a>
 			<div style="font-size: 10px;"><?php
 
 				print ($the_folder != 2) ? "<b>From:&nbsp;</b>" . $aMessage->get(B2tUsers::BUDDYNAME, B2tMessages::FROM_USER) : (($aMessage->get(B2tTeams::TEAMNAME) == "") ? "<b>To:&nbsp;</b>" . $aMessage->get(B2tUsers::BUDDYNAME, B2tMessages::TO_USER) . "&nbsp;(" . $aMessage->get(B2tUsers::UNAME, B2tMessages::TO_USER) . ")" : "");
@@ -205,7 +205,7 @@
 					print "<b>To:&nbsp;</b>" . $aMessage->get(B2tTeams::TEAMNAME);
 				}
 
-			?>, <?php print tbg__formatTime($aMessage->get(B2tMessages::SENT), 3); ?></div>
+			?>, <?php print tbg_formatTime($aMessage->get(B2tMessages::SENT), 3); ?></div>
 			</div>
 			</td>
 			</tr>
@@ -243,7 +243,7 @@
 			<?php
 	
 				$replystring = MESSAGES_NEWMSGWINDOWSTRING_TOUSER_STRING;
-				$replystring = str_replace("{uid}", $the_msg[0]->get(B2tMessages::FROM_USER) . "&amp;set_title=RE: " . tbg__BBDecode($the_msg[0]->get(B2tMessages::TITLE)), $replystring);
+				$replystring = str_replace("{uid}", $the_msg[0]->get(B2tMessages::FROM_USER) . "&amp;set_title=RE: " . tbg_BBDecode($the_msg[0]->get(B2tMessages::TITLE)), $replystring);
 	
 			?>
 			<a href="javascript:void(0);" onclick="<?php print $replystring; ?>">
@@ -341,18 +341,18 @@
 			<div style="text-align: center; padding: 5px;"><a href="messages.php?delete_message=true&amp;msg_id=<?php print $the_msg[0]->get(B2tMessages::ID); ?>"><?php echo __('Yes'); ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void(0);" onclick="showHide('messages_deletemessage');"><b><?php echo __('No'); ?></b></a></div>
 			</div>
 			<div style="background-color: #F5F5F5; border-bottom: 1px solid #E5E5E5; padding: 5px;">
-			<b><?php echo __('Sent:'); ?>&nbsp;</b><?php print tbg__formatTime($the_msg[0]->get(B2tMessages::SENT), 7); ?><br>
+			<b><?php echo __('Sent:'); ?>&nbsp;</b><?php print tbg_formatTime($the_msg[0]->get(B2tMessages::SENT), 7); ?><br>
 			<table cellpadding=0 cellspacing=0 style="width: 100%;">
 			<tr>
 			<td style="width: 35px;" valign="middle"><b><?php echo __('From:') ?></b></td>
-			<td><table cellpadding=0 cellspacing=0 style="width: 100%;"><?php print tbg__userDropdown($the_msg[0]->get(B2tMessages::FROM_USER)); ?></table></td>
+			<td><table cellpadding=0 cellspacing=0 style="width: 100%;"><?php print tbg_userDropdown($the_msg[0]->get(B2tMessages::FROM_USER)); ?></table></td>
 			</tr>
 			</table>
-			<div style="font-size: 13px; width: auto; padding: 3px; padding-top: 5px; padding-left: 0px;"><b><?php print tbg__BBDecode($the_msg[0]->get(B2tMessages::TITLE)); ?></b></div>
+			<div style="font-size: 13px; width: auto; padding: 3px; padding-top: 5px; padding-left: 0px;"><b><?php print tbg_BBDecode($the_msg[0]->get(B2tMessages::TITLE)); ?></b></div>
 			</div>
 			<div style="padding: 5px;">
 			<?php
-			print tbg__BBDecode($the_msg[0]->get(B2tMessages::BODY));
+			print tbg_BBDecode($the_msg[0]->get(B2tMessages::BODY));
 			?>
 			</div>
 		<?php endif; ?>

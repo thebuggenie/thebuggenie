@@ -4,7 +4,7 @@
 
 	$strings['Configure projects'] = 'Redigere produkter';
 	$strings['This page gives you full control over your projects - each projects specific settings, as well as its editions and builds.'] = 'Denne siden gir deg full kontroll over dine produkter - hvert produkts innstillinger, i tillegg til utgaver og versjoner.';
-	$strings['If you are unsure how to set up projects, editions, builds and components, have a look at the %tbg__online_help%.'] = 'Hvis du er usikker p� hvordan du setter opp produkter, utgaver, versjoner og komponenter, ta en titt i %tbg__online_help%.';
+	$strings['If you are unsure how to set up projects, editions, builds and components, have a look at the %tbg_online_help%.'] = 'Hvis du er usikker p� hvordan du setter opp produkter, utgaver, versjoner og komponenter, ta en titt i %tbg_online_help%.';
 	$strings['Please select a project from the list to view and edit its details.'] = 'Vennligst velg et produkt fra listen for � se p� og redigere dets detaljer.';
 	$strings['View or edit details about the selected project below.'] = 'Se p� eller rediger detaljer for det gjeldende produktet nedenfor.';
 	$strings['Click the "Save"-button below to update settings and details.'] = 'Trykk p� "Lagre"-knappen nedenfor for � oppdatere innstillingene.';

@@ -57,7 +57,7 @@
 	$strings['From here you can manage all data types available in BUGS, which relates to issues.'] = 'Ici vous pouvez g&eacute;rer les types de donn&eacute;es associ&eacute;s aux demandes.';
 	$strings['Several of these data types have some kind of setting associated with them, which you can set in the corresponding subsection.'] = 'Certains de ces types de donn&eacute;es ont des param&egrave;tres que vous pouvez modifier dans la section correspondante.';
 	$strings['From here you can manage common The Bug Genie settings.'] = 'Ici vous pouvez g&eacute;rer les param&egrave;tres g&eacute;n&eacute;raux de BUGS.';
-	$strings['To find out more about what each setting does, please refer to the %tbg__online_help%'] = 'Pour avoir plus d\'informations sur chaque param&egrave;tre r&eacute;f&eacute;rez-vous &agrave; %tbg__online_help%';
+	$strings['To find out more about what each setting does, please refer to the %tbg_online_help%'] = 'Pour avoir plus d\'informations sur chaque param&egrave;tre r&eacute;f&eacute;rez-vous &agrave; %tbg_online_help%';
 	$strings['Could not find this username. Please type the username of an existing, enabled user.'] = 'Utilisateur non trouv&eacute;. Utilisez un nom d\'utilisateur existant et actif.';
 	$strings['Interface language'] = 'Langue';
 	$strings['The default language in BUGS 2'] = 'Langue par d&eacute;faut dans BUGS 2';
@@ -155,7 +155,7 @@
 	$strings['Edit settings'] = 'Modifier les param&egrave;tres';
 	$strings['Configure available scopes'] = 'Confirurer les domaines';
 	$strings['Scopes are individual BUGS 2 environments, fully functional, but invisible to eachother.'] = 'Les domaines sont des environements complets operationnels, invisibles les uns aux autres.';
-	$strings['You can learn more about scopes in the %tbg__online_help%.'] = 'Vous trouverez plus de d&eacute;tails sur les domaines (scopes) dans %tbg__online_help%.';
+	$strings['You can learn more about scopes in the %tbg_online_help%.'] = 'Vous trouverez plus de d&eacute;tails sur les domaines (scopes) dans %tbg_online_help%.';
 	$strings['Click on a scope to view its details and/or change its settings.'] = 'Cliquez sur un domaine pour voir ses d&eacute;tails et/ou modifier ses param&egrave;tres.';
 	$strings['Click here to create a new scope'] = 'Cliquez ici pour cr&eacute;er un domaine';
 	$strings['DEFAULT SCOPE'] = 'CONTEXTE PAR DEFAUT';
@@ -206,7 +206,7 @@
 	$strings['always use forward slashes, even if installed on Windows-systems'] = 'Veuillez toujours utiliser les slashes "normaux" ("/"), m&ecirc;me sous Windows';
 	$strings['Configure teams &agrave;amp; groups'] = 'Configurer les &eacute;quipes &agrave;amp; groupes';
 	$strings['From here you can manage available teams and groups, as well as their permissions.'] = 'Ici vous pouvez g&eacute;rer les &eacute;quipes, les groupes et les permissions associ&eacute;es.';
-	$strings['Please read more about applying permissions in the %tbg__online_help% before using this section.'] = 'Consultez  %tbg__online_help% avant d\'utiliser cette section.';
+	$strings['Please read more about applying permissions in the %tbg_online_help% before using this section.'] = 'Consultez  %tbg_online_help% avant d\'utiliser cette section.';
 	$strings['You can not remove the "%group_name%" group'] = 'Vous ne pouvez pas supprimer le groupe "%group_name%"';
 	$strings['You are a member of this group, and can therefore not remove it. You must change your user settings before you can remove this group.'] = 'Vous &ecirc;tes membre de ce groupe, vous ne pouvez pas le supprimer. Vous devez changer vos param&egrave;tres pour pouvoir supprimer ce groupe.';
 	$strings['This group is the default user group and can not be removed.'] = 'Ce groupe est celui par d&eacute;faut, vous ne pouvez pas le supprimer.';
@@ -230,7 +230,7 @@
 	$strings['From here you can manage users, as well as their individual permissions.'] = 'Ici vous pouvez g&eacute;rer les utilisateurs et leurs permissions.';
 	$strings['To add a user, click the "Add user" link'] = 'Pour ajouter un utilisateur cliquez sur le lien "Ajouter un utilisateur" ';
 	$strings['User-related settings are available from the %general_settings% page.'] = 'Les param&egrave;tres li&eacute;s &agrave; l\'utilisateur sout disponibles sur la page %general_settings%.';
-	$strings['To learn more about this configuration page, please refer to the %tbg__online_help%.'] = 'Pour plus de d&eacute;tails sur cette page r&eacute;f&eacute;rez-vous &agrave; %tbg__online_help%.';
+	$strings['To learn more about this configuration page, please refer to the %tbg_online_help%.'] = 'Pour plus de d&eacute;tails sur cette page r&eacute;f&eacute;rez-vous &agrave; %tbg_online_help%.';
 	$strings['Add user'] = 'Ajouter un utilisateur';
 	$strings['Username:'] = 'Nom d\'utilisateur:';
 	$strings['In group(s):'] = 'Dans le(s) groupe(s):';
@@ -292,7 +292,7 @@
 	$strings['Charset'] = 'Jeu de caract&egrave;res';
 	$strings['Configure file upload settings'] = 'Configurer l\'envoi de fichiers';
 	$strings['From here you can manage file uploads.'] = 'Ici vous pouvez configurer l\'envoi de fichiers.';
-	$strings['To find out more about what each setting does, please refer to the %tbg__online_help%'] = 'Pour savoir ce que fait chaque section, r&eacute;f&eacute;rez-vous &agrave; %tbg__online_help%';
+	$strings['To find out more about what each setting does, please refer to the %tbg_online_help%'] = 'Pour savoir ce que fait chaque section, r&eacute;f&eacute;rez-vous &agrave; %tbg_online_help%';
 	$strings['Allow file uploads'] = 'Autoriser l\'envoi de fichiers';
 	$strings['Yes, allow file uploads'] = 'Oui, autoriser';
 	$strings['No, don\'t allow file uploads'] = 'Non, ne pas autoriser';
@@ -314,7 +314,7 @@
 	$strings['Scripts (php, asp, etc.) are never allowed'] = 'Les scripts (php, asp, etc.) ne sont jamais autoris&eacute;s';
 	$strings['Import data from version 1.9'] = 'Importer les donn&eacute;es de BUGS 1.9';
 	$strings['To start importing data from your BUGS 1.9 installation, please enter the connection details below.'] = 'Pour commencer l\'importation de donn&eacute;es de BUGS 1.9, entrez les d&eacute;tails de connexion ci-dessous.';
-	$strings['After pressing "Next", you will be presented with several options related to the import. More information is available in the %tbg__online_help%'] = 'Apr&egrave;s avoir cliqu&eacute; sur "Suivant", vous pourrez choisir les options d\'import. Plus d\'information est accessible dans %tbg__online_help%';
+	$strings['After pressing "Next", you will be presented with several options related to the import. More information is available in the %tbg_online_help%'] = 'Apr&egrave;s avoir cliqu&eacute; sur "Suivant", vous pourrez choisir les options d\'import. Plus d\'information est accessible dans %tbg_online_help%';
 	$strings['Connection settings'] = 'Param&egrave;tres de connexion';
 	$strings['Hostname'] = 'Adresse';
 	$strings['Database name'] = 'Nom de base de donn&eacute;es';

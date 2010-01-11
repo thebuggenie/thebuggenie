@@ -114,7 +114,7 @@
 		TBGContext::getModule('messages')->setRead(TBGContext::getRequest()->getParameter('the_msg'), TBGContext::getRequest()->getParameter('set_read'));
 	}
 
-	$messages_viewmode = TBGContext::getModule('messages')->getSetting('viewmode', TBGContext::getUser()->getUID()); // tbg__module_loadSetting("messages", "viewmode", TBGContext::getUser()->getUID());
+	$messages_viewmode = TBGContext::getModule('messages')->getSetting('viewmode', TBGContext::getUser()->getUID()); // tbg_module_loadSetting("messages", "viewmode", TBGContext::getUser()->getUID());
 	if ($messages_viewmode == '') $messages_viewmode = TBGContext::getModule('messages')->getSetting('viewmode');
 	$message_folders = TBGContext::getModule('messages')->getFolders(TBGContext::getUser()->getUID());
 

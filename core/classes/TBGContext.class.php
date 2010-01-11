@@ -1632,22 +1632,22 @@
 						/**
 						 * @global TBGRequest The request object
 						 */
-						$tbg__request = self::getRequest();
+						$tbg_request = self::getRequest();
 
 						/**
 						 * @global TBGUser The user object
 						 */
-						$tbg__user = self::getUser();
+						$tbg_user = self::getUser();
 
 						/**
 						 * @global TBGAction The action object
 						 */
-						$tbg__action = $actionObject;
+						$tbg_action = $actionObject;
 
 						/**
 						 * @global TBGResponse The action object
 						 */
-						$tbg__response = self::getResponse();
+						$tbg_response = self::getResponse();
 
 						// Load the "ui" library, since this is used a lot
 						self::loadLibrary('ui');
@@ -1661,27 +1661,27 @@
 					}
 				}
 
-				if (!isset($tbg__response))
+				if (!isset($tbg_response))
 				{
 					/**
 					 * @global TBGRequest The request object
 					 */
-					$tbg__request = self::getRequest();
+					$tbg_request = self::getRequest();
 
 					/**
 					 * @global TBGUser The user object
 					 */
-					$tbg__user = self::getUser();
+					$tbg_user = self::getUser();
 
 					/**
 					 * @global TBGAction The action object
 					 */
-					$tbg__action = $actionObject;
+					$tbg_action = $actionObject;
 
 					/**
 					 * @global TBGResponse The action object
 					 */
-					$tbg__response = self::getResponse();
+					$tbg_response = self::getResponse();
 
 					// Load the "ui" library, since this is used a lot
 					self::loadLibrary('ui');
@@ -1800,7 +1800,7 @@
 				else
 				{
 					//header("HTTP/1.0 404 Not Found", true, 404);
-					//tbg__msgbox(true, 'Can\'t find the page you\'re looking for.', '404');
+					//tbg_msgbox(true, 'Can\'t find the page you\'re looking for.', '404');
 
 					require self::getIncludePath() . 'modules/main/classes/actions.class.php';
 					self::performAction('main', 'notFound');

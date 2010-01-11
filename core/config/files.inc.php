@@ -2,7 +2,7 @@
 
 	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
-		tbg__msgbox(false, "", __('You do not have access to this section'));
+		tbg_msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
@@ -42,7 +42,7 @@
 					</tr>
 					<tr>
 						<td colspan=2 class="cdesc">
-						<?php echo __('From here you can manage file uploads.') . __('To find out more about what each setting does, please refer to the %tbg__online_help%', array('%tbg__online_help%' => tbg__helpBrowserHelper('uploadsettings', 'The Bug Genie online help'))); ?>
+						<?php echo __('From here you can manage file uploads.') . __('To find out more about what each setting does, please refer to the %tbg_online_help%', array('%tbg_online_help%' => tbg_helpBrowserHelper('uploadsettings', 'The Bug Genie online help'))); ?>
 						</td>
 					</tr>
 				</table>

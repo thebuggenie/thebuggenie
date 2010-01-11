@@ -521,7 +521,7 @@
 		{
 			if ($this->_enabled == false || $this->hasAccess() == false)
 			{
-				tbg__showError('B2 Engine error - Not permitted', "You do not have access to this module. <br>You may have tried to access a link that is no longer in use.<br><br>If you think this is an error, please contact the administrator of this BUGS 2 instance.", true);
+				tbg_showError('B2 Engine error - Not permitted', "You do not have access to this module. <br>You may have tried to access a link that is no longer in use.<br><br>If you think this is an error, please contact the administrator of this BUGS 2 instance.", true);
 				exit();				
 			}
 		}

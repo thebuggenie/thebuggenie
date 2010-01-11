@@ -1,6 +1,6 @@
 <?php
 
-	function tbg__sanitize_string($string)
+	function tbg_sanitize_string($string)
 	{
 		if (get_magic_quotes_gpc() == 1)
 		{
@@ -14,7 +14,7 @@
 	 * Returns a formatted string of the given timestamp
 	 *
 	 */
-	function tbg__formatTime($tstamp, $format = 0, $skiptimestamp = 0)
+	function tbg_formatTime($tstamp, $format = 0, $skiptimestamp = 0)
 	{
 		if (TBGSettings::getUserTimezone() !== null && $skiptimestamp == 0)
 		{
@@ -167,7 +167,7 @@
 		return $text;
 	}
 
-	function tbg__getTaskIssueType()
+	function tbg_getTaskIssueType()
 	{
 		try
 		{
@@ -182,7 +182,7 @@
 		}
 	}
 
-	function tbg__getAvailableAssignees($p_id, $e_id = 0, $b_id = 0, $u_id = 0)
+	function tbg_getAvailableAssignees($p_id, $e_id = 0, $b_id = 0, $u_id = 0)
 	{
 		$uids = array();
 
@@ -220,7 +220,7 @@
 		return $uids;
 	}
 
-	function tbg__getIssueNotifications($uid, $notify_type)
+	function tbg_getIssueNotifications($uid, $notify_type)
 	{
 		$crit = new B2DBCriteria();
 		$crit->addWhere(B2tNotifications::UID, $uid);
@@ -230,7 +230,7 @@
 		return $notifications;
 	}
 
-	function tbg__removeIssueNotification($uid, $issue_id)
+	function tbg_removeIssueNotification($uid, $issue_id)
 	{
 		$crit = new B2DBCriteria();
 		$crit->addWhere(B2tNotifications::UID, $uid);
@@ -240,7 +240,7 @@
 		$res = B2DB::getTable('B2tNotifications')->doDelete($crit);
 	}
 
-	function tbg__createPassword($len = 8)
+	function tbg_createPassword($len = 8)
 	{
 		$pass = '';
 		$lchar = 0;
@@ -259,7 +259,7 @@
 		return $pass;
 	}
 
-	function tbg__printRandomNumber()
+	function tbg_printRandomNumber()
 	{
 		$randomNumber = "";
 
@@ -274,7 +274,7 @@
 		return $randomNumber;
 	}
 
-	function tbg__viewMinutes($minutes, $tformat, $hrs_pr_day)
+	function tbg_viewMinutes($minutes, $tformat, $hrs_pr_day)
 	{
 		$theTime = $minutes;
 		switch ($tformat)
@@ -328,7 +328,7 @@
 	 *
 	 * Displays an error dialog box (HTML)
 	 */
-	function tbg__showError($title, $text, $fatal = false)
+	function tbg_showError($title, $text, $fatal = false)
 	{
 		print "<div style=\"position: absolute; top: 25%; left: 20%;\"><div style=\"width: 500px; font-size: 11px; font-family: tahoma, sans-serif; padding: 2px 4px 2px 4px; color: #555; background-color: #DDD; font-weight: bold; border: 1px solid #BBB;\"><b>" . $title . "</b></div><div style=\"width: 500px; font-size: 11px; font-family: tahoma, sans-serif; padding: 5px 4px 5px 4px; color: #555; background-color: #FFF; border: 1px solid #BBB; border-top: 0px;\">";
 		print $text . "</div></div>";
@@ -338,7 +338,7 @@
 		}
 	}
 	
-	function tbg__cleanString($s)
+	function tbg_cleanString($s)
 	{
 		$preg = array('/</' => "&lt;", '/>/' => "&gt;");
 		$s = preg_replace(array_keys($preg), array_values($preg), $s);

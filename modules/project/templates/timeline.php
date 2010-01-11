@@ -1,7 +1,7 @@
 <?php
 
-	$tbg__response->setTitle(__('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
-	$tbg__response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
+	$tbg_response->setTitle(__('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
+	$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
 
 ?>
 <div class="timeline_actions features">
@@ -17,17 +17,17 @@
 		<table cellpadding=0 cellspacing=0 class="recent_activities">
 			<?php $prev_date = null; ?>
 			<?php foreach ($recent_activities as $timestamp => $activities): ?>
-				<?php $date = tbg__formatTime($timestamp, 5); ?>
+				<?php $date = tbg_formatTime($timestamp, 5); ?>
 					<?php if ($date != $prev_date): ?>
 					<tr>
-						<td class="latest_action_dates" colspan="2"><?php echo tbg__formatTime($timestamp, 5); ?></td>
+						<td class="latest_action_dates" colspan="2"><?php echo tbg_formatTime($timestamp, 5); ?></td>
 					</tr>
 				<?php endif; ?>
 				<?php foreach ($activities as $activity): ?>
 					<?php if ($activity['change_type'] == 'build_release'): ?>
 						<tr>
 							<td class="imgtd"><?php echo image_tag('icon_build.png'); ?></td>
-							<td style="padding-bottom: 10px;"><span class="time"><?php echo tbg__formatTime($timestamp, 19); ?></span>&nbsp;<b><?php echo $activity['info']; ?></b><br><i><?php echo __('New version released'); ?></i></td>
+							<td style="padding-bottom: 10px;"><span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<b><?php echo $activity['info']; ?></b><br><i><?php echo __('New version released'); ?></i></td>
 						</tr>
 					<?php else: ?>
 						<?php include_template('main/logitem', array('action' => $activity, 'include_time' => true, 'extra_padding' => true)); ?>

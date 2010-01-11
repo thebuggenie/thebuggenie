@@ -34,7 +34,7 @@
 		<br>
 		Please select which modules to enable here, before pressing "Continue":<br>
 		<i>(You can always enable / disable this functionality from the configuration center after the installation is completed)</i>
-		<form accept-charset="utf-8" action="index.php" method="post" id="tbg__settings">
+		<form accept-charset="utf-8" action="index.php" method="post" id="tbg_settings">
 			<input type="hidden" name="step" value="5">
 			<fieldset>
 				<legend>The Bug Genie modules</legend>

@@ -1,8 +1,8 @@
 <?php
 
-	if ($tbg__user->hasPageAccess('project_timeline', $project->getID()) || $tbg__user->hasPageAccess('project_allpages', $project->getID()))
+	if ($tbg_user->hasPageAccess('project_timeline', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))
 	{
-		$tbg__response->addFeed(make_url('project_timeline', array('project_key' => $project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $project->getName())));
+		$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $project->getName())));
 	}
 	
 ?>
@@ -25,10 +25,10 @@
 				<?php endif; ?>
 			</div>
 			<div style="text-align: right; font-size: 13px; font-weight: normal; padding-top: 3px;">
-				<?php if ($tbg__user->hasPageAccess('project_dashboard', $project->getID()) || $tbg__user->hasPageAccess('project_allpages', $project->getID())): ?>
+				<?php if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
 					<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Overview')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
 				<?php endif; ?>
-				<?php if ($tbg__user->canSearchForIssues() && ($tbg__user->hasPageAccess('project_issues', $project->getID()) || $tbg__user->hasPageAccess('project_allpages', $project->getID()))): ?>
+				<?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
 					<?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
 				<?php endif; ?>
 				<?php TBGContext::trigger('core', 'project_overview_item_links', array('project' => $project)); ?>

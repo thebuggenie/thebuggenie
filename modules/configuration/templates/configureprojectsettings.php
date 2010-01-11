@@ -1,6 +1,6 @@
 <?php
 
-	$tbg__response->setTitle(__('Manage projects - %project% - settings', array('%project%' => $theProject->getName())));
+	$tbg_response->setTitle(__('Manage projects - %project% - settings', array('%project%' => $theProject->getName())));
 	
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -292,7 +292,7 @@
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 					<select style="width: 85px;" name="release_month" id="release_month"<?php if (!$theProject->isPlannedReleased()): ?> disabled<?php endif; ?>>
 					<?php for ($cc = 1;$cc <= 12;$cc++): ?>
-						<option value=<?php print $cc; ?><?php echo (($theProject->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo tbg__formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
+						<option value=<?php print $cc; ?><?php echo (($theProject->getReleaseDateMonth() == $cc) ? " selected" : "") ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
 					<?php endfor; ?>
 					</select>
 					<select style="width: 40px;" name="release_day" id="release_day"<?php if (!$theProject->isPlannedReleased()): ?> disabled<?php endif; ?>>
@@ -306,7 +306,7 @@
 					<?php endfor; ?>
 					</select>
 				<?php elseif ($theProject->isPlannedReleased()): ?>
-					<?php echo tbg__formatTime($theProject->getReleaseDate(), 14); ?>
+					<?php echo tbg_formatTime($theProject->getReleaseDate(), 14); ?>
 				<?php else: ?>
 					<span class="faded_medium"><?php echo __('No planned release date'); ?></span>
 				<?php endif; ?>

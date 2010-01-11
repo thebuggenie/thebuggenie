@@ -134,15 +134,15 @@
 				<table style="width: 100%; margin-top: 3px; table-layout: fixed;" cellpadding=0 cellspacing=0>
 				<?php
 
-					//$tbg__modules = tbg__getModules("",array("id", "module_longname", "module_name"),"");
+					//$tbg_modules = tbg_getModules("",array("id", "module_longname", "module_name"),"");
 					foreach (TBGContext::getModules() as $aModule)
 					{
-						// if (tbg__getModulePermissions($aModule['module_name']) == true)
+						// if (tbg_getModulePermissions($aModule['module_name']) == true)
 						//$aModule = new TBGModule(1);
 						if ($aModule->hasAccess() == true)
 						{
 							//$module_name = $aModule->getName();
-							//$module_permissions = tbg__getModulePermissionConfig($aModule->getName())
+							//$module_permissions = tbg_getModulePermissionConfig($aModule->getName())
 							?>
 							<tr>
 								<td style="width: 20px; padding: 1px;" align="left" valign="middle"><?php echo image_tag('cfg_icon_modules.png'); ?></td>
@@ -166,11 +166,11 @@
 										{
 											TBGContext::getModule(TBGContext::getRequest()->getParameter('module_name'))->setPermission($theuid, $gid, $tid, TBGContext::getRequest()->getParameter('allowed'), TBGContext::getRequest()->getParameter('insertdeny'));
 										}
-										// $light = (tbg__getModulePermissions($aModule['module_name'], $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+										// $light = (tbg_getModulePermissions($aModule['module_name'], $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 										$light = ($aModule->hasAccess($theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 										if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 										{
-											$blue = $aModule->isAccessPermissionCached($theuid, $gid, $tid); // tbg__getAllModulePermissions($aModule->getName(), $theuid, $tid, $gid);
+											$blue = $aModule->isAccessPermissionCached($theuid, $gid, $tid); // tbg_getAllModulePermissions($aModule->getName(), $theuid, $tid, $gid);
 											$light = (!$blue) ? "lightblue" : $light;
 											$lightaccess = ($light == "lightblue") ? 1 : 0;
 											$insertdeny = ($light == "mediumgreen") ? 1 : 0;
@@ -186,7 +186,7 @@
 									}
 									else
 									{
-										// $light = (tbg__getModulePermissions($aModule['module_name'], $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
+										// $light = (tbg_getModulePermissions($aModule['module_name'], $theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 										$light = ($aModule->hasAccess($theuid, $gid, $tid, $all) == true) ? "mediumgreen" : "red";
 										if (($gid != 0) || ($tid != 0) || ($theuid != 0))
 										{
@@ -583,7 +583,7 @@
 							?>
 						</tr>
 						<?php
-						//$builds = tbg__getBuilds($anEdition->getID());
+						//$builds = tbg_getBuilds($anEdition->getID());
 
 						foreach ($anEdition->getBuilds() as $aBuild)
 						{
@@ -666,7 +666,7 @@
 						{
 							foreach ($restrictions as $aRest)
 							{
-								//$prefix = tbg__getIssuePrefix($aRest['target_id']);
+								//$prefix = tbg_getIssuePrefix($aRest['target_id']);
 								$restIssue = TBGFactory::TBGIssueLab($aRest['target_id']);
 								if ($aRest['p_type'] == "b2notviewissue")
 								{

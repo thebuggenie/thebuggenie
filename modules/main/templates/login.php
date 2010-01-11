@@ -159,7 +159,7 @@ TBGContext::clearMessage('postreg_success'); ?>
 
 				<label class="login_fieldheader" for="verification_no">*&nbsp;<?php echo __('Security check'); ?></label><br><br>
 				<?php
-					$_SESSION['activation_number'] = tbg__printRandomNumber();
+					$_SESSION['activation_number'] = tbg_printRandomNumber();
 				?>
 
 				<br><b><?php echo __('Enter the above number in this box'); ?></b><br><br>

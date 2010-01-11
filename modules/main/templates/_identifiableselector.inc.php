@@ -20,14 +20,14 @@
 			</div>
 		</form>
 		<div class="dropdown_content">
-			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), urlencode('%identifiable_value%')), array(1, $tbg__user->getID()), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg__user->getUsername(); ?>)</a><br>
+			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), urlencode('%identifiable_value%')), array(1, $tbg_user->getID()), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a><br>
 			<br>
-			<?php if (count($tbg__user->getFriends()) == 0): ?>
+			<?php if (count($tbg_user->getFriends()) == 0): ?>
 				<b class="faded_medium"><?php echo __("or - if you had any friends registered - you could've selected one from here"); ?></b>
 			<?php else: ?>
 				<br>
 				<b><?php echo __('or select a friend below'); ?>:</b><br>
-				<?php include_component('identifiableselectorresults', array('users' => $tbg__user->getFriends(), 'callback' => $callback)); ?>
+				<?php include_component('identifiableselectorresults', array('users' => $tbg_user->getFriends(), 'callback' => $callback)); ?>
 			<?php endif; ?>
 		</div>
 		<div id="<?php echo $base_id; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>

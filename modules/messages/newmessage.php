@@ -141,7 +141,7 @@
 		<td style="background-color: #F1F1F1; padding: 5px; text-align: left;" colspan=3><b><?php echo __('Message'); ?></b><br>
 		<?php
 
-			echo tbg__newTextArea("message_content", "280px", "100%");
+			echo tbg_newTextArea("message_content", "280px", "100%");
 
 		?>
 		</div>

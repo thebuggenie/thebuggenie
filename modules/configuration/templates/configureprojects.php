@@ -1,6 +1,6 @@
 <?php
 
-	$tbg__response->setTitle(__('Manage projects'));
+	$tbg_response->setTitle(__('Manage projects'));
 	
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>

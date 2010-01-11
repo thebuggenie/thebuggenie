@@ -56,7 +56,7 @@
 							case 'ul':
 								$output = '<li>';
 								$output .= __('Issue #') . TBGContext::getRequest()->getParameter('searchfor') . ' - ' . addslashes($theIssue->getTitle());
-								$output .= '<br><span class="informal">' . __('Last updated') . ' ' . tbg__formatTime($theIssue->getLastUpdatedTime(), 6) . '</span>';
+								$output .= '<br><span class="informal">' . __('Last updated') . ' ' . tbg_formatTime($theIssue->getLastUpdatedTime(), 6) . '</span>';
 								$output = '</li>';
 								break;
 						}
@@ -85,7 +85,7 @@
 						$output .= '<li>';
 						$output .= __('Issue ') . $theIssue->getFormattedIssueNo() . ' - ';
 						$output .= (strlen($theIssue->getTitle()) > 26) ? rtrim(substr($theIssue->getTitle(), 0, 24)) . "<span class=\"informal\">...</span>" : $theIssue->getTitle();
-						$output .= '<br><span class="informal"><i>' . __('Last updated') . ' ' . tbg__formatTime($theIssue->getLastUpdatedTime(), 3) . '</i></span>';
+						$output .= '<br><span class="informal"><i>' . __('Last updated') . ' ' . tbg_formatTime($theIssue->getLastUpdatedTime(), 3) . '</i></span>';
 						$output .= '</li>';
 						break;
 				}
@@ -141,7 +141,7 @@
 								$output .= '<li>';
 								$output .= 'Issue ' . $theIssue->getFormattedIssueNo() . ' - ';
 								$output .= (strlen($theIssue->getTitle()) > 24) ? rtrim(substr($theIssue->getTitle(), 0, 22)) . "<span class=\"informal\">...</span>" : $theIssue->getTitle();
-								$output .= '<br><span class="informal"><i>' . __('Last updated') . ' ' . tbg__formatTime($theIssue->getLastUpdatedTime(), 3) . '</i></span>';
+								$output .= '<br><span class="informal"><i>' . __('Last updated') . ' ' . tbg_formatTime($theIssue->getLastUpdatedTime(), 3) . '</i></span>';
 								$output .= '</li>';
 								break;
 						}

@@ -5,7 +5,7 @@
 			
 	$strings['Configure projects'] = 'Konfigurera produkter';
 	$strings['This page gives you full control over your projects - each projects specific settings, as well as its editions and builds.'] = 'Denna sida ger dig full kontroll �ver dina produkter - alla produkter som �r speciella inst�llningar, samt dess versioner och kandidater.';
-	$strings['If you are unsure how to set up projects, editions, builds and components, have a look at the %tbg__online_help%.'] = 'Om du �r os�ker hur du st�ller in produkter, upplagor, kandidater och komponenter, ta en titt p� den %tbg__online_help%.';
+	$strings['If you are unsure how to set up projects, editions, builds and components, have a look at the %tbg_online_help%.'] = 'Om du �r os�ker hur du st�ller in produkter, upplagor, kandidater och komponenter, ta en titt p� den %tbg_online_help%.';
 	$strings['Please select a project from the list to view and edit its details.'] = 'V�lj en produkt fr�n listan f�r att visa och redigera dess uppgifter.';
 	$strings['View or edit details about the selected project below.'] = 'Visa eller �ndra detaljer om den valda produkten nedan.';
 	$strings['Click the "Save"-button below to update settings and details.'] = 'Klicka p� "Spara"-knappen nedan f�r att uppdatera inst�llningar och information.';

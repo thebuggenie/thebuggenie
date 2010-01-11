@@ -59,7 +59,7 @@
 		}
 		?>
 		<td><a href="javascript:void(0);" onclick="window.open('show_event.php?id=<?php echo $anevent->getID(); ?>','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');"><?php print $anevent->getTitle(); ?></a><br>
-		<div class="today_list_entry"><?php print tbg__formatTime($anevent->getStartDate(), 12); ?> -&gt; <?php print tbg__formatTime($anevent->getEndDate(), 12); ?></div></td>
+		<div class="today_list_entry"><?php print tbg_formatTime($anevent->getStartDate(), 12); ?> -&gt; <?php print tbg_formatTime($anevent->getEndDate(), 12); ?></div></td>
 		</tr>
 		<?php
 	}

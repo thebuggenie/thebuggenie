@@ -2,7 +2,7 @@
 
 	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
-		tbg__msgbox(false, "", __('You do not have access to this section'));
+		tbg_msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
@@ -21,7 +21,7 @@
 							</tr>
 							<tr>
 								<td colspan=2 class="cdesc">
-								<?php echo __('From here you can manage available teams and groups, as well as their permissions.'); ?><br><b><?php echo __('Please read more about applying permissions in the %tbg__online_help% before using this section.', array('%tbg__online_help%' => tbg__helpBrowserHelper('permissions', 'The Bug Genie online help'))); ?></b>
+								<?php echo __('From here you can manage available teams and groups, as well as their permissions.'); ?><br><b><?php echo __('Please read more about applying permissions in the %tbg_online_help% before using this section.', array('%tbg_online_help%' => tbg_helpBrowserHelper('permissions', 'The Bug Genie online help'))); ?></b>
 								<?php
 								
 								if ($access_level == "full")

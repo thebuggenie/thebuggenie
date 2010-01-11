@@ -18,7 +18,7 @@
 
 	if (!$issue_no)
 	{
-		tbg__moveTo('index.php');
+		tbg_moveTo('index.php');
 		exit();
 	}
 	else
@@ -36,7 +36,7 @@
 	if ($theIssue instanceof TBGIssue)
 	{
 
-		tbg__removeIssueNotification(TBGContext::getUser()->getUID(), $theIssue->getID());
+		tbg_removeIssueNotification(TBGContext::getUser()->getUID(), $theIssue->getID());
 
 		if (!TBGContext::getUser()->hasPermission("b2cantvote", $theIssue->getID(), "core"))
 		{
@@ -325,7 +325,7 @@
 	{
 		require_once(TBGContext::getIncludePath() . 'include/header.inc.php');
 		require_once(TBGContext::getIncludePath() . 'include/menu.inc.php');
-		tbg__msgbox(false, __('The specified issue is not available'), __('The specified issue report is not available due to one of the following reasons:') . '<br><br><li>' . __('You have specified an issue id that does not exist, or has been deleted') . '</li><li>' . __('You do not have permission to view this issue report'));
+		tbg_msgbox(false, __('The specified issue is not available'), __('The specified issue report is not available due to one of the following reasons:') . '<br><br><li>' . __('You have specified an issue id that does not exist, or has been deleted') . '</li><li>' . __('You do not have permission to view this issue report'));
 	}
 	if ($theIssue instanceof TBGIssue)
 	{
@@ -333,7 +333,7 @@
 		{
 			require_once(TBGContext::getIncludePath() . 'include/header.inc.php');
 			require_once(TBGContext::getIncludePath() . 'include/menu.inc.php');
-			tbg__msgbox(false, __('The specified issue has been deleted'), __('The specified issue has been deleted'));
+			tbg_msgbox(false, __('The specified issue has been deleted'), __('The specified issue has been deleted'));
 			require_once(TBGContext::getIncludePath() . 'include/footer.inc.php');
 			exit();
 		}
@@ -423,13 +423,13 @@
 					if (TBGContext::getRequest()->getParameter('gettask_description') && is_numeric(TBGContext::getRequest()->getParameter('t_id')))
 					{
 						$theTask = new TBGTask(TBGContext::getRequest()->getParameter('t_id'));
-						echo tbg__BBDecode($theTask->getContent());
+						echo tbg_BBDecode($theTask->getContent());
 						?><div style="font-size: 10px; text-align: left;"><a href="javascript:void(0);" onclick="Element.hide('task_<?php echo $theTask->getID(); ?>');"><?php echo __('Hide description'); ?></a></div><?php
 					}
 					if (TBGContext::getRequest()->getParameter('gettask_lastupdated') && is_numeric(TBGContext::getRequest()->getParameter('t_id')))
 					{
 						$theTask = new TBGTask(TBGContext::getRequest()->getParameter('t_id'));
-						echo tbg__formatTime($theTask->getUpdated(), 4);
+						echo tbg_formatTime($theTask->getUpdated(), 4);
 					}
 					if (TBGContext::getRequest()->getParameter('setowner'))
 					{
@@ -442,7 +442,7 @@
 						{
 							TBGContext::setIncludePath('');
 							echo '<table style="width: 100%;" cellpadding=0 cellspacing=0>';
-							echo ($theIssue->getOwnerType() == TBGIdentifiableClass::TYPE_USER) ? tbg__userDropdown($theIssue->getOwner()->getID()) : tbg__teamDropdown($theIssue->getOwner()->getID());
+							echo ($theIssue->getOwnerType() == TBGIdentifiableClass::TYPE_USER) ? tbg_userDropdown($theIssue->getOwner()->getID()) : tbg_teamDropdown($theIssue->getOwner()->getID());
 							echo '</table>';
 						}
 						else
@@ -541,7 +541,7 @@
 						{
 							TBGContext::setIncludePath('');
 							echo '<table style="width: 100%;" cellpadding=0 cellspacing=0>';
-							echo ($theIssue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER) ? tbg__userDropdown($theIssue->getAssignee()->getID()) : tbg__teamDropdown($theIssue->getAssignee()->getID());
+							echo ($theIssue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER) ? tbg_userDropdown($theIssue->getAssignee()->getID()) : tbg_teamDropdown($theIssue->getAssignee()->getID());
 							echo '</table>';
 						}
 						else
@@ -558,34 +558,34 @@
 						{
 							if ($theIssue->canEditUsers())
 							{
-								$thetr = tbg__userDropdown($theTask->getAssignee()->getID(), 1);
+								$thetr = tbg_userDropdown($theTask->getAssignee()->getID(), 1);
 								echo $thetr[0];
 								?><td style="width: 20px;"><a href="javascript:void(0);" class="image" onclick="javascript:showHide('task_<?php echo $theTask->getID(); ?>_edit_assignee')"><?php echo image_tag('icon_switchassignee.png'); ?></a></td></tr><?php
 								echo $thetr[1];
 							}
 							else
 							{
-								echo tbg__userDropdown($theTask->getAssignee()->getID());
+								echo tbg_userDropdown($theTask->getAssignee()->getID());
 							}
 						}
 						else
 						{
 							if ($theIssue->canEditUsers())
 							{
-								$thetr = tbg__teamDropdown($theTask->getAssignee()->getID(), 1);
+								$thetr = tbg_teamDropdown($theTask->getAssignee()->getID(), 1);
 								echo $thetr[0];
 								?><td style="width: 20px;"><a href="javascript:void(0);" class="image" onclick="javascript:showHide('task_<?php echo $theTask->getID(); ?>_edit_assignee')"><?php echo image_tag('icon_switchassignee.png'); ?></a></td></tr><?php
 								echo $thetr[1];
 							}
 							else
 							{
-								echo tbg__teamDropdown($theTask->getAssignee()->getID());
+								echo tbg_teamDropdown($theTask->getAssignee()->getID());
 							}
 						}
 						?>
 						</table>
 						<span id="task_<?php echo $theTask->getID(); ?>_edit_assignee" style="display: none;">
-						<?php tbg__AJAXuserteamselector(__('Assign to a user'), 
+						<?php tbg_AJAXuserteamselector(__('Assign to a user'), 
 														__('Assign to a team'),
 														'include/viewissue_actions.inc.php?issue_no=' . $theIssue->getFormattedIssueNo(true) . '&t_id=' . $theTask->getID() . '&task_setassignee=true&assigned_type=1', 
 														'include/viewissue_actions.inc.php?issue_no=' . $theIssue->getFormattedIssueNo(true) . '&t_id=' . $theTask->getID() . '&task_setassignee=true&assigned_type=2',
@@ -621,7 +621,7 @@
 						{
 							$theIssue->setDescription($newDesc);
 						}
-						echo tbg__BBDecode($theIssue->getDescription());
+						echo tbg_BBDecode($theIssue->getDescription());
 					}
 				}
 				if ($theIssue->canEditFields())
@@ -1137,7 +1137,7 @@
 					}
 					else
 					{
-						echo tbg__BBDecode($theIssue->getReproduction());
+						echo tbg_BBDecode($theIssue->getReproduction());
 					}
 				}
 				if (TBGContext::getRequest()->getParameter('getcategories'))
@@ -1598,16 +1598,16 @@
 					echo "<td>&nbsp;" . __('Issue registered') . "</td>";
 					echo "<td style=\"width: 150px;\">";
 					echo "<table cellpadding=0 cellspacing=0 style=\"width: 100%;\">";
-					echo tbg__userDropdown($theIssue->getPostedBy()->getUID());
+					echo tbg_userDropdown($theIssue->getPostedBy()->getUID());
 					echo "</table>";
 					echo "</td>";
 					echo "<td style=\"width: 70px; font-size: 9px; text-align: right;\">";
-					echo tbg__formatTime($theIssue->getPosted(), 4);
+					echo tbg_formatTime($theIssue->getPosted(), 4);
 					echo "</td>";
 					echo "</tr>";
 					foreach($log_entries as $anEntry)
 					{
-						$anEntry['text'] = "&nbsp;" . tbg__BBDecode($anEntry['text']);
+						$anEntry['text'] = "&nbsp;" . tbg_BBDecode($anEntry['text']);
 						echo "<tr>";
 						echo "<td style=\"padding: 2px; text-align: right; vertical-align: middle;\">";
 						switch ($anEntry['change_type'])
@@ -1759,7 +1759,7 @@
 						if ($anEntry['uid'] != 0)
 						{
 							echo "<table cellpadding=0 cellspacing=0 style=\"width: 100%;\">";
-							echo tbg__userDropdown($anEntry['uid']);
+							echo tbg_userDropdown($anEntry['uid']);
 							echo "</table>";
 						}
 						else
@@ -1768,7 +1768,7 @@
 						}
 						echo "</td>";
 						echo "<td style=\"width: 70px; font-size: 9px; text-align: right;\">";
-						echo tbg__formatTime($anEntry['time'], 4);
+						echo tbg_formatTime($anEntry['time'], 4);
 						echo "</td>";
 						echo "</tr>";
 					}

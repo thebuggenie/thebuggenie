@@ -2,7 +2,7 @@
 
 	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
-		tbg__msgbox(false, "", __('You do not have access to this section'));
+		tbg_msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
@@ -438,7 +438,7 @@
 							<td colspan=2 class="cdesc">
 							<?php echo __('To start importing data from your BUGS 1.9 installation, please enter the connection details below.'); ?>
 							<br>
-							<?php echo __('After pressing "Next", you will be presented with several options related to the import. More information is available in the %tbg__online_help%', array('%tbg__online_help%' => tbg__helpBrowserHelper('generalsettings', __('The Bug Genie online help')))); ?>.
+							<?php echo __('After pressing "Next", you will be presented with several options related to the import. More information is available in the %tbg_online_help%', array('%tbg_online_help%' => tbg_helpBrowserHelper('generalsettings', __('The Bug Genie online help')))); ?>.
 							</td>
 						</tr>
 					</table>
@@ -465,7 +465,7 @@
 				</tr>
 				<tr>
 					<td style="padding: 5px;"><b><?php echo __('Database name'); ?></b></td>
-					<td><input type="text" name="b1_database" value="<?php echo (TBGContext::getRequest()->getParameter('b1_database')) ? TBGContext::getRequest()->getParameter('b1_database') : 'tbg__db'; ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
+					<td><input type="text" name="b1_database" value="<?php echo (TBGContext::getRequest()->getParameter('b1_database')) ? TBGContext::getRequest()->getParameter('b1_database') : 'tbg_db'; ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
 				</tr>
 			<?php 
 			

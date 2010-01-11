@@ -1,10 +1,10 @@
 <?php 
 
-	$tbg__response->setTitle('Dashboard');
-	$tbg__response->addJavascript('dashboard.js');
-	$tbg__response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me'));
-	$tbg__response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to you'));
-	$tbg__response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to your teams'));
+	$tbg_response->setTitle('Dashboard');
+	$tbg_response->addJavascript('dashboard.js');
+	$tbg_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me'));
+	$tbg_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to you'));
+	$tbg_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to your teams'));
 
 ?>
 <table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
@@ -36,11 +36,11 @@
 			<table cellpadding=0 cellspacing=0>
 				<tr>
 					<td style="width: 48px; text-align: center; padding: 0 10px 0 10px;">
-						<?php echo image_tag($tbg__user->getAvatarURL(false), array(), true); ?>
+						<?php echo image_tag($tbg_user->getAvatarURL(false), array(), true); ?>
 					</td>
 					<td>
-						<div style="font-size: 15px;"><?php echo '<b>' . __('Welcome, %username%', array('%username%' => '</b>' . $tbg__user->getRealname())); ?></div>
-						<span><?php echo '<b>' . __('This page was loaded at %time%', array('%time%' => '</b>' . tbg__formatTime($_SERVER['REQUEST_TIME'], 13))); ?></span>
+						<div style="font-size: 15px;"><?php echo '<b>' . __('Welcome, %username%', array('%username%' => '</b>' . $tbg_user->getRealname())); ?></div>
+						<span><?php echo '<b>' . __('This page was loaded at %time%', array('%time%' => '</b>' . tbg_formatTime($_SERVER['REQUEST_TIME'], 13))); ?></span>
 					</td>
 				</tr>
 			</table>
@@ -59,16 +59,16 @@
 							<?php echo __('Open issues assigned to you'); ?>
 						</div>
 					</div>
-					<?php if (count($tbg__user->getUserAssignedIssues()) > 0): ?>
+					<?php if (count($tbg_user->getUserAssignedIssues()) > 0): ?>
 						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
-						<?php foreach ($tbg__user->getUserAssignedIssues() as $theIssue): ?>
+						<?php foreach ($tbg_user->getUserAssignedIssues() as $theIssue): ?>
 							<tr class="<?php if ($theIssue->getState() == TBGIssue::STATE_CLOSED): ?>issue_closed<?php else: ?>issue_open<?php endif; ?> <?php if ($theIssue->isBlocking()): ?>issue_blocking<?php endif; ?>">
 								<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 								<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
 							</tr>
 							<tr>
 								<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
-									<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg__formatTime($theIssue->getLastUpdatedTime(), 12))); ?>
+									<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg_formatTime($theIssue->getLastUpdatedTime(), 12))); ?>
 								</td>
 							</tr>
 						<?php endforeach; ?>
@@ -91,10 +91,10 @@
 						</div>
 					</div>
 					<?php $team_issues_count = 0; ?>
-					<?php foreach ($tbg__user->getTeams() as $tid => $theTeam): ?>
-						<?php if (count($tbg__user->getUserTeamAssignedIssues($tid)) > 0): ?>
+					<?php foreach ($tbg_user->getTeams() as $tid => $theTeam): ?>
+						<?php if (count($tbg_user->getUserTeamAssignedIssues($tid)) > 0): ?>
 							<table cellpadding=0 cellspacing=0 style="margin: 5px;">
-							<?php foreach ($tbg__user->getUserTeamAssignedIssues($tid) as $theIssue): ?>
+							<?php foreach ($tbg_user->getUserTeamAssignedIssues($tid) as $theIssue): ?>
 								<tr class="<?php if ($theIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($theIssue->isBlocking()) echo ' issue_blocking'; ?>">
 									<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 									<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
@@ -102,7 +102,7 @@
 								<tr>
 									<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
 										<?php echo (int) $theIssue->isAssigned();?>
-										<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg__formatTime($theIssue->getLastUpdatedTime(), 12))); ?><br>
+										<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg_formatTime($theIssue->getLastUpdatedTime(), 12))); ?><br>
 										<?php echo __('Assigned to %assignee%', array('%assignee%' => $theIssue->getAssignee()->getName())); ?>
 									</td>
 								</tr>
@@ -127,9 +127,9 @@
 							<?php echo __('Issues with pending changes'); ?>
 						</div>
 					</div>
-					<?php if (count($tbg__user->getIssuesPendingChanges()) > 0): ?>
+					<?php if (count($tbg_user->getIssuesPendingChanges()) > 0): ?>
 						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
-						<?php foreach ($tbg__user->getIssuesPendingChanges() as $theIssue): ?>
+						<?php foreach ($tbg_user->getIssuesPendingChanges() as $theIssue): ?>
 							<tr class="<?php if ($theIssue->getState() == TBGIssue::STATE_CLOSED): ?>issue_closed<?php else: ?>issue_open<?php endif; ?> <?php if ($theIssue->isBlocking()): ?>issue_blocking<?php endif; ?>">
 								<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 								<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle()); ?></td>
@@ -157,9 +157,9 @@
 							<?php echo __('Your starred issues'); ?>
 						</div>
 					</div>
-					<?php if (count($tbg__user->getStarredIssues()) > 0): ?>
+					<?php if (count($tbg_user->getStarredIssues()) > 0): ?>
 						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
-						<?php foreach ($tbg__user->getStarredIssues() as $theIssue): ?>
+						<?php foreach ($tbg_user->getStarredIssues() as $theIssue): ?>
 							<tr class="<?php if ($theIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($theIssue->isBlocking()) echo ' issue_blocking'; ?>">
 								<td class="imgtd">
 									<?php echo image_tag('spinning_16.gif', array('id' => 'issue_favourite_indicator_'.$theIssue->getID(), 'style' => 'display: none;')); ?>
@@ -170,7 +170,7 @@
 							</tr>
 							<tr>
 								<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
-									<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg__formatTime($theIssue->getLastUpdatedTime(), 12))); ?><br>
+									<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg_formatTime($theIssue->getLastUpdatedTime(), 12))); ?><br>
 									<?php if ($theIssue->isAssigned()): ?>
 										<?php echo __('Assigned to %assignee%', array('%assignee%' => $theIssue->getAssignee()->getName())); ?>
 									<?php else: ?>
@@ -196,11 +196,11 @@
 							<?php echo __("What you've done recently"); ?>
 						</div>
 					</div>
-					<?php if (count($tbg__user->getLatestActions()) > 0): ?>
+					<?php if (count($tbg_user->getLatestActions()) > 0): ?>
 						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 							<?php $prev_date = null; ?>
-							<?php foreach ($tbg__user->getLatestActions() as $action): ?>
-								<?php $date = tbg__formatTime($action['timestamp'], 5); ?>
+							<?php foreach ($tbg_user->getLatestActions() as $action): ?>
+								<?php $date = tbg_formatTime($action['timestamp'], 5); ?>
 								<?php if ($date != $prev_date): ?>
 									<tr>
 										<td class="latest_action_dates" colspan="2"><?php echo $date; ?></td>
@@ -224,9 +224,9 @@
 		</td>
 		<td id="dashboard_righthand">
 			<div class="left_menu_header" style="margin: 7px 5px 5px 0;"><?php echo __('Your projects'); ?></div>
-			<?php if (count($tbg__user->getAssociatedProjects()) > 0): ?>
+			<?php if (count($tbg_user->getAssociatedProjects()) > 0): ?>
 				<ul id="associated_projects">
-					<?php foreach ($tbg__user->getAssociatedProjects() as $project): ?>
+					<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
 						<li style="text-align: right;">
 							<div class="rounded_box white">
 								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
@@ -252,7 +252,7 @@
 				</ul>
 				<div class="left_menu_header" style="margin: 5px 5px 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
 				<?php $milestone_cc = 0; ?>
-				<?php foreach ($tbg__user->getAssociatedProjects() as $project): ?>
+				<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
 					<?php foreach ($project->getUpcomingMilestonesAndSprints() as $milestone): ?>
 						<?php if ($milestone->isVisible() && $milestone->isScheduled()): ?>
 							<div class="rounded_box <?php if ($milestone->isReached()): ?>green_borderless<?php elseif ($milestone->isOverdue()): ?>red_borderless<?php else: ?>iceblue_borderless<?php endif; ?> milestone_box">
@@ -261,9 +261,9 @@
 									<div class="header"><?php echo $milestone->getProject()->getName(); ?> - <?php echo $milestone->getName(); ?></div>
 									<div class="date">
 										<?php if ($milestone->getStartingDate()): ?>
-											<?php echo tbg__formatTime($milestone->getStartingDate(), 20) . ' - ' . tbg__formatTime($milestone->getScheduledDate(), 20); ?>
+											<?php echo tbg_formatTime($milestone->getStartingDate(), 20) . ' - ' . tbg_formatTime($milestone->getScheduledDate(), 20); ?>
 										<?php else: ?>
-											<?php echo __('Scheduled for %scheduled_date%', array('%scheduled_date%' => tbg__formatTime($milestone->getScheduledDate(), 20))); ?>
+											<?php echo __('Scheduled for %scheduled_date%', array('%scheduled_date%' => tbg_formatTime($milestone->getScheduledDate(), 20))); ?>
 										<?php endif; ?>
 									</div>
 									<!-- <span class="faded_medium"><?php echo $milestone->getDescription(); ?></span>  -->

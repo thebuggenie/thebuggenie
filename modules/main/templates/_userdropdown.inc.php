@@ -28,7 +28,7 @@
 					</table>
 					<div style="padding: 2px;">
 						<?php echo '<b>' . __('Currently: %user_state%', array('%user_state%' => '</b> ' . $user->getState()->getName())); ?><br>
-						<?php echo '<b>' . __('Last seen: %time%', array('%time%' => '</b>' . tbg__formatTime($user->getLastSeen(), 11))); ?>
+						<?php echo '<b>' . __('Last seen: %time%', array('%time%' => '</b>' . tbg_formatTime($user->getLastSeen(), 11))); ?>
 					</div>
 				</div>
 				<?php

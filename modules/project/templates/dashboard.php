@@ -1,7 +1,7 @@
 <?php
 
-	$tbg__response->setTitle(__('"%project_name%" project dashboard', array('%project_name%' => $selected_project->getName())));
-	$tbg__response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
+	$tbg_response->setTitle(__('"%project_name%" project dashboard', array('%project_name%' => $selected_project->getName())));
+	$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
 
 ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0" id="project_dashboard">
@@ -15,17 +15,17 @@
 						<table cellpadding=0 cellspacing=0 class="recent_activities">
 							<?php $prev_date = null; ?>
 							<?php foreach ($recent_activities as $timestamp => $activities): ?>
-								<?php $date = tbg__formatTime($timestamp, 5); ?>
+								<?php $date = tbg_formatTime($timestamp, 5); ?>
 									<?php if ($date != $prev_date): ?>
 									<tr>
-										<td class="latest_action_dates" colspan="2"><?php echo tbg__formatTime($timestamp, 5); ?></td>
+										<td class="latest_action_dates" colspan="2"><?php echo tbg_formatTime($timestamp, 5); ?></td>
 									</tr>
 								<?php endif; ?>
 								<?php foreach ($activities as $activity): ?>
 									<?php if ($activity['change_type'] == 'build_release'): ?>
 										<tr>
 											<td class="imgtd"><?php echo image_tag('icon_build.png'); ?></td>
-											<td style="padding-bottom: 10px;"><span class="time"><?php echo tbg__formatTime($timestamp, 19); ?></span>&nbsp;<b><?php echo $activity['info']; ?></b><br><i><?php echo __('New version released'); ?></i></td>
+											<td style="padding-bottom: 10px;"><span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<b><?php echo $activity['info']; ?></b><br><i><?php echo __('New version released'); ?></i></td>
 										</tr>
 									<?php else: ?>
 										<?php include_template('main/logitem', array('action' => $activity, 'include_time' => true, 'extra_padding' => true)); ?>
@@ -79,7 +79,7 @@
 								<td style="padding-bottom: 15px;">
 									<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
 									<span class="faded_dark" style="font-size: 11px;">
-										<?php echo tbg__formatTime($issue->getPosted(), 20); ?>,
+										<?php echo tbg_formatTime($issue->getPosted(), 20); ?>,
 										<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
 									</span>
 								</td>
@@ -100,7 +100,7 @@
 								<td style="padding-bottom: 15px;">
 									<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
 									<span class="faded_dark" style="font-size: 11px;">
-										<?php echo tbg__formatTime($issue->getPosted(), 20); ?>,
+										<?php echo tbg_formatTime($issue->getPosted(), 20); ?>,
 										<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
 									</span>
 								</td>
@@ -131,7 +131,7 @@
 							<td style="padding-bottom: 15px; font-size: 13px;">
 								<?php echo __('%issue% (posted by %user%)', array('%issue%' => '<b>' . link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))) . '</b>', '%user%' => '<b>' . $issue->getPostedBy()->getName() . '</b>')); ?><br>
 								<span class="faded_dark">
-									<?php echo __('%number_of% comments, last updated %time%', array('%number_of%' => $issue->getCommentCount(), '%time%' => tbg__formatTime($issue->getLastUpdatedTime(), 20))); ?>
+									<?php echo __('%number_of% comments, last updated %time%', array('%number_of%' => $issue->getCommentCount(), '%time%' => tbg_formatTime($issue->getLastUpdatedTime(), 20))); ?>
 								</span>
 							</td>
 						</tr>

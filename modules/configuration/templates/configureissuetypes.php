@@ -1,7 +1,7 @@
 <?php
 
-	$tbg__response->setTitle(__('Configure issue types'));
-	$tbg__response->addJavascript('config/issuetypes.js');
+	$tbg_response->setTitle(__('Configure issue types'));
+	$tbg_response->addJavascript('config/issuetypes.js');
 
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>

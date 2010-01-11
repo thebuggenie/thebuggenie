@@ -2,7 +2,7 @@
 
 	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
-		tbg__msgbox(false, "", __('You do not have access to this section'));
+		tbg_msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
@@ -41,7 +41,7 @@
 						<td colspan=2 class="cdesc">
 						<?php echo __('Setup the SVN integration module here. To be able to use SVN integration, you should read more about how to set up commit hooks in the SVN documentation.'); ?><br>
 						<br>
-						<b><?php echo __('Please read the included %svn_integration_online_help% for information on how to set this up.', array('%svn_integration_online_help%' => tbg__helpBrowserHelper('svn_integration/howto', __('SVN Integration online help')))); ?></b><br>
+						<b><?php echo __('Please read the included %svn_integration_online_help% for information on how to set this up.', array('%svn_integration_online_help%' => tbg_helpBrowserHelper('svn_integration/howto', __('SVN Integration online help')))); ?></b><br>
 						</td>
 					</tr>
 				</table>

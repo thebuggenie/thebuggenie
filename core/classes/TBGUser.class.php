@@ -955,7 +955,7 @@
 		
 		public function setRandomPassword()
 		{
-			$newPass = tbg__createPassword();
+			$newPass = tbg_createPassword();
 			$md5newPass = md5($newPass);
 			$this->changePassword($newPass);
 			return $newPass;

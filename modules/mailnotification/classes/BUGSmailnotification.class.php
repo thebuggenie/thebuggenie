@@ -258,7 +258,7 @@
 				$subject = TBGContext::getI18n()->__('Issue ' . $theIssue->getFormattedIssueNo(false) . ' - ' . $theIssue->getTitle() . ' updated');
 				$message = 'Hi, %user_buddyname%!<br>You are receiving this update because you are subscribing for updates.<br>This email is an update for issue ' . $theIssue->getFormattedIssueNo(false) . ' - ' . $theIssue->getTitle();
 				$message .= '<br><br><b>' . $title . '</b>';
-				$message .= '<br>' . tbg__BBDecode($content);
+				$message .= '<br>' . tbg_BBDecode($content);
 				$message .= '<br><br>You can open the issue by clicking the following link:<br><a href="%link_to_issue%' . $theIssue->getFormattedIssueNo(true) . '">%link_to_issue%' . $theIssue->getFormattedIssueNo(true) . '</a>';				
 	
 				$message = "<div style=\"font-family: \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-size: 11px; color: #646464;\">".$message."</div>";
