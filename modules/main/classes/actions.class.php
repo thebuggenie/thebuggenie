@@ -1551,7 +1551,7 @@
 					if ($issue->canRemoveAttachments() && (int) $request->getParameter('file_id', 0))
 					{
 						B2DB::getTable('B2tIssueFiles')->removeFileFromIssue($issue->getID(), (int) $request->getParameter('file_id'));
-						return $this->renderJSON(array('failed' => false, 'file_id' => $request->getParameter('file_id')));
+						return $this->renderJSON(array('failed' => false, 'file_id' => $request->getParameter('file_id'), 'message' => TBGContext::getI18n()->__('The attachment has been removed')));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a valid issue')));
 					break;

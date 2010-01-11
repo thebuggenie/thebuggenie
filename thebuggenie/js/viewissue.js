@@ -66,6 +66,7 @@ function detachFileFromIssue(url, file_id)
 				$('uploaded_files_' + file_id).remove();
 				$('viewissue_files_' + file_id + '_remove_confirm').remove();
 				$('uploaded_files_' + file_id + '_remove_confirm').remove();
+				successMessage(json.message);
 				if ($('viewissue_uploaded_files').childElements().size() == 0)
 				{
 					$('uploader_no_uploaded_files').show();
