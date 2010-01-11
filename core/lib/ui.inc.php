@@ -99,6 +99,21 @@
 		if ($link_text === null) $link_text = $url;
 		return "<a " . parseHTMLoptions($params) . ">{$link_text}</a>";
 	}
+
+	/**
+	 * Return a javascript link tag
+	 *
+	 * @see link_tag()
+	 * 
+	 * @param string $link_text the text displayed in the tag
+	 * @param array $params[optional] html parameters
+	 *
+	 * @return string
+	 */
+	function javascript_link_tag($link_text, $params = array())
+	{
+		return link_tag('javascript:void(0);', $link_text, $params);
+	}
 	
 	/**
 	 * Returns an <input type="image"> tag

@@ -1308,7 +1308,17 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #viewissue_left_box_status { font-size: 13px; font-weight: normal; }
 #viewissue_left_box_status table tr td { font-size: 13px; font-weight: normal; }
 #viewissue_attached_information { margin: 5px 0 0 0; }
+#viewissue_attached_information .header_div a { float: right; margin-left: 5px; }
+#viewissue_attached_information .header_div a:hover { border: 0; }
 #viewissue_left_box_top #status_header { padding: 2px; }
+#attach_file { background-color: transparent; width: 100%; height: 100%; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center; }
+#attach_file .rounded_box { position: absolute; top: 25px; left: 50%; z-index: 100001; clear: both; width: 500px; margin: 0 0 0 -250px; }
+#attach_file .rounded_box .xboxcontent { padding: 0 5px 5px 5px; text-align: left; font-size: 12px; }
+#attach_file .rounded_box .xboxcontent .header_div.bigger { padding-top: 5px; margin: 0 0 5px 0; }
+#attach_file .rounded_box .xboxcontent .content { padding: 0 5px 0 5px; }
+#attach_file .rounded_box .xboxcontent #done_div { text-align: center; font-size: 14px; padding: 10px; margin-top: 5px; background-color: #F1F1F1; }
+#attach_file #uploaded_files_container { max-height: 160px; overflow: auto; }
+#attach_file #uploaded_files { table-layout: fixed; width: 100%; background-color: #FFF; }
 
 #issue_lefthand #more_actions { font-size: 13px; }
 #issue_lefthand #more_actions .xboxcontent { padding: 10px 5px 5px 10px; }

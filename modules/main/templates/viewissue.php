@@ -12,22 +12,23 @@
 
 	?>
 	<?php if (TBGSettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>
-		<div id="attach_file" style="display: none; background-color: transparent; width: 100%; height: 100%; position: fixed; top: 0; left: 0; margin: 0; padding: 0; text-align: center;">
-			<div class="rounded_box white_borderless" style="position: absolute; top: 50%; left: 50%; z-index: 100001; clear: both; width: 500px; margin: -200px 0 0 -250px;">
+		<div id="attach_file" style="display: none;">
+			<div class="rounded_box white_borderless">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-				<div class="xboxcontent" style="padding: 0 5px 5px 5px; text-align: left; font-size: 12px;">
-					<div class="header_div bigger" style="padding-top: 5px; margin: 0 0 5px 0;"><?php echo __('Attach one or more file(s) to this issue'); ?></div>
-					<div class="content" style="padding: 0 5px 0 5px;"><?php echo __('To attach a file to this issue, click the "Browse" button next to the input below, select the file you want to attach, and then click "%attach_file%. After you have started uploading one file you can always add another file if you want to attach more than one file.', array('%attach_file%' => __('Attach file'))); ?></div>
+				<div class="xboxcontent">
+					<div class="header_div bigger"><?php echo __('Attach one or more file(s) to this issue'); ?></div>
 					<?php include_component('main/uploader', array('issue' => $theIssue)); ?>
 					<div class="header_div"><?php echo __('Files already attached'); ?></div>
-					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0 id="uploaded_files">
-						<?php foreach ($theIssue->getFiles() as $file_id => $file): ?>
-							<?php include_template('attachedfile', array('issue' => $theIssue, 'file' => $file, 'file_id' => $file_id)); ?>
-						<?php endforeach; ?>
-					</table>
+					<div id="uploaded_files_container">
+						<table cellpadding=0 cellspacing=0 id="uploaded_files">
+							<?php foreach ($theIssue->getFiles() as $file_id => $file): ?>
+								<?php include_template('attachedfile', array('issue' => $theIssue, 'file' => $file, 'file_id' => $file_id)); ?>
+							<?php endforeach; ?>
+						</table>
+					</div>
 					<div class="faded_medium" id="issue_no_uploaded_files"<?php if (count($theIssue->getFiles()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
-					<div style="text-align: center; font-size: 14px; padding: 10px; margin-top: 25px; background-color: #F1F1F1;">
-						<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').hide();"><b>'.__('Done').'</b></a>')); ?>
+					<div id="done_div">
+						<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').fade({ duration: 0.5 });"><b>'.__('Done').'</b></a>')); ?>
 					</div>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
@@ -202,10 +203,10 @@
 					<div class="header_div">
 						<?php if ($theIssue->canAttachLinks() || (TBGSettings::isUploadsEnabled() && $theIssue->canAttachFiles())): ?>
 							<?php if ($theIssue->canAttachLinks()): ?>
-								<a href="javascript:void(0);" onclick="$('attach_link').show();" title="<?php echo __('Attach a link'); ?>" style="float: right; margin-left: 5px;"><?php echo image_tag('action_add_link.png'); ?></a>
+								<?php echo javascript_link_tag(image_tag('action_add_link.png'), array('onclick' => "$('attach_link').show();", 'title' => __('Attach a link'))); ?>
 							<?php endif; ?>
 							<?php if (TBGSettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>
-								<a href="javascript:void(0);" onclick="$('attach_file').show();" title="<?php echo __('Attach a file'); ?>" style="float: right; margin-left: 5px;"><?php echo image_tag('action_add_file.png'); ?></a>
+								<?php echo javascript_link_tag(image_tag('action_add_file.png'), array('onclick' => "$('attach_file').appear();", 'title' => __('Attach a file'))); ?>
 							<?php endif; ?>
 						<?php endif; ?>
 						<?php echo __('Attached information'); ?>
