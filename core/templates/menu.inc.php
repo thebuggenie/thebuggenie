@@ -1,10 +1,10 @@
-<div class="medium_transparent" style="z-index: 100001; margin: 0; position: fixed; top: 0; left: 0; width: 100%; padding: 0; background-color: #E84545; font-size: 14px; color: #000; border-bottom: 1px solid #555; display: none;" id="thebuggenie_failuremessage">
+<div class="medium_transparent" style="z-index: 200001; margin: 0; position: fixed; top: 0; left: 0; width: 100%; padding: 0; background-color: #E84545; font-size: 14px; color: #000; border-bottom: 1px solid #555; display: none;" id="thebuggenie_failuremessage">
 	<div style="padding: 10px 0 10px 0;">
 		<span style="color: #000; font-weight: bold;" id="thebuggenie_failuremessage_title"></span><br>
 		<span id="thebuggenie_failuremessage_content"></span>
 	</div>
 </div>
-<div class="medium_transparent" style="z-index: 100000; margin: 0; position: fixed; top: 0; left: 0; width: 100%; padding: 0; background-color: #45E845; font-size: 14px; color: #000; border-bottom: 1px solid #555; display: none;" id="thebuggenie_successmessage">
+<div class="medium_transparent" style="z-index: 200000; margin: 0; position: fixed; top: 0; left: 0; width: 100%; padding: 0; background-color: #45E845; font-size: 14px; color: #000; border-bottom: 1px solid #555; display: none;" id="thebuggenie_successmessage">
 	<div style="padding: 10px 0 10px 0;">
 		<span style="color: #000; font-weight: bold;" id="thebuggenie_successmessage_title"></span><br>
 		<span id="thebuggenie_successmessage_content"></span>
