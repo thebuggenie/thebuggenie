@@ -83,15 +83,6 @@
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>
 	<?php endif; ?>
-	<?php if (isset($upload_error)): ?>
-		<div class="rounded_box red_borderless" id="upload_error_div">
-			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-			<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 13px;">
-				<?php echo __('There was an error with your upload: %error%', array('%error%' => $upload_error)); ?>
-			</div>
-			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-		</div>
-	<?php endif; ?>
 	<?php if ($theIssue->isBlocking()): ?>
 		<div class="rounded_box red_borderless" id="blocking_div">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
