@@ -19,10 +19,13 @@
 					<div class="header_div bigger" style="padding-top: 5px; margin: 0 0 5px 0;"><?php echo __('Attach one or more file(s) to this issue'); ?></div>
 					<div class="content" style="padding: 0 5px 0 5px;"><?php echo __('To attach a file to this issue, click the "Browse" button next to the input below, select the file you want to attach, and then click "%attach_file%. After you have started uploading one file you can always add another file if you want to attach more than one file.', array('%attach_file%' => __('Attach file'))); ?></div>
 					<?php include_component('main/uploader', array('issue' => $theIssue)); ?>
-					<div class="header_div"><?php echo __('Files you have just attached'); ?></div>
+					<div class="header_div"><?php echo __('Files already attached'); ?></div>
 					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0 id="uploaded_files">
+						<?php foreach ($theIssue->getFiles() as $file_id => $file): ?>
+							<?php include_template('attachedfile', array('issue' => $theIssue, 'file' => $file, 'file_id' => $file_id)); ?>
+						<?php endforeach; ?>
 					</table>
-					<div class="faded_medium" id="issue_no_uploaded_files"><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
+					<div class="faded_medium" id="issue_no_uploaded_files"<?php if (count($theIssue->getFiles()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
 					<div style="text-align: center; font-size: 14px; padding: 10px; margin-top: 25px; background-color: #F1F1F1;">
 						<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').hide();"><b>'.__('Done').'</b></a>')); ?>
 					</div>
@@ -218,17 +221,8 @@
 								<?php endif; ?>
 							</tr>
 						<?php endforeach; ?>
-						<?php foreach ($theIssue->getFiles() as $file_id => $aFile): ?>
-							<tr>
-								<td class="imgtd" style="width: 22px; text-align: center; vertical-align: middle;"><?php echo link_tag(make_url('downloadfile', array('id' => $file_id)), image_tag('icon_download.png')); ?></td>
-								<td style="font-size: 13px; padding: 3px;">
-									<?php echo link_tag(make_url('showfile', array('id' => $file_id)), (($aFile['description'] != '') ? $aFile['description'] : $aFile['filename'])); ?><br>
-									<span class="faded_medium" style="font-size: 11px;"><?php echo bugs_formatTime($aFile['timestamp'], 13); ?></span>
-								</td>
-								<?php if ($theIssue->canRemoveAttachments()): ?>
-									<td style="width: 20px;"><a href="#" class="image"><?php echo image_tag('action_cancel_small.png'); ?></a></td>
-								<?php endif; ?>
-							</tr>
+						<?php foreach ($theIssue->getFiles() as $file_id => $file): ?>
+							<?php include_template('attachedfile', array('issue' => $theIssue, 'file' => $file, 'file_id' => $file_id)); ?>
 						<?php endforeach; ?>
 					</table>
 				</div>
