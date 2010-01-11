@@ -1385,7 +1385,7 @@
 						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("The upload path isn't writable")));
 					}
 				}
-				$settings = array('enable_uploads', 'upload_restriction_mode', 'upload_extensions_list', 'upload_storage', 'upload_localpath');
+				$settings = array('enable_uploads', 'upload_restriction_mode', 'upload_extensions_list', 'upload_max_file_size', 'upload_storage', 'upload_localpath');
 
 				foreach ($settings as $setting)
 				{

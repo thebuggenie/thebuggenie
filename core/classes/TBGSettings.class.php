@@ -422,9 +422,9 @@
 			return (bool) self::get('enable_uploads');
 		}
 
-		public static function getUploadsMaxSize($real = false)
+		public static function getUploadsMaxSize($bytes = false)
 		{
-			return ($real) ? (int) (self::get('upload_max_file_size') * 1024 * 1024) : (int) self::get('upload_max_file_size');
+			return ($bytes) ? (int) (self::get('upload_max_file_size') * 1024 * 1024) : (int) self::get('upload_max_file_size');
 		}
 
 		public static function getUploadsRestrictionMode()

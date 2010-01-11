@@ -12,6 +12,7 @@
 			$('upload_restriction_mode').enable();
 			$('upload_extensions_list').enable();
 			$('upload_storage').enable();
+			$('upload_max_file_size').enable();
 			if ($('upload_storage').getValue() == 'files')
 			{
 				$('upload_localpath').enable();
@@ -22,6 +23,7 @@
 			$('upload_restriction_mode').disable();
 			$('upload_extensions_list').disable();
 			$('upload_storage').disable();
+			$('upload_max_file_size').disable();
 			$('upload_localpath').disable();
 		}
 	}
@@ -47,6 +49,17 @@
 						</tr>
 						<tr>
 							<td class="config_explanation" colspan="2"><?php echo __('If uploads are disabled, users will not be able to attach files to issues or upload documents, images or PDFs in project planning. If you just want to allow one or the other, then enable this setting and use the permissions configuration.'); ?></td>
+						</tr>
+						<tr>
+							<td><label for="upload_max_file_size"><?php echo __('Max upload file size'); ?></label></td>
+							<td>
+								<input type="text" name="upload_max_file_size" id="upload_max_filesize" style="width: 50px;" value="<?php echo TBGSettings::getUploadsMaxSize(); ?>"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>&nbsp;MB
+							</td>
+						</tr>
+						<tr>
+							<td class="config_explanation" colspan="2">
+								<?php echo __('Enter the maximum allowed file size for uploads here. Remember that this value cannot be higher than the current php max upload size, defined in php.ini. Currently, this value is %ini_max_file_size%.', array('%ini_max_file_size%' => '<b>'.(int) ini_get('upload_max_filesize').'MB</b>')); ?>
+							</td>
 						</tr>
 						<tr>
 							<td><label for="upload_restriction_mode"><?php echo __('Upload restrictions'); ?></label></td>
