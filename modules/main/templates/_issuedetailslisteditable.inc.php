@@ -67,7 +67,7 @@
 					<?php echo __('%clear_the_status% or click to select a new status', array('%clear_the_status%' => '')); ?>:<br>
 					<table cellpadding="0" cellspacing="0">
 						<?php foreach ($statuses as $status): ?>
-							<?php if (!$status->canUserSet($bugs_user)) continue; ?>
+							<?php if (!$status->canUserSet($tbg__user)) continue; ?>
 							<tr>
 								<td style="width: 16px;"><div style="border: 1px solid #AAA; background-color: <?php echo $status->getColor(); ?>; font-size: 1px; width: 16px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
 								<td style="padding-left: 5px;"><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => $status->getID())); ?>', 'status');"><?php echo $status->getName(); ?></a></td>
@@ -126,7 +126,7 @@
 		</dl>
 		<?php if ($issue->getProject()->isVotesEnabled()): ?>
 			<?php //TODO: Add a vote counter, and a "plus" button? ?>
-			<?php if ($bugs_user->canVoteOnIssuesForProduct($issue->getProject()->getID()) && $bugs_user->canVoteForIssue($issue->getID())): /* ?>
+			<?php if ($tbg__user->canVoteOnIssuesForProduct($issue->getProject()->getID()) && $tbg__user->canVoteForIssue($issue->getID())): /* ?>
 				<div style="border-bottom: 1px solid #DDD; padding: 3px; font-size: 12px; margin-top: 5px;">
 					<b>VOTE!</b>
 				</div>
@@ -305,7 +305,7 @@
 						<?php echo $info['select']; ?>:<br>
 						<ul class="choices">
 							<?php foreach ($info['choices'] as $choice): ?>
-								<?php if ($choice instanceof TBGDatatypeBase && !$choice->canUserSet($bugs_user)) continue; ?>
+								<?php if ($choice instanceof TBGDatatypeBase && !$choice->canUserSet($tbg__user)) continue; ?>
 								<li>
 									<?php echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
 								</li>
@@ -344,7 +344,7 @@
 						<?php echo $info['select']; ?>:<br>
 						<ul class="choices">
 							<?php foreach ($info['choices'] as $choice): ?>
-								<?php if (!$choice->canUserSet($bugs_user)) continue; ?>
+								<?php if (!$choice->canUserSet($tbg__user)) continue; ?>
 								<li>
 									<?php echo image_tag('icon_customdatatype.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getValue())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
 								</li>
@@ -362,15 +362,15 @@
 </div>
 <div class="rounded_box green_borderless" id="more_actions" style="display: none;">
 	<div class="xboxcontent">
-		<?php if (!$issue->isBeingWorkedOn() || ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $bugs_user->getID())): ?>
+		<?php if (!$issue->isBeingWorkedOn() || ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $tbg__user->getID())): ?>
 		<ul>
 			<li><?php echo link_tag(make_url('issue_startworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_start_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __('Start working on this issue')); ?></li>
 		</ul>
-		<?php elseif ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $bugs_user->getID()): ?>
+		<?php elseif ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $tbg__user->getID()): ?>
 		<ul>
 			<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_start_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __('Take over this issue')); ?></li>
 		</ul>
-		<?php elseif ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() == $bugs_user->getID()): ?>
+		<?php elseif ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() == $tbg__user->getID()): ?>
 			<div class="box_header"><?php echo __('You are working on this issue'); ?></div>
 			<ul>
 				<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_stop_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __("I'm done working on it, add time spent")); ?></li>

@@ -2,7 +2,7 @@
 
 	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
-		bugs_msgbox(false, "", __('You do not have access to this section'));
+		tbg__msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
@@ -18,7 +18,7 @@
 					</tr>
 					<tr>
 						<td colspan=2 class="cdesc">
-						<?php echo __('Scopes are individual BUGS 2 environments, fully functional, but invisible to eachother.'); echo __('You can learn more about scopes in the %bugs_online_help%.', array('%bugs_online_help%' => bugs_helpBrowserHelper('scopes', __('The Bug Genie online help')))); ?><br><?php echo __('Click on a scope to view its details and/or change its settings.'); ?><br>
+						<?php echo __('Scopes are individual BUGS 2 environments, fully functional, but invisible to eachother.'); echo __('You can learn more about scopes in the %tbg__online_help%.', array('%tbg__online_help%' => tbg__helpBrowserHelper('scopes', __('The Bug Genie online help')))); ?><br><?php echo __('Click on a scope to view its details and/or change its settings.'); ?><br>
 						<br>
 						<a href="config.php?module=core&amp;section=14&amp;createnewscope=true"><b><?php echo __('Click here to create a new scope'); ?></b></a><br>
 						</td>
@@ -82,7 +82,7 @@
 													<td style="width: 100px;"><b><?php echo __('Administered by:'); ?></b></td>
 													<td>
 														<table cellpadding=0 cellspacing=0 width="100%">
-														<?php print bugs_userDropdown($aScope->getScopeAdmin()); ?>
+														<?php print tbg__userDropdown($aScope->getScopeAdmin()); ?>
 														</table>
 													</td>
 												</tr>
@@ -164,7 +164,7 @@
 															
 															if ($theScope->getScopeAdmin() instanceof TBGUser)
 															{
-																echo bugs_userDropdown($theScope->getScopeAdmin());
+																echo tbg__userDropdown($theScope->getScopeAdmin());
 															}
 															else
 															{
@@ -179,7 +179,7 @@
 													</tr>
 												</table>
 												<span id="edit_scopeadmin" style="display: none;">
-												<?php bugs_AJAXuserteamselector(__('Set scope administrator'), 
+												<?php tbg__AJAXuserteamselector(__('Set scope administrator'), 
 																				'',
 																				'config.php?module=core&section=14&selectedscope=' . $theScope->getID() . '&setscopeadmin=true', 
 																				'',
@@ -390,7 +390,7 @@
 										</tr>
 										<tr>
 											<td style="padding-top: 5px;" valign="top"><b><?php echo __('Scope administrator'); ?></b></td>
-											<td style="padding-top: 5px;"><table cellpadding=0 cellspacing=0 width="100%"><?php print bugs_userDropdown($theScope->getScopeAdmin()); ?></table></td>
+											<td style="padding-top: 5px;"><table cellpadding=0 cellspacing=0 width="100%"><?php print tbg__userDropdown($theScope->getScopeAdmin()); ?></table></td>
 										</tr>
 									</table>
 									</div>

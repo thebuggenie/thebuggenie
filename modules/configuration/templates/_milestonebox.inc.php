@@ -28,7 +28,7 @@
 				<td style="width: auto;">
 					<select style="width: 85px;" name="starting_month" id="starting_month_<?php echo $milestone->getID(); ?>"<?php if (!$milestone->isStarting()): ?> disabled<?php endif; ?>>
 					<?php for($cc = 1;$cc <= 12;$cc++): ?>
-						<option value=<?php echo $cc; ?><?php echo (($milestone->getStartingMonth() == $cc) ? " selected" : ""); ?>><?php echo bugs_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
+						<option value=<?php echo $cc; ?><?php echo (($milestone->getStartingMonth() == $cc) ? " selected" : ""); ?>><?php echo tbg__formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
 					<?php endfor; ?>
 					</select>
 					<select style="width: 40px;" name="starting_day" id="starting_day_<?php echo $milestone->getID(); ?>"<?php if (!$milestone->isStarting()): ?> disabled<?php endif; ?>>
@@ -53,7 +53,7 @@
 				<td style="width: auto;">
 					<select style="width: 85px;" name="sch_month" id="sch_month_<?php echo $milestone->getID(); ?>" <?php print (!$milestone->isScheduled()) ? "disabled" : ""; ?>>
 					<?php for($cc = 1;$cc <= 12;$cc++): ?>
-						<option value=<?php echo $cc; ?><?php echo (($milestone->getScheduledMonth() == $cc) ? " selected" : ""); ?>><?php echo bugs_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
+						<option value=<?php echo $cc; ?><?php echo (($milestone->getScheduledMonth() == $cc) ? " selected" : ""); ?>><?php echo tbg__formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
 					<?php endfor; ?>
 					</select>
 					<select style="width: 40px;" name="sch_day" id="sch_day_<?php echo $milestone->getID(); ?>" <?php print (!$milestone->isScheduled()) ? "disabled" : ""; ?>>
@@ -95,11 +95,11 @@
 			<?php if (!$milestone->isScheduled() && !$milestone->isStarting()): ?>
 				<?php echo __('This milestone has no planned schedule'); ?>
 			<?php elseif ($milestone->isScheduled() && $milestone->isStarting()): ?>
-				<?php echo __('This milestone is starting %starting_date% and scheduled for %scheduled_date%', array('%starting_date%' => bugs_formatTime($milestone->getStartingDate(), 5), '%scheduled_date%' => bugs_formatTime($milestone->getScheduledDate(), 5))); ?>
+				<?php echo __('This milestone is starting %starting_date% and scheduled for %scheduled_date%', array('%starting_date%' => tbg__formatTime($milestone->getStartingDate(), 5), '%scheduled_date%' => tbg__formatTime($milestone->getScheduledDate(), 5))); ?>
 			<?php elseif ($milestone->isScheduled()): ?>
-				<?php echo __('This milestone is scheduled for %scheduled_date%', array('%scheduled_date%' => bugs_formatTime($milestone->getScheduledDate(), 5))); ?>
+				<?php echo __('This milestone is scheduled for %scheduled_date%', array('%scheduled_date%' => tbg__formatTime($milestone->getScheduledDate(), 5))); ?>
 			<?php elseif ($milestone->isStarting()): ?>
-				<?php echo __('This milestone is starting %starting_date%', array('%starting_date%' => bugs_formatTime($milestone->getStartingDate(), 5))); ?>
+				<?php echo __('This milestone is starting %starting_date%', array('%starting_date%' => tbg__formatTime($milestone->getStartingDate(), 5))); ?>
 			<?php endif;?>
 		</div>
 		<div style="padding: 5px 0 10px 0;"><?php echo $milestone->getDescription(); ?></div>

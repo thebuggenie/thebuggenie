@@ -2,7 +2,7 @@
 	<div class="project_name<?php if (!$project instanceof TBGProject): ?> faded_dark<?php endif; ?>">
 		<?php echo image_tag('spinning_32.gif', array('id' => 'project_menustrip_indicator', 'style' => 'display: none;')); ?>
 		<span id="project_menustrip_name">
-			<a href="javascript:void(0);" onclick="$('project_menustrip_change').toggle();" style="float: right; margin-left: 10px;<?php if ($bugs_response->getPage() != 'reportissue' && $show_report_button && count(TBGProject::getAll()) <= 1): ?> display: none;<?php endif; ?>" class="image"><?php echo image_tag('expand.png'); ?></a>
+			<a href="javascript:void(0);" onclick="$('project_menustrip_change').toggle();" style="float: right; margin-left: 10px;<?php if ($tbg__response->getPage() != 'reportissue' && $show_report_button && count(TBGProject::getAll()) <= 1): ?> display: none;<?php endif; ?>" class="image"><?php echo image_tag('expand.png'); ?></a>
 			<?php if (!$project instanceof TBGProject): ?>
 				<?php echo __('There is no project selected'); ?>
 			<?php else: ?>
@@ -22,10 +22,10 @@
 								<tr>
 									<td style="width: 16px;"><?php echo image_tag($aProject->getIcon(), array('style' => 'float: left; margin-right: 5px;'), $aProject->hasIcon()); ?></td>
 									<td style="padding-left: 5px; font-size: 13px;">
-										<?php if (in_array($bugs_response->getPage(), array('project_dashboard', 'project_planning', 'project_scrum', 'project_issues', 'project_statistics', 'project_users', 'project_timeline'))): ?>
-											<?php echo link_tag(make_url($bugs_response->getPage(), array('project_key' => $aProject->getKey())), $aProject->getName()); ?>
+										<?php if (in_array($tbg__response->getPage(), array('project_dashboard', 'project_planning', 'project_scrum', 'project_issues', 'project_statistics', 'project_users', 'project_timeline'))): ?>
+											<?php echo link_tag(make_url($tbg__response->getPage(), array('project_key' => $aProject->getKey())), $aProject->getName()); ?>
 										<?php else: ?>
-											<a href="javascript:void(0);" onclick="updateProjectMenuStrip('<?php echo make_url('getprojectmenustrip', array('page' => $bugs_response->getPage())); ?>', <?php echo $aProject->getID(); ?>);"><?php echo $aProject->getName(); ?></a>
+											<a href="javascript:void(0);" onclick="updateProjectMenuStrip('<?php echo make_url('getprojectmenustrip', array('page' => $tbg__response->getPage())); ?>', <?php echo $aProject->getID(); ?>);"><?php echo $aProject->getName(); ?></a>
 										<?php endif; ?>
 									</td>
 								</tr>
@@ -54,7 +54,7 @@
 			<?php TBGContext::trigger('core', 'project_menustrip_item_links', array('project' => $project, 'selected_tab' => $selected_tab)); ?>
 		</ul> 
 		</div>
-		<?php if ($bugs_response->getPage() != 'reportissue' && (!isset($hide_button) || (isset($hide_button) && $hide_button == false))): ?>
+		<?php if ($tbg__response->getPage() != 'reportissue' && (!isset($hide_button) || (isset($hide_button) && $hide_button == false))): ?>
 			<form action="<?php echo make_url('project_reportissue', array('project_key' => $project->getKey())); ?>" method="get" style="clear: none; display: inline; position: absolute; right: 3px; top: 3px;">
 				<div class="report_button" style="width: 150px;"><input type="submit" value="<?php echo __('Report an issue'); ?>"></div>
 			</form>

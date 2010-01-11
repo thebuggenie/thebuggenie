@@ -9,7 +9,7 @@
 			$('continue_error').show();
 			$('continue_error').update('You need to fill out both server and directory url.<br />If The Bug Genie is located directly under the server, end the server url <i>without</i> a forward slash, and put a single forward slash in the directory url.');
 		}
-		else if($F($('bugs_settings')['url_host']).endsWith('/') == true || ($F($('bugs_settings')['url_subdir']).endsWith('/') == false || $F($('bugs_settings')['url_subdir']).startsWith('/') == false))
+		else if($F($('tbg__settings')['url_host']).endsWith('/') == true || ($F($('tbg__settings')['url_subdir']).endsWith('/') == false || $F($('tbg__settings')['url_subdir']).startsWith('/') == false))
 		{
 			$('continue_button').hide();
 			$('continue_error').show();
@@ -88,7 +88,7 @@
 		<br>
 		If you for any reason cannot turn on <b>AllowOverride All</b> for that folder, look at the .htaccess file The Bug Genie bundles (located inside the <i>thebuggenie/</i> folder, and copy the necessary lines to your virtual host definition.<br>
 		<br>
-		<form accept-charset="utf-8" action="index.php" method="post" id="bugs_settings" style="clear: both;">
+		<form accept-charset="utf-8" action="index.php" method="post" id="tbg__settings" style="clear: both;">
 			<input type="hidden" name="step" value="4">
 			<fieldset>
 				<legend>The Bug Genie URL information</legend>

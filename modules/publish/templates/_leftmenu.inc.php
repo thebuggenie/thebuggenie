@@ -55,7 +55,7 @@
 							<?php echo image_tag('news_item.png', array('style' => 'float: left;'), false, 'publish'); ?>
 							<?php echo link_tag(make_url('publish_article', array('article_name' => $linking_article->getName())), get_spaced_name($linking_article->getTitle())); ?>
 							<br>
-							<span><?php print bugs_formatTime($linking_article->getPostedDate(), 3); ?></span>
+							<span><?php print tbg__formatTime($linking_article->getPostedDate(), 3); ?></span>
 						</div>
 					</li>
 				<?php endforeach; ?>

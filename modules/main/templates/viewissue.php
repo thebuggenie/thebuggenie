@@ -1,8 +1,8 @@
 <?php if ($theIssue instanceof TBGIssue): ?>
 	<?php
 
-		$bugs_response->addJavascript('viewissue.js');
-		$bugs_response->setTitle('['.(($theIssue->isClosed()) ? strtoupper(__('Closed')) : strtoupper(__('Open'))) .'] ' . $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle());
+		$tbg__response->addJavascript('viewissue.js');
+		$tbg__response->setTitle('['.(($theIssue->isClosed()) ? strtoupper(__('Closed')) : strtoupper(__('Open'))) .'] ' . $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle());
 	
 	?>
 	<?php 
@@ -59,14 +59,14 @@
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 13px;">
 					<?php echo image_tag('action_start_working.png', array('style' => 'float: left; margin: 0 10px 0 5px;')); ?>
-					<?php if ($theIssue->getUserWorkingOnIssue()->getID() == $bugs_user->getID()): ?>
-						<div class="viewissue_info_header"><?php echo __('You have been working on this issue since %time%', array('%time%' => bugs_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
+					<?php if ($theIssue->getUserWorkingOnIssue()->getID() == $tbg__user->getID()): ?>
+						<div class="viewissue_info_header"><?php echo __('You have been working on this issue since %time%', array('%time%' => tbg__formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
 						<div class="viewissue_info_content">
 							<input type="submit" value="<?php echo __('Done'); ?>">
 							<?php echo __('When you are finished working on this issue, click the %done% button to the right', array('%done%' => '<b>' . __('Done') . '</b>')); ?>
 						</div>
 					<?php else: ?>
-						<div class="viewissue_info_header"><?php echo __('This issue has been worked on by %user% since %time%', array('%user%' => $theIssue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => bugs_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
+						<div class="viewissue_info_header"><?php echo __('This issue has been worked on by %user% since %time%', array('%user%' => $theIssue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg__formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
 						<?php if ($theIssue->canEditSpentTime()): ?>
 							<div class="viewissue_info_content">
 								<input type="hidden" name="perform_action" value="grab">
@@ -134,7 +134,7 @@
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>								
 	<?php endif; ?>
-	<?php if ($theIssue->isClosed() && $theIssue->getPostedBy()->getID() == $bugs_user->getID() && !TBGUser::isThisGuest()): ?>
+	<?php if ($theIssue->isClosed() && $theIssue->getPostedBy()->getID() == $tbg__user->getID() && !TBGUser::isThisGuest()): ?>
 		<div class="rounded_box iceblue_borderless" id="viewissue_closed_sameuser">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="vertical-align: middle; padding: 0;">
@@ -152,7 +152,7 @@
 			</div>
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>								
-	<?php elseif ($theIssue->isOpen() && $theIssue->getPostedBy()->getID() == $bugs_user->getID() && !TBGUser::isThisGuest()): ?>
+	<?php elseif ($theIssue->isOpen() && $theIssue->getPostedBy()->getID() == $tbg__user->getID() && !TBGUser::isThisGuest()): ?>
 		<div class="rounded_box iceblue_borderless" id="viewissue_open_sameuser">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="vertical-align: middle; padding: 0;">
@@ -177,11 +177,11 @@
 				<?php echo image_tag('icon_info_big.png'); ?>
 				<div class="viewissue_info_header"><?php echo __('This issue has been closed with status: %status_name%.', array('%status_name%' => '<b style="color: ' . (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getColor() : '#BBB') . '">' . (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Not determined')) . '</b>')); ?></div>
 				<div class="viewissue_info_content">
-					<?php if ($theIssue->canPostComments() && $bugs_user->canReportIssues($theIssue->getProjectID())): ?>
+					<?php if ($theIssue->canPostComments() && $tbg__user->canReportIssues($theIssue->getProjectID())): ?>
 						<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%, or %report_a_new_issue%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $theIssue->getID() . '">' . __('posting a comment') . '</a>', '%report_a_new_issue%' => link_tag(make_url('reportissue'), __('report a new issue')))); ?>
 					<?php elseif ($theIssue->canPostComments()): ?>
 						<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $theIssue->getID() . '">' . __('posting a comment') . '</a>')); ?>
-					<?php elseif ($bugs_user->canReportIssues($theIssue->getProjectID())): ?>
+					<?php elseif ($tbg__user->canReportIssues($theIssue->getProjectID())): ?>
 						<?php echo __('A closed issue will usually not be further updated - try %reporting_a_new_issue%', array('%reporting_a_new_issue%' => link_tag(make_url('reportissue'), __('reporting a new issue')))); ?>
 					<?php endif; ?>
 				</div>
@@ -268,19 +268,19 @@
 					TBGContext::trigger('core', 'viewissue_left_middle_top', $theIssue);
 					
 				?>
-				<?php if (!$bugs_user->isGuest()): ?>
-					<?php if ($bugs_user->showFollowUps()): ?>
+				<?php if (!$tbg__user->isGuest()): ?>
+					<?php if ($tbg__user->showFollowUps()): ?>
 						<div class="header_div">
 							<?php echo __('Your starred issues'); ?>
 						</div>
-						<?php if (count($bugs_user->getStarredIssues()) == 0): ?>
+						<?php if (count($tbg__user->getStarredIssues()) == 0): ?>
 							<div class="no_items"><?php echo __("You don't have any issues on your list"); ?></div>
 						<?php else: ?>
 							<div class="issuedetailscontentsleft" style="padding-top: 5px; padding-bottom: 5px;">
 								<table cellpadding=0 cellspacing=0>
-									<?php foreach ($bugs_user->getStarredIssues() as $anIssue): ?>
+									<?php foreach ($tbg__user->getStarredIssues() as $anIssue): ?>
 										<tr class="<?php if ($anIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($anIssue->isBlocking()) echo ' issue_blocking'; ?>">
-											<td class="imgtd"><?php echo image_tag('assigned_bugs.png'); ?></td>
+											<td class="imgtd"><?php echo image_tag('assigned_tbg_.png'); ?></td>
 											<td><a href="viewissue.php?issue_no=<?php echo $anIssue->getFormattedIssueNo(true); ?>"><?php echo $anIssue->getFormattedIssueNo(); ?></a> - <?php echo $anIssue->getTitle(); ?></td>
 										</tr>
 									<?php endforeach; ?>
@@ -288,16 +288,16 @@
 							</div>
 						<?php endif; ?>
 					<?php endif; ?>
-					<?php if ($bugs_user->showAssigned()): ?>
+					<?php if ($tbg__user->showAssigned()): ?>
 						<div class="header_div">
 							<?php echo __('Open issues assigned to you'); ?>
 						</div>
 						<div class="issuedetailscontentsleft" style="padding-top: 5px; padding-bottom: 5px;">
-							<?php if (count($bugs_user->getUserAssignedIssues()) > 0): ?>
+							<?php if (count($tbg__user->getUserAssignedIssues()) > 0): ?>
 								<table cellpadding=0 cellspacing=0>
-									<?php foreach ($bugs_user->getUserAssignedIssues() as $anIssue): ?>
+									<?php foreach ($tbg__user->getUserAssignedIssues() as $anIssue): ?>
 										<tr class="<?php if ($savedIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($savedIssue->isBlocking()) echo ' issue_blocking'; ?>">
-											<td class="imgtd"><?php echo image_tag('assigned_bugs.png'); ?></td>
+											<td class="imgtd"><?php echo image_tag('assigned_tbg_.png'); ?></td>
 											<td><a href="viewissue.php?issue_no=<?php print $savedIssue->getFormattedIssueNo(true); ?>"><?php print $savedIssue->getFormattedIssueNo(); ?></a> - <?php print (strlen($savedIssue->getTitle()) > 26) ? rtrim(substr($savedIssue->getTitle(), 0, 24), false) . "..." : $savedIssue->getTitle(); ?></td>
 										</tr>
 									<?php endforeach; ?>
@@ -306,16 +306,16 @@
 								<div class="no_items"><?php echo __('No issues are assigned to you'); ?></div>
 							<?php endif; ?>
 						</div>
-						<?php if (count($bugs_user->getTeams()) > 0): ?>
-							<?php foreach ($bugs_user->getTeams() as $tid => $theTeam): ?>
+						<?php if (count($tbg__user->getTeams()) > 0): ?>
+							<?php foreach ($tbg__user->getTeams() as $tid => $theTeam): ?>
 								<div class="header_div">
 									<?php echo __('Open issues assigned to %teamname%', array('%teamname%' => $theTeam->getName())); ?>
 								</div>
-								<?php if (count($bugs_user->getUserTeamAssignedIssues) > 0): ?>
+								<?php if (count($tbg__user->getUserTeamAssignedIssues) > 0): ?>
 									<table cellpadding=0 cellspacing=0>
-										<?php foreach ($bugs_user->getUserTeamAssignedIssues($tid) as $anIssue): ?>
+										<?php foreach ($tbg__user->getUserTeamAssignedIssues($tid) as $anIssue): ?>
 											<tr class="<?php if ($savedIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($savedIssue->isBlocking()) echo ' issue_blocking'; ?>">
-												<td class="imgtd"><?php echo image_tag('assigned_bugs.png'); ?></td>
+												<td class="imgtd"><?php echo image_tag('assigned_tbg_.png'); ?></td>
 												<td><a href="viewissue.php?issue_no=<?php print $savedIssue->getFormattedIssueNo(true); ?>"><?php print $savedIssue->getFormattedIssueNo(); ?></a> - <?php print (strlen($savedIssue->getTitle()) > 26) ? rtrim(substr($savedIssue->getTitle(), 0, 24)) . "..." : $savedIssue->getTitle(); ?></td>
 											</tr>
 										<?php endforeach; ?>
@@ -343,18 +343,18 @@
 					<table style="table-layout: fixed; width: 100%; margin: 10px 0 10px 0; background-color: transparent;" cellpadding=0 cellspacing=0>
 						<tr>
 							<td style="width: 22px; padding: 0 5px 0 5px;">
-								<?php if ($bugs_user->isGuest()): ?>
+								<?php if ($tbg__user->isGuest()): ?>
 									<?php echo image_tag('star_faded.png'); ?>
 								<?php else: ?>
 									<?php echo image_tag('spinning_20.gif', array('id' => 'issue_favourite_indicator', 'style' => 'display: none;')); ?>
-									<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded', 'style' => 'cursor: pointer;'.(($bugs_user->isIssueStarred($theIssue->getID())) ? 'display: none;' : ''), 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $theIssue->getID()))."', ".$theIssue->getID().");")); ?>
-									<?php echo image_tag('star.png', array('id' => 'issue_favourite_normal', 'style' => 'cursor: pointer;'.((!$bugs_user->isIssueStarred($theIssue->getID())) ? 'display: none;' : ''), 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $theIssue->getID()))."', ".$theIssue->getID().");")); ?>
+									<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded', 'style' => 'cursor: pointer;'.(($tbg__user->isIssueStarred($theIssue->getID())) ? 'display: none;' : ''), 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $theIssue->getID()))."', ".$theIssue->getID().");")); ?>
+									<?php echo image_tag('star.png', array('id' => 'issue_favourite_normal', 'style' => 'cursor: pointer;'.((!$tbg__user->isIssueStarred($theIssue->getID())) ? 'display: none;' : ''), 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $theIssue->getID()))."', ".$theIssue->getID().");")); ?>
 								<?php endif; ?>
 							</td>
 							<td style="font-size: 19px; width: auto; padding: 0; padding-left: 7px;">
 								<span class="faded_medium">[<?php echo $theIssue->isClosed() ? strtoupper(__('Closed')) : strtoupper(__('Open')); ?>]</span>&nbsp;<b><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), __('Issue %issue_no%', array('%issue_no%' => $theIssue->getFormattedIssueNo(true)))); ?>&nbsp;&nbsp;-&nbsp;&nbsp;<span id="issue_title"><?php echo $theIssue->getTitle(); ?></span></b><br>
 								<div style="font-size: 13px;">
-									<?php echo '<b>' . __('Posted %posted_at_time% - updated %last_updated_at_time%', array('%posted_at_time%' => '</b><i>' . bugs_formatTime($theIssue->getPosted(), 12) . '</i><b>', '%last_updated_at_time%' => '</b><i>' . bugs_formatTime($theIssue->getLastUpdatedTime(), 12) . '</i>')); ?>
+									<?php echo '<b>' . __('Posted %posted_at_time% - updated %last_updated_at_time%', array('%posted_at_time%' => '</b><i>' . tbg__formatTime($theIssue->getPosted(), 12) . '</i><b>', '%last_updated_at_time%' => '</b><i>' . tbg__formatTime($theIssue->getLastUpdatedTime(), 12) . '</i>')); ?>
 								</div>
 							</td>
 						</tr>
@@ -404,12 +404,12 @@
 								<tr>
 									<td class="issuedetailscontentsleft" style="width: auto;"><input type="text" name="issue_new_task_title" id="issue_new_task_title" style="width: 100%;" value="<?php echo __('Enter the task title here'); ?>"></td>
 									<td class="issuedetailscontentscenter" style="width: 150px; font-size: 10px;"><?php echo __('Save the task to assign it'); ?></td>
-									<td class="issuedetailscontentscenter" style="width: 80px; font-size: 10px; text-align: center;"><?php echo bugs_formatTime($_SERVER["REQUEST_TIME"], 4); ?></td>
+									<td class="issuedetailscontentscenter" style="width: 80px; font-size: 10px; text-align: center;"><?php echo tbg__formatTime($_SERVER["REQUEST_TIME"], 4); ?></td>
 									<td class="issuedetailscontentscenter" style="width: 190px; font-size: 10px;"><?php echo __('Save the task to set a status'); ?></td>
 									<td class="issuedetailscontentsright" style="width: 60px; text-align: center;"><?php echo image_tag('action_cancel_small.png'); ?></td>
 								</tr>
 								<tr>
-									<td colspan=3 class="issuedetailscontentsleft" style="border-bottom: 2px solid #CCC;"><?php echo bugs_newTextArea('issue_new_task_description', '100px', '100%', __('Enter the task details here')); ?></td>
+									<td colspan=3 class="issuedetailscontentsleft" style="border-bottom: 2px solid #CCC;"><?php echo tbg__newTextArea('issue_new_task_description', '100px', '100%', __('Enter the task details here')); ?></td>
 									<td colspan=2 class="issuedetailscontentsright" style="border-bottom: 2px solid #CCC; text-align: center;">
 										<button style="width: 100px;" onclick="addTask();"><?php echo __('Add this task'); ?></button><br>
 										<div style="padding: 5px;"><a href="javascript:void(0);" onclick="Element.hide('new_task');"><?php echo __('Cancel'); ?></a></div>

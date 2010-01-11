@@ -12,31 +12,31 @@
 </div>
 <div class="tab_menu header_menu">
 	<ul>
-		<?php /*?><li<?php if ($bugs_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png', array('style' => 'float: left;')).__('Frontpage')); ?></li> */ ?>
-		<?php if (!$bugs_user->isThisGuest()): ?>
-			<li<?php if ($bugs_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png', array('style' => 'float: left;')).__('My dashboard')); ?></li>
+		<?php /*?><li<?php if ($tbg__response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png', array('style' => 'float: left;')).__('Frontpage')); ?></li> */ ?>
+		<?php if (!$tbg__user->isThisGuest()): ?>
+			<li<?php if ($tbg__response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png', array('style' => 'float: left;')).__('My dashboard')); ?></li>
 		<?php endif; ?>
-		<?php if ($bugs_user->canReportIssues() || (TBGContext::isProjectContext() && $bugs_user->canReportIssues(TBGContext::getCurrentProject()->getID()))): ?>
-			<?php if (TBGContext::isProjectContext() && $bugs_user->canReportIssues(TBGContext::getCurrentProject()->getID())): ?>
-				<li<?php if ($bugs_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
-			<?php elseif ($bugs_user->canReportIssues()): ?>
-				<li<?php if ($bugs_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('reportissue'), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
+		<?php if ($tbg__user->canReportIssues() || (TBGContext::isProjectContext() && $tbg__user->canReportIssues(TBGContext::getCurrentProject()->getID()))): ?>
+			<?php if (TBGContext::isProjectContext() && $tbg__user->canReportIssues(TBGContext::getCurrentProject()->getID())): ?>
+				<li<?php if ($tbg__response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
+			<?php elseif ($tbg__user->canReportIssues()): ?>
+				<li<?php if ($tbg__response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('reportissue'), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
 			<?php endif; ?>
 		<?php endif; ?>
-		<?php if ($bugs_user->canSearchForIssues()): ?>
-			<li<?php if ($bugs_response->getPage() == 'search'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('search'), image_tag('tab_search.png', array('style' => 'float: left;')).__('Find issues')); ?></li>
+		<?php if ($tbg__user->canSearchForIssues()): ?>
+			<li<?php if ($tbg__response->getPage() == 'search'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('search'), image_tag('tab_search.png', array('style' => 'float: left;')).__('Find issues')); ?></li>
 		<?php endif; ?>
 		<?php foreach (TBGContext::getModules() as $module): ?>
 			<?php if ($module->hasAccess() && $module->isVisibleInMenu() && $module->isEnabled()): ?>
-				<li<?php if ($bugs_response->getPage() == $module->getTabKey()): ?> class="selected"<?php endif; ?>><?php echo link_tag($module->getRoute(), image_tag('tab_' . $module->getName() . '.png', array('style' => 'float: left;'), false, $module->getName()).$module->getMenuTitle()); ?></li>
+				<li<?php if ($tbg__response->getPage() == $module->getTabKey()): ?> class="selected"<?php endif; ?>><?php echo link_tag($module->getRoute(), image_tag('tab_' . $module->getName() . '.png', array('style' => 'float: left;'), false, $module->getName()).$module->getMenuTitle()); ?></li>
 			<?php endif; ?>
 		<?php endforeach; ?>
-		<?php if ($bugs_user->canAccessConfigurationPage()): ?>
-			<li<?php if ($bugs_response->getPage() == 'config'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure'), image_tag('tab_config.png', array('style' => 'float: left;')).__('Configure')); ?></li>
+		<?php if ($tbg__user->canAccessConfigurationPage()): ?>
+			<li<?php if ($tbg__response->getPage() == 'config'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure'), image_tag('tab_config.png', array('style' => 'float: left;')).__('Configure')); ?></li>
 		<?php endif; ?>
-		<?php /*?><li<?php if ($bugs_response->getPage() == 'about'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('about'), image_tag('tab_about.png', array('style' => 'float: left;')).__('About')); ?></li> */ ?>
+		<?php /*?><li<?php if ($tbg__response->getPage() == 'about'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('about'), image_tag('tab_about.png', array('style' => 'float: left;')).__('About')); ?></li> */ ?>
 	</ul>
-	<?php if ($bugs_user->canSearchForIssues()): ?>
+	<?php if ($tbg__user->canSearchForIssues()): ?>
 		<ul class="right">
 			<li style="height: 24px;" class="nohover">
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'quicksearch' => 'true')) : make_url('search', array('quicksearch' => 'true')); ?>" method="post" name="quicksearchform">
@@ -56,14 +56,14 @@
 		</ul>
 	<?php endif; ?>
 </div>
-<?php if ($bugs_response->isProjectMenuStripVisible()): ?>
+<?php if ($tbg__response->isProjectMenuStripVisible()): ?>
 	<div id="project_menustrip"><?php include_component('project/menustrip', array('project' => TBGContext::getCurrentProject())); ?></div>
 <?php endif; ?>
 <?php
 /*
-		if (!$bugs_user->isThisGuest())
+		if (!$tbg__user->isThisGuest())
 		{
-			if ($bugs_response->getPage() == "account")
+			if ($tbg__response->getPage() == "account")
 			{
 				?>
 				<td align="center" valign="middle" class="selected" style="width: 110px;"><table align="center"><tr><td><?php echo image_tag('tab_account.png'); ?></td><td><?php echo __('My account'); ?></td></tr></table></td>
@@ -74,7 +74,7 @@
 				?>
 				<td align="center" valign="middle" onmouseover="this.className='hover_unselected';" onmouseout="this.className='unselected';" class="unselected" style="width: 110px;"><table align="center"><tr><td><a href="javascript:void(0);" onclick="Effect.Appear('myacct', { duration: 0.5 });"><?php echo image_tag('tab_account.png'); ?></a></td><td><a href="javascript:void(0);" onclick="Effect.Appear('myacct', { duration: 0.5 });"><?php echo __('My account'); ?></a></td></tr></table>
 				<div style="display: none; position: absolute; right: 1px; width: 180px; padding: 5px; background-color: #FFF; border: 1px solid #DDD;" id="myacct">
-				<div style="text-align: left; padding-bottom: 2px; border-bottom: 1px solid #DDD; margin-bottom: 5px;"><b><?php echo $bugs_user->getRealname(); ?></b></div>
+				<div style="text-align: left; padding-bottom: 2px; border-bottom: 1px solid #DDD; margin-bottom: 5px;"><b><?php echo $tbg__user->getRealname(); ?></b></div>
 				<div style="text-align: left; padding-bottom: 2px;"><b><?php echo __('Places'); ?></b></div>
 				<table style="width: 100%; table-layout: fixed;" cellpadding=0 cellspacing=2>
 				<?php
@@ -132,7 +132,7 @@
 		}
 		else
 		{
-			if ($bugs_response->getPage() == "login")
+			if ($tbg__response->getPage() == "login")
 			{
 				?>
 				<td align="center" valign="middle" class="selected" style="width: 130px;"><table align="center"><tr><td><?php echo image_tag('tab_login.png'); ?></td><td><?php echo (TBGSettings::get('allowreg') == 1) ? __('Login / Register') : __('Login'); ?></td></tr></table></td>

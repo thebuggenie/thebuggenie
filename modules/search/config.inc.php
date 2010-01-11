@@ -2,7 +2,7 @@
 
 	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
-		bugs_msgbox(false, "", __('You do not have access to this section'));
+		tbg__msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{

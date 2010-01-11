@@ -1,6 +1,6 @@
 <?php
 
-	$bugs_response->setTitle(__('Configure uploads &amp; attachments'));
+	$tbg__response->setTitle(__('Configure uploads &amp; attachments'));
 	
 ?>
 <script type="text/javascript">

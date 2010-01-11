@@ -5,7 +5,7 @@
         
         $strings['Configure projects'] = 'Produkt konfigurieren';
         $strings['This page gives you full control over your projects - each projects specific settings, as well as its editions and builds.'] = 'Mit Hilfe dieser Seite haben Sie einen kompletten Zugriff auf Ihre Produkte - spezifische Einstellungen jedes Produktes, sowie dessen Editionen und Builds.';
-        $strings['If you are unsure how to set up projects, editions, builds and components, have a look at the %bugs_online_help%.'] = 'Wenn Sie sich nicht sicher sind, wie Sie am besten Produkte, Editionen, Builds und Komponenten einstellen werfen Sie doch ein Blick in die %bugs_online_help%.';
+        $strings['If you are unsure how to set up projects, editions, builds and components, have a look at the %tbg__online_help%.'] = 'Wenn Sie sich nicht sicher sind, wie Sie am besten Produkte, Editionen, Builds und Komponenten einstellen werfen Sie doch ein Blick in die %tbg__online_help%.';
         $strings['Please select a project from the list to view and edit its details.'] = 'Bitte wählen Sie ein Produkt aus der Liste um dessen Details zu betrachten und zu ändern.';
         $strings['View or edit details about the selected project below.'] = 'Betrachten oder ändern Sie unten die Details über das gewählte Produkt.';
         $strings['Click the "Save"-button below to update settings and details.'] = 'Klicken Sie unten den "Speichern"-Button um die Einstellungen und Details zu aktualisieren.';

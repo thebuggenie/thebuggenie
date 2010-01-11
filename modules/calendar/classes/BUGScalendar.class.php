@@ -243,7 +243,7 @@
 							}
 							?>
 							<td><a href="javascript:void(0);" onclick="window.open('<?php echo TBGContext::getTBGPath(); ?>modules/calendar/show_event.php?id=<?php echo $anevent->getID(); ?>','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');"><?php echo $anevent->getTitle(); ?></a><br>
-							<div><?php echo bugs_formatTime($anevent->getStartDate(), 12); ?> - <?php echo bugs_formatTime($anevent->getEndDate(), 12); ?></div></td>
+							<div><?php echo tbg__formatTime($anevent->getStartDate(), 12); ?> - <?php echo tbg__formatTime($anevent->getEndDate(), 12); ?></div></td>
 							</tr>
 							<?php
 						}
@@ -283,12 +283,12 @@
 			$retval = '<table class="calendar_day" cellpadding=0 cellspacing=0>';
 			$retval .= '<caption class="calendar-day-big">';
 			// prev-link
-			$retval .= '<span class="smaller_day_link"><a href="javascript:void(0);" onclick="getOverview(' . date('d, m, Y', ($daystart - 1)) . ');">' . bugs_formatTime(($daystart - 1), 16) . '</a></span>';
+			$retval .= '<span class="smaller_day_link"><a href="javascript:void(0);" onclick="getOverview(' . date('d, m, Y', ($daystart - 1)) . ');">' . tbg__formatTime(($daystart - 1), 16) . '</a></span>';
 			
-			$retval .= bugs_formatTime($daystart, 16) . ',&nbsp;' . $year;
+			$retval .= tbg__formatTime($daystart, 16) . ',&nbsp;' . $year;
 
 			// next-link
-			$retval .= '<span class="smaller_day_link"><a href="javascript:void(0);" onclick="getOverview(' . date('d, m, Y', ($dayend + 1)) . ');">' . bugs_formatTime(($dayend + 1), 16) . '</a></span>';
+			$retval .= '<span class="smaller_day_link"><a href="javascript:void(0);" onclick="getOverview(' . date('d, m, Y', ($dayend + 1)) . ');">' . tbg__formatTime(($dayend + 1), 16) . '</a></span>';
 			
 			$retval .= '</caption>';
 			$retval .= '<tr>';
@@ -312,8 +312,8 @@
 						$retval .= image_tag('calendar/meeting.png', 'style="float: left;"');
 						break;
 				}
-				$retval .= '<b>' . bugs_formatTime($anevent->getStartDate(), 12) . ' -&gt; ' . bugs_formatTime($anevent->getEndDate(), 12) . ':&nbsp; ' . $anevent->getTitle() . '</b><br>';
-				$retval .= bugs_BBDecode($anevent->getDescription());
+				$retval .= '<b>' . tbg__formatTime($anevent->getStartDate(), 12) . ' -&gt; ' . tbg__formatTime($anevent->getEndDate(), 12) . ':&nbsp; ' . $anevent->getTitle() . '</b><br>';
+				$retval .= tbg__BBDecode($anevent->getDescription());
 				$retval .= '</div>';
 			}
 			
@@ -340,7 +340,7 @@
 			$day_names = array();
 			for($n = 0, $t = $first_of_week; $n < 7; $n++, $t += 86400)
 			{
-				$day_names[$n] = bugs_formatTime($t, 17);
+				$day_names[$n] = tbg__formatTime($t, 17);
 			}
 			
 			$retval = '<table class="calendar_week" cellpadding=0 cellspacing=0>';
@@ -360,7 +360,7 @@
 			foreach ($day_names as $day)
 			{
 				if ($hideweekend == 0 || $cc < 5) 
-				$retval .= '<th abbr="' . bugs_sanitize_string($day) . '">' . bugs_sanitize_string($day) . '</th>';
+				$retval .= '<th abbr="' . tbg__sanitize_string($day) . '">' . tbg__sanitize_string($day) . '</th>';
 				$cc++;
 			}
 			$retval .= '</tr>';
@@ -390,7 +390,7 @@
 									break;
 							}
 							$retval .= '<b>' . $anevent->getTitle() . '</b><br>';
-							$retval .= bugs_formatTime($anevent->getStartDate(), 12) . ' -&gt; ' . bugs_formatTime($anevent->getEndDate(), 12); 
+							$retval .= tbg__formatTime($anevent->getStartDate(), 12) . ' -&gt; ' . tbg__formatTime($anevent->getEndDate(), 12); 
 							$retval .= '</div>';
 						}
 					}
@@ -417,11 +417,11 @@
 			
 			$prev_month_days = (date('t', $first_of_month - 1) + 1);
 			$prev_month = date('m', $first_of_month - 1);
-			$prev_month_name = bugs_formatTime($first_of_month - 1, 15);
+			$prev_month_name = tbg__formatTime($first_of_month - 1, 15);
 			$prev_month_year = date('Y', $first_of_month - 1);
 			
 			$next_month = date('m', $last_of_month + 1);
-			$next_month_name = bugs_formatTime($last_of_month + 1, 15);
+			$next_month_name = tbg__formatTime($last_of_month + 1, 15);
 			$next_month_year = date('Y', $last_of_month + 1);
 						
 			$week_no = date('W', $first_of_month);
@@ -429,11 +429,11 @@
 			$day_names = array();
 			for($n = 0, $t = (3 + $week_offset) * 86400; $n < 7; $n++, $t += 86400)
 			{
-				$day_names[$n] = bugs_formatTime($t, 17);
+				$day_names[$n] = tbg__formatTime($t, 17);
 			}
 			
 			list($month, $year, $weekday) = explode(',', date('m,Y,w', $first_of_month));
-			$month_name = bugs_formatTime($first_of_month, 15);
+			$month_name = tbg__formatTime($first_of_month, 15);
 			$weekday = (($weekday + 7 - $week_offset) % 7);
 			
 			if ($mode == 'mini')
@@ -445,7 +445,7 @@
 				$retval .= '<span class="smaller_month_link"><a class="image" href="javascript:void(0);" onclick="getMonth(' . $prev_month . ', ' . $prev_month_year . ', \'mini\');">' . image_tag('calendar/prev_month.png', '', '', '', 0, 12, 12) . '</a></span>';
 
 				// current month
-				$retval .= '<span class="minimonth_monthname"><a href="javascript:void(0);" onclick="getMonth(' . $month . ', ' . $year . ', \'full\');">' . bugs_sanitize_string(ucfirst($month_name)) . '&nbsp;' . $year . '</a></span>';
+				$retval .= '<span class="minimonth_monthname"><a href="javascript:void(0);" onclick="getMonth(' . $month . ', ' . $year . ', \'full\');">' . tbg__sanitize_string(ucfirst($month_name)) . '&nbsp;' . $year . '</a></span>';
 
 				// next-link
 				$retval .= '<span class="smaller_month_link"><a class="image" href="javascript:void(0);" onclick="getMonth(' . $next_month . ', ' . $next_month_year . ', \'mini\');">' . image_tag('calendar/next_month.png', '', '', '', 0, 12, 12) . '</a></span>';
@@ -457,7 +457,7 @@
 			
 				foreach ($day_names as $day)
 				{
-					$retval .= '<th abbr="' . bugs_sanitize_string($day) . '">' . bugs_sanitize_string($day) . '</th>';
+					$retval .= '<th abbr="' . tbg__sanitize_string($day) . '">' . tbg__sanitize_string($day) . '</th>';
 				}
 				$retval .= '</tr>';
 				
@@ -527,13 +527,13 @@
 				$retval .= '<caption class="calendar-month-big">';
 				// prev-link
 				$retval .= '<span class="smallest_month_link"><a href="javascript:void(0);" onclick="getMonth(' . $month . ', ' . ($year - 1) . ', \'full\');">' . ($year - 1). '</a></span>';
-				$retval .= '<span class="smaller_month_link"><a href="javascript:void(0);" onclick="getMonth(' . $prev_month . ', ' . $prev_month_year . ', \'full\');">' . bugs_sanitize_string(ucfirst($prev_month_name)) . '&nbsp;' . $prev_month_year . '</a></span>';
+				$retval .= '<span class="smaller_month_link"><a href="javascript:void(0);" onclick="getMonth(' . $prev_month . ', ' . $prev_month_year . ', \'full\');">' . tbg__sanitize_string(ucfirst($prev_month_name)) . '&nbsp;' . $prev_month_year . '</a></span>';
 
 				// current month
-				$retval .= bugs_sanitize_string(ucfirst($month_name)) . '&nbsp;' . $year;
+				$retval .= tbg__sanitize_string(ucfirst($month_name)) . '&nbsp;' . $year;
 
 				// next-link
-				$retval .= '<span class="smaller_month_link"><a href="javascript:void(0);" onclick="getMonth(' . $next_month . ', ' . $next_month_year . ', \'full\');">' . bugs_sanitize_string(ucfirst($next_month_name)) . '&nbsp;' . $next_month_year . '</a></span>';
+				$retval .= '<span class="smaller_month_link"><a href="javascript:void(0);" onclick="getMonth(' . $next_month . ', ' . $next_month_year . ', \'full\');">' . tbg__sanitize_string(ucfirst($next_month_name)) . '&nbsp;' . $next_month_year . '</a></span>';
 				$retval .= '<span class="smallest_month_link"><a href="javascript:void(0);" onclick="getMonth(' . $month . ', ' . ($year + 1) . ', \'full\');">' . ($year + 1). '</a></span>';
 				
 				$retval .= '</caption>';
@@ -542,7 +542,7 @@
 			
 				foreach ($day_names as $day)
 				{
-					$retval .= '<th abbr="' . bugs_sanitize_string($day) . '">' . bugs_sanitize_string($day) . '</th>';
+					$retval .= '<th abbr="' . tbg__sanitize_string($day) . '">' . tbg__sanitize_string($day) . '</th>';
 				}
 				$retval .= '</tr>';
 				

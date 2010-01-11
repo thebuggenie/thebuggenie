@@ -1,6 +1,6 @@
 <?php
 
-	$bugs_response->setTitle(__('Configure modules'));
+	$tbg__response->setTitle(__('Configure modules'));
 	
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>

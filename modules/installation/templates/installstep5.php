@@ -18,7 +18,7 @@
 			<br>
 			You should log in and change this password immediately after finalizing the installation.</div>
 		</fieldset>
-		<form accept-charset="utf-8" action="index.php" method="post" id="bugs_settings">
+		<form accept-charset="utf-8" action="index.php" method="post" id="tbg__settings">
 			<input type="hidden" name="step" value="5">
 			<input type="hidden" name="sample_data" value="1">
 			<fieldset>
@@ -40,7 +40,7 @@
 		</form>
 	</div>
 	<div class="installation_box">
-		<form accept-charset="utf-8" action="index.php" method="post" id="bugs_settings">
+		<form accept-charset="utf-8" action="index.php" method="post" id="tbg__settings">
 			<input type="hidden" name="step" value="6">
 			<div style="padding-top: 20px; clear: both; text-align: center;">
 				<label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button when you're done, and ready to use The Bug Genie</label>

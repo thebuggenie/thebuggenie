@@ -136,7 +136,7 @@
 
 	if (!defined('THEBUGGENIE_PATH'))
 	{
-		bugs_msgbox(true, 'THEBUGGENIE_PATH not defined', 'You must define the THEBUGGENIE_PATH constant so we can find the files we need');
+		tbg__msgbox(true, 'THEBUGGENIE_PATH not defined', 'You must define the THEBUGGENIE_PATH constant so we can find the files we need');
 	}
 
 	session_name("THEBUGGENIE");

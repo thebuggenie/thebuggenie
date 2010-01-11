@@ -222,7 +222,7 @@
 	$strings['config_projects'] = 'Projects, editions, builds and components';
 	$strings['permissions'] = 'Permissions';
 	$strings['This is the The Bug Genie online help system'] = 'This is the The Bug Genie online help system';
-	$strings['For other support options - or if you need more information - please refer to the support section of the BUGS website: %bugs_help%'] = 'For other support options - or if you need more information - please refer to the support section of the BUGS website: %bugs_help%';
+	$strings['For other support options - or if you need more information - please refer to the support section of the BUGS website: %tbg__help%'] = 'For other support options - or if you need more information - please refer to the support section of the BUGS website: %tbg__help%';
 	$strings['Go to the Frontpage'] = 'Go to the Frontpage';
 	$strings['Also remember that you can not upload these filetypes: %list%'] = 'Also remember that you can not upload these filetypes: %list%';
 	$strings['Also remember that the only allowed filetypes are: %list%'] = 'Also remember that the only allowed filetypes are: %list%';
@@ -341,7 +341,7 @@
 	$strings['From here you can manage all data types available in BUGS, which relates to issues.'] = 'From here you can manage all data types available in BUGS, which relates to issues.';
 	$strings['Several of these data types have some kind of setting associated with them, which you can set in the corresponding subsection.'] = 'Several of these data types have some kind of setting associated with them, which you can set in the corresponding subsection.';
 	$strings['From here you can manage common The Bug Genie settings.'] = 'From here you can manage common The Bug Genie settings.';
-	$strings['To find out more about what each setting does, please refer to the %bugs_online_help%'] = 'To find out more about what each setting does, please refer to the %bugs_online_help%';
+	$strings['To find out more about what each setting does, please refer to the %tbg__online_help%'] = 'To find out more about what each setting does, please refer to the %tbg__online_help%';
 	$strings['Could not find this username. Please type the username of an existing, enabled user.'] = 'Could not find this username. Please type the username of an existing, enabled user.';
 	$strings['Interface language'] = 'Interface language';
 	$strings['The default language in BUGS 2'] = 'The default language in BUGS 2';
@@ -439,7 +439,7 @@
 	$strings['Edit settings'] = 'Edit settings';
 	$strings['Configure available scopes'] = 'Configure available scopes';
 	$strings['Scopes are individual BUGS 2 environments, fully functional, but invisible to eachother.'] = 'Scopes are individual BUGS 2 environments, fully functional, but invisible to eachother.';
-	$strings['You can learn more about scopes in the %bugs_online_help%.'] = 'You can learn more about scopes in the %bugs_online_help%.';
+	$strings['You can learn more about scopes in the %tbg__online_help%.'] = 'You can learn more about scopes in the %tbg__online_help%.';
 	$strings['Click on a scope to view its details and/or change its settings.'] = 'Click on a scope to view its details and/or change its settings.';
 	$strings['Click here to create a new scope'] = 'Click here to create a new scope';
 	$strings['DEFAULT SCOPE'] = 'DEFAULT SCOPE';
@@ -485,12 +485,12 @@
 	$strings['ex: http://localhost'] = 'ex: http://localhost';
 	$strings['BUGS 2 subdirectory'] = 'BUGS 2 subdirectory';
 	$strings['The path from the server url root to The Bug Genie, including the trailing slash.'] = 'The path from the server url root to The Bug Genie, including the trailing slash.';
-	$strings['/bugs2/'] = '/bugs2/';
+	$strings['/tbg_2/'] = '/tbg_2/';
 	$strings['The full local path to The Bug Genie, including the trailing slash.'] = 'The full local path to The Bug Genie, including the trailing slash.';
 	$strings['always use forward slashes, even if installed on Windows-systems'] = 'always use forward slashes, even if installed on Windows-systems';
 	$strings['Configure teams &amp; groups'] = 'Configure teams &amp; groups';
 	$strings['From here you can manage available teams and groups, as well as their permissions.'] = 'From here you can manage available teams and groups, as well as their permissions.';
-	$strings['Please read more about applying permissions in the %bugs_online_help% before using this section.'] = 'Please read more about applying permissions in the %bugs_online_help% before using this section.';
+	$strings['Please read more about applying permissions in the %tbg__online_help% before using this section.'] = 'Please read more about applying permissions in the %tbg__online_help% before using this section.';
 	$strings['You can not remove the "%group_name%" group'] = 'You can not remove the "%group_name%" group';
 	$strings['You are a member of this group, and can therefore not remove it. You must change your user settings before you can remove this group.'] = 'You are a member of this group, and can therefore not remove it. You must change your user settings before you can remove this group.';
 	$strings['This group is the default user group and can not be removed.'] = 'This group is the default user group and can not be removed.';
@@ -514,7 +514,7 @@
 	$strings['From here you can manage users, as well as their individual permissions.'] = 'From here you can manage users, as well as their individual permissions.';
 	$strings['To add a user, click the "Add user" link'] = 'To add a user, click the "Add user" link';
 	$strings['User-related settings are available from the %general_settings% page.'] = 'User-related settings are available from the %general_settings% page.';
-	$strings['To learn more about this configuration page, please refer to the %bugs_online_help%.'] = 'To learn more about this configuration page, please refer to the %bugs_online_help%.';
+	$strings['To learn more about this configuration page, please refer to the %tbg__online_help%.'] = 'To learn more about this configuration page, please refer to the %tbg__online_help%.';
 	$strings['Add user'] = 'Add user';
 	$strings['Username:'] = 'Username:';
 	$strings['In group(s):'] = 'In group(s):';
@@ -576,7 +576,7 @@
 	$strings['Charset'] = 'Charset';
 	$strings['Configure file upload settings'] = 'Configure file upload settings';
 	$strings['From here you can manage file uploads.'] = 'From here you can manage file uploads.';
-	$strings['To find out more about what each setting does, please refer to the %bugs_online_help%'] = 'To find out more about what each setting does, please refer to the %bugs_online_help%';
+	$strings['To find out more about what each setting does, please refer to the %tbg__online_help%'] = 'To find out more about what each setting does, please refer to the %tbg__online_help%';
 	$strings['Allow file uploads'] = 'Allow file uploads';
 	$strings['Yes, allow file uploads'] = 'Yes, allow file uploads';
 	$strings['No, don\'t allow file uploads'] = 'No, don\'t allow file uploads';
@@ -598,7 +598,7 @@
 	$strings['Scripts (php, asp, etc.) are never allowed'] = 'Scripts (php, asp, etc.) are never allowed';
 	$strings['Import data from version 1.9'] = 'Import data from version 1.9';
 	$strings['To start importing data from your BUGS 1.9 installation, please enter the connection details below.'] = 'To start importing data from your BUGS 1.9 installation, please enter the connection details below.';
-	$strings['After pressing "Next", you will be presented with several options related to the import. More information is available in the %bugs_online_help%'] = 'After pressing "Next", you will be presented with several options related to the import. More information is available in the %bugs_online_help%';
+	$strings['After pressing "Next", you will be presented with several options related to the import. More information is available in the %tbg__online_help%'] = 'After pressing "Next", you will be presented with several options related to the import. More information is available in the %tbg__online_help%';
 	$strings['Connection settings'] = 'Connection settings';
 	$strings['Hostname'] = 'Hostname';
 	$strings['Database name'] = 'Database name';
@@ -633,7 +633,7 @@
 	$strings['Make default for new issues'] = 'Make default for new issues';
 	$strings['Configure projects'] = 'Configure projects';
 	$strings['This page gives you full control over your projects - each projects specific settings, as well as its editions and builds.'] = 'This page gives you full control over your projects - each projects specific settings, as well as its editions and builds.';
-	$strings['If you are unsure how to set up projects, editions, builds and components, have a look at the %bugs_online_help%.'] = 'If you are unsure how to set up projects, editions, builds and components, have a look at the %bugs_online_help%.';
+	$strings['If you are unsure how to set up projects, editions, builds and components, have a look at the %tbg__online_help%.'] = 'If you are unsure how to set up projects, editions, builds and components, have a look at the %tbg__online_help%.';
 	$strings['Please select a project from the list to view and edit its details.'] = 'Please select a project from the list to view and edit its details.';
 	$strings['View or edit details about the selected project below.'] = 'View or edit details about the selected project below.';
 	$strings['Click the "Save"-button below to update settings and details.'] = 'Click the "Save"-button below to update settings and details.';
@@ -1215,7 +1215,7 @@
 	$strings['This issue is blocking the next release'] = 'This issue is blocking the next release';
 	$strings['Issue registered'] = 'Issue registered';
 	$strings['About The Bug Genie'] = 'About The Bug Genie';
-	$strings['Version %bugs_version%'] = 'Version %bugs_version%';
+	$strings['Version %tbg__version%'] = 'Version %tbg__version%';
 	$strings['Dashboard'] = 'Dashboard';
 	
 ?>

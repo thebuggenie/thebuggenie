@@ -21,7 +21,7 @@
 						</td>
 						<td>
 							<a href="javascript:void(0);" onclick="window.open('<?php echo TBGContext::getTBGPath(); ?>modules/calendar/show_event.php?id=<?php echo $anevent->getID(); ?>','showevent','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');"><?php echo $anevent->getTitle(); ?></a><br>
-							<div><?php echo bugs_formatTime($anevent->getStartDate(), 12); ?> - <?php echo bugs_formatTime($anevent->getEndDate(), 12); ?></div>
+							<div><?php echo tbg__formatTime($anevent->getStartDate(), 12); ?> - <?php echo tbg__formatTime($anevent->getEndDate(), 12); ?></div>
 						</td>
 					</tr>
 				<?php endforeach; ?>

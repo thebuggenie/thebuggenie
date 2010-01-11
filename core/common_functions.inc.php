@@ -1,6 +1,6 @@
 <?php
 
-	function bugs_sanitize_string($string)
+	function tbg__sanitize_string($string)
 	{
 		if (get_magic_quotes_gpc() == 1)
 		{
@@ -14,7 +14,7 @@
 	 * Returns a formatted string of the given timestamp
 	 *
 	 */
-	function bugs_formatTime($tstamp, $format = 0, $skiptimestamp = 0)
+	function tbg__formatTime($tstamp, $format = 0, $skiptimestamp = 0)
 	{
 		if (TBGSettings::getUserTimezone() !== null && $skiptimestamp == 0)
 		{
@@ -167,7 +167,7 @@
 		return $text;
 	}
 
-	function bugs_getTaskIssueType()
+	function tbg__getTaskIssueType()
 	{
 		try
 		{
@@ -182,18 +182,18 @@
 		}
 	}
 
-	function bugs_getAvailableAssignees($p_id, $e_id = 0, $b_id = 0, $u_id = 0)
+	function tbg__getAvailableAssignees($p_id, $e_id = 0, $b_id = 0, $u_id = 0)
 	{
 		$uids = array();
 
 		if ($e_id != 0)
 		{
-			$sql = "select distinct b2ua.uid, b2ut.uname, b2ut.buddyname from bugs2_userassigns b2ua join bugs2_users b2ut on (b2ut.id = b2ua.uid) join bugs2_components b2ct on (b2ct.project = $p_id) join bugs2_scopes b2sc on (b2sc.id = b2ut.scope) where ((b2ua.target = $p_id and b2ua.target_type = 1) or (b2ua.target = $e_id and b2ua.target_type = 2) or (b2ua.target_type = 3)) and b2ut.scope = " . TBGContext::getScope()->getID() . " and b2sc.enabled = 1 order by b2ut.buddyname asc";
+			$sql = "select distinct b2ua.uid, b2ut.uname, b2ut.buddyname from tbg_2_userassigns b2ua join tbg_2_users b2ut on (b2ut.id = b2ua.uid) join tbg_2_components b2ct on (b2ct.project = $p_id) join tbg_2_scopes b2sc on (b2sc.id = b2ut.scope) where ((b2ua.target = $p_id and b2ua.target_type = 1) or (b2ua.target = $e_id and b2ua.target_type = 2) or (b2ua.target_type = 3)) and b2ut.scope = " . TBGContext::getScope()->getID() . " and b2sc.enabled = 1 order by b2ut.buddyname asc";
 		}
 		else
 		{
-			$sql = "select distinct b2ua.uid, b2ut.uname, b2ut.buddyname from bugs2_userassigns b2ua join bugs2_editions b2et on (b2et.project = $p_id) join bugs2_users b2ut on (b2ut.id = b2ua.uid) join bugs2_components b2ct on (b2ct.project = $p_id) join bugs2_scopes b2sc on (b2sc.id = b2ut.scope) where ((b2ua.target = $p_id and b2ua.target_type = 1) or (b2ua.target = b2et.id and b2ua.target_type = 2) or (b2ua.target_type = 3 and b2ct.id = b2ua.target and b2ct.project = $p_id)) and b2ut.scope = " . TBGContext::getScope()->getID() . " and b2sc.enabled = 1 order by b2ut.buddyname asc";
-			$sql_2 = "select distinct b2ua.target, b2ua.target_type from bugs2_userassigns b2ua join bugs2_editions b2et on (b2et.project = $p_id) join bugs2_components b2ct on (b2ct.project = $p_id) where ((b2ua.target = $p_id and b2ua.target_type = 1) or (b2ua.target = b2et.id and b2ua.target_type = 2) or (b2ua.target_type = 3)) and uid = ";
+			$sql = "select distinct b2ua.uid, b2ut.uname, b2ut.buddyname from tbg_2_userassigns b2ua join tbg_2_editions b2et on (b2et.project = $p_id) join tbg_2_users b2ut on (b2ut.id = b2ua.uid) join tbg_2_components b2ct on (b2ct.project = $p_id) join tbg_2_scopes b2sc on (b2sc.id = b2ut.scope) where ((b2ua.target = $p_id and b2ua.target_type = 1) or (b2ua.target = b2et.id and b2ua.target_type = 2) or (b2ua.target_type = 3 and b2ct.id = b2ua.target and b2ct.project = $p_id)) and b2ut.scope = " . TBGContext::getScope()->getID() . " and b2sc.enabled = 1 order by b2ut.buddyname asc";
+			$sql_2 = "select distinct b2ua.target, b2ua.target_type from tbg_2_userassigns b2ua join tbg_2_editions b2et on (b2et.project = $p_id) join tbg_2_components b2ct on (b2ct.project = $p_id) where ((b2ua.target = $p_id and b2ua.target_type = 1) or (b2ua.target = b2et.id and b2ua.target_type = 2) or (b2ua.target_type = 3)) and uid = ";
 		}
 
 		//$res = b2db_sql_query($sql, B2DB::getDBlink());
@@ -220,7 +220,7 @@
 		return $uids;
 	}
 
-	function bugs_getIssueNotifications($uid, $notify_type)
+	function tbg__getIssueNotifications($uid, $notify_type)
 	{
 		$crit = new B2DBCriteria();
 		$crit->addWhere(B2tNotifications::UID, $uid);
@@ -230,7 +230,7 @@
 		return $notifications;
 	}
 
-	function bugs_removeIssueNotification($uid, $issue_id)
+	function tbg__removeIssueNotification($uid, $issue_id)
 	{
 		$crit = new B2DBCriteria();
 		$crit->addWhere(B2tNotifications::UID, $uid);
@@ -240,7 +240,7 @@
 		$res = B2DB::getTable('B2tNotifications')->doDelete($crit);
 	}
 
-	function bugs_createPassword($len = 8)
+	function tbg__createPassword($len = 8)
 	{
 		$pass = '';
 		$lchar = 0;
@@ -259,7 +259,7 @@
 		return $pass;
 	}
 
-	function bugs_printRandomNumber()
+	function tbg__printRandomNumber()
 	{
 		$randomNumber = "";
 
@@ -274,7 +274,7 @@
 		return $randomNumber;
 	}
 
-	function bugs_viewMinutes($minutes, $tformat, $hrs_pr_day)
+	function tbg__viewMinutes($minutes, $tformat, $hrs_pr_day)
 	{
 		$theTime = $minutes;
 		switch ($tformat)
@@ -328,7 +328,7 @@
 	 *
 	 * Displays an error dialog box (HTML)
 	 */
-	function bugs_showError($title, $text, $fatal = false)
+	function tbg__showError($title, $text, $fatal = false)
 	{
 		print "<div style=\"position: absolute; top: 25%; left: 20%;\"><div style=\"width: 500px; font-size: 11px; font-family: tahoma, sans-serif; padding: 2px 4px 2px 4px; color: #555; background-color: #DDD; font-weight: bold; border: 1px solid #BBB;\"><b>" . $title . "</b></div><div style=\"width: 500px; font-size: 11px; font-family: tahoma, sans-serif; padding: 5px 4px 5px 4px; color: #555; background-color: #FFF; border: 1px solid #BBB; border-top: 0px;\">";
 		print $text . "</div></div>";
@@ -338,7 +338,7 @@
 		}
 	}
 	
-	function bugs_cleanString($s)
+	function tbg__cleanString($s)
 	{
 		$preg = array('/</' => "&lt;", '/>/' => "&gt;");
 		$s = preg_replace(array_keys($preg), array_values($preg), $s);

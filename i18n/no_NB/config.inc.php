@@ -56,7 +56,7 @@
 	$strings['From here you can manage all data types available in BUGS, which relates to issues.'] = 'Her kan du behandle alle datatyper i BUGS som har med rapporter � gj�re.';
 	$strings['Several of these data types have some kind of setting associated with them, which you can set in the corresponding subsection.'] = 'Flere av disse datatypene har egne innstillinger, som du kan endre ved � velge en underseksjon.';
 	$strings['From here you can manage common The Bug Genie settings.'] = 'Herfra kan du behandle alle generelle innstillinger i BUGS';
-	$strings['To find out more about what each setting does, please refer to the %bugs_online_help%'] = 'For � finne ut mer om hva hver enkelt innstilling gj�r, se %bugs_online_help%';
+	$strings['To find out more about what each setting does, please refer to the %tbg__online_help%'] = 'For � finne ut mer om hva hver enkelt innstilling gj�r, se %tbg__online_help%';
 	$strings['Could not find this username. Please type the username of an existing, enabled user.'] = 'Kunne ikke finne dette brukernavnet. Vennligst skriv inn brukernavnet til en eksisterende, aktivert bruker.';
 	$strings['Interface language'] = 'Spr�k i grensesnittet';
 	$strings['The default language in BUGS 2'] = 'Standardspr�k i BUGS 2';
@@ -152,7 +152,7 @@
 	$strings['Edit settings'] = 'Rediger innstillinger';
 	$strings['Configure available scopes'] = 'Konfigurer tilgjengelie scopes';
 	$strings['Scopes are individual BUGS 2 environments, fully functional, but invisible to eachother.'] = 'Scopes er separate BUGS 2-milj�er, fullt funksjonelle men usynlige for hverandre.';
-	$strings['You can learn more about scopes in the %bugs_online_help%.'] = 'L�r mer om scopes i %bugs_online_help%.';
+	$strings['You can learn more about scopes in the %tbg__online_help%.'] = 'L�r mer om scopes i %tbg__online_help%.';
 	$strings['Click on a scope to view its details and/or change its settings.'] = 'Klikk p� et scope for � se p� / endre dets detaljer.';
 	$strings['Click here to create a new scope'] = 'Trykk her for � opprette et nytt scope';
 	$strings['DEFAULT SCOPE'] = 'FORVALGT SCOPE';
@@ -198,12 +198,12 @@
 	$strings['ex: http://localhost'] = 'eks: http://localhost';
 	$strings['BUGS 2 subdirectory'] = 'BUGS 2 underkatalog';
 	$strings['The path from the server url root to The Bug Genie, including the trailing slash.'] = 'Stien fra server URLen til BUGS 2, inkludert den avsluttende skr�streken.';
-	$strings['/bugs2/'] = '/bugs2/';
+	$strings['/tbg_2/'] = '/tbg_2/';
 	$strings['The full local path to The Bug Genie, including the trailing slash.'] = 'Fullstendig lokal sti til BUGS, inkludert den avsluttende skr�streken.';
 	$strings['always use forward slashes, even if installed on Windows-systems'] = 'Bruk alltid framover-skr�strek - ogs� p� Windows-systemer';
 	$strings['Configure teams &amp; groups'] = 'Konfigurer grupper og lag';
 	$strings['From here you can manage available teams and groups, as well as their permissions.'] = 'Her kan du behandle lag og grupper, og deres tilganger.';
-	$strings['Please read more about applying permissions in the %bugs_online_help% before using this section.'] = 'Vennligs les om innstillinger i %bugs_online_help% f�r du bruker denne seksjonen.';
+	$strings['Please read more about applying permissions in the %tbg__online_help% before using this section.'] = 'Vennligs les om innstillinger i %tbg__online_help% f�r du bruker denne seksjonen.';
 	$strings['You can not remove the "%group_name%" group'] = 'Du kan ikke fjerne "%group_name%"-gruppen';
 	$strings['You are a member of this group, and can therefore not remove it. You must change your user settings before you can remove this group.'] = 'Du er med i denne gruppen og kan derfor ikke fjerne den. Du m� f�rst endre dine gruppe-medlemskap f�r du kan slette gruppen.';
 	$strings['This group is the default user group and can not be removed.'] = 'Denne gruppen er standard brukergruppe og kan derfor ikke slettes.';
@@ -227,7 +227,7 @@
 	$strings['From here you can manage users, as well as their individual permissions.'] = 'Her kan du behandle alle brukere, i tillegg til deres individuelle tilganger.';
 	$strings['To add a user, click the "Add user" link'] = 'For � legge til en bruker, klikk p� "Opprett bruker"-lenken';
 	$strings['User-related settings are available from the %general_settings% page.'] = 'Bruker-relaterte innstillinger er tilgjengelig fra %general_settings%-siden.';
-	$strings['To learn more about this configuration page, please refer to the %bugs_online_help%.'] = 'For � l�re mer om denne konfigurasjonssiden, vennligst se %bugs_online_help%.';
+	$strings['To learn more about this configuration page, please refer to the %tbg__online_help%.'] = 'For � l�re mer om denne konfigurasjonssiden, vennligst se %tbg__online_help%.';
 	$strings['Add user'] = 'Opprett bruker';
 	$strings['Username:'] = 'Brukernavn:';
 	$strings['In group(s):'] = 'I gruppe(r):';
@@ -289,7 +289,7 @@
 	$strings['Charset'] = 'Tegnsett';
 	$strings['Configure file upload settings'] = 'Konfigurer innstillinger for opplasting av filer';
 	$strings['From here you can manage file uploads.'] = 'Her kan du behandle fil-opplastinger.';
-	$strings['To find out more about what each setting does, please refer to the %bugs_online_help%'] = 'For � finne ut mer om hva hver innstilling gj�r, vennligst se %bugs_online_help%';
+	$strings['To find out more about what each setting does, please refer to the %tbg__online_help%'] = 'For � finne ut mer om hva hver innstilling gj�r, vennligst se %tbg__online_help%';
 	$strings['Allow file uploads'] = 'Opplasting av filer';
 	$strings['Yes, allow file uploads'] = 'Ja, tillatt opplasting av filer';
 	$strings['No, don\'t allow file uploads'] = 'Nei, ikke tillatt opplasting av filer';
@@ -311,7 +311,7 @@
 	$strings['Scripts (php, asp, etc.) are never allowed'] = 'Skript (php, asp, etc.) er aldri tillatt';
 	$strings['Import data from version 1.9'] = 'Importer data fra BUGS 1.9';
 	$strings['To start importing data from your BUGS 1.9 installation, please enter the connection details below.'] = 'For � starte import av data fra BUGS 1.9, vennligst oppgi tilkoblings-informasjonen nedenfor.';
-	$strings['After pressing "Next", you will be presented with several options related to the import. More information is available in the %bugs_online_help%'] = 'N�r du har trykket "Neste", vil du f� opp flere valg knyttet til importen. Mer informasjon er tilgjengelig i %bugs_online_help%';
+	$strings['After pressing "Next", you will be presented with several options related to the import. More information is available in the %tbg__online_help%'] = 'N�r du har trykket "Neste", vil du f� opp flere valg knyttet til importen. Mer informasjon er tilgjengelig i %tbg__online_help%';
 	$strings['Connection settings'] = 'Tilkoblings-innstillinger';
 	$strings['Hostname'] = 'Vertsnavn';
 	$strings['Database name'] = 'Databasenavn';

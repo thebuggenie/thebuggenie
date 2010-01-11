@@ -111,7 +111,7 @@
 
 		if (TBGContext::getRequest()->getParameter('randompassword') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
-			$newPass = bugs_createPassword();
+			$newPass = tbg__createPassword();
 			$md5newPass = md5($newPass);
 			$theUser = TBGFactory::userLab(TBGContext::getRequest()->getParameter('uid'));
 			$theUser->changePassword($newPass);
@@ -155,7 +155,7 @@
 			}
 			else
 			{
-				$newPass = bugs_createPassword();
+				$newPass = tbg__createPassword();
 				$md5newPass = md5($newPass);
 				$theUser = TBGUser::createNew($newUname, $newRealname, $newBuddyname, TBGContext::getScope()->getID());
 				$theUser->setEmail($newEmail);

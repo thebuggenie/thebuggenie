@@ -26,7 +26,7 @@
 	 * @param $noteams
 	 * @return unknown_type
 	 */
-	function bugs_AJAXuserteamselector($user_title, $team_title, $setuser_url, $setteam_url, $setuser_update_div, $setuser_update_url, $setteam_update_div, $setteam_update_url, $container_span, $group_title = '', $setgroup_url = '', $setgroup_update_div = '', $setgroup_update_url = '', $noteams = false)
+	function tbg__AJAXuserteamselector($user_title, $team_title, $setuser_url, $setteam_url, $setuser_update_div, $setuser_update_url, $setteam_update_div, $setteam_update_url, $container_span, $group_title = '', $setgroup_url = '', $setgroup_update_div = '', $setgroup_update_url = '', $noteams = false)
 	{
 	}
 	
@@ -38,7 +38,7 @@
 	 * 
 	 * @return string
 	 */
-	function bugs_printColorOptions($color, $data)
+	function tbg__printColorOptions($color, $data)
 	{
 		$retval = '<option value="' . $color . '" style="background-color: ' . $color . '; text-align: center;"';
 		$retval .= ($data == $color) ? ' selected' : '';
@@ -138,7 +138,7 @@
 	 * 
 	 * @return string
 	 */
-	function bugs_helpBrowserHelper($topic, $linktext)
+	function tbg__helpBrowserHelper($topic, $linktext)
 	{
 		return '<a href="javascript:void(0);" onclick="window.open(\'help.php?topic=' . $topic . '\',\'mywindow\',\'menubar=0,toolbar=0,location=0,status=0,scrollbars=1,width=600,height=700\');"><b>' . $linktext . '</b></a>';
 	}
@@ -149,14 +149,14 @@
 	 * @param TBGCustomer $cid
 	 * @param bool $dontclose
 	 * 
-	 * @see bugs_teamDropdown
-	 * @see bugs_userDropdown
+	 * @see tbg__teamDropdown
+	 * @see tbg__userDropdown
 	 * 
 	 * @return string
 	 */
-	function bugs_customerDropdown($cid, $dontclose = 0)
+	function tbg__customerDropdown($cid, $dontclose = 0)
 	{
-		return bugs_teamDropdown($cid, $dontclose, true);
+		return tbg__teamDropdown($cid, $dontclose, true);
 	}
 	
 	/**
@@ -165,12 +165,12 @@
 	 * @param TBGTeam $tid
 	 * @param bool $dontclose
 	 * 
-	 * @see bugs_customerDropdown
-	 * @see bugs_userDropdown
+	 * @see tbg__customerDropdown
+	 * @see tbg__userDropdown
 	 * 
 	 * @return string
 	 */
-	function bugs_teamDropdown($tid, $dontclose = 0, $is_customer = false)
+	function tbg__teamDropdown($tid, $dontclose = 0, $is_customer = false)
 	{
 
 		$the_tr = "";
@@ -265,7 +265,7 @@
 	 * 
 	 * @return null
 	 */
-	function bugs_printMilestones($project_id, $onlyVisible = true)
+	function tbg__printMilestones($project_id, $onlyVisible = true)
 	{
 
 		$milestones = TBGFactory::projectLab($project_id)->getMilestones($onlyVisible);
@@ -284,7 +284,7 @@
 			<div style="padding: 2px; padding-top: 0px; font-size: 10px;">
 			<?php
 			if($aMilestone->isScheduled()) {
-				echo __('Scheduled: %date%', array('%date%' => bugs_formatTime($aMilestone->getScheduledDate(), 5)));
+				echo __('Scheduled: %date%', array('%date%' => tbg__formatTime($aMilestone->getScheduledDate(), 5)));
 			} else {
 				echo __('Not scheduled yet');
 			}
@@ -292,7 +292,7 @@
 			<?php $milestoneStatus = $aMilestone->getScheduledStatus(); ?>
 			<div style="color: #<?php echo $milestoneStatus['color']; ?>"><?php echo $milestoneStatus['status']; ?></div>			
 			</div>
-			<div style="padding: 2px;"><?php bugs_printPercentBar($aMilestone->getPercentComplete(), 10); ?></div>
+			<div style="padding: 2px;"><?php tbg__printPercentBar($aMilestone->getPercentComplete(), 10); ?></div>
 			<table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
 			<tr>
 			<td style="font-size: 10px; padding-left: 2px; width: 50%;"><i><?php echo __('Closed issues: %number_of_closed% of %number_of_issues% assigned to this milestone', array('%number_of_closed%' => $aMilestone->getClosedIssues(), '%number_of_issues%' => count($aMilestone->getIssues()))); ?></i></td>
@@ -322,7 +322,7 @@
 	 * 
 	 * @return string
 	 */
-	function bugs_printPercentBar($percent, $size = 16)
+	function tbg__printPercentBar($percent, $size = 16)
 	{
 		echo '<table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>';
 		echo '<tr>';
@@ -347,11 +347,11 @@
 	 * @param bool $start_hidden[optional] whether or not to start hidden
 	 * @param bool $multiline[optional] whether or not the box is multiline
 	 * 
-	 * @see bugs_failureStrip
+	 * @see tbg__failureStrip
 	 * 
 	 * @return string
 	 */
-	function bugs_successStrip($title, $content = '', $id = '', $start_hidden = false, $multiline = true)
+	function tbg__successStrip($title, $content = '', $id = '', $start_hidden = false, $multiline = true)
 	{
 		$retval = '';
 		$retval .= '<div class="medium_transparent" style="margin: 0; position: fixed; top: 0; left: 0; width: 100%; padding: 10px 0 10px 0; background-color: #45E845; font-size: 14px; color: #000; border-bottom: 1px solid #555;';
@@ -384,11 +384,11 @@
 	 * @param bool $start_hidden[optional] whether or not to start hidden
 	 * @param bool $multiline[optional] whether or not the box is multiline
 	 * 
-	 * @see bugs_successStrip
+	 * @see tbg__successStrip
 	 * 
 	 * @return string
 	 */
-	function bugs_failureStrip($title, $content = '', $id = '', $start_hidden = false)
+	function tbg__failureStrip($title, $content = '', $id = '', $start_hidden = false)
 	{
 		$retval = '';
 		$retval .= '<div class="medium_transparent" style="margin: 0; position: fixed; top: 0; left: 0; width: 100%; padding: 10px 0 10px 0; background-color: #E84545; font-size: 14px; color: #000; border-bottom: 1px solid #555;';
@@ -410,7 +410,7 @@
 	 * 
 	 * @return null
 	 */
-	function bugs_printmodeStrip($normalmode_link)
+	function tbg__printmodeStrip($normalmode_link)
 	{
 		?>
 		<div class="print_header_strip">

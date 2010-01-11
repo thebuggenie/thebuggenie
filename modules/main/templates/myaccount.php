@@ -1,6 +1,6 @@
 <?php
 
-	$bugs_response->setTitle('My account');
+	$tbg__response->setTitle('My account');
 
 ?>
 <table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
@@ -10,12 +10,12 @@
 			<div class="rounded_box iceblue_borderless" style="margin: 10px 0px 10px 10px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="vertical-align: middle; padding: 5px 10px 5px 10px; font-size: 14px;">
-					<?php echo image_tag($bugs_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;'), true); ?>
-					<strong><?php echo $bugs_user->getRealname(); ?></strong>
+					<?php echo image_tag($tbg__user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;'), true); ?>
+					<strong><?php echo $tbg__user->getRealname(); ?></strong>
 					<br />
 					<span style="font-size: 12px;">
-						(<?php echo $bugs_user->getUsername(); ?>)<br>
-						<?php echo '<b>' . __('Status: %status%', array('%status%' => '</b>' . (($bugs_user->getState() instanceof TBGUserstate) ? $bugs_user->getState()->getName() : '<span class="faded_medium">' . __('Unknown') . '</span>'))); ?>
+						(<?php echo $tbg__user->getUsername(); ?>)<br>
+						<?php echo '<b>' . __('Status: %status%', array('%status%' => '</b>' . (($tbg__user->getState() instanceof TBGUserstate) ? $tbg__user->getState()->getName() : '<span class="faded_medium">' . __('Unknown') . '</span>'))); ?>
 					</span>
 					<br />
 					<div style="font-size: 13px;">
@@ -46,13 +46,13 @@
 								<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 							</div>
 						</form>
-						<div style="<?php if (!$bugs_user->usesGravatar()): ?>display: none; <?php endif; ?>clear: both; margin: 3px 0 15px 0;" id="gravatar_change">
+						<div style="<?php if (!$tbg__user->usesGravatar()): ?>display: none; <?php endif; ?>clear: both; margin: 3px 0 15px 0;" id="gravatar_change">
 							<?php echo image_tag('gravatar.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 							<?php echo link_tag('http://en.gravatar.com/emails/', __('Change my profile picture / avatar'), array('target' => '_blank')); ?>
 						</div>
 						<div style="clear: both; margin-top: 3px;">
 							<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-							<?php echo link_tag(make_url('search', array('searchfor' => '%%', 'issues_per_page' => 30, 'filters' => array('posted_by' => array('value' => $bugs_user->getID(), 'operator' => '=')))), __("Show a list of all issues I've reported")); ?>
+							<?php echo link_tag(make_url('search', array('searchfor' => '%%', 'issues_per_page' => 30, 'filters' => array('posted_by' => array('value' => $tbg__user->getID(), 'operator' => '=')))), __("Show a list of all issues I've reported")); ?>
 						</div>
 					</div>
 				</div>
@@ -82,7 +82,7 @@
 									<tr>
 										<td style="padding: 5px;"><label for="profile_buddyname">* <?php echo __('"Friendly" name / nickname'); ?></label></td>
 										<td>
-											<input type="text" name="buddyname" id="profile_buddyname" value="<?php echo $bugs_user->getBuddyname(); ?>" style="width: 200px;">
+											<input type="text" name="buddyname" id="profile_buddyname" value="<?php echo $tbg__user->getBuddyname(); ?>" style="width: 200px;">
 										</td>
 									</tr>
 									<tr>
@@ -91,7 +91,7 @@
 									<tr>
 										<td style="padding: 5px;"><label for="profile_realname"><?php echo __('Full name'); ?></label></td>
 										<td>
-											<input type="text" name="realname" id="profile_realname" value="<?php echo $bugs_user->getRealname(); ?>" style="width: 300px;">
+											<input type="text" name="realname" id="profile_realname" value="<?php echo $tbg__user->getRealname(); ?>" style="width: 300px;">
 										</td>
 									</tr>
 									<tr>
@@ -100,14 +100,14 @@
 									<tr>
 										<td style="padding: 5px;"><label for="profile_email">* <?php echo __('Email address'); ?></label></td>
 										<td>
-											<input type="text" name="email" id="profile_email" value="<?php echo $bugs_user->getEmail(); ?>" style="width: 300px;">
+											<input type="text" name="email" id="profile_email" value="<?php echo $tbg__user->getEmail(); ?>" style="width: 300px;">
 										</td>
 									</tr>
 									<tr>
 										<td style="padding: 5px;"><label for="profile_email_private_yes">* <?php echo __('Show my email address to others'); ?></label></td>
 										<td>
-											<input type="radio" name="email_private" value="1" id="profile_email_private_yes"<?php if ($bugs_user->isEmailPrivate()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_yes"><?php echo __('No'); ?></label>&nbsp;&nbsp;
-											<input type="radio" name="email_private" value="0" id="profile_email_private_no"<?php if ($bugs_user->isEmailPublic()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_no"><?php echo __('Yes'); ?></label>
+											<input type="radio" name="email_private" value="1" id="profile_email_private_yes"<?php if ($tbg__user->isEmailPrivate()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_yes"><?php echo __('No'); ?></label>&nbsp;&nbsp;
+											<input type="radio" name="email_private" value="0" id="profile_email_private_no"<?php if ($tbg__user->isEmailPublic()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_email_private_no"><?php echo __('Yes'); ?></label>
 										</td>
 									</tr>
 									<tr>
@@ -116,7 +116,7 @@
 									<tr>
 										<td style="padding: 5px;"><label for="profile_homepage"><?php echo __('Homepage'); ?></label></td>
 										<td>
-											<input type="text" name="homepage" id="profile_homepage" value="<?php echo $bugs_user->getHomepage(); ?>" style="width: 300px;">
+											<input type="text" name="homepage" id="profile_homepage" value="<?php echo $tbg__user->getHomepage(); ?>" style="width: 300px;">
 										</td>
 									</tr>
 									<tr>
@@ -144,15 +144,15 @@
 									<tr>
 										<td style="width: 200px; padding: 5px;"><label for="profile_use_gravatar_yes"><?php echo __('Use Gravatar avatar'); ?></label></td>
 										<td>
-											<input type="radio" name="use_gravatar" value="1" id="profile_use_gravatar_yes"<?php if ($bugs_user->usesGravatar()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_use_gravatar_yes"><?php echo __('Yes'); ?></label><br>
-											<input type="radio" name="use_gravatar" value="0" id="profile_use_gravatar_no"<?php if (!$bugs_user->usesGravatar()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_use_gravatar_no"><?php echo __('No'); ?></label><br>
+											<input type="radio" name="use_gravatar" value="1" id="profile_use_gravatar_yes"<?php if ($tbg__user->usesGravatar()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_use_gravatar_yes"><?php echo __('Yes'); ?></label><br>
+											<input type="radio" name="use_gravatar" value="0" id="profile_use_gravatar_no"<?php if (!$tbg__user->usesGravatar()): ?> checked<?php endif; ?>>&nbsp;<label for="profile_use_gravatar_no"><?php echo __('No'); ?></label><br>
 										</td>
 									</tr>
 									<tr>
 										<td class="config_explanation" colspan="2">
 											<?php echo __("The Bug Genie can use your <a href=\"http://www.gravatar.com\" target=\"_blank\">Gravatar</a> profile picture, if you have one. If you don't have one but still want to use Gravatar for profile pictures, The Bug Genie will use a Gravatar <a href=\"http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/\" target=\"_blank\">auto-generated image unique for your email address</a>."); ?><br>
 											<br>
-											<?php echo __("Don't have a Gravatar yet? %link_to_get_one_now%", array('%link_to_get_one_now%' => link_tag('http://en.gravatar.com/site/signup/'.urlencode($bugs_user->getEmail()), __('Get one now!'), array('target' => '_blank')))); ?>
+											<?php echo __("Don't have a Gravatar yet? %link_to_get_one_now%", array('%link_to_get_one_now%' => link_tag('http://en.gravatar.com/site/signup/'.urlencode($tbg__user->getEmail()), __('Get one now!'), array('target' => '_blank')))); ?>
 										</td>
 									</tr>
 									<tr>
@@ -160,11 +160,11 @@
 										<td>
 											<select name="timezone" id="profile_timezone" style="width: 150px;">
 												<?php for ($cc = 12;$cc >= 1;$cc--): ?>
-													<option value="-<?php echo $cc; ?>"<?php if ($bugs_user->getTimezone() == -$cc): ?> selected<?php endif; ?>>GMT -<?php echo $cc; ?></option>
+													<option value="-<?php echo $cc; ?>"<?php if ($tbg__user->getTimezone() == -$cc): ?> selected<?php endif; ?>>GMT -<?php echo $cc; ?></option>
 												<?php endfor; ?>
-												<option value="0"<?php if ($bugs_user->getTimezone() == 0): ?> selected<?php endif; ?>>GMT/UTC</option>
+												<option value="0"<?php if ($tbg__user->getTimezone() == 0): ?> selected<?php endif; ?>>GMT/UTC</option>
 												<?php for ($cc = 1;$cc <= 12;$cc++): ?>
-													<option value="<?php echo $cc; ?>"<?php if ($bugs_user->getTimezone() == $cc): ?> selected<?php endif; ?>>GMT +<?php echo $cc; ?></option>
+													<option value="<?php echo $cc; ?>"<?php if ($tbg__user->getTimezone() == $cc): ?> selected<?php endif; ?>>GMT +<?php echo $cc; ?></option>
 												<?php endfor; ?>
 											</select>
 										</td>
@@ -345,13 +345,13 @@
 		<table style="table-layout: fixed; width: 100%; background-color: #F1F1F1; margin-top: 10px; border: 1px solid #DDD;" cellpadding=0 cellspacing=0>
 		<tr>
 		<td style="border: 0px; width: auto; padding: 3px; padding-left: 7px;"><b><?php echo __('Welcome, %username%', array('%username%' => TBGContext::getUser()->getRealname())); ?></b></td>
-		<td style="background: url('<?php print "themes/" .  TBGSettings::getThemeName(); ?>/clock.png') no-repeat right; text-align: right; padding: 3px; padding-right: 25px;"><?php print bugs_formatTime($_SERVER["REQUEST_TIME"], 3); ?></td>
+		<td style="background: url('<?php print "themes/" .  TBGSettings::getThemeName(); ?>/clock.png') no-repeat right; text-align: right; padding: 3px; padding-right: 25px;"><?php print tbg__formatTime($_SERVER["REQUEST_TIME"], 3); ?></td>
 		<td style="width: 7px;">&nbsp;</td>
 		</tr>
 		</table>
 		<table style="table-layout: fixed; width: 100%; background-color: #FFF; margin-top: 7px; margin-left: 0px;" cellpadding=0 cellspacing=0>
 		<tr>
-		<td style="padding: 0px; height: 70px; width: 70px; border: 1px solid #DDD; text-align: center;" align="right" valign="middle" id="avatar_td"><?php echo image_tag($bugs_user->getAvatarURL(false), array(), true); ?></td>
+		<td style="padding: 0px; height: 70px; width: 70px; border: 1px solid #DDD; text-align: center;" align="right" valign="middle" id="avatar_td"><?php echo image_tag($tbg__user->getAvatarURL(false), array(), true); ?></td>
 		<td style="padding-left: 10px; width: 250px;" valign="top">
 		<b><?php echo __('Real name: %real_name%', array('%real_name%' => '')); ?></b> <?php print TBGContext::getUser()->getRealname(); ?><br>
 		<b><?php echo __('People see you as: %buddy_name%', array('%buddy_name%' => '')); ?></b> <?php print TBGContext::getUser()->getBuddyname(); ?><br>

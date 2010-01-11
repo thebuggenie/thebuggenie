@@ -1,6 +1,6 @@
 <?php
 
-	$bugs_response->setTitle(__('Manage projects - %project% - editions, components and releases', array('%project%' => $theProject->getName())));
+	$tbg__response->setTitle(__('Manage projects - %project% - editions, components and releases', array('%project%' => $theProject->getName())));
 	
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -11,7 +11,7 @@
 	<table style="width: 700px; margin-top: 10px;" cellpadding=0 cellspacing=0>
 		<tr>
 			<td style="width: auto; padding-right: 5px; vertical-align: top;">
-				<div class="config_header nobg"><?php echo bugs_helpBrowserHelper('setup_editions', image_tag('help.png', array('style' => "float: right;"))); ?><b><?php echo __('Editions'); ?></b></div>
+				<div class="config_header nobg"><?php echo tbg__helpBrowserHelper('setup_editions', image_tag('help.png', array('style' => "float: right;"))); ?><b><?php echo __('Editions'); ?></b></div>
 			<?php if ($theProject->isEditionsEnabled()): ?>
 				<div style="padding: 0px 0px 5px 3px;"><?php echo __('Click an edition name to edit its information and settings, as well as manage builds for that edition'); ?>.</div>
 				<div class="faded_medium" id="no_editions" style="padding: 5px;<?php if (count($theProject->getEditions()) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no editions'); ?></div>
@@ -45,7 +45,7 @@
 			<?php endif; ?>
 			</td>
 			<td style="width: 350px; padding-right: 5px; vertical-align: top;">
-				<div class="config_header nobg"><?php echo bugs_helpBrowserHelper('setup_components', image_tag('help.png', array('style' => "float: right;"))); ?><b><?php echo __('Components'); ?></b></div>
+				<div class="config_header nobg"><?php echo tbg__helpBrowserHelper('setup_components', image_tag('help.png', array('style' => "float: right;"))); ?><b><?php echo __('Components'); ?></b></div>
 			<?php if ($theProject->isComponentsEnabled()): ?>
 				<div style="padding: 0px 0px 5px 3px;"><?php echo __('This is a list of all the components available for this project'); ?>.</div>	
 				<div class="faded_medium" id="no_components" style="padding: 5px;<?php if (count($theProject->getComponents()) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no components'); ?></div>
@@ -81,7 +81,7 @@
 		</tr>
 		<tr>
 			<td colspan="2" style="padding-right: 5px;">
-			<div class="config_header nobg" style="margin-top: 10px;"><?php echo bugs_helpBrowserHelper('setup_releases', image_tag('help.png', array('style' => "float: right;"))); ?><b><?php echo __('Builds / releases'); ?></b></div>
+			<div class="config_header nobg" style="margin-top: 10px;"><?php echo tbg__helpBrowserHelper('setup_releases', image_tag('help.png', array('style' => "float: right;"))); ?><b><?php echo __('Builds / releases'); ?></b></div>
 			<?php if ($theProject->isBuildsEnabled()): ?>
 				<?php include_template('builds', array('parent' => $theProject, 'access_level' => $access_level)); ?>
 			<?php else: ?>

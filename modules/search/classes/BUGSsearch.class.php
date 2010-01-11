@@ -609,7 +609,7 @@
 			if ($showtitle)
 			{
 				echo '<div class="searchtitleheader">' . $searchtitle;
-				if (!($bugs_response->getPage() == 'index' && $this->getSetting('showindexsummary') == 0))
+				if (!($tbg__response->getPage() == 'index' && $this->getSetting('showindexsummary') == 0))
 				{
 					echo '&nbsp;&nbsp;&nbsp;<span style="display: inline;">(' . TBGContext::getI18n()->__('%number_of% matches', array('%number_of%' => count($searchresult))) . ')</span>';
 				}
@@ -729,7 +729,7 @@
 					if ($prev_groupby !== $this_groupby)
 					{
 						echo "</table>\n";
-						if ($group_cc > 0 && (!($bugs_response->getPage() == 'index' && $this->getSetting('showindexsummarydetails') == 0)))
+						if ($group_cc > 0 && (!($tbg__response->getPage() == 'index' && $this->getSetting('showindexsummarydetails') == 0)))
 						{
 							echo '<div style="color: #AAA; font-size: 12px; border-bottom: 1px solid #DDD;">' . TBGContext::getI18n()->__('%count% matches in this group', array('%count%' => $group_cc)) . '</div>';
 						}
@@ -795,7 +795,7 @@
 										echo image_tag('sort_asc.png', ' align="left"');
 									}
 								}
-								if ($bugs_response->getPage() == 'search')
+								if ($tbg__response->getPage() == 'search')
 								{
 									echo '<a href="' . TBGContext::getTBGPath() . 'modules/search/search.php?perform_search=true';
 									echo (TBGContext::getRequest()->getParameter('s_id')) ? '&amp;saved_search=true&amp;s_id=' . TBGContext::getRequest()->getParameter('s_id') : '&amp;custom_search=true';
@@ -842,12 +842,12 @@
 										echo TBGContext::getI18n()->__('Description');
 										break;
 									case 'B2tComments::ID':
-										echo ($bugs_response->getPage() == 'search') ? '</a>&nbsp;<a>' : '&nbsp;';
+										echo ($tbg__response->getPage() == 'search') ? '</a>&nbsp;<a>' : '&nbsp;';
 										break;
 									default:
 										echo '';
 								}
-								if ($bugs_response->getPage() == 'search')
+								if ($tbg__response->getPage() == 'search')
 								{
 									echo '</a>';
 								}
@@ -985,7 +985,7 @@
 										 echo ' rowspan=' . $aLayoutField['span_rows'];
 									}
 									echo '>';
-									echo bugs_printPercentBar($theIssue->getPercentCompleted(), 12);
+									echo tbg__printPercentBar($theIssue->getPercentCompleted(), 12);
 									echo '</td>';
 									break;
 								case 'B2tIssues::TITLE': # "issue_title":
@@ -1119,13 +1119,13 @@
 										if ($theIssue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER)
 										{
 											echo '<table>';
-											echo bugs_userDropdown($theIssue->getAssignee());
+											echo tbg__userDropdown($theIssue->getAssignee());
 											echo '</table>';
 										}
 										elseif ($theIssue->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM)
 										{
 											echo '<table>';
-											echo bugs_teamDropdown($theIssue->getAssignee());
+											echo tbg__teamDropdown($theIssue->getAssignee());
 											echo '</table>';
 										}
 										else
@@ -1170,13 +1170,13 @@
 										if ($theIssue->getOwnerType() == TBGIdentifiableClass::TYPE_USER)
 										{
 											echo '<table>';
-											echo bugs_userDropdown($theIssue->getOwner());
+											echo tbg__userDropdown($theIssue->getOwner());
 											echo '</table>';
 										}
 										elseif ($theIssue->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM)
 										{
 											echo '<table>';
-											echo bugs_teamDropdown($theIssue->getOwner()->getID());
+											echo tbg__teamDropdown($theIssue->getOwner()->getID());
 											echo '</table>';
 										}
 										else
@@ -1257,7 +1257,7 @@
 										 echo ' rowspan=' . $aLayoutField['span_rows'];
 									}
 									echo ' class="small">';
-									echo ucfirst(bugs_BBDecode($theIssue->getDescription()));
+									echo ucfirst(tbg__BBDecode($theIssue->getDescription()));
 									echo '</td>';
 									break;
 								case 'B2tIssues::LAST_UPDATED': # "issue_last_update":
@@ -1280,15 +1280,15 @@
 									echo ($aLayoutField['include_desc'] == 1) ? '<b>' . TBGContext::getI18n()->__('Upd') . ':&nbsp;</b>' : '';
 									if ($aLayoutField['field_type'] == 1)
 									{
-										echo bugs_formatTime($theIssue->getLastUpdatedTime(), 14);
+										echo tbg__formatTime($theIssue->getLastUpdatedTime(), 14);
 									}
 									elseif ($aLayoutField['field_type'] == 2)
 									{
-										echo str_replace(', ', '<br>', bugs_formatTime($theIssue->getLastUpdatedTime(), 12));
+										echo str_replace(', ', '<br>', tbg__formatTime($theIssue->getLastUpdatedTime(), 12));
 									}
 									elseif ($aLayoutField['field_type'] == 3)
 									{
-										echo bugs_formatTime($theIssue->getLastUpdatedTime(), 12);
+										echo tbg__formatTime($theIssue->getLastUpdatedTime(), 12);
 									}
 									echo '&nbsp;';
 									echo '</td>';
@@ -1312,15 +1312,15 @@
 									echo ' class="small">';
 									if ($aLayoutField['field_type'] == 1)
 									{
-										echo bugs_formatTime($theIssue->getPosted(), 14);
+										echo tbg__formatTime($theIssue->getPosted(), 14);
 									}
 									elseif ($aLayoutField['field_type'] == 2)
 									{
-										echo str_replace(', ', '<br>', bugs_formatTime($theIssue->getPosted(), 12));
+										echo str_replace(', ', '<br>', tbg__formatTime($theIssue->getPosted(), 12));
 									}
 									elseif ($aLayoutField['field_type'] == 3)
 									{
-										echo bugs_formatTime($theIssue->getPosted(), 12);
+										echo tbg__formatTime($theIssue->getPosted(), 12);
 									}
 									echo '&nbsp;';
 									echo '</td>';
@@ -1370,7 +1370,7 @@
 				}
 			}
 			echo "</table>\n";
-			if (!($bugs_response->getPage() == 'index' && $this->getSetting('showindexsummarydetails') == 0))
+			if (!($tbg__response->getPage() == 'index' && $this->getSetting('showindexsummarydetails') == 0))
 			{
 				echo '<div style="color: #AAA; font-size: 12px; border-bottom: 1px solid #DDD;">' . TBGContext::getI18n()->__('%count% matches in this group', array('%count%' => $group_cc)) . '</div>';
 			}
@@ -1486,7 +1486,7 @@
 					<table cellpadding=0 cellspacing=0>
 					<?php if (TBGUser::isThisGuest() == false): ?>
 						<tr>
-						<td class="imgtd"><?php echo image_tag('assigned_bugs.png'); ?></td>
+						<td class="imgtd"><?php echo image_tag('assigned_tbg_.png'); ?></td>
 						<td><a href="<?php print TBGContext::getTBGPath(); ?>modules/search/search.php?custom_search=true&amp;clear_filters=true&amp;perform_search=true&amp;groupby=state&amp;add_filter=5&amp;filter_cc=0&amp;operator=B2DBCriteria::DB_EQUALS&amp;value=<?php print TBGContext::getUser()->getUID(); ?>"><?php echo TBGContext::getI18n()->__('View issues filed by you'); ?></a></td>
 						</tr>
 					<?php endif; ?>
@@ -1507,7 +1507,7 @@
 			{
 				?>
 				<tr>
-				<td class="imgtd"><?php echo image_tag('assigned_bugs.png'); ?></td>
+				<td class="imgtd"><?php echo image_tag('assigned_tbg_.png'); ?></td>
 				<td><a target="_blank" href="<?php echo TBGContext::getTBGPath(); ?>modules/search/search.php?custom_search=true&amp;clear_filters=true&amp;perform_search=true&amp;groupby=state&amp;add_filter=5&amp;filter_cc=0&amp;operator=B2DBCriteria::DB_EQUALS&amp;value=<?php echo TBGContext::getUser()->getUID(); ?>"><?php echo TBGContext::getI18n()->__('View all issues filed by you'); ?></a></td>
 				</tr>
 				<?php

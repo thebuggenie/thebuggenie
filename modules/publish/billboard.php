@@ -112,7 +112,7 @@
 			<b><?php echo __('Title:'); ?></b><br>
 			<input type="text" name="post_text_title" value="" style="width: 100%;">
 			<b><?php echo __('Content:'); ?></b><br>
-			<?php echo bugs_newTextArea('post_text_content', '100px', '250px'); ?>
+			<?php echo tbg__newTextArea('post_text_content', '100px', '250px'); ?>
 			<b><?php echo __('Select billboard:'); ?></b><br>
 			<select name="post_text_billboard" id="post_text_billboard" style="width: 100%;">
 				<?php 

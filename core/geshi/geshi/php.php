@@ -619,7 +619,7 @@ $language_data = array(
             'openssl_x509_export_to_file','openssl_x509_free',
             'openssl_x509_parse','openssl_x509_read','ord',
             'output_add_rewrite_var','output_reset_rewrite_vars','overload',
-            'outputdebugstring','pack','parse_ini_file','parse_str','parse_url',
+            'outputdetbg_tring','pack','parse_ini_file','parse_str','parse_url',
             'parsekit_compile_file','parsekit_compile_string',
             'parsekit_func_arginfo','parsekit_opcode_flags',
             'parsekit_opcode_name','passthru','pathinfo','pclose',

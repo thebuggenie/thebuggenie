@@ -181,7 +181,7 @@
 						?></td>
 						<td style="border-bottom: 1px solid #DDD; text-align: center; padding: 3px; width: 80px;"><?php echo ($article->isPublished()) ? image_tag('action_ok.png') : '&nbsp;'; ?></td>
 						<td style="border-bottom: 1px solid #DDD; text-align: center; padding: 3px; width: 80px;"><?php echo ($article->isNews()) ? image_tag('action_ok.png') : '&nbsp;'; ?></td>
-						<td style="border-bottom: 1px solid #DDD; padding: 3px; width: 110px;"><?php echo bugs_formatTime($article->getPostedDate(), 3); ?></td>
+						<td style="border-bottom: 1px solid #DDD; padding: 3px; width: 110px;"><?php echo tbg__formatTime($article->getPostedDate(), 3); ?></td>
 					</tr>
 					</table>
 					</li>
@@ -207,8 +207,8 @@
 					?>
 					<div style="width: auto; border: 1px solid #DDD; padding: 5px;">
 					<b style="font-size: 14px;"><?php echo $f_article->getTitle(); ?></b><br>
-					<div style="color: #AAA;"><b><?php print bugs_formatTime($f_article->getPostedDate(), 3); ?></b> by <b><?php echo $f_article->getAuthor(); ?></b></div>
-					<div style="padding-top: 5px; font-size: 11.5px; padding-bottom: 5px; font-weight: bold;"><?php echo bugs_BBDecode($f_article->getIntro()); ?></div>
+					<div style="color: #AAA;"><b><?php print tbg__formatTime($f_article->getPostedDate(), 3); ?></b> by <b><?php echo $f_article->getAuthor(); ?></b></div>
+					<div style="padding-top: 5px; font-size: 11.5px; padding-bottom: 5px; font-weight: bold;"><?php echo tbg__BBDecode($f_article->getIntro()); ?></div>
 					<div style="text-align: right;"><a href="articles.php?article_id=<?php echo $f_article->getID(); ?>"><?php echo __('Read more'); ?></a></div>
 					</div>
 					<?php
@@ -236,8 +236,8 @@
 								?>
 								<div style="width: auto; padding: 5px;">
 								<b style="font-size: 13px;"><?php echo $article->getTitle(); ?></b><br>
-								<div style="color: #AAA;"><?php print bugs_formatTime($article->getPostedDate(), 3); ?> by <?php echo $article->getAuthor(); ?></div>
-								<div style="padding-top: 5px; font-size: 11px; padding-bottom: 5px;"><?php echo bugs_BBDecode($article->getIntro()); ?></div>
+								<div style="color: #AAA;"><?php print tbg__formatTime($article->getPostedDate(), 3); ?> by <?php echo $article->getAuthor(); ?></div>
+								<div style="padding-top: 5px; font-size: 11px; padding-bottom: 5px;"><?php echo tbg__BBDecode($article->getIntro()); ?></div>
 								<div style="text-align: right;"><a href="articles.php?article_id=<?php echo $article->getID(); ?>"><?php echo __('Read more'); ?></a></div>
 								</div>
 								<?php
@@ -267,7 +267,7 @@
 								<div style="width: auto; padding: 5px;">
 								<?php echo image_tag('publish/' . $article->getIcon() . '.png', ' style="float: left; margin-right: 5px;"') ?>
 								<b style="font-size: 13px;"><?php echo $article->getTitle(); ?></b><br>
-								<div style="color: #AAA;"><?php print bugs_formatTime($article->getPostedDate(), 3); ?> by <?php echo $article->getAuthor(); ?></div>
+								<div style="color: #AAA;"><?php print tbg__formatTime($article->getPostedDate(), 3); ?> by <?php echo $article->getAuthor(); ?></div>
 								<div style="text-align: right;"><a href="articles.php?article_id=<?php echo $article->getID(); ?>"><?php echo __('Read more'); ?></a></div>
 								</div>
 								<?php

@@ -14,7 +14,7 @@
 	</div>
 	<div class="installation_box">
 		<h2>Thank you for installing The Bug Genie!</h2>
-		The Bug Genie builds upon the open source <b>B2 framework</b>, and a PHP database layer called <b>B2DB</b>. If you find any bugs or issues, please use our <a href="http://b2.thebuggenie.com" target="_new">issue tracker</a> or send an email to <a href="mailto:support@thebuggenie.com">support@thebuggenie.com</a>.<br>
+		The Bug Genie builds upon the open source <b>B2 framework</b>, and a PHP database layer called <b>B2DB</b>. If you find any tbg_ or issues, please use our <a href="http://b2.thebuggenie.com" target="_new">issue tracker</a> or send an email to <a href="mailto:support@thebuggenie.com">support@thebuggenie.com</a>.<br>
 		<br>
 		<h3>Help and support</h3>
 		Online documentation is available from <a href="http://www.thebuggenie.com/support.php" target="_new">www.thebuggenie.com</a>. If you need more help, you can use the <a href="http://www.thebuggenie.com/forum" target="_new">forums</a> where there are a lot of helpful people around.<br>

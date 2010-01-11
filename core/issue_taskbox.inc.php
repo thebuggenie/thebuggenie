@@ -27,7 +27,7 @@ if ($theIssue->canEditTexts())
 	<div style="border-bottom: 1px solid #DDD; padding: 2px;"><b><?php echo __('Edit task'); ?></b></div>
 	<div style="padding: 3px;"><?php echo __('Enter a new title and a new description, then press "Update" to update the task.'); ?></div>
 	<input type="text" name="task_new_title" value="<?php echo $theTask->getTitle(); ?>" style="width: 100%;"><br>
-	<?php echo bugs_newTextArea('task_new_content', '80px', '100%', $theTask->getContent()) ?>
+	<?php echo tbg__newTextArea('task_new_content', '80px', '100%', $theTask->getContent()) ?>
 	<div style="padding: 3px; padding-right: 0px; text-align: right;"><button style="width: 70px;" onclick="updateTask(<?php echo $theTask->getID(); ?>);"><?php echo __('Update'); ?></button></div>
 	</form>
 	<div style="border-bottom: 1px solid #DDD; padding: 2px;"><b><?php echo __('Promote task'); ?></b></div>
@@ -88,28 +88,28 @@ else
 		{
 			if ($theIssue->canEditUsers())
 			{
-				$thetr = bugs_userDropdown($theTask->getAssignee()->getID(), 1);
+				$thetr = tbg__userDropdown($theTask->getAssignee()->getID(), 1);
 				echo $thetr[0];
 				?><td style="width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.Appear('task_<?php echo $theTask->getID(); ?>_edit_assignee', { duration: 0.5 });"><?php echo image_tag('icon_switchassignee.png'); ?></a></td></tr><?php
 				echo $thetr[1];
 			}
 			else
 			{
-				echo bugs_userDropdown($theTask->getAssignee()->getID());
+				echo tbg__userDropdown($theTask->getAssignee()->getID());
 			}
 		}
 		else
 		{
 			if ($theIssue->canEditUsers())
 			{
-				$thetr = bugs_teamDropdown($theTask->getAssignee()->getID(), 1);
+				$thetr = tbg__teamDropdown($theTask->getAssignee()->getID(), 1);
 				echo $thetr[0];
 				?><td style="width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.Appear('task_<?php echo $theTask->getID(); ?>_edit_assignee', { duration: 0.5 });"><?php echo image_tag('icon_switchassignee.png'); ?></a></td></tr><?php
 				echo $thetr[1];
 			}
 			else
 			{
-				echo bugs_teamDropdown($theTask->getAssignee()->getID());
+				echo tbg__teamDropdown($theTask->getAssignee()->getID());
 			}
 		}
 		?>
@@ -128,7 +128,7 @@ else
 	}
 	?>
 	<span id="task_<?php echo $theTask->getID(); ?>_edit_assignee" style="display: none;">
-	<?php bugs_AJAXuserteamselector(__('Assign to a user'), 
+	<?php tbg__AJAXuserteamselector(__('Assign to a user'), 
 									__('Assign to a team'),
 									'include/viewissue_actions.inc.php?issue_no=' . $theIssue->getFormattedIssueNo(true) . '&t_id=' . $theTask->getID() . '&task_setassignee=true&assigned_type=1', 
 									'include/viewissue_actions.inc.php?issue_no=' . $theIssue->getFormattedIssueNo(true) . '&t_id=' . $theTask->getID() . '&task_setassignee=true&assigned_type=2',
@@ -140,7 +140,7 @@ else
 									); ?>
 	</span>
 </td>
-<td class="issuedetailscontentscenter" style="font-size: 10px; width: 80px;" id="task_<?php echo $theTask->getID(); ?>_lastupdated"><?php echo bugs_formatTime($theTask->getUpdated(), 4); ?></td>
+<td class="issuedetailscontentscenter" style="font-size: 10px; width: 80px;" id="task_<?php echo $theTask->getID(); ?>_lastupdated"><?php echo tbg__formatTime($theTask->getUpdated(), 4); ?></td>
 <td class="issuedetailscontentscenter" style="width: 190px;">
 	<table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
 	<tr id="task_status_inline_<?php echo $theTask->getID(); ?>">
@@ -188,7 +188,7 @@ else
 </tr>
 <tr id="task_<?php echo $theTask->getID(); ?>" style="display: none;">
 <td colspan=6 class="issuedetailscontentsleft" style="border-bottom: 1px solid #DDD;" id="task_<?php echo $theTask->getID(); ?>_description">
-<?php echo bugs_BBDecode($theTask->getContent()); ?>
+<?php echo tbg__BBDecode($theTask->getContent()); ?>
 <div style="font-size: 10px; text-align: left;"><a href="javascript:void(0);" onclick="Element.hide('task_<?php echo $theTask->getID(); ?>');"><?php echo __('Hide description'); ?></a></div>
 </td>
 </tr>

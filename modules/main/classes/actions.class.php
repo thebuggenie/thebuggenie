@@ -254,12 +254,12 @@
 									setcookie("b2_password_preswitch", $pre_pwd, $_SERVER["REQUEST_TIME"] + 432000);
 									setcookie("b2_uname", $newUser->getUname(), $_SERVER["REQUEST_TIME"] + 432000);
 									setcookie("b2_upwd", $newUser->getMD5Password(), $_SERVER["REQUEST_TIME"] + 432000);
-									bugs_moveTo(TBGSettings::get('returnfromlogin'));
+									tbg__moveTo(TBGSettings::get('returnfromlogin'));
 								}
 								else
 								{
 									$_SESSION['login_error'] = $BUGS_user->getLoginError();
-									bugs_moveTo('login.php');
+									tbg__moveTo('login.php');
 								}
 								exit;
 							}
@@ -277,7 +277,7 @@
 					setcookie("b2_upwd", $BUGS_user->getMD5Password(), $_SERVER["REQUEST_TIME"] + 432000);
 					setcookie("b2_username_preswitch", '', $_SERVER["REQUEST_TIME"] - 432000);
 					setcookie("b2_password_preswitch", '', $_SERVER["REQUEST_TIME"] - 432000);
-					bugs_moveTo(TBGSettings::get('returnfromlogin'));
+					tbg__moveTo(TBGSettings::get('returnfromlogin'));
 					exit;
 				}
 			}
@@ -296,7 +296,7 @@
 			{ 
 			   $_SESSION['login_error'] = ''; 
 			}
-			bugs_moveTo("login.php");
+			tbg__moveTo("login.php");
 		*/
 		}
 		
@@ -423,7 +423,7 @@
 
 						/* FIXME send email */
 
-						$user = TBGUser::createNew($username, $realname, $buddyname, TBGContext::getScope()->getID(), false, true, md5(bugs_createpassword()), $email, true);
+						$user = TBGUser::createNew($username, $realname, $buddyname, TBGContext::getScope()->getID(), false, true, md5(tbg__createpassword()), $email, true);
 
 						TBGContext::setMessage('postreg_success', true);
 						$this->forward('login');

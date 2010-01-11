@@ -1,7 +1,7 @@
 <?php
 
-	$bugs_response->setTitle(__('Configure data types'));
-	$bugs_response->addJavascript('config/issuefields.js');
+	$tbg__response->setTitle(__('Configure data types'));
+	$tbg__response->addJavascript('config/issuefields.js');
 
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>

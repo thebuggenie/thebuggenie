@@ -82,7 +82,7 @@
 
 				?>: <?php echo $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(); ?></title>
 			<description><?php echo strip_tags($issue->getDescription()); ?></description>
-			<pubdate><?php echo bugs_formatTime($issue->getLastUpdatedTime(), 21); ?></pubdate>
+			<pubdate><?php echo tbg__formatTime($issue->getLastUpdatedTime(), 21); ?></pubdate>
 			<link><?php echo make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey()), false); ?></link>
 			<guid><?php echo make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey()), false); ?></guid>
 		</item>

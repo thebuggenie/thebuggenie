@@ -220,7 +220,7 @@
         $strings['config_projects'] = 'Produkt(e), Edition(en), Build(s) und Komponenten';
         $strings['permissions'] = 'Zugriffsrechte';
 		$strings['This is the The Bug Genie online help system'] = 'Dies ist das BUGS 2 Online Hilfe-System';
-		$strings['For other support options - or if you need more information - please refer to the support section of the BUGS website: %bugs_help%'] = 'Für weiteren Support oder falls Sie mehr Informationen benötigen, schauen Sie bitte im Support auf der BUGS Website: %bugs_help%';
+		$strings['For other support options - or if you need more information - please refer to the support section of the BUGS website: %tbg__help%'] = 'Für weiteren Support oder falls Sie mehr Informationen benötigen, schauen Sie bitte im Support auf der BUGS Website: %tbg__help%';
 		$strings['Go to the Frontpage'] = 'Gehe zur Hauptseite';
 		$strings['Also remember that you can not upload these filetypes: %list%'] = 'Denken Sie daran, dass Sie die folgenden Dateitypen nicht hochladen können: %list%';
 		$strings['Also remember that the only allowed filetypes are: %list%'] = 'Denken Sie daran, dass Sie nur folgende Dateitypen erlaubt sind: %list%';

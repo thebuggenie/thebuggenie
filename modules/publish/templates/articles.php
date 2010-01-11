@@ -175,7 +175,7 @@
 
 				if ($issaved)
 				{
-					echo bugs_successStrip(__('Changes saved'), __('Your changes has been saved'));
+					echo tbg__successStrip(__('Changes saved'), __('Your changes has been saved'));
 				}
 				
 				?>
@@ -257,10 +257,10 @@
 					<div id="article_div" <?php if ($article->getArticleType() != PublishArticle::ARTICLE_NORMAL) echo 'style="display: none;"' ?>>
 						<div style="padding: 5px; padding-left: 0px; border-bottom: 1px solid #DDD; width: 730px;"><b><?php echo __('Intro text'); ?></b></div>
 						<div style="padding-top: 5px; padding-bottom: 5px; width: 730px;"><?php echo __('The intro text will be used on summary pages, as well as after the article title when in article view.'); ?>&nbsp;<?php echo __('The intro text should be a short description about the article, and should contain at most one paragraph, in some cases two.'); ?></div>
-						<?php echo bugs_newTextArea('intro', '70px', '730px', $article->getIntro()); ?><br>
+						<?php echo tbg__newTextArea('intro', '70px', '730px', $article->getIntro()); ?><br>
 						<div style="padding: 5px; padding-left: 0px; border-bottom: 1px solid #DDD; width: 730px;"><b><?php echo __('Article content'); ?></b></div>
 						<div style="padding-top: 5px; padding-bottom: 5px; width: 730px;"><?php echo __('The article content is the article body - the main content of the article.'); ?></div>
-						<?php echo bugs_newTextArea('content', '400px', '730px', $article->getContent()); ?>
+						<?php echo tbg__newTextArea('content', '400px', '730px', $article->getContent()); ?>
 					</div>
 					<div id="news_div" <?php if ($article->getArticleType() != PublishArticle::ARTICLE_NEWS) echo 'style="display: none;"' ?>>
 						<div style="padding-top: 5px; padding-bottom: 5px;">
@@ -294,15 +294,15 @@
 				?>
 				<div style="width: 730px;">
 				<b style="font-size: 13px;"><?php echo $article->getTitle(); ?></b><br>
-				<div style="color: #AAA;"><?php echo __('Published %at%, by %user%', array('%at%' => bugs_formatTime($article->getPostedDate(), 3), '%user%' => $article->getAuthor())); ?><br>
+				<div style="color: #AAA;"><?php echo __('Published %at%, by %user%', array('%at%' => tbg__formatTime($article->getPostedDate(), 3), '%user%' => $article->getAuthor())); ?><br>
 				<?php echo __('This article has been read %number_of% times', array('%number_of%' => $article->getViews())); ?></div>
 				<?php if ($article->hasContent()): ?>
-					<div style="padding-top: 5px; font-size: 11px; font-weight: bold; padding-bottom: 5px; border-bottom: 1px solid #DDD; margin-bottom: 5px; width: auto;"><?php echo bugs_BBDecode($article->getIntro()); ?></div>
+					<div style="padding-top: 5px; font-size: 11px; font-weight: bold; padding-bottom: 5px; border-bottom: 1px solid #DDD; margin-bottom: 5px; width: auto;"><?php echo tbg__BBDecode($article->getIntro()); ?></div>
 					<div style="display: block; float: left;"><?php echo image_tag('publish/large/' . $article->getIcon() . '.png') ?></div>
-					<div style="text-align: left; padding-top: 5px;"><?php echo bugs_BBDecode($article->getContent()); ?></div>
+					<div style="text-align: left; padding-top: 5px;"><?php echo tbg__BBDecode($article->getContent()); ?></div>
 				<?php else: ?>
 					<div style="display: block; float: left;"><?php echo image_tag('publish/large/' . $article->getIcon() . '.png') ?></div>
-					<div style="padding-top: 5px; font-size: 11px; font-weight: bold; padding-bottom: 5px; border-bottom: 1px solid #DDD; margin-bottom: 5px; width: auto;"><?php echo bugs_BBDecode($article->getIntro()); ?></div>
+					<div style="padding-top: 5px; font-size: 11px; font-weight: bold; padding-bottom: 5px; border-bottom: 1px solid #DDD; margin-bottom: 5px; width: auto;"><?php echo tbg__BBDecode($article->getIntro()); ?></div>
 				<?php endif; ?>
 				</div>
 				<?php

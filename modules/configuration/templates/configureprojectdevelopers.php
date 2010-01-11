@@ -1,6 +1,6 @@
 <?php
 
-	$bugs_response->setTitle(__('Manage projects - %project% - users', array('%project%' => $theProject->getName())));
+	$tbg__response->setTitle(__('Manage projects - %project% - users', array('%project%' => $theProject->getName())));
 	
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>

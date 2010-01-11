@@ -1,13 +1,13 @@
 <?php
 
-	$bugs_response->setTitle(__('Configuration center'));
+	$tbg__response->setTitle(__('Configuration center'));
 	
 ?>
 <table style="table-layout: fixed; width: 990px; margin: 10px 0 0 10px;" cellpadding=0 cellspacing=0>
 <tr>
 <td valign="top">
 <div style="font-size: 15px; font-weight: bold; padding: 5px; border-bottom: 1px solid #DDD;"><?php echo __('The Bug Genie - Configuration center')?></div>
-<p style="padding: 5px;"><?php echo __('Please select a configuration section from the list below. If you are stuck, you can always refer to the %bugs_online_help%.', array('%bugs_online_help%' => bugs_helpBrowserHelper('configure', __('The Bug Genie online help')))); ?></p>
+<p style="padding: 5px;"><?php echo __('Please select a configuration section from the list below. If you are stuck, you can always refer to the %tbg__online_help%.', array('%tbg__online_help%' => tbg__helpBrowserHelper('configure', __('The Bug Genie online help')))); ?></p>
 <div style="margin-left: 5px;">
 	<div style="margin-top: 15px; background-color: #F5F5F5; font-size: 13px; font-weight: bold; padding: 3px; border-bottom: 1px solid #EEE;"><?php echo __('General configuration'); ?></div>
 	<ul class="config_badges">
@@ -158,7 +158,7 @@
 				}
 				else
 				{
-					bugs_msgbox(false, "", __('You do not have access to this page'));
+					tbg__msgbox(false, "", __('You do not have access to this page'));
 				}
 			}
 		}
@@ -183,7 +183,7 @@
 			}
 			else
 			{
-				bugs_msgbox(false, "", __('You do not have access to this module'));
+				tbg__msgbox(false, "", __('You do not have access to this module'));
 			}
 		}
 	}

@@ -87,7 +87,7 @@ if ($issaved)
 	</tr>
 	<tr>
 		<td style="width: 100px; padding: 2px; font-weight: bold; vertical-align: top;"><?php echo __('Description'); ?></td>
-		<td style="width: auto; padding: 2px;"><?php echo bugs_newTextArea('description', '150px', '100%', ($theEvent instanceof BUGScalendarEvent) ? $theEvent->getDescription() : ''); ?></td>
+		<td style="width: auto; padding: 2px;"><?php echo tbg__newTextArea('description', '150px', '100%', ($theEvent instanceof BUGScalendarEvent) ? $theEvent->getDescription() : ''); ?></td>
 	</tr>
 	<tr>
 		<td style="width: 100px; padding: 2px; font-weight: bold; vertical-align: top;"><?php echo __('Event type'); ?></td>
@@ -126,12 +126,12 @@ if ($issaved)
 				if ($theEvent instanceof BUGScalendarEvent)
 				{
 					if (($cc == $start_month && $cc1 == 1) || ($cc == $end_month && $cc1 == 2)) echo ' selected';
-					echo ($cc1 == 1) ? '>' . bugs_formatTime($theEvent->getStartDate(), 15) . '</option>' : '>' . bugs_formatTime($theEvent->getEndDate(), 15) . '</option>'; 
+					echo ($cc1 == 1) ? '>' . tbg__formatTime($theEvent->getStartDate(), 15) . '</option>' : '>' . tbg__formatTime($theEvent->getEndDate(), 15) . '</option>'; 
 				}
 				else
 				{
 					if ($cc == $this_month) echo ' selected';
-					echo '>' . bugs_formatTime(mktime(0, 0, 0, $cc, 1), 15) . '</option>';
+					echo '>' . tbg__formatTime(mktime(0, 0, 0, $cc, 1), 15) . '</option>';
 				}
 			}
 			

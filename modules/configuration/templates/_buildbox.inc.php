@@ -7,7 +7,7 @@
 		<div style="padding-left: 2px;">
 			<b><?php print $build->getName(); ?></b><br>
 		<?php if ($build->isReleased()): ?>
-			<?php echo __('Released %release_date%', array('%release_date%' => bugs_formatTime($build->getReleaseDate(), 5))); ?>
+			<?php echo __('Released %release_date%', array('%release_date%' => tbg__formatTime($build->getReleaseDate(), 5))); ?>
 		<?php else: ?>
 			<span class="faded_medium"><?php echo __('Not released yet'); ?></span>
 		<?php endif; ?>
@@ -54,7 +54,7 @@
 				<td style="text-align: left;">
 					<select style="width: 85px;" name="release_month" id="release_month_<?php print $b_id; ?>"<?php if (!$build->isReleased()): ?> disabled<?php endif; ?>>
 					<?php for($cc = 1;$cc <= 12;$cc++): ?>
-						<option value=<?php print $cc; ?><?php echo ($build->getReleaseDateMonth() == $cc) ? " selected" : "" ?>><?php echo bugs_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
+						<option value=<?php print $cc; ?><?php echo ($build->getReleaseDateMonth() == $cc) ? " selected" : "" ?>><?php echo tbg__formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
 					<?php endfor; ?>
 					</select>
 					<select style="width: 40px;" name="release_day" id="release_day_<?php print $b_id; ?>"<?php if (!$build->isReleased()): ?> disabled<?php endif; ?>>

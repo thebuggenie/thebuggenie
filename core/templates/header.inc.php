@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
-		<title><?php echo ($bugs_response->hasTitle()) ? strip_tags(TBGSettings::get('b2_name') . ' ~ ' . $bugs_response->getTitle()) : strip_tags(TBGSettings::get('b2_name')); ?></title>
+		<title><?php echo ($tbg__response->hasTitle()) ? strip_tags(TBGSettings::get('b2_name') . ' ~ ' . $tbg__response->getTitle()) : strip_tags(TBGSettings::get('b2_name')); ?></title>
 		<?php
 			
 			TBGContext::trigger('core', 'header_begins');
@@ -11,10 +11,10 @@
 		<meta name="description" content="The bug genie, friendly issue tracking">
 		<meta name="keywords" content="thebuggenie friendly issue tracking">
 		<meta name="author" content="thebuggenie.com">
-		<meta http-equiv="Content-Type" content="<?php echo $bugs_response->getContentType(); ?> charset=<?php echo TBGContext::getI18n()->getCharset(); ?>">
+		<meta http-equiv="Content-Type" content="<?php echo $tbg__response->getContentType(); ?> charset=<?php echo TBGContext::getI18n()->getCharset(); ?>">
 		<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
 		<link rel="stylesheet" type="text/css" href="<?php print TBGContext::getTBGPath(); ?>css/<?php print TBGSettings::getThemeName(); ?>.css">
-		<?php foreach ($bugs_response->getFeeds() as $feed_url => $feed_title): ?>
+		<?php foreach ($tbg__response->getFeeds() as $feed_url => $feed_title): ?>
 			<link rel="alternate" type="application/rss+xml" title="<?php echo $feed_title; ?>" href="<?php echo $feed_url; ?>">
 		<?php endforeach; ?>
 		<?php if (count(TBGContext::getModules())): ?>
@@ -31,7 +31,7 @@
 		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/scriptaculous.js"></script>
 		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/b2.js"></script>
-		<?php foreach ($bugs_response->getJavascripts() as $javascript): ?>
+		<?php foreach ($tbg__response->getJavascripts() as $javascript): ?>
 			<script type="text/javascript" src="<?php print TBGContext::getTBGPath() . 'js/' . $javascript; ?>"></script>
 		<?php endforeach;?>
 		<?php 
@@ -55,8 +55,8 @@
 								<div class="rounded_box blue" id="header_userinfo">
 									<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 									<div class="xboxcontent" style="vertical-align: middle; padding: 0 5px 0 5px;">
-										<?php echo image_tag($bugs_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;'), true); ?>
-										<?php if ($bugs_user->isGuest()): ?>
+										<?php echo image_tag($tbg__user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;'), true); ?>
+										<?php if ($tbg__user->isGuest()): ?>
 											<div class="header_username">
 												<strong><?php echo __('You are currently %not_logged_in%', array('%not_logged_in%' => '')); ?></strong><br>
 												<?php echo __('Not logged in'); ?>

@@ -19,7 +19,7 @@
  *   -  Added support for multiple object splitters
  * 2004/08/05 (1.0.2)
  *   -  Added URL support
- *   -  Added keyword "this", as bugs in GeSHi class ironed out
+ *   -  Added keyword "this", as tbg_ in GeSHi class ironed out
  * 2004/08/05 (1.0.1)
  *   -  Added support for symbols
  *   -  Added extra missed keywords

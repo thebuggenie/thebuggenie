@@ -21,7 +21,7 @@
  * Release 1.0.7.20 (2006/01/26)
  * - First Release
  *
- * Current bugs & todo:
+ * Current tbg_ & todo:
  * ----------
  * - not sure how to get sendkeys to work " {!}, {SPACE} etc... "
  * - just copyied the regexp for variable from php so this HAVE to be checked and fixed to a better one ;)

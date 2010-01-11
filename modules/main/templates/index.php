@@ -1,9 +1,9 @@
 <?php 
 
-	$bugs_response->setTitle('Frontpage');
+	$tbg__response->setTitle('Frontpage');
 
 ?>
-<?php if ($bugs_user->getID() == 1 && count(TBGProject::getAll()) == 1): ?>
+<?php if ($tbg__user->getID() == 1 && count(TBGProject::getAll()) == 1): ?>
 	<?php include_component('main/hideableInfoBox', array('key' => 'index_single_project_mode', 'title' => __('Only using The Bug Genie to track issues for one project?'), 'content' => __("It looks likes you're only using The Bug Genie to track issues for one project. If you don't want to use this homepage, you can set The Bug Genie to <i>single project tracker mode</i>, which will automatically forward the frontpage to the project overview page.<br><br><i>Single project tracker mode</i> can be enabled from %configure_settings%.", array('%configure_settings%' => link_tag(make_url('configure_settings'), '<b>' . __('Configure &ndash;&gt; Settings') . '</b>'))))); ?>
 <?php endif; ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -53,7 +53,7 @@
 			<?php if (TBGSettings::isProjectOverviewEnabled()): ?>
 				<div class="project_overview">
 					<div class="header">
-						<?php if ($bugs_user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_PROJECTS)): ?>
+						<?php if ($tbg__user->canAccessConfigurationPage(TBGSettings::CONFIGURATION_SECTION_PROJECTS)): ?>
 							<?php echo link_tag(make_url('configure_projects'), image_tag('cfg_icon_projectheader.png', array('style' => 'float: left; margin-right: 5px;'))); ?>
 						<?php endif; ?>
 						<?php echo __('Projects'); ?>
@@ -66,7 +66,7 @@
 						</ul>
 					<?php else: ?>
 						<p class="content"><?php echo __('There are no projects'); ?>.
-							<?php if ($bugs_user->hasPermission('b2viewconfig', 10) || $bugs_user->hasPermission('b2saveconfig', 10)): ?>
+							<?php if ($tbg__user->hasPermission('b2viewconfig', 10) || $tbg__user->hasPermission('b2saveconfig', 10)): ?>
 								<br>
 								<b><?php echo __('Click the icon in the header above to go to project management'); ?></b>
 							<?php else: ?>

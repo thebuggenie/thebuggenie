@@ -5,7 +5,7 @@
     header ("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
     header ("Pragma: no-cache"); // HTTP/1.0
 
-    $step = $bugs_request->getParameter('step', 0);
+    $step = $tbg__request->getParameter('step', 0);
     
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

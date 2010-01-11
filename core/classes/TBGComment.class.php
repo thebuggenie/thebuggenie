@@ -188,11 +188,11 @@
 			$area_id = ($c_id != null) ? "new_comment_comment_{$module}_{$target_type}_{$target_id}" : 'new_comment_comment';
 			if ($c_id != null)
 			{
-				$retval .= bugs_newTextArea($area_id, '100px', '100%', $theComment->getContent());
+				$retval .= tbg__newTextArea($area_id, '100px', '100%', $theComment->getContent());
 			}
 			else
 			{
-				$retval .= bugs_newTextArea($area_id, '100px', '100%');
+				$retval .= tbg__newTextArea($area_id, '100px', '100%');
 			}
 			$retval .= '</td>';
 			$retval .= '</tr>';

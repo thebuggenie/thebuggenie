@@ -521,7 +521,7 @@
 		{
 			if ($this->_enabled == false || $this->hasAccess() == false)
 			{
-				bugs_showError('B2 Engine error - Not permitted', "You do not have access to this module. <br>You may have tried to access a link that is no longer in use.<br><br>If you think this is an error, please contact the administrator of this BUGS 2 instance.", true);
+				tbg__showError('B2 Engine error - Not permitted', "You do not have access to this module. <br>You may have tried to access a link that is no longer in use.<br><br>If you think this is an error, please contact the administrator of this BUGS 2 instance.", true);
 				exit();				
 			}
 		}
@@ -541,7 +541,7 @@
 	
 			$crit = new B2DBCriteria();
 			$crit->addWhere(B2tModulePermissions::MODULE_NAME, $module);
-			//$sql = "select b2mp.allowed from bugs2_modulepermissions b2mp where b2mp.module_name = '$module'";
+			//$sql = "select b2mp.allowed from tbg_2_modulepermissions b2mp where b2mp.module_name = '$module'";
 			switch (true)
 			{
 				case ($uid != 0):

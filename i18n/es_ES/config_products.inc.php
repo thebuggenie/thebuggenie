@@ -4,7 +4,7 @@
 
 	$strings['Configure projects'] = 'Configuración de projectos';
 	$strings['This page gives you full control over your projects - each projects specific settings, as well as its editions and builds.'] = 'Esta página le da el control completo sobre sus projectos, ajustes específicos de cada projecto, como as&iacute también de sus ediciones y compilaciones.';
-	$strings['If you are unsure how to set up projects, editions, builds and components, have a look at the %bugs_online_help%.'] = 'Si no está seguro de como configurar projectos, ediciones, compilaciones y componentes, eche un vistazo a %bugs_online_help%.';
+	$strings['If you are unsure how to set up projects, editions, builds and components, have a look at the %tbg__online_help%.'] = 'Si no está seguro de como configurar projectos, ediciones, compilaciones y componentes, eche un vistazo a %tbg__online_help%.';
 	$strings['Please select a project from the list to view and edit its details.'] = 'Por favor seleccione un projecto de la lista para ver y editar sus detalles.';
 	$strings['View or edit details about the selected project below.'] = 'Ver o editar detalles del projecto seleccionado.';
 	$strings['Click the "Save"-button below to update settings and details.'] = 'Haga clic en el botón "Guardar" para actualizar los ajustes y los detalles.';

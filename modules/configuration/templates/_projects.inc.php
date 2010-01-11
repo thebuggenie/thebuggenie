@@ -15,7 +15,7 @@
 					<?php else: ?>
 						<?php $help_topic = 'config_projects'; ?>
 					<?php endif; ?>
-					<?php echo __('If you are unsure how to set up projects, editions, builds and components, have a look at the %bugs_online_help%.', array('%bugs_online_help%' => bugs_helpBrowserHelper($help_topic, __('The Bug Genie online help')))); ?>
+					<?php echo __('If you are unsure how to set up projects, editions, builds and components, have a look at the %tbg__online_help%.', array('%tbg__online_help%' => tbg__helpBrowserHelper($help_topic, __('The Bug Genie online help')))); ?>
 					<?php
 
 						if (!($theProject instanceof TBGProject) && TBGContext::getUser()->hasPermission("b2projectaccess", TBGContext::getRequest()->getParameter('p_id'), "core") == true)

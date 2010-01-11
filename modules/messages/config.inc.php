@@ -2,7 +2,7 @@
 
 	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
-		bugs_msgbox(false, "", __('You do not have access to this section'));
+		tbg__msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
@@ -14,7 +14,7 @@
 			}
 		}
 		
-		$default_viewmode = TBGContext::getModule('messages')->getSetting('viewmode'); // bugs_module_loadSetting('messages', 'viewmode');
+		$default_viewmode = TBGContext::getModule('messages')->getSetting('viewmode'); // tbg__module_loadSetting('messages', 'viewmode');
 
 		?>
 		<table style="width: 100%" cellpadding=0 cellspacing=0>

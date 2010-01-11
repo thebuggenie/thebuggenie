@@ -1,7 +1,7 @@
 <?php 
 
-	$bugs_response->setTitle('Report an issue');
-	$bugs_response->addJavascript('reportissue.js');
+	$tbg__response->setTitle('Report an issue');
+	$tbg__response->addJavascript('reportissue.js');
 	
 ?>
 <div style="text-align: center; margin-bottom: 10px;">

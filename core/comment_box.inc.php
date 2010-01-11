@@ -19,11 +19,11 @@
 		<div class="commentheader"><?php echo $theTitle; ?><br>
 		<?php echo ($aComment->isSystemComment()) ? __('Posted automatically on behalf of %username%', array('%username%' => $commentusername)) : __('Posted by %username%', array('%username%' => $commentusername));
 
-		echo bugs_formatTime($aComment->getUpdated(), 12);
+		echo tbg__formatTime($aComment->getUpdated(), 12);
 		
 		if ($aComment->getUpdated() != $aComment->getPosted())
 		{
-			echo ', ' . __('edited by %username%', array('%username%' => '<b>' . $aComment->getUpdatedBy()->getBuddyname() . '</b>')); ?>&nbsp;(<?php echo $aComment->getUpdatedBy()->getUname(); ?>), &nbsp;<?php echo bugs_formatTime($aComment->getUpdated(), 12);
+			echo ', ' . __('edited by %username%', array('%username%' => '<b>' . $aComment->getUpdatedBy()->getBuddyname() . '</b>')); ?>&nbsp;(<?php echo $aComment->getUpdatedBy()->getUname(); ?>), &nbsp;<?php echo tbg__formatTime($aComment->getUpdated(), 12);
 		}
 	
 		?></div>
@@ -49,11 +49,11 @@
 		<div class="commentheader"><?php echo $theTitle; ?><br>
 		<?php echo ($aComment->isSystemComment()) ? __('Posted automatically on behalf of %username%', array('%username%' => $commentusername)) : __('Posted by %username%', array('%username%' => $commentusername));
 		
-		echo bugs_formatTime($aComment->getUpdated(), 12);
+		echo tbg__formatTime($aComment->getUpdated(), 12);
 		
 		if ($aComment->getUpdated() != $aComment->getPosted())
 		{
-			echo ', ' . __('edited by %username%', array('%username%' => '<b>' . $aComment->getUpdatedBy()->getBuddyname() . '</b>')); ?>&nbsp;(<?php echo $aComment->getUpdatedBy()->getUname(); ?>), &nbsp;<?php echo bugs_formatTime($aComment->getUpdated(), 12);
+			echo ', ' . __('edited by %username%', array('%username%' => '<b>' . $aComment->getUpdatedBy()->getBuddyname() . '</b>')); ?>&nbsp;(<?php echo $aComment->getUpdatedBy()->getUname(); ?>), &nbsp;<?php echo tbg__formatTime($aComment->getUpdated(), 12);
 		}
 			
 		?></div>
@@ -84,7 +84,7 @@
 	if ($notFiltered)
 	{
 		?>
-		<div class="comment" id="commentbody_<?php echo $aComment->getID(); ?>"><?php echo bugs_BBDecode($aComment->getContent(), true); ?></div>
+		<div class="comment" id="commentbody_<?php echo $aComment->getID(); ?>"><?php echo tbg__BBDecode($aComment->getContent(), true); ?></div>
 		<div id="deletedcomment_<?php echo $aComment->getID(); ?>" style="display: none; text-align: left; background-color: #F1F1F1; padding: 3px; border: 1px solid #E5E5E5; border-top: 1px solid #FFF;"><b><?php echo __('The comment was deleted'); ?></b>&nbsp;&nbsp;[<a href="javascript:void(0);" onclick="Effect.Fade('deletedcomment_<?php echo $aComment->getID(); ?>');"><?php echo __('OK'); ?></a>]</div>
 		<?php
 	}						

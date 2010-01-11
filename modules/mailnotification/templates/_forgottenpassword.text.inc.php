@@ -1,5 +1,5 @@
 Hi, %user_buddyname%!
-A request was made to reset your password for your user account at %bugs_url%.
+A request was made to reset your password for your user account at %tbg__url%.
 
 To change your password, click the following link:
 %link_to_reset_password%

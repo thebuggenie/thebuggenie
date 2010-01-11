@@ -2,7 +2,7 @@
 
 	if (($access_level != "full" && $access_level != "read") || TBGContext::getRequest()->getParameter('access_level'))
 	{
-		bugs_msgbox(false, "", __('You do not have access to this section'));
+		tbg__msgbox(false, "", __('You do not have access to this section'));
 	}
 	else
 	{
@@ -74,7 +74,7 @@
 							<div style="font-weight: bold; font-size: 14px;"><?php echo $row['pak_desc']; ?></div>
 							<input type="checkbox" name="projects[<?php echo $row['id']; ?>][import_project]" value="1" checked><label for="projects[<?php echo $row['id']; ?>][import_project]"><?php echo __('Import this project'); ?></label><br>
 							<input type="checkbox" name="projects[<?php echo $row['id']; ?>][import_editions]" value="1" checked><label for="projects[<?php echo $row['id']; ?>][import_editions]"><?php echo __('Import editions and builds from this project'); ?></label><br>
-							<input type="checkbox" name="projects[<?php echo $row['id']; ?>][import_bugs]" value="1" checked><label for="projects[<?php echo $row['id']; ?>][import_bugs]"><?php echo __('Import bug reports from this project'); ?></label><br>
+							<input type="checkbox" name="projects[<?php echo $row['id']; ?>][import_tbg_]" value="1" checked><label for="projects[<?php echo $row['id']; ?>][import_tbg_]"><?php echo __('Import bug reports from this project'); ?></label><br>
 							<input type="checkbox" name="projects[<?php echo $row['id']; ?>][import_comments]" value="1" checked><label for="projects[<?php echo $row['id']; ?>][import_comments]"><?php echo __('Import comments from bug reports'); ?></label><br>
 							<br>
 							<?php
@@ -279,13 +279,13 @@
 												{
 													$project['editions'][$e_id]['builds'][$b_id]['issueaffects'][$row['bug_id']][] = $row;
 												}
-												if (isset($import_data['import_bugs']))
+												if (isset($import_data['import_tbg_']))
 												{
-													$sql = 'select * from bugstable where pak = ' . $p_id;
+													$sql = 'select * from tbg_table where pak = ' . $p_id;
 													$res = B2DB::simpleQuery($sql);
 													if (isset($import_data['import_comments']))
 													{
-														$sql2 = 'select commentstable.* from commentstable join bugstable on bugstable.id = commentstable.bug_id where bugstable.pak = ' . $p_id;
+														$sql2 = 'select commentstable.* from commentstable join tbg_table on tbg_table.id = commentstable.bug_id where tbg_table.pak = ' . $p_id;
 														$res2 = B2DB::simpleQuery($sql2);
 													}
 													echo __('Importing project issues') . ' ... ';
@@ -438,7 +438,7 @@
 							<td colspan=2 class="cdesc">
 							<?php echo __('To start importing data from your BUGS 1.9 installation, please enter the connection details below.'); ?>
 							<br>
-							<?php echo __('After pressing "Next", you will be presented with several options related to the import. More information is available in the %bugs_online_help%', array('%bugs_online_help%' => bugs_helpBrowserHelper('generalsettings', __('The Bug Genie online help')))); ?>.
+							<?php echo __('After pressing "Next", you will be presented with several options related to the import. More information is available in the %tbg__online_help%', array('%tbg__online_help%' => tbg__helpBrowserHelper('generalsettings', __('The Bug Genie online help')))); ?>.
 							</td>
 						</tr>
 					</table>
@@ -465,7 +465,7 @@
 				</tr>
 				<tr>
 					<td style="padding: 5px;"><b><?php echo __('Database name'); ?></b></td>
-					<td><input type="text" name="b1_database" value="<?php echo (TBGContext::getRequest()->getParameter('b1_database')) ? TBGContext::getRequest()->getParameter('b1_database') : 'bugs_db'; ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
+					<td><input type="text" name="b1_database" value="<?php echo (TBGContext::getRequest()->getParameter('b1_database')) ? TBGContext::getRequest()->getParameter('b1_database') : 'tbg__db'; ?>" style="width: 100%;"<?php echo ($access_level != 'full') ? ' disabled' : ''; ?>></td>
 				</tr>
 			<?php 
 			

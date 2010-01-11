@@ -56,7 +56,7 @@
 	$strings['From here you can manage all data types available in BUGS, which relates to issues.'] = 'Desde aquí puede gestionar todos los tipos de datos disponibles en BUGS relativos a los problemas.';
 	$strings['Several of these data types have some kind of setting associated with them, which you can set in the corresponding subsection.'] = 'Varios de estos tipos de datos tienen configuraciones asociadas, las que se pueden establecer en su correspondiente subsección.';
 	$strings['From here you can manage common The Bug Genie settings.'] = 'Desde aquí puede gestionar los ajustes generales BUGS.';
-	$strings['To find out more about what each setting does, please refer to the %bugs_online_help%'] = 'Para encontrar más acerca de cada opción, por favor ingrese a %bugs_online_help%';
+	$strings['To find out more about what each setting does, please refer to the %tbg__online_help%'] = 'Para encontrar más acerca de cada opción, por favor ingrese a %tbg__online_help%';
 	$strings['Could not find this username. Please type the username of an existing, enabled user.'] = 'No se pudo encontrar este nombre de usuario. Por favor tipée un nombre de usuario existente y habilitado.';
 	$strings['Interface language'] = 'Idioma de Interfaz';
 	$strings['The default language in BUGS 2'] = 'Idioma predeterminado en BUGS 2';
@@ -154,7 +154,7 @@
 	$strings['Edit settings'] = 'Editar opciones';
 	$strings['Configure available scopes'] = 'Configuración de ámbitos disponibles';
 	$strings['Scopes are individual BUGS 2 environments, fully functional, but invisible to eachother.'] = 'Los ámbitos son entornos individuales en BUGS 2, totalmente operativos, pero invisibles entre sí. ';
-	$strings['You can learn more about scopes in the %bugs_online_help%.'] = 'Puede aprender más de los ámbitos en %bugs_online_help%.';
+	$strings['You can learn more about scopes in the %tbg__online_help%.'] = 'Puede aprender más de los ámbitos en %tbg__online_help%.';
 	$strings['Click on a scope to view its details and/or change its settings.'] = 'Clic en un ámbito para ver sus detalles y/o cambiar sus opciones.';
 	$strings['Click here to create a new scope'] = 'Clic aquí para crear un nuevo ámbito';
 	$strings['DEFAULT SCOPE'] = 'AMBITO PREDETERMINADO';
@@ -200,12 +200,12 @@
 	$strings['ex: http://localhost'] = 'ej: http://localhost';
 	$strings['BUGS 2 subdirectory'] = 'Subcarpeta BUGS 2';
 	$strings['The path from the server url root to The Bug Genie, including the trailing slash.'] = 'La ruta desde la url raíz a BUGS 2, incluyendo la barra final.';
-	$strings['/bugs2/'] = '/bugs2/';
+	$strings['/tbg_2/'] = '/tbg_2/';
 	$strings['The full local path to The Bug Genie, including the trailing slash.'] = 'La ruta local completa a BUGS, incluyendo la barra final.';
 	$strings['always use forward slashes, even if installed on Windows-systems'] = 'siempre utilice la barra "/", inclusive en sistemas Windows';
 	$strings['Configure teams &amp; groups'] = 'Configuración de equipos y grupos';
 	$strings['From here you can manage available teams and groups, as well as their permissions.'] = 'Desde aquí puede administrar los equipos y grupos y sus permisos.';
-	$strings['Please read more about applying permissions in the %bugs_online_help% before using this section.'] = 'Por favor lea más acerca de la aplicación de permisos en %bugs_online_help% antes de utilizar esta sección.';
+	$strings['Please read more about applying permissions in the %tbg__online_help% before using this section.'] = 'Por favor lea más acerca de la aplicación de permisos en %tbg__online_help% antes de utilizar esta sección.';
 	$strings['You can not remove the "%group_name%" group'] = 'No puede quitar el grupo "%group_name%" ';
 	$strings['You are a member of this group, and can therefore not remove it. You must change your user settings before you can remove this group.'] = 'Usted es un miembro de este grupo y por lo tanto no puede quitarlo. Debe cambiar sus ajustes de usuario antes de poder quitar este grupo.';
 	$strings['This group is the default user group and can not be removed.'] = 'este grupo es el grupo de usuarios predeterminado y no puede ser quitado.';
@@ -229,7 +229,7 @@
 	$strings['From here you can manage users, as well as their individual permissions.'] = 'Desde aquí puede administrar los usuarios como así también sus permisos individuales.';
 	$strings['To add a user, click the "Add user" link'] = 'Para agregar un usuario, haga clic en "Agregar usuario"';
 	$strings['User-related settings are available from the %general_settings% page.'] = 'Los ajustes relativos al usuario están disponibles en %general_settings%.';
-	$strings['To learn more about this configuration page, please refer to the %bugs_online_help%.'] = 'Para aprender más acerca de esta configuración, por favor ingrese a %bugs_online_help%.';
+	$strings['To learn more about this configuration page, please refer to the %tbg__online_help%.'] = 'Para aprender más acerca de esta configuración, por favor ingrese a %tbg__online_help%.';
 	$strings['Add user'] = 'Agregar usuario';
 	$strings['Username:'] = 'Usuario:';
 	$strings['In group(s):'] = 'En grupo(s):';
@@ -291,7 +291,7 @@
 	$strings['Charset'] = 'Juego de caracteres';
 	$strings['Configure file upload settings'] = 'Configura las opciones para subir archivos';
 	$strings['From here you can manage file uploads.'] = 'Desde aquí se puede gestionar las subidas de archivos.';
-	$strings['To find out more about what each setting does, please refer to the %bugs_online_help%'] = 'Para encontrar más acerca de lo que cada opción hace, por favor vea en %bugs_online_help%';
+	$strings['To find out more about what each setting does, please refer to the %tbg__online_help%'] = 'Para encontrar más acerca de lo que cada opción hace, por favor vea en %tbg__online_help%';
 	$strings['Allow file uploads'] = 'Permitir subidas de archivos';
 	$strings['Yes, allow file uploads'] = 'Sí, permite subida de archivos';
 	$strings['No, don\'t allow file uploads'] = 'No, no permite la subida de archivos';
@@ -313,7 +313,7 @@
 	$strings['Scripts (php, asp, etc.) are never allowed'] = 'Scripts (php, asp, etc.) nunca serán permitidos';
 	$strings['Import data from version 1.9'] = 'Importar datos desde BUGS 1.9';
 	$strings['To start importing data from your BUGS 1.9 installation, please enter the connection details below.'] = 'Para comenzar a importar de su instalación de BUGS 1.9, por favor ingrese la información de la conexión.';
-	$strings['After pressing "Next", you will be presented with several options related to the import. More information is available in the %bugs_online_help%'] = 'Antes de presionar "Siguiente", se presentaran varias opciones relacionadas con la importación. Hay m&aacute:s información disponible en %bugs_online_help%';
+	$strings['After pressing "Next", you will be presented with several options related to the import. More information is available in the %tbg__online_help%'] = 'Antes de presionar "Siguiente", se presentaran varias opciones relacionadas con la importación. Hay m&aacute:s información disponible en %tbg__online_help%';
 	$strings['Connection settings'] = 'Opciones de conexión';
 	$strings['Hostname'] = 'Nombre Servidor';
 	$strings['Database name'] = 'Nombre de la base de datos';
