@@ -62,7 +62,7 @@
 						if ($a_column['unsigned'] && B2DB::getDBtype() != 'pgsql') $fsql .= ' UNSIGNED';
 						break;
 					case 'blob':
-						$fsql = (B2DB::getDBtype() == 'mysql') ? 'LONGBLOB' : 'BLOB';
+						$fsql .= (B2DB::getDBtype() == 'mysql') ? 'LONGBLOB' : 'BLOB';
 						break;
 					case 'text':
 					case 'boolean':
