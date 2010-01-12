@@ -62,6 +62,8 @@ function attachLink(url)
 			{
 				$('attach_link_form').reset();
 				$('attach_link').hide();
+				$('viewissue_no_uploaded_files').hide();
+				$('viewissue_uploaded_links').insert({bottom: json.content});
 			}
 			else if (json && json.failed)
 			{
@@ -86,6 +88,57 @@ function attachLink(url)
 			}
 			$('attach_link_indicator').hide();
 			$('attach_link_submit').show();
+		}
+	});
+}
+
+function removeLinkFromIssue(url, link_id)
+{
+	new Ajax.Request(url, {
+		method: 'post',
+		requestHeaders: {Accept: 'application/json'},
+		onLoading: function() {
+			$('viewissue_links_'+ link_id + '_remove_link').hide();
+			$('viewissue_links_'+ link_id + '_remove_indicator').show();
+		},
+		onSuccess: function(transport) {
+			var json = transport.responseJSON;
+			if (json && json.failed == false)
+			{
+				$('viewissue_links_' + link_id).remove();
+				$('viewissue_links_' + link_id + '_remove_confirm').remove();
+				successMessage(json.message);
+				if ($('viewissue_uploaded_links').childElements().size() == 0 && $('viewissue_uploaded_links').childElements().size() == 0)
+				{
+					$('viewissue_no_uploaded_files').show();
+				}
+			}
+			else
+			{
+				if (json && json.failed)
+				{
+					failedMessage(json.error);
+				}
+				else
+				{
+					failedMessage(transport.responseText);
+				}
+				$('viewissue_links_'+ link_id + '_remove_link').show();
+				$('viewissue_links_'+ link_id + '_remove_indicator').hide();
+			}
+		},
+		onFailure: function(transport) {
+			$('viewissue_links_'+ link_id + '_remove_link').show();
+			$('viewissue_links_'+ link_id + '_remove_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && json.failed)
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
 		}
 	});
 }

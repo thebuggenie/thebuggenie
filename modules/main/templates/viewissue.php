@@ -187,7 +187,7 @@
 							<form action="<?php echo make_url('issue_attach_link', array('issue_id' => $theIssue->getID())); ?>" method="post" onsubmit="attachLink('<?php echo make_url('issue_attach_link', array('issue_id' => $theIssue->getID())); ?>');return false;" id="attach_link_form">
 								<dl style="margin: 0;">
 									<dt style="width: 80px; padding-top: 3px;"><label for="attach_link_url"><?php echo __('URL'); ?>:</label></dt>
-									<dd style="margin-bottom: 0px;"><input type="text" name="url" id="attach_link_url" style="width: 235px;"></dd>
+									<dd style="margin-bottom: 0px;"><input type="text" name="link_url" id="attach_link_url" style="width: 235px;"></dd>
 									<dt style="width: 80px; font-size: 10px; padding-top: 4px;"><label for="attach_link_description"><?php echo __('Description'); ?>:</label></dt>
 									<dd style="margin-bottom: 0px;"><input type="text" name="description" id="attach_link_description" style="width: 235px;"></dd>
 								</dl>
@@ -201,14 +201,8 @@
 					<div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($theIssue->getFiles()) + count($theIssue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
 					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
 						<tbody id="viewissue_uploaded_links">
-							<?php foreach ($theIssue->getLinks() as $aLink): ?>
-								<tr>
-									<td class="imgtd" style="width: 20px;"><?php echo image_tag('icon_link.png'); ?></td>
-									<td><a href="<?php echo $aLink['url']; ?>" target="_blank"><?php echo $aLink['description']; ?></a></td>
-									<?php if ($theIssue->canRemoveAttachments()): ?>
-										<td style="width: 15px;"><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;links=true&amp;action=remove&amp;l_id=<?php echo $aLink['id']; ?>" class="image"><?php echo image_tag('action_cancel_small.png'); ?></a></td>
-									<?php endif; ?>
-								</tr>
+							<?php foreach ($theIssue->getLinks() as $link_id => $link): ?>
+								<?php include_template('attachedlink', array('issue' => $theIssue, 'link' => $link, 'link_id' => $link_id)); ?>
 							<?php endforeach; ?>
 						</tbody>
 					</table>

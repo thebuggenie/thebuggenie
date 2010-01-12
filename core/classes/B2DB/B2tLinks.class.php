@@ -67,6 +67,8 @@
 			}
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
+
+			return $res->getInsertID();
 		}
 		
 		public function getByIssueID($issue_id)

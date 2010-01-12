@@ -1598,7 +1598,7 @@
 						B2DB::getTable('B2tIssueFiles')->removeFileFromIssue($issue->getID(), (int) $request->getParameter('file_id'));
 						return $this->renderJSON(array('failed' => false, 'file_id' => $request->getParameter('file_id'), 'message' => TBGContext::getI18n()->__('The attachment has been removed')));
 					}
-					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a valid issue')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You can not remove items from this issue')));
 					break;
 			}
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid mode')));
@@ -1633,16 +1633,31 @@
 			$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
 			if ($issue instanceof TBGIssue && $issue->canAttachLinks())
 			{
-				if ($request->getParameter('url') != '')
+				if ($request->getParameter('link_url') != '')
 				{
-					$issue->attachLink($request->getParameter('url'), $request->getParameter('description'));
-					return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Link attached!')));
+					$link_id = $issue->attachLink($request->getParameter('link_url'), $request->getParameter('description'));
+					return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Link attached!'), 'content' => $this->getTemplateHTML('main/attachedlink', array('issue' => $issue, 'link_id' => $link_id, 'link' => array('description' => $request->getParameter('description'), 'url' => $request->getParameter('link_url'))))));
 				}
 				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a link URL, otherwise we have nowhere to link to!')));
 			}
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You can not attach links to this issue')));
 		}
-		
+
+		public function runRemoveLink(TBGRequest $request)
+		{
+			$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+			if ($issue instanceof TBGIssue && $issue->canRemoveAttachments())
+			{
+				if ($request->getParameter('link_id') != 0)
+				{
+					$issue->removeLink($request->getParameter('link_id'));
+					return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Link removed!')));
+				}
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a valid link id')));
+			}
+			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You can not remove items from this issue')));
+		}
+
 	}
 
 ?>

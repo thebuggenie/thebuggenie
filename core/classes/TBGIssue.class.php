@@ -1329,7 +1329,8 @@
 		 */
 		public function attachLink($url, $description = null)
 		{
-			$res = B2DB::getTable('B2tLinks')->addLinkToIssue($this->getID(), $url, $description);
+			$link_id = B2DB::getTable('B2tLinks')->addLinkToIssue($this->getID(), $url, $description);
+			return $link_id;
 		}
 
 		/**
