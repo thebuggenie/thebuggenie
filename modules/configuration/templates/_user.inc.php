@@ -48,7 +48,13 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('Whether to assume you have access / are restricted as default'); ?></td>
+		<td class="config_explanation" colspan="2">
+			<?php echo __("%restrictive%: With this security policy, users don't automatically get access to projects, modules, etc., but must be granted access specifically.", array('%restrictive%' => '<b>'.__('Restrictive').'</b>')); ?><br>
+			<?php echo __("%permissive%: This security policy assume you have access to things like projects, pages, etc.", array('%permissive%' => '<b>'.__('Permissive').'</b>')); ?><br>
+			<br>
+			<?php echo __("If you're running a public tracker, or a tracker with several projects you probably want to use a restrictive security policy - however, with smaller teams or and simpler projects, permissive security policy will be most efficient."); ?><br>
+			<i><?php echo __("Some permissions, such as configuration access are not affected by this setting, but must always be explicitly defined"); ?></i>
+		</td>
 	</tr>
 	<tr>
 		<td><label for="allowreg"><?php echo __('New user accounts'); ?></label></td>

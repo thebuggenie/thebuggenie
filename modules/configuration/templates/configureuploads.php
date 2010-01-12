@@ -53,7 +53,7 @@
 						<tr>
 							<td><label for="upload_max_file_size"><?php echo __('Max upload file size'); ?></label></td>
 							<td>
-								<input type="text" name="upload_max_file_size" id="upload_max_filesize" style="width: 50px;" value="<?php echo TBGSettings::getUploadsMaxSize(); ?>"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>&nbsp;MB
+								<input type="text" name="upload_max_file_size" id="upload_max_file_size" style="width: 50px;" value="<?php echo TBGSettings::getUploadsMaxSize(); ?>"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>&nbsp;MB
 							</td>
 						</tr>
 						<tr>

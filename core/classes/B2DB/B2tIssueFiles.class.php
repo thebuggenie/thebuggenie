@@ -67,6 +67,8 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			if ($this->doCount($crit) == 0)
 			{
+				$file = B2DB::getTable('B2tFiles')->doSelectById($file_id);
+				unlink(TBGSettings::getUploadsLocalpath().$file->get(B2tFiles::REAL_FILENAME));
 				B2DB::getTable('B2tFiles')->doDeleteById($file_id);
 			}
 		}
