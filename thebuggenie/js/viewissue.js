@@ -295,9 +295,11 @@ function updateVisibleFields(visible_fields)
  */
 function setField(url, field)
 {
+	if (field == 'description') var params = $('description_form').serialize();
 	if (field == 'issuetype') $('issuetype_indicator_fullpage').show();
 	new Ajax.Request(url, {
 		method: 'post',
+		parameters: params,
 		requestHeaders: {Accept: 'application/json'},
 		onLoading: function(transport) {
 			$(field + '_spinning').show();

@@ -961,6 +961,18 @@
 			
 			switch ($request->getParameter('field'))
 			{
+				case 'description':
+					$issue->setDescription($request->getParameter('value'));
+					if ($issue->isDescriptionChanged())
+					{
+						return $this->renderJSON(array('changed' => true, 'field' => array('value' => true, 'name' => $issue->getDescription()), 'description' => $issue->getDescription()));
+					}
+					else
+					{
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('changed' => false, 'description' => $issue->getDescripton(), 'error' => TBGContext::getI18n()->__('Failed to set description')));
+					}
+					break;
 				case 'percent':
 					$issue->setPercentCompleted($request->getParameter('percent'));
 					if ($issue->isPercentCompletedChanged())
@@ -1228,6 +1240,10 @@
 			
 			switch ($request->getParameter('field'))
 			{
+				case 'description':
+					$issue->revertDescription();
+					$field = array('value' => true, 'name' => $issue->getDescription());
+					break;
 				case 'category':
 					$issue->revertCategory();
 					$field = ($issue->getCategory() instanceof TBGCategory) ? array('id' => $issue->getCategory()->getID(), 'name' => $issue->getCategory()->getName()) : array('id' => 0);

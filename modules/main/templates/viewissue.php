@@ -356,12 +356,24 @@
 				<?php //TODO: require TBGContext::getIncludePath() . 'include/issue_affected_inline.inc.php'; ?>
 				<div class="rounded_box invisible" id="description_field" style="margin: 5px 0 5px 0;<?php if (!$theIssue->isDescriptionVisible()): ?> display: none;<?php endif; ?>">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent viewissue_description">
-						<div class="viewissue_description_header"><?php echo __('Description'); ?>:</div>
-						<?php if ($theIssue->getDescription() == ''): ?>
-							<div class="faded_medium"><?php echo __('Nothing entered.'); ?></div>
-						<?php else: ?>
-							<?php echo tbg_parse_text($theIssue->getDescription(), false, null, array('headers' => false)); ?>
+					<div class="xboxcontent viewissue_description" id="description_field">
+						<div id="description_header" class="<?php if ($theIssue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?> viewissue_description_header"><?php if ($theIssue->canEditDescription()) : ?><?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'description_edit', 'onclick' => "$('description_change').show(); $('description_name').hide(); $('no_description').hide();")); ?> <a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'description')); ?>', 'description');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_undo_spinning')); ?><?php endif; ?><?php echo __('Description'); ?>:</div>
+						<div id="description_content" class="<?php if ($theIssue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+							<div class="faded_medium" id="no_description" <?php if ($theIssue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
+							<div id="description_name">
+								<?php echo tbg_parse_text($theIssue->getDescription(), false, null, array('headers' => false)); ?>
+							</div>
+						</div>
+						<?php if ($theIssue->canEditDescription()) : ?>
+						<div id="description_change" style="display: none;">
+							<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
+								<?php include_template('main/textarea', array('area_name' => 'value', 'height' => '100px', 'width' => '100%', 'value' => ($theIssue->getDescription()))); ?>
+								<br>
+								<input type="submit" value="<?php echo __('Save'); ?>"/>
+							</form>
+							<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_spinning')); ?>
+							<div id="description_change_error" class="error_message" style="display: none;"></div>
+						</div>
 						<?php endif; ?>
 					</div>
 					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
