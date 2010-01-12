@@ -1582,6 +1582,21 @@
 				return true;
 			}
 		}
+
+		public function runAttachLink(TBGRequest $request)
+		{
+			$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+			if ($issue instanceof TBGIssue && $issue->canAttachLinks())
+			{
+				if ($request->getParameter('url') != '')
+				{
+					$issue->attachLink($request->getParameter('url'), $request->getParameter('description'));
+					return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Link attached!')));
+				}
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a link URL, otherwise we have nowhere to link to!')));
+			}
+			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You can not attach links to this issue')));
+		}
 		
 	}
 

@@ -47,6 +47,49 @@ function toggleFavourite(url, issue_id)
 	});
 }
 
+function attachLink(url)
+{
+	var params = $('attach_link_form').serialize();
+	$('attach_link_indicator').show();
+	$('attach_link_submit').hide();
+	new Ajax.Request(url, {
+		method: 'post',
+		parameters: params,
+		requestHeaders: {Accept: 'application/json'},
+		onSuccess: function(transport) {
+			var json = transport.responseJSON;
+			if (json && !json.failed)
+			{
+				$('attach_link_form').reset();
+				$('attach_link').hide();
+			}
+			else if (json && json.failed)
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+			$('attach_link_indicator').hide();
+			$('attach_link_submit').show();
+		},
+		onFailure: function(transport) {
+			var json = transport.responseJSON;
+			if (json && json.failed)
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+			$('attach_link_indicator').hide();
+			$('attach_link_submit').show();
+		}
+	});
+}
+
 function detachFileFromIssue(url, file_id)
 {
 	new Ajax.Request(url, {

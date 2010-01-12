@@ -172,13 +172,31 @@
 					<div class="header_div">
 						<?php if ($theIssue->canAttachLinks() || (TBGSettings::isUploadsEnabled() && $theIssue->canAttachFiles())): ?>
 							<?php if ($theIssue->canAttachLinks()): ?>
-								<?php echo javascript_link_tag(image_tag('action_add_link.png'), array('onclick' => "$('attach_link').show();", 'title' => __('Attach a link'))); ?>
+								<?php echo javascript_link_tag(image_tag('action_add_link.png'), array('onclick' => "$('attach_link').toggle();", 'title' => __('Attach a link'))); ?>
 							<?php endif; ?>
 							<?php if (TBGSettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>
-								<?php echo javascript_link_tag(image_tag('action_add_file.png'), array('onclick' => "$('attach_file').appear();", 'title' => __('Attach a file'))); ?>
+								<?php echo javascript_link_tag(image_tag('action_add_file.png'), array('onclick' => "$('attach_file').appear({ duration: 0.5 });", 'title' => __('Attach a file'))); ?>
 							<?php endif; ?>
 						<?php endif; ?>
 						<?php echo __('Attached information'); ?>
+					</div>
+					<div class="rounded_box borderless" id="attach_link" style="margin: 5px 0 5px 0;">
+						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+						<div class="xboxcontent viewissue_description">
+							<div class="header_div" style="margin: 0 0 5px 0;"><?php echo __('Attach a link'); ?>:</div>
+							<form action="<?php echo make_url('issue_attach_link', array('issue_id' => $theIssue->getID())); ?>" method="post" onsubmit="attachLink('<?php echo make_url('issue_attach_link', array('issue_id' => $theIssue->getID())); ?>');return false;" id="attach_link_form">
+								<dl style="margin: 0;">
+									<dt style="width: 80px; padding-top: 3px;"><label for="attach_link_url"><?php echo __('URL'); ?>:</label></dt>
+									<dd style="margin-bottom: 0px;"><input type="text" name="url" id="attach_link_url" style="width: 235px;"></dd>
+									<dt style="width: 80px; font-size: 10px; padding-top: 4px;"><label for="attach_link_description"><?php echo __('Description'); ?>:</label></dt>
+									<dd style="margin-bottom: 0px;"><input type="text" name="description" id="attach_link_description" style="width: 235px;"></dd>
+								</dl>
+								<div style="font-size: 12px; padding: 15px 2px 10px 2px;" class="faded_medium" id="attach_link_submit"><?php echo __('Enter the link URL here, along with an optional description. Press "%attach_link%" to attach it to the issue.', array('%attach_link%' => __('Attach link'))); ?></div>
+								<div style="text-align: center; padding: 10px; display: none;" id="attach_link_indicator"><?php echo image_tag('spinning_26.gif'); ?></div>
+								<div style="text-align: center;"><input type="submit" value="<?php echo __('Attach link'); ?>" style="font-weight: bold;"><?php echo __('%attach_link% or %cancel%', array('%attach_link%' => '', '%cancel%' => '<b>'.javascript_link_tag(__('cancel'), array('onclick' => "$('attach_link').toggle();")).'</b>')); ?></div>
+							</form>
+						</div>
+						<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 					</div>
 					<div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($theIssue->getFiles()) + count($theIssue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
 					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>

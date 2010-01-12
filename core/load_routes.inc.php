@@ -26,6 +26,7 @@
 	$routes[] = array('downloadfile', '/files/download/:id', 'main', 'getFile', array('mode' => 'download'));
 	$routes[] = array('issue_upload_status', '/get/upload/status/for/issue/:issue_id', 'main', 'getUploadStatus', array('mode' => 'issue'));
 	$routes[] = array('issue_detach_file', '/upload/detach/file/:file_id/from/issue/:issue_id', 'main', 'detachFile', array('mode' => 'issue'));
+	$routes[] = array('issue_attach_link', '/attach/link/to/issue/:issue_id', 'main', 'attachLink');
 	$routes[] = array('account_change_password', '/my_account/change/password', 'main', 'accountChangePassword');
 	$routes[] = array('account_save_information', '/my_account/save/information', 'main', 'myAccount', array('mode' => 'information'));
 	$routes[] = array('account_save_settings', '/my_account/save/settings', 'main', 'myAccount', array('mode' => 'settings'));
