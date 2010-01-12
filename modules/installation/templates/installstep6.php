@@ -20,6 +20,6 @@
 		Online documentation is available from <a href="http://www.thebuggenie.com/support.php" target="_new">www.thebuggenie.com</a>. If you need more help, you can use the <a href="http://www.thebuggenie.com/forum" target="_new">forums</a> where there are a lot of helpful people around.<br>
 		<b>Commercial email support is available for anyone with a <a target="_new" href="http://www.thebuggenie.com/giving_back.php">support contract</a>.</b> For other inquiries, send an email to <a href="mailto:support@thebuggenie.com">support@thebuggenie.com</a>.
 	</div>
-	<div style="font-size: 15px; text-align: center; padding: 25px;">When you're done, <a href="index.php">click here to go to the frontpage</a></div>
+	<div style="font-size: 15px; text-align: center; padding: 25px;">When you're done, <?php echo link_tag(make_url('about'), 'click here to go to the frontpage'); ?></div>
 <?php endif; ?>
 <?php include_template('installation/footer'); ?>

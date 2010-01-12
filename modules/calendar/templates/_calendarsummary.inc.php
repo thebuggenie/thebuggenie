@@ -30,7 +30,7 @@
 		</div>
 		<div style="clear: both; margin-top: 15px;">
 			<?php echo image_tag('tab_calendar.png', array('style' => 'float: left; margin-right: 5px;'), false, 'calendar'); ?>
-			<a href="#">Open my calendar</a>
+			<?php echo javascript_link_tag(__('Open my calendar'), array('onclick' => "failedMessage('Not available', 'Calendar functionality is not implemented yet');")); ?>
 		</div>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
