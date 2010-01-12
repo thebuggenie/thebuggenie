@@ -180,7 +180,7 @@
 						<?php endif; ?>
 						<?php echo __('Attached information'); ?>
 					</div>
-					<div class="rounded_box borderless" id="attach_link" style="margin: 5px 0 5px 0;">
+					<div class="rounded_box borderless" id="attach_link" style="margin: 5px 0 5px 0; display: none">
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 						<div class="xboxcontent viewissue_description">
 							<div class="header_div" style="margin: 0 0 5px 0;"><?php echo __('Attach a link'); ?>:</div>
@@ -345,7 +345,27 @@
 								<?php endif; ?>
 							</td>
 							<td style="font-size: 19px; width: auto; padding: 0; padding-left: 7px;">
-								<span class="faded_medium">[<?php echo $theIssue->isClosed() ? strtoupper(__('Closed')) : strtoupper(__('Open')); ?>]</span>&nbsp;<b><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), __('Issue %issue_no%', array('%issue_no%' => $theIssue->getFormattedIssueNo(true)))); ?>&nbsp;&nbsp;-&nbsp;&nbsp;<span id="issue_title"><?php echo $theIssue->getTitle(); ?></span></b><br>
+								<span class="faded_medium">[<?php echo $theIssue->isClosed() ? strtoupper(__('Closed')) : strtoupper(__('Open')); ?>]</span>&nbsp;<b><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), __('Issue %issue_no%', array('%issue_no%' => $theIssue->getFormattedIssueNo(true)))); ?>&nbsp;&nbsp;-&nbsp;&nbsp;<span id="issue_title">
+									<span class="viewissue_title" id="title_field">
+										<span id="title_header" class="<?php if ($theIssue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php if ($theIssue->canEditTitle()) : ?><?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'title_edit', 'onclick' => "$('title_change').show(); $('title_name').hide(); $('no_title').hide();")); ?> <a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'title')); ?>', 'title');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'title_undo_spinning')); ?><?php endif; ?>
+											<span id="title_content" class="<?php if ($theIssue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+												<span class="faded_medium" id="no_title" <?php if ($theIssue->getTitle() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></span>
+												<span id="title_name">
+													<?php echo $theIssue->getTitle(); ?>
+												</span>
+											</span>
+										</span>
+										<?php if ($theIssue->canEditTitle()) : ?>
+										<span id="title_change" style="display: none;">
+											<form id="title_form" action="<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'title')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'title')) ?>', 'title'); return false;">
+												<input type="text" name="value" value="<?php echo $theIssue->getTitle() ?>" /> <input type="submit" value="<?php echo __('Save'); ?>"/> <a href="#" onClick="$('title_change').hide(); $('title_name').show(); return false;"><?php echo __('or close'); ?></a>
+											</form>
+											<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'title_spinning')); ?>
+											<span id="title_change_error" class="error_message" style="display: none;"></div>
+										</span>
+										<?php endif; ?>
+									</span>
+									</span></b><br>
 								<div style="font-size: 13px;">
 									<?php echo '<b>' . __('Posted %posted_at_time% - updated %last_updated_at_time%', array('%posted_at_time%' => '</b><i>' . tbg_formatTime($theIssue->getPosted(), 12) . '</i><b>', '%last_updated_at_time%' => '</b><i>' . tbg_formatTime($theIssue->getLastUpdatedTime(), 12) . '</i>')); ?>
 								</div>

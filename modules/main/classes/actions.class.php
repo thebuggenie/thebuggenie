@@ -983,6 +983,17 @@
 						return $this->renderJSON(array('changed' => false, 'field' => array('value' => true, 'name' => tbg_parse_text($issue->getReproductionSteps())), 'reproductionsteps' => tbg_parse_text($issue->getReproductionSteps())));
 					}
 					break;
+				case 'title':
+					$issue->setTitle($request->getParameter('value'));
+					if ($issue->isTitleChanged())
+					{
+						return $this->renderJSON(array('changed' => true, 'field' => array('value' => true, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
+					}
+					else
+					{
+						return $this->renderJSON(array('changed' => false, 'field' => array('value' => true, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
+					}
+					break;
 				case 'percent':
 					$issue->setPercentCompleted($request->getParameter('percent'));
 					if ($issue->isPercentCompletedChanged())
@@ -1257,6 +1268,10 @@
 				case 'reproductionsteps':
 					$issue->revertReproduction_Steps();
 					$field = array('value' => true, 'name' => tbg_parse_text($issue->getReproductionSteps()));
+					break;
+				case 'title':
+					$issue->revertTitle();
+					$field = array('value' => true, 'name' => strip_tags($issue->getTitle()));
 					break;
 				case 'category':
 					$issue->revertCategory();

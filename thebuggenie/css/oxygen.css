@@ -1271,11 +1271,11 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 dl.viewissue_list { margin: 0; font-size: 12px; padding: 0 0 0 0; position: relative; min-height: 18px; clear: both; }
 dl.viewissue_list dt { width: 100px; font-weight: bold; padding: 3px 2px 2px 2px; clear: both; }
 dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: normal; margin: 0; padding: 3px 5px 1px 2px; min-height: 16px; }
-#viewissue_left_box_top img.dropdown, #description_field img.dropdown, #reproductionsteps_field img.dropdown, dl.viewissue_list dd img.dropdown { float: left; margin-right: 5px; display: none; }
+#viewissue_left_box_top img.dropdown, #description_field img.dropdown, #title_field img.dropdown, #reproductionsteps_field img.dropdown, dl.viewissue_list dd img.dropdown { float: left; margin-right: 5px; display: none; }
 #viewissue_left_box_top img.spinning, dl.viewissue_list dd img.spinning { float: right; margin-right: 5px; }
-#viewissue_left_box_issuetype :hover img.dropdown, #description_field :hover img.dropdown, #reproductionsteps_field :hover img.dropdown,#viewissue_left_box_status :hover img.dropdown, #viewissue_left_box_top dl dd:hover img.dropdown, dl.viewissue_list dd:hover img.dropdown { float: left; margin-right: 5px; display: inline; }
-#viewissue_left_box_top .issue_detail_changed img.undo, #description_field .issue_detail_changed img.undo, #reproductionsteps_field .issue_detail_changed img.undo, dl.viewissue_list dd.issue_detail_changed img.undo { float: left; margin-right: 5px; display: inline; }
-#viewissue_left_box_top img.undo, #description_field img.undo, #reproductionsteps_field img.undo,dl.viewissue_list dd img.undo { display: none; }
+#viewissue_left_box_issuetype :hover img.dropdown, #description_field :hover img.dropdown, #title_field :hover img.dropdown, #reproductionsteps_field :hover img.dropdown,#viewissue_left_box_status :hover img.dropdown, #viewissue_left_box_top dl dd:hover img.dropdown, dl.viewissue_list dd:hover img.dropdown { float: left; margin-right: 5px; display: inline; }
+#viewissue_left_box_top .issue_detail_changed img.undo, #title_field .issue_detail_changed img.undo, #description_field .issue_detail_changed img.undo, #reproductionsteps_field .issue_detail_changed img.undo, dl.viewissue_list dd.issue_detail_changed img.undo { float: left; margin-right: 5px; display: inline; }
+#viewissue_left_box_top img.undo, #description_field img.undo, #title_field img.undo,#reproductionsteps_field img.undo,dl.viewissue_list dd img.undo { display: none; }
 #viewissue_left_box_issuetype img.undo, #viewissue_left_box_issuetype img.dropdown { margin-top: 7px; } 
 .dropdown_header, .dropdown_header, #project_leads .dropdown_header { font-weight: bold; font-size: 13px; }
 .dropdown_content, .dropdown_content, #project_leads .dropdown_content { font-weight: normal; padding-top: 5px; font-size: 12px; }
@@ -1284,13 +1284,13 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 .dropdown_content ul li, .dropdown_content ul li { font-size: 12px; font-weight: normal; margin: 0; text-align: left; height: 18px; padding: 1px; }
 .dropdown_content table, .dropdown_content table td { font-size: 12px; font-weight: normal; margin: 0; text-align: left; height: 18px; padding: 1px; }
 .dropdown_content table { margin-top: 5px; }
-#viewissue_left_box_bottom .error_message, #viewissue_left_box_top .error_message, #description_field .error_message, #reproductionsteps_field .error_message { color: #E44; font-weight: bold; margin: 10px 5px 5px 0; font-size: 13px; }
+#viewissue_left_box_bottom .error_message, #title_field .error_message, #viewissue_left_box_top .error_message, #description_field .error_message, #reproductionsteps_field .error_message { color: #E44; font-weight: bold; margin: 10px 5px 5px 0; font-size: 13px; }
 
 .viewissue_description_header, .viewissue_reproduction_steps_header { font-weight: bold; font-size: 14px; /*border-bottom: 1px solid #DDD;*/ padding: 0 0 5px 0; }
 .viewissue_description, .viewissue_reproduction_steps { font-size: 13px; font-weight: normal; padding: 5px; margin: 0; }
 
-#description_field .issue_detail_changed, #reproductionsteps_field .issue_detail_changed { background-color: #FFF299; }
-#description_field .issue_detail_unmerged, #reproductionsteps_field .issue_detail_unmerged { background-color: #E0AC9C; }
+#description_field .issue_detail_changed, #title_field .issue_detail_changed, #reproductionsteps_field .issue_detail_changed { background-color: #FFF299; }
+#description_field .issue_detail_unmerged, #title_field .issue_detail_merged, #reproductionsteps_field .issue_detail_unmerged { background-color: #E0AC9C; }
 
 #issue_lefthand { width: 340px; padding: 5px 5px 0 5px; vertical-align: top; }
 .header_div { border-bottom: 1px solid #DDD; padding: 3px; font-size: 13px; margin-top: 5px; font-weight: bold; }
