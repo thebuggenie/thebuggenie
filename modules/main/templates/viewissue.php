@@ -369,7 +369,7 @@
 							<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
 								<?php include_template('main/textarea', array('area_name' => 'value', 'height' => '100px', 'width' => '100%', 'value' => ($theIssue->getDescription()))); ?>
 								<br>
-								<input type="submit" value="<?php echo __('Save'); ?>"/>
+								<input type="submit" value="<?php echo __('Save'); ?>"/> <a href="#" onClick="$('description_change').hide(); <?php if ($theIssue->getDescription() != ''):?>$('description_name').show()<?php else: ?>$('no_description').show()<?php endif; ?>; return false;"><?php echo __('or close'); ?></a>
 							</form>
 							<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_spinning')); ?>
 							<div id="description_change_error" class="error_message" style="display: none;"></div>
@@ -380,12 +380,24 @@
 				</div>
 				<div class="rounded_box invisible" id="reproduction_steps_field" style="margin: 5px 0 5px 0;<?php if (!$theIssue->isReproductionStepsVisible()): ?> display: none;<?php endif; ?>">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent viewissue_reproduction_steps">
-						<div class="viewissue_reproduction_steps_header"><?php echo __('Reproduction steps'); ?>:</div>
-						<?php if ($theIssue->getReproductionSteps() == ''): ?>
-							<div class="faded_medium"><?php echo __('Nothing entered.'); ?></div>
-						<?php else: ?>
-							<?php echo tbg_parse_text($theIssue->getReproductionSteps(), false, null, array('headers' => false)); ?>
+					<div class="xboxcontent viewissue_reproduction_steps" id="reproductionsteps_field">
+						<div id="reproductionsteps_header" class="<?php if ($theIssue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?> viewissue_reproduction_steps_header"><?php if ($theIssue->canEditReproductionSteps()) : ?><?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'reproductionsteps_edit', 'onclick' => "$('reproductionsteps_change').show(); $('reproductionsteps_name').hide(); $('no_reproductionsteps').hide();")); ?> <a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'reproductionsteps')); ?>', 'reproductionsteps');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproductionsteps_undo_spinning')); ?><?php endif; ?><?php echo __('Reproduction steps'); ?>:</div>
+						<div id="reproductionsteps_content" class="<?php if ($theIssue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+							<div class="faded_medium" id="no_reproductionsteps" <?php if ($theIssue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
+							<div id="reproductionsteps_name">
+								<?php echo tbg_parse_text($theIssue->getReproductionSteps(), false, null, array('headers' => false)); ?>
+							</div>
+						</div>
+						<?php if ($theIssue->canEditReproductionSteps()) : ?>
+						<div id="reproductionsteps_change" style="display: none;">
+							<form id="reproductionsteps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'reproductionsteps')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'reproductionsteps')) ?>', 'reproductionsteps'); return false;">
+								<?php include_template('main/textarea', array('area_name' => 'value', 'height' => '100px', 'width' => '100%', 'value' => ($theIssue->getReproductionSteps()))); ?>
+								<br>
+								<input type="submit" value="<?php echo __('Save'); ?>"/> <a href="#" onClick="$('reproductionsteps_change').hide(); <?php if ($theIssue->getReproductionSteps() != ''):?>$('reproductionsteps_name').show()<?php else: ?>$('no_reproductionsteps').show()<?php endif; ?>; return false;"><?php echo __('or close'); ?></a>
+							</form>
+							<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproductionsteps_spinning')); ?>
+							<div id="reproductionsteps_change_error" class="error_message" style="display: none;"></div>
+						</div>
 						<?php endif; ?>
 					</div>
 					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>

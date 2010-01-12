@@ -965,12 +965,22 @@
 					$issue->setDescription($request->getParameter('value'));
 					if ($issue->isDescriptionChanged())
 					{
-						return $this->renderJSON(array('changed' => true, 'field' => array('value' => true, 'name' => $issue->getDescription()), 'description' => $issue->getDescription()));
+						return $this->renderJSON(array('changed' => true, 'field' => array('value' => true, 'name' => tbg_parse_text($issue->getDescription())), 'description' => tbg_parse_text($issue->getDescription())));
 					}
 					else
 					{
-						$this->getResponse()->setHttpStatus(400);
-						return $this->renderJSON(array('changed' => false, 'description' => $issue->getDescripton(), 'error' => TBGContext::getI18n()->__('Failed to set description')));
+						return $this->renderJSON(array('changed' => false, 'field' => array('value' => true, 'name' => tbg_parse_text($issue->getDescription())), 'description' => tbg_parse_text($issue->getDescripton())));
+					}
+					break;
+				case 'reproductionsteps':
+					$issue->setReproductionSteps($request->getParameter('value'));
+					if ($issue->isReproduction_StepsChanged())
+					{
+						return $this->renderJSON(array('changed' => true, 'field' => array('value' => true, 'name' => tbg_parse_text($issue->getReproductionSteps())), 'reproductionsteps' => tbg_parse_text($issue->getReproductionSteps())));
+					}
+					else
+					{
+						return $this->renderJSON(array('changed' => false, 'field' => array('value' => true, 'name' => tbg_parse_text($issue->getReproductionSteps())), 'reproductionsteps' => tbg_parse_text($issue->getReproductionSteps())));
 					}
 					break;
 				case 'percent':
@@ -1242,7 +1252,11 @@
 			{
 				case 'description':
 					$issue->revertDescription();
-					$field = array('value' => true, 'name' => $issue->getDescription());
+					$field = array('value' => true, 'name' => tbg_parse_text($issue->getDescription()));
+					break;
+				case 'reproductionsteps':
+					$issue->revertReproduction_Steps();
+					$field = array('value' => true, 'name' => tbg_parse_text($issue->getReproductionSteps()));
 					break;
 				case 'category':
 					$issue->revertCategory();

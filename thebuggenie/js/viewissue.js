@@ -264,7 +264,7 @@ function updateTimeFieldFromObject(object, values, field)
 
 function updateVisibleFields(visible_fields)
 {
-	available_fields = new Array('description', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'editions', 'builds', 'components', 'estimated_time', 'elapsed_time', 'milestone');
+	available_fields = new Array('description', 'reproductionsteps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'editions', 'builds', 'components', 'estimated_time', 'elapsed_time', 'milestone');
 	available_fields.each(function (key, index) 
 	{
 		if ($(key + '_field'))
@@ -296,6 +296,7 @@ function updateVisibleFields(visible_fields)
 function setField(url, field)
 {
 	if (field == 'description') var params = $('description_form').serialize();
+	if (field == 'reproductionsteps') var params = $('reproductionsteps_form').serialize();
 	if (field == 'issuetype') $('issuetype_indicator_fullpage').show();
 	new Ajax.Request(url, {
 		method: 'post',
