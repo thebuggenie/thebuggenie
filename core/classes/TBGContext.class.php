@@ -1366,6 +1366,7 @@
 					return true;
 				}
 				TBGLogging::log("It couldn't", 'main', TBGLogging::LEVEL_WARNING);
+				throw new Exception("The Bug Genie isn't set up to work with this server name.");
 			}
 			catch (Exception $e)
 			{
