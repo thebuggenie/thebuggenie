@@ -194,7 +194,7 @@
 		{
 			if ($this->_options === null)
 			{
-				$this->_options = TBGCustomDatatypeoption::getAllByKey($this->_key);
+				$this->_options = TBGCustomDatatypeOption::getAllByKey($this->_key);
 			}
 		}
 
@@ -206,7 +206,7 @@
 
 		public function createNewOption($name, $value, $itemdata = null)
 		{
-			$option = TBGCustomDatatypeoption::createNew($this->_itemtype, $this->_key, $name, $value, $itemdata);
+			$option = TBGCustomDatatypeOption::createNew($this->_itemtype, $this->_key, $name, $value, $itemdata);
 			$this->_options = null;
 			return $option;
 		}

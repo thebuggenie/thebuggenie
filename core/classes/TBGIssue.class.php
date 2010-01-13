@@ -1711,7 +1711,7 @@
 			$var_name = "_customfield{$key}";
 			if (!is_object($this->$var_name) && !is_null($this->$var_name))
 			{
-				$this->$var_name = TBGCustomDatatypeoption::getByValueAndKey($this->$var_name, $key);
+				$this->$var_name = TBGCustomDatatypeOption::getByValueAndKey($this->$var_name, $key);
 			}
 			return $this->$var_name;
 		}
@@ -3779,7 +3779,7 @@
 		{
 			foreach (TBGCustomDatatype::getAll() as $key => $customdatatype)
 			{
-				$option_id = ($this->getCustomField($key) instanceof TBGCustomDatatypeoption) ? $this->getCustomField($key)->getID() : null;
+				$option_id = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getID() : null;
 				B2DB::getTable('B2tIssueCustomFields')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
 			}
 		}
@@ -4042,8 +4042,8 @@
 							{
 								$key = substr($property, 12);
 								$customdatatype = TBGCustomDatatype::getByKey($key);
-								$old_value = ($old_item = TBGCustomDatatypeoption::getByValueAndKey($value['original_value'], $key)) ? $old_item->getName() : __('Unknown');
-								$new_value = ($this->getCustomField($key) instanceof TBGCustomDatatypeoption) ? $this->getCustomField($key)->getName() : __('Unknown');
+								$old_value = ($old_item = TBGCustomDatatypeOption::getByValueAndKey($value['original_value'], $key)) ? $old_item->getName() : __('Unknown');
+								$new_value = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getName() : __('Unknown');
 								$this->addLogEntry(B2tLog::LOG_ISSUE_CUSTOMFIELD_CHANGED, $old_value . ' &rArr; ' . $new_value);
 								$comment_lines[] = __("The custom field %customfield_name% has been updated, from <b>%previous_value%</b> to <b>%new_value%</b>.", array('%customfield_name%' => $customdatatype->getDescription(), '%previous_value%' => $old_value, '%new_value%' => $new_value));
 							}

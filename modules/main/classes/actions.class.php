@@ -749,7 +749,7 @@
 					$customdatatype_id = $customdatatype->getKey() . '_id';
 					if ($$customdatatype_id = $request->getParameter($customdatatype_id))
 					{
-						$selected_customdatatype[$customdatatype->getKey()] = TBGCustomDatatypeoption::getByValueAndKey($$customdatatype_id, $customdatatype->getKey());
+						$selected_customdatatype[$customdatatype->getKey()] = TBGCustomDatatypeOption::getByValueAndKey($$customdatatype_id, $customdatatype->getKey());
 					}
 				}
 				$this->selected_customdatatype = $selected_customdatatype;
@@ -801,7 +801,7 @@
 			if (isset($fields_array['percent_complete'])) $issue->setPercentCompleted($this->selected_percent_complete);
 			foreach (TBGCustomDatatype::getAll() as $customdatatype)
 			{
-				if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeoption)
+				if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption)
 				{
 					$selected_option = $this->selected_customdatatype[$customdatatype->getKey()];
 					$issue->setCustomField($customdatatype->getKey(), $selected_option->getValue());
@@ -962,36 +962,43 @@
 			switch ($request->getParameter('field'))
 			{
 				case 'description':
-					$issue->setDescription($request->getParameter('value'));
+					$issue->setDescription($request->getRawParameter('value'));
 					if ($issue->isDescriptionChanged())
 					{
-						return $this->renderJSON(array('changed' => true, 'field' => array('value' => true, 'name' => tbg_parse_text($issue->getDescription())), 'description' => tbg_parse_text($issue->getDescription())));
+						return $this->renderJSON(array('changed' => true, 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription())), 'description' => tbg_parse_text($issue->getDescription())));
 					}
 					else
 					{
-						return $this->renderJSON(array('changed' => false, 'field' => array('value' => true, 'name' => tbg_parse_text($issue->getDescription())), 'description' => tbg_parse_text($issue->getDescripton())));
+						return $this->renderJSON(array('changed' => false, 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription())), 'description' => tbg_parse_text($issue->getDescripton())));
 					}
 					break;
-				case 'reproductionsteps':
-					$issue->setReproductionSteps($request->getParameter('value'));
+				case 'reproduction_steps':
+					$issue->setReproductionSteps($request->getRawParameter('value'));
 					if ($issue->isReproduction_StepsChanged())
 					{
-						return $this->renderJSON(array('changed' => true, 'field' => array('value' => true, 'name' => tbg_parse_text($issue->getReproductionSteps())), 'reproductionsteps' => tbg_parse_text($issue->getReproductionSteps())));
+						return $this->renderJSON(array('changed' => true, 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps())), 'reproduction_steps' => tbg_parse_text($issue->getReproductionSteps())));
 					}
 					else
 					{
-						return $this->renderJSON(array('changed' => false, 'field' => array('value' => true, 'name' => tbg_parse_text($issue->getReproductionSteps())), 'reproductionsteps' => tbg_parse_text($issue->getReproductionSteps())));
+						return $this->renderJSON(array('changed' => false, 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps())), 'reproduction_steps' => tbg_parse_text($issue->getReproductionSteps())));
 					}
 					break;
 				case 'title':
-					$issue->setTitle($request->getParameter('value'));
-					if ($issue->isTitleChanged())
+					if ($request->getParameter('value') != '')
 					{
-						return $this->renderJSON(array('changed' => true, 'field' => array('value' => true, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
+						return $this->renderJSON(array('changed' => false, 'failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a title')));
 					}
 					else
 					{
-						return $this->renderJSON(array('changed' => false, 'field' => array('value' => true, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
+						$issue->setTitle($request->getParameter('value'));
+						if ($issue->isTitleChanged())
+						{
+							return $this->renderJSON(array('changed' => true, 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
+						}
+						else
+						{
+							return $this->renderJSON(array('changed' => false, 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
+						}
 					}
 					break;
 				case 'percent':
@@ -1214,7 +1221,7 @@
 						if ($request->hasParameter("{$key}_value"))
 						{
 							$customdatatypeoption_value = $request->getParameter("{$key}_value");
-							if ($customdatatypeoption_value && ($customdatatypeoption = TBGCustomDatatypeoption::getByValueAndKey($customdatatypeoption_value, $key)) instanceof TBGCustomDatatypeoption)
+							if ($customdatatypeoption_value && ($customdatatypeoption = TBGCustomDatatypeOption::getByValueAndKey($customdatatypeoption_value, $key)) instanceof TBGCustomDatatypeOption)
 							{
 								$issue->setCustomField($key, $customdatatypeoption->getValue());
 								$changed_methodname = "isCustomfield{$key}Changed";
@@ -1263,15 +1270,15 @@
 			{
 				case 'description':
 					$issue->revertDescription();
-					$field = array('value' => true, 'name' => tbg_parse_text($issue->getDescription()));
+					$field = array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription()), 'form_value' => $issue->getDescription());
 					break;
-				case 'reproductionsteps':
+				case 'reproduction_steps':
 					$issue->revertReproduction_Steps();
-					$field = array('value' => true, 'name' => tbg_parse_text($issue->getReproductionSteps()));
+					$field = array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps()), 'form_value' => $issue->getReproductionSteps());
 					break;
 				case 'title':
 					$issue->revertTitle();
-					$field = array('value' => true, 'name' => strip_tags($issue->getTitle()));
+					$field = array('id' => 1, 'name' => strip_tags($issue->getTitle()));
 					break;
 				case 'category':
 					$issue->revertCategory();
@@ -1337,7 +1344,7 @@
 						$key = $customdatatype->getKey();
 						$revert_methodname = "revertCustomfield{$key}";
 						$issue->$revert_methodname();
-						$field = ($issue->getCustomField($key) instanceof TBGCustomDatatypeoption) ? array('value' => $issue->getCustomField($key)->getValue(), 'name' => $issue->getCustomField($key)->getName()) : array('id' => 0);
+						$field = ($issue->getCustomField($key) instanceof TBGCustomDatatypeOption) ? array('value' => $issue->getCustomField($key)->getValue(), 'name' => $issue->getCustomField($key)->getName()) : array('id' => 0);
 					}
 					break;
 			}

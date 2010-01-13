@@ -368,53 +368,57 @@
 					</table>
 				</div>
 				<?php //TODO: require TBGContext::getIncludePath() . 'include/issue_affected_inline.inc.php'; ?>
-				<div class="rounded_box invisible" id="description_field" style="margin: 5px 0 5px 0;<?php if (!$theIssue->isDescriptionVisible()): ?> display: none;<?php endif; ?>">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent viewissue_description" id="description_field">
-						<div id="description_header" class="<?php if ($theIssue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?> viewissue_description_header"><?php if ($theIssue->canEditDescription()) : ?><?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'description_edit', 'onclick' => "$('description_change').show(); $('description_name').hide(); $('no_description').hide();")); ?> <a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'description')); ?>', 'description');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_undo_spinning')); ?><?php endif; ?><?php echo __('Description'); ?>:</div>
-						<div id="description_content" class="<?php if ($theIssue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-							<div class="faded_medium" id="no_description" <?php if ($theIssue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
-							<div id="description_name">
-								<?php echo tbg_parse_text($theIssue->getDescription(), false, null, array('headers' => false)); ?>
+				<div id="description_field"<?php if (!$theIssue->isDescriptionVisible()): ?> style="display: none;"<?php endif; ?>>
+					<div class="rounded_box invisible<?php if ($theIssue->isDescriptionChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$theIssue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="description_header" style="margin: 5px 0 5px 0;">
+						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+						<div class="xboxcontent viewissue_description">
+							<div class="viewissue_description_header"><?php if ($theIssue->canEditDescription()) : ?><?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'description_edit', 'onclick' => "$('description_change').show(); $('description_name').hide(); $('no_description').hide();")); ?> <a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'description')); ?>', 'description');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_undo_spinning')); ?><?php endif; ?><?php echo __('Description'); ?>:</div>
+							<div id="description_content" class="<?php if ($theIssue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+								<div class="faded_medium" id="no_description" <?php if ($theIssue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
+								<div id="description_name">
+									<?php echo tbg_parse_text($theIssue->getDescription(), false, null, array('headers' => false)); ?>
+								</div>
 							</div>
+							<?php if ($theIssue->canEditDescription()) : ?>
+							<div id="description_change" style="display: none;">
+								<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
+									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'description_form_value', 'height' => '100px', 'width' => '100%', 'value' => ($theIssue->getDescription()))); ?>
+									<br>
+									<input type="submit" value="<?php echo __('Save'); ?>" style="font-weight: bold;"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('description_change').hide();".(($theIssue->getDescription() != '') ? "$('description_name').show();" : "$('no_description').show();")."return false;")))); ?>
+								</form>
+								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_spinning')); ?>
+								<div id="description_change_error" class="error_message" style="display: none;"></div>
+							</div>
+							<?php endif; ?>
 						</div>
-						<?php if ($theIssue->canEditDescription()) : ?>
-						<div id="description_change" style="display: none;">
-							<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
-								<?php include_template('main/textarea', array('area_name' => 'value', 'height' => '100px', 'width' => '100%', 'value' => ($theIssue->getDescription()))); ?>
-								<br>
-								<input type="submit" value="<?php echo __('Save'); ?>"/> <a href="#" onClick="$('description_change').hide(); <?php if ($theIssue->getDescription() != ''):?>$('description_name').show()<?php else: ?>$('no_description').show()<?php endif; ?>; return false;"><?php echo __('or close'); ?></a>
-							</form>
-							<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_spinning')); ?>
-							<div id="description_change_error" class="error_message" style="display: none;"></div>
-						</div>
-						<?php endif; ?>
+						<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</div>
-				<div class="rounded_box invisible" id="reproduction_steps_field" style="margin: 5px 0 5px 0;<?php if (!$theIssue->isReproductionStepsVisible()): ?> display: none;<?php endif; ?>">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent viewissue_reproduction_steps" id="reproductionsteps_field">
-						<div id="reproductionsteps_header" class="<?php if ($theIssue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?> viewissue_reproduction_steps_header"><?php if ($theIssue->canEditReproductionSteps()) : ?><?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'reproductionsteps_edit', 'onclick' => "$('reproductionsteps_change').show(); $('reproductionsteps_name').hide(); $('no_reproductionsteps').hide();")); ?> <a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'reproductionsteps')); ?>', 'reproductionsteps');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproductionsteps_undo_spinning')); ?><?php endif; ?><?php echo __('Reproduction steps'); ?>:</div>
-						<div id="reproductionsteps_content" class="<?php if ($theIssue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-							<div class="faded_medium" id="no_reproductionsteps" <?php if ($theIssue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
-							<div id="reproductionsteps_name">
-								<?php echo tbg_parse_text($theIssue->getReproductionSteps(), false, null, array('headers' => false)); ?>
+				<div id="reproduction_steps_field"<?php if (!$theIssue->isReproductionStepsVisible()): ?> style="display: none;"<?php endif; ?>>
+					<div id="reproduction_steps_header" class="rounded_box invisible<?php if ($theIssue->isReproduction_StepsChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$theIssue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>" style="margin: 5px 0 5px 0;">
+						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+						<div class="xboxcontent viewissue_reproduction_steps">
+							<div class="viewissue_reproduction_steps_header"><?php if ($theIssue->canEditReproductionSteps()) : ?><?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'reproduction_steps_edit', 'onclick' => "$('reproduction_steps_change').show(); $('reproduction_steps_name').hide(); $('no_reproduction_steps').hide();")); ?> <a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'reproduction_steps')); ?>', 'reproduction_steps');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproduction_steps_undo_spinning')); ?><?php endif; ?><?php echo __('Reproduction steps'); ?>:</div>
+							<div id="reproduction_steps_content" class="<?php if ($theIssue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
+								<div class="faded_medium" id="no_reproduction_steps" <?php if ($theIssue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
+								<div id="reproduction_steps_name">
+									<?php echo tbg_parse_text($theIssue->getReproductionSteps(), false, null, array('headers' => false)); ?>
+								</div>
 							</div>
+							<?php if ($theIssue->canEditReproductionSteps()) : ?>
+							<div id="reproduction_steps_change" style="display: none;">
+								<form id="reproduction_steps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'reproduction_steps')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'reproduction_steps')) ?>', 'reproduction_steps'); return false;">
+									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'reproduction_steps_form_value', 'height' => '100px', 'width' => '100%', 'value' => ($theIssue->getReproductionSteps()))); ?>
+									<br>
+									<input type="submit" value="<?php echo __('Save'); ?>"/> <a href="#" onClick="$('reproduction_steps_change').hide(); <?php if ($theIssue->getReproductionSteps() != ''):?>$('reproduction_steps_name').show()<?php else: ?>$('no_reproduction_steps').show()<?php endif; ?>; return false;"><?php echo __('or close'); ?></a>
+								</form>
+								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproduction_steps_spinning')); ?>
+								<div id="reproduction_steps_change_error" class="error_message" style="display: none;"></div>
+							</div>
+							<?php endif; ?>
 						</div>
-						<?php if ($theIssue->canEditReproductionSteps()) : ?>
-						<div id="reproductionsteps_change" style="display: none;">
-							<form id="reproductionsteps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'reproductionsteps')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'reproductionsteps')) ?>', 'reproductionsteps'); return false;">
-								<?php include_template('main/textarea', array('area_name' => 'value', 'height' => '100px', 'width' => '100%', 'value' => ($theIssue->getReproductionSteps()))); ?>
-								<br>
-								<input type="submit" value="<?php echo __('Save'); ?>"/> <a href="#" onClick="$('reproductionsteps_change').hide(); <?php if ($theIssue->getReproductionSteps() != ''):?>$('reproductionsteps_name').show()<?php else: ?>$('no_reproductionsteps').show()<?php endif; ?>; return false;"><?php echo __('or close'); ?></a>
-							</form>
-							<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproductionsteps_spinning')); ?>
-							<div id="reproductionsteps_change_error" class="error_message" style="display: none;"></div>
-						</div>
-						<?php endif; ?>
+						<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</div>
 				<?php if ($theIssue->getProject()->isTasksEnabled()): ?>
 					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0 id="taskslist">

@@ -1,6 +1,6 @@
 <?php
 
-	class TBGCustomDatatypeoption extends TBGDatatypeBase
+	class TBGCustomDatatypeOption extends TBGDatatypeBase
 	{
 
 		protected static $_items = array();
@@ -26,7 +26,7 @@
 				{
 					foreach ($items as $row_id => $row)
 					{
-						self::$_items[$key][$row_id] = TBGFactory::TBGCustomDatatypeoptionLab($row_id, $row);
+						self::$_items[$key][$row_id] = TBGFactory::TBGCustomDatatypeOptionLab($row_id, $row);
 					}
 				}
 			}
@@ -57,7 +57,7 @@
 			}
 			
 			$res = B2DB::getTable('B2tCustomFieldOptions')->createNew($key, $name, $value, $itemdata);
-			return TBGFactory::TBGCustomDatatypeoptionLab($res->getInsertID());
+			return TBGFactory::TBGCustomDatatypeOptionLab($res->getInsertID());
 		}
 
 		/**
@@ -76,14 +76,14 @@
 		 * @param string|integer $value
 		 * @param string $key
 		 *
-		 * @return TBGCustomDatatypeoption
+		 * @return TBGCustomDatatypeOption
 		 */
 		public static function getByValueAndKey($value, $key)
 		{
 			$row = B2DB::getTable('B2tCustomFieldOptions')->getByValueAndKey($value, $key);
 			if ($row)
 			{
-				return TBGFactory::TBGCustomDatatypeoptionLab($row->get(B2tCustomFieldOptions::ID), $row);
+				return TBGFactory::TBGCustomDatatypeOptionLab($row->get(B2tCustomFieldOptions::ID), $row);
 			}
 			return null;
 		}

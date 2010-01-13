@@ -256,7 +256,7 @@
 						else
 						{
 							$customtype = TBGCustomDatatype::getByKey($request->getParameter('type'));
-							$item = TBGFactory::TBGCustomDatatypeoptionLab($request->getParameter('id'));
+							$item = TBGFactory::TBGCustomDatatypeOptionLab($request->getParameter('id'));
 						}
 						if ($item instanceof TBGDatatypeBase && $item->getItemtype() == $item->getType())
 						{

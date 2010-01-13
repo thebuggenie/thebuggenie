@@ -448,7 +448,7 @@
 									</select>
 								<?php elseif ($customdatatype->getType() == TBGCustomDatatype::RADIO_CHOICE) : ?>
 									<?php foreach ($customdatatype->getOptions() as $option): ?>
-										<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
+										<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <label for="<?php echo $customdatatype->getKey(); ?>_id"><?php echo $option->getName(); ?></label><br>
 									<?php endforeach; ?>
 								<?php endif; ?>
 							</td>
@@ -579,7 +579,7 @@
 							<?php foreach (TBGCustomDatatype::getAll() as $customdatatype): ?>
 								<li id="<?php echo $customdatatype->getKey(); ?>_additional" style="display: none;">
 									<?php echo image_tag('icon_customdatatype.png'); ?>
-									<div id="<?php echo $customdatatype->getKey(); ?>_link"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeoption): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
+									<div id="<?php echo $customdatatype->getKey(); ?>_link"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
 									<div id="<?php echo $customdatatype->getKey(); ?>_additional_div"<?php if ($selected_customdatatype[$customdatatype->getKey()] === null): ?> style="display: none;"<?php endif; ?>>
 										<?php if ($customdatatype->getType() == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT) : ?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">

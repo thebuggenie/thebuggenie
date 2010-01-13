@@ -270,21 +270,21 @@
 		}
 
 		/**
-		 * Returns a TBGCustomDatatypeoption
+		 * Returns a TBGCustomDatatypeOption
 		 *
 		 * @param integer $i_id The item id
 		 * @param B2DBrow $row[optional] a row to use
 		 *
-		 * @return TBGCustomDatatypeoption
+		 * @return TBGCustomDatatypeOption
 		 */
-		public static function TBGCustomDatatypeoptionLab($i_id, $row = null)
+		public static function TBGCustomDatatypeOptionLab($i_id, $row = null)
 		{
 			if ((int) $i_id == 0) throw new Exception('Invalid id');
 			if (!isset(self::$_customtypeoptions[$i_id]))
 			{
 				try
 				{
-					self::$_customtypeoptions[$i_id] = new TBGCustomDatatypeoption($i_id, $row);
+					self::$_customtypeoptions[$i_id] = new TBGCustomDatatypeOption($i_id, $row);
 				}
 				catch (Exception $e)
 				{

@@ -282,7 +282,7 @@ function updateDualFieldFromJSON(dualfield, field)
 
 function updateFieldFromObject(object, field)
 {
-	if ((object.id && object.id == 0) || (object.value && object.value == ''))
+	if ((Object.isUndefined(object.id) == false && object.id == 0) || (object.value && object.value == ''))
 	{
 		$(field + '_name').hide();
 		$('no_' + field).show();
@@ -317,7 +317,7 @@ function updateTimeFieldFromObject(object, values, field)
 
 function updateVisibleFields(visible_fields)
 {
-	available_fields = new Array('description', 'reproductionsteps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'editions', 'builds', 'components', 'estimated_time', 'elapsed_time', 'milestone');
+	available_fields = new Array('description', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'editions', 'builds', 'components', 'estimated_time', 'elapsed_time', 'milestone');
 	available_fields.each(function (key, index) 
 	{
 		if ($(key + '_field'))
@@ -349,8 +349,9 @@ function updateVisibleFields(visible_fields)
 function setField(url, field)
 {
 	if (field == 'description') var params = $('description_form').serialize();
-	if (field == 'reproductionsteps') var params = $('reproductionsteps_form').serialize();
-	if (field == 'title') var params = $('title_form').serialize();
+	else if (field == 'reproduction_steps') var params = $('reproduction_steps_form').serialize();
+	else if (field == 'title') var params = $('title_form').serialize();
+	else var params = '';
 	if (field == 'issuetype') $('issuetype_indicator_fullpage').show();
 	new Ajax.Request(url, {
 		method: 'post',
@@ -369,8 +370,9 @@ function setField(url, field)
 				else updateFieldFromObject(json.field, field);
 				if (field == 'issuetype') updateVisibleFields(json.visible_fields);
 			}
-			else
+			else if (json.failed)
 			{
+				failedMessage(json.error);
 			}
 			(json.changed == true) ? setIssueChanged(field) : setIssueUnchanged(field);
 			$(field + '_spinning').hide();
@@ -442,6 +444,10 @@ function revertField(url, field)
 				if (field == 'issuetype') 
 				{
 					updateVisibleFields(json.visible_fields);
+				}
+				if (field == 'description' || field == 'reproduction_steps')
+				{
+					$(field + '_form_value').update(json.form_value);
 				}
 				setIssueUnchanged(field);
 			}

@@ -1,4 +1,4 @@
-<textarea name="<?php echo $area_name; ?>" id="<?php echo $area_name; ?>" style="height: <?php echo $height; ?>; width: <?php echo $width; ?>;"><?php echo $value; ?></textarea>
+<textarea name="<?php echo $area_name; ?>" id="<?php echo (isset($area_id)) ? $area_id : $area_name; ?>" style="height: <?php echo $height; ?>; width: <?php echo $width; ?>;"><?php echo $value; ?></textarea>
 <?php if (!isset($hide_hint) || $hide_hint == false): ?>
 	<div class="textarea_hint">
 		<div class="header"><?php echo __('Formatting tips'); ?></div>
