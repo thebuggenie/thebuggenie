@@ -984,7 +984,7 @@
 					}
 					break;
 				case 'title':
-					if ($request->getParameter('value') != '')
+					if ($request->getParameter('value') == '')
 					{
 						return $this->renderJSON(array('changed' => false, 'failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a title')));
 					}

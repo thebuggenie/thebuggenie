@@ -1291,6 +1291,10 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 .dropdown_content table { margin-top: 5px; }
 #viewissue_left_box_bottom .error_message, #title_field .error_message, #viewissue_left_box_top .error_message, #description_field .error_message, #reproduction_steps_field .error_message { color: #E44; font-weight: bold; margin: 10px 5px 5px 0; font-size: 13px; }
 
+#title_content.issue_detail_unmerged { background-color: #E0AC9C; }
+#title_content.issue_detail_changed { background-color: #FFF299; }
+
+#title_form { display: inline; font-size: 12px}
 .viewissue_description_header, .viewissue_reproduction_steps_header { font-weight: bold; font-size: 14px; /*border-bottom: 1px solid #DDD;*/ padding: 0 0 5px 0; }
 .viewissue_description, .viewissue_reproduction_steps { font-size: 13px; font-weight: normal; padding: 5px; margin: 0; }
 
