@@ -71,6 +71,7 @@
 			$this->grouporder = $request->getParameter('grouporder', 'asc');
 			$this->predefined_search = $request->getParameter('predefined_search', false);
 			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys($this->getTemplates(false)))) ? $request->getParameter('template') : 'results_normal';
+			$this->template_parameter = $request->getParameter('template_parameter');
 			$this->searchtitle = __('Search results');
 			$this->issavedsearch = false;
 
@@ -82,6 +83,7 @@
 					$this->issavedsearch = true;
 					$this->savedsearch = $savedsearch;
 					$this->templatename = $savedsearch->get(B2tSavedSearches::TEMPLATE_NAME);
+					$this->template_parameter = $savedsearch->get(B2tSavedSearches::TEMPLATE_PARAMETER);
 					$this->groupby = $savedsearch->get(B2tSavedSearches::GROUPBY);
 					$this->grouporder = $savedsearch->get(B2tSavedSearches::GROUPORDER);
 					$this->ipp = $savedsearch->get(B2tSavedSearches::ISSUES_PER_PAGE);
@@ -130,6 +132,19 @@
 								$this->filters['assigned_to'][] = array('operator' => '=', 'value' => $team_id);
 							}
 							break;
+					}
+				}
+				elseif (in_array($this->templatename, array('results_userpain_singlepainthreshold', 'results_userpain_totalpainthreshold')))
+				{
+					$this->searchtitle = $i18n->__('Showing "bug report" issues sorted by user pain, threshold set at %threshold%', array('%threshold%' => $this->template_parameter));
+					$this->ipp = 0;
+					$this->groupby = 'user_pain';
+					$this->grouporder = 'asc';
+					$ids = B2DB::getTable('B2tIssueTypes')->getBugReportTypeIDs();
+					$this->filters['issue_type'] = array();
+					foreach ($ids as $id)
+					{
+						$this->filters['issue_type'][] = array('operator' => '=', 'value' => $id);
 					}
 				}
 				list ($this->foundissues, $this->resultcount) = TBGIssue::findIssues($this->filters, $this->ipp, $this->offset, $this->groupby, $this->grouporder);
@@ -181,6 +196,8 @@
 			$templates = array();
 			$templates['results_normal'] = TBGContext::getI18n()->__('Standard search results');
 			$templates['results_todo'] = TBGContext::getI18n()->__('Todo-list with progress indicator');
+			$templates['results_userpain_singlepainthreshold'] = TBGContext::getI18n()->__('User pain indicator with custom single bug pain threshold');
+			$templates['results_userpain_totalpainthreshold'] = TBGContext::getI18n()->__('User pain indicator with custom total pain threshold');
 			if (!$display_only)
 			{
 				$templates['results_rss'] = TBGContext::getI18n()->__('RSS feed');

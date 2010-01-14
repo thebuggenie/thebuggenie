@@ -69,6 +69,25 @@
 			$res = $this->doUpdateById($crit, $issuetype->getID());
 		}
 
+		public function getBugReportTypeIDs()
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ICON, 'bug_report');
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$res = $this->doSelect($crit);
+
+			$retarr = array();
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$retarr[] = $row->get(self::ID);
+				}
+			}
+
+			return $retarr;
+		}
+
 		public function loadFixtures($scope)
 		{
 			$i18n = TBGContext::getI18n();

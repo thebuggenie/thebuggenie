@@ -154,11 +154,16 @@
 						<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top" onclick="$('save_search').disable();">
 						<div style="<?php if (count($appliedfilters) <= ((int) TBGContext::isProjectContext() + (int) array_key_exists('text', $appliedfilters))): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
 							<label for="result_template"><?php echo __('Display results as'); ?></label>
-							<select name="template" id="result_template">
+							<select name="template" id="result_template" onchange="if (this.getValue() == 'results_userpain_totalpainthreshold' || this.getValue() == 'results_userpain_singlepainthreshold') { $('template_parameter_div').show();$('template_parameter_label').update(__('User pain threshold')); } else { $('template_parameter_div').hide();$('template_parameter_label').update(__('Template parameter')); }">
 								<?php foreach ($templates as $template_name => $template_description): ?>
 									<option value="<?php echo $template_name; ?>"<?php if ($template_name == $templatename): ?> selected<?php endif; ?>><?php echo $template_description; ?></option>
 								<?php endforeach; ?>
 							</select><br>
+							<div id="template_parameter_div" style="margin-bottom: 10px;<?php if (!in_array($templatename, array('results_userpain_singlepainthreshold', 'results_userpain_totalpainthreshold'))): ?> display: none;<?php endif; ?>">
+								<label for="template_parameter" id="template_parameter_label"><?php echo (!in_array($templatename, array('results_userpain_singlepainthreshold', 'results_userpain_totalpainthreshold'))) ? __('Template parameter') : __('User pain threshold'); ?></label>
+								<input name="template_parameter" id="template_parameter" type="text" value="<?php echo $template_parameter; ?>" style="width: 100px;">
+								<div class="faded_medium"><?php echo __('If the template has a custom parameter, use this field to specify it'); ?></div>
+							</div>
 							<label for="issues_per_page"><?php echo __('Issues per page'); ?></label>
 							<select name="issues_per_page" id="issues_per_page">
 								<?php foreach (array(15, 30, 50, 100) as $cc): ?>
@@ -271,7 +276,7 @@
 				</div>
 				<?php if (count($issues) > 0): ?>
 					<div id="search_results">
-						<?php include_template('search/issues_paginated', array('issues' => $issues, 'templatename' => $templatename, 'searchterm' => $searchterm, 'filters' => $appliedfilters, 'groupby' => $groupby, 'resultcount' => $resultcount, 'ipp' => $ipp, 'offset' => $offset)); ?>
+						<?php include_template('search/issues_paginated', array('issues' => $issues, 'templatename' => $templatename, 'template_parameter' => $template_parameter, 'searchterm' => $searchterm, 'filters' => $appliedfilters, 'groupby' => $groupby, 'resultcount' => $resultcount, 'ipp' => $ipp, 'offset' => $offset)); ?>
 					</div>
 				<?php else: ?>
 					<div class="faded_medium" id="no_issues"><?php echo __('No issues were found'); ?></div>

@@ -365,6 +365,22 @@
 			</td>
 		</tr>
 		<tr>
+			<td><label for="enable_triaging"><?php echo __('Enable triaging'); ?></label></td>
+			<td>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="enable_triaging" id="enable_triaging" style="width: 70px;">
+						<option value=1<?php if ($theProject->isTriagingEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$theProject->isTriagingEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($theProject->isTriagingEnabled()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="config_explanation" colspan="2"><?php echo __('Enable this if you want to be able to triage bug reports'); ?></td>
+		</tr>
+		<tr>
 			<td><label for="enable_builds"><?php echo __('Use builds'); ?></label></td>
 			<td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>

@@ -669,6 +669,7 @@
 					$this->theProject->setHoursPerDay($request->getParameter('hrs_pr_day'));
 					$this->theProject->setLocked((bool) $request->getParameter('locked'));
 					$this->theProject->setBuildsEnabled((bool) $request->getParameter('enable_builds'));
+					$this->theProject->setTriagingEnabled((bool) $request->getParameter('enable_triaging'));
 					$this->theProject->setEditionsEnabled((bool) $request->getParameter('enable_editions'));
 					$this->theProject->setComponentsEnabled((bool) $request->getParameter('enable_components'));
 					$this->theProject->setChangeIssuesWithoutWorkingOnThem((bool) $request->getParameter('allow_changing_without_working'));

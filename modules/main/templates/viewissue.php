@@ -166,6 +166,16 @@
 					TBGContext::trigger('core', 'viewissue_left_top', $theIssue);
 					
 				?>
+				<?php if ($theIssue->getProject()->isTriagingEnabled()): ?>
+					<div class="rounded_box yellow_borderless" id="viewissue_triaging" style="margin-bottom: 10px;<?php if ($theIssue->getIssueType()->getIcon() != 'bug_report'): ?>display: none;<?php endif; ?>">
+						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+						<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 13px; text-align: center">
+							<div class="viewissue_info_header"><?php echo __('Calculated user pain'); ?></div>
+							<div class="user_pain" id="issue_user_pain"><?php echo $theIssue->getUserPain(); ?></div>
+						</div>
+						<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+					</div>
+				<?php endif; ?>
 				<?php include_component('main/issuedetailslisteditable', array('issue' => $theIssue)); ?>
 				<div style="clear: both; font-size: 1px;">&nbsp;</div>
 				<div id="viewissue_attached_information">

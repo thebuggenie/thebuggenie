@@ -11,6 +11,7 @@
 		const GROUPORDER = 'savedsearches.grouporder';
 		const ISSUES_PER_PAGE = 'savedsearches.issues_per_page';
 		const TEMPLATE_NAME = 'savedsearches.templatename';
+		const TEMPLATE_PARAMETER = 'savedsearches.templateparameter';
 		const APPLIES_TO_PROJECT = 'savedsearches.applies_to_project';
 		const IS_PUBLIC = 'savedsearches.is_public';
 		const UID = 'savedsearches.uid';
@@ -22,6 +23,7 @@
 			parent::_addVarchar(self::DESCRIPTION, 255, '');
 			parent::_addBoolean(self::IS_PUBLIC);
 			parent::_addVarchar(self::TEMPLATE_NAME, 200);
+			parent::_addVarchar(self::TEMPLATE_PARAMETER, 200);
 			parent::_addInteger(self::ISSUES_PER_PAGE, 10);
 			parent::_addVarchar(self::GROUPBY, 100);
 			parent::_addVarchar(self::GROUPORDER, 5);

@@ -145,6 +145,34 @@
 		 * @var TBGIdentifiable
 		 */
 		protected $_ownedby;
+
+		/**
+		 * What kind of bug this is
+		 * 
+		 * @var integer
+		 */
+		protected $_pain_bug_type;
+
+		/**
+		 * What effect this bug has on users
+		 *
+		 * @var integer
+		 */
+		protected $_pain_effect;
+
+		/**
+		 * How likely users are to experience this bug
+		 *
+		 * @var integer
+		 */
+		protected $_pain_likelihood;
+
+		/**
+		 * Calculated user pain score
+		 * 
+		 * @var float
+		 */
+		protected $_user_pain;
 		
 		/**
 		 * Owner type
@@ -424,6 +452,49 @@
 			return B2DB::getTable('B2tIssues')->getCountsByProjectID($project_id);
 		}
 
+		static function getPainTypesOrLabel($type, $id = null)
+		{
+			$i18n = TBGContext::getI18n();
+
+			$bugtypes = array();
+			$bugtypes[1] = $i18n->__('Documentation: A documentation issue');
+			$bugtypes[2] = $i18n->__('Localization');
+			$bugtypes[3] = $i18n->__('Visual and Sound Polish: Aesthetic issues');
+			$bugtypes[4] = $i18n->__('Balancing: Enables degenerate usage strategies that harm the experience');
+			$bugtypes[5] = $i18n->__('Minor usability: Impairs usability in secondary scenarios');
+			$bugtypes[6] = $i18n->__('Major usability: Impairs usability in key scenarios');
+			$bugtypes[7] = $i18n->__('Crash: Bug causes crash or data loss. Asserts in the Debug release');
+
+			$likelihoods = array();
+			$likelihoods[1] = $i18n->__('Nuisance – not a big deal but noticeable. Extremely unlikely to affect sales');
+			$likelihoods[2] = $i18n->__('A Pain – users won’t like this once they notice it. A moderate number of users won’t buy');
+			$likelihoods[3] = $i18n->__('A User would likely not purchase the product. Will show up in review. Clearly a noticeable issue');
+			$likelihoods[4] = $i18n->__('A User would return the product. Cannot RTM. The Team would hold the release for this bug');
+			$likelihoods[5] = $i18n->__('Blocking further progress on the daily build');
+
+			$effects = array();
+			$effects[1] = $i18n->__('Will affect almost no one');
+			$effects[2] = $i18n->__('Will only affect a few users');
+			$effects[3] = $i18n->__('Will affect average number of users');
+			$effects[4] = $i18n->__('Will affect most users');
+			$effects[5] = $i18n->__('Will affect all users');
+
+			switch ($type)
+			{
+				case 'bug_type':
+					return ($id === null) ? $bugtypes : $bugtypes[$id];
+					break;
+				case 'likelihood':
+					return ($id === null) ? $likelihoods : $likelihoods[$id];
+					break;
+				case 'effect':
+					return ($id === null) ? $effects : $effects[$id];
+					break;
+			}
+
+			return ($id === null) ? array() : null;
+		}
+
 		/**
 		 * Count the number of open and closed issues for a specific project id
 		 * and issue type id
@@ -502,6 +573,7 @@
 			{
 				try
 				{
+					if (!TBGContext::isProjectContext()) return null;
 					if (TBGContext::getCurrentProject()->usePrefix()) return null;
 					if ($row = B2DB::getTable('B2tIssues')->getByProjectIDAndIssueNo(TBGContext::getCurrentProject()->getID(), $issue_no))
 					$theIssue = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID), $row);
@@ -611,6 +683,10 @@
 			$this->_milestone 				= $row->get(B2tIssues::MILESTONE);
 			$this->_being_worked_on_by		= $row->get(B2tIssues::USER_WORKING_ON);
 			$this->_being_worked_on_since	= $row->get(B2tIssues::USER_WORKED_ON_SINCE);
+			$this->_user_pain				= $row->get(B2tIssues::USER_PAIN);
+			$this->_pain_bug_type			= $row->get(B2tIssues::PAIN_BUG_TYPE);
+			$this->_pain_effect				= $row->get(B2tIssues::PAIN_EFFECT);
+			$this->_pain_likelihood			= $row->get(B2tIssues::PAIN_LIKELIHOOD);
 			$this->_deleted 				= (bool) $row->get(B2tIssues::DELETED);
 
 			$this->_populateCustomfields();
@@ -3828,6 +3904,52 @@
 							$this->addLogEntry(B2tLog::LOG_ISSUE_CATEGORY, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The category has been updated, from <b>%previous_category%</b> to <b>%new_category%</b>.", array('%previous_category%' => $old_name, '%new_category%' => $new_name));
 							break;
+						case '_pain_bug_type':
+							if ($value['original_value'] != 0)
+							{
+								$old_name = ($old_item = self::getPainTypesOrLabel('bug_type', $value['original_value'])) ? $old_item : __('Not determined');
+							}
+							else
+							{
+								$old_name = __('Not determined');
+							}
+							$new_name = ($new_item = self::getPainTypesOrLabel('bug_type', $value['current_value'])) ? $new_item : __('Not determined');
+
+							$this->addLogEntry(B2tLog::LOG_ISSUE_PAIN_BUG_TYPE, $old_name . ' &rArr; ' . $new_name);
+							$comment_lines[] = __("The triaging criteria 'bug type' has been updated, from <b>%previous_name%</b> to <b>%new_name%</b>.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+							break;
+						case '_pain_effect':
+							if ($value['original_value'] != 0)
+							{
+								$old_name = ($old_item = self::getPainTypesOrLabel('effect', $value['original_value'])) ? $old_item : __('Not determined');
+							}
+							else
+							{
+								$old_name = __('Not determined');
+							}
+							$new_name = ($new_item = self::getPainTypesOrLabel('effect', $value['current_value'])) ? $new_item : __('Not determined');
+
+							$this->addLogEntry(B2tLog::LOG_ISSUE_PAIN_EFFECT, $old_name . ' &rArr; ' . $new_name);
+							$comment_lines[] = __("The triaging criteria 'effect' has been updated, from <b>%previous_name%</b> to <b>%new_name%</b>.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+							break;
+						case '_pain_likelihood':
+							if ($value['original_value'] != 0)
+							{
+								$old_name = ($old_item = self::getPainTypesOrLabel('likelihood', $value['original_value'])) ? $old_item : __('Not determined');
+							}
+							else
+							{
+								$old_name = __('Not determined');
+							}
+							$new_name = ($new_item = self::getPainTypesOrLabel('likelihood', $value['current_value'])) ? $new_item : __('Not determined');
+
+							$this->addLogEntry(B2tLog::LOG_ISSUE_PAIN_LIKELIHOOD, $old_name . ' &rArr; ' . $new_name);
+							$comment_lines[] = __("The triaging criteria 'likelihood' has been updated, from <b>%previous_name%</b> to <b>%new_name%</b>.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+							break;
+						case '_user_pain':
+							$this->addLogEntry(B2tLog::LOG_ISSUE_PAIN_CALCULATED, $value['original_value'] . ' &rArr; ' . $value['current_value']);
+							$comment_lines[] = __("The calculated user pain has changed, from <b>%previous_value%</b> to <b>%new_value%</b>.", array('%previous_value%' => $value['original_value'], '%new_value%' => $value['current_value']));
+							break;
 						case '_status':
 							if ($value['original_value'] != 0)
 							{
@@ -4188,5 +4310,30 @@
 		{
 			return $this->_being_worked_on_since;
 		}
-		
+
+		public function setPainBugType($value)
+		{
+			$this->_addChangedProperty('_pain_bug_type', (int) $value);
+		}
+
+		public function setPainLikelihood($value)
+		{
+			$this->_addChangedProperty('_pain_likelihood', (int) $value);
+		}
+
+		public function setPainEffect($value)
+		{
+			$this->_addChangedProperty('_pain_effect', (int) $value);
+		}
+
+		public function calculateUserPain()
+		{
+			$this->_addChangedProperty('_user_pain', round($this->_pain_bug_type * $this->_pain_likelihood * $this->_pain_effect / 100, 1));
+		}
+
+		public function getUserPain()
+		{
+			return $this->_user_pain;
+		}
+
 	}

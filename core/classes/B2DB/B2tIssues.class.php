@@ -55,6 +55,10 @@
 		const ASSIGNED_TYPE = 'issues.assigned_type';
 		const USER_WORKING_ON = 'issues.user_working_on';
 		const USER_WORKED_ON_SINCE = 'issues.user_worked_on_since';
+		const USER_PAIN = 'issues.user_pain';
+		const PAIN_BUG_TYPE = 'issues.pain_bug_type';
+		const PAIN_EFFECT = 'issues.pain_effect';
+		const PAIN_LIKELIHOOD = 'issues.pain_likelihood';
 		const OWNED_TYPE = 'issues.owned_type';
 		const DUPLICATE = 'issues.duplicate';
 		const DELETED = 'issues.deleted';
@@ -74,6 +78,10 @@
 			parent::_addBoolean(self::STATE);
 			parent::_addForeignKeyColumn(self::POSTED_BY, B2DB::getTable('B2tUsers'), B2tUsers::ID);
 			parent::_addInteger(self::OWNED_BY, 10);
+			parent::_addFloat(self::USER_PAIN, 1);
+			parent::_addInteger(self::PAIN_BUG_TYPE, 3);
+			parent::_addInteger(self::PAIN_EFFECT, 3);
+			parent::_addInteger(self::PAIN_LIKELIHOOD, 3);
 			parent::_addInteger(self::ASSIGNED_TO, 10);
 			parent::_addText(self::REPRODUCTION, false);
 			parent::_addForeignKeyColumn(self::RESOLUTION, B2DB::getTable('B2tListTypes'), B2tListTypes::ID);
