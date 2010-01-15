@@ -21,7 +21,7 @@
 							<?php endforeach; ?>
 						<?php elseif (is_bool($error)): ?>
 							<li>
-								<?php if ($key == 'title' || in_array($key, TBGDatatype::getAvailableFields(true))): ?>
+								<?php if ($key == 'title' || in_array($key, TBGDatatype::getAvailableFields(true)) || in_array($key, array('pain_bug_type', 'pain_likelihood', 'pain_effect'))): ?>
 									<?php
 
 										switch ($key)
@@ -70,6 +70,18 @@
 												break;
 											case 'percent_complete':
 												echo __("Please enter how many percent complete the issue already is");
+												break;
+											case 'pain_bug_type':
+												echo __("Please enter a valid triaged bug type");
+												break;
+											case 'pain_likelihood':
+												echo __("Please enter a valid triaged likelihood");
+												break;
+											case 'pain_effect':
+												echo __("Please enter a valid triaged effect");
+												break;
+											default:
+												echo __("Please triage the reported issue, so the user pain score can be properly calculated");
 												break;
 										}
 

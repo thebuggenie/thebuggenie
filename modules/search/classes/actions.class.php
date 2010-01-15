@@ -220,7 +220,7 @@
 				if ($request->getParameter('saved_search_name') != '')
 				{
 					$project_id = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0;
-					B2DB::getTable('B2tSavedSearches')->saveSearch($request->getParameter('saved_search_name'), $request->getParameter('saved_search_description'), $request->getParameter('saved_search_public'), $this->filters, $this->groupby, $this->grouporder, $this->ipp, $this->templatename, $project_id, $request->getParameter('saved_search_id'));
+					B2DB::getTable('B2tSavedSearches')->saveSearch($request->getParameter('saved_search_name'), $request->getParameter('saved_search_description'), $request->getParameter('saved_search_public'), $this->filters, $this->groupby, $this->grouporder, $this->ipp, $this->templatename, $this->template_parameter, $project_id, $request->getParameter('saved_search_id'));
 					if ($request->getParameter('saved_search_id'))
 					{
 						TBGContext::setMessage('search_message', TBGContext::getI18n()->__('The saved search was updated'));

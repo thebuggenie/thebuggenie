@@ -54,7 +54,7 @@
 			return $retarr;
 		}
 
-		public function saveSearch($saved_search_name, $saved_search_description, $saved_search_public, $filters, $groupby, $grouporder, $ipp, $templatename, $project_id, $saved_search_id = null)
+		public function saveSearch($saved_search_name, $saved_search_description, $saved_search_public, $filters, $groupby, $grouporder, $ipp, $templatename, $template_parameter, $project_id, $saved_search_id = null)
 		{
 			$crit = $this->getCriteria();
 			if ($saved_search_id !== null)
@@ -62,6 +62,7 @@
 				$crit->addUpdate(self::NAME, $saved_search_name);
 				$crit->addUpdate(self::DESCRIPTION, $saved_search_description);
 				$crit->addUpdate(self::TEMPLATE_NAME, $templatename);
+				$crit->addUpdate(self::TEMPLATE_PARAMETER, $template_parameter);
 				$crit->addUpdate(self::GROUPBY, $groupby);
 				$crit->addUpdate(self::GROUPORDER, $grouporder);
 				$crit->addUpdate(self::ISSUES_PER_PAGE, $ipp);
@@ -84,6 +85,7 @@
 				$crit->addInsert(self::NAME, $saved_search_name);
 				$crit->addInsert(self::DESCRIPTION, $saved_search_description);
 				$crit->addInsert(self::TEMPLATE_NAME, $templatename);
+				$crit->addInsert(self::TEMPLATE_PARAMETER, $template_parameter);
 				$crit->addInsert(self::GROUPBY, $groupby);
 				$crit->addInsert(self::GROUPORDER, $grouporder);
 				$crit->addInsert(self::ISSUES_PER_PAGE, $ipp);

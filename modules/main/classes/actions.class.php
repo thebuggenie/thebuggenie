@@ -783,10 +783,20 @@
 
 				foreach ($fields_array as $field => $info)
 				{
-					if ($info['required'])
+					if ($field == 'user_pain')
+					{
+						if ($info['required'])
+						{
+							if (!($this->selected_pain_bug_type != 0 && $this->selected_pain_likelihood != 0 && $this->selected_pain_effect != 0))
+							{
+								$errors['user_pain'] = true;
+							}
+						}
+					}
+					elseif ($info['required'])
 					{
 						$var_name = "selected_{$field}";
-						if ((in_array($field, TBGDatatype::getAvailableFields(true)) && ($this->$var_name === null || $this->$var_name === 0)) || (!in_array($field, TBGDatatype::getAvailableFields(true)) && $selected_customdatatype[$field] === null))
+						if ((in_array($field, TBGDatatype::getAvailableFields(true)) && ($this->$var_name === null || $this->$var_name === 0)) || (!in_array($field, TBGDatatype::getAvailableFields(true)) && !in_array($field, array('pain_bug_type', 'pain_likelihood', 'pain_effect')) && $selected_customdatatype[$field] === null))
 						{
 							$errors[$field] = true;
 						}
