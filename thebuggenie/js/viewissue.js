@@ -317,7 +317,7 @@ function updateTimeFieldFromObject(object, values, field)
 
 function updateVisibleFields(visible_fields)
 {
-	available_fields = new Array('description', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'editions', 'builds', 'components', 'estimated_time', 'elapsed_time', 'milestone');
+	available_fields = new Array('description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'editions', 'builds', 'components', 'estimated_time', 'elapsed_time', 'milestone');
 	available_fields.each(function (key, index) 
 	{
 		if ($(key + '_field'))
@@ -325,10 +325,18 @@ function updateVisibleFields(visible_fields)
 			if (Object.isUndefined(visible_fields[key]) == false) 
 			{
 				$(key + '_field').show();
+				if ($(key + '_additional'))
+				{
+					$(key + '_additional').show();
+				}
 			}
 			else 
 			{
 				$(key + '_field').hide();
+				if ($(key + '_additional'))
+				{
+					$(key + '_additional').hide();
+				}
 			}
 		}
 	});

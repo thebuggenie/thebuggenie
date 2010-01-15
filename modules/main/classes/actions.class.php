@@ -572,6 +572,9 @@
 			$this->selected_estimated_time = null;
 			$this->selected_elapsed_time = null;
 			$this->selected_percent_complete = null;
+			$this->selected_pain_bug_type = null;
+			$this->selected_pain_likelihood = null;
+			$this->selected_pain_effect = null;
 			$selected_customdatatype = array();
 			foreach (TBGCustomDatatype::getAll() as $customdatatype)
 			{
@@ -607,6 +610,15 @@
 			$this->selected_estimated_time = null;
 			$this->selected_elapsed_time = null;
 			$this->selected_percent_complete = null;
+			$this->selected_pain_bug_type = null;
+			$this->selected_pain_likelihood = null;
+			$this->selected_pain_effect = null;
+			$selected_customdatatype = array();
+			foreach (TBGCustomDatatype::getAll() as $customdatatype)
+			{
+				$selected_customdatatype[$customdatatype->getKey()] = null;
+			}
+			$this->selected_customdatatype = $selected_customdatatype;
 		}
 
 		protected function _loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction(TBGRequest $request)
@@ -742,6 +754,21 @@
 					$this->selected_percent_complete = (int) $request->getParameter('percent_complete');
 				}
 
+				if ($pain_bug_type_id = (int) $request->getParameter('pain_bug_type_id'))
+				{
+					$this->selected_pain_bug_type = $pain_bug_type_id;
+				}
+
+				if ($pain_likelihood_id = (int) $request->getParameter('pain_likelihood_id'))
+				{
+					$this->selected_pain_likelihood = $pain_likelihood_id;
+				}
+
+				if ($pain_effect_id = (int) $request->getParameter('pain_effect_id'))
+				{
+					$this->selected_pain_effect = $pain_effect_id;
+				}
+
 				$selected_customdatatype = array();
 				foreach (TBGCustomDatatype::getAll() as $customdatatype)
 				{
@@ -759,7 +786,7 @@
 					if ($info['required'])
 					{
 						$var_name = "selected_{$field}";
-						if ((in_array($field, TBGDatatype::getAvailableFields(true)) && $this->$var_name === null) || (!in_array($field, TBGDatatype::getAvailableFields(true)) && $selected_customdatatype[$field] === null))
+						if ((in_array($field, TBGDatatype::getAvailableFields(true)) && ($this->$var_name === null || $this->$var_name === 0)) || (!in_array($field, TBGDatatype::getAvailableFields(true)) && $selected_customdatatype[$field] === null))
 						{
 							$errors[$field] = true;
 						}
@@ -799,6 +826,9 @@
 			if (isset($fields_array['estimated_time'])) $issue->setEstimatedTime($this->selected_estimated_time);
 			if (isset($fields_array['elapsed_time'])) $issue->setSpentTime($this->selected_elapsed_time);
 			if (isset($fields_array['percent_complete'])) $issue->setPercentCompleted($this->selected_percent_complete);
+			if (isset($fields_array['pain_bug_type'])) $issue->setPainBugType($this->selected_pain_bug_type);
+			if (isset($fields_array['pain_likelihood'])) $issue->setPainLikelihood($this->selected_pain_likelihood);
+			if (isset($fields_array['pain_effect'])) $issue->setPainEffect($this->selected_pain_effect);
 			foreach (TBGCustomDatatype::getAll() as $customdatatype)
 			{
 				if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption)
@@ -896,7 +926,11 @@
 			}
 			
 			$fields_array = $selected_project->getReportableFieldsArray($request->getParameter('issuetype_id'));
-			return $this->renderJSON(array('available_fields' => TBGDatatypeBase::getAvailableFields(), 'fields' => $fields_array));
+			$available_fields = TBGDatatypeBase::getAvailableFields();
+			$available_fields[] = 'pain_bug_type';
+			$available_fields[] = 'pain_likelihood';
+			$available_fields[] = 'pain_effect';
+			return $this->renderJSON(array('available_fields' => $available_fields, 'fields' => $fields_array));
 		}
 
 		/**

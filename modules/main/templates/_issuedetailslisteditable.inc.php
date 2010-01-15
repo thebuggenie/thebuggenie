@@ -136,7 +136,7 @@
 		<div style="clear: both;"> </div>
 	</div>
 </div>
-<div class="rounded_box lightyellow_borderless" style="margin: 0;<?php if (!$issue->getProject()->isTriagingEnabled()): ?> display: none;<?php endif; ?>" id="viewissue_left_box_middle">
+<div class="rounded_box lightyellow_borderless" style="margin: 0;<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_field">
 	<div class="xboxcontent" style="vertical-align: middle; padding: 0 10px 5px 5px;">
 		<dl class="viewissue_list" id="pain_bug_type_field">
 			<dt id="pain_bug_type_header" class="<?php if ($issue->isPainBugTypeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainBugTypeMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Type of bug'); ?></dt>

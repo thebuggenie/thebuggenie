@@ -40,7 +40,6 @@
 		const ENABLE_BUILDS = 'projects.enable_builds';
 		const ENABLE_EDITIONS = 'projects.enable_editions';
 		const ENABLE_COMPONENTS = 'projects.enable_components';
-		const ENABLE_TRIAGING = 'projects.enable_triaging';
 		const SHOW_IN_SUMMARY = 'projects.show_in_summary';
 		const SUMMARY_DISPLAY = 'projects.summary_display';
 		const VOTES = 'projects.votes';
@@ -78,7 +77,6 @@
 			parent::_addBoolean(self::ENABLE_BUILDS);
 			parent::_addBoolean(self::ENABLE_EDITIONS);
 			parent::_addBoolean(self::ENABLE_COMPONENTS);
-			parent::_addBoolean(self::ENABLE_TRIAGING);
 			parent::_addBoolean(self::SHOW_IN_SUMMARY, true);
 			parent::_addVarchar(self::SUMMARY_DISPLAY, 15, 'issuetypes');
 			parent::_addBoolean(self::VOTES);

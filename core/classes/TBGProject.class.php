@@ -73,13 +73,6 @@
 		protected $_enabletasks = null;
 
 		/**
-		 * Whether or not the project uses triaging
-		 *
-		 * @var boolean
-		 */
-		protected $_enabletriaging = null;
-
-		/**
 		 * Whether or not the project uses builds
 		 *
 		 * @var boolean
@@ -495,7 +488,6 @@
 				$this->_prefix 					= $row->get(B2tProjects::PREFIX);
 				$this->_locked 					= (bool) $row->get(B2tProjects::LOCKED);
 				$this->_useprefix 				= (bool) $row->get(B2tProjects::USE_PREFIX);
-				$this->_enabletriaging 			= (bool) $row->get(B2tProjects::ENABLE_TRIAGING);
 				$this->_enablebuilds 			= (bool) $row->get(B2tProjects::ENABLE_BUILDS);
 				$this->_enableeditions 			= (bool) $row->get(B2tProjects::ENABLE_EDITIONS);
 				$this->_enablecomponents 		= (bool) $row->get(B2tProjects::ENABLE_COMPONENTS);
@@ -895,26 +887,6 @@
 		public function setBuildsEnabled($builds_enabled)
 		{
 			$this->_enablebuilds = (bool) $builds_enabled;
-		}
-
-		/**
-		 * Is builds enabled
-		 *
-		 * @return boolean
-		 */
-		public function isTriagingEnabled()
-		{
-			return $this->_enabletriaging;
-		}
-
-		/**
-		 * Set if the project uses builds
-		 *
-		 * @param boolean $builds_enabled
-		 */
-		public function setTriagingEnabled($triaging_enabled)
-		{
-			$this->_enabletriaging = (bool) $triaging_enabled;
 		}
 
 		/**
@@ -1630,7 +1602,6 @@
 			$crit->addUpdate(B2tProjects::LOCKED, $this->_locked);
 			$crit->addUpdate(B2tProjects::PREFIX, $this->_prefix);
 			$crit->addUpdate(B2tProjects::USE_PREFIX, $this->_useprefix);
-			$crit->addUpdate(B2tProjects::ENABLE_TRIAGING, $this->_enabletriaging);
 			$crit->addUpdate(B2tProjects::ENABLE_BUILDS, $this->_enablebuilds);
 			$crit->addUpdate(B2tProjects::ENABLE_COMPONENTS, $this->_enablecomponents);
 			$crit->addUpdate(B2tProjects::ENABLE_EDITIONS, $this->_enableeditions);
@@ -2270,6 +2241,12 @@
 							}
 							$retval[$row->get(B2tIssueFields::FIELD_KEY)] = array('required' => (bool) $row->get(B2tIssueFields::REQUIRED), 'additional' => (bool) $row->get(B2tIssueFields::ADDITIONAL));
 						}
+					}
+					if (array_key_exists('user_pain', $retval))
+					{
+						$retval['pain_bug_type'] = array('required' => $retval['user_pain']['required']);
+						$retval['pain_likelihood'] = array('required' => $retval['user_pain']['required']);
+						$retval['pain_effect'] = array('required' => $retval['user_pain']['required']);
 					}
 					
 					if ($reportable)

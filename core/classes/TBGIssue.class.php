@@ -3664,6 +3664,16 @@
 			$fields_array = $this->getProject()->getVisibleFieldsArray($this->getIssueType()->getID());
 			return array_key_exists($fieldname, $fields_array);
 		}
+
+		/**
+		 * Return whether or not the triaging fields for user pain are visible
+		 * 
+		 * @return boolean
+		 */
+		public function isUserPainVisible()
+		{
+			return (bool) ($this->isFieldVisible('user_pain'));
+		}
 		
 		/**
 		 * Return whether or not the "description" field is visible

@@ -16,6 +16,9 @@
 					case 'reproduction_steps':
 						echo __('Steps to reproduce the issue');
 						break;
+					case 'user_pain':
+						echo __('Triaging: User pain');
+						break;
 					case 'percent_complete':
 						echo __('Percent completed');
 						break;
@@ -57,7 +60,7 @@
 	<td style="padding: 2px; text-align: center;">
 		<?php if (in_array($key, array('fu'))): ?>
 			<input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional" name="field[<?php echo $key; ?>][additional]" value="1"><?php echo image_tag('action_ok.png'); ?>
-		<?php elseif (!in_array($key, array('description', 'reproduction_steps'))): ?>
+		<?php elseif (!in_array($key, array('description', 'reproduction_steps', 'user_pain'))): ?>
 			<input type="checkbox" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional" name="field[<?php echo $key; ?>][additional]" value="1"<?php if (array_key_exists($key, $visiblefields) && $visiblefields[$key]['additional']): ?> checked<?php endif; ?><?php if ((!array_key_exists($key, $visiblefields) || !$visiblefields[$key]['reportable']) && !in_array($key, array('status'))): ?> disabled<?php endif; ?>>
 		<?php else: ?>
 			<input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional" name="fu"> - 
