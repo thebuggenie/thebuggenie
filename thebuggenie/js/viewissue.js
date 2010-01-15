@@ -368,7 +368,14 @@ function setField(url, field)
 			{
 				if (field == 'status' || field == 'issuetype') updateDualFieldFromJSON(json.field, field);
 				else updateFieldFromObject(json.field, field);
-				if (field == 'issuetype') updateVisibleFields(json.visible_fields);
+				if (field == 'issuetype')
+				{
+					updateVisibleFields(json.visible_fields);
+				}
+				else if (field == 'pain_bug_type' || field == 'pain_likelihood' || field == 'pain_effect')
+				{
+					$('issue_user_pain').update(json.user_pain);
+				}
 			}
 			else if (json.failed)
 			{
@@ -445,20 +452,30 @@ function revertField(url, field)
 				{
 					updateVisibleFields(json.visible_fields);
 				}
-				if (field == 'description' || field == 'reproduction_steps')
+				else if (field == 'description' || field == 'reproduction_steps')
 				{
 					$(field + '_form_value').update(json.form_value);
 				}
+				else if (field == 'pain_bug_type' || field == 'pain_likelihood' || field == 'pain_effect')
+				{
+					$('issue_user_pain').update(json.field.user_pain);
+				}
 				setIssueUnchanged(field);
 			}
-			else
+			else if (json && json.error)
 			{
+				failedMessage(json.error);
 			}
 			$(field + '_undo_spinning').hide();
 			if (field == 'issuetype') $('issuetype_indicator_fullpage').hide();
 		},
 		onFailure: function(transport) {
 			$(field + '_undo_spinning').hide();
+			var json = transport.responseJSON;
+			if (json && json.error)
+			{
+				failedMessage(json.error);
+			}
 			if (field == 'issuetype') $('issuetype_indicator_fullpage').hide();
 		}
 	});

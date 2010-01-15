@@ -139,7 +139,7 @@
 					$this->searchtitle = $i18n->__('Showing "bug report" issues sorted by user pain, threshold set at %threshold%', array('%threshold%' => $this->template_parameter));
 					$this->ipp = 0;
 					$this->groupby = 'user_pain';
-					$this->grouporder = 'asc';
+					$this->grouporder = 'desc';
 					$ids = B2DB::getTable('B2tIssueTypes')->getBugReportTypeIDs();
 					$this->filters['issue_type'] = array();
 					foreach ($ids as $id)
@@ -197,7 +197,7 @@
 			$templates['results_normal'] = TBGContext::getI18n()->__('Standard search results');
 			$templates['results_todo'] = TBGContext::getI18n()->__('Todo-list with progress indicator');
 			$templates['results_userpain_singlepainthreshold'] = TBGContext::getI18n()->__('User pain indicator with custom single bug pain threshold');
-			$templates['results_userpain_totalpainthreshold'] = TBGContext::getI18n()->__('User pain indicator with custom total pain threshold');
+			//$templates['results_userpain_totalpainthreshold'] = TBGContext::getI18n()->__('User pain indicator with custom total pain threshold');
 			if (!$display_only)
 			{
 				$templates['results_rss'] = TBGContext::getI18n()->__('RSS feed');

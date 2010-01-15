@@ -488,6 +488,9 @@
 					case 'severity':
 						$crit->addOrderBy(self::SEVERITY, $grouporder);
 						break;
+					case 'user_pain':
+						$crit->addOrderBy(self::USER_PAIN, $grouporder);
+						break;
 					case 'resolution':
 						$crit->addOrderBy(self::RESOLUTION, $grouporder);
 						break;

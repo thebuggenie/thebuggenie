@@ -370,28 +370,6 @@ Custom classes
 	border-right: 1px solid #EEE; */
 }
 
-.errorheader
-{
-	width: 500px;
-	text-align: left;
-	font-size: 11px;
-	padding: 2px 4px 2px 4px;
-	color: #555;
-	background-color: #FAFAD6; border: 1px solid #BBB;
-}
-
-.errorbox
-{
-	width: 500px;
-	text-align: left;
-	font-size: 11px;
-	padding: 5px 4px 5px 4px;
-	color: #555;
-	background-color: #FFF;
-	border: 1px solid #BBB;
-	border-top: 0px;
-}
-
 .msgheader
 {
 	width: 500px;
@@ -841,21 +819,6 @@ Custom classes
 	font-weight: bold;
 }
 
-.e_div
-{
-	background: url('error_large_light.png') no-repeat left;
-	border: 1px solid #FBB;
-	margin: 10px;
-	margin-left: 0px;
-	padding: 8px;
-	font-weight: normal;
-}
-
-.e_div:first-line
-{
-	font-weight: bold;
-}
-
 .hidden_iframe
 {
 	background-color: #6A70D6;
@@ -1273,6 +1236,9 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .viewissue_info_header { font-weight: bold; font-size: 14px; }
 .viewissue_info_content { font-weight: normal; font-size: 12px; }
 .user_pain { font-size: 30px; font-weight: bold; color: #D1C67D; }
+.search_results .yellow_borderless .user_pain { color: #B6AC6D; }
+.search_results .red_borderless .user_pain { color: #B55; }
+.userpain_below_threshold td { border-top: 2px solid #B77; }
 
 dl.viewissue_list { margin: 0; font-size: 12px; padding: 0 0 0 0; position: relative; min-height: 18px; clear: both; }
 dl.viewissue_list dt { width: 100px; font-weight: bold; padding: 3px 2px 2px 2px; clear: both; }
@@ -1283,14 +1249,14 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #viewissue_left_box_top .issue_detail_changed img.undo, #title_field .issue_detail_changed img.undo, #description_field .issue_detail_changed img.undo, #reproduction_steps_field .issue_detail_changed img.undo, dl.viewissue_list dd.issue_detail_changed img.undo { float: left; margin-right: 5px; display: inline; }
 #viewissue_left_box_top img.undo, #description_field img.undo, #title_field img.undo,#reproduction_steps_field img.undo,dl.viewissue_list dd img.undo { display: none; }
 #viewissue_left_box_issuetype img.undo, #viewissue_left_box_issuetype img.dropdown { margin-top: 7px; } 
-.dropdown_header, .dropdown_header, #project_leads .dropdown_header { font-weight: bold; font-size: 13px; }
-.dropdown_content, .dropdown_content, #project_leads .dropdown_content { font-weight: normal; padding-top: 5px; font-size: 12px; }
-.dropdown_content ul, .dropdown_content ul, #project_leads .dropdown_content ul { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; }
-.dropdown_content table, .dropdown_content table { margin: 5px 0 0 0; }
-.dropdown_content ul li, .dropdown_content ul li { font-size: 12px; font-weight: normal; margin: 0; text-align: left; height: 18px; padding: 1px; }
+.dropdown_header, #project_leads .dropdown_header { font-weight: bold; font-size: 13px; }
+.dropdown_content, #project_leads .dropdown_content { font-weight: normal; padding-top: 5px; font-size: 12px; }
+.dropdown_content ul, #project_leads .dropdown_content ul { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both; }
+.dropdown_content table { margin: 5px 0 0 0; }
+.dropdown_content ul li { font-size: 12px; font-weight: normal; margin: 0; text-align: left; min-height: 18px; padding: 1px; }
 .dropdown_content table, .dropdown_content table td { font-size: 12px; font-weight: normal; margin: 0; text-align: left; height: 18px; padding: 1px; }
 .dropdown_content table { margin-top: 5px; }
-#viewissue_left_box_bottom .error_message, #title_field .error_message, #viewissue_left_box_top .error_message, #description_field .error_message, #reproduction_steps_field .error_message { color: #E44; font-weight: bold; margin: 10px 5px 5px 0; font-size: 13px; }
+.error_message { color: #E44; font-weight: bold; margin: 10px 5px 5px 0; font-size: 13px; }
 
 #title_content.issue_detail_unmerged { background-color: #E0AC9C; }
 #title_content.issue_detail_changed { background-color: #FFF299; }

@@ -457,27 +457,29 @@
 			$i18n = TBGContext::getI18n();
 
 			$bugtypes = array();
-			$bugtypes[1] = $i18n->__('Documentation: A documentation issue');
-			$bugtypes[2] = $i18n->__('Localization');
-			$bugtypes[3] = $i18n->__('Visual and Sound Polish: Aesthetic issues');
-			$bugtypes[4] = $i18n->__('Balancing: Enables degenerate usage strategies that harm the experience');
-			$bugtypes[5] = $i18n->__('Minor usability: Impairs usability in secondary scenarios');
+			$bugtypes[7] = $i18n->__('Crash: Bug causes crash or data loss / asserts in the debug release');
 			$bugtypes[6] = $i18n->__('Major usability: Impairs usability in key scenarios');
-			$bugtypes[7] = $i18n->__('Crash: Bug causes crash or data loss. Asserts in the Debug release');
+			$bugtypes[5] = $i18n->__('Minor usability: Impairs usability in secondary scenarios');
+			$bugtypes[4] = $i18n->__('Balancing: Enables degenerate usage strategies that harm the experience');
+			$bugtypes[3] = $i18n->__('Visual and Sound Polish: Aesthetic issues');
+			$bugtypes[2] = $i18n->__('Localization');
+			$bugtypes[1] = $i18n->__('Documentation: A documentation issue');
 
 			$likelihoods = array();
-			$likelihoods[1] = $i18n->__('Nuisance – not a big deal but noticeable. Extremely unlikely to affect sales');
-			$likelihoods[2] = $i18n->__('A Pain – users won’t like this once they notice it. A moderate number of users won’t buy');
-			$likelihoods[3] = $i18n->__('A User would likely not purchase the product. Will show up in review. Clearly a noticeable issue');
-			$likelihoods[4] = $i18n->__('A User would return the product. Cannot RTM. The Team would hold the release for this bug');
 			$likelihoods[5] = $i18n->__('Blocking further progress on the daily build');
+			$likelihoods[4] = $i18n->__('A User would return the product / cannot RTM / the team would hold the release for this bug');
+			$likelihoods[3] = $i18n->__('A User would likely not purchase the product / will show up in review / clearly a noticeable issue');
+			$likelihoods[2] = $i18n->__("A Pain – users won't like this once they notice it / a moderate number of users won't buy");
+			$likelihoods[1] = $i18n->__('Nuisance – not a big deal but noticeable / extremely unlikely to affect sales');
 
 			$effects = array();
-			$effects[1] = $i18n->__('Will affect almost no one');
-			$effects[2] = $i18n->__('Will only affect a few users');
-			$effects[3] = $i18n->__('Will affect average number of users');
-			$effects[4] = $i18n->__('Will affect most users');
 			$effects[5] = $i18n->__('Will affect all users');
+			$effects[4] = $i18n->__('Will affect most users');
+			$effects[3] = $i18n->__('Will affect average number of users');
+			$effects[2] = $i18n->__('Will only affect a few users');
+			$effects[1] = $i18n->__('Will affect almost no one');
+
+			if ($id === 0) return null;
 
 			switch ($type)
 			{
@@ -1367,6 +1369,7 @@
 		{
 			$values = array();
 			$i18n = TBGContext::getI18n();
+			if (!is_array($time)) throw new Exception("That's not a valid time");
 			if (array_key_exists('months', $time) && $time['months'] > 0)
 			{
 				$values[] = ($time['months'] == 1) ? $i18n->__('1 month') : $i18n->__('%number_of% months', array('%number_of%' => $time['months']));
@@ -4193,6 +4196,10 @@
 			$crit->addUpdate(B2tIssues::PRIORITY, (is_object($this->_priority)) ? $this->_priority->getID() : $this->_priority);
 			$crit->addUpdate(B2tIssues::CATEGORY, (is_object($this->_category)) ? $this->_category->getID() : $this->_category);
 			$crit->addUpdate(B2tIssues::REPRODUCABILITY, (is_object($this->_reproducability)) ? $this->_reproducability->getID() : $this->_reproducability);
+			$crit->addUpdate(B2tIssues::USER_PAIN, $this->_user_pain);
+			$crit->addUpdate(B2tIssues::PAIN_BUG_TYPE, $this->_pain_bug_type);
+			$crit->addUpdate(B2tIssues::PAIN_LIKELIHOOD, $this->_pain_likelihood);
+			$crit->addUpdate(B2tIssues::PAIN_EFFECT, $this->_pain_effect);
 			$crit->addUpdate(B2tIssues::ESTIMATED_MONTHS, $this->_estimatedmonths);
 			$crit->addUpdate(B2tIssues::ESTIMATED_WEEKS, $this->_estimatedweeks);
 			$crit->addUpdate(B2tIssues::ESTIMATED_DAYS, $this->_estimateddays);
@@ -4311,29 +4318,125 @@
 			return $this->_being_worked_on_since;
 		}
 
+		public function getPainBugType()
+		{
+			return $this->_pain_bug_type;
+		}
+
+		public function getPainBugTypeLabel()
+		{
+			return self::getPainTypesOrLabel('bug_type', $this->_pain_bug_type);
+		}
+
 		public function setPainBugType($value)
 		{
 			$this->_addChangedProperty('_pain_bug_type', (int) $value);
+			$this->_calculateUserPain();
+		}
+
+		public function getPainLikelihood()
+		{
+			return $this->_pain_likelihood;
+		}
+
+		public function getPainLikelihoodLabel()
+		{
+			return self::getPainTypesOrLabel('likelihood', $this->_pain_likelihood);
 		}
 
 		public function setPainLikelihood($value)
 		{
 			$this->_addChangedProperty('_pain_likelihood', (int) $value);
+			$this->_calculateUserPain();
+		}
+
+		public function getPainEffect()
+		{
+			return $this->_pain_effect;
+		}
+
+		public function getPainEffectLabel()
+		{
+			return self::getPainTypesOrLabel('effect', $this->_pain_effect);
 		}
 
 		public function setPainEffect($value)
 		{
 			$this->_addChangedProperty('_pain_effect', (int) $value);
+			$this->_calculateUserPain();
 		}
 
-		public function calculateUserPain()
+		protected function _calculateUserPain()
 		{
-			$this->_addChangedProperty('_user_pain', round($this->_pain_bug_type * $this->_pain_likelihood * $this->_pain_effect / 100, 1));
+			$this->_addChangedProperty('_user_pain', round($this->_pain_bug_type * $this->_pain_likelihood * $this->_pain_effect / 1.75, 1));
 		}
 
 		public function getUserPain()
 		{
 			return $this->_user_pain;
+		}
+
+		public function hasPainBugType()
+		{
+			return (bool) ($this->_pain_bug_type > 0);
+		}
+
+		public function isPainBugTypeChanged()
+		{
+			return $this->_isPropertyChanged('_pain_bug_type');
+		}
+
+		public function isPainBugTypeMerged()
+		{
+			return $this->_isPropertyMerged('_pain_bug_type');
+		}
+
+		public function revertPainBugType()
+		{
+			$this->_revertPropertyChange('_pain_bug_type');
+			$this->_calculateUserPain();
+		}
+
+		public function hasPainLikelihood()
+		{
+			return (bool) ($this->_pain_likelihood > 0);
+		}
+
+		public function isPainLikelihoodChanged()
+		{
+			return $this->_isPropertyChanged('_pain_likelihood');
+		}
+
+		public function isPainLikelihoodMerged()
+		{
+			return $this->_isPropertyMerged('_pain_likelihood');
+		}
+
+		public function revertPainLikelihood()
+		{
+			$this->_revertPropertyChange('_pain_likelihood');
+			$this->_calculateUserPain();
+		}
+
+		public function hasPainEffect()
+		{
+			return (bool) ($this->_pain_effect > 0);
+		}
+
+		public function isPainEffectChanged()
+		{
+			return $this->_isPropertyChanged('_pain_effect');
+		}
+
+		public function isPainEffectMerged()
+		{
+			return $this->_isPropertyMerged('_pain_effect');
+		}
+
+		public function revertPainEffect()
+		{
+			$this->_revertPropertyChange('_pain_effect');
+			$this->_calculateUserPain();
 		}
 
 	}
