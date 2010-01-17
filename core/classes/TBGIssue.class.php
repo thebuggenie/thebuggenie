@@ -385,13 +385,6 @@
 		protected $_votes = null;
 		
 		/**
-		 * This issues comments
-		 * 
-		 * @var array
-		 */
-		protected $_comments;
-		
-		/**
 		 * The issue this issue is a duplicate of
 		 * 
 		 * @var TBGIssue

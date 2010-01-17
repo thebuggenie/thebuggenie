@@ -52,5 +52,16 @@
 			parent::_addForeignKeyColumn(self::UPDATED_BY, B2DB::getTable('B2tUsers'), B2tUsers::ID);
 			parent::_addForeignKeyColumn(self::POSTED_BY, B2DB::getTable('B2tUsers'), B2tUsers::ID);
 		}
-		
+
+		public function getComments($target_id, $target_type)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::TARGET_ID, $target_id);
+			$crit->addWhere(self::TARGET_TYPE, $target_type);
+			$crit->addWhere(self::DELETED, 0);
+			$crit->addOrderBy(self::POSTED, 'desc');
+			$res = $this->doSelect($crit);
+			return $res;
+		}
+
 	}

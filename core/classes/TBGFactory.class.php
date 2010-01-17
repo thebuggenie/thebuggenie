@@ -37,6 +37,7 @@
 		static protected $_issuetypes = array();
 		static protected $_tasks = array();
 		static protected $_issues = array();
+		static protected $_comments = array();
 		static protected $_modules = array();
 		static protected $_milestones = array();
 		static protected $_userstates = array();
@@ -546,7 +547,31 @@
 			}
 			return self::$_issues[$i_id];
 		}
-		
+
+		/**
+		 * Returns a TBGComment
+		 *
+		 * @param integer $c_id
+		 * 
+		 * @return TBGComment
+		 */
+		public static function TBGCommentLab($c_id, $row = null)
+		{
+			if ((int) $c_id == 0) throw new Exception('Invalid id');
+			if (!isset(self::$_comments[$c_id]))
+			{
+				try
+				{
+					self::$_comments[$c_id] = new TBGComment($c_id, $row);
+				}					
+				catch (Exception $e)
+				{
+					throw $e;
+				}
+			}
+			return self::$_comments[$c_id];
+		}
+
 		/**
 		 * Returns a TBGMilestone
 		 *

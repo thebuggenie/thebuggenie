@@ -349,7 +349,7 @@
 							</td>
 							<td style="font-size: 19px; width: auto; padding: 0; padding-left: 7px;" id="title_field">
 									<span class="viewissue_title" >
-										<span class="faded_medium <?php if ($theIssue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="title_header"><?php if ($theIssue->canEditTitle()) : ?><?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'title_edit', 'onclick' => "$('title_change').show(); $('title_name').hide(); $('no_title').hide();")); ?> <a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'title')); ?>', 'title');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'title_undo_spinning')); ?><?php endif; ?>[<?php echo $theIssue->isClosed() ? strtoupper(__('Closed')) : strtoupper(__('Open')); ?>]&nbsp;<b><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), __('Issue %issue_no%', array('%issue_no%' => $theIssue->getFormattedIssueNo(true)))); ?>&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+										<span class="faded_medium <?php if ($theIssue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="title_header"><?php if ($theIssue->canEditTitle()) : ?><?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'title_edit', 'onclick' => "$('title_change').show(); $('title_name').hide(); $('no_title').hide();")); ?> <a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'title')); ?>', 'title');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'title_undo_spinning')); ?><?php endif; ?>[<?php echo $theIssue->isClosed() ? strtoupper(__('Closed')) : strtoupper(__('Open')); ?>]&nbsp;<b><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), __('Issue %issue_no%', array('%issue_no%' => $theIssue->getFormattedIssueNo(true)))); ?>&nbsp;&nbsp;-&nbsp;</span>
 										<span id="issue_title">
 											<span id="title_content" class="<?php if ($theIssue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 												<span class="faded_medium" id="no_title" <?php if ($theIssue->getTitle() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></span>
@@ -477,8 +477,16 @@
 					//TBGContext::trigger('core', 'viewissue_right_middle', $theIssue);
 					
 				?>
-				<div style="margin-top: 10px;">
-					<?php
+				<div class="comments">
+					<h1 class="commentheadertop">Comments</h1>
+					<?php if (count(TBGComment::getComments($theIssue->getID(), 1)) == 0): ?>
+						<div class="faded_medium"><?php echo __('There are no comments'); ?></div>
+					<?php else:
+						foreach (TBGComment::getComments($theIssue->getID(), 1) as $aComment)
+						{
+							require('_comment.inc.php');
+						}
+					endif;
 					
 					/*
 					$canViewComments = TBGComment::getCommentAccess($theIssue->getID());

@@ -75,36 +75,21 @@
 		
 		/**
 		 *
-		 * Returns all comments for a given item, or a specified comment ($c_id)
+		 * Returns all comments for a given item
 		 *
 		 */
 		static function getComments($target_id, $target_type, $module = 'core', $from_when = null)
 		{
-			$theComments = array();
-			
-			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tComments::TARGET_ID, $target_id);
-			$crit->addWhere(B2tComments::TARGET_TYPE, $target_type);
-			$crit->addWhere(B2tComments::MODULE, $module);
-			$crit->addWhere(B2tComments::DELETED, 0);
-			if ($from_when != null)
+			$retval = array();
+			if ($res = B2DB::getTable('B2tComments')->getComments($target_id, $target_type))
 			{
-				$crit->addWhere(B2tComments::POSTED, $from_when, B2DBCriteria::DB_GREATER_THAN);
+				while ($row = $res->getNextRow())
+				{
+					$comment = TBGFactory::TBGCommentLab($row->get(B2tComments::ID), $row);
+					$retval[$comment->getID()] = $comment;
+				}
 			}
-			if (!TBGContext::getUser()->hasPermission('b2canreadallcomments'))
-			{
-				$crit->addWhere(B2tComments::IS_PUBLIC, 1);
-			}
-			$crit->addOrderBy(B2tComments::UPDATED, 'desc');
-	
-			$res = B2DB::getTable('B2tComments')->doSelect($crit);
-			
-			while ($row = $res->getNextRow())
-			{
-				$theComments[] = new TBGComment($row->get(B2tComments::ID), $row);
-			}
-	
-			return $theComments;
+			return $retval;
 		}
 		
 		static function countComments($target_id, $target_type, $module = 'core')
