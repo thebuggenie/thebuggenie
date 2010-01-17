@@ -338,18 +338,22 @@
 			B2DB::getTable('B2tComments')->doUpdateById($crit, $c_id);
 		}
 		
-		static function getCommentAccess($target_id, $type = 'view', $target_type = 1, $module = 'core')
+		static function getCommentAccess($target_id, $type = 'view', $cid = 0, $target_type = 1, $module = 'core')
 		{
+			if (is_numeric($cid) && $cid != 0)
+			{
+				$comment = TBGFactory::TBGCommentLab($cid);
+			}
 			switch ($module)
 			{
 				case 'core':
 					switch ($target_type)
 					{
 						case 1:
-							$ia = TBGIssue::hasAccess($target_id);
-							if ($ia['allowed'] || $ia['explicit'])
+							$theIssue = TBGFactory::TBGIssueLab($target_id);
+							$ia = $theIssue->hasAccess();
+							if ($ia)
 							{
-								$theIssue = TBGFactory::TBGIssueLab($target_id);
 								switch ($type)
 								{
 									case 'view':
@@ -363,38 +367,79 @@
 										return false;
 										break;
 									case 'add':
-										if (TBGContext::getUser()->hasPermission("b2canaddcomments", $target_type . ':' . $theIssue->getProject()->getID(), "core"))
+										if (TBGContext::getUser()->hasPermission("canpostcomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
 										{
 											$canAddComments = true;
 										}
-										if (TBGContext::getUser()->hasPermission("b2notaddcomments", $theIssue->getID(), "core") == true)
+										else
 										{
 											$canAddComments = false;
 										}
 										return $canAddComments;
 										break;
 									case 'edit':
-										if (TBGContext::getUser()->hasPermission("b2caneditcomments", $target_type . ':' . $theIssue->getProject()->getID(), "core"))
+										if (TBGContext::getUser()->hasPermission("caneditcomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
 										{
-											$canEditComments = true;
+											$canEditComments = false;
+											if ($comment->getPostedBy()->getID() !== TBGContext::getUser()->getID())
+											{
+												if(TBGContext::getUser()->hasPermission("caneditcomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
+												{
+													$canEditComments = true;
+												}
+											}
+											else
+											{
+												if (TBGContext::getUser()->hasPermission("caneditcomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments"))
+												{
+													$canEditComments = true;
+												}
+											}
+											
+											if(TBGContext::getUser()->hasPermission("caneditcomments"))
+											{
+												$canEditComments = true;
+											}
 										}
-										if (TBGContext::getUser()->hasPermission("b2noteditcomments", $theIssue->getID(), "core") == true)
+										else
 										{
 											$canEditComments = false;
 										}
 										return $canEditComments;
 										break;
+									case 'delete':
+										if (TBGContext::getUser()->hasPermission("candeletecomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
+										{
+											$canDeleteComments = false;
+											if ($comment->getPostedBy()->getID() !== TBGContext::getUser()->getID())
+											{
+												if(TBGContext::getUser()->hasPermission("candeletecomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
+												{
+													$canDeleteComments = true;
+												}
+											}
+											else
+											{
+												if (TBGContext::getUser()->hasPermission("candeletecomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments"))
+												{
+													$canDeleteComments = true;
+												}
+											}
+											
+											if(TBGContext::getUser()->hasPermission("candeletecomments"))
+											{
+												$canDeleteComments = true;
+											}
+										}
+										else
+										{
+											$canDeleteComments = false;
+										}
+										return $canDeleteComments;
+										break;
 								}
 							}
 							return false;
-							/*if (TBGSettings::get('b2filtercommentsuser', 'core', TBGContext::getScope()->getID(), TBGContext::getUser()->getUID()) == 1)
-							{
-								$doFilterUserComments = true;
-							}
-							if (TBGSettings::get('b2filtercommentssystem', 'core', TBGContext::getScope()->getID(), TBGContext::getUser()->getUID()) == 1)
-							{
-								$doFilterSystemComments = true;
-							}*/
 						break;
 					}
 					break;

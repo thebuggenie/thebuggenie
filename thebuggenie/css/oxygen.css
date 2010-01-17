@@ -561,6 +561,17 @@ Custom classes
 	font-size: 10px;
 }
 
+#comment_new_button {
+	font-weight: bold;
+	font-size: 13px;
+	margin: 5px;
+	margin-bottom: 10px;
+}
+
+#comment_new_button img {
+	vertical-align: bottom;
+}
+
 .comment {
 	padding-bottom: 10px;
 }
@@ -581,7 +592,18 @@ Custom classes
 }
 
 .commentbody {
+	padding-bottom: 5px;
 	font-size: 13px;
+}
+
+.commenttools {
+	padding: 5px;
+	border-top: 1px solid #CCC;
+}
+
+.commenttools img {
+	vertical-align: bottom;
+	margin-right: 5px;
 }
 
 .b2_section_loginframe

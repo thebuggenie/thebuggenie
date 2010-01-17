@@ -479,6 +479,7 @@
 				?>
 				<div class="comments">
 					<h1 class="commentheadertop">Comments</h1>
+					<?php if (TBGComment::getCommentAccess($theIssue->getID(), 'add')): ?><div id="comment_new_button"><?php echo image_tag('action_add_small.png', array('title' => __('Add new comment'))); ?> Add new comment </div><?php endif; ?>
 					<?php if (count(TBGComment::getComments($theIssue->getID(), 1)) == 0): ?>
 						<div class="faded_medium"><?php echo __('There are no comments'); ?></div>
 					<?php else:
@@ -487,50 +488,6 @@
 							require('_comment.inc.php');
 						}
 					endif;
-					
-					/*
-					$canViewComments = TBGComment::getCommentAccess($theIssue->getID());
-					$canAddComments = TBGComment::getCommentAccess($theIssue->getID(), 'add');
-					$canEditComments = TBGComment::getCommentAccess($theIssue->getID(), 'edit');
-					
-					if ($canViewComments || $canAddComments || $canEditComments)
-					{
-						if ($canAddComments)
-						{
-							echo TBGComment::getCommentForm($theIssue->getID());
-						}
-						
-						?>
-						<div class="commentheadertop" style="clear: both;"><b><?php echo __('Comments and discussion'); ?></b><?php if (TBGUser::isThisGuest() == false) { ?>&nbsp;&nbsp;(<a href="javascript:void(0);" onclick="Effect.Appear('filter_comments', { duration: 0.5 });" style="font-size: 10px;"><?php echo __('Filter comments'); ?></a><font style="font-size: 9px;">:<?php
-					
-							if ($doFilterSystemComments || $doFilterUserComments)
-							{
-								if ($doFilterSystemComments && !$doFilterUserComments) echo __('Filtering system comments');
-								if ($doFilterSystemComments && $doFilterUserComments) echo __('Filtering system comments and user comments');
-								if (!$doFilterSystemComments && $doFilterUserComments) echo __('Filtering user comments');
-							}
-							else
-							{
-								echo __('No filters applied');
-							}
-						
-						?></font>)<?php } ?>
-						<div id="filter_comments_core_1_<?php echo $theIssue->getID(); ?>" style="padding: 5px; left: 390px; position: absolute; display: none; background-color: #FFF; border: 1px solid #DDD; width: 200px;"><div style="padding-bottom: 3px;"><b><?php echo __('Apply filter to comments:'); ?></b></div>
-						<?php if ($doFilterSystemComments == false) { ?><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;hide_comments=system"><?php echo __('Hide system comments'); ?></a><br><?php } ?>
-						<?php if ($doFilterSystemComments) { ?><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;show_comments=system"><?php echo __('Show system comments'); ?></a><br><?php } ?>
-						<?php if ($doFilterUserComments == false) { ?><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;hide_comments=user"><?php echo __('Hide user comments'); ?></a><br><?php } ?>
-						<?php if ($doFilterUserComments) { ?><a href="viewissue.php?issue_no=<?php echo $theIssue->getFormattedIssueNo(true); ?>&amp;show_comments=user"><?php echo __('Show user comments'); ?></a><br><?php } ?>
-						<div style="text-align: right;"><a href="javascript:void(0);" onclick="Effect.Fade('filter_comments', { duration: 0.5 });" style="font-size: 10px;"><?php echo __('Never mind'); ?></a></div>
-						</div>
-						</div>
-						<?php
-						echo '<span id="comments_span_core_1_' . $theIssue->getID()  . '">';
-						$target_id = $theIssue->getID();
-						$target_type = 1;
-						$module = 'core';
-						require TBGContext::getIncludePath() . 'include/comments.inc.php';
-						echo '</span>';
-					}*/
 			
 					?>
 				</div>
