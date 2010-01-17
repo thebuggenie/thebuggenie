@@ -580,6 +580,10 @@ Custom classes
 	font-weight: bold;
 }
 
+.commentbody {
+	font-size: 13px;
+}
+
 .b2_section_loginframe
 {
 	table-layout: fixed;
