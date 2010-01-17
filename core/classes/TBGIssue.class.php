@@ -3908,7 +3908,7 @@
 							$new_name = ($this->getCategory() instanceof TBGDatatype) ? $this->getCategory()->getName() : __('Not determined');
 							
 							$this->addLogEntry(B2tLog::LOG_ISSUE_CATEGORY, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = __("The category has been updated, from <b>%previous_category%</b> to <b>%new_category%</b>.", array('%previous_category%' => $old_name, '%new_category%' => $new_name));
+							$comment_lines[] = __("The category has been updated, from '''%previous_category%''' to '''%new_category%'''.", array('%previous_category%' => $old_name, '%new_category%' => $new_name));
 							break;
 						case '_pain_bug_type':
 							if ($value['original_value'] != 0)
@@ -3922,7 +3922,7 @@
 							$new_name = ($new_item = self::getPainTypesOrLabel('bug_type', $value['current_value'])) ? $new_item : __('Not determined');
 
 							$this->addLogEntry(B2tLog::LOG_ISSUE_PAIN_BUG_TYPE, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = __("The triaging criteria 'bug type' has been updated, from <b>%previous_name%</b> to <b>%new_name%</b>.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+							$comment_lines[] = __("The triaging criteria 'bug type' has been updated, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
 						case '_pain_effect':
 							if ($value['original_value'] != 0)
@@ -3936,7 +3936,7 @@
 							$new_name = ($new_item = self::getPainTypesOrLabel('effect', $value['current_value'])) ? $new_item : __('Not determined');
 
 							$this->addLogEntry(B2tLog::LOG_ISSUE_PAIN_EFFECT, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = __("The triaging criteria 'effect' has been updated, from <b>%previous_name%</b> to <b>%new_name%</b>.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+							$comment_lines[] = __("The triaging criteria 'effect' has been updated, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
 						case '_pain_likelihood':
 							if ($value['original_value'] != 0)
@@ -3950,11 +3950,11 @@
 							$new_name = ($new_item = self::getPainTypesOrLabel('likelihood', $value['current_value'])) ? $new_item : __('Not determined');
 
 							$this->addLogEntry(B2tLog::LOG_ISSUE_PAIN_LIKELIHOOD, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = __("The triaging criteria 'likelihood' has been updated, from <b>%previous_name%</b> to <b>%new_name%</b>.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+							$comment_lines[] = __("The triaging criteria 'likelihood' has been updated, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
 						case '_user_pain':
 							$this->addLogEntry(B2tLog::LOG_ISSUE_PAIN_CALCULATED, $value['original_value'] . ' &rArr; ' . $value['current_value']);
-							$comment_lines[] = __("The calculated user pain has changed, from <b>%previous_value%</b> to <b>%new_value%</b>.", array('%previous_value%' => $value['original_value'], '%new_value%' => $value['current_value']));
+							$comment_lines[] = __("The calculated user pain has changed, from '''%previous_value%''' to '''%new_value%'''.", array('%previous_value%' => $value['original_value'], '%new_value%' => $value['current_value']));
 							break;
 						case '_status':
 							if ($value['original_value'] != 0)
@@ -3968,7 +3968,7 @@
 							$new_name = ($this->getStatus() instanceof TBGDatatype) ? $this->getStatus()->getName() : __('Not determined');
 							
 							$this->addLogEntry(B2tLog::LOG_ISSUE_STATUS, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = __("The status has been updated, from <b>%previous_status%</b> to <b>%new_status%</b>.", array('%previous_status%' => $old_name, '%new_status%' => $new_name));
+							$comment_lines[] = __("The status has been updated, from '''%previous_status%''' to '''%new_status%'''.", array('%previous_status%' => $old_name, '%new_status%' => $new_name));
 							break;
 						case '_reproducability':
 							if ($value['original_value'] != 0)
@@ -3982,7 +3982,7 @@
 							$new_name = ($this->getReproducability() instanceof TBGDatatype) ? $this->getReproducability()->getName() : __('Not determined');
 							
 							$this->addLogEntry(B2tLog::LOG_ISSUE_REPRODUCABILITY, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = __("The reproducability has been updated, from <b>%previous_reproducability%</b> to <b>%new_reproducability%</b>.", array('%previous_reproducability%' => $old_name, '%new_reproducability%' => $new_name));
+							$comment_lines[] = __("The reproducability has been updated, from '''%previous_reproducability%''' to '''%new_reproducability%'''.", array('%previous_reproducability%' => $old_name, '%new_reproducability%' => $new_name));
 							
 							break;
 						case '_priority':
@@ -3997,7 +3997,7 @@
 							$new_name = ($this->getPriority() instanceof TBGDatatype) ? $this->getPriority()->getName() : __('Not determined');
 							
 							$this->addLogEntry(B2tLog::LOG_ISSUE_PRIORITY, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = __("The priority has been updated, from <b>%previous_priority%</b> to <b>%new_priority%</b>.", array('%previous_priority%' => $old_name, '%new_priority%' => $new_name));
+							$comment_lines[] = __("The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''.", array('%previous_priority%' => $old_name, '%new_priority%' => $new_name));
 							break;
 						case '_assignedto':
 						case '_assignedtype':
@@ -4018,7 +4018,7 @@
 								$new_name = ($this->getAssignee() instanceof TBGIdentifiableClass) ? $this->getAssignee()->getName() : __('Not assigned');
 								
 								$this->addLogEntry(B2tLog::LOG_ISSUE_ASSIGNED, $old_name . ' &rArr; ' . $new_name);
-								$comment_lines[] = __("The assignee has been changed, from <b>%previous_name%</b> to <b>%new_name%</b>.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+								$comment_lines[] = __("The assignee has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 								$is_saved_assignee = true;
 							}
 							break;
@@ -4028,7 +4028,7 @@
 							$new_name = $this->getPostedBy()->getName();
 							
 							$this->addLogEntry(B2tLog::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = __("The issue's poster has been changed, from <b>%previous_name%</b> to <b>%new_name%</b>.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+							$comment_lines[] = __("The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
 						case '_ownedby':
 						case '_ownedtype':
@@ -4049,7 +4049,7 @@
 								$new_name = ($this->getOwner() instanceof TBGIdentifiableClass) ? $this->getOwner()->getName() : __('Not owned by anyone');
 								
 								$this->addLogEntry(B2tLog::LOG_ISSUE_OWNED, $old_name . ' &rArr; ' . $new_name);
-								$comment_lines[] = __("The owner has been changed, from <b>%previous_name%</b> to <b>%new_name%</b>.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+								$comment_lines[] = __("The owner has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 								$is_saved_assignee = true;
 							}
 							break;
@@ -4069,7 +4069,7 @@
 							$new_name = ($this->getResolution() instanceof TBGDatatype) ? $this->getResolution()->getName() : __('Not determined');
 							
 							$this->addLogEntry(B2tLog::LOG_ISSUE_RESOLUTION, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = __("The resolution has been updated, from <b>%previous_resolution%</b> to <b>%new_resolution%</b>.", array('%previous_resolution%' => $old_name, '%new_resolution%' => $new_name));
+							$comment_lines[] = __("The resolution has been updated, from '''%previous_resolution%''' to '''%new_resolution%'''.", array('%previous_resolution%' => $old_name, '%new_resolution%' => $new_name));
 							break;
 						case '_severity':
 							if ($value['original_value'] != 0)
@@ -4083,7 +4083,7 @@
 							$new_name = ($this->getSeverity() instanceof TBGDatatype) ? $this->getSeverity()->getName() : __('Not determined');
 							
 							$this->addLogEntry(B2tLog::LOG_ISSUE_SEVERITY, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = __("The severity has been updated, from <b>%previous_severity%</b> to <b>%new_severity%</b>.", array('%previous_severity%' => $old_name, '%new_severity%' => $new_name));
+							$comment_lines[] = __("The severity has been updated, from '''%previous_severity%''' to '''%new_severity%'''.", array('%previous_severity%' => $old_name, '%new_severity%' => $new_name));
 							break;
 						case '_milestone':
 							if ($value['original_value'] != 0)
@@ -4097,7 +4097,7 @@
 							$new_name = ($this->getMilestone() instanceof TBGMilestone) ? $this->getMilestone()->getName() : __('Not determined');
 							
 							$this->addLogEntry(B2tLog::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = __("The milestone has been updated, from <b>%previous_milestone%</b> to <b>%new_milestone%</b>.", array('%previous_milestone%' => $old_name, '%new_milestone%' => $new_name));
+							$comment_lines[] = __("The milestone has been updated, from '''%previous_milestone%''' to '''%new_milestone%'''.", array('%previous_milestone%' => $old_name, '%new_milestone%' => $new_name));
 							break;
 						case '_issuetype':
 							if ($value['original_value'] != 0)
@@ -4111,7 +4111,7 @@
 							$new_name = ($this->getIssuetype() instanceof TBGIssuetype) ? $this->getIssuetype()->getName() : __('Unknown');
 							
 							$this->addLogEntry(B2tLog::LOG_ISSUE_ISSUETYPE, $old_name . ' &rArr; ' . $new_name);
-							$comment_lines[] = __("The issue type has been updated, from <b>%previous_type%</b> to <b>%new_type%</b>.", array('%previous_type%' => $old_name, '%new_type%' => $new_name));
+							$comment_lines[] = __("The issue type has been updated, from '''%previous_type%''' to '''%new_type%'''.", array('%previous_type%' => $old_name, '%new_type%' => $new_name));
 							break;
 						case '_estimatedmonths':
 						case '_estimatedweeks':
@@ -4127,7 +4127,7 @@
 													'points' => $this->getChangedPropertyOriginal('_estimatedpoints'));
 
 								$this->addLogEntry(B2tLog::LOG_ISSUE_TIME_ESTIMATED, $this->getFormattedTime($old_time) . ' &rArr; ' . $this->getFormattedTime($this->getEstimatedTime()));
-								$comment_lines[] = __("The issue has been (re-)estimated, from <b>%previous_time%</b> to <b>%new_time%</b>.", array('%previous_time%' => $this->getFormattedTime($old_time), '%new_time%' => $this->getFormattedTime($this->getEstimatedTime())));
+								$comment_lines[] = __("The issue has been (re-)estimated, from '''%previous_time%''' to '''%new_time%'''.", array('%previous_time%' => $this->getFormattedTime($old_time), '%new_time%' => $this->getFormattedTime($this->getEstimatedTime())));
 								$is_saved_estimated = true;
 							}
 							break;
@@ -4145,7 +4145,7 @@
 													'points' => $this->getChangedPropertyOriginal('_spentpoints'));
 
 								$this->addLogEntry(B2tLog::LOG_ISSUE_TIME_SPENT, $this->getFormattedTime($old_time) . ' &rArr; ' . $this->getFormattedTime($this->getSpentTime()));
-								$comment_lines[] = __("Time spent on this issue, from <b>%previous_time%</b> to <b>%new_time%</b>.", array('%previous_time%' => $this->getFormattedTime($old_time), '%new_time%' => $this->getFormattedTime($this->getSpentTime())));
+								$comment_lines[] = __("Time spent on this issue, from '''%previous_time%''' to '''%new_time%'''.", array('%previous_time%' => $this->getFormattedTime($old_time), '%new_time%' => $this->getFormattedTime($this->getSpentTime())));
 								$is_saved_spent = true;
 							}
 							break;
@@ -4173,13 +4173,13 @@
 								$old_value = ($old_item = TBGCustomDatatypeOption::getByValueAndKey($value['original_value'], $key)) ? $old_item->getName() : __('Unknown');
 								$new_value = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getName() : __('Unknown');
 								$this->addLogEntry(B2tLog::LOG_ISSUE_CUSTOMFIELD_CHANGED, $old_value . ' &rArr; ' . $new_value);
-								$comment_lines[] = __("The custom field %customfield_name% has been updated, from <b>%previous_value%</b> to <b>%new_value%</b>.", array('%customfield_name%' => $customdatatype->getDescription(), '%previous_value%' => $old_value, '%new_value%' => $new_value));
+								$comment_lines[] = __("The custom field %customfield_name% has been updated, from '''%previous_value%''' to ''''''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%previous_value%' => $old_value, '%new_value%' => $new_value));
 							}
 							break;
 					}
 				}
 			}
-			$this->addSystemComment(__('Issue updated'), join("\n", $comment_lines), TBGContext::getUser()->getUID());
+			$this->addSystemComment(__('Issue updated'), '* '.join("\n* ", $comment_lines), TBGContext::getUser()->getUID());
 			$this->_clearChangedProperties();
 			
 			$crit = new B2DBCriteria();

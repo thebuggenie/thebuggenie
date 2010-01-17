@@ -18,7 +18,7 @@
 	</div>
 	<div class="rounded_box mediumgrey_borderless">
 		<div class="xboxcontent" style="padding: 5px;">
-			<div class="commentbody"><?php echo $aComment->getContent(); ?></div>
+			<div class="commentbody"><?php echo tbg_parse_text($aComment->getContent()); ?></div>
 		<?php if (TBGComment::getCommentAccess($theIssue->getID(), 'edit', $aComment->getID()) || TBGComment::getCommentAccess($theIssue->getID(), 'delete', $aComment->getID())) : ?>
 			<div class="commenttools">
 				<?php if (TBGComment::getCommentAccess($theIssue->getID(), 'edit', $aComment->getID())): echo image_tag('icon_edit.png', array('title' => __('Edit'))); ?><span style="margin-right: 10px;">Edit</span><?php endif; ?>
