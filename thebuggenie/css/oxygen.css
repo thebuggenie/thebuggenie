@@ -1246,6 +1246,7 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .search_results .yellow_borderless .user_pain { color: #B6AC6D; }
 .search_results .red_borderless .user_pain { color: #B55; }
 .userpain_below_threshold td { border-top: 2px solid #B77; }
+.userpain_below_threshold td .status_table td { border-top: 0; }
 
 dl.viewissue_list { margin: 0; font-size: 12px; padding: 0 0 0 0; position: relative; min-height: 18px; clear: both; }
 dl.viewissue_list dt { width: 100px; font-weight: bold; padding: 3px 2px 2px 2px; clear: both; }

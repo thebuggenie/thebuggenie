@@ -161,6 +161,10 @@
 			else
 			{
 				$this->resultcount = count($this->foundissues);
+				if ($this->templatename == 'results_userpain_singlepainthreshold')
+				{
+					usort($this->foundissues, array(searchActions, 'userPainSort'));
+				}
 			}
 
 			if ($request->hasParameter('predefined_search'))
@@ -432,6 +436,17 @@
 				$prevgroup_id = $groupby_id;
 			}
 			return array($showtablestart, $showheader, $prevgroup_id, $groupby_description);
+		}
+
+		static function userPainSort(TBGIssue $first_issue, TBGIssue $second_issue)
+		{
+			$first_issue_pain = $first_issue->getUserPain();
+			$second_issue_pain = $second_issue->getUserPain();
+			if ($first_issue_pain == $second_issue_pain)
+			{
+				return 0;
+			}
+			return ($first_issue_pain < $second_issue_pain) ? -1 : 1;
 		}
 
 	}

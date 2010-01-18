@@ -4379,7 +4379,23 @@
 			$this->_addChangedProperty('_user_pain', round($this->_pain_bug_type * $this->_pain_likelihood * $this->_pain_effect / 1.75, 1));
 		}
 
-		public function getUserPain()
+		protected function _calculateDatePain()
+		{
+			$user_pain = $this->_user_pain;
+			if ($this->_user_pain > 0 && $this->_user_pain < 100)
+			{
+				$offset = $_SERVER['REQUEST_TIME'] - $this->getPosted();
+				$user_pain += floor($offset / 60 / 60 / 24) * 0.1;
+			}
+			return $user_pain;
+		}
+
+		public function getUserPain($real = false)
+		{
+			return ($real) ? $this->getRealUserPain() : $this->_calculateDatePain();
+		}
+
+		protected function getRealUserPain()
 		{
 			return $this->_user_pain;
 		}
