@@ -94,7 +94,7 @@
 			</div>
 			<div style="float: right; width: 49%; margin: 0 0 10px 0;">
 				<div class="header_div">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'search' => true, 'groupby' => 'priority')), __('More'), array('style' => 'float: right; font-weight: normal;', 'title' => __('Show more issues'))); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'search' => true, 'filters[state]' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN), 'groupby' => 'priority', 'grouporder' => 'desc')), __('More'), array('style' => 'float: right; font-weight: normal;', 'title' => __('Show more issues'))); ?>
 					<?php echo __('Open issues by priority'); ?>
 				</div>
 				<table cellpadding=0 cellspacing=0 class="priority_percentage" style="margin: 5px 0 10px 0; width: 100%;">
