@@ -480,16 +480,15 @@
 				<div class="comments">
 					<h1 class="commentheadertop">Comments</h1>
 					<?php if (TBGComment::getCommentAccess($theIssue->getID(), 'add')): ?><div id="comment_new_button"><?php echo image_tag('action_add_small.png', array('title' => __('Add new comment'))); ?> Add new comment </div><?php endif; ?>
-					<?php if (count(TBGComment::getComments($theIssue->getID(), 1)) == 0): ?>
-						<div class="faded_medium"><?php echo __('There are no comments'); ?></div>
-					<?php else:
-						foreach (TBGComment::getComments($theIssue->getID(), 1) as $aComment)
-						{
-							require('_comment.inc.php');
-						}
-					endif;
-			
+					<div class="faded_medium" id="comments_none" <?php if (count(TBGComment::getComments($theIssue->getID(), 1)) != 0): ?>style="display: none;"<?php endif; ?>><?php echo __('There are no comments'); ?></div>
+					<div id="comments_box">
+					<?php
+					foreach (TBGComment::getComments($theIssue->getID(), 1) as $aComment)
+					{
+						require('_comment.inc.php');
+					}
 					?>
+					</div>
 				</div>
 			</td>
 		</tr>

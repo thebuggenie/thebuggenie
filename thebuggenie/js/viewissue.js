@@ -514,6 +514,48 @@ function setIssueUnchanged(field)
 	}
 }
 
+function deleteComment(url, pid)
+{
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	requestHeaders: {Accept: 'application/json'},
+	onLoading: function (transport) {
+		$('comment_delete_controls_' + pid).hide();
+		$('comment_delete_indicator_' + pid).show();
+	},
+	onSuccess: function(transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			$('comment_delete_controls_' + pid).show();
+			$('comment_delete_indicator_' + pid).hide();
+			failedMessage(json.error);
+		}
+		else
+		{
+			$('comment_delete_indicator_' + pid).remove();
+			$('comment_delete_confirm_' + pid).remove();
+			$('comment_' + pid).remove();
+			if ($('comments_box').childElements().size() == 0)
+			{
+				$('comments_none').show();
+			}
+			successMessage(json.title);
+		}
+	},
+	onFailure: function (transport) {
+		$('comment_delete_controls_' + pid).show();
+		$('comment_delete_error_' + pid).show();
+		var json = transport.responseJSON;
+		if (json && json.failed)
+		{
+			failedMessage(json.error);
+		}
+	}
+	});
+}
+
 /*function submitNewTitle()
 {
 	var params = Form.serialize('issue_edit_title');

@@ -1754,6 +1754,55 @@
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You can not remove items from this issue')));
 		}
 
+		public function runDeleteComment(TBGRequest $request)
+		{
+			$comment = TBGFactory::TBGCommentLab($request->getParameter('comment_id'));
+			if ($comment instanceof TBGcomment)
+			{
+				if (TBGContext::getUser()->hasPermission("candeletecomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
+				{
+					$canDeleteComments = false;
+					if ($comment->getPostedBy()->getID() !== TBGContext::getUser()->getID())
+					{
+						if(TBGContext::getUser()->hasPermission("candeletecomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
+						{
+							$canDeleteComments = true;
+						}
+					}
+					else
+					{
+						if (TBGContext::getUser()->hasPermission("candeletecomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments"))
+						{
+							$canDeleteComments = true;
+						}
+					}
+					
+					if(TBGContext::getUser()->hasPermission("candeletecomments"))
+					{
+						$canDeleteComments = true;
+					}
+				}
+				else
+				{
+					$canDeleteComments = false;
+				}
+											
+				if (!$canDeleteComments)
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
+				}
+				else
+				{
+					unset($comment);
+					TBGComment::deleteComment($request->getParameter('comment_id'));
+					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment deleted!')));
+				}
+			}
+			else
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Comment ID is invalid')));
+			}
+		}
 	}
 
 ?>

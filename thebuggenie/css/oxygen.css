@@ -576,6 +576,10 @@ Custom classes
 	padding-bottom: 10px;
 }
 
+.comment_delete {
+	margin-top: 10px !important;
+}
+
 .commentheader
 {
 	font-size: 14px;
@@ -592,6 +596,7 @@ Custom classes
 }
 
 .commentbody {
+    padding-top: 10px;
 	padding-bottom: 5px;
 	font-size: 13px;
 }

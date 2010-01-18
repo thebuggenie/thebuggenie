@@ -27,6 +27,7 @@
 	$routes[] = array('project_statistics_last_30', '/:project_key/statistics/last/30', 'project', 'statisticsLast30');
 	$routes[] = array('project_timeline', '/:project_key/timeline/*', 'project', 'timeline');
 	$routes[] = array('project_dashboard', '/:project_key', 'project', 'dashboard');
+	$routes[] = array('comment_delete', '/comment/delete/:comment_id', 'main', 'deletecomment');
 
 	foreach ($routes as $route)
 	{
