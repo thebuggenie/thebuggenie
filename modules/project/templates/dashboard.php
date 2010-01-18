@@ -47,7 +47,7 @@
 		<td style="width: auto; padding: 5px;">
 			<div style="clear: both; padding: 0 5px 5px 0;" id="project_header_container">
 				<?php echo image_tag($selected_project->getIcon()); ?>
-				<div id="project_name"><?php echo $selected_project->getName(); ?> (<?php echo $selected_project->getKey(); ?>)</div>
+				<div id="project_name"><?php echo $selected_project->getName(); ?> <span><?php echo $selected_project->getKey(); ?></span></div>
 				<div id="project_description"<?php if (!$selected_project->hasDescription()): ?> class="faded_dark"<?php endif; ?>>
 					<?php if ($selected_project->hasDescription()): ?>
 						<?php echo tbg_parse_text($selected_project->getDescription()); ?>
@@ -137,9 +137,9 @@
 							<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No ideas suggested yet'); ?></div>
 						<?php endif; ?>
 					</td>
-					<td style="width: 510px;">
+					<td style="width: 410px;">
 						<div class="header_div">
-							<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'search' => true, 'filters[state]' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN), 'groupby' => 'priority', 'grouporder' => 'desc')), __('More'), array('style' => 'float: right; font-weight: normal;', 'title' => __('Show more issues'))); ?>
+							<?php echo link_tag(make_url('project_statistics', array('project_key' => $selected_project->getKey())), __('More statistics'), array('style' => 'float: right; font-weight: normal;', 'title' => __('Show more issues'))); ?>
 							<?php echo __('Last 30 days'); ?>
 						</div>
 						<?php echo image_tag(make_url('project_statistics_last_30', array('project_key' => $selected_project->getKey())), array('style' => 'margin-bottom: 15px;'), true); ?>
