@@ -1,6 +1,16 @@
 <?php if (!$user instanceof TBGUser || $user->getUID() == 0): ?>
 	<tr><td style="padding: 5px; color: #BBB;" colspan=2><?php echo __('No such user'); ?></td></tr>
 <?php else: ?>
+<?php if (isset($size) && $size == 'small'): ?>
+	<tr>
+		<td class="imgtd_bud" id="icon_<?php echo $user->getUname() . "_" . $rnd_no; ?>">
+			<a href="javascript:void(0);" onclick="showBud('<?php echo $user->getUname() . "_" . $rnd_no; ?>');" class="image"><?php echo image_tag('icon_user.png', array()); ?></a>
+		</td>
+		<td style="padding: 0px; padding-left: 2px;" valign="middle">
+			<a href="javascript:void(0);" onclick="showBud('<?php echo $user->getUname() . "_" . $rnd_no; ?>');" style="font-weight: bold;"><?php echo $user->getBuddyname(); ?></a>&nbsp;&nbsp;<i><span class="faded_medium">(<?php echo $user->getState()->getName(); ?>)</span></i>
+		</td>
+	</tr>
+<?php else: ?>
 	<tr>
 		<td class="imgtd_bud" id="icon_<?php echo $user->getUname() . "_" . $rnd_no; ?>">
 			<a href="javascript:void(0);" onclick="showBud('<?php echo $user->getUname() . "_" . $rnd_no; ?>');" class="image"><?php echo image_tag($user->getAvatarURL(), array(), true); ?></a>
@@ -10,6 +20,7 @@
 			<span class="faded_medium"><?php echo $user->getState()->getName(); ?></span>
 		</td>
 	</tr>
+<?php endif; ?>
 	<tr>
 		<td colspan="2" class="nopadding">
 			<div id="bud_<?php echo $user->getUname() . '_' . $rnd_no; ?>" style="width: 225px; display: none; position: absolute;" class="bud_actions">

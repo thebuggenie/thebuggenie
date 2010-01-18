@@ -4,14 +4,14 @@
 		<?php
 			if ($aComment->isSystemComment())
 			{
-				$postedby = __('on behalf of ').$aComment->getPostedBy();
+				$postedby = __('on behalf of ');
 			}
 			else
 			{
-				$postedby = __('by ').$aComment->getPostedBy();
+				$postedby = __('by ');
 			}
 		?>
-		<div class="commentdate"><?php echo __('Posted').' <i>'.tbg_formattime($aComment->getPosted(), 12).'</i> '.$postedby; ?></div>
+		<div class="commentdate"><table cellpadding="0" cellspacing="0"><tr><td><?php echo __('Posted').' <i>'.tbg_formattime($aComment->getPosted(), 12).'</i> '.$postedby; ?></td><td><table style="display: inline;"><?php echo include_component('main/userdropdown', array('user' => $aComment->getPostedBy(), 'size' => 'small')); ?></table></td></tr></table></div>
 		<div class="commentbody"><?php echo tbg_parse_text($aComment->getContent()); ?></div>
 		<?php if (TBGComment::getCommentAccess($theIssue->getID(), 'edit', $aComment->getID()) || TBGComment::getCommentAccess($theIssue->getID(), 'delete', $aComment->getID())) : ?>
 			<div class="commenttools">
