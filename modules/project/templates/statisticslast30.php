@@ -1,0 +1,1 @@
+<?php include_component('pchart/lineGraph', array('width' => 500, 'height' => 250, 'datasets' => $datasets, 'title' => __('Issues closed vs. issues opened')));

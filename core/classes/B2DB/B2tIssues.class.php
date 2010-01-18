@@ -126,14 +126,38 @@
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			
+
 			$crit2 = clone $crit;
-			
+
 			$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
 			$crit2->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			return array($this->doCount($crit), $this->doCount($crit2));
 		}
-		
+
+		public function getLast30IssueCountsByProjectID($project_id)
+		{
+			$retarr = array();
+
+			for ($cc = 30; $cc >= 1; $cc--)
+			{
+				$crit = $this->getCriteria();
+				$crit->addWhere(self::PROJECT_ID, $project_id);
+				$crit->addWhere(self::DELETED, false);
+				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+				$ctn = $crit->returnCriterion(self::POSTED, $_SERVER['REQUEST_TIME'] - (86400 * 31), B2DBCriteria::DB_GREATER_THAN_EQUAL);
+				$ctn->addWhere(self::POSTED, $_SERVER['REQUEST_TIME'] - (86400 * $cc), B2DBCriteria::DB_LESS_THAN_EQUAL);
+				$crit->addWhere($ctn);
+
+				$crit2 = clone $crit;
+
+				$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
+
+				$retarr[0][] = $this->doCount($crit);
+				$retarr[1][] = $this->doCount($crit2);
+			}
+			return $retarr;
+		}
+
 		public function getCountsByProjectIDandIssuetype($project_id, $issuetype_id)
 		{
 			$crit = $this->getCriteria();

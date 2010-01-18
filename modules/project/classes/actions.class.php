@@ -223,6 +223,19 @@
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_statistics', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 		}
 
+		public function runStatisticsLast30(TBGRequest $request)
+		{
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_statistics', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->getResponse()->setContentType('image/png');
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+			$datasets = array();
+			$issues = $this->selected_project->getLast30Counts();
+			$datasets[] = array('values' => $issues['open'], 'label' => __('Issues opened'));
+			$datasets[] = array('values' => $issues['closed'], 'label' => __('Issues closed'));
+			$this->datasets = $datasets;
+			$this->max_value = 20;
+		}
+
 		/**
 		 * Return the project menu strip
 		 *

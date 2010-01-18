@@ -1840,6 +1840,12 @@
 			{
 				list ($this->_issuecounts['all']['closed'], $this->_issuecounts['all']['open']) = TBGIssue::getIssueCountsByProjectID($this->getID());
 			}
+			if (empty($this->_issuecounts['last30']))
+			{
+				list ($closed, $open) = B2DB::getTable('B2tIssues')->getLast30IssueCountsByProjectID($this->getID());
+				$this->_issuecounts['last30']['open'] = $open;
+				$this->_issuecounts['last30']['closed'] = $closed;
+			}
 		}
 		
 		protected function _populateIssueCountsByIssueType($issuetype_id)
@@ -1953,6 +1959,12 @@
 		{
 			$this->_populateIssueCounts();
 			return $this->_issuecounts['all']['closed'] + $this->_issuecounts['all']['open'];
+		}
+
+		public function getLast30Counts()
+		{
+			$this->_populateIssueCounts();
+			return $this->_issuecounts['last30'];
 		}
 		
 		/**
