@@ -2349,6 +2349,7 @@
 			if ($this->_prioritycount === null)
 			{
 				$this->_prioritycount = array();
+				$this->_prioritycount[0] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
 				foreach (TBGPriority::getAll() as $priority_id => $priority)
 				{
 					$this->_prioritycount[$priority_id] = array('open' => 0, 'closed' => 0, 'percentage' => 0);

@@ -94,10 +94,10 @@
 			</div>
 			<div style="float: right; width: 49%; margin: 0 0 10px 0;">
 				<div class="header_div">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('More'), array('style' => 'float: right; font-weight: normal;', 'title' => __('Show more issues'))); ?>
+					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'search' => true, 'groupby' => 'priority')), __('More'), array('style' => 'float: right; font-weight: normal;', 'title' => __('Show more issues'))); ?>
 					<?php echo __('Open issues by priority'); ?>
 				</div>
-				<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin: 5px 0 10px 0; width: 100%;">
+				<table cellpadding=0 cellspacing=0 class="priority_percentage" style="margin: 5px 0 10px 0; width: 100%;">
 				<?php foreach (TBGPriority::getAll() as $priority_id => $priority): ?>
 					<tr class="canhover_light">
 						<td style="font-weight: normal; font-size: 13px; padding-left: 3px;"><?php echo $priority->getName(); ?></td>
@@ -106,6 +106,12 @@
 						<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;">&nbsp;<?php echo (int) $priority_count[$priority_id]['percentage']; ?>%</td>
 					</tr>
 				<?php endforeach; ?>
+				<tr class="canhover_light">
+					<td style="font-weight: normal; font-size: 13px; padding-left: 3px;" class="faded_medium"><?php echo __('Priority not set'); ?></td>
+					<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;" class="faded_medium"><?php echo $priority_count[0]['open']; ?></td>
+					<td style="width: 40%; vertical-align: middle;" class="faded_medium"><?php include_template('main/percentbar', array('percent' => $priority_count[0]['percentage'], 'height' => 14)); ?></td>
+					<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;" class="faded_medium">&nbsp;<?php echo (int) $priority_count[0]['percentage']; ?>%</td>
+				</tr>
 				</table>
 				<div class="header_div">
 					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('More'), array('style' => 'float: right; font-weight: normal;', 'title' => __('Show more issues'))); ?>

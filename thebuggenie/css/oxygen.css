@@ -1278,6 +1278,10 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #issue_lefthand .percent_filled a, .percent_unfilled a { display: block; height: 14px; }
 #issue_lefthand .percent_filled a:hover, .percent_unfilled a:hover { border: 0; }
 
+.faded_medium .percent_filled { background-color: #BBEDB9; }
+.faded_medium .percent_unfilled { background-color: #D8FFD1; }
+.priority_percentage .percent_unfilled, .priority_percentage .faded_medium .percent_unfilled { background-color: #E2FFE1; }
+
 #blocking_div, #upload_error_div { margin: 10px 5px 5px 5px; } 
 #viewissue_left_box_top { margin: 0; }
 #viewissue_left_box_bottom { margin: 0; }
