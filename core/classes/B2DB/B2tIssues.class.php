@@ -172,6 +172,55 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
+
+		public function getPriorityCountByProjectID($project_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::ID, 'priority_count', B2DBCriteria::DB_COUNT);
+			$crit->addSelectionColumn(self::PRIORITY);
+			$crit->addGroupBy(self::PRIORITY);
+
+			$crit2 = clone $crit;
+
+			$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
+			$crit2->addWhere(self::STATE, TBGIssue::STATE_OPEN);
+
+			$res1 = $this->doSelect($crit, 'none');
+			$res2 = $this->doSelect($crit2, 'none');
+			$retarr = array();
+
+			if ($res1)
+			{
+				while ($row = $res1->getNextRow())
+				{
+					if (!array_key_exists($row->get(self::PRIORITY), $retarr)) $retarr[$row->get(self::PRIORITY)] = array('open' => 0, 'closed' => 0);
+					$retarr[$row->get(self::PRIORITY)]['closed'] = $row->get('priority_count');
+				}
+			}
+			if ($res2)
+			{
+				while ($row = $res2->getNextRow())
+				{
+					if (!array_key_exists($row->get(self::PRIORITY), $retarr)) $retarr[$row->get(self::PRIORITY)] = array('open' => 0, 'closed' => 0);
+					$retarr[$row->get(self::PRIORITY)]['open'] = $row->get('priority_count');
+				}
+			}
+
+			foreach ($retarr as $priority_id => $details)
+			{
+				if (array_sum($details) > 0)
+				{
+					$multiplier = 100 / array_sum($details);
+					$retarr[$priority_id]['percentage'] = $details['open'] * $multiplier;
+				}
+				else
+				{
+					$retarr[$priority_id]['percentage'] = 0;
+				}
+			}
+
+			return $retarr;
+		}
 		
 		public function getByID($id)
 		{

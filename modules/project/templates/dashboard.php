@@ -6,7 +6,7 @@
 ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0" id="project_dashboard">
 	<tr>
-		<td style="width: 365px; padding: 0 5px 0 5px;">
+		<td style="width: 320px; padding: 0 5px 0 5px;">
 			<div class="rounded_box mediumgrey_borderless" style="margin-top: 5px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
@@ -64,65 +64,75 @@
 							</table>
 						<?php endforeach; ?>
 					<?php else: ?>
-						<div class="faded_medium" style="font-weight: normal; padding: 8px 0 0 0;"><?php echo __('No users or teams assigned'); ?></span>
+						<div class="faded_medium" style="font-weight: normal; padding: 8px 0 0 0;"><?php echo __('No users or teams assigned'); ?></div>
 					<?php endif; ?>
 				</div>
 			</div>
-			<div style="clear: both;">
-				<div style="width: 305px; float: left; margin-right: 5px;">
-					<div class="header_div"><?php echo __('5 most recent issues / tbg_'); ?></div>
-					<?php if (count($recent_issues) > 0): ?>
-						<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
-						<?php foreach ($recent_issues as $issue): ?>
-							<tr>
-								<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-								<td style="padding-bottom: 15px;">
-									<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
-									<span class="faded_dark" style="font-size: 11px;">
-										<?php echo tbg_formatTime($issue->getPosted(), 20); ?>,
-										<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
-									</span>
-								</td>
-							</tr>
-						<?php endforeach; ?>
-						</table>
-					<?php else: ?>
-						<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No issues, tbg_ or defects posted'); ?></div>
-					<?php endif; ?>
+			<div style="width: 50%; float: left; margin-right: 5px;">
+				<div class="header_div">
+					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('More'), array('style' => 'float: right; font-weight: normal;', 'title' => __('Show more issues'))); ?>
+					<?php echo __('10 most recent issues / bugs'); ?>
 				</div>
-				<div style="width: 305px; float: left; margin-right: 5px;">
-					<div class="header_div"><?php echo __('5 most recent feature requests'); ?></div>
-					<?php if (count($recent_features) > 0): ?>
-						<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
-						<?php foreach ($recent_features as $issue): ?>
-							<tr>
-								<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-								<td style="padding-bottom: 15px;">
-									<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
-									<span class="faded_dark" style="font-size: 11px;">
-										<?php echo tbg_formatTime($issue->getPosted(), 20); ?>,
-										<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
-									</span>
-								</td>
-							</tr>
-						<?php endforeach; ?>
-						</table>
-					<?php else: ?>
-						<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No feature requests posted yet'); ?></div>
-					<?php endif; ?>
-				</div>
+				<?php if (count($recent_issues) > 0): ?>
+					<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
+					<?php foreach ($recent_issues as $issue): ?>
+						<tr>
+							<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
+							<td style="padding-bottom: 15px;">
+								<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
+								<span class="faded_dark" style="font-size: 11px;">
+									<?php echo tbg_formatTime($issue->getPosted(), 20); ?>,
+									<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
+								</span>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+					</table>
+				<?php else: ?>
+					<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No issues, tbg_ or defects posted'); ?></div>
+				<?php endif; ?>
 			</div>
-			<br style="clear: both;">
-			<div class="rounded_box mediumgrey_borderless" style="margin-top: 10px; clear: both; width: 620px;">
-				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-				<div class="xboxcontent" style="padding: 2px 5px 4px 5px; font-size: 13px;">
-					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('Show project issues'), array('style' => 'font-weight: bold; float: right;')); ?>
-					<?php echo __('See more issues for this project'); ?>
+			<div style="float: right; width: 49%; margin: 0 0 10px 0;">
+				<div class="header_div">
+					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('More'), array('style' => 'float: right; font-weight: normal;', 'title' => __('Show more issues'))); ?>
+					<?php echo __('Open issues by priority'); ?>
 				</div>
-				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-			</div>
-			<div style="clear: both; width: 615px; margin: 20px 5px 0 0;">
-				<div class="header_div"><?php echo __('Recent ideas'); ?></div>
+				<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin: 5px 0 10px 0; width: 100%;">
+				<?php foreach (TBGPriority::getAll() as $priority_id => $priority): ?>
+					<tr class="canhover_light">
+						<td style="font-weight: normal; font-size: 13px; padding-left: 3px;"><?php echo $priority->getName(); ?></td>
+						<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;"><?php echo $priority_count[$priority_id]['open']; ?></td>
+						<td style="width: 40%; vertical-align: middle;"><?php include_template('main/percentbar', array('percent' => $priority_count[$priority_id]['percentage'], 'height' => 14)); ?></td>
+						<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;">&nbsp;<?php echo (int) $priority_count[$priority_id]['percentage']; ?>%</td>
+					</tr>
+				<?php endforeach; ?>
+				</table>
+				<div class="header_div">
+					<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('More'), array('style' => 'float: right; font-weight: normal;', 'title' => __('Show more issues'))); ?>
+					<?php echo __('5 most recent feature requests'); ?>
+				</div>
+				<?php if (count($recent_features) > 0): ?>
+					<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
+					<?php foreach ($recent_features as $issue): ?>
+						<tr>
+							<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
+							<td style="padding-bottom: 15px;">
+								<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
+								<span class="faded_dark" style="font-size: 11px;">
+									<?php echo tbg_formatTime($issue->getPosted(), 20); ?>,
+									<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
+								</span>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+					</table>
+				<?php else: ?>
+					<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No feature requests posted yet'); ?></div>
+				<?php endif; ?>
+				<div class="header_div">
+					<?php echo link_tag(make_url('project_planning', array('project_key' => $selected_project->getKey())), __('Show project planning page'), array('style' => 'font-weight: normal; float: right;')); ?>
+					<?php echo __('Recent ideas'); ?>
+				</div>
 				<?php if (count($recent_ideas) > 0): ?>
 					<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
 					<?php foreach ($recent_ideas as $issue): ?>
@@ -140,14 +150,6 @@
 				<?php else: ?>
 					<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No ideas suggested yet'); ?></div>
 				<?php endif; ?>
-			</div>
-			<div class="rounded_box mediumgrey_borderless" style="margin-top: 10px; clear: both; width: 620px;">
-				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-				<div class="xboxcontent" style="padding: 2px 5px 4px 5px; font-size: 13px;">
-					<?php echo link_tag(make_url('project_planning', array('project_key' => $selected_project->getKey())), __('Show project planning page'), array('style' => 'font-weight: bold; float: right;')); ?>
-					<?php echo __('Plan your project, discuss and throw ideas around'); ?>
-				</div>
-				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
 		</td>
 	</tr>

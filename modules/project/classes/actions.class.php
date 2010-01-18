@@ -58,9 +58,10 @@
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_dashboard', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			$this->recent_activities = $this->selected_project->getRecentActivities(10);
-			$this->recent_issues = $this->selected_project->getRecentIssues();
+			$this->recent_issues = $this->selected_project->getRecentIssues(10);
 			$this->recent_features = $this->selected_project->getRecentFeatures();
 			$this->recent_ideas = $this->selected_project->getRecentIdeas();
+			$this->priority_count = $this->selected_project->getPriorityCount();
 			$this->assignees = $this->selected_project->getAssignees();
 		}
 

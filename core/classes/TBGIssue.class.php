@@ -1389,8 +1389,8 @@
 				}
 				$retval .= ($time['points'] == 1) ? $i18n->__('1 point') : $i18n->__('%number_of% points', array('%number_of%' => $time['points']));
 			}
-			
-			return $retval;
+
+			return ($retval != '') ? $retval : $i18n->__('No time');
 		}
 	
 		/**
@@ -4050,7 +4050,7 @@
 								
 								$this->addLogEntry(B2tLog::LOG_ISSUE_OWNED, $old_name . ' &rArr; ' . $new_name);
 								$comment_lines[] = __("The owner has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
-								$is_saved_assignee = true;
+								$is_saved_owner = true;
 							}
 							break;
 						case '_percentcompleted':
@@ -4126,8 +4126,10 @@
 													'hours' => $this->getChangedPropertyOriginal('_estimatedhours'),
 													'points' => $this->getChangedPropertyOriginal('_estimatedpoints'));
 
-								$this->addLogEntry(B2tLog::LOG_ISSUE_TIME_ESTIMATED, $this->getFormattedTime($old_time) . ' &rArr; ' . $this->getFormattedTime($this->getEstimatedTime()));
-								$comment_lines[] = __("The issue has been (re-)estimated, from '''%previous_time%''' to '''%new_time%'''.", array('%previous_time%' => $this->getFormattedTime($old_time), '%new_time%' => $this->getFormattedTime($this->getEstimatedTime())));
+								$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : __('Not estimated');
+								$new_formatted_time = ($this->hasEstimatedTime()) ? $this->getFormattedTime($this->getEstimatedTime()) : __('Not estimated');
+								$this->addLogEntry(B2tLog::LOG_ISSUE_TIME_ESTIMATED, $old_formatted_time . ' &rArr; ' . $new_formatted_time);
+								$comment_lines[] = __("The issue has been (re-)estimated, from '''%previous_time%''' to '''%new_time%'''.", array('%previous_time%' => $old_formatted_time, '%new_time%' => $new_formatted_time));
 								$is_saved_estimated = true;
 							}
 							break;
@@ -4144,8 +4146,10 @@
 													'hours' => $this->getChangedPropertyOriginal('_spenthours'),
 													'points' => $this->getChangedPropertyOriginal('_spentpoints'));
 
-								$this->addLogEntry(B2tLog::LOG_ISSUE_TIME_SPENT, $this->getFormattedTime($old_time) . ' &rArr; ' . $this->getFormattedTime($this->getSpentTime()));
-								$comment_lines[] = __("Time spent on this issue, from '''%previous_time%''' to '''%new_time%'''.", array('%previous_time%' => $this->getFormattedTime($old_time), '%new_time%' => $this->getFormattedTime($this->getSpentTime())));
+								$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : __('No time spent');
+								$new_formatted_time = ($this->hasSpentTime()) ? $this->getFormattedTime($this->getSpentTime()) : __('No time spent');
+								$this->addLogEntry(B2tLog::LOG_ISSUE_TIME_SPENT, $old_formatted_time . ' &rArr; ' . $new_formatted_time);
+								$comment_lines[] = __("Time spent on this issue, from '''%previous_time%''' to '''%new_time%'''.", array('%previous_time%' => $old_formatted_time, '%new_time%' => $new_formatted_time));
 								$is_saved_spent = true;
 							}
 							break;
@@ -4179,7 +4183,8 @@
 					}
 				}
 			}
-			$this->addSystemComment(__('Issue updated'), '* '.join("\n* ", $comment_lines), TBGContext::getUser()->getUID());
+			$comment = __("The issue was updated with the following change(s):\n%list_of_changes%", array('%list_of_changes%' => '* '.join("\n* ", $comment_lines)));
+			$this->addSystemComment(__('Issue updated'), $comment, TBGContext::getUser()->getUID());
 			$this->_clearChangedProperties();
 			
 			$crit = new B2DBCriteria();

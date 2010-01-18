@@ -311,6 +311,13 @@
 		protected $_recentissues = null;
 
 		/**
+		 * Priority count
+		 *
+		 * @var array
+		 */
+		protected $_prioritycount = null;
+
+		/**
 		 * Recent new features / enhancements reported
 		 *
 		 * @var array
@@ -2337,12 +2344,34 @@
 			return $this->_recentlogitems;
 		}
 
+		protected function _populatePriorityCount()
+		{
+			if ($this->_prioritycount === null)
+			{
+				$this->_prioritycount = array();
+				foreach (TBGPriority::getAll() as $priority_id => $priority)
+				{
+					$this->_prioritycount[$priority_id] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
+				}
+				foreach (B2DB::getTable('B2tIssues')->getPriorityCountByProjectID($this->getID()) as $priority_id => $priority_count)
+				{
+					$this->_prioritycount[$priority_id] = $priority_count;
+				}
+			}
+		}
+
+		public function getPriorityCount()
+		{
+			$this->_populatePriorityCount();
+			return $this->_prioritycount;
+		}
+
 		protected function _populateRecentIssues()
 		{
 			if ($this->_recentissues === null)
 			{
 				$this->_recentissues = array();
-				if ($res = B2DB::getTable('B2tIssues')->getRecentByProjectIDandIssueType($this->getID(), array('bug_report')))
+				if ($res = B2DB::getTable('B2tIssues')->getRecentByProjectIDandIssueType($this->getID(), array('bug_report'), 10))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -2383,7 +2412,7 @@
 		}
 
 		/**
-		 * Return this projects 5 most recent issues
+		 * Return this projects 10 most recent issues
 		 *
 		 * @return array A list of TBGIssues
 		 */

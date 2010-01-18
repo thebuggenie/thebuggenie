@@ -143,6 +143,7 @@
 			}
 			$this->customsel = true;
 			$column = $this->getSelectionColumn($column);
+			$alias = ($alias === '') ? str_replace('.', '_', $column) : $alias;
 			$this->_addSelectionColumn($column, $alias, $special, $variable, $additional);
 			return $this;
 		}
@@ -336,7 +337,7 @@
 			return $this->selections;
 		}
 		
-		public function getSelectionColumn($column, $join_column = null)
+		public function getSelectionColumn($column, $join_column = null, $debug = false)
 		{
 			if ($column instanceof B2DBCriterion)
 			{
@@ -350,6 +351,7 @@
 				{
 					if ($a_sel['alias'] == $column)
 					{
+						if ($debug) var_dump($a_sel);
 						return $column;
 					}
 				}
@@ -359,6 +361,7 @@
 					if ($this->fromtable->getB2DBAlias() == $table_name || $this->fromtable->getB2DBName() == $table_name)
 					{
 						$retval = $this->fromtable->getB2DBAlias() . '.' . $column_name;
+						if ($debug) var_dump($retval);
 						return $retval;
 					}
 					if (isset($this->jointables[$table_name])) return $this->jointables[$table_name]['jointable']->getB2DBAlias() . '.' . $column_name;
@@ -743,7 +746,7 @@
 						{
 							$sql .= ' @' . $a_sel['variable'] . ':=';
 						}
-						$sql .= $column;
+						$sql .= $a_sel['column'];
 						if ($a_sel['alias'] != '')
 						{
 							$sql .= ' AS ' . $a_sel['alias'];
@@ -964,8 +967,8 @@
 					{
 						$sql .= ', ';
 					}
-					$sql .= '? ' . $a_group['sort'];
-					$this->values[] = $this->getSelectionColumn($a_group['column']);
+					$sql .= $this->getSelectionColumn($a_group['column']) . ' ' . $a_group['sort'];
+					//$this->values[] = $this->getSelectionColumn($a_group['column']);
 					$first_crit = false;
 				}
 			}

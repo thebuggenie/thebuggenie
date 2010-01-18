@@ -41,7 +41,7 @@
 			$this->_statement = $statement;
 		}
 		
-		public function get($column, $foreign_key = null)
+		public function get($column, $foreign_key = null, $debug = false)
 		{
 			if ($this->_statement == null)
 			{
@@ -63,10 +63,16 @@
 				}
 				else
 				{
-					$column = $this->_statement->getCriteria()->getSelectionColumn($column);
+
+					$column = $this->_statement->getCriteria()->getSelectionColumn($column, null, $debug);
+					//if ($debug) var_dump($column);
+					if ($debug) var_dump('selection alias: ' . $this->_statement->getCriteria()->getSelectionAlias($column));
+					if ($debug) echo 'fields: ';
+					if ($debug) var_dump($this->_fields);
 				}
 				if (isset($this->_fields[$this->_statement->getCriteria()->getSelectionAlias($column)]))
 				{
+					
 					return $this->_fields[$this->_statement->getCriteria()->getSelectionAlias($column)];
 				}
 				else
