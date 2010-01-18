@@ -334,6 +334,7 @@
 									<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 									<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 13px; text-align: center">
 										<div class="user_pain" id="issue_user_pain"><?php echo $theIssue->getUserPain(); ?></div>
+										<div class="user_pain_calculated" id="issue_user_pain_calculated"><?php echo $theIssue->getUserPainDiffText(); ?></div>
 									</div>
 									<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 								</div>

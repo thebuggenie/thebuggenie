@@ -383,6 +383,15 @@ function setField(url, field)
 				else if (field == 'pain_bug_type' || field == 'pain_likelihood' || field == 'pain_effect')
 				{
 					$('issue_user_pain').update(json.user_pain);
+					if (json.user_pain_diff_text != '')
+					{
+						$('issue_user_pain_calculated').update(json.user_pain_diff_text);
+						$('issue_user_pain_calculated').show();
+					}
+					else
+					{
+						$('issue_user_pain_calculated').hide();
+					}
 				}
 			}
 			else if (json.failed)

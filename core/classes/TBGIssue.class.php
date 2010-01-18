@@ -4395,6 +4395,11 @@
 			return ($real) ? $this->getRealUserPain() : $this->_calculateDatePain();
 		}
 
+		public function getUserPainDiffText()
+		{
+			return $this->getUserPain(true) . ' + ' . ($this->getUserPain() - $this->getUserPain(true));
+		}
+
 		protected function getRealUserPain()
 		{
 			return $this->_user_pain;

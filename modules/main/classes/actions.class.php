@@ -1258,8 +1258,8 @@
 							if ($pain_bug_type_id == 0 || ($pain_bug_type_id !== 0 && (in_array($pain_bug_type_id, array_keys(TBGIssue::getPainTypesOrLabel('bug_type'))))))
 							{
 								$issue->setPainBugType($pain_bug_type_id);
-								if (!$issue->isPainBugTypeChanged()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain()));
-								return ($pain_bug_type_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_bug_type_id, 'name' => $issue->getPainBugTypeLabel()), 'user_pain' => $issue->getUserPain()));
+								if (!$issue->isPainBugTypeChanged()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
+								return ($pain_bug_type_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_bug_type_id, 'name' => $issue->getPainBugTypeLabel()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
 							}
 						}
 						elseif ($request->hasParameter('pain_likelihood_id') && $request->getParameter('field') == 'pain_likelihood')
@@ -1268,8 +1268,8 @@
 							if ($pain_likelihood_id == 0 || ($pain_likelihood_id !== 0 && (in_array($pain_likelihood_id, array_keys(TBGIssue::getPainTypesOrLabel('likelihood'))))))
 							{
 								$issue->setPainLikelihood($pain_likelihood_id);
-								if (!$issue->isPainLikelihoodChanged()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain()));
-								return ($pain_likelihood_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_likelihood_id, 'name' => $issue->getPainLikelihoodLabel()), 'user_pain' => $issue->getUserPain()));
+								if (!$issue->isPainLikelihoodChanged()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
+								return ($pain_likelihood_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_likelihood_id, 'name' => $issue->getPainLikelihoodLabel()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
 							}
 						}
 						elseif ($request->hasParameter('pain_effect_id') && $request->getParameter('field') == 'pain_effect')
@@ -1278,8 +1278,8 @@
 							if ($pain_effect_id == 0 || ($pain_effect_id !== 0 && (in_array($pain_effect_id, array_keys(TBGIssue::getPainTypesOrLabel('effect'))))))
 							{
 								$issue->setPainEffect($pain_effect_id);
-								if (!$issue->isPainEffectChanged()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain()));
-								return ($pain_effect_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_effect_id, 'name' => $issue->getPainEffectLabel()), 'user_pain' => $issue->getUserPain()));
+								if (!$issue->isPainEffectChanged()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
+								return ($pain_effect_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_effect_id, 'name' => $issue->getPainEffectLabel()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
 							}
 						}
 					}

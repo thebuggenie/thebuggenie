@@ -1243,6 +1243,7 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .viewissue_info_header { font-weight: bold; font-size: 14px; }
 .viewissue_info_content { font-weight: normal; font-size: 12px; }
 .user_pain { font-size: 30px; font-weight: bold; color: #D1C67D; }
+.user_pain_calculated { font-size: 11px; font-weight: bold; color: #D1C67D }
 .search_results .yellow_borderless .user_pain { color: #B6AC6D; }
 .search_results .red_borderless .user_pain { color: #B55; }
 .userpain_below_threshold td { border-top: 2px solid #B77; }
