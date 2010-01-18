@@ -33,8 +33,18 @@
 			$Test->drawTreshold(0, 143, 55, 72, TRUE, TRUE);
 
 			// Draw the cubic curve graph
-			$Test->drawLineGraph($DataSet->GetData(), $DataSet->GetDataDescription());
-			$Test->drawPlotGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 3, 2, 255, 255, 255);
+			if (isset($this->curved) && $this->curved)
+			{
+				$Test->drawCubicCurve($DataSet->GetData(), $DataSet->GetDataDescription());
+			}
+			else
+			{
+				$Test->drawLineGraph($DataSet->GetData(), $DataSet->GetDataDescription());
+			}
+			if (isset($this->include_plotter) && $this->include_plotter)
+			{
+				$Test->drawPlotGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 3, 2, 255, 255, 255);
+			}
 
 			// Finish the graph
 			$Test->setFontProperties(TBGContext::getIncludePath() . 'modules/pchart/fonts/DroidSans.ttf', 8);

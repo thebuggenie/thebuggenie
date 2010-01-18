@@ -1178,7 +1178,7 @@
     }
 
    /* This function draw a filled line graph */
-   function drawFilledLineGraph(&$Data,&$DataDescription,$Alpha=100,$AroundZero=FALSE)
+   function drawFilledLineGraph($Data,$DataDescription,$Alpha=100,$AroundZero=FALSE)
     {
      $Empty = -2147483647;
 
@@ -1373,7 +1373,7 @@
     }
 
    /* This function draw a stacked bar graph */
-   function drawStackedBarGraph(&$Data,&$DataDescription,$Alpha=50)
+   function drawStackedBarGraph($Data,$DataDescription,$Alpha=50)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawBarGraph",$DataDescription);
