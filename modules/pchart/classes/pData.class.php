@@ -123,7 +123,7 @@
 
      $ID = 0;
      for($i=0;$i<=count($this->Data);$i++)
-      { /*var_dump($this->Data);var_dump($i);var_dump($Serie);die();*/ if(is_array($this->Data) && isset($this->Data[$i][$Serie])) { $ID = $i+1; } }
+      { if(is_array($this->Data) && isset($this->Data[$i][$Serie])) { $ID = $i+1; } }
 
      if ( count($Value) == 1 )
       {
@@ -137,9 +137,17 @@
       {
        foreach($Value as $key => $Val)
         {
-         $this->Data[$ID][$Serie] = $Val;
-         if (!isset($this->Data[$ID]["Name"]))
-          $this->Data[$ID]["Name"] = $ID;
+		   if (is_array($Val))
+		   {
+			 $this->Data[$ID][$Serie] = $Val['value'];
+			 $this->Data[$ID]["Name"] = $Val['label'];
+		   }
+		   else
+		   {
+			 $this->Data[$ID][$Serie] = $Val;
+		   }
+		   if (!isset($this->Data[$ID]["Name"]))
+			$this->Data[$ID]["Name"] = $ID;
          $ID++;
         }
       }

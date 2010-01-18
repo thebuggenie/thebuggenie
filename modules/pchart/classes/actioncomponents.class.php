@@ -8,20 +8,46 @@
 			$DataSet = new pData;
 			foreach ($this->datasets as $ds_id => $dataset)
 			{
-				$DataSet->AddPoint($dataset['values'], "Serie" . $ds_id);
+				//var_dump(array_keys($dataset['values']));die();
+				$DataSet->AddPoint($dataset['values'], "Serie" . $ds_id, array_keys($dataset['values']));
 			}
 			$DataSet->AddAllSeries();
-			$DataSet->SetAbsciseLabelSerie();
+			if (isset($this->labels))
+			{
+				$DataSet->AddPoint($this->labels,"Labels");
+				$DataSet->SetAbsciseLabelSerie("Labels");
+			}
+			else
+			{
+				$DataSet->SetAbsciseLabelSerie();
+			}
 			foreach ($this->datasets as $ds_id => $dataset)
 			{
 				$DataSet->SetSerieName($dataset['label'], "Serie" . $ds_id);
+			}
+
+			if (isset($this->values_title))
+			{
+				$DataSet->SetYAxisName($this->values_title);
+			}
+
+			if (isset($this->labels_title))
+			{
+				$DataSet->SetXAxisName($this->labels_title);
 			}
 
 			// Initialise the graph
 			$Test = new pChart($this->width, $this->height);
 			//$Test->setFixedScale(-2, 8);
 			$Test->setFontProperties(TBGContext::getIncludePath() . 'modules/pchart/fonts/DroidSans.ttf', 8);
-			$Test->setGraphArea(50, 30, $this->width - 30, $this->height- 30);
+			if (isset($this->labels_title))
+			{
+				$Test->setGraphArea(50, 30, $this->width - 30, $this->height - 45);
+			}
+			else
+			{
+				$Test->setGraphArea(50, 30, $this->width - 30, $this->height - 30);
+			}
 			$Test->drawFilledRoundedRectangle(2, 2, $this->width - 3, $this->height - 3, 5, 240, 240, 240);
 			$Test->drawRoundedRectangle(0, 0, $this->width - 1, $this->height - 1, 5, 230, 230, 230);
 			$Test->drawGraphArea(255, 255, 255, TRUE);

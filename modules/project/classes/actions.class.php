@@ -233,7 +233,7 @@
 			$datasets[] = array('values' => $issues['open'], 'label' => __('Issues opened'));
 			$datasets[] = array('values' => $issues['closed'], 'label' => __('Issues closed'));
 			$this->datasets = $datasets;
-			$this->max_value = 20;
+			$this->labels = array(30,'','','','',25,'','','','',20,'','','','',15,'','','','',10,'','','','',5,'','','','',0);
 		}
 
 		/**

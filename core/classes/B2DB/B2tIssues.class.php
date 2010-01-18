@@ -152,8 +152,8 @@
 
 				$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
 
-				$retarr[0][] = $this->doCount($crit);
-				$retarr[1][] = $this->doCount($crit2);
+				$retarr[0][$cc] = $this->doCount($crit);
+				$retarr[1][$cc] = $this->doCount($crit2);
 			}
 			return $retarr;
 		}
