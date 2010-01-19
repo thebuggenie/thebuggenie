@@ -523,29 +523,29 @@ function setIssueUnchanged(field)
 	}
 }
 
-function deleteComment(url, pid)
+function deleteComment(url, cid)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
 	method: "post",
 	requestHeaders: {Accept: 'application/json'},
 	onLoading: function (transport) {
-		$('comment_delete_controls_' + pid).hide();
-		$('comment_delete_indicator_' + pid).show();
+		$('comment_delete_controls_' + cid).hide();
+		$('comment_delete_indicator_' + cid).show();
 	},
 	onSuccess: function(transport) {
 		var json = transport.responseJSON;
 		if (json.failed)
 		{
-			$('comment_delete_controls_' + pid).show();
-			$('comment_delete_indicator_' + pid).hide();
+			$('comment_delete_controls_' + cid).show();
+			$('comment_delete_indicator_' + cid).hide();
 			failedMessage(json.error);
 		}
 		else
 		{
-			$('comment_delete_indicator_' + pid).remove();
-			$('comment_delete_confirm_' + pid).remove();
-			$('comment_' + pid).remove();
+			$('comment_delete_indicator_' + cid).remove();
+			$('comment_delete_confirm_' + cid).remove();
+			$('comment_' + cid).remove();
 			if ($('comments_box').childElements().size() == 0)
 			{
 				$('comments_none').show();
@@ -554,10 +554,57 @@ function deleteComment(url, pid)
 		}
 	},
 	onFailure: function (transport) {
-		$('comment_delete_controls_' + pid).show();
-		$('comment_delete_error_' + pid).show();
+		$('comment_delete_indicator_' + cid).hide();
+		$('comment_delete_controls_' + cid).show();
 		var json = transport.responseJSON;
 		if (json && json.failed)
+		{
+			failedMessage(json.error);
+		}
+	}
+	});
+}
+
+function updateComment(url, cid)
+{
+	params = $('comment_edit_form_' + cid).serialize();
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	parameters: params,
+	requestHeaders: {Accept: 'application/json'},
+	onLoading: function (transport) {
+		$('comment_edit_controls_' + cid).hide();
+		$('comment_edit_indicator_' + cid).show();
+	},
+	onSuccess: function(transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			$('comment_edit_controls_' + cid).show();
+			$('comment_edit_indicator_' + cid).hide();
+			failedMessage(json.error);
+		}
+		else
+		{
+			$('comment_edit_indicator_' + cid).hide();
+			$('comment_edit_' + cid).hide();
+
+			$('comment_' + cid + '_header').update(json.comment_title);			
+			/* $('comment_' + cid + '_date').update(json.comment_date);	see the actions file */
+			$('comment_' + cid + '_body').update(json.comment_body);	
+
+			$('comment_view_' + cid).show();
+			$('comment_edit_controls_' + cid).show();
+			
+			successMessage(json.title);
+		}
+	},
+	onFailure: function (transport) {
+		$('comment_edit_controls_' + cid).show();
+		$('comment_edit_indicator_' + cid).hide();
+		var json = transport.responseJSON;
+		if (json && json.error)
 		{
 			failedMessage(json.error);
 		}

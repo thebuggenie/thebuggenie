@@ -596,7 +596,6 @@ Custom classes
 }
 
 .commentbody {
-    padding-top: 10px;
 	padding-bottom: 5px;
 	font-size: 13px;
 }
@@ -609,6 +608,20 @@ Custom classes
 .commenttools img {
 	vertical-align: bottom;
 	margin-right: 5px;
+}
+
+.comment_edit {
+	padding-left: 10px;
+	padding-right: 15px;
+}
+
+.comment_editsave {
+	font-size: 13px;
+	font-weight: bold;
+}
+
+input.comment_titlebox {
+	width: 100%;
 }
 
 .b2_section_loginframe

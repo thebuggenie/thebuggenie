@@ -1803,6 +1803,86 @@
 				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Comment ID is invalid')));
 			}
 		}
+		
+		public function runUpdateComment(TBGRequest $request)
+		{
+			TBGContext::loadLibrary('ui');
+			$comment = TBGFactory::TBGCommentLab($request->getParameter('comment_id'));
+			if ($comment instanceof TBGcomment)
+			{
+				if (TBGContext::getUser()->hasPermission("caneditcomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
+				{
+					$canEditComments = false;
+					if ($comment->getPostedBy()->getID() !== TBGContext::getUser()->getID())
+					{
+						if(TBGContext::getUser()->hasPermission("caneditcomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
+						{
+							$canEditComments = true;
+						}
+					}
+					else
+					{
+						if (TBGContext::getUser()->hasPermission("caneditcomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments"))
+						{
+							$canEditComments = true;
+						}
+					}
+					
+					if(TBGContext::getUser()->hasPermission("caneditcomments"))
+					{
+						$canEditComments = true;
+					}
+				}
+				else
+				{
+					$canEditComments = false;
+				}
+											
+				if (!$canEditComments)
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
+				}
+				else
+				{
+					if ($request->getParameter('comment_body') == '')
+					{
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('The comment must have some content')));
+					}
+					
+					/* FIXME: Make more efficient when cleaning up comment class */
+					$comment->setContent($request->getParameter('comment_body'));
+					
+					if ($request->getParameter('comment_title') == '')
+					{
+						$comment->setTitle(__('Untitled'));
+					}
+					else
+					{
+						$comment->setTitle($request->getParameter('comment_title'));
+					}
+					
+					$comment->setUpdatedBy(TBGContext::getUser()->getID());
+					
+					/* Not yet working as it tries to echo out the component which breaks stuff */
+					/*if ($comment->isSystemComment())
+					{
+						$postedby = __('on behalf of ');
+					}
+					else
+					{
+						$postedby = __('by ');
+					}
+					$date = '<table cellpadding="0" cellspacing="0"><tr><td>'.__('Posted').' <i>'.tbg_formattime($comment->getPosted(), 12).'</i>'.$postedby.'</td><td><table style="display: inline;">'.include_component('main/userdropdown', array('user' => $comment->getPostedBy(), 'size' => 'small')).'</table></td></tr></table>';
+					*/
+					$body = tbg_parse_text($comment->getContent());
+					
+					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment edited!'), 'comment_title' => $comment->getTitle(), 'comment_body' => $body));
+				}
+			}
+			else
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Comment ID is invalid')));
+			}
+		}
 	}
-
 ?>
