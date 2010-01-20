@@ -208,7 +208,15 @@
 			B2DB::getTable('B2tComments')->doUpdateById($crit, $this->getID());
 		}
 
-
+		/**
+		 * Perform a permission check based on a key, and whether or not to
+		 * check if the permission is explicitly set
+		 *
+		 * @param string $key The permission key to check for
+		 * @param boolean $exclusive Whether to make sure the permission is explicitly set
+		 *
+		 * @return boolean
+		 */
 		protected function _permissionCheckWithID($key, $explicit = false)
 		{
 			$retval = TBGContext::getUser()->hasPermission($key, $this->getID(), 'core', true, null);
@@ -224,6 +232,16 @@
 			return $retval;
 		}
 
+		/**
+		 * Perform a permission check based on a key, and whether or not to
+		 * check for the equivalent "*own" permission if the comment is posted
+		 * by the same user
+		 *
+		 * @param string $key The permission key to check for
+		 * @param boolean $exclusive Whether to perform a similar check for "own"
+		 *
+		 * @return boolean
+		 */
 		protected function _permissionCheck($key, $exclusive = false)
 		{
 			$retval = null;

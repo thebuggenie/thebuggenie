@@ -2555,6 +2555,15 @@
 			$this->_repro_template = $data;
 		}
 
+		/**
+		 * Perform a permission check based on a key, and whether or not to
+		 * check if the permission is explicitly set
+		 *
+		 * @param string $key The permission key to check for
+		 * @param boolean $exclusive Whether to make sure the permission is explicitly set
+		 *
+		 * @return boolean
+		 */
 		public function permissionCheck($key, $explicit = false)
 		{
 			$retval = TBGContext::getUser()->hasPermission($key, $this->getID(), 'core', true, null);

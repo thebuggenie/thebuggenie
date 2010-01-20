@@ -972,6 +972,16 @@
 			$this->_locked = !$val;
 		}
 
+		/**
+		 * Perform a permission check based on a key, and whether or not to
+		 * check for the equivalent "*own" permission if the issue is posted
+		 * by the same user
+		 *
+		 * @param string $key The permission key to check for
+		 * @param boolean $exclusive Whether to perform a similar check for "own"
+		 *
+		 * @return boolean
+		 */
 		protected function _permissionCheck($key, $exclusive = false)
 		{
 			$retval = null;

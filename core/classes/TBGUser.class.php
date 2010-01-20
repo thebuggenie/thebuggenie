@@ -1611,7 +1611,7 @@
 		}
 
 		/**
-		 * Return if the user can post comments
+		 * Return if the user can see non public comments
 		 *
 		 * @return boolean
 		 */
