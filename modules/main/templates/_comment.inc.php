@@ -45,7 +45,7 @@
 				<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
 			</div>
 			
-			<div id="comment_edit_controls_<?php echo $aComment->getID(); ?>">
+			<div id="comment_edit_controls_<?php echo $aComment->getID(); ?>" class="comment_controls">
 				<input type="submit" class="comment_editsave" value="<?php echo __('Save changes'); ?>" /> <a href="javascript:void(0)" onClick="$('comment_edit_<?php echo $aComment->getID(); ?>').hide();$('comment_view_<?php echo $aComment->getID(); ?>').show();"><?php echo __('or cancel'); ?></a>
 			</div>
 		</form>

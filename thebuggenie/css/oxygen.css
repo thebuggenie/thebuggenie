@@ -561,14 +561,16 @@ Custom classes
 	font-size: 10px;
 }
 
-#comment_new_button {
+#comment_add_button
+{
 	font-weight: bold;
 	font-size: 13px;
 	margin: 5px;
 	margin-bottom: 10px;
 }
 
-#comment_new_button img {
+#comment_add_button img
+{
 	vertical-align: bottom;
 }
 
@@ -576,7 +578,8 @@ Custom classes
 	padding-bottom: 10px;
 }
 
-.comment_delete {
+.comment_delete
+{
 	margin-top: 10px !important;
 }
 
@@ -595,32 +598,49 @@ Custom classes
 	font-weight: bold;
 }
 
-.commentbody {
+.comment_add_title
+{
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.commentbody
+{
 	padding-bottom: 5px;
 	font-size: 13px;
 }
 
-.commenttools {
+.commenttools
+{
 	padding: 5px;
 	border-top: 1px solid #CCC;
 }
 
-.commenttools img {
+.commenttools img
+{
 	vertical-align: bottom;
 	margin-right: 5px;
 }
 
-.comment_edit {
+.comment_controls
+{
+	margin-top: 10px;
+}
+
+.comment_edit, .comment_add_main
+{
 	padding-left: 10px;
 	padding-right: 15px;
 }
 
-.comment_editsave {
+.comment_editsave, .comment_addsave
+{
 	font-size: 13px;
 	font-weight: bold;
 }
 
-input.comment_titlebox {
+input.comment_titlebox, select.comment_visibilitybox
+{
 	width: 100%;
 }
 

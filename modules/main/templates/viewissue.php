@@ -480,13 +480,40 @@
 				?>
 				<div class="comments">
 					<h1 class="commentheadertop">Comments</h1>
-					<?php if (TBGComment::getCommentAccess($theIssue->getID(), 'add')): ?><div id="comment_new_button"><?php echo image_tag('action_add_small.png', array('title' => __('Add new comment'))); ?> Add new comment </div><?php endif; ?>
+					<?php if (TBGComment::getCommentAccess($theIssue->getID(), 'add')): ?><div id="comment_add_button"><a href="javascript:null();" onClick="$('comment_add_button').hide(); $('comment_add').show(); return false;"><?php echo image_tag('action_add_small.png', array('title' => __('Add new comment'))); ?> Add new comment</a></div><?php endif; ?>
+
+					<?php if (TBGComment::getCommentAccess($theIssue->getID(), 'add')): ?>
+					<div id="comment_add" class="comment_add" style="display: none;">
+						<div class="comment">
+							<div class="comment_add_main">
+								<div class="comment_add_title"><?php echo __('Create a comment'); ?></div><br>
+								<form id="comment_form" action="<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>" method="post" onSubmit="addComment('<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>'); return false;">
+									<input type="text" class="comment_titlebox" id="comment_title" name="comment_title" /><br>
+									<select class="comment_visibilitybox" id="comment_visibility" name="comment_visibility">
+										<option value="1"><?php echo __('Visible for all users'); ?></option>
+										<option value="0"><?php echo __('Visible for me, developers and administrators only'); ?></option>
+									</select>
+									<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '200px', 'width' => '100%', 'value' => '')); ?>
+									
+									<div id="comment_add_indicator" style="display: none;">
+										<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
+									</div>
+									
+									<div id="comment_add_controls" class="comment_controls">
+										<input type="submit" class="comment_addsave" value="<?php echo __('Create comment'); ?>" /> <a href="javascript:void(0)" onClick="$('comment_add').hide();$('comment_add_button').show();"><?php echo __('or cancel'); ?></a>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<?php endif; ?>
+
 					<div class="faded_medium" id="comments_none" <?php if (count(TBGComment::getComments($theIssue->getID(), 1)) != 0): ?>style="display: none;"<?php endif; ?>><?php echo __('There are no comments'); ?></div>
 					<div id="comments_box">
 					<?php
 					foreach (TBGComment::getComments($theIssue->getID(), 1) as $aComment)
 					{
-						require('_comment.inc.php');
+						include_template('main/comment', array('aComment' => $aComment, 'theIssue' => $theIssue));
 					}
 					?>
 					</div>

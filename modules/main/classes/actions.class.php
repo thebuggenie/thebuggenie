@@ -1854,7 +1854,7 @@
 					
 					if ($request->getParameter('comment_title') == '')
 					{
-						$comment->setTitle(__('Untitled'));
+						$comment->setTitle(__('Untitled comment'));
 					}
 					else
 					{
@@ -1877,6 +1877,60 @@
 					$body = tbg_parse_text($comment->getContent());
 					
 					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment edited!'), 'comment_title' => $comment->getTitle(), 'comment_body' => $body));
+				}
+			}
+			else
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Comment ID is invalid')));
+			}
+		}
+		
+		public function runAddComment(TBGRequest $request)
+		{
+			$project = TBGFactory::ProjectLab($request->getParameter('project_id'));
+			if ($project instanceof TBGProject)
+			{
+				if (TBGContext::getUser()->hasPermission("canpostcomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
+				{
+					$canEditComments = true;
+				}
+				else
+				{
+					$canEditComments = false;
+				}
+											
+				if (!$canEditComments)
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
+				}
+				else
+				{
+					if ($request->getParameter('comment_title') == '')
+					{
+						$title = __('Untitled comment');
+					}
+					else
+					{
+						$title = $request->getParameter('comment_title');
+					}
+					
+					if ($request->getParameter('comment_body') == '')
+					{
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('The comment must have some content')));
+					}
+					
+					$comment = TBGComment::createNew($title, $request->getParameter('comment_body'), TBGContext::getUser()->getID(), $request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'), $request->getParameter('comment_visibility'), 0, false);
+					
+					if ($request->getParameter('comment_applies_type') == 1 && $request->getParameter('comment_module') == 'core')
+					{					
+						$comment = $this->getTemplateHTML('main/comment', array('aComment' => $comment, 'theIssue' => TBGFactory::TBGIssueLab($request->getParameter('comment_applies_id'))));
+					}
+					else
+					{
+						$comment = 'OH NO!';
+					}
+					
+					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment added!'), 'comment_data' => $comment));
 				}
 			}
 			else

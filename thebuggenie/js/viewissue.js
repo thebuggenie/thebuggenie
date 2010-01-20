@@ -612,6 +612,60 @@ function updateComment(url, cid)
 	});
 }
 
+function addComment(url)
+{
+	params = $('comment_form').serialize();
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	parameters: params,
+	requestHeaders: {Accept: 'application/json'},
+	onLoading: function (transport) {
+		$('comment_add_controls').hide();
+		$('comment_add_indicator').show();
+	},
+	onSuccess: function(transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			$('comment_add_controls').show();
+			$('comment_add_indicator').hide();
+			failedMessage(json.error);
+		}
+		else
+		{
+			$('comment_add_indicator').hide();
+			$('comment_add').hide();
+			$('comment_add_button').show();
+
+			$('comments_box').insert({top: json.comment_data});
+
+			if ($('comments_box').childElements().size() != 0)
+			{
+				$('comments_none').hide();
+			}
+			
+			$('comment_add_controls').show();
+			
+			$('comment_title').clear();
+			$('comment_bodybox').clear()
+			$('comment_visibility').setValue(1);
+			
+			successMessage(json.title);
+		}
+	},
+	onFailure: function (transport) {
+		$('comment_add_controls').show();
+		$('comment_add_indicator').hide();
+		var json = transport.responseJSON;
+		if (json && json.error)
+		{
+			failedMessage(json.error);
+		}
+	}
+	});
+}
+
 /*function submitNewTitle()
 {
 	var params = Form.serialize('issue_edit_title');

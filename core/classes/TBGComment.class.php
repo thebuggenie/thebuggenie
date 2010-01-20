@@ -97,136 +97,6 @@
 			return 0;
 		}
 		
-		static function getCommentForm($target_id, $target_type = 1, $module = 'core', $c_id = null)
-		{
-			if ($c_id != null)
-			{
-				$theComment = new TBGComment($c_id);
-			}
-			$retval = '';
-			$form_id = ($c_id == null) ? "new_comment_form_{$module}_{$target_type}_{$target_id}" : "edit_comment_form_{$module}_{$target_type}_{$target_id}";
-			$form_action = ($c_id == null) ? 'addComment(\'' . $module . '\', \'' . $target_type . '\', \'' . $target_id . '\');' : 'updateComment(\'' . $theComment->getID() . '\', \'' . $theComment->getModuleName() . '\', \'' . $theComment->getTargetType() . '\', \'' . $theComment->getTargetID() . '\');'; 
-			if ($c_id == null)
-			{
-				$retval .= '<a name="add_comment_location_' . $module . '_' . $target_type . '_' . $target_id . '"></a>';
-				$retval .= '<div id="addCommentLink_' . $module . '_' . $target_type . '_' . $target_id . '" style="margin-top: 5px;">';
-				$retval .= '<div style="padding: 5px; width: auto; float: left; margin-bottom: 10px; text-align: left; background-color: #F7F7F7; border: 1px solid #EEE;">';
-				$retval .= '<a href="javascript:void(0);" onclick="Element.show(\'addComment_' . $module . '_' . $target_type . '_' . $target_id . '\');Element.hide(\'addCommentLink_' . $module . '_' . $target_type . '_' . $target_id . '\');">';
-				$retval .= image_tag('icon_title_small.png', 'align="left" style="margin-right: 5px;"');
-				$retval .= __('Click here to add a comment');
-				$retval .= '</a>';
-				$retval .= '</div>';
-				$retval .= '</div>';
-				$retval .= '<div style="padding: 5px; padding-top: 0px; display: none;" id="addComment_' . $module . '_' . $target_type . '_' . $target_id . '">';
-				$retval .= '<div class="commentheadertop"><b>' . __('Add a comment') . '</b></div>';
-				$retval .= '<form accept-charset="' . TBGContext::getI18n()->getCharset() . '" action="" enctype="multipart/form-data" method="post" id="'.$form_id.'" onsubmit="'.$form_action.'return false">';
-			}
-			else
-			{
-				$retval .= '<div style="padding: 5px; padding-top: 0px;" id="editComment_' . $c_id . '">';
-				$retval .= '<form accept-charset="' . TBGContext::getI18n()->getCharset() . '" action="" enctype="multipart/form-data" method="post" id="'.$form_id.'" onsubmit="'.$form_action.'return false">';
-			}
-			$retval .= '<input type="hidden" name="target_id" value="' . $target_id . '">';
-			$retval .= '<input type="hidden" name="target_type" value="' . $target_type . '">';
-			$retval .= '<input type="hidden" name="module" value="' . $module . '">';
-			if ($c_id == null)
-			{
-				$retval .= '<input type="hidden" name="add_comment" value="true">';
-			}
-			else
-			{
-				$retval .= '<input type="hidden" name="comment_id" value="' . $c_id . '">';
-			}
-			$retval .= '<table style="width: 100%" cellpadding=0 cellspacing=0>';
-			$retval .= '<tr>';
-			$retval .= '<td style="width: 70px; padding: 2px;"><b>' . __('Title') . '</b></td>';
-			$retval .= '<td style="width: auto; padding: 2px;">';
-			if ($c_id != null)
-			{
-				$retval .= '<input type="text" style="width: 100%;" name="new_comment_title_' . $module . '_' . $target_type . '_' . $target_id . '" value="' . $theComment->getTitle() . '">';
-			}
-			else
-			{
-				$retval .= '<input type="text" style="width: 100%;" name="new_comment_title">';
-			}
-			$retval .= '</td>';
-			$retval .= '</tr>';
-			$retval .= '<tr>';
-			$retval .= '<td style="width: 70px; padding: 2px;"><b>' . __('Visibility') . '</b></td>';
-			$retval .= '<td style="width: auto; padding: 2px;">';
-			$retval .= '<select name="is_public" style="width: 100%;">';
-			
-			$retval .= '<option value="1" ';
-			if ($c_id !== null && $theComment->isPublic()) $retval .= 'selected';
-			$retval .= '>' . __('This comment is visible to everyone') . '</option>';
-			
-			$retval .= '<option value="0" ';
-			if ($c_id !== null && !$theComment->isPublic()) $retval .= 'selected';
-			$retval .= '>' . __('This comment is visible only to the developers / staff') . '</option>';
-			
-			$retval .= '</select>';
-			$retval .= '</td>';
-			$retval .= '</tr>';
-			$retval .= '<tr>';
-			$retval .= '<td style="padding: 2px; padding-top: 4px;" valign="top"><b>' . __('Comment') . '</b></td>';
-			$retval .= '<td style="padding: 2px;">';
-			$area_id = ($c_id != null) ? "new_comment_comment_{$module}_{$target_type}_{$target_id}" : 'new_comment_comment';
-			if ($c_id != null)
-			{
-				$retval .= tbg_newTextArea($area_id, '100px', '100%', $theComment->getContent());
-			}
-			else
-			{
-				$retval .= tbg_newTextArea($area_id, '100px', '100%');
-			}
-			$retval .= '</td>';
-			$retval .= '</tr>';
-			$retval .= '</table><br>';
-			if ($c_id == null)
-			{
-				$retval .= '<input type="submit" value="' . __('Post comment') . '">&nbsp;&nbsp;<a style="font-size: 10px;" href="javascript:void(0);" onclick="Element.hide(\'addComment_' . $module . '_' . $target_type . '_' . $target_id . '\');Element.show(\'addCommentLink_' . $module . '_' . $target_type . '_' . $target_id . '\');">' . __('Cancel') . '</a>';
-			}
-			else
-			{
-				$retval .= '<input type="submit" value="' . __('Post comment') . '">&nbsp;&nbsp;<a style="font-size: 10px;" href="javascript:void(0);" onclick="getComment(' . $c_id . ', \'' . $module . '\', \'' . $target_type . '\', \'' . $target_id . '\');">' . __('Cancel') . '</a>';
-			}
-			$retval .= '</form>';
-			$retval .= '<div style="padding: 10px 0 10px 0; display: none;" id="add_comment_indicator_' . $module . '_' . $target_type . '_' . $target_id . '"><span style="float: left;">' . image_tag('spinning_16.gif') . '</span>&nbsp;' . __('Please wait') . '</div>';
-			$retval .= '</div>';
-			if (TBGContext::getRequest()->isAjaxCall())
-			{
-				$retval .= '<script type="text/javascript">';
-				$retval .= 'tinyMCE.init({';
-				$retval .= 'theme : "advanced",';
-				$retval .= 'mode : "none",';
-				$retval .= 'plugins : "bbcode",';
-				$retval .= 'theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,bullist,blockquote,|,undo,redo,|,link,unlink",';
-				$retval .= 'theme_advanced_buttons2 : "",';
-				$retval .= 'theme_advanced_buttons3 : "",';
-				$retval .= 'theme_advanced_toolbar_location : "bottom",';
-				$retval .= 'theme_advanced_toolbar_align : "left",';
-				$retval .= 'theme_advanced_styles : "Code=bb_code;Quote=bb_quote",';
-				$retval .= 'content_css : "' . TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/' . TBGSettings::getThemeName() . '.css",';
-				$retval .= 'entity_encoding : "raw",';
-				$retval .= 'valid_elements : "a,br,b,i,u,span,p,img,ul,li",';
-				$retval .= 'add_unload_trigger : false,';
-				$retval .= 'remove_linebreaks : false';
-				$retval .= '});';
-				$retval .= '</script>';
-			}
-			
-			$retval .= '<script type="text/javascript">
-							Event.observe(window, \'load\', function() {
-								tinyMCE.get(\''.$area_id.'\').onKeyPress.add(function(ed, k) { 
-									if (k.ctrlKey && k.keyCode == 13)
-									{
-										'.$form_action.'
-									}
-								});
-							});
-						</script>';
-			echo $retval;
-		}
 		
 		static function createNew($title, $content, $uid, $target_id, $target_type, $module, $is_public, $system_comment = 0, $invoke_trigger = true)
 		{
@@ -234,7 +104,7 @@
 			$commentContent = trim($content);
 			$comment = null;
 			if ($commentContent != '' && $commentTitle == '') $commentTitle = __('Untitled comment');
-			if ($commentTitle != '' && $commentContent != '' && $commentContent != '[p] [/p]')
+			if ($commentTitle != '' && $commentContent != '')
 			{
 				$now = $_SERVER["REQUEST_TIME"];
 				$crit = new B2DBCriteria();
@@ -251,14 +121,14 @@
 				$crit->addInsert(B2tComments::SCOPE, TBGContext::getScope()->getID());
 				$res = B2DB::getTable('B2tComments')->doInsert($crit);
 				$comment = new TBGComment($res->getInsertID());
-				if ($target_type == 1 && $module == 'core')
+				/*if ($target_type == 1 && $module == 'core')
 				{
 					try
 					{
 						TBGFactory::TBGIssueLab((int) $target_id)->updateTime();
 					}
 					catch (Exception $e) {}
-				}
+				}*/
 				if ($invoke_trigger)
 				{
 					try

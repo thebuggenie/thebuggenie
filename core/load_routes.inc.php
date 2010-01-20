@@ -88,6 +88,9 @@
 	$routes[] = array('configure_install_module', '/configure/modules/install', 'configuration', 'moduleAction', array('config_module' => 'core', 'section' => 15, 'mode' => 'install'));
 	$routes[] = array('configure_module', '/configure/module/:config_module', 'configuration', 'configureModule', array('config_module' => 'core', 'section' => 15));
 	$routes[] = array('configure_get_permissions', '/configure/permissions/:permissions_type/for/:permissions_target_type/:permissions_target', 'configuration', 'getPermissions', array('config_module' => 'core', 'section' => 5));
+	$routes[] = array('comment_delete', '/comment/delete/:comment_id', 'main', 'deletecomment');
+	$routes[] = array('comment_update', '/comment/update/:comment_id', 'main', 'updatecomment');
+	$routes[] = array('comment_add', '/comment/add/for/project/:project_id/module/:comment_module/item/type/:comment_applies_type/id/:comment_applies_id', 'main', 'addcomment');
 	
 	foreach ($routes as $route)
 	{
