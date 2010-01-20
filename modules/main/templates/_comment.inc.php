@@ -13,13 +13,13 @@
 		?>
 		<div class="commentdate" id="comment_<?php echo $aComment->getID(); ?>_date"><table cellpadding="0" cellspacing="0"><tr><td><?php echo __('Posted').' <i>'.tbg_formattime($aComment->getPosted(), 12).'</i> '.$postedby; ?></td><td><table style="display: inline;"><?php echo include_component('main/userdropdown', array('user' => $aComment->getPostedBy(), 'size' => 'small')); ?></table></td></tr></table></div>
 		<div class="commentbody" id="comment_<?php echo $aComment->getID(); ?>_body"><?php echo tbg_parse_text($aComment->getContent()); ?></div>
-		<?php if (TBGComment::getCommentAccess($theIssue->getID(), 'edit', $aComment->getID()) || TBGComment::getCommentAccess($theIssue->getID(), 'delete', $aComment->getID())) : ?>
+		<?php if ($aComment->canUserEditComment() || $aComment->canUserDeleteComment()) : ?>
 			<div class="commenttools">
-				<?php if (TBGComment::getCommentAccess($theIssue->getID(), 'edit', $aComment->getID())): echo '<span style="margin-right: 10px;"><a href="javascript:void(0)" onClick="$(\'comment_view_'.$aComment->getID().'\').hide();$(\'comment_edit_'.$aComment->getID().'\').show();">'; echo image_tag('icon_edit.png', array('title' => __('Edit'))).__('Edit'); ?></a></span><?php endif; ?>
-				<?php if (TBGComment::getCommentAccess($theIssue->getID(), 'delete', $aComment->getID())): echo '<a href="javascript:void(0)" onClick="$(\'comment_delete_confirm_'.$aComment->getID().'\').show();">'.image_tag('icon_comment_delete.png', array('title' => __('Delete'))).__('Delete').'</a>'; endif; ?>
+				<?php if ($aComment->canUserEditComment()): ?><span style="margin-right: 10px;"><a href="javascript:void(0)" onClick="$('comment_view_<?php echo $aComment->getID(); ?>').hide();$('comment_edit_<?php echo $aComment->getID(); ?>').show();"><?php echo image_tag('icon_edit.png', array('title' => __('Edit'))); ?><?php echo __('Edit'); ?></a></span><?php endif; ?>
+				<?php if ($aComment->canUserDeleteComment()): ?><a href="javascript:void(0)" onClick="$('comment_delete_confirm_<?php echo $aComment->getID(); ?>').show();"><?php echo image_tag('icon_comment_delete.png', array('title' => __('Delete'))); ?><?php echo __('Delete'); ?></a><?php endif; ?>
 			</div>
 		<?php endif; ?>
-		<div class="rounded_box white comment_delete" id="comment_delete_confirm_<?php echo $aComment->getID(); ?>" style="display: none;">
+		<div class="rounded_box yellow_borderless comment_delete" id="comment_delete_confirm_<?php echo $aComment->getID(); ?>" style="display: none;">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="padding: 5px;">
 				<h4><?php echo __('Really delete'); ?></h4>

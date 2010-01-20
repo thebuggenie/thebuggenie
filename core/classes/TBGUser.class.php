@@ -1591,6 +1591,36 @@
 		}
 
 		/**
+		 * Return if the user can see comments
+		 *
+		 * @return boolean
+		 */
+		public function canViewComments()
+		{
+			return (bool) ($this->hasPermission('canviewcomments') || $this->hasPermission('canpostandeditcomments'));
+		}
+
+		/**
+		 * Return if the user can post comments
+		 *
+		 * @return boolean
+		 */
+		public function canPostComments()
+		{
+			return (bool) ($this->hasPermission('canpostcomments') || $this->hasPermission('canpostandeditcomments'));
+		}
+
+		/**
+		 * Return if the user can post comments
+		 *
+		 * @return boolean
+		 */
+		public function canSeeNonPublicComments()
+		{
+			return (bool) ($this->hasPermission('canseenonpubliccomments') || $this->hasPermission('canpostseeandeditallcomments'));
+		}
+
+		/**
 		 * Return if the user can create public saved searches
 		 *
 		 * @return boolean
