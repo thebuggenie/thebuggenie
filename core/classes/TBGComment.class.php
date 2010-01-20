@@ -188,6 +188,16 @@
 			B2DB::getTable('B2tComments')->doUpdateById($crit, $this->getID());
 		}
 
+		public function setIsPublic($var)
+		{
+			$this->_is_public = $var;
+			$this->_updated = $_SERVER["REQUEST_TIME"];
+			$crit = new B2DBCriteria();
+			$crit->addUpdate(B2tComments::IS_PUBLIC, $var);
+			$crit->addUpdate(B2tComments::UPDATED, $_SERVER["REQUEST_TIME"]);
+			B2DB::getTable('B2tComments')->doUpdateById($crit, $this->getID());
+		}
+
 		public function setUpdatedBy($var)
 		{
 			$this->_updated = $_SERVER["REQUEST_TIME"];

@@ -1861,6 +1861,7 @@
 						$comment->setTitle($request->getParameter('comment_title'));
 					}
 					
+					$comment->setIsPublic($request->getParameter('comment_visibility'));
 					$comment->setUpdatedBy(TBGContext::getUser()->getID());
 					
 					/* Not yet working as it tries to echo out the component which breaks stuff */

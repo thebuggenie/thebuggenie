@@ -39,6 +39,10 @@
 		<form id="comment_edit_form_<?php echo $aComment->getID(); ?>" action="<?php echo make_url('comment_update', array('comment_id' => $aComment->getID())); ?>" method="post" onSubmit="updateComment('<?php echo make_url('comment_update', array('comment_id' => $aComment->getID())); ?>', '<?php echo $aComment->getID(); ?>'); return false;">
 			<input type="hidden" name="comment_id" value="<?php echo $aComment->getID(); ?>" />
 			<input type="text" class="comment_titlebox" name="comment_title" value="<?php echo $aComment->getTitle(); ?>" /><br>
+			<select class="comment_visibilitybox" id="comment_visibility" name="comment_visibility">
+				<option value="1"<?php if ($aComment->isPublic()): ?> selected="selected" <?php endif; ?>><?php echo __('Visible for all users'); ?></option>
+				<option value="0"<?php if (!$aComment->isPublic()): ?> selected="selected" <?php endif; ?>><?php echo __('Visible for me, developers and administrators only'); ?></option>
+			</select>
 			<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '200px', 'width' => '100%', 'value' => ($aComment->getContent()))); ?>
 			
 			<div id="comment_edit_indicator_<?php echo $aComment->getID(); ?>" style="display: none;">
