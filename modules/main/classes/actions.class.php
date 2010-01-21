@@ -1758,36 +1758,8 @@
 		{
 			$comment = TBGFactory::TBGCommentLab($request->getParameter('comment_id'));
 			if ($comment instanceof TBGcomment)
-			{
-				if (TBGContext::getUser()->hasPermission("candeletecomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
-				{
-					$canDeleteComments = false;
-					if ($comment->getPostedBy()->getID() !== TBGContext::getUser()->getID())
-					{
-						if(TBGContext::getUser()->hasPermission("candeletecomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
-						{
-							$canDeleteComments = true;
-						}
-					}
-					else
-					{
-						if (TBGContext::getUser()->hasPermission("candeletecomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments"))
-						{
-							$canDeleteComments = true;
-						}
-					}
-					
-					if(TBGContext::getUser()->hasPermission("candeletecomments"))
-					{
-						$canDeleteComments = true;
-					}
-				}
-				else
-				{
-					$canDeleteComments = false;
-				}
-											
-				if (!$canDeleteComments)
+			{							
+				if (!$comment->canUserDeleteComment())
 				{
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
 				}
@@ -1809,36 +1781,8 @@
 			TBGContext::loadLibrary('ui');
 			$comment = TBGFactory::TBGCommentLab($request->getParameter('comment_id'));
 			if ($comment instanceof TBGcomment)
-			{
-				if (TBGContext::getUser()->hasPermission("caneditcomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
-				{
-					$canEditComments = false;
-					if ($comment->getPostedBy()->getID() !== TBGContext::getUser()->getID())
-					{
-						if(TBGContext::getUser()->hasPermission("caneditcomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
-						{
-							$canEditComments = true;
-						}
-					}
-					else
-					{
-						if (TBGContext::getUser()->hasPermission("caneditcomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments"))
-						{
-							$canEditComments = true;
-						}
-					}
-					
-					if(TBGContext::getUser()->hasPermission("caneditcomments"))
-					{
-						$canEditComments = true;
-					}
-				}
-				else
-				{
-					$canEditComments = false;
-				}
-											
-				if (!$canEditComments)
+			{							
+				if (!$comment->canUserEditComment())
 				{
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
 				}
@@ -1890,17 +1834,8 @@
 		{
 			$project = TBGFactory::ProjectLab($request->getParameter('project_id'));
 			if ($project instanceof TBGProject)
-			{
-				if (TBGContext::getUser()->hasPermission("canpostcomments") || TBGContext::getUser()->hasPermission("canpostandeditcomments") || TBGContext::getUser()->hasPermission("canpostseeandeditallcomments"))
-				{
-					$canEditComments = true;
-				}
-				else
-				{
-					$canEditComments = false;
-				}
-											
-				if (!$canEditComments)
+			{						
+				if (!TBGContext->getUser()->canPostComments())
 				{
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
 				}
