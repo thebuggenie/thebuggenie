@@ -1835,7 +1835,7 @@
 			$project = TBGFactory::ProjectLab($request->getParameter('project_id'));
 			if ($project instanceof TBGProject)
 			{						
-				if (!TBGContext->getUser()->canPostComments())
+				if (!TBGContext::getUser()->canPostComments())
 				{
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
 				}

@@ -1398,6 +1398,11 @@
 				return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('All settings saved')));
 			}
 		}
+		
+		public function runConfigureUsers(TBGRequest $request)
+		{
+			
+		}
 
 		public function getAccessLevel($section, $module)
 		{
