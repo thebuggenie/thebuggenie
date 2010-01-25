@@ -40,6 +40,7 @@
 		.white .xb2, .white .xb3, .white .xb4 { background: #FFF; border-color: #CCC; }
 		.white .xb1 { background: #CCC; }
 		.white .xboxcontent { background: #FFF; border-color: #CCC; }
+		pre { overflow: scroll; padding: 5px; }
 		</style>
 		<div class=\"rounded_box white\" style=\"margin: 30px auto 0 auto; width: 700px;\">
 			<b class=\"xtop\"><b class=\"xb1\"></b><b class=\"xb2\"></b><b class=\"xb3\"></b><b class=\"xb4\"></b></b>
@@ -112,6 +113,34 @@
 					echo '<span style="color: #55F;">'.$exception['file'].'</span>, line '.$exception['line'];
 				echo "</li>
 				</ul>";
+				echo "<h2>Backtrace:</h2>
+				<ol>";
+				foreach (debug_backtrace() as $trace_element)
+				{
+					echo '<li>';
+					if (array_key_exists('class', $trace_element))
+					{
+						echo '<strong>'.$trace_element['class'].$trace_element['function'].'()</strong><br>';
+					}
+					elseif (array_key_exists('function', $trace_element))
+					{
+						echo '<strong>'.$trace_element['function'].'()</strong><br>';
+					}
+					else
+					{
+						echo '<strong>unknown function</strong><br>';
+					}
+					if (array_key_exists('file', $trace_element))
+					{
+						echo '<span style="color: #55F;">'.$trace_element['file'].'</span>, line '.$trace_element['line'];
+					}
+					else
+					{
+						echo '<span style="color: #C95;">unknown file</span>';
+					}	
+					echo '</li>';
+				}
+				echo "</ol>";
 			}
 			echo "<h2>Log messages:</h2>";
 			foreach (TBGLogging::getEntries() as $entry)
