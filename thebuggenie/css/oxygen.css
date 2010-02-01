@@ -52,6 +52,8 @@ INPUT, SELECT, TEXTAREA, BUTTON
 	padding: 2px;
 }
 
+input, select, textarea { background-color: #FFF; }
+
 input[type="submit"], button, input[type="file"]
 {
 	background-color: #E5E5E5;
