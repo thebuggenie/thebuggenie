@@ -158,6 +158,7 @@
 	
 	function b2_error_handler($code, $error, $file, $line_number)
 	{
+		if ($code == 2 && strpos(basename($file), 'Services_Yadis_') !== false) return;
 		tbg_exception($error, array('code' => $code, 'file' => $file, 'line' => $line_number));
 	}
 	

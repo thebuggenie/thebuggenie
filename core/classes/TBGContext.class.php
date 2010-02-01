@@ -1779,13 +1779,9 @@
 						{
 							throw new TBGActionNotFoundException('The ' . $route['module'] . ' module is missing the classes/actions.class.php file, containing all the module actions');
 						}
-						if (!class_exists($route['module'].'Actions'))
+						if (!class_exists($route['module'].'Actions') && !class_exists($route['module'].'ActionComponents'))
 						{
-							require self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actions.class.php';
-						}
-						if (file_exists(self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actioncomponents.class.php') && !class_exists($route['module'].'ActionComponents'))
-						{
-							require self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actioncomponents.class.php';
+							self::addClasspath(self::getIncludePath() . 'modules/' . $route['module'] . '/classes/');
 						}
 						if (self::performAction($route['module'], $route['action']))
 						{
