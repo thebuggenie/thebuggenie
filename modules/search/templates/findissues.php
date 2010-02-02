@@ -26,11 +26,11 @@
 
 	foreach ($savedsearches['user'] as $a_savedsearch)
 	{
-		$tbg_response->addFeed(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), __($a_savedsearch->get(B2tSavedSearches::NAME)));
+		$tbg_response->addFeed(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), __($a_savedsearch->get(TBGSavedSearchesTable::NAME)));
 	}
 	foreach ($savedsearches['public'] as $a_savedsearch)
 	{
-		$tbg_response->addFeed(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), __($a_savedsearch->get(B2tSavedSearches::NAME)));
+		$tbg_response->addFeed(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), __($a_savedsearch->get(TBGSavedSearchesTable::NAME)));
 	}
 
 ?>
@@ -82,19 +82,19 @@
 				<?php foreach ($savedsearches['user'] as $a_savedsearch): ?>
 					<?php if (TBGContext::isProjectContext()): ?>
 						<div style="clear: both;">
-							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
 						</div>
-						<?php if ($a_savedsearch->get(B2tSavedSearches::DESCRIPTION) != ''): ?>
-							<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(B2tSavedSearches::DESCRIPTION); ?></div>
+						<?php if ($a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION) != ''): ?>
+							<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?></div>
 						<?php endif; ?>
 					<?php else: ?>
 						<div style="clear: both;">
-							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
+							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
 						</div>
-						<?php if ($a_savedsearch->get(B2tSavedSearches::DESCRIPTION) != ''): ?>
-							<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(B2tSavedSearches::DESCRIPTION); ?></div>
+						<?php if ($a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION) != ''): ?>
+							<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?></div>
 						<?php endif; ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
@@ -106,15 +106,15 @@
 				<?php foreach ($savedsearches['public'] as $a_savedsearch): ?>
 					<div style="clear: both;">
 						<?php if (TBGContext::isProjectContext()): ?>
-							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
 						<?php else: ?>
-							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
-							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(B2tSavedSearches::ID), 'search' => true)), __($a_savedsearch->get(B2tSavedSearches::NAME))); ?>
+							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
+							<?php echo link_tag(make_url('search', array('saved_search' => $a_savedsearch->get(TBGSavedSearchesTable::ID), 'search' => true)), __($a_savedsearch->get(TBGSavedSearchesTable::NAME))); ?>
 						<?php endif; ?>
 					</div>
-					<?php if ($a_savedsearch->get(B2tSavedSearches::DESCRIPTION) != ''): ?>
-						<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(B2tSavedSearches::DESCRIPTION); ?></div>
+					<?php if ($a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION) != ''): ?>
+						<div style="clear: both; padding: 0 0 10px 3px;"><?php echo $a_savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?></div>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php else: ?>
@@ -221,17 +221,17 @@
 										<p style="padding-bottom: 15px;" class="faded_medium"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
 									<?php endif; ?>
 									<?php if ($issavedsearch): ?>
-										<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $savedsearch->get(B2tSavedSearches::ID); ?>">
+										<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $savedsearch->get(TBGSavedSearchesTable::ID); ?>">
 									<?php endif; ?>
 									<input type="hidden" name="save" value="1" id="save_search" disabled>
 									<label for="saved_search_name"><?php echo __('Saved search name'); ?></label>
-									<input type="text" name="saved_search_name" id="saved_search_name"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(B2tSavedSearches::NAME); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
+									<input type="text" name="saved_search_name" id="saved_search_name"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(TBGSavedSearchesTable::NAME); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
 									<label for="saved_search_description"><?php echo __('Description'); ?> <span style="font-weight: normal;">(<?php echo __('Optional'); ?>)</span></label>
-									<input type="text" name="saved_search_description" id="saved_search_description"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(B2tSavedSearches::DESCRIPTION); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
+									<input type="text" name="saved_search_description" id="saved_search_description"<?php if ($issavedsearch): ?> value="<?php echo $savedsearch->get(TBGSavedSearchesTable::DESCRIPTION); ?>"<?php endif; ?> style="width: 350px;" disabled><br>
 									<label for="saved_search_public"><?php echo __('Available to'); ?></label>
 									<select name="saved_search_public" id="saved_search_public" disabled<?php if (!$tbg_user->canCreatePublicSearches()): ?> style="display: none;"<?php endif; ?>>
-										<option value="0"<?php if ($issavedsearch && $savedsearch->get(B2tSavedSearches::IS_PUBLIC) == 0): ?> selected<?php endif; ?>><?php echo __('Only to me'); ?></option>
-										<option value="1"<?php if ($issavedsearch && $savedsearch->get(B2tSavedSearches::IS_PUBLIC) == 1): ?> selected<?php endif; ?>><?php echo __('To everyone'); ?></option>
+										<option value="0"<?php if ($issavedsearch && $savedsearch->get(TBGSavedSearchesTable::IS_PUBLIC) == 0): ?> selected<?php endif; ?>><?php echo __('Only to me'); ?></option>
+										<option value="1"<?php if ($issavedsearch && $savedsearch->get(TBGSavedSearchesTable::IS_PUBLIC) == 1): ?> selected<?php endif; ?>><?php echo __('To everyone'); ?></option>
 									</select>
 									<div style="text-align: right;">
 										<input type="submit" value="<?php echo __('Update this saved search'); ?>" id="search_button_save" onclick="$('find_issues_form').method = 'post';$('save_search').enable();return true;">

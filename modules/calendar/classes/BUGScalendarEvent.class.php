@@ -21,15 +21,15 @@
 		{
 			if (!$id instanceof B2DBRow)
 			{
-				$id = B2DB::getTable('B2tCalendarTasks')->doSelectById($id);
+				$id = B2DB::getTable('TBGCalendarTasksTable')->doSelectById($id);
 			}
-			$this->_itemid = $id->get(B2tCalendarTasks::ID);
-			$this->_name = $id->get(B2tCalendarTasks::TITLE);
-			$this->_itemtype = $id->get(B2tCalendarTasks::ITEMTYPE);
-			$this->_description = $id->get(B2tCalendarTasks::DESCRIPTION);
-			$this->_startdate = $id->get(B2tCalendarTasks::STARTS);
-			$this->_enddate = $id->get(B2tCalendarTasks::ENDS);
-			$this->_userstatus = $id->get(B2tCalendarTasks::STATUS);
+			$this->_itemid = $id->get(TBGCalendarTasksTable::ID);
+			$this->_name = $id->get(TBGCalendarTasksTable::TITLE);
+			$this->_itemtype = $id->get(TBGCalendarTasksTable::ITEMTYPE);
+			$this->_description = $id->get(TBGCalendarTasksTable::DESCRIPTION);
+			$this->_startdate = $id->get(TBGCalendarTasksTable::STARTS);
+			$this->_enddate = $id->get(TBGCalendarTasksTable::ENDS);
+			$this->_userstatus = $id->get(TBGCalendarTasksTable::STATUS);
 		}
 		
 		/**
@@ -47,16 +47,16 @@
 		public static function createNew($title, $type, $description, $starts, $ends, $userstatus, $calendar)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tCalendarTasks::DESCRIPTION, $description);
-			$crit->addInsert(B2tCalendarTasks::STARTS, $starts);
-			$crit->addInsert(B2tCalendarTasks::ENDS, $ends);
-			$crit->addInsert(B2tCalendarTasks::ITEMTYPE, $type);
-			$crit->addInsert(B2tCalendarTasks::TITLE, $title);
-			$crit->addInsert(B2tCalendarTasks::STATUS, $userstatus);
-			$crit->addInsert(B2tCalendarTasks::CALENDAR, $calendar);
-			$crit->addInsert(B2tCalendarTasks::LOCATION, 0);
-			$crit->addInsert(B2tCalendarTasks::SCOPE, TBGContext::getScope()->getID());
-			$res = B2DB::getTable('B2tCalendarTasks')->doInsert($crit);
+			$crit->addInsert(TBGCalendarTasksTable::DESCRIPTION, $description);
+			$crit->addInsert(TBGCalendarTasksTable::STARTS, $starts);
+			$crit->addInsert(TBGCalendarTasksTable::ENDS, $ends);
+			$crit->addInsert(TBGCalendarTasksTable::ITEMTYPE, $type);
+			$crit->addInsert(TBGCalendarTasksTable::TITLE, $title);
+			$crit->addInsert(TBGCalendarTasksTable::STATUS, $userstatus);
+			$crit->addInsert(TBGCalendarTasksTable::CALENDAR, $calendar);
+			$crit->addInsert(TBGCalendarTasksTable::LOCATION, 0);
+			$crit->addInsert(TBGCalendarTasksTable::SCOPE, TBGContext::getScope()->getID());
+			$res = B2DB::getTable('TBGCalendarTasksTable')->doInsert($crit);
 			return new BUGScalendarEvent($res->getInsertID());
 		}
 		
@@ -79,8 +79,8 @@
 		public function setDescription($val)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tCalendarTasks::DESCRIPTION, $val);
-			$res = B2DB::getTable('B2tCalendarTasks')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGCalendarTasksTable::DESCRIPTION, $val);
+			$res = B2DB::getTable('TBGCalendarTasksTable')->doUpdateById($crit, $this->getID());
 			$this->_description = $val;
 		}
 		
@@ -92,8 +92,8 @@
 		public function setStartDate($val)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tCalendarTasks::STARTS, $val);
-			$res = B2DB::getTable('B2tCalendarTasks')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGCalendarTasksTable::STARTS, $val);
+			$res = B2DB::getTable('TBGCalendarTasksTable')->doUpdateById($crit, $this->getID());
 			$this->_startdate = $val;
 		}
 		
@@ -105,8 +105,8 @@
 		public function setEndDate($val)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tCalendarTasks::ENDS, $val);
-			$res = B2DB::getTable('B2tCalendarTasks')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGCalendarTasksTable::ENDS, $val);
+			$res = B2DB::getTable('TBGCalendarTasksTable')->doUpdateById($crit, $this->getID());
 			$this->_enddate = $val;
 		}
 		
@@ -118,8 +118,8 @@
 		public function setType($val)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tCalendarTasks::ITEMTYPE, $val);
-			$res = B2DB::getTable('B2tCalendarTasks')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGCalendarTasksTable::ITEMTYPE, $val);
+			$res = B2DB::getTable('TBGCalendarTasksTable')->doUpdateById($crit, $this->getID());
 			$this->_itemtype = $val;
 		}
 		
@@ -131,8 +131,8 @@
 		public function setTitle($val)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tCalendarTasks::TITLE, $val);
-			$res = B2DB::getTable('B2tCalendarTasks')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGCalendarTasksTable::TITLE, $val);
+			$res = B2DB::getTable('TBGCalendarTasksTable')->doUpdateById($crit, $this->getID());
 			$this->_name = $val;
 		}
 		
@@ -159,8 +159,8 @@
 		public function setUserStatus($val)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tCalendarTasks::STATUS, $val);
-			$res = B2DB::getTable('B2tCalendarTasks')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGCalendarTasksTable::STATUS, $val);
+			$res = B2DB::getTable('TBGCalendarTasksTable')->doUpdateById($crit, $this->getID());
 			$this->_userstatus = $val;
 		}
 		

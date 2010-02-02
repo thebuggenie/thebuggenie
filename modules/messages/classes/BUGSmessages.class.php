@@ -39,9 +39,9 @@
 
 			if ($scope == TBGContext::getScope()->getID())
 			{
-				B2DB::getTable('B2tMessageFolders')->setAutoIncrementStart(5);
-				B2DB::getTable('B2tMessageFolders')->create();
-				B2DB::getTable('B2tMessages')->create();
+				B2DB::getTable('TBGMessageFoldersTable')->setAutoIncrementStart(5);
+				B2DB::getTable('TBGMessageFoldersTable')->create();
+				B2DB::getTable('TBGMessagesTable')->create();
 			}
 
 			return true;
@@ -51,8 +51,8 @@
 		{
 			if (TBGContext::getScope()->getID() == 1)
 			{
-				B2DB::getTable('B2tMessageFolders')->drop();
-				B2DB::getTable('B2tMessages')->drop();
+				B2DB::getTable('TBGMessageFoldersTable')->drop();
+				B2DB::getTable('TBGMessagesTable')->drop();
 			}
 			parent::_uninstall();
 		}
@@ -98,36 +98,36 @@
 					{
 						case 2:
 							$crit = new B2DBCriteria();
-							$crit->setFromTable(B2DB::getTable('B2tMessages'));
-							$crit->addJoin(B2DB::getTable('B2tBuddies'), B2tBuddies::ID, B2tMessages::FROM_USER, array(array(B2tBuddies::UID, TBGContext::getUser()->getUID())));
+							$crit->setFromTable(B2DB::getTable('TBGMessagesTable'));
+							$crit->addJoin(B2DB::getTable('TBGBuddiesTable'), TBGBuddiesTable::ID, TBGMessagesTable::FROM_USER, array(array(TBGBuddiesTable::UID, TBGContext::getUser()->getUID())));
 
 							if ($_SESSION['messages_filter'] != '')
 							{
-								$ctn = $crit->returnCriterion(B2tMessages::BODY, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
-								$ctn->addOr(B2tMessages::TITLE, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
-								$ctn->addOr(B2tMessages::TITLE, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
-								$ctn->addOr(B2tUsers::BUDDYNAME, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
-								$ctn->addOr(B2tUsers::UNAME, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+								$ctn = $crit->returnCriterion(TBGMessagesTable::BODY, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+								$ctn->addOr(TBGMessagesTable::TITLE, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+								$ctn->addOr(TBGMessagesTable::TITLE, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+								$ctn->addOr(TBGUsersTable::BUDDYNAME, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+								$ctn->addOr(TBGUsersTable::UNAME, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
 								$crit->addWhere($ctn);
 							}
 							
 							if ($_SESSION['unread_filter'] != '')
 							{
-								$crit->addWhere(B2tMessages::IS_READ, $_SESSION['unread_filter']);
+								$crit->addWhere(TBGMessagesTable::IS_READ, $_SESSION['unread_filter']);
 							}
 							
-							$crit->addWhere(B2tMessages::FROM_USER, $uid);
-							$crit->addWhere(B2tMessages::DELETED_SENT, 0);
+							$crit->addWhere(TBGMessagesTable::FROM_USER, $uid);
+							$crit->addWhere(TBGMessagesTable::DELETED_SENT, 0);
 							if ($msg != 0) 
 							{ 
-								$res = B2DB::getTable('B2tMessages')->doSelectById($msg, $crit);
+								$res = B2DB::getTable('TBGMessagesTable')->doSelectById($msg, $crit);
 								$msgs[] = $res;
 							}
 							else
 							{
-								$crit->addOrderBy(B2tMessages::SENT, 'desc');
-								$crit->addOrderBy(B2tMessages::ID, 'desc');
-								$res = B2DB::getTable('B2tMessages')->doSelect($crit);
+								$crit->addOrderBy(TBGMessagesTable::SENT, 'desc');
+								$crit->addOrderBy(TBGMessagesTable::ID, 'desc');
+								$res = B2DB::getTable('TBGMessagesTable')->doSelect($crit);
 								$msgs = $res->getAllRows();
 							}
 							break;
@@ -137,35 +137,35 @@
 								if (($tid != 0 && $thetid == $tid) || $tid == 0)
 								{
 									$crit = new B2DBCriteria();
-									$crit->setFromTable(B2DB::getTable('B2tMessages'));
-									$crit->addJoin(B2DB::getTable('B2tBuddies'), B2tBuddies::ID, B2tMessages::FROM_USER, array(array(B2tBuddies::UID, TBGContext::getUser()->getUID())));
+									$crit->setFromTable(B2DB::getTable('TBGMessagesTable'));
+									$crit->addJoin(B2DB::getTable('TBGBuddiesTable'), TBGBuddiesTable::ID, TBGMessagesTable::FROM_USER, array(array(TBGBuddiesTable::UID, TBGContext::getUser()->getUID())));
 									
 									if ($_SESSION['messages_filter'] != '')
 									{
-										$ctn = $crit->returnCriterion(B2tMessages::BODY, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
-										$ctn->addOr(B2tMessages::TITLE, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
-										$ctn->addOr(B2tUsers::BUDDYNAME, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
-										$ctn->addOr(B2tUsers::UNAME, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+										$ctn = $crit->returnCriterion(TBGMessagesTable::BODY, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+										$ctn->addOr(TBGMessagesTable::TITLE, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+										$ctn->addOr(TBGUsersTable::BUDDYNAME, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+										$ctn->addOr(TBGUsersTable::UNAME, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
 										$crit->addWhere($ctn);
 									}
 									
 									if ($_SESSION['unread_filter'] != '')
 									{
-										$crit->addWhere(B2tMessages::IS_READ, $_SESSION['unread_filter']);
+										$crit->addWhere(TBGMessagesTable::IS_READ, $_SESSION['unread_filter']);
 									}
 
 									if ($tid != 0)
 									{
-										$crit->addWhere(B2tMessages::TO_TEAM, $thetid, B2DBCriteria::DB_IN);
+										$crit->addWhere(TBGMessagesTable::TO_TEAM, $thetid, B2DBCriteria::DB_IN);
 									}
-									$crit->addWhere(B2tMessages::FOLDER, $folder);
-									$crit->addWhere(B2tMessages::DELETED, 0);
-									$crit->addWhere(B2tMessages::TO_USER, $uid);
+									$crit->addWhere(TBGMessagesTable::FOLDER, $folder);
+									$crit->addWhere(TBGMessagesTable::DELETED, 0);
+									$crit->addWhere(TBGMessagesTable::TO_USER, $uid);
 									if ($msg != 0) 
 									{ 
 										try
 										{
-											$res = B2DB::getTable('B2tMessages')->doSelectById($msg, $crit);
+											$res = B2DB::getTable('TBGMessagesTable')->doSelectById($msg, $crit);
 											$msgs[] = $res;
 										}
 										catch (Exception $e)
@@ -175,9 +175,9 @@
 									}
 									else
 									{
-										$crit->addOrderBy(B2tMessages::SENT, 'desc');
-										$crit->addOrderBy(B2tMessages::ID, 'desc');
-										$res = B2DB::getTable('B2tMessages')->doSelect($crit);
+										$crit->addOrderBy(TBGMessagesTable::SENT, 'desc');
+										$crit->addOrderBy(TBGMessagesTable::ID, 'desc');
+										$res = B2DB::getTable('TBGMessagesTable')->doSelect($crit);
 										$msgs = $res->getAllRows();
 									}
 								}
@@ -185,37 +185,37 @@
 							break;
 						default:
 							$crit = new B2DBCriteria();
-							$crit->setFromTable(B2DB::getTable('B2tMessages'));
-							$crit->addJoin(B2DB::getTable('B2tBuddies'), B2tBuddies::ID, B2tMessages::FROM_USER, array(array(B2tBuddies::UID, TBGContext::getUser()->getUID())));
-							$crit->addWhere(B2tMessages::TO_USER, $uid);
-							$crit->addWhere(B2tMessages::FOLDER, $folder);
-							$crit->addWhere(B2tMessages::DELETED, 0);
-							$crit->addWhere(B2tMessages::FOLDER, 2, B2DBCriteria::DB_NOT_EQUALS);
+							$crit->setFromTable(B2DB::getTable('TBGMessagesTable'));
+							$crit->addJoin(B2DB::getTable('TBGBuddiesTable'), TBGBuddiesTable::ID, TBGMessagesTable::FROM_USER, array(array(TBGBuddiesTable::UID, TBGContext::getUser()->getUID())));
+							$crit->addWhere(TBGMessagesTable::TO_USER, $uid);
+							$crit->addWhere(TBGMessagesTable::FOLDER, $folder);
+							$crit->addWhere(TBGMessagesTable::DELETED, 0);
+							$crit->addWhere(TBGMessagesTable::FOLDER, 2, B2DBCriteria::DB_NOT_EQUALS);
 
 							if ($_SESSION['messages_filter'] != '')
 							{
-								$ctn = $crit->returnCriterion(B2tMessages::BODY, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
-								$ctn->addOr(B2tMessages::TITLE, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
-								$ctn->addOr(B2tUsers::BUDDYNAME, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
-								$ctn->addOr(B2tUsers::UNAME, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+								$ctn = $crit->returnCriterion(TBGMessagesTable::BODY, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+								$ctn->addOr(TBGMessagesTable::TITLE, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+								$ctn->addOr(TBGUsersTable::BUDDYNAME, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
+								$ctn->addOr(TBGUsersTable::UNAME, '%'.$_SESSION['messages_filter'].'%', B2DBCriteria::DB_LIKE);
 								$crit->addWhere($ctn);
 							}
 							
 							if ($_SESSION['unread_filter'] != '')
 							{
-								$crit->addWhere(B2tMessages::IS_READ, $_SESSION['unread_filter']);
+								$crit->addWhere(TBGMessagesTable::IS_READ, $_SESSION['unread_filter']);
 							}
 							
 							if ($msg != 0) 
 							{ 
-								$res = B2DB::getTable('B2tMessages')->doSelectById($msg, $crit);
+								$res = B2DB::getTable('TBGMessagesTable')->doSelectById($msg, $crit);
 								$msgs[] = $res;
 							}
 							else
 							{
-								$crit->addOrderBy(B2tMessages::SENT, 'desc');
-								$crit->addOrderBy(B2tMessages::ID, 'desc');
-								$res = B2DB::getTable('B2tMessages')->doSelect($crit);
+								$crit->addOrderBy(TBGMessagesTable::SENT, 'desc');
+								$crit->addOrderBy(TBGMessagesTable::ID, 'desc');
+								$res = B2DB::getTable('TBGMessagesTable')->doSelect($crit);
 								$msgs = $res->getAllRows();
 							}
 							break;
@@ -231,17 +231,17 @@
 		public function getFolders($uid, $pid = null)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tMessageFolders::UID, $uid);
-			$crit->addOrderBy(B2tMessageFolders::FOLDERNAME, 'asc');
+			$crit->addWhere(TBGMessageFoldersTable::UID, $uid);
+			$crit->addOrderBy(TBGMessageFoldersTable::FOLDERNAME, 'asc');
 			if ($pid !== null)
 			{
-				$crit->addWhere(B2tMessageFolders::PARENT_FOLDER, $pid);
+				$crit->addWhere(TBGMessageFoldersTable::PARENT_FOLDER, $pid);
 			}
-			$res = B2DB::getTable('B2tMessageFolders')->doSelect($crit);
+			$res = B2DB::getTable('TBGMessageFoldersTable')->doSelect($crit);
 			$mfs = array();
 			while ($row = $res->getNextRow())
 			{
-				$mfs[] = array('id' => $row->get(B2tMessageFolders::ID), 'foldername' => $row->get(B2tMessageFolders::FOLDERNAME));
+				$mfs[] = array('id' => $row->get(TBGMessageFoldersTable::ID), 'foldername' => $row->get(TBGMessageFoldersTable::FOLDERNAME));
 			}
 			return $mfs;
 		}
@@ -249,9 +249,9 @@
 		public function addFolder($folder_name)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tMessageFolders::UID, TBGContext::getUser()->getUID());
-			$crit->addInsert(B2tMessageFolders::FOLDERNAME, $folder_name);
-			$res = B2DB::getTable('B2tMessageFolders')->doInsert($crit);
+			$crit->addInsert(TBGMessageFoldersTable::UID, TBGContext::getUser()->getUID());
+			$crit->addInsert(TBGMessageFoldersTable::FOLDERNAME, $folder_name);
+			$res = B2DB::getTable('TBGMessageFoldersTable')->doInsert($crit);
 	
 			return $res->getInsertID();
 		}
@@ -261,13 +261,13 @@
 			if (!$force)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tMessageFolders::UID, TBGContext::getUser()->getUID());
-				$crit->addWhere(B2tMessageFolders::ID, $folder_id);
-				$res = B2DB::getTable('B2tMessageFolders')->doDelete($crit);
+				$crit->addWhere(TBGMessageFoldersTable::UID, TBGContext::getUser()->getUID());
+				$crit->addWhere(TBGMessageFoldersTable::ID, $folder_id);
+				$res = B2DB::getTable('TBGMessageFoldersTable')->doDelete($crit);
 			}
 			else
 			{
-				$res = B2DB::getTable('B2tMessageFolders')->doDeleteById($folder_id);
+				$res = B2DB::getTable('TBGMessageFoldersTable')->doDeleteById($folder_id);
 			}
 		}
 	
@@ -276,32 +276,32 @@
 			if (!$force)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tMessages::TO_USER, TBGContext::getUser()->getUID());
-				$crit->addWhere(B2tMessages::ID, $msg_id);
-				$res = B2DB::getTable('B2tMessages')->doDelete($crit);
+				$crit->addWhere(TBGMessagesTable::TO_USER, TBGContext::getUser()->getUID());
+				$crit->addWhere(TBGMessagesTable::ID, $msg_id);
+				$res = B2DB::getTable('TBGMessagesTable')->doDelete($crit);
 			}
 			else
 			{
-				$res = B2DB::getTable('B2tMessages')->doDeleteById($msg_id);
+				$res = B2DB::getTable('TBGMessagesTable')->doDeleteById($msg_id);
 			}
 		}
 	
 		public function setRead($msg_id, $read)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tMessages::IS_READ, $read);
-			$crit->addWhere(B2tMessages::ID, $msg_id);
-			$crit->addWhere(B2tMessages::TO_USER, TBGContext::getUser()->getUID());
-			B2DB::getTable('B2tMessages')->doUpdate($crit);
+			$crit->addUpdate(TBGMessagesTable::IS_READ, $read);
+			$crit->addWhere(TBGMessagesTable::ID, $msg_id);
+			$crit->addWhere(TBGMessagesTable::TO_USER, TBGContext::getUser()->getUID());
+			B2DB::getTable('TBGMessagesTable')->doUpdate($crit);
 		}
 	
 		public function moveMessage($msg_id, $to_folder)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tMessages::FOLDER, $to_folder);
-			$crit->addWhere(B2tMessages::ID, $msg_id);
-			$crit->addWhere(B2tMessages::TO_USER, TBGContext::getUser()->getUID());
-			B2DB::getTable('B2tMessages')->doUpdate($crit);
+			$crit->addUpdate(TBGMessagesTable::FOLDER, $to_folder);
+			$crit->addWhere(TBGMessagesTable::ID, $msg_id);
+			$crit->addWhere(TBGMessagesTable::TO_USER, TBGContext::getUser()->getUID());
+			B2DB::getTable('TBGMessagesTable')->doUpdate($crit);
 		}
 	
 		public function sendMessage($to_id, $to_team, $title, $content)
@@ -309,27 +309,27 @@
 			$now = $_SERVER["REQUEST_TIME"];
 	
 			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tMessages::FROM_USER, TBGContext::getUser()->getUID());
-			$crit->addInsert(B2tMessages::TITLE, $title);
-			$crit->addInsert(B2tMessages::BODY, $content);
-			$crit->addInsert(B2tMessages::SENT, $now);
+			$crit->addInsert(TBGMessagesTable::FROM_USER, TBGContext::getUser()->getUID());
+			$crit->addInsert(TBGMessagesTable::TITLE, $title);
+			$crit->addInsert(TBGMessagesTable::BODY, $content);
+			$crit->addInsert(TBGMessagesTable::SENT, $now);
 			if ($to_team == 0)
 			{
-				$crit->addInsert(B2tMessages::FOLDER, 1);
-				$crit->addInsert(B2tMessages::TO_USER, $to_id);
-				B2DB::getTable('B2tMessages')->doInsert($crit);
+				$crit->addInsert(TBGMessagesTable::FOLDER, 1);
+				$crit->addInsert(TBGMessagesTable::TO_USER, $to_id);
+				B2DB::getTable('TBGMessagesTable')->doInsert($crit);
 			}
 			else
 			{
 				$theTeam = TBGFactory::teamLab($to_id);
 				
-				$crit->addInsert(B2tMessages::FOLDER, 4);
-				$crit->addInsert(B2tMessages::TO_TEAM, $to_id);
+				$crit->addInsert(TBGMessagesTable::FOLDER, 4);
+				$crit->addInsert(TBGMessagesTable::TO_TEAM, $to_id);
 				foreach ($theTeam->getMembers() as $anUid)
 				{
 					$crit2 = clone $crit;
-					$crit2->addInsert(B2tMessages::TO_USER, $anUid);
-					B2DB::getTable('B2tMessages')->doInsert($crit2);
+					$crit2->addInsert(TBGMessagesTable::TO_USER, $anUid);
+					B2DB::getTable('TBGMessagesTable')->doInsert($crit2);
 				}
 			}
 		}
@@ -338,12 +338,12 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->setDistinct();
-			$crit->addWhere(B2tMessages::FOLDER, (int) $folder_id);
-			$crit->addWhere(B2tMessages::DELETED, 0);
-			$crit->addWhere(B2tMessages::TO_USER, (int) TBGContext::getUser()->getUID());
+			$crit->addWhere(TBGMessagesTable::FOLDER, (int) $folder_id);
+			$crit->addWhere(TBGMessagesTable::DELETED, 0);
+			$crit->addWhere(TBGMessagesTable::TO_USER, (int) TBGContext::getUser()->getUID());
 			if ($tid !== null)
 			{
-				$crit->addWhere(B2tMessages::TO_TEAM, $tid);
+				$crit->addWhere(TBGMessagesTable::TO_TEAM, $tid);
 			}
 			
 			$unread_count = 0;
@@ -351,18 +351,18 @@
 			$frombuds_count = 0;
 			$urgent_count = 0;
 			
-			if ($res = B2DB::getTable('B2tMessages')->doSelect($crit))
+			if ($res = B2DB::getTable('TBGMessagesTable')->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
-					if ($row->get(B2tMessages::IS_READ) == 0)
+					if ($row->get(TBGMessagesTable::IS_READ) == 0)
 					{
 						$unread_count++;
-						if (TBGContext::getUser()->isFriend($row->get(B2tMessages::FROM_USER)))
+						if (TBGContext::getUser()->isFriend($row->get(TBGMessagesTable::FROM_USER)))
 						{
 							$frombuds_count++;
 						}
-						if ($row->get(B2tMessages::URGENT) == 1)
+						if ($row->get(TBGMessagesTable::URGENT) == 1)
 						{
 							$urgent_count++;
 						}

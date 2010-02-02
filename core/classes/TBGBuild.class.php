@@ -76,11 +76,11 @@
 			if (!array_key_exists($project_id, self::$_project_builds))
 			{
 				self::$_project_builds[$project_id] = array();
-				if ($res = B2DB::getTable('B2tBuilds')->getByProjectID($project_id))
+				if ($res = B2DB::getTable('TBGBuildsTable')->getByProjectID($project_id))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$build = TBGFactory::buildLab($row->get(B2tBuilds::ID), $row);
+						$build = TBGFactory::buildLab($row->get(TBGBuildsTable::ID), $row);
 						self::$_project_builds[$project_id][$build->getID()] = $build;
 					}
 				}
@@ -104,9 +104,9 @@
 			if (!array_key_exists($edition_id, self::$_edition_builds))
 			{
 				self::$_edition_builds[$edition_id] = array();
-				if ($res = B2DB::getTable('B2tBuilds')->getByEditionID($project_id))
+				if ($res = B2DB::getTable('TBGBuildsTable')->getByEditionID($project_id))
 				{
-					$build = TBGFactory::buildLab($row->get(B2tBuilds::ID), $row);
+					$build = TBGFactory::buildLab($row->get(TBGBuildsTable::ID), $row);
 					self::$_edition_builds[$edition_id][$build->getID()] = $build;
 				}
 			}
@@ -128,7 +128,7 @@
 		 */
 		public static function createNew($name, $project = null, $edition = null, $ver_mj = 0, $ver_mn = 0, $ver_rev = 1, $b_id = null)
 		{
-			$b_id = B2DB::getTable('B2tBuilds')->createNew($name, $project, $edition, $ver_mj, $ver_mn, $ver_rev, $b_id);
+			$b_id = B2DB::getTable('TBGBuildsTable')->createNew($name, $project, $edition, $ver_mj, $ver_mn, $ver_rev, $b_id);
 			
 			TBGContext::setPermission("b2buildaccess", $b_id, "core", 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
 			
@@ -145,26 +145,26 @@
 		{
 			if ($row === null)
 			{
-				$row = B2DB::getTable('B2tBuilds')->getById($b_id);
+				$row = B2DB::getTable('TBGBuildsTable')->getById($b_id);
 			}
 			if ($row instanceof B2DBRow)
 			{
-				$this->_name 				= $row->get(B2tBuilds::NAME);
+				$this->_name 				= $row->get(TBGBuildsTable::NAME);
 				$this->_itemid 				= $b_id;
-				$this->_isdefault 			= (bool) $row->get(B2tBuilds::IS_DEFAULT);
-				$this->_isreleased 			= (bool) $row->get(B2tBuilds::RELEASED);
-				$this->_locked 				= (bool) $row->get(B2tBuilds::LOCKED);
-				$this->_release_date 		= $row->get(B2tBuilds::RELEASE_DATE);
-				$this->_version_major 		= $row->get(B2tBuilds::VERSION_MAJOR);
-				$this->_version_minor 		= $row->get(B2tBuilds::VERSION_MINOR);
-				$this->_version_revision 	= $row->get(B2tBuilds::VERSION_REVISION);
-				if ($row->get(B2tBuilds::EDITION))
+				$this->_isdefault 			= (bool) $row->get(TBGBuildsTable::IS_DEFAULT);
+				$this->_isreleased 			= (bool) $row->get(TBGBuildsTable::RELEASED);
+				$this->_locked 				= (bool) $row->get(TBGBuildsTable::LOCKED);
+				$this->_release_date 		= $row->get(TBGBuildsTable::RELEASE_DATE);
+				$this->_version_major 		= $row->get(TBGBuildsTable::VERSION_MAJOR);
+				$this->_version_minor 		= $row->get(TBGBuildsTable::VERSION_MINOR);
+				$this->_version_revision 	= $row->get(TBGBuildsTable::VERSION_REVISION);
+				if ($row->get(TBGBuildsTable::EDITION))
 				{
-					$this->_edition = TBGFactory::editionLab($row->get(B2tBuilds::EDITION), $row);
+					$this->_edition = TBGFactory::editionLab($row->get(TBGBuildsTable::EDITION), $row);
 				}
-				elseif ($row->get(B2tBuilds::PROJECT))
+				elseif ($row->get(TBGBuildsTable::PROJECT))
 				{
-					$this->_project = TBGFactory::projectLab($row->get(B2tBuilds::PROJECT), $row);
+					$this->_project = TBGFactory::projectLab($row->get(TBGBuildsTable::PROJECT), $row);
 				}
 			}
 		}
@@ -274,13 +274,13 @@
 		{
 			if ($this->isEditionBuild())
 			{
-				B2DB::getTable('B2tBuilds')->clearDefaultsByEditionID($this->getParent()->getID());
+				B2DB::getTable('TBGBuildsTable')->clearDefaultsByEditionID($this->getParent()->getID());
 			}
 			else
 			{
-				B2DB::getTable('B2tBuilds')->clearDefaultsByProjectID($this->getParent()->getID());
+				B2DB::getTable('TBGBuildsTable')->clearDefaultsByProjectID($this->getParent()->getID());
 			}
-			$res = B2DB::getTable('B2tBuilds')->setDefaultBuild($this->getID());
+			$res = B2DB::getTable('TBGBuildsTable')->setDefaultBuild($this->getID());
 			$this->_isdefault = true;
 		}
 		
@@ -350,8 +350,8 @@
 		 */
 		public function delete()
 		{
-			B2DB::getTable('B2tIssueAffectsBuild')->deleteByBuildID($this->getID());
-			B2DB::getTable('B2tBuilds')->doDeleteById($this->getID());
+			B2DB::getTable('TBGIssueAffectsBuildTable')->deleteByBuildID($this->getID());
+			B2DB::getTable('TBGBuildsTable')->doDeleteById($this->getID());
 		}
 		
 		/**
@@ -360,18 +360,18 @@
 		public function save()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tBuilds::VERSION_MAJOR, $this->_version_major);
-			$crit->addUpdate(B2tBuilds::VERSION_MINOR, $this->_version_minor);
-			$crit->addUpdate(B2tBuilds::VERSION_REVISION, $this->_version_revision);
-			$crit->addUpdate(B2tBuilds::NAME, $this->_name);
-			$crit->addUpdate(B2tBuilds::TIMESTAMP, $_SERVER["REQUEST_TIME"]);
-			$crit->addUpdate(B2tBuilds::RELEASE_DATE, $this->_release_date);
-			$crit->addUpdate(B2tBuilds::RELEASED, (int) $this->_isreleased);
-			$crit->addUpdate(B2tBuilds::LOCKED, (int) $this->_locked);
+			$crit->addUpdate(TBGBuildsTable::VERSION_MAJOR, $this->_version_major);
+			$crit->addUpdate(TBGBuildsTable::VERSION_MINOR, $this->_version_minor);
+			$crit->addUpdate(TBGBuildsTable::VERSION_REVISION, $this->_version_revision);
+			$crit->addUpdate(TBGBuildsTable::NAME, $this->_name);
+			$crit->addUpdate(TBGBuildsTable::TIMESTAMP, $_SERVER["REQUEST_TIME"]);
+			$crit->addUpdate(TBGBuildsTable::RELEASE_DATE, $this->_release_date);
+			$crit->addUpdate(TBGBuildsTable::RELEASED, (int) $this->_isreleased);
+			$crit->addUpdate(TBGBuildsTable::LOCKED, (int) $this->_locked);
 			
 			try
 			{
-				$res = B2DB::getTable('B2tBuilds')->doUpdateById($crit, $this->getID());
+				$res = B2DB::getTable('TBGBuildsTable')->doUpdateById($crit, $this->getID());
 				return true;
 			}
 			catch (Exception $e)
@@ -395,11 +395,11 @@
 		{
 			if ($this->isEditionBuild())
 			{
-				$res = B2DB::getTable('B2tIssueAffectsEdition')->getOpenAffectedIssuesByEditionID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
+				$res = B2DB::getTable('TBGIssueAffectsEditionTable')->getOpenAffectedIssuesByEditionID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
 			}
 			else
 			{
-				$res = B2DB::getTable('B2tIssues')->getOpenAffectedIssuesByProjectID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
+				$res = B2DB::getTable('TBGIssuesTable')->getOpenAffectedIssuesByProjectID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
 			}
 			
 			$retval = false;
@@ -407,8 +407,8 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$issue_id = $row->get(B2tIssues::ID);
-					if (B2DB::getTable('B2tIssueAffectsBuild')->setIssueAffected($issue_id, $this->getID()))
+					$issue_id = $row->get(TBGIssuesTable::ID);
+					if (B2DB::getTable('TBGIssueAffectsBuildTable')->setIssueAffected($issue_id, $this->getID()))
 					{
 						$retval = true;
 					}

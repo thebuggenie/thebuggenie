@@ -28,11 +28,11 @@
 			if (self::$_teams === null)
 			{
 				self::$_teams = array();
-				if ($res = B2DB::getTable('B2tTeams')->getAll())
+				if ($res = B2DB::getTable('TBGTeamsTable')->getAll())
 				{
 					while ($row = $res->getNextRow())
 					{
-						self::$_teams[$row->get(B2tTeams::ID)] = TBGFactory::teamLab($row->get(B2tTeams::ID), $row);
+						self::$_teams[$row->get(TBGTeamsTable::ID)] = TBGFactory::teamLab($row->get(TBGTeamsTable::ID), $row);
 					}
 				}
 			}
@@ -50,13 +50,13 @@
 			if ($row == null)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tTeams::SCOPE, TBGContext::getScope()->getID());
-				$row = B2DB::getTable('B2tTeams')->doSelectById($t_id, $crit);
+				$crit->addWhere(TBGTeamsTable::SCOPE, TBGContext::getScope()->getID());
+				$row = B2DB::getTable('TBGTeamsTable')->doSelectById($t_id, $crit);
 			}
 			
 			if ($row instanceof B2DBRow)
 			{
-				$this->_name = $row->get(B2tTeams::TEAMNAME);
+				$this->_name = $row->get(TBGTeamsTable::TEAMNAME);
 			}
 			else
 			{
@@ -93,9 +93,9 @@
 		public static function createNew($teamname)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tTeams::TEAMNAME, $teamname);
-			$crit->addInsert(B2tTeams::SCOPE, TBGContext::getScope()->getID());
-			$res = B2DB::getTable('B2tTeams')->doInsert($crit);
+			$crit->addInsert(TBGTeamsTable::TEAMNAME, $teamname);
+			$crit->addInsert(TBGTeamsTable::SCOPE, TBGContext::getScope()->getID());
+			$res = B2DB::getTable('TBGTeamsTable')->doInsert($crit);
 			return TBGFactory::teamLab($res->getInsertID());
 		}
 		
@@ -107,10 +107,10 @@
 		public function addMember($uid)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tTeamMembers::SCOPE, TBGContext::getScope()->getID());
-			$crit->addInsert(B2tTeamMembers::TID, $this->_itemid);
-			$crit->addInsert(B2tTeamMembers::UID, $uid);
-			B2DB::getTable('B2tTeamMembers')->doInsert($crit);
+			$crit->addInsert(TBGTeamMembersTable::SCOPE, TBGContext::getScope()->getID());
+			$crit->addInsert(TBGTeamMembersTable::TID, $this->_itemid);
+			$crit->addInsert(TBGTeamMembersTable::UID, $uid);
+			B2DB::getTable('TBGTeamMembersTable')->doInsert($crit);
 			if ($this->_members === null)
 			{
 				$this->_members = array();
@@ -122,8 +122,8 @@
 		public function setName($tname)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tTeams::TEAMNAME, $tname);
-			B2DB::getTable('B2tTeams')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGTeamsTable::TEAMNAME, $tname);
+			B2DB::getTable('TBGTeamsTable')->doUpdateById($crit, $this->getID());
 			$this->_name = $tname;
 		}
 		
@@ -133,11 +133,11 @@
 			{
 				$this->_members = array();
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tTeamMembers::TID, $this->_itemid);
-				$res = B2DB::getTable('B2tTeamMembers')->doSelect($crit);
+				$crit->addWhere(TBGTeamMembersTable::TID, $this->_itemid);
+				$res = B2DB::getTable('TBGTeamMembersTable')->doSelect($crit);
 				while ($row = $res->getNextRow())
 				{
-					$this->_members[] = $row->get(B2tTeamMembers::UID);
+					$this->_members[] = $row->get(TBGTeamMembersTable::UID);
 				}
 			}
 			return $this->_members;
@@ -151,29 +151,29 @@
 		public function removeMember($uid)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tTeamMembers::UID, $uid);
-			$crit->addWhere(B2tTeamMembers::TID, $this->_itemid);
-			B2DB::getTable('B2tTeamMembers')->doDelete($crit);
+			$crit->addWhere(TBGTeamMembersTable::UID, $uid);
+			$crit->addWhere(TBGTeamMembersTable::TID, $this->_itemid);
+			B2DB::getTable('TBGTeamMembersTable')->doDelete($crit);
 		}
 		
 		public function delete()
 		{
-			$res = B2DB::getTable('B2tTeams')->doDeleteById($this->getID());
+			$res = B2DB::getTable('TBGTeamsTable')->doDeleteById($this->getID());
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tTeamMembers::TID, $this->getID());
-			$res = B2DB::getTable('B2tTeamMembers')->doDelete($crit);
+			$crit->addWhere(TBGTeamMembersTable::TID, $this->getID());
+			$res = B2DB::getTable('TBGTeamMembersTable')->doDelete($crit);
 		}
 		
 		public static function findTeams($details)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tTeams::TEAMNAME, "%$details%", B2DBCriteria::DB_LIKE);
+			$crit->addWhere(TBGTeamsTable::TEAMNAME, "%$details%", B2DBCriteria::DB_LIKE);
 			$teams = array();
-			if ($res = B2DB::getTable('B2tTeams')->doSelect($crit))
+			if ($res = B2DB::getTable('TBGTeamsTable')->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$teams[$row->get(B2tTeams::ID)] = TBGFactory::teamLab($row->get(B2tTeams::ID), $row);
+					$teams[$row->get(TBGTeamsTable::ID)] = TBGFactory::teamLab($row->get(TBGTeamsTable::ID), $row);
 				}
 			}
 			return $teams;

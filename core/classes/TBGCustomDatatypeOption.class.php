@@ -22,7 +22,7 @@
 			if (!array_key_exists($key, self::$_items))
 			{
 				self::$_items[$key] = array();
-				if ($items = B2DB::getTable('B2tCustomFieldOptions')->getAllByKey($key))
+				if ($items = B2DB::getTable('TBGCustomFieldOptionsTable')->getAllByKey($key))
 				{
 					foreach ($items as $row_id => $row)
 					{
@@ -56,7 +56,7 @@
 				}
 			}
 			
-			$res = B2DB::getTable('B2tCustomFieldOptions')->createNew($key, $name, $value, $itemdata);
+			$res = B2DB::getTable('TBGCustomFieldOptionsTable')->createNew($key, $name, $value, $itemdata);
 			return TBGFactory::TBGCustomDatatypeOptionLab($res->getInsertID());
 		}
 
@@ -67,7 +67,7 @@
 		 */
 		public static function delete($id)
 		{
-			B2DB::getTable('B2tCustomFieldOptions')->doDeleteById($id);
+			B2DB::getTable('TBGCustomFieldOptionsTable')->doDeleteById($id);
 		}
 
 		/**
@@ -80,10 +80,10 @@
 		 */
 		public static function getByValueAndKey($value, $key)
 		{
-			$row = B2DB::getTable('B2tCustomFieldOptions')->getByValueAndKey($value, $key);
+			$row = B2DB::getTable('TBGCustomFieldOptionsTable')->getByValueAndKey($value, $key);
 			if ($row)
 			{
-				return TBGFactory::TBGCustomDatatypeOptionLab($row->get(B2tCustomFieldOptions::ID), $row);
+				return TBGFactory::TBGCustomDatatypeOptionLab($row->get(TBGCustomFieldOptionsTable::ID), $row);
 			}
 			return null;
 		}
@@ -99,16 +99,16 @@
 		{
 			if ($row === null)
 			{
-				$row = B2DB::getTable('B2tCustomFieldOptions')->doSelectById($item_id);
+				$row = B2DB::getTable('TBGCustomFieldOptionsTable')->doSelectById($item_id);
 			}
 			if ($row instanceof B2DBRow)
 			{
-				$this->_itemid = $row->get(B2tCustomFieldOptions::ID);
-				$this->_itemdata = $row->get(B2tCustomFieldOptions::ITEMDATA);
-				$this->_name = $row->get(B2tCustomFieldOptions::NAME);
-				$this->_key = $row->get(B2tCustomFieldOptions::CUSTOMFIELDS_KEY);
-				$this->_value = $row->get(B2tCustomFieldOptions::OPTION_VALUE);
-				$this->_sortorder = (int) $row->get(B2tCustomFieldOptions::SORT_ORDER);
+				$this->_itemid = $row->get(TBGCustomFieldOptionsTable::ID);
+				$this->_itemdata = $row->get(TBGCustomFieldOptionsTable::ITEMDATA);
+				$this->_name = $row->get(TBGCustomFieldOptionsTable::NAME);
+				$this->_key = $row->get(TBGCustomFieldOptionsTable::CUSTOMFIELDS_KEY);
+				$this->_value = $row->get(TBGCustomFieldOptionsTable::OPTION_VALUE);
+				$this->_sortorder = (int) $row->get(TBGCustomFieldOptionsTable::SORT_ORDER);
 			}
 			else
 			{
@@ -158,7 +158,7 @@
 		 */
 		public function save()
 		{
-			B2DB::getTable('B2tCustomFieldOptions')->saveById($this->_name, $this->_value, $this->_itemdata, $this->_sortorder, $this->_itemid);
+			B2DB::getTable('TBGCustomFieldOptionsTable')->saveById($this->_name, $this->_value, $this->_itemdata, $this->_sortorder, $this->_itemid);
 		}
 
 	}

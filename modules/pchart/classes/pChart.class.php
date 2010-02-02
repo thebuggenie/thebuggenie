@@ -289,22 +289,25 @@
         {
          if ( $ScaleMode == SCALE_START0 ) { $this->VMin = 0; }
 
-         foreach ( $Data as $Key => $Values )
-          {
-           foreach ( $DataDescription["Values"] as $Key2 => $ColName )
-            {
-             if (isset($Data[$Key][$ColName]))
-              {
-               $Value = $Data[$Key][$ColName];
+		 if (is_array($Data))
+		 {
+			 foreach ( $Data as $Key => $Values )
+			  {
+			   foreach ( $DataDescription["Values"] as $Key2 => $ColName )
+				{
+				 if (isset($Data[$Key][$ColName]))
+				  {
+				   $Value = $Data[$Key][$ColName];
 
-               if ( is_numeric($Value) )
-                {
-                 if ( $this->VMax < $Value) { $this->VMax = $Value; }
-                 if ( $this->VMin > $Value) { $this->VMin = $Value; }
-                }
-              }
-            }
-          }
+				   if ( is_numeric($Value) )
+					{
+					 if ( $this->VMax < $Value) { $this->VMax = $Value; }
+					 if ( $this->VMin > $Value) { $this->VMin = $Value; }
+					}
+				  }
+				}
+			  }
+		 }
         }
        elseif ( $ScaleMode == SCALE_ADDALL || $ScaleMode == SCALE_ADDALLSTART0 ) /* Experimental */
         {
@@ -337,6 +340,13 @@
         {
          while(!$ScaleOk)
           {
+		   if ($Factor <= 0)
+		   {
+			   $Scale = $Scale1 = $Scale2 = $Scale4 = 1;
+			   $Factor = 1;
+			   $ScaleOk = true;
+			   break;
+		   }
            $Scale1 = ( $this->VMax - $this->VMin ) / $Factor;
            $Scale2 = ( $this->VMax - $this->VMin ) / $Factor / 2;
            $Scale4 = ( $this->VMax - $this->VMin ) / $Factor / 4;
@@ -443,44 +453,47 @@
      /* Horizontal Axis */
      $XPos = $this->GArea_X1 + $this->GAreaXOffset;
      $ID = 1; $YMax = NULL;
-     foreach ( $Data as $Key => $Values )
-      {
-       if ( $ID % $SkipLabels == 0 )
-        {
-         $this->drawLine(floor($XPos),$this->GArea_Y2,floor($XPos),$this->GArea_Y2+5,$R,$G,$B);
-         $Value      = $Data[$Key][$DataDescription["Position"]];
-         if ( $DataDescription["Format"]["X"] == "number" )
-          $Value = $Value.$DataDescription["Unit"]["X"];
-         if ( $DataDescription["Format"]["X"] == "time" )
-          $Value = $this->ToTime($Value);        
-         if ( $DataDescription["Format"]["X"] == "date" )
-          $Value = $this->ToDate($Value);        
-         if ( $DataDescription["Format"]["X"] == "metric" )
-          $Value = $this->ToMetric($Value);        
+	 if (is_array($Data))
+	 {
+		 foreach ( $Data as $Key => $Values )
+		  {
+		   if ( $ID % $SkipLabels == 0 )
+			{
+			 $this->drawLine(floor($XPos),$this->GArea_Y2,floor($XPos),$this->GArea_Y2+5,$R,$G,$B);
+			 $Value      = $Data[$Key][$DataDescription["Position"]];
+			 if ( $DataDescription["Format"]["X"] == "number" )
+			  $Value = $Value.$DataDescription["Unit"]["X"];
+			 if ( $DataDescription["Format"]["X"] == "time" )
+			  $Value = $this->ToTime($Value);
+			 if ( $DataDescription["Format"]["X"] == "date" )
+			  $Value = $this->ToDate($Value);
+			 if ( $DataDescription["Format"]["X"] == "metric" )
+			  $Value = $this->ToMetric($Value);
 
-         $Position   = imageftbbox($this->FontSize,$Angle,$this->FontName,$Value);
-         $TextWidth  = abs($Position[2])+abs($Position[0]);
-         $TextHeight = abs($Position[1])+abs($Position[3]);
+			 $Position   = imageftbbox($this->FontSize,$Angle,$this->FontName,$Value);
+			 $TextWidth  = abs($Position[2])+abs($Position[0]);
+			 $TextHeight = abs($Position[1])+abs($Position[3]);
 
-         if ( $Angle == 0 )
-          {
-           $YPos = $this->GArea_Y2+18;
-           imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)-floor($TextWidth/2),$YPos,$C_TextColor,$this->FontName,$Value);
-          }
-         else
-          {
-           $YPos = $this->GArea_Y2+10+$TextHeight;
-           if ( $Angle <= 90 )
-            imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)-$TextWidth+5,$YPos,$C_TextColor,$this->FontName,$Value);
-           else
-            imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)+$TextWidth+5,$YPos,$C_TextColor,$this->FontName,$Value);
-          }
-         if ( $YMax < $YPos || $YMax == NULL ) { $YMax = $YPos; }
-        }
+			 if ( $Angle == 0 )
+			  {
+			   $YPos = $this->GArea_Y2+18;
+			   imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)-floor($TextWidth/2),$YPos,$C_TextColor,$this->FontName,$Value);
+			  }
+			 else
+			  {
+			   $YPos = $this->GArea_Y2+10+$TextHeight;
+			   if ( $Angle <= 90 )
+				imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)-$TextWidth+5,$YPos,$C_TextColor,$this->FontName,$Value);
+			   else
+				imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)+$TextWidth+5,$YPos,$C_TextColor,$this->FontName,$Value);
+			  }
+			 if ( $YMax < $YPos || $YMax == NULL ) { $YMax = $YPos; }
+			}
 
-       $XPos = $XPos + $this->DivisionWidth;
-       $ID++;
-      }
+		   $XPos = $XPos + $this->DivisionWidth;
+		   $ID++;
+		  }
+	 }
 
     /* Write the X Axis caption if set */ 
     if ( isset($DataDescription["Axis"]["X"]) )
@@ -923,93 +936,96 @@
      $this->validateData("drawCubicCurve",$Data);
 
      $GraphID = 0;
-     foreach ( $DataDescription["Values"] as $Key2 => $ColName )
-      {
-       if ( $SerieName == "" || $SerieName == $ColName )
-        {
-         $XIn = ""; $Yin = ""; $Yt = ""; $U = "";
-         $XIn[0] = 0; $YIn[0] = 0;
+	 if (array_key_exists("Values", $DataDescription))
+	 {
+		 foreach ( $DataDescription["Values"] as $Key2 => $ColName )
+		  {
+		   if ( $SerieName == "" || $SerieName == $ColName )
+			{
+			 $XIn = ""; $Yin = ""; $Yt = ""; $U = "";
+			 $XIn[0] = 0; $YIn[0] = 0;
 
-         $ID = 0;
-         foreach ( $DataDescription["Description"] as $keyI => $ValueI )
-          { if ( $keyI == $ColName ) { $ColorID = $ID; }; $ID++; }
+			 $ID = 0;
+			 foreach ( $DataDescription["Description"] as $keyI => $ValueI )
+			  { if ( $keyI == $ColName ) { $ColorID = $ID; }; $ID++; }
 
-         $Index = 1;
-         $XLast = -1; $Missing = "";
-         foreach ( $Data as $Key => $Values )
-          {
-           if ( isset($Data[$Key][$ColName]) )
-            {
-             $Value = $Data[$Key][$ColName];
-             $XIn[$Index] = $Index;
-             $YIn[$Index] = $Value;
-             if ( !is_numeric($Value) ) { $Missing[$Index] = TRUE; }
-             $Index++;
-            }
-          }
-         $Index--;
+			 $Index = 1;
+			 $XLast = -1; $Missing = "";
+			 foreach ( $Data as $Key => $Values )
+			  {
+			   if ( isset($Data[$Key][$ColName]) )
+				{
+				 $Value = $Data[$Key][$ColName];
+				 $XIn[$Index] = $Index;
+				 $YIn[$Index] = $Value;
+				 if ( !is_numeric($Value) ) { $Missing[$Index] = TRUE; }
+				 $Index++;
+				}
+			  }
+			 $Index--;
 
-         $Yt[0] = 0;
-         $Yt[1] = 0;
-         $U[1]  = 0;
-         for($i=2;$i<=$Index-1;$i++)
-          {
-           $Sig    = ($XIn[$i] - $XIn[$i-1]) / ($XIn[$i+1] - $XIn[$i-1]);
-           $p      = $Sig * $Yt[$i-1] + 2;
-           $Yt[$i] = ($Sig - 1) / $p;
-           $U[$i]  = ($YIn[$i+1] - $YIn[$i]) / ($XIn[$i+1] - $XIn[$i]) - ($YIn[$i] - $YIn[$i-1]) / ($XIn[$i] - $XIn[$i-1]);
-           $U[$i]  = (6 * $U[$i] / ($XIn[$i+1] - $XIn[$i-1]) - $Sig * $U[$i-1]) / $p;
-          }
+			 $Yt[0] = 0;
+			 $Yt[1] = 0;
+			 $U[1]  = 0;
+			 for($i=2;$i<=$Index-1;$i++)
+			  {
+			   $Sig    = ($XIn[$i] - $XIn[$i-1]) / ($XIn[$i+1] - $XIn[$i-1]);
+			   $p      = $Sig * $Yt[$i-1] + 2;
+			   $Yt[$i] = ($Sig - 1) / $p;
+			   $U[$i]  = ($YIn[$i+1] - $YIn[$i]) / ($XIn[$i+1] - $XIn[$i]) - ($YIn[$i] - $YIn[$i-1]) / ($XIn[$i] - $XIn[$i-1]);
+			   $U[$i]  = (6 * $U[$i] / ($XIn[$i+1] - $XIn[$i-1]) - $Sig * $U[$i-1]) / $p;
+			  }
 
-         $qn = 0;
-         $un = 0;
-         $Yt[$Index] = ($un - $qn * $U[$Index-1]) / ($qn * $Yt[$Index-1] + 1);
+			 $qn = 0;
+			 $un = 0;
+			 $Yt[$Index] = ($un - $qn * $U[$Index-1]) / ($qn * $Yt[$Index-1] + 1);
 
-         for($k=$Index-1;$k>=1;$k--)
-          $Yt[$k] = $Yt[$k] * $Yt[$k+1] + $U[$k];
+			 for($k=$Index-1;$k>=1;$k--)
+			  $Yt[$k] = $Yt[$k] * $Yt[$k+1] + $U[$k];
 
-         $XPos  = $this->GArea_X1 + $this->GAreaXOffset;
-         for($X=1;$X<=$Index;$X=$X+$Accuracy)
-          {
-           $klo = 1;
-           $khi = $Index;
-           $k   = $khi - $klo;
-           while($k > 1)
-            {
-             $k = $khi - $klo;
-             If ( $XIn[$k] >= $X )
-              $khi = $k;
-             else
-              $klo = $k;
-            }
-           $klo = $khi - 1;
+			 $XPos  = $this->GArea_X1 + $this->GAreaXOffset;
+			 for($X=1;$X<=$Index;$X=$X+$Accuracy)
+			  {
+			   $klo = 1;
+			   $khi = $Index;
+			   $k   = $khi - $klo;
+			   while($k > 1)
+				{
+				 $k = $khi - $klo;
+				 If ( $XIn[$k] >= $X )
+				  $khi = $k;
+				 else
+				  $klo = $k;
+				}
+			   $klo = $khi - 1;
 
-           $h     = $XIn[$khi] - $XIn[$klo];
-           $a     = ($XIn[$khi] - $X) / $h;
-           $b     = ($X - $XIn[$klo]) / $h;
-           $Value = $a * $YIn[$klo] + $b * $YIn[$khi] + (($a*$a*$a - $a) * $Yt[$klo] + ($b*$b*$b - $b) * $Yt[$khi]) * ($h*$h) / 6;
+			   $h     = $XIn[$khi] - $XIn[$klo];
+			   $a     = ($XIn[$khi] - $X) / $h;
+			   $b     = ($X - $XIn[$klo]) / $h;
+			   $Value = $a * $YIn[$klo] + $b * $YIn[$khi] + (($a*$a*$a - $a) * $Yt[$klo] + ($b*$b*$b - $b) * $Yt[$khi]) * ($h*$h) / 6;
 
-           $YPos = $this->GArea_Y2 - (($Value-$this->VMin) * $this->DivisionRatio);
+			   $YPos = $this->GArea_Y2 - (($Value-$this->VMin) * $this->DivisionRatio);
 
-           if ( $XLast != -1 && !isset($Missing[floor($X)]) && !isset($Missing[floor($X+1)]) )
-            $this->drawLine($XLast,$YLast,$XPos,$YPos,$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"],TRUE);
+			   if ( $XLast != -1 && !isset($Missing[floor($X)]) && !isset($Missing[floor($X+1)]) )
+				$this->drawLine($XLast,$YLast,$XPos,$YPos,$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"],TRUE);
 
-           $XLast = $XPos;
-           $YLast = $YPos;
-           $XPos  = $XPos + $this->DivisionWidth * $Accuracy;
-          }
+			   $XLast = $XPos;
+			   $YLast = $YPos;
+			   $XPos  = $XPos + $this->DivisionWidth * $Accuracy;
+			  }
 
-         // Add potentialy missing values
-         $XPos  = $XPos - $this->DivisionWidth * $Accuracy;
-         if ( $XPos < ($this->GArea_X2 - $this->GAreaXOffset) )
-          {
-           $YPos = $this->GArea_Y2 - (($YIn[$Index]-$this->VMin) * $this->DivisionRatio);
-           $this->drawLine($XLast,$YLast,$this->GArea_X2-$this->GAreaXOffset,$YPos,$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"],TRUE);
-          }
+			 // Add potentialy missing values
+			 $XPos  = $XPos - $this->DivisionWidth * $Accuracy;
+			 if ( $XPos < ($this->GArea_X2 - $this->GAreaXOffset) )
+			  {
+			   $YPos = $this->GArea_Y2 - (($YIn[$Index]-$this->VMin) * $this->DivisionRatio);
+			   $this->drawLine($XLast,$YLast,$this->GArea_X2-$this->GAreaXOffset,$YPos,$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"],TRUE);
+			  }
 
-         $GraphID++;
-        }
-      }
+			 $GraphID++;
+			}
+		  }
+	 }
     }
 
    /* This function draw a filled cubic curve */
@@ -2518,15 +2534,18 @@
           }
         }
 
-       if (count($DataDescription["Description"]) < count($DataDescription["Values"]))
-        {
-         $this->Errors[] = "[Warning] ".$FunctionName." - Some series descriptions are not set.";
-         foreach($DataDescription["Values"] as $key => $Value)
-          {
-           if ( !isset($DataDescription["Description"][$Value]))
-            $DataDescription["Description"][$Value] = $Value;
-          }
-        }
+		if (array_key_exists("Values", $DataDescription))
+		{
+		    if (count($DataDescription["Description"]) < count($DataDescription["Values"]))
+			{
+			 $this->Errors[] = "[Warning] ".$FunctionName." - Some series descriptions are not set.";
+			 foreach($DataDescription["Values"] as $key => $Value)
+			  {
+			   if ( !isset($DataDescription["Description"][$Value]))
+				$DataDescription["Description"][$Value] = $Value;
+			  }
+			}
+		}
       }
     }
 
@@ -2535,27 +2554,30 @@
     {
      $DataSummary = "";
 
-     foreach($Data as $key => $Values)
-      {
-       foreach($Values as $key2 => $Value)
-        {
-         if (!isset($DataSummary[$key2]))
-          $DataSummary[$key2] = 1;
-         else
-          $DataSummary[$key2]++;
-        }
-      }
+	 if (is_array($Data) && count($Data))
+	 {
+		 foreach($Data as $key => $Values)
+		  {
+		   foreach($Values as $key2 => $Value)
+			{
+			 if (!isset($DataSummary[$key2]))
+			  $DataSummary[$key2] = 1;
+			 else
+			  $DataSummary[$key2]++;
+			}
+		  }
 
-     if ( max($DataSummary) == 0 )
-      $this->Errors[] = "[Warning] ".$FunctionName." - No data set.";
+		 if ( max($DataSummary) == 0 )
+		  $this->Errors[] = "[Warning] ".$FunctionName." - No data set.";
 
-     foreach($DataSummary as $key => $Value)
-      {
-       if ($Value < max($DataSummary))
-        {
-         $this->Errors[] = "[Warning] ".$FunctionName." - Missing data in serie ".$key.".";
-        }
-      }
+		 foreach($DataSummary as $key => $Value)
+		  {
+		   if ($Value < max($DataSummary))
+			{
+			 $this->Errors[] = "[Warning] ".$FunctionName." - Missing data in serie ".$key.".";
+			}
+		  }
+	 }
     }
 
    /* Print all error messages on the CLI or graphically */

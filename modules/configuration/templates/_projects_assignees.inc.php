@@ -23,7 +23,7 @@
 							<?php $theProject = TBGFactory::projectLab($p_id); ?>
 							<b><?php echo $theProject->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
+								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 							<?php endforeach; ?>
 							<?php echo join(', ', $types_array); ?><br>
 						<?php endforeach; ?>
@@ -34,7 +34,7 @@
 							<?php $theEdition = TBGFactory::editionLab($e_id); ?>
 							<b><?php echo $theEdition->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
+								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 							<?php endforeach; ?>
 							<?php echo join(', ', $types_array); ?><br>
 						<?php endforeach; ?>
@@ -45,7 +45,7 @@
 							<?php $theComponent = TBGFactory::componentLab($cp_id); ?>
 							<b><?php echo $theComponent->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
+								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 							<?php endforeach; ?>
 							<?php echo join(', ', $types_array); ?><br>
 						<?php endforeach; ?>
@@ -75,7 +75,7 @@
 							<?php $theProject = TBGFactory::projectLab($p_id); ?>
 							<b><?php echo $theProject->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
+								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 							<?php endforeach; ?>
 							<?php echo join(', ', $types_array); ?><br>
 						<?php endforeach; ?>
@@ -86,7 +86,7 @@
 							<?php $theEdition = TBGFactory::editionLab($e_id); ?>
 							<b><?php echo $theEdition->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
+								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 							<?php endforeach; ?>
 							<?php echo join(', ', $types_array); ?><br>
 						<?php endforeach; ?>
@@ -97,7 +97,7 @@
 							<?php $theComponent = TBGFactory::componentLab($cp_id); ?>
 							<b><?php echo $theComponent->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
+								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 							<?php endforeach; ?>
 							<?php echo join(', ', $types_array); ?><br>
 						<?php endforeach; ?>
@@ -126,7 +126,7 @@
 							<?php $theProject = TBGFactory::projectLab($p_id); ?>
 							<b><?php echo $theProject->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
+								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 							<?php endforeach; ?>
 							<?php echo join(', ', $types_array); ?><br>
 						<?php endforeach; ?>
@@ -137,7 +137,7 @@
 							<?php $theEdition = TBGFactory::editionLab($e_id); ?>
 							<b><?php echo $theEdition->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
+								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 							<?php endforeach; ?>
 							<?php echo join(', ', $types_array); ?><br>
 						<?php endforeach; ?>
@@ -148,7 +148,7 @@
 							<?php $theComponent = TBGFactory::componentLab($cp_id); ?>
 							<b><?php echo $theComponent->getName(); ?></b>:&nbsp;
 							<?php foreach ($types as $type => $bool): ?>
-								<?php $types_array[] = B2tProjectAssignees::getTypeName($type); ?>
+								<?php $types_array[] = TBGProjectAssigneesTable::getTypeName($type); ?>
 							<?php endforeach; ?>
 							<?php echo join(', ', $types_array); ?><br>
 						<?php endforeach; ?>

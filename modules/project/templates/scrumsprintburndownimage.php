@@ -1,0 +1,1 @@
+<?php include_component('pchart/lineGraph', array('width' => 790, 'height' => 500, 'filled_line' => true, 'include_plotter' => true, 'labels' => $labels, 'values_title' => __('Points remaining'), 'labels_title' => __('Date'), 'datasets' => $datasets, 'title' => __('Sprint burndown graph - %sprint_name%', array('%sprint_name%' => $milestone->getName()))));

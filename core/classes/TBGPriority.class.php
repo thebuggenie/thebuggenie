@@ -15,7 +15,7 @@
 			if (self::$_items === NULL)
 			{
 				self::$_items = array();
-				if ($items = B2DB::getTable('B2tListTypes')->getAllByItemType(self::PRIORITY))
+				if ($items = B2DB::getTable('TBGListTypesTable')->getAllByItemType(self::PRIORITY))
 				{
 					foreach ($items as $row_id => $row)
 					{
@@ -46,7 +46,7 @@
 		 */
 		public static function delete($id)
 		{
-			B2DB::getTable('B2tListTypes')->deleteByTypeAndId(self::PRIORITY, $id);
+			B2DB::getTable('TBGListTypesTable')->deleteByTypeAndId(self::PRIORITY, $id);
 		}
 
 		/**

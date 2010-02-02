@@ -27,18 +27,18 @@
 		
 		public static function createNew($name, $project_id)
 		{
-			$c_id = B2DB::getTable('B2tComponents')->createNew($name, $project_id);
+			$c_id = B2DB::getTable('TBGComponentsTable')->createNew($name, $project_id);
 			return TBGFactory::componentLab($c_id);
 		}
 		
 		public static function getAllByProjectID($project_id)
 		{
 			$retval = array();
-			if ($res = B2DB::getTable('B2tComponents')->getByProjectID($project_id))
+			if ($res = B2DB::getTable('TBGComponentsTable')->getByProjectID($project_id))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$component = TBGFactory::componentLab($row->get(B2tComponents::ID), $row);
+					$component = TBGFactory::componentLab($row->get(TBGComponentsTable::ID), $row);
 					$retval[$component->getID()] = $component;
 				}
 			}
@@ -56,19 +56,19 @@
 			if ($row === null)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tComponents::SCOPE, TBGContext::getScope()->getID());
-				$row = B2DB::getTable('B2tComponents')->doSelectById($c_id, $crit);
+				$crit->addWhere(TBGComponentsTable::SCOPE, TBGContext::getScope()->getID());
+				$row = B2DB::getTable('TBGComponentsTable')->doSelectById($c_id, $crit);
 			}
 			if ($row instanceof B2DBRow)
 			{
-				$this->_name = $row->get(B2tComponents::NAME);
+				$this->_name = $row->get(TBGComponentsTable::NAME);
 				$this->_itemid = $c_id;
 				$this->_isdefault = false;
 				$this->_locked = false;
-				$this->_version_major = $row->get(B2tComponents::VERSION_MAJOR);
-				$this->_version_minor = $row->get(B2tComponents::VERSION_MINOR);
-				$this->_version_revision = $row->get(B2tComponents::VERSION_REVISION);
-				$this->_project = $row->get(B2tComponents::PROJECT);
+				$this->_version_major = $row->get(TBGComponentsTable::VERSION_MAJOR);
+				$this->_version_minor = $row->get(TBGComponentsTable::VERSION_MINOR);
+				$this->_version_revision = $row->get(TBGComponentsTable::VERSION_REVISION);
+				$this->_project = $row->get(TBGComponentsTable::PROJECT);
 			}
 		}
 		
@@ -89,21 +89,21 @@
 		public function addAssignee($assignee, $role)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tComponentAssignees::COMPONENT_ID, $this->getID());
-			$crit->addWhere(B2tComponentAssignees::TARGET_TYPE, $role);
+			$crit->addWhere(TBGComponentAssigneesTable::COMPONENT_ID, $this->getID());
+			$crit->addWhere(TBGComponentAssigneesTable::TARGET_TYPE, $role);
 			switch (true)
 			{
 				case ($assignee instanceof TBGUser):
-					$crit->addWhere(B2tComponentAssignees::UID, $assignee->getID());
+					$crit->addWhere(TBGComponentAssigneesTable::UID, $assignee->getID());
 					break;
 				case ($assignee instanceof TBGTeam):
-					$crit->addWhere(B2tComponentAssignees::TID, $assignee->getID());
+					$crit->addWhere(TBGComponentAssigneesTable::TID, $assignee->getID());
 					break;
 				case ($assignee instanceof TBGCustomer):
-					$crit->addWhere(B2tComponentAssignees::CID, $assignee->getID());
+					$crit->addWhere(TBGComponentAssigneesTable::CID, $assignee->getID());
 					break;
 			}
-			$res = B2DB::getTable('B2tComponentAssignees')->doSelectOne($crit);
+			$res = B2DB::getTable('TBGComponentAssigneesTable')->doSelectOne($crit);
 			
 			if (!$res instanceof B2DBRow)
 			{
@@ -111,21 +111,21 @@
 				switch (true)
 				{
 					case ($assignee instanceof TBGUser):
-						$crit->addInsert(B2tComponentAssignees::UID, $assignee->getID());
+						$crit->addInsert(TBGComponentAssigneesTable::UID, $assignee->getID());
 						break;
 					case ($assignee instanceof TBGTeam):
-						$crit->addInsert(B2tComponentAssignees::TID, $assignee->getID());
+						$crit->addInsert(TBGComponentAssigneesTable::TID, $assignee->getID());
 						break;
 					case ($assignee instanceof TBGCustomer):
-						$crit->addInsert(B2tComponentAssignees::CID, $assignee->getID());
+						$crit->addInsert(TBGComponentAssigneesTable::CID, $assignee->getID());
 						break;
 				}
-				$crit->addInsert(B2tComponentAssignees::COMPONENT_ID, $this->getID());
-				$crit->addInsert(B2tComponentAssignees::TARGET_TYPE, $role);
-				$crit->addInsert(B2tComponentAssignees::SCOPE, TBGContext::getScope()->getID());
+				$crit->addInsert(TBGComponentAssigneesTable::COMPONENT_ID, $this->getID());
+				$crit->addInsert(TBGComponentAssigneesTable::TARGET_TYPE, $role);
+				$crit->addInsert(TBGComponentAssigneesTable::SCOPE, TBGContext::getScope()->getID());
 				try
 				{
-					$res = B2DB::getTable('B2tComponentAssignees')->doInsert($crit);
+					$res = B2DB::getTable('TBGComponentAssigneesTable')->doInsert($crit);
 				}
 				catch (Exception $e)
 				{
@@ -139,25 +139,25 @@
 		public function setName($name)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tComponents::NAME, $name);
-			$res = B2DB::getTable('B2tComponents')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGComponentsTable::NAME, $name);
+			$res = B2DB::getTable('TBGComponentsTable')->doUpdateById($crit, $this->getID());
 			
 			$this->_name = $name;
 		}
 
 		public function delete()
 		{
-			B2DB::getTable('B2tComponents')->doDeleteById($this->getID());
+			B2DB::getTable('TBGComponentsTable')->doDeleteById($this->getID());
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tIssueAffectsComponent::COMPONENT, $this->getID());
-			B2DB::getTable('B2tIssueAffectsComponent')->doDelete($crit);
+			$crit->addWhere(TBGIssueAffectsComponentTable::COMPONENT, $this->getID());
+			B2DB::getTable('TBGIssueAffectsComponentTable')->doDelete($crit);
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tEditionComponents::COMPONENT, $this->getID());
-			B2DB::getTable('B2tEditionComponents')->doDelete($crit);
+			$crit->addWhere(TBGEditionComponentsTable::COMPONENT, $this->getID());
+			B2DB::getTable('TBGEditionComponentsTable')->doDelete($crit);
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tComponentAssignees::COMPONENT_ID, $this->getID());
-			$crit->addWhere(B2tComponentAssignees::SCOPE, TBGContext::getScope()->getID());
-			B2DB::getTable('B2tComponentAssignees')->doDelete($crit);
+			$crit->addWhere(TBGComponentAssigneesTable::COMPONENT_ID, $this->getID());
+			$crit->addWhere(TBGComponentAssigneesTable::SCOPE, TBGContext::getScope()->getID());
+			B2DB::getTable('TBGComponentAssigneesTable')->doDelete($crit);
 		}
 		
 		public function getAssignees()
@@ -165,12 +165,12 @@
 			$uids = array();
 	
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tComponentAssignees::COMPONENT_ID, $this->getID());
+			$crit->addWhere(TBGComponentAssigneesTable::COMPONENT_ID, $this->getID());
 			
-			$res = B2DB::getTable('B2tComponentAssignees')->doSelect($crit);
+			$res = B2DB::getTable('TBGComponentAssigneesTable')->doSelect($crit);
 			while ($row = $res->getNextRow())
 			{
-				$uids[] = $row->get(B2tComponentAssignees::UID);
+				$uids[] = $row->get(TBGComponentAssigneesTable::UID);
 			}
 			return $uids;
 		}

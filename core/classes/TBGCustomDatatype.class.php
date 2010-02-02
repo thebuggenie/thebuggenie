@@ -64,11 +64,11 @@
 			if (self::$_types === NULL)
 			{
 				self::$_types = array();
-				if ($items = B2DB::getTable('B2tCustomFields')->getAll())
+				if ($items = B2DB::getTable('TBGCustomFieldsTable')->getAll())
 				{
 					foreach ($items as $row_id => $row)
 					{
-						self::$_types[$row->get(B2tCustomFields::FIELD_KEY)] = TBGFactory::TBGCustomDatatypeLab($row_id, $row);
+						self::$_types[$row->get(TBGCustomFieldsTable::FIELD_KEY)] = TBGFactory::TBGCustomDatatypeLab($row_id, $row);
 					}
 				}
 			}
@@ -115,7 +115,7 @@
 		public static function createNew($name, $type = 1)
 		{
 			$key = strtolower(str_replace(' ', '', $name));
-			$res = B2DB::getTable('B2tCustomFields')->createNew($name, $key, $type);
+			$res = B2DB::getTable('TBGCustomFieldsTable')->createNew($name, $key, $type);
 			return TBGFactory::TBGCustomDatatypeLab($res->getInsertID());
 		}
 
@@ -126,13 +126,13 @@
 		 */
 		public static function delete($id)
 		{
-			B2DB::getTable('B2tCustomFields')->doDeleteById($id);
+			B2DB::getTable('TBGCustomFieldsTable')->doDeleteById($id);
 		}
 
 		public static function isNameValid($name)
 		{
 			$key = strtolower(str_replace(' ', '', $name));
-			return (bool) B2DB::getTable('B2tCustomFields')->countByKey($key);
+			return (bool) B2DB::getTable('TBGCustomFieldsTable')->countByKey($key);
 		}
 
 		public static function doesKeyExist($key)
@@ -149,10 +149,10 @@
 		 */
 		public static function getByKey($key)
 		{
-			$row = B2DB::getTable('B2tCustomFields')->getByKey($key);
+			$row = B2DB::getTable('TBGCustomFieldsTable')->getByKey($key);
 			if ($row)
 			{
-				return TBGFactory::TBGCustomDatatypeLab($row->get(B2tCustomFields::ID), $row);
+				return TBGFactory::TBGCustomDatatypeLab($row->get(TBGCustomFieldsTable::ID), $row);
 			}
 			return null;
 		}
@@ -173,16 +173,16 @@
 		{
 			if ($row === null)
 			{
-				$row = B2DB::getTable('B2tCustomFields')->doSelectById($item_id);
+				$row = B2DB::getTable('TBGCustomFieldsTable')->doSelectById($item_id);
 			}
 			if ($row instanceof B2DBRow)
 			{
-				$this->_itemid = $row->get(B2tCustomFields::ID);
-				$this->_itemtype = $row->get(B2tCustomFields::FIELD_TYPE);
-				$this->_name = $row->get(B2tCustomFields::FIELD_NAME);
-				$this->_key = $row->get(B2tCustomFields::FIELD_KEY);
-				$this->_instructions = $row->get(B2tCustomFields::FIELD_INSTRUCTIONS);
-				$this->_description = ($row->get(B2tCustomFields::FIELD_DESCRIPTION) != '') ? $row->get(B2tCustomFields::FIELD_DESCRIPTION) : $this->_name;
+				$this->_itemid = $row->get(TBGCustomFieldsTable::ID);
+				$this->_itemtype = $row->get(TBGCustomFieldsTable::FIELD_TYPE);
+				$this->_name = $row->get(TBGCustomFieldsTable::FIELD_NAME);
+				$this->_key = $row->get(TBGCustomFieldsTable::FIELD_KEY);
+				$this->_instructions = $row->get(TBGCustomFieldsTable::FIELD_INSTRUCTIONS);
+				$this->_description = ($row->get(TBGCustomFieldsTable::FIELD_DESCRIPTION) != '') ? $row->get(TBGCustomFieldsTable::FIELD_DESCRIPTION) : $this->_name;
 			}
 			else
 			{
@@ -305,7 +305,7 @@
 		 */
 		public function save()
 		{
-			B2DB::getTable('B2tCustomFields')->saveById($this->_name, $this->_description, $this->_instructions, $this->_itemid);
+			B2DB::getTable('TBGCustomFieldsTable')->saveById($this->_name, $this->_description, $this->_instructions, $this->_itemid);
 		}
 
 		/**

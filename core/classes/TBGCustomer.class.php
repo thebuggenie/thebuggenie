@@ -30,11 +30,11 @@
 			$this->_itemid = $c_id;
 			if ($row === null)
 			{
-				$row = B2DB::getTable('B2tCustomers')->doSelectById($c_id); 
+				$row = B2DB::getTable('TBGCustomersTable')->doSelectById($c_id); 
 			}
 			try
 			{
-				$this->_name = $row->get(B2tCustomers::NAME);
+				$this->_name = $row->get(TBGCustomersTable::NAME);
 			}
 			catch (Exception $e)
 			{
@@ -66,13 +66,13 @@
 		public static function createNew($c_name, $scope = null)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tCustomers::NAME, $c_name);
+			$crit->addInsert(TBGCustomersTable::NAME, $c_name);
 			if ($scope === null)
 			{
 				$scope = TBGContext::getScope()->getID();
 			}
-			$crit->addInsert(B2tCustomer::SCOPE, $scope);
-			$res = B2DB::getTable('B2tCustomers')->doInsert($crit);
+			$crit->addInsert(TBGCustomerTable::SCOPE, $scope);
+			$res = B2DB::getTable('TBGCustomersTable')->doInsert($crit);
 			$customer = TBGFactory::customerLab($res->getInsertID());
 			if (self::$_customers !== null)
 			{
@@ -89,25 +89,25 @@
 		public function addMember($uid)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::CUSTOMER_ID, $this->_itemid);
-			B2DB::getTable('B2tUsers')->doUpdateById($crit, $uid);
+			$crit->addUpdate(TBGUsersTable::CUSTOMER_ID, $this->_itemid);
+			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $uid);
 		}
 		
 		public function setName($c_name)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tCustomers::NAME, $c_name);
-			B2DB::getTable('B2tCustomers')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGCustomersTable::NAME, $c_name);
+			B2DB::getTable('TBGCustomersTable')->doUpdateById($crit, $this->getID());
 			$this->_name = $c_name;
 		}
 		
 		public function delete()
 		{
-			$res = B2DB::getTable('B2tCustomers')->doDeleteById($this->getID());
+			$res = B2DB::getTable('TBGCustomersTable')->doDeleteById($this->getID());
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tUsers::CUSTOMER_ID, $this->getID());
-			$crit->addUpdate(B2tUsers::CUSTOMER_ID, 0);
-			$res = B2DB::getTable('B2tUsers')->doUpdate($crit);
+			$crit->addWhere(TBGUsersTable::CUSTOMER_ID, $this->getID());
+			$crit->addUpdate(TBGUsersTable::CUSTOMER_ID, 0);
+			$res = B2DB::getTable('TBGUsersTable')->doUpdate($crit);
 		}
 
 		public static function getAll()
@@ -115,15 +115,15 @@
 			if (self::$_groups === null)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tCustomers::SCOPE, TBGContext::getScope()->getID());
+				$crit->addWhere(TBGCustomersTable::SCOPE, TBGContext::getScope()->getID());
 				
-				$res = B2DB::getTable('B2tCustomers')->doSelect($crit);
+				$res = B2DB::getTable('TBGCustomersTable')->doSelect($crit);
 		
 				$customers = array();
 		
 				while ($row = $res->getNextRow())
 				{
-					$customers[$row->get(B2tCustomers::ID)] = TBGFactory::customerLab($row->get(B2tCustomers::ID), $row);
+					$customers[$row->get(TBGCustomersTable::ID)] = TBGFactory::customerLab($row->get(TBGCustomersTable::ID), $row);
 				}
 				self::$_customers = $customers;
 			}
@@ -133,13 +133,13 @@
 		public static function findCustomers($details)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tCustomers::NAME, "%$details%", B2DBCriteria::DB_LIKE);
+			$crit->addWhere(TBGCustomersTable::NAME, "%$details%", B2DBCriteria::DB_LIKE);
 			$customers = array();
-			if ($res = B2DB::getTable('B2tCustomers')->doSelect($crit))
+			if ($res = B2DB::getTable('TBGCustomersTable')->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$customers[$row->get(B2tCustomers::ID)] = TBGFactory::customerLab($row->get(B2tCustomers::ID), $row);
+					$customers[$row->get(TBGCustomersTable::ID)] = TBGFactory::customerLab($row->get(TBGCustomersTable::ID), $row);
 				}
 			}
 			return $customers;

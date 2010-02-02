@@ -77,26 +77,26 @@
 		{
 			if ($row === null)
 			{
-				$rows = B2DB::getTable('B2tListTypes')->getAllByItemType($item_type);
+				$rows = B2DB::getTable('TBGListTypesTable')->getAllByItemType($item_type);
 				if (array_key_exists($i_id, $rows)) $row = $rows[$i_id];
 			}
 			if ($row === null)
 			{
 				throw new Exception('wwwwaaat??');
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tListTypes::SCOPE, TBGContext::getScope()->getID());
-				$crit->addWhere(B2tListTypes::ITEMTYPE, $item_type);
-				$row = B2DB::getTable('B2tListTypes')->doSelectById($i_id, $crit);
+				$crit->addWhere(TBGListTypesTable::SCOPE, TBGContext::getScope()->getID());
+				$crit->addWhere(TBGListTypesTable::ITEMTYPE, $item_type);
+				$row = B2DB::getTable('TBGListTypesTable')->doSelectById($i_id, $crit);
 			}
 			
 			if ($row instanceof B2DBRow)
 			{
 				$this->_itemid = $i_id;
 				$this->_itemtype = $item_type;
-				$this->_appliesto = $row->get(B2tListTypes::APPLIES_TO);
-				$this->_itemdata = $row->get(B2tListTypes::ITEMDATA);
-				$this->_name = $row->get(B2tListTypes::NAME);
-				$this->_sortorder = (int) $row->get(B2tListTypes::ORDER);
+				$this->_appliesto = $row->get(TBGListTypesTable::APPLIES_TO);
+				$this->_itemdata = $row->get(TBGListTypesTable::ITEMDATA);
+				$this->_name = $row->get(TBGListTypesTable::NAME);
+				$this->_sortorder = (int) $row->get(TBGListTypesTable::ORDER);
 			}
 			else
 			{
@@ -116,7 +116,7 @@
 		 */
 		protected static function _createNew($name, $itemtype, $itemdata = null)
 		{
-			$res = B2DB::getTable('B2tListTypes')->createNew($name, $itemtype, $itemdata);
+			$res = B2DB::getTable('TBGListTypesTable')->createNew($name, $itemtype, $itemdata);
 			return $res;
 		}
 
@@ -140,7 +140,7 @@
 		 */
 		public function save()
 		{
-			B2DB::getTable('B2tListTypes')->saveById($this->_name, $this->_itemdata, $this->_sortorder, $this->_itemid);
+			B2DB::getTable('TBGListTypesTable')->saveById($this->_name, $this->_itemdata, $this->_sortorder, $this->_itemid);
 		}
 
 		public function isBuiltin()

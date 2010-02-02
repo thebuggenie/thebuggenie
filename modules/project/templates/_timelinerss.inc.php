@@ -19,61 +19,61 @@
 
 					switch ($activity['change_type'])
 					{
-						case B2tLog::LOG_ISSUE_CREATED:
+						case TBGLogTable::LOG_ISSUE_CREATED:
 							echo __('Issue created');
 							break;
-						case B2tLog::LOG_ISSUE_CLOSE:
+						case TBGLogTable::LOG_ISSUE_CLOSE:
 							echo __('Issue closed %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_REOPEN:
+						case TBGLogTable::LOG_ISSUE_REOPEN:
 							echo __('Issue reopened');
 							break;
-						case B2tLog::LOG_ISSUE_UPDATE:
+						case TBGLogTable::LOG_ISSUE_UPDATE:
 							echo $activity['text'];
 							break;
-						case B2tLog::LOG_ISSUE_CATEGORY:
+						case TBGLogTable::LOG_ISSUE_CATEGORY:
 							echo __('Category changed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_CUSTOMFIELD_CHANGED:
+						case TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED:
 							echo __('Custom field changed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_STATUS:
+						case TBGLogTable::LOG_ISSUE_STATUS:
 							echo __('Status changed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_REPRODUCABILITY:
+						case TBGLogTable::LOG_ISSUE_REPRODUCABILITY:
 							echo __('Reproducability changed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_PRIORITY:
+						case TBGLogTable::LOG_ISSUE_PRIORITY:
 							echo __('Priority changed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_SEVERITY:
+						case TBGLogTable::LOG_ISSUE_SEVERITY:
 							echo __('Severity changed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_RESOLUTION:
+						case TBGLogTable::LOG_ISSUE_RESOLUTION:
 							echo __('Resolution changed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_PERCENT:
+						case TBGLogTable::LOG_ISSUE_PERCENT:
 							echo __('Percent completed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_MILESTONE:
+						case TBGLogTable::LOG_ISSUE_MILESTONE:
 							echo __('Target milestone changed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_ISSUETYPE:
+						case TBGLogTable::LOG_ISSUE_ISSUETYPE:
 							echo __('Issue type changed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_TIME_ESTIMATED:
+						case TBGLogTable::LOG_ISSUE_TIME_ESTIMATED:
 							echo __('Estimation changed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_TIME_SPENT:
+						case TBGLogTable::LOG_ISSUE_TIME_SPENT:
 							echo __('Time spent: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_ASSIGNED:
+						case TBGLogTable::LOG_ISSUE_ASSIGNED:
 							echo __('Assignee changed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_OWNED:
+						case TBGLogTable::LOG_ISSUE_OWNED:
 							echo __('Owner changed: %text%', array('%text%' => $activity['text']));
 							break;
-						case B2tLog::LOG_ISSUE_POSTED:
+						case TBGLogTable::LOG_ISSUE_POSTED:
 							echo __('Posted by changed: %text%', array('%text%' => $activity['text']));
 							break;
 						default:

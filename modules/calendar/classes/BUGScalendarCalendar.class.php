@@ -14,13 +14,13 @@
 		{
 			if (!$id instanceof B2DBRow)
 			{
-				$id = B2DB::getTable('B2tCalendars')->doSelectById($id);
+				$id = B2DB::getTable('TBGCalendarsTable')->doSelectById($id);
 			}
-			$this->_itemid = $id->get(B2tCalendars::ID);
-			$this->_name = $id->get(B2tCalendars::NAME);
+			$this->_itemid = $id->get(TBGCalendarsTable::ID);
+			$this->_name = $id->get(TBGCalendarsTable::NAME);
 			$this->_itemtype = 0;
-			$this->_user = TBGFactory::userLab($id->get(B2tCalendars::UID));
-			$this->_exclusive = ($id->get(B2tCalendars::EXCLUSIVE) == 1) ? true : false;
+			$this->_user = TBGFactory::userLab($id->get(TBGCalendarsTable::UID));
+			$this->_exclusive = ($id->get(TBGCalendarsTable::EXCLUSIVE) == 1) ? true : false;
 		}
 		
 		/**
@@ -32,9 +32,9 @@
 		public static function createNew($uid)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tCalendars::UID, $uid);
-			$crit->addInsert(B2tCalendars::EXCLUSIVE, false);
-			$row = B2DB::getTable('B2tCalendars')->doInsert($crit);
+			$crit->addInsert(TBGCalendarsTable::UID, $uid);
+			$crit->addInsert(TBGCalendarsTable::EXCLUSIVE, false);
+			$row = B2DB::getTable('TBGCalendarsTable')->doInsert($crit);
 			$calendar = new BUGScalendarCalendar($row->getInsertID());
 			return $calendar;
 		}

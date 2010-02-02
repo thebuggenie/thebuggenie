@@ -90,13 +90,13 @@
 			$crit = new B2DBCriteria();
 			if ($e_id !== null)
 			{
-				$crit->addInsert(B2tEditions::ID, $e_id);
+				$crit->addInsert(TBGEditionsTable::ID, $e_id);
 			}
-			$crit->addInsert(B2tEditions::NAME, $e_name);
-			$crit->addInsert(B2tEditions::PROJECT, $p_id);
-			$crit->addInsert(B2tEditions::SCOPE, TBGContext::getScope()->getID());
-			$crit->addInsert(B2tEditions::DESCRIPTION, '');
-			$res = B2DB::getTable('B2tEditions')->doInsert($crit);
+			$crit->addInsert(TBGEditionsTable::NAME, $e_name);
+			$crit->addInsert(TBGEditionsTable::PROJECT, $p_id);
+			$crit->addInsert(TBGEditionsTable::SCOPE, TBGContext::getScope()->getID());
+			$crit->addInsert(TBGEditionsTable::DESCRIPTION, '');
+			$res = B2DB::getTable('TBGEditionsTable')->doInsert($crit);
 			
 			if ($e_id === null) $e_id = $res->getInsertID();
 			
@@ -113,11 +113,11 @@
 			if (!array_key_exists($project_id, self::$_editions))
 			{
 				self::$_editions[$project_id] = array();
-				if ($res = B2DB::getTable('B2tEditions')->getByProjectID($project_id))
+				if ($res = B2DB::getTable('TBGEditionsTable')->getByProjectID($project_id))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$edition = TBGFactory::editionLab($row->get(B2tEditions::ID), $row);
+						$edition = TBGFactory::editionLab($row->get(TBGEditionsTable::ID), $row);
 						self::$_editions[$project_id][$edition->getID()] = $edition;
 					}
 				}
@@ -137,24 +137,24 @@
 			if ($row === null)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tEditions::SCOPE, TBGContext::getScope()->getID());
-				$row = B2DB::getTable('B2tEditions')->doSelectById($e_id, $crit);
+				$crit->addWhere(TBGEditionsTable::SCOPE, TBGContext::getScope()->getID());
+				$row = B2DB::getTable('TBGEditionsTable')->doSelectById($e_id, $crit);
 			}
 			if ($row instanceof B2DBRow)
 			{
 				$this->_itemid = $e_id;
-				$this->_name = $row->get(B2tEditions::NAME);
-				$this->_isdefault = (bool) $row->get(B2tEditions::IS_DEFAULT);
-				$this->_locked = (bool) $row->get(B2tEditions::LOCKED);
-				$this->_isreleased = (bool) $row->get(B2tEditions::RELEASED);
-				$this->_isplannedreleased = (bool) $row->get(B2tEditions::PLANNED_RELEASED);
-				$this->_release_date = $row->get(B2tEditions::RELEASE_DATE);
-				$this->_description = $row->get(B2tEditions::DESCRIPTION);
-				$this->_lead_by = $row->get(B2tEditions::LEAD_BY);
-				$this->_lead_type = $row->get(B2tEditions::LEAD_TYPE);
-				$this->_qa = $row->get(B2tEditions::QA);
-				$this->_qa_type = $row->get(B2tEditions::QA_TYPE);
-				$this->_project = $row->get(B2tEditions::PROJECT);
+				$this->_name = $row->get(TBGEditionsTable::NAME);
+				$this->_isdefault = (bool) $row->get(TBGEditionsTable::IS_DEFAULT);
+				$this->_locked = (bool) $row->get(TBGEditionsTable::LOCKED);
+				$this->_isreleased = (bool) $row->get(TBGEditionsTable::RELEASED);
+				$this->_isplannedreleased = (bool) $row->get(TBGEditionsTable::PLANNED_RELEASED);
+				$this->_release_date = $row->get(TBGEditionsTable::RELEASE_DATE);
+				$this->_description = $row->get(TBGEditionsTable::DESCRIPTION);
+				$this->_lead_by = $row->get(TBGEditionsTable::LEAD_BY);
+				$this->_lead_type = $row->get(TBGEditionsTable::LEAD_TYPE);
+				$this->_qa = $row->get(TBGEditionsTable::QA);
+				$this->_qa_type = $row->get(TBGEditionsTable::QA_TYPE);
+				$this->_project = $row->get(TBGEditionsTable::PROJECT);
 			}
 			else
 			{
@@ -171,13 +171,13 @@
 		{
 			$this->_components = array();
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tEditionComponents::EDITION, $this->_itemid);
-			$res = B2DB::getTable('B2tEditionComponents')->doSelect($crit);
+			$crit->addWhere(TBGEditionComponentsTable::EDITION, $this->_itemid);
+			$res = B2DB::getTable('TBGEditionComponentsTable')->doSelect($crit);
 			if ($res->count() > 0)
 			{
 				while ($row = $res->getNextRow())
 				{
-					$this->_components[$row->get(B2tEditionComponents::COMPONENT)] = TBGFactory::componentLab($row->get(B2tEditionComponents::COMPONENT));
+					$this->_components[$row->get(TBGEditionComponentsTable::COMPONENT)] = TBGFactory::componentLab($row->get(TBGEditionComponentsTable::COMPONENT));
 				}
 			}
 			$this->_populatedcomponents = true;
@@ -230,10 +230,10 @@
 				$c_id = $c_id->getID();
 			}
 			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tEditionComponents::COMPONENT, $c_id);
-			$crit->addInsert(B2tEditionComponents::EDITION, $this->getID());
-			$crit->addInsert(B2tEditionComponents::SCOPE, TBGContext::getScope()->getID());
-			$res = B2DB::getTable('B2tEditionComponents')->doInsert($crit);
+			$crit->addInsert(TBGEditionComponentsTable::COMPONENT, $c_id);
+			$crit->addInsert(TBGEditionComponentsTable::EDITION, $this->getID());
+			$crit->addInsert(TBGEditionComponentsTable::SCOPE, TBGContext::getScope()->getID());
+			$res = B2DB::getTable('TBGEditionComponentsTable')->doInsert($crit);
 		}
 		
 		/**
@@ -248,10 +248,10 @@
 				$c_id = $c_id->getID();
 			}
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tEditionComponents::EDITION, $this->getID());
-			$crit->addWhere(B2tEditionComponents::COMPONENT, (int) $c_id);
-			$crit->addWhere(B2tEditionComponents::SCOPE, TBGContext::getScope()->getID());
-			B2DB::getTable('B2tEditionComponents')->doDelete($crit);
+			$crit->addWhere(TBGEditionComponentsTable::EDITION, $this->getID());
+			$crit->addWhere(TBGEditionComponentsTable::COMPONENT, (int) $c_id);
+			$crit->addWhere(TBGEditionComponentsTable::SCOPE, TBGContext::getScope()->getID());
+			B2DB::getTable('TBGEditionComponentsTable')->doDelete($crit);
 		}
 		
 		/**
@@ -322,19 +322,19 @@
 		public function getLatestBuild()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addSelectionColumn(B2tBuilds::ID);
-			$crit->addWhere(B2tBuilds::EDITION, $this->_itemid);
-			$crit->addWhere(B2tBuilds::RELEASED, 1);
-			$crit->addOrderBy(B2tBuilds::RELEASE_DATE, 'desc');
-			$res = B2DB::getTable('B2tBuilds')->doSelect($crit);
+			$crit->addSelectionColumn(TBGBuildsTable::ID);
+			$crit->addWhere(TBGBuildsTable::EDITION, $this->_itemid);
+			$crit->addWhere(TBGBuildsTable::RELEASED, 1);
+			$crit->addOrderBy(TBGBuildsTable::RELEASE_DATE, 'desc');
+			$res = B2DB::getTable('TBGBuildsTable')->doSelect($crit);
 			
 			if ($res->count() > 0)
 			{
 				while ($row = $res->getNextRow())
 				{
-					if (TBGContext::getUser()->hasPermission('b2buildaccess', $row->get(B2tBuilds::ID), 'core'))
+					if (TBGContext::getUser()->hasPermission('b2buildaccess', $row->get(TBGBuildsTable::ID), 'core'))
 					{
-						return(TBGFactory::buildLab($row->get(B2tBuilds::ID)));
+						return(TBGFactory::buildLab($row->get(TBGBuildsTable::ID)));
 					}
 				}
 			}
@@ -350,21 +350,21 @@
 		public function doPopulateBuilds()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tBuilds::EDITION, $this->_itemid);
-			$crit->addOrderBy(B2tBuilds::VERSION_MAJOR, 'desc');
-			$crit->addOrderBy(B2tBuilds::VERSION_MINOR, 'desc');
-			$crit->addOrderBy(B2tBuilds::VERSION_REVISION, 'desc');
-			$res = B2DB::getTable('B2tBuilds')->doSelect($crit);
+			$crit->addWhere(TBGBuildsTable::EDITION, $this->_itemid);
+			$crit->addOrderBy(TBGBuildsTable::VERSION_MAJOR, 'desc');
+			$crit->addOrderBy(TBGBuildsTable::VERSION_MINOR, 'desc');
+			$crit->addOrderBy(TBGBuildsTable::VERSION_REVISION, 'desc');
+			$res = B2DB::getTable('TBGBuildsTable')->doSelect($crit);
 			$this->_builds = array();
 			if ($res->count() > 0)
 			{
 				while ($row = $res->getNextRow())
 				{
-					if (!isset($this->_builds[$row->get(B2tBuilds::ID)]))
+					if (!isset($this->_builds[$row->get(TBGBuildsTable::ID)]))
 					{
-						if (TBGContext::getUser()->hasPermission('b2buildaccess', $row->get(B2tBuilds::ID), 'core'))
+						if (TBGContext::getUser()->hasPermission('b2buildaccess', $row->get(TBGBuildsTable::ID), 'core'))
 						{
-							$this->_builds[$row->get(B2tBuilds::ID)] = TBGFactory::buildLab($row->get(B2tBuilds::ID), $row);
+							$this->_builds[$row->get(TBGBuildsTable::ID)] = TBGFactory::buildLab($row->get(TBGBuildsTable::ID), $row);
 						}
 					}
 				}
@@ -412,21 +412,21 @@
 		public function addAssignee($assignee, $role)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tEditionAssignees::EDITION_ID, $this->getID());
-			$crit->addWhere(B2tEditionAssignees::TARGET_TYPE, $role);
+			$crit->addWhere(TBGEditionAssigneesTable::EDITION_ID, $this->getID());
+			$crit->addWhere(TBGEditionAssigneesTable::TARGET_TYPE, $role);
 			switch (true)
 			{
 				case ($assignee instanceof TBGUser):
-					$crit->addWhere(B2tEditionAssignees::UID, $assignee->getID());
+					$crit->addWhere(TBGEditionAssigneesTable::UID, $assignee->getID());
 					break;
 				case ($assignee instanceof TBGTeam):
-					$crit->addWhere(B2tEditionAssignees::TID, $assignee->getID());
+					$crit->addWhere(TBGEditionAssigneesTable::TID, $assignee->getID());
 					break;
 				case ($assignee instanceof TBGCustomer):
-					$crit->addWhere(B2tEditionAssignees::CID, $assignee->getID());
+					$crit->addWhere(TBGEditionAssigneesTable::CID, $assignee->getID());
 					break;
 			}
-			$res = B2DB::getTable('B2tEditionAssignees')->doSelectOne($crit);
+			$res = B2DB::getTable('TBGEditionAssigneesTable')->doSelectOne($crit);
 			
 			if (!$res instanceof B2DBRow)
 			{
@@ -434,21 +434,21 @@
 				switch (true)
 				{
 					case ($assignee instanceof TBGUser):
-						$crit->addInsert(B2tEditionAssignees::UID, $assignee->getID());
+						$crit->addInsert(TBGEditionAssigneesTable::UID, $assignee->getID());
 						break;
 					case ($assignee instanceof TBGTeam):
-						$crit->addInsert(B2tEditionAssignees::TID, $assignee->getID());
+						$crit->addInsert(TBGEditionAssigneesTable::TID, $assignee->getID());
 						break;
 					case ($assignee instanceof TBGCustomer):
-						$crit->addInsert(B2tEditionAssignees::CID, $assignee->getID());
+						$crit->addInsert(TBGEditionAssigneesTable::CID, $assignee->getID());
 						break;
 				}
-				$crit->addInsert(B2tEditionAssignees::EDITION_ID, $this->getID());
-				$crit->addInsert(B2tEditionAssignees::TARGET_TYPE, $role);
-				$crit->addInsert(B2tEditionAssignees::SCOPE, TBGContext::getScope()->getID());
+				$crit->addInsert(TBGEditionAssigneesTable::EDITION_ID, $this->getID());
+				$crit->addInsert(TBGEditionAssigneesTable::TARGET_TYPE, $role);
+				$crit->addInsert(TBGEditionAssigneesTable::SCOPE, TBGContext::getScope()->getID());
 				try
 				{
-					$res = B2DB::getTable('B2tEditionAssignees')->doInsert($crit);
+					$res = B2DB::getTable('TBGEditionAssigneesTable')->doInsert($crit);
 				}
 				catch (Exception $e)
 				{
@@ -463,12 +463,12 @@
 		{
 			$uids = array();
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tEditionAssignees::EDITION_ID, $this->getID());
+			$crit->addWhere(TBGEditionAssigneesTable::EDITION_ID, $this->getID());
 			
-			$res = B2DB::getTable('B2tEditionAssignees')->doSelect($crit);
+			$res = B2DB::getTable('TBGEditionAssigneesTable')->doSelect($crit);
 			while ($row = $res->getNextRow())
 			{
-				$uids[] = $row->get(B2tEditionAssignees::UID);
+				$uids[] = $row->get(TBGEditionAssigneesTable::UID);
 			}
 			return $uids;
 		}
@@ -688,24 +688,24 @@
 
 		public function delete()
 		{
-			B2DB::getTable('B2tEditions')->doDeleteById($this->getID());
+			B2DB::getTable('TBGEditionsTable')->doDeleteById($this->getID());
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tEditionAssignees::EDITION_ID, $this->getID());
-			$crit->addWhere(B2tEditionAssignees::SCOPE, TBGContext::getScope()->getID());
-			B2DB::getTable('B2tEditionAssignees')->doDelete($crit);
+			$crit->addWhere(TBGEditionAssigneesTable::EDITION_ID, $this->getID());
+			$crit->addWhere(TBGEditionAssigneesTable::SCOPE, TBGContext::getScope()->getID());
+			B2DB::getTable('TBGEditionAssigneesTable')->doDelete($crit);
 		}
 		
 		public function save()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tEditions::DESCRIPTION, $this->_description);
-			$crit->addUpdate(B2tEditions::DOC_URL, $this->_doc_url);
-			$crit->addUpdate(B2tEditions::NAME, $this->_name);
-			$crit->addUpdate(B2tEditions::LOCKED, $this->_locked);
-			$crit->addUpdate(B2tEditions::PLANNED_RELEASED, $this->_isplannedreleased);
-			$crit->addUpdate(B2tEditions::RELEASED, $this->_isreleased);
-			$crit->addUpdate(B2tEditions::RELEASE_DATE, $this->_release_date);
-			B2DB::getTable('B2tEditions')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGEditionsTable::DESCRIPTION, $this->_description);
+			$crit->addUpdate(TBGEditionsTable::DOC_URL, $this->_doc_url);
+			$crit->addUpdate(TBGEditionsTable::NAME, $this->_name);
+			$crit->addUpdate(TBGEditionsTable::LOCKED, $this->_locked);
+			$crit->addUpdate(TBGEditionsTable::PLANNED_RELEASED, $this->_isplannedreleased);
+			$crit->addUpdate(TBGEditionsTable::RELEASED, $this->_isreleased);
+			$crit->addUpdate(TBGEditionsTable::RELEASE_DATE, $this->_release_date);
+			B2DB::getTable('TBGEditionsTable')->doUpdateById($crit, $this->getID());
 			
 			return true;
 		}

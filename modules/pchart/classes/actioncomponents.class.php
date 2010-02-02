@@ -63,6 +63,10 @@
 			{
 				$Test->drawCubicCurve($DataSet->GetData(), $DataSet->GetDataDescription());
 			}
+			elseif (isset($this->filled_line) && $this->filled_line)
+			{
+				$Test->drawFilledLineGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 50, true);
+			}
 			else
 			{
 				$Test->drawLineGraph($DataSet->GetData(), $DataSet->GetDataDescription());

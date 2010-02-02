@@ -59,21 +59,21 @@
 			{
                                 $uid = 0;
                                 $crit = new B2DBCriteria();
-                                $crit->addWhere(B2tUsers::UNAME, $author);
-                                $row = B2DB::getTable('B2tUsers')->doSelectOne($crit);
-                                $uid = $row->get(B2tUsers::ID);
+                                $crit->addWhere(TBGUsersTable::UNAME, $author);
+                                $row = B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
+                                $uid = $row->get(TBGUsersTable::ID);
 				$theIssue->addSystemComment('Issue updated from SVN', 'This issue has been updated with the latest changes from SVN.[quote]' . $commit_msg . '[/quote]', $uid, true);
 				foreach ($files as $afile)
 				{
 					$crit = new B2DBCriteria();
-					$crit->addInsert(B2tSVNintegration::ISSUE_NO, $theIssue->getID()); 
-					$crit->addInsert(B2tSVNintegration::FILE_NAME, $afile); 
-					$crit->addInsert(B2tSVNintegration::NEW_REV, $new_rev);
-					$crit->addInsert(B2tSVNintegration::OLD_REV, $old_rev);
-					$crit->addInsert(B2tSVNintegration::AUTHOR, $uid);
-					$crit->addInsert(B2tSVNintegration::DATE, $_SERVER["REQUEST_TIME"]);
-					$crit->addInsert(B2tSVNintegration::SCOPE, TBGContext::getScope()->getID());
-					B2DB::getTable('B2tSVNintegration')->doInsert($crit);
+					$crit->addInsert(TBGSVNintegrationTable::ISSUE_NO, $theIssue->getID()); 
+					$crit->addInsert(TBGSVNintegrationTable::FILE_NAME, $afile); 
+					$crit->addInsert(TBGSVNintegrationTable::NEW_REV, $new_rev);
+					$crit->addInsert(TBGSVNintegrationTable::OLD_REV, $old_rev);
+					$crit->addInsert(TBGSVNintegrationTable::AUTHOR, $uid);
+					$crit->addInsert(TBGSVNintegrationTable::DATE, $_SERVER["REQUEST_TIME"]);
+					$crit->addInsert(TBGSVNintegrationTable::SCOPE, TBGContext::getScope()->getID());
+					B2DB::getTable('TBGSVNintegrationTable')->doInsert($crit);
 				}
 				echo 'Updated ' . $theIssue->getFormattedIssueNo() . "\n";
 			}

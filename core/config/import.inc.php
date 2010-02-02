@@ -152,7 +152,7 @@
 						B2DB::doConnect();
 						while ($row = $res->fetch_array())
 						{
-							B2DB::getTable('B2tUsers')->doDeleteById($row['id']);
+							B2DB::getTable('TBGUsersTable')->doDeleteById($row['id']);
 							if ($row['activated'] == 1 && TBGContext::getRequest()->getParameter('import_active_users'))
 							{
 								$user = TBGUser::createNew($row['uname'], $row['realname'], $row['realname'], TBGContext::getScope()->getID(), true, true, $row['passwd'], $row['email'], true, $row['id'], $row['last_seen']);
@@ -192,39 +192,39 @@
 					{
 						if (isset($row['id']))
 						{
-							B2DB::getTable('B2tListTypes')->doDeleteById($row['id']);
+							B2DB::getTable('TBGListTypesTable')->doDeleteById($row['id']);
 							$crit = new B2DBCriteria();
-							$crit->addInsert(B2tListTypes::ID, $row['id']);
-							$crit->addInsert(B2tListTypes::ITEMTYPE, TBGDatatype::STATUS);
-							$crit->addInsert(B2tListTypes::ITEMDATA, $row['status_color']);
-							$crit->addInsert(B2tListTypes::NAME, $row['status_desc']);
-							B2DB::getTable('B2tListTypes')->doInsert($crit);
+							$crit->addInsert(TBGListTypesTable::ID, $row['id']);
+							$crit->addInsert(TBGListTypesTable::ITEMTYPE, TBGDatatype::STATUS);
+							$crit->addInsert(TBGListTypesTable::ITEMDATA, $row['status_color']);
+							$crit->addInsert(TBGListTypesTable::NAME, $row['status_desc']);
+							B2DB::getTable('TBGListTypesTable')->doInsert($crit);
 						}
 					}
 					while ($res2 && $row = $res2->fetch_array())
 					{
 						if (isset($row['id']))
 						{
-							B2DB::getTable('B2tListTypes')->doDeleteById($row['id']);
+							B2DB::getTable('TBGListTypesTable')->doDeleteById($row['id']);
 							$crit = new B2DBCriteria();
-							$crit->addInsert(B2tListTypes::ID, $row['id']);
-							$crit->addInsert(B2tListTypes::ITEMTYPE, TBGDatatype::SEVERITY);
-							$crit->addInsert(B2tListTypes::ITEMDATA, $row['sev_no']);
-							$crit->addInsert(B2tListTypes::NAME, $row['sev_desc']);
-							B2DB::getTable('B2tListTypes')->doInsert($crit);
+							$crit->addInsert(TBGListTypesTable::ID, $row['id']);
+							$crit->addInsert(TBGListTypesTable::ITEMTYPE, TBGDatatype::SEVERITY);
+							$crit->addInsert(TBGListTypesTable::ITEMDATA, $row['sev_no']);
+							$crit->addInsert(TBGListTypesTable::NAME, $row['sev_desc']);
+							B2DB::getTable('TBGListTypesTable')->doInsert($crit);
 						}
 					}
 					while ($res3 && $row = $res3->fetch_array())
 					{
 						if (isset($row['id']))
 						{
-							B2DB::getTable('B2tListTypes')->doDeleteById($row['id']);
+							B2DB::getTable('TBGListTypesTable')->doDeleteById($row['id']);
 							$crit = new B2DBCriteria();
-							$crit->addInsert(B2tListTypes::ID, $row['id']);
-							$crit->addInsert(B2tListTypes::ITEMTYPE, TBGDatatype::PRIORITY);
-							$crit->addInsert(B2tListTypes::ITEMDATA, $row['prio_no']);
-							$crit->addInsert(B2tListTypes::NAME, $row['prio_desc']);
-							B2DB::getTable('B2tListTypes')->doInsert($crit);
+							$crit->addInsert(TBGListTypesTable::ID, $row['id']);
+							$crit->addInsert(TBGListTypesTable::ITEMTYPE, TBGDatatype::PRIORITY);
+							$crit->addInsert(TBGListTypesTable::ITEMDATA, $row['prio_no']);
+							$crit->addInsert(TBGListTypesTable::NAME, $row['prio_desc']);
+							B2DB::getTable('TBGListTypesTable')->doInsert($crit);
 						}
 					}
 					echo __('done') . '<br>';
@@ -300,24 +300,24 @@
 													while ($res && $row = $res->fetch_array())
 													{
 														$bug_id = $row['id'];
-														B2DB::getTable('B2tIssues')->doDeleteById($bug_id);
+														B2DB::getTable('TBGIssuesTable')->doDeleteById($bug_id);
 														$crit = new B2DBCriteria();
-														$crit->addInsert(B2tIssues::ID, $bug_id);
-														$crit->addInsert(B2tIssues::ISSUE_NO, $bug_id);
-														$crit->addInsert(B2tIssues::POSTED, $row['posted']);
-														$crit->addInsert(B2tIssues::LAST_UPDATED, $row['last_update']);
-														$crit->addInsert(B2tIssues::TITLE, $row['title']);
-														$crit->addInsert(B2tIssues::PROJECT_ID, $p_id);
-														$crit->addInsert(B2tIssues::LONG_DESCRIPTION, $row['long_desc']);
-														$crit->addInsert(B2tIssues::REPRODUCABILITY, $row['repro_steps']);
-														$crit->addInsert(B2tIssues::ISSUE_TYPE, 1);
-														$crit->addInsert(B2tIssues::POSTED_BY, $row['uname']);
-														$crit->addInsert(B2tIssues::STATUS, $row['status']);
-														$crit->addInsert(B2tIssues::CATEGORY, 0);
-														$crit->addInsert(B2tIssues::STATE, (($row['closed'] == 1) ? TBGIssue::STATE_CLOSED : TBGIssue::STATE_OPEN));
-														$crit->addInsert(B2tIssues::SEVERITY, $row['severity']);
-														$crit->addInsert(B2tIssues::SCOPE, TBGContext::getScope()->getID());
-														B2DB::getTable('B2tIssues')->doInsert($crit);
+														$crit->addInsert(TBGIssuesTable::ID, $bug_id);
+														$crit->addInsert(TBGIssuesTable::ISSUE_NO, $bug_id);
+														$crit->addInsert(TBGIssuesTable::POSTED, $row['posted']);
+														$crit->addInsert(TBGIssuesTable::LAST_UPDATED, $row['last_update']);
+														$crit->addInsert(TBGIssuesTable::TITLE, $row['title']);
+														$crit->addInsert(TBGIssuesTable::PROJECT_ID, $p_id);
+														$crit->addInsert(TBGIssuesTable::LONG_DESCRIPTION, $row['long_desc']);
+														$crit->addInsert(TBGIssuesTable::REPRODUCABILITY, $row['repro_steps']);
+														$crit->addInsert(TBGIssuesTable::ISSUE_TYPE, 1);
+														$crit->addInsert(TBGIssuesTable::POSTED_BY, $row['uname']);
+														$crit->addInsert(TBGIssuesTable::STATUS, $row['status']);
+														$crit->addInsert(TBGIssuesTable::CATEGORY, 0);
+														$crit->addInsert(TBGIssuesTable::STATE, (($row['closed'] == 1) ? TBGIssue::STATE_CLOSED : TBGIssue::STATE_OPEN));
+														$crit->addInsert(TBGIssuesTable::SEVERITY, $row['severity']);
+														$crit->addInsert(TBGIssuesTable::SCOPE, TBGContext::getScope()->getID());
+														B2DB::getTable('TBGIssuesTable')->doInsert($crit);
 														if (isset($import_data['import_editions']))
 														{
 															foreach ($project['editions'][$e_id]['builds'][$b_id]['issueaffects'][$bug_id] as $issue_affects)
@@ -325,19 +325,19 @@
 																$crit = new B2DBCriteria();
 																if ($issue_affects['build_no'] != 0)
 																{
-																	$crit->addInsert(B2tIssueAffectsBuild::BUILD, $issue_affects['build_no']);
-																	$crit->addInsert(B2tIssueAffectsBuild::ISSUE, $bug_id);
-																	$crit->addInsert(B2tIssueAffectsBuild::CONFIRMED, $issue_affects['confirmed']);
-																	$crit->addInsert(B2tIssueAffectsBuild::SCOPE, TBGContext::getScope()->getID());
-																	B2DB::getTable('B2tIssueAffectsBuild')->doInsert($crit);
+																	$crit->addInsert(TBGIssueAffectsBuildTable::BUILD, $issue_affects['build_no']);
+																	$crit->addInsert(TBGIssueAffectsBuildTable::ISSUE, $bug_id);
+																	$crit->addInsert(TBGIssueAffectsBuildTable::CONFIRMED, $issue_affects['confirmed']);
+																	$crit->addInsert(TBGIssueAffectsBuildTable::SCOPE, TBGContext::getScope()->getID());
+																	B2DB::getTable('TBGIssueAffectsBuildTable')->doInsert($crit);
 																}
 																else
 																{
-																	$crit->addInsert(B2tIssueAffectsEdition::EDITION, $issue_affects['edition']);
-																	$crit->addInsert(B2tIssueAffectsEdition::ISSUE, $bug_id);
-																	$crit->addInsert(B2tIssueAffectsEdition::CONFIRMED, $issue_affects['confirmed']);
-																	$crit->addInsert(B2tIssueAffectsEdition::SCOPE, TBGContext::getScope()->getID());
-																	B2DB::getTable('B2tIssueAffectsEdition')->doInsert($crit);
+																	$crit->addInsert(TBGIssueAffectsEditionTable::EDITION, $issue_affects['edition']);
+																	$crit->addInsert(TBGIssueAffectsEditionTable::ISSUE, $bug_id);
+																	$crit->addInsert(TBGIssueAffectsEditionTable::CONFIRMED, $issue_affects['confirmed']);
+																	$crit->addInsert(TBGIssueAffectsEditionTable::SCOPE, TBGContext::getScope()->getID());
+																	B2DB::getTable('TBGIssueAffectsEditionTable')->doInsert($crit);
 																}
 															}
 														}
@@ -375,7 +375,7 @@
 									B2DB::doConnect();
 									echo __('Importing the project') . ' ... ';
 									flush();
-									B2DB::getTable('B2tProjects')->doDeleteById($p_id);
+									B2DB::getTable('TBGProjectsTable')->doDeleteById($p_id);
 									TBGProject::createNew($project['project']['pak_desc'], $p_id);
 									echo __('done') . '<br>';
 									if (isset($import_data['import_editions']))
@@ -384,11 +384,11 @@
 										flush();
 										foreach ($project['editions'] as $e_id => $e_data)
 										{
-											B2DB::getTable('B2tEditions')->doDeleteById($e_id);
+											B2DB::getTable('TBGEditionsTable')->doDeleteById($e_id);
 											TBGEdition::createNew($e_data['edition']['ed_desc'], $p_id, $e_id);
 											foreach ($e_data['builds'] as $b_id => $b_data)
 											{
-												B2DB::getTable('B2tBuilds')->doDeleteById($b_id);
+												B2DB::getTable('TBGBuildsTable')->doDeleteById($b_id);
 												$b_major = $b_data['build']['build_no'];
 												$b_minor = 0;
 												$b_rev = 0;

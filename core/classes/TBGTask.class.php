@@ -47,8 +47,8 @@
 			if ($row === null)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tIssueTasks::SCOPE, TBGContext::getScope()->getID());
-				$row = B2DB::getTable('B2tIssueTasks')->doSelectById($t_id, $crit);
+				$crit->addWhere(TBGIssueTasksTable::SCOPE, TBGContext::getScope()->getID());
+				$row = B2DB::getTable('TBGIssueTasksTable')->doSelectById($t_id, $crit);
 			}
 			
 			if (!$row instanceof B2DBRow)
@@ -56,15 +56,15 @@
 				throw new Exception('The specified task does not exist');
 			}
 			
-			$this->_name = $row->get(B2tIssueTasks::TITLE);
-			$this->_assignedto = $row->get(B2tIssueTasks::ASSIGNED_TO);
-			$this->_assignedtype = $row->get(B2tIssueTasks::ASSIGNED_TYPE);
-			$this->_status = TBGFactory::datatypeLab($row->get(B2tIssueTasks::STATUS), TBGDatatype::STATUS);
-			$this->_completed = ($row->get(B2tIssueTasks::COMPLETED) == 1) ? true : false;
-			$this->_posted = $row->get(B2tIssueTasks::POSTED);
-			$this->_updated = $row->get(B2tIssueTasks::UPDATED);
-			$this->_content = $row->get(B2tIssueTasks::CONTENT);
-			$this->_issue = $row->get(B2tIssueTasks::ISSUE);
+			$this->_name = $row->get(TBGIssueTasksTable::TITLE);
+			$this->_assignedto = $row->get(TBGIssueTasksTable::ASSIGNED_TO);
+			$this->_assignedtype = $row->get(TBGIssueTasksTable::ASSIGNED_TYPE);
+			$this->_status = TBGFactory::datatypeLab($row->get(TBGIssueTasksTable::STATUS), TBGDatatype::STATUS);
+			$this->_completed = ($row->get(TBGIssueTasksTable::COMPLETED) == 1) ? true : false;
+			$this->_posted = $row->get(TBGIssueTasksTable::POSTED);
+			$this->_updated = $row->get(TBGIssueTasksTable::UPDATED);
+			$this->_content = $row->get(TBGIssueTasksTable::CONTENT);
+			$this->_issue = $row->get(TBGIssueTasksTable::ISSUE);
 		}
 		
 		public function __toString()
@@ -83,13 +83,13 @@
 		 */
 		static function createNew($title, $content, $issue_id)
 		{
-			$task_id = B2DB::getTable('B2tIssueTasks')->createNew($title, $content, $issue_id);
+			$task_id = B2DB::getTable('TBGIssueTasksTable')->createNew($title, $content, $issue_id);
 			return TBGFactory::taskLab($task_id);
 		}
 		
 		public function delete()
 		{
-			$tasktitle = B2DB::getTable('B2tIssueTasks')->doSelectById($t_id)->get(B2tIssueTasks::TITLE);
+			$tasktitle = B2DB::getTable('TBGIssueTasksTable')->doSelectById($t_id)->get(TBGIssueTasksTable::TITLE);
 			unset($this->_tasks[$t_id]);
 	
 			TBGTask::deleteTask($t_id);
@@ -180,9 +180,9 @@
 		{
 			TBGFactory::TBGIssueLab($this->_issue)->preserve_relatedUIDs();
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tIssueTasks::ASSIGNED_TO, $a_id);
-			$crit->addUpdate(B2tIssueTasks::ASSIGNED_TYPE, $a_type);
-			B2DB::getTable('B2tIssueTasks')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGIssueTasksTable::ASSIGNED_TO, $a_id);
+			$crit->addUpdate(TBGIssueTasksTable::ASSIGNED_TYPE, $a_type);
+			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
 			$this->updateTime();
 			TBGFactory::TBGIssueLab($this->_issue)->updateTime();
 			$this->_assignedtype = $a_type;
@@ -207,8 +207,8 @@
 		public function setStatus($sid)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tIssueTasks::STATUS, $sid);
-			$res = B2DB::getTable('B2tIssueTasks')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGIssueTasksTable::STATUS, $sid);
+			$res = B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
 			$this->_status = TBGFactory::datatypeLab($sid, TBGDatatype::STATUS);
 			TBGFactory::TBGIssueLab($this->_issue)->updateTime();
 	
@@ -225,8 +225,8 @@
 			$this->_completed = ($completed == 1) ? true : false;
 			
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tIssueTasks::COMPLETED, $completed);
-			B2DB::getTable('B2tIssueTasks')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGIssueTasksTable::COMPLETED, $completed);
+			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
 			$this->updateTime();
 	
 			if ($completed == 1)
@@ -248,9 +248,9 @@
 			$this->_content = $newContent;
 	
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tIssueTasks::TITLE, $newTitle);
-			$crit->addUpdate(B2tIssueTasks::CONTENT, $newContent);
-			B2DB::getTable('B2tIssueTasks')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGIssueTasksTable::TITLE, $newTitle);
+			$crit->addUpdate(TBGIssueTasksTable::CONTENT, $newContent);
+			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
 			$this->updateTime();
 			TBGFactory::TBGIssueLab($this->_issue)->updateTime();
 	
@@ -262,9 +262,9 @@
 		{
 			$theTime = $_SERVER["REQUEST_TIME"];
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tIssueTasks::UPDATED, $theTime);
+			$crit->addUpdate(TBGIssueTasksTable::UPDATED, $theTime);
 			$this->_updated = $theTime;
-			B2DB::getTable('B2tIssueTasks')->doUpdateById($crit, $this->_itemid);
+			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
 		}
 		
 	}

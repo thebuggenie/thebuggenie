@@ -94,12 +94,12 @@
 			{
 				if ($the_msg[0] !== null)
 				{
-					$sel_msg_id = $the_msg[0]->get(B2tMessages::ID);
+					$sel_msg_id = $the_msg[0]->get(TBGMessagesTable::ID);
 				}
 			}
 			else
 			{
-				$sel_msg_id = $the_msg->get(B2tMessages::ID);
+				$sel_msg_id = $the_msg->get(TBGMessagesTable::ID);
 			}
 		}
 		catch (Exception $e)

@@ -54,13 +54,13 @@
 				else
 				{
 					TBGLogging::log('Settings not cached. Retrieving from database');
-					if ($res = B2DB::getTable('B2tSettings')->getSettingsForEnabledScope(TBGContext::getScope()->getID()))
+					if ($res = B2DB::getTable('TBGSettingsTable')->getSettingsForEnabledScope(TBGContext::getScope()->getID()))
 					{
 						$cc = 0;
 						while ($row = $res->getNextRow())
 						{
 							$cc++;
-							self::$_settings[$row->get(B2tSettings::MODULE)][$row->get(B2tSettings::NAME)][$row->get(B2tSettings::UID)] = $row->get(B2tSettings::VALUE);
+							self::$_settings[$row->get(TBGSettingsTable::MODULE)][$row->get(TBGSettingsTable::NAME)][$row->get(TBGSettingsTable::UID)] = $row->get(TBGSettingsTable::VALUE);
 						}
 						if ($cc == 0)
 						{
@@ -85,7 +85,7 @@
 			{
 				unset(self::$_settings[$module_name]);
 			}
-			B2DB::getTable('B2tSettings')->deleteModuleSettings($module_name, TBGContext::getScope()->getID());
+			B2DB::getTable('TBGSettingsTable')->deleteModuleSettings($module_name, TBGContext::getScope()->getID());
 		}
 		
 		public static function saveSetting($name, $value, $module = 'core', $scope = 0, $uid = 0)
@@ -106,7 +106,7 @@
 				}
 			}
 
-			B2DB::getTable('B2tSettings')->saveSetting($name, $module, $value, $uid, $scope);
+			B2DB::getTable('TBGSettingsTable')->saveSetting($name, $module, $value, $uid, $scope);
 			
 			if ($scope != 0 && ((!TBGContext::getScope() instanceof TBGScope) || $scope == TBGContext::getScope()->getID()))
 			{
@@ -183,8 +183,8 @@
 			throw new Exception("This function is deprecated. Default scope is always 1");
 			if (self::$_defaultscope === null)
 			{
-				$row = B2DB::getTable('B2tSettings')->getDefaultScope();
-				self::$_defaultscope = TBGFactory::scopeLab($row->get(B2tSettings::VALUE));
+				$row = B2DB::getTable('TBGSettingsTable')->getDefaultScope();
+				self::$_defaultscope = TBGFactory::scopeLab($row->get(TBGSettingsTable::VALUE));
 			}
 			return self::$_defaultscope;
 		}
@@ -196,35 +196,35 @@
 				$scope = TBGContext::getScope()->getID();
 			}
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tSettings::NAME, $name);
-			$crit->addWhere(B2tSettings::MODULE, $module);
-			$crit->addWhere(B2tSettings::SCOPE, $scope);
-			$crit->addWhere(B2tSettings::UID, $uid);
+			$crit->addWhere(TBGSettingsTable::NAME, $name);
+			$crit->addWhere(TBGSettingsTable::MODULE, $module);
+			$crit->addWhere(TBGSettingsTable::SCOPE, $scope);
+			$crit->addWhere(TBGSettingsTable::UID, $uid);
 			if ($value != "")
 			{
-				$crit->addWhere(B2tSettings::VALUE, $value);
+				$crit->addWhere(TBGSettingsTable::VALUE, $value);
 			}
-			B2DB::getTable('B2tSettings')->doDelete($crit);
+			B2DB::getTable('TBGSettingsTable')->doDelete($crit);
 			unset(self::$_settings[$name][$uid]);
 		}
 	
 		private static function _loadSetting($name, $module = 'core', $scope = 0)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tSettings::NAME, $name);
-			$crit->addWhere(B2tSettings::MODULE, $module);
+			$crit->addWhere(TBGSettingsTable::NAME, $name);
+			$crit->addWhere(TBGSettingsTable::MODULE, $module);
 			if ($scope == 0)
 			{
 				throw new Exception('BUGS has not been correctly installed. Please check that the default scope exists');
 			}
-			$crit->addWhere(B2tSettings::SCOPE, $scope);
-			$res = B2DB::getTable('B2tSettings')->doSelect($crit);
+			$crit->addWhere(TBGSettingsTable::SCOPE, $scope);
+			$res = B2DB::getTable('TBGSettingsTable')->doSelect($crit);
 			if ($res->count() > 0)
 			{
 				$retarr = array();
 				while ($row = $res->getNextRow())
 				{
-					$retarr[$row->get(B2tSettings::UID)] = $row->get(B2tSettings::VALUE);
+					$retarr[$row->get(TBGSettingsTable::UID)] = $row->get(TBGSettingsTable::VALUE);
 				}
 				return $retarr;
 			}

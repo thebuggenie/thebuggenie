@@ -48,7 +48,7 @@
 		 */
 		public static function createNew($name, $icon = 'bug_report')
 		{
-			$res = B2DB::getTable('B2tIssueTypes')->createNew($name, $icon);
+			$res = B2DB::getTable('TBGIssueTypesTable')->createNew($name, $icon);
 			return TBGFactory::TBGIssuetypeLab($res->getInsertID());
 		}
 
@@ -85,19 +85,19 @@
 			{
 				if ($row === null)
 				{
-					$row = B2DB::getTable('B2tIssueTypes')->doSelectById($i_id);
+					$row = B2DB::getTable('TBGIssueTypesTable')->doSelectById($i_id);
 				}
 				if ($row instanceof B2DBRow)
 				{
 					$this->_itemid = $i_id;
-					$this->_appliesto = ($row->get(B2tIssueTypes::APPLIES_TO) != 0) ? TBGFactory::projectLab($row->get(B2tIssueTypes::APPLIES_TO)) : null;
-					$this->_itemdata = $row->get(B2tIssueTypes::ICON);
-					$this->_description = $row->get(B2tIssueTypes::DESCRIPTION);
-					$this->_reportable = (bool) $row->get(B2tIssueTypes::IS_REPORTABLE);
+					$this->_appliesto = ($row->get(TBGIssueTypesTable::APPLIES_TO) != 0) ? TBGFactory::projectLab($row->get(TBGIssueTypesTable::APPLIES_TO)) : null;
+					$this->_itemdata = $row->get(TBGIssueTypesTable::ICON);
+					$this->_description = $row->get(TBGIssueTypesTable::DESCRIPTION);
+					$this->_reportable = (bool) $row->get(TBGIssueTypesTable::IS_REPORTABLE);
 					$this->_itemtype = TBGDatatype::ISSUETYPE;
-					$this->_name = $row->get(B2tIssueTypes::NAME);
-					$this->_istask = (bool) $row->get(B2tIssueTypes::IS_TASK);
-					$this->_redirect_after_reporting = (bool) $row->get(B2tIssueTypes::REDIRECT_AFTER_REPORTING);
+					$this->_name = $row->get(TBGIssueTypesTable::NAME);
+					$this->_istask = (bool) $row->get(TBGIssueTypesTable::IS_TASK);
+					$this->_redirect_after_reporting = (bool) $row->get(TBGIssueTypesTable::REDIRECT_AFTER_REPORTING);
 				}
 				else
 				{
@@ -114,7 +114,7 @@
 		{
 			if ($this->_visiblefields === null)
 			{
-				$this->_visiblefields = B2DB::getTable('B2tIssueFields')->getVisibleFieldsArrayByIssuetypeID($this->getID());
+				$this->_visiblefields = B2DB::getTable('TBGIssueFieldsTable')->getVisibleFieldsArrayByIssuetypeID($this->getID());
 			}
 		}
 
@@ -207,17 +207,17 @@
 
 		public function clearAvailableFields()
 		{
-			B2DB::getTable('B2tIssueFields')->deleteByIssuetypeID($this->getID());
+			B2DB::getTable('TBGIssueFieldsTable')->deleteByIssuetypeID($this->getID());
 		}
 
 		public function setFieldAvailable($key, $details)
 		{
-			B2DB::getTable('B2tIssueFields')->addFieldAndDetailsByIssuetypeID($this->getID(), $key, $details);
+			B2DB::getTable('TBGIssueFieldsTable')->addFieldAndDetailsByIssuetypeID($this->getID(), $key, $details);
 		}
 
 		public function save()
 		{
-			B2DB::getTable('B2tIssueTypes')->saveDetails($this);
+			B2DB::getTable('TBGIssueTypesTable')->saveDetails($this);
 		}
 
 		static function getTask()
@@ -225,9 +225,9 @@
 			try
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tIssueTypes::IS_TASK, 1);
-				$crit->addWhere(B2tIssueTypes::SCOPE, TBGContext::getScope()->getID());
-				return B2DB::getTable('B2tIssueTypes')->doSelectOne($crit)->get(B2tIssueTypes::ID);
+				$crit->addWhere(TBGIssueTypesTable::IS_TASK, 1);
+				$crit->addWhere(TBGIssueTypesTable::SCOPE, TBGContext::getScope()->getID());
+				return B2DB::getTable('TBGIssueTypesTable')->doSelectOne($crit)->get(TBGIssueTypesTable::ID);
 			}
 			catch (Exception $e)
 			{
@@ -276,21 +276,21 @@
 		
 				if ($project_id !== 0)
 				{
-					$ctn = $crit->returnCriterion(B2tIssueTypes::APPLIES_TO, $project_id);
-					$ctn->addOr(B2tIssueTypes::APPLIES_TO, 0);
+					$ctn = $crit->returnCriterion(TBGIssueTypesTable::APPLIES_TO, $project_id);
+					$ctn->addOr(TBGIssueTypesTable::APPLIES_TO, 0);
 					$crit->addWhere($ctn);
 				}
 				else
 				{
-					$crit->addWhere(B2tIssueTypes::APPLIES_TO, 0);
+					$crit->addWhere(TBGIssueTypesTable::APPLIES_TO, 0);
 				}
-				$crit->addWhere(B2tIssueTypes::SCOPE, TBGContext::getScope()->getID());
-				$crit->addOrderBy(B2tIssueTypes::ID, B2DBCriteria::SORT_ASC);
+				$crit->addWhere(TBGIssueTypesTable::SCOPE, TBGContext::getScope()->getID());
+				$crit->addOrderBy(TBGIssueTypesTable::ID, B2DBCriteria::SORT_ASC);
 		
-				$res = B2DB::getTable('B2tIssueTypes')->doSelect($crit);
+				$res = B2DB::getTable('TBGIssueTypesTable')->doSelect($crit);
 				while ($row = $res->getNextRow())
 				{
-					$issuetypes[$row->get(B2tIssueTypes::ID)] = TBGFactory::TBGIssuetypeLab($res->get(B2tIssueTypes::ID), $row);
+					$issuetypes[$row->get(TBGIssueTypesTable::ID)] = TBGFactory::TBGIssuetypeLab($res->get(TBGIssueTypesTable::ID), $row);
 				}
 		
 				self::$_issuetypes[$project_id] = $issuetypes;

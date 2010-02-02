@@ -37,8 +37,8 @@
 
 			if ($scope == TBGContext::getScope()->getID())
 			{
-				B2DB::getTable('B2tCalendars')->create();
-				B2DB::getTable('B2tCalendarTasks')->create();
+				B2DB::getTable('TBGCalendarsTable')->create();
+				B2DB::getTable('TBGCalendarTasksTable')->create();
 			}
 
 			return true;
@@ -48,8 +48,8 @@
 		{
 			if (TBGContext::getScope()->getID() == 1)
 			{
-				B2DB::getTable('B2tCalendars')->drop();
-				B2DB::getTable('B2tCalendarTasks')->drop();
+				B2DB::getTable('TBGCalendarsTable')->drop();
+				B2DB::getTable('TBGCalendarTasksTable')->drop();
 			}
 			parent::_uninstall();
 		}
@@ -84,34 +84,34 @@
 			if ($bypass == true)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tCalendars::UID, $uid);
-				$res = B2DB::getTable('B2tCalendars')->doSelect($crit);
+				$crit->addWhere(TBGCalendarsTable::UID, $uid);
+				$res = B2DB::getTable('TBGCalendarsTable')->doSelect($crit);
 				$calendar = array();
 				while ($row = $res->getNextRow())
 				{
-					$calendar[] = $row->get(B2tCalendars::ID);
+					$calendar[] = $row->get(TBGCalendarsTable::ID);
 				}
 			}
 			
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tCalendarTasks::CALENDAR, $calendar, B2DBCriteria::DB_IN);
-			$ctn = $crit->returnCriterion(B2tCalendarTasks::STARTS, $startdate, B2DBCriteria::DB_LESS_THAN);
-			$ctn2 = $crit->returnCriterion(B2tCalendarTasks::STARTS, $startdate, B2DBCriteria::DB_GREATER_THAN);
-			$ctn2->addWhere(B2tCalendarTasks::STARTS, $enddate, B2DBCriteria::DB_LESS_THAN);
+			$crit->addWhere(TBGCalendarTasksTable::CALENDAR, $calendar, B2DBCriteria::DB_IN);
+			$ctn = $crit->returnCriterion(TBGCalendarTasksTable::STARTS, $startdate, B2DBCriteria::DB_LESS_THAN);
+			$ctn2 = $crit->returnCriterion(TBGCalendarTasksTable::STARTS, $startdate, B2DBCriteria::DB_GREATER_THAN);
+			$ctn2->addWhere(TBGCalendarTasksTable::STARTS, $enddate, B2DBCriteria::DB_LESS_THAN);
 			$ctn->addOr($ctn2);
 			$crit->addWhere($ctn);
-			$ctn = $crit->returnCriterion(B2tCalendarTasks::ENDS, $enddate, B2DBCriteria::DB_GREATER_THAN);
-			$ctn2 = $crit->returnCriterion(B2tCalendarTasks::ENDS, $enddate, B2DBCriteria::DB_LESS_THAN);
-			$ctn2->addWhere(B2tCalendarTasks::ENDS, $startdate, B2DBCriteria::DB_GREATER_THAN);
+			$ctn = $crit->returnCriterion(TBGCalendarTasksTable::ENDS, $enddate, B2DBCriteria::DB_GREATER_THAN);
+			$ctn2 = $crit->returnCriterion(TBGCalendarTasksTable::ENDS, $enddate, B2DBCriteria::DB_LESS_THAN);
+			$ctn2->addWhere(TBGCalendarTasksTable::ENDS, $startdate, B2DBCriteria::DB_GREATER_THAN);
 			$ctn->addOr($ctn2);
 			$crit->addWhere($ctn);
-			$crit->addOrderBy(B2tCalendarTasks::STARTS, 'asc');
+			$crit->addOrderBy(TBGCalendarTasksTable::STARTS, 'asc');
 			
-			if ($res = B2DB::getTable('B2tCalendarTasks')->doSelect($crit))
+			if ($res = B2DB::getTable('TBGCalendarTasksTable')->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$tasks[$row->get(B2tCalendarTasks::ID)] = new BUGScalendarEvent($row);
+					$tasks[$row->get(TBGCalendarTasksTable::ID)] = new BUGScalendarEvent($row);
 				}
 			}
 			

@@ -9,7 +9,7 @@
 				<form action="<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'customer', 'assignee_id' => $customer->getID())); ?>" onsubmit="assignToProject('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'customer', 'assignee_id' => $customer->getID())); ?>', 'assign_customer');return false;" method="post" id="assign_customer">
 					<label for="role_team_<?php echo $customer->getID(); ?>"><?php echo $customer->getName(); ?>:</label>&nbsp;
 					<select name="role" id="role_team_<?php echo $customer->getID(); ?>">
-						<?php foreach (B2tProjectAssignees::getTypes() as $type_id => $type_desc): ?>
+						<?php foreach (TBGProjectAssigneesTable::getTypes() as $type_id => $type_desc): ?>
 							<option value="<?php echo $type_id; ?>"><?php echo $type_desc; ?></option>
 						<?php endforeach ;?>
 					</select>
@@ -46,7 +46,7 @@
 				<form action="<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>" onsubmit="assignToProject('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'team', 'assignee_id' => $team->getID())); ?>', 'assign_team');return false;" method="post" id="assign_team">
 					<label for="role_team_<?php echo $team->getID(); ?>"><?php echo $team->getName(); ?>:</label>&nbsp;
 					<select name="role" id="role_team_<?php echo $team->getID(); ?>">
-						<?php foreach (B2tProjectAssignees::getTypes() as $type_id => $type_desc): ?>
+						<?php foreach (TBGProjectAssigneesTable::getTypes() as $type_id => $type_desc): ?>
 							<option value="<?php echo $type_id; ?>"><?php echo $type_desc; ?></option>
 						<?php endforeach ;?>
 					</select>
@@ -83,7 +83,7 @@
 				<form action="<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID())); ?>" onsubmit="assignToProject('<?php echo make_url('configure_project_add_assignee', array('project_id' => $theProject->getID(), 'assignee_type' => 'user', 'assignee_id' => $user->getID())); ?>', 'assign_user');return false;" method="post" id="assign_user">
 					<label for="role_<?php echo $user->getID(); ?>"><?php echo $user->getNameWithUsername(); ?>:</label>&nbsp;
 					<select name="role" id="role_<?php echo $user->getID(); ?>">
-						<?php foreach (B2tProjectAssignees::getTypes() as $type_id => $type_desc): ?>
+						<?php foreach (TBGProjectAssigneesTable::getTypes() as $type_id => $type_desc): ?>
 							<option value="<?php echo $type_id; ?>"><?php echo $type_desc; ?></option>
 						<?php endforeach ;?>
 					</select>

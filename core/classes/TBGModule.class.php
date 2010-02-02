@@ -69,17 +69,17 @@
 		{
 			if ($row === null)
 			{
-				$row = B2DB::getTable('B2tModules')->doSelectById($m_id);
+				$row = B2DB::getTable('TBGModulesTable')->doSelectById($m_id);
 			}
 			$this->_itemid = $m_id;
-			$this->_name = $row->get(B2tModules::MODULE_NAME);
-			$this->_classname = $row->get(B2tModules::CLASSNAME);
-			$this->_enabled = (bool) $row->get(B2tModules::ENABLED);
-			$this->_shortname = $row->get(B2tModules::MODULE_NAME);
-			$this->_showinconfig = (bool) $row->get(B2tModules::SHOW_IN_CONFIG);
-			$this->_showinmenu = (bool) $row->get(B2tModules::SHOW_IN_MENU);
-			$this->_showinusermenu = (bool) $row->get(B2tModules::SHOW_IN_USERMENU);
-			$this->_version = $row->get(B2tModules::VERSION);
+			$this->_name = $row->get(TBGModulesTable::MODULE_NAME);
+			$this->_classname = $row->get(TBGModulesTable::CLASSNAME);
+			$this->_enabled = (bool) $row->get(TBGModulesTable::ENABLED);
+			$this->_shortname = $row->get(TBGModulesTable::MODULE_NAME);
+			$this->_showinconfig = (bool) $row->get(TBGModulesTable::SHOW_IN_CONFIG);
+			$this->_showinmenu = (bool) $row->get(TBGModulesTable::SHOW_IN_MENU);
+			$this->_showinusermenu = (bool) $row->get(TBGModulesTable::SHOW_IN_USERMENU);
+			$this->_version = $row->get(TBGModulesTable::VERSION);
 		}
 		
 		public function log($message, $level = 1)
@@ -90,48 +90,48 @@
 		public function disable()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tModules::ENABLED, 0);
-			B2DB::getTable('B2tModules')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGModulesTable::ENABLED, 0);
+			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
 			$this->_enabled = false;
 		}
 
 		public function enable()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tModules::ENABLED, 1);
-			B2DB::getTable('B2tModules')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGModulesTable::ENABLED, 1);
+			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
 			$this->_enabled = true;
 		}
 		
 		public function showInMenu()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tModules::SHOW_IN_MENU, 1);
-			B2DB::getTable('B2tModules')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGModulesTable::SHOW_IN_MENU, 1);
+			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
 			$this->_showinmenu = true;
 		}
 		
 		public function hideFromMenu()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tModules::SHOW_IN_MENU, 0);
-			B2DB::getTable('B2tModules')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGModulesTable::SHOW_IN_MENU, 0);
+			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
 			$this->_showinmenu = false;
 		}
 		
 		public function showInUserMenu()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tModules::SHOW_IN_USERMENU, 1);
-			B2DB::getTable('B2tModules')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGModulesTable::SHOW_IN_USERMENU, 1);
+			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
 			$this->_showinusermenu = true;
 		}
 
 		public function hideFromUserMenu()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tModules::SHOW_IN_USERMENU, 0);
-			B2DB::getTable('B2tModules')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGModulesTable::SHOW_IN_USERMENU, 0);
+			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
 			$this->_showinusermenu = false;
 		}
 
@@ -140,8 +140,8 @@
 		protected function _uninstall()
 		{
 			$scope = TBGContext::getScope()->getID();
-			B2DB::getTable('B2tModules')->doDeleteById($this->getID());
-			B2DB::getTable('B2tEnabledModuleListeners')->removeAllModuleListeners($this->getName(), $scope);
+			B2DB::getTable('TBGModulesTable')->doDeleteById($this->getID());
+			B2DB::getTable('TBGEnabledModuleListenersTable')->removeAllModuleListeners($this->getName(), $scope);
 			TBGSettings::deleteModuleSettings($this->getName());
 			TBGContext::deleteModulePermissions($this->getName());
 		}
@@ -167,7 +167,7 @@
   			if (!TBGContext::getScope() instanceof TBGScope) throw new Exception('No scope??');
 
 			TBGLogging::log('installing module' . $identifier);
-			$module_id = B2DB::getTable('B2tModules')->installModule($identifier, $classname, $version, $show_in_config, $show_in_menu, $show_in_usermenu, $scope);
+			$module_id = B2DB::getTable('TBGModulesTable')->installModule($identifier, $classname, $version, $show_in_config, $show_in_menu, $show_in_usermenu, $scope);
   			
 			if (class_exists($classname))
 			{
@@ -196,7 +196,7 @@
 			if (array_key_exists($module . '_' . $identifier, $this->_listeners))
 			{
 				$this->_listeners[$module . '_' . $identifier]['enabled'] = false;
-				B2DB::getTable('B2tEnabledModuleListeners')->removePermanentListener($module, $identifier, $this->getName());
+				B2DB::getTable('TBGEnabledModuleListenersTable')->removePermanentListener($module, $identifier, $this->getName());
 			}
 		}
 		
@@ -263,12 +263,12 @@
 		public static function cacheAllAccessPermissions()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tModulePermissions::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(TBGModulePermissionsTable::SCOPE, TBGContext::getScope()->getID());
 			
-			$resultset = B2DB::getTable('B2tModulePermissions')->doSelect($crit);
+			$resultset = B2DB::getTable('TBGModulePermissionsTable')->doSelect($crit);
 			while ($row = $resultset->getNextRow())
 			{
-				self::cacheAccessPermission($row->get(B2tModulePermissions::MODULE_NAME), $row->get(B2tModulePermissions::UID), $row->get(B2tModulePermissions::GID), $row->get(B2tModulePermissions::TID), 0, (bool) $row->get(B2tModulePermissions::ALLOWED));
+				self::cacheAccessPermission($row->get(TBGModulePermissionsTable::MODULE_NAME), $row->get(TBGModulePermissionsTable::UID), $row->get(TBGModulePermissionsTable::GID), $row->get(TBGModulePermissionsTable::TID), 0, (bool) $row->get(TBGModulePermissionsTable::ALLOWED));
 			}
 		}
 
@@ -280,8 +280,8 @@
 		public function setPermission($uid, $gid, $tid, $allowed, $scope = null)
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
-			B2DB::getTable('B2tModulePermissions')->deleteByModuleAndUIDandGIDandTIDandScope($this->getName(), $uid, $gid, $tid, $scope);
-			B2DB::getTable('B2tModulePermissions')->setPermissionByModuleAndUIDandGIDandTIDandScope($this->getName(), $uid, $gid, $tid, $allowed, $scope);
+			B2DB::getTable('TBGModulePermissionsTable')->deleteByModuleAndUIDandGIDandTIDandScope($this->getName(), $uid, $gid, $tid, $scope);
+			B2DB::getTable('TBGModulePermissionsTable')->setPermissionByModuleAndUIDandGIDandTIDandScope($this->getName(), $uid, $gid, $tid, $allowed, $scope);
 			if ($scope == TBGContext::getScope()->getID())
 			{
 				self::cacheAccessPermission($this->getName(), $uid, $gid, $tid, 0, $allowed);
@@ -368,14 +368,14 @@
 				
 		static function loadModuleListeners($module_names)
 		{
-			if ($res = B2DB::getTable('B2tEnabledModuleListeners')->getAll($module_names))
+			if ($res = B2DB::getTable('TBGEnabledModuleListenersTable')->getAll($module_names))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$module = TBGContext::getModule($row->get(B2tEnabledModuleListeners::MODULE_NAME));
+					$module = TBGContext::getModule($row->get(TBGEnabledModuleListenersTable::MODULE_NAME));
 					if ($module->hasAccess() && $module->isEnabled())
 					{
-						$module->enableListener($row->get(B2tEnabledModuleListeners::MODULE), $row->get(B2tEnabledModuleListeners::IDENTIFIER));
+						$module->enableListener($row->get(TBGEnabledModuleListenersTable::MODULE), $row->get(TBGEnabledModuleListenersTable::IDENTIFIER));
 					}
 				}
 			}
@@ -397,7 +397,7 @@
 		public function enableListenerSaved($module, $identifier, $scope = null)
 		{
 			$this->enableListener($module, $identifier, $scope);
-			B2DB::getTable('B2tEnabledModuleListeners')->savePermanentListener($module, $identifier, $this->getName(), $scope);
+			B2DB::getTable('TBGEnabledModuleListenersTable')->savePermanentListener($module, $identifier, $this->getName(), $scope);
 		}
 
 		public function setConfigTitle($title)
@@ -540,41 +540,41 @@
 		{
 	
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tModulePermissions::MODULE_NAME, $module);
+			$crit->addWhere(TBGModulePermissionsTable::MODULE_NAME, $module);
 			//$sql = "select b2mp.allowed from tbg_2_modulepermissions b2mp where b2mp.module_name = '$module'";
 			switch (true)
 			{
 				case ($uid != 0):
 					//$sql .= " and uid = $uid";
-					$crit->addWhere(B2tModulePermissions::UID, $uid);
+					$crit->addWhere(TBGModulePermissionsTable::UID, $uid);
 				case ($tid != 0):
 					//$sql .= " and tid = $tid";
-					$crit->addWhere(B2tModulePermissions::TID, $tid);
+					$crit->addWhere(TBGModulePermissionsTable::TID, $tid);
 				case ($gid != 0):
 					//$sql .= " and gid = $gid";
-					$crit->addWhere(B2tModulePermissions::GID, $gid);
+					$crit->addWhere(TBGModulePermissionsTable::GID, $gid);
 			}
 			if (($uid + $tid + $gid) == 0)
 			{
 				//$sql .= " and uid = $uid and tid = $tid and gid = $gid";
-				$crit->addWhere(B2tModulePermissions::UID, $uid);
-				$crit->addWhere(B2tModulePermissions::TID, $tid);
-				$crit->addWhere(B2tModulePermissions::GID, $gid);
+				$crit->addWhere(TBGModulePermissionsTable::UID, $uid);
+				$crit->addWhere(TBGModulePermissionsTable::TID, $tid);
+				$crit->addWhere(TBGModulePermissionsTable::GID, $gid);
 			}
 			
 			//$sql .= " AND b2mp.scope = " . TBGContext::getScope()->getID();
-			$crit->addWhere(B2tModulePermissions::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(TBGModulePermissionsTable::SCOPE, TBGContext::getScope()->getID());
 	
 			//$res = b2db_sql_query($sql, B2DB::getDBlink());
 	
 			#print $sql;
 	
 			$permissions = array();
-			$res = B2DB::getTable('B2tModulePermissions')->doSelect($crit);
+			$res = B2DB::getTable('TBGModulePermissionsTable')->doSelect($crit);
 	
 			while ($row = $res->getNextRow())
 			{
-				$permissions[] = array('allowed' => $row->get(B2tModulePermissions::ALLOWED));
+				$permissions[] = array('allowed' => $row->get(TBGModulePermissionsTable::ALLOWED));
 			}
 	
 			return $permissions;

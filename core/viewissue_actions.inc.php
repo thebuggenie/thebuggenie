@@ -457,7 +457,7 @@
 					}
 					if (TBGContext::getRequest()->getParameter('deleteaccess'))
 					{
-						B2DB::getTable('B2tPermissions')->doDeleteById(TBGContext::getRequest()->getParameter('id'));
+						B2DB::getTable('TBGPermissionsTable')->doDeleteById(TBGContext::getRequest()->getParameter('id'));
 					}
 					if (TBGContext::getRequest()->getParameter('sethidden'))
 					{
@@ -1550,7 +1550,7 @@
 					$retval .= '<table cellpadding=0 cellspacing=0 style="width: 100%;">';
 					foreach ($theIssue->getProject()->getMilestones(true) as $aMilestone)
 					{
-						$aMilestone = TBGFactory::milestoneLab($aMilestone['id']);
+						$aMilestone = TBGFactory::TBGMilestoneLab($aMilestone['id']);
 						$retval .= '<tr>';
 						$retval .= '<td style="width: 20px; padding: 2px;">' .image_tag('icon_milestones.png') . '</td>';
 						$retval .= '<td style="width: auto; padding: 2px;"><a href="javascript:void(0);" onclick="addMilestone(' . $aMilestone->getID() . ');">' . $aMilestone->getName() . '</a></td>';

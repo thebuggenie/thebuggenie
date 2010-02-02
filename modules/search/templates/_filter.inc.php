@@ -1,5 +1,5 @@
 <li id="filter_<?php echo $key; ?>">
-	<?php if (in_array($filter, B2tIssues::getValidSearchFilters())): ?>
+	<?php if (in_array($filter, TBGIssuesTable::getValidSearchFilters())): ?>
 		<?php if ($filter == 'project_id' && !TBGContext::isProjectContext()): ?>
 			<label<?php if (!TBGContext::isProjectContext()): ?> for="filter_project_id_<?php echo $key; ?>"<?php endif; ?>><?php echo __('Project'); ?></label>
 			<?php if (TBGContext::isProjectContext()): ?>

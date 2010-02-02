@@ -102,6 +102,65 @@
 		}
 
 		/**
+		 * The project scrum page
+		 *
+		 * @param TBGRequest $request
+		 */
+		public function runScrumSprintBurndown(TBGRequest $request)
+		{
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			//$this->unassigned_issues = $this->selected_project->getUnassignedStories();
+		}
+
+		public function runScrumSprintBurndownImage(TBGRequest $request)
+		{
+			$milestone = null;
+			if ($request->getParameter('milestone_id'))
+			{
+				$milestone = TBGFactory::TBGMilestoneLab($m_id);
+			}
+			else
+			{
+				$milestones = $this->selected_project->getUpcomingMilestonesAndSprints();
+				if (count($milestones))
+				{
+					$milestone = array_shift($milestones);
+				}
+			}
+
+			$this->getResponse()->setContentType('image/png');
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+			if ($milestone instanceof TBGMilestone)
+			{
+				$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+				$datasets = array();
+
+				$burndown_data = $milestone->getBurndownData();
+
+				if (count($burndown_data['estimations']))
+				{
+					$datasets[] = array('values' => $burndown_data['estimations'], 'label' => __('Estimated points'));
+					$datasets[] = array('values' => $burndown_data['spent_times'], 'label' => __('Points spent'));
+					//$datasets[] = array('values' => $issues['closed'], 'label' => __('Issues closed'));
+					$this->labels = array_keys($burndown_data['estimations']);
+				}
+				else
+				{
+					$datasets[] = array('values' => array(0), 'label' => __('Estimated points'));
+					$datasets[] = array('values' => array(0), 'label' => __('Points spent'));
+					$this->labels = array(0);
+				}
+				$this->datasets = $datasets;
+				$this->milestone = $milestone;
+			}
+			else
+			{
+				return $this->renderText('');
+			}
+		}
+
+
+		/**
 		 * Set color on a user story
 		 *
 		 * @param TBGRequest $request
@@ -148,7 +207,7 @@
 				$sprint = null;
 				try
 				{
-					$sprint = TBGFactory::milestoneLab($new_sprint_id);
+					$sprint = TBGFactory::TBGMilestoneLab($new_sprint_id);
 				}
 				catch (Exception $e) {}
 				if ($issue instanceof TBGIssue)

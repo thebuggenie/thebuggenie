@@ -77,18 +77,18 @@
 
 			if ($request->hasParameter('saved_search'))
 			{
-				$savedsearch = B2DB::getTable('B2tSavedSearches')->doSelectById($request->getParameter('saved_search'));
+				$savedsearch = B2DB::getTable('TBGSavedSearchesTable')->doSelectById($request->getParameter('saved_search'));
 				if ($savedsearch instanceof B2DBRow && TBGContext::getUser()->canAccessSavedSearch($savedsearch))
 				{
 					$this->issavedsearch = true;
 					$this->savedsearch = $savedsearch;
-					$this->templatename = $savedsearch->get(B2tSavedSearches::TEMPLATE_NAME);
-					$this->template_parameter = $savedsearch->get(B2tSavedSearches::TEMPLATE_PARAMETER);
-					$this->groupby = $savedsearch->get(B2tSavedSearches::GROUPBY);
-					$this->grouporder = $savedsearch->get(B2tSavedSearches::GROUPORDER);
-					$this->ipp = $savedsearch->get(B2tSavedSearches::ISSUES_PER_PAGE);
-					$this->searchtitle = $savedsearch->get(B2tSavedSearches::NAME);
-					$this->filters = B2DB::getTable('B2tSavedSearchFilters')->getFiltersBySavedSearchID($savedsearch->get(B2tSavedSearches::ID));
+					$this->templatename = $savedsearch->get(TBGSavedSearchesTable::TEMPLATE_NAME);
+					$this->template_parameter = $savedsearch->get(TBGSavedSearchesTable::TEMPLATE_PARAMETER);
+					$this->groupby = $savedsearch->get(TBGSavedSearchesTable::GROUPBY);
+					$this->grouporder = $savedsearch->get(TBGSavedSearchesTable::GROUPORDER);
+					$this->ipp = $savedsearch->get(TBGSavedSearchesTable::ISSUES_PER_PAGE);
+					$this->searchtitle = $savedsearch->get(TBGSavedSearchesTable::NAME);
+					$this->filters = B2DB::getTable('TBGSavedSearchFiltersTable')->getFiltersBySavedSearchID($savedsearch->get(TBGSavedSearchesTable::ID));
 				}
 			}
 		}
@@ -140,7 +140,7 @@
 					$this->ipp = 0;
 					$this->groupby = 'user_pain';
 					$this->grouporder = 'desc';
-					$ids = B2DB::getTable('B2tIssueTypes')->getBugReportTypeIDs();
+					$ids = B2DB::getTable('TBGIssueTypesTable')->getBugReportTypeIDs();
 					$this->filters['issue_type'] = array();
 					foreach ($ids as $id)
 					{
@@ -224,7 +224,7 @@
 				if ($request->getParameter('saved_search_name') != '')
 				{
 					$project_id = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0;
-					B2DB::getTable('B2tSavedSearches')->saveSearch($request->getParameter('saved_search_name'), $request->getParameter('saved_search_description'), $request->getParameter('saved_search_public'), $this->filters, $this->groupby, $this->grouporder, $this->ipp, $this->templatename, $this->template_parameter, $project_id, $request->getParameter('saved_search_id'));
+					B2DB::getTable('TBGSavedSearchesTable')->saveSearch($request->getParameter('saved_search_name'), $request->getParameter('saved_search_description'), $request->getParameter('saved_search_public'), $this->filters, $this->groupby, $this->grouporder, $this->ipp, $this->templatename, $this->template_parameter, $project_id, $request->getParameter('saved_search_id'));
 					if ($request->getParameter('saved_search_id'))
 					{
 						TBGContext::setMessage('search_message', TBGContext::getI18n()->__('The saved search was updated'));
@@ -262,7 +262,7 @@
 			$this->appliedfilters = $this->filters;
 			$this->templates = $this->getTemplates();
 			
-			$this->savedsearches = B2DB::getTable('B2tSavedSearches')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID(), (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0);
+			$this->savedsearches = B2DB::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID(), (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0);
 			
 			if ($request->getParameter('format') == 'rss')
 			{
@@ -285,7 +285,7 @@
 
 		public function runAddFilter(TBGRequest $request)
 		{
-			if (in_array($request->getParameter('filter_name'), B2tIssues::getValidSearchFilters()) || TBGCustomDatatype::doesKeyExist($request->getParameter('filter_name')))
+			if (in_array($request->getParameter('filter_name'), TBGIssuesTable::getValidSearchFilters()) || TBGCustomDatatype::doesKeyExist($request->getParameter('filter_name')))
 			{
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('search/filter', array('filter' => $request->getParameter('filter_name'), 'key' => $request->getParameter('key', 0)))));
 			}

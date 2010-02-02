@@ -172,9 +172,9 @@
 		try
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tIssueTypes::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(B2tIssueTypes::IS_TASK, 1);
-			return B2DB::getTable('B2tIssueTypes')->doSelect($crit)->get(B2tIssueTypes::ID);
+			$crit->addWhere(TBGIssueTypesTable::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(TBGIssueTypesTable::IS_TASK, 1);
+			return B2DB::getTable('TBGIssueTypesTable')->doSelect($crit)->get(TBGIssueTypesTable::ID);
 		}
 		catch (Exception $e)
 		{
@@ -223,9 +223,9 @@
 	function tbg_getIssueNotifications($uid, $notify_type)
 	{
 		$crit = new B2DBCriteria();
-		$crit->addWhere(B2tNotifications::UID, $uid);
-		$crit->addWhere(B2tNotifications::NOTIFY_TYPE, $notify_type);
-		$notifications = B2DB::getTable('B2tNotifications')->doCount($crit);
+		$crit->addWhere(TBGNotificationsTable::UID, $uid);
+		$crit->addWhere(TBGNotificationsTable::NOTIFY_TYPE, $notify_type);
+		$notifications = B2DB::getTable('TBGNotificationsTable')->doCount($crit);
 		
 		return $notifications;
 	}
@@ -233,11 +233,11 @@
 	function tbg_removeIssueNotification($uid, $issue_id)
 	{
 		$crit = new B2DBCriteria();
-		$crit->addWhere(B2tNotifications::UID, $uid);
-		$crit->addWhere(B2tNotifications::NOTIFY_TYPE, 3, B2DBCriteria::DB_LESS_THAN_EQUAL);
-		$crit->addWhere(B2tNotifications::TARGET_ID, $issue_id);
+		$crit->addWhere(TBGNotificationsTable::UID, $uid);
+		$crit->addWhere(TBGNotificationsTable::NOTIFY_TYPE, 3, B2DBCriteria::DB_LESS_THAN_EQUAL);
+		$crit->addWhere(TBGNotificationsTable::TARGET_ID, $issue_id);
 		
-		$res = B2DB::getTable('B2tNotifications')->doDelete($crit);
+		$res = B2DB::getTable('TBGNotificationsTable')->doDelete($crit);
 	}
 
 	function tbg_createPassword($len = 8)

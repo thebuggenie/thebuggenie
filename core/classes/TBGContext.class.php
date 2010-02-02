@@ -633,11 +633,11 @@
 					TBGLogging::log('getting modules from database');
 					$module_paths = array();
 
-					if ($res = B2DB::getTable('B2tModules')->getAll())
+					if ($res = B2DB::getTable('TBGModulesTable')->getAll())
 					{
 						while ($moduleRow = $res->getNextRow())
 						{
-							$module_name = $moduleRow->get(B2tModules::MODULE_NAME);
+							$module_name = $moduleRow->get(TBGModulesTable::MODULE_NAME);
 							$modules[$module_name] = $moduleRow;
 							$moduleClassPath = self::getIncludePath() . "modules/{$module_name}/classes/";
 							try
@@ -659,13 +659,13 @@
 					TBGLogging::log('setting up module objects');
 					foreach ($modules as $module_name => $moduleRow)
 					{
-						$classname = $moduleRow->get(B2tModules::CLASSNAME);
+						$classname = $moduleRow->get(TBGModulesTable::CLASSNAME);
 						if ($classname != '' && $classname != 'TBGModule')
 						{
 							if (class_exists($classname))
 							{
 								self::getI18n()->loadModuleStrings($module_name);
-								self::$_modules[$module_name] = new $classname($moduleRow->get(B2tModules::ID), $moduleRow);
+								self::$_modules[$module_name] = new $classname($moduleRow->get(TBGModulesTable::ID), $moduleRow);
 								TBGCache::add("module_{$module_name}", serialize(self::$_modules[$module_name]));
 							}
 							else
@@ -879,39 +879,39 @@
 		public static function getAllPermissions($type, $uid, $tid, $gid, $target_id = null, $all = false)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tPermissions::SCOPE, self::getScope()->getID());
-			$crit->addWhere(B2tPermissions::PERMISSION_TYPE, $type);
+			$crit->addWhere(TBGPermissionsTable::SCOPE, self::getScope()->getID());
+			$crit->addWhere(TBGPermissionsTable::PERMISSION_TYPE, $type);
 
 			if (($uid + $tid + $gid) == 0 && !$all)
 			{
-				$crit->addWhere(B2tPermissions::UID, $uid);
-				$crit->addWhere(B2tPermissions::TID, $tid);
-				$crit->addWhere(B2tPermissions::GID, $gid);
+				$crit->addWhere(TBGPermissionsTable::UID, $uid);
+				$crit->addWhere(TBGPermissionsTable::TID, $tid);
+				$crit->addWhere(TBGPermissionsTable::GID, $gid);
 			}
 			else
 			{
 				switch (true)
 				{
 					case ($uid != 0):
-						$crit->addWhere(B2tPermissions::UID, $uid);
+						$crit->addWhere(TBGPermissionsTable::UID, $uid);
 					case ($tid != 0):
-						$crit->addWhere(B2tPermissions::TID, $tid);
+						$crit->addWhere(TBGPermissionsTable::TID, $tid);
 					case ($gid != 0):
-						$crit->addWhere(B2tPermissions::GID, $gid);
+						$crit->addWhere(TBGPermissionsTable::GID, $gid);
 				}
 			}
 			if ($target_id != null)
 			{
-				$crit->addWhere(B2tPermissions::TARGET_ID, $target_id);
+				$crit->addWhere(TBGPermissionsTable::TARGET_ID, $target_id);
 			}
 	
 			$permissions = array();
 
-			if ($res = B2DB::getTable('B2tPermissions')->doSelect($crit))
+			if ($res = B2DB::getTable('TBGPermissionsTable')->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$permissions[] = array('p_type' => $row->get(B2tPermissions::PERMISSION_TYPE), 'target_id' => $row->get(B2tPermissions::TARGET_ID), 'allowed' => $row->get(B2tPermissions::ALLOWED), 'uid' => $row->get(B2tPermissions::UID), 'gid' => $row->get(B2tPermissions::GID), 'tid' => $row->get(B2tPermissions::TID), 'id' => $row->get(B2tPermissions::ID));
+					$permissions[] = array('p_type' => $row->get(TBGPermissionsTable::PERMISSION_TYPE), 'target_id' => $row->get(TBGPermissionsTable::TARGET_ID), 'allowed' => $row->get(TBGPermissionsTable::ALLOWED), 'uid' => $row->get(TBGPermissionsTable::UID), 'gid' => $row->get(TBGPermissionsTable::GID), 'tid' => $row->get(TBGPermissionsTable::TID), 'id' => $row->get(TBGPermissionsTable::ID));
 				}
 			}
 	
@@ -926,23 +926,23 @@
 			self::$_permissions = array();
 			
 			TBGLogging::log('starting to cache access permissions');
-			if ($res = B2DB::getTable('B2tPermissions')->getAll())
+			if ($res = B2DB::getTable('TBGPermissionsTable')->getAll())
 			{
 				while ($row = $res->getNextRow())
 				{
-					if (!array_key_exists($row->get(B2tPermissions::MODULE), self::$_permissions))
+					if (!array_key_exists($row->get(TBGPermissionsTable::MODULE), self::$_permissions))
 					{
-						self::$_permissions[$row->get(B2tPermissions::MODULE)] = array();
+						self::$_permissions[$row->get(TBGPermissionsTable::MODULE)] = array();
 					}
-					if (!array_key_exists($row->get(B2tPermissions::PERMISSION_TYPE), self::$_permissions[$row->get(B2tPermissions::MODULE)]))
+					if (!array_key_exists($row->get(TBGPermissionsTable::PERMISSION_TYPE), self::$_permissions[$row->get(TBGPermissionsTable::MODULE)]))
 					{
-						self::$_permissions[$row->get(B2tPermissions::MODULE)][$row->get(B2tPermissions::PERMISSION_TYPE)] = array();
+						self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)] = array();
 					}
-					if (!array_key_exists($row->get(B2tPermissions::TARGET_ID), self::$_permissions[$row->get(B2tPermissions::MODULE)][$row->get(B2tPermissions::PERMISSION_TYPE)]))
+					if (!array_key_exists($row->get(TBGPermissionsTable::TARGET_ID), self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)]))
 					{
-						self::$_permissions[$row->get(B2tPermissions::MODULE)][$row->get(B2tPermissions::PERMISSION_TYPE)][$row->get(B2tPermissions::TARGET_ID)] = array();
+						self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)][$row->get(TBGPermissionsTable::TARGET_ID)] = array();
 					}
-					self::$_permissions[$row->get(B2tPermissions::MODULE)][$row->get(B2tPermissions::PERMISSION_TYPE)][$row->get(B2tPermissions::TARGET_ID)][] = array('uid' => $row->get(B2tPermissions::UID), 'gid' => $row->get(B2tPermissions::GID), 'tid' => $row->get(B2tPermissions::TID), 'allowed' => (bool) $row->get(B2tPermissions::ALLOWED));
+					self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)][$row->get(TBGPermissionsTable::TARGET_ID)][] = array('uid' => $row->get(TBGPermissionsTable::UID), 'gid' => $row->get(TBGPermissionsTable::GID), 'tid' => $row->get(TBGPermissionsTable::TID), 'allowed' => (bool) $row->get(TBGPermissionsTable::ALLOWED));
 				}
 			}
 			TBGLogging::log('done (starting to cache access permissions)');
@@ -954,7 +954,7 @@
 			{
 				unset(self::$_permissions[$module_name]);
 			}
-			B2DB::getTable('B2tPermissions')->deleteModulePermissions($module_name, self::getScope()->getID());
+			B2DB::getTable('TBGPermissionsTable')->deleteModulePermissions($module_name, self::getScope()->getID());
 		}
 
 		/**
@@ -983,7 +983,7 @@
 		{
 			if ($scope === null) $scope = self::getScope()->getID();
 			
-			B2DB::getTable('B2tPermissions')->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope);
+			B2DB::getTable('TBGPermissionsTable')->removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope);
 			
 			if ($recache) self::cacheAllPermissions();
 		}
@@ -1005,7 +1005,7 @@
 			if ($scope === null) $scope = self::getScope()->getID();
 			
 			self::removePermission($permission_type, $target_id, $module, $uid, $gid, $tid, false, $scope);
-			B2DB::getTable('B2tPermissions')->setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope);
+			B2DB::getTable('TBGPermissionsTable')->setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope);
 			
 			self::cacheAllPermissions();
 		}
@@ -1355,12 +1355,12 @@
 			{
 				$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http://' : 'https://';
 				TBGLogging::log("Checking if scope can be set from hostname (".$hostprefix.$_SERVER['HTTP_HOST'].")");
-				$row = B2DB::getTable('B2tScopes')->getByHostname($hostprefix . $_SERVER['HTTP_HOST']);
+				$row = B2DB::getTable('TBGScopesTable')->getByHostname($hostprefix . $_SERVER['HTTP_HOST']);
 				if ($row instanceof B2DBRow)
 				{
 					TBGLogging::log("It could");
 					TBGLogging::log("Setting scope from hostname");
-					$theScope = TBGFactory::scopeLab($row->get(B2tScopes::ID), $row);
+					$theScope = TBGFactory::scopeLab($row->get(TBGScopesTable::ID), $row);
 					self::$_scope = $theScope;
 					TBGLogging::log("...done (Setting scope from hostname)");
 					return true;
@@ -1753,7 +1753,7 @@
 		{
 			if (!$links = TBGCache::get('core_main_links'))
 			{
-				$links = B2DB::getTable('B2tLinks')->getMainLinks();
+				$links = B2DB::getTable('TBGLinksTable')->getMainLinks();
 				TBGCache::add('core_main_links', $links);
 			}
 			return $links;

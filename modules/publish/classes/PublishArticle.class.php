@@ -100,22 +100,22 @@
 			{
 				if ($row === null)
 				{
-					$row = B2DB::getTable('B2tArticles')->doSelectById($id);
+					$row = B2DB::getTable('TBGArticlesTable')->doSelectById($id);
 				}
 
 				if ($row instanceof B2DBRow)
 				{
-					$this->_itemid = $row->get(B2tArticles::ID);
+					$this->_itemid = $row->get(TBGArticlesTable::ID);
 
-					$this->_name = $row->get(B2tArticles::ARTICLE_NAME);
+					$this->_name = $row->get(TBGArticlesTable::ARTICLE_NAME);
 
-					$this->_title = $row->get(B2tArticles::TITLE);
-					$this->_intro_text = $row->get(B2tArticles::INTRO_TEXT);
-					$this->_content = $row->get(B2tArticles::CONTENT);
-					$this->_posted_date = $row->get(B2tArticles::DATE);
-					$this->_author = $row->get(B2tArticles::AUTHOR);
+					$this->_title = $row->get(TBGArticlesTable::TITLE);
+					$this->_intro_text = $row->get(TBGArticlesTable::INTRO_TEXT);
+					$this->_content = $row->get(TBGArticlesTable::CONTENT);
+					$this->_posted_date = $row->get(TBGArticlesTable::DATE);
+					$this->_author = $row->get(TBGArticlesTable::AUTHOR);
 
-					$this->_is_published = ($row->get(B2tArticles::IS_PUBLISHED) == 1) ? true : false;
+					$this->_is_published = ($row->get(TBGArticlesTable::IS_PUBLISHED) == 1) ? true : false;
 				}
 				else
 				{
@@ -128,25 +128,25 @@
 		{
 			if ($row === null)
 			{
-				$row = B2DB::getTable('B2tArticles')->getArticleByName($article_name);
+				$row = B2DB::getTable('TBGArticlesTable')->getArticleByName($article_name);
 			}
 			if ($row instanceof B2DBRow)
 			{
-				return PublishFactory::articleLab($row->get(B2tArticles::ID), $row);
+				return PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
 			}
 			return null;
 		}
 
 		public static function deleteByName($article_name)
 		{
-			B2DB::getTable('B2tArticles')->deleteArticleByName($article_name);
-			B2DB::getTable('B2tArticleLinks')->deleteLinksByArticle($article_name);
+			B2DB::getTable('TBGArticlesTable')->deleteArticleByName($article_name);
+			B2DB::getTable('TBGArticleLinksTable')->deleteLinksByArticle($article_name);
 		}
 
 		public static function createNew($name, $content, $published, $scope = null)
 		{
 			$user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
-			$article_id = B2DB::getTable('B2tArticles')->save($name, $content, $published, $user_id, null, $scope);
+			$article_id = B2DB::getTable('TBGArticlesTable')->save($name, $content, $published, $user_id, null, $scope);
 			PublishFactory::articleLab($article_id)->save();
 			return $article_id;
 		}
@@ -199,11 +199,11 @@
 			if ($this->_linking_articles === null)
 			{
 				$this->_linking_articles = array();
-				if ($res = B2DB::getTable('B2tArticleLinks')->getLinkingArticles($this->getName()))
+				if ($res = B2DB::getTable('TBGArticleLinksTable')->getLinkingArticles($this->getName()))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_linking_articles[$row->get(B2tArticleLinks::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(B2tArticleLinks::ARTICLE_NAME));
+						$this->_linking_articles[$row->get(TBGArticleLinksTable::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(TBGArticleLinksTable::ARTICLE_NAME));
 					}
 				}
 			}
@@ -220,11 +220,11 @@
 			if ($this->_subcategories === null)
 			{
 				$this->_subcategories = array();
-				if ($res = B2DB::getTable('B2tArticleCategories')->getSubCategories($this->getCategoryName()))
+				if ($res = B2DB::getTable('TBGArticleCategoriesTable')->getSubCategories($this->getCategoryName()))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_subcategories[$row->get(B2tArticleCategories::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(B2tArticleCategories::ARTICLE_NAME));
+						$this->_subcategories[$row->get(TBGArticleCategoriesTable::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(TBGArticleCategoriesTable::ARTICLE_NAME));
 					}
 				}
 			}
@@ -241,11 +241,11 @@
 			if ($this->_category_articles === null)
 			{
 				$this->_category_articles = array();
-				if ($res = B2DB::getTable('B2tArticleCategories')->getCategoryArticles($this->getCategoryName()))
+				if ($res = B2DB::getTable('TBGArticleCategoriesTable')->getCategoryArticles($this->getCategoryName()))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_category_articles[$row->get(B2tArticleCategories::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(B2tArticleCategories::ARTICLE_NAME));
+						$this->_category_articles[$row->get(TBGArticleCategoriesTable::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(TBGArticleCategoriesTable::ARTICLE_NAME));
 					}
 				}
 			}
@@ -264,11 +264,11 @@
 				$this->_categories = array();
 				if ($categories === null)
 				{
-					if ($res = B2DB::getTable('B2tArticleCategories')->getArticleCategories($this->getName()))
+					if ($res = B2DB::getTable('TBGArticleCategoriesTable')->getArticleCategories($this->getName()))
 					{
 						while ($row = $res->getNextRow())
 						{
-							$this->_categories[] = $row->get(B2tArticleCategories::CATEGORY_NAME);
+							$this->_categories[] = $row->get(TBGArticleCategoriesTable::CATEGORY_NAME);
 						}
 					}
 				}
@@ -323,26 +323,26 @@
 
 		public function save()
 		{
-			if (B2DB::getTable('B2tArticles')->doesNameConflictExist($this->_name, $this->_itemid))
+			if (B2DB::getTable('TBGArticlesTable')->doesNameConflictExist($this->_name, $this->_itemid))
 			{
 				throw new Exception(TBGContext::getI18n()->__('Another article with this name already exists'));
 			}
 			$user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
-			B2DB::getTable('B2tArticles')->save($this->_name, $this->_content, $this->_is_published, $user_id, $this->_itemid);
+			B2DB::getTable('TBGArticlesTable')->save($this->_name, $this->_content, $this->_is_published, $user_id, $this->_itemid);
 
-			B2DB::getTable('B2tArticleLinks')->deleteLinksByArticle($this->_name);
-			B2DB::getTable('B2tArticleCategories')->deleteCategoriesByArticle($this->_name);
+			B2DB::getTable('TBGArticleLinksTable')->deleteLinksByArticle($this->_name);
+			B2DB::getTable('TBGArticleCategoriesTable')->deleteCategoriesByArticle($this->_name);
 
 			list ($links, $categories) = $this->_retrieveLinksAndCategoriesFromContent();
 
 			foreach ($links as $link => $occurrences)
 			{
-				B2DB::getTable('B2tArticleLinks')->addArticleLink($this->_name, $link);
+				B2DB::getTable('TBGArticleLinksTable')->addArticleLink($this->_name, $link);
 			}
 
 			foreach ($categories as $category => $occurrences)
 			{
-				B2DB::getTable('B2tArticleCategories')->addArticleCategory($this->_name, $category, $this->isCategory());
+				B2DB::getTable('TBGArticleCategoriesTable')->addArticleCategory($this->_name, $category, $this->isCategory());
 			}
 
 			return true;
@@ -351,47 +351,47 @@
 		public function retract()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tArticles::IS_PUBLISHED, 0);
-			$res = B2DB::getTable('B2tArticles')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGArticlesTable::IS_PUBLISHED, 0);
+			$res = B2DB::getTable('TBGArticlesTable')->doUpdateById($crit, $this->_itemid);
 			$this->is_published = false;
 		}
 
 		public function publish()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tArticles::IS_PUBLISHED, 1);
-			$res = B2DB::getTable('B2tArticles')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGArticlesTable::IS_PUBLISHED, 1);
+			$res = B2DB::getTable('TBGArticlesTable')->doUpdateById($crit, $this->_itemid);
 			$this->is_published = true;
 		}
 
 		public function hideFromNews()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tArticles::IS_NEWS, 0);
-			$res = B2DB::getTable('B2tArticles')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGArticlesTable::IS_NEWS, 0);
+			$res = B2DB::getTable('TBGArticlesTable')->doUpdateById($crit, $this->_itemid);
 			$this->is_news = false;
 		}
 		
 		public function view()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tArticleViews::ARTICLE_ID, $this->getID());
-			$crit->addWhere(B2tArticleViews::USER_ID, TBGContext::getUser()->getID());
-			if (B2DB::getTable('B2tArticleViews')->doCount($crit) == 0)
+			$crit->addWhere(TBGArticleViewsTable::ARTICLE_ID, $this->getID());
+			$crit->addWhere(TBGArticleViewsTable::USER_ID, TBGContext::getUser()->getID());
+			if (B2DB::getTable('TBGArticleViewsTable')->doCount($crit) == 0)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addInsert(B2tArticleViews::ARTICLE_ID, $this->getID());
-				$crit->addInsert(B2tArticleViews::USER_ID, TBGContext::getUser()->getID());
-				$crit->addInsert(B2tArticleViews::SCOPE, TBGContext::getScope()->getID());
-				B2DB::getTable('B2tArticleViews')->doInsert($crit);
+				$crit->addInsert(TBGArticleViewsTable::ARTICLE_ID, $this->getID());
+				$crit->addInsert(TBGArticleViewsTable::USER_ID, TBGContext::getUser()->getID());
+				$crit->addInsert(TBGArticleViewsTable::SCOPE, TBGContext::getScope()->getID());
+				B2DB::getTable('TBGArticleViewsTable')->doInsert($crit);
 			}
 		}
 		
 		public function getViews()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tArticleViews::ARTICLE_ID, $this->getID());
-			return B2DB::getTable('B2tArticleViews')->doCount($crit);
+			$crit->addWhere(TBGArticleViewsTable::ARTICLE_ID, $this->getID());
+			return B2DB::getTable('TBGArticleViewsTable')->doCount($crit);
 		}
 		
 		public function hasIntro()

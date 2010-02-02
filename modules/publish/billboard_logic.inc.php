@@ -11,13 +11,13 @@
 				$url = trim(TBGContext::getRequest()->getParameter('post_link_url'));
 				$description = (trim(TBGContext::getRequest()->getParameter('post_link_description')) != '') ? trim(TBGContext::getRequest()->getParameter('post_link_description')) : trim(TBGContext::getRequest()->getParameter('post_link_url'));
 				$crit = new B2DBCriteria();
-				$crit->addInsert(B2tBillboardPosts::AUTHOR, TBGContext::getUser()->getUID());
-				$crit->addInsert(B2tBillboardPosts::DATE, $_SERVER["REQUEST_TIME"]);
-				$crit->addInsert(B2tBillboardPosts::LINK, $url);
-				$crit->addInsert(B2tBillboardPosts::SCOPE, TBGContext::getScope()->getID());
-				$crit->addInsert(B2tBillboardPosts::TARGET_BOARD, (int) TBGContext::getRequest()->getParameter('post_link_billboard'));
-				$crit->addInsert(B2tBillboardPosts::TITLE, $description);
-				$res = B2DB::getTable('B2tBillboardPosts')->doInsert($crit);
+				$crit->addInsert(TBGBillboardPostsTable::AUTHOR, TBGContext::getUser()->getUID());
+				$crit->addInsert(TBGBillboardPostsTable::DATE, $_SERVER["REQUEST_TIME"]);
+				$crit->addInsert(TBGBillboardPostsTable::LINK, $url);
+				$crit->addInsert(TBGBillboardPostsTable::SCOPE, TBGContext::getScope()->getID());
+				$crit->addInsert(TBGBillboardPostsTable::TARGET_BOARD, (int) TBGContext::getRequest()->getParameter('post_link_billboard'));
+				$crit->addInsert(TBGBillboardPostsTable::TITLE, $description);
+				$res = B2DB::getTable('TBGBillboardPostsTable')->doInsert($crit);
 				TBGContext::getModule('publish')->printBillboardPostOnBillboard(new PublishBillboardPost($res->getInsertID()));
 			}
 		}
@@ -28,13 +28,13 @@
 				$title = trim(TBGContext::getRequest()->getParameter('post_text_title'));
 				$content = (trim(TBGContext::getRequest()->getParameter('post_text_content')) != '') ? trim(TBGContext::getRequest()->getParameter('post_text_content')) : trim(TBGContext::getRequest()->getParameter('post_text_title'));
 				$crit = new B2DBCriteria();
-				$crit->addInsert(B2tBillboardPosts::AUTHOR, TBGContext::getUser()->getUID());
-				$crit->addInsert(B2tBillboardPosts::DATE, $_SERVER["REQUEST_TIME"]);
-				$crit->addInsert(B2tBillboardPosts::SCOPE, TBGContext::getScope()->getID());
-				$crit->addInsert(B2tBillboardPosts::TARGET_BOARD, (int) TBGContext::getRequest()->getParameter('post_text_billboard'));
-				$crit->addInsert(B2tBillboardPosts::TITLE, $title);
-				$crit->addInsert(B2tBillboardPosts::CONTENT, $content);
-				$res = B2DB::getTable('B2tBillboardPosts')->doInsert($crit);
+				$crit->addInsert(TBGBillboardPostsTable::AUTHOR, TBGContext::getUser()->getUID());
+				$crit->addInsert(TBGBillboardPostsTable::DATE, $_SERVER["REQUEST_TIME"]);
+				$crit->addInsert(TBGBillboardPostsTable::SCOPE, TBGContext::getScope()->getID());
+				$crit->addInsert(TBGBillboardPostsTable::TARGET_BOARD, (int) TBGContext::getRequest()->getParameter('post_text_billboard'));
+				$crit->addInsert(TBGBillboardPostsTable::TITLE, $title);
+				$crit->addInsert(TBGBillboardPostsTable::CONTENT, $content);
+				$res = B2DB::getTable('TBGBillboardPostsTable')->doInsert($crit);
 				TBGContext::getModule('publish')->printBillboardPostOnBillboard(new PublishBillboardPost($res->getInsertID()));
 			}
 		}

@@ -59,29 +59,29 @@
 		$searchlayouts = TBGContext::getModule('search')->getLayouts();
 		$availablesearches = array();
 		$crit = new B2DBCriteria();
-		$crit->addWhere(B2tSavedSearches::SCOPE, TBGContext::getScope()->getID());
-		$crit->addWhere(B2tSavedSearches::APPLIES_TO, 0);
-		$criterion = $crit->returnCriterion(B2tSavedSearches::IS_PUBLIC, 1);
-		$criterion->addOr(B2tSavedSearches::UID, TBGContext::getUser()->getUID());
+		$crit->addWhere(TBGSavedSearchesTable::SCOPE, TBGContext::getScope()->getID());
+		$crit->addWhere(TBGSavedSearchesTable::APPLIES_TO, 0);
+		$criterion = $crit->returnCriterion(TBGSavedSearchesTable::IS_PUBLIC, 1);
+		$criterion->addOr(TBGSavedSearchesTable::UID, TBGContext::getUser()->getUID());
 		$crit->addWhere($criterion);
-		$resultset = B2DB::getTable('B2tSavedSearches')->doSelect($crit);
+		$resultset = B2DB::getTable('TBGSavedSearchesTable')->doSelect($crit);
 		while ($row = $resultset->getNextRow())
 		{
-			$availablesearches[] = array('id' => $row->get(B2tSavedSearches::ID), 'name' => $row->get(B2tSavedSearches::NAME));
+			$availablesearches[] = array('id' => $row->get(TBGSavedSearchesTable::ID), 'name' => $row->get(TBGSavedSearchesTable::NAME));
 		}
 		
 		foreach (TBGProject::getAll() as $aProject)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tSavedSearches::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(B2tSavedSearches::APPLIES_TO, $aProject['id']);
-			$criterion = $crit->returnCriterion(B2tSavedSearches::IS_PUBLIC, 1);
-			$criterion->addOr(B2tSavedSearches::UID, TBGContext::getUser()->getUID());
+			$crit->addWhere(TBGSavedSearchesTable::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(TBGSavedSearchesTable::APPLIES_TO, $aProject['id']);
+			$criterion = $crit->returnCriterion(TBGSavedSearchesTable::IS_PUBLIC, 1);
+			$criterion->addOr(TBGSavedSearchesTable::UID, TBGContext::getUser()->getUID());
 			$crit->addWhere($criterion);
-			$resultset = B2DB::getTable('B2tSavedSearches')->doSelect($crit);
+			$resultset = B2DB::getTable('TBGSavedSearchesTable')->doSelect($crit);
 			while ($row = $resultset->getNextRow())
 			{
-				$availablesearches[] = array('id' => $row->get(B2tSavedSearches::ID), 'name' => $row->get(B2tSavedSearches::NAME));
+				$availablesearches[] = array('id' => $row->get(TBGSavedSearchesTable::ID), 'name' => $row->get(TBGSavedSearchesTable::NAME));
 			}
 		}
 		

@@ -107,6 +107,13 @@
 		protected $_hours;
 
 		/**
+		 * Calculated burndown data
+		 *
+		 * @var array
+		 */
+		protected $_burndowndata;
+
+		/**
 		 * Get milestones + sprints by a project id
 		 *
 		 * @param integer $project_id The project id
@@ -116,11 +123,11 @@
 		public static function getAllByProjectID($project_id)
 		{
 			$milestones = array();
-			if ($res = B2DB::getTable('B2tMilestones')->getAllByProjectID($project_id))
+			if ($res = B2DB::getTable('TBGMilestonesTable')->getAllByProjectID($project_id))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$milestone = TBGFactory::milestoneLab($row->get(B2tMilestones::ID), $row);
+					$milestone = TBGFactory::TBGMilestoneLab($row->get(TBGMilestonesTable::ID), $row);
 					$milestones[$milestone->getID()] = $milestone;
 				}
 			}
@@ -137,11 +144,11 @@
 		public static function getMilestonesByProjectID($project_id)
 		{
 			$milestones = array();
-			if ($res = B2DB::getTable('B2tMilestones')->getMilestonesByProjectID($project_id))
+			if ($res = B2DB::getTable('TBGMilestonesTable')->getMilestonesByProjectID($project_id))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$milestone = TBGFactory::milestoneLab($row->get(B2tMilestones::ID), $row);
+					$milestone = TBGFactory::TBGMilestoneLab($row->get(TBGMilestonesTable::ID), $row);
 					$milestones[$milestone->getID()] = $milestone;
 				}
 			}
@@ -158,11 +165,11 @@
 		public static function getSprintsByProjectID($project_id)
 		{
 			$sprints = array();
-			if ($res = B2DB::getTable('B2tMilestones')->getSprintsByProjectID($project_id))
+			if ($res = B2DB::getTable('TBGMilestonesTable')->getSprintsByProjectID($project_id))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$sprint = TBGFactory::milestoneLab($row->get(B2tMilestones::ID), $row);
+					$sprint = TBGFactory::TBGMilestoneLab($row->get(TBGMilestonesTable::ID), $row);
 					$sprints[$sprint->getID()] = $sprint;
 				}
 			}
@@ -179,9 +186,9 @@
 		 */
 		public static function createNew($name, $type, $project_id)
 		{
-			$m_id = B2DB::getTable('B2tMilestones')->createNew($name, $type, $project_id);
+			$m_id = B2DB::getTable('TBGMilestonesTable')->createNew($name, $type, $project_id);
 			TBGContext::setPermission('b2milestoneaccess', $m_id, 'core', 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
-			return TBGFactory::milestoneLab($m_id);
+			return TBGFactory::TBGMilestoneLab($m_id);
 		}
 		
 		/**
@@ -195,23 +202,23 @@
 			if ($row === null)
 			{
 				$crit = new B2DBCriteria();
-				$row = B2DB::getTable('B2tMilestones')->doSelectById($m_id, $crit);
+				$row = B2DB::getTable('TBGMilestonesTable')->doSelectById($m_id, $crit);
 			}
 			
 			if ($row instanceof B2DBRow)
 			{
-				$this->_name = $row->get(B2tMilestones::NAME);
-				$this->_itemid = $row->get(B2tMilestones::ID);
-				$this->_itemtype = $row->get(B2tMilestones::MILESTONE_TYPE);
-				$this->_isvisible = (bool) $row->get(B2tMilestones::VISIBLE);
-				$this->_isscheduled = (bool) $row->get(B2tMilestones::SCHEDULED);
-				$this->_isreached = (bool) $row->get(B2tMilestones::REACHED);
-				$this->_scheduleddate = $row->get(B2tMilestones::SCHEDULED);
-				$this->_isstarting = (bool) $row->get(B2tMilestones::STARTING);
-				$this->_startingdate = $row->get(B2tMilestones::STARTING);
-				$this->_reacheddate = $row->get(B2tMilestones::REACHED);
-				$this->_description = $row->get(B2tMilestones::DESCRIPTION);
-				$this->_project = $row->get(B2tMilestones::PROJECT);
+				$this->_name = $row->get(TBGMilestonesTable::NAME);
+				$this->_itemid = $row->get(TBGMilestonesTable::ID);
+				$this->_itemtype = $row->get(TBGMilestonesTable::MILESTONE_TYPE);
+				$this->_isvisible = (bool) $row->get(TBGMilestonesTable::VISIBLE);
+				$this->_isscheduled = (bool) $row->get(TBGMilestonesTable::SCHEDULED);
+				$this->_isreached = (bool) $row->get(TBGMilestonesTable::REACHED);
+				$this->_scheduleddate = $row->get(TBGMilestonesTable::SCHEDULED);
+				$this->_isstarting = (bool) $row->get(TBGMilestonesTable::STARTING);
+				$this->_startingdate = $row->get(TBGMilestonesTable::STARTING);
+				$this->_reacheddate = $row->get(TBGMilestonesTable::REACHED);
+				$this->_description = $row->get(TBGMilestonesTable::DESCRIPTION);
+				$this->_project = $row->get(TBGMilestonesTable::PROJECT);
 			}
 			else
 			{
@@ -244,7 +251,7 @@
 			if ($this->_points === null)
 			{
 				$this->_points = array();
-				list($this->_points['estimated'], $this->_points['spent']) = B2DB::getTable('B2tIssues')->getTotalPointsByMilestoneID($this->getID());
+				list($this->_points['estimated'], $this->_points['spent']) = B2DB::getTable('TBGIssuesTable')->getTotalPointsByMilestoneID($this->getID());
 			}
 		}
 		
@@ -276,7 +283,7 @@
 			if ($this->_hours === null)
 			{
 				$this->_hours = array();
-				list($this->_hours['estimated'], $this->_hours['spent']) = B2DB::getTable('B2tIssues')->getTotalHoursByMilestoneID($this->getID());
+				list($this->_hours['estimated'], $this->_hours['spent']) = B2DB::getTable('TBGIssuesTable')->getTotalHoursByMilestoneID($this->getID());
 			}
 		}
 
@@ -340,11 +347,11 @@
 			if ($this->_issues == null)
 			{
 				$this->_issues = array();
-				if ($res = B2DB::getTable('B2tIssues')->getByMilestone($this->getID()))
+				if ($res = B2DB::getTable('TBGIssuesTable')->getByMilestone($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$theIssue = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID));
+						$theIssue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID));
 						$this->_issues[$theIssue->getID()] = $theIssue;
 						if ($theIssue->getState() == TBGIssue::STATE_CLOSED)
 						{
@@ -773,7 +780,7 @@
 			}
 			if ($this->_closed_issues == count($this->_issues))
 			{
-				B2DB::getTable('B2tMilestones')->setReached($this->getID());
+				B2DB::getTable('TBGMilestonesTable')->setReached($this->getID());
 			}
 		}
 		
@@ -783,29 +790,29 @@
 		public function save()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tMilestones::NAME, $this->_name);
-			$crit->addUpdate(B2tMilestones::MILESTONE_TYPE, $this->_itemtype);
-			$crit->addUpdate(B2tMilestones::DESCRIPTION, $this->_description);
-			$crit->addUpdate(B2tMilestones::STARTING, $this->_startingdate);
+			$crit->addUpdate(TBGMilestonesTable::NAME, $this->_name);
+			$crit->addUpdate(TBGMilestonesTable::MILESTONE_TYPE, $this->_itemtype);
+			$crit->addUpdate(TBGMilestonesTable::DESCRIPTION, $this->_description);
+			$crit->addUpdate(TBGMilestonesTable::STARTING, $this->_startingdate);
 			if ($this->_isscheduled)
 			{
-				$crit->addUpdate(B2tMilestones::SCHEDULED, $this->_scheduleddate);
+				$crit->addUpdate(TBGMilestonesTable::SCHEDULED, $this->_scheduleddate);
 			}
 			else
 			{
-				$crit->addUpdate(B2tMilestones::SCHEDULED, 0);
+				$crit->addUpdate(TBGMilestonesTable::SCHEDULED, 0);
 				$this->_scheduleddate = 0;
 			}
 			if ($this->_isstarting)
 			{
-				$crit->addUpdate(B2tMilestones::STARTING, $this->_startingdate);
+				$crit->addUpdate(TBGMilestonesTable::STARTING, $this->_startingdate);
 			}
 			else
 			{
-				$crit->addUpdate(B2tMilestones::STARTING, 0);
+				$crit->addUpdate(TBGMilestonesTable::STARTING, 0);
 				$this->_startingdate = 0;
 			}
-			$res = B2DB::getTable('B2tMilestones')->doUpdateById($crit, $this->getID());
+			$res = B2DB::getTable('TBGMilestonesTable')->doUpdateById($crit, $this->getID());
 		}
 
 		/**
@@ -813,8 +820,8 @@
 		 */
 		public function delete()
 		{
-			B2DB::getTable('B2tMilestones')->doDeleteById($this->getID());
-			B2DB::getTable('B2tIssues')->clearMilestone($this->getID());
+			B2DB::getTable('TBGMilestonesTable')->doDeleteById($this->getID());
+			B2DB::getTable('TBGIssuesTable')->clearMilestone($this->getID());
 		}
 		
 		/**
@@ -857,6 +864,38 @@
 		public function isStarting()
 		{
 			return $this->_isstarting;
+		}
+
+		protected function _populateBurndownData()
+		{
+			if ($this->_burndowndata === null)
+			{
+				$this->_burndowndata = array();
+				$estimations = B2DB::getTable('TBGIssueEstimates')->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), array_keys($this->getIssues()));
+				$spent_times = B2DB::getTable('TBGIssueSpentTimes')->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), array_keys($this->getIssues()));
+
+				$burndowndata = array();
+				//var_dump($spent_times);var_dump($estimations);die();
+				/*foreach ($estimations as $key => $sum)
+				{
+					if ($estimations[$key] !== null)
+					{
+						$burndowndata[$key] = $estimations[$key] - $spent_times[$key];
+					}
+					else
+					{
+						$burndowndata[$key] = '';
+					}
+				}*/
+
+				$this->_burndowndata = array('estimations' => $estimations, 'spent_times' => $spent_times);
+			}
+		}
+
+		public function getBurndownData()
+		{
+			$this->_populateBurndownData();
+			return $this->_burndowndata;
 		}
 
 	}

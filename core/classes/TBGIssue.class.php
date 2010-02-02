@@ -442,7 +442,7 @@
 		 */
 		static function getIssueCountsByProjectID($project_id)
 		{
-			return B2DB::getTable('B2tIssues')->getCountsByProjectID($project_id);
+			return B2DB::getTable('TBGIssuesTable')->getCountsByProjectID($project_id);
 		}
 
 		static function getPainTypesOrLabel($type, $id = null)
@@ -501,7 +501,7 @@
 		 */
 		static function getIssueCountsByProjectIDandIssuetype($project_id, $issuetype_id)
 		{
-			return B2DB::getTable('B2tIssues')->getCountsByProjectIDandIssuetype($project_id, $issuetype_id);
+			return B2DB::getTable('TBGIssuesTable')->getCountsByProjectIDandIssuetype($project_id, $issuetype_id);
 		}
 
 		/**
@@ -515,7 +515,7 @@
 		 */
 		static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id)
 		{
-			return B2DB::getTable('B2tIssues')->getCountsByProjectIDandMilestone($project_id, $milestone_id);
+			return B2DB::getTable('TBGIssuesTable')->getCountsByProjectIDandMilestone($project_id, $milestone_id);
 		}
 		
 		/**
@@ -534,10 +534,10 @@
 		{
 			try
 			{
-				$i_id = B2DB::getTable('B2tIssues')->createNewWithTransaction($title, $issuetype, $p_id, $issue_id);
+				$i_id = B2DB::getTable('TBGIssuesTable')->createNewWithTransaction($title, $issuetype, $p_id, $issue_id);
 				
 				$theIssue = TBGFactory::TBGIssueLab($i_id);
-				$theIssue->addLogEntry(B2tLog::LOG_ISSUE_CREATED);
+				$theIssue->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED);
 
 				TBGContext::trigger('core', 'TBGIssue::createNew', $theIssue);
 				return $theIssue;
@@ -570,8 +570,8 @@
 				{
 					if (!TBGContext::isProjectContext()) return null;
 					if (TBGContext::getCurrentProject()->usePrefix()) return null;
-					if ($row = B2DB::getTable('B2tIssues')->getByProjectIDAndIssueNo(TBGContext::getCurrentProject()->getID(), $issue_no))
-					$theIssue = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID), $row);
+					if ($row = B2DB::getTable('TBGIssuesTable')->getByProjectIDAndIssueNo(TBGContext::getCurrentProject()->getID(), $issue_no))
+					$theIssue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
 				}
 				catch (Exception $e)
 				{
@@ -582,9 +582,9 @@
 			{
 				$issue_no = explode('-', strtoupper($issue_no));
 				TBGLogging::log('exploding');
-				if (count($issue_no) == 2 && $row = B2DB::getTable('B2tIssues')->getByPrefixAndIssueNo($issue_no[0], $issue_no[1]))
+				if (count($issue_no) == 2 && $row = B2DB::getTable('TBGIssuesTable')->getByPrefixAndIssueNo($issue_no[0], $issue_no[1]))
 				{
-					$theIssue = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID), $row);
+					$theIssue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
 					if (!$theIssue->getProject()->usePrefix())
 					{
 						return null;
@@ -599,12 +599,12 @@
 		public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null)
 		{
 			$issues = array();
-			list ($res, $count) = B2DB::getTable('B2tIssues')->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder);
+			list ($res, $count) = B2DB::getTable('TBGIssuesTable')->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder);
 			if ($res)
 			{
 				while ($row = $res->getNextRow())
 				{
-					$issue = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID), $row);
+					$issue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
 					if (!$issue->hasAccess()) continue;
 					$issues[] = $issue;
 				}
@@ -631,7 +631,7 @@
 			}
 			if ($row === null)
 			{
-				$row = B2DB::getTable('B2tIssues')->getByID($i_id, false);
+				$row = B2DB::getTable('TBGIssuesTable')->getByID($i_id, false);
 			}
 	
 			if (!$row instanceof B2DBRow)
@@ -639,50 +639,50 @@
 				throw new Exception('The specified issue id does not exist');
 			}
 			
-			$this->_title 					= $row->get(B2tIssues::TITLE);
-			$this->_project					= $row->get(B2tIssues::PROJECT_ID);
-			$this->_issue_no 				= $row->get(B2tIssues::ISSUE_NO);
-			$this->_issuetype 				= $row->get(B2tIssues::ISSUE_TYPE);
-			$this->_issue_uniqueid 			= $row->get(B2tIssues::ID);
-			$this->_description 			= $row->get(B2tIssues::LONG_DESCRIPTION);
-			$this->_reproduction_steps		= $row->get(B2tIssues::REPRODUCTION);
-			$this->_posted 					= $row->get(B2tIssues::POSTED);
-			$this->_last_updated 			= $row->get(B2tIssues::LAST_UPDATED);
-			$this->_resolution 				= $row->get(B2tIssues::RESOLUTION);
-			$this->_state 					= $row->get(B2tIssues::STATE);
-			$this->_locked 					= $row->get(B2tIssues::LOCKED);
-			$this->_status 					= $row->get(B2tIssues::STATUS);
-			$this->_priority 				= $row->get(B2tIssues::PRIORITY);
-			$this->_severity 				= $row->get(B2tIssues::SEVERITY);
-			$this->_category 				= $row->get(B2tIssues::CATEGORY);
-			$this->_reproducability 		= $row->get(B2tIssues::REPRODUCABILITY);
-			$this->_scrumcolor				= $row->get(B2tIssues::SCRUMCOLOR);
-			$this->_postedby 				= $row->get(B2tIssues::POSTED_BY);
-			$this->_ownedby 				= $row->get(B2tIssues::OWNED_BY);
-			$this->_ownedtype				= $row->get(B2tIssues::OWNED_TYPE);
-			$this->_assignedto	 			= $row->get(B2tIssues::ASSIGNED_TO);
-			$this->_assignedtype			= $row->get(B2tIssues::ASSIGNED_TYPE);
-			$this->_blocking 				= (bool) $row->get(B2tIssues::BLOCKING);
-			$this->_duplicateof 			= $row->get(B2tIssues::DUPLICATE);
-			$this->_estimatedmonths			= $row->get(B2tIssues::ESTIMATED_MONTHS);
-			$this->_estimatedweeks			= $row->get(B2tIssues::ESTIMATED_WEEKS);
-			$this->_estimateddays			= $row->get(B2tIssues::ESTIMATED_DAYS);
-			$this->_estimatedhours			= $row->get(B2tIssues::ESTIMATED_HOURS);
-			$this->_estimatedpoints			= $row->get(B2tIssues::ESTIMATED_POINTS);
-			$this->_spentmonths				= $row->get(B2tIssues::SPENT_MONTHS);
-			$this->_spentweeks				= $row->get(B2tIssues::SPENT_WEEKS);
-			$this->_spentdays				= $row->get(B2tIssues::SPENT_DAYS);
-			$this->_spenthours				= $row->get(B2tIssues::SPENT_HOURS);
-			$this->_spentpoints				= $row->get(B2tIssues::SPENT_POINTS);
-			$this->_percentcompleted 		= $row->get(B2tIssues::PERCENT_COMPLETE);
-			$this->_milestone 				= $row->get(B2tIssues::MILESTONE);
-			$this->_being_worked_on_by		= $row->get(B2tIssues::USER_WORKING_ON);
-			$this->_being_worked_on_since	= $row->get(B2tIssues::USER_WORKED_ON_SINCE);
-			$this->_user_pain				= $row->get(B2tIssues::USER_PAIN);
-			$this->_pain_bug_type			= $row->get(B2tIssues::PAIN_BUG_TYPE);
-			$this->_pain_effect				= $row->get(B2tIssues::PAIN_EFFECT);
-			$this->_pain_likelihood			= $row->get(B2tIssues::PAIN_LIKELIHOOD);
-			$this->_deleted 				= (bool) $row->get(B2tIssues::DELETED);
+			$this->_title 					= $row->get(TBGIssuesTable::TITLE);
+			$this->_project					= $row->get(TBGIssuesTable::PROJECT_ID);
+			$this->_issue_no 				= $row->get(TBGIssuesTable::ISSUE_NO);
+			$this->_issuetype 				= $row->get(TBGIssuesTable::ISSUE_TYPE);
+			$this->_issue_uniqueid 			= $row->get(TBGIssuesTable::ID);
+			$this->_description 			= $row->get(TBGIssuesTable::LONG_DESCRIPTION);
+			$this->_reproduction_steps		= $row->get(TBGIssuesTable::REPRODUCTION);
+			$this->_posted 					= $row->get(TBGIssuesTable::POSTED);
+			$this->_last_updated 			= $row->get(TBGIssuesTable::LAST_UPDATED);
+			$this->_resolution 				= $row->get(TBGIssuesTable::RESOLUTION);
+			$this->_state 					= $row->get(TBGIssuesTable::STATE);
+			$this->_locked 					= $row->get(TBGIssuesTable::LOCKED);
+			$this->_status 					= $row->get(TBGIssuesTable::STATUS);
+			$this->_priority 				= $row->get(TBGIssuesTable::PRIORITY);
+			$this->_severity 				= $row->get(TBGIssuesTable::SEVERITY);
+			$this->_category 				= $row->get(TBGIssuesTable::CATEGORY);
+			$this->_reproducability 		= $row->get(TBGIssuesTable::REPRODUCABILITY);
+			$this->_scrumcolor				= $row->get(TBGIssuesTable::SCRUMCOLOR);
+			$this->_postedby 				= $row->get(TBGIssuesTable::POSTED_BY);
+			$this->_ownedby 				= $row->get(TBGIssuesTable::OWNED_BY);
+			$this->_ownedtype				= $row->get(TBGIssuesTable::OWNED_TYPE);
+			$this->_assignedto	 			= $row->get(TBGIssuesTable::ASSIGNED_TO);
+			$this->_assignedtype			= $row->get(TBGIssuesTable::ASSIGNED_TYPE);
+			$this->_blocking 				= (bool) $row->get(TBGIssuesTable::BLOCKING);
+			$this->_duplicateof 			= $row->get(TBGIssuesTable::DUPLICATE);
+			$this->_estimatedmonths			= $row->get(TBGIssuesTable::ESTIMATED_MONTHS);
+			$this->_estimatedweeks			= $row->get(TBGIssuesTable::ESTIMATED_WEEKS);
+			$this->_estimateddays			= $row->get(TBGIssuesTable::ESTIMATED_DAYS);
+			$this->_estimatedhours			= $row->get(TBGIssuesTable::ESTIMATED_HOURS);
+			$this->_estimatedpoints			= $row->get(TBGIssuesTable::ESTIMATED_POINTS);
+			$this->_spentmonths				= $row->get(TBGIssuesTable::SPENT_MONTHS);
+			$this->_spentweeks				= $row->get(TBGIssuesTable::SPENT_WEEKS);
+			$this->_spentdays				= $row->get(TBGIssuesTable::SPENT_DAYS);
+			$this->_spenthours				= $row->get(TBGIssuesTable::SPENT_HOURS);
+			$this->_spentpoints				= $row->get(TBGIssuesTable::SPENT_POINTS);
+			$this->_percentcompleted 		= $row->get(TBGIssuesTable::PERCENT_COMPLETE);
+			$this->_milestone 				= $row->get(TBGIssuesTable::MILESTONE);
+			$this->_being_worked_on_by		= $row->get(TBGIssuesTable::USER_WORKING_ON);
+			$this->_being_worked_on_since	= $row->get(TBGIssuesTable::USER_WORKED_ON_SINCE);
+			$this->_user_pain				= $row->get(TBGIssuesTable::USER_PAIN);
+			$this->_pain_bug_type			= $row->get(TBGIssuesTable::PAIN_BUG_TYPE);
+			$this->_pain_effect				= $row->get(TBGIssuesTable::PAIN_EFFECT);
+			$this->_pain_likelihood			= $row->get(TBGIssuesTable::PAIN_LIKELIHOOD);
+			$this->_deleted 				= (bool) $row->get(TBGIssuesTable::DELETED);
 
 			$this->_populateCustomfields();
 			$this->_mergeChangedProperties();
@@ -788,12 +788,12 @@
 				$var_name = "_customfield".$key;
 				$this->$var_name = null;
 			}
-			if ($res = B2DB::getTable('B2tIssueCustomFields')->getAllValuesByIssueID($this->getID()))
+			if ($res = B2DB::getTable('TBGIssueCustomFieldsTable')->getAllValuesByIssueID($this->getID()))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$var_name = "_customfield".$row->get(B2tCustomFields::FIELD_KEY);
-					$this->$var_name = $row->get(B2tCustomFieldOptions::OPTION_VALUE);
+					$var_name = "_customfield".$row->get(TBGCustomFieldsTable::FIELD_KEY);
+					$this->$var_name = $row->get(TBGCustomFieldOptionsTable::OPTION_VALUE);
 				}
 			}
 		}
@@ -809,46 +809,46 @@
 				$this->_builds = array();
 				$this->_components = array();
 		
-				if ($res = B2DB::getTable('B2tIssueAffectsEdition')->getByIssueID($this->getID()))
+				if ($res = B2DB::getTable('TBGIssueAffectsEditionTable')->getByIssueID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
 						try
 						{
-							$this->_editions[] = array(	'edition' => TBGFactory::editionLab($row->get(B2tIssueAffectsEdition::EDITION)),
-														'status' => TBGFactory::TBGStatusLab($row->get(B2tIssueAffectsEdition::STATUS), $row),
-														'confirmed' => (bool) $row->get(B2tIssueAffectsEdition::CONFIRMED),
-														'a_id' => $row->get(B2tIssueAffectsEdition::ID));
+							$this->_editions[] = array(	'edition' => TBGFactory::editionLab($row->get(TBGIssueAffectsEditionTable::EDITION)),
+														'status' => TBGFactory::TBGStatusLab($row->get(TBGIssueAffectsEditionTable::STATUS), $row),
+														'confirmed' => (bool) $row->get(TBGIssueAffectsEditionTable::CONFIRMED),
+														'a_id' => $row->get(TBGIssueAffectsEditionTable::ID));
 						}
 						catch (Exception $e) {}
 					}
 				}
 				
-				if ($res = B2DB::getTable('B2tIssueAffectsBuild')->getByIssueID($this->getID()))
+				if ($res = B2DB::getTable('TBGIssueAffectsBuildTable')->getByIssueID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
 						try
 						{
-							$this->_builds[] = array(	'build' => TBGFactory::buildLab($row->get(B2tIssueAffectsBuild::BUILD)),
-														'status' => TBGFactory::TBGStatusLab($row->get(B2tIssueAffectsBuild::STATUS), $row),
-														'confirmed' => (bool) $row->get(B2tIssueAffectsBuild::CONFIRMED),
-														'a_id' => $row->get(B2tIssueAffectsBuild::ID));
+							$this->_builds[] = array(	'build' => TBGFactory::buildLab($row->get(TBGIssueAffectsBuildTable::BUILD)),
+														'status' => TBGFactory::TBGStatusLab($row->get(TBGIssueAffectsBuildTable::STATUS), $row),
+														'confirmed' => (bool) $row->get(TBGIssueAffectsBuildTable::CONFIRMED),
+														'a_id' => $row->get(TBGIssueAffectsBuildTable::ID));
 						}
 						catch (Exception $e) {}
 					}
 				}
 				
-				if ($res = B2DB::getTable('B2tIssueAffectsComponent')->getByIssueID($this->getID()))
+				if ($res = B2DB::getTable('TBGIssueAffectsComponentTable')->getByIssueID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
 						try
 						{
-							$this->_components[] = array(	'component' => TBGFactory::componentLab($row->get(B2tIssueAffectsComponent::COMPONENT)),
-															'status' => TBGFactory::TBGStatusLab($row->get(B2tIssueAffectsComponent::STATUS), $row),
-															'confirmed' => (bool) $row->get(B2tIssueAffectsComponent::CONFIRMED),
-															'a_id' => $row->get(B2tIssueAffectsComponent::ID));
+							$this->_components[] = array(	'component' => TBGFactory::componentLab($row->get(TBGIssueAffectsComponentTable::COMPONENT)),
+															'status' => TBGFactory::TBGStatusLab($row->get(TBGIssueAffectsComponentTable::STATUS), $row),
+															'confirmed' => (bool) $row->get(TBGIssueAffectsComponentTable::CONFIRMED),
+															'a_id' => $row->get(TBGIssueAffectsComponentTable::ID));
 						}
 						catch (Exception $e) {}
 					}
@@ -903,7 +903,7 @@
 		 */
 		public function setDuplicateOf($d_id)
 		{
-			B2DB::getTable('B2tIssues')->setDuplicate($this->getID(), $d_id);
+			B2DB::getTable('TBGIssuesTable')->setDuplicate($this->getID(), $d_id);
 			$this->_duplicateof = $d_id;
 		}
 		
@@ -1411,7 +1411,7 @@
 		 */
 		public function attachLink($url, $description = null)
 		{
-			$link_id = B2DB::getTable('B2tLinks')->addLinkToIssue($this->getID(), $url, $description);
+			$link_id = B2DB::getTable('TBGLinksTable')->addLinkToIssue($this->getID(), $url, $description);
 			return $link_id;
 		}
 
@@ -1422,7 +1422,7 @@
 		 */
 		public function attachFile($file_id)
 		{
-			B2DB::getTable('B2tIssueFiles')->addFileToIssue($this->getID(), $file_id);
+			B2DB::getTable('TBGIssueFilesTable')->addFileToIssue($this->getID(), $file_id);
 		}
 
 		/**
@@ -1435,19 +1435,19 @@
 				$this->_parent_issues = array();
 				$this->_child_issues = array();
 				
-				if ($res = B2DB::getTable('B2tIssueRelations')->getRelatedIssues($this->getID()))
+				if ($res = B2DB::getTable('TBGIssueRelationsTable')->getRelatedIssues($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
 						try
 						{
-							if ($row->get(B2tIssueRelations::PARENT_ID) == $this->getID())
+							if ($row->get(TBGIssueRelationsTable::PARENT_ID) == $this->getID())
 							{
-								$this->_parent_issues[$row->get(B2tIssueRelations::ID)] = TBGFactory::TBGIssueLab($row->get(B2tIssueRelations::CHILD_ID));
+								$this->_parent_issues[$row->get(TBGIssueRelationsTable::ID)] = TBGFactory::TBGIssueLab($row->get(TBGIssueRelationsTable::CHILD_ID));
 							}
 							else
 							{
-								$this->_child_issues[$row->get(B2tIssueRelations::ID)] = TBGFactory::TBGIssueLab($row->get(B2tIssueRelations::PARENT_ID));
+								$this->_child_issues[$row->get(TBGIssueRelationsTable::ID)] = TBGFactory::TBGIssueLab($row->get(TBGIssueRelationsTable::PARENT_ID));
 							}
 						}
 						catch (Exception $e) {}
@@ -1487,7 +1487,7 @@
 		{
 			if ($this->_votes === null)
 			{
-				$this->_votes = B2DB::getTable('B2tVotes')->getNumberOfVotesForIssue($this->getID());
+				$this->_votes = B2DB::getTable('TBGVotesTable')->getNumberOfVotesForIssue($this->getID());
 			}
 			return $this->_votes;
 		}
@@ -1499,7 +1499,7 @@
 		 */
 		public function hasUserVoted()
 		{
-			return (bool) B2DB::getTable('B2tVotes')->getByUserIdAndIssueId(TBGContext::getUser()->getID(), $this->getID());
+			return (bool) B2DB::getTable('TBGVotesTable')->getByUserIdAndIssueId(TBGContext::getUser()->getID(), $this->getID());
 		}
 	
 		/**
@@ -1515,7 +1515,7 @@
 			}
 			else
 			{
-				B2DB::getTable('B2tVotes')->addByUserIdAndIssueId(TBGContext::getUser()->getID(), $this->getID());
+				B2DB::getTable('TBGVotesTable')->addByUserIdAndIssueId(TBGContext::getUser()->getID(), $this->getID());
 				return true;
 			}
 		}
@@ -1532,11 +1532,11 @@
 				if ($this->_tasks == null)
 				{
 					$this->_tasks = array();
-					if ($res = B2DB::getTable('B2tIssueTasks')->getByIssueID($this->getID()))
+					if ($res = B2DB::getTable('TBGIssueTasksTable')->getByIssueID($this->getID()))
 					{
 						while ($row = $resultset->getNextRow())
 						{
-							$this->_tasks[$row->get(B2tIssueTasks::ID)] = TBGFactory::taskLab($row->get(B2tIssueTasks::ID), $row);
+							$this->_tasks[$row->get(TBGIssueTasksTable::ID)] = TBGFactory::taskLab($row->get(TBGIssueTasksTable::ID), $row);
 						}
 					}
 				}
@@ -1555,11 +1555,11 @@
 			if ($this->_tags == null)
 			{
 				$this->_tags = array();
-				if ($res = B2DB::getTable('B2tIssueTags')->getByIssueID($this->getID()))
+				if ($res = B2DB::getTable('TBGIssueTagsTable')->getByIssueID($this->getID()))
 				{
 					while ($row = $resultset->getNextRow())
 					{
-						$this->_tags[$row->get(B2tIssueTags::ID)] = $row->get(B2tIssueTags::TAG_NAME);
+						$this->_tags[$row->get(TBGIssueTagsTable::ID)] = $row->get(TBGIssueTagsTable::TAG_NAME);
 					}
 				}
 			}
@@ -1829,7 +1829,7 @@
 			{
 				try
 				{
-					$this->_milestone = TBGFactory::milestoneLab($this->_milestone);
+					$this->_milestone = TBGFactory::TBGMilestoneLab($this->_milestone);
 				}
 				catch (Exception $e)
 				{
@@ -1864,16 +1864,16 @@
 		 */
 		public function removeDependantIssue($issue_id)
 		{
-			if ($row = B2DB::getTable('B2tIssueRelations')->getIssueRelation($this->getID(), $issue_id))
+			if ($row = B2DB::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $issue_id))
 			{
 				$related_issue = TBGFactory::TBGIssueLab($issue_id);
-				if ($row->get(B2tIssueRelations::PARENT_ID) == $this->getID())
+				if ($row->get(TBGIssueRelationsTable::PARENT_ID) == $this->getID())
 				{
-					$this->_removeChildIssue($related_issue, $row->get(B2tIssueRelations::ID));
+					$this->_removeChildIssue($related_issue, $row->get(TBGIssueRelationsTable::ID));
 				}
 				else
 				{
-					$this->_removeParentIssue($related_issue, $row->get(B2tIssueRelations::ID));
+					$this->_removeParentIssue($related_issue, $row->get(TBGIssueRelationsTable::ID));
 				}
 			}
 		}
@@ -1888,10 +1888,10 @@
 		 */
 		protected function _removeParentIssue($related_issue, $relation_id)
 		{
-			$this->addLogEntry(B2tLog::LOG_ISSUE_DEPENDS, __('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
+			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, __('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
 			$this->addSystemComment(__('Issue dependancy removed'), __('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 			
-			$related_issue->addLogEntry(B2tLog::LOG_ISSUE_DEPENDS, __('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())));
+			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, __('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())));
 			$related_issue->addSystemComment(__('Issue dependancy removed'), __('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 			
 			if ($this->_parent_issues !== null && array_key_exists($relation_id, $this->_parent_issues))
@@ -1910,10 +1910,10 @@
 		 */
 		protected function _removeChildIssue($related_issue, $relation_id)
 		{
-			$this->addLogEntry(B2tLog::LOG_ISSUE_DEPENDS, __('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
+			$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, __('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
 			$this->addSystemComment(__('Issue dependancy removed'), __('Issue %issue_no% no longer depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 			
-			$related_issue->addLogEntry(B2tLog::LOG_ISSUE_DEPENDS, __('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())));
+			$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, __('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())));
 			$related_issue->addSystemComment(__('Issue dependancy removed'), __('This issue no longer depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 			
 			if ($this->_child_issues !== null && array_key_exists($relation_id, $this->_child_issues))
@@ -1931,14 +1931,14 @@
 		 */
 		public function addParentIssue(TBGIssue $related_issue)
 		{
-			if (!$row = B2DB::getTable('B2tIssueRelations')->getIssueRelation($this->getID(), $related_issue->getID()))
+			if (!$row = B2DB::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $related_issue->getID()))
 			{
-				$res = B2DB::getTable('B2tIssueRelations')->addParentIssue($this->getID(), $related_issue->getID());
+				$res = B2DB::getTable('TBGIssueRelationsTable')->addParentIssue($this->getID(), $related_issue->getID());
 				
-				$this->addLogEntry(B2tLog::LOG_ISSUE_DEPENDS, __('This issue now depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
+				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, __('This issue now depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
 				$this->addSystemComment(__('Issue dependancy added'), __('This issue now depends on the solution of issue %issue_no%', array('%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 				
-				$related_issue->addLogEntry(B2tLog::LOG_ISSUE_DEPENDS, __('Issue %issue_no% now depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())));
+				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, __('Issue %issue_no% now depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())));
 				$related_issue->addSystemComment(__('Issue dependancy added'), __('Issue %issue_no% now depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 				
 				return true;
@@ -1955,14 +1955,14 @@
 		 */
 		public function addChildIssue(TBGIssue $related_issue)
 		{
-			if (!$row = B2DB::getTable('B2tIssueRelations')->getIssueRelation($this->getID(), $related_issue->getID()))
+			if (!$row = B2DB::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $related_issue->getID()))
 			{
-				$res = B2DB::getTable('B2tIssueRelations')->addChildIssue($this->getID(), $related_issue->getID());
+				$res = B2DB::getTable('TBGIssueRelationsTable')->addChildIssue($this->getID(), $related_issue->getID());
 				
-				$this->addLogEntry(B2tLog::LOG_ISSUE_DEPENDS, __('Issue %issue_no% now depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
+				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, __('Issue %issue_no% now depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
 				$this->addSystemComment(__('Issue dependancy removed'), __('Issue %issue_no% now depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 				
-				$related_issue->addLogEntry(B2tLog::LOG_ISSUE_DEPENDS, __('This issue now depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())));
+				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, __('This issue now depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())));
 				$related_issue->addSystemComment(__('Issue dependancy removed'), __('This issue now depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 				
 				return true;
@@ -2942,9 +2942,9 @@
 		{
 			if ($this->getProject() && $this->getProject()->isBuildsEnabled())
 			{
-				if ($retval = B2DB::getTable('B2tIssueAffectsBuild')->setIssueAffected($this->getID(), $build->getID()))
+				if ($retval = B2DB::getTable('TBGIssueAffectsBuildTable')->setIssueAffected($this->getID(), $build->getID()))
 				{
-					$this->addLogEntry(B2tLog::LOG_AFF_ADD, __("'%release_name%' added", array('%release_name%' => $build->getName())));
+					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, __("'%release_name%' added", array('%release_name%' => $build->getName())));
 					$this->addSystemComment(__("Affected releases"), __('[b]%release_name%[/b] has been added to the list of affected releases', array('%release_name%' => $build->getName())), TBGContext::getUser()->getUID());
 				}
 				return $retval;
@@ -2963,9 +2963,9 @@
 		{
 			if ($this->getProject() && $this->getProject()->isEditionsEnabled())
 			{
-				if ($retval = B2DB::getTable('B2tIssueAffectsEdition')->setIssueAffected($this->getID(), $edition->getID()))
+				if ($retval = B2DB::getTable('TBGIssueAffectsEditionTable')->setIssueAffected($this->getID(), $edition->getID()))
 				{
-					$this->addLogEntry(B2tLog::LOG_AFF_ADD, __("'%edition_name%' added", array('%edition_name%' => $edition->getName())));
+					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, __("'%edition_name%' added", array('%edition_name%' => $edition->getName())));
 					$this->addSystemComment(__("Affected editions"), __('[b]%edition_name%[/b] has been added to the list of affected editions', array('%edition_name%' => $edition->getName())), TBGContext::getUser()->getUID());
 				}
 				return $retval;
@@ -2984,9 +2984,9 @@
 		{
 			if ($this->getProject() && $this->getProject()->isComponentsEnabled())
 			{
-				if ($retval = B2DB::getTable('B2tIssueAffectsComponent')->setIssueAffected($this->getID(), $component->getID()))
+				if ($retval = B2DB::getTable('TBGIssueAffectsComponentTable')->setIssueAffected($this->getID(), $component->getID()))
 				{
-					$this->addLogEntry(B2tLog::LOG_AFF_ADD, __("'%component_name%' added", array('%component_name%' => $component->getName())));
+					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, __("'%component_name%' added", array('%component_name%' => $component->getName())));
 					$this->addSystemComment(__("Affected components"), __('[b]%component_name%[/b] has been added to the list of affected components', array('%component_name%' => $component->getName())), TBGContext::getUser()->getUID());
 				}
 				return $retval;
@@ -3036,10 +3036,10 @@
 		 */
 		public function removeAffectedEdition($item)
 		{
-			if (B2DB::getTable('B2tIssueAffectsEdition')->deleteByIssueIDandEditionID($this->getID(), $item->getID()))
+			if (B2DB::getTable('TBGIssueAffectsEditionTable')->deleteByIssueIDandEditionID($this->getID(), $item->getID()))
 			{
 				$aff_name = $item->getName();
-				$this->addLogEntry(B2tLog::LOG_AFF_DELETE, __("'%item_name%' removed", array('%item_name%' => $item->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, __("'%item_name%' removed", array('%item_name%' => $item->getName())));
 				$this->addSystemComment(__("Affected editions"), __("[s][b]%edition_name%[/b] has been removed from the list of affected editions[/s]", array('%edition_name%' => $item->getName())), TBGContext::getUser()->getUID());
 				return true;
 			}
@@ -3059,10 +3059,10 @@
 		 */
 		public function removeAffectedBuild($item)
 		{
-			if (B2DB::getTable('B2tIssueAffectsBuild')->deleteByIssueIDandBuildID($this->getID(), $item->getID()))
+			if (B2DB::getTable('TBGIssueAffectsBuildTable')->deleteByIssueIDandBuildID($this->getID(), $item->getID()))
 			{
 				$aff_name = $item->getName();
-				$this->addLogEntry(B2tLog::LOG_AFF_DELETE, __("'%item_name%' removed", array('%item_name%' => $item->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, __("'%item_name%' removed", array('%item_name%' => $item->getName())));
 				$this->addSystemComment(__("Affected releases"), __("[s][b]%release_name%[/b] has been removed from the list of affected releases[/s]", array('%release_name%' => $item->getName())), TBGContext::getUser()->getUID());
 				return true;
 			}
@@ -3082,10 +3082,10 @@
 		 */
 		public function removeAffectedComponent($item)
 		{
-			if (B2DB::getTable('B2tIssueAffectsComponent')->deleteByIssueIDandComponentID($this->getID(), $item->getID()))
+			if (B2DB::getTable('TBGIssueAffectsComponentTable')->deleteByIssueIDandComponentID($this->getID(), $item->getID()))
 			{
 				$aff_name = $item->getName();
-				$this->addLogEntry(B2tLog::LOG_AFF_DELETE, __("'%item_name%' removed", array('%item_name%' => $item->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, __("'%item_name%' removed", array('%item_name%' => $item->getName())));
 				$this->addSystemComment(__("Affected components"), __("[s][b]%component_name%[/b] has been removed from the list of affected components[/s]", array('%component_name%' => $item->getName())), TBGContext::getUser()->getUID());
 				return true;
 			}
@@ -3135,9 +3135,9 @@
 		 */
 		public function confirmAffectedEdition($item, $confirmed = true)
 		{
-			if (B2DB::getTable('B2tIssueAffectsEdition')->confirmByIssueIDandEditionID($this->getID(), $item->getID(), $confirmed))
+			if (B2DB::getTable('TBGIssueAffectsEditionTable')->confirmByIssueIDandEditionID($this->getID(), $item->getID(), $confirmed))
 			{
-				$this->addLogEntry(B2tLog::LOG_AFF_DELETE, __("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, __("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
 				$this->addSystemComment(__("Affected editions"), __("[b]%edition_name%[/b] has been confirmed for this issue", array('%edition_name%' => $item->getName())), TBGContext::getUser()->getUID());
 				return true;
 			}
@@ -3158,9 +3158,9 @@
 		 */
 		public function confirmAffectedBuild($item, $confirmed = true)
 		{
-			if (B2DB::getTable('B2tIssueAffectsBuild')->confirmByIssueIDandBuildID($this->getID(), $item->getID(), $confirmed))
+			if (B2DB::getTable('TBGIssueAffectsBuildTable')->confirmByIssueIDandBuildID($this->getID(), $item->getID(), $confirmed))
 			{
-				$this->addLogEntry(B2tLog::LOG_AFF_DELETE, __("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, __("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
 				$this->addSystemComment(__("Affected releases"), __("[b]%release_name%[/b] has been confirmed for this issue", array('%release_name%' => $item->getName())), TBGContext::getUser()->getUID());
 				return true;
 			}
@@ -3181,9 +3181,9 @@
 		 */
 		public function confirmAffectedComponent($item, $confirmed = true)
 		{
-			if (B2DB::getTable('B2tIssueAffectsComponent')->confirmByIssueIDandComponentID($this->getID(), $item->getID(), $confirmed))
+			if (B2DB::getTable('TBGIssueAffectsComponentTable')->confirmByIssueIDandComponentID($this->getID(), $item->getID(), $confirmed))
 			{
-				$this->addLogEntry(B2tLog::LOG_AFF_DELETE, __("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, __("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
 				$this->addSystemComment(__("Affected components"), __("[b]%component_name%[/b] has been confirmed for this issue", array('%component_name%' => $item->getName())), TBGContext::getUser()->getUID());
 				return true;
 			}
@@ -3229,9 +3229,9 @@
 		 */
 		public function setAffectedEditionStatus($item, $status)
 		{
-			if (B2DB::getTable('B2tIssueAffectsEdition')->setStatusByIssueIDandEditionID($this->getID(), $item->getID(), $status->getID()))
+			if (B2DB::getTable('TBGIssueAffectsEditionTable')->setStatusByIssueIDandEditionID($this->getID(), $item->getID(), $status->getID()))
 			{
-				$this->addLogEntry(B2tLog::LOG_AFF_DELETE, __("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, __("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
 				$this->addSystemComment(__("Affected editions"), __("[b]%edition_name%[/b] has been set to status '%status_name% for this issue", array('%edition_name%' => $item->getName(), '%status_name%' => $status->getName())), TBGContext::getUser()->getUID());
 				return true;
 			}
@@ -3252,9 +3252,9 @@
 		 */
 		public function setAffectedBuildStatus($item, $status)
 		{
-			if (B2DB::getTable('B2tIssueAffectsBuild')->setStatusByIssueIDandBuildID($this->getID(), $item->getID(), $status->getID()))
+			if (B2DB::getTable('TBGIssueAffectsBuildTable')->setStatusByIssueIDandBuildID($this->getID(), $item->getID(), $status->getID()))
 			{
-				$this->addLogEntry(B2tLog::LOG_AFF_DELETE, __("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, __("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
 				$this->addSystemComment(__("Affected releases"), __("[b]%release_name%[/b] has been set to status '%status_name% for this issue", array('%release_name%' => $item->getName(), '%status_name%' => $status->getName())), TBGContext::getUser()->getUID());
 				return true;
 			}
@@ -3275,9 +3275,9 @@
 		 */
 		public function setAffectedComponentStatus($item, $status)
 		{
-			if (B2DB::getTable('B2tIssueAffectsComponent')->setStatusByIssueIDandComponentID($this->getID(), $item->getID(), $status->getID()))
+			if (B2DB::getTable('TBGIssueAffectsComponentTable')->setStatusByIssueIDandComponentID($this->getID(), $item->getID(), $status->getID()))
 			{
-				$this->addLogEntry(B2tLog::LOG_AFF_DELETE, __("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, __("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
 				$this->addSystemComment(__("Affected components"), __("[b]%component_name%[/b] has been set to status '%status_name% for this issue", array('%component_name%' => $item->getName(), '%status_name%' => $status->getName())), TBGContext::getUser()->getUID());
 				return true;
 			}
@@ -3296,7 +3296,7 @@
 		{
 			$task = TBGTask::createTask($title, $desc, $this->getID());
 			
-			$this->addLogEntry(B2tLog::LOG_TASK_ADD, __("Added task '%task_title%'", array('%task_title%' => $title)));
+			$this->addLogEntry(TBGLogTable::LOG_TASK_ADD, __("Added task '%task_title%'", array('%task_title%' => $title)));
 			$this->addSystemComment(__("Task added"), __("The task '%task_title%' has been added", array('%task_title%' => $title)), TBGContext::getUser()->getUID());
 	
 			return $task;
@@ -3326,13 +3326,13 @@
 			$users = array();
 			if (count($this->getRelatedUIDs()) > 0)
 			{
-				if ($res = B2DB::getTable('B2tUsers')->getByUserIDs($this->getRelatedUIDs()))
+				if ($res = B2DB::getTable('TBGUsersTable')->getByUserIDs($this->getRelatedUIDs()))
 				{
 					while ($row = $res->getNextRow())
 					{
 						try
 						{
-							$user = TBGFactory::userLab($row->get(B2tUsers::ID), $row);
+							$user = TBGFactory::userLab($row->get(TBGUsersTable::ID), $row);
 							$users[$user->getID()] = $user;
 						}
 						catch (Exception $e) { }
@@ -3360,7 +3360,7 @@
 			$uids = array();
 	
 			// Add all users who's marked this issue as interesting
-			$uids = array_merge($uids, B2DB::getTable('B2tUserIssues')->getUserIDsByIssueID($this->getID()));
+			$uids = array_merge($uids, B2DB::getTable('TBGUserIssuesTable')->getUserIDsByIssueID($this->getID()));
 	
 			// Add all users from the team owning the issue if valid
 			// or add the owning user if a user owns the issue
@@ -3469,7 +3469,7 @@
 		public function addLogEntry($change_type, $text = null, $system = false)
 		{
 			$uid = ($system) ? 0 : TBGContext::getUser()->getUID();
-			B2DB::getTable('B2tLog')->createNew($this->getID(), B2tLog::TYPE_ISSUE, $change_type, $text, $uid);
+			B2DB::getTable('TBGLogTable')->createNew($this->getID(), TBGLogTable::TYPE_ISSUE, $change_type, $text, $uid);
 		}
 	
 		/**
@@ -3511,7 +3511,7 @@
 		{
 			if ($this->_links === null)
 			{
-				$this->_links = B2DB::getTable('B2tLinks')->getByIssueID($this->getID());
+				$this->_links = B2DB::getTable('TBGLinksTable')->getByIssueID($this->getID());
 			}
 		}
 	
@@ -3522,7 +3522,7 @@
 		 */
 		public function removeLink($link_id)
 		{
-			if ($res = B2DB::getTable('B2tLinks')->removeByIssueIDandLinkID($this->getID(), $link_id))
+			if ($res = B2DB::getTable('TBGLinksTable')->removeByIssueIDandLinkID($this->getID(), $link_id))
 			{
 				if (is_array($this->_links) && array_key_exists($link_id, $this->_links))
 				{
@@ -3549,7 +3549,7 @@
 		{
 			if ($this->_files === null)
 			{
-				$this->_files = B2DB::getTable('B2tIssueFiles')->getByIssueID($this->getID());
+				$this->_files = B2DB::getTable('TBGIssueFilesTable')->getByIssueID($this->getID());
 			}
 		}
 		
@@ -3562,13 +3562,13 @@
 		 */
 		public function removeFile($file_id)
 		{
-			if ($res = B2DB::getTable('B2tFiles')->removeByIssueIDandFileID($this->getID(), $file_id))
+			if ($res = B2DB::getTable('TBGFilesTable')->removeByIssueIDandFileID($this->getID(), $file_id))
 			{
 				if (is_array($this->_files) && array_key_exists($file_id, $this->_files))
 				{
 					unset($this->_files[$file_id]);
 				}
-				unlink(TBGContext::getIncludePath() . 'files/' . $row->get(B2tFiles::FILENAME));
+				unlink(TBGContext::getIncludePath() . 'files/' . $row->get(TBGFilesTable::FILENAME));
 				return true;
 			}
 			return false;
@@ -3592,7 +3592,7 @@
 		{
 			if ($this->_log_entries === null)
 			{
-				$this->_log_entries = B2DB::getTable('B2tLog')->getByIssueID($this->getID()); 
+				$this->_log_entries = B2DB::getTable('TBGLogTable')->getByIssueID($this->getID()); 
 			}
 		}
 
@@ -3827,17 +3827,17 @@
 		{
 			if (!$this->isClosed()) return false;
 			$crit = new B2DBCriteria();
-			$crit->addSelectionColumn(B2tLog::TIME);
-			$crit->addWhere(B2tLog::TARGET, $this->_issue_uniqueid);
-			$crit->addWhere(B2tLog::TARGET_TYPE, 1);
-			$crit->addWhere(B2tLog::CHANGE_TYPE, 14);
-			$crit->addOrderBy(B2tLog::TIME, 'desc');
-			$res = B2DB::getTable('B2tLog')->doSelect($crit);
+			$crit->addSelectionColumn(TBGLogTable::TIME);
+			$crit->addWhere(TBGLogTable::TARGET, $this->_issue_uniqueid);
+			$crit->addWhere(TBGLogTable::TARGET_TYPE, 1);
+			$crit->addWhere(TBGLogTable::CHANGE_TYPE, 14);
+			$crit->addOrderBy(TBGLogTable::TIME, 'desc');
+			$res = B2DB::getTable('TBGLogTable')->doSelect($crit);
 			
 			$ret_arr = array();
 
 			$row = $res->getNextRow();
-			return($row->get(B2tLog::TIME));
+			return($row->get(TBGLogTable::TIME));
 		}	
 
 		/**
@@ -3849,12 +3849,12 @@
 		{
 			if ($this->isClosed()) return false;
 			$crit = new B2DBCriteria();
-			$crit->addSelectionColumn(B2tLog::TIME);
-			$crit->addWhere(B2tLog::TARGET, $this->_issue_uniqueid);
-			$crit->addWhere(B2tLog::TARGET_TYPE, 1);
-			$crit->addWhere(B2tLog::CHANGE_TYPE, 22);
-			$crit->addOrderBy(B2tLog::TIME, 'desc');
-			$res = B2DB::getTable('B2tLog')->doSelect($crit);
+			$crit->addSelectionColumn(TBGLogTable::TIME);
+			$crit->addWhere(TBGLogTable::TARGET, $this->_issue_uniqueid);
+			$crit->addWhere(TBGLogTable::TARGET_TYPE, 1);
+			$crit->addWhere(TBGLogTable::CHANGE_TYPE, 22);
+			$crit->addOrderBy(TBGLogTable::TIME, 'desc');
+			$res = B2DB::getTable('TBGLogTable')->doSelect($crit);
 			
 			$ret_arr = array();
 
@@ -3864,7 +3864,7 @@
 			}
 			
 			$row = $res->getNextRow();
-			return($row->get(B2tLog::TIME));
+			return($row->get(TBGLogTable::TIME));
 		}
 
 		protected function _saveCustomFieldValues()
@@ -3872,7 +3872,7 @@
 			foreach (TBGCustomDatatype::getAll() as $key => $customdatatype)
 			{
 				$option_id = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getID() : null;
-				B2DB::getTable('B2tIssueCustomFields')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
+				B2DB::getTable('TBGIssueCustomFieldsTable')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
 			}
 		}
 		
@@ -3895,15 +3895,15 @@
 					switch ($property)
 					{
 						case '_title':
-							$this->addLogEntry(B2tLog::LOG_ISSUE_UPDATE, __("Title updated"));
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE, __("Title updated"));
 							$comment_lines[] = __("This issue's title has been changed");
 							break;
 						case '_description':
-							$this->addLogEntry(B2tLog::LOG_ISSUE_UPDATE, __("Description updated"));
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_UPDATE, __("Description updated"));
 							$comment_lines[] = __("This issue's description has been changed");
 							break;
 						case '_reproduction_steps':
-							$this->addLogEntry(B2tLog::LOG_ISSUE_REPRODUCABILITY, __("Reproduction steps updated"));
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, __("Reproduction steps updated"));
 							$comment_lines[] = __("This issue's reproduction steps has been changed");
 							break;
 						case '_category':
@@ -3917,7 +3917,7 @@
 							}
 							$new_name = ($this->getCategory() instanceof TBGDatatype) ? $this->getCategory()->getName() : __('Not determined');
 							
-							$this->addLogEntry(B2tLog::LOG_ISSUE_CATEGORY, $old_name . ' &rArr; ' . $new_name);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_CATEGORY, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The category has been updated, from '''%previous_category%''' to '''%new_category%'''.", array('%previous_category%' => $old_name, '%new_category%' => $new_name));
 							break;
 						case '_pain_bug_type':
@@ -3931,7 +3931,7 @@
 							}
 							$new_name = ($new_item = self::getPainTypesOrLabel('bug_type', $value['current_value'])) ? $new_item : __('Not determined');
 
-							$this->addLogEntry(B2tLog::LOG_ISSUE_PAIN_BUG_TYPE, $old_name . ' &rArr; ' . $new_name);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_BUG_TYPE, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The triaging criteria 'bug type' has been updated, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
 						case '_pain_effect':
@@ -3945,7 +3945,7 @@
 							}
 							$new_name = ($new_item = self::getPainTypesOrLabel('effect', $value['current_value'])) ? $new_item : __('Not determined');
 
-							$this->addLogEntry(B2tLog::LOG_ISSUE_PAIN_EFFECT, $old_name . ' &rArr; ' . $new_name);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_EFFECT, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The triaging criteria 'effect' has been updated, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
 						case '_pain_likelihood':
@@ -3959,11 +3959,11 @@
 							}
 							$new_name = ($new_item = self::getPainTypesOrLabel('likelihood', $value['current_value'])) ? $new_item : __('Not determined');
 
-							$this->addLogEntry(B2tLog::LOG_ISSUE_PAIN_LIKELIHOOD, $old_name . ' &rArr; ' . $new_name);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_LIKELIHOOD, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The triaging criteria 'likelihood' has been updated, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
 						case '_user_pain':
-							$this->addLogEntry(B2tLog::LOG_ISSUE_PAIN_CALCULATED, $value['original_value'] . ' &rArr; ' . $value['current_value']);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_CALCULATED, $value['original_value'] . ' &rArr; ' . $value['current_value']);
 							$comment_lines[] = __("The calculated user pain has changed, from '''%previous_value%''' to '''%new_value%'''.", array('%previous_value%' => $value['original_value'], '%new_value%' => $value['current_value']));
 							break;
 						case '_status':
@@ -3977,7 +3977,7 @@
 							}
 							$new_name = ($this->getStatus() instanceof TBGDatatype) ? $this->getStatus()->getName() : __('Not determined');
 							
-							$this->addLogEntry(B2tLog::LOG_ISSUE_STATUS, $old_name . ' &rArr; ' . $new_name);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_STATUS, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The status has been updated, from '''%previous_status%''' to '''%new_status%'''.", array('%previous_status%' => $old_name, '%new_status%' => $new_name));
 							break;
 						case '_reproducability':
@@ -3991,7 +3991,7 @@
 							}
 							$new_name = ($this->getReproducability() instanceof TBGDatatype) ? $this->getReproducability()->getName() : __('Not determined');
 							
-							$this->addLogEntry(B2tLog::LOG_ISSUE_REPRODUCABILITY, $old_name . ' &rArr; ' . $new_name);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_REPRODUCABILITY, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The reproducability has been updated, from '''%previous_reproducability%''' to '''%new_reproducability%'''.", array('%previous_reproducability%' => $old_name, '%new_reproducability%' => $new_name));
 							
 							break;
@@ -4006,7 +4006,7 @@
 							}
 							$new_name = ($this->getPriority() instanceof TBGDatatype) ? $this->getPriority()->getName() : __('Not determined');
 							
-							$this->addLogEntry(B2tLog::LOG_ISSUE_PRIORITY, $old_name . ' &rArr; ' . $new_name);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PRIORITY, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''.", array('%previous_priority%' => $old_name, '%new_priority%' => $new_name));
 							break;
 						case '_assignedto':
@@ -4027,7 +4027,7 @@
 								}
 								$new_name = ($this->getAssignee() instanceof TBGIdentifiableClass) ? $this->getAssignee()->getName() : __('Not assigned');
 								
-								$this->addLogEntry(B2tLog::LOG_ISSUE_ASSIGNED, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_ASSIGNED, $old_name . ' &rArr; ' . $new_name);
 								$comment_lines[] = __("The assignee has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 								$is_saved_assignee = true;
 							}
@@ -4037,7 +4037,7 @@
 							$old_name = ($old_identifiable instanceof TBGIdentifiableClass) ? $old_identifiable->getName() : __('Unknown');
 							$new_name = $this->getPostedBy()->getName();
 							
-							$this->addLogEntry(B2tLog::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
 						case '_ownedby':
@@ -4058,13 +4058,13 @@
 								}
 								$new_name = ($this->getOwner() instanceof TBGIdentifiableClass) ? $this->getOwner()->getName() : __('Not owned by anyone');
 								
-								$this->addLogEntry(B2tLog::LOG_ISSUE_OWNED, $old_name . ' &rArr; ' . $new_name);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_OWNED, $old_name . ' &rArr; ' . $new_name);
 								$comment_lines[] = __("The owner has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 								$is_saved_owner = true;
 							}
 							break;
 						case '_percentcompleted':
-							$this->addLogEntry(B2tLog::LOG_ISSUE_PERCENT, $value['original_value'] . '% &rArr; ' . $this->getPercentCompleted() . '%');
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PERCENT, $value['original_value'] . '% &rArr; ' . $this->getPercentCompleted() . '%');
 							$comment_lines[] = __("This issue's progression has been updated to %percent_completed% percent completed.", array('%percent_completed%' => $this->getPercentCompleted()));
 							break;
 						case '_resolution':
@@ -4078,7 +4078,7 @@
 							}
 							$new_name = ($this->getResolution() instanceof TBGDatatype) ? $this->getResolution()->getName() : __('Not determined');
 							
-							$this->addLogEntry(B2tLog::LOG_ISSUE_RESOLUTION, $old_name . ' &rArr; ' . $new_name);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_RESOLUTION, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The resolution has been updated, from '''%previous_resolution%''' to '''%new_resolution%'''.", array('%previous_resolution%' => $old_name, '%new_resolution%' => $new_name));
 							break;
 						case '_severity':
@@ -4092,13 +4092,13 @@
 							}
 							$new_name = ($this->getSeverity() instanceof TBGDatatype) ? $this->getSeverity()->getName() : __('Not determined');
 							
-							$this->addLogEntry(B2tLog::LOG_ISSUE_SEVERITY, $old_name . ' &rArr; ' . $new_name);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_SEVERITY, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The severity has been updated, from '''%previous_severity%''' to '''%new_severity%'''.", array('%previous_severity%' => $old_name, '%new_severity%' => $new_name));
 							break;
 						case '_milestone':
 							if ($value['original_value'] != 0)
 							{
-								$old_name = ($old_item = TBGFactory::milestoneLab($value['original_value'])) ? $old_item->getName() : __('Not determined');
+								$old_name = ($old_item = TBGFactory::TBGMilestoneLab($value['original_value'])) ? $old_item->getName() : __('Not determined');
 							}
 							else
 							{
@@ -4106,7 +4106,7 @@
 							}
 							$new_name = ($this->getMilestone() instanceof TBGMilestone) ? $this->getMilestone()->getName() : __('Not determined');
 							
-							$this->addLogEntry(B2tLog::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The milestone has been updated, from '''%previous_milestone%''' to '''%new_milestone%'''.", array('%previous_milestone%' => $old_name, '%new_milestone%' => $new_name));
 							break;
 						case '_issuetype':
@@ -4120,7 +4120,7 @@
 							}
 							$new_name = ($this->getIssuetype() instanceof TBGIssuetype) ? $this->getIssuetype()->getName() : __('Unknown');
 							
-							$this->addLogEntry(B2tLog::LOG_ISSUE_ISSUETYPE, $old_name . ' &rArr; ' . $new_name);
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_ISSUETYPE, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = __("The issue type has been updated, from '''%previous_type%''' to '''%new_type%'''.", array('%previous_type%' => $old_name, '%new_type%' => $new_name));
 							break;
 						case '_estimatedmonths':
@@ -4138,7 +4138,7 @@
 
 								$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : __('Not estimated');
 								$new_formatted_time = ($this->hasEstimatedTime()) ? $this->getFormattedTime($this->getEstimatedTime()) : __('Not estimated');
-								$this->addLogEntry(B2tLog::LOG_ISSUE_TIME_ESTIMATED, $old_formatted_time . ' &rArr; ' . $new_formatted_time);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_TIME_ESTIMATED, $old_formatted_time . ' &rArr; ' . $new_formatted_time);
 								$comment_lines[] = __("The issue has been (re-)estimated, from '''%previous_time%''' to '''%new_time%'''.", array('%previous_time%' => $old_formatted_time, '%new_time%' => $new_formatted_time));
 								$is_saved_estimated = true;
 							}
@@ -4158,7 +4158,7 @@
 
 								$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : __('No time spent');
 								$new_formatted_time = ($this->hasSpentTime()) ? $this->getFormattedTime($this->getSpentTime()) : __('No time spent');
-								$this->addLogEntry(B2tLog::LOG_ISSUE_TIME_SPENT, $old_formatted_time . ' &rArr; ' . $new_formatted_time);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_TIME_SPENT, $old_formatted_time . ' &rArr; ' . $new_formatted_time);
 								$comment_lines[] = __("Time spent on this issue, from '''%previous_time%''' to '''%new_time%'''.", array('%previous_time%' => $old_formatted_time, '%new_time%' => $new_formatted_time));
 								$is_saved_spent = true;
 							}
@@ -4166,7 +4166,7 @@
 						case '_state':
 							if ($this->isClosed())
 							{
-								$this->addLogEntry(B2tLog::LOG_ISSUE_CLOSE);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_CLOSE);
 								$comment_lines[] = __("This issue has been closed");
 								if ($this->getMilestone() instanceof TBGMilestone)
 								{
@@ -4175,7 +4175,7 @@
 							}
 							else
 							{
-								$this->addLogEntry(B2tLog::LOG_ISSUE_REOPEN);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_REOPEN);
 								$comment_lines[] = __("This issue has been reopened");
 							}
 							break;
@@ -4186,7 +4186,7 @@
 								$customdatatype = TBGCustomDatatype::getByKey($key);
 								$old_value = ($old_item = TBGCustomDatatypeOption::getByValueAndKey($value['original_value'], $key)) ? $old_item->getName() : __('Unknown');
 								$new_value = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getName() : __('Unknown');
-								$this->addLogEntry(B2tLog::LOG_ISSUE_CUSTOMFIELD_CHANGED, $old_value . ' &rArr; ' . $new_value);
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $old_value . ' &rArr; ' . $new_value);
 								$comment_lines[] = __("The custom field %customfield_name% has been updated, from '''%previous_value%''' to ''''''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%previous_value%' => $old_value, '%new_value%' => $new_value));
 							}
 							break;
@@ -4195,48 +4195,59 @@
 			}
 			$comment = __("The issue was updated with the following change(s):\n%list_of_changes%", array('%list_of_changes%' => '* '.join("\n* ", $comment_lines)));
 			$this->addSystemComment(__('Issue updated'), $comment, TBGContext::getUser()->getUID());
+
+			if ($is_saved_estimated)
+			{
+				B2DB::getTable('TBGIssueEstimates')->saveEstimate($this->getID(), $this->_estimatedmonths, $this->_estimatedweeks, $this->_estimateddays, $this->_estimatedhours, $this->_estimatedpoints);
+			}
+
+			if ($is_saved_spent)
+			{
+				B2DB::getTable('TBGIssueSpentTimes')->saveSpentTime($this->getID(), $this->_spentmonths, $this->_spentweeks, $this->_spentdays, $this->_spenthours, $this->_spentpoints);
+			}
+
 			$this->_clearChangedProperties();
 			
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tIssues::TITLE, $this->_title);
-			$crit->addUpdate(B2tIssues::LAST_UPDATED, $this->_last_updated);
-			$crit->addUpdate(B2tIssues::LONG_DESCRIPTION, $this->_description);
-			$crit->addUpdate(B2tIssues::REPRODUCTION, $this->_reproduction_steps);
-			$crit->addUpdate(B2tIssues::ISSUE_TYPE, (is_object($this->_issuetype)) ? $this->_issuetype->getID() : $this->_issuetype);
-			$crit->addUpdate(B2tIssues::RESOLUTION, (is_object($this->_resolution)) ? $this->_resolution->getID() : $this->_resolution);
-			$crit->addUpdate(B2tIssues::STATE, $this->_state);
-			$crit->addUpdate(B2tIssues::POSTED_BY, (is_object($this->_postedby)) ? $this->_postedby->getID() : $this->_postedby);
-			$crit->addUpdate(B2tIssues::OWNED_BY, (is_object($this->_ownedby)) ? $this->_ownedby->getID() : $this->_ownedby);
-			$crit->addUpdate(B2tIssues::OWNED_TYPE, $this->_ownedtype);
-			$crit->addUpdate(B2tIssues::ASSIGNED_TO, (is_object($this->_assignedto)) ? $this->_assignedto->getID() : $this->_assignedto);
-			$crit->addUpdate(B2tIssues::ASSIGNED_TYPE, $this->_assignedtype);
-			$crit->addUpdate(B2tIssues::STATUS, (is_object($this->_status)) ? $this->_status->getID() : $this->_status);
-			$crit->addUpdate(B2tIssues::PRIORITY, (is_object($this->_priority)) ? $this->_priority->getID() : $this->_priority);
-			$crit->addUpdate(B2tIssues::CATEGORY, (is_object($this->_category)) ? $this->_category->getID() : $this->_category);
-			$crit->addUpdate(B2tIssues::REPRODUCABILITY, (is_object($this->_reproducability)) ? $this->_reproducability->getID() : $this->_reproducability);
-			$crit->addUpdate(B2tIssues::USER_PAIN, $this->_user_pain);
-			$crit->addUpdate(B2tIssues::PAIN_BUG_TYPE, $this->_pain_bug_type);
-			$crit->addUpdate(B2tIssues::PAIN_LIKELIHOOD, $this->_pain_likelihood);
-			$crit->addUpdate(B2tIssues::PAIN_EFFECT, $this->_pain_effect);
-			$crit->addUpdate(B2tIssues::ESTIMATED_MONTHS, $this->_estimatedmonths);
-			$crit->addUpdate(B2tIssues::ESTIMATED_WEEKS, $this->_estimatedweeks);
-			$crit->addUpdate(B2tIssues::ESTIMATED_DAYS, $this->_estimateddays);
-			$crit->addUpdate(B2tIssues::ESTIMATED_HOURS, $this->_estimatedhours);
-			$crit->addUpdate(B2tIssues::ESTIMATED_POINTS, $this->_estimatedpoints);
-			$crit->addUpdate(B2tIssues::SPENT_MONTHS, $this->_spentmonths);
-			$crit->addUpdate(B2tIssues::SPENT_WEEKS, $this->_spentweeks);
-			$crit->addUpdate(B2tIssues::SPENT_DAYS, $this->_spentdays);
-			$crit->addUpdate(B2tIssues::SPENT_HOURS, $this->_spenthours);
-			$crit->addUpdate(B2tIssues::SPENT_POINTS, $this->_spentpoints);
-			$crit->addUpdate(B2tIssues::SCRUMCOLOR, $this->_scrumcolor);
-			$crit->addUpdate(B2tIssues::PERCENT_COMPLETE, $this->_percentcompleted);
-			$crit->addUpdate(B2tIssues::DUPLICATE, (is_object($this->_duplicateof)) ? $this->_duplicateof->getID() : $this->_duplicateof);
-			$crit->addUpdate(B2tIssues::DELETED, $this->_deleted);
-			$crit->addUpdate(B2tIssues::BLOCKING, $this->_blocking);
-			$crit->addUpdate(B2tIssues::USER_WORKING_ON, (is_object($this->_being_worked_on_by)) ? $this->_being_worked_on_by->getID() : $this->_being_worked_on_by);
-			$crit->addUpdate(B2tIssues::USER_WORKED_ON_SINCE, $this->_being_worked_on_since);
-			$crit->addUpdate(B2tIssues::MILESTONE, (is_object($this->_milestone)) ? $this->_milestone->getID() : $this->_milestone);
-			$res = B2DB::getTable('B2tIssues')->doUpdateById($crit, $this->getID());
+			$crit = B2DB::getTable('TBGIssuesTable')->getCriteria();
+			$crit->addUpdate(TBGIssuesTable::TITLE, $this->_title);
+			$crit->addUpdate(TBGIssuesTable::LAST_UPDATED, $this->_last_updated);
+			$crit->addUpdate(TBGIssuesTable::LONG_DESCRIPTION, $this->_description);
+			$crit->addUpdate(TBGIssuesTable::REPRODUCTION, $this->_reproduction_steps);
+			$crit->addUpdate(TBGIssuesTable::ISSUE_TYPE, (is_object($this->_issuetype)) ? $this->_issuetype->getID() : $this->_issuetype);
+			$crit->addUpdate(TBGIssuesTable::RESOLUTION, (is_object($this->_resolution)) ? $this->_resolution->getID() : $this->_resolution);
+			$crit->addUpdate(TBGIssuesTable::STATE, $this->_state);
+			$crit->addUpdate(TBGIssuesTable::POSTED_BY, (is_object($this->_postedby)) ? $this->_postedby->getID() : $this->_postedby);
+			$crit->addUpdate(TBGIssuesTable::OWNED_BY, (is_object($this->_ownedby)) ? $this->_ownedby->getID() : $this->_ownedby);
+			$crit->addUpdate(TBGIssuesTable::OWNED_TYPE, $this->_ownedtype);
+			$crit->addUpdate(TBGIssuesTable::ASSIGNED_TO, (is_object($this->_assignedto)) ? $this->_assignedto->getID() : $this->_assignedto);
+			$crit->addUpdate(TBGIssuesTable::ASSIGNED_TYPE, $this->_assignedtype);
+			$crit->addUpdate(TBGIssuesTable::STATUS, (is_object($this->_status)) ? $this->_status->getID() : $this->_status);
+			$crit->addUpdate(TBGIssuesTable::PRIORITY, (is_object($this->_priority)) ? $this->_priority->getID() : $this->_priority);
+			$crit->addUpdate(TBGIssuesTable::CATEGORY, (is_object($this->_category)) ? $this->_category->getID() : $this->_category);
+			$crit->addUpdate(TBGIssuesTable::REPRODUCABILITY, (is_object($this->_reproducability)) ? $this->_reproducability->getID() : $this->_reproducability);
+			$crit->addUpdate(TBGIssuesTable::USER_PAIN, $this->_user_pain);
+			$crit->addUpdate(TBGIssuesTable::PAIN_BUG_TYPE, $this->_pain_bug_type);
+			$crit->addUpdate(TBGIssuesTable::PAIN_LIKELIHOOD, $this->_pain_likelihood);
+			$crit->addUpdate(TBGIssuesTable::PAIN_EFFECT, $this->_pain_effect);
+			$crit->addUpdate(TBGIssuesTable::ESTIMATED_MONTHS, $this->_estimatedmonths);
+			$crit->addUpdate(TBGIssuesTable::ESTIMATED_WEEKS, $this->_estimatedweeks);
+			$crit->addUpdate(TBGIssuesTable::ESTIMATED_DAYS, $this->_estimateddays);
+			$crit->addUpdate(TBGIssuesTable::ESTIMATED_HOURS, $this->_estimatedhours);
+			$crit->addUpdate(TBGIssuesTable::ESTIMATED_POINTS, $this->_estimatedpoints);
+			$crit->addUpdate(TBGIssuesTable::SPENT_MONTHS, $this->_spentmonths);
+			$crit->addUpdate(TBGIssuesTable::SPENT_WEEKS, $this->_spentweeks);
+			$crit->addUpdate(TBGIssuesTable::SPENT_DAYS, $this->_spentdays);
+			$crit->addUpdate(TBGIssuesTable::SPENT_HOURS, $this->_spenthours);
+			$crit->addUpdate(TBGIssuesTable::SPENT_POINTS, $this->_spentpoints);
+			$crit->addUpdate(TBGIssuesTable::SCRUMCOLOR, $this->_scrumcolor);
+			$crit->addUpdate(TBGIssuesTable::PERCENT_COMPLETE, $this->_percentcompleted);
+			$crit->addUpdate(TBGIssuesTable::DUPLICATE, (is_object($this->_duplicateof)) ? $this->_duplicateof->getID() : $this->_duplicateof);
+			$crit->addUpdate(TBGIssuesTable::DELETED, $this->_deleted);
+			$crit->addUpdate(TBGIssuesTable::BLOCKING, $this->_blocking);
+			$crit->addUpdate(TBGIssuesTable::USER_WORKING_ON, (is_object($this->_being_worked_on_by)) ? $this->_being_worked_on_by->getID() : $this->_being_worked_on_by);
+			$crit->addUpdate(TBGIssuesTable::USER_WORKED_ON_SINCE, $this->_being_worked_on_since);
+			$crit->addUpdate(TBGIssuesTable::MILESTONE, (is_object($this->_milestone)) ? $this->_milestone->getID() : $this->_milestone);
+			$res = B2DB::getTable('TBGIssuesTable')->doUpdateById($crit, $this->getID());
 
 			$this->_saveCustomFieldValues();
 			$this->getProject()->clearRecentActivities();

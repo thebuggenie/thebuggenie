@@ -89,62 +89,62 @@
 			{
 				
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tBuilds::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tBuilds')->doDelete($crit);
+				$crit->addWhere(TBGBuildsTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGBuildsTable')->doDelete($crit);
 
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tListTypes::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tListTypes')->doDelete($crit);
+				$crit->addWhere(TBGListTypesTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGListTypesTable')->doDelete($crit);
 
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tEditionComponents::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tEditionComponents')->doDelete($crit);
+				$crit->addWhere(TBGEditionComponentsTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGEditionComponentsTable')->doDelete($crit);
 				
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tEditions::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tEditions')->doDelete($crit);
+				$crit->addWhere(TBGEditionsTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGEditionsTable')->doDelete($crit);
 
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tGroups::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tGroups')->doDelete($crit);
+				$crit->addWhere(TBGGroupsTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGGroupsTable')->doDelete($crit);
 				
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tIssues::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tIssues')->doDelete($crit);
+				$crit->addWhere(TBGIssuesTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGIssuesTable')->doDelete($crit);
 				
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tIssueTypes::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tIssueTypes')->doDelete($crit);
+				$crit->addWhere(TBGIssueTypesTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGIssueTypesTable')->doDelete($crit);
 				
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tModulePermissions::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tModulePermissions')->doDelete($crit);
+				$crit->addWhere(TBGModulePermissionsTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGModulePermissionsTable')->doDelete($crit);
 				
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tPermissions::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tPermissions')->doDelete($crit);
+				$crit->addWhere(TBGPermissionsTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGPermissionsTable')->doDelete($crit);
 				
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tProjects::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tProjects')->doDelete($crit);
+				$crit->addWhere(TBGProjectsTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGProjectsTable')->doDelete($crit);
 				
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tSettings::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tSettings')->doDelete($crit);
+				$crit->addWhere(TBGSettingsTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGSettingsTable')->doDelete($crit);
 				
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tTeams::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tTeams')->doDelete($crit);
+				$crit->addWhere(TBGTeamsTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGTeamsTable')->doDelete($crit);
 				
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tUserState::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tUserState')->doDelete($crit);
+				$crit->addWhere(TBGUserStateTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGUserStateTable')->doDelete($crit);
 				
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tUsers::SCOPE, $theScope->getID());
-				B2DB::getTable('B2tUsers')->doDelete($crit);
+				$crit->addWhere(TBGUsersTable::SCOPE, $theScope->getID());
+				B2DB::getTable('TBGUsersTable')->doDelete($crit);
 				
-				B2DB::getTable('B2tScopes')->doDeleteById($theScope->getID());
+				B2DB::getTable('TBGScopesTable')->doDeleteById($theScope->getID());
 				
 				TBGContext::trigger('core', 'delete_scope', $theScope);
 				

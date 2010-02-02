@@ -276,7 +276,7 @@
 		$cc = 0;
 		foreach($milestones as $aMilestone)
 		{
-			$aMilestone = TBGFactory::milestoneLab($aMilestone['id']);
+			$aMilestone = TBGFactory::TBGMilestoneLab($aMilestone['id']);
 			$cc++;
 			?><tr>
 			<td style="width: 50%; padding: 2px; padding-bottom: 10px;" valign="top">

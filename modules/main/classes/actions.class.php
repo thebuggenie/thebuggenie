@@ -141,8 +141,8 @@
 		 */
 		public function runAbout(TBGRequest $request)
 		{
-			B2DB::getTable('B2tFiles')->create();
-			B2DB::getTable('B2tIssueFiles')->create();
+			B2DB::getTable('TBGIssueEstimates')->create();
+			B2DB::getTable('TBGIssueSpentTimes')->create();
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('about'));
 			$this->getResponse()->setProjectMenuStripHidden();
 		}
@@ -235,12 +235,12 @@
 					if ($BUGS_user->getUID() != 0)
 					{
 						$crit = new B2DBCriteria();
-						$crit->addWhere(B2tUsers::UNAME, TBGContext::getRequest()->getParameter('new_user'));
-						$crit->addSelectionColumn(B2tUsers::ID);
-						$row = B2DB::getTable('B2tUsers')->doSelectOne($crit);
+						$crit->addWhere(TBGUsersTable::UNAME, TBGContext::getRequest()->getParameter('new_user'));
+						$crit->addSelectionColumn(TBGUsersTable::ID);
+						$row = B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
 						if ($row instanceof B2DBRow)
 						{
-							$newUser = new TBGUser($row->get(B2tUsers::ID));
+							$newUser = new TBGUser($row->get(TBGUsersTable::ID));
 							TBGContext::setScope(1);
 							TBGContext::cacheAllPermissions();
 							if ((TBGContext::getUser()->hasPermission("b2saveconfig", 14, "core") && $newUser->getScope()->getID() != TBGContext::getScope()->getID()) || TBGContext::getUser()->hasPermission("b2saveconfig", 2, "core"))
@@ -315,7 +315,7 @@
 					$username = TBGContext::getRequest()->getParameter('desired_username');
 					if (!empty($username))
 					{
-						$exists = B2DB::getTable('B2tUsers')->getByUsername($username);
+						$exists = B2DB::getTable('TBGUsersTable')->getByUsername($username);
 						
 						if ($exists)
 						{
@@ -451,17 +451,17 @@
 		{
 			$this->getResponse()->setPage('../../login');
 			
-			$row = B2DB::getTable('B2tUsers')->getByUsername($request->getParameter('user'));
+			$row = B2DB::getTable('TBGUsersTable')->getByUsername($request->getParameter('user'));
 			if ($row)
 			{
-				if ($row->get(B2tUsers::PASSWD) != $request->getParameter('key'))
+				if ($row->get(TBGUsersTable::PASSWD) != $request->getParameter('key'))
 				{
 					TBGContext::setMessage('account_activate', true);
 					TBGContext::setMessage('activate_failure', true);
 				}
 				else
 				{
-					$user = new TBGUser($row->get(B2tUsers::ID), $row);
+					$user = new TBGUser($row->get(TBGUsersTable::ID), $row);
 					$user->setValidated(1);
 					TBGContext::setMessage('account_activate', true);
 					TBGContext::setMessage('activate_success', true);
@@ -1245,7 +1245,7 @@
 						elseif ($request->hasParameter('milestone_id') && $request->getParameter('field') == 'milestone')
 						{
 							$milestone_id = $request->getParameter('milestone_id');
-							if ($milestone_id == 0 || ($milestone_id !== 0 && ($milestone = TBGFactory::milestoneLab($milestone_id)) instanceof TBGMilestone))
+							if ($milestone_id == 0 || ($milestone_id !== 0 && ($milestone = TBGFactory::TBGMilestoneLab($milestone_id)) instanceof TBGMilestone))
 							{
 								$issue->setMilestone($milestone_id);
 								if (!$issue->isMilestoneChanged()) return $this->renderJSON(array('changed' => false));
@@ -1691,7 +1691,7 @@
 					$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
 					if ($issue->canRemoveAttachments() && (int) $request->getParameter('file_id', 0))
 					{
-						B2DB::getTable('B2tIssueFiles')->removeFileFromIssue($issue->getID(), (int) $request->getParameter('file_id'));
+						B2DB::getTable('TBGIssueFilesTable')->removeFileFromIssue($issue->getID(), (int) $request->getParameter('file_id'));
 						return $this->renderJSON(array('failed' => false, 'file_id' => $request->getParameter('file_id'), 'message' => TBGContext::getI18n()->__('The attachment has been removed')));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You can not remove items from this issue')));
@@ -1702,22 +1702,22 @@
 
 		public function runGetFile(TBGRequest $request)
 		{
-			$file = B2DB::getTable('B2tFiles')->doSelectById((int) $request->getParameter('id'));
+			$file = B2DB::getTable('TBGFilesTable')->doSelectById((int) $request->getParameter('id'));
 			if ($file instanceof B2DBRow)
 			{
 				$this->getResponse()->cleanBuffer();
 				$this->getResponse()->clearHeaders();
 				$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
-				$this->getResponse()->addHeader('Content-disposition: '.(($request->getParameter('mode') == 'download') ? 'attachment' : 'inline').'; filename='.$file->get(B2tFiles::ORIGINAL_FILENAME));
-				$this->getResponse()->addHeader('Content-type: '.$file->get(B2tFiles::CONTENT_TYPE));
+				$this->getResponse()->addHeader('Content-disposition: '.(($request->getParameter('mode') == 'download') ? 'attachment' : 'inline').'; filename='.$file->get(TBGFilesTable::ORIGINAL_FILENAME));
+				$this->getResponse()->addHeader('Content-type: '.$file->get(TBGFilesTable::CONTENT_TYPE));
 				$this->getResponse()->renderHeaders();
 				if (TBGSettings::getUploadStorage() == 'files')
 				{
-					echo fpassthru(fopen(TBGSettings::getUploadsLocalpath().$file->get(B2tFiles::REAL_FILENAME), 'r'));
+					echo fpassthru(fopen(TBGSettings::getUploadsLocalpath().$file->get(TBGFilesTable::REAL_FILENAME), 'r'));
 				}
 				else
 				{
-					echo $file->get(B2tFiles::CONTENT);
+					echo $file->get(TBGFilesTable::CONTENT);
 				}
 				//die();
 				return true;

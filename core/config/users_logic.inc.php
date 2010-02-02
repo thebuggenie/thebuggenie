@@ -7,27 +7,27 @@
 		if (TBGContext::getRequest()->getParameter('validate') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::ACTIVATED, 1);
-			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, TBGContext::getRequest()->getParameter('uid'));
+			$crit->addUpdate(TBGUsersTable::ACTIVATED, 1);
+			$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, TBGContext::getRequest()->getParameter('uid'));
 		}
 		if (TBGContext::getRequest()->getParameter('unvalidate') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::ACTIVATED, 0);
-			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, TBGContext::getRequest()->getParameter('uid'));
+			$crit->addUpdate(TBGUsersTable::ACTIVATED, 0);
+			$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, TBGContext::getRequest()->getParameter('uid'));
 		}
 
 		if (TBGContext::getRequest()->getParameter('suspend') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::ENABLED, 0);
-			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, TBGContext::getRequest()->getParameter('uid'));
+			$crit->addUpdate(TBGUsersTable::ENABLED, 0);
+			$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, TBGContext::getRequest()->getParameter('uid'));
 		}
 		if (TBGContext::getRequest()->getParameter('enable') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::ENABLED, 1);
-			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, TBGContext::getRequest()->getParameter('uid'));
+			$crit->addUpdate(TBGUsersTable::ENABLED, 1);
+			$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, TBGContext::getRequest()->getParameter('uid'));
 		}
 
 		if (TBGContext::getRequest()->getParameter('addteam') != "" && is_numeric(TBGContext::getRequest()->getParameter('uid')) && is_numeric(TBGContext::getRequest()->getParameter('addteam')))
@@ -44,50 +44,50 @@
 		if (TBGContext::getRequest()->getParameter('delete') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
 			$uid = TBGContext::getRequest()->getParameter('uid');
-			$row = B2DB::getTable('B2tUsers')->doSelectById($uid);
-			if (TBGSettings::get('defaultuname') == $row->get(B2tUsers::UNAME))
+			$row = B2DB::getTable('TBGUsersTable')->doSelectById($uid);
+			if (TBGSettings::get('defaultuname') == $row->get(TBGUsersTable::UNAME))
 			{
 				$theMessage = __('This is the default user account. You cannot delete this');
 			}
 			else
 			{
 				$crit = new B2DBCriteria();
-				$crit->addUpdate(B2tUsers::DELETED, 1);
-				B2DB::getTable('B2tUsers')->doUpdateById($crit, $uid);
+				$crit->addUpdate(TBGUsersTable::DELETED, 1);
+				B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $uid);
 			}
 		}
 		if (TBGContext::getRequest()->getParameter('restore') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::ENABLED, 0);
-			$crit->addUpdate(B2tUsers::DELETED, 0);
-			$res = B2DB::getTable('B2tUsers')->doUpdateById(TBGContext::getRequest()->getParameter('uid'));
+			$crit->addUpdate(TBGUsersTable::ENABLED, 0);
+			$crit->addUpdate(TBGUsersTable::DELETED, 0);
+			$res = B2DB::getTable('TBGUsersTable')->doUpdateById(TBGContext::getRequest()->getParameter('uid'));
 		}
 
 		if (TBGContext::getRequest()->getParameter('purge') && is_numeric(TBGContext::getRequest()->getParameter('uid')))
 		{
-			B2DB::getTable('B2tUsers')->doDeleteById(TBGContext::getRequest()->getParameter('uid'));
+			B2DB::getTable('TBGUsersTable')->doDeleteById(TBGContext::getRequest()->getParameter('uid'));
 			$uid = TBGContext::getRequest()->getParameter('uid');
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tIssues::POSTED_BY, TBGContext::getRequest()->getParameter('uid'));
-			B2DB::getTable('B2tIssues')->doDelete($crit);
+			$crit->addWhere(TBGIssuesTable::POSTED_BY, TBGContext::getRequest()->getParameter('uid'));
+			B2DB::getTable('TBGIssuesTable')->doDelete($crit);
 			
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tComments::POSTED_BY, TBGContext::getRequest()->getParameter('uid'));
-			B2DB::getTable('B2tComments')->doDelete($crit);
+			$crit->addWhere(TBGCommentsTable::POSTED_BY, TBGContext::getRequest()->getParameter('uid'));
+			B2DB::getTable('TBGCommentsTable')->doDelete($crit);
 
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tBuddies::UID, $uid);
-			$crit->addOr(B2tBuddies::BID, $uid);
-			B2DB::getTable('B2tBuddies')->doDelete($crit);
+			$crit->addWhere(TBGBuddiesTable::UID, $uid);
+			$crit->addOr(TBGBuddiesTable::BID, $uid);
+			B2DB::getTable('TBGBuddiesTable')->doDelete($crit);
 			
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tTeamMembers::UID, $uid);
-			B2DB::getTable('B2tTeamMembers')->doDelete($crit);
+			$crit->addWhere(TBGTeamMembersTable::UID, $uid);
+			B2DB::getTable('TBGTeamMembersTable')->doDelete($crit);
 			
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tPermissions::UID, $uid);
-			B2DB::getTable('B2tPermissions')->doDelete($crit);				
+			$crit->addWhere(TBGPermissionsTable::UID, $uid);
+			B2DB::getTable('TBGPermissionsTable')->doDelete($crit);				
 		}
 
 		if (TBGContext::getRequest()->getParameter('pwd_1') != "" && is_numeric(TBGContext::getRequest()->getParameter('uid')))
@@ -146,9 +146,9 @@
 			$newGroup = (int) TBGContext::getRequest()->getParameter('group');
 
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tUsers::UNAME, $newUname);
+			$crit->addWhere(TBGUsersTable::UNAME, $newUname);
 			
-			if (B2DB::getTable('B2tUsers')->doCount($crit) > 0)
+			if (B2DB::getTable('TBGUsersTable')->doCount($crit) > 0)
 			{
 				$searchTerm = $newUname;
 				$theMessage = __('This user already exists');

@@ -229,13 +229,13 @@
 		public static function getUsersByVerified($activated)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tUsers::ACTIVATED, ($activated) ? 1 : 0);
-			$res = B2DB::getTable('B2tUsers')->doSelect($crit);
+			$crit->addWhere(TBGUsersTable::ACTIVATED, ($activated) ? 1 : 0);
+			$res = B2DB::getTable('TBGUsersTable')->doSelect($crit);
 			
 			$users = array();
 			while ($row = $res->getNextRow())
 			{
-				$users[] = array('id' => $row->get(B2tUsers::ID));
+				$users[] = array('id' => $row->get(TBGUsersTable::ID));
 			}
 			return $users;
 		}
@@ -243,13 +243,13 @@
 		public static function getUsersByEnabled($enabled)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tUsers::ENABLED, ($enabled) ? 1 : 0);
-			$res = B2DB::getTable('B2tUsers')->doSelect($crit);
+			$crit->addWhere(TBGUsersTable::ENABLED, ($enabled) ? 1 : 0);
+			$res = B2DB::getTable('TBGUsersTable')->doSelect($crit);
 			
 			$users = array();
 			while ($row = $res->getNextRow())
 			{
-				$users[] = array('id' => $row->get(B2tUsers::ID));
+				$users[] = array('id' => $row->get(TBGUsersTable::ID));
 			}
 			return $users;
 		}
@@ -263,9 +263,9 @@
 		 */
 		public static function getByUsername($username)
 		{
-			if ($row = B2DB::getTable('B2tUsers')->getByUsername($username))
+			if ($row = B2DB::getTable('TBGUsersTable')->getByUsername($username))
 			{
-				return TBGFactory::userLab($row->get(B2tUsers::ID), $row);
+				return TBGFactory::userLab($row->get(TBGUsersTable::ID), $row);
 			}
 			return null;
 		}
@@ -278,37 +278,37 @@
 			{
 				if (stristr($details, "@"))
 				{
-					$crit->addWhere(B2tUsers::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
+					$crit->addWhere(TBGUsersTable::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
 				}
 				else
 				{
-					$crit->addWhere(B2tUsers::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
+					$crit->addWhere(TBGUsersTable::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
 				}
 		
 				if ($noScope == false)
 				{
-					$crit->addWhere(B2tUsers::SCOPE, TBGContext::getScope()->getID());
+					$crit->addWhere(TBGUsersTable::SCOPE, TBGContext::getScope()->getID());
 				}
 			}
 			else
 			{
-				$crit->addWhere(B2tUsers::UNAME, "$details%", B2DBCriteria::DB_LIKE);
+				$crit->addWhere(TBGUsersTable::UNAME, "$details%", B2DBCriteria::DB_LIKE);
 			}
 	
-			$res = B2DB::getTable('B2tUsers')->doSelect($crit);
+			$res = B2DB::getTable('TBGUsersTable')->doSelect($crit);
 	
 			if ($res->count() == 0 && strlen($details) > 1)
 			{
 				$crit = new B2DBCriteria();
-				$ctn = $crit->returnCriterion(B2tUsers::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$ctn->addOr(B2tUsers::BUDDYNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$ctn->addOr(B2tUsers::REALNAME, "%$details%", B2DBCriteria::DB_LIKE);
+				$ctn = $crit->returnCriterion(TBGUsersTable::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
+				$ctn->addOr(TBGUsersTable::BUDDYNAME, "%$details%", B2DBCriteria::DB_LIKE);
+				$ctn->addOr(TBGUsersTable::REALNAME, "%$details%", B2DBCriteria::DB_LIKE);
 				$crit->addWhere($ctn);
 				if ($noScope == false)
 				{
-					$crit->addWhere(B2tUsers::SCOPE, TBGContext::getScope()->getID());
+					$crit->addWhere(TBGUsersTable::SCOPE, TBGContext::getScope()->getID());
 				}
-				$res = B2DB::getTable('B2tUsers')->doSelect($crit);
+				$res = B2DB::getTable('TBGUsersTable')->doSelect($crit);
 			}
 	
 			if ($res->count() == 0)
@@ -319,7 +319,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$users[] = array('id' => $row->get(B2tUsers::ID));
+					$users[] = array('id' => $row->get(TBGUsersTable::ID));
 				}
 				return $users;
 			}
@@ -331,7 +331,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$users[] = array('id' => $row->get(B2tUsers::ID));
+					$users[] = array('id' => $row->get(TBGUsersTable::ID));
 				}
 				return $users;
 			}
@@ -355,7 +355,7 @@
 					{
 						$username = TBGContext::getRequest()->getCookie('b2_username');
 						$password = TBGContext::getRequest()->getCookie('b2_password');
-						$row = B2DB::getTable('B2tUsers')->getByUsernameAndPassword($username, $password);
+						$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, $password);
 						if (!$row)
 						{
 							TBGContext::getResponse()->deleteCookie('b2_username');
@@ -366,27 +366,27 @@
 				}
 				if ($username !== null && $password !== null)
 				{
-					$row = B2DB::getTable('B2tUsers')->getByUsernameAndPassword($username, $password);
+					$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, $password);
 				}
 				elseif (!TBGSettings::isLoginRequired())
 				{
-					$row = B2DB::getTable('B2tUsers')->getByUserID(TBGSettings::getDefaultUserID());
+					$row = B2DB::getTable('TBGUsersTable')->getByUserID(TBGSettings::getDefaultUserID());
 				}
 				if ($row)
 				{
-					if (!$row->get(B2tScopes::ENABLED))
+					if (!$row->get(TBGScopesTable::ENABLED))
 					{
 						throw new Exception('This account belongs to a scope that is not active');
 					}
-					elseif (!$row->get(B2tUsers::ACTIVATED))
+					elseif (!$row->get(TBGUsersTable::ACTIVATED))
 					{
 						throw new Exception('This account has not been activated yet');
 					}
-					elseif (!$row->get(B2tUsers::ENABLED))
+					elseif (!$row->get(TBGUsersTable::ENABLED))
 					{
 						throw new Exception('This account has been suspended');
 					}
-					$user = TBGFactory::userLab($row->get(B2tUsers::ID), $row);
+					$user = TBGFactory::userLab($row->get(TBGUsersTable::ID), $row);
 				}
 				elseif (TBGSettings::isLoginRequired())
 				{
@@ -443,30 +443,30 @@
 			$crit = new B2DBCriteria();
 			if ($u_id !== null)
 			{
-				$crit->addInsert(B2tUsers::ID, $u_id);
+				$crit->addInsert(TBGUsersTable::ID, $u_id);
 			}
 			if ($lastseen !== null)
 			{
-				$crit->addInsert(B2tUsers::LASTSEEN, $lastseen);
+				$crit->addInsert(TBGUsersTable::LASTSEEN, $lastseen);
 			}
-			$crit->addInsert(B2tUsers::UNAME, $username);
-			$crit->addInsert(B2tUsers::REALNAME, $realname);
-			$crit->addInsert(B2tUsers::BUDDYNAME, $buddyname);
-			$crit->addInsert(B2tUsers::EMAIL, $email);
+			$crit->addInsert(TBGUsersTable::UNAME, $username);
+			$crit->addInsert(TBGUsersTable::REALNAME, $realname);
+			$crit->addInsert(TBGUsersTable::BUDDYNAME, $buddyname);
+			$crit->addInsert(TBGUsersTable::EMAIL, $email);
 			if ($pass_is_md5)
 			{
-				$crit->addInsert(B2tUsers::PASSWD, $password);
+				$crit->addInsert(TBGUsersTable::PASSWD, $password);
 			}
 			else
 			{
-				$crit->addInsert(B2tUsers::PASSWD, md5($password));
+				$crit->addInsert(TBGUsersTable::PASSWD, md5($password));
 			}
-			$crit->addInsert(B2tUsers::SCOPE, $scope);
-			$crit->addInsert(B2tUsers::ACTIVATED, $activated);
-			$crit->addInsert(B2tUsers::ENABLED, $enabled);
-			$crit->addInsert(B2tUsers::JOINED, $_SERVER["REQUEST_TIME"]);
-			$crit->addInsert(B2tUsers::AVATAR, 'smiley');
-			$res = B2DB::getTable('B2tUsers')->doInsert($crit);
+			$crit->addInsert(TBGUsersTable::SCOPE, $scope);
+			$crit->addInsert(TBGUsersTable::ACTIVATED, $activated);
+			$crit->addInsert(TBGUsersTable::ENABLED, $enabled);
+			$crit->addInsert(TBGUsersTable::JOINED, $_SERVER["REQUEST_TIME"]);
+			$crit->addInsert(TBGUsersTable::AVATAR, 'smiley');
+			$res = B2DB::getTable('TBGUsersTable')->doInsert($crit);
 	
 			if ($u_id === null) $u_id = $res->getInsertID();
 			
@@ -503,7 +503,7 @@
 			{
 				if ($row === null)
 				{
-					$row = B2DB::getTable('B2tUsers')->doSelectById($uid);
+					$row = B2DB::getTable('TBGUsersTable')->doSelectById($uid);
 				}
 				if (!$row instanceof B2DBRow)
 				{
@@ -511,39 +511,39 @@
 				}
 				try
 				{
-					$this->uid = $row->get(B2tUsers::ID);
-					if (($row->get(B2tUsers::STATE) == TBGSettings::get('offlinestate') || $row->get(B2tUsers::STATE) == TBGSettings::get('awaystate')) && !TBGContext::getRequest()->getParameter('setuserstate')) 
+					$this->uid = $row->get(TBGUsersTable::ID);
+					if (($row->get(TBGUsersTable::STATE) == TBGSettings::get('offlinestate') || $row->get(TBGUsersTable::STATE) == TBGSettings::get('awaystate')) && !TBGContext::getRequest()->getParameter('setuserstate')) 
 					{ 
 						$this->setState(TBGSettings::get('onlinestate')); 
 					}
-					if ($row->get(B2tUsers::GROUP_ID) != 0)
+					if ($row->get(TBGUsersTable::GROUP_ID) != 0)
 					{
-						$this->group = TBGFactory::groupLab($row->get(B2tUsers::GROUP_ID), $row);
+						$this->group = TBGFactory::groupLab($row->get(TBGUsersTable::GROUP_ID), $row);
 					}
-					if ($row->get(B2tUsers::CUSTOMER_ID) != 0)
+					if ($row->get(TBGUsersTable::CUSTOMER_ID) != 0)
 					{
-						$this->customer = TBGFactory::customerLab($row->get(B2tUsers::CUSTOMER_ID), $row);
+						$this->customer = TBGFactory::customerLab($row->get(TBGUsersTable::CUSTOMER_ID), $row);
 					}
 					$this->authenticated = true;
-					$this->uname = $row->get(B2tUsers::UNAME);
-					$this->realname = $row->get(B2tUsers::REALNAME);
-					$this->buddyname = $row->get(B2tUsers::BUDDYNAME);
-					$this->email = $row->get(B2tUsers::EMAIL);
-					$this->homepage = $row->get(B2tUsers::HOMEPAGE);
-					$this->showfollowups = ($row->get(B2tUsers::SHOWFOLLOWUPS) == 1) ? true : false;
-					$this->avatar = $row->get(B2tUsers::AVATAR);
-					$this->_use_gravatar = (bool) $row->get(B2tUsers::USE_GRAVATAR);
-					$this->scope = TBGFactory::scopeLab($row->get(B2tUsers::SCOPE), $row);
-					$this->pwd = $row->get(B2tUsers::PASSWD);
-					$this->showassigned = ($row->get(B2tUsers::SHOWASSIGNED) == 1) ? true : false;
-					$this->private_email = ($row->get(B2tUsers::PRIVATE_EMAIL) == 1) ? true : false;
+					$this->uname = $row->get(TBGUsersTable::UNAME);
+					$this->realname = $row->get(TBGUsersTable::REALNAME);
+					$this->buddyname = $row->get(TBGUsersTable::BUDDYNAME);
+					$this->email = $row->get(TBGUsersTable::EMAIL);
+					$this->homepage = $row->get(TBGUsersTable::HOMEPAGE);
+					$this->showfollowups = ($row->get(TBGUsersTable::SHOWFOLLOWUPS) == 1) ? true : false;
+					$this->avatar = $row->get(TBGUsersTable::AVATAR);
+					$this->_use_gravatar = (bool) $row->get(TBGUsersTable::USE_GRAVATAR);
+					$this->scope = TBGFactory::scopeLab($row->get(TBGUsersTable::SCOPE), $row);
+					$this->pwd = $row->get(TBGUsersTable::PASSWD);
+					$this->showassigned = ($row->get(TBGUsersTable::SHOWASSIGNED) == 1) ? true : false;
+					$this->private_email = ($row->get(TBGUsersTable::PRIVATE_EMAIL) == 1) ? true : false;
 					$this->login_error = '';
-					$this->state = $row->get(B2tUsers::STATE);
-					$this->lastseen = $row->get(B2tUsers::LASTSEEN);
-					$this->_joined = $row->get(B2tUsers::JOINED);
-					$this->_isactivated = ($row->get(B2tUsers::ACTIVATED) == 1) ? true : false;
-					$this->_isenabled = ($row->get(B2tUsers::ENABLED) == 1) ? true : false;
-					$this->_isdeleted = ($row->get(B2tUsers::DELETED) == 1) ? true : false;
+					$this->state = $row->get(TBGUsersTable::STATE);
+					$this->lastseen = $row->get(TBGUsersTable::LASTSEEN);
+					$this->_joined = $row->get(TBGUsersTable::JOINED);
+					$this->_isactivated = ($row->get(TBGUsersTable::ACTIVATED) == 1) ? true : false;
+					$this->_isenabled = ($row->get(TBGUsersTable::ENABLED) == 1) ? true : false;
+					$this->_isdeleted = ($row->get(TBGUsersTable::DELETED) == 1) ? true : false;
 					$this->_timezone = (int) TBGSettings::get('timezone', 'core', null, $uid);
 				}
 				catch (Exception $e)
@@ -604,9 +604,9 @@
 		public function updateLastSeen()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::LASTSEEN, $_SERVER["REQUEST_TIME"]);
-			$crit->addWhere(B2tUsers::ID, $this->uid);
-			B2DB::getTable('B2tUsers')->doUpdate($crit);
+			$crit->addUpdate(TBGUsersTable::LASTSEEN, $_SERVER["REQUEST_TIME"]);
+			$crit->addWhere(TBGUsersTable::ID, $this->uid);
+			B2DB::getTable('TBGUsersTable')->doUpdate($crit);
 			$this->lastseen = $_SERVER["REQUEST_TIME"];
 		}
 		
@@ -647,14 +647,14 @@
 				$this->teams = array();
 				TBGLogging::log('Populating user teams');
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tTeamMembers::UID, $this->uid);
+				$crit->addWhere(TBGTeamMembersTable::UID, $this->uid);
 		
-				if (B2DB::getTable('B2tTeamMembers')->doCount($crit) > 0)
+				if (B2DB::getTable('TBGTeamMembersTable')->doCount($crit) > 0)
 				{
-					$res = B2DB::getTable('B2tTeamMembers')->doSelect($crit);
+					$res = B2DB::getTable('TBGTeamMembersTable')->doSelect($crit);
 					while ($row = $res->getNextRow())
 					{
-						$this->teams[$row->get(B2tTeams::ID)] = TBGFactory::teamLab($row->get(B2tTeams::ID), $row);
+						$this->teams[$row->get(TBGTeamsTable::ID)] = TBGFactory::teamLab($row->get(TBGTeamsTable::ID), $row);
 					}
 				}
 				TBGLogging::log('...done (Populating user teams)');
@@ -691,8 +691,8 @@
 			if ($setting != null)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addUpdate(B2tUsers::SHOWFOLLOWUPS, $setting);
-				$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, $this->uid);
+				$crit->addUpdate(TBGUsersTable::SHOWFOLLOWUPS, $setting);
+				$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->uid);
 				$this->showfollowups = ($setting == 0) ? false : true;
 			}
 			return $this->showfollowups;
@@ -708,11 +708,11 @@
 			if ($this->userassigned === null)
 			{
 				$this->userassigned = array();
-				if ($res = B2DB::getTable('B2tIssues')->getOpenIssuesByUserAssigned($this->getUID()))
+				if ($res = B2DB::getTable('TBGIssuesTable')->getOpenIssuesByUserAssigned($this->getUID()))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->userassigned[$row->get(B2tIssues::ID)] = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID), $row);
+						$this->userassigned[$row->get(TBGIssuesTable::ID)] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
 					}
 					ksort($this->userassigned, SORT_NUMERIC);
 				}
@@ -730,8 +730,8 @@
 			if ($setting != null)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addUpdate(B2tUsers::SHOWASSIGNED, $setting);
-				$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, $this->uid);
+				$crit->addUpdate(TBGUsersTable::SHOWASSIGNED, $setting);
+				$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->uid);
 				$this->showassigned = ($setting == 0) ? false : true;
 			}
 			return $this->showassigned;
@@ -748,11 +748,11 @@
 			if (!array_key_exists($team_id, $this->teamassigned))
 			{
 				$this->teamassigned[$team_id] = array();
-				if ($res = B2DB::getTable('B2tIssues')->getOpenIssuesByTeamAssigned($team_id))
+				if ($res = B2DB::getTable('TBGIssuesTable')->getOpenIssuesByTeamAssigned($team_id))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->teamassigned[$team_id][$row->get(B2tIssues::ID)] = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID), $row);
+						$this->teamassigned[$team_id][$row->get(TBGIssuesTable::ID)] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
 					}
 				}
 				ksort($this->teamassigned[$team_id], SORT_NUMERIC);
@@ -768,11 +768,11 @@
 			if ($this->_starredissues === null)
 			{
 				$this->_starredissues = array();
-				if ($res = B2DB::getTable('B2tUserIssues')->getUserStarredIssues($this->getUID()))
+				if ($res = B2DB::getTable('TBGUserIssuesTable')->getUserStarredIssues($this->getUID()))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_starredissues[$row->get(B2tIssues::ID)] = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID), $row);
+						$this->_starredissues[$row->get(TBGIssuesTable::ID)] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
 					}
 					ksort($this->_starredissues, SORT_NUMERIC);
 				}
@@ -822,11 +822,11 @@
 				}
 				TBGLogging::log('Logged in and unstarred, continuing');
 				$crit = new B2DBCriteria();
-				$crit->addInsert(B2tUserIssues::ISSUE, $issue_id);
-				$crit->addInsert(B2tUserIssues::UID, $this->uid);
-				$crit->addInsert(B2tUserIssues::SCOPE, TBGContext::getScope()->getID());
+				$crit->addInsert(TBGUserIssuesTable::ISSUE, $issue_id);
+				$crit->addInsert(TBGUserIssuesTable::UID, $this->uid);
+				$crit->addInsert(TBGUserIssuesTable::SCOPE, TBGContext::getScope()->getID());
 				
-				B2DB::getTable('B2tUserIssues')->doInsert($crit);
+				B2DB::getTable('TBGUserIssuesTable')->doInsert($crit);
 				$issue = TBGFactory::TBGIssueLab($issue_id);
 				$this->_starredissues[$issue->getID()] = $issue;
 				ksort($this->_starredissues);
@@ -848,10 +848,10 @@
 		public function removeStarredIssue($issue_id)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tUserIssues::ISSUE, $issue_id);
-			$crit->addWhere(B2tUserIssues::UID, $this->uid);
+			$crit->addWhere(TBGUserIssuesTable::ISSUE, $issue_id);
+			$crit->addWhere(TBGUserIssuesTable::UID, $this->uid);
 				
-			B2DB::getTable('B2tUserIssues')->doDelete($crit);
+			B2DB::getTable('TBGUserIssuesTable')->doDelete($crit);
 			unset($this->_starredissues[$issue_id]);
 			return true;
 		}
@@ -867,10 +867,10 @@
 			if (!($this->isFriend($bid)))
 			{
 				$crit = new B2DBCriteria();
-				$crit->addInsert(B2tBuddies::UID, $this->uid);
-				$crit->addInsert(B2tBuddies::BID, $bid);
-				$crit->addInsert(B2tBuddies::SCOPE, TBGContext::getScope()->getID());
-				B2DB::getTable('B2tBuddies')->doInsert($crit);
+				$crit->addInsert(TBGBuddiesTable::UID, $this->uid);
+				$crit->addInsert(TBGBuddiesTable::BID, $bid);
+				$crit->addInsert(TBGBuddiesTable::SCOPE, TBGContext::getScope()->getID());
+				B2DB::getTable('TBGBuddiesTable')->doInsert($crit);
 				$this->_friends[$bid] = array('id' => $bid);
 				return true;
 			}
@@ -891,14 +891,14 @@
 			{
 				$this->_friends = array();
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tBuddies::UID, $this->uid);
-				$crit->setFromTable(B2DB::getTable('B2tBuddies'));
-				$crit->addJoin(B2DB::getTable('B2tUsers'), B2tUsers::ID, B2tBuddies::BID);
-				if ($res = B2DB::getTable('B2tBuddies')->doSelect($crit))
+				$crit->addWhere(TBGBuddiesTable::UID, $this->uid);
+				$crit->setFromTable(B2DB::getTable('TBGBuddiesTable'));
+				$crit->addJoin(B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID, TBGBuddiesTable::BID);
+				if ($res = B2DB::getTable('TBGBuddiesTable')->doSelect($crit))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_friends[$row->get(B2tBuddies::BID)] = TBGFactory::userLab($row->get(B2tBuddies::BID), $row);
+						$this->_friends[$row->get(TBGBuddiesTable::BID)] = TBGFactory::userLab($row->get(TBGBuddiesTable::BID), $row);
 					}
 				}
 			}
@@ -914,10 +914,10 @@
 		public function removeFriend($bid)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tBuddies::UID, $this->uid);
-			$crit->addWhere(B2tBuddies::BID, $bid);
+			$crit->addWhere(TBGBuddiesTable::UID, $this->uid);
+			$crit->addWhere(TBGBuddiesTable::BID, $bid);
 			
-			B2DB::getTable('B2tBuddies')->doDelete($crit);
+			B2DB::getTable('TBGBuddiesTable')->doDelete($crit);
 			unset($this->_friends[$bid]);
 		}
 	
@@ -970,10 +970,10 @@
 		public function setState($s_id)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::STATE, $s_id);
-			$crit->addWhere(B2tUsers::ID, $this->uid);
+			$crit->addUpdate(TBGUsersTable::STATE, $s_id);
+			$crit->addWhere(TBGUsersTable::ID, $this->uid);
 			
-			B2DB::getTable('B2tUsers')->doUpdate($crit);
+			B2DB::getTable('TBGUsersTable')->doUpdate($crit);
 			$this->state = $s_id;
 		}
 		
@@ -1041,7 +1041,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate($detail, $value);
-			B2DB::getTable('B2tUsers')->doUpdateById($crit, $this->uid);
+			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->uid);
 			return true;
 		}
 	
@@ -1133,8 +1133,8 @@
 		public function setGroup($gid)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::GROUP_ID, (int) $gid);
-			B2DB::getTable('B2tUsers')->doUpdateById($crit, $this->uid);
+			$crit->addUpdate(TBGUsersTable::GROUP_ID, (int) $gid);
+			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->uid);
 			$this->group = TBGFactory::groupLab($gid);
 		}
 		
@@ -1244,7 +1244,7 @@
 		 */
 		public function setAvatar($avatar)
 		{
-			$this->_setUserDetail(B2tUsers::AVATAR, $avatar);
+			$this->_setUserDetail(TBGUsersTable::AVATAR, $avatar);
 			$this->avatar = $avatar;
 		}
 		
@@ -1305,13 +1305,13 @@
 		{
 			$crit = new B2DBCriteria();
 			
-			if ($realname !== null) $crit->addUpdate(B2tUsers::REALNAME, $realname);
-			if ($buddyname !== null) $crit->addUpdate(B2tUsers::BUDDYNAME, $buddyname);
-			if ($homepage !== null) $crit->addUpdate(B2tUsers::HOMEPAGE, $homepage);
-			if ($email !== null) $crit->addUpdate(B2tUsers::EMAIL, $email);
-			if ($uname !== null) $crit->addUpdate(B2tUsers::UNAME, $uname);
+			if ($realname !== null) $crit->addUpdate(TBGUsersTable::REALNAME, $realname);
+			if ($buddyname !== null) $crit->addUpdate(TBGUsersTable::BUDDYNAME, $buddyname);
+			if ($homepage !== null) $crit->addUpdate(TBGUsersTable::HOMEPAGE, $homepage);
+			if ($email !== null) $crit->addUpdate(TBGUsersTable::EMAIL, $email);
+			if ($uname !== null) $crit->addUpdate(TBGUsersTable::UNAME, $uname);
 			
-			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, $this->uid);
+			$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->uid);
 			
 			if ($realname !== null) $this->realname = $realname;
 			if ($buddyname !== null) $this->buddyname = $buddyname;
@@ -1363,8 +1363,8 @@
 		public function setEnabled($val)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::ENABLED, ($val) ? 1 : 0);
-			B2DB::getTable('B2tUsers')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGUsersTable::ENABLED, ($val) ? 1 : 0);
+			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->getID());
 			$this->_isenabled = $val;
 			if (!$val && $this->getUname() == TBGSettings::get('defaultuname'))
 			{
@@ -1375,8 +1375,8 @@
 		public function setValidated($val)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::ACTIVATED, ($val) ? 1 : 0);
-			B2DB::getTable('B2tUsers')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGUsersTable::ACTIVATED, ($val) ? 1 : 0);
+			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->getID());
 			$this->_isactivated = $val;
 		}
 		
@@ -1389,11 +1389,11 @@
 		 */
 		public static function findUser($details)
 		{
-			$res = B2DB::getTable('B2tUsers')->getByDetails($details);
+			$res = B2DB::getTable('TBGUsersTable')->getByDetails($details);
 			
 			if (!$res || $res->count() > 1) return false;
 			
-			return TBGFactory::userLab($row->get(B2tUsers::ID), $row);
+			return TBGFactory::userLab($row->get(TBGUsersTable::ID), $row);
 		}
 
 		/**
@@ -1408,11 +1408,11 @@
 		{
 			$retarr = array();
 			
-			if ($res = B2DB::getTable('B2tUsers')->getByDetails($details))
+			if ($res = B2DB::getTable('TBGUsersTable')->getByDetails($details))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$retarr[$row->get(B2tUsers::ID)] = TBGFactory::userLab($row->get(B2tUsers::ID), $row);
+					$retarr[$row->get(TBGUsersTable::ID)] = TBGFactory::userLab($row->get(TBGUsersTable::ID), $row);
 				}
 			}
 			return $retarr;
@@ -1478,16 +1478,16 @@
 		 */
 		public function save()
 		{
-			$crit = B2DB::getTable('B2tUsers')->getCriteria();
-			$crit->addUpdate(B2tUsers::REALNAME, $this->realname);
-			$crit->addUpdate(B2tUsers::BUDDYNAME, $this->buddyname);
-			$crit->addUpdate(B2tUsers::USE_GRAVATAR, (bool) $this->_use_gravatar);
-			$crit->addUpdate(B2tUsers::PRIVATE_EMAIL, (bool) $this->private_email);
-			$crit->addUpdate(B2tUsers::PASSWD, $this->pwd);
-			$crit->addUpdate(B2tUsers::EMAIL, $this->email);
-			$crit->addUpdate(B2tUsers::HOMEPAGE, $this->homepage);
+			$crit = B2DB::getTable('TBGUsersTable')->getCriteria();
+			$crit->addUpdate(TBGUsersTable::REALNAME, $this->realname);
+			$crit->addUpdate(TBGUsersTable::BUDDYNAME, $this->buddyname);
+			$crit->addUpdate(TBGUsersTable::USE_GRAVATAR, (bool) $this->_use_gravatar);
+			$crit->addUpdate(TBGUsersTable::PRIVATE_EMAIL, (bool) $this->private_email);
+			$crit->addUpdate(TBGUsersTable::PASSWD, $this->pwd);
+			$crit->addUpdate(TBGUsersTable::EMAIL, $this->email);
+			$crit->addUpdate(TBGUsersTable::HOMEPAGE, $this->homepage);
 
-			$res = B2DB::getTable('B2tUsers')->doUpdateById($crit, $this->getID());
+			$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->getID());
 
 			TBGSettings::saveSetting('timezone', $this->_timezone, 'core', null, $this->getID());
 
@@ -1639,7 +1639,7 @@
 		 */
 		public function canAccessSavedSearch($savedsearch)
 		{
-			return (bool) ($savedsearch->get(B2tSavedSearches::IS_PUBLIC) || $savedsearch->get(B2tSavedSearches::UID) == $this->getID());
+			return (bool) ($savedsearch->get(TBGSavedSearchesTable::IS_PUBLIC) || $savedsearch->get(TBGSavedSearchesTable::UID) == $this->getID());
 		}
 
 		/**
@@ -1673,7 +1673,7 @@
 		 */
 		public function getLatestActions($number = 10)
 		{
-			if ($items = B2DB::getTable('B2tLog')->getByUserID($this->getUID(), $number))
+			if ($items = B2DB::getTable('TBGLogTable')->getByUserID($this->getUID(), $number))
 			{
 				return $items;
 			}
@@ -1704,9 +1704,9 @@
 			{
 				$this->_associated_projects = array();
 				
-				$projects = B2DB::getTable('B2tProjectAssignees')->getProjectsByUserID($this->getUID());
-				$edition_projects = B2DB::getTable('B2tEditionAssignees')->getProjectsByUserID($this->getUID());
-				$component_projects = B2DB::getTable('B2tComponentAssignees')->getProjectsByUserID($this->getUID());
+				$projects = B2DB::getTable('TBGProjectAssigneesTable')->getProjectsByUserID($this->getUID());
+				$edition_projects = B2DB::getTable('TBGEditionAssigneesTable')->getProjectsByUserID($this->getUID());
+				$component_projects = B2DB::getTable('TBGComponentAssigneesTable')->getProjectsByUserID($this->getUID());
 
 				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects));
 				foreach ($project_ids as $project_id)

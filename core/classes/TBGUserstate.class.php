@@ -39,18 +39,18 @@
 			if ($row === null)
 			{
 				$crit = new B2DBCriteria();
-				$row = B2DB::getTable('B2tUserState')->doSelectById($us_id, $crit);
+				$row = B2DB::getTable('TBGUserStateTable')->doSelectById($us_id, $crit);
 			}
 			if ($row instanceof B2DBRow)
 			{
-				$this->_itemdata = $row->get(B2tUserState::COLOR);
-				$this->_name = $row->get(B2tUserState::STATE_NAME);
+				$this->_itemdata = $row->get(TBGUserStateTable::COLOR);
+				$this->_name = $row->get(TBGUserStateTable::STATE_NAME);
 				$this->_itemid = $us_id;
-				$this->_is_absent = ($row->get(B2tUserState::ABSENT) == 1) ? true : false;
-				$this->_is_online = ($row->get(B2tUserState::ONLINE) == 1) ? true : false;
-				$this->_is_unavailable = ($row->get(B2tUserState::UNAVAILABLE) == 1) ? true : false;
-				$this->_is_busy = ($row->get(B2tUserState::BUSY) == 1) ? true : false;
-				$this->_is_in_meeting = ($row->get(B2tUserState::MEETING) == 1) ? true : false;
+				$this->_is_absent = ($row->get(TBGUserStateTable::ABSENT) == 1) ? true : false;
+				$this->_is_online = ($row->get(TBGUserStateTable::ONLINE) == 1) ? true : false;
+				$this->_is_unavailable = ($row->get(TBGUserStateTable::UNAVAILABLE) == 1) ? true : false;
+				$this->_is_busy = ($row->get(TBGUserStateTable::BUSY) == 1) ? true : false;
+				$this->_is_in_meeting = ($row->get(TBGUserStateTable::MEETING) == 1) ? true : false;
 			}
 			else
 			{
@@ -88,15 +88,15 @@
 			if (self::$_userstates === null)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tUserState::SCOPE, TBGContext::getScope()->getID());
+				$crit->addWhere(TBGUserStateTable::SCOPE, TBGContext::getScope()->getID());
 				
-				$res = B2DB::getTable('B2tUserState')->doSelect($crit);
+				$res = B2DB::getTable('TBGUserStateTable')->doSelect($crit);
 		
 				$aStates = array();
 				
 				while ($row = $res->getNextRow())
 				{
-					$aStates[$row->get(B2tUserState::ID)] = TBGFactory::userstateLab($row->get(B2tUserState::ID), $row);
+					$aStates[$row->get(TBGUserStateTable::ID)] = TBGFactory::userstateLab($row->get(TBGUserStateTable::ID), $row);
 				}
 				self::$_userstates = $aStates;
 			}

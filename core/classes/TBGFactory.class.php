@@ -579,7 +579,7 @@
 		 * 
 		 * @return TBGMilestone
 		 */
-		public static function milestoneLab($m_id, $row = null)
+		public static function TBGMilestoneLab($m_id, $row = null)
 		{
 			if ((int) $m_id == 0) throw new Exception('Invalid id');
 			if (!isset(self::$_milestones[$m_id]))

@@ -56,21 +56,21 @@
 			if ($row == null)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(B2tComments::SCOPE, TBGContext::getScope()->getID());
-				$row = B2DB::getTable('B2tComments')->doSelectById($c_id, $crit);
+				$crit->addWhere(TBGCommentsTable::SCOPE, TBGContext::getScope()->getID());
+				$row = B2DB::getTable('TBGCommentsTable')->doSelectById($c_id, $crit);
 			}
-			$this->_itemid = $row->get(B2tComments::ID);
-			$this->_name = $row->get(B2tComments::TITLE);
-			$this->_content = $row->get(B2tComments::CONTENT);
-			$this->_posted = $row->get(B2tComments::POSTED);
-			$this->_updated = $row->get(B2tComments::UPDATED);
-			$this->_postedby = $row->get(B2tComments::POSTED_BY);
-			$this->_updatedby = $row->get(B2tComments::UPDATED_BY);
-			$this->_target_id = $row->get(B2tComments::TARGET_ID);
-			$this->_target_type = $row->get(B2tComments::TARGET_TYPE);
-			$this->_module = $row->get(B2tComments::MODULE);
-			$this->_systemcomment = ($row->get(B2tComments::SYSTEM_COMMENT) == 1) ? true : false;
-			$this->_is_public = ($row->get(B2tComments::IS_PUBLIC) == 1) ? true : false;
+			$this->_itemid = $row->get(TBGCommentsTable::ID);
+			$this->_name = $row->get(TBGCommentsTable::TITLE);
+			$this->_content = $row->get(TBGCommentsTable::CONTENT);
+			$this->_posted = $row->get(TBGCommentsTable::POSTED);
+			$this->_updated = $row->get(TBGCommentsTable::UPDATED);
+			$this->_postedby = $row->get(TBGCommentsTable::POSTED_BY);
+			$this->_updatedby = $row->get(TBGCommentsTable::UPDATED_BY);
+			$this->_target_id = $row->get(TBGCommentsTable::TARGET_ID);
+			$this->_target_type = $row->get(TBGCommentsTable::TARGET_TYPE);
+			$this->_module = $row->get(TBGCommentsTable::MODULE);
+			$this->_systemcomment = ($row->get(TBGCommentsTable::SYSTEM_COMMENT) == 1) ? true : false;
+			$this->_is_public = ($row->get(TBGCommentsTable::IS_PUBLIC) == 1) ? true : false;
 		}
 		
 		/**
@@ -81,11 +81,11 @@
 		static function getComments($target_id, $target_type, $module = 'core', $from_when = null)
 		{
 			$retval = array();
-			if ($res = B2DB::getTable('B2tComments')->getComments($target_id, $target_type))
+			if ($res = B2DB::getTable('TBGCommentsTable')->getComments($target_id, $target_type))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$comment = TBGFactory::TBGCommentLab($row->get(B2tComments::ID), $row);
+					$comment = TBGFactory::TBGCommentLab($row->get(TBGCommentsTable::ID), $row);
 					$retval[$comment->getID()] = $comment;
 				}
 			}
@@ -108,18 +108,18 @@
 			{
 				$now = $_SERVER["REQUEST_TIME"];
 				$crit = new B2DBCriteria();
-				$crit->addInsert(B2tComments::TARGET_ID, $target_id);
-				$crit->addInsert(B2tComments::TARGET_TYPE, $target_type);
-				$crit->addInsert(B2tComments::TITLE, $commentTitle);
-				$crit->addInsert(B2tComments::CONTENT, $commentContent);
-				$crit->addInsert(B2tComments::POSTED_BY, $uid);
-				$crit->addInsert(B2tComments::POSTED, $now);
-				$crit->addInsert(B2tComments::UPDATED, $now);
-				$crit->addInsert(B2tComments::IS_PUBLIC, (int) $is_public);
-				$crit->addInsert(B2tComments::SYSTEM_COMMENT, $system_comment);
-				$crit->addInsert(B2tComments::MODULE, $module);
-				$crit->addInsert(B2tComments::SCOPE, TBGContext::getScope()->getID());
-				$res = B2DB::getTable('B2tComments')->doInsert($crit);
+				$crit->addInsert(TBGCommentsTable::TARGET_ID, $target_id);
+				$crit->addInsert(TBGCommentsTable::TARGET_TYPE, $target_type);
+				$crit->addInsert(TBGCommentsTable::TITLE, $commentTitle);
+				$crit->addInsert(TBGCommentsTable::CONTENT, $commentContent);
+				$crit->addInsert(TBGCommentsTable::POSTED_BY, $uid);
+				$crit->addInsert(TBGCommentsTable::POSTED, $now);
+				$crit->addInsert(TBGCommentsTable::UPDATED, $now);
+				$crit->addInsert(TBGCommentsTable::IS_PUBLIC, (int) $is_public);
+				$crit->addInsert(TBGCommentsTable::SYSTEM_COMMENT, $system_comment);
+				$crit->addInsert(TBGCommentsTable::MODULE, $module);
+				$crit->addInsert(TBGCommentsTable::SCOPE, TBGContext::getScope()->getID());
+				$res = B2DB::getTable('TBGCommentsTable')->doInsert($crit);
 				$comment = new TBGComment($res->getInsertID());
 				/*if ($target_type == 1 && $module == 'core')
 				{
@@ -147,11 +147,11 @@
 			$commentContent = trim($content);
 			$now = $_SERVER["REQUEST_TIME"];
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tComments::TITLE, $commentTitle);
-			$crit->addUpdate(B2tComments::CONTENT, $commentContent);
-			$crit->addUpdate(B2tComments::UPDATED, $now);
-			$crit->addUpdate(B2tComments::UPDATED_BY, $uid);
-			B2DB::getTable('B2tComments')->doUpdateById($crit, $c_id);
+			$crit->addUpdate(TBGCommentsTable::TITLE, $commentTitle);
+			$crit->addUpdate(TBGCommentsTable::CONTENT, $commentContent);
+			$crit->addUpdate(TBGCommentsTable::UPDATED, $now);
+			$crit->addUpdate(TBGCommentsTable::UPDATED_BY, $uid);
+			B2DB::getTable('TBGCommentsTable')->doUpdateById($crit, $c_id);
 			if ($module == 'core' && $target_type == 1)
 			{
 				TBGFactory::TBGIssueLab($target_id)->updateComment($title, $content, $uid);
@@ -163,9 +163,9 @@
 			$this->_name = $var;
 			$this->_updated = $_SERVER["REQUEST_TIME"];
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tComments::TITLE, $var);
-			$crit->addUpdate(B2tComments::UPDATED, $_SERVER["REQUEST_TIME"]);
-			B2DB::getTable('B2tComments')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGCommentsTable::TITLE, $var);
+			$crit->addUpdate(TBGCommentsTable::UPDATED, $_SERVER["REQUEST_TIME"]);
+			B2DB::getTable('TBGCommentsTable')->doUpdateById($crit, $this->getID());
 		}
 
 		public function setPublic($var)
@@ -173,9 +173,9 @@
 			$this->_updated = $_SERVER["REQUEST_TIME"];
 			$this->_is_public = ($var == 1) ? true : false;
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tComments::IS_PUBLIC, (int) $var);
-			$crit->addUpdate(B2tComments::UPDATED, $_SERVER["REQUEST_TIME"]);
-			B2DB::getTable('B2tComments')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGCommentsTable::IS_PUBLIC, (int) $var);
+			$crit->addUpdate(TBGCommentsTable::UPDATED, $_SERVER["REQUEST_TIME"]);
+			B2DB::getTable('TBGCommentsTable')->doUpdateById($crit, $this->getID());
 		}
 		
 		public function setContent($var)
@@ -183,9 +183,9 @@
 			$this->_content = $var;
 			$this->_updated = $_SERVER["REQUEST_TIME"];
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tComments::CONTENT, $var);
-			$crit->addUpdate(B2tComments::UPDATED, $_SERVER["REQUEST_TIME"]);
-			B2DB::getTable('B2tComments')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGCommentsTable::CONTENT, $var);
+			$crit->addUpdate(TBGCommentsTable::UPDATED, $_SERVER["REQUEST_TIME"]);
+			B2DB::getTable('TBGCommentsTable')->doUpdateById($crit, $this->getID());
 		}
 
 		public function setIsPublic($var)
@@ -193,9 +193,9 @@
 			$this->_is_public = $var;
 			$this->_updated = $_SERVER["REQUEST_TIME"];
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tComments::IS_PUBLIC, $var);
-			$crit->addUpdate(B2tComments::UPDATED, $_SERVER["REQUEST_TIME"]);
-			B2DB::getTable('B2tComments')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGCommentsTable::IS_PUBLIC, $var);
+			$crit->addUpdate(TBGCommentsTable::UPDATED, $_SERVER["REQUEST_TIME"]);
+			B2DB::getTable('TBGCommentsTable')->doUpdateById($crit, $this->getID());
 		}
 
 		public function setUpdatedBy($var)
@@ -203,9 +203,9 @@
 			$this->_updated = $_SERVER["REQUEST_TIME"];
 			$this->_updatedby = $var;
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tComments::UPDATED_BY, $var);
-			$crit->addUpdate(B2tComments::UPDATED, $_SERVER["REQUEST_TIME"]);
-			B2DB::getTable('B2tComments')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGCommentsTable::UPDATED_BY, $var);
+			$crit->addUpdate(TBGCommentsTable::UPDATED, $_SERVER["REQUEST_TIME"]);
+			B2DB::getTable('TBGCommentsTable')->doUpdateById($crit, $this->getID());
 		}
 
 		/**
@@ -276,10 +276,10 @@
 		{
 			$now = $_SERVER["REQUEST_TIME"];
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tComments::DELETED, 1);
-			$crit->addUpdate(B2tComments::UPDATED, $now);
-			$crit->addUpdate(B2tComments::UPDATED_BY, TBGContext::getUser()->getUID());
-			B2DB::getTable('B2tComments')->doUpdateById($crit, $c_id);
+			$crit->addUpdate(TBGCommentsTable::DELETED, 1);
+			$crit->addUpdate(TBGCommentsTable::UPDATED, $now);
+			$crit->addUpdate(TBGCommentsTable::UPDATED_BY, TBGContext::getUser()->getUID());
+			B2DB::getTable('TBGCommentsTable')->doUpdateById($crit, $c_id);
 		}
 		
 		public function __toString()

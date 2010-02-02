@@ -31,12 +31,12 @@
 		
 		static function getAll()
 		{
-			$res = B2DB::getTable('B2tScopes')->doSelectAll();
+			$res = B2DB::getTable('TBGScopesTable')->doSelectAll();
 			$scopes = array();
 	
 			while ($row = $res->getNextRow())
 			{
-				$scopes[] = TBGFactory::scopeLab($row->get(B2tScopes::ID), $row);
+				$scopes[] = TBGFactory::scopeLab($row->get(TBGScopesTable::ID), $row);
 			}
 	
 			return $scopes;
@@ -54,7 +54,7 @@
 			{
 				if ($row === null)
 				{
-					$row = B2DB::getTable('B2tScopes')->doSelectById($id);
+					$row = B2DB::getTable('TBGScopesTable')->doSelectById($id);
 				}
 			}
 			catch (Exception $e)
@@ -67,11 +67,11 @@
 				throw new Exception("This scope ($id) does not exist");
 			}
 			
-			$this->_itemid = $row->get(B2tScopes::ID);
-			$this->_description = $row->get(B2tScopes::DESCRIPTION);
-			$this->_is_enabled = ($row->get(B2tScopes::ENABLED) == 1) ? true : false;
-			$this->_hostname = $row->get(B2tScopes::HOSTNAME);
-			$this->_administrator = $row->get(B2tScopes::ADMIN);
+			$this->_itemid = $row->get(TBGScopesTable::ID);
+			$this->_description = $row->get(TBGScopesTable::DESCRIPTION);
+			$this->_is_enabled = ($row->get(TBGScopesTable::ENABLED) == 1) ? true : false;
+			$this->_hostname = $row->get(TBGScopesTable::HOSTNAME);
+			$this->_administrator = $row->get(TBGScopesTable::ADMIN);
 		}
 		
 		public function __toString()
@@ -92,8 +92,8 @@
 		public function setName($name)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tScopes::NAME, $name);
-			B2DB::getTable('B2tScopes')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGScopesTable::NAME, $name);
+			B2DB::getTable('TBGScopesTable')->doUpdateById($crit, $this->_itemid);
 			
 			$this->_name = $name;
 		}
@@ -106,8 +106,8 @@
 		public function setShortname($shortname)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tScopes::SHORTNAME, $shortname);
-			B2DB::getTable('B2tScopes')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGScopesTable::SHORTNAME, $shortname);
+			B2DB::getTable('TBGScopesTable')->doUpdateById($crit, $this->_itemid);
 			
 			$this->_shortname = $shortname;
 		}
@@ -120,8 +120,8 @@
 		public function setEnabled($enabled)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tScopes::ENABLED, $enabled);
-			B2DB::getTable('B2tScopes')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGScopesTable::ENABLED, $enabled);
+			B2DB::getTable('TBGScopesTable')->doUpdateById($crit, $this->_itemid);
 			$this->_is_enabled = ($enabled == 1) ? true : false;
 		}
 		
@@ -133,8 +133,8 @@
 		public function setDescription($description)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tScopes::DESCRIPTION, $description);
-			B2DB::getTable('B2tScopes')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGScopesTable::DESCRIPTION, $description);
+			B2DB::getTable('TBGScopesTable')->doUpdateById($crit, $this->_itemid);
 			
 			$this->_description = $description;
 		}
@@ -176,13 +176,13 @@
 		{
 			$adminuser = TBGFactory::userLab($uid);
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tScopes::ADMIN, $uid);
-			$res = B2DB::getTable('B2tScopes')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGScopesTable::ADMIN, $uid);
+			$res = B2DB::getTable('TBGScopesTable')->doUpdateById($crit, $this->_itemid);
 			$this->_administrator = $adminuser;
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tGroups::SCOPE, $this->_itemid);
-			$crit->addOrderBy(B2tScopes::ID, B2DBCriteria::SORT_ASC);
-			$adminuser->setGroup(B2DB::getTable('B2tGroups')->doSelectOne($crit)->get(B2tGroups::ID));
+			$crit->addWhere(TBGGroupsTable::SCOPE, $this->_itemid);
+			$crit->addOrderBy(TBGScopesTable::ID, B2DBCriteria::SORT_ASC);
+			$adminuser->setGroup(B2DB::getTable('TBGGroupsTable')->doSelectOne($crit)->get(TBGGroupsTable::ID));
 			foreach ($adminuser->getTeams() as $aTeam)
 			{
 				$aTeam = TBGFactory::teamLab($aTeam);
@@ -192,7 +192,7 @@
 
 		public static function createNew($scope_name, $hostname)
 		{
-			$scope_id = B2DB::getTable('B2tScopes')->createNew($scope_name, $hostname);
+			$scope_id = B2DB::getTable('TBGScopesTable')->createNew($scope_name, $hostname);
 			self::loadFixtures($scope_id);
 			return TBGFactory::scopeLab($scope_id);
 		}
@@ -200,7 +200,7 @@
 		public static function loadFixtures($scope_id)
 		{
 			$i18n = TBGContext::getI18n();
-			list ($admin_group_id, $users_group_id, $guest_group_id) = B2DB::getTable('B2tGroups')->loadFixtures($scope_id);
+			list ($admin_group_id, $users_group_id, $guest_group_id) = B2DB::getTable('TBGGroupsTable')->loadFixtures($scope_id);
 
 			$adminuser = TBGUser::createNew('administrator', 'Administrator', 'Admin', $scope_id, true, true);
 			$adminuser->setGroup($admin_group_id);
@@ -212,24 +212,24 @@
 			$guestuser->setGroup($guest_group_id);
 			$adminuser->save();
 
-			B2DB::getTable('B2tSettings')->loadFixtures($scope_id);
+			B2DB::getTable('TBGSettingsTable')->loadFixtures($scope_id);
 			TBGSettings::saveSetting('defaultgroup', $users_group_id, 'core', $scope_id);
 			TBGSettings::saveSetting('defaultuserid', $guestuser->getID(), 'core', $scope_id);
 
-			B2DB::getTable('B2tTeams')->loadFixtures($scope_id);
-			B2DB::getTable('B2tPermissions')->loadFixtures($scope_id, $admin_group_id, $guest_group_id);
+			B2DB::getTable('TBGTeamsTable')->loadFixtures($scope_id);
+			B2DB::getTable('TBGPermissionsTable')->loadFixtures($scope_id, $admin_group_id, $guest_group_id);
 
-			B2DB::getTable('B2tUserState')->loadFixtures($scope_id);
-			B2DB::getTable('B2tIssueTypes')->loadFixtures($scope_id);
-			B2DB::getTable('B2tListTypes')->loadFixtures($scope_id);
-			B2DB::getTable('B2tLinks')->loadFixtures($scope_id);
+			B2DB::getTable('TBGUserStateTable')->loadFixtures($scope_id);
+			B2DB::getTable('TBGIssueTypesTable')->loadFixtures($scope_id);
+			B2DB::getTable('TBGListTypesTable')->loadFixtures($scope_id);
+			B2DB::getTable('TBGLinksTable')->loadFixtures($scope_id);
 		}
 
 		public function save()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tScopes::HOSTNAME, $this->_hostname);
-			B2DB::getTable('B2tScopes')->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGScopesTable::HOSTNAME, $this->_hostname);
+			B2DB::getTable('TBGScopesTable')->doUpdateById($crit, $this->_itemid);
 			TBGSettings::saveSetting('url_host', $this->_hostname, 'core', $this->getID());
 		}
 		
@@ -246,20 +246,20 @@
 		public static function createNewOld($scopeShortname, $scopeName, $scopeEnabled, $scopeDescription, $scopeHostname)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tScopes::SHORTNAME, $scopeShortname);
-			if (B2DB::getTable('B2tScopes')->doCount($crit) != 0)
+			$crit->addWhere(TBGScopesTable::SHORTNAME, $scopeShortname);
+			if (B2DB::getTable('TBGScopesTable')->doCount($crit) != 0)
 			{
 				throw new Exception('Could not add this scope, since it already exists');
 			}
 			
 			// Create the new scope and use the return value to create more stuff
 			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tScopes::NAME, $scopeName);
-			$crit->addInsert(B2tScopes::ENABLED, $scopeEnabled);
-			$crit->addInsert(B2tScopes::SHORTNAME, $scopeShortname);
-			$crit->addInsert(B2tScopes::HOSTNAME, $scopeHostname);
-			$crit->addInsert(B2tScopes::DESCRIPTION, $scopeDescription);
-			$res = B2DB::getTable('B2tScopes')->doInsert($crit);
+			$crit->addInsert(TBGScopesTable::NAME, $scopeName);
+			$crit->addInsert(TBGScopesTable::ENABLED, $scopeEnabled);
+			$crit->addInsert(TBGScopesTable::SHORTNAME, $scopeShortname);
+			$crit->addInsert(TBGScopesTable::HOSTNAME, $scopeHostname);
+			$crit->addInsert(TBGScopesTable::DESCRIPTION, $scopeDescription);
+			$res = B2DB::getTable('TBGScopesTable')->doInsert($crit);
 			$addedScope = TBGFactory::scopeLab($res->getInsertID());
 			
 			// Create a new 'administrator' user inside the new scope
@@ -340,11 +340,11 @@
 			foreach ($b2_settings as $b2_settings_name => $b2_settings_val)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addInsert(B2tSettings::MODULE, 'core');
-				$crit->addInsert(B2tSettings::SCOPE, $addedScope->getID());
-				$crit->addInsert(B2tSettings::NAME, $b2_settings_name);
-				$crit->addInsert(B2tSettings::VALUE, $b2_settings_val);
-				B2DB::getTable('B2tSettings')->doInsert($crit);
+				$crit->addInsert(TBGSettingsTable::MODULE, 'core');
+				$crit->addInsert(TBGSettingsTable::SCOPE, $addedScope->getID());
+				$crit->addInsert(TBGSettingsTable::NAME, $b2_settings_name);
+				$crit->addInsert(TBGSettingsTable::VALUE, $b2_settings_val);
+				B2DB::getTable('TBGSettingsTable')->doInsert($crit);
 			}
 			
 			return $addedScope;

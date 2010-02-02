@@ -1067,7 +1067,7 @@
 				{
 					if ($m_id = $request->getParameter('milestone_id'))
 					{
-						$theMilestone = TBGFactory::milestoneLab($m_id);
+						$theMilestone = TBGFactory::TBGMilestoneLab($m_id);
 						if ($theMilestone->hasAccess())
 						{
 							switch ($request->getParameter('milestone_action'))

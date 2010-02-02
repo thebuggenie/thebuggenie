@@ -16,22 +16,22 @@
 		{
 			if (!$id instanceof B2DBRow)
 			{
-				$id = B2DB::getTable('B2tBillboardPosts')->doSelectById($id);
+				$id = B2DB::getTable('TBGBillboardPostsTable')->doSelectById($id);
 			}
-			$this->_itemid = $id->get(B2tBillboardPosts::ID);
+			$this->_itemid = $id->get(TBGBillboardPostsTable::ID);
 			
-			$this->_name = $id->get(B2tBillboardPosts::TITLE);
+			$this->_name = $id->get(TBGBillboardPostsTable::TITLE);
 			$this->title = $this->_name;
-			$this->author = $id->get(B2tBillboardPosts::AUTHOR);
+			$this->author = $id->get(TBGBillboardPostsTable::AUTHOR);
 			
-			$this->content = $id->get(B2tBillboardPosts::CONTENT);
-			$this->posted_date = $id->get(B2tBillboardPosts::DATE);
-			$this->link_url = $id->get(B2tBillboardPosts::LINK);
+			$this->content = $id->get(TBGBillboardPostsTable::CONTENT);
+			$this->posted_date = $id->get(TBGBillboardPostsTable::DATE);
+			$this->link_url = $id->get(TBGBillboardPostsTable::LINK);
 			
-			$this->is_published = ($id->get(B2tBillboardPosts::IS_DELETED) == 0) ? true : false;
-			$this->related_article_id = $id->get(B2tBillboardPosts::ARTICLE_ID);
+			$this->is_published = ($id->get(TBGBillboardPostsTable::IS_DELETED) == 0) ? true : false;
+			$this->related_article_id = $id->get(TBGBillboardPostsTable::ARTICLE_ID);
 			
-			$this->target_board = $id->get(B2tBillboardPosts::TARGET_BOARD);
+			$this->target_board = $id->get(TBGBillboardPostsTable::TARGET_BOARD);
 		}
 		
 		public function getTargetBoard()
@@ -51,7 +51,7 @@
 		
 		public function delete()
 		{
-			B2DB::getTable('B2tBillboardPosts')->doDeleteById($this->_itemid);
+			B2DB::getTable('TBGBillboardPostsTable')->doDeleteById($this->_itemid);
 		}
 		
 	}

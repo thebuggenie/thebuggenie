@@ -65,11 +65,11 @@
   									  
 			if ($scope == TBGContext::getScope()->getID())
 			{
-				B2DB::getTable('B2tArticles')->create();
-				B2DB::getTable('B2tArticleViews')->create();
-				B2DB::getTable('B2tArticleLinks')->create();
-				B2DB::getTable('B2tArticleCategories')->create();
-				B2DB::getTable('B2tBillboardPosts')->create();
+				B2DB::getTable('TBGArticlesTable')->create();
+				B2DB::getTable('TBGArticleViewsTable')->create();
+				B2DB::getTable('TBGArticleLinksTable')->create();
+				B2DB::getTable('TBGArticleCategoriesTable')->create();
+				B2DB::getTable('TBGBillboardPostsTable')->create();
 			}
 
 			try
@@ -424,8 +424,8 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 		{
 			if (TBGContext::getScope()->getID() == 1)
 			{
-				B2DB::getTable('B2tArticles')->drop();
-				B2DB::getTable('B2tBillboardPosts')->drop();
+				B2DB::getTable('TBGArticlesTable')->drop();
+				B2DB::getTable('TBGBillboardPostsTable')->drop();
 			}
 			parent::_uninstall();
 		}
@@ -498,22 +498,22 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 		public function getBillboardPosts($target_board = 0, $posts = 5)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tBillboardPosts::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(B2tBillboardPosts::IS_DELETED, 0);
+			$crit->addWhere(TBGBillboardPostsTable::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(TBGBillboardPostsTable::IS_DELETED, 0);
 			$crit->setLimit($posts);
-			$crit->addOrderBy(B2tBillboardPosts::DATE, 'desc');
+			$crit->addOrderBy(TBGBillboardPostsTable::DATE, 'desc');
 			if (is_array($target_board))
 			{
-				$crit->addWhere(B2tBillboardPosts::TARGET_BOARD, $target_board, B2DBCriteria::DB_IN);
+				$crit->addWhere(TBGBillboardPostsTable::TARGET_BOARD, $target_board, B2DBCriteria::DB_IN);
 			}
 			else
 			{
-				$crit->addWhere(B2tBillboardPosts::TARGET_BOARD, $target_board);
+				$crit->addWhere(TBGBillboardPostsTable::TARGET_BOARD, $target_board);
 			}
 	
 			$posts = array();
 	
-			$res = B2DB::getTable('B2tBillboardPosts')->doSelect($crit);
+			$res = B2DB::getTable('TBGBillboardPostsTable')->doSelect($crit);
 			while ($row = $res->getNextRow())
 			{
 				$posts[] = new PublishBillboardPost($row);
@@ -530,13 +530,13 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 		public function getAllArticles()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addOrderBy(B2tArticles::ORDER, 'asc');
-			$crit->addOrderBy(B2tArticles::DATE, 'desc');
-			$res = B2DB::getTable('B2tArticles')->doSelect($crit);
+			$crit->addOrderBy(TBGArticlesTable::ORDER, 'asc');
+			$crit->addOrderBy(TBGArticlesTable::DATE, 'desc');
+			$res = B2DB::getTable('TBGArticlesTable')->doSelect($crit);
 			$articles = array();
 			while ($row = $res->getNextRow())
 			{
-				$articles[] = PublishFactory::articleLab($row->get(B2tArticles::ID), $row);
+				$articles[] = PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
 			}
 			return $articles;
 		}
@@ -544,22 +544,22 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 		public function getArticles($num_articles = 5, $news = false, $published = true)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tArticles::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(B2tArticles::ARTICLE_NAME, 'Category:%', B2DBCriteria::DB_NOT_LIKE);
+			$crit->addWhere(TBGArticlesTable::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(TBGArticlesTable::ARTICLE_NAME, 'Category:%', B2DBCriteria::DB_NOT_LIKE);
 			
-			$crit->addOrderBy(B2tArticles::DATE, 'desc');
+			$crit->addOrderBy(TBGArticlesTable::DATE, 'desc');
 			
-			if ($published) $crit->addWhere(B2tArticles::IS_PUBLISHED, 1);
+			if ($published) $crit->addWhere(TBGArticlesTable::IS_PUBLISHED, 1);
 	
 			$articles = array();
 			
-			if ($res = B2DB::getTable('B2tArticles')->doSelect($crit))
+			if ($res = B2DB::getTable('TBGArticlesTable')->doSelect($crit))
 			{
 				while (($row = $res->getNextRow()) && (count($articles) < $num_articles))
 				{
 					try
 					{
-						$article = PublishFactory::articleLab($row->get(B2tArticles::ID), $row);
+						$article = PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
 					}
 					catch (Exception $e) 
 					{
@@ -585,13 +585,13 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 		{
 			$articles = array();
 
-			if ($res = B2DB::getTable('B2tArticles')->getUnpublishedArticlesByUser(TBGContext::getUser()->getID()))
+			if ($res = B2DB::getTable('TBGArticlesTable')->getUnpublishedArticlesByUser(TBGContext::getUser()->getID()))
 			{
 				while ($row = $res->getNextRow())
 				{
 					try
 					{
-						$article = PublishFactory::articleLab($row->get(B2tArticles::ID), $row);
+						$article = PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
 					}
 					catch (Exception $e)
 					{
@@ -610,9 +610,9 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 		
 		public function getFrontpageArticle()
 		{
-			if ($row = B2DB::getTable('B2tArticles')->getArticleByName('FrontpageArticle'))
+			if ($row = B2DB::getTable('TBGArticlesTable')->getArticleByName('FrontpageArticle'))
 			{
-				return PublishFactory::articleLab($row->get(B2tArticles::ID), $row);
+				return PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
 			}
 			return null;
 		}

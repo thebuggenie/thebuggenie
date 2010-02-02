@@ -33,7 +33,7 @@
 
 			if ($scope == TBGContext::getScope()->getID())
 			{
-				B2DB::getTable('B2tSVNintegration')->create();
+				B2DB::getTable('TBGSVNintegrationTable')->create();
 			}
 
 			return true;
@@ -43,7 +43,7 @@
 		{
 			if (TBGContext::getScope()->getID() == 1)
 			{
-				B2DB::getTable('B2tSVNintegration')->drop();
+				B2DB::getTable('TBGSVNintegrationTable')->drop();
 			}
 			parent::_uninstall();
 		}
@@ -88,9 +88,9 @@
 				<?php
 				
 					$crit = new B2DBCriteria();
-					$crit->addWhere(B2tSVNintegration::ISSUE_NO, $theIssue->getID());
-					$crit->addOrderBy(B2tSVNintegration::DATE, 'desc');
-					if ($results = B2DB::getTable('B2tSVNintegration')->doSelect($crit))
+					$crit->addWhere(TBGSVNintegrationTable::ISSUE_NO, $theIssue->getID());
+					$crit->addOrderBy(TBGSVNintegrationTable::DATE, 'desc');
+					if ($results = B2DB::getTable('TBGSVNintegrationTable')->doSelect($crit))
 					{
 						$vvcpath_setting = 'viewvc_path_' . $theIssue->getProject()->getID();
 						$viewvc_path = TBGContext::getModule('svn_integration')->getSetting($vvcpath_setting);
@@ -98,23 +98,23 @@
 						echo '<table cellpadding=0 cellspacing=0 style="width: 100%;">';
 						while ($results->next())
 						{
-							$theUser = TBGFactory::userLab($results->get(B2tSVNintegration::AUTHOR));
+							$theUser = TBGFactory::userLab($results->get(TBGSVNintegrationTable::AUTHOR));
 							echo '<tr>';
 							echo '<td class="issuedetailscontentsleft" style="border-bottom: 0px; padding-right: 20px;">';
-							echo '<span style="font-size: 10px;">[rev <b>'.$results->get(B2tSVNintegration::NEW_REV).'</b>] </span>';
+							echo '<span style="font-size: 10px;">[rev <b>'.$results->get(TBGSVNintegrationTable::NEW_REV).'</b>] </span>';
 							if ($viewvc_path)
 							{
-								echo '<a href="' . $viewvc_path . $results->get(B2tSVNintegration::FILE_NAME) . '?view=log" target="_blank"><b>' . $results->get(B2tSVNintegration::FILE_NAME) . '</b></a>';
+								echo '<a href="' . $viewvc_path . $results->get(TBGSVNintegrationTable::FILE_NAME) . '?view=log" target="_blank"><b>' . $results->get(TBGSVNintegrationTable::FILE_NAME) . '</b></a>';
 							}
 							else
 							{
-								echo $results->get(B2tSVNintegration::FILE_NAME);
+								echo $results->get(TBGSVNintegrationTable::FILE_NAME);
 							}
 							echo '</td>';
 							if ($viewvc_path)
 							{
-								echo '<td class="issuedetailscontentscenter" style="border-bottom: 0px; padding-right: 10px;"><a href="' . $viewvc_path . $results->get(B2tSVNintegration::FILE_NAME) . '?r1=' . $results->get(B2tSVNintegration::OLD_REV) . '&amp;r2=' . $results->get(B2tSVNintegration::NEW_REV) . '" target="_blank""><b>' . TBGContext::getI18n()->__('Diff') . '</b></a></td>';
-								echo '<td class="issuedetailscontentscenter" style="border-bottom: 0px; padding-right: 10px;"><a href="' . $viewvc_path . $results->get(B2tSVNintegration::FILE_NAME) . '?revision=' . $results->get(B2tSVNintegration::NEW_REV) . '&amp;view=markup" target="_blank""><b>' . TBGContext::getI18n()->__('View') . '</b></a></td>';
+								echo '<td class="issuedetailscontentscenter" style="border-bottom: 0px; padding-right: 10px;"><a href="' . $viewvc_path . $results->get(TBGSVNintegrationTable::FILE_NAME) . '?r1=' . $results->get(TBGSVNintegrationTable::OLD_REV) . '&amp;r2=' . $results->get(TBGSVNintegrationTable::NEW_REV) . '" target="_blank""><b>' . TBGContext::getI18n()->__('Diff') . '</b></a></td>';
+								echo '<td class="issuedetailscontentscenter" style="border-bottom: 0px; padding-right: 10px;"><a href="' . $viewvc_path . $results->get(TBGSVNintegrationTable::FILE_NAME) . '?revision=' . $results->get(TBGSVNintegrationTable::NEW_REV) . '&amp;view=markup" target="_blank""><b>' . TBGContext::getI18n()->__('View') . '</b></a></td>';
 							}
 							echo '</tr>';
 						}
@@ -178,12 +178,12 @@
 				if ($issue_uniqueid != 0)
 				{
 					$crit = new B2DBCriteria();
-					$crit->addInsert(B2tSVNintegration::ISSUE_NO, $issue_uniqueid); 
-					$crit->addInsert(B2tSVNintegration::FILE_NAME, $argv[3]); 
-					$crit->addInsert(B2tSVNintegration::NEW_REV, $argv[5]);
-					$crit->addInsert(B2tSVNintegration::DATE, $_SERVER["REQUEST_TIME"]);
-					$crit->addInsert(B2tSVNintegration::SCOPE, TBGContext::getScope());
-					B2DB::getTable('B2tSVNintegration')->doInsert($crit);
+					$crit->addInsert(TBGSVNintegrationTable::ISSUE_NO, $issue_uniqueid); 
+					$crit->addInsert(TBGSVNintegrationTable::FILE_NAME, $argv[3]); 
+					$crit->addInsert(TBGSVNintegrationTable::NEW_REV, $argv[5]);
+					$crit->addInsert(TBGSVNintegrationTable::DATE, $_SERVER["REQUEST_TIME"]);
+					$crit->addInsert(TBGSVNintegrationTable::SCOPE, TBGContext::getScope());
+					B2DB::getTable('TBGSVNintegrationTable')->doInsert($crit);
 					return true;
 				}
 				else

@@ -361,16 +361,16 @@
 		 */
 		public static function setDefault($p_id)
 		{
-			B2DB::getTable('B2tProjects')->clearDefaults();
-			B2DB::getTable('B2tProjects')->setDefaultProject($p_id);
+			B2DB::getTable('TBGProjectsTable')->clearDefaults();
+			B2DB::getTable('TBGProjectsTable')->setDefaultProject($p_id);
 			return true;
 		}
 		
 		public static function getByKey($key)
 		{
-			if ($project_row = B2DB::getTable('B2tProjects')->getByKey($key))
+			if ($project_row = B2DB::getTable('TBGProjectsTable')->getByKey($key))
 			{
-				return TBGFactory::projectLab($project_row->get(B2tProjects::ID), $project_row);
+				return TBGFactory::projectLab($project_row->get(TBGProjectsTable::ID), $project_row);
 			}
 			return null;
 		}
@@ -383,11 +383,11 @@
 			if (self::$_projects === null)
 			{
 				self::$_projects = array();
-				if ($res = B2DB::getTable('B2tProjects')->getAll())
+				if ($res = B2DB::getTable('TBGProjectsTable')->getAll())
 				{
 					while ($row = $res->getNextRow())
 					{
-						$project = TBGFactory::projectLab($row->get(B2tProjects::ID), $row);
+						$project = TBGFactory::projectLab($row->get(TBGProjectsTable::ID), $row);
 						if ($project->hasAccess() && $project->isDeleted() == 0)
 						{
 							self::$_projects[$project->getID()] = $project;
@@ -415,14 +415,14 @@
 		 */
 		static function getDefaultProject()
 		{
-			if ($res = B2DB::getTable('B2tProjects')->getAllSortedByIsDefault())
+			if ($res = B2DB::getTable('TBGProjectsTable')->getAllSortedByIsDefault())
 			{
 				while ($row = $res->getNextRow())
 				{
-					$project = TBGFactory::projectLab($row->get(B2tProjects::ID), $row);
+					$project = TBGFactory::projectLab($row->get(TBGProjectsTable::ID), $row);
 					if ($project->hasAccess() && $project->isDeleted() == 0)
 					{
-						return $row->get(B2tProjects::ID);
+						return $row->get(TBGProjectsTable::ID);
 					}
 				}
 			}
@@ -439,10 +439,10 @@
 		 */
 		public static function createNew($name)
 		{
-			$project = B2DB::getTable('B2tProjects')->getByKey(strtolower(str_replace(' ', '', $name)));
+			$project = B2DB::getTable('TBGProjectsTable')->getByKey(strtolower(str_replace(' ', '', $name)));
 			if ($project === null)
 			{
-				$p_id = B2DB::getTable('B2tProjects')->createNew($name);
+				$p_id = B2DB::getTable('TBGProjectsTable')->createNew($name);
 
 				TBGContext::setPermission("canseeproject", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("page_project_allpages_access", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
@@ -469,9 +469,9 @@
 		 */
 		static function getByPrefix($prefix)
 		{
-			if ($row = B2DB::getTable('B2tProjects')->getByPrefix($prefix))
+			if ($row = B2DB::getTable('TBGProjectsTable')->getByPrefix($prefix))
 			{
-				return TBGFactory::projectLab($row->get(B2tProjects::ID), $row);
+				return TBGFactory::projectLab($row->get(TBGProjectsTable::ID), $row);
 			}
 			return null;
 		}
@@ -486,44 +486,44 @@
 		{
 			if (!$row instanceof B2DBRow)
 			{
-				$row = B2DB::getTable('B2tProjects')->getById($id);
+				$row = B2DB::getTable('TBGProjectsTable')->getById($id);
 			}
 			if ($row instanceof B2DBRow)
 			{
-				$this->_name 					= $row->get(B2tProjects::NAME);
-				$this->_key 					= $row->get(B2tProjects::KEY);
-				$this->_prefix 					= $row->get(B2tProjects::PREFIX);
-				$this->_locked 					= (bool) $row->get(B2tProjects::LOCKED);
-				$this->_useprefix 				= (bool) $row->get(B2tProjects::USE_PREFIX);
-				$this->_enablebuilds 			= (bool) $row->get(B2tProjects::ENABLE_BUILDS);
-				$this->_enableeditions 			= (bool) $row->get(B2tProjects::ENABLE_EDITIONS);
-				$this->_enablecomponents 		= (bool) $row->get(B2tProjects::ENABLE_COMPONENTS);
-				$this->_enabletasks 			= (bool) $row->get(B2tProjects::ENABLE_TASKS);
-				$this->_enablevotes 			= (bool) $row->get(B2tProjects::VOTES);
-				$this->_isreleased 				= (bool) $row->get(B2tProjects::RELEASED);
-				$this->_isplannedreleased		= (bool) $row->get(B2tProjects::PLANNED_RELEASE);
-				$this->_isdefault 				= (bool) $row->get(B2tProjects::IS_DEFAULT);
-				$this->_release_date 			= $row->get(B2tProjects::RELEASE_DATE);
+				$this->_name 					= $row->get(TBGProjectsTable::NAME);
+				$this->_key 					= $row->get(TBGProjectsTable::KEY);
+				$this->_prefix 					= $row->get(TBGProjectsTable::PREFIX);
+				$this->_locked 					= (bool) $row->get(TBGProjectsTable::LOCKED);
+				$this->_useprefix 				= (bool) $row->get(TBGProjectsTable::USE_PREFIX);
+				$this->_enablebuilds 			= (bool) $row->get(TBGProjectsTable::ENABLE_BUILDS);
+				$this->_enableeditions 			= (bool) $row->get(TBGProjectsTable::ENABLE_EDITIONS);
+				$this->_enablecomponents 		= (bool) $row->get(TBGProjectsTable::ENABLE_COMPONENTS);
+				$this->_enabletasks 			= (bool) $row->get(TBGProjectsTable::ENABLE_TASKS);
+				$this->_enablevotes 			= (bool) $row->get(TBGProjectsTable::VOTES);
+				$this->_isreleased 				= (bool) $row->get(TBGProjectsTable::RELEASED);
+				$this->_isplannedreleased		= (bool) $row->get(TBGProjectsTable::PLANNED_RELEASE);
+				$this->_isdefault 				= (bool) $row->get(TBGProjectsTable::IS_DEFAULT);
+				$this->_release_date 			= $row->get(TBGProjectsTable::RELEASE_DATE);
 				$this->_itemtype 				= TBGVersionItem::PROJECT;
-				$this->_homepage 				= $row->get(B2tProjects::HOMEPAGE);
-				$this->_description 			= $row->get(B2tProjects::DESCRIPTION);
-				$this->_timeunit 				= ($row->get(B2tProjects::TIME_UNIT)) ? $row->get(B2tProjects::TIME_UNIT) : 5;
+				$this->_homepage 				= $row->get(TBGProjectsTable::HOMEPAGE);
+				$this->_description 			= $row->get(TBGProjectsTable::DESCRIPTION);
+				$this->_timeunit 				= ($row->get(TBGProjectsTable::TIME_UNIT)) ? $row->get(TBGProjectsTable::TIME_UNIT) : 5;
 				$this->_itemid 					= $id;
-				$this->_defaultstatus 			= ($row->get(B2tProjects::DEFAULT_STATUS)) ? $row->get(B2tProjects::DEFAULT_STATUS) : null;
-				$this->_doc_url 				= $row->get(B2tProjects::DOC_URL);
-				$this->_ownedtype				= $row->get(B2tProjects::OWNED_TYPE);
-				$this->_ownedby 				= $row->get(B2tProjects::OWNED_BY);
-				$this->_leadtype 				= $row->get(B2tProjects::LEAD_TYPE);
-				$this->_leadby 					= $row->get(B2tProjects::LEAD_BY);
-				$this->_qatype	 				= $row->get(B2tProjects::QA_TYPE);
-				$this->_qaby 					= $row->get(B2tProjects::QA);
-				$this->_hrsprday 				= $row->get(B2tProjects::HRS_PR_DAY);
-				$this->_show_in_summary			= (bool) $row->get(B2tProjects::SHOW_IN_SUMMARY);
-				$this->_can_change_wo_working	= (bool) $row->get(B2tProjects::ALLOW_CHANGING_WITHOUT_WORKING);
-				$this->_summary_display			= $row->get(B2tProjects::SUMMARY_DISPLAY);
-				$this->_deleted					= $row->get(B2tProjects::DELETED);
-				$this->_descr_template			= $row->get(B2tProjects::DESCR_TEMPLATE);
-				$this->_repro_template			= $row->get(B2tProjects::REPRO_TEMPLATE);
+				$this->_defaultstatus 			= ($row->get(TBGProjectsTable::DEFAULT_STATUS)) ? $row->get(TBGProjectsTable::DEFAULT_STATUS) : null;
+				$this->_doc_url 				= $row->get(TBGProjectsTable::DOC_URL);
+				$this->_ownedtype				= $row->get(TBGProjectsTable::OWNED_TYPE);
+				$this->_ownedby 				= $row->get(TBGProjectsTable::OWNED_BY);
+				$this->_leadtype 				= $row->get(TBGProjectsTable::LEAD_TYPE);
+				$this->_leadby 					= $row->get(TBGProjectsTable::LEAD_BY);
+				$this->_qatype	 				= $row->get(TBGProjectsTable::QA_TYPE);
+				$this->_qaby 					= $row->get(TBGProjectsTable::QA);
+				$this->_hrsprday 				= $row->get(TBGProjectsTable::HRS_PR_DAY);
+				$this->_show_in_summary			= (bool) $row->get(TBGProjectsTable::SHOW_IN_SUMMARY);
+				$this->_can_change_wo_working	= (bool) $row->get(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING);
+				$this->_summary_display			= $row->get(TBGProjectsTable::SUMMARY_DISPLAY);
+				$this->_deleted					= $row->get(TBGProjectsTable::DELETED);
+				$this->_descr_template			= $row->get(TBGProjectsTable::DESCR_TEMPLATE);
+				$this->_repro_template			= $row->get(TBGProjectsTable::REPRO_TEMPLATE);
 			}
 			else
 			{
@@ -1450,21 +1450,21 @@
 			switch (true)
 			{
 				case ($assignee instanceof TBGUser):
-					if (!$res = B2DB::getTable('B2tProjectAssignees')->getByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID()))
+					if (!$res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID()))
 					{
-						B2DB::getTable('B2tProjectAssignees')->addByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID());
+						B2DB::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndUser($this->getID(), $role, $assignee->getID());
 					}
 					break;
 				case ($assignee instanceof TBGTeam):
-					if ($res = B2DB::getTable('B2tProjectAssignees')->getByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID()))
+					if ($res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID()))
 					{
-						B2DB::getTable('B2tProjectAssignees')->addByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID());
+						B2DB::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID());
 					}
 					break;
 				case ($assignee instanceof TBGCustomer):
-					if ($res = B2DB::getTable('B2tProjectAssignees')->getByProjectAndRoleAndCustomer($this->getID(), $role, $assignee->getID()))
+					if ($res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndCustomer($this->getID(), $role, $assignee->getID()))
 					{
-						B2DB::getTable('B2tProjectAssignees')->addByProjectAndRoleAndCustomer($this->getID(), $role, $assignee->getID());
+						B2DB::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndCustomer($this->getID(), $role, $assignee->getID());
 					}
 					break;
 			}
@@ -1476,22 +1476,22 @@
 			{
 				$this->_assignees = array('uids' => array(), 'users' => array(), 'customers' => array(), 'teams' => array());
 		
-				if ($res = B2DB::getTable('B2tProjectAssignees')->getByProjectID($this->getID()))
+				if ($res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
 						switch (true)
 						{
-							case ($row->get(B2tProjectAssignees::UID) != 0):
-								$this->_assignees['users'][$row->get(B2tProjectAssignees::UID)]['projects'][$this->getID()][$row->get(B2tProjectAssignees::TARGET_TYPE)] = true;
-								$this->_assignees['uids'][$row->get(B2tProjectAssignees::UID)] = $row->get(B2tProjectAssignees::UID);
+							case ($row->get(TBGProjectAssigneesTable::UID) != 0):
+								$this->_assignees['users'][$row->get(TBGProjectAssigneesTable::UID)]['projects'][$this->getID()][$row->get(TBGProjectAssigneesTable::TARGET_TYPE)] = true;
+								$this->_assignees['uids'][$row->get(TBGProjectAssigneesTable::UID)] = $row->get(TBGProjectAssigneesTable::UID);
 								break;
-							case ($row->get(B2tProjectAssignees::CID) != 0):
-								$this->_assignees['customers'][$row->get(B2tProjectAssignees::CID)]['projects'][$this->getID()][$row->get(B2tProjectAssignees::TARGET_TYPE)] = true;
+							case ($row->get(TBGProjectAssigneesTable::CID) != 0):
+								$this->_assignees['customers'][$row->get(TBGProjectAssigneesTable::CID)]['projects'][$this->getID()][$row->get(TBGProjectAssigneesTable::TARGET_TYPE)] = true;
 								break;
-							case ($row->get(B2tProjectAssignees::TID) != 0):
-								$this->_assignees['teams'][$row->get(B2tProjectAssignees::TID)]['projects'][$this->getID()][$row->get(B2tProjectAssignees::TARGET_TYPE)] = true;
-								foreach (B2DB::getTable('B2tTeamMembers')->getUIDsForTeamID($row->get(B2tProjectAssignees::TID)) as $uid)
+							case ($row->get(TBGProjectAssigneesTable::TID) != 0):
+								$this->_assignees['teams'][$row->get(TBGProjectAssigneesTable::TID)]['projects'][$this->getID()][$row->get(TBGProjectAssigneesTable::TARGET_TYPE)] = true;
+								foreach (B2DB::getTable('TBGTeamMembersTable')->getUIDsForTeamID($row->get(TBGProjectAssigneesTable::TID)) as $uid)
 								{
 									$this->_assignees['uids'][$uid] = $uid;
 								}
@@ -1502,22 +1502,22 @@
 				
 				if ($edition_ids = array_keys($this->getEditions()))
 				{
-					if ($res = B2DB::getTable('B2tEditionAssignees')->getByEditionIDs($edition_ids))
+					if ($res = B2DB::getTable('TBGEditionAssigneesTable')->getByEditionIDs($edition_ids))
 					{
 						while ($row = $res->getNextRow())
 						{
 							switch (true)
 							{
-								case ($row->get(B2tEditionAssignees::UID) != 0):
-									$this->_assignees['users'][$row->get(B2tEditionAssignees::UID)]['editions'][$row->get(B2tEditionAssignees::EDITION_ID)][$row->get(B2tEditionAssignees::TARGET_TYPE)] = true;
-									$this->_assignees['uids'][$row->get(B2tEditionAssignees::UID)] = $row->get(B2tEditionAssignees::UID);
+								case ($row->get(TBGEditionAssigneesTable::UID) != 0):
+									$this->_assignees['users'][$row->get(TBGEditionAssigneesTable::UID)]['editions'][$row->get(TBGEditionAssigneesTable::EDITION_ID)][$row->get(TBGEditionAssigneesTable::TARGET_TYPE)] = true;
+									$this->_assignees['uids'][$row->get(TBGEditionAssigneesTable::UID)] = $row->get(TBGEditionAssigneesTable::UID);
 									break;
-								case ($row->get(B2tEditionAssignees::CID) != 0):
-									$this->_assignees['customers'][$row->get(B2tEditionAssignees::CID)]['editions'][$row->get(B2tEditionAssignees::EDITION_ID)][$row->get(B2tEditionAssignees::TARGET_TYPE)] = true;
+								case ($row->get(TBGEditionAssigneesTable::CID) != 0):
+									$this->_assignees['customers'][$row->get(TBGEditionAssigneesTable::CID)]['editions'][$row->get(TBGEditionAssigneesTable::EDITION_ID)][$row->get(TBGEditionAssigneesTable::TARGET_TYPE)] = true;
 									break;
-								case ($row->get(B2tEditionAssignees::TID) != 0):
-									$this->_assignees['teams'][$row->get(B2tEditionAssignees::TID)]['editions'][$row->get(B2tEditionAssignees::EDITION_ID)][$row->get(B2tEditionAssignees::TARGET_TYPE)] = true;
-									foreach (B2DB::getTable('B2tTeamMembers')->getUIDsForTeamID($row->get(B2tEditionAssignees::TID)) as $uid)
+								case ($row->get(TBGEditionAssigneesTable::TID) != 0):
+									$this->_assignees['teams'][$row->get(TBGEditionAssigneesTable::TID)]['editions'][$row->get(TBGEditionAssigneesTable::EDITION_ID)][$row->get(TBGEditionAssigneesTable::TARGET_TYPE)] = true;
+									foreach (B2DB::getTable('TBGTeamMembersTable')->getUIDsForTeamID($row->get(TBGEditionAssigneesTable::TID)) as $uid)
 									{
 										$this->_assignees['uids'][$uid] = $uid;
 									}
@@ -1529,22 +1529,22 @@
 	
 				if ($component_ids = array_keys($this->getComponents()))
 				{
-					if ($res = B2DB::getTable('B2tComponentAssignees')->getByComponentIDs($component_ids))
+					if ($res = B2DB::getTable('TBGComponentAssigneesTable')->getByComponentIDs($component_ids))
 					{
 						while ($row = $res->getNextRow())
 						{
 							switch (true)
 							{
-								case ($row->get(B2tComponentAssignees::UID) != 0):
-									$this->_assignees['users'][$row->get(B2tComponentAssignees::UID)]['components'][$row->get(B2tComponentAssignees::COMPONENT_ID)][$row->get(B2tComponentAssignees::TARGET_TYPE)] = true;
-									$this->_assignees['uids'][$row->get(B2tComponentAssignees::UID)] = $row->get(B2tComponentAssignees::UID);
+								case ($row->get(TBGComponentAssigneesTable::UID) != 0):
+									$this->_assignees['users'][$row->get(TBGComponentAssigneesTable::UID)]['components'][$row->get(TBGComponentAssigneesTable::COMPONENT_ID)][$row->get(TBGComponentAssigneesTable::TARGET_TYPE)] = true;
+									$this->_assignees['uids'][$row->get(TBGComponentAssigneesTable::UID)] = $row->get(TBGComponentAssigneesTable::UID);
 									break;
-								case ($row->get(B2tComponentAssignees::CID) != 0):
-									$this->_assignees['customers'][$row->get(B2tComponentAssignees::CID)]['components'][$row->get(B2tComponentAssignees::COMPONENT_ID)][$row->get(B2tComponentAssignees::TARGET_TYPE)] = true;
+								case ($row->get(TBGComponentAssigneesTable::CID) != 0):
+									$this->_assignees['customers'][$row->get(TBGComponentAssigneesTable::CID)]['components'][$row->get(TBGComponentAssigneesTable::COMPONENT_ID)][$row->get(TBGComponentAssigneesTable::TARGET_TYPE)] = true;
 									break;
-								case ($row->get(B2tComponentAssignees::TID) != 0):
-									$this->_assignees['teams'][$row->get(B2tComponentAssignees::TID)]['components'][$row->get(B2tComponentAssignees::COMPONENT_ID)][$row->get(B2tComponentAssignees::TARGET_TYPE)] = true;
-									foreach (B2DB::getTable('B2tTeamMembers')->getUIDsForTeamID($row->get(B2tComponentAssignees::TID)) as $uid)
+								case ($row->get(TBGComponentAssigneesTable::TID) != 0):
+									$this->_assignees['teams'][$row->get(TBGComponentAssigneesTable::TID)]['components'][$row->get(TBGComponentAssigneesTable::COMPONENT_ID)][$row->get(TBGComponentAssigneesTable::TARGET_TYPE)] = true;
+									foreach (B2DB::getTable('TBGTeamMembersTable')->getUIDsForTeamID($row->get(TBGComponentAssigneesTable::TID)) as $uid)
 									{
 										$this->_assignees['uids'][$uid] = $uid;
 									}
@@ -1606,39 +1606,39 @@
 		public function save()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tProjects::LOCKED, $this->_locked);
-			$crit->addUpdate(B2tProjects::PREFIX, $this->_prefix);
-			$crit->addUpdate(B2tProjects::USE_PREFIX, $this->_useprefix);
-			$crit->addUpdate(B2tProjects::ENABLE_BUILDS, $this->_enablebuilds);
-			$crit->addUpdate(B2tProjects::ENABLE_COMPONENTS, $this->_enablecomponents);
-			$crit->addUpdate(B2tProjects::ENABLE_EDITIONS, $this->_enableeditions);
-			$crit->addUpdate(B2tProjects::ENABLE_TASKS, $this->_enabletasks);
-			$crit->addUpdate(B2tProjects::VOTES, $this->_enablevotes);
-			$crit->addUpdate(B2tProjects::NAME, $this->_name);
-			$crit->addUpdate(B2tProjects::KEY, $this->_key);
-			$crit->addUpdate(B2tProjects::RELEASED, $this->_isreleased);
-			$crit->addUpdate(B2tProjects::PLANNED_RELEASE, $this->_isplannedreleased);
-			$crit->addUpdate(B2tProjects::IS_DEFAULT, $this->_isdefault);
-			$crit->addUpdate(B2tProjects::RELEASE_DATE, $this->_release_date);
-			$crit->addUpdate(B2tProjects::HOMEPAGE, $this->_homepage);
-			$crit->addUpdate(B2tProjects::DESCRIPTION, $this->_description);
-			$crit->addUpdate(B2tProjects::TIME_UNIT, $this->_timeunit);
-			$crit->addUpdate(B2tProjects::DEFAULT_STATUS, $this->_defaultstatus);
-			$crit->addUpdate(B2tProjects::DOC_URL, $this->_doc_url);
-			$crit->addUpdate(B2tProjects::OWNED_TYPE, $this->_ownedtype);
-			$crit->addUpdate(B2tProjects::OWNED_BY, $this->_ownedby);
-			$crit->addUpdate(B2tProjects::LEAD_TYPE, $this->_leadtype);
-			$crit->addUpdate(B2tProjects::LEAD_BY, $this->_leadby);
-			$crit->addUpdate(B2tProjects::QA_TYPE, $this->_qatype);
-			$crit->addUpdate(B2tProjects::QA, $this->_qaby);
-			$crit->addUpdate(B2tProjects::HRS_PR_DAY, $this->_hrsprday); 
-			$crit->addUpdate(B2tProjects::SHOW_IN_SUMMARY, $this->_show_in_summary);
-			$crit->addUpdate(B2tProjects::SUMMARY_DISPLAY, $this->_summary_display);
-			$crit->addUpdate(B2tProjects::ALLOW_CHANGING_WITHOUT_WORKING, $this->_can_change_wo_working);
-			$crit->addUpdate(B2tProjects::DELETED, $this->_deleted);
-			$crit->addUpdate(B2tProjects::DESCR_TEMPLATE, $this->_descr_template);
-			$crit->addUpdate(B2tProjects::REPRO_TEMPLATE, $this->_repro_template);
-			$res = B2DB::getTable('B2tProjects')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGProjectsTable::LOCKED, $this->_locked);
+			$crit->addUpdate(TBGProjectsTable::PREFIX, $this->_prefix);
+			$crit->addUpdate(TBGProjectsTable::USE_PREFIX, $this->_useprefix);
+			$crit->addUpdate(TBGProjectsTable::ENABLE_BUILDS, $this->_enablebuilds);
+			$crit->addUpdate(TBGProjectsTable::ENABLE_COMPONENTS, $this->_enablecomponents);
+			$crit->addUpdate(TBGProjectsTable::ENABLE_EDITIONS, $this->_enableeditions);
+			$crit->addUpdate(TBGProjectsTable::ENABLE_TASKS, $this->_enabletasks);
+			$crit->addUpdate(TBGProjectsTable::VOTES, $this->_enablevotes);
+			$crit->addUpdate(TBGProjectsTable::NAME, $this->_name);
+			$crit->addUpdate(TBGProjectsTable::KEY, $this->_key);
+			$crit->addUpdate(TBGProjectsTable::RELEASED, $this->_isreleased);
+			$crit->addUpdate(TBGProjectsTable::PLANNED_RELEASE, $this->_isplannedreleased);
+			$crit->addUpdate(TBGProjectsTable::IS_DEFAULT, $this->_isdefault);
+			$crit->addUpdate(TBGProjectsTable::RELEASE_DATE, $this->_release_date);
+			$crit->addUpdate(TBGProjectsTable::HOMEPAGE, $this->_homepage);
+			$crit->addUpdate(TBGProjectsTable::DESCRIPTION, $this->_description);
+			$crit->addUpdate(TBGProjectsTable::TIME_UNIT, $this->_timeunit);
+			$crit->addUpdate(TBGProjectsTable::DEFAULT_STATUS, $this->_defaultstatus);
+			$crit->addUpdate(TBGProjectsTable::DOC_URL, $this->_doc_url);
+			$crit->addUpdate(TBGProjectsTable::OWNED_TYPE, $this->_ownedtype);
+			$crit->addUpdate(TBGProjectsTable::OWNED_BY, $this->_ownedby);
+			$crit->addUpdate(TBGProjectsTable::LEAD_TYPE, $this->_leadtype);
+			$crit->addUpdate(TBGProjectsTable::LEAD_BY, $this->_leadby);
+			$crit->addUpdate(TBGProjectsTable::QA_TYPE, $this->_qatype);
+			$crit->addUpdate(TBGProjectsTable::QA, $this->_qaby);
+			$crit->addUpdate(TBGProjectsTable::HRS_PR_DAY, $this->_hrsprday); 
+			$crit->addUpdate(TBGProjectsTable::SHOW_IN_SUMMARY, $this->_show_in_summary);
+			$crit->addUpdate(TBGProjectsTable::SUMMARY_DISPLAY, $this->_summary_display);
+			$crit->addUpdate(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING, $this->_can_change_wo_working);
+			$crit->addUpdate(TBGProjectsTable::DELETED, $this->_deleted);
+			$crit->addUpdate(TBGProjectsTable::DESCR_TEMPLATE, $this->_descr_template);
+			$crit->addUpdate(TBGProjectsTable::REPRO_TEMPLATE, $this->_repro_template);
+			$res = B2DB::getTable('TBGProjectsTable')->doUpdateById($crit, $this->getID());
 
 			return true;
 		}
@@ -1706,11 +1706,11 @@
 			if ($this->_unassignedissues == null)
 			{
 				$this->_unassignedissues = array();
-				if ($res = B2DB::getTable('B2tIssues')->getByProjectIDandNoMilestone($this->getID()))
+				if ($res = B2DB::getTable('TBGIssuesTable')->getByProjectIDandNoMilestone($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_unassignedissues[$row->get(B2tIssues::ID)] = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID));
+						$this->_unassignedissues[$row->get(TBGIssuesTable::ID)] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID));
 					}
 				}
 			}
@@ -1756,11 +1756,11 @@
 			if ($this->_visible_milestones === null)
 			{
 				$this->_visible_milestones = array();
-				if ($res = B2DB::getTable('B2tVisibleMilestones')->getAllByProjectID($this->getID()))
+				if ($res = B2DB::getTable('TBGVisibleMilestonesTable')->getAllByProjectID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$milestone = TBGFactory::milestoneLab($row->get(B2tMilestones::ID), $row);
+						$milestone = TBGFactory::TBGMilestoneLab($row->get(TBGMilestonesTable::ID), $row);
 						if ($milestone->hasAccess())
 						{
 							$this->_visible_milestones[$milestone->getID()] = $milestone;
@@ -1789,7 +1789,7 @@
 		public function clearVisibleMilestones()
 		{
 			$this->_visible_milestones = null;
-			B2DB::getTable('B2tVisibleMilestones')->clearByProjectID($this->getID());
+			B2DB::getTable('TBGVisibleMilestonesTable')->clearByProjectID($this->getID());
 		}
 		
 		/**
@@ -1804,7 +1804,7 @@
 			try
 			{
 				$this->_visible_milestones = null;
-				B2DB::getTable('B2tVisibleMilestones')->addByProjectIDAndMilestoneID($this->getID(), $milestone_id);
+				B2DB::getTable('TBGVisibleMilestonesTable')->addByProjectIDAndMilestoneID($this->getID(), $milestone_id);
 				return true;
 			}
 			catch (Exception $e)
@@ -1842,7 +1842,7 @@
 			}
 			if (empty($this->_issuecounts['last30']))
 			{
-				list ($closed, $open) = B2DB::getTable('B2tIssues')->getLast30IssueCountsByProjectID($this->getID());
+				list ($closed, $open) = B2DB::getTable('TBGIssuesTable')->getLast30IssueCountsByProjectID($this->getID());
 				$this->_issuecounts['last30']['open'] = $open;
 				$this->_issuecounts['last30']['closed'] = $closed;
 			}
@@ -1885,11 +1885,11 @@
 			if ($this->_visible_issuetypes === null)
 			{
 				$this->_visible_issuetypes = array();
-				if ($res = B2DB::getTable('B2tVisibleIssueTypes')->getAllByProjectID($this->getID()))
+				if ($res = B2DB::getTable('TBGVisibleIssueTypesTable')->getAllByProjectID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_visible_issuetypes[$row->get(B2tIssueTypes::ID)] = TBGFactory::TBGIssuetypeLab($row->get(B2tIssueTypes::ID), $row);
+						$this->_visible_issuetypes[$row->get(TBGIssueTypesTable::ID)] = TBGFactory::TBGIssuetypeLab($row->get(TBGIssueTypesTable::ID), $row);
 					}
 				}
 			}
@@ -1914,7 +1914,7 @@
 		public function clearVisibleIssuetypes()
 		{
 			$this->_visible_issuetypes = null;
-			B2DB::getTable('B2tVisibleIssueTypes')->clearByProjectID($this->getID());
+			B2DB::getTable('TBGVisibleIssueTypesTable')->clearByProjectID($this->getID());
 		}
 		
 		/**
@@ -1928,7 +1928,7 @@
 		{
 			try
 			{
-				B2DB::getTable('B2tVisibleIssueTypes')->addByProjectIDAndIssuetypeID($this->getID(), $issuetype_id);
+				B2DB::getTable('TBGVisibleIssueTypesTable')->addByProjectIDAndIssuetypeID($this->getID(), $issuetype_id);
 				return true;
 			}
 			catch (Exception $e)
@@ -2243,22 +2243,22 @@
 			if (!isset($this->_fieldsarrays[$issue_type][(int) $reportable]))
 			{
 				$retval = array();
-				if (!($res = B2DB::getTable('B2tIssueFields')->getByProjectIDandIssuetypeID($this->getID(), $issue_type)))
+				if (!($res = B2DB::getTable('TBGIssueFieldsTable')->getByProjectIDandIssuetypeID($this->getID(), $issue_type)))
 				{
-					$res = B2DB::getTable('B2tIssueFields')->getByIssuetypeID($issue_type);
+					$res = B2DB::getTable('TBGIssueFieldsTable')->getByIssuetypeID($issue_type);
 				}
 				if ($res)
 				{
 					while ($row = $res->getNextRow())
 					{
-						if (!$reportable || (bool) $row->get(B2tIssueFields::REPORTABLE) == true)
+						if (!$reportable || (bool) $row->get(TBGIssueFieldsTable::REPORTABLE) == true)
 						{
 							if ($reportable)
 							{
-								if (in_array($row->get(B2tIssueFields::FIELD_KEY), TBGDatatype::getAvailableFields(true)) && (!$this->fieldPermissionCheck($row->get(B2tIssueFields::FIELD_KEY), $reportable) && !($row->get(B2tIssueFields::REQUIRED) && $reportable))) continue;
-								elseif (!in_array($row->get(B2tIssueFields::FIELD_KEY), TBGDatatype::getAvailableFields(true)) && (!$this->fieldPermissionCheck($row->get(B2tIssueFields::FIELD_KEY), $reportable, true) && !($row->get(B2tIssueFields::REQUIRED) && $reportable))) continue;
+								if (in_array($row->get(TBGIssueFieldsTable::FIELD_KEY), TBGDatatype::getAvailableFields(true)) && (!$this->fieldPermissionCheck($row->get(TBGIssueFieldsTable::FIELD_KEY), $reportable) && !($row->get(TBGIssueFieldsTable::REQUIRED) && $reportable))) continue;
+								elseif (!in_array($row->get(TBGIssueFieldsTable::FIELD_KEY), TBGDatatype::getAvailableFields(true)) && (!$this->fieldPermissionCheck($row->get(TBGIssueFieldsTable::FIELD_KEY), $reportable, true) && !($row->get(TBGIssueFieldsTable::REQUIRED) && $reportable))) continue;
 							}
-							$retval[$row->get(B2tIssueFields::FIELD_KEY)] = array('required' => (bool) $row->get(B2tIssueFields::REQUIRED), 'additional' => (bool) $row->get(B2tIssueFields::ADDITIONAL));
+							$retval[$row->get(TBGIssueFieldsTable::FIELD_KEY)] = array('required' => (bool) $row->get(TBGIssueFieldsTable::REQUIRED), 'additional' => (bool) $row->get(TBGIssueFieldsTable::ADDITIONAL));
 						}
 					}
 					if (array_key_exists('user_pain', $retval))
@@ -2338,7 +2338,7 @@
 			if ($this->_recentlogitems === null)
 			{
 				$this->_recentlogitems = array();
-				if ($res = B2DB::getTable('B2tLog')->getImportantByProjectID($this->getID(), $limit))
+				if ($res = B2DB::getTable('TBGLogTable')->getImportantByProjectID($this->getID(), $limit))
 				{
 					$this->_recentlogitems = $res;
 				}
@@ -2366,7 +2366,7 @@
 				{
 					$this->_prioritycount[$priority_id] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
 				}
-				foreach (B2DB::getTable('B2tIssues')->getPriorityCountByProjectID($this->getID()) as $priority_id => $priority_count)
+				foreach (B2DB::getTable('TBGIssuesTable')->getPriorityCountByProjectID($this->getID()) as $priority_id => $priority_count)
 				{
 					$this->_prioritycount[$priority_id] = $priority_count;
 				}
@@ -2384,11 +2384,11 @@
 			if ($this->_recentissues === null)
 			{
 				$this->_recentissues = array();
-				if ($res = B2DB::getTable('B2tIssues')->getRecentByProjectIDandIssueType($this->getID(), array('bug_report'), 10))
+				if ($res = B2DB::getTable('TBGIssuesTable')->getRecentByProjectIDandIssueType($this->getID(), array('bug_report'), 10))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_recentissues[] = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID), $row);
+						$this->_recentissues[] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
 					}
 				}
 			}
@@ -2399,11 +2399,11 @@
 			if ($this->_recentfeatures === null)
 			{
 				$this->_recentfeatures = array();
-				if ($res = B2DB::getTable('B2tIssues')->getRecentByProjectIDandIssueType($this->getID(), array('feature_request', 'enhancement')))
+				if ($res = B2DB::getTable('TBGIssuesTable')->getRecentByProjectIDandIssueType($this->getID(), array('feature_request', 'enhancement')))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_recentfeatures[] = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID), $row);
+						$this->_recentfeatures[] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
 					}
 				}
 			}
@@ -2414,11 +2414,11 @@
 			if ($this->_recentideas === null)
 			{
 				$this->_recentideas = array();
-				if ($res = B2DB::getTable('B2tIssues')->getRecentByProjectIDandIssueType($this->getID(), array('idea')))
+				if ($res = B2DB::getTable('TBGIssuesTable')->getRecentByProjectIDandIssueType($this->getID(), array('idea')))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_recentideas[] = TBGFactory::TBGIssueLab($row->get(B2tIssues::ID), $row);
+						$this->_recentideas[] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
 					}
 				}
 			}

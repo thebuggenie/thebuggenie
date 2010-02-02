@@ -25,11 +25,11 @@
 			if (self::$_groups === null)
 			{
 				self::$_groups = array();
-				if ($res = B2DB::getTable('B2tGroups')->getAll())
+				if ($res = B2DB::getTable('TBGGroupsTable')->getAll())
 				{
 					while ($row = $res->getNextRow())
 					{
-						self::$_groups[$row->get(B2tGroups::ID)] = TBGFactory::groupLab($row->get(B2tGroups::ID), $row);
+						self::$_groups[$row->get(TBGGroupsTable::ID)] = TBGFactory::groupLab($row->get(TBGGroupsTable::ID), $row);
 					}
 				}
 			}
@@ -46,11 +46,11 @@
 			$this->_itemid = $g_id;
 			if ($row === null)
 			{
-				$row = B2DB::getTable('B2tGroups')->doSelectById($g_id); 
+				$row = B2DB::getTable('TBGGroupsTable')->doSelectById($g_id); 
 			}
 			try
 			{
-				$this->_name = $row->get(B2tGroups::GNAME);
+				$this->_name = $row->get(TBGGroupsTable::GNAME);
 			}
 			catch (Exception $e)
 			{
@@ -82,13 +82,13 @@
 		public static function createNew($groupname, $scope = null)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addInsert(B2tGroups::GNAME, $groupname);
+			$crit->addInsert(TBGGroupsTable::GNAME, $groupname);
 			if ($scope === null)
 			{
 				$scope = TBGContext::getScope()->getID();
 			}
-			$crit->addInsert(B2tGroups::SCOPE, $scope);
-			$res = B2DB::getTable('B2tGroups')->doInsert($crit);
+			$crit->addInsert(TBGGroupsTable::SCOPE, $scope);
+			$res = B2DB::getTable('TBGGroupsTable')->doInsert($crit);
 			$group = TBGFactory::groupLab($res->getInsertID());
 			if (self::$_groups !== null)
 			{
@@ -105,25 +105,25 @@
 		public function addMember($uid)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tUsers::GROUP_ID, $this->_itemid);
-			B2DB::getTable('B2tUsers')->doUpdateById($crit, $uid);
+			$crit->addUpdate(TBGUsersTable::GROUP_ID, $this->_itemid);
+			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $uid);
 		}
 		
 		public function setName($gname)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(B2tGroups::GNAME, $gname);
-			B2DB::getTable('B2tGroups')->doUpdateById($crit, $this->getID());
+			$crit->addUpdate(TBGGroupsTable::GNAME, $gname);
+			B2DB::getTable('TBGGroupsTable')->doUpdateById($crit, $this->getID());
 			$this->_name = $gname;
 		}
 		
 		public function delete()
 		{
-			$res = B2DB::getTable('B2tGroups')->doDeleteById($this->getID());
+			$res = B2DB::getTable('TBGGroupsTable')->doDeleteById($this->getID());
 			$crit = new B2DBCriteria();
-			$crit->addWhere(B2tUsers::GROUP_ID, $this->getID());
-			$crit->addUpdate(B2tUsers::GROUP_ID, 0);
-			$res = B2DB::getTable('B2tUsers')->doUpdate($crit);
+			$crit->addWhere(TBGUsersTable::GROUP_ID, $this->getID());
+			$crit->addUpdate(TBGUsersTable::GROUP_ID, 0);
+			$res = B2DB::getTable('TBGUsersTable')->doUpdate($crit);
 		}
 		
 	}
