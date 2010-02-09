@@ -1427,6 +1427,9 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #project_dashboard #project_header_container img { float: left; margin: 3px 5px 0 0; }
 #project_dashboard .recent_activities td.latest_action_dates { font-size: 13px; }
 #project_dashboard .recent_activities td .time { font-size: 11px; }
+#project_dashboard_menu li.selected a, #project_dashboard_menu li a { font-size: 13px; }
+#project_dashboard_menu_panes a.more { font-size: 13px; padding: 5px; float: right; font-weight: bold; }
+#project_dashboard_menu_panes a.more:hover { border: 0; }
 #timeline .recent_activities td .time { font-size: 12px; }
 #timeline { padding: 5px 0 30px 15px; }
 #timeline .recent_activities, #timeline .recent_activities td { font-size: 13px; }

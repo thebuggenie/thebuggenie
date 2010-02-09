@@ -64,7 +64,7 @@
 		{
 			$retarr = array();
 			$sd = $startdate;
-			while ($sd < $enddate)
+			while ($sd <= $enddate)
 			{
 				$retarr[date('md', $sd)] = array();
 				$sd += 86400;
@@ -83,15 +83,23 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$date = ($row->get(self::EDITED_AT) >= $startdate) ? $row->get(self::EDITED_AT) : $startdate;
-						$retarr[date('md', $date)][$row->get(self::ISSUE_ID)] = $row->get(self::SPENT_POINTS);
+						$date = date('md', ($row->get(self::EDITED_AT) >= $startdate) ? $row->get(self::EDITED_AT) : $startdate);
+						foreach ($retarr as $key => &$details)
+						{
+							if ($key >= $date)
+							{
+								$details[$row->get(self::ISSUE_ID)] = $row->get(self::SPENT_POINTS);
+							}
+						}
+						//$date = ($row->get(self::EDITED_AT) >= $startdate) ? $row->get(self::EDITED_AT) : $startdate;
+						//$retarr[date('md', $date)][$row->get(self::ISSUE_ID)] = $row->get(self::SPENT_POINTS);
 					}
 				}
 			}
 			
 			foreach ($retarr as $key => $vals)
 			{
-				$retarr[$key] = (count($vals)) ? array_sum($vals) : null;
+				$retarr[$key] = (count($vals)) ? array_sum($vals) : 0;
 			}
 
 			return $retarr;

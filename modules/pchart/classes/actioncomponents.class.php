@@ -9,7 +9,6 @@
 			$maxvals = array();
 			foreach ($this->datasets as $ds_id => $dataset)
 			{
-				//var_dump(array_keys($dataset['values']));die();
 				$DataSet->AddPoint($dataset['values'], "Serie" . $ds_id, array_keys($dataset['values']));
 				$maxvals[] = max($dataset['values']);
 			}
@@ -41,7 +40,6 @@
 			// Initialise the graph
 			$Test = new pChart($this->width, $this->height);
 			$Test->setFixedScale(0, max($maxvals));
-			//$Test->setFixedScale(-2, 8);
 			$Test->setFontProperties(TBGContext::getIncludePath() . 'modules/pchart/fonts/DroidSans.ttf', 8);
 			if (isset($this->labels_title))
 			{

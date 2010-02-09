@@ -146,15 +146,19 @@
 
 				if (count($burndown_data['estimations']))
 				{
-					$datasets[] = array('values' => $burndown_data['estimations'], 'label' => __('Estimated points'));
-					$datasets[] = array('values' => $burndown_data['spent_times'], 'label' => __('Points spent'));
-					//$datasets[] = array('values' => $issues['closed'], 'label' => __('Issues closed'));
+					foreach ($burndown_data['estimations'] as $key => &$e)
+					{
+						if (array_key_exists($key, $burndown_data['spent_times']))
+						{
+							$e -= $burndown_data['spent_times'][$key];
+						}
+					}
+					$datasets[] = array('values' => $burndown_data['estimations'], 'label' => __('Remaining effort'));
 					$this->labels = array_keys($burndown_data['estimations']);
 				}
 				else
 				{
-					$datasets[] = array('values' => array(0), 'label' => __('Estimated points'));
-					$datasets[] = array('values' => array(0), 'label' => __('Points spent'));
+					$datasets[] = array('values' => array(0), 'label' => __('Remaining effort'));
 					$this->labels = array(0);
 				}
 				$this->datasets = $datasets;
