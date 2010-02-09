@@ -5,11 +5,11 @@
 			<a href="javascript: void(0);" onclick="$('scrum_sprint_<?php echo $sprint->getID(); ?>_container').toggle();"><?php echo $sprint->getName(); ?></a>
 			<span class="sprint_date">
 				<?php if ($sprint->getStartingDate() && $sprint->isScheduled()): ?>
-					(<?php echo tbg_formatTime($sprint->getStartingDate(), 20); ?> - <?php echo tbg_formatTime($sprint->getScheduledDate(), 20); ?>)
+					(<?php echo tbg_formatTime($sprint->getStartingDate(), 22); ?> - <?php echo tbg_formatTime($sprint->getScheduledDate(), 22); ?>)
 				<?php elseif ($sprint->getStartingDate() && !$sprint->isScheduled()): ?>
-					<?php echo __('Starting %start_date%', array('%start_date%' => tbg_formatTime($sprint->getStartingDate(), 20))); ?>
+					<?php echo __('Starting %start_date%', array('%start_date%' => tbg_formatTime($sprint->getStartingDate(), 22))); ?>
 				<?php elseif (!$sprint->getStartingDate() && $sprint->isScheduled()): ?>
-					<?php echo __('Ends %end_date%', array('%end_date%' => tbg_formatTime($sprint->getScheduledDate(), 20))); ?>
+					<?php echo __('Ends %end_date%', array('%end_date%' => tbg_formatTime($sprint->getScheduledDate(), 22))); ?>
 				<?php endif; ?>
 			</span>
 			&nbsp;&nbsp;<?php echo __('%number_of% issue(s)', array('%number_of%' => '<span style="font-weight: bold;" id="scrum_sprint_'.$sprint->getID().'_issues">'.$sprint->countIssues().'</span>')); ?>&nbsp;

@@ -15,11 +15,15 @@
 					<table cellpadding="0" cellspacing="0" border="0">
 						<tr>
 							<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_burndown.png'); ?></td>
-							<td style="padding: 3px 0 0 2px; text-align: left; font-size: 12px; font-weight: bold;"><?php echo link_tag(make_url('project_scrum_sprint_burndown', array('project_key' => $selected_project->getKey())), __('Show sprint burndown')); ?></td>
+							<td style="padding: 3px 0 0 2px; text-align: left; font-size: 12px; font-weight: bold;"><?php echo link_tag(make_url('project_scrum', array('project_key' => $selected_project->getKey())), __('Show scrum planning page')); ?></td>
 						</tr>
 						<tr>
 							<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_burndown.png'); ?></td>
-							<td style="padding: 3px 0 0 2px; text-align: left; font-size: 12px; font-weight: bold;"><?php echo link_tag('#', __('Show release burndown'), array('class' => 'faded_medium')); ?></td>
+							<td style="padding: 3px 0 0 2px; text-align: left; font-size: 12px; font-weight: normal;"><?php echo link_tag(make_url('project_scrum_sprint_burndown', array('project_key' => $selected_project->getKey())), __('Show sprint burndown')); ?></td>
+						</tr>
+						<tr>
+							<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_burndown.png'); ?></td>
+							<td style="padding: 3px 0 0 2px; text-align: left; font-size: 12px; font-weight: normal;"><?php echo link_tag('#', __('Show release burndown'), array('class' => 'faded_medium')); ?></td>
 						</tr>
 					</table>
 				</div>
@@ -35,7 +39,39 @@
 						<div id="add_sprint">
 							<label for="sprint_name"><?php echo __('Add sprint'); ?></label>
 							<input type="text" id="sprint_name" name="sprint_name">
-							<input type="submit" value="<?php echo __('Add'); ?>">
+							<input type="submit" value="<?php echo __('Add'); ?>"><br>
+							<label for="sprint_starting_day"><?php echo __('Sprint starts'); ?></label>
+							<select name="starting_day" id="sprint_starting_day">
+								<?php for ($cc = 1;$cc <= 31;$cc++): ?>
+									<option value=<?php echo $cc; ?><?php echo ((date('d') == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
+								<?php endfor; ?>
+							</select>
+							<select name="starting_month" id="sprint_starting_month">
+								<?php for ($cc = 1;$cc <= 12;$cc++): ?>
+									<option value=<?php echo $cc; ?><?php echo ((date('m') == $cc) ? " selected" : ""); ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
+								<?php endfor; ?>
+							</select>
+							<select name="starting_year" id="sprint_starting_year">
+								<?php for ($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
+									<option value=<?php echo $cc; ?><?php echo ((date('Y') == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
+								<?php endfor; ?>
+							</select><br>
+							<label for="sprint_scheduled_day"><?php echo __('Sprint ends'); ?></label>
+							<select name="scheduled_day" id="sprint_scheduled_day">
+								<?php for ($cc = 1;$cc <= 31;$cc++): ?>
+									<option value=<?php echo $cc; ?><?php echo ((date('d') == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
+								<?php endfor; ?>
+							</select>
+							<select name="scheduled_month" id="sprint_scheduled_month">
+								<?php for ($cc = 1;$cc <= 12;$cc++): ?>
+									<option value=<?php echo $cc; ?><?php echo ((date('m') == $cc) ? " selected" : ""); ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
+								<?php endfor; ?>
+							</select>
+							<select name="scheduled_year" id="sprint_scheduled_year">
+								<?php for ($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
+									<option value=<?php echo $cc; ?><?php echo ((date('Y') == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
+								<?php endfor; ?>
+							</select><br>
 						</div>
 					</form>
 				</div>

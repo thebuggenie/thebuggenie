@@ -53,19 +53,8 @@ INPUT, SELECT, TEXTAREA, BUTTON
 }
 
 input, select, textarea { background-color: #FFF; }
-
-input[type="submit"], button, input[type="file"]
-{
-	background-color: #E5E5E5;
-}
-
-input[type="image"]
-{
-	border: 0px;
-	padding: 0px;
-	width: 16px;
-	height: 16px;
-}
+input[type="submit"], button, input[type="file"] { background-color: #E5E5E5; }
+input[type="image"] { border: 0px; padding: 0px; width: 16px; height: 16px; background-color: transparent; }
 
 th { font-weight: bold; border-bottom: 1px solid #DDD; padding-bottom: 2px; }
 

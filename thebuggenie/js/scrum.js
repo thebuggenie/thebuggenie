@@ -23,7 +23,7 @@ function addUserStory(url)
 			//$('message_user_story_added').show();
 			$('scrum_sprint_0_list').insert({bottom: json.content});
 			$('scrum_sprint_0_unassigned').hide();
-			new Draggable('scrum_story_' + json.story_id, { revert: true });
+			new Draggable('scrum_story_' + json.story_id, {revert: true});
 			//new Effect.Fade('message_user_story_added', {delay: 20} );
 		}
 	},
@@ -59,7 +59,7 @@ function addSprint(url, assign_url)
 			$('sprint_add_indicator').hide();
 			//$('message_sprint_added').show();
 			$('scrum_sprints').insert({bottom: json.content});
-			Droppables.add('scrum_sprint_' + json.sprint_id, { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { assignStory(assign_url, dragged, dropped)}});
+			Droppables.add('scrum_sprint_' + json.sprint_id, {hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) {assignStory(assign_url, dragged, dropped)}});
 		}
 	},
 	onFailure: function (transport) {
@@ -75,7 +75,7 @@ function assignStory(url, dragged, dropped)
 	asynchronous:true,
 	method: "post",
 	evalScripts: true,
-	parameters: { story_id: $(dragged.id + '_id').getValue(), sprint_id: $(dropped.id + '_id').getValue() },
+	parameters: {story_id: $(dragged.id + '_id').getValue(), sprint_id: $(dropped.id + '_id').getValue()},
 	onLoading: function (transport) {
 		$(dropped.id + '_indicator').show();
 	},
@@ -89,7 +89,7 @@ function assignStory(url, dragged, dropped)
 		else
 		{
 			$(dropped.id + '_indicator').hide();
-			$(dropped.id + '_list').insert(Element.remove(dragged), { insertion: Insertion.Bottom, queue: 'end' });
+			$(dropped.id + '_list').insert(Element.remove(dragged), {insertion: Insertion.Bottom, queue: 'end'});
 			$('scrum_sprint_' + json.old_sprint_id + '_issues').update(json.old_issues);
 			$('scrum_sprint_' + json.new_sprint_id + '_issues').update(json.new_issues);
 			$('scrum_sprint_' + json.old_sprint_id + '_estimated_points').update(json.old_estimated_points);
@@ -113,7 +113,7 @@ function setStoryColor(url, story_id, color)
 	new Ajax.Request(url, {
 	asynchronous:true,
 	method: "post",
-	parameters: { color: color },
+	parameters: {color: color},
 	onLoading: function (transport) {
 		$('color_selector_' + story_id + '_indicator').show();
 	},
@@ -146,7 +146,7 @@ function setStoryEstimates(url, story_id)
 	new Ajax.Request(url, {
 	asynchronous:true,
 	method: "post",
-	parameters: { estimated_points: points, estimated_hours: hours },
+	parameters: {estimated_points: points, estimated_hours: hours},
 	onLoading: function (transport) {
 		$('point_selector_' + story_id + '_indicator').show();
 	},

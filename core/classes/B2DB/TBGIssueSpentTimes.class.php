@@ -62,26 +62,33 @@
 
 		public function getSpentTimesByDateAndIssueIDs($startdate, $enddate, $issue_ids)
 		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::EDITED_AT, $startdate, B2DBCriteria::DB_GREATER_THAN_EQUAL);
-			$crit->addWhere(self::EDITED_AT, $enddate, B2DBCriteria::DB_LESS_THAN_EQUAL);
-			$crit->addWhere(self::ISSUE_ID, $issue_ids, B2DBCriteria::DB_IN);
-			$crit->addOrderBy(self::EDITED_AT, B2DBCriteria::SORT_ASC);
-			$res = $this->doSelect($crit);
-
 			$retarr = array();
-			while ($startdate < $enddate)
+			$sd = $startdate;
+			while ($sd < $enddate)
 			{
-				$retarr[date('md', $startdate)] = array();
-				$startdate += 86400;
+				$retarr[date('md', $sd)] = array();
+				$sd += 86400;
 			}
-			if ($res)
+
+			if (count($issue_ids))
 			{
-				while ($row = $res->getNextRow())
+				$crit = $this->getCriteria();
+				//$crit->addWhere(self::EDITED_AT, $startdate, B2DBCriteria::DB_GREATER_THAN_EQUAL);
+				$crit->addWhere(self::EDITED_AT, $enddate, B2DBCriteria::DB_LESS_THAN_EQUAL);
+				$crit->addWhere(self::ISSUE_ID, $issue_ids, B2DBCriteria::DB_IN);
+				$crit->addOrderBy(self::EDITED_AT, B2DBCriteria::SORT_ASC);
+				$res = $this->doSelect($crit);
+
+				if ($res)
 				{
-					$retarr[date('md', $row->get(self::EDITED_AT))][$row->get(self::ISSUE_ID)] = $row->get(self::SPENT_POINTS);
+					while ($row = $res->getNextRow())
+					{
+						$date = ($row->get(self::EDITED_AT) >= $startdate) ? $row->get(self::EDITED_AT) : $startdate;
+						$retarr[date('md', $date)][$row->get(self::ISSUE_ID)] = $row->get(self::SPENT_POINTS);
+					}
 				}
 			}
+			
 			foreach ($retarr as $key => $vals)
 			{
 				$retarr[$key] = (count($vals)) ? array_sum($vals) : null;

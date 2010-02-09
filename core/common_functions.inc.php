@@ -149,6 +149,27 @@
 				if (TBGContext::getUser()->getTimezone() != 0) $time .= TBGContext::getUser()->getTimezone();
 				return $time;
 				break;
+			case 22:
+				return strftime("%b %d, %Y", $tstamp);
+			case 23:
+				$tstring = '';
+				if (date('dmY', $tstamp) == date('dmY'))
+				{
+					$tstring .= __('Today');
+				}
+				elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') - 1))))
+				{
+					$tstring .= __('Yesterday');
+				}
+				elseif (date('dmY', $tstamp) == date('dmY', mktime(0, 0, 0, date('m'), (date('d') + 1))))
+				{
+					$tstring .= __('Tomorrow');
+				}
+				else
+				{
+					$tstring .= strftime("%b %d, %Y", $tstamp);
+				}
+				return $tstring;
 			default:
 				return $tstamp;
 		}

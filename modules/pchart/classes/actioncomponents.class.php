@@ -6,10 +6,12 @@
 		public function componentLineGraph()
 		{
 			$DataSet = new pData;
+			$maxvals = array();
 			foreach ($this->datasets as $ds_id => $dataset)
 			{
 				//var_dump(array_keys($dataset['values']));die();
 				$DataSet->AddPoint($dataset['values'], "Serie" . $ds_id, array_keys($dataset['values']));
+				$maxvals[] = max($dataset['values']);
 			}
 			$DataSet->AddAllSeries();
 			if (isset($this->labels))
@@ -38,6 +40,7 @@
 
 			// Initialise the graph
 			$Test = new pChart($this->width, $this->height);
+			$Test->setFixedScale(0, max($maxvals));
 			//$Test->setFixedScale(-2, 8);
 			$Test->setFontProperties(TBGContext::getIncludePath() . 'modules/pchart/fonts/DroidSans.ttf', 8);
 			if (isset($this->labels_title))
@@ -59,13 +62,17 @@
 			$Test->drawTreshold(0, 143, 55, 72, TRUE, TRUE);
 
 			// Draw the cubic curve graph
-			if (isset($this->curved) && $this->curved)
+			if (isset($this->style) && $this->style == 'curved')
 			{
 				$Test->drawCubicCurve($DataSet->GetData(), $DataSet->GetDataDescription());
 			}
-			elseif (isset($this->filled_line) && $this->filled_line)
+			if (isset($this->style) && $this->style == 'filled_line')
 			{
 				$Test->drawFilledLineGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 50, true);
+			}
+			if (isset($this->style) && $this->style == 'stacked_bar')
+			{
+				$Test->drawStackedBarGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 50, true);
 			}
 			else
 			{

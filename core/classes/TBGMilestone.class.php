@@ -861,6 +861,16 @@
 		 *
 		 * @return boolean
 		 */
+		public function hasScheduledDate()
+		{
+			return (bool) $this->getScheduledDate();
+		}
+
+		/**
+		 * Whether or not this milestone has starting date set
+		 *
+		 * @return boolean
+		 */
 		public function isStarting()
 		{
 			return $this->_isstarting;

@@ -109,13 +109,20 @@
 		public function runScrumSprintBurndown(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$selected_sprint = null;
+			$sprints = $this->selected_project->getUpcomingMilestonesAndSprints();
+			if (count($sprints))
+			{
+				$selected_sprint = array_shift($sprints);
+			}
+			$this->selected_sprint = $selected_sprint;
 			//$this->unassigned_issues = $this->selected_project->getUnassignedStories();
 		}
 
 		public function runScrumSprintBurndownImage(TBGRequest $request)
 		{
 			$milestone = null;
-			if ($request->getParameter('milestone_id'))
+			if ($m_id = $request->getParameter('sprint_id'))
 			{
 				$milestone = TBGFactory::TBGMilestoneLab($m_id);
 			}
@@ -247,6 +254,11 @@
 			if (($sprint_name = $request->getParameter('sprint_name')) && trim($sprint_name) != '')
 			{
 				$sprint = TBGMilestone::createNew($sprint_name, TBGMilestone::TYPE_SCRUMSPRINT, $this->selected_project->getID());
+				$sprint->setStarting();
+				$sprint->setStartingDate(mktime(0, 0, 1, $request->getParameter('starting_month'), $request->getParameter('starting_day'), $request->getParameter('starting_year')));
+				$sprint->setScheduled();
+				$sprint->setScheduledDate(mktime(0, 0, 1, $request->getParameter('scheduled_month'), $request->getParameter('scheduled_day'), $request->getParameter('scheduled_year')));
+				$sprint->save();
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('sprintbox', array('sprint' => $sprint)), 'sprint_id' => $sprint->getID()));
 			}
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please specify a sprint name')));
