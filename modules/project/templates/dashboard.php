@@ -69,7 +69,7 @@
 				</div>
 			</div>
 			<div style="width: 680px; padding-right: 5px;">
-				<?php echo image_tag(make_url('project_statistics_last_30', array('project_key' => $selected_project->getKey())), array('style' => 'margin-bottom: 15px;'), true); ?>
+				<?php echo image_tag(make_url('project_statistics_last_30', array('project_key' => $selected_project->getKey())), array('style' => 'float: right; margin-bottom: 15px;'), true); ?>
 				<div style="clear: both; height: 30px;" class="tab_menu">
 					<ul id="project_dashboard_menu">
 						<li class="selected" id="tab_10_recent_issues"><a onclick="switchSubmenuTab('tab_10_recent_issues', 'project_dashboard_menu');" href="javascript:void(0);"><?php echo __('Recent issues / bugs'); ?></a></li>

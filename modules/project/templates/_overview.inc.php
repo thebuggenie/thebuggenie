@@ -6,12 +6,12 @@
 	}
 	
 ?>
-<div class="rounded_box invisible">
+<div class="rounded_box invisible project_strip">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="vertical-align: middle; padding: 0 5px 0 5px;">
 			<div style="float: left; font-weight: normal; font-size: 14px;">
 				<?php echo image_tag($project->getIcon(), array('style' => 'float: left; margin-right: 5px;'), $project->hasIcon()); ?>
-				<b><?php echo $project->getName(); ?> <?php if ($project->usePrefix()): ?>(<?php echo strtoupper($project->getPrefix()); ?>)<?php endif; ?></b><br>
+				<b class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?> <?php if ($project->usePrefix()): ?>(<?php echo strtoupper($project->getPrefix()); ?>)<?php endif; ?></b><br>
 				<?php if ($project->hasHomepage()): ?>
 					<a href="<?php echo $project->getHomepage(); ?>" style="font-size: 13px;" target="_blank"><?php echo $project->getHomepage(); ?></a>
 				<?php else: ?>

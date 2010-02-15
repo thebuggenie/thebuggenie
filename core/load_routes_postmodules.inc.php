@@ -13,8 +13,10 @@
 	$routes[] = array('project_reportissue', '/:project_key/reportissue/*', 'main', 'reportIssue');
 	$routes[] = array('project_planning', '/:project_key/planning', 'project', 'planning');
 	$routes[] = array('project_scrum', '/:project_key/scrum', 'project', 'scrum');
-	$routes[] = array('project_scrum_sprint_burndown', '/:project_key/scrum/burndown/sprint', 'project', 'scrumSprintBurndown');
-	$routes[] = array('project_scrum_sprint_burndown_image', '/:project_key/scrum/burndown/sprint/image/*', 'project', 'scrumSprintBurndownImage');
+	$routes[] = array('project_scrum_sprint_details', '/:project_key/scrum/sprint/details/*', 'project', 'scrumShowDetails');
+	$routes[] = array('project_scrum_release_burndown', '/:project_key/scrum/burndown/release', 'project', 'scrumShowBurndown', array('mode' => 'release'));
+	$routes[] = array('project_scrum_sprint_burndown_image', '/:project_key/scrum/burndown/sprint/image/*', 'project', 'scrumShowBurndownImage', array('mode' => 'sprint'));
+	$routes[] = array('project_scrum_release_burndown_image', '/:project_key/scrum/burndown/release/image/*', 'project', 'scrumShowBurndownImage', array('mode' => 'release'));
 	$routes[] = array('project_scrum_assign_story', '/:project_key/scrum/assign/story', 'project', 'scrumAssignStory');
 	$routes[] = array('project_scrum_add_sprint', '/:project_key/scrum/add/sprint', 'project', 'scrumAddSprint');
 	$routes[] = array('project_scrum_story_setcolor', '/:project_key/scrum/set/color/for/story/:story_id', 'project', 'scrumSetStoryDetail', array('detail' => 'color'));

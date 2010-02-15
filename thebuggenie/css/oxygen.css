@@ -994,6 +994,8 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .menu_project_strip .project_stuff ul li.selected { border-width: 1px; border-style: solid; border-color: #D9D9BB #D9D9BB #FFF #D9D9BB; background-color: #FFF; }
 .menu_project_strip .project_stuff ul li.selected a { padding-bottom: 7px; }
 .menu_project_strip .faded_dark { color: #B0AA64; }
+.project_strip .project_name a { color: #333; }
+.project_strip .project_name a:hover { color: #555; }
 #account_info { z-index: 100; }
 #account_info ul { list-style: none; position: relative; }
 #account_info li { display: block; float: none; text-align: left; background-color: #FFF; border: 0px; padding: 3px; min-height: 16px; }

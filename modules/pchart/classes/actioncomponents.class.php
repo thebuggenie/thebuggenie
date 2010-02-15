@@ -64,11 +64,11 @@
 			{
 				$Test->drawCubicCurve($DataSet->GetData(), $DataSet->GetDataDescription());
 			}
-			if (isset($this->style) && $this->style == 'filled_line')
+			elseif (isset($this->style) && $this->style == 'filled_line')
 			{
 				$Test->drawFilledLineGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 50, true);
 			}
-			if (isset($this->style) && $this->style == 'stacked_bar')
+			elseif (isset($this->style) && $this->style == 'stacked_bar')
 			{
 				$Test->drawStackedBarGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 50, true);
 			}

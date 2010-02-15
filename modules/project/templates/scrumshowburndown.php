@@ -17,7 +17,7 @@
 						</tr>
 						<tr>
 							<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_burndown.png'); ?></td>
-							<td style="padding: 3px 0 0 2px; text-align: left; font-size: 12px; font-weight: bold;"><?php echo link_tag(make_url('project_scrum_sprint_burndown', array('project_key' => $selected_project->getKey())), __('Show sprint burndown')); ?></td>
+							<td style="padding: 3px 0 0 2px; text-align: left; font-size: 12px; font-weight: bold;"><?php echo link_tag(make_url('project_scrum_sprint_details', array('project_key' => $selected_project->getKey())), __('Show sprint details')); ?></td>
 						</tr>
 						<tr>
 							<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_burndown.png'); ?></td>

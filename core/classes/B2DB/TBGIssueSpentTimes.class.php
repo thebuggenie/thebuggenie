@@ -62,47 +62,72 @@
 
 		public function getSpentTimesByDateAndIssueIDs($startdate, $enddate, $issue_ids)
 		{
-			$retarr = array();
+			$points_retarr = array();
+			$hours_retarr = array();
 			$sd = $startdate;
 			while ($sd <= $enddate)
 			{
-				$retarr[date('md', $sd)] = array();
+				$points_retarr[date('md', $sd)] = array();
+				$hours_retarr[date('md', $sd)] = array();
 				$sd += 86400;
 			}
 
 			if (count($issue_ids))
 			{
 				$crit = $this->getCriteria();
-				//$crit->addWhere(self::EDITED_AT, $startdate, B2DBCriteria::DB_GREATER_THAN_EQUAL);
 				$crit->addWhere(self::EDITED_AT, $enddate, B2DBCriteria::DB_LESS_THAN_EQUAL);
 				$crit->addWhere(self::ISSUE_ID, $issue_ids, B2DBCriteria::DB_IN);
 				$crit->addOrderBy(self::EDITED_AT, B2DBCriteria::SORT_ASC);
-				$res = $this->doSelect($crit);
 
-				if ($res)
+				if ($res = $this->doSelect($crit))
 				{
 					while ($row = $res->getNextRow())
 					{
 						$date = date('md', ($row->get(self::EDITED_AT) >= $startdate) ? $row->get(self::EDITED_AT) : $startdate);
-						foreach ($retarr as $key => &$details)
+						foreach ($points_retarr as $key => &$details)
 						{
 							if ($key >= $date)
 							{
 								$details[$row->get(self::ISSUE_ID)] = $row->get(self::SPENT_POINTS);
 							}
 						}
-						//$date = ($row->get(self::EDITED_AT) >= $startdate) ? $row->get(self::EDITED_AT) : $startdate;
-						//$retarr[date('md', $date)][$row->get(self::ISSUE_ID)] = $row->get(self::SPENT_POINTS);
+					}
+				}
+
+				$crit = $this->getCriteria();
+				$crit->addWhere(self::EDITED_AT, $enddate, B2DBCriteria::DB_LESS_THAN_EQUAL);
+				$crit->addJoin(B2DB::getTable('TBGIssueRelations'), TBGIssueRelationsTable::PARENT_ID, self::ISSUE_ID);
+				$crit->addWhere(TBGIssueRelationsTable::PARENT_ID, $issue_ids, B2DBCriteria::DB_IN);
+				$crit->addOrderBy(self::EDITED_AT, B2DBCriteria::SORT_ASC);
+				$res = $this->doSelect($crit);
+				
+				if ($res = $this->doSelect($crit))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$date = date('md', ($row->get(self::EDITED_AT) >= $startdate) ? $row->get(self::EDITED_AT) : $startdate);
+						foreach ($hours_retarr as $key => &$details)
+						{
+							if ($key >= $date)
+							{
+								$details[$row->get(self::ISSUE_ID)] = $row->get(self::SPENT_HOURS);
+							}
+						}
 					}
 				}
 			}
-			
-			foreach ($retarr as $key => $vals)
+
+			foreach ($points_retarr as $key => $vals)
 			{
-				$retarr[$key] = (count($vals)) ? array_sum($vals) : 0;
+				$points_retarr[$key] = (count($vals)) ? array_sum($vals) : 0;
 			}
 
-			return $retarr;
+			foreach ($hours_retarr as $key => $vals)
+			{
+				$hours_retarr[$key] = (count($vals)) ? array_sum($vals) : 0;
+			}
+
+			return array($points_retarr, $hours_retarr);
 		}
 
 	}

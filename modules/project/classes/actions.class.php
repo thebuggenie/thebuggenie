@@ -106,20 +106,27 @@
 		 *
 		 * @param TBGRequest $request
 		 */
-		public function runScrumSprintBurndown(TBGRequest $request)
+		public function runScrumShowDetails(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			$selected_sprint = null;
-			$sprints = $this->selected_project->getUpcomingMilestonesAndSprints();
-			if (count($sprints))
+			if ($s_id = $request->getParameter('sprint_id'))
 			{
-				$selected_sprint = array_shift($sprints);
+				$selected_sprint = TBGFactory::TBGMilestoneLab($s_id);
+			}
+			else
+			{
+				$sprints = $this->selected_project->getUpcomingMilestonesAndSprints();
+				if (count($sprints))
+				{
+					$selected_sprint = array_shift($sprints);
+				}
 			}
 			$this->selected_sprint = $selected_sprint;
 			//$this->unassigned_issues = $this->selected_project->getUnassignedStories();
 		}
 
-		public function runScrumSprintBurndownImage(TBGRequest $request)
+		public function runScrumShowBurndownImage(TBGRequest $request)
 		{
 			$milestone = null;
 			if ($m_id = $request->getParameter('sprint_id'))
