@@ -1,1 +1,1 @@
-<?php include_component('pchart/lineGraph', array('width' => 680, 'height' => 275, 'curved' => true, 'labels' => $labels, 'values_title' => __('Number of issues'), 'labels_title' => __('# days ago'), 'datasets' => $datasets, 'title' => __('Issues closed vs. issues opened')));
+<?php include_component('pchart/lineGraph', array('width' => 680, 'height' => 275, 'style' => 'filled_line', 'labels' => $labels, 'values_title' => __('Number of issues'), 'labels_title' => __('# days ago'), 'datasets' => $datasets, 'title' => __('Issues closed vs. issues opened')));

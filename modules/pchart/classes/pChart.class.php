@@ -1229,6 +1229,9 @@
        $YLast = $Empty;
        foreach ( $Data as $Key => $Values )
         {
+		if(!array_key_exists($ColName, $Data[$Key])) {
+		 continue;
+		}
          $Value = $Data[$Key][$ColName];
          $YPos = $LayerHeight - (($Value-$this->VMin) * $this->DivisionRatio);
 

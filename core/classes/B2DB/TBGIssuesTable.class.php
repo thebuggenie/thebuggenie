@@ -138,7 +138,7 @@
 		{
 			$retarr = array();
 
-			for ($cc = 30; $cc >= 1; $cc--)
+			for ($cc = 30; $cc >= 0; $cc--)
 			{
 				$crit = $this->getCriteria();
 				$crit->addWhere(self::PROJECT_ID, $project_id);
