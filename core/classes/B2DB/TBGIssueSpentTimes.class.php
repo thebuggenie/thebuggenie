@@ -96,7 +96,7 @@
 
 				$crit = $this->getCriteria();
 				$crit->addWhere(self::EDITED_AT, $enddate, B2DBCriteria::DB_LESS_THAN_EQUAL);
-				$crit->addJoin(B2DB::getTable('TBGIssueRelations'), TBGIssueRelationsTable::PARENT_ID, self::ISSUE_ID);
+				$crit->addJoin(B2DB::getTable('TBGIssueRelationsTable'), TBGIssueRelationsTable::PARENT_ID, self::ISSUE_ID);
 				$crit->addWhere(TBGIssueRelationsTable::PARENT_ID, $issue_ids, B2DBCriteria::DB_IN);
 				$crit->addOrderBy(self::EDITED_AT, B2DBCriteria::SORT_ASC);
 				$res = $this->doSelect($crit);
@@ -127,7 +127,7 @@
 				$hours_retarr[$key] = (count($vals)) ? array_sum($vals) : 0;
 			}
 
-			return array($points_retarr, $hours_retarr);
+			return array('points' => $points_retarr, 'hours' => $hours_retarr);
 		}
 
 	}

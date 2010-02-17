@@ -123,6 +123,8 @@
 				}
 			}
 			$this->selected_sprint = $selected_sprint;
+			$this->total_estimated_points = 0;
+			$this->total_estimated_hours = 0;
 			//$this->unassigned_issues = $this->selected_project->getUnassignedStories();
 		}
 
@@ -151,17 +153,17 @@
 
 				$burndown_data = $milestone->getBurndownData();
 
-				if (count($burndown_data['estimations']))
+				if (count($burndown_data['estimations']['hours']))
 				{
-					foreach ($burndown_data['estimations'] as $key => &$e)
+					foreach ($burndown_data['estimations']['hours'] as $key => $e)
 					{
-						if (array_key_exists($key, $burndown_data['spent_times']))
+						if (array_key_exists($key, $burndown_data['spent_times']['hours']))
 						{
-							$e -= $burndown_data['spent_times'][$key];
+							$burndown_data['estimations']['hours'][$key] -= $burndown_data['spent_times']['hours'][$key];
 						}
 					}
-					$datasets[] = array('values' => $burndown_data['estimations'], 'label' => __('Remaining effort'));
-					$this->labels = array_keys($burndown_data['estimations']);
+					$datasets[] = array('values' => array_values($burndown_data['estimations']['hours']), 'label' => __('Remaining effort'));
+					$this->labels = array_keys($burndown_data['estimations']['hours']);
 				}
 				else
 				{
