@@ -30,7 +30,7 @@
 							<td style="padding-bottom: 10px;"><span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<b><?php echo $activity['info']; ?></b><br><i><?php echo __('New version released'); ?></i></td>
 						</tr>
 					<?php else: ?>
-						<?php include_template('main/logitem', array('action' => $activity, 'include_time' => true, 'extra_padding' => true)); ?>
+						<?php include_template('main/logitem', array('action' => $activity, 'include_time' => true, 'include_user' => true, 'extra_padding' => true)); ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
 				<?php $prev_date = $date; ?>

@@ -19,6 +19,9 @@
 	class TBGRequest
 	{
 		
+		const POST = 1;
+		const GET = 2; 
+
 		protected $_request_parameters = array();
 		protected $_post_parameters = array();
 		protected $_get_parameters = array();
@@ -29,9 +32,6 @@
 		
 		protected $_is_ajax_call = false;
 		
-		const POST = 1;
-		const GET = 2; 
-
 		/**
 		 * Handles an uploaded file, stores it to the correct folder, adds an entry
 		 * to the database and returns a TBGFile object

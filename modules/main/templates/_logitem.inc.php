@@ -5,78 +5,84 @@
 			<?php if (isset($include_time) && $include_time == true): ?><span class="time"><?php echo tbg_formatTime($action['timestamp'], 19); ?></span>&nbsp;<?php endif; ?>
 			<?php if (isset($include_project) && $include_project == true): ?><span class="faded_medium smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $theIssue->getProject()->getKey())), '['.$theIssue->getProject()->getKey().']'); ?></span><?php endif; ?>
 			<?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle(), array('class' => (($action['change_type'] == TBGLogTable::LOG_ISSUE_CLOSE) ? 'issue_closed' : 'issue_open'))); ?>
+			<?php if (isset($include_user) && $include_user == true): ?>
+				<br>
+				<span class="user"><?php if (($user = TBGFactory::userLab($action['user_id'])) instanceof TBGUser): ?><?php echo $user->getUsername(); ?><?php else: ?><span class="faded"><?php echo __('Unknown user'); ?></span><?php endif; ?>:</span>
+			<?php else: ?>
+				<br>
+			<?php endif; ?>
 			<?php
 
 				switch ($action['change_type'])
 				{
 					case TBGLogTable::LOG_ISSUE_CREATED:
-						echo '<br><i>' . __('Issue created') . '</i>';
+						echo '<i>' . __('Issue created') . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_CLOSE:
-						echo '<br><span class="issue_closed"><i>' . __('Issue closed %text%', array('%text%' => $action['text'])) . '</i></span>';
+						echo '<span class="issue_closed"><i>' . __('Issue closed %text%', array('%text%' => $action['text'])) . '</i></span>';
 						break;
 					case TBGLogTable::LOG_ISSUE_REOPEN:
-						echo '<br><i>' . __('Issue reopened') . '</i>';
+						echo '<i>' . __('Issue reopened') . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_UPDATE:
-						echo '<br><i>' . $action['text'] . '</i>';
+						echo '<i>' . $action['text'] . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_PAIN_BUG_TYPE:
-						echo '<br><i>' . __('Triaged bug type: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Triaged bug type: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_PAIN_LIKELIHOOD:
-						echo '<br><i>' . __('Triaged likelihood: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Triaged likelihood: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_PAIN_EFFECT:
-						echo '<br><i>' . __('Triaged effect: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Triaged effect: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_PAIN_CALCULATED:
-						echo '<br><i>' . __('Calculated user pain: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Calculated user pain: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_CATEGORY:
-						echo '<br><i>' . __('Category changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Category changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED:
-						echo '<br><i>' . __('Custom field changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Custom field changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_STATUS:
-						echo '<br><i>' . __('Status changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Status changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_REPRODUCABILITY:
-						echo '<br><i>' . __('Reproducability changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Reproducability changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_PRIORITY:
-						echo '<br><i>' . __('Priority changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Priority changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_SEVERITY:
-						echo '<br><i>' . __('Severity changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Severity changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_RESOLUTION:
-						echo '<br><i>' . __('Resolution changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Resolution changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_PERCENT:
-						echo '<br><i>' . __('Percent completed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Percent completed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_MILESTONE:
-						echo '<br><i>' . __('Target milestone changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Target milestone changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_ISSUETYPE:
-						echo '<br><i>' . __('Issue type changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Issue type changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_TIME_ESTIMATED:
-						echo '<br><i>' . __('Estimation changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Estimation changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_TIME_SPENT:
-						echo '<br><i>' . __('Time spent: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Time spent: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_ASSIGNED:
-						echo '<br><i>' . __('Assignee changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Assignee changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_OWNED:
-						echo '<br><i>' . __('Owner changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Owner changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					case TBGLogTable::LOG_ISSUE_POSTED:
-						echo '<br><i>' . __('Posted by changed: %text%', array('%text%' => $action['text'])) . '</i>';
+						echo '<i>' . __('Posted by changed: %text%', array('%text%' => $action['text'])) . '</i>';
 						break;
 					default:
 						break;
