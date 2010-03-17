@@ -211,7 +211,7 @@
 			if (!$this->preformat) $output .= "<pre>";
 			$this->preformat = true;
 
-			$output .= $matches[1];
+			$output .= htmlspecialchars($matches[1]);
 
 			return $output."\n";
 		}
@@ -618,12 +618,6 @@
 			$text = preg_replace_callback('/<nowiki>(.+?)<\/nowiki>(?!<\/nowiki>)/ism', array($this, "_parse_save_nowiki"), $text);
 			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*?")*)>\s*(.*?)\s*<\/source>/ism', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
-			
-			$text = str_replace('<br>', '|||BR|||', $text); // Do not destroy <br>s
-			
-			$text = htmlspecialchars($text);
-
-			$text = str_replace('|||BR|||', '<br>', $text); // Do not destroy <br>s
 
 			$lines = explode("\n",$text);
 			foreach ($lines as $line)
