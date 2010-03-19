@@ -20,23 +20,27 @@
 				</ul>
 			</div>
 			<div id="usersteamsgroups_menu_panes">
-				<div id="tab_users_pane" style="padding-top: 0;">
-					<div id="users_link_strip" style="width: 750px; border-bottom: 1px solid #CCC;">
+				<div id="tab_users_pane" style="padding-top: 0; width: 750px;">
+					<div class="rounded_box mediumgrey_borderless" style="margin-top: 5px;">
+						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+						<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
 						<table cellpadding="0" cellspacing="0" border="0">
 							<tr>
-								<td style="padding: 3px; background-color: #F1F1F1;"><b><?php echo __('Show user(s)'); ?>:</b>&nbsp;&nbsp;</td>
-								<td style="padding: 3px;">
+								<td style="padding: 3px;"><b><?php echo __('Show user(s)'); ?>:</b>&nbsp;&nbsp;</td>
+								<td style="padding: 3px; font-size: 12px;">
 									<?php foreach (range('A', 'Z') as $letter): ?>
-										<?php echo javascript_link_tag($letter, array('onclick' => "showUser('{$letter}');")); ?> |
+										<?php echo javascript_link_tag($letter, array('onclick' => "showUsers('{$letter}');")); ?> |
 									<?php endforeach; ?>
-									<?php echo javascript_link_tag('0-9', array('onclick' => "showUser('0-9');")); ?> |
+									<?php echo javascript_link_tag('0-9', array('onclick' => "showUsers('0-9');")); ?> |
 								</td>
 							</tr>
 							<tr>
-								<td style="padding: 3px; background-color: #F1F1F1;"><label for="findusers"><?php echo __('Find user(s)'); ?>:&nbsp;&nbsp;</label></td>
-								<td style="padding: 3px;"><input type="text" name="findusers" id="findusers" style="width: 300px;"></td>
+								<td style="padding: 3px;"><label for="findusers"><?php echo __('Find user(s)'); ?>:&nbsp;&nbsp;</label></td>
+								<td style="padding: 3px;"><input type="text" name="findusers" id="findusers" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo __('Find'); ?>" style="font-size: 12px; font-weight: bold;"></td>
 							</tr>
 						</table>
+						</div>
+						<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 					</div>
 				</div>
 				<div id="tab_groups_pane" style="display: none;"></div>
