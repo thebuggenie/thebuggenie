@@ -349,6 +349,7 @@
 		{
 			try
 			{
+				$row = null;
 				if ($username === null && $password === null)
 				{
 					if (TBGContext::getRequest()->hasCookie('b2_username') && TBGContext::getRequest()->hasCookie('b2_password'))
@@ -924,11 +925,15 @@
 		/**
 		 * Check if the given user is a friend of this user
 		 *
-		 * @param integer $uid UID of user to check
+		 * @param integer|object $uid UID of user to check
 		 * @return boolean
 		 */
 		public function isFriend($uid)
 		{
+			if (is_object($uid))
+			{
+				$uid = $uid->getID();
+			}
 			if ($this->_friends === null)
 			{
 				$this->getFriends();
@@ -1205,6 +1210,18 @@
 		public function getBuddyname()
 		{
 			return $this->buddyname;
+		}
+
+		/**
+		 * Return the users nickname (buddyname)
+		 *
+		 * @uses self::getBuddyname()
+		 *
+		 * @return string
+		 */
+		public function getNickname()
+		{
+			return $this->getBuddyname();
 		}
 		
 		/**

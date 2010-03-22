@@ -137,5 +137,60 @@
 			
 			return $res;
 		}
+
+		public function findInConfig($details, $limit = 50, $offset = null)
+		{
+			$crit = $this->getCriteria();
+			switch ($details)
+			{
+				case 'unactivated':
+					$crit->addWhere(self::ACTIVATED, false);
+					break;
+				case 'newusers':
+					$crit->addWhere(self::JOINED, $_SERVER['REQUEST_TIME'] - 1814400, B2DBCriteria::DB_GREATER_THAN_EQUAL);
+					break;
+				case '0-9':
+					$ctn = $crit->returnCriterion(self::UNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), B2DBCriteria::DB_IN);
+					$ctn->addOr(self::BUDDYNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), B2DBCriteria::DB_IN);
+					$ctn->addOr(self::REALNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), B2DBCriteria::DB_IN);
+					$crit->addWhere($ctn);
+					break;
+				case 'all':
+					break;
+				default:
+					$details = (strlen($details) == 1) ? strtolower("$details%") : strtolower("%$details%");
+					$ctn = $crit->returnCriterion(self::UNAME, $details, B2DBCriteria::DB_LIKE);
+					$ctn->addOr(self::BUDDYNAME, $details, B2DBCriteria::DB_LIKE);
+					$ctn->addOr(self::REALNAME, $details, B2DBCriteria::DB_LIKE);
+					$ctn->addOr(self::EMAIL, $details, B2DBCriteria::DB_LIKE);
+					$crit->addWhere($ctn);
+					break;
+			}
+			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			if ($limit !== null)
+			{
+				$crit->setLimit($limit);
+			}
+			if ($offset !== null)
+			{
+				$crit->setOffset($offset);
+			}
+
+			$users = array();
+			$res = null;
+
+			if ($details != '' && $res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$users[$row->get(self::ID)] = TBGFactory::userLab($row->get(self::ID));
+				}
+			}
+
+			$num_results = (is_object($res)) ? $res->getNumberOfRows() : 0;
+
+			return array($users, $num_results);
+		}
 		
 	}

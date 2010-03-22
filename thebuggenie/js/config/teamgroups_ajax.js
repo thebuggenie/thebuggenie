@@ -1,15 +1,14 @@
-function showUsers(url, letter)
+function showUsers(url, findstring)
 {
-	var params = Form.serialize('find_dev_form');
-	new Ajax.Updater('find_dev_results', url, {
-		asynchronous:true,
+	new Ajax.Updater('users_results', url, {
+		asynchronous: true,
 		method: "post",
-		parameters: params,
+		parameters: '&findstring=' + findstring,
 		onLoading: function (transport) {
-			$('find_dev_indicator').show();
+			$('find_users_indicator').show();
 		},
 		onComplete: function (transport) {
-			$('find_dev_indicator').hide();
+			$('find_users_indicator').hide();
 			var json = transport.responseJSON;
 			if (json && json.failed)
 			{
@@ -17,11 +16,15 @@ function showUsers(url, letter)
 			}
 		},
 		onFailure: function (transport) {
-			$('find_dev_indicator').hide();
+			$('find_users_indicator').hide();
 			var json = transport.responseJSON;
 			if (json && json.failed)
 			{
 				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
 			}
 		}
 	});

@@ -908,7 +908,7 @@
 					else
 					{
 						$sql .= '?';
-						$this->_addValue('%' . $an_or['value'] . '%');
+						$this->_addValue($an_or['value']);
 					}
 				}
 				else

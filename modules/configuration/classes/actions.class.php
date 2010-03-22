@@ -1404,6 +1404,35 @@
 			
 		}
 
+		public function runFindUsers(TBGRequest $request)
+		{
+			$this->too_short = false;
+			$findstring = $request->getParameter('findstring');
+			if (strlen($findstring) >= 1)
+			{
+				list ($this->users, $this->total_results) = B2DB::getTable('TBGUsersTable')->findInConfig($findstring);
+			}
+			else
+			{
+				$this->too_short = true;
+			}
+			switch ($findstring)
+			{
+				case 'unactivated':
+					$this->findstring = TBGContext::getI18n()->__('Unactivated users');
+					break;
+				case 'newusers':
+					$this->findstring = TBGContext::getI18n()->__('New users');
+					break;
+				case 'all':
+					$this->findstring = TBGContext::getI18n()->__('All users');
+					break;
+				default:
+					$this->findstring = $findstring;
+			}
+			
+		}
+
 		public function getAccessLevel($section, $module)
 		{
 			return (TBGContext::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;

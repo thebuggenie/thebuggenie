@@ -81,7 +81,7 @@
 	$routes[] = array('configure_issuefields_add_customtype', '/configure/issuefields/add/custom/type', 'configuration', 'configureIssuefieldsCustomTypeAction', array('config_module' => 'core', 'section' => 4, 'mode' => 'add'));
 	$routes[] = array('configure_issuefields_update_customtype', '/configure/issuefields/update/custom/type/:type', 'configuration', 'configureIssuefieldsCustomTypeAction', array('config_module' => 'core', 'section' => 4, 'mode' => 'update'));
 	$routes[] = array('configure_users', '/configure/users', 'configuration', 'configureUsers', array('config_module' => 'core', 'section' => 2));
-	$routes[] = array('configure_teams_groups', '/configure/teams_and_groups', 'configuration', 'index', array('config_module' => 'core', 'section' => 1));
+	$routes[] = array('configure_users_find_user', '/configure/users/find/users/*', 'configuration', 'findUsers', array('config_module' => 'core', 'section' => 2));
 	$routes[] = array('configure_modules', '/configure/modules', 'configuration', 'configureModules', array('config_module' => 'core', 'section' => 15));
 	$routes[] = array('configure_disable_module', '/configure/modules/disable/:module_key', 'configuration', 'moduleAction', array('config_module' => 'core', 'section' => 15, 'mode' => 'disable'));
 	$routes[] = array('configure_enable_module', '/configure/modules/enable/:module_key', 'configuration', 'moduleAction', array('config_module' => 'core', 'section' => 15, 'mode' => 'enable'));

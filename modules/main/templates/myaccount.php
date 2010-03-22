@@ -49,6 +49,9 @@
 						<div style="<?php if (!$tbg_user->usesGravatar()): ?>display: none; <?php endif; ?>clear: both; margin: 3px 0 15px 0;" id="gravatar_change">
 							<?php echo image_tag('gravatar.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 							<?php echo link_tag('http://en.gravatar.com/emails/', __('Change my profile picture / avatar'), array('target' => '_blank')); ?>
+							<p class="faded_medium" style="font-size: 11px; padding-top: 3px;">
+								<?php echo __('This will open up gravatar.com, which will let you change your avatar in The Bug Genie, and other webpages that uses Gravatar.'); ?>&nbsp;<?php echo link_tag('http://en.gravatar.com/', __('Read more ...')); ?>
+							</p>
 						</div>
 						<div style="clear: both; margin-top: 3px;">
 							<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
