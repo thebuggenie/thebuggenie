@@ -475,6 +475,7 @@
 				}
 				else
 				{
+					self::$_modules = array();
 					TBGLogging::log('Not loading modules');
 				}
 

@@ -1142,7 +1142,16 @@
 
 		public function getGroupID()
 		{
-			return ($this->getGroup() instanceof TBGGroup) ? $this->getGroup()->getID() : null;
+			if (is_object($this->getGroup()))
+			{
+				return $this->getGroup()->getID();
+			}
+			elseif (is_numeric($this->getGroup()))
+			{
+				return $this->getGroup();
+			}
+
+			return null;
 		}
 		
 		public function setGroup($gid)
@@ -1282,7 +1291,6 @@
 		 */
 		public function setAvatar($avatar)
 		{
-			$this->_setUserDetail(TBGUsersTable::AVATAR, $avatar);
 			$this->avatar = $avatar;
 		}
 		
@@ -1512,8 +1520,9 @@
 			$crit = B2DB::getTable('TBGUsersTable')->getCriteria();
 			$crit->addUpdate(TBGUsersTable::REALNAME, $this->realname);
 			$crit->addUpdate(TBGUsersTable::BUDDYNAME, $this->buddyname);
-			$crit->addUpdate(TBGUsersTable::UNAME, $this->username);
-			$crit->addUpdate(TBGUsersTable::GROUP_ID, $this->group->getID());
+			$crit->addUpdate(TBGUsersTable::UNAME, $this->uname);
+			$crit->addUpdate(TBGUsersTable::GROUP_ID, $this->getGroupID());
+			$crit->addUpdate(TBGUsersTable::AVATAR, $this->avatar);
 			$crit->addUpdate(TBGUsersTable::USE_GRAVATAR, (bool) $this->_use_gravatar);
 			$crit->addUpdate(TBGUsersTable::PRIVATE_EMAIL, (bool) $this->private_email);
 			$crit->addUpdate(TBGUsersTable::PASSWD, $this->pwd);

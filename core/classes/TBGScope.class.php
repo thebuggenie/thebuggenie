@@ -210,7 +210,7 @@
 			
 			$guestuser = TBGUser::createNew('guest', 'Guest user', 'Guest user', $scope_id, true, true);
 			$guestuser->setGroup($guest_group_id);
-			$adminuser->save();
+			$guestuser->save();
 
 			B2DB::getTable('TBGSettingsTable')->loadFixtures($scope_id);
 			TBGSettings::saveSetting('defaultgroup', $users_group_id, 'core', $scope_id);
