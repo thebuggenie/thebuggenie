@@ -1433,6 +1433,35 @@
 			
 		}
 
+		public function runUpdateUser(TBGRequest $request)
+		{
+			$user = TBGFactory::userLab($request->getParameter('user_id'));
+			if ($user instanceof TBGUser)
+			{
+				$user->setRealname($request->getParameter('realname'));
+				if ($group = TBGFactory::groupLab($request->getParameter('group')))
+				{
+					$user->setGroup($group);
+				}
+				$testuser = TBGUser::getByUsername($request->getParameter('username'));
+				if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
+				{
+					$user->setUsername($request->getParameter('username'));
+				}
+				else
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This username is already taken')));
+				}
+				$user->setBuddyname($request->getParameter('nickname'));
+				$user->setActivated((bool) $request->getParameter('activated'));
+				$user->setEmail($request->getParameter('email'));
+				$user->setEnabled((bool) $request->getParameter('enabled'));
+				$user->save();
+				return $this->renderTemplate('finduser_row', array('user' => $user));
+			}
+			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This user could not be updated')));
+		}
+
 		public function getAccessLevel($section, $module)
 		{
 			return (TBGContext::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;

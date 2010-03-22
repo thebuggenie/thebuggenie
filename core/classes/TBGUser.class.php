@@ -1015,7 +1015,12 @@
 		{
 			return $this->_isenabled;
 		}
-		
+
+		public function setActivated($val = true)
+		{
+			$this->_isactivated = (boolean) $val;
+		}
+
 		public function isActivated()
 		{
 			return $this->_isactivated;
@@ -1134,12 +1139,18 @@
 		{
 			return $this->group;
 		}
+
+		public function getGroupID()
+		{
+			return ($this->getGroup() instanceof TBGGroup) ? $this->getGroup()->getID() : null;
+		}
 		
 		public function setGroup($gid)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGUsersTable::GROUP_ID, (int) $gid);
-			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->uid);
+			if (is_object($gid))
+			{
+				$gid = $gid->getID();
+			}
 			$this->group = TBGFactory::groupLab($gid);
 		}
 		
@@ -1153,6 +1164,16 @@
 			return $this->uname;
 		}
 		
+		/**
+		 * Set the username
+		 *
+		 * @param string $username
+		 */
+		public function setUsername($username)
+		{
+			$this->username = $username;
+		}
+
 		public function getUsername()
 		{
 			return $this->getUname();
@@ -1377,16 +1398,9 @@
 			$this->_use_gravatar = (bool) $val;
 		}
 
-		public function setEnabled($val)
+		public function setEnabled($val = true)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGUsersTable::ENABLED, ($val) ? 1 : 0);
-			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->getID());
 			$this->_isenabled = $val;
-			if (!$val && $this->getUname() == TBGSettings::get('defaultuname'))
-			{
-				TBGSettings::saveSetting('requirelogin', 1);
-			}
 		}
 		
 		public function setValidated($val)
@@ -1498,10 +1512,14 @@
 			$crit = B2DB::getTable('TBGUsersTable')->getCriteria();
 			$crit->addUpdate(TBGUsersTable::REALNAME, $this->realname);
 			$crit->addUpdate(TBGUsersTable::BUDDYNAME, $this->buddyname);
+			$crit->addUpdate(TBGUsersTable::UNAME, $this->username);
+			$crit->addUpdate(TBGUsersTable::GROUP_ID, $this->group->getID());
 			$crit->addUpdate(TBGUsersTable::USE_GRAVATAR, (bool) $this->_use_gravatar);
 			$crit->addUpdate(TBGUsersTable::PRIVATE_EMAIL, (bool) $this->private_email);
 			$crit->addUpdate(TBGUsersTable::PASSWD, $this->pwd);
 			$crit->addUpdate(TBGUsersTable::EMAIL, $this->email);
+			$crit->addUpdate(TBGUsersTable::ACTIVATED, $this->_isactivated);
+			$crit->addUpdate(TBGUsersTable::ENABLED, $this->_isenabled);
 			$crit->addUpdate(TBGUsersTable::HOMEPAGE, $this->homepage);
 
 			$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->getID());

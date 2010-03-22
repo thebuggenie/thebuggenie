@@ -20,8 +20,11 @@
 			</thead>
 			<tbody>
 				<?php foreach ($users as $user): ?>
-				<tr class="canhover_light" id="users_results_user_<?php echo $user->getID(); ?>">
+				<tr class="canhover_light" id="users_results_user_<?php echo $user->getID(); ?>" onclick="$('users_results_user_<?php echo $user->getID(); ?>').toggleClassName('selected_green');">
 					<?php include_template('finduser_row', array('user' => $user)); ?>
+				</tr>
+				<tr class="canhover_light" id="users_results_user_<?php echo $user->getID(); ?>_edit" style="display: none;">
+					<?php include_template('finduser_row_editable', array('user' => $user)); ?>
 				</tr>
 				<?php endforeach; ?>
 			</tbody>
