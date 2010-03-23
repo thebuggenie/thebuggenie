@@ -31,7 +31,7 @@
 				<?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
 					<?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
 				<?php endif; ?>
-				<?php TBGContext::trigger('core', 'project_overview_item_links', array('project' => $project)); ?>
+				<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
 				<form action="<?php echo make_url('project_reportissue', array('project_key' => $project->getKey())); ?>" method="get" style="clear: none; display: inline; width: 160px;">
 					<div class="report_button" style="width: 150px;"><input type="submit" value="<?php echo __('Report an issue'); ?>"></div>
 				</form>

@@ -5,7 +5,7 @@
 		<title><?php echo ($tbg_response->hasTitle()) ? strip_tags(TBGSettings::get('b2_name') . ' ~ ' . $tbg_response->getTitle()) : strip_tags(TBGSettings::get('b2_name')); ?></title>
 		<?php
 			
-			TBGContext::trigger('core', 'header_begins');
+			TBGEvent::createNew('core', 'header_begins')->trigger();
 				
 		?>
 		<meta name="description" content="The bug genie, friendly issue tracking">
@@ -36,7 +36,7 @@
 		<?php endforeach;?>
 		<?php 
 			
-			TBGContext::trigger('core', 'header_ends');
+			TBGEvent::createNew('core', 'header_ends')->trigger();
 		
 		?>
 	</head>
@@ -81,7 +81,7 @@
 					</table>
 					<?php
 				
-						TBGContext::trigger('core', 'header_end');
+						TBGEvent::createNew('core', 'header_end')->trigger();
 						require TBGContext::getIncludePath() . 'core/templates/menu.inc.php';
 						
 					?>

@@ -3,10 +3,6 @@
 	class BUGSmessages extends TBGModule 
 	{
 
-	//define ('MESSAGES_NEWMSGWINDOWSTRING', "window.open('" . TBGContext::getTBGPath() . "modules/messages/newmessage.php?clear_sendto=true','mywindow','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=500');");
-	//define ('MESSAGES_NEWMSGWINDOWSTRING_TOUSER_STRING', "window.open('" . TBGContext::getTBGPath() . "modules/messages/newmessage.php?set_sendto={uid}','mywindow','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=500');");
-
-		
 		public function __construct($m_id, $res = null)
 		{
 			parent::__construct($m_id, $res);
@@ -16,9 +12,9 @@
 			$this->setConfigTitle(TBGContext::getI18n()->__('Messages'));
 			$this->setDescription(TBGContext::getI18n()->__('Enables messaging functionality'));
 			$this->setHasAccountSettings();
-			$this->addAvailableListener('core', 'dashboard_left_top', 'section_messagesSummary', 'Dashboard message summary');
-			$this->addAvailableListener('core', 'useractions_bottom', 'section_useractionsBottom', '"Send message" in user drop-down menu');
-			$this->addAvailableListener('core', 'teamactions_bottom', 'section_teamactionsBottom', '"Send message" in team drop-down menu');
+			$this->addAvailableListener('core', 'dashboard_left_top', 'listen_messagesSummary', 'Dashboard message summary');
+			$this->addAvailableListener('core', 'useractions_bottom', 'listen_useractionsBottom', '"Send message" in user drop-down menu');
+			$this->addAvailableListener('core', 'teamactions_bottom', 'listen_teamactionsBottom', '"Send message" in team drop-down menu');
 		}
 
 		public function initialize()
@@ -60,30 +56,6 @@
 		public function getCommentAccess($target_type, $target_id, $type = 'view')
 		{
 			
-		}
-		
-		public function enableSection($module, $identifier, $scope)
-		{
-			$function_name = '';
-			switch ($module . '_' . $identifier)
-			{
-				case 'core_teamactions_bottom':
-					$function_name = 'section_teamactionsBottom';
-					break;
-				case 'core_useractions_bottom':
-					$function_name = 'section_useractionsBottom';
-					break;
-				case 'core_account_settingslist':
-					$function_name = 'section_accountSettingsList';
-					break;
-				case 'core_account_settings':
-					$function_name = 'section_accountSettings';
-					break;
-				case 'core_dashboard_left_top':
-					$function_name = 'section_messagesSummary';
-					break;
-			}
-			if ($function_name != '') parent::registerPermanentTriggerListener($module, $identifier, $function_name, $scope);
 		}
 		
 		public function getMessages($gettype, $uid = 0, $folder = 0, $msg = 0, $tid = 0)
@@ -374,26 +346,23 @@
 			return array('total' => $total_count, 'unread' => $unread_count, 'frombuds' => $frombuds_count, 'urgent' => $urgent_count);
 		}
 		
-		public function section_teamactionsBottom($vars)
+		public function listen_teamactionsBottom(TBGEvent $event)
 		{
-			if (!is_array($vars)) throw new Exception('something went wrong');
-			$tid = array_shift($vars);
+			/*$tid = array_shift($vars);
 			$closemenustring = array_shift($vars);
 			$msgstring = '';
-			/*MESSAGES_NEWMSGWINDOWSTRING_TOUSER_STRING;
-			$msgstring = str_replace("{uid}", $tid . "&sendto_team=1", $msgstring);*/
 			if (TBGUser::isThisGuest() == false)
 			{
 				$retval = '<div style="padding: 2px;"><a href="javascript:void(0);" onclick="' . $msgstring . $closemenustring . '">' . TBGContext::getI18n()->__('Send a message to this team') . '</a></div>';
 			}
-			return $retval;
+			return $retval;*/
 		}
 		
-		public function section_useractionsBottom($vars)
+		public function listen_useractionsBottom(TBGEvent $event)
 		{
-			if (!is_array($vars)) throw new Exception('something went wrong');
-			$user = array_shift($vars);
-			$closemenustring = array_shift($vars);
+			//if (!is_array($vars)) throw new Exception('something went wrong');
+			$user = $event->getSubject();
+			$closemenustring = $event->getParameter('closemenu_string');
 			$msgstring = '';
 			$retval = '';
 			/*MESSAGES_NEWMSGWINDOWSTRING_TOUSER_STRING;
@@ -405,14 +374,14 @@
 			return $retval;
 		}
 		
-		public function section_accountSettingsList()
+		public function listen_accountSettingsList(TBGEvent $event)
 		{
 			include_template('messages/accountsettingslist');
 		}
 		
-		public function section_accountSettings($module)
+		public function listen_accountSettings(TBGEvent $event)
 		{
-			if ($module != $this->getName()) return;
+			/*if ($module != $this->getName()) return;
 			if (TBGContext::getRequest()->getParameter('viewmode'))
 			{
 				TBGContext::getModule('messages')->saveSetting('viewmode', TBGContext::getRequest()->getParameter('viewmode'), TBGContext::getUser()->getUID());
@@ -440,118 +409,12 @@
 			</tr>
 			</table>
 			</form>
-			<?php
+			<?php*/
 		}
 
-		public function section_messagesSummary()
+		public function listen_messagesSummary(TBGEvent $event)
 		{
 			include_template('messages/messagessummary', array('messages' => $this->countMessages(1)));
-		}
-		
-		public function section_messagesBox()
-		{
-			if (TBGUser::isThisGuest() == false)
-			{
-				?>
-				<table class="b2_section_miniframe" cellpadding=0 cellspacing=0>
-				<tr>
-				<td class="b2_section_miniframe_header"><?php echo TBGContext::getI18n()->__('Message central'); ?></td>
-				</tr>
-				<tr>
-				<td class="td1">
-				<?php
-	
-					$messages = $this->countMessages(1);
-
-				?>
-				<table cellpadding=0 cellspacing=0 style="width: 100%;">
-				<tr>
-				<td class="imgtd">
-				<?php 
-				
-				if ($messages['unread'] >= 1)
-				{
-					echo image_tag('mail_new.png');
-				}
-				else
-				{
-					echo image_tag('mail_nonew.png');
-				}
-
-				?>
-				</td>
-				<td><a href="modules/messages/messages.php?select_folder=1"><b><?php echo TBGContext::getI18n()->__('Inbox:'); ?></b></a>&nbsp;<?php print $messages['total']; ?>&nbsp;<?php print ($messages['unread'] > 0) ? "<b>(" . TBGContext::getI18n()->__('%number_of% new', array('%number_of%' => $messages['unread'])) . ")</b>" : ""; ?></td>
-				</tr>
-				<?php
-				if ($messages['urgent'] > 0 || $messages['frombuds'] > 0)
-				{
-					?>
-					<tr>
-					<td>&nbsp;</td>
-					<td><?php
-	
-					if ($messages['urgent'] > 0)
-					{
-						echo '<b style="color: #A55;">' . TBGContext::getI18n()->__('%number_of% urgent message(s)', array('%number_of%' => $messages['urgent'])) . "</b><br>";
-					}
-					if ($messages['frombuds'] > 0)
-					{
-						echo TBGContext::getI18n()->__('%number_of% message(s) from people you know', array('%number_of%' => $messages['frombuds']));
-					}
-	
-					?></td>
-					</tr>
-					<?php
-				}
-	
-				if (count(TBGContext::getUser()->getTeams()) >= 1)
-				{
-					$teammessages = $this->countMessages(4);
-					?>
-					<tr>
-					<td class="imgtd">
-					<?php
-					
-					if ($teammessages['unread'] > 0)
-					{
-						echo image_tag('mail_new.png');
-					}
-					else
-					{
-						echo image_tag('mail_nonew.png');
-					}
-
-					?>
-					</td>
-					<td><a href="modules/messages/messages.php?select_folder=4&amp;team_id=0"><b><?php echo TBGContext::getI18n()->__('Team inbox:'); ?></b></a>&nbsp;<?php print $teammessages['total']; ?>&nbsp;<?php print ($teammessages['unread'] > 0) ? "<b>(" . TBGContext::getI18n()->__('%number_of% new', array('%number_of%' => $teammessages['unread'])) . ")</b>" : ""; ?></td>
-					</tr>
-					<?php
-					foreach (TBGContext::getUser()->getTeams() as $tid)
-					{
-						$teammessages = $this->countMessages(4, $tid);
-						if ($teammessages['unread'] > 0)
-						{
-							$team = TBGFactory::teamLab($tid);
-							?>
-							<tr>
-							<td>&nbsp;</td>
-							<td><?php echo TBGContext::getI18n()->__('%teamname%: %number_of% new', array('%teamname%' => $team->getName(), '%number_of%' => $teammessages['unread'])); ?><br></td>
-							</tr>
-							<?php
-						}
-					}
-				}
-				?>
-				<tr>
-				<td class="imgtd" style="padding-top: 15px;"><?php echo image_tag('msg_unknown.png'); ?></td>
-				<td style="padding-top: 15px;"><a href="javascript:void(0);" onclick="<?php //print MESSAGES_NEWMSGWINDOWSTRING; ?>"><?php echo TBGContext::getI18n()->__('Write a new message'); ?></a></td>
-				</tr>
-				</table>
-				</td>
-				</tr>
-				</table>
-				<?php
-			}
 		}
 		
 	}

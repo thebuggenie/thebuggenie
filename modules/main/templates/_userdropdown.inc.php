@@ -42,11 +42,7 @@
 						<?php echo '<b>' . __('Last seen: %time%', array('%time%' => '</b>' . tbg_formatTime($user->getLastSeen(), 11))); ?>
 					</div>
 				</div>
-				<?php
-	
-				TBGContext::trigger('core', 'useractions_top', array("user" => $user, "closemenustring" => $closemenu_string));
-				
-				?>
+				<?php TBGEvent::createNew('core', 'useractions_top', $user, array("closemenustring" => $closemenu_string))->trigger(); ?>
 				<?php if (TBGUser::isThisGuest() == false): ?>
 					<div id="friends_message_<?php echo $user->getUname() . '_' . $rnd_no; ?>" style="padding: 2px; font-size: 9px;"></div>
 					<div style="padding: 2px;" id="friends_link_<?php echo $user->getUname() . '_' . $rnd_no; ?>">
@@ -58,11 +54,7 @@
 					</div>
 				<?php endif; ?>
 				<div style="padding: 2px;"><a href="javascript:void(0);" onclick="<?php echo $viewuser_string . $closemenu_string; ?>"><?php echo __('View details'); ?></a></div>
-				<?php 
-					
-				TBGContext::trigger('core', 'useractions_bottom', array("user" => $user, "closemenustring" => $closemenu_string));
-				
-				?>
+				<?php TBGEvent::createNew('core', 'useractions_bottom', $user, array("closemenustring" => $closemenu_string))->trigger(); ?>
 				<?php if (((TBGContext::getUser()->hasPermission("b2saveconfig", 14, "core") && $user->getScope()->getID() != TBGContext::getScope()->getID()) || TBGContext::getUser()->hasPermission("b2saveconfig", 2, "core")) && $user->getID() != TBGContext::getUser()->getUID()): ?>
 					<div style="padding: 2px; padding-top: 10px; padding-bottom: 10px;"><a href="login_validate.inc.php?switch_user=true&amp;new_user=<?php echo $user->getUname(); ?>"><?php echo __('Temporarily switch to this user'); ?></a></div>
 					<?php if (TBGContext::getRequest()->hasCookie('b2_username_preswitch')): ?>

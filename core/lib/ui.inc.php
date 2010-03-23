@@ -238,9 +238,9 @@
 		$the_tr .= '<div style="padding: 3px; margin-bottom: 2px;"><b>' . $aTeam->getName() . '</b></div>';
 
 		$trigger_name = (!$is_customer) ? 'teamactions' : 'customeractions';  
-		$the_tr .= TBGContext::trigger('core', $trigger_name.'_top', array("tid" => $tid, "closemenustring" => $closemenu_string, 'retval' => &$the_tr));
+		//$the_tr .= TBGContext::trigger('core', $trigger_name.'_top', array("tid" => $tid, "closemenustring" => $closemenu_string, 'retval' => &$the_tr));
 
-		$the_tr .= TBGContext::trigger('core', $trigger_name.'_bottom', array("tid" => $tid, "closemenustring" => $closemenu_string));
+		//$the_tr .= TBGContext::trigger('core', $trigger_name.'_bottom', array("tid" => $tid, "closemenustring" => $closemenu_string));
 
 		$the_tr .= '<div style="text-align: right; padding: 3px; font-size: 9px;"><a href="javascript:void(0);" onclick="' . $closemenu_string . '">' . __('Close this menu') . '</a></div>';
 		$the_tr .= '</td></tr>';

@@ -51,7 +51,7 @@
 			<li<?php if ($selected_tab == 'project_team'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_team', array('project_key' => $project->getKey())), __('Team')); ?></li>
 			<li<?php if ($selected_tab == 'project_statistics'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_statistics', array('project_key' => $project->getKey())), __('Statistics')); ?></li>
 			<li<?php if ($selected_tab == 'project_timeline'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_timeline', array('project_key' => $project->getKey())), __('Timeline')); ?></li>
-			<?php TBGContext::trigger('core', 'project_menustrip_item_links', array('project' => $project, 'selected_tab' => $selected_tab)); ?>
+			<?php TBGEvent::createNew('core', 'project_menustrip_item_links', $project, array('selected_tab' => $selected_tab))->trigger(); ?>
 		</ul> 
 		</div>
 		<?php if ($tbg_response->getPage() != 'reportissue' && (!isset($hide_button) || (isset($hide_button) && $hide_button == false))): ?>

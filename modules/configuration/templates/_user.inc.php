@@ -90,7 +90,7 @@
 		<td>
 			<select name="returnfromlogin" id="returnfromlogin" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
 				<?php $return_routes = array('home' => __('Frontpage'), 'account' => __('Account details')); ?>
-				<?php TBGContext::trigger('core', 'setting_returnfromlogin', $return_routes); ?>
+				<?php $return_routes = TBGEvent::createNew('core', 'setting_returnfromlogin', null, array(), $return_routes)->trigger()->getReturnList(); ?>
 				<?php foreach ($return_routes as $route => $description): ?> 
 					<option value="<?php echo $route; ?>"<?php if (TBGSettings::getLoginReturnRoute() == $route): ?> selected<?php endif; ?>><?php echo $description; ?></option>
 				<?php endforeach; ?>
@@ -102,7 +102,7 @@
 		<td>
 			<select name="returnfromlogout" id="returnfromlogout" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
 				<?php $return_routes = array('home' => __('Frontpage'), 'account' => __('Account details')); ?>
-				<?php TBGContext::trigger('core', 'setting_returnfromlogout', $return_routes); ?>
+				<?php $return_routes = TBGEvent::createNew('core', 'setting_returnfromlogout', null, array(), $return_routes)->trigger()->getReturnList(); ?>
 				<?php foreach ($return_routes as $route => $description): ?> 
 					<option value="<?php echo $route; ?>"<?php if (TBGSettings::getLogoutReturnRoute() == $route): ?> selected<?php endif; ?>><?php echo $description; ?></option>
 				<?php endforeach; ?>

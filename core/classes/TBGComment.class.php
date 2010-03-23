@@ -133,7 +133,7 @@
 				{
 					try
 					{
-						TBGContext::trigger('core', 'TBGComment::createNew', $comment);
+						TBGEvent::createNew('core', 'TBGComment::createNew', $comment)->trigger();
 					}
 					catch (Exception $e) {}
 				}

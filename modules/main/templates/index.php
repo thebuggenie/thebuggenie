@@ -34,9 +34,9 @@
 				</div>
 				<?php
 				
-					TBGContext::trigger('core', 'index_left_top');
-					TBGContext::trigger('core', 'index_left_middle');
-					TBGContext::trigger('core', 'index_left_bottom');
+					TBGEvent::createNew('core', 'index_left_top')->trigger();
+					TBGEvent::createNew('core', 'index_left_middle')->trigger();
+					TBGEvent::createNew('core', 'index_left_bottom')->trigger();
 				
 				?>
 			</td>
@@ -44,10 +44,10 @@
 		<td class="main_area">
 			<?php
 			
-				TBGContext::trigger('core', 'index_right_top');
+				TBGEvent::createNew('core', 'index_right_top')->trigger();
 			
-				TBGContext::trigger('core', 'index_right_middle');
-				TBGContext::trigger('core', 'index_right_middle_top');
+				TBGEvent::createNew('core', 'index_right_middle')->trigger();
+				TBGEvent::createNew('core', 'index_right_middle_top')->trigger();
 				
 			?>
 			<?php if (TBGSettings::isProjectOverviewEnabled()): ?>
@@ -78,8 +78,8 @@
 			<?php endif; ?>
 			<?php 
 			
-				TBGContext::trigger('core', 'index_right_middle_bottom');
-				TBGContext::trigger('core', 'index_right_bottom');
+				TBGEvent::createNew('core', 'index_right_middle_bottom')->trigger();
+				TBGEvent::createNew('core', 'index_right_bottom')->trigger();
 			
 			?>
 		</td>

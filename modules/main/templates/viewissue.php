@@ -7,7 +7,7 @@
 	?>
 	<?php 
 
-		TBGContext::trigger('core', 'viewissue_top', $theIssue);
+		TBGEvent::createNew('core', 'viewissue_top', $theIssue)->trigger();
 //		require_once(TBGContext::getIncludePath() . 'js/viewissue_ajax.js.php');
 
 	?>
@@ -163,7 +163,7 @@
 			<td id="issue_lefthand">
 				<?php
 				 
-					TBGContext::trigger('core', 'viewissue_left_top', $theIssue);
+					TBGEvent::createNew('core', 'viewissue_left_top', $theIssue)->trigger();
 					
 				?>
 				<?php include_component('main/issuedetailslisteditable', array('issue' => $theIssue)); ?>
@@ -252,7 +252,7 @@
 				<?php endif; ?>
 				<?php
 			
-					TBGContext::trigger('core', 'viewissue_left_middle_top', $theIssue);
+					TBGEvent::createNew('core', 'viewissue_left_middle_top', $theIssue)->trigger();
 					
 				?>
 				<?php if (!$tbg_user->isGuest()): ?>
@@ -316,14 +316,14 @@
 				<?php endif; ?>
 				<?php
 			
-					TBGContext::trigger('core', 'viewissue_left_bottom', $theIssue);
+					TBGEvent::createNew('core', 'viewissue_left_bottom', $theIssue)->trigger();
 			
 				?>
 			</td><?php /* end left column */ ?>
 			<td valign="top" align="left" style="padding-right: 5px;" id="issue_main">
 				<?php
 			
-					TBGContext::trigger('core', 'viewissue_right_top', $theIssue);
+					TBGEvent::createNew('core', 'viewissue_right_top', $theIssue)->trigger();
 			
 				?>
 				<div style="vertical-align: middle; padding: 5px 0 0 5px;">

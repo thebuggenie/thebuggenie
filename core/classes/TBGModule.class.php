@@ -388,7 +388,7 @@
 				if ($scope === null || $scope == TBGContext::getScope()->getID())
 				{
 					$listener = &$this->_listeners[$module . '_' . $identifier];
-					TBGContext::listenToTrigger($module, $identifier, array($this, $listener['callback_function']));
+					TBGEvent::listen($module, $identifier, array($this, $listener['callback_function']));
 					$listener['enabled'] = true;
 				}
 			}

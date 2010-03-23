@@ -51,7 +51,7 @@
 
 <br>
 
-<?php TBGContext::trigger('core', 'login_middle'); ?>
+<?php TBGEvent::createNew('core', 'login_middle')->trigger(); ?>
 
 <?php if (TBGSettings::get('allowreg')): ?>
 

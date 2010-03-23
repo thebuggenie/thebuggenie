@@ -998,7 +998,7 @@
 			{
 				$this->setState(TBGSettings::get('offlinestate'));
 			}
-			TBGContext::trigger('core', 'TBGUser::getState', $this);
+			TBGEvent::createNew('core', 'TBGUser::getState', $this)->trigger();
 			
 			if (!$this->state instanceof TBGUserstate)
 			{

@@ -90,15 +90,15 @@
 			return $this->getSetting('from_name');
 		}
 
-		public function listen_accountSettingsList()
+		public function listen_accountSettingsList(TBGEvent $event)
 		{
 			include_template('mailnotification/accountsettingslist');
 		}
 		
-		public function listen_registerUser($vars)
+		public function listen_registerUser(TBGEvent $event)
 		{
-			$user = array_shift($vars);
-			$password = array_shift($vars);
+			$user = $event->getSubject();
+			$password = $event->getParameter('password');
 			$subject = TBGContext::getI18n()->__('User account registered with The Bug Genie');
 			$html_message = TBGAction::returnTemplateHTML('mailnotification/registeruser.html', array('user' => $user, 'password' => $password));
 			$plain_message = TBGAction::returnTemplateHTML('mailnotification/registeruser.text', array('user' => $user, 'password' => $password));
@@ -113,15 +113,15 @@
 			}
 		}
 
-		public function listen_loginMiddle()
+		public function listen_loginMiddle(TBGEvent $event)
 		{
 			TBGActionComponent::includeComponent('mailnotification/forgotPasswordBlock');
 		}
 		
-		public function listen_passwordReset($vars)
+		public function listen_passwordReset(TBGEvent $event)
 		{
-			$to_users = array(array('id' => $vars[0]->getID()));
-			$new_pwd = $vars[1];
+			$to_users = array(array('id' => $event->getSubject()->getID()));
+			$new_pwd = $event->getParameter('password');
 			$subject = TBGContext::getI18n()->__('Password reset');
 			$message = TBGAction::returnTemplateHTML('mailnotification/passwordreset', array('password' => $new_pwd));
 			$this->_sendToUsers($to_users, $subject, $message);
@@ -144,8 +144,9 @@
 			return $this->sendMail($email_address, $email_address, $subject, $html_message, $plain_message);
 		}
 
-		public function listen_issueCreate(TBGIssue $issue)
+		public function listen_issueCreate(TBGEvent $event)
 		{
+			$issue = $event->getSubject();
 			if ($issue instanceof TBGIssue)
 			{
 				$to_users = $issue->getRelatedUsers();
@@ -202,8 +203,9 @@
 			}
 		}
 		
-		public function listen_TBGComment_createNew($comment)
+		public function listen_TBGComment_createNew(TBGEvent $event)
 		{
+			$comment = $event->getSubject();
 			if ($comment instanceof TBGComment && $comment->getTargetType() == 1)
 			{
 				try
@@ -220,14 +222,15 @@
 			}
 		}
 		
-		public function listen_issueTop($theIssue)
+		public function listen_issueTop(TBGEvent $event)
 		{
+			$theIssue = $event->getSubject();
 			TBGSettings::deleteSetting('notified_issue_'.$theIssue->getId(), 'mailnotification', '', 0, TBGContext::getUser()->getId());
 		}
 		
-		public function listen_issueUpdate($vars)
+		public function listen_issueUpdate(TBGEvent $event)
 		{
-			$theIssue = array_shift($vars);
+			$theIssue = $event->getSubject();
 			$title = array_shift($vars);
 			$content = array_shift($vars);
 			$uid = array_shift($vars);

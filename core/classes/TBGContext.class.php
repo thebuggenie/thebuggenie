@@ -150,13 +150,6 @@
 		static protected $_classpaths = array();
 		
 		/**
-		 * List of registered trigger listeners
-		 * 
-		 * @var string
-		 */
-		static protected $_registeredlisteners = array();
-		
-		/**
 		 * List of loaded libraries
 		 * 
 		 * @var string
@@ -789,73 +782,6 @@
 		public static function isModuleLoaded($module_name)
 		{
 			if (isset(self::$_modules[$module_name]))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		/**
-		 * Register a listener for a spesified trigger
-		 * 
-		 * @param string $module The module for which the trigger is active
-		 * @param string $identifier The trigger identifier
-		 * @param string $callback_function Which function to call
-		 */
-		public static function listenToTrigger($module, $identifier, $callback_function)
-		{
-			self::$_registeredlisteners[$module][$identifier][] = $callback_function;
-		}
-
-		/**
-		 * Invoke a trigger
-		 * 
-		 * @param string $module The module for which the trigger is active
-		 * @param string $identifier The trigger identifier
-		 * @param array $params Parameters to pass to the registered listeners
-		 * 
-		 * @return unknown_type
-		 */
-		public static function trigger($module, $identifier, $params = array(), $return_when_true = false)
-		{
-			TBGLogging::log("Triggering $module - $identifier");
-			if (isset(self::$_registeredlisteners[$module][$identifier]))
-			{
-				foreach (self::$_registeredlisteners[$module][$identifier] as $trigger)
-				{
-					try
-					{
-						TBGLogging::log('Running callback function '.$trigger);
-						$retval = call_user_func($trigger, $params);
-						if ($return_when_true && $retval === true)
-						{
-							return true;
-						}
-						TBGLogging::log('done (Running callback function '.$trigger.')');
-					}
-					catch (Exception $e)
-					{
-						throw $e;
-					}
-				}
-			}
-			TBGLogging::log("done (Triggering $module - $identifier)");
-		}
-		
-		/**
-		 * Whether or not there are any listeners to a specific trigger
-		 * 
-		 * @param string $module The module for which the trigger is active
-		 * @param string $identifier The trigger identifier
-		 * 
-		 * @return boolean
-		 */
-		public static function isHookedInto($module, $identifier)
-		{
-			if (isset(self::$_registeredlisteners[$module]) && isset(self::$_registeredlisteners[$module][$identifier]))
 			{
 				return true;
 			}

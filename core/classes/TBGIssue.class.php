@@ -539,7 +539,7 @@
 				$theIssue = TBGFactory::TBGIssueLab($i_id);
 				$theIssue->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED);
 
-				TBGContext::trigger('core', 'TBGIssue::createNew', $theIssue);
+				TBGEvent::createNew('core', 'TBGIssue::createNew', $theIssue)->trigger();
 				return $theIssue;
 			}
 			catch (Exception $e)
@@ -3486,7 +3486,7 @@
 			if (!TBGSettings::isCommentTrailClean())
 			{
 				$comment = TBGComment::createNew($title, $text, $uid, $this->getID(), TBGComment::TYPE_ISSUE, 'core', true, true, false);
-				TBGContext::trigger('core', 'issue_comment_posted', array($this, $comment));
+				TBGEvent::createNew('core', 'issue_comment_posted', $this, array('comment' => $comment))->trigger();
 				return $comment;
 			}
 			return false;

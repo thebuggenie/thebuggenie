@@ -13,7 +13,7 @@
 			<div style="margin-top: 0px;">
 			<?php
 			
-				TBGContext::trigger('core', 'dashboard_left_top');
+				TBGEvent::createNew('core', 'dashboard_left_top')->trigger();
 			
 			?>
 			</div>
@@ -22,15 +22,15 @@
 			</div>
 			<?php 
 		
-				TBGContext::trigger('core', 'dashboard_left_middle');
-				TBGContext::trigger('core', 'dashboard_left_bottom');
+				TBGEvent::createNew('core', 'dashboard_left_middle')->trigger();
+				TBGEvent::createNew('core', 'dashboard_left_bottom')->trigger();
 			
 			?>
 		</td>
 		<td valign="top" align="left" style="padding-right: 10px;">
 			<?php
 			
-				TBGContext::trigger('core', 'dashboard_right_top');
+				TBGEvent::createNew('core', 'dashboard_right_top')->trigger();
 			
 			/*?>
 			<table cellpadding=0 cellspacing=0>
@@ -46,8 +46,8 @@
 			</table>
 			<?php*/
 			
-				TBGContext::trigger('core', 'dashboard_right_middle');
-				TBGContext::trigger('core', 'dashboard_right_middle_top');
+				TBGEvent::createNew('core', 'dashboard_right_middle')->trigger();
+				TBGEvent::createNew('core', 'dashboard_right_middle_top')->trigger();
 				
 			?>
 			<ul id="dashboard">
@@ -78,7 +78,7 @@
 					<?php endif; ?>
 					<?php 
 					
-					TBGContext::trigger('core', 'dashboard_main_myassignedissues');
+					TBGEvent::createNew('core', 'dashboard_main_myassignedissues')->trigger();
 					
 					?>
 				</li>
@@ -116,7 +116,7 @@
 					<?php endif; ?>
 					<?php 
 					
-					TBGContext::trigger('core', 'dashboard_main_teamassignedissues');
+					TBGEvent::createNew('core', 'dashboard_main_teamassignedissues')->trigger();
 					
 					?>
 				</li>
@@ -146,7 +146,7 @@
 					<?php endif; ?>
 					<?php 
 					
-					TBGContext::trigger('core', 'dashboard_main_pendingissues');
+					TBGEvent::createNew('core', 'dashboard_main_pendingissues')->trigger();
 					
 					?>
 				</li>
@@ -185,7 +185,7 @@
 					<?php endif; ?>
 					<?php 
 					
-					TBGContext::trigger('core', 'dashboard_main_mystarredissues');
+					TBGEvent::createNew('core', 'dashboard_main_mystarredissues')->trigger();
 					
 					?>
 				</li>
@@ -217,8 +217,8 @@
 			</ul>
 			<?php 
 			
-				TBGContext::trigger('core', 'dashboard_right_middle_bottom');
-				TBGContext::trigger('core', 'dashboard_right_bottom');
+				TBGEvent::createNew('core', 'dashboard_right_middle_bottom')->trigger();
+				TBGEvent::createNew('core', 'dashboard_right_bottom')->trigger();
 			
 			?>
 		</td>

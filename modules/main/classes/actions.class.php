@@ -113,7 +113,7 @@
 			{
 				$this->showleftbar = true;
 			}
-			if (TBGContext::isHookedInto('core', 'index_left_top') || TBGContext::isHookedInto('core', 'index_left_middle') || TBGContext::isHookedInto('core', 'index_left_bottom')) 
+			if (TBGEvent::isAnyoneListening('core', 'index_left_top') || TBGEvent::isAnyoneListening('core', 'index_left_middle') || TBGEvent::isAnyoneListening('core', 'index_left_bottom'))
 			{
 				$this->showleftbar = true;
 			}
@@ -495,7 +495,7 @@
 
 						if (TBGContext::getUser()->getEmail() != $request->getParameter('email'))
 						{
-							if (TBGContext::trigger('core', 'changeEmail', array('email' => $request->getParameter('email')), true) !== true)
+							if (TBGEvent::createNew('core', 'changeEmail', TBGContext::getUser(), array('email' => $request->getParameter('email')))->triggerUntilProcessed()->isProcessed() == false)
 							{
 								TBGContext::getUser()->setEmail($request->getParameter('email'));
 							}

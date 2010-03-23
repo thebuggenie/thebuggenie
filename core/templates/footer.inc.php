@@ -1,6 +1,6 @@
 				<?php
 					
-					TBGContext::trigger('core', 'footer_begin');
+					TBGEvent::createNew('core', 'footer_begin')->trigger();
 					TBGContext::ping();
 				
 				?>
@@ -23,7 +23,7 @@
 					</div>
 					<?php
 				
-					TBGContext::trigger('core', 'footer_end');
+					TBGEvent::createNew('core', 'footer_end')->trigger();
 				
 					?>
 				</td>

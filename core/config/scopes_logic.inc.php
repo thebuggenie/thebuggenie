@@ -146,7 +146,7 @@
 				
 				B2DB::getTable('TBGScopesTable')->doDeleteById($theScope->getID());
 				
-				TBGContext::trigger('core', 'delete_scope', $theScope);
+				TBGEvent::createNew('core', 'delete_scope', $theScope)->trigger();
 				
 				$theScope = null;
 			}

@@ -659,7 +659,7 @@
 							<li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_dark"><?php echo __('Set owner'); ?></a></li>
 							<?php
 		
-								TBGContext::trigger('core', 'reportissue.listfields');
+								TBGEvent::createNew('core', 'reportissue.listfields')->trigger();
 							
 							?>
 						</ul>

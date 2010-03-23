@@ -617,7 +617,7 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 			return null;
 		}
 		
-		public function listen_frontpageArticle()
+		public function listen_frontpageArticle(TBGEvent $event)
 		{
 			$index_article = $this->getFrontpageArticle();
 			if ($index_article instanceof PublishArticle)
@@ -626,19 +626,19 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 			}
 		}
 
-		public function listen_latestArticles()
+		public function listen_latestArticles(TBGEvent $event)
 		{
-			TBGActionComponent::includeComponent('publish/latestArticles');
+			TBGActionComponent::includeComponent('publish/latestArticles', array('project' => $event->getSubject()));
 		}
 
-		public function listen_projectLinks($params)
+		public function listen_projectLinks(TBGEvent $event)
 		{
-			TBGActionComponent::includeTemplate('publish/projectlinks', $params);
+			TBGActionComponent::includeTemplate('publish/projectlinks', array('project' => $event->getSubject()));
 		}
 
-		public function listen_projectMenustripLinks($params)
+		public function listen_projectMenustripLinks(TBGEvent $event)
 		{
-			TBGActionComponent::includeTemplate('publish/projectmenustriplinks', $params);
+			TBGActionComponent::includeTemplate('publish/projectmenustriplinks', array('project' => $event->getSubject(), 'selected_tab' => $event->getParameter('selected_tab')));
 		}
 
 		public function getTabKey()

@@ -455,7 +455,7 @@
 				TBGContext::setPermission("canpostseeandeditallcomments", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
 
 				$theProject = TBGFactory::projectLab($p_id);
-				TBGContext::trigger('core', 'TBGProject::createNew', $theProject);
+				TBGEvent::createNew('core', 'TBGProject::createNew', $theProject)->trigger();
 
 				return $theProject;
 			}

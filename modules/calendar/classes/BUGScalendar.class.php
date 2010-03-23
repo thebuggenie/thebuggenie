@@ -12,8 +12,8 @@
 			$this->setConfigTitle(TBGContext::getI18n()->__('Calendar'));
 			$this->setDescription(TBGContext::getI18n()->__('Enables calendars, todos and meetings'));
 			$this->setHasAccountSettings();
-			$this->addAvailableListener('core', 'dashboard_left_top', 'section_calendarSummary', 'Dashboard calendar summary');
-			$this->addAvailableListener('core', 'TBGUser::getState', 'section_TBGUser_getState', 'Automatic user-state change');
+			$this->addAvailableListener('core', 'dashboard_left_top', 'listen_calendarSummary', 'Dashboard calendar summary');
+			$this->addAvailableListener('core', 'TBGUser::getState', 'listen_TBGUser_getState', 'Automatic user-state change');
 		}
 
 		public function initialize()
@@ -119,12 +119,12 @@
 			
 		}		
 		
-		public function section_accountSettingsList()
+		public function listen_accountSettingsList(TBGEvent $event)
 		{
 			include_template('calendar/accountsettingslist');
 		}
 
-		public function section_accountSettings($module)
+		public function listen_accountSettings(TBGEvent $event)
 		{
 			if ($module != $this->getName()) return;
 			if (TBGContext::getRequest()->getParameter('weekstart'))
@@ -185,9 +185,9 @@
 			<?php
 		}
 		
-		public function section_TBGUser_getState($theUser)
+		public function listen_TBGUser_getState(TBGEvent $event)
 		{
-			//$theUser = $vars;
+			$theUser = $event->getSubject();
 			$events = $this->getEvents($_SERVER["REQUEST_TIME"], $_SERVER["REQUEST_TIME"]);
 			foreach ($events as $anevent)
 			{
@@ -195,12 +195,12 @@
 			}
 		}
 		
-		public function section_calendarSummary()
+		public function listen_calendarSummary(TBGEvent $event)
 		{
 			include_component('calendar/calendarsummary');
 		}
 		
-		public function section_indexLeftTop()
+		public function listen_indexLeftTop(TBGEvent $event)
 		{
 			if (TBGContext::getUser()->getUID() != 0)
 			{
