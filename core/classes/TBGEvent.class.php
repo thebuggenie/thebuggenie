@@ -126,9 +126,9 @@
 		 *
 		 * @return TBGEvent
 		 */
-		public static function createNew($module, $identifier, $subject = null, $parameters = array())
+		public static function createNew($module, $identifier, $subject = null, $parameters = array(), $initial_list = array())
 		{
-			$event = new TBGEvent($module, $identifier, $subject, $parameters);
+			$event = new TBGEvent($module, $identifier, $subject, $parameters, $initial_list);
 			return $event;
 		}
 
