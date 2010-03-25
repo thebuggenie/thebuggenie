@@ -56,7 +56,7 @@
 	 * 
 	 * @return string
 	 */
-	function image_tag($image, $params = array(), $notheme = false, $module = 'core')
+	function image_tag($image, $params = array(), $notheme = false, $module = 'core', $relative = true)
 	{
 		if ($notheme)
 		{
@@ -76,6 +76,10 @@
 			{
 				$params['src'] = TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/' . $image;
 			}
+		}
+		if (!$relative)
+		{
+			$params['src'] = TBGContext::getUrlHost() . $params['src'];
 		}
 		if (!isset($params['alt']))
 		{

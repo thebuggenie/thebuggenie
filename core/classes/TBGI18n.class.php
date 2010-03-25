@@ -43,8 +43,11 @@
 		
 		public function setLanguage($language)
 		{
-			$this->_language = $language;
-			$this->loadStrings();
+			if ($language != $this->_language)
+			{
+				$this->_language = $language;
+				$this->loadStrings();
+			}
 		}
 		
 		public function getMissingStrings()

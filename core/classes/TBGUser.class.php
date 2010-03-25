@@ -103,6 +103,13 @@
 		 * @access protected
 		 */
 		protected $homepage = '';
+
+		/**
+		 * Users language
+		 *
+		 * @var string
+		 */
+		protected $language = '';
 		
 		/**
 		 * Array of team ids where the current user is a member
@@ -535,6 +542,7 @@
 					$this->avatar = $row->get(TBGUsersTable::AVATAR);
 					$this->_use_gravatar = (bool) $row->get(TBGUsersTable::USE_GRAVATAR);
 					$this->scope = TBGFactory::scopeLab($row->get(TBGUsersTable::SCOPE), $row);
+					$this->language = $row->get(TBGUsersTable::LANGUAGE);
 					$this->pwd = $row->get(TBGUsersTable::PASSWD);
 					$this->showassigned = ($row->get(TBGUsersTable::SHOWASSIGNED) == 1) ? true : false;
 					$this->private_email = ($row->get(TBGUsersTable::PRIVATE_EMAIL) == 1) ? true : false;
@@ -1527,6 +1535,7 @@
 			$crit->addUpdate(TBGUsersTable::PRIVATE_EMAIL, (bool) $this->private_email);
 			$crit->addUpdate(TBGUsersTable::PASSWD, $this->pwd);
 			$crit->addUpdate(TBGUsersTable::EMAIL, $this->email);
+			$crit->addUpdate(TBGUsersTable::LANGUAGE, $this->language);
 			$crit->addUpdate(TBGUsersTable::ACTIVATED, $this->_isactivated);
 			$crit->addUpdate(TBGUsersTable::ENABLED, $this->_isenabled);
 			$crit->addUpdate(TBGUsersTable::HOMEPAGE, $this->homepage);
@@ -1770,6 +1779,16 @@
 		public function getIssuesPendingChanges()
 		{
 			return TBGChangeableItem::getChangedItems('TBGIssue');
+		}
+
+		public function setLanguage($language)
+		{
+			$this->language = $language;
+		}
+
+		public function getLanguage()
+		{
+			return ($this->language != '') ? $this->language : TBGContext::getI18n()->getCurrentLanguage();
 		}
 		
 	}

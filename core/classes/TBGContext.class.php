@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	final class TBGContext
+	class TBGContext
 	{
 
 		const PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES = 1;

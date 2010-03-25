@@ -1,4 +1,4 @@
-<div class="header"><?php echo __('Basic information'); ?></div>
+<div class="header"><?php echo __('Outgoing emails'); ?></div>
 <div class="content"><?php echo __('This is the basic information about outgoing emails, used regardless of your email method or outgoing server'); ?></div>
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
 <div class="rounded_box borderless" style="margin: 10px 0 0 0; width: 700px;">
@@ -26,15 +26,15 @@
 			<tr>
 				<td style="padding: 5px;"><label for="mail_type_php"><?php echo __('Mail configuration'); ?></label></td>
 				<td>
-					<input type="radio" name="mail_type" value="<?php echo BUGSmailnotification::MAIL_TYPE_PHP; ?>" id="mail_type_php"<?php if ($module->getSetting('mail_type') != BUGSmailnotification::MAIL_TYPE_B2M): ?> checked<?php endif; ?> onclick="$('mail_type_b2m_info').hide();">&nbsp;<label for="mail_type_php"><?php echo __('Use php settings'); ?></label><br>
-					<input type="radio" name="mail_type" value="<?php echo BUGSmailnotification::MAIL_TYPE_B2M; ?>" id="mail_type_b2m"<?php if ($module->getSetting('mail_type') == BUGSmailnotification::MAIL_TYPE_B2M): ?> checked<?php endif; ?> onclick="$('mail_type_b2m_info').show();">&nbsp;<label for="mail_type_b2m"><?php echo __('Use custom settings'); ?></label>
+					<input type="radio" name="mail_type" value="<?php echo TBGMailer::MAIL_TYPE_PHP; ?>" id="mail_type_php"<?php if ($module->getSetting('mail_type') != TBGMailer::MAIL_TYPE_B2M): ?> checked<?php endif; ?> onclick="$('mail_type_b2m_info').hide();">&nbsp;<label for="mail_type_php"><?php echo __('Use php settings'); ?></label><br>
+					<input type="radio" name="mail_type" value="<?php echo TBGMailer::MAIL_TYPE_B2M; ?>" id="mail_type_b2m"<?php if ($module->getSetting('mail_type') == TBGMailer::MAIL_TYPE_B2M): ?> checked<?php endif; ?> onclick="$('mail_type_b2m_info').show();">&nbsp;<label for="mail_type_b2m"><?php echo __('Use custom settings'); ?></label>
 				</td>
 			</tr>
 			<tr>
 				<td class="config_explanation" colspan="2"><?php echo __('This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration'); ?></td>
 			</tr>
 		</table>
-		<table style="width: 680px; margin-top: 10px;<?php if ($module->getSetting('mail_type') != BUGSmailnotification::MAIL_TYPE_B2M): ?> display: none;<?php endif; ?>" class="padded_table" cellpadding=0 cellspacing=0 id="mail_type_b2m_info">
+		<table style="width: 680px; margin-top: 10px;<?php if ($module->getSetting('mail_type') != TBGMailer::MAIL_TYPE_B2M): ?> display: none;<?php endif; ?>" class="padded_table" cellpadding=0 cellspacing=0 id="mail_type_b2m_info">
 			<tr>
 				<td style="width: 200px; padding: 5px;"><label for="smtp_host"><?php echo __('SMTP server address'); ?></label></td>
 				<td style="width: auto;"><input type="text" name="smtp_host" id="smtp_host" value="<?php echo $module->getSetting('smtp_host'); ?>" style="width: 100%;"<?php echo ($access_level != configurationActions::ACCESS_FULL) ? ' disabled' : ''; ?>></td>

@@ -30,6 +30,7 @@
 		const EMAIL = 'users.email';
 		const STATE = 'users.state';
 		const HOMEPAGE = 'users.homepage';
+		const LANGUAGE = 'users.language';
 		const LASTSEEN = 'users.lastseen';
 		const LASTLOGIN = 'users.lastlogin';
 		const QUOTA = 'users.quota';
@@ -56,6 +57,7 @@
 			parent::_addVarchar(self::EMAIL, 200);
 			parent::_addForeignKeyColumn(self::STATE, B2DB::getTable('TBGUserStateTable'), TBGUserStateTable::ID);
 			parent::_addVarchar(self::HOMEPAGE, 250, '');
+			parent::_addVarchar(self::LANGUAGE, 100, '');
 			parent::_addInteger(self::LASTSEEN, 10);
 			parent::_addInteger(self::LASTLOGIN, 10);
 			parent::_addInteger(self::QUOTA);
