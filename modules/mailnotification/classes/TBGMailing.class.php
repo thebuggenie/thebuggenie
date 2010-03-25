@@ -1,6 +1,6 @@
 <?php
 
-	class TBGmailing extends TBGModule
+	class TBGMailing extends TBGModule
 	{
 
 		protected $mailer = null;
@@ -29,7 +29,7 @@
 			// No, I didn't forget the parameters, but what else would you call
 			// it when it's about retrieving a forgotten password?
 			$this->addRoute('forgot', '/forgot', 'forgot');
-			$this->addRoute('mailnotification_test_email', '/mailnotification/test', 'testEmail');
+			$this->addRoute('mailing_test_email', '/mailing/test', 'testEmail');
 		}
 
 		public function initialize()
@@ -40,7 +40,7 @@
 		{
   			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			
-			$module = parent::_install('mailnotification', 'BUGSmailnotification', '1.0', true, false, false, $scope);
+			$module = parent::_install('mailing', 'TBGMailing', '1.0', true, false, false, $scope);
 								  
 			$module->enableListenerSaved('core', 'user_registration', $scope);
 			$module->enableListenerSaved('core', 'login_middle', $scope);
@@ -92,7 +92,7 @@
 
 		public function listen_accountSettingsList(TBGEvent $event)
 		{
-			include_template('mailnotification/accountsettingslist');
+			include_template('mailing/accountsettingslist');
 		}
 		
 		public function listen_registerUser(TBGEvent $event)
@@ -114,7 +114,7 @@
 
 		public function listen_loginMiddle(TBGEvent $event)
 		{
-			TBGActionComponent::includeComponent('mailnotification/forgotPasswordBlock');
+			TBGActionComponent::includeComponent('mailing/forgotPasswordBlock');
 		}
 		
 		public function listen_passwordReset(TBGEvent $event)
@@ -215,7 +215,7 @@
 		public function listen_issueTop(TBGEvent $event)
 		{
 			$issue = $event->getSubject();
-			TBGSettings::deleteSetting('notified_issue_'.$issue->getId(), 'mailnotification', '', 0, TBGContext::getUser()->getId());
+			TBGSettings::deleteSetting('notified_issue_'.$issue->getId(), 'mailing', '', 0, TBGContext::getUser()->getId());
 		}
 		
 		public function listen_issueUpdate(TBGEvent $event)

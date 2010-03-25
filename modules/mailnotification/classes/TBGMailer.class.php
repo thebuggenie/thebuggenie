@@ -7,14 +7,14 @@
 	 * @version 2.0
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
 	 * @package thebuggenie
-	 * @subpackage mailnotification
+	 * @subpackage mailing
 	 */
 
 	/**
 	 * Mailer class
 	 *
 	 * @package thebuggenie
-	 * @subpackage mailnotification
+	 * @subpackage mailing
 	 */
 	class TBGMailer
 	{

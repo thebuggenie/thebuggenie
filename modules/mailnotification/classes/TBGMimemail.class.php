@@ -254,12 +254,12 @@
 						{
 							$current_language = TBGContext::getI18n()->getCurrentLanguage();
 							TBGContext::getI18n()->setLanguage($this->language);
-							$this->message_html = TBGAction::returnTemplateHTML("mailnotification/{$this->template}.html", $this->template_parameters);
+							$this->message_html = TBGAction::returnTemplateHTML("mailing/{$this->template}.html", $this->template_parameters);
 							if ($this->message_html == '')
 							{
 								$this->message_html = null;
 							}
-							$this->message_plain = TBGAction::returnTemplateHTML("mailnotification/{$this->template}.text", $this->template_parameters);
+							$this->message_plain = TBGAction::returnTemplateHTML("mailing/{$this->template}.text", $this->template_parameters);
 							if ($this->message_plain == '')
 							{
 								$this->message_plain = null;
@@ -274,8 +274,8 @@
 					}
 					else
 					{
-						$this->message_html = TBGAction::returnTemplateHTML("mailnotification/{$this->template}.html", $this->template_parameters);
-						$this->message_plain = TBGAction::returnTemplateHTML("mailnotification/{$this->template}.text", $this->template_parameters);
+						$this->message_html = TBGAction::returnTemplateHTML("mailing/{$this->template}.html", $this->template_parameters);
+						$this->message_plain = TBGAction::returnTemplateHTML("mailing/{$this->template}.text", $this->template_parameters);
 					}
 				}
 			}

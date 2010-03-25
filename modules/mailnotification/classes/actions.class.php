@@ -1,6 +1,6 @@
 <?php
 
-	class mailnotificationActions extends TBGAction
+	class mailingActions extends TBGAction
 	{
 
 		/**
@@ -21,7 +21,7 @@
 						{
 							if ($user->getEmail())
 							{
-								TBGContext::getModule('mailnotification')->sendForgottenPasswordEmail($user);
+								TBGContext::getModule('mailing')->sendForgottenPasswordEmail($user);
 								TBGContext::setMessage('forgot_success', TBGContext::getI18n()->__('Please use the link in the email you received'));
 								$this->forward(TBGContext::getRouting()->generate('login'));
 							}
@@ -57,21 +57,21 @@
 		{
 			if ($email_to = $request->getParameter('test_email_to'))
 			{
-				if (TBGContext::getModule('mailnotification')->sendTestEmail($email_to))
+				if (TBGContext::getModule('mailing')->sendTestEmail($email_to))
 				{
 					TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The email was successfully accepted for delivery'));
 				}
 				else
 				{
 					TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The email was not sent'));
-					TBGContext::setMessage('module_error_details', TBGLogging::getMessagesForCategory('mailnotification', TBGLogging::LEVEL_NOTICE));
+					TBGContext::setMessage('module_error_details', TBGLogging::getMessagesForCategory('mailing', TBGLogging::LEVEL_NOTICE));
 				}
 			}
 			else
 			{
 				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Please specify an email address'));
 			}
-			$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'mailnotification')));
+			$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'mailing')));
 		}
 
 	}

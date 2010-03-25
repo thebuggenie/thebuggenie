@@ -98,7 +98,7 @@
 	</div>
 <?php endif; ?>
 </form>
-<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('mailnotification_test_email'); ?>" method="post">
+<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('mailing_test_email'); ?>" method="post">
 	<div class="rounded_box borderless" style="margin: 10px 0 0 0; width: 700px;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 5px 5px 25px 5px;">

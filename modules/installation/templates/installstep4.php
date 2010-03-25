@@ -40,12 +40,12 @@
 				<legend>The Bug Genie modules</legend>
 				<dl class="install_list">
 					<dt>
-						<strong>Enable outgoing email</strong><br>
-						Enables functionality that sends out emails
+						<strong>Enable email communication</strong><br>
+						Enables functionality that sends and receives emails
 					</dt>
 					<dd>
-						<input type="radio" name="modules[mailnotification]" value="1" id="modules_mailnotification_yes" checked="checked"><label for="modules_mailnotification_yes" style="margin-right: 5px;">Yes</label>
-						<input type="radio" name="modules[mailnotification]" value="0" id="modules_mailnotification_no"><label for="modules_mailnotification_no">No</label>
+						<input type="radio" name="modules[mailing]" value="1" id="modules_mailing_yes" checked="checked"><label for="modules_mailing_yes" style="margin-right: 5px;">Yes</label>
+						<input type="radio" name="modules[mailing]" value="0" id="modules_mailing_no"><label for="modules_mailing_no">No</label>
 					</dd>
 					<dt>
 						<strong>Enable messaging</strong><br>
