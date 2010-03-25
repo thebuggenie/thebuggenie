@@ -133,9 +133,16 @@
 		
 		public function sendTestEmail($email_address)
 		{
-			$subject = TBGContext::getI18n()->__('Test email');
-			$message = $this->createNewTBGMimemailFromTemplate($subject, 'testemail', array(), null, array($email_address));
-			return $this->sendMail($message);
+			try
+			{
+				$subject = TBGContext::getI18n()->__('Test email');
+				$message = $this->createNewTBGMimemailFromTemplate($subject, 'testemail', array(), null, array($email_address));
+				return $this->sendMail($message);
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
 		}
 
 		public function listen_issueCreate(TBGEvent $event)
@@ -335,10 +342,17 @@
 		 */
 		public function createNewTBGMimemailFromTemplate($subject, $template, $parameters = array(), $language = null, $recipients = array(), $charset = 'utf-8')
 		{
-			$mail = TBGMimemail::createNewFromTemplate($subject, $template, $parameters, $language, $recipients, $charset);
-			$this->_setInitialMailValues($mail);
+			try
+			{
+				$mail = TBGMimemail::createNewFromTemplate($subject, $template, $parameters, $language, $recipients, $charset);
+				$this->_setInitialMailValues($mail);
 
-			return $mail;
+				return $mail;
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
 		}
 
 		/**
@@ -354,10 +368,17 @@
 		 */
 		public function createNewTBGMimemailFromMessage($subject, $message_plain, $message_html = null, $recipients = array(), $charset = 'utf-8')
 		{
-			$mail = TBGMimemail::createNewFromMessage($subject, $message_plain, $message_html, $recipients, $charset);
-			$this->_setInitialMailValues($mail);
+			try
+			{
+				$mail = TBGMimemail::createNewFromMessage($subject, $message_plain, $message_html, $recipients, $charset);
+				$this->_setInitialMailValues($mail);
 
-			return $mail;
+				return $mail;
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
 		}
 
 		public function sendMail(TBGMimemail $mail, $debug = false)

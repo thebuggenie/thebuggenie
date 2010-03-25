@@ -57,14 +57,21 @@
 		{
 			if ($email_to = $request->getParameter('test_email_to'))
 			{
-				if (TBGContext::getModule('mailing')->sendTestEmail($email_to))
+				try
 				{
-					TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The email was successfully accepted for delivery'));
+					if (TBGContext::getModule('mailing')->sendTestEmail($email_to))
+					{
+						TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The email was successfully accepted for delivery'));
+					}
+					else
+					{
+						TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The email was not sent'));
+						TBGContext::setMessage('module_error_details', TBGLogging::getMessagesForCategory('mailing', TBGLogging::LEVEL_NOTICE));
+					}
 				}
-				else
+				catch (Exception $e)
 				{
-					TBGContext::setMessage('module_error', TBGContext::getI18n()->__('The email was not sent'));
-					TBGContext::setMessage('module_error_details', TBGLogging::getMessagesForCategory('mailing', TBGLogging::LEVEL_NOTICE));
+					TBGContext::setMessage('module_error', $e->getMessage());
 				}
 			}
 			else

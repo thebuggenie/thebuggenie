@@ -126,7 +126,7 @@
 					}
 					else
 					{
-						$filename = TBGContext::getIncludePath() . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'general.inc.php';
+						$filename = TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'general.inc.php';
 					}
 				}
 				else
@@ -144,7 +144,7 @@
 				{
 					$message = 'Could not find language file ' . $filename;
 					TBGLogging::log($message, 'i18n');
-					throw new Exception($message);
+					//throw new Exception($message);
 				}
 			}
 			else
@@ -161,9 +161,12 @@
 		
 		public function addStrings($strings)
 		{
-			foreach ($strings as $key => $translation)
+			if (is_array($strings))
 			{
-				$this->_strings[$key] = $translation;
+				foreach ($strings as $key => $translation)
+				{
+					$this->_strings[$key] = $translation;
+				}
 			}
 		}
 		

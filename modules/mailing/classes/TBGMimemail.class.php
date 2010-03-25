@@ -38,7 +38,14 @@
 		
 		public static function createNewFromTemplate($subject, $template, $parameters = array(), $language = null, $recipients = array(), $charset = 'utf-8')
 		{
-			return new self($subject, $template, $parameters, $language, null, null, $recipients, $charset);
+			try
+			{
+				return new self($subject, $template, $parameters, $language, null, null, $recipients, $charset);
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
 		}
 		
 		public static function createNewFromMessage($subject, $message_plain, $message_html = null, $recipients = array(), $charset = 'utf-8')
