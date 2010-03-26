@@ -70,9 +70,10 @@
 			$crit->addOrderBy(self::VERSION_MINOR, B2DBCriteria::SORT_DESC);
 			$crit->addOrderBy(self::VERSION_REVISION, B2DBCriteria::SORT_DESC);
 			$res = $this->doSelect($crit);
+			
 			return $res;
 		}
-		
+
 		public function createNew($name, $project = null, $edition = null, $ver_mj = 0, $ver_mn = 0, $ver_rev = 1, $b_id = null)
 		{
 			$ver_mj = ((int) $ver_mj > 0) ? (int) $ver_mj : 0;

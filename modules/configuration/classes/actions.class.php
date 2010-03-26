@@ -768,9 +768,10 @@
 			{
 				try
 				{
-					if ($p_id = $request->getParameter('project_id'))
+					$p_id = $request->getParameter('project_id');
+					if ($project = TBGFactory::projectLab($p_id))
 					{
-						if (TBGContext::getUser()->hasPermission('b2projectaccess', $p_id))
+						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
 							if ($e_name = $request->getParameter('e_name'))
 							{
@@ -913,9 +914,10 @@
 			{
 				try
 				{
-					if ($p_id = $request->getParameter('project_id'))
+					$p_id = $request->getParameter('project_id');
+					if ($project = TBGFactory::projectLab($p_id))
 					{
-						if (TBGContext::getUser()->hasPermission('b2projectaccess', $p_id))
+						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
 							if ($b_name = $request->getParameter('build_name'))
 							{
@@ -972,9 +974,10 @@
 			{
 				try
 				{
-					if ($p_id = $request->getParameter('project_id'))
+					$p_id = $request->getParameter('project_id');
+					if ($project = TBGFactory::projectLab($p_id))
 					{
-						if (TBGContext::getUser()->hasPermission('b2projectaccess', $p_id))
+						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
 							if ($c_name = $request->getParameter('c_name'))
 							{
@@ -1018,9 +1021,10 @@
 			{
 				try
 				{
-					if ($p_id = $request->getParameter('project_id'))
+					$p_id = $request->getParameter('project_id');
+					if ($project = TBGFactory::projectLab($p_id))
 					{
-						if (TBGContext::getUser()->hasPermission('b2projectaccess', $p_id))
+						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
 							if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
 							{

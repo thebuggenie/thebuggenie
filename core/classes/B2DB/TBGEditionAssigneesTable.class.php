@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGEditionAssigneesTable extends B2DBTable 
+	class self extends B2DBTable
 	{
 
 		const B2DBNAME = 'editionassignees';
@@ -61,6 +61,49 @@
 				}
 			}
 			return $projects;
+		}
+
+		public function addAssigneeToEdition($edition_id, $assignee, $role)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::EDITION_ID, $edition_id);
+			$crit->addWhere(self::TARGET_TYPE, $role);
+			switch (true)
+			{
+				case ($assignee instanceof TBGUser):
+					$crit->addWhere(self::UID, $assignee->getID());
+					break;
+				case ($assignee instanceof TBGTeam):
+					$crit->addWhere(self::TID, $assignee->getID());
+					break;
+				case ($assignee instanceof TBGCustomer):
+					$crit->addWhere(self::CID, $assignee->getID());
+					break;
+			}
+			$res = $this->doSelectOne($crit);
+
+			if (!$res instanceof B2DBRow)
+			{
+				$crit = $this->getCriteria();
+				switch (true)
+				{
+					case ($assignee instanceof TBGUser):
+						$crit->addInsert(self::UID, $assignee->getID());
+						break;
+					case ($assignee instanceof TBGTeam):
+						$crit->addInsert(self::TID, $assignee->getID());
+						break;
+					case ($assignee instanceof TBGCustomer):
+						$crit->addInsert(self::CID, $assignee->getID());
+						break;
+				}
+				$crit->addInsert(self::EDITION_ID, $edition_id);
+				$crit->addInsert(self::TARGET_TYPE, $role);
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+				$res = $this->doInsert($crit);
+				return true;
+			}
+			return false;
 		}
 		
 	}

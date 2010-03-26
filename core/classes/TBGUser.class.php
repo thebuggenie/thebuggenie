@@ -1718,6 +1718,42 @@
 		}
 
 		/**
+		 * Return if the user can manage a project
+		 *
+		 * @param TBGProject $project
+		 * 
+		 * @return boolean
+		 */
+		public function canManageProject(TBGProject $project)
+		{
+			return (bool) $this->hasPermission('canmanageproject', $project->getID());
+		}
+
+		/**
+		 * Return if the user can manage releases for a project
+		 *
+		 * @param TBGProject $project
+		 *
+		 * @return boolean
+		 */
+		public function canManageProjectReleases(TBGProject $project)
+		{
+			return (bool) ($this->hasPermission('canmanageprojectreleases', $project->getID()) || $this->hasPermission('canmanageproject', $project->getID()));
+		}
+
+		/**
+		 * Return if the user can edit project details and settings
+		 *
+		 * @param TBGProject $project
+		 *
+		 * @return boolean
+		 */
+		public function canEditProjectDetails(TBGProject $project)
+		{
+			return (bool) ($this->hasPermission('caneditprojectdetails', $project->getID()) || $this->hasPermission('canmanageproject', $project->getID()));
+		}
+
+		/**
 		 * Return a list of the users latest log items
 		 * 
 		 * @param integer $number Limit to a number of changes

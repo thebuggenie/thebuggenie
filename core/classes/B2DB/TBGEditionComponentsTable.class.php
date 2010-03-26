@@ -32,5 +32,47 @@
 			parent::_addForeignKeyColumn(self::COMPONENT, B2DB::getTable('TBGComponentsTable'), TBGComponentsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
 		}
-		
+
+		public function getByEditionID($edition_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::EDITION, $edition_id);
+			$res = $this->doSelect($crit);
+
+			return $res;
+		}
+
+		public function getByEditionIDandComponentID($edition_id, $component_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::EDITION, $edition_id);
+			$crit->addWhere(self::COMPONENT, $component_id);
+
+			return $this->doCount($crit);
+		}
+
+		public function addEditionComponent($edition_id, $component_id)
+		{
+			if ($this->getByEditionIDandComponentID($edition_id, $component_id) == 0)
+			{
+				$crit = $this->getCriteria();
+				$crit->addInsert(self::EDITION, $edition_id);
+				$crit->addInsert(self::COMPONENT, $component_id);
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+				$res = $this->doInsert($crit);
+
+				return true;
+			}
+			return false;
+		}
+
+		public function removeEditionComponent($edition_id, $component_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::EDITION, $edition_id);
+			$crit->addWhere(self::COMPONENT, $component_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$res = $this->doDelete($crit);
+		}
+
 	}

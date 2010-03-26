@@ -46,6 +46,7 @@
 	$routes[] = array('configure_projects_add_component', '/configure/project/:project_id/add/component', 'configuration', 'addComponent', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_projects_add_build', '/configure/project/:project_id/add/build', 'configuration', 'addBuild', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_build_action', '/configure/build/:build_id/do/:build_action', 'configuration', 'buildAction', array('config_module' => 'core', 'section' => 10));
+	$routes[] = array('configure_edition_set_leadby', '/configure/project/:project_id/edition/:edition_id/set/:field/*', 'configuration', 'setEditionLead', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_edition_add_build', '/configure/project/:project_id/edition/:edition_id/add/build', 'configuration', 'addBuild', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_edition_add_component', '/configure/project/:project_id/edition/:edition_id/add/component/:component_id', 'configuration', 'editEditionComponent', array('config_module' => 'core', 'section' => 10, 'mode' => 'add'));
 	$routes[] = array('configure_edition_remove_component', '/configure/project/:project_id/edition/:edition_id/remove/component/:component_id', 'configuration', 'editEditionComponent', array('config_module' => 'core', 'section' => 10, 'mode' => 'remove'));

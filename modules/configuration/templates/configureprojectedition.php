@@ -61,28 +61,29 @@
 							<b><?php echo __('Edition owner'); ?></b>
 							<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 								<span id="edit_owner" style="display: none;">
-								<?php include_template('main/identifiableselector', 
-													   array('user_title' => __('Set lead by a user'),
-													   		 'team_title' => __('Set lead by a team'),
-													   		 'setuser_url' => make_url('configure_project_set_leadby', array('project_id' => $theEdition->getID(), 'lead_type' => 1)),
-													   		 'setteam_url' => make_url('configure_project_set_leadby', array('project_id' => $theEdition->getID(), 'lead_type' => 2)),
-															 'setuser_update_div' => 'project_leadby',
-													   		 'setuser_update_url' => make_url('configure_project_get_leadby', array('project_id' => $theEdition->getID())),
-													   		 'setteam_update_div' => 'project_leadby',
-													   		 'setteam_update_url' => make_url('configure_project_get_leadby', array('project_id' => $theEdition->getID())),
-													   		 'container_span' => 'edit_owner')); ?>
+									<?php include_component('main/identifiableselector', array('html_id'		=> 'owned_by_change',
+																							'header' 			=> __('Change / set owner'),
+																							'clear_link_text'	=> __('Set owned by noone'),
+																							'style'				=> array('position' => 'absolute'),
+																							'callback'		 	=> "setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $theProject->getID(), 'edition_id' => $theEdition->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
+																							'base_id'			=> 'owned_by')); ?>
 								</span>
 							<?php endif; ?>
 						</td>
-						<td style="padding: 2px;" id="project_owner">
-							<?php if ($theEdition->hasOwner()): ?>
-								<?php echo $theEdition->getOwner()->getName(); ?>
-							<?php else: ?>
-								<span class="faded_dark"><?php echo __('None'); ?></span>
-							<?php endif; ?>
+						<td style="<?php if (!$theEdition->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
+							<table style="width: 270px; display: <?php if ($theEdition->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="owned_by_name">
+								<?php if ($theEdition->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
+									<?php echo include_component('main/userdropdown', array('user' => $theEdition->getOwner())); ?>
+								<?php elseif ($theEdition->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+									<?php echo include_component('main/teamdropdown', array('team' => $theEdition->getOwner())); ?>
+								<?php endif; ?>
+							</table>
+						</td>
+						<td style="<?php if ($theEdition->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_owned_by">
+							<?php echo __('Noone'); ?>
 						</td>
 						<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-							<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('edit_owner', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
+							<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('owned_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
 						<?php endif; ?>
 					</tr>
 					<tr><td colspan="3" class="description" style="padding-bottom: 10px;"><?php echo __('The edition owner has total control over this edition and can edit information, settings, and anything about it'); ?></td></tr>

@@ -1131,6 +1131,9 @@
 				self::$_available_permissions['project_pages']['page_project_allpages_access']['details']['page_project_statistics_access'] = array('description' => $i18n->__('Can access the project statistics page'));
 				self::$_available_permissions['project_pages']['page_project_allpages_access']['details']['page_project_timeline_access'] = array('description' => $i18n->__('Can access the project timeline page'));
 				self::$_available_permissions['project']['canseeproject'] = array('description' => $i18n->__('Can access project'));
+				self::$_available_permissions['project']['canmanageproject'] = array('description' => $i18n->__('Can manage project'));
+				self::$_available_permissions['project']['canmanageproject']['details']['canmanageprojectreleases'] = array('description' => $i18n->__('Can manage project releases and components'));
+				self::$_available_permissions['project']['canmanageproject']['details']['caneditprojectdetails'] = array('description' => $i18n->__('Can edit project details and settings'));
 				self::$_available_permissions['edition']['canseeedition'] = array('description' => $i18n->__('Can see this edition'));
 				self::$_available_permissions['component']['canseecomponent'] = array('description' => $i18n->__('Can see this component'));
 				self::$_available_permissions['build']['canseebuild'] = array('description' => $i18n->__('Can see this release'));

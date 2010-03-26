@@ -365,7 +365,14 @@
 			B2DB::getTable('TBGProjectsTable')->setDefaultProject($p_id);
 			return true;
 		}
-		
+
+		/**
+		 * Retrieve a project by its key
+		 *
+		 * @param string $key
+		 *
+		 * @return TBGProject
+		 */
 		public static function getByKey($key)
 		{
 			if ($project_row = B2DB::getTable('TBGProjectsTable')->getByKey($key))
@@ -445,6 +452,7 @@
 				$p_id = B2DB::getTable('TBGProjectsTable')->createNew($name);
 
 				TBGContext::setPermission("canseeproject", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
+				TBGContext::setPermission("canmanageproject", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("page_project_allpages_access", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canvoteforissues", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canlockandeditlockedissues", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
@@ -454,10 +462,10 @@
 				TBGContext::setPermission("canaddextrainformationtoissues", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canpostseeandeditallcomments", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
 
-				$theProject = TBGFactory::projectLab($p_id);
-				TBGEvent::createNew('core', 'TBGProject::createNew', $theProject)->trigger();
+				$project = TBGFactory::projectLab($p_id);
+				TBGEvent::createNew('core', 'TBGProject::createNew', $project)->trigger();
 
-				return $theProject;
+				return $project;
 			}
 			return null;
 		}
@@ -524,6 +532,7 @@
 				$this->_deleted					= $row->get(TBGProjectsTable::DELETED);
 				$this->_descr_template			= $row->get(TBGProjectsTable::DESCR_TEMPLATE);
 				$this->_repro_template			= $row->get(TBGProjectsTable::REPRO_TEMPLATE);
+				TBGEvent::createNew('core', 'TBGProject::__construct', $this)->trigger();
 			}
 			else
 			{
