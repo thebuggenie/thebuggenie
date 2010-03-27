@@ -760,7 +760,7 @@
 			$crit->addUpdate(TBGEditionsTable::RELEASE_DATE, $this->_release_date);
 			$crit->addUpdate(TBGEditionsTable::LEAD_BY, $this->getLeaderID());
 			$crit->addUpdate(TBGEditionsTable::QA, $this->getQaID());
-			//$crit->addUpdate(TBGEditionsTable::OWNED_BY, $this->getOwnerID());
+			$crit->addUpdate(TBGEditionsTable::OWNED_BY, $this->getOwnerID());
 			B2DB::getTable('TBGEditionsTable')->doUpdateById($crit, $this->getID());
 			
 			return true;

@@ -27,6 +27,8 @@
 		const PROJECT = 'editions.project';
 		const LEAD_BY = 'editions.lead_by';
 		const LEAD_TYPE = 'editions.lead_type';
+		const OWNED_BY = 'editions.owned_by';
+		const OWNED_TYPE = 'editions.owned_type';
 		const DOC_URL = 'editions.doc_url';
 		const QA = 'editions.qa';
 		const QA_TYPE = 'editions.qa_type';
@@ -43,6 +45,8 @@
 			parent::_addText(self::DESCRIPTION, false);
 			parent::_addInteger(self::LEAD_BY, 10);
 			parent::_addInteger(self::LEAD_TYPE, 3);
+			parent::_addInteger(self::OWNED_BY, 10);
+			parent::_addInteger(self::OWNED_TYPE, 3);
 			parent::_addVarchar(self::DOC_URL, 200, '');
 			parent::_addInteger(self::QA, 10);
 			parent::_addInteger(self::QA_TYPE, 3);
