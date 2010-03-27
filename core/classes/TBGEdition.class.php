@@ -441,25 +441,38 @@
 		/**
 		 * Return the leader
 		 *
-		 * @return TBGIdentifiable
+		 * @return TBGIdentifiableClass
 		 */
 		public function getLeadBy()
 		{
-			if ($this->_lead_type == TBGIdentifiableClass::TYPE_USER)
+			if (is_numeric($this->_lead_by))
 			{
-				return TBGFactory::userLab($this->_lead_by);
+				try
+				{
+					if ($this->_lead_type == TBGIdentifiableClass::TYPE_USER)
+					{
+						$this->_lead_by = TBGFactory::userLab($this->_lead_by);
+					}
+					elseif ($this->_lead_type == TBGIdentifiableClass::TYPE_TEAM)
+					{
+						$this->_lead_by = TBGFactory::teamLab($this->_lead_by);
+					}
+				}
+				catch (Exception $e)
+				{
+					$this->_lead_by = null;
+					$this->_lead_type = null;
+				}
 			}
-			elseif ($this->_lead_type == TBGIdentifiableClass::TYPE_TEAM)
-			{
-				return TBGFactory::teamLab($this->_lead_by);
-			}
-			return null;
+			return $this->_lead_by;
 		}
 		
 		/**
 		 * Return the leader
 		 *
-		 * @return TBGIdentifiable
+		 * @uses self::getLeadBy()
+		 *
+		 * @return TBGIdentifiableClass
 		 */
 		public function getLeader()
 		{
@@ -483,9 +496,19 @@
 		 */
 		public function hasLeader()
 		{
-			return ($this->getLeadBy() instanceof TBGIdentifiable) ? true : false;
+			return ($this->getLeadBy() instanceof TBGIdentifiableClass) ? true : false;
 		}
 		
+		/**
+		 * Return the leader id
+		 *
+		 * @return integer
+		 */
+		public function getLeaderID()
+		{
+			return ($this->hasLeader()) ? $this->getLeader()->getID() : null;
+		}
+
 		/**
 		 * Returns the QA type
 		 *
@@ -503,22 +526,34 @@
 		 */
 		public function getOwnedBy()
 		{
-			if ($this->_owned_type == TBGIdentifiableClass::TYPE_USER)
+			if (is_numeric($this->_owned_by))
 			{
-				return TBGFactory::userLab($this->_owned_by);
+				try
+				{
+					if ($this->_owned_type == TBGIdentifiableClass::TYPE_USER)
+					{
+						$this->_owned_by = TBGFactory::userLab($this->_owned_by);
+					}
+					elseif ($this->_owned_type == TBGIdentifiableClass::TYPE_TEAM)
+					{
+						$this->_owned_by = TBGFactory::teamLab($this->_owned_by);
+					}
+				}
+				catch (Exception $e)
+				{
+					$this->_owned_by = null;
+					$this->_owned_type = null;
+				}
 			}
-			elseif ($this->_owned_type == TBGIdentifiableClass::TYPE_TEAM)
-			{
-				return TBGFactory::teamLab($this->_owned_by);
-			}
-			return null;
+			return $this->_owned_by;
 		}
 		
 		/**
 		 * Alias for getOwnedBy
 		 * 
-		 * @see getOwnedBy
-		 * @return TBGIdentifiable
+		 * @uses self::getOwnedBy()
+		 * 
+		 * @return TBGIdentifiableClass
 		 */
 		public function getOwner()
 		{
@@ -536,31 +571,52 @@
 		}
 
 		/**
-		 * Returns whether or not this project has an owner set
+		 * Returns whether or not this edition has an owner set
 		 * 
 		 * @return boolean
 		 */
 		public function hasOwner()
 		{
-			return ($this->getOwnedBy() instanceof TBGIdentifiable) ? true : false;
+			return ($this->getOwnedBy() instanceof TBGIdentifiableClass) ? true : false;
 		}
 		
 		/**
+		 * Return the owner id
+		 *
+		 * @return integer
+		 */
+		public function getOwnerID()
+		{
+			return ($this->hasOwner()) ? $this->getOwner()->getID() : null;
+		}
+
+		/**
 		 * Return the assignee
 		 *
-		 * @return TBGIdentifiable
+		 * @return TBGIdentifiableClass
 		 */
 		public function getQA()
 		{
-			if ($this->_qa_type == TBGIdentifiableClass::TYPE_USER)
+			if (is_numeric($this->_qa))
 			{
-				return TBGFactory::userLab($this->_qa);
+				try
+				{
+					if ($this->_qa_type == TBGIdentifiableClass::TYPE_USER)
+					{
+						$this->_qa = TBGFactory::userLab($this->_qa);
+					}
+					elseif ($this->_qa_type == TBGIdentifiableClass::TYPE_TEAM)
+					{
+						$this->_qa = TBGFactory::teamLab($this->_qa);
+					}
+				}
+				catch (Exception $e)
+				{
+					$this->_qa = null;
+					$this->_qa_type = null;
+				}
 			}
-			elseif ($this->_qa_type == TBGIdentifiableClass::TYPE_TEAM)
-			{
-				return TBGFactory::teamLab($this->_qa);
-			}
-			return null;
+			return $this->_qa;
 		}
 
 		/**
@@ -570,45 +626,80 @@
 		 */
 		public function hasQA()
 		{
-			return ($this->getQA() instanceof TBGIdentifiable) ? true : false;
+			return ($this->getQA() instanceof TBGIdentifiableClass) ? true : false;
+		}
+
+		/**
+		 * Return the qa id
+		 *
+		 * @return integer
+		 */
+		public function getQaID()
+		{
+			return ($this->hasQA()) ? $this->getQA()->getID() : null;
 		}
 		
-		public function setLeadBy($l_id, $l_type)
+		public function setLeadBy(TBGIdentifiableClass $lead_by)
 		{
-			$this->_lead_by = (int) $l_id;
-			$this->_lead_type = (int) $l_type;
+			$this->_lead_by = $lead_by->getID();
+			$this->_lead_type = $lead_by->getType();
 		}
 
-		public function setQA($q_id, $q_type)
+		public function setQA(TBGIdentifiableClass $qa)
 		{
-			$this->_qa = (int) $q_id;
-			$this->_qa_type = (int) $q_type;
+			$this->_qa = $qa->getID();
+			$this->_qa_type = $qa->getType();
 		}
 
-		public function setOwner($o_id, $o_type)
+		public function setOwner(TBGIdentifiableClass $owned_by)
 		{
-			$this->_owned_by = (int) $o_id;
-			$this->_owned_type = (int) $o_type;
+			$this->_owned_by = $owned_by->getID();
+			$this->_owned_type = $owned_by->getType();
 		}
 				
 		/**
 		 * Set if the edition is released
 		 *
-		 * @param integer|boolean $released
+		 * @param boolean $released[optional]
 		 */
-		public function setReleased($released)
+		public function setReleased($released = true)
 		{
 			$this->_isreleased = (bool) $released;
 		}
 
 		/**
+		 * Release the edition
+		 *
+		 * @uses self::setReleased()
+		 */
+		public function release()
+		{
+			$this->setReleased(true);
+		}
+
+		public function retract()
+		{
+			$this->setReleased(false);
+		}
+
+		/**
 		 * Set if the edition is locked
 		 *
-		 * @param integer|boolean $locked
+		 * @param boolean $locked[optional]
 		 */
-		public function setLocked($locked)
+		public function setLocked($locked = true)
 		{
 			$this->_locked = (bool) $locked;
+		}
+
+		public function lock()
+		{
+			$this->setLocked(true);
+		}
+
+		public function unlock()
+		{
+			$this->setLocked(false);
 		}
 		
 		/**
@@ -654,10 +745,7 @@
 		public function delete()
 		{
 			B2DB::getTable('TBGEditionsTable')->doDeleteById($this->getID());
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGEditionAssigneesTable::EDITION_ID, $this->getID());
-			$crit->addWhere(TBGEditionAssigneesTable::SCOPE, TBGContext::getScope()->getID());
-			B2DB::getTable('TBGEditionAssigneesTable')->doDelete($crit);
+			B2DB::getTable('TBGEditionAssigneesTable')->deleteByEditionID($crit);
 		}
 		
 		public function save()
@@ -670,6 +758,9 @@
 			$crit->addUpdate(TBGEditionsTable::PLANNED_RELEASED, $this->_isplannedreleased);
 			$crit->addUpdate(TBGEditionsTable::RELEASED, $this->_isreleased);
 			$crit->addUpdate(TBGEditionsTable::RELEASE_DATE, $this->_release_date);
+			$crit->addUpdate(TBGEditionsTable::LEAD_BY, $this->getLeaderID());
+			$crit->addUpdate(TBGEditionsTable::QA, $this->getQaID());
+			//$crit->addUpdate(TBGEditionsTable::OWNED_BY, $this->getOwnerID());
 			B2DB::getTable('TBGEditionsTable')->doUpdateById($crit, $this->getID());
 			
 			return true;
@@ -682,7 +773,7 @@
 		 */
 		public function hasAccess()
 		{
-			return TBGContext::getUser()->hasPermission('b2editionaccess', $this->getID(), 'core');			
+			return TBGContext::getUser()->hasPermission('canseeedition', $this->getID(), 'core');
 		}
 		
 	}

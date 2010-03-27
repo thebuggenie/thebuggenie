@@ -1123,17 +1123,6 @@
 		}
 		
 		/**
-		 * Return the owner id
-		 *
-		 * @return integer
-		 */
-		public function getOwnerID()
-		{
-			$owner = $this->getOwner();
-			return ($owner instanceof TBGIdentifiableClass) ? $owner->getID() : null;
-		}
-		
-		/**
 		 * Returns whether or not this project has an owner set
 		 * 
 		 * @return boolean
@@ -1141,6 +1130,16 @@
 		public function hasOwner()
 		{
 			return (bool) ($this->getOwnedBy() instanceof TBGIdentifiable);
+		}
+
+		/**
+		 * Return the owner id
+		 *
+		 * @return integer
+		 */
+		public function getOwnerID()
+		{
+			return ($this->hasOwner()) ? $this->getOwner()->getID() : null;
 		}
 		
 		/**
@@ -2323,7 +2322,7 @@
 		}
 				
 		/**
-		 * Whether or not the current user can access the edition
+		 * Whether or not the current user can access the project
 		 * 
 		 * @return boolean
 		 */

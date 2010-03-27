@@ -46,7 +46,15 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
-		
+
+		public function deleteByEditionID($edition_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::EDITION_ID, $edition_id);
+			$res = $this->doDelete($crit);
+			return $res;
+		}
+
 		public function getProjectsByUserID($user_id)
 		{
 			$projects = array();
