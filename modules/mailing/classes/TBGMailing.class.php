@@ -152,7 +152,7 @@
 			{
 				$to_users = $issue->getRelatedUsers();
 				$subject = TBGContext::getI18n()->__('[%project_name%]: %issue_no% - "%issue_title%" created', array('%project_name%' => $issue->getProject()->getKey(), '%issue_no%' => $issue->getFormattedIssueNo(false), '%issue_title%' => $issue->getTitle()));
-				$message = $this->getMimemailWithMessageTemplate($subject, 'issuecreate', array('issue' => $issue));
+				$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecreate', array('issue' => $issue));
 				$this->_sendToUsers($to_users, $message);
 			}
 		}

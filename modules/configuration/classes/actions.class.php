@@ -921,16 +921,9 @@
 						{
 							if ($b_name = $request->getParameter('build_name'))
 							{
-								if ($e_id = $request->getParameter('edition_id'))
+								if (($e_id = $request->getParameter('edition_id')) && $edition = TBGFactory::editionLab($e_id))
 								{
-									if (TBGContext::getUser()->hasPermission('b2editionaccess', $e_id))
-									{
-										$build = TBGBuild::createNew($b_name, null, $e_id, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
-									}
-									else
-									{
-										throw new Exception($i18n->__('You do not have access to this edition'));
-									}
+									$build = TBGBuild::createNew($b_name, null, $e_id, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
 								}
 								else
 								{

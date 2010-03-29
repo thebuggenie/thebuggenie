@@ -176,6 +176,8 @@
 							<?php endif; ?>
 							<?php if (TBGSettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>
 								<?php echo javascript_link_tag(image_tag('action_add_file.png'), array('onclick' => "$('attach_file').appear({ duration: 0.5 });", 'title' => __('Attach a file'))); ?>
+							<?php else: ?>
+								<?php echo javascript_link_tag(image_tag('action_add_file_disabled.png'), array('onclick' => "failedMessage('".__('File uploads are not enabled')."');", 'title' => __('File uploads are disabled'))); ?>
 							<?php endif; ?>
 						<?php endif; ?>
 						<?php echo __('Attached information'); ?>

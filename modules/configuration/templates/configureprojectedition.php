@@ -8,41 +8,7 @@
 <?php include_component('configleftmenu', array('selected_section' => 10)); ?>
 <td valign="top">
 <script type="text/javascript" src="<?php echo TBGContext::getTBGPath(); ?>js/config/projects_ajax.js"></script>
-	<table style="width: 100%" cellpadding=0 cellspacing=0>
-		<tr>
-			<td style="padding-right: 10px;">
-				<div class="configheader" style="width: 750px;"><?php echo __('Configure projects'); ?></div>
-	            <div style="height: 60px; position: absolute;">
-	            	<?php echo tbg_failureStrip('', '', 'message_failed', true); ?>
-	            	<?php echo tbg_successStrip(__('The component has been added'), '', 'message_component_added', true); ?>
-	            	<?php echo tbg_successStrip(__('The build has been added'), __('Remember to give other users/groups permission access to it if necessary.'), 'message_build_added', true, false); ?>
-	            	<?php echo tbg_successStrip(__('The component name has been changed'), '', 'message_component_name_changed', true); ?>
-	            	<?php echo tbg_successStrip(__('The build details has been updated'), '', 'message_build_details_updated', true); ?>
-	            	<?php echo tbg_successStrip(__('The selected build has been deleted'), '', 'message_build_deleted', true); ?>
-	            	<?php echo tbg_successStrip(__('The selected build has been added to open issues based on your selections'), '', 'message_build_added_to_open_issues', true); ?>
-	            	<?php echo tbg_successStrip(__('The selected build has been marked as &laquo;Released&raquo;'), '', 'message_build_release', true); ?>
-	            	<?php echo tbg_successStrip(__('The selected build has been marked as &laquo;Not released&raquo;'), '', 'message_build_retract', true); ?>
-	            	<?php echo tbg_successStrip(__('The selected build is now locked for new issue reports'), '', 'message_build_lock', true); ?>
-	            	<?php echo tbg_successStrip(__('The selected build is no longer locked for new issue reports'), '', 'message_build_unlock', true); ?>
-	            	<?php echo tbg_successStrip(__('The selected build is now the initial default when reporting new issues for this edition'), '', 'message_build_markdefault', true); ?>
-	            	<?php echo tbg_successStrip(__('Your changes has been saved'), '', 'message_changes_saved', true); ?>
-	            </div>
-				<p style="padding-top: 5px;">
-					<?php echo __('More information about projects, editions, builds and components is available from the %tbg_online_help%.', array('%tbg_online_help%' => tbg_helpBrowserHelper('config_projects', __('The Bug Genie online help')))); ?>
-				</p>
-			</td>
-		</tr>
-	</table>
-	<div class="rounded_box" style="margin: 15px 0px 15px 0px; width: 700px;">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="vertical-align: middle; padding: 5px 10px 5px 10px; font-size: 12px;">
-		<?php echo __('You are now looking at %project_name% &gt;&gt; %edition_name%', array('%project_name%' => '<b>'.$theEdition->getProject()->getName().'</b>', '%edition_name%' => '<span id="edition_name_span" style="font-weight: bold;">'.$theEdition->getName().'</span>')); ?><br>
-		<b><?php echo link_tag(make_url('configure_project_editions_components', array('project_id' => $theEdition->getProject()->getID())), '&lt;&lt;&nbsp;'.__('Go back to project overview')); ?></b><?php echo __('%something% or %something_else%', array('%something%' => '', '%something_else%' => '')); ?><br>
-		<b><?php echo link_tag(make_url('configure_projects'), '&lt;&lt;&nbsp;'.__('Go back to list of projects')); ?></b>
-		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-	</div>
-
+	<?php include_template('configuration/project_header', array('theProject' => $theProject, 'theEdition' => $theEdition, 'hide_tabbar' => true, 'mode' => 3)); ?>
 	<div style="clear: both; margin-top: 10px; margin-bottom: 10px; width: 750px; clear: both; height: 30px;" class="tab_menu">
 		<ul>
 			<li<?php if ($selected_section == 'general'): ?> class="selected"<?php endif; ?> id="tab_edition_settings"><a href="javascript:void(0);" onclick="switchEditionTab('settings');"><?php echo image_tag('cfg_icon_editiondetails.png', array('style' => 'float: left;')).__('Details &amp; settings'); ?></a></li>

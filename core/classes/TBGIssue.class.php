@@ -3399,34 +3399,34 @@
 			}
 	
 			// Same for QA
-			if ($this->getProject()->getQAType() == TBGIdentifiableClass::TYPE_TEAM)
+			if ($this->getProject()->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM)
 			{
-				$uids = array_merge($uids, $this->getProject()->getQA()->getMembers());
+				$uids = array_merge($uids, $this->getProject()->getQaResponsible()->getMembers());
 			}
-			elseif ($this->getProject()->getQAType() == TBGIdentifiableClass::TYPE_USER)
+			elseif ($this->getProject()->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER)
 			{
-				$uids[] = $this->getProject()->getQA()->getID();
+				$uids[] = $this->getProject()->getQaResponsibleID();
 			}
 			
 			// Add all users relevant for all affected editions
 			foreach ($this->getEditions() as $edition_list)
 			{
-				if ($edition_list['edition']->getLeadType() == TBGIdentifiableClass::TYPE_TEAM)
+				if ($edition_list['edition']->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM)
 				{
-					$uids = array_merge($uids, $edition_list['edition']->getLeadBy()->getMembers());
+					$uids = array_merge($uids, $edition_list['edition']->getLeader()->getMembers());
 				}
-				elseif ($edition_list['edition']->getLeadType() == TBGIdentifiableClass::TYPE_USER)
+				elseif ($edition_list['edition']->getLeaderType() == TBGIdentifiableClass::TYPE_USER)
 				{
-					$uids[] = $edition_list['edition']->getLeadBy()->getID();
+					$uids[] = $edition_list['edition']->getLeaderID();
 				}
 				
-				if ($edition_list['edition']->getQAType() == TBGIdentifiableClass::TYPE_TEAM)
+				if ($edition_list['edition']->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM)
 				{
-					$uids = array_merge($uids, $edition_list['edition']->getQA()->getMembers());
+					$uids = array_merge($uids, $edition_list['edition']->getQAgetQaResponsible());
 				}
-				elseif ($edition_list['edition']->getQAType() == TBGIdentifiableClass::TYPE_USER)
+				elseif ($edition_list['edition']->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER)
 				{
-					$uids[] = $edition_list['edition']->getQA()->getID();
+					$uids[] = $edition_list['edition']->getQaResponsibleID();
 				}
 				$uids = array_merge($uids, $edition_list['edition']->getAssigneeIDs());
 			}
