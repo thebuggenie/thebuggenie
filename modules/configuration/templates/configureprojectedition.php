@@ -135,8 +135,8 @@
 							<?php endif; ?>
 						</td>
 						<td style="padding: 2px;" id="project_qa">
-							<?php if ($theEdition->hasQA()): ?>
-								<?php echo $theEdition->getQA()->getName(); ?>
+							<?php if ($theEdition->hasQaResponsible()): ?>
+								<?php echo $theEdition->getQaResponsible()->getName(); ?>
 							<?php else: ?>
 								<span class="faded_dark"><?php echo __('None'); ?></span>
 							<?php endif; ?>

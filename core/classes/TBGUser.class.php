@@ -115,6 +115,7 @@
 		 * Array of team ids where the current user is a member
 		 *
 		 * @var array
+		 * 
 		 * @access protected
 		 */
 		protected $teams = null;
@@ -633,6 +634,7 @@
 		 * Checks if the user is a member of the given team
 		 *
 		 * @param integer $teamid
+		 * 
 		 * @return boolean
 		 */
 		public function isMemberOf($teamid)
@@ -640,7 +642,7 @@
 			$this->_populateTeams();
 			if ($teamid != 0)
 			{
-				return in_array($teamid, $this->teams);
+				return array_key_exists($teamid, $this->teams);
 			}
 			return false;
 		}
@@ -1048,6 +1050,18 @@
 		{
 			$this->_populateTeams();
 			return $this->teams;
+		}
+		
+		public function clearTeams()
+		{
+			B2DB::getTable('TBGTeamMembersTable')->clearTeamsByUserID($this->getID());
+		}
+		
+		public function addToTeam(TBGTeam $team)
+		{
+			$team->addMember($this);
+			$this->teams = null;
+			$this->_populateTeams();
 		}
 		
 		public function getType()

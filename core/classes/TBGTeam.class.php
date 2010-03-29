@@ -102,20 +102,20 @@
 		/**
 		 * Adds a user to the team
 		 *
-		 * @param integer $uid
+		 * @param TBGUser $user
 		 */
-		public function addMember($uid)
+		public function addMember(TBGUser $user)
 		{
 			$crit = new B2DBCriteria();
 			$crit->addInsert(TBGTeamMembersTable::SCOPE, TBGContext::getScope()->getID());
 			$crit->addInsert(TBGTeamMembersTable::TID, $this->_itemid);
-			$crit->addInsert(TBGTeamMembersTable::UID, $uid);
+			$crit->addInsert(TBGTeamMembersTable::UID, $user->getID());
 			B2DB::getTable('TBGTeamMembersTable')->doInsert($crit);
 			if ($this->_members === null)
 			{
 				$this->_members = array();
 			}
-			$this->_members[] = $uid;
+			$this->_members[] = $user->getID();
 			array_unique($this->_members);
 		}
 		

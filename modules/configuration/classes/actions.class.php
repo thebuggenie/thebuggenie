@@ -1446,6 +1446,14 @@
 				{
 					$user->setGroup($group);
 				}
+				$user->clearTeams();
+				foreach ($request->getParameter('teams', array()) as $team_id => $team)
+				{
+					if ($team = TBGFactory::teamLab($team_id))
+					{
+						$user->addToTeam($team);
+					}
+				}
 				$testuser = TBGUser::getByUsername($request->getParameter('username'));
 				if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
 				{

@@ -75,23 +75,23 @@
 						<b><?php echo __('QA responsible'); ?></b>
 						<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 							<?php include_component('main/identifiableselector', array(	'html_id'		=> 'qa_by_change', 
-																					'header' 			=> __('Change / set QA responsible'),
-																					'clear_link_text'	=> __('Set QA responsible to noone'),
+																					'header' 			=> __('Change / set QaResponsible responsible'),
+																					'clear_link_text'	=> __('Set QaResponsible responsible to noone'),
 																					'style'				=> array('position' => 'absolute'),
 																					'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $theProject->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'qa_by');",
 																					'base_id'			=> 'qa_by')); ?>
 						<?php endif; ?>
 					</td>
-					<td style="<?php if (!$theProject->hasQA()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
-						<table style="width: 270px; display: <?php if ($theProject->hasQA()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="qa_by_name">
-							<?php if ($theProject->getQAType() == TBGIdentifiableClass::TYPE_USER): ?>
-								<?php echo include_component('main/userdropdown', array('user' => $theProject->getQA())); ?>
-							<?php elseif ($theProject->getQAType() == TBGIdentifiableClass::TYPE_TEAM): ?>
-								<?php echo include_component('main/teamdropdown', array('team' => $theProject->getQA())); ?>
+					<td style="<?php if (!$theProject->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
+						<table style="width: 270px; display: <?php if ($theProject->hasQaResponsible()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="qa_by_name">
+							<?php if ($theProject->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
+								<?php echo include_component('main/userdropdown', array('user' => $theProject->getQaResponsible())); ?>
+							<?php elseif ($theProject->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+								<?php echo include_component('main/teamdropdown', array('team' => $theProject->getQaResponsible())); ?>
 							<?php endif; ?>
 						</table>
 					</td>
-					<td style="<?php if ($theProject->hasQA()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_qa_by">
+					<td style="<?php if ($theProject->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_qa_by">
 						<?php echo __('Noone'); ?>
 					</td>
 					<?php if ($access_level == configurationActions::ACCESS_FULL): ?>

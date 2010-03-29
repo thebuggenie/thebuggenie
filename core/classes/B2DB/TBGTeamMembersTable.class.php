@@ -51,4 +51,11 @@
 			return $uids;
 		}
 		
+		public function clearTeamsByUserID($user_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::UID, $user_id);
+			$res = $this->doDelete($crit);
+		}
+		
 	}

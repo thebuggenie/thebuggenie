@@ -11,7 +11,7 @@
 		<div class="xboxcontent" style="vertical-align: middle; padding: 0 5px 0 5px;">
 			<div style="float: left; font-weight: normal; font-size: 14px;">
 				<?php echo image_tag($project->getIcon(), array('style' => 'float: left; margin-right: 5px;'), $project->hasIcon()); ?>
-				<b class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?> <?php if ($project->usePrefix()): ?>(<?php echo strtoupper($project->getPrefix()); ?>)<?php endif; ?></b><br>
+				<b class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?> <?php if ($project->usePrefix()): ?>(<?php echo strtoupper($project->getPrefix()); ?>)<?php endif; ?></b><?php if ($tbg_user->canEditProjectDetails($project)): ?>&nbsp;&nbsp;<span class="faded_medium"><?php echo link_tag(make_url('configure_project_settings', array('project_id' => $project->getID())), __('Edit project'), array('style' => 'font-size: 12px;')); ?></span><?php endif; ?><br>
 				<?php if ($project->hasHomepage()): ?>
 					<a href="<?php echo $project->getHomepage(); ?>" style="font-size: 13px;" target="_blank"><?php echo $project->getHomepage(); ?></a>
 				<?php else: ?>

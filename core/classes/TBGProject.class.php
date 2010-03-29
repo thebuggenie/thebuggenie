@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage main
 	 */
-	class TBGProject extends TBGVersionItem
+	class TBGProject extends TBGOwnableItem
 	{
 		
 		const TIME_UNIT_HOURS = 0;
@@ -170,48 +170,6 @@
 		 */
 		protected $_unassignedissues = null;
 
-		/**
-		 * The lead type for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
-		 * 
-		 * @var integer
-		 */
-		protected $_leadtype = 0;
-
-		/**
-		 * The lead for the project
-		 *  
-		 * @var TBGIdentifiable
-		 */
-		protected $_leadby = 0;
-		
-		/**
-		 * The QA type for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
-		 * 
-		 * @var integer
-		 */
-		protected $_qatype = 0;
-		
-		/**
-		 * The QA for the project
-		 *  
-		 * @var TBGIdentifiable
-		 */
-		protected $_qaby = 0;
-		
-		/**
-		 * The owner type for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
-		 * 
-		 * @var integer
-		 */
-		protected $_ownedtype = 0;
-		
-		/**
-		 * The owner of the project
-		 *  
-		 * @var TBGIdentifiable
-		 */
-		protected $_ownedby = 0;
-		
 		/**
 		 * The projects documentation URL
 		 * 
@@ -519,12 +477,12 @@
 				$this->_itemid 					= $id;
 				$this->_defaultstatus 			= ($row->get(TBGProjectsTable::DEFAULT_STATUS)) ? $row->get(TBGProjectsTable::DEFAULT_STATUS) : null;
 				$this->_doc_url 				= $row->get(TBGProjectsTable::DOC_URL);
-				$this->_ownedtype				= $row->get(TBGProjectsTable::OWNED_TYPE);
-				$this->_ownedby 				= $row->get(TBGProjectsTable::OWNED_BY);
-				$this->_leadtype 				= $row->get(TBGProjectsTable::LEAD_TYPE);
-				$this->_leadby 					= $row->get(TBGProjectsTable::LEAD_BY);
-				$this->_qatype	 				= $row->get(TBGProjectsTable::QA_TYPE);
-				$this->_qaby 					= $row->get(TBGProjectsTable::QA);
+				$this->_owner_type				= $row->get(TBGProjectsTable::OWNED_TYPE);
+				$this->_owner	 				= $row->get(TBGProjectsTable::OWNED_BY);
+				$this->_leader_type				= $row->get(TBGProjectsTable::LEAD_TYPE);
+				$this->_leader 					= $row->get(TBGProjectsTable::LEAD_BY);
+				$this->_qa_responsible_type		= $row->get(TBGProjectsTable::QA_TYPE);
+				$this->_qa_responsible			= $row->get(TBGProjectsTable::QA);
 				$this->_hrsprday 				= $row->get(TBGProjectsTable::HRS_PR_DAY);
 				$this->_show_in_summary			= (bool) $row->get(TBGProjectsTable::SHOW_IN_SUMMARY);
 				$this->_can_change_wo_working	= (bool) $row->get(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING);
@@ -996,276 +954,6 @@
 		}
 		
 		/**
-		 * Return the leader
-		 *
-		 * @return TBGIdentifiable
-		 */
-		public function getLeadBy()
-		{
-			if (is_numeric($this->_leadby))
-			{
-				try
-				{
-					if ($this->_leadtype == TBGIdentifiableClass::TYPE_USER)
-					{
-						$this->_leadby = TBGFactory::userLab($this->_leadby);
-					}
-					elseif ($this->_leadtype == TBGIdentifiableClass::TYPE_TEAM)
-					{
-						$this->_leadby = TBGFactory::teamLab($this->_leadby);
-					}
-				}
-				catch (Exception $e)
-				{
-					$this->_leadby = null;
-					$this->_leadtype = null;
-				}
-			}
-	
-			return $this->_leadby;
-		}
-		
-		/**
-		 * Return the leader
-		 *
-		 * @see getLeadBy
-		 * 
-		 * @return TBGIdentifiable
-		 */
-		public function getLeader()
-		{
-			return $this->getLeadBy();
-		}
-		
-		/**
-		 * Returns the leader type
-		 *
-		 * @return integer
-		 */
-		public function getLeaderType()
-		{
-			$leader = $this->getLeader();
-			return ($leader instanceof TBGIdentifiableClass) ? $leader->getType() : null;
-		}
-		
-		/**
-		 * Return the leader id
-		 *
-		 * @return integer
-		 */
-		public function getLeaderID()
-		{
-			$leader = $this->getLeader();
-			return ($leader instanceof TBGIdentifiableClass) ? $leader->getID() : null;
-		}
-		
-		/**
-		 * Returns whether or not this project has a leader set
-		 * 
-		 * @return boolean
-		 */
-		public function hasLeader()
-		{
-			return (bool) ($this->getLeadBy() instanceof TBGIdentifiable);
-		}
-		
-		/**
-		 * Return the owner
-		 *
-		 * @return TBGIdentifiable
-		 */
-		public function getOwnedBy()
-		{
-			if (is_numeric($this->_ownedby))
-			{
-				try
-				{
-					if ($this->_ownedtype == TBGIdentifiableClass::TYPE_USER)
-					{
-						$this->_ownedby = TBGFactory::userLab($this->_ownedby);
-					}
-					elseif ($this->_ownedtype == TBGIdentifiableClass::TYPE_TEAM)
-					{
-						$this->_ownedby = TBGFactory::teamLab($this->_ownedby);
-					}
-				}
-				catch (Exception $e)
-				{
-					$this->_ownedby = null;
-					$this->_ownedtype = null;
-				}
-			}
-	
-			return $this->_ownedby;
-		}
-		
-		/**
-		 * Alias for getOwnedBy
-		 * 
-		 * @see getOwnedBy
-		 * 
-		 * @return TBGIdentifiable
-		 */
-		public function getOwner()
-		{
-			return $this->getOwnedBy();
-		}
-		
-		/**
-		 * Returns the owner type
-		 *
-		 * @return integer
-		 */
-		public function getOwnerType()
-		{
-			$owner = $this->getOwner();
-			return ($owner instanceof TBGIdentifiableClass) ? $owner->getType() : null;
-		}
-		
-		/**
-		 * Returns whether or not this project has an owner set
-		 * 
-		 * @return boolean
-		 */
-		public function hasOwner()
-		{
-			return (bool) ($this->getOwnedBy() instanceof TBGIdentifiable);
-		}
-
-		/**
-		 * Return the owner id
-		 *
-		 * @return integer
-		 */
-		public function getOwnerID()
-		{
-			return ($this->hasOwner()) ? $this->getOwner()->getID() : null;
-		}
-		
-		/**
-		 * Return the assignee
-		 *
-		 * @return TBGIdentifiable
-		 */
-		public function getQA()
-		{
-			if (is_numeric($this->_qaby))
-			{
-				try
-				{
-					if ($this->_qatype == TBGIdentifiableClass::TYPE_USER)
-					{
-						$this->_qaby = TBGFactory::userLab($this->_qaby);
-					}
-					elseif ($this->_qatype == TBGIdentifiableClass::TYPE_TEAM)
-					{
-						$this->_qaby = TBGFactory::teamLab($this->_qaby);
-					}
-				}
-				catch (Exception $e)
-				{
-					$this->_qaby = null;
-					$this->_qatype = null;
-				}
-			}
-	
-			return $this->_qaby;
-		}
-
-		/**
-		 * Returns the qa type
-		 *
-		 * @return integer
-		 */
-		public function getQAType()
-		{
-			$qa = $this->getQA();
-			return ($qa instanceof TBGIdentifiableClass) ? $qa->getType() : null;
-		}
-		
-		/**
-		 * Return the qa id
-		 *
-		 * @return integer
-		 */
-		public function getQAID()
-		{
-			$qa = $this->getQA();
-			return ($qa instanceof TBGIdentifiableClass) ? $qa->getID() : null;
-		}
-		
-		/**
-		 * Returns whether or not this project has a QA set
-		 * 
-		 * @return boolean
-		 */
-		public function hasQA()
-		{
-			return (bool) ($this->getQA() instanceof TBGIdentifiable);
-		}
-		
-		/**
-		 * Set project Leader
-		 * 
-		 * @param TBGIdentifiableClass $leader The user/team you want to lead the project
-		 */
-		public function setLeadBy(TBGIdentifiableClass $leader)
-		{
-			$this->_leadby = $leader->getID();
-			$this->_leadtype = $leader->getType();
-		}
-
-		/**
-		 * Unset project Leader
-		 */
-		public function unsetLeadBy()
-		{
-			$this->_leadby = 0;
-			$this->_leadtype = 0;
-		}
-		
-		/**
-		 * Set project QA
-		 * 
-		 * @param TBGIdentifiableClass $qaby The user/team you want to QA the project
-		 */
-		public function setQA(TBGIdentifiableClass $qaby)
-		{
-			$this->_qaby = $qaby->getID();
-			$this->_qatype = $qaby->getType();
-		}
-
-		/**
-		 * Unset project QA
-		 */
-		public function unsetQA()
-		{
-			$this->_qaby = 0;
-			$this->_qatype = 0;
-		}
-		
-		/**
-		 * Set project owner
-		 * 
-		 * @param TBGIdentifiableClass $owner The user/team you want to own the project
-		 */
-		public function setOwner(TBGIdentifiableClass $owner)
-		{
-			$this->_ownedby = $owner->getID();
-			$this->_ownedtype = $owner->getType();
-			TBGLogging::log('set owner');
-		}
-				
-		/**
-		 * Unset project Owner
-		 */
-		public function unsetOwner()
-		{
-			$this->_ownedby = 0;
-			$this->_ownedtype = 0;
-		}
-		
-		/**
 		 * Returns an array of all the projects editions
 		 *
 		 * @return array
@@ -1633,12 +1321,12 @@
 			$crit->addUpdate(TBGProjectsTable::TIME_UNIT, $this->_timeunit);
 			$crit->addUpdate(TBGProjectsTable::DEFAULT_STATUS, $this->_defaultstatus);
 			$crit->addUpdate(TBGProjectsTable::DOC_URL, $this->_doc_url);
-			$crit->addUpdate(TBGProjectsTable::OWNED_TYPE, $this->_ownedtype);
-			$crit->addUpdate(TBGProjectsTable::OWNED_BY, $this->_ownedby);
-			$crit->addUpdate(TBGProjectsTable::LEAD_TYPE, $this->_leadtype);
-			$crit->addUpdate(TBGProjectsTable::LEAD_BY, $this->_leadby);
-			$crit->addUpdate(TBGProjectsTable::QA_TYPE, $this->_qatype);
-			$crit->addUpdate(TBGProjectsTable::QA, $this->_qaby);
+			$crit->addUpdate(TBGProjectsTable::OWNED_TYPE, $this->getOwnerType());
+			$crit->addUpdate(TBGProjectsTable::OWNED_BY, $this->getOwnerID());
+			$crit->addUpdate(TBGProjectsTable::LEAD_TYPE, $this->getLeaderType());
+			$crit->addUpdate(TBGProjectsTable::LEAD_BY, $this->getLeaderID());
+			$crit->addUpdate(TBGProjectsTable::QA_TYPE, $this->getQaResponsibleType());
+			$crit->addUpdate(TBGProjectsTable::QA, $this->getQaResponsibleID());
 			$crit->addUpdate(TBGProjectsTable::HRS_PR_DAY, $this->_hrsprday); 
 			$crit->addUpdate(TBGProjectsTable::SHOW_IN_SUMMARY, $this->_show_in_summary);
 			$crit->addUpdate(TBGProjectsTable::SUMMARY_DISPLAY, $this->_summary_display);
@@ -2333,12 +2021,12 @@
 		
 		public function hasIcon()
 		{
-			return (bool) (file_exists(TBGContext::getIncludePath() . 'files/projects/' . $this->getID() . '.png'));
+			return (bool) (file_exists(TBGContext::getIncludePath() . 'thebuggenie/project_icons/' . $this->getKey() . '.png'));
 		}
 		
 		public function getIcon()
 		{
-			return ($this->hasIcon()) ? 'files/projects/' . $this->getID() . '.png' : 'icon_project.png';			
+			return ($this->hasIcon()) ? 'project_icons/' . $this->getKey() . '.png' : 'icon_project.png';			
 		}
 
 		protected function _populateLogItems($limit = null)

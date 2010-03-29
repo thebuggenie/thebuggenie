@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage main
 	 */
-	class TBGEdition extends TBGVersionItem 
+	class TBGEdition extends TBGOwnableItem 
 	{
 		/**
 		 * The project
@@ -42,54 +42,12 @@
 		protected $_description = '';
 		
 		/**
-		 * The edition leader
-		 *
-		 * @var TBGIdentifiableClass
-		 */
-		protected $_lead_by = null;
-		
-		/**
-		 * The leader type for the edition, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
-		 *
-		 * @var integer
-		 */
-		protected $_lead_type = 0;
-
-		/**
-		 * The QA responsible for this edition
-		 *
-		 * @var TBGIdentifiableClass
-		 */
-		protected $_qa = null;
-		
-		/**
-		 * The qa type for the edition, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
-		 *
-		 * @var integer
-		 */
-		protected $_qa_type = 0;
-		
-		/**
 		 * The editions documentation URL
 		 * 
 		 * @var string
 		 */
 		protected $_doc_url = '';
 						
-		/**
-		 * The owner type for the edition, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
-		 * 
-		 * @var integer
-		 */
-		protected $_owned_type = 0;
-		
-		/**
-		 * The owner of the project
-		 *  
-		 * @var TBGIdentifiableClass
-		 */
-		protected $_owned_by = 0;
-		
 		static protected $_editions = null;
 		
 		/**
@@ -166,10 +124,10 @@
 				$this->_isplannedreleased = (bool) $row->get(TBGEditionsTable::PLANNED_RELEASED);
 				$this->_release_date = $row->get(TBGEditionsTable::RELEASE_DATE);
 				$this->_description = $row->get(TBGEditionsTable::DESCRIPTION);
-				$this->_lead_by = $row->get(TBGEditionsTable::LEAD_BY);
-				$this->_lead_type = $row->get(TBGEditionsTable::LEAD_TYPE);
-				$this->_qa = $row->get(TBGEditionsTable::QA);
-				$this->_qa_type = $row->get(TBGEditionsTable::QA_TYPE);
+				$this->_leader = $row->get(TBGEditionsTable::LEAD_BY);
+				$this->_leader_type = $row->get(TBGEditionsTable::LEAD_TYPE);
+				$this->_qa_responsible = $row->get(TBGEditionsTable::QA);
+				$this->_qa_responsible_type = $row->get(TBGEditionsTable::QA_TYPE);
 				$this->_project = $row->get(TBGEditionsTable::PROJECT);
 				TBGEvent::createNew('core', 'TBGEdition::__construct', $this)->trigger();
 			}
@@ -437,225 +395,6 @@
 			}
 			return $uids;
 		}
-
-		/**
-		 * Return the leader
-		 *
-		 * @return TBGIdentifiableClass
-		 */
-		public function getLeadBy()
-		{
-			if (is_numeric($this->_lead_by))
-			{
-				try
-				{
-					if ($this->_lead_type == TBGIdentifiableClass::TYPE_USER)
-					{
-						$this->_lead_by = TBGFactory::userLab($this->_lead_by);
-					}
-					elseif ($this->_lead_type == TBGIdentifiableClass::TYPE_TEAM)
-					{
-						$this->_lead_by = TBGFactory::teamLab($this->_lead_by);
-					}
-				}
-				catch (Exception $e)
-				{
-					$this->_lead_by = null;
-					$this->_lead_type = null;
-				}
-			}
-			return $this->_lead_by;
-		}
-		
-		/**
-		 * Return the leader
-		 *
-		 * @uses self::getLeadBy()
-		 *
-		 * @return TBGIdentifiableClass
-		 */
-		public function getLeader()
-		{
-			return $this->getLeadBy();
-		}
-
-		/**
-		 * Returns the leader type
-		 *
-		 * @return integer
-		 */
-		public function getLeadType()
-		{
-			return $this->_lead_type;
-		}
-		
-		/**
-		 * Returns whether or not this project has a leader set
-		 * 
-		 * @return boolean
-		 */
-		public function hasLeader()
-		{
-			return ($this->getLeadBy() instanceof TBGIdentifiableClass) ? true : false;
-		}
-		
-		/**
-		 * Return the leader id
-		 *
-		 * @return integer
-		 */
-		public function getLeaderID()
-		{
-			return ($this->hasLeader()) ? $this->getLeader()->getID() : null;
-		}
-
-		/**
-		 * Returns the QA type
-		 *
-		 * @return integer
-		 */
-		public function getQAType()
-		{
-			return $this->_qa_type;
-		}
-
-		/**
-		 * Return the owner
-		 *
-		 * @return TBGIdentifiable
-		 */
-		public function getOwnedBy()
-		{
-			if (is_numeric($this->_owned_by))
-			{
-				try
-				{
-					if ($this->_owned_type == TBGIdentifiableClass::TYPE_USER)
-					{
-						$this->_owned_by = TBGFactory::userLab($this->_owned_by);
-					}
-					elseif ($this->_owned_type == TBGIdentifiableClass::TYPE_TEAM)
-					{
-						$this->_owned_by = TBGFactory::teamLab($this->_owned_by);
-					}
-				}
-				catch (Exception $e)
-				{
-					$this->_owned_by = null;
-					$this->_owned_type = null;
-				}
-			}
-			return $this->_owned_by;
-		}
-		
-		/**
-		 * Alias for getOwnedBy
-		 * 
-		 * @uses self::getOwnedBy()
-		 * 
-		 * @return TBGIdentifiableClass
-		 */
-		public function getOwner()
-		{
-			return $this->getOwnedBy();
-		}
-		
-		/**
-		 * Returns the owner type
-		 *
-		 * @return integer
-		 */
-		public function getOwnerType()
-		{
-			return $this->_owned_type;
-		}
-
-		/**
-		 * Returns whether or not this edition has an owner set
-		 * 
-		 * @return boolean
-		 */
-		public function hasOwner()
-		{
-			return ($this->getOwnedBy() instanceof TBGIdentifiableClass) ? true : false;
-		}
-		
-		/**
-		 * Return the owner id
-		 *
-		 * @return integer
-		 */
-		public function getOwnerID()
-		{
-			return ($this->hasOwner()) ? $this->getOwner()->getID() : null;
-		}
-
-		/**
-		 * Return the assignee
-		 *
-		 * @return TBGIdentifiableClass
-		 */
-		public function getQA()
-		{
-			if (is_numeric($this->_qa))
-			{
-				try
-				{
-					if ($this->_qa_type == TBGIdentifiableClass::TYPE_USER)
-					{
-						$this->_qa = TBGFactory::userLab($this->_qa);
-					}
-					elseif ($this->_qa_type == TBGIdentifiableClass::TYPE_TEAM)
-					{
-						$this->_qa = TBGFactory::teamLab($this->_qa);
-					}
-				}
-				catch (Exception $e)
-				{
-					$this->_qa = null;
-					$this->_qa_type = null;
-				}
-			}
-			return $this->_qa;
-		}
-
-		/**
-		 * Returns whether or not this project has a QA set
-		 * 
-		 * @return boolean
-		 */
-		public function hasQA()
-		{
-			return ($this->getQA() instanceof TBGIdentifiableClass) ? true : false;
-		}
-
-		/**
-		 * Return the qa id
-		 *
-		 * @return integer
-		 */
-		public function getQaID()
-		{
-			return ($this->hasQA()) ? $this->getQA()->getID() : null;
-		}
-		
-		public function setLeadBy(TBGIdentifiableClass $lead_by)
-		{
-			$this->_lead_by = $lead_by->getID();
-			$this->_lead_type = $lead_by->getType();
-		}
-
-		public function setQA(TBGIdentifiableClass $qa)
-		{
-			$this->_qa = $qa->getID();
-			$this->_qa_type = $qa->getType();
-		}
-
-		public function setOwner(TBGIdentifiableClass $owned_by)
-		{
-			$this->_owned_by = $owned_by->getID();
-			$this->_owned_type = $owned_by->getType();
-		}
 				
 		/**
 		 * Set if the edition is released
@@ -759,8 +498,11 @@
 			$crit->addUpdate(TBGEditionsTable::RELEASED, $this->_isreleased);
 			$crit->addUpdate(TBGEditionsTable::RELEASE_DATE, $this->_release_date);
 			$crit->addUpdate(TBGEditionsTable::LEAD_BY, $this->getLeaderID());
-			$crit->addUpdate(TBGEditionsTable::QA, $this->getQaID());
+			$crit->addUpdate(TBGEditionsTable::LEAD_TYPE, $this->getLeaderType());
+			$crit->addUpdate(TBGEditionsTable::QA, $this->getQaResponsibleID());
+			$crit->addUpdate(TBGEditionsTable::QA_TYPE, $this->getQaResponsibleType());
 			$crit->addUpdate(TBGEditionsTable::OWNED_BY, $this->getOwnerID());
+			$crit->addUpdate(TBGEditionsTable::OWNED_TYPE, $this->getOwnerType());
 			B2DB::getTable('TBGEditionsTable')->doUpdateById($crit, $this->getID());
 			
 			return true;

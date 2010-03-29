@@ -25,9 +25,13 @@
 			</tr>
 			<tr>
 				<td><label for="buddyname_<?php echo $user->getID(); ?>"><?php echo __('Nickname'); ?></label></td>
-				<td><input type="text" name="nickname" id="nickname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getNickname(); ?>"></td>
+				<td colspan="3"><input type="text" name="nickname" id="nickname_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getNickname(); ?>"></td>
+			</tr>
+			<tr>
+				<td><label for="email_<?php echo $user->getID(); ?>"><?php echo __('Email address'); ?></label></td>
+				<td><input type="text" name="email" id="email_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getEmail(); ?>"></td>
 				<td><label for="user_<?php echo $user->getID(); ?>_group"><?php echo __('In group'); ?></label></td>
-				<td valign="middle">
+				<td>
 					<select name="group" id="user_<?php echo $user->getID(); ?>_group">
 						<?php foreach (TBGGroup::getAll() as $group): ?>
 							<option value="<?php echo $group->getID(); ?>"<?php if ($user->getGroupID() == $group->getID()): ?> selected<?php endif; ?>><?php echo $group->getName(); ?></option>
@@ -36,13 +40,18 @@
 				</td>
 			</tr>
 			<tr>
-				<td><label for="email_<?php echo $user->getID(); ?>"><?php echo __('Email address'); ?></label></td>
-				<td><input type="text" name="email" id="email_<?php echo $user->getID(); ?>" style="width: 220px;" value="<?php echo $user->getEmail(); ?>"></td>
-				<td><label for="homepage_<?php echo $user->getID(); ?>"><?php echo __('Homepage'); ?></label></td>
-				<td><input type="text" name="homepage" id="homepage_<?php echo $user->getID(); ?>" style="width: 250px;" value="<?php echo $user->getHomepage(); ?>"></td>
+				<td style="vertical-align: top; padding-top: 4px;"><label for="homepage_<?php echo $user->getID(); ?>"><?php echo __('Homepage'); ?></label></td>
+				<td style="vertical-align: top;"><input type="text" name="homepage" id="homepage_<?php echo $user->getID(); ?>" style="width: 250px;" value="<?php echo $user->getHomepage(); ?>"></td>
+				<td style="vertical-align: top; padding-top: 4px;"><label><?php echo __('Member of team(s)'); ?></label></td>
+				<td>
+					<?php foreach (TBGTeam::getAll() as $team): ?>
+						<input type="checkbox" name="teams[<?php echo $team->getID(); ?>]" id="team_<?php echo $team->getID(); ?>" value="<?php echo $team->getID(); ?>"<?php if ($user->isMemberOf($team->getID())): ?> checked<?php endif; ?>>
+						<label for="team_<?php echo $team->getID(); ?>" style="font-weight: normal;"><?php echo $team->getName(); ?></label><br>
+					<?php endforeach; ?>
+				</td>
 			</tr>
 			<tr>
-				<td colspan="4" style="text-align: right; font-size: 13px;">
+				<td colspan="4" style="text-align: right; font-size: 13px; padding-top: 10px;">
 					<div style="padding: 10px 0 10px 0; display: none;" id="edit_user_<?php echo $user->getID(); ?>_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
 					<input type="submit" value="<?php echo __('Update user'); ?>" style="font-size: 13px; font-weight: bold;">
 					<?php echo __('or %cancel%', array('%cancel%' => javascript_link_tag('<b>'.__('cancel').'</b>', array('onclick' => "$('users_results_user_".$user->getID()."_edit').toggleClassName('selected_green');$('users_results_user_".$user->getID()."').toggle();$('users_results_user_".$user->getID()."_edit').toggle();")))); ?>

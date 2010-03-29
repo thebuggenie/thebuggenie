@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class self extends B2DBTable
+	class TBGEditionAssigneesTable extends B2DBTable
 	{
 
 		const B2DBNAME = 'editionassignees';
