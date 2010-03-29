@@ -14,7 +14,7 @@
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td style="text-align: left;"><label for="ver_mj"><?php echo __('Ver: %version_number%', array('%version_number%' => '')); ?></label></td>
+					<td style="text-align: left;"><label for="ver_mj"><?php echo __('Version: %version_number%', array('%version_number%' => '')); ?></label></td>
 					<td style="text-align: left;"><input type="text" name="ver_mj" id="ver_mj" style="width: 25px; text-align: center;" value="0">&nbsp;.&nbsp;<input type="text" name="ver_mn" id="ver_mn" style="width: 25px; text-align: center;" value="0">&nbsp;.&nbsp;<input type="text" name="ver_rev" id="ver_rev" style="width: 25px; text-align: center;" value="0"></td>
 					<td style="text-align: right;" colspan="2"><input type="submit" style="font-weight: bold;" value="<?php echo __('Add release'); ?>"></td>
 				</tr>
