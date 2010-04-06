@@ -44,7 +44,7 @@
 								<td><a href="#"><?php echo __('Send this article to a friend'); ?></a></td>
 							</tr>
 							<?php */ ?>
-							<?php if ((TBGContext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish") || TBGContext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish")) && $article->getArticleType() == PublishArticle::ARTICLE_NORMAL): ?>
+							<?php if ((TBGContext::getUser()->hasPermission('publish_postonglobalbillboard', 0, "publish") || TBGContext::getUser()->hasPermission('publish_postonteambillboard', 0, "publish")) && $article->getArticleType() == TBGWikiArticle::ARTICLE_NORMAL): ?>
 								<tr><td colspan=2>&nbsp;</td></tr>
 								<tr>
 									<td style="width: 20px;"><?php echo image_tag('publish/icon_new_link.png') ?></td>
@@ -218,7 +218,7 @@
 					<input type="text" name="title" value="<?php echo $article->getTitle(); ?>" style="width: 700px;" >
 					<br style="clear: both;">
 					<br style="clear: both;">
-					<div id="icon_div" <?php if ($article->getArticleType() != PublishArticle::ARTICLE_NORMAL) echo 'style="display: none;"' ?>>
+					<div id="icon_div" <?php if ($article->getArticleType() != TBGWikiArticle::ARTICLE_NORMAL) echo 'style="display: none;"' ?>>
 						<div style="font-weight: bold; width: 80px; padding: 2px; float: left;"><?php echo __('Icon'); ?></div>
 						<div style="background-color: #FFF; width: 130px; border: 1px solid #DDD; padding: 3px; float: left;">
 						<?php echo image_tag('publish/large/' . $article->getIcon() . '.png', 'id="article_icon"'); ?>
@@ -254,7 +254,7 @@
 						<br style="clear: both;">
 					</div>
 					<br style="clear: both;">
-					<div id="article_div" <?php if ($article->getArticleType() != PublishArticle::ARTICLE_NORMAL) echo 'style="display: none;"' ?>>
+					<div id="article_div" <?php if ($article->getArticleType() != TBGWikiArticle::ARTICLE_NORMAL) echo 'style="display: none;"' ?>>
 						<div style="padding: 5px; padding-left: 0px; border-bottom: 1px solid #DDD; width: 730px;"><b><?php echo __('Intro text'); ?></b></div>
 						<div style="padding-top: 5px; padding-bottom: 5px; width: 730px;"><?php echo __('The intro text will be used on summary pages, as well as after the article title when in article view.'); ?>&nbsp;<?php echo __('The intro text should be a short description about the article, and should contain at most one paragraph, in some cases two.'); ?></div>
 						<?php echo tbg_newTextArea('intro', '70px', '730px', $article->getIntro()); ?><br>
@@ -262,13 +262,13 @@
 						<div style="padding-top: 5px; padding-bottom: 5px; width: 730px;"><?php echo __('The article content is the article body - the main content of the article.'); ?></div>
 						<?php echo tbg_newTextArea('content', '400px', '730px', $article->getContent()); ?>
 					</div>
-					<div id="news_div" <?php if ($article->getArticleType() != PublishArticle::ARTICLE_NEWS) echo 'style="display: none;"' ?>>
+					<div id="news_div" <?php if ($article->getArticleType() != TBGWikiArticle::ARTICLE_NEWS) echo 'style="display: none;"' ?>>
 						<div style="padding-top: 5px; padding-bottom: 5px;">
 							<?php echo __('Remember to check the "Show in news" checkbox, as well as the "Published" checkbox so this item appears in the news overview.'); ?><br>
 							<?php echo __('You do not need to select an icon for this item, since it will not be used.'); ?>
 						</div>
 					</div>
-					<div id="link_div" <?php if ($article->getArticleType() != PublishArticle::ARTICLE_LINK) echo 'style="display: none;"' ?>>
+					<div id="link_div" <?php if ($article->getArticleType() != TBGWikiArticle::ARTICLE_LINK) echo 'style="display: none;"' ?>>
 						<div style="font-weight: bold; width: 80px; padding: 2px; float: left;"><?php echo __('URL'); ?></div>
 						<input type="text" name="link_url" value="<?php echo $article->getLinkURL(); ?>" style="width: 700px;" ><br>
 						<div style="padding-top: 5px; padding-bottom: 5px;">

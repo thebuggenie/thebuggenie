@@ -113,7 +113,7 @@ function submitForm(url, form_id)
 	onSuccess: function (transport) {
 		$(form_id + '_indicator').hide();
 		var json = transport.responseJSON;
-		if (json && json.failed)
+		if (json && (json.failed || json.error))
 		{
 			failedMessage(json.error);
 		}
@@ -131,7 +131,7 @@ function submitForm(url, form_id)
 		$(form_id + '_indicator').hide();
 		$(form_id + '_button').enable();
 		var json = transport.responseJSON;
-		if (json && json.failed)
+		if (json && (json.failed || json.error))
 		{
 			failedMessage(json.error);
 		}
@@ -286,7 +286,7 @@ function setPermission(url, field)
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
 			$(field + '_indicator').hide();
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}

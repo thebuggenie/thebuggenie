@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage main
 	 */
-	class TBGComment extends TBGIdentifiableClass implements TBGIdentifiable 
+	class TBGComment extends TBGIdentifiableClass 
 	{
 		
 		/**

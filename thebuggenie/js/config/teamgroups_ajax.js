@@ -10,7 +10,7 @@ function showUsers(url, findstring)
 		onComplete: function (transport) {
 			$('find_users_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -18,7 +18,7 @@ function showUsers(url, findstring)
 		onFailure: function (transport) {
 			$('find_users_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -43,7 +43,7 @@ function editUser(url, user_id, message)
 		onSuccess: function (transport) {
 			$('edit_user_' + user_id + '_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -59,7 +59,7 @@ function editUser(url, user_id, message)
 		onFailure: function (transport) {
 			$('edit_user_' + user_id + '_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -69,4 +69,38 @@ function editUser(url, user_id, message)
 			}
 		}
 	});
+}
+
+function getUserPermissionsBlock(url, user_id)
+{
+	if ($('users_results_user_' + user_id + '_permissions').innerHTML == '')
+	{
+		$('users_results_user_' + user_id + '_permissions_row').toggle();
+		new Ajax.Request(url, {
+			asynchronous: true,
+			method: "post",
+			onLoading: function (transport) {
+				$('permissions_' + user_id + '_indicator').show();
+				$('permissions_' + user_id + '_link').hide();
+			},
+			onSuccess: function (transport) {
+				$('permissions_' + user_id + '_indicator').hide();
+				$('permissions_' + user_id + '_link').show();
+				$('users_results_user_' + user_id + '_permissions').update(transport.responseText);
+			},
+			onComplete: function (transport) {
+				$('permissions_' + user_id + '_indicator').hide();
+				$('permissions_' + user_id + '_link').show();
+				var json = transport.responseJSON;
+				if (json && (json.failed || json.error))
+				{
+					failedMessage(json.error);
+				}
+			}
+		});
+	}
+	else
+	{
+		$('users_results_user_' + user_id + '_permissions_row').toggle();
+	}
 }

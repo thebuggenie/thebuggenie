@@ -26,8 +26,8 @@
 				<tr class="canhover_light" id="users_results_user_<?php echo $user->getID(); ?>_edit" style="display: none;">
 					<?php include_template('finduser_row_editable', array('user' => $user)); ?>
 				</tr>
-				<tr id="users_results_user_<?php echo $user->getID(); ?>_permissions" style="display: none;">
-					<td colspan="4"></td>
+				<tr id="users_results_user_<?php echo $user->getID(); ?>_permissions_row" style="display: none;">
+					<td id="users_results_user_<?php echo $user->getID(); ?>_permissions" colspan="6" class="config_permissions" style="padding-bottom: 5px;"></td>
 				</tr>
 				<?php endforeach; ?>
 			</tbody>

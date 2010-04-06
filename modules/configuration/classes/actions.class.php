@@ -1276,7 +1276,7 @@
 
 			if ($this->access_level == self::ACCESS_FULL)
 			{
-				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsblock', array('base_id' => $request->getParameter('base_id'), 'permissions_list' => $request->getParameter('permissions_list'), 'mode' => $request->getParameter('mode'), 'target_id' => $request->getParameter('target_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
+				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsblock', array('base_id' => $request->getParameter('base_id'), 'permissions_list' => $request->getParameter('permissions_list'), 'mode' => $request->getParameter('mode'), 'target_id' => $request->getParameter('target_id'), 'user_id' => $request->getParameter('user_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
 			}
 			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify components")));
 		}
@@ -1464,6 +1464,11 @@
 				return $this->renderTemplate('finduser_row', array('user' => $user));
 			}
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This user could not be updated')));
+		}
+
+		public function runGetPermissionsConfigurator(TBGRequest $request)
+		{
+			return $this->renderComponent('configuration/permissionsconfigurator', array('access_level' => $this->access_level, 'user_id' => $request->getParameter('user_id', 0), 'base_id' => $request->getParameter('base_id', 0)));
 		}
 
 		public function getAccessLevel($section, $module)

@@ -110,7 +110,7 @@ To learn more about the wiki formatting used in The Bug Genie, check out WikiFor
 
 ''ps: this page can be edited from [[FrontpageArticle]]''
 ";
-				PublishArticle::createNew($article_name, $content, true, $scope);
+				TBGWikiArticle::createNew($article_name, $content, true, $scope);
 
 				$article_name = 'GettingStarted';
 				$content = "= Getting started with The Bug Genie =
@@ -130,7 +130,7 @@ Someone is usually working on your project. You should add developers working on
 
 [[Category:Help]][[Category:HowTo]]
 ";
-				PublishArticle::createNew($article_name, $content, true, $scope);
+				TBGWikiArticle::createNew($article_name, $content, true, $scope);
 
 				$article_name = 'ConfigurePermissions';
 				$content = "= Setting up and understanding permissions in The Bug Genie =
@@ -166,11 +166,11 @@ Every datatype (status, priority, category, etc) also have their own permissions
 
 [[Category:Help]][[Category:HowTo]]
 ";
-				PublishArticle::createNew($article_name, $content, true, $scope);
+				TBGWikiArticle::createNew($article_name, $content, true, $scope);
 
 				$article_name = 'MainPage';
 				$content = "This is the main wiki homepage!";
-				PublishArticle::createNew($article_name, $content, true, $scope);
+				TBGWikiArticle::createNew($article_name, $content, true, $scope);
 
 				$article_name = 'WikiFormatting';
 				$content = "{{TOC}}
@@ -392,7 +392,7 @@ echo(\$stuff);
 
 [[Category:Help]][[Category:HowTo]]
 ";
-				PublishArticle::createNew($article_name, $content, true, $scope);
+				TBGWikiArticle::createNew($article_name, $content, true, $scope);
 
 				$article_name = 'CamelCasing';
 				$content = "'''!CamelCase''' (also spelled \"camel case\") or ''medial capitals'' is the practice of writing compound words or phrases in which the elements are joined without spaces, with each element's initial letter capitalized within the compound, and the first letter can be upper or lower case — as in !LaBelle, !BackColor, !MacGyver, or iPod.
@@ -403,15 +403,15 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 
 '''This is a short introduction to the subject, based on the [[Wikipedia:CamelCase|Wikipedia article]] about camel case.
 [[Category:Help]]";
-				PublishArticle::createNew($article_name, $content, true, $scope);
+				TBGWikiArticle::createNew($article_name, $content, true, $scope);
 
 				$article_name = 'Category:Help';
 				$content = "This is a list of all the available help articles in The Bug Genie. If you are stuck, look here for help.";
-				PublishArticle::createNew($article_name, $content, true, $scope);
+				TBGWikiArticle::createNew($article_name, $content, true, $scope);
 
 				$article_name = 'Category:HowTo';
 				$content = "[[Category:Help]]";
-				PublishArticle::createNew($article_name, $content, true, $scope);
+				TBGWikiArticle::createNew($article_name, $content, true, $scope);
 
 			}
 			catch (Exception $e)
@@ -620,7 +620,7 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 		public function listen_frontpageArticle(TBGEvent $event)
 		{
 			$index_article = $this->getFrontpageArticle();
-			if ($index_article instanceof PublishArticle)
+			if ($index_article instanceof TBGWikiArticle)
 			{
 				TBGActionComponent::includeComponent('publish/articledisplay', array('article' => $index_article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true));
 			}

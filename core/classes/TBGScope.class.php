@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	class TBGScope extends TBGIdentifiableClass implements TBGIdentifiable
+	class TBGScope extends TBGIdentifiableClass
 	{
 		
 		protected $_description = '';

@@ -41,14 +41,6 @@
 		 */
 		public function getType();
 		
-		/**
-		 * Invoked when trying to print the item directly
-		 * 
-		 * @return string
-		 *
-		 */
-		public function __toString();
-		
 	}
 	
 	/**

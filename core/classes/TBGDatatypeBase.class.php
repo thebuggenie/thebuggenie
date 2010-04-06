@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage main
 	 */
-	abstract class TBGDatatypeBase extends TBGIdentifiableClass implements TBGIdentifiable
+	abstract class TBGDatatypeBase extends TBGIdentifiableClass
 	{
 
 		/**

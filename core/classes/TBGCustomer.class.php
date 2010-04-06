@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage main
 	 */
-	class TBGCustomer extends TBGIdentifiableClass implements TBGIdentifiable 
+	class TBGCustomer extends TBGIdentifiableClass 
 	{
 		static $_customers = null;
 		

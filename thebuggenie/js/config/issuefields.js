@@ -12,7 +12,7 @@ function showIssuefieldOptions(url, field)
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
 			$(field + '_indicator').hide();
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}

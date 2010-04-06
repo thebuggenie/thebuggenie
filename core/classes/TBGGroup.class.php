@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage main
 	 */
-	class TBGGroup extends TBGIdentifiableClass implements TBGIdentifiable 
+	class TBGGroup extends TBGIdentifiableClass 
 	{
 		protected static $_groups = null;
 

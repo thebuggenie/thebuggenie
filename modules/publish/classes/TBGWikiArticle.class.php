@@ -1,6 +1,6 @@
 <?php
 
-	class PublishArticle extends TBGIdentifiableClass implements TBGIdentifiable
+	class TBGWikiArticle extends TBGIdentifiableClass
 	{
 
 		/**

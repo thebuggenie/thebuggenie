@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage main
 	 */
-	class TBGTeam extends TBGIdentifiableClass implements TBGIdentifiable 
+	class TBGTeam extends TBGIdentifiableClass 
 	{
 		
 		protected $_members = null;

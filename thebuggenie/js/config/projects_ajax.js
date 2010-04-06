@@ -28,7 +28,7 @@ function addProject(url)
 		onFailure: function (transport) {
 			$('project_add_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -70,7 +70,7 @@ function removeProject(url, pid)
 		$('project_delete_controls_' + pid).show();
 		$('project_delete_error_' + pid).show();
 		var json = transport.responseJSON;
-		if (json && json.failed)
+		if (json && (json.failed || json.error))
 		{
 			failedMessage(json.error);
 		}
@@ -108,7 +108,7 @@ function addMilestone(url)
 		onFailure: function (transport) {
 			$('milestone_add_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -128,7 +128,7 @@ function doBuildAction(url, bid, action, update)
 		},
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 				$('build_'+bid+'_indicator').hide();
@@ -152,7 +152,7 @@ function doBuildAction(url, bid, action, update)
 			$('build_'+bid+'_indicator').hide();
 			$('build_'+bid+'_info').show();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -174,7 +174,7 @@ function updateBuild(url, bid)
 		},
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 				$('build_'+bid+'_indicator').hide();
@@ -191,7 +191,7 @@ function updateBuild(url, bid)
 			$('build_'+bid+'_indicator').hide();
 			$('build_'+bid+'_info').show();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -227,7 +227,7 @@ function saveProjectOther(url)
 		onFailure: function (transport) {
 			$('settings_save_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -270,7 +270,7 @@ function addToOpenBuild(url, bid)
 			$('build_'+bid+'_info').show();
 			$('addtoopen_build_'+bid).hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -317,7 +317,7 @@ function deleteBuild(url, bid)
 			$('build_'+bid+'_info').show();
 			$('del_build_'+bid).hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -367,7 +367,7 @@ function addEdition(url)
 		onFailure: function (transport) {
 			$('edition_add_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -402,7 +402,7 @@ function addBuild(url)
 		onFailure: function (transport) {
 			$('build_add_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -440,7 +440,7 @@ function addComponent(url)
 		onFailure: function (transport) {
 			$('component_add_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -476,7 +476,7 @@ function submitProjectSettings(url)
 		onFailure: function (transport) {
 			$('project_save_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -512,7 +512,7 @@ function submitEditionSettings(url)
 		onFailure: function (transport, response) {
 			$('edition_save_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -543,7 +543,7 @@ function addEditionComponent(url, cid)
 		onFailure: function (transport, response) {
 			new Effect.Appear('project_component_'+cid);
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -574,7 +574,7 @@ function removeEditionComponent(url, cid)
 		onFailure: function (transport, response) {
 			new Effect.Appear('edition_component_'+cid);
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -615,7 +615,7 @@ function updateComponent(url, cid)
 			$('component_'+cid+'_indicator').hide();
 			$('component_'+cid+'_icon').show();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -637,7 +637,7 @@ function updateMilestone(url, mid)
 		onFailure: function (transport) {
 			$('milestone_'+mid+'_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -674,7 +674,7 @@ function deleteMilestone(url, mid)
 		onFailure: function (transport) {
 			$('milestone_'+mid+'_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -695,7 +695,7 @@ function findDevs(url)
 		onComplete: function (transport) {
 			$('find_dev_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -703,7 +703,7 @@ function findDevs(url)
 		onFailure: function (transport) {
 			$('find_dev_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -750,7 +750,7 @@ function setUser(url, field)
 		onFailure: function(transport) {
 			$(field + '_spinning').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -771,7 +771,7 @@ function assignToProject(url, form_id)
 		onComplete: function (transport) {
 			$('assign_dev_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -779,7 +779,7 @@ function assignToProject(url, form_id)
 		onFailure: function (transport) {
 			$('assign_dev_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -794,7 +794,7 @@ function removeFromProject(url, aid)
 		method: "post",
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -809,7 +809,7 @@ function removeFromProject(url, aid)
 		},
 		onFailure: function (transport) {
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}

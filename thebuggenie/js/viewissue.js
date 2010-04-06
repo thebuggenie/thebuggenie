@@ -35,7 +35,7 @@ function toggleFavourite(url, issue_id)
 		onFailure: function(transport) {
 			$('issue_favourite_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -65,7 +65,7 @@ function attachLink(url)
 				$('viewissue_no_uploaded_files').hide();
 				$('viewissue_uploaded_links').insert({bottom: json.content});
 			}
-			else if (json && json.failed)
+			else if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -78,7 +78,7 @@ function attachLink(url)
 		},
 		onFailure: function(transport) {
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -115,7 +115,7 @@ function removeLinkFromIssue(url, link_id)
 			}
 			else
 			{
-				if (json && json.failed)
+				if (json && (json.failed || json.error))
 				{
 					failedMessage(json.error);
 				}
@@ -131,7 +131,7 @@ function removeLinkFromIssue(url, link_id)
 			$('viewissue_links_'+ link_id + '_remove_link').show();
 			$('viewissue_links_'+ link_id + '_remove_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -174,7 +174,7 @@ function detachFileFromIssue(url, file_id)
 			}
 			else
 			{
-				if (json && json.failed)
+				if (json && (json.failed || json.error))
 				{
 					failedMessage(json.error);
 				}
@@ -194,7 +194,7 @@ function detachFileFromIssue(url, file_id)
 			$('uploaded_files_'+ file_id + '_remove_link').show();
 			$('uploaded_files_'+ file_id + '_remove_indicator').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -251,7 +251,7 @@ function updatePercent(url, mode)
 		onFailure: function(transport) {
 			$('percent_spinning').hide();
 			var json = transport.responseJSON;
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}
@@ -557,7 +557,7 @@ function deleteComment(url, cid)
 		$('comment_delete_indicator_' + cid).hide();
 		$('comment_delete_controls_' + cid).show();
 		var json = transport.responseJSON;
-		if (json && json.failed)
+		if (json && (json.failed || json.error))
 		{
 			failedMessage(json.error);
 		}

@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	class TBGVersionItem extends TBGIdentifiableClass implements TBGIdentifiable
+	class TBGVersionItem extends TBGIdentifiableClass
 	{
 		/**
 		 * Major version

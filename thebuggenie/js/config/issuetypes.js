@@ -12,7 +12,7 @@ function showIssuetypeOptions(url, id)
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
 			$('issuetype_' + id + '_indicator').hide();
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}

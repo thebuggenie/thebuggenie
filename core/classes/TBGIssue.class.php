@@ -715,7 +715,6 @@
 		{
 			TBGLogging::log('checking access to issue ' . $this->getFormattedIssueNo());
 			$i_id = $this->getID();
-			$project_id = $this->getProjectID();
 			$specific_access = TBGContext::getUser()->hasPermission("canviewissue", $i_id, 'core', true, null);
 			if ($specific_access !== null)
 			{
@@ -737,10 +736,15 @@
 				TBGLogging::log('done checking, allowed since this user is assigned to it');
 				return true;
 			}
-			if (TBGContext::getUser()->hasPermission("canseeproject", $project_id))
+			if (!TBGContext::getUser()->hasPermission('canseeallissues', 0, 'core', true, true))
 			{
-				TBGLogging::log('done checking, can access project, returning '. ((TBGContext::getUser()->hasPermission("canseeallissues", $i_id, 'core', false, true)) ? 'allowed' : 'denied'));
-				return TBGContext::getUser()->hasPermission("canseeallissues", $i_id, 'core', false, true);
+				TBGLogging::log('done checking, not allowed to access issues not posted by themselves');
+				return false;
+			}
+			if ($this->getProject()->hasAccess())
+			{
+				TBGLogging::log('done checking, can access project');
+				return true;
 			}
 			TBGLogging::log('done checking, denied');
 			return false;

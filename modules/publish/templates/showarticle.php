@@ -24,7 +24,7 @@
 					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</div>
 			<?php endif; ?>
-			<?php if ($article instanceof PublishArticle): ?>
+			<?php if ($article instanceof TBGWikiArticle): ?>
 				<?php include_component('articledisplay', array('article' => $article)); ?>
 			<?php else: ?>
 				<div class="header" style="padding: 5px;">
@@ -48,9 +48,9 @@
 			<div class="publish_article_actions">
 				<div class="sub_header"><?php echo __('Actions available'); ?></div>
 				<form action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="get" style="float: left; margin-right: 10px;">
-					<input type="submit" value="<?php echo ($article instanceof PublishArticle) ? __('Edit this article') : __('Create this article'); ?>">
+					<input type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Edit this article') : __('Create this article'); ?>">
 				</form>
-				<?php if ($article instanceof PublishArticle): ?>
+				<?php if ($article instanceof TBGWikiArticle): ?>
 					<button onclick="$('delete_article_confirm').toggle();"><?php echo __('Delete this article'); ?></button>
 					<div class="rounded_box" style="margin: 10px 0 5px; width: 720px; display: none;" id="delete_article_confirm">
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>

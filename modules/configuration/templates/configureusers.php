@@ -2,6 +2,7 @@
 
 	$tbg_response->setTitle(__('Configure users, teams and groups'));
 	$tbg_response->addJavascript('config/teamgroups_ajax.js');
+	$tbg_response->addJavascript('config/permissions.js');
 
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>

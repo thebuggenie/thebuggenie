@@ -150,7 +150,7 @@
 						<td style="border-bottom: 1px solid #DDD; padding: 3px; width: auto;">
 						<?php 
 						
-						if ($article->getArticleType() == PublishArticle::ARTICLE_NORMAL)
+						if ($article->getArticleType() == TBGWikiArticle::ARTICLE_NORMAL)
 						{
 							?>
 							<a href="articles.php?article_id=<?php echo $article->getID(); ?>"><?php echo $article->getTitle(); ?></a>
@@ -168,13 +168,13 @@
 
 						switch ($article->getArticleType())
 						{
-							case PublishArticle::ARTICLE_NORMAL:
+							case TBGWikiArticle::ARTICLE_NORMAL:
 								echo 'Normal article';
 								break;
-							case PublishArticle::ARTICLE_NEWS:
+							case TBGWikiArticle::ARTICLE_NEWS:
 								echo 'News headline';
 								break;
-							case PublishArticle::ARTICLE_LINK:
+							case TBGWikiArticle::ARTICLE_LINK:
 								echo 'Link to webpage';
 								break;
 						}
@@ -201,7 +201,7 @@
 			
 			if ($featured_article != '')
 			{
-				$f_article = new PublishArticle($featured_article);
+				$f_article = new TBGWikiArticle($featured_article);
 				if ($f_article->isPublished())
 				{
 					?>

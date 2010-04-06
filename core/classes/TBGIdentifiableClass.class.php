@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	abstract class TBGIdentifiableClass
+	abstract class TBGIdentifiableClass implements TBGIdentifiable
 	{
 		
 		const TYPE_USER = 1;

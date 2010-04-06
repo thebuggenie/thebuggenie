@@ -27,7 +27,7 @@
 					$article_name = substr($article_name, strpos($article_name, ':') + 1);
 				}
 				
-				if (($project = TBGProject::getByKey($namespace)) instanceof TBGProject)
+				if ($namespace != '' && ($project = TBGProject::getByKey($namespace)) instanceof TBGProject)
 				{
 					TBGContext::setCurrentProject($project);
 					$this->getResponse()->setProjectMenuStripHidden(false);
@@ -60,7 +60,7 @@
 		{
 			if ($article_name = $request->getParameter('article_name'))
 			{
-				PublishArticle::deleteByName($article_name);
+				TBGWikiArticle::deleteByName($article_name);
 				TBGContext::setMessage('publish_article_error', TBGContext::getI18n()->__('The article was deleted'));
 				$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $article_name)));
 			}
@@ -81,7 +81,7 @@
 					{
 						if ($request->getParameter('article_id'))
 						{
-							if (($article = PublishFactory::articleLab($request->getParameter('article_id'))) && $article instanceof PublishArticle)
+							if (($article = PublishFactory::articleLab($request->getParameter('article_id'))) && $article instanceof TBGWikiArticle)
 							{
 								if ($article->getLastUpdatedDate() != $request->getParameter('last_modified'))
 								{
@@ -114,22 +114,22 @@
 					}
 					catch (Exception $e) {}
 					
-					if (($article = PublishArticle::getByName($request->getParameter('new_article_name'))) && $article instanceof PublishArticle && $article->getID() != $request->getParameter('article_id'))
+					if (($article = TBGWikiArticle::getByName($request->getParameter('new_article_name'))) && $article instanceof TBGWikiArticle && $article->getID() != $request->getParameter('article_id'))
 					{
 						$this->error = TBGContext::getI18n()->__('An article with that name already exists. Please choose a different article name');
 					}
-					elseif (!$article instanceof PublishArticle)
+					elseif (!$article instanceof TBGWikiArticle)
 					{
 						if ($request->getParameter('preview'))
 						{
-							$article = new PublishArticle();
+							$article = new TBGWikiArticle();
 							$article->setContent($request->getRawParameter('new_article_content'));
 							$article->setName($request->getParameter('new_article_name'));
 							$this->article = $article;
 						}
 						else
 						{
-							$article_id = PublishArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content', ''), true);
+							$article_id = TBGWikiArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content', ''), true);
 
 							$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $request->getParameter('new_article_name'))));
 						}
@@ -146,7 +146,7 @@
 			$this->article_content = null;
 			$this->article_intro = null;
 
-			if ($this->article instanceof PublishArticle)
+			if ($this->article instanceof TBGWikiArticle)
 			{
 				$this->article_title = $this->article->getTitle();
 				$this->article_content = $this->article->getContent();

@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	abstract class TBGModule extends TBGIdentifiableClass implements TBGIdentifiable 
+	abstract class TBGModule extends TBGIdentifiableClass 
 	{
 		
 		protected $_classname = '';

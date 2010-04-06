@@ -1487,10 +1487,10 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 
 thead.borderless th { border: 0; }
 
-#config_permissions { font-size: 12px; }
-#config_permissions .faded_medium.smaller { font-size: 10px; padding-left: 10px; }
-#config_permissions .permission_list .tab_pane { border: 1px solid #AAA; border-top: 0; padding: 10px; }
-#config_permissions .permission_list .tab_pane p { margin-bottom: 15px; font-size: 13px; }
+.config_permissions { font-size: 12px; }
+.config_permissions .faded_medium.smaller { font-size: 10px; padding-left: 10px; }
+.config_permissions .permission_list .tab_pane { border: 1px solid #AAA; border-top: 0; padding: 10px; }
+.config_permissions .permission_list .tab_pane p { margin-bottom: 15px; font-size: 13px; }
 .permission_list ul { list-style-type: none; padding: 0; margin: 0; width: 715px; }
 .permission_list ul li { margin: 0px; padding: 0; font-size: 13px; font-weight: normal; clear: both; background-color: transparent; }
 .permission_list ul li:hover { background-color: #FAFAFA; }

@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	class TBGUser extends TBGIdentifiableClass implements TBGIdentifiable 
+	class TBGUser extends TBGIdentifiableClass 
 	{
 		/**
 		 * Unique id (uid)

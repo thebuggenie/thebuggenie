@@ -1,6 +1,6 @@
 <?php
 
-	class BUGScalendarCalendar extends TBGIdentifiableClass implements TBGIdentifiable
+	class BUGScalendarCalendar extends TBGIdentifiableClass
 	{
 		protected $_user = null;
 		protected $_exclusive = false;

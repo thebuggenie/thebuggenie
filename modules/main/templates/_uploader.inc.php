@@ -184,7 +184,7 @@
 			this.status.hide();
 			this.form.show();
 			this.poller.stop();
-			if (json && json.failed)
+			if (json && (json.failed || json.error))
 			{
 				failedMessage(json.error);
 			}

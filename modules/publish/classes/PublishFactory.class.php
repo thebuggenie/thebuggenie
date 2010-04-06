@@ -12,7 +12,7 @@
 		 * @param $a_id
 		 * @param $row
 		 * 
-		 * @return PublishArticle
+		 * @return TBGWikiArticle
 		 */
 		static function articleLab($a_id, $row = null)
 		{
@@ -21,7 +21,7 @@
 			{
 				try
 				{
-					self::$_articles[$a_id] = new PublishArticle($a_id, $row);
+					self::$_articles[$a_id] = new TBGWikiArticle($a_id, $row);
 					self::$_article_names[self::$_articles[$a_id]->getName()] = $a_id;
 				}
 				catch (Exception $e)
@@ -38,7 +38,7 @@
 		 * @param $a_id
 		 * @param $row
 		 *
-		 * @return PublishArticle
+		 * @return TBGWikiArticle
 		 */
 		static function articleNameLab($article_name, $row = null)
 		{
@@ -46,8 +46,8 @@
 			{
 				try
 				{
-					$article = PublishArticle::getByName($article_name);
-					if ($article instanceof PublishArticle)
+					$article = TBGWikiArticle::getByName($article_name);
+					if ($article instanceof TBGWikiArticle)
 					{
 						self::$_articles[$article->getID()] = $article;
 						self::$_article_names[$article_name] = $article->getID();

@@ -5,7 +5,7 @@
 		<div class="content">
 			<ul>
 				<li>
-					<?php if (!$article instanceof PublishArticle || $article->getName() != 'MainPage'): ?>
+					<?php if (!$article instanceof TBGWikiArticle || $article->getName() != 'MainPage'): ?>
 						<?php echo link_tag(make_url('publish_article', array('article_name' => 'MainPage')), __('Wiki Frontpage')); ?>
 					<?php else: ?>
 						<b><?php echo __('Wiki Frontpage'); ?></b>
@@ -17,14 +17,14 @@
 					</li>
 				<?php endif; ?>
 				<li>
-					<?php if (!$article instanceof PublishArticle || $article->getName() != 'WikiFormatting'): ?>
+					<?php if (!$article instanceof TBGWikiArticle || $article->getName() != 'WikiFormatting'): ?>
 						<?php echo link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), __('Formatting help')); ?>
 					<?php else: ?>
 						<b><?php echo __('Formatting help'); ?></b>
 					<?php endif; ?>
 				</li>
 				<li>
-					<?php if (!$article instanceof PublishArticle || $article->getName() != 'Category:Help'): ?>
+					<?php if (!$article instanceof TBGWikiArticle || $article->getName() != 'Category:Help'): ?>
 						<?php echo link_tag(make_url('publish_article', array('article_name' => 'Category:Help')), __('Help topics')); ?>
 					<?php else: ?>
 						<b><?php echo __('Help topics'); ?></b>
@@ -44,7 +44,7 @@
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
-<?php if ($article instanceof PublishArticle): ?>
+<?php if ($article instanceof TBGWikiArticle): ?>
 	<div style="margin: 10px 0 5px 5px;">
 	<div class="left_menu_header"><?php echo __('Links to this article'); ?></div>
 		<?php if (count($whatlinkshere) > 0): ?>

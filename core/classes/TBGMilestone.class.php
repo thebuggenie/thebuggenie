@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage main
 	 */
-	class TBGMilestone extends TBGIdentifiableClass implements TBGIdentifiable  
+	class TBGMilestone extends TBGIdentifiableClass  
 	{
 
 		const TYPE_REGULAR = 1;

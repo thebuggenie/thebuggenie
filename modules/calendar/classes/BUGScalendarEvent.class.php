@@ -1,6 +1,6 @@
 <?php
 
-	class BUGScalendarEvent extends TBGIdentifiableClass implements TBGIdentifiable
+	class BUGScalendarEvent extends TBGIdentifiableClass
 	{
 		
 		const EVENT = 1;

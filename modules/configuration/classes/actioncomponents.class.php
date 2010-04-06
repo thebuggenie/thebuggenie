@@ -126,4 +126,10 @@
 			}
 		}
 
+		public function componentPermissionsConfigurator()
+		{
+			$this->base_id = (isset($this->base_id)) ? $this->base_id : '';
+			$this->user_id = (isset($this->user_id)) ? $this->user_id : '';
+		}
+
 	}
