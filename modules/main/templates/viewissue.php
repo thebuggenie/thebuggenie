@@ -422,7 +422,7 @@
 								<form id="reproduction_steps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'reproduction_steps')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'reproduction_steps')) ?>', 'reproduction_steps'); return false;">
 									<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'reproduction_steps_form_value', 'height' => '100px', 'width' => '100%', 'value' => ($theIssue->getReproductionSteps()))); ?>
 									<br>
-									<input type="submit" value="<?php echo __('Save'); ?>"/> <a href="#" onClick="$('reproduction_steps_change').hide(); <?php if ($theIssue->getReproductionSteps() != ''):?>$('reproduction_steps_name').show()<?php else: ?>$('no_reproduction_steps').show()<?php endif; ?>; return false;"><?php echo __('or close'); ?></a>
+									<input type="submit" value="<?php echo __('Save'); ?>" style="font-weight: bold;"><?php echo __('%save% or %cancel%', array('%save%' => '', '%cancel%' => javascript_link_tag(__('cancel'), array('style' => 'font-weight: bold;', 'onclick' => "$('reproduction_steps_change').hide();".(($theIssue->getReproductionSteps() != '') ? "$('reproduction_steps_name').show();" : "$('no_reproduction_steps').show();")."return false;")))); ?>
 								</form>
 								<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproduction_steps_spinning')); ?>
 								<div id="reproduction_steps_change_error" class="error_message" style="display: none;"></div>
