@@ -397,10 +397,7 @@
 			$uid = TBGContext::getUser()->getID();
 			foreach ($settings as $setting)
 			{
-				if ($request->hasParameter($setting))
-				{
-					$this->saveSetting($setting, (int) $request->getParameter($setting), $uid);
-				}
+				$this->saveSetting($setting, (int) $request->getParameter($setting, 0), $uid);
 			}
 			return true;
 		}
