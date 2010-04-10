@@ -7,8 +7,7 @@
 		<tr>
 			<td style="width: auto; padding: 5px; border-bottom: 1px solid #DDD;"><label for="<?php echo $setting; ?>_yes" style="font-weight: normal;"><?php echo $description; ?></label></td>
 			<td style="width: 150px; padding: 5px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-				<input type="radio" name="<?php echo $setting; ?>" value="1" id="<?php echo $setting; ?>_yes"<?php if ($module->getSetting($setting, $uid) == 1): ?> checked<?php endif; ?>>&nbsp;<label for="<?php echo $setting; ?>_yes"><?php echo __('Yes'); ?></label>&nbsp;
-				<input type="radio" name="<?php echo $setting; ?>" value="0" id="<?php echo $setting; ?>_no"<?php if ($module->getSetting($setting, $uid) == 0): ?> checked<?php endif; ?>>&nbsp;<label for="<?php echo $setting; ?>_no"><?php echo __('No'); ?></label>
+				<input type="checkbox" name="<?php echo $setting; ?>" value="1" id="<?php echo $setting; ?>_yes"<?php if ($module->getSetting($setting, $uid) == 1): ?> checked<?php endif; ?>>
 			</td>
 		</tr>
 	<?php endforeach; ?>
@@ -22,8 +21,7 @@
 		<tr>
 			<td style="width: auto; padding: 5px; border-bottom: 1px solid #DDD;"><label for="<?php echo $setting; ?>_yes" style="font-weight: normal;"><?php echo $description; ?></label></td>
 			<td style="width: 150px; padding: 5px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-				<input type="radio" name="<?php echo $setting; ?>" value="1" id="<?php echo $setting; ?>_yes"<?php if ($module->getSetting($setting, $uid) == 1): ?> checked<?php endif; ?>>&nbsp;<label for="<?php echo $setting; ?>_yes"><?php echo __('Yes'); ?></label>&nbsp;
-				<input type="radio" name="<?php echo $setting; ?>" value="0" id="<?php echo $setting; ?>_no"<?php if ($module->getSetting($setting, $uid) == 0): ?> checked<?php endif; ?>>&nbsp;<label for="<?php echo $setting; ?>_no"><?php echo __('No'); ?></label>
+				<input type="checkbox" name="<?php echo $setting; ?>" value="1" id="<?php echo $setting; ?>_yes"<?php if ($module->getSetting($setting, $uid) == 1): ?> checked<?php endif; ?>>
 			</td>
 		</tr>
 	<?php endforeach; ?>
