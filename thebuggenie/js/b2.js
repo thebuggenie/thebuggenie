@@ -216,6 +216,12 @@ function updateProfileInformation(url)
 	return true;
 }
 
+function updateProfileModuleSettings(url, module_name)
+{
+	_postFormWithJSONFeedback(url, 'profile_' + module_name + '_form', 'profile_' + module_name + '_save_indicator');
+	return true;
+}
+
 function updateProfileSettings(url)
 {
 	_postFormWithJSONFeedback(url, 'profile_settings_form', 'profile_settings_save_indicator');

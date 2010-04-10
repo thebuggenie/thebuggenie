@@ -32,6 +32,7 @@
 	$routes[] = array('account_change_password', '/my_account/change/password', 'main', 'accountChangePassword');
 	$routes[] = array('account_save_information', '/my_account/save/information', 'main', 'myAccount', array('mode' => 'information'));
 	$routes[] = array('account_save_settings', '/my_account/save/settings', 'main', 'myAccount', array('mode' => 'settings'));
+	$routes[] = array('account_save_module_settings', '/my_account/save/module/:target_module/settings', 'main', 'myAccount', array('mode' => 'module'));
 	$routes[] = array('account', '/my_account/*', 'main', 'myAccount');
 	$routes[] = array('configure', '/configure', 'configuration', 'index', array('section' => 0));
 	$routes[] = array('configure_projects', '/configure/projects', 'configuration', 'configureProjects', array('config_module' => 'core', 'section' => 10));

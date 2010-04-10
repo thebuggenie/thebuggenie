@@ -445,15 +445,23 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 			return TBGContext::getRouting()->generate('publish_article', array('article_name' => ucfirst($project_key).":MainPage"));
 		}
 
-		public function postConfigSettings()
+		public function postConfigSettings(TBGRequest $request)
 		{
 			$settings = array('allow_camelcase_links', 'menu_title');
 			foreach ($settings as $setting)
 			{
-				if (TBGContext::getRequest()->hasParameter($setting))
+				if ($request->hasParameter($setting))
 				{
-					$this->saveSetting($setting, TBGContext::getRequest()->getParameter($setting));
+					$this->saveSetting($setting, $request->getParameter($setting));
 				}
+			}
+			if ((bool) $request->getParameter('show_latest_article'))
+			{
+				$this->enableListenerSaved('core', 'index_left_middle');
+			}
+			else
+			{
+				$this->disableListenerSaved('core', 'index_left_middle');
 			}
 		}
 

@@ -37,6 +37,8 @@
 		protected $_settings = array();
 		protected $_routes = array();
 		protected $_has_account_settings = false;
+		protected $_account_settings_name = null;
+		protected $_account_settings_logo = null;
 		protected $_has_config_settings = false;
 		
 		static protected $_permissions = array();
@@ -191,13 +193,21 @@
 			return $this->_classname;
 		}
 		
-		public function disableListener($module, $identifier, $scope)
+		public function disableListener($module, $identifier, $scope = null)
 		{
 			if (array_key_exists($module . '_' . $identifier, $this->_listeners))
 			{
-				$this->_listeners[$module . '_' . $identifier]['enabled'] = false;
-				B2DB::getTable('TBGEnabledModuleListenersTable')->removePermanentListener($module, $identifier, $this->getName());
+				if ($scope === null || $scope == TBGContext::getScope()->getID())
+				{
+					$this->_listeners[$module . '_' . $identifier]['enabled'] = false;
+				}
 			}
+		}
+
+		public function disableListenerSaved($module, $identifier, $scope = null)
+		{
+			$this->disableListener($module, $identifier, $scope);
+			B2DB::getTable('TBGEnabledModuleListenersTable')->removePermanentListener($module, $identifier, $this->getName(), $scope);
 		}
 		
 		public function __toString()
@@ -600,6 +610,26 @@
 			return $this->_has_account_settings;
 		}
 
+		public function setAccountSettingsName($name)
+		{
+			$this->_account_settings_name = $name;
+		}
+
+		public function getAccountSettingsName()
+		{
+			return $this->_account_settings_name;
+		}
+
+		public function setAccountSettingsLogo($logo)
+		{
+			$this->_account_settings_logo = $logo;
+		}
+
+		public function getAccountSettingsLogo()
+		{
+			return $this->_account_settings_logo;
+		}
+
 		public function setHasConfigSettings($val = true)
 		{
 			$this->_has_config_settings = (bool) $val;
@@ -618,6 +648,16 @@
 		public function getTabKey()
 		{
 			return $this->getName();
+		}
+
+		public function postConfigSettings(TBGRequest $request)
+		{
+
+		}
+
+		public function postAccountSettings(TBGRequest $request)
+		{
+
 		}
 
 	}

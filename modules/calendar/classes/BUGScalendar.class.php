@@ -11,7 +11,7 @@
 			$this->setMenuTitle(TBGContext::getI18n()->__('Calendar'));
 			$this->setConfigTitle(TBGContext::getI18n()->__('Calendar'));
 			$this->setDescription(TBGContext::getI18n()->__('Enables calendars, todos and meetings'));
-			$this->setHasAccountSettings();
+			//$this->setHasAccountSettings();
 			$this->addAvailableListener('core', 'dashboard_left_top', 'listen_calendarSummary', 'Dashboard calendar summary');
 			$this->addAvailableListener('core', 'TBGUser::getState', 'listen_TBGUser_getState', 'Automatic user-state change');
 		}

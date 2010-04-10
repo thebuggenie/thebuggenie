@@ -104,23 +104,7 @@
 			}
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('home'));
 			$this->getResponse()->setProjectMenuStripHidden();
-			$this->showleftbar = false;
-			if (!TBGUser::isThisGuest() && (TBGContext::getUser()->showFollowUps() || TBGContext::getUser()->showAssigned()))
-			{
-				$this->showleftbar = true;
-			}
-			if (TBGSettings::showLoginBox() && TBGUser::isThisGuest())
-			{
-				$this->showleftbar = true;
-			}
-			if (TBGEvent::isAnyoneListening('core', 'index_left_top') || TBGEvent::isAnyoneListening('core', 'index_left_middle') || TBGEvent::isAnyoneListening('core', 'index_left_bottom'))
-			{
-				$this->showleftbar = true;
-			}
-			if ($this->showleftbar)
-			{
-				$this->links = TBGContext::getMainLinks();
-			}
+			$this->links = TBGContext::getMainLinks();
 		}
 
 		/**
@@ -512,6 +496,22 @@
 						TBGContext::getUser()->save();
 
 						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Profile settings saved'), 'content' => ''));
+						break;
+					case 'module':
+						foreach (TBGContext::getModules() as $module_name => $module)
+						{
+							if ($request->getParameter('target_module') == $module_name && $module->hasAccountSettings())
+							{
+								if ($module->postAccountSettings($request))
+								{
+									return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Settings saved'), 'content' => ''));
+								}
+								else
+								{
+									return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('An error occured')));
+								}
+							}
+						}
 						break;
 				}
 			}

@@ -67,11 +67,16 @@
 			<?php TBGEvent::createNew('core', 'account_left_bottom')->trigger(); ?>
 		</td>
 		<td valign="top" align="left" style="padding: 0 10px 0 5px;">
-			<div style="margin: 10px 0 0 0; clear: both; height: 30px;" class="tab_menu">
+			<div style="margin: 10px 0 0 0; clear: both; height: 30px; width: 700px;" class="tab_menu">
 				<ul id="account_tabs">
-					<li class="selected" id="tab_profile"><a onclick="switchSubmenuTab('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('My profile'); ?></a></li>
+					<li class="selected" id="tab_profile"><a onclick="switchSubmenuTab('tab_profile', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Profile information'); ?></a></li>
 					<li id="tab_settings"><a onclick="switchSubmenuTab('tab_settings', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('Settings'); ?></a></li>
 					<?php TBGEvent::createNew('core', 'account_tabs')->trigger(); ?>
+					<?php foreach (TBGContext::getModules() as $module_name => $module): ?>
+						<?php if ($module->hasAccountSettings()): ?>
+							<li id="tab_settings_<?php echo $module_name; ?>"><a onclick="switchSubmenuTab('tab_settings_<?php echo $module_name; ?>', 'account_tabs');" href="javascript:void(0);"><?php echo image_tag($module->getAccountSettingsLogo(), array('style' => 'float: left;'), false, $module_name).$module->getAccountSettingsName(); ?></a></li>
+						<?php endif; ?>
+					<?php endforeach; ?>
 				</ul>
 			</div>
 			<div id="account_tabs_panes">
@@ -194,6 +199,28 @@
 					</form>
 				</div>
 				<?php TBGEvent::createNew('core', 'account_tab_panes')->trigger(); ?>
+				<?php foreach (TBGContext::getModules() as $module_name => $module): ?>
+					<?php if ($module->hasAccountSettings()): ?>
+						<div id="tab_settings_<?php echo $module_name; ?>_pane" style="display: none;">
+							<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="updateProfileModuleSettings('<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?php echo $module_name; ?>'); return false;" method="post" id="profile_<?php echo $module_name; ?>_form">
+								<div class="rounded_box borderless" style="margin: 5px 0 0 0; width: 700px;">
+									<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+									<div class="xboxcontent" style="padding: 5px;">
+										<?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
+									</div>
+								</div>
+								<div class="rounded_box iceblue_borderless" style="margin: 0 0 5px 0; width: 700px;">
+									<div class="xboxcontent" style="padding: 8px 5px 2px 5px; height: 23px;">
+										<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save your %module_settings_name% settings', array('%save%' => __('Save'), '%module_settings_name%' => $module->getAccountSettingsName())); ?></div>
+										<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+										<span id="profile_<?php echo $module_name; ?>_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+									</div>
+									<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+								</div>
+							</form>
+						</div>
+					<?php endif; ?>
+				<?php endforeach; ?>
 			</div>
 		</td>
 	</tr>

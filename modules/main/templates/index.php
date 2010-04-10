@@ -8,39 +8,37 @@
 <?php endif; ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
-		<?php if ($showleftbar): ?>
-			<td class="left_bar">
-				<div class="rounded_box borderless" id="main_menu" style="margin: 10px 0 5px 5px;">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent" style="padding: 5px;">
-						<div class="header"><?php echo __('Quick links'); ?></div>
-						<div class="content">
-						<?php if (count($links) > 0): ?>
-							<ul>
-								<?php foreach ($links as $link): ?>
-									<?php if ($link['url'] == ''): ?>
-										<li>&nbsp;</li>
-									<?php else: ?>
-										<li style="font-size: 12px;"><?php echo link_tag($link['url'], $link['description'], array('title' => $link['url'])); ?></a></li>
-									<?php endif; ?>
-								<?php endforeach; ?>
-							</ul>
-						<?php else: ?>
-							<div style="padding-left: 5px;" class="faded_medium"><?php echo __('There are no links in this menu'); ?></div>
-						<?php endif; ?>
-						</div>
+		<td class="left_bar">
+			<div class="rounded_box borderless" id="main_menu" style="margin: 10px 0 5px 5px;">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="padding: 5px;">
+					<div class="header"><?php echo __('Quick links'); ?></div>
+					<div class="content">
+					<?php if (count($links) > 0): ?>
+						<ul>
+							<?php foreach ($links as $link): ?>
+								<?php if ($link['url'] == ''): ?>
+									<li>&nbsp;</li>
+								<?php else: ?>
+									<li style="font-size: 12px;"><?php echo link_tag($link['url'], $link['description'], array('title' => $link['url'])); ?></a></li>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						</ul>
+					<?php else: ?>
+						<div style="padding-left: 5px;" class="faded_medium"><?php echo __('There are no links in this menu'); ?></div>
+					<?php endif; ?>
 					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</div>
-				<?php
-				
-					TBGEvent::createNew('core', 'index_left_top')->trigger();
-					TBGEvent::createNew('core', 'index_left_middle')->trigger();
-					TBGEvent::createNew('core', 'index_left_bottom')->trigger();
-				
-				?>
-			</td>
-		<?php endif; ?>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div>
+			<?php
+
+				TBGEvent::createNew('core', 'index_left_top')->trigger();
+				TBGEvent::createNew('core', 'index_left_middle')->trigger();
+				TBGEvent::createNew('core', 'index_left_bottom')->trigger();
+
+			?>
+		</td>
 		<td class="main_area">
 			<?php
 			

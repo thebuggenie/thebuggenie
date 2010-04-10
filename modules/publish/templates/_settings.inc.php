@@ -31,6 +31,16 @@
 				<td class="config_explanation" colspan="2"><?php echo __('Traditionally, %CamelCasing% has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting% wiki article if you are unsure how to use this feature.', array('%CamelCasing%' => link_tag('http://wikipedia.org/wiki/CamelCase', __('CamelCasing'), array('target' => '_blank')), '%wikiformatting%' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting', array('target' => '_blank')))); ?></td>
 			</tr>
 			<tr>
+				<td style="padding: 5px;"><label for="allow_camelcase_links_yes"><?php echo __('Show "latest articles" on frontpage'); ?></label></td>
+				<td>
+					<input type="radio" name="show_latest_article" value="1" id="show_latest_article_yes"<?php if ($module->isListening('core', 'index_left_middle')): ?> checked<?php endif; ?>>&nbsp;<label for="show_latest_article_yes"><?php echo __('Yes'); ?></label><br>
+					<input type="radio" name="show_latest_article" value="0" id="show_latest_article_no"<?php if (!$module->isListening('core', 'index_left_middle')): ?> checked<?php endif; ?>>&nbsp;<label for="show_latest_article_no"><?php echo __('No'); ?></label>
+				</td>
+			</tr>
+			<tr>
+				<td class="config_explanation" colspan="2"><?php echo __('Setting this to "%yes%" will show a list of the latest edited articles in the left column on the frontpage', array('%yes%' => __('Yes'))); ?></td>
+			</tr>
+			<tr>
 				<td colspan="2" style="padding: 5px; text-align: right;">&nbsp;</td>
 			</tr>
 		</table>

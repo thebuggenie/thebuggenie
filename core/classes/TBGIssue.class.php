@@ -427,6 +427,13 @@
 		protected $_locked;
 
 		/**
+		 * An array of TBGComment s
+		 * 
+		 * @var array
+		 */
+		protected $_comments;
+
+		/**
 		 * All custom data type properties
 		 *
 		 * @property $_customfield*

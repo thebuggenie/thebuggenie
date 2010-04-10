@@ -11,7 +11,7 @@
 			$this->setMenuTitle(TBGContext::getI18n()->__('Messages'));
 			$this->setConfigTitle(TBGContext::getI18n()->__('Messages'));
 			$this->setDescription(TBGContext::getI18n()->__('Enables messaging functionality'));
-			$this->setHasAccountSettings();
+			//$this->setHasAccountSettings();
 			$this->addAvailableListener('core', 'dashboard_left_top', 'listen_messagesSummary', 'Dashboard message summary');
 			$this->addAvailableListener('core', 'useractions_bottom', 'listen_useractionsBottom', '"Send message" in user drop-down menu');
 			$this->addAvailableListener('core', 'teamactions_bottom', 'listen_teamactionsBottom', '"Send message" in team drop-down menu');

@@ -1,42 +1,30 @@
-<?php
-
-	if (TBGContext::getRequest()->getParameter('forcenotification'))
-	{
-		TBGContext::getModule('mailing')->saveSetting('forcenotification', TBGContext::getRequest()->getParameter('forcenotification'), TBGContext::getUser()->getUID());
-	}
-	if (TBGContext::getRequest()->getParameter('hold_email_on_issue_update'))
-	{
-		TBGContext::getModule('mailing')->saveSetting('hold_email_on_issue_update', TBGContext::getRequest()->getParameter('hold_email_on_issue_update'), TBGContext::getUser()->getUID());
-	}
-
-?>
-<table style="table-layout: fixed; width: 100%; background-color: #F1F1F1; margin-top: 15px; border: 1px solid #DDD;" cellpadding=0 cellspacing=0>
-<tr>
-<td style="padding-left: 4px; width: 20px;"><?php echo image_tag('cfg_icon_mailing.png'); ?></td>
-<td style="border: 0px; width: auto; padding: 3px; padding-left: 7px;"><b><?php echo __('Notification settings'); ?></b></td>
-</tr>
+<table style="width: 680px; margin-bottom: 15px;" class="padded_table" cellpadding=0 cellspacing=0>
+	<tr>
+		<td style="border-bottom: 1px solid #CCC; font-size: 12px; font-weight: bold;"><?php echo __('General'); ?></td>
+		<td style="width: 150px; text-align: center; border-bottom: 1px solid #CCC;"><?php echo image_tag('notification_settings.png', array(), false, 'mailing'); ?></td>
+	</tr>
+	<?php foreach ($general_settings as $setting => $description): ?>
+		<tr>
+			<td style="width: auto; padding: 5px; border-bottom: 1px solid #DDD;"><label for="<?php echo $setting; ?>_yes" style="font-weight: normal;"><?php echo $description; ?></label></td>
+			<td style="width: 150px; padding: 5px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
+				<input type="radio" name="<?php echo $setting; ?>" value="1" id="<?php echo $setting; ?>_yes"<?php if ($module->getSetting($setting, $uid) == 1): ?> checked<?php endif; ?>>&nbsp;<label for="<?php echo $setting; ?>_yes"><?php echo __('Yes'); ?></label>&nbsp;
+				<input type="radio" name="<?php echo $setting; ?>" value="0" id="<?php echo $setting; ?>_no"<?php if ($module->getSetting($setting, $uid) == 0): ?> checked<?php endif; ?>>&nbsp;<label for="<?php echo $setting; ?>_no"><?php echo __('No'); ?></label>
+			</td>
+		</tr>
+	<?php endforeach; ?>
 </table>
-<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="account.php" method="post">
-<input type="hidden" name="settings" value="mailing">
-<table class="b2_section_miniframe" cellpadding=0 cellspacing=0>
-<tr>
-<td style="width: 200px;"><b><?php echo __('Notification on own changes'); ?></b></td>
-<td style="width: 300px;"><select name="forcenotification" style="width: 100%;">
-<option value=1 <?php if (TBGSettings::get('forcenotification', 'mailing', null, TBGContext::getUser()->getUID()) == 1) echo ' selected'; ?>><?php echo __('Send notification email on my own changes'); ?></option>
-<option value=2 <?php if (TBGSettings::get('forcenotification', 'mailing', null, TBGContext::getUser()->getUID()) == 2) echo ' selected'; ?>><?php echo __('Only notify me when others are committing changes'); ?></option>
-</select>
-</td>
-</tr>
-<tr>
-<td style="width: 200px;"><b><?php echo __('Always notify'); ?></b></td>
-<td style="width: 300px;"><select name="hold_email_on_issue_update" style="width: 100%;">
-<option value=0 <?php if (TBGSettings::get('hold_email_on_issue_update', 'mailing', null, TBGContext::getUser()->getUID()) == 0) echo ' selected'; ?>><?php echo __('Always send me an email whenever an issue changes'); ?></option>
-<option value=1 <?php if (TBGSettings::get('hold_email_on_issue_update', 'mailing', null, TBGContext::getUser()->getUID()) == 1) echo ' selected'; ?>><?php echo __('Stop sending emails until I open the issue'); ?></option>
-</select>
-</td>
-</tr>
-<tr>
-<td colspan=2 style="text-align: right;"><input type="submit" value="<?php echo __('Save'); ?>"></td>
-</tr>
+<table style="width: 680px; margin-bottom: 15px;" class="padded_table" cellpadding=0 cellspacing=0>
+	<tr>
+		<td style="border-bottom: 1px solid #CCC; font-size: 12px; font-weight: bold;"><?php echo __('Issues'); ?></td>
+		<td style="width: 150px; text-align: center; border-bottom: 1px solid #CCC;"><?php echo image_tag('notification_settings.png', array(), false, 'mailing'); ?></td>
+	</tr>
+	<?php foreach ($issues_settings as $setting => $description): ?>
+		<tr>
+			<td style="width: auto; padding: 5px; border-bottom: 1px solid #DDD;"><label for="<?php echo $setting; ?>_yes" style="font-weight: normal;"><?php echo $description; ?></label></td>
+			<td style="width: 150px; padding: 5px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
+				<input type="radio" name="<?php echo $setting; ?>" value="1" id="<?php echo $setting; ?>_yes"<?php if ($module->getSetting($setting, $uid) == 1): ?> checked<?php endif; ?>>&nbsp;<label for="<?php echo $setting; ?>_yes"><?php echo __('Yes'); ?></label>&nbsp;
+				<input type="radio" name="<?php echo $setting; ?>" value="0" id="<?php echo $setting; ?>_no"<?php if ($module->getSetting($setting, $uid) == 0): ?> checked<?php endif; ?>>&nbsp;<label for="<?php echo $setting; ?>_no"><?php echo __('No'); ?></label>
+			</td>
+		</tr>
+	<?php endforeach; ?>
 </table>
-</form>

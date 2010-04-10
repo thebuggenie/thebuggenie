@@ -16,6 +16,8 @@
 			$this->setDescription($i18n->__('Enables in- and outgoing email functionality'));
 			$this->setConfigDescription($i18n->__('Set up in- and outgoing email communication from this section'));
 			$this->setHasAccountSettings();
+			$this->setAccountSettingsName($i18n->__('Notifications'));
+			$this->setAccountSettingsLogo('notification_settings.png');
 			$this->setHasConfigSettings();
 			$this->addAvailableListener('core', 'user_registration', 'listen_registerUser', $i18n->__('Email when user registers'));
 			$this->addAvailableListener('core', 'password_reset', 'listen_forgottenPassword', $i18n->__('Email to reset password'));
@@ -65,7 +67,7 @@
 			$this->_uninstall();
 		}
 
-		public function postConfigSettings()
+		public function postConfigSettings(TBGRequest $request)
 		{
 			$settings = array('smtp_host', 'smtp_port', 'smtp_user', 'timeout', 'mail_type',
 								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo',
@@ -73,9 +75,9 @@
 								'showprojectsoverview', 'showprojectsoverview', 'cleancomments');
 			foreach ($settings as $setting)
 			{
-				if (TBGContext::getRequest()->getParameter($setting) !== null)
+				if ($request->getParameter($setting) !== null)
 				{
-					$this->saveSetting($setting, TBGContext::getRequest()->getParameter($setting));
+					$this->saveSetting($setting, $request->getParameter($setting));
 				}
 			}
 		}
@@ -388,7 +390,21 @@
 			
 			return $retval;
 		}
-		
+
+		public function postAccountSettings(TBGRequest $request)
+		{
+			$settings = array('notify_add_friend', 'notify_issue_change', 'notify_issue_comment');
+			$uid = TBGContext::getUser()->getID();
+			foreach ($settings as $setting)
+			{
+				if ($request->hasParameter($setting))
+				{
+					$this->saveSetting($setting, (int) $request->getParameter($setting), $uid);
+				}
+			}
+			return true;
+		}
+
 	}
 
 ?>
