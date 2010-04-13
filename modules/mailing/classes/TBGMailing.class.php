@@ -69,7 +69,7 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
-			$settings = array('smtp_host', 'smtp_port', 'smtp_user', 'timeout', 'mail_type',
+			$settings = array('smtp_host', 'smtp_port', 'smtp_user', 'timeout', 'mail_type', 'enable_outgoing_notifications',
 								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo',
 								'returnfromlogin', 'returnfromlogout', 'showloginbox', 'limit_registration',
 								'showprojectsoverview', 'showprojectsoverview', 'cleancomments');
@@ -101,61 +101,84 @@
 		{
 			$user = $event->getSubject();
 			$password = $event->getParameter('password');
-			$subject = TBGContext::getI18n()->__('User account registered with The Bug Genie');
-			$message = $this->createNewTBGMimemailFromTemplate($subject, 'registeruser', array('user' => $user, 'password' => $password), null, array($user->getBuddyname(), $user->getEmail()));
-	
-			try
+			if ($this->isOutgoingNotificationsEnabled())
 			{
-				$this->sendMail($message);
-			}
-			catch (Exception $e)
-			{
-				throw $e;
+				$subject = TBGContext::getI18n()->__('User account registered with The Bug Genie');
+				$message = $this->createNewTBGMimemailFromTemplate($subject, 'registeruser', array('user' => $user, 'password' => $password), null, array($user->getBuddyname(), $user->getEmail()));
+
+				try
+				{
+					$this->sendMail($message);
+					$event->setProcessed();
+				}
+				catch (Exception $e)
+				{
+					throw $e;
+				}
 			}
 		}
 
 		public function listen_loginMiddle(TBGEvent $event)
 		{
-			TBGActionComponent::includeComponent('mailing/forgotPasswordBlock');
+			if ($this->isOutgoingNotificationsEnabled())
+			{
+				TBGActionComponent::includeComponent('mailing/forgotPasswordBlock');
+			}
 		}
 		
 		public function listen_passwordReset(TBGEvent $event)
 		{
-			$subject = TBGContext::getI18n()->__('Password reset');
-			$message = $this->createNewTBGMimemailFromTemplate($subject, 'passwordreset', array('password' => $event->getParameter('password')));
-			$this->_sendToUsers($event->getSubject(), $message);
+			if ($this->isOutgoingNotificationsEnabled())
+			{
+				$subject = TBGContext::getI18n()->__('Password reset');
+				$message = $this->createNewTBGMimemailFromTemplate($subject, 'passwordreset', array('password' => $event->getParameter('password')));
+				$this->_sendToUsers($event->getSubject(), $message);
+			}
 		}
 		
 		public function sendforgottenPasswordEmail($user)
 		{
-			$subject = TBGContext::getI18n()->__('Forgot your password?');
-			$message = $this->createNewTBGMimemailFromTemplate($subject, 'forgottenpassword');
-			$this->_sendToUsers($user, $message);
+			if ($this->isOutgoingNotificationsEnabled())
+			{
+				$subject = TBGContext::getI18n()->__('Forgot your password?');
+				$message = $this->createNewTBGMimemailFromTemplate($subject, 'forgottenpassword');
+				$this->_sendToUsers($user, $message);
+			}
 		}
 		
 		public function sendTestEmail($email_address)
 		{
-			try
+			if ($this->isOutgoingNotificationsEnabled())
 			{
-				$subject = TBGContext::getI18n()->__('Test email');
-				$message = $this->createNewTBGMimemailFromTemplate($subject, 'testemail', array(), null, array($email_address));
-				return $this->sendMail($message);
+				try
+				{
+					$subject = TBGContext::getI18n()->__('Test email');
+					$message = $this->createNewTBGMimemailFromTemplate($subject, 'testemail', array(), null, array($email_address));
+					return $this->sendMail($message);
+				}
+				catch (Exception $e)
+				{
+					throw $e;
+				}
 			}
-			catch (Exception $e)
+			else
 			{
-				throw $e;
+				throw TBGContext::getI18n()->__('The email module is not configured for outgoing emails');
 			}
 		}
 
 		public function listen_issueCreate(TBGEvent $event)
 		{
-			$issue = $event->getSubject();
-			if ($issue instanceof TBGIssue)
+			if ($this->isOutgoingNotificationsEnabled())
 			{
-				$to_users = $issue->getRelatedUsers();
-				$subject = TBGContext::getI18n()->__('[%project_name%]: %issue_no% - "%issue_title%" created', array('%project_name%' => $issue->getProject()->getKey(), '%issue_no%' => $issue->getFormattedIssueNo(false), '%issue_title%' => $issue->getTitle()));
-				$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecreate', array('issue' => $issue));
-				$this->_sendToUsers($to_users, $message);
+				$issue = $event->getSubject();
+				if ($issue instanceof TBGIssue)
+				{
+					$to_users = $issue->getRelatedUsers();
+					$subject = TBGContext::getI18n()->__('[%project_name%]: %issue_no% - "%issue_title%" created', array('%project_name%' => $issue->getProject()->getKey(), '%issue_no%' => $issue->getFormattedIssueNo(false), '%issue_title%' => $issue->getTitle()));
+					$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecreate', array('issue' => $issue));
+					$this->_sendToUsers($to_users, $message);
+				}
 			}
 		}
 		
@@ -174,25 +197,28 @@
 		
 		protected function _sendToUsers($to_users, TBGMimemail $message)
 		{
-			$to_users = (array) $to_users;
-			foreach ($to_users as $user)
+			if ($this->isOutgoingNotificationsEnabled())
 			{
-				if ($user->getID() != TBGContext::getUser()->getUID())
+				$to_users = (array) $to_users;
+				foreach ($to_users as $user)
 				{
-					if ($user instanceof TBGUser && $user->isEnabled() && $user->isActivated() && !$user->isDeleted() && !$user->isGuest())
+					if ($user->getID() != TBGContext::getUser()->getUID())
 					{
-						$message->setLanguage($user->getLanguage());
-						$message->clearRecipients();
-						$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname(), '%user_username%' => $user->getUsername()));
-						$message->addTo($user->getBuddyname(), $user->getEmail());
+						if ($user instanceof TBGUser && $user->isEnabled() && $user->isActivated() && !$user->isDeleted() && !$user->isGuest())
+						{
+							$message->setLanguage($user->getLanguage());
+							$message->clearRecipients();
+							$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname(), '%user_username%' => $user->getUsername()));
+							$message->addTo($user->getBuddyname(), $user->getEmail());
 
-						try
-						{
-							$this->sendMail($message);
-						}
-						catch (Exception $e) 
-						{
-							$this->log('There was an error when trying to send email to ' . join('/', $message->getRecipients()) . ":\n" . $e->getMessage(), TBGLogging::LEVEL_NOTICE);
+							try
+							{
+								$this->sendMail($message);
+							}
+							catch (Exception $e)
+							{
+								$this->log('There was an error when trying to send email to ' . join('/', $message->getRecipients()) . ":\n" . $e->getMessage(), TBGLogging::LEVEL_NOTICE);
+							}
 						}
 					}
 				}
@@ -201,22 +227,25 @@
 		
 		public function listen_TBGComment_createNew(TBGEvent $event)
 		{
-			$comment = $event->getSubject();
-			if ($comment instanceof TBGComment && $comment->getTargetType() == 1)
+			if ($this->isOutgoingNotificationsEnabled())
 			{
-				try
+				$comment = $event->getSubject();
+				if ($comment instanceof TBGComment && $comment->getTargetType() == 1)
 				{
-					$issue = TBGFactory::TBGIssueLab($comment->getTargetID());
-					$title = $comment->getTitle();
-					$content = $comment->getContent();
-					$to_users = $issue->getRelatedUsers();
-					$subject = TBGContext::getI18n()->__('[%project_name%]: %issue_no% - "%issue_title%" updated', array('%project_name%' => $issue->getProject()->getKey(), '%issue_no%' => $issue->getFormattedIssueNo(false), '%issue_title%' => $issue->getTitle()));
-					$message = $this->getMimemailWithMessageTemplate($subject, 'issuecomment', array('issue' => $issue));
-					$this->_sendToUsers($to_users, $message);
-				}
-				catch (Exception $e)
-				{
-					throw $e;
+					try
+					{
+						$issue = TBGFactory::TBGIssueLab($comment->getTargetID());
+						$title = $comment->getTitle();
+						$content = $comment->getContent();
+						$to_users = $issue->getRelatedUsers();
+						$subject = TBGContext::getI18n()->__('[%project_name%]: %issue_no% - "%issue_title%" updated', array('%project_name%' => $issue->getProject()->getKey(), '%issue_no%' => $issue->getFormattedIssueNo(false), '%issue_title%' => $issue->getTitle()));
+						$message = $this->getMimemailWithMessageTemplate($subject, 'issuecomment', array('issue' => $issue));
+						$this->_sendToUsers($to_users, $message);
+					}
+					catch (Exception $e)
+					{
+						throw $e;
+					}
 				}
 			}
 		}
@@ -229,42 +258,45 @@
 		
 		public function listen_issueUpdate(TBGEvent $event)
 		{
-			$issue = $event->getSubject();
-			$title = array_shift($vars);
-			$content = array_shift($vars);
-			$uid = array_shift($vars);
-			$system = array_shift($vars);
-			$to_users = array();
-	
-			if ($issue instanceof TBGIssue)
+			if ($this->isOutgoingNotificationsEnabled())
 			{
-				$to_users = $issue->getRelatedUIDs();
-				$cc = 0;
-				foreach ($to_users as &$a_user)
+				$issue = $event->getSubject();
+				$title = array_shift($vars);
+				$content = array_shift($vars);
+				$uid = array_shift($vars);
+				$system = array_shift($vars);
+				$to_users = array();
+
+				if ($issue instanceof TBGIssue)
 				{
-					if (is_array($a_user) && isset($a_user['id'])) $a_user = $a_user['id'];
-					if ($this->_mustNotifyUserForIssue($issue->getID(), $a_user))
+					$to_users = $issue->getRelatedUIDs();
+					$cc = 0;
+					foreach ($to_users as &$a_user)
 					{
-						if ($this->getSetting('hold_email_on_issue_update', $a_user) == 1)
+						if (is_array($a_user) && isset($a_user['id'])) $a_user = $a_user['id'];
+						if ($this->_mustNotifyUserForIssue($issue->getID(), $a_user))
 						{
-							$this->saveSetting('notified_issue_'.$issue->getID(), 1, $a_user);
+							if ($this->getSetting('hold_email_on_issue_update', $a_user) == 1)
+							{
+								$this->saveSetting('notified_issue_'.$issue->getID(), 1, $a_user);
+							}
 						}
+						else
+						{
+							unset($to_users[$cc]);
+						}
+						$cc++;
 					}
-					else
-					{
-						unset($to_users[$cc]);
-					}
-					$cc++;
+
+					$subject = TBGContext::getI18n()->__('Issue ' . $issue->getFormattedIssueNo(false) . ' - ' . $issue->getTitle() . ' updated');
+					$message = 'Hi, %user_buddyname%!<br>You are receiving this update because you are subscribing for updates.<br>This email is an update for issue ' . $issue->getFormattedIssueNo(false) . ' - ' . $issue->getTitle();
+					$message .= '<br><br><b>' . $title . '</b>';
+					$message .= '<br>' . tbg_BBDecode($content);
+					$message .= '<br><br>You can open the issue by clicking the following link:<br><a href="%link_to_issue%' . $issue->getFormattedIssueNo(true) . '">%link_to_issue%' . $issue->getFormattedIssueNo(true) . '</a>';
+
+					$message = "<div style=\"font-family: \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-size: 11px; color: #646464;\">".$message."</div>";
+					$this->_sendToUsers($to_users, $subject, $message);
 				}
-				
-				$subject = TBGContext::getI18n()->__('Issue ' . $issue->getFormattedIssueNo(false) . ' - ' . $issue->getTitle() . ' updated');
-				$message = 'Hi, %user_buddyname%!<br>You are receiving this update because you are subscribing for updates.<br>This email is an update for issue ' . $issue->getFormattedIssueNo(false) . ' - ' . $issue->getTitle();
-				$message .= '<br><br><b>' . $title . '</b>';
-				$message .= '<br>' . tbg_BBDecode($content);
-				$message .= '<br><br>You can open the issue by clicking the following link:<br><a href="%link_to_issue%' . $issue->getFormattedIssueNo(true) . '">%link_to_issue%' . $issue->getFormattedIssueNo(true) . '</a>';
-	
-				$message = "<div style=\"font-family: \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-size: 11px; color: #646464;\">".$message."</div>";
-				$this->_sendToUsers($to_users, $subject, $message);
 			}
 		}
 
@@ -385,10 +417,13 @@
 
 		public function sendMail(TBGMimemail $mail, $debug = false)
 		{
-			$mailer = $this->getMailer();
-			$retval = $mailer->send($mail);
-			
-			return $retval;
+			if ($this->isOutgoingNotificationsEnabled())
+			{
+				$mailer = $this->getMailer();
+				$retval = $mailer->send($mail);
+
+				return $retval;
+			}
 		}
 
 		public function postAccountSettings(TBGRequest $request)
@@ -400,6 +435,16 @@
 				$this->saveSetting($setting, (int) $request->getParameter($setting, 0), $uid);
 			}
 			return true;
+		}
+
+		public function isOutgoingNotificationsEnabled()
+		{
+			return (bool) $this->getSetting('enable_outgoing_notifications');
+		}
+
+		public function setOutgoingNotificationsEnabled($enabled = true)
+		{
+			$this->saveSetting('enable_outgoing_notifications', $enabled);
 		}
 
 	}

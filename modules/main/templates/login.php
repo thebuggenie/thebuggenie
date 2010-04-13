@@ -54,138 +54,134 @@
 <?php TBGEvent::createNew('core', 'login_middle')->trigger(); ?>
 
 <?php if (TBGSettings::get('allowreg')): ?>
-
-<?php if (TBGContext::hasMessage('account_activate')) {
-TBGContext::clearMessage('account_activate');
-
-if (TBGContext::hasMessage('activate_success')) {
-TBGContext::clearMessage('activate_success'); ?>
-
-<div class="rounded_box green_borderless">
-	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
-		<span class="login_fieldheader"><?php echo __('Thank you for registering!'); ?></span>
-		<p><?php echo __('Your account has now been activated. Please log in by entering your username and password in the fields above.'); ?></p>
-	</div>
-	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-</div>
-
-<?php } elseif (TBGContext::hasMessage('activate_failure')) {
-TBGContext::clearMessage('activate_success'); ?>
-	
-<div class="rounded_box red_borderless">
-	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
-		<span class="login_fieldheader"><?php echo __('There seems to be something wrong with your verification code.'); ?></span>
-		<p><?php echo __('Please copy and paste the link from the activation email into your browser address bar, and try again.'); ?></p>
-	</div>
-	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-</div>
-
-<?php }
-}
-else
-{
-
-if (TBGContext::hasMessage('prereg_error')) { ?>
-<div class="rounded_box red_borderless">
-	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<span class="login_fieldheader"><?php echo TBGContext::getMessageAndClear('prereg_error'); ?></span>
-	</div>
-	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-</div>
-<br>
-<?php } ?>
-
-<?php if (TBGContext::hasMessage('postreg_error')) { ?>
-<div class="rounded_box red_borderless">
-	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<span class="login_fieldheader"><?php echo TBGContext::getMessageAndClear('postreg_error'); ?></span>
-	</div>
-	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-</div>
-<br>
-<?php } ?>
-
-<?php if (TBGContext::hasMessage('postreg_success')) {
-TBGContext::clearMessage('postreg_success'); ?>
-<div class="rounded_box green_borderless">
-	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-		<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
-		<span class="login_fieldheader"><?php echo __('Thank you for registering!'); ?></span>
-		<p><?php echo __('The account has now been registered - check your email inbox for the activation email. Please be patient - this email can take up to two hours to arrive.'); ?></p>
-	</div>
-	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-</div>
-<?php } elseif (TBGContext::hasMessage('prereg_success')) { ?>
-<div class="rounded_box gray">
-	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-	<div class="xboxcontent" style="vertical-align: middle; padding: 10px;">
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register2'); ?>" enctype="multipart/form-data" method="post" name="registerform">
-		<input type="hidden" name="register" value="true">
-		<input type="hidden" name="username" value="<?php echo TBGContext::getMessageAndClear('prereg_success'); ?>">
-			<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
-			<div>
-				<?php echo __('The username you requested is available. To register it, please fill out the information below.'); ?>
-				<i>(<?php echo __('Required information is marked with an asterisk'); ?>: <b>*</b>)</i><br><br>
-				<table border="0" class="login_fieldtable">
-					<tr>
-						<td><label class="login_fieldheader" for="buddyname">*&nbsp;<?php echo __('Buddy name'); ?></label></td>
-						<td><input type="text" id="buddyname" name="buddyname" value="<?php print TBGContext::getRequest()->getParameter('buddyname'); ?>" style="width: 200px;"></td>
-					</tr>
-					<tr>
-						<td><label class="login_fieldheader" for="realname"><?php echo __('Real name'); ?></label></td>
-						<td><input type="text" id="realname" name="realname" value="<?php print TBGContext::getRequest()->getParameter('realname'); ?>" style="width: 200px;"></td>
-					</tr>
-					<tr>
-						<td><label class="login_fieldheader" for="email_address">*&nbsp;<?php echo __('E-mail address'); ?></label></td>
-						<td><input type="text" id="email_address" name="email_address" value="<?php print TBGContext::getRequest()->getParameter('email_address'); ?>" style="width: 200px;"></td>
-					</tr>
-					<tr>
-						<td><label class="login_fieldheader" for="email_confirm">*&nbsp;<?php echo __('Confirm e-mail'); ?></label></td>
-						<td><input type="text" id="email_confirm" name="email_confirm" value="<?php print TBGContext::getRequest()->getParameter('email_confirm'); ?>" style="width: 200px;"></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-					</tr>
-				</table>
-				<br>
-
-				<label class="login_fieldheader" for="verification_no">*&nbsp;<?php echo __('Security check'); ?></label><br><br>
-				<?php
-					$_SESSION['activation_number'] = tbg_printRandomNumber();
-				?>
-
-				<br><b><?php echo __('Enter the above number in this box'); ?></b><br><br>
-				<input type="text" id="verification_no" name="verification_no" style="width: 100px;<?php print (!true) ? " background-color: #FBB;" : ""; ?>"><br><br>
-				<input type="submit" id="login_button" value="<?php echo __('Register'); ?>">
+	<?php if (TBGContext::hasMessage('account_activate')): ?>
+		<?php TBGContext::clearMessage('account_activate'); ?>
+		<?php if (TBGContext::hasMessage('activate_success')): ?>
+			<?php TBGContext::clearMessage('activate_success'); ?>
+			<div class="rounded_box green_borderless">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+					<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
+					<span class="login_fieldheader"><?php echo __('Thank you for registering!'); ?></span>
+					<p><?php echo __('Your account has now been activated. Please log in by entering your username and password in the fields above.'); ?></p>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
-		</form>
-	</div>
-	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-</div>
-<?php } else { ?>
-
-<div class="rounded_box gray">
-	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-	<div class="xboxcontent" style="vertical-align: middle; padding: 10px;">
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register1'); ?>" enctype="multipart/form-data" method="post" name="registerform">
-		<input type="hidden" name="register" value="true">
-			<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
-			<div>
-				<label style="font-size: larger; font-weight: bold; padding-bottom: 5px;" for="desired_username"><?php echo __('Desired username'); ?></label>&nbsp;
-				<input type="text" id="desired_username" name="desired_username" style="width: 200px;"><br><br>
-			
-				<input type="submit" id="login_button" value="<?php echo __('Check availability'); ?>">
+		<?php elseif (TBGContext::hasMessage('activate_failure')): ?>
+			<?php TBGContext::clearMessage('activate_success'); ?>
+			<div class="rounded_box red_borderless">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+					<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
+					<span class="login_fieldheader"><?php echo __('There seems to be something wrong with your verification code.'); ?></span>
+					<p><?php echo __('Please copy and paste the link from the activation email into your browser address bar, and try again.'); ?></p>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
-		</form>
-	</div>
-	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-</div>
-<?php } } endif; ?>
+		<?php endif; ?>
+	<?php else: ?>
+		<?php if (TBGContext::hasMessage('prereg_error')): ?>
+			<div class="rounded_box red_borderless">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+					<span class="login_fieldheader"><?php echo TBGContext::getMessageAndClear('prereg_error'); ?></span>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div>
+			<br>
+		<?php endif; ?>
+		<?php if (TBGContext::hasMessage('postreg_error')): ?>
+			<div class="rounded_box red_borderless">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+					<span class="login_fieldheader"><?php echo TBGContext::getMessageAndClear('postreg_error'); ?></span>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div>
+			<br>
+		<?php endif; ?>
+		<?php if (TBGContext::hasMessage('postreg_success')): ?>
+			<?php TBGContext::clearMessage('postreg_success'); ?>
+			<div class="rounded_box green_borderless">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
+					<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
+					<span class="login_fieldheader"><?php echo __('Thank you for registering!'); ?></span>
+					<p>
+					<?php if ($password = TBGContext::getMessageAndClear('postreg_password')): ?>
+						<span style="font-size: 14px;"><?php echo __('A password has been autogenerated for you. To log in, use the following password: %password%', array('%password%' => '<b>'.$password.'</b>')); ?></span>
+					<?php else: ?>
+						<?php echo __('The account has now been registered - check your email inbox for the activation email. Please be patient - this email can take up to two hours to arrive.'); ?>
+					<?php endif; ?>
+					</p>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div>
+		<?php elseif (TBGContext::hasMessage('prereg_success')): ?>
+			<div class="rounded_box gray">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="vertical-align: middle; padding: 10px;">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register2'); ?>" enctype="multipart/form-data" method="post" name="registerform">
+					<input type="hidden" name="register" value="true">
+					<input type="hidden" name="username" value="<?php echo TBGContext::getMessageAndClear('prereg_success'); ?>">
+						<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
+						<div>
+							<?php echo __('The username you requested is available. To register it, please fill out the information below.'); ?>
+							<i>(<?php echo __('Required information is marked with an asterisk'); ?>: <b>*</b>)</i><br><br>
+							<table border="0" class="login_fieldtable">
+								<tr>
+									<td><label class="login_fieldheader" for="buddyname">*&nbsp;<?php echo __('Buddy name'); ?></label></td>
+									<td><input type="text" id="buddyname" name="buddyname" value="<?php print TBGContext::getRequest()->getParameter('buddyname'); ?>" style="width: 200px;"></td>
+								</tr>
+								<tr>
+									<td><label class="login_fieldheader" for="realname"><?php echo __('Real name'); ?></label></td>
+									<td><input type="text" id="realname" name="realname" value="<?php print TBGContext::getRequest()->getParameter('realname'); ?>" style="width: 200px;"></td>
+								</tr>
+								<tr>
+									<td><label class="login_fieldheader" for="email_address">*&nbsp;<?php echo __('E-mail address'); ?></label></td>
+									<td><input type="text" id="email_address" name="email_address" value="<?php print TBGContext::getRequest()->getParameter('email_address'); ?>" style="width: 200px;"></td>
+								</tr>
+								<tr>
+									<td><label class="login_fieldheader" for="email_confirm">*&nbsp;<?php echo __('Confirm e-mail'); ?></label></td>
+									<td><input type="text" id="email_confirm" name="email_confirm" value="<?php print TBGContext::getRequest()->getParameter('email_confirm'); ?>" style="width: 200px;"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+								</tr>
+							</table>
+							<br>
+
+							<label class="login_fieldheader" for="verification_no">*&nbsp;<?php echo __('Security check'); ?></label><br><br>
+							<?php
+								$_SESSION['activation_number'] = tbg_printRandomNumber();
+							?>
+
+							<br><b><?php echo __('Enter the above number in this box'); ?></b><br><br>
+							<input type="text" id="verification_no" name="verification_no" style="width: 100px;<?php print (!true) ? " background-color: #FBB;" : ""; ?>"><br><br>
+							<input type="submit" id="login_button" value="<?php echo __('Register'); ?>">
+						</div>
+					</form>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div>
+		<?php else: ?>
+			<div class="rounded_box gray">
+				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+				<div class="xboxcontent" style="vertical-align: middle; padding: 10px;">
+					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register1'); ?>" enctype="multipart/form-data" method="post" name="registerform">
+					<input type="hidden" name="register" value="true">
+						<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
+						<div>
+							<label style="font-size: larger; font-weight: bold; padding-bottom: 5px;" for="desired_username"><?php echo __('Desired username'); ?></label>&nbsp;
+							<input type="text" id="desired_username" name="desired_username" style="width: 200px;"><br><br>
+
+							<input type="submit" id="login_button" value="<?php echo __('Check availability'); ?>">
+						</div>
+					</form>
+				</div>
+				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div>
+		<?php endif; ?>
+	<?php endif; ?>
+<?php endif; ?>

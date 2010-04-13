@@ -15,7 +15,7 @@
 				<b><?php echo __('Enjoy using The Bug Genie!'); ?></b>
 			</div>
 			<br>
-			<a href="http://www.thebuggenie.com" target="_blank">The Bug Genie</a>, Copyright 2002 &copy; 09 <b>The Bug Genie team</b><br>
+			<a href="http://www.thebuggenie.com" target="_blank">The Bug Genie</a>, Copyright &copy; 2002 - 2010 <b>The Bug Genie team</b><br>
 			Licensed under the MPL 1.1 only, read the license at <a href="http://www.opensource.org/licenses/mozilla1.1.php">opensource.org</a>.<br>
 			<br>
 			<span class="faded_medium">

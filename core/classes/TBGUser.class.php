@@ -480,6 +480,13 @@
 			if ($u_id === null) $u_id = $res->getInsertID();
 			
 			$returnUser = TBGFactory::userLab($u_id);
+			$event = TBGEvent::createNew('core', 'TBGUser::createNew', $returnUser);
+			$event->trigger();
+			if (!$event->isProcessed())
+			{
+				$returnUser->setEnabled();
+				$returnUser->setActivated();
+			}
 			return $returnUser;
 		}
 		

@@ -537,7 +537,7 @@
 		 * 
 		 * @return TBGIssue
 		 */
-		static function createNew($title, $issuetype, $p_id, $issue_id = null)
+		static function createNew($title, $issuetype, $p_id, $issue_id = null, $notify = true)
 		{
 			try
 			{
@@ -546,7 +546,10 @@
 				$theIssue = TBGFactory::TBGIssueLab($i_id);
 				$theIssue->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED);
 
-				TBGEvent::createNew('core', 'TBGIssue::createNew', $theIssue)->trigger();
+				if ($notify)
+				{
+					TBGEvent::createNew('core', 'TBGIssue::createNew', $theIssue)->trigger();
+				}
 				return $theIssue;
 			}
 			catch (Exception $e)
@@ -3892,7 +3895,7 @@
 		 * 
 		 * @return boolean
 		 */
-		public function save()
+		public function save($notify = true)
 		{
 			$comment_lines = array();
 			$is_saved_estimated = false;
@@ -3901,7 +3904,7 @@
 			$is_saved_owner = false;
 			foreach ($this->_getChangedProperties() as $property => $value)
 			{
-				if ($value['original_value'] != $this->$property)
+				if ($value['original_value'] != $this->$property && $notify)
 				{
 					switch ($property)
 					{
@@ -4204,8 +4207,11 @@
 					}
 				}
 			}
-			$comment = __("The issue was updated with the following change(s):\n%list_of_changes%", array('%list_of_changes%' => '* '.join("\n* ", $comment_lines)));
-			$this->addSystemComment(__('Issue updated'), $comment, TBGContext::getUser()->getUID());
+			if ($notify)
+			{
+				$comment = __("The issue was updated with the following change(s):\n%list_of_changes%", array('%list_of_changes%' => '* '.join("\n* ", $comment_lines)));
+				$this->addSystemComment(__('Issue updated'), $comment, TBGContext::getUser()->getUID());
+			}
 
 			if ($is_saved_estimated)
 			{

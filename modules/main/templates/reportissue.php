@@ -266,7 +266,7 @@
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
-							<?php include_template('main/textarea', array('area_name' => 'description', 'height' => '250px', 'width' => '990px', 'value' => ((isset($description)) ? $description : null))); ?>
+							<?php include_template('main/textarea', array('area_name' => 'description', 'height' => '250px', 'width' => '990px', 'value' => ((isset($selected_description)) ? $selected_description : null))); ?>
 						</td>
 					</tr>
 				</table>
@@ -277,7 +277,7 @@
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
-							<?php include_template('textarea', array('area_name' => 'reproduction_steps', 'height' => '250px', 'width' => '990px', 'value' => ((isset($reproduction_steps)) ? $reproduction_steps : null))); ?>
+							<?php include_template('textarea', array('area_name' => 'reproduction_steps', 'height' => '250px', 'width' => '990px', 'value' => ((isset($selected_reproduction_steps)) ? $selected_reproduction_steps : null))); ?>
 						</td>
 					</tr>
 				</table>
