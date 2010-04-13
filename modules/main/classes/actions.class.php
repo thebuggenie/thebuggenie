@@ -405,8 +405,6 @@
 							throw new Exception(__('To prevent automatic sign-ups, enter the verification number shown below.'));
 						}
 
-						/* FIXME send email */
-
 						$password = tbg_createpassword();
 						$user = TBGUser::createNew($username, $realname, $buddyname, TBGContext::getScope()->getID(), false, true, md5($password), $email, true);
 
