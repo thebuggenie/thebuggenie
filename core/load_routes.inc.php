@@ -22,6 +22,7 @@
 	$routes[] = array('about', '/about', 'main', 'about');
 	$routes[] = array('soap', '/soapmeup', 'soap', 'soapHandler');
 	$routes[] = array('wsdl', '/thebuggenie.wsdl', 'soap', 'getWSDL');
+	$routes[] = array('get_partial_for_backdrop', '/get/partials/:key/*', 'main', 'getBackdropPartial');
 	$routes[] = array('issue_upload', '/upload/:issue_id', 'main', 'upload', array('mode' => 'issue'));
 	$routes[] = array('showfile', '/files/show/:id', 'main', 'getFile', array('mode' => 'show'));
 	$routes[] = array('downloadfile', '/files/download/:id', 'main', 'getFile', array('mode' => 'download'));

@@ -8,7 +8,6 @@
 	<?php 
 
 		TBGEvent::createNew('core', 'viewissue_top', $theIssue)->trigger();
-//		require_once(TBGContext::getIncludePath() . 'js/viewissue_ajax.js.php');
 
 	?>
 	<?php if (TBGSettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>

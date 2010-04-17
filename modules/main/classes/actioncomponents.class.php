@@ -62,8 +62,8 @@
 		{
 			$this->friends = TBGContext::getUser()->getFriends();
 		}
-		
-		public function componentIssuedetailslistEditable()
+
+		protected function setupVariables()
 		{
 			$i18n = TBGContext::getI18n();
 			$this->statuses = TBGStatus::getAll();
@@ -83,9 +83,14 @@
 				$merged_methodname = "isCustomfield{$key}Merged";
 				$customfields_list[$key] = array('title' => $i18n->__($customdatatype->getDescription()), 'visible' => $this->issue->getIssuetype()->isFieldVisible($customdatatype->getKey()), 'changed' => $this->issue->$changed_methodname(), 'merged' => $this->issue->$merged_methodname(), 'name' => (($this->issue->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->issue->getCustomField($key)->getName() : ''), 'name_visible' => (bool) ($this->issue->getCustomField($key) instanceof TBGCustomDatatypeOption), 'noname_visible' => (bool) (!$this->issue->getCustomField($key) instanceof TBGCustomDatatypeOption), 'change_tip' => $i18n->__($customdatatype->getInstructions()), 'change_header' => $i18n->__($customdatatype->getDescription()), 'choices' => $customdatatype->getOptions(), 'clear' => $i18n->__('Clear this field'), 'select' => $i18n->__('%clear_this_field% or click to set a new value', array('%clear_this_field%' => '')));
 			}
-			
+
 			$this->fields_list = $fields_list;
 			$this->customfields_list = $customfields_list;
+		}
+		
+		public function componentIssuedetailslistEditable()
+		{
+			$this->setupVariables();
 		}
 		
 		public function componentHideableInfoBox()
@@ -113,6 +118,11 @@
 			}
 			$file = B2DB::getTable('TBGFilesTable')->doSelectById($this->file_id);
 			$this->file = array('id' => $file->get(TBGFilesTable::ID), 'filename' => $file->get(TBGFilesTable::ORIGINAL_FILENAME), 'description' => $file->get(TBGFilesTable::DESCRIPTION), 'timestamp' => $file->get(TBGFilesTable::UPLOADED_AT));
+		}
+
+		public function componentCloseissue()
+		{
+			$this->setupVariables();
 		}
 
 	}

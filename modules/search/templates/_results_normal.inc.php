@@ -25,7 +25,7 @@
 	<?php endif; ?>
 			<tr class="<?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?>">
 				<?php if (!TBGContext::isProjectContext()): ?>
-					<td style="padding-left: 5px;"><?php echo $issue->getProject()->getName(); ?></td>
+				<td style="padding-left: 5px;"><?php echo link_tag(make_url('project_issues', array('project_key' => $issue->getProject())), $issue->getProject()->getName()); ?></td>
 				<?php endif; ?>
 				<td>
 					<?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('title' => $issue->getIssueType()->getName())); ?>

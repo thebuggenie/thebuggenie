@@ -1878,5 +1878,24 @@
 				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Comment ID is invalid')));
 			}
 		}
+
+		public function runGetBackdropPartial(TBGRequest $request)
+		{
+			try
+			{
+				switch ($request->getParameter('key'))
+				{
+					case 'close_issue':
+						$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+						return $this->renderJSON(array('content' => $this->getComponentHTML('main/closeissue', array('issue' => $issue))));
+						break;
+				}
+			}
+			catch (Exception $e)
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('An error occured: %error_message%', array('%error_message%' => $e->getMessage()))));
+			}
+			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid template or parameter')));
+		}
+
 	}
-?>

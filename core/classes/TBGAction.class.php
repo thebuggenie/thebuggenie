@@ -81,7 +81,7 @@
 		/**
 		 * Renders JSON output, also takes care of setting the correct headers
 		 * 
-		 * @param string $text The array / text / object to render
+		 * @param array $content The array to render
 		 *  
 		 * @return boolean
 		 */

@@ -1259,7 +1259,7 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 #viewissue_saved .xboxcontent, #viewissue_unsaved .xboxcontent { padding: 5px; text-align: center; }
 #viewissue_changed .xboxcontent { height: 35px; padding: 5px 10px 5px 10px; color: #222; }
 #viewissue_changed input[type="submit"], #viewissue_being_worked_on input[type="submit"] { font-weight: bold; position: absolute; right: 10px; top: 15px; font-size: 13px; }
-#close_issue_fullpage input[type="submit"] { font-weight: bold; font-size: 13px; }
+#fullpage_backdrop input[type="submit"] { font-weight: bold; font-size: 13px; }
 #viewissue_changed a, #viewissue_duplicate a, #viewissue_nonexisting a, #viewissue_open_sameuser a, #viewissue_closed_sameuser a, #viewissue_closed a { font-size: 12px; font-weight: bold; }
 #viewissue_nonexisting { width: 700px; }
 #viewissue_open_sameuser { width: 650px; }
@@ -1339,12 +1339,12 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #issue_lefthand #more_actions { font-size: 13px; }
 #issue_lefthand #more_actions .xboxcontent { padding: 10px 5px 5px 10px; }
 #issue_lefthand #more_actions .box_header { font-weight: bold; padding: 5px 0 5px 0; }
-#issue_lefthand #more_actions ul, #close_issue_fullpage ul { list-style-type: none; padding: 0; margin: 0; clear: both; }
+#issue_lefthand #more_actions ul, #fullpage_backdrop ul { list-style-type: none; padding: 0; margin: 0; clear: both; }
 #issue_lefthand #more_actions ul li { min-height: 18px; }
-#issue_lefthand #more_actions ul li, #close_issue_fullpage ul li { font-size: 13px; font-weight: normal; margin: 0 0 3px 0; text-align: left; }
-#close_issue_fullpage ul li input[type="checkbox"] { margin-left: 0; }
-#close_issue_fullpage ul li { padding-left: 5px; margin-bottom: 5px; }
-#close_issue_fullpage ul { margin: 10px 0 5px 0; }
+#issue_lefthand #more_actions ul li, #fullpage_backdrop ul li { font-size: 13px; font-weight: normal; margin: 0 0 3px 0; text-align: left; }
+#fullpage_backdrop ul li input[type="checkbox"] { margin-left: 0; }
+#fullpage_backdrop ul li { padding-left: 5px; margin-bottom: 5px; }
+#fullpage_backdrop ul { margin: 10px 0 5px 0; }
 
 #dashboard_lefthand, #dashboard_righthand { vertical-align: top; font-size: 12px; }
 #dashboard_lefthand { width: 255px; }
