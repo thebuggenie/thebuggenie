@@ -551,8 +551,11 @@ Custom classes
 }
 
 .comment { padding-bottom: 10px; }
+.comment:target .comment_main { border: 1px dotted #CCC; background-color: #F0F7FF; }
 .comment_delete { margin-top: 10px !important; }
 .commenttitle { font-size: 13px; font-weight: bold; }
+.comment_hash { float: right; font-size: 23px; font-weight: normal; color: #B1B8E9; }
+.comments_none { font-size: 13px; font-weight: normal; }
 .commentdate { color: #AAA; font-weight: normal; }
 .commentheadertop { margin-top: 20px; margin-bottom: 5px; padding: 2px; border-bottom: 1px dotted #CCC; background-color: #F5F5F5; }
 .commentheadertop td { font-size: 14px; font-weight: bold; }

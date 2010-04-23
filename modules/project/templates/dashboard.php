@@ -46,7 +46,7 @@
 		</td>
 		<td style="width: auto; padding: 5px;">
 			<div style="clear: both; padding: 0 5px 5px 0;" id="project_header_container">
-				<?php echo image_tag($selected_project->getIcon()); ?>
+				<?php echo image_tag($selected_project->getIcon(), array(), $selected_project->hasIcon()); ?>
 				<div id="project_name"><?php echo $selected_project->getName(); ?> <span><?php echo $selected_project->getKey(); ?></span></div>
 				<div id="project_description"<?php if (!$selected_project->hasDescription()): ?> class="faded_dark"<?php endif; ?>>
 					<?php if ($selected_project->hasDescription()): ?>

@@ -515,13 +515,13 @@
 									</div>
 
 									<div id="comment_add_controls" class="comment_controls">
-										<input type="submit" class="comment_addsave" value="<?php echo __('Create comment'); ?>" /> <a href="javascript:void(0)" onClick="$('comment_add').hide();$('comment_add_button').show();"><?php echo __('or cancel'); ?></a>
+										<?php echo __('%create_comment% or %cancel%', array('%create_comment%' => '<input type="submit" class="comment_addsave" value="'.__('Create comment').'" />', '%cancel%' => '<a href="javascript:void(0)" onClick="$(\'comment_add\').hide();$(\'comment_add_button\').show();">'.__('cancel').'</a>')); ?>
 									</div>
 								</form>
 							</div>
 						</div>
 					<?php endif; ?>
-					<div class="faded_medium" id="comments_none" <?php if (count(TBGComment::getComments($theIssue->getID(), 1)) != 0): ?>style="display: none;"<?php endif; ?>><?php echo __('There are no comments'); ?></div>
+					<div class="faded_medium comments_none" id="comments_none" <?php if (count(TBGComment::getComments($theIssue->getID(), 1)) != 0): ?>style="display: none;"<?php endif; ?>><?php echo __('There are no comments'); ?></div>
 					<div id="comments_box">
 					<?php foreach (TBGComment::getComments($theIssue->getID(), 1) as $aComment): ?>
 						<?php include_template('main/comment', array('aComment' => $aComment, 'theIssue' => $theIssue)); ?>

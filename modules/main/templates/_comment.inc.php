@@ -1,6 +1,7 @@
-<div class="comment" id="comment_<?php echo $aComment->getID(); ?>">
-	<div style="padding: 5px;" id="comment_view_<?php echo $aComment->getID(); ?>">
+<div class="comment" id="comment_<?php echo $aComment->getTargetType(); ?>_<?php echo $aComment->getTargetID(); ?>_<?php echo $aComment->getID(); ?>">
+	<div style="padding: 5px;" id="comment_view_<?php echo $aComment->getID(); ?>" class="comment_main">
 		<div id="comment_<?php echo $aComment->getID(); ?>_header" class="commentheader">
+			<a href="#comment_<?php echo $aComment->getTargetType(); ?>_<?php echo $aComment->getTargetID(); ?>_<?php echo $aComment->getID(); ?>" class="comment_hash">#<?php echo $aComment->getCommentNumber(); ?></a>
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td valign="middle" class="commenttitle">

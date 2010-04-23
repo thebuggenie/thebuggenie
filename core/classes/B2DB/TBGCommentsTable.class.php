@@ -33,6 +33,7 @@
 		const UPDATED = 'comments.updated';
 		const DELETED = 'comments.deleted';
 		const MODULE = 'comments.module';
+		const COMMENT_NUMBER = 'comments.comment_number';
 		const SYSTEM_COMMENT = 'comments.system_comment';
 
 		public function __construct()
@@ -44,6 +45,7 @@
 			parent::_addText(self::CONTENT, false);
 			parent::_addInteger(self::POSTED, 10);
 			parent::_addInteger(self::UPDATED, 10);
+			parent::_addInteger(self::COMMENT_NUMBER, 10);
 			parent::_addBoolean(self::DELETED);
 			parent::_addBoolean(self::IS_PUBLIC, true);
 			parent::_addVarchar(self::MODULE, 50);
@@ -62,6 +64,17 @@
 			$crit->addOrderBy(self::POSTED, 'desc');
 			$res = $this->doSelect($crit);
 			return $res;
+		}
+
+		public function getNextCommentNumber($target_id, $target_type)
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::COMMENT_NUMBER, 'max_no', B2DBCriteria::DB_MAX, '', '+1');
+			$crit->addWhere(self::TARGET_ID, $target_id);
+			$crit->addWhere(self::TARGET_TYPE, $target_type);
+
+			$row = $this->doSelectOne($crit);
+			return ($row->get('max_no')) ? $row->get('max_no') : 1;
 		}
 
 	}

@@ -51,6 +51,14 @@
 									</form>
 								</td>
 							</tr>
+							<tr id="adduser_div">
+								<td style="padding: 3px;"><label for="adduser"><?php echo __('Enter username'); ?>:</label></td>
+								<td style="padding: 3px;">
+									<form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="showUsers('<?php echo make_url('configure_users_find_user'); ?>', $('findusers').getValue());return false;">
+										<input type="text" name="findusers" id="findusers" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo __('Find'); ?>" style="font-size: 12px; font-weight: bold;">
+									</form>
+								</td>
+							</tr>
 						</table>
 						</div>
 						<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>

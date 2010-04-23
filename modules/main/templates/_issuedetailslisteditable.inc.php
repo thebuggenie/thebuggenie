@@ -5,7 +5,7 @@
 	</div>
 	<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent"> </div>
 </div>
-<div class="rounded_box iceblue_borderless" id="viewissue_left_box_top">
+<div class="rounded_box mediumgrey_borderless" id="viewissue_left_box_top">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="padding: 5px;">
 		<div id="viewissue_left_box_issuetype">

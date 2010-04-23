@@ -33,7 +33,7 @@
 				<?php endif; ?>
 				<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
 				<form action="<?php echo make_url('project_reportissue', array('project_key' => $project->getKey())); ?>" method="get" style="clear: none; display: inline; width: 160px;">
-					<div class="report_button" style="width: 150px;"><input type="submit" value="<?php echo __('Report an issue'); ?>"></div>
+					<table border="0" cellpadding="0" cellspacing="0" style="float: right;"><tr><td class="nice_button report_button"><input type="submit" value="<?php echo __('Report an issue'); ?>"></td></tr></table>
 				</form>
 			</div>
 			<?php if ($project->isIssuetypesVisibleInFrontpageSummary() && count($project->getVisibleIssuetypes())): ?>

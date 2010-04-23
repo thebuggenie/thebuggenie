@@ -44,6 +44,8 @@
 		
 		protected $_systemcomment = false;
 
+		protected $_comment_number = 0;
+
 
 		/**
 		 * Class constructor
@@ -68,6 +70,7 @@
 			$this->_updatedby = $row->get(TBGCommentsTable::UPDATED_BY);
 			$this->_target_id = $row->get(TBGCommentsTable::TARGET_ID);
 			$this->_target_type = $row->get(TBGCommentsTable::TARGET_TYPE);
+			$this->_comment_number = $row->get(TBGCommentsTable::COMMENT_NUMBER);
 			$this->_module = $row->get(TBGCommentsTable::MODULE);
 			$this->_systemcomment = ($row->get(TBGCommentsTable::SYSTEM_COMMENT) == 1) ? true : false;
 			$this->_is_public = ($row->get(TBGCommentsTable::IS_PUBLIC) == 1) ? true : false;
@@ -118,6 +121,7 @@
 				$crit->addInsert(TBGCommentsTable::IS_PUBLIC, (int) $is_public);
 				$crit->addInsert(TBGCommentsTable::SYSTEM_COMMENT, $system_comment);
 				$crit->addInsert(TBGCommentsTable::MODULE, $module);
+				$crit->addInsert(TBGCommentsTable::COMMENT_NUMBER, B2DB::getTable('TBGCommentsTable')->getNextCommentNumber($target_id, $target_type));
 				$crit->addInsert(TBGCommentsTable::SCOPE, TBGContext::getScope()->getID());
 				$res = B2DB::getTable('TBGCommentsTable')->doInsert($crit);
 				$comment = new TBGComment($res->getInsertID());
@@ -371,6 +375,11 @@
 		public function getModuleName()
 		{
 			return $this->_module;
+		}
+
+		public function getCommentNumber()
+		{
+			return (int) $this->_comment_number;
 		}
 		
 	}
