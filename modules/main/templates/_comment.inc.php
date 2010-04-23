@@ -1,17 +1,22 @@
 <div class="comment" id="comment_<?php echo $aComment->getID(); ?>">
 	<div style="padding: 5px;" id="comment_view_<?php echo $aComment->getID(); ?>">
-		<div class="commentheader" id="comment_<?php echo $aComment->getID(); ?>_header"><?php echo $aComment->getTitle(); ?></div>
-		<?php
-			if ($aComment->isSystemComment())
-			{
-				$postedby = __('on behalf of ');
-			}
-			else
-			{
-				$postedby = __('by ');
-			}
-		?>
-		<div class="commentdate" id="comment_<?php echo $aComment->getID(); ?>_date"><table cellpadding="0" cellspacing="0"><tr><td><?php echo __('Posted').' <i>'.tbg_formattime($aComment->getPosted(), 12).'</i> '.$postedby; ?></td><td><table style="display: inline;"><?php echo include_component('main/userdropdown', array('user' => $aComment->getPostedBy(), 'size' => 'small')); ?></table></td></tr></table></div>
+		<div id="comment_<?php echo $aComment->getID(); ?>_header" class="commentheader">
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td valign="middle" class="commenttitle">
+						<?php if ($aComment->isSystemComment()): ?>
+							<?php $title_string = '%comment_title% on behalf of %user%'; ?>
+						<?php else: ?>
+							<?php $title_string = '%comment_title% posted by %user%'; ?>
+						<?php endif; ?>
+						<?php echo __($title_string, array('%comment_title%' => $aComment->getTitle(), '%user%' => '</td><td><table style="display: inline;" cellpadding="0" cellspacing="0">' . get_component_html('main/userdropdown', array('user' => $aComment->getPostedBy(), 'size' => 'small')) . '</table>')); ?>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="commentdate" id="comment_<?php echo $aComment->getID(); ?>_date"><?php echo tbg_formattime($aComment->getPosted(), 12); ?></td>
+				</tr>
+			</table>
+		</div>
 		<div class="commentbody" id="comment_<?php echo $aComment->getID(); ?>_body"><?php echo tbg_parse_text($aComment->getContent()); ?></div>
 		<?php if ($aComment->canUserEditComment() || $aComment->canUserDeleteComment()) : ?>
 			<div class="commenttools">

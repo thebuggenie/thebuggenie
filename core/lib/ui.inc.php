@@ -430,26 +430,48 @@
 
 	/**
 	 * Includes a template with specified parameters
-	 * 
-	 * @param string	$template	name of template to load, or module/template to load 
+	 *
+	 * @param string	$template	name of template to load, or module/template to load
 	 * @param array 	$params  	key => value pairs of parameters for the template
 	 */
 	function include_template($template, $params = array())
 	{
 		return TBGActionComponent::includeTemplate($template, $params);
 	}
-	
+
+	/**
+	 * Return a rendered template with specified parameters
+	 *
+	 * @param string	$template	name of template to load, or module/template to load
+	 * @param array 	$params  	key => value pairs of parameters for the template
+	 */
+	function get_template_html($template, $params = array())
+	{
+		return TBGAction::returnTemplateHTML($template, $params);
+	}
+
 	/**
 	 * Includes a component with specified parameters
-	 * 
-	 * @param string	$component	name of component to load, or module/component to load 
+	 *
+	 * @param string	$component	name of component to load, or module/component to load
 	 * @param array 	$params  	key => value pairs of parameters for the template
 	 */
 	function include_component($component, $params = array())
 	{
 		return TBGActionComponent::includeComponent($component, $params);
 	}
-	
+
+	/**
+	 * Return a rendered component with specified parameters
+	 *
+	 * @param string	$component	name of component to load, or module/component to load
+	 * @param array 	$params  	key => value pairs of parameters for the template
+	 */
+	function get_component_html($component, $params = array())
+	{
+		return TBGAction::returnComponentHTML($component, $params);
+	}
+
 	/**
 	 * Generate a url based on a route
 	 * 

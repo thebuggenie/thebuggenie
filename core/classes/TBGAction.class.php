@@ -176,6 +176,25 @@
 			echo TBGActionComponent::includeComponent($template, $params);
 			return true;
 		}
+
+		/**
+		 * Returns the HTML output from a component, but doesn't render it
+		 *
+		 * @param string $template the component name
+		 * @param array $params component parameters
+		 *
+		 * @return boolean
+		 */
+		public static function returnComponentHTML($template, $params = array())
+		{
+			$current_content = ob_get_clean();
+			ob_start();
+			echo TBGActionComponent::includeComponent($template, $params);
+			$component_content = ob_get_clean();
+			ob_start();
+			echo $current_content;
+			return $component_content;
+		}
 		
 		/**
 		 * Returns the HTML output from a component, but doesn't render it
@@ -187,34 +206,9 @@
 		 */
 		public function getComponentHTML($template, $params = array())
 		{
-			$current_content = ob_get_clean();
-			ob_start();
-			$this->renderComponent($template, $params);
-			$component_content = ob_get_clean();
-			ob_start();
-			echo $current_content;
-			return $component_content;
+			return self::returnComponentHTML($template, $params);
 		}
 
-		/**
-		 * Returns the HTML output from a template, but doesn't render it
-		 * 
-		 * @param string $template the template name
-		 * @param array $params template parameters
-		 * 
-		 * @return boolean
-		 */
-		public function getTemplateHTML($template, $params = array())
-		{
-			$current_content = ob_get_clean();
-			ob_start();
-			$this->renderTemplate($template, $params);
-			$template_content = ob_get_clean();
-			ob_start();
-			echo $current_content;
-			return $template_content;
-		}
-		
 		/**
 		 * Returns the HTML output from a template, but doesn't render it
 		 *
@@ -234,4 +228,17 @@
 			return $template_content;
 		}
 
+		/**
+		 * Returns the HTML output from a template, but doesn't render it
+		 * 
+		 * @param string $template the template name
+		 * @param array $params template parameters
+		 * 
+		 * @return boolean
+		 */
+		public function getTemplateHTML($template, $params = array())
+		{
+			return self::returnTemplateHTML($template, $params);
+		}
+		
 	}

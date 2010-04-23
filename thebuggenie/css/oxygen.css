@@ -326,10 +326,8 @@ Custom classes
 
 .imgtd_bud
 {
-	width: 26px;
-	padding: 1px;
-	padding-top: 4px;
-	padding-bottom: 2px;
+	width: 16px;
+	padding: 0 5px 0 5px;
 	text-align: center;
 }
 
@@ -552,42 +550,14 @@ Custom classes
 	font-size: 10px;
 }
 
-#comment_add_button
-{
-	font-weight: bold;
-	font-size: 13px;
-	margin: 5px;
-	margin-bottom: 10px;
-}
-
-#comment_add_button img
-{
-	vertical-align: bottom;
-}
-
-.comment {
-	padding-bottom: 10px;
-}
-
-.comment_delete
-{
-	margin-top: 10px !important;
-}
-
-.commentheader
-{
-	font-size: 14px;
-	font-weight: bold;
-}
-
-.commentheadertop
-{
-	margin-top: 20px;
-	margin-bottom: 10px;
-	padding: 4px;
-	font-size: 14px;
-	font-weight: bold;
-}
+.comment { padding-bottom: 10px; }
+.comment_delete { margin-top: 10px !important; }
+.commenttitle { font-size: 13px; font-weight: bold; }
+.commentdate { color: #AAA; font-weight: normal; }
+.commentheadertop { margin-top: 20px; margin-bottom: 5px; padding: 2px; border-bottom: 1px dotted #CCC; background-color: #F5F5F5; }
+.commentheadertop td { font-size: 14px; font-weight: bold; }
+.commentheadertop td.nice_button input { font-size: 13px; }
+.commentheader { padding: 0 0 5px 0; border-bottom: 1px dotted #CCC; }
 
 .comment_add_title
 {
@@ -597,12 +567,13 @@ Custom classes
 
 .commentbody
 {
-	padding-bottom: 5px;
-	font-size: 13px;
+	padding: 5px 5px 5px 0;
+	font-size: 12px;
 }
 
 .commenttools
 {
+	display: none;
 	padding: 5px;
 	border-top: 1px solid #CCC;
 }
@@ -620,8 +591,9 @@ Custom classes
 
 .comment_edit, .comment_add_main
 {
-	padding-left: 10px;
-	padding-right: 15px;
+	padding: 5px;
+	background-color: #F1F1F1;
+	border: 1px dotted #CCC;
 }
 
 .comment_editsave, .comment_addsave
@@ -1250,9 +1222,10 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .reportissue_error label { color: #955; }
 .reportissue_error .faded_dark { color: #AA8D8D; }
 
-.report_button              { padding: 0px; color: #FFF; border: 0; position: relative; display: inline; text-align: center; margin-left: 10px; }
-.report_button input        { border: 0; border-top: 1px solid #9D9; color: #FFF; padding: 3px; font-weight: bold; background-color: #5A5; cursor: pointer; }
-.report_button input:active { background-color: #7B7; }
+.nice_button              { padding: 0px; color: #FFF; border: 0; position: relative; display: inline; text-align: center; margin-left: 10px; }
+.nice_button.report_button input { font-size: 13px; }
+.nice_button input        { border: 0; border-top: 1px solid #9D9; color: #FFF; padding: 3px; font-weight: bold; background-color: #5A5; cursor: pointer; }
+.nice_button input:active { background-color: #7B7; }
 
 #viewissue_duplicate, #viewissue_nonexisting, #viewissue_open_sameuser, #viewissue_closed_sameuser, #viewissue_closed { margin: 10px auto 5px auto; }
 #viewissue_changed, #viewissue_merge_errors, #viewissue_saved, #viewissue_unsaved, #viewissue_being_worked_on { margin: 5px 5px 0 5px; position: relative; }

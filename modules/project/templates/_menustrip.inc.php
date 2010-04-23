@@ -56,7 +56,7 @@
 		</div>
 		<?php if ($tbg_response->getPage() != 'reportissue' && (!isset($hide_button) || (isset($hide_button) && $hide_button == false))): ?>
 			<form action="<?php echo make_url('project_reportissue', array('project_key' => $project->getKey())); ?>" method="get" style="clear: none; display: inline; position: absolute; right: 3px; top: 3px;">
-				<div class="report_button" style="width: 150px;"><input type="submit" value="<?php echo __('Report an issue'); ?>"></div>
+				<table border="0" cellpadding="0" cellspacing="0" style="float: right;"><tr><td class="nice_button report_button"><input type="submit" value="<?php echo __('Report an issue'); ?>"></td></tr></table>
 			</form>
 		<?php endif; ?>
 	<?php endif; ?>
