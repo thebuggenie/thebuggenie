@@ -134,10 +134,11 @@
 		<?php endif; ?>
 		
 		<div style="clear: both;"> </div>
-	</div>
+	<?php /*</div>
 </div>
 <div class="rounded_box lightyellow_borderless" style="margin: 0;<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_field">
-	<div class="xboxcontent" style="vertical-align: middle; padding: 0 10px 5px 5px;">
+	<div class="xboxcontent" style="vertical-align: middle; padding: 0 10px 5px 5px;"> */ ?>
+	<div style="margin: 0;<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_field">
 		<dl class="viewissue_list" id="pain_bug_type_field">
 			<dt id="pain_bug_type_header" class="<?php if ($issue->isPainBugTypeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainBugTypeMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Type of bug'); ?></dt>
 			<dd id="pain_bug_type_content" class="<?php if ($issue->isPainBugTypeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainBugTypeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
@@ -241,9 +242,9 @@
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>
 	</div>
-</div>
+<?php /*</div>
 <div class="rounded_box mediumgrey_borderless" style="margin: 0; clear: both;" id="viewissue_left_box_bottom">
-	<div class="xboxcontent" style="vertical-align: middle; padding: 0 10px 0 5px;">
+	<div class="xboxcontent" style="vertical-align: middle; padding: 0 10px 0 5px;"> */ ?>
 		<dl class="viewissue_list" id="edition_field"<?php if (!($issue->getProject()->isEditionsEnabled() && $issue->isEditionsVisible())): ?> style="display: none;"<?php endif; ?>>
 			<dt><?php echo __('Edition(s)'); ?></dt>
 			<dd>
@@ -496,7 +497,7 @@
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 </div>
-<div class="rounded_box mediumgrey_borderless" id="more_actions_div" style="">
+<div class="rounded_box iceblue_borderless" id="more_actions_div" style="">
 	<div class="xboxcontent" style="padding: 5px;">
 		<div style="text-align: center; font-size: 14px; width: 120px; margin: 5px auto 0 auto; padding: 5px 0 5px 0; height: 20px;">
 			<a href="javascript:void(0);" onclick="$('more_actions').show();$('more_actions_div').hide();"><?php echo image_tag('action_add_small_faded.png', array('style' => 'float: left; margin-right: 5px;')); ?><span style="float: left;"><?php echo __('More actions'); ?></span></a>

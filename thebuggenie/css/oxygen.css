@@ -1269,7 +1269,8 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #title_content.issue_detail_unmerged { background-color: #E0AC9C; }
 #title_content.issue_detail_changed { background-color: #FFF299; }
 
-#title_form { display: inline; font-size: 12px}
+#title_form { display: inline; font-size: 15px}
+#title_form input[type="text"] { font-size: 17px; margin-right: 5px; width: 300px; }
 .viewissue_description_header, .viewissue_reproduction_steps_header { font-weight: bold; font-size: 14px; /*border-bottom: 1px solid #DDD;*/ padding: 0 0 5px 0; }
 .viewissue_description, .viewissue_reproduction_steps { font-size: 13px; font-weight: normal; padding: 5px; margin: 0; }
 
