@@ -10,7 +10,7 @@
 		<td valign="top">
 			<div style="width: 740px;" id="config_permissions" class="config_permissions">
 				<div class="configheader"><?php echo __('Configure permissions'); ?></div>
-				<?php include_component('configuration/permissionsconfigurator', array('access_level' => $access_level)); ?>
+				<?php include_component('configuration/permissionsconfigurator', array('access_level' => $access_level, 'base_id' => 'configurator')); ?>
 			</div>
 		</td>
 	</tr>
