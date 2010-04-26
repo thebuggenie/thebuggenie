@@ -1,4 +1,5 @@
-<div class="rounded_box borderless" id="wiki_menu" style="margin: 10px 0 5px 5px;">
+<?php include_template('main/menulinks', array('links' => $links, 'target_type' => 'wiki', 'target_id' => $links_target_id, 'title' => __('Wiki menu'))); ?>
+<?php /*<div class="rounded_box borderless" id="wiki_menu" style="margin: 10px 0 5px 5px;">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="padding: 5px;">
 		<div class="header"><?php echo __('Wiki menu'); ?></div>
@@ -43,7 +44,7 @@
 		</div>
 	</div>
 	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-</div>
+</div>*/?>
 <?php if ($article instanceof TBGWikiArticle): ?>
 	<div style="margin: 10px 0 5px 5px;">
 	<div class="left_menu_header"><?php echo __('Links to this article'); ?></div>

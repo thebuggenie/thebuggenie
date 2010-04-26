@@ -200,11 +200,11 @@ function resetFadedBackdrop()
 	$('fullpage_backdrop_content').update('');
 }
 
-function addMainMenuLink(url)
+function addLink(url, target_type, target_id)
 {
-	var params = $('attach_link_form').serialize();
-	$('attach_link_indicator').show();
-	$('attach_link_submit').hide();
+	var params = $('attach_link_' + target_type + '_' + target_id + '_form').serialize();
+	$('attach_link_' + target_type + '_' + target_id + '_indicator').show();
+	$('attach_link_' + target_type + '_' + target_id + '_submit').hide();
 	new Ajax.Request(url, {
 		method: 'post',
 		parameters: params,
@@ -213,10 +213,10 @@ function addMainMenuLink(url)
 			var json = transport.responseJSON;
 			if (json && !json.failed)
 			{
-				$('attach_link_form').reset();
-				$('attach_link').hide();
-				$('main_menu_no_links').hide();
-				$('main_menu_links').insert({bottom: json.content});
+				$('attach_link_' + target_type + '_' + target_id + '_form').reset();
+				$('attach_link_' + target_type + '_' + target_id).hide();
+				$(target_type + '_' + target_id + '_no_links').hide();
+				$(target_type + '_' + target_id + '_links').insert({bottom: json.content});
 				successMessage(json.message);
 			}
 			else if (json && (json.failed || json.error))
@@ -227,8 +227,8 @@ function addMainMenuLink(url)
 			{
 				failedMessage(transport.responseText);
 			}
-			$('attach_link_indicator').hide();
-			$('attach_link_submit').show();
+			$('attach_link_' + target_type + '_' + target_id + '_indicator').hide();
+			$('attach_link_' + target_type + '_' + target_id + '_submit').show();
 		},
 		onFailure: function(transport) {
 			var json = transport.responseJSON;
@@ -240,31 +240,31 @@ function addMainMenuLink(url)
 			{
 				failedMessage(transport.responseText);
 			}
-			$('attach_link_indicator').hide();
-			$('attach_link_submit').show();
+			$('attach_link_' + target_type + '_' + target_id + '_indicator').hide();
+			$('attach_link_' + target_type + '_' + target_id + '_submit').show();
 		}
 	});
 }
 
-function removeMainMenuLink(url, link_id)
+function removeLink(url, target_type, target_id, link_id)
 {
 	new Ajax.Request(url, {
 		method: 'post',
 		requestHeaders: {Accept: 'application/json'},
 		onLoading: function() {
-			$('main_menu_links_'+ link_id + '_remove_link').hide();
-			$('main_menu_links_'+ link_id + '_remove_indicator').show();
+			$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_link').hide();
+			$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_indicator').show();
 		},
 		onSuccess: function(transport) {
 			var json = transport.responseJSON;
 			if (json && json.failed == false)
 			{
-				$('main_menu_links_' + link_id).remove();
-				$('main_menu_links_' + link_id + '_remove_confirm').remove();
+				$(target_type + '_' + target_id + '_links_' + link_id).remove();
+				$(target_type + '_' + target_id + '_links_' + link_id + '_remove_confirm').remove();
 				successMessage(json.message);
-				if ($('main_menu_links').childElements().size() == 0)
+				if ($(target_type + '_' + target_id + '_links').childElements().size() == 0)
 				{
-					$('main_menu_no_links').show();
+					$(target_type + '_' + target_id + '_no_links').show();
 				}
 			}
 			else
@@ -277,13 +277,13 @@ function removeMainMenuLink(url, link_id)
 				{
 					failedMessage(transport.responseText);
 				}
-				$('main_menu_links_'+ link_id + '_remove_link').show();
-				$('main_menu_links_'+ link_id + '_remove_indicator').hide();
+				$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_link').show();
+				$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_indicator').hide();
 			}
 		},
 		onFailure: function(transport) {
-			$('main_menu_links_'+ link_id + '_remove_link').show();
-			$('main_menu_links_'+ link_id + '_remove_indicator').hide();
+			$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_link').show();
+			$(target_type + '_' + target_id + '_links_'+ link_id + '_remove_indicator').hide();
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{

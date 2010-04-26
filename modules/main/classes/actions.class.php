@@ -1758,17 +1758,17 @@
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You can not remove items from this issue')));
 		}
 
-		public function runAttachLinkToMainMenu(TBGRequest $request)
+		public function runAttachLink(TBGRequest $request)
 		{
-			$link_id = TBGLinksTable::getTable()->addMainMenuLink($request->getParameter('link_url'), $request->getParameter('description'));
-			return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Link added!'), 'content' => $this->getTemplateHTML('main/mainmenulink', array('link_id' => $link_id, 'link' => array('description' => $request->getParameter('description'), 'url' => $request->getParameter('link_url'))))));
+			$link_id = TBGLinksTable::getTable()->addLink($request->getParameter('target_type'), $request->getParameter('target_id'), $request->getParameter('link_url'), $request->getParameter('description'));
+			return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Link added!'), 'content' => $this->getTemplateHTML('main/menulink', array('link_id' => $link_id, 'link' => array('target_type' => $request->getParameter('target_type'), 'target_id' => $request->getParameter('target_id'), 'description' => $request->getParameter('description'), 'url' => $request->getParameter('link_url'))))));
 		}
 
-		public function runRemoveLinkFromMainMenu(TBGRequest $request)
+		public function runRemoveLink(TBGRequest $request)
 		{
 			if ($request->getParameter('link_id') != 0)
 			{
-				TBGLinksTable::getTable()->doDeleteById($request->getParameter('link_id'));
+				TBGLinksTable::getTable()->removeByTargetTypeTargetIDandLinkID($request->getParameter('target_type'), $request->getParameter('target_id'), $request->getParameter('link_id'));
 				return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Link removed!')));
 			}
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a valid link id')));

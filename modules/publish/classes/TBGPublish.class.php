@@ -412,7 +412,10 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 				$article_name = 'Category:HowTo';
 				$content = "[[Category:Help]]";
 				TBGWikiArticle::createNew($article_name, $content, true, $scope);
-
+				
+				TBGLinksTable::getTable()->addLink('wiki', 0, 'MainPage', 'Wiki Frontpage', 1, $scope);
+				TBGLinksTable::getTable()->addLink('wiki', 0, 'WikiFormatting', 'Formatting help', 2, $scope);
+				TBGLinksTable::getTable()->addLink('wiki', 0, 'Category:Help', 'Help topics', 3, $scope);
 			}
 			catch (Exception $e)
 			{
@@ -584,9 +587,9 @@ The practice is also known by many other names, such as '''!BumpCaps''', '''!Bee
 			return $articles;
 		}
 
-		public function getMenuItems()
+		public function getMenuItems($target_id = 0)
 		{
-			return array();
+			return TBGLinksTable::getTable()->getLinks('wiki', $target_id);
 		}
 
 		public function getUserDrafts()

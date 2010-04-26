@@ -31,7 +31,8 @@
 		public function componentLeftmenu()
 		{
 			$this->show_article_options = (bool) ($this->article instanceof TBGWikiArticle);
-			$this->links = TBGContext::getModule('publish')->getMenuItems();
+			$this->links_target_id = (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0;
+			$this->links = TBGContext::getModule('publish')->getMenuItems($this->links_target_id);
 			$this->user_drafts = TBGContext::getModule('publish')->getUserDrafts();
 			$this->whatlinkshere = ($this->article instanceof TBGWikiArticle) ? $this->article->getLinkingArticles() : null;
 		}

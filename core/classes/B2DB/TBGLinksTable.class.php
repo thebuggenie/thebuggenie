@@ -25,7 +25,8 @@
 		const URL = 'links.url';
 		const LINK_ORDER = 'links.link_order';
 		const DESCRIPTION = 'links.description';
-		const ISSUE = 'links.issue';
+		const TARGET_TYPE = 'links.target_type';
+		const TARGET_ID = 'links.target_id';
 		const SCOPE = 'links.scope';
 
 		/**
@@ -43,23 +44,53 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::URL, 300);
 			parent::_addInteger(self::LINK_ORDER, 3);
+			parent::_addVarchar(self::TARGET_TYPE, 30);
+			parent::_addInteger(self::TARGET_ID, 10);
 			parent::_addVarchar(self::DESCRIPTION, 100, '');
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::ISSUE, B2DB::getTable('TBGIssuesTable'), TBGIssuesTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
 		}
 		
-		public function getMainLinks()
+		public function addLink($target_type, $target_id = 0, $url = null, $description = null, $link_order = null, $scope = null)
+		{
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope; 
+			if ($link_order === null)
+			{
+				$crit = $this->getCriteria();
+				$crit->addSelectionColumn(self::LINK_ORDER, 'max_order', B2DBCriteria::DB_MAX, '', '+1');
+				$crit->addWhere(self::TARGET_TYPE, $target_type);
+				$crit->addWhere(self::TARGET_ID, $target_id);
+				$crit->addWhere(self::SCOPE, $scope);
+	
+				$row = $this->doSelectOne($crit);
+				$link_order = ($row->get('max_order')) ? $row->get('max_order') : 1;
+			}
+			
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::TARGET_TYPE, $target_type);
+			$crit->addInsert(self::TARGET_ID, $target_id);
+			$crit->addInsert(self::URL, $url);
+			$crit->addInsert(self::DESCRIPTION, $description);
+			$crit->addInsert(self::LINK_ORDER, $link_order);
+			$crit->addInsert(self::UID, (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0);
+			$crit->addInsert(self::SCOPE, $scope);
+			$res = $this->doInsert($crit);
+
+			return $res->getInsertID();
+		}
+		
+		public function getLinks($target_type, $target_id = 0)
 		{
 			$links = array();
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE, 0);
+			$crit->addWhere(self::TARGET_TYPE, $target_type);
+			$crit->addWhere(self::TARGET_ID, $target_id);
 			$crit->addOrderBy(self::LINK_ORDER, B2DBCriteria::SORT_ASC);
 			if ($res = $this->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$links[$row->get(self::ID)] = array('url' => $row->get(self::URL), 'description' => $row->get(self::DESCRIPTION));
+					$links[$row->get(self::ID)] = array('target_type' => $row->get(self::TARGET_TYPE), 'target_id' => $row->get(self::TARGET_ID), 'url' => $row->get(self::URL), 'description' => $row->get(self::DESCRIPTION));
 				}
 			}
 			return $links;
@@ -67,71 +98,46 @@
 		
 		public function addLinkToIssue($issue_id, $url, $description = null)
 		{
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::UID, TBGContext::getUser()->getID());
-			$crit->addInsert(self::ISSUE, $issue_id);
-			$crit->addInsert(self::URL, $url);
-			if ($description !== null)
-			{
-				$crit->addInsert(self::DESCRIPTION, $description);
-			}
-			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$res = $this->doInsert($crit);
-
-			return $res->getInsertID();
+			return $this->addLink('issue', $issue_id, $url, $description);
+		}
+		
+		public function getMainLinks()
+		{
+			return $this->getLinks('main_menu');
 		}
 		
 		public function getByIssueID($issue_id)
 		{
-			$links = array();
+			return $this->getLinks('issue', $issue_id);
+		}
+		
+		public function removeByTargetTypeTargetIDandLinkID($target_type, $target_id, $link_id)
+		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE, $issue_id);
-			$crit->addOrderBy(self::ID, B2DBCriteria::SORT_ASC);
-			if ($res = $this->doSelect($crit))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$links[$row->get(self::ID)] = array('url' => $row->get(self::URL), 'description' => $row->get(self::DESCRIPTION));
-				}
-			}
-			return $links;
+			$crit->addWhere(self::TARGET_TYPE, $target_type);
+			$crit->addWhere(self::TARGET_ID, $target_id);
+			$crit->addWhere(self::ID, $link_id);
+			$res = $this->doDelete($crit);
+			
+			return true;
 		}
 
 		public function removeByIssueIDandLinkID($issue_id, $link_id)
 		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE, $issue_id);
-			$crit->addWhere(self::ID, $link_id);
-			$res = $this->doDelete($crit);
+			return $this->removeByTargetTypeTargetIDandLinkID('issue', $issue_id, $link_id);
 		}
 		
-		public function addMainMenuLink($url = null, $description = null, $link_order = null)
+		public function addMainMenuLink($url = null, $description = null, $link_order = null, $scope = null)
 		{
-			if ($link_order === null)
-			{
-				$crit = $this->getCriteria();
-				$crit->addSelectionColumn(self::LINK_ORDER, 'max_order', B2DBCriteria::DB_MAX, '', '+1');
-				$crit->addWhere(self::ISSUE, '');
-	
-				$row = $this->doSelectOne($crit);
-				$link_order = ($row->get('max_order')) ? $row->get('max_order') : 1;
-			}
-			
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::URL, (string) $url);
-			$crit->addInsert(self::DESCRIPTION, (string) $description);
-			$crit->addInsert(self::LINK_ORDER, $link_order);
-			$id = $this->doInsert($crit)->getInsertID();
-			
-			return $id;
+			return $this->addLink('main_menu', 0, $url, $description, $link_order, $scope);
 		}
 
 		public function loadFixtures($scope)
 		{
-			$this->addMainMenuLink('http://www.thebuggenie.com', 'The Bug Genie homepage', 1);
-			$this->addMainMenuLink('http://www.thebuggenie.com/forum', 'The Bug Genie forums', 2);
-			$this->addMainMenuLink();
-			$this->addMainMenuLink('http://www.thebuggenie.com/b2', 'Online issue tracker');
+			$this->addMainMenuLink('http://www.thebuggenie.com', 'The Bug Genie homepage', 1, $scope);
+			$this->addMainMenuLink('http://www.thebuggenie.com/forum', 'The Bug Genie forums', 2, $scope);
+			$this->addMainMenuLink(null, null, 3, $scope);
+			$this->addMainMenuLink('http://www.thebuggenie.com/b2', 'Online issue tracker', 4, $scope);
 		}
 		
 	}
