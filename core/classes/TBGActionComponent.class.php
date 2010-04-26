@@ -101,6 +101,11 @@
 			$tbg_response = TBGContext::getResponse();
 			
 			/**
+			 * @global TBGRequest The request object
+			 */
+			$tbg_routing = TBGContext::getRouting();
+			
+			/**
 			 * @global TBGUser The user object
 			 */
 			$tbg_user = TBGContext::getUser();

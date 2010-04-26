@@ -1358,6 +1358,8 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 .menu_links .header { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
 .menu_links .content table td { font-size: 12px; padding: 1px; }
 .menu_links .content a { font-weight: bold; }
+.menu_links .content a.selected { font-weight: bold; color: #006700; }
+.menu_links .content a.selected:hover { font-weight: bold; color: #00A400; }
 .menu_links .content table td img { display: none; }
 .menu_links.menu_editing .content table td img { display: inline; }
 

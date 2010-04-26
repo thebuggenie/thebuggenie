@@ -1581,6 +1581,11 @@
 						 */
 						$tbg_response = self::getResponse();
 
+						/**
+						 * @global TBGResponse The action object
+						 */
+						$tbg_routing = self::getRouting();
+
 						// Load the "ui" library, since this is used a lot
 						self::loadLibrary('ui');
 
