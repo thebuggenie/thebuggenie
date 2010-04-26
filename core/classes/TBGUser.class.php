@@ -1665,6 +1665,16 @@
 		}
 
 		/**
+		 * Return if the user can edit the main menu
+		 *
+		 * @return boolean
+		 */
+		public function canEditMainMenu()
+		{
+			return (bool) ($this->hasPermission('caneditmainmenu'));
+		}
+
+		/**
 		 * Return if the user can see comments
 		 *
 		 * @return boolean

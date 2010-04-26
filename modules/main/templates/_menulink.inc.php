@@ -10,14 +10,14 @@
 			&nbsp;
 		<?php endif; ?>
 	</td>
-	<?php if (true): ?>
+	<?php if ($tbg_user->canEditMainMenu()): ?>
 		<td style="width: 20px;">
 			<?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'image', 'id' => $link['target_type'].'_'.$link['target_id'].'_links_' . $link_id . '_remove_link', 'onclick' => "$('{$link['target_type']}_{$link['target_id']}_links_{$link_id}_remove_confirm').toggle();")); ?>
 			<?php echo image_tag('spinning_16.gif', array('id' => "{$link['target_type']}_{$link['target_id']}_links_{$link_id}_remove_indicator", 'style' => 'display: none;')); ?>
 		</td>
 	<?php endif; ?>
 </tr>
-<?php if (true): ?>
+<?php if ($tbg_user->canEditMainMenu()): ?>
 	<tr id="<?php echo $link['target_type']; ?>_<?php echo $link['target_id']; ?>_links_<?php echo $link_id; ?>_remove_confirm" style="display: none;">
 		<td colspan="2">
 			<div class="rounded_box white" style="position: relative; clear: both; left: auto; top: auto; margin: 0; width: auto;">
