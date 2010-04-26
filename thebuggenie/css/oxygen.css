@@ -1356,9 +1356,11 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #scrum ul li .header, .infobox .header { font-size: 14px; font-weight: bold; }
 #scrum ul li .content { padding-top: 3px; line-height: 15px; font-size: 13px; font-weight: normal; margin-bottom: 12px; }
 #main_menu .header { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
-#main_menu .content ul { list-style-type: none; margin: 0; padding: 0; }
-#main_menu .content ul li { font-size: 12px; }
-#main_menu .content ul li a { font-weight: bold; }
+#main_menu .content table td { font-size: 12px; padding: 1px; }
+#main_menu .content a { font-weight: bold; }
+#main_menu .content table td img { display: none; }
+#main_menu.menu_editing .content table td img { display: inline; }
+
 .infobox { position: relative; }
 .infobox .close_me { position: absolute; top: 5px; right: 5px; }
 .infobox .close_me label, .infobox .close_me input[type="checkbox"] { float: left; }

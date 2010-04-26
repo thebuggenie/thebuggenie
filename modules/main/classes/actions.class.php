@@ -1728,7 +1728,7 @@
 			}
 		}
 
-		public function runAttachLink(TBGRequest $request)
+		public function runAttachLinkToIssue(TBGRequest $request)
 		{
 			$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
 			if ($issue instanceof TBGIssue && $issue->canAttachLinks())
@@ -1743,7 +1743,7 @@
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You can not attach links to this issue')));
 		}
 
-		public function runRemoveLink(TBGRequest $request)
+		public function runRemoveLinkFromIssue(TBGRequest $request)
 		{
 			$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
 			if ($issue instanceof TBGIssue && $issue->canRemoveAttachments())
@@ -1758,6 +1758,22 @@
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You can not remove items from this issue')));
 		}
 
+		public function runAttachLinkToMainMenu(TBGRequest $request)
+		{
+			$link_id = TBGLinksTable::getTable()->addMainMenuLink($request->getParameter('link_url'), $request->getParameter('description'));
+			return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Link added!'), 'content' => $this->getTemplateHTML('main/mainmenulink', array('link_id' => $link_id, 'link' => array('description' => $request->getParameter('description'), 'url' => $request->getParameter('link_url'))))));
+		}
+
+		public function runRemoveLinkFromMainMenu(TBGRequest $request)
+		{
+			if ($request->getParameter('link_id') != 0)
+			{
+				TBGLinksTable::getTable()->doDeleteById($request->getParameter('link_id'));
+				return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Link removed!')));
+			}
+			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a valid link id')));
+		}
+		
 		public function runDeleteComment(TBGRequest $request)
 		{
 			$comment = TBGFactory::TBGCommentLab($request->getParameter('comment_id'));

@@ -28,6 +28,16 @@
 		const ISSUE = 'links.issue';
 		const SCOPE = 'links.scope';
 
+		/**
+		 * Return an instance of this table
+		 * 
+		 * @return TBGLinksTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGLinksTable');
+		}
+		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -94,32 +104,34 @@
 			$crit->addWhere(self::ID, $link_id);
 			$res = $this->doDelete($crit);
 		}
+		
+		public function addMainMenuLink($url = null, $description = null, $link_order = null)
+		{
+			if ($link_order === null)
+			{
+				$crit = $this->getCriteria();
+				$crit->addSelectionColumn(self::LINK_ORDER, 'max_order', B2DBCriteria::DB_MAX, '', '+1');
+				$crit->addWhere(self::ISSUE, '');
+	
+				$row = $this->doSelectOne($crit);
+				$link_order = ($row->get('max_order')) ? $row->get('max_order') : 1;
+			}
+			
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::URL, (string) $url);
+			$crit->addInsert(self::DESCRIPTION, (string) $description);
+			$crit->addInsert(self::LINK_ORDER, $link_order);
+			$id = $this->doInsert($crit)->getInsertID();
+			
+			return $id;
+		}
 
 		public function loadFixtures($scope)
 		{
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::URL, 'http://www.thebuggenie.com');
-			$crit->addInsert(self::DESCRIPTION, 'The Bug Genie homepage');
-			$crit->addInsert(self::LINK_ORDER, 1);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::URL, 'http://www.thebuggenie.com/forum');
-			$crit->addInsert(self::DESCRIPTION, 'The Bug Genie forums');
-			$crit->addInsert(self::LINK_ORDER, 2);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::URL, '');
-			$crit->addInsert(self::DESCRIPTION, '');
-			$crit->addInsert(self::LINK_ORDER, 3);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::URL, 'http://www.thebuggenie.com/b2');
-			$crit->addInsert(self::DESCRIPTION, 'Online issue tracker');
-			$crit->addInsert(self::LINK_ORDER, 4);
-			$this->doInsert($crit);
+			$this->addMainMenuLink('http://www.thebuggenie.com', 'The Bug Genie homepage', 1);
+			$this->addMainMenuLink('http://www.thebuggenie.com/forum', 'The Bug Genie forums', 2);
+			$this->addMainMenuLink();
+			$this->addMainMenuLink('http://www.thebuggenie.com/b2', 'Online issue tracker');
 		}
 		
 	}

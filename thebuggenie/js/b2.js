@@ -200,6 +200,103 @@ function resetFadedBackdrop()
 	$('fullpage_backdrop_content').update('');
 }
 
+function addMainMenuLink(url)
+{
+	var params = $('attach_link_form').serialize();
+	$('attach_link_indicator').show();
+	$('attach_link_submit').hide();
+	new Ajax.Request(url, {
+		method: 'post',
+		parameters: params,
+		requestHeaders: {Accept: 'application/json'},
+		onSuccess: function(transport) {
+			var json = transport.responseJSON;
+			if (json && !json.failed)
+			{
+				$('attach_link_form').reset();
+				$('attach_link').hide();
+				$('main_menu_no_links').hide();
+				$('main_menu_links').insert({bottom: json.content});
+				successMessage(json.message);
+			}
+			else if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+			$('attach_link_indicator').hide();
+			$('attach_link_submit').show();
+		},
+		onFailure: function(transport) {
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+			$('attach_link_indicator').hide();
+			$('attach_link_submit').show();
+		}
+	});
+}
+
+function removeMainMenuLink(url, link_id)
+{
+	new Ajax.Request(url, {
+		method: 'post',
+		requestHeaders: {Accept: 'application/json'},
+		onLoading: function() {
+			$('main_menu_links_'+ link_id + '_remove_link').hide();
+			$('main_menu_links_'+ link_id + '_remove_indicator').show();
+		},
+		onSuccess: function(transport) {
+			var json = transport.responseJSON;
+			if (json && json.failed == false)
+			{
+				$('main_menu_links_' + link_id).remove();
+				$('main_menu_links_' + link_id + '_remove_confirm').remove();
+				successMessage(json.message);
+				if ($('main_menu_links').childElements().size() == 0)
+				{
+					$('main_menu_no_links').show();
+				}
+			}
+			else
+			{
+				if (json && (json.failed || json.error))
+				{
+					failedMessage(json.error);
+				}
+				else
+				{
+					failedMessage(transport.responseText);
+				}
+				$('main_menu_links_'+ link_id + '_remove_link').show();
+				$('main_menu_links_'+ link_id + '_remove_indicator').hide();
+			}
+		},
+		onFailure: function(transport) {
+			$('main_menu_links_'+ link_id + '_remove_link').show();
+			$('main_menu_links_'+ link_id + '_remove_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+		}
+	});
+}
+
 function addSearchFilter(url)
 {
 	var params = Form.serialize('add_filter_form');
