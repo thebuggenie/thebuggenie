@@ -881,8 +881,19 @@
 			if ($this->_burndowndata === null)
 			{
 				$this->_burndowndata = array();
-				$estimations = B2DB::getTable('TBGIssueEstimates')->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), array_keys($this->getIssues()));
-				$spent_times = B2DB::getTable('TBGIssueSpentTimes')->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), array_keys($this->getIssues()));
+				$child_issues = array();
+				foreach ($this->getIssues() as $issue)
+				{
+					foreach ($issue->getChildIssues() as $child_issue)
+					{
+						$child_issues[] = (int) $child_issue->getID();
+					}
+				}
+				
+				//var_dump($child_issues);die();
+				
+				$estimations = B2DB::getTable('TBGIssueEstimates')->getEstimatesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
+				$spent_times = B2DB::getTable('TBGIssueSpentTimes')->getSpentTimesByDateAndIssueIDs($this->getStartingDate(), $this->getScheduledDate(), $child_issues);
 
 				$burndowndata = array();
 				//var_dump($spent_times);var_dump($estimations);die();

@@ -33,6 +33,53 @@ function addUserStory(url)
 	});
 }
 
+function addUserStoryTask(url, story_id)
+{
+	var params = Form.serialize('scrum_story_' + story_id + '_add_task_form');
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	evalScripts: true,
+	parameters: params,
+	onLoading: function (transport) {
+		$('add_task_' + story_id + '_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json && !json.failed)
+		{
+			Form.reset('scrum_story_' + story_id + '_add_task_form');
+			$('add_task_' + story_id + '_indicator').hide();
+			$('scrum_story_' + story_id + '_tasks').insert({bottom: json.content});
+		}
+		else
+		{
+			if (json && json.error)
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+			$('add_task_' + story_id + '_indicator').hide();
+		}
+	},
+	onFailure: function (transport) {
+		var json = transport.responseJSON;
+		if (json && json.error)
+		{
+			failedMessage(json.error);
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+		$('add_task_' + story_id + '_indicator').hide();
+	}
+	});
+}
+
 function addSprint(url, assign_url)
 {
 	var params = Form.serialize('add_sprint_form');

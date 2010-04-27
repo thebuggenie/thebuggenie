@@ -97,7 +97,7 @@
 							<?php endforeach; ?>
 							</table>
 						<?php else: ?>
-							<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No issues, tbg_ or defects posted'); ?></div>
+							<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No issues, bugs or defects posted'); ?></div>
 						<?php endif; ?>
 					</div>
 					<div id="tab_5_recent_requests_pane" style="display: none;">

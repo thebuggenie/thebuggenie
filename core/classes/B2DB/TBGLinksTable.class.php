@@ -138,6 +138,7 @@
 			$this->addMainMenuLink('http://www.thebuggenie.com/forum', 'The Bug Genie forums', 2, $scope);
 			$this->addMainMenuLink(null, null, 3, $scope);
 			$this->addMainMenuLink('http://www.thebuggenie.com/b2', 'Online issue tracker', 4, $scope);
+			$this->addMainMenuLink('', "''This is the issue tracker for The Bug Genie''", 5, $scope);
 		}
 		
 	}

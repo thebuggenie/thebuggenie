@@ -127,6 +127,19 @@
 			$this->total_estimated_hours = 0;
 			//$this->unassigned_issues = $this->selected_project->getUnassignedStories();
 		}
+		
+		public function runScrumAddTask(TBGRequest $request)
+		{
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$issue = TBGFactory::TBGIssueLab($request->getParameter('story_id'));
+			if ($issue instanceof TBGIssue)
+			{
+				$task = TBGIssue::createNew($request->getParameter('task_name'), TBGIssuetype::getTask()->getID(), $issue->getProjectID());
+				$issue->addChildIssue($task);
+				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumstorytask', array('task' => $task))));
+			}
+			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid user story')));
+		}
 
 		public function runScrumShowBurndownImage(TBGRequest $request)
 		{
@@ -270,7 +283,7 @@
 				$sprint->setStarting();
 				$sprint->setStartingDate(mktime(0, 0, 1, $request->getParameter('starting_month'), $request->getParameter('starting_day'), $request->getParameter('starting_year')));
 				$sprint->setScheduled();
-				$sprint->setScheduledDate(mktime(0, 0, 1, $request->getParameter('scheduled_month'), $request->getParameter('scheduled_day'), $request->getParameter('scheduled_year')));
+				$sprint->setScheduledDate(mktime(23, 59, 59, $request->getParameter('scheduled_month'), $request->getParameter('scheduled_day'), $request->getParameter('scheduled_year')));
 				$sprint->save();
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('sprintbox', array('sprint' => $sprint)), 'sprint_id' => $sprint->getID()));
 			}

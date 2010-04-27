@@ -424,7 +424,7 @@
 			{
 				$output = $matches[1];
 			}
-			return $ouput;
+			return $output;
 		}
 
 		protected function _parse_variable($matches)

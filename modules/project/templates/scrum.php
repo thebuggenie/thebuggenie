@@ -14,7 +14,7 @@
 					<div class="header"><?php echo __('Actions'); ?></div>
 					<table cellpadding="0" cellspacing="0" border="0">
 						<tr>
-							<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_burndown.png'); ?></td>
+							<td style="width: 20px; padding: 2px;"><?php echo image_tag('scrum_planning.png'); ?></td>
 							<td style="padding: 3px 0 0 2px; text-align: left; font-size: 12px; font-weight: bold;"><?php echo link_tag(make_url('project_scrum', array('project_key' => $selected_project->getKey())), __('Show scrum planning page')); ?></td>
 						</tr>
 						<tr>

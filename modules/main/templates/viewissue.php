@@ -216,7 +216,11 @@
 					</table>
 				</div>
 				<div class="header_div">
-					<?php echo __('Related issues'); ?>
+					<?php if ($theIssue->getIssueType()->getItemdata() == 'developer_report'): ?>
+						<?php echo __('Tasks'); ?>
+					<?php else: ?>
+						<?php echo __('Related issues'); ?>
+					<?php endif; ?>
 				</div>
 				<div id="related_parent_issues_inline">
 					<?php $p_issues = 0; ?>
@@ -224,9 +228,15 @@
 						<?php if ($parent_issue->hasAccess()): ?>
 							<table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
 								<tr>
-									<td style="width: 20px;"><div style="border: 1px solid #AAA; background-color: <?php echo $parent_issue->getStatus()->getColor(); ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo $parent_issue->getStatus()->getName(); ?>">&nbsp;</div></td>
-									<td style="padding: 1px; width: auto;" valign="middle"><a href="viewissue.php?issue_no=<?php echo $parent_issue->getFormattedIssueNo(true); ?>"><?php echo $parent_issue->getFormattedIssueNo(); ?></a> - <?php echo $parent_issue->getTitle(); ?></td>
-									<td style="padding: 1px; width: 20px;" valign="middle"><?php echo image_tag('action_' . (($parent_issue->getState() == TBGIssue::STATE_CLOSED) ? "ok" : "cancel") . '_small.png', '', __('All these issues must be fixed before the issue relation is solved')); ?></td>
+									<td style="width: 20px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($parent_issue->getStatus() instanceof TBGStatus) ? $parent_issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo ($parent_issue->getStatus() instanceof TBGStatus) ? $parent_issue->getStatus()->getName() : ''; ?>">&nbsp;</div></td>
+									<td style="padding: 1px; width: auto;" valign="middle"><?php echo link_tag(make_url('viewissue', array('issue_no' => $parent_issue->getIssueNo(), 'project_key' => $parent_issue->getProject()->getKey())), $parent_issue->getFormattedIssueNo() . ' - ' . $parent_issue->getTitle()); ?></td>
+									<td style="padding: 1px; width: 20px;" valign="middle">
+										<?php if ($parent_issue->getState() == TBGIssue::STATE_CLOSED): ?>
+											<?php echo image_tag('action_ok_small.png', array('title' => ($parent_issue->getIssuetype()->isTask()) ? __('This relation is solved because the task has been closed') : __('This relation is solved because the issue has been closed'))); ?>
+										<?php else: ?>
+											<?php echo image_tag('action_cancel_small.png', array('title' => ($parent_issue->getIssuetype()->isTask()) ? __('This task must be closed before the relation is solved') : __('This issue must be closed before the relation is solved'))); ?>
+										<?php endif; ?>
+									</td>
 								</tr>
 							</table>
 							<?php $p_issues++; ?>
@@ -237,13 +247,25 @@
 					<?php $c_issues = 0; ?>
 					<?php foreach ($theIssue->getChildIssues() as $child_issue): ?>
 						<?php if ($child_issue->hasAccess()): ?>
+							<?php if ($theIssue->getIssueType()->getItemdata() == 'developer_report'): ?>
+								<div class="user_story_task">
+							<?php endif; ?>
 							<table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
 								<tr>
-									<td style="width: 20px;"><div style="border: 1px solid #AAA; background-color: <?php echo $child_issue->getStatus()->getColor(); ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo $child_issue->getStatus()->getName(); ?>">&nbsp;</div></td>
-									<td style="padding: 1px; width: auto;" valign="middle"><a href="viewissue.php?issue_no=<?php echo $child_issue->getFormattedIssueNo(true); ?>"><?php echo $child_issue->getFormattedIssueNo(); ?></a> - <?php echo $child_issue->getTitle(); ?><br></td>
-									<td style="padding: 1px; width: 20px;" valign="middle"><?php echo image_tag('action_' . (($child_issue->getState() == TBGIssue::STATE_CLOSED) ? "ok" : "cancel") . '_small.png', '', __('All these issues must be fixed before the issue relation is solved')); ?></td>
+									<td style="width: 20px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($child_issue->getStatus() instanceof TBGStatus) ? $child_issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo ($child_issue->getStatus() instanceof TBGStatus) ? $child_issue->getStatus()->getName() : ''; ?>">&nbsp;</div></td>
+									<td style="padding: 1px; width: auto;" valign="middle"><?php echo link_tag(make_url('viewissue', array('issue_no' => $child_issue->getIssueNo(), 'project_key' => $child_issue->getProject()->getKey())), $child_issue->getFormattedIssueNo() . ' - ' . $child_issue->getTitle()); ?></td>
+									<td style="padding: 1px; width: 20px;" valign="middle">
+										<?php if ($child_issue->getState() == TBGIssue::STATE_CLOSED): ?>
+											<?php echo image_tag('action_ok_small.png', array('title' => ($child_issue->getIssuetype()->isTask()) ? __('This relation is solved because the task has been closed') : __('This relation is solved because the issue has been closed'))); ?>
+										<?php else: ?>
+											<?php echo image_tag('action_cancel_small.png', array('title' => ($child_issue->getIssuetype()->isTask()) ? __('This task must be closed before the issue relation is solved') : __('This issue must be closed before the issue relation is solved'))); ?>
+										<?php endif; ?>
+									</td>
 								</tr>
 							</table>
+							<?php if ($theIssue->getIssueType()->getItemdata() == 'developer_report'): ?>
+								</div>
+							<?php endif; ?>
 							<?php $c_issues++; ?>
 						<?php endif; ?>
 					<?php endforeach; ?>

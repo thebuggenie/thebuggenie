@@ -51,10 +51,10 @@
 			$crit = $this->getCriteria();
 			$ctn = $crit->returnCriterion(self::PARENT_ID, $this_issue_id);
 			$ctn->addOr(self::CHILD_ID, $this_issue_id);
-			$ctn->addWhere($ctn);
+			$crit->addWhere($ctn);
 			$ctn = $crit->returnCriterion(self::PARENT_ID, $related_issue_id);
 			$ctn->addOr(self::CHILD_ID, $related_issue_id);
-			$ctn->addWhere($ctn);
+			$crit->addWhere($ctn);
 			$crit->addWhere(TBGIssuesTable::DELETED, 0);
 			$res = $this->doSelectOne($crit);
 			return $res;

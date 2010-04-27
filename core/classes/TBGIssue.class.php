@@ -529,9 +529,7 @@
 		 * Creates a new issue and returns it
 		 *
 		 * @param string $title The title
-		 * @param string $description The description
 		 * @param integer $issuetype The issue type
-		 * @param integer $category The category
 		 * @param integer $p_id The Project ID for the issue
 		 * @param integer $issue_id[optional] specific issue_id
 		 * 
@@ -1444,7 +1442,7 @@
 		 */
 		protected function _populateRelatedIssues()
 		{
-			if ($this->_parent_issues === null && $this->_child_issues === null)
+			if ($this->_parent_issues === null || $this->_child_issues === null)
 			{
 				$this->_parent_issues = array();
 				$this->_child_issues = array();
@@ -1457,14 +1455,18 @@
 						{
 							if ($row->get(TBGIssueRelationsTable::PARENT_ID) == $this->getID())
 							{
-								$this->_parent_issues[$row->get(TBGIssueRelationsTable::ID)] = TBGFactory::TBGIssueLab($row->get(TBGIssueRelationsTable::CHILD_ID));
+								$issue = TBGFactory::TBGIssueLab($row->get(TBGIssueRelationsTable::CHILD_ID));
+								$this->_child_issues[$row->get(TBGIssueRelationsTable::ID)] = $issue;
 							}
 							else
 							{
-								$this->_child_issues[$row->get(TBGIssueRelationsTable::ID)] = TBGFactory::TBGIssueLab($row->get(TBGIssueRelationsTable::PARENT_ID));
+								$issue = TBGFactory::TBGIssueLab($row->get(TBGIssueRelationsTable::PARENT_ID));
+								$this->_parent_issues[$row->get(TBGIssueRelationsTable::ID)] = $issue;
 							}
 						}
-						catch (Exception $e) {}
+						catch (Exception $e) 
+						{
+						}
 					}
 				}
 			}
@@ -1974,10 +1976,10 @@
 				$res = B2DB::getTable('TBGIssueRelationsTable')->addChildIssue($this->getID(), $related_issue->getID());
 				
 				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, __('Issue %issue_no% now depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())));
-				$this->addSystemComment(__('Issue dependancy removed'), __('Issue %issue_no% now depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getUID());
+				$this->addSystemComment(__('Issue dependancy added'), __('Issue %issue_no% now depends on the solution of this issue', array('%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 				
 				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, __('This issue now depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())));
-				$related_issue->addSystemComment(__('Issue dependancy removed'), __('This issue now depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getUID());
+				$related_issue->addSystemComment(__('Issue dependancy added'), __('This issue now depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 				
 				return true;
 			}

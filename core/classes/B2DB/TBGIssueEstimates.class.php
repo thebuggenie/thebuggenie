@@ -71,7 +71,9 @@
 				$hours_retarr[date('md', $sd)] = array();
 				$sd += 86400;
 			}
-
+			
+			//var_dump($issue_ids);die();
+			
 			if (count($issue_ids))
 			{
 				$crit = $this->getCriteria();
@@ -91,21 +93,6 @@
 								$details[$row->get(self::ISSUE_ID)] = $row->get(self::ESTIMATED_POINTS);
 							}
 						}
-					}
-				}
-
-				$crit = $this->getCriteria();
-				$crit->addWhere(self::EDITED_AT, $enddate, B2DBCriteria::DB_LESS_THAN_EQUAL);
-				$crit->addJoin(B2DB::getTable('TBGIssueRelationsTable'), TBGIssueRelationsTable::PARENT_ID, self::ISSUE_ID);
-				$crit->addWhere(TBGIssueRelationsTable::PARENT_ID, $issue_ids, B2DBCriteria::DB_IN);
-				$crit->addOrderBy(self::EDITED_AT, B2DBCriteria::SORT_ASC);
-				$res = $this->doSelect($crit);
-				
-				if ($res = $this->doSelect($crit))
-				{
-					while ($row = $res->getNextRow())
-					{
-						$date = date('md', ($row->get(self::EDITED_AT) >= $startdate) ? $row->get(self::EDITED_AT) : $startdate);
 						foreach ($hours_retarr as $key => &$details)
 						{
 							if ($key >= $date)

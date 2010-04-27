@@ -96,7 +96,7 @@
 					$this->_reportable = (bool) $row->get(TBGIssueTypesTable::IS_REPORTABLE);
 					$this->_itemtype = TBGDatatype::ISSUETYPE;
 					$this->_name = $row->get(TBGIssueTypesTable::NAME);
-					$this->_istask = (bool) $row->get(TBGIssueTypesTable::IS_TASK);
+					$this->_istask = ($row->get(TBGIssueTypesTable::ICON) == 'task') ? true : false;
 					$this->_redirect_after_reporting = (bool) $row->get(TBGIssueTypesTable::REDIRECT_AFTER_REPORTING);
 				}
 				else
@@ -225,9 +225,10 @@
 			try
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGIssueTypesTable::IS_TASK, 1);
+				$crit->addWhere(TBGIssueTypesTable::ICON, 'task');
 				$crit->addWhere(TBGIssueTypesTable::SCOPE, TBGContext::getScope()->getID());
-				return B2DB::getTable('TBGIssueTypesTable')->doSelectOne($crit)->get(TBGIssueTypesTable::ID);
+				$row = B2DB::getTable('TBGIssueTypesTable')->doSelectOne($crit);
+				return TBGFactory::TBGIssuetypeLab($row->get(TBGIssueTypesTable::ID), $row);
 			}
 			catch (Exception $e)
 			{

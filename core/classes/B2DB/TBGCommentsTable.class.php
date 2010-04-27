@@ -61,7 +61,7 @@
 			$crit->addWhere(self::TARGET_ID, $target_id);
 			$crit->addWhere(self::TARGET_TYPE, $target_type);
 			$crit->addWhere(self::DELETED, 0);
-			$crit->addOrderBy(self::POSTED, 'desc');
+			$crit->addOrderBy(self::POSTED, 'asc');
 			$res = $this->doSelect($crit);
 			return $res;
 		}
