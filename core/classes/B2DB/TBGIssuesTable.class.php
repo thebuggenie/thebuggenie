@@ -18,7 +18,6 @@
 	 */
 	class TBGIssuesTable extends B2DBTable 
 	{
-
 		const B2DBNAME = 'issues';
 		const ID = 'issues.id';
 		const SCOPE = 'issues.scope';
@@ -143,6 +142,8 @@
 				$crit = $this->getCriteria();
 				$crit->addWhere(self::PROJECT_ID, $project_id);
 				$crit->addWhere(self::DELETED, false);
+				$crit->addJoin(B2DB::getTable('TBGIssueTypesTable'), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
+				$crit->addWhere(TBGIssueTypesTable::ICON, array('developer_report', 'task'), B2DBCriteria::DB_NOT_IN);
 				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 				$ctn = $crit->returnCriterion(self::POSTED, $_SERVER['REQUEST_TIME'] - (86400 * 31), B2DBCriteria::DB_GREATER_THAN_EQUAL);
 				$ctn->addWhere(self::POSTED, $_SERVER['REQUEST_TIME'] - (86400 * $cc), B2DBCriteria::DB_LESS_THAN_EQUAL);

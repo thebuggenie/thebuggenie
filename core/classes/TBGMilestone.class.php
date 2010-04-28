@@ -918,6 +918,11 @@
 			$this->_populateBurndownData();
 			return $this->_burndowndata;
 		}
+		
+		public function isSprint()
+		{
+			return (bool) ($this->_itemtype == self::TYPE_SCRUMSPRINT);
+		}
 
 	}
 	

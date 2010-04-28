@@ -2162,6 +2162,7 @@
 				{
 					if ($build->isReleased() && $build->getReleaseDate() <= time())
 					{
+						if ($build->getReleaseDate() > time()) continue;
 						if (!array_key_exists($build->getReleaseDate(), $this->_recentactivities))
 						{
 							$this->_recentactivities[$build->getReleaseDate()] = array();
@@ -2169,7 +2170,28 @@
 						$this->_recentactivities[$build->getReleaseDate()][] = array('change_type' => 'build_release', 'info' => $build->getName());
 					}
 				}
-
+				foreach ($this->getAllMilestones() as $milestone)
+				{
+					if ($milestone->isVisible() && $milestone->isStarting() && $milestone->isSprint())
+					{
+						if ($milestone->getStartingDate() > time()) continue;
+						if (!array_key_exists($milestone->getStartingDate(), $this->_recentactivities))
+						{
+							$this->_recentactivities[$milestone->getStartingDate()] = array();
+						}
+						$this->_recentactivities[$milestone->getStartingDate()][] = array('change_type' => 'sprint_start', 'info' => $milestone->getName());
+					}
+					if ($milestone->isVisible() && $milestone->isScheduled() && $milestone->isReached())
+					{
+						if ($milestone->getReachedDate() > time()) continue;
+						if (!array_key_exists($milestone->getReachedDate(), $this->_recentactivities))
+						{
+							$this->_recentactivities[$build->getReachedDate()] = array();
+						}
+						$this->_recentactivities[$build->getReachedDate()][] = array('change_type' => (($milestone->isSprint()) ? 'sprint_end' : 'milestone_release'), 'info' => $milestone->getName());
+					}
+				}
+				
 				foreach ($this->getRecentLogItems($limit) as $log_item)
 				{
 					if (!array_key_exists($log_item['timestamp'], $this->_recentactivities))
