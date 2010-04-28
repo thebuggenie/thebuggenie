@@ -101,12 +101,12 @@
 		}
 		
 		
-		static function createNew($title, $content, $uid, $target_id, $target_type, $module, $is_public, $system_comment = 0, $invoke_trigger = true)
+		static function createNew($title, $content, $uid, $target_id, $target_type, $module = 'core', $is_public = true, $system_comment = false, $invoke_trigger = true)
 		{
 			$commentTitle = trim($title);
 			$commentContent = trim($content);
 			$comment = null;
-			if ($commentContent != '' && $commentTitle == '') $commentTitle = __('Untitled comment');
+			if ($commentContent != '' && $commentTitle == '') $commentTitle = TBGContext::getI18n()->__('Untitled comment');
 			if ($commentTitle != '' && $commentContent != '')
 			{
 				$now = $_SERVER["REQUEST_TIME"];

@@ -136,7 +136,15 @@
 			{
 				$task = TBGIssue::createNew($request->getParameter('task_name'), TBGIssuetype::getTask()->getID(), $issue->getProjectID());
 				$issue->addChildIssue($task);
-				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumstorytask', array('task' => $task))));
+				$mode = $request->getParameter('mode', 'scrum');
+				if ($mode == 'scrum')
+				{
+					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumstorytask', array('task' => $task))));
+				}
+				else
+				{
+					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumstorytask', array('task' => $task))));
+				}
 			}
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid user story')));
 		}

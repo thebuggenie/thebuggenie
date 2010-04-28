@@ -325,6 +325,23 @@
 		 */
 		public function generate($name, $params = array(), $relative = true, $querydiv = '/', $divider = '/', $equals = '/')
 		{
+			if (substr($name, 0, 1) == '@')
+			{
+				$name = substr($name, 1);
+				$details = explode('?', $name);
+				$name = array_shift($details);
+				if (count($details))
+				{
+					$param_details = array_shift($details);
+					$param_details = explode('&', $param_details);
+					foreach ($param_details as $detail)
+					{
+						$param_detail = explode('=', $detail);
+						if (count($param_detail) > 1)
+						$params[$param_detail[0]] = $param_detail[1];
+					}
+				}
+			}
 			if (!isset($this->routes[$name]))
 			{
 				TBGLogging::log("The route '$name' does not exist", 'routing', TBGLogging::LEVEL_FATAL);

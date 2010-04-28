@@ -1653,19 +1653,31 @@
 				$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
 				$canupload = (bool) ($issue instanceof TBGIssue && $issue->hasAccess() && $issue->canAttachFiles());
 			}
+			
+			$event = TBGEvent::createNew('core', 'main_upload', $request->getParameter('mode'))->triggerUntilProcessed();
+			if ($event->isProcessed())
+			{
+				$canupload = $event->getReturnValue();
+			}
 
 			if ($canupload)
 			{
 				try
 				{
-					//var_dump($_FILES);die();
 					$file_id = TBGContext::getRequest()->handleUpload('uploader_file', $issue);
-					//var_dump($filename);die();
 					if ($file_id)
 					{
 						if ($request->getParameter('mode') == 'issue')
 						{
 							$issue->attachFile($file_id);
+							if ($request->getParameter('comment') != '')
+							{
+								TBGComment::createNew('', TBGContext::getI18n()->__('The file %link_to_file% was uploaded with the following comment: %comment%', array('%comment%' => "\n  " . str_replace("\n", "\n  ", $request->getParameter('comment')), '%link_to_file%' => "[[TBG:@showfile?id={$file_id}|{$request->getParameter('uploader_file_description')}]]")), TBGContext::getUser()->getID(), $issue->getID(), TBGComment::TYPE_ISSUE);
+							}
+							else
+							{
+								TBGComment::createNew('', TBGContext::getI18n()->__('The file %link_to_file% was uploaded.', array('%link_to_file%' => "[[TBG:@showfile?id={$file_id}|{$request->getParameter('uploader_file_description')}]]")), TBGContext::getUser()->getID(), $issue->getID(), TBGComment::TYPE_ISSUE, 'core', true, true);								
+							}
 						}
 						return $this->renderText('ok');
 					}

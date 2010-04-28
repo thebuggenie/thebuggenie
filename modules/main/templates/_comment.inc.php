@@ -18,7 +18,7 @@
 				</tr>
 			</table>
 		</div>
-		<div class="commentbody" id="comment_<?php echo $aComment->getID(); ?>_body"><?php echo tbg_parse_text($aComment->getContent()); ?></div>
+		<div class="commentbody article" id="comment_<?php echo $aComment->getID(); ?>_body"><?php echo tbg_parse_text($aComment->getContent()); ?></div>
 		<?php if ($aComment->canUserEditComment() || $aComment->canUserDeleteComment()) : ?>
 			<div class="commenttools">
 				<?php if ($aComment->canUserEditComment()): ?><span style="margin-right: 10px;"><a href="javascript:void(0)" onClick="$('comment_view_<?php echo $aComment->getID(); ?>').hide();$('comment_edit_<?php echo $aComment->getID(); ?>').show();"><?php echo image_tag('icon_edit.png', array('title' => __('Edit'))); ?><?php echo __('Edit'); ?></a></span><?php endif; ?>
