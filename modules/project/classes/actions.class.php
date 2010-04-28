@@ -143,7 +143,7 @@
 				}
 				else
 				{
-					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumstorytask', array('task' => $task))));
+					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('main/relatedissue', array('theIssue' => $issue, 'child_issue' => $task)), 'message' => TBGContext::getI18n()->__('The task was added')));
 				}
 			}
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid user story')));

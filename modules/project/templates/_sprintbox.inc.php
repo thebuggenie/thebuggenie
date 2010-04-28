@@ -2,8 +2,8 @@
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
 		<div class="sprint_header">
-			<?php echo link_tag(make_url('project_scrum_sprint_details', array('project_key' => $sprint->getProject()->getKey(), 'sprint_id' => $sprint->getID())), image_tag('show_sprint_details.png', array('style' => 'float: left; margin-right: 5px;'))); ?>
-			<a href="javascript: void(0);" onclick="$('scrum_sprint_<?php echo $sprint->getID(); ?>_container').toggle();"><?php echo $sprint->getName(); ?></a>
+			<?php echo link_tag(make_url('project_scrum_sprint_details', array('project_key' => $sprint->getProject()->getKey(), 'sprint_id' => $sprint->getID())), image_tag('show_sprint_details.png', array('style' => 'float: left; margin-right: 5px;', 'title' => __('Show sprint overview and details')))); ?>
+			<a href="javascript: void(0);" onclick="$('scrum_sprint_<?php echo $sprint->getID(); ?>_container').toggle();" title="<?php echo __('Click to show assigned stories for this sprint'); ?>"><?php echo $sprint->getName(); ?></a>
 			<span class="sprint_date">
 				<?php if ($sprint->getStartingDate() && $sprint->isScheduled()): ?>
 					(<?php echo tbg_formatTime($sprint->getStartingDate(), 22); ?> - <?php echo tbg_formatTime($sprint->getScheduledDate(), 22); ?>)

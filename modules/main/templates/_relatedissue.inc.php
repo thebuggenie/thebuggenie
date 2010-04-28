@@ -1,4 +1,4 @@
-<?php if ($theIssue->getIssueType()->getItemdata() == 'developer_report'): ?>
+<?php if ($child_issue->getIssueType()->getItemdata() == 'task'): ?>
 	<div class="user_story_task">
 <?php endif; ?>
 <table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
@@ -14,6 +14,6 @@
 		</td>
 	</tr>
 </table>
-<?php if ($theIssue->getIssueType()->getItemdata() == 'developer_report'): ?>
+<?php if ($child_issue->getIssueType()->getItemdata() == 'task'): ?>
 	</div>
 <?php endif; ?>

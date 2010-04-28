@@ -31,8 +31,17 @@
 			</div>
 		</td>
 		<td style="width: auto; padding-right: 5px;" id="scrum_sprints">
-			<div class="header_div"><?php echo __('Sprints overview'); ?></div>
-			<div class="rounded_box lightyellow" style="margin-top: 5px;">
+			<div class="header_div">
+				<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+					<tr>
+						<td><?php echo __('Sprints overview'); ?></td>
+						<td style="text-align: right;" id="sprint_add_button">
+							<table align="right" border="0" cellpadding="0" cellspacing="0"><tr><td class="nice_button"><input type="button" onclick="$('sprint_add_div').toggle();" value="<?php echo __('Add new sprint'); ?>"></td></tr></table>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="rounded_box lightyellow" style="margin-top: 5px; display: none;" id="sprint_add_div">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
 					<form id="add_sprint_form" action="<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addSprint('<?php echo make_url('project_scrum_add_sprint', array('project_key' => $project_key)); ?>', '<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>');return false;">
@@ -98,7 +107,7 @@
 						<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
 							<form id="add_user_story_form" action="<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStory('<?php echo make_url('project_reportissue', array('project_key' => $project_key)); ?>');return false;">
 								<div id="add_story">
-									<label for="story_title"><?php echo __('Add user story'); ?></label>
+									<label for="story_title"><?php echo __('Create a user story'); ?></label>
 									<input type="hidden" name="issuetype_id" value="<?php echo TBGSettings::getIssueTypeUserStory(); ?>">
 									<input type="hidden" name="return_format" value="scrum">
 									<input type="text" id="story_title" name="title">

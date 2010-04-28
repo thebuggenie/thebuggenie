@@ -20,62 +20,13 @@ function addUserStory(url)
 		{
 			Form.reset('add_user_story_form');
 			$('user_story_add_indicator').hide();
-			//$('message_user_story_added').show();
 			$('scrum_sprint_0_list').insert({bottom: json.content});
 			$('scrum_sprint_0_unassigned').hide();
 			new Draggable('scrum_story_' + json.story_id, {revert: true});
-			//new Effect.Fade('message_user_story_added', {delay: 20} );
 		}
 	},
 	onFailure: function (transport) {
 		$('user_story_add_indicator').hide();
-	}
-	});
-}
-
-function addUserStoryTask(url, story_id)
-{
-	var params = Form.serialize('scrum_story_' + story_id + '_add_task_form');
-	new Ajax.Request(url, {
-	asynchronous:true,
-	method: "post",
-	evalScripts: true,
-	parameters: params,
-	onLoading: function (transport) {
-		$('add_task_' + story_id + '_indicator').show();
-	},
-	onSuccess: function (transport) {
-		var json = transport.responseJSON;
-		if (json && !json.failed)
-		{
-			Form.reset('scrum_story_' + story_id + '_add_task_form');
-			$('add_task_' + story_id + '_indicator').hide();
-			$('scrum_story_' + story_id + '_tasks').insert({bottom: json.content});
-		}
-		else
-		{
-			if (json && json.error)
-			{
-				failedMessage(json.error);
-			}
-			else
-			{
-				failedMessage(transport.responseText);
-			}
-			$('add_task_' + story_id + '_indicator').hide();
-		}
-	},
-	onFailure: function (transport) {
-		var json = transport.responseJSON;
-		if (json && json.error)
-		{
-			failedMessage(json.error);
-		}
-		else
-		{
-			failedMessage(transport.responseText);
-		}
-		$('add_task_' + story_id + '_indicator').hide();
 	}
 	});
 }

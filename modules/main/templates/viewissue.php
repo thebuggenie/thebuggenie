@@ -216,11 +216,27 @@
 					</table>
 				</div>
 				<div class="header_div">
+					<a href="javascript:void(0);" onclick="$('viewissue_add_task_div').toggle();"><?php echo image_tag('scrum_add_task.png', array('title' => __('Add a task to this issue'), 'style' => 'float: right;')); ?></a>
 					<?php if ($theIssue->getIssueType()->getItemdata() == 'developer_report'): ?>
 						<?php echo __('Tasks'); ?>
 					<?php else: ?>
 						<?php echo __('Related issues'); ?>
 					<?php endif; ?>
+				</div>
+				<div class="rounded_box borderless" id="viewissue_add_task_div" style="margin: 5px 0 5px 0; display: none">
+					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+					<div class="xboxcontent">
+						<form id="viewissue_add_task_form" action="<?php echo make_url('project_scrum_story_addtask', array('project_key' => $theIssue->getProject()->getKey(), 'story_id' => $theIssue->getID(), 'mode' => 'issue')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStoryTask('<?php echo make_url('project_scrum_story_addtask', array('project_key' => $theIssue->getProject()->getKey(), 'story_id' => $theIssue->getID(), 'mode' => 'issue')); ?>', <?php echo $theIssue->getID(); ?>, 'issue');return false;">
+							<div>
+								<label for="viewissue_task_name_input"><?php echo __('Add task'); ?>&nbsp;</label>
+								<input type="text" name="task_name" id="viewissue_task_name_input">
+								<input type="submit" value="<?php echo __('Add task'); ?>">
+								<?php echo __('%add_task% or %cancel%', array('%add_task%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'viewissue_add_task_form\').toggle();">' . __('cancel') . '</a>')); ?>
+								<?php echo image_tag('spinning_20.gif', array('id' => 'add_task_indicator', 'style' => 'display: none;')); ?><br>
+							</div>
+						</form>
+					</div>
+					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</div>
 				<div id="related_parent_issues_inline">
 					<?php $p_issues = 0; ?>
@@ -247,7 +263,7 @@
 					<?php $c_issues = 0; ?>
 					<?php foreach ($theIssue->getChildIssues() as $child_issue): ?>
 						<?php if ($child_issue->hasAccess()): ?>
-							<?php include_template('main/relatedissue', array('child_issue' => $child_issue, 'theIssue' => $theIssue)); ?>
+							<?php include_template('main/relatedissue', array('theIssue' => $theIssue, 'child_issue' => $child_issue)); ?>
 							<?php $c_issues++; ?>
 						<?php endif; ?>
 					<?php endforeach; ?>

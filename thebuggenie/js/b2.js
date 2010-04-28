@@ -297,6 +297,71 @@ function removeLink(url, target_type, target_id, link_id)
 	});
 }
 
+function addUserStoryTask(url, story_id, mode)
+{
+	if (mode == 'scrum')
+	{
+		var prefix = 'scrum_story_' + story_id;
+		var indicator_prefix = 'add_task_' + story_id;
+	}
+	else if (mode == 'issue')
+	{
+		var prefix = 'viewissue';
+		var indicator_prefix = 'add_task';
+	}
+	var params = Form.serialize(prefix + '_add_task_form');
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	evalScripts: true,
+	parameters: params,
+	onLoading: function (transport) {
+		$(indicator_prefix + '_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json && !json.failed)
+		{
+			Form.reset(prefix + '_add_task_form');
+			$(indicator_prefix + '_indicator').hide();
+			if (mode == 'scrum')
+			{
+				$(prefix + '_tasks').insert({bottom: json.content});
+			}
+			else if (mode == 'issue')
+			{
+				$('related_child_issues_inline').insert({bottom: json.content});
+				successMessage(json.message);
+			}
+		}
+		else
+		{
+			if (json && json.error)
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+			$(indicator_prefix + '_indicator').hide();
+		}
+	},
+	onFailure: function (transport) {
+		var json = transport.responseJSON;
+		if (json && json.error)
+		{
+			failedMessage(json.error);
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+		$(indicator_prefix + '_indicator').hide();
+	}
+	});
+}
+
 function addSearchFilter(url)
 {
 	var params = Form.serialize('add_filter_form');

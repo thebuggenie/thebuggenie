@@ -22,7 +22,7 @@
 	<div class="rounded_box mediumgrey_borderless story_estimation_div" id="scrum_story_<?php echo $issue->getID(); ?>_estimation" style="display: none;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
-			<form id="scrum_story_<?php echo $issue->getID(); ?>_estimation_form" action="<?php echo make_url('project_scrum_story_setestimates', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="setStoryEstimates('<?php echo make_url('project_scrum_story_setestimates', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>);return false;">
+			<form id="scrum_story_<?php echo $issue->getID(); ?>_estimation_form" action="<?php echo make_url('project_scrum_story_setestimates', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="setStoryEstimates('<?php echo make_url('project_scrum_story_setestimates', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>, 'scrum');return false;">
 				<div class="header"><?php echo __('New story estimate'); ?></div>
 				<?php echo image_tag('spinning_20.gif', array('id' => 'point_selector_'.$issue->getID().'_indicator', 'style' => 'display: none;')); ?><br>
 				<input type="text" name="hours" value="<?php echo $issue->getEstimatedHours(); ?>" id="scrum_story_<?php echo $issue->getID(); ?>_hours_input"> hrs
@@ -40,7 +40,7 @@
 		<a href="javascript:void(0);" onclick="$('scrum_story_<?php echo $issue->getID(); ?>_add_task_form').toggle();"><?php echo image_tag('scrum_add_task.png', array('title' => __('Add a task to this user story'))); ?></a>
 		<form id="scrum_story_<?php echo $issue->getID(); ?>_add_task_form" action="<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStoryTask('<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID())); ?>', <?php echo $issue->getID(); ?>);return false;" style="display: none;">
 			<div>
-				<label for="scrum_story_<?php echo $issue->getID(); ?>_task_name_input"><?php echo __('Add task'); ?>&nbsp;
+				<label for="scrum_story_<?php echo $issue->getID(); ?>_task_name_input"><?php echo __('Add task'); ?>&nbsp;</label>
 				<input type="text" name="task_name" id="scrum_story_<?php echo $issue->getID(); ?>_task_name_input">
 				<input type="submit" value="<?php echo __('Add task'); ?>">
 				<?php echo __('%add_task% or %cancel%', array('%add_task%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'scrum_story_' . $issue->getID() . '_add_task_form\').toggle();">' . __('cancel') . '</a>')); ?>
