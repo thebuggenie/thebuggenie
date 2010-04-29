@@ -57,9 +57,9 @@
 						<?php foreach ($issue->getChildIssues() as $child_issue): ?>
 							<tr class="canhover_light">
 								<td>&nbsp;</td>
-								<td style="padding: 3px; font-size: 12px;"><?php echo $child_issue->getFormattedTitle(); ?></td>
+								<td style="padding: 3px 0 3px 10px; font-size: 12px; <?php if ($child_issue->isClosed()): ?> text-decoration: line-through; <?php endif; ?>"><?php echo link_tag(make_url('viewissue', array('issue_no' => $child_issue->getIssueNo(), 'project_key' => $child_issue->getProject()->getKey())), $child_issue->getTitle()); ?></td>
 								<td style="text-align: center; padding: 3px; font-size: 13px; font-weight: normal;" class="faded_medium">-</td>
-								<td style="text-align: center; padding: 3px; font-size: 13px; font-weight: normal;"><?php echo $child_issue->getEstimatedHours(); ?></td>
+								<td style="text-align: center; padding: 3px; font-size: 13px; font-weight: normal;<?php if ($child_issue->isClosed()): ?> text-decoration: line-through; <?php endif; ?>"<?php if ($child_issue->isClosed()): ?> class="faded_medium"<?php endif; ?>><?php echo $child_issue->getEstimatedHours(); ?></td>
 							</tr>
 							<?php $total_estimated_hours += $child_issue->getEstimatedHours(); ?>
 						<?php endforeach; ?>

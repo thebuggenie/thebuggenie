@@ -217,11 +217,7 @@
 				</div>
 				<div class="header_div">
 					<a href="javascript:void(0);" onclick="$('viewissue_add_task_div').toggle();"><?php echo image_tag('scrum_add_task.png', array('title' => __('Add a task to this issue'), 'style' => 'float: right;')); ?></a>
-					<?php if ($theIssue->getIssueType()->getItemdata() == 'developer_report'): ?>
-						<?php echo __('Tasks'); ?>
-					<?php else: ?>
-						<?php echo __('Related issues'); ?>
-					<?php endif; ?>
+					<?php echo __('Related issues and tasks'); ?>
 				</div>
 				<div class="rounded_box borderless" id="viewissue_add_task_div" style="margin: 5px 0 5px 0; display: none">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
@@ -242,101 +238,33 @@
 					<?php $p_issues = 0; ?>
 					<?php foreach ($theIssue->getParentIssues() as $parent_issue): ?>
 						<?php if ($parent_issue->hasAccess()): ?>
-							<table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
-								<tr>
-									<td style="width: 20px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($parent_issue->getStatus() instanceof TBGStatus) ? $parent_issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo ($parent_issue->getStatus() instanceof TBGStatus) ? $parent_issue->getStatus()->getName() : ''; ?>">&nbsp;</div></td>
-									<td style="padding: 1px; width: auto;" valign="middle"><?php echo link_tag(make_url('viewissue', array('issue_no' => $parent_issue->getIssueNo(), 'project_key' => $parent_issue->getProject()->getKey())), $parent_issue->getFormattedIssueNo() . ' - ' . $parent_issue->getTitle()); ?></td>
-									<td style="padding: 1px; width: 20px;" valign="middle">
-										<?php if ($parent_issue->getState() == TBGIssue::STATE_CLOSED): ?>
-											<?php echo image_tag('action_ok_small.png', array('title' => ($parent_issue->getIssuetype()->isTask()) ? __('This relation is solved because the task has been closed') : __('This relation is solved because the issue has been closed'))); ?>
-										<?php else: ?>
-											<?php echo image_tag('action_cancel_small.png', array('title' => ($parent_issue->getIssuetype()->isTask()) ? __('This task must be closed before the relation is solved') : __('This issue must be closed before the relation is solved'))); ?>
-										<?php endif; ?>
-									</td>
-								</tr>
-							</table>
+							<?php include_template('main/relatedissue', array('theIssue' => $theIssue, 'related_issue' => $parent_issue)); ?>
 							<?php $p_issues++; ?>
 						<?php endif; ?>
 					<?php endforeach; ?>
+					<div class="no_items" id="no_parent_issues"<?php if ($p_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('No other issues depends on this issue'); ?></div>
 				</div>
+				<div style="margin: 5px auto 5px auto; width: 16px; text-align: center; padding: 0;"><?php echo image_tag('up.png'); ?></div>
+				<div class="rounded_box borderless" id="related_issues_this_issue" style="margin: 5px auto 5px auto; width: 250px;">
+					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+					<div class="xboxcontent">
+						<?php echo __('This issue'); ?>
+					</div>
+					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+				</div>
+				<div style="margin: 10px auto 5px auto; width: 16px; text-align: center; padding: 0;"><?php echo image_tag('down.png'); ?></div>
 				<div id="related_child_issues_inline">
 					<?php $c_issues = 0; ?>
 					<?php foreach ($theIssue->getChildIssues() as $child_issue): ?>
 						<?php if ($child_issue->hasAccess()): ?>
-							<?php include_template('main/relatedissue', array('theIssue' => $theIssue, 'child_issue' => $child_issue)); ?>
+							<?php include_template('main/relatedissue', array('theIssue' => $theIssue, 'related_issue' => $child_issue)); ?>
 							<?php $c_issues++; ?>
 						<?php endif; ?>
 					<?php endforeach; ?>
+					<div class="no_items" id="no_child_issues"<?php if ($c_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('This issue does not depend on any other issues'); ?></div>
 				</div>
-				<?php if ($c_issues + $p_issues == 0): ?> 
-					<div class="no_items"><?php echo __('There are no issues related to this'); ?></div>
-				<?php endif; ?>
 				<?php
-			
-					TBGEvent::createNew('core', 'viewissue_left_middle_top', $theIssue)->trigger();
-					
-				?>
-				<?php if (!$tbg_user->isGuest()): ?>
-					<?php if ($tbg_user->showFollowUps()): ?>
-						<div class="header_div">
-							<?php echo __('Your starred issues'); ?>
-						</div>
-						<?php if (count($tbg_user->getStarredIssues()) == 0): ?>
-							<div class="no_items"><?php echo __("You don't have any issues on your list"); ?></div>
-						<?php else: ?>
-							<div class="issuedetailscontentsleft" style="padding-top: 5px; padding-bottom: 5px;">
-								<table cellpadding=0 cellspacing=0>
-									<?php foreach ($tbg_user->getStarredIssues() as $anIssue): ?>
-										<tr class="<?php if ($anIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($anIssue->isBlocking()) echo ' issue_blocking'; ?>">
-											<td class="imgtd"><?php echo image_tag('assigned_tbg_.png'); ?></td>
-											<td><a href="viewissue.php?issue_no=<?php echo $anIssue->getFormattedIssueNo(true); ?>"><?php echo $anIssue->getFormattedIssueNo(); ?></a> - <?php echo $anIssue->getTitle(); ?></td>
-										</tr>
-									<?php endforeach; ?>
-								</table>
-							</div>
-						<?php endif; ?>
-					<?php endif; ?>
-					<?php if ($tbg_user->showAssigned()): ?>
-						<div class="header_div">
-							<?php echo __('Open issues assigned to you'); ?>
-						</div>
-						<div class="issuedetailscontentsleft" style="padding-top: 5px; padding-bottom: 5px;">
-							<?php if (count($tbg_user->getUserAssignedIssues()) > 0): ?>
-								<table cellpadding=0 cellspacing=0>
-									<?php foreach ($tbg_user->getUserAssignedIssues() as $anIssue): ?>
-										<tr class="<?php if ($savedIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($savedIssue->isBlocking()) echo ' issue_blocking'; ?>">
-											<td class="imgtd"><?php echo image_tag('assigned_tbg_.png'); ?></td>
-											<td><a href="viewissue.php?issue_no=<?php print $savedIssue->getFormattedIssueNo(true); ?>"><?php print $savedIssue->getFormattedIssueNo(); ?></a> - <?php print (strlen($savedIssue->getTitle()) > 26) ? rtrim(substr($savedIssue->getTitle(), 0, 24), false) . "..." : $savedIssue->getTitle(); ?></td>
-										</tr>
-									<?php endforeach; ?>
-								</table>
-							<?php else: ?>
-								<div class="no_items"><?php echo __('No issues are assigned to you'); ?></div>
-							<?php endif; ?>
-						</div>
-						<?php if (count($tbg_user->getTeams()) > 0): ?>
-							<?php foreach ($tbg_user->getTeams() as $tid => $theTeam): ?>
-								<div class="header_div">
-									<?php echo __('Open issues assigned to %teamname%', array('%teamname%' => $theTeam->getName())); ?>
-								</div>
-								<?php if (count($tbg_user->getUserTeamAssignedIssues) > 0): ?>
-									<table cellpadding=0 cellspacing=0>
-										<?php foreach ($tbg_user->getUserTeamAssignedIssues($tid) as $anIssue): ?>
-											<tr class="<?php if ($savedIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($savedIssue->isBlocking()) echo ' issue_blocking'; ?>">
-												<td class="imgtd"><?php echo image_tag('assigned_tbg_.png'); ?></td>
-												<td><a href="viewissue.php?issue_no=<?php print $savedIssue->getFormattedIssueNo(true); ?>"><?php print $savedIssue->getFormattedIssueNo(); ?></a> - <?php print (strlen($savedIssue->getTitle()) > 26) ? rtrim(substr($savedIssue->getTitle(), 0, 24)) . "..." : $savedIssue->getTitle(); ?></td>
-											</tr>
-										<?php endforeach; ?>
-									</table>
-								<?php else: ?>
-									<div class="no_items"><?php echo __('No issues assigned to this team'); ?></div>
-								<?php endif; ?>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					<?php endif; ?>
-				<?php endif; ?>
-				<?php
-			
+
 					TBGEvent::createNew('core', 'viewissue_left_bottom', $theIssue)->trigger();
 			
 				?>
@@ -457,54 +385,6 @@
 						<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 					</div>
 				</div>
-				<?php if ($theIssue->getProject()->isTasksEnabled()): ?>
-					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0 id="taskslist">
-						<tr>
-							<td style="width: 100px; font-size: 12px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;"><b><?php echo __('Tasks'); ?></b></td>
-							<td style="width: auto; font-size: 10px; border-bottom: 1px solid #DDD; padding: 4px;">&nbsp;(<?php echo __('click to view details'); ?>)</td>
-							<td style="width: 150px; font-size: 10px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;"><b><?php echo __('Assigned to'); ?></b></td>
-							<td style="width: 80px; font-size: 10px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;"><b><?php echo __('Last updated'); ?></b></td>
-							<td style="width: 190px; font-size: 10px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;"><b><?php echo __('Status'); ?></b></td>
-							<td style="width: 60px; font-size: 10px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;"><b><?php echo __('Completed'); ?></b></td>
-						</tr>
-					</table>
-					<div id="new_task" style="display: none;">
-						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="viewissue.php" enctype="multipart/form-data" method="post" id="issue_add_task" onsubmit="return false">
-							<input type="hidden" name="issue_no" id="issue_no" value="<?php echo $theIssue->getFormattedIssueNo(true); ?>">
-							<input type="hidden" name="issue_new_task" id="issue_new_task" value="true">
-							<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0 id="taskslist">
-								<tr>
-									<td class="issuedetailscontentsleft" style="width: auto;"><input type="text" name="issue_new_task_title" id="issue_new_task_title" style="width: 100%;" value="<?php echo __('Enter the task title here'); ?>"></td>
-									<td class="issuedetailscontentscenter" style="width: 150px; font-size: 10px;"><?php echo __('Save the task to assign it'); ?></td>
-									<td class="issuedetailscontentscenter" style="width: 80px; font-size: 10px; text-align: center;"><?php echo tbg_formatTime($_SERVER["REQUEST_TIME"], 4); ?></td>
-									<td class="issuedetailscontentscenter" style="width: 190px; font-size: 10px;"><?php echo __('Save the task to set a status'); ?></td>
-									<td class="issuedetailscontentsright" style="width: 60px; text-align: center;"><?php echo image_tag('action_cancel_small.png'); ?></td>
-								</tr>
-								<tr>
-									<td colspan=3 class="issuedetailscontentsleft" style="border-bottom: 2px solid #CCC;"><?php echo tbg_newTextArea('issue_new_task_description', '100px', '100%', __('Enter the task details here')); ?></td>
-									<td colspan=2 class="issuedetailscontentsright" style="border-bottom: 2px solid #CCC; text-align: center;">
-										<button style="width: 100px;" onclick="addTask();"><?php echo __('Add this task'); ?></button><br>
-										<div style="padding: 5px;"><a href="javascript:void(0);" onclick="Element.hide('new_task');"><?php echo __('Cancel'); ?></a></div>
-									</td>
-								</tr>
-							</table>
-						</form>
-					</div>
-					<div id="issue_tasks">
-						<?php if (count($theIssue->getTasks()) == 0): ?>
-							<div class="faded_medium"><?php echo __('No tasks are specified for this issue'); ?></div>
-						<?php else: ?>
-							<?php foreach ($theIssue->getTasks() as $theTask): ?>
-								<?php require TBGContext::getIncludePath() . 'include/issue_taskbox.inc.php'; ?>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					</div>
-				<?php endif; ?>
-				<?php 
-				
-					//TBGContext::trigger('core', 'viewissue_right_middle', $theIssue);
-					
-				?>
 				<div class="comments">
 					<h1 class="commentheadertop">
 						<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">

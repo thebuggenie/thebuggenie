@@ -638,7 +638,7 @@ function addComment(url)
 			$('comment_add').hide();
 			$('comment_add_button').show();
 
-			$('comments_box').insert({top: json.comment_data});
+			$('comments_box').insert({bottom: json.comment_data});
 
 			if ($('comments_box').childElements().size() != 0)
 			{

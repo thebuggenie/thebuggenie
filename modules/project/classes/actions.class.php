@@ -135,7 +135,7 @@
 			if ($issue instanceof TBGIssue)
 			{
 				$task = TBGIssue::createNew($request->getParameter('task_name'), TBGIssuetype::getTask()->getID(), $issue->getProjectID());
-				$issue->addChildIssue($task);
+				$comment = $issue->addChildIssue($task);
 				$mode = $request->getParameter('mode', 'scrum');
 				if ($mode == 'scrum')
 				{
@@ -143,7 +143,7 @@
 				}
 				else
 				{
-					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('main/relatedissue', array('theIssue' => $issue, 'child_issue' => $task)), 'message' => TBGContext::getI18n()->__('The task was added')));
+					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('main/relatedissue', array('theIssue' => $issue, 'related_issue' => $task)), 'comment' => (($comment instanceof TBGComment) ? $this->getTemplateHTML('main/comment', array('aComment' => $comment, 'theIssue' => $issue)) : false), 'message' => TBGContext::getI18n()->__('The task was added')));
 				}
 			}
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid user story')));

@@ -331,7 +331,17 @@ function addUserStoryTask(url, story_id, mode)
 			else if (mode == 'issue')
 			{
 				$('related_child_issues_inline').insert({bottom: json.content});
+				$('no_child_issues').hide();
 				successMessage(json.message);
+				if (json.comment)
+				{
+					$('comments_box').insert({bottom: json.comment});
+
+					if ($('comments_box').childElements().size() != 0)
+					{
+						$('comments_none').hide();
+					}
+				}
 			}
 		}
 		else
