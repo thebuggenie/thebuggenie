@@ -54,7 +54,7 @@
 			</tr>
 		<?php endforeach; ?>
 	</table>
-<?php endif; ?>
+<?php endif; /*?>
 <div class="config_header nobg" style="margin-top: 20px;"><b><?php echo tbg_helpBrowserHelper('setup_build', image_tag('help.png', array('style' => "float: right;"))); ?><?php echo __('Assigned customers'); ?></b></div>
 <?php if (count($assignees['customers']) == 0): ?>
 	<div style="padding-left: 5px; padding-top: 3px; color: #AAA;"><?php echo __('There are no customers assigned to this project'); ?></div>
@@ -106,7 +106,7 @@
 			</tr>
 		<?php endforeach; ?>
 	</table>
-<?php endif; ?>
+<?php endif; */ ?>
 <div class="config_header nobg" style="margin-top: 20px;"><b><?php echo tbg_helpBrowserHelper('setup_build', image_tag('help.png', array('style' => "float: right;"))); ?><?php echo __('Assigned teams'); ?></b></div>
 <?php if (count($assignees['teams']) == 0): ?>
 	<div style="padding-left: 5px; padding-top: 3px; color: #AAA;"><?php echo __('There are no teams assigned to this project'); ?></div>

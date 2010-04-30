@@ -1388,6 +1388,7 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #scrum ul li .story_tags { padding-top: 3px; line-height: 15px; font-size: 13px; font-weight: normal; }
 #scrum ul li .actions { display: none; clear: both; padding: 3px; }
 #scrum ul li .actions a:hover { border: 0; }
+#scrum ul li .actions .task_count { font-size: 14px; font-weight: normal; color: #AAA; }
 #scrum ul li:hover .actions { display: block; }
 #scrum ul li .actions label { float: left; font-weight: bold; margin: 0 5px 0 0; padding: 0; font-size: 12px; }
 .user_story_task { display: block; cursor: default; background-color: #FFFFC0; border: 1px solid #D6D6A1; margin: 2px; padding: 2px; font-weight: normal; }
@@ -1429,6 +1430,8 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #project_dashboard #project_name span { margin: 3px; font-size: 15px; font-weight: normal; display: inline; padding: 3px; color: #AAA; }
 #project_dashboard #project_team { font-size: 13px; font-weight: normal; margin: 5px 5px 5px 0; width: 615px; }
 #project_dashboard #project_description { font-size: 14px; font-weight: normal; color: #666; }
+
+#project_team_overview .xboxcontent table td { font-size: 12px; }
 
 div.autocomplete { position: absolute; z-index: 200000; background-color: white; border: 0; padding: 0px; }
 div.autocomplete ul { list-style-type: none; margin: 0px; width: 220px; padding: 0px; border: 0; }

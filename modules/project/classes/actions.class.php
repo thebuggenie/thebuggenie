@@ -139,7 +139,7 @@
 				$mode = $request->getParameter('mode', 'scrum');
 				if ($mode == 'scrum')
 				{
-					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumstorytask', array('task' => $task))));
+					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumstorytask', array('task' => $task)), 'count' => count($issue->getChildIssues())));
 				}
 				else
 				{
@@ -316,6 +316,7 @@
 		public function runTeam(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_team', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->assignees = $this->selected_project->getAssignees();
 		}
 
 		/**

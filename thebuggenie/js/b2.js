@@ -327,6 +327,7 @@ function addUserStoryTask(url, story_id, mode)
 			if (mode == 'scrum')
 			{
 				$(prefix + '_tasks').insert({bottom: json.content});
+				$(prefix + '_tasks_count').update(json.count);
 			}
 			else if (mode == 'issue')
 			{

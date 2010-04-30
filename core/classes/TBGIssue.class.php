@@ -1950,6 +1950,7 @@
 			if (!$row = B2DB::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $related_issue->getID()))
 			{
 				$res = B2DB::getTable('TBGIssueRelationsTable')->addParentIssue($this->getID(), $related_issue->getID());
+				$this->_parent_issues = null;
 				
 				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, __('This issue now depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())));
 				$related_issue->addSystemComment(__('Issue dependancy added'), __('This issue now depends on the solution of issue %issue_no%', array('%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getUID());
@@ -1974,6 +1975,7 @@
 			if (!$row = B2DB::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $related_issue->getID()))
 			{
 				$res = B2DB::getTable('TBGIssueRelationsTable')->addChildIssue($this->getID(), $related_issue->getID());
+				$this->_child_issues = null;
 				
 				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, __('Issue %issue_no% now depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())));
 				$related_issue->addSystemComment(__('Issue dependancy added'), __('Issue %issue_no% now depends on the solution of this issue', array('%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getUID());
