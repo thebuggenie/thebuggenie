@@ -46,6 +46,8 @@
 
 		protected $_comment_number = 0;
 
+		protected static $_comment_count = array();
+
 
 		/**
 		 * Class constructor
@@ -91,13 +93,22 @@
 					$comment = TBGFactory::TBGCommentLab($row->get(TBGCommentsTable::ID), $row);
 					$retval[$comment->getID()] = $comment;
 				}
+				self::$_comment_count[$target_type][$target_id] = count($retval);
 			}
 			return $retval;
 		}
 		
 		static function countComments($target_id, $target_type, $module = 'core')
 		{
-			return 0;
+			if (!array_key_exists($target_type, self::$_comment_count))
+			{
+				self::$_comment_count[$target_type] = array();
+			}
+			if (!array_key_exists($target_id, self::$_comment_count[$target_type]))
+			{
+				self::$_comment_count[$target_type][$target_id] = B2DB::getTable('TBGCommentsTable')->countComments($target_id, $target_type);
+			}
+			return self::$_comment_count[$target_type][$target_id];
 		}
 		
 		

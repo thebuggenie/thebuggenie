@@ -961,6 +961,7 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .header_menu li:hover a { color: #FFF; }
 .header_menu li.nohover:hover a { padding: 4px 6px 3px 7px; color: #FFF; font-size: 13px; }
 .header_menu li a { border-top: 0; padding: 4px 6px 5px 6px; color: #FFF; font-size: 13px; }
+#viewissue_menu li a { font-size: 12px; }
 .menu_project_strip { position: relative; font-size: 13px; background-color: #FFF;/*D4E5FF*/ border-bottom: 1px solid #D9D9BB; border-top: 1px solid #D9D9BB; padding: 0; margin-top: 5px; height: 33px; color: #444; width: 100%; background-color: #FFFBE2; }
 .menu_project_strip .project_name { font-size: 14px; font-weight: bold; padding: 8px; background-color: #F4EC8B; height: 17px; float: left; margin-right: 6px; }
 .menu_project_strip .project_stuff { float: left; position: relative; height: 33px; min-width: 650px; }
@@ -1064,6 +1065,8 @@ li.green .xboxcontent { background-color: #CFE8CF; border-color: #AAC6AA; }
 .yellow_borderless .xb2, .rounded_box.issue_detail_changed .xb2, .yellow_borderless .xb3, .rounded_box.issue_detail_changed .xb3, .yellow_borderless .xb4, .rounded_box.issue_detail_changed .xb4 { background-color: #FFF299; border-color: #FFF299; }
 .yellow_borderless .xb1, .rounded_box.issue_detail_changed .xb1 { background-color: #FFF299; }
 .yellow_borderless .xboxcontent, .rounded_box.issue_detail_changed .xboxcontent { background-color: #FFF299; border-color: #FFF299; }
+.yellow_borderless .percent_filled { background-color: #CC8; }
+.yellow_borderless .percent_unfilled { background-color: #FFA; }
 .rounded_box.issue_detail_changed { background-color: #FFF; }
 
 .lightyellow .xb2, .lightyellow .xb3, .lightyellow .xb4 { background-color: #FFFBE2; border-color: #D9D9BB; }
@@ -1217,9 +1220,9 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 #report_form .textarea_hint { color: #AAA; font-size: 13px; font-weight: normal; padding: 5px 0 0 0; }
 #report_form .textarea_hint .header { font-weight: bold; }
 #report_form .textarea_hint .example { font-style: italic; }
-#issue_main .textarea_hint { color: #999; font-size: 13px; font-weight: normal; padding: 5px 0 0 0; }
-#issue_main .textarea_hint .header { font-weight: bold; }
-#issue_main .textarea_hint .example { font-style: italic; }
+.issue_main .textarea_hint { color: #999; font-size: 13px; font-weight: normal; padding: 5px 0 0 0; }
+.issue_main .textarea_hint .header { font-weight: bold; }
+.issue_main .textarea_hint .example { font-style: italic; }
 .reportissue_error tr { background-color: #FEE; }
 .reportissue_error tr td input, .reportissue_error tr td textarea, .reportissue_error tr td select { background-color: #FEE; border-color: #B77; }
 .reportissue_error label { color: #955; }
@@ -1251,14 +1254,14 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .userpain_below_threshold td { border-top: 2px solid #B77; }
 .userpain_below_threshold td .status_table td { border-top: 0; }
 
-dl.viewissue_list { margin: 0; font-size: 12px; padding: 0 0 0 0; position: relative; min-height: 18px; clear: both; }
-dl.viewissue_list dt { width: 100px; font-weight: bold; padding: 3px 2px 2px 2px; clear: both; }
-dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: normal; margin: 0; padding: 3px 5px 1px 2px; min-height: 16px; }
-#viewissue_left_box_top img.dropdown, #description_field img.dropdown, #title_field img.dropdown, #reproduction_steps_field img.dropdown, dl.viewissue_list dd img.dropdown { float: left; margin-right: 5px; display: none; cursor: pointer; }
-#viewissue_left_box_top img.spinning, dl.viewissue_list dd img.spinning { float: right; margin-right: 5px; }
-#viewissue_left_box_issuetype :hover img.dropdown, #description_field :hover img.dropdown, #title_field :hover img.dropdown, #reproduction_steps_field :hover img.dropdown,#viewissue_left_box_status :hover img.dropdown, #viewissue_left_box_top dl dd:hover img.dropdown, dl.viewissue_list dd:hover img.dropdown { float: left; margin-right: 5px; display: inline; }
-#viewissue_left_box_top .issue_detail_changed img.undo, #title_field .issue_detail_changed img.undo, #description_field .issue_detail_changed img.undo, #reproduction_steps_field .issue_detail_changed img.undo, dl.viewissue_list dd.issue_detail_changed img.undo { float: left; margin-right: 5px; display: inline; }
-#viewissue_left_box_top img.undo, #description_field img.undo, #title_field img.undo,#reproduction_steps_field img.undo,dl.viewissue_list dd img.undo { display: none; }
+dl.viewissue_list { margin: 0; font-size: 11px; padding: 0 0 0 0; position: relative; min-height: 16px; clear: both; }
+dl.viewissue_list dt { width: 85px; font-weight: bold; padding: 3px 2px 2px 2px; clear: both; }
+dl.viewissue_list dd { float: left; display: block; width: 185px; font-weight: normal; margin: 0; padding: 3px 5px 1px 2px; min-height: 16px; }
+img.dropdown { float: left; margin-right: 5px; display: none; cursor: pointer; }
+img.spinning { float: right; margin-right: 5px; }
+dd:hover img.dropdown, div.hoverable:hover img.dropdown { float: left; margin-right: 5px; display: inline; }
+.issue_detail_changed img.undo { float: left; margin-right: 5px; display: inline; }
+img.undo { display: none; }
 #viewissue_left_box_issuetype img.undo, #viewissue_left_box_issuetype img.dropdown { margin-top: 7px; } 
 .dropdown_header, #project_leads .dropdown_header { font-weight: bold; font-size: 13px; }
 .dropdown_content, #project_leads .dropdown_content { font-weight: normal; padding-top: 5px; font-size: 12px; }
@@ -1266,6 +1269,7 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 .dropdown_content table { margin: 5px 0 0 0; }
 .dropdown_content ul li { font-size: 12px; font-weight: normal; margin: 0; text-align: left; min-height: 18px; padding: 1px; }
 .dropdown_content table, .dropdown_content table td { font-size: 12px; font-weight: normal; margin: 0; text-align: left; height: 18px; padding: 1px; }
+.issue_lefthand .dropdown_content, .issue_lefthand .dropdown_content table td { font-size: 11px; }
 .dropdown_content table { margin-top: 5px; }
 .error_message { color: #E44; font-weight: bold; margin: 10px 5px 5px 0; font-size: 13px; }
 
@@ -1275,9 +1279,9 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #title_form { display: inline; font-size: 15px}
 #title_form input[type="text"] { font-size: 17px; margin-right: 5px; width: 300px; }
 .viewissue_description_header, .viewissue_reproduction_steps_header { font-weight: bold; font-size: 14px; /*border-bottom: 1px solid #DDD;*/ padding: 0 0 5px 0; }
-.viewissue_description, .viewissue_reproduction_steps { font-size: 13px; font-weight: normal; padding: 5px; margin: 0; }
+.viewissue_description, .viewissue_reproduction_steps { font-size: 13px; font-weight: normal; padding: 0; margin: 0; }
 
-#issue_lefthand { width: 340px; padding: 5px 5px 0 5px; vertical-align: top; }
+.issue_lefthand { width: 300px; padding: 0; vertical-align: top; }
 .header_div { border-bottom: 1px solid #DDD; padding: 3px; font-size: 13px; margin-top: 5px; font-weight: bold; }
 .header_div td { font-weight: bold; font-size: 13px; vertical-align: middle; }
 .header_div td.nice_button input { font-size: 11px; }
@@ -1287,8 +1291,8 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 .no_items { color: #AAA; font-size: 12px; padding: 5px; }
 .percent_filled { background-color: #8C8; }
 .percent_unfilled { background-color: #AFA; }
-#issue_lefthand .percent_filled a, .percent_unfilled a { display: block; height: 14px; }
-#issue_lefthand .percent_filled a:hover, .percent_unfilled a:hover { border: 0; }
+.issue_lefthand .percent_filled a, .percent_unfilled a { display: block; height: 14px; }
+.issue_lefthand .percent_filled a:hover, .percent_unfilled a:hover { border: 0; }
 
 .faded_medium .percent_filled { background-color: #BBEDB9; }
 .faded_medium .percent_unfilled { background-color: #D8FFD1; }
@@ -1315,12 +1319,12 @@ dl.viewissue_list dd { float: left; display: block; width: 210px; font-weight: n
 #attach_file #uploaded_files { table-layout: fixed; width: 100%; background-color: #FFF; }
 #uploader_no_uploaded_files { padding: 5px 0 15px 5px; }
 
-#issue_lefthand #more_actions { font-size: 13px; }
-#issue_lefthand #more_actions .xboxcontent { padding: 10px 5px 5px 10px; }
-#issue_lefthand #more_actions .box_header { font-weight: bold; padding: 5px 0 5px 0; }
-#issue_lefthand #more_actions ul, #fullpage_backdrop ul { list-style-type: none; padding: 0; margin: 0; clear: both; }
-#issue_lefthand #more_actions ul li { min-height: 18px; }
-#issue_lefthand #more_actions ul li, #fullpage_backdrop ul li { font-size: 13px; font-weight: normal; margin: 0 0 3px 0; text-align: left; }
+.issue_lefthand #more_actions { font-size: 13px; }
+.issue_lefthand #more_actions .xboxcontent { padding: 10px 5px 5px 10px; }
+.issue_lefthand #more_actions .box_header { font-weight: bold; padding: 5px 0 5px 0; }
+.issue_lefthand #more_actions ul, #fullpage_backdrop ul { list-style-type: none; padding: 0; margin: 0; clear: both; }
+.issue_lefthand #more_actions ul li { min-height: 18px; }
+.issue_lefthand #more_actions ul li, #fullpage_backdrop ul li { font-size: 13px; font-weight: normal; margin: 0 0 3px 0; text-align: left; }
 #fullpage_backdrop ul li input[type="checkbox"] { margin-left: 0; }
 #fullpage_backdrop ul li { padding-left: 5px; margin-bottom: 5px; }
 #fullpage_backdrop ul { margin: 10px 0 5px 0; }

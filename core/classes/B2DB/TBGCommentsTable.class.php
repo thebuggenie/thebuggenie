@@ -66,6 +66,16 @@
 			return $res;
 		}
 
+		public function countComments($target_id, $target_type)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::TARGET_ID, $target_id);
+			$crit->addWhere(self::TARGET_TYPE, $target_type);
+			$crit->addWhere(self::DELETED, 0);
+			$res = $this->doCount($crit);
+			return $res;
+		}
+
 		public function getNextCommentNumber($target_id, $target_type)
 		{
 			$crit = $this->getCriteria();
