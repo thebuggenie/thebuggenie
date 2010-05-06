@@ -946,7 +946,7 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .rounded_box.green { background-color: #CFE8CF; border-color: #AAC6AA; color: #242; }
 .rounded_box.lightgreen { background-color: #BDF4AA; border-color: #AAC6AA; }
 .rounded_box.yellow { background-color: #F9EF9E; border-color: #D9D9BB; }
-.rounded_box.lightyellow { background-color: #FFFBE2; border-color: #D9D9BB; }
+.rounded_box.lightyellow { background-color: #F9F5B2; border-color: #D9D9BB; }
 .rounded_box.red { background-color: #E8CFCF; border-color: #C6AAAA; color: #422; }
 .rounded_box.blue { background-color: #585DB2; border: 0; }
 .rounded_box.iceblue { background-color: #D4E5FF; border-color: #B1B8E9; }

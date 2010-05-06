@@ -178,7 +178,7 @@
 				</tr>
 			</table>
 		</div>
-		<div class="rounded_box <?php if ($theIssue->getIssueType()->getItemdata() == 'task'): ?>yellow borderless<?php else: ?>mediumgrey<?php endif; ?>" id="viewissue_left_box_top">
+		<div class="rounded_box <?php if ($theIssue->getIssueType()->getItemdata() == 'task'): ?>lightyellow<?php else: ?>lightgrey<?php endif; ?>" id="viewissue_left_box_top">
 			<table style="table-layout: auto; width: 100%; clear: both;" cellpadding=0 cellspacing=0 id="issue_view">
 				<tr>
 					<td class="issue_lefthand">
@@ -194,9 +194,9 @@
 
 							TBGEvent::createNew('core', 'viewissue_right_top', $theIssue)->trigger();
 
-						?>
+						/*?>
 						<div class="rounded_box lightgrey borderless">
-							<?php //TODO: require TBGContext::getIncludePath() . 'include/issue_affected_inline.inc.php'; ?>
+							<?php */ //TODO: require TBGContext::getIncludePath() . 'include/issue_affected_inline.inc.php'; ?>
 							<div id="description_field"<?php if (!$theIssue->isDescriptionVisible()): ?> style="display: none;"<?php endif; ?> class="hoverable">
 								<div class="rounded_box invisible nohover viewissue_description<?php if ($theIssue->isDescriptionChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$theIssue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="description_header" style="margin: 0;">
 									<div class="viewissue_description_header">
@@ -253,7 +253,7 @@
 									<?php endif; ?>
 								</div>
 							</div>
-						</div>
+						<?php /* </div> */ ?>
 					</td>
 				</tr>
 			</table>
