@@ -271,7 +271,7 @@
 			</ul>
 		</div>
 		<div id="viewissue_menu_panes">
-			<div id="tab_comments_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;" class="comments">
+			<div id="tab_comments_pane" style="padding-top: 0; margin: 0 5px 0 5px;" class="comments">
 				<?php if ($tbg_user->canPostComments()): ?>
 					<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();" value="<?php echo __('Add new comment'); ?>"></td></tr></table>
 					<div id="comment_add" class="comment_add" style="display: none; margin-top: 5px;">
@@ -351,7 +351,7 @@
 					</table>
 				</div>
 			</div>
-			<div id="tab_related_issues_and_tasks_pane" style="padding-top: 0; margin: 0 5px 0 5px;">
+			<div id="tab_related_issues_and_tasks_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
 				<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('viewissue_add_task_div').toggle();" value="<?php echo __('Add a task to this issue'); ?>"></td></tr></table>
 				<br style="clear: both;">
 				<div class="rounded_box mediumgrey shadowed" id="viewissue_add_task_div" style="margin: 5px 0 5px 0; display: none; position: absolute; font-size: 12px; width: 400px;">
