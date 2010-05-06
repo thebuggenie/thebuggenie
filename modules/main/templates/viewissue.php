@@ -265,13 +265,13 @@
 		</div>
 		<div style="clear: both; height: 30px; margin: 20px 5px 0 5px;" class="tab_menu">
 			<ul id="viewissue_menu">
-				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('icon_comments.png', array('style' => 'float: left; margin-right: 5px;')) . __('Comments (%count%)', array('%count%' => '<span id="viewissue_comment_count">'.$theIssue->getCommentCount().'</span>')), array('onclick' => "switchSubmenuTab('tab_comments', 'viewissue_menu');")); ?></li>
+				<li id="tab_comments"><?php echo javascript_link_tag(image_tag('icon_comments.png', array('style' => 'float: left; margin-right: 5px;')) . __('Comments (%count%)', array('%count%' => '<span id="viewissue_comment_count">'.$theIssue->getCommentCount().'</span>')), array('onclick' => "switchSubmenuTab('tab_comments', 'viewissue_menu');")); ?></li>
 				<li id="tab_attached_information"><?php echo javascript_link_tag(image_tag('icon_attached_information.png', array('style' => 'float: left; margin-right: 5px;')) . __('Attached information (%count%)', array('%count%' => '<span id="viewissue_uploaded_attachments_count">'.(count($theIssue->getLinks()) + count($theIssue->getFiles())).'</span>')), array('onclick' => "switchSubmenuTab('tab_attached_information', 'viewissue_menu');")); ?></li>
-				<li id="tab_related_issues_and_tasks"><?php echo javascript_link_tag(image_tag('icon_related_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Related issues and tasks'), array('onclick' => "switchSubmenuTab('tab_related_issues_and_tasks', 'viewissue_menu');")); ?></li>
+				<li id="tab_related_issues_and_tasks" class="selected"><?php echo javascript_link_tag(image_tag('icon_related_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Related issues and tasks'), array('onclick' => "switchSubmenuTab('tab_related_issues_and_tasks', 'viewissue_menu');")); ?></li>
 			</ul>
 		</div>
 		<div id="viewissue_menu_panes">
-			<div id="tab_comments_pane" style="padding-top: 0; margin: 0 5px 0 5px;" class="comments">
+			<div id="tab_comments_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;" class="comments">
 				<?php if ($tbg_user->canPostComments()): ?>
 					<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();" value="<?php echo __('Add new comment'); ?>"></td></tr></table>
 					<div id="comment_add" class="comment_add" style="display: none; margin-top: 5px;">
@@ -351,56 +351,51 @@
 					</table>
 				</div>
 			</div>
-			<div id="tab_related_issues_and_tasks_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
-				<?php /*
-				<div class="header_div">
-					<a href="javascript:void(0);" onclick="$('viewissue_add_task_div').toggle();"><?php echo image_tag('scrum_add_task.png', array('title' => __('Add a task to this issue'), 'style' => 'float: right;')); ?></a>
-					<?php echo __('Related issues and tasks'); ?>
+			<div id="tab_related_issues_and_tasks_pane" style="padding-top: 0; margin: 0 5px 0 5px;">
+				<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('viewissue_add_task_div').toggle();" value="<?php echo __('Add a task to this issue'); ?>"></td></tr></table>
+				<br style="clear: both;">
+				<div class="rounded_box mediumgrey shadowed" id="viewissue_add_task_div" style="margin: 5px 0 5px 0; display: none; position: absolute; font-size: 12px; width: 400px;">
+					<form id="viewissue_add_task_form" action="<?php echo make_url('project_scrum_story_addtask', array('project_key' => $theIssue->getProject()->getKey(), 'story_id' => $theIssue->getID(), 'mode' => 'issue')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStoryTask('<?php echo make_url('project_scrum_story_addtask', array('project_key' => $theIssue->getProject()->getKey(), 'story_id' => $theIssue->getID(), 'mode' => 'issue')); ?>', <?php echo $theIssue->getID(); ?>, 'issue');return false;">
+						<div>
+							<label for="viewissue_task_name_input"><?php echo __('Add task'); ?>&nbsp;</label>
+							<input type="text" name="task_name" id="viewissue_task_name_input">
+							<input type="submit" value="<?php echo __('Add task'); ?>">
+							<?php echo __('%add_task% or %cancel%', array('%add_task%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'viewissue_add_task_div\').toggle();">' . __('cancel') . '</a>')); ?>
+							<?php echo image_tag('spinning_20.gif', array('id' => 'add_task_indicator', 'style' => 'display: none;')); ?><br>
+						</div>
+					</form>
 				</div>
-				<div class="rounded_box borderless" id="viewissue_add_task_div" style="margin: 5px 0 5px 0; display: none">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent">
-						<form id="viewissue_add_task_form" action="<?php echo make_url('project_scrum_story_addtask', array('project_key' => $theIssue->getProject()->getKey(), 'story_id' => $theIssue->getID(), 'mode' => 'issue')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStoryTask('<?php echo make_url('project_scrum_story_addtask', array('project_key' => $theIssue->getProject()->getKey(), 'story_id' => $theIssue->getID(), 'mode' => 'issue')); ?>', <?php echo $theIssue->getID(); ?>, 'issue');return false;">
-							<div>
-								<label for="viewissue_task_name_input"><?php echo __('Add task'); ?>&nbsp;</label>
-								<input type="text" name="task_name" id="viewissue_task_name_input">
-								<input type="submit" value="<?php echo __('Add task'); ?>">
-								<?php echo __('%add_task% or %cancel%', array('%add_task%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'viewissue_add_task_form\').toggle();">' . __('cancel') . '</a>')); ?>
-								<?php echo image_tag('spinning_20.gif', array('id' => 'add_task_indicator', 'style' => 'display: none;')); ?><br>
+				<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+					<tr>
+						<td id="related_parent_issues_inline" style="width: 360px;">
+							<?php $p_issues = 0; ?>
+							<?php foreach ($theIssue->getParentIssues() as $parent_issue): ?>
+								<?php if ($parent_issue->hasAccess()): ?>
+									<?php include_template('main/relatedissue', array('theIssue' => $theIssue, 'related_issue' => $parent_issue)); ?>
+									<?php $p_issues++; ?>
+								<?php endif; ?>
+							<?php endforeach; ?>
+							<div class="no_items" id="no_parent_issues"<?php if ($p_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('No other issues depends on this issue'); ?></div>
+						</td>
+						<td style="width: 40px; text-align: center; padding: 0;"><?php echo image_tag('left.png'); ?></td>
+						<td style="width: auto;">
+							<div class="rounded_box mediumgrey borderless" id="related_issues_this_issue" style="margin: 5px auto 5px auto;">
+								<?php echo __('This issue'); ?>
 							</div>
-						</form>
-					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-				</div>
-				<div id="related_parent_issues_inline">
-					<?php $p_issues = 0; ?>
-					<?php foreach ($theIssue->getParentIssues() as $parent_issue): ?>
-						<?php if ($parent_issue->hasAccess()): ?>
-							<?php include_template('main/relatedissue', array('theIssue' => $theIssue, 'related_issue' => $parent_issue)); ?>
-							<?php $p_issues++; ?>
-						<?php endif; ?>
-					<?php endforeach; ?>
-					<div class="no_items" id="no_parent_issues"<?php if ($p_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('No other issues depends on this issue'); ?></div>
-				</div>
-				<div style="margin: 5px auto 5px auto; width: 16px; text-align: center; padding: 0;"><?php echo image_tag('up.png'); ?></div>
-				<div class="rounded_box borderless" id="related_issues_this_issue" style="margin: 5px auto 5px auto; width: 250px;">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent">
-						<?php echo __('This issue'); ?>
-					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-				</div>
-				<div style="margin: 10px auto 5px auto; width: 16px; text-align: center; padding: 0;"><?php echo image_tag('down.png'); ?></div>
-				<div id="related_child_issues_inline">
-					<?php $c_issues = 0; ?>
-					<?php foreach ($theIssue->getChildIssues() as $child_issue): ?>
-						<?php if ($child_issue->hasAccess()): ?>
-							<?php include_template('main/relatedissue', array('theIssue' => $theIssue, 'related_issue' => $child_issue)); ?>
-							<?php $c_issues++; ?>
-						<?php endif; ?>
-					<?php endforeach; ?>
-					<div class="no_items" id="no_child_issues"<?php if ($c_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('This issue does not depend on any other issues'); ?></div>
-				</div><?php */ ?>
+						</td>
+						<td style="width: 40px; text-align: center; padding: 0;"><?php echo image_tag('right.png'); ?></td>
+						<td id="related_child_issues_inline" style="width: 360px;">
+							<?php $c_issues = 0; ?>
+							<?php foreach ($theIssue->getChildIssues() as $child_issue): ?>
+								<?php if ($child_issue->hasAccess()): ?>
+									<?php include_template('main/relatedissue', array('theIssue' => $theIssue, 'related_issue' => $child_issue)); ?>
+									<?php $c_issues++; ?>
+								<?php endif; ?>
+							<?php endforeach; ?>
+							<div class="no_items" id="no_child_issues"<?php if ($c_issues > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('This issue does not depend on any other issues'); ?></div>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>
