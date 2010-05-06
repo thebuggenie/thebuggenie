@@ -612,7 +612,7 @@ function updateComment(url, cid)
 	});
 }
 
-function addComment(url)
+function addComment(url, commentcount_span)
 {
 	params = $('comment_form').serialize();
 	new Ajax.Request(url, {
@@ -650,6 +650,7 @@ function addComment(url)
 			$('comment_title').clear();
 			$('comment_bodybox').clear()
 			$('comment_visibility').setValue(1);
+			$(commentcount_span).update(json.commentcount);
 			
 			successMessage(json.title);
 		}

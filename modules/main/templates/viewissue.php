@@ -129,7 +129,7 @@
 			<table style="table-layout: fixed; width: 100%; margin: 0 0 10px 0; background-color: transparent;" cellpadding=0 cellspacing=0>
 				<tr>
 					<td style="width: 80px;<?php if (!$theIssue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_additional">
-						<div class="rounded_box yellow borderless" id="viewissue_triaging" style="margin: 0 5px 0 0; vertical-align: middle; padding: 0; color: #222; font-weight: bold; font-size: 13px; text-align: center">
+						<div class="rounded_box yellow borderless" id="viewissue_triaging" style="margin: 0 5px 0 0; vertical-align: middle; padding: 5px; font-weight: bold; font-size: 13px; text-align: center">
 							<div class="user_pain" id="issue_user_pain"><?php echo $theIssue->getUserPain(); ?></div>
 							<div class="user_pain_calculated" id="issue_user_pain_calculated"><?php echo $theIssue->getUserPainDiffText(); ?></div>
 						</div>
@@ -178,7 +178,7 @@
 				</tr>
 			</table>
 		</div>
-		<div class="rounded_box <?php if ($theIssue->getIssueType()->getItemdata() == 'task'): ?>yellow borderless<?php else: ?>lightgrey<?php endif; ?>" id="viewissue_left_box_top">
+		<div class="rounded_box <?php if ($theIssue->getIssueType()->getItemdata() == 'task'): ?>yellow borderless<?php else: ?>mediumgrey<?php endif; ?>" id="viewissue_left_box_top">
 			<table style="table-layout: auto; width: 100%; clear: both;" cellpadding=0 cellspacing=0 id="issue_view">
 				<tr>
 					<td class="issue_lefthand">
@@ -272,7 +272,7 @@
 					<div id="comment_add" class="comment_add" style="display: none; margin-top: 5px;">
 						<div class="comment_add_main">
 							<div class="comment_add_title"><?php echo __('Create a comment'); ?></div><br>
-							<form id="comment_form" action="<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>" method="post" onSubmit="addComment('<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>'); return false;">
+							<form id="comment_form" action="<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>" method="post" onSubmit="addComment('<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>', 'viewissue_comment_count'); return false;">
 								<label for="comment_title"><?php echo __('Comment title'); ?> <span class="faded_medium">(<?php echo __('optional'); ?>)</span></label><br />
 								<input type="text" class="comment_titlebox" id="comment_title" name="comment_title" /><br />
 								<label for="comment_visibility"><?php echo __('Visibility'); ?> <span class="faded_medium">(<?php echo __('whether to hide this comment for "regular users"'); ?>)</span></label><br />

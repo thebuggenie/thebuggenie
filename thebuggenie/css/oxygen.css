@@ -552,7 +552,7 @@ Custom classes
 }
 
 .comment { padding-bottom: 10px; }
-.comment:target .comment_main { border: 1px dotted #CCC; background-color: #F0F7FF; }
+.comment:target .comment_main { border: 1px dotted #CCC; background-color: #F0F7FF; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
 .comment_delete { margin-top: 10px !important; }
 .commenttitle { font-size: 13px; font-weight: bold; }
 .comment_hash { float: right; font-size: 23px; font-weight: normal; color: #B1B8E9; }
@@ -950,7 +950,7 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .rounded_box.red { background-color: #E8CFCF; border-color: #C6AAAA; color: #422; }
 .rounded_box.blue { background-color: #585DB2; border: 0; }
 .rounded_box.iceblue { background-color: #D4E5FF; border-color: #B1B8E9; }
-.rounded_box.mediumgrey { background-color: #F3F3F3; border-color: #DDD; }
+.rounded_box.mediumgrey { background-color: #E7E7E7; border-color: #D7D7D7; }
 .rounded_box.lightgrey { background-color: #F1F1F1; border-color: #DDD; }
 .rounded_box.invisible { background-color: transparent; border-color: transparent; }
 .rounded_box.invisible:hover { background-color: #F5F5F5; border-color: #F5F5F5; }

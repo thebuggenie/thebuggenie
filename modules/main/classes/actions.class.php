@@ -1898,7 +1898,7 @@
 						$comment = 'OH NO!';
 					}
 					
-					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment added!'), 'comment_data' => $comment));
+					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment added!'), 'comment_data' => $comment, 'commentcount' => TBGComment::countComments($request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'))));
 				}
 			}
 			else
