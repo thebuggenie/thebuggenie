@@ -1,61 +1,57 @@
 <div id="attach_file" style="display: none;">
-	<div class="rounded_box white borderless">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent">
-			<div class="header_div bigger">
-				<?php if ($mode == 'issue'): ?>
-					<?php echo __('Attach one or more file(s) to this issue'); ?>
-				<?php endif; ?>
-			</div>
-			<div id="upload_forms">
-				<form method="post" action="<?php echo $form_action ?>" enctype="multipart/form-data" id="uploader_upload_form" style="margin: 10px 0 0 5px; display: none;">
-					<input type="hidden" name ="MAX_FILE_SIZE" value="<?php echo TBGSettings::getUploadsMaxSize(true); ?>">
-					<input type="hidden" name="APC_UPLOAD_PROGRESS" value="" />
-					<div>
-						<dl>
-							<dt style="width: 120px;"><label for="uploader_file"><?php echo __('Select a file'); ?></label></dt>
-							<dd style="margin-bottom: 3px;"><input type="file" name="uploader_file" id="uploader_file"></dd>
-							<dd><?php echo __('Files bigger than %max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.', array('%max_filesize%' => '<b>'.TBGSettings::getUploadsMaxSize().'MB</b>')); ?></dd>
-							<dt style="width: 120px;"><label for="upload_file_description"><?php echo __('Describe the file'); ?></label></dt>
-							<dd style="margin-bottom: 3px;"><input type="text" name="uploader_file_description" id="upload_file_description" style="width: 340px;"></dd>
-							<dd class="faded_medium"><?php echo __('Enter a few words about the file, so people can understand what it is/does'); ?></dd>
-							<?php if ($mode == 'issue'): ?>
-								<dt style="width: 120px;"><label for="upload_file_comment"><?php echo __('Comment'); ?></label> (<?php echo __('optional'); ?>)</dt><br>
-								<dd style="margin-bottom: 3px;"><textarea name="comment" cols="70" rows="3" id="upload_file_comment" style="width: 460px; height: 50px;"></textarea></dd>
-								<dd class="faded_medium" style="width: 440px;"><?php echo __('If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'); ?></dd>
-							<?php endif; ?>
-						</dl>
-						<div style="text-align: center; margin-top: 0;">
-							<p style="margin-bottom: 5px;"><?php echo __('Press the %upload_and_attach% button to upload and attach the file', array('%upload_and_attach%' => '<i>'.__('Upload and attach').'</i>')); ?></p>
-							<input type="submit" name="submit" value="<?php echo __('Upload and attach'); ?>" style="font-weight: bold; font-size: 13px;">
-						</div>
-					</div>
-				</form>
-			</div>
-			<div id="uploader_upload_indicators">
-				<div id="uploader_upload_indicator" style="display: none;">
-					<?php echo image_tag('spinning_32.gif', array('style' => 'float: left;')); ?>&nbsp;<div style="float: left; font-size: 13px; padding: 1px;"><?php echo __('Uploading file, please wait'); ?>...</div>
-				</div>
-			</div>
-			<br style="clear: both;">
-			<div class="header_div"><?php echo __('Files already attached'); ?></div>
-			<div id="uploaded_files_container">
-				<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-					<tbody id="uploaded_files">
+	<div class="rounded_box white shadowed">
+		<div class="header_div bigger">
+			<?php if ($mode == 'issue'): ?>
+				<?php echo __('Attach one or more file(s) to this issue'); ?>
+			<?php endif; ?>
+		</div>
+		<div id="upload_forms">
+			<form method="post" action="<?php echo $form_action ?>" enctype="multipart/form-data" id="uploader_upload_form" style="margin: 10px 0 0 5px; display: none;">
+				<input type="hidden" name ="MAX_FILE_SIZE" value="<?php echo TBGSettings::getUploadsMaxSize(true); ?>">
+				<input type="hidden" name="APC_UPLOAD_PROGRESS" value="" />
+				<div>
+					<dl>
+						<dt style="width: 120px;"><label for="uploader_file"><?php echo __('Select a file'); ?></label></dt>
+						<dd style="margin-bottom: 3px;"><input type="file" name="uploader_file" id="uploader_file"></dd>
+						<dd><?php echo __('Files bigger than %max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.', array('%max_filesize%' => '<b>'.TBGSettings::getUploadsMaxSize().'MB</b>')); ?></dd>
+						<dt style="width: 120px;"><label for="upload_file_description"><?php echo __('Describe the file'); ?></label></dt>
+						<dd style="margin-bottom: 3px;"><input type="text" name="uploader_file_description" id="upload_file_description" style="width: 340px;"></dd>
+						<dd class="faded_medium"><?php echo __('Enter a few words about the file, so people can understand what it is/does'); ?></dd>
 						<?php if ($mode == 'issue'): ?>
-							<?php foreach ($existing_files as $file_id => $file): ?>
-								<?php include_template('attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file, 'file_id' => $file_id)); ?>
-							<?php endforeach; ?>
+							<dt style="width: 120px;"><label for="upload_file_comment"><?php echo __('Comment'); ?></label> (<?php echo __('optional'); ?>)</dt><br>
+							<dd style="margin-bottom: 3px;"><textarea name="comment" cols="70" rows="3" id="upload_file_comment" style="width: 460px; height: 50px;"></textarea></dd>
+							<dd class="faded_medium" style="width: 440px;"><?php echo __('If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'); ?></dd>
 						<?php endif; ?>
-					</tbody>
-				</table>
-			</div>
-			<div class="faded_medium" id="uploader_no_uploaded_files"<?php if (count($existing_files) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
-			<div id="done_div">
-				<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').fade({ duration: 0.5 });"><b>'.__('Done').'</b></a>')); ?>
+					</dl>
+					<div style="text-align: center; margin-top: 0;">
+						<p style="margin-bottom: 5px;"><?php echo __('Press the %upload_and_attach% button to upload and attach the file', array('%upload_and_attach%' => '<i>'.__('Upload and attach').'</i>')); ?></p>
+						<input type="submit" name="submit" value="<?php echo __('Upload and attach'); ?>" style="font-weight: bold; font-size: 13px;">
+					</div>
+				</div>
+			</form>
+		</div>
+		<div id="uploader_upload_indicators">
+			<div id="uploader_upload_indicator" style="display: none;">
+				<?php echo image_tag('spinning_32.gif', array('style' => 'float: left;')); ?>&nbsp;<div style="float: left; font-size: 13px; padding: 1px;"><?php echo __('Uploading file, please wait'); ?>...</div>
 			</div>
 		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+		<br style="clear: both;">
+		<div class="header_div"><?php echo __('Files already attached'); ?></div>
+		<div id="uploaded_files_container">
+			<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
+				<tbody id="uploaded_files">
+					<?php if ($mode == 'issue'): ?>
+						<?php foreach ($existing_files as $file_id => $file): ?>
+							<?php include_template('attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file, 'file_id' => $file_id)); ?>
+						<?php endforeach; ?>
+					<?php endif; ?>
+				</tbody>
+			</table>
+		</div>
+		<div class="faded_medium" id="uploader_no_uploaded_files"<?php if (count($existing_files) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
+		<div id="done_div">
+			<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').fade({ duration: 0.5 });"><b>'.__('Done').'</b></a>')); ?>
+		</div>
 	</div>
 	<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent"> </div>
 </div>
@@ -163,6 +159,7 @@
 					<?php if ($mode == 'issue'): ?>
 						$('viewissue_no_uploaded_files').hide();
 						$('viewissue_uploaded_files').insert({bottom: json.content_inline});
+						$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
 					<?php endif; ?>
 					this.error = false;
 				}

@@ -1633,6 +1633,8 @@
 			{
 				$status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue_id' => $request->getParameter('issue_id'), 'file_id' => $status['file_id']));
 				$status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue_id' => $request->getParameter('issue_id'), 'file_id' => $status['file_id']));
+				$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+				$status['attachmentcount'] = count($issue->getFiles()) + count($issue->getLinks());
 			}
 			
 			return $this->renderJSON($status);
@@ -1708,7 +1710,7 @@
 					if ($issue->canRemoveAttachments() && (int) $request->getParameter('file_id', 0))
 					{
 						B2DB::getTable('TBGIssueFilesTable')->removeFileFromIssue($issue->getID(), (int) $request->getParameter('file_id'));
-						return $this->renderJSON(array('failed' => false, 'file_id' => $request->getParameter('file_id'), 'message' => TBGContext::getI18n()->__('The attachment has been removed')));
+						return $this->renderJSON(array('failed' => false, 'file_id' => $request->getParameter('file_id'), 'attachmentcount' => (count($issue->getFiles()) + count($issue->getLinks())), 'message' => TBGContext::getI18n()->__('The attachment has been removed')));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You can not remove items from this issue')));
 					break;
@@ -1748,7 +1750,7 @@
 				if ($request->getParameter('link_url') != '')
 				{
 					$link_id = $issue->attachLink($request->getParameter('link_url'), $request->getParameter('description'));
-					return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Link attached!'), 'content' => $this->getTemplateHTML('main/attachedlink', array('issue' => $issue, 'link_id' => $link_id, 'link' => array('description' => $request->getParameter('description'), 'url' => $request->getParameter('link_url'))))));
+					return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Link attached!'), 'attachmentcount' => (count($issue->getFiles()) + count($issue->getLinks())), 'content' => $this->getTemplateHTML('main/attachedlink', array('issue' => $issue, 'link_id' => $link_id, 'link' => array('description' => $request->getParameter('description'), 'url' => $request->getParameter('link_url'))))));
 				}
 				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a link URL, otherwise we have nowhere to link to!')));
 			}
@@ -1763,7 +1765,7 @@
 				if ($request->getParameter('link_id') != 0)
 				{
 					$issue->removeLink($request->getParameter('link_id'));
-					return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Link removed!')));
+					return $this->renderJSON(array('failed' => false, 'attachmentcount' => (count($issue->getFiles()) + count($issue->getLinks())), 'message' => TBGContext::getI18n()->__('Link removed!')));
 				}
 				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a valid link id')));
 			}

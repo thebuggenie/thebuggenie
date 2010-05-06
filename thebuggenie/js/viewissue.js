@@ -64,6 +64,7 @@ function attachLink(url)
 				$('attach_link').hide();
 				$('viewissue_no_uploaded_files').hide();
 				$('viewissue_uploaded_links').insert({bottom: json.content});
+				$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
 			}
 			else if (json && (json.failed || json.error))
 			{
@@ -108,10 +109,11 @@ function removeLinkFromIssue(url, link_id)
 				$('viewissue_links_' + link_id).remove();
 				$('viewissue_links_' + link_id + '_remove_confirm').remove();
 				successMessage(json.message);
-				if ($('viewissue_uploaded_links').childElements().size() == 0 && $('viewissue_uploaded_links').childElements().size() == 0)
+				if (json.attachmentcount == 0)
 				{
 					$('viewissue_no_uploaded_files').show();
 				}
+				$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
 			}
 			else
 			{
@@ -163,14 +165,11 @@ function detachFileFromIssue(url, file_id)
 				$('viewissue_files_' + file_id + '_remove_confirm').remove();
 				$('uploaded_files_' + file_id + '_remove_confirm').remove();
 				successMessage(json.message);
-				if ($('viewissue_uploaded_files').childElements().size() == 0)
+				if (json.attachmentcount == 0)
 				{
-					$('uploader_no_uploaded_files').show();
-					if ($('viewissue_uploaded_links').childElements().size() == 0)
-					{
-						$('viewissue_no_uploaded_files').show();
-					}
+					$('viewissue_no_uploaded_files').show();
 				}
+				$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
 			}
 			else
 			{

@@ -33,7 +33,7 @@
 		<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status')); ?>', 'status');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 		<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'status_undo_spinning')); ?>
 		<a href="javascript:void(0);" onclick="$('status_change').toggle();" title="<?php echo __('Click to change status'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
-		<table style="table-layout: auto; width: 250px;<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> display: none;<?php endif; ?>" cellpadding=0 cellspacing=0 id="status_table">
+		<table style="table-layout: auto; width: 240px;<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> display: none;<?php endif; ?>" cellpadding=0 cellspacing=0 id="status_table">
 			<tr>
 				<td style="width: 24px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 2px;" id="status_color">&nbsp;</div></td>
 				<td style="padding-left: 5px;" id="status_content" class="<?php if ($issue->isStatusChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isStatusMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php if ($issue->getStatus() instanceof TBGDatatype) echo $issue->getStatus()->getName(); ?></td>
@@ -479,6 +479,6 @@
 		<a href="javascript:void(0);" onclick="$('more_actions').hide();$('more_actions_div').show();"><?php echo image_tag('action_remove_small.png', array('style' => 'float: left; margin-right: 5px;')); ?><span style="float: left;"><?php echo __('Show less actions'); ?></span></a>
 	</div>
 </div>
-<div style="text-align: center; font-size: 14px; width: 150px; margin: 5px auto 0 auto; padding: 5px 0 5px 0; height: 20px;" id="more_actions_div">
-	<a href="javascript:void(0);" onclick="$('more_actions').show();$('more_actions_div').hide();"><?php echo image_tag('action_add_small_faded.png', array('style' => 'float: left; margin-right: 5px;')); ?><span style="float: left;"><?php echo __('Show more actions'); ?></span></a>
+<div style="text-align: center; font-size: 14px; width: 180px; margin: 5px auto 0 auto; padding: 5px 0 5px 0; height: 20px;" id="more_actions_div">
+	<a href="javascript:void(0);" onclick="$('more_actions').show();$('more_actions_div').hide();"><?php echo image_tag('action_add_small_faded.png', array('style' => 'float: left; margin-right: 5px;')); ?><span style="float: left; font-weight: bold;"><?php echo __('Show more actions'); ?></span></a>
 </div>
