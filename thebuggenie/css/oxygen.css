@@ -950,8 +950,9 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .rounded_box.red { background-color: #E8CFCF; border-color: #C6AAAA; color: #422; }
 .rounded_box.blue { background-color: #585DB2; border: 0; }
 .rounded_box.iceblue { background-color: #D4E5FF; border-color: #B1B8E9; }
+.rounded_box.frostblue { background-color: #EDF9FF; border-color: #CEDAE3; }
 .rounded_box.mediumgrey { background-color: #E7E7E7; border-color: #D7D7D7; }
-.rounded_box.lightgrey { background-color: #F1F1F1; border-color: #DDD; }
+.rounded_box.lightgrey { background-color: #F3F3F3; border-color: #DDD; }
 .rounded_box.invisible { background-color: transparent; border-color: transparent; }
 .rounded_box.invisible:hover { background-color: #F5F5F5; border-color: #F5F5F5; }
 .rounded_box.invisible.nohover:hover { background-color: transparent; border-color: transparent; }
@@ -1116,7 +1117,7 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 #viewissue_changed a, #viewissue_duplicate a, #viewissue_nonexisting a, #viewissue_open_sameuser a, #viewissue_closed_sameuser a, #viewissue_closed a { font-size: 12px; font-weight: bold; }
 #viewissue_nonexisting { width: 700px; }
 #viewissue_open_sameuser { width: 650px; }
-#viewissue_closed_sameuser, #viewissue_closed { width: 700px; }
+#viewissue_closed_sameuser, #viewissue_closed { width: 990px; }
 #viewissue_open_sameuser, #viewissue_closed_sameuser, #viewissue_closed { text-align: left; }
 #viewissue_open_sameuser img, #viewissue_closed_sameuser img, #viewissue_closed img { float: left; margin: 0 20px 0 20px; }
 .viewissue_info_header { font-weight: bold; font-size: 14px; }

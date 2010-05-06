@@ -81,7 +81,7 @@
 			<div class="viewissue_info_content"><?php echo __('For more information you should visit the issue mentioned above, as this issue is not likely to be updated'); ?></div>
 		</div>								
 	<?php endif; ?>
-	<?php if ($theIssue->isClosed() && $theIssue->getPostedBy()->getID() == $tbg_user->getID() && !TBGUser::isThisGuest()): ?>
+	<?php /*if ($theIssue->isClosed() && $theIssue->getPostedBy()->getID() == $tbg_user->getID() && !TBGUser::isThisGuest()): ?>
 		<div class="rounded_box iceblue borderless" id="viewissue_closed_sameuser">
 			<?php echo image_tag('icon_info_big.png'); ?>
 			<div class="viewissue_info_header"><?php echo __('You reported this issue, and it was closed with status "%status_name%"', array('%status_name%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Not determined')))); ?></div>
@@ -109,10 +109,10 @@
 			<?php endif; ?>
 			</div>
 		</div>
-	<?php elseif ($theIssue->isClosed()): ?>
+	<?php else*/ if ($theIssue->isClosed()): ?>
 		<div class="rounded_box iceblue borderless" id="viewissue_closed">
 			<?php echo image_tag('icon_info_big.png'); ?>
-			<div class="viewissue_info_header"><?php echo __('This issue has been closed with status: %status_name%.', array('%status_name%' => '<b style="color: ' . (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getColor() : '#BBB') . '">' . (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Not determined')) . '</b>')); ?></div>
+			<div class="viewissue_info_header"><?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($theIssue->getStatus() instanceof TBGStatus) ? $theIssue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($theIssue->getResolution() instanceof TBGResolution) ? $theIssue->getResolution()->getName() : __('Not determined')))); ?></div>
 			<div class="viewissue_info_content">
 				<?php if ($theIssue->canPostComments() && $tbg_user->canReportIssues($theIssue->getProjectID())): ?>
 					<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%, or %report_a_new_issue%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $theIssue->getID() . '">' . __('posting a comment') . '</a>', '%report_a_new_issue%' => link_tag(make_url('reportissue'), __('report a new issue')))); ?>
@@ -178,7 +178,7 @@
 				</tr>
 			</table>
 		</div>
-		<div class="rounded_box <?php if ($theIssue->getIssueType()->getItemdata() == 'task'): ?>lightyellow<?php else: ?>lightgrey<?php endif; ?>" id="viewissue_left_box_top">
+		<div class="rounded_box <?php if ($theIssue->getIssueType()->getItemdata() == 'task'): ?>lightyellow<?php else: ?>frostblue<?php endif; ?>" id="viewissue_left_box_top">
 			<table style="table-layout: auto; width: 100%; clear: both;" cellpadding=0 cellspacing=0 id="issue_view">
 				<tr>
 					<td class="issue_lefthand">
@@ -189,7 +189,7 @@
 						?>
 						<?php include_component('main/issuedetailslisteditable', array('issue' => $theIssue)); ?>
 					</td>
-					<td valign="top" align="left" style="padding-right: 5px; height: 100%;" class="issue_main">
+					<td valign="top" align="left" style="padding: 5px; height: 100%;" class="issue_main">
 						<?php
 
 							TBGEvent::createNew('core', 'viewissue_right_top', $theIssue)->trigger();
