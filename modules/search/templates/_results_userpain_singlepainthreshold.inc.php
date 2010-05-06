@@ -11,7 +11,7 @@
 	<?php foreach ($issues as $issue): ?>
 		<tr class="<?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?><?php if ($issue->getUserPain() <= $template_parameter && $first): $first = false; ?> userpain_below_threshold<?php endif; ?>">
 			<td style="padding: 3px;">
-				<div class="rounded_box <?php if ($issue->getUserPain() > $template_parameter): ?>red<?php else: ?>yellow<?php endif; ?>_borderless" id="viewissue_triaging" style="margin: 0 5px 0 0;<?php if ($issue->getIssueType()->getIcon() != 'bug_report'): ?>display: none;<?php endif; ?>">
+				<div class="rounded_box <?php if ($issue->getUserPain() > $template_parameter): ?>red<?php else: ?>yellow<?php endif; ?> borderless" id="viewissue_triaging" style="margin: 0 5px 0 0;<?php if ($issue->getIssueType()->getIcon() != 'bug_report'): ?>display: none;<?php endif; ?>">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent" style="vertical-align: middle; padding: 1px; text-align: center">
 						<div class="user_pain" style="font-size: 13px;"><?php echo $issue->getUserPain(); ?></div>

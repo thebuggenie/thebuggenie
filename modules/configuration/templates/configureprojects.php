@@ -13,8 +13,8 @@ include_component('configleftmenu', array('selected_section' => 10));
 <td valign="top">
 	<?php include_template('configuration/project_header', array('mode' => 1)); ?>
 	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-		<div style="width: 700px; padding: 5px 0 5px 0; margin-top: 45px; border-bottom: 1px solid #DDD; font-size: 14px;"><b><?php echo __('Create a new project'); ?></b></div>
-		<div style="width: 690px; padding: 5px; background-color: #F9F9F9; margin-bottom: 20px; border-bottom: 1px solid #DDD;">
+		<div style="width: 700px; padding: 5px 0 5px 0; margin-top: 45px; border: 0; font-size: 14px;"><b><?php echo __('Create a new project'); ?></b></div>
+		<div class="rounded_box mediumgrey" style="width: 690px; padding: 5px; margin-bottom: 20px;">
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" method="post" id="add_project_form" onsubmit="return false;">
 				<input type="hidden" name="add_project" value="true">
 				<table cellpadding=0 cellspacing=0 style="margin: 0; width: 690px; table-layout: auto;">

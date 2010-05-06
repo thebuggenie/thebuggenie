@@ -9,36 +9,32 @@
 				<?php echo $project->getName(); ?>
 			<?php endif; ?>
 		</span>
-		<div class="rounded_box white" id="project_menustrip_change" style="position: absolute; display: none; width: 324px; top: 34px;">
-			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-			<div class="xboxcontent" style="padding: 5px;">
-				<div class="dropdown_header"><?php echo __('Select a different project'); ?></div>
-				<div class="dropdown_content">
-					<?php if (count(TBGProject::getAll()) > 1): ?>
-						<?php echo __('Choose a project from the list below'); ?>:<br>
-						<table cellpadding="0" cellspacing="0">
-							<?php foreach (TBGProject::getAll() as $aProject): ?>
-								<?php if ($project instanceof TBGProject && $aProject->getID() == $project->getID()) continue; ?>
-								<tr>
-									<td style="width: 16px;"><?php echo image_tag($aProject->getIcon(), array('style' => 'float: left; margin-right: 5px;'), $aProject->hasIcon()); ?></td>
-									<td style="padding-left: 5px; font-size: 13px;">
-										<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_planning', 'project_scrum', 'project_issues', 'project_statistics', 'project_users', 'project_timeline'))): ?>
-											<?php echo link_tag(make_url($tbg_response->getPage(), array('project_key' => $aProject->getKey())), $aProject->getName()); ?>
-										<?php else: ?>
-											<a href="javascript:void(0);" onclick="updateProjectMenuStrip('<?php echo make_url('getprojectmenustrip', array('page' => $tbg_response->getPage())); ?>', <?php echo $aProject->getID(); ?>);"><?php echo $aProject->getName(); ?></a>
-										<?php endif; ?>
-									</td>
-								</tr>
-							<?php endforeach; ?>
-						</table>
-					<?php else: ?>
-						<span class="faded_medium"><?php echo __('The are no other projects to choose from'); ?></span>
-					<?php endif; ?>
-					<div id="issuetype_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-				</div>
-				<div id="issuetype_change_error" class="error_message" style="display: none;"></div>
+		<div class="rounded_box white shadowed" id="project_menustrip_change" style="position: absolute; display: none; width: 324px; top: 32px; z-index: 10001;">
+			<div class="dropdown_header"><?php echo __('Select a different project'); ?></div>
+			<div class="dropdown_content">
+				<?php if (count(TBGProject::getAll()) > 1): ?>
+					<?php echo __('Choose a project from the list below'); ?>:<br>
+					<table cellpadding="0" cellspacing="0">
+						<?php foreach (TBGProject::getAll() as $aProject): ?>
+							<?php if ($project instanceof TBGProject && $aProject->getID() == $project->getID()) continue; ?>
+							<tr>
+								<td style="width: 16px;"><?php echo image_tag($aProject->getIcon(), array('style' => 'float: left; margin-right: 5px;'), $aProject->hasIcon()); ?></td>
+								<td style="padding-left: 5px; font-size: 13px;">
+									<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_planning', 'project_scrum', 'project_issues', 'project_statistics', 'project_users', 'project_timeline'))): ?>
+										<?php echo link_tag(make_url($tbg_response->getPage(), array('project_key' => $aProject->getKey())), $aProject->getName()); ?>
+									<?php else: ?>
+										<a href="javascript:void(0);" onclick="updateProjectMenuStrip('<?php echo make_url('getprojectmenustrip', array('page' => $tbg_response->getPage())); ?>', <?php echo $aProject->getID(); ?>);"><?php echo $aProject->getName(); ?></a>
+									<?php endif; ?>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</table>
+				<?php else: ?>
+					<span class="faded_medium"><?php echo __('The are no other projects to choose from'); ?></span>
+				<?php endif; ?>
+				<div id="issuetype_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
 			</div>
-			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			<div id="issuetype_change_error" class="error_message" style="display: none;"></div>
 		</div>
 	</div>
 	<?php if ($project instanceof TBGProject): ?>

@@ -3,87 +3,86 @@
 	$tbg_response->setTitle(__('Configuration center'));
 	
 ?>
-<table style="table-layout: fixed; width: 990px; margin: 10px 0 0 10px;" cellpadding=0 cellspacing=0>
-<tr>
-<td valign="top">
-<div style="font-size: 15px; font-weight: bold; padding: 5px; border-bottom: 1px solid #DDD;"><?php echo __('The Bug Genie - Configuration center')?></div>
-<p style="padding: 5px;"><?php echo __('Please select a configuration section from the list below. If you are stuck, you can always refer to the %tbg_online_help%.', array('%tbg_online_help%' => tbg_helpBrowserHelper('configure', __('The Bug Genie online help')))); ?></p>
-<div style="margin-left: 5px;">
-	<div style="margin-top: 15px; background-color: #F5F5F5; font-size: 13px; font-weight: bold; padding: 3px; border-bottom: 1px solid #EEE;"><?php echo __('General configuration'); ?></div>
-	<ul class="config_badges">
-	<?php foreach ($general_config_sections as $section => $config_info): ?>
-  		<?php if (array_key_exists('icon', $config_info)) $config_info = array($config_info); ?>
-  		<?php foreach ($config_info as $info): ?>
-  			<li>
-  			<?php if (is_array($info['route'])): ?>
-  				<?php $url = make_url($info['route'][0], $info['route'][1]); ?>
-  			<?php else: ?>
-  				<?php $url = make_url($info['route']); ?>
-  			<?php endif;?>
-	  			<a href="<?php echo $url; ?>">
-		  			<b>
-	  					<?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-	  					<?php echo $info['description']; ?>
-	  				</b>
-	  				<span><?php echo $info['details']; ?></span>
-  				</a>
-  			</li>
-  		<?php endforeach;?>
-	<?php endforeach;?>
-	</ul>
-	<div style="margin-top: 15px; background-color: #F5F5F5; clear: both; font-size: 13px; font-weight: bold; padding: 3px; border-bottom: 1px solid #EEE;"><?php echo __('Data configuration'); ?></div>
-	<ul class="config_badges">
-	<?php foreach ($data_config_sections as $section => $config_info): ?>
-  		<?php if (array_key_exists('icon', $config_info)) $config_info = array($config_info); ?>
-  		<?php foreach ($config_info as $info): ?>
-  			<li>
-  			<?php if (is_array($info['route'])): ?>
-  				<?php $url = make_url($info['route'][0], $info['route'][1]); ?>
-  			<?php else: ?>
-  				<?php $url = make_url($info['route']); ?>
-  			<?php endif;?>
-  				<a href="<?php echo $url; ?>">
-		  			<b>
-	  					<?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-	  					<?php echo $info['description']; ?>
-	  				</b>
-	  				<span><?php echo $info['details']; ?></span>
-  				</a>
-  			</li>
-  		<?php endforeach;?>
-	<?php endforeach;?>
-	</ul>
-	<div style="margin-top: 15px; background-color: #F5F5F5; clear: both; font-size: 13px; font-weight: bold; padding: 3px; border-bottom: 1px solid #EEE;"><?php echo __('Modules / addons'); ?></div>
-	<ul class="config_badges">
-	<?php foreach ($module_config_sections as $section => $config_info): ?>
-  		<?php if (array_key_exists('icon', $config_info)) $config_info = array($config_info); ?>
-  		<?php foreach ($config_info as $info): ?>
-			<?php if ($info['module'] != 'core' && !TBGContext::getModule($info['module'])->hasConfigSettings()) continue; ?>
-  			<li>
-  			<?php if (is_array($info['route'])): ?>
-  				<?php $url = make_url($info['route'][0], $info['route'][1]); ?>
-  			<?php else: ?>
-  				<?php $url = make_url($info['route']); ?>
-  			<?php endif;?>
-	  			<a href="<?php echo $url; ?>">
-		  			<b>
-		  				<?php if ($info['module'] != 'core'): ?>
-	  						<?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;'), false, $info['module']); ?>
-  						<?php else: ?>
-  							<?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-  						<?php endif; ?>
-	  					<?php echo $info['description']; ?>
-	  				</b>
-	  				<span><?php echo $info['details']; ?></span>
-  				</a>
-  			</li>
-  		<?php endforeach;?>
-	<?php endforeach;?>
-	</ul>
-	<br style="clear: both;">
-</div>
-</td>
-</tr>
+<table style="table-layout: fixed; width: 1000px; margin: 10px 0 0 10px;" cellpadding=0 cellspacing=0>
+	<tr>
+		<td valign="top">
+			<div class="header_div"><?php echo __('The Bug Genie - Configuration center')?></div>
+			<div style="margin-left: 5px;">
+				<div style="margin-top: 5px; background-color: #F5F5F5; font-size: 13px; font-weight: bold; padding: 3px; border-bottom: 1px solid #EEE;"><?php echo __('General configuration'); ?></div>
+				<ul class="config_badges">
+				<?php foreach ($general_config_sections as $section => $config_info): ?>
+					<?php if (array_key_exists('icon', $config_info)) $config_info = array($config_info); ?>
+					<?php foreach ($config_info as $info): ?>
+						<li class="rounded_box">
+						<?php if (is_array($info['route'])): ?>
+							<?php $url = make_url($info['route'][0], $info['route'][1]); ?>
+						<?php else: ?>
+							<?php $url = make_url($info['route']); ?>
+						<?php endif; ?>
+							<a href="<?php echo $url; ?>">
+								<b>
+									<?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+									<?php echo $info['description']; ?>
+								</b>
+								<span><?php echo $info['details']; ?></span>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				<?php endforeach; /*?>
+				</ul>
+				<div style="margin-top: 15px; background-color: #F5F5F5; clear: both; font-size: 13px; font-weight: bold; padding: 3px; border-bottom: 1px solid #EEE;"><?php echo __('Data configuration'); ?></div>
+				<ul class="config_badges">
+				<?php */ foreach ($data_config_sections as $section => $config_info): ?>
+					<?php if (array_key_exists('icon', $config_info)) $config_info = array($config_info); ?>
+					<?php foreach ($config_info as $info): ?>
+						<li class="rounded_box">
+						<?php if (is_array($info['route'])): ?>
+							<?php $url = make_url($info['route'][0], $info['route'][1]); ?>
+						<?php else: ?>
+							<?php $url = make_url($info['route']); ?>
+						<?php endif; ?>
+							<a href="<?php echo $url; ?>">
+								<b>
+									<?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+									<?php echo $info['description']; ?>
+								</b>
+								<span><?php echo $info['details']; ?></span>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				<?php endforeach; ?>
+				</ul>
+				<div style="margin-top: 15px; background-color: #F5F5F5; clear: both; font-size: 13px; font-weight: bold; padding: 3px; border-bottom: 1px solid #EEE;"><?php echo __('Modules / addons'); ?></div>
+				<ul class="config_badges">
+				<?php foreach ($module_config_sections as $section => $config_info): ?>
+					<?php if (array_key_exists('icon', $config_info)) $config_info = array($config_info); ?>
+					<?php foreach ($config_info as $info): ?>
+						<?php if ($info['module'] != 'core' && !TBGContext::getModule($info['module'])->hasConfigSettings()) continue; ?>
+						<li class="rounded_box">
+						<?php if (is_array($info['route'])): ?>
+							<?php $url = make_url($info['route'][0], $info['route'][1]); ?>
+						<?php else: ?>
+							<?php $url = make_url($info['route']); ?>
+						<?php endif; ?>
+							<a href="<?php echo $url; ?>">
+								<b>
+									<?php if ($info['module'] != 'core'): ?>
+										<?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;'), false, $info['module']); ?>
+									<?php else: ?>
+										<?php echo image_tag('cfg_icon_'.$info['icon'].'.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+									<?php endif; ?>
+									<?php echo $info['description']; ?>
+								</b>
+								<span><?php echo $info['details']; ?></span>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				<?php endforeach; ?>
+				</ul>
+				<br style="clear: both;">
+			</div>
+		</td>
+	</tr>
 </table>
 
 <?php 

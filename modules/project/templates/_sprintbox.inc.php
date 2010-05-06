@@ -1,4 +1,4 @@
-<div class="rounded_box mediumgrey_borderless" style="margin-top: 5px;" id="scrum_sprint_<?php echo $sprint->getID(); ?>">
+<div class="rounded_box mediumgrey borderless" style="margin-top: 5px;" id="scrum_sprint_<?php echo $sprint->getID(); ?>">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
 		<div class="sprint_header">

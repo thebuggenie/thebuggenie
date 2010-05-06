@@ -123,7 +123,7 @@
 		</td>
 		<td style="width: auto; padding: 5px; vertical-align: top;" id="find_issues">
 			<?php if ($search_error !== null): ?>
-				<div class="rounded_box red_borderless" style="margin: 0;" id="search_error">
+				<div class="rounded_box red borderless" style="margin: 0;" id="search_error">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent" style="vertical-align: middle;">
 						<div class="header"><?php echo $search_error; ?></div>
@@ -132,7 +132,7 @@
 				</div>
 			<?php endif; ?>
 			<?php if ($search_message !== null): ?>
-				<div class="rounded_box green_borderless" style="margin: 0;" id="search_message">
+				<div class="rounded_box green borderless" style="margin: 0;" id="search_message">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent" style="vertical-align: middle;">
 						<div class="header"><?php echo $search_message; ?></div>
@@ -140,7 +140,7 @@
 					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</div>
 			<?php endif; ?>
-			<div class="rounded_box iceblue_borderless" style="margin: 5px 0 5px 0;">
+			<div class="rounded_box iceblue borderless" style="margin: 5px 0 5px 0;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" id="find_issues_form">
@@ -215,7 +215,7 @@
 								<?php endif; ?>
 								<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_bottom" onclick="$('save_search').disable();$('saved_search_name').disable();$('saved_search_description').disable();<?php if ($tbg_user->canCreatePublicSearches()): ?>$('saved_search_public').disable();<?php endif; ?>$('find_issues_form').method = 'get';">
 							</div>
-							<div class="rounded_box white_borderless" style="margin: 5px 0 5px 0; display: none;" id="saved_search_details">
+							<div class="rounded_box white borderless" style="margin: 5px 0 5px 0; display: none;" id="saved_search_details">
 								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 								<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
 									<?php if (TBGContext::isProjectContext()): ?>

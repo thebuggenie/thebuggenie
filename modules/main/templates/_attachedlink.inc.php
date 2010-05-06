@@ -13,7 +13,7 @@
 <?php if ($issue->canRemoveAttachments()): ?>
 	<tr id="viewissue_links_<?php echo $link_id; ?>_remove_confirm" style="display: none;">
 		<td colspan="3">
-			<div class="rounded_box yellow_borderless" style="position: relative; clear: both; left: auto; top: auto; margin: 0; width: auto;">
+			<div class="rounded_box yellow borderless" style="position: relative; clear: both; left: auto; top: auto; margin: 0; width: auto;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-size: 12px; width: auto;">
 					<div class="header_div" style="margin-top: 0;"><?php echo __('Are you sure?'); ?></div>

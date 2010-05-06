@@ -52,12 +52,9 @@
 			?>
 			<ul id="dashboard">
 				<li>
-					<div class="rounded_box borderless" style="margin-top: 5px;">
-						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
-							<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
-							<?php echo __('Open issues assigned to you'); ?>
-						</div>
+					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
+						<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+						<?php echo __('Open issues assigned to you'); ?>
 					</div>
 					<?php if (count($tbg_user->getUserAssignedIssues()) > 0): ?>
 						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
@@ -83,12 +80,9 @@
 					?>
 				</li>
 				<li>
-					<div class="rounded_box borderless" style="margin-top: 5px;">
-						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
-							<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
-							<?php echo __('Open issues assigned to your teams'); ?>
-						</div>
+					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
+						<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+						<?php echo __('Open issues assigned to your teams'); ?>
 					</div>
 					<?php $team_issues_count = 0; ?>
 					<?php foreach ($tbg_user->getTeams() as $tid => $theTeam): ?>
@@ -121,11 +115,8 @@
 					?>
 				</li>
 				<li style="clear: both;"> 
-					<div class="rounded_box borderless" style="margin-top: 5px;">
-						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
-							<?php echo __('Issues with pending changes'); ?>
-						</div>
+					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
+						<?php echo __('Issues with pending changes'); ?>
 					</div>
 					<?php if (count($tbg_user->getIssuesPendingChanges()) > 0): ?>
 						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
@@ -151,11 +142,8 @@
 					?>
 				</li>
 				<li> 
-					<div class="rounded_box borderless" style="margin-top: 5px;">
-						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
-							<?php echo __('Your starred issues'); ?>
-						</div>
+					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
+						<?php echo __('Your starred issues'); ?>
 					</div>
 					<?php if (count($tbg_user->getStarredIssues()) > 0): ?>
 						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
@@ -190,11 +178,8 @@
 					?>
 				</li>
 				<li style="clear: both;"> 
-					<div class="rounded_box borderless" style="margin-top: 5px;">
-						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-						<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-weight: bold; font-size: 13px;">
-							<?php echo __("What you've done recently"); ?>
-						</div>
+					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
+						<?php echo __("What you've done recently"); ?>
 					</div>
 					<?php if (count($tbg_user->getLatestActions()) > 0): ?>
 						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
@@ -228,24 +213,18 @@
 				<ul id="associated_projects">
 					<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
 						<li style="text-align: right;">
-							<div class="rounded_box white">
-								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-								<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-									<div class="project_name">
-										<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?>
-									</div>
+							<div class="rounded_box white cut_bottom" style="border-bottom: 0;">
+								<div class="project_name">
+									<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?>
 								</div>
 							</div>
-							<div class="rounded_box lightgrey">
-								<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-									<div style="float: left; font-weight: bold;"><?php echo __('Go to'); ?>:</div>
-									<?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning')); ?>
-									|
-									<?php echo link_tag(make_url('project_scrum', array('project_key' => $project->getKey())), __('Scrum')); ?>
-									|
-									<?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?>
-								</div>
-								<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+							<div class="rounded_box lightgrey cut_top" style="border-top: 0;">
+								<div style="float: left; font-weight: bold;"><?php echo __('Go to'); ?>:</div>
+								<?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning')); ?>
+								|
+								<?php echo link_tag(make_url('project_scrum', array('project_key' => $project->getKey())), __('Scrum')); ?>
+								|
+								<?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?>
 							</div>
 						</li>
 					<?php endforeach; ?>
@@ -255,7 +234,7 @@
 				<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
 					<?php foreach ($project->getUpcomingMilestonesAndSprints() as $milestone): ?>
 						<?php if ($milestone->isVisible() && $milestone->isScheduled()): ?>
-							<div class="rounded_box <?php if ($milestone->isReached()): ?>green_borderless<?php elseif ($milestone->isOverdue()): ?>red_borderless<?php else: ?>iceblue_borderless<?php endif; ?> milestone_box">
+							<div class="rounded_box <?php if ($milestone->isReached()): ?>green borderless<?php elseif ($milestone->isOverdue()): ?>red borderless<?php else: ?>iceblue borderless<?php endif; ?> milestone_box">
 								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 								<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 									<div class="header"><?php echo $milestone->getProject()->getName(); ?> - <?php echo $milestone->getName(); ?></div>

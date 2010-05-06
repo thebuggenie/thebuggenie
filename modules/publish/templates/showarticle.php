@@ -7,7 +7,7 @@
 		<td class="main_area article">
 			<a name="top"></a>
 			<?php if ($error): ?>
-				<div class="rounded_box red_borderless" style="margin: 0 0 5px 0;">
+				<div class="rounded_box red borderless" style="margin: 0 0 5px 0;">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent" style="padding: 3px; font-size: 14px; color: #FFF;">
 						<?php echo $error; ?>
@@ -16,7 +16,7 @@
 				</div>
 			<?php endif; ?>
 			<?php if ($message): ?>
-				<div class="rounded_box green_borderless" style="margin: 0 0 5px 5px;">
+				<div class="rounded_box green borderless" style="margin: 0 0 5px 5px;">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent" style="padding: 3px; font-size: 14px;">
 						<b><?php echo $message; ?></b>

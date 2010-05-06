@@ -9,98 +9,94 @@
 <td valign="top">
 	<?php include_template('configuration/project_header', array('theProject' => $theProject, 'mode' => 2)); ?>
 
-	<div class="rounded_box" style="margin: 5px 0px 5px 0px; width: 700px;" id="project_leads">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="vertical-align: middle;">
-			<table style="width: 680px;" cellpadding=0 cellspacing=0>
-				<tr class="canhover_dark">
-					<td style="padding: 2px; width: 100px;">
-						<b><?php echo __('Project owner'); ?></b>
-						<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-							<?php include_component('main/identifiableselector', array(	'html_id'		=> 'owned_by_change', 
-																					'header' 			=> __('Change / set owner'),
-																					'clear_link_text'	=> __('Set owned by noone'),
-																					'style'				=> array('position' => 'absolute'),
-																					'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $theProject->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
-																					'base_id'			=> 'owned_by')); ?>
-						<?php endif; ?>
-					</td>
-					<td style="<?php if (!$theProject->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
-						<table style="width: 270px; display: <?php if ($theProject->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="owned_by_name">
-							<?php if ($theProject->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
-								<?php echo include_component('main/userdropdown', array('user' => $theProject->getOwner())); ?>
-							<?php elseif ($theProject->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
-								<?php echo include_component('main/teamdropdown', array('team' => $theProject->getOwner())); ?>
-							<?php endif; ?>
-						</table>
-					</td>
-					<td style="<?php if ($theProject->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_owned_by">
-						<?php echo __('Noone'); ?>
-					</td>
+	<div class="rounded_box mediumgrey" style="margin: 5px 0px 5px 0px; width: 700px;" id="project_leads">
+		<table style="width: 680px;" cellpadding=0 cellspacing=0>
+			<tr class="canhover_dark">
+				<td style="padding: 2px; width: 100px;">
+					<b><?php echo __('Project owner'); ?></b>
 					<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-						<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('owned_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
+						<?php include_component('main/identifiableselector', array(	'html_id'		=> 'owned_by_change',
+																				'header' 			=> __('Change / set owner'),
+																				'clear_link_text'	=> __('Set owned by noone'),
+																				'style'				=> array('position' => 'absolute'),
+																				'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $theProject->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
+																				'base_id'			=> 'owned_by')); ?>
 					<?php endif; ?>
-				</tr>
-				<tr><td colspan="3" class="description" style="padding-bottom: 10px;"><?php echo __('The project owner has total control over this project and can edit information, settings, and anything about it'); ?></td></tr>
-				<tr class="canhover_dark">
-					<td style="padding: 2px; width: 100px;">
-						<b><?php echo __('Lead by'); ?></b>
-						<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-							<?php include_component('main/identifiableselector', array(	'html_id'		=> 'lead_by_change', 
-																					'header' 			=> __('Change / set leader'),
-																					'clear_link_text'	=> __('Set lead by noone'),
-																					'style'				=> array('position' => 'absolute'),
-																					'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $theProject->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'lead_by');",
-																					'base_id'			=> 'lead_by')); ?>
+				</td>
+				<td style="<?php if (!$theProject->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
+					<table style="width: 270px; display: <?php if ($theProject->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="owned_by_name">
+						<?php if ($theProject->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
+							<?php echo include_component('main/userdropdown', array('user' => $theProject->getOwner())); ?>
+						<?php elseif ($theProject->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+							<?php echo include_component('main/teamdropdown', array('team' => $theProject->getOwner())); ?>
 						<?php endif; ?>
-					</td>
-					<td style="<?php if (!$theProject->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
-						<table style="width: 270px; display: <?php if ($theProject->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="lead_by_name">
-							<?php if ($theProject->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
-								<?php echo include_component('main/userdropdown', array('user' => $theProject->getLeader())); ?>
-							<?php elseif ($theProject->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM): ?>
-								<?php echo include_component('main/teamdropdown', array('team' => $theProject->getLeader())); ?>
-							<?php endif; ?>
-						</table>
-					</td>
-					<td style="<?php if ($theProject->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_lead_by">
-						<?php echo __('Noone'); ?>
-					</td>
+					</table>
+				</td>
+				<td style="<?php if ($theProject->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_owned_by">
+					<?php echo __('Noone'); ?>
+				</td>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('owned_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
+				<?php endif; ?>
+			</tr>
+			<tr><td colspan="3" class="description" style="padding-bottom: 10px;"><?php echo __('The project owner has total control over this project and can edit information, settings, and anything about it'); ?></td></tr>
+			<tr class="canhover_dark">
+				<td style="padding: 2px; width: 100px;">
+					<b><?php echo __('Lead by'); ?></b>
 					<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-						<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('lead_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
+						<?php include_component('main/identifiableselector', array(	'html_id'		=> 'lead_by_change',
+																				'header' 			=> __('Change / set leader'),
+																				'clear_link_text'	=> __('Set lead by noone'),
+																				'style'				=> array('position' => 'absolute'),
+																				'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $theProject->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'lead_by');",
+																				'base_id'			=> 'lead_by')); ?>
 					<?php endif; ?>
-				</tr>
-				<tr class="canhover_dark">
-					<td style="padding: 2px; width: 100px;">
-						<b><?php echo __('QA responsible'); ?></b>
-						<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-							<?php include_component('main/identifiableselector', array(	'html_id'		=> 'qa_by_change', 
-																					'header' 			=> __('Change / set QaResponsible responsible'),
-																					'clear_link_text'	=> __('Set QaResponsible responsible to noone'),
-																					'style'				=> array('position' => 'absolute'),
-																					'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $theProject->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'qa_by');",
-																					'base_id'			=> 'qa_by')); ?>
+				</td>
+				<td style="<?php if (!$theProject->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
+					<table style="width: 270px; display: <?php if ($theProject->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="lead_by_name">
+						<?php if ($theProject->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
+							<?php echo include_component('main/userdropdown', array('user' => $theProject->getLeader())); ?>
+						<?php elseif ($theProject->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+							<?php echo include_component('main/teamdropdown', array('team' => $theProject->getLeader())); ?>
 						<?php endif; ?>
-					</td>
-					<td style="<?php if (!$theProject->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
-						<table style="width: 270px; display: <?php if ($theProject->hasQaResponsible()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="qa_by_name">
-							<?php if ($theProject->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
-								<?php echo include_component('main/userdropdown', array('user' => $theProject->getQaResponsible())); ?>
-							<?php elseif ($theProject->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM): ?>
-								<?php echo include_component('main/teamdropdown', array('team' => $theProject->getQaResponsible())); ?>
-							<?php endif; ?>
-						</table>
-					</td>
-					<td style="<?php if ($theProject->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_qa_by">
-						<?php echo __('Noone'); ?>
-					</td>
+					</table>
+				</td>
+				<td style="<?php if ($theProject->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_lead_by">
+					<?php echo __('Noone'); ?>
+				</td>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('lead_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
+				<?php endif; ?>
+			</tr>
+			<tr class="canhover_dark">
+				<td style="padding: 2px; width: 100px;">
+					<b><?php echo __('QA responsible'); ?></b>
 					<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-						<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('qa_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
+						<?php include_component('main/identifiableselector', array(	'html_id'		=> 'qa_by_change',
+																				'header' 			=> __('Change / set QaResponsible responsible'),
+																				'clear_link_text'	=> __('Set QaResponsible responsible to noone'),
+																				'style'				=> array('position' => 'absolute'),
+																				'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $theProject->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'qa_by');",
+																				'base_id'			=> 'qa_by')); ?>
 					<?php endif; ?>
-				</tr>
-			</table>
-		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+				</td>
+				<td style="<?php if (!$theProject->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
+					<table style="width: 270px; display: <?php if ($theProject->hasQaResponsible()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="qa_by_name">
+						<?php if ($theProject->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
+							<?php echo include_component('main/userdropdown', array('user' => $theProject->getQaResponsible())); ?>
+						<?php elseif ($theProject->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+							<?php echo include_component('main/teamdropdown', array('team' => $theProject->getQaResponsible())); ?>
+						<?php endif; ?>
+					</table>
+				</td>
+				<td style="<?php if ($theProject->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_qa_by">
+					<?php echo __('Noone'); ?>
+				</td>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('qa_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
+				<?php endif; ?>
+			</tr>
+		</table>
 	</div>
 
 	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -444,14 +440,10 @@
 		</tr>
 	</table>
 	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-		<div class="rounded_box" style="margin: 5px 0px 5px 0px; width: 700px;">
-			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-			<div class="xboxcontent" style="vertical-align: middle; height: 23px; padding: 5px 10px 5px 10px;">
-				<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "Save" when you are done, to save your changes'); ?></div>
-				<input type="submit" id="project_submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
-				<span id="project_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
-			</div>
-			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+		<div class="rounded_box mediumgrey" style="margin: 5px 0px 5px 0px; width: 700px; height: 23px; padding: 5px 10px 5px 10px;">
+			<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "Save" when you are done, to save your changes'); ?></div>
+			<input type="submit" id="project_submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+			<span id="project_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 		</div>
 	<?php endif; ?>
 	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>

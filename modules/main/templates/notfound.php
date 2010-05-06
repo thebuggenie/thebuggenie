@@ -1,4 +1,4 @@
-<div class="rounded_box red_borderless" id="viewissue_nonexisting">
+<div class="rounded_box red borderless" id="viewissue_nonexisting">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 13px; text-align: center;">
 		<div class="viewissue_info_header"><?php echo __("404 - Not Found"); ?></div>

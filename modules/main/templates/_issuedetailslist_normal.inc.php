@@ -1,4 +1,4 @@
-<div class="rounded_box iceblue_borderless" id="viewissue_left_box_top">
+<div class="rounded_box iceblue borderless" id="viewissue_left_box_top">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="padding: 5px;">
 		<div id="viewissue_left_box_issuetype">
@@ -75,7 +75,7 @@
 		<div style="clear: both;"> </div>
 	</div>
 </div>
-<div class="rounded_box mediumgrey_borderless" style="margin: 0;" id="viewissue_left_box_bottom">
+<div class="rounded_box mediumgrey borderless" style="margin: 0;" id="viewissue_left_box_bottom">
 	<div class="xboxcontent" style="vertical-align: middle; padding: 0 10px 0 5px;">
 		<dl class="viewissue_list">
 			<?php if ($theIssue->getProject()->isEditionsEnabled() && $theIssue->isEditionsVisible()): ?>

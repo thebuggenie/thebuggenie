@@ -9,231 +9,213 @@
 		<?php echo __("What's the issue?"); ?>
 	</div>
 	<?php if (!empty($errors) || !(empty($permission_errors))): ?>
-		<div class="rounded_box report_issue_desc red_borderless" style="margin-bottom: 5px;">
-			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-			<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222;">
-				<strong><?php echo __('One or more errors occured when trying to file your issue'); ?>:</strong>
-				<ul>
-					<?php foreach ($errors as $key => $error): ?>
-						<?php if (is_array($error)): ?>
-							<?php foreach ($error as $suberror): ?>
-								<li><?php echo $suberror; ?></li>
-							<?php endforeach; ?>
-						<?php elseif (is_bool($error)): ?>
-							<li>
-								<?php if ($key == 'title' || in_array($key, TBGDatatype::getAvailableFields(true)) || in_array($key, array('pain_bug_type', 'pain_likelihood', 'pain_effect'))): ?>
-									<?php
+		<div class="rounded_box report_issue_desc red borderless" style="margin-bottom: 5px;">
+			<strong><?php echo __('One or more errors occured when trying to file your issue'); ?>:</strong>
+			<ul>
+				<?php foreach ($errors as $key => $error): ?>
+					<?php if (is_array($error)): ?>
+						<?php foreach ($error as $suberror): ?>
+							<li><?php echo $suberror; ?></li>
+						<?php endforeach; ?>
+					<?php elseif (is_bool($error)): ?>
+						<li>
+							<?php if ($key == 'title' || in_array($key, TBGDatatype::getAvailableFields(true)) || in_array($key, array('pain_bug_type', 'pain_likelihood', 'pain_effect'))): ?>
+								<?php
 
-										switch ($key)
-										{
-											case 'title':
-												echo __('You have to specify a title');
-												break;
-											case 'description':
-												echo __('You have to enter a description in the "%description%" field', array('%description%' => __('Description')));
-												break;
-											case 'reproduction_steps':
-												echo __('You have to enter something in the "%steps_to_reproduce%" field', array('%steps_to_reproduce%' => __('Steps to reproduce')));
-												break;
-											case 'edition':
-												echo __("Please specify a valid edition");
-												break;
-											case 'builds':
-												echo __("Please specify a valid version / release");
-												break;
-											case 'components':
-												echo __("Please specify a valid component");
-												break;
-											case 'category':
-												echo __("Please specify a valid category");
-												break;
-											case 'status':
-												echo __("Please specify a valid status");
-												break;
-											case 'priority':
-												echo __("Please specify a valid priority");
-												break;
-											case 'reproducability':
-												echo __("Please specify a valid reproducability");
-												break;
-											case 'severity':
-												echo __("Please specify a valid severity");
-												break;
-											case 'resolution':
-												echo __("Please specify a valid resolution");
-												break;
-											case 'estimated_time':
-												echo __("Please enter a valid estimate");
-												break;
-											case 'elapsed_time':
-												echo __("Please enter time already spent working on this issue");
-												break;
-											case 'percent_complete':
-												echo __("Please enter how many percent complete the issue already is");
-												break;
-											case 'pain_bug_type':
-												echo __("Please enter a valid triaged bug type");
-												break;
-											case 'pain_likelihood':
-												echo __("Please enter a valid triaged likelihood");
-												break;
-											case 'pain_effect':
-												echo __("Please enter a valid triaged effect");
-												break;
-											default:
-												echo __("Please triage the reported issue, so the user pain score can be properly calculated");
-												break;
-										}
+									switch ($key)
+									{
+										case 'title':
+											echo __('You have to specify a title');
+											break;
+										case 'description':
+											echo __('You have to enter a description in the "%description%" field', array('%description%' => __('Description')));
+											break;
+										case 'reproduction_steps':
+											echo __('You have to enter something in the "%steps_to_reproduce%" field', array('%steps_to_reproduce%' => __('Steps to reproduce')));
+											break;
+										case 'edition':
+											echo __("Please specify a valid edition");
+											break;
+										case 'builds':
+											echo __("Please specify a valid version / release");
+											break;
+										case 'components':
+											echo __("Please specify a valid component");
+											break;
+										case 'category':
+											echo __("Please specify a valid category");
+											break;
+										case 'status':
+											echo __("Please specify a valid status");
+											break;
+										case 'priority':
+											echo __("Please specify a valid priority");
+											break;
+										case 'reproducability':
+											echo __("Please specify a valid reproducability");
+											break;
+										case 'severity':
+											echo __("Please specify a valid severity");
+											break;
+										case 'resolution':
+											echo __("Please specify a valid resolution");
+											break;
+										case 'estimated_time':
+											echo __("Please enter a valid estimate");
+											break;
+										case 'elapsed_time':
+											echo __("Please enter time already spent working on this issue");
+											break;
+										case 'percent_complete':
+											echo __("Please enter how many percent complete the issue already is");
+											break;
+										case 'pain_bug_type':
+											echo __("Please enter a valid triaged bug type");
+											break;
+										case 'pain_likelihood':
+											echo __("Please enter a valid triaged likelihood");
+											break;
+										case 'pain_effect':
+											echo __("Please enter a valid triaged effect");
+											break;
+										default:
+											echo __("Please triage the reported issue, so the user pain score can be properly calculated");
+											break;
+									}
 
-									?>
-								<?php else: ?>
-									<?php echo __('Required field "%field_name%" is missing or invalid', array('%field_name%' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
-								<?php endif; ?>
-							</li>
-						<?php else: ?>
-							<li><?php echo $error; ?></li>
-						<?php endif; ?>
-					<?php endforeach; ?>
-					<?php foreach ($permission_errors as $key => $p_error): ?>
-						<?php if (is_array($p_error)): ?>
-							<?php foreach ($p_error as $p_suberror): ?>
-								<li><?php echo $p_suberror; ?></li>
-							<?php endforeach; ?>
-						<?php elseif (is_bool($p_error)): ?>
-							<li>
-								<?php if (in_array($key, TBGDatatype::getAvailableFields(true))): ?>
-									<?php
+								?>
+							<?php else: ?>
+								<?php echo __('Required field "%field_name%" is missing or invalid', array('%field_name%' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
+							<?php endif; ?>
+						</li>
+					<?php else: ?>
+						<li><?php echo $error; ?></li>
+					<?php endif; ?>
+				<?php endforeach; ?>
+				<?php foreach ($permission_errors as $key => $p_error): ?>
+					<?php if (is_array($p_error)): ?>
+						<?php foreach ($p_error as $p_suberror): ?>
+							<li><?php echo $p_suberror; ?></li>
+						<?php endforeach; ?>
+					<?php elseif (is_bool($p_error)): ?>
+						<li>
+							<?php if (in_array($key, TBGDatatype::getAvailableFields(true))): ?>
+								<?php
 
-										switch ($key)
-										{
-											case 'description':
-												echo __("You don't have access to enter a description");
-												break;
-											case 'reproduction_steps':
-												echo __("You don't have access to enter steps to reproduce");
-												break;
-											case 'edition':
-												echo __("You don't have access to add edition information");
-												break;
-											case 'builds':
-												echo __("You don't have access to enter release information");
-												break;
-											case 'components':
-												echo __("You don't have access to enter component information");
-												break;
-											case 'category':
-												echo __("You don't have access to specify a category");
-												break;
-											case 'status':
-												echo __("You don't have access to specify a status");
-												break;
-											case 'priority':
-												echo __("You don't have access to specify a priority");
-												break;
-											case 'reproducability':
-												echo __("You don't have access to specify reproducability");
-												break;
-											case 'severity':
-												echo __("You don't have access to specify a severity");
-												break;
-											case 'resolution':
-												echo __("You don't have access to specify a resolution");
-												break;
-											case 'estimated_time':
-												echo __("You don't have access to estimate the issue");
-												break;
-											case 'elapsed_time':
-												echo __("You don't have access to specify time already spent working on the issue");
-												break;
-											case 'percent_complete':
-												echo __("You don't have access to specify how many percent complete the issue is");
-												break;
-										}
+									switch ($key)
+									{
+										case 'description':
+											echo __("You don't have access to enter a description");
+											break;
+										case 'reproduction_steps':
+											echo __("You don't have access to enter steps to reproduce");
+											break;
+										case 'edition':
+											echo __("You don't have access to add edition information");
+											break;
+										case 'builds':
+											echo __("You don't have access to enter release information");
+											break;
+										case 'components':
+											echo __("You don't have access to enter component information");
+											break;
+										case 'category':
+											echo __("You don't have access to specify a category");
+											break;
+										case 'status':
+											echo __("You don't have access to specify a status");
+											break;
+										case 'priority':
+											echo __("You don't have access to specify a priority");
+											break;
+										case 'reproducability':
+											echo __("You don't have access to specify reproducability");
+											break;
+										case 'severity':
+											echo __("You don't have access to specify a severity");
+											break;
+										case 'resolution':
+											echo __("You don't have access to specify a resolution");
+											break;
+										case 'estimated_time':
+											echo __("You don't have access to estimate the issue");
+											break;
+										case 'elapsed_time':
+											echo __("You don't have access to specify time already spent working on the issue");
+											break;
+										case 'percent_complete':
+											echo __("You don't have access to specify how many percent complete the issue is");
+											break;
+									}
 
-									?>
-								<?php else: ?>
-									<?php echo __('You don\'t have access to enter "%field_name%"', array('%field_name%' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
-								<?php endif; ?>
-							</li>
-						<?php else: ?>
-							<li><?php echo $p_error; ?></li>
-						<?php endif; ?>
-					<?php endforeach; ?>
-				</ul>
-				<?php echo __('Please try to fix the error described above, and then click the %file_issue% button again', array('%file_issue%' => '<b>'.__('File issue').'</b>')); ?>.
-			</div>
-			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+								?>
+							<?php else: ?>
+								<?php echo __('You don\'t have access to enter "%field_name%"', array('%field_name%' => TBGCustomDatatype::getByKey($key)->getDescription())); ?>
+							<?php endif; ?>
+						</li>
+					<?php else: ?>
+						<li><?php echo $p_error; ?></li>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</ul>
+			<?php echo __('Please try to fix the error described above, and then click the %file_issue% button again', array('%file_issue%' => '<b>'.__('File issue').'</b>')); ?>.
 		</div>
 	<?php elseif ($issue instanceof TBGIssue): ?>
-		<div class="rounded_box report_issue_desc green_borderless" style="margin-bottom: 10px;">
-			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-			<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222;">
-				<strong><?php echo __('The following issue was reported'); ?>:</strong> 
-				<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), __('%issue_no% - %issue_title%', array('%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()))); ?><br>
-				<?php echo __('Click the link to visit the reported issue'); ?>
-			</div>
-			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+		<div class="rounded_box report_issue_desc green borderless" style="margin-bottom: 10px;">
+			<strong><?php echo __('The following issue was reported'); ?>:</strong>
+			<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), __('%issue_no% - %issue_title%', array('%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()))); ?><br>
+			<?php echo __('Click the link to visit the reported issue'); ?>
 		</div>
 	<?php endif; ?>
 	<form action="<?php echo make_url('reportissue'); ?>" method="post">
-		<div class="rounded_box report_issue_desc borderless">
-			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-			<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-				<?php if (count($projects) > 0): ?>
-					<?php if (!$selected_project instanceof TBGProject): ?>
-						<p><?php echo __('Please select the project you are filing an issue for, as well as what kind of issue you are filing'); ?>.</p>
-					<?php endif; ?>
-					<div style="margin: 10px 0 0 0; clear: both; height: 25px;">
-						<div style="float: left;">
-							<?php if ($selected_project instanceof TBGProject): ?>
-								<span style="font-size: 14px;"><?php echo __('Reporting an issue for %project_name%', array('%project_name%' => '<b>' . $selected_project->getName() . '</b>'))?></span>
-							<?php endif; ?>
-							<label for="project_id" style="margin-right: 20px;<?php if ($selected_project instanceof TBGProject): ?> display: none;<?php endif; ?>"><?php echo __('Select project'); ?></label>
-							<select name="project_id" id="project_id" style="min-width: 300px; height: 25px;<?php if ($selected_project instanceof TBGProject): ?> display: none;<?php endif; ?>" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');">
-								<option value="0"><?php echo __('Please select a project from this list'); ?>...</option>
-								<?php foreach ($projects as $project): ?>
-									<option value="<?php echo $project->getID(); ?>"<?php if ($selected_project instanceof TBGProject && $selected_project->getID() == $project->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
-								<?php endforeach; ?>
-							</select>
-						</div>
-						<div style="float: right;<?php if (!$selected_issuetype instanceof TBGIssuetype): ?> display: none;<?php endif; ?>" id="issuetype_dropdown">
-							<label for="issuetype_id" style="margin-right: 20px;"><?php echo __('Select issue type'); ?></label>
-							<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '');">
-								<option value="0"><?php echo __('Please select an issue type from this list'); ?>...</option>
-								<?php foreach ($issuetypes as $issue_type): ?>
-									<?php if (!$issue_type->isReportable()) continue; ?>
-									<option value="<?php echo $issue_type->getID(); ?>"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_issuetype->getID() == $issue_type->getID()): ?> selected<?php endif; ?>><?php echo $issue_type->getName(); ?></option>
-								<?php endforeach; ?>
-							</select>
-						</div>
-					</div>
-				<?php else: ?>
-					<p style="padding-bottom: 5px;">
-						<b class="faded_dark"><?php echo __('There are no projects to choose from'); ?>.</b><br>
-						<i><?php echo __('An administrator must create one or more projects before you can report any issues'); ?>.</i>
-					</p>
+		<div class="rounded_box report_issue_desc borderless lightgrey">
+			<?php if (count($projects) > 0): ?>
+				<?php if (!$selected_project instanceof TBGProject): ?>
+					<p><?php echo __('Please select the project you are filing an issue for, as well as what kind of issue you are filing'); ?>.</p>
 				<?php endif; ?>
-			</div>
-			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+				<div style="margin: 10px 0 0 0; clear: both; height: 25px;">
+					<div style="float: left;">
+						<?php if ($selected_project instanceof TBGProject): ?>
+							<span style="font-size: 14px;"><?php echo __('Reporting an issue for %project_name%', array('%project_name%' => '<b>' . $selected_project->getName() . '</b>'))?></span>
+						<?php endif; ?>
+						<label for="project_id" style="margin-right: 20px;<?php if ($selected_project instanceof TBGProject): ?> display: none;<?php endif; ?>"><?php echo __('Select project'); ?></label>
+						<select name="project_id" id="project_id" style="min-width: 300px; height: 25px;<?php if ($selected_project instanceof TBGProject): ?> display: none;<?php endif; ?>" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');">
+							<option value="0"><?php echo __('Please select a project from this list'); ?>...</option>
+							<?php foreach ($projects as $project): ?>
+								<option value="<?php echo $project->getID(); ?>"<?php if ($selected_project instanceof TBGProject && $selected_project->getID() == $project->getID()): ?> selected<?php endif; ?>><?php echo $project->getName(); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+					<div style="float: right;<?php if (!$selected_issuetype instanceof TBGIssuetype): ?> display: none;<?php endif; ?>" id="issuetype_dropdown">
+						<label for="issuetype_id" style="margin-right: 20px;"><?php echo __('Select issue type'); ?></label>
+						<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '');">
+							<option value="0"><?php echo __('Please select an issue type from this list'); ?>...</option>
+							<?php foreach ($issuetypes as $issue_type): ?>
+								<?php if (!$issue_type->isReportable()) continue; ?>
+								<option value="<?php echo $issue_type->getID(); ?>"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_issuetype->getID() == $issue_type->getID()): ?> selected<?php endif; ?>><?php echo $issue_type->getName(); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				</div>
+			<?php else: ?>
+				<p style="padding-bottom: 5px;">
+					<b class="faded_dark"><?php echo __('There are no projects to choose from'); ?>.</b><br>
+					<i><?php echo __('An administrator must create one or more projects before you can report any issues'); ?>.</i>
+				</p>
+			<?php endif; ?>
 		</div>
 		<?php if (count($projects) > 0 && count($issuetypes) > 0): ?>
 			<ul class="issuetype_list" id="issuetype_list"<?php if ($selected_issuetype instanceof TBGIssuetype): ?> style="display: none;"<?php endif; ?>>
-			<?php $left = true; ?>
 			<?php foreach ($issuetypes as $issuetype): ?>
 				<?php if (!$issuetype->isReportable()) continue; ?>
-				<li class="rounded_box borderless" style="float: <?php if ($left): ?>left<?php else: ?>right<?php endif; ?>;">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
-						<?php echo image_tag($issuetype->getIcon() . '.png'); ?>
-						<strong style="font-size: 14px;"><?php echo $issuetype->getName(); ?></strong><br>
-						<?php echo $issuetype->getDescription(); ?>
-						<div style="text-align: right; margin-top: 5px;">
-							<a href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);updateFields('<?php echo make_url('getreportissuefields'); ?>');" style="font-size: 13px; font-weight: bold;"><?php echo __('Choose %issue_type%', array('%issue_type%' => strtolower($issuetype->getName()))); ?>&nbsp;&gt;&gt;</a>
-						</div>
+				<li class="rounded_box borderless lightgrey">
+					<?php echo image_tag($issuetype->getIcon() . '.png'); ?>
+					<strong style="font-size: 14px;"><?php echo $issuetype->getName(); ?></strong><br>
+					<?php echo $issuetype->getDescription(); ?>
+					<div style="text-align: right; margin-top: 5px;">
+						<a href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);updateFields('<?php echo make_url('getreportissuefields'); ?>');" style="font-size: 13px; font-weight: bold;"><?php echo __('Choose %issue_type%', array('%issue_type%' => strtolower($issuetype->getName()))); ?>&nbsp;&gt;&gt;</a>
 					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</li>
-				<?php $left = !$left; ?>
 			<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>
@@ -515,7 +497,7 @@
 				<?php if ($selected_issuetype != null && $selected_project != null): ?>
 					<script type="text/javascript">updateFields('<?php echo make_url('getreportissuefields'); ?>');</script>
 				<?php endif; ?>
-				<div class="rounded_box report_issue_desc green_borderless" id="report_issue_add_extra">
+				<div class="rounded_box report_issue_desc green borderless" id="report_issue_add_extra">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent" style="vertical-align: middle; padding: 5px; height: 25px; font-size: 15px;">
 						<div style="float: left; padding-top: 3px;"><?php echo __('When you are satisfied, click the %file_issue% button to file your issue', array('%file_issue%' => '<strong>'.__('File issue').'</strong>')); ?></div>
@@ -523,7 +505,7 @@
 					</div>
 					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</div>
-				<div class="rounded_box report_issue_desc borderless" id="report_issue_add_extra">
+				<div class="rounded_box report_issue_desc borderless lightgrey" id="report_issue_add_extra">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 					<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 						<strong><?php echo __('Add more information to your issue'); ?></strong><br>

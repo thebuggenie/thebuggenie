@@ -21,14 +21,10 @@
 					<?php echo image_tag('spinning_20.gif', array('style' => 'display: none;', 'id' => $base_id . '_' . $permission_key . '_details_indicator')); ?>
 					<ul style="display: none;" id="<?php echo $base_id; ?>_<?php echo $permission_key; ?>_details"> </ul>
 				<?php endif; ?>
-				<div class="rounded_box white" style="margin: 5px 5px 10px 0; display: none;" id="<?php echo $base_id; ?>_<?php echo $permission_key; ?>_settings" style="display: none;">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent" style="padding: 3px; font-size: 12px;">
-						<div class="content">
-							<?php include_component('configuration/permissionsinfo', array('key' => $permission_key, 'mode' => $mode, 'target_id' => $current_target_id, 'module' => $module, 'access_level' => $access_level)); ?>
-						</div>
+				<div class="rounded_box white" style="margin: 5px 5px 10px 0; display: none; padding: 3px; font-size: 12px;" id="<?php echo $base_id; ?>_<?php echo $permission_key; ?>_settings" style="display: none;">
+					<div class="content">
+						<?php include_component('configuration/permissionsinfo', array('key' => $permission_key, 'mode' => $mode, 'target_id' => $current_target_id, 'module' => $module, 'access_level' => $access_level)); ?>
 					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 				</div>
 			</li>
 		<?php endif; ?>

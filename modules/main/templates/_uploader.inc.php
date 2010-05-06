@@ -1,5 +1,5 @@
 <div id="attach_file" style="display: none;">
-	<div class="rounded_box white_borderless">
+	<div class="rounded_box white borderless">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent">
 			<div class="header_div bigger">

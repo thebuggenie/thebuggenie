@@ -52,7 +52,7 @@
 	<br style="clear: both;">
 <?php endif; ?>
 <?php if (!$embedded): ?>
-	<div class="rounded_box lightgrey_borderless" style="margin: 30px 5px 20px 5px;">
+	<div class="rounded_box lightgrey borderless" style="margin: 30px 5px 20px 5px;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
 			<div class="content">

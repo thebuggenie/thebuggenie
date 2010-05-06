@@ -34,13 +34,9 @@
 	}
 </style>
 <?php if ($error !== null): ?>
-	<div class="rounded_box red_borderless" style="margin: 5px auto 5px auto; width: 700px;">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 13px;">
-			<div class="viewissue_info_header"><?php echo __('An error occurred when trying to connect to the OpenID provider'); ?></div>
-			<div class="viewissue_info_content"><?php echo $error_description; ?></div>
-		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+	<div class="rounded_box red borderless" style="margin: 5px auto 5px auto; width: 700px; vertical-align: middle; padding: 5px; font-weight: bold; font-size: 13px;">
+		<div class="viewissue_info_header"><?php echo __('An error occurred when trying to connect to the OpenID provider'); ?></div>
+		<div class="viewissue_info_content"><?php echo $error_description; ?></div>
 	</div>
 <?php endif; ?>
 <div>

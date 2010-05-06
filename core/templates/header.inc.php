@@ -53,28 +53,24 @@
 							</td>
 							<td style="width: auto;">
 								<div class="rounded_box blue" id="header_userinfo">
-									<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-									<div class="xboxcontent" style="vertical-align: middle; padding: 0 5px 0 5px;">
-										<?php echo image_tag($tbg_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;'), true); ?>
-										<?php if ($tbg_user->isGuest()): ?>
-											<div class="header_username">
-												<strong><?php echo __('You are currently %not_logged_in%', array('%not_logged_in%' => '')); ?></strong><br>
-												<?php echo __('Not logged in'); ?>
-											</div>
-											<div style="text-align: right;">
-												<?php echo link_tag(make_url('login'), __('Login')); ?>
-												<?php if (TBGSettings::isRegistrationAllowed()): ?>
-													<?php echo __('%login% or %register%', array('%login%' => '', '%register%' => link_tag(make_url('login'), __('Register')))); ?>
-												<?php endif; ?> 
-											</div>
-										<?php else: ?>
-											<div class="header_username"><?php echo '<strong>' . __('Logged in as %name%', array('%name%' => '</strong><br>' . TBGContext::getUser()->getRealname())); ?></div>
-											<div style="text-align: right;">
-												<?php echo link_tag(make_url('account'), __('My account')); ?> | <?php echo link_tag(make_url('logout'), __('Logout')); ?> 
-											</div>
-										<?php endif; ?>
-									</div>
-									<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+									<?php echo image_tag($tbg_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;'), true); ?>
+									<?php if ($tbg_user->isGuest()): ?>
+										<div class="header_username">
+											<strong><?php echo __('You are currently %not_logged_in%', array('%not_logged_in%' => '')); ?></strong><br>
+											<?php echo __('Not logged in'); ?>
+										</div>
+										<div style="text-align: right;">
+											<?php echo link_tag(make_url('login'), __('Login')); ?>
+											<?php if (TBGSettings::isRegistrationAllowed()): ?>
+												<?php echo __('%login% or %register%', array('%login%' => '', '%register%' => link_tag(make_url('login'), __('Register')))); ?>
+											<?php endif; ?>
+										</div>
+									<?php else: ?>
+										<div class="header_username"><?php echo '<strong>' . __('Logged in as %name%', array('%name%' => '</strong><br>' . TBGContext::getUser()->getRealname())); ?></div>
+										<div style="text-align: right;">
+											<?php echo link_tag(make_url('account'), __('My account')); ?> | <?php echo link_tag(make_url('logout'), __('Logout')); ?>
+										</div>
+									<?php endif; ?>
 								</div>
 							</td>
 						</tr>

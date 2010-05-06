@@ -23,7 +23,7 @@
 			</div>
 			<div id="usersteamsgroups_menu_panes">
 				<div id="tab_users_pane" style="padding-top: 0; width: 750px;">
-					<div class="rounded_box mediumgrey_borderless" style="margin-top: 5px;">
+					<div class="rounded_box mediumgrey borderless" style="margin-top: 5px;">
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 						<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
 						<table cellpadding="0" cellspacing="0" border="0">

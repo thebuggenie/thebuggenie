@@ -26,14 +26,10 @@
 	<div id="tab_user_settings_pane" style="display: none;"><?php include_template('user', array('access_level' => $access_level)); ?></div>
 </div>
 <?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-	<div class="rounded_box" style="margin: 5px 0px 5px 0px; width: 700px;">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="vertical-align: middle; height: 23px; padding: 5px 10px 5px 10px;">
-			<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "Save" to save your changes in all categories'); ?></div>
-			<input type="submit" id="config_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
-			<span id="config_settings_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
-		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+	<div class="rounded_box mediumgrey" style="margin: 5px 0px 5px 0px; width: 700px; height: 25px; padding: 5px 10px 5px 10px;">
+		<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "Save" to save your changes in all categories'); ?></div>
+		<input type="submit" id="config_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+		<span id="config_settings_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 	</div>
 <?php endif; ?>
 </form>

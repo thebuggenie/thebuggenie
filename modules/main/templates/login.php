@@ -16,7 +16,7 @@
 
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" enctype="multipart/form-data" method="post" name="loginform">
 <?php if (isset($login_error)): ?>
-<div class="rounded_box red_borderless">
+<div class="rounded_box red borderless">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 		<span  class="login_fieldheader"><?php echo $login_error; ?></span>
@@ -58,7 +58,7 @@
 		<?php TBGContext::clearMessage('account_activate'); ?>
 		<?php if (TBGContext::hasMessage('activate_success')): ?>
 			<?php TBGContext::clearMessage('activate_success'); ?>
-			<div class="rounded_box green_borderless">
+			<div class="rounded_box green borderless">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 					<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
@@ -69,7 +69,7 @@
 			</div>
 		<?php elseif (TBGContext::hasMessage('activate_failure')): ?>
 			<?php TBGContext::clearMessage('activate_success'); ?>
-			<div class="rounded_box red_borderless">
+			<div class="rounded_box red borderless">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 					<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
@@ -81,7 +81,7 @@
 		<?php endif; ?>
 	<?php else: ?>
 		<?php if (TBGContext::hasMessage('prereg_error')): ?>
-			<div class="rounded_box red_borderless">
+			<div class="rounded_box red borderless">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 					<span class="login_fieldheader"><?php echo TBGContext::getMessageAndClear('prereg_error'); ?></span>
@@ -91,7 +91,7 @@
 			<br>
 		<?php endif; ?>
 		<?php if (TBGContext::hasMessage('postreg_error')): ?>
-			<div class="rounded_box red_borderless">
+			<div class="rounded_box red borderless">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 					<span class="login_fieldheader"><?php echo TBGContext::getMessageAndClear('postreg_error'); ?></span>
@@ -102,7 +102,7 @@
 		<?php endif; ?>
 		<?php if (TBGContext::hasMessage('postreg_success')): ?>
 			<?php TBGContext::clearMessage('postreg_success'); ?>
-			<div class="rounded_box green_borderless">
+			<div class="rounded_box green borderless">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 					<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>

@@ -1,4 +1,4 @@
-<div class="rounded_box<?php if ($module->isEnabled()): ?> iceblue_borderless<?php endif; ?>" style="margin: 5px 0px 5px 0px; width: 750px;" id="module_<?php echo $module->getID(); ?>">
+<div class="rounded_box<?php if ($module->isEnabled()): ?> iceblue<?php else: ?> lightgrey<?php endif; ?> borderless" style="margin: 5px 0px 5px 0px; width: 750px;" id="module_<?php echo $module->getID(); ?>">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; text-align: right; min-height: 40px;">
 		<div style="float: left;">
@@ -19,15 +19,15 @@
 				<?php endif; ?>
 				<a href="javascript:void(0);" class="image" onclick="$('permissions_module_<?php echo($module->getID()); ?>').toggle();$('uninstall_module_<?php echo $module->getID(); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_edit_permissions.png', array('style' => 'margin-right: 5px;', 'title' => __('Edit permissions'))); ?></a>
 				<?php if ($module->isEnabled()): ?>
-					<a href="javascript:void(0);" class="image" onclick="$('disable_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_disable_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Disable module'))); ?></a>
+					<a href="javascript:void(0);" class="image" onclick="$('disable_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_enable_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Disable module'))); ?></a>
 				<?php else: ?>
-					<a href="javascript:void(0);" class="image" onclick="$('enable_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_enable_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Enable module'))) ?></a>
+					<a href="javascript:void(0);" class="image" onclick="$('enable_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_disable_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Enable module'))) ?></a>
 				<?php endif; ?>
 				<a href="javascript:void(0);" class="image" onclick="$('uninstall_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_uninstall_module.png', array('title' => __('Uinstall module'))); ?></a>
 			</div>
 		</div>
 		<?php if ($module->isEnabled()): ?>
-			<div id="disable_module_<?php echo($module->getID()); ?>" style="display: none; margin-top: 10px;" class="rounded_box white">
+			<div id="disable_module_<?php echo($module->getID()); ?>" style="display: none; margin-top: 10px;" class="rounded_box white shadowed">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 10px 5px 10px; text-align: left;">
 					<h4><?php echo __('Really disable "%module_name%"?', array('%module_name%' => $module->getLongname())); ?></h4>
@@ -37,7 +37,7 @@
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
 		<?php else: ?>
-			<div id="enable_module_<?php echo($module->getID()); ?>" style="display: none; margin-top: 10px;" class="rounded_box white">
+			<div id="enable_module_<?php echo($module->getID()); ?>" style="display: none; margin-top: 10px;" class="rounded_box white shadowed">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 10px 5px 10px; text-align: left;">
 					<h4><?php echo __('Really enable "%module_name%"?', array('%module_name%' => $module->getLongname())); ?></h4>
@@ -47,7 +47,7 @@
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
 		<?php endif; ?>
-		<div id="uninstall_module_<?php echo($module->getID()); ?>" style="display: none; margin-top: 10px;" class="rounded_box white">
+		<div id="uninstall_module_<?php echo($module->getID()); ?>" style="display: none; margin-top: 10px;" class="rounded_box white shadowed">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="padding: 0 10px 5px 10px; text-align: left;">
 				<h4><?php echo __('Really uninstall "%module_name%"?', array('%module_name%' => $module->getLongname())); ?></h4>
@@ -56,7 +56,7 @@
 			</div>
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>
-		<div id="permissions_module_<?php echo($module->getID()); ?>" style="display: none; margin-top: 10px;" class="rounded_box white">
+		<div id="permissions_module_<?php echo($module->getID()); ?>" style="display: none; margin-top: 10px;" class="rounded_box white shadowed">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent permission_list" style="padding: 0 10px 5px 10px; text-align: left;">
 				<div class="header_div" style="margin-top: 0;"><?php echo __('Available permissions'); ?></div>

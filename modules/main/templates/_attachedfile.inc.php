@@ -14,7 +14,7 @@
 <?php if ($mode == 'issue' && $issue->canRemoveAttachments()): ?>
 	<tr id="<?php echo $base_id . '_' . $file_id; ?>_remove_confirm" style="display: none;">
 		<td colspan="3">
-			<div class="rounded_box yellow_borderless" style="position: relative; clear: both; left: auto; top: auto; margin: 0; width: auto;">
+			<div class="rounded_box yellow borderless" style="position: relative; clear: both; left: auto; top: auto; margin: 0; width: auto;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 5px 5px 5px; font-size: 12px; width: auto;">
 					<div class="header_div" style="margin-top: 0;"><?php echo __('Do you really want to detach this file?'); ?></div>

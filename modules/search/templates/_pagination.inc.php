@@ -1,5 +1,5 @@
 <div style="text-align: center;">
-	<div class="rounded_box lightgrey_borderless" style="width: 500px; margin: 10px auto 10px auto;">
+	<div class="rounded_box lightgrey borderless" style="width: 500px; margin: 10px auto 10px auto;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 3px 5px 3px 5px; font-size: 13px; text-align: center;">
 			<?php if ($currentpage > 1): ?>

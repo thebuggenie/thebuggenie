@@ -25,7 +25,7 @@
 				<?php if ($aComment->canUserDeleteComment()): ?><a href="javascript:void(0)" onClick="$('comment_delete_confirm_<?php echo $aComment->getID(); ?>').show();"><?php echo image_tag('icon_comment_delete.png', array('title' => __('Delete'))); ?><?php echo __('Delete'); ?></a><?php endif; ?>
 			</div>
 		<?php endif; ?>
-		<div class="rounded_box yellow_borderless comment_delete" id="comment_delete_confirm_<?php echo $aComment->getID(); ?>" style="display: none;">
+		<div class="rounded_box yellow borderless comment_delete" id="comment_delete_confirm_<?php echo $aComment->getID(); ?>" style="display: none;">
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="padding: 5px;">
 				<h4><?php echo __('Really delete'); ?></h4>

@@ -15,9 +15,7 @@
 	</tr>
 </table>
 <?php if ($mode > 1): ?>
-	<div class="rounded_box" style="margin: 15px 0px 15px 0px; width: 700px;">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="vertical-align: middle; padding: 5px 10px 5px 10px; font-size: 12px;">
+	<div class="rounded_box mediumgrey" style="margin: 15px 0px 15px 0px; width: 700px; vertical-align: middle; padding: 5px 10px 5px 10px; font-size: 12px;">
 		<?php if (isset($theEdition) && $theEdition instanceof TBGEdition): ?>
 			<?php echo __('You are now looking at %project_name% &gt;&gt; %edition_name%', array('%project_name%' => '<b>'.$theProject->getName().'</b>', '%edition_name%' => '<span id="edition_name_span" style="font-weight: bold;">'.$theEdition->getName().'</span>')); ?><br>
 			<b><?php echo link_tag(make_url('configure_project_editions_components', array('project_id' => $theProject->getID())), '&lt;&lt;&nbsp;'.__('Go back to project editions and components overview')); ?></b><?php echo __('%something% or %something_else%', array('%something%' => '', '%something_else%' => '')); ?><br>
@@ -25,8 +23,6 @@
 			<?php echo __('You are now looking at %project_name%', array('%project_name%' => '<span id="project_name_span" style="font-weight: bold;">' . $theProject->getName() . '</span>')); ?><br>
 		<?php endif; ?>
 		<b><?php echo link_tag(make_url('configure_projects'), '&lt;&lt;&nbsp;'.__('Go back to list of projects')); ?></b>
-		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 	</div>
 	<?php if (!isset($hide_tabbar) || $hide_tabbar == false): ?>
 		<div style="width: 750px; clear: both; height: 30px;" class="tab_menu">

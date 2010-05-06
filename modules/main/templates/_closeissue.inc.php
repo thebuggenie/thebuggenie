@@ -1,4 +1,4 @@
-<div class="rounded_box white_borderless" style="position: absolute; top: 50%; left: 50%; z-index: 100001; clear: both; width: 400px; margin: -200px 0 0 -200px;">
+<div class="rounded_box white borderless" style="position: absolute; top: 50%; left: 50%; z-index: 100001; clear: both; width: 400px; margin: -200px 0 0 -200px;">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="padding: 5px; text-align: left; font-size: 13px;">
 		<div class="viewissue_info_header"><?php echo __('Close this issue'); ?></div>

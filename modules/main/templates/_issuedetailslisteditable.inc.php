@@ -12,25 +12,21 @@
 		<div class="faded_medium" id="no_issuetype"<?php if ($issue->getIssueType() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Unknown issue type'); ?></div>
 	</div>
 </div>
-<div class="rounded_box white" id="issuetype_change" style="display: none; clear: both; width: 324px; margin: 5px 0 5px 0;">
-	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-	<div class="xboxcontent" style="padding: 5px;">
-		<div class="dropdown_header"><?php echo __('Set issue type'); ?></div>
-		<div class="dropdown_content">
-			<?php echo __('Select a new issue type'); ?>:<br>
-			<table cellpadding="0" cellspacing="0">
-				<?php foreach ($issuetypes as $issuetype): ?>
-					<tr>
-						<td style="width: 16px;"><?php echo image_tag($issuetype->getIcon() . '_tiny.png'); ?></td>
-						<td style="padding-left: 5px;"><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype', 'issuetype_id' => $issuetype->getID())); ?>', 'issuetype');"><?php echo $issuetype->getName(); ?></a></td>
-					</tr>
-				<?php endforeach; ?>
-			</table>
-			<div id="issuetype_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-		</div>
-		<div id="issuetype_change_error" class="error_message" style="display: none;"></div>
+<div id="issuetype_change" class="rounded_box white shadowed" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
+	<div class="dropdown_header"><?php echo __('Set issue type'); ?></div>
+	<div class="dropdown_content">
+		<?php echo __('Select a new issue type'); ?>:<br>
+		<table cellpadding="0" cellspacing="0">
+			<?php foreach ($issuetypes as $issuetype): ?>
+				<tr>
+					<td style="width: 16px;"><?php echo image_tag($issuetype->getIcon() . '_tiny.png'); ?></td>
+					<td style="padding-left: 5px;"><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype', 'issuetype_id' => $issuetype->getID())); ?>', 'issuetype');"><?php echo $issuetype->getName(); ?></a></td>
+				</tr>
+			<?php endforeach; ?>
+		</table>
+		<div id="issuetype_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
 	</div>
-	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+	<div id="issuetype_change_error" class="error_message" style="display: none;"></div>
 </div>
 <div id="viewissue_left_box_status">
 	<div id="status_header" class="hoverable <?php if ($issue->isStatusChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isStatusMerged()): ?> issue_detail_unmerged<?php endif; ?>">
@@ -46,7 +42,7 @@
 		<span class="faded_medium" id="no_status"<?php if ($issue->getStatus() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Status not determined'); ?></span>
 	</div>
 </div>
-<div class="rounded_box white" id="status_change" style="display: none; clear: both; width: 324px; margin: 5px 0 5px 0;">
+<div class="rounded_box white shadowed" id="status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="padding: 5px;">
 		<div class="dropdown_header"><?php echo __('Set status'); ?></div>
@@ -91,7 +87,8 @@
 														'callback'		 	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'assigned_to');",
 														'clear_link_text'	=> __('Clear current assignee'),
 														'base_id'			=> 'assigned_to',
-														'include_teams'		=> true)); ?>
+														'include_teams'		=> true,
+														'absolute' => true)); ?>
 <dl class="viewissue_list" id="percent_complete_field"<?php if (!$issue->isPercentCompletedVisible()): ?> style="display: none;"<?php endif; ?>>
 	<dt id="percent_header" class="<?php if ($issue->isPercentCompletedChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPercentCompletedMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Progress'); ?></dt>
 	<dd id="percent_content" class="<?php if ($issue->isPercentCompletedChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPercentCompletedMerged()): ?> issue_detail_unmerged<?php endif; ?>">
@@ -136,7 +133,7 @@
 			<span class="faded_medium" id="no_pain_bug_type"<?php if ($issue->hasPainBugType()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
 		</dd>
 	</dl>
-	<div class="rounded_box white" id="pain_bug_type_change" style="display: none; clear: both; width: 324px; margin: 5px 0 5px 0;">
+	<div class="rounded_box white shadowed" id="pain_bug_type_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 5px;">
 			<div class="dropdown_header"><?php echo __('Triage bug type'); ?></div>
@@ -170,7 +167,7 @@
 			<span class="faded_medium" id="no_pain_likelihood"<?php if ($issue->hasPainLikelihood()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
 		</dd>
 	</dl>
-	<div class="rounded_box white" id="pain_likelihood_change" style="display: none; clear: both; width: 324px; margin: 5px 0 5px 0;">
+	<div class="rounded_box white shadowed" id="pain_likelihood_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 5px;">
 			<div class="dropdown_header"><?php echo __('Triage likelihood'); ?></div>
@@ -204,7 +201,7 @@
 			<span class="faded_medium" id="no_pain_effect"<?php if ($issue->hasPainEffect()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
 		</dd>
 	</dl>
-	<div class="rounded_box white" id="pain_effect_change" style="display: none; clear: both; width: 324px; margin: 5px 0 5px 0;">
+	<div class="rounded_box white shadowed" id="pain_effect_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 5px;">
 			<div class="dropdown_header"><?php echo __('Triage effect'); ?></div>
@@ -257,7 +254,8 @@
 														'allow_clear'		=> false,
 														'clear_link_text'	=> '',
 														'callback'		 	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'posted_by', 'value' => '%identifiable_value%')) . "', 'posted_by');",
-														'base_id'			=> 'posted_by')); ?>
+														'base_id'			=> 'posted_by',
+														'absolute'			=> true)); ?>
 <dl class="viewissue_list" id="owned_by_field">
 	<dt id="owned_by_header" class="<?php if ($issue->isOwnedByChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isOwnedByMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Owned by'); ?></dt>
 	<dd id="owned_by_content" class="<?php if ($issue->isOwnedByChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isOwnedByMerged()): ?> issue_detail_unmerged<?php endif; ?>">
@@ -279,7 +277,8 @@
 														'callback'		 	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
 														'clear_link_text'	=> __('Clear current owner'),
 														'base_id'			=> 'owned_by',
-														'include_teams'		=> true)); ?>
+														'include_teams'		=> true,
+														'absolute'			=> true)); ?>
 <dl class="viewissue_list" id="estimated_time_field"<?php if (!$issue->isEstimatedTimeVisible()): ?> style="display: none;"<?php endif; ?>>
 	<dt id="estimated_time_header" class="<?php if ($issue->isEstimatedTimeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isEstimatedTimeMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Estimated time'); ?></dt>
 	<dd id="estimated_time_content" class="<?php if ($issue->isEstimatedTimeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isEstimatedTimeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
@@ -292,7 +291,7 @@
 		<span class="faded_medium" id="no_estimated_time"<?php if ($issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not estimated'); ?></span>
 	</dd>
 </dl>
-<div class="rounded_box white" id="estimated_time_change" style="clear: both; display: none; width: 324px; margin: 5px 0 5px 0;">
+<div class="rounded_box white shadowed" id="estimated_time_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="padding: 5px;">
 		<form id="estimated_time_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="setTimeField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time')); ?>', 'estimated_time');return false;">
@@ -334,7 +333,7 @@
 		<span class="faded_medium" id="no_spent_time"<?php if ($issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('No time spent'); ?></span>
 	</dd>
 </dl>
-<div class="rounded_box white" id="spent_time_change" style="clear: both; display: none; width: 324px; margin: 5px 0 5px 0;">
+<div class="rounded_box white shadowed" id="spent_time_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="padding: 5px;">
 		<form id="spent_time_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="setTimeField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time')); ?>', 'spent_time');return false;">
@@ -345,7 +344,7 @@
 			<div class="dropdown_content">
 				<label for="spent_time_input"><?php echo trim(__("%clear_time_spent% enter how much time you've spent %or_select_below%", array('%clear_time_spent%' => '', '%or_select_below%' => ''))); ?>:</label><br>
 				<?php $spent_time_title = __('Enter time spent here'); ?>
-				<input type="text" name="spent_time" id="spent_time_input" value="<?php echo $spent_time_title; ?>" style="width: 220px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $spent_time_title; ?>'; this.addClassName('faded_medium'); }" onfocus="if (this.getValue() == '<?php echo $spent_time_title; ?>') { this.clear(); } this.removeClassName('faded_medium');" class="faded_medium">
+				<input type="text" name="spent_time" id="spent_time_input" value="<?php echo $spent_time_title; ?>" style="width: 180px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $spent_time_title; ?>'; this.addClassName('faded_medium'); }" onfocus="if (this.getValue() == '<?php echo $spent_time_title; ?>') { this.clear(); } this.removeClassName('faded_medium');" class="faded_medium">
 				<input type="submit" style="width: 80px;" value="<?php echo __('Spend time'); ?>"><br>
 				<input type="checkbox" checked="checked" name="spent_time_added_text" value="true" id="spent_time_added_text"><label for="spent_time_added_text"><?php echo __('Add entered time to total time spent') ?></label>
 				<div class="faded_medium" style="padding: 5px 0 5px 0;"><?php echo __('Enter time spent as plain text, like "1 day, 2 hours", "12 hours / 2 points", or similar'); ?>.</div>
@@ -383,7 +382,7 @@
 		</dd>
 	</dl>
 	<div style="clear: both;"> </div>
-	<div class="rounded_box white" id="<?php echo $field; ?>_change" style="display: none; clear: both; width: 322px; margin: 5px 0 5px 0;">
+	<div class="rounded_box white shadowed" id="<?php echo $field; ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 5px;">
 			<div class="dropdown_header"><?php echo $info['change_header']; ?></div>
@@ -422,7 +421,7 @@
 		</dd>
 	</dl>
 	<div style="clear: both;"> </div>
-	<div class="rounded_box white" id="<?php echo $field; ?>_change" style="display: none; clear: both; width: 322px; margin: 5px 0 5px 0;">
+	<div class="rounded_box white shadowed" id="<?php echo $field; ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 5px;">
 			<div class="dropdown_header"><?php echo $info['change_header']; ?></div>
@@ -448,32 +447,38 @@
 <?php endforeach; ?>
 <div style="clear: both; margin-bottom: 5px;"> </div>
 <div id="more_actions" style="display: none;">
-	<?php if (!$issue->isBeingWorkedOn() || ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $tbg_user->getID())): ?>
-	<ul>
-		<li><?php echo link_tag(make_url('issue_startworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_start_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __('Start working on this issue')); ?></li>
-	</ul>
-	<?php elseif ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $tbg_user->getID()): ?>
-	<ul>
-		<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_start_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __('Take over this issue')); ?></li>
-	</ul>
-	<?php elseif ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
-		<div class="box_header"><?php echo __('You are working on this issue'); ?></div>
-		<ul>
-			<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_stop_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __("I'm done working on it, add time spent")); ?></li>
-			<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'did' => 'nothing')), image_tag('action_stop_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __("I'm done working on it, don't add time spent")); ?></li>
-		</ul>
-	<?php endif; ?>
-	<ul>
-		<?php if ($issue->isOpen()): ?>
-			<li><a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'close_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_close.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Close this issue'); ?></a></li>
-		<?php else: ?>
-			<li><?php echo link_tag(make_url('openissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('action_reopen.png', array('style' => 'float: left; margin-right: 5px;')) . __("Reopen this issue")); ?></li>
-		<?php endif; ?>
-	</ul>
-	<div style="text-align: center; font-size: 14px; width: 120px; margin: 5px auto 0 auto; padding: 5px 0 5px 0; height: 20px;">
-		<a href="javascript:void(0);" onclick="$('more_actions').hide();$('more_actions_div').show();"><?php echo image_tag('action_remove_small.png', array('style' => 'float: left; margin-right: 5px;')); ?><span style="float: left;"><?php echo __('Less actions'); ?></span></a>
+	<div class="rounded_box white shadowed">
+		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+		<div class="xboxcontent" style="padding: 5px;">
+			<?php if (!$issue->isBeingWorkedOn() || ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $tbg_user->getID())): ?>
+			<ul>
+				<li><?php echo link_tag(make_url('issue_startworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_start_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __('Start working on this issue')); ?></li>
+			</ul>
+			<?php elseif ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $tbg_user->getID()): ?>
+			<ul>
+				<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_start_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __('Take over this issue')); ?></li>
+			</ul>
+			<?php elseif ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
+				<div class="box_header"><?php echo __('You are working on this issue'); ?></div>
+				<ul>
+					<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_stop_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __("I'm done working on it, add time spent")); ?></li>
+					<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'did' => 'nothing')), image_tag('action_stop_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __("I'm done working on it, don't add time spent")); ?></li>
+				</ul>
+			<?php endif; ?>
+			<ul>
+				<?php if ($issue->isOpen()): ?>
+					<li><a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'close_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_close.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Close this issue'); ?></a></li>
+				<?php else: ?>
+					<li><?php echo link_tag(make_url('openissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('action_reopen.png', array('style' => 'float: left; margin-right: 5px;')) . __("Reopen this issue")); ?></li>
+				<?php endif; ?>
+			</ul>
+		</div>
+		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+	</div>
+	<div style="text-align: center; font-size: 14px; width: 150px; margin: 5px auto 0 auto; padding: 5px 0 5px 0; height: 20px;">
+		<a href="javascript:void(0);" onclick="$('more_actions').hide();$('more_actions_div').show();"><?php echo image_tag('action_remove_small.png', array('style' => 'float: left; margin-right: 5px;')); ?><span style="float: left;"><?php echo __('Show less actions'); ?></span></a>
 	</div>
 </div>
-<div style="text-align: center; font-size: 14px; width: 120px; margin: 5px auto 0 auto; padding: 5px 0 5px 0; height: 20px;">
-	<a href="javascript:void(0);" onclick="$('more_actions').show();$('more_actions_div').hide();"><?php echo image_tag('action_add_small_faded.png', array('style' => 'float: left; margin-right: 5px;')); ?><span style="float: left;"><?php echo __('More actions'); ?></span></a>
+<div style="text-align: center; font-size: 14px; width: 150px; margin: 5px auto 0 auto; padding: 5px 0 5px 0; height: 20px;" id="more_actions_div">
+	<a href="javascript:void(0);" onclick="$('more_actions').show();$('more_actions_div').hide();"><?php echo image_tag('action_add_small_faded.png', array('style' => 'float: left; margin-right: 5px;')); ?><span style="float: left;"><?php echo __('Show more actions'); ?></span></a>
 </div>

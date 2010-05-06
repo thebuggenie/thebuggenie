@@ -43,9 +43,7 @@
 </tr>
 <tr id="delete_item_<?php echo $item->getID(); ?>" style="display: none;">
 	<td colspan="3">
-		<div class="rounded_box white_borderless" style="margin: 5px 0 10px 0;">
-			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-			<div class="xboxcontent" style="padding: 3px; font-size: 12px;">
+		<div class="rounded_box white shadowed" style="margin: 5px 0 10px 0; font-size: 12px;">
 				<div class="header"><?php echo __('Really delete "%itemname%"?', array('%itemname%' => $item->getName())); ?></div>
 				<div class="content">
 					<?php echo __('Are you really sure you want to delete this item?'); ?>
