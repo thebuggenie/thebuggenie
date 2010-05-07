@@ -228,11 +228,18 @@
 				$crit->addWhere(TBGIssueTypesTable::ICON, 'task');
 				$crit->addWhere(TBGIssueTypesTable::SCOPE, TBGContext::getScope()->getID());
 				$row = B2DB::getTable('TBGIssueTypesTable')->doSelectOne($crit);
-				return TBGFactory::TBGIssuetypeLab($row->get(TBGIssueTypesTable::ID), $row);
+				if ($row instanceof B2DBRow)
+				{
+					return TBGFactory::TBGIssuetypeLab($row->get(TBGIssueTypesTable::ID), $row);
+				}
+				else
+				{
+					throw new Exception("Couldn't find any 'task' issue types");
+				}
 			}
 			catch (Exception $e)
 			{
-				return 0;
+				throw $e;
 			}
 		}
 		

@@ -1,5 +1,6 @@
 Hi, %user_buddyname%!
-This email is to notify you that issue <?php echo $issue->getFormattedIssueNo() . ' - ' . $issue->getTitle(); ?> has been created.
+The following issue was created by <?php echo $issue->getPostedBy()->getName(); ?>:
+<?php echo $issue->getFormattedIssueNo() . ' - ' . $issue->getTitle(); ?>
 
 * The issue was created with the following description *
 <?php echo tbg_parse_text($issue->getDescription()); ?>

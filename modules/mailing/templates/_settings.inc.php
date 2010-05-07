@@ -31,6 +31,16 @@
 			<td class="config_explanation" colspan="2"><?php echo __('The character encoding used in outgoing emails'); ?></td>
 		</tr>
 		<tr>
+			<td style="padding: 5px;"><label for="use_queue"><?php echo __('Queue emails for batch processing'); ?></label></td>
+			<td>
+				<input type="radio" name="use_queue" value="0" id="use_queue_no"<?php if (!$module->usesEmailQueue()): ?> checked<?php endif; ?> <?php echo ($access_level != configurationActions::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="use_queue_no"><?php echo __('Send email notifications instantly'); ?></label><br>
+				<input type="radio" name="use_queue" value="1" id="use_queue_yes"<?php if ($module->usesEmailQueue()): ?> checked<?php endif; ?> <?php echo ($access_level != configurationActions::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="use_queue_yes"><?php echo __('Use email queueing'); ?></label>
+			</td>
+		</tr>
+		<tr>
+			<td class="config_explanation" colspan="2"><?php echo __("If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing%", array('%email_queueing%' => link_tag(make_url('@publish_article?article_name=EmailQueueing'), 'EmailQueueing'))); ?></td>
+		</tr>
+		<tr>
 			<td style="padding: 5px;"><label for="mail_type_php"><?php echo __('Mail configuration'); ?></label></td>
 			<td>
 				<input type="radio" name="mail_type" value="<?php echo TBGMailer::MAIL_TYPE_PHP; ?>" id="mail_type_php"<?php if ($module->getSetting('mail_type') != TBGMailer::MAIL_TYPE_B2M): ?> checked<?php endif; ?> onclick="$('mail_type_b2m_info').hide();"<?php echo ($access_level != configurationActions::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="mail_type_php"><?php echo __('Use php settings'); ?></label><br>

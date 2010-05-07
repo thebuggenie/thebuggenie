@@ -132,21 +132,28 @@
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			$issue = TBGFactory::TBGIssueLab($request->getParameter('story_id'));
-			if ($issue instanceof TBGIssue)
+			try
 			{
-				$task = TBGIssue::createNew($request->getParameter('task_name'), TBGIssuetype::getTask()->getID(), $issue->getProjectID());
-				$comment = $issue->addChildIssue($task);
-				$mode = $request->getParameter('mode', 'scrum');
-				if ($mode == 'scrum')
+				if ($issue instanceof TBGIssue)
 				{
-					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumstorytask', array('task' => $task)), 'count' => count($issue->getChildIssues())));
+					$task = TBGIssue::createNew($request->getParameter('task_name'), TBGIssuetype::getTask()->getID(), $issue->getProjectID());
+					$comment = $issue->addChildIssue($task);
+					$mode = $request->getParameter('mode', 'scrum');
+					if ($mode == 'scrum')
+					{
+						return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumstorytask', array('task' => $task)), 'count' => count($issue->getChildIssues())));
+					}
+					else
+					{
+						return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('main/relatedissue', array('theIssue' => $issue, 'related_issue' => $task)), 'comment' => (($comment instanceof TBGComment) ? $this->getTemplateHTML('main/comment', array('aComment' => $comment, 'theIssue' => $issue)) : false), 'message' => TBGContext::getI18n()->__('The task was added')));
+					}
 				}
-				else
-				{
-					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('main/relatedissue', array('theIssue' => $issue, 'related_issue' => $task)), 'comment' => (($comment instanceof TBGComment) ? $this->getTemplateHTML('main/comment', array('aComment' => $comment, 'theIssue' => $issue)) : false), 'message' => TBGContext::getI18n()->__('The task was added')));
-				}
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid user story')));
 			}
-			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid user story')));
+			catch (Exception $e)
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("An error occured while trying to create a new task: %exception_message%", array('%exception_message%' => $e->getMessage()))));
+			}
 		}
 
 		public function runScrumShowBurndownImage(TBGRequest $request)

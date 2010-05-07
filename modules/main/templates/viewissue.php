@@ -23,6 +23,12 @@
 	<div class="rounded_box red borderless" id="viewissue_unsaved"<?php if (!isset($issue_unsaved)): ?> style="display: none;"<?php endif; ?>>
 		<div class="viewissue_info_header"><?php echo __('Could not save your changes'); ?></div>
 	</div>
+	<?php if (isset($error) && $error): ?>
+		<div class="rounded_box red borderless" id="viewissue_error">
+			<div class="viewissue_info_header"><?php echo __('There was an error trying to save changes to this issue'); ?></div>
+			<div class="viewissue_info_content"><?php echo $error; ?></div>
+		</div>
+	<?php endif; ?>
 	<div class="rounded_box red borderless" id="viewissue_merge_errors"<?php if (!$theIssue->hasMergeErrors()): ?> style="display: none;"<?php endif; ?>>
 		<div class="viewissue_info_header"><?php echo __('This issue has been changed since you started editing it'); ?></div>
 		<div class="viewissue_info_content"><?php echo __('Data that has been changed is highlighted in red below. Undo your changes to see the updated information'); ?></div>
@@ -316,7 +322,7 @@
 						<?php if (TBGSettings::isUploadsEnabled() && $theIssue->canAttachFiles()): ?>
 							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_file').appear({ duration: 0.5 });" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
 						<?php else: ?>
-							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="failedMessage('<?php echo __('File uploads are not enabled'); ?>');" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
+							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="comment_add_button"><tr><td class="nice_button disabled" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="failedMessage('<?php echo __('File uploads are not enabled'); ?>');" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
 						<?php endif; ?>
 						<br style="clear: both;">
 					<?php endif; ?>
@@ -336,14 +342,14 @@
 					</div>
 					<div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($theIssue->getFiles()) + count($theIssue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
 					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-						<tbody id="viewissue_uploaded_links">
+						<tbody id="viewissue_uploaded_links" class="canhover_light">
 							<?php foreach ($theIssue->getLinks() as $link_id => $link): ?>
 								<?php include_template('attachedlink', array('issue' => $theIssue, 'link' => $link, 'link_id' => $link_id)); ?>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
 					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-						<tbody id="viewissue_uploaded_files">
+						<tbody id="viewissue_uploaded_files" class="canhover_light">
 							<?php foreach ($theIssue->getFiles() as $file_id => $file): ?>
 								<?php include_template('attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $theIssue, 'file' => $file, 'file_id' => $file_id)); ?>
 							<?php endforeach; ?>

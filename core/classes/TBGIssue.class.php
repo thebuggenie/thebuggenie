@@ -707,11 +707,13 @@
 		/**
 		 * Print the issue number and title nicely formatted
 		 *
+		 * @param boolean $link_formatted[optional] Whether to include the # if it's only numeric (default false)
+		 *
 		 * @return string
 		 */
-		public function getFormattedTitle()
+		public function getFormattedTitle($link_formatted = false)
 		{
-			return $this->getFormattedIssueNo() . ' - ' . $this->_title;
+			return $this->getFormattedIssueNo($link_formatted) . ' - ' . $this->_title;
 		}
 		
 		/**
@@ -4226,6 +4228,9 @@
 			{
 				B2DB::getTable('TBGIssueSpentTimes')->saveSpentTime($this->getID(), $this->_spentmonths, $this->_spentweeks, $this->_spentdays, $this->_spenthours, $this->_spentpoints);
 			}
+
+			$event = TBGEvent::createNew('core', 'TBGIssue::save', $this, array('changed_properties' => $this->_getChangedProperties(), 'comment_lines' => $comment_lines, 'notify' => $notify, 'updated_by' => TBGContext::getUser()));
+			$event->trigger();
 
 			$this->_clearChangedProperties();
 			

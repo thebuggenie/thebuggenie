@@ -24,7 +24,7 @@
 			$this->addAvailableListener('core', 'viewissue_top', 'listen_issueTop', $i18n->__('Email when user registers'));
 			$this->addAvailableListener('core', 'login_middle', 'listen_loginMiddle', $i18n->__('Email to reset password'));
 			$this->addAvailableListener('core', 'password_reset', 'listen_passwordReset', $i18n->__('Email when password is reset'));
-			$this->addAvailableListener('core', 'TBGIssue::update', 'listen_issueUpdate', $i18n->__('Email on issue update'));
+			$this->addAvailableListener('core', 'TBGIssue::save', 'listen_issueSave', $i18n->__('Email when an issue is updated'));
 			$this->addAvailableListener('core', 'TBGIssue::createNew', 'listen_issueCreate', $i18n->__('Email on new issues'));
 			$this->addAvailableListener('core', 'TBGComment::createNew', 'listen_TBGComment_createNew', $i18n->__('Email when comments are posted'));
 
@@ -47,7 +47,7 @@
 			$module->enableListenerSaved('core', 'user_registration', $scope);
 			$module->enableListenerSaved('core', 'login_middle', $scope);
 			$module->enableListenerSaved('core', 'password_reset', $scope);
-			$module->enableListenerSaved('core', 'TBGIssue::update', $scope);
+			$module->enableListenerSaved('core', 'TBGIssue::save', $scope);
 			$module->enableListenerSaved('core', 'TBGIssue::createNew', $scope);
 			$module->enableListenerSaved('core', 'TBGComment::createNew', $scope);
 			$module->saveSetting('smtp_host', '');
@@ -70,7 +70,7 @@
 		public function postConfigSettings(TBGRequest $request)
 		{
 			$settings = array('smtp_host', 'smtp_port', 'smtp_user', 'timeout', 'mail_type', 'enable_outgoing_notifications',
-								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo',
+								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo', 'use_queue',
 								'returnfromlogin', 'returnfromlogout', 'showloginbox', 'limit_registration',
 								'showprojectsoverview', 'showprojectsoverview', 'cleancomments');
 			foreach ($settings as $setting)
@@ -175,7 +175,7 @@
 				if ($issue instanceof TBGIssue)
 				{
 					$to_users = $issue->getRelatedUsers();
-					$subject = TBGContext::getI18n()->__('[%project_name%]: %issue_no% - "%issue_title%" created', array('%project_name%' => $issue->getProject()->getKey(), '%issue_no%' => $issue->getFormattedIssueNo(false), '%issue_title%' => $issue->getTitle()));
+					$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - "%issue_title%" created', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => __($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()));
 					$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecreate', array('issue' => $issue));
 					$this->_sendToUsers($to_users, $message);
 				}
@@ -202,14 +202,14 @@
 				$to_users = (array) $to_users;
 				foreach ($to_users as $user)
 				{
-					if ($user->getID() != TBGContext::getUser()->getUID())
+					if ($user->getID() != TBGContext::getUser()->getUID() || $this->getSetting('notify_issue_change_own', $user->getID()))
 					{
 						if ($user instanceof TBGUser && $user->isEnabled() && $user->isActivated() && !$user->isDeleted() && !$user->isGuest())
 						{
 							$message->setLanguage($user->getLanguage());
 							$message->clearRecipients();
 							$message->addReplacementValues(array('%user_buddyname%' => $user->getBuddyname(), '%user_username%' => $user->getUsername()));
-							$message->addTo($user->getBuddyname(), $user->getEmail());
+							$message->addTo($user->getEmail(), $user->getBuddyname());
 
 							try
 							{
@@ -238,8 +238,8 @@
 						$title = $comment->getTitle();
 						$content = $comment->getContent();
 						$to_users = $issue->getRelatedUsers();
-						$subject = TBGContext::getI18n()->__('[%project_name%]: %issue_no% - "%issue_title%" updated', array('%project_name%' => $issue->getProject()->getKey(), '%issue_no%' => $issue->getFormattedIssueNo(false), '%issue_title%' => $issue->getTitle()));
-						$message = $this->getMimemailWithMessageTemplate($subject, 'issuecomment', array('issue' => $issue));
+						$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - "%issue_title%" updated', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => __($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()));
+						$message = $this->createNewTBGMimemailFromTemplate($subject, 'issuecomment', array('issue' => $issue));
 						$this->_sendToUsers($to_users, $message);
 					}
 					catch (Exception $e)
@@ -256,21 +256,15 @@
 			TBGSettings::deleteSetting('notified_issue_'.$issue->getId(), 'mailing', '', 0, TBGContext::getUser()->getId());
 		}
 		
-		public function listen_issueUpdate(TBGEvent $event)
+		public function listen_issueSave(TBGEvent $event)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
 				$issue = $event->getSubject();
-				$title = array_shift($vars);
-				$content = array_shift($vars);
-				$uid = array_shift($vars);
-				$system = array_shift($vars);
-				$to_users = array();
 
 				if ($issue instanceof TBGIssue)
 				{
-					$to_users = $issue->getRelatedUIDs();
-					$cc = 0;
+					$to_users = $issue->getRelatedUsers();
 					foreach ($to_users as &$a_user)
 					{
 						if (is_array($a_user) && isset($a_user['id'])) $a_user = $a_user['id'];
@@ -285,17 +279,11 @@
 						{
 							unset($to_users[$cc]);
 						}
-						$cc++;
 					}
 
-					$subject = TBGContext::getI18n()->__('Issue ' . $issue->getFormattedIssueNo(false) . ' - ' . $issue->getTitle() . ' updated');
-					$message = 'Hi, %user_buddyname%!<br>You are receiving this update because you are subscribing for updates.<br>This email is an update for issue ' . $issue->getFormattedIssueNo(false) . ' - ' . $issue->getTitle();
-					$message .= '<br><br><b>' . $title . '</b>';
-					$message .= '<br>' . tbg_BBDecode($content);
-					$message .= '<br><br>You can open the issue by clicking the following link:<br><a href="%link_to_issue%' . $issue->getFormattedIssueNo(true) . '">%link_to_issue%' . $issue->getFormattedIssueNo(true) . '</a>';
-
-					$message = "<div style=\"font-family: \'Trebuchet MS\', \'Liberation Sans\', \'Bitstream Vera Sans\', \'Luxi Sans\', Verdana, sans-serif; font-size: 11px; color: #646464;\">".$message."</div>";
-					$this->_sendToUsers($to_users, $subject, $message);
+					$subject = TBGContext::getI18n()->__('[%project_name%] %issue_type% %issue_no% - "%issue_title%" updated', array('%project_name%' => $issue->getProject()->getKey(), '%issue_type%' => __($issue->getIssueType()->getName()), '%issue_no%' => $issue->getFormattedIssueNo(true), '%issue_title%' => $issue->getTitle()));
+					$message = $this->createNewTBGMimemailFromTemplate($subject, 'issueupdate', array('issue' => $issue, 'comment_lines' => $event->getParameter('comment_lines'), 'updated_by' => $event->getParameter('updated_by')));
+					$this->_sendToUsers($to_users, $message);
 				}
 			}
 		}
@@ -428,7 +416,7 @@
 
 		public function postAccountSettings(TBGRequest $request)
 		{
-			$settings = array('notify_add_friend', 'notify_issue_change', 'notify_issue_comment');
+			$settings = array('notify_add_friend', 'notify_issue_change', 'notify_issue_change_own', 'notify_issue_comment');
 			$uid = TBGContext::getUser()->getID();
 			foreach ($settings as $setting)
 			{
@@ -442,11 +430,14 @@
 			return (bool) $this->getSetting('enable_outgoing_notifications');
 		}
 
+		public function usesEmailQueue()
+		{
+			return (bool) $this->getSetting('use_queue');
+		}
+
 		public function setOutgoingNotificationsEnabled($enabled = true)
 		{
 			$this->saveSetting('enable_outgoing_notifications', $enabled);
 		}
 
 	}
-
-?>

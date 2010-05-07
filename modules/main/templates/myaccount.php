@@ -74,7 +74,7 @@
 			<div id="account_tabs_panes">
 				<div id="tab_profile_pane">
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_information'); ?>" onsubmit="updateProfileInformation('<?php echo make_url('account_save_information'); ?>'); return false;" method="post" id="profile_information_form">
-						<div class="rounded_box borderless mediumgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
+						<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
 							<p class="content"><?php echo __('Edit your profile details here, including additional information.'); ?><br><?php echo __('Required fields are marked with a little star.'); ?></p>
 							<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
 								<tr>
@@ -131,7 +131,7 @@
 				</div>
 				<div id="tab_settings_pane" style="display: none;">
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_settings'); ?>" onsubmit="updateProfileSettings('<?php echo make_url('account_save_settings'); ?>'); return false;" method="post" id="profile_settings_form">
-						<div class="rounded_box borderless mediumgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
+						<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
 							<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
 								<tr>
 									<td style="width: 200px; padding: 5px;"><label for="profile_use_gravatar_yes"><?php echo __('Use Gravatar avatar'); ?></label></td>
@@ -171,7 +171,7 @@
 								</tr>
 							</table>
 						</div>
-						<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 690px; border-top: 0;padding: 8px 5px 2px 5px; height: 23px;">
+						<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 690px; border-top: 0;padding: 8px 5px 2px 5px; height: 25px;">
 							<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save your profile settings', array('%save%' => __('Save'))); ?></div>
 							<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 							<span id="profile_settings_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
@@ -183,10 +183,10 @@
 					<?php if ($module->hasAccountSettings()): ?>
 						<div id="tab_settings_<?php echo $module_name; ?>_pane" style="display: none;">
 							<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="updateProfileModuleSettings('<?php echo make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?php echo $module_name; ?>'); return false;" method="post" id="profile_<?php echo $module_name; ?>_form">
-								<div class="rounded_box borderless mediumgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
+								<div class="rounded_box borderless lightgrey cut_bottom" style="margin: 5px 0 0 0; width: 690px; border-bottom: 0;">
 									<?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
 								</div>
-								<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 690px; border-top: 0; padding: 8px 5px 2px 5px; height: 23px;">
+								<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 690px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
 									<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save your %module_settings_name% settings', array('%save%' => __('Save'), '%module_settings_name%' => $module->getAccountSettingsName())); ?></div>
 									<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 									<span id="profile_<?php echo $module_name; ?>_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>

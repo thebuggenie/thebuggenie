@@ -187,6 +187,7 @@
 		
 		public function listen_TBGUser_getState(TBGEvent $event)
 		{
+			return true;
 			$theUser = $event->getSubject();
 			$events = $this->getEvents($_SERVER["REQUEST_TIME"], $_SERVER["REQUEST_TIME"]);
 			foreach ($events as $anevent)

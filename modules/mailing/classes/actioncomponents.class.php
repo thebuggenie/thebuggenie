@@ -22,6 +22,7 @@
 			$general_settings['notify_add_friend'] = $i18n->__('Notify me when someone adds me as their friend');
 
 			$issues_settings['notify_issue_change'] = $i18n->__('Notify me when an issue I posted gets updated');
+			$issues_settings['notify_issue_change_own'] = $i18n->__('Send me a notification email when I update an issue');
 			$issues_settings['notify_issue_comment'] = $i18n->__('Notify me when someone comments on an issue I posted');
 
 			$this->general_settings = $general_settings;
