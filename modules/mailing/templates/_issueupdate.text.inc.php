@@ -7,5 +7,5 @@ Hi, %user_buddyname%!
 <?php endforeach; ?>
 
 ---
-You can open the issue by clicking the following link:
-<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false); ?>
+Show issue: <?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false); ?>
+Show <?php echo $issue->getProject()->getName(); ?> project dashboard: <?php echo make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey()), false); ?>

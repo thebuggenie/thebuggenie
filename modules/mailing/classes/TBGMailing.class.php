@@ -258,7 +258,7 @@
 		
 		public function listen_issueSave(TBGEvent $event)
 		{
-			if ($this->isOutgoingNotificationsEnabled())
+			if ($this->isOutgoingNotificationsEnabled() && $event->getParameter('notify'))
 			{
 				$issue = $event->getSubject();
 

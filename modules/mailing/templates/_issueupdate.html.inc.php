@@ -9,6 +9,6 @@
 	<?php endforeach; ?>
 	</ul>
 	<br>
-	You can open the issue by clicking the following link:<br>
-	<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false)); ?>
+	Show issue: <?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false)); ?><br>
+	Show <?php echo $issue->getProject()->getName(); ?> project dashboard: <?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey()), false)); ?>
 </div>
