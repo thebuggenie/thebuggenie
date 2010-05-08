@@ -46,7 +46,7 @@
 						<?php echo __('When you are finished working on this issue, click the %done% button to the right', array('%done%' => '<b>' . __('Done') . '</b>')); ?>
 					</div>
 				<?php else: ?>
-					<div class="viewissue_info_header"><?php echo __('This issue has been worked on by %user% since %time%', array('%user%' => $theIssue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
+					<div class="viewissue_info_header"><?php echo __('%user% has been working on this issue since %time%', array('%user%' => $theIssue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
 					<?php if ($theIssue->canEditSpentTime()): ?>
 						<div class="viewissue_info_content">
 							<input type="hidden" name="perform_action" value="grab">
@@ -184,7 +184,7 @@
 				</tr>
 			</table>
 		</div>
-		<div class="rounded_box <?php if ($theIssue->getIssueType()->getItemdata() == 'task'): ?>lightyellow<?php else: ?>verylightyellow<?php endif; ?> shadowed" id="viewissue_left_box_top">
+		<div class="rounded_box verylightyellow shadowed" id="viewissue_left_box_top">
 			<table style="table-layout: auto; width: 100%; clear: both;" cellpadding=0 cellspacing=0 id="issue_view">
 				<tr>
 					<td class="issue_lefthand">
@@ -274,6 +274,7 @@
 				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('icon_comments.png', array('style' => 'float: left; margin-right: 5px;')) . __('Comments (%count%)', array('%count%' => '<span id="viewissue_comment_count">'.$theIssue->getCommentCount().'</span>')), array('onclick' => "switchSubmenuTab('tab_comments', 'viewissue_menu');")); ?></li>
 				<li id="tab_attached_information"><?php echo javascript_link_tag(image_tag('icon_attached_information.png', array('style' => 'float: left; margin-right: 5px;')) . __('Attached information (%count%)', array('%count%' => '<span id="viewissue_uploaded_attachments_count">'.(count($theIssue->getLinks()) + count($theIssue->getFiles())).'</span>')), array('onclick' => "switchSubmenuTab('tab_attached_information', 'viewissue_menu');")); ?></li>
 				<li id="tab_related_issues_and_tasks"><?php echo javascript_link_tag(image_tag('icon_related_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Related issues and tasks'), array('onclick' => "switchSubmenuTab('tab_related_issues_and_tasks', 'viewissue_menu');")); ?></li>
+				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Duplicate issues'), array('onclick' => "switchSubmenuTab('tab_duplicate_issues', 'viewissue_menu');failedMessage('".__('This functionality is not yet implemented')."');")); ?></li>
 			</ul>
 		</div>
 		<div id="viewissue_menu_panes">
@@ -402,6 +403,8 @@
 						</td>
 					</tr>
 				</table>
+			</div>
+			<div id="tab_duplicate_issues_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
 			</div>
 		</div>
 	</div>

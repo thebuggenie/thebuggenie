@@ -1740,6 +1740,7 @@
 				//die();
 				return true;
 			}
+			$this->return404(TBGContext::getI18n()->__('This file does not exist'));
 		}
 
 		public function runAttachLinkToIssue(TBGRequest $request)
