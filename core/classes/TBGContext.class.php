@@ -19,12 +19,17 @@
 	class TBGContext
 	{
 
+		const ENV_CLI = 1;
+		const ENV_HTTP = 2;
+
 		const PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES = 1;
 		const PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES = 2;
 		const PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO = 6;
 		const PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES = 3;
 		const PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES = 4;
 		const PREDEFINED_SEARCH_MY_REPORTED_ISSUES = 5;
+		
+		static protected $_environment = 2;
 		
 		static protected $_B2DBObject = null;
 		
@@ -1284,9 +1289,16 @@
 	
 			try
 			{
-				$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http://' : 'https://';
-				TBGLogging::log("Checking if scope can be set from hostname (".$hostprefix.$_SERVER['HTTP_HOST'].")");
-				$row = B2DB::getTable('TBGScopesTable')->getByHostname($hostprefix . $_SERVER['HTTP_HOST']);
+				if (self::getEnvironment() == self::ENV_HTTP)
+				{
+					$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http://' : 'https://';
+					TBGLogging::log("Checking if scope can be set from hostname (".$hostprefix.$_SERVER['HTTP_HOST'].")");
+					$row = B2DB::getTable('TBGScopesTable')->getByHostname($hostprefix . $_SERVER['HTTP_HOST']);
+				}
+				else
+				{
+					$row = B2DB::getTable('TBGScopesTable')->getDefault();
+				}
 				if ($row instanceof B2DBRow)
 				{
 					TBGLogging::log("It could");
@@ -1780,6 +1792,16 @@
 				$content_type = mime_content_type($filename);
 			}
 			return $content_type;
+		}
+
+		public static function setEnvironment($environment = self::ENV_HTTP)
+		{
+			self::$_environment = $environment;
+		}
+
+		public static function getEnvironment()
+		{
+			return self::$_environment;
 		}
 
 	}

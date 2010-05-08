@@ -20,6 +20,83 @@
 		{
 			ob_end_clean();
 		}
+		
+		if (TBGContext::getEnvironment() == TBGContext::ENV_CLI)
+		{
+			$trace_elements = null;
+			if ($exception instanceof Exception)
+			{
+				if ($exception instanceof TBGActionNotFoundException)
+				{
+					echo format_text("Could not find the specified action", 'white', 'bold');
+				}
+				elseif ($exception instanceof TBGTemplateNotFoundException)
+				{
+					echo format_text("Could not find the template file for the specified action", 'white', 'bold');
+				}
+				elseif ($exception instanceof B2DBException)
+				{
+					echo format_text("An exception was thrown in the B2DB framework", 'white', 'bold');
+				}
+				else
+				{
+					echo format_text("An unhandled exception occurred:", 'white', 'bold');
+				}
+				echo "\n".format_text($exception->getMessage(), 'red', 'bold')."\n";
+				echo "\n";
+				echo format_text('Stack trace').":\n";
+				$trace_elements = $exception->getTrace();
+			}
+			else
+			{
+				if ($exception['code'] == 8)
+				{
+					echo format_text('The following notice has stopped further execution:', 'white', 'bold');
+				}
+				else
+				{
+					echo format_text('The following error occured:', 'white', 'bold');
+				}
+				echo "\n";
+				echo "\n";
+				echo format_text($title, 'red', 'bold');
+				echo "\n";
+				echo format_text('occured in')."\n";
+				echo format_text($exception['file'].', line '.$exception['line'], 'blue', 'bold');
+				echo "\n";
+				echo "\n";
+				echo format_text("Backtrace:", 'white', 'bold')."\n";
+				$trace_elements = debug_backtrace();
+			}
+			foreach ($trace_elements as $trace_element)
+			{
+				if (array_key_exists('class', $trace_element))
+				{
+					echo format_text($trace_element['class'].$trace_element['type'].$trace_element['function'].'()');
+				}
+				elseif (array_key_exists('function', $trace_element))
+				{
+					echo format_text($trace_element['function'].'()');
+				}
+				else
+				{
+					echo format_text('unknown function');
+				}
+				echo "\n";
+				if (array_key_exists('file', $trace_element))
+				{
+					echo format_text($trace_element['file'].', line '.$trace_element['line'], 'blue', 'bold');
+				}
+				else
+				{
+					echo format_text('unknown file', 'red', 'bold');
+				}
+				echo "\n";
+			}
+			echo "\n";
+			die();
+		}
+
 		echo "
 		<style>
 		body { background-color: #DFDFDF; font-family: \"Droid Sans\", \"Trebuchet MS\", \"Liberation Sans\", \"Nimbus Sans L\", \"Luxi Sans\", Verdana, sans-serif; font-size: 13px; }
@@ -198,7 +275,13 @@
 
 		// Load the logging class so we can log stuff
 		require THEBUGGENIE_PATH . 'core/classes/TBGLogging.class.php';
-		
+
+		// Set the environment to cli if it is
+		if (isset($argc))
+		{
+			TBGContext::setEnvironment(TBGContext::ENV_CLI);
+		}
+
 		// Set the start time
 		TBGContext::setLoadStart($starttime[1] + $starttime[0]);
 		TBGLogging::log('Initializing B2 framework');

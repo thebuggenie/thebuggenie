@@ -52,5 +52,11 @@
 			$row = $this->doSelectOne($crit);
 			return $row;
 		}
-		
+
+		public function getDefault()
+		{
+			$row = $this->doSelectByID(1);
+			return $row;
+		}
+
 	}
