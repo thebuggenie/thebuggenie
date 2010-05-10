@@ -143,11 +143,11 @@
 			B2DB::getTable('TBGArticleLinksTable')->deleteLinksByArticle($article_name);
 		}
 
-		public static function createNew($name, $content, $published, $scope = null)
+		public static function createNew($name, $content, $published, $scope = null, $options = array())
 		{
 			$user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
 			$article_id = B2DB::getTable('TBGArticlesTable')->save($name, $content, $published, $user_id, null, $scope);
-			PublishFactory::articleLab($article_id)->save();
+			PublishFactory::articleLab($article_id)->save($options);
 			return $article_id;
 		}
 
@@ -288,10 +288,10 @@
 			return $this->_categories;
 		}
 
-		protected function _retrieveLinksAndCategoriesFromContent()
+		protected function _retrieveLinksAndCategoriesFromContent($options = array())
 		{
 			$parser = new TBGTextParser(html_entity_decode($this->_content));
-			$parser->doParse();
+			$parser->doParse($options);
 			return array($parser->getInternalLinks(), $parser->getCategories());
 		}
 
@@ -321,7 +321,7 @@
 			return $this->_category_name;
 		}
 
-		public function save()
+		public function save($options = array())
 		{
 			if (B2DB::getTable('TBGArticlesTable')->doesNameConflictExist($this->_name, $this->_itemid))
 			{
@@ -333,7 +333,7 @@
 			B2DB::getTable('TBGArticleLinksTable')->deleteLinksByArticle($this->_name);
 			B2DB::getTable('TBGArticleCategoriesTable')->deleteCategoriesByArticle($this->_name);
 
-			list ($links, $categories) = $this->_retrieveLinksAndCategoriesFromContent();
+			list ($links, $categories) = $this->_retrieveLinksAndCategoriesFromContent($options);
 
 			foreach ($links as $link => $occurrences)
 			{

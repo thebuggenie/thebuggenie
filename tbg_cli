@@ -11,16 +11,10 @@
 	}
 	catch (Exception $e)
 	{
-		TBGCliCommand::cli_echo('An error occured when trying to initialize the command line client:', 'white', 'bold');
-		echo "\n";
-		TBGCliCommand::cli_echo($e->getMessage(), 'red', 'bold');
-		echo "\n";
+		TBGCliCommand::cli_echo("An error occured when trying to initialize the command line client:\n", 'white', 'bold');
+		TBGCliCommand::cli_echo($e->getMessage() . "\n", 'red', 'bold');
 		die();
 	}
-
-	$core_commands = array();
-	$event = TBGEvent::createNew('cli', 'core_commands', null, array(), $core_commands);
-	$event->trigger();
 
 	/*
 
@@ -30,8 +24,41 @@
 	$core_commands['upgrade'] = array('command' => 'upgrade', 'params' => '', 'description' => "Launches the upgrade wizard", 'help' => "Launches the upgrade wizard");
 
 	*/
-	
-	if (!file_exists('installed'))
+
+	$commands = array('main' => array());
+
+	$command_paths = array();
+	$command_paths['main'] = THEBUGGENIE_PATH . 'modules' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR;
+	foreach (TBGContext::getModules() as $module_name => $module)
+	{
+		$module_cli_path = THEBUGGENIE_PATH . 'modules' . DIRECTORY_SEPARATOR . $module_name . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR;
+		if (file_exists($module_cli_path))
+		{
+			$command_paths[$module_name] = $module_cli_path;
+		}
+	}
+
+	foreach ($command_paths as $module_name => $command_path)
+	{
+		TBGContext::addClasspath($command_path);
+		$_path_handle = opendir($command_path);
+		while ($command_class_file = readdir($_path_handle))
+		{
+			if (($classname = substr($command_class_file, 0, strpos($command_class_file, '.'))) != '')
+			{
+				$command = new $classname();
+				$commands[$module_name][$command->getCommandName()] = $command;
+				foreach ($command->getCommandAliases() as $alias)
+				{
+					$commands[$module_name][$alias] = $command;
+				}
+			}
+		}
+	}
+
+	TBGCliCommand::setAvailableCommands($commands);
+
+	/*if (!file_exists('installed'))
 	{
 		$core_commands['install'] = array('command' => 'install', 'params' => '', 'description' => "Launches the installation wizard", 'help' => "Launches the installation wizard");
 	}
@@ -46,55 +73,59 @@
 				$module_commands[$aModule->getName()][$aCommand['command']] = $aCommand;
 			}
 		}
-	}
+	}*/
 	
-	if ($argc < 2 || in_array($argv[1], array('help', '--help', '-help', '-h', '-?')))
+	if ($argc < 2)
 	{
-		echo "The Bug Genie command line tool\n";
-		TBGCliCommand::cli_echo("Usage: ", 'black', 'bold') . $argv[0] . ' [' . TBGCliCommand::cli_echo('command', 'green', 'bold') . "]\n";
-		if ($argc > 1 && in_array($argv[1], array('help', '--help', '-help', '-h', '-?')))
+		TBGCliCommand::cli_echo("The Bug Genie command line tool\n\n");
+		TBGCliCommand::cli_echo("Usage: ", 'white', 'bold');
+		TBGCliCommand::cli_echo(TBGCliCommand::getCommandLineName() . " [");
+		TBGCliCommand::cli_echo('command', 'green', 'bold');
+		TBGCliCommand::cli_echo("]\n");
+		TBGCliCommand::cli_echo("Type " . TBGCliCommand::getCommandLineName() . ' ');
+		TBGCliCommand::cli_echo('help', 'green', 'bold');
+		TBGCliCommand::cli_echo(" for more information.\n\n");
+	}
+	else
+	{
+		TBGCliCommand::processArguments();
+		$module_command = explode(':', $argv[1]);
+		$module_name = (count($module_command) == 2) ? $module_command[0] : 'main';
+		$command = (count($module_command) == 2) ? $module_command[1] : $module_command[0];
+
+		if (array_key_exists($module_name, $commands) && array_key_exists($command, $commands[$module_name]))
 		{
-			echo "\n";
-			foreach ($core_commands as $aCommand)
+			$class = $commands[$module_name][$command];
+			$class->execute();
+		}
+		else
+		{
+			TBGCliCommand::cli_echo('Unknown command', 'red', '') . "\n";
+		}
+
+		/*if (stristr($argv[1], ':') != '')
+		{
+			$tmpvar = explode(':', $argv[1]);
+			$module = $tmpvar[0];
+			$command = $tmpvar[1];
+			if (isset($module_commands[$module]))
 			{
-				TBGCliCommand::cli_echo($aCommand['command'], 'green', 'bold') . ' ';
-				echo "\t" . $aCommand['description'] . "\n";
+				if (isset($module_commands[$module][$command]))
+				{
+					call_user_func(array(TBGContext::getModule($module), $module_commands[$module][$command]['function']), $argv);
+				}
 			}
-			echo "\n";
-			if (isset($module_commands))
+			else
 			{
-				echo "Available module commands: (invoked by using " . TBGCliCommand::cli_echo('module_name:command', 'green', 'bold') . ")\n";
-				$cc = 0;
-				foreach ($module_commands as $module => $commands)
-				{
-					echo "\n";
-					TBGCliCommand::cli_echo("{$module}:\n", 'green', 'bold');
-					foreach ($commands as $command)
-					{
-						TBGCliCommand::cli_echo($command['command'], 'green', 'bold') . ' ';
-						echo "\t" . $command['description'] . "\n";
-						$cc++;
-					}
-					if (empty($commands))
-					{
-						echo "This module does not have any commands\n";
-					}
-					echo "\n";
-				}
-				if ($cc == 0)
-				{
-					echo "There are no module commands\n\n";
-				}
+				TBGCliCommand::cli_echo('Unknown command', 'red', '') . "\n";
 			}
 		}
 		else
 		{
-			echo "\nType " . $argv[0] . ' ' . TBGCliCommand::cli_echo('help', 'green', 'bold') . "\033[0m for more information.\n";
-		}
-	}
-	else
-	{
-		switch ($argv[1])
+			TBGCliCommand::cli_echo('Unknown command', 'red', '') . "\n";
+		}*/
+
+		/*switch ($argv[1])
 		{
 			case "explain":
 				if (isset($argv[2]))
@@ -137,19 +168,6 @@
 				}
 				break;
 			case "license":
-				if ($argv[2] == 'print')
-				{
-					$thelicense = file_get_contents('LICENSE.TXT');
-					echo $thelicense . "\n";
-				}
-				else
-				{
-					echo 'The Bug Genie is released under the MPL 1.1 only. You can read the license at: ' . "\n";
-					TBGCliCommand::cli_echo('http://www.opensource.org/licenses/mozilla1.1.php', 'blue', 'underline') . '.';
-					echo "\n\n" . 'To print the license, type: ' . $argv[0] . TBGCliCommand::cli_echo(' license', 'green', 'bold') . TBGCliCommand::cli_echo(' print', 'magenta', '');
-					echo "\n\nResistance is futile.\n\n";
-				}
-				break;
 			case "upgrade":
 				echo "Upgrading is not implemented from command line yet\n";
 				break;
@@ -485,7 +503,7 @@
 					TBGCliCommand::cli_echo('Unknown command', 'red', '') . "\n";
 				}
 				break;
-		}
+		}*/
 	}
 
 	return true;

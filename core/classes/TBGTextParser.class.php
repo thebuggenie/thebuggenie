@@ -440,7 +440,7 @@
 				case 'NUMBEROFARTICLES': return 0;
 				case 'PAGENAME': return TBGContext::getResponse()->getPage();
 				case 'NAMESPACE': return 'None';
-				case 'TOC': return '{{TOC}}';
+				case 'TOC': return '__TOC__';
 				case 'SITENAME': return TBGSettings::getTBGname();
 				case 'SITETAGLINE': return TBGSettings::getTBGtagline();
 				default: return '';
@@ -539,7 +539,7 @@
 		protected function _test()
 		{
 			$text = "WikiParser stress tester. <br /> Testing...
-	{{TOC}}
+	__TOC__
 
 	== Nowiki test ==
 	<nowiki>[[wooticles|narf]] and '''test''' and stuff.</nowiki>
@@ -604,7 +604,7 @@
 			return $this->parse($text);
 		}
 
-		protected function _parseText()
+		protected function _parseText($options = array())
 		{
 			self::$current_parser = $this;
 			$this->list_level_types = array();
@@ -628,7 +628,10 @@
 			$this->nowikis = array_reverse($this->nowikis);
 			$this->codeblocks = array_reverse($this->codeblocks);
 
-			$output = preg_replace_callback('/{{TOC}}/', array($this, "_parse_add_toc"), $output);
+			if (!array_key_exists('ignore_toc', $options))
+			{
+				$output = preg_replace_callback('/{{TOC}}/', array($this, "_parse_add_toc"), $output);
+			}
 			$output = preg_replace_callback('/\|\|\|NOWIKI\|\|\|/i', array($this, "_parse_restore_nowiki"), $output);
 			$output = preg_replace_callback('/\|\|\|CODE\|\|\|/i', array($this, "_parse_restore_code"), $output);
 
@@ -645,11 +648,11 @@
 			return $this->parsed_text;
 		}
 
-		public function doParse()
+		public function doParse($options = array())
 		{
 			if ($this->parsed_text === null)
 			{
-				$this->parsed_text = $this->_parseText();
+				$this->parsed_text = $this->_parseText($options);
 			}
 		}
 

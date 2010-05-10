@@ -28,68 +28,68 @@
 			{
 				if ($exception instanceof TBGActionNotFoundException)
 				{
-					echo format_text("Could not find the specified action", 'white', 'bold');
+					TBGCliCommand::cli_echo("Could not find the specified action", 'white', 'bold');
 				}
 				elseif ($exception instanceof TBGTemplateNotFoundException)
 				{
-					echo format_text("Could not find the template file for the specified action", 'white', 'bold');
+					TBGCliCommand::cli_echo("Could not find the template file for the specified action", 'white', 'bold');
 				}
 				elseif ($exception instanceof B2DBException)
 				{
-					echo format_text("An exception was thrown in the B2DB framework", 'white', 'bold');
+					TBGCliCommand::cli_echo("An exception was thrown in the B2DB framework", 'white', 'bold');
 				}
 				else
 				{
-					echo format_text("An unhandled exception occurred:", 'white', 'bold');
+					TBGCliCommand::cli_echo("An unhandled exception occurred:", 'white', 'bold');
 				}
 				echo "\n".format_text($exception->getMessage(), 'red', 'bold')."\n";
 				echo "\n";
-				echo format_text('Stack trace').":\n";
+				TBGCliCommand::cli_echo('Stack trace').":\n";
 				$trace_elements = $exception->getTrace();
 			}
 			else
 			{
 				if ($exception['code'] == 8)
 				{
-					echo format_text('The following notice has stopped further execution:', 'white', 'bold');
+					TBGCliCommand::cli_echo('The following notice has stopped further execution:', 'white', 'bold');
 				}
 				else
 				{
-					echo format_text('The following error occured:', 'white', 'bold');
+					TBGCliCommand::cli_echo('The following error occured:', 'white', 'bold');
 				}
 				echo "\n";
 				echo "\n";
-				echo format_text($title, 'red', 'bold');
+				TBGCliCommand::cli_echo($title, 'red', 'bold');
 				echo "\n";
-				echo format_text('occured in')."\n";
-				echo format_text($exception['file'].', line '.$exception['line'], 'blue', 'bold');
+				TBGCliCommand::cli_echo('occured in')."\n";
+				TBGCliCommand::cli_echo($exception['file'].', line '.$exception['line'], 'blue', 'bold');
 				echo "\n";
 				echo "\n";
-				echo format_text("Backtrace:", 'white', 'bold')."\n";
+				TBGCliCommand::cli_echo("Backtrace:", 'white', 'bold')."\n";
 				$trace_elements = debug_backtrace();
 			}
 			foreach ($trace_elements as $trace_element)
 			{
 				if (array_key_exists('class', $trace_element))
 				{
-					echo format_text($trace_element['class'].$trace_element['type'].$trace_element['function'].'()');
+					TBGCliCommand::cli_echo($trace_element['class'].$trace_element['type'].$trace_element['function'].'()');
 				}
 				elseif (array_key_exists('function', $trace_element))
 				{
-					echo format_text($trace_element['function'].'()');
+					TBGCliCommand::cli_echo($trace_element['function'].'()');
 				}
 				else
 				{
-					echo format_text('unknown function');
+					TBGCliCommand::cli_echo('unknown function');
 				}
 				echo "\n";
 				if (array_key_exists('file', $trace_element))
 				{
-					echo format_text($trace_element['file'].', line '.$trace_element['line'], 'blue', 'bold');
+					TBGCliCommand::cli_echo($trace_element['file'].', line '.$trace_element['line'], 'blue', 'bold');
 				}
 				else
 				{
-					echo format_text('unknown file', 'red', 'bold');
+					TBGCliCommand::cli_echo('unknown file', 'red', 'bold');
 				}
 				echo "\n";
 			}
