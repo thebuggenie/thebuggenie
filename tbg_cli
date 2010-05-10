@@ -16,17 +16,7 @@
 		die();
 	}
 
-	/*
-
-	$core_commands['help'] = array('command' => 'help', 'params' => '', 'optional' => false, 'description' => "\tDisplays this output and exits", 'help' => 'This command displays a list of available commands, and a brief description of what each command does.');
-	$core_commands['explain'] = array('command' => 'explain', 'params' => 'command', 'description' => "Explains any <command> in more detail", 'help' => "If you didn't know what this command does, how would you be reading this?");
-	$core_commands['license'] = array('command' => 'license', 'params' => 'print', 'optional' => true, 'description' => "Gives more information the bug genie license", 'help' => 'This command prints the complete license for you to read. Enjoy!');
-	$core_commands['upgrade'] = array('command' => 'upgrade', 'params' => '', 'description' => "Launches the upgrade wizard", 'help' => "Launches the upgrade wizard");
-
-	*/
-
-	$commands = array('main' => array());
-
+	// Set up all available search paths for cli commands
 	$command_paths = array();
 	$command_paths['main'] = THEBUGGENIE_PATH . 'modules' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'cli' . DIRECTORY_SEPARATOR;
 	foreach (TBGContext::getModules() as $module_name => $module)
@@ -38,6 +28,8 @@
 		}
 	}
 
+	// Set up all cli commands
+	$commands = array('main' => array());
 	foreach ($command_paths as $module_name => $command_path)
 	{
 		TBGContext::addClasspath($command_path);
@@ -58,11 +50,11 @@
 			}
 		}
 	}
-
 	TBGCliCommand::setAvailableCommands($commands);
-	
+
 	if ($argc < 2)
 	{
+		// Show usage if no parameters are provided
 		TBGCliCommand::cli_echo("The Bug Genie command line tool\n\n");
 		TBGCliCommand::cli_echo("Usage: ", 'white', 'bold');
 		TBGCliCommand::cli_echo(TBGCliCommand::getCommandLineName() . " [");
@@ -74,6 +66,7 @@
 	}
 	else
 	{
+		// Process arguments and invoke command if available
 		TBGCliCommand::processArguments();
 		$module_command = explode(':', $argv[1]);
 		$module_name = (count($module_command) == 2) ? $module_command[0] : 'main';
@@ -86,7 +79,11 @@
 		}
 		else
 		{
-			TBGCliCommand::cli_echo('Unknown command', 'red', '') . "\n";
+			TBGCliCommand::cli_echo("\n");
+			TBGCliCommand::cli_echo("Unknown command\n", 'red', 'bold');
+			TBGCliCommand::cli_echo("Type " . TBGCliCommand::getCommandLineName() . ' ');
+			TBGCliCommand::cli_echo('help', 'green', 'bold');
+			TBGCliCommand::cli_echo(" for more information about the cli tool.\n\n");
 		}
 	}
 
