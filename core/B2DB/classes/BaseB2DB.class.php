@@ -115,7 +115,6 @@
 			$string .= "\n";
 			$string .= "\tself::setDSN('".self::getDSN()."');\n";
 			$string .= "\n";
-			$string .= "?>";
 			try
 			{
 				if (file_put_contents(B2DB_BASEPATH . 'sql_parameters.inc.php', $string) === false)

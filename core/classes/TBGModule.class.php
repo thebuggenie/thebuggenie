@@ -259,6 +259,11 @@
 		{
 			return $this->_availablepermissions;
 		}
+
+		public function getAvailableCommandLineCommands()
+		{
+			return array();
+		}
 		
 		public function addAvailableListener($module, $identifier, $callback_function, $description)
 		{
@@ -276,9 +281,13 @@
 			$crit->addWhere(TBGModulePermissionsTable::SCOPE, TBGContext::getScope()->getID());
 			
 			$resultset = B2DB::getTable('TBGModulePermissionsTable')->doSelect($crit);
-			while ($row = $resultset->getNextRow())
+
+			if ($resultset)
 			{
-				self::cacheAccessPermission($row->get(TBGModulePermissionsTable::MODULE_NAME), $row->get(TBGModulePermissionsTable::UID), $row->get(TBGModulePermissionsTable::GID), $row->get(TBGModulePermissionsTable::TID), 0, (bool) $row->get(TBGModulePermissionsTable::ALLOWED));
+				while ($row = $resultset->getNextRow())
+				{
+					self::cacheAccessPermission($row->get(TBGModulePermissionsTable::MODULE_NAME), $row->get(TBGModulePermissionsTable::UID), $row->get(TBGModulePermissionsTable::GID), $row->get(TBGModulePermissionsTable::TID), 0, (bool) $row->get(TBGModulePermissionsTable::ALLOWED));
+				}
 			}
 		}
 
@@ -315,6 +324,7 @@
 		
 		public function hasAccess($uid = null, $gid = null, $tid = null, $all = null, $debug = false)
 		{
+			if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return true;
 			$permissions = self::getAccessPermissionList();
 			if (!array_key_exists($this->getName(), $permissions))
 			{

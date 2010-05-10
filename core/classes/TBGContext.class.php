@@ -383,7 +383,7 @@
 				self::$_request = new TBGRequest();
 				self::$_response = new TBGResponse();
 				TBGLogging::log('...done');
-				if (!is_readable(THEBUGGENIE_PATH . 'installed') && !isset($argc))
+				if (!is_readable(THEBUGGENIE_PATH . 'installed'))
 				{
 					self::$_installmode = true;
 				}
@@ -416,37 +416,40 @@
 				TBGLogging::log("...done");
 
 				$load_modules = true;
-				TBGLogging::log('Loading user');
-				try
+				if (self::getEnvironment() != self::ENV_CLI)
 				{
-					TBGLogging::log('is this logout?');
-					if (self::getRequest()->getParameter('logout'))
+					TBGLogging::log('Loading user');
+					try
 					{
-						TBGLogging::log('yes');
-						self::logout();
+						TBGLogging::log('is this logout?');
+						if (self::getRequest()->getParameter('logout'))
+						{
+							TBGLogging::log('yes');
+							self::logout();
+						}
+						else
+						{
+							TBGLogging::log('no');
+							TBGLogging::log('sets up user object');
+							self::loadUser();
+							TBGLogging::log('loaded');
+							TBGLogging::log('caches permissions');
+							self::cacheAllPermissions();
+							TBGLogging::log('...cached');
+						}
 					}
-					else
+					catch (Exception $e)
 					{
-						TBGLogging::log('no');
-						TBGLogging::log('sets up user object');
-						self::loadUser();
-						TBGLogging::log('loaded');
-						TBGLogging::log('caches permissions');
-						self::cacheAllPermissions();
-						TBGLogging::log('...cached');
-					}
-				}
-				catch (Exception $e)
-				{
-					TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
-					if (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'login')
-					{
-						self::getResponse()->headerRedirect(self::getRouting()->generate('login'));
-					}
-					else
-					{
-						self::$_user = new TBGUser();
-						$load_modules = false;
+						TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
+						if (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'login')
+						{
+							self::getResponse()->headerRedirect(self::getRouting()->generate('login'));
+						}
+						else
+						{
+							self::$_user = new TBGUser();
+							$load_modules = false;
+						}
 					}
 				}
 				TBGLogging::log('...done');
@@ -1281,8 +1284,7 @@
 			if ($scope !== null)
 			{
 				TBGLogging::log("Setting scope from function parameter");
-				$theScope = TBGFactory::scopeLab((int) $scope);
-				self::$_scope = $theScope;
+				self::$_scope = $scope;
 				TBGLogging::log("...done (Setting scope from function parameter)");
 				return true;
 			}

@@ -16,18 +16,28 @@
 		return $return_text;
 	}
 
-	// Include the "engine" script, which initializes and sets up stuff
-	require THEBUGGENIE_PATH . 'core/tbg_engine.inc.php';
+	try
+	{
+		// Include the "engine" script, which initializes and sets up stuff
+		require THEBUGGENIE_PATH . 'core/tbg_engine.inc.php';
+	}
+	catch (Exception $e)
+	{
+		echo format_text('An error occured when trying to initialize the command line client:', 'white', 'bold');
+		echo "\n";
+		echo format_text($e->getMessage(), 'red', 'bold');
+		echo "\n";
+		die();
+	}
 
 	$core_commands = array();
 	$core_commands['help'] = array('command' => 'help', 'params' => '', 'optional' => false, 'description' => "\tDisplays this output and exits", 'help' => 'This command displays a list of available commands, and a brief description of what each command does.');	
 	$core_commands['explain'] = array('command' => 'explain', 'params' => 'command', 'description' => "Explains any <command> in more detail", 'help' => "If you didn't know what this command does, how would you be reading this?");
-	$core_commands['license'] = array('command' => 'license', 'params' => 'print', 'optional' => true, 'description' => "Gives more information the BUGS 2 license", 'help' => 'This command prints the complete BUGS 2 license for you to read. Enjoy!');
+	$core_commands['license'] = array('command' => 'license', 'params' => 'print', 'optional' => true, 'description' => "Gives more information the bug genie license", 'help' => 'This command prints the complete license for you to read. Enjoy!');
 	$core_commands['upgrade'] = array('command' => 'upgrade', 'params' => '', 'description' => "Launches the upgrade wizard", 'help' => "Launches the upgrade wizard");
 	
 	if (!file_exists('installed'))
 	{
-		//$core_commands['install'] = array('command' => 'install', 'params' => 'db_type db_host db_username db_password db_name', 'description' => "Installs BUGS 2", 'help' => "\nInstalls BUGS 2.\n" . format_text("Parameters:\n", 'white', 'bold') . format_text('db_type', 'magenta') . " (required)\nThe type of database you are installing to.\nFor a list of available B2DB engines, run " . format_text($argv[0], 'white', 'bold') . ' ' . format_text('list_db_types', 'green', 'bold') . ".\n\n" . format_text('db_host', 'magenta') . " (required)\nThe hostname of the SQL server you are installing to.\n\n" . format_text('db_username', 'magenta') . " (required)\nThe username for the database account you are connecting with.\n\n" . format_text('db_password', 'magenta') . "\nLeave out this if you are using an SQL account that doesn't\nrequire a password. (not recommended)\n\n" . format_text('db_name', 'magenta') . "\nIf installing into an existing database, this is the\nname of the database to use.\nDefault is " . format_text('bugs2_db', 'cyan', 'bold') . ".");
 		$core_commands['install'] = array('command' => 'install', 'params' => '', 'description' => "Launches the installation wizard", 'help' => "Launches the installation wizard");
 	}
 	else
@@ -36,12 +46,9 @@
 		
 		foreach (TBGContext::getModules() as $aModule)
 		{
-			if (method_exists($aModule, 'getAvailableCommandLineCommands'))
+			foreach ($aModule->getAvailableCommandLineCommands() as $aCommand)
 			{
-				foreach ($aModule->getAvailableCommandLineCommands() as $aCommand)
-				{
-					$module_commands[$aModule->getName()][$aCommand['command']] = $aCommand;
-				}
+				$module_commands[$aModule->getName()][$aCommand['command']] = $aCommand;
 			}
 		}
 	}
@@ -50,7 +57,7 @@
 	{
 		echo "The Bug Genie command line tool\n";
 		echo format_text("Usage: ", 'black', 'bold') . $argv[0] . ' [' . format_text('command', 'green', 'bold') . "]\n";
-		if (count($argv) > 1 && in_array($argv[1], array('help', '--help', '-help', '-h', '-?')))
+		if ($argc > 1 && in_array($argv[1], array('help', '--help', '-help', '-h', '-?')))
 		{
 			echo "\n";
 			foreach ($core_commands as $aCommand)
@@ -66,7 +73,7 @@
 				foreach ($module_commands as $module => $commands)
 				{
 					echo "\n";
-					echo format_text($module . ":\n", 'green', 'bold');
+					echo format_text("{$module}:\n", 'green', 'bold');
 					foreach ($commands as $command)
 					{
 						echo format_text($command['command'], 'green', 'bold') . ' ';
@@ -142,7 +149,7 @@
 				}
 				else
 				{
-					echo 'BUGS 2 is released under the MPL 1.1 only. You can read the license at: ' . "\n";
+					echo 'The Bug Genie is released under the MPL 1.1 only. You can read the license at: ' . "\n";
 					echo format_text('http://www.opensource.org/licenses/mozilla1.1.php', 'blue', 'underline') . '.';
 					echo "\n\n" . 'To print the license, type: ' . $argv[0] . format_text(' license', 'green', 'bold') . format_text(' print', 'magenta', '');
 					echo "\n\nResistance is futile.\n\n";
@@ -152,9 +159,9 @@
 				echo "Upgrading is not implemented from command line yet\n";
 				break;
 			case "install":
-				echo format_text("\nWelcome to the \"BUGS 2\" installation wizard!\n");
-				echo "This wizard will take you through the installation of BUGS 2.\nRemember that you can also install BUGS 2 from your web-browser.\n";
-				echo "Simply point your web-browser to the BUGS 2 subdirectory on your web server,\nand the installation will start.\n\n";
+				echo format_text("\nWelcome to the \"The Bug Genie\" installation wizard!\n");
+				echo "This wizard will take you through the installation of The Bug Genie.\nRemember that you can also install The Bug Genie from your web-browser.\n";
+				echo "Simply point your web-browser to the The Bug Genie subdirectory on your web server,\nand the installation will start.\n\n";
 				echo format_text("Remember that this is a pre-release version,\nwhich is not yet recommended for production use!\n\n");
 				echo "Press ENTER to continue with the installation: ";
 				try
@@ -166,7 +173,7 @@
 					echo "Even though this software has been provided to you free of charge,\ndeveloping it would not have been possible without support from our users.\n";
 					echo "By making a donation, or buying a support contract you can help us continue development.\n\n";
 					echo format_text("If this software is valuable to you - please consider supporting it.\n\n");
-					echo "More information about supporting BUGS' development can be found here:\n";
+					echo "More information about supporting The Bug Genie's development can be found here:\n";
 					echo format_text("http://www.thebuggenie.com/giving_back.php\n\n", 'blue', 'underline');
 					echo "Press ENTER to continue: ";
 					
@@ -175,52 +182,50 @@
 					echo "\n";
 					echo format_text("License information\n", 'green', 'bold');
 					echo "This software is Open Source Initiative approved Open Source Software.\nOpen Source Initiative Approved is a trademark of the Open Source Initiative.\n\n";
-					echo "True to the the Open Source Definition, BUGS - the Bug Genie is released\nunder the MPL 1.1 only. You can read the full license here:\n";
+					echo "True to the the Open Source Definition, The Bug Genie is released\nunder the MPL 1.1 only. You can read the full license here:\n";
 					echo format_text("http://www.opensource.org/licenses/mozilla1.1.php\n\n", 'blue', 'underline');
 					echo "Before you can continue the installation, you need to confirm that you \nagree to be bound by the terms in this license.\n\n";
 					echo "Do you agree to be bound by the terms in the MPL 1.1 license?\n(type \"yes\" to agree, anything else aborts the installation): ";
 					
 					if (strtolower(trim(fgets(STDIN))) != 'yes') throw new Exception(format_text('You need to accept the license to continue', 'red', 'bold'));
 					
-					echo format_text("\nThis is the fourth BUGS 2 beta release, named \"Yasmine\"\n");
-					echo format_text("Yasmine is a beautiful flower in the olive family.\nUnlike other flowers in its family who only has four \"petals\",\nthe Yasmine often have five or six.\n\n", 'white', '');
-					
 					$not_well = array();
-					if (!is_writable('include/B2DB/'))
+					if (!is_writable('core/B2DB/'))
 					{
 						$not_well[] = 'b2db_perm';
 					}
-					if (!is_writable(substr(__FILE__, 0, strripos(__FILE__, DIRECTORY_SEPARATOR) + 1)))
+					if (!is_writable(TBGContext::getIncludePath()))
 					{
 						$not_well[] = 'root';
 					}
 					
 					if (count($not_well) > 0)
-					{ 
+					{
+						echo "\n";
 						foreach ($not_well as $afail)
 						{
-							switch ($not_well)
+							switch ($afail)
 							{
 								case 'b2db_perm':
 									echo format_text("Could not write to the B2DB directory\n", 'red', 'bold');
 									echo 'The ' . format_text('include/B2DB') . ' folder needs to be writable';
 									break;
 								case 'root':
-									echo format_text("Could not write to the BUGS 2 directory\n", 'red', 'bold');
-									echo 'The BUGS 2 folder must be writable during installation';
+									echo format_text("Could not write to the main directory\n", 'red', 'bold');
+									echo 'The top level folder must be writable during installation';
 									break;
 							}
 						}
 			
-						throw new Exception("\n\nYou need to correct the above errors before the installation can continue.\n");
+						throw new Exception("\n\nYou need to correct the above errors before the installation can continue.");
 					}
 					else
 					{
 						echo format_text("Step 1 - database information\n");
-						if (file_exists('include/B2DB/sql_parameters.inc.php'))
+						if (file_exists('core/B2DB/sql_parameters.inc.php'))
 						{
-							echo "You seem to already have completed this step successfully.\nDo you want to use the stored settings?\n";
-							echo "\nType \"no\" to enter new settings, press ENTER to use existing: ";
+							echo format_text("You seem to already have completed this step successfully.\nDo you want to use the stored settings?\n", 'white', 'bold');
+							echo format_text("\nType \"no\" to enter new settings, press ENTER to use existing: ", 'white', 'bold');
 							$use_existing = strtolower(trim(fgets(STDIN)));
 							$use_existing_db_info = ($use_existing == 'no') ? false : true;
 							echo "\n";
@@ -231,47 +236,44 @@
 						}
 						if (!$use_existing_db_info)
 						{
-							echo "BUGS uses a database to store information. To be able to connect\nto your database, BUGS needs some information, such as\ndatabase type, username, password, etc.\n\n";
-							echo "Please select what kind of database you are installing BUGS on:\n";
-					  	define ('B2DB_BASEPATH', THEBUGGENIE_PATH . 'include/B2DB/');
-							define ('B2DB_SQLTYPE', 'mysql');
-							define ('B2DB_DONTINITIALIZE', true);
-							require 'include/B2DB/B2DBinitialize.inc.php';
-							B2DB::setHTMLException(false);
+							echo "The Bug Genie uses a database to store information. To be able to connect\nto your database, The Bug Genie needs some information, such as\ndatabase type, username, password, etc.\n\n";
+							echo "Please select what kind of database you are installing The Bug Genie on:\n";
+							BaseB2DB::setHTMLException(false);
 							$db_types = array();
-							foreach (B2DB::getDBtypes() as $db_type => $db_desc)
+							foreach (BaseB2DB::getDBtypes() as $db_type => $db_desc)
 							{
 								$db_types[] = $db_type;
-								echo format_text(count($db_types) . ': ' . $db_desc . "\n");
+								echo format_text(count($db_types) . ': ' . $db_desc . "\n", 'white', 'bold');
 							}
 							do
 							{
-								echo format_text('Enter the corresponding number for the database (1-' . count($db_types) . '): ', 'white', '');
+								echo format_text('Enter the corresponding number for the database (1-' . count($db_types) . '): ');
 								$db_selection = strtolower(trim(fgets(STDIN)));
 								if (!isset($db_types[((int) $db_selection - 1)])) throw new Exception($db_selection . ' is not a valid database type selection');
 								$db_type = $db_types[((int) $db_selection - 1)];
 								echo "Selected database type: " . format_text($db_type . "\n\n");
 								echo "Please enter the database hostname: \n";
-								echo format_text('Database hostname: ');
+								echo format_text('Database hostname [localhost]: ', 'white', 'bold');
 								$db_hostname = trim(fgets(STDIN));
-								echo "\nPlease enter the username BUGS will use to connect to the database: \n";
-								echo format_text('Database username: ');
+								$db_hostname = ($db_hostname == '') ? 'localhost' : $db_hostname;
+								echo "\nPlease enter the username The Bug Genie will use to connect to the database: \n";
+								echo format_text('Database username: ', 'white', 'bold');
 								$db_username = trim(fgets(STDIN));
-								echo format_text("Database password (press ENTER if blank): ");
+								echo format_text("Database password (press ENTER if blank): ", 'white', 'bold');
 								$db_password = trim(fgets(STDIN));
-								echo "\nPlease enter the database BUGS will use.\nIf it does not exist, BUGS will create it for you.\n(the default database name is ";
-								echo format_text("bugs2_db");
+								echo "\nPlease enter the database The Bug Genie will use.\nIf it does not exist, The Bug Genie will create it for you.\n(the default database name is ";
+								echo format_text("thebuggenie_db", 'white', 'bold');
 								echo " - press ENTER to use that):\n";
-								echo format_text('Database name: ');
+								echo format_text('Database name: ', 'white', 'bold');
 								$db_name = trim(fgets(STDIN));
-								$db_name = ($db_name == '') ? 'bugs2_db' : $db_name;
+								$db_name = ($db_name == '') ? 'thebuggenie_db' : $db_name;
 								echo "\n";
 								echo "The following settings will be used:\n";
-								echo format_text("Database type: \t\t") . $db_type . "\n";
-								echo format_text("Database hostname: \t") . $db_hostname . "\n";
-								echo format_text("Database username: \t") . $db_username . "\n";
-								echo format_text("Database password: \t") . $db_password . "\n";
-								echo format_text("Database name: \t\t") . $db_name . "\n";
+								echo format_text("Database type: \t\t", 'white', 'bold') . $db_type . "\n";
+								echo format_text("Database hostname: \t", 'white', 'bold') . $db_hostname . "\n";
+								echo format_text("Database username: \t", 'white', 'bold') . $db_username . "\n";
+								echo format_text("Database password: \t", 'white', 'bold') . $db_password . "\n";
+								echo format_text("Database name: \t\t", 'white', 'bold') . $db_name . "\n";
 								
 								echo "\nIf these settings are ok, press ENTER, or anything else to retry: ";
 								
@@ -280,10 +282,11 @@
 							while (!$e_ok);
 							try
 							{
-								B2DB::setHost($db_hostname);
-								B2DB::setUname($db_username);
-								B2DB::setPasswd($db_password);
-								B2DB::setDBname('');
+								BaseB2DB::setHost($db_hostname);
+								BaseB2DB::setUname($db_username);
+								BaseB2DB::setPasswd($db_password);
+								BaseB2DB::setDBtype($db_type);
+								BaseB2DB::initialize(true);
 								B2DB::doConnect();
 								B2DB::createDatabase($db_name);
 							}
@@ -293,202 +296,166 @@
 							}
 							B2DB::setDBname($db_name);
 							B2DB::doSelectDB();
-							echo format_text("\nSuccessfully connected to the database.\n", 'green', '');
+							echo format_text("\nSuccessfully connected to the database.\n", 'green');
 							echo "Press ENTER to continue ... ";
 							fgets(STDIN);
-							echo "\n\n";
-							echo format_text("Saving database connection information ... ");
-							$fp = fopen('include/B2DB/sql_type.inc.php', 'w');
-							fwrite($fp, $db_type);
-							fclose($fp);
-							
-							$connection_params = file_get_contents('include/B2DB/sql_parameters_template.inc.php');
-							$search = array('--db_hostname--', '--db_username--', '--db_password--', '--db_name--');
-							$replace = array($db_hostname);
-							$replace[] = $db_username;
-							$replace[] = $db_password;
-							$replace[] = $db_name;
-	
-							$connection_params = str_replace($search, $replace, $connection_params);
-	
-							file_put_contents('include/B2DB/sql_parameters.inc.php', $connection_params);
+							echo "\n";
+							echo format_text("Saving database connection information ... ", 'white', 'bold');
+							echo "\n";
+							B2DB::saveConnectionParameters();
+							echo format_text("Successfully saved database connection information.\n", 'green');
+							echo "\n";
 						}
 						else
 						{
-							define ('B2DB_BASEPATH', THEBUGGENIE_PATH . 'include/B2DB/');
-							require 'include/B2DB/B2DBinitialize.inc.php';
+							B2DB::initialize();
 							echo format_text("Successfully connected to the database.\n", 'green', '');
 							echo "Press ENTER to continue ... ";
 							fgets(STDIN);
 						}
-						echo "\nBUGS needs some server settings to function properly...\n\n";
+						echo "\nThe Bug Genie needs some server settings to function properly...\n\n";
 						
 						do
 						{
-							echo format_text('Web server root URL') . "\nThis is the root of the Web server where BUGS will be running\nex: http://www.mycompany.com\n";
-							echo 'Enter the web URL ' . format_text('without') . " any ending slashes\n\n";
-							echo format_text('Web server root URL: ');
+							echo format_text('URL rewriting', 'cyan', 'bold') . "\n";
+							echo "The Bug Genie uses a technique called \"url rewriting\" - which allows for pretty\nURLs such as " . format_text('/issue/1', 'white', 'bold') . ' instead of ' . format_text('viewissue.php?issue_id=1', 'white', 'bold') . "\n";
+							echo "Make sure you have read the URL_REWRITE document located in the root\nfolder, or at http://www.thebuggenie.com before you continue\n";
+							echo "Press ENTER to continue ... ";
+							fgets(STDIN);
+							echo "\n";
+							echo format_text('Web server root URL', 'white', 'bold') . "\nThis is the root of the Web server where The Bug Genie will be running\nex: http://bugs.mycompany.com\n";
+							echo 'Enter the web URL ' . format_text('without', 'white', 'bold') . " any ending slashes\n\n";
+							echo format_text('Web server root URL: ', 'white', 'bold');
 							$url_host = trim(fgets(STDIN));
 							echo "\n";
 							
-							echo format_text('BUGS 2 subdir') . "\nThis is the sub-path of the Web server where BUGS will be located.\n" . format_text('Start and end this with a forward slash') . ". (ex: \"/bugs/\")\nIf BUGS is running at root, just type \"/\" (without the quotes)\n\n";
-							echo format_text('BUGS 2 subdir: ');
+							echo format_text('The Bug Genie subdir', 'white', 'bold') . "\nThis is the sub-path of the Web server where The Bug Genie will be located.\n" . format_text('Start and end this with a forward slash', 'white', 'bold') . ". (ex: \"/thebuggenie/\")\nIf The Bug Genie is running at root, just type \"/\" (without the quotes)\n\n";
+							echo format_text('The Bug Genie subdir: ', 'white', 'bold');
 							$url_subdir = trim(fgets(STDIN));
 							echo "\n";
 							
-							echo "BUGS 2 will now be accessible at\n" . format_text($url_host . $url_subdir . 'index.php');
+							echo "The Bug Genie will now be accessible at\n" . format_text($url_host . $url_subdir, 'white', 'bold');
 							echo "\nPress ENTER if ok, or \"no\" to try again: ";
 							$e_ok = (trim(fgets(STDIN)) == '') ? true : false;
 							echo "\n";
 						}
 						while (!$e_ok);
 						
-						$local_path = str_ireplace('\\', '/', substr(__FILE__, 0, strripos(__FILE__, DIRECTORY_SEPARATOR) + 1));
-						echo format_text('BUGS 2 server path') . "\nThis is the local path of the BUGS 2 directory\n";
-						echo "If the default value is not correct, remember to use " . format_text('forward') . "\nslashes in the new path - even on Windows systems.\nAlso, remember to " . format_text("end the path with a forward slash\n\n");
+						echo "Setup can autoconfigure your .htaccess file (located in the thebuggenie/ subfolder), so you don't have to.\n";
+						echo format_text('Would you like setup to auto-generate the .htaccess file for you?');
+						echo "\nPress ENTER if ok, or \"no\" to not set up the .htaccess file: ";
+						$htaccess_ok = (trim(fgets(STDIN)) == '') ? true : false;
+						echo "\n";
 
-						do
+						if ($htaccess_ok)
 						{
-							if (isset($tmp_path))
+							if (!is_writable(TBGContext::getIncludePath() . 'thebuggenie/') || (file_exists(TBGContext::getIncludePath() . 'thebuggenie/.htaccess') && !is_writable(TBGContext::getIncludePath() . 'thebuggenie/.htaccess')))
 							{
-								echo format_text("Could not find BUGS in the path you defined.\nPlease try again\n\n", 'red', 'bold');
+								echo format_text('Permission denied when trying to save the [main folder]/thebuggenie/.htaccess', 'red', 'bold') . "\n";
+								echo format_text('You will have to set up the .htaccess file yourself. See the README file for more information.', 'white', 'bold') . "\n";
+								echo format_text('Please note: ', 'white', 'bold') . "The Bug Genie will not function properly until the .htaccess file is properly set up!";
 							}
-							$local_path = str_ireplace('\\', '/', substr(__FILE__, 0, strripos(__FILE__, DIRECTORY_SEPARATOR) + 1));
-							echo "Default: " . $local_path . ", press ENTER to accept default\n";
-							echo format_text('Web server root URL: ');
-							$tmp_path = trim(fgets(STDIN));
-							$local_path = ($tmp_path != '') ? $tmp_path : $local_path;
-							echo "\n";
+							else
+							{
+								$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $url_subdir, file_get_contents(TBGContext::getIncludePath() . 'thebuggenie/htaccess.template'));
+								file_put_contents(TBGContext::getIncludePath() . 'thebuggenie/.htaccess', $content);
+								if (file_get_contents(TBGContext::getIncludePath() . 'thebuggenie/.htaccess') != $content)
+								{
+									echo format_text('Permission denied when trying to save the [main folder]/thebuggenie/.htaccess', 'red', 'bold') . "\n";
+									echo format_text('You will have to set up the .htaccess file yourself. See the README file for more information.', 'white', 'bold') . "\n";
+									echo format_text('Please note: ', 'white', 'bold') . "The Bug Genie will not function properly until the .htaccess file is properly set up!";
+								}
+								else
+								{
+									echo format_text('The .htaccess file was successfully set up...', 'green', 'bold');
+									echo "\n";
+								}
+							}
+							
 						}
-						while (!file_exists($local_path . 'b2'));
+						echo "Press ENTER to continue ... ";
+						fgets(STDIN);
+						echo "\n";
+
+						echo "You will now get a list of available modules.\nTo enable the module after installation, just press ENTER.\nIf you don't want to enable the module, type \"no\".\nRemember that all these modules can be disabled/uninstalled after installation.\n\n";
+						echo format_text("Enable incoming and outgoing email? ", 'white', 'bold') . '(yes): ';
+						$enable_modules = array();
+						$enable_modules['mailing'] = (trim(fgets(STDIN)) == '') ? true : false;
+						echo format_text("Enable internal messaging between users? ", 'white', 'bold') . '(yes): ';
+						$enable_modules['messages'] = (trim(fgets(STDIN)) == '') ? true : false;
+						echo format_text("Enable calendar? ", 'white', 'bold') . '(yes): ';
+						$enable_modules['calendar'] = (trim(fgets(STDIN)) == '') ? true : false;
+						echo format_text("Enable SCM integration? ", 'white', 'bold') . '(yes): ';
+						$enable_modules['svn_integration'] = (trim(fgets(STDIN)) == '') ? true : false;
 						
-						echo "You will now get a list of available modules.\nTo enable the module after installation, just press ENTER.\nIf you don't want to enable the module, type \"no\".\nRemember that all these modules can be enabled after installation.\n\n";
-						echo format_text("Enable Search? ") . '(yes): ';
-						$enable_search_module = (trim(fgets(STDIN)) == '') ? true : false;
-						echo format_text("Enable Email notification? ") . '(yes): ';
-						$enable_mailnotification_module = (trim(fgets(STDIN)) == '') ? true : false;
-						echo format_text("Enable News & articles? ") . '(yes): ';
-						$enable_publish_module = (trim(fgets(STDIN)) == '') ? true : false;
-						echo format_text("Enable Messaging? ") . '(yes): ';
-						$enable_messages_module = (trim(fgets(STDIN)) == '') ? true : false;
-						echo format_text("Enable Calendar? ") . '(yes): ';
-						$enable_calendar_module = (trim(fgets(STDIN)) == '') ? true : false;
-						echo format_text("Enable Subversion integration? ") . '(yes): ';
-						$enable_svnintegration_module = (trim(fgets(STDIN)) == '') ? true : false;
+						$enable_modules['publish'] = true;
 						
 						echo "Creating tables ...\n";
-						b2db_autoload(THEBUGGENIE_PATH . 'include/classes/B2DB/');
-						b2db_autoload(THEBUGGENIE_PATH . 'include/classes/');
-						require_once THEBUGGENIE_PATH . 'include/loadtables.inc.php';
-						
-						foreach (B2DB::getTables() as $aTable)
+						$tables_path = THEBUGGENIE_PATH . 'core/classes/B2DB/';
+						TBGContext::addClasspath($tables_path);
+						$tables_path_handle = opendir($tables_path);
+						$tables_created = array();
+						while ($table_class_file = readdir($tables_path_handle))
 						{
-							echo $aTable->getB2DBName();
-							$res = $aTable->create();
-							echo ' [' . format_text('OK', 'green', 'bold') . "]\n";
+							if (($tablename = substr($table_class_file, 0, strpos($table_class_file, '.'))) != '')
+							{
+								B2DB::getTable($tablename)->create();
+								echo format_text('Creating table '.$tablename, 'white', 'bold');
+								echo "\n";
+							}
 						}
 						
-						echo format_text("\nCreated tables successfully ...\n\n", 'green');
-
-						echo "Loading fixtures ... ";
+						echo format_text("\nAll tables successfully created...\n\n", 'green', 'bold');
+						echo format_text("Setting up initial scope... \n", 'white', 'bold');
+						TBGContext::reinitializeI18n('en_US');
+						$scope = TBGScope::createNew('The default scope', '');
+						TBGSettings::saveSetting('language', 'en_US', 'core', 1);
+						$scope->setHostname($url_host);
+						$scope->save();
+						TBGContext::setScope($scope);
+						TBGSettings::saveSetting('url_subdir', $url_subdir, 'core', 1);
+						echo format_text("Initial scope setup successfully... \n\n", 'green', 'bold');
 						
-						$_REQUEST['default_theme'] = 'fam';
-						$_REQUEST['url_host'] = $url_host;
-						$_REQUEST['url_subdir'] = $url_subdir;
-						$_REQUEST['local_path'] = $local_path;
-						$_REQUEST['language'] = 'en_US';
-						$_REQUEST['requirelogin'] = 0;
-						$_REQUEST['defaultisguest'] = 1;
-						$_REQUEST['showloginbox'] = 1;
-						$_REQUEST['allowreg'] = 1;
-						
-	          TBGContext::reinitializeI18n('en_US');
-	          TBGContext::getI18n()->loadStrings('install_fixtures');
-						require_once 'include/common_functions.inc.php';
-						require_once 'install_load_fixtures.inc.php';
-						
-						echo ' [' . format_text('OK', 'green', 'bold') . "]\n";
-						
-						echo "Saving settings ... ";
-						TBGContext::setScope(1);
-						require_once 'install_save_settings.inc.php';
-						echo ' [' . format_text('OK', 'green', 'bold') . "]\n";
-						
-						BUGSsettings::get('language');
-						require THEBUGGENIE_PATH . "include/b2_engine.inc.php";
-						
-		  				$current_module = '';
+						echo format_text("Setting up modules... \n", 'white', 'bold');
 		  				try
 		  				{
-		  					if ($enable_search_module)
-			  				{
-								echo "Installing Search module ... ";
-			  					$current_module = 'search';
-			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/search/classes/B2DB/');
-			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/search/classes/');
-			  					BUGSsearch::install(1);
-			  					echo ' [' . format_text('OK', 'green', 'bold') . "]\n";
-			  				}
-		  					if ($enable_mailnotification_module)
-			  				{
-			  					echo "Installing Mail notification module ... ";
-			  					$current_module = 'mailnotification';
-			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/mailnotification/classes/B2DB/');
-			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/mailnotification/classes/');
-			  					BUGSmailnotification::install(1);
-			  					echo ' [' . format_text('OK', 'green', 'bold') . "]\n";
-			  				}
-		  					if ($enable_messages_module)
-			  				{
-			  					echo "Installing Messaging module ... ";
-			  					$current_module = 'messages';
-			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/messages/classes/B2DB/');
-			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/messages/classes/');
-			  					BUGSmessages::install(1);
-			  					echo ' [' . format_text('OK', 'green', 'bold') . "]\n";
-			  				}
-		  					if ($enable_publish_module)
-			  				{
-			  					echo "Installing News & articles module ... ";
-			  					$current_module = 'publish';
-			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/publish/classes/B2DB/');
-			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/publish/classes/');
-			  					BUGSpublish::install(1);
-			  					echo ' [' . format_text('OK', 'green', 'bold') . "]\n";
-			  				}
-		  					if ($enable_svnintegration_module)
-			  				{
-			  					echo "Installing Subversion integration module ... ";
-			  					$current_module = 'svn_integration';
-			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/svn_integration/classes/B2DB/');
-			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/svn_integration/classes/');
-			  					BUGSsvnintegration::install(1);
-			  					echo ' [' . format_text('OK', 'green', 'bold') . "]\n";
-			  				}
-		  					if ($enable_svnintegration_module)
-			  				{
-			  					echo "Installing Calendar module ... ";
-			  					$current_module = 'calendar';
-			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/calendar/classes/B2DB/');
-			  					b2db_autoload(THEBUGGENIE_PATH . 'modules/calendar/classes/');
-			  					BUGScalendar::install(1);
-			  					echo ' [' . format_text('OK', 'green', 'bold') . "]\n";
-			  				}
-			  				
-			  				$fp = fopen('installed', 'w');
-							fwrite($fp, 'installed');
-							fclose($fp);
-			  				
-			  				echo format_text("\nThe installation was completed successfully!\n", 'green', 'bold');
-			  				echo "\nTo use BUGS 2, access " . $url_host . $url_subdir . "index.php with a web-browser.\n";
-			  				echo "The default username is " . format_text('Administrator') . ' and the password is ' . format_text('admin');
-			  				echo format_text("\n\nThank you for trying this BUGS 2 test release!\n");
-			  				echo "\nRemember to file any bugs you find at " . format_text('http://b2.thebuggenie.com/', 'bold', 'underline');
-			  				echo "\n";
+							foreach ($enable_modules as $module => $install)
+							{
+								if ((bool) $install && file_exists(TBGContext::getIncludePath() . "modules/{$module}/module"))
+								{
+									echo format_text("Installing $module... \n", 'white', 'bold');
+									TBGContext::addClasspath(TBGContext::getIncludePath() . "modules/{$module}/classes/");
+									if (file_exists(TBGContext::getIncludePath() . "modules/{$module}/classes/B2DB/"))
+									{
+										TBGContext::addClasspath(TBGContext::getIncludePath() . "modules/{$module}/classes/B2DB/");
+									}
+									$classname = file_get_contents(TBGContext::getIncludePath() . "modules/{$module}/class");
+									call_user_func(array($classname, 'install'), 1);
+								}
+							}
+
+							error_reporting(E_ERROR);
+			  				if (file_put_contents(TBGContext::getIncludePath() . 'installed', '2.1, installed ' . date('d.m.Y H:i')) === false)
+							{
+								echo format_text("Could not create the 'installed' file.\n", 'red', 'bold');
+								echo "Please create the file " . format_text(TBGContext::getIncludePath() . 'installed', 'white', 'bold') . "\n";
+								echo "with the following line inside:\n";
+								echo format_text('2.1, installed ' . date('d.m.Y H:i'), 'blue', 'bold');
+								echo "\n\n";
+								echo "When that is done, please press ENTER to continue ... ";
+								fgets(STDIN);
+							}
+
+							echo format_text("\nThe installation was completed successfully!\n", 'green', 'bold');
+							echo "\nTo use The Bug Genie, access " . $url_host . $url_subdir . "index.php with a web-browser.\n";
+							echo "The default username is " . format_text('Administrator') . ' and the password is ' . format_text('admin');
+							echo format_text("\n\nThank you for trying this The Bug Genie test release!\n");
+							echo "\nFor support, please visit " . format_text('http://www.thebuggenie.com/', 'blue', 'underline');
+							echo "\n";
 		  				}
 						catch (Exception $e)
 						{
-							throw new Exception("Could not install the $current_module module:\n" . $e->getMessage());
+							throw new Exception("Could not install the $module module:\n" . $e->getMessage());
 						}
 						
 					}
