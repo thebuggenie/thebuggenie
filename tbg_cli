@@ -47,10 +47,13 @@
 			if (($classname = substr($command_class_file, 0, strpos($command_class_file, '.'))) != '')
 			{
 				$command = new $classname();
-				$commands[$module_name][$command->getCommandName()] = $command;
-				foreach ($command->getCommandAliases() as $alias)
+				if ($command instanceof TBGCliCommand)
 				{
-					$commands[$module_name][$alias] = $command;
+					$commands[$module_name][$command->getCommandName()] = $command;
+					foreach ($command->getCommandAliases() as $alias)
+					{
+						$commands[$module_name][$alias] = $command;
+					}
 				}
 			}
 		}
