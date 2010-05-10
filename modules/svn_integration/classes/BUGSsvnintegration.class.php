@@ -189,14 +189,14 @@
 				else
 				{
 					echo 'I can\'t update this issue - you have to provide more information.' . "\n";
-					echo 'Type ' . $argv[0] . formatText(' explain', 'green', 'bold') . formatText(' svn_integration:svnupdate', 'magenta') . " for more information.\n";
+					echo 'Type ' . $argv[0] . format_text(' explain', 'green', 'bold') . format_text(' svn_integration:svnupdate', 'magenta') . " for more information.\n";
 					return false;
 				}
 			}
 			else
 			{
 				echo 'I can\'t update this issue - you have to provide more information.' . "\n";
-				echo 'Type ' . $argv[0] . formatText(' explain', 'green', 'bold') . formatText(' svn_integration:svnupdate', 'magenta') . " for more information.\n";
+				echo 'Type ' . $argv[0] . format_text(' explain', 'green', 'bold') . format_text(' svn_integration:svnupdate', 'magenta') . " for more information.\n";
 				return false;
 			}
 		}

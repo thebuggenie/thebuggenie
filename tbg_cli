@@ -122,9 +122,9 @@
 						echo "\n";
 						echo format_text('Usage: ', 'black', 'bold') . $argv[0];
 						echo ' ' . format_text($module_commands[$tmpvar[0]][$tmpvar[1]]['command'], 'green', 'bold') . ' ';
-						echo ($module_commands[$tmpvar[0]][$tmpvar[1]]['optional']) ? '[' : '';
+						echo (array_key_exists('optional', $module_commands[$tmpvar[0]][$tmpvar[1]])) ? '[' : '';
 						echo format_text($module_commands[$tmpvar[0]][$tmpvar[1]]['params'], 'magenta', '');
-						echo ($module_commands[$tmpvar[0]][$tmpvar[1]]['optional']) ? ']' : '';
+						echo (array_key_exists('optional', $module_commands[$tmpvar[0]][$tmpvar[1]])) ? ']' : '';
 						echo "\n";
 						echo $module_commands[$tmpvar[0]][$tmpvar[1]]['help'];
 						echo "\n\n";
@@ -494,5 +494,3 @@
 	}
 
 	return true;
-
-?>
