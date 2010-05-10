@@ -4,18 +4,6 @@
 	// Set the path to The Bug Genie top folder
 	define ('THEBUGGENIE_PATH', realpath(getcwd() . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
 
-	function format_text($text, $color = 'white', $style = '')
-	{
-		$fg_colors = array('black' => 29, 'red' => 31, 'green' => 32, 'yellow' => 33, 'blue' => 34, 'magenta' => 35, 'cyan' => 36, 'white' => 37);
-		$op_format = array('bold' => 1, 'underline' => 4, 'blink' => 5, 'reverse' => 7, 'conceal' => 8);
-
-		$return_text = "\033[" . $fg_colors[$color];
-		$return_text .= ($style != '') ? ";" . $op_format[$style] : '';
-		$return_text .= "m" . $text . "\033[0m";
-
-		return $return_text;
-	}
-
 	try
 	{
 		// Include the "engine" script, which initializes and sets up stuff
@@ -23,18 +11,25 @@
 	}
 	catch (Exception $e)
 	{
-		echo format_text('An error occured when trying to initialize the command line client:', 'white', 'bold');
+		TBGCliCommand::cli_echo('An error occured when trying to initialize the command line client:', 'white', 'bold');
 		echo "\n";
-		echo format_text($e->getMessage(), 'red', 'bold');
+		TBGCliCommand::cli_echo($e->getMessage(), 'red', 'bold');
 		echo "\n";
 		die();
 	}
 
 	$core_commands = array();
-	$core_commands['help'] = array('command' => 'help', 'params' => '', 'optional' => false, 'description' => "\tDisplays this output and exits", 'help' => 'This command displays a list of available commands, and a brief description of what each command does.');	
+	$event = TBGEvent::createNew('cli', 'core_commands', null, array(), $core_commands);
+	$event->trigger();
+
+	/*
+
+	$core_commands['help'] = array('command' => 'help', 'params' => '', 'optional' => false, 'description' => "\tDisplays this output and exits", 'help' => 'This command displays a list of available commands, and a brief description of what each command does.');
 	$core_commands['explain'] = array('command' => 'explain', 'params' => 'command', 'description' => "Explains any <command> in more detail", 'help' => "If you didn't know what this command does, how would you be reading this?");
 	$core_commands['license'] = array('command' => 'license', 'params' => 'print', 'optional' => true, 'description' => "Gives more information the bug genie license", 'help' => 'This command prints the complete license for you to read. Enjoy!');
 	$core_commands['upgrade'] = array('command' => 'upgrade', 'params' => '', 'description' => "Launches the upgrade wizard", 'help' => "Launches the upgrade wizard");
+
+	*/
 	
 	if (!file_exists('installed'))
 	{
@@ -56,27 +51,27 @@
 	if ($argc < 2 || in_array($argv[1], array('help', '--help', '-help', '-h', '-?')))
 	{
 		echo "The Bug Genie command line tool\n";
-		echo format_text("Usage: ", 'black', 'bold') . $argv[0] . ' [' . format_text('command', 'green', 'bold') . "]\n";
+		TBGCliCommand::cli_echo("Usage: ", 'black', 'bold') . $argv[0] . ' [' . TBGCliCommand::cli_echo('command', 'green', 'bold') . "]\n";
 		if ($argc > 1 && in_array($argv[1], array('help', '--help', '-help', '-h', '-?')))
 		{
 			echo "\n";
 			foreach ($core_commands as $aCommand)
 			{
-				echo format_text($aCommand['command'], 'green', 'bold') . ' ';
+				TBGCliCommand::cli_echo($aCommand['command'], 'green', 'bold') . ' ';
 				echo "\t" . $aCommand['description'] . "\n";
 			}
 			echo "\n";
 			if (isset($module_commands))
 			{
-				echo "Available module commands: (invoked by using " . format_text('module_name:command', 'green', 'bold') . ")\n";
+				echo "Available module commands: (invoked by using " . TBGCliCommand::cli_echo('module_name:command', 'green', 'bold') . ")\n";
 				$cc = 0;
 				foreach ($module_commands as $module => $commands)
 				{
 					echo "\n";
-					echo format_text("{$module}:\n", 'green', 'bold');
+					TBGCliCommand::cli_echo("{$module}:\n", 'green', 'bold');
 					foreach ($commands as $command)
 					{
-						echo format_text($command['command'], 'green', 'bold') . ' ';
+						TBGCliCommand::cli_echo($command['command'], 'green', 'bold') . ' ';
 						echo "\t" . $command['description'] . "\n";
 						$cc++;
 					}
@@ -94,7 +89,7 @@
 		}
 		else
 		{
-			echo "\nType " . $argv[0] . ' ' . format_text('help', 'green', 'bold') . "\033[0m for more information.\n";
+			echo "\nType " . $argv[0] . ' ' . TBGCliCommand::cli_echo('help', 'green', 'bold') . "\033[0m for more information.\n";
 		}
 	}
 	else
@@ -108,10 +103,10 @@
 					if (isset($core_commands[$argv[2]]))
 					{
 						echo "\n";
-						echo format_text('Usage: ', 'black', 'bold') . $argv[0];
-						echo ' ' . format_text($core_commands[$argv[2]]['command'], 'green', 'bold') . ' ';
+						TBGCliCommand::cli_echo('Usage: ', 'black', 'bold') . $argv[0];
+						echo ' ' . TBGCliCommand::cli_echo($core_commands[$argv[2]]['command'], 'green', 'bold') . ' ';
 						echo ($core_commands[$argv[2]]['optional']) ? '[' : '';
-						echo format_text($core_commands[$argv[2]]['params'], 'magenta', '');
+						TBGCliCommand::cli_echo($core_commands[$argv[2]]['params'], 'magenta', '');
 						echo ($core_commands[$argv[2]]['optional']) ? ']' : '';
 						echo "\n";
 						echo $core_commands[$argv[2]]['help'];
@@ -120,10 +115,10 @@
 					elseif (is_array($tmpvar) && isset($module_commands[$tmpvar[0]]) && isset($module_commands[$tmpvar[0]][$tmpvar[1]]))
 					{
 						echo "\n";
-						echo format_text('Usage: ', 'black', 'bold') . $argv[0];
-						echo ' ' . format_text($module_commands[$tmpvar[0]][$tmpvar[1]]['command'], 'green', 'bold') . ' ';
+						TBGCliCommand::cli_echo('Usage: ', 'black', 'bold') . $argv[0];
+						echo ' ' . TBGCliCommand::cli_echo($module_commands[$tmpvar[0]][$tmpvar[1]]['command'], 'green', 'bold') . ' ';
 						echo (array_key_exists('optional', $module_commands[$tmpvar[0]][$tmpvar[1]])) ? '[' : '';
-						echo format_text($module_commands[$tmpvar[0]][$tmpvar[1]]['params'], 'magenta', '');
+						TBGCliCommand::cli_echo($module_commands[$tmpvar[0]][$tmpvar[1]]['params'], 'magenta', '');
 						echo (array_key_exists('optional', $module_commands[$tmpvar[0]][$tmpvar[1]])) ? ']' : '';
 						echo "\n";
 						echo $module_commands[$tmpvar[0]][$tmpvar[1]]['help'];
@@ -131,13 +126,13 @@
 					}
 					else
 					{
-						echo format_text('That command is unknown. I can\'t explain it.', 'red', '') . "\n";
+						TBGCliCommand::cli_echo('That command is unknown. I can\'t explain it.', 'red', '') . "\n";
 						return false;
 					}
 				}
 				else
 				{
-					echo format_text('Please tell me what to explain.', 'red', '') . "\n";
+					TBGCliCommand::cli_echo('Please tell me what to explain.', 'red', '') . "\n";
 					return false;
 				}
 				break;
@@ -150,8 +145,8 @@
 				else
 				{
 					echo 'The Bug Genie is released under the MPL 1.1 only. You can read the license at: ' . "\n";
-					echo format_text('http://www.opensource.org/licenses/mozilla1.1.php', 'blue', 'underline') . '.';
-					echo "\n\n" . 'To print the license, type: ' . $argv[0] . format_text(' license', 'green', 'bold') . format_text(' print', 'magenta', '');
+					TBGCliCommand::cli_echo('http://www.opensource.org/licenses/mozilla1.1.php', 'blue', 'underline') . '.';
+					echo "\n\n" . 'To print the license, type: ' . $argv[0] . TBGCliCommand::cli_echo(' license', 'green', 'bold') . TBGCliCommand::cli_echo(' print', 'magenta', '');
 					echo "\n\nResistance is futile.\n\n";
 				}
 				break;
@@ -159,35 +154,35 @@
 				echo "Upgrading is not implemented from command line yet\n";
 				break;
 			case "install":
-				echo format_text("\nWelcome to the \"The Bug Genie\" installation wizard!\n");
+				TBGCliCommand::cli_echo("\nWelcome to the \"The Bug Genie\" installation wizard!\n");
 				echo "This wizard will take you through the installation of The Bug Genie.\nRemember that you can also install The Bug Genie from your web-browser.\n";
 				echo "Simply point your web-browser to the The Bug Genie subdirectory on your web server,\nand the installation will start.\n\n";
-				echo format_text("Remember that this is a pre-release version,\nwhich is not yet recommended for production use!\n\n");
+				TBGCliCommand::cli_echo("Remember that this is a pre-release version,\nwhich is not yet recommended for production use!\n\n");
 				echo "Press ENTER to continue with the installation: ";
 				try
 				{
 					if (strtolower(trim(fgets(STDIN))) != '') throw new Exception();
 					
 					echo "\n";
-					echo format_text("How to support future development\n", 'green', 'bold');
+					TBGCliCommand::cli_echo("How to support future development\n", 'green', 'bold');
 					echo "Even though this software has been provided to you free of charge,\ndeveloping it would not have been possible without support from our users.\n";
 					echo "By making a donation, or buying a support contract you can help us continue development.\n\n";
-					echo format_text("If this software is valuable to you - please consider supporting it.\n\n");
+					TBGCliCommand::cli_echo("If this software is valuable to you - please consider supporting it.\n\n");
 					echo "More information about supporting The Bug Genie's development can be found here:\n";
-					echo format_text("http://www.thebuggenie.com/giving_back.php\n\n", 'blue', 'underline');
+					TBGCliCommand::cli_echo("http://www.thebuggenie.com/giving_back.php\n\n", 'blue', 'underline');
 					echo "Press ENTER to continue: ";
 					
 					if (strtolower(trim(fgets(STDIN))) != '') throw new Exception();
 					
 					echo "\n";
-					echo format_text("License information\n", 'green', 'bold');
+					TBGCliCommand::cli_echo("License information\n", 'green', 'bold');
 					echo "This software is Open Source Initiative approved Open Source Software.\nOpen Source Initiative Approved is a trademark of the Open Source Initiative.\n\n";
 					echo "True to the the Open Source Definition, The Bug Genie is released\nunder the MPL 1.1 only. You can read the full license here:\n";
-					echo format_text("http://www.opensource.org/licenses/mozilla1.1.php\n\n", 'blue', 'underline');
+					TBGCliCommand::cli_echo("http://www.opensource.org/licenses/mozilla1.1.php\n\n", 'blue', 'underline');
 					echo "Before you can continue the installation, you need to confirm that you \nagree to be bound by the terms in this license.\n\n";
 					echo "Do you agree to be bound by the terms in the MPL 1.1 license?\n(type \"yes\" to agree, anything else aborts the installation): ";
 					
-					if (strtolower(trim(fgets(STDIN))) != 'yes') throw new Exception(format_text('You need to accept the license to continue', 'red', 'bold'));
+					if (strtolower(trim(fgets(STDIN))) != 'yes') throw new Exception(TBGCliCommand::cli_echo('You need to accept the license to continue', 'red', 'bold'));
 					
 					$not_well = array();
 					if (!is_writable('core/B2DB/'))
@@ -207,11 +202,11 @@
 							switch ($afail)
 							{
 								case 'b2db_perm':
-									echo format_text("Could not write to the B2DB directory\n", 'red', 'bold');
-									echo 'The ' . format_text('include/B2DB') . ' folder needs to be writable';
+									TBGCliCommand::cli_echo("Could not write to the B2DB directory\n", 'red', 'bold');
+									echo 'The ' . TBGCliCommand::cli_echo('include/B2DB') . ' folder needs to be writable';
 									break;
 								case 'root':
-									echo format_text("Could not write to the main directory\n", 'red', 'bold');
+									TBGCliCommand::cli_echo("Could not write to the main directory\n", 'red', 'bold');
 									echo 'The top level folder must be writable during installation';
 									break;
 							}
@@ -221,11 +216,11 @@
 					}
 					else
 					{
-						echo format_text("Step 1 - database information\n");
+						TBGCliCommand::cli_echo("Step 1 - database information\n");
 						if (file_exists('core/B2DB/sql_parameters.inc.php'))
 						{
-							echo format_text("You seem to already have completed this step successfully.\nDo you want to use the stored settings?\n", 'white', 'bold');
-							echo format_text("\nType \"no\" to enter new settings, press ENTER to use existing: ", 'white', 'bold');
+							TBGCliCommand::cli_echo("You seem to already have completed this step successfully.\nDo you want to use the stored settings?\n", 'white', 'bold');
+							TBGCliCommand::cli_echo("\nType \"no\" to enter new settings, press ENTER to use existing: ", 'white', 'bold');
 							$use_existing = strtolower(trim(fgets(STDIN)));
 							$use_existing_db_info = ($use_existing == 'no') ? false : true;
 							echo "\n";
@@ -243,37 +238,37 @@
 							foreach (BaseB2DB::getDBtypes() as $db_type => $db_desc)
 							{
 								$db_types[] = $db_type;
-								echo format_text(count($db_types) . ': ' . $db_desc . "\n", 'white', 'bold');
+								TBGCliCommand::cli_echo(count($db_types) . ': ' . $db_desc . "\n", 'white', 'bold');
 							}
 							do
 							{
-								echo format_text('Enter the corresponding number for the database (1-' . count($db_types) . '): ');
+								TBGCliCommand::cli_echo('Enter the corresponding number for the database (1-' . count($db_types) . '): ');
 								$db_selection = strtolower(trim(fgets(STDIN)));
 								if (!isset($db_types[((int) $db_selection - 1)])) throw new Exception($db_selection . ' is not a valid database type selection');
 								$db_type = $db_types[((int) $db_selection - 1)];
-								echo "Selected database type: " . format_text($db_type . "\n\n");
+								echo "Selected database type: " . TBGCliCommand::cli_echo($db_type . "\n\n");
 								echo "Please enter the database hostname: \n";
-								echo format_text('Database hostname [localhost]: ', 'white', 'bold');
+								TBGCliCommand::cli_echo('Database hostname [localhost]: ', 'white', 'bold');
 								$db_hostname = trim(fgets(STDIN));
 								$db_hostname = ($db_hostname == '') ? 'localhost' : $db_hostname;
 								echo "\nPlease enter the username The Bug Genie will use to connect to the database: \n";
-								echo format_text('Database username: ', 'white', 'bold');
+								TBGCliCommand::cli_echo('Database username: ', 'white', 'bold');
 								$db_username = trim(fgets(STDIN));
-								echo format_text("Database password (press ENTER if blank): ", 'white', 'bold');
+								TBGCliCommand::cli_echo("Database password (press ENTER if blank): ", 'white', 'bold');
 								$db_password = trim(fgets(STDIN));
 								echo "\nPlease enter the database The Bug Genie will use.\nIf it does not exist, The Bug Genie will create it for you.\n(the default database name is ";
-								echo format_text("thebuggenie_db", 'white', 'bold');
+								TBGCliCommand::cli_echo("thebuggenie_db", 'white', 'bold');
 								echo " - press ENTER to use that):\n";
-								echo format_text('Database name: ', 'white', 'bold');
+								TBGCliCommand::cli_echo('Database name: ', 'white', 'bold');
 								$db_name = trim(fgets(STDIN));
 								$db_name = ($db_name == '') ? 'thebuggenie_db' : $db_name;
 								echo "\n";
 								echo "The following settings will be used:\n";
-								echo format_text("Database type: \t\t", 'white', 'bold') . $db_type . "\n";
-								echo format_text("Database hostname: \t", 'white', 'bold') . $db_hostname . "\n";
-								echo format_text("Database username: \t", 'white', 'bold') . $db_username . "\n";
-								echo format_text("Database password: \t", 'white', 'bold') . $db_password . "\n";
-								echo format_text("Database name: \t\t", 'white', 'bold') . $db_name . "\n";
+								TBGCliCommand::cli_echo("Database type: \t\t", 'white', 'bold') . $db_type . "\n";
+								TBGCliCommand::cli_echo("Database hostname: \t", 'white', 'bold') . $db_hostname . "\n";
+								TBGCliCommand::cli_echo("Database username: \t", 'white', 'bold') . $db_username . "\n";
+								TBGCliCommand::cli_echo("Database password: \t", 'white', 'bold') . $db_password . "\n";
+								TBGCliCommand::cli_echo("Database name: \t\t", 'white', 'bold') . $db_name . "\n";
 								
 								echo "\nIf these settings are ok, press ENTER, or anything else to retry: ";
 								
@@ -296,20 +291,20 @@
 							}
 							B2DB::setDBname($db_name);
 							B2DB::doSelectDB();
-							echo format_text("\nSuccessfully connected to the database.\n", 'green');
+							TBGCliCommand::cli_echo("\nSuccessfully connected to the database.\n", 'green');
 							echo "Press ENTER to continue ... ";
 							fgets(STDIN);
 							echo "\n";
-							echo format_text("Saving database connection information ... ", 'white', 'bold');
+							TBGCliCommand::cli_echo("Saving database connection information ... ", 'white', 'bold');
 							echo "\n";
 							B2DB::saveConnectionParameters();
-							echo format_text("Successfully saved database connection information.\n", 'green');
+							TBGCliCommand::cli_echo("Successfully saved database connection information.\n", 'green');
 							echo "\n";
 						}
 						else
 						{
 							B2DB::initialize();
-							echo format_text("Successfully connected to the database.\n", 'green', '');
+							TBGCliCommand::cli_echo("Successfully connected to the database.\n", 'green', '');
 							echo "Press ENTER to continue ... ";
 							fgets(STDIN);
 						}
@@ -317,24 +312,24 @@
 						
 						do
 						{
-							echo format_text('URL rewriting', 'cyan', 'bold') . "\n";
-							echo "The Bug Genie uses a technique called \"url rewriting\" - which allows for pretty\nURLs such as " . format_text('/issue/1', 'white', 'bold') . ' instead of ' . format_text('viewissue.php?issue_id=1', 'white', 'bold') . "\n";
+							TBGCliCommand::cli_echo('URL rewriting', 'cyan', 'bold') . "\n";
+							echo "The Bug Genie uses a technique called \"url rewriting\" - which allows for pretty\nURLs such as " . TBGCliCommand::cli_echo('/issue/1', 'white', 'bold') . ' instead of ' . TBGCliCommand::cli_echo('viewissue.php?issue_id=1', 'white', 'bold') . "\n";
 							echo "Make sure you have read the URL_REWRITE document located in the root\nfolder, or at http://www.thebuggenie.com before you continue\n";
 							echo "Press ENTER to continue ... ";
 							fgets(STDIN);
 							echo "\n";
-							echo format_text('Web server root URL', 'white', 'bold') . "\nThis is the root of the Web server where The Bug Genie will be running\nex: http://bugs.mycompany.com\n";
-							echo 'Enter the web URL ' . format_text('without', 'white', 'bold') . " any ending slashes\n\n";
-							echo format_text('Web server root URL: ', 'white', 'bold');
+							TBGCliCommand::cli_echo('Web server root URL', 'white', 'bold') . "\nThis is the root of the Web server where The Bug Genie will be running\nex: http://bugs.mycompany.com\n";
+							echo 'Enter the web URL ' . TBGCliCommand::cli_echo('without', 'white', 'bold') . " any ending slashes\n\n";
+							TBGCliCommand::cli_echo('Web server root URL: ', 'white', 'bold');
 							$url_host = trim(fgets(STDIN));
 							echo "\n";
 							
-							echo format_text('The Bug Genie subdir', 'white', 'bold') . "\nThis is the sub-path of the Web server where The Bug Genie will be located.\n" . format_text('Start and end this with a forward slash', 'white', 'bold') . ". (ex: \"/thebuggenie/\")\nIf The Bug Genie is running at root, just type \"/\" (without the quotes)\n\n";
-							echo format_text('The Bug Genie subdir: ', 'white', 'bold');
+							TBGCliCommand::cli_echo('The Bug Genie subdir', 'white', 'bold') . "\nThis is the sub-path of the Web server where The Bug Genie will be located.\n" . TBGCliCommand::cli_echo('Start and end this with a forward slash', 'white', 'bold') . ". (ex: \"/thebuggenie/\")\nIf The Bug Genie is running at root, just type \"/\" (without the quotes)\n\n";
+							TBGCliCommand::cli_echo('The Bug Genie subdir: ', 'white', 'bold');
 							$url_subdir = trim(fgets(STDIN));
 							echo "\n";
 							
-							echo "The Bug Genie will now be accessible at\n" . format_text($url_host . $url_subdir, 'white', 'bold');
+							echo "The Bug Genie will now be accessible at\n" . TBGCliCommand::cli_echo($url_host . $url_subdir, 'white', 'bold');
 							echo "\nPress ENTER if ok, or \"no\" to try again: ";
 							$e_ok = (trim(fgets(STDIN)) == '') ? true : false;
 							echo "\n";
@@ -342,7 +337,7 @@
 						while (!$e_ok);
 						
 						echo "Setup can autoconfigure your .htaccess file (located in the thebuggenie/ subfolder), so you don't have to.\n";
-						echo format_text('Would you like setup to auto-generate the .htaccess file for you?');
+						TBGCliCommand::cli_echo('Would you like setup to auto-generate the .htaccess file for you?');
 						echo "\nPress ENTER if ok, or \"no\" to not set up the .htaccess file: ";
 						$htaccess_ok = (trim(fgets(STDIN)) == '') ? true : false;
 						echo "\n";
@@ -351,9 +346,9 @@
 						{
 							if (!is_writable(TBGContext::getIncludePath() . 'thebuggenie/') || (file_exists(TBGContext::getIncludePath() . 'thebuggenie/.htaccess') && !is_writable(TBGContext::getIncludePath() . 'thebuggenie/.htaccess')))
 							{
-								echo format_text('Permission denied when trying to save the [main folder]/thebuggenie/.htaccess', 'red', 'bold') . "\n";
-								echo format_text('You will have to set up the .htaccess file yourself. See the README file for more information.', 'white', 'bold') . "\n";
-								echo format_text('Please note: ', 'white', 'bold') . "The Bug Genie will not function properly until the .htaccess file is properly set up!";
+								TBGCliCommand::cli_echo('Permission denied when trying to save the [main folder]/thebuggenie/.htaccess', 'red', 'bold') . "\n";
+								TBGCliCommand::cli_echo('You will have to set up the .htaccess file yourself. See the README file for more information.', 'white', 'bold') . "\n";
+								TBGCliCommand::cli_echo('Please note: ', 'white', 'bold') . "The Bug Genie will not function properly until the .htaccess file is properly set up!";
 							}
 							else
 							{
@@ -361,13 +356,13 @@
 								file_put_contents(TBGContext::getIncludePath() . 'thebuggenie/.htaccess', $content);
 								if (file_get_contents(TBGContext::getIncludePath() . 'thebuggenie/.htaccess') != $content)
 								{
-									echo format_text('Permission denied when trying to save the [main folder]/thebuggenie/.htaccess', 'red', 'bold') . "\n";
-									echo format_text('You will have to set up the .htaccess file yourself. See the README file for more information.', 'white', 'bold') . "\n";
-									echo format_text('Please note: ', 'white', 'bold') . "The Bug Genie will not function properly until the .htaccess file is properly set up!";
+									TBGCliCommand::cli_echo('Permission denied when trying to save the [main folder]/thebuggenie/.htaccess', 'red', 'bold') . "\n";
+									TBGCliCommand::cli_echo('You will have to set up the .htaccess file yourself. See the README file for more information.', 'white', 'bold') . "\n";
+									TBGCliCommand::cli_echo('Please note: ', 'white', 'bold') . "The Bug Genie will not function properly until the .htaccess file is properly set up!";
 								}
 								else
 								{
-									echo format_text('The .htaccess file was successfully set up...', 'green', 'bold');
+									TBGCliCommand::cli_echo('The .htaccess file was successfully set up...', 'green', 'bold');
 									echo "\n";
 								}
 							}
@@ -378,14 +373,14 @@
 						echo "\n";
 
 						echo "You will now get a list of available modules.\nTo enable the module after installation, just press ENTER.\nIf you don't want to enable the module, type \"no\".\nRemember that all these modules can be disabled/uninstalled after installation.\n\n";
-						echo format_text("Enable incoming and outgoing email? ", 'white', 'bold') . '(yes): ';
+						TBGCliCommand::cli_echo("Enable incoming and outgoing email? ", 'white', 'bold') . '(yes): ';
 						$enable_modules = array();
 						$enable_modules['mailing'] = (trim(fgets(STDIN)) == '') ? true : false;
-						echo format_text("Enable internal messaging between users? ", 'white', 'bold') . '(yes): ';
+						TBGCliCommand::cli_echo("Enable internal messaging between users? ", 'white', 'bold') . '(yes): ';
 						$enable_modules['messages'] = (trim(fgets(STDIN)) == '') ? true : false;
-						echo format_text("Enable calendar? ", 'white', 'bold') . '(yes): ';
+						TBGCliCommand::cli_echo("Enable calendar? ", 'white', 'bold') . '(yes): ';
 						$enable_modules['calendar'] = (trim(fgets(STDIN)) == '') ? true : false;
-						echo format_text("Enable SCM integration? ", 'white', 'bold') . '(yes): ';
+						TBGCliCommand::cli_echo("Enable SCM integration? ", 'white', 'bold') . '(yes): ';
 						$enable_modules['svn_integration'] = (trim(fgets(STDIN)) == '') ? true : false;
 						
 						$enable_modules['publish'] = true;
@@ -400,13 +395,13 @@
 							if (($tablename = substr($table_class_file, 0, strpos($table_class_file, '.'))) != '')
 							{
 								B2DB::getTable($tablename)->create();
-								echo format_text('Creating table '.$tablename, 'white', 'bold');
+								TBGCliCommand::cli_echo('Creating table '.$tablename, 'white', 'bold');
 								echo "\n";
 							}
 						}
 						
-						echo format_text("\nAll tables successfully created...\n\n", 'green', 'bold');
-						echo format_text("Setting up initial scope... \n", 'white', 'bold');
+						TBGCliCommand::cli_echo("\nAll tables successfully created...\n\n", 'green', 'bold');
+						TBGCliCommand::cli_echo("Setting up initial scope... \n", 'white', 'bold');
 						TBGContext::reinitializeI18n('en_US');
 						$scope = TBGScope::createNew('The default scope', '');
 						TBGSettings::saveSetting('language', 'en_US', 'core', 1);
@@ -414,16 +409,16 @@
 						$scope->save();
 						TBGContext::setScope($scope);
 						TBGSettings::saveSetting('url_subdir', $url_subdir, 'core', 1);
-						echo format_text("Initial scope setup successfully... \n\n", 'green', 'bold');
+						TBGCliCommand::cli_echo("Initial scope setup successfully... \n\n", 'green', 'bold');
 						
-						echo format_text("Setting up modules... \n", 'white', 'bold');
+						TBGCliCommand::cli_echo("Setting up modules... \n", 'white', 'bold');
 		  				try
 		  				{
 							foreach ($enable_modules as $module => $install)
 							{
 								if ((bool) $install && file_exists(TBGContext::getIncludePath() . "modules/{$module}/module"))
 								{
-									echo format_text("Installing $module... \n", 'white', 'bold');
+									TBGCliCommand::cli_echo("Installing $module... \n", 'white', 'bold');
 									TBGContext::addClasspath(TBGContext::getIncludePath() . "modules/{$module}/classes/");
 									if (file_exists(TBGContext::getIncludePath() . "modules/{$module}/classes/B2DB/"))
 									{
@@ -437,20 +432,20 @@
 							error_reporting(E_ERROR);
 			  				if (file_put_contents(TBGContext::getIncludePath() . 'installed', '2.1, installed ' . date('d.m.Y H:i')) === false)
 							{
-								echo format_text("Could not create the 'installed' file.\n", 'red', 'bold');
-								echo "Please create the file " . format_text(TBGContext::getIncludePath() . 'installed', 'white', 'bold') . "\n";
+								TBGCliCommand::cli_echo("Could not create the 'installed' file.\n", 'red', 'bold');
+								echo "Please create the file " . TBGCliCommand::cli_echo(TBGContext::getIncludePath() . 'installed', 'white', 'bold') . "\n";
 								echo "with the following line inside:\n";
-								echo format_text('2.1, installed ' . date('d.m.Y H:i'), 'blue', 'bold');
+								TBGCliCommand::cli_echo('2.1, installed ' . date('d.m.Y H:i'), 'blue', 'bold');
 								echo "\n\n";
 								echo "When that is done, please press ENTER to continue ... ";
 								fgets(STDIN);
 							}
 
-							echo format_text("\nThe installation was completed successfully!\n", 'green', 'bold');
+							TBGCliCommand::cli_echo("\nThe installation was completed successfully!\n", 'green', 'bold');
 							echo "\nTo use The Bug Genie, access " . $url_host . $url_subdir . "index.php with a web-browser.\n";
-							echo "The default username is " . format_text('Administrator') . ' and the password is ' . format_text('admin');
-							echo format_text("\n\nThank you for trying this The Bug Genie test release!\n");
-							echo "\nFor support, please visit " . format_text('http://www.thebuggenie.com/', 'blue', 'underline');
+							echo "The default username is " . TBGCliCommand::cli_echo('Administrator') . ' and the password is ' . TBGCliCommand::cli_echo('admin');
+							TBGCliCommand::cli_echo("\n\nThank you for trying this The Bug Genie test release!\n");
+							echo "\nFor support, please visit " . TBGCliCommand::cli_echo('http://www.thebuggenie.com/', 'blue', 'underline');
 							echo "\n";
 		  				}
 						catch (Exception $e)
@@ -462,7 +457,7 @@
 				}
 				catch (Exception $e)
 				{
-					echo format_text("\n\nThe installation was interrupted\n", 'red');
+					TBGCliCommand::cli_echo("\n\nThe installation was interrupted\n", 'red');
 					echo $e->getMessage() . "\n";
 				}
 				echo "\n";
@@ -482,12 +477,12 @@
 					}
 					else
 					{
-						echo format_text('Unknown command', 'red', '') . "\n";
+						TBGCliCommand::cli_echo('Unknown command', 'red', '') . "\n";
 					}
 				}
 				else
 				{
-					echo format_text('Unknown command', 'red', '') . "\n";
+					TBGCliCommand::cli_echo('Unknown command', 'red', '') . "\n";
 				}
 				break;
 		}
