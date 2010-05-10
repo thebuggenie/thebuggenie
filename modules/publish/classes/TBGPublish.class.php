@@ -89,29 +89,15 @@
 		{
 			try
 			{
-				$article_name = 'FrontpageArticle';
-				$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'frontpagearticle');
-				TBGWikiArticle::createNew($article_name, $content, true, $scope);
-
-				$article_name = 'GettingStarted';
-				$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'gettingstarted');
-				TBGWikiArticle::createNew($article_name, $content, true, $scope, array('ignore_toc' => true));
-
-				$article_name = 'ConfigurePermissions';
-				$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'configurepermissions');
-				TBGWikiArticle::createNew($article_name, $content, true, $scope, array('ignore_toc' => true));
-
-				$article_name = 'MainPage';
-				$content = "This is the main wiki homepage!";
-				TBGWikiArticle::createNew($article_name, $content, true, $scope);
-
-				$article_name = 'WikiFormatting';
-				$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'wikiformatting');
-				TBGWikiArticle::createNew($article_name, $content, true, $scope, array('ignore_toc' => true));
-
-				$article_name = 'CamelCasing';
-				$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'camelcasing');
-				TBGWikiArticle::createNew($article_name, $content, true, $scope);
+				$_path_handle = opendir(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR);
+				while ($article_name = readdir($_path_handle))
+				{
+					if (strpos($article_name, '.') === false)
+					{
+						$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $article_name);
+						TBGWikiArticle::createNew($article_name, $content, true, $scope);
+					}
+				}
 
 				$article_name = 'Category:Help';
 				$content = "This is a list of all the available help articles in The Bug Genie. If you are stuck, look here for help.";
