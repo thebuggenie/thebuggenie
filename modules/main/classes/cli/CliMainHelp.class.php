@@ -29,11 +29,6 @@
 			return "Prints out help information";
 		}
 
-		public function getCommandAliases()
-		{
-			return parent::getCommandAliases();
-		}
-
 		public function do_execute()
 		{
 			$this->cliEcho("The Bug Genie CLI help\n", 'white', 'bold');

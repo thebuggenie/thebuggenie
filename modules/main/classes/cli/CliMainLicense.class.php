@@ -22,22 +22,17 @@
 		protected function _setup()
 		{
 			$this->_command_name = 'license';
+			$this->addOptionalArgument('print', 'Print the license in full');
 		}
 
 		public function getDescription()
 		{
-			return "Prints the license";
-		}
-
-		public function getCommandAliases()
-		{
-			//return array('-h', '--help', '-?', '-help', '--h');
-			return parent::getCommandAliases();
+			return "Show license information";
 		}
 
 		public function do_execute()
 		{
-			if ($this->getProvidedArgument(2) == 'print')
+			if ($this->getProvidedArgument(2) == 'print' || $this->getProvidedArgument('print') == 'yes')
 			{
 				$thelicense = file_get_contents('LICENSE.TXT');
 				$this->cliEcho("{$thelicense}\n");
