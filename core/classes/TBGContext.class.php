@@ -379,10 +379,13 @@
 		{
 			try
 			{
-				TBGLogging::log('Loading request');
-				self::$_request = new TBGRequest();
-				self::$_response = new TBGResponse();
-				TBGLogging::log('...done');
+				if (self::getEnvironment() != self::ENV_CLI)
+				{
+					TBGLogging::log('Loading request');
+					self::$_request = new TBGRequest();
+					self::$_response = new TBGResponse();
+					TBGLogging::log('...done');
+				}
 				if (!is_readable(THEBUGGENIE_PATH . 'installed'))
 				{
 					self::$_installmode = true;

@@ -67,7 +67,7 @@
 				{
 					self::$_provided_arguments[$cc] = $argument;
 
-					$argument_parts = explode('=', $argument, 1);
+					$argument_parts = explode('=', $argument, 2);
 					if (count($argument_parts) == 2)
 					{
 						self::$_provided_arguments[substr($argument_parts[0], 2)] = $argument_parts[1];
@@ -85,9 +85,23 @@
 			{
 				$cc++;
 				if ($this->hasProvidedArgument($key)) continue;
-				if ($this->hasProvidedArgument($cc)) continue;
+				if ($this->hasProvidedArgument($cc))
+				{
+					self::$_provided_arguments[$key] = self::$_provided_arguments[$cc];
+					continue;
+				}
 
 				throw new Exception('Please include all required arguments');
+			}
+			foreach ($this->_optional_arguments as $key => $argument)
+			{
+				$cc++;
+				if ($this->hasProvidedArgument($key)) continue;
+				if ($this->hasProvidedArgument($cc))
+				{
+					self::$_provided_arguments[$key] = self::$_provided_arguments[$cc];
+					continue;
+				}
 			}
 		}
 
@@ -106,14 +120,24 @@
 			return array_key_exists($key, self::$_provided_arguments);
 		}
 
-		protected function addRequiredParameter($parameter, $description = null)
+		protected function addRequiredArgument($argumen, $description = null)
 		{
-			$this->_required_arguments[$parameter] = $description;
+			$this->_required_arguments[$argument] = $description;
 		}
 
-		protected function addOptionalParameter($parameter, $description = null)
+		public function getRequiredArguments()
 		{
-			$this->_optional_arguments[$parameter] = $description;
+			return $this->_required_arguments;
+		}
+
+		protected function addOptionalArgument($argument, $description = null)
+		{
+			$this->_optional_arguments[$argument] = $description;
+		}
+
+		public function getOptionalArguments()
+		{
+			return $this->_optional_arguments;
 		}
 
 		public static function getCommandLineName()

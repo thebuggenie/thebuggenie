@@ -22,6 +22,12 @@
 		protected function _setup()
 		{
 			$this->_command_name = 'install';
+			$this->addOptionalArgument('accept_license', 'Set to "yes" to auto-accept license');
+			$this->addOptionalArgument('url_host', 'Specify URL host');
+			$this->addOptionalArgument('url_subdir', 'Specify URL subdirectory');
+			$this->addOptionalArgument('use_existing_db_info', 'Set to "yes" to use existing db information if available');
+			$this->addOptionalArgument('enable_all_modules', 'Set to "yes" to install all modules');
+			$this->addOptionalArgument('setup_htaccess', 'Set to "yes" to autoconfigure .htaccess file');
 		}
 
 		public function getDescription()
@@ -31,35 +37,43 @@
 
 		public function do_execute()
 		{
-			$this->cliEcho("\nWelcome to the \"The Bug Genie\" installation wizard!\n");
+			$this->cliEcho("\nWelcome to the \"The Bug Genie\" installation wizard!\n", 'white', 'bold');
 			$this->cliEcho("This wizard will take you through the installation of The Bug Genie.\nRemember that you can also install The Bug Genie from your web-browser.\n");
 			$this->cliEcho("Simply point your web-browser to the The Bug Genie subdirectory on your web server,\nand the installation will start.\n\n");
-			$this->cliEcho("Remember that this is a pre-release version,\nwhich is not yet recommended for production use!\n\n");
+			$this->cliEcho("Remember that this is a pre-release version!\nDo not use this version for production!\n\n", 'white', 'bold');
 			$this->cliEcho("Press ENTER to continue with the installation: ");
+			$this->pressEnterToContinue();
+			
+			$this->cliEcho("\n");
+			$this->cliEcho("How to support future development\n", 'green', 'bold');
+			$this->cliEcho("Even though this software has been provided to you free of charge,\ndeveloping it would not have been possible without support from our users.\n");
+			$this->cliEcho("By making a donation, or buying a support contract you can help us continue development.\n\n");
+			$this->cliEcho("If this software is valuable to you - please consider supporting it.\n\n");
+			$this->cliEcho("More information about supporting The Bug Genie's development can be found here:\n");
+			$this->cliEcho("http://www.thebuggenie.com/giving_back.php\n\n", 'blue', 'underline');
+			$this->cliEcho("Press ENTER to continue: ");
+
+			$this->pressEnterToContinue();
+			$this->cliEcho("\n");
+
 			try
 			{
-				$this->pressEnterToContinue();
-
-				$this->cliEcho("\n");
-				$this->cliEcho("How to support future development\n", 'green', 'bold');
-				$this->cliEcho("Even though this software has been provided to you free of charge,\ndeveloping it would not have been possible without support from our users.\n");
-				$this->cliEcho("By making a donation, or buying a support contract you can help us continue development.\n\n");
-				$this->cliEcho("If this software is valuable to you - please consider supporting it.\n\n");
-				$this->cliEcho("More information about supporting The Bug Genie's development can be found here:\n");
-				$this->cliEcho("http://www.thebuggenie.com/giving_back.php\n\n", 'blue', 'underline');
-				$this->cliEcho("Press ENTER to continue: ");
-
-				$this->pressEnterToContinue();
-
-				$this->cliEcho("\n");
 				$this->cliEcho("License information\n", 'green', 'bold');
 				$this->cliEcho("This software is Open Source Initiative approved Open Source Software.\nOpen Source Initiative Approved is a trademark of the Open Source Initiative.\n\n");
 				$this->cliEcho("True to the the Open Source Definition, The Bug Genie is released\nunder the MPL 1.1 only. You can read the full license here:\n");
 				$this->cliEcho("http://www.opensource.org/licenses/mozilla1.1.php\n\n", 'blue', 'underline');
-				$this->cliEcho("Before you can continue the installation, you need to confirm that you \nagree to be bound by the terms in this license.\n\n");
-				$this->cliEcho("Do you agree to be bound by the terms in the MPL 1.1 license?\n(type \"yes\" to agree, anything else aborts the installation): ");
 
-				if (!$this->askToAccept()) throw new Exception($this->cliEcho('You need to accept the license to continue', 'red', 'bold'));
+				if ($this->getProvidedArgument('accept_license') != 'yes')
+				{
+					$this->cliEcho("Before you can continue the installation, you need to confirm that you \nagree to be bound by the terms in this license.\n\n");
+					$this->cliEcho("Do you agree to be bound by the terms in the MPL 1.1 license?\n(type \"yes\" to agree, anything else aborts the installation): ");
+					if (!$this->askToAccept()) throw new Exception($this->cliEcho('You need to accept the license to continue', 'red', 'bold'));
+				}
+				else
+				{
+					$this->cliEcho('You have accepted the license', 'yellow', 'bold');
+					$this->cliEcho("\n\n");
+				}
 
 				$not_well = array();
 				if (!is_writable('core/B2DB/'))
@@ -98,9 +112,19 @@
 					$this->cliEcho("Step 1 - database information\n");
 					if (file_exists('core/B2DB/sql_parameters.inc.php'))
 					{
-						$this->cliEcho("You seem to already have completed this step successfully.\nDo you want to use the stored settings?\n", 'white', 'bold');
-						$this->cliEcho("\nType \"no\" to enter new settings, press ENTER to use existing: ", 'white', 'bold');
-						$use_existing_db_info = $this->askToDecline();
+						$this->cliEcho("You seem to already have completed this step successfully.\n");
+						if ($this->getProvidedArgument('use_existing_db_info') == 'yes')
+						{
+							$this->cliEcho("\n");
+							$this->cliEcho("Using existing database information\n", 'yellow', 'bold');
+							$use_existing_db_info = true;
+						}
+						else
+						{
+							$this->cliEcho("Do you want to use the stored settings?\n", 'white', 'bold');
+							$this->cliEcho("\nType \"no\" to enter new settings, press ENTER to use existing: ", 'white', 'bold');
+							$use_existing_db_info = $this->askToDecline();
+						}
 						$this->cliEcho("\n");
 					}
 					else
@@ -188,8 +212,11 @@
 					{
 						B2DB::initialize();
 						$this->cliEcho("Successfully connected to the database.\n", 'green');
-						$this->cliEcho("Press ENTER to continue ... ");
-						$this->pressEnterToContinue();
+						if ($this->getProvidedArgument('use_existing_db_info') != 'yes')
+						{
+							$this->cliEcho("Press ENTER to continue ... ");
+							$this->pressEnterToContinue();
+						}
 					}
 					$this->cliEcho("\nThe Bug Genie needs some server settings to function properly...\n\n");
 
@@ -198,38 +225,82 @@
 						$this->cliEcho("URL rewriting\n", 'cyan', 'bold');
 						$this->cliEcho("The Bug Genie uses a technique called \"url rewriting\" - which allows for pretty\nURLs such as ") . $this->cliEcho('/issue/1', 'white', 'bold') . $this->cliEcho(' instead of ') . $this->cliEcho("viewissue.php?issue_id=1\n", 'white', 'bold');
 						$this->cliEcho("Make sure you have read the URL_REWRITE document located in the root\nfolder, or at http://www.thebuggenie.com before you continue\n");
-						$this->cliEcho("Press ENTER to continue ... ");
-						$this->pressEnterToContinue();
+
+						if (!($this->hasProvidedArgument('url_subdir') && $this->hasProvidedArgument('url_host')))
+						{
+							$this->cliEcho("Press ENTER to continue ... ");
+							$this->pressEnterToContinue();
+						}
 						$this->cliEcho("\n");
+						
 						$this->cliEcho("Web server root URL\n", 'white', 'bold');
 						$this->cliEcho("This is the root of the Web server where The Bug Genie will be running\nex: http://bugs.mycompany.com\n");
-						$this->cliEcho('Enter the web URL ');
-						$this->cliEcho('without', 'white', 'bold');
-						$this->cliEcho(" any ending slashes\n\n");
-						$this->cliEcho('Web server root URL: ', 'white', 'bold');
-						$url_host = $this->getInput();
+						if ($this->hasProvidedArgument('url_host'))
+						{
+							$this->cliEcho('Web server root URL: ', 'white', 'bold');
+							$url_host = $this->getProvidedArgument('url_host');
+							$this->cliEcho($url_host, 'yellow', 'bold');
+							$this->cliEcho("\n");
+						}
+						else
+						{
+							$this->cliEcho('Enter the web URL ');
+							$this->cliEcho('without', 'white', 'bold');
+							$this->cliEcho(" any ending slashes\n\n");
+							$this->cliEcho('Web server root URL: ', 'white', 'bold');
+							$url_host = $this->getInput();
+						}
 						$this->cliEcho("\n");
 
 						$this->cliEcho("The Bug Genie subdir\n", 'white', 'bold');
 						$this->cliEcho("This is the sub-path of the Web server where The Bug Genie will be located.\n");
-						$this->cliEcho('Start and end this with a forward slash', 'white', 'bold');
-						$this->cliEcho(". (ex: \"/thebuggenie/\")\nIf The Bug Genie is running at root, just type \"/\" (without the quotes)\n\n");
-						$this->cliEcho('The Bug Genie subdir: ', 'white', 'bold');
-						$url_subdir = $this->getInput();
+						if ($this->hasProvidedArgument('url_subdir'))
+						{
+							$this->cliEcho('The Bug Genie subdir: ', 'white', 'bold');
+							$url_subdir = $this->getProvidedArgument('url_subdir');
+							$this->cliEcho($url_subdir, 'yellow', 'bold');
+							$this->cliEcho("\n");
+						}
+						else
+						{
+							$this->cliEcho('Start and end this with a forward slash', 'white', 'bold');
+							$this->cliEcho(". (ex: \"/thebuggenie/\")\nIf The Bug Genie is running at root, just type \"/\" (without the quotes)\n\n");
+							$this->cliEcho('The Bug Genie subdir: ', 'white', 'bold');
+							$url_subdir = $this->getInput();
+						}
 						$this->cliEcho("\n");
 
 						$this->cliEcho("The Bug Genie will now be accessible at\n");
 						$this->cliEcho($url_host . $url_subdir, 'white', 'bold');
-						$this->cliEcho("\nPress ENTER if ok, or \"no\" to try again: ");
-						$e_ok = $this->askToDecline();
+						if ($this->hasProvidedArgument('url_subdir') && $this->hasProvidedArgument('url_host'))
+						{
+							$this->cliEcho("\n");
+							$this->cliEcho("Using existing values", 'yellow', 'bold');
+							$this->cliEcho("\n");
+							$e_ok = true;
+						}
+						else
+						{
+							$this->cliEcho("\nPress ENTER if ok, or \"no\" to try again: ");
+							$e_ok = $this->askToDecline();
+						}
 						$this->cliEcho("\n");
 					}
 					while (!$e_ok);
 
-					$this->cliEcho("Setup can autoconfigure your .htaccess file (located in the thebuggenie/ subfolder), so you don't have to.\n");
-					$this->cliEcho('Would you like setup to auto-generate the .htaccess file for you?');
-					$this->cliEcho("\nPress ENTER if ok, or \"no\" to not set up the .htaccess file: ");
-					$htaccess_ok = $this->askToDecline();
+					if ($this->getProvidedArgument('setup_htaccess') != 'yes')
+					{
+						$this->cliEcho("Setup can autoconfigure your .htaccess file (located in the thebuggenie/ subfolder), so you don't have to.\n");
+						$this->cliEcho('Would you like setup to auto-generate the .htaccess file for you?');
+						$this->cliEcho("\nPress ENTER if ok, or \"no\" to not set up the .htaccess file: ");
+						$htaccess_ok = $this->askToDecline();
+					}
+					else
+					{
+						$this->cliEcho('Autoconfiguring .htaccess', 'yellow', 'bold');
+						$this->cliEcho("\n");
+						$htaccess_ok = true;
+					}
 					$this->cliEcho("\n");
 
 					if ($htaccess_ok)
@@ -268,17 +339,24 @@
 					$this->cliEcho("\n");
 
 					$enable_modules = array();
-					
-					$this->cliEcho("You will now get a list of available modules.\nTo enable the module after installation, just press ENTER.\nIf you don't want to enable the module, type \"no\".\nRemember that all these modules can be disabled/uninstalled after installation.\n\n");
+
+					if ($this->getProvidedArgument('enable_all_modules') != 'yes')
+					{
+						$this->cliEcho("You will now get a list of available modules.\nTo enable the module after installation, just press ENTER.\nIf you don't want to enable the module, type \"no\".\nRemember that all these modules can be disabled/uninstalled after installation.\n\n");
+					}
 					
 					$this->cliEcho("Enable incoming and outgoing email? ", 'white', 'bold') . $this->cliEcho('(yes): ');
-					$enable_modules['mailing'] = $this->askToDecline();
+					$enable_modules['mailing'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
+					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
 					$this->cliEcho("Enable internal messaging between users? ", 'white', 'bold') . $this->cliEcho('(yes): ');
-					$enable_modules['messages'] = $this->askToDecline();
+					$enable_modules['messages'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
+					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
 					$this->cliEcho("Enable calendar? ", 'white', 'bold') . $this->cliEcho('(yes): ');
-					$enable_modules['calendar'] = $this->askToDecline();
+					$enable_modules['calendar'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
+					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
 					$this->cliEcho("Enable SCM integration? ", 'white', 'bold') . $this->cliEcho('(yes): ');
-					$enable_modules['svn_integration'] = $this->askToDecline();
+					$enable_modules['svn_integration'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
+					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
 
 					$enable_modules['publish'] = true;
 
@@ -330,23 +408,27 @@
 
 						$this->cliEcho("\n");
 						$this->cliEcho("All modules installed successfully...\n", 'green', 'bold');
+						$this->cliEcho("\n");
 
+						$this->cliEcho("Finishing installation... \n", 'white', 'bold');
 						if (!is_writable(TBGContext::getIncludePath() . 'installed'))
 						{
-							$this->cliEcho("\n\n");
+							$this->cliEcho("\n");
 							$this->cliEcho("Could not create the 'installed' file.\n", 'red', 'bold');
 							$this->cliEcho("Please create the file ");
 							$this->cliEcho(TBGContext::getIncludePath() . "installed\n", 'white', 'bold');
 							$this->cliEcho("with the following line inside:\n");
 							$this->cliEcho('3.0, installed ' . date('d.m.Y H:i'), 'blue', 'bold');
-							$this->cliEcho("\n\n");
+							$this->cliEcho("\n");
+							$this->cliEcho("Press ENTER to continue ... ");
+							$this->pressEnterToContinue();
+							$this->cliEcho("\n");
 						}
 						else
 						{
 							file_put_contents(TBGContext::getIncludePath() . 'installed', '3.0, installed ' . date('d.m.Y H:i'));
 						}
-
-						$this->cliEcho("\nThe installation was completed successfully!\n", 'green', 'bold');
+						$this->cliEcho("The installation was completed successfully!\n", 'green', 'bold');
 						$this->cliEcho("\nTo use The Bug Genie, access " . $url_host . $url_subdir . "index.php with a web-browser.\n");
 						$this->cliEcho("The default username is ") . $this->cliEcho('Administrator') . $this->cliEcho(' and the password is ') . $this->cliEcho('admin');
 						$this->cliEcho("\n\nThank you for trying this The Bug Genie test release!\n");

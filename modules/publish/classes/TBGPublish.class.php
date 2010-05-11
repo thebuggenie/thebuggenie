@@ -192,11 +192,18 @@
 
 		public function getArticleLinkTag($matches)
 		{
-			TBGContext::loadLibrary('ui');
 			$article_name = $matches[0];
 			TBGTextParser::getCurrentParser()->addInternalLinkOccurrence($article_name);
 			$article_name = $this->getSpacedName($matches[0]);
-			return link_tag(make_url('publish_article', array('article_name' => $matches[0])), $article_name);
+			if (TBGContext::getEnvironment() != TBGContext::ENV_CLI)
+			{
+				TBGContext::loadLibrary('ui');
+				return link_tag(make_url('publish_article', array('article_name' => $matches[0])), $article_name);
+			}
+			else
+			{
+				return $matches[0];
+			}
 		}
 
 
