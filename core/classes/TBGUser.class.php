@@ -1534,8 +1534,8 @@
 			}
 			else
 			{
-				$retval = $this->hasPermission("page_{$page}_access", $target_id, "core", true, null);
-				return ($retval === null) ? $this->hasPermission("page_{$page}_access", 0, "core", true, null) : $retval;
+				$retval = $this->hasPermission("page_{$page}_access", $target_id, "core", true, TBGSettings::isPermissive());
+				return ($retval === null) ? $this->hasPermission("page_{$page}_access", 0, "core", true, TBGSettings::isPermissive()) : $retval;
 			}
 		}
 
