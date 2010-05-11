@@ -156,8 +156,7 @@
 
 		public function pressEnterToContinue()
 		{
-			$this->_getCliInput();
-			return true;
+			fgets(STDIN);
 		}
 
 		public static function cli_echo($text, $color = 'white', $style = null)

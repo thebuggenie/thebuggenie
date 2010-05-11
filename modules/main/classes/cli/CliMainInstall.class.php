@@ -316,7 +316,7 @@
 						{
 							if ((bool) $install && file_exists(TBGContext::getIncludePath() . "modules/{$module}/module"))
 							{
-								$this->cliEcho("Installing {$module}... \n", 'white', 'bold');
+								$this->cliEcho("Installing {$module}... \n");
 								TBGContext::addClasspath(TBGContext::getIncludePath() . "modules/{$module}/classes/");
 								if (file_exists(TBGContext::getIncludePath() . "modules/{$module}/classes/B2DB/"))
 								{
@@ -324,26 +324,22 @@
 								}
 								$classname = file_get_contents(TBGContext::getIncludePath() . "modules/{$module}/class");
 								call_user_func(array($classname, 'install'), 1);
-								$this->cliEcho("Module {$module} installed successfully...\n", 'green', 'bold');
+								$this->cliEcho("Module {$module} installed successfully...\n", 'green');
 							}
 						}
 
 						$this->cliEcho("\n");
 						$this->cliEcho("All modules installed successfully...\n", 'green', 'bold');
-						$this->cliEcho("Please press ENTER to finish installation... ");
-						$this->pressEnterToContinue();
 
 						if (!is_writable(TBGContext::getIncludePath() . 'installed'))
 						{
-							$this->cliEcho("\n");
+							$this->cliEcho("\n\n");
 							$this->cliEcho("Could not create the 'installed' file.\n", 'red', 'bold');
 							$this->cliEcho("Please create the file ");
 							$this->cliEcho(TBGContext::getIncludePath() . "installed\n", 'white', 'bold');
 							$this->cliEcho("with the following line inside:\n");
 							$this->cliEcho('3.0, installed ' . date('d.m.Y H:i'), 'blue', 'bold');
 							$this->cliEcho("\n\n");
-							$this->cliEcho("When that is done, please press ENTER to continue ... ");
-							$this->pressEnterToContinue();
 						}
 						else
 						{

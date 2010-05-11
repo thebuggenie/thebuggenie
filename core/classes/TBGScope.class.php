@@ -332,7 +332,6 @@
 			
 			$b2_settings['requirelogin'] = 0;
 			$b2_settings['defaultisguest'] = 1;
-			$b2_settings['showloginbox'] = 1;
 			$b2_settings['allowreg'] = 1;
 			$b2_settings['local_path'] = TBGSettings::get('local_path');
 			$b2_settings['language'] = TBGSettings::get('language');

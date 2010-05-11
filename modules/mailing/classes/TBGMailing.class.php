@@ -70,9 +70,7 @@
 		public function postConfigSettings(TBGRequest $request)
 		{
 			$settings = array('smtp_host', 'smtp_port', 'smtp_user', 'timeout', 'mail_type', 'enable_outgoing_notifications',
-								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo', 'use_queue',
-								'returnfromlogin', 'returnfromlogout', 'showloginbox', 'limit_registration',
-								'showprojectsoverview', 'showprojectsoverview', 'cleancomments');
+								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo', 'use_queue');
 			foreach ($settings as $setting)
 			{
 				if ($request->getParameter($setting) !== null)

@@ -110,7 +110,6 @@
 			$settings['theme_name'] = 'oxygen';
 			$settings['requirelogin'] = 0;
 			$settings['defaultisguest'] = 1;
-			$settings['showloginbox'] = 1;
 			$settings['allowreg'] = 1;
 			$settings['returnfromlogin'] = 'dashboard';
 			$settings['returnfromlogout'] = 'home';

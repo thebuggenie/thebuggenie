@@ -440,14 +440,14 @@
 				case 'NUMBEROFARTICLES': return 0;
 				case 'PAGENAME': return TBGContext::getResponse()->getPage();
 				case 'NAMESPACE': return 'None';
-				case 'TOC': return '__TOC__';
+				case 'TOC': return '{{TOC}}';
 				case 'SITENAME': return TBGSettings::getTBGname();
 				case 'SITETAGLINE': return TBGSettings::getTBGtagline();
 				default: return '';
 			}
 		}
 
-		protected function _parse_line($line)
+		protected function _parse_line($line, $options = array())
 		{
 			$line_regexes = array();
 			
@@ -463,7 +463,10 @@
 			$char_regexes[] = array('/(\[([^\]]*?)(\s+[^\]]*?)?\])/i', array($this, '_parse_externallink'));
 			$char_regexes[] = array('/(\'{2,5})/i', array($this, '_parse_emphasize'));
 			$char_regexes[] = array('/(__NOTOC__|__NOEDITSECTION__)/i', array($this, '_parse_eliminate'));
-			$char_regexes[] = array('/(\{\{([^\}]*?)\}\})/i', array($this, '_parse_variable'));
+			if (!array_key_exists('ignore_vars', $options))
+			{
+				$char_regexes[] = array('/(\{\{([^\}]*?)\}\})/i', array($this, '_parse_variable'));
+			}
 			$char_regexes[] = array('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, '_parse_issuelink'));
 			$char_regexes[] = array('/(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))/i', array($this, '_getsmiley'));
 			$char_regexes[] = array('/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9$_+!*();\/?:~-]))/', array($this, '_parse_autosensedlink'));
@@ -622,7 +625,7 @@
 			$lines = explode("\n",$text);
 			foreach ($lines as $line)
 			{
-				$output .= $this->_parse_line($line);
+				$output .= $this->_parse_line($line, $options);
 			}
 			
 			$this->nowikis = array_reverse($this->nowikis);

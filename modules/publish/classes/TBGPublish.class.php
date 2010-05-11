@@ -95,17 +95,17 @@
 					if (strpos($article_name, '.') === false)
 					{
 						$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $article_name);
-						TBGWikiArticle::createNew($article_name, $content, true, $scope);
+						TBGWikiArticle::createNew($article_name, $content, true, $scope, array('ignore_vars' => true));
 					}
 				}
 
 				$article_name = 'Category:Help';
 				$content = "This is a list of all the available help articles in The Bug Genie. If you are stuck, look here for help.";
-				TBGWikiArticle::createNew($article_name, $content, true, $scope);
+				TBGWikiArticle::createNew($article_name, $content, true, $scope, array('ignore_vars' => true));
 
 				$article_name = 'Category:HowTo';
 				$content = "[[Category:Help]]";
-				TBGWikiArticle::createNew($article_name, $content, true, $scope);
+				TBGWikiArticle::createNew($article_name, $content, true, $scope, array('ignore_vars' => true));
 				
 				TBGLinksTable::getTable()->addLink('wiki', 0, 'MainPage', 'Wiki Frontpage', 1, $scope);
 				TBGLinksTable::getTable()->addLink('wiki', 0, 'WikiFormatting', 'Formatting help', 2, $scope);

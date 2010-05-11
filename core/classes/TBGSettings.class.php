@@ -299,16 +299,6 @@
 			return (bool) self::get('requirelogin');
 		}
 		
-		public static function showLoginBox()
-		{
-			return (bool) self::get('showloginbox');
-		}
-		
-		public static function isLoginBoxVisible()
-		{
-			return self::showLoginBox();
-		}
-		
 		public static function isDefaultUserGuest()
 		{
 			return (bool) self::get('defaultisguest');

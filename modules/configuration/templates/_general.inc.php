@@ -68,18 +68,6 @@
 	<tr>
 		<td class="config_explanation" colspan="2"><?php echo __('To keep the comment trail clean in issues, you can select not to post system comments when an issue is updated.'); ?><br>(<?php echo __('The issue log will always be updated regardless of this setting.'); ?>)</td>
 	</tr>
-	<tr>
-		<td><label for="showloginbox"><?php echo __('Show login links on front page'); ?></label></td>
-		<td>
-			<select name="showloginbox" id="showloginbox" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
-				<option value=1<?php if (TBGSettings::showLoginBox()): ?> selected<?php endif; ?>><?php echo __('Yes, show a login box at the left hand side'); ?></option>
-				<option value=0<?php if (!TBGSettings::showLoginBox()): ?> selected<?php endif; ?>><?php echo __('No, only show in the menu'); ?></option>
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('Choose whether to display the login box on the front page or not'); ?></td>
-	</tr>
 	<?php
 		// Generate list of languages
 		$files = scandir(THEBUGGENIE_PATH.'core/geshi/geshi/');
