@@ -1785,6 +1785,42 @@
 		}
 
 		/**
+		 * Return if the user can add scrum user stories
+		 *
+		 * @param TBGProject $project
+		 *
+		 * @return boolean
+		 */
+		public function canAddScrumUserStories(TBGProject $project)
+		{
+			return (bool) ($this->hasPermission('canaddscrumuserstories', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canaddscrumuserstories', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
+		}
+
+		/**
+		 * Return if the user can add scrum sprints
+		 *
+		 * @param TBGProject $project
+		 *
+		 * @return boolean
+		 */
+		public function canAddScrumSprints(TBGProject $project)
+		{
+			return (bool) ($this->hasPermission('canaddscrumsprints', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canaddscrumsprints', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
+		}
+
+		/**
+		 * Return if the user can assign scrum user stories
+		 *
+		 * @param TBGProject $project
+		 *
+		 * @return boolean
+		 */
+		public function canAssignScrumUserStories(TBGProject $project)
+		{
+			return (bool) ($this->hasPermission('canassignscrumuserstoriestosprints', $project->getID(), 'core', true) || $this->hasPermission('candoscrumplanning', $project->getID(), 'core', true) || $this->hasPermission('canassignscrumuserstoriestosprints', 0, 'core', true) || $this->hasPermission('candoscrumplanning', 0, 'core', true));
+		}
+
+		/**
 		 * Return a list of the users latest log items
 		 * 
 		 * @param integer $number Limit to a number of changes

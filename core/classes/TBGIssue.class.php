@@ -1241,6 +1241,16 @@
 		}
 
 		/**
+		 * Return if the user can add related issues to this issue
+		 *
+		 * @return boolean
+		 */
+		public function canAddRelatedIssues()
+		{
+			return (bool) ($this->_permissionCheck('canaddrelatedissues') || $this->_permissionCheck('canaddextrainformationtoissues'));
+		}
+
+		/**
 		 * Return if the user can remove attachments
 		 *
 		 * @return boolean

@@ -93,20 +93,8 @@
 		public function loadFixtures($scope_id, $admin_group_id, $guest_group_id)
 		{
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', 'cansaveconfig', 0, $scope_id);
-
-			/*for ($cc = 1; $cc <= 16; $cc++)
-			{
-				$crit = $this->getCriteria();
-				$crit->addInsert(self::ALLOWED, 1);
-				$crit->addInsert(self::SCOPE, $scope_id);
-				$crit->addInsert(self::PERMISSION_TYPE, 'cansaveconfig');
-				$crit->addInsert(self::TARGET_ID, $cc);
-				$crit->addInsert(self::GID, $admin_group_id);
-				$crit->addInsert(self::MODULE, 'core');
-				$this->doInsert($crit);
-			}*/
-
 			$this->setPermission(0, $guest_group_id, 0, false, 'core', 'page_account_access', 0, $scope_id);
+			$this->setPermission(0, 0, 0, false, 'core', 'candoscrumplanning', 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', 'cancreateandeditissues', 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', 'canfindissuesandsavesearches', 0, $scope_id);
 			$this->setPermission(0, 0, 0, false, 'core', 'cancreatepublicsearches', 0, $scope_id);
@@ -115,6 +103,7 @@
 			$this->setPermission(0, 0, 0, true, 'core', 'caneditissuecustomfieldsown', 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', 'canpostandeditcomments', 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "canseeproject", 0, $scope_id);
+			$this->setPermission(0, $admin_group_id, 0, true, 'core', 'candoscrumplanning', 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "page_project_allpages_access", 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "canvoteforissues", 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "canlockandeditlockedissues", 0, $scope_id);

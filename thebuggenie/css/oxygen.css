@@ -1275,6 +1275,7 @@ img.undo { display: none; }
 #scrum ul li .actions .task_count { font-size: 14px; font-weight: normal; color: #AAA; }
 #scrum ul li:hover .actions { display: block; }
 #scrum ul li .actions label { float: left; font-weight: bold; margin: 0 5px 0 0; padding: 0; font-size: 12px; }
+#scrum .story_card { position: relative; }
 .user_story_task { display: block; cursor: default; background-color: #FFFFC0; border: 1px solid #D6D6A1; margin: 2px; padding: 2px; font-weight: normal; }
 #related_parent_issues_inline td, #related_child_issues_inline td { font-size: 12px; }
 #related_issues_this_issue { font-size: 14px; font-weight: bold; text-align: center; }
@@ -1287,8 +1288,8 @@ img.undo { display: none; }
 #scrum_unassigned #story_title { width: 180px; }
 #scrum_sprints #sprint_name { width: 250px; }
 #scrum .sprint_date { font-size: 13px; font-weight: normal; color: #555; }
-#scrum .sprint_header { background-color: transparent; padding: 3px; font-weight: normal; font-size: 11px; color: #888; }
-#scrum .sprint_points { position: absolute; top: 6px; right: 8px; font-weight: bold; font-size: 13px; background-color: #FAFAFA; border: 1px solid #EAEAEA; padding: 2px 5px 2px 5px; }
+#scrum .sprint_header { background-color: transparent; padding: 3px; font-weight: normal; font-size: 11px; color: #888; position: relative; }
+#scrum .sprint_points { position: absolute; top: 0; right: 0; font-weight: bold; font-size: 13px; background-color: #FAFAFA; border: 1px solid #EAEAEA; padding: 2px 5px 2px 5px; }
 #scrum .sprint_header a { color: #555; text-decoration: none; border: 0; font-weight: bold; font-size: 13px; }
 #scrum .sprint_header a:hover { color: #888; text-decoration: none; border: 0; }
 
