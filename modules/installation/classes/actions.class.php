@@ -18,7 +18,8 @@
 			{
 				if ($step >= 5)
 				{
-					TBGContext::setScope(1);
+					$scope = new TBGScope(1);
+					TBGContext::setScope($scope);
 				}
 				return $this->redirect('installStep'.$step);
 			}
@@ -281,7 +282,7 @@
 								TBGContext::addClasspath(TBGContext::getIncludePath() . "modules/{$module}/classes/B2DB/");
 							}
 							$classname = file_get_contents(TBGContext::getIncludePath() . "modules/{$module}/class");
-							call_user_func(array($classname, 'install'), 1);
+							call_user_func(array($classname, 'install'), TBGContext::getScope()->getID());
 						}
 					}
 				}
