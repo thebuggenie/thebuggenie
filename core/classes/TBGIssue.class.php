@@ -3918,9 +3918,13 @@
 			$is_saved_spent = false;
 			$is_saved_assignee = false;
 			$is_saved_owner = false;
-			foreach ($this->_getChangedProperties() as $property => $value)
+			$changed_properties = $this->_getChangedProperties();
+
+			if (count($changed_properties) == 0) return false;
+
+			foreach ($changed_properties as $property => $value)
 			{
-				if ($value['original_value'] != $this->$property && $notify)
+				if ($value['original_value'] != $this->$property)
 				{
 					switch ($property)
 					{
@@ -4223,9 +4227,11 @@
 					}
 				}
 			}
+
+			$comment = __("The issue was updated with the following change(s):\n%list_of_changes%", array('%list_of_changes%' => '* '.join("\n* ", $comment_lines)));
+			
 			if ($notify)
 			{
-				$comment = __("The issue was updated with the following change(s):\n%list_of_changes%", array('%list_of_changes%' => '* '.join("\n* ", $comment_lines)));
 				$this->addSystemComment(__('Issue updated'), $comment, TBGContext::getUser()->getUID());
 			}
 
@@ -4239,7 +4245,7 @@
 				B2DB::getTable('TBGIssueSpentTimes')->saveSpentTime($this->getID(), $this->_spentmonths, $this->_spentweeks, $this->_spentdays, $this->_spenthours, $this->_spentpoints);
 			}
 
-			$event = TBGEvent::createNew('core', 'TBGIssue::save', $this, array('changed_properties' => $this->_getChangedProperties(), 'comment_lines' => $comment_lines, 'notify' => $notify, 'updated_by' => TBGContext::getUser()));
+			$event = TBGEvent::createNew('core', 'TBGIssue::save', $this, array('changed_properties' => $this->_getChangedProperties(), 'comment' => $comment, 'comment_lines' => $comment_lines, 'notify' => $notify, 'updated_by' => TBGContext::getUser()));
 			$event->trigger();
 
 			$this->_clearChangedProperties();

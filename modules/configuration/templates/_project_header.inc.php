@@ -15,7 +15,7 @@
 	</tr>
 </table>
 <?php if ($mode > 1): ?>
-	<div class="rounded_box mediumgrey" style="margin: 15px 0px 15px 0px; width: 700px; vertical-align: middle; padding: 5px 10px 5px 10px; font-size: 12px;">
+	<div class="rounded_box lightgrey" style="margin: 15px 0px 15px 0px; width: 730px; vertical-align: middle; padding: 5px 10px 5px 10px; font-size: 12px;">
 		<?php if (isset($theEdition) && $theEdition instanceof TBGEdition): ?>
 			<?php echo __('You are now looking at %project_name% &gt;&gt; %edition_name%', array('%project_name%' => '<b>'.$theProject->getName().'</b>', '%edition_name%' => '<span id="edition_name_span" style="font-weight: bold;">'.$theEdition->getName().'</span>')); ?><br>
 			<b><?php echo link_tag(make_url('configure_project_editions_components', array('project_id' => $theProject->getID())), '&lt;&lt;&nbsp;'.__('Go back to project editions and components overview')); ?></b><?php echo __('%something% or %something_else%', array('%something%' => '', '%something_else%' => '')); ?><br>

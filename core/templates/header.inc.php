@@ -53,7 +53,7 @@
 							</td>
 							<td style="width: auto;">
 								<div class="rounded_box blue" id="header_userinfo">
-									<?php echo image_tag($tbg_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;'), true); ?>
+									<?php echo image_tag($tbg_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px; width: 48px; height: 48px;'), true); ?>
 									<?php if ($tbg_user->isGuest()): ?>
 										<div class="header_username">
 											<strong><?php echo __('You are currently %not_logged_in%', array('%not_logged_in%' => '')); ?></strong><br>

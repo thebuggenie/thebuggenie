@@ -16,7 +16,7 @@ include_component('configleftmenu', array('selected_section' => 10));
 		<tr>
 			<td style="width: auto; padding-right: 5px; vertical-align: top;">
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<div class="rounded_box mediumgrey" style="margin: 10px 0px 10px 0px; width: 700px; padding: 5px 10px 5px 10px;">
+					<div class="rounded_box lightgrey" style="margin: 10px 0px 10px 0px; width: 700px; padding: 5px 10px 5px 10px;">
 						<div class="config_header nobg"><b><?php echo __('Assign developers'); ?></b></div>
 						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_find_assignee', array('project_id' => $theProject->getID())); ?>" method="post" onsubmit="findDevs('<?php echo make_url('configure_project_find_assignee', array('project_id' => $theProject->getID())); ?>');return false;" id="find_dev_form">
 							<table style="width: 100%; margin-top: 3px;" cellpadding=0 cellspacing=0 id="find_user">

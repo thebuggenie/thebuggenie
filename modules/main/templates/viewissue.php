@@ -87,35 +87,7 @@
 			<div class="viewissue_info_content"><?php echo __('For more information you should visit the issue mentioned above, as this issue is not likely to be updated'); ?></div>
 		</div>								
 	<?php endif; ?>
-	<?php /*if ($theIssue->isClosed() && $theIssue->getPostedBy()->getID() == $tbg_user->getID() && !TBGUser::isThisGuest()): ?>
-		<div class="rounded_box iceblue borderless" id="viewissue_closed_sameuser">
-			<?php echo image_tag('icon_info_big.png'); ?>
-			<div class="viewissue_info_header"><?php echo __('You reported this issue, and it was closed with status "%status_name%"', array('%status_name%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Not determined')))); ?></div>
-			<div class="viewissue_info_content">
-			<?php if ($theIssue->canReopenIssue()): ?>
-				<?php echo __('If you have new information and you think this issue should be reopened, then %reopen_the_issue%', array('%reopen_the_issue%' => link_tag(make_url('openissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID())), __('reopen the issue')))); ?>
-			<?php elseif ($theIssue->canPostComments()): ?>
-				<?php echo __('If you have think this issue should be reopened, then post a comment in the comment area'); ?>
-			<?php else: ?>
-				<?php echo __('If anything new comes up, an administrator or developer will reopen this issue'); ?>
-			<?php endif; ?>
-			</div>
-		</div>								
-	<?php elseif ($theIssue->isOpen() && $theIssue->getPostedBy()->getID() == $tbg_user->getID() && !TBGUser::isThisGuest()): ?>
-		<div class="rounded_box iceblue borderless" id="viewissue_open_sameuser">
-			<?php echo image_tag('icon_info_big.png'); ?>
-			<div class="viewissue_info_header"><?php echo __('You reported this issue, and its status is currently "%status_name%"', array('%status_name%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Not determined')))) ?></div>
-			<div class="viewissue_info_content">
-			<?php if ($theIssue->canReopenIssue()): ?>
-				<?php echo __('If you think this issue should be closed without further investigation, then %close_the_issue%', array('%close_the_issue%' => link_tag(make_url('closeissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID())), __('close the issue')))); ?>
-			<?php elseif ($theIssue->canPostComments()): ?>
-				<?php echo __('If you have think this issue should be closed, then post a comment in the comment area'); ?>
-			<?php else: ?>
-				<?php echo __('An administrator or developer may close this issue'); ?>
-			<?php endif; ?>
-			</div>
-		</div>
-	<?php else*/ if ($theIssue->isClosed()): ?>
+	<?php if ($theIssue->isClosed()): ?>
 		<div class="rounded_box iceblue borderless" id="viewissue_closed">
 			<?php echo image_tag('icon_info_big.png'); ?>
 			<div class="viewissue_info_header"><?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($theIssue->getStatus() instanceof TBGStatus) ? $theIssue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($theIssue->getResolution() instanceof TBGResolution) ? $theIssue->getResolution()->getName() : __('Not determined')))); ?></div>
@@ -281,12 +253,12 @@
 			<div id="tab_comments_pane" style="padding-top: 0; margin: 0 5px 0 5px;" class="comments">
 				<?php if ($tbg_user->canPostComments()): ?>
 					<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();" value="<?php echo __('Add new comment'); ?>"></td></tr></table>
-					<div id="comment_add" class="comment_add" style="display: none; margin-top: 5px;">
+					<div id="comment_add" class="comment_add" style="<?php if (!(isset($comment_error) && $comment_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
 						<div class="comment_add_main">
 							<div class="comment_add_title"><?php echo __('Create a comment'); ?></div><br>
-							<form id="comment_form" action="<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>" method="post" onSubmit="addComment('<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>', 'viewissue_comment_count'); return false;">
+							<form id="comment_form" action="<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>" method="post" onSubmit="return addComment('<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>', 'viewissue_comment_count');">
 								<label for="comment_title"><?php echo __('Comment title'); ?> <span class="faded_medium">(<?php echo __('optional'); ?>)</span></label><br />
-								<input type="text" class="comment_titlebox" id="comment_title" name="comment_title" /><br />
+								<input type="text" class="comment_titlebox" id="comment_title" name="comment_title"<?php if (isset($comment_error) && $comment_error): ?>value="<?php echo $comment_error_title; ?>"<?php endif; ?> /><br />
 								<label for="comment_visibility"><?php echo __('Visibility'); ?> <span class="faded_medium">(<?php echo __('whether to hide this comment for "regular users"'); ?>)</span></label><br />
 								<select class="comment_visibilitybox" id="comment_visibility" name="comment_visibility">
 									<option value="1"><?php echo __('Visible for all users'); ?></option>
@@ -294,13 +266,18 @@
 								</select>
 								<br />
 								<label for="comment_bodybox"><?php echo __('Comment'); ?></label><br />
-								<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '200px', 'width' => '970px', 'value' => '')); ?>
+								<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '200px', 'width' => '970px', 'value' => ((isset($comment_error) && $comment_error) ? $comment_error_body : ''))); ?>
 
 								<div id="comment_add_indicator" style="display: none;">
 									<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
 								</div>
 
+								<div style="margin: 10px 0 10px 0; font-size: 12px;">
+									<input type="checkbox" name="comment_save_changes" id="comment_save_changes" value="1"<?php if (isset($issue_unsaved) || (isset($comment_error) && $comment_error)): ?> checked<?php endif; ?>>&nbsp;<label for="comment_save_changes"><?php echo __('Save my changes with this comment'); ?></label>
+								</div>
+
 								<div id="comment_add_controls" class="comment_controls">
+									<input type="hidden" name="forward_url" value="<?php echo make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getIssueNo())); ?>"
 									<?php echo __('%create_comment% or %cancel%', array('%create_comment%' => '<input type="submit" class="comment_addsave" value="'.__('Create comment').'" />', '%cancel%' => '<a href="javascript:void(0)" onClick="$(\'comment_add\').hide();$(\'comment_add_button\').show();">'.__('cancel').'</a>')); ?>
 								</div>
 							</form>

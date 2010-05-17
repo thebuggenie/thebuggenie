@@ -54,7 +54,7 @@
 						<?php endif; ?>
 					</div>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<div class="rounded_box mediumgrey" style="margin: 15px 0px 5px 0px; width: 700px; vertical-align: middle; height: 23px; padding: 5px 10px 5px 10px;">
+					<div class="rounded_box lightgrey" style="margin: 15px 0px 5px 0px; width: 700px; vertical-align: middle; height: 23px; padding: 5px 10px 5px 10px;">
 						<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "Save" to save your changes'); ?></div>
 						<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 						<span id="settings_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>

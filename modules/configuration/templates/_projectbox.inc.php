@@ -1,5 +1,5 @@
 <?php TBGContext::loadLibrary('ui'); ?>
-<div class="rounded_box round_canhover mediumgrey" style="margin: 10px 0px 10px 0px; width: 690px;" id="project_box_<?php echo $project->getID();?>">
+<div class="rounded_box round_canhover lightgrey" style="margin: 10px 0px 10px 0px; width: 690px;" id="project_box_<?php echo $project->getID();?>">
 	<div style="padding: 3px; font-size: 14px;">
 		<strong><?php echo $project->getName(); ?></strong>&nbsp;(<?php echo $project->getKey(); ?>)
 		<?php if ($project->usePrefix()): ?>
@@ -36,22 +36,20 @@
 			<div style="float: right;"><span style="margin-right: 10px;"><strong><?php echo link_tag(make_url('configure_project_settings', array('project_id' => $project->getID())), image_tag('cfg_icon_projectsettings.png', array('title' => (($access_level == configurationActions::ACCESS_FULL) ? __('Edit project') : __('Show project details')), 'style' => 'float: left; margin-right: 5px;')) . (($access_level == configurationActions::ACCESS_FULL) ? __('Edit project') : __('Show project details'))); ?></strong></span></div>
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 				<div style="float: right;"><span style="margin-right: 10px;"><a href="javascript:void(0)" onClick="$('project_delete_confirm_<?php echo($project->getID()); ?>').show();"><?php echo image_tag('icon_delete.png', array('title' => __('Delete project'), 'style' => 'float: left; margin-right: 5px;')) . __('Delete');?></a></span></div>
-				<div id="project_delete_confirm_<?php echo($project->getID()); ?>" style="display: none;" class="rounded_box white">
-					<br style="clear: both;"><br style="clear: both;">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent" style="padding: 0 10px 5px 10px;">
-						<h4><?php echo __('Really delete project?'); ?></h4>
-						<span class="xboxlarge"><?php echo __('Deleting this project will prevent users from accessing it or any associated data, such as issues.'); ?></span><br>
-						<div style="text-align: right;" id="project_delete_controls_<?php echo($project->getID()); ?>"><a href="javascript:void(0)" class="xboxlink" onClick="removeProject('<?php echo make_url('configure_project_delete', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>)"><?php echo __('Yes'); ?></a> :: <a href="javascript:void(0)" class="xboxlink" onClick="$('project_delete_confirm_<?php echo($project->getID()); ?>').hide();"><?php echo __('No'); ?></a></div>
-						<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="project_delete_indicator_<?php echo($project->getID()); ?>">
-							<tr>
-								<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
-								<td style="padding: 0px; text-align: left;"><?php echo __('Deleting project, please wait'); ?>...</td>
-							</tr>
-						</table>
-						<div id="project_delete_error_<?php echo($project->getID()); ?>" style="display: none;"><b>System error when deleting project</b></div>
-					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			<?php endif; ?>
+			<br style="clear: both;">
+			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+				<div id="project_delete_confirm_<?php echo($project->getID()); ?>" style="display: none; padding: 0 10px 5px 10px; margin-top: 5px;" class="rounded_box white shadowed">
+					<h4><?php echo __('Really delete project?'); ?></h4>
+					<span class="xboxlarge"><?php echo __('Deleting this project will prevent users from accessing it or any associated data, such as issues.'); ?></span><br>
+					<div style="text-align: right;" id="project_delete_controls_<?php echo($project->getID()); ?>"><a href="javascript:void(0)" class="xboxlink" onClick="removeProject('<?php echo make_url('configure_project_delete', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>)"><?php echo __('Yes'); ?></a> :: <a href="javascript:void(0)" class="xboxlink" onClick="$('project_delete_confirm_<?php echo($project->getID()); ?>').hide();"><?php echo __('No'); ?></a></div>
+					<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="project_delete_indicator_<?php echo($project->getID()); ?>">
+						<tr>
+							<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
+							<td style="padding: 0px; text-align: left;"><?php echo __('Deleting project, please wait'); ?>...</td>
+						</tr>
+					</table>
+					<div id="project_delete_error_<?php echo($project->getID()); ?>" style="display: none;"><b>System error when deleting project</b></div>
 				</div>
 			<?php endif; ?>
 		<?php if ($project->hasEditions() && $project->isEditionsEnabled()): ?>

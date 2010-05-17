@@ -9,8 +9,8 @@
 <td valign="top">
 	<?php include_template('configuration/project_header', array('theProject' => $theProject, 'mode' => 2)); ?>
 
-	<div class="rounded_box mediumgrey" style="margin: 5px 0px 5px 0px; width: 700px;" id="project_leads">
-		<table style="width: 680px;" cellpadding=0 cellspacing=0>
+	<div class="rounded_box lightgrey" style="margin: 5px 0px 5px 0px; width: 740px;" id="project_leads">
+		<table style="width: 730px;" cellpadding=0 cellspacing=0>
 			<tr class="canhover_dark">
 				<td style="padding: 2px; width: 100px;">
 					<b><?php echo __('Project owner'); ?></b>
@@ -20,7 +20,8 @@
 																				'clear_link_text'	=> __('Set owned by noone'),
 																				'style'				=> array('position' => 'absolute'),
 																				'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $theProject->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
-																				'base_id'			=> 'owned_by')); ?>
+																				'base_id'			=> 'owned_by',
+																				'absolute'			=> true)); ?>
 					<?php endif; ?>
 				</td>
 				<td style="<?php if (!$theProject->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
@@ -49,7 +50,8 @@
 																				'clear_link_text'	=> __('Set lead by noone'),
 																				'style'				=> array('position' => 'absolute'),
 																				'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $theProject->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'lead_by');",
-																				'base_id'			=> 'lead_by')); ?>
+																				'base_id'			=> 'lead_by',
+																				'absolute'			=> true)); ?>
 					<?php endif; ?>
 				</td>
 				<td style="<?php if (!$theProject->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
@@ -73,11 +75,12 @@
 					<b><?php echo __('QA responsible'); ?></b>
 					<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 						<?php include_component('main/identifiableselector', array(	'html_id'		=> 'qa_by_change',
-																				'header' 			=> __('Change / set QaResponsible responsible'),
-																				'clear_link_text'	=> __('Set QaResponsible responsible to noone'),
+																				'header' 			=> __('Change / set QA responsible'),
+																				'clear_link_text'	=> __('Set QA responsible to noone'),
 																				'style'				=> array('position' => 'absolute'),
 																				'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $theProject->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'qa_by');",
-																				'base_id'			=> 'qa_by')); ?>
+																				'base_id'			=> 'qa_by',
+																				'absolute'			=> true)); ?>
 					<?php endif; ?>
 				</td>
 				<td style="<?php if (!$theProject->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">

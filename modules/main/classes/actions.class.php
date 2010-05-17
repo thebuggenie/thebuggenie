@@ -20,6 +20,7 @@
 		 */
 		public function runViewIssue(TBGRequest $request)
 		{
+			TBGEvent::listen('core', 'viewissue', array($this, 'listenViewIssuePostError'));
 			TBGLogging::log('Loading issue');
 			$selected_project = null;
 			
@@ -86,6 +87,7 @@
 				$this->issue_saved = true;
 			}
 			$this->theIssue = $issue;
+			$event = TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
 		}
 		
 		/**
@@ -1864,49 +1866,107 @@
 				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Comment ID is invalid')));
 			}
 		}
+
+		public function listenIssueSaveAddComment(TBGEvent $event)
+		{
+			$this->comment_lines = $event->getParameter('comment_lines');
+			$this->comment = $event->getParameter('comment');
+		}
+
+		public function listenViewIssuePostError(TBGEvent $event)
+		{
+			if (TBGContext::hasMessage('comment_error'))
+			{
+				$this->comment_error = true;
+				$this->error = TBGContext::getMessageAndClear('comment_error');
+				$this->comment_error_title = TBGContext::getMessageAndClear('comment_error_title');
+				$this->comment_error_body = TBGContext::getMessageAndClear('comment_error_body');
+			}
+		}
 		
 		public function runAddComment(TBGRequest $request)
 		{
+			$comment = null;
 			$project = TBGFactory::ProjectLab($request->getParameter('project_id'));
-			if ($project instanceof TBGProject)
-			{						
-				if (!TBGContext::getUser()->canPostComments())
+			$project_key = ($project instanceof TBGProject) ? $project->getKey() : false;
+			try
+			{
+				if ($project instanceof TBGProject)
 				{
-					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
+					if (!TBGContext::getUser()->canPostComments())
+					{
+						throw new Exception(TBGContext::getI18n()->__('You are not allowed to do this'));
+					}
+					else
+					{
+						if ($request->getParameter('comment_title') == '')
+						{
+							$title = __('Untitled comment');
+						}
+						else
+						{
+							$title = $request->getParameter('comment_title');
+						}
+
+						if ($request->getParameter('comment_body') == '')
+						{
+							throw new Exception(TBGContext::getI18n()->__('The comment must have some content'));
+						}
+
+						if (!$request->isAjaxCall())
+						{
+							$this->comment_lines = array();
+							$this->comment = '';
+							TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenIssueSaveAddComment'));
+							$issue = TBGFactory::TBGIssueLab($request->getParameter('comment_applies_id'));
+							$issue->save(false);
+						}
+
+						$comment_body = $this->comment . "\n\n" . $request->getParameter('comment_body');
+
+						$comment = TBGComment::createNew($title, $comment_body, TBGContext::getUser()->getID(), $request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'), $request->getParameter('comment_visibility'), 0, false);
+
+						if ($request->getParameter('comment_applies_type') == 1 && $request->getParameter('comment_module') == 'core')
+						{
+							$comment_html = $this->getTemplateHTML('main/comment', array('aComment' => $comment, 'theIssue' => TBGFactory::TBGIssueLab($request->getParameter('comment_applies_id'))));
+						}
+						else
+						{
+							$comment_html = 'OH NO!';
+						}
+					}
 				}
 				else
 				{
-					if ($request->getParameter('comment_title') == '')
-					{
-						$title = __('Untitled comment');
-					}
-					else
-					{
-						$title = $request->getParameter('comment_title');
-					}
-					
-					if ($request->getParameter('comment_body') == '')
-					{
-						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('The comment must have some content')));
-					}
-					
-					$comment = TBGComment::createNew($title, $request->getParameter('comment_body'), TBGContext::getUser()->getID(), $request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'), $request->getParameter('comment_visibility'), 0, false);
-					
-					if ($request->getParameter('comment_applies_type') == 1 && $request->getParameter('comment_module') == 'core')
-					{					
-						$comment = $this->getTemplateHTML('main/comment', array('aComment' => $comment, 'theIssue' => TBGFactory::TBGIssueLab($request->getParameter('comment_applies_id'))));
-					}
-					else
-					{
-						$comment = 'OH NO!';
-					}
-					
-					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment added!'), 'comment_data' => $comment, 'commentcount' => TBGComment::countComments($request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'))));
+					throw new Exception(TBGContext::getI18n()->__('Comment ID is invalid'));
 				}
+			}
+			catch (Exception $e)
+			{
+				if ($request->isAjaxCall())
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+				}
+				else
+				{
+					TBGContext::setMessage('comment_error', $e->getMessage());
+					TBGContext::setMessage('comment_error_body', $request->getParameter('comment_body'));
+					TBGContext::setMessage('comment_error_title', $request->getParameter('comment_title'));
+					TBGContext::setMessage('comment_error_visibility', $request->getParameter('comment_visibility'));
+				}
+			}
+			if ($request->isAjaxCall())
+			{
+				return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment added!'), 'comment_data' => $comment_html, 'commentcount' => TBGComment::countComments($request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'))));
+			}
+//			var_dump($comment);die();
+			if ($comment instanceof TBGComment)
+			{
+				$this->forward($request->getParameter('forward_url') . "#comment_{$request->getParameter('comment_applies_type')}_{$request->getParameter('comment_applies_id')}_{$comment->getID()}");
 			}
 			else
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Comment ID is invalid')));
+				$this->forward($request->getParameter('forward_url'));
 			}
 		}
 

@@ -506,6 +506,10 @@ function setIssueChanged(field)
 	}
 	$(field + '_header').addClassName('issue_detail_changed');
 	$(field + '_content').addClassName('issue_detail_changed');
+	if ($('comment_save_changes'))
+	{
+		$('comment_save_changes').checked = true;
+	}
 }
 
 function setIssueUnchanged(field)
@@ -519,6 +523,10 @@ function setIssueUnchanged(field)
 		$('viewissue_changed').hide();
 		$('viewissue_merge_errors').hide();
 		$('viewissue_unsaved').hide();
+		if ($('comment_save_changes'))
+		{
+			$('comment_save_changes').checked = false;
+		}
 	}
 }
 
@@ -613,6 +621,10 @@ function updateComment(url, cid)
 
 function addComment(url, commentcount_span)
 {
+	if ($('comment_save_changes').checked)
+	{
+		return true;
+	}
 	params = $('comment_form').serialize();
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -664,6 +676,7 @@ function addComment(url, commentcount_span)
 		}
 	}
 	});
+	return false;
 }
 
 /*function submitNewTitle()

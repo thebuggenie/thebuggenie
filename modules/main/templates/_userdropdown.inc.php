@@ -4,7 +4,7 @@
 <?php if (isset($size) && $size == 'small'): ?>
 	<tr>
 		<td class="imgtd_bud" id="icon_<?php echo $user->getUname() . "_" . $rnd_no; ?>">
-			<a href="javascript:void(0);" onclick="showBud('<?php echo $user->getUname() . "_" . $rnd_no; ?>');" class="image"><?php echo image_tag('icon_user.png', array()); ?></a>
+			<a href="javascript:void(0);" onclick="showBud('<?php echo $user->getUname() . "_" . $rnd_no; ?>');" class="image"><?php echo image_tag('icon_user.png', array('style' => 'width: 22px; height: 22px;')); ?></a>
 		</td>
 		<td style="padding: 0px; padding-left: 2px;" valign="middle">
 			<a href="javascript:void(0);" onclick="showBud('<?php echo $user->getUname() . "_" . $rnd_no; ?>');" style="font-weight: bold;"><?php echo $user->getBuddyname(); ?></a>&nbsp;&nbsp;<i><span class="faded_medium">(<?php echo $user->getState()->getName(); ?>)</span></i>
@@ -13,7 +13,7 @@
 <?php else: ?>
 	<tr>
 		<td class="imgtd_bud" id="icon_<?php echo $user->getUname() . "_" . $rnd_no; ?>">
-			<a href="javascript:void(0);" onclick="showBud('<?php echo $user->getUname() . "_" . $rnd_no; ?>');" class="image"><?php echo image_tag($user->getAvatarURL(), array(), true); ?></a>
+			<a href="javascript:void(0);" onclick="showBud('<?php echo $user->getUname() . "_" . $rnd_no; ?>');" class="image"><?php echo image_tag($user->getAvatarURL(), array('style' => 'width: 22px; height: 22px;'), true); ?></a>
 		</td>
 		<td style="padding: 0px; padding-left: 2px;" valign="middle">
 			<a href="javascript:void(0);" onclick="showBud('<?php echo $user->getUname() . "_" . $rnd_no; ?>');" style="font-weight: bold;"><?php echo $user->getBuddyname(); ?></a><br>
@@ -29,7 +29,7 @@
 						<tr>
 							<td style="padding: 2px; width: 30px; text-align: center;">
 								<div style="padding: 2px; background-color: #FFF; border: 1px solid #DDD;">
-									<?php echo image_tag($user->getAvatarURL(), array(), true); ?>
+									<?php echo image_tag($user->getAvatarURL(), array('style' => 'width: 22px; height: 22px;'), true); ?>
 								</div>
 							</td>
 							<td style="padding: 3px; font-size: 12px;">
