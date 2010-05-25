@@ -11,7 +11,7 @@
 		<?php elseif ($link['url'] != ''): ?>
 			<?php echo link_tag($link['url'], (($link['description'] != '') ? $link['description'] : $link['url'])); ?>
 		<?php elseif ($link['description'] != ''): ?>
-			<?php echo tbg_parse_text(' '.$link['description'].' '); ?>
+			<?php echo tbg_parse_text($link['description']); ?>
 		<?php else: ?>
 			&nbsp;
 		<?php endif; ?>
