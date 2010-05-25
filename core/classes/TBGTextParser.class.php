@@ -20,10 +20,11 @@
 	{
 
 		protected static $additional_regexes = null;
-
 		protected static $current_parser = null;
 
 		protected $preformat = null;
+		protected $tablemode = null;
+		protected $opentablecol = false;
 		protected $options = array();
 		protected $use_toc = false;
 		protected $toc_base_id = null;
@@ -54,12 +55,24 @@
 			return self::$current_parser;
 		}
 
+		/**
+		 * Return an array of the registered regexes to be parsed
+		 *
+		 * @return array
+		 */
 		protected static function getRegexes()
 		{
 			if (self::$additional_regexes === null) self::$additional_regexes = array();
 			return self::$additional_regexes;
 		}
 
+		/**
+		 * Setup the parser object
+		 *
+		 * @param string $text The text to be parsed
+		 * @param boolean $use_toc[optional] Whether to use a TOC if found
+		 * @param string $toc_base_id[optional] Base id to use for the TOC element
+		 */
 		public function __construct($text, $use_toc = false, $toc_base_id = null)
 		{
 			$this->text = $text;
@@ -90,11 +103,11 @@
 		{
 			if (array_key_exists('headers', $this->options) && !$this->options['headers'])
 			{
-				return $matches[0] . "\n";
+				return htmlspecialchars($matches[0]) . "\n";
 			}
+			
 			$level = strlen($matches[1]);
 			$content = $matches[2];
-
 			$this->stop = true;
 
 			// avoid accidental run-on openblocks
@@ -107,7 +120,7 @@
 				$this->toc[] = array('level' => $level, 'content' => $content, 'id' => $id);
 				$retval .= " id=\"{$id}\"";
 			}
-			$retval .= ">" . $content;
+			$retval .= ">" . htmlspecialchars($content);
 			if (!isset($this->options['embedded']) || $this->options['embedded'] == false)
 			{
 				$retval .= "&nbsp;<a href=\"#top\">&uArr;&nbsp;".__('top')."</a>";
@@ -126,19 +139,15 @@
 			return $this->_emphasize_off() . "<br><br>";
 		}
 
-		protected function _parse_list($matches,$close=false)
+		protected function _parse_list($matches, $close = false)
 		{
-
-			$listtypes = array(
-				'*'=>'ul',
-				'#'=>'ol',
-			);
-
+			$listtypes = array('*' => 'ul', '#' => 'ol');
 			$output = "";
 
 			$newlevel = ($close) ? 0 : strlen($matches[1]);
 
-			while ($this->list_level!=$newlevel) {
+			while ($this->list_level != $newlevel)
+			{
 				$listchar = substr($matches[1],-1);
 				if (is_string($listchar) || is_numeric($listchar))
 				{
@@ -149,51 +158,59 @@
 					$listtype = 'ul';
 				}
 
-				//$output .= "[".$this->list_level."->".$newlevel."]";
-
-				if ($this->list_level>$newlevel) {
+				if ($this->list_level > $newlevel)
+				{
 					$listtype = '/'.array_pop($this->list_level_types);
 					$this->list_level--;
-				} else {
+				} 
+				else
+				{
 					$this->list_level++;
 					array_push($this->list_level_types,$listtype);
 				}
 				$output .= "\n<{$listtype}>\n";
 			}
 
-			if ($close) return $output;
-
-			$output .= "<li>".$matches[2]."</li>\n";
-
-			return $output;
+			if ($close)
+			{
+				return $output;
+			}
+			else
+			{
+				$output .= "<li>".htmlspecialchars($matches[2])."</li>\n";
+				return $output;
+			}
 		}
 
-		protected function _parse_definitionlist($matches,$close=false)
+		protected function _parse_definitionlist($matches, $close = false)
 		{
-
-			if ($close) {
+			if ($close)
+			{
 				$this->deflist = false;
 				return "</dl>\n";
 			}
-
 
 			$output = "";
 			if (!$this->deflist) $output .= "<dl>\n";
 			$this->deflist = true;
 
-			switch($matches[1]) {
+			switch ($matches[1])
+			{
 				case ';':
-					$term = $matches[2];
-					$p = strpos($term,' :');
-					if ($p!==false) {
-						list($term,$definition) = explode(':',$term);
+					$term = htmlspecialchars($matches[2]);
+					$p = strpos($term, ' :');
+					if ($p !== false)
+					{
+						list($term, $definition) = explode(':', $term);
 						$output .= "<dt>{$term}</dt><dd>{$definition}</dd>";
-					} else {
+					} 
+					else
+					{
 						$output .= "<dt>{$term}</dt>";
 					}
 					break;
 				case ':':
-					$definition = $matches[2];
+					$definition = htmlspecialchars($matches[2]);
 					$output .= "<dd>{$definition}</dd>\n";
 					break;
 			}
@@ -201,9 +218,10 @@
 			return $output;
 		}
 
-		protected function _parse_preformat($matches,$close=false)
+		protected function _parse_preformat($matches, $close = false)
 		{
-			if ($close) {
+			if ($close)
+			{
 				$this->preformat = false;
 				return "</pre>\n";
 			}
@@ -226,12 +244,12 @@
 
 		protected function _parse_underline($matches)
 		{
-			return "<u>".$matches[1]."</u>";
+			return "<u>".htmlspecialchars($matches[1])."</u>";
 		}
 
 		protected function _wiki_link($topic)
 		{
-			return ucfirst(str_replace(' ','_',$topic));
+			return ucfirst(str_replace(' ', '_', $topic));
 		}
 
 		protected function _parse_image($href,$title,$options)
@@ -241,28 +259,16 @@
 
 			$href = $this->image_uri . $href;
 
-			$imagetag = sprintf(
-				'<img src="%s" alt="%s" />',
-				$href,
-				$title
-			);
-			foreach ($options as $k=>$option) {
-				switch($option) {
+			$imagetag = sprintf('<img src="%s" alt="%s" />', $href, $title);
+			foreach ($options as $k=>$option)
+			{
+				switch($option)
+				{
 					case 'frame':
-						$imagetag = sprintf(
-							'<div style="float: right; background-color: #F5F5F5; border: 1px solid #D0D0D0; padding: 2px">'.
-							'%s'.
-							'<div>%s</div>'.
-							'</div>',
-							$imagetag,
-							$title
-						);
+						$imagetag = sprintf('<div style="float: right; background-color: #F5F5F5; border: 1px solid #D0D0D0; padding: 2px">%s<div>%s</div></div>', $imagetag, $title);
 						break;
 					case 'right':
-						$imagetag = sprintf(
-							'<div style="float: right">%s</div>',
-							$imagetag
-						);
+						$imagetag = sprintf('<div style="float: right">%s</div>', $imagetag);
 						break;
 				}
 			}
@@ -291,45 +297,49 @@
 			}
 			$namespace = $matches[3];
 
-			if ($namespace=='Image') {
-				$options = explode('|',$title);
+			if (strtolower($namespace) == 'image')
+			{
+				$options = explode('|', $title);
 				$title = array_pop($options);
 
-				return image_tag($href, array('alt' => $title)); // $this->parse_image($href,$title,$options);
+				return image_tag($href, array('alt' => htmlspecialchars($title))); // $this->parse_image($href,$title,$options);
 			}
 
-			if ($namespace == 'Category')
+			if (strtolower($namespace) == 'category')
 			{
 				if (substr($matches[2], 0, 1) != ':')
 				{
-					$this->addCategorizer($href);
+					$this->addCategorizer(htmlspecialchars($href));
 					return '';
 				}
 			}
 
-			if (strtolower($namespace) == 'wikipedia') {
+			if (strtolower($namespace) == 'wikipedia')
+			{
+				$options = explode('|', $title);
+				$title = array_pop($options);
+
+				return link_tag('http://en.wikipedia.org/wiki/'.$href, $namespace.':'.htmlspecialchars($title)); // $this->parse_image($href,$title,$options);
+			}
+
+			if ($namespace == 'TBG')
+			{
 				$options = explode('|',$title);
 				$title = array_pop($options);
 
-				return link_tag('http://wikipedia.org/wiki/'.$href, $title); // $this->parse_image($href,$title,$options);
+				return link_tag(make_url($href), htmlspecialchars($title)); // $this->parse_image($href,$title,$options);
 			}
 
-			if ($namespace == 'TBG') {
-				$options = explode('|',$title);
+			if (substr($href, 0, 1) == '/')
+			{
+				$options = explode('|', $title);
 				$title = array_pop($options);
 
-				return link_tag(make_url($href), $title); // $this->parse_image($href,$title,$options);
+				return link_tag($href, htmlspecialchars($title)); // $this->parse_image($href,$title,$options);
 			}
 
-			if (substr($href, 0, 1) == '/') {
-				$options = explode('|',$title);
-				$title = array_pop($options);
-
-				return link_tag($href, $title); // $this->parse_image($href,$title,$options);
-			}
-
-			$title = preg_replace('/\(.*?\)/','',$title);
-			$title = preg_replace('/^.*?\:/','',$title);
+			$title = preg_replace('/\(.*?\)/', '', $title);
+			$title = preg_replace('/^.*?\:/', '', $title);
 
 			if (!$namespace || !array_key_exists($namespace, array('ftp', 'http', 'https', 'gopher', 'mailto', 'news', 'nntp', 'telnet', 'wais', 'file', 'prospero', 'aim', 'webcal')))
 			{
@@ -344,7 +354,7 @@
 				$href = $namespace.':'.$this->_wiki_link($href);
 			}
 
-			return link_tag($href, $title);
+			return link_tag($href, htmlspecialchars($title));
 		}
 
 		protected function _parse_externallink($matches)
@@ -357,12 +367,13 @@
 			TBGContext::loadLibrary('ui');
 			$title = null;
 			$title = (array_key_exists(3, $matches)) ? $matches[3] : $matches[2];
-			if (!$title) {
+			if (!$title)
+			{
 				$this->linknumber++;
 				$title = "[{$this->linknumber}]";
 			}
 
-			return link_tag($href, $title, array('target' => '_new'));
+			return link_tag($href, htmlspecialchars($title), array('target' => '_new'));
 		}
 
 		protected function _parse_autosensedlink($matches)
@@ -396,7 +407,6 @@
 		{
 			$amount = strlen($matches[1]);
 			return $this->_emphasize($amount);
-
 		}
 
 		protected function _emphasize_off()
@@ -404,8 +414,8 @@
 			$output = "";
 			if (count($this->openblocks))
 			{
-				foreach ($this->openblocks as $amount=>$state) {
-					if ($state) $output .= $this->emphasize($amount);
+				foreach ($this->openblocks as $amount =>$state) {
+					if ($state) $output .= $this->_emphasize($amount);
 				}
 			}
 
@@ -429,33 +439,162 @@
 			if ($theIssue instanceof TBGIssue)
 			{
 				$output = link_tag(make_url('viewissue', array('issue_no' => $theIssue->getIssueNo(true), 'project_key' => $theIssue->getProject()->getKey())), $theIssue->getFormattedIssueNo() . ' - ' . $theIssue->getTitle(), array('class' => $classname));
-				/*$retval .= '<a href="' . TBGContext::getTBGPath(). $theProject->getName(). '/issue/' . $issue . '" class="inline_issue_link ' . $classname . '" title="';
-				$retval .= $theIssue->getFormattedIssueNo() . ' - ' . TBGContext::getRequest()->sanitize_input($theIssue->getTitle()) . '">' . $text . ': ' . TBGContext::getRequest()->sanitize_input($theIssue->getTitle()) . '</a>';*/
 			}
 			else
 			{
-				$output = $matches[1];
+				$output = htmlspecialchars($matches[1]);
 			}
 			return $output;
 		}
 
 		protected function _parse_variable($matches)
 		{
-			switch($matches[2]) {
-				case 'CURRENTMONTH': return date('m');
+			switch($matches[2])
+			{
+				case 'CURRENTMONTH':
+					return date('m');
 				case 'CURRENTMONTHNAMEGEN':
-				case 'CURRENTMONTHNAME': return date('F');
-				case 'CURRENTDAY': return date('d');
-				case 'CURRENTDAYNAME': return date('l');
-				case 'CURRENTYEAR': return date('Y');
-				case 'CURRENTTIME': return date('H:i');
-				case 'NUMBEROFARTICLES': return 0;
-				case 'PAGENAME': return TBGContext::getResponse()->getPage();
-				case 'NAMESPACE': return 'None';
-				case 'TOC': return '{{TOC}}';
-				case 'SITENAME': return TBGSettings::getTBGname();
-				case 'SITETAGLINE': return TBGSettings::getTBGtagline();
-				default: return '';
+				case 'CURRENTMONTHNAME':
+					return date('F');
+				case 'CURRENTDAY':
+					return date('d');
+				case 'CURRENTDAYNAME':
+					return date('l');
+				case 'CURRENTYEAR':
+					return date('Y');
+				case 'CURRENTTIME':
+					return date('H:i');
+				case 'NUMBEROFARTICLES':
+					return 0;
+				case 'PAGENAME':
+					return TBGContext::getResponse()->getPage();
+				case 'NAMESPACE':
+					return 'None';
+				case 'TOC':
+					return '{{TOC}}';
+				case 'SITENAME':
+					return TBGSettings::getTBGname();
+				case 'SITETAGLINE':
+					return TBGSettings::getTBGtagline();
+				default:
+					return '';
+			}
+		}
+
+		protected function _parse_tableopener($matches)
+		{
+			$output = "<table";
+			if (array_key_exists(1, $matches))
+			{
+				$output .= $matches[1];
+			}
+			if (strpos($output, "cellspacing") === false)
+			{
+				$output .= " cellspacing=0";
+			}
+			$output .= ">";
+			$this->tablemode = true;
+			$this->opentablecol = false;
+			$this->stop_all = true;
+
+			return $output;
+		}
+
+		protected function _parse_tablecloser($matches)
+		{
+			$this->tablemode = false;
+			$this->stop_all = true;
+			$output = '';
+			if ($this->opentablecol == true)
+			{
+				$output .= '</td></tr>';
+				$this->opentablecol = false;
+			}
+			$output .= "</table>";
+
+			return $output;
+		}
+
+		protected function _parse_tablerow($matches)
+		{
+			$this->stop_all = true;
+			$output = '';
+			if ($this->opentablecol == true)
+			{
+				$output .= '</td></tr>';
+				$this->opentablecol = false;
+			}
+			$output .= "<tr>";
+
+			return $output;
+		}
+
+		protected function _parse_tableheader($matches)
+		{
+			$this->opentablecol = false;
+			$output = '<thead>';
+			if (array_key_exists(1, $matches))
+			{
+				$cols = explode(' !! ', $matches[1]);
+				foreach ($cols as $col)
+				{
+					$col = htmlspecialchars($col);
+					$output .= "<th>{$col}</th>";
+				}
+			}
+			$output .= "</thead>";
+
+			return $output;
+		}
+
+		protected function _parse_tablerowcontent($matches)
+		{
+			$this->opentablecol = true;
+			$first = true;
+			$output = '<td>';
+			if (array_key_exists(1, $matches))
+			{
+				$cols = explode(' || ', $matches[1]);
+				foreach ($cols as $col)
+				{
+					if (!$first) $output .= "</td><td>";
+					$output .= htmlspecialchars($col);
+					$output .= '<br>';
+					$first = false;
+				}
+			}
+
+			return $output;
+		}
+
+		protected function _getsmiley($smiley_code)
+		{
+			switch ($smiley_code[1])
+	        {
+				case ":(":
+				case ":-(":
+					return image_tag('smileys/4.png');
+				case ":)":
+				case ":-)":
+					return image_tag('smileys/2.png');
+				case "8)":
+				case "8-)":
+					return image_tag('smileys/3.png');
+				case "B)":
+				case "B-)":
+					return image_tag('smileys/3.png');
+				case ":-/":
+					return image_tag('smileys/10.png');
+				case ":D":
+				case ":-D":
+					return image_tag('smileys/5.png');
+				case ":P":
+				case ":-P":
+					return image_tag('smileys/6.png');
+				case "(!)":
+					return image_tag('smileys/8.png');
+				case "(?)":
+					return image_tag('smileys/9.png');
 			}
 		}
 
@@ -463,10 +602,15 @@
 		{
 			$line_regexes = array();
 			
-			$line_regexes['preformat'] = '^\s{2}(.*?)$';
+			$line_regexes['preformat'] = '^\s{1}(.*?)$';
 			$line_regexes['definitionlist'] = '^([\;\:])(?!\-?[\(\)\D\/P])\s*(.*?)$';
 			$line_regexes['newline'] = '^$';
 			$line_regexes['list'] = '^([\*\#]+)(.*?)$';
+			$line_regexes['tableopener'] = '^\{\|(.*?)$';
+			$line_regexes['tablecloser'] = '^\|\}$';
+			$line_regexes['tablerow'] = '^\|-$';
+			$line_regexes['tableheader'] = '^\!\s{1}(.*?)$';
+			$line_regexes['tablerowcontent'] = '^\|{1,2}\s{1}(.*?)$';
 			$line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
 			$line_regexes['horizontalrule'] = '^----$';
 
@@ -491,10 +635,20 @@
 			$this->stop_all = false;
 
 			$called = array();
-			$line = rtrim($line);
+			//$line = rtrim($line);
 
-			foreach ($line_regexes as $func=>$regex)
+			//$trimmed_line = rtrim($line);
+
+			//if ($trimmed_line) $line = $trimmed_line;
+
+			//if (substr($line, -1) == " ")
+			//{
+				//$line = substr($line, 0, -1);
+			//}
+
+			foreach ($line_regexes as $func => $regex)
 			{
+				//TBGLogging::log($func, 'parsing', 5);
 				if (preg_match("/$regex/i", $line, $matches))
 				{
 					$called[$func] = true;
@@ -517,108 +671,19 @@
 			$isline = (bool) (strlen(trim($line)) > 0);
 
 			// if this wasn't a list item, and we are in a list, close the list tag(s)
-			if (($this->list_level>0) && !array_key_exists('list', $called)) $line = $this->_parse_list(false,true) . $line;
-			if ($this->deflist && !array_key_exists('definitionlist', $called)) $line = $this->_parse_definitionlist(false,true) . $line;
-			if ($this->preformat && !array_key_exists('preformat', $called)) $line = $this->_parse_preformat(false,true) . $line;
+			if (($this->list_level > 0) && !array_key_exists('list', $called)) $line = $this->_parse_list(false, true) . $line;
+			if ($this->deflist && !array_key_exists('definitionlist', $called)) $line = $this->_parse_definitionlist(false, true) . $line;
+
+			if ($this->preformat && !array_key_exists('preformat', $called)) $line = $this->_parse_preformat(false, true) . $line;
+
+			//if ($this->tablemode && (!array_key_exists('tablerow', $called) && !array_key_exists('tableopener', $called))) $line = $this->_parse_tablecloser(array()) . $line;
 
 			// suppress linebreaks for the next line if we just displayed one; otherwise re-enable them
 			if ($isline) $this->ignore_newline = (array_key_exists('newline', $called) || array_key_exists('headers', $called));
 
-			//TBGLogging::log($line);
-
 			return $line;
 		}
 		
-		private function _getsmiley($smiley_code)
-		{
-			switch ($smiley_code[1])
-	        {
-				case ":(": return(image_tag('smileys/4.png'));
-				case ":-(": return(image_tag('smileys/4.png'));
-				case ":)": return(image_tag('smileys/2.png'));
-				case ":-)": return(image_tag('smileys/2.png'));
-				case "8)": return(image_tag('smileys/3.png'));
-				case "8-)": return(image_tag('smileys/3.png'));
-				case "B)": return(image_tag('smileys/3.png'));
-				case "B-)": return(image_tag('smileys/3.png'));
-				case ":-/": return(image_tag('smileys/10.png'));
-				case ":D": return(image_tag('smileys/5.png'));
-				case ":-D": return(image_tag('smileys/5.png'));
-				case ":P": return(image_tag('smileys/6.png'));
-				case ":-P": return(image_tag('smileys/6.png'));
-				case "(!)": return(image_tag('smileys/8.png'));
-				case "(?)": return(image_tag('smileys/9.png'));
-			}
-		}
-
-		protected function _test()
-		{
-			$text = "WikiParser stress tester. <br /> Testing...
-	__TOC__
-
-	== Nowiki test ==
-	<nowiki>[[wooticles|narf]] and '''test''' and stuff.</nowiki>
-
-	== Character formatting ==
-	This is ''emphasized'', this is '''really emphasized''', this is ''''grossly emphasized'''',
-	and this is just '''''freeking insane'''''.
-	Done.
-
-	== Variables ==
-	{{CURRENTDAY}}/{{CURRENTMONTH}}/{{CURRENTYEAR}}
-	Done.
-
-	== Image test ==
-	[[:Image:bao1.jpg]]
-	[[Image:bao1.jpg|frame|alternate text]]
-	[[Image:bao1.jpg|right|alternate text]]
-	Done.
-
-	== Horizontal Rule ==
-	Above the rule.
-	----
-	Done.
-
-	== Hyperlink test ==
-	This is a [[namespace:link target|bitchin hypalink]] to another document for [[click]]ing, with [[(some) hidden text]] and a [[namespace:hidden namespace]].
-
-	A link to an external site [http://www.google.ca] as well another [http://www.esitemedia.com], and a [http://www.blitzaffe.com titled link] -- woo!
-	Done.
-
-	== Preformat ==
-	Not preformatted.
-	 Totally preformatted 01234    o o
-	 Again, this is preformatted    b    <-- It's a face
-	 Again, this is preformatted   ---'
-	Done.
-
-	== Bullet test ==
-	* One bullet
-	* Another '''bullet'''
-	*# a list item
-	*# another list item
-	*#* unordered, ordered, unordered
-	*#* again
-	*# back down one
-	Done.
-
-	== Definition list ==
-	; yes : opposite of no
-	; no : opposite of yes
-	; maybe
-	: somewhere in between yes and no
-	Done.
-
-	== Indent ==
-	Normal
-	: indented woo
-	: more indentation
-	Done.
-
-	";
-			return $this->parse($text);
-		}
-
 		protected function _parseText($options = array())
 		{
 			self::$current_parser = $this;
@@ -634,18 +699,25 @@
 			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*?")*)>\s*(.*?)\s*<\/source>/ism', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 
-			$lines = explode("\n",$text);
+			$lines = explode("\n", $text);
+			//var_dump($text);
 			foreach ($lines as $line)
 			{
+				if (substr($line, -1) == "\r")
+				{
+					$line = substr($line, 0, -1);
+				}
+				//var_dump($line);
 				$output .= $this->_parse_line($line, $options);
 			}
+			//die();
 			
 			$this->nowikis = array_reverse($this->nowikis);
 			$this->codeblocks = array_reverse($this->codeblocks);
 
 			if (!array_key_exists('ignore_toc', $options))
 			{
-				$output = preg_replace_callback('/{{TOC}}/', array($this, "_parse_add_toc"), $output);
+				$output = preg_replace_callback('/\{\{TOC\}\}/', array($this, "_parse_add_toc"), $output);
 			}
 			$output = preg_replace_callback('/\|\|\|NOWIKI\|\|\|/i', array($this, "_parse_restore_nowiki"), $output);
 			$output = preg_replace_callback('/\|\|\|CODE\|\|\|/i', array($this, "_parse_restore_code"), $output);
@@ -704,32 +776,44 @@
 
 			$language = preg_match('/(?<=lang=")(.*?)(?=")/', $params, $matches);
 
-			if($language !== 0) {
+			if ($language !== 0)
+			{
 				$language = $matches[0];
-			} else {
+			} 
+			else
+			{
 				$language = TBGSettings::get('highlight_default_lang');
 			}
 			
 			$numbering_startfrom = preg_match('/(?<=line start=")(.*?)(?=")/', $params, $matches);
-			if($numbering_startfrom !== 0) {
-				$numbering_startfrom = (int)$matches[0];
-			} else {
+			if ($numbering_startfrom !== 0)
+			{
+				$numbering_startfrom = (int) $matches[0];
+			} 
+			else
+			{
 				$numbering_startfrom = 1;
 			}
 			
 			$geshi = new GeSHi($codeblock, $language);
 			
 			$highlighting = preg_match('/(?<=line=")(.*?)(?=")/', $params, $matches);
-			if($highlighting !== 0) {
+			if ($highlighting !== 0)
+			{
 				$highlighting = $matches[0];
-			} else {
+			} 
+			else
+			{
 				$highlighting = false;
 			}
 			
 			$interval = preg_match('/(?<=highlight=")(.*?)(?=")/', $params, $matches);
-			if($interval !== 0) {
+			if ($interval !== 0)
+			{
 				$interval = $matches[0];
-			} else {
+			} 
+			else
+			{
 				$interval = TBGSettings::get('highlight_default_interval');
 			}
 

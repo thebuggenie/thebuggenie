@@ -24,7 +24,7 @@
 				<?php include_component('articledisplay', array('article' => $article, 'show_category_contains' => false, 'show_actions' => false)); ?>
 			<?php endif; ?>
 			<a name="edit_article"></a>
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="post"
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="post">
 				<input type="hidden" name="preview" value="0" id="article_preview">
 				<input type="hidden" name="article_id" value="<?php echo ($article instanceof TBGWikiArticle) ? $article->getID() : 0; ?>">
 				<input type="hidden" name="last_modified" value="<?php echo ($article instanceof TBGWikiArticle) ? $article->getPostedDate() : 0; ?>">

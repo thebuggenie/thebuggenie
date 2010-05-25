@@ -33,7 +33,7 @@
 		
 		protected static $_entries = array();
 
-		protected static $_loglevel = 1;
+		protected static $_loglevel = 5;
 		
 		public static function log($message, $category = 'main', $level = 1)
 		{

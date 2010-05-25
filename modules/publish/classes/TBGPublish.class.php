@@ -124,6 +124,7 @@
 				B2DB::getTable('TBGArticlesTable')->drop();
 				B2DB::getTable('TBGBillboardPostsTable')->drop();
 			}
+			TBGLinksTable::getTable()->removeByTargetTypeTargetIDandLinkID('wiki', 0);
 			parent::_uninstall();
 		}
 

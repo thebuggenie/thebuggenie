@@ -374,10 +374,6 @@
 				{
 					return $this->__sanitize_string($this->_request_parameters[$key]);
 				}
-				elseif (is_string($this->_request_parameters[$key]) && $sanitized)
-				{
-					return $this->__strip_if_needed($this->_request_parameters[$key]);
-				}
 				elseif ($sanitized)
 				{
 					return $this->__sanitize_params($this->_request_parameters[$key]);

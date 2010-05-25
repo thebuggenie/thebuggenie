@@ -102,7 +102,7 @@
 			$sql .= ", PRIMARY KEY ($qc" . $this->_getRealColumnFieldName($this->id_column) . "$qc) ";
 			$sql .= ') ';
 			if (B2DB::getDBtype() != 'pgsql') $sql .= 'AUTO_INCREMENT=' . $this->_autoincrement_start_at . ' ';
-			if (B2DB::getDBtype() == 'mysql') $sql .= 'DEFAULT CHARSET=' . $this->_charset;
+			$sql .= 'CHARACTER SET ' . $this->_charset;
 			return $sql;
 		}
 		

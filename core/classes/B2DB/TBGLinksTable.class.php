@@ -111,12 +111,16 @@
 			return $this->getLinks('issue', $issue_id);
 		}
 		
-		public function removeByTargetTypeTargetIDandLinkID($target_type, $target_id, $link_id)
+		public function removeByTargetTypeTargetIDandLinkID($target_type, $target_id, $link_id = null)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::TARGET_TYPE, $target_type);
 			$crit->addWhere(self::TARGET_ID, $target_id);
-			$crit->addWhere(self::ID, $link_id);
+			if ($link_id !== null)
+			{
+				$crit->addWhere(self::ID, $link_id);
+			}
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doDelete($crit);
 			
 			return true;

@@ -1,75 +1,3 @@
-
-.billboarddiv
-{
-	padding: 3px;
-	background-color: #F1F1F1;
-	border: 1px solid #DDD;
-}
-
-.billboardinfo
-{
-	width: 100%;
-	background-color: #FFF;
-	font-size: 10px;
-	height: 12px;
-	padding-bottom: 3px;
-	margin-bottom: 2px;
-	border-bottom: 1px solid #DDD;
-}
-
-.billboardpostdiv
-{
-	margin-top: 0px;
-	padding: 5px;
-	background-color: #FFF;
-}
-
-.billboardpost
-{
-	text-align: right;
-	width: 100%;
-	float: right;
-}
-
-.billboardtable
-{
-	table-layout: auto;
-	width: 100%;
-	background-color: #FFF;
-	margin-top: 0px;
-	margin-bottom: 10px;
-	padding: 0px;
-}
-
-.bbfirsttd
-{
-	width: auto;
-	padding: 0px;
-}
-
-.bbspacingtd
-{
-	width: 10px;
-}
-
-.bbteamtd
-{
-	width: 325px;
-	padding: 0px;
-}
-
-#article_list, .billboard_list
-{
-	list-style: none;
-	margin: 0px;
-	padding: 0px;
-}
-
-#article_list li
-{
-	cursor: move;
-}
-
 .article_list { list-style-type: none; margin: 5px 0 0 5px; padding: 0; font-size: 13px; }
 .article_list img { float: left; margin-right: 5px; }
 .article_list span { font-size: 10px; }
@@ -121,6 +49,11 @@
 .article .toc:hover .content { display: inherit; }
 .article .toc:hover .faded_medium { display: none; }
 .article .toc a, .article .toc a:hover { border-bottom: 0; }
+
+.article table { border: 0; border-collapse: collapse; }
+.article.edit table, .article.edit table td { border: 0; }
+.article table td, .article table th { border: 1px solid #DDD; padding: 2px; font-size: 12px; }
+.article table th { text-align: center; }
 
 .category_list { padding: 0; margin: 0 0 10px 10px; width: 100%; }
 .category_list li { margin-left: 10px; float: left; font-size: 13px; width: 33%; }

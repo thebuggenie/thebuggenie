@@ -22,7 +22,7 @@
 		protected $id_column;
 		protected $b2db_alias;
 		protected $_columns;
-		protected $_charset = 'latin1';
+		protected $_charset = 'utf8';
 		protected $_autoincrement_start_at = 1;
 		protected $_foreigntables = array();
 

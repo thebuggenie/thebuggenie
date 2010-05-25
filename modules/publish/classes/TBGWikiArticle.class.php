@@ -114,7 +114,6 @@
 					$this->_content = $row->get(TBGArticlesTable::CONTENT);
 					$this->_posted_date = $row->get(TBGArticlesTable::DATE);
 					$this->_author = $row->get(TBGArticlesTable::AUTHOR);
-
 					$this->_is_published = ($row->get(TBGArticlesTable::IS_PUBLISHED) == 1) ? true : false;
 				}
 				else
