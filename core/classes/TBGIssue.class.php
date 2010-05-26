@@ -3402,7 +3402,10 @@
 			{
 				$uids[] = $this->getOwner()->getID();
 			}
-	
+
+			// Add the poster
+			$uids[] = $this->getPostedByID();
+
 			// Add all users from the team assigned to the issue if valid
 			// or add the assigned user if a user is assigned to the issue
 			if ($this->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM)
@@ -3911,7 +3914,7 @@
 		 * 
 		 * @return boolean
 		 */
-		public function save($notify = true)
+		public function save($notify = true, $new = false)
 		{
 			$comment_lines = array();
 			$is_saved_estimated = false;
@@ -4245,8 +4248,11 @@
 				B2DB::getTable('TBGIssueSpentTimes')->saveSpentTime($this->getID(), $this->_spentmonths, $this->_spentweeks, $this->_spentdays, $this->_spenthours, $this->_spentpoints);
 			}
 
-			$event = TBGEvent::createNew('core', 'TBGIssue::save', $this, array('changed_properties' => $this->_getChangedProperties(), 'comment' => $comment, 'comment_lines' => $comment_lines, 'notify' => $notify, 'updated_by' => TBGContext::getUser()));
-			$event->trigger();
+			if (!$new)
+			{
+				$event = TBGEvent::createNew('core', 'TBGIssue::save', $this, array('changed_properties' => $this->_getChangedProperties(), 'comment' => $comment, 'comment_lines' => $comment_lines, 'notify' => $notify, 'updated_by' => TBGContext::getUser()));
+				$event->trigger();
+			}
 
 			$this->_clearChangedProperties();
 			

@@ -852,7 +852,7 @@
 					$issue->setCustomField($customdatatype->getKey(), $selected_option->getValue());
 				}
 			}
-			$issue->save(false);
+			$issue->save(false, true);
 			if (isset($fields_array['edition']) && $this->selected_edition instanceof TBGEdition) $issue->addAffectedEdition($this->selected_edition);
 			if (isset($fields_array['build']) && $this->selected_build instanceof TBGBuild) $issue->addAffectedBuild($this->selected_build);
 			if (isset($fields_array['component']) && $this->selected_component instanceof TBGComponent) $issue->addAffectedComponent($this->selected_component);
