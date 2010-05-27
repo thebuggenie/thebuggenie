@@ -222,9 +222,24 @@
 			}
 			self::$_dsn = $dsn;
 		}
-		
+
+		protected static function _generateDSN()
+		{
+			$dsn = self::getDBtype() . ":host=" . self::getHost();
+			if (self::getPort())
+			{
+				$dsn .= ';port=' . self::getPort();
+			}
+			$dsn .= ';dbname='.self::getDBname();
+			self::$_dsn = $dsn;
+		}
+
 		public static function getDSN()
 		{
+			if (self::$_dsn === null)
+			{
+				self::_generateDSN();
+			}
 			return self::$_dsn;
 		}
 		
@@ -281,6 +296,7 @@
 		public static function setDBname($dbname)
 		{
 			self::$_db_name = $dbname;
+			self::$_dsn = null;
 		}
 
 		public static function getDBname()

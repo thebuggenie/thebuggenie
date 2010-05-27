@@ -24,7 +24,7 @@
 		 * @var PDO
 		 */
 		protected static $_db_connection = null;
-		
+
 		public static function doConnect()
 		{
 			if (!class_exists('PDO'))
@@ -35,24 +35,9 @@
 			{
 				$uname = self::getUname();
 				$pwd = self::getPasswd();
-				if (!($dsn = self::getDSN()))
+				if (self::$_db_connection instanceof PDO)
 				{
-					$dsn = self::getDBtype() . ":host=" . self::getHost();
-					if (self::getPort())
-					{
-						$dsn .= ';port=' . self::getPort();
-					}
-					/*switch (self::getDBtype())
-					{
-						case 'pgsql':
-							$dsn .= ";dbname=" . self::getDBname() . "\'";
-							break;
-						default:
-							$dsn .= ';dbname='.self::getDBname();
-							break;
-					}*/
-					$dsn .= ';dbname='.self::getDBname();
-					self::$_dsn = $dsn;
+					self::$_db_connection = null;
 				}
 				self::$_db_connection = new PDO(self::getDSN(), $uname, $pwd);
 				if (!self::$_db_connection instanceof PDO)

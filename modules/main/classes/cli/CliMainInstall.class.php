@@ -191,6 +191,8 @@
 							BaseB2DB::initialize(true);
 							B2DB::doConnect();
 							B2DB::createDatabase($db_name);
+							B2DB::setDBname($db_name);
+							B2DB::doConnect();
 						}
 						catch (Exception $e)
 						{
