@@ -394,21 +394,28 @@
 				{
 					throw new Exception('The Bug Genie seems installed, but B2DB isn\'t configured. This usually indicates an error with the installation. Try removing the file ' . THEBUGGENIE_PATH . 'installed and try again.');
 				}
-				
-				TBGLogging::log('Loading first batch of routes', 'routing');
-				if (!($routes_1 = TBGCache::get('routes_1')))
+
+				if (self::getEnvironment() != self::ENV_CLI)
 				{
-					TBGLogging::log('generating routes', 'routing');
-					require THEBUGGENIE_PATH . 'core/load_routes.inc.php';
-					TBGCache::add('routes_1', self::getRouting()->getRoutes());
+					TBGLogging::log('Loading first batch of routes', 'routing');
+					if (!($routes_1 = TBGCache::get('routes_1')))
+					{
+						TBGLogging::log('generating routes', 'routing');
+						require THEBUGGENIE_PATH . 'core/load_routes.inc.php';
+						TBGCache::add('routes_1', self::getRouting()->getRoutes());
+					}
+					else
+					{
+						TBGLogging::log('loading routes from cache', 'routing');
+						self::getRouting()->setRoutes($routes_1);
+					}
+					TBGLogging::log('...done', 'routing');
 				}
-				else
+				if (self::$_installmode)
 				{
-					TBGLogging::log('loading routes from cache', 'routing');
-					self::getRouting()->setRoutes($routes_1);
+					self::$_modules = array();
+					return true;
 				}
-				TBGLogging::log('...done', 'routing');
-				if (self::$_installmode) return true;
 
 				TBGLogging::log("Setting current scope");
 				self::setScope();
