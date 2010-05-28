@@ -72,7 +72,7 @@
 			$this->predefined_search = $request->getParameter('predefined_search', false);
 			$this->templatename = ($request->hasParameter('template') && in_array($request->getParameter('template'), array_keys($this->getTemplates(false)))) ? $request->getParameter('template') : 'results_normal';
 			$this->template_parameter = $request->getParameter('template_parameter');
-			$this->searchtitle = __('Search results');
+			$this->searchtitle = TBGContext::getI18n()->__('Search results');
 			$this->issavedsearch = false;
 
 			if ($request->hasParameter('saved_search'))

@@ -39,6 +39,12 @@
 		protected $toc = array();
 		protected $text = null;
 
+		/**
+		 * Add a regex to be parsed, with a function callback
+		 *
+		 * @param string $regex
+		 * @param callback $callback
+		 */
 		public static function addRegex($regex, $callback)
 		{
 			if (self::$additional_regexes === null) self::$additional_regexes = array();
@@ -123,7 +129,7 @@
 			$retval .= ">" . htmlspecialchars($content);
 			if (!isset($this->options['embedded']) || $this->options['embedded'] == false)
 			{
-				$retval .= "&nbsp;<a href=\"#top\">&uArr;&nbsp;".__('top')."</a>";
+				$retval .= "&nbsp;<a href=\"#top\">&uArr;&nbsp;".TBGContext::getI18n()->__('top')."</a>";
 			}
 			$retval .= "</h{$level}>\n";
 
@@ -317,9 +323,9 @@
 			if (strtolower($namespace) == 'wikipedia')
 			{
 				$options = explode('|', $title);
-				$title = array_pop($options);
+				$title = (array_key_exists(5, $matches) && (strpos($matches[5], '|') !== false) ? '' : $namespace.':') . array_pop($options);
 
-				return link_tag('http://en.wikipedia.org/wiki/'.$href, $namespace.':'.htmlspecialchars($title)); // $this->parse_image($href,$title,$options);
+				return link_tag('http://en.wikipedia.org/wiki/'.$href, htmlspecialchars($title)); // $this->parse_image($href,$title,$options);
 			}
 
 			if ($namespace == 'TBG')
@@ -681,6 +687,12 @@
 			// suppress linebreaks for the next line if we just displayed one; otherwise re-enable them
 			if ($isline) $this->ignore_newline = (array_key_exists('newline', $called) || array_key_exists('headers', $called));
 
+			if (substr($line, -1) != "\n")
+			{
+				//var_dump($line);
+				$line = $line . " \n";
+			}
+
 			return $line;
 		}
 		
@@ -709,6 +721,8 @@
 				}
 				//var_dump($line);
 				$output .= $this->_parse_line($line, $options);
+				//if ($thisline != '') $thisline .= ' ';
+				//$thisline;
 			}
 			//die();
 			

@@ -118,7 +118,12 @@
 
 			return $ret;
 		}
-		
+
+		/**
+		 * Get added values
+		 *
+		 * @return array
+		 */
 		public function getValues()
 		{
 			return $this->values;
@@ -278,6 +283,11 @@
 			return $this;
 		}
 
+		/**
+		 * Generates "select all" SQL
+		 *
+		 * @return string
+		 */
 		protected function _generateSelectAllSQL()
 		{
 			$sqls = array();
@@ -290,6 +300,9 @@
 			return join(', ', $sqls);
 		}
 		
+		/**
+		 * Adds all select columns from all available tables in the query
+		 */
 		protected function _addAllSelectColumns()
 		{
 			foreach ($this->fromtable->getAliasColumns() as $aColumn)
@@ -304,7 +317,12 @@
 				}
 			}
 		}
-		
+
+		/**
+		 * Retrieve a list of foreign tables
+		 *
+		 * @return array
+		 */
 		public function getForeignTables()
 		{
 			return $this->jointables;
@@ -319,7 +337,14 @@
 		{
 			return $this->fromtable;
 		}
-		
+
+		/**
+		 * Get the column name part of a column
+		 *
+		 * @param string $column
+		 *
+		 * @return string
+		 */
 		public function getColumnName($column)
 		{
 			if (stripos($column, '.') > 0)
@@ -331,12 +356,26 @@
 				return $column;
 			}
 		}
-		
+
+		/**
+		 * Get all select columns
+		 *
+		 * @return array
+		 */
 		public function getSelectionColumns()
 		{
 			return $this->selections;
 		}
-		
+
+		/**
+		 * Return a select column
+		 *
+		 * @param string $column
+		 * @param string $join_column[optional]
+		 * @param boolean $debug[optional]
+		 * 
+		 * @return string
+		 */
 		public function getSelectionColumn($column, $join_column = null, $debug = false)
 		{
 			if ($column instanceof B2DBCriterion)
@@ -381,7 +420,14 @@
 			}
 			throw new B2DBException('Couldn\'t find table name \'' . $table_name . '\' for column \'' . $column_name . '\', column was \'' . $column . '\'. If this is a column from a foreign table, make sure the foreign table is joined.');
 		}
-		
+
+		/**
+		 * Get the selection alias for a specified column
+		 *
+		 * @param string $column
+		 * 
+		 * @return string
+		 */
 		public function getSelectionAlias($column)
 		{
 			if (!is_numeric($column) && !is_string($column))
@@ -498,6 +544,11 @@
 			return $this->sql;
 		}
 
+		/**
+		 * Add all available foreign tables
+		 *
+		 * @param array $join [optional]
+		 */
 		public function setupJoinTables($join = 'all')
 		{
 			if (!is_array($join) && $join == 'all')
@@ -520,7 +571,12 @@
 			}
 			
 		}
-		
+
+		/**
+		 * Generate a "select" query
+		 *
+		 * @param boolean $all [optional]
+		 */
 		public function generateSelectSQL($all = false)
 		{
 			if (!$this->fromtable instanceof B2DBTable)
@@ -540,6 +596,9 @@
 			$this->sql = $sql;
 		}
 
+		/**
+		 * Generate a "count" query
+		 */
 		public function generateCountSQL()
 		{
 			if (!$this->fromtable instanceof B2DBTable)
@@ -555,7 +614,12 @@
 
 			$this->sql = $sql;
 		}
-		
+
+		/**
+		 * Add a specified value
+		 *
+		 * @param mixed $value
+		 */
 		protected function _addValue($value)
 		{
 			if (is_bool($value))
@@ -576,6 +640,9 @@
 			}
 		}
 
+		/**
+		 * Generate an "update" query
+		 */
 		public function generateUpdateSQL()
 		{
 			if (!$this->fromtable instanceof B2DBTable)
@@ -591,6 +658,9 @@
 			$this->sql = $sql;
 		}
 
+		/**
+		 * Generate an "insert" query
+		 */
 		public function generateInsertSQL()
 		{
 			foreach ($this->criterias as $a_crit)
@@ -612,6 +682,9 @@
 			$this->sql = $sql;
 		}
 
+		/**
+		 * Generate a "delete" query
+		 */
 		public function generateDeleteSQL()
 		{
 			if (!$this->fromtable instanceof B2DBTable)
@@ -625,9 +698,13 @@
 			$sql .= $this->_generateWhereSQL(true);
 
 			$this->sql = $sql;
-			return $sql;
 		}
 
+		/**
+		 * Generate the "delete" part of the query
+		 * 
+		 * @return string
+		 */
 		protected function _generateDeleteSQL()
 		{
 			$sql = 'DELETE FROM ';
@@ -636,6 +713,11 @@
 			return $sql;
 		}
 
+		/**
+		 * Generate the "insert" part of the query
+		 *
+		 * @return string
+		 */
 		protected function _generateInsertSQL()
 		{
 			$sql = 'INSERT INTO ';
@@ -685,6 +767,11 @@
 			return $sql;
 		}
 
+		/**
+		 * Generate the "update" part of the query
+		 *
+		 * @return string
+		 */
 		protected function _generateUpdateSQL()
 		{
 			$sql = 'UPDATE ';
@@ -705,6 +792,11 @@
 			return $sql;
 		}
 
+		/**
+		 * Generate the "select" part of the query
+		 *
+		 * @return string
+		 */
 		protected function _generateSelectSQL()
 		{
 			$sql = 'SELECT ';
@@ -772,6 +864,11 @@
 			return $sql;
 		}
 
+		/**
+		 * Generate the "count" part of the query
+		 *
+		 * @return string
+		 */
 		protected function _generateCountSQL()
 		{
 			$sql = 'SELECT COUNT(';
@@ -784,7 +881,10 @@
 
 			return $sql;
 		}
-		
+
+		/**
+		 * Set the query to distinct mode
+		 */
 		public function setDistinct()
 		{
 			$this->distinct = true;
@@ -924,6 +1024,13 @@
 			return $sql;
 		}
 
+		/**
+		 * Generate the "where" part of the query
+		 *
+		 * @param boolean $strip[optional]
+		 * 
+		 * @return string
+		 */
 		protected function _generateWhereSQL($strip = false)
 		{
 			$sql = '';
@@ -998,6 +1105,11 @@
 			return $sql;
 		}
 
+		/**
+		 * Generate the "join" part of the sql
+		 *
+		 * @return string
+		 */
 		protected function _generateJoinSQL()
 		{
 			$sql = ' FROM ' . B2DB::getTablePrefix() . $this->fromtable->getB2DBName() . ' ' . $this->fromtable->getB2DBAlias();

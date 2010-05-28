@@ -64,14 +64,14 @@
 							TBGLogging::log('No upload errors');
 							if (filesize($thefile['tmp_name']) > TBGSettings::getUploadsMaxSize(true) && TBGSettings::getUploadsMaxSize() > 0)
 							{
-								throw new Exception(__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => TBGSettings::getUploadsMaxSize())));
+								throw new Exception(TBGContext::getI18n()->__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => TBGSettings::getUploadsMaxSize())));
 							}
 							TBGLogging::log('Upload filesize ok');
 							$extension = substr(basename($thefile['name']), strpos(basename($thefile['name']), '.'));
 							if ($extension == '')
 							{
 								TBGLogging::log('OOps, could not determine upload filetype', 'main', TBGLogging::LEVEL_WARNING_RISK);
-								throw new Exception(__('Could not determine filetype'));
+								throw new Exception(TBGContext::getI18n()->__('Could not determine filetype'));
 							}
 							else
 							{
@@ -86,7 +86,7 @@
 										if (strtolower(trim($extension)) == strtolower(trim($an_ext)))
 										{
 											TBGLogging::log('Upload extension not ok');
-											throw new Exception(__('This filetype is not allowed'));
+											throw new Exception(TBGContext::getI18n()->__('This filetype is not allowed'));
 										}
 									}
 									TBGLogging::log('Upload extension ok');
@@ -107,13 +107,13 @@
 									if (!$is_ok)
 									{
 										TBGLogging::log('Upload extension not ok');
-										throw new Exception(__('This filetype is not allowed'));
+										throw new Exception(TBGContext::getI18n()->__('This filetype is not allowed'));
 									}
 								}
 								if (in_array(strtolower(trim($extension)), array('php', 'asp')))
 								{
 									TBGLogging::log('Upload extension is php or asp');
-									throw new Exception(__('This filetype is not allowed'));
+									throw new Exception(TBGContext::getI18n()->__('This filetype is not allowed'));
 								}
 							}
 							if (is_uploaded_file($thefile['tmp_name']))
@@ -125,7 +125,7 @@
 								if (!move_uploaded_file($thefile['tmp_name'], $files_dir . $new_filename))
 								{
 									TBGLogging::log('Moving uploaded file failed!');
-									throw new Exception(__('An error occured when saving the file'));
+									throw new Exception(TBGContext::getI18n()->__('An error occured when saving the file'));
 								}
 								else
 								{
@@ -146,7 +146,7 @@
 							else
 							{
 								TBGLogging::log('Uploaded file was not uploaded correctly');
-								throw new Exception(__('The file was not uploaded correctly'));
+								throw new Exception(TBGContext::getI18n()->__('The file was not uploaded correctly'));
 							}
 						}
 						else
@@ -156,16 +156,16 @@
 							{
 								case UPLOAD_ERR_INI_SIZE:
 								case UPLOAD_ERR_FORM_SIZE:
-									throw new Exception(__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => TBGSettings::getUploadsMaxSize())));
+									throw new Exception(TBGContext::getI18n()->__('You cannot upload files bigger than %max_size% MB', array('%max_size%' => TBGSettings::getUploadsMaxSize())));
 									break;
 								case UPLOAD_ERR_PARTIAL:
-									throw new Exception(__('The upload was interrupted, please try again'));
+									throw new Exception(TBGContext::getI18n()->__('The upload was interrupted, please try again'));
 									break;
 								case UPLOAD_ERR_NO_FILE:
-									throw new Exception(__('No file was uploaded'));
+									throw new Exception(TBGContext::getI18n()->__('No file was uploaded'));
 									break;
 								default:
-									throw new Exception(__('An unhandled error occured') . ': ' . $thefile['error']);
+									throw new Exception(TBGContext::getI18n()->__('An unhandled error occured') . ': ' . $thefile['error']);
 									break;
 							}
 						}
@@ -173,13 +173,13 @@
 					else
 					{
 						TBGLogging::log('Uploads not enabled');
-						throw new Exception(__('Uploads are not enabled'));
+						throw new Exception(TBGContext::getI18n()->__('Uploads are not enabled'));
 					}
 					TBGLogging::log('Uploaded file could not be uploaded');
-					throw new Exception(__('The file could not be uploaded'));
+					throw new Exception(TBGContext::getI18n()->__('The file could not be uploaded'));
 				}
 				TBGLogging::log('Could not find uploaded file' . $key);
-				throw new Exception(__('Could not find the uploaded file. Please make sure that it is not too big.'));
+				throw new Exception(TBGContext::getI18n()->__('Could not find the uploaded file. Please make sure that it is not too big.'));
 			}
 			catch (Exception $e)
 			{

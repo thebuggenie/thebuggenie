@@ -190,12 +190,12 @@
 							$burndown_data['estimations']['hours'][$key] -= $burndown_data['spent_times']['hours'][$key];
 						}
 					}
-					$datasets[] = array('values' => array_values($burndown_data['estimations']['hours']), 'label' => __('Remaining effort'));
+					$datasets[] = array('values' => array_values($burndown_data['estimations']['hours']), 'label' => TBGContext::getI18n()->__('Remaining effort'));
 					$this->labels = array_keys($burndown_data['estimations']['hours']);
 				}
 				else
 				{
-					$datasets[] = array('values' => array(0), 'label' => __('Remaining effort'));
+					$datasets[] = array('values' => array(0), 'label' => TBGContext::getI18n()->__('Remaining effort'));
 					$this->labels = array(0);
 				}
 				$this->datasets = $datasets;
@@ -343,8 +343,8 @@
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			$datasets = array();
 			$issues = $this->selected_project->getLast30Counts();
-			$datasets[] = array('values' => $issues['open'], 'label' => __('Issues opened'));
-			$datasets[] = array('values' => $issues['closed'], 'label' => __('Issues closed'));
+			$datasets[] = array('values' => $issues['open'], 'label' => TBGContext::getI18n()->__('Issues opened'));
+			$datasets[] = array('values' => $issues['closed'], 'label' => TBGContext::getI18n()->__('Issues closed'));
 			$this->datasets = $datasets;
 			$this->labels = array(30,'','','','',25,'','','','',20,'','','','',15,'','','','',10,'','','','',5,'','','','',0);
 		}

@@ -18,7 +18,14 @@
 	 */
 	class TBGActionComponent extends TBGParameterholder
 	{
-		
+
+		/**
+		 * Get module and template for a module/template combination
+		 *
+		 * @param string $template
+		 * 
+		 * @return array
+		 */
 		protected static function getModuleAndTemplate($template)
 		{
 			if ($separator_pos = strpos($template, '/'))
@@ -32,7 +39,13 @@
 			}
 			return array('module' => $module, 'file' => $template);
 		}
-		
+
+		/**
+		 * Include a component from a module
+		 *
+		 * @param string $template
+		 * @param array $params
+		 */
 		public static function includeComponent($template, $params = array())
 		{
 			TBGContext::loadLibrary('ui');
@@ -65,7 +78,13 @@
 			$actionClass->$actionToRunName();
 			self::presentTemplate($template_name, $actionClass->getParameterHolder());
 		}
-		
+
+		/**
+		 * Include a template from a module
+		 *
+		 * @param string $template
+		 * @param array $params
+		 */
 		public static function includeTemplate($template, $params = array())
 		{
 			TBGContext::loadLibrary('ui');
@@ -80,7 +99,12 @@
 			}
 			self::presentTemplate($template_name, $params);
 		}
-		
+
+		/**
+		 * Present a template
+		 * @param string $template_file
+		 * @param array $params
+		 */
 		protected static function presentTemplate($template_file, $params = array())
 		{
 			foreach ($params as $key => $val)
@@ -109,6 +133,8 @@
 			 * @global TBGUser The user object
 			 */
 			$tbg_user = TBGContext::getUser();
+
+			TBGContext::loadLibrary('common');
 			
 			require $template_file;
 		}

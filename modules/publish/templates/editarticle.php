@@ -40,7 +40,7 @@
 				<br style="clear: both;">
 				<label for="article_content" style="margin-left: 5px; clear: both;"><?php echo __('Article content'); ?></label><br>
 				<div style="margin: 5px 10px 5px 5px;">
-					<textarea id="article_content" name="new_article_content" style="width: 100%; margin: 0; font-size: 12px; height: 350px;"><?php echo $article_content; ?></textarea>
+					<textarea id="article_content" name="new_article_content" style="width: 100%; margin: 0; font-size: 12px; height: 350px;"><?php echo htmlspecialchars($article_content); ?></textarea>
 				</div>
 				<div class="faded_dark" style="padding: 5px; font-size: 13px;"><?php echo __('For help and tips on how to format your article, see %wiki_formatting%', array('%wiki_formatting%' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting', array('target' => '_new')))); ?></div>
 				<div class="rounded_box lightgrey borderless" style="margin: 0 5px 5px 5px; padding: 7px; min-height: 27px;">

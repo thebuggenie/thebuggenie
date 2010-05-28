@@ -18,6 +18,7 @@
 	 */
 	abstract class BaseB2DBStatement
 	{
+
 		/**
 		 * Current BaseB2DBCriteria
 		 *
@@ -29,6 +30,27 @@
 		public $statement;
 		
 		public $custom_sql = '';
+
+		/**
+		 * Returns a statement
+		 *
+		 * @param B2DBCriteria $crit
+		 *
+		 * @return B2DBStatement
+		 */
+		public static function getPreparedStatement($crit)
+		{
+			try
+			{
+				$statement = new B2DBStatement($crit);
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
+
+			return $statement;
+		}
 
 		public function __construct($crit)
 		{
@@ -71,13 +93,25 @@
 		{
 			return $this->crit;
 		}
-		
+
+		/**
+		 * Return the ID for the inserted record
+		 */
 		abstract public function getInsertID();
-		
+
+		/**
+		 * Return the number of affected rows
+		 */
 		abstract public function getNumRows();
-		
+
+		/**
+		 * Fetch the resultset
+		 */
 		abstract public function fetch();
-		
+
+		/**
+		 * Prepare the statement
+		 */
 		abstract protected function _prepare();
 		
 	}

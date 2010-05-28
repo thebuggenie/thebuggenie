@@ -41,23 +41,43 @@
 			self::$_tables[get_class($table)] = $table;
 			return $table;
 		}
-		
+
+		/**
+		 * Enable or disable debug mode
+		 *
+		 * @param boolean $debug_mode
+		 */
 		public static function setDebugMode($debug_mode)
 		{
 			self::$_debug_mode = $debug_mode;
 		}
-		
+
+		/**
+		 * Return whether or not debug mode is enabled
+		 *
+		 * @return boolean
+		 */
 		public static function isDebugMode()
 		{
 			return self::$_debug_mode;
 		}
-		
+
+		/**
+		 * Add a table alias to alias counter
+		 *
+		 * @return integer
+		 */
 		public static function addAlias()
 		{
 			return self::$_aliascnt++;
 		}
-		
-		public static function initialize($dont_load_params = false)
+
+		/**
+		 * Initialize B2DB and load related B2DB classes
+		 *
+		 * @param boolean $load_parameters[optional] whether to load connection parameters
+		 */
+		public static function initialize($load_parameters = true)
 		{
 			if (!defined('B2DB_BASEPATH'))
 			{
@@ -66,7 +86,7 @@
 			
 			try
 			{
-				if (!$dont_load_params)
+				if ($load_parameters)
 				{
 					if (file_exists(B2DB_BASEPATH . 'sql_parameters.inc.php'))
 					{
@@ -95,7 +115,10 @@
 			}
 			
 		}
-		
+
+		/**
+		 * Store connection parameters
+		 */
 		public static function saveConnectionParameters()
 		{
 			$string = "<?php\n";
@@ -159,31 +182,59 @@
 			return self::$_tables[$tbl_name];
 		}
 
+		/**
+		 * Return all tables registered
+		 *
+		 * @return array
+		 */
 		public static function getTables()
 		{
 			return self::$_tables;
 		}
 
+		/**
+		 * Set tables
+		 *
+		 * @param array $tables
+		 */
 		public static function setTables($tables)
 		{
 			self::$_tables = $tables;
 		}
-		
+
+		/**
+		 * Register a new SQL call
+		 */
 		public static function sqlHit()
 		{
 			self::$_sqlhits++;
 		}
 
+		/**
+		 * Get number of SQL calls
+		 *
+		 * @return integer
+		 */
 		public static function getSQLHits()
 		{
 			return (int) self::$_sqlhits;
 		}
 
+		/**
+		 * Return the database connection object
+		 * 
+		 * @return PDO
+		 */
 		public static function getDBlink()
 		{
 			return self::$_db_connection;
 		}
 
+		/**
+		 * Set the DSN
+		 *
+		 * @param string $dsn
+		 */
 		public static function setDSN($dsn)
 		{
 			$dsn_details = parse_url($dsn);
@@ -223,6 +274,9 @@
 			self::$_dsn = $dsn;
 		}
 
+		/**
+		 * Generate the DSN when needed
+		 */
 		protected static function _generateDSN()
 		{
 			$dsn = self::getDBtype() . ":host=" . self::getHost();
@@ -234,6 +288,11 @@
 			self::$_dsn = $dsn;
 		}
 
+		/**
+		 * Return current DSN
+		 *
+		 * @return string
+		 */
 		public static function getDSN()
 		{
 			if (self::$_dsn === null)
@@ -242,68 +301,133 @@
 			}
 			return self::$_dsn;
 		}
-		
+
+		/**
+		 * Set the database host
+		 *
+		 * @param string $host
+		 */
 		public static function setHost($host)
 		{
 			self::$_db_host = $host;
 		}
-		
+
+		/**
+		 * Return the database host
+		 *
+		 * @return string
+		 */
 		public static function getHost()
 		{
 			return self::$_db_host;
 		}
-		
+
+		/**
+		 * Return the database port
+		 *
+		 * @return integer
+		 */
 		public static function getPort()
 		{
 			return self::$_db_port;
 		}
-		
+
+		/**
+		 * Set the database port
+		 * 
+		 * @param integer $port 
+		 */
 		public static function setPort($port)
 		{
 			self::$_db_port = $port;
 		}
 
+		/**
+		 * Set database username
+		 *
+		 * @param string $uname
+		 */
 		public static function setUname($uname)
 		{
 			self::$_db_uname = $uname;
 		}
 
+		/**
+		 * Get database username
+		 *
+		 * @return string
+		 */
 		public static function getUname()
 		{
 			return self::$_db_uname;
 		}
 
+		/**
+		 * Set the database table prefix
+		 *
+		 * @param string $prefix
+		 */
 		public static function setTablePrefix($prefix)
 		{
 			self::$_tableprefix = $prefix;
 		}
 
+		/**
+		 * Get the database table prefix
+		 *
+		 * @return string
+		 */
 		public static function getTablePrefix()
 		{
 			return self::$_tableprefix;
 		}
 
+		/**
+		 * Set the database password
+		 *
+		 * @param string $upwd
+		 */
 		public static function setPasswd($upwd)
 		{
 			self::$_db_pwd = $upwd;
 		}
 
+		/**
+		 * Return the database password
+		 *
+		 * @return string
+		 */
 		public static function getPasswd()
 		{
 			return self::$_db_pwd;
 		}
-		
+
+		/**
+		 * Set the database name
+		 *
+		 * @param string $dbname
+		 */
 		public static function setDBname($dbname)
 		{
 			self::$_db_name = $dbname;
 			self::$_dsn = null;
 		}
 
+		/**
+		 * Get the database name
+		 *
+		 * @return string
+		 */
 		public static function getDBname()
 		{
 			return self::$_db_name;
 		}
 
+		/**
+		 * Set the database type
+		 *
+		 * @param string $dbtype
+		 */
 		public static function setDBtype($dbtype)
 		{
 			if (self::hasDBEngine($dbtype) == false)
@@ -313,6 +437,11 @@
 			self::$_db_type = $dbtype;
 		}
 
+		/**
+		 * Get the database type
+		 *
+		 * @return string
+		 */
 		public static function getDBtype()
 		{
 			if (!self::$_db_type && defined('B2DB_SQLTYPE'))
@@ -322,11 +451,19 @@
 			return self::$_db_type;
 		}
 
+		/**
+		 * Connect to the database
+		 */
 		public static function doConnect()
 		{
 			self::$_db_connection = b2db_sql_connect(self::$_db_host, self::$_db_uname, self::$_db_pwd) or die(b2db_sql_fatal_error(1));
 		}
 
+		/**
+		 * Select/enable the selected database
+		 *
+		 * @param string $db_name[optional]
+		 */
 		public static function doSelectDB($db_name = null)
 		{
 			if ($db_name == null)
@@ -337,26 +474,8 @@
 		}
 
 		/**
-		 * Returns a statement
-		 *
-		 * @param B2DBCriteria $crit
-		 * 
-		 * @return B2DBStatement
+		 * Manually close the database connection
 		 */
-		public static function prepareStatement($crit)
-		{
-			try
-			{
-				$statement = new B2DBStatement($crit);
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-
-			return $statement;
-		}
-
 		public static function closeDBLink()
 		{
 			if (self::$_transaction_active)
@@ -365,7 +484,12 @@
 			}
 			b2db_sql_close(self::$_db_connection);
 		}
-		
+
+		/**
+		 * Toggle the transaction state
+		 *
+		 * @param boolean $state
+		 */
 		public static function setTransaction($state)
 		{
 			self::$_transaction_active = $state;
@@ -471,17 +595,32 @@
 				echo "For more information, refer to the B2DB manual.\n";
 			}
 		}
-		
-		public static function setHTMLException($val)
+
+		/**
+		 * Toggle HTML exception messages
+		 *
+		 * @param boolean $active
+		 */
+		public static function setHTMLException($active)
 		{
-			self::$_throwhtmlexception = $val;
+			self::$_throwhtmlexception = $active;
 		}
-		
+
+		/**
+		 * Return whether exceptions are thrown and displayed as HTML
+		 *
+		 * @return boolean
+		 */
 		public static function throwExceptionAsHTML()
 		{
 			return self::$_throwhtmlexception;
 		}
-		
+
+		/**
+		 * Get available DB drivers
+		 *
+		 * @return array
+		 */
 		public static function getDBtypes()
 		{
 			$retarr = array();
@@ -505,10 +644,17 @@
 			
 			return $retarr;
 		}
-		
-		public static function hasDBEngine($engine)
+
+		/**
+		 * Whether a specific DB driver is supported
+		 *
+		 * @param string $driver
+		 *
+		 * @return boolean
+		 */
+		public static function hasDBEngine($driver)
 		{
-			return array_key_exists($engine, self::getDBtypes());
+			return array_key_exists($driver, self::getDBtypes());
 		}
 		
 	}

@@ -330,7 +330,7 @@
 		TBGContext::initialize();
 		TBGLogging::log('...done');
 		
-		require THEBUGGENIE_PATH . 'core/common_functions.inc.php';
+		//require THEBUGGENIE_PATH . 'core/common_functions.inc.php';
 		require THEBUGGENIE_PATH . 'core/geshi/geshi.php';
 		
 		TBGLogging::log('B2 framework loaded');

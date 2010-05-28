@@ -33,8 +33,15 @@
 		
 		protected static $_entries = array();
 
-		protected static $_loglevel = 5;
-		
+		protected static $_loglevel = 1;
+
+		/**
+		 * Log a message to the logger
+		 *
+		 * @param string $message The message to log
+		 * @param string $category[optional] The message category (default "main")
+		 * @param integer $level[optional] The loglevel
+		 */
 		public static function log($message, $category = 'main', $level = 1)
 		{
 			TBGContext::ping();
@@ -51,7 +58,14 @@
 				self::$_entries[] = array('category' => $category, 'time' => $time_msg, 'message' => $message, 'level' => $level);
 			}
 		}
-		
+
+		/**
+		 * Get the level name for a given level
+		 *
+		 * @param integer $level
+		 *
+		 * @return string
+		 */
 		public static function getLevelName($level)
 		{
 			switch ($level)
@@ -66,9 +80,18 @@
 					return 'risk';
 				case self::LEVEL_FATAL:
 					return 'fatal';
+				default:
+					return 'unknown';
 			}
 		}
-		
+
+		/**
+		 * Return the color assigned to a specific category
+		 *
+		 * @param string $category
+		 *
+		 * @return string
+		 */
 		public static function getCategoryColor($category)
 		{
 			switch ($category)
@@ -89,12 +112,25 @@
 					return "999";
 			}
 		}
-		
+
+		/**
+		 * Get current logged entries
+		 *
+		 * @return array
+		 */
 		public static function getEntries()
 		{
 			return self::$_entries;
 		}
 
+		/**
+		 * Get complete log entries for a specific category
+		 *
+		 * @param string $category
+		 * @param integer $min_level[optional]
+		 * 
+		 * @return array
+		 */
 		public static function getEntriesForCategory($category, $min_level = 1)
 		{
 			$retval = array();
@@ -108,6 +144,14 @@
 			return $retval;
 		}
 		
+		/**
+		 * Get log messages for a specific category
+		 *
+		 * @param string $category
+		 * @param integer $min_level[optional]
+		 *
+		 * @return array
+		 */
 		public static function getMessagesForCategory($category, $min_level = 1)
 		{
 			$retval = array();
@@ -121,6 +165,11 @@
 			return $retval;
 		}
 
+		/**
+		 * Return whether logging is enabled
+		 *
+		 * @return boolean
+		 */
 		public static function isEnabled()
 		{
 			return self::$_logging_enabled;

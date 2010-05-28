@@ -166,7 +166,7 @@
 						}
 					}
 					
-					BaseB2DB::initialize(true);
+					BaseB2DB::initialize(false);
 					B2DB::doConnect();
 					
 					if (B2DB::getDBname() == '')

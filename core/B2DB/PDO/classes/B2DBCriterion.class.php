@@ -16,7 +16,7 @@
 	 * @package B2DB
 	 * @subpackage pdo
 	 */
-	class B2DBCriterion extends BaseB2DBCriterion  
+	class B2DBCriterion extends BaseB2DBCriterion
 	{
 		
 	}

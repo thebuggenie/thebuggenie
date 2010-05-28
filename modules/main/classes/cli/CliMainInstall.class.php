@@ -188,7 +188,7 @@
 							BaseB2DB::setUname($db_username);
 							BaseB2DB::setPasswd($db_password);
 							BaseB2DB::setDBtype($db_type);
-							BaseB2DB::initialize(true);
+							BaseB2DB::initialize(false);
 							B2DB::doConnect();
 							B2DB::createDatabase($db_name);
 							B2DB::setDBname($db_name);

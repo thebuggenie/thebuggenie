@@ -20,7 +20,7 @@
 		 */
 		public function runViewIssue(TBGRequest $request)
 		{
-			TBGEvent::listen('core', 'viewissue', array($this, 'listenViewIssuePostError'));
+			//TBGEvent::listen('core', 'viewissue', array($this, 'listenViewIssuePostError'));
 			TBGLogging::log('Loading issue');
 			$selected_project = null;
 			
@@ -88,6 +88,7 @@
 			}
 			$this->theIssue = $issue;
 			$event = TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
+			$this->listenViewIssuePostError($event);
 		}
 		
 		/**
@@ -167,6 +168,7 @@
 		 */
 		public function runLogin(TBGRequest $request)
 		{
+			$i18n = TBGContext::getI18n();
 			$this->getResponse()->setPage('login');
 			$this->getResponse()->setProjectMenuStripHidden();
 			try
@@ -191,16 +193,16 @@
 					}
 					else
 					{
-						throw new Exception(__('Please enter a username and password'));
+						throw new Exception($i18n->__('Please enter a username and password'));
 					}
 				}
 				elseif (!TBGContext::getUser()->isAuthenticated() && TBGSettings::get('requirelogin'))
 				{
-					$this->login_error = __('You need to log in to access this site');
+					$this->login_error = $i18n->__('You need to log in to access this site');
 				}
 				elseif (!TBGContext::getUser()->isAuthenticated())
 				{
-					$this->login_error = __('Please log in');
+					$this->login_error = $i18n->__('Please log in');
 				}
 				elseif (TBGContext::hasMessage('forward'))
 				{
@@ -211,79 +213,6 @@
 			{
 				$this->login_error = $e->getMessage();
 			}
-			
-			/*
-			elseif (TBGContext::getRequest()->getParameter('switch_user'))
-			{
-				if (TBGContext::getRequest()->getParameter('new_user'))
-				{
-					$BUGS_user = TBGContext::loginCheck($_SESSION['b2_username'], $_SESSION['b2_password']);
-					if ($BUGS_user->getUID() != 0)
-					{
-						$crit = new B2DBCriteria();
-						$crit->addWhere(TBGUsersTable::UNAME, TBGContext::getRequest()->getParameter('new_user'));
-						$crit->addSelectionColumn(TBGUsersTable::ID);
-						$row = B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
-						if ($row instanceof B2DBRow)
-						{
-							$newUser = new TBGUser($row->get(TBGUsersTable::ID));
-							TBGContext::setScope(1);
-							TBGContext::cacheAllPermissions();
-							if ((TBGContext::getUser()->hasPermission("b2saveconfig", 14, "core") && $newUser->getScope()->getID() != TBGContext::getScope()->getID()) || TBGContext::getUser()->hasPermission("b2saveconfig", 2, "core"))
-							{
-								$pre_uname = $BUGS_user->getUname();
-								$pre_pwd = $BUGS_user->getMD5Password();
-								$BUGS_user = TBGContext::loginCheck($newUser->getUname(), $newUser->getMD5Password());
-								if ($BUGS_user->getLoginError() == '')
-								{
-									setcookie("b2_username_preswitch", $pre_uname, $_SERVER["REQUEST_TIME"] + 432000);
-									setcookie("b2_password_preswitch", $pre_pwd, $_SERVER["REQUEST_TIME"] + 432000);
-									setcookie("b2_uname", $newUser->getUname(), $_SERVER["REQUEST_TIME"] + 432000);
-									setcookie("b2_upwd", $newUser->getMD5Password(), $_SERVER["REQUEST_TIME"] + 432000);
-									tbg_moveTo(TBGSettings::get('returnfromlogin'));
-								}
-								else
-								{
-									$_SESSION['login_error'] = $BUGS_user->getLoginError();
-									tbg_moveTo('login.php');
-								}
-								exit;
-							}
-						} 
-					}
-					else
-					{
-						$BUGS_user->setLoginError('Please enter a username and password');
-					}
-				}
-				else
-				{
-					$BUGS_user = TBGContext::loginCheck($_COOKIE['b2_username_preswitch'], $_COOKIE['b2_password_preswitch']);
-					setcookie("b2_uname", $BUGS_user->getUname(), $_SERVER["REQUEST_TIME"] + 432000);
-					setcookie("b2_upwd", $BUGS_user->getMD5Password(), $_SERVER["REQUEST_TIME"] + 432000);
-					setcookie("b2_username_preswitch", '', $_SERVER["REQUEST_TIME"] - 432000);
-					setcookie("b2_password_preswitch", '', $_SERVER["REQUEST_TIME"] - 432000);
-					tbg_moveTo(TBGSettings::get('returnfromlogin'));
-					exit;
-				}
-			}
-			else
-			{
-				$BUGS_user = new TBGUser();
-				$BUGS_user->setLoginError('Please enter a username and password');
-			}
-			
-				
-			if ($BUGS_user->hasLoginError()) 
-			{ 
-			   $_SESSION['login_error'] = $BUGS_user->getLoginError(); 
-			} 
-			else 
-			{ 
-			   $_SESSION['login_error'] = ''; 
-			}
-			tbg_moveTo("login.php");
-		*/
 		}
 		
 		/**
@@ -305,7 +234,7 @@
 						
 						if ($exists)
 						{
-							throw new Exception(__('This username is in use'));
+							throw new Exception(TBGContext::getI18n()->__('This username is in use'));
 						}
 						else
 						{
@@ -316,7 +245,7 @@
 					}
 					else
 					{
-						throw new Exception(__('Please enter a username'));
+						throw new Exception(TBGContext::getI18n()->__('Please enter a username'));
 					}
 				}
 			}
@@ -350,12 +279,12 @@
 					{
 						if ($email != $confirmemail)
 						{
-							throw new Exception(__('The email address must be valid, and must be typed twice.'));
+							throw new Exception(TBGContext::getI18n()->__('The email address must be valid, and must be typed twice.'));
 						}
 
 						if ($security != $_SESSION['activation_number'])
 						{
-							throw new Exception(__('To prevent automatic sign-ups, enter the verification number shown below.'));
+							throw new Exception(TBGContext::getI18n()->__('To prevent automatic sign-ups, enter the verification number shown below.'));
 						}
 
 						$email_ok = false;
@@ -394,17 +323,17 @@
 						
 						if ($valid_domain == false)
 						{
-							throw new Exception(__('Email adresses from this domain can not be used.'));
+							throw new Exception(TBGContext::getI18n()->__('Email adresses from this domain can not be used.'));
 						}
 						
 						if($email_ok == false)
 						{
-							throw new Exception(__('The email address must be valid, and must be typed twice.'));
+							throw new Exception(TBGContext::getI18n()->__('The email address must be valid, and must be typed twice.'));
 						}
 						
 						if ($security != $_SESSION['activation_number'])
 						{
-							throw new Exception(__('To prevent automatic sign-ups, enter the verification number shown below.'));
+							throw new Exception(TBGContext::getI18n()->__('To prevent automatic sign-ups, enter the verification number shown below.'));
 						}
 
 						$password = tbg_createpassword();
@@ -419,7 +348,7 @@
 					}
 					else
 					{
-						throw new Exception(__('You need to fill out all fields correctly.'));
+						throw new Exception(TBGContext::getI18n()->__('You need to fill out all fields correctly.'));
 					}
 				}
 			}
@@ -1835,7 +1764,7 @@
 					
 					if ($request->getParameter('comment_title') == '')
 					{
-						$comment->setTitle(__('Untitled comment'));
+						$comment->setTitle(TBGContext::getI18n()->__('Untitled comment'));
 					}
 					else
 					{
@@ -1844,18 +1773,6 @@
 					
 					$comment->setIsPublic($request->getParameter('comment_visibility'));
 					$comment->setUpdatedBy(TBGContext::getUser()->getID());
-					
-					/* Not yet working as it tries to echo out the component which breaks stuff */
-					/*if ($comment->isSystemComment())
-					{
-						$postedby = __('on behalf of ');
-					}
-					else
-					{
-						$postedby = __('by ');
-					}
-					$date = '<table cellpadding="0" cellspacing="0"><tr><td>'.__('Posted').' <i>'.tbg_formattime($comment->getPosted(), 12).'</i>'.$postedby.'</td><td><table style="display: inline;">'.include_component('main/userdropdown', array('user' => $comment->getPostedBy(), 'size' => 'small')).'</table></td></tr></table>';
-					*/
 					$body = tbg_parse_text($comment->getContent());
 					
 					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment edited!'), 'comment_title' => $comment->getTitle(), 'comment_body' => $body));
@@ -1886,6 +1803,7 @@
 		
 		public function runAddComment(TBGRequest $request)
 		{
+			$i18n = TBGContext::getI18n();
 			$comment = null;
 			$project = TBGFactory::ProjectLab($request->getParameter('project_id'));
 			$project_key = ($project instanceof TBGProject) ? $project->getKey() : false;
@@ -1895,13 +1813,13 @@
 				{
 					if (!TBGContext::getUser()->canPostComments())
 					{
-						throw new Exception(TBGContext::getI18n()->__('You are not allowed to do this'));
+						throw new Exception($i18n->__('You are not allowed to do this'));
 					}
 					else
 					{
 						if ($request->getParameter('comment_title') == '')
 						{
-							$title = __('Untitled comment');
+							$title = $i18n->__('Untitled comment');
 						}
 						else
 						{
@@ -1910,7 +1828,7 @@
 
 						if ($request->getParameter('comment_body') == '')
 						{
-							throw new Exception(TBGContext::getI18n()->__('The comment must have some content'));
+							throw new Exception($i18n->__('The comment must have some content'));
 						}
 
 						if (!$request->isAjaxCall())
@@ -1938,7 +1856,7 @@
 				}
 				else
 				{
-					throw new Exception(TBGContext::getI18n()->__('Comment ID is invalid'));
+					throw new Exception($i18n->__('Comment ID is invalid'));
 				}
 			}
 			catch (Exception $e)
@@ -1957,7 +1875,7 @@
 			}
 			if ($request->isAjaxCall())
 			{
-				return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment added!'), 'comment_data' => $comment_html, 'commentcount' => TBGComment::countComments($request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'))));
+				return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'commentcount' => TBGComment::countComments($request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'))));
 			}
 //			var_dump($comment);die();
 			if ($comment instanceof TBGComment)

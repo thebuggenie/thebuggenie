@@ -1618,6 +1618,7 @@
 
 						// Load the "ui" library, since this is used a lot
 						self::loadLibrary('ui');
+						self::loadLibrary('common');
 
 						// Include the template, buffer the output and store it in a variable
 						// to be outputted in context later
@@ -1670,11 +1671,11 @@
 				$load_time = self::getLoadtime();
 				if (class_exists('B2DB'))
 				{
-					$run_summary = self::getI18n()->__('Page load time: %load_time%, with %num_queries% queries. Scope ID: %scope_id%.', array('%load_time%' => ($load_time >= 1) ? __('%num_seconds% seconds', array('%num_seconds%' => round($load_time, 2))) : __('%num_milliseconds% ms', array('%num_milliseconds%' => round($load_time * 1000, 1))), '%num_queries%' => B2DB::getSQLHits(), '%scope_id%' => (self::getScope() instanceof TBGScope) ? self::getScope()->getID() : __('unknown')));
+					$run_summary = self::getI18n()->__('Page load time: %load_time%, with %num_queries% queries. Scope ID: %scope_id%.', array('%load_time%' => ($load_time >= 1) ? self::getI18n()->__('%num_seconds% seconds', array('%num_seconds%' => round($load_time, 2))) : self::getI18n()->__('%num_milliseconds% ms', array('%num_milliseconds%' => round($load_time * 1000, 1))), '%num_queries%' => B2DB::getSQLHits(), '%scope_id%' => (self::getScope() instanceof TBGScope) ? self::getScope()->getID() : self::getI18n()->__('unknown')));
 				}
 				else
 				{
-					$run_summary = self::getI18n()->__('Page load time: %load_time%.', array('%load_time%' => ($load_time >= 1) ? __('%num_seconds% seconds', array('%num_seconds%' => round($load_time, 2))) : __('%num_milliseconds% ms', array('%num_milliseconds%' => round($load_time * 1000, 1)))));
+					$run_summary = self::getI18n()->__('Page load time: %load_time%.', array('%load_time%' => ($load_time >= 1) ? self::getI18n()->__('%num_seconds% seconds', array('%num_seconds%' => round($load_time, 2))) : self::getI18n()->__('%num_milliseconds% ms', array('%num_milliseconds%' => round($load_time * 1000, 1)))));
 				}
 
 				// Render footer template if any, and store the output in a variable

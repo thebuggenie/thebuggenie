@@ -9,15 +9,16 @@ Wiki formatting is well explained in the [http://en.wikipedia.org/wiki/Help:Wiki
 We will show you the most common syntax below.
 
 == Line breaks and text formatting ==
-You can use line breaks to space out the text and make it more readable in the editor. One line break will not be transformed into a line break when the page is
+You can use line breaks to space out the text and make it more readable in the editor. One line break will not be transformed into a line break when the page is 
 displayed. A blank line makes a new paragraph. You can put <br> to make a hard line break, but be careful with this as it might break layout.
-  This text is easy to &nbsp;
-  read because it is &nbsp;
+  This text is easy to
+  read because it is
   split into several lines
-  (put &nbsp; at the end of each line if you don't want the text to run together)
-This text is easy to &nbsp;
-read because it is &nbsp;
+  but it will only show up as one line on the page
+This text is easy to
+read because it is
 split into several lines
+but it will only show up as one line on the page
 
 Text can be formatted by putting '-characters around the text you want to format. Here are some examples:
 

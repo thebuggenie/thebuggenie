@@ -229,7 +229,7 @@
 				$crit->setFromTable($this);
 				$crit->generateSelectSQL(true);
 	
-				$statement = B2DB::prepareStatement($crit);
+				$statement = B2DBStatement::getPreparedStatement($crit);
 				$resultSet = $statement->performQuery();
 			}
 			catch (Exception $e)
@@ -303,7 +303,7 @@
 			{
 				$crit->setFromTable($this);
 				$crit->generateCountSQL();
-				$statement = B2DB::prepareStatement($crit);
+				$statement = B2DBStatement::getPreparedStatement($crit);
 	
 				$resultSet = $statement->performQuery();
 				$cnt = $resultSet->getCount();
@@ -343,7 +343,7 @@
 				$crit->setupJoinTables($join);
 				$crit->generateSelectSQL();
 				
-				$statement = B2DB::prepareStatement($crit);
+				$statement = B2DBStatement::getPreparedStatement($crit);
 	
 				$resultSet = $statement->performQuery();
 			}
@@ -386,7 +386,7 @@
 				$crit->setLimit(1);
 				$crit->generateSelectSQL();
 				
-				$statement = B2DB::prepareStatement($crit);
+				$statement = B2DBStatement::getPreparedStatement($crit);
 				$resultset = $statement->performQuery();
 				$resultset->next();
 			}
@@ -420,7 +420,7 @@
 				$crit->setFromTable($this);
 				$crit->generateInsertSQL();
 				
-				$statement = B2DB::prepareStatement($crit);
+				$statement = B2DBStatement::getPreparedStatement($crit);
 	
 				$resultset = $statement->performQuery('insert');
 			}
@@ -454,7 +454,7 @@
 				$crit->setFromTable($this);
 				$crit->generateUpdateSQL();
 				
-				$statement = B2DB::prepareStatement($crit);
+				$statement = B2DBStatement::getPreparedStatement($crit);
 	
 				$res = $statement->performQuery('update');
 			}
@@ -491,7 +491,7 @@
 				$crit->setLimit(1);
 				$crit->generateUpdateSQL();
 				
-				$statement = B2DB::prepareStatement($crit);
+				$statement = B2DBStatement::getPreparedStatement($crit);
 	
 				$resultset = $statement->performQuery('update');
 			}
@@ -525,7 +525,7 @@
 				$crit->setFromTable($this);
 				$crit->generateDeleteSQL();
 				
-				$statement = B2DB::prepareStatement($crit);
+				$statement = B2DBStatement::getPreparedStatement($crit);
 	
 				$resultset = $statement->performQuery('delete');
 				return $resultset;
@@ -560,7 +560,7 @@
 				$crit->addWhere($this->id_column, $id);
 				$crit->generateDeleteSQL();
 				
-				$statement = B2DB::prepareStatement($crit);
+				$statement = B2DBStatement::getPreparedStatement($crit);
 	
 				$resultset = $statement->performQuery('delete');
 				return $resultset;
@@ -596,7 +596,7 @@
 				{
 					echo $sql;
 				}
-				$statement = B2DB::prepareStatement($sql);
+				$statement = B2DBStatement::getPreparedStatement($sql);
 				$res = $statement->performQuery('create');
 			}
 			catch (Exception $e)
@@ -616,7 +616,7 @@
 			try
 			{
 				$sql = $this->_dropToSQL();
-				$statement = B2DB::prepareStatement($sql);
+				$statement = B2DBStatement::getPreparedStatement($sql);
 				$res = $statement->performQuery('drop');
 			}
 			catch (Exception $e)
