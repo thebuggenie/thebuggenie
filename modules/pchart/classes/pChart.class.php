@@ -39,41 +39,41 @@
       drawFromJPG($FileName,$X,$Y,$Alpha=100)
      Graph setup methods :
       drawGraphArea($R,$G,$B,$Stripe=FALSE)
-      drawScale(&$Data,&$DataDescription,$ScaleMode,$R,$G,$B,$DrawTicks=TRUE,$Angle=0,$Decimals=1,$WithMargin=FALSE,$SkipLabels=1)
+      drawScale($Data, $DataDescription,$ScaleMode,$R,$G,$B,$DrawTicks=TRUE,$Angle=0,$Decimals=1,$WithMargin=FALSE,$SkipLabels=1)
       drawGrid($LineWidth,$Mosaic=TRUE,$R=220,$G=220,$B=220,$Alpha=100)
       drawLegend($XPos,$YPos,&$DataDescription,$R,$G,$B)
       drawPieLegend($XPos,$YPos,$Data,$DataDescription,$R,$G,$B)
       drawTitle($XPos,$YPos,$Value,$R,$G,$B,$XPos2=-1,$YPos2=-1)
       drawTreshold($Value,$R,$G,$B,$ShowLabel=FALSE,$ShowOnRight=FALSE,$TickWidth=4)
       drawArea(&$Data,$Serie1,$Serie2,$R,$G,$B,$Alpha = 50)
-      drawRadarAxis(&$Data,&$DataDescription,$Mosaic=TRUE,$BorderOffset=10,$A_R=60,$A_G=60,$A_B=60,$S_R=200,$S_G=200,$S_B=200,$MaxValue=-1)
+      drawRadarAxis($Data, $DataDescription,$Mosaic=TRUE,$BorderOffset=10,$A_R=60,$A_G=60,$A_B=60,$S_R=200,$S_G=200,$S_B=200,$MaxValue=-1)
       getLegendBoxSize($DataDescription)
       loadColorPalette($FileName,$Delimiter=",")
       reportWarnings($Interface="CLI")
       setGraphArea($X1,$Y1,$X2,$Y2)
       setFixedScale($VMin,$VMax)
-      setLabel(&$Data,&$DataDescription,$SerieName,$ValueName,$Caption,$R=210,$G=210,$B=210)
+      setLabel($Data, $DataDescription,$SerieName,$ValueName,$Caption,$R=210,$G=210,$B=210)
       setColorPalette($ID,$R,$G,$B)
       setDateFormat($Format)
       setFontProperties($FontName,$FontSize)
       setLineStyle($Width=1,$DotSize=0)
       setFixedScale($VMin,$VMax,$Divisions=5)
-      writeValues(&$Data,&$DataDescription,$Series)
+      writeValues($Data, $DataDescription,$Series)
     Graphs methods :
-      drawPlotGraph(&$Data,&$DataDescription,$BigRadius=5,$SmallRadius=2,$R2=-1,$G2=-1,$B2=-1)
-      drawLineGraph(&$Data,&$DataDescription,$SerieName="")
-      drawFilledLineGraph(&$Data,&$DataDescription,$Alpha=100,$AroundZero=FALSE)
-      drawCubicCurve(&$Data,&$DataDescription,$Accuracy=.1,$SerieName="")
-      drawFilledCubicCurve(&$Data,&$DataDescription,$Accuracy=.1,$Alpha=100,$AroundZero=FALSE)
-      drawOverlayBarGraph(&$Data,&$DataDescription,$Alpha=50)
-      drawBarGraph(&$Data,&$DataDescription,$Shadow=FALSE)
-      drawStackedBarGraph(&$Data,&$DataDescription,$Alpha=50)
-      drawLimitsGraph(&$Data,&$DataDescription,$R=0,$G=0,$B=0)
-      drawRadar(&$Data,&$DataDescription,$BorderOffset=10,$MaxValue=-1)
-      drawFilledRadar(&$Data,&$DataDescription,$Alpha=50,$BorderOffset=10,$MaxValue=-1)
-      drawBasicPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$R=255,$G=255,$B=255,$Decimals=0)
-      drawFlatPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$SpliceDistance=0,$Decimals = 0)
-      drawPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$EnhanceColors=TRUE,$Skew=60,$SpliceHeight=20,$SpliceDistance=0,$Decimals=0)
+      drawPlotGraph($Data, $DataDescription,$BigRadius=5,$SmallRadius=2,$R2=-1,$G2=-1,$B2=-1)
+      drawLineGraph($Data, $DataDescription,$SerieName="")
+      drawFilledLineGraph($Data, $DataDescription,$Alpha=100,$AroundZero=FALSE)
+      drawCubicCurve($Data, $DataDescription,$Accuracy=.1,$SerieName="")
+      drawFilledCubicCurve($Data, $DataDescription,$Accuracy=.1,$Alpha=100,$AroundZero=FALSE)
+      drawOverlayBarGraph($Data, $DataDescription,$Alpha=50)
+      drawBarGraph($Data, $DataDescription,$Shadow=FALSE)
+      drawStackedBarGraph($Data, $DataDescription,$Alpha=50)
+      drawLimitsGraph($Data, $DataDescription,$R=0,$G=0,$B=0)
+      drawRadar($Data, $DataDescription,$BorderOffset=10,$MaxValue=-1)
+      drawFilledRadar($Data, $DataDescription,$Alpha=50,$BorderOffset=10,$MaxValue=-1)
+      drawBasicPieGraph($Data, $DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$R=255,$G=255,$B=255,$Decimals=0)
+      drawFlatPieGraph($Data, $DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$SpliceDistance=0,$Decimals = 0)
+      drawPieGraph($Data, $DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$EnhanceColors=TRUE,$Skew=60,$SpliceHeight=20,$SpliceDistance=0,$Decimals=0)
      Other methods :
       Render($FileName)
       Stroke()
@@ -622,7 +622,7 @@
     }
 
    /* Draw the data legends */
-   function drawPieLegend($XPos,$YPos,&$Data,&$DataDescription,$R,$G,$B)
+   function drawPieLegend($XPos,$YPos,$Data, $DataDescription,$R,$G,$B)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawPieLegend",$DataDescription,FALSE);
@@ -712,7 +712,7 @@
     }
 
    /* This function put a label on a specific point */
-   function setLabel(&$Data,&$DataDescription,$SerieName,$ValueName,$Caption,$R=210,$G=210,$B=210)
+   function setLabel($Data, $DataDescription,$SerieName,$ValueName,$Caption,$R=210,$G=210,$B=210)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("setLabel",$DataDescription);
@@ -852,7 +852,7 @@
 
 
    /* This function write the values of the specified series */
-   function writeValues(&$Data,&$DataDescription,$Series)
+   function writeValues($Data, $DataDescription,$Series)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("writeValues",$DataDescription);
@@ -1029,7 +1029,7 @@
     }
 
    /* This function draw a filled cubic curve */
-   function drawFilledCubicCurve(&$Data,&$DataDescription,$Accuracy=.1,$Alpha=100,$AroundZero=FALSE)
+   function drawFilledCubicCurve($Data, $DataDescription,$Accuracy=.1,$Alpha=100,$AroundZero=FALSE)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawFilledCubicCurve",$DataDescription);
@@ -1288,7 +1288,7 @@
     }
 
    /* This function draw a bar graph */
-   function drawOverlayBarGraph(&$Data,&$DataDescription,$Alpha=50)
+   function drawOverlayBarGraph($Data, $DataDescription,$Alpha=50)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawOverlayBarGraph",$DataDescription);
@@ -1347,7 +1347,7 @@
     }
 
    /* This function draw a bar graph */
-   function drawBarGraph(&$Data,&$DataDescription,$Shadow=FALSE,$Alpha=100)
+   function drawBarGraph($Data, $DataDescription,$Shadow=FALSE,$Alpha=100)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawBarGraph",$DataDescription);
@@ -1444,7 +1444,7 @@
     }
 
    /* This function draw a limits bar graphs */
-   function drawLimitsGraph(&$Data,&$DataDescription,$R=0,$G=0,$B=0)
+   function drawLimitsGraph($Data, $DataDescription,$R=0,$G=0,$B=0)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawLimitsGraph",$DataDescription);
@@ -1492,7 +1492,7 @@
     }
 
    /* This function draw radar axis centered on the graph area */
-   function drawRadarAxis(&$Data,&$DataDescription,$Mosaic=TRUE,$BorderOffset=10,$A_R=60,$A_G=60,$A_B=60,$S_R=200,$S_G=200,$S_B=200,$MaxValue=-1)
+   function drawRadarAxis($Data, $DataDescription,$Mosaic=TRUE,$BorderOffset=10,$A_R=60,$A_G=60,$A_B=60,$S_R=200,$S_G=200,$S_B=200,$MaxValue=-1)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawRadarAxis",$DataDescription);
@@ -1630,7 +1630,7 @@
     }
 
    /* This function draw a radar graph centered on the graph area */
-   function drawRadar(&$Data,&$DataDescription,$BorderOffset=10,$MaxValue=-1)
+   function drawRadar($Data, $DataDescription,$BorderOffset=10,$MaxValue=-1)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawRadar",$DataDescription);
@@ -1690,7 +1690,7 @@
     }
 
    /* This function draw a radar graph centered on the graph area */
-   function drawFilledRadar(&$Data,&$DataDescription,$Alpha=50,$BorderOffset=10,$MaxValue=-1)
+   function drawFilledRadar($Data, $DataDescription,$Alpha=50,$BorderOffset=10,$MaxValue=-1)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawFilledRadar",$DataDescription);
@@ -1771,7 +1771,7 @@
     }
 
    /* This function draw a flat pie chart */
-   function drawBasicPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$R=255,$G=255,$B=255,$Decimals=0)
+   function drawBasicPieGraph($Data, $DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$R=255,$G=255,$B=255,$Decimals=0)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawBasicPieGraph",$DataDescription,FALSE);
@@ -1868,7 +1868,7 @@
     }
 
    /* This function draw a flat pie chart */
-   function drawFlatPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$SpliceDistance=0,$Decimals = 0)
+   function drawFlatPieGraph($Data, $DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$SpliceDistance=0,$Decimals = 0)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawFlatPieGraph",$DataDescription,FALSE);
@@ -1989,7 +1989,7 @@
     }
 
    /* This function draw a pseudo-3D pie chart */
-   function drawPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$EnhanceColors=TRUE,$Skew=60,$SpliceHeight=20,$SpliceDistance=0,$Decimals=0)
+   function drawPieGraph($Data, $DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$EnhanceColors=TRUE,$Skew=60,$SpliceHeight=20,$SpliceDistance=0,$Decimals=0)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawPieGraph",$DataDescription,FALSE);
@@ -2021,7 +2021,7 @@
      $SkewHeight          = ($Radius * $Skew) / 100;
      $SpliceRatio         = (360 - $SpliceDistanceRatio * count($iValues) ) / $PieSum;
      $SplicePercent       = 100 / $PieSum;
-     $rSplicePercent      = 100 / $rPieSum;
+     $rSplicePercent      = ($rPieSum > 0) ? 100 / $rPieSum : 0;
 
      /* Calculate all polygons */
      $Angle    = 0; $TopPlots = ""; $BotPlots = ""; $CDev = 5;

@@ -90,4 +90,52 @@
 			$Test->Stroke();//("example2.png");
 		}
 
+		public function componentPieChart()
+		{
+			$DataSet = new pData;
+
+			if (count($this->values) > 0)
+			{
+				$DataSet->AddPoint($this->values, "Serie1");
+				$DataSet->AddPoint($this->labels, "Serie2");
+				$DataSet->AddAllSeries();
+				$DataSet->SetAbsciseLabelSerie("Serie2");
+			}
+
+			// Draw the pie chart  
+
+			// Initialise the graph
+			$Test = new pChart($this->width, $this->height);
+			$Test->setFontProperties(TBGContext::getIncludePath() . 'modules/pchart/fonts/DroidSans.ttf', 8);
+
+			$Test->drawFilledRoundedRectangle(2, 2, $this->width - 3, $this->height - 3, 5, 240, 240, 240);
+			$Test->drawRoundedRectangle(0, 0, $this->width - 1, $this->height - 1, 5, 230, 230, 230);
+
+			if ($this->height > 200 && $this->width > 250)
+			{
+				if (count($this->values) > 0)
+				{
+					$Test->drawPieLegend($this->width / 3 + $this->width / 3, 40, $DataSet->GetData(), $DataSet->GetDataDescription(), 250, 250, 250);
+				}
+				$title_font_size = 10;
+				$left = $this->width / 3;
+				$pie_labels = PIE_PERCENTAGE;
+			}
+			else
+			{
+				$title_font_size = 6;
+				$left = $this->width / 2;
+				$pie_labels = PIE_NOLABEL;
+			}
+
+			if (isset($this->style) && $this->style == '3d' && count($this->values) > 0)
+			{
+				$Test->drawPieGraph($DataSet->GetData(), $DataSet->GetDataDescription(), $left, $this->height / 2, (($this->width + $this->height) / 7), $pie_labels, TRUE, 40, 10, 5);
+			}
+
+			$Test->setFontProperties(TBGContext::getIncludePath() . 'modules/pchart/fonts/DroidSans.ttf', $title_font_size);
+			$Test->drawTitle(50, 22, $this->title, 50, 50, 50, $this->width - 30);
+			$Test->Stroke();//("example2.png");
+		}
+
 	}

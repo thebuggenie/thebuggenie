@@ -370,4 +370,179 @@
 			return $this->renderComponent('menustrip', array('project' => $project, 'hide_button' => $hide_button));
 		}
 
+		public function runStatisticsImagesets(TBGRequest $request)
+		{
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_statistics', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$success = false;
+			switch ($request->getParameter('set'))
+			{
+				case 'issues_per_status':
+					$success = true;
+					$base_url = TBGContext::getRouting()->generate('project_statistics_image', array('project_key' => $this->selected_project->getKey(), 'key' => '%key%', 'mode' => '%mode%'));
+					$key = urlencode('%key%');
+					$mode = urlencode('%mode%');
+					$images = array('main' => str_replace(array($key, $mode), array('issues_per_status_2', 'main'), $base_url),
+									'mini_1_small' => str_replace(array($key, $mode), array('issues_per_status_1', 'mini'), $base_url),
+									'mini_1_large' => str_replace(array($key, $mode), array('issues_per_status_1', 'main'), $base_url), 
+									'mini_2_small' => str_replace(array($key, $mode), array('issues_per_status_2', 'mini'), $base_url),
+									'mini_2_large' => str_replace(array($key, $mode), array('issues_per_status_2', 'main'), $base_url), 
+									'mini_3_small' => str_replace(array($key, $mode), array('issues_per_status_3', 'mini'), $base_url), 
+									'mini_3_large' => str_replace(array($key, $mode), array('issues_per_status_3', 'main'), $base_url));
+					break;
+				case 'issues_per_priority':
+					$success = true;
+					$base_url = TBGContext::getRouting()->generate('project_statistics_image', array('project_key' => $this->selected_project->getKey(), 'key' => '%key%', 'mode' => '%mode%'));
+					$key = urlencode('%key%');
+					$mode = urlencode('%mode%');
+					$images = array('main' => str_replace(array($key, $mode), array('issues_per_priority_2', 'main'), $base_url),
+									'mini_1_small' => str_replace(array($key, $mode), array('issues_per_priority_1', 'mini'), $base_url),
+									'mini_1_large' => str_replace(array($key, $mode), array('issues_per_priority_1', 'main'), $base_url),
+									'mini_2_small' => str_replace(array($key, $mode), array('issues_per_priority_2', 'mini'), $base_url),
+									'mini_2_large' => str_replace(array($key, $mode), array('issues_per_priority_2', 'main'), $base_url),
+									'mini_3_small' => str_replace(array($key, $mode), array('issues_per_priority_3', 'mini'), $base_url),
+									'mini_3_large' => str_replace(array($key, $mode), array('issues_per_priority_3', 'main'), $base_url));
+					break;
+				default:
+					$error = TBGContext::getI18n()->__('Invalid image set');
+			}
+
+			$this->getResponse()->setHttpStatus(($success) ? 200 : 400);
+			return $this->renderJSON(($success) ? array('success' => $success, 'images' => $images) : array('success' => $success, 'error' => $error));
+		}
+
+		public function runStatisticsGetImage(TBGRequest $request)
+		{
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_statistics', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->getResponse()->setContentType('image/png');
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+
+			$i18n = TBGContext::getI18n();
+			$this->key = $request->getParameter('key');
+			$this->graphmode = null;
+
+			switch ($this->key)
+			{
+				case 'issues_per_status_1':
+				case 'issues_per_status_2':
+				case 'issues_per_status_3':
+					$this->graphmode = 'piechart';
+					if ($request->getParameter('mode', 'mini') == 'main')
+					{
+						$this->width = 695;
+						$this->height = 310;
+					}
+					else
+					{
+						$this->width = 230;
+						$this->height = 150;
+					}
+					$counts = TBGIssuesTable::getTable()->getStatusCountByProjectID($this->selected_project->getID());
+					$values = array();
+					$statuses = array();
+					if ($this->key == 'issues_per_status_1')
+					{
+						$this->title = $i18n->__('Total number of issues per status type');
+					}
+					elseif ($this->key == 'issues_per_status_2')
+					{
+						$this->title = $i18n->__('Open issues per status type');
+					}
+					elseif ($this->key == 'issues_per_status_3')
+					{
+						$this->title = $i18n->__('Closed issues per status type');
+					}
+					foreach ($counts as $status_id => $details)
+					{
+						if ($this->key == 'issues_per_status_1')
+						{
+							$value = $details['open'] + $details['closed'];
+						}
+						elseif ($this->key == 'issues_per_status_2')
+						{
+							$value = $details['open'];
+						}
+						elseif ($this->key == 'issues_per_status_3')
+						{
+							$value = $details['closed'];
+						}
+						if ($value > 0)
+						{
+							if ($status_id != 0)
+							{
+								$status = TBGFactory::TBGStatusLab($status_id);
+								$statuses[] = ($status instanceof TBGStatus) ? $status->getName() : $i18n->__('Unknown');
+							}
+							else
+							{
+								$statuses[] = $i18n->__('Not determined');
+							}
+							$values[] = $value;
+						}
+					}
+					$this->values = $values;
+					$this->labels = $statuses;
+					break;
+				case 'issues_per_priority_1':
+				case 'issues_per_priority_2':
+				case 'issues_per_priority_3':
+					$this->graphmode = 'piechart';
+					if ($request->getParameter('mode', 'mini') == 'main')
+					{
+						$this->width = 695;
+						$this->height = 310;
+					}
+					else
+					{
+						$this->width = 230;
+						$this->height = 150;
+					}
+					$counts = TBGIssuesTable::getTable()->getPriorityCountByProjectID($this->selected_project->getID());
+					$values = array();
+					$priorities = array();
+					if ($this->key == 'issues_per_priority_1')
+					{
+						$this->title = $i18n->__('Total number of issues per priority level');
+					}
+					elseif ($this->key == 'issues_per_priority_2')
+					{
+						$this->title = $i18n->__('Open issues per priority level');
+					}
+					elseif ($this->key == 'issues_per_priority_3')
+					{
+						$this->title = $i18n->__('Closed issues per priority level');
+					}
+					foreach ($counts as $priority_id => $details)
+					{
+						if ($this->key == 'issues_per_priority_1')
+						{
+							$value = $details['open'] + $details['closed'];
+						}
+						elseif ($this->key == 'issues_per_priority_2')
+						{
+							$value = $details['open'];
+						}
+						elseif ($this->key == 'issues_per_priority_3')
+						{
+							$value = $details['closed'];
+						}
+						if ($value > 0)
+						{
+							if ($priority_id != 0)
+							{
+								$priority = TBGFactory::TBGPriorityLab($priority_id);
+								$priorities[] = ($priority instanceof TBGPriority) ? $priority->getName() : $i18n->__('Unknown');
+							}
+							else
+							{
+								$priorities[] = $i18n->__('Not determined');
+							}
+							$values[] = $value;
+						}
+					}
+					$this->values = $values;
+					$this->labels = $priorities;
+					break;
+			}
+		}
+
 	}

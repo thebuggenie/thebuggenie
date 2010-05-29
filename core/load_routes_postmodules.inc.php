@@ -30,7 +30,8 @@
 	$routes[] = array('project_team', '/:project_key/team', 'project', 'team');
 	$routes[] = array('project_statistics', '/:project_key/statistics', 'project', 'statistics');
 	$routes[] = array('project_statistics_last_30', '/:project_key/statistics/last/30', 'project', 'statisticsLast30');
-	$routes[] = array('project_statistics_images', '/:project_key/statistics/images/*', 'project', 'statisticsImages');
+	$routes[] = array('project_statistics_imagesets', '/:project_key/statistics/imagesets/:set', 'project', 'statisticsImagesets');
+	$routes[] = array('project_statistics_image', '/:project_key/statistics/image/:key/:mode/*', 'project', 'statisticsGetImage');
 	$routes[] = array('project_timeline', '/:project_key/timeline/*', 'project', 'timeline');
 	$routes[] = array('project_dashboard', '/:project_key', 'project', 'dashboard');
 

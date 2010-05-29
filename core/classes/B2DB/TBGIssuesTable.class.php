@@ -65,6 +65,16 @@
 		const LOCKED = 'issues.locked';
 		const MILESTONE = 'issues.milestone';
 
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGIssuesTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGIssuesTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -173,6 +183,55 @@
 			$crit2->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			return array($this->doCount($crit), $this->doCount($crit2));
 		}
+
+		protected function _getCountByProjectIDAndColumn($project_id, $column)
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::ID, 'column_count', B2DBCriteria::DB_COUNT);
+			$crit->addSelectionColumn($column);
+			$crit->addGroupBy($column);
+
+			$crit2 = clone $crit;
+
+			$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
+			$crit2->addWhere(self::STATE, TBGIssue::STATE_OPEN);
+
+			$res1 = $this->doSelect($crit, 'none');
+			$res2 = $this->doSelect($crit2, 'none');
+			$retarr = array();
+
+			if ($res1)
+			{
+				while ($row = $res1->getNextRow())
+				{
+					if (!array_key_exists($row->get($column), $retarr)) $retarr[$row->get($column)] = array('open' => 0, 'closed' => 0);
+					$retarr[$row->get($column)]['closed'] = $row->get('column_count');
+				}
+			}
+			if ($res2)
+			{
+				while ($row = $res2->getNextRow())
+				{
+					if (!array_key_exists($row->get($column), $retarr)) $retarr[$row->get($column)] = array('open' => 0, 'closed' => 0);
+					$retarr[$row->get($column)]['open'] = $row->get('column_count');
+				}
+			}
+
+			foreach ($retarr as $column_id => $details)
+			{
+				if (array_sum($details) > 0)
+				{
+					$multiplier = 100 / array_sum($details);
+					$retarr[$column_id]['percentage'] = $details['open'] * $multiplier;
+				}
+				else
+				{
+					$retarr[$column_id]['percentage'] = 0;
+				}
+			}
+
+			return $retarr;
+		}
 		
 		public function getCountsByProjectIDandMilestone($project_id, $milestone_id)
 		{
@@ -200,53 +259,19 @@
 
 		public function getPriorityCountByProjectID($project_id)
 		{
-			$crit = $this->getCriteria();
-			$crit->addSelectionColumn(self::ID, 'priority_count', B2DBCriteria::DB_COUNT);
-			$crit->addSelectionColumn(self::PRIORITY);
-			$crit->addGroupBy(self::PRIORITY);
-
-			$crit2 = clone $crit;
-
-			$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
-			$crit2->addWhere(self::STATE, TBGIssue::STATE_OPEN);
-
-			$res1 = $this->doSelect($crit, 'none');
-			$res2 = $this->doSelect($crit2, 'none');
-			$retarr = array();
-
-			if ($res1)
-			{
-				while ($row = $res1->getNextRow())
-				{
-					if (!array_key_exists($row->get(self::PRIORITY), $retarr)) $retarr[$row->get(self::PRIORITY)] = array('open' => 0, 'closed' => 0);
-					$retarr[$row->get(self::PRIORITY)]['closed'] = $row->get('priority_count');
-				}
-			}
-			if ($res2)
-			{
-				while ($row = $res2->getNextRow())
-				{
-					if (!array_key_exists($row->get(self::PRIORITY), $retarr)) $retarr[$row->get(self::PRIORITY)] = array('open' => 0, 'closed' => 0);
-					$retarr[$row->get(self::PRIORITY)]['open'] = $row->get('priority_count');
-				}
-			}
-
-			foreach ($retarr as $priority_id => $details)
-			{
-				if (array_sum($details) > 0)
-				{
-					$multiplier = 100 / array_sum($details);
-					$retarr[$priority_id]['percentage'] = $details['open'] * $multiplier;
-				}
-				else
-				{
-					$retarr[$priority_id]['percentage'] = 0;
-				}
-			}
-
-			return $retarr;
+			return $this->_getCountByProjectIDAndColumn($project_id, self::PRIORITY);
 		}
-		
+
+		public function getStatusCountByProjectID($project_id)
+		{
+			return $this->_getCountByProjectIDAndColumn($project_id, self::STATUS);
+		}
+
+		public function getCategoryCountByProjectID($project_id)
+		{
+			return $this->_getCountByProjectIDAndColumn($project_id, self::CATEGORY);
+		}
+
 		public function getByID($id)
 		{
 			$crit = $this->getCriteria();

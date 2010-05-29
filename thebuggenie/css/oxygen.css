@@ -513,6 +513,7 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .rounded_box.frostblue { background-color: #EDF9FF; border-color: #CEDAE3; }
 .rounded_box.mediumgrey { background-color: #E7E7E7; border-color: #D7D7D7; }
 .rounded_box.lightgrey { background-color: #F3F3F3; border-color: #DDD; }
+.rounded_box.verylightgrey { background-color: #F8F8F8; border-color: #DDD; }
 .rounded_box.invisible { background-color: transparent; border-color: transparent; }
 .rounded_box.invisible:hover { background-color: #F5F5F5; border-color: #F5F5F5; }
 .rounded_box.invisible.nohover:hover { background-color: transparent; border-color: transparent; }

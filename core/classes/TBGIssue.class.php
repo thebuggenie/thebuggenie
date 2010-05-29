@@ -447,12 +447,12 @@
 		 * 
 		 * @return array
 		 */
-		static function getIssueCountsByProjectID($project_id)
+		public static function getIssueCountsByProjectID($project_id)
 		{
 			return B2DB::getTable('TBGIssuesTable')->getCountsByProjectID($project_id);
 		}
 
-		static function getPainTypesOrLabel($type, $id = null)
+		public static function getPainTypesOrLabel($type, $id = null)
 		{
 			$i18n = TBGContext::getI18n();
 
@@ -506,7 +506,7 @@
 		 * 
 		 * @return array
 		 */
-		static function getIssueCountsByProjectIDandIssuetype($project_id, $issuetype_id)
+		public static function getIssueCountsByProjectIDandIssuetype($project_id, $issuetype_id)
 		{
 			return B2DB::getTable('TBGIssuesTable')->getCountsByProjectIDandIssuetype($project_id, $issuetype_id);
 		}
@@ -520,7 +520,7 @@
 		 * 
 		 * @return array
 		 */
-		static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id)
+		public static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id)
 		{
 			return B2DB::getTable('TBGIssuesTable')->getCountsByProjectIDandMilestone($project_id, $milestone_id);
 		}
@@ -535,7 +535,7 @@
 		 * 
 		 * @return TBGIssue
 		 */
-		static function createNew($title, $issuetype, $p_id, $issue_id = null, $notify = true)
+		public static function createNew($title, $issuetype, $p_id, $issue_id = null, $notify = true)
 		{
 			try
 			{
@@ -563,7 +563,7 @@
 		 * 
 		 * @return TBGIssue
 		 */
-		static function getIssueFromLink($issue_no)
+		public static function getIssueFromLink($issue_no)
 		{
 			$theIssue = null;
 			$issue_no = strtolower($issue_no);
@@ -618,11 +618,6 @@
 				}
 			}
 			return array($issues, $count);
-		}
-		
-		public function __call($method, $parameters = null)
-		{
-			return parent::__call($method, $parameters);
 		}
 		
 		/**
