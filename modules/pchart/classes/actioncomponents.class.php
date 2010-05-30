@@ -119,11 +119,11 @@
 				}
 				$title_font_size = 10;
 				$left = $this->width / 3;
-				$pie_labels = PIE_PERCENTAGE;
+				$pie_labels = PIE_PERCENTAGE_AND_VALUES;
 			}
 			else
 			{
-				$title_font_size = 6;
+				$title_font_size = 7;
 				$left = $this->width / 2;
 				$pie_labels = PIE_NOLABEL;
 			}

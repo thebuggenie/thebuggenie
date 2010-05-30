@@ -87,6 +87,8 @@
  define("PIE_PERCENTAGE", 1);
  define("PIE_LABELS",2);
  define("PIE_NOLABEL",3);
+ define("PIE_VALUES", 4);
+ define("PIE_PERCENTAGE_AND_VALUES", 5);
 
  /* pChart class definition */
  class pChart
@@ -1812,8 +1814,12 @@
          $TAngle   = $Angle+($Value*$SpliceRatio/2);
          if ($DrawLabels == PIE_PERCENTAGE)
           $Caption  = (floor($Value * pow(10,$Decimals) * $SplicePercent)/pow(10,$Decimals))."%";
+         elseif ($DrawLabels == PIE_PERCENTAGE_AND_VALUES)
+          $Caption  = (floor($Value * pow(10,$Decimals) * $SplicePercent)/pow(10,$Decimals))."% ({$Value})";
          elseif ($DrawLabels == PIE_LABELS)
           $Caption  = $iLabels[$Key];
+         elseif ($DrawLabels == PIE_VALUES)
+          $Caption  = $Value;
          $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius + 10)+ $XPos;
          $TY       = sin(($TAngle) * 3.1418 / 180 ) * ($Radius+ 10) + $YPos + 4;
 
@@ -1913,8 +1919,12 @@
          $TAngle   = $Angle+($Value*$SpliceRatio/2);
          if ($DrawLabels == PIE_PERCENTAGE)
           $Caption  = (floor($Value * pow(10,$Decimals) * $SplicePercent)/pow(10,$Decimals))."%";
+         elseif ($DrawLabels == PIE_PERCENTAGE_AND_VALUES)
+          $Caption  = (floor($Value * pow(10,$Decimals) * $SplicePercent)/pow(10,$Decimals))."% ({$Value})";
          elseif ($DrawLabels == PIE_LABELS)
           $Caption  = $iLabels[$Key];
+         elseif ($DrawLabels == PIE_VALUES)
+          $Caption  = $Value;
          $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius+10+$SpliceDistance)+$XPos;
          $TY       = sin(($TAngle) * 3.1418 / 180 ) * ($Radius+10+$SpliceDistance) + $YPos + 4;
 
@@ -2041,8 +2051,12 @@
          $TAngle   = $Angle+($Value*$SpliceRatio/2);
          if ($DrawLabels == PIE_PERCENTAGE)
           $Caption  = (floor($rValues[$Key] * pow(10,$Decimals) * $rSplicePercent)/pow(10,$Decimals))."%";
+         elseif ($DrawLabels == PIE_PERCENTAGE_AND_VALUES)
+          $Caption  = (floor($rValues[$Key] * pow(10,$Decimals) * $rSplicePercent)/pow(10,$Decimals))."% ({$Value})";
          elseif ($DrawLabels == PIE_LABELS)
           $Caption  = $iLabels[$Key];
+         elseif ($DrawLabels == PIE_VALUES)
+          $Caption  = $Value;
 
          $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius + 10)+ $XPos;
 

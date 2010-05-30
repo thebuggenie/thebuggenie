@@ -679,6 +679,8 @@ function getStatistics(url)
 		if (json && (json.failed || json.error))
 		{
 			failedMessage(json.error);
+			$('statistics_help').show();
+			$('statistics_main').hide();
 		}
 		else if (json)
 		{
@@ -693,6 +695,8 @@ function getStatistics(url)
 		else
 		{
 			failedMessage(transport.responseText);
+			$('statistics_help').show();
+			$('statistics_main').hide();
 		}
 	},
 	onFailure: function (transport) {
@@ -705,6 +709,8 @@ function getStatistics(url)
 		{
 			failedMessage(transport.responseText);
 		}
+		$('statistics_help').show();
+		$('statistics_main').hide();
 	}
 	});
 

@@ -272,6 +272,16 @@
 			return $this->_getCountByProjectIDAndColumn($project_id, self::CATEGORY);
 		}
 
+		public function getResolutionCountByProjectID($project_id)
+		{
+			return $this->_getCountByProjectIDAndColumn($project_id, self::RESOLUTION);
+		}
+
+		public function getReproducabilityCountByProjectID($project_id)
+		{
+			return $this->_getCountByProjectIDAndColumn($project_id, self::REPRODUCABILITY);
+		}
+
 		public function getByID($id)
 		{
 			$crit = $this->getCriteria();
