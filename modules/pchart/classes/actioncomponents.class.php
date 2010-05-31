@@ -130,7 +130,7 @@
 
 			if (isset($this->style) && $this->style == '3d' && count($this->values) > 0)
 			{
-				$Test->drawPieGraph($DataSet->GetData(), $DataSet->GetDataDescription(), $left, $this->height / 2, (($this->width + $this->height) / 7), $pie_labels, TRUE, 40, 10, 5);
+				$Test->drawPieGraph($DataSet->GetData(), $DataSet->GetDataDescription(), floor($left), floor($this->height / 2), floor(($this->width + $this->height) / 6), $pie_labels, TRUE, 40, 10, 3);
 			}
 
 			$Test->setFontProperties(TBGContext::getIncludePath() . 'modules/pchart/fonts/DroidSans.ttf', $title_font_size);
