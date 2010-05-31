@@ -282,48 +282,6 @@ Custom classes
 	font-weight: bold;
 }
 
-.projectoverviewhleft
-{
-	width: auto;
-	background-color: #EAEAEA;
-	padding: 3px;
-}
-
-.projectoverviewhright
-{
-	width: 250px;
-	background-color: #EAEAEA;
-	padding: 3px;
-	text-align: right;
-}
-
-.projectoverviewbleft
-{
-	background-color: #F3F3F3;
-	padding: 3px;
-	width: auto;
-	border-bottom: 1px solid #CCC;
-	vertical-align: top;
-}
-
-.projectoverviewbright
-{
-	text-align: right;
-	background-color: #F3F3F3;
-	padding: 3px;
-	width: auto;
-	border-bottom: 1px solid #CCC;
-}
-
-.projectoverviewbbottom
-{
-	text-align: left;
-	background-color: #FAFAFA;
-	padding: 3px;
-	width: auto;
-	border-bottom: 1px solid #CCC;
-}
-
 .comment { padding-bottom: 10px; }
 .comment:target .comment_main { border: 1px dotted #CCC; background-color: #F0F7FF; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
 .comment_delete { margin-top: 10px !important; }
@@ -345,63 +303,8 @@ Custom classes
 .comment_titlebox { width: 600px; margin-bottom: 8px; }
 .comment_visibilitybox { width: 400px; margin-bottom: 8px; }
 
-.loginintro
-{
-	border: 1px solid #DDD;
-	background-color: #FFF;
-	padding: 4px;
-	margin: 0px;
-	height: auto;
-	width: auto;
-	font-size: 11px;
-}
-
-.p_sel TD
-{
-	background-color: #F3F3F3;
-}
-
-.g_marked TD
-{
-	background-color: #F3F3F3;
-}
-
-.g_marked_red TD
-{
-	background-color: #F8E8E8;
-}
-
-.grouplist TD
-{
-	padding: 3px;
-}
-
-.viewissue_selected
-{
-	border: 1px solid #DDD; 
-	border-top: 0px; 
-	padding: 5px; 
-	background-color: #F1F1F1; 
-	text-align: center;
-}
-
-.viewissue_unselected
-{
-	border-top: 1px solid #DDD; 
-	padding: 5px; 
-	text-align: center;
-}
-
-.issue_closed TD
-{
-	text-decoration: line-through;
-}
-
-.issue_blocking TD
-{
-	color: #F44;
-	font-weight: bold;
-}
+.issue_closed TD { text-decoration: line-through; }
+.issue_blocking TD { color: #F44; font-weight: bold; }
 
 .installation_prerequisites { margin-top: 20px; margin-bottom: 10px; width: 500px; color: #333; padding: 4px; }
 .install_progress { font-weight: bold; border: 1px solid #DDD; padding: 7px 4px 7px 4px; font-size: 11px; margin-bottom: 5px; background-color: #FDFDFD; }
@@ -455,8 +358,6 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 .padded_table td.config_explanation, .config_explanation { color: #999; padding: 5px 0 10px 5px; }
 .config_explanation a { color: #549D54; font-weight: bold; }
 .faded_medium a { color: #549D54; }
-
-#myacct { z-index: 100; }
 
 .transparent_wrapper { text-align: center; vertical-align: middle; z-index: 100; filter: alpha(opacity=40); opacity: .40; -moz-opacity: .40; background-color:#D5D5D5; position:absolute; color: #000; }
 
@@ -797,7 +698,6 @@ img.undo { display: none; }
 #scrum ul li { padding: 0; background-color: #FFF; border: 1px solid #BBB; position: relative; margin: 0; /*height: 19px;*/ }
 #dashboard_righthand #associated_projects li { padding: 0 5px 5px 0; border: 0; position: relative; margin: 0; font-size: 13px; }
 #dashboard_righthand #associated_projects li .project_name { text-align: left; padding: 0; font-weight: bold; }
-/*#scrum ul li:hover { height: 42px; }*/
 .moveable { cursor: move; }
 #scrum ul li .header, .infobox .header { font-size: 14px; font-weight: bold; }
 #scrum ul li .content { padding-top: 3px; line-height: 15px; font-size: 13px; font-weight: normal; margin-bottom: 12px; }
