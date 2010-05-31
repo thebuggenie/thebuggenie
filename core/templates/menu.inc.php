@@ -20,7 +20,9 @@
 </div>
 <div class="tab_menu header_menu">
 	<ul>
-		<?php /*?><li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png', array('style' => 'float: left;')).__('Frontpage')); ?></li> */ ?>
+		<?php if (!TBGSettings::isSingleProjectTracker()): ?>
+			<li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png', array('style' => 'float: left;')).__('Frontpage')); ?></li>
+		<?php endif; ?>
 		<?php if (!$tbg_user->isThisGuest()): ?>
 			<li<?php if ($tbg_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png', array('style' => 'float: left;')).__('My dashboard')); ?></li>
 		<?php endif; ?>

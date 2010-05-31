@@ -127,7 +127,12 @@
 			$this->total_estimated_hours = 0;
 			//$this->unassigned_issues = $this->selected_project->getUnassignedStories();
 		}
-		
+
+		/**
+		 * Add a task to a scrum user story
+		 *
+		 * @param TBGRequest $request
+		 */
 		public function runScrumAddTask(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
@@ -156,6 +161,11 @@
 			}
 		}
 
+		/**
+		 * Show the scrum burndown chart for a specified sprint
+		 *
+		 * @param TBGRequest $request
+		 */
 		public function runScrumShowBurndownImage(TBGRequest $request)
 		{
 			$milestone = null;
@@ -206,7 +216,6 @@
 				return $this->renderText('');
 			}
 		}
-
 
 		/**
 		 * Set color on a user story
