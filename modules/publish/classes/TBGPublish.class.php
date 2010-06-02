@@ -43,7 +43,7 @@
 			$this->addRoute('publish_article_edit', '/wiki/:article_name/edit', 'editArticle');
 			$this->addRoute('publish_article_delete', '/wiki/:article_name/delete', 'deleteArticle');
 			$this->addRoute('publish_article_save', '/wiki/savearticle', 'saveArticle');
-			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'showArticle');
+			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'articleHistory');
 		}
 
 		public static function install($scope = null)
@@ -75,6 +75,8 @@
 			try
 			{
 				TBGContext::getRouting()->addRoute('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
+				TBGTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($module, 'getArticleLinkTag'));
+				TBGTextParser::addRegex('/(?<!")\![A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($module, 'stripExclamationMark'));
 				self::loadFixtures($scope);
 			}
 			catch (Exception $e)
@@ -95,17 +97,17 @@
 					if (strpos($article_name, '.') === false)
 					{
 						$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $article_name);
-						TBGWikiArticle::createNew($article_name, $content, true, $scope, array('ignore_vars' => true));
+						TBGWikiArticle::createNew($article_name, $content, true, $scope);
 					}
 				}
 
 				$article_name = 'Category:Help';
 				$content = "This is a list of all the available help articles in The Bug Genie. If you are stuck, look here for help.";
-				TBGWikiArticle::createNew($article_name, $content, true, $scope, array('ignore_vars' => true));
+				TBGWikiArticle::createNew($article_name, $content, true, $scope);
 
 				$article_name = 'Category:HowTo';
 				$content = "[[Category:Help]]";
-				TBGWikiArticle::createNew($article_name, $content, true, $scope, array('ignore_vars' => true));
+				TBGWikiArticle::createNew($article_name, $content, true, $scope);
 				
 				TBGLinksTable::getTable()->addLink('wiki', 0, 'MainPage', 'Wiki Frontpage', 1, $scope);
 				TBGLinksTable::getTable()->addLink('wiki', 0, 'WikiFormatting', 'Formatting help', 2, $scope);
@@ -206,7 +208,6 @@
 				return $matches[0];
 			}
 		}
-
 
 		public function getBillboardPosts($target_board = 0, $posts = 5)
 		{

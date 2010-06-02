@@ -392,7 +392,7 @@
 				}
 				elseif (!class_exists('B2DB'))
 				{
-					throw new Exception('The Bug Genie seems installed, but B2DB isn\'t configured. This usually indicates an error with the installation. Try removing the file ' . THEBUGGENIE_PATH . 'installed and try again.');
+					throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
 				}
 
 				if (self::getEnvironment() != self::ENV_CLI)

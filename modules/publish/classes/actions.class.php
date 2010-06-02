@@ -49,6 +49,21 @@
 		{
 			$this->message = TBGContext::getMessageAndClear('publish_article_message');
 			$this->error = TBGContext::getMessageAndClear('publish_article_error');
+
+			$file1 = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'WikiFormatting');
+			$file2 = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'WikiFormatting2');
+
+			/*$diff = new TBGTextDiff();
+			$result = $diff->stringDiff($file1, $file2);
+			$changes = $diff->sequentialChanges($result);
+			echo '<style type="text/css">INS { display: block; background-color: #8D8; } DEL { display: block; text-decoration: none; background-color: #D88; }</style>';
+			echo nl2br($diff->renderDiff($result));
+			echo nl2br($diff->renderChanges($changes, $file1));
+			die();*/
+		}
+
+		public function runArticleHistory(TBGRequest $request)
+		{
 		}
 
 		/**

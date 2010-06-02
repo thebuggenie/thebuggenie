@@ -259,7 +259,6 @@
 			return $ret_tr;
 		}
 	}
-	
 
 	/**
 	 * Prints a list of milestones for a given project
@@ -405,7 +404,6 @@
 				
 		return $retval;
 	}
-	
 	
 	/**
 	 * Prints out the print mode strip displayed at the top when in print mode

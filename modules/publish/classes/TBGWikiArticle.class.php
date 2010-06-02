@@ -86,6 +86,8 @@
 		 */
 		protected $_is_category = null;
 
+		protected $_history = null;
+
 		protected $_category_name = null;
 
 		/**
@@ -146,7 +148,8 @@
 		{
 			$user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
 			$article_id = B2DB::getTable('TBGArticlesTable')->save($name, $content, $published, $user_id, null, $scope);
-			PublishFactory::articleLab($article_id)->save($options);
+			$article = PublishFactory::articleLab($article_id);
+			$article->save($options);
 			return $article_id;
 		}
 
@@ -320,6 +323,20 @@
 			return $this->_category_name;
 		}
 
+		protected function _populateHistory()
+		{
+			if ($this->_history === null)
+			{
+				$this->_history = TBGArticlesHistoryTable::getTable()->getHistoryByArticleName($this->getName());
+			}
+		}
+
+		public function getHistory()
+		{
+			$this->_populateHistory();
+			return $this->_history;
+		}
+
 		public function save($options = array())
 		{
 			if (B2DB::getTable('TBGArticlesTable')->doesNameConflictExist($this->_name, $this->_itemid))
@@ -343,6 +360,8 @@
 			{
 				B2DB::getTable('TBGArticleCategoriesTable')->addArticleCategory($this->_name, $category, $this->isCategory());
 			}
+
+			$this->_history  = null;
 
 			return true;
 		}

@@ -25,6 +25,9 @@
 		 */
 		protected static $_db_connection = null;
 
+		/**
+		 * Try connecting to the database
+		 */
 		public static function doConnect()
 		{
 			if (!class_exists('PDO'))
@@ -54,17 +57,31 @@
 				throw $e;
 			}
 		}
-		
+
+		/**
+		 * Create the specified database
+		 * 
+		 * @param string $db_name
+		 */
 		public static function createDatabase($db_name)
 		{
 			$res = self::getDBLink()->query('create database ' . $db_name);
 		}
-		
+
+		/**
+		 * Select a database to use
+		 *
+		 * @param string $db
+		 * @deprecated
+		 */
 		public static function doSelectDB($db = null)
 		{
 			return true;
 		}
-		
+
+		/**
+		 * Close the database connection
+		 */
 		public static function closeDBLink()
 		{
 			self::$_db_connection = null;

@@ -285,10 +285,7 @@
 		protected function _parse_internallink($matches)
 		{
 			$href = $matches[4];
-			if (TBGContext::getEnvironment() == TBGContext::ENV_CLI)
-			{
-				return $href;
-			}
+			
 			if (isset($matches[6]) && $matches[6])
 			{
 				$title = $matches[6];
@@ -308,7 +305,8 @@
 				$options = explode('|', $title);
 				$title = array_pop($options);
 
-				return image_tag($href, array('alt' => htmlspecialchars($title))); // $this->parse_image($href,$title,$options);
+				if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return $href;
+				return image_tag($href, array('alt' => htmlspecialchars($title)));
 			}
 
 			if (strtolower($namespace) == 'category')
@@ -322,14 +320,18 @@
 
 			if (strtolower($namespace) == 'wikipedia')
 			{
+				if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return $href;
+				
 				$options = explode('|', $title);
 				$title = (array_key_exists(5, $matches) && (strpos($matches[5], '|') !== false) ? '' : $namespace.':') . array_pop($options);
 
-				return link_tag('http://en.wikipedia.org/wiki/'.$href, htmlspecialchars($title)); // $this->parse_image($href,$title,$options);
+				return link_tag('http://en.wikipedia.org/wiki/'.$href, htmlspecialchars($title));
 			}
 
 			if ($namespace == 'TBG')
 			{
+				if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return $href;
+
 				$options = explode('|',$title);
 				$title = array_pop($options);
 
@@ -338,6 +340,8 @@
 
 			if (substr($href, 0, 1) == '/')
 			{
+				if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return $href;
+				
 				$options = explode('|', $title);
 				$title = array_pop($options);
 
@@ -353,6 +357,9 @@
 				$href = $this->_wiki_link($href);
 				$title = $href;
 				$this->addInternalLinkOccurrence($href);
+
+				if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return $href;
+				
 				$href = TBGContext::getRouting()->generate('publish_article', array('article_name' => $href));
 			}
 			else
@@ -360,17 +367,14 @@
 				$href = $namespace.':'.$this->_wiki_link($href);
 			}
 
+			if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return $href;
+			
 			return link_tag($href, htmlspecialchars($title));
 		}
 
 		protected function _parse_externallink($matches)
 		{
 			$href = $matches[2];
-			if (TBGContext::getEnvironment() == TBGContext::ENV_CLI)
-			{
-				return $href;
-			}
-			TBGContext::loadLibrary('ui');
 			$title = null;
 			$title = (array_key_exists(3, $matches)) ? $matches[3] : $matches[2];
 			if (!$title)
@@ -378,6 +382,8 @@
 				$this->linknumber++;
 				$title = "[{$this->linknumber}]";
 			}
+
+			if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return $href;
 
 			return link_tag($href, htmlspecialchars($title), array('target' => '_new'));
 		}
@@ -759,10 +765,8 @@
 
 		protected function _parse_add_toc($matches)
 		{
-			if (TBGContext::getEnvironment() == TBGContext::ENV_CLI)
-			{
-				return true;
-			}
+			if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return '';
+			
 			return TBGAction::returnTemplateHTML('publish/toc', array('toc' => $this->toc));
 		}
 
