@@ -1311,11 +1311,11 @@
 				{
 					$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http://' : 'https://';
 					TBGLogging::log("Checking if scope can be set from hostname (".$hostprefix.$_SERVER['HTTP_HOST'].")");
-					$row = B2DB::getTable('TBGScopesTable')->getByHostname($hostprefix . $_SERVER['HTTP_HOST']);
+					$row = TBGScopesTable::getTable()->getByHostname($hostprefix . $_SERVER['HTTP_HOST']);
 				}
 				else
 				{
-					$row = B2DB::getTable('TBGScopesTable')->getDefault();
+					$row = TBGScopesTable::getTable()->getDefault();
 				}
 				if ($row instanceof B2DBRow)
 				{

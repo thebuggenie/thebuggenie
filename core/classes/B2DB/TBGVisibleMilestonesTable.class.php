@@ -30,7 +30,7 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::MILESTONE_ID, B2DB::getTable('TBGMilestonesTable'), TBGMilestonesTable::ID);
 			parent::_addForeignKeyColumn(self::PROJECT_ID, B2DB::getTable('TBGProjectsTable'), TBGProjectsTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
 		public function getAllByProjectID($project_id)

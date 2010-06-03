@@ -1,0 +1,119 @@
+<?php
+
+	class TBGArticleHistoryTable extends B2DBTable
+	{
+		const B2DBNAME = 'articlehistory';
+		const ID = 'articlehistory.id';
+		const ARTICLE_NAME = 'articlehistory.article_name';
+		const OLD_CONTENT = 'articlehistory.old_content';
+		const NEW_CONTENT = 'articlehistory.new_content';
+		const REASON = 'articlehistory.reason';
+		const REVISION = 'articlehistory.revision';
+		const DATE = 'articlehistory.date';
+		const AUTHOR = 'articlehistory.author';
+		const SCOPE = 'articlehistory.scope';
+		
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGArticleHistoryTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGArticleHistoryTable');
+		}
+
+		public function __construct()
+		{
+			parent::__construct(self::B2DBNAME, self::ID);
+			parent::_addVarchar(self::ARTICLE_NAME, 255);
+			parent::_addText(self::OLD_CONTENT, false);
+			parent::_addText(self::NEW_CONTENT, false);
+			parent::_addVarchar(self::REASON, 255);
+			parent::_addInteger(self::DATE, 10);
+			parent::_addInteger(self::REVISION, 10);
+			parent::_addForeignKeyColumn(self::AUTHOR, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+		}
+
+		protected function _getNextRevisionNumberForArticle($article_name)
+		{
+			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::REVISION, 'next_revision', B2DBCriteria::DB_MAX, '', '+1');
+			$crit->addWhere(self::ARTICLE_NAME, $article_name);
+
+			$row = $this->doSelectOne($crit);
+			return ($row->get('next_revision')) ? $row->get('next_revision') : 1;
+		}
+
+		public function addArticleHistory($article_name, $old_content, $new_content, $user_id, $reason = null)
+		{
+			$transaction = B2DB::startTransaction();
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ARTICLE_NAME, $article_name);
+			$crit->addInsert(self::AUTHOR, $user_id);
+			$revision_number = $this->_getNextRevisionNumberForArticle($article_name);
+			$crit->addInsert(self::REVISION, $revision_number);
+
+			if (!($revision_number == 1 && $old_content == $new_content))
+			{
+				$crit->addInsert(self::OLD_CONTENT, $old_content);
+			}
+			else
+			{
+				$crit->addInsert(self::OLD_CONTENT, '');
+			}
+			$crit->addInsert(self::NEW_CONTENT, $new_content);
+
+			if ($reason !== null)
+			{
+				$crit->addInsert(self::REASON, $reason);
+			}
+			
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addInsert(self::DATE, time());
+
+			$res = $this->doInsert($crit);
+			$transaction->commitAndEnd();
+
+			return $res->getInsertID();
+		}
+
+		public function getHistoryByArticleName($article_name)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ARTICLE_NAME, $article_name);
+			$crit->addOrderBy(self::REVISION, 'desc');
+
+			$res = $this->doSelect($crit);
+
+			return $res;
+		}
+
+		public function getRevisionContentFromArticleName($article_name, $from_revision, $to_revision)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ARTICLE_NAME, $article_name);
+			$ctn = $crit->returnCriterion(self::REVISION, $from_revision);
+			$ctn->addOr(self::REVISION, $to_revision);
+			$crit->addWhere($ctn);
+
+			$res = $this->doSelect($crit);
+
+			if ($res)
+			{
+				$retval = array();
+				while ($row = $res->getNextRow())
+				{
+					$retval[$row->get(self::REVISION)] = array('old_content' => $row->get(self::OLD_CONTENT), 'new_content' => $row->get(self::NEW_CONTENT), 'date' => $row->get(self::DATE), 'author' => TBGFactory::userLab($row->get(self::AUTHOR)));
+				}
+				
+				return $retval;
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+	}

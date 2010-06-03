@@ -43,7 +43,8 @@
 			$this->addRoute('publish_article_edit', '/wiki/:article_name/edit', 'editArticle');
 			$this->addRoute('publish_article_delete', '/wiki/:article_name/delete', 'deleteArticle');
 			$this->addRoute('publish_article_save', '/wiki/savearticle', 'saveArticle');
-			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'articleHistory');
+			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'articleHistory', array('history_action' => 'list'));
+			$this->addRoute('publish_article_diff', '/wiki/:article_name/diff', 'articleHistory', array('history_action' => 'diff'));
 		}
 
 		public static function install($scope = null)
@@ -65,10 +66,10 @@
   									  
 			if ($scope == TBGContext::getScope()->getID())
 			{
-				B2DB::getTable('TBGArticlesTable')->create();
+				TBGArticlesTable::getTable()->create();
 				B2DB::getTable('TBGArticleViewsTable')->create();
-				B2DB::getTable('TBGArticleLinksTable')->create();
-				B2DB::getTable('TBGArticleCategoriesTable')->create();
+				TBGArticleLinksTable::getTable()->create();
+				TBGArticleCategoriesTable::getTable()->create();
 				B2DB::getTable('TBGBillboardPostsTable')->create();
 			}
 
@@ -123,7 +124,7 @@
 		{
 			if (TBGContext::getScope()->getID() == 1)
 			{
-				B2DB::getTable('TBGArticlesTable')->drop();
+				TBGArticlesTable::getTable()->drop();
 				B2DB::getTable('TBGBillboardPostsTable')->drop();
 			}
 			TBGLinksTable::getTable()->removeByTargetTypeTargetIDandLinkID('wiki', 0);
@@ -246,7 +247,7 @@
 			$crit = new B2DBCriteria();
 			$crit->addOrderBy(TBGArticlesTable::ORDER, 'asc');
 			$crit->addOrderBy(TBGArticlesTable::DATE, 'desc');
-			$res = B2DB::getTable('TBGArticlesTable')->doSelect($crit);
+			$res = TBGArticlesTable::getTable()->doSelect($crit);
 			$articles = array();
 			while ($row = $res->getNextRow())
 			{
@@ -267,7 +268,7 @@
 	
 			$articles = array();
 			
-			if ($res = B2DB::getTable('TBGArticlesTable')->doSelect($crit))
+			if ($res = TBGArticlesTable::getTable()->doSelect($crit))
 			{
 				while (($row = $res->getNextRow()) && (count($articles) < $num_articles))
 				{
@@ -299,7 +300,7 @@
 		{
 			$articles = array();
 
-			if ($res = B2DB::getTable('TBGArticlesTable')->getUnpublishedArticlesByUser(TBGContext::getUser()->getID()))
+			if ($res = TBGArticlesTable::getTable()->getUnpublishedArticlesByUser(TBGContext::getUser()->getID()))
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -324,7 +325,7 @@
 		
 		public function getFrontpageArticle()
 		{
-			if ($row = B2DB::getTable('TBGArticlesTable')->getArticleByName('FrontpageArticle'))
+			if ($row = TBGArticlesTable::getTable()->getArticleByName('FrontpageArticle'))
 			{
 				return PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
 			}

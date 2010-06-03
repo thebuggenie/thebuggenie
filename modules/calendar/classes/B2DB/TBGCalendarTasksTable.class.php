@@ -24,7 +24,7 @@
 			parent::_addInteger(self::ITEMTYPE, 3);
 			parent::_addInteger(self::STATUS, 3);
 			parent::_addVarchar(self::LOCATION, 200, '');
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::CALENDAR, B2DB::getTable('TBGCalendarsTable'), TBGCalendarsTable::ID);
 		}
 	}

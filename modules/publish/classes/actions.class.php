@@ -34,7 +34,7 @@
 				}
 			}
 			
-			if ($row = B2DB::getTable('TBGArticlesTable')->getArticleByName($this->article_name))
+			if ($row = TBGArticlesTable::getTable()->getArticleByName($this->article_name))
 			{
 				$this->article = PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
 			}
@@ -49,21 +49,48 @@
 		{
 			$this->message = TBGContext::getMessageAndClear('publish_article_message');
 			$this->error = TBGContext::getMessageAndClear('publish_article_error');
-
-			$file1 = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'WikiFormatting');
-			$file2 = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'WikiFormatting2');
-
-			/*$diff = new TBGTextDiff();
-			$result = $diff->stringDiff($file1, $file2);
-			$changes = $diff->sequentialChanges($result);
-			echo '<style type="text/css">INS { display: block; background-color: #8D8; } DEL { display: block; text-decoration: none; background-color: #D88; }</style>';
-			echo nl2br($diff->renderDiff($result));
-			echo nl2br($diff->renderChanges($changes, $file1));
-			die();*/
 		}
 
 		public function runArticleHistory(TBGRequest $request)
 		{
+			$this->history_action = $request->getParameter('history_action');
+
+			switch ($this->history_action)
+			{
+				case 'list':
+					$this->history = $this->article->getHistory();
+					$this->revision_count = count($this->history);
+					break;
+				case 'diff':
+					$from_revision = $request->getParameter('from_revision');
+					$to_revision = $request->getParameter('to_revision');
+
+					if (!$from_revision || !$to_revision)
+					{
+						$this->error = TBGContext::getI18n()->__('Please specify a from- and to-revision to compare');
+					}
+					else
+					{
+						$content = TBGArticleHistoryTable::getTable()->getRevisionContentFromArticleName($this->article->getName(), $from_revision, $to_revision);
+						$old_content = htmlspecialchars($content[$from_revision]['new_content']);
+						$new_content = htmlspecialchars($content[$to_revision]['new_content']);
+
+						$this->from_revision = $from_revision;
+						$this->from_revision_author = $content[$from_revision]['author'];
+						$this->from_revision_date = $content[$from_revision]['date'];
+						$this->to_revision = $to_revision;
+						$this->to_revision_author = $content[$to_revision]['author'];
+						$this->to_revision_date = $content[$to_revision]['date'];
+
+						$diff = new TBGTextDiff();
+						$result = $diff->stringDiff($old_content, $new_content);
+						//var_dump($old_content);
+						//var_dump($new_content);
+						//var_dump($result);die();
+						$changes = $diff->sequentialChanges($result);
+						$this->diff = explode("\n", $diff->renderDiff($result));
+					}
+			}
 		}
 
 		/**
@@ -92,63 +119,70 @@
 			{
 				if ($request->hasParameter('new_article_name') && $request->getParameter('new_article_name') != '')
 				{
-					try
+					if ($request->hasParameter('change_reason') && trim($request->getParameter('change_reason')) != '')
 					{
-						if ($request->getParameter('article_id'))
+						try
 						{
-							if (($article = PublishFactory::articleLab($request->getParameter('article_id'))) && $article instanceof TBGWikiArticle)
+							if ($request->getParameter('article_id'))
 							{
-								if ($article->getLastUpdatedDate() != $request->getParameter('last_modified'))
+								if (($article = PublishFactory::articleLab($request->getParameter('article_id'))) && $article instanceof TBGWikiArticle)
 								{
-									$this->error = TBGContext::getI18n()->__('The file has been modified since you last opened it');
-								}
-								else
-								{
-									try
+									if ($article->getLastUpdatedDate() != $request->getParameter('last_modified'))
 									{
-										$article->setName($request->getParameter('new_article_name'));
-										$article->setContent($request->getRawParameter('new_article_content'));
-										if ($request->getParameter('preview'))
-										{
-											$this->article = $article;
-										}
-										else
-										{
-											$article->save();
-											TBGContext::setMessage('publish_article_message', TBGContext::getI18n()->__('The article was saved'));
-											$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $article->getName())));
-										}
+										$this->error = TBGContext::getI18n()->__('The file has been modified since you last opened it');
 									}
-									catch (Exception $e)
+									else
 									{
-										$this->error = $e->getMessage();
+										try
+										{
+											$article->setName($request->getParameter('new_article_name'));
+											$article->setContent($request->getRawParameter('new_article_content'));
+											if ($request->getParameter('preview'))
+											{
+												$this->article = $article;
+											}
+											else
+											{
+												$article->save(array(), $request->getParameter('change_reason'));
+												TBGContext::setMessage('publish_article_message', TBGContext::getI18n()->__('The article was saved'));
+												$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $article->getName())));
+											}
+										}
+										catch (Exception $e)
+										{
+											$this->error = $e->getMessage();
+										}
 									}
 								}
 							}
 						}
-					}
-					catch (Exception $e) {}
-					
-					if (($article = TBGWikiArticle::getByName($request->getParameter('new_article_name'))) && $article instanceof TBGWikiArticle && $article->getID() != $request->getParameter('article_id'))
-					{
-						$this->error = TBGContext::getI18n()->__('An article with that name already exists. Please choose a different article name');
-					}
-					elseif (!$article instanceof TBGWikiArticle)
-					{
-						if ($request->getParameter('preview'))
-						{
-							$article = new TBGWikiArticle();
-							$article->setContent($request->getRawParameter('new_article_content'));
-							$article->setName($request->getParameter('new_article_name'));
-							$this->article = $article;
-						}
-						else
-						{
-							$article_id = TBGWikiArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content', ''), true);
+						catch (Exception $e) {}
 
-							$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $request->getParameter('new_article_name'))));
+						if (($article = TBGWikiArticle::getByName($request->getParameter('new_article_name'))) && $article instanceof TBGWikiArticle && $article->getID() != $request->getParameter('article_id'))
+						{
+							$this->error = TBGContext::getI18n()->__('An article with that name already exists. Please choose a different article name');
 						}
+						elseif (!$article instanceof TBGWikiArticle)
+						{
+							if ($request->getParameter('preview'))
+							{
+								$article = new TBGWikiArticle();
+								$article->setContent($request->getRawParameter('new_article_content'));
+								$article->setName($request->getParameter('new_article_name'));
+								$this->article = $article;
+							}
+							else
+							{
+								$article_id = TBGWikiArticle::createNew($request->getParameter('new_article_name'), $request->getRawParameter('new_article_content', ''), true);
 
+								$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $request->getParameter('new_article_name'))));
+							}
+
+						}
+					}
+					else
+					{
+						$this->error = TBGContext::getI18n()->__('You have to provide a reason for the changes');
 					}
 				}
 				else
@@ -160,12 +194,29 @@
 			$this->article_title = null;
 			$this->article_content = null;
 			$this->article_intro = null;
+			$this->change_reason = null;
 
 			if ($this->article instanceof TBGWikiArticle)
 			{
 				$this->article_title = $this->article->getTitle();
 				$this->article_content = $this->article->getContent();
 				$this->article_intro = $this->article->getIntro();
+
+				if ($request->isMethod(TBGRequest::POST))
+				{
+					if ($request->hasParameter('new_article_name'))
+					{
+						$this->article_title = $request->getParameter('new_article_name');
+					}
+					if ($request->hasParameter('new_article_content'))
+					{
+						$this->article_content = $request->getRawParameter('new_article_content');
+					}
+					if ($request->hasParameter('change_reason'))
+					{
+						$this->change_reason = $request->getParameter('change_reason');
+					}
+				}
 			}
 			else
 			{

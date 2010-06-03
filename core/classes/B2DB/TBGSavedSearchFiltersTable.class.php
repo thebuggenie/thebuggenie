@@ -16,7 +16,7 @@
 			parent::_addVarchar(self::VALUE, 200);
 			parent::_addVarchar(self::OPERATOR, 40);
 			parent::_addVarchar(self::FILTER_KEY, 100);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::SEARCH_ID, B2DB::getTable('TBGSavedSearchesTable'), TBGSavedSearchesTable::ID);
 		}
 

@@ -56,7 +56,7 @@
 			parent::_addBoolean(self::PLANNED_RELEASED);
 			parent::_addBoolean(self::LOCKED);
 			parent::_addForeignKeyColumn(self::PROJECT, B2DB::getTable('TBGProjectsTable'), TBGProjectsTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
 		public function getByProjectID($project_id)

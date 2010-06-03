@@ -20,7 +20,7 @@
 			parent::_addVarchar(self::NEW_REV, 10);
 			parent::_addVarchar(self::AUTHOR, 100);
 			parent::_addInteger(self::DATE, 10);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUE_NO, B2DB::getTable('TBGIssuesTable'), TBGIssuesTable::ID);
 		}
 	}

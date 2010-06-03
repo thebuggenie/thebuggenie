@@ -34,7 +34,7 @@
 			parent::_addVarchar(self::MODULE, 45);
 			parent::_addVarchar(self::VALUE, 200);
 			parent::_addInteger(self::UID, 10);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
 		public function getDefaultScope()

@@ -32,7 +32,7 @@
 			parent::_addForeignKeyColumn(self::ISSUE_ID, B2DB::getTable('TBGIssuesTable'), TBGIssuesTable::ID);
 			parent::_addVarchar(self::TAG_NAME, 50);
 			parent::_addInteger(self::ADDED, 10);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
 		public function getByIssueID($issue_id)

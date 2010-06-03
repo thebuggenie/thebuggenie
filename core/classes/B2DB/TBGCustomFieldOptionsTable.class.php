@@ -36,7 +36,7 @@
 			parent::_addVarchar(self::ITEMDATA, 100);
 			parent::_addInteger(self::SORT_ORDER, 100);
 			parent::_addForeignKeyColumn(self::CUSTOMFIELDS_KEY, B2DB::getTable('TBGCustomFieldsTable'), TBGCustomFieldsTable::FIELD_KEY);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
 		public function createNew($key, $name, $value, $itemdata = null, $scope = null)

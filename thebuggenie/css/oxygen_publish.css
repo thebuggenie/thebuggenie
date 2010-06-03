@@ -63,3 +63,13 @@
 #wiki_menu .content ul { list-style-type: none; margin: 0; padding: 0; }
 #wiki_menu .content ul li { font-size: 12px; }
 #wiki_menu .content ul li a { font-weight: bold; }
+
+#article_history, #article_diff { border: 0; width: 100%; }
+#article_diff { margin-left: 5px; }
+#article_history th { background-color: #F1F1F1; border-bottom: 1px dotted #CCC; padding: 2px; }
+#article_history tbody tr:hover { background-color: #F5F5F5; }
+#article_history tfoot td { border: 0; }
+#article_diff tr td { font-family: monospace; border: 0; }
+#article_diff tr.odd { background-color: #F5F5F5; }
+#article_diff tr:hover { background-color: #EEE; }
+INS { display: block; background-color: #8D8; text-decoration: none; } DEL { display: block; text-decoration: none; background-color: #D88; }

@@ -33,7 +33,7 @@
 			parent::_addVarchar(self::IDENTIFIER, 50);
 			parent::_addInteger(self::ORDER, 3);
 			parent::_addForeignKeyColumn(self::MODULE_NAME, B2DB::getTable('TBGModulesTable'), TBGModulesTable::MODULE_NAME);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
 		public function getAll($module_names)

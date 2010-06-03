@@ -32,7 +32,7 @@
 				B2DB::setTransaction(true);
 			}
 			return $this;
-		}		
+		}
 		
 		public function end()
 		{

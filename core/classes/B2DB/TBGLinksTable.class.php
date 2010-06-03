@@ -48,7 +48,7 @@
 			parent::_addInteger(self::TARGET_ID, 10);
 			parent::_addVarchar(self::DESCRIPTION, 100, '');
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
 		public function addLink($target_type, $target_id = 0, $url = null, $description = null, $link_order = null, $scope = null)

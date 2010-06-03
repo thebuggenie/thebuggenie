@@ -39,7 +39,7 @@
 			parent::_addText(self::ITEMDATA, false);
 			parent::_addInteger(self::APPLIES_TO, 10);
 			parent::_addInteger(self::ORDER, 3);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
 		public function clearListTypeCache()

@@ -31,7 +31,7 @@
 			parent::_addForeignKeyColumn(self::TO_USER, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::TO_TEAM, B2DB::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
 			parent::_addForeignKeyColumn(self::FOLDER, B2DB::getTable('TBGMessageFoldersTable'), TBGMessageFoldersTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 	}
 

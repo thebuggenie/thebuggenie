@@ -7,13 +7,23 @@
 		const ARTICLE_NAME = 'articlelinks.article_name';
 		const LINK_ARTICLE_NAME = 'articlelinks.link_article_name';
 		const SCOPE = 'articlelinks.scope';
-		
+
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGArticleLinksTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGArticleLinksTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::ARTICLE_NAME, 300);
 			parent::_addVarchar(self::LINK_ARTICLE_NAME, 300);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
 		public function deleteLinksByArticle($article_name)

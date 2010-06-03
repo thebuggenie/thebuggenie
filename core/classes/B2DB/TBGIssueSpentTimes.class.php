@@ -42,7 +42,7 @@
 			parent::_addInteger(self::SPENT_DAYS, 10);
 			parent::_addInteger(self::SPENT_HOURS, 10);
 			parent::_addFloat(self::SPENT_POINTS);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
 		public function saveSpentTime($issue_id, $months, $weeks, $days, $hours, $points)

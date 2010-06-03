@@ -26,6 +26,16 @@
 		const ADMIN = 'scopes.admin';
 		const HOSTNAME = 'scopes.hostname';
 		
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGScopesTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGScopesTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);

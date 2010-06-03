@@ -86,7 +86,7 @@
 			parent::_addInteger(self::RELEASE_DATE, 10);
 			parent::_addBoolean(self::LOCKED);
 			parent::_addBoolean(self::PLANNED_RELEASE);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addBoolean(self::DELETED);
 			parent::_addText(self::DESCR_TEMPLATE, true);
 			parent::_addText(self::REPRO_TEMPLATE, true);

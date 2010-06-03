@@ -16,9 +16,9 @@
 	 * @package B2DB
 	 * @subpackage pdo
 	 */
-	class B2DBTable extends BaseB2DBTable 
+	abstract class B2DBTable extends BaseB2DBTable
 	{
-		
+
 		protected function getQC()
 		{
 			$qc = '`';

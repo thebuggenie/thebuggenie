@@ -39,6 +39,13 @@
 		protected $_intro_text = null;
 
 		/**
+		 * The old article content, used for history when saving
+		 *
+		 * @var string
+		 */
+		protected $_old_content = null;
+
+		/**
 		 * The article content
 		 *
 		 * @var string
@@ -102,7 +109,7 @@
 			{
 				if ($row === null)
 				{
-					$row = B2DB::getTable('TBGArticlesTable')->doSelectById($id);
+					$row = TBGArticlesTable::getTable()->doSelectById($id);
 				}
 
 				if ($row instanceof B2DBRow)
@@ -113,7 +120,8 @@
 
 					$this->_title = $row->get(TBGArticlesTable::TITLE);
 					$this->_intro_text = $row->get(TBGArticlesTable::INTRO_TEXT);
-					$this->_content = $row->get(TBGArticlesTable::CONTENT);
+					$this->_content = str_replace("\r\n", "\n", $row->get(TBGArticlesTable::CONTENT));
+					$this->_old_content = $this->_content;
 					$this->_posted_date = $row->get(TBGArticlesTable::DATE);
 					$this->_author = $row->get(TBGArticlesTable::AUTHOR);
 					$this->_is_published = ($row->get(TBGArticlesTable::IS_PUBLISHED) == 1) ? true : false;
@@ -129,7 +137,7 @@
 		{
 			if ($row === null)
 			{
-				$row = B2DB::getTable('TBGArticlesTable')->getArticleByName($article_name);
+				$row = TBGArticlesTable::getTable()->getArticleByName($article_name);
 			}
 			if ($row instanceof B2DBRow)
 			{
@@ -140,14 +148,14 @@
 
 		public static function deleteByName($article_name)
 		{
-			B2DB::getTable('TBGArticlesTable')->deleteArticleByName($article_name);
-			B2DB::getTable('TBGArticleLinksTable')->deleteLinksByArticle($article_name);
+			TBGArticlesTable::getTable()->deleteArticleByName($article_name);
+			TBGArticleLinksTable::getTable()->deleteLinksByArticle($article_name);
 		}
 
 		public static function createNew($name, $content, $published, $scope = null, $options = array())
 		{
 			$user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
-			$article_id = B2DB::getTable('TBGArticlesTable')->save($name, $content, $published, $user_id, null, $scope);
+			$article_id = TBGArticlesTable::getTable()->save($name, $content, $published, $user_id, null, $scope);
 			$article = PublishFactory::articleLab($article_id);
 			$article->save($options);
 			return $article_id;
@@ -180,7 +188,7 @@
 
 		public function setContent($content)
 		{
-			$this->_content = $content;
+			$this->_content = str_replace("\r\n", "\n", $content);
 			$parser = new TBGTextParser($content);
 			$parser->doParse();
 			$this->_populateCategories($parser->getCategories());
@@ -201,7 +209,7 @@
 			if ($this->_linking_articles === null)
 			{
 				$this->_linking_articles = array();
-				if ($res = B2DB::getTable('TBGArticleLinksTable')->getLinkingArticles($this->getName()))
+				if ($res = TBGArticleLinksTable::getTable()->getLinkingArticles($this->getName()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -222,7 +230,7 @@
 			if ($this->_subcategories === null)
 			{
 				$this->_subcategories = array();
-				if ($res = B2DB::getTable('TBGArticleCategoriesTable')->getSubCategories($this->getCategoryName()))
+				if ($res = TBGArticleCategoriesTable::getTable()->getSubCategories($this->getCategoryName()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -243,7 +251,7 @@
 			if ($this->_category_articles === null)
 			{
 				$this->_category_articles = array();
-				if ($res = B2DB::getTable('TBGArticleCategoriesTable')->getCategoryArticles($this->getCategoryName()))
+				if ($res = TBGArticleCategoriesTable::getTable()->getCategoryArticles($this->getCategoryName()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -266,7 +274,7 @@
 				$this->_categories = array();
 				if ($categories === null)
 				{
-					if ($res = B2DB::getTable('TBGArticleCategoriesTable')->getArticleCategories($this->getName()))
+					if ($res = TBGArticleCategoriesTable::getTable()->getArticleCategories($this->getName()))
 					{
 						while ($row = $res->getNextRow())
 						{
@@ -327,7 +335,17 @@
 		{
 			if ($this->_history === null)
 			{
-				$this->_history = TBGArticlesHistoryTable::getTable()->getHistoryByArticleName($this->getName());
+				$this->_history = array();
+				$history = TBGArticleHistoryTable::getTable()->getHistoryByArticleName($this->getName());
+
+				if ($history)
+				{
+					while ($row = $history->getNextRow())
+					{
+						$author = ($row->get(TBGArticleHistoryTable::AUTHOR)) ? TBGFactory::userLab($row->get(TBGArticleHistoryTable::AUTHOR)) : null;
+						$this->_history[$row->get(TBGArticleHistoryTable::REVISION)] = array('old_content' => $row->get(TBGArticleHistoryTable::OLD_CONTENT), 'new_content' => $row->get(TBGArticleHistoryTable::NEW_CONTENT), 'change_reason' => $row->get(TBGArticleHistoryTable::REASON), 'updated' => $row->get(TBGArticleHistoryTable::DATE), 'author' => $author);
+					}
+				}
 			}
 		}
 
@@ -337,28 +355,32 @@
 			return $this->_history;
 		}
 
-		public function save($options = array())
+		public function save($options = array(), $reason = null)
 		{
-			if (B2DB::getTable('TBGArticlesTable')->doesNameConflictExist($this->_name, $this->_itemid))
+			if (TBGArticlesTable::getTable()->doesNameConflictExist($this->_name, $this->_itemid))
 			{
 				throw new Exception(TBGContext::getI18n()->__('Another article with this name already exists'));
 			}
 			$user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
-			B2DB::getTable('TBGArticlesTable')->save($this->_name, $this->_content, $this->_is_published, $user_id, $this->_itemid);
+			
+			TBGArticleHistoryTable::getTable()->addArticleHistory($this->_name, $this->_old_content, $this->_content, $user_id, $reason);
+			TBGArticlesTable::getTable()->save($this->_name, $this->_content, $this->_is_published, $user_id, $this->_itemid);
 
-			B2DB::getTable('TBGArticleLinksTable')->deleteLinksByArticle($this->_name);
-			B2DB::getTable('TBGArticleCategoriesTable')->deleteCategoriesByArticle($this->_name);
+			$this->_old_content = $this->_content;
+
+			TBGArticleLinksTable::getTable()->deleteLinksByArticle($this->_name);
+			TBGArticleCategoriesTable::getTable()->deleteCategoriesByArticle($this->_name);
 
 			list ($links, $categories) = $this->_retrieveLinksAndCategoriesFromContent($options);
 
 			foreach ($links as $link => $occurrences)
 			{
-				B2DB::getTable('TBGArticleLinksTable')->addArticleLink($this->_name, $link);
+				TBGArticleLinksTable::getTable()->addArticleLink($this->_name, $link);
 			}
 
 			foreach ($categories as $category => $occurrences)
 			{
-				B2DB::getTable('TBGArticleCategoriesTable')->addArticleCategory($this->_name, $category, $this->isCategory());
+				TBGArticleCategoriesTable::getTable()->addArticleCategory($this->_name, $category, $this->isCategory());
 			}
 
 			$this->_history  = null;
@@ -370,7 +392,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGArticlesTable::IS_PUBLISHED, 0);
-			$res = B2DB::getTable('TBGArticlesTable')->doUpdateById($crit, $this->_itemid);
+			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_itemid);
 			$this->is_published = false;
 		}
 
@@ -378,7 +400,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGArticlesTable::IS_PUBLISHED, 1);
-			$res = B2DB::getTable('TBGArticlesTable')->doUpdateById($crit, $this->_itemid);
+			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_itemid);
 			$this->is_published = true;
 		}
 
@@ -386,7 +408,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGArticlesTable::IS_NEWS, 0);
-			$res = B2DB::getTable('TBGArticlesTable')->doUpdateById($crit, $this->_itemid);
+			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_itemid);
 			$this->is_news = false;
 		}
 		

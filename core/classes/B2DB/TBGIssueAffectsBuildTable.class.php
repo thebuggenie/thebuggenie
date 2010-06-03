@@ -33,7 +33,7 @@
 			parent::_addBoolean(self::CONFIRMED);
 			parent::_addForeignKeyColumn(self::BUILD, B2DB::getTable('TBGBuildsTable'), TBGBuildsTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUE, B2DB::getTable('TBGIssuesTable'), TBGIssuesTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::STATUS, B2DB::getTable('TBGListTypesTable'), TBGListTypesTable::ID);
 		}
 		

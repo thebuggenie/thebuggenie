@@ -50,7 +50,7 @@
 			parent::_addBoolean(self::IS_PUBLIC, true);
 			parent::_addVarchar(self::MODULE, 50);
 			parent::_addBoolean(self::SYSTEM_COMMENT);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::UPDATED_BY, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::POSTED_BY, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
 		}

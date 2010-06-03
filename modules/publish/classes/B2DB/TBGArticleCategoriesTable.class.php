@@ -9,13 +9,23 @@
 		const CATEGORY_NAME = 'articlecategories.category_name';
 		const SCOPE = 'articlecategories.scope';
 		
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGArticleCategoriesTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGArticleCategoriesTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::ARTICLE_NAME, 300);
 			parent::_addBoolean(self::ARTICLE_IS_CATEGORY);
 			parent::_addVarchar(self::CATEGORY_NAME, 300);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
 		public function deleteCategoriesByArticle($article_name)

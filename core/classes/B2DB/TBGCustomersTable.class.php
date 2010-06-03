@@ -28,7 +28,7 @@
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 50);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
 	}

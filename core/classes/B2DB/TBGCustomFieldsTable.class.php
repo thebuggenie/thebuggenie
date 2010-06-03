@@ -36,7 +36,7 @@
 			parent::_addVarchar(self::FIELD_DESCRIPTION, 200);
 			parent::_addText(self::FIELD_INSTRUCTIONS);
 			parent::_addInteger(self::FIELD_TYPE);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
 		public function createNew($name, $key, $fieldtype = 1, $scope = null)

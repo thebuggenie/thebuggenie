@@ -30,7 +30,7 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET, 10);
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
 		public function getNumberOfVotesForIssue($issue_id)

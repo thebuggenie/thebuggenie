@@ -15,7 +15,7 @@
 			parent::_addVarchar(self::FOLDERNAME, 60);
 			parent::_addInteger(self::PARENT_FOLDER, 10);
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 	}
 

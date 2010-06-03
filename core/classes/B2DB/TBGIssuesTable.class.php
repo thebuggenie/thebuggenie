@@ -121,7 +121,7 @@
 			parent::_addForeignKeyColumn(self::USER_WORKING_ON, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
 			parent::_addInteger(self::USER_WORKED_ON_SINCE, 10);
 			parent::_addForeignKeyColumn(self::MILESTONE, B2DB::getTable('TBGMilestonesTable'), TBGMilestonesTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
 		public static function getValidSearchFilters()

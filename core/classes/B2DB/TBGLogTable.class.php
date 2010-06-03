@@ -84,7 +84,7 @@
 			parent::_addText(self::CURRENT_VALUE, false);
 			parent::_addInteger(self::TIME, 10);
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
 		public function createNew($target, $target_type, $change_type, $text = null, $uid = 0)

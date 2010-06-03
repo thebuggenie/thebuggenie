@@ -47,7 +47,7 @@
 			parent::_addInteger(self::POSTED, 10);
 			parent::_addInteger(self::UPDATED, 10);
 			parent::_addInteger(self::DUE, 10);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::STATUS, B2DB::getTable('TBGListTypesTable'), TBGListTypesTable::ID);
 		}
 		

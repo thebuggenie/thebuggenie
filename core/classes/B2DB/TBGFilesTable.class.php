@@ -34,7 +34,7 @@
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addVarchar(self::REAL_FILENAME, 250);
 			parent::_addVarchar(self::CONTENT_TYPE, 250);
 			parent::_addVarchar(self::ORIGINAL_FILENAME, 250);

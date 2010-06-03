@@ -81,7 +81,7 @@
 		 */
 		public function __construct($text, $use_toc = false, $toc_base_id = null)
 		{
-			$this->text = $text;
+			$this->text = str_replace("\r\n", "\n", $text);
 			$this->use_toc = $use_toc;
 			$this->toc_base_id = $toc_base_id;
 

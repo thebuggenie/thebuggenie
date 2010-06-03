@@ -42,7 +42,7 @@
 			parent::_addBoolean(self::SHOW_IN_CONFIG);
 			parent::_addBoolean(self::SHOW_IN_MENU);
 			parent::_addBoolean(self::SHOW_IN_USERMENU);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
 		public function getAll()

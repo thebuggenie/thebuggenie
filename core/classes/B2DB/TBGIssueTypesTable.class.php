@@ -42,7 +42,7 @@
 			parent::_addBoolean(self::IS_TASK);
 			parent::_addBoolean(self::IS_REPORTABLE, true);
 			parent::_addBoolean(self::REDIRECT_AFTER_REPORTING, true);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
 		public function createNew($name, $icon = 'bug_report')

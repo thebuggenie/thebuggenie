@@ -331,7 +331,7 @@
 		 * 
 		 * @return B2DBResultset
 		 */
-		public function doSelect(B2DBCriteria $crit = null, $join = 'all')
+		public function doSelect(B2DBCriteria $crit, $join = 'all')
 		{
 			try
 			{

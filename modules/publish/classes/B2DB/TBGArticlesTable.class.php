@@ -17,6 +17,16 @@
 		const ICON = 'articles.icon';
 		const SCOPE = 'articles.scope';
 		
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGArticlesTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGArticlesTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -31,7 +41,7 @@
 			parent::_addInteger(self::ORDER, 5);
 			parent::_addVarchar(self::ICON, 50, '');
 			parent::_addForeignKeyColumn(self::AUTHOR, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
 		public function getArticleByName($name)

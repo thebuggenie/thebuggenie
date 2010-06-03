@@ -41,7 +41,7 @@
 			parent::_addBoolean(self::MEETING);
 			parent::_addBoolean(self::ABSENT);
 			parent::_addVarchar(self::COLOR, 7, '');
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
 		public function loadFixtures($scope)

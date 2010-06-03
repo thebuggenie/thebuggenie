@@ -72,7 +72,7 @@
 			parent::_addInteger(self::JOINED, 10);
 			parent::_addForeignKeyColumn(self::GROUP_ID, B2DB::getTable('TBGGroupsTable'), TBGGroupsTable::ID);
 			parent::_addForeignKeyColumn(self::CUSTOMER_ID, B2DB::getTable('TBGCustomersTable'), TBGCustomersTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
 		public function getByUsername($username)

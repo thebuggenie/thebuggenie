@@ -42,7 +42,7 @@
 			parent::_addInteger(self::ESTIMATED_DAYS, 10);
 			parent::_addInteger(self::ESTIMATED_HOURS, 10);
 			parent::_addFloat(self::ESTIMATED_POINTS);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
 		public function saveEstimate($issue_id, $months, $weeks, $days, $hours, $points)

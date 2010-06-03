@@ -40,7 +40,7 @@
 			parent::_addForeignKeyColumn(self::PROJECT_ID, B2DB::getTable('TBGProjectsTable'), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::CATEGORY_ID, B2DB::getTable('TBGListTypesTable'), TBGListTypesTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUETYPE_ID, B2DB::getTable('TBGIssueTypesTable'), TBGIssueTypesTable::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
 		public function getByProjectIDandIssuetypeID($project_id, $issuetype_id)

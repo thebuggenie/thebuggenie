@@ -27,7 +27,7 @@
 			parent::_addInteger(self::ISSUES_PER_PAGE, 10);
 			parent::_addVarchar(self::GROUPBY, 100);
 			parent::_addVarchar(self::GROUPORDER, 5);
-			parent::_addForeignKeyColumn(self::SCOPE, B2DB::getTable('TBGScopesTable'), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::APPLIES_TO_PROJECT, B2DB::getTable('TBGProjectsTable'), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
 		}
