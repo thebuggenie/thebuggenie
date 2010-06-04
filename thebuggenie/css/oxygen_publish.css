@@ -72,4 +72,4 @@
 #article_diff tr td { font-family: monospace; border: 0; }
 #article_diff tr.odd { background-color: #F5F5F5; }
 #article_diff tr:hover { background-color: #EEE; }
-INS { display: block; background-color: #8D8; text-decoration: none; } DEL { display: block; text-decoration: none; background-color: #D88; }
+INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { display: inline; text-decoration: line-through; background-color: #D88; }

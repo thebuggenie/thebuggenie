@@ -49,17 +49,30 @@
 		{
 			$this->message = TBGContext::getMessageAndClear('publish_article_message');
 			$this->error = TBGContext::getMessageAndClear('publish_article_error');
+
+			try
+			{
+				if ($request->hasParameter('revision'))
+				{
+					$this->revision = $request->getParameter('revision');
+					$this->article->setRevision($this->revision);
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->error = TBGContext::getI18n()->__('There was an error trying to show this revision');
+			}
 		}
 
 		public function runArticleHistory(TBGRequest $request)
 		{
 			$this->history_action = $request->getParameter('history_action');
+			$this->history = $this->article->getHistory();
+			$this->revision_count = count($this->history);
 
 			switch ($this->history_action)
 			{
 				case 'list':
-					$this->history = $this->article->getHistory();
-					$this->revision_count = count($this->history);
 					break;
 				case 'diff':
 					$from_revision = $request->getParameter('from_revision');
@@ -71,10 +84,8 @@
 					}
 					else
 					{
-						$content = TBGArticleHistoryTable::getTable()->getRevisionContentFromArticleName($this->article->getName(), $from_revision, $to_revision);
-						$old_content = htmlspecialchars($content[$from_revision]['new_content']);
-						$new_content = htmlspecialchars($content[$to_revision]['new_content']);
-
+						list ($content, $diff) = $this->article->compareRevisions($from_revision, $to_revision);
+						
 						$this->from_revision = $from_revision;
 						$this->from_revision_author = $content[$from_revision]['author'];
 						$this->from_revision_date = $content[$from_revision]['date'];
@@ -82,13 +93,19 @@
 						$this->to_revision_author = $content[$to_revision]['author'];
 						$this->to_revision_date = $content[$to_revision]['date'];
 
-						$diff = new TBGTextDiff();
-						$result = $diff->stringDiff($old_content, $new_content);
-						//var_dump($old_content);
-						//var_dump($new_content);
-						//var_dump($result);die();
-						$changes = $diff->sequentialChanges($result);
-						$this->diff = explode("\n", $diff->renderDiff($result));
+						$this->diff = explode("\n", $diff);
+					}
+					break;
+				case 'revert':
+					$revision = $request->getParameter('revision');
+					if ($revision)
+					{
+						$this->article->restoreRevision($revision);
+						$this->forward(TBGContext::getRouting()->generate('publish_article_history', array('article_name' => $this->article->getName())));
+					}
+					else
+					{
+						$this->forward(TBGContext::getRouting()->generate('publish_article_history', array('article_name' => $this->article->getName())));
 					}
 			}
 		}

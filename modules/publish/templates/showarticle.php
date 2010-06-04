@@ -7,21 +7,19 @@
 		<td class="main_area article">
 			<a name="top"></a>
 			<?php if ($error): ?>
-				<div class="rounded_box red borderless" style="margin: 0 0 5px 0;">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent" style="padding: 3px; font-size: 14px; color: #FFF;">
-						<?php echo $error; ?>
-					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+				<div class="rounded_box red borderless" style="margin: 0 0 5px 0; padding: 8px; font-size: 14px; color: #FFF;">
+					<?php echo $error; ?>
 				</div>
 			<?php endif; ?>
 			<?php if ($message): ?>
-				<div class="rounded_box green borderless" style="margin: 0 0 5px 5px;">
-					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-					<div class="xboxcontent" style="padding: 3px; font-size: 14px;">
-						<b><?php echo $message; ?></b>
-					</div>
-					<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+				<div class="rounded_box green borderless" style="margin: 0 0 5px 5px; padding: 8px; font-size: 14px;">
+					<b><?php echo $message; ?></b>
+				</div>
+			<?php endif; ?>
+			<?php if (isset($revision) && !$error): ?>
+				<div class="rounded_box yellow borderless" style="margin: 0 0 5px 5px; padding: 8px; font-size: 14px;">
+					<?php echo __('You are now viewing a previous revision of this article - revision %revision_number% %date%, by %author%', array('%revision_number%' => '<b>'.$revision.'</b>', '%date%' => '<span class="faded_medium">[ '.tbg_formatTime($article->getPostedDate(), 20).' ]</span>', '%author%' => (($article->getAuthor() instanceof TBGUser) ? $article->getAuthor()->getName() : __('System')))); ?><br>
+					<b><?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), __('Show current version')); ?></b>
 				</div>
 			<?php endif; ?>
 			<?php if ($article instanceof TBGWikiArticle): ?>

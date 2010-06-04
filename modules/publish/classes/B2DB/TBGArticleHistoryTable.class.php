@@ -90,12 +90,16 @@
 			return $res;
 		}
 
-		public function getRevisionContentFromArticleName($article_name, $from_revision, $to_revision)
+		public function getRevisionContentFromArticleName($article_name, $from_revision, $to_revision = null)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ARTICLE_NAME, $article_name);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$ctn = $crit->returnCriterion(self::REVISION, $from_revision);
-			$ctn->addOr(self::REVISION, $to_revision);
+			if ($to_revision !== null)
+			{
+				$ctn->addOr(self::REVISION, $to_revision);
+			}
 			$crit->addWhere($ctn);
 
 			$res = $this->doSelect($crit);
@@ -105,15 +109,27 @@
 				$retval = array();
 				while ($row = $res->getNextRow())
 				{
-					$retval[$row->get(self::REVISION)] = array('old_content' => $row->get(self::OLD_CONTENT), 'new_content' => $row->get(self::NEW_CONTENT), 'date' => $row->get(self::DATE), 'author' => TBGFactory::userLab($row->get(self::AUTHOR)));
+					$author = ($row->get(self::AUTHOR)) ? TBGFactory::userLab($row->get(self::AUTHOR)) : null;
+					$retval[$row->get(self::REVISION)] = array('old_content' => $row->get(self::OLD_CONTENT), 'new_content' => $row->get(self::NEW_CONTENT), 'date' => $row->get(self::DATE), 'author' => $author);
 				}
-				
-				return $retval;
+
+				return ($to_revision !== null) ? $retval : $retval[$from_revision];
 			}
 			else
 			{
 				return null;
 			}
 		}
+
+		public function removeArticleRevisionsSince($article_name, $revision)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ARTICLE_NAME, $article_name);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::REVISION, $revision, B2DBCriteria::DB_GREATER_THAN);
+			$res = $this->doDelete($crit);
+		}
+
+		
 
 	}

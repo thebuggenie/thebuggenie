@@ -362,8 +362,11 @@
 				throw new Exception(TBGContext::getI18n()->__('Another article with this name already exists'));
 			}
 			$user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
-			
-			TBGArticleHistoryTable::getTable()->addArticleHistory($this->_name, $this->_old_content, $this->_content, $user_id, $reason);
+
+			if (!isset($options['revert']) || !$options['revert'])
+			{
+				TBGArticleHistoryTable::getTable()->addArticleHistory($this->_name, $this->_old_content, $this->_content, $user_id, $reason);
+			}
 			TBGArticlesTable::getTable()->save($this->_name, $this->_content, $this->_is_published, $user_id, $this->_itemid);
 
 			$this->_old_content = $this->_content;
@@ -489,6 +492,48 @@
 			return $this->_author;
 		}
 
+		/**
+		 * Compare to revisions of this article, and return the diff output, as well as revision information
+		 *
+		 * @param integer $from_revision
+		 * @param integer $to_revision
+		 *
+		 * @return array
+		 */
+		public function compareRevisions($from_revision, $to_revision)
+		{
+			$content = TBGArticleHistoryTable::getTable()->getRevisionContentFromArticleName($this->getName(), $from_revision, $to_revision);
+			$old_content = htmlspecialchars($content[$from_revision]['new_content']);
+			$new_content = htmlspecialchars($content[$to_revision]['new_content']);
+
+			$diff = new TBGTextDiff();
+			$result = $diff->stringDiff($old_content, $new_content);
+			$changes = $diff->sequentialChanges($result);
+			return array($content, $diff->renderDiff($result));
+		}
+
+		public function restoreRevision($revision)
+		{
+			TBGArticleHistoryTable::getTable()->removeArticleRevisionsSince($this->getName(), $revision);
+			$content = TBGArticleHistoryTable::getTable()->getRevisionContentFromArticleName($this->getName(), $revision);
+			$this->setContent($content['new_content']);
+			$this->save(array('revert' => true));
+		}
+
+		public function setRevision($revision = null)
+		{
+			$content = TBGArticleHistoryTable::getTable()->getRevisionContentFromArticleName($this->getName(), $revision);
+			if (array_key_exists('new_content', $content))
+			{
+				$this->setContent($content['new_content']);
+				$this->_posted_date = $content['date'];
+				$this->_author = $content['author'];
+			}
+			else
+			{
+				throw new Exception('No such revision');
+			}
+		}
 
 	}
 
