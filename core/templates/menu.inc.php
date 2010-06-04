@@ -49,7 +49,7 @@
 	<?php if ($tbg_user->canSearchForIssues()): ?>
 		<ul class="right">
 			<li style="height: 24px;" class="nohover">
-				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'quicksearch' => 'true')) : make_url('search', array('quicksearch' => 'true')); ?>" method="post" name="quicksearchform">
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'quicksearch' => 'true')) : make_url('search', array('quicksearch' => 'true')); ?>" method="get" name="quicksearchform">
 					<div style="width: auto; padding: 0; text-align: right; position: relative;">
 					<label for="searchfor"><?php echo __('Quick search'); ?></label>
 					<?php $quicksearch_title = __('Search for anything here'); ?>

@@ -216,7 +216,7 @@
 		 */
 		public function runFindIssues(TBGRequest $request)
 		{
-			$this->show_results = ($request->hasParameter('filters') || $request->getParameter('search', false)) ? true : false;
+			$this->show_results = ($request->hasParameter('quicksearch') || $request->hasParameter('filters') || $request->getParameter('search', false)) ? true : false;
 			$this->_getSearchDetailsFromRequest($request);
 
 			if ($request->isMethod(TBGRequest::POST))
@@ -249,7 +249,6 @@
 				{
 					$route = 'search';
 				}
-				//var_dump($params);die();
 				$this->forward(TBGContext::getRouting()->generate($route, $params));
 			}
 			elseif ($this->show_results)
