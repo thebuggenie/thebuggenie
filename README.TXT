@@ -1,3 +1,13 @@
+THE BUG GENIE VERSION 3 ALPHA RELEASE 1
+-------
+Thank you for downloading this pre-release version. Keep in mind that this is
+PRE-RELEASE software, which means it will contain bugs, unfinished functionality
+and may not perform in the way you expect it to.
+
+Please report issues and feedback from the issue tracker on our website:
+http://www.thebuggenie.com
+
+
 * INSTALLATION *
 
 via web
@@ -12,13 +22,14 @@ installation process.
 via command-line (unix/linux only)
 ----------------------------------
 You can use the thebuggenie command-line client to install, if you prefer that.
-Run "./thebuggenie" from this folder.
+Run "./tbg_cli" from this folder.
 
 To install:
-    ./thebuggenie install
+    ./tbg_cli install
 
 
 * REPORTING ISSUES *
 
-If you find any issues, please report them in our online bug tracker: 
-    http://bugs.thebuggenie.com
+If you find any issues, please report them in the issue tracker on our website:
+http://www.thebuggenie.com
+

@@ -69,6 +69,7 @@
 			if ($scope == TBGContext::getScope()->getID())
 			{
 				TBGArticlesTable::getTable()->create();
+				TBGArticleHistoryTable::getTable()->create();
 				B2DB::getTable('TBGArticleViewsTable')->create();
 				TBGArticleLinksTable::getTable()->create();
 				TBGArticleCategoriesTable::getTable()->create();

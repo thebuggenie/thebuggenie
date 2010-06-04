@@ -64,14 +64,6 @@
 						<input type="radio" name="modules[calendar]" value="0" id="modules_calendar_no"><label for="modules_calendar_no">No</label>
 					</dd>
 					<dt>
-						<strong>Enable Wiki</strong><br>
-						Enables functionality that lets you create wiki articles
-					</dt>
-					<dd>
-						<input type="radio" name="modules[publish]" value="1" id="modules_publish_yes" checked="checked"><label for="modules_publish_yes" style="margin-right: 5px;">Yes</label>
-						<input type="radio" name="modules[publish]" value="0" id="modules_publish_no"><label for="modules_publish_no">No</label>
-					</dd>
-					<dt>
 						<strong>Enable subversion integration</strong><br>
 						Enables functionality that makes it possible to integrate with SVN hooks
 					</dt>
@@ -84,6 +76,7 @@
 			<div style="padding-top: 20px; clear: both; text-align: center;">
 				<label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and enable the selected modules</label>
 				<img src="themes/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
+				<input type="hidden" name="modules[publish]" value="1" id="modules_publish_yes">
 				<input type="submit" id="continue_button" onclick="$('continue_button').hide();$('next_indicator').show();" value="Continue">
 			</div>
 		</form>
