@@ -6,7 +6,7 @@
 	}
 	
 ?>
-<div class="rounded_box invisible project_strip">
+<div class="rounded_box <?php if (!($project->isIssuelistVisibleInFrontpageSummary() && count($project->getVisibleIssuetypes()))): ?>invisible <?php else: ?> white borderless <?php endif; ?>project_strip">
 	<div style="float: left; font-weight: normal; font-size: 14px;">
 		<?php echo image_tag($project->getIcon(), array('style' => 'float: left; margin-right: 5px;'), $project->hasIcon()); ?>
 		<b class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?> <?php if ($project->usePrefix()): ?>(<?php echo strtoupper($project->getPrefix()); ?>)<?php endif; ?></b><?php if ($tbg_user->canEditProjectDetails($project)): ?>&nbsp;&nbsp;<span class="faded_medium"><?php echo link_tag(make_url('configure_project_settings', array('project_id' => $project->getID())), __('Edit project'), array('style' => 'font-size: 12px;')); ?></span><?php endif; ?><br>
@@ -46,6 +46,10 @@
 			</tr>
 		<?php endforeach; ?>
 		</table>
+	<?php elseif ($project->isIssuelistVisibleInFrontpageSummary() && count($project->getVisibleIssuetypes())): ?>
+		<div class="search_results">
+			<?php include_component('search/results_normal', array('issues' => $project->getOpenIssuesForFrontpageSummary(true), 'cc' => 1, 'groupby' => 'issuetype', 'prevgroup_id' => 0)); ?>
+		</div>
 	<?php elseif ($project->isMilestonesVisibleInFrontpageSummary() && count($project->getVisibleMilestones())): ?>
 		<table style="width: 100%; margin-top: 5px;" cellpadding=0 cellspacing=0>
 		<?php foreach ($project->getVisibleMilestones() as $milestone): ?>

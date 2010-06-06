@@ -410,6 +410,19 @@
 			return $res;
 		}
 
+		public function getOpenIssuesByProjectIDAndIssueTypes($project_id, $issue_types)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addWhere(self::ISSUE_TYPE, $issue_types, B2DBCriteria::DB_IN);
+			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
+			$crit->addWhere(self::DELETED, 0);
+
+			$res = $this->doSelect($crit);
+
+			return $res;
+		}
+
 		public function getRecentByProjectIDandIssueType($project_id, $issuetypes, $limit = 5)
 		{
 			$crit = $this->getCriteria();

@@ -1892,6 +1892,37 @@
 			return ($this->getFrontpageSummaryType() == 'issuelist') ? true : false;
 		}
 
+		public function getOpenIssuesForFrontpageSummary($merged = false)
+		{
+			$res = TBGIssuesTable::getTable()->getOpenIssuesByProjectIDAndIssueTypes($this->getID(), array_keys($this->getVisibleIssuetypes()));
+
+			$retval = array();
+			if (!$merged)
+			{
+				foreach ($this->getVisibleIssuetypes() as $issuetype_id => $issuetype)
+				{
+					$retval[$issuetype_id] = array('issuetype' => $issuetype, 'issues' => array());
+				}
+			}
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$issue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID));;
+					if (!$merged)
+					{
+						$retval[$row->get(TBGIssuesTable::ISSUE_TYPE)]['issues'][] = $issue;
+					}
+					else
+					{
+						$retval[] = $issue;
+					}
+				}
+			}
+
+			return $retval;
+		}
+
 		/**
 		 * Checks to see if anything is shown in the frontpage summary
 		 * 

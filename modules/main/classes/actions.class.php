@@ -1759,7 +1759,6 @@
 						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('The comment must have some content')));
 					}
 					
-					/* FIXME: Make more efficient when cleaning up comment class */
 					$comment->setContent($request->getParameter('comment_body'));
 					
 					if ($request->getParameter('comment_title') == '')
