@@ -242,7 +242,20 @@
 		{
 			return self::$_classpaths;
 		}
-		
+
+		/**
+		 * Setup the routing object with CLI parameters
+		 *
+		 * @param string $module
+		 * @param string $action
+		 */
+		public static function setCLIRouting($module, $action)
+		{
+			self::$_routing->setCurrentRouteModule($module);
+			self::$_routing->setCurrentRouteAction($action);
+			self::$_routing->setCurrentRouteName('cli');
+		}
+
 		/**
 		 * Returns the routing object
 		 * 
@@ -395,22 +408,20 @@
 					throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
 				}
 
-				if (self::getEnvironment() != self::ENV_CLI)
+				TBGLogging::log('Loading first batch of routes', 'routing');
+				if (!($routes_1 = TBGCache::get('routes_1')))
 				{
-					TBGLogging::log('Loading first batch of routes', 'routing');
-					if (!($routes_1 = TBGCache::get('routes_1')))
-					{
-						TBGLogging::log('generating routes', 'routing');
-						require THEBUGGENIE_PATH . 'core/load_routes.inc.php';
-						TBGCache::add('routes_1', self::getRouting()->getRoutes());
-					}
-					else
-					{
-						TBGLogging::log('loading routes from cache', 'routing');
-						self::getRouting()->setRoutes($routes_1);
-					}
-					TBGLogging::log('...done', 'routing');
+					TBGLogging::log('generating routes', 'routing');
+					require THEBUGGENIE_PATH . 'core/load_routes.inc.php';
+					TBGCache::add('routes_1', self::getRouting()->getRoutes());
 				}
+				else
+				{
+					TBGLogging::log('loading routes from cache', 'routing');
+					self::getRouting()->setRoutes($routes_1);
+				}
+				TBGLogging::log('...done', 'routing');
+				
 				if (self::$_installmode)
 				{
 					self::$_modules = array();

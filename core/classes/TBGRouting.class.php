@@ -23,6 +23,13 @@
 		protected $current_route_module = null;
 		protected $current_route_action = null;
 
+		public function __construct($current_module = null, $current_action = null, $current_name = null)
+		{
+			if ($current_module !== null) $this->current_route_module = $current_module;
+			if ($current_action !== null) $this->current_route_action = $current_action;
+			if ($current_name !== null) $this->current_route_name = $current_name;
+		}
+
 		/**
 		 * Set all routes manually (used by cache functions)
 		 * 
@@ -274,6 +281,16 @@
 		}
 
 		/**
+		 * Set the current route name
+		 *
+		 * @param string $current_route_name
+		 */
+		public function setCurrentRouteName($current_route_name)
+		{
+			$this->current_route_name = $current_route_name;
+		}
+
+		/**
 		 * Returns the current route name
 		 * 
 		 * @return string The current route name
@@ -285,6 +302,16 @@
 				$this->getRouteFromUrl(TBGContext::getRequest()->getParameter('url', null, false));
 			}
 			return $this->current_route_name;
+		}
+
+		/**
+		 * Set the current route module
+		 * 
+		 * @param string $current_route_module
+		 */
+		public function setCurrentRouteModule($current_route_module)
+		{
+			$this->current_route_module = $current_route_module;
 		}
 		
 		/**
@@ -299,6 +326,16 @@
 				$this->getRouteFromUrl(TBGContext::getRequest()->getParameter('url', null, false));
 			}
 			return $this->current_route_module;
+		}
+
+		/**
+		 * Set the current route action
+		 *
+		 * @param string $current_route_action
+		 */
+		public function setCurrentRouteAction($current_route_action)
+		{
+			$this->current_route_action = $current_route_action;
 		}
 
 		/**

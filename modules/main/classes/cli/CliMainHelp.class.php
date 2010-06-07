@@ -22,6 +22,7 @@
 		protected function _setup()
 		{
 			$this->_command_name = 'help';
+			$this->addOptionalArgument('command', "Show help for the command specified");
 		}
 
 		public function getDescription()
@@ -47,6 +48,10 @@
 					$class = $commands[$module_name][$command];
 					$this->cliEcho("Usage: ", 'white', 'bold');
 					$this->cliEcho(TBGCliCommand::getCommandLineName() . " ");
+					if ($module_name != 'main')
+					{
+						$this->cliEcho($module_name.':', 'green', 'bold');
+					}
 					$this->cliEcho($class->getCommandName() . " ", 'green', 'bold');
 
 					$hasArguments = false;
@@ -101,29 +106,41 @@
 				}
 				else
 				{
-					TBGCliCommand::cli_echo("\n");
-					TBGCliCommand::cli_echo("Unknown command\n", 'red', 'bold');
-					TBGCliCommand::cli_echo("Type " . TBGCliCommand::getCommandLineName() . ' ');
-					TBGCliCommand::cli_echo('help', 'green', 'bold');
-					TBGCliCommand::cli_echo(" for more information about the cli tool.\n\n");
+					$this->cliEcho("\n");
+					$this->cliEcho("Unknown command\n", 'red', 'bold');
+					$this->cliEcho("Type " . TBGCliCommand::getCommandLineName() . ' ', 'white', 'bold');
+					$this->cliEcho('help', 'green', 'bold');
+					$this->cliEcho(" for more information about the cli tool.\n\n");
 				}
 			}
 			else
 			{
-				$this->cliEcho("Below is a list of available commands:\n\n");
+				$this->cliEcho("Below is a list of available commands:\n");
+				$this->cliEcho("Type ");
+				$this->cliEcho(TBGCliCommand::getCommandLineName() . ' ', 'white', 'bold');
+				$this->cliEcho('help', 'green', 'bold');
+				$this->cliEcho(' command', 'magenta');
+				$this->cliEcho(" for more information about a specific command.\n\n");
 				$commands = $this->getAvailableCommands();
 
 				foreach ($commands as $module_name => $module_commands)
 				{
 					if ($module_name != 'main' && count($module_commands) > 0)
 					{
-						$this->cliEcho("{$module_name}:\n", 'green', 'bold');
+						$this->cliEcho("\n{$module_name}:\n", 'green', 'bold');
 					}
 					foreach ($module_commands as $command_name => $command)
 					{
-						if ($module_name != 'main') $this->cliEcho("\t");
+						if ($module_name != 'main') $this->cliEcho("  ");
 						$this->cliEcho("{$command_name}", 'green', 'bold');
 						$this->cliEcho(" - {$command->getDescription()}\n");
+					}
+
+					if (count($commands) > 1 && $module_name == 'main')
+					{
+						$this->cliEcho("\nModule commands, use ");
+						$this->cliEcho("module_name:command_name", 'green');
+						$this->cliEcho(" to run:");
 					}
 				}
 

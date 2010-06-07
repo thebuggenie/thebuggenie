@@ -75,6 +75,7 @@
 		if (array_key_exists($module_name, $commands) && array_key_exists($command, $commands[$module_name]))
 		{
 			$class = $commands[$module_name][$command];
+			TBGContext::setCLIRouting($module_name, $command);
 			$class->execute();
 		}
 		else

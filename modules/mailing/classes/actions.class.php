@@ -21,7 +21,7 @@
 						{
 							if ($user->getEmail())
 							{
-								TBGContext::getModule('mailing')->sendForgottenPasswordEmail($user);
+								TBGMailing::getModule()->sendForgottenPasswordEmail($user);
 								TBGContext::setMessage('forgot_success', TBGContext::getI18n()->__('Please use the link in the email you received'));
 								$this->forward(TBGContext::getRouting()->generate('login'));
 							}
@@ -59,7 +59,7 @@
 			{
 				try
 				{
-					if (TBGContext::getModule('mailing')->sendTestEmail($email_to))
+					if (TBGMailing::getModule()->sendTestEmail($email_to))
 					{
 						TBGContext::setMessage('module_message', TBGContext::getI18n()->__('The email was successfully accepted for delivery'));
 					}

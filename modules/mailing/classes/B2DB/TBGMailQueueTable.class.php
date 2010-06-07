@@ -6,7 +6,7 @@
 		const ID = 'mailing_queue.id';
 		const MESSAGE = 'mailing_queue.headers';
 		const DATE = 'mailing_queue.date';
-		const SCOPE = 'articlecategories.scope';
+		const SCOPE = 'mailing_queue.scope';
 
 		/**
 		 * Return an instance of this table
@@ -39,10 +39,14 @@
 			return $res->getInsertID();
 		}
 
-		public function getQueuedMessages()
+		public function getQueuedMessages($limit = null)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			if ($limit !== null)
+			{
+				$crit->setLimit($limit);
+			}
 			$crit->addOrderBy(self::DATE, 'asc');
 
 			$messages = array();

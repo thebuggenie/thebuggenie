@@ -4,6 +4,16 @@
 	{
 
 		protected $mailer = null;
+
+		/**
+		 * Get an instance of this module
+		 * 
+		 * @return TBGMailing
+		 */
+		public static function getModule()
+		{
+			return TBGContext::getModule('mailing');
+		}
 		
 		public function __construct($m_id, $res = null)
 		{
