@@ -59,6 +59,11 @@
 			$module->saveSetting('from_addr', '');
 			$module->saveSetting('ehlo', 1);
 
+			if ($scope == TBGContext::getScope()->getID())
+			{
+				TBGMailQueueTable::getTable()->create();
+			}
+
 			return true;
 		}
 		
@@ -405,8 +410,16 @@
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
-				$mailer = $this->getMailer();
-				$retval = $mailer->send($mail);
+				if ($this->usesEmailQueue())
+				{
+					TBGMailQueueTable::getTable()->addMailToQueue($mail);
+					return true;
+				}
+				else
+				{
+					$mailer = $this->getMailer();
+					$retval = $mailer->send($mail);
+				}
 
 				return $retval;
 			}
