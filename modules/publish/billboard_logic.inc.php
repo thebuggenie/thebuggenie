@@ -18,7 +18,7 @@
 				$crit->addInsert(TBGBillboardPostsTable::TARGET_BOARD, (int) TBGContext::getRequest()->getParameter('post_link_billboard'));
 				$crit->addInsert(TBGBillboardPostsTable::TITLE, $description);
 				$res = B2DB::getTable('TBGBillboardPostsTable')->doInsert($crit);
-				TBGContext::getModule('publish')->printBillboardPostOnBillboard(new PublishBillboardPost($res->getInsertID()));
+				TBGPublish::getModule()->printBillboardPostOnBillboard(new PublishBillboardPost($res->getInsertID()));
 			}
 		}
 		if (TBGContext::getRequest()->getParameter('billboard_post_new_text') && TBGContext::getRequest()->getParameter('post_text_title') && trim(TBGContext::getRequest()->getParameter('post_text_title')) != '' && TBGContext::getRequest()->getParameter('post_text_billboard') !== null)
@@ -35,7 +35,7 @@
 				$crit->addInsert(TBGBillboardPostsTable::TITLE, $title);
 				$crit->addInsert(TBGBillboardPostsTable::CONTENT, $content);
 				$res = B2DB::getTable('TBGBillboardPostsTable')->doInsert($crit);
-				TBGContext::getModule('publish')->printBillboardPostOnBillboard(new PublishBillboardPost($res->getInsertID()));
+				TBGPublish::getModule()->printBillboardPostOnBillboard(new PublishBillboardPost($res->getInsertID()));
 			}
 		}
 		exit();

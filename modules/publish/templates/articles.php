@@ -8,7 +8,7 @@
 	
 	require TBGContext::getIncludePath() . "include/ui_functions.inc.php";
 
-	TBGContext::getModule('publish')->activate();
+	TBGPublish::getModule()->activate();
 	
 	require TBGContext::getIncludePath() . "modules/publish/articles_logic.inc.php";
 	require TBGContext::getIncludePath() . "include/header.inc.php";
@@ -138,7 +138,7 @@
 										<?php
 									}
 	
-									if (TBGContext::getModule('publish')->getSetting('featured_article') != $article->getID())
+									if (TBGPublish::getModule()->getSetting('featured_article') != $article->getID())
 									{  
 										?>
 										<tr>
@@ -228,7 +228,7 @@
 						</div>
 						<br style="clear: both;">
 						<select name="icon_select" id="icon_select" onchange="updateIcon()" style="margin-left: 85px; width: 136px;">
-							<?php foreach (TBGContext::getModule('publish')->getIcons() as $key => $value): ?>
+							<?php foreach (TBGPublish::getModule()->getIcons() as $key => $value): ?>
 								<option value="<?php echo $key; ?>" <?php if ($article->getIcon() == $key) echo 'selected'; ?>><?php echo $value; ?></option>
 							<?php endforeach; ?>
 						</select>

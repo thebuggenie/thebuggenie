@@ -22,12 +22,8 @@
 		protected function _setup()
 		{
 			$this->_command_name = 'license';
+			$this->_description = "Show license information";
 			$this->addOptionalArgument('print', 'Print the license in full');
-		}
-
-		public function getDescription()
-		{
-			return "Show license information";
 		}
 
 		public function do_execute()

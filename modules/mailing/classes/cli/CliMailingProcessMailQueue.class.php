@@ -22,13 +22,9 @@
 		protected function _setup()
 		{
 			$this->_command_name = 'process_mail_queue';
+			$this->_description = "Processes emails in the mailing queue";
 			$this->addOptionalArgument('test', "Set to 'yes' or 'no' to do a test run");
 			$this->addOptionalArgument('limit', "Specify a limit to only process a certain number of emails");
-		}
-
-		public function getDescription()
-		{
-			return "Processes emails in the mailing queue";
 		}
 
 		public function do_execute()

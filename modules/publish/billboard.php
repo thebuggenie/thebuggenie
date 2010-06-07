@@ -8,7 +8,7 @@
 	
 	require TBGContext::getIncludePath() . "include/ui_functions.inc.php";
 
-	TBGContext::getModule('publish')->activate();
+	TBGPublish::getModule()->activate();
 	
 	require TBGContext::getIncludePath() . "modules/publish/billboard_logic.inc.php";
 	require TBGContext::getIncludePath() . "include/header.inc.php";
@@ -149,7 +149,7 @@
 		<div style="border-bottom: 1px solid #DDD; padding: 3px; font-size: 13px;"><b><a href="<?php echo TBGContext::getTBGPath(); ?>modules/publish/billboard.php?billboard=0"><?php echo __('Global billboard'); ?></a></b> <span style="display: inline; font-weight: normal; font-size: 11px;"></span></div>
 		<?php
 		
-			$billboardposts = TBGContext::getModule('publish')->getBillboardPosts(0, 9);
+			$billboardposts = TBGPublish::getModule()->getBillboardPosts(0, 9);
 
 			for ($cc = 1; $cc <= 3; $cc++) 
 			{
@@ -163,7 +163,7 @@
 								if (!empty($billboardposts))
 								{
 									$billboardpost = array_shift($billboardposts);
-									TBGContext::getModule('publish')->printBillboardPostOnBillboard($billboardpost); 
+									TBGPublish::getModule()->printBillboardPostOnBillboard($billboardpost); 
 								}
 							}
 							
@@ -176,11 +176,11 @@
 		?><div style="clear: both;">&nbsp;</div>
 		<?php
 
-		if (TBGContext::getModule('publish')->getSetting('enableteambillboards') == 1)
+		if (TBGPublish::getModule()->getSetting('enableteambillboards') == 1)
 		{
 			foreach (TBGContext::getUser()->getTeams() as $aTeamID) 
 			{
-				$billboardposts = TBGContext::getModule('publish')->getBillboardPosts($aTeamID, 9);
+				$billboardposts = TBGPublish::getModule()->getBillboardPosts($aTeamID, 9);
 				$aTeam = TBGFactory::teamLab($aTeamID);
 				?><div style="border-bottom: 1px solid #DDD; padding: 3px; font-size: 13px;"><b><a href="<?php echo TBGContext::getTBGPath(); ?>modules/publish/billboard.php?billboard=<?php echo $aTeam->getID(); ?>"><?php echo __('%teamname% billboard', array('%teamname%' => $aTeam->getName())); ?></a></b> <span style="display: inline; font-weight: normal; font-size: 11px;">(<?php echo __('available only to team members'); ?>)</span></div>
 				<?php
@@ -196,7 +196,7 @@
 									if (!empty($billboardposts))
 									{
 										$billboardpost = array_shift($billboardposts);
-										TBGContext::getModule('publish')->printBillboardPostOnBillboard($billboardpost);
+										TBGPublish::getModule()->printBillboardPostOnBillboard($billboardpost);
 									}
 								}
 								
@@ -217,12 +217,12 @@
 		
 		if ((int) TBGContext::getRequest()->getParameter('billboard') == 0)
 		{
-			$billboardposts = TBGContext::getModule('publish')->getBillboardPosts(0, 30);
+			$billboardposts = TBGPublish::getModule()->getBillboardPosts(0, 30);
 			$billboardtitle = 'Global billboard';
 		}
 		elseif (in_array((int) TBGContext::getRequest()->getParameter('billboard'), TBGContext::getUser()->getTeams()))
 		{
-			$billboardposts = TBGContext::getModule('publish')->getBillboardPosts(TBGContext::getRequest()->getParameter('billboard'), 30);
+			$billboardposts = TBGPublish::getModule()->getBillboardPosts(TBGContext::getRequest()->getParameter('billboard'), 30);
 			$billboardtitle = TBGFactory::teamLab(TBGContext::getRequest()->getParameter('billboard'))->getName() . ' billboard';
 		}
 			
@@ -242,7 +242,7 @@
 								if (!empty($billboardposts))
 								{
 									$billboardpost = array_shift($billboardposts);
-									TBGContext::getModule('publish')->printBillboardPostOnBillboard($billboardpost);
+									TBGPublish::getModule()->printBillboardPostOnBillboard($billboardpost);
 								}
 							}
 							

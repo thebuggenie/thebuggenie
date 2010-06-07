@@ -22,17 +22,13 @@
 		protected function _setup()
 		{
 			$this->_command_name = 'install';
+			$this->_description = "Run the installation routine";
 			$this->addOptionalArgument('accept_license', 'Set to "yes" to auto-accept license');
 			$this->addOptionalArgument('url_host', 'Specify URL host');
 			$this->addOptionalArgument('url_subdir', 'Specify URL subdirectory');
 			$this->addOptionalArgument('use_existing_db_info', 'Set to "yes" to use existing db information if available');
 			$this->addOptionalArgument('enable_all_modules', 'Set to "yes" to install all modules');
 			$this->addOptionalArgument('setup_htaccess', 'Set to "yes" to autoconfigure .htaccess file');
-		}
-
-		public function getDescription()
-		{
-			return "Run the installation routine";
 		}
 
 		public function do_execute()

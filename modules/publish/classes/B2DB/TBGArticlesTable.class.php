@@ -44,6 +44,27 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
+		public function getAllArticles()
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addOrderBy(self::ARTICLE_NAME);
+
+			$res = $this->doSelect($crit);
+			$articles = array();
+
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$a_id = $row->get(self::ID);
+					$articles[$a_id] = PublishFactory::articleLab($a_id, $row);
+				}
+			}
+
+			return $articles;
+		}
+
 		public function getArticleByName($name)
 		{
 			$crit = $this->getCriteria();

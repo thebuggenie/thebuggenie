@@ -22,12 +22,8 @@
 		protected function _setup()
 		{
 			$this->_command_name = 'help';
+			$this->_description = "Prints out help information";
 			$this->addOptionalArgument('command', "Show help for the command specified");
-		}
-
-		public function getDescription()
-		{
-			return "Prints out help information";
 		}
 
 		public function do_execute()

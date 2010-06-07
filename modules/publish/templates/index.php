@@ -57,7 +57,7 @@
 				</table>
 				<?php 
 				
-				if (TBGContext::getModule('publish')->getSetting('enablebillboards') == 1)
+				if (TBGPublish::getModule()->getSetting('enablebillboards') == 1)
 				{
 					?> 
 					<table class="b2_section_miniframe" cellpadding=0 cellspacing=0>
@@ -80,7 +80,7 @@
 				}
 			}
 						
-			TBGContext::getModule('publish')->listen_latestArticles();
+			TBGPublish::getModule()->listen_latestArticles();
 			
 			?>
 		</td>
@@ -104,7 +104,7 @@
 			<ul id="article_list">
 				<?php 
 				
-				foreach (TBGContext::getModule('publish')->getAllArticles() as $article)
+				foreach (TBGPublish::getModule()->getAllArticles() as $article)
 				{
 					?>
 					<li id="article_list_<?php echo $article->getID(); ?>">
@@ -197,7 +197,7 @@
 		}
 		else
 		{
-			$featured_article = TBGContext::getModule('publish')->getSetting('featured_article');
+			$featured_article = TBGPublish::getModule()->getSetting('featured_article');
 			
 			if ($featured_article != '')
 			{
@@ -215,7 +215,7 @@
 				}
 			}
 			
-			$previous_articles = TBGContext::getModule('publish')->getArticles(30);
+			$previous_articles = TBGPublish::getModule()->getArticles(30);
 					
 			?>
 			<table style="width: 100%;" cellpadding=0 cellspacing=0>

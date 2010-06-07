@@ -25,13 +25,13 @@
 
 		protected $_command_name = null;
 
+		protected $_description = '';
+
 		protected $_required_arguments = array();
 
 		protected $_optional_arguments = array();
 
-		abstract function do_execute();
-
-		abstract function getDescription();
+		abstract protected function do_execute();
 
 		final function __construct()
 		{
@@ -42,6 +42,11 @@
 		{
 			$this->_processArguments();
 			$this->do_execute();
+		}
+
+		public function getDescription()
+		{
+			return $this->_description;
 		}
 
 		public static function setAvailableCommands($available_commands)

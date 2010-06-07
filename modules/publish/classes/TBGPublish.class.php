@@ -3,6 +3,16 @@
 	class TBGPublish extends TBGModule 
 	{
 
+		/**
+		 * Return an instance of this module
+		 *
+		 * @return TBGPublish
+		 */
+		public static function getModule()
+		{
+			return TBGContext::getModule('publish');
+		}
+
 		public function __construct($m_id, $res = null)
 		{
 			parent::__construct($m_id, $res);
@@ -91,27 +101,38 @@
 			return true;
 		}
 		
+		static function loadFixturesArticles($scope, $overwrite = true)
+		{
+			$_path_handle = opendir(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR);
+			while ($article_name = readdir($_path_handle))
+			{
+				if (strpos($article_name, '.') === false)
+				{
+					$imported = false;
+					if (TBGArticlesTable::getTable()->getArticleByName(urldecode($article_name)) === null || $overwrite)
+					{
+						$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $article_name);
+						TBGWikiArticle::createNew(urldecode($article_name), $content, true, $scope, array('overwrite' => $overwrite));
+						$imported = true;
+					}
+					TBGEvent::createNew('publish', 'fixture_article_loaded', urldecode($article_name), array('imported' => $imported))->trigger();
+				}
+			}
+		}
+
 		static function loadFixtures($scope)
 		{
 			try
 			{
-				$_path_handle = opendir(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR);
-				while ($article_name = readdir($_path_handle))
-				{
-					if (strpos($article_name, '.') === false)
-					{
-						$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $article_name);
-						TBGWikiArticle::createNew($article_name, $content, true, $scope);
-					}
-				}
+				self::loadFixturesArticles($scope);
 
-				$article_name = 'Category:Help';
+				/*$article_name = 'Category:Help';
 				$content = "This is a list of all the available help articles in The Bug Genie. If you are stuck, look here for help.";
 				TBGWikiArticle::createNew($article_name, $content, true, $scope);
 
 				$article_name = 'Category:HowTo';
 				$content = "[[Category:Help]]";
-				TBGWikiArticle::createNew($article_name, $content, true, $scope);
+				TBGWikiArticle::createNew($article_name, $content, true, $scope);*/
 				
 				TBGLinksTable::getTable()->addLink('wiki', 0, 'MainPage', 'Wiki Frontpage', 1, $scope);
 				TBGLinksTable::getTable()->addLink('wiki', 0, 'WikiFormatting', 'Formatting help', 2, $scope);
