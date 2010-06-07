@@ -46,12 +46,14 @@
 				{
 					$mailer = TBGMailing::getModule()->getMailer();
 					$processed_messages = array();
+					$failed_messages = 0;
 					try
 					{
 						foreach ($messages as $message_id => $message)
 						{
-							$mailer->send($message);
+							$retval = $mailer->send($message);
 							$processed_messages[] = $message_id;
+							if (!$retval) $failed_messages++;
 						}
 					}
 					catch (Exception $e) { throw $e; }
@@ -61,6 +63,11 @@
 						TBGMailQueueTable::getTable()->deleteProcessedMessages($processed_messages);
 						$this->cliEcho("Emails successfully processed: ");
 						$this->cliEcho(count($messages)."\n", 'green', 'bold');
+						if ($failed_messages > 0)
+						{
+							$this->cliEcho("Emails processed with error(s): ");
+							$this->cliEcho($failed_messages."\n", 'red', 'bold');
+						}
 					}
 				}
 			}
