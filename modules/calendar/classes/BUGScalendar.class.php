@@ -2,58 +2,34 @@
 
 	class BUGScalendar extends TBGModule 
 	{
+
+		protected $_module_version = '1.0';
 		
-		public function __construct($m_id, $res = null)
+		protected function _initialize(TBGI18n $i18n)
 		{
-			parent::__construct($m_id, $res);
-			$this->_module_version = '1.0';
-			$this->setLongName(TBGContext::getI18n()->__('Calendar'));
-			$this->setMenuTitle(TBGContext::getI18n()->__('Calendar'));
-			$this->setConfigTitle(TBGContext::getI18n()->__('Calendar'));
-			$this->setDescription(TBGContext::getI18n()->__('Enables calendars, todos and meetings'));
-			//$this->setHasAccountSettings();
+			$this->setLongName($i18n->__('Calendar'));
+			$this->setMenuTitle($i18n->__('Calendar'));
+			$this->setConfigTitle($i18n->__('Calendar'));
+			$this->setDescription($i18n->__('Enables calendars, todos and meetings'));
+		}
+
+		protected function _addAvailableListeners()
+		{
 			$this->addAvailableListener('core', 'dashboard_left_top', 'listen_calendarSummary', 'Dashboard calendar summary');
 			$this->addAvailableListener('core', 'TBGUser::getState', 'listen_TBGUser_getState', 'Automatic user-state change');
 		}
 
-		public function initialize()
+		protected function _install($scope)
 		{
-		}
-
-		public static function install($scope = null)
-		{
-  			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
+			$this->enableListenerSaved('core', 'dashboard_left_top', $scope);
+			$this->enableListenerSaved('core', 'account_settings', $scope);
+			$this->enableListenerSaved('core', 'account_settingslist', $scope);
+			$this->enableListenerSaved('core', 'TBGUser::getState', $scope);
 			
-			$module = parent::_install('calendar', 'BUGScalendar', '1.0', true, false, true, $scope);
-
-			$module->enableListenerSaved('core', 'dashboard_left_top', $scope);
-			$module->enableListenerSaved('core', 'account_settings', $scope);
-			$module->enableListenerSaved('core', 'account_settingslist', $scope);
-			$module->enableListenerSaved('core', 'TBGUser::getState', $scope);
-			
-			$module->setPermission(0, 3, 0, false, $scope);
-
-			$module->saveSetting('weekstart', 1, 0, $scope);
-
-			if ($scope == TBGContext::getScope()->getID())
-			{
-				B2DB::getTable('TBGCalendarsTable')->create();
-				B2DB::getTable('TBGCalendarTasksTable')->create();
-			}
-
-			return true;
+			$this->setPermission(0, 3, 0, false, $scope);
+			$this->saveSetting('weekstart', 1, 0, $scope);
 		}
 		
-		public function uninstall()
-		{
-			if (TBGContext::getScope()->getID() == 1)
-			{
-				B2DB::getTable('TBGCalendarsTable')->drop();
-				B2DB::getTable('TBGCalendarTasksTable')->drop();
-			}
-			parent::_uninstall();
-		}
-
 		/**
 		 * Get events for a user
 		 *

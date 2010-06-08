@@ -2,52 +2,31 @@
 
 	class BUGSsvnintegration extends TBGModule 
 	{
-		
-		public function __construct($m_id, $res = null)
+
+		protected $_module_version = '1.0';
+
+		protected function _initialize(TBGI18n $i18n)
 		{
-			parent::__construct($m_id, $res);
-			$this->_module_version = '1.0';
-			$this->setLongName(TBGContext::getI18n()->__('SVN integration'));
-			$this->setMenuTitle(TBGContext::getI18n()->__('SVN integration'));
-			$this->setConfigTitle(TBGContext::getI18n()->__('SVN integration'));
-			$this->setDescription(TBGContext::getI18n()->__('Enables integration with SVN'));
+			$this->setLongName($i18n->__('SVN integration'));
+			$this->setMenuTitle($i18n->__('SVN integration'));
+			$this->setConfigTitle($i18n->__('SVN integration'));
+			$this->setDescription($i18n->__('Enables integration with SVN'));
 			$this->setHasConfigSettings();
-			$this->setConfigDescription(TBGContext::getI18n()->__('Configure source code integration from this section'));
+			$this->setConfigDescription($i18n->__('Configure source code integration from this section'));
+		}
+
+		protected function _addAvailableListeners()
+		{
 			$this->addAvailableListener('core', 'viewissue_right_middle', 'section_viewissueRightMiddle', 'List of updated files for an issue');
 			$this->addAvailableListener('core', 'viewproject_right_top', 'section_viewProject_viewCode', '"View code" link in project overview');
 		}
 
-		public function initialize()
+		protected function _install($scope)
 		{
-
-		}
-
-		public static function install($scope = null)
-		{
-  			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
-			
-			$module = parent::_install('svn_integration', 'BUGSsvnintegration', '1.0', true, false, false, $scope);
-
-			$module->enableListenerSaved('core', 'viewissue_right_middle');
-			$module->enableListenerSaved('core', 'viewproject_right_top');
-
-			if ($scope == TBGContext::getScope()->getID())
-			{
-				B2DB::getTable('TBGSVNintegrationTable')->create();
-			}
-
-			return true;
+			$this->enableListenerSaved('core', 'viewissue_right_middle', $scope);
+			$this->enableListenerSaved('core', 'viewproject_right_top', $scope);
 		}
 					
-		public function uninstall()
-		{
-			if (TBGContext::getScope()->getID() == 1)
-			{
-				B2DB::getTable('TBGSVNintegrationTable')->drop();
-			}
-			parent::_uninstall();
-		}
-		
 		public function loadHelpTitle($topic)
 		{
 			switch ($topic)

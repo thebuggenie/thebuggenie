@@ -355,7 +355,7 @@
 			{
 				if ($namespace) $href = $namespace . ':' . $href;
 				$href = $this->_wiki_link($href);
-				$title = $href;
+				$title = (isset($title)) ? $title : $href;
 				$this->addInternalLinkOccurrence($href);
 
 				if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return $href;

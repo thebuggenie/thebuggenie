@@ -25,8 +25,6 @@
 		protected $_longname = '';
 		protected $_showinconfig = false;
 		protected $_showinmenu = false;
-		protected $_showinusermenu = false;
-		protected $_version = '';
 		protected $_shortname = '';
 		protected $_module_menu_title = '';
 		protected $_module_config_title = '';
@@ -51,37 +49,104 @@
 		 */
 		public static function installModule($module_name)
 		{
-			TBGContext::addClasspath(TBGContext::getIncludePath() . 'modules/' . $module_name . '/classes');
-			if (is_dir(TBGContext::getIncludePath() . 'modules/' . $module_name . '/classes/B2DB'))
-			{
-				TBGContext::addClasspath(TBGContext::getIncludePath() . 'modules/' . $module_name . '/classes/B2DB');
-			}
-			$classname = file_get_contents(TBGContext::getIncludePath() . 'modules/' . $module_name . '/class');
+			$module_basepath = TBGContext::getIncludePath() . "modules/{$module_name}";
+			$module_classpath = "{$module_basepath}/classes";
+			TBGContext::addClasspath($module_classpath);
+			
+			$scope = TBGContext::getScope()->getID();
+			$module_details = file_get_contents($module_basepath . '/class');
 
-			return (call_user_func(array($classname, 'install')));
+			if (strpos($module_details, '|') === false)
+			{
+				throw new Exception("Need to have module details in the form of ModuleName|version in the {$module_basepath}/class file");
+			}
+
+			$details = explode('|', $module_details);
+			list($classname, $version) = $details;
+
+  			if (!TBGContext::getScope() instanceof TBGScope) throw new Exception('No scope??');
+
+			TBGLogging::log('installing module ' . $module_name);
+			$module_id = B2DB::getTable('TBGModulesTable')->installModule($module_name, $classname, $version, $scope);
+
+			if (!class_exists($classname))
+			{
+				throw new Exception('Can not load new instance of type ' . $classname . ', is not loaded');
+			}
+
+			$module = new $classname($module_id);
+			$module->install($scope);
+
+			return $module;
 		}
-		
+
+		protected function _addAvailablePermissions() { }
+
+		protected function _addAvailableListeners() { }
+
+		protected function _addAvailableRoutes() { }
+
+		abstract protected function _initialize(TBGI18n $i18n);
+
+		protected function _install($scope) { }
+
+		protected function _uninstall() { }
+
 		/**
 		 * Class constructor
 		 *
 		 * @param integer $m_id
 		 * @param B2DBRow $row
 		 */
-		public function __construct($m_id, $row = null)
+		final public function __construct($m_id, $row = null)
 		{
 			if ($row === null)
 			{
 				$row = B2DB::getTable('TBGModulesTable')->doSelectById($m_id);
+			}
+
+			if (!$row instanceof B2DBRow)
+			{
+				throw new Exception('This module does not exist');
 			}
 			$this->_itemid = $m_id;
 			$this->_name = $row->get(TBGModulesTable::MODULE_NAME);
 			$this->_classname = $row->get(TBGModulesTable::CLASSNAME);
 			$this->_enabled = (bool) $row->get(TBGModulesTable::ENABLED);
 			$this->_shortname = $row->get(TBGModulesTable::MODULE_NAME);
-			$this->_showinconfig = (bool) $row->get(TBGModulesTable::SHOW_IN_CONFIG);
-			$this->_showinmenu = (bool) $row->get(TBGModulesTable::SHOW_IN_MENU);
-			$this->_showinusermenu = (bool) $row->get(TBGModulesTable::SHOW_IN_USERMENU);
-			$this->_version = $row->get(TBGModulesTable::VERSION);
+			if ($this->_module_version != $row->get(TBGModulesTable::VERSION))
+			{
+				throw new Exception('This module must be upgraded to the latest version');
+			}
+		}
+
+		protected function _loadFixtures($scope) { }
+
+		final public function install($scope)
+		{
+			try
+			{
+				$this->_install($scope);
+				$b2db_classpath = TBGContext::getIncludePath() . 'modules/' . $this->_name . '/classes/B2DB';
+
+				if ($scope == TBGContext::getScope()->getID() && is_dir($b2db_classpath))
+				{
+					TBGContext::addClasspath($b2db_classpath);
+					$b2db_classpath_handle = opendir($b2db_classpath);
+					while ($table_class_file = readdir($b2db_classpath_handle))
+					{
+						if (($tablename = substr($table_class_file, 0, strpos($table_class_file, '.'))) != '')
+						{
+							B2DB::getTable($tablename)->create();
+						}
+					}
+				}
+				$this->_loadFixtures($scope);
+			}
+			catch (Exception $e)
+			{
+				throw $e;
+			}
 		}
 		
 		public function log($message, $level = 1)
@@ -137,55 +202,14 @@
 			$this->_showinusermenu = false;
 		}
 
-		abstract public function uninstall();
-		
-		protected function _uninstall()
+		final public function uninstall()
 		{
+			$this->_uninstall();
 			$scope = TBGContext::getScope()->getID();
 			B2DB::getTable('TBGModulesTable')->doDeleteById($this->getID());
 			B2DB::getTable('TBGEnabledModuleListenersTable')->removeAllModuleListeners($this->getName(), $scope);
 			TBGSettings::deleteModuleSettings($this->getName());
 			TBGContext::deleteModulePermissions($this->getName());
-		}
-		
-		/**
-		 * Installs the module, adds it to the list of loaded modules and returns it
-		 *
-		 * @param string $identifier
-		 * @param string $longname
-		 * @param string $description
-		 * @param string $classname
-		 * @param bool   $show_in_config
-		 * @param bool   $show_in_menu
-		 * @param bool   $show_in_usermenu
-		 * @param string $version
-		 * @param bool   $enabled
-		 * @param int	$scope
-		 * 
-		 * @return TBGModule
-		 */
-		static protected function _install($identifier, $classname, $version, $show_in_config, $show_in_menu, $show_in_usermenu, $scope)
-		{
-  			if (!TBGContext::getScope() instanceof TBGScope) throw new Exception('No scope??');
-
-			TBGLogging::log('installing module' . $identifier);
-			$module_id = B2DB::getTable('TBGModulesTable')->installModule($identifier, $classname, $version, $show_in_config, $show_in_menu, $show_in_usermenu, $scope);
-  			
-			if (class_exists($classname))
-			{
-				$module = new $classname($module_id);
-				if ($scope == TBGContext::getScope()->getID())
-				{
-					TBGContext::addModule($module, $identifier);
-				}
-				$module->setPermission(0, 0, 0, true, $scope);
-			}
-			else
-			{
-				throw new Exception('Can not load new instance of type ' . $classname . ', is not loaded');
-			}
-
-			return $module;
 		}
 		
 		public function getClassname()
@@ -475,26 +499,6 @@
 		}
 		
 		/**
-		 * Returns whether the module is visible in configuration
-		 *
-		 * @return boolean
-		 */
-		public function isVisibleInConfig()
-		{
-			return $this->_showinconfig;
-		}
-		
-		/**
-		 * Returns whether the module is visible in the user menu
-		 *
-		 * @return boolean
-		 */
-		public function isVisibleInUsermenu()
-		{
-			return $this->_showinusermenu;
-		}
-		
-		/**
 		 * Returns whether the module is visible in the menu
 		 *
 		 * @return boolean
@@ -513,14 +517,21 @@
 			return false;
 		}
 
-		abstract public function initialize();
-
 		public function addRoute($key, $url, $function, $params = array())
 		{
 			$this->_routes[] = array($key, $url, $this->getName(), $function, $params);
 		}
 
-		public function loadRoutes()
+		public function initialize()
+		{
+			$this->_initialize(TBGContext::getI18n());
+			$this->_addAvailablePermissions();
+			$this->_addAvailableListeners();
+			$this->_addAvailableRoutes();
+			$this->_loadRoutes();
+		}
+
+		final protected function _loadRoutes()
 		{
 			foreach ($this->_routes as $route)
 			{
@@ -534,15 +545,6 @@
 					TBGContext::getRouting()->addRoute($route[0], $route[1], $route[2], $route[3]);
 				}
 				$this->log('done (adding route ' . $route[0] . ')');
-			}
-		}
-		
-		public function activate()
-		{
-			if ($this->_enabled == false || $this->hasAccess() == false)
-			{
-				tbg_showError('B2 Engine error - Not permitted', "You do not have access to this module. <br>You may have tried to access a link that is no longer in use.<br><br>If you think this is an error, please contact the administrator of this BUGS 2 instance.", true);
-				exit();				
 			}
 		}
 		

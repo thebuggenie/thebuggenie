@@ -25,9 +25,6 @@
 		const DESC = 'modules.module_desc';
 		const ENABLED = 'modules.enabled';
 		const VERSION = 'modules.version';
-		const SHOW_IN_MENU = 'modules.show_in_menu';
-		const SHOW_IN_CONFIG = 'modules.show_in_config';
-		const SHOW_IN_USERMENU = 'modules.show_in_usermenu';
 		const CLASSNAME = 'modules.classname';
 		const SCOPE = 'modules.scope';
 		
@@ -39,9 +36,6 @@
 			parent::_addBoolean(self::ENABLED);
 			parent::_addVarchar(self::VERSION, 10);
 			parent::_addVarchar(self::CLASSNAME, 50);
-			parent::_addBoolean(self::SHOW_IN_CONFIG);
-			parent::_addBoolean(self::SHOW_IN_MENU);
-			parent::_addBoolean(self::SHOW_IN_USERMENU);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
@@ -53,7 +47,7 @@
 			return $res;
 		}
 
-		public function installModule($identifier, $classname, $version, $show_in_config, $show_in_menu, $show_in_usermenu, $scope)
+		public function installModule($identifier, $classname, $version, $scope)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::CLASSNAME, $classname);
@@ -65,9 +59,6 @@
 	  			$crit->addInsert(self::ENABLED, true);
 	  			$crit->addInsert(self::MODULE_NAME, $identifier);
 	  			$crit->addInsert(self::VERSION, $version);
-	  			$crit->addInsert(self::SHOW_IN_CONFIG, $show_in_config);
-	  			$crit->addInsert(self::SHOW_IN_MENU, $show_in_menu);
-	  			$crit->addInsert(self::SHOW_IN_USERMENU, $show_in_usermenu);
 	  			$crit->addInsert(self::SCOPE, $scope);
 	  			$module_id = $this->doInsert($crit)->getInsertID();
   			}

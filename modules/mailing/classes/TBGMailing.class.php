@@ -3,6 +3,8 @@
 	class TBGMailing extends TBGModule
 	{
 
+		protected $_module_version = '1.0';
+
 		protected $mailer = null;
 
 		/**
@@ -15,11 +17,9 @@
 			return TBGContext::getModule('mailing');
 		}
 		
-		public function __construct($m_id, $res = null)
+		protected function _initialize(TBGI18n $i18n)
 		{
-			$i18n = TBGContext::getI18n();
-			parent::__construct($m_id, $res);
-			$this->_module_version = '1.0';
+			$i18n = $i18n;
 			$this->setLongName($i18n->__('Email communication'));
 			$this->setMenuTitle('');
 			$this->setConfigTitle($i18n->__('Email communication'));
@@ -29,6 +29,11 @@
 			$this->setAccountSettingsName($i18n->__('Notifications'));
 			$this->setAccountSettingsLogo('notification_settings.png');
 			$this->setHasConfigSettings();
+		}
+
+		protected function _addAvailableListeners()
+		{
+			$i18n = TBGContext::getI18n();
 			$this->addAvailableListener('core', 'user_registration', 'listen_registerUser', $i18n->__('Email when user registers'));
 			$this->addAvailableListener('core', 'password_reset', 'listen_forgottenPassword', $i18n->__('Email to reset password'));
 			$this->addAvailableListener('core', 'viewissue_top', 'listen_issueTop', $i18n->__('Email when user registers'));
@@ -37,47 +42,35 @@
 			$this->addAvailableListener('core', 'TBGIssue::save', 'listen_issueSave', $i18n->__('Email when an issue is updated'));
 			$this->addAvailableListener('core', 'TBGIssue::createNew', 'listen_issueCreate', $i18n->__('Email on new issues'));
 			$this->addAvailableListener('core', 'TBGComment::createNew', 'listen_TBGComment_createNew', $i18n->__('Email when comments are posted'));
+		}
 
+		protected function _addAvailableRoutes()
+		{
 			// No, I didn't forget the parameters, but what else would you call
 			// it when it's about retrieving a forgotten password?
 			$this->addRoute('forgot', '/forgot', 'forgot');
 			$this->addRoute('mailing_test_email', '/mailing/test', 'testEmail');
 		}
-
-		public function initialize()
+		
+		protected function _install($scope)
 		{
+			$this->enableListenerSaved('core', 'user_registration', $scope);
+			$this->enableListenerSaved('core', 'login_middle', $scope);
+			$this->enableListenerSaved('core', 'password_reset', $scope);
+			$this->enableListenerSaved('core', 'TBGIssue::save', $scope);
+			$this->enableListenerSaved('core', 'TBGIssue::createNew', $scope);
+			$this->enableListenerSaved('core', 'TBGComment::createNew', $scope);
+			$this->saveSetting('smtp_host', '');
+			$this->saveSetting('smtp_port', 25);
+			$this->saveSetting('smtp_user', '');
+			$this->saveSetting('smtp_pwd', '');
+			$this->saveSetting('headcharset', 'utf-8');
+			$this->saveSetting('from_name', 'The Bug Genie Automailer');
+			$this->saveSetting('from_addr', '');
+			$this->saveSetting('ehlo', 1);
 		}
 		
-		public static function install($scope = null)
-		{
-  			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
-			
-			$module = parent::_install('mailing', 'TBGMailing', '1.0', true, false, false, $scope);
-								  
-			$module->enableListenerSaved('core', 'user_registration', $scope);
-			$module->enableListenerSaved('core', 'login_middle', $scope);
-			$module->enableListenerSaved('core', 'password_reset', $scope);
-			$module->enableListenerSaved('core', 'TBGIssue::save', $scope);
-			$module->enableListenerSaved('core', 'TBGIssue::createNew', $scope);
-			$module->enableListenerSaved('core', 'TBGComment::createNew', $scope);
-			$module->saveSetting('smtp_host', '');
-			$module->saveSetting('smtp_port', 25);
-			$module->saveSetting('smtp_user', '');
-			$module->saveSetting('smtp_pwd', '');
-			$module->saveSetting('headcharset', 'utf-8');
-			$module->saveSetting('from_name', 'The Bug Genie Automailer');
-			$module->saveSetting('from_addr', '');
-			$module->saveSetting('ehlo', 1);
-
-			if ($scope == TBGContext::getScope()->getID())
-			{
-				TBGMailQueueTable::getTable()->create();
-			}
-
-			return true;
-		}
-		
-		public function uninstall()
+		protected function _uninstall()
 		{
 			$this->_uninstall();
 		}

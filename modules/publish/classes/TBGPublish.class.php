@@ -2,6 +2,8 @@
 
 	class TBGPublish extends TBGModule 
 	{
+		
+		protected $_module_version = '1.0';
 
 		/**
 		 * Return an instance of this module
@@ -13,27 +15,14 @@
 			return TBGContext::getModule('publish');
 		}
 
-		public function __construct($m_id, $res = null)
+		protected function _initialize(TBGI18n $i18n)
 		{
-			parent::__construct($m_id, $res);
-			$this->_module_version = '1.0';
-			$this->setLongName(TBGContext::getI18n()->__('Wiki'));
-			$this->setMenuTitle(TBGContext::getI18n()->__('Wiki'));
-			$this->setConfigTitle(TBGContext::getI18n()->__('Wiki'));
-			$this->setDescription(TBGContext::getI18n()->__('Enables Wiki-functionality'));
-			$this->setConfigDescription(TBGContext::getI18n()->__('Set up the Wiki module from this section'));
+			$this->setLongName($i18n->__('Wiki'));
+			$this->setMenuTitle($i18n->__('Wiki'));
+			$this->setConfigTitle($i18n->__('Wiki'));
+			$this->setDescription($i18n->__('Enables Wiki-functionality'));
+			$this->setConfigDescription($i18n->__('Set up the Wiki module from this section'));
 			$this->setHasConfigSettings();
-			$this->addAvailablePermission('article_management', 'Can create and manage articles');
-			$this->addAvailablePermission('manage_billboard', 'Can delete billboard posts');
-			$this->addAvailablePermission('publish_postonglobalbillboard', 'Can post articles on global billboard');
-			$this->addAvailablePermission('publish_postonteambillboard', 'Can post articles on team billboard');
-			$this->addAvailableListener('core', 'index_left_middle', 'listen_latestArticles', 'Frontpage "Last news items"');
-			$this->addAvailableListener('core', 'index_right_middle', 'listen_frontpageArticle', 'Frontpage article');
-			$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
-			$this->addAvailableListener('core', 'project_menustrip_item_links', 'listen_projectMenustripLinks', 'Project menustrip links');
-
-			$this->_addRoutes();
-
 			if ($this->getSetting('allow_camelcase_links'))
 			{
 				TBGTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));
@@ -41,11 +30,23 @@
 			}
 		}
 
-		public function initialize()
+		protected function _addAvailablePermissions()
 		{
+			$this->addAvailablePermission('article_management', 'Can create and manage articles');
+			$this->addAvailablePermission('manage_billboard', 'Can delete billboard posts');
+			$this->addAvailablePermission('publish_postonglobalbillboard', 'Can post articles on global billboard');
+			$this->addAvailablePermission('publish_postonteambillboard', 'Can post articles on team billboard');
+		}
+		
+		protected function _addAvailableListeners()
+		{
+			$this->addAvailableListener('core', 'index_left_middle', 'listen_latestArticles', 'Frontpage "Last news items"');
+			$this->addAvailableListener('core', 'index_right_middle', 'listen_frontpageArticle', 'Frontpage article');
+			$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
+			$this->addAvailableListener('core', 'project_menustrip_item_links', 'listen_projectMenustripLinks', 'Project menustrip links');
 		}
 
-		protected function _addRoutes()
+		protected function _addAvailableRoutes()
 		{
 			$this->addRoute('publish', '/wiki', 'showArticle', array('article_name' => 'MainPage'));
 			$this->addRoute('publish_article_new', '/wiki/new', 'editArticle', array('article_name' => 'NewArticle'));
@@ -59,49 +60,25 @@
 			$this->addRoute('publish_article_restore', '/wiki/:article_name/revert/to/revision/:revision', 'articleHistory', array('history_action' => 'revert'));
 		}
 
-		public static function install($scope = null)
+		protected function _install($scope)
 		{
-  			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
-
-			$module = parent::_install('publish', 'TBGPublish','1.0', true, true, false, $scope);
-
 			TBGContext::setPermission('article_management', 0, 'publish', 0, 1, 0, true, $scope);
 			TBGContext::setPermission('publish_postonglobalbillboard', 0, 'publish', 0, 1, 0, true, $scope);
 			TBGContext::setPermission('publish_postonteambillboard', 0, 'publish', 0, 1, 0, true, $scope);
 			TBGContext::setPermission('manage_billboard', 0, 'publish', 0, 1, 0, true, $scope);
-			$module->saveSetting('allow_camelcase_links', 1);
+			$this->saveSetting('allow_camelcase_links', 1);
 
-			$module->enableListenerSaved('core', 'index_left_middle');
-			$module->enableListenerSaved('core', 'index_right_middle');
-			$module->enableListenerSaved('core', 'project_overview_item_links');
-			$module->enableListenerSaved('core', 'project_menustrip_item_links');
+			$this->enableListenerSaved('core', 'index_left_middle');
+			$this->enableListenerSaved('core', 'index_right_middle');
+			$this->enableListenerSaved('core', 'project_overview_item_links');
+			$this->enableListenerSaved('core', 'project_menustrip_item_links');
   									  
-			if ($scope == TBGContext::getScope()->getID())
-			{
-				TBGArticlesTable::getTable()->create();
-				TBGArticleHistoryTable::getTable()->create();
-				B2DB::getTable('TBGArticleViewsTable')->create();
-				TBGArticleLinksTable::getTable()->create();
-				TBGArticleCategoriesTable::getTable()->create();
-				B2DB::getTable('TBGBillboardPostsTable')->create();
-			}
-
-			try
-			{
-				TBGContext::getRouting()->addRoute('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
-				TBGTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($module, 'getArticleLinkTag'));
-				TBGTextParser::addRegex('/(?<!")\![A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($module, 'stripExclamationMark'));
-				self::loadFixtures($scope);
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-
-			return true;
+			TBGContext::getRouting()->addRoute('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
+			TBGTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));
+			TBGTextParser::addRegex('/(?<!")\![A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'stripExclamationMark'));
 		}
 		
-		static function loadFixturesArticles($scope, $overwrite = true)
+		public function loadFixturesArticles($scope, $overwrite = true)
 		{
 			$_path_handle = opendir(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR);
 			while ($article_name = readdir($_path_handle))
@@ -124,31 +101,16 @@
 			}
 		}
 
-		static function loadFixtures($scope)
+		protected function _loadFixtures($scope)
 		{
-			try
-			{
-				self::loadFixturesArticles($scope);
+			$this->loadFixturesArticles($scope);
 
-				/*$article_name = 'Category:Help';
-				$content = "This is a list of all the available help articles in The Bug Genie. If you are stuck, look here for help.";
-				TBGWikiArticle::createNew($article_name, $content, true, $scope);
-
-				$article_name = 'Category:HowTo';
-				$content = "[[Category:Help]]";
-				TBGWikiArticle::createNew($article_name, $content, true, $scope);*/
-				
-				TBGLinksTable::getTable()->addLink('wiki', 0, 'MainPage', 'Wiki Frontpage', 1, $scope);
-				TBGLinksTable::getTable()->addLink('wiki', 0, 'TheBugGenie:WikiFormatting', 'Formatting help', 2, $scope);
-				TBGLinksTable::getTable()->addLink('wiki', 0, 'Category:Help', 'Help topics', 3, $scope);
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
+			TBGLinksTable::getTable()->addLink('wiki', 0, 'MainPage', 'Wiki Frontpage', 1, $scope);
+			TBGLinksTable::getTable()->addLink('wiki', 0, 'TheBugGenie:WikiFormatting', 'Formatting help', 2, $scope);
+			TBGLinksTable::getTable()->addLink('wiki', 0, 'Category:Help', 'Help topics', 3, $scope);
 		}
 		
-		public function uninstall()
+		protected function _uninstall()
 		{
 			if (TBGContext::getScope()->getID() == 1)
 			{
@@ -390,5 +352,3 @@
 		}
 
 	}
-
-?>

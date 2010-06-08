@@ -711,19 +711,16 @@
 				TBGLogging::log('initializing modules');
 				if (!empty(self::$_modules))
 				{
-					TBGModule::loadModuleListeners(array_keys(self::$_modules));
 					foreach (self::$_modules as $module_name => $module)
 					{
 						if ($module->isEnabled())
 						{
-							TBGLogging::log("initializing {$module_name}");
+							TBGLogging::log("initializing and loading routes for {$module_name}");
 							$module->initialize();
-							TBGLogging::log("done (initializing {$module_name})");
-							TBGLogging::log("loading module routes for {$module_name}", 'routing');
-							$module->loadRoutes();
-							TBGLogging::log("done (loading module routes)", 'routing');
+							TBGLogging::log("done (initializing and loading routes for {$module_name})");
 						}
 					}
+					TBGModule::loadModuleListeners(array_keys(self::$_modules));
 					TBGLogging::log('done (initializing modules)');
 				}
 				else

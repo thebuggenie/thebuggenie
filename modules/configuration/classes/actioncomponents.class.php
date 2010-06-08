@@ -22,7 +22,7 @@
 			$config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => 'configure_modules', 'description' => $i18n->__('Modules'), 'icon' => 'modules', 'module' => 'core');
 			foreach (TBGContext::getModules() as $module)
 			{
-				if ($module->hasAccess() && $module->isVisibleInConfig())
+				if ($module->hasAccess() && $module->hasConfigSettings())
 				{
 					$config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => $module->getConfigTitle(), 'icon' => $module->getName(), 'module' => $module->getName());
 				}

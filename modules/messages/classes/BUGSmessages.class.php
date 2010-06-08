@@ -3,56 +3,31 @@
 	class BUGSmessages extends TBGModule 
 	{
 
-		public function __construct($m_id, $res = null)
+		protected $_module_version = '1.0';
+
+		protected function _initialize(TBGI18n $i18n)
 		{
-			parent::__construct($m_id, $res);
-			$this->_module_version = '1.0';
-			$this->setLongName(TBGContext::getI18n()->__('Messages'));
-			$this->setMenuTitle(TBGContext::getI18n()->__('Messages'));
-			$this->setConfigTitle(TBGContext::getI18n()->__('Messages'));
-			$this->setDescription(TBGContext::getI18n()->__('Enables messaging functionality'));
-			//$this->setHasAccountSettings();
+			$this->setLongName($i18n->__('Messages'));
+			$this->setMenuTitle($i18n->__('Messages'));
+			$this->setConfigTitle($i18n->__('Messages'));
+			$this->setDescription($i18n->__('Enables messaging functionality'));
+		}
+
+		protected function _addAvailableListeners()
+		{
 			$this->addAvailableListener('core', 'dashboard_left_top', 'listen_messagesSummary', 'Dashboard message summary');
 			$this->addAvailableListener('core', 'useractions_bottom', 'listen_useractionsBottom', '"Send message" in user drop-down menu');
 			$this->addAvailableListener('core', 'teamactions_bottom', 'listen_teamactionsBottom', '"Send message" in team drop-down menu');
 		}
 
-		public function initialize()
+		protected function _install($scope)
 		{
-
-		}
-
-		public static function install($scope = null)
-		{
-  			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
-			
-			$module = parent::_install('messages', 'BUGSmessages', '1.0', true, false, true, $scope);
-
-			$module->saveSetting('viewmode', 1, 0, $scope);
-			$module->enableListenerSaved('core', 'dashboard_left_top', $scope);
-			$module->enableListenerSaved('core', 'useractions_bottom', $scope);
-			$module->enableListenerSaved('core', 'teamactions_bottom', $scope);
-
-			if ($scope == TBGContext::getScope()->getID())
-			{
-				B2DB::getTable('TBGMessageFoldersTable')->setAutoIncrementStart(5);
-				B2DB::getTable('TBGMessageFoldersTable')->create();
-				B2DB::getTable('TBGMessagesTable')->create();
-			}
-
-			return true;
+			$this->saveSetting('viewmode', 1, 0, $scope);
+			$this->enableListenerSaved('core', 'dashboard_left_top', $scope);
+			$this->enableListenerSaved('core', 'useractions_bottom', $scope);
+			$this->enableListenerSaved('core', 'teamactions_bottom', $scope);
 		}
 		
-		public function uninstall()
-		{
-			if (TBGContext::getScope()->getID() == 1)
-			{
-				B2DB::getTable('TBGMessageFoldersTable')->drop();
-				B2DB::getTable('TBGMessagesTable')->drop();
-			}
-			parent::_uninstall();
-		}
-				
 		public function getCommentAccess($target_type, $target_id, $type = 'view')
 		{
 			
