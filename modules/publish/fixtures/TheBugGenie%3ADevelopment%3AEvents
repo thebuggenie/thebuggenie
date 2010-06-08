@@ -1,0 +1,150 @@
+{{TOC}}
+= Introduction =
+The event system in The Bug Genie allows for an easy way to extend and modify existing functionality, without having to modify existing code. Events are thrown in several places in The Bug Genie core, which you can listen to. For a full list of events available for listening, see [[TheBugGenie:Development:Events:List]].
+
+= The Event system, explained =
+The event system is controlled by the '''TBGEvent''' class, which handles things such as dispatching events, registering event listeners and controlling the event flow. You can throw events anywhere in The Bug Genie, even if noone is listening into the event.
+
+= Creating and triggering an event =
+An event is created by calling <source lang="php">$event = TBGEvent::createNew($module, $identifier, $subject);</source> with the required parameters. This function needs to know the module where you threw the event from ('''$module'''), an event identifier ('''$identifier''' - needs to be unique inside the module), and an event subject ('''$subject'''). You can also pass an optional array of parameters. All event data is available to event listeners.
+
+Example (''This passes the string "something" to any event listeners, and is created in the core''):
+<source lang="php">$event = TBGEvent::createNew('core', 'my_event', 'something');</source>
+
+== Passing more information in the event ==
+An event needs a subject, but often you want to pass more information from where the event was thrown to whoever is listening into it. ''TBGEvent::createNew()'' has a fourth parameter, '''$parameters''', where you can pass an associated array to the event.
+
+Parameters can also be passed when triggering the event, by passing the same array as a parameter to the '''trigger()''' function. This would be the preferred way if you need to trigger the event repeatedly but with different parameters, instead of repeatedly instantiating a new event. (See below).
+
+== Triggering an event ==
+After you have created the event, you need to trigger it (also known as throwing it). There are two ways of triggering an event, depending on how you want it to be handled.
+
+=== Letting anyone handle the event, as many times as necessary ===
+If you just want to trigger the event, and let all possible event listeners for that event catch it, trigger the event by calling the '''trigger()''' function on the event object. 
+
+Example:
+<source lang="php">
+$event = TBGEvent::createNew('core', 'my_event', 'something');
+$event->trigger();
+
+// you can also trigger it directly without assigning it
+TBGEvent::createNew('core', 'my_event', 'something')->trigger();
+</source>
+
+The event will then be passed on to any listeners, processed and will then continue. The program flow will not be interrupted (unless specifically interrupted by a listener).
+
+=== Trigger the event but return as soon as someone catches it ===
+Sometimes, you just want to let the first listener to grab the event, process it and then return. This can be the case if you don't want multiple listeners to both manipulate the event subject, or other cases. To do this, use the '''triggerUntilProcessed()''' function. This function takes the same parameters as the '''trigger''' function.
+
+Example:
+<source lang="php">
+$event = TBGEvent::createNew('core', 'my_event', 'something');
+$event->triggerUntilProcessed();
+
+// you can also trigger it directly without assigning it
+TBGEvent::createNew('core', 'my_event', 'something')->triggerUntilProcessed();
+</source>
+
+When the first event listener for this event has processed the event, '''TBGEvent''' will stop and return to your program flow, and no other event listeners will be able to handle it.
+
+= Listening to and handling an event =
+There's not much use for events to be thrown unless someone is listening to that event. Luckily, this is also possible in The Bug Genie. When an event is triggered, the event handler in '''TBGEvent''' will look through all the registered event listeners for that specific event, and execute them.
+
+== Handling an event ==
+When an event is triggered, all listeners for that event (depending on whether trigger() or triggerUntilProcessed() was being called) will be executed, '''in the order they were added'''. There is no way to manipulate the order of how events are triggered - they are executed on a "first come, first served" basis.
+
+To listen to an event, use the static '''listen()''' method on the TBGEvent class, with a valid callback. 
+<source lang="php">
+TBGEvent::listen($module, $identifier, $callback);
+</source>
+
+This call can be placed anywhere in the code, but remember that the listener isn't registered until that line of code is parsed. Good places to put this is at the end of a class file (outside the class, but inside the class file) and in constructors. The event you're listening to does not have to be registered anywhere for you to register the listener.
+
+The callback function must accept one parameter, which is the event.
+
+Example (''listen to the "my_event" event that was thrown earlier''):
+<source lang="php">
+function listenMyEvent(TBGEvent $event)
+{
+    // echo the subject ("something")
+    echo $event->getSubject();
+}
+
+TBGEvent::listen('core', 'my_event', 'listenMyEvent');
+</source>
+
+When the event is thrown, the '''listenMyEvent''' function will be executed and passed the event.
+
+== Checking if anyone is listening to an event ==
+If you want to see whether anyone is listening to a specific event, use the static ''isAnyoneListening()'' method on the TBGEvent class, with the correct parameters.
+<source lang="php">
+TBGEvent::isAnyoneListening($module, $identifier);
+</source>
+
+Example (''check to see if anyone is listening to the event described earlier''):
+<source lang="php">
+echo (TBGEvent::isAnyoneListening('core', 'my_event')) ? 'yes' : 'no';
+</source>
+
+Keep in mind that since event listeners are added as they are processed, this function may not return the expected result if executed too early. A good place to check this is in class methods (not constructors), actions and templates.
+
+== Handling the event ==
+When you've caught the event that is being triggered, you may want to do some actions. This will probably be based on the information passed via the event. All event information is available from the '''TBGEvent''' object.
+
+Some examples are available here:
+<source lang="php">
+function listenMyEvent(TBGEvent $event)
+{
+    // echo the subject ("something")
+    echo $event->getSubject();
+
+    if ($event->getParameter('some_parameter') == true)
+    {
+        echo 'I got some parameter';
+    }
+}
+
+// Add the event listener
+TBGEvent::listen('core', 'my_event', 'listenMyEvent');
+
+// Set up and trigger the event
+$event = TBGEvent::createNew('core', 'my_event', 'something');
+$event->trigger();
+
+// trigger the event again with other parameters
+$event->trigger(array('some_parameter' => true));
+</source>
+
+= Using events to set up lists =
+In some cases you may want to use an event to set up a list of available options (or other kinds of lists). In that case, the event system has special list handling function that helps you with this. The '''createEvent()''' function accepts a fourth parameter, the initial list you want to pass with the event. When you retrieve the event, and handle it, you can add items to this list with the '''addToReturnList()''' function:
+<source lang="php">
+// the key is optional
+$event->addToReturnList($value, $key);
+</source>
+When the event is processed you can retrieve the final list with the '''getReturnList()''' method:
+<source lang="php">
+$my_list = $event->getReturnList();
+</source>
+
+This functionality is in use for instance in the configuration -> general settings section, where the "return from login/logout" options are added dynamically, allowing you to add your own possible routes.
+
+Here's an example of the usage:
+<source lang="php">
+function listenMyEvent(TBGEvent $event)
+{
+    $event->addToReturnList('value_3');
+    $event->addToReturnList('value_4');
+}
+
+// Add the event listener
+TBGEvent::listen('core', 'my_event', 'listenMyEvent');
+
+$my_list = array('value_1', 'value_2');
+// Set up and trigger the event
+$event = TBGEvent::createNew('core', 'my_event', 'something', null, $my_list);
+$event->trigger();
+
+// get the list again
+$my_list = $event->getReturnList();
+</source>
+[[Category:TheBugGenie:Development]]

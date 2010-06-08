@@ -109,7 +109,11 @@
 				if (strpos($article_name, '.') === false)
 				{
 					$imported = false;
-					if (TBGArticlesTable::getTable()->getArticleByName(urldecode($article_name)) === null || $overwrite)
+					if ($overwrite)
+					{
+						TBGArticlesTable::getTable()->deleteArticleByName(urldecode($article_name));
+					}
+					if (TBGArticlesTable::getTable()->getArticleByName(urldecode($article_name)) === null)
 					{
 						$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $article_name);
 						TBGWikiArticle::createNew(urldecode($article_name), $content, true, $scope, array('overwrite' => $overwrite));
@@ -135,7 +139,7 @@
 				TBGWikiArticle::createNew($article_name, $content, true, $scope);*/
 				
 				TBGLinksTable::getTable()->addLink('wiki', 0, 'MainPage', 'Wiki Frontpage', 1, $scope);
-				TBGLinksTable::getTable()->addLink('wiki', 0, 'WikiFormatting', 'Formatting help', 2, $scope);
+				TBGLinksTable::getTable()->addLink('wiki', 0, 'TheBugGenie:WikiFormatting', 'Formatting help', 2, $scope);
 				TBGLinksTable::getTable()->addLink('wiki', 0, 'Category:Help', 'Help topics', 3, $scope);
 			}
 			catch (Exception $e)

@@ -357,9 +357,9 @@
 
 		public function save($options = array(), $reason = null)
 		{
-			if (!array_key_exists('overwrite', $options) || !$options['overwrite'])
+			if (TBGArticlesTable::getTable()->doesNameConflictExist($this->_name, $this->_itemid))
 			{
-				if (TBGArticlesTable::getTable()->doesNameConflictExist($this->_name, $this->_itemid))
+				if (!array_key_exists('overwrite', $options) || !$options['overwrite'])
 				{
 					throw new Exception(TBGContext::getI18n()->__('Another article with this name already exists'));
 				}
