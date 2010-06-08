@@ -349,6 +349,10 @@
 		public function hasAccess($uid = null, $gid = null, $tid = null, $all = null, $debug = false)
 		{
 			if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return true;
+
+			return true;
+
+			// TODO: module access permissions have not been implemented yet
 			$permissions = self::getAccessPermissionList();
 			if (!array_key_exists($this->getName(), $permissions))
 			{
