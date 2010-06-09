@@ -80,7 +80,7 @@ class MyModule extends TBGModule
 </source>
 
 = Installing a module =
-To be able to use a module, it needs to be installed. This can be done either via the cli task '''install_module''', or via the [[TBG:configure_modules|module configuration interface]]. After you have installed it, it will be added to the autoloader and loaded on each request, as well as via the cli.
+To be able to use a module, it needs to be installed. This can be done either via the cli task '''manage_modules install ''' '''''module_name''''', or via the [[TBG:configure_modules|module configuration interface]]. After you have installed it, it will be added to the autoloader and loaded on each request, as well as via the cli.
 
 When a module is installed, some functions in your module are executed (if the exists) - '''_install()''' and '''_loadFixtures()'''. If your module has database table classes in the ''classes/B2DB'' folder, they will be created after the '''_install()''' function has been called but before the '''_loadFixtures()''' function is called. This means you cannot add data to any custom tables in the '''_install()''' function, but you can do it in the '''_loadFixtures()''' function.
 
