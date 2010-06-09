@@ -394,15 +394,6 @@
 							{
 								$this->cliEcho("Installing {$module}... \n");
 								TBGModule::installModule($module);
-								/*
-								TBGContext::addClasspath(TBGContext::getIncludePath() . "modules/{$module}/classes/");
-								if (file_exists(TBGContext::getIncludePath() . "modules/{$module}/classes/B2DB/"))
-								{
-									TBGContext::addClasspath(TBGContext::getIncludePath() . "modules/{$module}/classes/B2DB/");
-								}
-								$classname = file_get_contents(TBGContext::getIncludePath() . "modules/{$module}/class");
-
-								call_user_func(array($classname, 'install'), 1);*/
 								$this->cliEcho("Module {$module} installed successfully...\n", 'green');
 							}
 						}

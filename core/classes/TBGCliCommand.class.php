@@ -125,7 +125,7 @@
 			return array_key_exists($key, self::$_provided_arguments);
 		}
 
-		protected function addRequiredArgument($argumen, $description = null)
+		protected function addRequiredArgument($argument, $description = null)
 		{
 			$this->_required_arguments[$argument] = $description;
 		}
