@@ -276,13 +276,7 @@
 					{
 						if ((bool) $install && file_exists(TBGContext::getIncludePath() . "modules/{$module}/module"))
 						{
-							TBGContext::addClasspath(TBGContext::getIncludePath() . "modules/{$module}/classes/");
-							if (file_exists(TBGContext::getIncludePath() . "modules/{$module}/classes/B2DB/"))
-							{
-								TBGContext::addClasspath(TBGContext::getIncludePath() . "modules/{$module}/classes/B2DB/");
-							}
-							$classname = file_get_contents(TBGContext::getIncludePath() . "modules/{$module}/class");
-							call_user_func(array($classname, 'install'), TBGContext::getScope()->getID());
+							TBGModule::installModule($module);
 						}
 					}
 				}
