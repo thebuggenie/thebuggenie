@@ -67,21 +67,33 @@
 	else
 	{
 		// Process arguments and invoke command if available
-		TBGCliCommand::processArguments();
-		$module_command = explode(':', $argv[1]);
-		$module_name = (count($module_command) == 2) ? $module_command[0] : 'main';
-		$command = (count($module_command) == 2) ? $module_command[1] : $module_command[0];
-
-		if (array_key_exists($module_name, $commands) && array_key_exists($command, $commands[$module_name]))
+		try
 		{
-			$class = $commands[$module_name][$command];
-			TBGContext::setCLIRouting($module_name, $command);
-			$class->execute();
+			TBGCliCommand::processArguments();
+			$module_command = explode(':', $argv[1]);
+			$module_name = (count($module_command) == 2) ? $module_command[0] : 'main';
+			$command = (count($module_command) == 2) ? $module_command[1] : $module_command[0];
+
+			if (array_key_exists($module_name, $commands) && array_key_exists($command, $commands[$module_name]))
+			{
+				$class = $commands[$module_name][$command];
+				TBGContext::setCLIRouting($module_name, $command);
+				$class->execute();
+			}
+			else
+			{
+				TBGCliCommand::cli_echo("\n");
+				TBGCliCommand::cli_echo("Unknown command\n", 'red', 'bold');
+				TBGCliCommand::cli_echo("Type " . TBGCliCommand::getCommandLineName() . ' ');
+				TBGCliCommand::cli_echo('help', 'green', 'bold');
+				TBGCliCommand::cli_echo(" for more information about the cli tool.\n\n");
+			}
 		}
-		else
+		catch (Exception $e)
 		{
 			TBGCliCommand::cli_echo("\n");
-			TBGCliCommand::cli_echo("Unknown command\n", 'red', 'bold');
+			TBGCliCommand::cli_echo("The following error occured:\n", 'red', 'bold');
+			TBGCliCommand::cli_echo($e->getMessage()."\n\n", 'red');
 			TBGCliCommand::cli_echo("Type " . TBGCliCommand::getCommandLineName() . ' ');
 			TBGCliCommand::cli_echo('help', 'green', 'bold');
 			TBGCliCommand::cli_echo(" for more information about the cli tool.\n\n");
