@@ -87,7 +87,7 @@
 			$crit->addWhere(self::ITEMTYPE, $itemtype);
 			$crit->addSelectionColumn(self::ORDER, 'sortorder', B2DBCriteria::DB_MAX, '', '+1');
 			$row = $this->doSelectOne($crit, 'none');
-			$sort_order = $row->get('sortorder');
+			$sort_order = (int) $row->get('sortorder');
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, $name);

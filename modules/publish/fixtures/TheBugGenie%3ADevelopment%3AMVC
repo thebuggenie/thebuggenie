@@ -1,0 +1,19 @@
+{{TOC}}
+= Introduction =
+The Bug Genie uses an MVC framework, heavily inspired by the [http://symfony-project.org Symfony framework]. The Bug Genie tries to follow the MVC separation strictly, and borrows several well known concepts from the Symfony framework. If you've worked with this framework before, files such as ''actions.class.php'' and the [[TheBugGenie:Development:Routing|routing]] system should be familiar concepts.
+
+= Directory hierarchy =
+ thebuggenie
+   - core
+     - B2DB
+     - classes
+       - B2DB
+     - lib
+     - templates
+   - modules
+     - main
+       - classes
+     
+   - thebuggenie
+
+[[Category:TheBugGenie:Development]]

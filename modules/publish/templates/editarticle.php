@@ -17,9 +17,6 @@
 					<b><?php echo __('The article has not been saved yet'); ?>&nbsp;&nbsp;</b>[<a href="#edit_article" onclick="$('article_content').focus();"><?php echo __('Continue editing'); ?></a>]
 				</div>
 			<?php endif; ?>
-			<div class="rounded_box iceblue borderless" style="margin: 0 5px 5px 5px; padding: 7px; font-size: 14px;">
-				<?php echo __('If you cannot see the "%save%"-button, scroll all the way down', array('%save%' => __('Save'))); ?>
-			</div>
 			<?php if ($preview && $article instanceof TBGWikiArticle): ?>
 				<?php include_component('articledisplay', array('article' => $article, 'show_category_contains' => false, 'show_actions' => false)); ?>
 			<?php endif; ?>

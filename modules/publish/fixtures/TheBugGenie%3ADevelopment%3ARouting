@@ -38,8 +38,8 @@ protected function _addAvailableRoutes()
 }
 </source>
 
-== The route key ==
-The route key is what you use when you refer to this route to generate the url. This can be generated one of two ways, depending on where in the system you are. In the view (templates), you use the '''make_url()''' function, which takes one or two parameters, depending on how you refer to the route key.
+== The route key and parameters ==
+The route key is what you use when you refer to this route to generate the url. This can be generated one of two ways, depending on where in the system you are. In the [[TheBugGenie:Development:Templates|view]] ([[TheBugGenie:Development:Templates|templates]]), you use the '''make_url()''' function, which takes one or two parameters, depending on how you refer to the route key.
 <source lang="php">
 // This takes the route name and an associative array of parameters.
 make_url($route_name, $parameters, $relative = true);
@@ -69,7 +69,7 @@ echo make_url("@configure_module?module_name=mailing", array(), false);
 // outputs "http://hostname/subdirectory/configure/module/mailing"
 </source>
 
-Alternatively if you you're in an action / component and you need to generate a URL, you can use the '''generate()''' function in the '''TBGRouting''' class directly. The '''make_url()''' function is a shortcut to this function, so the function behaves just as the '''make_url()''' function. Remember that you need that instantiated routing object, which means you have to access it through the '''TBGContext''' class' '''getRouting()''' function.
+Alternatively if you you're in an action / component and you need to generate a URL, you can use the '''generate()''' function in the '''TBGRouting''' class directly. The '''make_url()''' function is a shortcut to this function ('''TBGRouting::generate()'''), so the behavior of the two function is identical. ''Remember that you need that instantiated routing object, which means you have to access it through the '''TBGContext''' class' '''getRouting()''' function.''
 
 Here is the example from above, with the '''generate()''' function instead:
 <source lang="php">
@@ -90,6 +90,6 @@ echo TBGContext::getRouting()->generate("@configure_module?module_name=mailing",
 // outputs "http://hostname/subdirectory/configure/module/mailing"
 </source>
 
-The '''make_url()''' function is only loaded after the ''ui'' library has been loaded. This happens when the template has been parsed (or any template has been parsed), so the '''make_url()''' function is only safe to call inside templates. Anywhere else you should use the '''TBGRouting''' '''generate()''' function.
+The '''make_url()''' function is only loaded after the ''ui'' library has been loaded. This happens when the template has been parsed (or any template has been parsed), so the '''make_url()''' function is only safe to call inside templates. Anywhere else you should use the '''TBGRouting::generate()''' function.
 
 [[Category:TheBugGenie:Development]]
