@@ -234,7 +234,11 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_subcategories[$row->get(TBGArticleCategoriesTable::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(TBGArticleCategoriesTable::ARTICLE_NAME));
+						try
+						{
+							$this->_subcategories[$row->get(TBGArticleCategoriesTable::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(TBGArticleCategoriesTable::ARTICLE_NAME));
+						}
+						catch (Exception $e) {}
 					}
 				}
 			}
@@ -255,7 +259,11 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_category_articles[$row->get(TBGArticleCategoriesTable::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(TBGArticleCategoriesTable::ARTICLE_NAME));
+						try
+						{
+							$this->_category_articles[$row->get(TBGArticleCategoriesTable::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(TBGArticleCategoriesTable::ARTICLE_NAME));
+						}
+						catch (Exception $e) {}
 					}
 				}
 			}

@@ -1,0 +1,60 @@
+{{TOC}}
+= Introduction =
+This page lists all the variables available to action templates, component templates and template partials in The Bug Genie.
+
+= Any action variables =
+Any variables that have been assigned in the action will be passed on to the template when the action is completed. 
+
+Examples:
+''actions.class.php'' '''runIndex()''' action:
+<source lang="php">
+public function runIndex(TBGRequest $request)
+{
+	$this->my_variable = 'fu';
+}
+</source>
+
+''mymodule/templates/index.php''
+<source lang="php">
+<?php echo $my_variable; // echoes "fu" ?>
+</source>
+
+= $tbg_request =
+In the template you can always access data from the request, via the $tbg_request variable. This is the same object you get when you do '''TBGContext::getRequest()'''.
+
+Example:
+''mymodule/templates/index.php''
+<source lang="php">
+<?php echo ($tbg_request->isMethod(TBGRequest::POST)) ? 'yes' : 'no'; // echoes "yes" if this was a post request, or "no" if it wasn't ?>
+</source>
+
+= $tbg_response =
+The template has access to the response object, which will be useful if you want to add javascript files, headers, feeds etc from your template. The response is also where you set the page title. $tbg_response is an instance of '''TBGResponse'''.
+
+Example:
+''mymodule/templates/index.php''
+<source lang="php">
+<?php
+	$tbg_response->setTitle('Frontpage');
+	$tbg_response->addJavascript('scrum.js');
+?>
+</source>
+
+= $tbg_routing =
+You can access the routing object from the template via $tbg_routing, which is an instance of the '''TBGRouting''' object, elsewhere accessed via '''TBGContext::getRouting()'''. This object can be used if you want to find out what specific action was run, what template was being included, etc.
+
+Example:
+''mymodule/templates/index.php''
+<source lang="php">
+<?php echo $tbg_routing->getCurrentRouteModule(); // echoes "mymodule" ?>
+</source>
+
+= $tbg_user =
+This is the instantiated user object, which may or may not be logged in, depending on the security settings.
+
+Example:
+<source lang="php">
+<?php echo ($tbg_user->isAuthenticated()) ? 'logged in' : 'not logged in'; ?>
+</source>
+
+[[Category:TheBugGenie:Development]]
