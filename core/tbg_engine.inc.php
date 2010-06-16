@@ -306,7 +306,7 @@
 
 			TBGLogging::log('Initializing B2DB');
 			if (!isset($argc)) BaseB2DB::setHTMLException(true);
-			BaseB2DB::initialize();
+			BaseB2DB::initialize(THEBUGGENIE_PATH . 'core/b2db_bootstrap.inc.php');
 			TBGLogging::log('...done (Initializing B2DB)');
 			
 			if (class_exists('B2DB'))

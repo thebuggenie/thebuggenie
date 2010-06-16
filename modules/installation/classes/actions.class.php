@@ -45,7 +45,7 @@
 				$this->b2db_folder_perm_ok = false;
 				$this->all_well = false;
 			}
-			if (file_exists(TBGContext::getIncludePath() . 'core/B2DB/sql_parameters.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/B2DB/sql_parameters.inc.php'))
+			if (file_exists(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php'))
 			{
 				$this->b2db_param_file_ok = false;
 				$this->all_well = false;
@@ -84,7 +84,7 @@
 			{
 				try
 				{
-					BaseB2DB::initialize();
+					BaseB2DB::initialize(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
 				}
 				catch (Exception $e)
 				{
@@ -166,14 +166,14 @@
 						}
 					}
 					
-					BaseB2DB::initialize(false);
+					BaseB2DB::initialize(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
 					B2DB::doConnect();
 					
 					if (B2DB::getDBname() == '')
 					{
 						throw new Exception('You must provide a database to use');
 					}
-					B2DB::saveConnectionParameters();
+					B2DB::saveConnectionParameters(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
 					
 				}
 				else

@@ -73,7 +73,7 @@
 			</div>
 			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/B2DB/sql_parameters.inc.php
+			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
 			</div>
 		<?php endif; ?>
 		<?php if (!$base_folder_perm_ok): ?>

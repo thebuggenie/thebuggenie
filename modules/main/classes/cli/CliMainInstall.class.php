@@ -106,7 +106,7 @@
 				else
 				{
 					$this->cliEcho("Step 1 - database information\n");
-					if (file_exists('core/B2DB/sql_parameters.inc.php'))
+					if (file_exists('core/b2db_bootstrap.inc.php'))
 					{
 						$this->cliEcho("You seem to already have completed this step successfully.\n");
 						if ($this->getProvidedArgument('use_existing_db_info') == 'yes')
@@ -184,7 +184,7 @@
 							BaseB2DB::setUname($db_username);
 							BaseB2DB::setPasswd($db_password);
 							BaseB2DB::setDBtype($db_type);
-							BaseB2DB::initialize(false);
+							BaseB2DB::initialize();
 							B2DB::doConnect();
 							B2DB::createDatabase($db_name);
 							B2DB::setDBname($db_name);
@@ -202,13 +202,13 @@
 						$this->cliEcho("\n");
 						$this->cliEcho("Saving database connection information ... ", 'white', 'bold');
 						$this->cliEcho("\n");
-						B2DB::saveConnectionParameters();
+						B2DB::saveConnectionParameters(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
 						$this->cliEcho("Successfully saved database connection information.\n", 'green');
 						$this->cliEcho("\n");
 					}
 					else
 					{
-						B2DB::initialize();
+						B2DB::initialize(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
 						$this->cliEcho("Successfully connected to the database.\n", 'green');
 						if ($this->getProvidedArgument('use_existing_db_info') != 'yes')
 						{
