@@ -307,6 +307,15 @@
 			TBGLogging::log('Initializing B2DB');
 			if (!isset($argc)) BaseB2DB::setHTMLException(true);
 			BaseB2DB::initialize(THEBUGGENIE_PATH . 'core/b2db_bootstrap.inc.php');
+			$engine_path = BaseB2DB::getEngineClassPath();
+			if ($engine_path !== null)
+			{
+				TBGContext::addClasspath($engine_path);
+			}
+			else
+			{
+				TBGLogging::log('...no classpath', 'main', TBGLogging::LEVEL_WARNING);
+			}
 			TBGLogging::log('...done (Initializing B2DB)');
 			
 			if (class_exists('B2DB'))
