@@ -310,6 +310,7 @@
 			$engine_path = BaseB2DB::getEngineClassPath();
 			if ($engine_path !== null)
 			{
+				TBGLogging::log("adding classpath {$engine_path}");
 				TBGContext::addClasspath($engine_path);
 			}
 			else
