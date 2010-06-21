@@ -367,7 +367,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="enable_builds"><?php echo __('Use builds'); ?></label></td>
+			<td><label for="enable_builds"><?php echo __('Enable releases'); ?></label></td>
 			<td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 					<select name="enable_builds" id="enable_builds" style="width: 70px;">
@@ -380,7 +380,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="config_explanation" colspan="2"><?php echo __('If this project has regular new main- or test-releases, you should enable builds (releases)'); ?></td>
+			<td class="config_explanation" colspan="2"><?php echo __('If this project has regular new main- or test-releases, you should enable releases'); ?></td>
 		</tr>
 		<tr>
 			<td><label for="enable_editions"><?php echo __('Use editions'); ?></label></td>

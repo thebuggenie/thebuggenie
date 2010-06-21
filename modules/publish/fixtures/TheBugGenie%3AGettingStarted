@@ -11,6 +11,16 @@ To add a project, log in as an admin, and either click the little configuration 
 The Bug Genie is now ready to be used for issue reporting with your new project. However, you might want to set up more information about the project. Click the "Edit project" link on the project and change any settings in here. From that page you can also add a project description, release date and more information about your project. This is also where you set up editions, components, releases, milestones, and more.
 
 === Project team ===
-Someone is usually working on your project. You should add developers working on The Bug Genie to your project. (This of course requires that your developers have user accounts). Click the "Edit project" icon on your project, and then open up the '''Related users''' tab. Add developers, project managers, testers and documentors from this page.
+Someone is usually working on your project. You should add developers working on The Bug Genie to your project. (This of course requires that your developers have user accounts). Click the "Edit project" icon on your project, and then open up the '''Related users''' tab. Add developers, project managers, testers and documentors from this page. By adding developers to projects, you ensure that they get access to project specific features such as project information on their dashboard, issue notifications, and they also appear on the projects' team page.
+
+=== Editions, components & releases ===
+==== Releases ====
+If your project publishes regular test releases / builds, you should enable releases. This lets you add a specific build / release name / id to an issue so that you can target the issues progress through a set of releases. When this setting is enabled you can also add a release to your issue when you report it, and even make it mandatory during the report process for any given issue type.
+
+==== Components ====
+Often a project is made up of several very specific pieces of code or functionality. Such components can be "search", "wiki", "admin interface", etc. and is up to you to decide. Similar to above (releases), an issue can also target a specific component. You can also notify certain developers or teams when a new issue for a certain component has been reported by adding them to the specific component on the project "Related users" configuration page.
+
+==== Editions ====
+In some cases your project may also be made up of several different editions. Editions are mainly defined by their included components, and one edition usually includes a different feature set from another edition. You may also want to use editions for version tracking, and set up editions between major versions, such as "MYPROJECT version 1", "MYPROJECT version 2", and so on.
 
 [[Category:Help]][[Category:HowTo]]
