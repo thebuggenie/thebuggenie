@@ -6,7 +6,7 @@
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 <tr>
-<?php include_component('configleftmenu', array('selected_section' => 6)); ?>
+<?php include_component('leftmenu', array('selected_section' => 6)); ?>
 <td valign="top">
 	<div style="width: 750px;" id="config_issuetypes">
 		<div class="configheader"><?php echo __('Configure issue types'); ?></div>

@@ -5,7 +5,7 @@
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 <tr>
-<?php include_component('configleftmenu', array('selected_section' => 10)); ?>
+<?php include_component('leftmenu', array('selected_section' => 10)); ?>
 <td valign="top">
 	<?php include_template('configuration/project_header', array('theProject' => $theProject, 'mode' => 4)); ?>
 	<table style="width: 700px; margin-top: 10px;" cellpadding=0 cellspacing=0>

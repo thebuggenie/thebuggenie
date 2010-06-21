@@ -1,6 +1,5 @@
 <td style="width: 255px;" valign="top">
-<div class="configheader" style="padding-left: 5px; width: auto;"><?php echo __('Configuration sections'); ?></div>
-<ul class="config_buttons">
+<ul class="rounded_box lightgrey shadowed config_buttons">
 <?php foreach ($config_sections as $section => $config_info): ?>
 	<?php if (array_key_exists('icon', $config_info)) $config_info = array($config_info); ?>
 	<?php foreach ($config_info as $info): ?>

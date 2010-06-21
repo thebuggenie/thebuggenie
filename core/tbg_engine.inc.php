@@ -315,7 +315,7 @@
 			}
 			else
 			{
-				TBGLogging::log('...no classpath', 'main', TBGLogging::LEVEL_WARNING);
+				TBGLogging::log('...no b2db classpath', 'main', TBGLogging::LEVEL_WARNING);
 			}
 			TBGLogging::log('...done (Initializing B2DB)');
 			
@@ -324,7 +324,7 @@
 				TBGLogging::log('Database connection details found, connecting');
 				B2DB::doConnect();
 				TBGLogging::log('...done (Database connection details found, connecting)');
-				TBGLogging::log('Adding B2DB table classpath to autoload path');
+				TBGLogging::log('Adding core table classpath to autoload path');
 				TBGContext::addClasspath(THEBUGGENIE_PATH . 'core/classes/B2DB/');
 			}
 			

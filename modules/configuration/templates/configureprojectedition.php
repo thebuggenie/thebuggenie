@@ -5,7 +5,7 @@
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 <tr>
-<?php include_component('configleftmenu', array('selected_section' => 10)); ?>
+<?php include_component('leftmenu', array('selected_section' => 10)); ?>
 <td valign="top">
 <script type="text/javascript" src="<?php echo TBGContext::getTBGPath(); ?>js/config/projects_ajax.js"></script>
 	<?php include_template('configuration/project_header', array('theProject' => $theProject, 'theEdition' => $theEdition, 'hide_tabbar' => true, 'mode' => 3)); ?>

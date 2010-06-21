@@ -31,7 +31,7 @@
 </script>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
-		<?php include_component('configleftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_UPLOADS)); ?>
+		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_UPLOADS)); ?>
 		<td valign="top">
 			<div class="configheader" style="width: 750px;"><?php echo __('Configure uploads &amp; attachments'); ?></div>
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>

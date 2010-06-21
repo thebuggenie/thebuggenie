@@ -5,7 +5,7 @@
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 <tr>
-<?php include_component('configleftmenu', array('selected_section' => 10)); ?>
+<?php include_component('leftmenu', array('selected_section' => 10)); ?>
 <td valign="top">
 	<?php include_template('configuration/project_header', array('theProject' => $theProject, 'mode' => 2)); ?>
 
@@ -105,7 +105,7 @@
 	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $theProject->getID())); ?>" method="post" onsubmit="submitProjectSettings('<?php echo make_url('configure_project_settings', array('project_id' => $theProject->getID())); ?>'); return false;" id="project_settings">
 	<?php endif; ?>
-	<table style="clear: both; width: 700px;" class="padded_table" cellpadding=0 cellspacing=0>
+	<table style="clear: both; width: 745px;" class="padded_table" cellpadding=0 cellspacing=0>
 		<tr>
 			<td style="width: 200px;"><label for="project_name"><?php echo __('Project name'); ?></label></td>
 			<td style="width: auto;">
@@ -130,7 +130,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="prefix"><?php echo __('Prefix'); ?></label></td>
+			<td><label for="prefix"><?php echo __('Project prefix'); ?></label></td>
 			<td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 					<input type="text" name="prefix" id="prefix" value="<?php print $theProject->getPrefix(); ?>" style="width: 70px;"<?php if (!$theProject->usePrefix()): ?> disabled<?php endif; ?>>
@@ -142,7 +142,10 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="description"><?php echo __('Description'); ?></label></td>
+			<td class="config_explanation" colspan="2"><?php echo __('With prefix enabled, issues will be prefixed with the specified text. Ex: If you enable prefix and set "MYPROJ" as the prefix, issues will be named "MYPROJ-1", "MYPROJ-2", and so on. Without prefix enabled, issues will be name #1, #2, and so on.'); ?></td>
+		</tr>
+		<tr>
+			<td><label for="description"><?php echo __('Project description'); ?></label></td>
 			<td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 					<?php include_template('main/textarea', array('area_name' => 'description', 'height' => '75px', 'width' => '100%', 'value' => $theProject->getDescription(), 'hide_hint' => true)); ?>
@@ -273,6 +276,19 @@
 			</td>
 		</tr>
 		<tr>
+			<td><label for="released"><?php echo __('Released'); ?></label></td>
+			<td>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="released" id="released" style="width: 70px;">
+						<option value=1<?php if ($theProject->isReleased()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$theProject->isReleased()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($theProject->isReleased()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
 			<td><label for="planned_release"><?php echo __('Planned release'); ?></label></td>
 			<td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -308,19 +324,6 @@
 					<?php echo tbg_formatTime($theProject->getReleaseDate(), 14); ?>
 				<?php else: ?>
 					<span class="faded_medium"><?php echo __('No planned release date'); ?></span>
-				<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
-			<td><label for="released"><?php echo __('Released:'); ?></label></td>
-			<td>
-				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<select name="released" id="released" style="width: 70px;">
-						<option value=1<?php if ($theProject->isReleased()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-						<option value=0<?php if (!$theProject->isReleased()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-					</select>
-				<?php else: ?>
-					<?php echo ($theProject->isReleased()) ? __('Yes') : __('No'); ?>
 				<?php endif; ?>
 			</td>
 		</tr>
@@ -411,39 +414,9 @@
 		<tr>
 			<td class="config_explanation" colspan="2" style="padding-bottom: 10px;"><?php echo __('If the project consists of several easily identifiable sub-parts, you should enable components'); ?></td>
 		</tr>
-		<tr>
-			<td><label for="descr_template"><?php echo __('Description template'); ?></label></td>
-			<td>
-				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<?php include_template('main/textarea', array('area_name' => 'descr_template', 'height' => '75px', 'width' => '100%', 'value' => ($theProject->getDescrTemplate()))); ?>
-				<?php elseif ($theProject->getDescrTemplate() != ''): ?>
-					<?php echo tbg_parse_text($theProject->getDescrTemplate()); ?>
-				<?php else: ?>
-					<span class="faded_light"><?php echo __('No template provided'); ?></span>
-				<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="config_explanation" colspan="2" style="padding-bottom: 10px;"><?php echo __('To help users structure the description field of their issue, enter some predefined content to appear in the field, acting as a template'); ?></td>
-		</tr>
-		<tr>
-			<td><label for="repro_template"><?php echo __('Reproduction steps template'); ?></label></td>
-			<td>
-				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<?php include_template('main/textarea', array('area_name' => 'repro_template', 'height' => '75px', 'width' => '100%', 'value' => ($theProject->getReproTemplate()))); ?>
-				<?php elseif ($theProject->getReproTemplate() != ''): ?>
-					<?php echo tbg_parse_text($theProject->getReproTemplate()); ?>
-				<?php else: ?>
-					<span class="faded_light"><?php echo __('No template provided'); ?></span>
-				<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="config_explanation" colspan="2" style="padding-bottom: 10px;"><?php echo __('To help users structure the reproduction steps field of their issue, enter some predefined content to appear in the field, acting as a template'); ?></td>
-		</tr>
 	</table>
 	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-		<div class="rounded_box mediumgrey" style="margin: 5px 0px 5px 0px; width: 700px; height: 23px; padding: 5px 10px 5px 10px;">
+		<div class="rounded_box mediumgrey" style="margin: 5px 0px 5px 0px; width: 730px; height: 23px; padding: 5px 10px 5px 10px;">
 			<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "Save" when you are done, to save your changes'); ?></div>
 			<input type="submit" id="project_submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 			<span id="project_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>

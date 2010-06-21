@@ -6,9 +6,8 @@
 <table style="table-layout: fixed; width: 1000px; margin: 10px 0 0 10px;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td valign="top">
-			<div class="header_div"><?php echo __('The Bug Genie - Configuration center')?></div>
 			<div style="margin-left: 5px;">
-				<div style="margin-top: 5px; background-color: #F5F5F5; font-size: 13px; font-weight: bold; padding: 3px; border-bottom: 1px solid #EEE;"><?php echo __('General configuration'); ?></div>
+				<div class="configheader" style="width: 972px;"><?php echo __('General configuration'); ?></div>
 				<ul class="config_badges">
 				<?php foreach ($general_config_sections as $section => $config_info): ?>
 					<?php if (array_key_exists('icon', $config_info)) $config_info = array($config_info); ?>
@@ -28,11 +27,8 @@
 							</a>
 						</li>
 					<?php endforeach; ?>
-				<?php endforeach; /*?>
-				</ul>
-				<div style="margin-top: 15px; background-color: #F5F5F5; clear: both; font-size: 13px; font-weight: bold; padding: 3px; border-bottom: 1px solid #EEE;"><?php echo __('Data configuration'); ?></div>
-				<ul class="config_badges">
-				<?php */ foreach ($data_config_sections as $section => $config_info): ?>
+				<?php endforeach; ?>
+				<?php foreach ($data_config_sections as $section => $config_info): ?>
 					<?php if (array_key_exists('icon', $config_info)) $config_info = array($config_info); ?>
 					<?php foreach ($config_info as $info): ?>
 						<li class="rounded_box">
@@ -52,7 +48,7 @@
 					<?php endforeach; ?>
 				<?php endforeach; ?>
 				</ul>
-				<div style="margin-top: 15px; background-color: #F5F5F5; clear: both; font-size: 13px; font-weight: bold; padding: 3px; border-bottom: 1px solid #EEE;"><?php echo __('Modules / addons'); ?></div>
+				<div class="configheader" style="width: 972px; clear: both;"><?php echo __('Modules / addons'); ?></div>
 				<ul class="config_badges">
 				<?php foreach ($module_config_sections as $section => $config_info): ?>
 					<?php if (array_key_exists('icon', $config_info)) $config_info = array($config_info); ?>

@@ -6,7 +6,7 @@
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
-		<?php include_component('configleftmenu', array('selected_section' => 5)); ?>
+		<?php include_component('leftmenu', array('selected_section' => 5)); ?>
 		<td valign="top">
 			<div style="width: 740px;" id="config_permissions" class="config_permissions">
 				<div class="configheader"><?php echo __('Configure permissions'); ?></div>

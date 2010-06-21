@@ -3,7 +3,7 @@
 	class configurationActionComponents extends TBGActionComponent
 	{
 
-		public function componentConfigLeftmenu()
+		public function componentLeftmenu()
 		{
 			$i18n = TBGContext::getI18n();
 			$config_sections = array();
