@@ -169,6 +169,13 @@
 		static protected $_routing = null;
 
 		/**
+		 * Messages passed on from the previous request
+		 *
+		 * @var array
+		 */
+		static protected $_messages = null;
+
+		/**
 		 * Returns the Database object
 		 *
 		 * @return B2DBObject
@@ -1399,6 +1406,19 @@
 			$_SESSION['tbg_message'][$key] = $message;
 		}
 
+		protected static function _setupMessages()
+		{
+			if (self::$_messages === null)
+			{
+				self::$_messages = array();
+				if (array_key_exists('tbg_message', $_SESSION))
+				{
+					self::$_messages = $_SESSION['tbg_message'];
+					unset($_SESSION['tbg_message']);
+				}
+			}
+		}
+
 		/**
 		 * Whether or not there is a message in the next request
 		 * 
@@ -1406,24 +1426,20 @@
 		 */
 		public static function hasMessage($key)
 		{
-			if (!array_key_exists('tbg_message', $_SESSION))
-			{
-				return false;
-			}
-			else
-			{
-				return array_key_exists($key, $_SESSION['tbg_message']);
-			}
+			self::_setupMessages();
+			return array_key_exists($key, self::$_messages);
 		}
 		
 		/**
-		 * Retrieve the message
-		 * 
+		 * Retrieve a message passed on from the previous request
+		 *
+		 * @param string $key A message identifier
+		 *
 		 * @return string
 		 */
 		public static function getMessage($key)
 		{
-			return (self::hasMessage($key)) ? $_SESSION['tbg_message'][$key] : false;
+			return (self::hasMessage($key)) ? self::$_messages[$key] : null;
 		}
 		
 		/**
@@ -1433,7 +1449,7 @@
 		{
 			if (self::hasMessage($key))
 			{
-				unset($_SESSION['tbg_message'][$key]);
+				unset(self::$_messages[$key]);
 			}
 		}
 

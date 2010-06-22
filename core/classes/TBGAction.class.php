@@ -140,11 +140,11 @@
 		 */
 		public function forward403unless($condition, $message = null)
 		{
-			$message = ($message === null) ? TBGContext::getI18n()->__("You don't have access to this page") : $message;
-			TBGContext::setMessage('forward', $message);
-			
 			if (!$condition)
 			{
+				$message = ($message === null) ? TBGContext::getI18n()->__("You don't have access to this page") : $message;
+				TBGContext::setMessage('forward', $message);
+
 				$this->forward(TBGContext::getRouting()->generate('login'), 403);
 			}
 		}
