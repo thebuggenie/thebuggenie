@@ -167,6 +167,15 @@
 					}
 					
 					BaseB2DB::initialize(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php');
+					$engine_path = BaseB2DB::getEngineClassPath();
+					if ($engine_path !== null)
+					{
+						TBGContext::addClasspath($engine_path);
+					}
+					else
+					{
+						throw new Exception("Cannot initialize the B2DB engine");
+					}
 					B2DB::doConnect();
 					
 					if (B2DB::getDBname() == '')

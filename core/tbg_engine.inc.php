@@ -42,7 +42,7 @@
 				{
 					TBGCliCommand::cli_echo("An unhandled exception occurred:", 'white', 'bold');
 				}
-				echo "\n".format_text($exception->getMessage(), 'red', 'bold')."\n";
+				echo "\n".TBGCliCommand::cli_echo($exception->getMessage(), 'red', 'bold')."\n";
 				echo "\n";
 				TBGCliCommand::cli_echo('Stack trace').":\n";
 				$trace_elements = $exception->getTrace();
