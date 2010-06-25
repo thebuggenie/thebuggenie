@@ -73,6 +73,27 @@
 		public function runPlanning(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_planning', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+
+			$this->recent_ideas = $this->selected_project->getRecentIdeas();
+
+		}
+
+		/**
+		 * The project files page
+		 *
+		 * @param TBGRequest $request
+		 */
+		public function runFiles(TBGRequest $request)
+		{
+		}
+
+		/**
+		 * The project roadmap page
+		 *
+		 * @param TBGRequest $request
+		 */
+		public function runRoadmap(TBGRequest $request)
+		{
 		}
 
 		/**
