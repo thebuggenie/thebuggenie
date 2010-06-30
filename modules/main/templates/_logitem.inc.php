@@ -4,7 +4,7 @@
 		<td style="padding-bottom: <?php if (isset($extra_padding) && $extra_padding == true): ?>10<?php else: ?>5<?php endif; ?>px;">
 			<?php if (isset($include_time) && $include_time == true): ?><span class="time"><?php echo tbg_formatTime($action['timestamp'], 19); ?></span>&nbsp;<?php endif; ?>
 			<?php if (isset($include_project) && $include_project == true): ?><span class="faded_medium smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $theIssue->getProject()->getKey())), '['.$theIssue->getProject()->getKey().']'); ?></span><?php endif; ?>
-			<?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedIssueNo(true) . ' - ' . $theIssue->getTitle(), array('class' => (($action['change_type'] == TBGLogTable::LOG_ISSUE_CLOSE) ? 'issue_closed' : 'issue_open'))); ?>
+			<?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedTitle(true), array('class' => (($action['change_type'] == TBGLogTable::LOG_ISSUE_CLOSE) ? 'issue_closed' : 'issue_open'))); ?>
 			<?php if (isset($include_user) && $include_user == true): ?>
 				<br>
 				<span class="user"><?php if (($user = TBGFactory::userLab($action['user_id'])) instanceof TBGUser): ?><?php echo $user->getUsername(); ?><?php else: ?><span class="faded"><?php echo __('Unknown user'); ?></span><?php endif; ?>:</span>

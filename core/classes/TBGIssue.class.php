@@ -706,9 +706,10 @@
 		 *
 		 * @return string
 		 */
-		public function getFormattedTitle($link_formatted = false)
+		public function getFormattedTitle($link_formatted = false, $include_issuetype = true)
 		{
-			return $this->getFormattedIssueNo($link_formatted) . ' - ' . $this->_title;
+			$issuetype_description = ($this->getIssueType() instanceof TBGIssuetype && $include_issuetype) ? $this->getIssueType()->getName() : '';
+			return $issuetype_description . ' ' . $this->getFormattedIssueNo($link_formatted) . ' - ' . $this->_title;
 		}
 		
 		/**
