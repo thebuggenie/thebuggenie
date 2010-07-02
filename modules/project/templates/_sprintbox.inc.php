@@ -1,7 +1,7 @@
 <div class="rounded_box lightgrey borderless" style="margin-top: 5px; padding: 6px;" id="scrum_sprint_<?php echo $sprint->getID(); ?>">
 	<div class="sprint_header">
 		<?php echo link_tag(make_url('project_scrum_sprint_details', array('project_key' => $sprint->getProject()->getKey(), 'sprint_id' => $sprint->getID())), image_tag('show_sprint_details.png', array('style' => 'float: left; margin-right: 5px;', 'title' => __('Show sprint overview and details')))); ?>
-		<a href="javascript: void(0);" onclick="$('scrum_sprint_<?php echo $sprint->getID(); ?>_container').toggle();" title="<?php echo __('Click to show assigned stories for this sprint'); ?>"><?php echo $sprint->getName(); ?></a>
+		<b><?php echo $sprint->getName(); ?></b>
 		<span class="sprint_date">
 			<?php if ($sprint->getStartingDate() && $sprint->isScheduled()): ?>
 				(<?php echo tbg_formatTime($sprint->getStartingDate(), 22); ?> - <?php echo tbg_formatTime($sprint->getScheduledDate(), 22); ?>)

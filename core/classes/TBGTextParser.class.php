@@ -450,11 +450,11 @@
 			}
 			if ($theIssue instanceof TBGIssue)
 			{
-				$output = link_tag(make_url('viewissue', array('issue_no' => $theIssue->getIssueNo(true), 'project_key' => $theIssue->getProject()->getKey())), $theIssue->getFormattedIssueNo() . ' - ' . $theIssue->getTitle(), array('class' => $classname));
+				$output = link_tag(make_url('viewissue', array('issue_no' => $theIssue->getIssueNo(true), 'project_key' => $theIssue->getProject()->getKey())), $theIssue->getFormattedTitle(), array('class' => $classname));
 			}
 			else
 			{
-				$output = htmlspecialchars($matches[1]);
+				$output = htmlspecialchars('no issue'.$matches[1]);
 			}
 			return $output;
 		}
@@ -635,7 +635,14 @@
 			{
 				$char_regexes[] = array('/(\{\{([^\}]*?)\}\})/i', array($this, '_parse_variable'));
 			}
-			$char_regexes[] = array('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, '_parse_issuelink'));
+			$issue_strings = array('bug', 'issue', 'ticket', 'story');
+			foreach (TBGIssuetype::getAll() as $issuetype)
+			{
+				$issue_strings[] = $issuetype->getName();
+			}
+			$issue_string = str_replace(' ', '\s{1,1}', join('|', $issue_strings));
+			TBGLogging::log('issue string '.$issue_string);
+			$char_regexes[] = array('#(?<!\!)(('.$issue_string.')\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, '_parse_issuelink'));
 			$char_regexes[] = array('/(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))/i', array($this, '_getsmiley'));
 			$char_regexes[] = array('/(^|[ \t\r\n])((ftp|http|https|gopher|mailto|news|nntp|telnet|wais|file|prospero|aim|webcal):(([A-Za-z0-9$_.+!*(),;\/?:@&~=-])|%[A-Fa-f0-9]{2}){2,}(#([a-zA-Z0-9][a-zA-Z0-9$_.+!*(),;\/?:@&~=%-]*))?([A-Za-z0-9$_+!*();\/?:~-]))/', array($this, '_parse_autosensedlink'));
 			foreach (self::getRegexes() as $regex)

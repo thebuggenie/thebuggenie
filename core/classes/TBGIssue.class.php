@@ -569,7 +569,7 @@
 			$issue_no = strtolower($issue_no);
 			if (strpos($issue_no, ' ') !== false)
 			{
-				$issue_no = substr($issue_no, strpos($issue_no, ' ') + 1);
+				$issue_no = substr($issue_no, strrpos($issue_no, ' ') + 1);
 			}
 			if (substr($issue_no, 0, 1) == '#') $issue_no = substr($issue_no, 1);
 			if (is_numeric($issue_no))
