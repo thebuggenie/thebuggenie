@@ -339,16 +339,6 @@
 		}
 		
 		/**
-		 * Invoked when trying to print the object
-		 *
-		 * @return string
-		 */
-		public function __toString()
-		{
-			return $this->_name;
-		}
-		
-		/**
 		 * Returns the edition parent project
 		 *
 		 * @return TBGProject
@@ -394,71 +384,6 @@
 				$uids[] = $row->get(TBGEditionAssigneesTable::UID);
 			}
 			return $uids;
-		}
-				
-		/**
-		 * Set if the edition is released
-		 *
-		 * @param boolean $released[optional]
-		 */
-		public function setReleased($released = true)
-		{
-			$this->_isreleased = (bool) $released;
-		}
-
-		/**
-		 * Release the edition
-		 *
-		 * @uses self::setReleased()
-		 */
-		public function release()
-		{
-			$this->setReleased(true);
-		}
-
-		public function retract()
-		{
-			$this->setReleased(false);
-		}
-
-		/**
-		 * Set if the edition is locked
-		 *
-		 * @param boolean $locked[optional]
-		 */
-		public function setLocked($locked = true)
-		{
-			$this->_locked = (bool) $locked;
-		}
-
-		public function lock()
-		{
-			$this->setLocked(true);
-		}
-
-		public function unlock()
-		{
-			$this->setLocked(false);
-		}
-		
-		/**
-		 * Set the release date
-		 *
-		 * @param integer $release_date
-		 */
-		public function setReleaseDate($release_date)
-		{
-			$this->_release_date = $release_date;
-		}
-		
-		/**
-		 * Set the edition name
-		 *
-		 * @param string $name
-		 */
-		public function setName($name)
-		{
-			$this->_name = $name;
 		}
 		
 		/**

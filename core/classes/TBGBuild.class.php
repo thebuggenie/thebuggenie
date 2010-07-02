@@ -170,14 +170,6 @@
 		}
 		
 		/**
-		 * @deprecated
-		 */
-		public function __toString()
-		{
-			throw new Exception("Don't print the build object, use the getPrintableName instead");
-		}
-		
-		/**
 		 * Returns the name and the version, nicely formatted
 		 * 
 		 * @return string
@@ -238,36 +230,6 @@
 		}
 		
 		/**
-		 * Set this build as locked or unlocked
-		 * 
-		 * @param boolean $val Whether it's locked or not
-		 */
-		public function setLocked($val)
-		{
-			$this->_locked = (bool) $val;
-		}
-		
-		/**
-		 * Set this build as released or unreleased
-		 * 
-		 * @param boolean $val Whether it's released or not
-		 */
-		public function setReleased($val)
-		{
-			$this->_isreleased = (bool) $val;
-		}
-		
-		/**
-		 * Set the release date
-		 * @param integer $val The date (timestamp) for the release
-		 */
-		public function setReleaseDate($val = null)
-		{
-			if ($val === null) $val = $_SERVER["REQUEST_TIME"];
-			$this->_release_date = $val;
-		}
-
-		/**
 		 * Make the build the default for it's edition or project
 		 */
 		public function setDefault()
@@ -284,67 +246,6 @@
 			$this->_isdefault = true;
 		}
 		
-		/**
-		 * Set the build name
-		 *
-		 * @param string $name
-		 */
-		public function setName($name)
-		{
-			$this->_name = $name;
-		}
-
-		/**
-		 * Set the version
-		 * 
-		 * @param integer $ver_mj Major version number
-		 * @param integer $ver_mn Minor version number
-		 * @param integer $ver_rev Version revision
-		 */
-		public function setVersion($ver_mj, $ver_mn, $ver_rev)
-		{
-			$ver_mj = ((int) $ver_mj > 0) ? (int) $ver_mj : 0;
-			$ver_mn = ((int) $ver_mn > 0) ? (int) $ver_mn : 0;
-			$ver_rev = ((int) $ver_rev > 0) ? (int) $ver_rev : 0;
-
-			$this->_version_major = $ver_mj;
-			$this->_version_minor = $ver_mn;
-			$this->_version_revision = $ver_rev;
-		}
-
-		/**
-		 * Set the major version number
-		 * 
-		 * @param $ver_mj
-		 */
-		public function setVersionMajor($ver_mj)
-		{
-			$ver_mj = ((int) $ver_mj > 0) ? (int) $ver_mj : 0;
-			$this->_version_major = $ver_mj;
-		}
-		
-		/**
-		 * Set the minor version number
-		 * 
-		 * @param $ver_mn
-		 */
-		public function setVersionMinor($ver_mn)
-		{
-			$ver_mn = ((int) $ver_mn > 0) ? (int) $ver_mn : 0;
-			$this->_version_minor = $ver_mn;
-		}
-		
-		/**
-		 * Set the version revision number
-		 * 
-		 * @param $ver_rev
-		 */
-		public function setVersionRevision($ver_rev)
-		{
-			$ver_rev = ((int) $ver_rev > 0) ? (int) $ver_rev : 0;
-			$this->_version_revision = $ver_rev;
-		}
-
 		/**
 		 * Delete this build
 		 */

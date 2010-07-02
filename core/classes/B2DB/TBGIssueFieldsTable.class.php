@@ -369,6 +369,14 @@
 			$this->doInsert($crit);
 
 			$crit = $this->getCriteria();
+			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_task_id);
+			$crit->addInsert(self::FIELD_KEY, 'milestone');
+			$crit->addInsert(self::REPORTABLE, true);
+			$crit->addInsert(self::ADDITIONAL, true);
+			$crit->addInsert(self::SCOPE, $scope);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_user_story_id);
 			$crit->addInsert(self::FIELD_KEY, 'description');
 			$crit->addInsert(self::REPORTABLE, true);

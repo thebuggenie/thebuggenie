@@ -297,6 +297,17 @@ function removeLink(url, target_type, target_id, link_id)
 	});
 }
 
+function reloadImage(id) {
+   var src = $(id).src;
+   var pos = src.indexOf('?');
+   if (pos >= 0) {
+      src = src.substr(0, pos);
+   }
+   var date = new Date();
+   $(id).src = src + '?v=' + date.getTime();
+   return false;
+}
+
 function addUserStoryTask(url, story_id, mode)
 {
 	if (mode == 'scrum')
@@ -326,6 +337,7 @@ function addUserStoryTask(url, story_id, mode)
 			$(indicator_prefix + '_indicator').hide();
 			if (mode == 'scrum')
 			{
+				$('no_tasks_' + story_id).hide();
 				$(prefix + '_tasks').insert({bottom: json.content});
 				$(prefix + '_tasks_count').update(json.count);
 			}

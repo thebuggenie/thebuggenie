@@ -11,7 +11,7 @@
 				<?php echo __('Ends %end_date%', array('%end_date%' => tbg_formatTime($sprint->getScheduledDate(), 22))); ?>
 			<?php endif; ?>
 		</span>
-		&nbsp;&nbsp;<?php echo __('%number_of% issue(s)', array('%number_of%' => '<span style="font-weight: bold;" id="scrum_sprint_'.$sprint->getID().'_issues">'.$sprint->countIssues().'</span>')); ?>&nbsp;
+		&nbsp;&nbsp;<a href="javascript: void(0);" class="issue_count" onclick="$('scrum_sprint_<?php echo $sprint->getID(); ?>_container').toggle();" title="<?php echo __('Click to show assigned stories for this sprint'); ?>"><?php echo __('%number_of% issue(s)', array('%number_of%' => '<span style="font-weight: bold;" id="scrum_sprint_'.$sprint->getID().'_issues">'.$sprint->countIssues().'</span>')); ?></a>&nbsp;
 		<div class="sprint_points"><?php echo __('%hours% hrs / %points% pts', array('%points%' => '<span id="scrum_sprint_'.$sprint->getID().'_estimated_points">' . $sprint->getPointsEstimated() . '</span>', '%hours%' => '<span id="scrum_sprint_'.$sprint->getID().'_estimated_hours">' . $sprint->getHoursEstimated() . '</span>')); ?></div>
 	</div>
 	<div id="scrum_sprint_<?php echo $sprint->getID(); ?>_container" style="display: none;">

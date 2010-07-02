@@ -557,7 +557,7 @@
 		 */
 		public function setName($name)
 		{
-			$this->_name = $name;
+			parent::setName($name);
 			$this->_key = strtolower(str_replace(' ', '', $name));
 		}
 		
@@ -780,26 +780,6 @@
 		public function setVotesEnabled($votes_enabled)
 		{
 			$this->_enablevotes = (bool) $votes_enabled;
-		}
-		
-		/**
-		 * Set if the project is locked
-		 *
-		 * @param boolean $locked
-		 */
-		public function setLocked($locked)
-		{
-			$this->_locked = (bool) $locked;
-		}
-		
-		/**
-		 * Set the release date
-		 *
-		 * @param integer $release_date
-		 */
-		public function setReleaseDate($release_date)
-		{
-			$this->_release_date = (int) $release_date;
 		}
 		
 		/**

@@ -62,7 +62,17 @@
 		{
 			return $this->_name;
 		}
-		
+
+		/**
+		 * Set the edition name
+		 *
+		 * @param string $name
+		 */
+		public function setName($name)
+		{
+			$this->_name = $name;
+		}
+
 		public function getType()
 		{
 			return 0;

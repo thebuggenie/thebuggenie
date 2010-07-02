@@ -387,7 +387,7 @@ tr.selected_red span.faded_medium { color: #F1F1F1; }
 #viewissue_menu li a { font-size: 12px; }
 .menu_project_strip { position: relative; font-size: 13px; background-color: #FFF;/*D4E5FF*/ border-bottom: 1px solid #D9D9BB; border-top: 1px solid #D9D9BB; padding: 0; margin-top: 5px; height: 33px; color: #444; width: 100%; background-color: #FFFBE2; }
 .menu_project_strip .project_name { font-size: 14px; font-weight: bold; padding: 8px; background-color: #F4EC8B; height: 17px; float: left; margin-right: 6px; }
-.menu_project_strip .project_stuff { float: left; position: relative; height: 33px; min-width: 650px; }
+.menu_project_strip .project_stuff { float: left; position: relative; height: 33px; min-width: 750px; }
 .menu_project_strip .project_stuff ul li a { font-size: 13px; border-color: #FFFBE2; padding-bottom: 8px; }
 .menu_project_strip .project_stuff ul li { border: 0; border-bottom: 1px #D9D9BB solid; background-color: #FFFBE2; }
 .menu_project_strip .project_stuff ul li.selected { border-width: 1px; border-style: solid; border-color: #D9D9BB #D9D9BB #FFF #D9D9BB; background-color: #FFF; }
@@ -720,15 +720,15 @@ img.undo { display: none; }
 #scrum ul li .story_color { float: left; width: 13px; height: 19px; font-size: 1px; font-weight: normal; padding: 0; border-right: 1px solid #BBB; margin-right: 3px; }
 #scrum ul li:hover .story_color { border-bottom: 1px solid #BBB; }
 #scrum ul li .story_color_selector { position: absolute; top: 0px; left: 0px; width: 385px; height: 50px; z-index: 999; border: 1px solid #BBB; padding: 1px; background-color: #FFF; }
-#scrum ul li .story_estimation_div { position: absolute; top: 0px; right: 0px; width: 381px; z-index: 999; text-align: right; font-size: 13px; margin: 1px; }
-#scrum ul li .story_estimation_div .header { float: left; padding-top: 3px; }
-#scrum ul li .story_estimation_div a { font-weight: bold; }
-#scrum ul li .story_estimation_div input[type="text"] { width: 30px; }
+#scrum .story_estimation_div, .scrum_sprint_details_actions .quickaddtask { position: absolute; top: 0px; right: 0px; width: 381px; z-index: 999; text-align: right; font-size: 13px; margin: 1px; }
+.scrum_sprint_details_actions a:hover { border: 0; }
+#scrum .story_estimation_div .header { float: left; padding-top: 3px; font-weight: bold; }
+#scrum .story_estimation_div a { font-weight: bold; }
+#scrum .story_estimation_div input[type="text"] { width: 30px; }
 #scrum ul li .story_color_selector_item { cursor: pointer; float: left; width: 12px; height: 50px; font-size: 1px; font-weight: normal; padding: 0; border: 0; border-right: 1px solid #555; }
 #scrum ul li .story_no { float: left; font-size: 14px; font-weight: bold; font-style: italic; background-color: transparent; color: #AAA; padding: 1px 2px 1px 2px; margin-right: 3px; }
 #scrum ul li .story_estimate { float: right; margin-left: 3px; font-size: 13px; font-weight: normal; padding: 1px 0 0 0; }
 #scrum ul li .story_estimate img { float: right; margin: 0 2px 0 3px; }
-#scrum ul li .story_eestimation_div .header { float: left; margin-right: 3px; }
 #scrum ul li .story_owner { position: absolute; bottom: 1px; left: 8px; font-size: 14px; font-weight: normal; padding: 1px 4px 1px 1px; }
 #scrum ul li .story_tags { padding-top: 3px; line-height: 15px; font-size: 13px; font-weight: normal; }
 #scrum ul li .actions { display: none; clear: both; padding: 3px; }
@@ -737,12 +737,13 @@ img.undo { display: none; }
 #scrum ul li:hover .actions { display: block; }
 #scrum ul li .actions label { float: left; font-weight: bold; margin: 0 5px 0 0; padding: 0; font-size: 12px; }
 #scrum .story_card { position: relative; }
+#scrum .story_task_list .faded_medium { padding: 5px; font-size: 13px; }
 .user_story_task { display: block; cursor: default; background-color: #FFFFC0; border: 1px solid #D6D6A1; margin: 2px; padding: 2px; font-weight: normal; }
 #related_parent_issues_inline td, #related_child_issues_inline td { font-size: 12px; }
 #related_issues_this_issue { font-size: 14px; font-weight: bold; text-align: center; }
 #no_child_issues, #no_parent_issues { text-align: center; }
 #scrum_unassigned #add_story, #scrum_sprints #add_sprint { text-align: right; padding-top: 3px; }
-#scrum_unassigned { width: 400px; padding-right: 5px; }
+#scrum_unassigned { width: 440px; padding-right: 5px; }
 #scrum_unassigned .header_div { border: 0; margin: 0; font-size: 15px; }
 #scrum_unassigned label, #scrum_sprints label { float: left; padding-top: 4px; }
 #scrum_unassigned label, #scrum_unassigned input[type="submit"], #scrum_sprints label, #scrum_sprints input[type="submit"] { font-size: 12px; font-weight: bold; }
@@ -752,6 +753,8 @@ img.undo { display: none; }
 #scrum .sprint_header { background-color: transparent; padding: 3px; font-weight: normal; font-size: 11px; color: #888; position: relative; }
 #scrum .sprint_points { position: absolute; top: 0; right: 0; font-weight: bold; font-size: 13px; background-color: #FAFAFA; border: 1px solid #EAEAEA; padding: 2px 5px 2px 5px; }
 #scrum .sprint_header a { color: #555; text-decoration: none; border: 0; font-weight: bold; font-size: 13px; }
+#scrum .sprint_header a.issue_count { font-size: 11px; font-weight: normal; color: #888; }
+#scrum .sprint_header a.issue_count:hover { color: #BBB; }
 #scrum .sprint_header a:hover { color: #888; text-decoration: none; border: 0; }
 
 #project_dashboard .recent_activities td.latest_action_dates, #timeline .recent_activities td.latest_action_dates { font-weight: bold; padding: 10px 5px 2px 5px; }

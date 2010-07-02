@@ -277,7 +277,6 @@
 			return (int) $this->_points['spent'];
 		}
 
-
 		protected function _populateHours()
 		{
 			if ($this->_hours === null)
@@ -296,6 +295,12 @@
 		{
 			$this->_populateHours();
 			return (int) $this->_hours['estimated'];
+		}
+
+		public function clearEstimates()
+		{
+			$this->_hours = null;
+			$this->_points = null;
 		}
 
 		/**

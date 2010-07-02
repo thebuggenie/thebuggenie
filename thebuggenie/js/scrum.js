@@ -139,12 +139,23 @@ function setStoryColor(url, story_id, color)
 
 function setStoryEstimates(url, story_id)
 {
-	points = $('scrum_story_' + story_id + '_points_input').getValue();
-	hours = $('scrum_story_' + story_id + '_hours_input').getValue();
+	var params = {};
+	if ($('scrum_story_' + story_id + '_points_input') && $('scrum_story_' + story_id + '_hours_input'))
+	{
+		params = { estimated_points: $('scrum_story_' + story_id + '_points_input').getValue(), estimated_hours: $('scrum_story_' + story_id + '_hours_input').getValue() };
+	}
+	else if ($('scrum_story_' + story_id + '_hours_input'))
+	{
+		params = { estimated_hours: $('scrum_story_' + story_id + '_hours_input').getValue() };
+	}
+	else if ($('scrum_story_' + story_id + '_points_input'))
+	{
+		params = { estimated_points: $('scrum_story_' + story_id + '_points_input').getValue() };
+	}
 	new Ajax.Request(url, {
 	asynchronous:true,
 	method: "post",
-	parameters: {estimated_points: points, estimated_hours: hours},
+	parameters: params,
 	onLoading: function (transport) {
 		$('point_selector_' + story_id + '_indicator').show();
 	},
@@ -160,8 +171,18 @@ function setStoryEstimates(url, story_id)
 		{
 			$('point_selector_' + story_id + '_indicator').hide();
 			$('scrum_story_' + story_id + '_estimation').hide();
-			$('scrum_story_' + story_id + '_points').update(json.points);
-			$('scrum_story_' + story_id + '_hours').update(json.hours);
+			if ($('scrum_story_' + story_id + '_points'))
+			{
+				$('scrum_story_' + story_id + '_points').update(json.points);
+			}
+			if ($('scrum_story_' + story_id + '_hours'))
+			{
+				$('scrum_story_' + story_id + '_hours').update(json.hours);
+				if ($('selected_burndown_image'))
+				{
+					reloadImage('selected_burndown_image');
+				}
+			}
 			$('scrum_sprint_' + json.sprint_id + '_estimated_points').update(json.new_estimated_points);
 			$('scrum_sprint_' + json.sprint_id + '_estimated_hours').update(json.new_estimated_hours);
 		}

@@ -164,10 +164,15 @@
 				{
 					$task = TBGIssue::createNew($request->getParameter('task_name'), TBGIssuetype::getTask()->getID(), $issue->getProjectID());
 					$comment = $issue->addChildIssue($task);
+					$task->setMilestone(($issue->getMilestone() instanceof TBGMilestone) ? $issue->getMilestone()->getID() : null);
 					$mode = $request->getParameter('mode', 'scrum');
 					if ($mode == 'scrum')
 					{
 						return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumstorytask', array('task' => $task)), 'count' => count($issue->getChildIssues())));
+					}
+					elseif ($mode == 'sprint')
+					{
+						return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/scrumsprintdetailstask', array('task' => $task, 'can_estimate' => $issue->canEditEstimatedTime())), 'count' => count($issue->getChildIssues())));
 					}
 					else
 					{
@@ -257,12 +262,19 @@
 						return $this->renderJSON(array('failed' => false));
 						break;
 					case 'estimates':
-						$issue->setEstimatedPoints((int) $request->getParameter('estimated_points'));
-						$issue->setEstimatedHours((int) $request->getParameter('estimated_hours'));
+						if ($request->hasParameter('estimated_points'))
+						{
+							$issue->setEstimatedPoints((int) $request->getParameter('estimated_points'));
+						}
+						if ($request->hasParameter('estimated_hours'))
+						{
+							$issue->setEstimatedHours((int) $request->getParameter('estimated_hours'));
+						}
 						$issue->save();
 						$sprint_id = ($issue->getMilestone() instanceof TBGMilestone) ? $issue->getMilestone()->getID() : 0;
 						$new_sprint_points = ($sprint_id !== 0) ? $issue->getMilestone()->getPointsEstimated() : 0;
 						$new_sprint_hours = ($sprint_id !== 0) ? $issue->getMilestone()->getHoursEstimated() : 0;
+						
 						return $this->renderJSON(array('failed' => false, 'points' => $issue->getEstimatedPoints(), 'hours' => $issue->getEstimatedHours(), 'sprint_id' => $sprint_id, 'new_estimated_points' => $new_sprint_points, 'new_estimated_hours' => $new_sprint_hours));
 						break;
 				}

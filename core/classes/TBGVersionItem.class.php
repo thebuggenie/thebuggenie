@@ -91,26 +91,6 @@
 		}
 		
 		/**
-		 * Returns the name of the item
-		 *
-		 * @return string
-		 */
-		public function getName()
-		{
-			return $this->_name;
-		}
-		
-		/**
-		 * Returns the id of the item
-		 *
-		 * @return integer
-		 */
-		public function getID()
-		{
-			return $this->_itemid;
-		}
-		
-		/**
 		 * Returns the item type of the object
 		 *
 		 * @return integer
@@ -142,7 +122,42 @@
 		{
 			return $this->_locked;
 		}
-		
+
+		/**
+		 * Release the edition
+		 *
+		 * @uses self::setReleased()
+		 */
+		public function release()
+		{
+			$this->setReleased(true);
+		}
+
+		public function retract()
+		{
+			$this->setReleased(false);
+		}
+
+		/**
+		 * Set if the edition is locked
+		 *
+		 * @param boolean $locked[optional]
+		 */
+		public function setLocked($locked = true)
+		{
+			$this->_locked = (bool) $locked;
+		}
+
+		public function lock()
+		{
+			$this->setLocked(true);
+		}
+
+		public function unlock()
+		{
+			$this->setLocked(false);
+		}
+
 		/**
 		 * Returns the complete version number
 		 * 
@@ -154,11 +169,62 @@
 		}
 		
 		/**
+		 * Set the version
+		 *
+		 * @param integer $ver_mj Major version number
+		 * @param integer $ver_mn Minor version number
+		 * @param integer $ver_rev Version revision
+		 */
+		public function setVersion($ver_mj, $ver_mn, $ver_rev)
+		{
+			$ver_mj = ((int) $ver_mj > 0) ? (int) $ver_mj : 0;
+			$ver_mn = ((int) $ver_mn > 0) ? (int) $ver_mn : 0;
+			$ver_rev = ((int) $ver_rev > 0) ? (int) $ver_rev : 0;
+
+			$this->_version_major = $ver_mj;
+			$this->_version_minor = $ver_mn;
+			$this->_version_revision = $ver_rev;
+		}
+
+		/**
+		 * Set the major version number
+		 *
+		 * @param $ver_mj
+		 */
+		public function setVersionMajor($ver_mj)
+		{
+			$ver_mj = ((int) $ver_mj > 0) ? (int) $ver_mj : 0;
+			$this->_version_major = $ver_mj;
+		}
+
+		/**
+		 * Set the minor version number
+		 *
+		 * @param $ver_mn
+		 */
+		public function setVersionMinor($ver_mn)
+		{
+			$ver_mn = ((int) $ver_mn > 0) ? (int) $ver_mn : 0;
+			$this->_version_minor = $ver_mn;
+		}
+
+		/**
+		 * Set the version revision number
+		 *
+		 * @param $ver_rev
+		 */
+		public function setVersionRevision($ver_rev)
+		{
+			$ver_rev = ((int) $ver_rev > 0) ? (int) $ver_rev : 0;
+			$this->_version_revision = $ver_rev;
+		}
+
+		/**
 		 * Returns the major version number
 		 *
 		 * @return integer
 		 */
-		public function getMajor()
+		public function getVersionMajor()
 		{
 			return $this->_version_major;
 		}
@@ -168,7 +234,7 @@
 		 *
 		 * @return integer
 		 */
-		public function getMinor()
+		public function getVersionMinor()
 		{
 			return $this->_version_minor;
 		}
@@ -178,7 +244,7 @@
 		 *
 		 * @return mixed
 		 */
-		public function getRevision()
+		public function getVersionRevision()
 		{
 			return $this->_version_revision;
 		}
@@ -193,7 +259,7 @@
 			return $this->_isreleased;
 		}
 		
-		public function setReleased($val)
+		public function setReleased($val = true)
 		{
 			$this->_isreleased = (bool) $val;
 		}
@@ -212,7 +278,18 @@
 		{
 			$this->_isplannedreleased = (bool) $val;
 		}
-		
+
+		/**
+		 * Set the release date
+		 *
+		 * @param integer $release_date
+		 */
+		public function setReleaseDate($release_date = null)
+		{
+			if ($val === null) $val = $_SERVER["REQUEST_TIME"];
+			$this->_release_date = $release_date;
+		}
+
 		/**
 		 * Returns the (planned/)release date
 		 *

@@ -47,7 +47,7 @@
 					<td style="width: 120px;"><label for="build_name_<?php echo $b_id; ?>"><?php echo __('Build / release name'); ?>:</label></td>
 					<td style="width: auto;"><input type="text" name="build_name" name="build_name_<?php echo $b_id; ?>" style="width: 300px;" value="<?php print $build->getName(); ?>"></td>
 					<td style="width: 100px; text-align: right;"><label for="ver_mj_<?php echo $b_id; ?>"><?php echo __('Ver: %version_number%', array('%version_number%' => '')); ?></label></td>
-					<td style="width: 100px; text-align: right;"><input type="text" name="ver_mj" id="ver_mj_<?php echo $b_id; ?>" style="width: 25px; text-align: center;" value="<?php print $build->getMajor(); ?>">&nbsp;.&nbsp;<input type="text" name="ver_mn" style="width: 25px; text-align: center;" value="<?php print $build->getMinor(); ?>">&nbsp;.&nbsp;<input type="text" name="ver_rev" style="width: 25px; text-align: center;" value="<?php print $build->getRevision(); ?>"></td>
+					<td style="width: 100px; text-align: right;"><input type="text" name="ver_mj" id="ver_mj_<?php echo $b_id; ?>" style="width: 25px; text-align: center;" value="<?php print $build->getVersionMajor(); ?>">&nbsp;.&nbsp;<input type="text" name="ver_mn" style="width: 25px; text-align: center;" value="<?php print $build->getVersionMinor(); ?>">&nbsp;.&nbsp;<input type="text" name="ver_rev" style="width: 25px; text-align: center;" value="<?php print $build->getVersionRevision(); ?>"></td>
 				</tr>
 				<tr>
 				<td><label for="release_month_<?echo $b_id; ?>"><?php echo __('Release date'); ?>:</label></td>

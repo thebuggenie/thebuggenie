@@ -1,6 +1,7 @@
 <?php
 
 	$tbg_response->setTitle(__('"%project_name%" project planning', array('%project_name%' => $selected_project->getName())));
+	$tbg_response->addJavascript('scrum.js');
 
 ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0" id="scrum">
@@ -28,7 +29,7 @@
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div>
 		</td>
-		<td style="width: auto; padding-right: 5px;" id="scrum_sprint_burndown">
+		<td style="width: auto; padding-right: 5px; position: relative;" id="scrum_sprint_burndown">
 			<div class="header_div">
 				<?php if ($selected_sprint instanceof TBGMilestone): ?>
 					<?php echo __('Sprint details, "%sprint_name%"', array('%sprint_name%' => $selected_sprint->getName())); ?>
@@ -38,39 +39,55 @@
 			</div>
 			<?php if ($selected_sprint instanceof TBGMilestone): ?>
 				<?php echo image_tag(make_url('project_scrum_sprint_burndown_image', array('project_key' => $selected_project->getKey(), 'sprint_id' => $selected_sprint->getID())), array('style' => 'margin: 15px 0 15px 0;', 'id' => 'selected_burndown_image'), true); ?>
-				<table style="width: 800px;" cellpadding="0" cellspacing="0" border="0">
+				<table style="width: 800px; position: relative; margin-bottom: 20px;" cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td style="width: 20px; border-bottom: 1px solid #DDD;">&nbsp;</td>
 						<td style="width: auto; border-bottom: 1px solid #DDD;">&nbsp;</td>
 						<td style="width: 50px; border-bottom: 1px solid #DDD; font-size: 11px; font-weight: bold; text-align: center; padding: 5px;"><?php echo __('Points'); ?></td>
 						<td style="width: 50px; border-bottom: 1px solid #DDD; font-size: 11px; font-weight: bold; text-align: center; padding: 5px;"><?php echo __('Hours'); ?></td>
+						<td style="width: 50px; border-bottom: 1px solid #DDD; font-size: 11px; font-weight: bold; text-align: center; padding: 5px;"><?php echo __('Actions'); ?></td>
 					</tr>
 				<?php foreach ($selected_sprint->getIssues() as $issue): ?>
-					<tr class="canhover_light">
-						<td style="padding: 3px 0 3px 3px;"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('title' => $issue->getIssueType()->getName())); ?></td>
-						<td style="padding: 3px 3px 3px 5px; font-weight: bold; font-size: 13px;"><?php echo $issue->getFormattedTitle(); ?></td>
-						<td style="padding: 3px; text-align: center; font-size: 13px; font-weight: normal;"<?php if (!$issue->getEstimatedPoints()): ?> class="faded_medium"<?php endif; ?>><?php echo $issue->getEstimatedPoints(); ?></td>
-						<td style="padding: 3px; text-align: center; font-size: 13px; font-weight: normal;" class="faded_medium">-</td>
-					</tr>
-					<?php $total_estimated_points += $issue->getEstimatedPoints(); ?>
-					<?php if (count($issue->getChildIssues())): ?>
-						<?php foreach ($issue->getChildIssues() as $child_issue): ?>
-							<tr class="canhover_light">
-								<td>&nbsp;</td>
-								<td style="padding: 3px 0 3px 10px; font-size: 12px; <?php if ($child_issue->isClosed()): ?> text-decoration: line-through; <?php endif; ?>"><?php echo link_tag(make_url('viewissue', array('issue_no' => $child_issue->getIssueNo(), 'project_key' => $child_issue->getProject()->getKey())), $child_issue->getTitle()); ?></td>
-								<td style="text-align: center; padding: 3px; font-size: 13px; font-weight: normal;" class="faded_medium">-</td>
-								<td style="text-align: center; padding: 3px; font-size: 13px; font-weight: normal;<?php if ($child_issue->isClosed()): ?> text-decoration: line-through; <?php endif; ?>"<?php if ($child_issue->isClosed()): ?> class="faded_medium"<?php endif; ?>><?php echo $child_issue->getEstimatedHours(); ?></td>
-							</tr>
-							<?php $total_estimated_hours += $child_issue->getEstimatedHours(); ?>
-						<?php endforeach; ?>
-					<?php else: ?>
-						<tr><td>&nbsp;</td><td colspan="3" class="faded_medium" style="padding: 0 0 10px 3px; font-size: 13px;"><?php echo __("This story doesn't have any tasks"); ?></td></tr>
+					<?php if (!$issue->getIssueType()->isTask()): ?>
+						<tr class="canhover_light">
+							<td style="padding: 3px 0 3px 3px;"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('title' => $issue->getIssueType()->getName())); ?></td>
+							<td style="padding: 3px 3px 3px 5px; font-weight: bold; font-size: 13px;"><?php echo $issue->getFormattedTitle(); ?></td>
+							<td style="padding: 3px; text-align: center; font-size: 13px; font-weight: normal;"<?php if (!$issue->getEstimatedPoints()): ?> class="faded_medium"<?php endif; ?> id="scrum_story_<?php echo $issue->getID(); ?>_points"><?php echo $issue->getEstimatedPoints(); ?></td>
+							<td style="padding: 3px; text-align: center; font-size: 13px; font-weight: normal;" class="faded_medium">-</td>
+							<td style="padding: 3px;">
+								<div style="position: relative; text-align: center;" class="scrum_sprint_details_actions">
+									<?php if ($issue->canEditEstimatedTime()): ?>
+										<a href="javascript:void(0);" onclick="$('scrum_story_<?php echo $issue->getID(); ?>_estimation').toggle();" alt="<?php echo __('Change estimate'); ?>" title="<?php echo __('Change estimate'); ?>"><?php echo image_tag('scrum_estimate.png'); ?></a>
+										<?php include_template('quickestimate', array('issue' => $issue)); ?>
+									<?php endif; ?>
+									<?php if ($issue->canAddRelatedIssues()): ?>
+										<a href="javascript:void(0);" onclick="$('scrum_story_<?php echo $issue->getID(); ?>_add_task_div').toggle();"><?php echo image_tag('scrum_add_task.png', array('title' => __('Add a task to this user story'))); ?></a>
+										<?php include_template('quickaddtask', array('issue' => $issue, 'mode' => 'sprint')); ?>
+									<?php endif; ?>
+								</div>
+							</td>
+						</tr>
+						<?php $total_estimated_points += $issue->getEstimatedPoints(); ?>
+						<?php $hastasks = false; ?>
+						<tbody id="scrum_story_<?php echo $issue->getID(); ?>_tasks">
+							<?php if (count($issue->getChildIssues())): ?>
+								<?php foreach ($issue->getChildIssues() as $child_issue): ?>
+									<?php if ($child_issue->getIssueType()->isTask()): ?>
+										<?php $hastasks = true; ?>
+										<?php include_template('project/scrumsprintdetailstask', array('task' => $child_issue, 'can_estimate' => $issue->canEditEstimatedTime())); ?>
+										<?php $total_estimated_hours += $child_issue->getEstimatedHours(); ?>
+									<?php endif; ?>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</tbody>
+						<tr id="no_tasks_<?php echo $issue->getID(); ?>"<?php if ($hastasks): ?> style="display: none;"<?php endif; ?>><td>&nbsp;</td><td colspan="5" class="faded_medium" style="padding: 0 0 10px 3px; font-size: 13px;"><?php echo __("This story doesn't have any tasks"); ?></td></tr>
 					<?php endif; ?>
 				<?php endforeach; ?>
 					<tr>
 						<td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-weight: bold; font-size: 12px;" colspan="2"><?php echo __('Total estimated effort'); ?></td>
-						<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;"><?php echo $total_estimated_points; ?></td>
-						<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;"><?php echo $total_estimated_hours; ?></td>
+						<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_estimated_points"><?php echo $total_estimated_points; ?></td>
+						<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_estimated_hours"><?php echo $total_estimated_hours; ?></td>
+						<td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-weight: bold; font-size: 12px;" colspan="2">&nbsp;</td>
 					</tr>
 				</table>
 			<?php else: ?>
