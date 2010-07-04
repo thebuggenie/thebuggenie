@@ -35,16 +35,10 @@
 		public function runInstallStep1(TBGRequest $request)
 		{
 			$this->all_well = true;
-			$this->b2db_folder_perm_ok = true;
 			$this->base_folder_perm_ok = true;
 			$this->thebuggenie_folder_perm_ok = true;
 			$this->b2db_param_file_ok = true;
 			$this->pdo_ok = true;
-			if (!is_writable(TBGContext::getIncludePath() . 'core/B2DB/'))
-			{
-				$this->b2db_folder_perm_ok = false;
-				$this->all_well = false;
-			}
 			if (file_exists(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php'))
 			{
 				$this->b2db_param_file_ok = false;

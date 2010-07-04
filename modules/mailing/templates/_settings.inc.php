@@ -104,7 +104,7 @@
 		</table>
 	</div>
 	<div id="tab_incoming_settings_pane" class="rounded_box borderless mediumgrey<?php if ($access_level == configurationActions::ACCESS_FULL): ?> cut_bottom<?php endif; ?>" style="margin: 10px 0 0 0; display: none; width: 700px;<?php if ($access_level == configurationActions::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
-		incoming
+		<span class="faded_medium"><?php echo __("This section doesn't have any settings yet"); ?></span>
 	</div>
 </div>
 <?php if ($access_level == configurationActions::ACCESS_FULL): ?>

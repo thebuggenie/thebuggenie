@@ -35,7 +35,7 @@
 	<?php if ($pdo_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP PDO installed and enabled ...</div>
 	<?php endif; ?>
-	<?php if ($b2db_folder_perm_ok && $b2db_param_file_ok): ?>
+	<?php if ($b2db_param_file_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can save database connection details ...</div>
 	<?php endif; ?>
 	<?php if ($all_well): ?>
@@ -56,16 +56,6 @@
 			</form>
 		</div>
 	<?php else: ?>
-		<?php if (!$b2db_folder_perm_ok): ?>
-			<div class="installation_prerequisites prereq_fail">
-			<b>Can not save database connection details</b><br>
-			The <i>core/B2DB</i> folder needs to be writable by the web-server
-			</div>
-			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
-			<div class="command_box">
-			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/B2DB
-			</div>
-		<?php endif; ?>
 		<?php if (!$b2db_param_file_ok): ?>
 			<div class="installation_prerequisites prereq_fail">
 			<b>Could not write the SQL settings file</b><br>
