@@ -1540,7 +1540,7 @@
 			}
 		}
 
-		protected function _populateIssueCountsByMilestone($milestone_id)
+		protected function _populateIssueCountsByMilestone($milestone_id, $exclude_tasks = false)
 		{
 			if ($this->_issuecounts === null)
 			{
@@ -1552,7 +1552,7 @@
 			}
 			if (!array_key_exists($milestone_id, $this->_issuecounts['milestone']))
 			{
-				list ($this->_issuecounts['milestone'][$milestone_id]['closed'], $this->_issuecounts['milestone'][$milestone_id]['open']) = TBGIssue::getIssueCountsByProjectIDandMilestone($this->getID(), $milestone_id);
+				list ($this->_issuecounts['milestone'][$milestone_id]['closed'], $this->_issuecounts['milestone'][$milestone_id]['open']) = TBGIssue::getIssueCountsByProjectIDandMilestone($this->getID(), $milestone_id, $exclude_tasks);
 			}
 		}
 
@@ -1660,12 +1660,13 @@
 		 * Returns the number of issues for this project with a specific milestone
 		 * 
 		 * @param integer $milestone ID of the milestone
+		 * @param boolean $exclude_tasks Whether to exclude tasks
 		 * 
 		 * @return integer
 		 */
-		public function countIssuesByMilestone($milestone)
+		public function countIssuesByMilestone($milestone, $exclude_tasks = false)
 		{
-			$this->_populateIssueCountsByMilestone($milestone);
+			$this->_populateIssueCountsByMilestone($milestone, $exclude_tasks);
 			return $this->_issuecounts['milestone'][$milestone]['closed'] + $this->_issuecounts['milestone'][$milestone]['open'];
 		}
 		

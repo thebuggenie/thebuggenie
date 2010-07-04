@@ -31,6 +31,16 @@
 		const IS_REPORTABLE = 'issuetypes.is_reportable';
 		const REDIRECT_AFTER_REPORTING = 'issuetypes.redirect_after_reporting';
 
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGIssuesTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGIssueTypesTable');
+		}
+		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);

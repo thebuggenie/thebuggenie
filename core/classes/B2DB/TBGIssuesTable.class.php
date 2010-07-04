@@ -233,13 +233,18 @@
 			return $retarr;
 		}
 		
-		public function getCountsByProjectIDandMilestone($project_id, $milestone_id)
+		public function getCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks = false)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(self::DELETED, false);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::MILESTONE, $milestone_id);
+			if ($exclude_tasks)
+			{
+				$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
+				$crit->addWhere(TBGIssueTypesTable::IS_TASK, false);
+			}
 			
 			$crit2 = clone $crit;
 			

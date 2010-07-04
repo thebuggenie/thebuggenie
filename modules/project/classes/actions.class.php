@@ -145,7 +145,9 @@
 			}
 			$this->selected_sprint = $selected_sprint;
 			$this->total_estimated_points = 0;
+			$this->total_spent_points = 0;
 			$this->total_estimated_hours = 0;
+			$this->total_spent_hours = 0;
 			//$this->unassigned_issues = $this->selected_project->getUnassignedStories();
 		}
 

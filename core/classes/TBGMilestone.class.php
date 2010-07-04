@@ -321,7 +321,7 @@
 		 */
 		public function countIssues()
 		{
-			return $this->getProject()->countIssuesByMilestone($this->getID());
+			return $this->getProject()->countIssuesByMilestone($this->getID(), $this->isSprint());
 		}
 
 		/**
@@ -357,6 +357,7 @@
 					while ($row = $res->getNextRow())
 					{
 						$theIssue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID));
+						if ($this->isSprint() && $theIssue->getIssueType()->isTask()) continue;
 						$this->_issues[$theIssue->getID()] = $theIssue;
 						if ($theIssue->getState() == TBGIssue::STATE_CLOSED)
 						{
@@ -781,7 +782,7 @@
 		{
 			if ($this->_issues == null)
 			{
-				$this->doPopulateIssues();
+				$this->_populateIssues();
 			}
 			if ($this->_closed_issues == count($this->_issues))
 			{

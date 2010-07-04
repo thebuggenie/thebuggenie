@@ -7,7 +7,7 @@
 				<?php echo __('New story estimate'); ?>
 			<?php endif; ?>
 		</div>
-		<?php echo image_tag('spinning_20.gif', array('id' => 'point_selector_'.$issue->getID().'_indicator', 'style' => 'display: none;')); ?><br>
+		<?php echo image_tag('spinning_20.gif', array('id' => 'point_selector_'.$issue->getID().'_indicator', 'style' => 'display: none;')); ?>
 		<?php if (isset($show_hours) && $show_hours): ?>
 			<input type="text" name="hours" value="<?php echo $issue->getEstimatedHours(); ?>" id="scrum_story_<?php echo $issue->getID(); ?>_hours_input"> hrs
 		<?php else: ?>

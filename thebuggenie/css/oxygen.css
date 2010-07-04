@@ -757,6 +757,14 @@ img.undo { display: none; }
 #scrum .sprint_header a.issue_count { font-size: 11px; font-weight: normal; color: #888; }
 #scrum .sprint_header a.issue_count:hover { color: #BBB; }
 #scrum .sprint_header a:hover { color: #888; text-decoration: none; border: 0; }
+#scrum_sprint_burndown a { color: #555; border-bottom: 1px dotted #AAA; }
+#scrum_sprint_burndown .faded_medium a { color: #888; border-bottom: 0; }
+#scrum_sprint_burndown a:hover { color: #777; border-bottom: 1px dotted #BBB; }
+#scrum_sprint_burndown .faded_medium a:hover { color: #999; border-bottom: 0; }
+#scrum_sprint_burndown a.img, #scrum_sprint_burndown a.img:hover { border-bottom: 0; }
+#scrum_sprint_burndown td.estimates { padding: 3px; text-align: center; font-size: 13px; font-weight: normal; }
+#scrum_sprint_burndown tr.canhover_light:hover { background-color: transparent; }
+#scrum_sprint_burndown tr.canhover_light:hover td.estimates { background-color: #F1F1F1; }
 
 #project_dashboard .recent_activities td.latest_action_dates, #timeline .recent_activities td.latest_action_dates { font-weight: bold; padding: 10px 5px 2px 5px; }
 #project_dashboard .timeline_link { font-size: 13px; text-align: right; padding: 5px; }

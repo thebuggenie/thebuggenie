@@ -517,12 +517,13 @@
 		 * 
 		 * @param integer $project_id The project ID
 		 * @param integer $milestone_id The milestone ID
+		 * @param boolean $exclude_tasks Whether to exclude tasks
 		 * 
 		 * @return array
 		 */
-		public static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id)
+		public static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks = false)
 		{
-			return B2DB::getTable('TBGIssuesTable')->getCountsByProjectIDandMilestone($project_id, $milestone_id);
+			return B2DB::getTable('TBGIssuesTable')->getCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks);
 		}
 		
 		/**
