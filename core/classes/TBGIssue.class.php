@@ -709,8 +709,7 @@
 		 */
 		public function getFormattedTitle($link_formatted = false, $include_issuetype = true)
 		{
-			$issuetype_description = ($this->getIssueType() instanceof TBGIssuetype && $include_issuetype) ? $this->getIssueType()->getName() : '';
-			return $issuetype_description . ' ' . $this->getFormattedIssueNo($link_formatted) . ' - ' . $this->_title;
+			return $this->getFormattedIssueNo($link_formatted, $include_issuetype) . ' - ' . $this->_title;
 		}
 		
 		/**
@@ -1285,16 +1284,19 @@
 		 * 
 		 * @return string
 		 */
-		public function getFormattedIssueNo($link_formatted = false)
+		public function getFormattedIssueNo($link_formatted = false, $include_issuetype = true)
 		{
+			$issuetype_description = ($this->getIssueType() instanceof TBGIssuetype && $include_issuetype) ? $this->getIssueType()->getName() : '';
+
 			if ($this->getProject()->usePrefix())
 			{
-				return $this->getProject()->getPrefix() . '-' . $this->getIssueNo();
+				$issue_no = $this->getProject()->getPrefix() . '-' . $this->getIssueNo();
 			}
 			else
 			{
-				return (($link_formatted) ? '#' : '') . $this->getIssueNo();
+				$issue_no = (($link_formatted) ? '#' : '') . $this->getIssueNo();
 			}
+			return $issuetype_description . ' ' . $issue_no;
 		}
 	
 		/**
