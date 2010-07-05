@@ -341,7 +341,7 @@
 		 */
 		public function countClosedIssues()
 		{
-			return $this->getProject()->countClosedIssuesByMilestone($this->getID());
+			return $this->getProject()->countClosedIssuesByMilestone($this->getID(), $this->isSprint());
 		}
 		
 		/**
@@ -750,15 +750,7 @@
 		{
 			if ($this->getType() == self::TYPE_REGULAR)
 			{
-				if (count($this->getIssues()) > 0)
-				{
-					$multiplier = 100 / count($this->getIssues());
-					$pct = $this->getClosedIssues() * $multiplier;
-				}
-				else
-				{
-					$pct = 0;
-				}
+				return $this->getProject()->getClosedPercentageByMilestone($this->getID());
 			}
 			else
 			{

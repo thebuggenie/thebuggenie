@@ -1738,9 +1738,9 @@
 		 * 
 		 * @return integer
 		 */
-		public function countClosedIssuesByMilestone($milestone)
+		public function countClosedIssuesByMilestone($milestone, $exclude_tasks = false)
 		{
-			$this->_populateIssueCountsByMilestone($milestone);
+			$this->_populateIssueCountsByMilestone($milestone, $exclude_tasks);
 			return $this->_issuecounts['milestone'][$milestone]['closed'];
 		}
 		

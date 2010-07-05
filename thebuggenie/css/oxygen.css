@@ -856,3 +856,9 @@ thead.borderless th { border: 0; }
 .permission_list ul li ul li ul li a.permission_description { display: block; width: 540px; }
 
 ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
+
+#project_roadmap { width: 990px; margin: 5px; }
+.roadmap_header { padding: 5px; border-bottom: 1px solid #CCC; font-size: 14px; font-weight: bold; margin: 5px 5px 5px 0; }
+.roadmap_percentbar { width: 490px; padding: 1px; border: 1px solid #8A8; float: left; margin-right: 10px; }
+.roadmap_percentdescription { width: 470px; float: left; padding: 5px; font-size: 13px; font-weight: normal; color: #555; }
+.roadmap_dates { display: inline; margin-left: 5px; font-weight: normal; color: #888; }
