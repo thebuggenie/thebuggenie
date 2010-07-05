@@ -33,7 +33,7 @@
 				</div>
 			</div>
 			<div class="roadmap_percentbar">
-				<?php include_template('main/percentbar', array('percent' => $milestone->getPercentComplete(), 'height' => 25)); ?>
+				<?php include_template('main/percentbar', array('rounded' => true, 'percent' => $milestone->getPercentComplete(), 'height' => 22)); ?>
 			</div>
 			<div class="roadmap_percentdescription">
 				<?php if ($milestone->isSprint()): ?>
