@@ -34,7 +34,7 @@
 		/**
 		 * Return an instance of this table
 		 *
-		 * @return TBGIssuesTable
+		 * @return TBGIssueTypesTable
 		 */
 		public static function getTable()
 		{

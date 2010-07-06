@@ -265,7 +265,7 @@
 						</select>
 						<?php echo image_submit_tag('action_add_small.png'); ?>
 						<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'add_filter_indicator')); ?>
-						<div class="faded_medium" style="padding: 10px 0 5px 0;"><?php echo __('Please note that adding the same filter more than once means that any of the given values for that filter will return a match'); ?></div>
+						<div class="faded_medium" style="padding: 10px 0 5px 0;"><?php echo __('Adding the same filter more than once means that any of the given values for that filter will return a match if you are matching with "is", and neither of the given values if you are matching with "is not"'); ?></div>
 					</form>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>

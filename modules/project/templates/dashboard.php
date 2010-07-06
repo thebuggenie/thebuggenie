@@ -95,7 +95,7 @@
 				</div>
 				<div id="project_dashboard_menu_panes">
 					<div id="tab_10_recent_issues_pane">
-						<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('More') . ' &raquo;', array('class' => 'more', 'title' => __('Show more issues'))); ?>
+						<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true)), __('More') . ' &raquo;', array('class' => 'more', 'title' => __('Show more issues'))); ?>
 						<?php if (count($recent_issues) > 0): ?>
 							<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
 							<?php foreach ($recent_issues as $issue): ?>

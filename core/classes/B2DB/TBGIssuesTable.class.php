@@ -560,9 +560,13 @@
 								{
 									foreach ($filter_info as $single_filter)
 									{
-										if (in_array($single_filter['operator'], array('=', '!=', '<=', '>=', '<', '>')))
+										if (in_array($single_filter['operator'], array('=', '<=', '>=', '<', '>')))
 										{
 											$ctn->addOr($this->getB2DBName().'.'.$filter, $single_filter['value'], $single_filter['operator']);
+										}
+										elseif ($single_filter['operator'] == '!=')
+										{
+											$ctn->addWhere($this->getB2DBName().'.'.$filter, $single_filter['value'], $single_filter['operator']);
 										}
 									}
 								}

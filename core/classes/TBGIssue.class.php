@@ -608,7 +608,7 @@
 		public static function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null)
 		{
 			$issues = array();
-			list ($res, $count) = B2DB::getTable('TBGIssuesTable')->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder);
+			list ($res, $count) = TBGIssuesTable::getTable()->findIssues($filters, $results_per_page, $offset, $groupby, $grouporder);
 			if ($res)
 			{
 				while ($row = $res->getNextRow())
