@@ -96,7 +96,7 @@ Custom classes
 .main_header_print, .main_header_print .logo_large, .main_header_print .logo_small { background-color: #FFF; color: #333; }
 .print_header_strip { background-color: #F1F1F1; padding: 3px; border-bottom: 1px solid #DDD; }
 
-#logo_td { height: 75px; padding: 10px; vertical-align: middle; }
+#logo_td { height: 75px; padding: 0 0 0 10px; vertical-align: middle; }
 #logo_td a { float: left; margin: 0 10px 0 5px; text-decoration: none; border: 0; }
 #logo_td a:hover { text-decoration: none; border: 0; }
 .logo_large { font-size: 21px; font-weight: bold; color: #FFF; margin-top: 2px; }
