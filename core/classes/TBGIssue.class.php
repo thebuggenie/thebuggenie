@@ -1284,9 +1284,9 @@
 		 * 
 		 * @return string
 		 */
-		public function getFormattedIssueNo($link_formatted = false, $include_issuetype = true)
+		public function getFormattedIssueNo($link_formatted = false, $include_issuetype = false)
 		{
-			$issuetype_description = ($this->getIssueType() instanceof TBGIssuetype && $include_issuetype) ? $this->getIssueType()->getName() : '';
+			$issuetype_description = ($this->getIssueType() instanceof TBGIssuetype && $include_issuetype) ? $this->getIssueType()->getName().' ' : '';
 
 			if ($this->getProject()->usePrefix())
 			{
@@ -1296,7 +1296,7 @@
 			{
 				$issue_no = (($link_formatted) ? '#' : '') . $this->getIssueNo();
 			}
-			return $issuetype_description . ' ' . $issue_no;
+			return $issuetype_description . $issue_no;
 		}
 	
 		/**

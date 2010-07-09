@@ -13,7 +13,7 @@
 					<th style="width: auto; padding-left: 2px;"><?php echo __('Title'); ?></th>
 					<th style="text-align: center; width: 70px;"><?php echo __('Progress'); ?></th>
 					<th style="width: auto;"><?php echo __('Description'); ?></th>
-					<th style="width: 70px;"><?php echo __('More info'); ?></th>
+					<th style="width: 170px;"><?php echo __('More info'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -46,7 +46,7 @@
 
 					?>; font-weight: bold;"><?php echo $issue->getPercentCompleted(); ?>%</td>
 					<td style="padding: 3px;"><?php echo ($issue->getDescription() != '') ? $issue->getDescription() : '<span class="faded_medium">'.__('No description provided').'</span>'; ?></td>
-					<td class="result_issue"><?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true)); ?></td>
+					<td class="result_issue"><?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true, true)); ?></td>
 				</tr>
 	<?php if ($cc == count($issues)): ?>
 			</tbody>
