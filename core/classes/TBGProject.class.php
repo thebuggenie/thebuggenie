@@ -43,7 +43,14 @@
 		 * @access protected
 		 */
 		protected $_useprefix = false;
-		
+
+		/**
+		 * Whether or not the project uses scrum planning
+		 *
+		 * @var boolean
+		 */
+		protected $_usescrum = false;
+
 		/**
 		 * Hours per day for this project
 		 *
@@ -461,6 +468,7 @@
 				$this->_prefix 					= $row->get(TBGProjectsTable::PREFIX);
 				$this->_locked 					= (bool) $row->get(TBGProjectsTable::LOCKED);
 				$this->_useprefix 				= (bool) $row->get(TBGProjectsTable::USE_PREFIX);
+				$this->_usescrum 				= (bool) $row->get(TBGProjectsTable::USE_SCRUM);
 				$this->_enablebuilds 			= (bool) $row->get(TBGProjectsTable::ENABLE_BUILDS);
 				$this->_enableeditions 			= (bool) $row->get(TBGProjectsTable::ENABLE_EDITIONS);
 				$this->_enablecomponents 		= (bool) $row->get(TBGProjectsTable::ENABLE_COMPONENTS);
@@ -516,6 +524,26 @@
 		public function hasPrefix()
 		{
 			return ($this->_prefix != '') ? true : false;
+		}
+
+		/**
+		 * Set whether the project uses scrum planning
+		 *
+		 * @param boolean $val
+		 */
+		public function setUsesScrum($val = true)
+		{
+			$this->_usescrum = $val;
+		}
+
+		/**
+		 * Return whether the project uses scrum planning
+		 *
+		 * @return boolean
+		 */
+		public function usesScrum()
+		{
+			return (bool) $this->_usescrum;
 		}
 		
 		/**
@@ -1285,6 +1313,7 @@
 			$crit->addUpdate(TBGProjectsTable::LOCKED, $this->_locked);
 			$crit->addUpdate(TBGProjectsTable::PREFIX, $this->_prefix);
 			$crit->addUpdate(TBGProjectsTable::USE_PREFIX, $this->_useprefix);
+			$crit->addUpdate(TBGProjectsTable::USE_SCRUM, $this->_usescrum);
 			$crit->addUpdate(TBGProjectsTable::ENABLE_BUILDS, $this->_enablebuilds);
 			$crit->addUpdate(TBGProjectsTable::ENABLE_COMPONENTS, $this->_enablecomponents);
 			$crit->addUpdate(TBGProjectsTable::ENABLE_EDITIONS, $this->_enableeditions);

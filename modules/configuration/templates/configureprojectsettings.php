@@ -181,6 +181,22 @@
 			</td>
 		</tr>
 		<tr>
+			<td><label for="use_scrum"><?php echo __('Enable scrum planning'); ?></label></td>
+			<td>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="use_scrum" id="use_scrum" style="width: 70px;">
+						<option value=1<?php if ($theProject->usesScrum()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$theProject->usesScrum()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($theProject->usesScrum()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="config_explanation" colspan="2"><?php echo __('If the project uses the scrum method for planning, releases and development, enable it here'); ?></td>
+		</tr>
+		<tr>
 			<td>
 				<label for="time_unit"><?php echo __('Time measuring'); ?></label>
 			</td>

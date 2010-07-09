@@ -25,6 +25,7 @@
 		const KEY = 'projects.key';
 		const PREFIX = 'projects.prefix';
 		const USE_PREFIX = 'projects.use_prefix';
+		const USE_SCRUM = 'projects.use_scrum';
 		const HOMEPAGE = 'projects.homepage';
 		const OWNED_BY = 'projects.owned_by';
 		const OWNED_TYPE = 'projects.owned_type';
@@ -61,6 +62,7 @@
 			parent::_addVarchar(self::KEY, 100);
 			parent::_addVarchar(self::PREFIX, 5, '');
 			parent::_addBoolean(self::USE_PREFIX);
+			parent::_addBoolean(self::USE_SCRUM);
 			parent::_addVarchar(self::HOMEPAGE, 200, '');
 			parent::_addInteger(self::OWNED_BY, 10);
 			parent::_addInteger(self::OWNED_TYPE, 3);

@@ -657,6 +657,7 @@
 
 					$this->theProject->setName($request->getParameter('project_name'));
 					$this->theProject->setUsePrefix((bool) $request->getParameter('use_prefix'));
+					$this->theProject->setUsesScrum((bool) $request->getParameter('use_scrum'));
 					$this->theProject->setPrefix($request->getParameter('prefix'));
 					$this->theProject->setDescription($request->getParameter('description', null, false));
 					$this->theProject->setHomepage($request->getParameter('homepage'));
