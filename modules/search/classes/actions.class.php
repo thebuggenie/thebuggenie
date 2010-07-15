@@ -117,6 +117,11 @@
 							break;
 						case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
 							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_CLOSED);
+							$bug_reports_issue_type_ids = TBGIssueTypesTable::getTable()->getBugReportTypeIDs();
+							foreach ($bug_reports_issue_type_ids as $b_id)
+							{
+								$this->filters['issue_type'][] = array('operator' => '=', 'value' => $b_id);
+							}
 							break;
 						case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
 							$this->groupby = 'milestone';

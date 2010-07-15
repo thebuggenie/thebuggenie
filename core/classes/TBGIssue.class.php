@@ -4211,13 +4211,13 @@
 									{
 										if (!$this->getIssueType()->isTask())
 										{
-											$this->_spentpoints = $this->_estimatedpoints;
+											$this->setSpentPoints($this->getEstimatedPoints());
 										}
 										else
 										{
-											if ($this->_spenthours < $this->_estimatedhours)
+											if ($this->getSpentHours() < $this->getEstimatedHours())
 											{
-												$this->_spenthours = $this->_estimatedhours;
+												$this->setSpentHours($this->getEstimatedHours());
 											}
 											foreach ($this->getParentIssues() as $parent_issue)
 											{

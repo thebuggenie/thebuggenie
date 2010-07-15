@@ -17,6 +17,7 @@
 				{
 					case TBGLogTable::LOG_ISSUE_CREATED:
 						echo '<i>' . __('Issue created') . '</i>';
+						echo '<div class="timeline_inline_details">'.$theIssue->getDescription().'</div>';
 						break;
 					case TBGLogTable::LOG_ISSUE_CLOSE:
 						echo '<span class="issue_closed"><i>' . __('Issue closed %text%', array('%text%' => $action['text'])) . '</i></span>';

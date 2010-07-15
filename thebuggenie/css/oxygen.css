@@ -784,6 +784,7 @@ img.undo { display: none; }
 #timeline .recent_activities td.latest_action_dates { font-size: 14px; }
 #timeline .user { font-size: 12px; color: #AAA; }
 .timeline_actions a { font-weight: bold; font-size: 13px; }
+#timeline .timeline_inline_details { color: #AAA; font-style: italic; margin: 5px 0 0 7px; padding-left: 5px; border-left: 1px dotted #CCC; font-size: 11px; }
 #project_dashboard #project_name { font-size: 18px; font-weight: bold; margin: 5px 5px 5px 0; }
 #project_dashboard #project_name span { margin: 3px; font-size: 15px; font-weight: normal; display: inline; padding: 3px; color: #AAA; }
 #project_dashboard #project_team { font-size: 13px; font-weight: normal; margin: 5px 5px 5px 0; width: 615px; }
