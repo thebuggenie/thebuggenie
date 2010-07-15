@@ -424,7 +424,7 @@
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_statistics', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			$success = false;
-			if (in_array($request->getParameter('set'), array('issues_per_status', 'issues_per_priority', 'issues_per_category', 'issues_per_resolution', 'issues_per_reproducability')))
+			if (in_array($request->getParameter('set'), array('issues_per_status', 'issues_per_state', 'issues_per_priority', 'issues_per_category', 'issues_per_resolution', 'issues_per_reproducability')))
 			{
 				$success = true;
 				$base_url = TBGContext::getRouting()->generate('project_statistics_image', array('project_key' => $this->selected_project->getKey(), 'key' => '%key%', 'mode' => '%mode%', 'image_number' => '%image_number%'));
@@ -432,13 +432,20 @@
 				$mode = urlencode('%mode%');
 				$image_number = urlencode('%image_number%');
 				$set = $request->getParameter('set');
-				$images = array('main' => str_replace(array($key, $mode, $image_number), array($set, 'main', 1), $base_url),
-								'mini_1_small' => str_replace(array($key, $mode, $image_number), array($set, 'mini', 1), $base_url),
-								'mini_1_large' => str_replace(array($key, $mode, $image_number), array($set, 'main', 1), $base_url),
-								'mini_2_small' => str_replace(array($key, $mode, $image_number), array($set, 'mini', 2), $base_url),
-								'mini_2_large' => str_replace(array($key, $mode, $image_number), array($set, 'main', 2), $base_url),
-								'mini_3_small' => str_replace(array($key, $mode, $image_number), array($set, 'mini', 3), $base_url),
-								'mini_3_large' => str_replace(array($key, $mode, $image_number), array($set, 'main', 3), $base_url));
+				if ($set != 'issues_per_state')
+				{
+					$images = array('main' => str_replace(array($key, $mode, $image_number), array($set, 'main', 1), $base_url),
+									'mini_1_small' => str_replace(array($key, $mode, $image_number), array($set, 'mini', 1), $base_url),
+									'mini_1_large' => str_replace(array($key, $mode, $image_number), array($set, 'main', 1), $base_url),
+									'mini_2_small' => str_replace(array($key, $mode, $image_number), array($set, 'mini', 2), $base_url),
+									'mini_2_large' => str_replace(array($key, $mode, $image_number), array($set, 'main', 2), $base_url),
+									'mini_3_small' => str_replace(array($key, $mode, $image_number), array($set, 'mini', 3), $base_url),
+									'mini_3_large' => str_replace(array($key, $mode, $image_number), array($set, 'main', 3), $base_url));
+				}
+				else
+				{
+					$images = array('main' => str_replace(array($key, $mode, $image_number), array($set, 'main', 1), $base_url));
+				}
 			}
 			else
 			{
@@ -470,7 +477,7 @@
 				}
 				if ($value > 0)
 				{
-					if ($item_id != 0)
+					if ($item_id != 0 || $this->key == 'issues_per_state')
 					{
 						switch ($this->key)
 						{
@@ -489,8 +496,18 @@
 							case 'issues_per_reproducability':
 								$item = TBGFactory::TBGReproducabilityLab($item_id);
 								break;
+							case 'issues_per_state':
+								$item = ($item_id == TBGIssue::STATE_OPEN) ? $i18n->__('Open') : $i18n->__('Closed');
+								break;
 						}
-						$labels[] = ($item instanceof TBGIdentifiableClass) ? $item->getName() : $i18n->__('Unknown');
+						if ($this->key != 'issues_per_state')
+						{
+							$labels[] = ($item instanceof TBGIdentifiableClass) ? $item->getName() : $i18n->__('Unknown');
+						}
+						else
+						{
+							$labels[] = $item;
+						}
 					}
 					else
 					{
@@ -597,6 +614,14 @@
 					elseif ($this->image_number == 3)
 					{
 						$this->title = $i18n->__('Closed issues per reproducability level');
+					}
+					break;
+				case 'issues_per_state':
+					$this->graphmode = 'piechart';
+					$counts = TBGIssuesTable::getTable()->getStateCountByProjectID($this->selected_project->getID());
+					if ($this->image_number == 1)
+					{
+						$this->title = $i18n->__('Total number of issues (open / closed)');
 					}
 					break;
 				default:

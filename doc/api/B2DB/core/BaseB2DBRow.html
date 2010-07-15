@@ -2,93 +2,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
-			<!-- template designed by Marco Von Ballmoos  -->
+			<!-- template designed by Marco Von Ballmoos -->
 			<title>Docs For Class BaseB2DBRow</title>
 			<link rel="stylesheet" href="../../media/stylesheet.css" />
-						<script src="../../media/lib/classTree.js"></script>
-												<script language="javascript" type="text/javascript">
-				var imgPlus = new Image();
-				var imgMinus = new Image();
-				imgPlus.src = "../../media/images/plus.png";
-				imgMinus.src = "../../media/images/minus.png";
-				
-				function showNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgMinus.src;
-					oTable.style.display = "block";
-				}
-				
-				function hideNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgPlus.src;
-					oTable.style.display = "none";
-				}
-				
-				function nodeIsVisible(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-									break;
-							}
-					return (oTable && oTable.style.display == "block");
-				}
-				
-				function toggleNodeVisibility(Node){
-					if (nodeIsVisible(Node)){
-						hideNode(Node);
-					}else{
-						showNode(Node);
-					}
-				}
-			</script>
-					</head>
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
 		<body>
-			<div class="page-body">			
-<h2 class="class-name"><img src="../../media/images/AbstractClass_logo.png"
-														alt="Abstract Class"
-														title="Abstract Class"
-														style="vertical-align: middle"> BaseB2DBRow</h2>
+			<div class="page-body">			
+<h2 class="class-name">Class BaseB2DBRow</h2>
 
 <a name="sec-description"></a>
 <div class="info-box">
@@ -133,13 +54,7 @@
 					<th class="class-table-header">Description</th>
 				</tr>
 								<tr>
-					<td style="padding-right: 2em; white-space: nowrap">
-						<img src="../../media/images/Class.png"
-								 alt=" class"
-								 title=" class"
-								 style="vertical-align: center"/>
-						
-					</td>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/B2DBRow.html">B2DBRow</a></td>
 					<td>
 											PDO row class
 										</td>
@@ -154,7 +69,7 @@
 		<div class="info-box-title">Variable Summary</span></div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
-							<a href="#sec-descendents">Descendants</a> |
+							<a href="#sec-descendents">Descendents</a> |
 						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
 							| 
 									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
@@ -163,13 +78,11 @@
 		<div class="info-box-body">
 			<div class="var-summary">
 																																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$_fields" title="details" class="var-name">$_fields</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
-					<span class="var-type"><a href="../../B2DB/mysqli/B2DBStatement.html">B2DBStatement</a></span>
+					<span class="var-type"><a href="../../B2DB/pdo/B2DBStatement.html">B2DBStatement</a></span>
 					<a href="#$_statement" title="details" class="var-name">$_statement</a>
 				</div>
 											</div>
@@ -181,7 +94,7 @@
 		<div class="info-box-title">Method Summary</span></div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
-							<a href="#sec-descendents">Descendants</a> |
+							<a href="#sec-descendents">Descendents</a> |
 																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
 				 
 				|
@@ -189,21 +102,18 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																															
-				<div class="method-definition">
-					<img src="../../media/images/Constructor.png" alt=" "/>
+																				
+												<div class="method-definition">
 											<span class="method-result">BaseB2DBRow</span>
 										<a href="#__construct" title="details" class="method-name">__construct</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$statement</span>)
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$row</span>, <span class="var-type">B2DBstatement</span>&nbsp;<span class="var-name">$statement</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#get" title="details" class="method-name">get</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$foreign_key</span> = <span class="var-default">null</span>])
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$foreign_key</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$debug</span> = <span class="var-default">false</span>])
 									</div>
-											</div>
+								</div>
 		</div>
 	</div>		
 
@@ -221,12 +131,10 @@
 							
 					</div>
 		<div class="info-box-body">
-			
-<a name="var$_fields" id="$_fields"><!-- --></A>
-<div class="evenrow">
+			<a name="var$_fields" id="$_fields"><!-- --></A>
+<div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$_fields</span>
@@ -245,12 +153,11 @@
 
 </div>
 <a name="var$_statement" id="$_statement"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
-			<span class="var-type"><a href="../../B2DB/mysqli/B2DBStatement.html">B2DBStatement</a></span>
+			<span class="var-type"><a href="../../B2DB/pdo/B2DBStatement.html">B2DBStatement</a></span>
 			<span class="var-name">$_statement</span>
 			 = <span class="var-default"> null</span>			(line <span class="line-number">28</span>)
 		</span>
@@ -267,7 +174,7 @@
 		
 
 </div>
-						
+						
 		</div>
 	</div>
 	
@@ -283,15 +190,16 @@
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
+
 <a name="method__construct" id="__construct"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Constructor.png" />
-		<span class="method-title">Constructor __construct</span> (line <span class="line-number">30</span>)
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">35</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Constructor</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
@@ -301,23 +209,25 @@
 		<span class="method-name">
 			__construct
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$statement</span>)
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$row</span>, <span class="var-type">B2DBstatement</span>&nbsp;<span class="var-name">$statement</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
+				<span class="var-type">B2DBstatement</span>
 				<span class="var-name">$statement</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$row</span>			</li>
 				</ul>
 		
 			
 	</div>
 <a name="methodget" id="get"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">get</span> (line <span class="line-number">61</span>)
+		<span class="method-title">get</span> (line <span class="line-number">44</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -330,7 +240,7 @@
 		<span class="method-name">
 			get
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$foreign_key</span> = <span class="var-default">null</span>])
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$foreign_key</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$debug</span> = <span class="var-default">false</span>])
 			</div>
 	
 			<ul class="parameters">
@@ -340,6 +250,9 @@
 					<li>
 				<span class="var-type"></span>
 				<span class="var-name">$foreign_key</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$debug</span>			</li>
 				</ul>
 		
 			
@@ -348,9 +261,9 @@
 		</div>
 	</div>
 
-	
+
 	<p class="notes" id="credit">
-		Documentation generated on Wed, 15 Jul 2009 00:28:11 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+		Documentation generated on Wed, 14 Jul 2010 10:30:28 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
-</html>
+</html>

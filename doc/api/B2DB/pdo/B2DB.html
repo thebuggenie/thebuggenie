@@ -2,93 +2,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
-			<!-- template designed by Marco Von Ballmoos  -->
+			<!-- template designed by Marco Von Ballmoos -->
 			<title>Docs For Class B2DB</title>
 			<link rel="stylesheet" href="../../media/stylesheet.css" />
-						<script src="../../media/lib/classTree.js"></script>
-												<script language="javascript" type="text/javascript">
-				var imgPlus = new Image();
-				var imgMinus = new Image();
-				imgPlus.src = "../../media/images/plus.png";
-				imgMinus.src = "../../media/images/minus.png";
-				
-				function showNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgMinus.src;
-					oTable.style.display = "block";
-				}
-				
-				function hideNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgPlus.src;
-					oTable.style.display = "none";
-				}
-				
-				function nodeIsVisible(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-									break;
-							}
-					return (oTable && oTable.style.display == "block");
-				}
-				
-				function toggleNodeVisibility(Node){
-					if (nodeIsVisible(Node)){
-						hideNode(Node);
-					}else{
-						showNode(Node);
-					}
-				}
-			</script>
-					</head>
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
 		<body>
-			<div class="page-body">			
-<h2 class="class-name"><img src="../../media/images/Class_logo.png"
-														alt=" Class"
-														title=" Class"
-														style="vertical-align: middle"> B2DB</h2>
+			<div class="page-body">			
+<h2 class="class-name">Class B2DB</h2>
 
 <a name="sec-description"></a>
 <div class="info-box">
@@ -103,7 +24,7 @@
         		<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">PDO B2DB class</p>
 		<p class="notes">
-			Located in <a class="field" href="_core---B2DB---PDO---classes---B2DB.class.php.html">/core/B2DB/PDO/classes/B2DB.class.php</a> (line <span class="field"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DB.class.php.html#a19">19</a></span>)
+			Located in <a class="field" href="_core---B2DB---PDO---classes---B2DB.class.php.html">/core/B2DB/PDO/classes/B2DB.class.php</a> (line <span class="field">19</span>)
 		</p>
 		
 				
@@ -129,7 +50,6 @@
 		<div class="info-box-body">
 			<div class="var-summary">
 												<div class="var-title">
-					<img src="../../media/images/StaticVariable.png" alt=" " />
 					static <span class="var-type">PDO</span>
 					<a href="#$_db_connection" title="details" class="var-name">$_db_connection</a>
 				</div>
@@ -149,49 +69,38 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-											
-				<div class="method-definition">
-					<img src="../../media/images/StaticMethod.png" alt=" "/>
+												<div class="method-definition">
 					static 						<span class="method-result">void</span>
 										<a href="#closeDBLink" title="details" class="method-name">closeDBLink</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/StaticMethod.png" alt=" "/>
+																<div class="method-definition">
 					static 						<span class="method-result">void</span>
 										<a href="#createDatabase" title="details" class="method-name">createDatabase</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$db_name</span>)
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$db_name</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/StaticMethod.png" alt=" "/>
+																<div class="method-definition">
 					static 						<span class="method-result">void</span>
 										<a href="#doConnect" title="details" class="method-name">doConnect</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/StaticMethod.png" alt=" "/>
+																<div class="method-definition">
 					static 						<span class="method-result">void</span>
 										<a href="#doSelectDB" title="details" class="method-name">doSelectDB</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$db</span> = <span class="var-default">null</span>])
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$db</span> = <span class="var-default">null</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/StaticMethod.png" alt=" "/>
+																<div class="method-definition">
 					static 						<span class="method-result">PDO</span>
 										<a href="#getDBLink" title="details" class="method-name">getDBLink</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/StaticMethod.png" alt=" "/>
+																<div class="method-definition">
 					static 						<span class="method-result">void</span>
 										<a href="#simpleQuery" title="details" class="method-name">simpleQuery</a>
 											(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>)
 									</div>
-																																																															</div>
+								
+																																																				</div>
 		</div>
 	</div>		
 
@@ -212,16 +121,18 @@
 <div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/StaticVariable.png" />
 		<span class="var-title">
 			static <span class="var-type">PDO</span>
 			<span class="var-name">$_db_connection</span>
-			 = <span class="var-default"> null</span>			(line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DB.class.php.html#a26">26</a></span>)
+			 = <span class="var-default"> null</span>			(line <span class="line-number">26</span>)
 		</span>
 	</div>
 
 	<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">PDO object</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
 	
 	
 			<hr class="separator" />
@@ -233,57 +144,53 @@
 		
 
 </div>
-
-							<h4>Inherited Variables</h4>
+							<h4>Inherited Variables</h4>
 				<A NAME='inherited_vars'><!-- --></A>
 									<p>Inherited from <span class="classname"><a href="../../B2DB/core/BaseB2DB.html">BaseB2DB</a></span></p>
 					<blockquote>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_aliases">BaseB2DB::$_aliases</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_aliascnt">BaseB2DB::$_aliascnt</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_db_host">BaseB2DB::$_db_host</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_db_name">BaseB2DB::$_db_name</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_db_port">BaseB2DB::$_db_port</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_db_pwd">BaseB2DB::$_db_pwd</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_db_type">BaseB2DB::$_db_type</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_db_uname">BaseB2DB::$_db_uname</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_debug_mode">BaseB2DB::$_debug_mode</a></span><br>
+							</span>
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_dsn">BaseB2DB::$_dsn</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_engine_classpath">BaseB2DB::$_engine_classpath</a></span><br>
+							</span>
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_sqlhits">BaseB2DB::$_sqlhits</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_tableprefix">BaseB2DB::$_tableprefix</a></span><br>
+							</span>
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_tables">BaseB2DB::$_tables</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_throwhtmlexception">BaseB2DB::$_throwhtmlexception</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DB.html#var$_transaction_active">BaseB2DB::$_transaction_active</a></span><br>
 							</span>
 											</blockquote> 
@@ -306,17 +213,18 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/StaticMethod.png" />
-		<span class="method-title">static closeDBLink</span> (line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DB.class.php.html#a75">75</a></span>)
+		<span class="method-title">static method closeDBLink</span> (line <span class="line-number">85</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Close the database connection</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		static <span class="method-result">void</span>
+	    static
+		<span class="method-result">void</span>
 		<span class="method-name">
 			closeDBLink
 		</span>
@@ -328,6 +236,7 @@
 		<div class="notes">Redefinition of:</div>
 		<dl>
 			<dt><a href="../../B2DB/core/BaseB2DB.html#methodcloseDBLink">BaseB2DB::closeDBLink()</a></dt>
+						<dd>Manually close the database connection</dd>
 					</dl>
 			
 	</div>
@@ -335,26 +244,27 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/StaticMethod.png" />
-		<span class="method-title">static createDatabase</span> (line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DB.class.php.html#a65">65</a></span>)
+		<span class="method-title">static method createDatabase</span> (line <span class="line-number">66</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Create the specified database</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		static <span class="method-result">void</span>
+	    static
+		<span class="method-result">void</span>
 		<span class="method-name">
 			createDatabase
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$db_name</span>)
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$db_name</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
+				<span class="var-type">string</span>
 				<span class="var-name">$db_name</span>			</li>
 				</ul>
 		
@@ -364,17 +274,18 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/StaticMethod.png" />
-		<span class="method-title">static doConnect</span> (line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DB.class.php.html#a28">28</a></span>)
+		<span class="method-title">static method doConnect</span> (line <span class="line-number">31</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Try connecting to the database</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		static <span class="method-result">void</span>
+	    static
+		<span class="method-result">void</span>
 		<span class="method-name">
 			doConnect
 		</span>
@@ -386,6 +297,7 @@
 		<div class="notes">Redefinition of:</div>
 		<dl>
 			<dt><a href="../../B2DB/core/BaseB2DB.html#methoddoConnect">BaseB2DB::doConnect()</a></dt>
+						<dd>Connect to the database</dd>
 					</dl>
 			
 	</div>
@@ -393,26 +305,28 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/StaticMethod.png" />
-		<span class="method-title">static doSelectDB</span> (line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DB.class.php.html#a70">70</a></span>)
+		<span class="method-title">static method doSelectDB</span> (line <span class="line-number">77</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Select a database to use</p>
 	<ul class="tags">
+				<li><span class="field">deprecated:</span> </li>
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		static <span class="method-result">void</span>
+	    static
+		<span class="method-result">void</span>
 		<span class="method-name">
 			doSelectDB
 		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$db</span> = <span class="var-default">null</span>])
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$db</span> = <span class="var-default">null</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
+				<span class="var-type">string</span>
 				<span class="var-name">$db</span>			</li>
 				</ul>
 		
@@ -420,6 +334,7 @@
 		<div class="notes">Redefinition of:</div>
 		<dl>
 			<dt><a href="../../B2DB/core/BaseB2DB.html#methoddoSelectDB">BaseB2DB::doSelectDB()</a></dt>
+						<dd>Select/enable the selected database</dd>
 					</dl>
 			
 	</div>
@@ -427,8 +342,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/StaticMethod.png" />
-		<span class="method-title">static getDBLink</span> (line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DB.class.php.html#a85">85</a></span>)
+		<span class="method-title">static method getDBLink</span> (line <span class="line-number">95</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -438,7 +352,8 @@
 			</ul>
 	
 	<div class="method-signature">
-		static <span class="method-result">PDO</span>
+	    static
+		<span class="method-result">PDO</span>
 		<span class="method-name">
 			getDBLink
 		</span>
@@ -452,8 +367,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/StaticMethod.png" />
-		<span class="method-title">static simpleQuery</span> (line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DB.class.php.html#a95">95</a></span>)
+		<span class="method-title">static method simpleQuery</span> (line <span class="line-number">105</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -463,7 +377,8 @@
 			</ul>
 	
 	<div class="method-signature">
-		static <span class="method-result">void</span>
+	    static
+		<span class="method-result">void</span>
 		<span class="method-name">
 			simpleQuery
 		</span>
@@ -478,89 +393,60 @@
 		
 			
 	</div>
+
 							<h4>Inherited Methods</h4>
 				<a name='inherited_methods'><!-- --></a>	
 									<!-- =========== Summary =========== -->
 					<p>Inherited From <span class="classname"><a href="../../B2DB/core/BaseB2DB.html">BaseB2DB</a></span></p>
 					<blockquote>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodaddAlias">BaseB2DB::addAlias()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodcloseDBLink">BaseB2DB::closeDBLink()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methoddoConnect">BaseB2DB::doConnect()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methoddoSelectDB">BaseB2DB::doSelectDB()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodfatalError">BaseB2DB::fatalError()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetDBlink">BaseB2DB::getDBlink()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetDBname">BaseB2DB::getDBname()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetDBtype">BaseB2DB::getDBtype()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetDBtypes">BaseB2DB::getDBtypes()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetDSN">BaseB2DB::getDSN()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetHost">BaseB2DB::getHost()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetPasswd">BaseB2DB::getPasswd()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetPort">BaseB2DB::getPort()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetSQLHits">BaseB2DB::getSQLHits()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetTable">BaseB2DB::getTable()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetTables">BaseB2DB::getTables()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetUname">BaseB2DB::getUname()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodhasDBEngine">BaseB2DB::hasDBEngine()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodinitialize">BaseB2DB::initialize()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodloadNewTable">BaseB2DB::loadNewTable()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodprepareStatement">BaseB2DB::prepareStatement()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsaveConnectionParameters">BaseB2DB::saveConnectionParameters()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetDBname">BaseB2DB::setDBname()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetDBtype">BaseB2DB::setDBtype()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetDSN">BaseB2DB::setDSN()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetHost">BaseB2DB::setHost()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetHTMLException">BaseB2DB::setHTMLException()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetPasswd">BaseB2DB::setPasswd()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetPort">BaseB2DB::setPort()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetTables">BaseB2DB::setTables()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetTransaction">BaseB2DB::setTransaction()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetUname">BaseB2DB::setUname()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsqlHit">BaseB2DB::sqlHit()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodstartTransaction">BaseB2DB::startTransaction()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodthrowExceptionAsHTML">BaseB2DB::throwExceptionAsHTML()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodaddAlias">BaseB2DB::addAlias()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodcloseDBLink">BaseB2DB::closeDBLink()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methoddoConnect">BaseB2DB::doConnect()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methoddoSelectDB">BaseB2DB::doSelectDB()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodfatalError">BaseB2DB::fatalError()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetDBlink">BaseB2DB::getDBlink()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetDBname">BaseB2DB::getDBname()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetDBtype">BaseB2DB::getDBtype()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetDBtypes">BaseB2DB::getDBtypes()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetDSN">BaseB2DB::getDSN()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetEngineClassPath">BaseB2DB::getEngineClassPath()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetHost">BaseB2DB::getHost()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetPasswd">BaseB2DB::getPasswd()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetPort">BaseB2DB::getPort()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetSQLHits">BaseB2DB::getSQLHits()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetTable">BaseB2DB::getTable()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetTablePrefix">BaseB2DB::getTablePrefix()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetTables">BaseB2DB::getTables()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodgetUname">BaseB2DB::getUname()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodhasDBEngine">BaseB2DB::hasDBEngine()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodinitialize">BaseB2DB::initialize()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodisDebugMode">BaseB2DB::isDebugMode()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodloadNewTable">BaseB2DB::loadNewTable()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsaveConnectionParameters">BaseB2DB::saveConnectionParameters()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetDBname">BaseB2DB::setDBname()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetDBtype">BaseB2DB::setDBtype()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetDebugMode">BaseB2DB::setDebugMode()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetDSN">BaseB2DB::setDSN()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetHost">BaseB2DB::setHost()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetHTMLException">BaseB2DB::setHTMLException()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetPasswd">BaseB2DB::setPasswd()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetPort">BaseB2DB::setPort()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetTablePrefix">BaseB2DB::setTablePrefix()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetTables">BaseB2DB::setTables()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetTransaction">BaseB2DB::setTransaction()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsetUname">BaseB2DB::setUname()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodsqlHit">BaseB2DB::sqlHit()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodstartTransaction">BaseB2DB::startTransaction()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#methodthrowExceptionAsHTML">BaseB2DB::throwExceptionAsHTML()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DB.html#method_generateDSN">BaseB2DB::_generateDSN()</a></span><br>
 											</blockquote>
 										
 		</div>
 	</div>
 
-	
+
 	<p class="notes" id="credit">
-		Documentation generated on Sat, 20 Jun 2009 19:25:08 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+		Documentation generated on Wed, 14 Jul 2010 10:30:26 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
-</html>
+</html>

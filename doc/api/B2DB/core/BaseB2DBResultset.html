@@ -2,93 +2,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
-			<!-- template designed by Marco Von Ballmoos  -->
+			<!-- template designed by Marco Von Ballmoos -->
 			<title>Docs For Class BaseB2DBResultset</title>
 			<link rel="stylesheet" href="../../media/stylesheet.css" />
-						<script src="../../media/lib/classTree.js"></script>
-												<script language="javascript" type="text/javascript">
-				var imgPlus = new Image();
-				var imgMinus = new Image();
-				imgPlus.src = "../../media/images/plus.png";
-				imgMinus.src = "../../media/images/minus.png";
-				
-				function showNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgMinus.src;
-					oTable.style.display = "block";
-				}
-				
-				function hideNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgPlus.src;
-					oTable.style.display = "none";
-				}
-				
-				function nodeIsVisible(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-									break;
-							}
-					return (oTable && oTable.style.display == "block");
-				}
-				
-				function toggleNodeVisibility(Node){
-					if (nodeIsVisible(Node)){
-						hideNode(Node);
-					}else{
-						showNode(Node);
-					}
-				}
-			</script>
-					</head>
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
 		<body>
-			<div class="page-body">			
-<h2 class="class-name"><img src="../../media/images/AbstractClass_logo.png"
-														alt="Abstract Class"
-														title="Abstract Class"
-														style="vertical-align: middle"> BaseB2DBResultset</h2>
+			<div class="page-body">			
+<h2 class="class-name">Class BaseB2DBResultset</h2>
 
 <a name="sec-description"></a>
 <div class="info-box">
@@ -133,13 +54,7 @@
 					<th class="class-table-header">Description</th>
 				</tr>
 								<tr>
-					<td style="padding-right: 2em; white-space: nowrap">
-						<img src="../../media/images/Class.png"
-								 alt=" class"
-								 title=" class"
-								 style="vertical-align: center"/>
-						
-					</td>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/B2DBResultset.html">B2DBResultset</a></td>
 					<td>
 											PDO resultset class
 										</td>
@@ -154,7 +69,7 @@
 		<div class="info-box-title">Variable Summary</span></div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
-							<a href="#sec-descendents">Descendants</a> |
+							<a href="#sec-descendents">Descendents</a> |
 						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
 							| 
 									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
@@ -162,28 +77,27 @@
 								</div>
 		<div class="info-box-body">
 			<div class="var-summary">
-																																																								<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
-					<span class="var-type"><a href="../../B2DB/mysqli/B2DBCriteria.html">B2DBCriteria</a></span>
+																																																																<div class="var-title">
+					<span class="var-type"><a href="../../B2DB/pdo/B2DBCriteria.html">B2DBCriteria</a></span>
 					<a href="#$crit" title="details" class="var-name">$crit</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$insert_id" title="details" class="var-name">$insert_id</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$int_ptr" title="details" class="var-name">$int_ptr</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$max_ptr" title="details" class="var-name">$max_ptr</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$num_col" title="details" class="var-name">$num_col</a>
+				</div>
+																<div class="var-title">
 					<span class="var-type">mixed</span>
 					<a href="#$rows" title="details" class="var-name">$rows</a>
 				</div>
@@ -196,7 +110,7 @@
 		<div class="info-box-title">Method Summary</span></div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
-							<a href="#sec-descendents">Descendants</a> |
+							<a href="#sec-descendents">Descendents</a> |
 																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
 				 
 				|
@@ -204,91 +118,73 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																																																																																																															
-				<div class="method-definition">
-					<img src="../../media/images/Constructor.png" alt=" "/>
+																																																																																																												
+												<div class="method-definition">
 											<span class="method-result">BaseB2DBResultset</span>
 										<a href="#__construct" title="details" class="method-name">__construct</a>
-											(<span class="var-type"><a href="../../B2DB/mysqli/B2DBStatement.html">B2DBStatement</a></span>&nbsp;<span class="var-name">$statement</span>)
+											(<span class="var-type"><a href="../../B2DB/pdo/B2DBStatement.html">B2DBStatement</a></span>&nbsp;<span class="var-name">$statement</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#count" title="details" class="method-name">count</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#get" title="details" class="method-name">get</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$foreign_key</span> = <span class="var-default">null</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#getAllRows" title="details" class="method-name">getAllRows</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result"><a href="../../B2DB/mysqli/B2DBRow.html">B2DBRow</a></span>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getCount" title="details" class="method-name">getCount</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../../B2DB/pdo/B2DBRow.html">B2DBRow</a></span>
 										<a href="#getCurrentRow" title="details" class="method-name">getCurrentRow</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#getInsertID" title="details" class="method-name">getInsertID</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result"><a href="../../B2DB/mysqli/B2DBRow.html">B2DBRow</a></span>
+																<div class="method-definition">
+											<span class="method-result"><a href="../../B2DB/pdo/B2DBRow.html">B2DBRow</a></span>
 										<a href="#getNextRow" title="details" class="method-name">getNextRow</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#getNumberOfRows" title="details" class="method-name">getNumberOfRows</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#getSQL" title="details" class="method-name">getSQL</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#next" title="details" class="method-name">next</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#printSQL" title="details" class="method-name">printSQL</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#resetPtr" title="details" class="method-name">resetPtr</a>
 										()
 									</div>
-											</div>
+								</div>
 		</div>
 	</div>		
 
@@ -306,14 +202,12 @@
 							
 					</div>
 		<div class="info-box-body">
-			
-<a name="var$crit" id="$crit"><!-- --></A>
-<div class="oddrow">
+			<a name="var$crit" id="$crit"><!-- --></A>
+<div class="evenrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
-			<span class="var-type"><a href="../../B2DB/mysqli/B2DBCriteria.html">B2DBCriteria</a></span>
+			<span class="var-type"><a href="../../B2DB/pdo/B2DBCriteria.html">B2DBCriteria</a></span>
 			<span class="var-name">$crit</span>
 						(line <span class="line-number">28</span>)
 		</span>
@@ -331,10 +225,9 @@
 
 </div>
 <a name="var$insert_id" id="$insert_id"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$insert_id</span>
@@ -353,10 +246,9 @@
 
 </div>
 <a name="var$int_ptr" id="$int_ptr"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$int_ptr</span>
@@ -375,10 +267,9 @@
 
 </div>
 <a name="var$max_ptr" id="$max_ptr"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$max_ptr</span>
@@ -396,11 +287,31 @@
 		
 
 </div>
+<a name="var$num_col" id="$num_col"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$num_col</span>
+						(line <span class="line-number">32</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
 <a name="var$rows" id="$rows"><!-- --></A>
 <div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$rows</span>
@@ -418,7 +329,7 @@
 		
 
 </div>
-						
+						
 		</div>
 	</div>
 	
@@ -434,12 +345,12 @@
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
+
 <a name="method__construct" id="__construct"><!-- --></a>
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Constructor.png" />
-		<span class="method-title">Constructor __construct</span> (line <span class="line-number">33</span>)
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">34</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -452,12 +363,12 @@
 		<span class="method-name">
 			__construct
 		</span>
-					(<span class="var-type"><a href="../../B2DB/mysqli/B2DBStatement.html">B2DBStatement</a></span>&nbsp;<span class="var-name">$statement</span>)
+					(<span class="var-type"><a href="../../B2DB/pdo/B2DBStatement.html">B2DBStatement</a></span>&nbsp;<span class="var-name">$statement</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"><a href="../../B2DB/mysqli/B2DBStatement.html">B2DBStatement</a></span>
+				<span class="var-type"><a href="../../B2DB/pdo/B2DBStatement.html">B2DBStatement</a></span>
 				<span class="var-name">$statement</span>			</li>
 				</ul>
 		
@@ -467,8 +378,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">count</span> (line <span class="line-number">74</span>)
+		<span class="method-title">count</span> (line <span class="line-number">80</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -491,8 +401,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">get</span> (line <span class="line-number">125</span>)
+		<span class="method-title">get</span> (line <span class="line-number">136</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -523,8 +432,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getAllRows</span> (line <span class="line-number">138</span>)
+		<span class="method-title">getAllRows</span> (line <span class="line-number">149</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -543,12 +451,34 @@
 		
 			
 	</div>
-<a name="methodgetCurrentRow" id="getCurrentRow"><!-- --></a>
+<a name="methodgetCount" id="getCount"><!-- --></a>
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getCurrentRow</span> (line <span class="line-number">89</span>)
+		<span class="method-title">getCount</span> (line <span class="line-number">90</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getCount
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetCurrentRow" id="getCurrentRow"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCurrentRow</span> (line <span class="line-number">100</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -558,7 +488,7 @@
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result"><a href="../../B2DB/mysqli/B2DBRow.html">B2DBRow</a></span>
+		<span class="method-result"><a href="../../B2DB/pdo/B2DBRow.html">B2DBRow</a></span>
 		<span class="method-name">
 			getCurrentRow
 		</span>
@@ -569,11 +499,10 @@
 			
 	</div>
 <a name="methodgetInsertID" id="getInsertID"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getInsertID</span> (line <span class="line-number">171</span>)
+		<span class="method-title">getInsertID</span> (line <span class="line-number">182</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -593,11 +522,10 @@
 			
 	</div>
 <a name="methodgetNextRow" id="getNextRow"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getNextRow</span> (line <span class="line-number">108</span>)
+		<span class="method-title">getNextRow</span> (line <span class="line-number">119</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -607,7 +535,7 @@
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result"><a href="../../B2DB/mysqli/B2DBRow.html">B2DBRow</a></span>
+		<span class="method-result"><a href="../../B2DB/pdo/B2DBRow.html">B2DBRow</a></span>
 		<span class="method-name">
 			getNextRow
 		</span>
@@ -618,11 +546,10 @@
 			
 	</div>
 <a name="methodgetNumberOfRows" id="getNumberOfRows"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getNumberOfRows</span> (line <span class="line-number">79</span>)
+		<span class="method-title">getNumberOfRows</span> (line <span class="line-number">85</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -642,11 +569,10 @@
 			
 	</div>
 <a name="methodgetSQL" id="getSQL"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getSQL</span> (line <span class="line-number">148</span>)
+		<span class="method-title">getSQL</span> (line <span class="line-number">159</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -666,11 +592,10 @@
 			
 	</div>
 <a name="methodnext" id="next"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">next</span> (line <span class="line-number">61</span>)
+		<span class="method-title">next</span> (line <span class="line-number">67</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -690,11 +615,10 @@
 			
 	</div>
 <a name="methodprintSQL" id="printSQL"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">printSQL</span> (line <span class="line-number">153</span>)
+		<span class="method-title">printSQL</span> (line <span class="line-number">164</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -714,11 +638,10 @@
 			
 	</div>
 <a name="methodresetPtr" id="resetPtr"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">resetPtr</span> (line <span class="line-number">143</span>)
+		<span class="method-title">resetPtr</span> (line <span class="line-number">154</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -741,9 +664,9 @@
 		</div>
 	</div>
 
-	
+
 	<p class="notes" id="credit">
-		Documentation generated on Wed, 15 Jul 2009 00:28:11 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+		Documentation generated on Wed, 14 Jul 2010 10:30:28 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
-</html>
+</html>

@@ -2,93 +2,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
-			<!-- template designed by Marco Von Ballmoos  -->
+			<!-- template designed by Marco Von Ballmoos -->
 			<title>Docs For Class calendarActionComponents</title>
 			<link rel="stylesheet" href="../../media/stylesheet.css" />
-						<script src="../../media/lib/classTree.js"></script>
-												<script language="javascript" type="text/javascript">
-				var imgPlus = new Image();
-				var imgMinus = new Image();
-				imgPlus.src = "../../media/images/plus.png";
-				imgMinus.src = "../../media/images/minus.png";
-				
-				function showNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgMinus.src;
-					oTable.style.display = "block";
-				}
-				
-				function hideNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgPlus.src;
-					oTable.style.display = "none";
-				}
-				
-				function nodeIsVisible(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-									break;
-							}
-					return (oTable && oTable.style.display == "block");
-				}
-				
-				function toggleNodeVisibility(Node){
-					if (nodeIsVisible(Node)){
-						hideNode(Node);
-					}else{
-						showNode(Node);
-					}
-				}
-			</script>
-					</head>
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
 		<body>
-			<div class="page-body">			
-<h2 class="class-name"><img src="../../media/images/Class_logo.png"
-														alt=" Class"
-														title=" Class"
-														style="vertical-align: middle"> calendarActionComponents</h2>
+			<div class="page-body">			
+<h2 class="class-name">Class calendarActionComponents</h2>
 
 <a name="sec-description"></a>
 <div class="info-box">
@@ -107,9 +28,9 @@
 		</p>
 		
 				
-		<pre><a href="../../thebuggenie/mvc/BUGSparameterholder.html">BUGSparameterholder</a>
+		<pre><a href="../../thebuggenie/mvc/TBGParameterholder.html">TBGParameterholder</a>
    |
-   --<a href="../../thebuggenie/mvc/BUGSactioncomponent.html">BUGSactioncomponent</a>
+   --<a href="../../thebuggenie/mvc/TBGActionComponent.html">TBGActionComponent</a>
       |
       --calendarActionComponents</pre>
 	
@@ -131,14 +52,13 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																							
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+												
+												<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#componentCalendarsummary" title="details" class="method-name">componentCalendarsummary</a>
 										()
 									</div>
-											</div>
+								</div>
 		</div>
 	</div>		
 
@@ -155,14 +75,12 @@
 							
 					</div>
 		<div class="info-box-body">
-			
-							<h4>Inherited Variables</h4>
+										<h4>Inherited Variables</h4>
 				<A NAME='inherited_vars'><!-- --></A>
-									<p>Inherited from <span class="classname"><a href="../../thebuggenie/mvc/BUGSparameterholder.html">BUGSparameterholder</a></span></p>
+									<p>Inherited from <span class="classname"><a href="../../thebuggenie/mvc/TBGParameterholder.html">TBGParameterholder</a></span></p>
 					<blockquote>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/mvc/BUGSparameterholder.html#var$_property_list">BUGSparameterholder::$_property_list</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/mvc/TBGParameterholder.html#var$_property_list">TBGParameterholder::$_property_list</a></span><br>
 							</span>
 											</blockquote> 
 										
@@ -180,11 +98,11 @@
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
+
 <a name="methodcomponentCalendarsummary" id="componentCalendarsummary"><!-- --></a>
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
 		<span class="method-title">componentCalendarsummary</span> (line <span class="line-number">6</span>)
 	</div> 
 	
@@ -207,36 +125,30 @@
 							<h4>Inherited Methods</h4>
 				<a name='inherited_methods'><!-- --></a>	
 									<!-- =========== Summary =========== -->
-					<p>Inherited From <span class="classname"><a href="../../thebuggenie/mvc/BUGSactioncomponent.html">BUGSactioncomponent</a></span></p>
+					<p>Inherited From <span class="classname"><a href="../../thebuggenie/mvc/TBGActionComponent.html">TBGActionComponent</a></span></p>
 					<blockquote>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSactioncomponent.html#methodgetModuleAndTemplate">BUGSactioncomponent::getModuleAndTemplate()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSactioncomponent.html#methodincludeComponent">BUGSactioncomponent::includeComponent()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSactioncomponent.html#methodincludeTemplate">BUGSactioncomponent::includeTemplate()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSactioncomponent.html#methodpresentTemplate">BUGSactioncomponent::presentTemplate()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/mvc/TBGActionComponent.html#methodgetModuleAndTemplate">TBGActionComponent::getModuleAndTemplate()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/mvc/TBGActionComponent.html#methodgetResponse">TBGActionComponent::getResponse()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/mvc/TBGActionComponent.html#methodincludeComponent">TBGActionComponent::includeComponent()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/mvc/TBGActionComponent.html#methodincludeTemplate">TBGActionComponent::includeTemplate()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/mvc/TBGActionComponent.html#methodpresentTemplate">TBGActionComponent::presentTemplate()</a></span><br>
 											</blockquote>
 									<!-- =========== Summary =========== -->
-					<p>Inherited From <span class="classname"><a href="../../thebuggenie/mvc/BUGSparameterholder.html">BUGSparameterholder</a></span></p>
+					<p>Inherited From <span class="classname"><a href="../../thebuggenie/mvc/TBGParameterholder.html">TBGParameterholder</a></span></p>
 					<blockquote>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSparameterholder.html#methodgetParameterHolder">BUGSparameterholder::getParameterHolder()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSparameterholder.html#methodhasParameter">BUGSparameterholder::hasParameter()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSparameterholder.html#method__get">BUGSparameterholder::__get()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/mvc/BUGSparameterholder.html#method__set">BUGSparameterholder::__set()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/mvc/TBGParameterholder.html#methodgetParameterHolder">TBGParameterholder::getParameterHolder()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/mvc/TBGParameterholder.html#methodhasParameter">TBGParameterholder::hasParameter()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/mvc/TBGParameterholder.html#method__get">TBGParameterholder::__get()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/mvc/TBGParameterholder.html#method__isset">TBGParameterholder::__isset()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/mvc/TBGParameterholder.html#method__set">TBGParameterholder::__set()</a></span><br>
 											</blockquote>
 										
 		</div>
 	</div>
 
-	
+
 	<p class="notes" id="credit">
-		Documentation generated on Wed, 15 Jul 2009 00:27:58 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+		Documentation generated on Wed, 14 Jul 2010 10:30:24 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
-</html>
+</html>

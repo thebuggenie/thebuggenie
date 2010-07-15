@@ -776,7 +776,7 @@
 			{
 				$this->_populateIssues();
 			}
-			if ($this->_closed_issues == count($this->_issues))
+			if ($this->_closed_issues == count($this->_issues) && !$this->isSprint())
 			{
 				B2DB::getTable('TBGMilestonesTable')->setReached($this->getID());
 			}

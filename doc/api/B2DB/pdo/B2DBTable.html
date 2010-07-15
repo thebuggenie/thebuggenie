@@ -2,108 +2,33 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
-			<!-- template designed by Marco Von Ballmoos  -->
+			<!-- template designed by Marco Von Ballmoos -->
 			<title>Docs For Class B2DBTable</title>
 			<link rel="stylesheet" href="../../media/stylesheet.css" />
-						<script src="../../media/lib/classTree.js"></script>
-												<script language="javascript" type="text/javascript">
-				var imgPlus = new Image();
-				var imgMinus = new Image();
-				imgPlus.src = "../../media/images/plus.png";
-				imgMinus.src = "../../media/images/minus.png";
-				
-				function showNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgMinus.src;
-					oTable.style.display = "block";
-				}
-				
-				function hideNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgPlus.src;
-					oTable.style.display = "none";
-				}
-				
-				function nodeIsVisible(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-									break;
-							}
-					return (oTable && oTable.style.display == "block");
-				}
-				
-				function toggleNodeVisibility(Node){
-					if (nodeIsVisible(Node)){
-						hideNode(Node);
-					}else{
-						showNode(Node);
-					}
-				}
-			</script>
-					</head>
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
 		<body>
-			<div class="page-body">			
-<h2 class="class-name"><img src="../../media/images/Class_logo.png"
-														alt=" Class"
-														title=" Class"
-														style="vertical-align: middle"> B2DBTable</h2>
+			<div class="page-body">			
+<h2 class="class-name">Class B2DBTable</h2>
 
 <a name="sec-description"></a>
 <div class="info-box">
 	<div class="info-box-title">Description</div>
 	<div class="nav-bar">
 					<span class="disabled">Description</span> |
-													<a href="#sec-vars">Vars</a>
+							<a href="#sec-descendents">Descendents</a>
+			|											<a href="#sec-vars">Vars</a>
 						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
 						
 					</div>
 	<div class="info-box-body">
         		<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">PDO table class</p>
+	<ul class="tags">
+				<li><span class="field">abstract:</span> </li>
+			</ul>
 		<p class="notes">
-			Located in <a class="field" href="_core---B2DB---PDO---classes---B2DBTable.class.php.html">/core/B2DB/PDO/classes/B2DBTable.class.php</a> (line <span class="field"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DBTable.class.php.html#a19">19</a></span>)
+			Located in <a class="field" href="_core---B2DB---PDO---classes---B2DBTable.class.php.html">/core/B2DB/PDO/classes/B2DBTable.class.php</a> (line <span class="field">19</span>)
 		</p>
 		
 				
@@ -114,6 +39,391 @@
 			</div>
 </div>
 
+	<a name="sec-descendents"></a>
+	<div class="info-box">
+		<div class="info-box-title">Direct descendents</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+			<span class="disabled">Descendents</span>
+			|												<a href="#sec-vars">Vars</a>
+								|															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGModulesTable.html">TBGModulesTable</a></td>
+					<td>
+											Modules table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGGroupsTable.html">TBGGroupsTable</a></td>
+					<td>
+											Groups table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGComponentsTable.html">TBGComponentsTable</a></td>
+					<td>
+											Components table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGComponentAssigneesTable.html">TBGComponentAssigneesTable</a></td>
+					<td>
+											Component assignees table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGPermissionsTable.html">TBGPermissionsTable</a></td>
+					<td>
+											Permissions table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGUserIssuesTable.html">TBGUserIssuesTable</a></td>
+					<td>
+											User issues table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGCustomFieldOptionsTable.html">TBGCustomFieldOptionsTable</a></td>
+					<td>
+											Custom field options table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGListTypesTable.html">TBGListTypesTable</a></td>
+					<td>
+											List types table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssueCustomFieldsTable.html">TBGIssueCustomFieldsTable</a></td>
+					<td>
+											Issue &lt;-&gt; custom fields relations table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGLogTable.html">TBGLogTable</a></td>
+					<td>
+											Log table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGProjectAssigneesTable.html">TBGProjectAssigneesTable</a></td>
+					<td>
+											Project assignees table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGCommentsTable.html">TBGCommentsTable</a></td>
+					<td>
+											Comments table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGSavedSearchesTable.html">TBGSavedSearchesTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGEditionAssigneesTable.html">TBGEditionAssigneesTable</a></td>
+					<td>
+											Edition assignees table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssueAffectsComponentTable.html">TBGIssueAffectsComponentTable</a></td>
+					<td>
+											Issue affects component table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGVisibleIssueTypesTable.html">TBGVisibleIssueTypesTable</a></td>
+					<td>
+											Visible issue types table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGModulePermissionsTable.html">TBGModulePermissionsTable</a></td>
+					<td>
+											Module permissions table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGVotesTable.html">TBGVotesTable</a></td>
+					<td>
+											Votes table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGTeamMembersTable.html">TBGTeamMembersTable</a></td>
+					<td>
+											Team members table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGBuildsTable.html">TBGBuildsTable</a></td>
+					<td>
+											Builds table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGSettingsTable.html">TBGSettingsTable</a></td>
+					<td>
+											Settings table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGUsersTable.html">TBGUsersTable</a></td>
+					<td>
+											Users table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGEditionsTable.html">TBGEditionsTable</a></td>
+					<td>
+											Editions table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGCustomFieldsTable.html">TBGCustomFieldsTable</a></td>
+					<td>
+											Custom fields table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssueTypesTable.html">TBGIssueTypesTable</a></td>
+					<td>
+											Issue types table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGProjectsTable.html">TBGProjectsTable</a></td>
+					<td>
+											Projects table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssueTagsTable.html">TBGIssueTagsTable</a></td>
+					<td>
+											Issue tags table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGCustomersTable.html">TBGCustomersTable</a></td>
+					<td>
+											Customers table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGTeamsTable.html">TBGTeamsTable</a></td>
+					<td>
+											Teams table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssueSpentTimes.html">TBGIssueSpentTimes</a></td>
+					<td>
+											Issue spent times table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGEnabledModuleListenersTable.html">TBGEnabledModuleListenersTable</a></td>
+					<td>
+											Module sections table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssuesTable.html">TBGIssuesTable</a></td>
+					<td>
+											Issues table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGLinksTable.html">TBGLinksTable</a></td>
+					<td>
+											Links table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssueRelationsTable.html">TBGIssueRelationsTable</a></td>
+					<td>
+											Issue relations table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssueFieldsTable.html">TBGIssueFieldsTable</a></td>
+					<td>
+											Issue fields table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGScopesTable.html">TBGScopesTable</a></td>
+					<td>
+											Scopes table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGFilesTable.html">TBGFilesTable</a></td>
+					<td>
+											Files table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGSavedSearchFiltersTable.html">TBGSavedSearchFiltersTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGMilestonesTable.html">TBGMilestonesTable</a></td>
+					<td>
+											Milestones table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssueTasksTable.html">TBGIssueTasksTable</a></td>
+					<td>
+											Issue tasks table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssueAffectsBuildTable.html">TBGIssueAffectsBuildTable</a></td>
+					<td>
+											Issue affects build table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssueFilesTable.html">TBGIssueFilesTable</a></td>
+					<td>
+											Issues &lt;-&gt; Files table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGNotificationsTable.html">TBGNotificationsTable</a></td>
+					<td>
+											Notifications table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGEditionComponentsTable.html">TBGEditionComponentsTable</a></td>
+					<td>
+											Edition components table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGVisibleMilestonesTable.html">TBGVisibleMilestonesTable</a></td>
+					<td>
+											Visible milestones table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssueEstimates.html">TBGIssueEstimates</a></td>
+					<td>
+											Issue estimates table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGUserStateTable.html">TBGUserStateTable</a></td>
+					<td>
+											Userstate table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGIssueAffectsEditionTable.html">TBGIssueAffectsEditionTable</a></td>
+					<td>
+											Issue affects edition table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../thebuggenie/tables/TBGBuddiesTable.html">TBGBuddiesTable</a></td>
+					<td>
+											Buddies table
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGMessagesTable.html">TBGMessagesTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGMessageFoldersTable.html">TBGMessageFoldersTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGSVNintegrationTable.html">TBGSVNintegrationTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGArticleHistoryTable.html">TBGArticleHistoryTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGArticleLinksTable.html">TBGArticleLinksTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGBillboardPostsTable.html">TBGBillboardPostsTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGArticleCategoriesTable.html">TBGArticleCategoriesTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGArticleViewsTable.html">TBGArticleViewsTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGArticlesTable.html">TBGArticlesTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGCalendarTasksTable.html">TBGCalendarTasksTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGCalendarsTable.html">TBGCalendarsTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/TBGMailQueueTable.html">TBGMailQueueTable</a></td>
+					<td>
+											PDO table class
+										</td>
+				</tr>
+							</table>
+		</div>
+	</div>
 
 
 
@@ -122,6 +432,7 @@
 		<div class="info-box-title">Method Summary</span></div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
 																		<a href="#sec-vars">Vars</a>
 				 
 				|
@@ -129,28 +440,23 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																																							
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																												
+												<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#getQC" title="details" class="method-name">getQC</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#_createToSQL" title="details" class="method-name">_createToSQL</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#_dropToSQL" title="details" class="method-name">_dropToSQL</a>
 										()
 									</div>
-											</div>
+								</div>
 		</div>
 	</div>		
 
@@ -159,6 +465,7 @@
 		<div class="info-box-title">Variables</div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
 										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
 						
 			
@@ -167,37 +474,29 @@
 							
 					</div>
 		<div class="info-box-body">
-			
-							<h4>Inherited Variables</h4>
+										<h4>Inherited Variables</h4>
 				<A NAME='inherited_vars'><!-- --></A>
 									<p>Inherited from <span class="classname"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span></p>
 					<blockquote>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$b2db_alias">BaseB2DBTable::$b2db_alias</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$b2db_name">BaseB2DBTable::$b2db_name</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$id_column">BaseB2DBTable::$id_column</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_autoincrement_start_at">BaseB2DBTable::$_autoincrement_start_at</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_charset">BaseB2DBTable::$_charset</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_columns">BaseB2DBTable::$_columns</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_foreigntables">BaseB2DBTable::$_foreigntables</a></span><br>
 							</span>
 											</blockquote> 
@@ -210,18 +509,19 @@
 		<div class="info-box-title">Methods</div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
 															<a href="#sec-vars">Vars</a>
 																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
 						
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
+
 <a name="methodgetQC" id="getQC"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getQC</span> (line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DBTable.class.php.html#a22">22</a></span>)
+		<span class="method-title">getQC</span> (line <span class="line-number">22</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -241,11 +541,10 @@
 			
 	</div>
 <a name="method_createToSQL" id="_createToSQL"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">_createToSQL</span> (line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DBTable.class.php.html#a34">34</a></span>)
+		<span class="method-title">_createToSQL</span> (line <span class="line-number">34</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -262,19 +561,13 @@
 			</div>
 	
 		
-			<hr class="separator" />
-		<div class="notes">Redefinition of:</div>
-		<dl>
-			<dt><a href="../../B2DB/core/BaseB2DBTable.html#method_createToSQL">BaseB2DBTable::_createToSQL()</a></dt>
-					</dl>
 			
 	</div>
 <a name="method_dropToSQL" id="_dropToSQL"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">_dropToSQL</span> (line <span class="line-number"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DBTable.class.php.html#a104">104</a></span>)
+		<span class="method-title">_dropToSQL</span> (line <span class="line-number">120</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -291,11 +584,6 @@
 			</div>
 	
 		
-			<hr class="separator" />
-		<div class="notes">Redefinition of:</div>
-		<dl>
-			<dt><a href="../../B2DB/core/BaseB2DBTable.html#method_dropToSQL">BaseB2DBTable::_dropToSQL()</a></dt>
-					</dl>
 			
 	</div>
 							<h4>Inherited Methods</h4>
@@ -303,80 +591,50 @@
 									<!-- =========== Summary =========== -->
 					<p>Inherited From <span class="classname"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span></p>
 					<blockquote>
-													<img src="../../media/images/Constructor.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__construct">BaseB2DBTable::__construct()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodcreate">BaseB2DBTable::create()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoCount">BaseB2DBTable::doCount()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoDelete">BaseB2DBTable::doDelete()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoDeleteById">BaseB2DBTable::doDeleteById()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoInsert">BaseB2DBTable::doInsert()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelect">BaseB2DBTable::doSelect()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectAll">BaseB2DBTable::doSelectAll()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectById">BaseB2DBTable::doSelectById()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectOne">BaseB2DBTable::doSelectOne()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoUpdate">BaseB2DBTable::doUpdate()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoUpdateById">BaseB2DBTable::doUpdateById()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddrop">BaseB2DBTable::drop()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetAliasColumns">BaseB2DBTable::getAliasColumns()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetB2DBAlias">BaseB2DBTable::getB2DBAlias()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetB2DBName">BaseB2DBTable::getB2DBName()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetColumn">BaseB2DBTable::getColumn()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetColumns">BaseB2DBTable::getColumns()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTable">BaseB2DBTable::getForeignTable()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTables">BaseB2DBTable::getForeignTables()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetIdColumn">BaseB2DBTable::getIdColumn()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodsetAutoIncrementStart">BaseB2DBTable::setAutoIncrementStart()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodsetCharset">BaseB2DBTable::setCharset()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addBoolean">BaseB2DBTable::_addBoolean()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addForeignKeyColumn">BaseB2DBTable::_addForeignKeyColumn()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addInteger">BaseB2DBTable::_addInteger()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addText">BaseB2DBTable::_addText()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addVarchar">BaseB2DBTable::_addVarchar()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_createToSQL">BaseB2DBTable::_createToSQL()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_dropToSQL">BaseB2DBTable::_dropToSQL()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_getRealColumnFieldName">BaseB2DBTable::_getRealColumnFieldName()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__clone">BaseB2DBTable::__clone()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__toString">BaseB2DBTable::__toString()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__construct">BaseB2DBTable::__construct()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodcreate">BaseB2DBTable::create()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoCount">BaseB2DBTable::doCount()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoDelete">BaseB2DBTable::doDelete()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoDeleteById">BaseB2DBTable::doDeleteById()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoInsert">BaseB2DBTable::doInsert()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelect">BaseB2DBTable::doSelect()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectAll">BaseB2DBTable::doSelectAll()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectById">BaseB2DBTable::doSelectById()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectOne">BaseB2DBTable::doSelectOne()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoUpdate">BaseB2DBTable::doUpdate()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoUpdateById">BaseB2DBTable::doUpdateById()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddrop">BaseB2DBTable::drop()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetAliasColumns">BaseB2DBTable::getAliasColumns()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetB2DBAlias">BaseB2DBTable::getB2DBAlias()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetB2DBName">BaseB2DBTable::getB2DBName()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetColumn">BaseB2DBTable::getColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetColumns">BaseB2DBTable::getColumns()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetCriteria">BaseB2DBTable::getCriteria()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTable">BaseB2DBTable::getForeignTable()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTableByLocalColumn">BaseB2DBTable::getForeignTableByLocalColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTables">BaseB2DBTable::getForeignTables()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetIdColumn">BaseB2DBTable::getIdColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodsetAutoIncrementStart">BaseB2DBTable::setAutoIncrementStart()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodsetCharset">BaseB2DBTable::setCharset()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addBlob">BaseB2DBTable::_addBlob()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addBoolean">BaseB2DBTable::_addBoolean()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addColumn">BaseB2DBTable::_addColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addFloat">BaseB2DBTable::_addFloat()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addForeignKeyColumn">BaseB2DBTable::_addForeignKeyColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addInteger">BaseB2DBTable::_addInteger()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addText">BaseB2DBTable::_addText()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addVarchar">BaseB2DBTable::_addVarchar()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_getRealColumnFieldName">BaseB2DBTable::_getRealColumnFieldName()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__clone">BaseB2DBTable::__clone()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__toString">BaseB2DBTable::__toString()</a></span><br>
 											</blockquote>
 										
 		</div>
 	</div>
 
-	
+
 	<p class="notes" id="credit">
-		Documentation generated on Sat, 20 Jun 2009 19:25:09 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+		Documentation generated on Wed, 14 Jul 2010 10:30:27 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
-</html>
+</html>

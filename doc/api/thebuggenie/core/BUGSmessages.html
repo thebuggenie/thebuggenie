@@ -2,100 +2,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
-			<!-- template designed by Marco Von Ballmoos  -->
+			<!-- template designed by Marco Von Ballmoos -->
 			<title>Docs For Class BUGSmessages</title>
 			<link rel="stylesheet" href="../../media/stylesheet.css" />
-						<script src="../../media/lib/classTree.js"></script>
-												<script language="javascript" type="text/javascript">
-				var imgPlus = new Image();
-				var imgMinus = new Image();
-				imgPlus.src = "../../media/images/plus.png";
-				imgMinus.src = "../../media/images/minus.png";
-				
-				function showNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgMinus.src;
-					oTable.style.display = "block";
-				}
-				
-				function hideNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgPlus.src;
-					oTable.style.display = "none";
-				}
-				
-				function nodeIsVisible(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-									break;
-							}
-					return (oTable && oTable.style.display == "block");
-				}
-				
-				function toggleNodeVisibility(Node){
-					if (nodeIsVisible(Node)){
-						hideNode(Node);
-					}else{
-						showNode(Node);
-					}
-				}
-			</script>
-					</head>
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
 		<body>
-			<div class="page-body">			
-<h2 class="class-name"><img src="../../media/images/Class_logo.png"
-														alt=" Class"
-														title=" Class"
-														style="vertical-align: middle"> BUGSmessages</h2>
+			<div class="page-body">			
+<h2 class="class-name">Class BUGSmessages</h2>
 
 <a name="sec-description"></a>
 <div class="info-box">
 	<div class="info-box-title">Description</div>
 	<div class="nav-bar">
 					<span class="disabled">Description</span> |
-													<a href="#sec-vars">Vars</a>
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
 						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
 						
 											<a href="#sec-consts">Constants</a>
@@ -109,9 +30,9 @@
 		</p>
 		
 				
-		<pre><a href="../../thebuggenie/core/BUGSidentifiableclass.html">BUGSidentifiableclass</a>
+		<pre><a href="../../thebuggenie/core/TBGIdentifiableClass.html">TBGIdentifiableClass</a>
    |
-   --<a href="../../thebuggenie/core/BUGSmodule.html">BUGSmodule</a>
+   --<a href="../../thebuggenie/core/TBGModule.html">TBGModule</a>
       |
       --BUGSmessages</pre>
 	
@@ -120,6 +41,27 @@
 
 
 
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+															<a href="#sec-consts">Constants</a>
+							
+					</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																								<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_module_version" title="details" class="var-name">$_module_version</a>
+				</div>
+											</div>
+		</div>
+	</div>
 
 	<a name="sec-method-summary"></a>
 	<div class="info-box">
@@ -128,161 +70,105 @@
 			<a href="#sec-description">Description</a> |
 															<a href="#sec-consts">Constants</a>
 							
-															<a href="#sec-vars">Vars</a>
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
 				 
 				|
 						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																																																																																			
-				<div class="method-definition">
-					<img src="../../media/images/StaticMethod.png" alt=" "/>
-					static 						<span class="method-result">void</span>
-										<a href="#install" title="details" class="method-name">install</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$scope</span> = <span class="var-default">null</span>])
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/StaticMethod.png" alt=" "/>
-					static 						<span class="method-result">void</span>
-										<a href="#loadFixtures" title="details" class="method-name">loadFixtures</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$scope</span>)
-									</div>
-																																																																																																			
-				<div class="method-definition">
-					<img src="../../media/images/Constructor.png" alt=" "/>
-											<span class="method-result">BUGSmessages</span>
-										<a href="#__construct" title="details" class="method-name">__construct</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$m_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$res</span> = <span class="var-default">null</span>])
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																																																																																																																																																				
+												<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#addFolder" title="details" class="method-name">addFolder</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$folder_name</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#countMessages" title="details" class="method-name">countMessages</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$folder_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$tid</span> = <span class="var-default">null</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#deleteFolder" title="details" class="method-name">deleteFolder</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$folder_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$force</span> = <span class="var-default">false</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#deleteMessage" title="details" class="method-name">deleteMessage</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$msg_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$force</span> = <span class="var-default">false</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#enableSection" title="details" class="method-name">enableSection</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$module</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$identifier</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$scope</span>)
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#getCommentAccess" title="details" class="method-name">getCommentAccess</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$target_type</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$target_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$type</span> = <span class="var-default">'view'</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#getFolders" title="details" class="method-name">getFolders</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$uid</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$pid</span> = <span class="var-default">null</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#getMessages" title="details" class="method-name">getMessages</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$gettype</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$uid</span> = <span class="var-default">0</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$folder</span> = <span class="var-default">0</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$msg</span> = <span class="var-default">0</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$tid</span> = <span class="var-default">0</span>])
 									</div>
-																															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#listen_accountSettings" title="details" class="method-name">listen_accountSettings</a>
+											(<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>&nbsp;<span class="var-name">$event</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#listen_accountSettingsList" title="details" class="method-name">listen_accountSettingsList</a>
+											(<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>&nbsp;<span class="var-name">$event</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#listen_messagesSummary" title="details" class="method-name">listen_messagesSummary</a>
+											(<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>&nbsp;<span class="var-name">$event</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#listen_teamactionsBottom" title="details" class="method-name">listen_teamactionsBottom</a>
+											(<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>&nbsp;<span class="var-name">$event</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#listen_useractionsBottom" title="details" class="method-name">listen_useractionsBottom</a>
+											(<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>&nbsp;<span class="var-name">$event</span>)
+									</div>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#moveMessage" title="details" class="method-name">moveMessage</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$msg_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$to_folder</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#section_accountSettings" title="details" class="method-name">section_accountSettings</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$module</span>)
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#section_accountSettingsList" title="details" class="method-name">section_accountSettingsList</a>
-										()
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#section_messagesBox" title="details" class="method-name">section_messagesBox</a>
-										()
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#section_messagesSummary" title="details" class="method-name">section_messagesSummary</a>
-										()
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#section_teamactionsBottom" title="details" class="method-name">section_teamactionsBottom</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$vars</span>)
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#section_useractionsBottom" title="details" class="method-name">section_useractionsBottom</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$vars</span>)
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#sendMessage" title="details" class="method-name">sendMessage</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$to_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$to_team</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$title</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$content</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#setRead" title="details" class="method-name">setRead</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$msg_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$read</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
-										<a href="#uninstall" title="details" class="method-name">uninstall</a>
+										<a href="#_addAvailableListeners" title="details" class="method-name">_addAvailableListeners</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#_initialize" title="details" class="method-name">_initialize</a>
+											(<span class="var-type"><a href="../../thebuggenie/core/TBGI18n.html">TBGI18n</a></span>&nbsp;<span class="var-name">$i18n</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#_install" title="details" class="method-name">_install</a>
 											(<span class="var-type"></span>&nbsp;<span class="var-name">$scope</span>)
 									</div>
-											</div>
+								</div>
 		</div>
 	</div>		
 
@@ -301,101 +187,104 @@
 							
 					</div>
 		<div class="info-box-body">
-			
-							<h4>Inherited Variables</h4>
+			<a name="var$_module_version" id="$_module_version"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_module_version</span>
+			 = <span class="var-default"> '1.0'</span>			(line <span class="line-number">6</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../thebuggenie/core/TBGModule.html#var$_module_version">TBGModule::$_module_version</a></dt>
+					</dl>
+		
+		
+
+</div>
+							<h4>Inherited Variables</h4>
 				<A NAME='inherited_vars'><!-- --></A>
-									<p>Inherited from <span class="classname"><a href="../../thebuggenie/core/BUGSmodule.html">BUGSmodule</a></span></p>
+									<p>Inherited from <span class="classname"><a href="../../thebuggenie/core/TBGModule.html">TBGModule</a></span></p>
 					<blockquote>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_availablepermissions">BUGSmodule::$_availablepermissions</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_account_settings_logo">TBGModule::$_account_settings_logo</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_availablesections">BUGSmodule::$_availablesections</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_account_settings_name">TBGModule::$_account_settings_name</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_classname">BUGSmodule::$_classname</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_availablepermissions">TBGModule::$_availablepermissions</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_description">BUGSmodule::$_description</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_classname">TBGModule::$_classname</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_enabled">BUGSmodule::$_enabled</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_description">TBGModule::$_description</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_enabledsections">BUGSmodule::$_enabledsections</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_enabled">TBGModule::$_enabled</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_longname">BUGSmodule::$_longname</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_has_account_settings">TBGModule::$_has_account_settings</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_moduletype">BUGSmodule::$_moduletype</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_has_config_settings">TBGModule::$_has_config_settings</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_module_config_description">BUGSmodule::$_module_config_description</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_listeners">TBGModule::$_listeners</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_module_config_title">BUGSmodule::$_module_config_title</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_longname">TBGModule::$_longname</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_module_menu_title">BUGSmodule::$_module_menu_title</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_module_config_description">TBGModule::$_module_config_description</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_module_version">BUGSmodule::$_module_version</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_module_config_title">TBGModule::$_module_config_title</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_permissions">BUGSmodule::$_permissions</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_module_menu_title">TBGModule::$_module_menu_title</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_settings">BUGSmodule::$_settings</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_permissions">TBGModule::$_permissions</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_shortname">BUGSmodule::$_shortname</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_routes">TBGModule::$_routes</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_showinconfig">BUGSmodule::$_showinconfig</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_settings">TBGModule::$_settings</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_showinmenu">BUGSmodule::$_showinmenu</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_shortname">TBGModule::$_shortname</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_showinusermenu">BUGSmodule::$_showinusermenu</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_showinconfig">TBGModule::$_showinconfig</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSmodule.html#var$_version">BUGSmodule::$_version</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGModule.html#var$_showinmenu">TBGModule::$_showinmenu</a></span><br>
 							</span>
 											</blockquote> 
-									<p>Inherited from <span class="classname"><a href="../../thebuggenie/core/BUGSidentifiableclass.html">BUGSidentifiableclass</a></span></p>
+									<p>Inherited from <span class="classname"><a href="../../thebuggenie/core/TBGIdentifiableClass.html">TBGIdentifiableClass</a></span></p>
 					<blockquote>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSidentifiableclass.html#var$_itemid">BUGSidentifiableclass::$_itemid</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#var$_itemid">TBGIdentifiableClass::$_itemid</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSidentifiableclass.html#var$_itemtype">BUGSidentifiableclass::$_itemtype</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#var$_itemtype">TBGIdentifiableClass::$_itemtype</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
-								<span class="var-name"><a href="../../thebuggenie/core/BUGSidentifiableclass.html#var$_name">BUGSidentifiableclass::$_name</a></span><br>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#var$_name">TBGIdentifiableClass::$_name</a></span><br>
 							</span>
 											</blockquote> 
 										
@@ -407,7 +296,7 @@
 		<div class="info-box-title">Methods</div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
-															<a href="#sec-vars">Vars</a>
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
 																			<a href="#sec-consts">Constants</a>
 							
 										<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
@@ -415,111 +304,12 @@
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
-<a name="methodinstall" id="install"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/StaticMethod.png" />
-		<span class="method-title">static install</span> (line <span class="line-number">24</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			install
-		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$scope</span> = <span class="var-default">null</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$scope</span>			</li>
-				</ul>
-		
-			<hr class="separator" />
-		<div class="notes">Redefinition of:</div>
-		<dl>
-			<dt><a href="../../thebuggenie/core/BUGSmodule.html#methodinstall">BUGSmodule::install()</a></dt>
-						<dd>Installs the module, adds it to the list of loaded modules and returns it</dd>
-					</dl>
-			
-	</div>
-<a name="methodloadFixtures" id="loadFixtures"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/StaticMethod.png" />
-		<span class="method-title">static loadFixtures</span> (line <span class="line-number">65</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	<div class="method-signature">
-		static <span class="method-result">void</span>
-		<span class="method-name">
-			loadFixtures
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$scope</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$scope</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="method__construct" id="__construct"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Constructor.png" />
-		<span class="method-title">Constructor __construct</span> (line <span class="line-number">10</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">BUGSmessages</span>
-		<span class="method-name">
-			__construct
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$m_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$res</span> = <span class="var-default">null</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$m_id</span>			</li>
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$res</span>			</li>
-				</ul>
-		
-			<hr class="separator" />
-		<div class="notes">Redefinition of:</div>
-		<dl>
-			<dt><a href="../../thebuggenie/core/BUGSmodule.html#method__construct">BUGSmodule::__construct()</a></dt>
-						<dd>Class constructor</dd>
-					</dl>
-			
-	</div>
+
 <a name="methodaddFolder" id="addFolder"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">addFolder</span> (line <span class="line-number">273</span>)
+		<span class="method-title">addFolder</span> (line <span class="line-number">196</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -544,11 +334,10 @@
 			
 	</div>
 <a name="methodcountMessages" id="countMessages"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">countMessages</span> (line <span class="line-number">361</span>)
+		<span class="method-title">countMessages</span> (line <span class="line-number">284</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -576,11 +365,10 @@
 			
 	</div>
 <a name="methoddeleteFolder" id="deleteFolder"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">deleteFolder</span> (line <span class="line-number">283</span>)
+		<span class="method-title">deleteFolder</span> (line <span class="line-number">206</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -608,11 +396,10 @@
 			
 	</div>
 <a name="methoddeleteMessage" id="deleteMessage"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">deleteMessage</span> (line <span class="line-number">298</span>)
+		<span class="method-title">deleteMessage</span> (line <span class="line-number">221</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -639,47 +426,11 @@
 		
 			
 	</div>
-<a name="methodenableSection" id="enableSection"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">enableSection</span> (line <span class="line-number">89</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			enableSection
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$module</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$identifier</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$scope</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$module</span>			</li>
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$identifier</span>			</li>
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$scope</span>			</li>
-				</ul>
-		
-			
-	</div>
 <a name="methodgetCommentAccess" id="getCommentAccess"><!-- --></a>
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getCommentAccess</span> (line <span class="line-number">84</span>)
+		<span class="method-title">getCommentAccess</span> (line <span class="line-number">31</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -707,19 +458,13 @@
 				<span class="var-name">$type</span>			</li>
 				</ul>
 		
-			<hr class="separator" />
-		<div class="notes">Redefinition of:</div>
-		<dl>
-			<dt><a href="../../thebuggenie/core/BUGSmodule.html#methodgetCommentAccess">BUGSmodule::getCommentAccess()</a></dt>
-					</dl>
 			
 	</div>
 <a name="methodgetFolders" id="getFolders"><!-- --></a>
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getFolders</span> (line <span class="line-number">255</span>)
+		<span class="method-title">getFolders</span> (line <span class="line-number">178</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -750,8 +495,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getMessages</span> (line <span class="line-number">113</span>)
+		<span class="method-title">getMessages</span> (line <span class="line-number">36</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -787,12 +531,151 @@
 		
 			
 	</div>
-<a name="methodmoveMessage" id="moveMessage"><!-- --></a>
+<a name="methodlisten_accountSettings" id="listen_accountSettings"><!-- --></a>
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">moveMessage</span> (line <span class="line-number">322</span>)
+		<span class="method-title">listen_accountSettings</span> (line <span class="line-number">357</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			listen_accountSettings
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>&nbsp;<span class="var-name">$event</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>
+				<span class="var-name">$event</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodlisten_accountSettingsList" id="listen_accountSettingsList"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">listen_accountSettingsList</span> (line <span class="line-number">352</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			listen_accountSettingsList
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>&nbsp;<span class="var-name">$event</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>
+				<span class="var-name">$event</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodlisten_messagesSummary" id="listen_messagesSummary"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">listen_messagesSummary</span> (line <span class="line-number">390</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			listen_messagesSummary
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>&nbsp;<span class="var-name">$event</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>
+				<span class="var-name">$event</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodlisten_teamactionsBottom" id="listen_teamactionsBottom"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">listen_teamactionsBottom</span> (line <span class="line-number">324</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			listen_teamactionsBottom
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>&nbsp;<span class="var-name">$event</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>
+				<span class="var-name">$event</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodlisten_useractionsBottom" id="listen_useractionsBottom"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">listen_useractionsBottom</span> (line <span class="line-number">336</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			listen_useractionsBottom
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>&nbsp;<span class="var-name">$event</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/core/TBGEvent.html">TBGEvent</a></span>
+				<span class="var-name">$event</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodmoveMessage" id="moveMessage"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">moveMessage</span> (line <span class="line-number">245</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -819,171 +702,11 @@
 		
 			
 	</div>
-<a name="methodsection_accountSettings" id="section_accountSettings"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">section_accountSettings</span> (line <span class="line-number">436</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			section_accountSettings
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$module</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$module</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodsection_accountSettingsList" id="section_accountSettingsList"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">section_accountSettingsList</span> (line <span class="line-number">431</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			section_accountSettingsList
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodsection_messagesBox" id="section_messagesBox"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">section_messagesBox</span> (line <span class="line-number">474</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			section_messagesBox
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodsection_messagesSummary" id="section_messagesSummary"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">section_messagesSummary</span> (line <span class="line-number">469</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			section_messagesSummary
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodsection_teamactionsBottom" id="section_teamactionsBottom"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">section_teamactionsBottom</span> (line <span class="line-number">400</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			section_teamactionsBottom
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$vars</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$vars</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodsection_useractionsBottom" id="section_useractionsBottom"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">section_useractionsBottom</span> (line <span class="line-number">415</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			section_useractionsBottom
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$vars</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$vars</span>			</li>
-				</ul>
-		
-			
-	</div>
 <a name="methodsendMessage" id="sendMessage"><!-- --></a>
-<div class="evenrow">
+<div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">sendMessage</span> (line <span class="line-number">331</span>)
+		<span class="method-title">sendMessage</span> (line <span class="line-number">254</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1017,11 +740,10 @@
 			
 	</div>
 <a name="methodsetRead" id="setRead"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">setRead</span> (line <span class="line-number">313</span>)
+		<span class="method-title">setRead</span> (line <span class="line-number">236</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1048,23 +770,83 @@
 		
 			
 	</div>
-<a name="methoduninstall" id="uninstall"><!-- --></a>
-<div class="evenrow">
+<a name="method_addAvailableListeners" id="_addAvailableListeners"><!-- --></a>
+<div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">uninstall</span> (line <span class="line-number">77</span>)
+		<span class="method-title">_addAvailableListeners</span> (line <span class="line-number">16</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
+				<li><span class="field">access:</span> protected</li>
 			</ul>
 	
 	<div class="method-signature">
 		<span class="method-result">void</span>
 		<span class="method-name">
-			uninstall
+			_addAvailableListeners
+		</span>
+				()
+			</div>
+	
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../thebuggenie/core/TBGModule.html#method_addAvailableListeners">TBGModule::_addAvailableListeners()</a></dt>
+					</dl>
+			
+	</div>
+<a name="method_initialize" id="_initialize"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">_initialize</span> (line <span class="line-number">8</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_initialize
+		</span>
+					(<span class="var-type"><a href="../../thebuggenie/core/TBGI18n.html">TBGI18n</a></span>&nbsp;<span class="var-name">$i18n</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../thebuggenie/core/TBGI18n.html">TBGI18n</a></span>
+				<span class="var-name">$i18n</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../thebuggenie/core/TBGModule.html#method_initialize">TBGModule::_initialize()</a></dt>
+					</dl>
+			
+	</div>
+<a name="method_install" id="_install"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">_install</span> (line <span class="line-number">23</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_install
 		</span>
 					(<span class="var-type"></span>&nbsp;<span class="var-name">$scope</span>)
 			</div>
@@ -1078,113 +860,96 @@
 			<hr class="separator" />
 		<div class="notes">Redefinition of:</div>
 		<dl>
-			<dt><a href="../../thebuggenie/core/BUGSmodule.html#methoduninstall">BUGSmodule::uninstall()</a></dt>
+			<dt><a href="../../thebuggenie/core/TBGModule.html#method_install">TBGModule::_install()</a></dt>
 					</dl>
 			
 	</div>
 							<h4>Inherited Methods</h4>
 				<a name='inherited_methods'><!-- --></a>	
 									<!-- =========== Summary =========== -->
-					<p>Inherited From <span class="classname"><a href="../../thebuggenie/core/BUGSmodule.html">BUGSmodule</a></span></p>
+					<p>Inherited From <span class="classname"><a href="../../thebuggenie/core/TBGModule.html">TBGModule</a></span></p>
 					<blockquote>
-													<img src="../../media/images/Constructor.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#method__construct">BUGSmodule::__construct()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodactivate">BUGSmodule::activate()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodaddAvailablePermission">BUGSmodule::addAvailablePermission()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodaddAvailableSection">BUGSmodule::addAvailableSection()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodcacheAccessPermission">BUGSmodule::cacheAccessPermission()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodcacheAllAccessPermissions">BUGSmodule::cacheAllAccessPermissions()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodcreateSection">BUGSmodule::createSection()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methoddisable">BUGSmodule::disable()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methoddisableSection">BUGSmodule::disableSection()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodenable">BUGSmodule::enable()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetAccessPermissionList">BUGSmodule::getAccessPermissionList()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetAllModulePermissions">BUGSmodule::getAllModulePermissions()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetAvailablePermissions">BUGSmodule::getAvailablePermissions()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetAvailableSections">BUGSmodule::getAvailableSections()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetClassname">BUGSmodule::getClassname()</a></span><br>
-													<img src="../../media/images/AbstractMethod.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetCommentAccess">BUGSmodule::getCommentAccess()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetConfigDescription">BUGSmodule::getConfigDescription()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetConfigTitle">BUGSmodule::getConfigTitle()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetDescription">BUGSmodule::getDescription()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetID">BUGSmodule::getID()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetLongname">BUGSmodule::getLongname()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetMenuTitle">BUGSmodule::getMenuTitle()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetName">BUGSmodule::getName()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetRoute">BUGSmodule::getRoute()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetSetting">BUGSmodule::getSetting()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodgetVersion">BUGSmodule::getVersion()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodhasAccess">BUGSmodule::hasAccess()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodhideFromMenu">BUGSmodule::hideFromMenu()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodhideFromUserMenu">BUGSmodule::hideFromUserMenu()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodinitialize">BUGSmodule::initialize()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodinstall">BUGSmodule::install()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodisEnabled">BUGSmodule::isEnabled()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodisSectionEnabled">BUGSmodule::isSectionEnabled()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodisVisibleInConfig">BUGSmodule::isVisibleInConfig()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodisVisibleInMenu">BUGSmodule::isVisibleInMenu()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodisVisibleInUsermenu">BUGSmodule::isVisibleInUsermenu()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodloadHelpTitle">BUGSmodule::loadHelpTitle()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodlog">BUGSmodule::log()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodpopulateSections">BUGSmodule::populateSections()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodrebuildAccessPermissionCache">BUGSmodule::rebuildAccessPermissionCache()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodremoveSection">BUGSmodule::removeSection()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodsaveSetting">BUGSmodule::saveSetting()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodsetPermission">BUGSmodule::setPermission()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodsetSectionEnabled">BUGSmodule::setSectionEnabled()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodshowInMenu">BUGSmodule::showInMenu()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methodshowInUserMenu">BUGSmodule::showInUserMenu()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#methoduninstall">BUGSmodule::uninstall()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#method__call">BUGSmodule::__call()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../thebuggenie/core/BUGSmodule.html#method__toString">BUGSmodule::__toString()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#method__construct">TBGModule::__construct()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodaddAvailableListener">TBGModule::addAvailableListener()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodaddAvailablePermission">TBGModule::addAvailablePermission()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodaddRoute">TBGModule::addRoute()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodcacheAccessPermission">TBGModule::cacheAccessPermission()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodcacheAllAccessPermissions">TBGModule::cacheAllAccessPermissions()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methoddisable">TBGModule::disable()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methoddisableListener">TBGModule::disableListener()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methoddisableListenerSaved">TBGModule::disableListenerSaved()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodenable">TBGModule::enable()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodenableListener">TBGModule::enableListener()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodenableListenerSaved">TBGModule::enableListenerSaved()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetAccessPermissionList">TBGModule::getAccessPermissionList()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetAccountSettingsLogo">TBGModule::getAccountSettingsLogo()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetAccountSettingsName">TBGModule::getAccountSettingsName()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetAllModulePermissions">TBGModule::getAllModulePermissions()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetAvailableCommandLineCommands">TBGModule::getAvailableCommandLineCommands()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetAvailableListeners">TBGModule::getAvailableListeners()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetAvailablePermissions">TBGModule::getAvailablePermissions()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetClassname">TBGModule::getClassname()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetConfigDescription">TBGModule::getConfigDescription()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetConfigTitle">TBGModule::getConfigTitle()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetDescription">TBGModule::getDescription()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetID">TBGModule::getID()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetLongName">TBGModule::getLongName()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetMenuTitle">TBGModule::getMenuTitle()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetName">TBGModule::getName()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetRoute">TBGModule::getRoute()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetSetting">TBGModule::getSetting()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetTabKey">TBGModule::getTabKey()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodgetVersion">TBGModule::getVersion()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodhasAccess">TBGModule::hasAccess()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodhasAccountSettings">TBGModule::hasAccountSettings()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodhasConfigSettings">TBGModule::hasConfigSettings()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodhasProjectAwareRoute">TBGModule::hasProjectAwareRoute()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodhideFromMenu">TBGModule::hideFromMenu()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodhideFromUserMenu">TBGModule::hideFromUserMenu()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodinitialize">TBGModule::initialize()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodinstall">TBGModule::install()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodinstallModule">TBGModule::installModule()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodisEnabled">TBGModule::isEnabled()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodisListening">TBGModule::isListening()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodisVisibleInMenu">TBGModule::isVisibleInMenu()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodloadHelpTitle">TBGModule::loadHelpTitle()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodloadModuleListeners">TBGModule::loadModuleListeners()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodlog">TBGModule::log()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodpostAccountSettings">TBGModule::postAccountSettings()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodpostConfigSettings">TBGModule::postConfigSettings()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodrebuildAccessPermissionCache">TBGModule::rebuildAccessPermissionCache()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodsaveSetting">TBGModule::saveSetting()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodsetAccountSettingsLogo">TBGModule::setAccountSettingsLogo()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodsetAccountSettingsName">TBGModule::setAccountSettingsName()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodsetConfigDescription">TBGModule::setConfigDescription()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodsetConfigTitle">TBGModule::setConfigTitle()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodsetDescription">TBGModule::setDescription()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodsetHasAccountSettings">TBGModule::setHasAccountSettings()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodsetHasConfigSettings">TBGModule::setHasConfigSettings()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodsetLongName">TBGModule::setLongName()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodsetMenuTitle">TBGModule::setMenuTitle()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodsetPermission">TBGModule::setPermission()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodshowInMenu">TBGModule::showInMenu()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methodshowInUserMenu">TBGModule::showInUserMenu()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#methoduninstall">TBGModule::uninstall()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#method_addAvailableListeners">TBGModule::_addAvailableListeners()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#method_addAvailablePermissions">TBGModule::_addAvailablePermissions()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#method_addAvailableRoutes">TBGModule::_addAvailableRoutes()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#method_initialize">TBGModule::_initialize()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#method_install">TBGModule::_install()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#method_loadFixtures">TBGModule::_loadFixtures()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#method_loadRoutes">TBGModule::_loadRoutes()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#method_uninstall">TBGModule::_uninstall()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#method__call">TBGModule::__call()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGModule.html#method__toString">TBGModule::__toString()</a></span><br>
+											</blockquote>
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../thebuggenie/core/TBGIdentifiableClass.html">TBGIdentifiableClass</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#methodgetID">TBGIdentifiableClass::getID()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#methodgetName">TBGIdentifiableClass::getName()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#methodgetType">TBGIdentifiableClass::getType()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#methodsetName">TBGIdentifiableClass::setName()</a></span><br>
 											</blockquote>
 										
 		</div>
@@ -1198,31 +963,31 @@
 										<a href="#sec-var-summary">Constants</a> (<span class="disabled">details</span>)
 						
 			
-												<a href="#sec-vars">Vars</a>
+												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
 														| 
 									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
 							
 					</div>
 		<div class="info-box-body">
-										<h4>Inherited Constants</h4>
+										<h4>Inherited Constants</h4>
 				<A NAME='inherited_vars'><!-- --></A>
-									<p>Inherited from <span class="classname"><a href="../../thebuggenie/core/BUGSidentifiableclass.html">BUGSidentifiableclass</a></span></p>
+									<p>Inherited from <span class="classname"><a href="../../thebuggenie/core/TBGIdentifiableClass.html">TBGIdentifiableClass</a></span></p>
 					<blockquote>
 													<img src="../../media/images/Variable.png" />
 							<span class="const-title">
-								<span class="const-name"><a href="../../thebuggenie/core/BUGSidentifiableclass.html#constTYPE_TEAM">BUGSidentifiableclass::TYPE_TEAM</a></span><br>
+								<span class="const-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#constTYPE_TEAM">TBGIdentifiableClass::TYPE_TEAM</a></span><br>
 							</span>
 													<img src="../../media/images/Variable.png" />
 							<span class="const-title">
-								<span class="const-name"><a href="../../thebuggenie/core/BUGSidentifiableclass.html#constTYPE_USER">BUGSidentifiableclass::TYPE_USER</a></span><br>
+								<span class="const-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#constTYPE_USER">TBGIdentifiableClass::TYPE_USER</a></span><br>
 							</span>
 											</blockquote> 
 										
 		</div>
 	</div>
-	
+
 	<p class="notes" id="credit">
-		Documentation generated on Wed, 15 Jul 2009 00:28:17 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+		Documentation generated on Wed, 14 Jul 2010 10:30:29 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
-</html>
+</html>

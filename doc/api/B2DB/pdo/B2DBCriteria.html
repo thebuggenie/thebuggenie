@@ -2,93 +2,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
-			<!-- template designed by Marco Von Ballmoos  -->
+			<!-- template designed by Marco Von Ballmoos -->
 			<title>Docs For Class B2DBCriteria</title>
 			<link rel="stylesheet" href="../../media/stylesheet.css" />
-						<script src="../../media/lib/classTree.js"></script>
-												<script language="javascript" type="text/javascript">
-				var imgPlus = new Image();
-				var imgMinus = new Image();
-				imgPlus.src = "../../media/images/plus.png";
-				imgMinus.src = "../../media/images/minus.png";
-				
-				function showNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgMinus.src;
-					oTable.style.display = "block";
-				}
-				
-				function hideNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgPlus.src;
-					oTable.style.display = "none";
-				}
-				
-				function nodeIsVisible(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-									break;
-							}
-					return (oTable && oTable.style.display == "block");
-				}
-				
-				function toggleNodeVisibility(Node){
-					if (nodeIsVisible(Node)){
-						hideNode(Node);
-					}else{
-						showNode(Node);
-					}
-				}
-			</script>
-					</head>
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
 		<body>
-			<div class="page-body">			
-<h2 class="class-name"><img src="../../media/images/Class_logo.png"
-														alt=" Class"
-														title=" Class"
-														style="vertical-align: middle"> B2DBCriteria</h2>
+			<div class="page-body">			
+<h2 class="class-name">Class B2DBCriteria</h2>
 
 <a name="sec-description"></a>
 <div class="info-box">
@@ -105,7 +26,7 @@
         		<!-- ========== Info from phpDoc block ========= -->
 <p class="short-description">PDO Criteria class</p>
 		<p class="notes">
-			Located in <a class="field" href="_core---B2DB---PDO---classes---B2DBCriteria.class.php.html">/core/B2DB/PDO/classes/B2DBCriteria.class.php</a> (line <span class="field"><a href="../../__filesource/fsource_B2DB_pdo_coreB2DBPDOclassesB2DBCriteria.class.php.html#a19">19</a></span>)
+			Located in <a class="field" href="_core---B2DB---PDO---classes---B2DBCriteria.class.php.html">/core/B2DB/PDO/classes/B2DBCriteria.class.php</a> (line <span class="field">19</span>)
 		</p>
 		
 				
@@ -135,73 +56,59 @@
 							
 					</div>
 		<div class="info-box-body">
-			
-							<h4>Inherited Variables</h4>
+										<h4>Inherited Variables</h4>
 				<A NAME='inherited_vars'><!-- --></A>
 									<p>Inherited from <span class="classname"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span></p>
 					<blockquote>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$action">BaseB2DBCriteria::$action</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$aliases">BaseB2DBCriteria::$aliases</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$criterias">BaseB2DBCriteria::$criterias</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$customsel">BaseB2DBCriteria::$customsel</a></span><br>
+							</span>
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$distinct">BaseB2DBCriteria::$distinct</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$fromtable">BaseB2DBCriteria::$fromtable</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$jointables">BaseB2DBCriteria::$jointables</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$limit">BaseB2DBCriteria::$limit</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$offset">BaseB2DBCriteria::$offset</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$ors">BaseB2DBCriteria::$ors</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$return_selections">BaseB2DBCriteria::$return_selections</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$selections">BaseB2DBCriteria::$selections</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$sort_groups">BaseB2DBCriteria::$sort_groups</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$sort_orders">BaseB2DBCriteria::$sort_orders</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$sql">BaseB2DBCriteria::$sql</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$updates">BaseB2DBCriteria::$updates</a></span><br>
 							</span>
-													<img src="../../media/images/Variable.png" />
-							<span class="var-title">
+													<span class="var-title">
 								<span class="var-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#var$values">BaseB2DBCriteria::$values</a></span><br>
 							</span>
 											</blockquote> 
@@ -222,71 +129,52 @@
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
+
 							<h4>Inherited Methods</h4>
 				<a name='inherited_methods'><!-- --></a>	
 									<!-- =========== Summary =========== -->
 					<p>Inherited From <span class="classname"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span></p>
 					<blockquote>
-													<img src="../../media/images/Constructor.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method__construct">BaseB2DBCriteria::__construct()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddGroupBy">BaseB2DBCriteria::addGroupBy()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddInsert">BaseB2DBCriteria::addInsert()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddJoin">BaseB2DBCriteria::addJoin()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddOr">BaseB2DBCriteria::addOr()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddOrderBy">BaseB2DBCriteria::addOrderBy()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddSel">BaseB2DBCriteria::addSel()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddUpdate">BaseB2DBCriteria::addUpdate()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddValue">BaseB2DBCriteria::addValue()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddWhere">BaseB2DBCriteria::addWhere()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methoddeleteToSQL">BaseB2DBCriteria::deleteToSQL()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetColumnName">BaseB2DBCriteria::getColumnName()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetForeignTables">BaseB2DBCriteria::getForeignTables()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetSelectionAlias">BaseB2DBCriteria::getSelectionAlias()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetSelectionColumn">BaseB2DBCriteria::getSelectionColumn()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetSelectionColumns">BaseB2DBCriteria::getSelectionColumns()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetSQL">BaseB2DBCriteria::getSQL()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetTable">BaseB2DBCriteria::getTable()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetValues">BaseB2DBCriteria::getValues()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodinsertToSQL">BaseB2DBCriteria::insertToSQL()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodreturnCriterion">BaseB2DBCriteria::returnCriterion()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodselectToSQL">BaseB2DBCriteria::selectToSQL()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodsetDistinct">BaseB2DBCriteria::setDistinct()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodsetFromTable">BaseB2DBCriteria::setFromTable()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodsetLimit">BaseB2DBCriteria::setLimit()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodsetOffset">BaseB2DBCriteria::setOffset()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodsetupJoinTables">BaseB2DBCriteria::setupJoinTables()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodupdateToSQL">BaseB2DBCriteria::updateToSQL()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_addAllSelectColumns">BaseB2DBCriteria::_addAllSelectColumns()</a></span><br>
-													<img src="../../media/images/Method.png" alt=" "/>
-							<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_selectAllSQL">BaseB2DBCriteria::_selectAllSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method__construct">BaseB2DBCriteria::__construct()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddGroupBy">BaseB2DBCriteria::addGroupBy()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddInsert">BaseB2DBCriteria::addInsert()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddJoin">BaseB2DBCriteria::addJoin()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddOr">BaseB2DBCriteria::addOr()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddOrderBy">BaseB2DBCriteria::addOrderBy()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddSelectionColumn">BaseB2DBCriteria::addSelectionColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddUpdate">BaseB2DBCriteria::addUpdate()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodaddWhere">BaseB2DBCriteria::addWhere()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgenerateCountSQL">BaseB2DBCriteria::generateCountSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgenerateDeleteSQL">BaseB2DBCriteria::generateDeleteSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgenerateInsertSQL">BaseB2DBCriteria::generateInsertSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgenerateSelectSQL">BaseB2DBCriteria::generateSelectSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgenerateUpdateSQL">BaseB2DBCriteria::generateUpdateSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetColumnName">BaseB2DBCriteria::getColumnName()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetForeignTables">BaseB2DBCriteria::getForeignTables()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetSelectionAlias">BaseB2DBCriteria::getSelectionAlias()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetSelectionColumn">BaseB2DBCriteria::getSelectionColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetSelectionColumns">BaseB2DBCriteria::getSelectionColumns()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetSQL">BaseB2DBCriteria::getSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetTable">BaseB2DBCriteria::getTable()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodgetValues">BaseB2DBCriteria::getValues()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodreturnCriterion">BaseB2DBCriteria::returnCriterion()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodsetDistinct">BaseB2DBCriteria::setDistinct()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodsetFromTable">BaseB2DBCriteria::setFromTable()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodsetLimit">BaseB2DBCriteria::setLimit()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodsetOffset">BaseB2DBCriteria::setOffset()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#methodsetupJoinTables">BaseB2DBCriteria::setupJoinTables()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_addAllSelectColumns">BaseB2DBCriteria::_addAllSelectColumns()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_addSelectionColumn">BaseB2DBCriteria::_addSelectionColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_addValue">BaseB2DBCriteria::_addValue()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_generateCountSQL">BaseB2DBCriteria::_generateCountSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_generateDeleteSQL">BaseB2DBCriteria::_generateDeleteSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_generateInsertSQL">BaseB2DBCriteria::_generateInsertSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_generateJoinSQL">BaseB2DBCriteria::_generateJoinSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_generateSelectAllSQL">BaseB2DBCriteria::_generateSelectAllSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_generateSelectSQL">BaseB2DBCriteria::_generateSelectSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_generateUpdateSQL">BaseB2DBCriteria::_generateUpdateSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_generateWhereSQL">BaseB2DBCriteria::_generateWhereSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#method_parseCriterion">BaseB2DBCriteria::_parseCriterion()</a></span><br>
 											</blockquote>
 										
 		</div>
@@ -306,7 +194,7 @@
 							
 					</div>
 		<div class="info-box-body">
-										<h4>Inherited Constants</h4>
+										<h4>Inherited Constants</h4>
 				<A NAME='inherited_vars'><!-- --></A>
 									<p>Inherited from <span class="classname"><a href="../../B2DB/core/BaseB2DBCriteria.html">BaseB2DBCriteria</a></span></p>
 					<blockquote>
@@ -344,6 +232,10 @@
 							</span>
 													<img src="../../media/images/Variable.png" />
 							<span class="const-title">
+								<span class="const-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#constDB_INNER_JOIN">BaseB2DBCriteria::DB_INNER_JOIN</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
 								<span class="const-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#constDB_IS_NOT_NULL">BaseB2DBCriteria::DB_IS_NOT_NULL</a></span><br>
 							</span>
 													<img src="../../media/images/Variable.png" />
@@ -376,11 +268,23 @@
 							</span>
 													<img src="../../media/images/Variable.png" />
 							<span class="const-title">
+								<span class="const-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#constDB_NOT_ILIKE">BaseB2DBCriteria::DB_NOT_ILIKE</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
 								<span class="const-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#constDB_NOT_IN">BaseB2DBCriteria::DB_NOT_IN</a></span><br>
 							</span>
 													<img src="../../media/images/Variable.png" />
 							<span class="const-title">
+								<span class="const-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#constDB_NOT_LIKE">BaseB2DBCriteria::DB_NOT_LIKE</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
 								<span class="const-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#constDB_RIGHT_JOIN">BaseB2DBCriteria::DB_RIGHT_JOIN</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../B2DB/core/BaseB2DBCriteria.html#constDB_SUM">BaseB2DBCriteria::DB_SUM</a></span><br>
 							</span>
 													<img src="../../media/images/Variable.png" />
 							<span class="const-title">
@@ -394,9 +298,9 @@
 										
 		</div>
 	</div>
-	
+
 	<p class="notes" id="credit">
-		Documentation generated on Sat, 20 Jun 2009 19:25:08 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+		Documentation generated on Wed, 14 Jul 2010 10:30:26 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
-</html>
+</html>

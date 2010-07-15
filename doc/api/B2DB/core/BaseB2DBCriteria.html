@@ -2,93 +2,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
-			<!-- template designed by Marco Von Ballmoos  -->
+			<!-- template designed by Marco Von Ballmoos -->
 			<title>Docs For Class BaseB2DBCriteria</title>
 			<link rel="stylesheet" href="../../media/stylesheet.css" />
-						<script src="../../media/lib/classTree.js"></script>
-												<script language="javascript" type="text/javascript">
-				var imgPlus = new Image();
-				var imgMinus = new Image();
-				imgPlus.src = "../../media/images/plus.png";
-				imgMinus.src = "../../media/images/minus.png";
-				
-				function showNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgMinus.src;
-					oTable.style.display = "block";
-				}
-				
-				function hideNode(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-							var oImg = document.layers["img" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-							var oImg = document.all["img" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-							var oImg = document.getElementById("img" + Node);
-									break;
-							}
-					oImg.src = imgPlus.src;
-					oTable.style.display = "none";
-				}
-				
-				function nodeIsVisible(Node){
-							switch(navigator.family){
-								case 'nn4':
-									// Nav 4.x code fork...
-							var oTable = document.layers["span" + Node];
-									break;
-								case 'ie4':
-									// IE 4/5 code fork...
-							var oTable = document.all["span" + Node];
-									break;
-								case 'gecko':
-									// Standards Compliant code fork...
-							var oTable = document.getElementById("span" + Node);
-									break;
-							}
-					return (oTable && oTable.style.display == "block");
-				}
-				
-				function toggleNodeVisibility(Node){
-					if (nodeIsVisible(Node)){
-						hideNode(Node);
-					}else{
-						showNode(Node);
-					}
-				}
-			</script>
-					</head>
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
 		<body>
-			<div class="page-body">			
-<h2 class="class-name"><img src="../../media/images/AbstractClass_logo.png"
-														alt="Abstract Class"
-														title="Abstract Class"
-														style="vertical-align: middle"> BaseB2DBCriteria</h2>
+			<div class="page-body">			
+<h2 class="class-name">Class BaseB2DBCriteria</h2>
 
 <a name="sec-description"></a>
 <div class="info-box">
@@ -137,13 +58,7 @@
 					<th class="class-table-header">Description</th>
 				</tr>
 								<tr>
-					<td style="padding-right: 2em; white-space: nowrap">
-						<img src="../../media/images/Class.png"
-								 alt=" class"
-								 title=" class"
-								 style="vertical-align: center"/>
-						
-					</td>
+					<td style="padding-right: 2em"><a href="../../B2DB/pdo/B2DBCriteria.html">B2DBCriteria</a></td>
 					<td>
 											PDO Criteria class
 										</td>
@@ -210,6 +125,11 @@
 				</div>
 								<div class="const-title">
 					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#DB_INNER_JOIN" title="details" class="const-name">DB_INNER_JOIN</a> = 					<span class="var-type"> 'INNER JOIN'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
 					<a href="#DB_IS_NOT_NULL" title="details" class="const-name">DB_IS_NOT_NULL</a> = 					<span class="var-type"> 'IS NOT NULL'</span>
 
 				</div>
@@ -250,12 +170,27 @@
 				</div>
 								<div class="const-title">
 					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#DB_NOT_ILIKE" title="details" class="const-name">DB_NOT_ILIKE</a> = 					<span class="var-type"> 'NOT ILIKE'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
 					<a href="#DB_NOT_IN" title="details" class="const-name">DB_NOT_IN</a> = 					<span class="var-type"> 'NOT IN'</span>
 
 				</div>
 								<div class="const-title">
 					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#DB_NOT_LIKE" title="details" class="const-name">DB_NOT_LIKE</a> = 					<span class="var-type"> 'NOT LIKE'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
 					<a href="#DB_RIGHT_JOIN" title="details" class="const-name">DB_RIGHT_JOIN</a> = 					<span class="var-type"> 'RIGHT JOIN'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#DB_SUM" title="details" class="const-name">DB_SUM</a> = 					<span class="var-type"> 'SUM'</span>
 
 				</div>
 								<div class="const-title">
@@ -277,7 +212,7 @@
 		<div class="info-box-title">Variable Summary</span></div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
-							<a href="#sec-descendents">Descendants</a> |
+							<a href="#sec-descendents">Descendents</a> |
 						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
 							| 
 									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
@@ -287,83 +222,71 @@
 					</div>
 		<div class="info-box-body">
 			<div class="var-summary">
-																																																																																																																																																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
+																																																																																																																																																								<div class="var-title">
 					<span class="var-type">mixed</span>
 					<a href="#$action" title="details" class="var-name">$action</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$aliases" title="details" class="var-name">$aliases</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$criterias" title="details" class="var-name">$criterias</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
+					<span class="var-type">mixed</span>
+					<a href="#$customsel" title="details" class="var-name">$customsel</a>
+				</div>
+																<div class="var-title">
 					<span class="var-type">mixed</span>
 					<a href="#$distinct" title="details" class="var-name">$distinct</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span>
 					<a href="#$fromtable" title="details" class="var-name">$fromtable</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$jointables" title="details" class="var-name">$jointables</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$limit" title="details" class="var-name">$limit</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$offset" title="details" class="var-name">$offset</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$ors" title="details" class="var-name">$ors</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$return_selections" title="details" class="var-name">$return_selections</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$selections" title="details" class="var-name">$selections</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$sort_groups" title="details" class="var-name">$sort_groups</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$sort_orders" title="details" class="var-name">$sort_orders</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$sql" title="details" class="var-name">$sql</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$updates" title="details" class="var-name">$updates</a>
 				</div>
 																<div class="var-title">
-					<img src="../../media/images/Variable.png" alt=" " />
 					<span class="var-type">mixed</span>
 					<a href="#$values" title="details" class="var-name">$values</a>
 				</div>
@@ -376,7 +299,7 @@
 		<div class="info-box-title">Method Summary</span></div>
 		<div class="nav-bar">
 			<a href="#sec-description">Description</a> |
-							<a href="#sec-descendents">Descendants</a> |
+							<a href="#sec-descendents">Descendents</a> |
 															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
 							
 															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
@@ -386,217 +309,208 @@
 		</div>
 		<div class="info-box-body">			
 			<div class="method-summary">
-																																																																																																																																																																																																																																																															
-				<div class="method-definition">
-					<img src="../../media/images/Constructor.png" alt=" "/>
-											<span class="method-result">BaseB2DBCriteria</span>
-										<a href="#__construct" title="details" class="method-name">__construct</a>
-										()
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																																																																																																																																																																																																																																																																																																																																				
+												<div class="method-definition">
+											<span class="method-result">Base2DBCriteria</span>
 										<a href="#addGroupBy" title="details" class="method-name">addGroupBy</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$sort</span> = <span class="var-default">null</span>])
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$sort</span> = <span class="var-default">null</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">Base2DBCriteria</span>
 										<a href="#addInsert" title="details" class="method-name">addInsert</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$value</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$operator</span> = <span class="var-default">self::DB_EQUALS</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$variable</span> = <span class="var-default">''</span>])
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$operator</span> = <span class="var-default">self::DB_EQUALS</span>], [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$variable</span> = <span class="var-default">''</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">Base2DBCriteria</span>
 										<a href="#addJoin" title="details" class="method-name">addJoin</a>
 											(<span class="var-type"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span>&nbsp;<span class="var-name">$jointable</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$foreigncol</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$tablecol</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$criterias</span> = <span class="var-default">array()</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$jointype</span> = <span class="var-default">self::DB_LEFT_JOIN</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$col1</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$col2</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">Base2DBCriteria</span>
 										<a href="#addOr" title="details" class="method-name">addOr</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$value</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$operator</span> = <span class="var-default">self::DB_EQUALS</span>])
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$operator</span> = <span class="var-default">self::DB_EQUALS</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">Base2DBCriteria</span>
 										<a href="#addOrderBy" title="details" class="method-name">addOrderBy</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$sort</span> = <span class="var-default">null</span>])
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$sort</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$join_column</span> = <span class="var-default">null</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#addSel" title="details" class="method-name">addSel</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$alias</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$special</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$variable</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$additional</span> = <span class="var-default">''</span>])
+																<div class="method-definition">
+											<span class="method-result">Base2DBCriteria</span>
+										<a href="#addSelectionColumn" title="details" class="method-name">addSelectionColumn</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$alias</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$special</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$variable</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$additional</span> = <span class="var-default">''</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">Base2DBCriteria</span>
 										<a href="#addUpdate" title="details" class="method-name">addUpdate</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$value</span>)
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#addValue" title="details" class="method-name">addValue</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$value</span>)
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">Base2DBCriteria</span>
 										<a href="#addWhere" title="details" class="method-name">addWhere</a>
 											(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$operator</span> = <span class="var-default">self::DB_EQUALS</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$variable</span> = <span class="var-default">''</span>], [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$additional</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$special</span> = <span class="var-default">''</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
+											<span class="method-result">Base2DBCriteria</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											([<span class="var-type">object</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$setupjointable</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
 											<span class="method-result">void</span>
-										<a href="#deleteToSQL" title="details" class="method-name">deleteToSQL</a>
+										<a href="#generateCountSQL" title="details" class="method-name">generateCountSQL</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
-										<a href="#getColumnName" title="details" class="method-name">getColumnName</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>)
+										<a href="#generateDeleteSQL" title="details" class="method-name">generateDeleteSQL</a>
+										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
+										<a href="#generateInsertSQL" title="details" class="method-name">generateInsertSQL</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#generateSelectSQL" title="details" class="method-name">generateSelectSQL</a>
+											([<span class="var-type">boolean</span>&nbsp;<span class="var-name">$all</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#generateUpdateSQL" title="details" class="method-name">generateUpdateSQL</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getColumnName" title="details" class="method-name">getColumnName</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
 										<a href="#getForeignTables" title="details" class="method-name">getForeignTables</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">string</span>
 										<a href="#getSelectionAlias" title="details" class="method-name">getSelectionAlias</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>)
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">string</span>
 										<a href="#getSelectionColumn" title="details" class="method-name">getSelectionColumn</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>)
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$join_column</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$debug</span> = <span class="var-default">false</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$join_column[optional]</span>, <span class="var-type">boolean</span>&nbsp;<span class="var-name">$debug[optional]</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">array</span>
 										<a href="#getSelectionColumns" title="details" class="method-name">getSelectionColumns</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">string</span>
 										<a href="#getSQL" title="details" class="method-name">getSQL</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result"><a href="../../B2DB/pdo/B2DBTable.html">B2DBTable</a></span>
 										<a href="#getTable" title="details" class="method-name">getTable</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">array</span>
 										<a href="#getValues" title="details" class="method-name">getValues</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#insertToSQL" title="details" class="method-name">insertToSQL</a>
-										()
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result"><a href="../../B2DB/mysqli/B2DBCriterion.html">B2DBCriterion</a></span>
+																<div class="method-definition">
+											<span class="method-result"><a href="../../B2DB/pdo/B2DBCriterion.html">B2DBCriterion</a></span>
 										<a href="#returnCriterion" title="details" class="method-name">returnCriterion</a>
 											(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$operator</span> = <span class="var-default">self::DB_EQUALS</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#selectToSQL" title="details" class="method-name">selectToSQL</a>
-											([<span class="var-type"></span>&nbsp;<span class="var-name">$all</span> = <span class="var-default">false</span>])
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#setDistinct" title="details" class="method-name">setDistinct</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">Base2DBCriteria</span>
 										<a href="#setFromTable" title="details" class="method-name">setFromTable</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$table</span>)
+											(<span class="var-type">BaseB2DBtable</span>&nbsp;<span class="var-name">$table</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$setupjointables</span> = <span class="var-default">false</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">Base2DBCriteria</span>
 										<a href="#setLimit" title="details" class="method-name">setLimit</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$limit</span>)
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$limit</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
+																<div class="method-definition">
+											<span class="method-result">Base2DBCriteria</span>
 										<a href="#setOffset" title="details" class="method-name">setOffset</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$offset</span>)
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$offset</span>)
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#setupJoinTables" title="details" class="method-name">setupJoinTables</a>
-											(<span class="var-type"></span>&nbsp;<span class="var-name">$join</span>)
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$join</span> = <span class="var-default">'all'</span>])
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
-											<span class="method-result">void</span>
-										<a href="#updateToSQL" title="details" class="method-name">updateToSQL</a>
-										()
-									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
 										<a href="#_addAllSelectColumns" title="details" class="method-name">_addAllSelectColumns</a>
 										()
 									</div>
-															
-				<div class="method-definition">
-					<img src="../../media/images/Method.png" alt=" "/>
+																<div class="method-definition">
 											<span class="method-result">void</span>
-										<a href="#_selectAllSQL" title="details" class="method-name">_selectAllSQL</a>
+										<a href="#_addSelectionColumn" title="details" class="method-name">_addSelectionColumn</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$alias</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$special</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$variable</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$additional</span> = <span class="var-default">''</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#_addValue" title="details" class="method-name">_addValue</a>
+											(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#_generateCountSQL" title="details" class="method-name">_generateCountSQL</a>
 										()
 									</div>
-											</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#_generateDeleteSQL" title="details" class="method-name">_generateDeleteSQL</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#_generateInsertSQL" title="details" class="method-name">_generateInsertSQL</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#_generateJoinSQL" title="details" class="method-name">_generateJoinSQL</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#_generateSelectAllSQL" title="details" class="method-name">_generateSelectAllSQL</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#_generateSelectSQL" title="details" class="method-name">_generateSelectSQL</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#_generateUpdateSQL" title="details" class="method-name">_generateUpdateSQL</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#_generateWhereSQL" title="details" class="method-name">_generateWhereSQL</a>
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$strip</span> = <span class="var-default">false</span>], <span class="var-type">boolean</span>&nbsp;<span class="var-name">$strip[optional]</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#_parseCriterion" title="details" class="method-name">_parseCriterion</a>
+											(<span class="var-type"><a href="../../B2DB/pdo/B2DBCriterion.html">B2DBCriterion</a></span>&nbsp;<span class="var-name">$critn</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$strip</span> = <span class="var-default">false</span>])
+									</div>
+								</div>
 		</div>
 	</div>		
 
@@ -616,16 +530,14 @@
 							
 					</div>
 		<div class="info-box-body">
-			
-<a name="var$action" id="$action"><!-- --></A>
+			<a name="var$action" id="$action"><!-- --></A>
 <div class="evenrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$action</span>
-						(line <span class="line-number">40</span>)
+						(line <span class="line-number">43</span>)
 		</span>
 	</div>
 
@@ -643,7 +555,6 @@
 <div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$aliases</span>
@@ -665,7 +576,6 @@
 <div class="evenrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$criterias</span>
@@ -683,11 +593,31 @@
 		
 
 </div>
-<a name="var$distinct" id="$distinct"><!-- --></A>
+<a name="var$customsel" id="$customsel"><!-- --></A>
 <div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$customsel</span>
+			 = <span class="var-default"> false</span>			(line <span class="line-number">42</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$distinct" id="$distinct"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$distinct</span>
@@ -706,10 +636,9 @@
 
 </div>
 <a name="var$fromtable" id="$fromtable"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span>
 			<span class="var-name">$fromtable</span>
@@ -729,10 +658,9 @@
 
 </div>
 <a name="var$jointables" id="$jointables"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$jointables</span>
@@ -751,14 +679,13 @@
 
 </div>
 <a name="var$limit" id="$limit"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$limit</span>
-						(line <span class="line-number">39</span>)
+			 = <span class="var-default"> null</span>			(line <span class="line-number">40</span>)
 		</span>
 	</div>
 
@@ -773,14 +700,13 @@
 
 </div>
 <a name="var$offset" id="$offset"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$offset</span>
-			 = <span class="var-default"> ''</span>			(line <span class="line-number">39</span>)
+			 = <span class="var-default"> null</span>			(line <span class="line-number">41</span>)
 		</span>
 	</div>
 
@@ -795,10 +721,9 @@
 
 </div>
 <a name="var$ors" id="$ors"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$ors</span>
@@ -817,10 +742,9 @@
 
 </div>
 <a name="var$return_selections" id="$return_selections"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$return_selections</span>
@@ -839,10 +763,9 @@
 
 </div>
 <a name="var$selections" id="$selections"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$selections</span>
@@ -861,10 +784,9 @@
 
 </div>
 <a name="var$sort_groups" id="$sort_groups"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$sort_groups</span>
@@ -883,10 +805,9 @@
 
 </div>
 <a name="var$sort_orders" id="$sort_orders"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$sort_orders</span>
@@ -905,14 +826,13 @@
 
 </div>
 <a name="var$sql" id="$sql"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$sql</span>
-						(line <span class="line-number">41</span>)
+						(line <span class="line-number">44</span>)
 		</span>
 	</div>
 
@@ -927,10 +847,9 @@
 
 </div>
 <a name="var$updates" id="$updates"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$updates</span>
@@ -949,10 +868,9 @@
 
 </div>
 <a name="var$values" id="$values"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="var-header">
-		<img src="../../media/images/Variable.png" />
 		<span class="var-title">
 			<span class="var-type">mixed</span>
 			<span class="var-name">$values</span>
@@ -970,7 +888,7 @@
 		
 
 </div>
-						
+						
 		</div>
 	</div>
 	
@@ -988,58 +906,35 @@
 		</div>
 		<div class="info-box-body">
 			<A NAME='method_detail'></A>
-<a name="method__construct" id="__construct"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Constructor.png" />
-		<span class="method-title">Constructor __construct</span> (line <span class="line-number">65</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">BaseB2DBCriteria</span>
-		<span class="method-name">
-			__construct
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
+
 <a name="methodaddGroupBy" id="addGroupBy"><!-- --></a>
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">addGroupBy</span> (line <span class="line-number">334</span>)
+		<span class="method-title">addGroupBy</span> (line <span class="line-number">508</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a group by clause</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">Base2DBCriteria</span>
 		<span class="method-name">
 			addGroupBy
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$sort</span> = <span class="var-default">null</span>])
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$sort</span> = <span class="var-default">null</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$column</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$column</span><span class="var-description">: The column to group by</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$sort</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$sort</span><span class="var-description">: [optional] The sort order</span>			</li>
 				</ul>
 		
 			
@@ -1048,36 +943,36 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">addInsert</span> (line <span class="line-number">164</span>)
+		<span class="method-title">addInsert</span> (line <span class="line-number">236</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Adds an &quot;insert&quot; part to the criteria</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">Base2DBCriteria</span>
 		<span class="method-name">
 			addInsert
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$value</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$operator</span> = <span class="var-default">self::DB_EQUALS</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$variable</span> = <span class="var-default">''</span>])
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$operator</span> = <span class="var-default">self::DB_EQUALS</span>], [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$variable</span> = <span class="var-default">''</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$column</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$column</span><span class="var-description">: The name of the column</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$value</span>			</li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$value</span><span class="var-description">: The value to insert</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$operator</span>			</li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$operator</span><span class="var-description">: [optional] The operator</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$variable</span>			</li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$variable</span><span class="var-description">: [optional] assigns the inserted value a variable to use later in the transaction</span>			</li>
 				</ul>
 		
 			
@@ -1086,8 +981,7 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">addJoin</span> (line <span class="line-number">186</span>)
+		<span class="method-title">addJoin</span> (line <span class="line-number">261</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1097,7 +991,7 @@
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">Base2DBCriteria</span>
 		<span class="method-name">
 			addJoin
 		</span>
@@ -1134,33 +1028,33 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">addOr</span> (line <span class="line-number">124</span>)
+		<span class="method-title">addOr</span> (line <span class="line-number">170</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Adds an &quot;or&quot; part to the query</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">Base2DBCriteria</span>
 		<span class="method-name">
 			addOr
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$value</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$operator</span> = <span class="var-default">self::DB_EQUALS</span>])
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$operator</span> = <span class="var-default">self::DB_EQUALS</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$column</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$column</span><span class="var-description">: The column to update</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$value</span>			</li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$value</span><span class="var-description">: The value</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$operator</span>			</li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$operator</span><span class="var-description">: [optional]</span>			</li>
 				</ul>
 		
 			
@@ -1169,71 +1063,74 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">addOrderBy</span> (line <span class="line-number">314</span>)
+		<span class="method-title">addOrderBy</span> (line <span class="line-number">460</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add an order by clause</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">Base2DBCriteria</span>
 		<span class="method-name">
 			addOrderBy
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$sort</span> = <span class="var-default">null</span>])
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$sort</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$join_column</span> = <span class="var-default">null</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$column</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$column</span><span class="var-description">: The column to order by</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$sort</span><span class="var-description">: [optional] The sort order</span>			</li>
 					<li>
 				<span class="var-type"></span>
-				<span class="var-name">$sort</span>			</li>
+				<span class="var-name">$join_column</span>			</li>
 				</ul>
 		
 			
 	</div>
-<a name="methodaddSel" id="addSel"><!-- --></a>
+<a name="methodaddSelectionColumn" id="addSelectionColumn"><!-- --></a>
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">addSel</span> (line <span class="line-number">102</span>)
+		<span class="method-title">addSelectionColumn</span> (line <span class="line-number">143</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a column to select</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">Base2DBCriteria</span>
 		<span class="method-name">
-			addSel
+			addSelectionColumn
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$alias</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$special</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$variable</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$additional</span> = <span class="var-default">''</span>])
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$alias</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$special</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$variable</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$additional</span> = <span class="var-default">''</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$column</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$column</span><span class="var-description">: The column</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$alias</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$alias</span><span class="var-description">: [optional] An alias for the column</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$special</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$special</span><span class="var-description">: [optional] Whether to use a special method on the column</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$variable</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$variable</span><span class="var-description">: [optional] An optional variable to assign it to</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$additional</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$additional</span><span class="var-description">: [optional] Additional parameter</span>			</li>
 				</ul>
 		
 			
@@ -1242,79 +1139,49 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">addUpdate</span> (line <span class="line-number">137</span>)
+		<span class="method-title">addUpdate</span> (line <span class="line-number">191</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a field to update</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">Base2DBCriteria</span>
 		<span class="method-name">
 			addUpdate
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$value</span>)
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$column</span>			</li>
+				<span class="var-type">string</span>
+				<span class="var-name">$column</span><span class="var-description">: The column name</span>			</li>
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$value</span>			</li>
-				</ul>
-		
-			
-	</div>
-<a name="methodaddValue" id="addValue"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">addValue</span> (line <span class="line-number">408</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			addValue
-		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$value</span>)
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$value</span>			</li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$value</span><span class="var-description">: The value to update</span>			</li>
 				</ul>
 		
 			
 	</div>
 <a name="methodaddWhere" id="addWhere"><!-- --></a>
-<div class="oddrow">
+<div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">addWhere</span> (line <span class="line-number">152</span>)
+		<span class="method-title">addWhere</span> (line <span class="line-number">213</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
-<p class="short-description">update query</p>
+<p class="short-description">Adds a &quot;where&quot; part to the criteria</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">Base2DBCriteria</span>
 		<span class="method-name">
 			addWhere
 		</span>
@@ -1344,15 +1211,47 @@
 		
 			
 	</div>
-<a name="methoddeleteToSQL" id="deleteToSQL"><!-- --></a>
-<div class="evenrow">
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">deleteToSQL</span> (line <span class="line-number">449</span>)
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">79</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Constructor</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Base2DBCriteria</span>
+		<span class="method-name">
+			__construct
+		</span>
+					([<span class="var-type">object</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$setupjointable</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">object</span>
+				<span class="var-name">$table</span><span class="var-description">: [optional]</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$setupjointable</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgenerateCountSQL" id="generateCountSQL"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">generateCountSQL</span> (line <span class="line-number">602</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate a &quot;count&quot; query</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
@@ -1360,7 +1259,108 @@
 	<div class="method-signature">
 		<span class="method-result">void</span>
 		<span class="method-name">
-			deleteToSQL
+			generateCountSQL
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgenerateDeleteSQL" id="generateDeleteSQL"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">generateDeleteSQL</span> (line <span class="line-number">688</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate a &quot;delete&quot; query</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			generateDeleteSQL
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgenerateInsertSQL" id="generateInsertSQL"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">generateInsertSQL</span> (line <span class="line-number">664</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate an &quot;insert&quot; query</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			generateInsertSQL
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgenerateSelectSQL" id="generateSelectSQL"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">generateSelectSQL</span> (line <span class="line-number">580</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate a &quot;select&quot; query</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			generateSelectSQL
+		</span>
+					([<span class="var-type">boolean</span>&nbsp;<span class="var-name">$all</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$all</span><span class="var-description">: [optional]</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgenerateUpdateSQL" id="generateUpdateSQL"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">generateUpdateSQL</span> (line <span class="line-number">646</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate an &quot;update&quot; query</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			generateUpdateSQL
 		</span>
 				()
 			</div>
@@ -1372,26 +1372,26 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getColumnName</span> (line <span class="line-number">243</span>)
+		<span class="method-title">getColumnName</span> (line <span class="line-number">348</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the column name part of a column</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">string</span>
 		<span class="method-name">
 			getColumnName
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>)
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
+				<span class="var-type">string</span>
 				<span class="var-name">$column</span>			</li>
 				</ul>
 		
@@ -1401,17 +1401,17 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getForeignTables</span> (line <span class="line-number">233</span>)
+		<span class="method-title">getForeignTables</span> (line <span class="line-number">326</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Retrieve a list of foreign tables</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">array</span>
 		<span class="method-name">
 			getForeignTables
 		</span>
@@ -1425,26 +1425,26 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getSelectionAlias</span> (line <span class="line-number">305</span>)
+		<span class="method-title">getSelectionAlias</span> (line <span class="line-number">431</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the selection alias for a specified column</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">string</span>
 		<span class="method-name">
 			getSelectionAlias
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>)
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
+				<span class="var-type">string</span>
 				<span class="var-name">$column</span>			</li>
 				</ul>
 		
@@ -1454,27 +1454,39 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getSelectionColumn</span> (line <span class="line-number">260</span>)
+		<span class="method-title">getSelectionColumn</span> (line <span class="line-number">379</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Return a select column</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">string</span>
 		<span class="method-name">
 			getSelectionColumn
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>)
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$join_column</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$debug</span> = <span class="var-default">false</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$join_column[optional]</span>, <span class="var-type">boolean</span>&nbsp;<span class="var-name">$debug[optional]</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
+				<span class="var-type">string</span>
 				<span class="var-name">$column</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$join_column[optional]</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$debug[optional]</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$join_column</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$debug</span>			</li>
 				</ul>
 		
 			
@@ -1483,17 +1495,17 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getSelectionColumns</span> (line <span class="line-number">255</span>)
+		<span class="method-title">getSelectionColumns</span> (line <span class="line-number">365</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get all select columns</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">array</span>
 		<span class="method-name">
 			getSelectionColumns
 		</span>
@@ -1507,8 +1519,7 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getSQL</span> (line <span class="line-number">359</span>)
+		<span class="method-title">getSQL</span> (line <span class="line-number">542</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1532,17 +1543,17 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getTable</span> (line <span class="line-number">238</span>)
+		<span class="method-title">getTable</span> (line <span class="line-number">336</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the table the criteria applies to</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result"><a href="../../B2DB/pdo/B2DBTable.html">B2DBTable</a></span>
 		<span class="method-name">
 			getTable
 		</span>
@@ -1556,17 +1567,17 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">getValues</span> (line <span class="line-number">92</span>)
+		<span class="method-title">getValues</span> (line <span class="line-number">127</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get added values</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">array</span>
 		<span class="method-name">
 			getValues
 		</span>
@@ -1576,36 +1587,11 @@
 		
 			
 	</div>
-<a name="methodinsertToSQL" id="insertToSQL"><!-- --></a>
+<a name="methodreturnCriterion" id="returnCriterion"><!-- --></a>
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">insertToSQL</span> (line <span class="line-number">428</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			insertToSQL
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="methodreturnCriterion" id="returnCriterion"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">returnCriterion</span> (line <span class="line-number">85</span>)
+		<span class="method-title">returnCriterion</span> (line <span class="line-number">115</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
@@ -1615,7 +1601,7 @@
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result"><a href="../../B2DB/mysqli/B2DBCriterion.html">B2DBCriterion</a></span>
+		<span class="method-result"><a href="../../B2DB/pdo/B2DBCriterion.html">B2DBCriterion</a></span>
 		<span class="method-name">
 			returnCriterion
 		</span>
@@ -1636,44 +1622,15 @@
 		
 			
 	</div>
-<a name="methodselectToSQL" id="selectToSQL"><!-- --></a>
-<div class="oddrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">selectToSQL</span> (line <span class="line-number">389</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			selectToSQL
-		</span>
-					([<span class="var-type"></span>&nbsp;<span class="var-name">$all</span> = <span class="var-default">false</span>])
-			</div>
-	
-			<ul class="parameters">
-					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$all</span>			</li>
-				</ul>
-		
-			
-	</div>
 <a name="methodsetDistinct" id="setDistinct"><!-- --></a>
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">setDistinct</span> (line <span class="line-number">606</span>)
+		<span class="method-title">setDistinct</span> (line <span class="line-number">888</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Set the query to distinct mode</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
@@ -1693,27 +1650,30 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">setFromTable</span> (line <span class="line-number">71</span>)
+		<span class="method-title">setFromTable</span> (line <span class="line-number">96</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Set the &quot;from&quot; table</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">Base2DBCriteria</span>
 		<span class="method-name">
 			setFromTable
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$table</span>)
+					(<span class="var-type">BaseB2DBtable</span>&nbsp;<span class="var-name">$table</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$setupjointables</span> = <span class="var-default">false</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$table</span>			</li>
+				<span class="var-type">BaseB2DBtable</span>
+				<span class="var-name">$table</span><span class="var-description">: The table</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$setupjointables</span><span class="var-description">: [optional] Whether to automatically join other tables</span>			</li>
 				</ul>
 		
 			
@@ -1722,27 +1682,27 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">setLimit</span> (line <span class="line-number">329</span>)
+		<span class="method-title">setLimit</span> (line <span class="line-number">494</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Limit the query</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">Base2DBCriteria</span>
 		<span class="method-name">
 			setLimit
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$limit</span>)
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$limit</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$limit</span>			</li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$limit</span><span class="var-description">: The number to limit</span>			</li>
 				</ul>
 		
 			
@@ -1751,27 +1711,27 @@
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">setOffset</span> (line <span class="line-number">349</span>)
+		<span class="method-title">setOffset</span> (line <span class="line-number">531</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Offset the query</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
 	
 	<div class="method-signature">
-		<span class="method-result">void</span>
+		<span class="method-result">Base2DBCriteria</span>
 		<span class="method-name">
 			setOffset
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$offset</span>)
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$offset</span>)
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$offset</span>			</li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$offset</span><span class="var-description">: The number to offset by</span>			</li>
 				</ul>
 		
 			
@@ -1780,11 +1740,11 @@
 <div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">setupJoinTables</span> (line <span class="line-number">364</span>)
+		<span class="method-title">setupJoinTables</span> (line <span class="line-number">552</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add all available foreign tables</p>
 	<ul class="tags">
 				<li><span class="field">access:</span> public</li>
 			</ul>
@@ -1794,52 +1754,28 @@
 		<span class="method-name">
 			setupJoinTables
 		</span>
-					(<span class="var-type"></span>&nbsp;<span class="var-name">$join</span>)
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$join</span> = <span class="var-default">'all'</span>])
 			</div>
 	
 			<ul class="parameters">
 					<li>
-				<span class="var-type"></span>
-				<span class="var-name">$join</span>			</li>
+				<span class="var-type">array</span>
+				<span class="var-name">$join</span><span class="var-description">: [optional]</span>			</li>
 				</ul>
 		
 			
 	</div>
-<a name="methodupdateToSQL" id="updateToSQL"><!-- --></a>
+<a name="method_addAllSelectColumns" id="_addAllSelectColumns"><!-- --></a>
 <div class="oddrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">updateToSQL</span> (line <span class="line-number">413</span>)
+		<span class="method-title">_addAllSelectColumns</span> (line <span class="line-number">306</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Adds all select columns from all available tables in the query</p>
 	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
-			</ul>
-	
-	<div class="method-signature">
-		<span class="method-result">void</span>
-		<span class="method-name">
-			updateToSQL
-		</span>
-				()
-			</div>
-	
-		
-			
-	</div>
-<a name="method_addAllSelectColumns" id="_addAllSelectColumns"><!-- --></a>
-<div class="evenrow">
-	
-	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">_addAllSelectColumns</span> (line <span class="line-number">225</span>)
-	</div> 
-	
-	<!-- ========== Info from phpDoc block ========= -->
-	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
+				<li><span class="field">access:</span> protected</li>
 			</ul>
 	
 	<div class="method-signature">
@@ -1853,27 +1789,304 @@
 		
 			
 	</div>
-<a name="method_selectAllSQL" id="_selectAllSQL"><!-- --></a>
-<div class="oddrow">
+<a name="method_addSelectionColumn" id="_addSelectionColumn"><!-- --></a>
+<div class="evenrow">
 	
 	<div class="method-header">
-		<img src="../../media/images/Method.png" />
-		<span class="method-title">_selectAllSQL</span> (line <span class="line-number">214</span>)
+		<span class="method-title">_addSelectionColumn</span> (line <span class="line-number">156</span>)
 	</div> 
 	
 	<!-- ========== Info from phpDoc block ========= -->
 	<ul class="tags">
-				<li><span class="field">access:</span> public</li>
+				<li><span class="field">access:</span> protected</li>
 			</ul>
 	
 	<div class="method-signature">
 		<span class="method-result">void</span>
 		<span class="method-name">
-			_selectAllSQL
+			_addSelectionColumn
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$alias</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$special</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$variable</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$additional</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$column</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$alias</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$special</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$variable</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$additional</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method_addValue" id="_addValue"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">_addValue</span> (line <span class="line-number">623</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add a specified value</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_addValue
+		</span>
+					(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$value</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method_generateCountSQL" id="_generateCountSQL"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">_generateCountSQL</span> (line <span class="line-number">872</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate the &quot;count&quot; part of the query</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			_generateCountSQL
 		</span>
 				()
 			</div>
 	
+		
+			
+	</div>
+<a name="method_generateDeleteSQL" id="_generateDeleteSQL"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">_generateDeleteSQL</span> (line <span class="line-number">708</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate the &quot;delete&quot; part of the query</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			_generateDeleteSQL
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method_generateInsertSQL" id="_generateInsertSQL"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">_generateInsertSQL</span> (line <span class="line-number">721</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate the &quot;insert&quot; part of the query</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			_generateInsertSQL
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method_generateJoinSQL" id="_generateJoinSQL"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">_generateJoinSQL</span> (line <span class="line-number">1113</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate the &quot;join&quot; part of the sql</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			_generateJoinSQL
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method_generateSelectAllSQL" id="_generateSelectAllSQL"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">_generateSelectAllSQL</span> (line <span class="line-number">291</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generates &quot;select all&quot; SQL</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			_generateSelectAllSQL
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method_generateSelectSQL" id="_generateSelectSQL"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">_generateSelectSQL</span> (line <span class="line-number">800</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate the &quot;select&quot; part of the query</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			_generateSelectSQL
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method_generateUpdateSQL" id="_generateUpdateSQL"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">_generateUpdateSQL</span> (line <span class="line-number">775</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate the &quot;update&quot; part of the query</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			_generateUpdateSQL
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method_generateWhereSQL" id="_generateWhereSQL"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">_generateWhereSQL</span> (line <span class="line-number">1034</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Generate the &quot;where&quot; part of the query</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			_generateWhereSQL
+		</span>
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$strip</span> = <span class="var-default">false</span>], <span class="var-type">boolean</span>&nbsp;<span class="var-name">$strip[optional]</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$strip[optional]</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$strip</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method_parseCriterion" id="_parseCriterion"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">_parseCriterion</span> (line <span class="line-number">900</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Parses the given criterion and returns the SQL string</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			_parseCriterion
+		</span>
+					(<span class="var-type"><a href="../../B2DB/pdo/B2DBCriterion.html">B2DBCriterion</a></span>&nbsp;<span class="var-name">$critn</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$strip</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../../B2DB/pdo/B2DBCriterion.html">B2DBCriterion</a></span>
+				<span class="var-name">$critn</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$strip</span>			</li>
+				</ul>
 		
 			
 	</div>
@@ -1897,14 +2110,14 @@
 					</div>
 		<div class="info-box-body">
 			<a name="constDB_CONCAT" id="DB_CONCAT"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="const-header">
 		<img src="../../media/images/Variable.png" />
 		<span class="const-title">
 			<span class="const-name">DB_CONCAT</span>
 			 = <span class="const-default"> 'CONCAT'</span>
-			(line <span class="line-number">59</span>)
+			(line <span class="line-number">66</span>)
 		</span>
 	</div>
 
@@ -1913,14 +2126,14 @@
 	
 </div>
 <a name="constDB_COUNT" id="DB_COUNT"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="const-header">
 		<img src="../../media/images/Variable.png" />
 		<span class="const-title">
 			<span class="const-name">DB_COUNT</span>
 			 = <span class="const-default"> 'COUNT'</span>
-			(line <span class="line-number">57</span>)
+			(line <span class="line-number">63</span>)
 		</span>
 	</div>
 
@@ -1929,14 +2142,14 @@
 	
 </div>
 <a name="constDB_COUNT_DISTINCT" id="DB_COUNT_DISTINCT"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="const-header">
 		<img src="../../media/images/Variable.png" />
 		<span class="const-title">
 			<span class="const-name">DB_COUNT_DISTINCT</span>
 			 = <span class="const-default"> 'COUNT(DISTINCT'</span>
-			(line <span class="line-number">60</span>)
+			(line <span class="line-number">67</span>)
 		</span>
 	</div>
 
@@ -1945,14 +2158,14 @@
 	
 </div>
 <a name="constDB_EQUALS" id="DB_EQUALS"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="const-header">
 		<img src="../../media/images/Variable.png" />
 		<span class="const-title">
 			<span class="const-name">DB_EQUALS</span>
 			 = <span class="const-default"> '='</span>
-			(line <span class="line-number">43</span>)
+			(line <span class="line-number">46</span>)
 		</span>
 	</div>
 
@@ -1961,14 +2174,14 @@
 	
 </div>
 <a name="constDB_GREATER_THAN" id="DB_GREATER_THAN"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="const-header">
 		<img src="../../media/images/Variable.png" />
 		<span class="const-title">
 			<span class="const-name">DB_GREATER_THAN</span>
 			 = <span class="const-default"> '&gt;'</span>
-			(line <span class="line-number">45</span>)
+			(line <span class="line-number">48</span>)
 		</span>
 	</div>
 
@@ -1977,14 +2190,14 @@
 	
 </div>
 <a name="constDB_GREATER_THAN_EQUAL" id="DB_GREATER_THAN_EQUAL"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="const-header">
 		<img src="../../media/images/Variable.png" />
 		<span class="const-title">
 			<span class="const-name">DB_GREATER_THAN_EQUAL</span>
 			 = <span class="const-default"> '&gt;='</span>
-			(line <span class="line-number">47</span>)
+			(line <span class="line-number">50</span>)
 		</span>
 	</div>
 
@@ -1993,14 +2206,14 @@
 	
 </div>
 <a name="constDB_ILIKE" id="DB_ILIKE"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="const-header">
 		<img src="../../media/images/Variable.png" />
 		<span class="const-title">
 			<span class="const-name">DB_ILIKE</span>
 			 = <span class="const-default"> 'ILIKE'</span>
-			(line <span class="line-number">52</span>)
+			(line <span class="line-number">55</span>)
 		</span>
 	</div>
 
@@ -2009,14 +2222,30 @@
 	
 </div>
 <a name="constDB_IN" id="DB_IN"><!-- --></A>
-<div class="oddrow">
+<div class="evenrow">
 
 	<div class="const-header">
 		<img src="../../media/images/Variable.png" />
 		<span class="const-title">
 			<span class="const-name">DB_IN</span>
 			 = <span class="const-default"> 'IN'</span>
-			(line <span class="line-number">53</span>)
+			(line <span class="line-number">58</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constDB_INNER_JOIN" id="DB_INNER_JOIN"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">DB_INNER_JOIN</span>
+			 = <span class="const-default"> 'INNER JOIN'</span>
+			(line <span class="line-number">61</span>)
 		</span>
 	</div>
 
@@ -2032,7 +2261,7 @@
 		<span class="const-title">
 			<span class="const-name">DB_IS_NOT_NULL</span>
 			 = <span class="const-default"> 'IS NOT NULL'</span>
-			(line <span class="line-number">50</span>)
+			(line <span class="line-number">53</span>)
 		</span>
 	</div>
 
@@ -2048,7 +2277,7 @@
 		<span class="const-title">
 			<span class="const-name">DB_IS_NULL</span>
 			 = <span class="const-default"> 'IS NULL'</span>
-			(line <span class="line-number">49</span>)
+			(line <span class="line-number">52</span>)
 		</span>
 	</div>
 
@@ -2064,7 +2293,7 @@
 		<span class="const-title">
 			<span class="const-name">DB_LEFT_JOIN</span>
 			 = <span class="const-default"> 'LEFT JOIN'</span>
-			(line <span class="line-number">55</span>)
+			(line <span class="line-number">60</span>)
 		</span>
 	</div>
 
@@ -2080,7 +2309,7 @@
 		<span class="const-title">
 			<span class="const-name">DB_LESS_THAN</span>
 			 = <span class="const-default"> '&lt;'</span>
-			(line <span class="line-number">46</span>)
+			(line <span class="line-number">49</span>)
 		</span>
 	</div>
 
@@ -2096,7 +2325,7 @@
 		<span class="const-title">
 			<span class="const-name">DB_LESS_THAN_EQUAL</span>
 			 = <span class="const-default"> '&lt;='</span>
-			(line <span class="line-number">48</span>)
+			(line <span class="line-number">51</span>)
 		</span>
 	</div>
 
@@ -2112,7 +2341,7 @@
 		<span class="const-title">
 			<span class="const-name">DB_LIKE</span>
 			 = <span class="const-default"> 'LIKE'</span>
-			(line <span class="line-number">51</span>)
+			(line <span class="line-number">54</span>)
 		</span>
 	</div>
 
@@ -2128,7 +2357,7 @@
 		<span class="const-title">
 			<span class="const-name">DB_MAX</span>
 			 = <span class="const-default"> 'MAX'</span>
-			(line <span class="line-number">58</span>)
+			(line <span class="line-number">64</span>)
 		</span>
 	</div>
 
@@ -2144,7 +2373,23 @@
 		<span class="const-title">
 			<span class="const-name">DB_NOT_EQUALS</span>
 			 = <span class="const-default"> '!='</span>
-			(line <span class="line-number">44</span>)
+			(line <span class="line-number">47</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constDB_NOT_ILIKE" id="DB_NOT_ILIKE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">DB_NOT_ILIKE</span>
+			 = <span class="const-default"> 'NOT ILIKE'</span>
+			(line <span class="line-number">57</span>)
 		</span>
 	</div>
 
@@ -2153,14 +2398,30 @@
 	
 </div>
 <a name="constDB_NOT_IN" id="DB_NOT_IN"><!-- --></A>
-<div class="evenrow">
+<div class="oddrow">
 
 	<div class="const-header">
 		<img src="../../media/images/Variable.png" />
 		<span class="const-title">
 			<span class="const-name">DB_NOT_IN</span>
 			 = <span class="const-default"> 'NOT IN'</span>
-			(line <span class="line-number">54</span>)
+			(line <span class="line-number">59</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constDB_NOT_LIKE" id="DB_NOT_LIKE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">DB_NOT_LIKE</span>
+			 = <span class="const-default"> 'NOT LIKE'</span>
+			(line <span class="line-number">56</span>)
 		</span>
 	</div>
 
@@ -2176,22 +2437,6 @@
 		<span class="const-title">
 			<span class="const-name">DB_RIGHT_JOIN</span>
 			 = <span class="const-default"> 'RIGHT JOIN'</span>
-			(line <span class="line-number">56</span>)
-		</span>
-	</div>
-
-	<!-- ========== Info from phpDoc block ========= -->
-	
-	
-</div>
-<a name="constSORT_ASC" id="SORT_ASC"><!-- --></A>
-<div class="evenrow">
-
-	<div class="const-header">
-		<img src="../../media/images/Variable.png" />
-		<span class="const-title">
-			<span class="const-name">SORT_ASC</span>
-			 = <span class="const-default"> 'asc'</span>
 			(line <span class="line-number">62</span>)
 		</span>
 	</div>
@@ -2200,15 +2445,15 @@
 	
 	
 </div>
-<a name="constSORT_DESC" id="SORT_DESC"><!-- --></A>
-<div class="oddrow">
+<a name="constDB_SUM" id="DB_SUM"><!-- --></A>
+<div class="evenrow">
 
 	<div class="const-header">
 		<img src="../../media/images/Variable.png" />
 		<span class="const-title">
-			<span class="const-name">SORT_DESC</span>
-			 = <span class="const-default"> 'desc'</span>
-			(line <span class="line-number">63</span>)
+			<span class="const-name">DB_SUM</span>
+			 = <span class="const-default"> 'SUM'</span>
+			(line <span class="line-number">65</span>)
 		</span>
 	</div>
 
@@ -2216,12 +2461,44 @@
 	
 	
 </div>
-						
+<a name="constSORT_ASC" id="SORT_ASC"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SORT_ASC</span>
+			 = <span class="const-default"> 'asc'</span>
+			(line <span class="line-number">69</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSORT_DESC" id="SORT_DESC"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SORT_DESC</span>
+			 = <span class="const-default"> 'desc'</span>
+			(line <span class="line-number">70</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+						
 		</div>
 	</div>
-	
+
 	<p class="notes" id="credit">
-		Documentation generated on Wed, 15 Jul 2009 00:28:11 -0500 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.0</a>
+		Documentation generated on Wed, 14 Jul 2010 10:30:28 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
 	</p>
 	</div></body>
-</html>
+</html>

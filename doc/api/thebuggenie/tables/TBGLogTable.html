@@ -1,0 +1,1527 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class TBGLogTable</title>
+			<link rel="stylesheet" href="../../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class TBGLogTable</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-vars">Vars</a>
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+											<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+						
+			</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Log table</p>
+		<p class="notes">
+			Located in <a class="field" href="_core---classes---B2DB---TBGLogTable.class.php.html">/core/classes/B2DB/TBGLogTable.class.php</a> (line <span class="field">19</span>)
+		</p>
+		
+				
+		<pre><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a>
+   |
+   --<a href="../../B2DB/pdo/B2DBTable.html">B2DBTable</a>
+      |
+      --TBGLogTable</pre>
+	
+			</div>
+</div>
+
+
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Constants</span> (<a href="#sec-consts">details</a>)
+												<a href="#sec-vars">Vars</a>
+				 
+				|
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#B2DBNAME" title="details" class="const-name">B2DBNAME</a> = 					<span class="var-type"> 'log'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#CHANGE_TYPE" title="details" class="const-name">CHANGE_TYPE</a> = 					<span class="var-type"> 'log.change_type'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#CURRENT_VALUE" title="details" class="const-name">CURRENT_VALUE</a> = 					<span class="var-type"> 'log.current_value'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ID" title="details" class="const-name">ID</a> = 					<span class="var-type"> 'log.id'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_AFF_ADD" title="details" class="const-name">LOG_AFF_ADD</a> = 					<span class="var-type"> 15</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_AFF_DELETE" title="details" class="const-name">LOG_AFF_DELETE</a> = 					<span class="var-type"> 17</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_AFF_UPDATE" title="details" class="const-name">LOG_AFF_UPDATE</a> = 					<span class="var-type"> 16</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_COMMENT" title="details" class="const-name">LOG_COMMENT</a> = 					<span class="var-type"> 28</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_ASSIGNED" title="details" class="const-name">LOG_ISSUE_ASSIGNED</a> = 					<span class="var-type"> 33</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_CATEGORY" title="details" class="const-name">LOG_ISSUE_CATEGORY</a> = 					<span class="var-type"> 7</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_CLOSE" title="details" class="const-name">LOG_ISSUE_CLOSE</a> = 					<span class="var-type"> 14</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_CREATED" title="details" class="const-name">LOG_ISSUE_CREATED</a> = 					<span class="var-type"> 29</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_CUSTOMFIELD_CHANGED" title="details" class="const-name">LOG_ISSUE_CUSTOMFIELD_CHANGED</a> = 					<span class="var-type"> 36</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_DEPENDS" title="details" class="const-name">LOG_ISSUE_DEPENDS</a> = 					<span class="var-type"> 11</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_ISSUETYPE" title="details" class="const-name">LOG_ISSUE_ISSUETYPE</a> = 					<span class="var-type"> 6</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_MILESTONE" title="details" class="const-name">LOG_ISSUE_MILESTONE</a> = 					<span class="var-type"> 31</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_OWNED" title="details" class="const-name">LOG_ISSUE_OWNED</a> = 					<span class="var-type"> 34</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_PAIN_BUG_TYPE" title="details" class="const-name">LOG_ISSUE_PAIN_BUG_TYPE</a> = 					<span class="var-type"> 37</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_PAIN_CALCULATED" title="details" class="const-name">LOG_ISSUE_PAIN_CALCULATED</a> = 					<span class="var-type"> 40</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_PAIN_EFFECT" title="details" class="const-name">LOG_ISSUE_PAIN_EFFECT</a> = 					<span class="var-type"> 38</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_PAIN_LIKELIHOOD" title="details" class="const-name">LOG_ISSUE_PAIN_LIKELIHOOD</a> = 					<span class="var-type"> 39</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_PERCENT" title="details" class="const-name">LOG_ISSUE_PERCENT</a> = 					<span class="var-type"> 9</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_POSTED" title="details" class="const-name">LOG_ISSUE_POSTED</a> = 					<span class="var-type"> 35</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_PRIORITY" title="details" class="const-name">LOG_ISSUE_PRIORITY</a> = 					<span class="var-type"> 13</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_REOPEN" title="details" class="const-name">LOG_ISSUE_REOPEN</a> = 					<span class="var-type"> 22</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_REPRODUCABILITY" title="details" class="const-name">LOG_ISSUE_REPRODUCABILITY</a> = 					<span class="var-type"> 8</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_RESOLUTION" title="details" class="const-name">LOG_ISSUE_RESOLUTION</a> = 					<span class="var-type"> 12</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_SEVERITY" title="details" class="const-name">LOG_ISSUE_SEVERITY</a> = 					<span class="var-type"> 30</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_STATUS" title="details" class="const-name">LOG_ISSUE_STATUS</a> = 					<span class="var-type"> 3</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_TEAM" title="details" class="const-name">LOG_ISSUE_TEAM</a> = 					<span class="var-type"> 21</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_TIME_ESTIMATED" title="details" class="const-name">LOG_ISSUE_TIME_ESTIMATED</a> = 					<span class="var-type"> 10</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_TIME_SPENT" title="details" class="const-name">LOG_ISSUE_TIME_SPENT</a> = 					<span class="var-type"> 32</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_UPDATE" title="details" class="const-name">LOG_ISSUE_UPDATE</a> = 					<span class="var-type"> 5</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_ISSUE_USERS" title="details" class="const-name">LOG_ISSUE_USERS</a> = 					<span class="var-type"> 4</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_MILESTONE_ADD" title="details" class="const-name">LOG_MILESTONE_ADD</a> = 					<span class="var-type"> 2</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_MILESTONE_REMOVE" title="details" class="const-name">LOG_MILESTONE_REMOVE</a> = 					<span class="var-type"> 1</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_TASK_ADD" title="details" class="const-name">LOG_TASK_ADD</a> = 					<span class="var-type"> 18</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_TASK_ASSIGN_TEAM" title="details" class="const-name">LOG_TASK_ASSIGN_TEAM</a> = 					<span class="var-type"> 27</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_TASK_ASSIGN_USER" title="details" class="const-name">LOG_TASK_ASSIGN_USER</a> = 					<span class="var-type"> 26</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_TASK_COMPLETED" title="details" class="const-name">LOG_TASK_COMPLETED</a> = 					<span class="var-type"> 23</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_TASK_DELETE" title="details" class="const-name">LOG_TASK_DELETE</a> = 					<span class="var-type"> 20</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_TASK_REOPENED" title="details" class="const-name">LOG_TASK_REOPENED</a> = 					<span class="var-type"> 24</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_TASK_STATUS" title="details" class="const-name">LOG_TASK_STATUS</a> = 					<span class="var-type"> 25</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOG_TASK_UPDATE" title="details" class="const-name">LOG_TASK_UPDATE</a> = 					<span class="var-type"> 19</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#PREVIOUS_VALUE" title="details" class="const-name">PREVIOUS_VALUE</a> = 					<span class="var-type"> 'log.previous_value'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#SCOPE" title="details" class="const-name">SCOPE</a> = 					<span class="var-type"> 'log.scope'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#TARGET" title="details" class="const-name">TARGET</a> = 					<span class="var-type"> 'log.target'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#TARGET_TYPE" title="details" class="const-name">TARGET_TYPE</a> = 					<span class="var-type"> 'log.target_type'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#TEXT" title="details" class="const-name">TEXT</a> = 					<span class="var-type"> 'log.text'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#TIME" title="details" class="const-name">TIME</a> = 					<span class="var-type"> 'log.time'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#TYPE_ISSUE" title="details" class="const-name">TYPE_ISSUE</a> = 					<span class="var-type"> 1</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#UID" title="details" class="const-name">UID</a> = 					<span class="var-type"> 'log.uid'</span>
+
+				</div>
+							</div>
+		</div>
+	</div>
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+															<a href="#sec-vars">Vars</a>
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																				
+												<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#createNew" title="details" class="method-name">createNew</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$target</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$target_type</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$change_type</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$text</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$uid</span> = <span class="var-default">0</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getByIssueID" title="details" class="method-name">getByIssueID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$issue_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getByProjectID" title="details" class="method-name">getByProjectID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">20</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getByUserID" title="details" class="method-name">getByUserID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$user_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getImportantByProjectID" title="details" class="method-name">getImportantByProjectID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">20</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">TBGLogTable</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+										()
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+										<h4>Inherited Variables</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span></p>
+					<blockquote>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$b2db_alias">BaseB2DBTable::$b2db_alias</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$b2db_name">BaseB2DBTable::$b2db_name</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$id_column">BaseB2DBTable::$id_column</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_autoincrement_start_at">BaseB2DBTable::$_autoincrement_start_at</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_charset">BaseB2DBTable::$_charset</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_columns">BaseB2DBTable::$_columns</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_foreigntables">BaseB2DBTable::$_foreigntables</a></span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-vars">Vars</a>
+																			<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+										<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="methodcreateNew" id="createNew"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">createNew</span> (line <span class="line-number">90</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			createNew
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$target</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$target_type</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$change_type</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$text</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$uid</span> = <span class="var-default">0</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$target</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$target_type</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$change_type</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$text</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$uid</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetByIssueID" id="getByIssueID"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getByIssueID</span> (line <span class="line-number">107</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getByIssueID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$issue_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$issue_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetByProjectID" id="getByProjectID"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getByProjectID</span> (line <span class="line-number">150</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getByProjectID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">20</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$limit</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetByUserID" id="getByUserID"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getByUserID</span> (line <span class="line-number">127</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getByUserID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$user_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$user_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$limit</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetImportantByProjectID" id="getImportantByProjectID"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getImportantByProjectID</span> (line <span class="line-number">175</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getImportantByProjectID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">20</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$limit</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">76</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">TBGLogTable</span>
+		<span class="method-name">
+			__construct
+		</span>
+				()
+			</div>
+	
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../B2DB/core/BaseB2DBTable.html#method__construct">BaseB2DBTable::__construct()</a></dt>
+					</dl>
+			
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../B2DB/pdo/B2DBTable.html">B2DBTable</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../../B2DB/pdo/B2DBTable.html#methodgetQC">B2DBTable::getQC()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/pdo/B2DBTable.html#method_createToSQL">B2DBTable::_createToSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/pdo/B2DBTable.html#method_dropToSQL">B2DBTable::_dropToSQL()</a></span><br>
+											</blockquote>
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__construct">BaseB2DBTable::__construct()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodcreate">BaseB2DBTable::create()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoCount">BaseB2DBTable::doCount()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoDelete">BaseB2DBTable::doDelete()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoDeleteById">BaseB2DBTable::doDeleteById()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoInsert">BaseB2DBTable::doInsert()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelect">BaseB2DBTable::doSelect()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectAll">BaseB2DBTable::doSelectAll()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectById">BaseB2DBTable::doSelectById()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectOne">BaseB2DBTable::doSelectOne()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoUpdate">BaseB2DBTable::doUpdate()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoUpdateById">BaseB2DBTable::doUpdateById()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddrop">BaseB2DBTable::drop()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetAliasColumns">BaseB2DBTable::getAliasColumns()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetB2DBAlias">BaseB2DBTable::getB2DBAlias()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetB2DBName">BaseB2DBTable::getB2DBName()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetColumn">BaseB2DBTable::getColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetColumns">BaseB2DBTable::getColumns()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetCriteria">BaseB2DBTable::getCriteria()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTable">BaseB2DBTable::getForeignTable()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTableByLocalColumn">BaseB2DBTable::getForeignTableByLocalColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTables">BaseB2DBTable::getForeignTables()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetIdColumn">BaseB2DBTable::getIdColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodsetAutoIncrementStart">BaseB2DBTable::setAutoIncrementStart()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodsetCharset">BaseB2DBTable::setCharset()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addBlob">BaseB2DBTable::_addBlob()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addBoolean">BaseB2DBTable::_addBoolean()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addColumn">BaseB2DBTable::_addColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addFloat">BaseB2DBTable::_addFloat()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addForeignKeyColumn">BaseB2DBTable::_addForeignKeyColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addInteger">BaseB2DBTable::_addInteger()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addText">BaseB2DBTable::_addText()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addVarchar">BaseB2DBTable::_addVarchar()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_getRealColumnFieldName">BaseB2DBTable::_getRealColumnFieldName()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__clone">BaseB2DBTable::__clone()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__toString">BaseB2DBTable::__toString()</a></span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Constants</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-vars">Vars</a>
+														| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="constB2DBNAME" id="B2DBNAME"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">B2DBNAME</span>
+			 = <span class="const-default"> 'log'</span>
+			(line <span class="line-number">64</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constCHANGE_TYPE" id="CHANGE_TYPE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">CHANGE_TYPE</span>
+			 = <span class="const-default"> 'log.change_type'</span>
+			(line <span class="line-number">69</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constCURRENT_VALUE" id="CURRENT_VALUE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">CURRENT_VALUE</span>
+			 = <span class="const-default"> 'log.current_value'</span>
+			(line <span class="line-number">71</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constID" id="ID"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ID</span>
+			 = <span class="const-default"> 'log.id'</span>
+			(line <span class="line-number">65</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_AFF_ADD" id="LOG_AFF_ADD"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_AFF_ADD</span>
+			 = <span class="const-default"> 15</span>
+			(line <span class="line-number">37</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_AFF_DELETE" id="LOG_AFF_DELETE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_AFF_DELETE</span>
+			 = <span class="const-default"> 17</span>
+			(line <span class="line-number">39</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_AFF_UPDATE" id="LOG_AFF_UPDATE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_AFF_UPDATE</span>
+			 = <span class="const-default"> 16</span>
+			(line <span class="line-number">38</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_COMMENT" id="LOG_COMMENT"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_COMMENT</span>
+			 = <span class="const-default"> 28</span>
+			(line <span class="line-number">50</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_ASSIGNED" id="LOG_ISSUE_ASSIGNED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_ASSIGNED</span>
+			 = <span class="const-default"> 33</span>
+			(line <span class="line-number">55</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_CATEGORY" id="LOG_ISSUE_CATEGORY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_CATEGORY</span>
+			 = <span class="const-default"> 7</span>
+			(line <span class="line-number">29</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_CLOSE" id="LOG_ISSUE_CLOSE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_CLOSE</span>
+			 = <span class="const-default"> 14</span>
+			(line <span class="line-number">36</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_CREATED" id="LOG_ISSUE_CREATED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_CREATED</span>
+			 = <span class="const-default"> 29</span>
+			(line <span class="line-number">51</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_CUSTOMFIELD_CHANGED" id="LOG_ISSUE_CUSTOMFIELD_CHANGED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_CUSTOMFIELD_CHANGED</span>
+			 = <span class="const-default"> 36</span>
+			(line <span class="line-number">58</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_DEPENDS" id="LOG_ISSUE_DEPENDS"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_DEPENDS</span>
+			 = <span class="const-default"> 11</span>
+			(line <span class="line-number">33</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_ISSUETYPE" id="LOG_ISSUE_ISSUETYPE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_ISSUETYPE</span>
+			 = <span class="const-default"> 6</span>
+			(line <span class="line-number">28</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_MILESTONE" id="LOG_ISSUE_MILESTONE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_MILESTONE</span>
+			 = <span class="const-default"> 31</span>
+			(line <span class="line-number">53</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_OWNED" id="LOG_ISSUE_OWNED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_OWNED</span>
+			 = <span class="const-default"> 34</span>
+			(line <span class="line-number">56</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_PAIN_BUG_TYPE" id="LOG_ISSUE_PAIN_BUG_TYPE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_PAIN_BUG_TYPE</span>
+			 = <span class="const-default"> 37</span>
+			(line <span class="line-number">59</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_PAIN_CALCULATED" id="LOG_ISSUE_PAIN_CALCULATED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_PAIN_CALCULATED</span>
+			 = <span class="const-default"> 40</span>
+			(line <span class="line-number">62</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_PAIN_EFFECT" id="LOG_ISSUE_PAIN_EFFECT"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_PAIN_EFFECT</span>
+			 = <span class="const-default"> 38</span>
+			(line <span class="line-number">60</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_PAIN_LIKELIHOOD" id="LOG_ISSUE_PAIN_LIKELIHOOD"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_PAIN_LIKELIHOOD</span>
+			 = <span class="const-default"> 39</span>
+			(line <span class="line-number">61</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_PERCENT" id="LOG_ISSUE_PERCENT"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_PERCENT</span>
+			 = <span class="const-default"> 9</span>
+			(line <span class="line-number">31</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_POSTED" id="LOG_ISSUE_POSTED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_POSTED</span>
+			 = <span class="const-default"> 35</span>
+			(line <span class="line-number">57</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_PRIORITY" id="LOG_ISSUE_PRIORITY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_PRIORITY</span>
+			 = <span class="const-default"> 13</span>
+			(line <span class="line-number">35</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_REOPEN" id="LOG_ISSUE_REOPEN"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_REOPEN</span>
+			 = <span class="const-default"> 22</span>
+			(line <span class="line-number">44</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_REPRODUCABILITY" id="LOG_ISSUE_REPRODUCABILITY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_REPRODUCABILITY</span>
+			 = <span class="const-default"> 8</span>
+			(line <span class="line-number">30</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_RESOLUTION" id="LOG_ISSUE_RESOLUTION"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_RESOLUTION</span>
+			 = <span class="const-default"> 12</span>
+			(line <span class="line-number">34</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_SEVERITY" id="LOG_ISSUE_SEVERITY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_SEVERITY</span>
+			 = <span class="const-default"> 30</span>
+			(line <span class="line-number">52</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_STATUS" id="LOG_ISSUE_STATUS"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_STATUS</span>
+			 = <span class="const-default"> 3</span>
+			(line <span class="line-number">25</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_TEAM" id="LOG_ISSUE_TEAM"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_TEAM</span>
+			 = <span class="const-default"> 21</span>
+			(line <span class="line-number">43</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_TIME_ESTIMATED" id="LOG_ISSUE_TIME_ESTIMATED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_TIME_ESTIMATED</span>
+			 = <span class="const-default"> 10</span>
+			(line <span class="line-number">32</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_TIME_SPENT" id="LOG_ISSUE_TIME_SPENT"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_TIME_SPENT</span>
+			 = <span class="const-default"> 32</span>
+			(line <span class="line-number">54</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_UPDATE" id="LOG_ISSUE_UPDATE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_UPDATE</span>
+			 = <span class="const-default"> 5</span>
+			(line <span class="line-number">27</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_ISSUE_USERS" id="LOG_ISSUE_USERS"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_ISSUE_USERS</span>
+			 = <span class="const-default"> 4</span>
+			(line <span class="line-number">26</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_MILESTONE_ADD" id="LOG_MILESTONE_ADD"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_MILESTONE_ADD</span>
+			 = <span class="const-default"> 2</span>
+			(line <span class="line-number">24</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_MILESTONE_REMOVE" id="LOG_MILESTONE_REMOVE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_MILESTONE_REMOVE</span>
+			 = <span class="const-default"> 1</span>
+			(line <span class="line-number">23</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_TASK_ADD" id="LOG_TASK_ADD"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_TASK_ADD</span>
+			 = <span class="const-default"> 18</span>
+			(line <span class="line-number">40</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_TASK_ASSIGN_TEAM" id="LOG_TASK_ASSIGN_TEAM"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_TASK_ASSIGN_TEAM</span>
+			 = <span class="const-default"> 27</span>
+			(line <span class="line-number">49</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_TASK_ASSIGN_USER" id="LOG_TASK_ASSIGN_USER"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_TASK_ASSIGN_USER</span>
+			 = <span class="const-default"> 26</span>
+			(line <span class="line-number">48</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_TASK_COMPLETED" id="LOG_TASK_COMPLETED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_TASK_COMPLETED</span>
+			 = <span class="const-default"> 23</span>
+			(line <span class="line-number">45</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_TASK_DELETE" id="LOG_TASK_DELETE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_TASK_DELETE</span>
+			 = <span class="const-default"> 20</span>
+			(line <span class="line-number">42</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_TASK_REOPENED" id="LOG_TASK_REOPENED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_TASK_REOPENED</span>
+			 = <span class="const-default"> 24</span>
+			(line <span class="line-number">46</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_TASK_STATUS" id="LOG_TASK_STATUS"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_TASK_STATUS</span>
+			 = <span class="const-default"> 25</span>
+			(line <span class="line-number">47</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOG_TASK_UPDATE" id="LOG_TASK_UPDATE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOG_TASK_UPDATE</span>
+			 = <span class="const-default"> 19</span>
+			(line <span class="line-number">41</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constPREVIOUS_VALUE" id="PREVIOUS_VALUE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">PREVIOUS_VALUE</span>
+			 = <span class="const-default"> 'log.previous_value'</span>
+			(line <span class="line-number">70</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSCOPE" id="SCOPE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SCOPE</span>
+			 = <span class="const-default"> 'log.scope'</span>
+			(line <span class="line-number">66</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constTARGET" id="TARGET"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">TARGET</span>
+			 = <span class="const-default"> 'log.target'</span>
+			(line <span class="line-number">67</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constTARGET_TYPE" id="TARGET_TYPE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">TARGET_TYPE</span>
+			 = <span class="const-default"> 'log.target_type'</span>
+			(line <span class="line-number">68</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constTEXT" id="TEXT"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">TEXT</span>
+			 = <span class="const-default"> 'log.text'</span>
+			(line <span class="line-number">72</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constTIME" id="TIME"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">TIME</span>
+			 = <span class="const-default"> 'log.time'</span>
+			(line <span class="line-number">73</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constTYPE_ISSUE" id="TYPE_ISSUE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">TYPE_ISSUE</span>
+			 = <span class="const-default"> 1</span>
+			(line <span class="line-number">22</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constUID" id="UID"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">UID</span>
+			 = <span class="const-default"> 'log.uid'</span>
+			(line <span class="line-number">74</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+						
+		</div>
+	</div>
+
+	<p class="notes" id="credit">
+		Documentation generated on Wed, 14 Jul 2010 10:30:45 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

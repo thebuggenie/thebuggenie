@@ -3916,6 +3916,7 @@
 		public function save($notify = true, $new = false)
 		{
 			$comment_lines = array();
+			$related_issues_to_save = array();
 			$is_saved_estimated = false;
 			$is_saved_spent = false;
 			$is_saved_assignee = false;
@@ -4206,6 +4207,27 @@
 								$comment_lines[] = TBGContext::getI18n()->__("This issue has been closed");
 								if ($this->getMilestone() instanceof TBGMilestone)
 								{
+									if ($this->getMilestone()->isSprint())
+									{
+										if (!$this->getIssueType()->isTask())
+										{
+											$this->_spentpoints = $this->_estimatedpoints;
+										}
+										else
+										{
+											if ($this->_spenthours < $this->_estimatedhours)
+											{
+												$this->_spenthours = $this->_estimatedhours;
+											}
+											foreach ($this->getParentIssues() as $parent_issue)
+											{
+												if ($parent_issue->checkTaskStates())
+												{
+													$related_issues_to_save[$parent_issue->getID()] = true;
+												}
+											}
+										}
+									}
 									$this->getMilestone()->updateStatus();
 								}
 							}
@@ -4298,8 +4320,39 @@
 
 			$this->_saveCustomFieldValues();
 			$this->getProject()->clearRecentActivities();
+			
+			foreach (array_keys($related_issues_to_save) as $i_id)
+			{
+				$related_issue = TBGFactory::TBGIssueLab($i_id);
+				$related_issue->save();
+			}
 
 			return true;
+		}
+		
+		public function checkTaskStates()
+		{
+			if ($this->isOpen())
+			{
+				$open_issues = false;
+				foreach ($this->getChildIssues() as $child_issue)
+				{
+					if ($child_issue->getIssueType()->isTask())
+					{
+						if ($child_issue->isOpen())
+						{
+							$open_issues = true;
+							break;
+						}
+					}
+				}
+				if (!$open_issues)
+				{
+					$this->close();
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/**

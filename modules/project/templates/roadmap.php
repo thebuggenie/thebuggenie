@@ -5,7 +5,7 @@
 ?>
 <div id="project_roadmap">
 	<?php foreach ($selected_project->getAllMilestones() as $milestone): ?>
-		<div class="roadmap_milestone">
+		<div class="roadmap_milestone" id="roadmap_milestone_<?php echo $milestone->getID(); ?>">
 			<div class="roadmap_header">
 				<?php echo $milestone->getName(); ?>
 				<div class="roadmap_dates">

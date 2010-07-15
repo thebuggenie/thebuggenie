@@ -2227,9 +2227,9 @@
 						if ($milestone->getReachedDate() > time()) continue;
 						if (!array_key_exists($milestone->getReachedDate(), $this->_recentactivities))
 						{
-							$this->_recentactivities[$build->getReachedDate()] = array();
+							$this->_recentactivities[$milestone->getReachedDate()] = array();
 						}
-						$this->_recentactivities[$build->getReachedDate()][] = array('change_type' => (($milestone->isSprint()) ? 'sprint_end' : 'milestone_release'), 'info' => $milestone->getName());
+						$this->_recentactivities[$milestone->getReachedDate()][] = array('change_type' => (($milestone->isSprint()) ? 'sprint_end' : 'milestone_release'), 'info' => $milestone->getName());
 					}
 				}
 				

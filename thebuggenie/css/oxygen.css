@@ -598,7 +598,7 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 
 dl.viewissue_list { margin: 0; font-size: 11px; padding: 0 0 0 0; position: relative; min-height: 16px; clear: both; }
 dl.viewissue_list dt { width: 85px; font-weight: bold; padding: 3px 2px 2px 2px; clear: both; }
-dl.viewissue_list dd { float: left; display: block; width: 185px; font-weight: normal; margin: 0; padding: 3px 5px 1px 2px; min-height: 16px; }
+dl.viewissue_list dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; padding: 3px 5px 1px 2px; min-height: 16px; }
 img.dropdown { float: left; margin-right: 5px; display: none; cursor: pointer; }
 img.spinning { float: right; margin-right: 5px; }
 dd:hover img.dropdown, div.hoverable:hover img.dropdown { float: left; margin-right: 5px; display: inline; }

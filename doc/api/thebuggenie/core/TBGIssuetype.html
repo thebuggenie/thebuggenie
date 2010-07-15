@@ -1,0 +1,1162 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class TBGIssuetype</title>
+			<link rel="stylesheet" href="../../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class TBGIssuetype</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+											<a href="#sec-consts">Constants</a>
+						
+			</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Issue type class</p>
+		<p class="notes">
+			Located in <a class="field" href="_core---classes---TBGIssuetype.class.php.html">/core/classes/TBGIssuetype.class.php</a> (line <span class="field">19</span>)
+		</p>
+		
+				
+		<pre><a href="../../thebuggenie/core/TBGIdentifiableClass.html">TBGIdentifiableClass</a>
+   |
+   --<a href="../../thebuggenie/main/TBGDatatypeBase.html">TBGDatatypeBase</a>
+      |
+      --<a href="../../thebuggenie/main/TBGDatatype.html">TBGDatatype</a>
+         |
+         --TBGIssuetype</pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+															<a href="#sec-consts">Constants</a>
+							
+					</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																												<div class="var-title">
+					static <span class="var-type">mixed</span>
+					<a href="#$_issuetypes" title="details" class="var-name">$_issuetypes</a>
+				</div>
+																																																				<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_appliesto" title="details" class="var-name">$_appliesto</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_description" title="details" class="var-name">$_description</a>
+				</div>
+																								<div class="var-title">
+					<span class="var-type">boolean</span>
+					<a href="#$_istask" title="details" class="var-name">$_istask</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_redirect_after_reporting" title="details" class="var-name">$_redirect_after_reporting</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_reportable" title="details" class="var-name">$_reportable</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_visiblefields" title="details" class="var-name">$_visiblefields</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-consts">Constants</a>
+							
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																				<div class="method-definition">
+					static 						<span class="method-result"><a href="../../thebuggenie/core/TBGIssuetype.html">TBGIssuetype</a></span>
+										<a href="#createNew" title="details" class="method-name">createNew</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$icon</span> = <span class="var-default">'bug_report'</span>])
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">array</span>
+										<a href="#getAll" title="details" class="method-name">getAll</a>
+											([<span class="var-type">integer</span>&nbsp;<span class="var-name">$project_id</span> = <span class="var-default">0</span>])
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#getAllApplicableToProject" title="details" class="method-name">getAllApplicableToProject</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$p_id</span>)
+									</div>
+																																								<div class="method-definition">
+					static 						<span class="method-result">array</span>
+										<a href="#getIcons" title="details" class="method-name">getIcons</a>
+										()
+									</div>
+																								<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#getTask" title="details" class="method-name">getTask</a>
+										()
+									</div>
+																																																																																																
+												<div class="method-definition">
+											<span class="method-result">TBGIssuetype</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											(<span class="var-type">integer</span>&nbsp;<span class="var-name">$i_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$row</span> = <span class="var-default">null</span>], <span class="var-type">integer</span>&nbsp;<span class="var-name">$item_type</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#appliesToProject" title="details" class="method-name">appliesToProject</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#clearAvailableFields" title="details" class="method-name">clearAvailableFields</a>
+										()
+									</div>
+																																								<div class="method-definition">
+											<span class="method-result"><a href="../../thebuggenie/main/TBGProject.html">TBGProject</a></span>
+										<a href="#getAppliesTo" title="details" class="method-name">getAppliesTo</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getDescription" title="details" class="method-name">getDescription</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getIcon" title="details" class="method-name">getIcon</a>
+										()
+									</div>
+																								<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getRedirectAfterReporting" title="details" class="method-name">getRedirectAfterReporting</a>
+										()
+									</div>
+																								<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getVisibleFields" title="details" class="method-name">getVisibleFields</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#isFieldVisible" title="details" class="method-name">isFieldVisible</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#isReportable" title="details" class="method-name">isReportable</a>
+											([<span class="var-type">boolean[optional]</span>&nbsp;<span class="var-name">$val</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#isTask" title="details" class="method-name">isTask</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#save" title="details" class="method-name">save</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#setDescription" title="details" class="method-name">setDescription</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$description</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#setFieldAvailable" title="details" class="method-name">setFieldAvailable</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$key</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$details</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#setIcon" title="details" class="method-name">setIcon</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$icon</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#setIsReportable" title="details" class="method-name">setIsReportable</a>
+											(<span class="var-type">boolean</span>&nbsp;<span class="var-name">$val</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#setRedirectAfterReporting" title="details" class="method-name">setRedirectAfterReporting</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$val</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#_populateVisibleFields" title="details" class="method-name">_populateVisibleFields</a>
+										()
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-consts">Constants</a>
+							
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$_issuetypes" id="$_issuetypes"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">mixed</span>
+			<span class="var-name">$_issuetypes</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">37</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+		
+		
+
+</div>
+<a name="var$_appliesto" id="$_appliesto"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_appliesto</span>
+						(line <span class="line-number">29</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../thebuggenie/main/TBGDatatypeBase.html#var$_appliesto">TBGDatatypeBase::$_appliesto</a></dt>
+						<dd>ID of project which this item applies to (if any)</dd>
+					</dl>
+		
+		
+
+</div>
+<a name="var$_description" id="$_description"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_description</span>
+						(line <span class="line-number">31</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_istask" id="$_istask"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">boolean</span>
+			<span class="var-name">$_istask</span>
+						(line <span class="line-number">27</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">If true, is the default issue type when promoting tasks to issues</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_redirect_after_reporting" id="$_redirect_after_reporting"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_redirect_after_reporting</span>
+			 = <span class="var-default"> true</span>			(line <span class="line-number">33</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_reportable" id="$_reportable"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_reportable</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">35</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_visiblefields" id="$_visiblefields"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_visiblefields</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">39</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+							<h4>Inherited Variables</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../../thebuggenie/main/TBGDatatypeBase.html">TBGDatatypeBase</a></span></p>
+					<blockquote>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#var$_itemdata">TBGDatatypeBase::$_itemdata</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#var$_itemtype">TBGDatatypeBase::$_itemtype</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#var$_sortorder">TBGDatatypeBase::$_sortorder</a></span><br>
+							</span>
+											</blockquote> 
+									<p>Inherited from <span class="classname"><a href="../../thebuggenie/core/TBGIdentifiableClass.html">TBGIdentifiableClass</a></span></p>
+					<blockquote>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#var$_itemid">TBGIdentifiableClass::$_itemid</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#var$_name">TBGIdentifiableClass::$_name</a></span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																			<a href="#sec-consts">Constants</a>
+							
+										<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodcreateNew" id="createNew"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method createNew</span> (line <span class="line-number">49</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Create a new issue type and return it</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../../thebuggenie/core/TBGIssuetype.html">TBGIssuetype</a></span>
+		<span class="method-name">
+			createNew
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$icon</span> = <span class="var-default">'bug_report'</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$icon</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetAll" id="getAll"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method getAll</span> (line <span class="line-number">277</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns an array of issue types</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getAll
+		</span>
+					([<span class="var-type">integer</span>&nbsp;<span class="var-name">$project_id</span> = <span class="var-default">0</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$project_id</span><span class="var-description">: The id of the project which this issue type applies to</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetAllApplicableToProject" id="getAllApplicableToProject"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method getAllApplicableToProject</span> (line <span class="line-number">266</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getAllApplicableToProject
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$p_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$p_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetIcons" id="getIcons"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method getIcons</span> (line <span class="line-number">60</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Return an array of available icons</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getIcons
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetTask" id="getTask"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method getTask</span> (line <span class="line-number">223</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getTask
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">82</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Constructor function</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">TBGIssuetype</span>
+		<span class="method-name">
+			__construct
+		</span>
+					(<span class="var-type">integer</span>&nbsp;<span class="var-name">$i_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$row</span> = <span class="var-default">null</span>], <span class="var-type">integer</span>&nbsp;<span class="var-name">$item_type</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$i_id</span>			</li>
+					<li>
+				<span class="var-type">integer</span>
+				<span class="var-name">$item_type</span><span class="var-description">: Must always be ISSUETYPE</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$row</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../thebuggenie/main/TBGDatatypeBase.html#method__construct">TBGDatatypeBase::__construct()</a></dt>
+					</dl>
+			
+	</div>
+<a name="methodappliesToProject" id="appliesToProject"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">appliesToProject</span> (line <span class="line-number">261</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns whether or not the issue type applies to a project</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			appliesToProject
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodclearAvailableFields" id="clearAvailableFields"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">clearAvailableFields</span> (line <span class="line-number">208</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			clearAvailableFields
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetAppliesTo" id="getAppliesTo"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getAppliesTo</span> (line <span class="line-number">251</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the TBGProject which the issue type applies to, if any</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../../thebuggenie/main/TBGProject.html">TBGProject</a></span>
+		<span class="method-name">
+			getAppliesTo
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetDescription" id="getDescription"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getDescription</span> (line <span class="line-number">188</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getDescription
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetIcon" id="getIcon"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getIcon</span> (line <span class="line-number">178</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getIcon
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetRedirectAfterReporting" id="getRedirectAfterReporting"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getRedirectAfterReporting</span> (line <span class="line-number">198</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getRedirectAfterReporting
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetVisibleFields" id="getVisibleFields"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getVisibleFields</span> (line <span class="line-number">121</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getVisibleFields
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodisFieldVisible" id="isFieldVisible"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">isFieldVisible</span> (line <span class="line-number">134</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Whether a field is visible for this issue type</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			isFieldVisible
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$key</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodisReportable" id="isReportable"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">isReportable</span> (line <span class="line-number">169</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns or set whether or not this issue type is reportable</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			isReportable
+		</span>
+					([<span class="var-type">boolean[optional]</span>&nbsp;<span class="var-name">$val</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">boolean[optional]</span>
+				<span class="var-name">$val</span><span class="var-description">: Provide a value to set it</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodisTask" id="isTask"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">isTask</span> (line <span class="line-number">145</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns whether or not this issue type is the default for promoting tasks to issues</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			isTask
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodsave" id="save"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">save</span> (line <span class="line-number">218</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			save
+		</span>
+				()
+			</div>
+	
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../thebuggenie/main/TBGDatatype.html#methodsave">TBGDatatype::save()</a></dt>
+						<dd>Save name and itemdata</dd>
+					</dl>
+			
+	</div>
+<a name="methodsetDescription" id="setDescription"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">setDescription</span> (line <span class="line-number">193</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			setDescription
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$description</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$description</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetFieldAvailable" id="setFieldAvailable"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">setFieldAvailable</span> (line <span class="line-number">213</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			setFieldAvailable
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$key</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$details</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$key</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$details</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetIcon" id="setIcon"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">setIcon</span> (line <span class="line-number">183</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			setIcon
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$icon</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$icon</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetIsReportable" id="setIsReportable"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">setIsReportable</span> (line <span class="line-number">157</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Set whether or not this issue type is reportable</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			setIsReportable
+		</span>
+					(<span class="var-type">boolean</span>&nbsp;<span class="var-name">$val</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$val</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetRedirectAfterReporting" id="setRedirectAfterReporting"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">setRedirectAfterReporting</span> (line <span class="line-number">203</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			setRedirectAfterReporting
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$val</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$val</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method_populateVisibleFields" id="_populateVisibleFields"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">_populateVisibleFields</span> (line <span class="line-number">113</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_populateVisibleFields
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../thebuggenie/main/TBGDatatype.html">TBGDatatype</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatype.html#methodgetTypes">TBGDatatype::getTypes()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatype.html#methodinitialize">TBGDatatype::initialize()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatype.html#methodisBuiltin">TBGDatatype::isBuiltin()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatype.html#methodsave">TBGDatatype::save()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatype.html#method_createNew">TBGDatatype::_createNew()</a></span><br>
+											</blockquote>
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../thebuggenie/main/TBGDatatypeBase.html">TBGDatatypeBase</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#method__construct">TBGDatatypeBase::__construct()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#methodcanUserSet">TBGDatatypeBase::canUserSet()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#methodgetAvailableFields">TBGDatatypeBase::getAvailableFields()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#methodgetID">TBGDatatypeBase::getID()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#methodgetItemdata">TBGDatatypeBase::getItemdata()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#methodgetItemtype">TBGDatatypeBase::getItemtype()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#methodgetName">TBGDatatypeBase::getName()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#methodgetOrder">TBGDatatypeBase::getOrder()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#methodgetPermissionsKey">TBGDatatypeBase::getPermissionsKey()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#methodsetItemdata">TBGDatatypeBase::setItemdata()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#methodsetName">TBGDatatypeBase::setName()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#methodsetOrder">TBGDatatypeBase::setOrder()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/main/TBGDatatypeBase.html#method__toString">TBGDatatypeBase::__toString()</a></span><br>
+											</blockquote>
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../thebuggenie/core/TBGIdentifiableClass.html">TBGIdentifiableClass</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#methodgetID">TBGIdentifiableClass::getID()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#methodgetName">TBGIdentifiableClass::getName()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#methodgetType">TBGIdentifiableClass::getType()</a></span><br>
+													<span class="method-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#methodsetName">TBGIdentifiableClass::setName()</a></span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Constants</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+														| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+										<h4>Inherited Constants</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../../thebuggenie/main/TBGDatatype.html">TBGDatatype</a></span></p>
+					<blockquote>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../thebuggenie/main/TBGDatatype.html#constCATEGORY">TBGDatatype::CATEGORY</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../thebuggenie/main/TBGDatatype.html#constISSUETYPE">TBGDatatype::ISSUETYPE</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../thebuggenie/main/TBGDatatype.html#constPRIORITY">TBGDatatype::PRIORITY</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../thebuggenie/main/TBGDatatype.html#constREPRODUCABILITY">TBGDatatype::REPRODUCABILITY</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../thebuggenie/main/TBGDatatype.html#constRESOLUTION">TBGDatatype::RESOLUTION</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../thebuggenie/main/TBGDatatype.html#constSEVERITY">TBGDatatype::SEVERITY</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../thebuggenie/main/TBGDatatype.html#constSTATUS">TBGDatatype::STATUS</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../thebuggenie/main/TBGDatatype.html#constUSERSTATE">TBGDatatype::USERSTATE</a></span><br>
+							</span>
+											</blockquote> 
+									<p>Inherited from <span class="classname"><a href="../../thebuggenie/core/TBGIdentifiableClass.html">TBGIdentifiableClass</a></span></p>
+					<blockquote>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#constTYPE_TEAM">TBGIdentifiableClass::TYPE_TEAM</a></span><br>
+							</span>
+													<img src="../../media/images/Variable.png" />
+							<span class="const-title">
+								<span class="const-name"><a href="../../thebuggenie/core/TBGIdentifiableClass.html#constTYPE_USER">TBGIdentifiableClass::TYPE_USER</a></span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+
+	<p class="notes" id="credit">
+		Documentation generated on Wed, 14 Jul 2010 10:30:44 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

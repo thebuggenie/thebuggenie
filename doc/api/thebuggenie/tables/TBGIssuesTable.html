@@ -1,0 +1,2216 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class TBGIssuesTable</title>
+			<link rel="stylesheet" href="../../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class TBGIssuesTable</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-vars">Vars</a>
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+											<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+						
+			</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Issues table</p>
+		<p class="notes">
+			Located in <a class="field" href="_core---classes---B2DB---TBGIssuesTable.class.php.html">/core/classes/B2DB/TBGIssuesTable.class.php</a> (line <span class="field">19</span>)
+		</p>
+		
+				
+		<pre><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a>
+   |
+   --<a href="../../B2DB/pdo/B2DBTable.html">B2DBTable</a>
+      |
+      --TBGIssuesTable</pre>
+	
+			</div>
+</div>
+
+
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Constants</span> (<a href="#sec-consts">details</a>)
+												<a href="#sec-vars">Vars</a>
+				 
+				|
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ASSIGNED_TO" title="details" class="const-name">ASSIGNED_TO</a> = 					<span class="var-type"> 'issues.assigned_to'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ASSIGNED_TYPE" title="details" class="const-name">ASSIGNED_TYPE</a> = 					<span class="var-type"> 'issues.assigned_type'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#B2DBNAME" title="details" class="const-name">B2DBNAME</a> = 					<span class="var-type"> 'issues'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#BLOCKING" title="details" class="const-name">BLOCKING</a> = 					<span class="var-type"> 'issues.blocking'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#CATEGORY" title="details" class="const-name">CATEGORY</a> = 					<span class="var-type"> 'issues.category'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#DELETED" title="details" class="const-name">DELETED</a> = 					<span class="var-type"> 'issues.deleted'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#DUPLICATE" title="details" class="const-name">DUPLICATE</a> = 					<span class="var-type"> 'issues.duplicate'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ESTIMATED_DAYS" title="details" class="const-name">ESTIMATED_DAYS</a> = 					<span class="var-type"> 'issues.estimated_days'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ESTIMATED_HOURS" title="details" class="const-name">ESTIMATED_HOURS</a> = 					<span class="var-type"> 'issues.estimated_hours'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ESTIMATED_MONTHS" title="details" class="const-name">ESTIMATED_MONTHS</a> = 					<span class="var-type"> 'issues.estimated_months'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ESTIMATED_POINTS" title="details" class="const-name">ESTIMATED_POINTS</a> = 					<span class="var-type"> 'issues.estimated_points'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ESTIMATED_WEEKS" title="details" class="const-name">ESTIMATED_WEEKS</a> = 					<span class="var-type"> 'issues.estimated_weeks'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ID" title="details" class="const-name">ID</a> = 					<span class="var-type"> 'issues.id'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ISSUE_NO" title="details" class="const-name">ISSUE_NO</a> = 					<span class="var-type"> 'issues.issue_no'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#ISSUE_TYPE" title="details" class="const-name">ISSUE_TYPE</a> = 					<span class="var-type"> 'issues.issue_type'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LAST_UPDATED" title="details" class="const-name">LAST_UPDATED</a> = 					<span class="var-type"> 'issues.last_updated'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LOCKED" title="details" class="const-name">LOCKED</a> = 					<span class="var-type"> 'issues.locked'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#LONG_DESCRIPTION" title="details" class="const-name">LONG_DESCRIPTION</a> = 					<span class="var-type"> 'issues.long_description'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#MILESTONE" title="details" class="const-name">MILESTONE</a> = 					<span class="var-type"> 'issues.milestone'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#OWNED_BY" title="details" class="const-name">OWNED_BY</a> = 					<span class="var-type"> 'issues.owned_by'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#OWNED_TYPE" title="details" class="const-name">OWNED_TYPE</a> = 					<span class="var-type"> 'issues.owned_type'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#PAIN_BUG_TYPE" title="details" class="const-name">PAIN_BUG_TYPE</a> = 					<span class="var-type"> 'issues.pain_bug_type'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#PAIN_EFFECT" title="details" class="const-name">PAIN_EFFECT</a> = 					<span class="var-type"> 'issues.pain_effect'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#PAIN_LIKELIHOOD" title="details" class="const-name">PAIN_LIKELIHOOD</a> = 					<span class="var-type"> 'issues.pain_likelihood'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#PERCENT_COMPLETE" title="details" class="const-name">PERCENT_COMPLETE</a> = 					<span class="var-type"> 'issues.percent_complete'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#POSTED" title="details" class="const-name">POSTED</a> = 					<span class="var-type"> 'issues.posted'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#POSTED_BY" title="details" class="const-name">POSTED_BY</a> = 					<span class="var-type"> 'issues.posted_by'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#PRIORITY" title="details" class="const-name">PRIORITY</a> = 					<span class="var-type"> 'issues.priority'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#PROJECT_ID" title="details" class="const-name">PROJECT_ID</a> = 					<span class="var-type"> 'issues.project_id'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#REPRODUCABILITY" title="details" class="const-name">REPRODUCABILITY</a> = 					<span class="var-type"> 'issues.reproducability'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#REPRODUCTION" title="details" class="const-name">REPRODUCTION</a> = 					<span class="var-type"> 'issues.reproduction'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#RESOLUTION" title="details" class="const-name">RESOLUTION</a> = 					<span class="var-type"> 'issues.resolution'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#SCOPE" title="details" class="const-name">SCOPE</a> = 					<span class="var-type"> 'issues.scope'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#SCRUMCOLOR" title="details" class="const-name">SCRUMCOLOR</a> = 					<span class="var-type"> 'issues.scrumcolor'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#SEVERITY" title="details" class="const-name">SEVERITY</a> = 					<span class="var-type"> 'issues.severity'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#SPENT_DAYS" title="details" class="const-name">SPENT_DAYS</a> = 					<span class="var-type"> 'issues.spent_days'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#SPENT_HOURS" title="details" class="const-name">SPENT_HOURS</a> = 					<span class="var-type"> 'issues.spent_hours'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#SPENT_MONTHS" title="details" class="const-name">SPENT_MONTHS</a> = 					<span class="var-type"> 'issues.spent_months'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#SPENT_POINTS" title="details" class="const-name">SPENT_POINTS</a> = 					<span class="var-type"> 'issues.spent_points'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#SPENT_WEEKS" title="details" class="const-name">SPENT_WEEKS</a> = 					<span class="var-type"> 'issues.spent_weeks'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#STATE" title="details" class="const-name">STATE</a> = 					<span class="var-type"> 'issues.state'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#STATUS" title="details" class="const-name">STATUS</a> = 					<span class="var-type"> 'issues.status'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#TITLE" title="details" class="const-name">TITLE</a> = 					<span class="var-type"> 'issues.title'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#USER_PAIN" title="details" class="const-name">USER_PAIN</a> = 					<span class="var-type"> 'issues.user_pain'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#USER_WORKED_ON_SINCE" title="details" class="const-name">USER_WORKED_ON_SINCE</a> = 					<span class="var-type"> 'issues.user_worked_on_since'</span>
+
+				</div>
+								<div class="const-title">
+					<img src="../../media/images/Constant.png" alt=" " />
+					<a href="#USER_WORKING_ON" title="details" class="const-name">USER_WORKING_ON</a> = 					<span class="var-type"> 'issues.user_working_on'</span>
+
+				</div>
+							</div>
+		</div>
+	</div>
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+															<a href="#sec-vars">Vars</a>
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																																																																																																				<div class="method-definition">
+					static 						<span class="method-result"><a href="../../thebuggenie/tables/TBGIssuesTable.html">TBGIssuesTable</a></span>
+										<a href="#getTable" title="details" class="method-name">getTable</a>
+										()
+									</div>
+																																<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#getValidSearchFilters" title="details" class="method-name">getValidSearchFilters</a>
+										()
+									</div>
+																																
+												<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#clearMilestone" title="details" class="method-name">clearMilestone</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$milestone_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#createNewWithTransaction" title="details" class="method-name">createNewWithTransaction</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$title</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$issue_type</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$p_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$issue_id</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#findIssues" title="details" class="method-name">findIssues</a>
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$filters</span> = <span class="var-default">array()</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$results_per_page</span> = <span class="var-default">30</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$offset</span> = <span class="var-default">0</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$groupby</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$grouporder</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getByID" title="details" class="method-name">getByID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getByMilestone" title="details" class="method-name">getByMilestone</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$milestone_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getByPrefixAndIssueNo" title="details" class="method-name">getByPrefixAndIssueNo</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$prefix</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$issue_no</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getByProjectIDAndIssueNo" title="details" class="method-name">getByProjectIDAndIssueNo</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$issue_no</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getByProjectIDandNoMilestone" title="details" class="method-name">getByProjectIDandNoMilestone</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getCategoryCountByProjectID" title="details" class="method-name">getCategoryCountByProjectID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getCountByProjectID" title="details" class="method-name">getCountByProjectID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getCountsByProjectID" title="details" class="method-name">getCountsByProjectID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getCountsByProjectIDandIssuetype" title="details" class="method-name">getCountsByProjectIDandIssuetype</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$issuetype_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getCountsByProjectIDandMilestone" title="details" class="method-name">getCountsByProjectIDandMilestone</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$milestone_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$exclude_tasks</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getLast30IssueCountsByProjectID" title="details" class="method-name">getLast30IssueCountsByProjectID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getOpenAffectedIssuesByProjectID" title="details" class="method-name">getOpenAffectedIssuesByProjectID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getOpenIssuesByProjectIDAndIssueTypes" title="details" class="method-name">getOpenIssuesByProjectIDAndIssueTypes</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$issue_types</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getOpenIssuesByTeamAssigned" title="details" class="method-name">getOpenIssuesByTeamAssigned</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$team_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getOpenIssuesByUserAssigned" title="details" class="method-name">getOpenIssuesByUserAssigned</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$user_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getPriorityCountByProjectID" title="details" class="method-name">getPriorityCountByProjectID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getRecentByProjectIDandIssueType" title="details" class="method-name">getRecentByProjectIDandIssueType</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$issuetypes</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">5</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getReproducabilityCountByProjectID" title="details" class="method-name">getReproducabilityCountByProjectID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getResolutionCountByProjectID" title="details" class="method-name">getResolutionCountByProjectID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getStatusCountByProjectID" title="details" class="method-name">getStatusCountByProjectID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+									</div>
+																								<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getTotalHoursByMilestoneID" title="details" class="method-name">getTotalHoursByMilestoneID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$milestone_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getTotalPointsByMilestoneID" title="details" class="method-name">getTotalPointsByMilestoneID</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$milestone_id</span>)
+									</div>
+																								<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#setDuplicate" title="details" class="method-name">setDuplicate</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$issue_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$duplicate_of</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">TBGIssuesTable</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#_getCountByProjectIDAndColumn" title="details" class="method-name">_getCountByProjectIDAndColumn</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$column</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+										<h4>Inherited Variables</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span></p>
+					<blockquote>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$b2db_alias">BaseB2DBTable::$b2db_alias</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$b2db_name">BaseB2DBTable::$b2db_name</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$id_column">BaseB2DBTable::$id_column</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_autoincrement_start_at">BaseB2DBTable::$_autoincrement_start_at</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_charset">BaseB2DBTable::$_charset</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_columns">BaseB2DBTable::$_columns</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../../B2DB/core/BaseB2DBTable.html#var$_foreigntables">BaseB2DBTable::$_foreigntables</a></span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-vars">Vars</a>
+																			<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+										<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodgetTable" id="getTable"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method getTable</span> (line <span class="line-number">73</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Return an instance of this table</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../../thebuggenie/tables/TBGIssuesTable.html">TBGIssuesTable</a></span>
+		<span class="method-name">
+			getTable
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetValidSearchFilters" id="getValidSearchFilters"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method getValidSearchFilters</span> (line <span class="line-number">127</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getValidSearchFilters
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+
+<a name="methodclearMilestone" id="clearMilestone"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">clearMilestone</span> (line <span class="line-number">384</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			clearMilestone
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$milestone_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$milestone_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateNewWithTransaction" id="createNewWithTransaction"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">createNewWithTransaction</span> (line <span class="line-number">306</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			createNewWithTransaction
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$title</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$issue_type</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$p_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$issue_id</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$title</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$issue_type</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$p_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$issue_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfindIssues" id="findIssues"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">findIssues</span> (line <span class="line-number">480</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			findIssues
+		</span>
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$filters</span> = <span class="var-default">array()</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$results_per_page</span> = <span class="var-default">30</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$offset</span> = <span class="var-default">0</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$groupby</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$grouporder</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$filters</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$results_per_page</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$offset</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$groupby</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$grouporder</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetByID" id="getByID"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getByID</span> (line <span class="line-number">290</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getByID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetByMilestone" id="getByMilestone"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getByMilestone</span> (line <span class="line-number">365</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getByMilestone
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$milestone_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$milestone_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetByPrefixAndIssueNo" id="getByPrefixAndIssueNo"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getByPrefixAndIssueNo</span> (line <span class="line-number">340</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getByPrefixAndIssueNo
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$prefix</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$issue_no</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$prefix</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$issue_no</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetByProjectIDAndIssueNo" id="getByProjectIDAndIssueNo"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getByProjectIDAndIssueNo</span> (line <span class="line-number">349</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getByProjectIDAndIssueNo
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$issue_no</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$issue_no</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetByProjectIDandNoMilestone" id="getByProjectIDandNoMilestone"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getByProjectIDandNoMilestone</span> (line <span class="line-number">374</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getByProjectIDandNoMilestone
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetCategoryCountByProjectID" id="getCategoryCountByProjectID"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCategoryCountByProjectID</span> (line <span class="line-number">275</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getCategoryCountByProjectID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetCountByProjectID" id="getCountByProjectID"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCountByProjectID</span> (line <span class="line-number">298</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getCountByProjectID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetCountsByProjectID" id="getCountsByProjectID"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCountsByProjectID</span> (line <span class="line-number">132</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getCountsByProjectID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetCountsByProjectIDandIssuetype" id="getCountsByProjectIDandIssuetype"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCountsByProjectIDandIssuetype</span> (line <span class="line-number">172</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getCountsByProjectIDandIssuetype
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$issuetype_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$issuetype_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetCountsByProjectIDandMilestone" id="getCountsByProjectIDandMilestone"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCountsByProjectIDandMilestone</span> (line <span class="line-number">236</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getCountsByProjectIDandMilestone
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$milestone_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$exclude_tasks</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$milestone_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$exclude_tasks</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetLast30IssueCountsByProjectID" id="getLast30IssueCountsByProjectID"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getLast30IssueCountsByProjectID</span> (line <span class="line-number">146</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getLast30IssueCountsByProjectID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetOpenAffectedIssuesByProjectID" id="getOpenAffectedIssuesByProjectID"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getOpenAffectedIssuesByProjectID</span> (line <span class="line-number">256</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getOpenAffectedIssuesByProjectID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetOpenIssuesByProjectIDAndIssueTypes" id="getOpenIssuesByProjectIDAndIssueTypes"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getOpenIssuesByProjectIDAndIssueTypes</span> (line <span class="line-number">418</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getOpenIssuesByProjectIDAndIssueTypes
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$issue_types</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$issue_types</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetOpenIssuesByTeamAssigned" id="getOpenIssuesByTeamAssigned"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getOpenIssuesByTeamAssigned</span> (line <span class="line-number">392</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getOpenIssuesByTeamAssigned
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$team_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$team_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetOpenIssuesByUserAssigned" id="getOpenIssuesByUserAssigned"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getOpenIssuesByUserAssigned</span> (line <span class="line-number">405</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getOpenIssuesByUserAssigned
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$user_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$user_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetPriorityCountByProjectID" id="getPriorityCountByProjectID"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getPriorityCountByProjectID</span> (line <span class="line-number">265</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getPriorityCountByProjectID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetRecentByProjectIDandIssueType" id="getRecentByProjectIDandIssueType"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getRecentByProjectIDandIssueType</span> (line <span class="line-number">431</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getRecentByProjectIDandIssueType
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$issuetypes</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">5</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$issuetypes</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$limit</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetReproducabilityCountByProjectID" id="getReproducabilityCountByProjectID"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getReproducabilityCountByProjectID</span> (line <span class="line-number">285</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getReproducabilityCountByProjectID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetResolutionCountByProjectID" id="getResolutionCountByProjectID"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getResolutionCountByProjectID</span> (line <span class="line-number">280</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getResolutionCountByProjectID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetStatusCountByProjectID" id="getStatusCountByProjectID"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getStatusCountByProjectID</span> (line <span class="line-number">270</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getStatusCountByProjectID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetTotalHoursByMilestoneID" id="getTotalHoursByMilestoneID"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getTotalHoursByMilestoneID</span> (line <span class="line-number">464</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getTotalHoursByMilestoneID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$milestone_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$milestone_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetTotalPointsByMilestoneID" id="getTotalPointsByMilestoneID"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getTotalPointsByMilestoneID</span> (line <span class="line-number">448</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getTotalPointsByMilestoneID
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$milestone_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$milestone_id</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetDuplicate" id="setDuplicate"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">setDuplicate</span> (line <span class="line-number">358</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			setDuplicate
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$issue_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$duplicate_of</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$issue_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$duplicate_of</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">78</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">TBGIssuesTable</span>
+		<span class="method-name">
+			__construct
+		</span>
+				()
+			</div>
+	
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../../B2DB/core/BaseB2DBTable.html#method__construct">BaseB2DBTable::__construct()</a></dt>
+					</dl>
+			
+	</div>
+<a name="method_getCountByProjectIDAndColumn" id="_getCountByProjectIDAndColumn"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">_getCountByProjectIDAndColumn</span> (line <span class="line-number">187</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_getCountByProjectIDAndColumn
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$project_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$column</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$project_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$column</span>			</li>
+				</ul>
+		
+			
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../B2DB/pdo/B2DBTable.html">B2DBTable</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../../B2DB/pdo/B2DBTable.html#methodgetQC">B2DBTable::getQC()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/pdo/B2DBTable.html#method_createToSQL">B2DBTable::_createToSQL()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/pdo/B2DBTable.html#method_dropToSQL">B2DBTable::_dropToSQL()</a></span><br>
+											</blockquote>
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../../B2DB/core/BaseB2DBTable.html">BaseB2DBTable</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__construct">BaseB2DBTable::__construct()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodcreate">BaseB2DBTable::create()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoCount">BaseB2DBTable::doCount()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoDelete">BaseB2DBTable::doDelete()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoDeleteById">BaseB2DBTable::doDeleteById()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoInsert">BaseB2DBTable::doInsert()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelect">BaseB2DBTable::doSelect()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectAll">BaseB2DBTable::doSelectAll()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectById">BaseB2DBTable::doSelectById()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoSelectOne">BaseB2DBTable::doSelectOne()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoUpdate">BaseB2DBTable::doUpdate()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddoUpdateById">BaseB2DBTable::doUpdateById()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methoddrop">BaseB2DBTable::drop()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetAliasColumns">BaseB2DBTable::getAliasColumns()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetB2DBAlias">BaseB2DBTable::getB2DBAlias()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetB2DBName">BaseB2DBTable::getB2DBName()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetColumn">BaseB2DBTable::getColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetColumns">BaseB2DBTable::getColumns()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetCriteria">BaseB2DBTable::getCriteria()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTable">BaseB2DBTable::getForeignTable()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTableByLocalColumn">BaseB2DBTable::getForeignTableByLocalColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetForeignTables">BaseB2DBTable::getForeignTables()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodgetIdColumn">BaseB2DBTable::getIdColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodsetAutoIncrementStart">BaseB2DBTable::setAutoIncrementStart()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#methodsetCharset">BaseB2DBTable::setCharset()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addBlob">BaseB2DBTable::_addBlob()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addBoolean">BaseB2DBTable::_addBoolean()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addColumn">BaseB2DBTable::_addColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addFloat">BaseB2DBTable::_addFloat()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addForeignKeyColumn">BaseB2DBTable::_addForeignKeyColumn()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addInteger">BaseB2DBTable::_addInteger()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addText">BaseB2DBTable::_addText()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_addVarchar">BaseB2DBTable::_addVarchar()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method_getRealColumnFieldName">BaseB2DBTable::_getRealColumnFieldName()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__clone">BaseB2DBTable::__clone()</a></span><br>
+													<span class="method-name"><a href="../../B2DB/core/BaseB2DBTable.html#method__toString">BaseB2DBTable::__toString()</a></span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Constants</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-vars">Vars</a>
+														| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="constASSIGNED_TO" id="ASSIGNED_TO"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ASSIGNED_TO</span>
+			 = <span class="const-default"> 'issues.assigned_to'</span>
+			(line <span class="line-number">36</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constASSIGNED_TYPE" id="ASSIGNED_TYPE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ASSIGNED_TYPE</span>
+			 = <span class="const-default"> 'issues.assigned_type'</span>
+			(line <span class="line-number">54</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constB2DBNAME" id="B2DBNAME"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">B2DBNAME</span>
+			 = <span class="const-default"> 'issues'</span>
+			(line <span class="line-number">21</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constBLOCKING" id="BLOCKING"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">BLOCKING</span>
+			 = <span class="const-default"> 'issues.blocking'</span>
+			(line <span class="line-number">64</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constCATEGORY" id="CATEGORY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">CATEGORY</span>
+			 = <span class="const-default"> 'issues.category'</span>
+			(line <span class="line-number">40</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constDELETED" id="DELETED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">DELETED</span>
+			 = <span class="const-default"> 'issues.deleted'</span>
+			(line <span class="line-number">63</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constDUPLICATE" id="DUPLICATE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">DUPLICATE</span>
+			 = <span class="const-default"> 'issues.duplicate'</span>
+			(line <span class="line-number">62</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constESTIMATED_DAYS" id="ESTIMATED_DAYS"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ESTIMATED_DAYS</span>
+			 = <span class="const-default"> 'issues.estimated_days'</span>
+			(line <span class="line-number">45</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constESTIMATED_HOURS" id="ESTIMATED_HOURS"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ESTIMATED_HOURS</span>
+			 = <span class="const-default"> 'issues.estimated_hours'</span>
+			(line <span class="line-number">46</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constESTIMATED_MONTHS" id="ESTIMATED_MONTHS"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ESTIMATED_MONTHS</span>
+			 = <span class="const-default"> 'issues.estimated_months'</span>
+			(line <span class="line-number">43</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constESTIMATED_POINTS" id="ESTIMATED_POINTS"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ESTIMATED_POINTS</span>
+			 = <span class="const-default"> 'issues.estimated_points'</span>
+			(line <span class="line-number">47</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constESTIMATED_WEEKS" id="ESTIMATED_WEEKS"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ESTIMATED_WEEKS</span>
+			 = <span class="const-default"> 'issues.estimated_weeks'</span>
+			(line <span class="line-number">44</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constID" id="ID"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ID</span>
+			 = <span class="const-default"> 'issues.id'</span>
+			(line <span class="line-number">22</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constISSUE_NO" id="ISSUE_NO"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ISSUE_NO</span>
+			 = <span class="const-default"> 'issues.issue_no'</span>
+			(line <span class="line-number">24</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constISSUE_TYPE" id="ISSUE_TYPE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">ISSUE_TYPE</span>
+			 = <span class="const-default"> 'issues.issue_type'</span>
+			(line <span class="line-number">31</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLAST_UPDATED" id="LAST_UPDATED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LAST_UPDATED</span>
+			 = <span class="const-default"> 'issues.last_updated'</span>
+			(line <span class="line-number">27</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLOCKED" id="LOCKED"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LOCKED</span>
+			 = <span class="const-default"> 'issues.locked'</span>
+			(line <span class="line-number">65</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constLONG_DESCRIPTION" id="LONG_DESCRIPTION"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">LONG_DESCRIPTION</span>
+			 = <span class="const-default"> 'issues.long_description'</span>
+			(line <span class="line-number">29</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constMILESTONE" id="MILESTONE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">MILESTONE</span>
+			 = <span class="const-default"> 'issues.milestone'</span>
+			(line <span class="line-number">66</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constOWNED_BY" id="OWNED_BY"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">OWNED_BY</span>
+			 = <span class="const-default"> 'issues.owned_by'</span>
+			(line <span class="line-number">35</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constOWNED_TYPE" id="OWNED_TYPE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">OWNED_TYPE</span>
+			 = <span class="const-default"> 'issues.owned_type'</span>
+			(line <span class="line-number">61</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constPAIN_BUG_TYPE" id="PAIN_BUG_TYPE"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">PAIN_BUG_TYPE</span>
+			 = <span class="const-default"> 'issues.pain_bug_type'</span>
+			(line <span class="line-number">58</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constPAIN_EFFECT" id="PAIN_EFFECT"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">PAIN_EFFECT</span>
+			 = <span class="const-default"> 'issues.pain_effect'</span>
+			(line <span class="line-number">59</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constPAIN_LIKELIHOOD" id="PAIN_LIKELIHOOD"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">PAIN_LIKELIHOOD</span>
+			 = <span class="const-default"> 'issues.pain_likelihood'</span>
+			(line <span class="line-number">60</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constPERCENT_COMPLETE" id="PERCENT_COMPLETE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">PERCENT_COMPLETE</span>
+			 = <span class="const-default"> 'issues.percent_complete'</span>
+			(line <span class="line-number">53</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constPOSTED" id="POSTED"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">POSTED</span>
+			 = <span class="const-default"> 'issues.posted'</span>
+			(line <span class="line-number">26</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constPOSTED_BY" id="POSTED_BY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">POSTED_BY</span>
+			 = <span class="const-default"> 'issues.posted_by'</span>
+			(line <span class="line-number">34</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constPRIORITY" id="PRIORITY"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">PRIORITY</span>
+			 = <span class="const-default"> 'issues.priority'</span>
+			(line <span class="line-number">38</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constPROJECT_ID" id="PROJECT_ID"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">PROJECT_ID</span>
+			 = <span class="const-default"> 'issues.project_id'</span>
+			(line <span class="line-number">28</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constREPRODUCABILITY" id="REPRODUCABILITY"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">REPRODUCABILITY</span>
+			 = <span class="const-default"> 'issues.reproducability'</span>
+			(line <span class="line-number">41</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constREPRODUCTION" id="REPRODUCTION"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">REPRODUCTION</span>
+			 = <span class="const-default"> 'issues.reproduction'</span>
+			(line <span class="line-number">30</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constRESOLUTION" id="RESOLUTION"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">RESOLUTION</span>
+			 = <span class="const-default"> 'issues.resolution'</span>
+			(line <span class="line-number">32</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSCOPE" id="SCOPE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SCOPE</span>
+			 = <span class="const-default"> 'issues.scope'</span>
+			(line <span class="line-number">23</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSCRUMCOLOR" id="SCRUMCOLOR"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SCRUMCOLOR</span>
+			 = <span class="const-default"> 'issues.scrumcolor'</span>
+			(line <span class="line-number">42</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSEVERITY" id="SEVERITY"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SEVERITY</span>
+			 = <span class="const-default"> 'issues.severity'</span>
+			(line <span class="line-number">39</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSPENT_DAYS" id="SPENT_DAYS"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SPENT_DAYS</span>
+			 = <span class="const-default"> 'issues.spent_days'</span>
+			(line <span class="line-number">50</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSPENT_HOURS" id="SPENT_HOURS"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SPENT_HOURS</span>
+			 = <span class="const-default"> 'issues.spent_hours'</span>
+			(line <span class="line-number">51</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSPENT_MONTHS" id="SPENT_MONTHS"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SPENT_MONTHS</span>
+			 = <span class="const-default"> 'issues.spent_months'</span>
+			(line <span class="line-number">48</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSPENT_POINTS" id="SPENT_POINTS"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SPENT_POINTS</span>
+			 = <span class="const-default"> 'issues.spent_points'</span>
+			(line <span class="line-number">52</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSPENT_WEEKS" id="SPENT_WEEKS"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">SPENT_WEEKS</span>
+			 = <span class="const-default"> 'issues.spent_weeks'</span>
+			(line <span class="line-number">49</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSTATE" id="STATE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">STATE</span>
+			 = <span class="const-default"> 'issues.state'</span>
+			(line <span class="line-number">33</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constSTATUS" id="STATUS"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">STATUS</span>
+			 = <span class="const-default"> 'issues.status'</span>
+			(line <span class="line-number">37</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constTITLE" id="TITLE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">TITLE</span>
+			 = <span class="const-default"> 'issues.title'</span>
+			(line <span class="line-number">25</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constUSER_PAIN" id="USER_PAIN"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">USER_PAIN</span>
+			 = <span class="const-default"> 'issues.user_pain'</span>
+			(line <span class="line-number">57</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constUSER_WORKED_ON_SINCE" id="USER_WORKED_ON_SINCE"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">USER_WORKED_ON_SINCE</span>
+			 = <span class="const-default"> 'issues.user_worked_on_since'</span>
+			(line <span class="line-number">56</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+<a name="constUSER_WORKING_ON" id="USER_WORKING_ON"><!-- --></A>
+<div class="evenrow">
+
+	<div class="const-header">
+		<img src="../../media/images/Variable.png" />
+		<span class="const-title">
+			<span class="const-name">USER_WORKING_ON</span>
+			 = <span class="const-default"> 'issues.user_working_on'</span>
+			(line <span class="line-number">55</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+						
+		</div>
+	</div>
+
+	<p class="notes" id="credit">
+		Documentation generated on Wed, 14 Jul 2010 10:30:44 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

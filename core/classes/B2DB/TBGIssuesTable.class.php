@@ -287,6 +287,11 @@
 			return $this->_getCountByProjectIDAndColumn($project_id, self::REPRODUCABILITY);
 		}
 
+		public function getStateCountByProjectID($project_id)
+		{
+			return $this->_getCountByProjectIDAndColumn($project_id, self::STATE);
+		}
+
 		public function getByID($id)
 		{
 			$crit = $this->getCriteria();
