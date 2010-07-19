@@ -20,6 +20,7 @@
 			$this->setLongName($i18n->__('Wiki'));
 			$this->setMenuTitle($i18n->__('Wiki'));
 			$this->setConfigTitle($i18n->__('Wiki'));
+			$this->showInMenu();
 			$this->setDescription($i18n->__('Enables Wiki-functionality'));
 			$this->setConfigDescription($i18n->__('Set up the Wiki module from this section'));
 			$this->setHasConfigSettings();

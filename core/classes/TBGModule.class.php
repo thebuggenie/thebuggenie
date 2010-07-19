@@ -183,38 +183,16 @@
 			$this->_enabled = true;
 		}
 		
-		public function showInMenu()
+		public function showInMenu($val = true)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGModulesTable::SHOW_IN_MENU, 1);
-			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
-			$this->_showinmenu = true;
+			$this->_showinmenu = $val;
 		}
 		
 		public function hideFromMenu()
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGModulesTable::SHOW_IN_MENU, 0);
-			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
-			$this->_showinmenu = false;
+			$this->showInMenu(false);
 		}
 		
-		public function showInUserMenu()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGModulesTable::SHOW_IN_USERMENU, 1);
-			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
-			$this->_showinusermenu = true;
-		}
-
-		public function hideFromUserMenu()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGModulesTable::SHOW_IN_USERMENU, 0);
-			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
-			$this->_showinusermenu = false;
-		}
-
 		final public function uninstall()
 		{
 			if ($this->isCore())

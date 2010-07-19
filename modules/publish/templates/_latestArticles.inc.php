@@ -1,6 +1,6 @@
 <?php TBGContext::loadLibrary('publish/publish'); ?>
 <div style="margin: 10px 5px 10px 10px;">
-	<div class="left_menu_header"><?php echo __('Latest articles'); ?></div>
+	<div class="left_menu_header"><?php echo __('Recently edited pages'); ?></div>
 	<ul class="article_list">
 	<?php if (count($latest_articles) >= 1): ?>
 		<?php foreach($latest_articles as $article): ?>
@@ -13,7 +13,7 @@
 				</div>
 			</li>
 		<?php endforeach; ?>
-			<li class="more_news"><?php echo link_tag(make_url('publish'), __('More articles')); ?></li>
+			<li class="more_news"><?php echo link_tag(make_url('publish'), __('Show wiki').'&nbsp;&rArr;'); ?></li>
 	<?php elseif (count($latest_articles) == 0): ?>
 		<li class="faded_medium"><?php echo __('There are no news published'); ?></li>
 	<?php endif; ?>
