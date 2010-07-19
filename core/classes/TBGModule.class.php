@@ -154,11 +154,19 @@
 			TBGLogging::log($message, $this->getName(), $level);
 		}
 		
+		public static function disableModule($module_id)
+		{
+			TBGModulesTable::getTable()->disableModuleByID($module_id);
+		}
+
+		public static function removeModule($module_id)
+		{
+			TBGModulesTable::getTable()->removeModuleByID($module_id);
+		}
+
 		public function disable()
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGModulesTable::ENABLED, 0);
-			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
+			self::disableModule($this->getID());
 			$this->_enabled = false;
 		}
 

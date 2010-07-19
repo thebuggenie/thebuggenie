@@ -27,7 +27,17 @@
 		const VERSION = 'modules.version';
 		const CLASSNAME = 'modules.classname';
 		const SCOPE = 'modules.scope';
-		
+
+		/**
+		 * Return an instance of TBGModulesTable
+		 *
+		 * @return TBGModulesTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGModulesTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -45,6 +55,27 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doSelect($crit);
 			return $res;
+		}
+
+		public function disableModuleByID($module_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addUpdate(self::ENABLED, 0);
+			return $this->doUpdateById($crit, $module_id);
+		}
+
+		public function removeModuleByID($module_id)
+		{
+			return $this->doDeleteById($module_id);
+		}
+
+		public function disableModuleByName($module_name)
+		{
+			$crit = $this->getCriteria();
+			$crit->addUpdate(self::ENABLED, 0);
+			$crit->addWhere(self::MODULE_NAME, $module_name);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			return $this->doUpdate($crit);
 		}
 
 		public function installModule($identifier, $classname, $version, $scope)
