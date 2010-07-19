@@ -22,19 +22,25 @@
 			<span class="faded_medium" style="font-size: 13px; font-weight: normal;"><?php echo __('No documentation URL provided'); ?></span>
 		<?php endif; ?>
 	</div>
-	<div style="text-align: right; font-size: 13px; font-weight: normal; padding-top: 3px;">
-		<?php if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
-			<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Overview')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
-		<?php endif; ?>
-		<?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
-			<?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
-		<?php endif; ?>
-		<?php if ($tbg_user->hasPageAccess('project_roadmap', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
-			<?php echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Show roadmap')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
-		<?php endif; ?>
-		<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
+	<div style="text-align: right; padding-top: 3px;">
 		<form action="<?php echo make_url('project_reportissue', array('project_key' => $project->getKey())); ?>" method="get" style="clear: none; display: inline; width: 160px;">
-			<table border="0" cellpadding="0" cellspacing="0" style="float: right;"><tr><td class="nice_button report_button"><input type="submit" value="<?php echo __('Report an issue'); ?>"></td></tr></table>
+			<table border="0" cellpadding="0" cellspacing="0" style="float: right;">
+				<tr>
+					<td style="font-size: 13px; font-weight: normal;">
+						<?php /*if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
+							<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Overview')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+						<?php endif;*/ ?>
+						<?php if ($tbg_user->canSearchForIssues() && ($tbg_user->hasPageAccess('project_issues', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID()))): ?>
+							<?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+						<?php endif; ?>
+						<?php if ($tbg_user->hasPageAccess('project_roadmap', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
+							<?php echo link_tag(make_url('project_roadmap', array('project_key' => $project->getKey())), __('Show roadmap')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
+						<?php endif; ?>
+						<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
+					</td>
+					<td class="nice_button report_button"><input type="submit" value="<?php echo __('Report an issue'); ?>"></td>
+				</tr>
+			</table>
 		</form>
 	</div>
 	<?php if ($project->isIssuetypesVisibleInFrontpageSummary() && count($project->getVisibleIssuetypes())): ?>

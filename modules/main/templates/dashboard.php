@@ -221,8 +221,10 @@
 							<div class="rounded_box lightgrey cut_top" style="border-top: 0;">
 								<div style="float: left; font-weight: bold;"><?php echo __('Go to'); ?>:</div>
 								<?php echo link_tag(make_url('project_planning', array('project_key' => $project->getKey())), __('Planning')); ?>
-								|
-								<?php echo link_tag(make_url('project_scrum', array('project_key' => $project->getKey())), __('Scrum')); ?>
+								<?php if ($project->usesScrum()): ?>
+									|
+									<?php echo link_tag(make_url('project_scrum', array('project_key' => $project->getKey())), __('Scrum')); ?>
+								<?php endif; ?>
 								|
 								<?php echo link_tag(make_url('project_issues', array('project_key' => $project->getKey())), __('Issues')); ?>
 							</div>
