@@ -7,7 +7,21 @@
 			<?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedTitle(true), array('class' => (($action['change_type'] == TBGLogTable::LOG_ISSUE_CLOSE) ? 'issue_closed' : 'issue_open'))); ?>
 			<?php if (isset($include_user) && $include_user == true): ?>
 				<br>
-				<span class="user"><?php if (($user = TBGFactory::userLab($action['user_id'])) instanceof TBGUser): ?><?php echo $user->getUsername(); ?><?php else: ?><span class="faded"><?php echo __('Unknown user'); ?></span><?php endif; ?>:</span>
+				<span class="user">
+					<?php if (($user = TBGFactory::userLab($action['user_id'])) instanceof TBGUser): ?>
+						<?php if ($action['change_type'] != TBGLogTable::LOG_COMMENT): ?>
+							<?php echo $user->getUsername(); ?>
+						<?php else: ?>
+							<?php echo __('%username% (%buddy_name%) said', array('%username%' => $user->getUsername(), '%buddy_name%' => $user->getBuddyname())); ?>
+						<?php endif; ?>
+					<?php else: ?>
+						<?php if ($action['change_type'] != TBGLogTable::LOG_COMMENT): ?>
+							<span class="faded"><?php echo __('Unknown user'); ?></span>
+						<?php else: ?>
+							<?php echo __('Unknown user said'); ?>
+						<?php endif; ?>
+					<?php endif; ?>:
+				</span>
 			<?php else: ?>
 				<br>
 			<?php endif; ?>
@@ -18,6 +32,12 @@
 					case TBGLogTable::LOG_ISSUE_CREATED:
 						echo '<i>' . __('Issue created') . '</i>';
 						echo '<div class="timeline_inline_details">'.$theIssue->getDescription().'</div>';
+						break;
+					case TBGLogTable::LOG_COMMENT:
+						$comment = TBGFactory::TBGCommentLab((int) $action['text']);
+						echo '<div class="timeline_inline_details">';
+						echo (strlen($comment->getContent() > 300)) ? substr($comment->getContent(), 300) . '...' : $comment->getContent();
+						echo '</div>';
 						break;
 					case TBGLogTable::LOG_ISSUE_CLOSE:
 						echo '<span class="issue_closed"><i>' . __('Issue closed %text%', array('%text%' => $action['text'])) . '</i></span>';

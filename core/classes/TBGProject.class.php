@@ -2257,6 +2257,17 @@
 					}
 					$this->_recentactivities[$log_item['timestamp']][] = $log_item;
 				}
+				
+				/*if ($important)
+				{
+					if ($res = TBGCommentsTable::getTable()->getRecentCommentsByProjectID($this->getID()))
+					{
+						while ($row = $res->getNextRow())
+						{
+							//$this->_recentactivities[$row->get(TBGCommentsTable::POSTED)][] = 
+						}
+					}
+				}*/
 				krsort($this->_recentactivities, SORT_NUMERIC);
 			}
 		}

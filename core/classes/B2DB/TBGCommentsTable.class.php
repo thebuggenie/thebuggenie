@@ -36,6 +36,16 @@
 		const COMMENT_NUMBER = 'comments.comment_number';
 		const SYSTEM_COMMENT = 'comments.system_comment';
 
+		/**
+		 * Return an instance of TBGCommentsTable
+		 * 
+		 * @return TBGCommentsTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGCommentsTable');
+		}
+		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -85,6 +95,15 @@
 
 			$row = $this->doSelectOne($crit);
 			return ($row->get('max_no')) ? $row->get('max_no') : 1;
+		}
+		
+		public function getRecentCommentsByProjectID($project_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addJoin(TBGIssuesTable::getTable(), TBGIssuesTable::ID, self::TARGET_ID, array(array(self::TARGET_TYPE, 1)));
+			$crit->addWhere(TBGIssuesTable::PROJECT_ID, $project_id);
+			
+			return $this->doSelect($crit);
 		}
 
 	}

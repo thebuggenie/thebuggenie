@@ -20,6 +20,7 @@
 	{
 
 		const TYPE_ISSUE = 1;
+		
 		const LOG_MILESTONE_REMOVE = 1;
 		const LOG_MILESTONE_ADD = 2;
 		const LOG_ISSUE_STATUS = 3;

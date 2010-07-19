@@ -136,6 +136,10 @@
 				$crit->addInsert(TBGCommentsTable::SCOPE, TBGContext::getScope()->getID());
 				$res = B2DB::getTable('TBGCommentsTable')->doInsert($crit);
 				$comment = new TBGComment($res->getInsertID());
+				if (!$system_comment)
+				{
+					TBGLogTable::getTable()->createNew($target_id, TBGLogTable::TYPE_ISSUE, TBGLogTable::LOG_COMMENT, $comment->getID(), $uid);
+				}
 				/*if ($target_type == 1 && $module == 'core')
 				{
 					try
