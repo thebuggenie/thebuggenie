@@ -164,6 +164,11 @@
 			TBGModulesTable::getTable()->removeModuleByID($module_id);
 		}
 
+		public final function isCore()
+		{
+			return in_array($this->_name, array('publish'));
+		}
+
 		public function disable()
 		{
 			self::disableModule($this->getID());
@@ -212,6 +217,10 @@
 
 		final public function uninstall()
 		{
+			if ($this->isCore())
+			{
+				throw new Exception('Cannot uninstall core modules');
+			}
 			$this->_uninstall();
 			$scope = TBGContext::getScope()->getID();
 			B2DB::getTable('TBGModulesTable')->doDeleteById($this->getID());
