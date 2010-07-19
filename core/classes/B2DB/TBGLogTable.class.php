@@ -73,6 +73,16 @@
 		const TIME = 'log.time';
 		const UID = 'log.uid';
 
+		/**
+		 * Return an instance of TBGLogTable
+		 * 
+		 * @return TBGLogTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGLogTable');
+		}
+		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);

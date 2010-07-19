@@ -4,7 +4,7 @@
 	$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
 
 ?>
-<div class="rounded_box lightgrey feature" style="width: 330px; float: right; margin: 10px;">
+<div class="rounded_box lightgrey feature timeline_actions" style="width: 330px; float: right; margin: 10px;">
 	<div class="header_div"><?php echo __('Timeline actions'); ?></div>
 	<div class="content">
 		<?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), image_tag('icon_rss.png', array('style' => 'float: left; margin-right: 5px;')) . __('Subscribe to updates via RSS')); ?>

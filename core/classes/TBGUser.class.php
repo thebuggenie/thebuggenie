@@ -1829,7 +1829,7 @@
 		 */
 		public function getLatestActions($number = 10)
 		{
-			if ($items = B2DB::getTable('TBGLogTable')->getByUserID($this->getUID(), $number))
+			if ($items = TBGLogTable::getTable()->getByUserID($this->getUID(), $number))
 			{
 				return $items;
 			}

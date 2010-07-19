@@ -3501,7 +3501,7 @@
 		public function addLogEntry($change_type, $text = null, $system = false)
 		{
 			$uid = ($system) ? 0 : TBGContext::getUser()->getUID();
-			B2DB::getTable('TBGLogTable')->createNew($this->getID(), TBGLogTable::TYPE_ISSUE, $change_type, $text, $uid);
+			TBGLogTable::getTable()->createNew($this->getID(), TBGLogTable::TYPE_ISSUE, $change_type, $text, $uid);
 		}
 	
 		/**
@@ -3624,7 +3624,7 @@
 		{
 			if ($this->_log_entries === null)
 			{
-				$this->_log_entries = B2DB::getTable('TBGLogTable')->getByIssueID($this->getID()); 
+				$this->_log_entries = TBGLogTable::getTable()->getByIssueID($this->getID()); 
 			}
 		}
 
@@ -3864,7 +3864,7 @@
 			$crit->addWhere(TBGLogTable::TARGET_TYPE, 1);
 			$crit->addWhere(TBGLogTable::CHANGE_TYPE, 14);
 			$crit->addOrderBy(TBGLogTable::TIME, 'desc');
-			$res = B2DB::getTable('TBGLogTable')->doSelect($crit);
+			$res = TBGLogTable::getTable()->doSelect($crit);
 			
 			$ret_arr = array();
 
@@ -3886,7 +3886,7 @@
 			$crit->addWhere(TBGLogTable::TARGET_TYPE, 1);
 			$crit->addWhere(TBGLogTable::CHANGE_TYPE, 22);
 			$crit->addOrderBy(TBGLogTable::TIME, 'desc');
-			$res = B2DB::getTable('TBGLogTable')->doSelect($crit);
+			$res = TBGLogTable::getTable()->doSelect($crit);
 			
 			$ret_arr = array();
 

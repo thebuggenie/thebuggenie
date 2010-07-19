@@ -269,6 +269,13 @@
 		protected $_recentlogitems = null;
 
 		/**
+		 * Recent important log items
+		 *
+		 * @var array
+		 */
+		protected $_recentimportantlogitems = null;
+
+		/**
 		 * Recent issues reported
 		 *
 		 * @var array
@@ -2070,14 +2077,23 @@
 			return ($this->hasIcon()) ? 'project_icons/' . $this->getKey() . '.png' : 'icon_project.png';			
 		}
 
-		protected function _populateLogItems($limit = null)
+		protected function _populateLogItems($limit = null, $important = true)
 		{
-			if ($this->_recentlogitems === null)
+			$varname = ($important) ? '_recentimportantlogitems' : '_recentlogitems';
+			if ($this->$varname === null)
 			{
-				$this->_recentlogitems = array();
-				if ($res = B2DB::getTable('TBGLogTable')->getImportantByProjectID($this->getID(), $limit))
+				$this->$varname = array();
+				if ($important)
 				{
-					$this->_recentlogitems = $res;
+					$res = TBGLogTable::getTable()->getImportantByProjectID($this->getID(), $limit);
+				}
+				else
+				{
+					$res = TBGLogTable::getTable()->getByProjectID($this->getID(), $limit);
+				}
+				if ($res)
+				{
+					$this->$varname = $res;
 				}
 			}
 		}
@@ -2087,10 +2103,10 @@
 		 *
 		 * @return array A list of log items
 		 */
-		public function getRecentLogItems($limit = null)
+		public function getRecentLogItems($limit = null, $important = true)
 		{
-			$this->_populateLogItems($limit);
-			return $this->_recentlogitems;
+			$this->_populateLogItems($limit, $important);
+			return ($important) ? $this->_recentimportantlogitems : $this->_recentlogitems;
 		}
 
 		protected function _populatePriorityCount()
@@ -2194,7 +2210,7 @@
 			return $this->_recentideas;
 		}
 
-		protected function _populateRecentActivities($limit = null)
+		protected function _populateRecentActivities($limit = null, $important = true)
 		{
 			if ($this->_recentactivities === null)
 			{
@@ -2233,7 +2249,7 @@
 					}
 				}
 				
-				foreach ($this->getRecentLogItems($limit) as $log_item)
+				foreach ($this->getRecentLogItems($limit, $important) as $log_item)
 				{
 					if (!array_key_exists($log_item['timestamp'], $this->_recentactivities))
 					{
@@ -2251,9 +2267,9 @@
 		 * @param integer $limit Limit number of activities
 		 * @return array
 		 */
-		public function getRecentActivities($limit = null)
+		public function getRecentActivities($limit = null, $important = false)
 		{
-			$this->_populateRecentActivities($limit);
+			$this->_populateRecentActivities($limit, $important);
 			if ($limit !== null)
 			{
 				$recent_activities = array_slice($this->_recentactivities, 0, $limit, true);
@@ -2264,6 +2280,11 @@
 			}
 			
 			return $recent_activities;
+		}
+		
+		public function getRecentImportantActivities($limit = null)
+		{
+			return $this->getRecentActivities($limit, true);
 		}
 
 		public function clearRecentActivities()
