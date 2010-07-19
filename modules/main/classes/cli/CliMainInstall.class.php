@@ -361,9 +361,6 @@
 					$this->cliEcho("Enable calendar? ", 'white', 'bold') . $this->cliEcho('(yes): ');
 					$enable_modules['calendar'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
 					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
-					$this->cliEcho("Enable SCM integration? ", 'white', 'bold') . $this->cliEcho('(yes): ');
-					$enable_modules['svn_integration'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
-					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
 
 					$enable_modules['publish'] = true;
 

@@ -63,14 +63,6 @@
 						<input type="radio" name="modules[calendar]" value="1" id="modules_calendar_yes" checked="checked"><label for="modules_calendar_yes" style="margin-right: 5px;">Yes</label>
 						<input type="radio" name="modules[calendar]" value="0" id="modules_calendar_no"><label for="modules_calendar_no">No</label>
 					</dd>
-					<dt>
-						<strong>Enable subversion integration</strong><br>
-						Enables functionality that makes it possible to integrate with SVN hooks
-					</dt>
-					<dd>
-						<input type="radio" name="modules[svn_integration]" value="1" id="modules_svn_integration_yes" checked="checked"><label for="modules_svn_integration_yes" style="margin-right: 5px;">Yes</label>
-						<input type="radio" name="modules[svn_integration]" value="0" id="modules_svn_integration_no"><label for="modules_svn_integration_no">No</label>
-					</dd>
 				</dl>
 			</fieldset>
 			<div style="padding-top: 20px; clear: both; text-align: center;">
