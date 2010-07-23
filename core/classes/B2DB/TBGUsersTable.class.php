@@ -46,6 +46,16 @@
 		const GROUP_ID = 'users.group_id';
 		const CUSTOMER_ID = 'users.customer_id';
 		
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGUsersTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGUsersTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);

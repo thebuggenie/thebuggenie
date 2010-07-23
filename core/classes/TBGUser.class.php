@@ -449,6 +449,10 @@
 		 */
 		public static function createNew($username, $realname, $buddyname, $scope, $activated = false, $enabled = false, $password = 'password', $email = '', $pass_is_md5 = false, $u_id = null, $lastseen = null)
 		{
+			if (TBGUsersTable::getTable()->getByUsername($username) instanceof B2DBRow)
+			{
+				throw new Exception(TBGContext::getI18n()->__('This username already exists'));
+			}
 			$crit = new B2DBCriteria();
 			if ($u_id !== null)
 			{

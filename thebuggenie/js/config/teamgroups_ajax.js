@@ -1,11 +1,15 @@
 function showUsers(url, findstring)
 {
-	new Ajax.Updater('users_results', url, {
+	new Ajax.Request(url, {
 		asynchronous: true,
 		method: "post",
 		parameters: '&findstring=' + findstring,
 		onLoading: function (transport) {
 			$('find_users_indicator').show();
+		},
+		onSuccess: function (transport) {
+			$('find_users_indicator').hide();
+			$('users_results').update(transport.responseText);
 		},
 		onComplete: function (transport) {
 			$('find_users_indicator').hide();
@@ -28,6 +32,12 @@ function showUsers(url, findstring)
 			}
 		}
 	});
+}
+
+function createUser(url)
+{
+	_postFormWithJSONFeedback(url, 'createuser_form', 'find_users_indicator', '', 'users_results');
+	return true;
 }
 
 function editUser(url, user_id, message)

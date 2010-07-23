@@ -52,10 +52,10 @@
 								</td>
 							</tr>
 							<tr id="adduser_div">
-								<td style="padding: 3px;"><label for="adduser"><?php echo __('Enter username'); ?>:</label></td>
+								<td style="padding: 3px;"><label for="adduser_username"><?php echo __('Enter username'); ?>:</label></td>
 								<td style="padding: 3px;">
-									<form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="showUsers('<?php echo make_url('configure_users_find_user'); ?>', $('findusers').getValue());return false;">
-										<input type="text" name="findusers" id="findusers" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo __('Find'); ?>" style="font-size: 12px; font-weight: bold;">
+									<form action="<?php echo make_url('configure_users_add_user'); ?>" method="post" onsubmit="createUser('<?php echo make_url('configure_users_add_user'); ?>');return false;" id="createuser_form">
+										<input type="text" name="username" id="adduser_username" style="width: 300px;">&nbsp;<input type="submit" value="<?php echo __('Create user'); ?>" style="font-size: 12px; font-weight: bold;">
 									</form>
 								</td>
 							</tr>

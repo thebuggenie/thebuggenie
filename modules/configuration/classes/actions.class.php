@@ -1431,6 +1431,32 @@
 			
 		}
 
+		public function runAddUser(TBGRequest $request)
+		{
+			try
+			{
+				if ($username = $request->getParameter('username'))
+				{
+					$user = TBGUser::createNew($username, $username, $username, TBGContext::getScope()->getID());
+				}
+				else
+				{
+					throw new Exception(TBGContext::getI18n()->__('Please enter a username'));
+				}
+				$this->getResponse()->setTemplate('configuration/findusers');
+				$this->too_short = false;
+				$this->created_user = true;
+				$this->users = array($user);
+				$this->total_results = 1;
+				$this->title = TBGContext::getI18n()->__('User %username% created', array('%username%' => $username));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
+
 		public function runUpdateUser(TBGRequest $request)
 		{
 			$user = TBGFactory::userLab($request->getParameter('user_id'));
@@ -1465,6 +1491,7 @@
 				$user->save();
 				return $this->renderTemplate('finduser_row', array('user' => $user));
 			}
+			$this->getResponse()->setHttpStatus(400);
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This user could not be updated')));
 		}
 
