@@ -234,27 +234,26 @@ You can also specify the number at which the numbers count from. This is useful 
 
 Finally, if you choose '''GESHI_FANCY_LINE_NUMBERS''' or '''highlighted''', every ''n''th row is highlighted. To set a value for ''n'', you use the highlight property. For example if you set it to 10, then every 10th row will be highlighted.
 
-Below is an example of all of the properties in use.
+The code below is an example of a highlighting block you can use - which features every setting available.
 
-<nowiki>
+  <nowiki><source lang="php" line="highlighted" line start="54" highlight="3"></nowiki>
+  <?php
+  	function do_something($stuff) {
+  		echo($stuff);
+  		$mythings = array();
+  		$mythings[] = $stuff;
+  	}
+  ?>
+  <nowiki></source></nowiki>
+This will produce the following output:
+
 <source lang="php" line="highlighted" line start="54" highlight="3">
 <?php
-function do_something($stuff) {
-echo($stuff);
-$mythings = array();
-$mythings[] = $stuff;
-}
-?>
-</source>
-</nowiki>
-
-<source lang="php" line="highlighted" line start="54" highlight="3">
-<?php
-function do_something($stuff) {
-echo($stuff);
-$mythings = array();
-$mythings[] = $stuff;
-}
+	function do_something($stuff) {
+		echo($stuff);
+		$mythings = array();
+		$mythings[] = $stuff;
+	}
 ?>
 </source>
 
