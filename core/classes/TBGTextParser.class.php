@@ -722,7 +722,7 @@
 			
 			$text = preg_replace_callback('/<nowiki>(.+?)<\/nowiki>(?!<\/nowiki>)/ism', array($this, "_parse_save_nowiki"), $text);
 			//$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*?")*)>\s*(.*?)\s*<\/source>/ism', array($this, "_parse_save_code"), $text);
-			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*?")*)>\s*(.+)\s*<\/source>/ism', array($this, "_parse_save_code"), $text);
+			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 
 			$lines = explode("\n", $text);
@@ -748,7 +748,7 @@
 				$output = preg_replace_callback('/\{\{TOC\}\}/', array($this, "_parse_add_toc"), $output);
 			}
 			$output = preg_replace_callback('/\|\|\|NOWIKI\|\|\|/i', array($this, "_parse_restore_nowiki"), $output);
-			$output = preg_replace_callback('/\|\|\|CODE\|\|\|/i', array($this, "_parse_restore_code"), $output);
+			$output = preg_replace_callback('/\|\|\|CODE\|\|\|/Ui', array($this, "_parse_restore_code"), $output);
 
 			self::$current_parser = null;
 			return $output;
