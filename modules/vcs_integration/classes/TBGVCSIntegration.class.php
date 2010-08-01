@@ -23,6 +23,16 @@
 			$this->setConfigDescription($i18n->__('Configure repository settings for source code integration'));
 			$this->setHasConfigSettings();
 		}
+		
+		protected function _install($scope)
+		{
+			$this->enableListenerSaved('core', 'project_menustrip_item_links');
+		}
+		
+		protected function _addAvailableListeners()
+		{
+			$this->addAvailableListener('core', 'project_menustrip_item_links', 'listen_projectMenustripLinks', 'Project menustrip links');
+		}
 
 		protected function _addAvailableRoutes()
 		{
@@ -85,5 +95,10 @@
 			{
 				return false;
 			}
+		}
+		
+		public function listen_projectMenustripLinks(TBGEvent $event)
+		{
+			TBGActionComponent::includeTemplate('vcs_integration/projectmenustriplinks', array('project' => $event->getSubject(), 'module' => $this));
 		}
 	}
