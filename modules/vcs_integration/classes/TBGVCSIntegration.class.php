@@ -57,6 +57,22 @@
 					$this->saveSetting($setting, $request->getParameter($setting));
 				}
 			}
+			
+			foreach (TBGProject::getAll() as $aProduct)
+			{
+				if ($request->hasParameter('web_path_' . $aProduct->getID()))
+				{
+					$this->saveSetting('web_path_' . $aProduct->getID(), $request->getParameter('web_path_' . $aProduct->getID()));
+				}
+				if ($request->hasParameter('web_type_' . $aProduct->getID()))
+				{
+					$this->saveSetting('web_type_' . $aProduct->getID(), $request->getParameter('web_type_' . $aProduct->getID()));
+				}
+				if ($request->hasParameter('web_repo_' . $aProduct->getID()))
+				{
+					$this->saveSetting('web_repo_' . $aProduct->getID(), $request->getParameter('web_repo_' . $aProduct->getID()));
+				}
+			}
 		}
 		
 		public function isUsingHTTPMethod()

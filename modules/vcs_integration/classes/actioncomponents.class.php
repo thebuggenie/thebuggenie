@@ -4,5 +4,6 @@
 	{
 		public function componentSettings()
 		{
+			$this->allProjects = TBGProject::getAll();
 		}
 	}
