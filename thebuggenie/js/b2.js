@@ -576,7 +576,7 @@ function searchPage(url, offset)
 tinyMCE.init({
 	theme : "advanced",
 	mode : "none",
-	plugins : "inlinepopups,safari",
+	plugins : "inlinepopups",
 	convert_fonts_to_spans : false,
 	inline_styles : false,
 	valid_elements : "a[href|target=_blank],b/strong,i/em,u/span,p,font[color],blockquote,code,ul,ol,li,br",
