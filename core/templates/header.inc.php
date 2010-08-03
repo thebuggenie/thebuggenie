@@ -29,7 +29,6 @@
 		<?php endif; ?>
 		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/prototype.js"></script>
 		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/scriptaculous.js"></script>
-		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/b2.js"></script>
 		<?php foreach ($tbg_response->getJavascripts() as $javascript): ?>
 			<script type="text/javascript" src="<?php print TBGContext::getTBGPath() . 'js/' . $javascript; ?>"></script>

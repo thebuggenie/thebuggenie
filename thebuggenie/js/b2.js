@@ -573,24 +573,6 @@ function searchPage(url, offset)
 	});
 }
 
-tinyMCE.init({
-	theme : "advanced",
-	mode : "none",
-	plugins : "inlinepopups",
-	convert_fonts_to_spans : false,
-	inline_styles : false,
-	valid_elements : "a[href|target=_blank],b/strong,i/em,u/span,p,font[color],blockquote,code,ul,ol,li,br",
-	theme_advanced_buttons1 : "bold,italic,underline,forecolor,|,bullist,numlist,blockquote,code,|,undo,redo,|,link,unlink",
-	theme_advanced_buttons2 : "",
-	theme_advanced_buttons3 : "",
-	theme_advanced_toolbar_location : "bottom",
-	theme_advanced_toolbar_align : "left",
-	entity_encoding : "raw",
-	body_class: "tinymce_body",
-	add_unload_trigger : false,
-	remove_linebreaks : false
-});
-
 function getUserStateList()
 {
 	new Ajax.Updater('user_statelist', 'ajax_handler.php?getuserstatelist=true', {
