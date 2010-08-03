@@ -85,7 +85,7 @@
 		{
 			if (substr($file[0], -1) == '/' || substr($file[0], -1) == '\\')
 			{
-				echo '<td style="width: 75px;">' . __('directory') . '</td>';
+				echo '<td style="width: 75px;" class="faded_medium">' . __('directory') . '</td>';
 			}
 			else
 			{
