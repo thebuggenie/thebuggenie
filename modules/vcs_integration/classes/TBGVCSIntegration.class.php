@@ -108,11 +108,66 @@
 		
 		public function listen_viewissue_tab(TBGEvent $event)
 		{
-			TBGActionComponent::includeTemplate('vcs_integration/viewissue_tab');
+			$count = TBGVCSIntegrationTable::getTable()->getNumberOfCommitsByIssue($event->getSubject()->getId());
+			TBGActionComponent::includeTemplate('vcs_integration/viewissue_tab', array('count' => $count));
 		}
 		
 		public function listen_viewissue_panel(TBGEvent $event)
 		{
-			TBGActionComponent::includeTemplate('vcs_integration/viewissue', array('theIssue' => $event->getSubject()));
+			$web_path = $this->getSetting('web_path_' . $event->getSubject()->getProject()->getID());
+			$web_repo = $this->getSetting('web_repo_' . $event->getSubject()->getProject()->getID());
+
+			$data = TBGVCSIntegrationTable::getTable()->getCommitsByIssue($event->getSubject()->getId());
+			
+			if (!is_array($data))
+			{
+				TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits_top', array('items' => false));
+			}
+			else
+			{
+				TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits_top', array('items' => true));
+				
+				/* Now produce each box */
+				foreach ($data as $revno => $entry)
+				{
+					$revision = $revno;
+					/* Build correct URLs */
+					switch ($this->getSetting('web_type_' . $event->getSubject()->getProject()->getID()))
+					{
+						case 'viewvc':
+							$link_rev = $web_path . '/' . '?root=' . $web_repo . '&amp;view=rev&amp;revision=' . $revision;
+							break;
+						case 'viewvc_repo':
+							$link_rev = $web_path . '/' . '?view=rev&amp;revision=' . $revision;
+							break;
+						case 'websvn':
+							$link_rev = $web_path . '/revision.php?repname=' . $web_repo . '&amp;isdir=1&amp;rev=' . $revision;
+							break;
+						case 'websvn_mv':
+							$link_rev = $web_path . '/' . '?repname=' . $web_repo . '&amp;op=log&isdir=1&amp;rev=' . $revision;
+							break;
+						case 'loggerhead':
+							$link_rev = $web_path . '/' . $web_repo . '/revision/' . $revision;
+							break;
+						case 'gitweb':
+							$link_rev = $web_path . '/' . '?p=' . $web_repo . ';a=commitdiff;h=' . $revision;
+							break;
+						case 'cgit':
+							$link_rev = $web_path . '/' . $web_repo . '/commit/?id=' . $revision;
+							break;
+						case 'hgweb':
+							$link_rev = $web_path . '/' . $web_repo . '/rev/' . $revision;
+							break;
+						case 'github':
+							$link_rev = 'http://github.com/' . $web_repo . '/commit/' . $revision;
+							break;
+					}
+					
+					/* Now we have everything, render the template */
+					include_template('vcs_integration/commitbox', array("projectId" => $event->getSubject()->getProject()->getID(), "id" => $entry[0][0], "revision" => $revision, "author" => $entry[0][1], "date" => $entry[0][2], "log" => $entry[0][3], "files" => $entry[1]));
+				}
+				
+				TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits_bottom');
+			}
 		}
 	}

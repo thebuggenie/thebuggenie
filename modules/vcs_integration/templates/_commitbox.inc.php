@@ -1,12 +1,12 @@
 <?php
 	if ($author == 0)
 	{
-		$user = __('No such user') . '</b>';
+		$user = __('No such user');
 	}
 	else
 	{
 		$theUser = TBGFactory::userLab($author);
-		$user = $theUser->getBuddyname() . '</b> (' . $theUser->getUname() . ')';
+		$user = $theUser->getBuddyname() . ' (' . $theUser->getUname() . ')';
 	}
 ?>
 
@@ -89,7 +89,7 @@
 			}
 			else
 			{
-				echo '<td style="width: 75px;"><a href="' . $link_diff . '" target="_new""><b>' . __('Diff') . '</b></a></td>';
+				echo '<td style="width: 75px;"><a href="' . $link_diff . '" target="_new"><b>' . __('Diff') . '</b></a></td>';
 			}
 		}
 		
@@ -105,7 +105,7 @@
 		
 		if($action != "D")
 		{
-			echo '<td style="width: 75px;"><a href="' . $link_view . '" target="_new""><b>' . __('View') . '</b></a></td>';
+			echo '<td style="width: 75px;"><a href="' . $link_view . '" target="_new"><b>' . __('View') . '</b></a></td>';
 		}
 		echo '</tr>';
 	}
