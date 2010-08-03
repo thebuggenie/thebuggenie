@@ -27,11 +27,15 @@
 		protected function _install($scope)
 		{
 			$this->enableListenerSaved('core', 'project_menustrip_item_links');
+			$this->enableListenerSaved('core', 'viewissue_tabs');
+			$this->enableListenerSaved('core', 'viewissue_tab_panes_back');
 		}
 		
 		protected function _addAvailableListeners()
 		{
 			$this->addAvailableListener('core', 'project_menustrip_item_links', 'listen_projectMenustripLinks', 'Project menustrip links');
+			$this->addAvailableListener('core', 'viewissue_tabs', 'listen_viewissue_tab', 'Tab to view commit details when viewing issues');
+			$this->addAvailableListener('core', 'viewissue_tab_panes_back', 'listen_viewissue_panel', 'Commit details shown when viewing issues');
 		}
 
 		protected function _addAvailableRoutes()
@@ -100,5 +104,15 @@
 		public function listen_projectMenustripLinks(TBGEvent $event)
 		{
 			TBGActionComponent::includeTemplate('vcs_integration/projectmenustriplinks', array('project' => $event->getSubject(), 'module' => $this));
+		}
+		
+		public function listen_viewissue_tab(TBGEvent $event)
+		{
+			TBGActionComponent::includeTemplate('vcs_integration/viewissue_tab');
+		}
+		
+		public function listen_viewissue_panel(TBGEvent $event)
+		{
+			TBGActionComponent::includeTemplate('vcs_integration/viewissue', array('theIssue' => $event->getSubject()));
 		}
 	}
