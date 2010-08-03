@@ -311,20 +311,6 @@
 		protected $_recentactivities = null;
 
 		/**
-		 * Template for description field
-		 *
-		 * @var string
-		 */
-		protected $_descr_template = null;
-
-		/**
-		 * Template for reproduction field
-		 *
-		 * @var string
-		 */
-		protected $_repro_template = null;
-
-		/**
 		 * Make a project default
 		 * 
 		 * @param $p_id integer The id for the default project
@@ -503,8 +489,6 @@
 				$this->_can_change_wo_working	= (bool) $row->get(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING);
 				$this->_summary_display			= $row->get(TBGProjectsTable::SUMMARY_DISPLAY);
 				$this->_deleted					= $row->get(TBGProjectsTable::DELETED);
-				$this->_descr_template			= $row->get(TBGProjectsTable::DESCR_TEMPLATE);
-				$this->_repro_template			= $row->get(TBGProjectsTable::REPRO_TEMPLATE);
 				TBGEvent::createNew('core', 'TBGProject::__construct', $this)->trigger();
 			}
 			else
@@ -1348,8 +1332,6 @@
 			$crit->addUpdate(TBGProjectsTable::SUMMARY_DISPLAY, $this->_summary_display);
 			$crit->addUpdate(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING, $this->_can_change_wo_working);
 			$crit->addUpdate(TBGProjectsTable::DELETED, $this->_deleted);
-			$crit->addUpdate(TBGProjectsTable::DESCR_TEMPLATE, $this->_descr_template);
-			$crit->addUpdate(TBGProjectsTable::REPRO_TEMPLATE, $this->_repro_template);
 			$res = B2DB::getTable('TBGProjectsTable')->doUpdateById($crit, $this->getID());
 
 			return true;
@@ -2304,46 +2286,6 @@
 			$this->_recentissues = null;
 			$this->_recentfeatures = null;
 			$this->_recentlogitems = null;
-		}
-
-		/**
-		 * Return the issue description template
-		 * 
-		 * @return string
-		 */
-		public function getDescrTemplate()
-		{
-			return $this->_descr_template;
-		}
-		
-		/**
-		 * Return the issue reproduction template
-		 * 
-		 * @return string
-		 */
-		public function getReproTemplate()
-		{
-			return $this->_repro_template;
-		}
-
-		/**
-		 * Set the issue description template
-		 * 
-		 * @var string
-		 */
-		public function setDescrTemplate($data)
-		{
-			$this->_descr_template = $data;
-		}
-		
-		/**
-		 * Set the issue reproduction template
-		 * 
-		 * @var string
-		 */
-		public function setReproTemplate($data)
-		{
-			$this->_repro_template = $data;
 		}
 
 		/**

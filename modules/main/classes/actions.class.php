@@ -730,7 +730,7 @@
 					elseif ($info['required'])
 					{
 						$var_name = "selected_{$field}";
-						if ((in_array($field, TBGDatatype::getAvailableFields(true)) && ($this->$var_name === null || $this->$var_name === 0)) || (!in_array($field, TBGDatatype::getAvailableFields(true)) && !in_array($field, array('pain_bug_type', 'pain_likelihood', 'pain_effect')) && $selected_customdatatype[$field] === null))
+						if ((in_array($field, TBGDatatype::getAvailableFields(true)) && ($this->$var_name === null || $this->$var_name === 0)) || (!in_array($field, TBGDatatype::getAvailableFields(true)) && !in_array($field, array('pain_bug_type', 'pain_likelihood', 'pain_effect')) && (array_key_exists($field, $selected_customdatatype) && $selected_customdatatype[$field] === null)))
 						{
 							$errors[$field] = true;
 						}
@@ -937,6 +937,8 @@
 				$this->getResponse()->setHttpStatus(400);
 				return $this->renderText('no issue');
 			}
+
+			TBGContext::loadLibrary('common');
 			
 			switch ($request->getParameter('field'))
 			{

@@ -52,8 +52,6 @@
 		const PLANNED_RELEASE = 'projects.planned_release';
 		const DELETED = 'projects.deleted';
 		const ALLOW_CHANGING_WITHOUT_WORKING = 'projects.allow_changing_wo_working';
-		const DESCR_TEMPLATE = 'projects.descr_template';
-		const REPRO_TEMPLATE = 'projects.repro_template';
 		
 		public function __construct()
 		{
@@ -90,8 +88,6 @@
 			parent::_addBoolean(self::PLANNED_RELEASE);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addBoolean(self::DELETED);
-			parent::_addText(self::DESCR_TEMPLATE, true);
-			parent::_addText(self::REPRO_TEMPLATE, true);
 		}
 		
 		public function clearDefaults()

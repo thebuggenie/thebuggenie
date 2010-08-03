@@ -223,10 +223,10 @@
 		<?php if (count($projects) > 0 && count($issuetypes) > 0): ?>
 			<?php if ($selected_project instanceof TBGProject) : ?>
 				<?php if (!isset($description)) : ?>
-					<?php $description = $selected_project->getDescrTemplate(); ?>
+					<?php $description = ''; ?>
 				<?php endif; ?>
 				<?php if (!isset($reproduction_steps)) : ?>
-					<?php $reproduction_steps = $selected_project->getReproTemplate(); ?>
+					<?php $reproduction_steps = ''; ?>
 				<?php endif; ?>
 			<?php endif; ?>
 			<div id="report_more_here"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_project instanceof TBGProject): ?> style="display: none;"<?php endif; ?>><?php echo __('More options will appear here as soon as you select a project and an issue type above'); ?>...</div>
