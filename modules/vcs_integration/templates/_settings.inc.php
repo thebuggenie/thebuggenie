@@ -49,19 +49,25 @@
 									<td style="padding: 5px;"><label for="web_type_<?php echo $aProject->getID(); ?>"><?php echo __('Repository browser'); ?></label></td>
 									<td>
 										<select name="web_type_<?php echo $aProject->getID(); ?>" id="web_type_<?php echo $aProject->getID(); ?>">
-											<option disabled="disabled" style="background: #DDD"><?php echo __('Multi-system'); ?></option>
-											<option value='viewvc' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'viewvc') ? 'selected' : ''; ?>>CVS/SVN - ViewVC <?php echo __('with project\'s repository set as default'); ?></option>
-											<option value='viewvc_repo' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'viewvc_repo') ? 'selected' : ''; ?>>CVS/SVN - ViewVC (<?php echo __('manually specified repository'); ?>)</option>
-											<option disabled="disabled" style="background: #DDD">Subversion</option>
-											<option value='websvn' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'websvn') ? 'selected' : ''; ?>>WebSVN</option>
-											<option value='websvn_mv' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'websvn_mv') ? 'selected' : ''; ?>>WebSVN <?php echo __('using MultiViews'); ?></option>
-											<option disabled="disabled" style="background: #DDD">Mercurial</option>
-											<option value='hgweb' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'hgweb') ? 'selected' : ''; ?>>hgweb</option>
-											<option disabled="disabled" style="background: #DDD">Git</option>
-											<option value='gitweb' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'gitweb') ? 'selected' : ''; ?>>gitweb</option>
-											<option value='cgit' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'cgit') ? 'selected' : ''; ?>>cgit</option>
-											<option disabled="disabled" style="background: #DDD">Bazaar</option>
-											<option value='loggerhead' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'loggerhead') ? 'selected' : ''; ?>>Loggerhead</option>
+											<optgroup label="<?php echo __('Multi-system'); ?>">
+												<option value='viewvc' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'viewvc') ? 'selected' : ''; ?>>CVS/SVN - ViewVC <?php echo __('with project\'s repository set as default'); ?></option>
+												<option value='viewvc_repo' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'viewvc_repo') ? 'selected' : ''; ?>>CVS/SVN - ViewVC (<?php echo __('manually specified repository'); ?>)</option>
+											</optgroup>
+											<optgroup label="Subversion">
+												<option value='websvn' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'websvn') ? 'selected' : ''; ?>>WebSVN</option>
+												<option value='websvn_mv' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'websvn_mv') ? 'selected' : ''; ?>>WebSVN <?php echo __('using MultiViews'); ?></option>
+											</optgroup>
+											<optgroup label="Mercurial">
+												<option value='hgweb' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'hgweb') ? 'selected' : ''; ?>>hgweb</option>
+											</optgroup>
+											<optgroup label="Git">
+												<option value='gitweb' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'gitweb') ? 'selected' : ''; ?>>gitweb</option>
+												<option value='cgit' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'cgit') ? 'selected' : ''; ?>>cgit</option>
+												<option value='github' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'github') ? 'selected' : ''; ?>>Github</option>
+											</optgroup>
+											<optgroup label="Bazaar">
+												<option value='loggerhead' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'loggerhead') ? 'selected' : ''; ?>>Loggerhead</option>
+											</optgroup>
 										</select>
 									</td>
 								</tr>

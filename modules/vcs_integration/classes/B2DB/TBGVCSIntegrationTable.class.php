@@ -47,12 +47,14 @@
 		 */
 		public function getNumberOfCommitsByIssue($id)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(self::ISSUE_NO, $id);
-			$crit->addOrderBy(self::DATE, B2DBCriteria::SORT_DESC);
-			$results = $this->doSelect($crit);
-
-			return $results->getNumberOfRows();
+			$commits = $this->getCommitsByIssue($id);
+			
+			if ($commits === false)
+			{
+				return 0;
+			}
+			
+			return count($commits);
 		}
 		
 		/**
