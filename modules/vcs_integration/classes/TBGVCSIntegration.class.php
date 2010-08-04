@@ -55,8 +55,8 @@
 
 		protected function _addAvailableRoutes()
 		{
-			$this->addRoute('normalcheckin', '/vcs_integration/report/', 'addCommit');
-			$this->addRoute('githubcheckin', '/vcs_integration/report/github', 'addCommitGithub');
+			$this->addRoute('normalcheckin', '/vcs_integration/report/:project/', 'addCommit');
+			$this->addRoute('githubcheckin', '/vcs_integration/report/:project/github', 'addCommitGithub');
 		}
 
 		protected function _uninstall()
@@ -188,7 +188,7 @@
 			}
 		}
 		
-		public function addNewCommit($commit_msg, $old_rev, $new_rev, $date = null, $changed, $author)
+		public function addNewCommit($project, $commit_msg, $old_rev, $new_rev, $date = null, $changed, $author)
 		{
 			/* Find issues to update */
 			$fixes_grep = "#((bug|issue|ticket|fix|fixes|fixed|fixing|applies to|closes|references|ref|addresses|re|see|according to|also see)\s\#?(([A-Z0-9]+\-)?\d+))#ie";
@@ -196,6 +196,15 @@
 			$output = '';
 			
 			$f_issues = array();
+			
+			try
+			{
+				$project = new TBGProject($project);
+			}
+			catch (Exception $e)
+			{
+				return 'Error: Invalid project ID';
+			}
 			
 			if (preg_match_all($fixes_grep, $commit_msg, &$f_issues))
 			{
@@ -241,16 +250,9 @@
 				
 				foreach ($f_issues as $issue_no)
 				{
-					/* We dont set product so workaround if no prefix */
-					if (substr($issue_no, 0, 1) == '#') $issue_no = substr($issue_no, 1);
-					if (is_numeric($issue_no))
-					{
-						$theIssue = new TBGIssue($issue_no);
-					}
-					else
-					{
-						$theIssue = TBGIssue::getIssueFromLink($issue_no, true);
-					}
+					TBGContext::setCurrentProject($project);
+					$theIssue = TBGIssue::getIssueFromLink($issue_no, true);
+
 					if ($theIssue instanceof TBGIssue)
 					{
 						$uid = 0;

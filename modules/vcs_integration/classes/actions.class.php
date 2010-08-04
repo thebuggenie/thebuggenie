@@ -21,6 +21,7 @@
 		{
 			/* Prepare variables */
 			$passkey = TBGContext::getRequest()->getParameter('passkey');
+			$project = urldecode(TBGContext::getRequest()->getParameter('project'));
 			$author = urldecode(TBGContext::getRequest()->getParameter('author'));
 			$new_rev = TBGContext::getRequest()->getParameter('rev');
 			$commit_msg = urldecode(TBGContext::getRequest()->getParameter('commit_msg'));
@@ -56,9 +57,15 @@
 				exit;
 			}
 
-			if (empty($author) || empty($new_rev) || empty($commit_msg) || empty($changed) || empty($new_rev))
+			if (empty($author) || empty($new_rev) || empty($commit_msg) || empty($changed) || empty($project))
 			{
 				echo 'Error: A field was not specified';
+				exit;
+			}
+			
+			if (!is_numeric($project))
+			{
+				echo 'Error: Project ID not a number';
 				exit;
 			}
 			
@@ -68,7 +75,7 @@
 				exit;
 			}
 			
-			echo TBGContext::getModule('vcs_integration')->addNewCommit($commit_msg, $old_rev, $new_rev, $date, $changed, $author);
+			echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author);
 			exit;
 		}
 		
@@ -86,6 +93,7 @@
 				exit;
 			}
 			
+			$project = TBGContext::getRequest()->getParameter('project');
 			$data = TBGContext::getRequest()->getParameter('payload');
 			if (empty($data) || $data == null)
 			{
@@ -115,7 +123,7 @@
 				$file_lines = preg_split('/[\n\r]+/', $changed);
 				$files = array();
 				
-				echo TBGContext::getModule('vcs_integration')->addNewCommit($commit_msg, $old_rev, $previous, $date, array($entries->commits->modfied, $entries->commits->added, $entries->commits->removed), $author);
+				echo TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $previous, $date, array($entries->commits->modfied, $entries->commits->added, $entries->commits->removed), $author);
 				exit;
 			}
 		}

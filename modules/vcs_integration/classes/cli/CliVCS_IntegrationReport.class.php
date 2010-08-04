@@ -23,6 +23,7 @@
 		{
 			$this->_command_name = 'report_commit';
 			$this->_description = "Report a new commit to an issue";
+			$this->addRequiredArgument('prjid', "Project ID number");
 			$this->addRequiredArgument('author', "Username of the committer");
 			$this->addRequiredArgument('revno', "Revision number or hash of this commit");
 			$this->addRequiredArgument('log', "Log entry from commit");
@@ -35,6 +36,7 @@
 		public function do_execute()
 		{
 			/* Prepare variables */
+			$project = $this->getProvidedArgument('prjid');
 			$author = $this->getProvidedArgument('author');
 			$new_rev = $this->getProvidedArgument('revno');
 			$commit_msg = $this->getProvidedArgument('log');
@@ -54,7 +56,7 @@
 				exit;
 			}
 			
-			$output = TBGContext::getModule('vcs_integration')->addNewCommit($commit_msg, $old_rev, $new_rev, $date, $changed, $author);
+			$output = TBGContext::getModule('vcs_integration')->addNewCommit($project, $commit_msg, $old_rev, $new_rev, $date, $changed, $author);
 			$this->cliEcho($output);
 		}
 	}
