@@ -1,5 +1,20 @@
 <?php
+	/**
+	 * Module class, vcs_integration
+	 *
+	 * @author Philip Kent <kentphilip@gmail.com>
+	 * @version 2.0
+	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+	 * @package thebuggenie
+	 * @subpackage vcs_integration
+	 */
 
+	/**
+	 * Module class, vcs_integration
+	 *
+	 * @package thebuggenie
+	 * @subpackage vcs_integration
+	 */
 	class TBGVCSIntegration extends TBGModule 
 	{
 		
@@ -40,6 +55,8 @@
 
 		protected function _addAvailableRoutes()
 		{
+			$this->addRoute('normalcheckin', '/vcs_integration/report/', 'addCommit');
+			$this->addRoute('githubcheckin', '/vcs_integration/report/github', 'addCommitGithub');
 		}
 
 		protected function _uninstall()
@@ -169,5 +186,175 @@
 				
 				TBGActionComponent::includeTemplate('vcs_integration/viewissue_commits_bottom');
 			}
+		}
+		
+		public function addNewCommit($commit_msg, $old_rev, $new_rev, $date = null, $changed, $author)
+		{
+			/* Find issues to update */
+			$fixes_grep = "#((bug|issue|ticket|fix|fixes|fixed|fixing|applies to|closes|references|ref|addresses|re|see|according to|also see)\s\#?(([A-Z0-9]+\-)?\d+))#ie";
+			
+			$output = '';
+			
+			$f_issues = array();
+			
+			if (preg_match_all($fixes_grep, $commit_msg, &$f_issues))
+			{
+				// Github
+				if (is_array($changed))
+				{
+					$entries = $changed;
+					$changed = '';
+					// Now handle changed files
+					foreach ($entries[0] as $file)
+					{
+						$changed .= 'U'.$file."\n";
+					}
+					
+					// Now handle new files
+					foreach ($entries[1] as $file)
+					{
+						$changed .= 'A'.$file."\n";
+					}
+					
+					// Now handle deleted files
+					foreach ($entries[2] as $file)
+					{
+						$changed .= 'D'.$file."\n";
+					}
+				}
+				
+				$f_issues = array_unique($f_issues[3]);
+
+				$file_lines = preg_split('/[\n\r]+/', $changed);
+				$files = array();
+
+				foreach ($file_lines as $aline)
+				{
+					$action = substr($aline, 0, 1);
+
+					if ($action == "A" || $action == "U" || $action == "D")
+					{
+						$theline = trim(substr($aline, 1));
+						$files[] = array($action, $theline);
+					}
+				}
+				
+				foreach ($f_issues as $issue_no)
+				{
+					/* We dont set product so workaround if no prefix */
+					if (substr($issue_no, 0, 1) == '#') $issue_no = substr($issue_no, 1);
+					if (is_numeric($issue_no))
+					{
+						$theIssue = new TBGIssue($issue_no);
+					}
+					else
+					{
+						$theIssue = TBGIssue::getIssueFromLink($issue_no, true);
+					}
+					if ($theIssue instanceof TBGIssue)
+					{
+						$uid = 0;
+						
+						/*
+						 * Some VCSes use a different format of storing the committer's name. Systems like bzr, git and hg use the format
+						 * Joe Bloggs <me@example.com>, instead of a classic username. Therefore a user will be found via 4 queries:
+						 * a) First we extract the email if there is one, and find a user with that email
+						 * b) If one is not found - or if no email was specified, then instead test against the real name (using the name part if there was an email)
+						 * c) the username or full name is checked against the friendly name field
+						 * d) and if we still havent found one, then we check against the username
+						 * e) and if we STILL havent found one, we just say the user is id 0 (unknown user).
+						 */
+						 
+						if (preg_match("/(?<=<)(.*)(?=>)/", $author, $matches))
+						{
+							$email = $matches[0];
+							
+							// a)
+							$crit = new B2DBCriteria();
+							$crit->setFromTable(TBGUsersTable::getTable());
+							$crit->addSelectionColumn(TBGUsersTable::ID);
+							$crit->addWhere(TBGUsersTable::EMAIL, $email);
+							$row = B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
+							
+							if ($row != null)
+							{
+								$uid = $row->get(TBGUsersTable::ID);
+							}
+							else
+							{
+								// Not found by email
+								preg_match("/(?<=^)(.*)(?= <)/", $author, $matches);
+								$author = $matches[0];
+							}
+						}
+
+						// b)
+						
+						if ($uid == 0)
+						{
+							$crit = new B2DBCriteria();
+							$crit->setFromTable(TBGUsersTable::getTable());
+							$crit->addSelectionColumn(TBGUsersTable::ID);
+							$crit->addWhere(TBGUsersTable::REALNAME, $author);
+							$row = B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
+							
+							if ($row != null)
+							{
+								$uid = $row->get(TBGUsersTable::ID);
+							}
+						}
+						
+						// c)
+						
+						if ($uid == 0)
+						{
+							$crit = new B2DBCriteria();
+							$crit->setFromTable(TBGUsersTable::getTable());
+							$crit->addSelectionColumn(TBGUsersTable::ID);
+							$crit->addWhere(TBGUsersTable::BUDDYNAME, $author);
+							$row = B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
+							
+							if ($row != null)
+							{
+								$uid = $row->get(TBGUsersTable::ID);
+							}
+						}
+						
+						// d)
+						
+						if ($uid == 0)
+						{
+							$crit = new B2DBCriteria();
+							$crit->setFromTable(TBGUsersTable::getTable());
+							$crit->addSelectionColumn(TBGUsersTable::ID);
+							$crit->addWhere(TBGUsersTable::UNAME, $author);
+							$row = B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
+							
+							if ($row != null)
+							{
+								$uid = $row->get(TBGUsersTable::ID);
+							}
+						}
+						
+						$theIssue->addSystemComment('Issue updated from code repository', 'This issue has been updated with the latest changes from the code repository.<pre>'.$commit_msg.'</pre>', $uid);
+
+						foreach ($files as $afile)
+						{
+							if ($date == null)
+							{
+								$date = time();
+							}
+						
+							TBGVCSIntegrationTable::addEntry($theIssue->getID(), $afile[0], $commit_msg, $afile[1], $new_rev, $old_rev, $uid, $date);
+						}
+						$output .= 'Updated ' . $theIssue->getFormattedIssueNo() . "\n";
+					}
+					else
+					{
+						$output .= 'Can\'t find ' . $issue_no . ' so not updating that one.' . "\n";
+					}
+				}
+			}
+			return $output;
 		}
 	}

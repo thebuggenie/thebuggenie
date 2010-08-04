@@ -1,5 +1,20 @@
 <?php
+	/**
+	 * B2DB Table, vcs_integration -> VCSIntegrationTable
+	 *
+	 * @author Philip Kent <kentphilip@gmail.com>
+	 * @version 2.0
+	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+	 * @package thebuggenie
+	 * @subpackage vcs_integration
+	 */
 
+	/**
+	 * B2DB Table, vcs_integration -> VCSIntegrationTable
+	 *
+	 * @package thebuggenie
+	 * @subpackage vcs_integration
+	 */
 	class TBGVCSIntegrationTable extends B2DBTable 
 	{
 		const B2DBNAME = 'vcsintegration';
@@ -96,6 +111,40 @@
 			}
 			
 			return $data;
+		}
+
+		/**
+		 * Add a commit entry to the database
+		 *
+		 * @param $id Issue ID
+		 * @param $action A/D/U action applied to file
+		 * @param $commit_msg Log message
+		 * @param $file File changed
+		 * @param $new_rev New revision
+		 * @param $old_rev Old revision
+		 * @param $uid UID of changer
+		 * @param $date POSIX timestamp of change
+		 */
+		public static function addEntry($id, $action, $commit_msg, $file, $new_rev, $old_rev, $uid, $date)
+		{
+			$crit = new B2DBCriteria();
+			$crit->addInsert(TBGVCSIntegrationTable::ISSUE_NO, $id); 
+			$crit->addInsert(TBGVCSIntegrationTable::ACTION, $action);
+			$crit->addInsert(TBGVCSIntegrationTable::LOG, $commit_msg);
+			$crit->addInsert(TBGVCSIntegrationTable::FILE_NAME, $file); 
+			$crit->addInsert(TBGVCSIntegrationTable::NEW_REV, $new_rev);
+			$crit->addInsert(TBGVCSIntegrationTable::OLD_REV, $old_rev);
+			$crit->addInsert(TBGVCSIntegrationTable::AUTHOR, $uid);
+			if ($date == null)
+			{
+				$crit->addInsert(TBGVCSIntegrationTable::DATE, time());
+			}
+			else
+			{
+				$crit->addInsert(TBGVCSIntegrationTable::DATE, $date);
+			}
+			$crit->addInsert(TBGVCSIntegrationTable::SCOPE, TBGContext::getScope()->getID());
+			B2DB::getTable('TBGVCSIntegrationTable')->doInsert($crit);
 		}
 	}
 
