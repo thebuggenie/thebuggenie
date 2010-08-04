@@ -31,7 +31,10 @@
 				{
 					case TBGLogTable::LOG_ISSUE_CREATED:
 						echo '<i>' . __('Issue created') . '</i>';
-						echo '<div class="timeline_inline_details">'.$theIssue->getDescription().'</div>';
+						if (isset($include_details) && $include_details)
+						{
+							echo '<div class="timeline_inline_details">'.$theIssue->getDescription().'</div>';
+						}
 						break;
 					case TBGLogTable::LOG_COMMENT:
 						$comment = TBGFactory::TBGCommentLab((int) $action['text']);
