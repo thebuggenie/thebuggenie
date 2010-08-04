@@ -125,6 +125,14 @@
 		
 		public function listen_viewissue_tab(TBGEvent $event)
 		{
+			$web_path = $this->getSetting('web_path_' . $event->getSubject()->getProject()->getID());
+			$web_repo = $this->getSetting('web_repo_' . $event->getSubject()->getProject()->getID());
+
+			if (empty($web_repo) || empty($web_path))
+			{
+				return;
+			}
+
 			$count = TBGVCSIntegrationTable::getTable()->getNumberOfCommitsByIssue($event->getSubject()->getId());
 			TBGActionComponent::includeTemplate('vcs_integration/viewissue_tab', array('count' => $count));
 		}
@@ -133,6 +141,11 @@
 		{
 			$web_path = $this->getSetting('web_path_' . $event->getSubject()->getProject()->getID());
 			$web_repo = $this->getSetting('web_repo_' . $event->getSubject()->getProject()->getID());
+
+			if (empty($web_repo) || empty($web_path))
+			{
+				return;
+			}
 
 			$data = TBGVCSIntegrationTable::getTable()->getCommitsByIssue($event->getSubject()->getId());
 			
@@ -206,7 +219,7 @@
 				return 'Error: Invalid project ID';
 			}
 			
-			if (preg_match_all($fixes_grep, $commit_msg, &$f_issues))
+			if (preg_match_all($fixes_grep, $commit_msg, $f_issues))
 			{
 				// Github
 				if (is_array($changed))
