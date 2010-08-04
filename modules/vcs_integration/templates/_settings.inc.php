@@ -43,7 +43,7 @@
 				<tr>
 					<td>
 						<div class="rounded_box white">
-							<div class="header"><?php echo image_tag('cfg_icon_projects.png').' '.$aProject->getName(); ?></div>
+							<div class="header"><?php echo image_tag('cfg_icon_projects.png').' '.$aProject->getName(); ?> (id: <?php echo $aProject->getID(); ?>)</div>
 							<table style="width: 650px;" class="padded_table" cellpadding=0 cellspacing=0 id="vcsintegration_project_<?php echo $aProject->getID(); ?>_table">
 								<tr>
 									<td style="padding: 5px;"><label for="web_type_<?php echo $aProject->getID(); ?>"><?php echo __('Repository browser'); ?></label></td>
