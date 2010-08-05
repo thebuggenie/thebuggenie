@@ -726,6 +726,10 @@
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 
 			$text = htmlentities($text);
+			$text = str_replace('&lt;u&gt;', '<u>', $text);
+			$text = str_replace('&lt;/u&gt;', '</u>', $text);
+			$text = str_replace('&lt;strike&gt;', '<strike>', $text);
+			$text = str_replace('&lt;/strike&gt;', '</strike>', $text);
 			
 			$lines = explode("\n", $text);
 			//var_dump($text);
