@@ -546,14 +546,14 @@
 		 */
 		public function setPrefix($prefix)
 		{
-			if (preg_match('/^[a-zA-Z0-9]+$/', $prefix) > 0)
+			if (preg_match('/[^a-zA-Z0-9]+/', $prefix) > 0)
 			{
-				$this->_prefix = $prefix;
-				return true;
+				return false;
 			}
 			else
 			{
-				return false;
+				$this->_prefix = $prefix;
+				return true;
 			}
 		}	
 		
