@@ -41,7 +41,7 @@
 			$new_rev = $this->getProvidedArgument('revno');
 			$commit_msg = $this->getProvidedArgument('log');
 			$changed = $this->getProvidedArgument('changed');
-			$oldrev = $this->getProvidedArgument('oldrev', $old_rev = $new_rev - 1;);
+			$oldrev = $this->getProvidedArgument('oldrev', $new_rev - 1);
 			$date = $this->getProvidedArgument('date', null);
 			
 			if ((TBGContext::getModule('vcs_integration')->isUsingHTTPMethod()))
