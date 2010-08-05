@@ -86,7 +86,7 @@
 			$crit->addOrderBy(self::DATE, B2DBCriteria::SORT_DESC);
 			$results = $this->doSelect($crit);
 
-			if ($results->getNumberOfRows() == 0)
+			if (!is_object($results) || $results->getNumberOfRows() == 0)
 			{
 				return false;
 			}
