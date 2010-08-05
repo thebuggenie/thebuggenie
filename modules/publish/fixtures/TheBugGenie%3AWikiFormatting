@@ -212,8 +212,8 @@ issue <strike>[http://sample.com/product/issue/TBG-24 TBG-24 - issue title]</str
 The links will automatically include things such as the title, and a strikethrough if the issue is closed.
 
 == Examples / comments ==
-If you want to put some text on the page that shouldn't be interpreted (like the examples above), put two spaces in front of each line.
-  I'm an example because I have two spaces in front of me (actually I have four, but that's just so you can see the two spaces)
+If you want to put some text on the page that shouldn't be interpreted (like the examples above), put a space in front of each line.
+  I'm an example because I have a space in front of me (actually I have two, but that's just so you can see the first space)
   This is a second line
 
 == Syntax highlighting ==
