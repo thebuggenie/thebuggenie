@@ -658,7 +658,8 @@
 					$this->theProject->setName($request->getParameter('project_name'));
 					$this->theProject->setUsePrefix((bool) $request->getParameter('use_prefix'));
 					$this->theProject->setUsesScrum((bool) $request->getParameter('use_scrum'));
-					$this->theProject->setPrefix($request->getParameter('prefix'));
+					if (!$this->theProject->setPrefix($request->getParameter('prefix')))
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("Project prefixes may only contain letters and numbers")));
 					$this->theProject->setDescription($request->getParameter('description', null, false));
 					$this->theProject->setHomepage($request->getParameter('homepage'));
 					$this->theProject->setDocumentationURL($request->getParameter('doc_url'));
