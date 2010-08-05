@@ -725,6 +725,8 @@
 			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 
+			$text = htmlentities($text);
+			
 			$lines = explode("\n", $text);
 			//var_dump($text);
 			foreach ($lines as $line)
