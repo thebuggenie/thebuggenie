@@ -686,6 +686,7 @@
 			$this->_pain_bug_type			= $row->get(TBGIssuesTable::PAIN_BUG_TYPE);
 			$this->_pain_effect				= $row->get(TBGIssuesTable::PAIN_EFFECT);
 			$this->_pain_likelihood			= $row->get(TBGIssuesTable::PAIN_LIKELIHOOD);
+			$this->_votes					= $row->get(TBGIssuesTable::VOTES);
 			$this->_deleted 				= (bool) $row->get(TBGIssuesTable::DELETED);
 
 			$this->_populateCustomfields();
@@ -1508,15 +1509,11 @@
 		/**
 		 * Returns the number of votes for this issue
 		 * 
-		 * @return unknown_type
+		 * @return integer
 		 */
 		public function getVotes()
 		{
-			if ($this->_votes === null)
-			{
-				$this->_votes = B2DB::getTable('TBGVotesTable')->getNumberOfVotesForIssue($this->getID());
-			}
-			return $this->_votes;
+			return (int) $this->_votes;
 		}
 
 		/**

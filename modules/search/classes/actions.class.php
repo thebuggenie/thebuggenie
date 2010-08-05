@@ -157,6 +157,13 @@
 						$this->filters['issue_type'][] = array('operator' => '=', 'value' => $id);
 					}
 				}
+				elseif ($this->templatename == 'results_votes')
+				{
+					$this->searchtitle = $i18n->__('Showing issues ordered by number of votes');
+					$this->ipp = 100;
+					$this->groupby = 'votes';
+					$this->grouporder = 'desc';
+				}
 				list ($this->foundissues, $this->resultcount) = TBGIssue::findIssues($this->filters, $this->ipp, $this->offset, $this->groupby, $this->grouporder);
 			}
 			elseif (count($this->foundissues) == 1 && $request->getParameter('quicksearch'))
@@ -210,6 +217,7 @@
 			$templates = array();
 			$templates['results_normal'] = TBGContext::getI18n()->__('Standard search results');
 			$templates['results_todo'] = TBGContext::getI18n()->__('Todo-list with progress indicator');
+			$templates['results_votes'] = TBGContext::getI18n()->__('Most voted-for issues');
 			$templates['results_userpain_singlepainthreshold'] = TBGContext::getI18n()->__('User pain indicator with custom single bug pain threshold');
 			//$templates['results_userpain_totalpainthreshold'] = TBGContext::getI18n()->__('User pain indicator with custom total pain threshold');
 			if (!$display_only)

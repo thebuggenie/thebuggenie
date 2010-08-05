@@ -592,6 +592,8 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .user_pain { font-size: 30px; font-weight: bold; color: #D1C67D; }
 .user_pain_calculated { font-size: 11px; font-weight: bold; color: #D1C67D }
 .search_results .yellow_borderless .user_pain { color: #B6AC6D; }
+.search_results .user_pain, .search_results .votes { font-size: 13px; }
+.search_results .votes { color: #88C; }
 .search_results .red_borderless .user_pain { color: #B55; }
 .userpain_below_threshold td { border-top: 2px solid #B77; }
 .userpain_below_threshold td .status_table td { border-top: 0; }

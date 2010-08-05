@@ -64,6 +64,7 @@
 		const BLOCKING = 'issues.blocking';
 		const LOCKED = 'issues.locked';
 		const MILESTONE = 'issues.milestone';
+		const VOTES = 'issues.votes';
 
 		/**
 		 * Return an instance of this table
@@ -110,6 +111,7 @@
 			parent::_addInteger(self::SPENT_WEEKS, 10);
 			parent::_addInteger(self::SPENT_DAYS, 10);
 			parent::_addInteger(self::SPENT_HOURS, 10);
+			parent::_addInteger(self::VOTES, 10);
 			parent::_addFloat(self::SPENT_POINTS);
 			parent::_addInteger(self::PERCENT_COMPLETE, 2);
 			parent::_addInteger(self::ASSIGNED_TYPE, 2);
@@ -626,6 +628,9 @@
 						break;
 					case 'user_pain':
 						$crit->addOrderBy(self::USER_PAIN, $grouporder);
+						break;
+					case 'votes':
+						$crit->addOrderBy(self::VOTES, $grouporder);
 						break;
 					case 'resolution':
 						$crit->addOrderBy(self::RESOLUTION, $grouporder);
