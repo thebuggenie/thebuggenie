@@ -484,9 +484,19 @@
 			}
 		}
 
+		public function markIssuesDeletedByProjectID($project_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::PROJECT_ID, $project_id);
+			$crit->addUpdate(self::DELETED, true);
+
+			$this->doUpdate($crit);
+		}
+
 		public function findIssues($filters = array(), $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null)
 		{
 			$crit = $this->getCriteria();
+			$crit->addWhere(self::DELETED, false);
 			if (count($filters) > 0)
 			{
 				foreach ($filters as $filter => $filter_info)

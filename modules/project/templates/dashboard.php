@@ -43,7 +43,7 @@
 											<td style="padding-bottom: 10px;"><span class="time"><?php echo tbg_formatTime($timestamp, 19); ?></span>&nbsp;<b><?php echo $activity['info']; ?></b><br><i><?php echo __('A new milestone has been reached'); ?></i></td>
 										</tr>
 									<?php else: ?>
-										<?php include_template('main/logitem', array('action' => $activity, 'include_time' => true, 'extra_padding' => true, 'include_details' => false)); ?>
+										<?php include_component('main/logitem', array('log_action' => $activity, 'include_time' => true, 'extra_padding' => true, 'include_details' => false)); ?>
 									<?php endif; ?>
 								<?php endforeach; ?>
 								<?php $prev_date = $date; ?>

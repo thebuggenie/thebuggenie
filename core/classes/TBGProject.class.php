@@ -262,6 +262,13 @@
 		protected $_deleted = 0;
 
 		/**
+		 * Set to true if the project is set to be deleted, but not saved yet
+		 *
+		 * @var boolean
+		 */
+		protected $_dodelete = false;
+
+		/**
 		 * Recent log items
 		 *
 		 * @var array
@@ -564,7 +571,8 @@
 		 */
 		public function delete()
 		{
-			$this->_deleted = 1;
+			$this->_deleted = true;
+			$this->_dodelete = true;
 			$this->_key = '';
 			return true;
 		}
@@ -1334,6 +1342,11 @@
 			$crit->addUpdate(TBGProjectsTable::DELETED, $this->_deleted);
 			$res = B2DB::getTable('TBGProjectsTable')->doUpdateById($crit, $this->getID());
 
+			if ($this->_dodelete)
+			{
+				TBGIssuesTable::getTable()->markIssuesDeletedByProjectID($this->getID());
+				$this->_dodelete = false;
+			}
 			return true;
 		}
 

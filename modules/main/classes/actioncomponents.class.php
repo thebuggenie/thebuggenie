@@ -125,6 +125,18 @@
 			$this->setupVariables();
 		}
 
+		public function componentLogitem()
+		{
+			if ($this->log_action['target_type'] == 1)
+			{
+				try
+				{
+					$this->issue = TBGFactory::TBGIssueLab($this->log_action['target']);
+				}
+				catch (Exception $e) {}
+			}
+		}
+
 	}
 
 ?>

@@ -613,9 +613,13 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$issue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
-					if (!$issue->hasAccess()) continue;
-					$issues[] = $issue;
+					try
+					{
+						$issue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
+						if (!$issue->hasAccess()) continue;
+						$issues[] = $issue;
+					}
+					catch (Exception $e) {}
 				}
 			}
 			return array($issues, $count);
@@ -688,6 +692,11 @@
 			$this->_pain_likelihood			= $row->get(TBGIssuesTable::PAIN_LIKELIHOOD);
 			$this->_votes					= $row->get(TBGIssuesTable::VOTES);
 			$this->_deleted 				= (bool) $row->get(TBGIssuesTable::DELETED);
+
+			if ($this->getProject() instanceof TBGProject && $this->getProject()->isDeleted())
+			{
+				throw new Exception("This issue ({$this->getID()}) belongs to a project that has been deleted");
+			}
 
 			$this->_populateCustomfields();
 			$this->_mergeChangedProperties();
