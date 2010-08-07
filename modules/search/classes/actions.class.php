@@ -285,6 +285,26 @@
 			{
 				return $this->renderComponent('search/results_rss', array('issues' => $this->issues, 'searchtitle' => $this->searchtitle));
 			}
+			
+			if ($request->getParameter('format') == 'csv')
+			{
+				switch ($this->templatename)
+				{
+					default:
+					case 'results_normal':
+						return $this->renderComponent('search/results_normal_csv', array('issues' => $this->issues, 'templateparameter' => $this->templateparameter));
+						break;
+					case 'results_todo':
+						return $this->renderComponent('search/results_todo_csv', array('issues' => $this->issues, 'templateparameter' => $this->templateparameter));
+						break;
+					case 'results_votes':
+						return $this->renderComponent('search/results_votes_csv', array('issues' => $this->issues, 'templateparameter' => $this->templateparameter));
+						break;
+					case 'results_userpain_singlepainthreshold':
+						return $this->renderComponent('search/results_userpain_singlepainthreshold_csv', array('issues' => $this->issues, 'templateparameter' => $this->templateparameter));
+						break;
+				}
+			}
 		}
 
 		public function runFindIssuesPaginated(TBGRequest $request)

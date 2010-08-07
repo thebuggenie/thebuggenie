@@ -10,6 +10,7 @@
 			<title><?php echo TBGSettings::getTBGname() . ' ~ '. $searchtitle; ?></title>
 			<link><?php echo make_url('home', array(), false); ?></link>
 		</image>
+<?php if ($issues != false): ?>
 <?php foreach ($issues as $issue): ?>
 		
 		<item>
@@ -20,6 +21,6 @@
 			<guid><?php echo make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey()), false); ?></guid>
 		</item>
 <?php endforeach; ?>
-		
+<?php endif; ?>
 	</channel>
 </rss>

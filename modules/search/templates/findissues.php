@@ -272,8 +272,13 @@
 			</div>
 			<?php if ($show_results): ?>
 				<div class="main_header">
+					<?php
+						/* Produce get parameters for query */
+						$get = str_replace($_SERVER['REDIRECT_URL'], '', $_SERVER['REQUEST_URI']);
+					?>
 					<?php echo $searchtitle; ?>
-					&nbsp;&nbsp;<span class="faded_medium"><?php echo __('%number_of% issue(s)', array('%number_of%' => $resultcount)); ?></span>
+					&nbsp;&nbsp;<span class="faded_medium"><?php echo __('%number_of% issue(s)', array('%number_of%' => $resultcount)); ?></span><br>
+					<?php echo __('Export results as:');?>&nbsp;&nbsp;<a href="<?php echo make_url('search', array('format' => 'csv')); echo $get?>"> <?php echo image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')); ?>&nbsp;CSV</a>&nbsp;&nbsp;<a href="<?php echo make_url('search', array('format' => 'rss')); echo $get;?>"> <?php echo image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')); ?>&nbsp;RSS</a>
 				</div>
 				<?php if (count($issues) > 0): ?>
 					<div id="search_results" class="search_results">

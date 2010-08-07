@@ -42,4 +42,28 @@
 			$this->getResponse()->setContentType('application/xml');
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 		}
+		
+		public function componentResults_normal_csv()
+		{
+			$this->getResponse()->setContentType('text/csv');
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+		}
+		
+		public function componentResults_votes_csv()
+		{
+			$this->getResponse()->setContentType('text/csv');
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+		}
+		
+		public function componentResults_userpain_singlepainthreshold_csv()
+		{
+			$this->getResponse()->setContentType('text/csv');
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+		}
+		
+		public function componentResults_todo_csv()
+		{
+			$this->getResponse()->setContentType('text/csv');
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+		}
 	}
