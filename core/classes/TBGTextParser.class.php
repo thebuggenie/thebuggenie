@@ -730,6 +730,7 @@
 			$text = str_replace('&lt;/u&gt;', '</u>', $text);
 			$text = str_replace('&lt;strike&gt;', '<strike>', $text);
 			$text = str_replace('&lt;/strike&gt;', '</strike>', $text);
+			$text = str_replace('&lt;br&gt;', '<br>', $text);
 			
 			$lines = explode("\n", $text);
 			//var_dump($text);
