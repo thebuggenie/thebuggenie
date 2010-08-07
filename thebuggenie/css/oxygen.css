@@ -54,6 +54,8 @@ INPUT, SELECT, TEXTAREA, BUTTON
 
 input, select, textarea { background-color: #FFF; }
 input[type="submit"], button, input[type="file"] { background-color: #E5E5E5; }
+input[type="submit"]:hover { background-color: #F5F5F5; }
+input[type="submit"]:active { background-color: #D5D5D5; }
 input[type="image"] { border: 0px; padding: 0px; width: 16px; height: 16px; background-color: transparent; }
 input[disabled] { background-color: #F9F9F9; color: #BBB; }
 
@@ -80,11 +82,6 @@ P
 {
 	margin: 0px;
 	padding: 0px;
-}
-
-INPUT#login_button:hover
-{
-	border-bottom: 1px dotted #AAA;
 }
 
 /* *******************
