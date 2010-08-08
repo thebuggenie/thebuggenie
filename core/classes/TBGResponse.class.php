@@ -136,6 +136,9 @@
 				case 'json':
 					$this->setContentType('application/json');
 					break;
+				case 'csv':
+					$this->setContentType('text/csv');
+					break;
 				default:
 			}
 		}
