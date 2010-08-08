@@ -14,6 +14,26 @@
 	{
 		return TBGContext::getI18n()->__($text, $replacements);
 	}
+	
+	/**
+	 * Returns a random number
+	 * 
+	 * @return integer
+	 */
+	function tbg_printRandomNumber()
+	{
+		$randomNumber = "";
+
+		for($cc = 1; $cc <= 6; $cc++)
+		{
+			$rndNo = mt_rand(0,9);
+			$randomNumber .= $rndNo;
+
+			?><?php echo image_tag('/numbers/' . $rndNo . '.png'); ?><?php
+		}
+
+		return $randomNumber;
+	}
 
 	/**
 	 * Returns a formatted string of the given timestamp

@@ -336,7 +336,7 @@
 							throw new Exception(TBGContext::getI18n()->__('To prevent automatic sign-ups, enter the verification number shown below.'));
 						}
 
-						$password = tbg_createpassword();
+						$password = TBGUser::createPassword();
 						$user = TBGUser::createNew($username, $realname, $buddyname, TBGContext::getScope()->getID(), false, true, md5($password), $email, true);
 
 						if ($user->isActivated())

@@ -436,6 +436,30 @@
 		}
 		
 		/**
+		 * Create and return a temporary password
+		 * 
+		 * @return string
+		 */
+		public static function createPassword($len = 8)
+		{
+			$pass = '';
+			$lchar = 0;
+			$char = 0;
+			for($i = 0; $i < $len; $i++)
+			{
+				while($char == $lchar)
+				{
+					$char = mt_rand(48, 109);
+					if($char > 57) $char += 7;
+					if($char > 90) $char += 6;
+				}
+				$pass .= chr($char);
+				$lchar = $char;
+			}
+			return $pass;
+		}
+		
+		/**
 		 * Creates a new user and returns it
 		 *
 		 * @param string $username
@@ -479,6 +503,7 @@
 			$crit->addInsert(TBGUsersTable::ENABLED, $enabled);
 			$crit->addInsert(TBGUsersTable::JOINED, $_SERVER["REQUEST_TIME"]);
 			$crit->addInsert(TBGUsersTable::AVATAR, 'smiley');
+			$crit->addInsert(TBGUsersTable::GROUP_ID, '2');
 			$res = B2DB::getTable('TBGUsersTable')->doInsert($crit);
 	
 			if ($u_id === null) $u_id = $res->getInsertID();
@@ -490,6 +515,7 @@
 			{
 				$returnUser->setEnabled();
 				$returnUser->setActivated();
+				$returnUser->save();
 			}
 			return $returnUser;
 		}
