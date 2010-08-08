@@ -823,3 +823,763 @@ NOTICE [i18n] The text "Page load time: %load_time%, with %num_queries% queries.
 INFO [main] ...done
 INFO [main] rendering content
 INFO [main] ...done (rendering content)
+INFO [main] Initializing B2 framework
+INFO [main] Cache is not enabled
+INFO [main] Loading B2DB
+INFO [main] Adding B2DB classes to autoload path
+INFO [main] ...done (Adding B2DB classes to autoload path)
+INFO [main] Initializing B2DB
+INFO [main] adding classpath /var/www/dev/thebuggenie/core/B2DB/PDO/classes/
+INFO [main] ...done (Initializing B2DB)
+INFO [main] Database connection details found, connecting
+INFO [main] ...done (Database connection details found, connecting)
+INFO [main] Adding core table classpath to autoload path
+INFO [main] ...done
+INFO [main] Initializing context
+INFO [main] Loading request
+INFO [main] ...done
+INFO [routing] Loading first batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] Setting current scope
+INFO [main] Checking if scope can be set from hostname (http://thebuggenie)
+INFO [B2DB] executing PDO query (0)
+INFO [B2DB] SELECT scopes0.id AS scopes0_id, scopes0.enabled AS scopes0_enabled, scopes0.description AS scopes0_description, scopes0.admin AS scopes0_admin, scopes0.hostname AS scopes0_hostname FROM tbg3_scopes scopes0 WHERE (scopes0.hostname = 'http://thebuggenie') LIMIT 1
+INFO [B2DB] Values: http://thebuggenie
+INFO [B2DB] done
+INFO [main] It could
+INFO [main] Setting scope from hostname
+INFO [main] ...done (Setting scope from hostname)
+INFO [main] ...done
+INFO [main] Loading settings
+INFO [main] Loading all settings
+INFO [main] Settings not cached. Retrieving from database
+INFO [B2DB] executing PDO query (1)
+INFO [B2DB] SELECT settings1.id AS settings1_id, settings1.name AS settings1_name, settings1.module AS settings1_module, settings1.value AS settings1_value, settings1.uid AS settings1_uid, settings1.scope AS settings1_scope, scopes2.id AS scopes2_id, scopes2.enabled AS scopes2_enabled, scopes2.description AS scopes2_description, scopes2.admin AS scopes2_admin, scopes2.hostname AS scopes2_hostname FROM tbg3_settings settings1 LEFT JOIN tbg3_scopes scopes2 ON (scopes2.id=settings1.scope) WHERE (scopes2.enabled = '1') AND (settings1.scope = '1')
+INFO [B2DB] Values: 1, 1
+INFO [B2DB] done
+INFO [main] Retrieved
+INFO [main] ...done
+INFO [main] Loading user
+INFO [main] is this logout?
+INFO [main] no
+INFO [main] sets up user object
+INFO [B2DB] executing PDO query (2)
+INFO [B2DB] SELECT users3.id AS users3_id, users3.uname AS users3_uname, users3.passwd AS users3_passwd, users3.buddyname AS users3_buddyname, users3.realname AS users3_realname, users3.email AS users3_email, users3.state AS users3_state, users3.homepage AS users3_homepage, users3.language AS users3_language, users3.lastseen AS users3_lastseen, users3.lastlogin AS users3_lastlogin, users3.quota AS users3_quota, users3.activated AS users3_activated, users3.enabled AS users3_enabled, users3.deleted AS users3_deleted, users3.showfollowups AS users3_showfollowups, users3.showassigned AS users3_showassigned, users3.avatar AS users3_avatar, users3.use_gravatar AS users3_use_gravatar, users3.private_email AS users3_private_email, users3.joined AS users3_joined, users3.group_id AS users3_group_id, users3.customer_id AS users3_customer_id, users3.scope AS users3_scope, userstate6.id AS userstate6_id, userstate6.state_name AS userstate6_state_name, userstate6.unavailable AS userstate6_unavailable, userstate6.busy AS userstate6_busy, userstate6.online AS userstate6_online, userstate6.meeting AS userstate6_meeting, userstate6.absent AS userstate6_absent, userstate6.color AS userstate6_color, userstate6.scope AS userstate6_scope, groups9.id AS groups9_id, groups9.gname AS groups9_gname, groups9.scope AS groups9_scope, customers12.id AS customers12_id, customers12.cname AS customers12_cname, customers12.scope AS customers12_scope, scopes13.id AS scopes13_id, scopes13.enabled AS scopes13_enabled, scopes13.description AS scopes13_description, scopes13.admin AS scopes13_admin, scopes13.hostname AS scopes13_hostname FROM tbg3_users users3 LEFT JOIN tbg3_userstate userstate6 ON (userstate6.id=users3.state) LEFT JOIN tbg3_groups groups9 ON (groups9.id=users3.group_id) LEFT JOIN tbg3_customers customers12 ON (customers12.id=users3.customer_id) LEFT JOIN tbg3_scopes scopes13 ON (scopes13.id=users3.scope) WHERE (users3.uname = 'administrator') AND (users3.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users3.deleted = '0') LIMIT 1
+INFO [B2DB] Values: administrator, 21232f297a57a5a743894a0e4a801fc3, 0
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (3)
+INFO [B2DB] SELECT users3.id AS users3_id, users3.uname AS users3_uname, users3.passwd AS users3_passwd, users3.buddyname AS users3_buddyname, users3.realname AS users3_realname, users3.email AS users3_email, users3.state AS users3_state, users3.homepage AS users3_homepage, users3.language AS users3_language, users3.lastseen AS users3_lastseen, users3.lastlogin AS users3_lastlogin, users3.quota AS users3_quota, users3.activated AS users3_activated, users3.enabled AS users3_enabled, users3.deleted AS users3_deleted, users3.showfollowups AS users3_showfollowups, users3.showassigned AS users3_showassigned, users3.avatar AS users3_avatar, users3.use_gravatar AS users3_use_gravatar, users3.private_email AS users3_private_email, users3.joined AS users3_joined, users3.group_id AS users3_group_id, users3.customer_id AS users3_customer_id, users3.scope AS users3_scope, userstate6.id AS userstate6_id, userstate6.state_name AS userstate6_state_name, userstate6.unavailable AS userstate6_unavailable, userstate6.busy AS userstate6_busy, userstate6.online AS userstate6_online, userstate6.meeting AS userstate6_meeting, userstate6.absent AS userstate6_absent, userstate6.color AS userstate6_color, userstate6.scope AS userstate6_scope, groups9.id AS groups9_id, groups9.gname AS groups9_gname, groups9.scope AS groups9_scope, customers12.id AS customers12_id, customers12.cname AS customers12_cname, customers12.scope AS customers12_scope, scopes13.id AS scopes13_id, scopes13.enabled AS scopes13_enabled, scopes13.description AS scopes13_description, scopes13.admin AS scopes13_admin, scopes13.hostname AS scopes13_hostname FROM tbg3_users users3 LEFT JOIN tbg3_userstate userstate6 ON (userstate6.id=users3.state) LEFT JOIN tbg3_groups groups9 ON (groups9.id=users3.group_id) LEFT JOIN tbg3_customers customers12 ON (customers12.id=users3.customer_id) LEFT JOIN tbg3_scopes scopes13 ON (scopes13.id=users3.scope) WHERE (users3.uname = 'administrator') AND (users3.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users3.deleted = '0') LIMIT 1
+INFO [B2DB] Values: administrator, 21232f297a57a5a743894a0e4a801fc3, 0
+INFO [B2DB] done
+INFO [main] User with id 1 set up successfully
+INFO [B2DB] executing PDO query (4)
+INFO [B2DB] UPDATE tbg3_users SET `lastseen`='1281293290' WHERE (id = '1')
+INFO [B2DB] Values: 1281293290, 1
+INFO [B2DB] done
+INFO [main] loaded
+INFO [main] caches permissions
+INFO [main] starting to cache access permissions
+INFO [B2DB] executing PDO query (5)
+INFO [B2DB] SELECT permissions14.id AS permissions14_id, permissions14.permission_type AS permissions14_permission_type, permissions14.target_id AS permissions14_target_id, permissions14.allowed AS permissions14_allowed, permissions14.module AS permissions14_module, permissions14.uid AS permissions14_uid, permissions14.gid AS permissions14_gid, permissions14.tid AS permissions14_tid, permissions14.scope AS permissions14_scope, users15.id AS users15_id, users15.uname AS users15_uname, users15.passwd AS users15_passwd, users15.buddyname AS users15_buddyname, users15.realname AS users15_realname, users15.email AS users15_email, users15.state AS users15_state, users15.homepage AS users15_homepage, users15.language AS users15_language, users15.lastseen AS users15_lastseen, users15.lastlogin AS users15_lastlogin, users15.quota AS users15_quota, users15.activated AS users15_activated, users15.enabled AS users15_enabled, users15.deleted AS users15_deleted, users15.showfollowups AS users15_showfollowups, users15.showassigned AS users15_showassigned, users15.avatar AS users15_avatar, users15.use_gravatar AS users15_use_gravatar, users15.private_email AS users15_private_email, users15.joined AS users15_joined, users15.group_id AS users15_group_id, users15.customer_id AS users15_customer_id, users15.scope AS users15_scope, groups16.id AS groups16_id, groups16.gname AS groups16_gname, groups16.scope AS groups16_scope, teams19.id AS teams19_id, teams19.teamname AS teams19_teamname, teams19.scope AS teams19_scope, scopes20.id AS scopes20_id, scopes20.enabled AS scopes20_enabled, scopes20.description AS scopes20_description, scopes20.admin AS scopes20_admin, scopes20.hostname AS scopes20_hostname FROM tbg3_permissions permissions14 LEFT JOIN tbg3_users users15 ON (users15.id=permissions14.uid) LEFT JOIN tbg3_groups groups16 ON (groups16.id=permissions14.gid) LEFT JOIN tbg3_teams teams19 ON (teams19.id=permissions14.tid) LEFT JOIN tbg3_scopes scopes20 ON (scopes20.id=permissions14.scope) WHERE (permissions14.scope = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] done (starting to cache access permissions)
+INFO [main] ...cached
+INFO [main] ...done
+INFO [main] Loading i18n strings
+INFO [main] Loading strings from file
+INFO [main] en_US
+INFO [i18n] Loading strings from file
+INFO [main] ...done
+INFO [main] Loading modules
+INFO [main] getting modules from database
+INFO [B2DB] executing PDO query (6)
+INFO [B2DB] SELECT modules21.id AS modules21_id, modules21.module_name AS modules21_module_name, modules21.enabled AS modules21_enabled, modules21.version AS modules21_version, modules21.classname AS modules21_classname, modules21.scope AS modules21_scope, scopes22.id AS scopes22_id, scopes22.enabled AS scopes22_enabled, scopes22.description AS scopes22_description, scopes22.admin AS scopes22_admin, scopes22.hostname AS scopes22_hostname FROM tbg3_modules modules21 LEFT JOIN tbg3_scopes scopes22 ON (scopes22.id=modules21.scope) WHERE (modules21.scope = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] done (getting modules from database)
+INFO [main] setting up module objects
+INFO [i18n] Loading strings from file
+INFO [i18n] Could not find language file /var/www/dev/thebuggenie/modules/mailing/i18n/en_US/general.inc.php
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Could not find language file /var/www/dev/thebuggenie/modules/vcs_integration/i18n/en_US/general.inc.php
+INFO [i18n] Loading strings from file
+INFO [main] done (setting up module objects)
+INFO [main] caching module access permissions
+INFO [B2DB] executing PDO query (7)
+INFO [B2DB] SELECT modulepermissions23.id AS modulepermissions23_id, modulepermissions23.module_name AS modulepermissions23_module_name, modulepermissions23.allowed AS modulepermissions23_allowed, modulepermissions23.uid AS modulepermissions23_uid, modulepermissions23.gid AS modulepermissions23_gid, modulepermissions23.tid AS modulepermissions23_tid, modulepermissions23.scope AS modulepermissions23_scope, users24.id AS users24_id, users24.uname AS users24_uname, users24.passwd AS users24_passwd, users24.buddyname AS users24_buddyname, users24.realname AS users24_realname, users24.email AS users24_email, users24.state AS users24_state, users24.homepage AS users24_homepage, users24.language AS users24_language, users24.lastseen AS users24_lastseen, users24.lastlogin AS users24_lastlogin, users24.quota AS users24_quota, users24.activated AS users24_activated, users24.enabled AS users24_enabled, users24.deleted AS users24_deleted, users24.showfollowups AS users24_showfollowups, users24.showassigned AS users24_showassigned, users24.avatar AS users24_avatar, users24.use_gravatar AS users24_use_gravatar, users24.private_email AS users24_private_email, users24.joined AS users24_joined, users24.group_id AS users24_group_id, users24.customer_id AS users24_customer_id, users24.scope AS users24_scope, groups25.id AS groups25_id, groups25.gname AS groups25_gname, groups25.scope AS groups25_scope, teams26.id AS teams26_id, teams26.teamname AS teams26_teamname, teams26.scope AS teams26_scope, scopes27.id AS scopes27_id, scopes27.enabled AS scopes27_enabled, scopes27.description AS scopes27_description, scopes27.admin AS scopes27_admin, scopes27.hostname AS scopes27_hostname FROM tbg3_modulepermissions modulepermissions23 LEFT JOIN tbg3_users users24 ON (users24.id=modulepermissions23.uid) LEFT JOIN tbg3_groups groups25 ON (groups25.id=modulepermissions23.gid) LEFT JOIN tbg3_teams teams26 ON (teams26.id=modulepermissions23.tid) LEFT JOIN tbg3_scopes scopes27 ON (scopes27.id=modulepermissions23.scope) WHERE (modulepermissions23.scope = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] done (caching module access permissions)
+INFO [main] initializing modules
+INFO [main] initializing and loading routes for mailing
+INFO [mailing] adding route forgot
+INFO [mailing] done (adding route forgot)
+INFO [mailing] adding route mailing_test_email
+INFO [mailing] done (adding route mailing_test_email)
+INFO [main] done (initializing and loading routes for mailing)
+INFO [main] initializing and loading routes for messages
+INFO [main] done (initializing and loading routes for messages)
+INFO [main] initializing and loading routes for calendar
+INFO [main] done (initializing and loading routes for calendar)
+INFO [main] initializing and loading routes for vcs_integration
+INFO [vcs_integration] adding route normalcheckin
+INFO [vcs_integration] done (adding route normalcheckin)
+INFO [vcs_integration] adding route githubcheckin
+INFO [vcs_integration] done (adding route githubcheckin)
+INFO [main] done (initializing and loading routes for vcs_integration)
+INFO [main] initializing and loading routes for publish
+INFO [publish] adding route publish
+INFO [publish] done (adding route publish)
+INFO [publish] adding route publish_article_new
+INFO [publish] done (adding route publish_article_new)
+INFO [publish] adding route publish_article
+INFO [publish] done (adding route publish_article)
+INFO [publish] adding route publish_article_revision
+INFO [publish] done (adding route publish_article_revision)
+INFO [publish] adding route publish_article_edit
+INFO [publish] done (adding route publish_article_edit)
+INFO [publish] adding route publish_article_delete
+INFO [publish] done (adding route publish_article_delete)
+INFO [publish] adding route publish_article_save
+INFO [publish] done (adding route publish_article_save)
+INFO [publish] adding route publish_article_history
+INFO [publish] done (adding route publish_article_history)
+INFO [publish] adding route publish_article_diff
+INFO [publish] done (adding route publish_article_diff)
+INFO [publish] adding route publish_article_restore
+INFO [publish] done (adding route publish_article_restore)
+INFO [main] done (initializing and loading routes for publish)
+INFO [B2DB] executing PDO query (8)
+INFO [B2DB] SELECT enabledmodulelisteners28.id AS enabledmodulelisteners28_id, enabledmodulelisteners28.module AS enabledmodulelisteners28_module, enabledmodulelisteners28.identifier AS enabledmodulelisteners28_identifier, enabledmodulelisteners28.order AS enabledmodulelisteners28_order, enabledmodulelisteners28.module_name AS enabledmodulelisteners28_module_name, enabledmodulelisteners28.scope AS enabledmodulelisteners28_scope, modules21.id AS modules21_id, modules21.module_name AS modules21_module_name, modules21.enabled AS modules21_enabled, modules21.version AS modules21_version, modules21.classname AS modules21_classname, modules21.scope AS modules21_scope, modules29.id AS modules29_id, modules29.module_name AS modules29_module_name, modules29.enabled AS modules29_enabled, modules29.version AS modules29_version, modules29.classname AS modules29_classname, modules29.scope AS modules29_scope, scopes30.id AS scopes30_id, scopes30.enabled AS scopes30_enabled, scopes30.description AS scopes30_description, scopes30.admin AS scopes30_admin, scopes30.hostname AS scopes30_hostname FROM tbg3_enabledmodulelisteners enabledmodulelisteners28 LEFT JOIN tbg3_modules modules21 ON (modules21.module_name=enabledmodulelisteners28.module_name) LEFT JOIN tbg3_modules modules29 ON (modules29.module_name=enabledmodulelisteners28.module_name) LEFT JOIN tbg3_scopes scopes30 ON (scopes30.id=enabledmodulelisteners28.scope) WHERE (enabledmodulelisteners28.module_name IN ('mailing', 'messages', 'calendar', 'vcs_integration', 'publish')) AND (enabledmodulelisteners28.scope = '1') AND (modules21.scope = '1') ORDER BY enabledmodulelisteners28.order asc
+INFO [B2DB] Values: mailing, messages, calendar, vcs_integration, publish, 1, 1
+INFO [B2DB] done
+INFO [main] done (initializing modules)
+INFO [main] ...done
+INFO [routing] Loading last batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] ...done initializing
+INFO [main] ...done
+INFO [main] B2 framework loaded
+INFO [main] Dispatching
+INFO [routing] URL is thebuggenie/issues
+INFO [routing] URL is now /thebuggenie/issues
+INFO [routing] URL is now /thebuggenie/issues
+INFO [routing] match route [project_issues] "/:project_key/issues/*"
+INFO [main] Running main pre-execute action
+INFO [main] Checking permission page_search_access
+INFO [main] Populating user teams
+INFO [B2DB] executing PDO query (9)
+INFO [B2DB] SELECT COUNT(teammembers31.id) as num_col FROM tbg3_teammembers teammembers31 WHERE (teammembers31.uid = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] ...done (Populating user teams)
+INFO [main] ...done (Checking permissions page_search_access)
+INFO [B2DB] executing PDO query (10)
+INFO [B2DB] SELECT projects35.id AS projects35_id, projects35.name AS projects35_name, projects35.key AS projects35_key, projects35.prefix AS projects35_prefix, projects35.use_prefix AS projects35_use_prefix, projects35.use_scrum AS projects35_use_scrum, projects35.homepage AS projects35_homepage, projects35.owned_by AS projects35_owned_by, projects35.owned_type AS projects35_owned_type, projects35.lead_by AS projects35_lead_by, projects35.lead_type AS projects35_lead_type, projects35.time_unit AS projects35_time_unit, projects35.hrs_pr_day AS projects35_hrs_pr_day, projects35.description AS projects35_description, projects35.doc_url AS projects35_doc_url, projects35.enable_tasks AS projects35_enable_tasks, projects35.is_default AS projects35_is_default, projects35.allow_changing_wo_working AS projects35_allow_changing_wo_working, projects35.default_status AS projects35_default_status, projects35.enable_builds AS projects35_enable_builds, projects35.enable_editions AS projects35_enable_editions, projects35.enable_components AS projects35_enable_components, projects35.show_in_summary AS projects35_show_in_summary, projects35.summary_display AS projects35_summary_display, projects35.votes AS projects35_votes, projects35.qa AS projects35_qa, projects35.qa_type AS projects35_qa_type, projects35.released AS projects35_released, projects35.release_date AS projects35_release_date, projects35.locked AS projects35_locked, projects35.planned_release AS projects35_planned_release, projects35.scope AS projects35_scope, projects35.deleted AS projects35_deleted FROM tbg3_projects projects35 WHERE (projects35.scope = '1') AND (projects35.key = 'thebuggenie') LIMIT 1
+INFO [B2DB] Values: 1, thebuggenie
+INFO [B2DB] done
+INFO [main] Triggering core - TBGProject::__construct
+INFO [main] done (Triggering core - TBGProject::__construct)
+INFO [main] Running route action runFindIssues()
+INFO [B2DB] executing PDO query (11)
+INFO [B2DB] SELECT savedsearches40.id AS savedsearches40_id, savedsearches40.name AS savedsearches40_name, savedsearches40.description AS savedsearches40_description, savedsearches40.is_public AS savedsearches40_is_public, savedsearches40.templatename AS savedsearches40_templatename, savedsearches40.templateparameter AS savedsearches40_templateparameter, savedsearches40.issues_per_page AS savedsearches40_issues_per_page, savedsearches40.groupby AS savedsearches40_groupby, savedsearches40.grouporder AS savedsearches40_grouporder, savedsearches40.scope AS savedsearches40_scope, savedsearches40.applies_to_project AS savedsearches40_applies_to_project, savedsearches40.uid AS savedsearches40_uid FROM tbg3_savedsearches savedsearches40 WHERE (savedsearches40.scope = '1') AND  ((savedsearches40.uid = '1') OR savedsearches40.uid = '0')  AND (savedsearches40.applies_to_project = '2')
+INFO [B2DB] Values: 1, 1, 0, 2
+INFO [B2DB] done
+INFO [main] ...done
+INFO [main] Displaying template
+INFO [main] configuring variables
+INFO [main] rendering template and buffering output
+INFO [B2DB] executing PDO query (12)
+INFO [B2DB] SELECT listtypes36.id AS listtypes36_id, listtypes36.name AS listtypes36_name, listtypes36.itemtype AS listtypes36_itemtype, listtypes36.itemdata AS listtypes36_itemdata, listtypes36.applies_to AS listtypes36_applies_to, listtypes36.order AS listtypes36_order, listtypes36.scope AS listtypes36_scope, scopes37.id AS scopes37_id, scopes37.enabled AS scopes37_enabled, scopes37.description AS scopes37_description, scopes37.admin AS scopes37_admin, scopes37.hostname AS scopes37_hostname FROM tbg3_listtypes listtypes36 LEFT JOIN tbg3_scopes scopes37 ON (scopes37.id=listtypes36.scope) WHERE (listtypes36.scope = '1') ORDER BY listtypes36.order asc
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (13)
+INFO [B2DB] SELECT  DISTINCT issuetypes44.id AS issuetypes44_id, issuetypes44.name AS issuetypes44_name, issuetypes44.applies_to AS issuetypes44_applies_to, issuetypes44.applies_type AS issuetypes44_applies_type, issuetypes44.icon AS issuetypes44_icon, issuetypes44.description AS issuetypes44_description, issuetypes44.is_task AS issuetypes44_is_task, issuetypes44.is_reportable AS issuetypes44_is_reportable, issuetypes44.redirect_after_reporting AS issuetypes44_redirect_after_reporting, issuetypes44.scope AS issuetypes44_scope, scopes45.id AS scopes45_id, scopes45.enabled AS scopes45_enabled, scopes45.description AS scopes45_description, scopes45.admin AS scopes45_admin, scopes45.hostname AS scopes45_hostname FROM tbg3_issuetypes issuetypes44 LEFT JOIN tbg3_scopes scopes45 ON (scopes45.id=issuetypes44.scope) WHERE (issuetypes44.applies_to = '0') AND (issuetypes44.scope = '1') ORDER BY issuetypes44.id asc
+INFO [B2DB] Values: 0, 1
+INFO [B2DB] done
+INFO [main] Checking permission cancreatepublicsearches
+INFO [main] ...done (Checking permissions cancreatepublicsearches)
+INFO [main] Checking permission cancreatepublicsearches
+INFO [main] ...done (Checking permissions cancreatepublicsearches)
+INFO [main] Checking permission cancreatepublicsearches
+INFO [main] ...done (Checking permissions cancreatepublicsearches)
+INFO [main] Checking permission cancreatepublicsearches
+INFO [main] ...done (Checking permissions cancreatepublicsearches)
+INFO [B2DB] executing PDO query (14)
+INFO [B2DB] SELECT customfields46.id AS customfields46_id, customfields46.field_name AS customfields46_field_name, customfields46.field_key AS customfields46_field_key, customfields46.field_description AS customfields46_field_description, customfields46.field_instructions AS customfields46_field_instructions, customfields46.field_type AS customfields46_field_type, customfields46.scope AS customfields46_scope, scopes47.id AS scopes47_id, scopes47.enabled AS scopes47_enabled, scopes47.description AS scopes47_description, scopes47.admin AS scopes47_admin, scopes47.hostname AS scopes47_hostname FROM tbg3_customfields customfields46 LEFT JOIN tbg3_scopes scopes47 ON (scopes47.id=customfields46.scope) WHERE (customfields46.scope = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] ...completed
+INFO [main] decorating with header
+INFO [main] Triggering core - header_begins
+INFO [main] done (Triggering core - header_begins)
+INFO [main] Triggering core - header_ends
+INFO [main] done (Triggering core - header_ends)
+INFO [main] Triggering core - header_end
+INFO [main] done (Triggering core - header_end)
+INFO [main] Checking permission cancreateissues
+INFO [main] ...done (Checking permissions cancreateissues)
+INFO [main] Checking permission cancreateandeditissues
+INFO [main] ...done (Checking permissions cancreateandeditissues)
+INFO [main] Checking permission cancreateissues
+INFO [main] ...done (Checking permissions cancreateissues)
+INFO [main] Checking permission cancreateandeditissues
+INFO [main] ...done (Checking permissions cancreateandeditissues)
+INFO [main] Checking permission canfindissues
+INFO [main] ...done (Checking permissions canfindissues)
+INFO [main] Checking permission canfindissuesandsavesearches
+INFO [main] ...done (Checking permissions canfindissuesandsavesearches)
+INFO [main] Checking permission canviewconfig
+INFO [main] ...done (Checking permissions canviewconfig)
+INFO [main] Checking permission cansaveconfig
+INFO [main] ...done (Checking permissions cansaveconfig)
+INFO [main] Checking permission canfindissues
+INFO [main] ...done (Checking permissions canfindissues)
+INFO [main] Checking permission canfindissuesandsavesearches
+INFO [main] ...done (Checking permissions canfindissuesandsavesearches)
+INFO [B2DB] executing PDO query (15)
+INFO [B2DB] SELECT projects35.id AS projects35_id, projects35.name AS projects35_name, projects35.key AS projects35_key, projects35.prefix AS projects35_prefix, projects35.use_prefix AS projects35_use_prefix, projects35.use_scrum AS projects35_use_scrum, projects35.homepage AS projects35_homepage, projects35.owned_by AS projects35_owned_by, projects35.owned_type AS projects35_owned_type, projects35.lead_by AS projects35_lead_by, projects35.lead_type AS projects35_lead_type, projects35.time_unit AS projects35_time_unit, projects35.hrs_pr_day AS projects35_hrs_pr_day, projects35.description AS projects35_description, projects35.doc_url AS projects35_doc_url, projects35.enable_tasks AS projects35_enable_tasks, projects35.is_default AS projects35_is_default, projects35.allow_changing_wo_working AS projects35_allow_changing_wo_working, projects35.default_status AS projects35_default_status, projects35.enable_builds AS projects35_enable_builds, projects35.enable_editions AS projects35_enable_editions, projects35.enable_components AS projects35_enable_components, projects35.show_in_summary AS projects35_show_in_summary, projects35.summary_display AS projects35_summary_display, projects35.votes AS projects35_votes, projects35.qa AS projects35_qa, projects35.qa_type AS projects35_qa_type, projects35.released AS projects35_released, projects35.release_date AS projects35_release_date, projects35.locked AS projects35_locked, projects35.planned_release AS projects35_planned_release, projects35.scope AS projects35_scope, projects35.deleted AS projects35_deleted, listtypes38.id AS listtypes38_id, listtypes38.name AS listtypes38_name, listtypes38.itemtype AS listtypes38_itemtype, listtypes38.itemdata AS listtypes38_itemdata, listtypes38.applies_to AS listtypes38_applies_to, listtypes38.order AS listtypes38_order, listtypes38.scope AS listtypes38_scope, scopes39.id AS scopes39_id, scopes39.enabled AS scopes39_enabled, scopes39.description AS scopes39_description, scopes39.admin AS scopes39_admin, scopes39.hostname AS scopes39_hostname FROM tbg3_projects projects35 LEFT JOIN tbg3_listtypes listtypes38 ON (listtypes38.id=projects35.default_status) LEFT JOIN tbg3_scopes scopes39 ON (scopes39.id=projects35.scope) WHERE (projects35.scope = '1') ORDER BY projects35.name asc
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] Triggering core - TBGProject::__construct
+INFO [main] done (Triggering core - TBGProject::__construct)
+INFO [main] Checking permission canseeproject
+INFO [main] ...done (Checking permissions canseeproject)
+INFO [main] Checking permission canseeproject
+INFO [main] ...done (Checking permissions canseeproject)
+INFO [main] Triggering core - project_menustrip_item_links
+INFO [main] Running callback function TBGPublish::listen_projectMenustripLinks
+INFO [main] done (Running callback function Array)
+INFO [main] Running callback function TBGVCSIntegration::listen_projectMenustripLinks
+INFO [main] done (Running callback function Array)
+INFO [main] done (Triggering core - project_menustrip_item_links)
+INFO [main] decorating with footer
+INFO [main] Triggering core - footer_begin
+INFO [main] done (Triggering core - footer_begin)
+INFO [main] Triggering core - footer_end
+INFO [main] done (Triggering core - footer_end)
+NOTICE [i18n] The text "Email communication" does not exist in list of translated strings.
+NOTICE [i18n] The text "Enables in- and outgoing email functionality" does not exist in list of translated strings.
+NOTICE [i18n] The text "Set up in- and outgoing email communication from this section" does not exist in list of translated strings.
+NOTICE [i18n] The text "Notifications" does not exist in list of translated strings.
+NOTICE [i18n] The text "Email when user registers" does not exist in list of translated strings.
+NOTICE [i18n] The text "Email to reset password" does not exist in list of translated strings.
+NOTICE [i18n] The text "Email when password is reset" does not exist in list of translated strings.
+NOTICE [i18n] The text "Email when an issue is updated" does not exist in list of translated strings.
+NOTICE [i18n] The text "Email on new issues" does not exist in list of translated strings.
+NOTICE [i18n] The text "Email when comments are posted" does not exist in list of translated strings.
+NOTICE [i18n] The text "Enables messaging functionality" does not exist in list of translated strings.
+NOTICE [i18n] The text "Enables calendars, todos and meetings" does not exist in list of translated strings.
+NOTICE [i18n] The text "VCS Integration" does not exist in list of translated strings.
+NOTICE [i18n] The text "Allows details from source code checkins to be displayed in The Bug Genie" does not exist in list of translated strings.
+NOTICE [i18n] The text "Configure repository settings for source code integration" does not exist in list of translated strings.
+NOTICE [i18n] The text "Wiki" does not exist in list of translated strings.
+NOTICE [i18n] The text "Enables Wiki-functionality" does not exist in list of translated strings.
+NOTICE [i18n] The text "Set up the Wiki module from this section" does not exist in list of translated strings.
+NOTICE [i18n] The text "Search results" does not exist in list of translated strings.
+NOTICE [i18n] The text "Standard search results" does not exist in list of translated strings.
+NOTICE [i18n] The text "Todo-list with progress indicator" does not exist in list of translated strings.
+NOTICE [i18n] The text "Most voted-for issues" does not exist in list of translated strings.
+NOTICE [i18n] The text "User pain indicator with custom single bug pain threshold" does not exist in list of translated strings.
+NOTICE [i18n] The text "Find issues for %project_name%" does not exist in list of translated strings.
+NOTICE [i18n] The text "Open issues for %project_name%" does not exist in list of translated strings.
+NOTICE [i18n] The text "Closed issues for %project_name%" does not exist in list of translated strings.
+NOTICE [i18n] The text "Milestone todo-list for %project_name%" does not exist in list of translated strings.
+NOTICE [i18n] The text "Issues reported by me" does not exist in list of translated strings.
+NOTICE [i18n] The text "Open issues assigned to me" does not exist in list of translated strings.
+NOTICE [i18n] The text "Open issues assigned to my teams" does not exist in list of translated strings.
+NOTICE [i18n] The text "Predefined searches" does not exist in list of translated strings.
+NOTICE [i18n] The text "Download feed" does not exist in list of translated strings.
+NOTICE [i18n] The text "Open issues for this project" does not exist in list of translated strings.
+NOTICE [i18n] The text "Closed issues for this project" does not exist in list of translated strings.
+NOTICE [i18n] The text "Milestone todo-list for this project" does not exist in list of translated strings.
+NOTICE [i18n] The text "Your saved searches for this project" does not exist in list of translated strings.
+NOTICE [i18n] The text "You don't have any saved searches for this project" does not exist in list of translated strings.
+NOTICE [i18n] The text "Public saved searches for this project" does not exist in list of translated strings.
+NOTICE [i18n] The text "There are no saved searches for this project" does not exist in list of translated strings.
+NOTICE [i18n] The text "More" does not exist in list of translated strings.
+NOTICE [i18n] The text "Issues containing" does not exist in list of translated strings.
+NOTICE [i18n] The text "Issues not containing" does not exist in list of translated strings.
+NOTICE [i18n] The text "Leave this input field blank to list all issues based on filters below" does not exist in list of translated strings.
+NOTICE [i18n] The text "Display results as" does not exist in list of translated strings.
+NOTICE [i18n] The text "Template parameter" does not exist in list of translated strings.
+NOTICE [i18n] The text "If the template has a custom parameter, use this field to specify it" does not exist in list of translated strings.
+NOTICE [i18n] The text "Issues per page" does not exist in list of translated strings.
+NOTICE [i18n] The text "%number_of_issues% issues per page" does not exist in list of translated strings.
+NOTICE [i18n] The text "All results on one page" does not exist in list of translated strings.
+NOTICE [i18n] The text "Group results by" does not exist in list of translated strings.
+NOTICE [i18n] The text "No grouping" does not exist in list of translated strings.
+NOTICE [i18n] The text "Milestone" does not exist in list of translated strings.
+NOTICE [i18n] The text "Who's assigned" does not exist in list of translated strings.
+NOTICE [i18n] The text "State (open or closed)" does not exist in list of translated strings.
+NOTICE [i18n] The text "Edition" does not exist in list of translated strings.
+NOTICE [i18n] The text "Version" does not exist in list of translated strings.
+NOTICE [i18n] The text "Component" does not exist in list of translated strings.
+NOTICE [i18n] The text "Ascending" does not exist in list of translated strings.
+NOTICE [i18n] The text "Descending" does not exist in list of translated strings.
+NOTICE [i18n] The text "Save this search" does not exist in list of translated strings.
+NOTICE [i18n] The text "Find issues" does not exist in list of translated strings.
+NOTICE [i18n] The text "This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead" does not exist in list of translated strings.
+NOTICE [i18n] The text "Saved search name" does not exist in list of translated strings.
+NOTICE [i18n] The text "Optional" does not exist in list of translated strings.
+NOTICE [i18n] The text "Available to" does not exist in list of translated strings.
+NOTICE [i18n] The text "Only to me" does not exist in list of translated strings.
+NOTICE [i18n] The text "To everyone" does not exist in list of translated strings.
+NOTICE [i18n] The text "Update this saved search" does not exist in list of translated strings.
+NOTICE [i18n] The text "cancel" does not exist in list of translated strings.
+NOTICE [i18n] The text "%update_or_save_search% or %cancel%" does not exist in list of translated strings.
+NOTICE [i18n] The text "Add filter" does not exist in list of translated strings.
+NOTICE [i18n] The text "Issue state - whether an issue is open or closed" does not exist in list of translated strings.
+NOTICE [i18n] The text "Status - what status an issue has" does not exist in list of translated strings.
+NOTICE [i18n] The text "Resolution - the issue's resolution" does not exist in list of translated strings.
+NOTICE [i18n] The text "Category - which category an issue is in" does not exist in list of translated strings.
+NOTICE [i18n] The text "Priority - how high the issue is prioritised" does not exist in list of translated strings.
+NOTICE [i18n] The text "Severity - how serious the issue is" does not exist in list of translated strings.
+NOTICE [i18n] The text "Reproducability - how often you can reproduce the issue" does not exist in list of translated strings.
+NOTICE [i18n] The text "Issue type - what kind of issue it is" does not exist in list of translated strings.
+NOTICE [i18n] The text "Adding the same filter more than once means that any of the given values for that filter will return a match if you are matching with "is", and neither of the given values if you are matching with "is not"" does not exist in list of translated strings.
+NOTICE [i18n] The text "Logged in as %name%" does not exist in list of translated strings.
+NOTICE [i18n] The text "Logout" does not exist in list of translated strings.
+NOTICE [i18n] The text "Please wait, loading content" does not exist in list of translated strings.
+NOTICE [i18n] The text "My dashboard" does not exist in list of translated strings.
+NOTICE [i18n] The text "Quick search" does not exist in list of translated strings.
+NOTICE [i18n] The text "Search for anything here" does not exist in list of translated strings.
+NOTICE [i18n] The text "The are no other projects to choose from" does not exist in list of translated strings.
+NOTICE [i18n] The text "Please wait" does not exist in list of translated strings.
+NOTICE [i18n] The text "Project dashboard" does not exist in list of translated strings.
+NOTICE [i18n] The text "Issues" does not exist in list of translated strings.
+NOTICE [i18n] The text "Roadmap" does not exist in list of translated strings.
+NOTICE [i18n] The text "Team" does not exist in list of translated strings.
+NOTICE [i18n] The text "Timeline" does not exist in list of translated strings.
+NOTICE [i18n] The text "%num_milliseconds% ms" does not exist in list of translated strings.
+NOTICE [i18n] The text "Page load time: %load_time%, with %num_queries% queries. Scope ID: %scope_id%." does not exist in list of translated strings.
+INFO [main] ...done
+INFO [main] rendering content
+INFO [main] ...done (rendering content)
+INFO [main] Initializing B2 framework
+INFO [main] Cache is not enabled
+INFO [main] Loading B2DB
+INFO [main] Adding B2DB classes to autoload path
+INFO [main] ...done (Adding B2DB classes to autoload path)
+INFO [main] Initializing B2DB
+INFO [main] adding classpath /var/www/dev/thebuggenie/core/B2DB/PDO/classes/
+INFO [main] ...done (Initializing B2DB)
+INFO [main] Database connection details found, connecting
+INFO [main] ...done (Database connection details found, connecting)
+INFO [main] Adding core table classpath to autoload path
+INFO [main] ...done
+INFO [main] Initializing context
+INFO [main] Loading request
+INFO [main] ...done
+INFO [routing] Loading first batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] Setting current scope
+INFO [main] Checking if scope can be set from hostname (http://thebuggenie)
+INFO [B2DB] executing PDO query (0)
+INFO [B2DB] SELECT scopes0.id AS scopes0_id, scopes0.enabled AS scopes0_enabled, scopes0.description AS scopes0_description, scopes0.admin AS scopes0_admin, scopes0.hostname AS scopes0_hostname FROM tbg3_scopes scopes0 WHERE (scopes0.hostname = 'http://thebuggenie') LIMIT 1
+INFO [B2DB] Values: http://thebuggenie
+INFO [B2DB] done
+INFO [main] It could
+INFO [main] Setting scope from hostname
+INFO [main] ...done (Setting scope from hostname)
+INFO [main] ...done
+INFO [main] Loading settings
+INFO [main] Loading all settings
+INFO [main] Settings not cached. Retrieving from database
+INFO [B2DB] executing PDO query (1)
+INFO [B2DB] SELECT settings1.id AS settings1_id, settings1.name AS settings1_name, settings1.module AS settings1_module, settings1.value AS settings1_value, settings1.uid AS settings1_uid, settings1.scope AS settings1_scope, scopes2.id AS scopes2_id, scopes2.enabled AS scopes2_enabled, scopes2.description AS scopes2_description, scopes2.admin AS scopes2_admin, scopes2.hostname AS scopes2_hostname FROM tbg3_settings settings1 LEFT JOIN tbg3_scopes scopes2 ON (scopes2.id=settings1.scope) WHERE (scopes2.enabled = '1') AND (settings1.scope = '1')
+INFO [B2DB] Values: 1, 1
+INFO [B2DB] done
+INFO [main] Retrieved
+INFO [main] ...done
+INFO [main] Loading user
+INFO [main] is this logout?
+INFO [main] no
+INFO [main] sets up user object
+INFO [B2DB] executing PDO query (2)
+INFO [B2DB] SELECT users3.id AS users3_id, users3.uname AS users3_uname, users3.passwd AS users3_passwd, users3.buddyname AS users3_buddyname, users3.realname AS users3_realname, users3.email AS users3_email, users3.state AS users3_state, users3.homepage AS users3_homepage, users3.language AS users3_language, users3.lastseen AS users3_lastseen, users3.lastlogin AS users3_lastlogin, users3.quota AS users3_quota, users3.activated AS users3_activated, users3.enabled AS users3_enabled, users3.deleted AS users3_deleted, users3.showfollowups AS users3_showfollowups, users3.showassigned AS users3_showassigned, users3.avatar AS users3_avatar, users3.use_gravatar AS users3_use_gravatar, users3.private_email AS users3_private_email, users3.joined AS users3_joined, users3.group_id AS users3_group_id, users3.customer_id AS users3_customer_id, users3.scope AS users3_scope, userstate6.id AS userstate6_id, userstate6.state_name AS userstate6_state_name, userstate6.unavailable AS userstate6_unavailable, userstate6.busy AS userstate6_busy, userstate6.online AS userstate6_online, userstate6.meeting AS userstate6_meeting, userstate6.absent AS userstate6_absent, userstate6.color AS userstate6_color, userstate6.scope AS userstate6_scope, groups9.id AS groups9_id, groups9.gname AS groups9_gname, groups9.scope AS groups9_scope, customers12.id AS customers12_id, customers12.cname AS customers12_cname, customers12.scope AS customers12_scope, scopes13.id AS scopes13_id, scopes13.enabled AS scopes13_enabled, scopes13.description AS scopes13_description, scopes13.admin AS scopes13_admin, scopes13.hostname AS scopes13_hostname FROM tbg3_users users3 LEFT JOIN tbg3_userstate userstate6 ON (userstate6.id=users3.state) LEFT JOIN tbg3_groups groups9 ON (groups9.id=users3.group_id) LEFT JOIN tbg3_customers customers12 ON (customers12.id=users3.customer_id) LEFT JOIN tbg3_scopes scopes13 ON (scopes13.id=users3.scope) WHERE (users3.uname = 'administrator') AND (users3.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users3.deleted = '0') LIMIT 1
+INFO [B2DB] Values: administrator, 21232f297a57a5a743894a0e4a801fc3, 0
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (3)
+INFO [B2DB] SELECT users3.id AS users3_id, users3.uname AS users3_uname, users3.passwd AS users3_passwd, users3.buddyname AS users3_buddyname, users3.realname AS users3_realname, users3.email AS users3_email, users3.state AS users3_state, users3.homepage AS users3_homepage, users3.language AS users3_language, users3.lastseen AS users3_lastseen, users3.lastlogin AS users3_lastlogin, users3.quota AS users3_quota, users3.activated AS users3_activated, users3.enabled AS users3_enabled, users3.deleted AS users3_deleted, users3.showfollowups AS users3_showfollowups, users3.showassigned AS users3_showassigned, users3.avatar AS users3_avatar, users3.use_gravatar AS users3_use_gravatar, users3.private_email AS users3_private_email, users3.joined AS users3_joined, users3.group_id AS users3_group_id, users3.customer_id AS users3_customer_id, users3.scope AS users3_scope, userstate6.id AS userstate6_id, userstate6.state_name AS userstate6_state_name, userstate6.unavailable AS userstate6_unavailable, userstate6.busy AS userstate6_busy, userstate6.online AS userstate6_online, userstate6.meeting AS userstate6_meeting, userstate6.absent AS userstate6_absent, userstate6.color AS userstate6_color, userstate6.scope AS userstate6_scope, groups9.id AS groups9_id, groups9.gname AS groups9_gname, groups9.scope AS groups9_scope, customers12.id AS customers12_id, customers12.cname AS customers12_cname, customers12.scope AS customers12_scope, scopes13.id AS scopes13_id, scopes13.enabled AS scopes13_enabled, scopes13.description AS scopes13_description, scopes13.admin AS scopes13_admin, scopes13.hostname AS scopes13_hostname FROM tbg3_users users3 LEFT JOIN tbg3_userstate userstate6 ON (userstate6.id=users3.state) LEFT JOIN tbg3_groups groups9 ON (groups9.id=users3.group_id) LEFT JOIN tbg3_customers customers12 ON (customers12.id=users3.customer_id) LEFT JOIN tbg3_scopes scopes13 ON (scopes13.id=users3.scope) WHERE (users3.uname = 'administrator') AND (users3.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users3.deleted = '0') LIMIT 1
+INFO [B2DB] Values: administrator, 21232f297a57a5a743894a0e4a801fc3, 0
+INFO [B2DB] done
+INFO [main] User with id 1 set up successfully
+INFO [B2DB] executing PDO query (4)
+INFO [B2DB] UPDATE tbg3_users SET `lastseen`='1281293300' WHERE (id = '1')
+INFO [B2DB] Values: 1281293300, 1
+INFO [B2DB] done
+INFO [main] loaded
+INFO [main] caches permissions
+INFO [main] starting to cache access permissions
+INFO [B2DB] executing PDO query (5)
+INFO [B2DB] SELECT permissions14.id AS permissions14_id, permissions14.permission_type AS permissions14_permission_type, permissions14.target_id AS permissions14_target_id, permissions14.allowed AS permissions14_allowed, permissions14.module AS permissions14_module, permissions14.uid AS permissions14_uid, permissions14.gid AS permissions14_gid, permissions14.tid AS permissions14_tid, permissions14.scope AS permissions14_scope, users15.id AS users15_id, users15.uname AS users15_uname, users15.passwd AS users15_passwd, users15.buddyname AS users15_buddyname, users15.realname AS users15_realname, users15.email AS users15_email, users15.state AS users15_state, users15.homepage AS users15_homepage, users15.language AS users15_language, users15.lastseen AS users15_lastseen, users15.lastlogin AS users15_lastlogin, users15.quota AS users15_quota, users15.activated AS users15_activated, users15.enabled AS users15_enabled, users15.deleted AS users15_deleted, users15.showfollowups AS users15_showfollowups, users15.showassigned AS users15_showassigned, users15.avatar AS users15_avatar, users15.use_gravatar AS users15_use_gravatar, users15.private_email AS users15_private_email, users15.joined AS users15_joined, users15.group_id AS users15_group_id, users15.customer_id AS users15_customer_id, users15.scope AS users15_scope, groups16.id AS groups16_id, groups16.gname AS groups16_gname, groups16.scope AS groups16_scope, teams19.id AS teams19_id, teams19.teamname AS teams19_teamname, teams19.scope AS teams19_scope, scopes20.id AS scopes20_id, scopes20.enabled AS scopes20_enabled, scopes20.description AS scopes20_description, scopes20.admin AS scopes20_admin, scopes20.hostname AS scopes20_hostname FROM tbg3_permissions permissions14 LEFT JOIN tbg3_users users15 ON (users15.id=permissions14.uid) LEFT JOIN tbg3_groups groups16 ON (groups16.id=permissions14.gid) LEFT JOIN tbg3_teams teams19 ON (teams19.id=permissions14.tid) LEFT JOIN tbg3_scopes scopes20 ON (scopes20.id=permissions14.scope) WHERE (permissions14.scope = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] done (starting to cache access permissions)
+INFO [main] ...cached
+INFO [main] ...done
+INFO [main] Loading i18n strings
+INFO [main] Loading strings from file
+INFO [main] en_US
+INFO [i18n] Loading strings from file
+INFO [main] ...done
+INFO [main] Loading modules
+INFO [main] getting modules from database
+INFO [B2DB] executing PDO query (6)
+INFO [B2DB] SELECT modules21.id AS modules21_id, modules21.module_name AS modules21_module_name, modules21.enabled AS modules21_enabled, modules21.version AS modules21_version, modules21.classname AS modules21_classname, modules21.scope AS modules21_scope, scopes22.id AS scopes22_id, scopes22.enabled AS scopes22_enabled, scopes22.description AS scopes22_description, scopes22.admin AS scopes22_admin, scopes22.hostname AS scopes22_hostname FROM tbg3_modules modules21 LEFT JOIN tbg3_scopes scopes22 ON (scopes22.id=modules21.scope) WHERE (modules21.scope = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] done (getting modules from database)
+INFO [main] setting up module objects
+INFO [i18n] Loading strings from file
+INFO [i18n] Could not find language file /var/www/dev/thebuggenie/modules/mailing/i18n/en_US/general.inc.php
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Could not find language file /var/www/dev/thebuggenie/modules/vcs_integration/i18n/en_US/general.inc.php
+INFO [i18n] Loading strings from file
+INFO [main] done (setting up module objects)
+INFO [main] caching module access permissions
+INFO [B2DB] executing PDO query (7)
+INFO [B2DB] SELECT modulepermissions23.id AS modulepermissions23_id, modulepermissions23.module_name AS modulepermissions23_module_name, modulepermissions23.allowed AS modulepermissions23_allowed, modulepermissions23.uid AS modulepermissions23_uid, modulepermissions23.gid AS modulepermissions23_gid, modulepermissions23.tid AS modulepermissions23_tid, modulepermissions23.scope AS modulepermissions23_scope, users24.id AS users24_id, users24.uname AS users24_uname, users24.passwd AS users24_passwd, users24.buddyname AS users24_buddyname, users24.realname AS users24_realname, users24.email AS users24_email, users24.state AS users24_state, users24.homepage AS users24_homepage, users24.language AS users24_language, users24.lastseen AS users24_lastseen, users24.lastlogin AS users24_lastlogin, users24.quota AS users24_quota, users24.activated AS users24_activated, users24.enabled AS users24_enabled, users24.deleted AS users24_deleted, users24.showfollowups AS users24_showfollowups, users24.showassigned AS users24_showassigned, users24.avatar AS users24_avatar, users24.use_gravatar AS users24_use_gravatar, users24.private_email AS users24_private_email, users24.joined AS users24_joined, users24.group_id AS users24_group_id, users24.customer_id AS users24_customer_id, users24.scope AS users24_scope, groups25.id AS groups25_id, groups25.gname AS groups25_gname, groups25.scope AS groups25_scope, teams26.id AS teams26_id, teams26.teamname AS teams26_teamname, teams26.scope AS teams26_scope, scopes27.id AS scopes27_id, scopes27.enabled AS scopes27_enabled, scopes27.description AS scopes27_description, scopes27.admin AS scopes27_admin, scopes27.hostname AS scopes27_hostname FROM tbg3_modulepermissions modulepermissions23 LEFT JOIN tbg3_users users24 ON (users24.id=modulepermissions23.uid) LEFT JOIN tbg3_groups groups25 ON (groups25.id=modulepermissions23.gid) LEFT JOIN tbg3_teams teams26 ON (teams26.id=modulepermissions23.tid) LEFT JOIN tbg3_scopes scopes27 ON (scopes27.id=modulepermissions23.scope) WHERE (modulepermissions23.scope = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] done (caching module access permissions)
+INFO [main] initializing modules
+INFO [main] initializing and loading routes for mailing
+INFO [mailing] adding route forgot
+INFO [mailing] done (adding route forgot)
+INFO [mailing] adding route mailing_test_email
+INFO [mailing] done (adding route mailing_test_email)
+INFO [main] done (initializing and loading routes for mailing)
+INFO [main] initializing and loading routes for messages
+INFO [main] done (initializing and loading routes for messages)
+INFO [main] initializing and loading routes for calendar
+INFO [main] done (initializing and loading routes for calendar)
+INFO [main] initializing and loading routes for vcs_integration
+INFO [vcs_integration] adding route normalcheckin
+INFO [vcs_integration] done (adding route normalcheckin)
+INFO [vcs_integration] adding route githubcheckin
+INFO [vcs_integration] done (adding route githubcheckin)
+INFO [main] done (initializing and loading routes for vcs_integration)
+INFO [main] initializing and loading routes for publish
+INFO [publish] adding route publish
+INFO [publish] done (adding route publish)
+INFO [publish] adding route publish_article_new
+INFO [publish] done (adding route publish_article_new)
+INFO [publish] adding route publish_article
+INFO [publish] done (adding route publish_article)
+INFO [publish] adding route publish_article_revision
+INFO [publish] done (adding route publish_article_revision)
+INFO [publish] adding route publish_article_edit
+INFO [publish] done (adding route publish_article_edit)
+INFO [publish] adding route publish_article_delete
+INFO [publish] done (adding route publish_article_delete)
+INFO [publish] adding route publish_article_save
+INFO [publish] done (adding route publish_article_save)
+INFO [publish] adding route publish_article_history
+INFO [publish] done (adding route publish_article_history)
+INFO [publish] adding route publish_article_diff
+INFO [publish] done (adding route publish_article_diff)
+INFO [publish] adding route publish_article_restore
+INFO [publish] done (adding route publish_article_restore)
+INFO [main] done (initializing and loading routes for publish)
+INFO [B2DB] executing PDO query (8)
+INFO [B2DB] SELECT enabledmodulelisteners28.id AS enabledmodulelisteners28_id, enabledmodulelisteners28.module AS enabledmodulelisteners28_module, enabledmodulelisteners28.identifier AS enabledmodulelisteners28_identifier, enabledmodulelisteners28.order AS enabledmodulelisteners28_order, enabledmodulelisteners28.module_name AS enabledmodulelisteners28_module_name, enabledmodulelisteners28.scope AS enabledmodulelisteners28_scope, modules21.id AS modules21_id, modules21.module_name AS modules21_module_name, modules21.enabled AS modules21_enabled, modules21.version AS modules21_version, modules21.classname AS modules21_classname, modules21.scope AS modules21_scope, modules29.id AS modules29_id, modules29.module_name AS modules29_module_name, modules29.enabled AS modules29_enabled, modules29.version AS modules29_version, modules29.classname AS modules29_classname, modules29.scope AS modules29_scope, scopes30.id AS scopes30_id, scopes30.enabled AS scopes30_enabled, scopes30.description AS scopes30_description, scopes30.admin AS scopes30_admin, scopes30.hostname AS scopes30_hostname FROM tbg3_enabledmodulelisteners enabledmodulelisteners28 LEFT JOIN tbg3_modules modules21 ON (modules21.module_name=enabledmodulelisteners28.module_name) LEFT JOIN tbg3_modules modules29 ON (modules29.module_name=enabledmodulelisteners28.module_name) LEFT JOIN tbg3_scopes scopes30 ON (scopes30.id=enabledmodulelisteners28.scope) WHERE (enabledmodulelisteners28.module_name IN ('mailing', 'messages', 'calendar', 'vcs_integration', 'publish')) AND (enabledmodulelisteners28.scope = '1') AND (modules21.scope = '1') ORDER BY enabledmodulelisteners28.order asc
+INFO [B2DB] Values: mailing, messages, calendar, vcs_integration, publish, 1, 1
+INFO [B2DB] done
+INFO [main] done (initializing modules)
+INFO [main] ...done
+INFO [routing] Loading last batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] ...done initializing
+INFO [main] ...done
+INFO [main] B2 framework loaded
+INFO [main] Dispatching
+INFO [routing] URL is thebuggenie/issues/predefined_search/1/search/1/format/rss
+INFO [routing] URL is now /thebuggenie/issues/predefined_search/1/search/1/format/rss
+INFO [routing] URL is now /thebuggenie/issues/predefined_search/1/search/1/format/rss
+INFO [routing] match route [project_issues] "/:project_key/issues/*"
+INFO [main] Running main pre-execute action
+INFO [main] Checking permission page_search_access
+INFO [main] Populating user teams
+INFO [B2DB] executing PDO query (9)
+INFO [B2DB] SELECT COUNT(teammembers31.id) as num_col FROM tbg3_teammembers teammembers31 WHERE (teammembers31.uid = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] ...done (Populating user teams)
+INFO [main] ...done (Checking permissions page_search_access)
+INFO [B2DB] executing PDO query (10)
+INFO [B2DB] SELECT projects35.id AS projects35_id, projects35.name AS projects35_name, projects35.key AS projects35_key, projects35.prefix AS projects35_prefix, projects35.use_prefix AS projects35_use_prefix, projects35.use_scrum AS projects35_use_scrum, projects35.homepage AS projects35_homepage, projects35.owned_by AS projects35_owned_by, projects35.owned_type AS projects35_owned_type, projects35.lead_by AS projects35_lead_by, projects35.lead_type AS projects35_lead_type, projects35.time_unit AS projects35_time_unit, projects35.hrs_pr_day AS projects35_hrs_pr_day, projects35.description AS projects35_description, projects35.doc_url AS projects35_doc_url, projects35.enable_tasks AS projects35_enable_tasks, projects35.is_default AS projects35_is_default, projects35.allow_changing_wo_working AS projects35_allow_changing_wo_working, projects35.default_status AS projects35_default_status, projects35.enable_builds AS projects35_enable_builds, projects35.enable_editions AS projects35_enable_editions, projects35.enable_components AS projects35_enable_components, projects35.show_in_summary AS projects35_show_in_summary, projects35.summary_display AS projects35_summary_display, projects35.votes AS projects35_votes, projects35.qa AS projects35_qa, projects35.qa_type AS projects35_qa_type, projects35.released AS projects35_released, projects35.release_date AS projects35_release_date, projects35.locked AS projects35_locked, projects35.planned_release AS projects35_planned_release, projects35.scope AS projects35_scope, projects35.deleted AS projects35_deleted FROM tbg3_projects projects35 WHERE (projects35.scope = '1') AND (projects35.key = 'thebuggenie') LIMIT 1
+INFO [B2DB] Values: 1, thebuggenie
+INFO [B2DB] done
+INFO [main] Triggering core - TBGProject::__construct
+INFO [main] done (Triggering core - TBGProject::__construct)
+INFO [main] Running route action runFindIssues()
+INFO [B2DB] executing PDO query (11)
+INFO [B2DB] SELECT issuetypes40.id AS issuetypes40_id, issuetypes40.name AS issuetypes40_name, issuetypes40.applies_to AS issuetypes40_applies_to, issuetypes40.applies_type AS issuetypes40_applies_type, issuetypes40.icon AS issuetypes40_icon, issuetypes40.description AS issuetypes40_description, issuetypes40.is_task AS issuetypes40_is_task, issuetypes40.is_reportable AS issuetypes40_is_reportable, issuetypes40.redirect_after_reporting AS issuetypes40_redirect_after_reporting, issuetypes40.scope AS issuetypes40_scope, scopes41.id AS scopes41_id, scopes41.enabled AS scopes41_enabled, scopes41.description AS scopes41_description, scopes41.admin AS scopes41_admin, scopes41.hostname AS scopes41_hostname FROM tbg3_issuetypes issuetypes40 LEFT JOIN tbg3_scopes scopes41 ON (scopes41.id=issuetypes40.scope) WHERE (issuetypes40.icon = 'bug_report') AND (issuetypes40.scope = '1')
+INFO [B2DB] Values: bug_report, 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (12)
+INFO [B2DB] SELECT COUNT(issues42.id) as num_col FROM tbg3_issues issues42 WHERE (issues42.deleted = '0') AND (issues42.project_id = '2') AND (issues42.state = '0') AND (issues42.issue_type = '1')
+INFO [B2DB] Values: 0, 2, 0, 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (13)
+INFO [B2DB] SELECT issues42.id AS issues42_id, issues42.issue_no AS issues42_issue_no, issues42.title AS issues42_title, issues42.posted AS issues42_posted, issues42.last_updated AS issues42_last_updated, issues42.project_id AS issues42_project_id, issues42.long_description AS issues42_long_description, issues42.state AS issues42_state, issues42.posted_by AS issues42_posted_by, issues42.owned_by AS issues42_owned_by, issues42.user_pain AS issues42_user_pain, issues42.pain_bug_type AS issues42_pain_bug_type, issues42.pain_effect AS issues42_pain_effect, issues42.pain_likelihood AS issues42_pain_likelihood, issues42.assigned_to AS issues42_assigned_to, issues42.reproduction AS issues42_reproduction, issues42.resolution AS issues42_resolution, issues42.issue_type AS issues42_issue_type, issues42.status AS issues42_status, issues42.priority AS issues42_priority, issues42.category AS issues42_category, issues42.severity AS issues42_severity, issues42.reproducability AS issues42_reproducability, issues42.scrumcolor AS issues42_scrumcolor, issues42.estimated_months AS issues42_estimated_months, issues42.estimated_weeks AS issues42_estimated_weeks, issues42.estimated_days AS issues42_estimated_days, issues42.estimated_hours AS issues42_estimated_hours, issues42.estimated_points AS issues42_estimated_points, issues42.spent_months AS issues42_spent_months, issues42.spent_weeks AS issues42_spent_weeks, issues42.spent_days AS issues42_spent_days, issues42.spent_hours AS issues42_spent_hours, issues42.votes AS issues42_votes, issues42.spent_points AS issues42_spent_points, issues42.percent_complete AS issues42_percent_complete, issues42.assigned_type AS issues42_assigned_type, issues42.owned_type AS issues42_owned_type, issues42.duplicate AS issues42_duplicate, issues42.deleted AS issues42_deleted, issues42.blocking AS issues42_blocking, issues42.locked AS issues42_locked, issues42.user_working_on AS issues42_user_working_on, issues42.user_worked_on_since AS issues42_user_worked_on_since, issues42.milestone AS issues42_milestone, issues42.scope AS issues42_scope, projects43.id AS projects43_id, projects43.name AS projects43_name, projects43.key AS projects43_key, projects43.prefix AS projects43_prefix, projects43.use_prefix AS projects43_use_prefix, projects43.use_scrum AS projects43_use_scrum, projects43.homepage AS projects43_homepage, projects43.owned_by AS projects43_owned_by, projects43.owned_type AS projects43_owned_type, projects43.lead_by AS projects43_lead_by, projects43.lead_type AS projects43_lead_type, projects43.time_unit AS projects43_time_unit, projects43.hrs_pr_day AS projects43_hrs_pr_day, projects43.description AS projects43_description, projects43.doc_url AS projects43_doc_url, projects43.enable_tasks AS projects43_enable_tasks, projects43.is_default AS projects43_is_default, projects43.allow_changing_wo_working AS projects43_allow_changing_wo_working, projects43.default_status AS projects43_default_status, projects43.enable_builds AS projects43_enable_builds, projects43.enable_editions AS projects43_enable_editions, projects43.enable_components AS projects43_enable_components, projects43.show_in_summary AS projects43_show_in_summary, projects43.summary_display AS projects43_summary_display, projects43.votes AS projects43_votes, projects43.qa AS projects43_qa, projects43.qa_type AS projects43_qa_type, projects43.released AS projects43_released, projects43.release_date AS projects43_release_date, projects43.locked AS projects43_locked, projects43.planned_release AS projects43_planned_release, projects43.scope AS projects43_scope, projects43.deleted AS projects43_deleted, users44.id AS users44_id, users44.uname AS users44_uname, users44.passwd AS users44_passwd, users44.buddyname AS users44_buddyname, users44.realname AS users44_realname, users44.email AS users44_email, users44.state AS users44_state, users44.homepage AS users44_homepage, users44.language AS users44_language, users44.lastseen AS users44_lastseen, users44.lastlogin AS users44_lastlogin, users44.quota AS users44_quota, users44.activated AS users44_activated, users44.enabled AS users44_enabled, users44.deleted AS users44_deleted, users44.showfollowups AS users44_showfollowups, users44.showassigned AS users44_showassigned, users44.avatar AS users44_avatar, users44.use_gravatar AS users44_use_gravatar, users44.private_email AS users44_private_email, users44.joined AS users44_joined, users44.group_id AS users44_group_id, users44.customer_id AS users44_customer_id, users44.scope AS users44_scope, listtypes45.id AS listtypes45_id, listtypes45.name AS listtypes45_name, listtypes45.itemtype AS listtypes45_itemtype, listtypes45.itemdata AS listtypes45_itemdata, listtypes45.applies_to AS listtypes45_applies_to, listtypes45.order AS listtypes45_order, listtypes45.scope AS listtypes45_scope, issuetypes46.id AS issuetypes46_id, issuetypes46.name AS issuetypes46_name, issuetypes46.applies_to AS issuetypes46_applies_to, issuetypes46.applies_type AS issuetypes46_applies_type, issuetypes46.icon AS issuetypes46_icon, issuetypes46.description AS issuetypes46_description, issuetypes46.is_task AS issuetypes46_is_task, issuetypes46.is_reportable AS issuetypes46_is_reportable, issuetypes46.redirect_after_reporting AS issuetypes46_redirect_after_reporting, issuetypes46.scope AS issuetypes46_scope, listtypes47.id AS listtypes47_id, listtypes47.name AS listtypes47_name, listtypes47.itemtype AS listtypes47_itemtype, listtypes47.itemdata AS listtypes47_itemdata, listtypes47.applies_to AS listtypes47_applies_to, listtypes47.order AS listtypes47_order, listtypes47.scope AS listtypes47_scope, listtypes48.id AS listtypes48_id, listtypes48.name AS listtypes48_name, listtypes48.itemtype AS listtypes48_itemtype, listtypes48.itemdata AS listtypes48_itemdata, listtypes48.applies_to AS listtypes48_applies_to, listtypes48.order AS listtypes48_order, listtypes48.scope AS listtypes48_scope, listtypes49.id AS listtypes49_id, listtypes49.name AS listtypes49_name, listtypes49.itemtype AS listtypes49_itemtype, listtypes49.itemdata AS listtypes49_itemdata, listtypes49.applies_to AS listtypes49_applies_to, listtypes49.order AS listtypes49_order, listtypes49.scope AS listtypes49_scope, listtypes50.id AS listtypes50_id, listtypes50.name AS listtypes50_name, listtypes50.itemtype AS listtypes50_itemtype, listtypes50.itemdata AS listtypes50_itemdata, listtypes50.applies_to AS listtypes50_applies_to, listtypes50.order AS listtypes50_order, listtypes50.scope AS listtypes50_scope, listtypes51.id AS listtypes51_id, listtypes51.name AS listtypes51_name, listtypes51.itemtype AS listtypes51_itemtype, listtypes51.itemdata AS listtypes51_itemdata, listtypes51.applies_to AS listtypes51_applies_to, listtypes51.order AS listtypes51_order, listtypes51.scope AS listtypes51_scope, users52.id AS users52_id, users52.uname AS users52_uname, users52.passwd AS users52_passwd, users52.buddyname AS users52_buddyname, users52.realname AS users52_realname, users52.email AS users52_email, users52.state AS users52_state, users52.homepage AS users52_homepage, users52.language AS users52_language, users52.lastseen AS users52_lastseen, users52.lastlogin AS users52_lastlogin, users52.quota AS users52_quota, users52.activated AS users52_activated, users52.enabled AS users52_enabled, users52.deleted AS users52_deleted, users52.showfollowups AS users52_showfollowups, users52.showassigned AS users52_showassigned, users52.avatar AS users52_avatar, users52.use_gravatar AS users52_use_gravatar, users52.private_email AS users52_private_email, users52.joined AS users52_joined, users52.group_id AS users52_group_id, users52.customer_id AS users52_customer_id, users52.scope AS users52_scope, milestones56.id AS milestones56_id, milestones56.name AS milestones56_name, milestones56.visible AS milestones56_visible, milestones56.description AS milestones56_description, milestones56.reached AS milestones56_reached, milestones56.milestone_type AS milestones56_milestone_type, milestones56.starting AS milestones56_starting, milestones56.scheduled AS milestones56_scheduled, milestones56.project AS milestones56_project, milestones56.scope AS milestones56_scope, scopes57.id AS scopes57_id, scopes57.enabled AS scopes57_enabled, scopes57.description AS scopes57_description, scopes57.admin AS scopes57_admin, scopes57.hostname AS scopes57_hostname FROM tbg3_issues issues42 LEFT JOIN tbg3_projects projects43 ON (projects43.id=issues42.project_id) LEFT JOIN tbg3_users users44 ON (users44.id=issues42.posted_by) LEFT JOIN tbg3_listtypes listtypes45 ON (listtypes45.id=issues42.resolution) LEFT JOIN tbg3_issuetypes issuetypes46 ON (issuetypes46.id=issues42.issue_type) LEFT JOIN tbg3_listtypes listtypes47 ON (listtypes47.id=issues42.status) LEFT JOIN tbg3_listtypes listtypes48 ON (listtypes48.id=issues42.priority) LEFT JOIN tbg3_listtypes listtypes49 ON (listtypes49.id=issues42.category) LEFT JOIN tbg3_listtypes listtypes50 ON (listtypes50.id=issues42.severity) LEFT JOIN tbg3_listtypes listtypes51 ON (listtypes51.id=issues42.reproducability) LEFT JOIN tbg3_users users52 ON (users52.id=issues42.user_working_on) LEFT JOIN tbg3_milestones milestones56 ON (milestones56.id=issues42.milestone) LEFT JOIN tbg3_scopes scopes57 ON (scopes57.id=issues42.scope) WHERE (issues42.deleted = '0') AND (issues42.project_id = '2') AND (issues42.state = '0') AND (issues42.issue_type = '1') LIMIT 30
+INFO [B2DB] Values: 0, 2, 0, 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (14)
+INFO [B2DB] SELECT customfields58.id AS customfields58_id, customfields58.field_name AS customfields58_field_name, customfields58.field_key AS customfields58_field_key, customfields58.field_description AS customfields58_field_description, customfields58.field_instructions AS customfields58_field_instructions, customfields58.field_type AS customfields58_field_type, customfields58.scope AS customfields58_scope, scopes59.id AS scopes59_id, scopes59.enabled AS scopes59_enabled, scopes59.description AS scopes59_description, scopes59.admin AS scopes59_admin, scopes59.hostname AS scopes59_hostname FROM tbg3_customfields customfields58 LEFT JOIN tbg3_scopes scopes59 ON (scopes59.id=customfields58.scope) WHERE (customfields58.scope = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (15)
+INFO [B2DB] SELECT issuecustomfields60.id AS issuecustomfields60_id, issuecustomfields60.issue_id AS issuecustomfields60_issue_id, issuecustomfields60.customfields_id AS issuecustomfields60_customfields_id, issuecustomfields60.option_value AS issuecustomfields60_option_value, issuecustomfields60.scope AS issuecustomfields60_scope, issues61.id AS issues61_id, issues61.issue_no AS issues61_issue_no, issues61.title AS issues61_title, issues61.posted AS issues61_posted, issues61.last_updated AS issues61_last_updated, issues61.project_id AS issues61_project_id, issues61.long_description AS issues61_long_description, issues61.state AS issues61_state, issues61.posted_by AS issues61_posted_by, issues61.owned_by AS issues61_owned_by, issues61.user_pain AS issues61_user_pain, issues61.pain_bug_type AS issues61_pain_bug_type, issues61.pain_effect AS issues61_pain_effect, issues61.pain_likelihood AS issues61_pain_likelihood, issues61.assigned_to AS issues61_assigned_to, issues61.reproduction AS issues61_reproduction, issues61.resolution AS issues61_resolution, issues61.issue_type AS issues61_issue_type, issues61.status AS issues61_status, issues61.priority AS issues61_priority, issues61.category AS issues61_category, issues61.severity AS issues61_severity, issues61.reproducability AS issues61_reproducability, issues61.scrumcolor AS issues61_scrumcolor, issues61.estimated_months AS issues61_estimated_months, issues61.estimated_weeks AS issues61_estimated_weeks, issues61.estimated_days AS issues61_estimated_days, issues61.estimated_hours AS issues61_estimated_hours, issues61.estimated_points AS issues61_estimated_points, issues61.spent_months AS issues61_spent_months, issues61.spent_weeks AS issues61_spent_weeks, issues61.spent_days AS issues61_spent_days, issues61.spent_hours AS issues61_spent_hours, issues61.votes AS issues61_votes, issues61.spent_points AS issues61_spent_points, issues61.percent_complete AS issues61_percent_complete, issues61.assigned_type AS issues61_assigned_type, issues61.owned_type AS issues61_owned_type, issues61.duplicate AS issues61_duplicate, issues61.deleted AS issues61_deleted, issues61.blocking AS issues61_blocking, issues61.locked AS issues61_locked, issues61.user_working_on AS issues61_user_working_on, issues61.user_worked_on_since AS issues61_user_worked_on_since, issues61.milestone AS issues61_milestone, issues61.scope AS issues61_scope, customfields62.id AS customfields62_id, customfields62.field_name AS customfields62_field_name, customfields62.field_key AS customfields62_field_key, customfields62.field_description AS customfields62_field_description, customfields62.field_instructions AS customfields62_field_instructions, customfields62.field_type AS customfields62_field_type, customfields62.scope AS customfields62_scope, customfieldoptions66.id AS customfieldoptions66_id, customfieldoptions66.cname AS customfieldoptions66_cname, customfieldoptions66.option_value AS customfieldoptions66_option_value, customfieldoptions66.itemdata AS customfieldoptions66_itemdata, customfieldoptions66.sort_order AS customfieldoptions66_sort_order, customfieldoptions66.customfields_key AS customfieldoptions66_customfields_key, customfieldoptions66.scope AS customfieldoptions66_scope, scopes67.id AS scopes67_id, scopes67.enabled AS scopes67_enabled, scopes67.description AS scopes67_description, scopes67.admin AS scopes67_admin, scopes67.hostname AS scopes67_hostname FROM tbg3_issuecustomfields issuecustomfields60 LEFT JOIN tbg3_issues issues61 ON (issues61.id=issuecustomfields60.issue_id) LEFT JOIN tbg3_customfields customfields62 ON (customfields62.id=issuecustomfields60.customfields_id) LEFT JOIN tbg3_customfieldoptions customfieldoptions66 ON (customfieldoptions66.id=issuecustomfields60.option_value) LEFT JOIN tbg3_scopes scopes67 ON (scopes67.id=issuecustomfields60.scope) WHERE (issuecustomfields60.issue_id = '20') AND (issuecustomfields60.scope = '1')
+INFO [B2DB] Values: 20, 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (16)
+INFO [B2DB] SELECT issuetypes40.id AS issuetypes40_id, issuetypes40.name AS issuetypes40_name, issuetypes40.applies_to AS issuetypes40_applies_to, issuetypes40.applies_type AS issuetypes40_applies_type, issuetypes40.icon AS issuetypes40_icon, issuetypes40.description AS issuetypes40_description, issuetypes40.is_task AS issuetypes40_is_task, issuetypes40.is_reportable AS issuetypes40_is_reportable, issuetypes40.redirect_after_reporting AS issuetypes40_redirect_after_reporting, issuetypes40.scope AS issuetypes40_scope, scopes41.id AS scopes41_id, scopes41.enabled AS scopes41_enabled, scopes41.description AS scopes41_description, scopes41.admin AS scopes41_admin, scopes41.hostname AS scopes41_hostname FROM tbg3_issuetypes issuetypes40 LEFT JOIN tbg3_scopes scopes41 ON (scopes41.id=issuetypes40.scope) WHERE (issuetypes40.id = '1') LIMIT 1
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] checking access to issue 1
+INFO [main] Checking permission canviewissue
+INFO [main] ...done (Checking permissions canviewissue)
+INFO [main] done checking, allowed since this user posted it
+INFO [B2DB] executing PDO query (17)
+INFO [B2DB] SELECT issuecustomfields60.id AS issuecustomfields60_id, issuecustomfields60.issue_id AS issuecustomfields60_issue_id, issuecustomfields60.customfields_id AS issuecustomfields60_customfields_id, issuecustomfields60.option_value AS issuecustomfields60_option_value, issuecustomfields60.scope AS issuecustomfields60_scope, issues61.id AS issues61_id, issues61.issue_no AS issues61_issue_no, issues61.title AS issues61_title, issues61.posted AS issues61_posted, issues61.last_updated AS issues61_last_updated, issues61.project_id AS issues61_project_id, issues61.long_description AS issues61_long_description, issues61.state AS issues61_state, issues61.posted_by AS issues61_posted_by, issues61.owned_by AS issues61_owned_by, issues61.user_pain AS issues61_user_pain, issues61.pain_bug_type AS issues61_pain_bug_type, issues61.pain_effect AS issues61_pain_effect, issues61.pain_likelihood AS issues61_pain_likelihood, issues61.assigned_to AS issues61_assigned_to, issues61.reproduction AS issues61_reproduction, issues61.resolution AS issues61_resolution, issues61.issue_type AS issues61_issue_type, issues61.status AS issues61_status, issues61.priority AS issues61_priority, issues61.category AS issues61_category, issues61.severity AS issues61_severity, issues61.reproducability AS issues61_reproducability, issues61.scrumcolor AS issues61_scrumcolor, issues61.estimated_months AS issues61_estimated_months, issues61.estimated_weeks AS issues61_estimated_weeks, issues61.estimated_days AS issues61_estimated_days, issues61.estimated_hours AS issues61_estimated_hours, issues61.estimated_points AS issues61_estimated_points, issues61.spent_months AS issues61_spent_months, issues61.spent_weeks AS issues61_spent_weeks, issues61.spent_days AS issues61_spent_days, issues61.spent_hours AS issues61_spent_hours, issues61.votes AS issues61_votes, issues61.spent_points AS issues61_spent_points, issues61.percent_complete AS issues61_percent_complete, issues61.assigned_type AS issues61_assigned_type, issues61.owned_type AS issues61_owned_type, issues61.duplicate AS issues61_duplicate, issues61.deleted AS issues61_deleted, issues61.blocking AS issues61_blocking, issues61.locked AS issues61_locked, issues61.user_working_on AS issues61_user_working_on, issues61.user_worked_on_since AS issues61_user_worked_on_since, issues61.milestone AS issues61_milestone, issues61.scope AS issues61_scope, customfields62.id AS customfields62_id, customfields62.field_name AS customfields62_field_name, customfields62.field_key AS customfields62_field_key, customfields62.field_description AS customfields62_field_description, customfields62.field_instructions AS customfields62_field_instructions, customfields62.field_type AS customfields62_field_type, customfields62.scope AS customfields62_scope, customfieldoptions66.id AS customfieldoptions66_id, customfieldoptions66.cname AS customfieldoptions66_cname, customfieldoptions66.option_value AS customfieldoptions66_option_value, customfieldoptions66.itemdata AS customfieldoptions66_itemdata, customfieldoptions66.sort_order AS customfieldoptions66_sort_order, customfieldoptions66.customfields_key AS customfieldoptions66_customfields_key, customfieldoptions66.scope AS customfieldoptions66_scope, scopes67.id AS scopes67_id, scopes67.enabled AS scopes67_enabled, scopes67.description AS scopes67_description, scopes67.admin AS scopes67_admin, scopes67.hostname AS scopes67_hostname FROM tbg3_issuecustomfields issuecustomfields60 LEFT JOIN tbg3_issues issues61 ON (issues61.id=issuecustomfields60.issue_id) LEFT JOIN tbg3_customfields customfields62 ON (customfields62.id=issuecustomfields60.customfields_id) LEFT JOIN tbg3_customfieldoptions customfieldoptions66 ON (customfieldoptions66.id=issuecustomfields60.option_value) LEFT JOIN tbg3_scopes scopes67 ON (scopes67.id=issuecustomfields60.scope) WHERE (issuecustomfields60.issue_id = '21') AND (issuecustomfields60.scope = '1')
+INFO [B2DB] Values: 21, 1
+INFO [B2DB] done
+INFO [main] checking access to issue 2
+INFO [main] Checking permission canviewissue
+INFO [main] ...done (Checking permissions canviewissue)
+INFO [main] done checking, allowed since this user posted it
+INFO [B2DB] executing PDO query (18)
+INFO [B2DB] SELECT savedsearches68.id AS savedsearches68_id, savedsearches68.name AS savedsearches68_name, savedsearches68.description AS savedsearches68_description, savedsearches68.is_public AS savedsearches68_is_public, savedsearches68.templatename AS savedsearches68_templatename, savedsearches68.templateparameter AS savedsearches68_templateparameter, savedsearches68.issues_per_page AS savedsearches68_issues_per_page, savedsearches68.groupby AS savedsearches68_groupby, savedsearches68.grouporder AS savedsearches68_grouporder, savedsearches68.scope AS savedsearches68_scope, savedsearches68.applies_to_project AS savedsearches68_applies_to_project, savedsearches68.uid AS savedsearches68_uid FROM tbg3_savedsearches savedsearches68 WHERE (savedsearches68.scope = '1') AND  ((savedsearches68.uid = '1') OR savedsearches68.uid = '0')  AND (savedsearches68.applies_to_project = '2')
+INFO [B2DB] Values: 1, 1, 0, 2
+INFO [B2DB] done
+INFO [main] ...done
+INFO [main] Displaying template
+INFO [main] configuring variables
+INFO [main] rendering template and buffering output
+INFO [main] ...completed
+INFO [main] ...done
+INFO [main] rendering content
+INFO [main] ...done (rendering content)
+INFO [main] Initializing B2 framework
+INFO [main] Cache is not enabled
+INFO [main] Loading B2DB
+INFO [main] Adding B2DB classes to autoload path
+INFO [main] ...done (Adding B2DB classes to autoload path)
+INFO [main] Initializing B2DB
+INFO [main] adding classpath /var/www/dev/thebuggenie/core/B2DB/PDO/classes/
+INFO [main] ...done (Initializing B2DB)
+INFO [main] Database connection details found, connecting
+INFO [main] ...done (Database connection details found, connecting)
+INFO [main] Adding core table classpath to autoload path
+INFO [main] ...done
+INFO [main] Initializing context
+INFO [main] Loading request
+INFO [main] ...done
+INFO [routing] Loading first batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] Setting current scope
+INFO [main] Checking if scope can be set from hostname (http://thebuggenie)
+INFO [B2DB] executing PDO query (0)
+INFO [B2DB] SELECT scopes0.id AS scopes0_id, scopes0.enabled AS scopes0_enabled, scopes0.description AS scopes0_description, scopes0.admin AS scopes0_admin, scopes0.hostname AS scopes0_hostname FROM tbg3_scopes scopes0 WHERE (scopes0.hostname = 'http://thebuggenie') LIMIT 1
+INFO [B2DB] Values: http://thebuggenie
+INFO [B2DB] done
+INFO [main] It could
+INFO [main] Setting scope from hostname
+INFO [main] ...done (Setting scope from hostname)
+INFO [main] ...done
+INFO [main] Loading settings
+INFO [main] Loading all settings
+INFO [main] Settings not cached. Retrieving from database
+INFO [B2DB] executing PDO query (1)
+INFO [B2DB] SELECT settings1.id AS settings1_id, settings1.name AS settings1_name, settings1.module AS settings1_module, settings1.value AS settings1_value, settings1.uid AS settings1_uid, settings1.scope AS settings1_scope, scopes2.id AS scopes2_id, scopes2.enabled AS scopes2_enabled, scopes2.description AS scopes2_description, scopes2.admin AS scopes2_admin, scopes2.hostname AS scopes2_hostname FROM tbg3_settings settings1 LEFT JOIN tbg3_scopes scopes2 ON (scopes2.id=settings1.scope) WHERE (scopes2.enabled = '1') AND (settings1.scope = '1')
+INFO [B2DB] Values: 1, 1
+INFO [B2DB] done
+INFO [main] Retrieved
+INFO [main] ...done
+INFO [main] Loading user
+INFO [main] is this logout?
+INFO [main] no
+INFO [main] sets up user object
+INFO [B2DB] executing PDO query (2)
+INFO [B2DB] SELECT users3.id AS users3_id, users3.uname AS users3_uname, users3.passwd AS users3_passwd, users3.buddyname AS users3_buddyname, users3.realname AS users3_realname, users3.email AS users3_email, users3.state AS users3_state, users3.homepage AS users3_homepage, users3.language AS users3_language, users3.lastseen AS users3_lastseen, users3.lastlogin AS users3_lastlogin, users3.quota AS users3_quota, users3.activated AS users3_activated, users3.enabled AS users3_enabled, users3.deleted AS users3_deleted, users3.showfollowups AS users3_showfollowups, users3.showassigned AS users3_showassigned, users3.avatar AS users3_avatar, users3.use_gravatar AS users3_use_gravatar, users3.private_email AS users3_private_email, users3.joined AS users3_joined, users3.group_id AS users3_group_id, users3.customer_id AS users3_customer_id, users3.scope AS users3_scope, userstate6.id AS userstate6_id, userstate6.state_name AS userstate6_state_name, userstate6.unavailable AS userstate6_unavailable, userstate6.busy AS userstate6_busy, userstate6.online AS userstate6_online, userstate6.meeting AS userstate6_meeting, userstate6.absent AS userstate6_absent, userstate6.color AS userstate6_color, userstate6.scope AS userstate6_scope, groups9.id AS groups9_id, groups9.gname AS groups9_gname, groups9.scope AS groups9_scope, customers12.id AS customers12_id, customers12.cname AS customers12_cname, customers12.scope AS customers12_scope, scopes13.id AS scopes13_id, scopes13.enabled AS scopes13_enabled, scopes13.description AS scopes13_description, scopes13.admin AS scopes13_admin, scopes13.hostname AS scopes13_hostname FROM tbg3_users users3 LEFT JOIN tbg3_userstate userstate6 ON (userstate6.id=users3.state) LEFT JOIN tbg3_groups groups9 ON (groups9.id=users3.group_id) LEFT JOIN tbg3_customers customers12 ON (customers12.id=users3.customer_id) LEFT JOIN tbg3_scopes scopes13 ON (scopes13.id=users3.scope) WHERE (users3.uname = 'administrator') AND (users3.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users3.deleted = '0') LIMIT 1
+INFO [B2DB] Values: administrator, 21232f297a57a5a743894a0e4a801fc3, 0
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (3)
+INFO [B2DB] SELECT users3.id AS users3_id, users3.uname AS users3_uname, users3.passwd AS users3_passwd, users3.buddyname AS users3_buddyname, users3.realname AS users3_realname, users3.email AS users3_email, users3.state AS users3_state, users3.homepage AS users3_homepage, users3.language AS users3_language, users3.lastseen AS users3_lastseen, users3.lastlogin AS users3_lastlogin, users3.quota AS users3_quota, users3.activated AS users3_activated, users3.enabled AS users3_enabled, users3.deleted AS users3_deleted, users3.showfollowups AS users3_showfollowups, users3.showassigned AS users3_showassigned, users3.avatar AS users3_avatar, users3.use_gravatar AS users3_use_gravatar, users3.private_email AS users3_private_email, users3.joined AS users3_joined, users3.group_id AS users3_group_id, users3.customer_id AS users3_customer_id, users3.scope AS users3_scope, userstate6.id AS userstate6_id, userstate6.state_name AS userstate6_state_name, userstate6.unavailable AS userstate6_unavailable, userstate6.busy AS userstate6_busy, userstate6.online AS userstate6_online, userstate6.meeting AS userstate6_meeting, userstate6.absent AS userstate6_absent, userstate6.color AS userstate6_color, userstate6.scope AS userstate6_scope, groups9.id AS groups9_id, groups9.gname AS groups9_gname, groups9.scope AS groups9_scope, customers12.id AS customers12_id, customers12.cname AS customers12_cname, customers12.scope AS customers12_scope, scopes13.id AS scopes13_id, scopes13.enabled AS scopes13_enabled, scopes13.description AS scopes13_description, scopes13.admin AS scopes13_admin, scopes13.hostname AS scopes13_hostname FROM tbg3_users users3 LEFT JOIN tbg3_userstate userstate6 ON (userstate6.id=users3.state) LEFT JOIN tbg3_groups groups9 ON (groups9.id=users3.group_id) LEFT JOIN tbg3_customers customers12 ON (customers12.id=users3.customer_id) LEFT JOIN tbg3_scopes scopes13 ON (scopes13.id=users3.scope) WHERE (users3.uname = 'administrator') AND (users3.passwd = '21232f297a57a5a743894a0e4a801fc3') AND (users3.deleted = '0') LIMIT 1
+INFO [B2DB] Values: administrator, 21232f297a57a5a743894a0e4a801fc3, 0
+INFO [B2DB] done
+INFO [main] User with id 1 set up successfully
+INFO [B2DB] executing PDO query (4)
+INFO [B2DB] UPDATE tbg3_users SET `lastseen`='1281293584' WHERE (id = '1')
+INFO [B2DB] Values: 1281293584, 1
+INFO [B2DB] done
+INFO [main] loaded
+INFO [main] caches permissions
+INFO [main] starting to cache access permissions
+INFO [B2DB] executing PDO query (5)
+INFO [B2DB] SELECT permissions14.id AS permissions14_id, permissions14.permission_type AS permissions14_permission_type, permissions14.target_id AS permissions14_target_id, permissions14.allowed AS permissions14_allowed, permissions14.module AS permissions14_module, permissions14.uid AS permissions14_uid, permissions14.gid AS permissions14_gid, permissions14.tid AS permissions14_tid, permissions14.scope AS permissions14_scope, users15.id AS users15_id, users15.uname AS users15_uname, users15.passwd AS users15_passwd, users15.buddyname AS users15_buddyname, users15.realname AS users15_realname, users15.email AS users15_email, users15.state AS users15_state, users15.homepage AS users15_homepage, users15.language AS users15_language, users15.lastseen AS users15_lastseen, users15.lastlogin AS users15_lastlogin, users15.quota AS users15_quota, users15.activated AS users15_activated, users15.enabled AS users15_enabled, users15.deleted AS users15_deleted, users15.showfollowups AS users15_showfollowups, users15.showassigned AS users15_showassigned, users15.avatar AS users15_avatar, users15.use_gravatar AS users15_use_gravatar, users15.private_email AS users15_private_email, users15.joined AS users15_joined, users15.group_id AS users15_group_id, users15.customer_id AS users15_customer_id, users15.scope AS users15_scope, groups16.id AS groups16_id, groups16.gname AS groups16_gname, groups16.scope AS groups16_scope, teams19.id AS teams19_id, teams19.teamname AS teams19_teamname, teams19.scope AS teams19_scope, scopes20.id AS scopes20_id, scopes20.enabled AS scopes20_enabled, scopes20.description AS scopes20_description, scopes20.admin AS scopes20_admin, scopes20.hostname AS scopes20_hostname FROM tbg3_permissions permissions14 LEFT JOIN tbg3_users users15 ON (users15.id=permissions14.uid) LEFT JOIN tbg3_groups groups16 ON (groups16.id=permissions14.gid) LEFT JOIN tbg3_teams teams19 ON (teams19.id=permissions14.tid) LEFT JOIN tbg3_scopes scopes20 ON (scopes20.id=permissions14.scope) WHERE (permissions14.scope = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] done (starting to cache access permissions)
+INFO [main] ...cached
+INFO [main] ...done
+INFO [main] Loading i18n strings
+INFO [main] Loading strings from file
+INFO [main] en_US
+INFO [i18n] Loading strings from file
+INFO [main] ...done
+INFO [main] Loading modules
+INFO [main] getting modules from database
+INFO [B2DB] executing PDO query (6)
+INFO [B2DB] SELECT modules21.id AS modules21_id, modules21.module_name AS modules21_module_name, modules21.enabled AS modules21_enabled, modules21.version AS modules21_version, modules21.classname AS modules21_classname, modules21.scope AS modules21_scope, scopes22.id AS scopes22_id, scopes22.enabled AS scopes22_enabled, scopes22.description AS scopes22_description, scopes22.admin AS scopes22_admin, scopes22.hostname AS scopes22_hostname FROM tbg3_modules modules21 LEFT JOIN tbg3_scopes scopes22 ON (scopes22.id=modules21.scope) WHERE (modules21.scope = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] done (getting modules from database)
+INFO [main] setting up module objects
+INFO [i18n] Loading strings from file
+INFO [i18n] Could not find language file /var/www/dev/thebuggenie/modules/mailing/i18n/en_US/general.inc.php
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Loading strings from file
+INFO [i18n] Could not find language file /var/www/dev/thebuggenie/modules/vcs_integration/i18n/en_US/general.inc.php
+INFO [i18n] Loading strings from file
+INFO [main] done (setting up module objects)
+INFO [main] caching module access permissions
+INFO [B2DB] executing PDO query (7)
+INFO [B2DB] SELECT modulepermissions23.id AS modulepermissions23_id, modulepermissions23.module_name AS modulepermissions23_module_name, modulepermissions23.allowed AS modulepermissions23_allowed, modulepermissions23.uid AS modulepermissions23_uid, modulepermissions23.gid AS modulepermissions23_gid, modulepermissions23.tid AS modulepermissions23_tid, modulepermissions23.scope AS modulepermissions23_scope, users24.id AS users24_id, users24.uname AS users24_uname, users24.passwd AS users24_passwd, users24.buddyname AS users24_buddyname, users24.realname AS users24_realname, users24.email AS users24_email, users24.state AS users24_state, users24.homepage AS users24_homepage, users24.language AS users24_language, users24.lastseen AS users24_lastseen, users24.lastlogin AS users24_lastlogin, users24.quota AS users24_quota, users24.activated AS users24_activated, users24.enabled AS users24_enabled, users24.deleted AS users24_deleted, users24.showfollowups AS users24_showfollowups, users24.showassigned AS users24_showassigned, users24.avatar AS users24_avatar, users24.use_gravatar AS users24_use_gravatar, users24.private_email AS users24_private_email, users24.joined AS users24_joined, users24.group_id AS users24_group_id, users24.customer_id AS users24_customer_id, users24.scope AS users24_scope, groups25.id AS groups25_id, groups25.gname AS groups25_gname, groups25.scope AS groups25_scope, teams26.id AS teams26_id, teams26.teamname AS teams26_teamname, teams26.scope AS teams26_scope, scopes27.id AS scopes27_id, scopes27.enabled AS scopes27_enabled, scopes27.description AS scopes27_description, scopes27.admin AS scopes27_admin, scopes27.hostname AS scopes27_hostname FROM tbg3_modulepermissions modulepermissions23 LEFT JOIN tbg3_users users24 ON (users24.id=modulepermissions23.uid) LEFT JOIN tbg3_groups groups25 ON (groups25.id=modulepermissions23.gid) LEFT JOIN tbg3_teams teams26 ON (teams26.id=modulepermissions23.tid) LEFT JOIN tbg3_scopes scopes27 ON (scopes27.id=modulepermissions23.scope) WHERE (modulepermissions23.scope = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] done (caching module access permissions)
+INFO [main] initializing modules
+INFO [main] initializing and loading routes for mailing
+INFO [mailing] adding route forgot
+INFO [mailing] done (adding route forgot)
+INFO [mailing] adding route mailing_test_email
+INFO [mailing] done (adding route mailing_test_email)
+INFO [main] done (initializing and loading routes for mailing)
+INFO [main] initializing and loading routes for messages
+INFO [main] done (initializing and loading routes for messages)
+INFO [main] initializing and loading routes for calendar
+INFO [main] done (initializing and loading routes for calendar)
+INFO [main] initializing and loading routes for vcs_integration
+INFO [vcs_integration] adding route normalcheckin
+INFO [vcs_integration] done (adding route normalcheckin)
+INFO [vcs_integration] adding route githubcheckin
+INFO [vcs_integration] done (adding route githubcheckin)
+INFO [main] done (initializing and loading routes for vcs_integration)
+INFO [main] initializing and loading routes for publish
+INFO [publish] adding route publish
+INFO [publish] done (adding route publish)
+INFO [publish] adding route publish_article_new
+INFO [publish] done (adding route publish_article_new)
+INFO [publish] adding route publish_article
+INFO [publish] done (adding route publish_article)
+INFO [publish] adding route publish_article_revision
+INFO [publish] done (adding route publish_article_revision)
+INFO [publish] adding route publish_article_edit
+INFO [publish] done (adding route publish_article_edit)
+INFO [publish] adding route publish_article_delete
+INFO [publish] done (adding route publish_article_delete)
+INFO [publish] adding route publish_article_save
+INFO [publish] done (adding route publish_article_save)
+INFO [publish] adding route publish_article_history
+INFO [publish] done (adding route publish_article_history)
+INFO [publish] adding route publish_article_diff
+INFO [publish] done (adding route publish_article_diff)
+INFO [publish] adding route publish_article_restore
+INFO [publish] done (adding route publish_article_restore)
+INFO [main] done (initializing and loading routes for publish)
+INFO [B2DB] executing PDO query (8)
+INFO [B2DB] SELECT enabledmodulelisteners28.id AS enabledmodulelisteners28_id, enabledmodulelisteners28.module AS enabledmodulelisteners28_module, enabledmodulelisteners28.identifier AS enabledmodulelisteners28_identifier, enabledmodulelisteners28.order AS enabledmodulelisteners28_order, enabledmodulelisteners28.module_name AS enabledmodulelisteners28_module_name, enabledmodulelisteners28.scope AS enabledmodulelisteners28_scope, modules21.id AS modules21_id, modules21.module_name AS modules21_module_name, modules21.enabled AS modules21_enabled, modules21.version AS modules21_version, modules21.classname AS modules21_classname, modules21.scope AS modules21_scope, modules29.id AS modules29_id, modules29.module_name AS modules29_module_name, modules29.enabled AS modules29_enabled, modules29.version AS modules29_version, modules29.classname AS modules29_classname, modules29.scope AS modules29_scope, scopes30.id AS scopes30_id, scopes30.enabled AS scopes30_enabled, scopes30.description AS scopes30_description, scopes30.admin AS scopes30_admin, scopes30.hostname AS scopes30_hostname FROM tbg3_enabledmodulelisteners enabledmodulelisteners28 LEFT JOIN tbg3_modules modules21 ON (modules21.module_name=enabledmodulelisteners28.module_name) LEFT JOIN tbg3_modules modules29 ON (modules29.module_name=enabledmodulelisteners28.module_name) LEFT JOIN tbg3_scopes scopes30 ON (scopes30.id=enabledmodulelisteners28.scope) WHERE (enabledmodulelisteners28.module_name IN ('mailing', 'messages', 'calendar', 'vcs_integration', 'publish')) AND (enabledmodulelisteners28.scope = '1') AND (modules21.scope = '1') ORDER BY enabledmodulelisteners28.order asc
+INFO [B2DB] Values: mailing, messages, calendar, vcs_integration, publish, 1, 1
+INFO [B2DB] done
+INFO [main] done (initializing modules)
+INFO [main] ...done
+INFO [routing] Loading last batch of routes
+INFO [routing] generating routes
+INFO [routing] ...done
+INFO [main] ...done initializing
+INFO [main] ...done
+INFO [main] B2 framework loaded
+INFO [main] Dispatching
+INFO [routing] URL is thebuggenie/issues/predefined_search/1/search/1/format/rss
+INFO [routing] URL is now /thebuggenie/issues/predefined_search/1/search/1/format/rss
+INFO [routing] URL is now /thebuggenie/issues/predefined_search/1/search/1/format/rss
+INFO [routing] match route [project_issues] "/:project_key/issues/*"
+INFO [main] Running main pre-execute action
+INFO [main] Checking permission page_search_access
+INFO [main] Populating user teams
+INFO [B2DB] executing PDO query (9)
+INFO [B2DB] SELECT COUNT(teammembers31.id) as num_col FROM tbg3_teammembers teammembers31 WHERE (teammembers31.uid = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] ...done (Populating user teams)
+INFO [main] ...done (Checking permissions page_search_access)
+INFO [B2DB] executing PDO query (10)
+INFO [B2DB] SELECT projects35.id AS projects35_id, projects35.name AS projects35_name, projects35.key AS projects35_key, projects35.prefix AS projects35_prefix, projects35.use_prefix AS projects35_use_prefix, projects35.use_scrum AS projects35_use_scrum, projects35.homepage AS projects35_homepage, projects35.owned_by AS projects35_owned_by, projects35.owned_type AS projects35_owned_type, projects35.lead_by AS projects35_lead_by, projects35.lead_type AS projects35_lead_type, projects35.time_unit AS projects35_time_unit, projects35.hrs_pr_day AS projects35_hrs_pr_day, projects35.description AS projects35_description, projects35.doc_url AS projects35_doc_url, projects35.enable_tasks AS projects35_enable_tasks, projects35.is_default AS projects35_is_default, projects35.allow_changing_wo_working AS projects35_allow_changing_wo_working, projects35.default_status AS projects35_default_status, projects35.enable_builds AS projects35_enable_builds, projects35.enable_editions AS projects35_enable_editions, projects35.enable_components AS projects35_enable_components, projects35.show_in_summary AS projects35_show_in_summary, projects35.summary_display AS projects35_summary_display, projects35.votes AS projects35_votes, projects35.qa AS projects35_qa, projects35.qa_type AS projects35_qa_type, projects35.released AS projects35_released, projects35.release_date AS projects35_release_date, projects35.locked AS projects35_locked, projects35.planned_release AS projects35_planned_release, projects35.scope AS projects35_scope, projects35.deleted AS projects35_deleted FROM tbg3_projects projects35 WHERE (projects35.scope = '1') AND (projects35.key = 'thebuggenie') LIMIT 1
+INFO [B2DB] Values: 1, thebuggenie
+INFO [B2DB] done
+INFO [main] Triggering core - TBGProject::__construct
+INFO [main] done (Triggering core - TBGProject::__construct)
+INFO [main] Running route action runFindIssues()
+INFO [B2DB] executing PDO query (11)
+INFO [B2DB] SELECT issuetypes40.id AS issuetypes40_id, issuetypes40.name AS issuetypes40_name, issuetypes40.applies_to AS issuetypes40_applies_to, issuetypes40.applies_type AS issuetypes40_applies_type, issuetypes40.icon AS issuetypes40_icon, issuetypes40.description AS issuetypes40_description, issuetypes40.is_task AS issuetypes40_is_task, issuetypes40.is_reportable AS issuetypes40_is_reportable, issuetypes40.redirect_after_reporting AS issuetypes40_redirect_after_reporting, issuetypes40.scope AS issuetypes40_scope, scopes41.id AS scopes41_id, scopes41.enabled AS scopes41_enabled, scopes41.description AS scopes41_description, scopes41.admin AS scopes41_admin, scopes41.hostname AS scopes41_hostname FROM tbg3_issuetypes issuetypes40 LEFT JOIN tbg3_scopes scopes41 ON (scopes41.id=issuetypes40.scope) WHERE (issuetypes40.icon = 'bug_report') AND (issuetypes40.scope = '1')
+INFO [B2DB] Values: bug_report, 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (12)
+INFO [B2DB] SELECT COUNT(issues42.id) as num_col FROM tbg3_issues issues42 WHERE (issues42.deleted = '0') AND (issues42.project_id = '2') AND (issues42.state = '0') AND (issues42.issue_type = '1')
+INFO [B2DB] Values: 0, 2, 0, 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (13)
+INFO [B2DB] SELECT issues42.id AS issues42_id, issues42.issue_no AS issues42_issue_no, issues42.title AS issues42_title, issues42.posted AS issues42_posted, issues42.last_updated AS issues42_last_updated, issues42.project_id AS issues42_project_id, issues42.long_description AS issues42_long_description, issues42.state AS issues42_state, issues42.posted_by AS issues42_posted_by, issues42.owned_by AS issues42_owned_by, issues42.user_pain AS issues42_user_pain, issues42.pain_bug_type AS issues42_pain_bug_type, issues42.pain_effect AS issues42_pain_effect, issues42.pain_likelihood AS issues42_pain_likelihood, issues42.assigned_to AS issues42_assigned_to, issues42.reproduction AS issues42_reproduction, issues42.resolution AS issues42_resolution, issues42.issue_type AS issues42_issue_type, issues42.status AS issues42_status, issues42.priority AS issues42_priority, issues42.category AS issues42_category, issues42.severity AS issues42_severity, issues42.reproducability AS issues42_reproducability, issues42.scrumcolor AS issues42_scrumcolor, issues42.estimated_months AS issues42_estimated_months, issues42.estimated_weeks AS issues42_estimated_weeks, issues42.estimated_days AS issues42_estimated_days, issues42.estimated_hours AS issues42_estimated_hours, issues42.estimated_points AS issues42_estimated_points, issues42.spent_months AS issues42_spent_months, issues42.spent_weeks AS issues42_spent_weeks, issues42.spent_days AS issues42_spent_days, issues42.spent_hours AS issues42_spent_hours, issues42.votes AS issues42_votes, issues42.spent_points AS issues42_spent_points, issues42.percent_complete AS issues42_percent_complete, issues42.assigned_type AS issues42_assigned_type, issues42.owned_type AS issues42_owned_type, issues42.duplicate AS issues42_duplicate, issues42.deleted AS issues42_deleted, issues42.blocking AS issues42_blocking, issues42.locked AS issues42_locked, issues42.user_working_on AS issues42_user_working_on, issues42.user_worked_on_since AS issues42_user_worked_on_since, issues42.milestone AS issues42_milestone, issues42.scope AS issues42_scope, projects43.id AS projects43_id, projects43.name AS projects43_name, projects43.key AS projects43_key, projects43.prefix AS projects43_prefix, projects43.use_prefix AS projects43_use_prefix, projects43.use_scrum AS projects43_use_scrum, projects43.homepage AS projects43_homepage, projects43.owned_by AS projects43_owned_by, projects43.owned_type AS projects43_owned_type, projects43.lead_by AS projects43_lead_by, projects43.lead_type AS projects43_lead_type, projects43.time_unit AS projects43_time_unit, projects43.hrs_pr_day AS projects43_hrs_pr_day, projects43.description AS projects43_description, projects43.doc_url AS projects43_doc_url, projects43.enable_tasks AS projects43_enable_tasks, projects43.is_default AS projects43_is_default, projects43.allow_changing_wo_working AS projects43_allow_changing_wo_working, projects43.default_status AS projects43_default_status, projects43.enable_builds AS projects43_enable_builds, projects43.enable_editions AS projects43_enable_editions, projects43.enable_components AS projects43_enable_components, projects43.show_in_summary AS projects43_show_in_summary, projects43.summary_display AS projects43_summary_display, projects43.votes AS projects43_votes, projects43.qa AS projects43_qa, projects43.qa_type AS projects43_qa_type, projects43.released AS projects43_released, projects43.release_date AS projects43_release_date, projects43.locked AS projects43_locked, projects43.planned_release AS projects43_planned_release, projects43.scope AS projects43_scope, projects43.deleted AS projects43_deleted, users44.id AS users44_id, users44.uname AS users44_uname, users44.passwd AS users44_passwd, users44.buddyname AS users44_buddyname, users44.realname AS users44_realname, users44.email AS users44_email, users44.state AS users44_state, users44.homepage AS users44_homepage, users44.language AS users44_language, users44.lastseen AS users44_lastseen, users44.lastlogin AS users44_lastlogin, users44.quota AS users44_quota, users44.activated AS users44_activated, users44.enabled AS users44_enabled, users44.deleted AS users44_deleted, users44.showfollowups AS users44_showfollowups, users44.showassigned AS users44_showassigned, users44.avatar AS users44_avatar, users44.use_gravatar AS users44_use_gravatar, users44.private_email AS users44_private_email, users44.joined AS users44_joined, users44.group_id AS users44_group_id, users44.customer_id AS users44_customer_id, users44.scope AS users44_scope, listtypes45.id AS listtypes45_id, listtypes45.name AS listtypes45_name, listtypes45.itemtype AS listtypes45_itemtype, listtypes45.itemdata AS listtypes45_itemdata, listtypes45.applies_to AS listtypes45_applies_to, listtypes45.order AS listtypes45_order, listtypes45.scope AS listtypes45_scope, issuetypes46.id AS issuetypes46_id, issuetypes46.name AS issuetypes46_name, issuetypes46.applies_to AS issuetypes46_applies_to, issuetypes46.applies_type AS issuetypes46_applies_type, issuetypes46.icon AS issuetypes46_icon, issuetypes46.description AS issuetypes46_description, issuetypes46.is_task AS issuetypes46_is_task, issuetypes46.is_reportable AS issuetypes46_is_reportable, issuetypes46.redirect_after_reporting AS issuetypes46_redirect_after_reporting, issuetypes46.scope AS issuetypes46_scope, listtypes47.id AS listtypes47_id, listtypes47.name AS listtypes47_name, listtypes47.itemtype AS listtypes47_itemtype, listtypes47.itemdata AS listtypes47_itemdata, listtypes47.applies_to AS listtypes47_applies_to, listtypes47.order AS listtypes47_order, listtypes47.scope AS listtypes47_scope, listtypes48.id AS listtypes48_id, listtypes48.name AS listtypes48_name, listtypes48.itemtype AS listtypes48_itemtype, listtypes48.itemdata AS listtypes48_itemdata, listtypes48.applies_to AS listtypes48_applies_to, listtypes48.order AS listtypes48_order, listtypes48.scope AS listtypes48_scope, listtypes49.id AS listtypes49_id, listtypes49.name AS listtypes49_name, listtypes49.itemtype AS listtypes49_itemtype, listtypes49.itemdata AS listtypes49_itemdata, listtypes49.applies_to AS listtypes49_applies_to, listtypes49.order AS listtypes49_order, listtypes49.scope AS listtypes49_scope, listtypes50.id AS listtypes50_id, listtypes50.name AS listtypes50_name, listtypes50.itemtype AS listtypes50_itemtype, listtypes50.itemdata AS listtypes50_itemdata, listtypes50.applies_to AS listtypes50_applies_to, listtypes50.order AS listtypes50_order, listtypes50.scope AS listtypes50_scope, listtypes51.id AS listtypes51_id, listtypes51.name AS listtypes51_name, listtypes51.itemtype AS listtypes51_itemtype, listtypes51.itemdata AS listtypes51_itemdata, listtypes51.applies_to AS listtypes51_applies_to, listtypes51.order AS listtypes51_order, listtypes51.scope AS listtypes51_scope, users52.id AS users52_id, users52.uname AS users52_uname, users52.passwd AS users52_passwd, users52.buddyname AS users52_buddyname, users52.realname AS users52_realname, users52.email AS users52_email, users52.state AS users52_state, users52.homepage AS users52_homepage, users52.language AS users52_language, users52.lastseen AS users52_lastseen, users52.lastlogin AS users52_lastlogin, users52.quota AS users52_quota, users52.activated AS users52_activated, users52.enabled AS users52_enabled, users52.deleted AS users52_deleted, users52.showfollowups AS users52_showfollowups, users52.showassigned AS users52_showassigned, users52.avatar AS users52_avatar, users52.use_gravatar AS users52_use_gravatar, users52.private_email AS users52_private_email, users52.joined AS users52_joined, users52.group_id AS users52_group_id, users52.customer_id AS users52_customer_id, users52.scope AS users52_scope, milestones56.id AS milestones56_id, milestones56.name AS milestones56_name, milestones56.visible AS milestones56_visible, milestones56.description AS milestones56_description, milestones56.reached AS milestones56_reached, milestones56.milestone_type AS milestones56_milestone_type, milestones56.starting AS milestones56_starting, milestones56.scheduled AS milestones56_scheduled, milestones56.project AS milestones56_project, milestones56.scope AS milestones56_scope, scopes57.id AS scopes57_id, scopes57.enabled AS scopes57_enabled, scopes57.description AS scopes57_description, scopes57.admin AS scopes57_admin, scopes57.hostname AS scopes57_hostname FROM tbg3_issues issues42 LEFT JOIN tbg3_projects projects43 ON (projects43.id=issues42.project_id) LEFT JOIN tbg3_users users44 ON (users44.id=issues42.posted_by) LEFT JOIN tbg3_listtypes listtypes45 ON (listtypes45.id=issues42.resolution) LEFT JOIN tbg3_issuetypes issuetypes46 ON (issuetypes46.id=issues42.issue_type) LEFT JOIN tbg3_listtypes listtypes47 ON (listtypes47.id=issues42.status) LEFT JOIN tbg3_listtypes listtypes48 ON (listtypes48.id=issues42.priority) LEFT JOIN tbg3_listtypes listtypes49 ON (listtypes49.id=issues42.category) LEFT JOIN tbg3_listtypes listtypes50 ON (listtypes50.id=issues42.severity) LEFT JOIN tbg3_listtypes listtypes51 ON (listtypes51.id=issues42.reproducability) LEFT JOIN tbg3_users users52 ON (users52.id=issues42.user_working_on) LEFT JOIN tbg3_milestones milestones56 ON (milestones56.id=issues42.milestone) LEFT JOIN tbg3_scopes scopes57 ON (scopes57.id=issues42.scope) WHERE (issues42.deleted = '0') AND (issues42.project_id = '2') AND (issues42.state = '0') AND (issues42.issue_type = '1') LIMIT 30
+INFO [B2DB] Values: 0, 2, 0, 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (14)
+INFO [B2DB] SELECT customfields58.id AS customfields58_id, customfields58.field_name AS customfields58_field_name, customfields58.field_key AS customfields58_field_key, customfields58.field_description AS customfields58_field_description, customfields58.field_instructions AS customfields58_field_instructions, customfields58.field_type AS customfields58_field_type, customfields58.scope AS customfields58_scope, scopes59.id AS scopes59_id, scopes59.enabled AS scopes59_enabled, scopes59.description AS scopes59_description, scopes59.admin AS scopes59_admin, scopes59.hostname AS scopes59_hostname FROM tbg3_customfields customfields58 LEFT JOIN tbg3_scopes scopes59 ON (scopes59.id=customfields58.scope) WHERE (customfields58.scope = '1')
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (15)
+INFO [B2DB] SELECT issuecustomfields60.id AS issuecustomfields60_id, issuecustomfields60.issue_id AS issuecustomfields60_issue_id, issuecustomfields60.customfields_id AS issuecustomfields60_customfields_id, issuecustomfields60.option_value AS issuecustomfields60_option_value, issuecustomfields60.scope AS issuecustomfields60_scope, issues61.id AS issues61_id, issues61.issue_no AS issues61_issue_no, issues61.title AS issues61_title, issues61.posted AS issues61_posted, issues61.last_updated AS issues61_last_updated, issues61.project_id AS issues61_project_id, issues61.long_description AS issues61_long_description, issues61.state AS issues61_state, issues61.posted_by AS issues61_posted_by, issues61.owned_by AS issues61_owned_by, issues61.user_pain AS issues61_user_pain, issues61.pain_bug_type AS issues61_pain_bug_type, issues61.pain_effect AS issues61_pain_effect, issues61.pain_likelihood AS issues61_pain_likelihood, issues61.assigned_to AS issues61_assigned_to, issues61.reproduction AS issues61_reproduction, issues61.resolution AS issues61_resolution, issues61.issue_type AS issues61_issue_type, issues61.status AS issues61_status, issues61.priority AS issues61_priority, issues61.category AS issues61_category, issues61.severity AS issues61_severity, issues61.reproducability AS issues61_reproducability, issues61.scrumcolor AS issues61_scrumcolor, issues61.estimated_months AS issues61_estimated_months, issues61.estimated_weeks AS issues61_estimated_weeks, issues61.estimated_days AS issues61_estimated_days, issues61.estimated_hours AS issues61_estimated_hours, issues61.estimated_points AS issues61_estimated_points, issues61.spent_months AS issues61_spent_months, issues61.spent_weeks AS issues61_spent_weeks, issues61.spent_days AS issues61_spent_days, issues61.spent_hours AS issues61_spent_hours, issues61.votes AS issues61_votes, issues61.spent_points AS issues61_spent_points, issues61.percent_complete AS issues61_percent_complete, issues61.assigned_type AS issues61_assigned_type, issues61.owned_type AS issues61_owned_type, issues61.duplicate AS issues61_duplicate, issues61.deleted AS issues61_deleted, issues61.blocking AS issues61_blocking, issues61.locked AS issues61_locked, issues61.user_working_on AS issues61_user_working_on, issues61.user_worked_on_since AS issues61_user_worked_on_since, issues61.milestone AS issues61_milestone, issues61.scope AS issues61_scope, customfields62.id AS customfields62_id, customfields62.field_name AS customfields62_field_name, customfields62.field_key AS customfields62_field_key, customfields62.field_description AS customfields62_field_description, customfields62.field_instructions AS customfields62_field_instructions, customfields62.field_type AS customfields62_field_type, customfields62.scope AS customfields62_scope, customfieldoptions66.id AS customfieldoptions66_id, customfieldoptions66.cname AS customfieldoptions66_cname, customfieldoptions66.option_value AS customfieldoptions66_option_value, customfieldoptions66.itemdata AS customfieldoptions66_itemdata, customfieldoptions66.sort_order AS customfieldoptions66_sort_order, customfieldoptions66.customfields_key AS customfieldoptions66_customfields_key, customfieldoptions66.scope AS customfieldoptions66_scope, scopes67.id AS scopes67_id, scopes67.enabled AS scopes67_enabled, scopes67.description AS scopes67_description, scopes67.admin AS scopes67_admin, scopes67.hostname AS scopes67_hostname FROM tbg3_issuecustomfields issuecustomfields60 LEFT JOIN tbg3_issues issues61 ON (issues61.id=issuecustomfields60.issue_id) LEFT JOIN tbg3_customfields customfields62 ON (customfields62.id=issuecustomfields60.customfields_id) LEFT JOIN tbg3_customfieldoptions customfieldoptions66 ON (customfieldoptions66.id=issuecustomfields60.option_value) LEFT JOIN tbg3_scopes scopes67 ON (scopes67.id=issuecustomfields60.scope) WHERE (issuecustomfields60.issue_id = '20') AND (issuecustomfields60.scope = '1')
+INFO [B2DB] Values: 20, 1
+INFO [B2DB] done
+INFO [B2DB] executing PDO query (16)
+INFO [B2DB] SELECT issuetypes40.id AS issuetypes40_id, issuetypes40.name AS issuetypes40_name, issuetypes40.applies_to AS issuetypes40_applies_to, issuetypes40.applies_type AS issuetypes40_applies_type, issuetypes40.icon AS issuetypes40_icon, issuetypes40.description AS issuetypes40_description, issuetypes40.is_task AS issuetypes40_is_task, issuetypes40.is_reportable AS issuetypes40_is_reportable, issuetypes40.redirect_after_reporting AS issuetypes40_redirect_after_reporting, issuetypes40.scope AS issuetypes40_scope, scopes41.id AS scopes41_id, scopes41.enabled AS scopes41_enabled, scopes41.description AS scopes41_description, scopes41.admin AS scopes41_admin, scopes41.hostname AS scopes41_hostname FROM tbg3_issuetypes issuetypes40 LEFT JOIN tbg3_scopes scopes41 ON (scopes41.id=issuetypes40.scope) WHERE (issuetypes40.id = '1') LIMIT 1
+INFO [B2DB] Values: 1
+INFO [B2DB] done
+INFO [main] checking access to issue 1
+INFO [main] Checking permission canviewissue
+INFO [main] ...done (Checking permissions canviewissue)
+INFO [main] done checking, allowed since this user posted it
+INFO [B2DB] executing PDO query (17)
+INFO [B2DB] SELECT issuecustomfields60.id AS issuecustomfields60_id, issuecustomfields60.issue_id AS issuecustomfields60_issue_id, issuecustomfields60.customfields_id AS issuecustomfields60_customfields_id, issuecustomfields60.option_value AS issuecustomfields60_option_value, issuecustomfields60.scope AS issuecustomfields60_scope, issues61.id AS issues61_id, issues61.issue_no AS issues61_issue_no, issues61.title AS issues61_title, issues61.posted AS issues61_posted, issues61.last_updated AS issues61_last_updated, issues61.project_id AS issues61_project_id, issues61.long_description AS issues61_long_description, issues61.state AS issues61_state, issues61.posted_by AS issues61_posted_by, issues61.owned_by AS issues61_owned_by, issues61.user_pain AS issues61_user_pain, issues61.pain_bug_type AS issues61_pain_bug_type, issues61.pain_effect AS issues61_pain_effect, issues61.pain_likelihood AS issues61_pain_likelihood, issues61.assigned_to AS issues61_assigned_to, issues61.reproduction AS issues61_reproduction, issues61.resolution AS issues61_resolution, issues61.issue_type AS issues61_issue_type, issues61.status AS issues61_status, issues61.priority AS issues61_priority, issues61.category AS issues61_category, issues61.severity AS issues61_severity, issues61.reproducability AS issues61_reproducability, issues61.scrumcolor AS issues61_scrumcolor, issues61.estimated_months AS issues61_estimated_months, issues61.estimated_weeks AS issues61_estimated_weeks, issues61.estimated_days AS issues61_estimated_days, issues61.estimated_hours AS issues61_estimated_hours, issues61.estimated_points AS issues61_estimated_points, issues61.spent_months AS issues61_spent_months, issues61.spent_weeks AS issues61_spent_weeks, issues61.spent_days AS issues61_spent_days, issues61.spent_hours AS issues61_spent_hours, issues61.votes AS issues61_votes, issues61.spent_points AS issues61_spent_points, issues61.percent_complete AS issues61_percent_complete, issues61.assigned_type AS issues61_assigned_type, issues61.owned_type AS issues61_owned_type, issues61.duplicate AS issues61_duplicate, issues61.deleted AS issues61_deleted, issues61.blocking AS issues61_blocking, issues61.locked AS issues61_locked, issues61.user_working_on AS issues61_user_working_on, issues61.user_worked_on_since AS issues61_user_worked_on_since, issues61.milestone AS issues61_milestone, issues61.scope AS issues61_scope, customfields62.id AS customfields62_id, customfields62.field_name AS customfields62_field_name, customfields62.field_key AS customfields62_field_key, customfields62.field_description AS customfields62_field_description, customfields62.field_instructions AS customfields62_field_instructions, customfields62.field_type AS customfields62_field_type, customfields62.scope AS customfields62_scope, customfieldoptions66.id AS customfieldoptions66_id, customfieldoptions66.cname AS customfieldoptions66_cname, customfieldoptions66.option_value AS customfieldoptions66_option_value, customfieldoptions66.itemdata AS customfieldoptions66_itemdata, customfieldoptions66.sort_order AS customfieldoptions66_sort_order, customfieldoptions66.customfields_key AS customfieldoptions66_customfields_key, customfieldoptions66.scope AS customfieldoptions66_scope, scopes67.id AS scopes67_id, scopes67.enabled AS scopes67_enabled, scopes67.description AS scopes67_description, scopes67.admin AS scopes67_admin, scopes67.hostname AS scopes67_hostname FROM tbg3_issuecustomfields issuecustomfields60 LEFT JOIN tbg3_issues issues61 ON (issues61.id=issuecustomfields60.issue_id) LEFT JOIN tbg3_customfields customfields62 ON (customfields62.id=issuecustomfields60.customfields_id) LEFT JOIN tbg3_customfieldoptions customfieldoptions66 ON (customfieldoptions66.id=issuecustomfields60.option_value) LEFT JOIN tbg3_scopes scopes67 ON (scopes67.id=issuecustomfields60.scope) WHERE (issuecustomfields60.issue_id = '21') AND (issuecustomfields60.scope = '1')
+INFO [B2DB] Values: 21, 1
+INFO [B2DB] done
+INFO [main] checking access to issue 2
+INFO [main] Checking permission canviewissue
+INFO [main] ...done (Checking permissions canviewissue)
+INFO [main] done checking, allowed since this user posted it
+INFO [B2DB] executing PDO query (18)
+INFO [B2DB] SELECT savedsearches68.id AS savedsearches68_id, savedsearches68.name AS savedsearches68_name, savedsearches68.description AS savedsearches68_description, savedsearches68.is_public AS savedsearches68_is_public, savedsearches68.templatename AS savedsearches68_templatename, savedsearches68.templateparameter AS savedsearches68_templateparameter, savedsearches68.issues_per_page AS savedsearches68_issues_per_page, savedsearches68.groupby AS savedsearches68_groupby, savedsearches68.grouporder AS savedsearches68_grouporder, savedsearches68.scope AS savedsearches68_scope, savedsearches68.applies_to_project AS savedsearches68_applies_to_project, savedsearches68.uid AS savedsearches68_uid FROM tbg3_savedsearches savedsearches68 WHERE (savedsearches68.scope = '1') AND  ((savedsearches68.uid = '1') OR savedsearches68.uid = '0')  AND (savedsearches68.applies_to_project = '2')
+INFO [B2DB] Values: 1, 1, 0, 2
+INFO [B2DB] done
+INFO [main] ...done
+INFO [main] Displaying template
+INFO [main] configuring variables
+INFO [main] rendering template and buffering output
+INFO [main] ...completed
+INFO [main] ...done
+INFO [main] rendering content
+INFO [main] ...done (rendering content)

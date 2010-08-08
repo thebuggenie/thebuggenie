@@ -1537,6 +1537,7 @@
 			// Set up the response object, responsible for controlling any output
 			self::getResponse()->setPage(self::getRouting()->getCurrentRouteName());
 			self::getResponse()->setTemplate(strtolower($method) . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php');
+			self::getResponse()->setupResponseContentType(self::getRequest()->getRequestedFormat());
 			if (TBGContext::getRequest()->getRequestedFormat() == 'html')
 			{
 				self::getResponse()->setDecoration(TBGResponse::DECORATE_BOTH, array('header' => self::getIncludePath() . 'core/templates/header.inc.php', 'footer' => self::getIncludePath() . 'core/templates/footer.inc.php'));

@@ -123,6 +123,23 @@
 			die();
 		}
 
+		public function setupResponseContentType($request_content_type)
+		{
+			switch ($request_content_type)
+			{
+				case 'xml':
+					$this->setContentType('application/xml');
+					break;
+				case 'rss':
+					$this->setContentType('application/xml');
+					break;
+				case 'json':
+					$this->setContentType('application/json');
+					break;
+				default:
+			}
+		}
+
 		public function cleanBuffer()
 		{
 			$ob_status = ob_get_status();
