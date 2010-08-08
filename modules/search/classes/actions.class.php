@@ -281,10 +281,10 @@
 			
 			$this->savedsearches = B2DB::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID(), (TBGContext::isProjectContext()) ? TBGContext::getCurrentProject()->getID() : 0);
 			
-			if ($request->getParameter('format') == 'rss')
+			/*if ($request->getParameter('format') == 'rss')
 			{
 				return $this->renderComponent('search/results_rss', array('issues' => $this->issues, 'searchtitle' => $this->searchtitle));
-			}
+			}*/
 			
 			if ($request->getParameter('format') == 'csv')
 			{

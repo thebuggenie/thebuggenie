@@ -105,10 +105,10 @@
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_timeline', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			$this->recent_activities = $this->selected_project->getRecentActivities();
-			if ($request->getParameter('format') == 'rss')
+			/*if ($request->getParameter('format') == 'rss')
 			{
 				return $this->renderComponent('project/timelinerss', array('recent_activities' => $this->recent_activities));
-			}
+			}*/
 		}
 
 		/**
