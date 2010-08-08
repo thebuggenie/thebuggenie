@@ -14,7 +14,7 @@
 	</div>
 	<br>
 <?php else: ?>
-	<div class="rounded_box gray" style="vertical-align: middle; padding: 5px;">
+	<div class="rounded_box lightgrey" style="vertical-align: middle; padding: 5px;">
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('forgot'); ?>" enctype="multipart/form-data" method="post" name="lostpasswordform">
 			<input type="hidden" name="lostpassword" value="true">
 			<div class="login_boxheader"><?php echo __('Forgot password?'); ?></div>
