@@ -65,7 +65,8 @@
 											<?php endif; ?>
 										</div>
 									<?php else: ?>
-										<div class="header_username"><?php echo '<strong>' . __('Logged in as %name%', array('%name%' => '</strong><br>' . TBGContext::getUser()->getRealname())); ?></div>
+										<?php (TBGContext::getUser()->getRealname() == '') ? $name = TBGContext::getUser()->getBuddyname() : $name = TBGContext::getUser()->getRealname() ?>
+										<div class="header_username"><?php echo '<strong>' . __('Logged in as %name%', array('%name%' => '</strong><br>' . $name )); ?></div>
 										<div style="text-align: right;">
 											<?php echo link_tag(make_url('account'), __('My account')); ?> | <?php echo link_tag(make_url('logout'), __('Logout')); ?>
 										</div>
