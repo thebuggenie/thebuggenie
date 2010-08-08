@@ -1301,9 +1301,9 @@
 		 */
 		public static function logout()
 		{
-			setcookie('b2_username', '', $_SERVER["REQUEST_TIME"] - 36000);
-			setcookie('b2_password', '', $_SERVER["REQUEST_TIME"] - 36000);
-			setcookie("THEBUGGENIE", '', $_SERVER["REQUEST_TIME"] - 36000);
+			self::getResponse()->deleteCookie('b2_username');
+			self::getResponse()->deleteCookie('b2_password');
+			self::getResponse()->deleteCookie('THEBUGGENIE');
 			session_regenerate_id(true);
 			session_destroy();
 		}
