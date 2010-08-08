@@ -1536,7 +1536,7 @@
 
 			// Set up the response object, responsible for controlling any output
 			self::getResponse()->setPage(self::getRouting()->getCurrentRouteName());
-			self::getResponse()->setTemplate(strtolower($method) . '.php');
+			self::getResponse()->setTemplate(strtolower($method) . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php');
 			self::getResponse()->setDecoration(TBGResponse::DECORATE_BOTH, array('header' => self::getIncludePath() . 'core/templates/header.inc.php', 'footer' => self::getIncludePath() . 'core/templates/footer.inc.php'));
 			
 			// Set up the action object
@@ -1595,7 +1595,7 @@
 							if (strpos(self::getResponse()->getTemplate(), '/'))
 							{
 								$newPath = explode('/', self::getResponse()->getTemplate());
-								$templateName = self::getIncludePath() . 'modules/' . $newPath[0] . '/templates/' . $newPath[1] . '.php';
+								$templateName = self::getIncludePath() . 'modules/' . $newPath[0] . '/templates/' . $newPath[1] . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php';
 							}
 							else
 							{
@@ -1790,9 +1790,6 @@
 				}
 				else
 				{
-					//header("HTTP/1.0 404 Not Found", true, 404);
-					//tbg_msgbox(true, 'Can\'t find the page you\'re looking for.', '404');
-
 					require self::getIncludePath() . 'modules/main/classes/actions.class.php';
 					self::performAction('main', 'notFound');
 				}

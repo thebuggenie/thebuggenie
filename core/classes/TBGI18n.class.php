@@ -192,12 +192,12 @@
 			{
 				$templateinfo = explode('/', $template);
 				$module = $templateinfo[0];
-				$templatefile = ($is_component) ? '_' . $templateinfo[1] . '.inc.php' : $templateinfo[1] . '.php';
+				$templatefile = ($is_component) ? '_' . $templateinfo[1] . '.inc.php' : $templateinfo[1] . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php';
 			}
 			else
 			{
 				$module = TBGContext::getRouting()->getCurrentRouteModule();
-				$templatefile = ($is_component) ? '_' . $template . '.inc.php' : $template;
+				$templatefile = ($is_component) ? '_' . $template . '.inc.php' : $template . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php';
 			}
 			if (file_exists($basepath . $module . DIRECTORY_SEPARATOR . $templatefile))
 			{

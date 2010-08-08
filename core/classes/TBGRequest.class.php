@@ -29,7 +29,7 @@
 		protected $_cookies = array();
 
 		protected $_hasfiles = false;
-		
+
 		protected $_is_ajax_call = false;
 		
 		/**
@@ -276,7 +276,6 @@
 
             return $ret;
         }
-
 
 		/**
 		 * Sanitizes a given parameter and returns it
@@ -537,5 +536,10 @@
 		public function sanitize_input($string)
 		{
 			return $this->__sanitize_string($string);
+		}
+
+		public function getRequestedFormat()
+		{
+			return $this->getParameter('format', 'html');
 		}
 	}

@@ -40,6 +40,63 @@
 			return array('module' => $module, 'file' => $template);
 		}
 
+		protected static function getFinalTemplateName($template, $module_file = null)
+		{
+			if (!isset($module_file)) $module_file = self::getModuleAndTemplate($template);
+			if (($template_name = TBGContext::getI18n()->hasTranslatedTemplate($template, true)) === false)
+			{
+				$template_name = TBGContext::getIncludePath() . "modules/{$module_file['module']}/templates/_{$module_file['file']}.inc.php";
+			}
+			return $template_name;
+		}
+
+		protected static function _doesTemplateExist($template, $throw_exceptions = true, $module_file = null)
+		{
+			if (!isset($module_file)) $module_file = self::getModuleAndTemplate($template);
+			$template_name = self::getFinalTemplateName($template, $module_file);
+			if (!file_exists($template_name))
+			{
+				if (!$throw_exceptions) return false;
+				throw new TBGTemplateNotFoundException("The template file <b>_{$module_file['file']}.inc.php</b> cannot be found in the template directory for module \"" . TBGContext::getRouting()->getCurrentRouteModule() . '"');
+			}
+			if (!$throw_exceptions) return true;
+
+			return $template_name;
+		}
+
+		protected static function _getComponentDetails($template)
+		{
+			$module_file = self::getModuleAndTemplate($template);
+			$actionClassName = $module_file['module'].'ActionComponents';
+			$actionToRunName = 'component' . ucfirst($module_file['file']);
+
+			return array($module_file, $actionClassName, $actionToRunName);
+		}
+
+		protected static function _doesComponentExist($template, $throw_exceptions = true)
+		{
+			list ($module_file, $actionClassName, $actionToRunName) = self::_getComponentDetails($template);
+			if (!class_exists($actionClassName))
+			{
+				TBGContext::addClasspath(TBGContext::getIncludePath() . 'modules/' . $module_file['module'] . '/classes/');
+			}
+			if (!class_exists($actionClassName))
+			{
+				if (!$throw_exceptions) return false;
+				throw new TBGComponentNotFoundException('The component class ' . $actionClassName . ' could not be found');
+			}
+			$actionClass = new $actionClassName();
+			if (!method_exists($actionClass, $actionToRunName))
+			{
+				if (!$throw_exceptions) return false;
+				throw new TBGComponentNotFoundException("The component action {$actionToRunName} was not found in the {$actionClassName} class");
+			}
+			$retval = self::_doesTemplateExist($template, $throw_exceptions, $module_file);
+			if (!$throw_exceptions) return $retval;
+
+			return array($retval, $actionClass, $actionToRunName);
+		}
+
 		/**
 		 * Include a component from a module
 		 *
@@ -49,28 +106,9 @@
 		public static function includeComponent($template, $params = array())
 		{
 			TBGContext::loadLibrary('ui');
-			$module_file = self::getModuleAndTemplate($template);
-			$template_name = TBGContext::getIncludePath() . "modules/{$module_file['module']}/templates/_{$module_file['file']}.inc.php";
-			$actionClassName = $module_file['module'].'ActionComponents';
-			$actionToRunName = 'component' . ucfirst($module_file['file']);
-			if (!class_exists($actionClassName))
-			{
-				TBGContext::addClasspath(TBGContext::getIncludePath() . 'modules/' . $module_file['module'] . '/classes/');
-			}
-			if (!class_exists($actionClassName))
-			{
-				throw new TBGComponentNotFoundException('The component class ' . $actionClassName . ' could not be found');
-			}
-			$actionClass = new $actionClassName();
-			if (!method_exists($actionClass, $actionToRunName))
-			{
-				throw new TBGComponentNotFoundException("The component action {$actionToRunName} was not found in the {$actionClassName} class");
-			}
-			if (!file_exists($template_name))
-			{
-				throw new TBGTemplateNotFoundException("The template file for the {$module_file['file']} component was not found in the {$module_file['module']} module");
-			}
-				
+
+			list ($template_name, $actionClass, $actionToRunName) = self::_doesComponentExist($template);
+
 			foreach ($params as $key => $val)
 			{
 				$actionClass->$key = $val;
@@ -88,15 +126,7 @@
 		public static function includeTemplate($template, $params = array())
 		{
 			TBGContext::loadLibrary('ui');
-			$module_file = self::getModuleAndTemplate($template);
-			if (($template_name = TBGContext::getI18n()->hasTranslatedTemplate($template, true)) === false)
-			{
-				$template_name = TBGContext::getIncludePath() . "modules/{$module_file['module']}/templates/_{$module_file['file']}.inc.php";
-			}
-			if (!file_exists($template_name))
-			{
-				throw new TBGTemplateNotFoundException("The template file <b>_{$module_file['file']}.inc.php</b> cannot be found in the template directory for module \"" . TBGContext::getRouting()->getCurrentRouteModule() . '"');
-			}
+			$template_name = self::getFinalTemplateName($template);
 			self::presentTemplate($template_name, $params);
 		}
 
