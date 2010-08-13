@@ -125,6 +125,7 @@
 
 		public function setupResponseContentType($request_content_type)
 		{
+			$this->setDecoration(self::DECORATE_NONE);
 			switch ($request_content_type)
 			{
 				case 'xml':
@@ -140,7 +141,10 @@
 					$this->setContentType('text/csv');
 					break;
 				default:
+					$this->setDecoration(self::DECORATE_BOTH, array('header' => TBGContext::getIncludePath() . 'core/templates/header.inc.php', 'footer' => TBGContext::getIncludePath() . 'core/templates/footer.inc.php'));
+					break;
 			}
+
 		}
 
 		public function cleanBuffer()

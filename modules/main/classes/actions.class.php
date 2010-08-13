@@ -909,7 +909,6 @@
 			{
 				$retval = TBGContext::getUser()->addStarredIssue($issue_id);
 			}
-			$this->getResponse()->setContentType('application/json');
 			return $this->renderText(json_encode(array('starred' => $retval)));
 		}
 		
