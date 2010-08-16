@@ -204,5 +204,16 @@
 
 			return array($users, $num_results);
 		}
+
+		public function getNumberOfMembersByGroupID($group_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::GROUP_ID, $group_id);
+			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::ENABLED, true);
+			$count = $this->doCount($crit);
+
+			return $count;
+		}
 		
 	}

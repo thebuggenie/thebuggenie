@@ -24,6 +24,16 @@
 		const GNAME = 'groups.gname';
 		const SCOPE = 'groups.scope';
 
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGGroupsTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGGroupsTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -64,6 +74,14 @@
 			$res = $this->doSelect($crit);
 			
 			return $res;
+		}
+
+		public function doesGroupNameExist($group_name)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::GNAME, $group_name);
+			
+			return (bool) $this->doCount($crit);
 		}
 		
 	}

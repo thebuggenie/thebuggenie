@@ -1398,7 +1398,33 @@
 		
 		public function runConfigureUsers(TBGRequest $request)
 		{
-			
+			$this->groups = TBGGroup::getAll();
+			$this->teams = TBGTeam::getAll();
+		}
+
+		public function runAddGroup(TBGRequest $request)
+		{
+			try
+			{
+				if ($group_name = $request->getParameter('group_name'))
+				{
+					if (TBGGroup::doesGroupNameExist(trim($group_name)))
+					{
+						throw new Exception(TBGContext::getI18n()->__("Please enter a group name that doesn't already exist"));
+					}
+					$group = TBGGroup::createNew($group_name);
+					return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('The group was added'), 'content' => $this->getTemplateHTML('configuration/groupbox', array('group' => $group))));
+				}
+				else
+				{
+					throw new Exception(TBGContext::getI18n()->__('Please enter a group name'));
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
 		}
 
 		public function runFindUsers(TBGRequest $request)

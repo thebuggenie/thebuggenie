@@ -20,6 +20,15 @@
 	{
 		protected static $_groups = null;
 
+		protected $_members = null;
+
+		protected $_num_members = null;
+
+		public static function doesGroupNameExist($group_name)
+		{
+			return TBGGroupsTable::getTable()->doesGroupNameExist($group_name);
+		}
+
 		public static function getAll()
 		{
 			if (self::$_groups === null)
@@ -63,16 +72,6 @@
 			return $this->_name;
 		}
 		
-		public function getName()
-		{
-			return $this->_name;
-		}
-		
-		public function getID()
-		{
-			return $this->_itemid;
-		}
-		
 		/**
 		 * Creates a group
 		 *
@@ -109,14 +108,6 @@
 			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $uid);
 		}
 		
-		public function setName($gname)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGGroupsTable::GNAME, $gname);
-			B2DB::getTable('TBGGroupsTable')->doUpdateById($crit, $this->getID());
-			$this->_name = $gname;
-		}
-		
 		public function delete()
 		{
 			$res = B2DB::getTable('TBGGroupsTable')->doDeleteById($this->getID());
@@ -125,5 +116,19 @@
 			$crit->addUpdate(TBGUsersTable::GROUP_ID, 0);
 			$res = B2DB::getTable('TBGUsersTable')->doUpdate($crit);
 		}
-		
+
+		public function getNumberOfMembers()
+		{
+			if ($this->_members !== null)
+			{
+				return count($this->_members);
+			}
+			elseif ($this->_num_members === null)
+			{
+				$this->_num_members = TBGUsersTable::getTable()->getNumberOfMembersByGroupID($this->getID());
+			}
+
+			return $this->_num_members;
+		}
+
 	}

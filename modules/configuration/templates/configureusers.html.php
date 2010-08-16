@@ -17,8 +17,8 @@
 			<div style="width: 750px; clear: both; height: 30px;" class="tab_menu">
 				<ul id="usersteamsgroups_menu">
 					<li id="tab_users" class="selected"><?php echo javascript_link_tag(image_tag('cfg_icon_users.png', array('style' => 'float: left; margin-right: 5px;')) . __('Users'), array('onclick' => "switchSubmenuTab('tab_users', 'usersteamsgroups_menu');")); ?></li>
-					<li id="tab_groups"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Groups'), array('onclick' => "switchSubmenuTab('tab_groups', 'usersteamsgroups_menu');failedMessage('".__('This configuration section has not been completed yet')."');")); ?></li>
-					<li id="tab_teams"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Teams'), array('onclick' => "switchSubmenuTab('tab_teams', 'usersteamsgroups_menu');failedMessage('".__('This configuration section has not been completed yet')."');")); ?></li>
+					<li id="tab_groups"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Groups'), array('onclick' => "switchSubmenuTab('tab_groups', 'usersteamsgroups_menu');")); ?></li>
+					<li id="tab_teams"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Teams'), array('onclick' => "switchSubmenuTab('tab_teams', 'usersteamsgroups_menu');")); ?></li>
 				</ul>
 			</div>
 			<div id="usersteamsgroups_menu_panes">
@@ -66,8 +66,27 @@
 					<div style="padding: 10px 0 10px 0; display: none;" id="find_users_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
 					<div id="users_results"></div>
 				</div>
-				<div id="tab_groups_pane" style="display: none;">
-					<p class="faded_medium" style="font-size: 12px; padding-top: 5px;"><?php echo __('This configuration section has not been completed yet'); ?></p>
+				<div id="tab_groups_pane" style="display: none; padding-top: 0; width: 750px;">
+					<div class="rounded_box yellow borderless" style="margin-top: 5px; padding: 7px;">
+						<form id="create_group_form" action="<?php echo make_url('configure_users_add_group'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="createGroup('<?php echo make_url('configure_users_add_group'); ?>');return false;">
+							<div id="add_group">
+								<label for="group_name"><?php echo __('Create a new group'); ?></label>
+								<input type="text" id="group_name" name="group_name">
+								<input type="submit" value="<?php echo __('Create'); ?>">
+							</div>
+						</form>
+					</div>
+					<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="create_group_indicator">
+						<tr>
+							<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
+							<td style="padding: 0px; text-align: left;"><?php echo __('Adding group, please wait'); ?>...</td>
+						</tr>
+					</table>
+					<div id="groupconfig_list">
+						<?php foreach ($groups as $group): ?>
+							<?php include_template('configuration/groupbox', array('group' => $group)); ?>
+						<?php endforeach; ?>
+					</div>
 				</div>
 				<div id="tab_teams_pane" style="display: none;">
 					<p class="faded_medium" style="font-size: 12px; padding-top: 5px;"><?php echo __('This configuration section has not been completed yet'); ?></p>

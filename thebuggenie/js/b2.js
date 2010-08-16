@@ -45,7 +45,7 @@ function successMessage(title, content)
 	new Effect.SlideUp('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, delay: 10});
 }
 
-function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done, update_div)
+function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done, update_div, insertion)
 {
 	var params = Form.serialize(formname);
 	new Ajax.Request(url, {
@@ -68,7 +68,19 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done,
 			$(indicator).hide();
 			if (update_div != '' && $(update_div))
 			{
-				$(update_div).update(transport.responseText);
+				content = (json) ? json.content : transport.responseText;
+				if (insertion == true)
+				{
+					$(update_div).insert(content, 'after');
+				}
+				else
+				{
+					$(update_div).update(content);
+				}
+				if (json && json.message != '')
+				{
+					successMessage(json.message);
+				}
 			}
 			else if (json)
 			{

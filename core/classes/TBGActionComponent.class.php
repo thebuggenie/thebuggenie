@@ -105,8 +105,6 @@
 		 */
 		public static function includeComponent($template, $params = array())
 		{
-			TBGContext::loadLibrary('ui');
-
 			list ($template_name, $actionClass, $actionToRunName) = self::_doesComponentExist($template);
 
 			foreach ($params as $key => $val)
@@ -125,7 +123,6 @@
 		 */
 		public static function includeTemplate($template, $params = array())
 		{
-			TBGContext::loadLibrary('ui');
 			$template_name = self::getFinalTemplateName($template);
 			self::presentTemplate($template_name, $params);
 		}
@@ -135,8 +132,9 @@
 		 * @param string $template_file
 		 * @param array $params
 		 */
-		protected static function presentTemplate($template_file, $params = array())
+		public static function presentTemplate($template_file, $params = array())
 		{
+			TBGLogging::log("configuring template variables for template {$template_file}");
 			foreach ($params as $key => $val)
 			{
 				$$key = $val;
@@ -165,7 +163,9 @@
 			$tbg_user = TBGContext::getUser();
 
 			TBGContext::loadLibrary('common');
-			
+			TBGContext::loadLibrary('ui');
+
+			TBGLogging::log('rendering template output');
 			require $template_file;
 		}
 

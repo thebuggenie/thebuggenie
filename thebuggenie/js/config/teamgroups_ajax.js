@@ -40,6 +40,12 @@ function createUser(url)
 	return true;
 }
 
+function createGroup(url)
+{
+	_postFormWithJSONFeedback(url, 'create_group_form', 'create_group_indicator', '', 'groupconfig_list', true);
+	return true;
+}
+
 function editUser(url, user_id, message)
 {
 	var params = Form.serialize('edituser_' + user_id + '_form');

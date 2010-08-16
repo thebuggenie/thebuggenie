@@ -869,3 +869,9 @@ ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
 .roadmap_issue .issue_status { display: inline; width: 20px; float: left; }
 .roadmap_issue .issue_points { display: inline; color: #AAA; font-size: 11px; margin-left: 10px; }
 .roadmap_issue.issue_closed { text-decoration: line-through; }
+
+#create_group_form label { font-size: 13px; }
+#create_group_form input[type="text"] { width: 200px; }
+#create_group_form input[type="submit"] { font-size: 12px; }
+.groupbox_header { font-weight: bold; font-size: 13px; }
+.groupbox_membercount { font-weight: normal; font-size: 11px; color: #888; }

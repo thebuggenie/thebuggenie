@@ -25,6 +25,16 @@
 		const UID = 'teammembers.uid';
 		const TID = 'teammembers.tid';
 		
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGTeamMembersTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGTeamMembersTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -57,5 +67,14 @@
 			$crit->addWhere(self::UID, $user_id);
 			$res = $this->doDelete($crit);
 		}
-		
+
+		public function getNumberOfMembersByTeamID($team_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::TID, $team_id);
+			$count = $this->doCount($crit);
+
+			return $count;
+		}
+
 	}

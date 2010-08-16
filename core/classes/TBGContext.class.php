@@ -1610,47 +1610,8 @@
 							throw new TBGTemplateNotFoundException('The template file for the ' . $method . ' action ("'.self::getResponse()->getTemplate().'") does not exist');
 						}
 
-						// Make all template variables available to the template, including the
-						// main ones like request, user, action and response
-						TBGLogging::log('configuring variables');
-						foreach ($actionObject->getParameterHolder() as $key => $val)
-						{
-							$$key = $val;
-						}
-						
-						/**
-						 * @global TBGRequest The request object
-						 */
-						$tbg_request = self::getRequest();
-
-						/**
-						 * @global TBGUser The user object
-						 */
-						$tbg_user = self::getUser();
-
-						/**
-						 * @global TBGAction The action object
-						 */
-						$tbg_action = $actionObject;
-
-						/**
-						 * @global TBGResponse The action object
-						 */
-						$tbg_response = self::getResponse();
-
-						/**
-						 * @global TBGResponse The action object
-						 */
-						$tbg_routing = self::getRouting();
-
-						// Load the "ui" library, since this is used a lot
-						self::loadLibrary('ui');
-						self::loadLibrary('common');
-
-						// Include the template, buffer the output and store it in a variable
-						// to be outputted in context later
-						TBGLogging::log('rendering template and buffering output');
-						require $templateName;
+						// Present template for current action
+						TBGActionComponent::presentTemplate($templateName, $actionObject->getParameterHolder());
 						$content = ob_get_clean();
 						TBGLogging::log('...completed');
 					}
@@ -1667,11 +1628,6 @@
 					 * @global TBGUser The user object
 					 */
 					$tbg_user = self::getUser();
-
-					/**
-					 * @global TBGAction The action object
-					 */
-					$tbg_action = $actionObject;
 
 					/**
 					 * @global TBGResponse The action object

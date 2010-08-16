@@ -20,6 +20,8 @@
 	{
 		
 		protected $_members = null;
+
+		protected $_num_members = null;
 		
 		protected static $_teams = null;
 		
@@ -69,16 +71,6 @@
 			return "" . $this->_name;
 		}
 		
-		public function getName()
-		{
-			return $this->_name;
-		}
-		
-		public function getID()
-		{
-			return $this->_itemid;
-		}
-
 		public function getType()
 		{
 			return self::TYPE_TEAM;
@@ -117,14 +109,6 @@
 			}
 			$this->_members[] = $user->getID();
 			array_unique($this->_members);
-		}
-		
-		public function setName($tname)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGTeamsTable::TEAMNAME, $tname);
-			B2DB::getTable('TBGTeamsTable')->doUpdateById($crit, $this->getID());
-			$this->_name = $tname;
 		}
 		
 		public function getMembersIDs()
@@ -178,6 +162,19 @@
 			}
 			return $teams;
 		}
-		
+
+		public function getNumberOfMembers()
+		{
+			if ($this->_members !== null)
+			{
+				return count($this->_members);
+			}
+			elseif ($this->_num_members === null)
+			{
+				$this->_num_members = TBGTeamMembersTable::getTable()->getNumberOfMembersByTeamID($this->getID());
+			}
+
+			return $this->_num_members;
+		}
 		
 	}
