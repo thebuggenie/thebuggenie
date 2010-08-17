@@ -1452,7 +1452,10 @@
 					$group = TBGGroup::createNew($group_name);
 					if ($mode == 'clone')
 					{
-						TBGPermissionsTable::getTable()->cloneGroupPermissions($old_group->getID(), $group->getID());
+						if ($request->getParameter('clone_permissions'))
+						{
+							TBGPermissionsTable::getTable()->cloneGroupPermissions($old_group->getID(), $group->getID());
+						}
 						$message = TBGContext::getI18n()->__('The group was cloned');
 					}
 					else
