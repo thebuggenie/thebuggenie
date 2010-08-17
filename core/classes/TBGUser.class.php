@@ -358,29 +358,40 @@
 			try
 			{
 				$row = null;
-				if ($username === null && $password === null)
+				$event = TBGEvent::createNew('TBGUser', 'loginCheck');
+				$event->trigger();
+
+				if ($event->isProcessed())
 				{
-					if (TBGContext::getRequest()->hasCookie('b2_username') && TBGContext::getRequest()->hasCookie('b2_password'))
+					$row = $event->getReturnValue();
+				}
+				else
+				{
+					if ($username === null && $password === null)
 					{
-						$username = TBGContext::getRequest()->getCookie('b2_username');
-						$password = TBGContext::getRequest()->getCookie('b2_password');
-						$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, $password);
-						if (!$row)
+						if (TBGContext::getRequest()->hasCookie('b2_username') && TBGContext::getRequest()->hasCookie('b2_password'))
 						{
-							TBGContext::getResponse()->deleteCookie('b2_username');
-							TBGContext::getResponse()->deleteCookie('b2_password');
-							TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
+							$username = TBGContext::getRequest()->getCookie('b2_username');
+							$password = TBGContext::getRequest()->getCookie('b2_password');
+							$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, $password);
+							if (!$row)
+							{
+								TBGContext::getResponse()->deleteCookie('b2_username');
+								TBGContext::getResponse()->deleteCookie('b2_password');
+								TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
+							}
 						}
 					}
+					if ($username !== null && $password !== null)
+					{
+						$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, $password);
+					}
+					elseif (!TBGSettings::isLoginRequired())
+					{
+						$row = B2DB::getTable('TBGUsersTable')->getByUserID(TBGSettings::getDefaultUserID());
+					}
 				}
-				if ($username !== null && $password !== null)
-				{
-					$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, $password);
-				}
-				elseif (!TBGSettings::isLoginRequired())
-				{
-					$row = B2DB::getTable('TBGUsersTable')->getByUserID(TBGSettings::getDefaultUserID());
-				}
+
 				if ($row)
 				{
 					if (!$row->get(TBGScopesTable::ENABLED))

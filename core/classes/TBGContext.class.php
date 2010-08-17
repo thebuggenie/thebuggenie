@@ -443,7 +443,10 @@
 				TBGSettings::loadSettings();
 				TBGLogging::log("...done");
 
-				$load_modules = true;
+				TBGLogging::log('Loading modules');
+				self::loadModules();
+				TBGLogging::log('...done');
+
 				if (self::getEnvironment() != self::ENV_CLI)
 				{
 					TBGLogging::log('Loading user');
@@ -453,13 +456,27 @@
 						if (self::getRequest()->getParameter('logout'))
 						{
 							TBGLogging::log('yes');
+							TBGEvent::createNew('core', 'pre_logout')->trigger();
 							self::logout();
+							TBGEvent::createNew('core', 'post_logout')->trigger();
 						}
 						else
 						{
 							TBGLogging::log('no');
 							TBGLogging::log('sets up user object');
-							self::loadUser();
+							$event = TBGEvent::createNew('core', 'pre_login');
+							$event->trigger();
+
+							if ($event->isProcessed())
+							{
+								self::loadUser($event->getReturnValue());
+							}
+							else
+							{
+								self::loadUser();
+							}
+							TBGEvent::createNew('core', 'post_login', self::getUser())->trigger();
+							
 							TBGLogging::log('loaded');
 							TBGLogging::log('caches permissions');
 							self::cacheAllPermissions();
@@ -476,7 +493,6 @@
 						else
 						{
 							self::$_user = new TBGUser();
-							$load_modules = false;
 						}
 					}
 				}
@@ -496,17 +512,6 @@
 					self::$_i18n = $cached_i18n;
 				}
 				TBGLogging::log('...done');
-				if ($load_modules)
-				{
-					TBGLogging::log('Loading modules');
-					self::loadModules();
-					TBGLogging::log('...done');
-				}
-				else
-				{
-					self::$_modules = array();
-					TBGLogging::log('Not loading modules');
-				}
 
 				TBGLogging::log('Loading last batch of routes', 'routing');
 				if (!($routes = TBGCache::get('routes_2')))
@@ -607,11 +612,11 @@
 		 * 
 		 * @return TBGUser
 		 */
-		public static function loadUser()
+		public static function loadUser($user = null)
 		{
 			try
 			{
-				self::$_user = TBGUser::loginCheck();
+				self::$_user = ($user === null) ? TBGUser::loginCheck() : $user;
 			}
 			catch (Exception $e)
 			{
