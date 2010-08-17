@@ -183,7 +183,7 @@
 			}
 			else
 			{
-				$output .= "<li>".htmlspecialchars($matches[2])."</li>\n";
+				$output .= "<li>{$matches[2]}</li>\n";
 				return $output;
 			}
 		}

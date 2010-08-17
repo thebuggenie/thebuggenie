@@ -84,4 +84,25 @@ To be able to use a module, it needs to be installed. This can be done either vi
 
 When a module is installed, some functions in your module are executed (if the exists) - '''_install()''' and '''_loadFixtures()'''. If your module has database table classes in the ''classes/B2DB'' folder, they will be created after the '''_install()''' function has been called but before the '''_loadFixtures()''' function is called. This means you cannot add data to any custom tables in the '''_install()''' function, but you can do it in the '''_loadFixtures()''' function.
 
+
+= Your first module page =
+So, unless you just want to linger in the background and do tasks invisible to the user, you probably want to have a page or something where user can interact with. External modules are treated in a similar way to internal modules - that means they follow the same rules and conventions as the internal modules does when it comes to [[TheBugGenie:Development:Actions|Actions]] and [[TheBugGenie:Development:Actions|Templates]]. However - it differs for external modules in that to be able to access the page, it needs to be added to the routing stack - it needs to have a URL which the user can access.
+
+You set this up in the '''_addAvailableRoutes()''' function, where routes are added after the module has been initialized. Keep in mind that routes are being processed first-come, first-served, so you should make a conscious effort to avoid having routes where the URL overwrites previous URLs. (See the [[TheBugGenie:Development:Routing|Routing documentation]] for more information about routes in general.) To dynamically add a route to the list, use the built-in '''addRoute()''' function from the module object:
+
+'''TBGModule::addRoute():'''
+<source lang="php">
+$this->addRoute($route_key, $url, $action);
+</source>
+
+'''modules/mymodule/classes/MyModule.class.php:'''
+<source lang="php">
+// Add a route available via : http://<thebuggenie.location>/mymodule
+// which will trigger the runFrontpage() method in the mymodules
+// actions class
+$this->addRoute('mymodule_frontpage', '/mymodule', 'frontpage');
+</source>
+
+The parameters in this call are similar to the normal routing parameters - except that the module will default to the current module, so that parameter is excluded. Actions and templates are then set up according to the documentation as specified in the [[TheBugGenie:Development:Actions|Actions]] and [[TheBugGenie:Development:Actions|Templates]] sections.
+
 [[Category:TheBugGenie:Development]]

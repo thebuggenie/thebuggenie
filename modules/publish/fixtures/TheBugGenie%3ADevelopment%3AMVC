@@ -15,7 +15,7 @@ The Bug Genie uses an MVC framework, heavily inspired by the [http://symfony-pro
        - classes
          actions.class.php
        - templates
-         index.php
+         index.html.php
    - thebuggenie
      - css
      - js
@@ -40,7 +40,7 @@ TBGContext::addClasspath('/my/valid/path/');
 This will add the path to The Bug Genies class autoloader. Usually this is not necessary, but may be desired for some external libraries or classes.
 
 == Actions and components classes ==
-Every module that uses routes is expected to have an [[TheBugGenie:Development:Action|actions]] class, named '''ModulenameActions''', which should extend the '''[[TheBugGenie:Development:Action|TBGAction]]''' class. This special class is saved in the file ''actions.class.php'' inside the classes directory, and is autoloaded if it exists.
+Every module that uses routes is expected to have an [[TheBugGenie:Development:Actions|actions]] class, named '''ModulenameActions''', which should extend the '''[[TheBugGenie:Development:Actions|TBGAction]]''' class. This special class is saved in the file ''actions.class.php'' inside the classes directory, and is autoloaded if it exists.
 
 If your module uses [[TheBugGenie:Development:Components|components]], you will have to create a components class '''ModulenameActionComponents''', extending the '''TBGActionComponent''' class (Notice the plural form in the child classes).
 
@@ -87,14 +87,14 @@ class mymoduleActionComponents extends TBGActionComponent
 Core template files are located in the ''core/templates'' folder. The templates there are the ones decorating every page, the header, menu and the footer. If you ever want to change the global header, menu or footer, edit the template files located here. Keep in mind that these template files may be overwritten on updates, so back up your changes before you update to newer versions.
 
 == Module templates ==
-Module templates are found in the ''modulename/templates'' folder. This is also where component templates and partial templates are found. Main templates (associated with an action) are called (lowercase) ''&lt;actionname&gt;.php'', whereas template partials and component templates are called (lowercase) ''_&lt;componentname&gt;.inc.php'' and ''_&lt;templatename&gt;.inc.php''. Notice the difference, with both a leading underscore, and the ''.inc.php'' extension.
+Module templates are found in the ''modulename/templates'' folder. This is also where component templates and partial templates are found. Main templates (associated with an action) are called (lowercase) ''<actionname>.<format>.php'', whereas template partials and component templates are called (lowercase) ''_<componentname>.inc.php'' and ''_<templatename>.inc.php''. Notice the difference, with both a leading underscore, and the ''.inc.php'' extension.
 
-Example (template file for the ''runIndex()'' action above):
+Example (template file for the ''runIndex()'' action above, standard html version):
  thebuggenie
  - modules
    - mymodule
      - templates
-       index.php
+       index.html.php
 
 Example (template file for the ''componentMenu()'' component above):
  thebuggenie
