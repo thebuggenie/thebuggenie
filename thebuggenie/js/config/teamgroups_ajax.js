@@ -170,3 +170,48 @@ function getUserPermissionsBlock(url, user_id)
 		$('users_results_user_' + user_id + '_permissions_row').toggle();
 	}
 }
+
+function showGroupMembers(url, group_id)
+{
+	new Ajax.Request(url, {
+		asynchronous: true,
+		method: "post",
+		onLoading: function (transport) {
+			$('group_members_' + group_id + '_indicator').show();
+			$('group_members_' + group_id + '_container').show();
+		},
+		onSuccess: function (transport) {
+			$('group_members_' + group_id + '_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && json.content)
+			{
+				$('group_members_' + group_id + '_list').update(json.content);
+			}
+		},
+		onComplete: function (transport) {
+			$('group_members_' + group_id + '_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && (!json.failed || json.success) && json.message)
+			{
+				successMessage(json.message);
+			}
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+		},
+		onFailure: function (transport) {
+			$('group_members_' + group_id + '_indicator').hide();
+			$('group_members_' + group_id + '_container').hide();
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+		}
+	});
+}
