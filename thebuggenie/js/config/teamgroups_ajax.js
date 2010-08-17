@@ -46,6 +46,56 @@ function createGroup(url)
 	return true;
 }
 
+function deleteGroup(url, group_id)
+{
+	new Ajax.Request(url, {
+		asynchronous: true,
+		method: "post",
+		onLoading: function (transport) {
+			$('delete_group_' + group_id + '_indicator').show();
+		},
+		onSuccess: function (transport) {
+			$('delete_group_' + group_id + '_indicator').hide();
+			$('groupbox_' + group_id).remove();
+			var json = transport.responseJSON;
+			if (json && (!json.failed || json.success) && json.message)
+			{
+				successMessage(json.message);
+			}
+		},
+		onComplete: function (transport) {
+			$('delete_group_' + group_id + '_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && (!json.failed || json.success) && json.message)
+			{
+				successMessage(json.message);
+			}
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+		},
+		onFailure: function (transport) {
+			$('delete_group_' + group_id + '_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+		}
+	});
+}
+
+function cloneGroup(url, group_id)
+{
+	_postFormWithJSONFeedback(url, 'clone_group_' + group_id + '_form', 'clone_group_' + group_id + '_indicator', 'clone_group_' + group_id, 'groupconfig_list', true);
+	return true;
+}
+
 function editUser(url, user_id, message)
 {
 	var params = Form.serialize('edituser_' + user_id + '_form');

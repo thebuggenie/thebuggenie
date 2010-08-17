@@ -29,6 +29,16 @@
 		const ALLOWED = 'permissions.allowed';
 		const MODULE = 'permissions.module';
 
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGPermissionsTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGPermissionsTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -114,6 +124,32 @@
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "canpostseeandeditallcomments", 0, $scope_id);
 
 			
+		}
+
+		public function cloneGroupPermissions($cloned_group_id, $new_group_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::GID, $cloned_group_id);
+			$permissions_to_add = array();
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$permissions_to_add[] = array('target_id' => $row->get(self::TARGET_ID), 'permission_type' => $row->get(self::PERMISSION_TYPE), 'allowed' => $row->get(self::ALLOWED), 'module' => $row->get(self::MODULE));
+				}
+			}
+
+			foreach ($permissions_to_add as $permission)
+			{
+				$crit = $this->getCriteria();
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+				$crit->addInsert(self::PERMISSION_TYPE, $permission['permission_type']);
+				$crit->addInsert(self::TARGET_ID, $permission['target_id']);
+				$crit->addInsert(self::GID, $new_group_id);
+				$crit->addInsert(self::ALLOWED, $permission['allowed']);
+				$crit->addInsert(self::MODULE, $permission['module']);
+				$res = $this->doInsert($crit);
+			}
 		}
 		
 	}

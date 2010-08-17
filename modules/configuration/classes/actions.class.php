@@ -1402,18 +1402,64 @@
 			$this->teams = TBGTeam::getAll();
 		}
 
+		public function runDeleteGroup(TBGRequest $request)
+		{
+			try
+			{
+				try
+				{
+					$group = TBGFactory::groupLab($request->getParameter('group_id'));
+				}
+				catch (Exception $e) { }
+				if (!$group instanceof TBGGroup)
+				{
+					throw new Exception(TBGContext::getI18n()->__("You cannot delete this group"));
+				}
+				$group->delete();
+				return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The group was deleted')));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
+
 		public function runAddGroup(TBGRequest $request)
 		{
 			try
 			{
-				if ($group_name = $request->getParameter('group_name'))
+				$mode = $request->getParameter('mode');
+				$request_param = ($mode == 'clone') ? 'group_name' : 'new_group_name';
+				if ($group_name = $request->getParameter($request_param))
 				{
+					if ($mode == 'clone')
+					{
+						try
+						{
+							$old_group = TBGFactory::groupLab($request->getParameter('group_id'));
+						}
+						catch (Exception $e) { }
+						if (!$old_group instanceof TBGGroup)
+						{
+							throw new Exception(TBGContext::getI18n()->__("You cannot clone this group"));
+						}
+					}
 					if (TBGGroup::doesGroupNameExist(trim($group_name)))
 					{
 						throw new Exception(TBGContext::getI18n()->__("Please enter a group name that doesn't already exist"));
 					}
 					$group = TBGGroup::createNew($group_name);
-					return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('The group was added'), 'content' => $this->getTemplateHTML('configuration/groupbox', array('group' => $group))));
+					if ($mode == 'clone')
+					{
+						TBGPermissionsTable::getTable()->cloneGroupPermissions($old_group->getID(), $group->getID());
+						$message = TBGContext::getI18n()->__('The group was cloned');
+					}
+					else
+					{
+						$message = TBGContext::getI18n()->__('The group was added');
+					}
+					return $this->renderJSON(array('failed' => false, 'message' => $message, 'content' => $this->getTemplateHTML('configuration/groupbox', array('group' => $group))));
 				}
 				else
 				{
