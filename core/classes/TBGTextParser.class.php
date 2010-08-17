@@ -154,7 +154,7 @@
 
 			while ($this->list_level != $newlevel)
 			{
-				$listchar = substr($matches[1],-1);
+				$listchar = substr($matches[1], -1);
 				if (is_string($listchar) || is_numeric($listchar))
 				{
 					$listtype = $listtypes[$listchar];
@@ -172,7 +172,7 @@
 				else
 				{
 					$this->list_level++;
-					array_push($this->list_level_types,$listtype);
+					array_push($this->list_level_types, $listtype);
 				}
 				$output .= "\n<{$listtype}>\n";
 			}

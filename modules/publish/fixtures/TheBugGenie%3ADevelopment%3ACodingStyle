@@ -1,0 +1,7 @@
+{{TOC}}
+= Introduction =
+The Bug Genie uses a specific coding style / coding standard which we urge you to follow. By following the same coding style everywhere, we ensure that the code is easy to read and understand, as well as debug, fix and maintain. If you want your module included in the official module repository on thebuggenie.com, you must ensure that it follows the coding style specified in this document.
+
+There are several common coding standards in use in all kinds of projects - we're not promoting one over the other. However, we've chosen a certain coding style for The Bug Genie to make our lives easier.
+
+[[Category:TheBugGenie:Development]]
