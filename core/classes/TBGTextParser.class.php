@@ -306,14 +306,14 @@
 				$title = array_pop($options);
 
 				if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return $href;
-				return image_tag($href, array('alt' => htmlspecialchars($title)));
+				return image_tag($href, array('alt' => $title));
 			}
 
 			if (strtolower($namespace) == 'category')
 			{
 				if (substr($matches[2], 0, 1) != ':')
 				{
-					$this->addCategorizer(htmlspecialchars($href));
+					$this->addCategorizer($href);
 					return '';
 				}
 			}
@@ -325,7 +325,7 @@
 				$options = explode('|', $title);
 				$title = (array_key_exists(5, $matches) && (strpos($matches[5], '|') !== false) ? '' : $namespace.':') . array_pop($options);
 
-				return link_tag('http://en.wikipedia.org/wiki/'.$href, htmlspecialchars($title));
+				return link_tag('http://en.wikipedia.org/wiki/'.$href, $title);
 			}
 
 			if ($namespace == 'TBG')
@@ -335,7 +335,7 @@
 				$options = explode('|',$title);
 				$title = array_pop($options);
 
-				return link_tag(make_url($href), htmlspecialchars($title)); // $this->parse_image($href,$title,$options);
+				return link_tag(make_url($href), $title); // $this->parse_image($href,$title,$options);
 			}
 
 			if (substr($href, 0, 1) == '/')
@@ -345,7 +345,7 @@
 				$options = explode('|', $title);
 				$title = array_pop($options);
 
-				return link_tag($href, htmlspecialchars($title)); // $this->parse_image($href,$title,$options);
+				return link_tag($href, $title); // $this->parse_image($href,$title,$options);
 			}
 
 			$title = preg_replace('/\(.*?\)/', '', $title);
@@ -369,7 +369,7 @@
 
 			if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return $href;
 			
-			return link_tag($href, htmlspecialchars($title));
+			return link_tag($href, $title);
 		}
 
 		protected function _parse_externallink($matches)
