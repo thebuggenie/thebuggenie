@@ -556,6 +556,7 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .textarea_hint .header { font-weight: bold; }
 .textarea_hint .example { font-style: italic; }
 .issue_main .textarea_hint { color: #999; font-size: 13px; font-weight: normal; padding: 5px 0 0 0; }
+.issue_main pre { width: 650px; padding: 3px; background-color: #F1EECB; border: 1px dotted #E3DDA5; }
 .reportissue_error tr { background-color: #FEE; }
 .reportissue_error tr td input, .reportissue_error tr td textarea, .reportissue_error tr td select { background-color: #FEE; border-color: #B77; }
 .reportissue_error label { color: #955; }
