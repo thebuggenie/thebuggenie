@@ -94,6 +94,7 @@
 		 */
 		public function runRoadmap(TBGRequest $request)
 		{
+			$this->milestones = $this->selected_project->getAllMilestones();
 		}
 
 		/**
