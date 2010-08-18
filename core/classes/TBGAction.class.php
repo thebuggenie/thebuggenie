@@ -57,7 +57,7 @@
 		public function redirect($redirect_to)
 		{
 			$actionName = 'run' . ucfirst($redirect_to);
-			$this->getResponse()->setTemplate(strtolower($redirect_to) . '.php');
+			$this->getResponse()->setTemplate(strtolower($redirect_to) . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php');
 			if (method_exists($this, $actionName))
 			{
 				return $this->$actionName(TBGContext::getRequest());

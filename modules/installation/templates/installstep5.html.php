@@ -13,7 +13,7 @@
 			<legend>Administrator account</legend>
 			<div style="font-size: 12px; margin: 10px 0 10px 0;">
 			An administrator account has been created. To use this account, log in with the following information:<br>
-			<b>Username: </b>Administrator<br>
+			<b>Username: </b>administrator<br>
 			<b>Password: </b>admin<br>
 			<br>
 			You should log in and change this password immediately after finalizing the installation.</div>
