@@ -227,12 +227,13 @@
 
 				TBGLogging::log('Loading fixtures for default scope');
 				$scope = TBGScope::createNew('The default scope', '');
-
+				
 				TBGLogging::log('Setting up default users and groups');
 				TBGSettings::saveSetting('language', 'en_US', 'core', 1);
 				$scope->setHostname($request->getParameter('url_host'));
 				$scope->save();
 				TBGSettings::saveSetting('url_subdir', $request->getParameter('url_subdir'), 'core', 1);
+
 				$this->htaccess_error = false;
 				$this->htaccess_ok = (bool) $request->getParameter('apache_autosetup');
 

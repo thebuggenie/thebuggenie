@@ -201,10 +201,19 @@
 		{
 			$i18n = TBGContext::getI18n();
 			list ($admin_group_id, $users_group_id, $guest_group_id) = B2DB::getTable('TBGGroupsTable')->loadFixtures($scope_id);
-
+			
 			$adminuser = TBGUser::createNew('administrator', 'Administrator', 'Admin', $scope_id, true, true);
 			$adminuser->setGroup($admin_group_id);
-			$adminuser->changePassword('admin');
+
+			if (TBGContext::isInstallmode())
+			{
+				$salt = sha1(time().mt_rand(1000, 10000));
+				$adminuser->changePassword('admin'.$salt); // Settings not active yet
+			}
+			else
+			{
+				$adminuser->changePassword('admin');
+			}
 			$adminuser->setAvatar('admin');
 			$adminuser->save();
 			
@@ -215,6 +224,11 @@
 			B2DB::getTable('TBGSettingsTable')->loadFixtures($scope_id);
 			TBGSettings::saveSetting('defaultgroup', $users_group_id, 'core', $scope_id);
 			TBGSettings::saveSetting('defaultuserid', $guestuser->getID(), 'core', $scope_id);
+			
+			if (TBGContext::isInstallmode())
+			{
+				TBGSettings::saveSetting('salt', $salt, 'core', 1);
+			}
 
 			B2DB::getTable('TBGTeamsTable')->loadFixtures($scope_id);
 			B2DB::getTable('TBGPermissionsTable')->loadFixtures($scope_id, $admin_group_id, $guest_group_id);
@@ -325,8 +339,8 @@
 			TBGSettings::saveSetting('local_path', TBGSettings::get('local_path'), 'core', $addedScope->getID());
 			
 			// Update scope guest user setting to the new scope guest user
-			$md5Pass = md5('password');
-			TBGSettings::saveSetting('defaultpwd', $md5Pass, 'core', $addedScope->getID());
+			$hashPass = TBGUser::hashPassword('password');
+			TBGSettings::saveSetting('defaultpwd', $hashPass, 'core', $addedScope->getID());
 			TBGSettings::saveSetting('defaultuname', 'scope' . $scopeShortname . 'guest', 'core', $addedScope->getID());
 			TBGSettings::saveSetting('defaultgroup', $theUserGroup, 'core', $addedScope->getID());
 			

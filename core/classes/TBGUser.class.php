@@ -42,7 +42,7 @@
 		protected $authenticated = false;
 		
 		/**
-		 * MD5 hash of password
+		 * Hashed password
 		 *
 		 * @var string
 		 * @access protected
@@ -346,6 +346,18 @@
 		}
 		
 		/**
+		 * Take a raw password and convert it to the hashed format
+		 * 
+		 * @param string $password
+		 * 
+		 * @return hashed password
+		 */
+		public static function hashPassword($password)
+		{
+			return sha1($password.TBGSettings::getPasswordSalt());
+		}
+		
+		/**
 		 * Returns the logged in user, or default user if not logged in
 		 *
 		 * @param string $uname
@@ -374,6 +386,7 @@
 							$username = TBGContext::getRequest()->getCookie('b2_username');
 							$password = TBGContext::getRequest()->getCookie('b2_password');
 							$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, $password);
+							
 							if (!$row)
 							{
 								TBGContext::getResponse()->deleteCookie('b2_username');
@@ -384,7 +397,35 @@
 					}
 					if ($username !== null && $password !== null)
 					{
+						// First test a pre-encrypted password
 						$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, $password);
+
+						if (!$row)
+						{
+							// Then test an unencrypted password
+							$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, self::hashPassword($password));
+							
+							if(!$row)
+							{
+								// This is a legacy account from a 2.1 upgrade - try md5
+								$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, md5($password));
+								if(!$row)
+								{
+									// Invalid
+									TBGContext::getResponse()->deleteCookie('b2_username');
+									TBGContext::getResponse()->deleteCookie('b2_password');
+									TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
+								}
+								else 
+								{
+									// convert md5 to new password type
+									$user = new TBGUser($row->get(TBGUsersTable::ID), $row);
+									$user->changePassword($password);
+									$user->save();
+									unset($user);
+								}
+							}
+						}
 					}
 					elseif (!TBGSettings::isLoginRequired())
 					{
@@ -482,7 +523,7 @@
 		 * 
 		 * @return TBGUser
 		 */
-		public static function createNew($username, $realname, $buddyname, $scope, $activated = false, $enabled = false, $password = 'password', $email = '', $pass_is_md5 = false, $u_id = null, $lastseen = null)
+		public static function createNew($username, $realname, $buddyname, $scope, $activated = false, $enabled = false, $password = 'password', $email = '', $pass_is_hash = false, $u_id = null, $lastseen = null)
 		{
 			if (TBGUsersTable::getTable()->getByUsername($username) instanceof B2DBRow)
 			{
@@ -501,13 +542,13 @@
 			$crit->addInsert(TBGUsersTable::REALNAME, $realname);
 			$crit->addInsert(TBGUsersTable::BUDDYNAME, $buddyname);
 			$crit->addInsert(TBGUsersTable::EMAIL, $email);
-			if ($pass_is_md5)
+			if ($pass_is_hash)
 			{
 				$crit->addInsert(TBGUsersTable::PASSWD, $password);
 			}
 			else
 			{
-				$crit->addInsert(TBGUsersTable::PASSWD, md5($password));
+				$crit->addInsert(TBGUsersTable::PASSWD, self::hashPassword($password));
 			}
 			$crit->addInsert(TBGUsersTable::SCOPE, $scope);
 			$crit->addInsert(TBGUsersTable::ACTIVATED, $activated);
@@ -1013,13 +1054,13 @@
 		 */
 		public function changePassword($newpassword)
 		{
-			$this->pwd = md5($newpassword);
+			$this->pwd = self::hashPassword($newpassword);
 		}
 		
 		public function setRandomPassword()
 		{
 			$newPass = tbg_createPassword();
-			$md5newPass = md5($newPass);
+			$hashnewPass = self::hashPassword($newPass);
 			$this->changePassword($newPass);
 			return $newPass;
 		}
@@ -1155,7 +1196,7 @@
 			return !$this->private_email;
 		}
 
-		public function getPasswordMD5()
+		public function getPasswordHash()
 		{
 			return $this->pwd;
 		}
@@ -1259,11 +1300,11 @@
 		}
 		
 		/**
-		 * Returns an md5 hash of the user password
+		 * Returns a hash of the user password
 		 *
 		 * @return string
 		 */
-		public function getMD5Password()
+		public function getHashPassword()
 		{
 			return $this->pwd;
 		}
@@ -1277,19 +1318,19 @@
 		 */
 		public function hasPassword($password)
 		{
-			return $this->hasPasswordMD5(md5($password));
+			return $this->hasPasswordHash(self::hashPassword($password));
 		}
 
 		/**
 		 * Return whether or not the users password is this
 		 *
-		 * @param string $password MD5-hashed password
+		 * @param string $password Hashed password
 		 *
 		 * @return boolean
 		 */
-		public function hasPasswordMD5($password)
+		public function hasPasswordHash($password)
 		{
-			return (bool) ($password == $this->getMD5Password());
+			return (bool) ($password == $this->getHashPassword());
 		}
 
 		/**

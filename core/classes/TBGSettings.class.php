@@ -365,6 +365,11 @@
 			}
 		}
 		
+		public static function getPasswordSalt()
+		{
+			return self::get('salt', 'core', 1);
+		}
+		
 		public static function getAwayState()
 		{
 			try

@@ -3,7 +3,7 @@
 	Someone registered the username '<?php echo $user->getUname(); ?>' with The Bug Genie, here: %thebuggenie_url%.<br>
 	<br>
 	Before you can use the new account, you need to confirm it, by visiting the following link:<br>
-	<?php echo link_tag(make_url('activate', array('user' => $user->getUsername(), 'key' => $user->getPasswordMD5()))); ?><br>
+	<?php echo link_tag(make_url('activate', array('user' => $user->getUsername(), 'key' => $user->getPasswordHash()))); ?><br>
 	<br>
 	Your password is:<br>
 	<b><?php echo $password; ?></b><br>

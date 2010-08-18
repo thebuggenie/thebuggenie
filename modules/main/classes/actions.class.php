@@ -179,9 +179,9 @@
 					{
 						$username = TBGContext::getRequest()->getParameter('b2_username');
 						$password = TBGContext::getRequest()->getParameter('b2_password');
-						$user = TBGUser::loginCheck($username, md5($password), true);
+						$user = TBGUser::loginCheck($username, $password, true);
 						$this->getResponse()->setCookie('b2_username', $username);
-						$this->getResponse()->setCookie('b2_password', md5($password));
+						$this->getResponse()->setCookie('b2_password', TBGUser::hashPassword($password));
 						if (TBGContext::getRequest()->hasParameter('return_to')) 
 						{
 							$this->forward(TBGContext::getRequest()->getParameter('return_to'));
@@ -337,7 +337,7 @@
 						}
 
 						$password = TBGUser::createPassword();
-						$user = TBGUser::createNew($username, $realname, $buddyname, TBGContext::getScope()->getID(), false, true, md5($password), $email, true);
+						$user = TBGUser::createNew($username, $realname, $buddyname, TBGContext::getScope()->getID(), false, true, TBGUser::hashPassword($password), $email, true);
 
 						if ($user->isActivated())
 						{
@@ -485,7 +485,7 @@
 				}
 				TBGContext::getUser()->changePassword($request->getParameter('new_password_1'));
 				TBGContext::getUser()->save();
-				$this->getResponse()->setCookie('b2_password', TBGContext::getUser()->getPasswordMD5());
+				$this->getResponse()->setCookie('b2_password', TBGContext::getUser()->getPasswordHash());
 				return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Your new password was changed')));
 			}
 		}
