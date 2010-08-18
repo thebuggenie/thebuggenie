@@ -219,6 +219,10 @@
 			
 			$guestuser = TBGUser::createNew('guest', 'Guest user', 'Guest user', $scope_id, true, true);
 			$guestuser->setGroup($guest_group_id);
+			if (TBGContext::isInstallmode())
+			{
+				$guestuser->changePassword('password'.$salt); // Settings not active yet
+			}
 			$guestuser->save();
 
 			B2DB::getTable('TBGSettingsTable')->loadFixtures($scope_id);
