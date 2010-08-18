@@ -41,6 +41,7 @@
 		
 		protected function _addAvailableListeners()
 		{
+			$this->addAvailableListener('core', 'index_left_middle', 'listen_frontpageLeftmenu', 'Frontpage left menu');
 			$this->addAvailableListener('core', 'index_right_middle', 'listen_frontpageArticle', 'Frontpage article');
 			$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
 			$this->addAvailableListener('core', 'project_menustrip_item_links', 'listen_projectMenustripLinks', 'Project menustrip links');
@@ -313,9 +314,10 @@
 			return $articles;
 		}
 		
-		public function getFrontpageArticle()
+		public function getFrontpageArticle($type)
 		{
-			if ($row = TBGArticlesTable::getTable()->getArticleByName('FrontpageArticle'))
+			$article_name = ($type == 'main') ? 'FrontpageArticle' : 'FrontpageLeftmenu';
+			if ($row = TBGArticlesTable::getTable()->getArticleByName($article_name))
 			{
 				return PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
 			}
@@ -324,16 +326,20 @@
 		
 		public function listen_frontpageArticle(TBGEvent $event)
 		{
-			$index_article = $this->getFrontpageArticle();
-			if ($index_article instanceof TBGWikiArticle)
+			$article = $this->getFrontpageArticle('main');
+			if ($article instanceof TBGWikiArticle)
 			{
-				TBGActionComponent::includeComponent('publish/articledisplay', array('article' => $index_article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true));
+				TBGActionComponent::includeComponent('publish/articledisplay', array('article' => $article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true));
 			}
 		}
 
-		public function listen_latestArticles(TBGEvent $event)
+		public function listen_frontpageLeftmenu(TBGEvent $event)
 		{
-			TBGActionComponent::includeComponent('publish/latestArticles', array('project' => $event->getSubject()));
+			$article = $this->getFrontpageArticle('menu');
+			if ($article instanceof TBGWikiArticle)
+			{
+				TBGActionComponent::includeComponent('publish/articledisplay', array('article' => $article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true));
+			}
 		}
 
 		public function listen_projectLinks(TBGEvent $event)
