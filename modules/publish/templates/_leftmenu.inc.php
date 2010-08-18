@@ -7,7 +7,7 @@
 				<?php foreach ($whatlinkshere as $linking_article): ?>
 					<li>
 						<div>
-							<?php echo image_tag('news_item.png', array('style' => 'float: left;'), false, 'publish'); ?>
+							<?php echo image_tag('news_item_medium.png', array('style' => 'float: left;'), false, 'publish'); ?>
 							<?php echo link_tag(make_url('publish_article', array('article_name' => $linking_article->getName())), get_spaced_name($linking_article->getTitle())); ?>
 							<br>
 							<span><?php print tbg_formatTime($linking_article->getPostedDate(), 3); ?></span>
@@ -32,3 +32,4 @@
 		<span class="faded_medium" style="padding-left: 5px; font-size: 12px;"><?php echo __("You don't have any unpublished pages"); ?></span>
 	<?php endif; ?>
 </div>
+<?php include_component('publish/latestArticles'); ?>
