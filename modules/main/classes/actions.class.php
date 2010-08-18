@@ -708,8 +708,9 @@
 				{
 					$selected_customdatatype[$customdatatype->getKey()] = null;
 					$customdatatype_id = $customdatatype->getKey() . '_id';
-					if ($$customdatatype_id = $request->getParameter($customdatatype_id))
+					if ($request->hasParameter($customdatatype_id))
 					{
+						$$customdatatype_id = $request->getParameter($customdatatype_id);
 						$selected_customdatatype[$customdatatype->getKey()] = TBGCustomDatatypeOption::getByValueAndKey($$customdatatype_id, $customdatatype->getKey());
 					}
 				}
