@@ -1,4 +1,9 @@
-<?php TBGContext::loadLibrary('publish/publish'); ?>
+<?php
+
+	TBGContext::loadLibrary('publish/publish');
+	$tbg_response->setTitle($article_name);
+
+?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
 		<td class="left_bar" style="width: 250px;">
