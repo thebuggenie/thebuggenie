@@ -3928,12 +3928,13 @@
 			$is_saved_assignee = false;
 			$is_saved_owner = false;
 			$changed_properties = $this->_getChangedProperties();
-
+			
 			if (count($changed_properties) == 0) return false;
-
+			
 			foreach ($changed_properties as $property => $value)
 			{
-				if ($value['original_value'] != $this->$property)
+				$compare_value = (is_object($this->$property)) ? $this->$property->getID() : $this->$property;
+				if ($value['original_value'] != $compare_value)
 				{
 					switch ($property)
 					{

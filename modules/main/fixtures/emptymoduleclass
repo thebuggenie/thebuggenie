@@ -1,0 +1,75 @@
+<?php
+
+	/**
+	 * %module_description%
+	 *
+	 * @author
+	 * @version 0.1
+	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+	 * @package %module_key%
+	 * @subpackage core
+	 */
+
+	/**
+	 * %module_description%
+	 *
+	 * @package %module_key%
+	 * @subpackage core
+	 */
+	class %module_name% extends TBGModule
+	{
+
+		protected $_module_version = '0.1';
+
+		/**
+		 * Return an instance of this module
+		 *
+		 * @return %module_name%
+		 */
+		public static function getModule()
+		{
+			return TBGContext::getModule('%module_key%');
+		}
+
+		protected function _initialize(TBGI18n $i18n)
+		{
+			$this->setLongName($i18n->__('%module_name%'));
+			$this->setMenuTitle($i18n->__('%module_name%'));
+			$this->setConfigTitle($i18n->__('%module_name%'));
+			$this->showInMenu();
+			$this->setDescription($i18n->__('%module_description%'));
+			$this->setConfigDescription($i18n->__('Set up the %module_name% module from this section'));
+		}
+
+		protected function _addAvailablePermissions()
+		{
+		}
+
+		protected function _addAvailableListeners()
+		{
+		}
+
+		protected function _addAvailableRoutes()
+		{
+			$this->addRoute('%module_key%_index', '/%module_key%', 'index');
+		}
+
+		protected function _install($scope)
+		{
+		}
+
+		protected function _loadFixtures($scope)
+		{
+		}
+
+		protected function _uninstall()
+		{
+		}
+
+		public function getRoute()
+		{
+			return TBGContext::getRouting()->generate('%module_key%_index');
+		}
+
+	}
+

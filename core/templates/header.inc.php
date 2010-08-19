@@ -40,7 +40,7 @@
 		?>
 	</head>
 	<body>
-		<table style="width: 100%; height: 100%; table-layout: fixed;" cellpadding=0 cellspacing=0>
+		<table style="width: 100%; height: 100%; table-layout: fixed; min-width: 1020px;" cellpadding=0 cellspacing=0>
 			<tr>
 				<td style="height: auto; overflow: hidden;" valign="top" id="maintd">
 					<table class="main_header<?php if (isset($print_friendly) && $print_friendly) { echo '_print'; } ?>" cellpadding=0 cellspacing=0 width="100%" style="table-layout: fixed;">
@@ -50,7 +50,7 @@
 								<div class="logo_large"><?php echo TBGSettings::get('b2_name'); ?></div>
 								<div class="logo_small"><?php echo TBGSettings::get('b2_tagline'); ?></div>
 							</td>
-							<td style="width: auto;">
+							<td style="width: auto; min-width: 500px;">
 								<div class="rounded_box blue" id="header_userinfo">
 									<?php echo image_tag($tbg_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px; width: 48px; height: 48px;'), true); ?>
 									<?php if ($tbg_user->isGuest()): ?>

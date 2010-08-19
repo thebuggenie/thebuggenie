@@ -1,0 +1,10 @@
+<?php
+
+	/**
+	 * action components for the %module_key% module
+	 */
+	class %module_key%ActionComponents extends TBGActionComponent
+	{
+
+	}
+

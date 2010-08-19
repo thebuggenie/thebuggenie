@@ -1,5 +1,8 @@
 <?php
 
+	/**
+	 * actions for the publish module
+	 */
 	class publishActions extends TBGAction
 	{
 

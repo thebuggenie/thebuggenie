@@ -108,7 +108,7 @@ Custom classes
 .left_menu ul { list-style-type: none; padding: 0 0 0 5px; margin: 5px 0 0 0; }
 .left_menu ul li { margin: 0px; font-size: 11px; font-weight: bold; clear: both; }
 
-.main_area { text-align: left; vertical-align: top; padding: 10px 10px 10px 5px; }
+.main_area { text-align: left; vertical-align: top; padding: 10px 10px 10px 5px; width: auto; min-width: 700px; }
 
 .footer_image { width: 30px; text-align: right; padding: 5px; }
 .footer_container { background-color: #F5F5F5; width: 100%; border-top: 1px solid #DDD; text-aling: center; }

@@ -1,0 +1,14 @@
+<?php
+
+	/**
+	 * actions for the %module_key% module
+	 */
+	class %module_key%Actions extends TBGAction
+	{
+
+		public function runIndex(TBGRequest $request)
+		{
+		}
+
+	}
+
