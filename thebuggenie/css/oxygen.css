@@ -671,6 +671,18 @@ img.undo { display: none; }
 #fullpage_backdrop ul li { padding-left: 5px; margin-bottom: 5px; }
 #fullpage_backdrop ul { margin: 10px 0 5px 0; }
 
+.backdrop_box { position: absolute; top: 50%; left: 50%; z-index: 100001; clear: both; }
+.backdrop_box.small { width: 400px; margin: -200px 0 0 -200px; }
+.backdrop_box.medium { width: 600px; margin: -300px 0 0 -300px; }
+
+#viewissue_add_relation_div { text-align: left; padding: 10px; }
+#viewissue_find_issue_form div { text-align: left; font-size: 12px; margin-top: 10px; }
+#viewissue_find_issue_form input[type="text"] { width: 300px; }
+#viewissue_relation_results { padding-top: 10px; }
+#viewissue_relation_results table { margin-top: 5px; }
+#viewissue_relation_results .issue_title { width: auto; font-size: 13px; }
+#viewissue_relation_results .faded_medium { font-size: 13px; font-weight: normal; }
+
 #dashboard_lefthand, #dashboard_righthand { vertical-align: top; font-size: 12px; }
 #dashboard_lefthand { width: 255px; }
 #dashboard_righthand { width: 275px; }
@@ -739,6 +751,7 @@ img.undo { display: none; }
 #scrum .story_card { position: relative; }
 #scrum .story_task_list .faded_medium { padding: 5px; font-size: 13px; }
 .user_story_task { display: block; cursor: default; background-color: #FFFFC0; border: 1px solid #D6D6A1; margin: 2px; padding: 2px; font-weight: normal; }
+.related_issue { display: block; cursor: default; background-color: #FFF; border: 1px solid #DDD; margin: 2px; padding: 2px; font-weight: normal; }
 #related_parent_issues_inline td, #related_child_issues_inline td { font-size: 12px; }
 #related_issues_this_issue { font-size: 14px; font-weight: bold; text-align: center; }
 #no_child_issues, #no_parent_issues { text-align: center; }

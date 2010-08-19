@@ -624,6 +624,11 @@
 			}
 			return array($issues, $count);
 		}
+
+		public static function findIssuesByText($text)
+		{
+			return self::findIssues(array('text' => array('value' => $text, 'operator' => '=')));
+		}
 		
 		/**
 		 * Construct a new issue

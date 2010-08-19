@@ -77,7 +77,7 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done,
 				{
 					$(update_div).update(content);
 				}
-				if (json && json.message != '')
+				if (json && json.message)
 				{
 					successMessage(json.message);
 				}
@@ -760,4 +760,23 @@ function toggleStatisticsMainImage(image)
 {
 	$('statistics_main_image').src = '';
 	$('statistics_main_image').src = $('statistics_mini_'+image+'_main').getValue();
+}
+
+function findRelatedIssues(url)
+{
+	_postFormWithJSONFeedback(url, 'viewissue_find_issue_form', 'find_issue_indicator', '', 'viewissue_relation_results');
+	return false;
+}
+
+function relateIssues(url)
+{
+	if ($('relate_issue_with_selected').getValue() == 'relate_children')
+	{
+		_postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_child_issues', 'related_child_issues_inline', true);
+	}
+	else
+	{
+		_postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_parent_issues', 'related_parent_issues_inline', true);
+	}
+	return false;
 }

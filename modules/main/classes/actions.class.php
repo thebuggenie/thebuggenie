@@ -43,7 +43,7 @@
 				}
 			}
 			TBGLogging::log('done (Loading issue)');
-			$this->getResponse()->setPage('viewissue');
+			//$this->getResponse()->setPage('viewissue');
 			if ($issue instanceof TBGIssue && !$issue->hasAccess())
 			{
 				$issue = null;
@@ -1899,6 +1899,10 @@
 						$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
 						return $this->renderJSON(array('content' => $this->getComponentHTML('main/closeissue', array('issue' => $issue))));
 						break;
+					case 'relate_issue':
+						$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+						return $this->renderJSON(array('content' => $this->getTemplateHTML('main/relateissue', array('issue' => $issue))));
+						break;
 				}
 			}
 			catch (Exception $e)
@@ -1906,6 +1910,120 @@
 				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('An error occured: %error_message%', array('%error_message%' => $e->getMessage()))));
 			}
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid template or parameter')));
+		}
+
+		public function runFindRelatedIssue(TBGRequest $request)
+		{
+			$status = 200;
+			$message = null;
+			if ($issue_id = $request->getParameter('issue_id'))
+			{
+				try
+				{
+					$issue = TBGFactory::TBGIssueLab($issue_id);
+				}
+				catch (Exception $e)
+				{
+					$status = 400;
+					$message = TBGContext::getI18n()->__('Could not find this issue');
+				}
+			}
+			else
+			{
+				$status = 400;
+				$message = TBGContext::getI18n()->__('Please provide an issue number');
+			}
+
+			$searchfor = $request->getParameter('searchfor');
+
+			if (strlen(trim($searchfor)) < 3 && !is_numeric($searchfor))
+			{
+				$status = 400;
+				$message = TBGContext::getI18n()->__('Please enter something to search for (3 characters or more)'.$searchfor);
+			}
+
+			$this->getResponse()->setHttpStatus($status);
+			if ($status == 400)
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => $message));
+			}
+
+			list ($issues, $count) = TBGIssue::findIssuesByText($searchfor);
+			return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('main/findrelatedissues', array('theIssue' => $issue, 'issues' => $issues, 'count' => $count))));
+		}
+
+		public function runRelateIssues(TBGRequest $request)
+		{
+			$status = 200;
+			$message = null;
+			if ($issue_id = $request->getParameter('issue_id'))
+			{
+				try
+				{
+					$issue = TBGFactory::TBGIssueLab($issue_id);
+				}
+				catch (Exception $e)
+				{
+					$status = 400;
+					$message = TBGContext::getI18n()->__('Could not find this issue');
+				}
+			}
+			else
+			{
+				$status = 400;
+				$message = TBGContext::getI18n()->__('Please provide an issue number');
+			}
+			
+			$this->getResponse()->setHttpStatus($status);
+			if ($status == 400)
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => $message));
+			}
+
+			$related_issues = $request->getParameter('relate_issues', array());
+
+			$cc = 0;
+			$message = TBGContext::getI18n()->__('Unknown error');
+			if (count($related_issues))
+			{
+				$mode = $request->getParameter('relate_action');
+				$content = '';
+				foreach ($related_issues as $issue_id)
+				{
+					try
+					{
+						$related_issue = TBGFactory::TBGIssueLab((int) $issue_id);
+						if ($mode == 'relate_children')
+						{
+							$issue->addChildIssue($related_issue);
+						}
+						else
+						{
+							$issue->addParentIssue($related_issue);
+						}
+						$cc++;
+						$content .= $this->getTemplateHTML('main/relatedissue', array('theIssue' => $issue, 'related_issue' => $related_issue));
+					}
+					catch (Exception $e)
+					{
+						$this->getResponse()->setHttpStatus(400);
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('An error occured when relating issues: %error%', array('%error%' => $e->getMessage()))));
+					}
+				}
+			}
+			else
+			{
+				$message = TBGContext::getI18n()->__('Please select at least one issue');
+			}
+
+			if ($cc > 0)
+			{
+				return $this->renderJSON(array('failed' => false, 'content' => $content, 'message' => TBGContext::getI18n()->__('The related issue was added')));
+			}
+			else
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('An error occured when relating issues: %error%', array('%error%' => $message))));
+			}
 		}
 
 	}

@@ -1,0 +1,19 @@
+<div class="rounded_box white borderless shadowed backdrop_box medium" id="viewissue_add_relation_div">
+	<div class="viewissue_info_header"><?php echo __('Find related issues'); ?></div>
+	<div class="viewissue_info_content">
+		<?php echo __('Please enter some details to search for, and then select the matching issues to relate them'); ?>
+	</div>
+	<form id="viewissue_find_issue_form" action="<?php echo make_url('viewissue_find_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="findRelatedIssues('<?php echo make_url('viewissue_find_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>');return false;">
+		<div>
+			<label for="viewissue_find_issue_input"><?php echo __('Find issue(s)'); ?>&nbsp;</label>
+			<input type="text" name="searchfor" id="viewissue_find_issue_input">
+			<input type="submit" value="<?php echo __('Find'); ?>">
+			<?php echo __('%find% or %cancel%', array('%find%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="resetFadedBackdrop();">' . __('cancel') . '</a>')); ?>
+			<?php echo image_tag('spinning_20.gif', array('id' => 'find_issue_indicator', 'style' => 'display: none;')); ?><br>
+		</div>
+	</form>
+	<div id="viewissue_relation_results"></div>
+	<div style="text-align: right; font-size: 11px; padding-top: 10px;">
+		<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Close this pop-up'); ?></a>
+	</div>
+</div>
