@@ -10,6 +10,19 @@ To add a project, log in as an admin, and either click the little configuration 
 
 The Bug Genie is now ready to be used for issue reporting with your new project. However, you might want to set up more information about the project. Click the "Edit project" link on the project and change any settings in here. From that page you can also add a project description, release date and more information about your project. This is also where you set up editions, components, releases, milestones, and more.
 
+=== Permissions ===
+Your project will initially only be available to the user group that created the project. If you created the project as the administrator user, the project will initially be available only to the "Administrator" group. You can change this by clicking the "more details" link when you create the project. You can also change project permissions for other user groups by going to [[TBG:configure_permissions|Configure -> Permissions]]. Select the "Project specific permissions" tab, and click the project name. From here you can set permissions for all groups and teams in the system. 
+
+To allow easy bug reporting if the global security setting is set to "Restrictive", enable the following permission groups:
+* Can access project
+* Can access all project pages
+* Can create issues, edit basic information on issues reported by the user and close/re-open them
+
+To do this, click the permission group text, and then click the icons for either global access, group-specific- or team-specific access.
+
+''For smaller teams, consider setting the global security setting to "Permissive". This can be done from [[TBG:configure_settings|Configure -> settings]] under the "Users & security" tab.''
+
+
 === Project team ===
 Someone is usually working on your project. You should add developers working on The Bug Genie to your project. (This of course requires that your developers have user accounts). Click the "Edit project" icon on your project, and then open up the '''Related users''' tab. Add developers, project managers, testers and documentors from this page. By adding developers to projects, you ensure that they get access to project specific features such as project information on their dashboard, issue notifications, and they also appear on the projects' team page.
 
