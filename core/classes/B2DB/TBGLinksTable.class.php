@@ -143,6 +143,9 @@
 			$this->addMainMenuLink(null, null, 3, $scope);
 			$this->addMainMenuLink('http://www.thebuggenie.com/b2', 'Online issue tracker', 4, $scope);
 			$this->addMainMenuLink('', "''This is the issue tracker for The Bug Genie''", 5, $scope);
+			$this->addMainMenuLink(null, null, 6, $scope);
+			$this->addMainMenuLink('http://www.thebuggenie.com/blog', 'The Bug Genie team blog', 7, $scope);
+			$this->addMainMenuLink('', "''Stay up to date on the latest development''", 8, $scope);
 		}
 		
 	}
