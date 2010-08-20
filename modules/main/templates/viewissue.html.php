@@ -240,7 +240,7 @@
 				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('icon_comments.png', array('style' => 'float: left; margin-right: 5px;')) . __('Comments (%count%)', array('%count%' => '<span id="viewissue_comment_count">'.$theIssue->getCommentCount().'</span>')), array('onclick' => "switchSubmenuTab('tab_comments', 'viewissue_menu');")); ?></li>
 				<li id="tab_attached_information"><?php echo javascript_link_tag(image_tag('icon_attached_information.png', array('style' => 'float: left; margin-right: 5px;')) . __('Attached information (%count%)', array('%count%' => '<span id="viewissue_uploaded_attachments_count">'.(count($theIssue->getLinks()) + count($theIssue->getFiles())).'</span>')), array('onclick' => "switchSubmenuTab('tab_attached_information', 'viewissue_menu');")); ?></li>
 				<li id="tab_related_issues_and_tasks"><?php echo javascript_link_tag(image_tag('icon_related_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Related issues and tasks'), array('onclick' => "switchSubmenuTab('tab_related_issues_and_tasks', 'viewissue_menu');")); ?></li>
-				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Duplicate issues (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count(TBGIssuesTable::getTable()->getDuplicateIssuesByIssueId($theIssue->getId()))).'</span>')), array('onclick' => "switchSubmenuTab('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
+				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Duplicate issues (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count($theIssue->getDuplicateIssues())).'</span>')), array('onclick' => "switchSubmenuTab('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
 				<?php TBGEvent::createNew('core', 'viewissue_tabs', $theIssue)->trigger(); ?>
 			</ul>
 		</div>
@@ -382,7 +382,7 @@
 			</div>
 			<div id="tab_duplicate_issues_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
 				<br>
-				<?php $data = TBGIssuesTable::getTable()->getDuplicateIssuesByIssueId($theIssue->getId()); ?>
+				<?php $data = $theIssue->getDuplicateIssues(); ?>
 				<?php if (count($data) != 0): ?>
 				<div class="header"><?php echo __('The following issues are duplicates of this issue:'); ?></div>
 				<?php else: ?>
@@ -390,9 +390,9 @@
 				<?php endif; ?>
 				<ul>
 					<?php
-					foreach ($data as $issue_id)
+					foreach ($data as $issue)
 					{
-						include_template('main/duplicateissue', array('theIssue' => $theIssue, 'issue_id' => $issue_id));
+						include_template('main/duplicateissue', array('duplicate_issue' => $issue));
 					}
 					?>
 				</ul>

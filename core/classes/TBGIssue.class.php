@@ -413,6 +413,13 @@
 		protected $_child_issues;
 		
 		/**
+		 * List of issues which are duplicates of this one
+		 * 
+		 * @var array
+		 */
+		protected $_duplicate_issues;
+		
+		/**
 		 * List of log entries
 		 * 
 		 * @var array
@@ -962,6 +969,17 @@
 		}
 		
 		/**
+		 * Returns an array of all issues which are duplicates of this one
+		 * 
+		 * @return array of TBGIssues
+		 */
+		public function getDuplicateIssues()
+		{
+			$this->_populateDuplicateIssues();
+			return $this->_duplicate_issues;
+		}
+		
+		/**
 		 * Return or set whether the issue is locked
 		 * 
 		 * @param boolean $val[optional]
@@ -1489,6 +1507,32 @@
 								$issue = TBGFactory::TBGIssueLab($row->get(TBGIssueRelationsTable::PARENT_ID));
 								$this->_parent_issues[$row->get(TBGIssueRelationsTable::ID)] = $issue;
 							}
+						}
+						catch (Exception $e) 
+						{
+						}
+					}
+				}
+			}
+		}
+		
+		/**
+		 * populates list of issues which are duplicates of this one
+		 */
+		protected function _populateDuplicateIssues()
+		{
+			if ($this->_duplicate_issues === null)
+			{
+				$this->_duplicate_issues = array();
+				
+				if ($res = B2DB::getTable('TBGIssuesTable')->getDuplicateIssuesByIssueNo($this->getID()))
+				{
+					while ($row = $res->getNextRow())
+					{
+						try
+						{
+							$issue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID));
+							$this->_duplicate_issues[$row->get(TBGIssuesTable::ID)] = $issue;
 						}
 						catch (Exception $e) 
 						{

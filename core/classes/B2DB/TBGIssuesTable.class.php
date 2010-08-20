@@ -673,26 +673,13 @@
 
 		}
 		
-		public function getDuplicateIssuesByIssueId($issue_no)
+		public function getDuplicateIssuesByIssueNo($issue_no)
 		{
 			$crit = $this->getCriteria();
-			$crit->addSelectionColumn(self::ID, 'id');
+			$crit->addSelectionColumn(self::ID);
 			$crit->addWhere(self::DUPLICATE, $issue_no);
 			
-			$return = array();
-			$data = $this->doSelect($crit);
-			
-			if (!($data instanceof B2DBResultSet))
-			{
-				return $return;
-			}
-			
-			while ($row = $data->getNextRow())
-			{
-				$return[] = $row->get('id');
-			}
-			
-			return $return;
+			return $this->doSelect($crit);
 		}
 		
 	}
