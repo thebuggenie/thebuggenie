@@ -57,16 +57,17 @@
 		</form>
 		<?php endif; ?>
 	<?php endif; ?>
-	<form action="<?php echo make_url('saveissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())); ?>" method="post">
-		<div class="rounded_box yellow borderless" id="viewissue_changed" <?php if (!$theIssue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
+	<div class="rounded_box yellow borderless" id="viewissue_changed" <?php if (!$theIssue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
+		<button onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_title').focus();return false;"><?php echo __('Add comment and save changes'); ?></button>
+		<form action="<?php echo make_url('saveissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())); ?>" method="post">
+			<input type="submit" value="<?php echo __('Save changes'); ?>">
 			<div class="viewissue_info_header"><?php echo __('You have unsaved changes'); ?></div>
 			<div class="viewissue_info_content">
 				<input type="hidden" name="issue_action" value="save">
-				<input type="submit" value="<?php echo __('Save changes'); ?>">
 				<?php echo __("You have changed this issue, but haven't saved your changes yet. To save it, press the %save_changes% button to the right", array('%save_changes%' => '<b>' . __("Save changes") . '</b>')); ?>
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 	<?php if (isset($issue_saved)): ?>
 		<div class="rounded_box green borderless viewissue_info_header" id="viewissue_saved">
 			<?php echo __('Your changes has been saved'); ?>
@@ -244,7 +245,7 @@
 			<div id="tab_comments_pane" style="padding-top: 0; margin: 0 5px 0 5px;" class="comments">
 				<div id="viewissue_comments">
 					<?php if ($tbg_user->canPostComments()): ?>
-						<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();" value="<?php echo __('Add new comment'); ?>"></td></tr></table>
+						<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_title').focus();" value="<?php echo __('Add new comment'); ?>"></td></tr></table>
 						<div id="comment_add" class="comment_add" style="<?php if (!(isset($comment_error) && $comment_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
 							<div class="comment_add_main">
 								<div class="comment_add_title"><?php echo __('Create a comment'); ?></div><br>

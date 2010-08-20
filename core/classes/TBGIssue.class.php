@@ -4264,7 +4264,7 @@
 				}
 			}
 
-			$comment = TBGContext::getI18n()->__("The issue was updated with the following change(s):\n%list_of_changes%", array('%list_of_changes%' => "\n* ".join("\n* ", $comment_lines)));
+			$comment = TBGContext::getI18n()->__("The issue was updated with the following change(s):%list_of_changes%", array('%list_of_changes%' => "\n* ".join("\n* ", $comment_lines)));
 			
 			if ($notify)
 			{
