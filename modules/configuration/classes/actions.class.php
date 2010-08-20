@@ -1125,7 +1125,6 @@
 			}
 			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify milestones")));
 		}
-						
 		
 		/**
 		 * Add or remove a component to/from an edition (AJAX call)
@@ -1476,6 +1475,21 @@
 			}
 		}
 
+		public function runGetGroupMembers(TBGRequest $request)
+		{
+			try
+			{
+				$group = TBGFactory::groupLab((int) $request->getParameter('group_id'));
+				$users = $group->getMembers();
+				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('configuration/groupuserlist', array('users' => $users))));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
+
 		public function runFindUsers(TBGRequest $request)
 		{
 			$this->too_short = false;
@@ -1580,5 +1594,3 @@
 		}
 		
 	}
-
-?>

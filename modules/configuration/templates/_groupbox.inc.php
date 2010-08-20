@@ -44,14 +44,14 @@
 			</div>
 		</div>
 	</div>
-	<div class="rounded_box lightgrey" style="margin-bottom: 5px;" id="group_<?php echo $group->getID(); ?>_users_container">
-		<b><?php echo __('Users in this group'); ?></b><br>
+	<div class="rounded_box lightgrey" style="margin-bottom: 5px; display: none;" id="group_members_<?php echo $group->getID(); ?>_container">
+		<div class="dropdown_header"><?php echo __('Users in this group'); ?></div>
 		<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="group_members_<?php echo $group->getID(); ?>_indicator">
 			<tr>
 				<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
 				<td style="padding: 0px; text-align: left;"><?php echo __('Retrieving members, please wait'); ?>...</td>
 			</tr>
 		</table>
-		<div id="group_<?php echo $group->getID(); ?>_users_list"></div>
+		<div id="group_members_<?php echo $group->getID(); ?>_list"></div>
 	</div>
 </div>

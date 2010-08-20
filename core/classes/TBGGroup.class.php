@@ -117,6 +117,28 @@
 			$res = B2DB::getTable('TBGUsersTable')->doUpdate($crit);
 		}
 
+		/**
+		 * Return an array of all members in this group
+		 *
+		 * @return array
+		 */
+		public function getMembers()
+		{
+			if ($this->_members === null)
+			{
+				$this->_members = array();
+				if ($res = TBGUsersTable::getTable()->getUsersByGroupID($this->getID()))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$uid = $row->get(TBGUsersTable::ID);
+						$this->_members[$uid] = TBGFactory::userLab($uid);
+					}
+				}
+			}
+			return $this->_members;
+		}
+
 		public function getNumberOfMembers()
 		{
 			if ($this->_members !== null)

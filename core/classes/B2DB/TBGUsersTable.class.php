@@ -215,5 +215,15 @@
 
 			return $count;
 		}
-		
+
+		public function getUsersByGroupID($group_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::GROUP_ID, $group_id);
+			$crit->addWhere(self::DELETED, false);
+			$crit->addWhere(self::ENABLED, true);
+
+			return $this->doSelect($crit);
+		}
+
 	}
