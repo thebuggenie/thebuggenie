@@ -689,8 +689,8 @@
 			$this->_spentpoints				= $row->get(TBGIssuesTable::SPENT_POINTS);
 			$this->_percentcompleted 		= $row->get(TBGIssuesTable::PERCENT_COMPLETE);
 			$this->_milestone 				= $row->get(TBGIssuesTable::MILESTONE);
-			$this->_being_worked_on_by		= $row->get(TBGIssuesTable::USER_WORKING_ON);
-			$this->_being_worked_on_since	= $row->get(TBGIssuesTable::USER_WORKED_ON_SINCE);
+			$this->_being_worked_on_by		= (int) $row->get(TBGIssuesTable::USER_WORKING_ON);
+			$this->_being_worked_on_since	= (int) $row->get(TBGIssuesTable::USER_WORKED_ON_SINCE);
 			$this->_user_pain				= $row->get(TBGIssuesTable::USER_PAIN);
 			$this->_pain_bug_type			= $row->get(TBGIssuesTable::PAIN_BUG_TYPE);
 			$this->_pain_effect				= $row->get(TBGIssuesTable::PAIN_EFFECT);

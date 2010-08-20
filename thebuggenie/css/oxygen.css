@@ -578,7 +578,7 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 #viewissue_saved, #viewissue_unsaved { padding: 5px; text-align: center; }
 #viewissue_merge_errors, #viewissue_unsaved, #blocking_div { vertical-align: middle; color: #222; font-weight: bold; font-size: 13px; }
 #viewissue_changed { height: 35px; padding: 5px 10px 5px 10px; color: #222; }
-#viewissue_changed input[type="submit"], #viewissue_changed button, #viewissue_being_worked_on input[type="submit"] { font-weight: bold; float: right; margin-top: 6px; font-size: 13px; }
+#viewissue_changed input[type="submit"], #viewissue_changed button, #viewissue_being_worked_on input[type="submit"] { font-weight: bold; float: right; margin-top: 6px; margin-left: 5px; font-size: 13px; }
 #fullpage_backdrop input[type="submit"] { font-weight: bold; font-size: 13px; }
 #viewissue_changed a, #viewissue_duplicate a, #viewissue_nonexisting a, #viewissue_open_sameuser a, #viewissue_closed_sameuser a, #viewissue_closed a { font-size: 12px; font-weight: bold; }
 #viewissue_nonexisting { width: 700px; }
