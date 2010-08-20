@@ -23,7 +23,7 @@
 		{
 			$this->_command_name = 'report_commit';
 			$this->_description = "Report a new commit to an issue";
-			$this->addRequiredArgument('prjid', "Project ID number");
+			$this->addRequiredArgument('projectid', "Project ID number");
 			$this->addRequiredArgument('author', "Username of the committer");
 			$this->addRequiredArgument('revno', "Revision number or hash of this commit");
 			$this->addRequiredArgument('log', "Log entry from commit");
@@ -36,12 +36,12 @@
 		public function do_execute()
 		{
 			/* Prepare variables */
-			$project = $this->getProvidedArgument('prjid');
+			$project = $this->getProvidedArgument('projectid');
 			$author = $this->getProvidedArgument('author');
 			$new_rev = $this->getProvidedArgument('revno');
 			$commit_msg = $this->getProvidedArgument('log');
 			$changed = $this->getProvidedArgument('changed');
-			$oldrev = $this->getProvidedArgument('oldrev', $new_rev - 1);
+			$old_rev = $this->getProvidedArgument('oldrev', $new_rev - 1);
 			$date = $this->getProvidedArgument('date', null);
 			
 			if ((TBGContext::getModule('vcs_integration')->isUsingHTTPMethod()))

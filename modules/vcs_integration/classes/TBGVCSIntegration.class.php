@@ -351,7 +351,7 @@
 							}
 						}
 						
-						$theIssue->addSystemComment('Issue updated from code repository', 'This issue has been updated with the latest changes from the code repository.<pre>'.$commit_msg.'</pre>', $uid);
+						$theIssue->addSystemComment('Issue updated from code repository', 'This issue has been updated with the latest changes from the code repository.<source>'.$commit_msg.'</source>', $uid);
 
 						foreach ($files as $afile)
 						{
