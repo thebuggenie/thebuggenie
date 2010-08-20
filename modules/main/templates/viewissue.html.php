@@ -79,24 +79,28 @@
 		</div>
 	<?php endif; ?>
 	<?php if ($theIssue->isDuplicate()): ?>
-		<div class="rounded_box iceblue borderless" id="viewissue_duplicate">
-			<?php echo image_tag('icon_info_big.png'); ?>
-			<div class="viewissue_info_header"><?php echo __('This issue is a duplicate of Issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getDuplicateOf()->getFormattedIssueNo())), $theIssue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $theIssue->getDuplicateOf()->getTitle() . '"')); ?></div>
-			<div class="viewissue_info_content"><?php echo __('For more information you should visit the issue mentioned above, as this issue is not likely to be updated'); ?></div>
+		<div class="rounded_box iceblue borderless infobox" style="margin: 5px;" id="viewissue_duplicate">
+			<div style="padding: 5px;">
+				<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
+				<div class="viewissue_info_header"><?php echo __('This issue is a duplicate of Issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getDuplicateOf()->getFormattedIssueNo())), $theIssue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $theIssue->getDuplicateOf()->getTitle() . '"')); ?></div>
+				<div class="viewissue_info_content"><?php echo __('For more information you should visit the issue mentioned above, as this issue is not likely to be updated'); ?></div>
+			</div>
 		</div>								
 	<?php endif; ?>
 	<?php if ($theIssue->isClosed()): ?>
-		<div class="rounded_box iceblue borderless" id="viewissue_closed">
-			<?php echo image_tag('icon_info_big.png'); ?>
-			<div class="viewissue_info_header"><?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($theIssue->getStatus() instanceof TBGStatus) ? $theIssue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($theIssue->getResolution() instanceof TBGResolution) ? $theIssue->getResolution()->getName() : __('Not determined')))); ?></div>
-			<div class="viewissue_info_content">
-				<?php if ($theIssue->canPostComments() && $tbg_user->canReportIssues($theIssue->getProjectID())): ?>
-					<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%, or %report_a_new_issue%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $theIssue->getID() . '">' . __('posting a comment') . '</a>', '%report_a_new_issue%' => link_tag(make_url('reportissue'), __('report a new issue')))); ?>
-				<?php elseif ($theIssue->canPostComments()): ?>
-					<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $theIssue->getID() . '">' . __('posting a comment') . '</a>')); ?>
-				<?php elseif ($tbg_user->canReportIssues($theIssue->getProjectID())): ?>
-					<?php echo __('A closed issue will usually not be further updated - try %reporting_a_new_issue%', array('%reporting_a_new_issue%' => link_tag(make_url('reportissue'), __('reporting a new issue')))); ?>
-				<?php endif; ?>
+		<div class="rounded_box iceblue borderless infobox" style="margin: 5px;" id="viewissue_closed">
+			<div style="padding: 5px;">
+				<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
+				<div class="viewissue_info_header"><?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($theIssue->getStatus() instanceof TBGStatus) ? $theIssue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($theIssue->getResolution() instanceof TBGResolution) ? $theIssue->getResolution()->getName() : __('Not determined')))); ?></div>
+				<div class="viewissue_info_content">
+					<?php if ($theIssue->canPostComments() && $tbg_user->canReportIssues($theIssue->getProjectID())): ?>
+						<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%, or %report_a_new_issue%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $theIssue->getID() . '">' . __('posting a comment') . '</a>', '%report_a_new_issue%' => link_tag(make_url('reportissue'), __('report a new issue')))); ?>
+					<?php elseif ($theIssue->canPostComments()): ?>
+						<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $theIssue->getID() . '">' . __('posting a comment') . '</a>')); ?>
+					<?php elseif ($tbg_user->canReportIssues($theIssue->getProjectID())): ?>
+						<?php echo __('A closed issue will usually not be further updated - try %reporting_a_new_issue%', array('%reporting_a_new_issue%' => link_tag(make_url('reportissue'), __('reporting a new issue')))); ?>
+					<?php endif; ?>
+				</div>
 			</div>
 		</div>
 	<?php endif; ?>
@@ -236,7 +240,7 @@
 				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('icon_comments.png', array('style' => 'float: left; margin-right: 5px;')) . __('Comments (%count%)', array('%count%' => '<span id="viewissue_comment_count">'.$theIssue->getCommentCount().'</span>')), array('onclick' => "switchSubmenuTab('tab_comments', 'viewissue_menu');")); ?></li>
 				<li id="tab_attached_information"><?php echo javascript_link_tag(image_tag('icon_attached_information.png', array('style' => 'float: left; margin-right: 5px;')) . __('Attached information (%count%)', array('%count%' => '<span id="viewissue_uploaded_attachments_count">'.(count($theIssue->getLinks()) + count($theIssue->getFiles())).'</span>')), array('onclick' => "switchSubmenuTab('tab_attached_information', 'viewissue_menu');")); ?></li>
 				<li id="tab_related_issues_and_tasks"><?php echo javascript_link_tag(image_tag('icon_related_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Related issues and tasks'), array('onclick' => "switchSubmenuTab('tab_related_issues_and_tasks', 'viewissue_menu');")); ?></li>
-				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Duplicate issues'), array('onclick' => "switchSubmenuTab('tab_duplicate_issues', 'viewissue_menu');failedMessage('".__('This functionality is not yet implemented')."');")); ?></li>
+				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Duplicate issues (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count(TBGIssuesTable::getTable()->getDuplicateIssuesByIssueId($theIssue->getId()))).'</span>')), array('onclick' => "switchSubmenuTab('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
 				<?php TBGEvent::createNew('core', 'viewissue_tabs', $theIssue)->trigger(); ?>
 			</ul>
 		</div>
@@ -377,6 +381,21 @@
 				</table>
 			</div>
 			<div id="tab_duplicate_issues_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
+				<br>
+				<?php $data = TBGIssuesTable::getTable()->getDuplicateIssuesByIssueId($theIssue->getId()); ?>
+				<?php if (count($data) != 0): ?>
+				<div class="header"><?php echo __('The following issues are duplicates of this issue:'); ?></div>
+				<?php else: ?>
+				<div class="no_items"><?php echo __('This issue has no duplicates'); ?></div>
+				<?php endif; ?>
+				<ul>
+					<?php
+					foreach ($data as $issue_id)
+					{
+						include_template('main/duplicateissue', array('theIssue' => $theIssue, 'issue_id' => $issue_id));
+					}
+					?>
+				</ul>
 			</div>
 			<?php TBGEvent::createNew('core', 'viewissue_tab_panes_back', $theIssue)->trigger(); ?>
 		</div>

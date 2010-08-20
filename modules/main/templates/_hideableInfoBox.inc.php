@@ -1,7 +1,6 @@
 <?php if ($show_box): ?>
 	<div class="rounded_box iceblue borderless infobox" style="margin: 5px;" id="infobox_<?php echo $key; ?>">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="padding: 5px;">
+		<div style="padding: 5px;">
 			<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
 			<div>
 				<div class="header"><?php echo $title; ?></div>
@@ -21,6 +20,5 @@
 				</tr>
 			</table>
 		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 	</div>
 <?php endif; ?>
