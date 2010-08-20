@@ -37,17 +37,17 @@
 			<div class="rounded_box yellow borderless" id="viewissue_being_worked_on" style="vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 13px;">
 				<?php echo image_tag('action_start_working.png', array('style' => 'float: left; margin: 0 10px 0 5px;')); ?>
 				<?php if ($theIssue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
+					<input type="submit" value="<?php echo __('Done'); ?>">
 					<div class="viewissue_info_header"><?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
 					<div class="viewissue_info_content">
-						<input type="submit" value="<?php echo __('Done'); ?>">
 						<?php echo __('When you are finished working on this issue, click the %done% button to the right', array('%done%' => '<b>' . __('Done') . '</b>')); ?>
 					</div>
 				<?php else: ?>
+					<input type="submit" value="<?php echo __('Take over'); ?>">
 					<div class="viewissue_info_header"><?php echo __('%user% has been working on this issue since %time%', array('%user%' => $theIssue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
 					<?php if ($theIssue->canEditSpentTime()): ?>
 						<div class="viewissue_info_content">
 							<input type="hidden" name="perform_action" value="grab">
-							<input type="submit" value="<?php echo __('Take over'); ?>">
 							<?php echo __('If you want to start working on this issue instead, click the %take_over% button to the right', array('%take_over%' => '<b>' . __('Take over') . '</b>')); ?>
 						</div>
 					<?php endif; ?>

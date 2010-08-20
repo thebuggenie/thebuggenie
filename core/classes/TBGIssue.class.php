@@ -4089,6 +4089,21 @@
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
+						case '_being_worked_on_by':
+							if ($value['original_value'] != 0)
+							{
+								$old_identifiable = TBGFactory::userLab($value['original_value']);
+								$old_name = ($old_identifiable instanceof TBGIdentifiableClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
+							}
+							else
+							{
+								$old_name = TBGContext::getI18n()->__('Not being worked on');
+							}
+							$new_name = ($this->getUserWorkingOnIssue() instanceof TBGIdentifiableClass) ? $this->getUserWorkingOnIssue()->getName() : TBGContext::getI18n()->__('Not being worked on');
+
+							$this->addLogEntry(TBGLogTable::LOG_ISSUE_USERS, $old_name . ' &rArr; ' . $new_name);
+							$comment_lines[] = TBGContext::getI18n()->__("Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
+							break;
 						case '_ownedby':
 						case '_ownedtype':
 							if (!$is_saved_owner)
@@ -4396,7 +4411,7 @@
 		 */
 		public function clearUserWorkingOnIssue()
 		{
-			$this->_being_worked_on_by = null;
+			$this->_addChangedProperty('_being_worked_on_by', null);
 			$this->_being_worked_on_since = null;
 		}
 		
@@ -4407,7 +4422,7 @@
 		 */
 		public function startWorkingOnIssue($user)
 		{
-			$this->_being_worked_on_by = $user;
+			$this->_addChangedProperty('_being_worked_on_by', $user->getID());
 			$this->_being_worked_on_since = $_SERVER['REQUEST_TIME'];
 		}
 		
