@@ -28,7 +28,7 @@
 					<?php else: ?>
 						<a href="javascript:void(0);" class="image" onclick="$('enable_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('uninstall_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_disable_module.png', array('style' => 'margin-right: 5px;', 'title' => __('Enable module'))) ?></a>
 					<?php endif; ?>
-					<a href="javascript:void(0);" class="image" onclick="$('uninstall_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_uninstall_module.png', array('title' => __('Uinstall module'))); ?></a>
+					<a href="javascript:void(0);" class="image" onclick="$('uninstall_module_<?php echo $module->getID(); ?>').toggle();$('permissions_module_<?php echo($module->getID()); ?>').hide();$('<?php if($module->isEnabled()): ?>disable<?php else: ?>enable<?php endif; ?>_module_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('action_uninstall_module.png', array('title' => __('Uninstall module'))); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>
