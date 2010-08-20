@@ -88,8 +88,27 @@
 						<?php endforeach; ?>
 					</div>
 				</div>
-				<div id="tab_teams_pane" style="display: none;">
-					<p class="faded_medium" style="font-size: 12px; padding-top: 5px;"><?php echo __('This configuration section has not been completed yet'); ?></p>
+				<div id="tab_teams_pane" style="display: none; padding-top: 0; width: 750px;">
+					<div class="rounded_box yellow borderless" style="margin-top: 5px; padding: 7px;">
+						<form id="create_team_form" action="<?php echo make_url('configure_users_add_team'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="createTeam('<?php echo make_url('configure_users_add_team'); ?>');return false;">
+							<div id="add_team">
+								<label for="team_name"><?php echo __('Create a new team'); ?></label>
+								<input type="text" id="team_name" name="team_name">
+								<input type="submit" value="<?php echo __('Create'); ?>">
+							</div>
+						</form>
+					</div>
+					<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="create_team_indicator">
+						<tr>
+							<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
+							<td style="padding: 0px; text-align: left;"><?php echo __('Adding team, please wait'); ?>...</td>
+						</tr>
+					</table>
+					<div id="teamconfig_list">
+						<?php foreach ($teams as $team): ?>
+							<?php include_template('configuration/teambox', array('team' => $team)); ?>
+						<?php endforeach; ?>
+					</div>
 				</div>
 			</div>
 		</td>

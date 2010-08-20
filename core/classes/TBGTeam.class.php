@@ -25,6 +25,11 @@
 		
 		protected static $_teams = null;
 		
+		public static function doesTeamNameExist($team_name)
+		{
+			return TBGTeamsTable::getTable()->doesTeamNameExist($team_name);
+		}
+
 		public static function getAll()
 		{
 			if (self::$_teams === null)
@@ -111,17 +116,14 @@
 			array_unique($this->_members);
 		}
 		
-		public function getMembersIDs()
+		public function getMembers()
 		{
 			if ($this->_members === null)
 			{
 				$this->_members = array();
-				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGTeamMembersTable::TID, $this->_itemid);
-				$res = B2DB::getTable('TBGTeamMembersTable')->doSelect($crit);
-				while ($row = $res->getNextRow())
+				foreach (TBGTeamMembersTable::getTable()->getUIDsForTeamID($this->getID()) as $uid)
 				{
-					$this->_members[] = $row->get(TBGTeamMembersTable::UID);
+					$this->_members[$uid] = TBGFactory::userLab($uid);
 				}
 			}
 			return $this->_members;

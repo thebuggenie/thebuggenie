@@ -1490,6 +1490,99 @@
 			}
 		}
 
+		public function runDeleteTeam(TBGRequest $request)
+		{
+			try
+			{
+				try
+				{
+					$team = TBGFactory::teamLab($request->getParameter('team_id'));
+				}
+				catch (Exception $e) { }
+				if (!$team instanceof TBGTeam)
+				{
+					throw new Exception(TBGContext::getI18n()->__("You cannot delete this team"));
+				}
+				$team->delete();
+				return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The team was deleted')));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
+
+		public function runAddTeam(TBGRequest $request)
+		{
+			try
+			{
+				$mode = $request->getParameter('mode');
+				$request_param = ($mode == 'clone') ? 'team_name' : 'new_team_name';
+				if ($team_name = $request->getParameter($request_param))
+				{
+					if ($mode == 'clone')
+					{
+						try
+						{
+							$old_team = TBGFactory::teamLab($request->getParameter('team_id'));
+						}
+						catch (Exception $e) { }
+						if (!$old_team instanceof TBGTeam)
+						{
+							throw new Exception(TBGContext::getI18n()->__("You cannot clone this team"));
+						}
+					}
+					if (TBGTeam::doesTeamNameExist(trim($team_name)))
+					{
+						throw new Exception(TBGContext::getI18n()->__("Please enter a team name that doesn't already exist"));
+					}
+					$team = TBGTeam::createNew($team_name);
+					if ($mode == 'clone')
+					{
+						if ($request->getParameter('clone_permissions'))
+						{
+							TBGPermissionsTable::getTable()->cloneTeamPermissions($old_team->getID(), $team->getID());
+						}
+						if ($request->getParameter('clone_memberships'))
+						{
+							TBGTeamMembersTable::getTable()->cloneTeamMemberships($old_team->getID(), $team->getID());
+						}
+						$message = TBGContext::getI18n()->__('The team was cloned');
+					}
+					else
+					{
+						$message = TBGContext::getI18n()->__('The team was added');
+					}
+					return $this->renderJSON(array('failed' => false, 'message' => $message, 'content' => $this->getTemplateHTML('configuration/teambox', array('team' => $team))));
+				}
+				else
+				{
+					throw new Exception(TBGContext::getI18n()->__('Please enter a team name'));
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
+
+		public function runGetTeamMembers(TBGRequest $request)
+		{
+			try
+			{
+				$team = TBGFactory::teamLab((int) $request->getParameter('team_id'));
+				$users = $team->getMembers();
+				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('configuration/teamuserlist', array('users' => $users))));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
+
 		public function runFindUsers(TBGRequest $request)
 		{
 			$this->too_short = false;

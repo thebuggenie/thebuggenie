@@ -93,6 +93,10 @@
 	$routes[] = array('configure_users_clone_group', '/configure/users/clone/group/:group_id', 'configuration', 'addGroup', array('config_module' => 'core', 'section' => 2, 'format' => 'json', 'mode' => 'clone'));
 	$routes[] = array('configure_users_delete_group', '/configure/users/delete/group/:group_id', 'configuration', 'deleteGroup', array('config_module' => 'core', 'section' => 2, 'format' => 'json'));
 	$routes[] = array('configure_users_get_group_members', '/configure/users/get/members/in/group/:group_id', 'configuration', 'getGroupMembers', array('config_module' => 'core', 'section' => 2, 'format' => 'json'));
+	$routes[] = array('configure_users_add_team', '/configure/users/add/team', 'configuration', 'addTeam', array('config_module' => 'core', 'section' => 2, 'format' => 'json', 'mode' => 'new'));
+	$routes[] = array('configure_users_clone_team', '/configure/users/clone/team/:team_id', 'configuration', 'addTeam', array('config_module' => 'core', 'section' => 2, 'format' => 'json', 'mode' => 'clone'));
+	$routes[] = array('configure_users_delete_team', '/configure/users/delete/team/:team_id', 'configuration', 'deleteTeam', array('config_module' => 'core', 'section' => 2, 'format' => 'json'));
+	$routes[] = array('configure_users_get_team_members', '/configure/users/get/members/in/team/:team_id', 'configuration', 'getTeamMembers', array('config_module' => 'core', 'section' => 2, 'format' => 'json'));
 	$routes[] = array('configure_users_update_user', '/configure/users/update/user/:user_id', 'configuration', 'updateUser', array('config_module' => 'core', 'section' => 2));
 	$routes[] = array('configure_modules', '/configure/modules', 'configuration', 'configureModules', array('config_module' => 'core', 'section' => 15));
 	$routes[] = array('configure_disable_module', '/configure/modules/disable/:module_key', 'configuration', 'moduleAction', array('config_module' => 'core', 'section' => 15, 'mode' => 'disable'));

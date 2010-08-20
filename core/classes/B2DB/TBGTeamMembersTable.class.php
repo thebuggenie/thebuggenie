@@ -77,4 +77,27 @@
 			return $count;
 		}
 
+		public function cloneTeamMemberships($cloned_team_id, $new_team_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::TID, $cloned_team_id);
+			$memberships_to_add = array();
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$memberships_to_add[] = $row->get(self::UID);
+				}
+			}
+
+			foreach ($memberships_to_add as $uid)
+			{
+				$crit = $this->getCriteria();
+				$crit->addInsert(self::UID, $uid);
+				$crit->addInsert(self::TID, $new_team_id);
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+				$this->doInsert($crit);
+			}
+		}
+
 	}

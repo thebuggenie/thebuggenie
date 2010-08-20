@@ -23,6 +23,16 @@
 		const ID = 'teams.id';
 		const SCOPE = 'teams.scope';
 		const TEAMNAME = 'teams.teamname';
+
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGTeamsTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGTeamsTable');
+		}
 		
 		public function __construct()
 		{
@@ -62,5 +72,13 @@
 			
 			return $res;
 		}
-		
+
+		public function doesTeamNameExist($team_name)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::TEAMNAME, $team_name);
+
+			return (bool) $this->doCount($crit);
+		}
+
 	}

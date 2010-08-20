@@ -96,6 +96,158 @@ function cloneGroup(url, group_id)
 	return true;
 }
 
+function showGroupMembers(url, group_id)
+{
+	$('group_members_' + group_id + '_container').toggle();
+	if ($('group_members_' + group_id + '_list').innerHTML == '')
+	{
+		new Ajax.Request(url, {
+			asynchronous: true,
+			method: "post",
+			onLoading: function (transport) {
+				$('group_members_' + group_id + '_indicator').show();
+			},
+			onSuccess: function (transport) {
+				$('group_members_' + group_id + '_indicator').hide();
+				var json = transport.responseJSON;
+				if (json && json.content)
+				{
+					$('group_members_' + group_id + '_list').update(json.content);
+				}
+			},
+			onComplete: function (transport) {
+				$('group_members_' + group_id + '_indicator').hide();
+				var json = transport.responseJSON;
+				if (json && (!json.failed || json.success) && json.message)
+				{
+					successMessage(json.message);
+				}
+				if (json && (json.failed || json.error))
+				{
+					failedMessage(json.error);
+				}
+			},
+			onFailure: function (transport) {
+				$('group_members_' + group_id + '_indicator').hide();
+				$('group_members_' + group_id + '_container').hide();
+				var json = transport.responseJSON;
+				if (json && (json.failed || json.error))
+				{
+					failedMessage(json.error);
+				}
+				else
+				{
+					failedMessage(transport.responseText);
+				}
+			}
+		});
+	}
+}
+
+function createTeam(url)
+{
+	_postFormWithJSONFeedback(url, 'create_team_form', 'create_team_indicator', '', 'teamconfig_list', true);
+	return true;
+}
+
+function deleteTeam(url, team_id)
+{
+	new Ajax.Request(url, {
+		asynchronous: true,
+		method: "post",
+		onLoading: function (transport) {
+			$('delete_team_' + team_id + '_indicator').show();
+		},
+		onSuccess: function (transport) {
+			$('delete_team_' + team_id + '_indicator').hide();
+			$('teambox_' + team_id).remove();
+			var json = transport.responseJSON;
+			if (json && (!json.failed || json.success) && json.message)
+			{
+				successMessage(json.message);
+			}
+		},
+		onComplete: function (transport) {
+			$('delete_team_' + team_id + '_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && (!json.failed || json.success) && json.message)
+			{
+				successMessage(json.message);
+			}
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+		},
+		onFailure: function (transport) {
+			$('delete_team_' + team_id + '_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+		}
+	});
+}
+
+function cloneTeam(url, team_id)
+{
+	_postFormWithJSONFeedback(url, 'clone_team_' + team_id + '_form', 'clone_team_' + team_id + '_indicator', 'clone_team_' + team_id, 'teamconfig_list', true);
+	return false;
+}
+
+function showTeamMembers(url, team_id)
+{
+	$('team_members_' + team_id + '_container').toggle();
+	if ($('team_members_' + team_id + '_list').innerHTML == '')
+	{
+		new Ajax.Request(url, {
+			asynchronous: true,
+			method: "post",
+			onLoading: function (transport) {
+				$('team_members_' + team_id + '_indicator').show();
+			},
+			onSuccess: function (transport) {
+				$('team_members_' + team_id + '_indicator').hide();
+				var json = transport.responseJSON;
+				if (json && json.content)
+				{
+					$('team_members_' + team_id + '_list').update(json.content);
+				}
+			},
+			onComplete: function (transport) {
+				$('team_members_' + team_id + '_indicator').hide();
+				var json = transport.responseJSON;
+				if (json && (!json.failed || json.success) && json.message)
+				{
+					successMessage(json.message);
+				}
+				if (json && (json.failed || json.error))
+				{
+					failedMessage(json.error);
+				}
+			},
+			onFailure: function (transport) {
+				$('team_members_' + team_id + '_indicator').hide();
+				$('team_members_' + team_id + '_container').hide();
+				var json = transport.responseJSON;
+				if (json && (json.failed || json.error))
+				{
+					failedMessage(json.error);
+				}
+				else
+				{
+					failedMessage(transport.responseText);
+				}
+			}
+		});
+	}
+}
+
 function editUser(url, user_id, message)
 {
 	var params = Form.serialize('edituser_' + user_id + '_form');
@@ -171,50 +323,3 @@ function getUserPermissionsBlock(url, user_id)
 	}
 }
 
-function showGroupMembers(url, group_id)
-{
-	$('group_members_' + group_id + '_container').toggle();
-	if ($('group_members_' + group_id + '_list').innerHTML == '')
-	{
-		new Ajax.Request(url, {
-			asynchronous: true,
-			method: "post",
-			onLoading: function (transport) {
-				$('group_members_' + group_id + '_indicator').show();
-			},
-			onSuccess: function (transport) {
-				$('group_members_' + group_id + '_indicator').hide();
-				var json = transport.responseJSON;
-				if (json && json.content)
-				{
-					$('group_members_' + group_id + '_list').update(json.content);
-				}
-			},
-			onComplete: function (transport) {
-				$('group_members_' + group_id + '_indicator').hide();
-				var json = transport.responseJSON;
-				if (json && (!json.failed || json.success) && json.message)
-				{
-					successMessage(json.message);
-				}
-				if (json && (json.failed || json.error))
-				{
-					failedMessage(json.error);
-				}
-			},
-			onFailure: function (transport) {
-				$('group_members_' + group_id + '_indicator').hide();
-				$('group_members_' + group_id + '_container').hide();
-				var json = transport.responseJSON;
-				if (json && (json.failed || json.error))
-				{
-					failedMessage(json.error);
-				}
-				else
-				{
-					failedMessage(transport.responseText);
-				}
-			}
-		});
-	}
-}

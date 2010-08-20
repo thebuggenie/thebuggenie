@@ -128,8 +128,27 @@
 
 		public function cloneGroupPermissions($cloned_group_id, $new_group_id)
 		{
+			return $this->_clonePermissions($cloned_group_id, $new_group_id, 'group');
+		}
+
+		public function cloneTeamPermissions($cloned_group_id, $new_group_id)
+		{
+			return $this->_clonePermissions($cloned_group_id, $new_group_id, 'group');
+		}
+
+		protected function _clonePermissions($cloned_id, $new_id, $mode)
+		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::GID, $cloned_group_id);
+			switch ($mode)
+			{
+				case 'group':
+					$mode = self::GID;
+					break;
+				case 'team':
+					$mode = self::TID;
+					break;
+			}
+			$crit->addWhere($mode, $cloned_id);
 			$permissions_to_add = array();
 			if ($res = $this->doSelect($crit))
 			{
@@ -145,7 +164,7 @@
 				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$crit->addInsert(self::PERMISSION_TYPE, $permission['permission_type']);
 				$crit->addInsert(self::TARGET_ID, $permission['target_id']);
-				$crit->addInsert(self::GID, $new_group_id);
+				$crit->addInsert($mode, $new_id);
 				$crit->addInsert(self::ALLOWED, $permission['allowed']);
 				$crit->addInsert(self::MODULE, $permission['module']);
 				$res = $this->doInsert($crit);
