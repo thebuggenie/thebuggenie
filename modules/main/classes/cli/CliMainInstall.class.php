@@ -355,12 +355,12 @@
 					$this->cliEcho("Enable incoming and outgoing email? ", 'white', 'bold') . $this->cliEcho('(yes): ');
 					$enable_modules['mailing'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
 					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
-					$this->cliEcho("Enable internal messaging between users? ", 'white', 'bold') . $this->cliEcho('(yes): ');
+					/*$this->cliEcho("Enable internal messaging between users? ", 'white', 'bold') . $this->cliEcho('(yes): ');
 					$enable_modules['messages'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
 					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
 					$this->cliEcho("Enable calendar? ", 'white', 'bold') . $this->cliEcho('(yes): ');
 					$enable_modules['calendar'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
-					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
+					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold'); */
 
 					$enable_modules['publish'] = true;
 

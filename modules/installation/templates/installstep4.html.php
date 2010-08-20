@@ -47,6 +47,7 @@
 						<input type="radio" name="modules[mailing]" value="1" id="modules_mailing_yes" checked="checked"><label for="modules_mailing_yes" style="margin-right: 5px;">Yes</label>
 						<input type="radio" name="modules[mailing]" value="0" id="modules_mailing_no"><label for="modules_mailing_no">No</label>
 					</dd>
+					<?php /*
 					<dt>
 						<strong>Enable messaging</strong><br>
 						Enables functionality that lets users send messages to eachother
@@ -62,7 +63,7 @@
 					<dd>
 						<input type="radio" name="modules[calendar]" value="1" id="modules_calendar_yes" checked="checked"><label for="modules_calendar_yes" style="margin-right: 5px;">Yes</label>
 						<input type="radio" name="modules[calendar]" value="0" id="modules_calendar_no"><label for="modules_calendar_no">No</label>
-					</dd>
+					</dd> */ ?>
 				</dl>
 			</fieldset>
 			<div style="padding-top: 20px; clear: both; text-align: center;">
