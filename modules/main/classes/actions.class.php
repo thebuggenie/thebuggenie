@@ -2036,26 +2036,31 @@
 		{
 			try
 			{
+				$template_name = null;
+				$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
 				switch ($request->getParameter('key'))
 				{
 					case 'close_issue':
-						$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
-						return $this->renderJSON(array('content' => $this->getComponentHTML('main/closeissue', array('issue' => $issue))));
+						$template_name = 'main/closeissue';
 						break;
 					case 'relate_issue':
-						$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
-						return $this->renderJSON(array('content' => $this->getTemplateHTML('main/relateissue', array('issue' => $issue))));
+						$template_name = 'main/relateissue';
 						break;
 					case 'markasduplicate_issue':
-						$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
-						return $this->renderJSON(array('content' => $this->getTemplateHTML('main/markasduplicate', array('issue' => $issue))));
+						$template_name = 'main/markasduplicate';
 						break;
+				}
+				if ($template_name !== null)
+				{
+					return $this->renderJSON(array('content' => $this->getComponentHTML($template_name, array('issue' => $issue))));
 				}
 			}
 			catch (Exception $e)
 			{
+				$this->getResponse()->setHttpStatus(400);
 				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('An error occured: %error_message%', array('%error_message%' => $e->getMessage()))));
 			}
+			$this->getResponse()->setHttpStatus(400);
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid template or parameter')));
 		}
 
