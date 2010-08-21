@@ -124,6 +124,11 @@
 		{
 			$this->setupVariables();
 		}
+		
+		public function componentFindduplicateissues()
+		{
+			$this->setupVariables();
+		}
 
 		public function componentLogitem()
 		{

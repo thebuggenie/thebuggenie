@@ -2,9 +2,12 @@
 
 	$routes[] = array('viewissue', '/:project_key/issue/:issue_no', 'main', 'viewIssue');
 	$routes[] = array('viewissue_find_issue', '/:project_key/issue/:issue_id/find/related', 'main', 'findRelatedIssue', array('format' => 'json'));
+	$routes[] = array('viewissue_find_issue_duplicate', '/:project_key/issue/:issue_id/find/duplicate', 'main', 'findDuplicateIssue', array('format' => 'json'));
 	$routes[] = array('viewissue_relate_issues', '/:project_key/issue/:issue_id/relate', 'main', 'relateIssues', array('format' => 'json'));
 	$routes[] = array('saveissue', '/:project_key/issue/:issue_no', 'main', 'viewIssue');
 	$routes[] = array('closeissue', '/:project_key/issue/:issue_id/close', 'main', 'closeIssue');
+	$routes[] = array('markasduplicate', '/:project_key/issue/:issue_id/markasduplicate', 'main', 'markAsDuplicate');
+	$routes[] = array('notduplicate', '/:project_key/issue/:issue_id/notduplicate', 'main', 'markAsNotDuplicate');
 	$routes[] = array('openissue', '/:project_key/issue/:issue_id/open', 'main', 'reopenIssue');
 	$routes[] = array('issue_setfield', '/:project_key/issue/:issue_id/set/:field/*', 'main', 'issueSetField');
 	$routes[] = array('issue_revertfield', '/:project_key/issue/:issue_id/revert/:field', 'main', 'issueRevertField');

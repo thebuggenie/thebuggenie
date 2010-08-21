@@ -583,7 +583,7 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 #viewissue_changed a, #viewissue_duplicate a, #viewissue_nonexisting a, #viewissue_open_sameuser a, #viewissue_closed_sameuser a, #viewissue_closed a { font-size: 12px; font-weight: bold; }
 #viewissue_nonexisting { width: 700px; }
 #viewissue_open_sameuser { width: 650px; }
-#viewissue_closed_sameuser, #viewissue_closed, #viewissue_saved, #viewissue_unsaved, #blocking_div { width: 990px; margin: 5px auto 5px auto; }
+#viewissue_duplicate, #viewissue_closed_sameuser, #viewissue_closed, #viewissue_saved, #viewissue_unsaved, #blocking_div { width: 990px; margin: 5px auto 5px auto; }
 #viewissue_open_sameuser, #viewissue_closed_sameuser, #viewissue_closed { text-align: left; }
 #viewissue_open_sameuser img, #viewissue_closed_sameuser img, #viewissue_closed img { float: left; margin: 0 20px 0 20px; }
 .viewissue_info_header { font-weight: bold; font-size: 14px; }
@@ -641,7 +641,7 @@ img.undo { display: none; }
 .faded_medium .percent_unfilled { background-color: #D8FFD1; }
 .priority_percentage .percent_unfilled, .priority_percentage .faded_medium .percent_unfilled { background-color: #E2FFE1; }
 
-#blocking_div, #upload_error_div { margin: 10px 5px 5px 5px; } 
+#upload_error_div { margin: 10px 5px 5px 5px; } 
 #viewissue_left_box_top { margin: 0; }
 #viewissue_left_box_bottom { margin: 0; }
 #viewissue_left_box_issuetype, #viewissue_left_box_status { margin: 0 5px 0 2px; }

@@ -79,7 +79,7 @@
 		</div>
 	<?php endif; ?>
 	<?php if ($theIssue->isDuplicate()): ?>
-		<div class="rounded_box iceblue borderless infobox" style="margin: 5px;" id="viewissue_duplicate">
+		<div class="rounded_box iceblue borderless infobox" id="viewissue_duplicate">
 			<div style="padding: 5px;">
 				<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
 				<div class="viewissue_info_header"><?php echo __('This issue is a duplicate of Issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getDuplicateOf()->getFormattedIssueNo())), $theIssue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $theIssue->getDuplicateOf()->getTitle() . '"')); ?></div>
@@ -88,7 +88,7 @@
 		</div>								
 	<?php endif; ?>
 	<?php if ($theIssue->isClosed()): ?>
-		<div class="rounded_box iceblue borderless infobox" style="margin: 5px;" id="viewissue_closed">
+		<div class="rounded_box iceblue borderless infobox" id="viewissue_closed">
 			<div style="padding: 5px;">
 				<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
 				<div class="viewissue_info_header"><?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($theIssue->getStatus() instanceof TBGStatus) ? $theIssue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($theIssue->getResolution() instanceof TBGResolution) ? $theIssue->getResolution()->getName() : __('Not determined')))); ?></div>

@@ -1524,6 +1524,91 @@
 		}
 		
 		/**
+		 * Mark the issue as a duplicate of another
+		 * 
+		 * @param TBGRequest $request
+		 */
+		public function runMarkAsDuplicate(TBGRequest $request)
+		{
+			if ($issue_id = $request->getParameter('issue_id'))
+			{
+				try
+				{
+					$issue = TBGFactory::TBGIssueLab($issue_id);
+				}
+				catch (Exception $e)
+				{
+					return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+				}
+			}
+			else
+			{
+				return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+			}
+			try
+			{
+				$issue2 = TBGFactory::TBGIssueLab($request->getParameter('duplicate_issue'));
+			}
+			catch (Exception $e)
+			{
+				return $this->return404(TBGContext::getI18n()->__('The issue to be set as the duplicate does not exist'));
+			}
+			if ($request->hasParameter('set_status'))
+			{
+				$issue->setStatus($request->getParameter('status_id'));
+			}
+			if ($request->hasParameter('set_resolution'))
+			{
+				$issue->setResolution($request->getParameter('resolution_id'));
+			}
+			if (trim($request->getParameter('markasduplicate_comment')) != '')
+			{
+				$issue->addSystemComment(TBGContext::getI18n()->__('Issue marked as a duplicate'), $request->getParameter('markasduplicate_comment'), TBGContext::getUser()->getID());
+			}
+			else
+			{
+				$issue->addSystemComment(TBGContext::getI18n()->__('Issue marked as a duplicate'), TBGContext::getI18n()->__('This issue is now a duplicate of %issue%', array('%issue%' => $issue2->getFormattedIssueNo(true, true))), TBGContext::getUser()->getID());
+			}
+			if ($request->hasParameter('set_close'))
+			{
+				$issue->close();
+			}
+			$issue->setDuplicateOf($request->getParameter('duplicate_issue'));
+			$issue->save();
+			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+		}
+		
+		/**
+		 * Mark the issue as not a duplicate of another
+		 * 
+		 * @param TBGRequest $request
+		 */
+		public function runMarkAsNotDuplicate(TBGRequest $request)
+		{
+			if ($issue_id = $request->getParameter('issue_id'))
+			{
+				try
+				{
+					$issue = TBGFactory::TBGIssueLab($issue_id);
+				}
+				catch (Exception $e)
+				{
+					return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+				}
+			}
+			else
+			{
+				return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+			}
+
+			$issue->setDuplicateOf(0);
+			$issue->save();
+			
+			$issue->addSystemComment(TBGContext::getI18n()->__('Issue is no longer a duplicate'), TBGContext::getI18n()->__('This issue is no longer a duplicate of any other issues'), TBGContext::getUser()->getID());
+			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+		}
+		
+		/**
 		 * Find users and show selection links
 		 * 
 		 * @param TBGRequest $request The request object
@@ -1903,6 +1988,10 @@
 						$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
 						return $this->renderJSON(array('content' => $this->getTemplateHTML('main/relateissue', array('issue' => $issue))));
 						break;
+					case 'markasduplicate_issue':
+						$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+						return $this->renderJSON(array('content' => $this->getTemplateHTML('main/markasduplicate', array('issue' => $issue))));
+						break;
 				}
 			}
 			catch (Exception $e)
@@ -1950,6 +2039,46 @@
 
 			list ($issues, $count) = TBGIssue::findIssuesByText($searchfor);
 			return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('main/findrelatedissues', array('theIssue' => $issue, 'issues' => $issues, 'count' => $count))));
+		}
+		
+		public function runFindDuplicateIssue(TBGRequest $request)
+		{
+			$status = 200;
+			$message = null;
+			if ($issue_id = $request->getParameter('issue_id'))
+			{
+				try
+				{
+					$issue = TBGFactory::TBGIssueLab($issue_id);
+				}
+				catch (Exception $e)
+				{
+					$status = 400;
+					$message = TBGContext::getI18n()->__('Could not find this issue');
+				}
+			}
+			else
+			{
+				$status = 400;
+				$message = TBGContext::getI18n()->__('Please provide an issue number');
+			}
+
+			$searchfor = $request->getParameter('searchfor');
+
+			if (strlen(trim($searchfor)) < 3 && !is_numeric($searchfor))
+			{
+				$status = 400;
+				$message = TBGContext::getI18n()->__('Please enter something to search for (3 characters or more)'.$searchfor);
+			}
+
+			$this->getResponse()->setHttpStatus($status);
+			if ($status == 400)
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => $message));
+			}
+
+			list ($issues, $count) = TBGIssue::findIssuesByText($searchfor);
+			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('main/findduplicateissues', array('issue' => $issue, 'issues' => $issues, 'count' => $count))));
 		}
 
 		public function runRelateIssues(TBGRequest $request)

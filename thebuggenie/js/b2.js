@@ -768,6 +768,12 @@ function findRelatedIssues(url)
 	return false;
 }
 
+function findDuplicateIssues(url)
+{
+	_postFormWithJSONFeedback(url, 'viewissue_find_issue_form', 'find_issue_indicator', '', 'viewissue_duplicate_results');
+	return false;
+}
+
 function relateIssues(url)
 {
 	if ($('relate_issue_with_selected').getValue() == 'relate_children')
