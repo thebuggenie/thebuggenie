@@ -474,6 +474,13 @@
 				<?php endif; ?>
 			</ul>
 			<ul>
+				<?php if ($issue->isBlocking()): ?>
+					<li><?php echo link_tag(make_url('unblock', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_unblock.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark this issue as not blocking the next release")); ?></li>
+				<?php else: ?>
+					<li><?php echo link_tag(make_url('block', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_block.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark this issue as blocking the next release")); ?></li>
+				<?php endif; ?>
+			</ul>
+			<ul>
 				<?php if ($issue->isOpen()): ?>
 					<li><a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'close_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_close.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Close this issue'); ?></a></li>
 				<?php else: ?>

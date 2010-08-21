@@ -4308,6 +4308,18 @@
 								$comment_lines[] = TBGContext::getI18n()->__("This issue has been reopened");
 							}
 							break;
+						case '_blocking':
+							if ($this->isBlocking())
+							{
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_BLOCKED);
+								$comment_lines[] = TBGContext::getI18n()->__("This issue is now blocking the next release");
+							}
+							else
+							{
+								$this->addLogEntry(TBGLogTable::LOG_ISSUE_UNBLOCKED);
+								$comment_lines[] = TBGContext::getI18n()->__("This issue is no longer blocking the next release");
+							}
+							break;
 						default:
 							if (substr($property, 0, 12) == '_customfield')
 							{

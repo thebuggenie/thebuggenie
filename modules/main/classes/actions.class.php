@@ -1609,6 +1609,64 @@
 		}
 		
 		/**
+		 * Mark the issue as not blocking the next release
+		 * 
+		 * @param TBGRequest $request
+		 */
+		public function runMarkAsNotBlocker(TBGRequest $request)
+		{
+			if ($issue_id = $request->getParameter('issue_id'))
+			{
+				try
+				{
+					$issue = TBGFactory::TBGIssueLab($issue_id);
+				}
+				catch (Exception $e)
+				{
+					return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+				}
+			}
+			else
+			{
+				return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+			}
+
+			$issue->setBlocking(false);
+			$issue->save();
+			
+			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+		}
+		
+		/**
+		 * Mark the issue as blocking the next release
+		 * 
+		 * @param TBGRequest $request
+		 */
+		public function runMarkAsBlocker(TBGRequest $request)
+		{
+			if ($issue_id = $request->getParameter('issue_id'))
+			{
+				try
+				{
+					$issue = TBGFactory::TBGIssueLab($issue_id);
+				}
+				catch (Exception $e)
+				{
+					return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+				}
+			}
+			else
+			{
+				return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+			}
+
+			$issue->setBlocking();
+			$issue->save();
+			
+			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+		}
+		
+		/**
 		 * Find users and show selection links
 		 * 
 		 * @param TBGRequest $request The request object

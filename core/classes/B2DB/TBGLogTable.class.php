@@ -61,6 +61,8 @@
 		const LOG_ISSUE_PAIN_EFFECT = 38;
 		const LOG_ISSUE_PAIN_LIKELIHOOD = 39;
 		const LOG_ISSUE_PAIN_CALCULATED = 40;
+		const LOG_ISSUE_BLOCKED = 41;
+		const LOG_ISSUE_UNBLOCKED = 42;
 		
 		const B2DBNAME = 'log';
 		const ID = 'log.id';
