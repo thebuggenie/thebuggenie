@@ -5,8 +5,8 @@
 		<div class="viewissue_info_content">
 			<input type="hidden" name="issue_action" value="duplicate">
 			<select name="duplicate_issue" style="width: 100%">
-				<?php foreach ($issues as $issue): ?>
-					<option value="<?php echo $issue->getID(); ?>"><?php echo $issue->getFormattedTitle(); ?></option>
+				<?php foreach ($issues as $aissue): ?>
+					<option value="<?php echo $aissue->getID(); ?>"><?php echo $aissue->getFormattedTitle(); ?></option>
 				<?php endforeach; ?>
 				</table>
 			</select>

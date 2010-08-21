@@ -3,7 +3,7 @@
 	<div class="viewissue_info_content">
 		<?php echo __('Please enter some details to search for, and then select the matching issues to relate them'); ?>
 	</div>
-	<form id="viewissue_find_issue_form" action="<?php echo make_url('viewissue_find_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="findRelatedIssues('<?php echo make_url('viewissue_find_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>');return false;">
+	<form id="viewissue_find_issue_form" action="<?php echo make_url('viewissue_find_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'type' => 'related')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="findRelatedIssues('<?php echo make_url('viewissue_find_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'type' => 'related')); ?>');return false;">
 		<div>
 			<label for="viewissue_find_issue_input"><?php echo __('Find issue(s)'); ?>&nbsp;</label>
 			<input type="text" name="searchfor" id="viewissue_find_issue_input">

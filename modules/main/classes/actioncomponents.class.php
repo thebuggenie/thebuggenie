@@ -125,9 +125,21 @@
 			$this->setupVariables();
 		}
 		
+		public function componentMarkasduplicate()
+		{
+		}
+		
+		public function componentRelateissue()
+		{
+		}
+		
 		public function componentFindduplicateissues()
 		{
 			$this->setupVariables();
+		}
+		
+		public function componentFindrelatedissues()
+		{
 		}
 
 		public function componentLogitem()

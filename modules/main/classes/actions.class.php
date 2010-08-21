@@ -2064,7 +2064,7 @@
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Invalid template or parameter')));
 		}
 
-		public function runFindRelatedIssue(TBGRequest $request)
+		public function runFindIssue(TBGRequest $request)
 		{
 			$status = 200;
 			$message = null;
@@ -2101,7 +2101,7 @@
 			}
 
 			list ($issues, $count) = TBGIssue::findIssuesByText($searchfor);
-			return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('main/findrelatedissues', array('theIssue' => $issue, 'issues' => $issues, 'count' => $count))));
+			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('main/find'.$request->getParameter('type').'issues', array('issue' => $issue, 'issues' => $issues, 'count' => $count))));
 		}
 		
 		public function runFindDuplicateIssue(TBGRequest $request)
