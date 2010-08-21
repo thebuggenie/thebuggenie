@@ -38,6 +38,7 @@
 			TBGEvent::createNew('core', 'header_ends')->trigger();
 		
 		?>
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
 		<table style="width: 100%; height: 100%; table-layout: fixed; min-width: 1020px;" cellpadding=0 cellspacing=0>
