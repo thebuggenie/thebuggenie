@@ -1,14 +1,13 @@
 <?php if ($count > 0): ?>
-	<form action="<?php echo make_url('markasduplicate', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 		<br>
 		<div class="viewissue_info_header"><?php echo __('The following issues matched your search'); ?>:</div>
 		<div class="viewissue_info_content">
+			<form action="<?php echo make_url('markasduplicate', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 			<input type="hidden" name="issue_action" value="duplicate">
 			<select name="duplicate_issue" style="width: 100%">
 				<?php foreach ($issues as $aissue): ?>
 					<option value="<?php echo $aissue->getID(); ?>"><?php echo $aissue->getFormattedTitle(); ?></option>
 				<?php endforeach; ?>
-				</table>
 			</select>
 			<br><br>
 			<?php echo __('Do you want to change some of these values as well?'); ?>
@@ -46,10 +45,10 @@
 				</li>
 			</ul>
 			<div style="text-align: right; margin-right: 5px;">
-				<input type="submit" value="<?php echo __('Mark as duplicate'); ?>">
+				<input type="submit" value="<?php echo __('Mark as duplicate'); ?>" />
 			</div>
+			</form>
 		</div>
-	</form>
 <?php else: ?>
 	<span class="faded_medium"><?php echo __('No issues matched your search. Please try again with different search terms.'); ?></span>
 <?php endif; ?>

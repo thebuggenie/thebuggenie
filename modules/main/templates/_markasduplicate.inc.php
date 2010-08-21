@@ -16,5 +16,4 @@
 		<div style="text-align: right; margin-right: 5px;">
 			<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Close this pop-up'); ?></a>
 		</div>
-	</form>
 </div>
