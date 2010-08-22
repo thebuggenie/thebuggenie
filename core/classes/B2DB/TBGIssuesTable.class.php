@@ -116,7 +116,7 @@
 			parent::_addInteger(self::PERCENT_COMPLETE, 2);
 			parent::_addInteger(self::ASSIGNED_TYPE, 2);
 			parent::_addInteger(self::OWNED_TYPE, 2);
-			parent::_addBoolean(self::DUPLICATE);
+			parent::_addInteger(self::DUPLICATE, 10);
 			parent::_addBoolean(self::DELETED);
 			parent::_addBoolean(self::BLOCKING);
 			parent::_addBoolean(self::LOCKED);
