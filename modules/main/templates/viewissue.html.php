@@ -274,7 +274,7 @@
 									</div>
 
 									<div id="comment_add_controls" class="comment_controls">
-										<input type="hidden" name="forward_url" value="<?php echo make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getIssueNo())); ?>"
+										<input type="hidden" name="forward_url" value="<?php echo make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getIssueNo())); ?>">
 										<?php echo __('%create_comment% or %cancel%', array('%create_comment%' => '<input type="submit" class="comment_addsave" value="'.__('Create comment').'" />', '%cancel%' => '<a href="javascript:void(0)" onClick="$(\'comment_add\').hide();$(\'comment_add_button\').show();">'.__('cancel').'</a>')); ?>
 									</div>
 								</form>
