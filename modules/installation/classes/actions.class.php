@@ -306,7 +306,7 @@
 		 */
 		public function runInstallStep6(TBGRequest $request)
 		{
-			if (file_put_contents(TBGContext::getIncludePath() . 'installed', '2.1, installed ' . date('d.m.Y H:i')) === false)
+			if (file_put_contents(TBGContext::getIncludePath() . 'installed', '3.0, installed ' . date('d.m.Y H:i')) === false)
 			{
 				$this->error = "Couldn't write to the main directory";
 			}

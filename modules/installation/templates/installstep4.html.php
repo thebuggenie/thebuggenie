@@ -30,7 +30,7 @@
 		</div>
 		<h2 style="margin-top: 10px;">Enabling functionality</h2>
 		The Bug Genie consists of the B2 framework, and a set of modules. Some modules are used for "core" functionality, such as searching, email notifications, and messaging - while
-		others provide extra functionality such as SVN (subversion) integration, articles, billboards and calendar.<br>
+		others provide extra functionality such as VCS (version control system) integration, articles, billboards and calendar.<br>
 		<br>
 		Please select which modules to enable here, before pressing "Continue":<br>
 		<i>(You can always enable / disable this functionality from the configuration center after the installation is completed)</i>
@@ -46,6 +46,14 @@
 					<dd>
 						<input type="radio" name="modules[mailing]" value="1" id="modules_mailing_yes" checked="checked"><label for="modules_mailing_yes" style="margin-right: 5px;">Yes</label>
 						<input type="radio" name="modules[mailing]" value="0" id="modules_mailing_no"><label for="modules_mailing_no">No</label>
+					</dd>
+					<dt>
+						<strong>Enable VCS Integration</strong><br>
+						Allows communication between VCS systems (such as svn) and The Bug Genie
+					</dt>
+					<dd>
+						<input type="radio" name="modules[vcs_integration]" value="1" id="modules_vcs_integration_yes" checked="checked"><label for="modules_vcs_integration_yes" style="margin-right: 5px;">Yes</label>
+						<input type="radio" name="modules[vcs_integration]" value="0" id="modules_vcs_integration_no"><label for="modules_vcs_integration_no">No</label>
 					</dd>
 					<?php /*
 					<dt>
