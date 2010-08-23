@@ -33,7 +33,7 @@
 				<?php endforeach; ?>
 			</ul>
 		<?php else: ?>
-			<div class="faded_medium" style="font-size: 13px;"><?php echo __("This category doesn't have any subcategories"); ?></div>
+			<div class="faded_medium"><?php echo __("This category doesn't have any subcategories"); ?></div>
 		<?php endif; ?>
 	</div>
 	<br style="clear: both;">
@@ -46,7 +46,7 @@
 				<?php endforeach; ?>
 			</ul>
 		<?php else: ?>
-			<div class="faded_medium" style="font-size: 13px;"><?php echo __('There are no pages in this category'); ?></div>
+			<div class="faded_medium"><?php echo __('There are no pages in this category'); ?></div>
 		<?php endif; ?>
 	</div>
 	<br style="clear: both;">
@@ -54,7 +54,7 @@
 <?php if (!$embedded): ?>
 	<div class="rounded_box lightgrey borderless" style="margin: 30px 5px 20px 5px;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
+		<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 1.1em;">
 			<div class="content">
 				<b><?php echo __('Categories:'); ?></b>
 				<?php if (count($article->getCategories()) > 0): ?>
