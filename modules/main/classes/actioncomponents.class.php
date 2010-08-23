@@ -81,7 +81,15 @@
 			{
 				$changed_methodname = "isCustomfield{$key}Changed";
 				$merged_methodname = "isCustomfield{$key}Merged";
-				$customfields_list[$key] = array('title' => $i18n->__($customdatatype->getDescription()), 'visible' => $this->issue->getIssuetype()->isFieldVisible($customdatatype->getKey()), 'changed' => $this->issue->$changed_methodname(), 'merged' => $this->issue->$merged_methodname(), 'name' => (($this->issue->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->issue->getCustomField($key)->getName() : ''), 'name_visible' => (bool) ($this->issue->getCustomField($key) instanceof TBGCustomDatatypeOption), 'noname_visible' => (bool) (!$this->issue->getCustomField($key) instanceof TBGCustomDatatypeOption), 'change_tip' => $i18n->__($customdatatype->getInstructions()), 'change_header' => $i18n->__($customdatatype->getDescription()), 'choices' => $customdatatype->getOptions(), 'clear' => $i18n->__('Clear this field'), 'select' => $i18n->__('%clear_this_field% or click to set a new value', array('%clear_this_field%' => '')));
+				switch ($customdatatype->getType())
+				{
+					case TBGCustomDatatype::INPUT_TEXT:
+						$customfields_list[$key] = array('type' => $customdatatype->getType(), 'title' => $i18n->__($customdatatype->getDescription()), 'visible' => $this->issue->getIssuetype()->isFieldVisible($customdatatype->getKey()), 'changed' => $this->issue->$changed_methodname(), 'merged' => $this->issue->$merged_methodname(), 'name' => $this->issue->getCustomField($key), 'name_visible' => (bool) ($this->issue->getCustomField($key) != ''), 'noname_visible' => (bool) ($this->issue->getCustomField($key) == ''), 'change_tip' => $i18n->__($customdatatype->getInstructions()), 'change_header' => $i18n->__($customdatatype->getDescription()), 'choices' => $customdatatype->getOptions(), 'clear' => $i18n->__('Clear this field'), 'select' => $i18n->__('%clear_this_field% or click to set a new value', array('%clear_this_field%' => '')));
+						break;
+					default:
+						$customfields_list[$key] = array('type' => $customdatatype->getType(), 'title' => $i18n->__($customdatatype->getDescription()), 'visible' => $this->issue->getIssuetype()->isFieldVisible($customdatatype->getKey()), 'changed' => $this->issue->$changed_methodname(), 'merged' => $this->issue->$merged_methodname(), 'name' => (($this->issue->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->issue->getCustomField($key)->getName() : ''), 'name_visible' => (bool) ($this->issue->getCustomField($key) instanceof TBGCustomDatatypeOption), 'noname_visible' => (bool) (!$this->issue->getCustomField($key) instanceof TBGCustomDatatypeOption), 'change_tip' => $i18n->__($customdatatype->getInstructions()), 'change_header' => $i18n->__($customdatatype->getDescription()), 'choices' => $customdatatype->getOptions(), 'clear' => $i18n->__('Clear this field'), 'select' => $i18n->__('%clear_this_field% or click to set a new value', array('%clear_this_field%' => '')));
+						break;
+				}
 			}
 
 			$this->fields_list = $fields_list;

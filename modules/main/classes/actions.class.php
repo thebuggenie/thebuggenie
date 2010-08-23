@@ -939,7 +939,6 @@
 			}
 
 			TBGContext::loadLibrary('common');
-			
 			switch ($request->getParameter('field'))
 			{
 				case 'description':
@@ -1235,6 +1234,13 @@
 						if ($request->hasParameter("{$key}_value"))
 						{
 							$customdatatypeoption_value = $request->getParameter("{$key}_value");
+							if ($customdatatype->getType() == TBGCustomDatatype::INPUT_TEXT)
+							{
+								$issue->setCustomField($key, $customdatatypeoption_value);
+								$changed_methodname = "isCustomfield{$key}Changed";
+								if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
+								return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => $customdatatypeoption_value)));
+							}
 							if ($customdatatypeoption_value && ($customdatatypeoption = TBGCustomDatatypeOption::getByValueAndKey($customdatatypeoption_value, $key)) instanceof TBGCustomDatatypeOption)
 							{
 								$issue->setCustomField($key, $customdatatypeoption->getValue());

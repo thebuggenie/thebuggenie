@@ -1875,7 +1875,16 @@
 			$var_name = "_customfield{$key}";
 			if (!is_object($this->$var_name) && !is_null($this->$var_name))
 			{
-				$this->$var_name = TBGCustomDatatypeOption::getByValueAndKey($this->$var_name, $key);
+				$datatype = TBGCustomDatatype::getByKey($key);
+				switch ($datatype->getType())
+				{
+					case TBGCustomDatatype::INPUT_TEXT:
+						$this->$var_name = B2DB::getTable('TBGIssueCustomFieldsTable')->getRowByCustomFieldIDandIssueID($datatype->getID(), $this->getID())->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
+						break;
+					default:
+						$this->$var_name = TBGCustomDatatypeOption::getByValueAndKey($this->$var_name, $key);
+						break;
+				}
 			}
 			return $this->$var_name;
 		}
@@ -3958,8 +3967,17 @@
 		{
 			foreach (TBGCustomDatatype::getAll() as $key => $customdatatype)
 			{
-				$option_id = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getID() : null;
-				B2DB::getTable('TBGIssueCustomFieldsTable')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
+				switch ($customdatatype->getType())
+				{
+					case TBGCustomDatatype::INPUT_TEXT:
+						$option_id = $this->getCustomField($key);
+						B2DB::getTable('TBGIssueCustomFieldsTable')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
+						break;
+					default:
+						$option_id = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getID() : null;
+						B2DB::getTable('TBGIssueCustomFieldsTable')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
+						break;
+				}
 			}
 		}
 		
@@ -4325,10 +4343,21 @@
 							{
 								$key = substr($property, 12);
 								$customdatatype = TBGCustomDatatype::getByKey($key);
-								$old_value = ($old_item = TBGCustomDatatypeOption::getByValueAndKey($value['original_value'], $key)) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
-								$new_value = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getName() : TBGContext::getI18n()->__('Unknown');
-								$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $old_value . ' &rArr; ' . $new_value);
-								$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been updated, from '''%previous_value%''' to ''''''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%previous_value%' => $old_value, '%new_value%' => $new_value));
+								
+								switch ($customdatatype->getType())
+								{
+									case TBGCustomDatatype::INPUT_TEXT:
+										$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
+										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $new_value);
+										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been changed to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%new_value%' => $new_value));
+										break;
+									default:
+										$old_value = ($old_item = TBGCustomDatatypeOption::getByValueAndKey($value['original_value'], $key)) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+										$new_value = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getName() : TBGContext::getI18n()->__('Unknown');
+										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $old_value . ' &rArr; ' . $new_value);
+										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been updated, from '''%previous_value%''' to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%previous_value%' => $old_value, '%new_value%' => $new_value));
+										break;
+								}
 							}
 							break;
 					}

@@ -358,7 +358,7 @@ function setField(url, field)
 	if (field == 'description') var params = $('description_form').serialize();
 	else if (field == 'reproduction_steps') var params = $('reproduction_steps_form').serialize();
 	else if (field == 'title') var params = $('title_form').serialize();
-	else var params = '';
+	else var params = $('custom_form').serialize();
 	if (field == 'issuetype') $('issuetype_indicator_fullpage').show();
 	new Ajax.Request(url, {
 		method: 'post',
