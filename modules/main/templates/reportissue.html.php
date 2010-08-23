@@ -479,17 +479,31 @@
 							<td class="report_issue_help faded_dark"><?php echo __($customdatatype->getInstructions()); ?></td>
 						<tr>
 							<td colspan="2" style="padding-top: 5px;">
-								<?php if ($customdatatype->getType() == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT) : ?>
-									<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
-										<?php foreach ($customdatatype->getOptions() as $option): ?>
-										<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
-										<?php endforeach; ?>
-									</select>
-								<?php elseif ($customdatatype->getType() == TBGCustomDatatype::RADIO_CHOICE) : ?>
-									<?php foreach ($customdatatype->getOptions() as $option): ?>
-										<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <label for="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>"><?php echo $option->getName(); ?></label><br>
-									<?php endforeach; ?>
-								<?php endif; ?>
+								<?php 
+									switch ($customdatatype->getType())
+									{
+										case TBGCustomDatatype::DROPDOWN_CHOICE_TEXT:
+											?>
+											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
+												<?php foreach ($customdatatype->getOptions() as $option): ?>
+												<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+												<?php endforeach; ?>
+											</select>
+											<?php
+											break;
+										case TBGCustomDatatype::RADIO_CHOICE:
+											foreach ($customdatatype->getOptions() as $option): ?>
+												<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <label for="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>"><?php echo $option->getName(); ?></label><br>
+											<?php
+											endforeach;
+											break;
+										case TBGCustomDatatype::INPUT_TEXT:
+											?>
+											<input type="text" name="<?php echo $customdatatype->getKey(); ?>_value" id="<?php echo $customdatatype->getKey(); ?>_value" /><br>
+											<?php
+											break;
+									}
+								?>
 							</td>
 						</tr>
 					</table>
@@ -620,20 +634,47 @@
 									<?php echo image_tag('icon_customdatatype.png'); ?>
 									<div id="<?php echo $customdatatype->getKey(); ?>_link"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').hide();$('<?php echo $customdatatype->getKey(); ?>_additional_div').show();"><?php echo __($customdatatype->getDescription()); ?></a></div>
 									<div id="<?php echo $customdatatype->getKey(); ?>_additional_div"<?php if ($selected_customdatatype[$customdatatype->getKey()] === null): ?> style="display: none;"<?php endif; ?>>
-										<?php if ($customdatatype->getType() == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT) : ?>
-											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
-												<?php foreach ($customdatatype->getOptions() as $option): ?>
-												<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
-												<?php endforeach; ?>
-											</select>
-										<?php elseif ($customdatatype->getType() == TBGCustomDatatype::RADIO_CHOICE) : ?>
-											<label for="<?php echo $customdatatype->getKey(); ?>_id_additional"><?php echo $customdatatype->getDescription(); ?></label>
-											<br>
-											<?php foreach ($customdatatype->getOptions() as $option): ?>
-												<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
-											<?php endforeach; ?>
-										<?php endif; ?>
-										<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+										<?php 
+											switch ($customdatatype->getType())
+											{
+												case TBGCustomDatatype::DROPDOWN_CHOICE_TEXT:
+													?>
+													<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
+														<?php foreach ($customdatatype->getOptions() as $option): ?>
+														<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
+														<?php endforeach; ?>
+													</select>
+													<?php
+													break;
+												case TBGCustomDatatype::RADIO_CHOICE:
+													?>
+													<label for="<?php echo $customdatatype->getKey(); ?>_id_additional"><?php echo $customdatatype->getDescription(); ?></label>
+													<br>
+													<?php foreach ($customdatatype->getOptions() as $option): ?>
+														<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <?php echo $option->getName(); ?><br>
+													<?php
+													endforeach;
+													break;
+												case TBGCustomDatatype::INPUT_TEXT:
+													?>
+													<input type="text" name="<?php echo $customdatatype->getKey(); ?>_value" class="field_additional" id="<?php echo $customdatatype->getKey(); ?>_value_additional" />
+													<?php
+													break;
+											}
+											switch ($customdatatype->getType())
+											{
+												case TBGCustomDatatype::INPUT_TEXT:
+													?>
+													<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_value_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+													<?php
+													break;
+												default:
+													?>
+													<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+													<?php
+													break;
+											}
+											?>								
 									</div>
 								</li>
 							<?php endforeach; ?>

@@ -542,12 +542,6 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .issuetype_list li { font-size: 11px; font-weight: normal; clear: both; margin: 0 0 5px 0; text-align: left; }
 .issuetype_list li img { margin: 0 10px 0 0; float: left; }
 #report_issue_more_options_indicator { text-align: left; /*font-size: 13px;*/ margin-top: 10px; }
-#reportissue_extrafields { list-style-type: none; padding: 0; margin: 10px 0 0 0; width: 1005px; clear: both; }
-#reportissue_extrafields li { /*font-size: 13px;*/ font-weight: normal; clear: none; margin: 5px; min-height: 24px; width: 310px; text-align: left; float: left; }
-#reportissue_extrafields li img { margin: 2px 5px 0 0; float: left; }
-#reportissue_extrafields li div { clear: none; margin-top: 2px; }
-#reportissue_extrafields li select { width: 255px; font-size: 11px; height: 20px; padding: 1px; float: left; }
-#reportissue_extrafields li a.img:hover { border-bottom: 0; }
 .report_issue_desc { width: 1000px; margin: 0 auto 0 auto; text-align: left; /*font-size: 13px;*/ }
 .report_issue_desc select { /*font-size: 13px;*/ }
 #report_more_here { color: #999; font-size: 14px; text-align: center; padding-top: 20px; }
@@ -572,6 +566,12 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .reportissue_error tr td input, .reportissue_error tr td textarea, .reportissue_error tr td select { background-color: #FEE; border-color: #B77; }
 .reportissue_error label { color: #955; }
 .reportissue_error .faded_dark { color: #AA8D8D; }
+#reportissue_extrafields { list-style-type: none; padding: 0; margin: 10px 0 0 0; width: 1005px; clear: both; }
+#reportissue_extrafields li { /*font-size: 13px;*/ font-weight: normal; clear: none; margin: 5px; min-height: 24px; width: 310px; text-align: left; float: left; }
+#reportissue_extrafields li img { margin: 2px 5px 0 0; float: left; }
+#reportissue_extrafields li div { clear: none; margin-top: 2px; }
+#reportissue_extrafields li select, #reportissue_extrafields input[type=text] { width: 255px; font-size: 11px; height: 20px; padding: 1px; float: left; }
+#reportissue_extrafields li a.img:hover { border-bottom: 0; }
 
 .nice_button              { padding: 0px; color: #FFF; border: 0; position: relative; display: inline; text-align: center; margin-left: 10px; }
 .nice_button.report_button input { /*font-size: 13px;*/ }

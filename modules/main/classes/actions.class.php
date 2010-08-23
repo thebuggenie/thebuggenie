@@ -706,12 +706,24 @@
 				$selected_customdatatype = array();
 				foreach (TBGCustomDatatype::getAll() as $customdatatype)
 				{
-					$selected_customdatatype[$customdatatype->getKey()] = null;
-					$customdatatype_id = $customdatatype->getKey() . '_id';
-					if ($request->hasParameter($customdatatype_id))
+					if ($customdatatype->hasCustomOptions())
 					{
-						$$customdatatype_id = $request->getParameter($customdatatype_id);
-						$selected_customdatatype[$customdatatype->getKey()] = TBGCustomDatatypeOption::getByValueAndKey($$customdatatype_id, $customdatatype->getKey());
+						$selected_customdatatype[$customdatatype->getKey()] = null;
+						$customdatatype_id = $customdatatype->getKey() . '_id';
+						if ($request->hasParameter($customdatatype_id))
+						{
+							$$customdatatype_id = $request->getParameter($customdatatype_id);
+							$selected_customdatatype[$customdatatype->getKey()] = TBGCustomDatatypeOption::getByValueAndKey($$customdatatype_id, $customdatatype->getKey());
+						}
+					}
+					else
+					{
+						$selected_customdatatype[$customdatatype->getKey()] = null;
+						$customdatatype_value = $customdatatype->getKey() . '_value';
+						if ($request->hasParameter($customdatatype_value))
+						{
+							$selected_customdatatype[$customdatatype->getKey()] = $request->getParameter($customdatatype_value);
+						}
 					}
 				}
 				$this->selected_customdatatype = $selected_customdatatype;
@@ -776,10 +788,17 @@
 			if (isset($fields_array['pain_effect'])) $issue->setPainEffect($this->selected_pain_effect);
 			foreach (TBGCustomDatatype::getAll() as $customdatatype)
 			{
-				if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption)
+				if ($customdatatype->hasCustomOptions())
 				{
-					$selected_option = $this->selected_customdatatype[$customdatatype->getKey()];
-					$issue->setCustomField($customdatatype->getKey(), $selected_option->getValue());
+					if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption)
+					{
+						$selected_option = $this->selected_customdatatype[$customdatatype->getKey()];
+						$issue->setCustomField($customdatatype->getKey(), $selected_option->getValue());
+					}
+				}
+				else
+				{
+					$issue->setCustomField($customdatatype->getKey(), $this->selected_customdatatype[$customdatatype->getKey()]);
 				}
 			}
 			$issue->save(false, true);
@@ -1376,7 +1395,15 @@
 						$key = $customdatatype->getKey();
 						$revert_methodname = "revertCustomfield{$key}";
 						$issue->$revert_methodname();
-						$field = ($issue->getCustomField($key) instanceof TBGCustomDatatypeOption) ? array('value' => $issue->getCustomField($key)->getValue(), 'name' => $issue->getCustomField($key)->getName()) : array('id' => 0);
+						
+						if ($customdatatype->hasCustomOptions())
+						{
+							$field = ($issue->getCustomField($key) instanceof TBGCustomDatatypeOption) ? array('value' => $issue->getCustomField($key)->getValue(), 'name' => $issue->getCustomField($key)->getName()) : array('id' => 0);
+						}
+						else
+						{
+							$field = ($issue->getCustomField($key) != '') ? array('value' => $key, 'name' => $issue->getCustomField($key)) : array('id' => 0);
+						}
 					}
 					break;
 			}
