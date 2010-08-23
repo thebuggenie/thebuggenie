@@ -499,7 +499,7 @@
 											break;
 										case TBGCustomDatatype::INPUT_TEXT:
 											?>
-											<input type="text" name="<?php echo $customdatatype->getKey(); ?>_value" id="<?php echo $customdatatype->getKey(); ?>_value" /><br>
+											<input type="text" name="<?php echo $customdatatype->getKey(); ?>_value" value="<?php echo $selected_customdatatype[$customdatatype->getKey()]; ?>" id="<?php echo $customdatatype->getKey(); ?>_value" /><br>
 											<?php
 											break;
 									}
@@ -657,7 +657,7 @@
 													break;
 												case TBGCustomDatatype::INPUT_TEXT:
 													?>
-													<input type="text" name="<?php echo $customdatatype->getKey(); ?>_value" class="field_additional" id="<?php echo $customdatatype->getKey(); ?>_value_additional" />
+													<input type="text" name="<?php echo $customdatatype->getKey(); ?>_value" class="field_additional" value="<?php echo $selected_customdatatype[$customdatatype->getKey()]; ?>" id="<?php echo $customdatatype->getKey(); ?>_value_additional" />
 													<?php
 													break;
 											}

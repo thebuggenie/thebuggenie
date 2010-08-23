@@ -1873,17 +1873,22 @@
 		public function getCustomField($key)
 		{
 			$var_name = "_customfield{$key}";
-			if (!is_object($this->$var_name) && !is_null($this->$var_name))
+			if (!is_null($this->$var_name))
 			{
-				echo $this->$var_name;
 				$datatype = TBGCustomDatatype::getByKey($key);
 				switch ($datatype->getType())
 				{
 					case TBGCustomDatatype::INPUT_TEXT:
-						//$this->$var_name = B2DB::getTable('TBGIssueCustomFieldsTable')->getRowByCustomFieldIDandIssueID($datatype->getID(), $this->getID())->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
+						if ($this->$var_name == '')
+						{
+							$this->$var_name = B2DB::getTable('TBGIssueCustomFieldsTable')->getRowByCustomFieldIDandIssueID($datatype->getID(), $this->getID())->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
+						}
 						break;
 					default:
-						$this->$var_name = TBGCustomDatatypeOption::getByValueAndKey($this->$var_name, $key);
+						if (!is_object($this->$var_name))
+						{
+							$this->$var_name = TBGCustomDatatypeOption::getByValueAndKey($this->$var_name, $key);
+						}
 						break;
 				}
 			}
