@@ -436,31 +436,29 @@
 			</div>
 			<div class="dropdown_content">
 				<?php echo $info['select']; ?>:<br>
-				<?php var_dump($info); echo $field;?>
-				<?php 
-				switch ($info['type'])
-				{
-					case TBGCustomDatatype::INPUT_TEXT:
-						?>
-							<form id="custom_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)) ?>', '<?php echo $field; ?>'); return false;">
-								<input type="text" name="<?php echo $field; ?>_value" value="<?php echo $info['name'] ?>" /><?php echo __('%save% or %cancel%', array('%save%' => '<input type="submit" value="'.__('Save').'">', '%cancel%' => '<a href="#" onClick="$(\''.$field.'_change\').hide(); return false;">'.__('cancel').'</a>')); ?>
-							</form>
-						<?php
-						break;
-					default:
-						?>
-						<ul class="choices">
-							<?php foreach ($info['choices'] as $choice): ?>
-								<?php if (!$choice->canUserSet($tbg_user)) continue; ?>
-								<li>
-									<?php echo image_tag('icon_customdatatype.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getValue())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
-								</li>
-							<?php endforeach; ?>
-						</ul>
-						<?php
-						break;
-				}
-				?>
+				<?php if (array_key_exists('choices', $info)): ?>
+					<ul class="choices">
+						<?php foreach ($info['choices'] as $choice): ?>
+							<?php if (!$choice->canUserSet($tbg_user)) continue; ?>
+							<li>
+								<?php echo image_tag('icon_customdatatype.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getValue())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				<?php else:
+
+					switch ($info['type'])
+					{
+						case TBGCustomDatatype::INPUT_TEXT:
+							?>
+								<form id="custom_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)) ?>', '<?php echo $field; ?>'); return false;">
+									<input type="text" name="<?php echo $field; ?>_value" value="<?php echo $info['name'] ?>" /><?php echo __('%save% or %cancel%', array('%save%' => '<input type="submit" value="'.__('Save').'">', '%cancel%' => '<a href="#" onClick="$(\''.$field.'_change\').hide(); return false;">'.__('cancel').'</a>')); ?>
+								</form>
+							<?php
+							break;
+					}
+
+				endif; ?>
 				<div id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
 			</div>
 			<div id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></div>
