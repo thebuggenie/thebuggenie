@@ -115,6 +115,11 @@
 			$this->setupVariables();
 		}
 		
+		public function componentIssuemaincustomfields()
+		{
+			$this->setupVariables();
+		}
+		
 		public function componentHideableInfoBox()
 		{
 			$this->show_box = TBGSettings::isInfoBoxVisible($this->key);

@@ -3976,6 +3976,7 @@
 				{
 					case TBGCustomDatatype::INPUT_TEXT:
 					case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+					case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 						$option_id = $this->getCustomField($key);
 						B2DB::getTable('TBGIssueCustomFieldsTable')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
 						break;
@@ -4353,10 +4354,15 @@
 								switch ($customdatatype->getType())
 								{
 									case TBGCustomDatatype::INPUT_TEXT:
-									case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 										$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
 										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $new_value);
 										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been changed to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%new_value%' => $new_value));
+										break;
+									case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+									case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+										$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
+										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $new_value);
+										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been changed.", array('%customfield_name%' => $customdatatype->getDescription()));
 										break;
 									default:
 										$old_value = ($old_item = TBGCustomDatatypeOption::getByValueAndKey($value['original_value'], $key)) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');

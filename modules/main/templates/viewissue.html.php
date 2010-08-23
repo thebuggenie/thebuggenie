@@ -229,6 +229,8 @@
 								<?php endif; ?>
 							</div>
 						</div>
+							<br />
+						<?php include_component('main/issuemaincustomfields', array('issue' => $theIssue)); ?>
 						<?php TBGEvent::createNew('core', 'viewissue_right_bottom', $theIssue)->trigger(); ?>
 					</td>
 				</tr>

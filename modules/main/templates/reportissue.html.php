@@ -503,8 +503,9 @@
 											<?php
 											break;
 										case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+										case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 											?>
-											<textarea name="<?php echo $customdatatype->getKey(); ?>_value" style="height: 125px; width: 990px;" id="<?php echo $customdatatype->getKey(); ?>_value"><?php echo $selected_customdatatype[$customdatatype->getKey()]; ?></textarea><br>
+											<?php include_template('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'area_id' => $customdatatype->getKey().'_value', 'height' => '125px', 'width' => '100%', 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
 											<?php
 											break;
 									}
@@ -666,10 +667,11 @@
 													<?php
 													break;
 												case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+												case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 													?>
 													<label for="<?php echo $customdatatype->getKey(); ?>_value_additional"><?php echo $customdatatype->getDescription(); ?></label>
 													<br>
-													<textarea name="<?php echo $customdatatype->getKey(); ?>_value" style="height: 125px; width: 300px;" id="<?php echo $customdatatype->getKey(); ?>_value"><?php echo $selected_customdatatype[$customdatatype->getKey()]; ?></textarea><br>
+													<?php include_template('main/textarea', array('area_name' => $customdatatype->getKey().'_value', 'area_id' => $customdatatype->getKey().'_value_additional', 'height' => '125px', 'width' => '100%', 'value' => $selected_customdatatype[$customdatatype->getKey()])); ?>
 													<?php
 													break;
 											}
