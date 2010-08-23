@@ -21,7 +21,7 @@
 	<?php if ($show_details): ?>
 		<div class="faded_medium" style="padding-bottom: 5px;"><?php echo __('Last updated at %time%, by %user%', array('%time%' => tbg_formatTime($article->getPostedDate(), 3), '%user%' => '<b>'.(($article->getAuthor() instanceof TBGIdentifiable) ? $article->getAuthor()->getName() : __('System')).'</b>')); ; ?></div>
 	<?php endif; ?>
-	<div style="font-size: 13px; padding-bottom: 5px;"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded)); ?></div>
+	<div style="padding-bottom: 5px;"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded)); ?></div>
 </div>
 <?php if ($article->isCategory() && !$embedded && $show_category_contains): ?>
 	<div style="margin: 15px 5px 5px 5px;">
