@@ -13,7 +13,7 @@ BODY, TD, TH
 	padding: 0px;
 	margin: 0px;
 	/*font: 11px "Droid Sans", "Trebuchet MS", "Liberation Sans", "Nimbus Sans L", "Luxi Sans", Verdana, sans-serif;*/
-	font-family: 'Nobile';
+	font-family: 'Nobile', sans-serif;
 	/*font-family: "Droid Sans";*/
 	font-style: normal;
 	font-weight: normal;
@@ -57,7 +57,8 @@ FORM
 
 INPUT, SELECT, TEXTAREA, BUTTON
 {
-	font: 1.0em "Droid Sans", "Trebuchet MS", "Liberation Sans", "Nimbus Sans L", "Luxi Sans", Verdana, sans-serif;
+	font-family: 'Nobile', sans-serif;
+	font-size: 1.0em;
 	color: #555;
 	border: 1px solid #BBB;
 	padding: 2px;
