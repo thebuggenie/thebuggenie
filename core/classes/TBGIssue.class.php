@@ -1876,20 +1876,19 @@
 			if (!is_null($this->$var_name))
 			{
 				$datatype = TBGCustomDatatype::getByKey($key);
-				switch ($datatype->getType())
+				if (!$datatype->hasCustomOptions())
 				{
-					case TBGCustomDatatype::INPUT_TEXT:
-						if ($this->$var_name == '')
-						{
-							$this->$var_name = B2DB::getTable('TBGIssueCustomFieldsTable')->getRowByCustomFieldIDandIssueID($datatype->getID(), $this->getID())->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
-						}
-						break;
-					default:
-						if (!is_object($this->$var_name))
-						{
-							$this->$var_name = TBGCustomDatatypeOption::getByValueAndKey($this->$var_name, $key);
-						}
-						break;
+					if ($this->$var_name == '')
+					{
+						$this->$var_name = B2DB::getTable('TBGIssueCustomFieldsTable')->getRowByCustomFieldIDandIssueID($datatype->getID(), $this->getID())->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
+					}
+				}
+				else
+				{
+					if (!is_object($this->$var_name))
+					{
+						$this->$var_name = TBGCustomDatatypeOption::getByValueAndKey($this->$var_name, $key);
+					}
 				}
 			}
 			return $this->$var_name;
@@ -3976,6 +3975,7 @@
 				switch ($customdatatype->getType())
 				{
 					case TBGCustomDatatype::INPUT_TEXT:
+					case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 						$option_id = $this->getCustomField($key);
 						B2DB::getTable('TBGIssueCustomFieldsTable')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
 						break;
@@ -4353,6 +4353,7 @@
 								switch ($customdatatype->getType())
 								{
 									case TBGCustomDatatype::INPUT_TEXT:
+									case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 										$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
 										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $new_value);
 										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been changed to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%new_value%' => $new_value));

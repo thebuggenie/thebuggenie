@@ -1253,7 +1253,7 @@
 						if ($request->hasParameter("{$key}_value"))
 						{
 							$customdatatypeoption_value = $request->getParameter("{$key}_value");
-							if ($customdatatype->getType() == TBGCustomDatatype::INPUT_TEXT)
+							if (!$customdatatype->hasCustomOptions())
 							{
 								$issue->setCustomField($key, $customdatatypeoption_value);
 								$changed_methodname = "isCustomfield{$key}Changed";

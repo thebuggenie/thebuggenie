@@ -502,6 +502,11 @@
 											<input type="text" name="<?php echo $customdatatype->getKey(); ?>_value" value="<?php echo $selected_customdatatype[$customdatatype->getKey()]; ?>" id="<?php echo $customdatatype->getKey(); ?>_value" /><br>
 											<?php
 											break;
+										case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+											?>
+											<textarea name="<?php echo $customdatatype->getKey(); ?>_value" style="height: 125px; width: 990px;" id="<?php echo $customdatatype->getKey(); ?>_value"><?php echo $selected_customdatatype[$customdatatype->getKey()]; ?></textarea><br>
+											<?php
+											break;
 									}
 								?>
 							</td>
@@ -660,19 +665,25 @@
 													<input type="text" name="<?php echo $customdatatype->getKey(); ?>_value" class="field_additional" value="<?php echo $selected_customdatatype[$customdatatype->getKey()]; ?>" id="<?php echo $customdatatype->getKey(); ?>_value_additional" />
 													<?php
 													break;
+												case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+													?>
+													<label for="<?php echo $customdatatype->getKey(); ?>_value_additional"><?php echo $customdatatype->getDescription(); ?></label>
+													<br>
+													<textarea name="<?php echo $customdatatype->getKey(); ?>_value" style="height: 125px; width: 300px;" id="<?php echo $customdatatype->getKey(); ?>_value"><?php echo $selected_customdatatype[$customdatatype->getKey()]; ?></textarea><br>
+													<?php
+													break;
 											}
-											switch ($customdatatype->getType())
+											if (!$customdatatype->hasCustomOptions())
 											{
-												case TBGCustomDatatype::INPUT_TEXT:
-													?>
-													<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_value_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
-													<?php
-													break;
-												default:
-													?>
-													<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
-													<?php
-													break;
+												?>
+												<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_value_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+												<?php
+											}
+											else
+											{
+												?>
+												<a href="javascript:void(0);" class="img" onclick="$('<?php echo $customdatatype->getKey(); ?>_link').show();$('<?php echo $customdatatype->getKey(); ?>_additional_div').hide();$('<?php echo $customdatatype->getKey(); ?>_id_additional').setValue(0);"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+												<?php
 											}
 											?>								
 									</div>
