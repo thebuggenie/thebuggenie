@@ -22,7 +22,7 @@
 		const USER_OR_TEAM_CHOICE = 17;
 		const DROPDOWN_CHOICE_TEXT_COLORED = 18;
 		const DROPDOWN_CHOICE_TEXT_COLOR = 19;
-		const DROPDOWN_CHOICE_TEXT_ICON = 19;
+		const DROPDOWN_CHOICE_TEXT_ICON = 20;
 
 		protected static $_types = null;
 
@@ -200,15 +200,10 @@
 
 		public function getOptions()
 		{
-			switch ($this->getType())
+			if ($this->hasCustomOptions())
 			{
-				case self::INPUT_TEXT:
-					return null;
-					break;
-				default:
-					$this->_populateOptions();
-					return $this->_options;
-					break;
+				$this->_populateOptions();
+				return $this->_options;
 			}
 		}
 
