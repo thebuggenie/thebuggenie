@@ -200,8 +200,16 @@
 
 		public function getOptions()
 		{
-			$this->_populateOptions();
-			return $this->_options;
+			switch ($this->getType())
+			{
+				case self::INPUT_TEXT:
+					return null;
+					break;
+				default:
+					$this->_populateOptions();
+					return $this->_options;
+					break;
+			}
 		}
 
 		public function createNewOption($name, $value, $itemdata = null)
