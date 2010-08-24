@@ -825,7 +825,16 @@
 				while ($row = $res->getNextRow())
 				{
 					$var_name = "_customfield".$row->get(TBGCustomFieldsTable::FIELD_KEY);
-					$this->$var_name = $row->get(TBGCustomFieldOptionsTable::OPTION_VALUE);
+					$datatype = new TBGCustomDatatype($row->get(TBGCustomFieldsTable::ID));
+					
+					if ($datatype->hasCustomOptions())
+					{
+						$this->$var_name = $row->get(TBGCustomFieldOptionsTable::OPTION_VALUE);
+					}
+					else
+					{
+						$this->$var_name =  $row->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
+					}
 				}
 			}
 		}
