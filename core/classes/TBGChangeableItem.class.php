@@ -106,7 +106,7 @@
 		{
 			if (property_exists($this, $property))
 			{
-				if (is_object($this->$property) && method_exists($this->$property, 'getID')) $this->$property = $this->$property->getValue();
+				if (is_object($this->$property) && method_exists($this->$property, 'getID')) $this->$property = $this->$property->getID();
 			}
 			else
 			{
