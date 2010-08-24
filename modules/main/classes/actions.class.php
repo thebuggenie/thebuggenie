@@ -1270,11 +1270,27 @@
 							{
 								case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 								case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+									if ($customdatatypeoption_value == '')
+									{
+										$issue->setCustomField($key, "");
+									}
+									else
+									{
+										$issue->setCustomField($key, $request->getRawParameter("{$key}_value"));
+									}
 									$changed_methodname = "isCustomfield{$key}Changed";
 									if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
 									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value")))));
 									break;
 								default:
+									if ($customdatatypeoption_value == '')
+									{
+										$issue->setCustomField($key, "");
+									}
+									else
+									{
+										$issue->setCustomField($key, $request->getParameter("{$key}_value"));
+									}
 									$changed_methodname = "isCustomfield{$key}Changed";
 									if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
 									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => $customdatatypeoption_value)));
