@@ -1262,38 +1262,58 @@
 					if ($customdatatype = TBGCustomDatatype::getByKey($request->getParameter('field')))
 					{
 						$key = $customdatatype->getKey();
-						if ($request->hasParameter("{$key}_value"))
+						
+						$customdatatypeoption_value = $request->getParameter("{$key}_value");
+						if (!$customdatatype->hasCustomOptions())
 						{
-							$customdatatypeoption_value = $request->getParameter("{$key}_value");
-							if (!$customdatatype->hasCustomOptions())
+							switch ($customdatatype->getType())
 							{
-								switch ($customdatatype->getType())
-								{
-									case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
-									case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
-									$issue->setCustomField($key, $request->getRawParameter("{$key}_value"));
+								case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+								case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+									if ($customdatatypeoption_value == '')
+									{
+										$issue->setCustomField($key, "");
+									}
+									else
+									{
+										$issue->setCustomField($key, $request->getRawParameter("{$key}_value"));
+									}
+									
 									$changed_methodname = "isCustomfield{$key}Changed";
 									if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
-										return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value")))));										break;
-										break;
-									default:
-										$issue->setCustomField($key, $customdatatypeoption_value);
-										$changed_methodname = "isCustomfield{$key}Changed";
-										if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
-										return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => $customdatatypeoption_value)));										break;
-										break;
-								}
-							}
-							if ($customdatatypeoption_value && ($customdatatypeoption = TBGCustomDatatypeOption::getByValueAndKey($customdatatypeoption_value, $key)) instanceof TBGCustomDatatypeOption)
-							{
-								$issue->setCustomField($key, $customdatatypeoption->getValue());
-								$changed_methodname = "isCustomfield{$key}Changed";
-								if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
-								return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $customdatatypeoption_value, 'name' => $customdatatypeoption->getName())));
+									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value")))));
+									break;
+								default:
+									if ($customdatatypeoption_value == '')
+									{
+										$issue->setCustomField($key, "");
+									}
+									else
+									{
+										$$issue->setCustomField($key, $customdatatypeoption_value);
+									}
+									
+									$changed_methodname = "isCustomfield{$key}Changed";
+									if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
+									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => $customdatatypeoption_value)));
+									break;
 							}
 						}
-						$this->getResponse()->setHttpStatus(400);
-						return $this->renderJSON(array('error' => TBGContext::getI18n()->__('No valid field value specified')));
+						if ($customdatatypeoption_value == '' || ($customdatatypeoption_value && ($customdatatypeoption = TBGCustomDatatypeOption::getByValueAndKey($customdatatypeoption_value, $key)) instanceof TBGCustomDatatypeOption))
+						{
+							if ($customdatatypeoption_value == '')
+							{
+								$issue->setCustomField($key, "");
+							}
+							else
+							{
+								$issue->setCustomField($key, $customdatatypeoption->getValue());
+							}
+							
+							$changed_methodname = "isCustomfield{$key}Changed";
+							if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
+							return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $customdatatypeoption_value, 'name' => $customdatatypeoption->getName())));
+						}
 					}
 					break;
 			}
