@@ -38,6 +38,7 @@
 		public function getAllValuesByIssueID($issue_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addJoin(B2DB::getTable('TBGCustomFieldOptionsTable'), TBGCustomFieldOptionsTable::ID, self::OPTION_VALUE);
 			$crit->addWhere(self::ISSUE_ID, $issue_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
@@ -49,6 +50,7 @@
 		public function getRowByCustomFieldIDandIssueID($customdatatype_id, $issue_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addJoin(B2DB::getTable('TBGCustomFieldOptionsTable'), TBGCustomFieldOptionsTable::ID, self::OPTION_VALUE);
 			$crit->addWhere(self::ISSUE_ID, $issue_id);
 			$crit->addWhere(self::CUSTOMFIELDS_ID, $customdatatype_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
