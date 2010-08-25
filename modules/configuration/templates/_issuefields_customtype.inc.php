@@ -7,6 +7,8 @@
 			switch ($type->getType())
 			{
 				case TBGCustomDatatype::INPUT_TEXT:
+				case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
+				case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 					break;
 				default:
 					?><a title="<?php echo __('Show and edit available choices'); ?>" href="javascript:void(0);" onclick="showIssuefieldOptions('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('action_dropdown_small.png'); ?></a><?php	
