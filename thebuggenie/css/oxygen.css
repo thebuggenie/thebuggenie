@@ -2,24 +2,19 @@
  /* The Bug Genie stylesheet
  Released under the MPL v1.1 only */
 
-
-
-/*@import url(http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold);*/
-@import url(http://fonts.googleapis.com/css?family=Nobile:regular,bold);
-@import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono);
+@import url('../fonts/droidsans/stylesheet.css');
+@import url('../fonts/droidsansmono/stylesheet.css');
 
 BODY, TD, TH
 {
 	padding: 0px;
 	margin: 0px;
-	/*font: 11px "Droid Sans", "Trebuchet MS", "Liberation Sans", "Nimbus Sans L", "Luxi Sans", Verdana, sans-serif;*/
-	font-family: 'Nobile', sans-serif;
-	/*font-family: "Droid Sans";*/
+	font-family: 'DroidSans', sans-serif;
 	font-style: normal;
 	font-weight: normal;
 	text-align: left;
 	/*letter-spacing: 0px;*/
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 1.5;
 	color: #555;
 }
@@ -57,7 +52,7 @@ FORM
 
 INPUT, SELECT, TEXTAREA, BUTTON
 {
-	font-family: 'Nobile', sans-serif;
+	font-family: 'DroidSans', sans-serif;
 	font-size: 1.0em;
 	color: #555;
 	border: 1px solid #BBB;
@@ -80,7 +75,7 @@ TEXTAREA
 {
 	padding: 2px;
 	/*font-size: 13px;*/
-	font-family: "Droid Sans Mono", "Liberation Mono", "Courier New", monospace;
+	font-family: 'DroidSansMono', monospace;
 }
 
 INPUT#login_button, INPUT#register_button
@@ -123,7 +118,7 @@ Custom classes
 .main_area { text-align: left; vertical-align: top; padding: 10px 10px 10px 5px; width: auto; min-width: 700px; }
 
 .footer_image { width: 30px; text-align: right; padding: 5px; }
-.footer_container { background-color: #F5F5F5; width: 100%; border-top: 1px solid #DDD; text-aling: center; }
+.footer_container { background-color: #F5F5F5; width: 100%; border-top: 1px solid #DDD; text-align: center; margin-top: 10px; }
 .footer_text_secondline { padding: 0px 0px 8px 0px; font-size: 0.9em; }
 .footer_text_firstline { padding: 8px 0px 0px 0px; font-size: 1em; }
 
@@ -324,7 +319,7 @@ Custom classes
 .installation_box input[type="submit"] { padding: 5px; font-weight: bold; height: 30px; font-size: 15px; }
 .donate { border: 1px solid #AAC6AA; background-color: #CFE8CF; }
 .grey_box { border: 1px solid #DDD; background-color: #F5F5F5; }
-.command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: monospace; width: 500px; margin-top: 5px; }
+.command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'DroidSansMono', monospace; width: 500px; margin-top: 5px; }
 .feature { border: 1px solid #DDD; background-color: #F5F5F5; padding: 10px; margin-bottom: 5px; }
 .feature .description { background-color: #FFF; padding: 10px; }
 .feature .content { background-color: transparent; padding: 10px; border-top: 1px solid #EEE; }
@@ -492,7 +487,7 @@ td.selected_red span	{ color: #FFF; }
 
 .config_buttons, .config_badges 	{ list-style: none; padding: 0px; }
 .config_buttons						{ width: 235px; padding-top: 7px; padding-bottom: 7px; margin-left: 5px; }
-.config_buttons li 					{ margin: 0; padding: 0px; text-align: left; width: 235px; font-size: 12px; border: 0; background-color: #transparent; }
+.config_buttons li 					{ margin: 0; padding: 0px; text-align: left; width: 235px; font-size: 12px; border: 0; background-color: transparent; }
 .config_buttons li:hover 			{ background-color: #E5E5E5; }
 .config_buttons li.config_selected 	{ background-color: #FFF; font-weight: bold; }
 .config_buttons li a				{ display: block; height: 20px; padding: 5px 0 0px 5px; }

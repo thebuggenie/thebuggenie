@@ -28,7 +28,7 @@
 .article h6:target { color: #77B; background-color: #F6F6F6; }
 .article h6 a { font-size: 10px; }
 
-.article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "Droid Sans Mono", monospace; font-size: 12px; }
+.article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "DroidSansMono", monospace; font-size: 12px; }
 
 .article .publish_article_actions .sub_header { font-size: 13px; font-weight: bold; padding: 5px; margin-right: 5px; float: left; }
 .article .publish_article_actions input[type="submit"], .article .publish_article_actions button { padding: 3px; font-weight: bold; font-size: 12px; cursor: pointer; }
@@ -37,7 +37,7 @@
 .article.edit label { font-size: 15px; }
 .article.edit label.small { font-size: 13px; }
 .article.edit input[type="text"] { font-size: 15px; padding: 5px; }
-.article.edit textarea { font-family: "Droid Sans Mono", monospace; }
+.article.edit textarea { font-family: "DroidSansMono", monospace; }
 
 .article .header { margin: 0 0 5px 0; padding: 3px; font-weight: bold; font-size: 17px; border-bottom: 1px solid #CCC; }
 .article .header a { font-size: 13px; }
