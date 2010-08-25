@@ -279,8 +279,16 @@
 				case 'delete':
 					if ($request->hasParameter('id'))
 					{
-						call_user_func(array($types[$request->getParameter('type')], 'delete'), (int) $request->getParameter('id'));
-						return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The option was deleted')));
+						if (array_key_exists($request->getParameter('type'), $types))
+						{
+							call_user_func(array($types[$request->getParameter('type')], 'delete'), (int) $request->getParameter('id'));
+							return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The option was deleted')));
+						}
+						else
+						{
+							TBGCustomDatatypeOption::delete($request->getParameter('id'));
+							return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The option was deleted')));
+						}
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => $i18n->__('Invalid id or type')));
 					break;
