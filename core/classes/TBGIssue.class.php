@@ -1885,12 +1885,7 @@
 			if (!is_null($this->$var_name))
 			{
 				$datatype = TBGCustomDatatype::getByKey($key);
-				if (!$datatype->hasCustomOptions())
-				{
-					// why does this fix it
-					// $this->$var_name = B2DB::getTable('TBGIssueCustomFieldsTable')->getRowByCustomFieldIDandIssueID($datatype->getID(), $this->getID())->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
-				}
-				else
+				if ($datatype->hasCustomOptions())
 				{
 					if (!is_object($this->$var_name))
 					{
