@@ -9,7 +9,7 @@ BODY, TD, TH
 {
 	padding: 0px;
 	margin: 0px;
-	font-family: 'DroidSans', sans-serif;
+	font-family: 'Droid Sans', sans-serif;
 	font-style: normal;
 	font-weight: normal;
 	text-align: left;
@@ -52,7 +52,7 @@ FORM
 
 INPUT, SELECT, TEXTAREA, BUTTON
 {
-	font-family: 'DroidSans', sans-serif;
+	font-family: 'Droid Sans', sans-serif;
 	font-size: 1.0em;
 	color: #555;
 	border: 1px solid #BBB;
@@ -75,7 +75,7 @@ TEXTAREA
 {
 	padding: 2px;
 	/*font-size: 13px;*/
-	font-family: 'DroidSansMono', monospace;
+	font-family: 'Droid Sans Mono', monospace;
 }
 
 INPUT#login_button, INPUT#register_button
@@ -319,7 +319,7 @@ Custom classes
 .installation_box input[type="submit"] { padding: 5px; font-weight: bold; height: 30px; font-size: 15px; }
 .donate { border: 1px solid #AAC6AA; background-color: #CFE8CF; }
 .grey_box { border: 1px solid #DDD; background-color: #F5F5F5; }
-.command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'DroidSansMono', monospace; width: 500px; margin-top: 5px; }
+.command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; width: 500px; margin-top: 5px; }
 .feature { border: 1px solid #DDD; background-color: #F5F5F5; padding: 10px; margin-bottom: 5px; }
 .feature .description { background-color: #FFF; padding: 10px; }
 .feature .content { background-color: transparent; padding: 10px; border-top: 1px solid #EEE; }
