@@ -1887,10 +1887,8 @@
 				$datatype = TBGCustomDatatype::getByKey($key);
 				if (!$datatype->hasCustomOptions())
 				{
-					if ($this->$var_name == '')
-					{
-						$this->$var_name = B2DB::getTable('TBGIssueCustomFieldsTable')->getRowByCustomFieldIDandIssueID($datatype->getID(), $this->getID())->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
-					}
+					// why does this fix it
+					// $this->$var_name = B2DB::getTable('TBGIssueCustomFieldsTable')->getRowByCustomFieldIDandIssueID($datatype->getID(), $this->getID())->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
 				}
 				else
 				{
