@@ -593,10 +593,12 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 #viewissue_duplicate, #viewissue_closed_sameuser, #viewissue_closed, #viewissue_saved, #viewissue_unsaved, #blocking_div { width: 990px; margin: 5px auto 5px auto; }
 #viewissue_open_sameuser, #viewissue_closed_sameuser, #viewissue_closed { text-align: left; }
 #viewissue_open_sameuser img, #viewissue_closed_sameuser img, #viewissue_closed img { float: left; margin: 0 20px 0 20px; }
-.viewissue_info_header { font-weight: bold; font-size: 14px; color: #FFF; padding: 5px; }
-.viewissue_info_content { font-weight: normal; font-size: 12px; padding: 5px; background: white; }
-.viewissue_info_closelink { font-weight: bold; font-size: 12px; padding: 5px; text-align: right; }
-.viewissue_info_closelink a { color: #B5B5FF; }
+.viewissue_info_header { font-weight: bold; font-size: 14px; }
+.viewissue_info_content { font-weight: normal; font-size: 12px; }
+.backdrop_box .viewissue_info_header { font-weight: bold; font-size: 14px; color: #FFF; padding: 5px; }
+.backdrop_box .viewissue_info_content { font-weight: normal; font-size: 12px; padding: 5px; background: white; }
+.backdrop_box .viewissue_info_closelink { font-weight: bold; font-size: 12px; padding: 5px; text-align: right; }
+.backdrop_box .viewissue_info_closelink a { color: #B5B5FF; }
 .user_pain { font-size: 30px; font-weight: bold; color: #91A291; }
 .user_pain_calculated { font-size: 11px; font-weight: bold; color: #91A291; }
 .search_results .yellow_borderless .user_pain { color: #B6AC6D; }
