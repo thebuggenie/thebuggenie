@@ -1,5 +1,4 @@
 <?php if ($count > 0): ?>
-		<br>
 		<div class="viewissue_info_header"><?php echo __('The following issues matched your search'); ?>:</div>
 		<div class="viewissue_info_content">
 			<form action="<?php echo make_url('markasduplicate', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
@@ -41,7 +40,7 @@
 				<?php endif; ?>
 				<li>
 					<label for="markasduplicate_comment"><?php echo __('Write a comment if you want it to be added'); ?></label>
-					<textarea name="markasduplicate_comment" id="markasduplicate_comment" style="width: 372px; height: 50px;"></textarea>
+					<?php include_template('main/textarea', array('area_name' => 'markasduplicate_comment', 'area_id' => 'markasduplicate_comment', 'height' => '75px', 'width' => '570px', 'value' => '')); ?>
 				</li>
 			</ul>
 			<div style="text-align: right; margin-right: 5px;">
@@ -50,5 +49,7 @@
 			</form>
 		</div>
 <?php else: ?>
-	<span class="faded_medium"><?php echo __('No issues matched your search. Please try again with different search terms.'); ?></span>
+		<div class="viewissue_info_content">
+			<span class="faded_medium"><?php echo __('No issues matched your search. Please try again with different search terms.'); ?></span>
+		</div>
 <?php endif; ?>

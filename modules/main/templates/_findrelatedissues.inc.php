@@ -24,5 +24,7 @@
 		</form>
 	</div>
 <?php else: ?>
-	<span class="faded_medium"><?php echo __('No issues matched your search. Please try again with different search terms.'); ?></span>
+	<div class="viewissue_info_content">
+		<span class="faded_medium"><?php echo __('No issues matched your search. Please try again with different search terms.'); ?></span>
+	</div>
 <?php endif; ?>

@@ -36,8 +36,10 @@
 			</ul>
 			<div style="text-align: right; margin-right: 5px;">
 				<input type="submit" value="<?php echo __('Close issue'); ?>">
-				&nbsp;<?php echo __('or %cancel%', array('%cancel%' => '<a href="javascript:void(0);" onclick="resetFadedBackdrop();">' . __('cancel') . '</a>')); ?>
 			</div>
+		</div>
+		<div class="viewissue_info_closelink">
+			<?php echo '<a href="javascript:void(0);" onclick="resetFadedBackdrop();">' . __('Cancel and close this pop-up') . '</a>'; ?>
 		</div>
 	</form>
 </div>
