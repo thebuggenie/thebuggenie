@@ -318,11 +318,22 @@
 							$customtype->setInstructions($request->getParameter('instructions'));
 							$customtype->setName($request->getParameter('name'));
 							$customtype->save();
-							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom type was added'), 'description' => $customtype->getDescription(), 'instructions' => $customtype->getInstructions(), 'name' => $customtype->getName()));
+							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom type was updated'), 'description' => $customtype->getDescription(), 'instructions' => $customtype->getInstructions(), 'name' => $customtype->getName()));
 						}
 						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a custom type key that already exists')));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name')));
+					break;
+				case 'delete':
+					$customtype = TBGCustomDatatype::getByKey($request->getParameter('type'));
+					if ($customtype instanceof TBGCustomDatatype)
+					{
+						$id = $customtype->getID();
+						unset($customtype);
+						TBGCustomDatatype::delete($id);
+						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom type was deleted')));
+					}
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a custom type key that already exists')));
 					break;
 			}
 		}

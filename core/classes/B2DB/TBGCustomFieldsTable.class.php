@@ -99,4 +99,17 @@
 			$res = $this->doUpdateById($crit, $id);
 		}
 
+		public function getKeyFromID($id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ID, $id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			$row = $this->doSelectOne($crit);
+			if ($row instanceof B2DBRow)
+			{
+				return $row->get(self::FIELD_KEY);
+			}
+			return null;
+		}
 	}

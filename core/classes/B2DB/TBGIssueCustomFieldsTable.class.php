@@ -84,5 +84,22 @@
 				$res = $this->doInsert($crit);
 			}
 		}
+		
+		public function doDeleteByFieldId($id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::CUSTOMFIELDS_ID, $id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			$res = $this->doSelect($crit);
+			
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$this->doDeleteById($row->get(self::ID));
+				}
+			}
+		}
 
 	}

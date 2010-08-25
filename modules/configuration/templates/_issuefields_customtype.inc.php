@@ -1,4 +1,4 @@
-<div class="rounded_box borderless mediumgrey" style="margin: 5px 0 0 0; padding: 3px; font-size: 12px;">
+<div id="item_<?php echo $type_key; ?>_<?php echo $type->getID(); ?>" class="rounded_box borderless mediumgrey" style="margin: 5px 0 0 0; padding: 3px; font-size: 12px;">
 	<?php echo image_tag('spinning_32.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => $type_key . '_indicator')); ?>
 	<div class="header"><a href="javascript:void(0);" onclick="showIssuefieldOptions('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');" id="custom_type_<?php echo $type_key; ?>_name_link"><?php echo $type->getName(); ?></a>&nbsp;<span class="faded_dark" style="font-weight: normal; font-size: 12px;"><?php echo $type_key; ?></span></div>
 	<div class="content">
@@ -15,7 +15,20 @@
 					break;
 			}
 		?>
+		<a href="javascript:void(0);" onclick="$('delete_item_<?php echo $type->getID(); ?>').toggle();" class="image" style="float: right; margin-right: 5px;" id="delete_<?php echo $type->getID(); ?>_link"><?php echo image_tag('icon_delete.png'); ?></a>
 		<b><?php echo __('Type'); ?>:</b>&nbsp;<?php echo $type->getTypeDescription(); ?>
+	</div>
+	<div id="delete_item_<?php echo $type->getID(); ?>" class="rounded_box white shadowed" style="margin: 5px 0 10px 0; font-size: 12px; display: none;">
+		<div class="header"><?php echo __('Really delete "%itemname%"?', array('%itemname%' => $type->getName())); ?></div>
+		<div class="content">
+			<?php echo __('Are you really sure you want to delete this item?'); ?><br>
+			<?php echo __('This will also remove the value of this custom field from all issues, along with any possible options this field can take.')?>
+			<div style="text-align: right; font-size: 13px;">
+				<a href="javascript:void(0);" onclick="deleteIssuefieldCustom('<?php echo make_url('configure_issuefields_delete_customtype', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>', '<?php echo $type->getID(); ?>');return false;"><?php echo __('Yes'); ?></a> ::
+				<a href="javascript:void(0);" onclick="$('delete_item_<?php echo $type->getID(); ?>').toggle();"><b><?php echo __('No'); ?></b></a>
+			</div>
+			<?php echo image_tag('spinning_20.gif', array('id' => 'delete_'.$type_key.'_'.$type->getID().'_indicator', 'style' => 'margin-left: 5px; display: none;')); ?>
+		</div>
 	</div>
 	<div id="custom_type_<?php echo $type_key; ?>_info">
 		<b><?php echo __('Label'); ?>:</b>&nbsp;<span id="custom_type_<?php echo $type_key; ?>_description_span"><?php echo $type->getDescription(); ?></span><br>

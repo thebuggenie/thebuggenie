@@ -110,5 +110,22 @@
 
 			$res = $this->doUpdateById($crit, $id);
 		}
+		
+		public function doDeleteByFieldKey($key)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::CUSTOMFIELDS_KEY, $key);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+		
+			$res = $this->doSelect($crit);
+			
+			if ($res)
+			{
+				while ($row = $res->getNextRow())
+				{
+					$this->doDeleteById($row->get(self::ID));
+				}
+			}
+		}
 
 	}

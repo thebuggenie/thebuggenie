@@ -238,12 +238,45 @@ function deleteIssuefieldOption(url, type, id)
 		{
 			$('delete_' + type + '_' + id + '_indicator').hide();
 			successMessage(json.title, '');
-			$('item_' + type + '_' + id).remove();
 			$('delete_item_' + id).remove();
-			if ($(type + '_list').childElements().size() == 0)
-			{
-				$('no_' + type + '_items').show();
-			}
+			$('item_' + type + '_' + id).remove();
+		}
+	},
+	onFailure: function (transport) {
+		$('delete_' + type + '_' + id + '_indicator').hide();
+		if (transport.responseJSON)
+		{
+			failedMessage(transport.responseJSON.error);
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+	}
+	});
+}
+
+function deleteIssuefieldCustom(url, type, id)
+{
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	onLoading: function (transport) {
+		$('delete_' + type + '_' + id + '_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+			$('delete_' + type + '_' + id + '_indicator').hide();
+		}
+		else
+		{
+			$('delete_' + type + '_' + id + '_indicator').hide();
+			successMessage(json.title, '');
+			$('delete_item_' + id).remove();
+			$('item_' + type + '_' + id).remove();
 		}
 	},
 	onFailure: function (transport) {
