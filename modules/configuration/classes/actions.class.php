@@ -310,9 +310,9 @@
 						if (!TBGCustomDatatype::isNameValid($request->getParameter('name')))
 						{
 							$customtype = TBGCustomDatatype::createNew($request->getParameter('name'), $request->getParameter('field_type'));
-							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom type was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
+							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom field was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
 						}
-						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a unique custom type name (key already exists)')));
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a unique custom field name (key already exists)')));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name')));
 					break;
@@ -326,9 +326,9 @@
 							$customtype->setInstructions($request->getParameter('instructions'));
 							$customtype->setName($request->getParameter('name'));
 							$customtype->save();
-							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom type was updated'), 'description' => $customtype->getDescription(), 'instructions' => $customtype->getInstructions(), 'name' => $customtype->getName()));
+							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom field was updated'), 'description' => $customtype->getDescription(), 'instructions' => $customtype->getInstructions(), 'name' => $customtype->getName()));
 						}
-						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a custom type key that already exists')));
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a custom field key that already exists')));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name')));
 					break;
@@ -339,7 +339,7 @@
 						$id = $customtype->getID();
 						unset($customtype);
 						TBGCustomDatatype::delete($id);
-						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom type was deleted')));
+						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom field was deleted')));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a custom type key that already exists')));
 					break;
