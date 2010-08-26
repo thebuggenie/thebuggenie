@@ -668,7 +668,6 @@ img.undo { display: none; }
 #attach_file #uploaded_files_container { max-height: 160px; overflow: auto; }
 #attach_file #uploaded_files { table-layout: fixed; width: 100%; background-color: #FFF; }
 #uploader_no_uploaded_files { padding: 5px 0 15px 5px; }
-
 .issue_lefthand #more_actions { /*font-size: 13px;*/ }
 .issue_lefthand #more_actions { padding: 10px 5px 5px 10px; }
 .issue_lefthand #more_actions .box_header { font-weight: bold; padding: 5px 0 5px 0; }
