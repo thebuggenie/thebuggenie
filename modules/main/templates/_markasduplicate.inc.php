@@ -11,8 +11,8 @@
 				<?php echo image_tag('spinning_20.gif', array('id' => 'find_issue_indicator', 'style' => 'display: none;')); ?><br>
 			</div>
 		</form>
+		<div id="viewissue_duplicate_results"></div>
 	</div>
-	<div id="viewissue_duplicate_results"></div>
 	<div class="backdrop_detail_footer">
 		<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Cancel and close this pop-up'); ?></a>
 	</div>
