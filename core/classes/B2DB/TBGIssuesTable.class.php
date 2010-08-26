@@ -499,14 +499,7 @@
 			$crit->addWhere(self::DELETED, false);
 			if (count($filters) > 0)
 			{
-				foreach ($filters as $filter => $filter_info)
-				{
-					if (!in_array($filter, self::getValidSearchFilters()))
-					{
-						$crit->addJoin(B2DB::getTable('TBGIssueCustomFieldsTable'), TBGIssueCustomFieldsTable::ISSUE_ID, TBGIssuesTable::ID);
-						break;
-					}
-				}
+				$crit->addJoin(B2DB::getTable('TBGIssueCustomFieldsTable'), TBGIssueCustomFieldsTable::ISSUE_ID, TBGIssuesTable::ID);
 
 				foreach ($filters as $filter => $filter_info)
 				{
@@ -522,12 +515,14 @@
 									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_LIKE);
 									$ctn->addOr(self::LONG_DESCRIPTION, $searchterm, B2DBCriteria::DB_LIKE);
 									$ctn->addOr(self::REPRODUCTION, $searchterm, B2DBCriteria::DB_LIKE);
+									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $searchterm, B2DBCriteria::DB_LIKE);
 								}
 								else
 								{
 									$ctn = $crit->returnCriterion(self::TITLE, $searchterm, B2DBCriteria::DB_NOT_LIKE);
 									$ctn->addWhere(self::LONG_DESCRIPTION, $searchterm, B2DBCriteria::DB_NOT_LIKE);
 									$ctn->addWhere(self::REPRODUCTION, $searchterm, B2DBCriteria::DB_NOT_LIKE);
+									$ctn->addOr(TBGIssueCustomFieldsTable::OPTION_VALUE, $searchterm, B2DBCriteria::DB_NOT_LIKE);
 								}
 								$crit->addWhere($ctn);
 							}
