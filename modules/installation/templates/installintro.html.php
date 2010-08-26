@@ -11,7 +11,7 @@
 	The key to success for any open source project is listening to feedback from users - both positive feedback <b>and</b> constructive criticism.<br>
 	<b>We listen to our users.</b>
 	<br>
-	<h4>If you have anything you would like to tell us, please let us know by emailing us: <a href="feedback@thebuggenie.com">feedback@thebuggenie.com</a></h4>
+	<h4>If you have anything you would like to tell us, please let us know by emailing us: <a href="mailto:feedback@thebuggenie.com">feedback@thebuggenie.com</a></h4>
 	<br>
 	<h2>License information</h2> 
 	<b>This software is Open Source Initiative approved Open Source Software. Open Source Initiative Approved is a trademark of the Open Source Initiative.</b><br>
