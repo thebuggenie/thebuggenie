@@ -595,10 +595,6 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 #viewissue_open_sameuser img, #viewissue_closed_sameuser img, #viewissue_closed img { float: left; margin: 0 20px 0 20px; }
 .viewissue_info_header { font-weight: bold; font-size: 14px; }
 .viewissue_info_content { font-weight: normal; font-size: 12px; }
-.backdrop_box .viewissue_info_header { font-weight: bold; font-size: 14px; color: #FFF; padding: 5px; }
-.backdrop_box .viewissue_info_content { font-weight: normal; font-size: 12px; padding: 5px; background: white; }
-.backdrop_box .viewissue_info_closelink { font-weight: bold; font-size: 12px; padding: 5px; text-align: right; }
-.backdrop_box .viewissue_info_closelink a { color: #B5B5FF; }
 .user_pain { font-size: 30px; font-weight: bold; color: #91A291; }
 .user_pain_calculated { font-size: 11px; font-weight: bold; color: #91A291; }
 .search_results .yellow_borderless .user_pain { color: #B6AC6D; }
@@ -686,6 +682,10 @@ img.undo { display: none; }
 .backdrop_box { background: #585DB2 !important; position: absolute; top: 50%; left: 50%; z-index: 100001; clear: both; padding: 0 !important; }
 .backdrop_box.small { width: 400px; margin: -200px 0 0 -200px; }
 .backdrop_box.medium { width: 600px; margin: -300px 0 0 -300px; }
+.backdrop_detail_header { font-weight: bold; font-size: 14px; color: #FFF; padding: 5px; }
+.backdrop_detail_content { font-weight: normal; font-size: 12px; padding: 5px; background: white; }
+.backdrop_detail_footer { font-weight: bold; font-size: 12px; padding: 5px; text-align: right; }
+.backdrop_detail_footer a { color: #B5B5FF; }
 
 #viewissue_add_relation_div { text-align: left; padding: 10px; }
 #viewissue_find_issue_form div { text-align: left; font-size: 12px; margin-top: 10px; }

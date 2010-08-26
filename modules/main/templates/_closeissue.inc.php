@@ -1,7 +1,7 @@
 <div class="rounded_box white borderless shadowed backdrop_box small" style="padding: 5px; text-align: left; font-size: 13px;">
-	<div class="viewissue_info_header"><?php echo __('Close this issue'); ?></div>
+	<div class="backdrop_detail_header"><?php echo __('Close this issue'); ?></div>
 	<form action="<?php echo make_url('closeissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
-		<div class="viewissue_info_content">
+		<div class="backdrop_detail_content">
 			<?php echo __('Do you want to change some of these values as well?'); ?>
 			<input type="hidden" name="issue_action" value="close">
 			<ul>
@@ -38,7 +38,7 @@
 				<input type="submit" value="<?php echo __('Close issue'); ?>">
 			</div>
 		</div>
-		<div class="viewissue_info_closelink">
+		<div class="backdrop_detail_footer">
 			<?php echo '<a href="javascript:void(0);" onclick="resetFadedBackdrop();">' . __('Cancel and close this pop-up') . '</a>'; ?>
 		</div>
 	</form>
