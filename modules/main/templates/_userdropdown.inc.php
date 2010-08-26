@@ -53,7 +53,7 @@
 					<?php endif; ?>
 					</div>
 				<?php endif; ?>
-				<div style="padding: 2px;"><a href="javascript:void(0);" onclick="<?php echo $viewuser_string . $closemenu_string; ?>"><?php echo __('View details'); ?></a></div>
+				<div style="padding: 2px;"><a href="javascript:void(0);" onclick="failedMessage('This functionality is not yet implemented');return false;<?php echo $viewuser_string . $closemenu_string; ?>"><?php echo __('View details'); ?></a></div>
 				<?php TBGEvent::createNew('core', 'useractions_bottom', $user, array("closemenustring" => $closemenu_string))->trigger(); ?>
 				<?php if (((TBGContext::getUser()->hasPermission("b2saveconfig", 14, "core") && $user->getScope()->getID() != TBGContext::getScope()->getID()) || TBGContext::getUser()->hasPermission("b2saveconfig", 2, "core")) && $user->getID() != TBGContext::getUser()->getUID()): ?>
 					<div style="padding: 2px; padding-top: 10px; padding-bottom: 10px;"><a href="login_validate.inc.php?switch_user=true&amp;new_user=<?php echo $user->getUname(); ?>"><?php echo __('Temporarily switch to this user'); ?></a></div>
