@@ -833,7 +833,7 @@
 					}
 					else
 					{
-						$this->$var_name =  $row->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
+						$this->$var_name = $row->get(TBGIssueCustomFieldsTable::OPTION_VALUE);
 					}
 				}
 			}
