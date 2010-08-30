@@ -74,6 +74,7 @@
 			$this->template_parameter = $request->getParameter('template_parameter');
 			$this->searchtitle = TBGContext::getI18n()->__('Search results');
 			$this->issavedsearch = false;
+			$this->show_results = ($request->hasParameter('quicksearch') || $request->hasParameter('filters') || $request->getParameter('search', false)) ? true : false;
 
 			if ($request->hasParameter('saved_search'))
 			{
@@ -234,7 +235,6 @@
 		 */
 		public function runFindIssues(TBGRequest $request)
 		{
-			$this->show_results = ($request->hasParameter('quicksearch') || $request->hasParameter('filters') || $request->getParameter('search', false)) ? true : false;
 			$this->_getSearchDetailsFromRequest($request);
 
 			if ($request->isMethod(TBGRequest::POST))
@@ -286,7 +286,7 @@
 		{
 			$this->_getSearchDetailsFromRequest($request);
 
-			if ($request->hasParameter('searchfor'))
+			if ($this->show_results)
 			{
 				$this->doSearch($request);
 				$this->issues = $this->foundissues;
