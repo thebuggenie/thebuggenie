@@ -37,9 +37,16 @@
 			if ($issue_no = TBGContext::getRequest()->getParameter('issue_no'))
 			{
 				$issue = TBGIssue::getIssueFromLink($issue_no);
-				if (!$selected_project instanceof TBGProject || $issue->getProjectID() != $selected_project->getID())
+				if ($issue instanceof TBGIssue)
 				{
-					$issue = null;
+					if (!$selected_project instanceof TBGProject || $issue->getProjectID() != $selected_project->getID())
+					{
+						$issue = null;
+					}
+				}
+				else
+				{
+					TBGLogging::log("Issue no [$issue_no] not a valid issue no", 'main', TBGLogging::LEVEL_WARNING_RISK);
 				}
 			}
 			TBGLogging::log('done (Loading issue)');
