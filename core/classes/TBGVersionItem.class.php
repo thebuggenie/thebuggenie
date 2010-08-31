@@ -286,7 +286,7 @@
 		 */
 		public function setReleaseDate($release_date = null)
 		{
-			if ($val === null) $val = $_SERVER["REQUEST_TIME"];
+			if ($release_date === null) $release_date = $_SERVER["REQUEST_TIME"];
 			$this->_release_date = $release_date;
 		}
 

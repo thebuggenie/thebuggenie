@@ -893,27 +893,36 @@
 		{
 			self::$_permissions = array();
 			
-			TBGLogging::log('starting to cache access permissions');
-			if ($res = B2DB::getTable('TBGPermissionsTable')->getAll())
+			if ($permissions = TBGCache::get('permissions'))
 			{
-				while ($row = $res->getNextRow())
-				{
-					if (!array_key_exists($row->get(TBGPermissionsTable::MODULE), self::$_permissions))
-					{
-						self::$_permissions[$row->get(TBGPermissionsTable::MODULE)] = array();
-					}
-					if (!array_key_exists($row->get(TBGPermissionsTable::PERMISSION_TYPE), self::$_permissions[$row->get(TBGPermissionsTable::MODULE)]))
-					{
-						self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)] = array();
-					}
-					if (!array_key_exists($row->get(TBGPermissionsTable::TARGET_ID), self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)]))
-					{
-						self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)][$row->get(TBGPermissionsTable::TARGET_ID)] = array();
-					}
-					self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)][$row->get(TBGPermissionsTable::TARGET_ID)][] = array('uid' => $row->get(TBGPermissionsTable::UID), 'gid' => $row->get(TBGPermissionsTable::GID), 'tid' => $row->get(TBGPermissionsTable::TID), 'allowed' => (bool) $row->get(TBGPermissionsTable::ALLOWED));
-				}
+				self::$_permissions = $permissions;
+				TBGLogging::log('Using cached permissions');
 			}
-			TBGLogging::log('done (starting to cache access permissions)');
+			else
+			{
+				TBGLogging::log('starting to cache access permissions');
+				if ($res = B2DB::getTable('TBGPermissionsTable')->getAll())
+				{
+					while ($row = $res->getNextRow())
+					{
+						if (!array_key_exists($row->get(TBGPermissionsTable::MODULE), self::$_permissions))
+						{
+							self::$_permissions[$row->get(TBGPermissionsTable::MODULE)] = array();
+						}
+						if (!array_key_exists($row->get(TBGPermissionsTable::PERMISSION_TYPE), self::$_permissions[$row->get(TBGPermissionsTable::MODULE)]))
+						{
+							self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)] = array();
+						}
+						if (!array_key_exists($row->get(TBGPermissionsTable::TARGET_ID), self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)]))
+						{
+							self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)][$row->get(TBGPermissionsTable::TARGET_ID)] = array();
+						}
+						self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)][$row->get(TBGPermissionsTable::TARGET_ID)][] = array('uid' => $row->get(TBGPermissionsTable::UID), 'gid' => $row->get(TBGPermissionsTable::GID), 'tid' => $row->get(TBGPermissionsTable::TID), 'allowed' => (bool) $row->get(TBGPermissionsTable::ALLOWED));
+					}
+				}
+				TBGLogging::log('done (starting to cache access permissions)');
+				TBGCache::add('permissions', self::$_permissions);
+			}
 		}
 
 		public static function deleteModulePermissions($module_name)
@@ -1689,6 +1698,8 @@
 					echo $decoration_footer;
 				}
 				TBGLogging::log('...done (rendering content)');
+
+				//self::getI18n()->addMissingStringsToStringsFile();
 				
 				return true;
 			}

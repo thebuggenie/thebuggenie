@@ -34,7 +34,7 @@
 				<div style="font-size: 16px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;">Log messages</div>
 				<div style="height: 470px; overflow: auto;">
 				<?php foreach (TBGContext::getI18n()->getMissingStrings() as $text => $t): ?>
-					<?php TBGLogging::log('The text "' . $text . '" does not exist in list of translated strings.', 'i18n', TBGLogging::LEVEL_NOTICE); ?>
+					<?php TBGLogging::log('The text "' . $text . '" does not exist in list of translated strings, and was added automatically', 'i18n', TBGLogging::LEVEL_NOTICE); ?>
 				<?php endforeach; ?>
 				<?php foreach (TBGLogging::getEntries() as $entry): ?>
 					<?php $color = TBGLogging::getCategoryColor($entry['category']); ?>

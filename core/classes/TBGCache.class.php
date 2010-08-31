@@ -30,8 +30,13 @@
 		
 		public static function add($key, $value)
 		{
-			if (!self::isEnabled()) return null;
+			if (!self::isEnabled())
+			{
+				TBGLogging::log('Can not cache value for key "' . $key . '"', 'cache');
+				return false;
+			}
 			apc_store($key, $value);
+			TBGLogging::log('Caching value for key "' . $key . '"', 'cache');
 			return true;
 		}
 		

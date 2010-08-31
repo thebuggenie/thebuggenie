@@ -29,15 +29,26 @@
 		
 		public function __construct($language)
 		{
-			if (!file_exists(TBGContext::getIncludePath() . 'i18n/' . $language . '/general.inc.php'))
+			if (!file_exists($this->getStringsFilename($language)))
 			{
 				throw new Exception('The selected language is not available');
 			}
 			$this->_language = $language;
 		}
+
+		public function getStringsFilename($language = null)
+		{
+			$language = ($language === null) ? $this->_language : $language;
+			return TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $language . DIRECTORY_SEPARATOR . 'strings.inc.php';
+		}
 		
 		public function initialize()
 		{
+			$filename = TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'initialize.inc.php';
+			if (file_exists($filename))
+			{
+				include $filename;
+			}
 			$this->loadStrings();
 		}
 		
@@ -46,13 +57,34 @@
 			if ($language != $this->_language)
 			{
 				$this->_language = $language;
-				$this->loadStrings();
+				$this->initialize();
 			}
 		}
 		
 		public function getMissingStrings()
 		{
 			return $this->_missing_strings;
+		}
+
+		public function addMissingStringsToStringsFile()
+		{
+			foreach ($this->getMissingStrings() as $string => $truth)
+			{
+				if (strpos($string, '"') !== false && strpos($string, "'") !== false)
+				{
+					$string = str_replace('"', '\"', $string);
+					file_put_contents($this->getStringsFilename(), "\n\t".'$strings["'.$string.'"] = "'.$string."\";", FILE_APPEND);
+				}
+				elseif (strpos($string, "'") !== false)
+				{
+					file_put_contents($this->getStringsFilename(), "\n\t".'$strings["'.$string.'"] = "'.$string."\";", FILE_APPEND);
+				}
+				else
+				{
+					file_put_contents($this->getStringsFilename(), "\n\t".'$strings[\''.$string.'\'] = \''.$string."';", FILE_APPEND);
+				}
+			}
+
 		}
 		
 		public function setCharset($charset)
@@ -120,18 +152,18 @@
 				$filename = '';
 				if ($module !== null)
 				{
-					if (file_exists(TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'general.inc.php'))
+					if (file_exists(TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . "{$module}.inc.php"))
 					{
-						$filename = TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'general.inc.php';
+						$filename = TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . "{$module}.inc.php";
 					}
 					else
 					{
-						$filename = TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'general.inc.php';
+						$filename = TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . "{$module}.inc.php";
 					}
 				}
 				else
 				{
-					$filename = TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'general.inc.php';
+					$filename = $this->getStringsFilename();
 				}
 				//echo $filename;
 				if (file_exists($filename))
@@ -143,8 +175,7 @@
 				else
 				{
 					$message = 'Could not find language file ' . $filename;
-					TBGLogging::log($message, 'i18n');
-					//throw new Exception($message);
+					TBGLogging::log($message, 'i18n', TBGLogging::LEVEL_NOTICE);
 				}
 			}
 			else

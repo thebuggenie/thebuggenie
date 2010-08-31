@@ -104,6 +104,8 @@
 					return "5C5";
 				case 'i18n':
 					return "A83";
+				case 'cache':
+					return "8A3";
 				case 'search':
 					return "2FA";
 				case 'publish':
