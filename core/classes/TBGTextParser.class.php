@@ -804,6 +804,10 @@
 
 		protected function _geshify($matches)
 		{
+			if (!(is_array($matches) && count($matches) > 1))
+			{
+				return '';
+			}
 			$codeblock = $matches[2];
 			$params = $matches[1];
 
