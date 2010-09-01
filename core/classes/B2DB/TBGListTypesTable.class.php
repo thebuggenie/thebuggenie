@@ -162,7 +162,7 @@
 			}
 
 			$statuses = array();
-			$statuses['Not reviewed'] = '#FFF';
+			$statuses['New'] = '#FFF';
 			$statuses['Collecting information'] = '#C2F533';
 			$statuses['Confirmed'] = '#FF55AA';
 			$statuses['Not a bug'] = '#44FC1D';

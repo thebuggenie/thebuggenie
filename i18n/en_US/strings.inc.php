@@ -832,7 +832,7 @@
 	$strings['Low'] = 'Low';
 	$strings['Normal'] = 'Normal';
 	$strings['Critical'] = 'Critical';
-	$strings['Not reviewed'] = 'Not reviewed';
+	$strings['New'] = 'New';
 	$strings['Collecting information'] = 'Collecting information';
 	$strings['Confirmed'] = 'Confirmed';
 	$strings['Not a bug'] = 'Not a bug';
