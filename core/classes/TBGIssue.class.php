@@ -598,7 +598,7 @@
 			{
 				$issue_no = explode('-', strtoupper($issue_no));
 				TBGLogging::log('exploding');
-				if (count($issue_no) == 2 && $row = B2DB::getTable('TBGIssuesTable')->getByPrefixAndIssueNo($issue_no[0], $issue_no[1]))
+				if (count($issue_no) == 2 && $row = TBGIssuesTable::getTable()->getByPrefixAndIssueNo($issue_no[0], $issue_no[1]))
 				{
 					$theIssue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
 					if (!$theIssue->getProject()->usePrefix())

@@ -348,6 +348,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(TBGProjectsTable::PREFIX, $prefix);
+			$crit->addWhere(TBGProjectsTable::DELETED, false);
 			$crit->addWhere(self::ISSUE_NO, $issue_no);
 			$row = $this->doSelectOne($crit, array(self::PROJECT_ID));
 			return $row;
