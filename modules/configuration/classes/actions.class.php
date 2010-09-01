@@ -1448,7 +1448,7 @@
 			try
 			{
 				$mode = $request->getParameter('mode');
-				$request_param = ($mode == 'clone') ? 'group_name' : 'new_group_name';
+				$request_param = ($mode == 'clone') ? 'new_group_name' : 'group_name';
 				if ($group_name = $request->getParameter($request_param))
 				{
 					if ($mode == 'clone')
@@ -1537,7 +1537,7 @@
 			try
 			{
 				$mode = $request->getParameter('mode');
-				$request_param = ($mode == 'clone') ? 'team_name' : 'new_team_name';
+				$request_param = ($mode == 'clone') ? 'new_team_name' : 'team_name';
 				if ($team_name = $request->getParameter($request_param))
 				{
 					if ($mode == 'clone')
