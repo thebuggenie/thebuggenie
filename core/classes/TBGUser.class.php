@@ -1692,7 +1692,7 @@
 		 */
 		public function canVoteForIssue($issue_id)
 		{
-			return !(bool) $this->hasPermissions("b2cantvote", $issue_id);
+			return !(bool) $this->hasPermission("b2cantvote", $issue_id);
 		}
 
 		/**
