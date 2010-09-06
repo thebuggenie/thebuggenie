@@ -261,25 +261,27 @@
 			<?php if ($show_results): ?>
 				<div class="main_header">
 					<?php echo $searchtitle; ?>
-					&nbsp;&nbsp;<span class="faded_medium"><?php echo __('%number_of% issue(s)', array('%number_of%' => $resultcount)); ?></span><br>
-					<?php
-						if (TBGContext::getRequest()->hasParameter('quicksearch'))
-						{
-							$searchfor = TBGContext::getRequest()->getParameter('searchfor');
-							echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('search', array('quicksearch' => 'true', 'format' => 'csv')).'?searchfor='.$searchfor.'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('search', array('quicksearch' => 'true', 'format' => 'rss')).'?searchfor='.$searchfor.'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
-						}
-						elseif (TBGContext::getRequest()->hasParameter('predefined_search'))
-						{
-							$searchno = TBGContext::getRequest()->getParameter('predefined_search');
-							echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('search', array('predefined_search' => $searchno, 'search' => '1', 'format' => 'csv')).'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('search', array('predefined_search' => $searchno, 'search' => '1', 'format' => 'rss')).'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
-						}
-						else
-						{
-							/* Produce get parameters for query */
-							$get = str_replace($_SERVER['REDIRECT_URL'], '', $_SERVER['REQUEST_URI']);
-							echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'csv')).$get.'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'rss')).$get.'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
-						}
-					?>
+					&nbsp;&nbsp;<span class="faded_medium"><?php echo __('%number_of% issue(s)', array('%number_of%' => $resultcount)); ?></span>
+					<div class="search_export_links">
+						<?php
+							if (TBGContext::getRequest()->hasParameter('quicksearch'))
+							{
+								$searchfor = TBGContext::getRequest()->getParameter('searchfor');
+								echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('search', array('quicksearch' => 'true', 'format' => 'csv')).'?searchfor='.$searchfor.'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('search', array('quicksearch' => 'true', 'format' => 'rss')).'?searchfor='.$searchfor.'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
+							}
+							elseif (TBGContext::getRequest()->hasParameter('predefined_search'))
+							{
+								$searchno = TBGContext::getRequest()->getParameter('predefined_search');
+								echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('search', array('predefined_search' => $searchno, 'search' => '1', 'format' => 'csv')).'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('search', array('predefined_search' => $searchno, 'search' => '1', 'format' => 'rss')).'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
+							}
+							else
+							{
+								/* Produce get parameters for query */
+								$get = str_replace($_SERVER['REDIRECT_URL'], '', $_SERVER['REQUEST_URI']);
+								echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'csv')).$get.'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'rss')).$get.'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
+							}
+						?>
+					</div>
 				</div>
 				<?php if (count($issues) > 0): ?>
 					<div id="search_results" class="search_results">

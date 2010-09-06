@@ -828,6 +828,7 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 #find_issues .main_header .faded_medium { font-weight: normal; }
 #find_issues .main_content { font-size: 12px; font-weight: normal; padding: 3px; }
 #find_issues #no_issues { /*font-size: 13px;*/ padding: 4px; }
+#find_issues .search_export_links { float: right; font-size: 0.9em; }
 .search_results { margin: 0 0 5px 0; }
 .search_results th { background-color: #F5F5F5; padding: 3px 3px 3px 0; }
 .search_results td { font-size: 12px; padding: 3px 3px 3px 0; }
