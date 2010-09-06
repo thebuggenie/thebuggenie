@@ -1810,5 +1810,12 @@
 		{
 			return (PHP_SAPI == 'cli');
 		}
+
+		public static function getCurrentCLIusername()
+		{
+			$processUser = posix_getpwuid(posix_geteuid());
+			return $processUser['name'];
+		}
+
 	}
 	
