@@ -21,7 +21,7 @@
 			ob_end_clean();
 		}
 		
-		if (TBGContext::getEnvironment() == TBGContext::ENV_CLI)
+		if (TBGContext::isCLI())
 		{
 			$trace_elements = null;
 			if ($exception instanceof Exception)
@@ -279,16 +279,11 @@
 		// Load the logging class so we can log stuff
 		require THEBUGGENIE_PATH . 'core/classes/TBGLogging.class.php';
 
-		// Set the environment to cli if it is
-		if (isset($argc))
-		{
-			TBGContext::setEnvironment(TBGContext::ENV_CLI);
-		}
-
 		// Set the start time
 		TBGContext::setLoadStart($starttime[1] + $starttime[0]);
 		TBGLogging::log('Initializing B2 framework');
-		
+		TBGLogging::log('PHP_SAPI says "' . PHP_SAPI . '"');
+
 		// Set the include path
 		TBGContext::setIncludePath(THEBUGGENIE_PATH);
 

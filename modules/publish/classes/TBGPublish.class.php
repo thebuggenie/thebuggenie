@@ -206,7 +206,7 @@
 			$article_name = $matches[0];
 			TBGTextParser::getCurrentParser()->addInternalLinkOccurrence($article_name);
 			$article_name = $this->getSpacedName($matches[0]);
-			if (TBGContext::getEnvironment() != TBGContext::ENV_CLI)
+			if (!TBGContext::isCLI())
 			{
 				TBGContext::loadLibrary('ui');
 				return link_tag(make_url('publish_article', array('article_name' => $matches[0])), $article_name);

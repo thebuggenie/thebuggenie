@@ -19,9 +19,6 @@
 	class TBGContext
 	{
 
-		const ENV_CLI = 1;
-		const ENV_HTTP = 2;
-
 		const PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES = 1;
 		const PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES = 2;
 		const PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO = 6;
@@ -399,7 +396,7 @@
 		{
 			try
 			{
-				if (self::getEnvironment() != self::ENV_CLI)
+				if (!self::isCLI())
 				{
 					TBGLogging::log('Loading request');
 					self::$_request = new TBGRequest();
@@ -447,7 +444,7 @@
 				self::loadModules();
 				TBGLogging::log('...done');
 
-				if (self::getEnvironment() != self::ENV_CLI)
+				if (!self::isCLI())
 				{
 					TBGLogging::log('Loading user');
 					try
@@ -1339,7 +1336,7 @@
 	
 			try
 			{
-				if (self::getEnvironment() == self::ENV_HTTP)
+				if (!self::isCLI())
 				{
 					$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http://' : 'https://';
 					TBGLogging::log("Checking if scope can be set from hostname (".$hostprefix.$_SERVER['HTTP_HOST'].")");
@@ -1809,15 +1806,9 @@
 			return $content_type;
 		}
 
-		public static function setEnvironment($environment = self::ENV_HTTP)
+		public static function isCLI()
 		{
-			self::$_environment = $environment;
+			return (PHP_SAPI == 'cli');
 		}
-
-		public static function getEnvironment()
-		{
-			return self::$_environment;
-		}
-
 	}
 	

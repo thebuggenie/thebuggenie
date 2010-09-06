@@ -343,7 +343,7 @@
 		
 		public function hasAccess($uid = null, $gid = null, $tid = null, $all = null, $debug = false)
 		{
-			if (TBGContext::getEnvironment() == TBGContext::ENV_CLI) return true;
+			if (TBGContext::isCLI()) return true;
 
 			return true;
 
