@@ -25,7 +25,7 @@
 	$strings['Show today'] = 'Mostrar hoy';
 	$strings['New calendar entry'] = 'Nueva entrada al calendario';
 	$strings['The event has been saved in your calendar.'] = 'El evento ha sido agendado en su calendario.';
-	$strings['What do you want to do next?'] = '¿Qué quieres hacer ahora?';
+	$strings['What do you want to do next?'] = '¿Qué quiere hacer ahora?';
 	$strings['Create a new event'] = 'Crear un nuevo evento';
 	$strings['Close this window'] = 'Cerrar esta ventana';
 	$strings['Editing calendar entry'] = 'Edición de la entrada del calendario';
@@ -41,6 +41,6 @@
 	$strings['Show as'] = 'Mostrar como';
 	$strings['When you are done, click "Save event" to save the event to your calendar'] = 'Cuando termine, haga clic en "Guardar Evento" para agendar el evento en su calendario';
 	$strings['Save event'] = 'Guardar Evento';
-	$strings['Configure the Calendar module in this section.'] = 'Configurar el módulo de Calendario en esta sección';
+	$strings['Configure the Calendar module in this section.'] = 'Configure el módulo de Calendario en esta sección';
 	
 ?>
