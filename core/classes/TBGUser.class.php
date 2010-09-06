@@ -427,6 +427,10 @@
 							}
 						}
 					}
+					elseif (TBGContext::isCLI())
+					{
+						$row = TBGUsersTable::getTable()->getByUsername(TBGContext::getCurrentCLIusername());
+					}
 					elseif (!TBGSettings::isLoginRequired())
 					{
 						$row = B2DB::getTable('TBGUsersTable')->getByUserID(TBGSettings::getDefaultUserID());

@@ -396,10 +396,12 @@
 		{
 			try
 			{
+				TBGLogging::log('Loading request');
+				self::$_request = new TBGRequest();
+				TBGLogging::log('...done');
 				if (!self::isCLI())
 				{
-					TBGLogging::log('Loading request');
-					self::$_request = new TBGRequest();
+					TBGLogging::log('Loading response');
 					self::$_response = new TBGResponse();
 					TBGLogging::log('...done');
 				}
@@ -444,55 +446,53 @@
 				self::loadModules();
 				TBGLogging::log('...done');
 
-				if (!self::isCLI())
+				TBGLogging::log('Loading user');
+				try
 				{
-					TBGLogging::log('Loading user');
-					try
+					TBGLogging::log('is this logout?');
+					if (self::getRequest()->getParameter('logout'))
 					{
-						TBGLogging::log('is this logout?');
-						if (self::getRequest()->getParameter('logout'))
-						{
-							TBGLogging::log('yes');
-							TBGEvent::createNew('core', 'pre_logout')->trigger();
-							self::logout();
-							TBGEvent::createNew('core', 'post_logout')->trigger();
-						}
-						else
-						{
-							TBGLogging::log('no');
-							TBGLogging::log('sets up user object');
-							$event = TBGEvent::createNew('core', 'pre_login');
-							$event->trigger();
-
-							if ($event->isProcessed())
-							{
-								self::loadUser($event->getReturnValue());
-							}
-							else
-							{
-								self::loadUser();
-							}
-							TBGEvent::createNew('core', 'post_login', self::getUser())->trigger();
-							
-							TBGLogging::log('loaded');
-							TBGLogging::log('caches permissions');
-							self::cacheAllPermissions();
-							TBGLogging::log('...cached');
-						}
+						TBGLogging::log('yes');
+						TBGEvent::createNew('core', 'pre_logout')->trigger();
+						self::logout();
+						TBGEvent::createNew('core', 'post_logout')->trigger();
 					}
-					catch (Exception $e)
+					else
 					{
-						TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
-						if (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'login')
+						TBGLogging::log('no');
+						TBGLogging::log('sets up user object');
+						$event = TBGEvent::createNew('core', 'pre_login');
+						$event->trigger();
+
+						if ($event->isProcessed())
 						{
-							self::getResponse()->headerRedirect(self::getRouting()->generate('login'));
+							self::loadUser($event->getReturnValue());
 						}
 						else
 						{
-							self::$_user = new TBGUser();
+							self::loadUser();
 						}
+						TBGEvent::createNew('core', 'post_login', self::getUser())->trigger();
+
+						TBGLogging::log('loaded');
+						TBGLogging::log('caches permissions');
+						self::cacheAllPermissions();
+						TBGLogging::log('...cached');
 					}
 				}
+				catch (Exception $e)
+				{
+					TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
+					if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'login'))
+					{
+						self::getResponse()->headerRedirect(self::getRouting()->generate('login'));
+					}
+					else
+					{
+						self::$_user = new TBGUser();
+					}
+				}
+
 				TBGLogging::log('...done');
 				TBGLogging::log('Loading i18n strings');
 				if (!$cached_i18n = TBGCache::get('i18n_'.TBGSettings::get('language')))
