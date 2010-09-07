@@ -95,7 +95,7 @@
 		<br>
 		<div style="clear: both; padding-top: 20px; text-align: center;">
 			<form accept-charset="utf-8" action="index.php" method="post">
-				<input type="hidden" name="step" value="2">
+				<input type="hidden" name="step" value="1">
 				<input type="hidden" name="agree_license" value="1">
 				<label for="retry_button" style="font-size: 13px; margin-right: 10px;">You need to correct the above error(s) before the installation can continue.</label>
 				<input type="submit" id="retry_button" value="Retry">
