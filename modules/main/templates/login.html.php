@@ -33,12 +33,12 @@
 		<div>
 			<table border="0" class="login_fieldtable">
 				<tr>
-					<td><label class="login_fieldheader" for="b2_username"><?php echo __('Username'); ?></label></td>
-					<td><input type="text" id="b2_username" name="b2_username" style="width: 200px;"></td>
+					<td><label class="login_fieldheader" for="tbg3_username"><?php echo __('Username'); ?></label></td>
+					<td><input type="text" id="tbg3_username" name="tbg3_username" style="width: 200px;"></td>
 				</tr>
 				<tr>
-					<td><label class="login_fieldheader" for="b2_password"><?php echo __('Password'); ?></label></td>
-					<td><input type="password" id="b2_password" name="b2_password" style="width: 200px;"></td>
+					<td><label class="login_fieldheader" for="tbg3_password"><?php echo __('Password'); ?></label></td>
+					<td><input type="password" id="tbg3_password" name="tbg3_password" style="width: 200px;"></td>
 				</tr>
 			</table>
 			<br>
