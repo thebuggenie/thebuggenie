@@ -33,14 +33,15 @@
 
 		abstract protected function do_execute();
 
-		final function __construct()
+		final public function __construct()
 		{
 			$this->_setup();
 		}
 
-		final function execute()
+		final public function execute()
 		{
 			$this->_processArguments();
+			$this->_prepare();
 			$this->do_execute();
 		}
 
@@ -83,7 +84,7 @@
 
 		protected function _setup() { }
 
-		protected function _processArguments()
+		final protected function _processArguments()
 		{
 			$cc = 1;
 			foreach ($this->_required_arguments as $key => $argument)
@@ -109,6 +110,8 @@
 				}
 			}
 		}
+		
+		protected function _prepare() { }
 
 		public function getCommandName()
 		{

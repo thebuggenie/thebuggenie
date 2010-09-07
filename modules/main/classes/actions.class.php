@@ -182,13 +182,13 @@
 			{
 				if (TBGContext::getRequest()->getMethod() == TBGRequest::POST)
 				{
-					if (TBGContext::getRequest()->hasParameter('b2_username') && TBGContext::getRequest()->hasParameter('b2_password'))
+					if (TBGContext::getRequest()->hasParameter('tbg3_username') && TBGContext::getRequest()->hasParameter('tbg3_password'))
 					{
-						$username = TBGContext::getRequest()->getParameter('b2_username');
-						$password = TBGContext::getRequest()->getParameter('b2_password');
+						$username = TBGContext::getRequest()->getParameter('tbg3_username');
+						$password = TBGContext::getRequest()->getParameter('tbg3_password');
 						$user = TBGUser::loginCheck($username, $password, true);
-						$this->getResponse()->setCookie('b2_username', $username);
-						$this->getResponse()->setCookie('b2_password', TBGUser::hashPassword($password));
+						$this->getResponse()->setCookie('tbg3_username', $username);
+						$this->getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($password));
 						if (TBGContext::getRequest()->hasParameter('return_to')) 
 						{
 							$this->forward(TBGContext::getRequest()->getParameter('return_to'));
@@ -2121,6 +2121,19 @@
 			{
 				$this->forward($request->getParameter('forward_url'));
 			}
+		}
+
+		public function runListProjects(TBGRequest $request)
+		{
+			$projects = TBGProject::getAll();
+
+			$return_array = array();
+			foreach ($projects as $project)
+			{
+				$return_array[$project->getKey()] = $project->getName();
+			}
+
+			return $this->renderJSON($return_array);
 		}
 
 		public function runGetBackdropPartial(TBGRequest $request)

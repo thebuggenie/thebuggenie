@@ -28,7 +28,7 @@
 		 */
 		public function forward($url, $code = 200)
 		{
-			if (TBGContext::getRequest()->isAjaxCall())
+			if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
 			{
 				$this->getResponse()->ajaxResponseText($code, TBGContext::getMessageAndClear('forward'));
 			}
@@ -109,7 +109,7 @@
 		 */
 		public function return404($message = null)
 		{
-			if (TBGContext::getRequest()->isAjaxCall())
+			if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
 			{
 				$this->getResponse()->ajaxResponseText(404, $message);
 			}

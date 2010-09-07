@@ -381,16 +381,16 @@
 				{
 					if ($username === null && $password === null)
 					{
-						if (TBGContext::getRequest()->hasCookie('b2_username') && TBGContext::getRequest()->hasCookie('b2_password'))
+						if (TBGContext::getRequest()->hasCookie('tbg3_username') && TBGContext::getRequest()->hasCookie('tbg3_password'))
 						{
-							$username = TBGContext::getRequest()->getCookie('b2_username');
-							$password = TBGContext::getRequest()->getCookie('b2_password');
-							$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, $password);
+							$username = TBGContext::getRequest()->getCookie('tbg3_username');
+							$password = TBGContext::getRequest()->getCookie('tbg3_password');
+							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
 							
 							if (!$row)
 							{
-								TBGContext::getResponse()->deleteCookie('b2_username');
-								TBGContext::getResponse()->deleteCookie('b2_password');
+								TBGContext::getResponse()->deleteCookie('tbg3_username');
+								TBGContext::getResponse()->deleteCookie('tbg3_password');
 								TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 							}
 						}
@@ -412,8 +412,8 @@
 								if(!$row)
 								{
 									// Invalid
-									TBGContext::getResponse()->deleteCookie('b2_username');
-									TBGContext::getResponse()->deleteCookie('b2_password');
+									TBGContext::getResponse()->deleteCookie('tbg3_username');
+									TBGContext::getResponse()->deleteCookie('tbg3_password');
 									TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 								}
 								else 

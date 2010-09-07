@@ -268,8 +268,15 @@
 			TBGLogging::log('Running header redirect function');
 			$this->clearHeaders();
 			$this->setHttpStatus($code);
-			$this->addHeader("Location: $url");
-			$this->renderHeaders();
+			if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
+			{
+				$this->renderHeaders();
+			}
+			else
+			{
+				$this->addHeader("Location: $url");
+				$this->renderHeaders();
+			}
 			exit();
 		}
 
