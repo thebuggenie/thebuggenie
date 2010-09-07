@@ -5,7 +5,7 @@ function updateFields(url, projectmenustripurl)
 		$('issuetype_list').hide();
 		$('issuetype_dropdown').show();
 	}
-	if (projectmenustripurl != '')
+	if (projectmenustripurl != '' && $('project_id').getValue() != 0)
 	{
 		updateProjectMenuStrip(projectmenustripurl, $('project_id').getValue());
 	}
