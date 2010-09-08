@@ -100,7 +100,6 @@
 			$retval = file_get_contents($url, false, stream_context_create($options));
 			error_reporting(E_ERROR);
 
-
 			if ($retval === false)
 			{
 				$errors = (isset($http_response_header)) ? ":\n" . $http_response_header[0] : '';

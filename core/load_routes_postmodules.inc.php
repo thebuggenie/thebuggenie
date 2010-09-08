@@ -41,6 +41,7 @@
 	$routes[] = array('project_timeline', '/:project_key/timeline/*', 'project', 'timeline');
 	$routes[] = array('project_files', '/:project_key/files', 'project', 'files');
 	$routes[] = array('project_roadmap', '/:project_key/roadmap', 'project', 'roadmap');
+	$routes[] = array('project_list_issues', '/:project_key/list/issues', 'project', 'listIssues', array('format' => 'json'));
 	$routes[] = array('project_dashboard', '/:project_key', 'project', 'dashboard');
 
 	foreach ($routes as $route)

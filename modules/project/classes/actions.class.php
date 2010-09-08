@@ -650,4 +650,49 @@
 			$this->_generateImageDetailsFromKey($request->getParameter('mode'));
 		}
 
+		public function runListIssues(TBGRequest $request)
+		{
+			$filters = array();
+			$filter_state = $request->getParameter('state', 'all');
+			$filter_assigned_to = $request->getParameter('assigned_to', 'all');
+
+			if (strtolower($filter_state) != 'all')
+			{
+				$filters['state'] = array('operator' => '=', 'value' => '');
+				if (strtolower($filter_state) == 'open') $filters['state']['value'] = TBGIssue::STATE_OPEN;
+				if (strtolower($filter_state) == 'closed') $filters['state']['value'] = TBGIssue::STATE_CLOSED;
+			}
+
+			if (strtolower($filter_assigned_to) != 'all')
+			{
+				$user_id = null;
+				switch (strtolower($filter_assigned_to))
+				{
+					case 'me':
+						$user_id = TBGContext::getUser()->getID();
+						break;
+					case 'none':
+						$user_id = null;
+						break;
+					default:
+						try
+						{
+							$user = TBGUser::findUser(strtolower($filter_assigned_to));
+							if ($user instanceof TBGUser) $user_id = $user->getID();
+						}
+						catch (Exception $e) {}
+						break;
+				}
+				
+				if ($user_id !== null)
+				{
+					$filters['assigned_to'] = array('operator' => '=', 'value' => $user_id);
+					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_USER);
+				}
+			}
+
+			list ($this->issues, $this->count) = TBGIssue::findIssues($filters);
+			$this->return_issues = array();
+		}
+
 	}
