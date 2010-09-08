@@ -99,7 +99,7 @@
 
 			if ($retval === false)
 			{
-				throw new Exception('An error occurred while retrieving ' . $url);
+				throw new Exception('An error occurred while retrieving ' . $url . ': ' . join(', ', $http_response_header));
 			}
 			return json_decode($retval);
 		}
@@ -108,7 +108,7 @@
 		{
 			$url = TBGContext::getRouting()->generate($route_name, $params, true);
 			$host = $this->_getCurrentRemoteServer();
-			if (substr($host, strlen($host) - 2) != '/') $host = $host . '/';
+			if (substr($host, strlen($host) - 2) == '/') $host = substr($host, 0, strlen($host) - 2);
 
 			return $host . substr($url, 2);
 		}

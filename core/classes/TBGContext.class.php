@@ -172,6 +172,8 @@
 		 */
 		static protected $_messages = null;
 
+		static protected $_redirect_login = null;
+
 		/**
 		 * Returns the Database object
 		 *
@@ -485,7 +487,7 @@
 					TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
 					if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'login'))
 					{
-						self::getResponse()->headerRedirect(self::getRouting()->generate('login'));
+						self::$_redirect_login = true;
 					}
 					else
 					{
@@ -1312,8 +1314,8 @@
 		 */
 		public static function logout()
 		{
-			self::getResponse()->deleteCookie('b2_username');
-			self::getResponse()->deleteCookie('b2_password');
+			self::getResponse()->deleteCookie('tbg3_username');
+			self::getResponse()->deleteCookie('tbg3_password');
 			self::getResponse()->deleteCookie('THEBUGGENIE');
 			session_regenerate_id(true);
 			session_destroy();
@@ -1735,7 +1737,12 @@
 					if (self::isInstallmode())
 					{
 						$route = array('module' => 'installation', 'action' => 'installIntro');
-					} 
+					}
+					if (self::$_redirect_login)
+					{
+						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
+						self::getResponse()->headerRedirect(self::getRouting()->generate('login'), 401);
+					}
 					if (is_dir(self::getIncludePath() . 'modules/' . $route['module']))
 					{
 						if (!file_exists(self::getIncludePath() . 'modules/' . $route['module'] . '/classes/actions.class.php'))

@@ -61,11 +61,11 @@
 				echo "\n";
 				TBGCliCommand::cli_echo($title, 'red', 'bold');
 				echo "\n";
-				TBGCliCommand::cli_echo('occured in')."\n";
+				TBGCliCommand::cli_echo("occured in\n");
 				TBGCliCommand::cli_echo($exception['file'].', line '.$exception['line'], 'blue', 'bold');
 				echo "\n";
 				echo "\n";
-				TBGCliCommand::cli_echo("Backtrace:", 'white', 'bold')."\n";
+				TBGCliCommand::cli_echo("Backtrace:\n", 'white', 'bold');
 				$trace_elements = debug_backtrace();
 			}
 			foreach ($trace_elements as $trace_element)
@@ -76,6 +76,7 @@
 				}
 				elseif (array_key_exists('function', $trace_element))
 				{
+					if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
 					TBGCliCommand::cli_echo($trace_element['function'].'()');
 				}
 				else
@@ -153,6 +154,7 @@
 					}
 					elseif (array_key_exists('function', $trace_element))
 					{
+						if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
 						echo '<strong>'.$trace_element['function'].'()</strong><br>';
 					}
 					else
@@ -201,6 +203,7 @@
 					}
 					elseif (array_key_exists('function', $trace_element))
 					{
+						if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
 						echo '<strong>'.$trace_element['function'].'()</strong><br>';
 					}
 					else
@@ -233,13 +236,13 @@
 		die();
 	}
 	
-	function b2_error_handler($code, $error, $file, $line_number)
+	function tbg_error_handler($code, $error, $file, $line_number)
 	{
 		if ($code == 2 && strpos(basename($file), 'Services_Yadis_') !== false) return;
 		tbg_exception($error, array('code' => $code, 'file' => $file, 'line' => $line_number));
 	}
 	
-	set_error_handler('b2_error_handler');
+	set_error_handler('tbg_error_handler');
 
 	if (!defined('THEBUGGENIE_PATH'))
 	{

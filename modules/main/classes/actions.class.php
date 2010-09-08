@@ -492,7 +492,7 @@
 				}
 				TBGContext::getUser()->changePassword($request->getParameter('new_password_1'));
 				TBGContext::getUser()->save();
-				$this->getResponse()->setCookie('b2_password', TBGContext::getUser()->getPasswordHash());
+				$this->getResponse()->setCookie('tbg3_password', TBGContext::getUser()->getPasswordHash());
 				return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Your new password was changed')));
 			}
 		}
