@@ -95,11 +95,16 @@
 
 			$options = array('http' => array('method' => 'GET', 'header' => $headers));
 
+			$prev_rep_val = error_reporting();
+			error_reporting(E_USER_ERROR);
 			$retval = file_get_contents($url, false, stream_context_create($options));
+			error_reporting(E_ERROR);
+
 
 			if ($retval === false)
 			{
-				throw new Exception('An error occurred while retrieving ' . $url . ': ' . join(', ', $http_response_header));
+				$errors = (isset($http_response_header)) ? ":\n" . $http_response_header[0] : '';
+				throw new Exception($url . " could not be retrieved" . $errors);
 			}
 			return json_decode($retval);
 		}
@@ -108,7 +113,7 @@
 		{
 			$url = TBGContext::getRouting()->generate($route_name, $params, true);
 			$host = $this->_getCurrentRemoteServer();
-			if (substr($host, strlen($host) - 2) == '/') $host = substr($host, 0, strlen($host) - 2);
+			if (substr($host, strlen($host) - 2) != '/') $host .= '/';
 
 			return $host . substr($url, 2);
 		}

@@ -239,6 +239,7 @@
 	function tbg_error_handler($code, $error, $file, $line_number)
 	{
 		if ($code == 2 && strpos(basename($file), 'Services_Yadis_') !== false) return;
+		if (error_reporting() == E_USER_ERROR) return;
 		tbg_exception($error, array('code' => $code, 'file' => $file, 'line' => $line_number));
 	}
 	
