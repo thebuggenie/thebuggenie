@@ -23,7 +23,8 @@
 	$routes[] = array('quicksearch', '/quicksearch/*', 'search', 'quickSearch');
 	$routes[] = array('about', '/about', 'main', 'about');
 	$routes[] = array('soap', '/soapmeup', 'soap', 'soapHandler');
-	$routes[] = array('list_projects', '/list_projects', 'main', 'listProjects', array('format' => 'json'));
+	$routes[] = array('list_projects', '/list/projects', 'main', 'listProjects', array('format' => 'json'));
+	$routes[] = array('list_issuetypes', '/list/issuetypes', 'main', 'listIssuetypes', array('format' => 'json'));
 	$routes[] = array('wsdl', '/thebuggenie.wsdl', 'soap', 'getWSDL');
 	$routes[] = array('get_partial_for_backdrop', '/get/partials/:key/*', 'main', 'getBackdropPartial');
 	$routes[] = array('issue_upload', '/upload/:issue_id', 'main', 'upload', array('mode' => 'issue'));

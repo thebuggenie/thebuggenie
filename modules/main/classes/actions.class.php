@@ -2133,7 +2133,20 @@
 				$return_array[$project->getKey()] = $project->getName();
 			}
 
-			return $this->renderJSON($return_array);
+			$this->projects = $return_array;
+		}
+
+		public function runListIssuetypes(TBGRequest $request)
+		{
+			$issuetypes = TBGIssuetype::getAll();
+
+			$return_array = array();
+			foreach ($issuetypes as $issuetype)
+			{
+				$return_array[] = $issuetype->getName();
+			}
+
+			$this->issuetypes = $return_array;
 		}
 
 		public function runGetBackdropPartial(TBGRequest $request)

@@ -25,6 +25,7 @@
 			$this->_description = "Show list of available issues for a project";
 			$this->addRequiredArgument("project_key", "The project key for the project you wish to list issues for (see list_project)");
 			$this->addOptionalArgument("state", "Filter show only [open/closed/all] issues");
+			$this->addOptionalArgument("issuetype", "Filter show only issues of type [<issue type>] (see list_issuetypes)");
 			$this->addOptionalArgument("assigned_to", "Filter show only issues assigned to [<username>/me/none/all]");
 			parent::_setup();
 		}
@@ -42,13 +43,20 @@
 			$this->cliEcho($options["state"], "yellow", "bold");
 			$this->cliEcho("\n");
 
+			$options["issuetype"] = $this->getProvidedArgument("issuetype", "all");
+			$this->cliEcho("Issuetypes: ");
+			$this->cliEcho($options["issuetype"], "yellow", "bold");
+			$this->cliEcho("\n");
+
 			$options["assigned_to"] = $this->getProvidedArgument("assigned_to", "all");
 			$this->cliEcho("Assigned to: ");
 			$this->cliEcho($options["assigned_to"], "yellow", "bold");
 			$this->cliEcho("\n");
 			$options["assigned"] = $this->getProvidedArgument("state", "all");
 
-			$response = $this->getRemoteResponse($this->getRemoteURL('project_list_issues', array('project_key' => $this->getProvidedArgument('project_key'))));
+			$options['project_key'] = $this->getProvidedArgument('project_key');
+
+			$response = $this->getRemoteResponse($this->getRemoteURL('project_list_issues', $options));
 
 			if (!empty($response) && $response->count > 0)
 			{
@@ -62,19 +70,23 @@
 						$this->cliEcho(($issue->state == TBGIssue::STATE_OPEN) ? "[open] " : "[closed] ");
 					}
 					$this->cliEcho($issue->issue_no, 'green', 'bold');
-					$this->cliEcho(" ({$issue->posted_by})", 'white', 'bold');
-					$this->cliEcho(' - ' . $issue->title);
+					$this->cliEcho(" - ");
+					$this->cliEcho($issue->title, 'white', 'bold');
 					$this->cliEcho("\n");
 	//				$this->cliEcho(" [ ", 'white', 'bold');
-					$this->cliEcho("Created/updated: ", 'blue', 'bold');
+					$this->cliEcho("Posted: ", 'blue', 'bold');
 					$this->cliEcho(tbg_formatTime($issue->created_at, 21));
+					$this->cliEcho(" ({$issue->posted_by})");
 					$this->cliEcho(" | ", 'white', 'bold');
-					$this->cliEcho("Last updated: ", 'blue', 'bold');
+					$this->cliEcho("Updated: ", 'blue', 'bold');
 					$this->cliEcho(tbg_formatTime($issue->last_updated, 21));
+					$this->cliEcho("\n");
+					$this->cliEcho("Assigned to: ", 'blue', 'bold');
+					$this->cliEcho($issue->assigned_to, 'yellow', 'bold');
 					$this->cliEcho(" | ", 'white', 'bold');
 					$this->cliEcho("Status: ", 'blue', 'bold');
 					$this->cliEcho($issue->status);
-					$this->cliEcho("\n");
+					$this->cliEcho("\n\n");
 	//				$this->cliEcho(" ]\n", 'white', 'bold');
 				}
 				$this->cliEcho("\n");

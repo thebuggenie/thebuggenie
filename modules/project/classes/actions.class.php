@@ -654,6 +654,7 @@
 		{
 			$filters = array();
 			$filter_state = $request->getParameter('state', 'all');
+			$filter_issuetype = $request->getParameter('issuetype', 'all');
 			$filter_assigned_to = $request->getParameter('assigned_to', 'all');
 
 			if (strtolower($filter_state) != 'all')
@@ -663,16 +664,28 @@
 				if (strtolower($filter_state) == 'closed') $filters['state']['value'] = TBGIssue::STATE_CLOSED;
 			}
 
+			if (strtolower($filter_issuetype) != 'all')
+			{
+				foreach (TBGIssuetype::getAll() as $issuetype)
+				{
+					if (str_replace(' ', '', strtolower($issuetype->getName())) == str_replace(' ', '', strtolower($filter_issuetype)))
+					{
+						$filters['issue_type'] = array('operator' => '=', 'value' => $issuetype->getID());
+						break;
+					}
+				}
+			}
+
 			if (strtolower($filter_assigned_to) != 'all')
 			{
-				$user_id = null;
+				$user_id = 0;
 				switch (strtolower($filter_assigned_to))
 				{
 					case 'me':
 						$user_id = TBGContext::getUser()->getID();
 						break;
 					case 'none':
-						$user_id = null;
+						$user_id = 0;
 						break;
 					default:
 						try
@@ -684,9 +697,9 @@
 						break;
 				}
 				
-				if ($user_id !== null)
+				$filters['assigned_to'] = array('operator' => '=', 'value' => $user_id);
+				if ($user_id > 0)
 				{
-					$filters['assigned_to'] = array('operator' => '=', 'value' => $user_id);
 					$filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_USER);
 				}
 			}

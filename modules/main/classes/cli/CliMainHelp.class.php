@@ -125,6 +125,7 @@
 					{
 						$this->cliEcho("\n{$module_name}:\n", 'green', 'bold');
 					}
+					ksort($module_commands, SORT_STRING);
 					foreach ($module_commands as $command_name => $command)
 					{
 						if ($module_name != 'main') $this->cliEcho("  ");
