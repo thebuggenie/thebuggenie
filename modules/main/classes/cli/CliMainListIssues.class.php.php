@@ -37,7 +37,7 @@
 			$this->cliEcho(" for list of issues ...\n\n");
 
 			$this->cliEcho("Filters:\n", 'white', 'bold');
-			$options = array();
+			$options = array('format' => 'json');
 			$options["state"] = $this->getProvidedArgument("state", "all");
 			$this->cliEcho("State: ");
 			$this->cliEcho($options["state"], "yellow", "bold");
