@@ -58,11 +58,11 @@
 
 			$response = $this->getRemoteResponse($this->getRemoteURL('project_list_issues', $options));
 
+			$this->cliEcho("\n");
 			if (!empty($response) && $response->count > 0)
 			{
 				TBGContext::loadLibrary('common');
-				$this->cliEcho("\n");
-				$this->cliEcho("The following issues were returned:\n", 'white', 'bold');
+				$this->cliEcho("The following {$response->count} issues were found:\n", 'white', 'bold');
 				foreach ($response->issues as $issue)
 				{
 					if (strtolower($options['state']) == 'all')
@@ -73,7 +73,6 @@
 					$this->cliEcho(" - ");
 					$this->cliEcho($issue->title, 'white', 'bold');
 					$this->cliEcho("\n");
-	//				$this->cliEcho(" [ ", 'white', 'bold');
 					$this->cliEcho("Posted: ", 'blue', 'bold');
 					$this->cliEcho(tbg_formatTime($issue->created_at, 21));
 					$this->cliEcho(" ({$issue->posted_by})");
@@ -87,7 +86,6 @@
 					$this->cliEcho("Status: ", 'blue', 'bold');
 					$this->cliEcho($issue->status);
 					$this->cliEcho("\n\n");
-	//				$this->cliEcho(" ]\n", 'white', 'bold');
 				}
 				$this->cliEcho("\n");
 			}

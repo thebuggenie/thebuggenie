@@ -27,6 +27,23 @@
 
 		protected function _setup()
 		{
+			if (!ini_get('allow_url_fopen'))
+			{
+				$this->cliEcho("The php.ini directive ", 'yellow');
+				$this->cliEcho("allow_url.fopen", 'yellow', 'bold');
+				$this->cliEcho(" is not set to 1\n", 'yellow');
+				$this->cliEcho("Trying to set correct value for the current run ...");
+				ini_set('allow_url_fopen', 1);
+				if (!ini_get('allow_url_fopen'))
+				{
+					throw new Exception('Could not set "allow_url_fopen" to correct value. Please fix your cli configuration.');
+				}
+				else
+				{
+					$this->cliEcho('OK', 'green', 'bold');
+					$this->cliEcho("\n\n");
+				}
+			}
 			$this->addOptionalArgument('server', 'URL for the remote The Bug Genie install');
 			$this->addOptionalArgument('username', "The username to authenticate as");
 		}
