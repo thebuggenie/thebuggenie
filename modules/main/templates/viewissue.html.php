@@ -59,7 +59,7 @@
 	<?php endif; ?>
 	<div class="rounded_box yellow borderless" id="viewissue_changed" <?php if (!$theIssue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
 		<button onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_title').focus();return false;"><?php echo __('Add comment and save changes'); ?></button>
-		<form action="<?php echo make_url('saveissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getIssueNo())); ?>" method="post">
+		<form action="<?php echo make_url('saveissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())); ?>" method="post">
 			<input type="submit" value="<?php echo __('Save changes'); ?>">
 			<div class="viewissue_info_header"><?php echo __('You have unsaved changes'); ?></div>
 			<div class="viewissue_info_content">
@@ -82,7 +82,7 @@
 		<div class="rounded_box iceblue borderless infobox" id="viewissue_duplicate">
 			<div style="padding: 5px;">
 				<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
-				<div class="viewissue_info_header"><?php echo __('This issue is a duplicate of Issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getDuplicateOf()->getIssueNo())), $theIssue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $theIssue->getDuplicateOf()->getTitle() . '"')); ?></div>
+				<div class="viewissue_info_header"><?php echo __('This issue is a duplicate of Issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getDuplicateOf()->getFormattedIssueNo())), $theIssue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $theIssue->getDuplicateOf()->getTitle() . '"')); ?></div>
 				<div class="viewissue_info_content"><?php echo __('For more information you should visit the issue mentioned above, as this issue is not likely to be updated'); ?></div>
 			</div>
 		</div>								
@@ -276,7 +276,7 @@
 									</div>
 
 									<div id="comment_add_controls" class="comment_controls">
-										<input type="hidden" name="forward_url" value="<?php echo make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getIssueNo())); ?>">
+										<input type="hidden" name="forward_url" value="<?php echo make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())); ?>">
 										<?php echo __('%create_comment% or %cancel%', array('%create_comment%' => '<input type="submit" class="comment_addsave" value="'.__('Create comment').'" />', '%cancel%' => '<a href="javascript:void(0)" onClick="$(\'comment_add\').hide();$(\'comment_add_button\').show();">'.__('cancel').'</a>')); ?>
 									</div>
 								</form>
