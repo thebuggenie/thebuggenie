@@ -31,7 +31,12 @@
 		{
 			if (!file_exists($this->getStringsFilename($language)))
 			{
-				throw new Exception('The selected language is not available');
+				TBGLogging::log('Selected language not available, trying "en_US" as a last attempt', 'i18n', TBGLogging::LEVEL_NOTICE);
+				$this->_language = 'en_US';
+				if (!file_exists($this->getStringsFilename($this->_language)))
+				{
+					throw new Exception('The selected language is not available');
+				}
 			}
 			$this->_language = $language;
 		}
