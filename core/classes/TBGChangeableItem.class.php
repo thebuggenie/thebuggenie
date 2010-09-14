@@ -69,7 +69,15 @@
 				{
 					if ($changes)
 					{
-						$retarr[$id] = TBGFactory::$function($id);
+						try
+						{
+							$retarr[$id] = TBGFactory::$function($id);
+						}
+						catch (Exception $e)
+						{
+							TBGLogging::log("Changed item of type {$class}, id {$id} is invalid - unsetting", 'main', TBGLogging::LEVEL_NOTICE);
+							unset($_SESSION['changeableitems'][$class][$id]);
+						}
 					}
 					else
 					{
