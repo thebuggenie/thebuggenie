@@ -666,13 +666,10 @@
 
 			if (strtolower($filter_issuetype) != 'all')
 			{
-				foreach (TBGIssuetype::getAll() as $issuetype)
+				$issuetype = TBGIssuetype::getIssuetypeByKeyish($filter_issuetype);
+				if ($issuetype instanceof TBGIssuetype)
 				{
-					if (str_replace(' ', '', strtolower($issuetype->getName())) == str_replace(' ', '', strtolower($filter_issuetype)))
-					{
-						$filters['issue_type'] = array('operator' => '=', 'value' => $issuetype->getID());
-						break;
-					}
+					$filters['issue_type'] = array('operator' => '=', 'value' => $issuetype->getID());
 				}
 			}
 
@@ -706,6 +703,22 @@
 
 			list ($this->issues, $this->count) = TBGIssue::findIssues($filters);
 			$this->return_issues = array();
+		}
+
+		public function runListIssuefields(TBGRequest $request)
+		{
+			try
+			{
+				$issuetype = TBGIssuetype::getIssuetypeByKeyish($request->getParameter('issuetype'));
+				$issuefields = $this->selected_project->getVisibleFieldsArray($issuetype->getID());
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('error' => 'An exception occurred: '.$e));
+			}
+
+			$this->issuefields = array_keys($issuefields);
 		}
 
 	}

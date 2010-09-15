@@ -32,7 +32,7 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::ISSUE_ID, B2DB::getTable('TBGIssuesTable'), TBGIssuesTable::ID);
+			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addForeignKeyColumn(self::FILE_ID, B2DB::getTable('TBGFilesTable'), TBGFilesTable::ID);
 			parent::_addInteger(self::ATTACHED_AT, 10);
 		}

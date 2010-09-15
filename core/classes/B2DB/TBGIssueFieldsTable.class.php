@@ -30,6 +30,16 @@
 		const REPORTABLE = 'issuefields.is_reportable';
 		const REQUIRED = 'issuefields.required';
 
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGIssueFieldsTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGIssueFieldsTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);

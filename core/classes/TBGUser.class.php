@@ -814,7 +814,7 @@
 			if ($this->userassigned === null)
 			{
 				$this->userassigned = array();
-				if ($res = B2DB::getTable('TBGIssuesTable')->getOpenIssuesByUserAssigned($this->getUID()))
+				if ($res = TBGIssuesTable::getTable()->getOpenIssuesByUserAssigned($this->getUID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -854,7 +854,7 @@
 			if (!array_key_exists($team_id, $this->teamassigned))
 			{
 				$this->teamassigned[$team_id] = array();
-				if ($res = B2DB::getTable('TBGIssuesTable')->getOpenIssuesByTeamAssigned($team_id))
+				if ($res = TBGIssuesTable::getTable()->getOpenIssuesByTeamAssigned($team_id))
 				{
 					while ($row = $res->getNextRow())
 					{

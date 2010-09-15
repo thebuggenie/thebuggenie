@@ -340,7 +340,7 @@
 		 */
 		public static function getByKey($key)
 		{
-			if ($project_row = B2DB::getTable('TBGProjectsTable')->getByKey($key))
+			if ($project_row = B2DB::getTable('TBGProjectsTable')->getByKey(strtolower($key)))
 			{
 				return TBGFactory::projectLab($project_row->get(TBGProjectsTable::ID), $project_row);
 			}
@@ -400,7 +400,6 @@
 			}
 			return null;
 		}
-		
 		
 		/**
 		 * Create a new project and return it
@@ -1413,7 +1412,7 @@
 			if ($this->_unassignedissues == null)
 			{
 				$this->_unassignedissues = array();
-				if ($res = B2DB::getTable('TBGIssuesTable')->getByProjectIDandNoMilestone($this->getID()))
+				if ($res = TBGIssuesTable::getTable()->getByProjectIDandNoMilestone($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -1549,7 +1548,7 @@
 			}
 			if (empty($this->_issuecounts['last30']))
 			{
-				list ($closed, $open) = B2DB::getTable('TBGIssuesTable')->getLast30IssueCountsByProjectID($this->getID());
+				list ($closed, $open) = TBGIssuesTable::getTable()->getLast30IssueCountsByProjectID($this->getID());
 				$this->_issuecounts['last30']['open'] = $open;
 				$this->_issuecounts['last30']['closed'] = $closed;
 			}
@@ -2114,7 +2113,7 @@
 				{
 					$this->_prioritycount[$priority_id] = array('open' => 0, 'closed' => 0, 'percentage' => 0);
 				}
-				foreach (B2DB::getTable('TBGIssuesTable')->getPriorityCountByProjectID($this->getID()) as $priority_id => $priority_count)
+				foreach (TBGIssuesTable::getTable()->getPriorityCountByProjectID($this->getID()) as $priority_id => $priority_count)
 				{
 					$this->_prioritycount[$priority_id] = $priority_count;
 				}
@@ -2132,7 +2131,7 @@
 			if ($this->_recentissues === null)
 			{
 				$this->_recentissues = array();
-				if ($res = B2DB::getTable('TBGIssuesTable')->getRecentByProjectIDandIssueType($this->getID(), array('bug_report'), 10))
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('bug_report'), 10))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -2147,7 +2146,7 @@
 			if ($this->_recentfeatures === null)
 			{
 				$this->_recentfeatures = array();
-				if ($res = B2DB::getTable('TBGIssuesTable')->getRecentByProjectIDandIssueType($this->getID(), array('feature_request', 'enhancement')))
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('feature_request', 'enhancement')))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -2162,7 +2161,7 @@
 			if ($this->_recentideas === null)
 			{
 				$this->_recentideas = array();
-				if ($res = B2DB::getTable('TBGIssuesTable')->getRecentByProjectIDandIssueType($this->getID(), array('idea')))
+				if ($res = TBGIssuesTable::getTable()->getRecentByProjectIDandIssueType($this->getID(), array('idea')))
 				{
 					while ($row = $res->getNextRow())
 					{

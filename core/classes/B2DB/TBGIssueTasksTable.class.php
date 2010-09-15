@@ -37,7 +37,7 @@
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::ISSUE, B2DB::getTable('TBGIssuesTable'), TBGIssuesTable::ID);
+			parent::_addForeignKeyColumn(self::ISSUE, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addVarchar(self::TITLE, 200);
 			parent::_addText(self::CONTENT, false);
 			parent::_addInteger(self::ISSUE_STATUS, 5);

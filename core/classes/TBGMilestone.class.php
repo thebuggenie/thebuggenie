@@ -251,7 +251,7 @@
 			if ($this->_points === null)
 			{
 				$this->_points = array();
-				list($this->_points['estimated'], $this->_points['spent']) = B2DB::getTable('TBGIssuesTable')->getTotalPointsByMilestoneID($this->getID());
+				list($this->_points['estimated'], $this->_points['spent']) = TBGIssuesTable::getTable()->getTotalPointsByMilestoneID($this->getID());
 			}
 		}
 		
@@ -282,7 +282,7 @@
 			if ($this->_hours === null)
 			{
 				$this->_hours = array();
-				list($this->_hours['estimated'], $this->_hours['spent']) = B2DB::getTable('TBGIssuesTable')->getTotalHoursByMilestoneID($this->getID());
+				list($this->_hours['estimated'], $this->_hours['spent']) = TBGIssuesTable::getTable()->getTotalHoursByMilestoneID($this->getID());
 			}
 		}
 
@@ -352,7 +352,7 @@
 			if ($this->_issues == null)
 			{
 				$this->_issues = array();
-				if ($res = B2DB::getTable('TBGIssuesTable')->getByMilestone($this->getID()))
+				if ($res = TBGIssuesTable::getTable()->getByMilestone($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -819,7 +819,7 @@
 		public function delete()
 		{
 			B2DB::getTable('TBGMilestonesTable')->doDeleteById($this->getID());
-			B2DB::getTable('TBGIssuesTable')->clearMilestone($this->getID());
+			TBGIssuesTable::getTable()->clearMilestone($this->getID());
 		}
 		
 		/**

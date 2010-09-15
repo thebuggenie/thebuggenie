@@ -163,7 +163,7 @@
 		public function getByProjectID($project_id, $limit = 20)
 		{
 			$crit = $this->getCriteria();
-			$crit->addJoin(B2DB::getTable('TBGIssuesTable'), TBGIssuesTable::ID, self::TARGET);
+			$crit->addJoin(TBGIssuesTable::getTable(), TBGIssuesTable::ID, self::TARGET);
 			$crit->addWhere(self::TARGET_TYPE, self::TYPE_ISSUE);
 			$crit->addWhere(TBGIssuesTable::PROJECT_ID, $project_id);
 			if ($limit !== null)
@@ -188,7 +188,7 @@
 		public function getImportantByProjectID($project_id, $limit = 20)
 		{
 			$crit = $this->getCriteria();
-			$crit->addJoin(B2DB::getTable('TBGIssuesTable'), TBGIssuesTable::ID, self::TARGET);
+			$crit->addJoin(TBGIssuesTable::getTable(), TBGIssuesTable::ID, self::TARGET);
 			$crit->addWhere(self::TARGET_TYPE, self::TYPE_ISSUE);
 			$crit->addWhere(self::CHANGE_TYPE, array(self::LOG_ISSUE_CREATED, self::LOG_ISSUE_CLOSE), B2DBCriteria::DB_IN);
 			$crit->addWhere(TBGIssuesTable::PROJECT_ID, $project_id);

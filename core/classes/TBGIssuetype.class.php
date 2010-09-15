@@ -73,6 +73,18 @@
 			return $icons;
 		}
 
+		public static function getIssuetypeByKeyish($key)
+		{
+			foreach (self::getAll() as $issuetype)
+			{
+				if (str_replace(' ', '', strtolower($issuetype->getName())) == str_replace(' ', '', strtolower($key)))
+				{
+					return $issuetype;
+				}
+			}
+			return null;
+		}
+
 		/**
 		 * Constructor function
 		 *

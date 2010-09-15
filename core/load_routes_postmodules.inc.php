@@ -42,6 +42,7 @@
 	$routes[] = array('project_files', '/:project_key/files', 'project', 'files');
 	$routes[] = array('project_roadmap', '/:project_key/roadmap', 'project', 'roadmap');
 	$routes[] = array('project_list_issues', '/:project_key/list/issues/:format/*', 'project', 'listIssues');
+	$routes[] = array('project_list_issuefields', '/:project_key/list/issuefields/for/type/:issuetype/:format', 'project', 'listIssuefields');
 	$routes[] = array('project_dashboard', '/:project_key', 'project', 'dashboard');
 
 	foreach ($routes as $route)

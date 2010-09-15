@@ -456,7 +456,7 @@
 		 */
 		public static function getIssueCountsByProjectID($project_id)
 		{
-			return B2DB::getTable('TBGIssuesTable')->getCountsByProjectID($project_id);
+			return TBGIssuesTable::getTable()->getCountsByProjectID($project_id);
 		}
 
 		public static function getPainTypesOrLabel($type, $id = null)
@@ -515,7 +515,7 @@
 		 */
 		public static function getIssueCountsByProjectIDandIssuetype($project_id, $issuetype_id)
 		{
-			return B2DB::getTable('TBGIssuesTable')->getCountsByProjectIDandIssuetype($project_id, $issuetype_id);
+			return TBGIssuesTable::getTable()->getCountsByProjectIDandIssuetype($project_id, $issuetype_id);
 		}
 
 		/**
@@ -530,7 +530,7 @@
 		 */
 		public static function getIssueCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks = false)
 		{
-			return B2DB::getTable('TBGIssuesTable')->getCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks);
+			return TBGIssuesTable::getTable()->getCountsByProjectIDandMilestone($project_id, $milestone_id, $exclude_tasks);
 		}
 		
 		/**
@@ -547,7 +547,7 @@
 		{
 			try
 			{
-				$i_id = B2DB::getTable('TBGIssuesTable')->createNewWithTransaction($title, $issuetype, $p_id, $issue_id);
+				$i_id = TBGIssuesTable::getTable()->createNewWithTransaction($title, $issuetype, $p_id, $issue_id);
 				
 				$theIssue = TBGFactory::TBGIssueLab($i_id);
 				$theIssue->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED);
@@ -586,7 +586,7 @@
 				{
 					if (!TBGContext::isProjectContext()) return null;
 					if (TBGContext::getCurrentProject()->usePrefix()) return null;
-					if ($row = B2DB::getTable('TBGIssuesTable')->getByProjectIDAndIssueNo(TBGContext::getCurrentProject()->getID(), $issue_no))
+					if ($row = TBGIssuesTable::getTable()->getByProjectIDAndIssueNo(TBGContext::getCurrentProject()->getID(), $issue_no))
 					$theIssue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
 				}
 				catch (Exception $e)
@@ -651,7 +651,7 @@
 			}
 			if ($row === null)
 			{
-				$row = B2DB::getTable('TBGIssuesTable')->getByID($i_id, false);
+				$row = TBGIssuesTable::getTable()->getByID($i_id, false);
 			}
 	
 			if (!$row instanceof B2DBRow)
@@ -944,7 +944,7 @@
 		 */
 		public function setDuplicateOf($d_id)
 		{
-			B2DB::getTable('TBGIssuesTable')->setDuplicate($this->getID(), $d_id);
+			TBGIssuesTable::getTable()->setDuplicate($this->getID(), $d_id);
 			$this->_duplicateof = $d_id;
 		}
 		
@@ -1534,7 +1534,7 @@
 			{
 				$this->_duplicate_issues = array();
 				
-				if ($res = B2DB::getTable('TBGIssuesTable')->getDuplicateIssuesByIssueNo($this->getID()))
+				if ($res = TBGIssuesTable::getTable()->getDuplicateIssuesByIssueNo($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -4404,7 +4404,7 @@
 
 			$this->_clearChangedProperties();
 			
-			$crit = B2DB::getTable('TBGIssuesTable')->getCriteria();
+			$crit = TBGIssuesTable::getTable()->getCriteria();
 			$crit->addUpdate(TBGIssuesTable::TITLE, $this->_title);
 			$crit->addUpdate(TBGIssuesTable::LAST_UPDATED, $this->_last_updated);
 			$crit->addUpdate(TBGIssuesTable::LONG_DESCRIPTION, $this->_description);
@@ -4437,13 +4437,13 @@
 			$crit->addUpdate(TBGIssuesTable::SPENT_POINTS, $this->_spentpoints);
 			$crit->addUpdate(TBGIssuesTable::SCRUMCOLOR, $this->_scrumcolor);
 			$crit->addUpdate(TBGIssuesTable::PERCENT_COMPLETE, $this->_percentcompleted);
-			$crit->addUpdate(TBGIssuesTable::DUPLICATE, (is_object($this->_duplicateof)) ? $this->_duplicateof->getID() : $this->_duplicateof);
+			$crit->addUpdate(TBGIssuesTable::DUPLICATE, (is_object($this->_duplicateof)) ? $this->_duplicateof->getID() : (int) $this->_duplicateof);
 			$crit->addUpdate(TBGIssuesTable::DELETED, $this->_deleted);
 			$crit->addUpdate(TBGIssuesTable::BLOCKING, $this->_blocking);
 			$crit->addUpdate(TBGIssuesTable::USER_WORKING_ON, (is_object($this->_being_worked_on_by)) ? $this->_being_worked_on_by->getID() : $this->_being_worked_on_by);
 			$crit->addUpdate(TBGIssuesTable::USER_WORKED_ON_SINCE, $this->_being_worked_on_since);
 			$crit->addUpdate(TBGIssuesTable::MILESTONE, (is_object($this->_milestone)) ? $this->_milestone->getID() : $this->_milestone);
-			$res = B2DB::getTable('TBGIssuesTable')->doUpdateById($crit, $this->getID());
+			$res = TBGIssuesTable::getTable()->doUpdateById($crit, $this->getID());
 
 			$this->_saveCustomFieldValues();
 			$this->getProject()->clearRecentActivities();

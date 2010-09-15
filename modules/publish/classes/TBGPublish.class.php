@@ -61,6 +61,7 @@
 			$this->addAvailableListener('core', 'index_right_middle', 'listen_frontpageArticle', 'Frontpage article');
 			$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
 			$this->addAvailableListener('core', 'project_menustrip_item_links', 'listen_projectMenustripLinks', 'Project menustrip links');
+			$this->addAvailableListener('core', 'TBGProject::createNew', 'listen_createNewProject', 'Project overview links');
 		}
 
 		protected function _addAvailableRoutes()
@@ -89,6 +90,7 @@
 			$this->enableListenerSaved('core', 'index_right_middle');
 			$this->enableListenerSaved('core', 'project_overview_item_links');
 			$this->enableListenerSaved('core', 'project_menustrip_item_links');
+			$this->enableListenerSaved('core', 'TBGProject::createNew');
   									  
 			TBGContext::getRouting()->addRoute('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
 			TBGTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));
@@ -366,6 +368,14 @@
 		public function listen_projectMenustripLinks(TBGEvent $event)
 		{
 			TBGActionComponent::includeTemplate('publish/projectmenustriplinks', array('project' => $event->getSubject(), 'selected_tab' => $event->getParameter('selected_tab')));
+		}
+
+		public function listen_createNewProject(TBGEvent $event)
+		{
+			if (!TBGWikiArticle::getByName(ucfirst($event->getSubject()->getKey()).':MainPage') instanceof TBGWikiArticle)
+			{
+				$article = TBGWikiArticle::createNew(ucfirst($event->getSubject()->getKey()).':MainPage', "[[Category:{$event->getSubject()->getName()}:About]]This is the wiki frontpage for the {$event->getSubject()->getName()} project", true);
+			}
 		}
 
 		public function getTabKey()

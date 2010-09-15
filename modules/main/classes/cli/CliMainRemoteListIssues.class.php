@@ -1,7 +1,7 @@
 <?php
 
 	/**
-	 * CLI command class, main -> list_issues
+	 * CLI command class, main -> remote_list_issues
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 * @version 2.0
@@ -11,21 +11,21 @@
 	 */
 
 	/**
-	 * CLI command class, main -> list_issues
+	 * CLI command class, main -> remote_list_issues
 	 *
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	class CliMainListIssues extends TBGCliRemoteCommand
+	class CliMainRemoteListIssues extends TBGCliRemoteCommand
 	{
 
 		protected function _setup()
 		{
-			$this->_command_name = 'list_issues';
-			$this->_description = "Show list of available issues for a project";
-			$this->addRequiredArgument("project_key", "The project key for the project you wish to list issues for (see list_project)");
+			$this->_command_name = 'remote_list_issues';
+			$this->_description = "Query a remote server for a list of available issues for a project";
+			$this->addRequiredArgument("project_key", "The project key for the project you wish to list issues for (see remote_list_project)");
 			$this->addOptionalArgument("state", "Filter show only [open/closed/all] issues");
-			$this->addOptionalArgument("issuetype", "Filter show only issues of type [<issue type>] (see list_issuetypes)");
+			$this->addOptionalArgument("issuetype", "Filter show only issues of type [<issue type>] (see remote_list_issuetypes)");
 			$this->addOptionalArgument("assigned_to", "Filter show only issues assigned to [<username>/me/none/all]");
 			parent::_setup();
 		}
@@ -63,8 +63,10 @@
 			{
 				TBGContext::loadLibrary('common');
 				$this->cliEcho("The following {$response->count} issues were found:\n", 'white', 'bold');
+
 				foreach ($response->issues as $issue)
 				{
+					$this->cliEcho("ID: {$issue->id} ", 'yellow');
 					if (strtolower($options['state']) == 'all')
 					{
 						$this->cliEcho(($issue->state == TBGIssue::STATE_OPEN) ? "[open] " : "[closed] ");
@@ -75,8 +77,9 @@
 					$this->cliEcho("\n");
 					$this->cliEcho("Posted: ", 'blue', 'bold');
 					$this->cliEcho(tbg_formatTime($issue->created_at, 21));
-					$this->cliEcho(" ({$issue->posted_by})");
-					$this->cliEcho(" | ", 'white', 'bold');
+					$this->cliEcho(" by ");
+					$this->cliEcho($issue->posted_by, 'cyan');
+					$this->cliEcho("\n");
 					$this->cliEcho("Updated: ", 'blue', 'bold');
 					$this->cliEcho(tbg_formatTime($issue->last_updated, 21));
 					$this->cliEcho("\n");
@@ -87,6 +90,8 @@
 					$this->cliEcho($issue->status);
 					$this->cliEcho("\n\n");
 				}
+				$this->cliEcho("If you are going to update any of these issues, use the id shown\n");
+				$this->cliEcho("in front of the issue as the issue id.\n");
 				$this->cliEcho("\n");
 			}
 			else

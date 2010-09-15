@@ -300,7 +300,7 @@
 			}
 			else
 			{
-				$res = B2DB::getTable('TBGIssuesTable')->getOpenAffectedIssuesByProjectID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
+				$res = TBGIssuesTable::getTable()->getOpenAffectedIssuesByProjectID($this->getParent()->getID(), $limit_status, $limit_category, $limit_issuetype);
 			}
 			
 			$retval = false;

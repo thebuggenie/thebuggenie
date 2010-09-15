@@ -29,7 +29,7 @@
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::ISSUE_ID, B2DB::getTable('TBGIssuesTable'), TBGIssuesTable::ID);
+			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addForeignKeyColumn(self::CUSTOMFIELDS_ID, B2DB::getTable('TBGCustomFieldsTable'), TBGCustomFieldsTable::ID);
 			parent::_addText(self::OPTION_VALUE, false);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);

@@ -6,7 +6,7 @@
 ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
-		<td class="left_bar" style="width: 250px;">
+		<td class="left_bar" style="width: 310px;">
 			<?php include_component('leftmenu', array('article' => $article)); ?>
 		</td>
 		<td class="main_area article">

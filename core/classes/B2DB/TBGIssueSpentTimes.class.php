@@ -34,7 +34,7 @@
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::ISSUE_ID, B2DB::getTable('TBGIssuesTable'), TBGIssuesTable::ID);
+			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
 			parent::_addForeignKeyColumn(self::EDITED_BY, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
 			parent::_addInteger(self::EDITED_AT, 10);
 			parent::_addInteger(self::SPENT_MONTHS, 10);
