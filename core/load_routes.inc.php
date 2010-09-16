@@ -25,6 +25,7 @@
 	$routes[] = array('soap', '/soapmeup', 'soap', 'soapHandler');
 	$routes[] = array('list_projects', '/list/projects/:format', 'main', 'listProjects');
 	$routes[] = array('list_issuetypes', '/list/issuetypes/:format', 'main', 'listIssuetypes');
+	$routes[] = array('list_fieldvalues', '/list/fieldvalues/for/field/:field_key/:format/*', 'main', 'listFieldvalues');
 	$routes[] = array('wsdl', '/thebuggenie.wsdl', 'soap', 'getWSDL');
 	$routes[] = array('get_partial_for_backdrop', '/get/partials/:key/*', 'main', 'getBackdropPartial');
 	$routes[] = array('issue_upload', '/upload/:issue_id', 'main', 'upload', array('mode' => 'issue'));

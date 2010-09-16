@@ -2149,6 +2149,80 @@
 			$this->issuetypes = $return_array;
 		}
 
+		public function runListFieldvalues(TBGRequest $request)
+		{
+			$field_key = $request->getParameter('field_key');
+			$return_array = array('description' => null, 'type' => null, 'choices' => null);
+			if ($field_key == 'title' || in_array($field_key, TBGDatatypeBase::getAvailableFields(true)))
+			{
+				switch ($field_key)
+				{
+					case 'title':
+						$return_array['description'] = 'Single line text input without formatting';
+						$return_array['type'] = 'single_line_input';
+						break;
+					case 'description':
+					case 'reproduction_steps':
+						$return_array['description'] = 'Text input with wiki formatting capabilities';
+						$return_array['type'] = 'wiki_input';
+						break;
+					case 'status':
+					case 'resolution':
+					case 'reproducability':
+					case 'priority':
+					case 'severity':
+					case 'category':
+						$return_array['description'] = 'Choose one of the available values';
+						$return_array['type'] = 'choice';
+
+						$classname = "TBG".ucfirst($field_key);
+						$choices = $classname::getAll();
+						foreach ($choices as $choice_key => $choice)
+						{
+							$return_array['choices'][$choice_key] = $choice->getName();
+						}
+						break;
+					case 'percent_complete':
+						$return_array['description'] = 'Value of percentage completed';
+						$return_array['type'] = 'choice';
+						$return_array['choices'][] = "1-100%";
+						break;
+					case 'owner':
+					case 'assignee':
+						$return_array['description'] = 'Select an existing user or <none>';
+						$return_array['type'] = 'select_user';
+						break;
+					case 'estimated_time':
+					case 'elapsed_time':
+						$return_array['description'] = 'Enter time, such as points, hours, minutes, etc or <none>';
+						$return_array['type'] = 'time';
+						break;
+					case 'milestone':
+						$return_array['description'] = 'Select from available project milestones';
+						$return_array['type'] = 'choice';
+						if ($request->hasParameter('project_key'))
+						{
+							$selected_project = TBGProject::getByKey($request->getParameter('project_key'));
+							if ($selected_project instanceof TBGProject)
+							{
+								$milestones = $selected_project->getAllMilestones();
+								foreach ($milestones as $milestone)
+								{
+									$return_array['choices'][$milestone->getID()] = $milestone->getName();
+								}
+							}
+						}
+						break;
+				}
+			}
+			else
+			{
+
+			}
+
+			$this->field_info = $return_array;
+		}
+
 		public function runGetBackdropPartial(TBGRequest $request)
 		{
 			try

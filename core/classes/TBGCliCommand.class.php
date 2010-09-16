@@ -99,6 +99,10 @@
 
 				throw new Exception('Please include all required arguments');
 			}
+			foreach (self::$_provided_arguments as $key => $value)
+			{
+				$this->$key = $value;
+			}
 			foreach ($this->_optional_arguments as $key => $argument)
 			{
 				$cc++;

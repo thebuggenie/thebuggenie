@@ -23,44 +23,89 @@
 		{
 			$this->_command_name = 'remote_list_fieldvalues';
 			$this->_description = "Query a remote server for a list of available field values";
-			$this->addRequiredArgument('issue_field', 'An issue field to show available values for');
+			$this->addRequiredArgument('field_key', 'The key for an issue field to show available values for');
+			$this->addOptionalArgument('project_key', "The key for a project to retrieve values for in case of project specific values (e.g. milestone)");
 			parent::_setup();
 		}
 
 		public function do_execute()
 		{
-			$this->cliEcho("Not implemented\n");
-			return null;
-			
-			/*$this->cliEcho('Querying ');
+			$this->cliEcho('Querying ');
 			$this->cliEcho($this->_getCurrentRemoteServer(), 'white', 'bold');
-			$this->cliEcho(" for issuefields valid for issue types {$issuetype} for project {$project_key}\n\n");
+			$this->cliEcho(" for valid use of issue field ");
+			$this->cliEcho($this->field_key, 'yellow');
+			$this->cliEcho("\n\n");
 
-			$response = $this->getRemoteResponse($this->getRemoteURL('project_list_issuefields', array('issuetype' => $issuetype, 'project_key' => $project_key, 'format' => 'json')));
+			$options = array('field_key' => $this->field_key, 'format' => 'json');
+			if ($this->hasProvidedArgument('project_key'))
+			{
+				$options['project_key'] = $this->getProvidedArgument('project_key');
+			}
+			$response = $this->getRemoteResponse($this->getRemoteURL('list_fieldvalues', $options));
 
 			if (!empty($response))
 			{
-				$this->cliEcho($issuetype, 'yellow', 'bold');
-				$this->cliEcho(" has the following available issue fields:\n");
-				foreach ($response->issuefields as $field_key)
+				$this->cliEcho($this->field_key, 'yellow', 'bold');
+				$this->cliEcho("\n");
+				$this->cliEcho('Type: ', 'white', 'bold');
+				$this->cliEcho($response->description."\n");
+				switch ($response->type)
 				{
-					$this->cliEcho("  {$field_key}\n", 'yellow');
+					case 'choice':
+						$this->cliEcho("Available values:\n", 'white', 'bold');
+						if (count($response->choices))
+						{
+							foreach ($response->choices as $value)
+							{
+								$this->cliEcho("  {$value}\n", 'yellow');
+							}
+						}
+						else
+						{
+							if ($this->field_key == 'milestone' && !$this->hasProvidedArgument('project_key'))
+							{
+								$this->cliEcho("  You need to specify a project key to retrieve milestone values\n", 'red');
+							}
+							else
+							{
+								$this->cliEcho("  There doesn't seem to be any available values\n", 'cyan');
+							}
+						}
+					case 'single_line_input':
+						break;
+					case 'time':
+						$this->cliEcho("You can enter any combination of weeks, days, hours,\n");
+						$this->cliEcho("minutes and/or points. Separate them with commas.\n\n");
+						$this->cliEcho("Examples:\n", 'white', 'bold');
+						$this->cliEcho("  2 days, 3 points\n", 'cyan');
+						$this->cliEcho("  1 week\n", 'cyan');
+						$this->cliEcho("  1 day, 2 hours\n", 'cyan');
+						break;
+					case 'select_user':
+						$this->cliEcho("Available values:\n", 'white', 'bold');
+						$this->cliEcho("  me\n", 'yellow');
+						$this->cliEcho("  none\n", 'yellow');
+						$this->cliEcho("  <username>\n", 'yellow');
+						$this->cliEcho("Where ");
+						$this->cliEcho("<username>", 'yellow');
+						$this->cliEcho(" is the username of any existing user.\n");
+						break;
 				}
 				$this->cliEcho("\n");
 				$this->cliEcho("When using ");
 				$this->cliEcho('remote_update_issue', 'green');
-				$this->cliEcho(" to update an issue, pass any of these issue fields\n");
-				$this->cliEcho("as a valid parameter to update the issue details.\n");
+				$this->cliEcho(" to update an issue, pass any combination of a field key and a valid value\n");
+				$this->cliEcho("as a parameter to update the issue details.\n");
 				$this->cliEcho("\n");
-				$this->cliEcho("Check the documentation for ");
+				$this->cliEcho("For more information, check the documentation for ");
 				$this->cliEcho('remote_update_issue', 'green');
-				$this->cliEcho(" for more information.\n");
+				$this->cliEcho(".\n");
 
 			}
 			else
 			{
-				$this->cliEcho("No issue fields available.\n\n");
-			}*/
+				$this->cliEcho("This field doesn't seem right.\n\n");
+			}
 		}
 
 	}
