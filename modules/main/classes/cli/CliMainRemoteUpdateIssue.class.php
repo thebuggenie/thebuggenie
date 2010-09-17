@@ -42,7 +42,7 @@
 
 			if (!$this->hasProvidedArgument('m'))
 			{
-				$this->cliEcho("Please enter a message to save with your changes, or ");
+				$this->cliEcho("\nPlease enter a message to save with your changes, or ");
 				$this->cliEcho("CTRL+C", 'white', 'bold');
 				$this->cliEcho(" to cancel ...\n");
 				$this->cliEcho("Message: ", 'white', 'bold');
