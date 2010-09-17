@@ -143,7 +143,7 @@
 			<div class="dropdown_content">
 				<?php echo __('%clear_the_bugtype% or click to select a new bug type', array('%clear_the_bugtype%' => '')); ?>:<br>
 				<ul class="choices">
-					<?php foreach (TBGIssue::getPainTypesOrLabel('bug_type') as $choice_id => $choice): ?>
+					<?php foreach (TBGIssue::getPainTypesOrLabel('pain_bug_type') as $choice_id => $choice): ?>
 						<li>
 							<?php //echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type', 'pain_bug_type_id' => $choice_id)); ?>', 'pain_bug_type');"><?php echo $choice; ?></a>
 						</li>
@@ -177,7 +177,7 @@
 			<div class="dropdown_content">
 				<?php echo __('%clear_the_likelihood% or click to select a new likelihood', array('%clear_the_likelihood%' => '')); ?>:<br>
 				<ul class="choices">
-					<?php foreach (TBGIssue::getPainTypesOrLabel('likelihood') as $choice_id => $choice): ?>
+					<?php foreach (TBGIssue::getPainTypesOrLabel('pain_likelihood') as $choice_id => $choice): ?>
 						<li>
 							<?php //echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood', 'pain_likelihood_id' => $choice_id)); ?>', 'pain_likelihood');"><?php echo $choice; ?></a>
 						</li>
@@ -211,7 +211,7 @@
 			<div class="dropdown_content">
 				<?php echo __('%clear_the_effect% or click to select a new effect', array('%clear_the_effect%' => '')); ?>:<br>
 				<ul class="choices">
-					<?php foreach (TBGIssue::getPainTypesOrLabel('effect') as $choice_id => $choice): ?>
+					<?php foreach (TBGIssue::getPainTypesOrLabel('pain_effect') as $choice_id => $choice): ?>
 						<li>
 							<?php //echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect', 'pain_effect_id' => $choice_id)); ?>', 'pain_effect');"><?php echo $choice; ?></a>
 						</li>

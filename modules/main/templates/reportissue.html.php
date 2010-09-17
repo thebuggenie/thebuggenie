@@ -420,7 +420,7 @@
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="pain_bug_type_id" id="pain_bug_type_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
-								<?php foreach (TBGIssue::getPainTypesOrLabel('bug_type') as $choice_id => $choice): ?>
+								<?php foreach (TBGIssue::getPainTypesOrLabel('pain_bug_type') as $choice_id => $choice): ?>
 									<option value="<?php echo $choice_id; ?>"<?php if ($selected_pain_bug_type == $choice_id): ?> selected<?php endif; ?>><?php echo $choice; ?></option>
 								<?php endforeach; ?>
 							</select>
@@ -435,7 +435,7 @@
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="pain_likelihood_id" id="pain_likelihood_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
-								<?php foreach (TBGIssue::getPainTypesOrLabel('likelihood') as $choice_id => $choice): ?>
+								<?php foreach (TBGIssue::getPainTypesOrLabel('pain_likelihood') as $choice_id => $choice): ?>
 									<option value="<?php echo $choice_id; ?>"<?php if ($selected_pain_likelihood == $choice_id): ?> selected<?php endif; ?>><?php echo $choice; ?></option>
 								<?php endforeach; ?>
 							</select>
@@ -450,7 +450,7 @@
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="pain_effect_id" id="pain_effect_id" style="width: 100%;">
 								<option value="0"><?php echo __('Not specified'); ?></option>
-								<?php foreach (TBGIssue::getPainTypesOrLabel('effect') as $choice_id => $choice): ?>
+								<?php foreach (TBGIssue::getPainTypesOrLabel('pain_effect') as $choice_id => $choice): ?>
 									<option value="<?php echo $choice_id; ?>"<?php if ($selected_pain_effect == $choice_id): ?> selected<?php endif; ?>><?php echo $choice; ?></option>
 								<?php endforeach; ?>
 							</select>

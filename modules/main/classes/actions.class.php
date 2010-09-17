@@ -951,6 +951,11 @@
 			return $this->renderText(json_encode(array('starred' => $retval)));
 		}
 		
+		public function _setFieldFromRequest(TBGRequest $request)
+		{
+			
+		}
+
 		/**
 		 * Sets an issue field to a specified value
 		 * 
@@ -981,25 +986,11 @@
 			{
 				case 'description':
 					$issue->setDescription($request->getRawParameter('value'));
-					if ($issue->isDescriptionChanged())
-					{
-						return $this->renderJSON(array('changed' => true, 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription())), 'description' => tbg_parse_text($issue->getDescription())));
-					}
-					else
-					{
-						return $this->renderJSON(array('changed' => false, 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription())), 'description' => tbg_parse_text($issue->getDescripton())));
-					}
+					return $this->renderJSON(array('changed' => $issue->isDescriptionChanged(), 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription())), 'description' => tbg_parse_text($issue->getDescription())));
 					break;
 				case 'reproduction_steps':
 					$issue->setReproductionSteps($request->getRawParameter('value'));
-					if ($issue->isReproduction_StepsChanged())
-					{
-						return $this->renderJSON(array('changed' => true, 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps())), 'reproduction_steps' => tbg_parse_text($issue->getReproductionSteps())));
-					}
-					else
-					{
-						return $this->renderJSON(array('changed' => false, 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps())), 'reproduction_steps' => tbg_parse_text($issue->getReproductionSteps())));
-					}
+					return $this->renderJSON(array('changed' => $issue->isReproductionStepsChanged(), 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps())), 'reproduction_steps' => tbg_parse_text($issue->getReproductionSteps())));
 					break;
 				case 'title':
 					if ($request->getParameter('value') == '')
@@ -1009,26 +1000,12 @@
 					else
 					{
 						$issue->setTitle($request->getParameter('value'));
-						if ($issue->isTitleChanged())
-						{
-							return $this->renderJSON(array('changed' => true, 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
-						}
-						else
-						{
-							return $this->renderJSON(array('changed' => false, 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
-						}
+						return $this->renderJSON(array('changed' => $issue->isTitleChanged(), 'field' => array('id' => 1, 'name' => strip_tags($issue->getTitle())), 'title' => strip_tags($issue->getTitle())));
 					}
 					break;
 				case 'percent':
 					$issue->setPercentCompleted($request->getParameter('percent'));
-					if ($issue->isPercentCompletedChanged())
-					{
-						return $this->renderJSON(array('changed' => true, 'percent' => $issue->getPercentCompleted()));
-					}
-					else
-					{
-						return $this->renderJSON(array('changed' => false, 'percent' => $issue->getPercentCompleted()));
-					}
+					return $this->renderJSON(array('changed' => $issue->isPercentCompletedChanged(), 'percent' => $issue->getPercentCompleted()));
 					break;
 				case 'estimated_time':
 					if ($request->getParameter('estimated_time') != TBGContext::getI18n()->__('Enter your estimate here') && $request->getParameter('estimated_time'))
@@ -1098,14 +1075,8 @@
 				case 'spent_time':
 					if ($request->getParameter('spent_time') != TBGContext::getI18n()->__('Enter time spent here') && $request->getParameter('spent_time'))
 					{
-						if ($request->hasParameter('spent_time_added_text'))
-						{
-							$issue->addSpentTime($request->getParameter('spent_time'));
-						}
-						else
-						{
-							$issue->setSpentTime($request->getParameter('spent_time'));
-						}
+						$function = ($request->hasParameter('spent_time_added_text')) ? 'addSpentTime' : 'setSpentTime';
+						$issue->$function($request->getParameter('spent_time'));
 					}
 					elseif ($request->hasParameter('value'))
 					{
@@ -1145,17 +1116,80 @@
 				case 'pain_effect':
 					try
 					{
-						if ($request->hasParameter('category_id') && $request->getParameter('field') == 'category')
+						$parameter_name = strtolower($request->getParameter('field'));
+						$parameter_id_name = "{$parameter_name}_id";
+						$is_pain = in_array($parameter_name, array('pain_bug_type', 'pain_likelihood', 'pain_effect'));
+						if ($is_pain)
 						{
-							$category_id = $request->getParameter('category_id');
-							if ($category_id == 0 || ($category_id !== 0 && ($category = TBGFactory::TBGCategoryLab($category_id)) instanceof TBGCategory))
+							switch ($parameter_name)
 							{
-								$issue->setCategory($category_id);
-								if (!$issue->isCategoryChanged()) return $this->renderJSON(array('changed' => false));
-								return ($category_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $category_id, 'name' => $category->getName()))); 
+								case 'pain_bug_type':
+									$set_function_name = 'setPainBugType';
+									$is_changed_function_name = 'isPainBugTypeChanged';
+									$get_pain_type_label_function = 'getPainBugTypeLabel';
+									break;
+								case 'pain_likelihood':
+									$set_function_name = 'setPainLikelihood';
+									$is_changed_function_name = 'isPainLikelihoodChanged';
+									$get_pain_type_label_function = 'getPainLikelihoodLabel';
+									break;
+								case 'pain_effect':
+									$set_function_name = 'setPainEffect';
+									$is_changed_function_name = 'isPainEffectChanged';
+									$get_pain_type_label_function = 'getPainEffectLabel';
+									break;
 							}
 						}
-						elseif ($request->hasParameter('resolution_id') && $request->getParameter('field') == 'resolution')
+						else
+						{
+							$classname = 'TBG'.ucfirst($parameter_name);
+							$lab_function_name = $classname.'Lab';
+							$set_function_name = 'set'.ucfirst($parameter_name);
+							$is_changed_function_name = 'is'.ucfirst($parameter_name).'Changed';
+						}
+						if ($request->hasParameter($paramter_id_name)) //$request->getParameter('field') == 'pain_bug_type')
+						{
+							$parameter_id = $request->getParameter($parameter_id_name);
+							if ($parameter_id !== 0)
+							{
+								$is_valid = ($is_pain) ? in_array($parameter_id, array_keys(TBGIssue::getPainTypesOrLabel($parameter_name))) : ($parameter = TBGFactory::$lab_function_name($parameter_id)) instanceof TBGDatatype;
+							}
+							if ($parameter_id == 0 || ($parameter_id !== 0 && $is_valid))
+							{
+								$issue->$set_function_name($parameter_id);
+								if ($is_pain)
+								{
+									if (!$issue->$is_changed_function_name()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
+									return ($pain_parameter_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_parameter_id, 'name' => $issue->$get_pain_type_label_function()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
+								}
+								else
+								{
+									if (!$issue->$is_changed_function_name()) return $this->renderJSON(array('changed' => false));
+									return ($parameter_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $parameter_id, 'name' => $parameter->getName())));
+								}
+							}
+						}
+						/*elseif ($request->hasParameter('pain_likelihood_id') && $request->getParameter('field') == 'pain_likelihood')
+						{
+							$pain_likelihood_id = $request->getParameter('pain_likelihood_id');
+							if ($pain_likelihood_id == 0 || ($pain_likelihood_id !== 0 && (in_array($pain_likelihood_id, array_keys(TBGIssue::getPainTypesOrLabel('pain_likelihood'))))))
+							{
+								$issue->setPainLikelihood($pain_likelihood_id);
+								if (!$issue->isPainLikelihoodChanged()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
+								return ($pain_likelihood_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_likelihood_id, 'name' => $issue->getPainLikelihoodLabel()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
+							}
+						}
+						elseif ($request->hasParameter('pain_effect_id') && $request->getParameter('field') == 'pain_effect')
+						{
+							$pain_effect_id = $request->getParameter('pain_effect_id');
+							if ($pain_effect_id == 0 || ($pain_effect_id !== 0 && (in_array($pain_effect_id, array_keys(TBGIssue::getPainTypesOrLabel('pain_effect'))))))
+							{
+								$issue->setPainEffect($pain_effect_id);
+								if (!$issue->isPainEffectChanged()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
+								return ($pain_effect_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_effect_id, 'name' => $issue->getPainEffectLabel()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
+							}
+						}*/
+						/*elseif ($request->hasParameter('resolution_id') && $request->getParameter('field') == 'resolution')
 						{
 							$resolution_id = $request->getParameter('resolution_id');
 							if ($resolution_id == 0 || ($resolution_id !== 0 && ($resolution = TBGFactory::TBGResolutionLab($resolution_id)) instanceof TBGResolution))
@@ -1225,37 +1259,7 @@
 								if (!$issue->isMilestoneChanged()) return $this->renderJSON(array('changed' => false));
 								return ($milestone_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $milestone_id, 'name' => $milestone->getName()))); 
 							}
-						}
-						elseif ($request->hasParameter('pain_bug_type_id') && $request->getParameter('field') == 'pain_bug_type')
-						{
-							$pain_bug_type_id = $request->getParameter('pain_bug_type_id');
-							if ($pain_bug_type_id == 0 || ($pain_bug_type_id !== 0 && (in_array($pain_bug_type_id, array_keys(TBGIssue::getPainTypesOrLabel('bug_type'))))))
-							{
-								$issue->setPainBugType($pain_bug_type_id);
-								if (!$issue->isPainBugTypeChanged()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
-								return ($pain_bug_type_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_bug_type_id, 'name' => $issue->getPainBugTypeLabel()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
-							}
-						}
-						elseif ($request->hasParameter('pain_likelihood_id') && $request->getParameter('field') == 'pain_likelihood')
-						{
-							$pain_likelihood_id = $request->getParameter('pain_likelihood_id');
-							if ($pain_likelihood_id == 0 || ($pain_likelihood_id !== 0 && (in_array($pain_likelihood_id, array_keys(TBGIssue::getPainTypesOrLabel('likelihood'))))))
-							{
-								$issue->setPainLikelihood($pain_likelihood_id);
-								if (!$issue->isPainLikelihoodChanged()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
-								return ($pain_likelihood_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_likelihood_id, 'name' => $issue->getPainLikelihoodLabel()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
-							}
-						}
-						elseif ($request->hasParameter('pain_effect_id') && $request->getParameter('field') == 'pain_effect')
-						{
-							$pain_effect_id = $request->getParameter('pain_effect_id');
-							if ($pain_effect_id == 0 || ($pain_effect_id !== 0 && (in_array($pain_effect_id, array_keys(TBGIssue::getPainTypesOrLabel('effect'))))))
-							{
-								$issue->setPainEffect($pain_effect_id);
-								if (!$issue->isPainEffectChanged()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
-								return ($pain_effect_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_effect_id, 'name' => $issue->getPainEffectLabel()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
-							}
-						}
+						}*/
 					}
 					catch (Exception $e)
 					{

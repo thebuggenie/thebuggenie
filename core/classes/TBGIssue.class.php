@@ -490,13 +490,13 @@
 
 			switch ($type)
 			{
-				case 'bug_type':
+				case 'pain_bug_type':
 					return ($id === null) ? $bugtypes : $bugtypes[$id];
 					break;
-				case 'likelihood':
+				case 'pain_likelihood':
 					return ($id === null) ? $likelihoods : $likelihoods[$id];
 					break;
-				case 'effect':
+				case 'pain_effect':
 					return ($id === null) ? $effects : $effects[$id];
 					break;
 			}
@@ -3758,6 +3758,11 @@
 			}
 		}
 		
+		public function isReproductionStepsChanged()
+		{
+			return $this->isReproduction_StepsChanged();
+		}
+
 		/**
 		 * Return whether or not a specific field is visible
 		 *  
@@ -4043,13 +4048,13 @@
 						case '_pain_bug_type':
 							if ($value['original_value'] != 0)
 							{
-								$old_name = ($old_item = self::getPainTypesOrLabel('bug_type', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
+								$old_name = ($old_item = self::getPainTypesOrLabel('pain_bug_type', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
 							}
 							else
 							{
 								$old_name = TBGContext::getI18n()->__('Not determined');
 							}
-							$new_name = ($new_item = self::getPainTypesOrLabel('bug_type', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
+							$new_name = ($new_item = self::getPainTypesOrLabel('pain_bug_type', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
 
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_BUG_TYPE, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The triaging criteria 'bug type' has been updated, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
@@ -4057,13 +4062,13 @@
 						case '_pain_effect':
 							if ($value['original_value'] != 0)
 							{
-								$old_name = ($old_item = self::getPainTypesOrLabel('effect', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
+								$old_name = ($old_item = self::getPainTypesOrLabel('pain_effect', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
 							}
 							else
 							{
 								$old_name = TBGContext::getI18n()->__('Not determined');
 							}
-							$new_name = ($new_item = self::getPainTypesOrLabel('effect', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
+							$new_name = ($new_item = self::getPainTypesOrLabel('pain_effect', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
 
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_EFFECT, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The triaging criteria 'effect' has been updated, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
@@ -4071,13 +4076,13 @@
 						case '_pain_likelihood':
 							if ($value['original_value'] != 0)
 							{
-								$old_name = ($old_item = self::getPainTypesOrLabel('likelihood', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
+								$old_name = ($old_item = self::getPainTypesOrLabel('pain_likelihood', $value['original_value'])) ? $old_item : TBGContext::getI18n()->__('Not determined');
 							}
 							else
 							{
 								$old_name = TBGContext::getI18n()->__('Not determined');
 							}
-							$new_name = ($new_item = self::getPainTypesOrLabel('likelihood', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
+							$new_name = ($new_item = self::getPainTypesOrLabel('pain_likelihood', $value['current_value'])) ? $new_item : TBGContext::getI18n()->__('Not determined');
 
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PAIN_LIKELIHOOD, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The triaging criteria 'likelihood' has been updated, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
@@ -4581,7 +4586,7 @@
 
 		public function getPainBugTypeLabel()
 		{
-			return self::getPainTypesOrLabel('bug_type', $this->_pain_bug_type);
+			return self::getPainTypesOrLabel('pain_bug_type', $this->_pain_bug_type);
 		}
 
 		public function setPainBugType($value)
@@ -4597,7 +4602,7 @@
 
 		public function getPainLikelihoodLabel()
 		{
-			return self::getPainTypesOrLabel('likelihood', $this->_pain_likelihood);
+			return self::getPainTypesOrLabel('pain_likelihood', $this->_pain_likelihood);
 		}
 
 		public function setPainLikelihood($value)
@@ -4613,7 +4618,7 @@
 
 		public function getPainEffectLabel()
 		{
-			return self::getPainTypesOrLabel('effect', $this->_pain_effect);
+			return self::getPainTypesOrLabel('pain_effect', $this->_pain_effect);
 		}
 
 		public function setPainEffect($value)

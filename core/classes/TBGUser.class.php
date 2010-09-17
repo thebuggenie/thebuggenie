@@ -1545,9 +1545,10 @@
 		 */
 		public static function findUser($details)
 		{
-			$res = B2DB::getTable('TBGUsersTable')->getByDetails($details);
+			$res = TBGUsersTable::getTable()->getByDetails($details);
 			
 			if (!$res || $res->count() > 1) return false;
+			$row = $res->getNextRow();
 			
 			return TBGFactory::userLab($row->get(TBGUsersTable::ID), $row);
 		}

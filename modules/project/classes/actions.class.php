@@ -721,4 +721,143 @@
 			$this->issuefields = array_keys($issuefields);
 		}
 
+		public function listenUpdateIssueAddMessage(TBGEvent $event)
+		{
+			$this->comment_lines = $event->getParameter('comment_lines');
+			$this->comment = $event->getParameter('comment');
+		}
+
+		public function runUpdateIssueDetails(TBGRequest $request)
+		{
+			$this->error = false;
+			try
+			{
+				$i18n = TBGContext::getI18n();
+				$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+				if ($issue->getProject() != $this->selected_project)
+				{
+					throw new Exception($i18n->__('This issue is not valid for this project'));
+				}
+				$fields = $request->getRawParameter('fields', array());
+				$return_values = array();
+				foreach ($fields as $field_key => $field_value)
+				{
+					try
+					{
+						if (in_array($field_key, array_merge(array('title', 'state'), TBGDatatype::getAvailableFields(true))))
+						{
+							switch ($field_key)
+							{
+								case 'state':
+									$issue->setState(($field_value == 'open') ? TBGIssue::STATE_OPEN : TBGIssue::STATE_CLOSED);
+									break;
+								case 'title':
+									if ($field_value != '')
+										$issue->setTitle($field_value);
+									else
+										throw new Exception($i18n->__('Invalid title'));
+									break;
+								case 'description':
+								case 'reproduction_steps':
+									$method = "set".ucfirst($field_key);
+									$issue->$method($field_value);
+									break;
+								case 'status':
+								case 'resolution':
+								case 'reproducability':
+								case 'priority':
+								case 'severity':
+								case 'category':
+									$classname = "TBG".ucfirst($field_key);
+									$method = "set".ucfirst($field_key);
+									$choices = $classname::getAll();
+									$found = false;
+									foreach ($choices as $choice_key => $choice)
+									{
+										if (str_replace(' ', '', strtolower($choice->getName())) == str_replace(' ', '', strtolower($field_value)))
+										{
+											$issue->$method($choice);
+											$found = true;
+										}
+									}
+									if (!$found)
+									{
+										throw new Exception('Could not find this value');
+									}
+									break;
+								case 'percent_complete':
+									$issue->setPercentCompleted($field_value);
+									break;
+								case 'owner':
+								case 'assignee':
+									$set_method = "set".ucfirst($field_key);
+									$unset_method = "un{$set_method}";
+									switch (strtolower($field_value))
+									{
+										case 'me':
+											$issue->$set_method(TBGContext::getUser());
+											break;
+										case 'none':
+											$issue->$unset_method();
+											break;
+										default:
+											try
+											{
+												$user = TBGUser::findUser(strtolower($field_value));
+												if ($user instanceof TBGUser) $issue->$set_method($user);
+											}
+											catch (Exception $e)
+											{
+												throw new Exception('No such user found');
+											}
+											break;
+									}
+									break;
+								case 'estimated_time':
+								case 'elapsed_time':
+									$set_method = "set".ucfirst(str_replace('_', '', $field_key));
+									$issue->$set_method($field_value);
+									break;
+								case 'milestone':
+									$found = false;
+									foreach ($this->selected_project->getAllMilestones() as $milestone)
+									{
+										if (str_replace(' ', '', strtolower($milestone->getName())) == str_replace(' ', '', strtolower($field_value)))
+										{
+											$issue->setMilestone($milestone->getID());
+											$found = true;
+										}
+									}
+									if (!$found)
+									{
+										throw new Exception('Could not find this milestone');
+									}
+									break;
+								default:
+									throw new Exception($i18n->__('Invalid field'));
+							}
+						}
+						$return_values[$field_key] = array('success' => true);
+					}
+					catch (Exception $e)
+					{
+						$return_values[$field_key] = array('success' => false, 'error' => $e->getMessage());
+					}
+				}
+				$this->comment_lines = array();
+				$this->comment = '';
+				TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenUpdateIssueAddMessage'));
+				$issue->save(false);
+				$comment_body = $this->comment . "\n\n" . $request->getParameter('message');
+				$comment = TBGComment::createNew('Issue updated', $comment_body, TBGContext::getUser()->getID(), $issue->getID(), TBGComment::TYPE_ISSUE, 'core', 1, 0, false);
+
+				$this->return_values = $return_values;
+			}
+			catch (Exception $e)
+			{
+				$this->error = true;
+				$this->error_message = $e->getMessage();
+			}
+		}
+
 	}

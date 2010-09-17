@@ -23,6 +23,8 @@
 
 		protected static $_provided_arguments = null;
 
+		protected static $_named_arguments = array();
+
 		protected $_command_name = null;
 
 		protected $_description = '';
@@ -76,7 +78,12 @@
 					$argument_parts = explode('=', $argument, 2);
 					if (count($argument_parts) == 2)
 					{
-						self::$_provided_arguments[substr($argument_parts[0], 2)] = $argument_parts[1];
+						$key = substr($argument_parts[0], 2);
+						self::$_provided_arguments[$key] = $argument_parts[1];
+						if (!is_numeric($key))
+						{
+							self::$_named_arguments[$key] = $argument_parts[1];
+						}
 					}
 				}
 			}
@@ -93,15 +100,23 @@
 				if ($this->hasProvidedArgument($key)) continue;
 				if ($this->hasProvidedArgument($cc))
 				{
+					if (substr(self::$_provided_arguments[$cc], 0, 2) == '--' && substr(self::$_provided_arguments[$cc], 2, strpos(self::$_provided_arguments[$cc], '=') - 1) != $key) continue;
 					self::$_provided_arguments[$key] = self::$_provided_arguments[$cc];
+					if (!is_numeric($key))
+					{
+						self::$_named_arguments[$key] = self::$_provided_arguments[$cc];
+					}
 					continue;
 				}
-
-				throw new Exception('Please include all required arguments');
 			}
 			foreach (self::$_provided_arguments as $key => $value)
 			{
 				$this->$key = $value;
+			}
+			$diff = array_diff(array_keys($this->_required_arguments), array_keys(self::$_named_arguments));
+			if (count($diff))
+			{
+				throw new Exception('Please include all required arguments. Missing arguments: '.join(', ', $diff));
 			}
 			foreach ($this->_optional_arguments as $key => $argument)
 			{
@@ -109,7 +124,12 @@
 				if ($this->hasProvidedArgument($key)) continue;
 				if ($this->hasProvidedArgument($cc))
 				{
+					if (substr(self::$_provided_arguments[$cc], 0, 2) == '--' && substr(self::$_provided_arguments[$cc], 2, strpos(self::$_provided_arguments[$cc], '=') - 1) != $key) continue;
 					self::$_provided_arguments[$key] = self::$_provided_arguments[$cc];
+					if (!is_numeric($key))
+					{
+						self::$_named_arguments[$key] = self::$_provided_arguments[$cc];
+					}
 					continue;
 				}
 			}
@@ -150,6 +170,16 @@
 		public function getOptionalArguments()
 		{
 			return $this->_optional_arguments;
+		}
+
+		public function getProvidedArguments()
+		{
+			return self::$_provided_arguments;
+		}
+
+		public function getNamedArguments()
+		{
+			return self::$_named_arguments;
 		}
 
 		public static function getCommandLineName()
