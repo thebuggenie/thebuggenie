@@ -2232,7 +2232,15 @@
 			try
 			{
 				$template_name = null;
-				$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+				if ($request->hasParameter('issue_id'))
+				{
+					$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+					$options = array('issue' => $issue);
+				}
+				else
+				{
+					$options = array();
+				}
 				switch ($request->getParameter('key'))
 				{
 					case 'close_issue':
@@ -2244,10 +2252,15 @@
 					case 'markasduplicate_issue':
 						$template_name = 'main/markasduplicate';
 						break;
+					case 'project_config':
+						$template_name = 'configuration/projectconfig';
+						$project = TBGFactory::projectLab($request->getParameter('project_id'));
+						$options['project'] = $project;
+						break;
 				}
 				if ($template_name !== null)
 				{
-					return $this->renderJSON(array('content' => $this->getComponentHTML($template_name, array('issue' => $issue))));
+					return $this->renderJSON(array('content' => $this->getComponentHTML($template_name, $options)));
 				}
 			}
 			catch (Exception $e)

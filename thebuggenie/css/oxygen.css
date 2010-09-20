@@ -671,18 +671,20 @@ img.undo { display: none; }
 .issue_lefthand #more_actions { /*font-size: 13px;*/ }
 .issue_lefthand #more_actions { padding: 10px 5px 5px 10px; }
 .issue_lefthand #more_actions .box_header { font-weight: bold; padding: 5px 0 5px 0; }
-.issue_lefthand #more_actions ul, #fullpage_backdrop ul { list-style-type: none; padding: 0; margin: 0; clear: both; }
+.issue_lefthand #more_actions ul, #fullpage_backdrop ul.duplicate_issues { list-style-type: none; padding: 0; margin: 0; clear: both; }
 .issue_lefthand #more_actions ul li { min-height: 18px; }
-.issue_lefthand #more_actions ul li, #fullpage_backdrop ul li { /*font-size: 13px;*/ font-weight: normal; margin: 0 0 3px 0; text-align: left; }
-#fullpage_backdrop ul li input[type="checkbox"] { margin-left: 0; }
-#fullpage_backdrop ul li { padding-left: 5px; margin-bottom: 5px; }
-#fullpage_backdrop ul { margin: 10px 0 5px 0; }
+.issue_lefthand #more_actions ul li, #fullpage_backdrop ul.duplicate_issues li { /*font-size: 13px;*/ font-weight: normal; margin: 0 0 3px 0; text-align: left; }
+#fullpage_backdrop ul.duplicate_issues li input[type="checkbox"] { margin-left: 0; }
+#fullpage_backdrop ul.duplicate_issues li { padding-left: 5px; margin-bottom: 5px; }
+#fullpage_backdrop ul.duplicate_issues { margin: 10px 0 5px 0; }
 
-.backdrop_box { background: #585DB2 !important; position: absolute; top: 50%; left: 50%; z-index: 100001; clear: both; padding: 0 !important; }
+.backdrop_box { background: #585DB2 !important; position: absolute; top: 87px; left: 50%; z-index: 100001; clear: both; padding: 0 !important; }
 .backdrop_box.small { width: 400px; margin: -200px 0 0 -200px; }
 .backdrop_box.medium { width: 600px; margin: -300px 0 0 -300px; }
+.backdrop_box.large { width: 800px; margin: 0 -400px 0 -400px; }
 .backdrop_detail_header { font-weight: bold; font-size: 14px; color: #FFF; padding: 5px; }
 .backdrop_detail_content { font-weight: normal; font-size: 12px; padding: 5px; background: white; }
+.backdrop_detail_content .tab_menu { margin-top: 30px; margin-bottom: 10px; font-size: 1.1em; }
 .backdrop_detail_footer { font-weight: bold; font-size: 12px; padding: 5px; text-align: right; }
 .backdrop_detail_footer a { color: #B5B5FF; }
 

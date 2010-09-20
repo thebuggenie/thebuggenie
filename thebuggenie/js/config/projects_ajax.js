@@ -325,7 +325,6 @@ function deleteBuild(url, bid)
 	});
 }
 
-
 function switchEditionTab(select_tab)
 {
 	$('edition_settings').hide();

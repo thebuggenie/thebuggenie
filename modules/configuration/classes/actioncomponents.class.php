@@ -133,4 +133,10 @@
 			$this->user_id = (isset($this->user_id)) ? $this->user_id : 0;
 		}
 
+		public function componentProjectConfig()
+		{
+			$this->access_level = (TBGContext::getUser()->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) ? configurationActions::ACCESS_FULL : configurationActions::ACCESS_READ;
+			$this->statustypes = TBGStatus::getAll();
+		}
+
 	}

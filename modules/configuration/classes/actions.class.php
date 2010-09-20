@@ -657,13 +657,12 @@
 		{
 			try
 			{
-				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
+				$this->project = TBGFactory::projectLab($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 			
-			if (!$this->theProject instanceof TBGProject) return $this->return404(TBGContext::getI18n()->__("This project doesn't exist"));
+			if (!$this->project instanceof TBGProject) return $this->return404(TBGContext::getI18n()->__("This project doesn't exist"));
 			
-			$this->statustypes = TBGStatus::getAll();
 			if ($request->isAjaxCall())
 			{
 				if ($this->access_level == self::ACCESS_FULL)
@@ -671,30 +670,30 @@
 					if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
 					{
 						$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
-						$this->theProject->setReleaseDate($release_date);
+						$this->project->setReleaseDate($release_date);
 					}
 
-					$this->theProject->setName($request->getParameter('project_name'));
-					$this->theProject->setUsePrefix((bool) $request->getParameter('use_prefix'));
-					$this->theProject->setUsesScrum((bool) $request->getParameter('use_scrum'));
-					if (!$this->theProject->setPrefix($request->getParameter('prefix')))
+					$this->project->setName($request->getParameter('project_name'));
+					$this->project->setUsePrefix((bool) $request->getParameter('use_prefix'));
+					$this->project->setUsesScrum((bool) $request->getParameter('use_scrum'));
+					if (!$this->project->setPrefix($request->getParameter('prefix')))
 						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("Project prefixes may only contain letters and numbers")));
-					$this->theProject->setDescription($request->getParameter('description', null, false));
-					$this->theProject->setHomepage($request->getParameter('homepage'));
-					$this->theProject->setDocumentationURL($request->getParameter('doc_url'));
-					$this->theProject->setDefaultStatus($request->getParameter('defaultstatus'));
-					$this->theProject->setPlannedReleased($request->getParameter('planned_release'));
-					$this->theProject->setTasksEnabled((bool) $request->getParameter('enable_tasks'));
-					$this->theProject->setReleased((int) $request->getParameter('released'));
-					$this->theProject->setVotesEnabled((bool) $request->getParameter('votes'));
-					$this->theProject->setTimeUnit((int) $request->getParameter('time_unit'));
-					$this->theProject->setHoursPerDay($request->getParameter('hrs_pr_day'));
-					$this->theProject->setLocked((bool) $request->getParameter('locked'));
-					$this->theProject->setBuildsEnabled((bool) $request->getParameter('enable_builds'));
-					$this->theProject->setEditionsEnabled((bool) $request->getParameter('enable_editions'));
-					$this->theProject->setComponentsEnabled((bool) $request->getParameter('enable_components'));
-					$this->theProject->setChangeIssuesWithoutWorkingOnThem((bool) $request->getParameter('allow_changing_without_working'));
-					$this->theProject->save();
+					$this->project->setDescription($request->getParameter('description', null, false));
+					$this->project->setHomepage($request->getParameter('homepage'));
+					$this->project->setDocumentationURL($request->getParameter('doc_url'));
+					$this->project->setDefaultStatus($request->getParameter('defaultstatus'));
+					$this->project->setPlannedReleased($request->getParameter('planned_release'));
+					$this->project->setTasksEnabled((bool) $request->getParameter('enable_tasks'));
+					$this->project->setReleased((int) $request->getParameter('released'));
+					$this->project->setVotesEnabled((bool) $request->getParameter('votes'));
+					$this->project->setTimeUnit((int) $request->getParameter('time_unit'));
+					$this->project->setHoursPerDay($request->getParameter('hrs_pr_day'));
+					$this->project->setLocked((bool) $request->getParameter('locked'));
+					$this->project->setBuildsEnabled((bool) $request->getParameter('enable_builds'));
+					$this->project->setEditionsEnabled((bool) $request->getParameter('enable_editions'));
+					$this->project->setComponentsEnabled((bool) $request->getParameter('enable_components'));
+					$this->project->setChangeIssuesWithoutWorkingOnThem((bool) $request->getParameter('allow_changing_without_working'));
+					$this->project->save();
 					return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Your changes has been saved'), 'message' => ''));
 				}
 				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("You don't have access to save settings")));
