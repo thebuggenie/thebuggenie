@@ -2,6 +2,10 @@
 
 	$tbg_response->setTitle(__('"%project_name%" project dashboard', array('%project_name%' => $selected_project->getName())));
 	$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
+	if ($tbg_user->canEditProjectDetails($selected_project))
+	{
+		$tbg_response->addJavascript('config/projects_ajax.js');
+	}
 
 ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0" id="project_dashboard">

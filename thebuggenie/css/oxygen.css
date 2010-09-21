@@ -64,7 +64,7 @@ input[type="submit"], button, input[type="file"] { background-color: #E5E5E5; }
 input[type="submit"]:hover { background-color: #F5F5F5; }
 input[type="submit"]:active { background-color: #D5D5D5; }
 input[type="image"] { border: 0px; padding: 0px; width: 16px; height: 16px; background-color: transparent; }
-input[disabled] { background-color: #F9F9F9; color: #BBB; }
+input[disabled], select[disabled] { background-color: #F9F9F9; color: #BBB; }
 
 th { font-weight: bold; border-bottom: 1px solid #DDD; padding-bottom: 2px; }
 

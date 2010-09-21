@@ -1,8 +1,7 @@
-<?php TBGContext::loadLibrary('ui'); ?>
 <?php if ($message): ?>
 	<p class="faded_medium" style="padding: 5px;"><?php echo __('Please specify something to search for'); ?></p>
 <?php else: ?>
-	<div class="config_header nobg" style="margin-top: 10px;"><b><?php echo __('The following customers were found based on your search criteria'); ?>:</b></div>
+	<?php /*<div class="config_header nobg" style="margin-top: 10px;"><b><?php echo __('The following customers were found based on your search criteria'); ?>:</b></div>
 	<?php if ($customers): ?>
 		<div style="margin: 5px 0 0 10px;">
 			<?php foreach ($customers as $customer): ?>
@@ -38,7 +37,7 @@
 		</div>
 	<?php else: ?>
 		<p class="faded_medium" style="padding: 2px 0 0 10px;"><?php echo __('Could not find any customers based on your search criteria'); ?></p>
-	<?php endif;?>
+	<?php endif; */ ?>
 	<div class="config_header nobg" style="margin-top: 10px;"><b><?php echo __('The following teams were found based on your search criteria'); ?>:</b></div>
 	<?php if ($teams): ?>
 		<div style="margin: 5px 0 0 10px;">

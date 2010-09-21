@@ -138,5 +138,15 @@
 			$this->access_level = (TBGContext::getUser()->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) ? configurationActions::ACCESS_FULL : configurationActions::ACCESS_READ;
 			$this->statustypes = TBGStatus::getAll();
 		}
+		
+		public function componentProjectSettings()
+		{
+			$this->statustypes = TBGStatus::getAll();
+		}
+		
+		public function componentProjectMilestones()
+		{
+			$this->milestones = $this->project->getAllMilestones();
+		}
 
 	}

@@ -9,7 +9,7 @@
 				<li id="tab_settings"><?php echo javascript_link_tag(image_tag('cfg_icon_projectsettings.png', array('style' => 'float: left;')).__('Settings'), array('onclick' => "switchSubmenuTab('tab_settings', 'project_config_menu');")); ?></li>
 				<li id="tab_hierarchy"><?php echo javascript_link_tag(image_tag('cfg_icon_projecteditionsbuilds.png', array('style' => 'float: left;')).__('Hierarchy'), array('onclick' => "switchSubmenuTab('tab_hierarchy', 'project_config_menu');")); ?></li>
 				<li id="tab_milestones"><?php echo javascript_link_tag(image_tag('icon_milestones.png', array('style' => 'float: left;')).__('Milestones'), array('onclick' => "switchSubmenuTab('tab_milestones', 'project_config_menu');")); ?></li>
-				<li id="tab_users"><?php echo javascript_link_tag(image_tag('cfg_icon_project_devs.png', array('style' => 'float: left;')).__('Related users'), array('onclick' => "switchSubmenuTab('tab_users', 'project_config_menu');")); ?></li>
+				<li id="tab_developers"><?php echo javascript_link_tag(image_tag('cfg_icon_project_devs.png', array('style' => 'float: left;')).__('Related users'), array('onclick' => "switchSubmenuTab('tab_developers', 'project_config_menu');")); ?></li>
 				<li id="tab_other"><?php echo javascript_link_tag(image_tag('cfg_icon_datatypes.png', array('style' => 'float: left;')).__('Other'), array('onclick' => "switchSubmenuTab('tab_other', 'project_config_menu');")); ?></li>
 			</ul>
 		</div>
@@ -18,19 +18,19 @@
 				<?php include_template('configuration/projectinfo', array('access_level' => $access_level, 'project' => $project)); ?>
 			</div>
 			<div id="tab_settings_pane" style="display: none;">
-				settings
+				<?php include_component('configuration/projectsettings', array('access_level' => $access_level, 'project' => $project)); ?>
 			</div>
 			<div id="tab_hierarchy_pane" style="display: none;">
-				hierarchy
+				hierarchy<?php //include_template('configuration/projecthierarchy', array('access_level' => $access_level, 'project' => $project)); ?>
 			</div>
 			<div id="tab_milestones_pane" style="display: none;">
-				milestones
+				<?php include_component('configuration/projectmilestones', array('access_level' => $access_level, 'project' => $project)); ?>
 			</div>
-			<div id="tab_users_pane" style="display: none;">
-				users
+			<div id="tab_developers_pane" style="display: none;">
+				<?php include_template('configuration/projectdevelopers', array('access_level' => $access_level, 'project' => $project)); ?>
 			</div>
 			<div id="tab_other_pane" style="display: none;">
-				other
+				<?php include_template('configuration/projectother', array('access_level' => $access_level, 'project' => $project)); ?>
 			</div>
 		</div>
 	</div>

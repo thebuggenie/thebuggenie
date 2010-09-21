@@ -584,7 +584,7 @@
 		public function setName($name)
 		{
 			parent::setName($name);
-			$this->_key = strtolower(str_replace(' ', '', $name));
+			$this->_key = strtolower(preg_replace("/[^0-9a-zA-Z]/i", '', $name));
 		}
 		
 		/**
@@ -937,6 +937,11 @@
 		public function usePrefix()
 		{
 			return $this->_useprefix;
+		}
+		
+		public function doesUsePrefix()
+		{
+			return $this->usePrefix();
 		}
 		
 		/**

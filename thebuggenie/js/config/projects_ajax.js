@@ -449,31 +449,41 @@ function addComponent(url)
 
 function submitProjectSettings(url)
 {
-	var params = Form.serialize('project_settings');
+	_submitProjectDetails(url, 'project_settings');
+}
+
+function submitProjectInfo(url)
+{
+	_submitProjectDetails(url, 'project_info');
+}
+
+function _submitProjectDetails(url, form)
+{
+	var params = Form.serialize(form);
 	new Ajax.Request(url, {
 		asynchronous:true,
 		method: "post",
 		requestHeaders: {Accept: 'application/json'},
 		parameters: params,
 		onLoading: function (transport) {
-			$('project_save_indicator').show();
+			$(form + '_indicator').show();
 		},
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
 			if (json.failed)
 			{
-				$('project_save_indicator').hide();
+				$(form + '_indicator').hide();
 				failedMessage(json.error);
 			}
 			else
 			{
-				$('project_save_indicator').hide();
+				$(form + '_indicator').hide();
 				$('project_name_span').update($('project_name').getValue());
 				successMessage(json.title, json.message);
 			}
 		},
 		onFailure: function (transport) {
-			$('project_save_indicator').hide();
+			$(form + '_indicator').hide();
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{

@@ -90,7 +90,7 @@
 </table>
 
 <?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="submitProjectSettings('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>'); return false;" id="project_settings">
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="submitProjectInfo('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>'); return false;" id="project_info">
 <?php endif; ?>
 <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 	<tr>
@@ -103,6 +103,7 @@
 			<?php endif; ?>
 		</td>
 	</tr>
+	<?php TBGEvent::createNew('core', 'configuration/projectinfo', $project)->trigger(); ?>
 	<tr>
 		<td><label for="use_prefix"><?php echo __('Use prefix'); ?></label></td>
 		<td>
@@ -172,7 +173,7 @@
 		<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
 			<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "Save" to save your changes'); ?></div>
 			<input type="submit" id="project_submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
-			<span id="project_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+			<span id="project_info_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 		</td>
 	</tr>
 <?php endif; ?>

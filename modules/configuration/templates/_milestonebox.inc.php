@@ -1,4 +1,4 @@
-<div id="milestone_span_<?php echo $milestone->getID(); ?>" style="border-bottom: 1px solid #DDD; margin-top: 10px;">
+<div id="milestone_span_<?php echo $milestone->getID(); ?>" style="margin-bottom: 10px;">
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'update')); ?>" method="post" id="edit_milestone_<?php echo $milestone->getID(); ?>" style="display: none;" onsubmit="updateMilestone('<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'update')); ?>', <?php echo $milestone->getID(); ?>);return false;">
 		<table style="width: 100%;" cellpadding=0 cellspacing=0>
 			<tr>
