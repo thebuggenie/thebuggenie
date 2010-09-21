@@ -1147,7 +1147,7 @@
 							$set_function_name = 'set'.ucfirst($parameter_name);
 							$is_changed_function_name = 'is'.ucfirst($parameter_name).'Changed';
 						}
-						if ($request->hasParameter($paramter_id_name)) //$request->getParameter('field') == 'pain_bug_type')
+						if ($request->hasParameter($parameter_id_name)) //$request->getParameter('field') == 'pain_bug_type')
 						{
 							$parameter_id = $request->getParameter($parameter_id_name);
 							if ($parameter_id !== 0)

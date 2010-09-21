@@ -62,6 +62,7 @@
 		<td style="width: auto; padding: 5px;">
 			<div style="clear: both; padding: 0 5px 5px 0;" id="project_header_container">
 				<?php echo image_tag($selected_project->getIcon(), array(), $selected_project->hasIcon()); ?>
+				<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><?php echo javascript_link_tag(image_tag('cfg_icon_projectheader.png'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $selected_project->getID()))."');")); ?><?php endif; ?>
 				<div id="project_name"><?php echo $selected_project->getName(); ?> <span><?php echo $selected_project->getKey(); ?></span></div>
 				<div id="project_description"<?php if (!$selected_project->hasDescription()): ?> class="faded_dark"<?php endif; ?>>
 					<?php if ($selected_project->hasDescription()): ?>

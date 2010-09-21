@@ -16,7 +16,7 @@
 		<?php echo __('Please wait, loading content'); ?>...
 	</div>
 	<div id="fullpage_backdrop_content"> </div>
-	<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent"> </div>
+	<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent" onclick="resetFadedBackdrop();"> </div>
 </div>
 <div class="tab_menu header_menu">
 	<ul>

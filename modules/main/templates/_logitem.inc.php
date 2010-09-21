@@ -33,13 +33,14 @@
 						echo '<i>' . __('Issue created') . '</i>';
 						if (isset($include_details) && $include_details)
 						{
-							echo '<div class="timeline_inline_details">'.$issue->getDescription().'</div>';
+							echo '<div class="timeline_inline_details">'.nl2br($issue->getDescription()).'</div>';
 						}
 						break;
 					case TBGLogTable::LOG_COMMENT:
 						$comment = TBGFactory::TBGCommentLab((int) $log_action['text']);
 						echo '<div class="timeline_inline_details">';
-						echo (strlen($comment->getContent() > 300)) ? substr($comment->getContent(), 300) . '...' : $comment->getContent();
+						$comment = (strlen($comment->getContent() > 300)) ? substr($comment->getContent(), 300) . '...' : $comment->getContent();
+						echo nl2br($comment);
 						echo '</div>';
 						break;
 					case TBGLogTable::LOG_ISSUE_CLOSE:

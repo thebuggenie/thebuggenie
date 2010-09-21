@@ -58,7 +58,7 @@
 		<?php endif; ?>
 	<?php endif; ?>
 	<div class="rounded_box yellow borderless" id="viewissue_changed" <?php if (!$theIssue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
-		<button onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_title').focus();return false;"><?php echo __('Add comment and save changes'); ?></button>
+		<button onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_save_changes').checked = true;$('comment_bodybox').focus();return false;"><?php echo __('Add comment and save changes'); ?></button>
 		<form action="<?php echo make_url('saveissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())); ?>" method="post">
 			<input type="submit" value="<?php echo __('Save changes'); ?>">
 			<div class="viewissue_info_header"><?php echo __('You have unsaved changes'); ?></div>
@@ -256,9 +256,9 @@
 							<div class="comment_add_main">
 								<div class="comment_add_title"><?php echo __('Create a comment'); ?></div><br>
 								<form id="comment_form" action="<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>" method="post" onSubmit="return addComment('<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>', 'viewissue_comment_count');">
-									<label for="comment_title"><?php echo __('Comment title'); ?> <span class="faded_medium">(<?php echo __('optional'); ?>)</span></label><br />
-									<input type="text" class="comment_titlebox" id="comment_title" name="comment_title"<?php if (isset($comment_error) && $comment_error): ?>value="<?php echo $comment_error_title; ?>"<?php endif; ?> /><br />
-									<label for="comment_visibility"><?php echo __('Visibility'); ?> <span class="faded_medium">(<?php echo __('whether to hide this comment for "regular users"'); ?>)</span></label><br />
+									<?php /*<label for="comment_title"><?php echo __('Comment title'); ?> <span class="faded_medium">(<?php echo __('optional'); ?>)</span></label><br />
+									<input type="text" class="comment_titlebox" id="comment_title" name="comment_title"<?php if (isset($comment_error) && $comment_error): ?>value="<?php echo $comment_error_title; ?>"<?php endif; ?> /><br /> */ ?>
+									<label for="comment_visibility"><?php echo __('Comment visibility'); ?> <span class="faded_medium">(<?php echo __('whether to hide this comment for "regular users"'); ?>)</span></label><br />
 									<select class="comment_visibilitybox" id="comment_visibility" name="comment_visibility">
 										<option value="1"><?php echo __('Visible for all users'); ?></option>
 										<option value="0"><?php echo __('Visible for me, developers and administrators only'); ?></option>
