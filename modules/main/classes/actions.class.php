@@ -2253,9 +2253,10 @@
 						$template_name = 'main/markasduplicate';
 						break;
 					case 'project_config':
-						$template_name = 'configuration/projectconfig';
+						$template_name = 'configuration/projectconfig_container';
 						$project = TBGFactory::projectLab($request->getParameter('project_id'));
 						$options['project'] = $project;
+						$options['section'] = 'hierarchy';
 						break;
 				}
 				if ($template_name !== null)

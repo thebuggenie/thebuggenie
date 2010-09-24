@@ -732,8 +732,8 @@
 		 * Configure a project edition with builds and settings
 		 * 
 		 * @param TBGRequest $request The request object
-		 */
-		public function runConfigureProjectEdition(TBGRequest $request)
+		 *
+		
 		{
 			try
 			{
@@ -762,16 +762,7 @@
 				return $this->renderJSON(array('failed' => false));
 			}
 			
-			switch ($request->getParameter('mode'))
-			{
-				case 'releases':
-				case 'components':
-					$this->selected_section = $request->getParameter('mode');
-					break;
-				default:
-					$this->selected_section = 'general';
-			}
-		}
+		}*/
 		
 		/**
 		 * Add a project (AJAX call)
@@ -1727,9 +1718,60 @@
 			return $this->renderComponent('configuration/permissionsconfigurator', array('access_level' => $this->access_level, 'user_id' => $request->getParameter('user_id', 0), 'base_id' => $request->getParameter('base_id', 0)));
 		}
 
+		public function runConfigureProjectEdition(TBGRequest $request)
+		{
+			try
+			{
+				if ($edition_id = $request->getParameter('edition_id'))
+				{
+					$edition = TBGFactory::editionLab($edition_id);
+					switch ($request->getParameter('mode'))
+					{
+						case 'releases':
+						case 'components':
+							$this->selected_section = $request->getParameter('mode');
+							break;
+						default:
+							$this->selected_section = 'general';
+					}
+					$content = $this->getComponentHTML('configuration/projectedition', array('edition' => $edition, 'access_level' => $this->access_level, 'selected_section' => $this->selected_section));
+					return $this->renderJSON(array('failed' => false, 'content' => $content));
+				}
+				else
+				{
+					throw new Exception(TBGContext::getI18n()->__('Invalid edition id'));
+				}
+			}
+			catch (Exception $e)
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
+
+		public function runConfigureProject(TBGRequest $request)
+		{
+			try
+			{
+				if ($project_id = $request->getParameter('project_id'))
+				{
+					$project = TBGFactory::projectLab($project_id);
+					$content = $this->getComponentHTML('configuration/projectconfig', array('project' => $project, 'access_level' => $this->access_level, 'section' => 'hierarchy'));
+					return $this->renderJSON(array('failed' => false, 'content' => $content));
+				}
+				else
+				{
+					throw new Exception(TBGContext::getI18n()->__('Invalid project id'));
+				}
+			}
+			catch (Exception $e)
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
+
 		public function getAccessLevel($section, $module)
 		{
 			return (TBGContext::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;
 		}
-		
+
 	}

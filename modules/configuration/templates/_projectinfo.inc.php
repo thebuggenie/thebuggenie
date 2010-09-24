@@ -25,7 +25,7 @@
 			<?php echo __('Noone'); ?>
 		</td>
 		<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-			<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('owned_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
+			<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('owned_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Change project owner'); ?>"><?php echo __('Change / set'); ?></a></td>
 		<?php endif; ?>
 	</tr>
 	<tr><td colspan="3" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('The project owner has total control over this project and can edit information, settings, and anything about it'); ?></td></tr>
@@ -55,7 +55,7 @@
 			<?php echo __('Noone'); ?>
 		</td>
 		<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-			<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('lead_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
+			<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('lead_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Change project leader'); ?>"><?php echo __('Change / set'); ?></a></td>
 		<?php endif; ?>
 	</tr>
 	<tr class="canhover_dark">
@@ -84,7 +84,7 @@
 			<?php echo __('Noone'); ?>
 		</td>
 		<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-			<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('qa_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
+			<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('qa_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Change Qa responsible'); ?>"><?php echo __('Change / set'); ?></a></td>
 		<?php endif; ?>
 	</tr>
 </table>

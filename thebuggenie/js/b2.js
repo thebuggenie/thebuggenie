@@ -45,6 +45,62 @@ function successMessage(title, content)
 	new Effect.SlideUp('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, delay: 10});
 }
 
+function _updateDivWithJSONFeedback(url, update_div, indicator, insertion)
+{
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "get",
+	evalScripts: true,
+	onLoading: function (transport) {
+		$(indicator).show();
+		$(update_div).update('');
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json && json.failed)
+		{
+			failedMessage(json.error);
+			$(indicator).hide();
+		}
+		else
+		{
+			$(indicator).hide();
+			if (update_div != '' && $(update_div))
+			{
+				content = (json) ? json.content : transport.responseText;
+				if (insertion == true)
+				{
+					$(update_div).insert(content, 'after');
+				}
+				else
+				{
+					$(update_div).update(content);
+				}
+				if (json && json.message)
+				{
+					successMessage(json.message);
+				}
+			}
+			else if (json)
+			{
+				successMessage(json.title, json.content);
+			}
+		}
+	},
+	onFailure: function (transport) {
+		$(indicator).hide();
+		if (transport.responseJSON)
+		{
+			failedMessage(transport.responseJSON.error);
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+	}
+	});
+}
+
 function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done, update_div, insertion)
 {
 	var params = Form.serialize(formname);

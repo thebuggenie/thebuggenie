@@ -359,6 +359,7 @@ function addEdition(url)
 			{
 				Form.reset('add_edition_form');
 				$('edition_add_indicator').hide();
+				$('no_editions').hide();
 				successMessage(json.title, json.message);
 				$('edition_table').update($('edition_table').innerHTML + json.html);
 			}
@@ -824,4 +825,14 @@ function removeFromProject(url, aid)
 			}
 		}
 	});
+}
+
+function editEdition(url, edition_id)
+{
+	_updateDivWithJSONFeedback(url, 'backdrop_detail_content', 'backdrop_detail_indicator', false);
+}
+
+function backToEditProject(url, project_id)
+{
+	_updateDivWithJSONFeedback(url, 'backdrop_detail_content', 'backdrop_detail_indicator', false);
 }

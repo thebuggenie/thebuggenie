@@ -62,7 +62,8 @@
 	$routes[] = array('configure_project_editions_components', '/configure/project/:project_id/editions_and_components', 'configuration', 'configureProjectEditionsAndComponents', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_project_other', '/configure/project/:project_id/other', 'configuration', 'configureProjectOther', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_project_updateother', '/configure/project/:project_id/update/other', 'configuration', 'configureProjectUpdateOther', array('config_module' => 'core', 'section' => 10));
-	$routes[] = array('configure_project_edition', '/configure/project/:project_id/edition/:edition_id/:mode', 'configuration', 'configureProjectEdition', array('config_module' => 'core', 'section' => 10));
+	$routes[] = array('configure_project_edition', '/configure/project/:project_id/edition/:edition_id', 'configuration', 'configureProjectEdition', array('config_module' => 'core', 'section' => 10, 'format' => 'json'));
+	$routes[] = array('configure_project', '/configure/project/:project_id/hierarchy', 'configuration', 'configureProject', array('config_module' => 'core', 'section' => 10, 'format' => 'json'));
 	$routes[] = array('configure_settings', '/configure/settings', 'configuration', 'settings', array('config_module' => 'core', 'section' => 12));
 	$routes[] = array('configure_scopes', '/configure/scopes', 'configuration', 'index', array('config_module' => 'core', 'section' => 14));
 	$routes[] = array('configure_files', '/configure/files', 'configuration', 'configureUploads', array('config_module' => 'core', 'section' => 3));
