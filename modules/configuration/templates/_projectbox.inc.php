@@ -53,7 +53,7 @@
 							<td style="padding: 0px; text-align: left;"><?php echo __('Deleting project, please wait'); ?>...</td>
 						</tr>
 					</table>
-					<div id="project_delete_error_<?php echo($project->getID()); ?>" style="display: none;"><b>System error when deleting project</b></div>
+					<div id="project_delete_error_<?php echo($project->getID()); ?>" style="display: none;"><b><?php echo __('System error when deleting project'); ?></b></div>
 				</div>
 			<?php endif; ?>
 		<?php if ($project->hasEditions() && $project->isEditionsEnabled()): ?>

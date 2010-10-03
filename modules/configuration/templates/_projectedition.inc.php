@@ -1,6 +1,6 @@
 <div style="clear: both; margin: 10px 0 10px 0; text-align: center; font-size: 1.2em;">
 	<?php echo __('You are now editing %project_name%s edition %edition_name%', array('%project_name%' => '<b>'.$edition->getProject()->getName().'</b>', '%edition_name%' => '<b>'.$edition->getName().'</b>')); ?><br>
-	<?php echo javascript_link_tag('<b>&lt;&lt; '.__('Go back to editing project details').'</b>', array('onclick' => "backToEditProject('".make_url('configure_project', array('project_id' => $edition->getProject()->getID()))."', '".$edition->getProject()->getID()."');")); ?>
+	<?php echo javascript_link_tag('<b>&lt;&lt; '.__('Switch to editing project details').'</b>', array('onclick' => "backToEditProject('".make_url('configure_project', array('project_id' => $edition->getProject()->getID()))."', '".$edition->getProject()->getID()."');")); ?>
 </div>
 <div style="clear: both; margin-top: 10px; margin-bottom: 10px; width: 790px; height: 30px;" class="tab_menu">
 	<ul>

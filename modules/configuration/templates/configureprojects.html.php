@@ -1,6 +1,7 @@
 <?php
 
 	$tbg_response->setTitle(__('Manage projects'));
+	$tbg_response->addJavascript('config/projects_ajax.js');
 	
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
@@ -11,7 +12,16 @@ include_component('leftmenu', array('selected_section' => 10));
 
 ?>
 <td valign="top">
-	<?php include_template('configuration/project_header', array('mode' => 1)); ?>
+	<table style="width: 100%" cellpadding=0 cellspacing=0>
+		<tr>
+			<td style="padding-right: 10px;">
+				<div class="configheader" style="width: 750px;"><?php echo __('Configure projects'); ?></div>
+				<p style="padding-top: 5px;">
+					<?php echo __('More information about projects, editions, builds and components is available from the %wiki_help_section%.', array('%wiki_help_section%' => link_tag(make_url('publish_article', array('article_name' => 'Category:Help')), '<b>'.__('Wiki help section').'</b>'))); ?>
+				</p>
+			</td>
+		</tr>
+	</table>
 	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 		<div style="width: 700px; padding: 5px 0 5px 0; margin-top: 45px; border: 0; font-size: 14px;"><b><?php echo __('Create a new project'); ?></b></div>
 		<div class="rounded_box lightgrey" style="width: 690px; padding: 5px; margin-bottom: 20px;">
