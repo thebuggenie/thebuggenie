@@ -11,7 +11,7 @@
 </div>
 <div id="edition_settings"<?php if ($selected_section != 'general'): ?> style="display: none;"<?php endif; ?>>
 	<div class="rounded_box lightgrey" style="margin: 5px 0px 5px 0px; width: 780px; vertical-align: middle;">
-		<table style="width: 770px;" cellpadding=0 cellspacing=0>
+		<table style="width: 780px;" cellpadding=0 cellspacing=0>
 			<tr class="canhover_dark">
 				<td style="padding: 2px; width: 100px;">
 					<b><?php echo __('Edition owner'); ?></b>
@@ -39,7 +39,7 @@
 					<?php echo __('Noone'); ?>
 				</td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('owned_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
+					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('owned_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
 				<?php endif; ?>
 			</tr>
 			<tr><td colspan="3" class="description" style="padding-bottom: 10px;"><?php echo __('The edition owner has total control over this edition and can edit information, settings, and anything about it'); ?></td></tr>
@@ -69,7 +69,7 @@
 					<?php endif; ?>
 				</td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('edit_leadby', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Switch'), 'title' => __('Change'))); ?></a></td>
+					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('edit_leadby', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
 				<?php endif; ?>
 			</tr>
 			<tr class="canhover_dark">
@@ -98,13 +98,13 @@
 					<?php endif; ?>
 				</td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<td style="padding: 2px; width: 20px;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('edit_qa', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo image_tag('icon_switchassignee.png', array('alt' => __('Change'), 'title' => __('Change'))); ?></a></td>
+					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('edit_qa', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
 				<?php endif; ?>
 			</tr>
 		</table>
 	</div>
 	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>" method="post" id="edition_settings" onsubmit="submitEditionSettings('<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>');return false;">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>" method="post" id="edition_settings_form" onsubmit="submitEditionSettings('<?php echo make_url('configure_project_edition', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')); ?>');return false;">
 			<table style="clear: both; width: 785px;" class="padded_table" cellpadding=0 cellspacing=0>
 				<tr>
 					<td style="width: 120px;"><label for="edition_name"><?php echo __('Name:') ?></label></td>
@@ -169,8 +169,8 @@
 				<tr>
 					<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
 						<div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "Save" to save your changes'); ?></div>
-						<input type="submit" id="project_submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
-						<span id="project_info_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+						<input type="submit" id="edition_submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+						<span id="edition_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
 					</td>
 				</tr>
 			<?php endif; ?>
@@ -180,6 +180,7 @@
 </div>
 <div id="edition_components" style="text-align: left;<?php if ($selected_section != 'components'): ?> display: none;<?php endif; ?>">
 <?php if ($edition->getProject()->isComponentsEnabled()): ?>
+	<input id="edition_component_count" type="hidden" value="<?php echo count($edition->getComponents()); ?>">
 	<table style="width: 785px;" cellpadding=0 cellspacing=0>
 		<tr>
 			<td style="<?php if ($access_level == configurationActions::ACCESS_FULL): ?> width: 395px; padding-right: 10px;<?php endif; ?> vertical-align: top;">
@@ -194,11 +195,9 @@
 					<?php endif; ?>
 					</tr>
 				<?php endforeach; ?>
-				<?php if (count($edition->getComponents()) == 0): ?>
-					<tr>
-						<td style="padding: 3px; color: #AAA;" colspan=3><?php echo __('This edition has no components'); ?></td>
-					</tr>
-				<?php endif; ?>
+				<tr<?php if (count($edition->getComponents()) > 0): ?> style="display: none;"<?php endif; ?> id="edition_no_components">
+					<td style="padding: 3px; color: #AAA;" colspan=3><?php echo __('This edition has no components'); ?></td>
+				</tr>
 				</table>
 			</td>
 		<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -231,7 +230,7 @@
 </div>
 <div id="edition_builds" style="width: 790px; text-align: left;<?php if ($selected_section != 'releases'): ?> display: none;<?php endif; ?>">
 <?php if ($edition->getProject()->isBuildsEnabled()): ?>
-	<?php include_template('builds', array('parent' => $edition, 'access_level' => $access_level)); ?>
+	<?php include_template('configuration/builds', array('parent' => $edition, 'access_level' => $access_level)); ?>
 <?php else: ?>
 	<div style="padding: 2px 5px 5px 5px;" class="faded_medium"><?php echo __('This project does not use releases'); ?>.<br><?php echo __('Releases can be enabled in project settings'); ?>.</div>
 <?php endif; ?>

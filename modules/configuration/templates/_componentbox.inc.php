@@ -1,9 +1,4 @@
-<?php 
-
-	TBGContext::loadLibrary('ui');
-
-?>
-<tr id="show_component_<?php print $component->getID(); ?>">
+<tr id="show_component_<?php print $component->getID(); ?>" class="canhover_light">
 	<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_components.png'); ?>
 		<div style="display: none; border: 1px solid #DDD; padding: 5px; text-align: center; width: 300px; position: absolute; background-color: #FFF;" id="del_component_<?php print $component->getID(); ?>">
 			<?php echo __('Are you sure you want to delete this component?'); ?><br>
@@ -11,7 +6,10 @@
 		</div>
 	</td>
 	<td style="width: auto; padding: 2px;" id="component_<?php echo $component->getID(); ?>_name"><?php print $component->getName(); ?></td>
-	<td style="width: 40px; text-align: right;"><a href="javascript:void(0);" onclick="$('show_component_<?php print $component->getID(); ?>').hide();$('edit_component_<?php print $component->getID(); ?>').show();$('c_name_<?php echo $component->getID(); ?>').focus();" style="font-size: 9px;"><?php echo __('Edit'); ?></a><br><a href="javascript:void(0);" onclick="Effect.Appear('del_component_<?php print $component->getID(); ?>', { duration: 0.5 });" style="font-size: 9px;"><?php echo __('Delete'); ?></a></td>
+	<td style="width: 40px; text-align: right;">
+		<a href="javascript:void(0);" class="image" onclick="$('show_component_<?php print $component->getID(); ?>').hide();$('edit_component_<?php print $component->getID(); ?>').show();$('c_name_<?php echo $component->getID(); ?>').focus();" style="font-size: 9px;"><?php echo image_tag('icon_edit.png'); ?></a>
+		<a href="javascript:void(0);" class="image" onclick="$('del_component_<?php print $component->getID(); ?>').toggle();" style="font-size: 9px;"><?php echo image_tag('action_cancel_small.png'); ?></a>
+	</td>
 </tr>
 <tr id="edit_component_<?php print $component->getID(); ?>" style="display: none;">
 	<td style="width: 20px; padding: 2px;">

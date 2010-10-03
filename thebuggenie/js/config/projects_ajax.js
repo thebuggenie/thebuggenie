@@ -292,7 +292,7 @@ function deleteBuild(url, bid)
 		},
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
-			if (json.deleted)
+			if (!json.deleted)
 			{
 				$('build_'+bid+'_indicator').removeClassName('selected_red');
 				$('build_'+bid+'_indicator').hide();
@@ -302,13 +302,19 @@ function deleteBuild(url, bid)
 			}
 			else
 			{
-				$('build_'+bid+'_indicator').hide();
-				$('build_'+bid+'_info').hide();
-				$('show_build_'+bid).hide();
-				$('edit_build_'+bid).hide();
-				$('del_build_'+bid).hide();
-				$('addtoopen_build_'+bid).hide();
-				successMessage(json.title, json.message);
+				if ($('build_list_'+bid))
+				{
+					$('build_list_'+bid).remove();
+				}
+				else
+				{
+					$('buildbox_'+bid).remove();
+				}
+				if ($('build_table').childElements().size() == 0)
+				{
+					$('no_builds').show();
+				}
+				successMessage(json.message);
 			}
 		},
 		onFailure: function (transport) {
@@ -395,6 +401,7 @@ function addBuild(url)
 			else
 			{
 				$('build_table').update($('build_table').innerHTML + json.html);
+				$('no_builds').hide();
 				$('build_add_indicator').hide();
 				successMessage(json.title, json.message);
 			}
@@ -496,38 +503,7 @@ function _submitProjectDetails(url, form)
 
 function submitEditionSettings(url)
 {
-	var params = Form.serialize('edition_settings');
-		new Ajax.Request(url, {
-		asynchronous:true,
-		method: "post",
-		parameters: params,
-		requestHeaders: {Accept: 'application/json'},
-		onLoading: function (transport) {
-			$('edition_save_indicator').show();
-		},
-		onSuccess: function (transport) {
-			var json = transport.responseJSON;
-			if (json.failed)
-			{
-				$('edition_save_indicator').hide();
-				failedMessage(json.error);
-			}
-			else
-			{
-				$('edition_save_indicator').hide();
-				$('message_changes_saved').show();
-				$('edition_name_span').update($('edition_name').getValue());
-			}
-		},
-		onFailure: function (transport, response) {
-			$('edition_save_indicator').hide();
-			var json = transport.responseJSON;
-			if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-			}
-		}
-	});
+	_postFormWithJSONFeedback(url, 'edition_settings_form', 'edition_save_indicator');
 }
 
 function addEditionComponent(url, cid)
@@ -537,7 +513,7 @@ function addEditionComponent(url, cid)
 		method: "post",
 		requestHeaders: {Accept: 'application/json'},
 		onLoading: function (transport) {
-			new Effect.Fade('project_component_'+cid);
+			$('project_component_'+cid).fade();
 		},
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
@@ -547,11 +523,13 @@ function addEditionComponent(url, cid)
 			}
 			else
 			{
-				new Effect.Appear('edition_component_'+cid);
+				$('edition_component_count').value++;
+				$('edition_component_'+cid).appear();
+				$('edition_no_components').hide();
 			}
 		},
 		onFailure: function (transport, response) {
-			new Effect.Appear('project_component_'+cid);
+			$('project_component_'+cid).appear();
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{
@@ -568,7 +546,7 @@ function removeEditionComponent(url, cid)
 	method: "post",
 	requestHeaders: {Accept: 'application/json'},
 		onLoading: function (transport) {
-			new Effect.Fade('edition_component_'+cid);
+			$('edition_component_'+cid).fade();
 		},
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
@@ -578,11 +556,16 @@ function removeEditionComponent(url, cid)
 			}
 			else
 			{
-				new Effect.Appear('project_component_'+cid);
+				$('edition_component_count').value--;
+				if ($('edition_component_count').value == 0)
+				{
+					$('edition_no_components').appear();
+				}
+				$('project_component_'+cid).show();
 			}
 		},
 		onFailure: function (transport, response) {
-			new Effect.Appear('edition_component_'+cid);
+			$('edition_component_'+cid).appear();
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{

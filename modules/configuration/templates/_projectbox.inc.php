@@ -31,9 +31,13 @@
 	<tr>
 		<td colspan="2" style="border-top: 1px solid #DDD; padding: 5px; background-color: transparent;">
 		<?php if (!$project->isEditionsEnabled() && $project->isBuildsEnabled()): ?>
-			<div style="float: right;"><span style="margin-right: 10px;"><strong><?php echo link_tag(make_url('configure_project_editions_components', array('project_id' => $project->getID())), image_tag('cfg_icon_builds.png', array('title' => (($access_level == configurationActions::ACCESS_FULL) ? __('Manage releases') : __('Show releases')), 'style' => 'float: left; margin-right: 5px;')) . (($access_level == configurationActions::ACCESS_FULL) ? __('Manage releases') : __('Show releases'))); ?></strong></span></div>
+			<div style="float: right;">
+				<span style="margin-right: 10px;"><strong><?php echo javascript_link_tag(image_tag('cfg_icon_builds.png', array('title' => (($access_level == configurationActions::ACCESS_FULL) ? __('Manage releases') : __('Show releases')), 'style' => 'float: left; margin-right: 5px;')) . (($access_level == configurationActions::ACCESS_FULL) ? __('Manage releases') : __('Show releases')), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'section' => 'hierarchy', 'project_id' => $project->getID()))."');", 'style' => 'font-size: 12px;')); ?></strong></span>
+			</div>
 		<?php endif; ?>
-			<div style="float: right;"><span style="margin-right: 10px;"><strong><?php echo link_tag(make_url('configure_project_settings', array('project_id' => $project->getID())), image_tag('cfg_icon_projectsettings.png', array('title' => (($access_level == configurationActions::ACCESS_FULL) ? __('Edit project') : __('Show project details')), 'style' => 'float: left; margin-right: 5px;')) . (($access_level == configurationActions::ACCESS_FULL) ? __('Edit project') : __('Show project details'))); ?></strong></span></div>
+			<div style="float: right;">
+				<span style="margin-right: 10px;"><strong><?php echo javascript_link_tag(image_tag('cfg_icon_projectsettings.png', array('title' => (($access_level == configurationActions::ACCESS_FULL) ? __('Edit project') : __('Show project details')), 'style' => 'float: left; margin-right: 5px;')) . (($access_level == configurationActions::ACCESS_FULL) ? __('Edit project') : __('Show project details')), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $project->getID()))."');", 'style' => 'font-size: 12px;')); ?></strong></span>
+			</div>
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 				<div style="float: right;"><span style="margin-right: 10px;"><a href="javascript:void(0)" onClick="$('project_delete_confirm_<?php echo($project->getID()); ?>').show();"><?php echo image_tag('icon_delete.png', array('title' => __('Delete project'), 'style' => 'float: left; margin-right: 5px;')) . __('Delete');?></a></span></div>
 			<?php endif; ?>
@@ -59,8 +63,8 @@
 			<?php foreach ($project->getEditions() as $edition): ?>
 				<tr class="canhover_dark">
 					<td style="width: auto; padding: 3px 0 3px 5px;">
-						<div style="float: right;"><span style="margin-right: 10px;"><?php echo link_tag(make_url('configure_project_edition', array('project_id' => $project->getID(), 'edition_id' => $edition->getID(), 'mode' => 'releases')), image_tag('cfg_icon_builds.png', array('title' => __('Manage edition releases'), 'style' => 'float: left; margin-right: 5px;')) . __('Manage releases')); ?></span></div>
-						<div style="float: right;"><span style="margin-right: 20px;"><?php echo link_tag(make_url('configure_project_edition', array('project_id' => $project->getID(), 'edition_id' => $edition->getID(), 'mode' => 'general')), image_tag('cfg_icon_editiondetails.png', array('title' => __('Edit details'), 'style' => 'float: left; margin-right: 5px;')) . __('Edit details')); ?></span></div>
+						<div style="float: right;"><span style="margin-right: 10px;"><?php echo javascript_link_tag(image_tag('cfg_icon_builds.png', array('title' => (($access_level == configurationActions::ACCESS_FULL) ? __('Manage releases') : __('Show releases')), 'style' => 'float: left; margin-right: 5px;')) . (($access_level == configurationActions::ACCESS_FULL) ? __('Manage releases') : __('Show releases')), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'edition_id' => $edition->getID(), 'section' => 'releases', 'project_id' => $project->getID()))."');", 'style' => 'font-size: 12px;')); ?></span></div>
+						<div style="float: right;"><span style="margin-right: 20px;"><?php echo javascript_link_tag(image_tag('cfg_icon_editiondetails.png', array('title' => (($access_level == configurationActions::ACCESS_FULL) ? __('Edit details') : __('Show details')), 'style' => 'float: left; margin-right: 5px;')) . (($access_level == configurationActions::ACCESS_FULL) ? __('Edit details') : __('Show details')), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'edition_id' => $edition->getID(), 'project_id' => $project->getID()))."');", 'style' => 'font-size: 12px;')); ?></span></div>
 						<?php echo $edition->getName(); ?>
 					</td>
 				</tr>

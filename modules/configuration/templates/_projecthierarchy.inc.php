@@ -1,4 +1,4 @@
-<table style="width: 790px; margin-top: 10px;" cellpadding=0 cellspacing=0>
+<table style="width: 790px;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td style="padding-right: 5px;">
 			<div class="config_header nobg"><b><?php echo __('Editions'); ?></b></div>
@@ -41,7 +41,7 @@
 		<td style="width: auto; padding-right: 5px; vertical-align: top;">
 			<div id="project_editions"<?php if (!$project->isEditionsEnabled()): ?> style="display: none;"<?php endif; ?>>
 				<div class="faded_medium" id="no_editions" style="padding: 5px;<?php if (count($project->getEditions()) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no editions'); ?></div>
-				<table cellpadding=0 cellspacing=0 style="width: 100%;">
+				<table cellpadding=0 cellspacing=0 style="width: 100%; margin-top: 10px;">
 					<tbody id="edition_table">
 					<?php foreach ($project->getEditions() as $edition): ?>
 						<?php include_template('configuration/editionbox', array('theProject' => $project, 'edition' => $edition)); ?>
@@ -54,7 +54,7 @@
 		<td style="width: 375px; padding-right: 5px; vertical-align: top;">
 			<div id="project_components"<?php if (!$project->isComponentsEnabled()): ?> style="display: none;"<?php endif; ?>>
 				<div class="faded_medium" id="no_components" style="padding: 5px;<?php if (count($project->getComponents()) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no components'); ?></div>
-				<table cellpadding=0 cellspacing=0 style="width: 100%;">
+				<table cellpadding=0 cellspacing=0 style="width: 100%; margin-top: 10px;">
 					<tbody id="component_table">
 					<?php foreach ($project->getComponents() as $component): ?>
 						<?php include_template('configuration/componentbox', array('component' => $component)); ?>

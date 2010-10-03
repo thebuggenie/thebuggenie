@@ -26,9 +26,9 @@
 	<span id="build_table">
 	<?php foreach ($parent->getBuilds() as $build): ?>
 		<span id="build_list_<?php echo $build->getID(); ?>">
-			<?php include_template('buildbox', array('build' => $build, 'access_level' => $access_level)); ?>
+			<?php include_template('configuration/buildbox', array('build' => $build, 'access_level' => $access_level)); ?>
 		</span>
 	<?php endforeach; ?>
 	</span>
-	<div id="<?php echo ($parent instanceof TBGProject) ? 'project' : 'edition'; ?>_no_builds" style="padding: 5px;<?php if (count($parent->getBuilds()) > 0): ?> display: none;<?php endif; ?>" class="faded_medium"><?php echo __('There are no releases'); ?></div>
+	<div id="no_builds" style="padding: 5px;<?php if (count($parent->getBuilds()) > 0): ?> display: none;<?php endif; ?>" class="faded_medium"><?php echo __('There are no releases'); ?></div>
 </div>

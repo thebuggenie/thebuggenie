@@ -3,7 +3,11 @@
 		<?php echo __('Configure project'); ?>
 	</div>
 	<div class="backdrop_detail_content" id="backdrop_detail_content">
-		<?php include_component('configuration/projectconfig', array('project' => $project, 'section' => $section)); ?>
+		<?php if (isset($edition)): ?>
+			<?php include_component('configuration/projectedition', array('edition' => $edition, 'selected_section' => $selected_section)); ?>
+		<?php else: ?>
+			<?php include_component('configuration/projectconfig', array('project' => $project, 'section' => $section)); ?>
+		<?php endif; ?>
 	</div>
 	<div class="backdrop_detail_content" id="backdrop_detail_indicator" style="text-align: center; padding: 50px; display: none;">
 		<?php echo image_tag('spinning_32.gif'); ?>

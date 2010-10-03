@@ -2256,7 +2256,13 @@
 						$template_name = 'configuration/projectconfig_container';
 						$project = TBGFactory::projectLab($request->getParameter('project_id'));
 						$options['project'] = $project;
-						$options['section'] = 'hierarchy';
+						$options['section'] = $request->getParameter('section', 'info');
+						if ($request->hasParameter('edition_id'))
+						{
+							$edition = TBGFactory::editionLab($request->getParameter('edition_id'));
+							$options['edition'] = $edition;
+							$options['selected_section'] = $request->getParameter('section', 'general');
+						}
 						break;
 				}
 				if ($template_name !== null)

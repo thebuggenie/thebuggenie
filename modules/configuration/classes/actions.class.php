@@ -866,7 +866,7 @@
 									break;
 								case 'delete':
 									$build->delete();
-									return $this->renderJSON(array('deleted' => true));
+									return $this->renderJSON(array('deleted' => true, 'message' => $i18n->__('The release was deleted')));
 									break;
 								case 'addtoopen':
 									$build->addToOpenParentIssues((int) $request->getParameter('status'), (int) $request->getParameter('category'), (int) $request->getParameter('issuetype'));
@@ -1725,17 +1725,37 @@
 				if ($edition_id = $request->getParameter('edition_id'))
 				{
 					$edition = TBGFactory::editionLab($edition_id);
-					switch ($request->getParameter('mode'))
+					if ($request->isMethod(TBGRequest::POST))
 					{
-						case 'releases':
-						case 'components':
-							$this->selected_section = $request->getParameter('mode');
-							break;
-						default:
-							$this->selected_section = 'general';
+						if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
+						{
+							$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
+							$edition->setReleaseDate($release_date);
+						}
+
+						$edition->setName($request->getParameter('edition_name'));
+						$edition->setDescription($request->getParameter('description', null, false));
+						$edition->setDocumentationURL($request->getParameter('doc_url'));
+						$edition->setPlannedReleased($request->getParameter('planned_release'));
+						$edition->setReleased((int) $request->getParameter('released'));
+						$edition->setLocked((bool) $request->getParameter('locked'));
+						$edition->save();
+						return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Edition details saved')));
 					}
-					$content = $this->getComponentHTML('configuration/projectedition', array('edition' => $edition, 'access_level' => $this->access_level, 'selected_section' => $this->selected_section));
-					return $this->renderJSON(array('failed' => false, 'content' => $content));
+					else
+					{
+						switch ($request->getParameter('mode'))
+						{
+							case 'releases':
+							case 'components':
+								$this->selected_section = $request->getParameter('mode');
+								break;
+							default:
+								$this->selected_section = 'general';
+						}
+						$content = $this->getComponentHTML('configuration/projectedition', array('edition' => $edition, 'access_level' => $this->access_level, 'selected_section' => $this->selected_section));
+						return $this->renderJSON(array('failed' => false, 'content' => $content));
+					}
 				}
 				else
 				{

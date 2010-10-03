@@ -66,7 +66,7 @@
 			TBGContext::setPermission("canseeedition", $edition_id, "core", 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
 			
 			$edition = TBGFactory::editionLab($edition_id);
-			TBGEvent::createNew('core', 'TBGProject::createNew', $edition)->trigger();
+			TBGEvent::createNew('core', 'TBGEdition::createNew', $edition)->trigger();
 
 			return $edition;
 		}

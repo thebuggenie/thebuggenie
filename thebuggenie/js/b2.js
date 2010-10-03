@@ -140,7 +140,14 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done,
 			}
 			else if (json)
 			{
-				successMessage(json.title, json.content);
+				if (json && json.message)
+				{
+					successMessage(json.message);
+				}
+				else
+				{
+					successMessage(json.title, json.content);
+				}
 			}
 			if (hide_div_when_done != '' && $(hide_div_when_done))
 			{
