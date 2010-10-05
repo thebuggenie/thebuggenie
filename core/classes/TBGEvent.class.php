@@ -53,6 +53,17 @@
 		}
 
 		/**
+		 * Remove all listeners from a module/identifier
+		 *
+		 * @param string $module The module for which the trigger is active
+		 * @param string $identifier The trigger identifier
+		 */
+		public static function clearListeners($module, $identifier)
+		{
+			self::$_registeredlisteners[$module][$identifier] = array();
+		}
+
+		/**
 		 * Whether or not there are any listeners to a specific trigger
 		 *
 		 * @param string $module The module for which the trigger is active
@@ -62,7 +73,7 @@
 		 */
 		public static function isAnyoneListening($module, $identifier)
 		{
-			if (isset(self::$_registeredlisteners[$module]) && isset(self::$_registeredlisteners[$module][$identifier]))
+			if (isset(self::$_registeredlisteners[$module]) && isset(self::$_registeredlisteners[$module][$identifier]) && !empty(self::$_registeredlisteners[$module][$identifier]))
 			{
 				return true;
 			}
