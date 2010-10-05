@@ -291,8 +291,12 @@
 		// Set the include path
 		TBGContext::setIncludePath(THEBUGGENIE_PATH);
 
-		// Add classpath so we can find the BUGS* classes
+		// Add classpath so we can find the TBG* classes
 		TBGContext::addClasspath(THEBUGGENIE_PATH . 'core/classes/');
+
+		// Load the logging class so we can log stuff
+		require THEBUGGENIE_PATH . 'core/classes/TBGCache.class.php';
+
 		TBGLogging::log((TBGCache::isEnabled()) ? 'Cache is enabled' : 'Cache is not enabled');
 		
 		TBGLogging::log('Loading B2DB');

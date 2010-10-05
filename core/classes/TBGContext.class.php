@@ -28,8 +28,6 @@
 		
 		static protected $_environment = 2;
 		
-		static protected $_B2DBObject = null;
-		
 		/**
 		 * The current user
 		 *
@@ -174,16 +172,6 @@
 
 		static protected $_redirect_login = null;
 
-		/**
-		 * Returns the Database object
-		 *
-		 * @return B2DBObject
-		 */
-		public static function getB2DBObject()
-		{
-			return B2DBObject;
-		}
-		
 		/**
 		 * Returns whether or not we're in install mode
 		 * 
@@ -389,6 +377,14 @@
 			return round((self::$_loadend - self::$_loadstart), $precision);
 		}
 		
+		public static function checkInstallMode()
+		{
+			if (!is_readable(THEBUGGENIE_PATH . 'installed'))
+			{
+				self::$_installmode = true;
+			}
+		}
+
 		/**
 		 * Initialize the context
 		 * 
@@ -407,11 +403,8 @@
 					self::$_response = new TBGResponse();
 					TBGLogging::log('...done');
 				}
-				if (!is_readable(THEBUGGENIE_PATH . 'installed'))
-				{
-					self::$_installmode = true;
-				}
-				elseif (!class_exists('B2DB'))
+				self::checkInstallMode();
+				if (!self::$_installmode && !class_exists('B2DB'))
 				{
 					throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
 				}
