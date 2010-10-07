@@ -158,13 +158,21 @@
 				$this->_version_major 		= $row->get(TBGBuildsTable::VERSION_MAJOR);
 				$this->_version_minor 		= $row->get(TBGBuildsTable::VERSION_MINOR);
 				$this->_version_revision 	= $row->get(TBGBuildsTable::VERSION_REVISION);
-				if ($row->get(TBGBuildsTable::EDITION))
+				if ($row->get(TBGBuildsTable::EDITION) && is_numeric($row->get(TBGBuildsTable::EDITION)))
 				{
-					$this->_edition = TBGFactory::editionLab($row->get(TBGBuildsTable::EDITION), $row);
+					try
+					{
+						$this->_edition = TBGFactory::editionLab($row->get(TBGBuildsTable::EDITION), $row);
+					}
+					catch (Exception $e) {}
 				}
-				elseif ($row->get(TBGBuildsTable::PROJECT))
+				elseif ($row->get(TBGBuildsTable::PROJECT) && is_numeric($row->get(TBGBuildsTable::PROJECT)))
 				{
-					$this->_project = TBGFactory::projectLab($row->get(TBGBuildsTable::PROJECT), $row);
+					try
+					{
+						$this->_project = TBGFactory::projectLab($row->get(TBGBuildsTable::PROJECT), $row);
+					}
+					catch (Exception $e) {}
 				}
 			}
 		}
