@@ -204,7 +204,7 @@
 		 */
 		public function getProject()
 		{
-			return ($this->_project !== null) ? $this->_project : $this->_edition->getProject();
+			return ($this->_project !== null || !is_object($this->_edition)) ? $this->_project : $this->_edition->getProject();
 		}
 		
 		/**
