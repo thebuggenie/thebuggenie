@@ -833,7 +833,7 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 #find_issues .search_export_links { float: right; font-size: 0.9em; }
 .search_results { margin: 0 0 5px 0; }
 .search_results th { background-color: #F5F5F5; padding: 3px 3px 3px 0; }
-.search_results td { font-size: 12px; padding: 3px 3px 3px 0; }
+.search_results td { font-size: 11px; padding: 3px 3px 3px 0; }
 .search_results tbody tr:hover { background-color: #F1F1F1; }
 .search_results tbody tr.changed { background-color: #FFFBE2; }
 .search_results tbody tr.changed:hover { background-color: #FFF299; }
