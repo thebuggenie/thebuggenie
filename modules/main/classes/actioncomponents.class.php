@@ -179,6 +179,9 @@
 			}
 		}
 
-	}
+		public function componentUsercard()
+		{
+			$this->rnd_no = rand();
+		}
 
-?>
+	}

@@ -109,7 +109,7 @@
 		{
 			if (array_key_exists('headers', $this->options) && !$this->options['headers'])
 			{
-				return htmlspecialchars($matches[0]) . "\n";
+				return $matches[0] . "\n";
 			}
 			
 			$level = strlen($matches[1]);
@@ -126,7 +126,7 @@
 				$this->toc[] = array('level' => $level, 'content' => $content, 'id' => $id);
 				$retval .= " id=\"{$id}\"";
 			}
-			$retval .= ">" . htmlspecialchars($content);
+			$retval .= ">" . $content;
 			if (!isset($this->options['embedded']) || $this->options['embedded'] == false)
 			{
 				$retval .= "&nbsp;<a href=\"#top\">&uArr;&nbsp;".TBGContext::getI18n()->__('top')."</a>";

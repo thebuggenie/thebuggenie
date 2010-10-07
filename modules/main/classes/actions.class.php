@@ -2243,6 +2243,14 @@
 				}
 				switch ($request->getParameter('key'))
 				{
+					case 'usercard':
+						$template_name = 'main/usercard';
+						if ($user_id = $request->getParameter('user_id'))
+						{
+							$user = TBGFactory::userLab($user_id);
+							$options['user'] = $user;
+						}
+						break;
 					case 'close_issue':
 						$template_name = 'main/closeissue';
 						break;

@@ -2,12 +2,12 @@
 	<span class="faded_medium"><?php echo __('No such user'); ?></span>
 <?php else: ?>
 	<?php $avatar_dimensions = (!isset($size) || $size == 'small') ? 16 : 22; ?>
-	<a href="javascript:void(0);" onclick="$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').toggle();" class="image"><?php echo image_tag($user->getAvatarURL(), array('style' => "width: {$avatar_dimensions}px; height: {$avatar_dimensions}px; float: left; margin-right: 5px;"), true); ?></a>
+	<a href="javascript:void(0);" onclick="$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').toggle();" class="image"><?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'style' => "width: {$avatar_dimensions}px; height: {$avatar_dimensions}px; float: left; margin-right: 5px;"), true); ?></a>
 	<a href="javascript:void(0);" onclick="$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').toggle();" style="font-weight: normal;"><?php echo $user->getBuddyname(); ?></a>
-	<div id="bud_<?php echo $user->getUsername() . '_' . $rnd_no; ?>" style="z-index: 100; width: 300px; display: none; position: absolute;" class="rounded_box white shadowed user_popup">
+	<div id="bud_<?php echo $user->getUsername() . '_' . $rnd_no; ?>" style="z-index: 100; width: 300px; /*display: none;*/ position: absolute;" class="rounded_box white shadowed user_popup">
 		<div style="padding: 3px;">
 			<div style="padding: 2px; width: 36px; height: 36px; text-align: center; background-color: #FFF; border: 1px solid #DDD; float: left;">
-				<?php echo image_tag($user->getAvatarURL(false), array('style' => "width: 36px; height: 36px;"), true); ?>
+				<?php echo image_tag($user->getAvatarURL(false), array('alt' => ' ', 'style' => "width: 36px; height: 36px;"), true); ?>
 			</div>
 			<div class="user_realname">
 				<?php echo $user->getRealname(); ?>
@@ -27,7 +27,9 @@
 				<?php endif; ?>
 				</div>
 			<?php endif; ?>
-			<div style="padding: 2px;"><a href="javascript:void(0);" onclick="failedMessage('This functionality is not yet implemented');return false;"><?php echo __('View details'); ?></a></div>
+			<div style="padding: 2px;">
+				<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $user->getID())); ?>');$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').hide();"><?php echo __('Show user details'); ?></a>
+			</div>
 			<?php TBGEvent::createNew('core', 'useractions_bottom', $user)->trigger(); ?>
 			<?php if (TBGContext::getUser()->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_USERS) && $user->getID() != TBGContext::getUser()->getUID()): ?>
 				<div style="padding: 2px; padding-top: 10px; padding-bottom: 10px;"><a href="login_validate.inc.php?switch_user=true&amp;new_user=<?php echo $user->getUsername(); ?>"><?php echo __('Temporarily switch to this user'); ?></a></div>

@@ -112,8 +112,9 @@ Custom classes
 
 .left_bar { width: 300px; background-color: transparent; vertical-align: top; }
 .left_menu { margin: 10px 5px 20px 10px; }
-.left_menu ul { list-style-type: none; padding: 0 0 0 5px; margin: 5px 0 0 0; }
+.left_menu ul, ul.teamlist { list-style-type: none; padding: 0 0 0 5px; margin: 5px 0 0 0; }
 .left_menu ul li { margin: 0px; font-size: 11px; font-weight: bold; clear: both; }
+ul.teamlist li { margin: 0 0 0 10px; }
 
 .main_area { text-align: left; vertical-align: top; padding: 10px 10px 10px 5px; width: auto; min-width: 700px; }
 
@@ -521,7 +522,7 @@ td.selected_red span	{ color: #FFF; }
 .left_menu_list { list-style-type: none; padding: 0; margin: 5px 0 0 0; }
 
 ul.project_list { list-style-type: none; padding: 0; margin: 5px 0 0 0; }
-ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5px 0 5px 0; margin-bottom: 10px; clear: both; }
+ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5px 0 5px 0; clear: both; }
 .project_overview { clear: both; /*font-size: 13px;*/ }
 .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-weight: bold; font-size: 14px; }
 .project_overview .content { padding-left: 5px; }
@@ -903,7 +904,9 @@ ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
 .groupbox_header, .teambox_header { font-weight: bold; /*font-size: 13px;*/ }
 .groupbox_membercount, .teambox_membercount { font-weight: normal; font-size: 11px; color: #888; }
 
-.user_popup { font-size: 12px; }
+.user_popup, #user_details_popup { font-size: 12px; }
 .user_popup .user_realname { font-size: 1.2em; font-weight: bold; padding: 0 0 0 7px; width: 240px; float: left; }
-.user_popup .user_realname .user_status { font-size: 0.8em; font-weight: normal; color: #AAA; }
-.user_popup .user_details { font-size: 1.0em; font-weight: normal; padding: 3px; clear: both; }
+#user_details_popup .user_realname { font-size: 1.5em; font-weight: bold; padding: 4px 0 0 10px; float: left; }
+#user_details_popup .user_username { font-weight: normal; font-size: 0.9em; color: #AAA; font-style: italic; }
+.user_popup .user_realname .user_status, #user_details_popup .user_realname .user_status { font-size: 0.8em; font-weight: normal; color: #AAA; }
+.user_popup .user_details, #user_details_popup .user_details { font-size: 1.0em; font-weight: normal; padding: 3px; clear: both; }
