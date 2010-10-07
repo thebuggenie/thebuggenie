@@ -40,6 +40,9 @@
 					case 'milestone':
 						echo __('Targetted for milestone');
 						break;
+					case 'votes':
+						echo __('Votes');
+						break;
 					default:
 						echo __(ucfirst($item));
 						break;

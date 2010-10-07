@@ -3778,14 +3778,24 @@
 
 		/**
 		 * Return whether or not the triaging fields for user pain are visible
-		 * 
+		 *
 		 * @return boolean
 		 */
 		public function isUserPainVisible()
 		{
 			return (bool) ($this->isFieldVisible('user_pain'));
 		}
-		
+
+		/**
+		 * Return whether or not voting is enabled for this issue type
+		 *
+		 * @return boolean
+		 */
+		public function isVotesVisible()
+		{
+			return (bool) ($this->isFieldVisible('votes'));
+		}
+
 		/**
 		 * Return whether or not the "description" field is visible
 		 * 
@@ -3794,7 +3804,7 @@
 		public function isDescriptionVisible()
 		{
 			return (bool) ($this->isFieldVisible('description') || $this->getDescription() != '');
-		} 
+		}
 
 		/**
 		 * Return whether or not the "reproduction steps" field is visible
