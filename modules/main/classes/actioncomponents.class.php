@@ -18,8 +18,6 @@
 					$this->user = TBGFactory::userLab($this->user);
 					TBGLogging::log('done (loading user object in dropdown)');
 				}
-				$this->viewuser_string = "window.open('" . TBGContext::getTBGPath() . "viewuser.php?uid=" . $this->user->getUname() . "','mywindow','menubar=0,toolbar=0,location=0,status=0,scrollbars=0,width=600,height=400');";
-				$this->closemenu_string = 'hideBud(\'' . $this->user->getUname() . '_' . $this->rnd_no . '\');';
 			}
 			catch (Exception $e) 
 			{ 
@@ -33,13 +31,13 @@
 			$this->rnd_no = rand();
 			try
 			{
+				$this->team = (isset($this->team)) ? $this->team : null;
 				if (!$this->team instanceof TBGTeam)
 				{
 					TBGLogging::log('loading team object in dropdown');
 					$this->team = TBGFactory::teamLab($this->team);
 					TBGLogging::log('done (loading team object in dropdown)');
 				}
-				$this->closemenu_string = 'hideBud(\'' . $this->team->getID() . '_' . $this->rnd_no . '\');';
 			}
 			catch (Exception $e) 
 			{ 
