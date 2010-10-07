@@ -35,13 +35,11 @@
 				</td>
 				<td<?php if (!$issue->isAssigned()): ?> class="faded_medium"<?php endif; ?>>
 					<?php if ($issue->isAssigned()): ?>
-						<table style="display: inline;" cellpadding=0 cellspacing=0>
-							<?php if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
-								<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
-							<?php else: ?>
-								<?php echo include_component('main/teamdropdown', array('user' => $issue->getAssignee())); ?>
-							<?php endif; ?>
-						</table>
+						<?php if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
+							<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
+						<?php else: ?>
+							<?php echo include_component('main/teamdropdown', array('user' => $issue->getAssignee())); ?>
+						<?php endif; ?>
 					<?php else: ?>
 						-
 					<?php endif; ?>

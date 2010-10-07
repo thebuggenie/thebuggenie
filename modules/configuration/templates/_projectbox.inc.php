@@ -11,13 +11,11 @@
 	<td style="padding-left: 3px; width: 80px;"><b><?php echo __('Owner: %user_or_team%', array('%user_or_team%' => '')); ?></b></td>
 	<td style="padding-left: 3px; width: auto;">
 		<?php if ($project->getOwner() != null): ?>
-			<table cellpadding=0 cellspacing=0 width="100%">
-				<?php if ($project->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
-					<?php echo include_component('main/userdropdown', array('user' => $project->getOwner())); ?>
-				<?php elseif ($project->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
-					<?php echo include_component('main/teamdropdown', array('team' => $project->getOwner())); ?>
-				<?php endif; ?>
-			</table>
+			<?php if ($project->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
+				<?php echo include_component('main/userdropdown', array('user' => $project->getOwner())); ?>
+			<?php elseif ($project->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+				<?php echo include_component('main/teamdropdown', array('team' => $project->getOwner())); ?>
+			<?php endif; ?>
 		<?php else: ?>
 			<div style="color: #AAA; padding: 2px; width: auto;"><?php echo __('None'); ?></div>
 		<?php endif; ?>

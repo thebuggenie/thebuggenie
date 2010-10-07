@@ -12,9 +12,7 @@
 		<?php foreach ($assignees['users'] as $u_id => $assigns): ?>
 			<tr>
 				<td style="vertical-align: top; width: 250px; border-bottom: 1px solid #F1F1F1;">
-					<table cellpadding=0 cellspacing=0 width="100%">
-						<?php echo include_component('main/userdropdown', array('user' => $u_id)); ?>
-					</table>
+					<?php echo include_component('main/userdropdown', array('user' => $u_id)); ?>
 				</td>
 				<td style="vertical-align: top; padding-top: 3px; border-bottom: 1px solid #F1F1F1; padding-bottom: 7px;">
 					<?php if (array_key_exists('projects', $assigns)): ?>

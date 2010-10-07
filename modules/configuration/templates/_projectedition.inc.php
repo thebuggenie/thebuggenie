@@ -27,13 +27,13 @@
 					<?php endif; ?>
 				</td>
 				<td style="<?php if (!$edition->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
-					<table style="width: 270px; display: <?php if ($edition->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="owned_by_name">
+					<div style="width: 270px; display: <?php if ($edition->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" id="owned_by_name">
 						<?php if ($edition->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
 							<?php echo include_component('main/userdropdown', array('user' => $edition->getOwner())); ?>
 						<?php elseif ($edition->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
 							<?php echo include_component('main/teamdropdown', array('team' => $edition->getOwner())); ?>
 						<?php endif; ?>
-					</table>
+					</div>
 				</td>
 				<td style="<?php if ($edition->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_owned_by">
 					<?php echo __('Noone'); ?>

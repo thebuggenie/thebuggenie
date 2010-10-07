@@ -518,18 +518,6 @@ function removeSearchFilter(key)
 	}
 }
 
-function showBud(elem_id)
-{
-	$('bud_' + elem_id).show();
-	$('icon_' + elem_id).className = "imgtd_bud_hover";
-}
-
-function hideBud(elem_id)
-{
-	$('bud_' + elem_id).hide();
-	$('icon_' + elem_id).className = "imgtd_bud";
-}
-
 function updateProfileInformation(url)
 {
 	_postFormWithJSONFeedback(url, 'profile_information_form', 'profile_save_indicator');

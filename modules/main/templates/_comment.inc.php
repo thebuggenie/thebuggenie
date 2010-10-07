@@ -10,7 +10,7 @@
 						<?php else: ?>
 							<?php $title_string = '%comment_title% posted by %user%'; ?>
 						<?php endif; ?>
-						<?php echo __($title_string, array('%comment_title%' => $aComment->getTitle(), '%user%' => '</td><td><table style="display: inline;" cellpadding="0" cellspacing="0">' . get_component_html('main/userdropdown', array('user' => $aComment->getPostedBy(), 'size' => 'small')) . '</table>')); ?>
+						<?php echo __($title_string, array('%comment_title%' => $aComment->getTitle(), '%user%' => '</td><td>' . get_component_html('main/userdropdown', array('user' => $aComment->getPostedBy(), 'size' => 'small')))); ?>
 					</td>
 				</tr>
 				<tr>

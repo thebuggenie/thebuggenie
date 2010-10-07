@@ -13,13 +13,13 @@
 			<?php endif; ?>
 		</td>
 		<td style="<?php if (!$project->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
-			<table style="width: 270px; display: <?php if ($project->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="owned_by_name">
+			<div style="width: 270px; display: <?php if ($project->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" id="owned_by_name">
 				<?php if ($project->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
 					<?php echo include_component('main/userdropdown', array('user' => $project->getOwner())); ?>
 				<?php elseif ($project->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
 					<?php echo include_component('main/teamdropdown', array('team' => $project->getOwner())); ?>
 				<?php endif; ?>
-			</table>
+			</div>
 		</td>
 		<td style="<?php if ($project->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_owned_by">
 			<?php echo __('Noone'); ?>
@@ -43,13 +43,13 @@
 			<?php endif; ?>
 		</td>
 		<td style="<?php if (!$project->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
-			<table style="width: 270px; display: <?php if ($project->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="lead_by_name">
+			<div style="width: 270px; display: <?php if ($project->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" id="lead_by_name">
 				<?php if ($project->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
 					<?php echo include_component('main/userdropdown', array('user' => $project->getLeader())); ?>
 				<?php elseif ($project->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM): ?>
 					<?php echo include_component('main/teamdropdown', array('team' => $project->getLeader())); ?>
 				<?php endif; ?>
-			</table>
+			</div>
 		</td>
 		<td style="<?php if ($project->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_lead_by">
 			<?php echo __('Noone'); ?>
@@ -72,13 +72,13 @@
 			<?php endif; ?>
 		</td>
 		<td style="<?php if (!$project->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
-			<table style="width: 270px; display: <?php if ($project->hasQaResponsible()): ?>inline<?php else: ?>none<?php endif; ?>;" cellpadding=0 cellspacing=0 id="qa_by_name">
+			<div style="width: 270px; display: <?php if ($project->hasQaResponsible()): ?>inline<?php else: ?>none<?php endif; ?>;" id="qa_by_name">
 				<?php if ($project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
 					<?php echo include_component('main/userdropdown', array('user' => $project->getQaResponsible())); ?>
 				<?php elseif ($project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM): ?>
 					<?php echo include_component('main/teamdropdown', array('team' => $project->getQaResponsible())); ?>
 				<?php endif; ?>
-			</table>
+			</div>
 		</td>
 		<td style="<?php if ($project->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_qa_by">
 			<?php echo __('Noone'); ?>

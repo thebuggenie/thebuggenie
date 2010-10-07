@@ -902,3 +902,8 @@ ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
 #create_group_form input[type="submit"], #create_team_form input[type="submit"] { font-size: 12px; }
 .groupbox_header, .teambox_header { font-weight: bold; /*font-size: 13px;*/ }
 .groupbox_membercount, .teambox_membercount { font-weight: normal; font-size: 11px; color: #888; }
+
+.user_popup { font-size: 12px; }
+.user_popup .user_realname { font-size: 1.2em; font-weight: bold; padding: 0 0 0 7px; width: 240px; float: left; }
+.user_popup .user_realname .user_status { font-size: 0.8em; font-weight: normal; color: #AAA; }
+.user_popup .user_details { font-size: 1.0em; font-weight: normal; padding: 3px; clear: both; }
