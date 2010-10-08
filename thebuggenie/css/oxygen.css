@@ -421,14 +421,15 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 
 /* main issue view styling */
 /* issue info boxes */
-#viewissue_menu li a { font-size: 0.9em; }
-.issue_info { text-align: left; vertical-align: middle; font-weight: bold; color: #222; }
-.issue_info input[type="submit"], .issue_info button { float: right; margin-top: 6px; margin-left: 5px;  }
+#viewissue_menu li a { font-size: 1em; }
+.issue_info { text-align: left; vertical-align: middle; font-weight: bold; color: #222; font-size: 1em; }
+.issue_info input[type="submit"], .issue_info button { float: right; margin-top: 6px; margin-left: 5px; }
 .issue_info a { font-size: 0.95em; font-weight: bold; }
-.issue_info.aligned { margin: 10px auto 5px auto; padding: 3px; width: 990px; text-align: center; font-size: 1em; }
-.issue_info.full_width { margin: 5px 5px 0 5px; padding: 5px; position: relative; font-size: 1.1em; }
+.issue_info.aligned { margin: 10px auto 5px auto; padding: 3px; width: 990px; text-align: center; }
+.issue_info.full_width { margin: 5px 5px 0 5px; padding: 5px; position: relative; }
 .issue_info.full_width img { float: left; margin: 0 10px 0 5px; }
-.issue_info .content, .notfound_error .content { font-weight: normal; font-size: 12px; }
+.issue_info .header { font-size: 1.1em; }
+.issue_info .content, .notfound_error .content { font-weight: normal; font-size: 0.95em; }
 #notfound_error { vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 1.1em; width: 700px; }
 #viewissue_changed { height: 35px; padding: 5px 10px 5px 10px; color: #222; }
 /* end issue info boxes */
@@ -638,12 +639,12 @@ ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
 /* end menu links */
 
 /* generic blue infobox */
-.infobox { position: relative; }
+.infobox { position: relative; text-align: left; }
 .infobox .close_me { position: absolute; top: 5px; right: 5px; }
 .infobox .close_me label, .infobox .close_me input[type="checkbox"] { float: left; }
 .infobox .close_me label { padding-top: 3px;  }
 .infobox .close_me input[type="submit"] { font-weight: bold;  margin-left: 5px; }
-.infobox .content { padding: 0; font-size: 12px; font-weight: normal; margin: 0; }
+.infobox .content { padding: 0; font-size: 0.95em; text-align: left; font-weight: normal; margin: 0; }
 /* end infobox */
 
 /* project dashboard */

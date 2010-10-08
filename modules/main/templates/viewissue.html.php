@@ -18,17 +18,17 @@
 		<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent"> </div>
 	</div>
 	<div class="rounded_box red borderless issue_info aligned" id="viewissue_unsaved"<?php if (!isset($issue_unsaved)): ?> style="display: none;"<?php endif; ?>>
-		<div class="viewissue_info_header"><?php echo __('Could not save your changes'); ?></div>
+		<div class="header"><?php echo __('Could not save your changes'); ?></div>
 	</div>
 	<?php if (isset($error) && $error): ?>
 		<div class="rounded_box red borderless issue_info aligned" id="viewissue_error">
-			<div class="viewissue_info_header"><?php echo __('There was an error trying to save changes to this issue'); ?></div>
-			<div class="viewissue_info_content"><?php echo $error; ?></div>
+			<div class="header"><?php echo __('There was an error trying to save changes to this issue'); ?></div>
+			<div class="content"><?php echo $error; ?></div>
 		</div>
 	<?php endif; ?>
 	<div class="rounded_box red borderless issue_info full_width" id="viewissue_merge_errors"<?php if (!$theIssue->hasMergeErrors()): ?> style="display: none;"<?php endif; ?>>
-		<div class="viewissue_info_header"><?php echo __('This issue has been changed since you started editing it'); ?></div>
-		<div class="viewissue_info_content"><?php echo __('Data that has been changed is highlighted in red below. Undo your changes to see the updated information'); ?></div>
+		<div class="header"><?php echo __('This issue has been changed since you started editing it'); ?></div>
+		<div class="content"><?php echo __('Data that has been changed is highlighted in red below. Undo your changes to see the updated information'); ?></div>
 	</div>
 	<?php if ($theIssue->isBeingWorkedOn()): ?>
 		<?php if ($theIssue->canEditSpentTime()): ?>
@@ -38,15 +38,15 @@
 				<?php echo image_tag('action_start_working.png'); ?>
 				<?php if ($theIssue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
 					<input type="submit" value="<?php echo __('Done'); ?>">
-					<div class="viewissue_info_header"><?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
-					<div class="viewissue_info_content">
+					<div class="header"><?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
+					<div class="content">
 						<?php echo __('When you are finished working on this issue, click the %done% button to the right', array('%done%' => '<b>' . __('Done') . '</b>')); ?>
 					</div>
 				<?php else: ?>
 					<input type="submit" value="<?php echo __('Take over'); ?>">
-					<div class="viewissue_info_header"><?php echo __('%user% has been working on this issue since %time%', array('%user%' => $theIssue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
+					<div class="header"><?php echo __('%user% has been working on this issue since %time%', array('%user%' => $theIssue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
 					<?php if ($theIssue->canEditSpentTime()): ?>
-						<div class="viewissue_info_content">
+						<div class="content">
 							<input type="hidden" name="perform_action" value="grab">
 							<?php echo __('If you want to start working on this issue instead, click the %take_over% button to the right', array('%take_over%' => '<b>' . __('Take over') . '</b>')); ?>
 						</div>
@@ -61,8 +61,8 @@
 		<button onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_save_changes').checked = true;$('comment_bodybox').focus();return false;"><?php echo __('Add comment and save changes'); ?></button>
 		<form action="<?php echo make_url('saveissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())); ?>" method="post">
 			<input type="submit" value="<?php echo __('Save changes'); ?>">
-			<div class="viewissue_info_header"><?php echo __('You have unsaved changes'); ?></div>
-			<div class="viewissue_info_content">
+			<div class="header"><?php echo __('You have unsaved changes'); ?></div>
+			<div class="content">
 				<input type="hidden" name="issue_action" value="save">
 				<?php echo __("You have changed this issue, but haven't saved your changes yet. To save it, press the %save_changes% button to the right", array('%save_changes%' => '<b>' . __("Save changes") . '</b>')); ?>
 			</div>
@@ -82,8 +82,8 @@
 		<div class="rounded_box iceblue borderless infobox issue_info aligned" id="viewissue_duplicate">
 			<div style="padding: 5px;">
 				<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
-				<div class="viewissue_info_header"><?php echo __('This issue is a duplicate of Issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getDuplicateOf()->getFormattedIssueNo())), $theIssue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $theIssue->getDuplicateOf()->getTitle() . '"')); ?></div>
-				<div class="viewissue_info_content"><?php echo __('For more information you should visit the issue mentioned above, as this issue is not likely to be updated'); ?></div>
+				<div class="header"><?php echo __('This issue is a duplicate of Issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getDuplicateOf()->getFormattedIssueNo())), $theIssue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $theIssue->getDuplicateOf()->getTitle() . '"')); ?></div>
+				<div class="content"><?php echo __('For more information you should visit the issue mentioned above, as this issue is not likely to be updated'); ?></div>
 			</div>
 		</div>								
 	<?php endif; ?>
@@ -91,8 +91,8 @@
 		<div class="rounded_box iceblue borderless infobox issue_info aligned" id="viewissue_closed">
 			<div style="padding: 5px;">
 				<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
-				<div class="viewissue_info_header"><?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($theIssue->getStatus() instanceof TBGStatus) ? $theIssue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($theIssue->getResolution() instanceof TBGResolution) ? $theIssue->getResolution()->getName() : __('Not determined')))); ?></div>
-				<div class="viewissue_info_content">
+				<div class="header"><?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($theIssue->getStatus() instanceof TBGStatus) ? $theIssue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($theIssue->getResolution() instanceof TBGResolution) ? $theIssue->getResolution()->getName() : __('Not determined')))); ?></div>
+				<div class="content">
 					<?php if ($theIssue->canPostComments() && $tbg_user->canReportIssues($theIssue->getProjectID())): ?>
 						<?php echo __('A closed issue will usually not be further updated - try %posting_a_comment%, or %report_a_new_issue%', array('%posting_a_comment%' => '<a href="#add_comment_location_core_1_' . $theIssue->getID() . '">' . __('posting a comment') . '</a>', '%report_a_new_issue%' => link_tag(make_url('reportissue'), __('report a new issue')))); ?>
 					<?php elseif ($theIssue->canPostComments()): ?>
@@ -413,7 +413,7 @@
 	</div>
 <?php else: ?>
 	<div class="rounded_box red borderless" id="notfound_error">
-		<div class="viewissue_info_header"><?php echo __("You have specified an issue that can't be shown"); ?></div>
-		<div class="viewissue_info_content"><?php echo __("This could be because you the issue doesn't exist, has been deleted or you don't have permission to see it"); ?></div>
+		<div class="header"><?php echo __("You have specified an issue that can't be shown"); ?></div>
+		<div class="content"><?php echo __("This could be because you the issue doesn't exist, has been deleted or you don't have permission to see it"); ?></div>
 	</div>
 <?php endif; ?>
