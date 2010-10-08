@@ -21,6 +21,34 @@
 		<script type="text/javascript" src="js/prototype.js"></script>
 		<script type="text/javascript" src="js/scriptaculous.js"></script>
 		<script type="text/javascript" src="js/install.js"></script>
+		<style type="text/css">
+			.installation_prerequisites { margin-top: 20px; margin-bottom: 10px; width: 500px; color: #333; padding: 4px; }
+			.install_progress { font-weight: bold; border: 1px solid #DDD; padding: 7px 4px 7px 4px; font-size: 11px; margin-bottom: 5px; background-color: #FDFDFD; }
+			.install_progress img { float: right; }
+			.prereq_ok { border: 1px solid #aaC6aa; background-color: #CFE8CF; font-size: 11px; }
+			.prereq_fail { border: 1px solid #B76B6B; color: #FFF; background-color: #F38888;  }
+			.installation_box { padding: 3px 10px 10px 10px; width: 950px; margin-left: auto; margin-right: auto; margin-top: 15px; position: relative; font-size: 12px; }
+			.installation_box input[type="submit"] { padding: 5px; font-weight: bold; height: 30px; font-size: 15px; }
+			.donate { border: 1px solid #aaC6aa; background-color: #CFE8CF; }
+			.grey_box { border: 1px solid #DDD; background-color: #F5F5F5; }
+			.command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Droid Sans Mono', monospace; width: 500px; margin-top: 5px; }
+			.feature { border: 1px solid #DDD; background-color: #F5F5F5; padding: 10px; margin-bottom: 5px; }
+			.feature .description { background-color: #FFF; padding: 10px; }
+			.feature .content { background-color: transparent; padding: 10px; border-top: 1px solid #EEE; }
+			.features { width: 400px; float: right; margin-left: 10px; }
+			.install_list dd { padding: 2px 0 5px 0; }
+			.install_list dd input[type="text"], .install_list dd input[type="password"], UNUSEDdd select { width: 320px; }
+			.error { padding: 4px; border: 1px solid #B77; background-color: #FEE; color: #955; margin: 10px 0 10px 0; }
+			.ok { padding: 4px; border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 10px 0 10px 0; }
+			.error:first-line, .ok:first-line { font-weight: bold; }
+
+
+			fieldset { border: 1px solid #DDD; margin: 10px 0 10px 0; background-color: #F5F5F5; padding: 0 0 0 8px; }
+			legend { font-weight: bold;  }
+
+			ul.outlined { margin-top: 5px; }
+			ul.outlined li { font-weight: bold; }
+		</style>
 	</head>
 	<body>
 		<table style="width: 1000px; height: 100%; table-layout: fixed; border-left: 1px solid #DDD; border-right: 1px solid #DDD;" cellpadding=0 cellspacing=0 align="center">

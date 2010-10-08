@@ -1,6 +1,6 @@
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
-		<td class="left_bar" style="width: 310px;">
+		<td class="side_bar">
 			<?php include_component('leftmenu', array('article' => '')); ?>
 		</td>
 		<td class="main_area article">

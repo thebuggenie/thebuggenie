@@ -1,5 +1,5 @@
 <div class="menu_project_strip tab_menu">
-	<div class="project_name<?php if (!$project instanceof TBGProject): ?> faded_dark<?php endif; ?>">
+	<div class="project_name<?php if (!$project instanceof TBGProject): ?> faded_out dark<?php endif; ?>">
 		<?php echo image_tag('spinning_32.gif', array('id' => 'project_menustrip_indicator', 'style' => 'display: none;')); ?>
 		<span id="project_menustrip_name">
 			<a href="javascript:void(0);" onclick="$('project_menustrip_change').toggle();" style="float: right; margin-left: 10px;<?php if ($tbg_response->getPage() != 'reportissue' && $show_report_button && count(TBGProject::getAll()) <= 1): ?> display: none;<?php endif; ?>" class="image"><?php echo image_tag('expand.png'); ?></a>
@@ -30,7 +30,7 @@
 						<?php endforeach; ?>
 					</table>
 				<?php else: ?>
-					<span class="faded_medium"><?php echo __('The are no other projects to choose from'); ?></span>
+					<span class="faded_out"><?php echo __('The are no other projects to choose from'); ?></span>
 				<?php endif; ?>
 				<div id="issuetype_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
 			</div>

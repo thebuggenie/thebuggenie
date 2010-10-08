@@ -27,6 +27,6 @@
 				<td style="padding: 0px; text-align: left; font-size: 13px;"><?php echo __('Reassigning, please wait'); ?>...</td>
 			</tr>
 		</table>
-		<div class="faded_medium" style="font-size: 13px;<?php if (count($sprint->getIssues()) > 0): ?> display: none;<?php endif; ?>" id="scrum_sprint_<?php echo $sprint->getID(); ?>_unassigned"><?php echo __('No user stories assigned to this sprint'); ?></div>
+		<div class="faded_out" style="font-size: 13px;<?php if (count($sprint->getIssues()) > 0): ?> display: none;<?php endif; ?>" id="scrum_sprint_<?php echo $sprint->getID(); ?>_unassigned"><?php echo __('No user stories assigned to this sprint'); ?></div>
 	</div>
 </div>

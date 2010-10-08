@@ -1,5 +1,5 @@
 <table style="width: 790px;" cellpadding=0 cellspacing=0>
-	<tr class="canhover_dark">
+	<tr class="hover_highlight">
 		<td style="padding: 2px; width: 200px;">
 			<b><?php echo __('Project owner'); ?></b>
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -21,7 +21,7 @@
 				<?php endif; ?>
 			</div>
 		</td>
-		<td style="<?php if ($project->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_owned_by">
+		<td style="<?php if ($project->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_owned_by">
 			<?php echo __('Noone'); ?>
 		</td>
 		<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -29,7 +29,7 @@
 		<?php endif; ?>
 	</tr>
 	<tr><td colspan="3" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('The project owner has total control over this project and can edit information, settings, and anything about it'); ?></td></tr>
-	<tr class="canhover_dark">
+	<tr class="hover_highlight">
 		<td style="padding: 2px;">
 			<b><?php echo __('Lead by'); ?></b>
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -51,14 +51,14 @@
 				<?php endif; ?>
 			</div>
 		</td>
-		<td style="<?php if ($project->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_lead_by">
+		<td style="<?php if ($project->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_lead_by">
 			<?php echo __('Noone'); ?>
 		</td>
 		<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 			<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('lead_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Change project leader'); ?>"><?php echo __('Change / set'); ?></a></td>
 		<?php endif; ?>
 	</tr>
-	<tr class="canhover_dark">
+	<tr class="hover_highlight">
 		<td style="padding: 2px;">
 			<b><?php echo __('QA responsible'); ?></b>
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -80,7 +80,7 @@
 				<?php endif; ?>
 			</div>
 		</td>
-		<td style="<?php if ($project->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_qa_by">
+		<td style="<?php if ($project->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_qa_by">
 			<?php echo __('Noone'); ?>
 		</td>
 		<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -125,7 +125,7 @@
 			<?php elseif ($project->hasPrefix()): ?>
 				<?php echo $project->getPrefix(); ?>
 			<?php else: ?>
-				<span class="faded_light"><?php echo __('No prefix set'); ?></span>
+				<span class="faded_out"><?php echo __('No prefix set'); ?></span>
 			<?php endif; ?>
 		</td>
 	</tr>
@@ -140,7 +140,7 @@
 			<?php elseif ($project->hasDescription()): ?>
 				<?php echo $project->getDescription(); ?>
 			<?php else: ?>
-				<span class="faded_light"><?php echo __('No description set'); ?></span>
+				<span class="faded_out"><?php echo __('No description set'); ?></span>
 			<?php endif; ?>
 		</td>
 	</tr>
@@ -152,7 +152,7 @@
 			<?php elseif ($project->hasHomepage()): ?>
 				<a href="<?php echo $project->getHomepage(); ?>"><?php echo $project->getHomepage(); ?></a>
 			<?php else: ?>
-				<span class="faded_light"><?php echo __('No homepage set'); ?></span>
+				<span class="faded_out"><?php echo __('No homepage set'); ?></span>
 			<?php endif; ?>
 		</td>
 	</tr>
@@ -164,7 +164,7 @@
 			<?php elseif ($project->hasDocumentationURL()): ?>
 				<a href="<?php echo $project->getDocumentationURL(); ?>"><?php echo $project->getDocumentationURL(); ?></a>
 			<?php else: ?>
-				<span class="faded_light"><?php echo __('No documentation URL provided'); ?></span>
+				<span class="faded_out"><?php echo __('No documentation URL provided'); ?></span>
 			<?php endif; ?>
 		</td>
 	</tr>

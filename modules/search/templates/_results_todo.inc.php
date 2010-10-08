@@ -45,7 +45,7 @@
 						}
 
 					?>; font-weight: bold;"><?php echo $issue->getPercentCompleted(); ?>%</td>
-					<td style="padding: 3px;"><?php echo ($issue->getDescription() != '') ? $issue->getDescription() : '<span class="faded_medium">'.__('No description provided').'</span>'; ?></td>
+					<td style="padding: 3px;"><?php echo ($issue->getDescription() != '') ? $issue->getDescription() : '<span class="faded_out">'.__('No description provided').'</span>'; ?></td>
 					<td class="result_issue"><?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true, true)); ?></td>
 				</tr>
 	<?php if ($cc == count($issues)): ?>

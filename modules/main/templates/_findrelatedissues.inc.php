@@ -1,6 +1,6 @@
 <?php if ($count > 0): ?>
 	<div class="header_div"><?php echo __('The following issues matched your search'); ?>:</div>
-	<span class="faded_medium"><?php echo __('Either use the checkboxes and press the "%relate_these_issues%"-button below or click any issues in the list, and select an action.', array('%relate_these_issues%' => __('Relate these issues'))); ?></span>
+	<span class="faded_out"><?php echo __('Either use the checkboxes and press the "%relate_these_issues%"-button below or click any issues in the list, and select an action.', array('%relate_these_issues%' => __('Relate these issues'))); ?></span>
 	<form id="viewissue_relate_issues_form" action="<?php echo make_url('viewissue_relate_issues', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="relateIssues('<?php echo make_url('viewissue_relate_issues', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>');return false;">
 		<table style="width: auto; border: 0;" cellpadding="0" cellspacing="0">
 			<?php foreach ($issues as $aissue): ?>
@@ -22,5 +22,5 @@
 		</div>
 	</form>
 <?php else: ?>
-	<span class="faded_medium"><?php echo __('No issues matched your search. Please try again with different search terms.'); ?></span>
+	<span class="faded_out"><?php echo __('No issues matched your search. Please try again with different search terms.'); ?></span>
 <?php endif; ?>

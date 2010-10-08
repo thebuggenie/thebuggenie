@@ -21,7 +21,7 @@
 <?php echo $log; ?>
 	</pre>
 	<h4><?php echo __('Changed files:'); ?></h4>
-	<table border=0 cellpadding=0 cellspacing=0 style="width: 100%;" class="td1">
+	<table border=0 cellpadding=0 cellspacing=0 style="width: 100%;">
 	<?php
 	$web_path = TBGContext::getModule('vcs_integration')->getSetting('web_path_' . $projectId);
 	$web_repo = TBGContext::getModule('vcs_integration')->getSetting('web_repo_' . $projectId);
@@ -85,7 +85,7 @@
 		{
 			if (substr($file[0], -1) == '/' || substr($file[0], -1) == '\\')
 			{
-				echo '<td style="width: 75px;" class="faded_medium">' . __('directory') . '</td>';
+				echo '<td style="width: 75px;" class="faded_out">' . __('directory') . '</td>';
 			}
 			else
 			{
@@ -95,12 +95,12 @@
 		
 		if ($action == "D")
 		{
-			echo '<td colspan="2" class="faded_medium" style="width: 150px;">'.__('deleted').'</td>';
+			echo '<td colspan="2" class="faded_out" style="width: 150px;">'.__('deleted').'</td>';
 		}
 		
 		if ($action == "A")
 		{
-			echo '<td class="faded_medium" style="width: 75px;">'.__('new file').'</td>';
+			echo '<td class="faded_out" style="width: 75px;">'.__('new file').'</td>';
 		}
 		
 		if($action != "D")

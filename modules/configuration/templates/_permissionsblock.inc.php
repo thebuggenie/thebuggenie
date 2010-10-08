@@ -30,5 +30,5 @@
 		<?php endif; ?>
 	<?php endforeach; ?>
 <?php else: ?>
-	<li class="faded_medium"><?php echo __('This permission list is empty'); ?></li>
+	<li class="faded_out"><?php echo __('This permission list is empty'); ?></li>
 <?php endif; ?>

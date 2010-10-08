@@ -1,4 +1,4 @@
-<tr id="edition_box_<?php echo $edition->getID(); ?>" class="canhover_light">
+<tr id="edition_box_<?php echo $edition->getID(); ?>" class="hover_highlight">
 	<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_edition.png'); ?></td>
 	<td style="width: auto; padding: 2px;"><?php echo $edition->getName(); ?><?php if ($edition->isDefault()): echo __('%edition_name% (default)', array('%edition_name%' => '')); endif; ?></td>
 	<td style="width: 40px; padding: 2px;">

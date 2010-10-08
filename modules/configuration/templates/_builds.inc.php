@@ -30,5 +30,5 @@
 		</span>
 	<?php endforeach; ?>
 	</span>
-	<div id="no_builds" style="padding: 5px;<?php if (count($parent->getBuilds()) > 0): ?> display: none;<?php endif; ?>" class="faded_medium"><?php echo __('There are no releases'); ?></div>
+	<div id="no_builds" style="padding: 5px;<?php if (count($parent->getBuilds()) > 0): ?> display: none;<?php endif; ?>" class="faded_out"><?php echo __('There are no releases'); ?></div>
 </div>

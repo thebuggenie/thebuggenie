@@ -57,7 +57,7 @@
 						<?php echo link_tag(make_url('project_timeline', array('project_key' => $selected_project->getKey())), image_tag('view_timeline.png', array('style' => 'float: right; margin-left: 5px;')) . __('Show complete timeline')); ?>
 					</div>
 					<?php else: ?>
-						<div class="faded_dark" style="font-size: 13px; padding-top: 3px;"><b><?php echo __('No recent activity registered for this project.'); ?></b><br><?php echo __('As soon as something important happens it will appear here.'); ?></div>
+						<div class="faded_out dark" style="font-size: 13px; padding-top: 3px;"><b><?php echo __('No recent activity registered for this project.'); ?></b><br><?php echo __('As soon as something important happens it will appear here.'); ?></div>
 					<?php endif; ?>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
@@ -68,7 +68,7 @@
 				<?php echo image_tag($selected_project->getIcon(), array(), $selected_project->hasIcon()); ?>
 				<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><?php echo javascript_link_tag(image_tag('cfg_icon_projectheader.png'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $selected_project->getID()))."');")); ?><?php endif; ?>
 				<div id="project_name"><?php echo $selected_project->getName(); ?> <span><?php echo $selected_project->getKey(); ?></span></div>
-				<div id="project_description"<?php if (!$selected_project->hasDescription()): ?> class="faded_dark"<?php endif; ?>>
+				<div id="project_description"<?php if (!$selected_project->hasDescription()): ?> class="faded_out dark"<?php endif; ?>>
 					<?php if ($selected_project->hasDescription()): ?>
 						<?php echo tbg_parse_text($selected_project->getDescription()); ?>
 					<?php else: ?>
@@ -84,7 +84,7 @@
 							</div>
 						<?php endforeach; ?>
 					<?php else: ?>
-						<div class="faded_medium" style="font-weight: normal; padding: 8px 0 0 0;"><?php echo __('No users or teams assigned'); ?></div>
+						<div class="faded_out" style="font-weight: normal; padding: 8px 0 0 0;"><?php echo __('No users or teams assigned'); ?></div>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -108,7 +108,7 @@
 									<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 									<td style="padding-bottom: 15px;">
 										<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<b>' . $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle() . '</b>', array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
-										<span class="faded_dark" style="font-size: 11px;">
+										<span class="faded_out dark" style="font-size: 11px;">
 											<?php echo tbg_formatTime($issue->getPosted(), 20); ?>,
 											<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
 										</span>
@@ -117,7 +117,7 @@
 							<?php endforeach; ?>
 							</table>
 						<?php else: ?>
-							<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No issues, bugs or defects posted'); ?></div>
+							<div class="faded_out dark" style="padding: 5px; font-size: 12px;"><?php echo __('No issues, bugs or defects posted'); ?></div>
 						<?php endif; ?>
 					</div>
 					<div id="tab_5_recent_requests_pane" style="display: none;">
@@ -129,7 +129,7 @@
 									<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 									<td style="padding-bottom: 15px;">
 										<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<b>' . $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle() . '</b>', array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
-										<span class="faded_dark" style="font-size: 11px;">
+										<span class="faded_out dark" style="font-size: 11px;">
 											<?php echo tbg_formatTime($issue->getPosted(), 20); ?>,
 											<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
 										</span>
@@ -138,7 +138,7 @@
 							<?php endforeach; ?>
 							</table>
 						<?php else: ?>
-							<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No feature requests posted yet'); ?></div>
+							<div class="faded_out dark" style="padding: 5px; font-size: 12px;"><?php echo __('No feature requests posted yet'); ?></div>
 						<?php endif; ?>
 					</div>
 					<div id="tab_recent_ideas_pane" style="display: none;">
@@ -150,7 +150,7 @@
 									<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_small.png', array('style' => 'margin-top: 3px;')); ?></td>
 									<td style="padding-bottom: 15px; font-size: 13px;">
 										<?php echo __('%issue% (posted by %user%)', array('%issue%' => '<b>' . link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))) . '</b>', '%user%' => '<b>' . (($issue->getPostedBy() instanceof TBGIdentifiable) ? $issue->getPostedBy()->getName() : __('Unknown user')) . '</b>')); ?><br>
-										<span class="faded_dark">
+										<span class="faded_out dark">
 											<?php echo __('%number_of% comments, last updated %time%', array('%number_of%' => $issue->getCommentCount(), '%time%' => tbg_formatTime($issue->getLastUpdatedTime(), 20))); ?>
 										</span>
 									</td>
@@ -158,7 +158,7 @@
 							<?php endforeach; ?>
 							</table>
 						<?php else: ?>
-							<div class="faded_dark" style="padding: 5px; font-size: 12px;"><?php echo __('No ideas suggested yet'); ?></div>
+							<div class="faded_out dark" style="padding: 5px; font-size: 12px;"><?php echo __('No ideas suggested yet'); ?></div>
 						<?php endif; ?>
 					</div>
 					<div id="tab_statistics_pane" style="display: none;">
@@ -168,18 +168,18 @@
 						</div>
 						<table cellpadding=0 cellspacing=0 class="priority_percentage" style="margin: 5px 0 10px 0; width: 100%;">
 							<?php foreach (TBGPriority::getAll() as $priority_id => $priority): ?>
-								<tr class="canhover_light">
+								<tr class="hover_highlight">
 									<td style="font-weight: normal; font-size: 13px; padding-left: 3px;"><?php echo $priority->getName(); ?></td>
 									<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;"><?php echo $priority_count[$priority_id]['open']; ?></td>
 									<td style="width: 40%; vertical-align: middle;"><?php include_template('main/percentbar', array('percent' => $priority_count[$priority_id]['percentage'], 'height' => 14)); ?></td>
 									<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;">&nbsp;<?php echo (int) $priority_count[$priority_id]['percentage']; ?>%</td>
 								</tr>
 							<?php endforeach; ?>
-							<tr class="canhover_light">
-								<td style="font-weight: normal; font-size: 13px; padding-left: 3px;" class="faded_medium"><?php echo __('Priority not set'); ?></td>
-								<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;" class="faded_medium"><?php echo $priority_count[0]['open']; ?></td>
-								<td style="width: 40%; vertical-align: middle;" class="faded_medium"><?php include_template('main/percentbar', array('percent' => $priority_count[0]['percentage'], 'height' => 14)); ?></td>
-								<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;" class="faded_medium">&nbsp;<?php echo (int) $priority_count[0]['percentage']; ?>%</td>
+							<tr class="hover_highlight">
+								<td style="font-weight: normal; font-size: 13px; padding-left: 3px;" class="faded_out"><?php echo __('Priority not set'); ?></td>
+								<td style="text-align: right; font-weight: bold; padding-right: 5px; vertical-align: middle;" class="faded_out"><?php echo $priority_count[0]['open']; ?></td>
+								<td style="width: 40%; vertical-align: middle;" class="faded_out"><?php include_template('main/percentbar', array('percent' => $priority_count[0]['percentage'], 'height' => 14)); ?></td>
+								<td style="text-align: right; font-weight: normal; font-size: 11px; padding-left: 5px; vertical-align: middle;" class="faded_out">&nbsp;<?php echo (int) $priority_count[0]['percentage']; ?>%</td>
 							</tr>
 						</table>
 						<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'search' => true, 'filters[state]' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN), 'groupby' => 'priority', 'grouporder' => 'desc')), __('Show details'), array('class' => 'more', 'title' => __('Show more issues'))); ?>

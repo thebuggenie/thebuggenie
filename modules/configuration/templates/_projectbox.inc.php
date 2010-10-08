@@ -43,7 +43,7 @@
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 				<div id="project_delete_confirm_<?php echo($project->getID()); ?>" style="display: none; padding: 0 10px 5px 10px; margin-top: 5px;" class="rounded_box white shadowed">
 					<h4><?php echo __('Really delete project?'); ?></h4>
-					<span class="xboxlarge"><?php echo __('Deleting this project will prevent users from accessing it or any associated data, such as issues.'); ?></span><br>
+					<span class="question_header"><?php echo __('Deleting this project will prevent users from accessing it or any associated data, such as issues.'); ?></span><br>
 					<div style="text-align: right;" id="project_delete_controls_<?php echo($project->getID()); ?>"><a href="javascript:void(0)" class="xboxlink" onClick="removeProject('<?php echo make_url('configure_project_delete', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>)"><?php echo __('Yes'); ?></a> :: <a href="javascript:void(0)" class="xboxlink" onClick="$('project_delete_confirm_<?php echo($project->getID()); ?>').hide();"><?php echo __('No'); ?></a></div>
 					<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="project_delete_indicator_<?php echo($project->getID()); ?>">
 						<tr>
@@ -56,10 +56,10 @@
 			<?php endif; ?>
 		<?php if ($project->hasEditions() && $project->isEditionsEnabled()): ?>
 			<br style="clear: both;">
-			<div class="config_header noborder nobg"><b><?php echo __('Project editions'); ?></b></div>
+			<div class="config_header"><b><?php echo __('Project editions'); ?></b></div>
 			<table cellpadding=0 cellspacing=0 style="width: 670px; table-layout: auto;">
 			<?php foreach ($project->getEditions() as $edition): ?>
-				<tr class="canhover_dark">
+				<tr class="hover_highlight">
 					<td style="width: auto; padding: 3px 0 3px 5px;">
 						<div style="float: right;"><span style="margin-right: 10px;"><?php echo javascript_link_tag(image_tag('cfg_icon_builds.png', array('title' => (($access_level == configurationActions::ACCESS_FULL) ? __('Manage releases') : __('Show releases')), 'style' => 'float: left; margin-right: 5px;')) . (($access_level == configurationActions::ACCESS_FULL) ? __('Manage releases') : __('Show releases')), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'edition_id' => $edition->getID(), 'section' => 'releases', 'project_id' => $project->getID()))."');", 'style' => 'font-size: 12px;')); ?></span></div>
 						<div style="float: right;"><span style="margin-right: 20px;"><?php echo javascript_link_tag(image_tag('cfg_icon_editiondetails.png', array('title' => (($access_level == configurationActions::ACCESS_FULL) ? __('Edit details') : __('Show details')), 'style' => 'float: left; margin-right: 5px;')) . (($access_level == configurationActions::ACCESS_FULL) ? __('Edit details') : __('Show details')), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'edition_id' => $edition->getID(), 'project_id' => $project->getID()))."');", 'style' => 'font-size: 12px;')); ?></span></div>

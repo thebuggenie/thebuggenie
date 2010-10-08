@@ -12,7 +12,7 @@ include_component('leftmenu', array('selected_section' => 15));
 ?>
 <td valign="top">
 	<div style="width: 750px;" id="config_modules">
-		<div class="configheader"><?php echo __('Configure modules'); ?></div>
+		<div class="config_header"><?php echo __('Configure modules'); ?></div>
 		<div class="header"><?php echo __('Installed modules'); ?></div>
 		<div class="content"><?php echo __('This is a list of all modules that are installed on this system'); ?></div>
 		<?php if ($module_error !== null): ?>
@@ -30,7 +30,7 @@ include_component('leftmenu', array('selected_section' => 15));
 		<?php endforeach; ?>
 		<div class="header" style="margin-top: 15px;"><?php echo __('Uninstalled modules'); ?></div>
 		<?php if (count($uninstalled_modules) == 0): ?>
-			<div class="faded_medium" style="margin-top: 5px;"><?php echo __('There are no uninstalled modules available'); ?></div>
+			<div class="faded_out" style="margin-top: 5px;"><?php echo __('There are no uninstalled modules available'); ?></div>
 		<?php else: ?>
 			<form action="<?php echo make_url('configure_install_module'); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 				<div class="rounded_box mediumgrey borderless" style="margin: 5px 0px 5px 0px; text-align: right; width: 750px;">

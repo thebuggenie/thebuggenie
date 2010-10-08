@@ -11,7 +11,7 @@
 			<?php $text_title = __('Enter a name here'); ?>
 			<input type="hidden" name="callback" value="<?php echo $callback; ?>">
 			<input type="hidden" name="include_teams" value="<?php echo (int) $include_teams; ?>">
-			<input type="text" name="find_identifiable_by" id="<?php echo $base_id; ?>_input" value="<?php echo $text_title; ?>" style="width: 240px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $text_title; ?>'; this.addClassName('faded_medium'); }" onfocus="if (this.getValue() == '<?php echo $text_title; ?>') { this.clear(); } this.removeClassName('faded_medium');" class="faded_medium">
+			<input type="text" name="find_identifiable_by" id="<?php echo $base_id; ?>_input" value="<?php echo $text_title; ?>" style="width: 240px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $text_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $text_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
 			<input type="submit" style="width: 60px;" value="<?php echo __('Find'); ?>"></input>
 		</div>
 		<div class="dropdown_content" id="<?php echo $base_id; ?>_results">
@@ -21,7 +21,7 @@
 		<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), urlencode('%identifiable_value%')), array(1, $tbg_user->getID()), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a><br>
 		<br>
 		<?php if (count($tbg_user->getFriends()) == 0): ?>
-			<b class="faded_medium"><?php echo __("or - if you had any friends registered - you could've selected one from here"); ?></b>
+			<b class="faded_out"><?php echo __("or - if you had any friends registered - you could've selected one from here"); ?></b>
 		<?php else: ?>
 			<br>
 			<b><?php echo __('or select a friend below'); ?>:</b><br>

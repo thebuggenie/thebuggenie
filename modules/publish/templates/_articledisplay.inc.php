@@ -9,17 +9,17 @@
 			<?php if (TBGContext::isProjectContext()): ?>
 				<?php if ((strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 0) || ($article->isCategory() && strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 9)): ?>
 					<?php $project_article_name = substr($article->getName(), ($article->isCategory() * 9) + strlen(TBGContext::getCurrentProject()->getKey())+1); ?>
-					<?php if ($article->isCategory()): ?><span class="faded_blue">Category:</span><?php endif; ?><span class="faded_dark"><?php echo ucfirst(TBGContext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
+					<?php if ($article->isCategory()): ?><span class="faded_out blue">Category:</span><?php endif; ?><span class="faded_out dark"><?php echo ucfirst(TBGContext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
 				<?php endif; ?>
 			<?php elseif (substr($article->getName(), 0, 9) == 'Category:'): ?>
-				<span class="faded_blue">Category:</span><?php echo get_spaced_name(substr($article->getName(), 9)); ?>
+				<span class="faded_out blue">Category:</span><?php echo get_spaced_name(substr($article->getName(), 9)); ?>
 			<?php else: ?>
 				<?php echo get_spaced_name($article->getName()); ?>
 			<?php endif; ?>
 		</div>
 	<?php endif; ?>
 	<?php if ($show_details): ?>
-		<div class="faded_medium" style="padding-bottom: 5px;"><?php echo __('Last updated at %time%, by %user%', array('%time%' => tbg_formatTime($article->getPostedDate(), 3), '%user%' => '<b>'.(($article->getAuthor() instanceof TBGIdentifiable) ? $article->getAuthor()->getName() : __('System')).'</b>')); ; ?></div>
+		<div class="faded_out" style="padding-bottom: 5px;"><?php echo __('Last updated at %time%, by %user%', array('%time%' => tbg_formatTime($article->getPostedDate(), 3), '%user%' => '<b>'.(($article->getAuthor() instanceof TBGIdentifiable) ? $article->getAuthor()->getName() : __('System')).'</b>')); ; ?></div>
 	<?php endif; ?>
 	<div style="padding-bottom: 5px;"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded)); ?></div>
 </div>
@@ -33,7 +33,7 @@
 				<?php endforeach; ?>
 			</ul>
 		<?php else: ?>
-			<div class="faded_medium"><?php echo __("This category doesn't have any subcategories"); ?></div>
+			<div class="faded_out"><?php echo __("This category doesn't have any subcategories"); ?></div>
 		<?php endif; ?>
 	</div>
 	<br style="clear: both;">
@@ -46,7 +46,7 @@
 				<?php endforeach; ?>
 			</ul>
 		<?php else: ?>
-			<div class="faded_medium"><?php echo __('There are no pages in this category'); ?></div>
+			<div class="faded_out"><?php echo __('There are no pages in this category'); ?></div>
 		<?php endif; ?>
 	</div>
 	<br style="clear: both;">
@@ -64,7 +64,7 @@
 					<?php endforeach; ?>
 					<?php echo join(', ', $category_links); ?>
 				<?php else: ?>
-					<span class="faded_dark"><?php echo __('This article is not in any categories'); ?></span>
+					<span class="faded_out dark"><?php echo __('This article is not in any categories'); ?></span>
 				<?php endif; ?>
 			</div>
 		</div>

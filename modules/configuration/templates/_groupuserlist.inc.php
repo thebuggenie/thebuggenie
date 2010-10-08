@@ -1,5 +1,5 @@
 <?php if (count($users) == 0): ?>
-	<div class="faded_medium"><?php echo __('There are no users in this group'); ?></div>
+	<div class="faded_out"><?php echo __('There are no users in this group'); ?></div>
 <?php else: ?>
 	<table style="width: 500px; border: 0;" cellpadding="0" cellspacing="0">
 		<?php foreach ($users as $user_id => $user): ?>

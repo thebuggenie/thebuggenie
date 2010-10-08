@@ -94,17 +94,17 @@
 				<legend>The Bug Genie URL information</legend>
 				<dl class="install_list">
 					<dt style="width: 500px;">
-						<label for="url_host">Server host</label> <span class="faded_medium">The url of the server The Bug Genie is hosted on <b>without the trailing slash</b></span>
+						<label for="url_host">Server host</label> <span class="faded_out">The url of the server The Bug Genie is hosted on <b>without the trailing slash</b></span>
 					</dt><br>
 					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_host" id="url_host" value="http://<?php echo $_SERVER['SERVER_NAME']; ?>"></dd>
 					<dt style="width: 500px;">
-						<label for="url_subdir">Url subdirectory</label> <span class="faded_medium">The Bug Genie subdirectory part of the url</span>
+						<label for="url_subdir">Url subdirectory</label> <span class="faded_out">The Bug Genie subdirectory part of the url</span>
 					</dt><br>
 					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_subdir" id="url_subdir" value="<?php echo (dirname($_SERVER['PHP_SELF']) != '/') ? dirname($_SERVER['PHP_SELF']) . '/' : dirname($_SERVER['PHP_SELF']); ?>"></dd>
 					<dt style="width: 500px;"><b>According to the information above,</b> The Bug Genie will be accessible at</dt><br>
 					<dd id="url_preview">http://<?php echo $_SERVER['SERVER_NAME'] . ((dirname($_SERVER['PHP_SELF']) != '/') ? dirname($_SERVER['PHP_SELF']) . '/' : dirname($_SERVER['PHP_SELF'])); ?></dd>
 					<dt style="width: 500px;">
-						<label for="apache_autosetup_yes">Set up my .htaccess file automatically</label> <span class="faded_medium">Check this if you're using an Apache web server</span>
+						<label for="apache_autosetup_yes">Set up my .htaccess file automatically</label> <span class="faded_out">Check this if you're using an Apache web server</span>
 					</dt><br>
 					<dd>
 						<input type="radio" name="apache_autosetup" id="apache_autosetup_yes" value="1" checked><label for="apachec_autosetup_yes">Yes</label>&nbsp;

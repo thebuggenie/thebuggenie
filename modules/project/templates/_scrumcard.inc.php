@@ -44,6 +44,6 @@
 				<?php include_template('project/scrumstorytask', array('task' => $task)); ?>
 			<?php endif; ?>
 		<?php endforeach; ?>
-		<div class="faded_medium" id="no_tasks_<?php echo $issue->getID(); ?>"<?php if ($hastasks): ?> style="display: none;"<?php endif; ?>><?php echo __("This story doesn't have any tasks"); ?></div>
+		<div class="faded_out" id="no_tasks_<?php echo $issue->getID(); ?>"<?php if ($hastasks): ?> style="display: none;"<?php endif; ?>><?php echo __("This story doesn't have any tasks"); ?></div>
 	</div>
 </li>

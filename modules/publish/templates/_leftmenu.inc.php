@@ -1,7 +1,7 @@
 <?php include_template('main/menulinks', array('links' => $links, 'target_type' => 'wiki', 'target_id' => $links_target_id, 'title' => __('Wiki menu'))); ?>
 <?php if ($article instanceof TBGWikiArticle): ?>
 	<div style="margin: 10px 0 5px 5px;">
-	<div class="left_menu_header"><?php echo __('Links to this article'); ?></div>
+	<div class="header"><?php echo __('Links to this article'); ?></div>
 		<?php if (count($whatlinkshere) > 0): ?>
 			<ul class="article_list">
 				<?php foreach ($whatlinkshere as $linking_article): ?>
@@ -16,12 +16,12 @@
 				<?php endforeach; ?>
 			</ul>
 		<?php else: ?>
-			<span class="left_menu_content faded_medium"><?php echo __("No other articles links to this article"); ?></span>
+			<span class="content faded_out"><?php echo __("No other articles links to this article"); ?></span>
 		<?php endif; ?>
 	</div>
 <?php endif; ?>
 <div style="margin: 10px 0 5px 5px;">
-<div class="left_menu_header"><?php echo __('Your drafts'); ?></div>
+<div class="header"><?php echo __('Your drafts'); ?></div>
 	<?php if (count($user_drafts) > 0): ?>
 		<ul class="article_list">
 			<?php foreach ($user_drafts as $article): ?>
@@ -29,7 +29,7 @@
 			<?php endforeach; ?>
 		</ul>
 	<?php else: ?>
-		<span class="faded_medium" style="padding-left: 5px; font-size: 12px;"><?php echo __("You don't have any unpublished pages"); ?></span>
+		<span class="faded_out" style="padding-left: 5px; font-size: 12px;"><?php echo __("You don't have any unpublished pages"); ?></span>
 	<?php endif; ?>
 </div>
 <?php include_component('publish/latestArticles'); ?>

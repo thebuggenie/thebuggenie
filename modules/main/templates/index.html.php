@@ -8,7 +8,7 @@
 <?php endif; ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
 	<tr>
-		<td class="left_bar">
+		<td class="side_bar">
 			<?php include_template('main/menulinks', array('links' => $links, 'target_type' => 'main_menu', 'target_id' => 0, 'title' => __('Quick links'))); ?>
 			<?php
 
@@ -36,7 +36,7 @@
 						<?php echo __('Projects'); ?>
 					</div>
 					<?php if (count(TBGProject::getAll()) > 0): ?>
-						<ul class="project_list">
+						<ul class="project_list simple_list">
 						<?php foreach (TBGProject::getAll() as $aProject): ?>
 							<li><?php include_component('project/overview', array('project' => $aProject)); ?></li>
 						<?php endforeach; ?>

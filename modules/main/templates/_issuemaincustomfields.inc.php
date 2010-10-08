@@ -12,7 +12,7 @@
 													<?php echo $info['title']; ?>:
 												</div>
 												<div id="<?php echo $field; ?>_content" class="<?php if ($info['changed']): ?>issue_detail_changed<?php endif; ?><?php if (!$info['merged']): ?> issue_detail_unmerged<?php endif; ?>">
-													<div class="faded_medium" id="no_<?php echo $field; ?>" <?php if ($info['name'] != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
+													<div class="faded_out" id="no_<?php echo $field; ?>" <?php if ($info['name'] != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
 													<div id="<?php echo $field; ?>_name">
 														<?php if ($info['name'] != ''): ?>
 															<?php echo tbg_parse_text($info['name'], false, null, array('headers' => false)); ?>

@@ -174,7 +174,7 @@
 				<?php elseif ($project->isPlannedReleased()): ?>
 					<?php echo tbg_formatTime($project->getReleaseDate(), 14); ?>
 				<?php else: ?>
-					<span class="faded_medium"><?php echo __('No planned release date'); ?></span>
+					<span class="faded_out"><?php echo __('No planned release date'); ?></span>
 				<?php endif; ?>
 			</td>
 		</tr>

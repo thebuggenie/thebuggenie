@@ -1,4 +1,4 @@
-<tr class="canhover_light" id="item_<?php echo $type; ?>_<?php echo $item->getID(); ?>">
+<tr class="hover_highlight" id="item_<?php echo $type; ?>_<?php echo $item->getID(); ?>">
 	<?php if ($type == 'status'): ?>
 		<td style="width: 30px;"><div style="border: 0; background-color: <?php echo $item->getColor(); ?>; font-size: 1px; width: 25px; height: 8px; margin-right: 2px;" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata">&nbsp;</div></td>
 	<?php endif; ?>

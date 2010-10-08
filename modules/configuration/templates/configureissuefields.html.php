@@ -9,13 +9,13 @@
 <?php include_component('leftmenu', array('selected_section' => 4)); ?>
 <td valign="top">
 	<div style="width: 750px;" id="config_issuefields">
-		<div class="configheader"><?php echo __('Configure issue fields'); ?></div>
+		<div class="config_header"><?php echo __('Configure issue fields'); ?></div>
 		<div class="content"><?php echo __('Edit built-in and custom issue fields and values here'); ?></div>
 		<div class="header_div" style="margin-top: 15px;"><?php echo __('Built-in issue fields'); ?></div>
 		<?php foreach ($builtin_types as $type_key => $type): ?>
 			<div class="rounded_box borderless mediumgrey" style="margin: 5px 0 0 0; font-size: 12px;">
 				<?php echo image_tag('spinning_32.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => $type_key . '_indicator')); ?>
-				<div class="header"><a href="javascript:void(0);" onclick="showIssuefieldOptions('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');"><?php echo $type['description']; ?></a>&nbsp;<span class="faded_dark" style="font-weight: normal; font-size: 12px;"><?php echo $type['key']; ?></span></div>
+				<div class="header"><a href="javascript:void(0);" onclick="showIssuefieldOptions('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');"><?php echo $type['description']; ?></a>&nbsp;<span class="faded_out dark" style="font-weight: normal; font-size: 12px;"><?php echo $type['key']; ?></span></div>
 				<div class="content" id="<?php echo $type_key; ?>_content" style="display: none;"> </div>
 			</div>
 		<?php endforeach; ?>

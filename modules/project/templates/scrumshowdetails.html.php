@@ -22,7 +22,7 @@
 						</tr>
 						<tr style="display: none;">
 							<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_burndown.png'); ?></td>
-							<td style="padding: 3px 0 0 2px; text-align: left; font-size: 12px; font-weight: normal;"><?php echo link_tag('#', __('Show release burndown'), array('class' => 'faded_medium')); ?></td>
+							<td style="padding: 3px 0 0 2px; text-align: left; font-size: 12px; font-weight: normal;"><?php echo link_tag('#', __('Show release burndown'), array('class' => 'faded_out')); ?></td>
 						</tr>
 					</table>
 				</div>
@@ -49,11 +49,11 @@
 					</tr>
 				<?php foreach ($selected_sprint->getIssues() as $issue): ?>
 					<?php if (!$issue->getIssueType()->isTask()): ?>
-						<tr class="canhover_light">
+						<tr class="hover_highlight">
 							<td style="padding: 3px 0 3px 3px;"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('title' => $issue->getIssueType()->getName())); ?></td>
 							<td style="padding: 3px 3px 3px 5px; font-weight: bold; font-size: 13px;"><?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getIssueNo(), 'project_key' => $issue->getProject()->getKey())), $issue->getFormattedTitle()); ?></td>
-							<td class="estimates" <?php if (!$issue->getEstimatedPoints()): ?> class="faded_medium"<?php endif; ?> id="scrum_story_<?php echo $issue->getID(); ?>_points"><?php echo $issue->getEstimatedPoints(); ?></td>
-							<td class="estimates faded_medium">-</td>
+							<td class="estimates" <?php if (!$issue->getEstimatedPoints()): ?> class="faded_out"<?php endif; ?> id="scrum_story_<?php echo $issue->getID(); ?>_points"><?php echo $issue->getEstimatedPoints(); ?></td>
+							<td class="estimates faded_out">-</td>
 							<td style="padding: 3px;">
 								<div style="position: relative; text-align: center;" class="scrum_sprint_details_actions">
 									<?php if ($issue->canEditEstimatedTime()): ?>
@@ -82,7 +82,7 @@
 								<?php endforeach; ?>
 							<?php endif; ?>
 						</tbody>
-						<tr id="no_tasks_<?php echo $issue->getID(); ?>"<?php if ($hastasks): ?> style="display: none;"<?php endif; ?>><td>&nbsp;</td><td colspan="5" class="faded_medium" style="padding: 0 0 10px 3px; font-size: 13px;"><?php echo __("This story doesn't have any tasks"); ?></td></tr>
+						<tr id="no_tasks_<?php echo $issue->getID(); ?>"<?php if ($hastasks): ?> style="display: none;"<?php endif; ?>><td>&nbsp;</td><td colspan="5" class="faded_out" style="padding: 0 0 10px 3px; font-size: 13px;"><?php echo __("This story doesn't have any tasks"); ?></td></tr>
 					<?php endif; ?>
 				<?php endforeach; ?>
 					<tr>

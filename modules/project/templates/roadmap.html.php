@@ -51,7 +51,7 @@
 				</div>
 				<div class="roadmap_issues">
 					<?php foreach ($milestone->getIssues() as $issue): ?>
-						<div class="roadmap_issue<?php if ($issue->isClosed()): ?> faded_medium issue_closed<?php endif; ?>">
+						<div class="roadmap_issue<?php if ($issue->isClosed()): ?> faded_out issue_closed<?php endif; ?>">
 							<div class="issue_status"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : ''; ?>">&nbsp;</div></div>
 							<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getIssueNo())), $issue->getFormattedIssueNo(true, true)); ?> - <?php echo $issue->getTitle(); ?>
 							<?php if ($milestone->isSprint()): ?>

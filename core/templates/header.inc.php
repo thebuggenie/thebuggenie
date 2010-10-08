@@ -45,7 +45,7 @@
 				<td style="height: auto; overflow: hidden;" valign="top" id="maintd">
 					<table class="main_header<?php if (isset($print_friendly) && $print_friendly) { echo '_print'; } ?>" cellpadding=0 cellspacing=0 width="100%" style="table-layout: fixed;">
 						<tr>
-							<td align="left" valign="middle" style="width: 500px;" id="logo_td">
+							<td align="left" valign="middle" id="logo_td">
 							<a href="<?php print TBGContext::getTBGPath(); ?>"><?php echo image_tag('logo_48.png', array('alt' => TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()), 'title' => TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()))) ; ?></a>
 								<div class="logo_large"><?php echo TBGSettings::get('b2_name'); ?></div>
 								<div class="logo_small"><?php echo TBGSettings::get('b2_tagline'); ?></div>

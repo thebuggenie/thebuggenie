@@ -1,5 +1,5 @@
 <?php if (!$user instanceof TBGUser || $user->getUID() == 0): ?>
-	<span class="faded_medium"><?php echo __('No such user'); ?></span>
+	<span class="faded_out"><?php echo __('No such user'); ?></span>
 <?php else: ?>
 	<?php $avatar_dimensions = (!isset($size) || $size == 'small') ? 16 : 22; ?>
 	<a href="javascript:void(0);" onclick="$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').toggle();" class="image"><?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'style' => "width: {$avatar_dimensions}px; height: {$avatar_dimensions}px; float: left; margin-right: 5px;"), true); ?></a>

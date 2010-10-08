@@ -9,7 +9,7 @@
 <?php include_component('leftmenu', array('selected_section' => 6)); ?>
 <td valign="top">
 	<div style="width: 750px;" id="config_issuetypes">
-		<div class="configheader"><?php echo __('Configure issue types'); ?></div>
+		<div class="config_header"><?php echo __('Configure issue types'); ?></div>
 		<div class="content"><?php echo __('Edit issue types and their settings here.'); ?></div>
 		<div class="header_div" style="margin-top: 15px;"><?php echo __('Issue types'); ?></div>
 		<div id="issuetypes_list">

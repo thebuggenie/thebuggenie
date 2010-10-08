@@ -1,7 +1,7 @@
 <?php TBGContext::loadLibrary('ui'); ?>
 <?php $b_id = $build->getID(); ?>
 <table cellpadding=0 cellspacing=0 style="width: 100%;" id="buildbox_<?php echo $b_id; ?>">
-	<tr id="show_build_<?php print $b_id; ?>" class="canhover_light">
+	<tr id="show_build_<?php print $b_id; ?>" class="hover_highlight">
 		<td style="width: 20px; padding: 7px 2px 0 2px; text-align: center; vertical-align: top;"><?php echo image_tag('icon_' . (($build->isReleased()) ? 'release' : 'build') . '.png'); ?></td>
 		<td style="width: auto; padding: 2px 0 2px 0;">
 			<div style="padding-left: 2px;">
@@ -9,7 +9,7 @@
 			<?php if ($build->isReleased()): ?>
 				<?php echo __('Released %release_date%', array('%release_date%' => tbg_formatTime($build->getReleaseDate(), 5))); ?>
 			<?php else: ?>
-				<span class="faded_medium"><?php echo __('Not released yet'); ?></span>
+				<span class="faded_out"><?php echo __('Not released yet'); ?></span>
 			<?php endif; ?>
 			</div>
 		</td>
@@ -19,7 +19,7 @@
 			<?php if (!$build->isDefault()): ?>
 				<a href="javascript:void(0);" onclick="doBuildAction('<?php echo make_url('configure_build_action', array('build_id' => $b_id, 'build_action' => 'markdefault')); ?>', <?php print $b_id; ?>, 'markdefault', 'all');" class="image"><?php echo image_tag('icon_build_default.png', array('onmouseover' => '$(\'build_' . $b_id . '_info\').update(\'' . __('Set this build / release as the initial default when reporting new issues') . '\')', 'onmouseout' => '$(\'build_' . $b_id . '_info\').update(\'&nbsp;\')')); ?></a>
 			<?php endif; ?>
-				<a href="javascript:void(0);" onclick="$('show_build_<?php print $b_id; ?>').addClassName('selected_green');$('show_build_<?php print $b_id; ?>').removeClassName('canhover_light');$('addtoopen_build_<?php print $b_id; ?>').show();$('build_<?php print $b_id; ?>_info').hide();" class="image"><?php echo image_tag('icon_build_addtoopen.png' , array('onmouseover' => '$(\'build_' . $b_id . '_info\').update(\'' . __('Add this build / release to the list of affected builds / releases for all open issues') . '\')', 'onmouseout' => '$(\'build_' . $b_id . '_info\').update(\'&nbsp;\')')); ?></a>
+				<a href="javascript:void(0);" onclick="$('show_build_<?php print $b_id; ?>').addClassName('selected_green');$('show_build_<?php print $b_id; ?>').removeClassName('hover_highlight');$('addtoopen_build_<?php print $b_id; ?>').show();$('build_<?php print $b_id; ?>_info').hide();" class="image"><?php echo image_tag('icon_build_addtoopen.png' , array('onmouseover' => '$(\'build_' . $b_id . '_info\').update(\'' . __('Add this build / release to the list of affected builds / releases for all open issues') . '\')', 'onmouseout' => '$(\'build_' . $b_id . '_info\').update(\'&nbsp;\')')); ?></a>
 			<?php if (!$build->isReleased()): ?>
 				<a href="javascript:void(0);" onclick="doBuildAction('<?php echo make_url('configure_build_action', array('build_id' => $b_id, 'build_action' => 'release')); ?>', <?php print $b_id; ?>, 'release', 'one');" class="image"><?php echo image_tag('icon_release.png', array('onmouseover' => '$(\'build_' . $b_id . '_info\').update(\'' . __("Mark this build / release as &laquo;Released&raquo;") . '\')', 'onmouseout' => '$(\'build_' . $b_id . '_info\').update(\'&nbsp;\')')); ?></a>
 			<?php else: ?>
@@ -31,7 +31,7 @@
 				<a href="javascript:void(0);" onclick="doBuildAction('<?php echo make_url('configure_build_action', array('build_id' => $b_id, 'build_action' => 'lock')); ?>', <?php print $b_id; ?>, 'lock', 'one');" class="image"><?php echo image_tag('icon_unlocked.png', array('onmouseover' => '$(\'build_' . $b_id . '_info\').update(\'' . __('Do not allow users to report issues for this build / release') . '\')', 'onmouseout' => '$(\'build_' . $b_id . '_info\').update(\'&nbsp;\')')); ?></a>
 			<?php endif; ?>
 				<a href="javascript:void(0);" onclick="$('edit_build_<?php print $b_id; ?>').show();$('show_build_<?php print $b_id; ?>').hide();" class="image"><?php echo image_tag('icon_edit.png', array('onmouseover' => '$(\'build_' . $b_id . '_info\').update(\'' . __('Edit information about this build') . '\')', 'onmouseout' => '$(\'build_' . $b_id . '_info\').update(\'&nbsp;\')')); ?></a>
-				<a href="javascript:void(0);" onclick="$('show_build_<?php print $build->getID(); ?>').addClassName('selected_red');$('show_build_<?php print $build->getID(); ?>').removeClassName('canhover_light');$('del_build_<?php print $b_id; ?>').show();$('build_<?php print $b_id; ?>_info').hide();" class="image"><?php echo image_tag('action_cancel_small.png', array('onmouseover' => '$(\'build_' . $b_id . '_info\').update(\'' . __('Delete this build permanently (confirmation needed)') . '\')', 'onmouseout' => '$(\'build_' . $b_id . '_info\').update(\'&nbsp;\')')); ?></a>
+				<a href="javascript:void(0);" onclick="$('show_build_<?php print $build->getID(); ?>').addClassName('selected_red');$('show_build_<?php print $build->getID(); ?>').removeClassName('hover_highlight');$('del_build_<?php print $b_id; ?>').show();$('build_<?php print $b_id; ?>_info').hide();" class="image"><?php echo image_tag('action_cancel_small.png', array('onmouseover' => '$(\'build_' . $b_id . '_info\').update(\'' . __('Delete this build permanently (confirmation needed)') . '\')', 'onmouseout' => '$(\'build_' . $b_id . '_info\').update(\'&nbsp;\')')); ?></a>
 			</div>
 			<div style="float: right; margin-right: 10px; font-weight: bold;"><?php echo __('Actions'); ?>:</div>
 		</td>
@@ -127,7 +127,7 @@
 					</tr>
 				</table>
 				<div style="text-align: right; padding: 3px;">
-					<a href="javascript:void(0);" onclick="$('show_build_<?php print $b_id; ?>').removeClassName('selected_green');$('show_build_<?php print $b_id; ?>').addClassName('canhover_light');$('addtoopen_build_<?php print $b_id; ?>').hide();$('build_<?php print $b_id; ?>_info').show();" style="font-size: 12px;"><?php echo __('Cancel'); ?></a>
+					<a href="javascript:void(0);" onclick="$('show_build_<?php print $b_id; ?>').removeClassName('selected_green');$('show_build_<?php print $b_id; ?>').addClassName('hover_highlight');$('addtoopen_build_<?php print $b_id; ?>').hide();$('build_<?php print $b_id; ?>_info').show();" style="font-size: 12px;"><?php echo __('Cancel'); ?></a>
 					&nbsp;&nbsp;<?php echo __('%cancel% or %save%', array('%save%' => '', '%cancel%' => '')); ?>&nbsp;&nbsp;
 					<input type="submit" value="<?php echo __('Add to open issues'); ?>">
 				</div>
@@ -137,7 +137,7 @@
 	<tr id="del_build_<?php print $b_id; ?>" class="selected_red" style="display: none;">
 		<td colspan=3 style="border-bottom: 1px solid #E55; padding: 5px; height: 33px; font-size: 12px;">
 			<div style="float: right;">
-				<a href="javascript:void(0);" onclick="$('show_build_<?php print $build->getID(); ?>').removeClassName('selected_red');$('show_build_<?php print $build->getID(); ?>').addClassName('canhover_light');$('del_build_<?php print $b_id; ?>').hide();$('build_<?php print $b_id; ?>_info').show();"><b><?php echo __('Cancel'); ?></b></a>
+				<a href="javascript:void(0);" onclick="$('show_build_<?php print $build->getID(); ?>').removeClassName('selected_red');$('show_build_<?php print $build->getID(); ?>').addClassName('hover_highlight');$('del_build_<?php print $b_id; ?>').hide();$('build_<?php print $b_id; ?>_info').show();"><b><?php echo __('Cancel'); ?></b></a>
 				&nbsp;<?php echo __('%cancel% or %delete%', array('%delete%' => '', '%cancel%' => '')); ?>&nbsp;
 				<button onclick="deleteBuild('<?php echo make_url('configure_build_action', array('build_id' => $b_id, 'build_action' => 'delete')); ?>', <?php print $b_id; ?>);" style="font-size: 11px;"><?php echo __('Delete it'); ?></button>
 			</div>

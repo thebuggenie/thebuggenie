@@ -1,9 +1,9 @@
 <?php if ($too_short): ?>
-	<div style="padding: 3px; margin-top: 5px; font-weight: normal; font-size: 14px;" class="faded_medium">
+	<div style="padding: 3px; margin-top: 5px; font-weight: normal; font-size: 14px;" class="faded_out">
 		<?php echo __('Please enter something to search for'); ?>
 	</div>
 <?php else: ?>
-	<div style="padding: 3px; margin-top: 5px; font-weight: normal; font-size: 14px;" class="faded_medium">
+	<div style="padding: 3px; margin-top: 5px; font-weight: normal; font-size: 14px;" class="faded_out">
 		<?php if (isset($title)): ?>
 			<?php echo $title; ?>
 		<?php else: ?>
@@ -24,10 +24,10 @@
 			</thead>
 			<tbody>
 				<?php foreach ($users as $user): ?>
-				<tr class="canhover_light" id="users_results_user_<?php echo $user->getID(); ?>" onclick="$('users_results_user_<?php echo $user->getID(); ?>').toggleClassName('selected_green');"<?php if (isset($created_user) && $created_user): ?> style="display: none;"<?php endif; ?>>
+				<tr class="hover_highlight" id="users_results_user_<?php echo $user->getID(); ?>" onclick="$('users_results_user_<?php echo $user->getID(); ?>').toggleClassName('selected_green');"<?php if (isset($created_user) && $created_user): ?> style="display: none;"<?php endif; ?>>
 					<?php include_template('finduser_row', array('user' => $user)); ?>
 				</tr>
-				<tr class="canhover_light<?php if (isset($created_user) && $created_user): ?> selected_green<?php endif; ?>" id="users_results_user_<?php echo $user->getID(); ?>_edit"<?php if (!isset($created_user) || !$created_user): ?> style="display: none;"<?php endif; ?>>
+				<tr class="hover_highlight<?php if (isset($created_user) && $created_user): ?> selected_green<?php endif; ?>" id="users_results_user_<?php echo $user->getID(); ?>_edit"<?php if (!isset($created_user) || !$created_user): ?> style="display: none;"<?php endif; ?>>
 					<?php include_template('finduser_row_editable', array('user' => $user)); ?>
 				</tr>
 				<tr id="users_results_user_<?php echo $user->getID(); ?>_permissions_row" style="display: none;">

@@ -33,7 +33,7 @@
 				<td class="result_issue"<?php if (TBGContext::isProjectContext()): ?> style="padding-left: 3px;"<?php endif; ?>>
 					<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<span class="issue_no">' . $issue->getFormattedIssueNo(true) . '</span> - <span class="issue_title">' . $issue->getTitle() . '</span>'); ?>
 				</td>
-				<td<?php if (!$issue->isAssigned()): ?> class="faded_medium"<?php endif; ?>>
+				<td<?php if (!$issue->isAssigned()): ?> class="faded_out"<?php endif; ?>>
 					<?php if ($issue->isAssigned()): ?>
 						<?php if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
 							<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
@@ -44,7 +44,7 @@
 						-
 					<?php endif; ?>
 				</td>
-				<td<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> class="faded_medium"<?php endif; ?>>
+				<td<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> class="faded_out"<?php endif; ?>>
 					<?php if ($issue->getStatus() instanceof TBGDatatype): ?>
 						<table style="table-layout: auto; width: auto;" cellpadding=0 cellspacing=0>
 							<tr>
@@ -56,7 +56,7 @@
 						-
 					<?php endif; ?>
 				</td>
-				<td<?php if (!$issue->getResolution() instanceof TBGResolution): ?> class="faded_medium"<?php endif; ?>>
+				<td<?php if (!$issue->getResolution() instanceof TBGResolution): ?> class="faded_out"<?php endif; ?>>
 					<?php echo ($issue->getResolution() instanceof TBGResolution) ? strtoupper($issue->getResolution()->getName()) : '-'; ?>
 				</td>
 				<td class="smaller"><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 12); ?></td>

@@ -15,7 +15,7 @@
 			<td colspan="3" valign="middle">
 				<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
-						<td valign="middle" class="faded_medium">
+						<td valign="middle" class="faded_out">
 							<?php echo __('Assigned to %user%', array('%user%' => '</td><td>' . get_component_html('main/userdropdown', array('user' => $related_issue->getAssignee(), 'size' => 'small')))); ?>
 						</td>
 					</tr>

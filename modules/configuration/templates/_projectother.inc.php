@@ -1,5 +1,5 @@
 <div style="text-align: left;">
-	<div class="config_header nobg"><b><?php echo __('Project frontpage overview'); ?></b></div>
+	<div class="config_header"><b><?php echo __('Project frontpage overview'); ?></b></div>
 	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 		<?php echo __('Select what to show on the frontpage project overview'); ?>. (<?php echo __('This will not affect the separate project overview page'); ?>)
 		<form action="<?php echo make_url('configure_project_updateother', array('project_id' => $project->getID())); ?>" method="post" style="margin-top: 10px;" onsubmit="saveProjectOther('<?php echo make_url('configure_project_updateother', array('project_id' => $project->getID())); ?>');return false;" id="project_other">
@@ -31,7 +31,7 @@
 		</div>
 		<div id="checkboxes_milestones" style="margin-top: 5px;<?php if (!$project->isMilestonesVisibleInFrontpageSummary()): ?> display: none;<?php endif;?>">
 			<?php if (count($project->getMilestones()) == 0): ?>
-				<div class="faded_medium" style="padding: 5px; font-size: 1.1em;"><?php echo __('There are no milestones'); ?></div>
+				<div class="faded_out" style="padding: 5px; font-size: 1.1em;"><?php echo __('There are no milestones'); ?></div>
 			<?php else: ?>
 				<?php foreach ($project->getMilestones() as $milestone): ?>
 					<div style="clear: both; font-size: 12px;">

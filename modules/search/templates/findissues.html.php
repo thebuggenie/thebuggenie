@@ -37,7 +37,7 @@
 <table style="width: 100%;" cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="saved_searches">
-			<div class="left_menu_header" style="margin-top: 5px;"><?php echo __('Predefined searches'); ?></div>
+			<div class="header" style="margin-top: 5px;"><?php echo __('Predefined searches'); ?></div>
 			<?php if (TBGContext::isProjectContext()): ?>
 				<div style="clear: both;">
 					<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: left; margin-right: 5px;', 'class' => 'image')); ?>
@@ -77,7 +77,7 @@
 					<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), __('Open issues assigned to my teams')); ?><br>
 				</div>
 			<?php endif; ?>
-			<div class="left_menu_header" style="margin-top: 20px;"><?php echo (TBGContext::isProjectContext()) ? __('Your saved searches for this project') : __('Your saved searches'); ?></div>
+			<div class="header" style="margin-top: 20px;"><?php echo (TBGContext::isProjectContext()) ? __('Your saved searches for this project') : __('Your saved searches'); ?></div>
 			<?php if (count($savedsearches['user']) > 0): ?>
 				<?php foreach ($savedsearches['user'] as $a_savedsearch): ?>
 					<?php if (TBGContext::isProjectContext()): ?>
@@ -99,9 +99,9 @@
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php else: ?>
-				<div class="faded_medium" style="padding-left: 3px;" id="no_user_saved_searches"><?php echo (TBGContext::isProjectContext()) ? __("You don't have any saved searches for this project") : __("You don't have any saved searches"); ?></div>
+				<div class="faded_out" style="padding-left: 3px;" id="no_user_saved_searches"><?php echo (TBGContext::isProjectContext()) ? __("You don't have any saved searches for this project") : __("You don't have any saved searches"); ?></div>
 			<?php endif; ?>
-			<div class="left_menu_header" style="margin-top: 20px;"><?php echo (TBGContext::isProjectContext()) ? __('Public saved searches for this project') : __('Public saved searches'); ?></div>
+			<div class="header" style="margin-top: 20px;"><?php echo (TBGContext::isProjectContext()) ? __('Public saved searches for this project') : __('Public saved searches'); ?></div>
 			<?php if (count($savedsearches['public']) > 0): ?>
 				<?php foreach ($savedsearches['public'] as $a_savedsearch): ?>
 					<div style="clear: both;">
@@ -118,7 +118,7 @@
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php else: ?>
-				<div class="faded_medium" style="padding-left: 3px;" id="no_public_saved_searches"><?php echo (TBGContext::isProjectContext()) ? __("There are no saved searches for this project") : __("There are no public saved searches"); ?></div>
+				<div class="faded_out" style="padding-left: 3px;" id="no_public_saved_searches"><?php echo (TBGContext::isProjectContext()) ? __("There are no saved searches for this project") : __("There are no public saved searches"); ?></div>
 			<?php endif; ?>
 		</td>
 		<td style="width: auto; padding: 5px; vertical-align: top;" id="find_issues">
@@ -142,7 +142,7 @@
 					</select>
 					<input type="text" name="filters[text][value]" value="<?php if (array_key_exists('text', $appliedfilters)) echo (array_key_exists('value', $appliedfilters['text'])) ? $appliedfilters['text']['value'] : $appliedfilters['text'][0]['value']; ?>" id="issues_searchfor" style="width: 450px;">
 					<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top" onclick="$('save_search').disable();">
-					<div class="faded_medium" style="padding: 2px 0 5px 2px; font-size: 12px;"><p><?php echo __('Leave this input field blank to list all issues based on filters below'); ?></p></div>
+					<div class="faded_out" style="padding: 2px 0 5px 2px; font-size: 12px;"><p><?php echo __('Leave this input field blank to list all issues based on filters below'); ?></p></div>
 					<div style="<?php if (($show_results && ($issavedsearch || $predefined_search)) || (count($appliedfilters) <= ((int) TBGContext::isProjectContext() + (int) array_key_exists('text', $appliedfilters)))): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
 						<label for="result_template"><?php echo __('Display results as'); ?></label>
 						<select name="template" id="result_template" onchange="if (this.getValue() == 'results_userpain_totalpainthreshold' || this.getValue() == 'results_userpain_singlepainthreshold') { $('template_parameter_div').show();$('template_parameter_label').update(__('User pain threshold')); } else { $('template_parameter_div').hide();$('template_parameter_label').update(__('Template parameter')); }">
@@ -153,7 +153,7 @@
 						<div id="template_parameter_div" style="margin-bottom: 10px;<?php if (!in_array($templatename, array('results_userpain_singlepainthreshold', 'results_userpain_totalpainthreshold'))): ?> display: none;<?php endif; ?>">
 							<label for="template_parameter" id="template_parameter_label"><?php echo (!in_array($templatename, array('results_userpain_singlepainthreshold', 'results_userpain_totalpainthreshold'))) ? __('Template parameter') : __('User pain threshold'); ?></label>
 							<input name="template_parameter" id="template_parameter" type="text" value="<?php echo $template_parameter; ?>" style="width: 100px;">
-							<div class="faded_medium"><?php echo __('If the template has a custom parameter, use this field to specify it'); ?></div>
+							<div class="faded_out"><?php echo __('If the template has a custom parameter, use this field to specify it'); ?></div>
 						</div>
 						<label for="issues_per_page"><?php echo __('Issues per page'); ?></label>
 						<select name="issues_per_page" id="issues_per_page">
@@ -209,7 +209,7 @@
 							<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 							<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
 								<?php if (TBGContext::isProjectContext()): ?>
-									<p style="padding-bottom: 15px;" class="faded_medium"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
+									<p style="padding-bottom: 15px;" class="faded_out"><?php echo __('This saved search will be available under this project only. To make a non-project-specific search, use the main "%find_issues%" page instead', array('%find_issues%' => link_tag(make_url('search'), __('Find issues')))); ?></p>
 								<?php endif; ?>
 								<?php if ($issavedsearch): ?>
 									<input type="hidden" name="saved_search_id" id="saved_search_id" value="<?php echo $savedsearch->get(TBGSavedSearchesTable::ID); ?>">
@@ -255,13 +255,13 @@
 					</select>
 					<?php echo image_submit_tag('action_add_small.png'); ?>
 					<?php echo image_tag('spinning_16.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'add_filter_indicator')); ?>
-					<div class="faded_medium" style="padding: 10px 0 5px 0;"><?php echo __('Adding the same filter more than once means that any of the given values for that filter will return a match if you are matching with "is", and neither of the given values if you are matching with "is not"'); ?></div>
+					<div class="faded_out" style="padding: 10px 0 5px 0;"><?php echo __('Adding the same filter more than once means that any of the given values for that filter will return a match if you are matching with "is", and neither of the given values if you are matching with "is not"'); ?></div>
 				</form>
 			</div>
 			<?php if ($show_results): ?>
 				<div class="main_header">
 					<?php echo $searchtitle; ?>
-					&nbsp;&nbsp;<span class="faded_medium"><?php echo __('%number_of% issue(s)', array('%number_of%' => $resultcount)); ?></span>
+					&nbsp;&nbsp;<span class="faded_out"><?php echo __('%number_of% issue(s)', array('%number_of%' => $resultcount)); ?></span>
 					<div class="search_export_links">
 						<?php
 							if (TBGContext::getRequest()->hasParameter('quicksearch'))
@@ -288,7 +288,7 @@
 						<?php include_template('search/issues_paginated', array('issues' => $issues, 'templatename' => $templatename, 'template_parameter' => $template_parameter, 'searchterm' => $searchterm, 'filters' => $appliedfilters, 'groupby' => $groupby, 'resultcount' => $resultcount, 'ipp' => $ipp, 'offset' => $offset)); ?>
 					</div>
 				<?php else: ?>
-					<div class="faded_medium" id="no_issues"><?php echo __('No issues were found'); ?></div>
+					<div class="faded_out" id="no_issues"><?php echo __('No issues were found'); ?></div>
 				<?php endif; ?>
 			<?php endif; ?>
 		</td>

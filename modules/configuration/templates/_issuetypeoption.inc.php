@@ -1,4 +1,4 @@
-<tr class="canhover_light" id="item_<?php echo $key; ?>_<?php echo $issuetype->getID(); ?>">
+<tr class="hover_highlight" id="item_<?php echo $key; ?>_<?php echo $issuetype->getID(); ?>">
 	<td style="padding: 2px; font-size: 12px;" id="<?php echo $key; ?>_<?php echo $issuetype->getID(); ?>_name">
 		<?php
 		

@@ -53,7 +53,7 @@
 		<ul>
 		<?php foreach (TBGContext::getModules() as $module_key => $module): ?>
 			<li>
-				<a href="javascript:void(0);" onclick="$('module_permission_details_<?php echo $module_key; ?>').toggle();"><?php echo image_tag('icon_project_permissions.png', array('style' => 'float: right;')); ?><?php echo $module->getLongName(); ?> <span class="faded_medium smaller"><?php echo $module_key; ?></span></a>
+				<a href="javascript:void(0);" onclick="$('module_permission_details_<?php echo $module_key; ?>').toggle();"><?php echo image_tag('icon_project_permissions.png', array('style' => 'float: right;')); ?><?php echo $module->getLongName(); ?> <span class="faded_out smaller"><?php echo $module_key; ?></span></a>
 				<ul style="display: none;" id="module_permission_details_<?php echo $module_key; ?>">
 					<?php include_template('configuration/permissionsblock', array('base_id' => $base_id . 'module_' . $module_key . '_permissions', 'permissions_list' => $module->getAvailablePermissions(), 'mode' => 'module_permissions', 'target_id' => 0, 'module' => $module_key, 'user_id' => $user_id, 'access_level' => $access_level)); ?>
 				</ul>
@@ -67,7 +67,7 @@
 			<ul>
 				<?php foreach (TBGProject::getAll() as $project): ?>
 					<li>
-						<a href="javascript:void(0);" onclick="$('project_permission_details_<?php echo $project->getID(); ?>').toggle();"><?php echo image_tag('icon_project_permissions.png', array('style' => 'float: right;')); ?><?php echo $project->getName(); ?> <span class="faded_medium smaller"><?php echo $project->getKey(); ?></span></a>
+						<a href="javascript:void(0);" onclick="$('project_permission_details_<?php echo $project->getID(); ?>').toggle();"><?php echo image_tag('icon_project_permissions.png', array('style' => 'float: right;')); ?><?php echo $project->getName(); ?> <span class="faded_out smaller"><?php echo $project->getKey(); ?></span></a>
 						<ul style="display: none;" id="project_permission_details_<?php echo $project->getID(); ?>">
 							<?php include_template('configuration/permissionsblock', array('base_id' => $base_id . 'project_' . $project->getID() . '_project_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('project'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'user_id' => $user_id, 'access_level' => $access_level)); ?>
 							<?php include_template('configuration/permissionsblock', array('base_id' => $base_id . 'project_' . $project->getID() . '_page_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('project_pages'), 'mode' => 'project_pages', 'target_id' => $project->getID(), 'module' => 'core', 'user_id' => $user_id, 'access_level' => $access_level)); ?>
@@ -77,7 +77,7 @@
 				<?php endforeach; ?>
 			</ul>
 		<?php else: ?>
-			<div class="faded_medium" style="padding: 2px;"><?php echo __('There are no projects'); ?></div>
+			<div class="faded_out" style="padding: 2px;"><?php echo __('There are no projects'); ?></div>
 		<?php endif; ?>
 	</div>
 </div>

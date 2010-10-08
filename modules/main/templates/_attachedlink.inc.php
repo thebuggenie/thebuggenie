@@ -1,5 +1,5 @@
 <tr id="viewissue_links_<?php echo $link_id; ?>">
-	<td class="imgtd" style="width: 22px; text-align: center; vertical-align: middle;"><?php echo image_tag('icon_link.png'); ?></td>
+	<td class="imgtd"><?php echo image_tag('icon_link.png'); ?></td>
 	<td style="font-size: 13px; padding: 3px;">
 		<?php echo link_tag($link['url'], (($link['description'] != '') ? $link['description'] : $link['url']), array('title' => $link['url'])); ?><br>
 	</td>

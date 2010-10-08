@@ -33,7 +33,7 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_UPLOADS)); ?>
 		<td valign="top">
-			<div class="configheader" style="width: 750px;"><?php echo __('Configure uploads &amp; attachments'); ?></div>
+			<div class="config_header" style="width: 750px;"><?php echo __('Configure uploads &amp; attachments'); ?></div>
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="submitForm('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
 			<?php endif; ?>

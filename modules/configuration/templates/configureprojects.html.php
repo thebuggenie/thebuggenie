@@ -15,7 +15,7 @@ include_component('leftmenu', array('selected_section' => 10));
 	<table style="width: 100%" cellpadding=0 cellspacing=0>
 		<tr>
 			<td style="padding-right: 10px;">
-				<div class="configheader" style="width: 750px;"><?php echo __('Configure projects'); ?></div>
+				<div class="config_header" style="width: 750px;"><?php echo __('Configure projects'); ?></div>
 				<p style="padding-top: 5px;">
 					<?php echo __('More information about projects, editions, builds and components is available from the %wiki_help_section%.', array('%wiki_help_section%' => link_tag(make_url('publish_article', array('article_name' => 'Category:Help')), '<b>'.__('Wiki help section').'</b>'))); ?>
 				</p>

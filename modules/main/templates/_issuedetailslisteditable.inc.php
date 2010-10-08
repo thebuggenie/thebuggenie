@@ -9,7 +9,7 @@
 				<td style="padding: 0 0 0 5px;" id="issuetype_content"><?php echo $issue->getIssueType()->getName(); ?></td>
 			</tr>
 		</table>
-		<div class="faded_medium" id="no_issuetype"<?php if ($issue->getIssueType() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Unknown issue type'); ?></div>
+		<div class="faded_out" id="no_issuetype"<?php if ($issue->getIssueType() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Unknown issue type'); ?></div>
 	</div>
 </div>
 <div id="issuetype_change" class="rounded_box white shadowed" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
@@ -39,7 +39,7 @@
 				<td style="padding-left: 5px;" id="status_content" class="<?php if ($issue->isStatusChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isStatusMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php if ($issue->getStatus() instanceof TBGDatatype) echo $issue->getStatus()->getName(); ?></td>
 			</tr>
 		</table>
-		<span class="faded_medium" id="no_status"<?php if ($issue->getStatus() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Status not determined'); ?></span>
+		<span class="faded_out" id="no_status"<?php if ($issue->getStatus() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Status not determined'); ?></span>
 	</div>
 </div>
 <div class="rounded_box white shadowed" id="status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
@@ -79,7 +79,7 @@
 				<?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
 			<?php endif; ?>
 		</div>
-		<span class="faded_medium" id="no_assigned_to"<?php if ($issue->isAssigned()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not assigned to anyone'); ?></span>
+		<span class="faded_out" id="no_assigned_to"<?php if ($issue->isAssigned()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not assigned to anyone'); ?></span>
 	</dd>
 </dl>
 <?php include_component('identifiableselector', array(	'html_id' 			=> 'assigned_to_change', 
@@ -130,7 +130,7 @@
 			<span id="pain_bug_type_name"<?php if (!$issue->hasPainBugType()): ?> style="display: none;"<?php endif; ?>>
 				<?php echo ($issue->hasPainBugType()) ? $issue->getPainBugTypeLabel() : ''; ?>
 			</span>
-			<span class="faded_medium" id="no_pain_bug_type"<?php if ($issue->hasPainBugType()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
+			<span class="faded_out" id="no_pain_bug_type"<?php if ($issue->hasPainBugType()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
 		</dd>
 	</dl>
 	<div class="rounded_box white shadowed" id="pain_bug_type_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
@@ -164,7 +164,7 @@
 			<span id="pain_likelihood_name"<?php if (!$issue->hasPainLikelihood()): ?> style="display: none;"<?php endif; ?>>
 				<?php echo ($issue->hasPainLikelihood()) ? $issue->getPainLikelihoodLabel() : ''; ?>
 			</span>
-			<span class="faded_medium" id="no_pain_likelihood"<?php if ($issue->hasPainLikelihood()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
+			<span class="faded_out" id="no_pain_likelihood"<?php if ($issue->hasPainLikelihood()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
 		</dd>
 	</dl>
 	<div class="rounded_box white shadowed" id="pain_likelihood_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
@@ -198,7 +198,7 @@
 			<span id="pain_effect_name"<?php if (!$issue->hasPainEffect()): ?> style="display: none;"<?php endif; ?>>
 				<?php echo ($issue->hasPainEffect()) ? $issue->getPainEffectLabel() : ''; ?>
 			</span>
-			<span class="faded_medium" id="no_pain_effect"<?php if ($issue->hasPainEffect()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
+			<span class="faded_out" id="no_pain_effect"<?php if ($issue->hasPainEffect()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
 		</dd>
 	</dl>
 	<div class="rounded_box white shadowed" id="pain_effect_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
@@ -269,7 +269,7 @@
 				<?php echo include_component('main/teamdropdown', array('team' => $issue->getOwner())); ?>
 			<?php endif; ?>
 		</div>
-		<span class="faded_medium" id="no_owned_by"<?php if ($issue->isOwned()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not owned by anyone'); ?></span>
+		<span class="faded_out" id="no_owned_by"<?php if ($issue->isOwned()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not owned by anyone'); ?></span>
 	</dd>
 </dl>
 <?php include_component('identifiableselector', array(	'html_id' 			=> 'owned_by_change', 
@@ -288,7 +288,7 @@
 		<span id="estimated_time_name"<?php if (!$issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>>
 			<?php echo $issue->getFormattedTime($issue->getEstimatedTime()); ?>
 		</span>
-		<span class="faded_medium" id="no_estimated_time"<?php if ($issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not estimated'); ?></span>
+		<span class="faded_out" id="no_estimated_time"<?php if ($issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not estimated'); ?></span>
 	</dd>
 </dl>
 <div class="rounded_box white shadowed" id="estimated_time_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
@@ -302,9 +302,9 @@
 			<div class="dropdown_content">
 				<label for="estimated_time_input"><?php echo trim(__('%clear_current_estimate% type a new estimate %or_select_below%', array('%clear_current_estimate%' => '', '%or_select_below%' => ''))); ?>:</label><br>
 				<?php $estimated_time_title = __('Enter your estimate here'); ?>
-				<input type="text" name="estimated_time" id="estimated_time_input" value="<?php echo $estimated_time_title; ?>" style="width: 240px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $estimated_time_title; ?>'; this.addClassName('faded_medium'); }" onfocus="if (this.getValue() == '<?php echo $estimated_time_title; ?>') { this.clear(); } this.removeClassName('faded_medium');" class="faded_medium">
+				<input type="text" name="estimated_time" id="estimated_time_input" value="<?php echo $estimated_time_title; ?>" style="width: 240px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $estimated_time_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $estimated_time_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
 				<input type="submit" style="width: 60px;" value="<?php echo __('Estimate'); ?>">
-				<div class="faded_medium" style="padding: 5px 0 5px 0;"><?php echo __('Enter an estimate in plain text, like "1 week, 2 hours", "3 months and 1 day", or similar'); ?>.</div>
+				<div class="faded_out" style="padding: 5px 0 5px 0;"><?php echo __('Enter an estimate in plain text, like "1 week, 2 hours", "3 months and 1 day", or similar'); ?>.</div>
 			</div>
 			<div class="dropdown_content">
 				<label for="estimated_time_months"><?php echo __('or enter an estimate below'); ?>:</label><br>
@@ -330,7 +330,7 @@
 		<span id="spent_time_name"<?php if (!$issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>>
 			<?php echo $issue->getFormattedTime($issue->getSpentTime()); ?>
 		</span>
-		<span class="faded_medium" id="no_spent_time"<?php if ($issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('No time spent'); ?></span>
+		<span class="faded_out" id="no_spent_time"<?php if ($issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('No time spent'); ?></span>
 	</dd>
 </dl>
 <div class="rounded_box white shadowed" id="spent_time_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
@@ -344,10 +344,10 @@
 			<div class="dropdown_content">
 				<label for="spent_time_input"><?php echo trim(__("%clear_time_spent% enter how much time you've spent %or_select_below%", array('%clear_time_spent%' => '', '%or_select_below%' => ''))); ?>:</label><br>
 				<?php $spent_time_title = __('Enter time spent here'); ?>
-				<input type="text" name="spent_time" id="spent_time_input" value="<?php echo $spent_time_title; ?>" style="width: 180px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $spent_time_title; ?>'; this.addClassName('faded_medium'); }" onfocus="if (this.getValue() == '<?php echo $spent_time_title; ?>') { this.clear(); } this.removeClassName('faded_medium');" class="faded_medium">
+				<input type="text" name="spent_time" id="spent_time_input" value="<?php echo $spent_time_title; ?>" style="width: 180px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $spent_time_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $spent_time_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
 				<input type="submit" style="width: 80px;" value="<?php echo __('Spend time'); ?>"><br>
 				<input type="checkbox" checked="checked" name="spent_time_added_text" value="true" id="spent_time_added_text"><label for="spent_time_added_text"><?php echo __('Add entered time to total time spent') ?></label>
-				<div class="faded_medium" style="padding: 5px 0 5px 0;"><?php echo __('Enter time spent as plain text, like "1 day, 2 hours", "12 hours / 2 points", or similar'); ?>.</div>
+				<div class="faded_out" style="padding: 5px 0 5px 0;"><?php echo __('Enter time spent as plain text, like "1 day, 2 hours", "12 hours / 2 points", or similar'); ?>.</div>
 			</div>
 			<div class="dropdown_content">
 				<label for="spent_time_months"><?php echo __('or enter time spent below'); ?>:</label><br>
@@ -378,7 +378,7 @@
 				<?php echo image_tag($info['icon_name'], array('style' => 'float: left; margin-right: 5px;')); ?>
 			<?php endif; ?>
 			<span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $info['name']; ?></span>
-			<span class="faded_medium" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span>
+			<span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span>
 		</dd>
 	</dl>
 	<div style="clear: both;"> </div>
@@ -421,10 +421,10 @@
 				switch ($info['type'])
 				{
 					case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
-						?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo tbg_parse_text($info['name'], false, null, array('headers' => false)); ?></span><span class="faded_medium" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
+						?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo tbg_parse_text($info['name'], false, null, array('headers' => false)); ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
 						break;
 					default:
-						?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $info['name']; ?></span><span class="faded_medium" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
+						?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $info['name']; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
 						break;
 				}
 			?>

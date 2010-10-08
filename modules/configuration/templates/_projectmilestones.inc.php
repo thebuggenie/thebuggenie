@@ -1,7 +1,7 @@
 <table style="width: 780px;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td style="width: auto; padding-right: 5px; vertical-align: top;">
-			<div class="config_header nobg"><b><?php echo __('Milestones'); ?></b></div>
+			<div class="config_header"><b><?php echo __('Milestones'); ?></b></div>
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_milestone', array('project_id' => $project->getID())); ?>" method="post" id="add_milestone_form" onsubmit="addMilestone('<?php echo make_url('configure_projects_add_milestone', array('project_id' => $project->getID())); ?>');return false;">
 					<div class="rounded_box yellow" style="padding: 5px; margin-bottom: 15px;">
@@ -27,7 +27,7 @@
 					</div>
 				</form>
 			<?php endif; ?>
-			<p class="faded_medium" id="no_milestones" style="padding: 5px;<?php if (count($milestones) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no milestones'); ?></p>
+			<p class="faded_out" id="no_milestones" style="padding: 5px;<?php if (count($milestones) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no milestones'); ?></p>
 			<div id="milestone_list" style="width: 780px; margin-left: 5px;">
 				<?php foreach ($milestones as $milestone): ?>
 					<?php include_template('configuration/milestonebox', array('milestone' => $milestone)); ?>

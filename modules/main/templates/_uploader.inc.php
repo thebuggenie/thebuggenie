@@ -17,11 +17,11 @@
 							<dd><?php echo __('Files bigger than %max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.', array('%max_filesize%' => '<b>'.TBGSettings::getUploadsMaxSize().'MB</b>')); ?></dd>
 							<dt style="width: 120px;"><label for="upload_file_description"><?php echo __('Describe the file'); ?></label></dt>
 							<dd style="margin-bottom: 3px;"><input type="text" name="uploader_file_description" id="upload_file_description" style="width: 340px;"></dd>
-							<dd class="faded_medium"><?php echo __('Enter a few words about the file, so people can understand what it is/does'); ?></dd>
+							<dd class="faded_out"><?php echo __('Enter a few words about the file, so people can understand what it is/does'); ?></dd>
 							<?php if ($mode == 'issue'): ?>
 								<dt style="width: 120px;"><label for="upload_file_comment"><?php echo __('Comment'); ?></label> (<?php echo __('optional'); ?>)</dt><br>
 								<dd style="margin-bottom: 3px;"><textarea name="comment" cols="70" rows="3" id="upload_file_comment" style="width: 460px; height: 50px;"></textarea></dd>
-								<dd class="faded_medium" style="width: 440px;"><?php echo __('If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'); ?></dd>
+								<dd class="faded_out" style="width: 440px;"><?php echo __('If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'); ?></dd>
 							<?php endif; ?>
 						</dl>
 						<div style="text-align: center; margin-top: 0;">
@@ -49,7 +49,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="faded_medium" id="uploader_no_uploaded_files"<?php if (count($existing_files) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
+			<div class="faded_out" id="uploader_no_uploaded_files"<?php if (count($existing_files) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
 			<div id="done_div">
 				<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="resetFadedBackdrop();"><b>'.__('Done').'</b></a>')); ?>
 			</div>

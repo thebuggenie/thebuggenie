@@ -15,7 +15,7 @@
 	<a href="http://www.thebuggenie.com" target="_blank">The Bug Genie</a>, Copyright &copy; 2002 - 2010 <b>The Bug Genie team</b><br>
 	Licensed under the MPL 1.1 only, read the license at <a href="http://www.opensource.org/licenses/mozilla1.1.php">opensource.org</a>.<br>
 	<br>
-	<span class="faded_medium">
+	<span class="faded_out">
 		The Bug Genie uses icons from the <a href="http://www.oxygen-icons.org">Oxygen icon set</a>.<br>
 		These icons my be freely distributed under the <a href="http://www.opensource.org/licenses/lgpl-3.0.html">LGPLv3</a>.
 	</span>

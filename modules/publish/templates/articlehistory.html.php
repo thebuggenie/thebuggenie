@@ -1,7 +1,7 @@
 <?php TBGContext::loadLibrary('publish/publish'); ?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
-		<td class="left_bar" style="width: 310px;">
+		<td class="side_bar">
 			<?php include_component('leftmenu', array('article' => $article)); ?>
 		</td>
 		<td class="main_area article">
@@ -13,14 +13,14 @@
 					<?php if (TBGContext::isProjectContext()): ?>
 						<?php if ((strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 0) || ($article->isCategory() && strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 9)): ?>
 							<?php $project_article_name = substr($article->getName(), ($article->isCategory() * 9) + strlen(TBGContext::getCurrentProject()->getKey())+1); ?>
-							<?php if ($article->isCategory()): ?><span class="faded_blue">Category:</span><?php endif; ?><span class="faded_dark"><?php echo ucfirst(TBGContext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
+							<?php if ($article->isCategory()): ?><span class="faded_out blue">Category:</span><?php endif; ?><span class="faded_out dark"><?php echo ucfirst(TBGContext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
 						<?php endif; ?>
 					<?php elseif (substr($article->getName(), 0, 9) == 'Category:'): ?>
-						<span class="faded_blue">Category:</span><?php echo get_spaced_name(substr($article->getName(), 9)); ?>
+						<span class="faded_out blue">Category:</span><?php echo get_spaced_name(substr($article->getName(), 9)); ?>
 					<?php else: ?>
 						<?php echo get_spaced_name($article->getName()); ?>
 					<?php endif; ?>
-					<span class="faded_medium"><?php echo __('%article_name% ~ History', array('%article_name%' => '')); ?></span>
+					<span class="faded_out"><?php echo __('%article_name% ~ History', array('%article_name%' => '')); ?></span>
 				</div>
 			</div>
 			<?php if ($history_action == 'list'): ?>

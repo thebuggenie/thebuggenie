@@ -32,7 +32,7 @@
 			</select>
 		</li>
 		<?php if (!$issue->isResolutionVisible()): ?>
-			<li id="markasduplicate_issue_resolution_link" class="faded_medium">
+			<li id="markasduplicate_issue_resolution_link" class="faded_out">
 				<?php echo __("Resolution isn't visible for this issuetype / product combination"); ?>
 				<a href="javascript:void(0);" onclick="$('markasduplicate_issue_resolution_link').hide();$('markasduplicate_issue_resolution_div').show();"><?php echo __('Set anyway'); ?></a>
 			</li>
@@ -47,5 +47,5 @@
 	</div>
 	</form>
 <?php else: ?>
-	<span class="faded_medium"><?php echo __('No issues matched your search. Please try again with different search terms.'); ?></span>
+	<span class="faded_out"><?php echo __('No issues matched your search. Please try again with different search terms.'); ?></span>
 <?php endif; ?>

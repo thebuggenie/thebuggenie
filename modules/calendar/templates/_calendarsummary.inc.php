@@ -3,7 +3,7 @@
 	<span style="font-size: 13px; font-weight: bold;"><?php echo __('Current events'); ?></span>
 	<div style="clear: both;">
 		<?php if (count($eventstoday) == 0): ?>
-			<div style="padding-top: 5px;" class="faded_dark"><?php echo __('You have nothing scheduled today'); ?></div>
+			<div style="padding-top: 5px;" class="faded_out dark"><?php echo __('You have nothing scheduled today'); ?></div>
 		<?php else: ?>
 			<table cellpadding=0 cellspacing=0 style="width: 100%;">
 			<?php foreach ($eventstoday as $anevent): ?>

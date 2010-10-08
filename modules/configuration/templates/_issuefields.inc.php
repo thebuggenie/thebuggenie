@@ -11,7 +11,7 @@
 			<?php endif; ?>
 		</tbody>
 	</table>
-	<div class="faded_dark" id="no_<?php echo $type; ?>_items" style="<?php if (count($items) > 0): ?>display: none; <?php endif; ?>padding: 3px;"><?php echo __('There are no items'); ?></div>
+	<div class="faded_out dark" id="no_<?php echo $type; ?>_items" style="<?php if (count($items) > 0): ?>display: none; <?php endif; ?>padding: 3px;"><?php echo __('There are no items'); ?></div>
 	<div class="header_div" style="margin: 15px 0 2px 0;"><?php echo __('Add an option'); ?></div>
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>" onsubmit="addIssuefieldOption('<?php echo make_url('configure_issuefields_add', array('type' => $type)); ?>', '<?php echo $type; ?>');return false;" id="add_<?php echo $type; ?>_form">
 		<?php if ($type == 'status'): ?>

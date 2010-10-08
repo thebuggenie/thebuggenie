@@ -21,7 +21,7 @@
 								<option value="<?php echo $icon; ?>"<?php if ($type->getIcon() == $icon): ?> selected<?php endif; ?>><?php echo $description; ?></option>
 							<?php endforeach; ?>
 						</select>
-						<div class="faded_medium" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('What kind of issue type this is'); ?>.</div>
+						<div class="faded_out" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('What kind of issue type this is'); ?>.</div>
 					</td>
 				</tr>
 				<tr>
@@ -31,14 +31,14 @@
 							<option value="1"<?php if ($type->isReportable()): ?> selected<?php endif; ?>><?php echo __('Users can report new issues with this issue type'); ?></option>
 							<option value="0"<?php if (!$type->isReportable()): ?> selected<?php endif; ?>><?php echo __('Users cannot report new issues with this issue type'); ?></option>
 						</select>
-						<div class="faded_medium" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether this issue type is enabled for reporting or not'); ?>.</div>
+						<div class="faded_out" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether this issue type is enabled for reporting or not'); ?>.</div>
 					</td>
 				</tr>
 				<tr>
 					<td style="vertical-align: top; padding-top: 5px;"><label for="issuetype_<?php echo $type->getID(); ?>_description"><?php echo __('Description'); ?></label></td>
 					<td>
 						<input type="text" name="description" id="issuetype_<?php echo $type->getID(); ?>_description" value="<?php echo $type->getDescription(); ?>" style="width: 600px;">
-						<div class="faded_medium" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Users see this description when choosing an issue type to report'); ?>.</div>
+						<div class="faded_out" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Users see this description when choosing an issue type to report'); ?>.</div>
 					</td>
 				</tr>
 				<tr>
@@ -48,7 +48,7 @@
 							<option value="1"<?php if ($type->getRedirectAfterReporting()): ?> selected<?php endif; ?>><?php echo __('Redirect to the reported issue after it has been reported'); ?></option>
 							<option value="0"<?php if (!$type->getRedirectAfterReporting()): ?> selected<?php endif; ?>><?php echo __('Reload a blank "%report_issue%" page with a link to the reported issue at the top', array('%report_issue%' => __('Report issue'))); ?></option>
 						</select>
-						<div class="faded_medium" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether to forward the user to the reported issue after it has been reported'); ?>.</div>
+						<div class="faded_out" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether to forward the user to the reported issue after it has been reported'); ?>.</div>
 					</td>
 				</tr>
 			</table>

@@ -13,7 +13,7 @@
 				<br />
 				<span style="font-size: 12px;">
 					(<?php echo $tbg_user->getUsername(); ?>)<br>
-					<?php echo '<b>' . __('Status: %status%', array('%status%' => '</b>' . (($tbg_user->getState() instanceof TBGUserstate) ? $tbg_user->getState()->getName() : '<span class="faded_medium">' . __('Unknown') . '</span>'))); ?>
+					<?php echo '<b>' . __('Status: %status%', array('%status%' => '</b>' . (($tbg_user->getState() instanceof TBGUserstate) ? $tbg_user->getState()->getName() : '<span class="faded_out">' . __('Unknown') . '</span>'))); ?>
 				</span>
 				<br />
 				<div style="font-size: 13px;">
@@ -43,7 +43,7 @@
 					<div style="<?php if (!$tbg_user->usesGravatar()): ?>display: none; <?php endif; ?>clear: both; margin: 3px 0 15px 0;" id="gravatar_change">
 						<?php echo image_tag('gravatar.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 						<?php echo link_tag('http://en.gravatar.com/emails/', __('Change my profile picture / avatar'), array('target' => '_blank')); ?>
-						<p class="faded_medium" style="font-size: 11px; padding-top: 3px;">
+						<p class="faded_out" style="font-size: 11px; padding-top: 3px;">
 							<?php echo __('This will open up gravatar.com, which will let you change your avatar in The Bug Genie, and other webpages that uses Gravatar.'); ?>&nbsp;<?php echo link_tag('http://en.gravatar.com/', __('Read more ...')); ?>
 						</p>
 					</div>

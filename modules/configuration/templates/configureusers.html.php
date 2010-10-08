@@ -13,7 +13,7 @@
 		
 		?>
 		<td valign="top">
-			<div class="configheader" style="width: 750px;"><?php echo __('Configure users, teams and groups'); ?></div>
+			<div class="config_header" style="width: 750px;"><?php echo __('Configure users, teams and groups'); ?></div>
 			<div style="width: 750px; clear: both; height: 30px;" class="tab_menu">
 				<ul id="usersteamsgroups_menu">
 					<li id="tab_users" class="selected"><?php echo javascript_link_tag(image_tag('cfg_icon_users.png', array('style' => 'float: left; margin-right: 5px;')) . __('Users'), array('onclick' => "switchSubmenuTab('tab_users', 'usersteamsgroups_menu');")); ?></li>

@@ -1,4 +1,4 @@
-<tr id="show_component_<?php print $component->getID(); ?>" class="canhover_light">
+<tr id="show_component_<?php print $component->getID(); ?>" class="hover_highlight">
 	<td style="width: 20px; padding: 2px;"><?php echo image_tag('icon_components.png'); ?>
 		<div style="display: none; border: 1px solid #DDD; padding: 5px; text-align: center; width: 300px; position: absolute; background-color: #FFF;" id="del_component_<?php print $component->getID(); ?>">
 			<?php echo __('Are you sure you want to delete this component?'); ?><br>

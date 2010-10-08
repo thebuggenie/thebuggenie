@@ -104,7 +104,7 @@
 		</table>
 	</div>
 	<div id="tab_incoming_settings_pane" class="rounded_box borderless mediumgrey<?php if ($access_level == configurationActions::ACCESS_FULL): ?> cut_bottom<?php endif; ?>" style="margin: 10px 0 0 0; display: none; width: 700px;<?php if ($access_level == configurationActions::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
-		<span class="faded_medium"><?php echo __("This section doesn't have any settings yet"); ?></span>
+		<span class="faded_out"><?php echo __("This section doesn't have any settings yet"); ?></span>
 	</div>
 </div>
 <?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -123,7 +123,7 @@
 			</tr>
 			<tr>
 				<td class="config_explanation" colspan="2" style="font-size: 13px;">
-					<span class="faded_medium">
+					<span class="faded_out">
 						<?php echo __('Enter an email address, and click "%send_test_email%" to check if the email module is configured correctly', array('%send_test_email%' => __('Send test email'))); ?>
 					</span>
 				</td>

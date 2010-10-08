@@ -29,7 +29,7 @@
 			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 			<div class="xboxcontent" style="padding: 5px;">
 				<h4><?php echo __('Really delete'); ?></h4>
-				<span class="xboxlarge"><?php echo __('Are you sure you want to delete this comment?'); ?></span><br><br>
+				<span class="question_header"><?php echo __('Are you sure you want to delete this comment?'); ?></span><br><br>
 				<div id="comment_delete_controls_<?php echo $aComment->getID(); ?>">
 					<a href="javascript:void(0)" onClick="deleteComment('<?php echo make_url('comment_delete', array('comment_id' => $aComment->getID())); ?>', <?php echo $aComment->getID(); ?>)" class="xboxlink">Yes</a> :: <a href="javascript:void(0)" onClick="$('comment_delete_confirm_<?php echo $aComment->getID(); ?>').hide();" class="xboxlink"><?php echo __('No'); ?></a>
 				</div>

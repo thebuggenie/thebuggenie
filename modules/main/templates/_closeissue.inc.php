@@ -24,7 +24,7 @@
 					</select>
 				</li>
 				<?php if (!$issue->isResolutionVisible()): ?>
-					<li id="close_issue_resolution_link" class="faded_medium">
+					<li id="close_issue_resolution_link" class="faded_out">
 						<?php echo __("Resolution isn't visible for this issuetype / product combination"); ?>
 						<a href="javascript:void(0);" onclick="$('close_issue_resolution_link').hide();$('close_issue_resolution_div').show();"><?php echo __('Set anyway'); ?></a>
 					</li>

@@ -17,16 +17,16 @@
 		</div>
 		<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent"> </div>
 	</div>
-	<div class="rounded_box red borderless" id="viewissue_unsaved"<?php if (!isset($issue_unsaved)): ?> style="display: none;"<?php endif; ?>>
+	<div class="rounded_box red borderless issue_info aligned" id="viewissue_unsaved"<?php if (!isset($issue_unsaved)): ?> style="display: none;"<?php endif; ?>>
 		<div class="viewissue_info_header"><?php echo __('Could not save your changes'); ?></div>
 	</div>
 	<?php if (isset($error) && $error): ?>
-		<div class="rounded_box red borderless" id="viewissue_error">
+		<div class="rounded_box red borderless issue_info aligned" id="viewissue_error">
 			<div class="viewissue_info_header"><?php echo __('There was an error trying to save changes to this issue'); ?></div>
 			<div class="viewissue_info_content"><?php echo $error; ?></div>
 		</div>
 	<?php endif; ?>
-	<div class="rounded_box red borderless" id="viewissue_merge_errors"<?php if (!$theIssue->hasMergeErrors()): ?> style="display: none;"<?php endif; ?>>
+	<div class="rounded_box red borderless issue_info full_width" id="viewissue_merge_errors"<?php if (!$theIssue->hasMergeErrors()): ?> style="display: none;"<?php endif; ?>>
 		<div class="viewissue_info_header"><?php echo __('This issue has been changed since you started editing it'); ?></div>
 		<div class="viewissue_info_content"><?php echo __('Data that has been changed is highlighted in red below. Undo your changes to see the updated information'); ?></div>
 	</div>
@@ -34,8 +34,8 @@
 		<?php if ($theIssue->canEditSpentTime()): ?>
 		<form action="<?php echo make_url('issue_stopworking', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID())); ?>" method="post">
 		<?php endif; ?>
-			<div class="rounded_box yellow borderless" id="viewissue_being_worked_on" style="vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 13px;">
-				<?php echo image_tag('action_start_working.png', array('style' => 'float: left; margin: 0 10px 0 5px;')); ?>
+			<div class="rounded_box yellow borderless issue_info full_width" id="viewissue_being_worked_on">
+				<?php echo image_tag('action_start_working.png'); ?>
 				<?php if ($theIssue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
 					<input type="submit" value="<?php echo __('Done'); ?>">
 					<div class="viewissue_info_header"><?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($theIssue->getWorkedOnSince(), 6))); ?></div>
@@ -57,7 +57,7 @@
 		</form>
 		<?php endif; ?>
 	<?php endif; ?>
-	<div class="rounded_box yellow borderless" id="viewissue_changed" <?php if (!$theIssue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
+	<div class="rounded_box yellow borderless issue_info full_width" id="viewissue_changed" <?php if (!$theIssue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
 		<button onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_save_changes').checked = true;$('comment_bodybox').focus();return false;"><?php echo __('Add comment and save changes'); ?></button>
 		<form action="<?php echo make_url('saveissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())); ?>" method="post">
 			<input type="submit" value="<?php echo __('Save changes'); ?>">
@@ -69,17 +69,17 @@
 		</form>
 	</div>
 	<?php if (isset($issue_saved)): ?>
-		<div class="rounded_box green borderless viewissue_info_header" id="viewissue_saved">
+		<div class="rounded_box green borderless issue_info aligned" id="viewissue_saved">
 			<?php echo __('Your changes has been saved'); ?>
 		</div>
 	<?php endif; ?>
 	<?php if ($theIssue->isBlocking()): ?>
-		<div class="rounded_box red borderless" id="blocking_div">
+		<div class="rounded_box red borderless issue_info aligned" id="blocking_div">
 			<?php echo __('This issue is blocking the next release'); ?>
 		</div>
 	<?php endif; ?>
 	<?php if ($theIssue->isDuplicate()): ?>
-		<div class="rounded_box iceblue borderless infobox" id="viewissue_duplicate">
+		<div class="rounded_box iceblue borderless infobox issue_info aligned" id="viewissue_duplicate">
 			<div style="padding: 5px;">
 				<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
 				<div class="viewissue_info_header"><?php echo __('This issue is a duplicate of Issue %link_to_duplicate_issue%', array('%link_to_duplicate_issue%' => link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getDuplicateOf()->getFormattedIssueNo())), $theIssue->getDuplicateOf()->getFormattedIssueNo(true)) . ' - "' . $theIssue->getDuplicateOf()->getTitle() . '"')); ?></div>
@@ -88,7 +88,7 @@
 		</div>								
 	<?php endif; ?>
 	<?php if ($theIssue->isClosed()): ?>
-		<div class="rounded_box iceblue borderless infobox" id="viewissue_closed">
+		<div class="rounded_box iceblue borderless infobox issue_info aligned" id="viewissue_closed">
 			<div style="padding: 5px;">
 				<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
 				<div class="viewissue_info_header"><?php echo __('This issue has been closed with status "%status_name%" and resolution "%resolution%".', array('%status_name%' => (($theIssue->getStatus() instanceof TBGStatus) ? $theIssue->getStatus()->getName() : __('Not determined')), '%resolution%' => (($theIssue->getResolution() instanceof TBGResolution) ? $theIssue->getResolution()->getName() : __('Not determined')))); ?></div>
@@ -133,7 +133,7 @@
 					</td>
 					<td style="font-size: 17px; width: auto; padding: 0; padding-left: 7px;" id="title_field">
 						<div class="viewissue_title hoverable">
-							<span class="faded_medium <?php if ($theIssue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="title_header">
+							<span class="faded_out <?php if ($theIssue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="title_header">
 								<?php if ($theIssue->canEditTitle()): ?>
 									<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'title_edit', 'onclick' => "$('title_change').show(); $('title_name').hide(); $('no_title').hide();")); ?>
 									<a class="undo" href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $theIssue->getProject()->getKey(), 'issue_id' => $theIssue->getID(), 'field' => 'title')); ?>', 'title');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
@@ -143,7 +143,7 @@
 							</span>
 							<span id="issue_title">
 								<span id="title_content" class="<?php if ($theIssue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-									<span class="faded_medium" id="no_title" <?php if ($theIssue->getTitle() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></span>
+									<span class="faded_out" id="no_title" <?php if ($theIssue->getTitle() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></span>
 									<span id="title_name" style="font-weight: bold;">
 										<?php echo $theIssue->getTitle(); ?>
 									</span>
@@ -186,7 +186,7 @@
 									<?php echo __('Description'); ?>:
 								</div>
 								<div id="description_content" class="<?php if ($theIssue->isDescriptionChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-									<div class="faded_medium" id="no_description" <?php if ($theIssue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
+									<div class="faded_out" id="no_description" <?php if ($theIssue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
 									<div id="description_name">
 										<?php if ($theIssue->getDescription()): ?>
 											<?php echo tbg_parse_text($theIssue->getDescription(), false, null, array('headers' => false)); ?>
@@ -217,7 +217,7 @@
 									<?php echo __('Reproduction steps'); ?>:
 								</div>
 								<div id="reproduction_steps_content" class="<?php if ($theIssue->isReproduction_StepsChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$theIssue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-									<div class="faded_medium" id="no_reproduction_steps" <?php if ($theIssue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
+									<div class="faded_out" id="no_reproduction_steps" <?php if ($theIssue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
 									<div id="reproduction_steps_name">
 										<?php if ($theIssue->getReproductionSteps()): ?>
 											<?php echo tbg_parse_text($theIssue->getReproductionSteps(), false, null, array('headers' => false)); ?>
@@ -264,9 +264,9 @@
 							<div class="comment_add_main">
 								<div class="comment_add_title"><?php echo __('Create a comment'); ?></div><br>
 								<form id="comment_form" action="<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>" method="post" onSubmit="return addComment('<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>', 'viewissue_comment_count');">
-									<?php /*<label for="comment_title"><?php echo __('Comment title'); ?> <span class="faded_medium">(<?php echo __('optional'); ?>)</span></label><br />
+									<?php /*<label for="comment_title"><?php echo __('Comment title'); ?> <span class="faded_out">(<?php echo __('optional'); ?>)</span></label><br />
 									<input type="text" class="comment_titlebox" id="comment_title" name="comment_title"<?php if (isset($comment_error) && $comment_error): ?>value="<?php echo $comment_error_title; ?>"<?php endif; ?> /><br /> */ ?>
-									<label for="comment_visibility"><?php echo __('Comment visibility'); ?> <span class="faded_medium">(<?php echo __('whether to hide this comment for "regular users"'); ?>)</span></label><br />
+									<label for="comment_visibility"><?php echo __('Comment visibility'); ?> <span class="faded_out">(<?php echo __('whether to hide this comment for "regular users"'); ?>)</span></label><br />
 									<select class="comment_visibilitybox" id="comment_visibility" name="comment_visibility">
 										<option value="1"><?php echo __('Visible for all users'); ?></option>
 										<option value="0"><?php echo __('Visible for me, developers and administrators only'); ?></option>
@@ -291,7 +291,7 @@
 							</div>
 						</div>
 					<?php endif; ?>
-					<div class="faded_medium comments_none" id="comments_none" <?php if (count(TBGComment::getComments($theIssue->getID(), 1)) != 0): ?>style="display: none;"<?php endif; ?>><?php echo __('There are no comments'); ?></div>
+					<div class="faded_out comments_none" id="comments_none" <?php if (count(TBGComment::getComments($theIssue->getID(), 1)) != 0): ?>style="display: none;"<?php endif; ?>><?php echo __('There are no comments'); ?></div>
 					<div id="comments_box">
 						<?php foreach (TBGComment::getComments($theIssue->getID(), 1) as $aComment): ?>
 							<?php include_template('main/comment', array('aComment' => $aComment, 'theIssue' => $theIssue)); ?>
@@ -321,21 +321,21 @@
 								<dt style="width: 80px; font-size: 10px; padding-top: 4px;"><label for="attach_link_description"><?php echo __('Description'); ?>:</label></dt>
 								<dd style="margin-bottom: 0px;"><input type="text" name="description" id="attach_link_description" style="width: 235px;"></dd>
 							</dl>
-							<div style="font-size: 12px; padding: 15px 2px 10px 2px;" class="faded_medium" id="attach_link_submit"><?php echo __('Enter the link URL here, along with an optional description. Press "%attach_link%" to attach it to the issue.', array('%attach_link%' => __('Attach link'))); ?></div>
+							<div style="font-size: 12px; padding: 15px 2px 10px 2px;" class="faded_out" id="attach_link_submit"><?php echo __('Enter the link URL here, along with an optional description. Press "%attach_link%" to attach it to the issue.', array('%attach_link%' => __('Attach link'))); ?></div>
 							<div style="text-align: center; padding: 10px; display: none;" id="attach_link_indicator"><?php echo image_tag('spinning_26.gif'); ?></div>
 							<div style="text-align: center;"><input type="submit" value="<?php echo __('Attach link'); ?>" style="font-weight: bold;"><?php echo __('%attach_link% or %cancel%', array('%attach_link%' => '', '%cancel%' => '<b>'.javascript_link_tag(__('cancel'), array('onclick' => "$('attach_link').toggle();")).'</b>')); ?></div>
 						</form>
 					</div>
 					<div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($theIssue->getFiles()) + count($theIssue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
 					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-						<tbody id="viewissue_uploaded_links" class="canhover_light">
+						<tbody id="viewissue_uploaded_links" class="hover_highlight">
 							<?php foreach ($theIssue->getLinks() as $link_id => $link): ?>
 								<?php include_template('attachedlink', array('issue' => $theIssue, 'link' => $link, 'link_id' => $link_id)); ?>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
 					<table style="table-layout: fixed; width: 100%; background-color: #FFF;" cellpadding=0 cellspacing=0>
-						<tbody id="viewissue_uploaded_files" class="canhover_light">
+						<tbody id="viewissue_uploaded_files" class="hover_highlight">
 							<?php foreach ($theIssue->getFiles() as $file_id => $file): ?>
 								<?php include_template('attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $theIssue, 'file' => $file, 'file_id' => $file_id)); ?>
 							<?php endforeach; ?>
@@ -412,7 +412,7 @@
 		<?php TBGEvent::createNew('core', 'viewissue_after_tabs', $theIssue)->trigger(); ?>
 	</div>
 <?php else: ?>
-	<div class="rounded_box red borderless" id="viewissue_nonexisting" style="vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 13px;">
+	<div class="rounded_box red borderless" id="notfound_error">
 		<div class="viewissue_info_header"><?php echo __("You have specified an issue that can't be shown"); ?></div>
 		<div class="viewissue_info_content"><?php echo __("This could be because you the issue doesn't exist, has been deleted or you don't have permission to see it"); ?></div>
 	</div>

@@ -199,7 +199,7 @@
 				</div>
 			<?php else: ?>
 				<p style="padding-bottom: 5px;">
-					<b class="faded_dark"><?php echo __('There are no projects to choose from'); ?>.</b><br>
+					<b class="faded_out dark"><?php echo __('There are no projects to choose from'); ?>.</b><br>
 					<i><?php echo __('An administrator must create one or more projects before you can report any issues'); ?>.</i>
 				</p>
 			<?php endif; ?>
@@ -234,7 +234,7 @@
 				<table cellpadding="0" cellspacing="0"<?php if (array_key_exists('title', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="title" class="required"><span>* </span><?php echo __('Short summary'); ?></label></td>
-						<td style="text-align: right;"><input type="text" name="title" id="title" <?php if ((isset($title) && $title == $default_title) || !isset($title) || (isset($title) && trim($title) == '')): ?> class="title faded_medium"<?php endif; ?> value="<?php echo (isset($title) && trim($title) != '') ? $title : $default_title; ?>" onblur="if ($('title').getValue() == '') { $('title').value = '<?php echo $default_title; ?>'; $('title').addClassName('faded_medium'); }" onfocus="if ($('title').getValue() == '<?php echo $default_title; ?>') { $('title').clear(); } $('title').removeClassName('faded_medium');"></td>
+						<td style="text-align: right;"><input type="text" name="title" id="title" <?php if ((isset($title) && $title == $default_title) || !isset($title) || (isset($title) && trim($title) == '')): ?> class="title faded_out"<?php endif; ?> value="<?php echo (isset($title) && trim($title) != '') ? $title : $default_title; ?>" onblur="if ($('title').getValue() == '') { $('title').value = '<?php echo $default_title; ?>'; $('title').addClassName('faded_out'); }" onfocus="if ($('title').getValue() == '<?php echo $default_title; ?>') { $('title').clear(); } $('title').removeClassName('faded_out');"></td>
 					</tr>
 				</table>
 				<div id="report_issue_more_options_indicator">
@@ -244,7 +244,7 @@
 				<table cellpadding="0" cellspacing="0" id="description_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('description', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="description" id="description_label"><span>* </span><?php echo __('Description'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __('Describe the issue in as much detail as possible. More is better.'); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __('Describe the issue in as much detail as possible. More is better.'); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
@@ -255,7 +255,7 @@
 				<table cellpadding="0" cellspacing="0" id="reproduction_steps_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('reproduction_steps', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="reproduction_steps" id="reproduction_steps_label"><span>* </span><?php echo __('Reproduction steps'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __('Enter the steps necessary to reproduce the issue, as detailed as possible.'); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __('Enter the steps necessary to reproduce the issue, as detailed as possible.'); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
@@ -266,7 +266,7 @@
 				<table cellpadding="0" cellspacing="0" id="edition_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('editions', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="edition_id" id="edition_label"><span>* </span><?php echo __('Edition'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __("Select which edition of the product you're using"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Select which edition of the product you're using"); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
@@ -282,7 +282,7 @@
 				<table cellpadding="0" cellspacing="0" id="build_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('builds', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="build_id" id="build_label"><span>* </span><?php echo __('Release'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __("Select which release you're using"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Select which release you're using"); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
@@ -298,7 +298,7 @@
 				<table cellpadding="0" cellspacing="0" id="component_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('components', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="component_id" id="component_label"><span>* </span><?php echo __('Component'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __("Choose the component affected by this issue"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Choose the component affected by this issue"); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
@@ -314,19 +314,19 @@
 				<table cellpadding="0" cellspacing="0" id="estimated_time_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('estimated_time', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="estimated_time_id" id="estimated_time_label"><span>* </span><?php echo __('Estimate'); ?></label></td>
-						<td style="text-align: left;"><input type="text" name="estimated_time" id="estimated_time_id" style="width: 810px;" <?php if (($selected_estimated_time !== null && $selected_estimated_time == $default_estimated_time) || $selected_estimated_time === null): ?> class="faded_medium"<?php endif; ?> value="<?php echo ($selected_estimated_time !== null) ? $selected_estimated_time : $default_estimated_time; ?>" onblur="if ($('estimated_time_id').getValue() == '') { $('estimated_time_id').value = '<?php echo $default_estimated_time; ?>'; $('estimated_time_id').addClassName('faded_medium'); }" onfocus="if ($('estimated_time_id').getValue() == '<?php echo $default_estimated_time; ?>') { $('estimated_time_id').clear(); } $('estimated_time_id').removeClassName('faded_medium');"></td>
+						<td style="text-align: left;"><input type="text" name="estimated_time" id="estimated_time_id" style="width: 810px;" <?php if (($selected_estimated_time !== null && $selected_estimated_time == $default_estimated_time) || $selected_estimated_time === null): ?> class="faded_out"<?php endif; ?> value="<?php echo ($selected_estimated_time !== null) ? $selected_estimated_time : $default_estimated_time; ?>" onblur="if ($('estimated_time_id').getValue() == '') { $('estimated_time_id').value = '<?php echo $default_estimated_time; ?>'; $('estimated_time_id').addClassName('faded_out'); }" onfocus="if ($('estimated_time_id').getValue() == '<?php echo $default_estimated_time; ?>') { $('estimated_time_id').clear(); } $('estimated_time_id').removeClassName('faded_out');"></td>
 					</tr>
 					<tr>
-						<td style="padding-top: 5px;" class="report_issue_help faded_dark" colspan="2"><?php echo __('Type in your estimate here. Use keywords such as "points", "hours", "days", "weeks" and "months" to describe your estimate'); ?></td>
+						<td style="padding-top: 5px;" class="report_issue_help faded_out dark" colspan="2"><?php echo __('Type in your estimate here. Use keywords such as "points", "hours", "days", "weeks" and "months" to describe your estimate'); ?></td>
 					</tr>
 				</table>
 				<table cellpadding="0" cellspacing="0" id="elapsed_time_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('elapsed_time', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="elapsed_time_id" id="elapsed_time_label"><span>* </span><?php echo __('Time spent'); ?></label></td>
-						<td style="text-align: left;"><input type="text" name="elapsed_time" id="elapsed_time_id" style="width: 810px;" <?php if (($selected_elapsed_time !== null && $selected_elapsed_time == $default_elapsed_time) || $selected_elapsed_time === null): ?> class="faded_medium"<?php endif; ?> value="<?php echo ($selected_elapsed_time !== null) ? $selected_elapsed_time : $default_elapsed_time; ?>" onblur="if ($('elapsed_time_id').getValue() == '') { $('elapsed_time_id').value = '<?php echo $default_elapsed_time; ?>'; $('elapsed_time_id').addClassName('faded_medium'); }" onfocus="if ($('elapsed_time_id').getValue() == '<?php echo $default_elapsed_time; ?>') { $('elapsed_time_id').clear(); } $('elapsed_time_id').removeClassName('faded_medium');"></td>
+						<td style="text-align: left;"><input type="text" name="elapsed_time" id="elapsed_time_id" style="width: 810px;" <?php if (($selected_elapsed_time !== null && $selected_elapsed_time == $default_elapsed_time) || $selected_elapsed_time === null): ?> class="faded_out"<?php endif; ?> value="<?php echo ($selected_elapsed_time !== null) ? $selected_elapsed_time : $default_elapsed_time; ?>" onblur="if ($('elapsed_time_id').getValue() == '') { $('elapsed_time_id').value = '<?php echo $default_elapsed_time; ?>'; $('elapsed_time_id').addClassName('faded_out'); }" onfocus="if ($('elapsed_time_id').getValue() == '<?php echo $default_elapsed_time; ?>') { $('elapsed_time_id').clear(); } $('elapsed_time_id').removeClassName('faded_out');"></td>
 					</tr>
 					<tr>
-						<td style="padding-top: 5px;" class="report_issue_help faded_dark" colspan="2"><?php echo __('Enter time spent on this issue here. Use keywords such as "points", "hours", "days", "weeks" and "months" to describe your estimate'); ?></td>
+						<td style="padding-top: 5px;" class="report_issue_help faded_out dark" colspan="2"><?php echo __('Enter time spent on this issue here. Use keywords such as "points", "hours", "days", "weeks" and "months" to describe your estimate'); ?></td>
 					</tr>
 				</table>
 				<table cellpadding="0" cellspacing="0" id="percent_complete_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('percent_complete', $errors)): ?> class="reportissue_error"<?php endif; ?>>
@@ -338,7 +338,7 @@
 				<table cellpadding="0" cellspacing="0" id="status_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('status', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="status_id" id="status_label"><span>* </span><?php echo __('Status'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __("Choose a status for this issue"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Choose a status for this issue"); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
@@ -354,7 +354,7 @@
 				<table cellpadding="0" cellspacing="0" id="category_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('category', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="category_id" id="category_label"><span>* </span><?php echo __('Category'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __("Choose a category for this issue"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Choose a category for this issue"); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
@@ -370,7 +370,7 @@
 				<table cellpadding="0" cellspacing="0" id="resolution_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('resolution', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="resolution_id" id="resolution_label"><span>* </span><?php echo __('Resolution'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __("Choose a resolution for this issue"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Choose a resolution for this issue"); ?></td>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="resolution_id" id="resolution_id" style="width: 100%;">
@@ -385,7 +385,7 @@
 				<table cellpadding="0" cellspacing="0" id="reproducability_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('reproducability', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="reproducability_id" id="reproducability_label"><span>* </span><?php echo __('Reproducability'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __("Choose a how often you can reproduce this issue"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Choose a how often you can reproduce this issue"); ?></td>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="reproducability_id" id="reproducability_id" style="width: 100%;">
@@ -400,7 +400,7 @@
 				<table cellpadding="0" cellspacing="0" id="priority_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('priority', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="priority_id" id="priority_label"><span>* </span><?php echo __('Priority'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __("Choose the priority of this issue"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Choose the priority of this issue"); ?></td>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="priority_id" id="priority_id" style="width: 100%;">
@@ -415,7 +415,7 @@
 				<table cellpadding="0" cellspacing="0" id="pain_bug_type_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('pain_bug_type', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="pain_bug_type_id" id="pain_bug_type_label"><span>* </span><?php echo __('Triaging: Bug type'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __("What type of bug is this?"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("What type of bug is this?"); ?></td>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="pain_bug_type_id" id="pain_bug_type_id" style="width: 100%;">
@@ -430,7 +430,7 @@
 				<table cellpadding="0" cellspacing="0" id="pain_likelihood_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('pain_likelihood', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="pain_likelihood_id" id="pain_likelihood_label"><span>* </span><?php echo __('Triaging: Likelihood'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __("How likely are users to experience the bug?"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("How likely are users to experience the bug?"); ?></td>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="pain_likelihood_id" id="pain_likelihood_id" style="width: 100%;">
@@ -445,7 +445,7 @@
 				<table cellpadding="0" cellspacing="0" id="pain_effect_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('pain_effect', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="pain_effect_id" id="pain_effect_label"><span>* </span><?php echo __('Triaging: Effect'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __("Of the people who experience the bug, how badly does it affect their experience?"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Of the people who experience the bug, how badly does it affect their experience?"); ?></td>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="pain_effect_id" id="pain_effect_id" style="width: 100%;">
@@ -460,7 +460,7 @@
 				<table cellpadding="0" cellspacing="0" id="severity_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('severity', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="severity_id" id="severity_label"><span>* </span><?php echo __('Severity'); ?></label></td>
-						<td class="report_issue_help faded_dark"><?php echo __("Choose a severity for this issue"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __("Choose a severity for this issue"); ?></td>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
 							<select name="severity_id" id="severity_id" style="width: 100%;">
@@ -476,7 +476,7 @@
 					<table cellpadding="0" cellspacing="0" id="<?php echo $customdatatype->getKey(); ?>_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists($customdatatype->getKey(), $errors)): ?> class="reportissue_error"<?php endif; ?>>
 						<tr>
 							<td style="width: 150px;"><label for="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_label"><span>* </span><?php echo __($customdatatype->getDescription()); ?></label></td>
-							<td class="report_issue_help faded_dark"><?php echo __($customdatatype->getInstructions()); ?></td>
+							<td class="report_issue_help faded_out dark"><?php echo __($customdatatype->getInstructions()); ?></td>
 						<tr>
 							<td colspan="2" style="padding-top: 5px;">
 								<?php 
@@ -691,8 +691,8 @@
 									</div>
 								</li>
 							<?php endforeach; ?>
-							<li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_dark"><?php echo __('Set assignee'); ?></a></li>
-							<li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_dark"><?php echo __('Set owner'); ?></a></li>
+							<li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_out dark"><?php echo __('Set assignee'); ?></a></li>
+							<li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_out dark"><?php echo __('Set owner'); ?></a></li>
 							<?php
 		
 								TBGEvent::createNew('core', 'reportissue.listfields')->trigger();

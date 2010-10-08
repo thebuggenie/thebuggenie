@@ -12,7 +12,7 @@
 <div id="edition_settings"<?php if ($selected_section != 'general'): ?> style="display: none;"<?php endif; ?>>
 	<div class="rounded_box lightgrey" style="margin: 5px 0px 5px 0px; width: 780px; vertical-align: middle;">
 		<table style="width: 780px;" cellpadding=0 cellspacing=0>
-			<tr class="canhover_dark">
+			<tr class="hover_highlight">
 				<td style="padding: 2px; width: 100px;">
 					<b><?php echo __('Edition owner'); ?></b>
 					<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -35,7 +35,7 @@
 						<?php endif; ?>
 					</div>
 				</td>
-				<td style="<?php if ($edition->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_medium" id="no_owned_by">
+				<td style="<?php if ($edition->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_owned_by">
 					<?php echo __('Noone'); ?>
 				</td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -43,7 +43,7 @@
 				<?php endif; ?>
 			</tr>
 			<tr><td colspan="3" class="description" style="padding-bottom: 10px;"><?php echo __('The edition owner has total control over this edition and can edit information, settings, and anything about it'); ?></td></tr>
-			<tr class="canhover_dark">
+			<tr class="hover_highlight">
 				<td style="padding: 2px; width: 100px;">
 					<b><?php echo __('Lead by'); ?></b>
 					<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -65,14 +65,14 @@
 					<?php if ($edition->hasLeader()): ?>
 						<?php echo $edition->getLeader()->getName(); ?>
 					<?php else: ?>
-						<span class="faded_dark"><?php echo __('None'); ?></span>
+						<span class="faded_out dark"><?php echo __('None'); ?></span>
 					<?php endif; ?>
 				</td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('edit_leadby', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
 				<?php endif; ?>
 			</tr>
-			<tr class="canhover_dark">
+			<tr class="hover_highlight">
 				<td style="padding: 2px; width: 100px;">
 					<b><?php echo __('QA responsible'); ?></b>
 					<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -94,7 +94,7 @@
 					<?php if ($edition->hasQaResponsible()): ?>
 						<?php echo $edition->getQaResponsible()->getName(); ?>
 					<?php else: ?>
-						<span class="faded_dark"><?php echo __('None'); ?></span>
+						<span class="faded_out dark"><?php echo __('None'); ?></span>
 					<?php endif; ?>
 				</td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -225,13 +225,13 @@
 	</table>
 	<div style="padding-top: 15px; font-size: 11px; width: 700px;"><?php echo __('You can only add existing project components. If this project does not have any components yet, go back to the project overview and add them there.'); ?></div>
 <?php else: ?>
-	<div style="padding: 2px 5px 5px 5px;" class="faded_medium"><?php echo __('This project does not use components'); ?>.<br><?php echo __('Components can be enabled in project settings'); ?>.</div>
+	<div style="padding: 2px 5px 5px 5px;" class="faded_out"><?php echo __('This project does not use components'); ?>.<br><?php echo __('Components can be enabled in project settings'); ?>.</div>
 <?php endif; ?>
 </div>
 <div id="edition_builds" style="width: 790px; text-align: left;<?php if ($selected_section != 'releases'): ?> display: none;<?php endif; ?>">
 <?php if ($edition->getProject()->isBuildsEnabled()): ?>
 	<?php include_template('configuration/builds', array('parent' => $edition, 'access_level' => $access_level)); ?>
 <?php else: ?>
-	<div style="padding: 2px 5px 5px 5px;" class="faded_medium"><?php echo __('This project does not use releases'); ?>.<br><?php echo __('Releases can be enabled in project settings'); ?>.</div>
+	<div style="padding: 2px 5px 5px 5px;" class="faded_out"><?php echo __('This project does not use releases'); ?>.<br><?php echo __('Releases can be enabled in project settings'); ?>.</div>
 <?php endif; ?>
 </div>

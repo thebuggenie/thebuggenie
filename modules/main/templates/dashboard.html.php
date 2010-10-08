@@ -9,47 +9,15 @@
 ?>
 <table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
 	<tr>
-		<td id="dashboard_lefthand">
-			<div style="margin-top: 0px;">
-			<?php
-			
-				TBGEvent::createNew('core', 'dashboard_left_top')->trigger();
-			
-			?>
-			</div>
+		<td id="dashboard_lefthand side_bar">
+			<?php TBGEvent::createNew('core', 'dashboard_left_top')->trigger(); ?>
 			<div style="margin: 10px 0 10px 10px;">
 				<?php include_component('main/myfriends'); ?>
 			</div>
-			<?php 
-		
-				TBGEvent::createNew('core', 'dashboard_left_middle')->trigger();
-				TBGEvent::createNew('core', 'dashboard_left_bottom')->trigger();
-			
-			?>
+			<?php TBGEvent::createNew('core', 'dashboard_left_bottom')->trigger();?>
 		</td>
-		<td valign="top" align="left" style="padding-right: 10px;">
-			<?php
-			
-				TBGEvent::createNew('core', 'dashboard_right_top')->trigger();
-			
-			/*?>
-			<table cellpadding=0 cellspacing=0>
-				<tr>
-					<td style="width: 48px; text-align: center; padding: 0 10px 0 10px;">
-						<?php echo image_tag($tbg_user->getAvatarURL(false), array(), true); ?>
-					</td>
-					<td>
-						<div style="font-size: 15px;"><?php echo '<b>' . __('Welcome, %username%', array('%username%' => '</b>' . $tbg_user->getRealname())); ?></div>
-						<span><?php echo '<b>' . __('This page was loaded at %time%', array('%time%' => '</b>' . tbg_formatTime($_SERVER['REQUEST_TIME'], 13))); ?></span>
-					</td>
-				</tr>
-			</table>
-			<?php*/
-			
-				TBGEvent::createNew('core', 'dashboard_right_middle')->trigger();
-				TBGEvent::createNew('core', 'dashboard_right_middle_top')->trigger();
-				
-			?>
+		<td class="main_area">
+			<?php TBGEvent::createNew('core', 'dashboard_main_top')->trigger(); ?>
 			<ul id="dashboard">
 				<li>
 					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
@@ -64,20 +32,16 @@
 								<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedTitle(true)); ?></td>
 							</tr>
 							<tr>
-								<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
+								<td colspan="2" class="faded_out" style="padding-bottom: 15px;">
 									<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg_formatTime($theIssue->getLastUpdatedTime(), 12))); ?>
 								</td>
 							</tr>
 						<?php endforeach; ?>
 						</table>
 					<?php else: ?>
-						<div class="faded_medium" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues are assigned to you'); ?></div>
+						<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues are assigned to you'); ?></div>
 					<?php endif; ?>
-					<?php 
-					
-					TBGEvent::createNew('core', 'dashboard_main_myassignedissues')->trigger();
-					
-					?>
+					<?php TBGEvent::createNew('core', 'dashboard_main_myassignedissues')->trigger(); ?>
 				</li>
 				<li>
 					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
@@ -94,7 +58,7 @@
 									<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedTitle(true)); ?></td>
 								</tr>
 								<tr>
-									<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
+									<td colspan="2" class="faded_out" style="padding-bottom: 15px;">
 										<?php echo (int) $theIssue->isAssigned();?>
 										<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg_formatTime($theIssue->getLastUpdatedTime(), 12))); ?><br>
 										<?php echo __('Assigned to %assignee%', array('%assignee%' => $theIssue->getAssignee()->getName())); ?>
@@ -106,13 +70,9 @@
 						<?php endif; ?>
 					<?php endforeach; ?>
 					<?php if ($team_issues_count == 0): ?>
-						<div class="faded_medium" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues are assigned to any of your teams'); ?></div>
+						<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues are assigned to any of your teams'); ?></div>
 					<?php endif; ?>
-					<?php 
-					
-					TBGEvent::createNew('core', 'dashboard_main_teamassignedissues')->trigger();
-					
-					?>
+					<?php TBGEvent::createNew('core', 'dashboard_main_teamassignedissues')->trigger(); ?>
 				</li>
 				<li style="clear: both;"> 
 					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
@@ -126,20 +86,16 @@
 								<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedTitle(true)); ?></td>
 							</tr>
 							<tr>
-								<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
+								<td colspan="2" class="faded_out" style="padding-bottom: 15px;">
 									<?php echo __('This issue has %number_of% unsaved change(s)', array('%number_of%' => '<strong>' . $theIssue->getNumberOfUnsavedChanges() . '</strong>')); ?>
 								</td>
 							</tr>
 						<?php endforeach; ?>
 						</table>
 					<?php else: ?>
-						<div class="faded_medium" style="padding: 5px 5px 15px 5px;"><?php echo __('You have no issues with unsaved changes'); ?></div>
+						<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('You have no issues with unsaved changes'); ?></div>
 					<?php endif; ?>
-					<?php 
-					
-					TBGEvent::createNew('core', 'dashboard_main_pendingissues')->trigger();
-					
-					?>
+					<?php TBGEvent::createNew('core', 'dashboard_main_pendingissues')->trigger(); ?>
 				</li>
 				<li> 
 					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
@@ -157,7 +113,7 @@
 								<td><?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedTitle(true)); ?></td>
 							</tr>
 							<tr>
-								<td colspan="2" class="faded_medium" style="padding-bottom: 15px;">
+								<td colspan="2" class="faded_out" style="padding-bottom: 15px;">
 									<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg_formatTime($theIssue->getLastUpdatedTime(), 12))); ?><br>
 									<?php if ($theIssue->isAssigned()): ?>
 										<?php echo __('Assigned to %assignee%', array('%assignee%' => $theIssue->getAssignee()->getName())); ?>
@@ -169,13 +125,9 @@
 						<?php endforeach; ?>
 						</table>
 					<?php else: ?>
-						<div class="faded_medium" style="padding: 5px 5px 15px 5px;"><?php echo __("You haven't starred any issues yet"); ?></div>
+						<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __("You haven't starred any issues yet"); ?></div>
 					<?php endif; ?>
-					<?php 
-					
-					TBGEvent::createNew('core', 'dashboard_main_mystarredissues')->trigger();
-					
-					?>
+					<?php TBGEvent::createNew('core', 'dashboard_main_mystarredissues')->trigger(); ?>
 				</li>
 				<li style="clear: both;"> 
 					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
@@ -196,19 +148,14 @@
 							<?php endforeach; ?>
 						</table>
 					<?php else: ?>
-						<div class="faded_medium" style="padding: 5px 5px 15px 5px;"><?php echo __("You haven't done anything recently"); ?></div>
+						<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __("You haven't done anything recently"); ?></div>
 					<?php endif; ?>
 				</li>
 			</ul>
-			<?php 
-			
-				TBGEvent::createNew('core', 'dashboard_right_middle_bottom')->trigger();
-				TBGEvent::createNew('core', 'dashboard_right_bottom')->trigger();
-			
-			?>
+			<?php TBGEvent::createNew('core', 'dashboard_main_bottom')->trigger(); ?>
 		</td>
-		<td id="dashboard_righthand">
-			<div class="left_menu_header" style="margin: 7px 5px 5px 0;"><?php echo __('Your projects'); ?></div>
+		<td id="dashboard_righthand side_bar">
+			<div class="header" style="margin: 7px 5px 5px 0;"><?php echo __('Your projects'); ?></div>
 			<?php if (count($tbg_user->getAssociatedProjects()) > 0): ?>
 				<ul id="associated_projects">
 					<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
@@ -231,7 +178,7 @@
 						</li>
 					<?php endforeach; ?>
 				</ul>
-				<div class="left_menu_header" style="margin: 5px 5px 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
+				<div class="header" style="margin: 5px 5px 5px 0;"><?php echo __('Milestones / sprints'); ?></div>
 				<?php $milestone_cc = 0; ?>
 				<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
 					<?php foreach ($project->getUpcomingMilestonesAndSprints() as $milestone): ?>
@@ -247,7 +194,7 @@
 											<?php echo __('Scheduled for %scheduled_date%', array('%scheduled_date%' => tbg_formatTime($milestone->getScheduledDate(), 20))); ?>
 										<?php endif; ?>
 									</div>
-									<!-- <span class="faded_medium"><?php echo $milestone->getDescription(); ?></span>  -->
+									<!-- <span class="faded_out"><?php echo $milestone->getDescription(); ?></span>  -->
 									<div class="percentage">
 										<div class="numbers">
 											<?php if ($milestone->isSprint()): ?>
@@ -287,10 +234,10 @@
 					<?php endforeach; ?>
 				<?php endforeach; ?>
 				<?php if ($milestone_cc == 0): ?>
-					<div class="faded_medium"><?php echo __('There are no upcoming milestones for any of your associated projects'); ?></div>
+					<div class="faded_out"><?php echo __('There are no upcoming milestones for any of your associated projects'); ?></div>
 				<?php endif; ?>
 			<?php else: ?>
-				<div class="faded_medium" style="padding: 0 0 0 5px;"><?php echo __('You are not associated with any projects'); ?></div>
+				<div class="faded_out" style="padding: 0 0 0 5px;"><?php echo __('You are not associated with any projects'); ?></div>
 			<?php endif; ?>
 		</td>
 	</tr>

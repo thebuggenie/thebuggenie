@@ -16,7 +16,7 @@
 					<dt style="width: 80px; font-size: 10px; padding-top: 4px;"><label for="attach_link_<?php echo $target_type; ?>_<?php echo $target_id; ?>_description"><?php echo __('Description'); ?>:</label></dt>
 					<dd style="margin-bottom: 0px;"><input type="text" name="description" id="attach_link_<?php echo $target_type; ?>_<?php echo $target_id; ?>_description" style="width: 95%;"></dd>
 				</dl>
-				<div style="font-size: 12px; padding: 15px 2px 10px 2px;" class="faded_medium" id="attach_link_<?php echo $target_type; ?>_<?php echo $target_id; ?>_submit">
+				<div style="font-size: 12px; padding: 15px 2px 10px 2px;" class="faded_out" id="attach_link_<?php echo $target_type; ?>_<?php echo $target_id; ?>_submit">
 					<?php if ($target_type == 'wiki'): ?>
 						<?php echo __('Enter the name of the article to link to here, along with an (optional) description, and press "%add_link%" to add it to the menu.', array('%add_link%' => __('Add link'))); ?><br /><br />
 					<?php else: ?>
