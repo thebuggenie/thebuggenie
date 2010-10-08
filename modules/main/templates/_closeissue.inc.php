@@ -4,7 +4,7 @@
 		<div class="backdrop_detail_content">
 			<?php echo __('Do you want to change some of these values as well?'); ?>
 			<input type="hidden" name="issue_action" value="close">
-			<ul>
+			<ul class="simple_list">
 				<li>
 					<input type="checkbox" name="set_status" id="close_issue_set_status" value="1"><label for="close_issue_set_status"><?php echo __('Status'); ?></label>
 					<select name="status_id">

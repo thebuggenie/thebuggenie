@@ -393,9 +393,8 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .nice_button input:active { background-color: #7B7; }
 .nice_button input:hover { background-color: #8C8; }
 
-.nice_button.disabled              { padding: 0px; color: #FFF; border: 0; position: relative; display: inline; text-align: center; margin-left: 10px; }
-.nice_button.report_button.disabled input {  }
-.nice_button.disabled input        { border: 0; border-top: 1px solid #F9F9F9; color: #aaa; padding: 3px; font-weight: bold; background-color: #EEE; cursor: pointer; }
+.nice_button.disabled { padding: 0px; color: #FFF; border: 0; position: relative; display: inline; text-align: center; margin-left: 10px; }
+.nice_button.disabled input { border: 0; border-top: 1px solid #F9F9F9; color: #aaa; padding: 3px; font-weight: bold; background-color: #EEE; cursor: pointer; }
 .nice_button.disabled input:active { background-color: #F5F5F5; }
 /* end very visible button */
 
@@ -407,9 +406,11 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 #fullpage_backdrop ul.duplicate_issues li { padding-left: 5px; margin-bottom: 5px; }
 #fullpage_backdrop ul.duplicate_issues { margin: 10px 0 5px 0; }
 
+#fullpage_backdrop_content { position: relative; }
+
 .backdrop_box { background: #585DB2 !important; position: absolute; top: 87px; left: 50%; z-index: 100001; clear: both; padding: 0 !important; }
-.backdrop_box.small { width: 400px; margin: -200px 0 0 -200px; }
-.backdrop_box.medium { width: 600px; margin: -300px 0 0 -300px; }
+.backdrop_box.small { width: 400px; margin: 0 -200px 0 -200px; }
+.backdrop_box.medium { width: 600px; margin: 0 -300px 0 -300px; }
 .backdrop_box.large { width: 800px; margin: 0 -400px 0 -400px; }
 .backdrop_detail_header { font-weight: bold; font-size: 14px; color: #FFF; padding: 5px; }
 .backdrop_detail_content { font-weight: normal; font-size: 12px; padding: 5px; background: white; }
@@ -627,7 +628,7 @@ ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
 /* end scrum page styling */
 
 /* menu links */
-.menu_links .header { font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+.menu_links .header { font-size: 14px; border-bottom: 0; font-weight: bold; margin-bottom: 5px; }
 .menu_links .content table td { font-size: 12px; padding: 1px; }
 .menu_links .content a { font-weight: bold; }
 .menu_links .content a.selected { font-weight: bold; color: #006700; }
@@ -671,6 +672,7 @@ ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
 #timeline .recent_activities td.latest_action_dates { font-size: 14px; }
 #timeline .user { font-size: 12px; color: #aaa; }
 .timeline_actions a { font-weight: bold;  }
+.timeline_actions .content { padding-top: 5px; }
 #timeline .timeline_inline_details { color: #aaa; font-style: italic; margin: 5px 0 0 7px; padding-left: 5px; border-left: 1px dotted #CCC; font-size: 11px; }
 /* end timeline */
 
