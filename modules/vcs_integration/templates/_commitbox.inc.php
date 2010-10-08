@@ -44,9 +44,9 @@
 				$link_view = $web_path . '/' . $file[0] . '?revision=' . $file[2] . '&amp;view=markup';
 				break;
 			case 'websvn':
-				$link_file = $web_path . '/log.php?repname=' . $web_repo . '&amp;path=' . $file[0];
+				$link_file = $web_path . '/log.php?repname=' . $web_repo . '&amp;path=/' . $file[0];
 				$link_diff = $web_path . '/comp.php?repname=' . $web_repo . '&amp;compare[]=/' . $file[0] . '@' . $file[2] . '&amp;compare[]=/' . $file[0] . '@' . $file[3];
-				$link_view = $web_path . '/filedetails.php?repname=' . $web_repo . '&path=' . $file[0] . '&amp;rev=' . $file[2];
+				$link_view = $web_path . '/filedetails.php?repname=' . $web_repo . '&path=/' . $file[0] . '&amp;rev=' . $file[2];
 				break;
 			case 'websvn_mv':
 				$link_file = $web_path . '/' . $file[0] . '?repname=' . $web_repo;
