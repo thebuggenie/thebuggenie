@@ -1870,7 +1870,7 @@
 		 */
 		public function canEditProjectDetails(TBGProject $project)
 		{
-			return (bool) ($this->hasPermission('caneditprojectdetails', $project->getID()) || $this->hasPermission('canmanageproject', $project->getID()));
+			return (bool) ($this->hasPermission('caneditprojectdetails', $project->getID(), 'core', true) || $this->hasPermission('canmanageproject', $project->getID(), 'core', true));
 		}
 
 		/**

@@ -2,21 +2,14 @@
 	<div style="padding: 5px;" id="comment_view_<?php echo $aComment->getID(); ?>" class="comment_main">
 		<div id="comment_<?php echo $aComment->getID(); ?>_header" class="commentheader">
 			<a href="#comment_<?php echo $aComment->getTargetType(); ?>_<?php echo $aComment->getTargetID(); ?>_<?php echo $aComment->getID(); ?>" class="comment_hash">#<?php echo $aComment->getCommentNumber(); ?></a>
-			<table border="0" cellpadding="0" cellspacing="0">
-				<tr>
-					<td valign="middle" class="commenttitle">
-						<?php if ($aComment->isSystemComment()): ?>
-							<?php $title_string = '%comment_title% on behalf of %user%'; ?>
-						<?php else: ?>
-							<?php $title_string = '%comment_title% posted by %user%'; ?>
-						<?php endif; ?>
-						<?php echo __($title_string, array('%comment_title%' => $aComment->getTitle(), '%user%' => '</td><td>' . get_component_html('main/userdropdown', array('user' => $aComment->getPostedBy(), 'size' => 'small')))); ?>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" class="commentdate" id="comment_<?php echo $aComment->getID(); ?>_date"><?php echo tbg_formattime($aComment->getPosted(), 12); ?></td>
-				</tr>
-			</table>
+			<div class="commenttitle">
+				<?php if ($aComment->isSystemComment()): ?>
+					<?php echo __('Comment posted on behalf of %user%', array('%user%' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $aComment->getPostedBy(), 'size' => 'small')).'</div>')); ?>
+				<?php else: ?>
+					<?php echo __('Comment posted by %user%', array('%user%' => '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $aComment->getPostedBy(), 'size' => 'small')).'</div>')); ?>
+				<?php endif; ?>
+			</div>
+			<div class="commentdate" id="comment_<?php echo $aComment->getID(); ?>_date"><?php echo tbg_formattime($aComment->getPosted(), 12); ?></div>
 		</div>
 		<div class="commentbody article" id="comment_<?php echo $aComment->getID(); ?>_body"><?php echo tbg_parse_text($aComment->getContent()); ?></div>
 		<?php if ($aComment->canUserEditComment() || $aComment->canUserDeleteComment()) : ?>

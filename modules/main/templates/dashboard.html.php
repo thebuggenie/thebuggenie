@@ -9,7 +9,7 @@
 ?>
 <table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
 	<tr>
-		<td id="dashboard_lefthand side_bar">
+		<td id="dashboard_lefthand" class="side_bar">
 			<?php TBGEvent::createNew('core', 'dashboard_left_top')->trigger(); ?>
 			<div style="margin: 10px 0 10px 10px;">
 				<?php include_component('main/myfriends'); ?>
@@ -154,7 +154,7 @@
 			</ul>
 			<?php TBGEvent::createNew('core', 'dashboard_main_bottom')->trigger(); ?>
 		</td>
-		<td id="dashboard_righthand side_bar">
+		<td id="dashboard_righthand" class="side_bar">
 			<div class="header" style="margin: 7px 5px 5px 0;"><?php echo __('Your projects'); ?></div>
 			<?php if (count($tbg_user->getAssociatedProjects()) > 0): ?>
 				<ul id="associated_projects">
