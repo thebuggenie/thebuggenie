@@ -262,6 +262,7 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 
 /* hoverable table rows */
 tbody.hover_highlight tr:hover, tr.hover_highlight:hover { background-color: #F1F1F1; }
+tbody.hover_highlight tr:hover td.highlighted_column, tr.hover_highlight:hover td.highlighted_column { background-color: #E5E5E5; }
 
 /* selected green and selected red styling */
 tr.selected_green { background-color: #CFE8CF; }
@@ -274,8 +275,11 @@ td.selected_red:hover { background-color: #E68989; color: #FFF; }
 td.selected_red span { color: #FFF; }
 /* end selected green / red */
 
-/* padded table styling */
+/* some table styling */
 .padded_table td { padding: 2px; }
+td.highlighted_column { background-color: #F1F1F1; }
+th.highlighted_column { background-color: #C1C1C1; }
+/* end table styling */
 
 /* configuration section styling */
 .config_header { margin: 5px 0px 5px 0px; background-color: transparent; font-weight: bold; border: 0px; padding: 7px 0px 3px 0px; border-bottom: 1px solid #DDD; font-size: 15px; }

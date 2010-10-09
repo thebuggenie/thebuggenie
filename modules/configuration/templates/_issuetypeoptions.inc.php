@@ -7,7 +7,7 @@
 			<thead>
 				<tr>
 					<th style="padding: 2px;"><?php echo __('Field'); ?></th>
-					<th style="padding: 2px; text-align: center;"><?php echo __('Visible'); ?></th>
+					<th style="padding: 2px; text-align: center;" class="highlighted_column"><?php echo __('Visible'); ?></th>
 					<th style="padding: 2px; text-align: center;"><?php echo __('Reportable'); ?></th>
 					<th style="padding: 2px; text-align: center;"><?php echo __('Additional'); ?></th>
 					<th style="padding: 2px; text-align: center;"><?php echo __('Required'); ?></th>
