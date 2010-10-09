@@ -155,12 +155,18 @@
 							<?php echo '<b>' . __('Posted %posted_at_time% - updated %last_updated_at_time%', array('%posted_at_time%' => '</b><i>' . tbg_formatTime($theIssue->getPosted(), 12) . '</i><b>', '%last_updated_at_time%' => '</b><i>' . tbg_formatTime($theIssue->getLastUpdatedTime(), 12) . '</i>')); ?>
 						</div>
 					</td>
-					<td style="width: 80px;<?php if (!$theIssue->isVotesVisible()): ?> display: none;<?php endif; ?>" id="votes_additional">
-						<div class="rounded_box iceblue borderless" id="viewissue_votes" style="margin: 0 5px 0 0; vertical-align: middle; padding: 5px; font-weight: bold; font-size: 13px; text-align: center">
-							<div class="votes">
-								<div id="issue_votes"><?php echo $theIssue->getVotes(); ?></div>
-								<div class="votes_header"><?php echo __('Votes'); ?></div>
-							</div>
+					<td style="width: 100px; text-align: right;<?php if (!$theIssue->isVotesVisible()): ?> display: none;<?php endif; ?>" id="votes_additional">
+						<div id="viewissue_votes">
+							<table align="right">
+								<tr>
+									<td id="vote_down"><?php echo image_tag('action_vote_minus.png'); ?></td>
+									<td class="votes">
+										<div id="issue_votes"><?php echo $theIssue->getVotes(); ?></div>
+										<div class="votes_header"><?php echo __('Votes'); ?></div>
+									</td>
+									<td id="vote_up"><?php echo image_tag('action_vote_plus.png'); ?></td>
+								</tr>
+							</table>
 						</div>
 					</td>
 				</tr>
