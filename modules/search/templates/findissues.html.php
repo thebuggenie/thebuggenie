@@ -36,7 +36,7 @@
 ?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="saved_searches">
+		<td class="saved_searches side_bar">
 			<div class="header" style="margin-top: 5px;"><?php echo __('Predefined searches'); ?></div>
 			<?php if (TBGContext::isProjectContext()): ?>
 				<div style="clear: both;">

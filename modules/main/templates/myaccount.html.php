@@ -5,7 +5,7 @@
 ?>
 <table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
 	<tr>
-		<td id="account_lefthand" style="vertical-align: top; width: 300px;">
+		<td id="account_lefthand" class="side_bar">
 			<?php TBGEvent::createNew('core', 'account_left_top')->trigger(); ?>
 			<div class="rounded_box iceblue borderless" style="margin: 10px 0px 10px 10px; padding: 10px; font-size: 14px;">
 				<?php echo image_tag($tbg_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;'), true); ?>

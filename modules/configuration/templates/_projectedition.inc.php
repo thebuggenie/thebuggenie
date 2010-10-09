@@ -16,14 +16,13 @@
 				<td style="padding: 2px; width: 100px;">
 					<b><?php echo __('Edition owner'); ?></b>
 					<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-						<span id="edit_owner" style="display: none;">
-							<?php include_component('main/identifiableselector', array('html_id'		=> 'owned_by_change',
-																					'header' 			=> __('Change / set owner'),
-																					'clear_link_text'	=> __('Set owned by noone'),
-																					'style'				=> array('position' => 'absolute'),
-																					'callback'		 	=> "setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
-																					'base_id'			=> 'owned_by')); ?>
-						</span>
+						<?php include_component('main/identifiableselector', array('html_id'		=> 'owned_by_change',
+																				'header' 			=> __('Change / set owner'),
+																				'clear_link_text'	=> __('Set owned by noone'),
+																				'absolute'			=> true,
+																				'style'				=> array('position' => 'absolute'),
+																				'callback'		 	=> "setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
+																				'base_id'			=> 'owned_by')); ?>
 					<?php endif; ?>
 				</td>
 				<td style="<?php if (!$edition->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
@@ -39,7 +38,7 @@
 					<?php echo __('Noone'); ?>
 				</td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('owned_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
+					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" onclick="$('owned_by_change').toggle();" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
 				<?php endif; ?>
 			</tr>
 			<tr><td colspan="3" class="description" style="padding-bottom: 10px;"><?php echo __('The edition owner has total control over this edition and can edit information, settings, and anything about it'); ?></td></tr>
@@ -47,58 +46,58 @@
 				<td style="padding: 2px; width: 100px;">
 					<b><?php echo __('Lead by'); ?></b>
 					<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-						<span id="edit_leadby" style="display: none;">
-						<?php tbg_AJAXuserteamselector(__('Set lead by a user'),
-														__('Set lead by a team'),
-														'config.php?module=core&section=10&p_id=' . $edition->getID() . '&edit_settings=true&setleadby=true&lead_type=1',
-														'config.php?module=core&section=10&p_id=' . $edition->getID() . '&edit_settings=true&setleadby=true&lead_type=2',
-														'project_leadby',
-														'config.php?module=core&section=10&p_id=' . $edition->getID() . '&edit_settings=true&getleadby=true',
-														'project_leadby',
-														'config.php?module=core&section=10&p_id=' . $edition->getID() . '&edit_settings=true&getleadby=true',
-														'edit_leadby'
-														); ?>
-						</span>
+					<?php include_component('main/identifiableselector', array('html_id'		=> 'lead_by_change',
+																			'header' 			=> __('Change / set leader'),
+																			'clear_link_text'	=> __('Set lead by noone'),
+																			'absolute'			=> true,
+																			'style'				=> array('position' => 'absolute'),
+																			'callback'		 	=> "setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'lead_by');",
+																			'base_id'			=> 'lead_by')); ?>
 					<?php endif; ?>
 				</td>
-				<td style="padding: 2px;" id="project_leadby">
-					<?php if ($edition->hasLeader()): ?>
-						<?php echo $edition->getLeader()->getName(); ?>
-					<?php else: ?>
-						<span class="faded_out dark"><?php echo __('None'); ?></span>
-					<?php endif; ?>
+				<td style="<?php if (!$edition->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
+					<div style="width: 270px; display: <?php if ($edition->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" id="lead_by_name">
+						<?php if ($edition->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
+							<?php echo include_component('main/userdropdown', array('user' => $edition->getLeader())); ?>
+						<?php elseif ($edition->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+							<?php echo include_component('main/teamdropdown', array('team' => $edition->getLeader())); ?>
+						<?php endif; ?>
+					</div>
+				</td>
+				<td style="<?php if ($edition->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_lead_by">
+					<?php echo __('Noone'); ?>
 				</td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('edit_leadby', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
+					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" onclick="$('lead_by_change').toggle();" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
 				<?php endif; ?>
 			</tr>
 			<tr class="hover_highlight">
 				<td style="padding: 2px; width: 100px;">
 					<b><?php echo __('QA responsible'); ?></b>
 					<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-						<span id="edit_qa" style="display: none;">
-						<?php tbg_AJAXuserteamselector(__('Set lead by a user'),
-														__('Set lead by a team'),
-														'config.php?module=core&section=10&p_id=' . $edition->getID() . '&edit_settings=true&setleadby=true&lead_type=1',
-														'config.php?module=core&section=10&p_id=' . $edition->getID() . '&edit_settings=true&setleadby=true&lead_type=2',
-														'project_leadby',
-														'config.php?module=core&section=10&p_id=' . $edition->getID() . '&edit_settings=true&getleadby=true',
-														'project_leadby',
-														'config.php?module=core&section=10&p_id=' . $edition->getID() . '&edit_settings=true&getleadby=true',
-														'edit_qa'
-														); ?>
-						</span>
+						<?php include_component('main/identifiableselector', array('html_id'		=> 'qa_by_change',
+																				'header' 			=> __('Change / set QA resp.'),
+																				'clear_link_text'	=> __('Set QA resp. noone'),
+																				'absolute'			=> true,
+																				'style'				=> array('position' => 'absolute'),
+																				'callback'		 	=> "setUser('" . make_url('configure_edition_set_leadby', array('project_id' => $edition->getProject()->getID(), 'edition_id' => $edition->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'qa_by');",
+																				'base_id'			=> 'qa_by')); ?>
 					<?php endif; ?>
 				</td>
-				<td style="padding: 2px;" id="project_qa">
-					<?php if ($edition->hasQaResponsible()): ?>
-						<?php echo $edition->getQaResponsible()->getName(); ?>
-					<?php else: ?>
-						<span class="faded_out dark"><?php echo __('None'); ?></span>
-					<?php endif; ?>
+				<td style="<?php if (!$edition->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
+					<div style="width: 270px; display: <?php if ($edition->hasQaResponsible()): ?>inline<?php else: ?>none<?php endif; ?>;" id="qa_by_name">
+						<?php if ($edition->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
+							<?php echo include_component('main/userdropdown', array('user' => $edition->getQaResponsible())); ?>
+						<?php elseif ($edition->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+							<?php echo include_component('main/teamdropdown', array('team' => $edition->getQaResponsible())); ?>
+						<?php endif; ?>
+					</div>
+				</td>
+				<td style="<?php if ($edition->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_qa_by">
+					<?php echo __('Noone'); ?>
 				</td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('edit_qa', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
+					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" onclick="$('qa_by_change').toggle();" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
 				<?php endif; ?>
 			</tr>
 		</table>

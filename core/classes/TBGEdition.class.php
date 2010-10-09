@@ -124,6 +124,8 @@
 				$this->_isplannedreleased = (bool) $row->get(TBGEditionsTable::PLANNED_RELEASED);
 				$this->_release_date = $row->get(TBGEditionsTable::RELEASE_DATE);
 				$this->_description = $row->get(TBGEditionsTable::DESCRIPTION);
+				$this->_owner = $row->get(TBGEditionsTable::OWNED_BY);
+				$this->_owner_type = $row->get(TBGEditionsTable::OWNED_TYPE);
 				$this->_leader = $row->get(TBGEditionsTable::LEAD_BY);
 				$this->_leader_type = $row->get(TBGEditionsTable::LEAD_TYPE);
 				$this->_qa_responsible = $row->get(TBGEditionsTable::QA);

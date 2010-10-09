@@ -598,15 +598,23 @@
 		 * 
 		 * @param TBGRequest $request The request object
 		 */
-		public function runSetProjectLead(TBGRequest $request)
+		public function runSetItemLead(TBGRequest $request)
 		{
 			try
 			{
-				$project = TBGFactory::projectLab($request->getParameter('project_id'));
+				switch ($request->getParameter('item_type'))
+				{
+					case 'project':
+						$item = TBGFactory::projectLab($request->getParameter('project_id'));
+						break;
+					case 'edition':
+						$item = TBGFactory::editionLab($request->getParameter('edition_id'));
+						break;
+				}
 			}
 			catch (Exception $e) {}
 			
-			$this->forward403unless($project instanceof TBGProject);
+			$this->forward403unless($item instanceof TBGOwnableItem);
 			
 			if ($request->hasParameter('value'))
 			{
@@ -626,26 +634,26 @@
 						}
 						if ($identified instanceof TBGIdentifiableClass)
 						{
-							if ($request->getParameter('field') == 'owned_by') $project->setOwner($identified);
-							elseif ($request->getParameter('field') == 'qa_by') $project->setQaResponsible($identified);
-							elseif ($request->getParameter('field') == 'lead_by') $project->setLeader($identified);
-							$project->save();
+							if ($request->getParameter('field') == 'owned_by') $item->setOwner($identified);
+							elseif ($request->getParameter('field') == 'qa_by') $item->setQaResponsible($identified);
+							elseif ($request->getParameter('field') == 'lead_by') $item->setLeader($identified);
+							$item->save();
 						}
 					}
 					else
 					{
-						if ($request->getParameter('field') == 'owned_by') $project->unsetOwner();
-						elseif ($request->getParameter('field') == 'qa_by') $project->unsetQaResponsible();
-						elseif ($request->getParameter('field') == 'lead_by') $project->unsetLeader();
-						$project->save();
+						if ($request->getParameter('field') == 'owned_by') $item->unsetOwner();
+						elseif ($request->getParameter('field') == 'qa_by') $item->unsetQaResponsible();
+						elseif ($request->getParameter('field') == 'lead_by') $item->unsetLeader();
+						$item->save();
 					}
 				}
 				if ($request->getParameter('field') == 'owned_by')
-					return $this->renderJSON(array('field' => (($project->hasOwner()) ? array('id' => $project->getOwnerID(), 'name' => (($project->getOwnerType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $project->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $project->getOwner())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($item->hasOwner()) ? array('id' => $item->getOwnerID(), 'name' => (($item->getOwnerType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getOwner())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getOwner())))) : array('id' => 0))));
 				elseif ($request->getParameter('field') == 'lead_by')
-					return $this->renderJSON(array('field' => (($project->hasLeader()) ? array('id' => $project->getLeaderID(), 'name' => (($project->getLeaderType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $project->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $project->getLeader())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($item->hasLeader()) ? array('id' => $item->getLeaderID(), 'name' => (($item->getLeaderType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getLeader())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getLeader())))) : array('id' => 0))));
 				elseif ($request->getParameter('field') == 'qa_by')
-					return $this->renderJSON(array('field' => (($project->hasQaResponsible()) ? array('id' => $project->getQaResponsibleID(), 'name' => (($project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $project->getQaResponsible())) : $this->getComponentHTML('main/teamdropdown', array('team' => $project->getQaResponsible())))) : array('id' => 0))));
+					return $this->renderJSON(array('field' => (($item->hasQaResponsible()) ? array('id' => $item->getQaResponsibleID(), 'name' => (($item->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER) ? $this->getComponentHTML('main/userdropdown', array('user' => $item->getQaResponsible())) : $this->getComponentHTML('main/teamdropdown', array('team' => $item->getQaResponsible())))) : array('id' => 0))));
 			}
 		}
 		
