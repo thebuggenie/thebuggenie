@@ -114,14 +114,6 @@
 							<div class="user_pain_calculated" id="issue_user_pain_calculated"><?php echo $theIssue->getUserPainDiffText(); ?></div>
 						</div>
 					</td>
-					<td style="width: 80px;<?php if (!$theIssue->isVotesVisible()): ?> display: none;<?php endif; ?>" id="votes_additional">
-						<div class="rounded_box iceblue borderless" id="viewissue_votes" style="margin: 0 5px 0 0; vertical-align: middle; padding: 5px; font-weight: bold; font-size: 13px; text-align: center">
-							<div class="votes">
-								<div id="issue_votes"><?php echo $theIssue->getVotes(); ?></div>
-								<div class="votes_header"><?php echo __('Votes'); ?></div>
-							</div>
-						</div>
-					</td>
 					<td style="width: 22px; padding: 0 5px 0 5px;">
 						<?php if ($tbg_user->isGuest()): ?>
 							<?php echo image_tag('star_faded.png', array('id' => 'issue_favourite_faded', 'title' => __('Please log in to bookmark issues'))); ?>
@@ -161,6 +153,14 @@
 						</div>
 						<div style="font-size: 12px;">
 							<?php echo '<b>' . __('Posted %posted_at_time% - updated %last_updated_at_time%', array('%posted_at_time%' => '</b><i>' . tbg_formatTime($theIssue->getPosted(), 12) . '</i><b>', '%last_updated_at_time%' => '</b><i>' . tbg_formatTime($theIssue->getLastUpdatedTime(), 12) . '</i>')); ?>
+						</div>
+					</td>
+					<td style="width: 80px;<?php if (!$theIssue->isVotesVisible()): ?> display: none;<?php endif; ?>" id="votes_additional">
+						<div class="rounded_box iceblue borderless" id="viewissue_votes" style="margin: 0 5px 0 0; vertical-align: middle; padding: 5px; font-weight: bold; font-size: 13px; text-align: center">
+							<div class="votes">
+								<div id="issue_votes"><?php echo $theIssue->getVotes(); ?></div>
+								<div class="votes_header"><?php echo __('Votes'); ?></div>
+							</div>
 						</div>
 					</td>
 				</tr>
