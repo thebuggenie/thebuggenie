@@ -85,7 +85,7 @@
 			$Test->setFontProperties(TBGContext::getIncludePath() . 'modules/pchart/fonts/DroidSans.ttf', 8);
 			//$Test->drawLegend(600, 30, $DataSet->GetDataDescription(), 255, 255, 255);
 			$Test->drawLegend(55, 35, $DataSet->GetDataDescription(), 255, 255, 255);
-			$Test->setFontProperties(TBGContext::getIncludePath() . 'modules/pchart/fonts/DroidSans.ttf', 10);
+			$Test->setFontProperties(TBGContext::getIncludePath() . 'modules/pchart/fonts/DroidSansBold.ttf', 10);
 			$Test->drawTitle(50, 22, $this->title, 50, 50, 50, $this->width - 30);
 			$Test->Stroke();//("example2.png");
 		}
@@ -134,7 +134,7 @@
 				$Test->drawPieGraph($DataSet->GetData(), $DataSet->GetDataDescription(), floor($left), floor($this->height / 2), floor(($this->width + $this->height) / 6), $pie_labels, TRUE, 40, 10, 3);
 			}
 
-			$Test->setFontProperties(TBGContext::getIncludePath() . 'modules/pchart/fonts/DroidSans.ttf', $title_font_size);
+			$Test->setFontProperties(TBGContext::getIncludePath() . 'modules/pchart/fonts/DroidSansBold.ttf', $title_font_size);
 			$Test->drawTitle(50, 22, $this->title, 50, 50, 50, $this->width - 30);
 			$Test->Stroke();//("example2.png");
 		}
