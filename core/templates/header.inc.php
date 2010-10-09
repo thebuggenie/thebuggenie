@@ -12,6 +12,20 @@
 		<meta name="keywords" content="thebuggenie friendly issue tracking">
 		<meta name="author" content="thebuggenie.com">
 		<meta http-equiv="Content-Type" content="<?php echo $tbg_response->getContentType(); ?> charset=<?php echo TBGContext::getI18n()->getCharset(); ?>">
+		<?php 
+			if (TBGSettings::isUsingCustomFavicon())
+			{
+				?>
+				<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>favicon.png">
+				<?php
+			}
+			else
+			{
+				?>
+				<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
+				<?php
+			}
+		?>
 		<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
 		<link rel="stylesheet" type="text/css" href="<?php print TBGContext::getTBGPath(); ?>css/<?php print TBGSettings::getThemeName(); ?>.css">
 		<?php foreach ($tbg_response->getFeeds() as $feed_url => $feed_title): ?>
@@ -46,7 +60,20 @@
 					<table class="main_header<?php if (isset($print_friendly) && $print_friendly) { echo '_print'; } ?>" cellpadding=0 cellspacing=0 width="100%" style="table-layout: fixed;">
 						<tr>
 							<td align="left" valign="middle" id="logo_td">
-							<a href="<?php print TBGContext::getTBGPath(); ?>"><?php echo image_tag('logo_48.png', array('alt' => TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()), 'title' => TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()))) ; ?></a>
+							<?php 
+								if (TBGSettings::isUsingCustomHeaderIcon())
+								{
+									?>
+									<a href="<?php print TBGContext::getTBGPath(); ?>"><img src="<?php print TBGContext::getTBGPath(); ?>header.png" alt="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>" title="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>"></a>
+									<?php
+								}
+								else
+								{
+									?>
+									<a href="<?php print TBGContext::getTBGPath(); ?>"><?php echo image_tag('logo_48.png', array('alt' => TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()), 'title' => TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()))) ; ?></a>
+									<?php
+								}
+							?>
 								<div class="logo_large"><?php echo TBGSettings::get('b2_name'); ?></div>
 								<div class="logo_small"><?php echo TBGSettings::get('b2_tagline'); ?></div>
 							</td>

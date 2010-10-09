@@ -278,6 +278,16 @@
 		{
 			return (bool) self::get('singleprojecttracker');
 		}
+		
+		public static function isUsingCustomHeaderIcon()
+		{
+			return (bool) self::get('icon_header');
+		}
+		
+		public static function isUsingCustomFavicon()
+		{
+			return (bool) self::get('icon_fav');
+		}
 
 		public static function getThemeName()
 		{

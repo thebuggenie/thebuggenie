@@ -6,18 +6,6 @@
 ?>
 <table style="clear: both; width: 700px; margin-top: 5px;" class="padded_table" cellpadding=0 cellspacing=0>
 	<tr>
-		<td style="width: 200px;"><label for="user_themes"><?php echo __('Individual themes'); ?></label></td>
-		<td style="width: auto;">
-			<select name="user_themes" id="user_themes" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
-				<option value=1<?php if (TBGSettings::isUserThemesEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes, users can choose their preferred theme'); ?></option>
-				<option value=0<?php if (!TBGSettings::isUserThemesEnabled()): ?> selected<?php endif; ?>><?php echo __('No, this theme will always be used'); ?></option>
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('Choose whether users can select a different theme than the default theme for their own account.'); ?></td>
-	</tr>
-	<tr>
 		<td><label for="requirelogin"><?php echo __('Anonymous access'); ?></label></td>
 		<td>
 			<select name="requirelogin" id="requirelogin" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>

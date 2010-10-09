@@ -14,13 +14,15 @@
 <div style="margin-top: 5px; width: 750px; clear: both; height: 30px;" class="tab_menu">
 	<ul id="settings_menu">
 		<li class="selected" id="tab_general_settings"><a onclick="switchSubmenuTab('tab_general_settings', 'settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_general.png', array('style' => 'float: left;')).__('General'); ?></a></li>
+		<li id="tab_appearance_settings"><a onclick="switchSubmenuTab('tab_appearance_settings', 'settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_appearance.png', array('style' => 'float: left;')).__('Appearance'); ?></a></li>
 		<li id="tab_server_settings"><a onclick="switchSubmenuTab('tab_server_settings', 'settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_server.png', array('style' => 'float: left;')).__('Server'); ?></a></li>
 		<li id="tab_reglang_settings"><a onclick="switchSubmenuTab('tab_reglang_settings', 'settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_reglang.png', array('style' => 'float: left;')).__('Regional &amp; language'); ?></a></li>
 		<li id="tab_user_settings"><a onclick="switchSubmenuTab('tab_user_settings', 'settings_menu');" href="javascript:void(0);"><?php echo image_tag('cfg_icon_users.png', array('style' => 'float: left;')).__('Users &amp; security'); ?></a></li>
 	</ul>
 </div>
 <div id="settings_menu_panes">
-	<div id="tab_general_settings_pane"><?php include_template('general', array('access_level' => $access_level, 'themes' => $themes)); ?></div>
+	<div id="tab_general_settings_pane"><?php include_template('general', array('access_level' => $access_level)); ?></div>
+	<div id="tab_appearance_settings_pane" style="display: none;"><?php include_template('appearance', array('access_level' => $access_level, 'themes' => $themes)); ?></div>
 	<div id="tab_server_settings_pane" style="display: none;"><?php include_template('server', array('access_level' => $access_level)); ?></div>
 	<div id="tab_reglang_settings_pane" style="display: none;"><?php include_template('reglang', array('access_level' => $access_level, 'languages' => $languages)); ?></div>
 	<div id="tab_user_settings_pane" style="display: none;"><?php include_template('user', array('access_level' => $access_level)); ?></div>

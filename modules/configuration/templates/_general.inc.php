@@ -44,19 +44,6 @@
 		<td class="config_explanation" colspan="2"><?php echo __('Whether the project overview list should appear on the frontpage or not'); ?></td>
 	</tr>
 	<tr>
-		<td><label for="theme_name"><?php echo __('Selected theme'); ?></label></td>
-		<td>
-			<select name="theme_name" id="theme_name" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
-			<?php foreach ($themes as $aTheme): ?>
-				<option value="<?php echo $aTheme; ?>"<?php if (TBGSettings::getThemeName() == $aTheme): ?> selected<?php endif; ?><?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo $aTheme; ?></option>
-			<?php endforeach; ?>
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('The selected theme used. Depending on other settings, users might be able to use another theme for their account.'); ?></td>
-	</tr>
-	<tr>
 		<td><label for="cleancomments"><?php echo __('Comment trail'); ?></label></td>
 		<td>
 			<select name="cleancomments" id="cleancomments" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>

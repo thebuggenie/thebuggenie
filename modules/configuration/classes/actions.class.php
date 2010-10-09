@@ -74,7 +74,8 @@
 									'requirelogin', 'allowreg', 'defaultgroup', 'returnfromlogin', 'returnfromlogout', 'permissive',
 									'limit_registration', 'showprojectsoverview', 'showprojectsoverview', 'cleancomments',
 									'b2_name', 'b2_tagline', 'url_subdir', 'local_path', 'charset', 'language', 'server_timezone',
-									'highlight_default_lang', 'highlight_default_interval', 'highlight_default_numbering');
+									'highlight_default_lang', 'highlight_default_interval', 'highlight_default_numbering', 'icon_header',
+									'icon_fav');
 				
 				foreach ($settings as $setting)
 				{
