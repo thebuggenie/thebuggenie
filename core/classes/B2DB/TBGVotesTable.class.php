@@ -23,38 +23,53 @@
 		const ID = 'votes.id';
 		const SCOPE = 'votes.scope';
 		const TARGET = 'votes.target';
+		const VOTE = 'votes.vote';
 		const UID = 'votes.uid';
+
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGVotesTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGVotesTable');
+		}
 
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET, 10);
+			parent::_addInteger(self::VOTE, 2);
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
-		public function getNumberOfVotesForIssue($issue_id)
+		public function getVoteSumForIssue($issue_id)
 		{
 			$crit = $this->getCriteria();
+			$crit->addSelectionColumn(self::VOTE, 'votes_total', B2DBCriteria::DB_SUM);
 			$crit->addWhere(self::TARGET, $issue_id);
-			return $this->doCount($crit);			
+			$res = $this->doSelectOne($crit);
+
+			return ($res) ? $res->get('votes_total') : 0;
 		}
 		
-		public function getByUserIdAndIssueId($user_id, $issue_id)
+		public function getByIssueId($issue_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::TARGET, $issue_id);
-			$crit->addWhere(self::UID, $user_id);
-			$res = $this->doSelectOne($crit);
+			$res = $this->doSelect($crit);
 			return $res;
 		}
 		
-		public function addByUserIdAndIssueId($user_id, $issue_id)
+		public function addByUserIdAndIssueId($user_id, $issue_id, $up = true)
 		{
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::TARGET, $issue_id);
 			$crit->addInsert(self::UID, $user_id);
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addInsert(self::VOTE, (($up) ? 1 : -1));
 			$res = $this->doInsert($crit);
 			return $res->getInsertID();
 		}

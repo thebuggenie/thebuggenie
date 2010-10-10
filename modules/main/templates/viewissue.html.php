@@ -159,12 +159,16 @@
 						<div id="viewissue_votes">
 							<table align="right">
 								<tr>
-									<td id="vote_down"><?php echo image_tag('action_vote_minus.png'); ?></td>
+									<td id="vote_down">
+										<?php echo javascript_link_tag(image_tag('action_vote_minus.png'), array('onclick' => "voteUp('".make_url('issue_vote', array('issue_id' => $theIssue->getID(), 'vote' => 'up'))."');", 'id' => 'vote_up_link')); ?>
+									</td>
 									<td class="votes">
 										<div id="issue_votes"><?php echo $theIssue->getVotes(); ?></div>
 										<div class="votes_header"><?php echo __('Votes'); ?></div>
 									</td>
-									<td id="vote_up"><?php echo image_tag('action_vote_plus.png'); ?></td>
+									<td id="vote_up">
+										<?php echo javascript_link_tag(image_tag('action_vote_plus.png'), array('onclick' => "voteDown('".make_url('issue_vote', array('issue_id' => $theIssue->getID(), 'vote' => 'down'))."');", 'id' => 'vote_up_link')); ?>
+									</td>
 								</tr>
 							</table>
 						</div>

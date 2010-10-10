@@ -741,6 +741,14 @@
 								{
 									$selected_customdatatype[$customdatatype->getKey()] = $request->getParameter($customdatatype_value);
 								}
+								else
+								{
+									$customdatatype_id = $customdatatype->getKey() . '_id';
+									if ($request->hasParameter($customdatatype_id))
+									{
+										$selected_customdatatype[$customdatatype->getKey()] = $request->getParameter($customdatatype_id);
+									}
+								}
 								break;
 						}
 					}
@@ -807,6 +815,7 @@
 			if (isset($fields_array['pain_effect'])) $issue->setPainEffect($this->selected_pain_effect);
 			foreach (TBGCustomDatatype::getAll() as $customdatatype)
 			{
+				if (!isset($fields_array[$customdatatype->getKey()])) continue;
 				if ($customdatatype->hasCustomOptions())
 				{
 					if (isset($fields_array[$customdatatype->getKey()]) && $this->selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption)
@@ -817,7 +826,6 @@
 				}
 				else
 				{
-					die($customdatatype->getKey().' - '.$this->selected_customdatatype[$customdatatype->getKey()]);
 					$issue->setCustomField($customdatatype->getKey(), $this->selected_customdatatype[$customdatatype->getKey()]);
 				}
 			}

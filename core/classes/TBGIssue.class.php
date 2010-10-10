@@ -378,11 +378,18 @@
 		protected $_blocking = false;
 
 		/**
-		 * The number of votes for this issue
+		 * Votes for this issue
 		 * 
-		 * @var integer
+		 * @var array
 		 */
 		protected $_votes = null;
+
+		/**
+		 * Sum of votes for this issue
+		 *
+		 * @var integer
+		 */
+		protected $_votes_total = null;
 		
 		/**
 		 * The issue this issue is a duplicate of
@@ -702,7 +709,7 @@
 			$this->_pain_bug_type			= $row->get(TBGIssuesTable::PAIN_BUG_TYPE);
 			$this->_pain_effect				= $row->get(TBGIssuesTable::PAIN_EFFECT);
 			$this->_pain_likelihood			= $row->get(TBGIssuesTable::PAIN_LIKELIHOOD);
-			$this->_votes					= $row->get(TBGIssuesTable::VOTES);
+			$this->_votes_total				= $row->get(TBGIssuesTable::VOTES);
 			$this->_deleted 				= (bool) $row->get(TBGIssuesTable::DELETED);
 
 			if ($this->getProject() instanceof TBGProject && $this->getProject()->isDeleted())
@@ -820,7 +827,7 @@
 				$var_name = "_customfield".$key;
 				$this->$var_name = null;
 			}
-			if ($res = B2DB::getTable('TBGIssueCustomFieldsTable')->getAllValuesByIssueID($this->getID()))
+			if ($res = TBGIssueCustomFieldsTable::getTable()->getAllValuesByIssueID($this->getID()))
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -1574,40 +1581,70 @@
 		} 
 		
 		/**
-		 * Returns the number of votes for this issue
+		 * Returns the vote sum for this issue
 		 * 
 		 * @return integer
 		 */
 		public function getVotes()
 		{
-			return (int) $this->_votes;
+			return $this->_votes_total;
+		}
+
+		/**
+		 * Load user votes
+		 */
+		protected function _setupVotes()
+		{
+			if ($this->_votes === null)
+			{
+				$this->_votes = array();
+				if ($res = TBGVotesTable::getTable()->getByIssueId($this->getID()))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$this->_votes[$row->get(TBGVotesTable::UID)] = $row->get(TBGVotesTable::VOTE);
+					}
+				}
+			}
+
 		}
 
 		/**
 		 * Whether or not the current user has voted
-		 * 
+		 *
 		 * @return boolean
 		 */
-		public function hasUserVoted()
+		public function hasUserVoted($user_id, $up)
 		{
-			return (bool) B2DB::getTable('TBGVotesTable')->getByUserIdAndIssueId(TBGContext::getUser()->getID(), $this->getID());
-		}
-	
-		/**
-		 * Vote for this issue, returns false if user cant vote or has voted before
-		 * 
-		 * @return boolean
-		 */
-		public function vote()
-		{
-			if (!TBGContext::getUser()->hasPermission("b2cantvote", $this->getID()) || $this->hasUserVoted())
+			$this->_setupVotes();
+			if (array_key_exists($user_id, $this->_votes))
 			{
-				return false;
+				return ($up) ? $this->_votes[$user_id] > 0 : $this->_votes[$user_id] < 0;
 			}
 			else
 			{
-				B2DB::getTable('TBGVotesTable')->addByUserIdAndIssueId(TBGContext::getUser()->getID(), $this->getID());
+				return false;
+			}
+		}
+
+		/**
+		 * Vote for this issue, returns false if user cant vote or has voted the same before
+		 * 
+		 * @return boolean
+		 */
+		public function vote($up = true)
+		{
+			$user_id = TBGContext::getUser()->getID();
+			if (!$this->hasUserVoted($user_id, $up))
+			{
+				TBGVotesTable::getTable()->addByUserIdAndIssueId($user_id, $this->getID(), $up);
+				$this->_votes[$user_id] = ($up) ? 1 : -1;
+				$this->_votes_total = array_sum($this->_votes);
 				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 	
@@ -3995,21 +4032,21 @@
 					case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 					case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 						$option_id = $this->getCustomField($key);
-						B2DB::getTable('TBGIssueCustomFieldsTable')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
+						TBGIssueCustomFieldsTable::getTable()->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
 						break;
 					case TBGCustomDatatype::EDITIONS_CHOICE:
 						$option_object = null;
 						try
 						{
-							$option_object = new TBGEdition($this->getCustomField($key));
+							$option_object = TBGFactory::editionLab($this->getCustomField($key));
 						}
 						catch (Exception $e) {}
 						$option_id = ($option_object instanceof TBGEdition) ? $option_object->getID() : null;
-						B2DB::getTable('TBGIssueCustomFieldsTable')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
+						TBGIssueCustomFieldsTable::getTable()->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
 						break;
 					default:
 						$option_id = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getID() : null;
-						B2DB::getTable('TBGIssueCustomFieldsTable')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
+						TBGIssueCustomFieldsTable::getTable()->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
 						break;
 				}
 			}
@@ -4396,8 +4433,12 @@
 										$new_object = null;
 										try
 										{
-											$old_object = new TBGEdition($value['original_value']);
-											$new_object = new TBGEdition($this->getCustomField($key));
+											$old_object = TBGFactory::editionLab($value['original_value']);
+										}
+										catch (Exception $e) {}
+										try
+										{
+											$new_object = TBGFactory::editionLab($this->getCustomField($key));
 										}
 										catch (Exception $e) {}
 										$old_value = ($old_object instanceof TBGEdition) ? $old_object->getName() : TBGContext::getI18n()->__('Unknown');
@@ -4479,6 +4520,7 @@
 			$crit->addUpdate(TBGIssuesTable::DUPLICATE, (is_object($this->_duplicateof)) ? $this->_duplicateof->getID() : (int) $this->_duplicateof);
 			$crit->addUpdate(TBGIssuesTable::DELETED, $this->_deleted);
 			$crit->addUpdate(TBGIssuesTable::BLOCKING, $this->_blocking);
+			$crit->addUpdate(TBGIssuesTable::VOTES, $this->_votes_total);
 			$crit->addUpdate(TBGIssuesTable::USER_WORKING_ON, (is_object($this->_being_worked_on_by)) ? $this->_being_worked_on_by->getID() : $this->_being_worked_on_by);
 			$crit->addUpdate(TBGIssuesTable::USER_WORKED_ON_SINCE, $this->_being_worked_on_since);
 			$crit->addUpdate(TBGIssuesTable::MILESTONE, (is_object($this->_milestone)) ? $this->_milestone->getID() : $this->_milestone);

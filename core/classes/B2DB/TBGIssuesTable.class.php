@@ -500,7 +500,7 @@
 			$crit->addWhere(self::DELETED, false);
 			if (count($filters) > 0)
 			{
-				$crit->addJoin(B2DB::getTable('TBGIssueCustomFieldsTable'), TBGIssueCustomFieldsTable::ISSUE_ID, TBGIssuesTable::ID);
+				$crit->addJoin(TBGIssueCustomFieldsTable::getTable(), TBGIssueCustomFieldsTable::ISSUE_ID, TBGIssuesTable::ID);
 
 				foreach ($filters as $filter => $filter_info)
 				{

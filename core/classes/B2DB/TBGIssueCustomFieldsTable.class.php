@@ -26,6 +26,16 @@
 		const OPTION_VALUE = 'issuecustomfields.option_value';
 		const CUSTOMFIELDS_ID = 'issuecustomfields.customfields_id';
 
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGIssueCustomFieldsTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGIssueCustomFieldsTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);

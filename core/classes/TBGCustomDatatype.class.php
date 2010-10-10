@@ -127,7 +127,7 @@
 		public static function delete($id)
 		{
 			$key = B2DB::getTable('TBGCustomFieldsTable')->getKeyFromId($id);
-			B2DB::getTable('TBGIssueCustomFieldsTable')->doDeleteByFieldId($id);
+			TBGIssueCustomFieldsTable::getTable()->doDeleteByFieldId($id);
 			B2DB::getTable('TBGCustomFieldOptionsTable')->doDeleteByFieldKey($key);
 			B2DB::getTable('TBGCustomFieldsTable')->doDeleteById($id);
 		}
