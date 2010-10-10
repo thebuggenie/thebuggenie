@@ -35,12 +35,10 @@ function updateFields(url, projectmenustripurl)
 								if ($(key + '_additional') && $(key + '_additional').visible())
 								{
 									prev_val = $(key + '_id_additional').getValue();
-									$(key + '_id_additional').update('');
 								}
 								else if ($(key + '_div') && $(key + '_div').visible())
 								{
 									prev_val = $(key + '_id').getValue();
-									$(key + '_id').update('');
 								}
 							}
 							if (fields[key].additional && $(key + '_additional'))
@@ -52,6 +50,7 @@ function updateFields(url, projectmenustripurl)
 								
 								if (fields[key].values)
 								{
+									$(key + '_id_additional').update('');
 									for (var opt in fields[key].values)
 									{
 										$(key + '_id_additional').insert('<option value="'+opt+'">'+fields[key].values[opt]+'</option>');
@@ -67,6 +66,7 @@ function updateFields(url, projectmenustripurl)
 								if ($(key + '_id_additional')) $(key + '_id_additional').disable();
 								if (fields[key].values)
 								{
+									$(key + '_id').update('');
 									for (var opt in fields[key].values)
 									{
 										$(key + '_id').insert('<option value="'+opt+'">'+fields[key].values[opt]+'</option>');

@@ -482,8 +482,7 @@
 								<?php 
 									switch ($customdatatype->getType())
 									{
-										case TBGCustomDatatype::DROPDOWN_CHOICE_TEXT:
-											?>
+										case TBGCustomDatatype::DROPDOWN_CHOICE_TEXT: ?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
 												<?php foreach ($customdatatype->getOptions() as $option): ?>
 												<option value="<?php echo $option->getValue(); ?>"<?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?>><?php echo $option->getName(); ?></option>
@@ -491,23 +490,21 @@
 											</select>
 											<?php
 											break;
-										case TBGCustomDatatype::EDITIONS_CHOICE:
-											if ($selected_project instanceof TBGProject)
-											{
-												?>
-												<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
-													<?php foreach (TBGEdition::getAllByProjectID($selected_project->getID()) as $option): ?>
-													<option value="<?php echo $option->getID(); ?>"><?php echo $option->getName(); ?></option>
-													<?php endforeach; ?>
-												</select>
-												<?php
-											}
-											break;
-										case TBGCustomDatatype::RADIO_CHOICE:
-											foreach ($customdatatype->getOptions() as $option): ?>
-												<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <label for="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>"><?php echo $option->getName(); ?></label><br>
+										case TBGCustomDatatype::EDITIONS_CHOICE: ?>
+											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
+											<?php if ($selected_project instanceof TBGProject): ?>
+												<?php foreach (TBGEdition::getAllByProjectID($selected_project->getID()) as $option): ?>
+												<option value="<?php echo $option->getID(); ?>"><?php echo $option->getName(); ?></option>
+												<?php endforeach; ?>
+											<?php endif; ?>
+											</select>
 											<?php
-											endforeach;
+											break;
+										case TBGCustomDatatype::RADIO_CHOICE: ?>
+											<?php foreach ($customdatatype->getOptions() as $option): ?>
+												<input type="radio" name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>" value="<?php echo $option->getValue(); ?>" <?php if ($selected_customdatatype[$customdatatype->getKey()] instanceof TBGCustomDatatypeOption && $selected_customdatatype[$customdatatype->getKey()]->getValue() == $option->getValue()): ?> selected<?php endif; ?> /> <label for="<?php echo $customdatatype->getKey(); ?>_<?php echo $option->getID(); ?>"><?php echo $option->getName(); ?></label><br>
+											<?php endforeach; ?>
+											<?php
 											break;
 										case TBGCustomDatatype::INPUT_TEXT:
 											?>

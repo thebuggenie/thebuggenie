@@ -1992,16 +1992,23 @@
 				}
 				if ($res)
 				{
+					$builtin_types = TBGDatatype::getAvailableFields(true);
 					while ($row = $res->getNextRow())
 					{
 						if (!$reportable || (bool) $row->get(TBGIssueFieldsTable::REPORTABLE) == true)
 						{
 							if ($reportable)
 							{
-								if (in_array($row->get(TBGIssueFieldsTable::FIELD_KEY), TBGDatatype::getAvailableFields(true)) && (!$this->fieldPermissionCheck($row->get(TBGIssueFieldsTable::FIELD_KEY), $reportable) && !($row->get(TBGIssueFieldsTable::REQUIRED) && $reportable))) continue;
-								elseif (!in_array($row->get(TBGIssueFieldsTable::FIELD_KEY), TBGDatatype::getAvailableFields(true)) && (!$this->fieldPermissionCheck($row->get(TBGIssueFieldsTable::FIELD_KEY), $reportable, true) && !($row->get(TBGIssueFieldsTable::REQUIRED) && $reportable))) continue;
+								if (in_array($row->get(TBGIssueFieldsTable::FIELD_KEY), $builtin_types) && (!$this->fieldPermissionCheck($row->get(TBGIssueFieldsTable::FIELD_KEY), $reportable) && !($row->get(TBGIssueFieldsTable::REQUIRED) && $reportable))) continue;
+								elseif (!in_array($row->get(TBGIssueFieldsTable::FIELD_KEY), $builtin_types) && (!$this->fieldPermissionCheck($row->get(TBGIssueFieldsTable::FIELD_KEY), $reportable, true) && !($row->get(TBGIssueFieldsTable::REQUIRED) && $reportable))) continue;
 							}
-							$retval[$row->get(TBGIssueFieldsTable::FIELD_KEY)] = array('required' => (bool) $row->get(TBGIssueFieldsTable::REQUIRED), 'additional' => (bool) $row->get(TBGIssueFieldsTable::ADDITIONAL));
+							$field_key = $row->get(TBGIssueFieldsTable::FIELD_KEY);
+							$retval[$field_key] = array('required' => (bool) $row->get(TBGIssueFieldsTable::REQUIRED), 'additional' => (bool) $row->get(TBGIssueFieldsTable::ADDITIONAL));
+							if (!in_array($field_key, $builtin_types))
+							{
+								$retval[$field_key]['custom'] = true;
+								$retval[$field_key]['custom_type'] = TBGCustomDatatype::getByKey($field_key)->getType();
+							}
 						}
 					}
 					if (array_key_exists('user_pain', $retval))
@@ -2013,16 +2020,32 @@
 					
 					if ($reportable)
 					{
-						if ($this->isEditionsEnabled() && array_key_exists('edition', $retval))
+						//var_dump('fu');
+						foreach ($retval as $key => $return_details)
 						{
-							$retval['edition']['values'] = array();
-							foreach ($this->getEditions() as $edition)
+							//var_dump('fu2');
+							if ($key == 'edition' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::EDITIONS_LIST, TBGCustomDatatype::EDITIONS_CHOICE)))
 							{
-								$retval['edition']['values'][$edition->getID()] = $edition->getName();
+								//var_dump('fu3');
+								$retval[$key]['values'] = array();
+								foreach ($this->getEditions() as $edition)
+								{
+									$retval[$key]['values'][$edition->getID()] = $edition->getName();
+								}
+								if (!$this->isEditionsEnabled() || empty($retval[$key]['values']))
+								{
+									if (!$retval[$key]['required'])
+									{
+										unset($retval[$key]);
+									}
+									else
+									{
+										unset($retval[$key]['values']);
+									}
+								}
 							}
 						}
 					}
-					if (!$this->isEditionsEnabled() || empty($retval['edition']['values'])) unset($retval['edition']);
 		
 					if ($reportable)
 					{

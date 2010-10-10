@@ -1677,7 +1677,6 @@
 			$this->_timezone = $timezone;
 		}
 		
-		
 		/**
 		 * Return whether the user can vote on issues for a specific product
 		 *  
