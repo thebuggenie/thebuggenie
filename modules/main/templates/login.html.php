@@ -167,7 +167,7 @@
 				<input type="hidden" name="register" value="true">
 					<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
 					<div>
-						<label style="font-size: larger; font-weight: bold; padding-bottom: 5px;" for="desired_username"><?php echo __('Desired username'); ?></label>&nbsp;
+						<label class="login_fieldheader"  for="desired_username"><?php echo __('Desired username'); ?></label>&nbsp;
 						<input type="text" id="desired_username" name="desired_username" style="width: 200px;"><br><br>
 
 						<input type="submit" id="login_button" value="<?php echo __('Check availability'); ?>">

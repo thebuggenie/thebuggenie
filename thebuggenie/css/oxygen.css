@@ -34,7 +34,7 @@ input[disabled], button[disabled], select[disabled] { background-color: #F9F9F9;
 select { height: 22px; }
 textarea { font-family: 'Droid Sans Mono', monospace; }
 
-input#login_button, input#register_button { font-size: 1.2em; cursor: pointer; font-weight: bold; }
+input#login_button, input#register_button { cursor: pointer; font-weight: bold; }
 
 th { font-weight: bold; border-bottom: 1px solid #DDD; padding-bottom: 2px; }
 
@@ -80,7 +80,7 @@ dd { margin-left: 0px; margin-bottom: 15px; vertical-align: middle; }
 /* login and registration page styling */
 .logindiv { margin-left: auto; margin-right: auto; text-align: center; border: 0px; padding: 10px; width: auto; width: 500px; }
 .login_boxheader { font-size: 1.4em; font-weight: bold; padding-bottom: 10px; }
-.login_fieldheader { font-size: 1.3em; font-weight: bold; }
+.login_fieldheader { font-weight: bold; }
 .login_fieldtable { margin-left: auto; margin-right: auto; }
 /* end login / registration styling */
 
