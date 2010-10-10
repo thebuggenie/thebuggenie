@@ -12,8 +12,14 @@
 		<meta name="keywords" content="thebuggenie friendly issue tracking">
 		<meta name="author" content="thebuggenie.com">
 		<meta http-equiv="Content-Type" content="<?php echo $tbg_response->getContentType(); ?> charset=<?php echo TBGContext::getI18n()->getCharset(); ?>">
-		<?php 
-			if (TBGSettings::isUsingCustomFavicon())
+		<?php
+			if (TBGSettings::isUsingCustomFavicon() == '2')
+			{
+				?>
+				<link rel="shortcut icon" href="<?php print TBGSettings::getFaviconURL(); ?>">
+				<?php
+			}
+			elseif (TBGSettings::isUsingCustomFavicon() == '1')
 			{
 				?>
 				<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>favicon.png">
@@ -61,7 +67,13 @@
 						<tr>
 							<td align="left" valign="middle" id="logo_td">
 							<?php 
-								if (TBGSettings::isUsingCustomHeaderIcon())
+								if (TBGSettings::isUsingCustomHeaderIcon() == '2')
+								{
+									?>
+									<a href="<?php print TBGContext::getTBGPath(); ?>"><img src="<?php print TBGSettings::getHeaderIconURL(); ?>" alt="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>" title="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>"></a>
+									<?php
+								}
+								elseif (TBGSettings::isUsingCustomHeaderIcon() == '1')
 								{
 									?>
 									<a href="<?php print TBGContext::getTBGPath(); ?>"><img src="<?php print TBGContext::getTBGPath(); ?>header.png" alt="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>" title="<?php print TBGSettings::getTBGname() . ' ~ ' . strip_tags(TBGSettings::getTBGtagline()); ?>"></a>

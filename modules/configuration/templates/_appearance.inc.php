@@ -27,25 +27,45 @@
 	<tr>
 		<td><label for="icon_header"><?php echo __('Custom header icon'); ?></label></td>
 		<td>
-			<select name="icon_header" id="icon_header" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
-				<option value="0"<?php if (!TBGSettings::isUsingCustomHeaderIcon()): ?> selected<?php endif; ?><?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Use the theme\'s default icon in the header'); ?></option>
-				<option value="1"<?php if (TBGSettings::isUsingCustomHeaderIcon()): ?> selected<?php endif; ?><?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Use a custom icon in the header'); ?></option>
+			<select name="icon_header" id="icon_header" onchange="if ($('icon_header').getValue() == 2) { $('icon_header_url').enable() } else { $('icon_header_url').disable() }" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
+				<option value="0"<?php if (TBGSettings::isUsingCustomHeaderIcon() == '0'): ?> selected<?php endif; ?><?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Use the theme\'s default icon in the header'); ?></option>
+				<option value="1"<?php if (TBGSettings::isUsingCustomHeaderIcon() == '1'): ?> selected<?php endif; ?><?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Use the file header.png in the \'thebuggenie\' directory'); ?></option>
+				<option value="2"<?php if (TBGSettings::isUsingCustomHeaderIcon() == '2'): ?> selected<?php endif; ?><?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Load an image from a specified URL'); ?></option>
 			</select>
 		</td>
 	</tr>
 	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('You can optionally use an alternative icon in the header. Select whether you want to do so here. If you choose to, you may need to upload a header icon, see below.'); ?></td>
+		<td class="config_explanation" colspan="2"><?php echo __('You can optionally use an alternative icon in the header. Select whether you want to do so here. If you choose to, you may need to upload or give the URL to a header icon, see below.'); ?></td>
+	</tr>
+	<tr>
+		<td><label for="icon_header_url"><?php echo __('Custom header icon URL'); ?></label></td>
+		<td>
+			<input type="text" name="icon_header_url" id="icon_header_url" value="<?php echo TBGSettings::getHeaderIconURL(); ?>" style="width: 100%;"<?php if ($access_level != configurationActions::ACCESS_FULL || TBGSettings::isUsingCustomHeaderIcon() != '2'): ?> disabled<?php endif; ?>>
+		</td>
+	</tr>
+	<tr>
+		<td class="config_explanation" colspan="2"><?php echo __('If you want to load your header icon from a URL, specify the URL to an image here.'); ?></td>
 	</tr>
 	<tr>
 		<td><label for="icon_fav"><?php echo __('Custom favicon'); ?></label></td>
 		<td>
-			<select name="icon_fav" id="icon_fav" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
-				<option value="0"<?php if (!TBGSettings::isUsingCustomFavicon()): ?> selected<?php endif; ?><?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Use the theme\'s default favicon'); ?></option>
-				<option value="1"<?php if (TBGSettings::isUsingCustomFavicon()): ?> selected<?php endif; ?><?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Use a custom favicon'); ?></option>
+			<select name="icon_fav" id="icon_fav" onchange="if ($('icon_fav').getValue() == 2) { $('icon_fav_url').enable() } else { $('icon_fav_url').disable() }" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
+				<option value="0"<?php if (TBGSettings::isUsingCustomFavicon() == '0'): ?> selected<?php endif; ?><?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Use the theme\'s default favicon'); ?></option>
+				<option value="1"<?php if (TBGSettings::isUsingCustomFavicon() == '1'): ?> selected<?php endif; ?><?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Use the file favicon.png in the \'thebuggenie\' directory'); ?></option>
+				<option value="2"<?php if (TBGSettings::isUsingCustomFavicon() == '2'): ?> selected<?php endif; ?><?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>><?php echo __('Load an image from a specified URL'); ?></option>
 			</select>
 		</td>
 	</tr>
 	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('You can optionally use an alternative favicon (the icon that appears next to the URL in your browser, as well as in your favourites). If you choose to do so, you may need to upload a favicon, see below.'); ?></td>
+		<td class="config_explanation" colspan="2"><?php echo __('You can optionally use an alternative favicon (the icon that appears next to the URL in your browser, as well as in your favourites). If you choose to do so, you may need to upload or give the URL to a favicon, see below.'); ?></td>
+	</tr>
+	<tr>
+		<td><label for="icon_fav_url"><?php echo __('Custom favicon URL'); ?></label></td>
+		<td>
+			<input type="text" name="icon_fav_url" id="icon_fav_url" value="<?php echo TBGSettings::getFaviconURL(); ?>" style="width: 100%;"<?php if ($access_level != configurationActions::ACCESS_FULL || TBGSettings::isUsingCustomFavicon() != '2'): ?> disabled<?php endif; ?>>
+		</td>
+	</tr>
+	<tr>
+		<td class="config_explanation" colspan="2"><?php echo __('If you want to load your favicon from a URL, specify the URL to an image here.'); ?></td>
 	</tr>
 </table>

@@ -259,6 +259,16 @@
 			return self::get('charset');
 		}
 		
+		public static function getHeaderIconURL()
+		{
+			return self::get('icon_header_url');
+		}
+		
+		public static function getFaviconURL()
+		{
+			return self::get('icon_fav_url');
+		}
+		
 		public static function getTBGname()
 		{
 			return self::get('b2_name');
@@ -281,12 +291,12 @@
 		
 		public static function isUsingCustomHeaderIcon()
 		{
-			return (bool) self::get('icon_header');
+			return self::get('icon_header');
 		}
 		
 		public static function isUsingCustomFavicon()
 		{
-			return (bool) self::get('icon_fav');
+			return self::get('icon_fav');
 		}
 
 		public static function getThemeName()
