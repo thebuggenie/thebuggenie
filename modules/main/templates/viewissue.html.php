@@ -160,14 +160,18 @@
 							<table align="right">
 								<tr>
 									<td id="vote_down">
-										<?php echo javascript_link_tag(image_tag('action_vote_minus.png'), array('onclick' => "voteUp('".make_url('issue_vote', array('issue_id' => $theIssue->getID(), 'vote' => 'up'))."');", 'id' => 'vote_up_link')); ?>
+										<?php $vote_down_options = ($theIssue->hasUserVoted($tbg_user, 'down')) ? 'display: none;' : ''; ?>
+										<?php $vote_down_faded_options = ($vote_down_options == '') ? 'display: none;' : ''; ?>
+										<?php echo javascript_link_tag(image_tag('action_vote_minus.png'), array('onclick' => "voteDown('".make_url('issue_vote', array('issue_id' => $theIssue->getID(), 'vote' => 'down'))."');", 'id' => 'vote_down_link', 'class' => 'image', 'style' => $vote_down_options)); ?>
+										<?php echo image_tag('spinning_16.gif', array('id' => 'vote_down_indicator', 'style' => 'display: none;')); ?>
+										<?php echo image_tag('action_vote_minus_faded.png', array('id' => 'vote_down_faded', 'style' => $vote_down_faded_options)); ?>
 									</td>
 									<td class="votes">
 										<div id="issue_votes"><?php echo $theIssue->getVotes(); ?></div>
 										<div class="votes_header"><?php echo __('Votes'); ?></div>
 									</td>
 									<td id="vote_up">
-										<?php echo javascript_link_tag(image_tag('action_vote_plus.png'), array('onclick' => "voteDown('".make_url('issue_vote', array('issue_id' => $theIssue->getID(), 'vote' => 'down'))."');", 'id' => 'vote_up_link')); ?>
+										<?php echo javascript_link_tag(image_tag('action_vote_plus.png'), array('onclick' => "voteDown('".make_url('issue_vote', array('issue_id' => $theIssue->getID(), 'vote' => 'down'))."');", 'id' => 'vote_down_link', 'class' => 'image')); ?>
 									</td>
 								</tr>
 							</table>

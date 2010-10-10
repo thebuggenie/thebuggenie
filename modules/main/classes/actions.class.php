@@ -2469,4 +2469,10 @@
 			}
 		}
 
+		public function runVoteForIssue(TBGRequest $request)
+		{
+			$i18n = TBGContext::getI18n();
+			return $this->renderJSON(array('content' => '76', 'message' => $i18n->__('Vote added')));
+		}
+
 	}

@@ -45,7 +45,7 @@ function successMessage(title, content)
 	new Effect.SlideUp('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, delay: 10});
 }
 
-function _updateDivWithJSONFeedback(url, update_div, indicator, insertion)
+function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, hide_div_while_loading, hide_div_on_success, show_div_on_success)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -54,6 +54,10 @@ function _updateDivWithJSONFeedback(url, update_div, indicator, insertion)
 	onLoading: function (transport) {
 		$(indicator).show();
 		$(update_div).update('');
+		if (hide_div_while_loading && $(hide_div_while_loading))
+		{
+			$(hide_div_while_loading).hide();
+		}
 	},
 	onSuccess: function (transport) {
 		var json = transport.responseJSON;
@@ -85,6 +89,14 @@ function _updateDivWithJSONFeedback(url, update_div, indicator, insertion)
 			{
 				successMessage(json.title, json.content);
 			}
+			if (hide_div_on_success && $(hide_div_on_success))
+			{
+				$(hide_div_on_success).hide();
+			}
+			if (show_div_on_success && $(show_div_on_success))
+			{
+				$(show_div_on_success).show();
+			}
 		}
 	},
 	onFailure: function (transport) {
@@ -96,6 +108,12 @@ function _updateDivWithJSONFeedback(url, update_div, indicator, insertion)
 		else
 		{
 			failedMessage(transport.responseText);
+		}
+	},
+	onComplete: function (transport) {
+		if (hide_div_while_loading && hide_div_while_loading != hide_div_on_success && $(hide_div_while_loading))
+		{
+			$(hide_div_while_loading).show();
 		}
 	}
 	});
@@ -836,4 +854,19 @@ function relateIssues(url)
 		_postFormWithJSONFeedback(url, 'viewissue_relate_issues_form', 'relate_issues_indicator', 'no_parent_issues', 'related_parent_issues_inline', true);
 	}
 	return false;
+}
+
+function _addVote(url, direction)
+{
+	_updateDivWithJSONFeedback(url, 'issue_votes', 'vote_' + direction + '_indicator', null, 'vote_' + direction + '_link', 'vote_' + direction + '_link', 'vote_' + direction + '_faded');
+}
+
+function voteUp(url)
+{
+	_addVote(url, 'up');
+}
+
+function voteDown(url)
+{
+	_addVote(url, 'down');
 }
