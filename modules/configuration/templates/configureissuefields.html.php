@@ -30,7 +30,7 @@
 				<input type="text" name="name" id="new_custom_field_name" style="width: 200px;">
 				<select id="new_custom_field_type" name="field_type" style="width: 375px;">
 					<?php foreach (TBGCustomDatatype::getFieldTypes() as $type => $description): ?>
-						<option value="<?php echo $type; ?>"<?php if ($type == TBGCustomDatatype::INPUT_TEXTAREA_MAIN || $type == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT || $type == TBGCustomDatatype::INPUT_TEXT || $type == TBGCustomDatatype::RADIO_CHOICE || $type == TBGCustomDatatype::INPUT_TEXTAREA_SMALL): ?> selected<?php else: ?> disabled<?php endif; ?>><?php echo $description; ?></option>
+						<option value="<?php echo $type; ?>"<?php if ($type == TBGCustomDatatype::INPUT_TEXTAREA_MAIN || $type == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT || $type == TBGCustomDatatype::INPUT_TEXT || $type == TBGCustomDatatype::RADIO_CHOICE || $type == TBGCustomDatatype::INPUT_TEXTAREA_SMALL || $type == TBGCustomDatatype::EDITIONS_CHOICE): ?> selected<?php else: ?> disabled<?php endif; ?>><?php echo $description; ?></option>
 					<?php endforeach; ?>
 				</select>
 				<input type="submit" value="<?php echo __('Add'); ?>" style="font-weight: bold;" id="add_custom_type_button">

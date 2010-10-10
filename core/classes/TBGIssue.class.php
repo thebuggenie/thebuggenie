@@ -3997,6 +3997,16 @@
 						$option_id = $this->getCustomField($key);
 						B2DB::getTable('TBGIssueCustomFieldsTable')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
 						break;
+					case TBGCustomDatatype::EDITIONS_CHOICE:
+						$option_object = null;
+						try
+						{
+							$option_object = new TBGEdition($this->getCustomField($key));
+						}
+						catch (Exception $e) {}
+						$option_id = ($option_object instanceof TBGEdition) ? $option_object->getID() : null;
+						B2DB::getTable('TBGIssueCustomFieldsTable')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
+						break;
 					default:
 						$option_id = ($this->getCustomField($key) instanceof TBGCustomDatatypeOption) ? $this->getCustomField($key)->getID() : null;
 						B2DB::getTable('TBGIssueCustomFieldsTable')->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
@@ -4380,6 +4390,20 @@
 										$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
 										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $new_value);
 										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been changed.", array('%customfield_name%' => $customdatatype->getDescription()));
+										break;
+									case TBGCustomDatatype::EDITIONS_CHOICE:
+										$old_object = null;
+										$new_object = null;
+										try
+										{
+											$old_object = new TBGEdition($value['original_value']);
+											$new_object = new TBGEdition($this->getCustomField($key));
+										}
+										catch (Exception $e) {}
+										$old_value = ($old_object instanceof TBGEdition) ? $old_object->getName() : TBGContext::getI18n()->__('Unknown');
+										$new_value = ($new_object instanceof TBGEdition) ? $new_object->getName() : TBGContext::getI18n()->__('Unknown');
+										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $old_value . ' &rArr; ' . $new_value);
+										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been updated, from '''%previous_value%''' to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%previous_value%' => $old_value, '%new_value%' => $new_value));
 										break;
 									default:
 										$old_value = ($old_item = TBGCustomDatatypeOption::getByValueAndKey($value['original_value'], $key)) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');

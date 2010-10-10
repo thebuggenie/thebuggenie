@@ -817,6 +817,7 @@
 				}
 				else
 				{
+					die($customdatatype->getKey().' - '.$this->selected_customdatatype[$customdatatype->getKey()]);
 					$issue->setCustomField($customdatatype->getKey(), $this->selected_customdatatype[$customdatatype->getKey()]);
 				}
 			}
@@ -1279,6 +1280,25 @@
 						{
 							switch ($customdatatype->getType())
 							{
+								case TBGCustomDatatype::EDITIONS_CHOICE:
+									if ($customdatatypeoption_value == '')
+									{
+										$issue->setCustomField($key, "");
+									}
+									else
+									{
+										switch ($customdatatype->getType())
+										{
+											case TBGCustomDatatype::EDITIONS_CHOICE:
+												$temp = new TBGEdition($request->getRawParameter("{$key}_value"));
+												$finalvalue = $temp->getName();
+										}
+										$issue->setCustomField($key, $request->getRawParameter("{$key}_value"));
+									}
+									$changed_methodname = "isCustomfield{$key}Changed";
+									if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
+									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => $finalvalue)));
+									break;
 								case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
 								case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 									if ($customdatatypeoption_value == '')
