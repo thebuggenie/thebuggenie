@@ -197,6 +197,7 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 #user_details_popup .user_username { font-weight: normal; font-size: 0.9em; color: #aaa; font-style: italic; }
 .user_popup .user_realname .user_status, #user_details_popup .user_realname .user_status { font-size: 0.8em; font-weight: normal; color: #aaa; }
 .user_popup .user_details, #user_details_popup .user_details { font-size: 1.0em; font-weight: normal; padding: 3px; clear: both; }
+.user_details ul.teamlist { list-style-type: none; }
 .user_details ul.teamlist li { margin: 0 0 0 10px; }
 /* end user popups */
 
