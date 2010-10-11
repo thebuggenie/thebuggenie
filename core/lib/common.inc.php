@@ -14,7 +14,27 @@
 	{
 		return TBGContext::getI18n()->__($text, $replacements);
 	}
-	
+
+	/**
+	 * Truncate a string, and optionally add padding dots
+	 * 
+	 * @param string $text
+	 * @param integer $length
+	 * @param boolean $add_dots[optional] defaults to true
+	 * 
+	 * @return string The truncated string
+	 */
+	function tbg_truncateText($text, $length, $add_dots = true)
+	{
+		if (strlen($text) > $length)
+		{
+			$string = wordwrap($text, $length - 3);
+			$text = substr($string, 0, strpos($string, "\n"));
+			if ($add_dots) $text .= '...';
+		}
+		return $text;
+	}
+
 	/**
 	 * Returns a random number
 	 * 

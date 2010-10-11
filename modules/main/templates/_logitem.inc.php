@@ -7,10 +7,9 @@
 			<?php 
 
 				$issue_title = $issue->getFormattedTitle(true);
-				if (isset($pad_length) && strlen($issue_title) > $pad_length)
+				if (isset($pad_length))
 				{
-					$string = wordwrap($issue_title, $pad_length - 3);
-					$issue_title = substr($string, 0, strpos($string, "\n")) . '...';
+					$issue_title = tbg_truncateText($issue_title, $pad_length);
 				}
 				
 			?>
