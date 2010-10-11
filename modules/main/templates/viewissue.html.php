@@ -160,7 +160,7 @@
 							<table align="right">
 								<tr>
 									<td id="vote_down">
-										<?php $vote_down_options = ($theIssue->hasUserVoted($tbg_user, 'down')) ? 'display: none;' : ''; ?>
+										<?php $vote_down_options = ($theIssue->hasUserVoted($tbg_user, false)) ? 'display: none;' : ''; ?>
 										<?php $vote_down_faded_options = ($vote_down_options == '') ? 'display: none;' : ''; ?>
 										<?php echo javascript_link_tag(image_tag('action_vote_minus.png'), array('onclick' => "voteDown('".make_url('issue_vote', array('issue_id' => $theIssue->getID(), 'vote' => 'down'))."');", 'id' => 'vote_down_link', 'class' => 'image', 'style' => $vote_down_options)); ?>
 										<?php echo image_tag('spinning_16.gif', array('id' => 'vote_down_indicator', 'style' => 'display: none;')); ?>
@@ -171,7 +171,7 @@
 										<div class="votes_header"><?php echo __('Votes'); ?></div>
 									</td>
 									<td id="vote_up">
-										<?php $vote_up_options = ($theIssue->hasUserVoted($tbg_user, 'up')) ? 'display: none;' : ''; ?>
+										<?php $vote_up_options = ($theIssue->hasUserVoted($tbg_user, true)) ? 'display: none;' : ''; ?>
 										<?php $vote_up_faded_options = ($vote_up_options == '') ? 'display: none;' : ''; ?>
 										<?php echo javascript_link_tag(image_tag('action_vote_plus.png'), array('onclick' => "voteUp('".make_url('issue_vote', array('issue_id' => $theIssue->getID(), 'vote' => 'up'))."');", 'id' => 'vote_up_link', 'class' => 'image', 'style' => $vote_up_options)); ?>
 										<?php echo image_tag('spinning_16.gif', array('id' => 'vote_up_indicator', 'style' => 'display: none;')); ?>

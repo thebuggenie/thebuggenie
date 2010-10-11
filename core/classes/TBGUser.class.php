@@ -963,21 +963,36 @@
 		}
 	
 		/**
+		 * Sets up the internal friends array
+		 */
+		protected function _setupFriends()
+		{
+			if ($this->_friends === null)
+			{
+				$this->_friends = array();
+				if ($res = TBGBuddiesTable::getTable()->getFriendsByUserID($this->getID()))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$this->_friends[$row->get(TBGBuddiesTable::BID)] = TBGFactory::userLab($row->get(TBGBuddiesTable::BID));
+					}
+				}
+			}
+		}
+
+		/**
 		 * Adds a friend to the buddy list
 		 *
-		 * @param integer $bid Friend to add
+		 * @param TBGUser $user Friend to add
+		 * 
 		 * @return boolean
 		 */
-		public function addFriend($bid)
+		public function addFriend($user)
 		{
-			if (!($this->isFriend($bid)))
+			if (!($this->isFriend($user)))
 			{
-				$crit = new B2DBCriteria();
-				$crit->addInsert(TBGBuddiesTable::UID, $this->uid);
-				$crit->addInsert(TBGBuddiesTable::BID, $bid);
-				$crit->addInsert(TBGBuddiesTable::SCOPE, TBGContext::getScope()->getID());
-				B2DB::getTable('TBGBuddiesTable')->doInsert($crit);
-				$this->_friends[$bid] = array('id' => $bid);
+				TBGBuddiesTable::getTable()->addFriend($this->getID(), $user->getID());
+				$this->_friends[$user->getID()] = $user;
 				return true;
 			}
 			else
@@ -987,70 +1002,42 @@
 		}
 	
 		/**
-		 * Returns an array of uids which are in the users buddy list
+		 * Get all this users friends
 		 *
-		 * @return array
+		 * @return array An array of TBGUsers
 		 */
 		public function getFriends()
 		{
-			if ($this->_friends == null)
-			{
-				$this->_friends = array();
-				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGBuddiesTable::UID, $this->uid);
-				$crit->setFromTable(B2DB::getTable('TBGBuddiesTable'));
-				$crit->addJoin(B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID, TBGBuddiesTable::BID);
-				if ($res = B2DB::getTable('TBGBuddiesTable')->doSelect($crit))
-				{
-					while ($row = $res->getNextRow())
-					{
-						$this->_friends[$row->get(TBGBuddiesTable::BID)] = TBGFactory::userLab($row->get(TBGBuddiesTable::BID), $row);
-					}
-				}
-			}
+			$this->_setupFriends();
 			return $this->_friends;
 		}
 		
 		/**
 		 * Removes a user from the list of buddies
 		 *
-		 * @param integer $bid UID of user to remove
-		 * @return nothing
+		 * @param TBGUser $user User to remove
 		 */
-		public function removeFriend($bid)
+		public function removeFriend($user)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGBuddiesTable::UID, $this->uid);
-			$crit->addWhere(TBGBuddiesTable::BID, $bid);
-			
-			B2DB::getTable('TBGBuddiesTable')->doDelete($crit);
-			unset($this->_friends[$bid]);
+			TBGBuddiesTable::getTable()->removeFriendByUserID($this->getID(), $user->getID());
+			if (is_array($this->_friends))
+			{
+				unset($this->_friends[$user->getID()]);
+			}
 		}
 	
 		/**
 		 * Check if the given user is a friend of this user
 		 *
-		 * @param integer|object $uid UID of user to check
+		 * @param TBGUser $user The user to check
+		 * 
 		 * @return boolean
 		 */
-		public function isFriend($uid)
+		public function isFriend($user)
 		{
-			if (is_object($uid))
-			{
-				$uid = $uid->getID();
-			}
-			if ($this->_friends === null)
-			{
-				$this->getFriends();
-			}
-			if (isset($this->_friends[$uid]))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			$this->_setupFriends();
+			if (empty($this->_friends)) return false;
+			return array_key_exists($user->getID(), $this->_friends);
 		}
 	
 		/**

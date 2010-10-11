@@ -25,6 +25,16 @@
 		const UID = 'buddies.uid';
 		const BID = 'buddies.bid';
 
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGBuddiesTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGBuddiesTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -32,6 +42,32 @@
 			parent::_addForeignKeyColumn(self::BID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
-		
-		
+
+		public function addFriend($user_id, $friend_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::UID, $user_id);
+			$crit->addInsert(self::BID, $friend_id);
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+			$this->doInsert($crit);
+		}
+
+		public function getFriendsByUserID($user_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::UID, $user_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			return $this->doSelect($crit);
+		}
+
+		public function removeFriendByUserID($user_id, $friend_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::UID, $user_id);
+			$crit->addWhere(self::BID, $friend_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$this->doDelete($crit);
+		}
+
+
 	}

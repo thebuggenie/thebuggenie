@@ -2482,4 +2482,26 @@
 
 		}
 
+		public function runToggleFriend(TBGRequest $request)
+		{
+			try
+			{
+				$friend_user = TBGFactory::userLab($request->getParameter('user_id'));
+				$mode = $request->getParameter('mode');
+				if ($mode == 'add')
+				{
+					TBGContext::getUser()->addFriend($friend_user);
+				}
+				else
+				{
+					TBGContext::getUser()->removeFriend($friend_user);
+				}
+				return $this->renderJSON(array('failed' => false, 'mode' => $mode));
+			}
+			catch (Exception $e)
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Could not add or remove friend')));
+			}
+		}
+
 	}

@@ -76,7 +76,7 @@
 					<?php endif; ?>
 				</div>
 				<div id="project_team">
-					<div style="font-weight: bold; float: left; padding: 8px 0 0 0; margin: 0 10px 0 0;"><?php echo __('Team'); ?>:</div>
+					<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Team'); ?>:</div>
 					<?php if (count($assignees['users']) > 0): ?>
 						<?php foreach ($assignees['users'] as $user_id => $info): ?>
 							<div style="width: auto; display: inline; clear: none; margin: 0 10px 0 0;">

@@ -1,6 +1,8 @@
 <?php
 
-	// Translation helper functions
+	/**
+	 * Common helper functions
+	 */
 
 	/**
 	 * Run the I18n translation function

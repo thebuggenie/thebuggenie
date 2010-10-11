@@ -41,6 +41,7 @@
 	$routes[] = array('account_save_settings', '/my_account/save/settings', 'main', 'myAccount', array('mode' => 'settings'));
 	$routes[] = array('account_save_module_settings', '/my_account/save/module/:target_module/settings', 'main', 'myAccount', array('mode' => 'module'));
 	$routes[] = array('account', '/my_account/*', 'main', 'myAccount');
+	$routes[] = array('toggle_friend', '/friends/:mode/:user_id', 'main', 'toggleFriend');
 	$routes[] = array('configure', '/configure', 'configuration', 'index', array('section' => 0));
 	$routes[] = array('configure_projects', '/configure/projects', 'configuration', 'configureProjects', array('config_module' => 'core', 'section' => 10));
 	$routes[] = array('configure_projects_add_project', '/configure/projects/add/new', 'configuration', 'addProject', array('config_module' => 'core', 'section' => 10));

@@ -88,7 +88,7 @@ function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, clear
 					successMessage(json.message);
 				}
 			}
-			else if (json)
+			else if (json && (json.title || json.content))
 			{
 				successMessage(json.title, json.content);
 			}

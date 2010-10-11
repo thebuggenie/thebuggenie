@@ -1606,7 +1606,6 @@
 					}
 				}
 			}
-			var_dump($this->_votes);
 
 		}
 
@@ -1621,7 +1620,7 @@
 			$this->_setupVotes();
 			if (array_key_exists($user_id, $this->_votes))
 			{
-				return ($up) ? $this->_votes[$user_id] > 0 : $this->_votes[$user_id] < 0;
+				return ($up) ? ((int) $this->_votes[$user_id] > 0) : ((int) $this->_votes[$user_id] < 0);
 			}
 			else
 			{
