@@ -59,7 +59,7 @@
 				<td<?php if (!$issue->getResolution() instanceof TBGResolution): ?> class="faded_out"<?php endif; ?>>
 					<?php echo ($issue->getResolution() instanceof TBGResolution) ? strtoupper($issue->getResolution()->getName()) : '-'; ?>
 				</td>
-				<td class="smaller"><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 12); ?></td>
+				<td class="smaller"><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
 			</tr>
 	<?php if ($cc == count($issues)): ?>
 			</tbody>
