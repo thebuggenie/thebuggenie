@@ -677,5 +677,13 @@
 			
 			return $this->doSelect($crit);
 		}
-		
+
+		public function saveVotesTotalForIssueID($votes_total, $issue_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addUpdate(self::VOTES, $votes_total);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$res = $this->doUpdateById($crit, $issue_id);
+		}
+
 	}

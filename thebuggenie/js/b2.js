@@ -45,7 +45,7 @@ function successMessage(title, content)
 	new Effect.SlideUp('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, delay: 10});
 }
 
-function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, hide_div_while_loading, hide_div_on_success, show_div_on_success)
+function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, clear_div_before_loading, hide_div_while_loading, hide_divs_on_success, show_divs_on_success)
 {
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -53,7 +53,10 @@ function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, hide_
 	evalScripts: true,
 	onLoading: function (transport) {
 		$(indicator).show();
-		$(update_div).update('');
+		if (clear_div_before_loading)
+		{
+			$(update_div).update('');
+		}
 		if (hide_div_while_loading && $(hide_div_while_loading))
 		{
 			$(hide_div_while_loading).hide();
@@ -89,13 +92,19 @@ function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, hide_
 			{
 				successMessage(json.title, json.content);
 			}
-			if (hide_div_on_success && $(hide_div_on_success))
+			if (hide_divs_on_success)
 			{
-				$(hide_div_on_success).hide();
+				hide_divs_on_success.each(function(s)
+				{
+					if ($(s)) $(s).hide();
+				});
 			}
-			if (show_div_on_success && $(show_div_on_success))
+			if (show_divs_on_success)
 			{
-				$(show_div_on_success).show();
+				show_divs_on_success.each(function(s)
+				{
+					if ($(s)) $(s).show();
+				});
 			}
 		}
 	},
@@ -858,7 +867,8 @@ function relateIssues(url)
 
 function _addVote(url, direction)
 {
-	_updateDivWithJSONFeedback(url, 'issue_votes', 'vote_' + direction + '_indicator', null, 'vote_' + direction + '_link', 'vote_' + direction + '_link', 'vote_' + direction + '_faded');
+	var opp_direction = (direction == 'up') ? 'down' : 'up';
+	_updateDivWithJSONFeedback(url, 'issue_votes', 'vote_' + direction + '_indicator', null, false, 'vote_' + direction + '_link', ['vote_' + direction + '_link', 'vote_' + opp_direction + '_faded'], ['vote_' + direction + '_faded', 'vote_' + opp_direction + '_link']);
 }
 
 function voteUp(url)

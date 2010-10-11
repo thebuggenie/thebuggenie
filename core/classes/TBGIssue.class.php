@@ -1641,6 +1641,7 @@
 				TBGVotesTable::getTable()->addByUserIdAndIssueId($user_id, $this->getID(), $up);
 				$this->_votes[$user_id] = ($up) ? 1 : -1;
 				$this->_votes_total = array_sum($this->_votes);
+				TBGIssuesTable::getTable()->saveVotesTotalForIssueID($this->_votes_total, $this->getID());
 				return true;
 			}
 			else

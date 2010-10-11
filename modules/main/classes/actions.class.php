@@ -2472,7 +2472,14 @@
 		public function runVoteForIssue(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
-			return $this->renderJSON(array('content' => '76', 'message' => $i18n->__('Vote added')));
+			$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+			$vote_direction = $request->getParameter('vote');
+			if ($issue instanceof TBGIssue && !$issue->hasUserVoted(TBGContext::getUser()->getID(), ($vote_direction == 'up')))
+			{
+				$issue->vote(($vote_direction == 'up'));
+				return $this->renderJSON(array('content' => $issue->getVotes(), 'message' => $i18n->__('Vote added')));
+			}
+
 		}
 
 	}

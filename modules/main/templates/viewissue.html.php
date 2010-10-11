@@ -171,7 +171,11 @@
 										<div class="votes_header"><?php echo __('Votes'); ?></div>
 									</td>
 									<td id="vote_up">
-										<?php echo javascript_link_tag(image_tag('action_vote_plus.png'), array('onclick' => "voteDown('".make_url('issue_vote', array('issue_id' => $theIssue->getID(), 'vote' => 'down'))."');", 'id' => 'vote_down_link', 'class' => 'image')); ?>
+										<?php $vote_up_options = ($theIssue->hasUserVoted($tbg_user, 'up')) ? 'display: none;' : ''; ?>
+										<?php $vote_up_faded_options = ($vote_up_options == '') ? 'display: none;' : ''; ?>
+										<?php echo javascript_link_tag(image_tag('action_vote_plus.png'), array('onclick' => "voteUp('".make_url('issue_vote', array('issue_id' => $theIssue->getID(), 'vote' => 'up'))."');", 'id' => 'vote_up_link', 'class' => 'image', 'style' => $vote_up_options)); ?>
+										<?php echo image_tag('spinning_16.gif', array('id' => 'vote_up_indicator', 'style' => 'display: none;')); ?>
+										<?php echo image_tag('action_vote_plus_faded.png', array('id' => 'vote_up_faded', 'style' => $vote_up_faded_options)); ?>
 									</td>
 								</tr>
 							</table>
