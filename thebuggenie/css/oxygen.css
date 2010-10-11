@@ -565,6 +565,8 @@ ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
 #dashboard .faded_out.smaller { font-size: 11px; padding-right: 5px; }
 
 #dashboard_lefthand, #dashboard_righthand { font-size: 0.95em; }
+#dashboard_lefthand a.friend { color: #00a400; }
+#dashboard_lefthand a.friend:hover { border-bottom: 1px solid #CCC; }
 
 #dashboard_righthand .milestone_box { margin: 5px 5px 5px 0; }
 #dashboard_righthand .milestone_box .header { font-weight: normal;  }
