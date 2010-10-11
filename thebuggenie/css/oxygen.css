@@ -550,7 +550,7 @@ ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
 /* user dashboard styling */
 #dashboard { list-style-type: none; padding: 0; margin: 0 5px 0 10px; clear: both; }
 #dashboard li { font-size: 12px; font-weight: normal; clear: none; margin: 5px 5px 5px 0; text-align: left; float: left; width: 460px; }
-#dashboard li table tr td {  font-weight: normal; vertical-align: top; }
+#dashboard li table tr td { font-size: 1em; font-weight: normal; vertical-align: top; }
 #dashboard li table tr.issue_closed td { text-decoration: line-through; color: #aaa; }
 #dashboard li table tr.issue_closed td a { color: #88C688; }
 #dashboard li table tr td .issue_closed { text-decoration: line-through; }

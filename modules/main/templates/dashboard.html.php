@@ -143,7 +143,7 @@
 										<td class="latest_action_dates" colspan="2"><?php echo $date; ?></td>
 									</tr>
 								<?php endif; ?>
-								<?php include_component('main/logitem', array('log_action' => $action, 'include_project' => true)); ?>
+								<?php include_component('main/logitem', array('log_action' => $action, 'include_project' => true, 'pad_length' => 60)); ?>
 								<?php $prev_date = $date; ?>
 							<?php endforeach; ?>
 						</table>

@@ -1606,6 +1606,7 @@
 					}
 				}
 			}
+			var_dump($this->_votes);
 
 		}
 

@@ -2007,7 +2007,15 @@
 							if (!in_array($field_key, $builtin_types))
 							{
 								$retval[$field_key]['custom'] = true;
-								$retval[$field_key]['custom_type'] = TBGCustomDatatype::getByKey($field_key)->getType();
+								$custom_type = TBGCustomDatatype::getByKey($field_key);
+								if ($custom_type instanceof TBGCustomDatatype)
+								{
+									$retval[$field_key]['custom_type'] = $custom_type->getType();
+								}
+								else
+								{
+									unset($retval[$field_key]);
+								}
 							}
 						}
 					}
