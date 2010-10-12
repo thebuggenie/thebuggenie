@@ -1587,7 +1587,7 @@
 		 */
 		public function getVotes()
 		{
-			return $this->_votes_total;
+			return (int) $this->_votes_total;
 		}
 
 		/**

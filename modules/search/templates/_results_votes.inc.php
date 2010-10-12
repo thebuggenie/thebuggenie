@@ -11,7 +11,7 @@
 	<?php foreach ($issues as $issue): ?>
 		<tr class="<?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?>">
 			<td style="padding: 3px;">
-				<div class="rounded_box iceblue borderless" id="viewissue_triaging" style="margin: 0 5px 0 0; vertical-align: middle; padding: 1px; text-align: center">
+				<div class="rounded_box iceblue borderless" style="margin: 0 5px 0 0; vertical-align: middle; padding: 1px; text-align: center">
 					<div class="votes"><?php echo $issue->getVotes(); ?></div>
 				</div>
 			</td>

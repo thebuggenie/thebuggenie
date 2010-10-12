@@ -127,6 +127,11 @@
 						case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
 							$this->groupby = 'milestone';
 							break;
+						case TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
+							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
+							$this->groupby = 'votes';
+							$this->grouporder = 'desc';
+							break;
 						case TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
 							$this->filters['posted_by'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
 							break;
@@ -198,6 +203,10 @@
 					case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
 						$this->searchtitle = $i18n->__('Milestone todo-list for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName()));
 						$this->templatename = 'results_todo';
+						break;
+					case TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
+						$this->searchtitle = $i18n->__('Most voted issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName()));
+						$this->templatename = 'results_votes';
 						break;
 					case TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
 						$this->searchtitle = $i18n->__('Open issues assigned to me');
