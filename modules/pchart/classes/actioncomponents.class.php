@@ -72,6 +72,10 @@
 			{
 				$Test->drawStackedBarGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 50, true);
 			}
+			elseif (isset($this->style) && $this->style == 'single_bar')
+			{
+				$Test->drawBarGraph($DataSet->GetData(), $DataSet->GetDataDescription(), TRUE);
+			}
 			else
 			{
 				$Test->drawLineGraph($DataSet->GetData(), $DataSet->GetDataDescription());

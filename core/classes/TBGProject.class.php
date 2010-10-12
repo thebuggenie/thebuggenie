@@ -1553,7 +1553,7 @@
 			}
 			if (empty($this->_issuecounts['last30']))
 			{
-				list ($closed, $open) = TBGIssuesTable::getTable()->getLast30IssueCountsByProjectID($this->getID());
+				list ($closed, $open) = TBGLogTable::getTable()->getLast30IssueCountsByProjectID($this->getID());
 				$this->_issuecounts['last30']['open'] = $open;
 				$this->_issuecounts['last30']['closed'] = $closed;
 			}

@@ -211,5 +211,34 @@
 
 		}
 
+		public function getLast30IssueCountsByProjectID($project_id)
+		{
+			$retarr = array();
+
+			for ($cc = 30; $cc >= 0; $cc--)
+			{
+				$crit = $this->getCriteria();
+				$joinedtable = $crit->addJoin(TBGIssuesTable::getTable(), TBGIssuesTable::ID, self::TARGET);
+				$crit->addWhere(self::TARGET_TYPE, self::TYPE_ISSUE);
+				$crit->addWhere(self::CHANGE_TYPE, array(self::LOG_ISSUE_CREATED, self::LOG_ISSUE_CLOSE), B2DBCriteria::DB_IN);
+				$crit->addWhere(TBGIssuesTable::PROJECT_ID, $project_id);
+				$crit->addWhere(TBGIssuesTable::DELETED, false);
+				$crit->addJoin(B2DB::getTable('TBGIssueTypesTable'), TBGIssueTypesTable::ID, TBGIssuesTable::ISSUE_TYPE, array(), B2DBCriteria::DB_LEFT_JOIN, $joinedtable);
+				$crit->addWhere(TBGIssueTypesTable::ICON, 'bug_report');
+				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+				$ctn = $crit->returnCriterion(self::TIME, NOW - (86400 * ($cc + 1)), B2DBCriteria::DB_GREATER_THAN_EQUAL);
+				$ctn->addWhere(self::TIME, NOW - (86400 * $cc), B2DBCriteria::DB_LESS_THAN_EQUAL);
+				$crit->addWhere($ctn);
+
+				$crit2 = clone $crit;
+
+				$crit->addWhere(self::CHANGE_TYPE, self::LOG_ISSUE_CLOSE);
+				$crit2->addWhere(self::CHANGE_TYPE, self::LOG_ISSUE_CREATED);
+
+				$retarr[0][$cc] = $this->doCount($crit);
+				$retarr[1][$cc] = $this->doCount($crit2);
+			}
+			return $retarr;
+		}
 
 	}

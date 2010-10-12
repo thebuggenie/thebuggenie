@@ -394,7 +394,7 @@
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			$datasets = array();
 			$issues = $this->selected_project->getLast30Counts();
-			$datasets[] = array('values' => $issues['open'], 'label' => TBGContext::getI18n()->__('Issues opened'));
+			$datasets[] = array('values' => $issues['open'], 'label' => TBGContext::getI18n()->__('Open issues'));
 			$datasets[] = array('values' => $issues['closed'], 'label' => TBGContext::getI18n()->__('Issues closed'));
 			$this->datasets = $datasets;
 			$this->labels = array(30,'','','','',25,'','','','',20,'','','','',15,'','','','',10,'','','','',5,'','','','',0);

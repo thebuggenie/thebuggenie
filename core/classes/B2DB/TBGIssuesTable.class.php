@@ -145,32 +145,6 @@
 			return array($this->doCount($crit), $this->doCount($crit2));
 		}
 
-		public function getLast30IssueCountsByProjectID($project_id)
-		{
-			$retarr = array();
-
-			for ($cc = 30; $cc >= 0; $cc--)
-			{
-				$crit = $this->getCriteria();
-				$crit->addWhere(self::PROJECT_ID, $project_id);
-				$crit->addWhere(self::DELETED, false);
-				$crit->addJoin(B2DB::getTable('TBGIssueTypesTable'), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
-				$crit->addWhere(TBGIssueTypesTable::ICON, array('developer_report', 'task'), B2DBCriteria::DB_NOT_IN);
-				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-				$ctn = $crit->returnCriterion(self::POSTED, NOW - (86400 * 31), B2DBCriteria::DB_GREATER_THAN_EQUAL);
-				$ctn->addWhere(self::POSTED, NOW - (86400 * $cc), B2DBCriteria::DB_LESS_THAN_EQUAL);
-				$crit->addWhere($ctn);
-
-				$crit2 = clone $crit;
-
-				$crit->addWhere(self::STATE, TBGIssue::STATE_CLOSED);
-
-				$retarr[0][$cc] = $this->doCount($crit);
-				$retarr[1][$cc] = $this->doCount($crit2);
-			}
-			return $retarr;
-		}
-
 		public function getCountsByProjectIDandIssuetype($project_id, $issuetype_id)
 		{
 			$crit = $this->getCriteria();
