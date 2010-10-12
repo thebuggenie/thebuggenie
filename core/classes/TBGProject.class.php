@@ -1797,7 +1797,7 @@
 				$pct = $num_1 * $multiplier;
 			}
 			
-			return $pct;			
+			return (int) $pct;
 		}
 		
 		/**

@@ -157,8 +157,8 @@
 				$crit->addJoin(B2DB::getTable('TBGIssueTypesTable'), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
 				$crit->addWhere(TBGIssueTypesTable::ICON, array('developer_report', 'task'), B2DBCriteria::DB_NOT_IN);
 				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-				$ctn = $crit->returnCriterion(self::POSTED, $_SERVER['REQUEST_TIME'] - (86400 * 31), B2DBCriteria::DB_GREATER_THAN_EQUAL);
-				$ctn->addWhere(self::POSTED, $_SERVER['REQUEST_TIME'] - (86400 * $cc), B2DBCriteria::DB_LESS_THAN_EQUAL);
+				$ctn = $crit->returnCriterion(self::POSTED, NOW - (86400 * 31), B2DBCriteria::DB_GREATER_THAN_EQUAL);
+				$ctn->addWhere(self::POSTED, NOW - (86400 * $cc), B2DBCriteria::DB_LESS_THAN_EQUAL);
 				$crit->addWhere($ctn);
 
 				$crit2 = clone $crit;
@@ -324,7 +324,7 @@
 			$status_id = (int) TBGFactory::projectLab($p_id)->getDefaultStatusID();
 			
 			$crit = $this->getCriteria();
-			$posted = $_SERVER["REQUEST_TIME"];
+			$posted = NOW;
 			
 			if ($issue_id !== null)
 			{

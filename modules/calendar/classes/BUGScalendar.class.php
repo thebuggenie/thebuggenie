@@ -165,7 +165,7 @@
 		{
 			return true;
 			$theUser = $event->getSubject();
-			$events = $this->getEvents($_SERVER["REQUEST_TIME"], $_SERVER["REQUEST_TIME"]);
+			$events = $this->getEvents(NOW, NOW);
 			foreach ($events as $anevent)
 			{
 				$theUser->setState($anevent->getUserStatus());
@@ -190,7 +190,7 @@
 				<td class="td1">
 				<?php
 
-					$nowstart = ($_SERVER["REQUEST_TIME"] - (date("H") * (60 * 60)) - (date("i") * 60) - (date("s")));
+					$nowstart = (NOW - (date("H") * (60 * 60)) - (date("i") * 60) - (date("s")));
 					$eventstoday = $this->getEvents($nowstart, $nowstart + 86400);
 
 					if (count($eventstoday) > 0)

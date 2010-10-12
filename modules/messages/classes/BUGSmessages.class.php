@@ -253,7 +253,7 @@
 	
 		public function sendMessage($to_id, $to_team, $title, $content)
 		{
-			$now = $_SERVER["REQUEST_TIME"];
+			$now = NOW;
 	
 			$crit = new B2DBCriteria();
 			$crit->addInsert(TBGMessagesTable::FROM_USER, TBGContext::getUser()->getUID());

@@ -289,7 +289,7 @@
 		 */
 		public static function setLoadedAt()
 		{
-			$_SESSION['b2lastreloadtime'] = $_SERVER["REQUEST_TIME"];
+			$_SESSION['b2lastreloadtime'] = NOW;
 		}
 		
 		/**

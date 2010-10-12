@@ -184,7 +184,7 @@ if ($issaved)
 			}
 			else
 			{
-				?><input type="text" name="<?php echo ($cc1 == 1) ? 'start' : 'end' ?>_at_hour" value="<?php echo ($cc1 == 1) ? date('H') : date('H', $_SERVER["REQUEST_TIME"] + 1800); ?>" style="width: 20px;" maxlength="2">:<input type="text" name="<?php echo ($cc1 == 1) ? 'start' : 'end' ?>_at_minute" value="<?php echo ($cc1 == 1) ? date('i') : date('i', $_SERVER["REQUEST_TIME"] + 1800); ?>" style="width: 20px;" maxlength="2"><?php
+				?><input type="text" name="<?php echo ($cc1 == 1) ? 'start' : 'end' ?>_at_hour" value="<?php echo ($cc1 == 1) ? date('H') : date('H', NOW + 1800); ?>" style="width: 20px;" maxlength="2">:<input type="text" name="<?php echo ($cc1 == 1) ? 'start' : 'end' ?>_at_minute" value="<?php echo ($cc1 == 1) ? date('i') : date('i', NOW + 1800); ?>" style="width: 20px;" maxlength="2"><?php
 			}
 			
 			?>

@@ -692,12 +692,15 @@ ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
 
 /* project roadmap styling */
 #project_roadmap { width: 990px; margin: 5px; }
-.roadmap_milestone { margin-bottom: 30px; }
+.roadmap_milestone { clear: both; padding-bottom: 15px; }
 .milestone_points { color: #888; font-weight: bold; }
 .roadmap_header { padding: 5px; border-bottom: 1px solid #CCC; font-size: 14px; font-weight: bold; margin: 5px 5px 5px 0; }
 .roadmap_percentbar { width: 490px; padding: 1px; border: 1px solid #8a8; float: left; margin-right: 10px; }
 .roadmap_percentdescription { width: 470px; float: left; padding: 5px;  font-weight: normal; color: #555; }
 .roadmap_dates { display: inline; margin-left: 5px; font-weight: normal; color: #888; }
+.milestones_indicator { font-size: 1.3em; color: #888; }
+.milestones_indicator img { float: left; margin-right: 10px; }
+.milestones_indicator button { text-transform: uppercase; float: right; font-size: 0.8em; margin-right: 10px; }
 .roadmap_issues { clear: both; font-size: 12px; padding-top: 5px; }
 .roadmap_issue { padding: 3px; }
 .roadmap_issue .issue_status { display: inline; width: 20px; float: left; }
@@ -745,3 +748,8 @@ ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
 .saved_searches { padding: 2px 2px 5px 5px; width: 300px; vertical-align: top; }
 .saved_searches a { font-size: 12px; font-weight: bold; padding-left: 3px; }
 /* end search styling */
+
+/* non-link-styled issue titles */
+a .issue_title { color: #333; }
+.faded_out a .issue_title { color: #888; }
+a:hover .issue_title { color: #555; }

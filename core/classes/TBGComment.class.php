@@ -120,7 +120,7 @@
 			if ($commentContent != '' && $commentTitle == '') $commentTitle = TBGContext::getI18n()->__('Untitled comment');
 			if ($commentTitle != '' && $commentContent != '')
 			{
-				$now = $_SERVER["REQUEST_TIME"];
+				$now = NOW;
 				$crit = new B2DBCriteria();
 				$crit->addInsert(TBGCommentsTable::TARGET_ID, $target_id);
 				$crit->addInsert(TBGCommentsTable::TARGET_TYPE, $target_type);
@@ -164,7 +164,7 @@
 		{
 			$commentTitle = trim($title);
 			$commentContent = trim($content);
-			$now = $_SERVER["REQUEST_TIME"];
+			$now = NOW;
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGCommentsTable::TITLE, $commentTitle);
 			$crit->addUpdate(TBGCommentsTable::CONTENT, $commentContent);
@@ -180,50 +180,50 @@
 		public function setTitle($var)
 		{
 			$this->_name = $var;
-			$this->_updated = $_SERVER["REQUEST_TIME"];
+			$this->_updated = NOW;
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGCommentsTable::TITLE, $var);
-			$crit->addUpdate(TBGCommentsTable::UPDATED, $_SERVER["REQUEST_TIME"]);
+			$crit->addUpdate(TBGCommentsTable::UPDATED, NOW);
 			B2DB::getTable('TBGCommentsTable')->doUpdateById($crit, $this->getID());
 		}
 
 		public function setPublic($var)
 		{
-			$this->_updated = $_SERVER["REQUEST_TIME"];
+			$this->_updated = NOW;
 			$this->_is_public = ($var == 1) ? true : false;
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGCommentsTable::IS_PUBLIC, (int) $var);
-			$crit->addUpdate(TBGCommentsTable::UPDATED, $_SERVER["REQUEST_TIME"]);
+			$crit->addUpdate(TBGCommentsTable::UPDATED, NOW);
 			B2DB::getTable('TBGCommentsTable')->doUpdateById($crit, $this->getID());
 		}
 		
 		public function setContent($var)
 		{
 			$this->_content = $var;
-			$this->_updated = $_SERVER["REQUEST_TIME"];
+			$this->_updated = NOW;
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGCommentsTable::CONTENT, $var);
-			$crit->addUpdate(TBGCommentsTable::UPDATED, $_SERVER["REQUEST_TIME"]);
+			$crit->addUpdate(TBGCommentsTable::UPDATED, NOW);
 			B2DB::getTable('TBGCommentsTable')->doUpdateById($crit, $this->getID());
 		}
 
 		public function setIsPublic($var)
 		{
 			$this->_is_public = $var;
-			$this->_updated = $_SERVER["REQUEST_TIME"];
+			$this->_updated = NOW;
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGCommentsTable::IS_PUBLIC, $var);
-			$crit->addUpdate(TBGCommentsTable::UPDATED, $_SERVER["REQUEST_TIME"]);
+			$crit->addUpdate(TBGCommentsTable::UPDATED, NOW);
 			B2DB::getTable('TBGCommentsTable')->doUpdateById($crit, $this->getID());
 		}
 
 		public function setUpdatedBy($var)
 		{
-			$this->_updated = $_SERVER["REQUEST_TIME"];
+			$this->_updated = NOW;
 			$this->_updatedby = $var;
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGCommentsTable::UPDATED_BY, $var);
-			$crit->addUpdate(TBGCommentsTable::UPDATED, $_SERVER["REQUEST_TIME"]);
+			$crit->addUpdate(TBGCommentsTable::UPDATED, NOW);
 			B2DB::getTable('TBGCommentsTable')->doUpdateById($crit, $this->getID());
 		}
 
@@ -293,7 +293,7 @@
 
 		static function deleteComment($c_id)
 		{
-			$now = $_SERVER["REQUEST_TIME"];
+			$now = NOW;
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGCommentsTable::DELETED, 1);
 			$crit->addUpdate(TBGCommentsTable::UPDATED, $now);

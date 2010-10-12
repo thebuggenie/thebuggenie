@@ -1,6 +1,11 @@
 <?php
 
 	$starttime = explode(' ', microtime());
+
+	/**
+	 * The time the script was loaded
+	 */
+	define('NOW', $starttime[1]);
 	error_reporting(E_ALL | E_STRICT);
 
 	/**

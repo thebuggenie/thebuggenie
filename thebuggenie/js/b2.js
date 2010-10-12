@@ -309,6 +309,36 @@ function resetFadedBackdrop()
 	$('fullpage_backdrop_content').update('');
 }
 
+function updatePercentageFromNumber(tds, percent)
+{
+	cc = 0;
+	$(tds).childElements().each(function(elm) {
+		if ($(tds).childElements().size() == 2)
+		{
+			$(tds).childElements().first().style.width = percent + '%';
+			$(tds).childElements().last().style.width = (100 - percent) + '%';
+		}
+		else
+		{
+			elm.removeClassName("percent_filled");
+			elm.removeClassName("percent_unfilled");
+			if (percent > 0 && percent < 100)
+			{
+				(cc <= percent) ? elm.addClassName("percent_filled") : elm.addClassName("percent_unfilled");
+			}
+			else if (percent == 0)
+			{
+				elm.addClassName("percent_unfilled");
+			}
+			else if (percent == 100)
+			{
+				elm.addClassName("percent_filled");
+			}
+			cc++;
+		}
+	});
+}
+
 function addLink(url, target_type, target_id)
 {
 	var params = $('attach_link_' + target_type + '_' + target_id + '_form').serialize();
@@ -879,4 +909,106 @@ function voteUp(url)
 function voteDown(url)
 {
 	_addVote(url, 'down');
+}
+
+function toggleMilestoneIssues(url, milestone_id)
+{
+	if ($('milestone_' + milestone_id + '_issues').childElements().size() == 0)
+	{
+		_updateDivWithJSONFeedback(url, 'milestone_' + milestone_id + '_issues', 'milestone_' + milestone_id + '_indicator', null, null, null, null, ['milestone_' + milestone_id + '_issues']);
+	}
+	else
+	{
+		$('milestone_' + milestone_id + '_issues').toggle();
+	}
+}
+
+function refreshMilestoneDetails(url, milestone_id)
+{
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	evalScripts: true,
+	onLoading: function (transport) {
+		$('milestone_' + milestone_id + '_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json && (json.failed || json.error))
+		{
+			failedMessage(json.error);
+		}
+		else if (json)
+		{
+			var must_reload_issue_list = false;
+			if (json.percent)
+			{
+				updatePercentageFromNumber('milestone_'+milestone_id+'_percent', json.percent);
+			}
+			if (json.closed_issues && $('milestone_'+milestone_id+'_closed_issues'))
+			{
+				if ($('milestone_'+milestone_id+'_closed_issues').innerHTML != json.closed_issues)
+				{
+					$('milestone_'+milestone_id+'_closed_issues').update(json.closed_issues);
+					must_reload_issue_list = true;
+				}
+			}
+			if (json.assigned_issues && $('milestone_'+milestone_id+'_assigned_issues'))
+			{
+				if ($('milestone_'+milestone_id+'_assigned_issues').innerHTML != json.assigned_issues)
+				{
+					$('milestone_'+milestone_id+'_assigned_issues').update(json.assigned_issues);
+					must_reload_issue_list = true;
+				}
+			}
+			if (json.assigned_points && $('milestone_'+milestone_id+'_assigned_points'))
+			{
+				if ($('milestone_'+milestone_id+'_assigned_points').innerHTML != json.assigned_points)
+				{
+					$('milestone_'+milestone_id+'_assigned_points').update(json.assigned_points);
+					must_reload_issue_list = true;
+				}
+			}
+			if (json.closed_points && $('milestone_'+milestone_id+'_closed_points'))
+			{
+				if ($('milestone_'+milestone_id+'_closed_points').innerHTML != json.closed_points)
+				{
+					$('milestone_'+milestone_id+'_closed_points').update(json.closed_points);
+					must_reload_issue_list = true;
+				}
+			}
+			if (json.date_string && $('milestone_'+milestone_id+'_date_string'))
+			{
+				if ($('milestone_'+milestone_id+'_date_string').innerHTML != json.date_string)
+				{
+					$('milestone_'+milestone_id+'_date_string').update(json.date_string);
+					must_reload_issue_list = true;
+				}
+			}
+			if (must_reload_issue_list)
+			{
+				$('milestone_'+milestone_id+'_changed').show();
+				$('milestone_'+milestone_id+'_issues').update('');
+			}
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+		$('milestone_' + milestone_id + '_indicator').hide();
+	},
+	onFailure: function (transport) {
+		var json = transport.responseJSON;
+		if (json && (json.failed || json.error))
+		{
+			failedMessage(json.error);
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+		$('milestone_' + milestone_id + '_indicator').hide();
+	}
+	});
+
 }

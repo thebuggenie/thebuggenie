@@ -635,7 +635,7 @@
 			{
 				if ($this->_isreached == false)
 				{
-					if ($this->_scheduleddate < $_SERVER["REQUEST_TIME"])
+					if ($this->_scheduleddate < NOW)
 					{
 						for ($dcc = 1;$dcc <= 7;$dcc++)
 						{
@@ -772,13 +772,16 @@
 		 */
 		public function updateStatus()
 		{
-			if ($this->_issues == null)
+			$this->_populateIssues();
+			if (($this->countClosedIssues() == $this->countIssues()) && !$this->isSprint())
 			{
-				$this->_populateIssues();
+				TBGMilestonesTable::getTable()->setReached($this->getID());
+				$this->_reacheddate = NOW;
 			}
-			if ($this->_closed_issues == count($this->_issues) && !$this->isSprint())
+			elseif ($this->hasReachedDate())
 			{
-				B2DB::getTable('TBGMilestonesTable')->setReached($this->getID());
+				TBGMilestonesTable::getTable()->clearReached($this->getID());
+				$this->_reacheddate = null;
 			}
 		}
 		
@@ -865,6 +868,16 @@
 		}
 
 		/**
+		 * Whether or not this milestone has reached date set
+		 *
+		 * @return boolean
+		 */
+		public function hasReachedDate()
+		{
+			return (bool) $this->getReachedDate();
+		}
+
+		/**
 		 * Whether or not this milestone has starting date set
 		 *
 		 * @return boolean
@@ -922,5 +935,53 @@
 			return (bool) ($this->_itemtype == self::TYPE_SCRUMSPRINT);
 		}
 
+		public function getDateString()
+		{
+			TBGContext::loadLibrary('common');
+			$i18n = TBGContext::getI18n();
+			if ($this->hasStartingDate() && $this->hasScheduledDate())
+			{
+				if ($this->getStartingDate() < time() && $this->getScheduledDate() < time())
+				{
+					return $i18n->__('%milestone_name% (started %start_date% - ended %end_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($this->getStartingDate(), 23), '%end_date%' => tbg_formatTime($this->getScheduledDate(), 23)));
+				}
+				elseif ($this->getStartingDate() < time() && $this->getScheduledDate() > time())
+				{
+					return $i18n->__('%milestone_name% (started %start_date% - ends %end_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($this->getStartingDate(), 23), '%end_date%' => tbg_formatTime($this->getScheduledDate(), 23)));
+				}
+				elseif ($this->getStartingDate() > time())
+				{
+					return $i18n->__('%milestone_name% (starts %start_date% - ended %end_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($this->getStartingDate(), 23), '%end_date%' => tbg_formatTime($this->getScheduledDate(), 23)));
+				}
+			}
+			elseif ($this->hasStartingDate())
+			{
+				if ($this->getStartingDate() < time())
+				{
+					return $i18n->__('%milestone_name% (started %start_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($this->getStartingDate(), 23)));
+				}
+				else
+				{
+					return $i18n->__('%milestone_name% (starts %start_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($this->getStartingDate(), 23)));
+				}
+			}
+			elseif ($this->hasScheduledDate())
+			{
+				if ($this->getScheduledDate() < time())
+				{
+					return $i18n->__('%milestone_name% (released: %date%)', array('%milestone_name%' => '', '%date%' => tbg_formatTime($this->getScheduledDate(), 23)));
+				}
+				else
+				{
+					return $i18n->__('%milestone_name% (will be released: %date%)', array('%milestone_name%' => '', '%date%' => tbg_formatTime($this->getScheduledDate(), 23)));
+				}
+			}
+			elseif ($this->hasReachedDate())
+			{
+				return $i18n->__('%milestone_name% (reached: %date%)', array('%milestone_name%' => '', '%date%' => tbg_formatTime($this->getReachedDate(), 23)));
+			}
+
+			return $i18n->__('In progress');
+		}
+
 	}
-	

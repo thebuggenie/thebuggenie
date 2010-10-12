@@ -367,7 +367,7 @@
 		 */
 		public function setCookie($key, $value, $expiration = 864000)
 		{
-			setcookie($key, $value, $_SERVER["REQUEST_TIME"] + $expiration, TBGContext::getTBGPath());
+			setcookie($key, $value, NOW + $expiration, TBGContext::getTBGPath());
 			return true;
 		}
 		
@@ -380,7 +380,7 @@
 		 */
 		public function deleteCookie($key)
 		{
-			setcookie($key, '', $_SERVER["REQUEST_TIME"] - 36000, TBGContext::getTBGPath());
+			setcookie($key, '', NOW - 36000, TBGContext::getTBGPath());
 			return true;
 		}		
 

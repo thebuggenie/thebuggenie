@@ -205,28 +205,6 @@ function detachFileFromIssue(url, file_id)
 	});
 }
 
-function updatePercentageFromNumber(percent)
-{
-	cc = 0;
-	$('percentage_tds').childElements().each(function(elm) {
-		elm.removeClassName("percent_filled");
-		elm.removeClassName("percent_unfilled");
-		if (percent > 0 && percent < 100)
-		{
-			(cc <= percent) ? elm.addClassName("percent_filled") : elm.addClassName("percent_unfilled");
-		}
-		else if (percent == 0)
-		{
-			elm.addClassName("percent_unfilled");
-		}
-		else if (percent == 100)
-		{
-			elm.addClassName("percent_filled");
-		}
-		cc++;
-	});
-}
-
 function updatePercent(url, mode)
 {
 	new Ajax.Request(url, {
@@ -239,7 +217,7 @@ function updatePercent(url, mode)
 			var json = transport.responseJSON;
 			if (Object.isUndefined(json.percent) == false)
 			{
-				updatePercentageFromNumber(json.percent);
+				updatePercentageFromNumber('percentage_tds', json.percent);
 				(mode == 'set') ? setIssueChanged('percent') : setIssueUnchanged('percent');
 			}
 			else

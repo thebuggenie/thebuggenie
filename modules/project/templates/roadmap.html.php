@@ -11,54 +11,38 @@
 			<div class="roadmap_milestone" id="roadmap_milestone_<?php echo $milestone->getID(); ?>">
 				<div class="roadmap_header">
 					<?php echo $milestone->getName(); ?>
-					<div class="roadmap_dates">
-						<?php if ($milestone->hasStartingDate() && $milestone->hasScheduledDate()): ?>
-							<?php if ($milestone->getStartingDate() < time() && $milestone->getScheduledDate() < time()): ?>
-								<?php echo __('%milestone_name% (started %start_date% - ended %end_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($milestone->getStartingDate(), 23), '%end_date%' => tbg_formatTime($milestone->getScheduledDate(), 23))); ?>
-							<?php elseif ($milestone->getStartingDate() < time() && $milestone->getScheduledDate() > time()): ?>
-								<?php echo __('%milestone_name% (started %start_date% - ends %end_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($milestone->getStartingDate(), 23), '%end_date%' => tbg_formatTime($milestone->getScheduledDate(), 23))); ?>
-							<?php elseif ($milestone->getStartingDate() > time()): ?>
-								<?php echo __('%milestone_name% (starts %start_date% - ended %end_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($milestone->getStartingDate(), 23), '%end_date%' => tbg_formatTime($milestone->getScheduledDate(), 23))); ?>
-							<?php endif; ?>
-						<?php elseif ($milestone->hasStartingDate()): ?>
-							<?php if ($milestone->getStartingDate() < time()): ?>
-								<?php echo __('%milestone_name% (started %start_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($milestone->getStartingDate(), 23))); ?>
-							<?php else: ?>
-								<?php echo __('%milestone_name% (starts %start_date%)', array('%milestone_name%' => '', '%start_date%' => tbg_formatTime($milestone->getStartingDate(), 23))); ?>
-							<?php endif; ?>
-						<?php elseif ($milestone->hasScheduledDate()): ?>
-							<?php if ($milestone->getScheduledDate() < time()): ?>
-								<?php echo __('%milestone_name% (released: %date%)', array('%milestone_name%' => '', '%date%' => tbg_formatTime($milestone->getScheduledDate(), 23))); ?>
-							<?php else: ?>
-								<?php echo __('%milestone_name% (will be released: %date%)', array('%milestone_name%' => '', '%date%' => tbg_formatTime($milestone->getScheduledDate(), 23))); ?>
-							<?php endif; ?>
-						<?php endif; ?>
-					</div>
+					<div class="roadmap_dates" id="milestone_<?php echo $milestone->getID(); ?>_date_string"><?php echo $milestone->getDateString(); ?></div>
 				</div>
 				<div class="roadmap_percentbar">
-					<?php include_template('main/percentbar', array('rounded' => true, 'percent' => $milestone->getPercentComplete(), 'height' => 22)); ?>
+					<?php include_template('main/percentbar', array('rounded' => true, 'percent' => $milestone->getPercentComplete(), 'height' => 22, 'id' => 'milestone_'.$milestone->getID().'_percent')); ?>
 				</div>
 				<div class="roadmap_percentdescription">
 					<?php if ($milestone->isSprint()): ?>
 						<?php if ($milestone->countClosedIssues() == 1): ?>
-							<?php echo __('%num_closed% story (%closed_points% pts) closed of %num_assigned% (%assigned_points% pts) assigned', array('%num_closed%' => '<b>'.$milestone->countClosedIssues().'</b>', '%closed_points%' => '<i>'.$milestone->getPointsSpent().'</i>', '%num_assigned%' => '<b>'.$milestone->countIssues().'</b>', '%assigned_points%' => '<i>'.$milestone->getPointsEstimated().'</i>')); ?>
+							<?php echo __('%num_closed% story (%closed_points% pts) closed of %num_assigned% (%assigned_points% pts) assigned', array('%num_closed%' => '<b id="milestone_'.$milestone->getID().'_closed_issues">'.$milestone->countClosedIssues().'</b>', '%closed_points%' => '<i id="milestone_'.$milestone->getID().'_closed_points">'.$milestone->getPointsSpent().'</i>', '%num_assigned%' => '<b id="milestone_'.$milestone->getID().'_assigned_issues">'.$milestone->countIssues().'</b>', '%assigned_points%' => '<i id="milestone_'.$milestone->getID().'_assigned_points">'.$milestone->getPointsEstimated().'</i>')); ?>
 						<?php else: ?>
-							<?php echo __('%num_closed% stories (%closed_points% pts) closed of %num_assigned% (%assigned_points% pts) assigned', array('%num_closed%' => '<b>'.$milestone->countClosedIssues().'</b>', '%closed_points%' => '<i>'.$milestone->getPointsSpent().'</i>', '%num_assigned%' => '<b>'.$milestone->countIssues().'</b>', '%assigned_points%' => '<i>'.$milestone->getPointsEstimated().'</i>')); ?>
+							<?php echo __('%num_closed% stories (%closed_points% pts) closed of %num_assigned% (%assigned_points% pts) assigned', array('%num_closed%' => '<b id="milestone_'.$milestone->getID().'_closed_issues">'.$milestone->countClosedIssues().'</b>', '%closed_points%' => '<i id="milestone_'.$milestone->getID().'_closed_points">'.$milestone->getPointsSpent().'</i>', '%num_assigned%' => '<b id="milestone_'.$milestone->getID().'_assigned_issues">'.$milestone->countIssues().'</b>', '%assigned_points%' => '<i id="milestone_'.$milestone->getID().'_assigned_points">'.$milestone->getPointsEstimated().'</i>')); ?>
 						<?php endif; ?>
 					<?php else: ?>
-						<?php echo __('%num_closed% issue(s) closed of %num_assigned% assigned', array('%num_closed%' => '<b>'.$milestone->countClosedIssues().'</b>', '%num_assigned%' => '<b>'.$milestone->countIssues().'</b>')); ?>
+						<?php echo __('%num_closed% issue(s) closed of %num_assigned% assigned', array('%num_closed%' => '<b id="milestone_'.$milestone->getID().'_closed_issues">'.$milestone->countClosedIssues().'</b>', '%num_assigned%' => '<b id="milestone_'.$milestone->getID().'_assigned_issues">'.$milestone->countIssues().'</b>')); ?>
 					<?php endif; ?>
+					<?php echo javascript_link_tag(image_tag('view_list_details.png', array('style' => 'float: right;', 'title' => __('Show issues'))), array('onclick' => "toggleMilestoneIssues('".make_url('project_roadmap_milestone_issues', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID().");")); ?>
+					<?php echo javascript_link_tag(image_tag('refresh.png', array('style' => 'float: right; margin-right: 10px;', 'title' => __('Update (regenerate) milestone details'))), array('onclick' => "refreshMilestoneDetails('".make_url('project_roadmap_milestone_refresh', array('project_key' => $selected_project->getKey(), 'milestone_id' => $milestone->getID()))."', ".$milestone->getID().");")); ?>
 				</div>
-				<div class="roadmap_issues">
-					<?php foreach ($milestone->getIssues() as $issue): ?>
-						<div class="roadmap_issue<?php if ($issue->isClosed()): ?> faded_out issue_closed<?php endif; ?>">
-							<div class="issue_status"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo ($issue->getStatus() instanceof TBGStatus) ? $issue->getStatus()->getName() : ''; ?>">&nbsp;</div></div>
-							<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getIssueNo())), $issue->getFormattedIssueNo(true, true)); ?> - <?php echo $issue->getTitle(); ?>
-							<?php if ($milestone->isSprint()): ?>
-								<div class="issue_points"><?php echo __('%pts% points', array('%pts%' => $issue->getEstimatedPoints())); ?></div>
-							<?php endif; ?>
-						</div>
-					<?php endforeach; ?>
+				<br style="clear: both;">
+				<div id="milestone_<?php echo $milestone->getID(); ?>_changed" class="milestones_indicator" style="display: none;">
+					<?php echo __('Milestone details have changed. To see the updated list of issues, click the "Show issues" icon'); ?>...
+					<button onclick="$('milestone_<?php echo $milestone->getID(); ?>_changed').hide();"><?php echo __('Ok'); ?></button>
+				</div>
+				<div id="milestone_<?php echo $milestone->getID(); ?>_indicator" class="milestones_indicator" style="display: none;">
+					<?php echo image_tag('spinning_32.gif'); ?>
+					<?php echo __('Please wait'); ?>...
+				</div>
+				<?php $show_issues = ((!$milestone->isScheduled() && !$milestone->isReached()) || $milestone->getScheduledDate() > NOW || $milestone->isOverdue()) ? true : false; ?>
+				<div class="roadmap_issues" id="milestone_<?php echo $milestone->getID(); ?>_issues"<?php if (!$show_issues): ?> style="display: none;"<?php endif; ?>>
+					<?php if ($show_issues): ?>
+						<?php include_template('project/milestoneissues', array('milestone' => $milestone)); ?>
+					<?php endif; ?>
 				</div>
 			</div>
 		<?php endforeach; ?>

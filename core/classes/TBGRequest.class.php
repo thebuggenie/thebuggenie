@@ -120,7 +120,7 @@
 							{
 								TBGLogging::log('Uploaded file is uploaded');
 								$files_dir = TBGSettings::getUploadsLocalpath();
-								$new_filename = TBGContext::getUser()->getID() . '_' . $_SERVER["REQUEST_TIME"] . '_' . basename($thefile['name']);
+								$new_filename = TBGContext::getUser()->getID() . '_' . NOW . '_' . basename($thefile['name']);
 								TBGLogging::log('Moving uploaded file to '.$new_filename);
 								if (!move_uploaded_file($thefile['tmp_name'], $files_dir . $new_filename))
 								{

@@ -3590,7 +3590,7 @@
 		 */
 		public function updateTime()
 		{
-			$this->_addChangedProperty('_last_updated', $_SERVER["REQUEST_TIME"]);
+			$this->_addChangedProperty('_last_updated', NOW);
 		}
 
 		/**
@@ -4606,7 +4606,7 @@
 		public function startWorkingOnIssue($user)
 		{
 			$this->_addChangedProperty('_being_worked_on_by', $user->getID());
-			$this->_being_worked_on_since = $_SERVER['REQUEST_TIME'];
+			$this->_being_worked_on_since = NOW;
 		}
 		
 		/**
@@ -4616,7 +4616,7 @@
 		 */
 		public function stopWorkingOnIssue()
 		{
-			$time_spent = $_SERVER['REQUEST_TIME'] - $this->_being_worked_on_since;
+			$time_spent = NOW - $this->_being_worked_on_since;
 			$user_working_on_it = $this->getUserWorkingOnIssue();
 			$this->clearUserWorkingOnIssue();
 			if ($time_spent > 0)
@@ -4715,7 +4715,7 @@
 			$user_pain = $this->_user_pain;
 			if ($this->_user_pain > 0 && $this->_user_pain < 100)
 			{
-				$offset = $_SERVER['REQUEST_TIME'] - $this->getPosted();
+				$offset = NOW - $this->getPosted();
 				$user_pain += floor($offset / 60 / 60 / 24) * 0.1;
 			}
 			return $user_pain;

@@ -30,7 +30,17 @@
 		const REACHED = 'milestones.reached';
 		const STARTING = 'milestones.starting';
 		const SCHEDULED = 'milestones.scheduled';
-		
+
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGMilestonesTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGMilestonesTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -89,8 +99,15 @@
 		public function setReached($milestone_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addUpdate(self::REACHED, $_SERVER["REQUEST_TIME"]);
+			$crit->addUpdate(self::REACHED, NOW);
 			$this->doUpdateById($crit, $milestone_id);
 		}
-		
+
+		public function clearReached($milestone_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addUpdate(self::REACHED, null);
+			$this->doUpdateById($crit, $milestone_id);
+		}
+
 	}

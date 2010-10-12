@@ -66,8 +66,8 @@
 			$crit->addInsert(self::ISSUE, $issue_id);
 			$crit->addInsert(self::TITLE, $title);
 			$crit->addInsert(self::CONTENT, $content);
-			$crit->addInsert(self::POSTED, $_SERVER["REQUEST_TIME"]);
-			$crit->addInsert(self::UPDATED, $_SERVER["REQUEST_TIME"]);
+			$crit->addInsert(self::POSTED, NOW);
+			$crit->addInsert(self::UPDATED, NOW);
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			return $res->getInsertID();

@@ -33,7 +33,7 @@
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ARTICLE_ID, 1);
 			$crit->addInsert(self::AUTHOR, 1);
-			$crit->addInsert(self::DATE, $_SERVER["REQUEST_TIME"]);
+			$crit->addInsert(self::DATE, NOW);
 			$crit->addInsert(self::SCOPE, $scope);
 			$crit->addInsert(self::TITLE, 'Welcome to the billboards!');
 			$crit->addInsert(self::TARGET_BOARD, 0);

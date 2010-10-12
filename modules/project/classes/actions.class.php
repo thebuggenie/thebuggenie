@@ -860,4 +860,61 @@
 			}
 		}
 
+		public function runGetMilestoneIssues(TBGRequest $request)
+		{
+			try
+			{
+				$i18n = TBGContext::getI18n();
+				if ($request->hasParameter('milestone_id'))
+				{
+					$milestone = TBGFactory::TBGMilestoneLab($request->getParameter('milestone_id'));
+					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/milestoneissues', array('milestone' => $milestone))));
+				}
+				else
+				{
+					throw new Exception($i18n->__('Invalid milestone'));
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+
+		}
+
+		public function runGetMilestoneDetails(TBGRequest $request)
+		{
+			try
+			{
+				$i18n = TBGContext::getI18n();
+				if ($request->hasParameter('milestone_id'))
+				{
+					$milestone = TBGFactory::TBGMilestoneLab($request->getParameter('milestone_id'));
+					$milestone->updateStatus();
+					$details = array('failed' => false);
+					$details['percent'] = $milestone->getPercentComplete();
+					$details['date_string'] = $milestone->getDateString();
+					if ($milestone->isSprint())
+					{
+						$details['closed_points'] = $milestone->getPointsSpent();
+						$details['assigned_points'] = $milestone->getPointsEstimated();
+					}
+					$details['closed_issues'] = $milestone->countClosedIssues();
+					$details['assigned_issues'] = $milestone->countIssues();
+					return $this->renderJSON($details);
+				}
+				else
+				{
+					throw new Exception($i18n->__('Invalid milestone'));
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+
+		}
+
 	}

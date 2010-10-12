@@ -559,7 +559,7 @@
 			$crit->addInsert(TBGUsersTable::SCOPE, $scope);
 			$crit->addInsert(TBGUsersTable::ACTIVATED, $activated);
 			$crit->addInsert(TBGUsersTable::ENABLED, $enabled);
-			$crit->addInsert(TBGUsersTable::JOINED, $_SERVER["REQUEST_TIME"]);
+			$crit->addInsert(TBGUsersTable::JOINED, NOW);
 			$crit->addInsert(TBGUsersTable::AVATAR, 'smiley');
 			$crit->addInsert(TBGUsersTable::GROUP_ID, '2');
 			$res = B2DB::getTable('TBGUsersTable')->doInsert($crit);
@@ -709,10 +709,10 @@
 		public function updateLastSeen()
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGUsersTable::LASTSEEN, $_SERVER["REQUEST_TIME"]);
+			$crit->addUpdate(TBGUsersTable::LASTSEEN, NOW);
 			$crit->addWhere(TBGUsersTable::ID, $this->uid);
 			B2DB::getTable('TBGUsersTable')->doUpdate($crit);
-			$this->lastseen = $_SERVER["REQUEST_TIME"];
+			$this->lastseen = NOW;
 		}
 		
 		public function getLastSeen()
@@ -1081,7 +1081,7 @@
 		 */
 		public function getState()
 		{
-			$now = $_SERVER["REQUEST_TIME"];
+			$now = NOW;
 			if (($this->lastseen < ($now - (60 * 10))) && ($this->state != TBGSettings::get('offlinestate') && $this->state != TBGSettings::get('awaystate')))
 			{
 				$this->setState(TBGSettings::get('awaystate'));

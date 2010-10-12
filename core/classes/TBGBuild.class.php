@@ -273,7 +273,7 @@
 			$crit->addUpdate(TBGBuildsTable::VERSION_MINOR, $this->_version_minor);
 			$crit->addUpdate(TBGBuildsTable::VERSION_REVISION, $this->_version_revision);
 			$crit->addUpdate(TBGBuildsTable::NAME, $this->_name);
-			$crit->addUpdate(TBGBuildsTable::TIMESTAMP, $_SERVER["REQUEST_TIME"]);
+			$crit->addUpdate(TBGBuildsTable::TIMESTAMP, NOW);
 			$crit->addUpdate(TBGBuildsTable::RELEASE_DATE, $this->_release_date);
 			$crit->addUpdate(TBGBuildsTable::RELEASED, (int) $this->_isreleased);
 			$crit->addUpdate(TBGBuildsTable::LOCKED, (int) $this->_locked);

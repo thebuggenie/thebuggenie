@@ -12,7 +12,7 @@
 				$description = (trim(TBGContext::getRequest()->getParameter('post_link_description')) != '') ? trim(TBGContext::getRequest()->getParameter('post_link_description')) : trim(TBGContext::getRequest()->getParameter('post_link_url'));
 				$crit = new B2DBCriteria();
 				$crit->addInsert(TBGBillboardPostsTable::AUTHOR, TBGContext::getUser()->getUID());
-				$crit->addInsert(TBGBillboardPostsTable::DATE, $_SERVER["REQUEST_TIME"]);
+				$crit->addInsert(TBGBillboardPostsTable::DATE, NOW);
 				$crit->addInsert(TBGBillboardPostsTable::LINK, $url);
 				$crit->addInsert(TBGBillboardPostsTable::SCOPE, TBGContext::getScope()->getID());
 				$crit->addInsert(TBGBillboardPostsTable::TARGET_BOARD, (int) TBGContext::getRequest()->getParameter('post_link_billboard'));
@@ -29,7 +29,7 @@
 				$content = (trim(TBGContext::getRequest()->getParameter('post_text_content')) != '') ? trim(TBGContext::getRequest()->getParameter('post_text_content')) : trim(TBGContext::getRequest()->getParameter('post_text_title'));
 				$crit = new B2DBCriteria();
 				$crit->addInsert(TBGBillboardPostsTable::AUTHOR, TBGContext::getUser()->getUID());
-				$crit->addInsert(TBGBillboardPostsTable::DATE, $_SERVER["REQUEST_TIME"]);
+				$crit->addInsert(TBGBillboardPostsTable::DATE, NOW);
 				$crit->addInsert(TBGBillboardPostsTable::SCOPE, TBGContext::getScope()->getID());
 				$crit->addInsert(TBGBillboardPostsTable::TARGET_BOARD, (int) TBGContext::getRequest()->getParameter('post_text_billboard'));
 				$crit->addInsert(TBGBillboardPostsTable::TITLE, $title);

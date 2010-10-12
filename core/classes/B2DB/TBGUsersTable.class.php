@@ -159,7 +159,7 @@
 					$crit->addWhere(self::ACTIVATED, false);
 					break;
 				case 'newusers':
-					$crit->addWhere(self::JOINED, $_SERVER['REQUEST_TIME'] - 1814400, B2DBCriteria::DB_GREATER_THAN_EQUAL);
+					$crit->addWhere(self::JOINED, NOW - 1814400, B2DBCriteria::DB_GREATER_THAN_EQUAL);
 					break;
 				case '0-9':
 					$ctn = $crit->returnCriterion(self::UNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), B2DBCriteria::DB_IN);

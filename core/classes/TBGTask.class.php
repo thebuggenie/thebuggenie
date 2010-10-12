@@ -260,7 +260,7 @@
 
 		public function updateTime()
 		{
-			$theTime = $_SERVER["REQUEST_TIME"];
+			$theTime = NOW;
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGIssueTasksTable::UPDATED, $theTime);
 			$this->_updated = $theTime;

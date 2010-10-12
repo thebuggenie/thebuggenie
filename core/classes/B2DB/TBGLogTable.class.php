@@ -110,7 +110,7 @@
 			{
 				$crit->addInsert(self::TEXT, $text);
 			}
-			$crit->addInsert(self::TIME, $_SERVER["REQUEST_TIME"]);
+			$crit->addInsert(self::TIME, NOW);
 			$crit->addInsert(self::UID, $uid);
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
