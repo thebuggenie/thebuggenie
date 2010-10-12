@@ -486,7 +486,46 @@ function _submitProjectDetails(url, form)
 			else
 			{
 				$(form + '_indicator').hide();
-				$('project_name_span').update($('project_name').getValue());
+				if ($('project_name_span'))
+				{
+					$('project_name_span').update($('project_name').getValue());
+				}
+				if ($('enable_editions').getValue() == 1)
+				{
+					$('add_edition_form').show();
+					$('project_editions').show();
+					$('project_editions_disabled').hide();
+				}
+				else
+				{
+					$('add_edition_form').hide();
+					$('project_editions').hide();
+					$('project_editions_disabled').show();
+				}
+				if ($('enable_components').getValue() == 1)
+				{
+					$('add_component_form').show();
+					$('project_components').show();
+					$('project_components_disabled').hide();
+				}
+				else
+				{
+					$('add_component_form').hide();
+					$('project_components').hide();
+					$('project_components_disabled').show();
+				}
+				if ($('enable_builds').getValue() == 1)
+				{
+					$('add_build_form').show();
+					$('project_builds').show();
+					$('project_builds_disabled').hide();
+				}
+				else
+				{
+					$('add_build_form').hide();
+					$('project_builds').hide();
+					$('project_builds_disabled').show();
+				}
 				successMessage(json.title, json.message);
 			}
 		},

@@ -49,7 +49,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div style="padding: 2px 5px 5px 5px;<?php if ($project->isEditionsEnabled()): ?> display: none;<?php endif; ?>" class="faded_out"><?php echo __('This project does not use editions'); ?>.<br><?php echo __('Editions can be enabled in project settings'); ?>.</div>
+			<div style="padding: 2px 5px 5px 5px;<?php if ($project->isEditionsEnabled()): ?> display: none;<?php endif; ?>" id="project_editions_disabled" class="faded_out"><?php echo __('This project does not use editions'); ?>.<br><?php echo __('Editions can be enabled in project settings'); ?>.</div>
 		</td>
 		<td style="width: 375px; padding-right: 5px; vertical-align: top;">
 			<div id="project_components"<?php if (!$project->isComponentsEnabled()): ?> style="display: none;"<?php endif; ?>>
@@ -62,14 +62,14 @@
 					</tbody>
 				</table>
 			</div>
-			<div style="padding: 2px 5px 5px 5px;<?php if ($project->isComponentsEnabled()): ?> display: none;<?php endif; ?>" class="faded_out"><?php echo __('This project does not use components'); ?>.<br><?php echo __('Components can be enabled in project settings'); ?>.</div>
+			<div style="padding: 2px 5px 5px 5px;<?php if ($project->isComponentsEnabled()): ?> display: none;<?php endif; ?>" id="project_components_disabled" class="faded_out"><?php echo __('This project does not use components'); ?>.<br><?php echo __('Components can be enabled in project settings'); ?>.</div>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="2" style="padding-right: 5px; padding-top: 10px;">
 			<div class="config_header" style="margin-top: 10px;"><b><?php echo __('Releases'); ?></b></div>
 			<?php include_template('configuration/builds', array('parent' => $project, 'access_level' => $access_level)); ?>
-			<div style="padding: 2px 5px 5px 5px;<?php if ($project->isBuildsEnabled()): ?> display: none;<?php endif; ?>" class="faded_out"><?php echo __('This project does not use releases'); ?>.<br><?php echo __('Releases can be enabled in project settings'); ?>.</div>
+			<div style="padding: 2px 5px 5px 5px;<?php if ($project->isBuildsEnabled()): ?> display: none;<?php endif; ?>" id="project_builds_disabled" class="faded_out"><?php echo __('This project does not use releases'); ?>.<br><?php echo __('Releases can be enabled in project settings'); ?>.</div>
 		</td>
 	</tr>
 </table>
