@@ -1690,15 +1690,24 @@
 			if ($user instanceof TBGUser)
 			{
 				$user->setRealname($request->getParameter('realname'));
+				$return_options = array();
 				if ($group = TBGFactory::groupLab($request->getParameter('group')))
 				{
+					if ($user->getGroupID() != $group->getID())
+					{
+						$groups = array($user->getGroupID(), $group->getID());
+						$return_options['update_groups'] = array('ids' => array(), 'membercounts' => array());
+					}
 					$user->setGroup($group);
 				}
+				$existing_teams = array_keys($user->getTeams());
+				$new_teams = array();
 				$user->clearTeams();
 				foreach ($request->getParameter('teams', array()) as $team_id => $team)
 				{
 					if ($team = TBGFactory::teamLab($team_id))
 					{
+						$new_teams[] = $team_id;
 						$user->addToTeam($team);
 					}
 				}
@@ -1716,7 +1725,30 @@
 				$user->setEmail($request->getParameter('email'));
 				$user->setEnabled((bool) $request->getParameter('enabled'));
 				$user->save();
-				return $this->renderTemplate('finduser_row', array('user' => $user));
+				if (isset($groups))
+				{
+					foreach ($groups as $group_id)
+					{
+						$return_options['update_groups']['ids'][] = $group_id;
+						$return_options['update_groups']['membercounts'][$group_id] = TBGFactory::groupLab($group_id)->getNumberOfMembers();
+					}
+				}
+				if ($new_teams != $existing_teams)
+				{
+					$new_team_ids = array_diff($new_teams, $existing_teams);
+					$existing_team_ids = array_diff($existing_teams, $new_teams);
+					$teams_to_update = array_merge($new_team_ids, $existing_team_ids);
+					$return_options['update_teams'] = array('ids' => array(), 'membercounts' => array());
+					foreach ($teams_to_update as $team_id)
+					{
+						$return_options['update_teams']['ids'][] = $team_id;
+						$return_options['update_teams']['membercounts'][$team_id] = TBGFactory::teamLab($team_id)->getNumberOfMembers();
+					}
+				}
+				$return_options['failed'] = false;
+				$return_options['content'] = $this->getTemplateHTML('configuration/finduser_row', array('user' => $user));
+				$return_options['message'] = TBGContext::getI18n()->__('User updated!');
+				return $this->renderJSON($return_options);
 			}
 			$this->getResponse()->setHttpStatus(400);
 			return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This user could not be updated')));

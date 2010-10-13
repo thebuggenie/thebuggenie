@@ -148,7 +148,7 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 /* end tabbed menu */
 
 /* header tabbed menu */
-.header_menu { background-color: #6a70D6; width: 100%; height: 25px; position: relative; color: #FFF; border-color: #4217B7; font-size: 1.1em; }
+.header_menu { background-color: #6a70D6; width: 100%; height: 25px; position: relative; color: #FFF; border-color: #4217B7; font-size: 1em; }
 .header_menu .selected, .header_menu li.selected:hover { font-weight: bold; background-color: #FFF; border-bottom: 1px solid #FFF; }
 .header_menu li { background-color: transparent; border: 0px; margin: 0;  }
 .header_menu li { margin-left: 5px; }

@@ -1258,13 +1258,13 @@
 			return null;
 		}
 		
-		public function setGroup($gid)
+		public function setGroup($group)
 		{
-			if (is_object($gid))
+			if (!is_object($group))
 			{
-				$gid = $gid->getID();
+				$group = TBGFactory::groupLab($group);
 			}
-			$this->group = TBGFactory::groupLab($gid);
+			$this->group = $group;
 		}
 		
 		/**

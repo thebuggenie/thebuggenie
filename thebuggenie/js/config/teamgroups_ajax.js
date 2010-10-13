@@ -248,7 +248,7 @@ function showTeamMembers(url, team_id)
 	}
 }
 
-function editUser(url, user_id, message)
+function editUser(url, user_id)
 {
 	var params = Form.serialize('edituser_' + user_id + '_form');
 	new Ajax.Request(url, {
@@ -265,13 +265,37 @@ function editUser(url, user_id, message)
 			{
 				failedMessage(json.error);
 			}
-			else
+			else if (json)
 			{
-				$('users_results_user_' + user_id).update(transport.responseText);
+				$('users_results_user_' + user_id).update(json.content);
 				$('users_results_user_' + user_id).show();
 				$('users_results_user_' + user_id + '_edit').hide();
 				$('users_results_user_' + user_id + '_edit').toggleClassName('selected_green');
-				successMessage(message);
+				if (json.update_groups)
+				{
+					json.update_groups.ids.each(function(group_id)
+					{
+						if ($('group_'+group_id+'_membercount'))
+						{
+							$('group_'+group_id+'_membercount').update(json.update_groups.membercounts[group_id]);
+						}
+						$('group_members_' + group_id + '_container').hide();
+						$('group_members_'+group_id+'_list').update('');
+					});
+				}
+				if (json.update_teams)
+				{
+					json.update_teams.ids.each(function(team_id)
+					{
+						if ($('team_'+team_id+'_membercount'))
+						{
+							$('team_'+team_id+'_membercount').update(json.update_teams.membercounts[team_id]);
+						}
+						$('team_members_' + team_id + '_container').hide();
+						$('team_members_'+team_id+'_list').update('');
+					});
+				}
+				successMessage(json.message);
 			}
 		},
 		onFailure: function (transport) {

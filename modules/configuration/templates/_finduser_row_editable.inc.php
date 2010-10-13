@@ -1,5 +1,5 @@
 <td style="padding: 3px;" colspan="6">
-	<form action="<?php echo make_url('configure_users_update_user', array('user_id' => $user->getID())); ?>" method="post" onsubmit="editUser('<?php echo make_url('configure_users_update_user', array('user_id' => $user->getID())); ?>', '<?php echo $user->getID(); ?>', '<?php echo __('User updated successfully'); ?>');return false;" id="edituser_<?php echo $user->getID(); ?>_form">
+	<form action="<?php echo make_url('configure_users_update_user', array('user_id' => $user->getID())); ?>" method="post" onsubmit="editUser('<?php echo make_url('configure_users_update_user', array('user_id' => $user->getID())); ?>', '<?php echo $user->getID(); ?>');return false;" id="edituser_<?php echo $user->getID(); ?>_form">
 		<table style="width: 100%;">
 			<tr>
 				<td><label for="username_<?php echo $user->getID(); ?>"><?php echo __('Username'); ?></label></td>
