@@ -2208,7 +2208,7 @@
 						$return_array['type'] = 'choice';
 
 						$classname = "TBG".ucfirst($field_key);
-						$choices = $classname::getAll();
+						$choices = $classname->getAll();
 						foreach ($choices as $choice_key => $choice)
 						{
 							$return_array['choices'][$choice_key] = $choice->getName();

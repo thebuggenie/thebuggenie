@@ -770,7 +770,7 @@
 								case 'category':
 									$classname = "TBG".ucfirst($field_key);
 									$method = "set".ucfirst($field_key);
-									$choices = $classname::getAll();
+									$choices = $classname->getAll();
 									$found = false;
 									foreach ($choices as $choice_key => $choice)
 									{
