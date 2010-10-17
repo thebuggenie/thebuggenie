@@ -721,11 +721,10 @@
 			$text = $this->text;
 			
 			$text = preg_replace_callback('/<nowiki>(.+?)<\/nowiki>(?!<\/nowiki>)/ism', array($this, "_parse_save_nowiki"), $text);
-			//$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*?")*)>\s*(.*?)\s*<\/source>/ism', array($this, "_parse_save_code"), $text);
 			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 
-			$text = htmlentities($text);
+			$text = htmlentities($text, ENT_NOQUOTES, TBGContext::getI18n()->getCharset());
 			$text = str_replace('&lt;u&gt;', '<u>', $text);
 			$text = str_replace('&lt;/u&gt;', '</u>', $text);
 			$text = str_replace('&lt;strike&gt;', '<strike>', $text);
@@ -733,19 +732,14 @@
 			$text = str_replace('&lt;br&gt;', '<br>', $text);
 			
 			$lines = explode("\n", $text);
-			//var_dump($text);
 			foreach ($lines as $line)
 			{
 				if (substr($line, -1) == "\r")
 				{
 					$line = substr($line, 0, -1);
 				}
-				//var_dump($line);
 				$output .= $this->_parse_line($line, $options);
-				//if ($thisline != '') $thisline .= ' ';
-				//$thisline;
 			}
-			//die();
 			
 			$this->nowikis = array_reverse($this->nowikis);
 			$this->codeblocks = array_reverse($this->codeblocks);
