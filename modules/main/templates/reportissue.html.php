@@ -188,7 +188,7 @@
 					</div>
 					<div style="float: right;<?php if (!$selected_issuetype instanceof TBGIssuetype): ?> display: none;<?php endif; ?>" id="issuetype_dropdown">
 						<label for="issuetype_id" style="margin-right: 20px;"><?php echo __('Select issue type'); ?></label>
-						<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '');">
+						<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');">
 							<option value="0"><?php echo __('Please select an issue type from this list'); ?>...</option>
 							<?php foreach ($issuetypes as $issue_type): ?>
 								<?php if (!$issue_type->isReportable()) continue; ?>
@@ -213,7 +213,7 @@
 					<strong style="font-size: 14px;"><?php echo $issuetype->getName(); ?></strong><br>
 					<?php echo $issuetype->getDescription(); ?>
 					<div style="text-align: right; margin-top: 5px;">
-						<a href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);updateFields('<?php echo make_url('getreportissuefields'); ?>');" style="font-size: 13px; font-weight: bold;"><?php echo __('Choose %issue_type%', array('%issue_type%' => strtolower($issuetype->getName()))); ?>&nbsp;&gt;&gt;</a>
+						<a href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');" style="font-size: 13px; font-weight: bold;"><?php echo __('Choose %issue_type%', array('%issue_type%' => strtolower($issuetype->getName()))); ?>&nbsp;&gt;&gt;</a>
 					</div>
 				</li>
 			<?php endforeach; ?>
