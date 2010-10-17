@@ -17,6 +17,7 @@
 					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>
+			<?php echo __('User ID: ').$user->getID(); ?>
 		</div>
 		<?php TBGEvent::createNew('core', 'usercardactions_top', $user)->trigger(); ?>
 		<?php if (TBGUser::isThisGuest() == false): ?>
