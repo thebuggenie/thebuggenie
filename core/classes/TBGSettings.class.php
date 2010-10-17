@@ -45,7 +45,7 @@
 				self::$_settings = array();
 				self::$_ver_mj = 3;
 				self::$_ver_mn = 0;
-				self::$_ver_rev = '0 alpha 1';
+				self::$_ver_rev = '0 alpha 4';
 				self::$_ver_name = 'Make it mine';
 				if (self::$_settings = TBGCache::get('settings'))
 				{
