@@ -167,7 +167,7 @@
 			<?php echo __('Click the link to visit the reported issue'); ?>
 		</div>
 	<?php endif; ?>
-	<form action="<?php echo make_url('reportissue'); ?>" method="post">
+	<form action="<?php echo make_url('reportissue'); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 		<div class="rounded_box report_issue_desc borderless lightgrey">
 			<?php if (count($projects) > 0): ?>
 				<?php if (!$selected_project instanceof TBGProject): ?>

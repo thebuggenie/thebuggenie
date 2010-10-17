@@ -277,13 +277,11 @@
 			<div id="tab_comments_pane" style="padding-top: 0; margin: 0 5px 0 5px;" class="comments">
 				<div id="viewissue_comments">
 					<?php if ($tbg_user->canPostComments()): ?>
-						<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_title').focus();" value="<?php echo __('Add new comment'); ?>"></td></tr></table>
+						<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_bodybox').focus();" value="<?php echo __('Add new comment'); ?>"></td></tr></table>
 						<div id="comment_add" class="comment_add" style="<?php if (!(isset($comment_error) && $comment_error)): ?>display: none; <?php endif; ?>margin-top: 5px;">
 							<div class="comment_add_main">
 								<div class="comment_add_title"><?php echo __('Create a comment'); ?></div><br>
-								<form id="comment_form" action="<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>" method="post" onSubmit="return addComment('<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>', 'viewissue_comment_count');">
-									<?php /*<label for="comment_title"><?php echo __('Comment title'); ?> <span class="faded_out">(<?php echo __('optional'); ?>)</span></label><br />
-									<input type="text" class="comment_titlebox" id="comment_title" name="comment_title"<?php if (isset($comment_error) && $comment_error): ?>value="<?php echo $comment_error_title; ?>"<?php endif; ?> /><br /> */ ?>
+								<form id="comment_form" accept-charset="<?php echo strtoupper(TBGContext::getI18n()->getCharset()); ?>" action="<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>" method="post" onSubmit="return addComment('<?php echo make_url('comment_add', array('project_id' => $theIssue->getProject()->getID(), 'comment_applies_id' => $theIssue->getID(), 'comment_applies_type' => 1, 'comment_module' => 'core')); ?>', 'viewissue_comment_count');">
 									<label for="comment_visibility"><?php echo __('Comment visibility'); ?> <span class="faded_out">(<?php echo __('whether to hide this comment for "regular users"'); ?>)</span></label><br />
 									<select class="comment_visibilitybox" id="comment_visibility" name="comment_visibility">
 										<option value="1"><?php echo __('Visible for all users'); ?></option>
@@ -292,7 +290,6 @@
 									<br />
 									<label for="comment_bodybox"><?php echo __('Comment'); ?></label><br />
 									<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '200px', 'width' => '970px', 'value' => ((isset($comment_error) && $comment_error) ? $comment_error_body : ''))); ?>
-
 									<div id="comment_add_indicator" style="display: none;">
 										<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
 									</div>
