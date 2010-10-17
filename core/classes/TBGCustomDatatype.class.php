@@ -135,7 +135,15 @@
 		public static function isNameValid($name)
 		{
 			$key = strtolower(str_replace(' ', '', $name));
-			return (bool) B2DB::getTable('TBGCustomFieldsTable')->countByKey($key);
+			$builtin_types = TBGDatatypeBase::getAvailableFields(true);
+			if (!in_array($key, $builtin_types))
+			{
+				return !(bool) TBGCustomFieldsTable::getTable()->countByKey($key);
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public static function doesKeyExist($key)

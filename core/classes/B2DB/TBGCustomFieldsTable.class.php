@@ -28,6 +28,16 @@
 		const FIELD_TYPE = 'customfields.field_type';
 		const SCOPE = 'customfields.scope';
 
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGCustomFieldsTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGCustomFieldsTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);

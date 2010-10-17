@@ -32,7 +32,7 @@ function updateFields(url, projectmenustripurl)
 							if (fields[key].values)
 							{
 								var prev_val;
-								if ($(key + '_additional') && $(key + '_additional').visible())
+								if ($(key + '_additional') && $(key + '_additional_div').visible())
 								{
 									prev_val = $(key + '_id_additional').getValue();
 								}

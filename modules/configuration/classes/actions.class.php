@@ -308,7 +308,7 @@
 				case 'add':
 					if ($request->getParameter('name') != '')
 					{
-						if (!TBGCustomDatatype::isNameValid($request->getParameter('name')))
+						if (TBGCustomDatatype::isNameValid($request->getParameter('name')))
 						{
 							$customtype = TBGCustomDatatype::createNew($request->getParameter('name'), $request->getParameter('field_type'));
 							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom field was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
