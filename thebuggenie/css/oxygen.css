@@ -441,6 +441,7 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 .issue_info .content, .notfound_error .content { font-weight: normal; font-size: 0.95em; }
 #notfound_error { vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 1.1em; width: 700px; }
 #viewissue_changed { height: 35px; padding: 5px 10px 5px 10px; color: #222; }
+#viewissue_saved { cursor: pointer; }
 /* end issue info boxes */
 
 /* issue extra data (pain and votes) - includes search result styling */

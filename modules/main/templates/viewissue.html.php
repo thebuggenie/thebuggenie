@@ -69,7 +69,7 @@
 		</form>
 	</div>
 	<?php if (isset($issue_saved)): ?>
-		<div class="rounded_box green borderless issue_info aligned" id="viewissue_saved">
+		<div class="rounded_box green borderless issue_info aligned" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
 			<?php echo __('Your changes has been saved'); ?>
 		</div>
 	<?php endif; ?>
