@@ -1291,6 +1291,7 @@
 								case TBGCustomDatatype::EDITIONS_CHOICE:
 								case TBGCustomDatatype::COMPONENTS_CHOICE:
 								case TBGCustomDatatype::RELEASES_CHOICE:
+								case TBGCustomDatatype::STATUS_CHOICE:
 									if ($customdatatypeoption_value == '')
 									{
 										$issue->setCustomField($key, "");
@@ -1311,9 +1312,19 @@
 												$temp = new TBGBuild($request->getRawParameter("{$key}_value"));
 												$finalvalue = $temp->getName();
 												break;
+											case TBGCustomDatatype::STATUS_CHOICE:
+												$temp = new TBGStatus($request->getRawParameter("{$key}_value"));
+												$finalvalue = $temp->getName();
+												break;
 										}
 										$issue->setCustomField($key, $request->getRawParameter("{$key}_value"));
 									}
+
+									if (isset($temp) && $customdatatype->getType() == TBGCustomDatatype::STATUS_CHOICE && is_object($temp))
+									{
+										$finalvalue = '<div style="border: 1px solid #AAA; background-color: '.$temp->getColor().'; ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 5px; float: left;" id="status_color">&nbsp;</div>'.$finalvalue;
+									}
+
 									$changed_methodname = "isCustomfield{$key}Changed";
 									if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
 									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => $finalvalue)));

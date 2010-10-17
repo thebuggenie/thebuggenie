@@ -500,6 +500,14 @@
 											</select>
 											<?php
 											break;
+										case TBGCustomDatatype::STATUS_CHOICE: ?>
+											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
+											<?php foreach (TBGStatus::getAll() as $option): ?>
+											<option value="<?php echo $option->getID(); ?>"><?php echo $option->getName(); ?></option>
+											<?php endforeach; ?>
+											</select>
+											<?php
+											break;
 										case TBGCustomDatatype::COMPONENTS_CHOICE: ?>
 											<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id" style="width: 100%;">
 											<?php if ($selected_project instanceof TBGProject): ?>
@@ -692,6 +700,15 @@
 														</select>
 														<?php
 													}
+													break;
+												case TBGCustomDatatype::STATUS_CHOICE:
+													?>
+														<select name="<?php echo $customdatatype->getKey(); ?>_id" id="<?php echo $customdatatype->getKey(); ?>_id_additional">
+															<?php foreach (TBGStatus::getAll() as $option): ?>
+															<option value="<?php echo $option->getID(); ?>"><?php echo $option->getName(); ?></option>
+															<?php endforeach; ?>
+														</select>
+													<?php
 													break;
 												case TBGCustomDatatype::COMPONENTS_CHOICE:
 													if ($selected_project instanceof TBGProject)

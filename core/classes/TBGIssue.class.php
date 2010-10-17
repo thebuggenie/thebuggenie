@@ -480,6 +480,7 @@
 			$bugtypes[1] = $i18n->__('Documentation: A documentation issue');
 
 
+
 			$likelihoods = array();
 			$likelihoods[5] = $i18n->__('Blocking further progress on the daily build');
 			$likelihoods[4] = $i18n->__('A User would return the product / cannot RTM / the team would hold the release for this bug');
@@ -4040,6 +4041,7 @@
 					case TBGCustomDatatype::EDITIONS_CHOICE:
 					case TBGCustomDatatype::COMPONENTS_CHOICE:
 					case TBGCustomDatatype::RELEASES_CHOICE:
+					case TBGCustomDatatype::STATUS_CHOICE:
 						$option_object = null;
 						try
 						{
@@ -4053,6 +4055,9 @@
 									break;
 								case TBGCustomDatatype::RELEASES_CHOICE:
 									$option_object = TBGFactory::buildLab($this->getCustomField($key));
+									break;
+								case TBGCustomDatatype::STATUS_CHOICE:
+									$option_object = TBGFactory::TBGStatusLab($this->getCustomField($key));
 									break;
 							}
 						}
@@ -4448,6 +4453,7 @@
 									case TBGCustomDatatype::EDITIONS_CHOICE:
 									case TBGCustomDatatype::COMPONENTS_CHOICE:
 									case TBGCustomDatatype::RELEASES_CHOICE:
+									case TBGCustomDatatype::STATUS_CHOICE:
 										$old_object = null;
 										$new_object = null;
 										try
@@ -4462,6 +4468,8 @@
 													break;
 												case TBGCustomDatatype::RELEASES_CHOICE:
 													$old_object = TBGFactory::buildLab($value['original_value']);
+												case TBGCustomDatatype::STATUS_CHOICE:
+													$old_object = TBGFactory::TBGStatusLab($value['original_value']);
 													break;
 											}
 										}
@@ -4478,6 +4486,8 @@
 													break;
 												case TBGCustomDatatype::RELEASES_CHOICE:
 													$new_object = TBGFactory::buildLab($this->getCustomField($key));
+												case TBGCustomDatatype::STATUS_CHOICE:
+													$new_object = TBGFactory::TBGStatusLab($this->getCustomField($key));
 													break;
 											}
 										}

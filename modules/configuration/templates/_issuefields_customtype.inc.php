@@ -12,6 +12,7 @@
 				case TBGCustomDatatype::EDITIONS_CHOICE:
 				case TBGCustomDatatype::COMPONENTS_CHOICE:
 				case TBGCustomDatatype::RELEASES_CHOICE:
+				case TBGCustomDatatype::STATUS_CHOICE:
 					break;
 				default:
 					?><a title="<?php echo __('Show and edit available choices'); ?>" href="javascript:void(0);" onclick="showIssuefieldOptions('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('action_dropdown_small.png'); ?></a><?php	
