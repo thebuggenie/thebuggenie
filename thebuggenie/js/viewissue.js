@@ -577,7 +577,7 @@ function updateComment(url, cid)
 			$('comment_edit_indicator_' + cid).hide();
 			$('comment_edit_' + cid).hide();
 
-			$('comment_' + cid + '_header').update(json.comment_title);			
+			//$('comment_' + cid + '_header').update(json.comment_title);
 			/* $('comment_' + cid + '_date').update(json.comment_date);	see the actions file */
 			$('comment_' + cid + '_body').update(json.comment_body);	
 
@@ -638,7 +638,7 @@ function addComment(url, commentcount_span)
 			
 			$('comment_add_controls').show();
 			
-			$('comment_title').clear();
+			//$('comment_title').clear();
 			$('comment_bodybox').clear()
 			$('comment_visibility').setValue(1);
 			$(commentcount_span).update(json.commentcount);
