@@ -8,12 +8,47 @@
 		$theUser = TBGFactory::userLab($author);
 		$user = $theUser->getBuddyname() . ' (' . $theUser->getUname() . ')';
 	}
+
+	$web_path = TBGContext::getModule('vcs_integration')->getSetting('web_path_' . $projectId);
+	$web_repo = TBGContext::getModule('vcs_integration')->getSetting('web_repo_' . $projectId);
+	
+	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
+	{
+		case 'viewvc':
+			$link_rev = $web_path . '/' . '?root=' . $web_repo . '&amp;view=rev&amp;revision=' . $revision; 
+			break;
+		case 'viewvc_repo':
+			$link_rev = $web_path . '/' . '?view=rev&amp;revision=' . $revision; 
+			break;
+		case 'websvn':
+			$link_rev = $web_path . '/revision.php?repname=' . $web_repo . '&amp;isdir=1&amp;rev=' . $revision; 
+			break;
+		case 'websvn_mv':
+			$link_rev = $web_path . '/' . '?repname=' . $web_repo . '&amp;op=log&isdir=1&amp;rev=' . $revision; 
+			break;
+		case 'loggerhead':
+			$link_rev = $web_path . '/' . $web_repo . '/revision/' . $revision; 
+			break;
+		case 'gitweb':
+			$link_rev = $web_path . '/' . '?p=' . $web_repo . ';a=commitdiff;h=' . $revision; 
+			break;
+		case 'cgit':
+			$link_rev = $web_path . '/' . $web_repo . '/commit/?id=' . $revision; 
+			break;
+		case 'hgweb':
+			$revision = explode(':', $revision);
+			$link_rev = $web_path . '/' . $web_repo . '/rev/' . $revision[1]; 
+			break;
+		case 'github':
+			$link_rev = 'http://github.com/' . $web_repo . '/commit/' . $revision; 
+			break;
+	}
 ?>
 
 <div class="rounded_box mediumgrey borderless cut_top cut_bottom">
 	<a href="javascript:void(0);" id="checkin_expand_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').show(); $('checkin_expand_<?php echo $id; ?>').hide(); $('checkin_collapse_<?php echo $id; ?>').show();"><?php echo image_tag('expand.png'); ?></a>
 	<a href="javascript:void(0);" style="display: none;" id="checkin_collapse_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').hide(); $('checkin_expand_<?php echo $id; ?>').show(); $('checkin_collapse_<?php echo $id; ?>').hide();"><?php echo image_tag('collapse.png'); ?></a>
-	<span class="commenttitle"><?php echo __('Revision %revno% - committed on %date% by %user%', array('%revno%' => $revision, '%date%' => tbg_formatTime($date, 10), '%user%' => $user)); ?></span>
+	<span class="commenttitle"><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision[0].':'.$revision[1])) . '</a> - ' . __('committed on %date% by %user%', array('%date%' => tbg_formatTime($date, 10), '%user%' => $user)); ?></span>
 </div>
 <div id="checkin_details_<?php echo $id; ?>" style="display: none;" class="rounded_box borderless cut_bottom cut_top iceblue">
 	<h4><?php echo __('Log entry:'); ?></h4>
@@ -23,8 +58,6 @@
 	<h4><?php echo __('Changed files:'); ?></h4>
 	<table border=0 cellpadding=0 cellspacing=0 style="width: 100%;">
 	<?php
-	$web_path = TBGContext::getModule('vcs_integration')->getSetting('web_path_' . $projectId);
-	$web_repo = TBGContext::getModule('vcs_integration')->getSetting('web_repo_' . $projectId);
 
 	foreach ($files as $file)
 	{
@@ -69,9 +102,10 @@
 				$link_view = $web_path . '/' . $web_repo . '/tree/' . $file[0] . '?id=' . $file[2];
 				break;
 			case 'hgweb':
+				$rev = explode(':', $file[2]);
 				$link_file = $web_path . '/' . $web_repo . '/log/tip/' . $file[0];
-				$link_diff = $web_path . '/' . $web_repo . '/diff/' . $file[2] . '/' . $file[0];
-				$link_view = $web_path . '/' . $web_repo . '/file/' .$file[2] . '/' . $file[0];
+				$link_diff = $web_path . '/' . $web_repo . '/diff/' . $rev[1] . '/' . $file[0];
+				$link_view = $web_path . '/' . $web_repo . '/file/' .$rev[1] . '/' . $file[0];
 				break;
 			case 'github':
 				$link_file = 'http://github.com/' . $web_repo . '/commits/master/' . $file[0];
