@@ -2054,7 +2054,66 @@
 							}
 						}
 					}
+
+					if ($reportable)
+					{
+						//var_dump('fu');
+						foreach ($retval as $key => $return_details)
+						{
+							//var_dump('fu2');
+							if ($key == 'component' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::COMPONENTS_LIST, TBGCustomDatatype::COMPONENTS_CHOICE)))
+							{
+								//var_dump('fu3');
+								$retval[$key]['values'] = array();
+								foreach ($this->getComponents() as $component)
+								{
+									$retval[$key]['values'][$component->getID()] = $component->getName();
+								}
+								if (!$this->isComponentsEnabled() || empty($retval[$key]['values']))
+								{
+									if (!$retval[$key]['required'])
+									{
+										unset($retval[$key]);
+									}
+									else
+									{
+										unset($retval[$key]['values']);
+									}
+								}
+							}
+						}
+					}
+
+					if ($reportable)
+					{
+						//var_dump('fu');
+						foreach ($retval as $key => $return_details)
+						{
+							//var_dump('fu2');
+							if ($key == 'build' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::RELEASES_LIST, TBGCustomDatatype::RELEASES_CHOICE)))
+							{
+								//var_dump('fu3');
+								$retval[$key]['values'] = array();
+								foreach ($this->getBuilds() as $build)
+								{
+									$retval[$key]['values'][$build->getID()] = $build->getName();
+								}
+								if (!$this->isBuildsEnabled() || empty($retval[$key]['values']))
+								{
+									if (!$retval[$key]['required'])
+									{
+										unset($retval[$key]);
+									}
+									else
+									{
+										unset($retval[$key]['values']);
+									}
+								}
+							}
+						}
+					}
 		
+
 					if ($reportable)
 					{
 						if ($this->isBuildsEnabled() && array_key_exists('build', $retval))

@@ -424,12 +424,27 @@
 						?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo tbg_parse_text($info['name'], false, null, array('headers' => false)); ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
 						break;
 					case TBGCustomDatatype::EDITIONS_CHOICE:
+					case TBGCustomDatatype::COMPONENTS_CHOICE:
+					case TBGCustomDatatype::RELEASES_CHOICE:
 						$edition = null;
 						$value = null;
 						try
 						{
-							$edition = new TBGEdition($info['name']);
-							$value = $edition->getName();
+							switch ($info['type'])
+							{
+								case TBGCustomDatatype::EDITIONS_CHOICE:
+									$edition = new TBGEdition($info['name']);
+									$value = $edition->getName();
+									break;
+								case TBGCustomDatatype::COMPONENTS_CHOICE:
+									$edition = new TBGComponent($info['name']);
+									$value = $edition->getName();
+									break;
+								case TBGCustomDatatype::RELEASES_CHOICE:
+									$edition = new TBGBuild($info['name']);
+									$value = $edition->getName();
+									break;
+							}
 						}
 						catch (Exception $e) { }
 						?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $value; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
@@ -468,6 +483,30 @@
 									<?php foreach (TBGEdition::getAllByProjectID($issue->getProject()->getID()) as $choice): ?>
 										<li>
 											<?php echo image_tag('icon_edition.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+							<?php
+							break;
+						case TBGCustomDatatype::COMPONENTS_CHOICE:
+							?>
+								<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+								<ul class="choices">
+									<?php foreach (TBGComponent::getAllByProjectID($issue->getProject()->getID()) as $choice): ?>
+										<li>
+											<?php echo image_tag('icon_components.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+							<?php
+							break;
+						case TBGCustomDatatype::RELEASES_CHOICE:
+							?>
+								<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+								<ul class="choices">
+									<?php foreach (TBGBuild::getByProjectID($issue->getProject()->getID()) as $choice): ?>
+										<li>
+											<?php echo image_tag('icon_build.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
 										</li>
 									<?php endforeach; ?>
 								</ul>

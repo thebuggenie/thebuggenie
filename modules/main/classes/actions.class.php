@@ -1289,6 +1289,8 @@
 							switch ($customdatatype->getType())
 							{
 								case TBGCustomDatatype::EDITIONS_CHOICE:
+								case TBGCustomDatatype::COMPONENTS_CHOICE:
+								case TBGCustomDatatype::RELEASES_CHOICE:
 									if ($customdatatypeoption_value == '')
 									{
 										$issue->setCustomField($key, "");
@@ -1300,6 +1302,15 @@
 											case TBGCustomDatatype::EDITIONS_CHOICE:
 												$temp = new TBGEdition($request->getRawParameter("{$key}_value"));
 												$finalvalue = $temp->getName();
+												break;
+											case TBGCustomDatatype::COMPONENTS_CHOICE:
+												$temp = new TBGComponent($request->getRawParameter("{$key}_value"));
+												$finalvalue = $temp->getName();
+												break;
+											case TBGCustomDatatype::RELEASES_CHOICE:
+												$temp = new TBGBuild($request->getRawParameter("{$key}_value"));
+												$finalvalue = $temp->getName();
+												break;
 										}
 										$issue->setCustomField($key, $request->getRawParameter("{$key}_value"));
 									}

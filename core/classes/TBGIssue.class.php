@@ -479,6 +479,7 @@
 			$bugtypes[2] = $i18n->__('Localization');
 			$bugtypes[1] = $i18n->__('Documentation: A documentation issue');
 
+
 			$likelihoods = array();
 			$likelihoods[5] = $i18n->__('Blocking further progress on the daily build');
 			$likelihoods[4] = $i18n->__('A User would return the product / cannot RTM / the team would hold the release for this bug');
@@ -4037,13 +4038,26 @@
 						TBGIssueCustomFieldsTable::getTable()->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
 						break;
 					case TBGCustomDatatype::EDITIONS_CHOICE:
+					case TBGCustomDatatype::COMPONENTS_CHOICE:
+					case TBGCustomDatatype::RELEASES_CHOICE:
 						$option_object = null;
 						try
 						{
-							$option_object = TBGFactory::editionLab($this->getCustomField($key));
+							switch ($customdatatype->getType())
+							{
+								case TBGCustomDatatype::EDITIONS_CHOICE:
+									$option_object = TBGFactory::editionLab($this->getCustomField($key));
+									break;
+								case TBGCustomDatatype::COMPONENTS_CHOICE:
+									$option_object = TBGFactory::componentLab($this->getCustomField($key));
+									break;
+								case TBGCustomDatatype::RELEASES_CHOICE:
+									$option_object = TBGFactory::buildLab($this->getCustomField($key));
+									break;
+							}
 						}
 						catch (Exception $e) {}
-						$option_id = ($option_object instanceof TBGEdition) ? $option_object->getID() : null;
+						$option_id = (is_object($option_object)) ? $option_object->getID() : null;
 						TBGIssueCustomFieldsTable::getTable()->saveIssueCustomFieldValue($option_id, $customdatatype->getID(), $this->getID());
 						break;
 					default:
@@ -4423,6 +4437,7 @@
 										$new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : TBGContext::getI18n()->__('Unknown');
 										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $new_value);
 										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been changed to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%new_value%' => $new_value));
+
 										break;
 									case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
 									case TBGCustomDatatype::INPUT_TEXTAREA_MAIN:
@@ -4431,20 +4446,44 @@
 										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been changed.", array('%customfield_name%' => $customdatatype->getDescription()));
 										break;
 									case TBGCustomDatatype::EDITIONS_CHOICE:
+									case TBGCustomDatatype::COMPONENTS_CHOICE:
+									case TBGCustomDatatype::RELEASES_CHOICE:
 										$old_object = null;
 										$new_object = null;
 										try
 										{
-											$old_object = TBGFactory::editionLab($value['original_value']);
+											switch ($customdatatype->getType())
+											{
+												case TBGCustomDatatype::EDITIONS_CHOICE:
+													$old_object = TBGFactory::editionLab($value['original_value']);
+													break;
+												case TBGCustomDatatype::COMPONENTS_CHOICE:
+													$old_object = TBGFactory::componentLab($value['original_value']);
+													break;
+												case TBGCustomDatatype::RELEASES_CHOICE:
+													$old_object = TBGFactory::buildLab($value['original_value']);
+													break;
+											}
 										}
 										catch (Exception $e) {}
 										try
 										{
-											$new_object = TBGFactory::editionLab($this->getCustomField($key));
+											switch ($customdatatype->getType())
+											{
+												case TBGCustomDatatype::EDITIONS_CHOICE:
+													$new_object = TBGFactory::editionLab($this->getCustomField($key));
+													break;
+												case TBGCustomDatatype::COMPONENTS_CHOICE:
+													$new_object = TBGFactory::componentLab($this->getCustomField($key));
+													break;
+												case TBGCustomDatatype::RELEASES_CHOICE:
+													$new_object = TBGFactory::buildLab($this->getCustomField($key));
+													break;
+											}
 										}
 										catch (Exception $e) {}
-										$old_value = ($old_object instanceof TBGEdition) ? $old_object->getName() : TBGContext::getI18n()->__('Unknown');
-										$new_value = ($new_object instanceof TBGEdition) ? $new_object->getName() : TBGContext::getI18n()->__('Unknown');
+										$old_value = (is_object($old_object)) ? $old_object->getName() : TBGContext::getI18n()->__('Unknown');
+										$new_value = (is_object($new_object)) ? $new_object->getName() : TBGContext::getI18n()->__('Unknown');
 										$this->addLogEntry(TBGLogTable::LOG_ISSUE_CUSTOMFIELD_CHANGED, $old_value . ' &rArr; ' . $new_value);
 										$comment_lines[] = TBGContext::getI18n()->__("The custom field %customfield_name% has been updated, from '''%previous_value%''' to '''%new_value%'''.", array('%customfield_name%' => $customdatatype->getDescription(), '%previous_value%' => $old_value, '%new_value%' => $new_value));
 										break;
