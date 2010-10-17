@@ -195,7 +195,14 @@
 						}
 						else
 						{
-							$this->forward(TBGContext::getRouting()->generate(TBGSettings::get('returnfromlogin')));
+							if (TBGSettings::get('returnfromlogin') == 'referer')
+							{
+								$this->forward(TBGContext::getRequest()->getParameter('tbg3_referer'));
+							}
+							else
+							{
+								$this->forward(TBGContext::getRouting()->generate(TBGSettings::get('returnfromlogin')));
+							}
 						}
 					}
 					else
@@ -206,19 +213,23 @@
 				elseif (!TBGContext::getUser()->isAuthenticated() && TBGSettings::get('requirelogin'))
 				{
 					$this->login_error = $i18n->__('You need to log in to access this site');
+					$this->login_error_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
 				}
 				elseif (!TBGContext::getUser()->isAuthenticated())
 				{
 					$this->login_error = $i18n->__('Please log in');
+					$this->login_error_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
 				}
 				elseif (TBGContext::hasMessage('forward'))
 				{
 					$this->login_error = TBGContext::getMessageAndClear('forward');
+					$this->login_error_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
 				}
 			}
 			catch (Exception $e)
 			{
 				$this->login_error = $e->getMessage();
+				$this->login_error_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
 			}
 		}
 		

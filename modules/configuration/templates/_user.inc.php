@@ -77,7 +77,7 @@
 		<td><label for="returnfromlogin"><?php echo __('Redirect after login'); ?></label></td>
 		<td>
 			<select name="returnfromlogin" id="returnfromlogin" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
-				<?php $return_routes = array('home' => __('Frontpage'), 'account' => __('Account details')); ?>
+				<?php $return_routes = array('home' => __('Frontpage'), 'account' => __('Account details'), 'referer' => __('Page before login')); ?>
 				<?php $return_routes = TBGEvent::createNew('core', 'setting_returnfromlogin', null, array(), $return_routes)->trigger()->getReturnList(); ?>
 				<?php foreach ($return_routes as $route => $description): ?> 
 					<option value="<?php echo $route; ?>"<?php if (TBGSettings::getLoginReturnRoute() == $route): ?> selected<?php endif; ?>><?php echo $description; ?></option>

@@ -26,6 +26,8 @@
 <br>
 <?php endif; ?>
 
+<input type="hidden" name="tbg3_referer" value="<?php if (isset($login_error)): echo $login_error_referer; else: echo $_SERVER['HTTP_REFERER']; endif; ?>" />
+
 <div class="rounded_box iceblue">
 	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 	<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
