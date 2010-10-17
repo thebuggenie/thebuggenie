@@ -1237,7 +1237,7 @@
 	$strings['Logged in as %name%'] = 'Logged in as %name%';
 	$strings['Logout'] = 'Logout';
 	$strings['Please wait, loading content'] = 'Please wait, loading content';
-	$strings['My dashboard'] = 'My dashboard';
+	$strings['Dashboard'] = 'Dashboard';
 	$strings['Find issues'] = 'Find issues';
 	$strings['Quick search'] = 'Quick search';
 	$strings['Search for anything here'] = 'Search for anything here';

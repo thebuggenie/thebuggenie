@@ -2028,13 +2028,10 @@
 					
 					if ($reportable)
 					{
-						//var_dump('fu');
 						foreach ($retval as $key => $return_details)
 						{
-							//var_dump('fu2');
 							if ($key == 'edition' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::EDITIONS_LIST, TBGCustomDatatype::EDITIONS_CHOICE)))
 							{
-								//var_dump('fu3');
 								$retval[$key]['values'] = array();
 								foreach ($this->getEditions() as $edition)
 								{
@@ -2052,19 +2049,8 @@
 									}
 								}
 							}
-						}
-					}
-
-					if ($reportable)
-					{
-						//var_dump('fu');
-						foreach ($retval as $key => $return_details)
-						{
-							//var_dump('fu2');
-							if ($key == 'status' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::EDITIONS_LIST, TBGCustomDatatype::STATUS_CHOICE)))
-
+							elseif ($key == 'status' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::EDITIONS_LIST, TBGCustomDatatype::STATUS_CHOICE)))
 							{
-								//var_dump('fu3');
 								$retval[$key]['values'] = array();
 								foreach (TBGStatus::getAll() as $status)
 								{
@@ -2082,18 +2068,8 @@
 									}
 								}
 							}
-						}
-					}
-
-					if ($reportable)
-					{
-						//var_dump('fu');
-						foreach ($retval as $key => $return_details)
-						{
-							//var_dump('fu2');
-							if ($key == 'component' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::COMPONENTS_LIST, TBGCustomDatatype::COMPONENTS_CHOICE)))
+							elseif ($key == 'component' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::COMPONENTS_LIST, TBGCustomDatatype::COMPONENTS_CHOICE)))
 							{
-								//var_dump('fu3');
 								$retval[$key]['values'] = array();
 								foreach ($this->getComponents() as $component)
 								{
@@ -2111,18 +2087,8 @@
 									}
 								}
 							}
-						}
-					}
-
-					if ($reportable)
-					{
-						//var_dump('fu');
-						foreach ($retval as $key => $return_details)
-						{
-							//var_dump('fu2');
-							if ($key == 'build' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::RELEASES_LIST, TBGCustomDatatype::RELEASES_CHOICE)))
+							elseif ($key == 'build' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::RELEASES_LIST, TBGCustomDatatype::RELEASES_CHOICE)))
 							{
-								//var_dump('fu3');
 								$retval[$key]['values'] = array();
 								foreach ($this->getBuilds() as $build)
 								{
@@ -2142,33 +2108,6 @@
 							}
 						}
 					}
-		
-
-					if ($reportable)
-					{
-						if ($this->isBuildsEnabled() && array_key_exists('build', $retval))
-						{
-							$retval['build']['values'] = array();
-							foreach ($this->getBuilds() as $build)
-							{
-								$retval['build']['values'][$build->getID()] = $build->getName();
-							}
-						}
-					}
-					if (!$this->isBuildsEnabled() || empty($retval['build']['values'])) unset($retval['build']);
-					
-					if ($reportable)
-					{
-						if ($this->isComponentsEnabled() && array_key_exists('component', $retval))
-						{
-							$retval['component']['values'] = array();
-							foreach ($this->getComponents() as $component)
-							{
-								$retval['component']['values'][$component->getID()] = $component->getName();
-							}
-						}
-					}
-					if (!$this->isComponentsEnabled() || empty($retval['component']['values'])) unset($retval['component']);
 				}
 				$this->_fieldsarrays[$issue_type][(int) $reportable] = $retval;
 			}
