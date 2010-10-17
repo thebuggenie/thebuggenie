@@ -26,7 +26,8 @@
 						<div id="add_sprint">
 							<label for="sprint_name"><?php echo __('Add sprint'); ?></label>
 							<input type="text" id="sprint_name" name="sprint_name">
-							<input type="submit" value="<?php echo __('Add'); ?>"><br>
+							<input type="submit" value="<?php echo __('Add'); ?>">
+							<br style="clear: both;">
 							<label for="sprint_starting_day"><?php echo __('Sprint starts'); ?></label>
 							<select name="starting_day" id="sprint_starting_day">
 								<?php for ($cc = 1;$cc <= 31;$cc++): ?>
@@ -42,7 +43,8 @@
 								<?php for ($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
 									<option value=<?php echo $cc; ?><?php echo ((date('Y') == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
 								<?php endfor; ?>
-							</select><br>
+							</select>
+							<br style="clear: both;">
 							<label for="sprint_scheduled_day"><?php echo __('Sprint ends'); ?></label>
 							<select name="scheduled_day" id="sprint_scheduled_day">
 								<?php for ($cc = 1;$cc <= 31;$cc++): ?>
@@ -58,7 +60,8 @@
 								<?php for ($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
 									<option value=<?php echo $cc; ?><?php echo ((date('Y') == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
 								<?php endfor; ?>
-							</select><br>
+							</select>
+							<br style="clear: both;">
 						</div>
 					</form>
 				</div>
