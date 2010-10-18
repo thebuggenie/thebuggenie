@@ -1,4 +1,4 @@
-<div id="attach_file" style="display: none;">
+<div id="attach_file" style="display: none;" onclick="$(this).hide();">
 	<div class="rounded_box white borderless shadowed backdrop_box medium">
 		<div class="backdrop_detail_header">
 			<?php if ($mode == 'issue'): ?>
@@ -51,11 +51,11 @@
 			</div>
 			<div class="faded_out" id="uploader_no_uploaded_files"<?php if (count($existing_files) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __("You haven't uploaded any files right now (not including already attached files)"); ?></div>
 			<div id="done_div">
-				<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="resetFadedBackdrop();"><b>'.__('Done').'</b></a>')); ?>
+				<?php echo __('Click %done% when you have uploaded the files you want to attach', array('%done%' => '<a href="javascript:void(0)" onclick="$(\'attach_file\').hide();"><b>'.__('Done').'</b></a>')); ?>
 			</div>
 		</div>
 		<div class="backdrop_detail_footer">
-			<a href="javascript:void(0)" onclick="$('attach_file').show();"><?php echo __('Close'); ?></a>
+			<a href="javascript:void(0)" onclick="$('attach_file').hide();"><?php echo __('Close'); ?></a>
 		</div>
 	</div>
 	<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent"> </div>
