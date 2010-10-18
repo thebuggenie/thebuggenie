@@ -283,7 +283,7 @@ th.highlighted_column { background-color: #C1C1C1; }
 /* end table styling */
 
 /* configuration section styling */
-.config_header { margin: 5px 0px 5px 0px; background-color: transparent; font-weight: bold; border: 0px; padding: 7px 0px 3px 0px; border-bottom: 1px solid #DDD; font-size: 15px; }
+.config_header { margin: 5px 0px 5px 0px; background-color: transparent; font-weight: bold; border: 0px; padding: 7px 0px 3px 0px; border-bottom: 1px solid #DDD; font-size: 1.1em; }
 
 .config_explanation { color: #999; padding: 5px 0 10px 5px; }
 .config_explanation a { color: #549D54; font-weight: bold; }
@@ -302,7 +302,6 @@ th.highlighted_column { background-color: #C1C1C1; }
 .config_badges li a:hover { border: 0px; }
 .config_badges li a span { color: #555; }
 .config_badges b { font-size: 14px; display: block; margin-bottom: 5px; }
-.config_header { padding: 3px; font-size: 12px; background-color: #FFF; border-bottom: 1px solid #DDD; margin-bottom: 5px; }
 
 #config_modules .header .module_shortname { font-weight: normal; font-size: 0.95em; }
 #config_modules .content { padding-top: 5px; text-align: left; }
@@ -338,6 +337,8 @@ th.highlighted_column { background-color: #C1C1C1; }
 .groupbox_header, .teambox_header { font-weight: bold;  }
 .groupbox_membercount, .teambox_membercount { font-weight: normal; font-size: 11px; color: #888; }
 /* end users / teams / groups */
+
+#project_table .config_header { font-size: 0.9em; }
 
 /* end config styling */
 
