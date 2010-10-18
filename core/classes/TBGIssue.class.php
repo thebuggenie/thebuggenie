@@ -4265,6 +4265,7 @@
 							{
 								if ($value['original_value'] != 0)
 								{
+									$old_identifiable = null;
 									if ($this->getChangedPropertyOriginal('_ownedtype') == TBGIdentifiableClass::TYPE_USER)
 										$old_identifiable = TBGFactory::userLab($value['original_value']);
 									elseif ($this->getChangedPropertyOriginal('_ownedtype') == TBGIdentifiableClass::TYPE_TEAM)
