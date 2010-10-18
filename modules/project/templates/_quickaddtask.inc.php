@@ -5,7 +5,7 @@
 			<input type="text" name="task_name" id="scrum_story_<?php echo $issue->getID(); ?>_task_name_input">
 			<input type="hidden" name="mode" value="<?php echo $mode; ?>" >
 			<input type="submit" value="<?php echo __('Add task'); ?>">
-			<?php echo __('%add_task% or %cancel%', array('%add_task%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'scrum_story_' . $issue->getID() . '_add_task_div\').toggle();">' . __('cancel') . '</a>')); ?>
+			<a class="close_micro_popup_link" href="javascript:void(0);" onclick="$('scrum_story_<?php echo $issue->getID(); ?>_add_task_div').toggle();"><?php echo __('Done'); ?></a>
 			<?php echo image_tag('spinning_20.gif', array('id' => 'add_task_'.$issue->getID().'_indicator', 'style' => 'display: none;')); ?><br>
 		</div>
 	</form>

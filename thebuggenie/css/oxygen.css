@@ -662,6 +662,9 @@ ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
 .infobox .content { padding: 0; font-size: 0.95em; text-align: left; font-weight: normal; margin: 0; }
 /* end infobox */
 
+/* add task popup */
+.close_micro_popup_link { position: absolute; right: 7px; top: 7px; font-size: 0.9em; }
+
 /* project dashboard */
 #project_dashboard .recent_activities td.latest_action_dates, #timeline .recent_activities td.latest_action_dates { font-weight: bold; padding: 10px 5px 2px 5px; }
 #project_dashboard .timeline_link {  text-align: right; padding: 5px; }
