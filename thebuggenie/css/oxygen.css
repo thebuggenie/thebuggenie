@@ -71,10 +71,10 @@ dd { margin-left: 0px; margin-bottom: 15px; vertical-align: middle; }
 /* end main page layout */
 
 /* footer section */
-.footer_image { width: 30px; text-align: right; padding: 5px; }
+.footer_bar { height: 35px; vertical-align: bottom; }
 .footer_container { background-color: #F5F5F5; width: 100%; border-top: 1px solid #DDD; text-align: center; margin-top: 10px; }
-.footer_text_secondline { padding: 0px 0px 8px 0px; font-size: 0.9em; }
-.footer_text_firstline { padding: 8px 0px 0px 0px; font-size: 1em; }
+.footer_container img { float: left; margin: 0 5px 0 0; }
+.footer_container td { font-size: 0.9em; line-height: 1.2; padding: 5px; }
 /* footer section */
 
 /* login and registration page styling */
