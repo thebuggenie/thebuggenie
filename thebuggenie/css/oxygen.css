@@ -94,7 +94,7 @@ dd { margin-left: 0px; margin-bottom: 15px; vertical-align: middle; }
 .commenttitle {  font-weight: bold; }
 .comment_hash { float: right; font-size: 23px; font-weight: normal; color: #B1B8E9; }
 .comments_none {  font-weight: normal; }
-.commentdate { color: #aaa; font-weight: normal; }
+.commentdate { color: #aaa; font-weight: normal; font-size: 0.8em; }
 .commentheader { padding: 0 0 5px 0; border-bottom: 1px dotted #CCC; }
 .comment_add_title { font-size: 14px; font-weight: bold; }
 .commentbody { padding: 5px 5px 5px 0; font-size: 12px; }
