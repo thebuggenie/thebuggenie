@@ -166,7 +166,6 @@
 
 		public final function isCore()
 		{
-			return false;
 			return in_array($this->_name, array('publish'));
 		}
 
