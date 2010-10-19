@@ -58,6 +58,7 @@
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::UID, TBGContext::getUser()->getUID());
 			$crit->addInsert(self::REAL_FILENAME, $real_filename);
+			$crit->addInsert(self::UPLOADED_AT, NOW);
 			$crit->addInsert(self::ORIGINAL_FILENAME, $original_filename);
 			$crit->addInsert(self::CONTENT_TYPE, $content_type);
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());

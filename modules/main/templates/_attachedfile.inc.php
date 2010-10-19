@@ -1,9 +1,9 @@
 <?php if ($file instanceof TBGFile): ?>
-	<tr id="<?php echo $base_id . '_' . $file_id; ?>">
+	<tr id="<?php echo $base_id . '_' . $file_id; ?>" class="attached_file">
 		<td class="imgtd"><?php echo link_tag(make_url('downloadfile', array('id' => $file_id)), image_tag('icon_download.png'), array('class' => 'image')); ?></td>
-		<td style="font-size: 13px; padding: 3px;">
-			<?php echo link_tag(make_url('showfile', array('id' => $file_id)), (($file->hasDescription()) ? $file->getDescription() : $file->getOriginalFilename())); ?><br>
-			<span class="faded_out" style="font-size: 11px;"><?php echo tbg_formatTime($file->getUploadedAt(), 13); ?></span>
+		<td>
+			<?php echo link_tag(make_url('showfile', array('id' => $file_id)), (($file->hasDescription()) ? $file->getDescription() : $file->getOriginalFilename())); ?>
+			<div class="upload_details"><?php echo __('%filename%, uploaded %date%', array('%filename%' => '<span class="filename">'.$file->getOriginalFilename().'</span>', '%date%' => tbg_formatTime($file->getUploadedAt(), 13))); ?></div>
 		</td>
 		<?php if ($mode == 'issue' && $issue->canRemoveAttachments()): ?>
 			<td style="width: 20px;">
