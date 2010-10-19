@@ -1,4 +1,4 @@
-<tr id="viewissue_links_<?php echo $link_id; ?>">
+<tr id="viewissue_links_<?php echo $link_id; ?>" class="attached_item">
 	<td class="imgtd"><?php echo image_tag('icon_link.png'); ?></td>
 	<td style="font-size: 13px; padding: 3px;">
 		<?php echo link_tag($link['url'], (($link['description'] != '') ? $link['description'] : $link['url']), array('title' => $link['url'])); ?><br>

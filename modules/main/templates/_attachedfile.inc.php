@@ -1,5 +1,5 @@
 <?php if ($file instanceof TBGFile): ?>
-	<tr id="<?php echo $base_id . '_' . $file_id; ?>" class="attached_file">
+	<tr id="<?php echo $base_id . '_' . $file_id; ?>" class="attached_item">
 		<td class="imgtd"><?php echo link_tag(make_url('downloadfile', array('id' => $file_id)), image_tag('icon_download.png'), array('class' => 'image')); ?></td>
 		<td>
 			<?php echo link_tag(make_url('showfile', array('id' => $file_id)), (($file->hasDescription()) ? $file->getDescription() : $file->getOriginalFilename())); ?>
