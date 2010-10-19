@@ -70,6 +70,7 @@
 	$routes[] = array('configure_project', '/configure/project/:project_id/hierarchy', 'configuration', 'configureProject', array('config_module' => 'core', 'section' => 10, 'format' => 'json'));
 	$routes[] = array('configure_settings', '/configure/settings', 'configuration', 'settings', array('config_module' => 'core', 'section' => 12));
 	$routes[] = array('configure_scopes', '/configure/scopes', 'configuration', 'index', array('config_module' => 'core', 'section' => 14));
+	$routes[] = array('configure_workflow', '/configure/workflow', 'configuration', 'configureWorkflow', array('config_module' => 'core', 'section' => 14));
 	$routes[] = array('configure_files', '/configure/files', 'configuration', 'configureUploads', array('config_module' => 'core', 'section' => 3));
 	$routes[] = array('configure_permissions', '/configure/permissions', 'configuration', 'configurePermissions', array('config_module' => 'core', 'section' => 5));
 	$routes[] = array('configure_permissions_get_configurator', '/configure/permissions/get/configurator/*', 'configuration', 'getPermissionsConfigurator', array('config_module' => 'core', 'section' => 5));
