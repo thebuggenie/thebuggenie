@@ -207,9 +207,10 @@
 									<div class="faded_out" id="no_description" <?php if ($issue->getDescription() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
 									<div id="description_name">
 										<?php if ($issue->getDescription()): ?>
-											<?php echo tbg_parse_text($issue->getDescription(), false, null, array('headers' => false)); ?>
+											<?php echo tbg_parse_text($issue->getDescription(), false, null, array('headers' => false, 'issue' => $issue)); ?>
 										<?php endif; ?>
 									</div>
+									<br style="clear: both;">
 								</div>
 								<?php if ($issue->canEditDescription()): ?>
 								<div id="description_change" style="display: none;">
@@ -238,9 +239,10 @@
 									<div class="faded_out" id="no_reproduction_steps" <?php if ($issue->getReproductionSteps() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
 									<div id="reproduction_steps_name">
 										<?php if ($issue->getReproductionSteps()): ?>
-											<?php echo tbg_parse_text($issue->getReproductionSteps(), false, null, array('headers' => false)); ?>
+											<?php echo tbg_parse_text($issue->getReproductionSteps(), false, null, array('headers' => false, 'issue' => $issue)); ?>
 										<?php endif; ?>
 									</div>
+									<br style="clear: both;">
 								</div>
 								<?php if ($issue->canEditReproductionSteps()): ?>
 								<div id="reproduction_steps_change" style="display: none;">
@@ -255,7 +257,7 @@
 								<?php endif; ?>
 							</div>
 						</div>
-							<br />
+						<br />
 						<?php include_component('main/issuemaincustomfields', array('issue' => $issue)); ?>
 						<?php TBGEvent::createNew('core', 'viewissue_right_bottom', $issue)->trigger(); ?>
 					</td>

@@ -1006,11 +1006,11 @@
 			{
 				case 'description':
 					$issue->setDescription($request->getRawParameter('value'));
-					return $this->renderJSON(array('changed' => $issue->isDescriptionChanged(), 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription())), 'description' => tbg_parse_text($issue->getDescription())));
+					return $this->renderJSON(array('changed' => $issue->isDescriptionChanged(), 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))), 'description' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))));
 					break;
 				case 'reproduction_steps':
 					$issue->setReproductionSteps($request->getRawParameter('value'));
-					return $this->renderJSON(array('changed' => $issue->isReproductionStepsChanged(), 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps())), 'reproduction_steps' => tbg_parse_text($issue->getReproductionSteps())));
+					return $this->renderJSON(array('changed' => $issue->isReproductionStepsChanged(), 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue))), 'reproduction_steps' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue))));
 					break;
 				case 'title':
 					if ($request->getParameter('value') == '')
@@ -1352,7 +1352,7 @@
 									}
 									$changed_methodname = "isCustomfield{$key}Changed";
 									if (!$issue->$changed_methodname()) return $this->renderJSON(array('changed' => false));
-									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value")))));
+									return ($customdatatypeoption_value == '') ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value"), false, null, array('issue' => $issue)))));
 									break;
 								default:
 									if ($customdatatypeoption_value == '')

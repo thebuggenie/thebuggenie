@@ -15,9 +15,10 @@
 													<div class="faded_out" id="no_<?php echo $field; ?>" <?php if ($info['name'] != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></div>
 													<div id="<?php echo $field; ?>_name">
 														<?php if ($info['name'] != ''): ?>
-															<?php echo tbg_parse_text($info['name'], false, null, array('headers' => false)); ?>
+															<?php echo tbg_parse_text($info['name'], false, null, array('headers' => false, 'issue' => $issue)); ?>
 														<?php endif; ?>
 													</div>
+													<br style="clear: both;">
 												</div>
 												<div id="<?php echo $field; ?>_change" style="display: none;">
 													<form id="<?php echo $field; ?>_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)) ?>', '<?php echo $field; ?>', '<?php echo $field; ?>'); return false;">
