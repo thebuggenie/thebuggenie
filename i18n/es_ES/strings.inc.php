@@ -1,6 +1,6 @@
 <?php
 	
-	$strings['Licensed under the MPL 1.1 only, read it at %link_to_MPL%'] = 'Licensiado bajo la licencia MPL 1.1 solamente, infórmese en %link_to_MPL%';
+	$strings['Licensed under the MPL 1.1 only, read it at %link_to_MPL%'] = 'Licenciado bajo la licencia MPL 1.1 solamente, infórmese en %link_to_MPL%';
 	$strings['Welcome, %username%'] = 'Bienvenido, %username%';
 	$strings['Frontpage'] = 'Portada';
 	$strings['Report an issue'] = 'Informar un problema';
@@ -1642,7 +1642,7 @@
 	$strings['%number_of% issue(s)'] = '%number_of% problema(s)';
 	$strings['Export results as:'] = 'Exportar resultados como:';
 	$strings['Issue'] = 'Problema';
-	$strings['No issues were found'] = 'No se encotnraron problemas';
+	$strings['No issues were found'] = 'No se encontraron problemas';
 	$strings['Not targetted'] = 'Sin objetivo';
 	$strings['No description provided'] = 'Sin descripción provista';
 	$strings['Status: %status%'] = 'Estado: %status%';
@@ -2132,7 +2132,7 @@
 	$strings['Targetted for milestone'] = 'Objetivo para el punto de control';
 	$strings['Triaging: User pain'] = 'Triaje: Sufrimento del usuario';
 	$strings['Textarea'] = 'Area de texto';
-	$strings['Click "Save" to save your changes'] = 'Haga clic en "Save" para guardar los cambios';
+	$strings['Click "Save" to save your changes'] = 'Haga clic en "Guardar" para guardar los cambios';
 	$strings['Manage projects - %project% - settings'] = 'Gestionar opciones de proyecto - %project%';
 	$strings['You are now looking at %project_name%'] = 'Ahroa está viendo %project_name%';
 	$strings['Go back to list of projects'] = 'Regresar a la lista de proyectos';
@@ -2276,7 +2276,7 @@
 	$strings['The selected build has been added to open issues based on your selections'] = 'La compilación seleccionada ha sido agregada a los problemas abiertos según su selección';
 	$strings['Mark this build / release as &laquo;Not released&raquo;'] = 'Marcar esta compilación / liberación como &laquo;Sin liberar&raquo;';
 	$strings['Allow users to report issues for this build / release'] = 'Permitit a los usuarios informar problemas de esta compilación / liberación';
-  $strings['Your saved searches'] = 'Sus búsquedas guardadas';
+    $strings['Your saved searches'] = 'Sus búsquedas guardadas';
 	$strings["You don't have any saved searches"] = "No tiene ninguna búsqueda guardada";
 	$strings['Public saved searches'] = 'Búsquedas públicas guardadas';
 	$strings['There are no public saved searches'] = 'No hay búsquedas públicas guardadas';
