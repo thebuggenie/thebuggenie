@@ -19,7 +19,6 @@
 		
 		protected function _initialize(TBGI18n $i18n)
 		{
-			$i18n = $i18n;
 			$this->setLongName($i18n->__('Email communication'));
 			$this->setMenuTitle('');
 			$this->setConfigTitle($i18n->__('Email communication'));
