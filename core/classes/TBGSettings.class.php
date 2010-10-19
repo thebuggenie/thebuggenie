@@ -313,7 +313,12 @@
 		{
 			return (bool) self::get('cleancomments');
 		}
-		
+
+		public static function isCommentImagePreviewEnabled()
+		{
+			return (self::get('previewcommentimages') !== null) ? (bool) self::get('previewcommentimages') : true;
+		}
+
 		public static function isLoginRequired()
 		{
 			return (bool) self::get('requirelogin');

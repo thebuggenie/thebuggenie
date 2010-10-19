@@ -47,13 +47,25 @@
 		<td><label for="cleancomments"><?php echo __('Comment trail'); ?></label></td>
 		<td>
 			<select name="cleancomments" id="cleancomments" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
-				<option value=1<?php if (TBGSettings::isCommentTrailClean()): ?> selected<?php endif; ?>><?php echo __('Don\'t post system comments when an issue is updated'); ?></option>
+				<option value=1<?php if (TBGSettings::isCommentTrailClean()): ?> selected<?php endif; ?>><?php echo __("Don't post system comments when an issue is updated"); ?></option>
 				<option value=0<?php if (!TBGSettings::isCommentTrailClean()): ?> selected<?php endif; ?>><?php echo __('Always post comments when an issue is updated'); ?></option>
 			</select>
 		</td>
 	</tr>
 	<tr>
 		<td class="config_explanation" colspan="2"><?php echo __('To keep the comment trail clean in issues, you can select not to post system comments when an issue is updated.'); ?><br>(<?php echo __('The issue log will always be updated regardless of this setting.'); ?>)</td>
+	</tr>
+	<tr>
+		<td><label for="previewcommentimages"><?php echo __('Preview images in comments'); ?></label></td>
+		<td>
+			<select name="previewcommentimages" id="previewcommentimages" style="width: 300px;"<?php if ($access_level != configurationActions::ACCESS_FULL): ?> disabled<?php endif; ?>>
+				<option value=0<?php if (!TBGSettings::isCommentImagePreviewEnabled()): ?> selected<?php endif; ?>><?php echo __("Don't show image previews of attached images in comments"); ?></option>
+				<option value=1<?php if (TBGSettings::isCommentImagePreviewEnabled()): ?> selected<?php endif; ?>><?php echo __('Show image previews of attached images in comments'); ?></option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="config_explanation" colspan="2"><?php echo __('If you have problems with spam images, turn this off'); ?></td>
 	</tr>
 	<?php
 		// Generate list of languages
