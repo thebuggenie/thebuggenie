@@ -1,4 +1,4 @@
-<div id="attach_file" style="display: none;" onclick="$(this).hide();">
+<div id="attach_file" style="display: none;">
 	<div class="rounded_box white borderless shadowed backdrop_box medium">
 		<div class="backdrop_detail_header">
 			<?php if ($mode == 'issue'): ?>
@@ -58,7 +58,7 @@
 			<a href="javascript:void(0)" onclick="$('attach_file').hide();"><?php echo __('Close'); ?></a>
 		</div>
 	</div>
-	<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent"> </div>
+	<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent" onclick="$('attach_file').hide();"> </div>
 </div>
 <script type="text/javascript">
 

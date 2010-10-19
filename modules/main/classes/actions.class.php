@@ -93,7 +93,7 @@
 			{
 				$this->issue_saved = true;
 			}
-			$this->theIssue = $issue;
+			$this->issue = $issue;
 			$event = TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
 			$this->listenViewIssuePostError($event);
 		}
@@ -1863,8 +1863,9 @@
 			TBGLogging::log('status was: ' . (int) $status['finished']. ', pct: '. (int) $status['percent']);
 			if (array_key_exists('file_id', $status) && $request->getParameter('mode') == 'issue')
 			{
-				$status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue_id' => $request->getParameter('issue_id'), 'file_id' => $status['file_id']));
-				$status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue_id' => $request->getParameter('issue_id'), 'file_id' => $status['file_id']));
+				$file = TBGFactory::TBGFileLab($status['file_id']);
+				$status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue_id' => $request->getParameter('issue_id'), 'file' => $file));
+				$status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue_id' => $request->getParameter('issue_id'), 'file' => $file));
 				$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
 				$status['attachmentcount'] = count($issue->getFiles()) + count($issue->getLinks());
 			}
@@ -1887,30 +1888,38 @@
 				$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
 				$canupload = (bool) ($issue instanceof TBGIssue && $issue->hasAccess() && $issue->canAttachFiles());
 			}
-			
-			$event = TBGEvent::createNew('core', 'main_upload', $request->getParameter('mode'))->triggerUntilProcessed();
-			if ($event->isProcessed())
+			else
 			{
-				$canupload = $event->getReturnValue();
-			}
+				$event = TBGEvent::createNew('core', 'upload', $request->getParameter('mode'));
+				$event->triggerUntilProcessed();
 
+				$canupload = ($event->isProcessed()) ? (bool) $event->getReturnValue() : true;
+			}
+			
 			if ($canupload)
 			{
 				try
 				{
-					$file_id = TBGContext::getRequest()->handleUpload('uploader_file', $issue);
-					if ($file_id)
+					if (isset($issue))
+					{
+						$file = TBGContext::getRequest()->handleUpload('uploader_file', $issue);
+					}
+					else
+					{
+						$file = TBGContext::getRequest()->handleUpload('uploader_file');
+					}
+					if ($file instanceof TBGFile)
 					{
 						if ($request->getParameter('mode') == 'issue')
 						{
-							$issue->attachFile($file_id);
+							$issue->attachFile($file);
 							if ($request->getParameter('comment') != '')
 							{
-								TBGComment::createNew('', TBGContext::getI18n()->__('The file %link_to_file% was uploaded with the following comment: %comment%', array('%comment%' => "\n  " . str_replace("\n", "\n  ", $request->getParameter('comment')), '%link_to_file%' => "[[TBG:@showfile?id={$file_id}|{$request->getParameter('uploader_file_description')}]]")), TBGContext::getUser()->getID(), $issue->getID(), TBGComment::TYPE_ISSUE);
+								TBGComment::createNew('', TBGContext::getI18n()->__('A file was uploaded. %link_to_file% This comment was attached: %comment%', array('%comment%' => "\n\n".$request->getRawParameter('comment'), '%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$request->getParameter('uploader_file_description')}]]")), TBGContext::getUser()->getID(), $issue->getID(), TBGComment::TYPE_ISSUE);
 							}
 							else
 							{
-								TBGComment::createNew('', TBGContext::getI18n()->__('The file %link_to_file% was uploaded.', array('%link_to_file%' => "[[TBG:@showfile?id={$file_id}|{$request->getParameter('uploader_file_description')}]]")), TBGContext::getUser()->getID(), $issue->getID(), TBGComment::TYPE_ISSUE, 'core', true, true);								
+								TBGComment::createNew('', TBGContext::getI18n()->__('A file was uploaded. %link_to_file%', array('%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$request->getParameter('uploader_file_description')}]]")), TBGContext::getUser()->getID(), $issue->getID(), TBGComment::TYPE_ISSUE, 'core', true, true);
 							}
 						}
 						return $this->renderText('ok');
@@ -1919,7 +1928,7 @@
 				}
 				catch (Exception $e)
 				{
-					$this->getResponse()->setHttpStatus(401);
+					$this->getResponse()->setHttpStatus(400);
 					$this->error = $e->getMessage();
 				}
 			}
@@ -1952,7 +1961,7 @@
 
 		public function runGetFile(TBGRequest $request)
 		{
-			$file = B2DB::getTable('TBGFilesTable')->doSelectById((int) $request->getParameter('id'));
+			$file = TBGFilesTable::getTable()->doSelectById((int) $request->getParameter('id'));
 			if ($file instanceof B2DBRow)
 			{
 				$this->getResponse()->cleanBuffer();
@@ -1964,10 +1973,12 @@
 				if (TBGSettings::getUploadStorage() == 'files')
 				{
 					echo fpassthru(fopen(TBGSettings::getUploadsLocalpath().$file->get(TBGFilesTable::REAL_FILENAME), 'r'));
+					exit();
 				}
 				else
 				{
 					echo $file->get(TBGFilesTable::CONTENT);
+					exit();
 				}
 				//die();
 				return true;
@@ -2146,7 +2157,7 @@
 
 						if ($request->getParameter('comment_applies_type') == 1 && $request->getParameter('comment_module') == 'core')
 						{
-							$comment_html = $this->getTemplateHTML('main/comment', array('aComment' => $comment, 'theIssue' => TBGFactory::TBGIssueLab($request->getParameter('comment_applies_id'))));
+							$comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment, 'issue' => TBGFactory::TBGIssueLab($request->getParameter('comment_applies_id'))));
 						}
 						else
 						{
@@ -2478,7 +2489,7 @@
 							$issue->addParentIssue($related_issue);
 						}
 						$cc++;
-						$content .= $this->getTemplateHTML('main/relatedissue', array('theIssue' => $issue, 'related_issue' => $related_issue));
+						$content .= $this->getTemplateHTML('main/relatedissue', array('related_issue' => $related_issue));
 					}
 					catch (Exception $e)
 					{

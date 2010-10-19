@@ -31,6 +31,8 @@ input[type="submit"]:active { background-color: #D5D5D5; }
 input[type="image"] { border: 0px; padding: 0px; width: 16px; height: 16px; background-color: transparent; }
 input[disabled], button[disabled], select[disabled] { background-color: #F9F9F9; color: #BBB; }
 
+pre { overflow: auto; }
+
 select { height: 22px; }
 textarea { font-family: 'Droid Sans Mono', monospace; }
 
@@ -43,6 +45,11 @@ dt label { padding-left: 0; }
 label { font-weight: bold; margin: 0px; padding: 2px; cursor: pointer; }
 label .faded_out { font-weight: normal; }
 dd { margin-left: 0px; margin-bottom: 15px; vertical-align: middle; }
+
+div.image_container { border: 1px solid #CCC; padding: 3px; background-color: #F3F3F3; width: auto; margin: 0 5px 0 5px; float: right; clear: right; }
+div.image_container icleft { float: left; clear: left; }
+div.image_container icright { float: right; clear: right; }
+div.image_container.thumb img.image { width: 220px; }
 /* end general styles */
 
 /* Main header area */
@@ -88,7 +95,7 @@ dd { margin-left: 0px; margin-bottom: 15px; vertical-align: middle; }
 .imgtd { width: 22px; text-align: center; vertical-align: middle; }
 
 /* comments styling */
-.comment { padding-bottom: 10px; }
+.comment { padding-bottom: 10px; clear: both; }
 .comment:target .comment_main { border: 1px dotted #CCC; background-color: #F0F7FF; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
 .comment_delete { margin-top: 10px !important; }
 .commenttitle {  font-weight: bold; }
@@ -550,7 +557,6 @@ dl.viewissue_list dd { float: left; display: block; width: 195px; font-weight: n
 #viewissue_relation_results .faded_out {  font-weight: normal; }
 
 ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
-
 /* end view issue styling */
 
 /* user dashboard styling */

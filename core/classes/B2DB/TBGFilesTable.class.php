@@ -30,6 +30,16 @@
 		const CONTENT = 'files.content';
 		const DESCRIPTION = 'files.description';
 
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGFilesTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGFilesTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -62,6 +72,14 @@
 			$res = $this->doInsert($crit);
 
 			return $res->getInsertID();
+		}
+
+		public function getByID($id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$row = $this->doSelectById($id, $crit, false);
+			return $row;
 		}
 
 	}

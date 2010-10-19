@@ -660,7 +660,7 @@
 			}
 			if ($row === null)
 			{
-				$row = TBGIssuesTable::getTable()->getByID($i_id, false);
+				$row = TBGIssuesTable::getTable()->getByID($i_id);
 			}
 	
 			if (!$row instanceof B2DBRow)
@@ -1492,11 +1492,15 @@
 		/**
 		 * Attach a file to the issue
 		 * 
-		 * @param string $file_id The file id
+		 * @param TBGFile $file The file to attach
 		 */
-		public function attachFile($file_id)
+		public function attachFile(TBGFile $file)
 		{
-			B2DB::getTable('TBGIssueFilesTable')->addFileToIssue($this->getID(), $file_id);
+			TBGIssueFilesTable::getTable()->addByIssueIDandFileID($this->getID(), $file->getID());
+			if ($this->_files !== null)
+			{
+				$this->_files[$file->getID()] = $file;
+			}
 		}
 
 		/**
@@ -3676,6 +3680,17 @@
 		}
 		
 		/**
+		 * Populate the files array
+		 */
+		protected function _populateFiles()
+		{
+			if ($this->_files === null)
+			{
+				$this->_files = TBGFile::getByIssueID($this->getID());
+			}
+		}
+
+		/**
 		 * Return an array with all files attached to this issue
 		 * 
 		 * @return array
@@ -3685,37 +3700,41 @@
 			$this->_populateFiles();
 			return $this->_files;
 		}
-		
+
 		/**
-		 * Populate the files array
+		 * Return a file by the filename if it is attached to this issue
+		 * 
+		 * @param string $filename The original filename to match against
+		 *
+		 * @return TBGFile
 		 */
-		protected function _populateFiles()
+		public function getFileByFilename($filename)
 		{
-			if ($this->_files === null)
+			foreach ($this->getFiles() as $file_id => $file)
 			{
-				$this->_files = B2DB::getTable('TBGIssueFilesTable')->getByIssueID($this->getID());
+				if (strtolower($filename) == strtolower($file->getOriginalFilename()))
+				{
+					return $file;
+				}
 			}
+			return null;
 		}
 		
 		/**
 		 * Remove a file
 		 * 
-		 * @param integer $file_id The file ID
+		 * @param TBGFile $file The file to be removed
 		 * 
 		 * @return boolean
 		 */
-		public function removeFile($file_id)
+		public function removeFile(TBGFile $file)
 		{
-			if ($res = B2DB::getTable('TBGFilesTable')->removeByIssueIDandFileID($this->getID(), $file_id))
+			TBGFilesTable::getTable()->removeByIssueIDandFileID($this->getID(), $file->getID());
+			if (is_array($this->_files) && array_key_exists($file->getID(), $this->_files))
 			{
-				if (is_array($this->_files) && array_key_exists($file_id, $this->_files))
-				{
-					unset($this->_files[$file_id]);
-				}
-				unlink(TBGContext::getIncludePath() . 'files/' . $row->get(TBGFilesTable::FILENAME));
-				return true;
+				unset($this->_files[$file->getID()]);
 			}
-			return false;
+			$file->delete();
 		}
 	
 		/**

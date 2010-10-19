@@ -300,15 +300,6 @@
 			}
 			$namespace = $matches[3];
 
-			if (strtolower($namespace) == 'image')
-			{
-				$options = explode('|', $title);
-				$title = array_pop($options);
-
-				if (TBGContext::isCLI()) return $href;
-				return image_tag($href, array('alt' => $title));
-			}
-
 			if (strtolower($namespace) == 'category')
 			{
 				if (substr($matches[2], 0, 1) != ':')
@@ -326,6 +317,82 @@
 				$title = (array_key_exists(5, $matches) && (strpos($matches[5], '|') !== false) ? '' : $namespace.':') . array_pop($options);
 
 				return link_tag('http://en.wikipedia.org/wiki/'.$href, $title);
+			}
+
+			if (in_array(strtolower($namespace), array('image', 'file')))
+			{
+				$retval = $namespace . ':' . $href;
+				if (!TBGContext::isCLI())
+				{
+					$options = explode('|', $title);
+					$filename = $href;
+					$issuemode = (bool) (isset($this->options['issue']) && $this->options['issue'] instanceof TBGIssue);
+					//var_dump($this->options);die();
+					if ($issuemode)
+					{
+						$file = $this->options['issue']->getFileByFilename($filename);
+						//var_dump($file);die();
+					}
+					if ($file instanceof TBGFile)
+					{
+						$caption = (!empty($options)) ? array_pop($options) : $file->getDescription();
+						$caption = ($caption != '') ? $caption : $file->getOriginalFilename();
+						$file_link = make_url('showfile', array('id' => $file->getID()));
+						if ($file->isImage())
+						{
+							$divclasses = array('image_container');
+							$style_dimensions = '';
+							foreach ($options as $option)
+							{
+								$optionlen = strlen($option);
+								if (substr($option, $optionlen - 2) == 'px')
+								{
+									if (is_numeric($option[0]))
+									{
+										$style_dimensions = ' width: '.$option[0].';';
+										break;
+									}
+									else
+									{
+										$style_dimensions = ' height: '.substr($option[0], 1).';';
+										break;
+									}
+								}
+							}
+							if (in_array('thumb', $options))
+							{
+								$divclasses[] = 'thumb';
+							}
+							if (in_array('left', $options))
+							{
+								$divclasses[] = 'icleft';
+							}
+							if (in_array('right', $options))
+							{
+								$divclasses[] = 'icright';
+							}
+							$retval = '<div class="'.join(' ', $divclasses).'"';
+							if ($issuemode)
+							{
+								$retval .= ' style="float: left; clear: left;"';
+							}
+							$retval .= '>';
+							$retval .= image_tag($file_link, array('alt' => $caption, 'title' => $caption, 'style' => $style_dimensions, 'class' => 'image'), true);
+							if ($caption != '')
+							{
+								$retval .= '<br>'.tbg_parse_text($caption);
+							}
+							$retval .= link_tag($file_link, image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('title' => __('Open image in new window')));
+							$retval .= '</div>';
+						}
+						else
+						{
+							$retval = link_tag($file_link, $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('title' => __('Open file in new window')));
+						}
+					}
+				}
+				return $retval;
+				//$file_id = TBGFilesTable::get
 			}
 
 			if ($namespace == 'TBG')

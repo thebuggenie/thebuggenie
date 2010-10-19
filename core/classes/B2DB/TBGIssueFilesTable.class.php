@@ -27,17 +27,27 @@
 		const FILE_ID = 'issuefiles.file_id';
 		const ISSUE_ID = 'issuefiles.issue_id';
 
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGIssueFilesTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGIssueFilesTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUE_ID, TBGIssuesTable::getTable(), TBGIssuesTable::ID);
-			parent::_addForeignKeyColumn(self::FILE_ID, B2DB::getTable('TBGFilesTable'), TBGFilesTable::ID);
+			parent::_addForeignKeyColumn(self::FILE_ID, TBGFilesTable::getTable(), TBGFilesTable::ID);
 			parent::_addInteger(self::ATTACHED_AT, 10);
 		}
 
-		public function addFileToIssue($issue_id, $file_id)
+		public function addByIssueIDandFileID($issue_id, $file_id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ISSUE_ID, $issue_id);
@@ -54,25 +64,6 @@
 			}
 		}
 
-		public function removeFileFromIssue($issue_id, $file_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUE_ID, $issue_id);
-			$crit->addWhere(self::FILE_ID, $file_id);
-			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$this->doDelete($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::FILE_ID, $file_id);
-			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			if ($this->doCount($crit) == 0)
-			{
-				$file = B2DB::getTable('TBGFilesTable')->doSelectById($file_id);
-				unlink(TBGSettings::getUploadsLocalpath().$file->get(TBGFilesTable::REAL_FILENAME));
-				B2DB::getTable('TBGFilesTable')->doDeleteById($file_id);
-			}
-		}
-		
 		public function getByIssueID($issue_id)
 		{
 			$crit = $this->getCriteria();
@@ -85,7 +76,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$ret_arr[$row->get(TBGFilesTable::ID)] = array('filename' => $row->get(TBGFilesTable::ORIGINAL_FILENAME), 'description' => $row->get(TBGFilesTable::DESCRIPTION), 'timestamp' => $row->get(TBGFilesTable::UPLOADED_AT));
+					$ret_arr[$row->get(TBGFilesTable::ID)] = TBGFactory::TBGFileLab($row->get(TBGFilesTable::ID), $row);
 				}
 			}
 			
@@ -96,6 +87,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ISSUE_ID, $issue_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			if ($res = $this->doSelectById($file_id, $crit))
 			{
 				$this->doDelete($crit);

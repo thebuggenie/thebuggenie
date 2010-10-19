@@ -35,7 +35,7 @@
 		static protected $_categories = array();
 		static protected $_severities = array();
 		static protected $_issuetypes = array();
-		static protected $_tasks = array();
+		static protected $_files = array();
 		static protected $_issues = array();
 		static protected $_comments = array();
 		static protected $_modules = array();
@@ -501,27 +501,27 @@
 		}
 
 		/**
-		 * Returns a TBGTask
+		 * Returns a TBGFile
 		 *
-		 * @param integer $t_id
+		 * @param integer $id
 		 * 
-		 * @return TBGTask
+		 * @return TBGFile
 		 */
-		public static function taskLab($t_id, $row = null)
+		public static function TBGFileLab($id, $row = null)
 		{
-			if ((int) $i_id == 0) throw new Exception('Invalid id');
-			if (!isset(self::$_tasks[$t_id]))
+			if ((int) $id == 0) throw new Exception('Invalid id');
+			if (!isset(self::$_files[$id]))
 			{
 				try
 				{
-					self::$_tasks[$t_id] = new TBGTask($t_id, $row);
+					self::$_files[$id] = new TBGFile($id, $row);
 				}
 				catch (Exception $e)
 				{
 					throw $e;
 				}
 			}
-			return self::$_tasks[$t_id];
+			return self::$_files[$id];
 		}
 		
 		/**

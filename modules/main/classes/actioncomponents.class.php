@@ -137,12 +137,11 @@
 
 		public function componentAttachedfile()
 		{
-			if ($this->mode == 'issue')
+			if ($this->mode == 'issue' && !isset($this->issue))
 			{
 				$this->issue = TBGFactory::TBGIssueLab($this->issue_id);
 			}
-			$file = B2DB::getTable('TBGFilesTable')->doSelectById($this->file_id);
-			$this->file = array('id' => $file->get(TBGFilesTable::ID), 'filename' => $file->get(TBGFilesTable::ORIGINAL_FILENAME), 'description' => $file->get(TBGFilesTable::DESCRIPTION), 'timestamp' => $file->get(TBGFilesTable::UPLOADED_AT));
+			$this->file_id = $this->file->getID();
 		}
 
 		public function componentCloseissue()

@@ -31,11 +31,13 @@
 	$routes[] = array('issue_upload', '/upload/:issue_id', 'main', 'upload', array('mode' => 'issue'));
 	$routes[] = array('showfile', '/files/show/:id', 'main', 'getFile', array('mode' => 'show'));
 	$routes[] = array('downloadfile', '/files/download/:id', 'main', 'getFile', array('mode' => 'download'));
-	$routes[] = array('issue_upload_status', '/get/upload/status/for/issue/:issue_id', 'main', 'getUploadStatus', array('mode' => 'issue'));
+	$routes[] = array('issue_upload_status', '/upload/get/status/for/issue/:issue_id', 'main', 'getUploadStatus', array('mode' => 'issue'));
 	$routes[] = array('issue_detach_file', '/upload/detach/file/:file_id/from/issue/:issue_id', 'main', 'detachFile', array('mode' => 'issue'));
 	$routes[] = array('issue_attach_link', '/update/attach/link/to/issue/:issue_id', 'main', 'attachLinkToIssue');
 	$routes[] = array('issue_vote', '/vote/for/issue/:issue_id/:vote', 'main', 'voteForIssue');
 	$routes[] = array('issue_remove_link', '/upload/remove/link/:link_id/from/issue/:issue_id', 'main', 'removeLinkFromIssue');
+	$routes[] = array('upload_status', '/upload/get/status/for/:mode', 'main', 'getUploadStatus');
+	$routes[] = array('upload', '/upload/:mode', 'main', 'upload');
 	$routes[] = array('account_change_password', '/my_account/change/password', 'main', 'accountChangePassword');
 	$routes[] = array('account_save_information', '/my_account/save/information', 'main', 'myAccount', array('mode' => 'information'));
 	$routes[] = array('account_save_settings', '/my_account/save/settings', 'main', 'myAccount', array('mode' => 'settings'));
