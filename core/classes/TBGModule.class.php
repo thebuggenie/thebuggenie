@@ -522,13 +522,16 @@
 			$this->_routes[] = array($key, $url, $this->getName(), $function, $params);
 		}
 
-		public function initialize()
+		final public function initialize()
 		{
 			$this->_initialize(TBGContext::getI18n());
-			$this->_addAvailablePermissions();
-			$this->_addAvailableListeners();
-			$this->_addAvailableRoutes();
-			$this->_loadRoutes();
+			if ($this->isEnabled())
+			{
+				$this->_addAvailablePermissions();
+				$this->_addAvailableListeners();
+				$this->_addAvailableRoutes();
+				$this->_loadRoutes();
+			}
 		}
 
 		final protected function _loadRoutes()

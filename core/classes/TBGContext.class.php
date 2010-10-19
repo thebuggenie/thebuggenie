@@ -721,12 +721,7 @@
 				{
 					foreach (self::$_modules as $module_name => $module)
 					{
-						if ($module->isEnabled())
-						{
-							TBGLogging::log("initializing and loading routes for {$module_name}");
-							$module->initialize();
-							TBGLogging::log("done (initializing and loading routes for {$module_name})");
-						}
+						$module->initialize();
 					}
 					TBGModule::loadModuleListeners(array_keys(self::$_modules));
 					TBGLogging::log('done (initializing modules)');
