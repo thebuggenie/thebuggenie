@@ -338,7 +338,7 @@
 						$caption = (!empty($options)) ? array_pop($options) : $file->getDescription();
 						$caption = ($caption != '') ? $caption : $file->getOriginalFilename();
 						$file_link = make_url('showfile', array('id' => $file->getID()));
-						if ($file->isImage())
+						if ($file->isImage() && strtolower($namespace) == 'image')
 						{
 							$divclasses = array('image_container');
 							$style_dimensions = '';
