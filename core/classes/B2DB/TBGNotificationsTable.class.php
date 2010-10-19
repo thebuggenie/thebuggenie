@@ -41,7 +41,7 @@
 			parent::_addVarchar(self::TITLE, 100);
 			parent::_addText(self::CONTENTS, false);
 			parent::_addInteger(self::STATUS, 5);
-			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::GID, B2DB::getTable('TBGGroupsTable'), TBGGroupsTable::ID);
 			parent::_addForeignKeyColumn(self::TID, B2DB::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);

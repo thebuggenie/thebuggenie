@@ -96,7 +96,7 @@
 			parent::_addText(self::PREVIOUS_VALUE, false);
 			parent::_addText(self::CURRENT_VALUE, false);
 			parent::_addInteger(self::TIME, 10);
-			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
@@ -223,7 +223,7 @@
 				$crit->addWhere(self::CHANGE_TYPE, array(self::LOG_ISSUE_CREATED, self::LOG_ISSUE_CLOSE), B2DBCriteria::DB_IN);
 				$crit->addWhere(TBGIssuesTable::PROJECT_ID, $project_id);
 				$crit->addWhere(TBGIssuesTable::DELETED, false);
-				$crit->addJoin(B2DB::getTable('TBGIssueTypesTable'), TBGIssueTypesTable::ID, TBGIssuesTable::ISSUE_TYPE, array(), B2DBCriteria::DB_LEFT_JOIN, $joinedtable);
+				$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, TBGIssuesTable::ISSUE_TYPE, array(), B2DBCriteria::DB_LEFT_JOIN, $joinedtable);
 				$crit->addWhere(TBGIssueTypesTable::ICON, 'bug_report');
 				$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 				$ctn = $crit->returnCriterion(self::TIME, NOW - (86400 * ($cc + 1)), B2DBCriteria::DB_GREATER_THAN_EQUAL);

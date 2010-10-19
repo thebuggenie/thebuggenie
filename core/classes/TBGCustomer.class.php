@@ -90,7 +90,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGUsersTable::CUSTOMER_ID, $this->_itemid);
-			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $uid);
+			TBGUsersTable::getTable()->doUpdateById($crit, $uid);
 		}
 		
 		public function setName($c_name)
@@ -107,7 +107,7 @@
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGUsersTable::CUSTOMER_ID, $this->getID());
 			$crit->addUpdate(TBGUsersTable::CUSTOMER_ID, 0);
-			$res = B2DB::getTable('TBGUsersTable')->doUpdate($crit);
+			$res = TBGUsersTable::getTable()->doUpdate($crit);
 		}
 
 		public static function getAll()

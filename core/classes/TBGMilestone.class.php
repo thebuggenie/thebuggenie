@@ -123,7 +123,7 @@
 		public static function getAllByProjectID($project_id)
 		{
 			$milestones = array();
-			if ($res = B2DB::getTable('TBGMilestonesTable')->getAllByProjectID($project_id))
+			if ($res = TBGMilestonesTable::getTable()->getAllByProjectID($project_id))
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -144,7 +144,7 @@
 		public static function getMilestonesByProjectID($project_id)
 		{
 			$milestones = array();
-			if ($res = B2DB::getTable('TBGMilestonesTable')->getMilestonesByProjectID($project_id))
+			if ($res = TBGMilestonesTable::getTable()->getMilestonesByProjectID($project_id))
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -165,7 +165,7 @@
 		public static function getSprintsByProjectID($project_id)
 		{
 			$sprints = array();
-			if ($res = B2DB::getTable('TBGMilestonesTable')->getSprintsByProjectID($project_id))
+			if ($res = TBGMilestonesTable::getTable()->getSprintsByProjectID($project_id))
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -186,7 +186,7 @@
 		 */
 		public static function createNew($name, $type, $project_id)
 		{
-			$m_id = B2DB::getTable('TBGMilestonesTable')->createNew($name, $type, $project_id);
+			$m_id = TBGMilestonesTable::getTable()->createNew($name, $type, $project_id);
 			TBGContext::setPermission('b2milestoneaccess', $m_id, 'core', 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
 			return TBGFactory::TBGMilestoneLab($m_id);
 		}
@@ -202,7 +202,7 @@
 			if ($row === null)
 			{
 				$crit = new B2DBCriteria();
-				$row = B2DB::getTable('TBGMilestonesTable')->doSelectById($m_id, $crit);
+				$row = TBGMilestonesTable::getTable()->doSelectById($m_id, $crit);
 			}
 			
 			if ($row instanceof B2DBRow)
@@ -813,7 +813,7 @@
 				$crit->addUpdate(TBGMilestonesTable::STARTING, 0);
 				$this->_startingdate = 0;
 			}
-			$res = B2DB::getTable('TBGMilestonesTable')->doUpdateById($crit, $this->getID());
+			$res = TBGMilestonesTable::getTable()->doUpdateById($crit, $this->getID());
 		}
 
 		/**
@@ -821,7 +821,7 @@
 		 */
 		public function delete()
 		{
-			B2DB::getTable('TBGMilestonesTable')->doDeleteById($this->getID());
+			TBGMilestonesTable::getTable()->doDeleteById($this->getID());
 			TBGIssuesTable::getTable()->clearMilestone($this->getID());
 		}
 		

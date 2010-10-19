@@ -47,9 +47,9 @@
 			parent::_addBoolean(self::REQUIRED);
 			parent::_addBoolean(self::REPORTABLE);
 			parent::_addBoolean(self::ADDITIONAL);
-			parent::_addForeignKeyColumn(self::PROJECT_ID, B2DB::getTable('TBGProjectsTable'), TBGProjectsTable::ID);
-			parent::_addForeignKeyColumn(self::CATEGORY_ID, B2DB::getTable('TBGListTypesTable'), TBGListTypesTable::ID);
-			parent::_addForeignKeyColumn(self::ISSUETYPE_ID, B2DB::getTable('TBGIssueTypesTable'), TBGIssueTypesTable::ID);
+			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
+			parent::_addForeignKeyColumn(self::CATEGORY_ID, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+			parent::_addForeignKeyColumn(self::ISSUETYPE_ID, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		

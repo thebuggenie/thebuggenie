@@ -77,7 +77,7 @@
 		{
 			if ($row === null)
 			{
-				$rows = B2DB::getTable('TBGListTypesTable')->getAllByItemType($item_type);
+				$rows = TBGListTypesTable::getTable()->getAllByItemType($item_type);
 				if (array_key_exists($i_id, $rows)) $row = $rows[$i_id];
 			}
 			if ($row === null)
@@ -86,7 +86,7 @@
 				$crit = new B2DBCriteria();
 				$crit->addWhere(TBGListTypesTable::SCOPE, TBGContext::getScope()->getID());
 				$crit->addWhere(TBGListTypesTable::ITEMTYPE, $item_type);
-				$row = B2DB::getTable('TBGListTypesTable')->doSelectById($i_id, $crit);
+				$row = TBGListTypesTable::getTable()->doSelectById($i_id, $crit);
 			}
 			
 			if ($row instanceof B2DBRow)
@@ -116,7 +116,7 @@
 		 */
 		protected static function _createNew($name, $itemtype, $itemdata = null)
 		{
-			$res = B2DB::getTable('TBGListTypesTable')->createNew($name, $itemtype, $itemdata);
+			$res = TBGListTypesTable::getTable()->createNew($name, $itemtype, $itemdata);
 			return $res;
 		}
 
@@ -140,7 +140,7 @@
 		 */
 		public function save()
 		{
-			B2DB::getTable('TBGListTypesTable')->saveById($this->_name, $this->_itemdata, $this->_sortorder, $this->_itemid);
+			TBGListTypesTable::getTable()->saveById($this->_name, $this->_itemdata, $this->_sortorder, $this->_itemid);
 		}
 
 		public function isBuiltin()

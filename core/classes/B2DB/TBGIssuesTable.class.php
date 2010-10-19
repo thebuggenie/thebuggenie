@@ -83,10 +83,10 @@
 			parent::_addVarchar(self::TITLE, 200);
 			parent::_addInteger(self::POSTED, 10);
 			parent::_addInteger(self::LAST_UPDATED, 10);
-			parent::_addForeignKeyColumn(self::PROJECT_ID, B2DB::getTable('TBGProjectsTable'), TBGProjectsTable::ID);
+			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addText(self::LONG_DESCRIPTION, false);
 			parent::_addBoolean(self::STATE);
-			parent::_addForeignKeyColumn(self::POSTED_BY, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::POSTED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addInteger(self::OWNED_BY, 10);
 			parent::_addFloat(self::USER_PAIN, 1);
 			parent::_addInteger(self::PAIN_BUG_TYPE, 3);
@@ -94,13 +94,13 @@
 			parent::_addInteger(self::PAIN_LIKELIHOOD, 3);
 			parent::_addInteger(self::ASSIGNED_TO, 10);
 			parent::_addText(self::REPRODUCTION, false);
-			parent::_addForeignKeyColumn(self::RESOLUTION, B2DB::getTable('TBGListTypesTable'), TBGListTypesTable::ID);
-			parent::_addForeignKeyColumn(self::ISSUE_TYPE, B2DB::getTable('TBGIssueTypesTable'), TBGIssueTypesTable::ID);
-			parent::_addForeignKeyColumn(self::STATUS, B2DB::getTable('TBGListTypesTable'), TBGListTypesTable::ID);
-			parent::_addForeignKeyColumn(self::PRIORITY, B2DB::getTable('TBGListTypesTable'), TBGListTypesTable::ID);
-			parent::_addForeignKeyColumn(self::CATEGORY, B2DB::getTable('TBGListTypesTable'), TBGListTypesTable::ID);
-			parent::_addForeignKeyColumn(self::SEVERITY, B2DB::getTable('TBGListTypesTable'), TBGListTypesTable::ID);
-			parent::_addForeignKeyColumn(self::REPRODUCABILITY, B2DB::getTable('TBGListTypesTable'), TBGListTypesTable::ID);
+			parent::_addForeignKeyColumn(self::RESOLUTION, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+			parent::_addForeignKeyColumn(self::ISSUE_TYPE, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
+			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+			parent::_addForeignKeyColumn(self::PRIORITY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+			parent::_addForeignKeyColumn(self::CATEGORY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+			parent::_addForeignKeyColumn(self::SEVERITY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
+			parent::_addForeignKeyColumn(self::REPRODUCABILITY, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
 			parent::_addVarchar(self::SCRUMCOLOR, 7, '#FFFFFF');
 			parent::_addInteger(self::ESTIMATED_MONTHS, 10);
 			parent::_addInteger(self::ESTIMATED_WEEKS, 10);
@@ -120,9 +120,9 @@
 			parent::_addBoolean(self::DELETED);
 			parent::_addBoolean(self::BLOCKING);
 			parent::_addBoolean(self::LOCKED);
-			parent::_addForeignKeyColumn(self::USER_WORKING_ON, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::USER_WORKING_ON, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addInteger(self::USER_WORKED_ON_SINCE, 10);
-			parent::_addForeignKeyColumn(self::MILESTONE, B2DB::getTable('TBGMilestonesTable'), TBGMilestonesTable::ID);
+			parent::_addForeignKeyColumn(self::MILESTONE, TBGMilestonesTable::getTable(), TBGMilestonesTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
@@ -413,7 +413,7 @@
 		public function getRecentByProjectIDandIssueType($project_id, $issuetypes, $limit = 5)
 		{
 			$crit = $this->getCriteria();
-			$crit->addJoin(B2DB::getTable('TBGIssueTypesTable'), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
+			$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addWhere(TBGIssueTypesTable::ICON, $issuetypes, B2DBCriteria::DB_IN);
 			$crit->addOrderBy(self::POSTED, B2DBCriteria::SORT_DESC);

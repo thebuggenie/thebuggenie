@@ -248,7 +248,7 @@
 					$username = TBGContext::getRequest()->getParameter('desired_username');
 					if (!empty($username))
 					{
-						$exists = B2DB::getTable('TBGUsersTable')->getByUsername($username);
+						$exists = TBGUsersTable::getTable()->getByUsername($username);
 						
 						if ($exists)
 						{
@@ -387,7 +387,7 @@
 		{
 			$this->getResponse()->setPage('../../login');
 			
-			$row = B2DB::getTable('TBGUsersTable')->getByUsername($request->getParameter('user'));
+			$row = TBGUsersTable::getTable()->getByUsername($request->getParameter('user'));
 			if ($row)
 			{
 				if ($row->get(TBGUsersTable::PASSWD) != $request->getParameter('key'))

@@ -28,8 +28,8 @@
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::MILESTONE_ID, B2DB::getTable('TBGMilestonesTable'), TBGMilestonesTable::ID);
-			parent::_addForeignKeyColumn(self::PROJECT_ID, B2DB::getTable('TBGProjectsTable'), TBGProjectsTable::ID);
+			parent::_addForeignKeyColumn(self::MILESTONE_ID, TBGMilestonesTable::getTable(), TBGMilestonesTable::ID);
+			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		

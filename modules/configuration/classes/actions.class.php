@@ -1636,7 +1636,7 @@
 			$findstring = $request->getParameter('findstring');
 			if (strlen($findstring) >= 1)
 			{
-				list ($this->users, $this->total_results) = B2DB::getTable('TBGUsersTable')->findInConfig($findstring);
+				list ($this->users, $this->total_results) = TBGUsersTable::getTable()->findInConfig($findstring);
 			}
 			else
 			{

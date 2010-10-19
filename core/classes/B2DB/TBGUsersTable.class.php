@@ -90,7 +90,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UNAME, $username);
 			$crit->addWhere(self::DELETED, false);
-			return B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
+			return $this->doSelectOne($crit);
 		}
 
 		public function getByUsernameAndPassword($username, $password)
@@ -99,14 +99,14 @@
 			$crit->addWhere(self::UNAME, $username);
 			$crit->addWhere(self::PASSWD, $password);
 			$crit->addWhere(self::DELETED, false);
-			return B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
+			return $this->doSelectOne($crit);
 		}
 
 		public function getByUserID($userid)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::DELETED, false);
-			return B2DB::getTable('TBGUsersTable')->doSelectById($userid, $crit);
+			return $this->doSelectById($userid, $crit);
 		}
 
 		public function getByUserIDs($userids)
@@ -114,7 +114,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ID, $userids, B2DBCriteria::DB_IN);
 			$crit->addWhere(self::DELETED, false);
-			return B2DB::getTable('TBGUsersTable')->doSelect($crit);
+			return $this->doSelect($crit);
 		}
 
 		public function getByDetails($details, $limit = null)

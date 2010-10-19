@@ -48,7 +48,7 @@
 		 */
 		public static function createNew($name, $icon = 'bug_report')
 		{
-			$res = B2DB::getTable('TBGIssueTypesTable')->createNew($name, $icon);
+			$res = TBGIssueTypesTable::getTable()->createNew($name, $icon);
 			return TBGFactory::TBGIssuetypeLab($res->getInsertID());
 		}
 
@@ -97,7 +97,7 @@
 			{
 				if ($row === null)
 				{
-					$row = B2DB::getTable('TBGIssueTypesTable')->doSelectById($i_id);
+					$row = TBGIssueTypesTable::getTable()->doSelectById($i_id);
 				}
 				if ($row instanceof B2DBRow)
 				{
@@ -229,7 +229,7 @@
 
 		public function save()
 		{
-			B2DB::getTable('TBGIssueTypesTable')->saveDetails($this);
+			TBGIssueTypesTable::getTable()->saveDetails($this);
 		}
 
 		static function getTask()
@@ -239,7 +239,7 @@
 				$crit = new B2DBCriteria();
 				$crit->addWhere(TBGIssueTypesTable::ICON, 'task');
 				$crit->addWhere(TBGIssueTypesTable::SCOPE, TBGContext::getScope()->getID());
-				$row = B2DB::getTable('TBGIssueTypesTable')->doSelectOne($crit);
+				$row = TBGIssueTypesTable::getTable()->doSelectOne($crit);
 				if ($row instanceof B2DBRow)
 				{
 					return TBGFactory::TBGIssuetypeLab($row->get(TBGIssueTypesTable::ID), $row);
@@ -307,7 +307,7 @@
 				$crit->addWhere(TBGIssueTypesTable::SCOPE, TBGContext::getScope()->getID());
 				$crit->addOrderBy(TBGIssueTypesTable::ID, B2DBCriteria::SORT_ASC);
 		
-				$res = B2DB::getTable('TBGIssueTypesTable')->doSelect($crit);
+				$res = TBGIssueTypesTable::getTable()->doSelect($crit);
 				while ($row = $res->getNextRow())
 				{
 					$issuetypes[$row->get(TBGIssueTypesTable::ID)] = TBGFactory::TBGIssuetypeLab($res->get(TBGIssueTypesTable::ID), $row);

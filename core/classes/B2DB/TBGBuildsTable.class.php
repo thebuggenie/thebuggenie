@@ -47,7 +47,7 @@
 			parent::_addBoolean(self::IS_DEFAULT);
 			parent::_addBoolean(self::LOCKED);
 			parent::_addForeignKeyColumn(self::EDITION, B2DB::getTable('TBGEditionsTable'), TBGEditionsTable::ID);
-			parent::_addForeignKeyColumn(self::PROJECT, B2DB::getTable('TBGProjectsTable'), TBGProjectsTable::ID);
+			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		

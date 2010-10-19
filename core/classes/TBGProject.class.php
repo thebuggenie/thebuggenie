@@ -326,8 +326,8 @@
 		 */
 		public static function setDefault($p_id)
 		{
-			B2DB::getTable('TBGProjectsTable')->clearDefaults();
-			B2DB::getTable('TBGProjectsTable')->setDefaultProject($p_id);
+			TBGProjectsTable::getTable()->clearDefaults();
+			TBGProjectsTable::getTable()->setDefaultProject($p_id);
 			return true;
 		}
 
@@ -340,7 +340,7 @@
 		 */
 		public static function getByKey($key)
 		{
-			if ($project_row = B2DB::getTable('TBGProjectsTable')->getByKey(strtolower($key)))
+			if ($project_row = TBGProjectsTable::getTable()->getByKey(strtolower($key)))
 			{
 				return TBGFactory::projectLab($project_row->get(TBGProjectsTable::ID), $project_row);
 			}
@@ -355,7 +355,7 @@
 			if (self::$_projects === null)
 			{
 				self::$_projects = array();
-				if ($res = B2DB::getTable('TBGProjectsTable')->getAll())
+				if ($res = TBGProjectsTable::getTable()->getAll())
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -387,7 +387,7 @@
 		 */
 		static function getDefaultProject()
 		{
-			if ($res = B2DB::getTable('TBGProjectsTable')->getAllSortedByIsDefault())
+			if ($res = TBGProjectsTable::getTable()->getAllSortedByIsDefault())
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -410,10 +410,10 @@
 		 */
 		public static function createNew($name)
 		{
-			$project = B2DB::getTable('TBGProjectsTable')->getByKey(strtolower(str_replace(' ', '', $name)));
+			$project = TBGProjectsTable::getTable()->getByKey(strtolower(str_replace(' ', '', $name)));
 			if ($project === null)
 			{
-				$p_id = B2DB::getTable('TBGProjectsTable')->createNew($name);
+				$p_id = TBGProjectsTable::getTable()->createNew($name);
 
 				TBGContext::setPermission("canseeproject", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canmanageproject", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
@@ -441,7 +441,7 @@
 		 */
 		static function getByPrefix($prefix)
 		{
-			if ($row = B2DB::getTable('TBGProjectsTable')->getByPrefix($prefix))
+			if ($row = TBGProjectsTable::getTable()->getByPrefix($prefix))
 			{
 				return TBGFactory::projectLab($row->get(TBGProjectsTable::ID), $row);
 			}
@@ -458,7 +458,7 @@
 		{
 			if (!$row instanceof B2DBRow)
 			{
-				$row = B2DB::getTable('TBGProjectsTable')->getById($id);
+				$row = TBGProjectsTable::getTable()->getById($id);
 			}
 			if ($row instanceof B2DBRow)
 			{
@@ -1344,7 +1344,7 @@
 			$crit->addUpdate(TBGProjectsTable::SUMMARY_DISPLAY, $this->_summary_display);
 			$crit->addUpdate(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING, $this->_can_change_wo_working);
 			$crit->addUpdate(TBGProjectsTable::DELETED, $this->_deleted);
-			$res = B2DB::getTable('TBGProjectsTable')->doUpdateById($crit, $this->getID());
+			$res = TBGProjectsTable::getTable()->doUpdateById($crit, $this->getID());
 
 			if ($this->_dodelete)
 			{

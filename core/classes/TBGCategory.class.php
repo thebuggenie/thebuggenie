@@ -15,7 +15,7 @@
 			if (self::$_items === NULL)
 			{
 				self::$_items = array();
-				if ($items = B2DB::getTable('TBGListTypesTable')->getAllByItemType(self::CATEGORY))
+				if ($items = TBGListTypesTable::getTable()->getAllByItemType(self::CATEGORY))
 				{
 					foreach ($items as $row_id => $row)
 					{
@@ -46,7 +46,7 @@
 		 */
 		public static function delete($id)
 		{
-			B2DB::getTable('TBGListTypesTable')->deleteByTypeAndId(self::CATEGORY, $id);
+			TBGListTypesTable::getTable()->deleteByTypeAndId(self::CATEGORY, $id);
 		}
 
 		/**

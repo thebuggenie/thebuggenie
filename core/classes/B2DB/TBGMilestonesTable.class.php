@@ -51,7 +51,7 @@
 			parent::_addInteger(self::MILESTONE_TYPE, 2);
 			parent::_addInteger(self::STARTING, 10);
 			parent::_addInteger(self::SCHEDULED, 10);
-			parent::_addForeignKeyColumn(self::PROJECT, B2DB::getTable('TBGProjectsTable'), TBGProjectsTable::ID);
+			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		

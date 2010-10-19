@@ -48,7 +48,7 @@
 			parent::_addInteger(self::UPDATED, 10);
 			parent::_addInteger(self::DUE, 10);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::STATUS, B2DB::getTable('TBGListTypesTable'), TBGListTypesTable::ID);
+			parent::_addForeignKeyColumn(self::STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
 		}
 		
 		public function getByIssueID($issue_id)

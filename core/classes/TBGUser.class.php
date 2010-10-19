@@ -238,7 +238,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGUsersTable::ACTIVATED, ($activated) ? 1 : 0);
-			$res = B2DB::getTable('TBGUsersTable')->doSelect($crit);
+			$res = TBGUsersTable::getTable()->doSelect($crit);
 			
 			$users = array();
 			while ($row = $res->getNextRow())
@@ -252,7 +252,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGUsersTable::ENABLED, ($enabled) ? 1 : 0);
-			$res = B2DB::getTable('TBGUsersTable')->doSelect($crit);
+			$res = TBGUsersTable::getTable()->doSelect($crit);
 			
 			$users = array();
 			while ($row = $res->getNextRow())
@@ -271,7 +271,7 @@
 		 */
 		public static function getByUsername($username)
 		{
-			if ($row = B2DB::getTable('TBGUsersTable')->getByUsername($username))
+			if ($row = TBGUsersTable::getTable()->getByUsername($username))
 			{
 				return TBGFactory::userLab($row->get(TBGUsersTable::ID), $row);
 			}
@@ -303,7 +303,7 @@
 				$crit->addWhere(TBGUsersTable::UNAME, "$details%", B2DBCriteria::DB_LIKE);
 			}
 	
-			$res = B2DB::getTable('TBGUsersTable')->doSelect($crit);
+			$res = TBGUsersTable::getTable()->doSelect($crit);
 	
 			if ($res->count() == 0 && strlen($details) > 1)
 			{
@@ -316,7 +316,7 @@
 				{
 					$crit->addWhere(TBGUsersTable::SCOPE, TBGContext::getScope()->getID());
 				}
-				$res = B2DB::getTable('TBGUsersTable')->doSelect($crit);
+				$res = TBGUsersTable::getTable()->doSelect($crit);
 			}
 	
 			if ($res->count() == 0)
@@ -399,17 +399,17 @@
 					if ($username !== null && $password !== null)
 					{
 						// First test a pre-encrypted password
-						$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, $password);
+						$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, $password);
 
 						if (!$row)
 						{
 							// Then test an unencrypted password
-							$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, self::hashPassword($password));
+							$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, self::hashPassword($password));
 							
 							if(!$row)
 							{
 								// This is a legacy account from a 2.1 upgrade - try md5
-								$row = B2DB::getTable('TBGUsersTable')->getByUsernameAndPassword($username, md5($password));
+								$row = TBGUsersTable::getTable()->getByUsernameAndPassword($username, md5($password));
 								if(!$row)
 								{
 									// Invalid
@@ -435,7 +435,7 @@
 					}
 					elseif (!TBGSettings::isLoginRequired())
 					{
-						$row = B2DB::getTable('TBGUsersTable')->getByUserID(TBGSettings::getDefaultUserID());
+						$row = TBGUsersTable::getTable()->getByUserID(TBGSettings::getDefaultUserID());
 					}
 				}
 
@@ -562,7 +562,7 @@
 			$crit->addInsert(TBGUsersTable::JOINED, NOW);
 			$crit->addInsert(TBGUsersTable::AVATAR, 'smiley');
 			$crit->addInsert(TBGUsersTable::GROUP_ID, '2');
-			$res = B2DB::getTable('TBGUsersTable')->doInsert($crit);
+			$res = TBGUsersTable::getTable()->doInsert($crit);
 	
 			if ($u_id === null) $u_id = $res->getInsertID();
 			
@@ -607,7 +607,7 @@
 			{
 				if ($row === null)
 				{
-					$row = B2DB::getTable('TBGUsersTable')->doSelectById($uid);
+					$row = TBGUsersTable::getTable()->doSelectById($uid);
 				}
 				if (!$row instanceof B2DBRow)
 				{
@@ -711,7 +711,7 @@
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGUsersTable::LASTSEEN, NOW);
 			$crit->addWhere(TBGUsersTable::ID, $this->uid);
-			B2DB::getTable('TBGUsersTable')->doUpdate($crit);
+			TBGUsersTable::getTable()->doUpdate($crit);
 			$this->lastseen = NOW;
 		}
 		
@@ -798,7 +798,7 @@
 			{
 				$crit = new B2DBCriteria();
 				$crit->addUpdate(TBGUsersTable::SHOWFOLLOWUPS, $setting);
-				$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->uid);
+				$res = TBGUsersTable::getTable()->doUpdateById($crit, $this->uid);
 				$this->showfollowups = ($setting == 0) ? false : true;
 			}
 			return $this->showfollowups;
@@ -837,7 +837,7 @@
 			{
 				$crit = new B2DBCriteria();
 				$crit->addUpdate(TBGUsersTable::SHOWASSIGNED, $setting);
-				$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->uid);
+				$res = TBGUsersTable::getTable()->doUpdateById($crit, $this->uid);
 				$this->showassigned = ($setting == 0) ? false : true;
 			}
 			return $this->showassigned;
@@ -1070,7 +1070,7 @@
 			$crit->addUpdate(TBGUsersTable::STATE, $s_id);
 			$crit->addWhere(TBGUsersTable::ID, $this->uid);
 			
-			B2DB::getTable('TBGUsersTable')->doUpdate($crit);
+			TBGUsersTable::getTable()->doUpdate($crit);
 			$this->state = $s_id;
 		}
 		
@@ -1155,7 +1155,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate($detail, $value);
-			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->uid);
+			TBGUsersTable::getTable()->doUpdateById($crit, $this->uid);
 			return true;
 		}
 	
@@ -1461,7 +1461,7 @@
 			if ($email !== null) $crit->addUpdate(TBGUsersTable::EMAIL, $email);
 			if ($uname !== null) $crit->addUpdate(TBGUsersTable::UNAME, $uname);
 			
-			$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->uid);
+			$res = TBGUsersTable::getTable()->doUpdateById($crit, $this->uid);
 			
 			if ($realname !== null) $this->realname = $realname;
 			if ($buddyname !== null) $this->buddyname = $buddyname;
@@ -1519,7 +1519,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGUsersTable::ACTIVATED, ($val) ? 1 : 0);
-			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->getID());
+			TBGUsersTable::getTable()->doUpdateById($crit, $this->getID());
 			$this->_isactivated = $val;
 		}
 		
@@ -1552,7 +1552,7 @@
 		{
 			$retarr = array();
 			
-			if ($res = B2DB::getTable('TBGUsersTable')->getByDetails($details))
+			if ($res = TBGUsersTable::getTable()->getByDetails($details))
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -1622,7 +1622,7 @@
 		 */
 		public function save()
 		{
-			$crit = B2DB::getTable('TBGUsersTable')->getCriteria();
+			$crit = TBGUsersTable::getTable()->getCriteria();
 			$crit->addUpdate(TBGUsersTable::REALNAME, $this->realname);
 			$crit->addUpdate(TBGUsersTable::BUDDYNAME, $this->buddyname);
 			$crit->addUpdate(TBGUsersTable::UNAME, $this->uname);
@@ -1637,7 +1637,7 @@
 			$crit->addUpdate(TBGUsersTable::ENABLED, $this->_isenabled);
 			$crit->addUpdate(TBGUsersTable::HOMEPAGE, $this->homepage);
 
-			$res = B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $this->getID());
+			$res = TBGUsersTable::getTable()->doUpdateById($crit, $this->getID());
 
 			TBGSettings::saveSetting('timezone', $this->_timezone, 'core', null, $this->getID());
 

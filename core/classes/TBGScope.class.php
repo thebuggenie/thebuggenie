@@ -238,8 +238,8 @@
 			B2DB::getTable('TBGPermissionsTable')->loadFixtures($scope_id, $admin_group_id, $guest_group_id);
 
 			B2DB::getTable('TBGUserStateTable')->loadFixtures($scope_id);
-			B2DB::getTable('TBGIssueTypesTable')->loadFixtures($scope_id);
-			B2DB::getTable('TBGListTypesTable')->loadFixtures($scope_id);
+			TBGIssueTypesTable::getTable()->loadFixtures($scope_id);
+			TBGListTypesTable::getTable()->loadFixtures($scope_id);
 			B2DB::getTable('TBGLinksTable')->loadFixtures($scope_id);
 		}
 

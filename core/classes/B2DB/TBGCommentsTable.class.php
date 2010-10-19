@@ -61,8 +61,8 @@
 			parent::_addVarchar(self::MODULE, 50);
 			parent::_addBoolean(self::SYSTEM_COMMENT);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addForeignKeyColumn(self::UPDATED_BY, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::POSTED_BY, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::UPDATED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::POSTED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
 		}
 
 		public function getComments($target_id, $target_type)

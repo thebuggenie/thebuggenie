@@ -33,7 +33,7 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::MODULE_NAME, 50);
 			parent::_addBoolean(self::ALLOWED);
-			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::GID, B2DB::getTable('TBGGroupsTable'), TBGGroupsTable::ID);
 			parent::_addForeignKeyColumn(self::TID, B2DB::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);

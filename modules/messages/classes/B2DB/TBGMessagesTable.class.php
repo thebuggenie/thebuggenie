@@ -27,8 +27,8 @@
 			parent::_addBoolean(self::DELETED);
 			parent::_addInteger(self::SENT, 10);
 			parent::_addBoolean(self::DELETED_SENT);
-			parent::_addForeignKeyColumn(self::FROM_USER, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
-			parent::_addForeignKeyColumn(self::TO_USER, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::FROM_USER, TBGUsersTable::getTable(), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::TO_USER, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::TO_TEAM, B2DB::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
 			parent::_addForeignKeyColumn(self::FOLDER, B2DB::getTable('TBGMessageFoldersTable'), TBGMessageFoldersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);

@@ -156,7 +156,7 @@
 					$this->ipp = 0;
 					$this->groupby = 'user_pain';
 					$this->grouporder = 'desc';
-					$ids = B2DB::getTable('TBGIssueTypesTable')->getBugReportTypeIDs();
+					$ids = TBGIssueTypesTable::getTable()->getBugReportTypeIDs();
 					$this->filters['issue_type'] = array();
 					foreach ($ids as $id)
 					{

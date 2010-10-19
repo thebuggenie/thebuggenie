@@ -3471,7 +3471,7 @@
 			$users = array();
 			if (count($this->getRelatedUIDs()) > 0)
 			{
-				if ($res = B2DB::getTable('TBGUsersTable')->getByUserIDs($this->getRelatedUIDs()))
+				if ($res = TBGUsersTable::getTable()->getByUserIDs($this->getRelatedUIDs()))
 				{
 					while ($row = $res->getNextRow())
 					{

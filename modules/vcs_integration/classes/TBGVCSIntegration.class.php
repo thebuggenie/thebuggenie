@@ -289,7 +289,7 @@
 							$crit->setFromTable(TBGUsersTable::getTable());
 							$crit->addSelectionColumn(TBGUsersTable::ID);
 							$crit->addWhere(TBGUsersTable::EMAIL, $email);
-							$row = B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
+							$row = TBGUsersTable::getTable()->doSelectOne($crit);
 							
 							if ($row != null)
 							{
@@ -311,7 +311,7 @@
 							$crit->setFromTable(TBGUsersTable::getTable());
 							$crit->addSelectionColumn(TBGUsersTable::ID);
 							$crit->addWhere(TBGUsersTable::REALNAME, $author);
-							$row = B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
+							$row = TBGUsersTable::getTable()->doSelectOne($crit);
 							
 							if ($row != null)
 							{
@@ -327,7 +327,7 @@
 							$crit->setFromTable(TBGUsersTable::getTable());
 							$crit->addSelectionColumn(TBGUsersTable::ID);
 							$crit->addWhere(TBGUsersTable::BUDDYNAME, $author);
-							$row = B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
+							$row = TBGUsersTable::getTable()->doSelectOne($crit);
 							
 							if ($row != null)
 							{
@@ -343,7 +343,7 @@
 							$crit->setFromTable(TBGUsersTable::getTable());
 							$crit->addSelectionColumn(TBGUsersTable::ID);
 							$crit->addWhere(TBGUsersTable::UNAME, $author);
-							$row = B2DB::getTable('TBGUsersTable')->doSelectOne($crit);
+							$row = TBGUsersTable::getTable()->doSelectOne($crit);
 							
 							if ($row != null)
 							{

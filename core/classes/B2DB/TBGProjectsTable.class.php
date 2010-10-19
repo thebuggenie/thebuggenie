@@ -52,7 +52,17 @@
 		const PLANNED_RELEASE = 'projects.planned_release';
 		const DELETED = 'projects.deleted';
 		const ALLOW_CHANGING_WITHOUT_WORKING = 'projects.allow_changing_wo_working';
-		
+
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGProjectsTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGProjectsTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -73,7 +83,7 @@
 			parent::_addBoolean(self::ENABLE_TASKS);
 			parent::_addBoolean(self::IS_DEFAULT);
 			parent::_addBoolean(self::ALLOW_CHANGING_WITHOUT_WORKING);
-			parent::_addForeignKeyColumn(self::DEFAULT_STATUS, B2DB::getTable('TBGListTypesTable'), TBGListTypesTable::ID);
+			parent::_addForeignKeyColumn(self::DEFAULT_STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
 			parent::_addBoolean(self::ENABLE_BUILDS);
 			parent::_addBoolean(self::ENABLE_EDITIONS);
 			parent::_addBoolean(self::ENABLE_COMPONENTS);
@@ -124,7 +134,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PREFIX, $prefix);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$row = B2DB::getTable('TBGProjectsTable')->doSelectOne($crit);
+			$row = $this->doSelectOne($crit);
 			return $row;
 		}
 		

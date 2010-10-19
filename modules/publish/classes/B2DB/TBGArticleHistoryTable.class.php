@@ -32,7 +32,7 @@
 			parent::_addVarchar(self::REASON, 255);
 			parent::_addInteger(self::DATE, 10);
 			parent::_addInteger(self::REVISION, 10);
-			parent::_addForeignKeyColumn(self::AUTHOR, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::AUTHOR, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 

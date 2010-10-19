@@ -47,7 +47,7 @@
 			parent::_addVarchar(self::TARGET_TYPE, 30);
 			parent::_addInteger(self::TARGET_ID, 10);
 			parent::_addVarchar(self::DESCRIPTION, 100, '');
-			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		

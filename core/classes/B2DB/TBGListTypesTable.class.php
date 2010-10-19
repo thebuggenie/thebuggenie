@@ -30,7 +30,17 @@
 		const ORDER = 'listtypes.order';
 		
 		protected static $_item_cache = null;
-		
+
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGListTypesTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGListTypesTable');
+		}
+
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);

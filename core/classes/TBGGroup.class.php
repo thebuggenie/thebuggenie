@@ -105,7 +105,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGUsersTable::GROUP_ID, $this->_itemid);
-			B2DB::getTable('TBGUsersTable')->doUpdateById($crit, $uid);
+			TBGUsersTable::getTable()->doUpdateById($crit, $uid);
 		}
 		
 		public function delete()
@@ -114,7 +114,7 @@
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGUsersTable::GROUP_ID, $this->getID());
 			$crit->addUpdate(TBGUsersTable::GROUP_ID, 0);
-			$res = B2DB::getTable('TBGUsersTable')->doUpdate($crit);
+			$res = TBGUsersTable::getTable()->doUpdate($crit);
 		}
 
 		/**

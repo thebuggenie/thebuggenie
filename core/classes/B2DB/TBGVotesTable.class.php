@@ -41,7 +41,7 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET, 10);
 			parent::_addInteger(self::VOTE, 2);
-			parent::_addForeignKeyColumn(self::UID, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		

@@ -40,7 +40,7 @@
 			parent::_addInteger(self::DATE, 10);
 			parent::_addInteger(self::ORDER, 5);
 			parent::_addVarchar(self::ICON, 50, '');
-			parent::_addForeignKeyColumn(self::AUTHOR, B2DB::getTable('TBGUsersTable'), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::AUTHOR, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
