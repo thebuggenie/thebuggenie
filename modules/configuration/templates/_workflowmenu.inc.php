@@ -11,6 +11,9 @@
 			<li<?php if ($selected_tab == 'schemes'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_schemes'), __('Workflow schemes')); ?></li>
 			<?php if (isset($workflow)): ?>
 				<li<?php if ($selected_tab == 'workflow'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_steps', array('workflow_id' => $workflow->getID())), $workflow->getName()); ?></li>
+				<?php if (isset($step)): ?>
+					<li<?php if ($selected_tab == 'step'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $workflow->getID(), 'step_id' => $step->getID())), __('Step: %step_name%', array('%step_name%' => $step->getName()))); ?></li>
+				<?php endif; ?>
 			<?php endif; ?>
 		</ul>
 	</div>

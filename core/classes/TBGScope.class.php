@@ -242,6 +242,7 @@
 			TBGListTypesTable::getTable()->loadFixtures($scope_id);
 			B2DB::getTable('TBGLinksTable')->loadFixtures($scope_id);
 			TBGWorkflowsTable::getTable()->loadFixtures($scope_id);
+			TBGWorkflowStepsTable::getTable()->loadFixtures($scope_id);
 		}
 
 		public function save()

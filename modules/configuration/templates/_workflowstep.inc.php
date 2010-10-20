@@ -1,5 +1,5 @@
 <tr>
-	<td><?php echo $step->getName(); ?></td>
+	<td><?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())), $step->getName()); ?></td>
 	<td>
 		<?php if ($step->hasLinkedStatus()): ?>
 			<table style="table-layout: auto; width: auto;" cellpadding=0 cellspacing=0>

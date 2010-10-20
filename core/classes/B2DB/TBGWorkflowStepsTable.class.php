@@ -51,6 +51,30 @@
 			parent::_addBoolean(self::IS_CLOSED);
 		}
 
+		public function loadFixtures($scope)
+		{
+			$steps = array();
+			$steps[] = array('name' => 'New', 'description' => 'A new issue, not yet handled', 'status_id' => 20, 'editable' => true, 'is_closed' => false);
+			$steps[] = array('name' => 'In progress', 'description' => 'An issue that is being investigated, looked into or is by other means progressing', 'status_id' => null, 'editable' => false, 'is_closed' => false);
+			$steps[] = array('name' => 'Confirmed', 'description' => 'An issue that has been confirmed', 'status_id' => 22, 'editable' => false, 'is_closed' => false);
+			$steps[] = array('name' => 'Testing', 'description' => 'An issue where the proposed or implemented solution is currently being tested or approved', 'status_id' => 27, 'editable' => false, 'is_closed' => false);
+			$steps[] = array('name' => 'Ready for testing', 'description' => 'An issue that has been marked fixed and is ready for testing', 'status_id' => 26, 'editable' => true, 'is_closed' => false);
+			$steps[] = array('name' => 'Closed', 'description' => 'A closed issue', 'status_id' => null, 'editable' => false, 'is_closed' => true);
+
+			foreach ($steps as $step)
+			{
+				$crit = $this->getCriteria();
+				$crit->addInsert(self::WORKFLOW_ID, 1);
+				$crit->addInsert(self::SCOPE, $scope);
+				$crit->addInsert(self::NAME, $step['name']);
+				$crit->addInsert(self::DESCRIPTION, $step['description']);
+				$crit->addInsert(self::STATUS_ID, $step['status_id']);
+				$crit->addInsert(self::IS_CLOSED, $step['is_closed']);
+				$crit->addInsert(self::EDITABLE, $step['editable']);
+				$this->doInsert($crit);
+			}
+		}
+
 		public function countByWorkflowID($workflow_id)
 		{
 			$crit = $this->getCriteria();

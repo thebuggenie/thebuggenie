@@ -1854,6 +1854,20 @@
 			}
 		}
 
+		public function runConfigureWorkflowStep(TBGRequest $request)
+		{
+			$this->workflow = null;
+			try
+			{
+				$this->workflow = TBGContext::factory()->TBGWorkflow($request->getParameter('workflow_id'));
+				$this->step = TBGContext::factory()->TBGWorkflowStep($request->getParameter('step_id'));
+			}
+			catch (Exception $e)
+			{
+				$this->error = TBGContext::getI18n()->__('This workflow / step does not exist');
+			}
+		}
+
 		public function getAccessLevel($section, $module)
 		{
 			return (TBGContext::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;

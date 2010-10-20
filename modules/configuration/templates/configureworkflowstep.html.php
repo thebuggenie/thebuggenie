@@ -1,0 +1,50 @@
+<?php
+
+	if ($workflow instanceof TBGWorkflow)
+	{
+		$tbg_response->setTitle(__('Configure workflow "%workflow_name%"', array('%workflow_name%' => $workflow->getName())));
+	}
+	else
+	{
+		$tbg_response->setTitle(__('Configure workflows'));
+	}
+	
+?>
+<table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
+	<tr>
+		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
+		<td valign="top">
+			<?php include_template('configuration/workflowmenu', array('selected_tab' => 'step', 'workflow' => $workflow, 'step' => $step)); ?>
+			<div class="content" style="width: 750px;" id="workflow_step_container">
+				<?php if ($step instanceof TBGWorkflowStep): ?>
+					<div class="rounded_box lightgrey workflow_step_intro">
+						<div class="header"><?php echo __("Editing workflow step %step_name%", array('%step_name%' => $step->getName())); ?></div>
+						<div class="content">
+							<?php echo __('This page shows all the available details for this steps for the selected workflow, as well as transitions to and from this step.'); ?>
+							<?php echo __('You can add and remove transitions from this page, as well as manage properties for this step.'); ?>
+						</div>
+					</div>
+					<div class="rounded_box lightyellow" id="workflow_browser_step">
+						<div class="header"><?php echo __('Step path'); ?></div>
+						<div class="content">
+							<?php if ($workflow->getFirstStep() === $step): ?>
+								<div class="workflow_browser_step_transition"><?php echo __('Issue is created'); ?></div>
+								<?php if ($step->getNumberOfIncomingTransitions() > 0): ?>
+									<div class="faded_out"><?php echo __('%a_workflow_step_transition% or %a_workflow_step_transition%', array('%a_workflow_step_transition%' => '')); ?></div>
+								<?php endif; ?>
+							<?php endif; ?>
+							<?php echo image_tag('workflow_step_transitions_outgoing.png'); ?>
+							<br>
+							<?php echo image_tag('workflow_step_transitions_outgoing.png'); ?>
+						</div>
+					</div>
+					<br style="clear: both;">
+				<?php else: ?>
+					<div class="rounded_box red borderless" id="no_such_workflow_error">
+						<div class="header"><?php echo $error; ?></div>
+					</div>
+				<?php endif; ?>
+			</div>
+		</td>
+	</tr>
+</table>

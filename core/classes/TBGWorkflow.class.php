@@ -142,9 +142,24 @@
 			return $this->_steps;
 		}
 
+		/**
+		 * Get the first step in this workflow
+		 *
+		 * @return TBGWorkflowStep
+		 */
+		public function getFirstStep()
+		{
+			$steps = $this->getSteps();
+			return (is_array($steps)) ? array_shift($steps) : null;
+		}
+
 		public function getNumberOfSteps()
 		{
-			if ($this->_num_steps === null)
+			if ($this->_num_steps === null && $this->_steps !== null)
+			{
+				$this->_num_steps = count($this->_steps);
+			}
+			elseif ($this->_num_steps === null)
 			{
 				$this->_num_steps = TBGWorkflowStepsTable::getTable()->countByWorkflowID($this->getID());
 			}

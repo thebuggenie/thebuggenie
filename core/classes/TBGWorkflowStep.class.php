@@ -136,4 +136,24 @@
 			return ($this->getLinkedStatus() instanceof TBGStatus);
 		}
 
+		public function isEditable()
+		{
+			return (bool) $this->_is_editable;
+		}
+
+		public function isClosed()
+		{
+			return (bool) $this->_is_closed;
+		}
+
+		public function getNumberOfIncomingTransitions()
+		{
+			return 2;
+		}
+
+		public function getNumberOfOutgoingTransitions()
+		{
+			return 2;
+		}
+
 	}

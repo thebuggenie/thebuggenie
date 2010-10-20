@@ -369,9 +369,14 @@ th.highlighted_column { background-color: #C1C1C1; }
 #no_such_workflow_error { margin-top: 10px; }
 
 #workflow_steps_container { }
-#workflow_steps_container .workflow_steps_intro { margin: 5px 0 5px 0; font-size: 0.9em; }
+#workflow_steps_container .workflow_steps_intro, #workflow_step_container .workflow_step_intro { margin: 5px 0 5px 0; font-size: 0.9em; }
 #workflow_steps_list { width: 100%; }
 #workflow_steps_list td, #workflow_steps_list th { font-size: 0.9em; }
+
+#workflow_browser_step { float: right; width: 300px; padding: 5px; text-align: center; }
+#workflow_browser_step .header, #workflow_browser_step .content { text-align: center; }
+#workflow_browser_step .content { font-size: 0.9em; }
+.workflow_browser_step_transition { padding: 2px; border: 1px dotted #AAA; background-color: #F8F8F8; }
 /* end workflow styling */
 
 /* end config styling */
