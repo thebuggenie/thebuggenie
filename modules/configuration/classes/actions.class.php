@@ -1838,7 +1838,7 @@
 
 		public function runConfigureWorkflows(TBGRequest $request)
 		{
-			
+			$this->workflows = TBGWorkflow::getAll();
 		}
 
 		public function getAccessLevel($section, $module)

@@ -4,7 +4,7 @@
 	 * The scope class
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-	 * @version 2.0
+	 ** @version 3.0
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
 	 * @package thebuggenie
 	 * @subpackage core
@@ -182,7 +182,7 @@
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGGroupsTable::SCOPE, $this->_itemid);
 			$crit->addOrderBy(TBGScopesTable::ID, B2DBCriteria::SORT_ASC);
-			$adminuser->setGroup(B2DB::getTable('TBGGroupsTable')->doSelectOne($crit)->get(TBGGroupsTable::ID));
+			$adminuser->setGroup(TBGGroupsTable::getTable()->doSelectOne($crit)->get(TBGGroupsTable::ID));
 			foreach ($adminuser->getTeams() as $aTeam)
 			{
 				$aTeam = TBGContext::factory()->TBGTeam($aTeam);
@@ -200,7 +200,7 @@
 		public static function loadFixtures($scope_id)
 		{
 			$i18n = TBGContext::getI18n();
-			list ($admin_group_id, $users_group_id, $guest_group_id) = B2DB::getTable('TBGGroupsTable')->loadFixtures($scope_id);
+			list ($admin_group_id, $users_group_id, $guest_group_id) = TBGGroupsTable::getTable()->loadFixtures($scope_id);
 			
 			$adminuser = TBGUser::createNew('administrator', 'Administrator', 'Admin', $scope_id, true, true);
 			$adminuser->setGroup($admin_group_id);

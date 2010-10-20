@@ -3,8 +3,6 @@
 	class TBGFile extends TBGIdentifiableClass
 	{
 
-		protected $_id;
-
 		protected $_content_type;
 
 		protected $_uploaded_by;
@@ -37,7 +35,7 @@
 		 * @param <type> $content_type
 		 * @param <type> $description
 		 * @param <type> $content
-		 * 
+		 *
 		 * @return TBGFile
 		 */
 		public static function createNew($real_filename, $original_filename, $content_type, $description = null, $content = null)
@@ -62,7 +60,7 @@
 				throw new Exception('The specified file id does not exist');
 			}
 
-			$this->_id = $row->get(TBGFilesTable::ID);
+			$this->_itemid = $row->get(TBGFilesTable::ID);
 			$this->_content_type = $row->get(TBGFilesTable::CONTENT_TYPE);
 			$this->_uploaded_by = $row->get(TBGFilesTable::UID);
 			$this->_uploaded_at = $row->get(TBGFilesTable::UPLOADED_AT);
@@ -72,24 +70,14 @@
 			$this->_description = ($row->get(TBGFilesTable::DESCRIPTION)) ? $row->get(TBGFilesTable::DESCRIPTION) : null;
 		}
 
-		public function getID()
-		{
-		 return $this->_id;
-		}
-
-		public function setID($id)
-		{
-		 $this->_id = $id;
-		}
-
 		public function getContentType()
 		{
-		 return $this->_content_type;
+			return $this->_content_type;
 		}
 
 		public function setContentType($content_type)
 		{
-		 $this->_content_type = $content_type;
+			$this->_content_type = $content_type;
 		}
 
 		public function isImage()
@@ -99,52 +87,52 @@
 
 		public function getUploadedBy()
 		{
-		 return $this->_uploaded_by;
+			return $this->_uploaded_by;
 		}
 
 		public function setUploadedBy($uploaded_by)
 		{
-		 $this->_uploaded_by = $uploaded_by;
+			$this->_uploaded_by = $uploaded_by;
 		}
 
 		public function getUploadedAt()
 		{
-		 return $this->_uploaded_at;
+			return $this->_uploaded_at;
 		}
 
 		public function setUploadedAt($uploaded_at)
 		{
-		 $this->_uploaded_at = $uploaded_at;
+			$this->_uploaded_at = $uploaded_at;
 		}
 
 		public function getRealFilename()
 		{
-		 return $this->_real_filename;
+			return $this->_real_filename;
 		}
 
 		public function setRealFilename($real_filename)
 		{
-		 $this->_real_filename = $real_filename;
+			$this->_real_filename = $real_filename;
 		}
 
 		public function getOriginalFilename()
 		{
-		 return $this->_original_filename;
+			return $this->_original_filename;
 		}
 
 		public function setOriginalFilename($original_filename)
 		{
-		 $this->_original_filename = $original_filename;
+			$this->_original_filename = $original_filename;
 		}
 
 		public function getContent()
 		{
-		 return $this->_content;
+			return $this->_content;
 		}
 
 		public function setContent($content)
 		{
-		 $this->_content = $content;
+			$this->_content = $content;
 		}
 
 		public function getFullpath()
@@ -168,7 +156,7 @@
 
 		public function getDescription()
 		{
-		 return $this->_description;
+			return $this->_description;
 		}
 
 		public function hasDescription()
@@ -178,9 +166,7 @@
 
 		public function setDescription($description)
 		{
-		 $this->_description = $description;
+			$this->_description = $description;
 		}
 
-
-		
 	}

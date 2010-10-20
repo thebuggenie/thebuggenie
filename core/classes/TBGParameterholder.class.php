@@ -4,7 +4,7 @@
 	 * Parameter holder class used in the MVC part of the framework for TBGAction and TBGActionComponent
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-	 * @version 2.0
+	 ** @version 3.0
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
 	 * @package thebuggenie
 	 * @subpackage mvc

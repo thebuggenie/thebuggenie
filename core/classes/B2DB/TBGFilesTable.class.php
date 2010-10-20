@@ -4,7 +4,7 @@
 	 * Files table
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-	 * @version 2.0
+	 ** @version 3.0
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
 	 * @package thebuggenie
 	 * @subpackage tables
@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGFilesTable extends B2DBTable 
+	class TBGFilesTable extends B2DBTable
 	{
 
 		const B2DBNAME = 'files';

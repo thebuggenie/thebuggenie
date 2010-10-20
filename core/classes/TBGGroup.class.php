@@ -4,7 +4,7 @@
 	 * Group class
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-	 * @version 2.0
+	 ** @version 3.0
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
 	 * @package thebuggenie
 	 * @subpackage main
@@ -34,7 +34,7 @@
 			if (self::$_groups === null)
 			{
 				self::$_groups = array();
-				if ($res = B2DB::getTable('TBGGroupsTable')->getAll())
+				if ($res = TBGGroupsTable::getTable()->getAll())
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -55,7 +55,7 @@
 			$this->_itemid = $g_id;
 			if ($row === null)
 			{
-				$row = B2DB::getTable('TBGGroupsTable')->doSelectById($g_id); 
+				$row = TBGGroupsTable::getTable()->doSelectById($g_id); 
 			}
 			try
 			{
@@ -87,7 +87,7 @@
 				$scope = TBGContext::getScope()->getID();
 			}
 			$crit->addInsert(TBGGroupsTable::SCOPE, $scope);
-			$res = B2DB::getTable('TBGGroupsTable')->doInsert($crit);
+			$res = TBGGroupsTable::getTable()->doInsert($crit);
 			$group = TBGContext::factory()->TBGGroup($res->getInsertID());
 			if (self::$_groups !== null)
 			{
@@ -110,7 +110,7 @@
 		
 		public function delete()
 		{
-			$res = B2DB::getTable('TBGGroupsTable')->doDeleteById($this->getID());
+			$res = TBGGroupsTable::getTable()->doDeleteById($this->getID());
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGUsersTable::GROUP_ID, $this->getID());
 			$crit->addUpdate(TBGUsersTable::GROUP_ID, 0);

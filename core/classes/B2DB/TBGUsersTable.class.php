@@ -4,7 +4,7 @@
 	 * Users table
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-	 * @version 2.0
+	 ** @version 3.0
 	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
 	 * @package thebuggenie
 	 * @subpackage tables
@@ -80,7 +80,7 @@
 			parent::_addBoolean(self::USE_GRAVATAR, true);
 			parent::_addBoolean(self::PRIVATE_EMAIL);
 			parent::_addInteger(self::JOINED, 10);
-			parent::_addForeignKeyColumn(self::GROUP_ID, B2DB::getTable('TBGGroupsTable'), TBGGroupsTable::ID);
+			parent::_addForeignKeyColumn(self::GROUP_ID, TBGGroupsTable::getTable(), TBGGroupsTable::ID);
 			parent::_addForeignKeyColumn(self::CUSTOMER_ID, B2DB::getTable('TBGCustomersTable'), TBGCustomersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
