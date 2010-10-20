@@ -32,10 +32,39 @@
 								<?php if ($step->getNumberOfIncomingTransitions() > 0): ?>
 									<div class="faded_out"><?php echo __('%a_workflow_step_transition% or %a_workflow_step_transition%', array('%a_workflow_step_transition%' => '')); ?></div>
 								<?php endif; ?>
+							<?php elseif ($step->getNumberOfIncomingTransitions() == 0): ?>
+								<div class="faded_out"><?php echo __("This step doesn't have any incoming transitions"); ?></div>
+							<?php else: ?>
+								<?php
+
+								$output = array();
+								foreach ($step->getIncomingTransitions() as $transition)
+								{
+									$output[] = "<div class=\"workflow_browser_step_transition\">{$transition->getName()}</div>";
+								}
+								$glue = "<div class=\"faded_out\">".__('%a_workflow_step_transition% or %a_workflow_step_transition%', array('%a_workflow_step_transition%' => ''))."</div>";
+								echo join($glue, $output);
+
+								?>
 							<?php endif; ?>
-							<?php echo image_tag('workflow_step_transitions_outgoing.png'); ?>
-							<br>
-							<?php echo image_tag('workflow_step_transitions_outgoing.png'); ?>
+							<div class="workflow_browser_step_image"><?php echo image_tag('workflow_step_transitions_outgoing.png'); ?></div>
+							<div class="workflow_browser_step_name"><?php echo $step->getName(); ?></div>
+							<div class="workflow_browser_step_image"><?php echo image_tag('workflow_step_transitions_outgoing.png'); ?></div>
+							<?php if ($step->getNumberOfOutgoingTransitions() == 0): ?>
+								<div class="faded_out"><?php echo __("This step doesn't have any outgoing transitions"); ?></div>
+							<?php else: ?>
+								<?php 
+								
+								$output = array();
+								foreach ($step->getOutgoingTransitions() as $transition)
+								{
+									$output[] = "<div class=\"workflow_browser_step_transition\">{$transition->getName()}</div>";
+								}
+								$glue = "<div class=\"faded_out\">".__('%a_workflow_step_transition% or %a_workflow_step_transition%', array('%a_workflow_step_transition%' => ''))."</div>";
+								echo join($glue, $output);
+
+								?>
+							<?php endif; ?>
 						</div>
 					</div>
 					<br style="clear: both;">

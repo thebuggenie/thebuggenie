@@ -32,6 +32,14 @@
 
 		protected $_linked_status = null;
 
+		protected $_incoming_transitions = null;
+
+		protected $_num_incoming_transitions = null;
+
+		protected $_outgoing_transitions = null;
+
+		protected $_num_outgoing_transitions = null;
+
 		/**
 		 * The associated workflow object
 		 *
@@ -52,7 +60,7 @@
 
 			if (!$row instanceof B2DBRow)
 			{
-				throw new Exception('The specified file id does not exist');
+				throw new Exception('The specified workflow step id does not exist');
 			}
 
 			$this->_itemid = $row->get(TBGWorkflowStepsTable::ID);
@@ -146,14 +154,68 @@
 			return (bool) $this->_is_closed;
 		}
 
-		public function getNumberOfIncomingTransitions()
+		protected function _populateOutgoingTransitions()
 		{
-			return 2;
+			if ($this->_outgoing_transitions === null)
+			{
+				$this->_outgoing_transitions = TBGWorkflowStepTransitionsTable::getTable()->getByStepID($this->getID());
+			}
+		}
+
+		/**
+		 * Get all outgoing transitions from this step
+		 *
+		 * @return array An array of TBGWorkflowTransition objects
+		 */
+		public function getOutgoingTransitions()
+		{
+			$this->_populateOutgoingTransitions();
+			return $this->_outgoing_transitions;
 		}
 
 		public function getNumberOfOutgoingTransitions()
 		{
-			return 2;
+			if ($this->_num_outgoing_transitions === null && $this->_outgoing_transitions !== null)
+			{
+				$this->_num_outgoing_transitions = count($this->_outgoing_transitions);
+			}
+			elseif ($this->_num_outgoing_transitions === null)
+			{
+				$this->_num_outgoing_transitions = TBGWorkflowStepTransitionsTable::getTable()->countByStepID($this->getID());
+			}
+			return $this->_num_outgoing_transitions;
+		}
+
+		protected function _populateIncomingTransitions()
+		{
+			if ($this->_incoming_transitions === null)
+			{
+				$this->_incoming_transitions = TBGWorkflowTransitionsTable::getTable()->getByStepID($this->getID());
+			}
+		}
+
+		/**
+		 * Get all incoming transitions from this step
+		 *
+		 * @return array An array of TBGWorkflowTransition objects
+		 */
+		public function getIncomingTransitions()
+		{
+			$this->_populateIncomingTransitions();
+			return $this->_incoming_transitions;
+		}
+
+		public function getNumberOfIncomingTransitions()
+		{
+			if ($this->_num_incoming_transitions === null && $this->_incoming_transitions !== null)
+			{
+				$this->_num_incoming_transitions = count($this->_incoming_transitions);
+			}
+			elseif ($this->_num_incoming_transitions === null)
+			{
+				$this->_num_incoming_transitions = TBGWorkflowTransitionsTable::getTable()->countByStepID($this->getID());
+			}
+			return $this->_num_incoming_transitions;
 		}
 
 	}

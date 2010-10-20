@@ -73,7 +73,7 @@
 
 			if (!$row instanceof B2DBRow)
 			{
-				throw new Exception('The specified file id does not exist');
+				throw new Exception('The specified workflow id does not exist');
 			}
 
 			$this->_itemid = $row->get(TBGWorkflowsTable::ID);

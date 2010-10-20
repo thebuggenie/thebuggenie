@@ -374,9 +374,11 @@ th.highlighted_column { background-color: #C1C1C1; }
 #workflow_steps_list td, #workflow_steps_list th { font-size: 0.9em; }
 
 #workflow_browser_step { float: right; width: 300px; padding: 5px; text-align: center; }
-#workflow_browser_step .header, #workflow_browser_step .content { text-align: center; }
-#workflow_browser_step .content { font-size: 0.9em; }
+#workflow_browser_step .header { font-size: 1.1em; text-align: center; margin-bottom: 5px; }
+#workflow_browser_step .content { font-size: 0.9em; text-align: center; }
+.workflow_browser_step_image { line-height: 0; }
 .workflow_browser_step_transition { padding: 2px; border: 1px dotted #AAA; background-color: #F8F8F8; }
+.workflow_browser_step_name { padding: 5px; font-size: 1.1em; font-style: italic; font-weight: normal; }
 /* end workflow styling */
 
 /* end config styling */
