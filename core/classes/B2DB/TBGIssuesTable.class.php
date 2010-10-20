@@ -63,6 +63,7 @@
 		const DELETED = 'issues.deleted';
 		const BLOCKING = 'issues.blocking';
 		const LOCKED = 'issues.locked';
+		const WORKFLOW_STEP_ID = 'issues.workflow_step_id';
 		const MILESTONE = 'issues.milestone';
 		const VOTES = 'issues.votes';
 
@@ -123,6 +124,7 @@
 			parent::_addForeignKeyColumn(self::USER_WORKING_ON, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addInteger(self::USER_WORKED_ON_SINCE, 10);
 			parent::_addForeignKeyColumn(self::MILESTONE, TBGMilestonesTable::getTable(), TBGMilestonesTable::ID);
+			parent::_addForeignKeyColumn(self::WORKFLOW_STEP_ID, TBGWorkflowStepsTable::getTable(), TBGWorkflowStepsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 

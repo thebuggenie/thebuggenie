@@ -72,6 +72,7 @@
 	$routes[] = array('configure_scopes', '/configure/scopes', 'configuration', 'index', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_SCOPES));
 	$routes[] = array('configure_workflow', '/configure/workflow', 'configuration', 'configureWorkflows', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW));
 	$routes[] = array('configure_workflow_schemes', '/configure/workflow/schemes', 'configuration', 'configureWorkflowSchemes', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW));
+	$routes[] = array('configure_workflow_steps', '/configure/workflow/:workflow_id/steps', 'configuration', 'configureWorkflowSteps', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW));
 	$routes[] = array('configure_workflow_workflows', '/configure/workflow/workflows', 'configuration', 'configureWorkflows', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW));
 	$routes[] = array('configure_files', '/configure/files', 'configuration', 'configureUploads', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_UPLOADS));
 	$routes[] = array('configure_permissions', '/configure/permissions', 'configuration', 'configurePermissions', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PERMISSIONS));

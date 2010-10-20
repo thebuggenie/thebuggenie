@@ -1841,6 +1841,19 @@
 			$this->workflows = TBGWorkflow::getAll();
 		}
 
+		public function runConfigureWorkflowSteps(TBGRequest $request)
+		{
+			$this->workflow = null;
+			try
+			{
+				$this->workflow = TBGContext::factory()->TBGWorkflow($request->getParameter('workflow_id'));
+			}
+			catch (Exception $e)
+			{
+				$this->error = TBGContext::getI18n()->__('This workflow does not exist');
+			}
+		}
+
 		public function getAccessLevel($section, $module)
 		{
 			return (TBGContext::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;

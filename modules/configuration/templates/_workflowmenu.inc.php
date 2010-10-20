@@ -9,6 +9,9 @@
 		<ul id="workflow_menu">
 			<li<?php if ($selected_tab == 'workflows'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_workflows'), __('Workflows')); ?></li>
 			<li<?php if ($selected_tab == 'schemes'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_schemes'), __('Workflow schemes')); ?></li>
+			<?php if (isset($workflow)): ?>
+				<li<?php if ($selected_tab == 'workflow'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_steps', array('workflow_id' => $workflow->getID())), $workflow->getName()); ?></li>
+			<?php endif; ?>
 		</ul>
 	</div>
 </div>

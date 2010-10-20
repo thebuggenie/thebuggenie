@@ -441,6 +441,13 @@
 		protected $_locked;
 
 		/**
+		 * The issues current step in the associated workflow
+		 *
+		 * @var TBGWorkflowStep
+		 */
+		protected $_workflow_step;
+
+		/**
 		 * An array of TBGComment s
 		 * 
 		 * @var array
@@ -712,6 +719,7 @@
 			$this->_pain_effect				= $row->get(TBGIssuesTable::PAIN_EFFECT);
 			$this->_pain_likelihood			= $row->get(TBGIssuesTable::PAIN_LIKELIHOOD);
 			$this->_votes_total				= $row->get(TBGIssuesTable::VOTES);
+			$this->_workflow_step			= $row->get(TBGIssuesTable::WORKFLOW_STEP_ID);
 			$this->_deleted 				= (bool) $row->get(TBGIssuesTable::DELETED);
 
 			if ($this->getProject() instanceof TBGProject && $this->getProject()->isDeleted())
@@ -817,6 +825,20 @@
 		{
 			$project = $this->getProject();
 			return ($project instanceof TBGProject) ? $project->getID() : null;
+		}
+
+		/**
+		 * Return the issues current step in the workflow
+		 * 
+		 * @return TBGWorkflowStep
+		 */
+		public function getWorkflowStep()
+		{
+			if (is_numeric($this->_workflow_step))
+			{
+				$this->_workflow_step = TBGContext::factory()->TBGWorkflowStep($this->_workflow_step);
+			}
+			return $this->_workflow_step;
 		}
 
 		/**

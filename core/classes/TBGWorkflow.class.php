@@ -35,6 +35,10 @@
 		 */
 		protected $_is_active = null;
 
+		protected $_steps = null;
+
+		protected $_num_steps = null;
+
 		/**
 		 * Return all workflows in the system
 		 *
@@ -99,7 +103,8 @@
 		}
 
 		/**
-		 * Whether this is the builtin workflow that cannot be edited or removed
+		 * Whether this is the builtin workflow that cannot be
+		 * edited or removed
 		 *
 		 * @return boolean
 		 */
@@ -118,9 +123,32 @@
 			return (bool) $this->_is_active;
 		}
 
+		protected function _populateSteps()
+		{
+			if ($this->_steps === null)
+			{
+				$this->_steps = TBGWorkflowStepsTable::getTable()->getByWorkflowID($this->getID());
+			}
+		}
+
+		/**
+		 * Get all steps in this workflow
+		 *
+		 * @return array An array of TBGWorkflowStep objects
+		 */
+		public function getSteps()
+		{
+			$this->_populateSteps();
+			return $this->_steps;
+		}
+
 		public function getNumberOfSteps()
 		{
-			return 0;
+			if ($this->_num_steps === null)
+			{
+				$this->_num_steps = TBGWorkflowStepsTable::getTable()->countByWorkflowID($this->getID());
+			}
+			return $this->_num_steps;
 		}
 
 	}

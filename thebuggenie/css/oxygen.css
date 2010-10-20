@@ -38,7 +38,7 @@ textarea { font-family: 'Droid Sans Mono', monospace; }
 
 input#login_button, input#register_button { cursor: pointer; font-weight: bold; }
 
-th { font-weight: bold; border-bottom: 1px solid #DDD; padding-bottom: 2px; }
+th { font-weight: bold; border-bottom: 1px solid #DDD; padding: 2px; background-color: #F5F5F5; }
 
 dt { float: left; width: 420px; }
 dt label { padding-left: 0; }
@@ -365,6 +365,13 @@ th.highlighted_column { background-color: #C1C1C1; }
 .workflow_description, .workflow_name span.builtin { font-weight: normal; font-style: italic; font-size: 0.9em; }
 .workflow_name span.builtin { color: #AAA; }
 .workflow_description { color: #777; }
+
+#no_such_workflow_error { margin-top: 10px; }
+
+#workflow_steps_container { }
+#workflow_steps_container .workflow_steps_intro { margin: 5px 0 5px 0; font-size: 0.9em; }
+#workflow_steps_list { width: 100%; }
+#workflow_steps_list td, #workflow_steps_list th { font-size: 0.9em; }
 /* end workflow styling */
 
 /* end config styling */

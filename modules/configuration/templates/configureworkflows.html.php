@@ -24,7 +24,7 @@
 										<?php echo __('Actions: %list%', array('%list%' => '')); ?><br>
 										<a href="#" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this workflow'))); ?></a>
 										<a href="#" class="rounded_box"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this workflow'))); ?></a>
-										<a href="#" class="rounded_box"><?php echo image_tag('icon_workflow_list_steps.png', array('title' => __('Show / edit workflow steps'))); ?></a>
+										<?php echo link_tag(make_url('configure_workflow_steps', array('workflow_id' => $workflow->getID())), image_tag('icon_workflow_list_steps.png', array('title' => __('Show / edit workflow steps'))), array('class' => 'rounded_box')); ?></a>
 									</td>
 								</tr>
 							</table>
