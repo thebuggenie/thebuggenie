@@ -350,6 +350,11 @@ th.highlighted_column { background-color: #C1C1C1; }
 
 /* workflow styling */
 .workflow_list li { padding: 3px; font-size: 0.9em; }
+.workflow_list li table td { font-size: inherit; padding: 0; margin: 0; }
+.workflow_list td.workflow_info { width: 450px; }
+.workflow_list td.workflow_inactive { color: #A88; font-weight: bold; width: 100px; text-align: center; }
+.workflow_list td.workflow_active { color: #390; font-weight: bold; width: 100px; text-align: center; }
+.workflow_list td.workflow_steps span { font-weight: bold; }
 .workflow_name { font-weight: bold; }
 .workflow_description, .workflow_name span.builtin { font-weight: normal; font-style: italic; font-size: 0.9em; }
 .workflow_name span.builtin { color: #AAA; }

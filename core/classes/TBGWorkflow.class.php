@@ -75,7 +75,7 @@
 			$this->_itemid = $row->get(TBGWorkflowsTable::ID);
 			$this->_name = $row->get(TBGWorkflowsTable::NAME);
 			$this->_description = $row->get(TBGWorkflowsTable::DESCRIPTION);
-			$this->_is_active = $row->get(TBGWorkflowsTable::IS_ACTIVE);
+			$this->_is_active = (bool) $row->get(TBGWorkflowsTable::IS_ACTIVE);
 		}
 
 		/**
@@ -106,6 +106,21 @@
 		public function isCore()
 		{
 			return ($this->getID() == 1);
+		}
+
+		/**
+		 * Whether this is the builtin workflow that cannot be edited or removed
+		 *
+		 * @return boolean
+		 */
+		public function isActive()
+		{
+			return (bool) $this->_is_active;
+		}
+
+		public function getNumberOfSteps()
+		{
+			return 0;
 		}
 
 	}
