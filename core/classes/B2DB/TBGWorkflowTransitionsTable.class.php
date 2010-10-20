@@ -57,6 +57,12 @@
 			$transitions[] = array('name' => 'Reject issue', 'description' => 'Reject the issue as invalid', 'to_step_id' => 7, 'template' => null);
 			$transitions[] = array('name' => 'Accept issue', 'description' => 'Accept the issue and assign it to yourself', 'to_step_id' => 4, 'template' => null);
 			$transitions[] = array('name' => 'Reopen issue', 'description' => 'Reopen the issue', 'to_step_id' => 1, 'template' => null);
+			$transitions[] = array('name' => 'Assign issue', 'description' => 'Accept the issue and assign it to someone', 'to_step_id' => 4, 'template' => null);
+			$transitions[] = array('name' => 'Mark ready for testing', 'description' => 'Mark the issue as ready to be tested', 'to_step_id' => 5, 'template' => null);
+			$transitions[] = array('name' => 'Resolve issue', 'description' => 'Resolve the issue', 'to_step_id' => 8, 'template' => null);
+			$transitions[] = array('name' => 'Test issue solution', 'description' => 'Check whether the solution is valid', 'to_step_id' => 6, 'template' => null);
+			$transitions[] = array('name' => 'Accept issue solution', 'description' => 'Mark the issue as resolved', 'to_step_id' => 8, 'template' => null);
+			$transitions[] = array('name' => 'Reject issue solution', 'description' => 'Reject the proposed solution and mark the issue as in progress', 'to_step_id' => 4, 'template' => null);
 
 			foreach ($transitions as $transition)
 			{

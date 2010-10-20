@@ -55,6 +55,16 @@
 			$transitions[] = array('from_step_id' => 2, 'transition_id' => 2);
 			$transitions[] = array('from_step_id' => 2, 'transition_id' => 3);
 			$transitions[] = array('from_step_id' => 2, 'transition_id' => 4);
+			$transitions[] = array('from_step_id' => 3, 'transition_id' => 4);
+			$transitions[] = array('from_step_id' => 3, 'transition_id' => 6);
+			$transitions[] = array('from_step_id' => 4, 'transition_id' => 3);
+			$transitions[] = array('from_step_id' => 4, 'transition_id' => 7);
+			$transitions[] = array('from_step_id' => 4, 'transition_id' => 8);
+			$transitions[] = array('from_step_id' => 5, 'transition_id' => 9);
+			$transitions[] = array('from_step_id' => 5, 'transition_id' => 8);
+			$transitions[] = array('from_step_id' => 6, 'transition_id' => 10);
+			$transitions[] = array('from_step_id' => 6, 'transition_id' => 11);
+			$transitions[] = array('from_step_id' => 7, 'transition_id' => 5);
 			$transitions[] = array('from_step_id' => 8, 'transition_id' => 5);
 
 			foreach ($transitions as $transition)
