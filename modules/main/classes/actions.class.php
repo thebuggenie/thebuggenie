@@ -1341,7 +1341,7 @@
 
 									if (isset($temp) && $customdatatype->getType() == TBGCustomDatatype::STATUS_CHOICE && is_object($temp))
 									{
-										$finalvalue = '<div style="border: 1px solid #AAA; background-color: '.$temp->getColor().'; ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 5px; float: left;" id="status_color">&nbsp;</div>'.$finalvalue;
+										$finalvalue = '<div style="border: 1px solid #AAA; background-color: '.$temp->getColor().'; font-size: 1px; width: 20px; height: 15px; margin-right: 5px; float: left;" id="status_color">&nbsp;</div>'.$finalvalue;
 									}
 
 									$changed_methodname = "isCustomfield{$key}Changed";

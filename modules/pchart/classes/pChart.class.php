@@ -2704,4 +2704,3 @@
    echo "[FATAL] ".$Message."\r\n";
    exit();
   }
-?>
