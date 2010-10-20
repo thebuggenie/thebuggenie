@@ -105,6 +105,7 @@ div.image_container.thumb img.image { width: 220px; }
 .commentheader { padding: 0 0 5px 0; border-bottom: 1px dotted #CCC; }
 .comment_add_title { font-size: 14px; font-weight: bold; }
 .commentbody { padding: 5px 5px 5px 0; font-size: 12px; }
+.commentbody .image_container.thumb img.image { width: 130px; }
 .commenttools { display: none; padding: 5px; border-top: 1px solid #CCC; }
 .commenttools img { vertical-align: bottom; margin-right: 5px; }
 .comment_controls { margin-top: 10px;  }
