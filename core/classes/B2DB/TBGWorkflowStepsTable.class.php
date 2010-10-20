@@ -55,10 +55,12 @@
 		{
 			$steps = array();
 			$steps[] = array('name' => 'New', 'description' => 'A new issue, not yet handled', 'status_id' => 20, 'editable' => true, 'is_closed' => false);
-			$steps[] = array('name' => 'In progress', 'description' => 'An issue that is being investigated, looked into or is by other means progressing', 'status_id' => null, 'editable' => false, 'is_closed' => false);
+			$steps[] = array('name' => 'Investigating', 'description' => 'An issue that is being investigated, looked into or is by other means between new and unconfirmed state', 'status_id' => 21, 'editable' => false, 'is_closed' => false);
 			$steps[] = array('name' => 'Confirmed', 'description' => 'An issue that has been confirmed', 'status_id' => 22, 'editable' => false, 'is_closed' => false);
+			$steps[] = array('name' => 'In progress', 'description' => 'An issue that is being adressed', 'status_id' => 24, 'editable' => false, 'is_closed' => false);
 			$steps[] = array('name' => 'Testing', 'description' => 'An issue where the proposed or implemented solution is currently being tested or approved', 'status_id' => 27, 'editable' => false, 'is_closed' => false);
 			$steps[] = array('name' => 'Ready for testing', 'description' => 'An issue that has been marked fixed and is ready for testing', 'status_id' => 26, 'editable' => true, 'is_closed' => false);
+			$steps[] = array('name' => 'Rejected', 'description' => 'A closed issue that has been rejected', 'status_id' => 23, 'editable' => false, 'is_closed' => true);
 			$steps[] = array('name' => 'Closed', 'description' => 'A closed issue', 'status_id' => null, 'editable' => false, 'is_closed' => true);
 
 			foreach ($steps as $step)

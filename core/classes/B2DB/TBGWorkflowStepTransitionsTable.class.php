@@ -50,6 +50,8 @@
 			$transitions = array();
 			$transitions[] = array('from_step_id' => 1, 'transition_id' => 1);
 			$transitions[] = array('from_step_id' => 1, 'transition_id' => 2);
+			$transitions[] = array('from_step_id' => 1, 'transition_id' => 3);
+			$transitions[] = array('from_step_id' => 1, 'transition_id' => 4);
 
 			foreach ($transitions as $transition)
 			{

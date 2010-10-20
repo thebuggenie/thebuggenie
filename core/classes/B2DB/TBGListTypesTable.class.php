@@ -173,12 +173,12 @@
 
 			$statuses = array();
 			$statuses['New'] = '#FFF';
-			$statuses['Collecting information'] = '#C2F533';
+			$statuses['Investigating'] = '#C2F533';
 			$statuses['Confirmed'] = '#FF55AA';
 			$statuses['Not a bug'] = '#44FC1D';
 			$statuses['Being worked on'] = '#5C5';
 			$statuses['Near completion'] = '#7D3';
-			$statuses['Ready for QA'] = '#55C';
+			$statuses['Ready for testing / QA'] = '#55C';
 			$statuses['Testing / QA'] = '#77C';
 			$statuses['Closed'] = '#C2F588';
 			$statuses['Postponed'] = '#FA5';
