@@ -1172,7 +1172,7 @@
 							$parameter_id = $request->getParameter($parameter_id_name);
 							if ($parameter_id !== 0)
 							{
-								$is_valid = ($is_pain) ? in_array($parameter_id, array_keys(TBGIssue::getPainTypesOrLabel($parameter_name))) : ($parameter = TBGFactory::$lab_function_name($parameter_id)) instanceof TBGDatatype;
+								$is_valid = ($is_pain) ? in_array($parameter_id, array_keys(TBGIssue::getPainTypesOrLabel($parameter_name))) : ($parameter_id == 0 || (($parameter = TBGFactory::$lab_function_name($parameter_id)) instanceof TBGIdentifiableClass));
 							}
 							if ($parameter_id == 0 || ($parameter_id !== 0 && $is_valid))
 							{
@@ -1208,8 +1208,8 @@
 								if (!$issue->isPainEffectChanged()) return $this->renderJSON(array('changed' => false, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
 								return ($pain_effect_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText())) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $pain_effect_id, 'name' => $issue->getPainEffectLabel()), 'user_pain' => $issue->getUserPain(), 'user_pain_diff_text' => $issue->getUserPainDiffText()));
 							}
-						}*/
-						/*elseif ($request->hasParameter('resolution_id') && $request->getParameter('field') == 'resolution')
+						}
+						elseif ($request->hasParameter('resolution_id') && $request->getParameter('field') == 'resolution')
 						{
 							$resolution_id = $request->getParameter('resolution_id');
 							if ($resolution_id == 0 || ($resolution_id !== 0 && ($resolution = TBGFactory::TBGResolutionLab($resolution_id)) instanceof TBGResolution))
