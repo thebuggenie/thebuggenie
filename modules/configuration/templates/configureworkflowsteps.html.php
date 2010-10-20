@@ -29,7 +29,7 @@
 							<tr>
 								<th><?php echo __('Step name'); ?></th>
 								<th><?php echo __('Connected status'); ?></th>
-								<th><?php echo __('Transitions'); ?></th>
+								<th><?php echo __('Outgoing transitions'); ?></th>
 								<th><?php echo __('Actions'); ?></th>
 							</tr>
 						</thead>

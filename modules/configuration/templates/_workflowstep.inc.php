@@ -12,6 +12,15 @@
 			<span class="faded_out"> - </span>
 		<?php endif; ?>
 	</td>
-	<td>-</td>
+	<td>
+		<?php if ($step->getNumberOfOutgoingTransitions() > 0): ?>
+			<?php foreach ($step->getOutgoingTransitions() as $transition): ?>
+				<div class="workflow_step_transition_name"><?php echo $transition->getName(); ?></div>
+				<div class="workflow_step_transition_outgoing_step">&rarr; <?php echo $transition->getOutgoingStep()->getName(); ?></div>
+			<?php endforeach; ?>
+		<?php else: ?>
+			<div class="faded_out"> - </div>
+		<?php endif; ?>
+	</td>
 	<td>-</td>
 </tr>
