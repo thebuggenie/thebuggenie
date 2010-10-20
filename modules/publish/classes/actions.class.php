@@ -39,7 +39,7 @@
 			
 			if ($row = TBGArticlesTable::getTable()->getArticleByName($this->article_name))
 			{
-				$this->article = PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
+				$this->article = PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
 			}
 		}
 
@@ -145,7 +145,7 @@
 						{
 							if ($request->getParameter('article_id'))
 							{
-								if (($article = PublishFactory::articleLab($request->getParameter('article_id'))) && $article instanceof TBGWikiArticle)
+								if (($article = PublishFactory::article($request->getParameter('article_id'))) && $article instanceof TBGWikiArticle)
 								{
 									if ($article->getLastUpdatedDate() != $request->getParameter('last_modified'))
 									{

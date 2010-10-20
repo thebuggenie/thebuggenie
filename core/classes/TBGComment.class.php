@@ -90,7 +90,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$comment = TBGFactory::TBGCommentLab($row->get(TBGCommentsTable::ID), $row);
+					$comment = TBGContext::factory()->TBGComment($row->get(TBGCommentsTable::ID), $row);
 					$retval[$comment->getID()] = $comment;
 				}
 				self::$_comment_count[$target_type][$target_id] = count($retval);
@@ -142,7 +142,7 @@
 				{
 					try
 					{
-						TBGFactory::TBGIssueLab((int) $target_id)->updateTime();
+						TBGContext::factory()->TBGIssue((int) $target_id)->updateTime();
 					}
 					catch (Exception $e) {}
 				}*/
@@ -171,7 +171,7 @@
 			TBGCommentsTable::getTable()->doUpdateById($crit, $c_id);
 			if ($module == 'core' && $target_type == 1)
 			{
-				TBGFactory::TBGIssueLab($target_id)->updateComment($title, $content, $uid);
+				TBGContext::factory()->TBGIssue($target_id)->updateComment($title, $content, $uid);
 			}
 		}
 		
@@ -321,7 +321,7 @@
 		 */
 		public function getUpdatedBy()
 		{
-			return TBGFactory::userLab($this->_updatedby);
+			return TBGContext::factory()->TBGUser($this->_updatedby);
 		}
 		
 		/**
@@ -331,7 +331,7 @@
 		 */
 		public function getPostedBy()
 		{
-			return TBGFactory::userLab($this->_postedby);
+			return TBGContext::factory()->TBGUser($this->_postedby);
 		}
 
 		/**

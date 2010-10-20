@@ -558,7 +558,7 @@
 			{
 				$i_id = TBGIssuesTable::getTable()->createNewWithTransaction($title, $issuetype, $p_id, $issue_id);
 				
-				$theIssue = TBGFactory::TBGIssueLab($i_id);
+				$theIssue = TBGContext::factory()->TBGIssue($i_id);
 				$theIssue->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED);
 
 				if ($notify)
@@ -596,7 +596,7 @@
 					if (!TBGContext::isProjectContext()) return null;
 					if (TBGContext::getCurrentProject()->usePrefix()) return null;
 					if ($row = TBGIssuesTable::getTable()->getByProjectIDAndIssueNo(TBGContext::getCurrentProject()->getID(), $issue_no))
-					$theIssue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
+					$theIssue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
 				}
 				catch (Exception $e)
 				{
@@ -609,7 +609,7 @@
 				TBGLogging::log('exploding');
 				if (count($issue_no) == 2 && $row = TBGIssuesTable::getTable()->getByPrefixAndIssueNo($issue_no[0], $issue_no[1]))
 				{
-					$theIssue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
+					$theIssue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
 					if (!$theIssue->getProject()->usePrefix())
 					{
 						return null;
@@ -631,7 +631,7 @@
 				{
 					try
 					{
-						$issue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
+						$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
 						if (!$issue->hasAccess()) continue;
 						$issues[] = $issue;
 					}
@@ -798,7 +798,7 @@
 			{
 				try
 				{
-					$this->_project = TBGFactory::projectLab($this->_project);
+					$this->_project = TBGContext::factory()->TBGProject($this->_project);
 				}
 				catch (Exception $e) 
 				{
@@ -865,8 +865,8 @@
 					{
 						try
 						{
-							$this->_editions[] = array(	'edition' => TBGFactory::editionLab($row->get(TBGIssueAffectsEditionTable::EDITION)),
-														'status' => TBGFactory::TBGStatusLab($row->get(TBGIssueAffectsEditionTable::STATUS), $row),
+							$this->_editions[] = array(	'edition' => TBGContext::factory()->TBGEdition($row->get(TBGIssueAffectsEditionTable::EDITION)),
+														'status' => TBGContext::factory()->TBGStatus($row->get(TBGIssueAffectsEditionTable::STATUS), $row),
 														'confirmed' => (bool) $row->get(TBGIssueAffectsEditionTable::CONFIRMED),
 														'a_id' => $row->get(TBGIssueAffectsEditionTable::ID));
 						}
@@ -880,8 +880,8 @@
 					{
 						try
 						{
-							$this->_builds[] = array(	'build' => TBGFactory::buildLab($row->get(TBGIssueAffectsBuildTable::BUILD)),
-														'status' => TBGFactory::TBGStatusLab($row->get(TBGIssueAffectsBuildTable::STATUS), $row),
+							$this->_builds[] = array(	'build' => TBGContext::factory()->TBGBuild($row->get(TBGIssueAffectsBuildTable::BUILD)),
+														'status' => TBGContext::factory()->TBGStatus($row->get(TBGIssueAffectsBuildTable::STATUS), $row),
 														'confirmed' => (bool) $row->get(TBGIssueAffectsBuildTable::CONFIRMED),
 														'a_id' => $row->get(TBGIssueAffectsBuildTable::ID));
 						}
@@ -895,8 +895,8 @@
 					{
 						try
 						{
-							$this->_components[] = array(	'component' => TBGFactory::componentLab($row->get(TBGIssueAffectsComponentTable::COMPONENT)),
-															'status' => TBGFactory::TBGStatusLab($row->get(TBGIssueAffectsComponentTable::STATUS), $row),
+							$this->_components[] = array(	'component' => TBGContext::factory()->TBGComponent($row->get(TBGIssueAffectsComponentTable::COMPONENT)),
+															'status' => TBGContext::factory()->TBGStatus($row->get(TBGIssueAffectsComponentTable::STATUS), $row),
 															'confirmed' => (bool) $row->get(TBGIssueAffectsComponentTable::CONFIRMED),
 															'a_id' => $row->get(TBGIssueAffectsComponentTable::ID));
 						}
@@ -976,7 +976,7 @@
 			{
 				try
 				{
-					$this->_duplicateof = TBGFactory::TBGIssueLab($this->_duplicateof);
+					$this->_duplicateof = TBGContext::factory()->TBGIssue($this->_duplicateof);
 				}
 				catch (Exception $e) 
 				{
@@ -1361,7 +1361,7 @@
 			{
 				try
 				{
-					$this->_issuetype = TBGFactory::TBGIssuetypeLab($this->_issuetype);
+					$this->_issuetype = TBGContext::factory()->TBGIssuetype($this->_issuetype);
 				}
 				catch (Exception $e) 
 				{
@@ -1392,7 +1392,7 @@
 			{
 				try
 				{
-					$this->_status = TBGFactory::TBGStatusLab($this->_status);
+					$this->_status = TBGContext::factory()->TBGStatus($this->_status);
 				}
 				catch (Exception $e)
 				{
@@ -1521,12 +1521,12 @@
 						{
 							if ($row->get(TBGIssueRelationsTable::PARENT_ID) == $this->getID())
 							{
-								$issue = TBGFactory::TBGIssueLab($row->get(TBGIssueRelationsTable::CHILD_ID));
+								$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssueRelationsTable::CHILD_ID));
 								$this->_child_issues[$row->get(TBGIssueRelationsTable::ID)] = $issue;
 							}
 							else
 							{
-								$issue = TBGFactory::TBGIssueLab($row->get(TBGIssueRelationsTable::PARENT_ID));
+								$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssueRelationsTable::PARENT_ID));
 								$this->_parent_issues[$row->get(TBGIssueRelationsTable::ID)] = $issue;
 							}
 						}
@@ -1553,7 +1553,7 @@
 					{
 						try
 						{
-							$issue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID));
+							$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));
 							$this->_duplicate_issues[$row->get(TBGIssuesTable::ID)] = $issue;
 						}
 						catch (Exception $e) 
@@ -1672,7 +1672,7 @@
 					{
 						while ($row = $resultset->getNextRow())
 						{
-							$this->_tasks[$row->get(TBGIssueTasksTable::ID)] = TBGFactory::taskLab($row->get(TBGIssueTasksTable::ID), $row);
+							$this->_tasks[$row->get(TBGIssueTasksTable::ID)] = TBGContext::factory()->task($row->get(TBGIssueTasksTable::ID), $row);
 						}
 					}
 				}
@@ -1798,7 +1798,7 @@
 			{
 				try
 				{
-					$this->_category = TBGFactory::TBGCategoryLab($this->_category);
+					$this->_category = TBGContext::factory()->TBGCategory($this->_category);
 				}
 				catch (Exception $e)
 				{
@@ -1839,7 +1839,7 @@
 			{
 				try
 				{
-					$this->_reproducability = TBGFactory::TBGReproducabilityLab($this->_reproducability);
+					$this->_reproducability = TBGContext::factory()->TBGReproducability($this->_reproducability);
 				}
 				catch (Exception $e)
 				{
@@ -1870,7 +1870,7 @@
 			{
 				try
 				{
-					$this->_priority = TBGFactory::TBGPriorityLab($this->_priority);
+					$this->_priority = TBGContext::factory()->TBGPriority($this->_priority);
 				}
 				catch (Exception $e)
 				{
@@ -1972,7 +1972,7 @@
 			{
 				try
 				{
-					$this->_milestone = TBGFactory::TBGMilestoneLab($this->_milestone);
+					$this->_milestone = TBGContext::factory()->TBGMilestone($this->_milestone);
 				}
 				catch (Exception $e)
 				{
@@ -2009,7 +2009,7 @@
 		{
 			if ($row = B2DB::getTable('TBGIssueRelationsTable')->getIssueRelation($this->getID(), $issue_id))
 			{
-				$related_issue = TBGFactory::TBGIssueLab($issue_id);
+				$related_issue = TBGContext::factory()->TBGIssue($issue_id);
 				if ($row->get(TBGIssueRelationsTable::PARENT_ID) == $this->getID())
 				{
 					$this->_removeChildIssue($related_issue, $row->get(TBGIssueRelationsTable::ID));
@@ -2128,11 +2128,11 @@
 				{
 					if ($this->_assignedtype == TBGIdentifiableClass::TYPE_USER)
 					{
-						$this->_assignedto = TBGFactory::userLab($this->_assignedto);
+						$this->_assignedto = TBGContext::factory()->TBGUser($this->_assignedto);
 					}
 					elseif ($this->_assignedtype == TBGIdentifiableClass::TYPE_TEAM)
 					{
-						$this->_assignedto = TBGFactory::teamLab($this->_assignedto);
+						$this->_assignedto = TBGContext::factory()->TBGTeam($this->_assignedto);
 					}
 				}
 				catch (Exception $e)
@@ -2210,11 +2210,11 @@
 				{
 					if ($this->_ownedtype == TBGIdentifiableClass::TYPE_USER)
 					{
-						$this->_ownedby = TBGFactory::userLab($this->_ownedby);
+						$this->_ownedby = TBGContext::factory()->TBGUser($this->_ownedby);
 					}
 					elseif ($this->_ownedtype == TBGIdentifiableClass::TYPE_TEAM)
 					{
-						$this->_ownedby = TBGFactory::teamLab($this->_ownedby);
+						$this->_ownedby = TBGContext::factory()->TBGTeam($this->_ownedby);
 					}
 				}
 				catch (Exception $e)
@@ -2290,7 +2290,7 @@
 			{
 				try
 				{
-					$this->_postedby = TBGFactory::userLab($this->_postedby);
+					$this->_postedby = TBGContext::factory()->TBGUser($this->_postedby);
 				}
 				catch (Exception $e)
 				{
@@ -2363,7 +2363,7 @@
 			{
 				try
 				{
-					$this->_resolution = TBGFactory::TBGResolutionLab($this->_resolution);
+					$this->_resolution = TBGContext::factory()->TBGResolution($this->_resolution);
 				}
 				catch (Exception $e)
 				{
@@ -2394,7 +2394,7 @@
 			{
 				try
 				{
-					$this->_severity = TBGFactory::TBGSeverityLab($this->_severity);
+					$this->_severity = TBGContext::factory()->TBGSeverity($this->_severity);
 				}
 				catch (Exception $e)
 				{
@@ -3477,7 +3477,7 @@
 					{
 						try
 						{
-							$user = TBGFactory::userLab($row->get(TBGUsersTable::ID), $row);
+							$user = TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
 							$users[$user->getID()] = $user;
 						}
 						catch (Exception $e) { }
@@ -4067,16 +4067,16 @@
 							switch ($customdatatype->getType())
 							{
 								case TBGCustomDatatype::EDITIONS_CHOICE:
-									$option_object = TBGFactory::editionLab($this->getCustomField($key));
+									$option_object = TBGContext::factory()->TBGEdition($this->getCustomField($key));
 									break;
 								case TBGCustomDatatype::COMPONENTS_CHOICE:
-									$option_object = TBGFactory::componentLab($this->getCustomField($key));
+									$option_object = TBGContext::factory()->TBGComponent($this->getCustomField($key));
 									break;
 								case TBGCustomDatatype::RELEASES_CHOICE:
-									$option_object = TBGFactory::buildLab($this->getCustomField($key));
+									$option_object = TBGContext::factory()->TBGBuild($this->getCustomField($key));
 									break;
 								case TBGCustomDatatype::STATUS_CHOICE:
-									$option_object = TBGFactory::TBGStatusLab($this->getCustomField($key));
+									$option_object = TBGContext::factory()->TBGStatus($this->getCustomField($key));
 									break;
 							}
 						}
@@ -4131,7 +4131,7 @@
 						case '_category':
 							if ($value['original_value'] != 0)
 							{
-								$old_name = ($old_item = TBGFactory::TBGCategoryLab($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Not determined');
+								$old_name = ($old_item = TBGContext::factory()->TBGCategory($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Not determined');
 							}
 							else
 							{
@@ -4191,7 +4191,7 @@
 						case '_status':
 							if ($value['original_value'] != 0)
 							{
-								$old_name = ($old_item = TBGFactory::TBGStatusLab($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+								$old_name = ($old_item = TBGContext::factory()->TBGStatus($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 							}
 							else
 							{
@@ -4205,7 +4205,7 @@
 						case '_reproducability':
 							if ($value['original_value'] != 0)
 							{
-								$old_name = ($old_item = TBGFactory::TBGReproducabilityLab($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+								$old_name = ($old_item = TBGContext::factory()->TBGReproducability($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 							}
 							else
 							{
@@ -4220,7 +4220,7 @@
 						case '_priority':
 							if ($value['original_value'] != 0)
 							{
-								$old_name = ($old_item = TBGFactory::TBGPriorityLab($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+								$old_name = ($old_item = TBGContext::factory()->TBGPriority($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 							}
 							else
 							{
@@ -4239,9 +4239,9 @@
 								{
 									$old_identifiable = null;
 									if ($this->getChangedPropertyOriginal('_assignedtype') == TBGIdentifiableClass::TYPE_USER)
-										$old_identifiable = TBGFactory::userLab($value['original_value']);
+										$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
 									elseif ($this->getChangedPropertyOriginal('_assignedtype') == TBGIdentifiableClass::TYPE_TEAM)
-										$old_identifiable = TBGFactory::teamLab($value['original_value']);
+										$old_identifiable = TBGContext::factory()->TBGTeam($value['original_value']);
 									$old_name = ($old_identifiable instanceof TBGIdentifiableClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 								}
 								else
@@ -4256,7 +4256,7 @@
 							}
 							break;
 						case '_postedby':
-							$old_identifiable = TBGFactory::userLab($value['original_value']);
+							$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
 							$old_name = ($old_identifiable instanceof TBGIdentifiableClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 							$new_name = $this->getPostedBy()->getName();
 							
@@ -4266,7 +4266,7 @@
 						case '_being_worked_on_by':
 							if ($value['original_value'] != 0)
 							{
-								$old_identifiable = TBGFactory::userLab($value['original_value']);
+								$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
 								$old_name = ($old_identifiable instanceof TBGIdentifiableClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 							}
 							else
@@ -4286,9 +4286,9 @@
 								{
 									$old_identifiable = null;
 									if ($this->getChangedPropertyOriginal('_ownedtype') == TBGIdentifiableClass::TYPE_USER)
-										$old_identifiable = TBGFactory::userLab($value['original_value']);
+										$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
 									elseif ($this->getChangedPropertyOriginal('_ownedtype') == TBGIdentifiableClass::TYPE_TEAM)
-										$old_identifiable = TBGFactory::teamLab($value['original_value']);
+										$old_identifiable = TBGContext::factory()->TBGTeam($value['original_value']);
 									$old_name = ($old_identifiable instanceof TBGIdentifiableClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 								}
 								else
@@ -4309,7 +4309,7 @@
 						case '_resolution':
 							if ($value['original_value'] != 0)
 							{
-								$old_name = ($old_item = TBGFactory::TBGResolutionLab($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+								$old_name = ($old_item = TBGContext::factory()->TBGResolution($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 							}
 							else
 							{
@@ -4323,7 +4323,7 @@
 						case '_severity':
 							if ($value['original_value'] != 0)
 							{
-								$old_name = ($old_item = TBGFactory::TBGSeverityLab($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+								$old_name = ($old_item = TBGContext::factory()->TBGSeverity($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 							}
 							else
 							{
@@ -4337,7 +4337,7 @@
 						case '_milestone':
 							if ($value['original_value'] != 0)
 							{
-								$old_name = ($old_item = TBGFactory::TBGMilestoneLab($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Not determined');
+								$old_name = ($old_item = TBGContext::factory()->TBGMilestone($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Not determined');
 							}
 							else
 							{
@@ -4351,7 +4351,7 @@
 						case '_issuetype':
 							if ($value['original_value'] != 0)
 							{
-								$old_name = ($old_item = TBGFactory::TBGIssuetypeLab($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
+								$old_name = ($old_item = TBGContext::factory()->TBGIssuetype($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
 							}
 							else
 							{
@@ -4482,15 +4482,15 @@
 											switch ($customdatatype->getType())
 											{
 												case TBGCustomDatatype::EDITIONS_CHOICE:
-													$old_object = TBGFactory::editionLab($value['original_value']);
+													$old_object = TBGContext::factory()->TBGEdition($value['original_value']);
 													break;
 												case TBGCustomDatatype::COMPONENTS_CHOICE:
-													$old_object = TBGFactory::componentLab($value['original_value']);
+													$old_object = TBGContext::factory()->TBGComponent($value['original_value']);
 													break;
 												case TBGCustomDatatype::RELEASES_CHOICE:
-													$old_object = TBGFactory::buildLab($value['original_value']);
+													$old_object = TBGContext::factory()->TBGBuild($value['original_value']);
 												case TBGCustomDatatype::STATUS_CHOICE:
-													$old_object = TBGFactory::TBGStatusLab($value['original_value']);
+													$old_object = TBGContext::factory()->TBGStatus($value['original_value']);
 													break;
 											}
 										}
@@ -4500,15 +4500,15 @@
 											switch ($customdatatype->getType())
 											{
 												case TBGCustomDatatype::EDITIONS_CHOICE:
-													$new_object = TBGFactory::editionLab($this->getCustomField($key));
+													$new_object = TBGContext::factory()->TBGEdition($this->getCustomField($key));
 													break;
 												case TBGCustomDatatype::COMPONENTS_CHOICE:
-													$new_object = TBGFactory::componentLab($this->getCustomField($key));
+													$new_object = TBGContext::factory()->TBGComponent($this->getCustomField($key));
 													break;
 												case TBGCustomDatatype::RELEASES_CHOICE:
-													$new_object = TBGFactory::buildLab($this->getCustomField($key));
+													$new_object = TBGContext::factory()->TBGBuild($this->getCustomField($key));
 												case TBGCustomDatatype::STATUS_CHOICE:
-													$new_object = TBGFactory::TBGStatusLab($this->getCustomField($key));
+													$new_object = TBGContext::factory()->TBGStatus($this->getCustomField($key));
 													break;
 											}
 										}
@@ -4603,7 +4603,7 @@
 			
 			foreach (array_keys($related_issues_to_save) as $i_id)
 			{
-				$related_issue = TBGFactory::TBGIssueLab($i_id);
+				$related_issue = TBGContext::factory()->TBGIssue($i_id);
 				$related_issue->save();
 			}
 
@@ -4646,7 +4646,7 @@
 			{
 				try
 				{
-					$this->_being_worked_on_by = TBGFactory::userLab($this->_being_worked_on_by);
+					$this->_being_worked_on_by = TBGContext::factory()->TBGUser($this->_being_worked_on_by);
 				}
 				catch (Exception $e)
 				{

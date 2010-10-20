@@ -76,7 +76,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$file = TBGFactory::TBGFileLab($row->get(TBGFilesTable::ID), $row);
+					$file = TBGContext::factory()->TBGFile($row->get(TBGFilesTable::ID), $row);
 					$file->setUploadedAt($row->get(self::ATTACHED_AT));
 					$ret_arr[$row->get(TBGFilesTable::ID)] = $file;
 				}

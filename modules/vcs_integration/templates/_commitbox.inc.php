@@ -5,7 +5,7 @@
 	}
 	else
 	{
-		$theUser = TBGFactory::userLab($author);
+		$theUser = TBGContext::factory()->TBGUser($author);
 		$user = $theUser->getBuddyname() . ' (' . $theUser->getUname() . ')';
 	}
 

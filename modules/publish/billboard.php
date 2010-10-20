@@ -94,7 +94,7 @@
 				{
 					foreach (TBGContext::getUser()->getTeams() as $aTeamID)
 					{
-						$theTeam = TBGFactory::teamLab($aTeamID);
+						$theTeam = TBGContext::factory()->TBGTeam($aTeamID);
 						?><option value="<?php echo $aTeamID; ?>"><?php echo $theTeam->getName(); ?></option><?php
 					}
 				}
@@ -128,7 +128,7 @@
 				{
 					foreach (TBGContext::getUser()->getTeams() as $aTeamID)
 					{
-						$theTeam = TBGFactory::teamLab($aTeamID);
+						$theTeam = TBGContext::factory()->TBGTeam($aTeamID);
 						?><option value="<?php echo $aTeamID; ?>"><?php echo $theTeam->getName(); ?></option><?php
 					}
 				}
@@ -181,7 +181,7 @@
 			foreach (TBGContext::getUser()->getTeams() as $aTeamID) 
 			{
 				$billboardposts = TBGPublish::getModule()->getBillboardPosts($aTeamID, 9);
-				$aTeam = TBGFactory::teamLab($aTeamID);
+				$aTeam = TBGContext::factory()->TBGTeam($aTeamID);
 				?><div style="border-bottom: 1px solid #DDD; padding: 3px; font-size: 13px;"><b><a href="<?php echo TBGContext::getTBGPath(); ?>modules/publish/billboard.php?billboard=<?php echo $aTeam->getID(); ?>"><?php echo __('%teamname% billboard', array('%teamname%' => $aTeam->getName())); ?></a></b> <span style="display: inline; font-weight: normal; font-size: 11px;">(<?php echo __('available only to team members'); ?>)</span></div>
 				<?php
 				for ($cc = 1; $cc <= 3; $cc++) 
@@ -223,7 +223,7 @@
 		elseif (in_array((int) TBGContext::getRequest()->getParameter('billboard'), TBGContext::getUser()->getTeams()))
 		{
 			$billboardposts = TBGPublish::getModule()->getBillboardPosts(TBGContext::getRequest()->getParameter('billboard'), 30);
-			$billboardtitle = TBGFactory::teamLab(TBGContext::getRequest()->getParameter('billboard'))->getName() . ' billboard';
+			$billboardtitle = TBGContext::factory()->TBGTeam(TBGContext::getRequest()->getParameter('billboard'))->getName() . ' billboard';
 		}
 			
 		if ($billboardtitle !== null)

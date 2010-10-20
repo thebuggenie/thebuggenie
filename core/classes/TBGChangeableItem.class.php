@@ -71,7 +71,7 @@
 					{
 						try
 						{
-							$retarr[$id] = TBGFactory::$function($id);
+							$retarr[$id] = TBGContext::factory()->$function($id);
 						}
 						catch (Exception $e)
 						{

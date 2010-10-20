@@ -38,7 +38,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						self::$_groups[$row->get(TBGGroupsTable::ID)] = TBGFactory::groupLab($row->get(TBGGroupsTable::ID), $row);
+						self::$_groups[$row->get(TBGGroupsTable::ID)] = TBGContext::factory()->TBGGroup($row->get(TBGGroupsTable::ID), $row);
 					}
 				}
 			}
@@ -88,7 +88,7 @@
 			}
 			$crit->addInsert(TBGGroupsTable::SCOPE, $scope);
 			$res = B2DB::getTable('TBGGroupsTable')->doInsert($crit);
-			$group = TBGFactory::groupLab($res->getInsertID());
+			$group = TBGContext::factory()->TBGGroup($res->getInsertID());
 			if (self::$_groups !== null)
 			{
 				self::$_groups[$group->getID()] = $group;
@@ -132,7 +132,7 @@
 					while ($row = $res->getNextRow())
 					{
 						$uid = $row->get(TBGUsersTable::ID);
-						$this->_members[$uid] = TBGFactory::userLab($uid);
+						$this->_members[$uid] = TBGContext::factory()->TBGUser($uid);
 					}
 				}
 			}

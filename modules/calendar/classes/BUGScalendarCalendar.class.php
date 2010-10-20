@@ -19,7 +19,7 @@
 			$this->_itemid = $id->get(TBGCalendarsTable::ID);
 			$this->_name = $id->get(TBGCalendarsTable::NAME);
 			$this->_itemtype = 0;
-			$this->_user = TBGFactory::userLab($id->get(TBGCalendarsTable::UID));
+			$this->_user = TBGContext::factory()->TBGUser($id->get(TBGCalendarsTable::UID));
 			$this->_exclusive = ($id->get(TBGCalendarsTable::EXCLUSIVE) == 1) ? true : false;
 		}
 		

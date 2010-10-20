@@ -28,7 +28,7 @@
 		public static function createNew($name, $project_id)
 		{
 			$c_id = B2DB::getTable('TBGComponentsTable')->createNew($name, $project_id);
-			return TBGFactory::componentLab($c_id);
+			return TBGContext::factory()->TBGComponent($c_id);
 		}
 		
 		public static function getAllByProjectID($project_id)
@@ -38,7 +38,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$component = TBGFactory::componentLab($row->get(TBGComponentsTable::ID), $row);
+					$component = TBGContext::factory()->TBGComponent($row->get(TBGComponentsTable::ID), $row);
 					$retval[$component->getID()] = $component;
 				}
 			}
@@ -81,7 +81,7 @@
 		{
 			if (!$this->_project instanceof TBGProject)
 			{
-				$this->_project = TBGFactory::projectLab($this->_project);
+				$this->_project = TBGContext::factory()->TBGProject($this->_project);
 			}
 			return $this->_project;
 		}

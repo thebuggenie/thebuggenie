@@ -268,7 +268,7 @@
 			}
 			else
 			{
-				$theTeam = TBGFactory::teamLab($to_id);
+				$theTeam = TBGContext::factory()->TBGTeam($to_id);
 				
 				$crit->addInsert(TBGMessagesTable::FOLDER, 4);
 				$crit->addInsert(TBGMessagesTable::TO_TEAM, $to_id);

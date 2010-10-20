@@ -80,7 +80,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$build = TBGFactory::buildLab($row->get(TBGBuildsTable::ID), $row);
+						$build = TBGContext::factory()->TBGBuild($row->get(TBGBuildsTable::ID), $row);
 						self::$_project_builds[$project_id][$build->getID()] = $build;
 					}
 				}
@@ -106,7 +106,7 @@
 				self::$_edition_builds[$edition_id] = array();
 				if ($res = B2DB::getTable('TBGBuildsTable')->getByEditionID($project_id))
 				{
-					$build = TBGFactory::buildLab($row->get(TBGBuildsTable::ID), $row);
+					$build = TBGContext::factory()->TBGBuild($row->get(TBGBuildsTable::ID), $row);
 					self::$_edition_builds[$edition_id][$build->getID()] = $build;
 				}
 			}
@@ -132,7 +132,7 @@
 			
 			TBGContext::setPermission("b2buildaccess", $b_id, "core", 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
 			
-			return TBGFactory::buildLab($b_id);
+			return TBGContext::factory()->TBGBuild($b_id);
 		}
 		
 		/**
@@ -162,7 +162,7 @@
 				{
 					try
 					{
-						$this->_edition = TBGFactory::editionLab($row->get(TBGBuildsTable::EDITION), $row);
+						$this->_edition = TBGContext::factory()->TBGEdition($row->get(TBGBuildsTable::EDITION), $row);
 					}
 					catch (Exception $e) {}
 				}
@@ -170,7 +170,7 @@
 				{
 					try
 					{
-						$this->_project = TBGFactory::projectLab($row->get(TBGBuildsTable::PROJECT), $row);
+						$this->_project = TBGContext::factory()->TBGProject($row->get(TBGBuildsTable::PROJECT), $row);
 					}
 					catch (Exception $e) {}
 				}

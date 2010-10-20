@@ -68,7 +68,7 @@
 			$allTeams = TBGTeam::getAll(TBGContext::getRequest()->getParameter('message_findsendto'));
 			foreach ($allTeams as $aTeam)
 			{
-				$aTeam = TBGFactory::teamLab($aTeam['id']);
+				$aTeam = TBGContext::factory()->TBGTeam($aTeam['id']);
 				?>
 				<a href="newmessage.php?set_sendto=<?php print $aTeam->getID(); ?>&amp;sendto_team=1"><?php print $aTeam->getName(); ?></a><br>
 				<?php
@@ -119,12 +119,12 @@
 
 		if (isset($_SESSION['message_sendto_team']) && $_SESSION['message_sendto_team'])
 		{
-			$theTeam = TBGFactory::teamLab($_SESSION['message_sendto']);
+			$theTeam = TBGContext::factory()->TBGTeam($_SESSION['message_sendto']);
 			print $theTeam->getName() . " (team message)";
 		}
 		else
 		{
-			$theUser = TBGFactory::userLab($_SESSION['message_sendto']);
+			$theUser = TBGContext::factory()->TBGUser($_SESSION['message_sendto']);
 			print $theUser;
 		}
 

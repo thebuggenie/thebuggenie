@@ -17,7 +17,7 @@
 			<?php if (isset($include_user) && $include_user == true): ?>
 				<br>
 				<span class="user">
-					<?php if (($user = TBGFactory::userLab($log_action['user_id'])) instanceof TBGUser): ?>
+					<?php if (($user = TBGContext::factory()->TBGUser($log_action['user_id'])) instanceof TBGUser): ?>
 						<?php if ($log_action['change_type'] != TBGLogTable::LOG_COMMENT): ?>
 							<?php echo $user->getUsername(); ?>
 						<?php else: ?>
@@ -46,7 +46,7 @@
 						}
 						break;
 					case TBGLogTable::LOG_COMMENT:
-						$comment = TBGFactory::TBGCommentLab((int) $log_action['text']);
+						$comment = TBGContext::factory()->TBGComment((int) $log_action['text']);
 						echo '<div class="timeline_inline_details">';
 						$comment = (strlen($comment->getContent() > 300)) ? substr($comment->getContent(), 300) . '...' : $comment->getContent();
 						echo nl2br($comment);

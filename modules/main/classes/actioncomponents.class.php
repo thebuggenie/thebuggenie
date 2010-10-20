@@ -15,7 +15,7 @@
 				if (!$this->user instanceof TBGUser)
 				{
 					TBGLogging::log('loading user object in dropdown');
-					$this->user = TBGFactory::userLab($this->user);
+					$this->user = TBGContext::factory()->TBGUser($this->user);
 					TBGLogging::log('done (loading user object in dropdown)');
 				}
 			}
@@ -35,7 +35,7 @@
 				if (!$this->team instanceof TBGTeam)
 				{
 					TBGLogging::log('loading team object in dropdown');
-					$this->team = TBGFactory::teamLab($this->team);
+					$this->team = TBGContext::factory()->TBGTeam($this->team);
 					TBGLogging::log('done (loading team object in dropdown)');
 				}
 			}
@@ -139,7 +139,7 @@
 		{
 			if ($this->mode == 'issue' && !isset($this->issue))
 			{
-				$this->issue = TBGFactory::TBGIssueLab($this->issue_id);
+				$this->issue = TBGContext::factory()->TBGIssue($this->issue_id);
 			}
 			$this->file_id = $this->file->getID();
 		}
@@ -172,7 +172,7 @@
 			{
 				try
 				{
-					$this->issue = TBGFactory::TBGIssueLab($this->log_action['target']);
+					$this->issue = TBGContext::factory()->TBGIssue($this->log_action['target']);
 				}
 				catch (Exception $e) {}
 			}

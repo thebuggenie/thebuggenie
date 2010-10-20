@@ -73,7 +73,7 @@
 			}
 			$crit->addInsert(TBGCustomerTable::SCOPE, $scope);
 			$res = B2DB::getTable('TBGCustomersTable')->doInsert($crit);
-			$customer = TBGFactory::customerLab($res->getInsertID());
+			$customer = TBGContext::factory()->TBGCustomer($res->getInsertID());
 			if (self::$_customers !== null)
 			{
 				self::$_customers[$customer->getID()] = $customer;
@@ -123,7 +123,7 @@
 		
 				while ($row = $res->getNextRow())
 				{
-					$customers[$row->get(TBGCustomersTable::ID)] = TBGFactory::customerLab($row->get(TBGCustomersTable::ID), $row);
+					$customers[$row->get(TBGCustomersTable::ID)] = TBGContext::factory()->TBGCustomer($row->get(TBGCustomersTable::ID), $row);
 				}
 				self::$_customers = $customers;
 			}
@@ -139,7 +139,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$customers[$row->get(TBGCustomersTable::ID)] = TBGFactory::customerLab($row->get(TBGCustomersTable::ID), $row);
+					$customers[$row->get(TBGCustomersTable::ID)] = TBGContext::factory()->TBGCustomer($row->get(TBGCustomersTable::ID), $row);
 				}
 			}
 			return $customers;

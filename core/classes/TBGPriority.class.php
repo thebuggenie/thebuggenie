@@ -19,7 +19,7 @@
 				{
 					foreach ($items as $row_id => $row)
 					{
-						self::$_items[$row_id] = TBGFactory::TBGPriorityLab($row_id, $row);
+						self::$_items[$row_id] = TBGContext::factory()->TBGPriority($row_id, $row);
 					}
 				}
 			}
@@ -36,7 +36,7 @@
 		public static function createNew($name)
 		{
 			$res = parent::_createNew($name, self::PRIORITY);
-			return TBGFactory::TBGPriorityLab($res->getInsertID());
+			return TBGContext::factory()->TBGPriority($res->getInsertID());
 		}
 
 		/**

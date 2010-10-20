@@ -36,7 +36,7 @@
 	
 			while ($row = $res->getNextRow())
 			{
-				$scopes[] = TBGFactory::scopeLab($row->get(TBGScopesTable::ID), $row);
+				$scopes[] = TBGContext::factory()->TBGScope($row->get(TBGScopesTable::ID), $row);
 			}
 	
 			return $scopes;
@@ -162,7 +162,7 @@
 			{
 				try
 				{
-					$this->_administrator = TBGFactory::userLab($this->_administrator);
+					$this->_administrator = TBGContext::factory()->TBGUser($this->_administrator);
 				}
 				catch (Exception $e)
 				{
@@ -174,7 +174,7 @@
 		
 		public function setScopeAdmin($uid)
 		{
-			$adminuser = TBGFactory::userLab($uid);
+			$adminuser = TBGContext::factory()->TBGUser($uid);
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGScopesTable::ADMIN, $uid);
 			$res = TBGScopesTable::getTable()->doUpdateById($crit, $this->_itemid);
@@ -185,7 +185,7 @@
 			$adminuser->setGroup(B2DB::getTable('TBGGroupsTable')->doSelectOne($crit)->get(TBGGroupsTable::ID));
 			foreach ($adminuser->getTeams() as $aTeam)
 			{
-				$aTeam = TBGFactory::teamLab($aTeam);
+				$aTeam = TBGContext::factory()->TBGTeam($aTeam);
 				$aTeam->removeMember($adminuser->getID());
 			}
 		}
@@ -194,7 +194,7 @@
 		{
 			$scope_id = TBGScopesTable::getTable()->createNew($scope_name, $hostname);
 			self::loadFixtures($scope_id);
-			return TBGFactory::scopeLab($scope_id);
+			return TBGContext::factory()->TBGScope($scope_id);
 		}
 		
 		public static function loadFixtures($scope_id)
@@ -278,7 +278,7 @@
 			$crit->addInsert(TBGScopesTable::HOSTNAME, $scopeHostname);
 			$crit->addInsert(TBGScopesTable::DESCRIPTION, $scopeDescription);
 			$res = TBGScopesTable::getTable()->doInsert($crit);
-			$addedScope = TBGFactory::scopeLab($res->getInsertID());
+			$addedScope = TBGContext::factory()->TBGScope($res->getInsertID());
 			
 			// Create a new 'administrator' user inside the new scope
 			$theAdminUser = TBGUser::createNew('scope' . $scopeShortname . 'administrator', 'Scope ' . $scopeShortname . ' Administrator', 'Scope ' . $scopeShortname . ' Admin', $addedScope->getID(), 1, 1);

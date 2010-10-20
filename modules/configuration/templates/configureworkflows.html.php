@@ -7,9 +7,7 @@
 	<tr>
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW)); ?>
 		<td valign="top">
-			<div style="width: 750px;" id="config_workflows">
-				<div class="config_header"><?php echo __('Configure workflows'); ?></div>
-			</div>
+			<?php include_template('configuration/workflowmenu', array('selected_tab' => 'workflows')); ?>
 		</td>
 	</tr>
 </table>

@@ -202,7 +202,7 @@ if ($issaved)
 		
 		foreach (TBGContext::getStates() as $aState)
 		{
-			$aState = TBGFactory::userstateLab($aState);
+			$aState = TBGContext::factory()->TBGUserstate($aState);
 			echo '<option value="' . $aState->getID() . '"';
 			if ($theEvent instanceof BUGScalendarEvent && $theEvent->getUserStatus() == $aState->getID()) echo ' selected';
 			echo '>' . $aState->getName() . '</option>';

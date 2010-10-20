@@ -121,6 +121,13 @@
 		 * @var TBGScope
 		 */
 		static protected $_scope = null;
+
+		/**
+		 * The TBGFactory instance
+		 *
+		 * @var TBGFactory
+		 */
+		static protected $_factory = null;
 		
 		/**
 		 * The currently selected project, if any
@@ -397,6 +404,7 @@
 			{
 				TBGLogging::log('Loading request');
 				self::$_request = new TBGRequest();
+				self::$_factory = new TBGFactory();
 				TBGLogging::log('...done');
 				if (!self::isCLI())
 				{
@@ -527,7 +535,17 @@
 				throw $e;
 			}
 		}
-		
+
+		/**
+		 * Returns the factory object
+		 *
+		 * @return TBGFactory
+		 */
+		public static function factory()
+		{
+			return self::$_factory;
+		}
+
 		/**
 		 * Returns the request object
 		 * 
@@ -1342,7 +1360,7 @@
 				{
 					TBGLogging::log("It could");
 					TBGLogging::log("Setting scope from hostname");
-					$theScope = TBGFactory::scopeLab($row->get(TBGScopesTable::ID), $row);
+					$theScope = TBGContext::factory()->TBGScope($row->get(TBGScopesTable::ID), $row);
 					self::$_scope = $theScope;
 					TBGLogging::log("...done (Setting scope from hostname)");
 					return true;

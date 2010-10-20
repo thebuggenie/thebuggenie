@@ -41,7 +41,7 @@
 			}
 			else
 			{
-				$theIssue = TBGFactory::TBGIssueLab($issue_uniqueid);
+				$theIssue = TBGContext::factory()->TBGIssue($issue_uniqueid);
 				if (TBGContext::getUser()->hasPermission("b2notviewissue", $theIssue->getID(), "core") == false)
 				{
 					if (TBGContext::getUser()->hasPermission("b2projectaccess", $theIssue->getProject()->getID(), "core"))

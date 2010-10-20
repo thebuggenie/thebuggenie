@@ -19,7 +19,7 @@
 				{
 					foreach ($items as $row_id => $row)
 					{
-						self::$_items[$row_id] = TBGFactory::TBGReproducabilityLab($row_id, $row);
+						self::$_items[$row_id] = TBGContext::factory()->TBGReproducability($row_id, $row);
 					}
 				}
 			}
@@ -36,7 +36,7 @@
 		public static function createNew($name)
 		{
 			$res = parent::_createNew($name, self::REPRODUCABILITY);
-			return TBGFactory::TBGReproducabilityLab($res->getInsertID());
+			return TBGContext::factory()->TBGReproducability($res->getInsertID());
 		}
 
 		/**

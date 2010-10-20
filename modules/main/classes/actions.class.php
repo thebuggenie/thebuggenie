@@ -178,6 +178,7 @@
 			$i18n = TBGContext::getI18n();
 			$this->getResponse()->setPage('login');
 			$this->getResponse()->setProjectMenuStripHidden();
+			$this->login_referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
 			try
 			{
 				if (TBGContext::getRequest()->getMethod() == TBGRequest::POST)
@@ -197,7 +198,14 @@
 						{
 							if (TBGSettings::get('returnfromlogin') == 'referer')
 							{
-								$this->forward(TBGContext::getRequest()->getParameter('tbg3_referer'));
+								if (TBGContext::getRequest()->getParameter('tbg3_referer'))
+								{
+									$this->forward(TBGContext::getRequest()->getParameter('tbg3_referer'));
+								}
+								else
+								{
+									$this->forward(TBGContext::getRouting()->generate('home'));
+								}
 							}
 							else
 							{
@@ -213,23 +221,23 @@
 				elseif (!TBGContext::getUser()->isAuthenticated() && TBGSettings::get('requirelogin'))
 				{
 					$this->login_error = $i18n->__('You need to log in to access this site');
-					$this->login_error_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
+					$this->login_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
 				}
 				elseif (!TBGContext::getUser()->isAuthenticated())
 				{
 					$this->login_error = $i18n->__('Please log in');
-					$this->login_error_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
+					$this->login_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
 				}
 				elseif (TBGContext::hasMessage('forward'))
 				{
 					$this->login_error = TBGContext::getMessageAndClear('forward');
-					$this->login_error_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
+					$this->login_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
 				}
 			}
 			catch (Exception $e)
 			{
 				$this->login_error = $e->getMessage();
-				$this->login_error_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
+				$this->login_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
 			}
 		}
 		
@@ -587,7 +595,7 @@
 			{
 				try
 				{
-					$this->selected_project = TBGFactory::projectLab($project_id);
+					$this->selected_project = TBGContext::factory()->TBGProject($project_id);
 				}
 				catch (Exception $e) {}
 			}
@@ -609,7 +617,7 @@
 			{
 				try
 				{
-					$this->selected_issuetype = TBGFactory::TBGIssuetypeLab($this->issuetype_id);
+					$this->selected_issuetype = TBGContext::factory()->TBGIssuetype($this->issuetype_id);
 				}
 				catch (Exception $e) {}
 			}
@@ -630,15 +638,15 @@
 
 				if ($edition_id = (int) $request->getParameter('edition_id'))
 				{
-					$this->selected_edition = TBGFactory::editionLab($edition_id);
+					$this->selected_edition = TBGContext::factory()->TBGEdition($edition_id);
 				}
 				if ($build_id = (int) $request->getParameter('build_id'))
 				{
-					$this->selected_build = TBGFactory::buildLab($build_id);
+					$this->selected_build = TBGContext::factory()->TBGBuild($build_id);
 				}
 				if ($component_id = (int) $request->getParameter('component_id'))
 				{
-					$this->selected_component = TBGFactory::componentLab($component_id);
+					$this->selected_component = TBGContext::factory()->TBGComponent($component_id);
 				}
 
 				if (trim($this->title) == '' || $this->title == $this->default_title) $errors['title'] = true; //$i18n->__('You have to specify a title');
@@ -663,32 +671,32 @@
 
 				if ($category_id = (int) $request->getParameter('category_id'))
 				{
-					$this->selected_category = TBGFactory::TBGCategoryLab($category_id);
+					$this->selected_category = TBGContext::factory()->TBGCategory($category_id);
 				}
 
 				if ($status_id = (int) $request->getParameter('status_id'))
 				{
-					$this->selected_status = TBGFactory::TBGStatusLab($status_id);
+					$this->selected_status = TBGContext::factory()->TBGStatus($status_id);
 				}
 
 				if ($reproducability_id = (int) $request->getParameter('reproducability_id'))
 				{
-					$this->selected_reproducability = TBGFactory::TBGReproducabilityLab($reproducability_id);
+					$this->selected_reproducability = TBGContext::factory()->TBGReproducability($reproducability_id);
 				}
 
 				if ($resolution_id = (int) $request->getParameter('resolution_id'))
 				{
-					$this->selected_resolution = TBGFactory::TBGResolutionLab($resolution_id);
+					$this->selected_resolution = TBGContext::factory()->TBGResolution($resolution_id);
 				}
 
 				if ($severity_id = (int) $request->getParameter('severity_id'))
 				{
-					$this->selected_severity = TBGFactory::TBGSeverityLab($severity_id);
+					$this->selected_severity = TBGContext::factory()->TBGSeverity($severity_id);
 				}
 
 				if ($priority_id = (int) $request->getParameter('priority_id'))
 				{
-					$this->selected_priority = TBGFactory::TBGPriorityLab($priority_id);
+					$this->selected_priority = TBGContext::factory()->TBGPriority($priority_id);
 				}
 
 				if ($request->getParameter('estimated_time'))
@@ -917,7 +925,7 @@
 			{
 				try
 				{
-					$selected_project = TBGFactory::projectLab($project_id);
+					$selected_project = TBGContext::factory()->TBGProject($project_id);
 				}
 				catch (Exception $e)
 				{
@@ -948,7 +956,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -987,7 +995,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1058,10 +1066,10 @@
 								switch ($request->getParameter('identifiable_type'))
 								{
 									case TBGIdentifiableClass::TYPE_USER:
-										$identified = TBGFactory::userLab($request->getParameter('value'));
+										$identified = TBGContext::factory()->TBGUser($request->getParameter('value'));
 										break;
 									case TBGIdentifiableClass::TYPE_TEAM:
-										$identified = TBGFactory::teamLab($request->getParameter('value'));
+										$identified = TBGContext::factory()->TBGTeam($request->getParameter('value'));
 										break;
 								}
 								if ($identified instanceof TBGIdentifiableClass)
@@ -1078,7 +1086,7 @@
 						}
 						elseif ($request->getParameter('field') == 'posted_by')
 						{
-							$identified = TBGFactory::userLab($request->getParameter('value'));
+							$identified = TBGContext::factory()->TBGUser($request->getParameter('value'));
 							if ($identified instanceof TBGIdentifiableClass)
 							{
 								$issue->setPostedBy($identified);
@@ -1172,7 +1180,7 @@
 							$parameter_id = $request->getParameter($parameter_id_name);
 							if ($parameter_id !== 0)
 							{
-								$is_valid = ($is_pain) ? in_array($parameter_id, array_keys(TBGIssue::getPainTypesOrLabel($parameter_name))) : ($parameter_id == 0 || (($parameter = TBGFactory::$lab_function_name($parameter_id)) instanceof TBGIdentifiableClass));
+								$is_valid = ($is_pain) ? in_array($parameter_id, array_keys(TBGIssue::getPainTypesOrLabel($parameter_name))) : ($parameter_id == 0 || (($parameter = TBGContext::factory()->$lab_function_name($parameter_id)) instanceof TBGIdentifiableClass));
 							}
 							if ($parameter_id == 0 || ($parameter_id !== 0 && $is_valid))
 							{
@@ -1212,7 +1220,7 @@
 						elseif ($request->hasParameter('resolution_id') && $request->getParameter('field') == 'resolution')
 						{
 							$resolution_id = $request->getParameter('resolution_id');
-							if ($resolution_id == 0 || ($resolution_id !== 0 && ($resolution = TBGFactory::TBGResolutionLab($resolution_id)) instanceof TBGResolution))
+							if ($resolution_id == 0 || ($resolution_id !== 0 && ($resolution = TBGContext::factory()->TBGResolution($resolution_id)) instanceof TBGResolution))
 							{
 								$issue->setResolution($resolution_id);
 								if (!$issue->isResolutionChanged()) return $this->renderJSON(array('changed' => false));
@@ -1222,7 +1230,7 @@
 						elseif ($request->hasParameter('issuetype_id') && $request->getParameter('field') == 'issuetype')
 						{
 							$issuetype_id = $request->getParameter('issuetype_id');
-							if ($issuetype_id == 0 || ($issuetype_id !== 0 && ($issuetype = TBGFactory::TBGIssuetypeLab($issuetype_id)) instanceof TBGIssuetype))
+							if ($issuetype_id == 0 || ($issuetype_id !== 0 && ($issuetype = TBGContext::factory()->TBGIssuetype($issuetype_id)) instanceof TBGIssuetype))
 							{
 								$issue->setIssuetype($issuetype_id);
 								if (!$issue->isIssuetypeChanged()) return $this->renderJSON(array('changed' => false));
@@ -1233,7 +1241,7 @@
 						elseif ($request->hasParameter('severity_id') && $request->getParameter('field') == 'severity')
 						{
 							$severity_id = $request->getParameter('severity_id');
-							if ($severity_id == 0 || ($severity_id !== 0 && ($severity = TBGFactory::TBGSeverityLab($severity_id)) instanceof TBGSeverity))
+							if ($severity_id == 0 || ($severity_id !== 0 && ($severity = TBGContext::factory()->TBGSeverity($severity_id)) instanceof TBGSeverity))
 							{
 								$issue->setSeverity($severity_id);
 								if (!$issue->isSeverityChanged()) return $this->renderJSON(array('changed' => false));
@@ -1243,7 +1251,7 @@
 						elseif ($request->hasParameter('reproducability_id') && $request->getParameter('field') == 'reproducability')
 						{
 							$reproducability_id = $request->getParameter('reproducability_id');
-							if ($reproducability_id == 0 || ($reproducability_id !== 0 && ($reproducability = TBGFactory::TBGReproducabilityLab($reproducability_id)) instanceof TBGReproducability))
+							if ($reproducability_id == 0 || ($reproducability_id !== 0 && ($reproducability = TBGContext::factory()->TBGReproducability($reproducability_id)) instanceof TBGReproducability))
 							{
 								$issue->setReproducability($reproducability_id);
 								if (!$issue->isReproducabilityChanged()) return $this->renderJSON(array('changed' => false));
@@ -1253,7 +1261,7 @@
 						elseif ($request->hasParameter('priority_id') && $request->getParameter('field') == 'priority')
 						{
 							$priority_id = $request->getParameter('priority_id');
-							if ($priority_id == 0 || ($priority_id !== 0 && ($priority = TBGFactory::TBGPriorityLab($priority_id)) instanceof TBGPriority))
+							if ($priority_id == 0 || ($priority_id !== 0 && ($priority = TBGContext::factory()->TBGPriority($priority_id)) instanceof TBGPriority))
 							{
 								$issue->setPriority($priority_id);
 								if (!$issue->isPriorityChanged()) return $this->renderJSON(array('changed' => false));
@@ -1263,7 +1271,7 @@
 						elseif ($request->hasParameter('status_id') && $request->getParameter('field') == 'status')
 						{
 							$status_id = $request->getParameter('status_id');
-							if ($status_id == 0 || ($status_id !== 0 && ($status = TBGFactory::TBGStatusLab($status_id)) instanceof TBGStatus))
+							if ($status_id == 0 || ($status_id !== 0 && ($status = TBGContext::factory()->TBGStatus($status_id)) instanceof TBGStatus))
 							{
 								$issue->setStatus($status_id);
 								if (!$issue->isStatusChanged()) return $this->renderJSON(array('changed' => false));
@@ -1273,7 +1281,7 @@
 						elseif ($request->hasParameter('milestone_id') && $request->getParameter('field') == 'milestone')
 						{
 							$milestone_id = $request->getParameter('milestone_id');
-							if ($milestone_id == 0 || ($milestone_id !== 0 && ($milestone = TBGFactory::TBGMilestoneLab($milestone_id)) instanceof TBGMilestone))
+							if ($milestone_id == 0 || ($milestone_id !== 0 && ($milestone = TBGContext::factory()->TBGMilestone($milestone_id)) instanceof TBGMilestone))
 							{
 								$issue->setMilestone($milestone_id);
 								if (!$issue->isMilestoneChanged()) return $this->renderJSON(array('changed' => false));
@@ -1403,7 +1411,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1553,7 +1561,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1580,7 +1588,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1624,7 +1632,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1651,7 +1659,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1690,7 +1698,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1703,7 +1711,7 @@
 			}
 			try
 			{
-				$issue2 = TBGFactory::TBGIssueLab($request->getParameter('duplicate_issue'));
+				$issue2 = TBGContext::factory()->TBGIssue($request->getParameter('duplicate_issue'));
 			}
 			catch (Exception $e)
 			{
@@ -1745,7 +1753,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1775,7 +1783,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1804,7 +1812,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -1863,10 +1871,10 @@
 			TBGLogging::log('status was: ' . (int) $status['finished']. ', pct: '. (int) $status['percent']);
 			if (array_key_exists('file_id', $status) && $request->getParameter('mode') == 'issue')
 			{
-				$file = TBGFactory::TBGFileLab($status['file_id']);
+				$file = TBGContext::factory()->TBGFile($status['file_id']);
 				$status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue_id' => $request->getParameter('issue_id'), 'file' => $file));
 				$status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue_id' => $request->getParameter('issue_id'), 'file' => $file));
-				$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 				$status['attachmentcount'] = count($issue->getFiles()) + count($issue->getLinks());
 			}
 			
@@ -1885,7 +1893,7 @@
 
 			if ($request->getParameter('mode') == 'issue')
 			{
-				$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 				$canupload = (bool) ($issue instanceof TBGIssue && $issue->hasAccess() && $issue->canAttachFiles());
 			}
 			else
@@ -1947,7 +1955,7 @@
 			switch ($request->getParameter('mode'))
 			{
 				case 'issue':
-					$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+					$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 					if ($issue->canRemoveAttachments() && (int) $request->getParameter('file_id', 0))
 					{
 						B2DB::getTable('TBGIssueFilesTable')->removeFileFromIssue($issue->getID(), (int) $request->getParameter('file_id'));
@@ -1988,7 +1996,7 @@
 
 		public function runAttachLinkToIssue(TBGRequest $request)
 		{
-			$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+			$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 			if ($issue instanceof TBGIssue && $issue->canAttachLinks())
 			{
 				if ($request->getParameter('link_url') != '')
@@ -2003,7 +2011,7 @@
 
 		public function runRemoveLinkFromIssue(TBGRequest $request)
 		{
-			$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+			$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 			if ($issue instanceof TBGIssue && $issue->canRemoveAttachments())
 			{
 				if ($request->getParameter('link_id') != 0)
@@ -2034,7 +2042,7 @@
 		
 		public function runDeleteComment(TBGRequest $request)
 		{
-			$comment = TBGFactory::TBGCommentLab($request->getParameter('comment_id'));
+			$comment = TBGContext::factory()->TBGComment($request->getParameter('comment_id'));
 			if ($comment instanceof TBGcomment)
 			{							
 				if (!$comment->canUserDeleteComment())
@@ -2057,7 +2065,7 @@
 		public function runUpdateComment(TBGRequest $request)
 		{
 			TBGContext::loadLibrary('ui');
-			$comment = TBGFactory::TBGCommentLab($request->getParameter('comment_id'));
+			$comment = TBGContext::factory()->TBGComment($request->getParameter('comment_id'));
 			if ($comment instanceof TBGcomment)
 			{							
 				if (!$comment->canUserEditComment())
@@ -2116,7 +2124,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 			$comment = null;
-			$project = TBGFactory::ProjectLab($request->getParameter('project_id'));
+			$project = TBGContext::factory()->Project($request->getParameter('project_id'));
 			$project_key = ($project instanceof TBGProject) ? $project->getKey() : false;
 			try
 			{
@@ -2147,7 +2155,7 @@
 							$this->comment_lines = array();
 							$this->comment = '';
 							TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenIssueSaveAddComment'));
-							$issue = TBGFactory::TBGIssueLab($request->getParameter('comment_applies_id'));
+							$issue = TBGContext::factory()->TBGIssue($request->getParameter('comment_applies_id'));
 							$issue->save(false);
 						}
 
@@ -2157,7 +2165,7 @@
 
 						if ($request->getParameter('comment_applies_type') == 1 && $request->getParameter('comment_module') == 'core')
 						{
-							$comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment, 'issue' => TBGFactory::TBGIssueLab($request->getParameter('comment_applies_id'))));
+							$comment_html = $this->getTemplateHTML('main/comment', array('comment' => $comment, 'issue' => TBGContext::factory()->TBGIssue($request->getParameter('comment_applies_id'))));
 						}
 						else
 						{
@@ -2306,7 +2314,7 @@
 				$template_name = null;
 				if ($request->hasParameter('issue_id'))
 				{
-					$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+					$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 					$options = array('issue' => $issue);
 				}
 				else
@@ -2319,7 +2327,7 @@
 						$template_name = 'main/usercard';
 						if ($user_id = $request->getParameter('user_id'))
 						{
-							$user = TBGFactory::userLab($user_id);
+							$user = TBGContext::factory()->TBGUser($user_id);
 							$options['user'] = $user;
 						}
 						break;
@@ -2334,12 +2342,12 @@
 						break;
 					case 'project_config':
 						$template_name = 'configuration/projectconfig_container';
-						$project = TBGFactory::projectLab($request->getParameter('project_id'));
+						$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 						$options['project'] = $project;
 						$options['section'] = $request->getParameter('section', 'info');
 						if ($request->hasParameter('edition_id'))
 						{
-							$edition = TBGFactory::editionLab($request->getParameter('edition_id'));
+							$edition = TBGContext::factory()->TBGEdition($request->getParameter('edition_id'));
 							$options['edition'] = $edition;
 							$options['selected_section'] = $request->getParameter('section', 'general');
 						}
@@ -2367,7 +2375,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -2407,7 +2415,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -2447,7 +2455,7 @@
 			{
 				try
 				{
-					$issue = TBGFactory::TBGIssueLab($issue_id);
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
 				}
 				catch (Exception $e)
 				{
@@ -2479,7 +2487,7 @@
 				{
 					try
 					{
-						$related_issue = TBGFactory::TBGIssueLab((int) $issue_id);
+						$related_issue = TBGContext::factory()->TBGIssue((int) $issue_id);
 						if ($mode == 'relate_children')
 						{
 							$issue->addChildIssue($related_issue);
@@ -2516,7 +2524,7 @@
 		public function runVoteForIssue(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
-			$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+			$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 			$vote_direction = $request->getParameter('vote');
 			if ($issue instanceof TBGIssue && !$issue->hasUserVoted(TBGContext::getUser()->getID(), ($vote_direction == 'up')))
 			{
@@ -2530,7 +2538,7 @@
 		{
 			try
 			{
-				$friend_user = TBGFactory::userLab($request->getParameter('user_id'));
+				$friend_user = TBGContext::factory()->TBGUser($request->getParameter('user_id'));
 				$mode = $request->getParameter('mode');
 				if ($mode == 'add')
 				{

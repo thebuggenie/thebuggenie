@@ -141,7 +141,7 @@
 			}
 			if ($row instanceof B2DBRow)
 			{
-				return PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
+				return PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
 			}
 			return null;
 		}
@@ -156,7 +156,7 @@
 		{
 			$user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
 			$article_id = TBGArticlesTable::getTable()->save($name, $content, $published, $user_id, null, $scope);
-			$article = PublishFactory::articleLab($article_id);
+			$article = PublishFactory::article($article_id);
 			$article->save($options);
 			return $article_id;
 		}
@@ -213,7 +213,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_linking_articles[$row->get(TBGArticleLinksTable::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(TBGArticleLinksTable::ARTICLE_NAME));
+						$this->_linking_articles[$row->get(TBGArticleLinksTable::ARTICLE_NAME)] = PublishFactory::articleName($row->get(TBGArticleLinksTable::ARTICLE_NAME));
 					}
 				}
 			}
@@ -236,7 +236,7 @@
 					{
 						try
 						{
-							$this->_subcategories[$row->get(TBGArticleCategoriesTable::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(TBGArticleCategoriesTable::ARTICLE_NAME));
+							$this->_subcategories[$row->get(TBGArticleCategoriesTable::ARTICLE_NAME)] = PublishFactory::articleName($row->get(TBGArticleCategoriesTable::ARTICLE_NAME));
 						}
 						catch (Exception $e) {}
 					}
@@ -261,7 +261,7 @@
 					{
 						try
 						{
-							$this->_category_articles[$row->get(TBGArticleCategoriesTable::ARTICLE_NAME)] = PublishFactory::articleNameLab($row->get(TBGArticleCategoriesTable::ARTICLE_NAME));
+							$this->_category_articles[$row->get(TBGArticleCategoriesTable::ARTICLE_NAME)] = PublishFactory::articleName($row->get(TBGArticleCategoriesTable::ARTICLE_NAME));
 						}
 						catch (Exception $e) {}
 					}
@@ -350,7 +350,7 @@
 				{
 					while ($row = $history->getNextRow())
 					{
-						$author = ($row->get(TBGArticleHistoryTable::AUTHOR)) ? TBGFactory::userLab($row->get(TBGArticleHistoryTable::AUTHOR)) : null;
+						$author = ($row->get(TBGArticleHistoryTable::AUTHOR)) ? TBGContext::factory()->TBGUser($row->get(TBGArticleHistoryTable::AUTHOR)) : null;
 						$this->_history[$row->get(TBGArticleHistoryTable::REVISION)] = array('old_content' => $row->get(TBGArticleHistoryTable::OLD_CONTENT), 'new_content' => $row->get(TBGArticleHistoryTable::NEW_CONTENT), 'change_reason' => $row->get(TBGArticleHistoryTable::REASON), 'updated' => $row->get(TBGArticleHistoryTable::DATE), 'author' => $author);
 					}
 				}
@@ -493,7 +493,7 @@
 			{
 				try
 				{
-					$this->_author = TBGFactory::userLab($this->_author);
+					$this->_author = TBGContext::factory()->TBGUser($this->_author);
 				}
 				catch (Exception $e)
 				{

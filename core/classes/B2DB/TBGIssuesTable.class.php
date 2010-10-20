@@ -295,7 +295,7 @@
 			$issue_no = $row->get('issueno');
 			if ($issue_no < 1) $issue_no = 1;
 			
-			$status_id = (int) TBGFactory::projectLab($p_id)->getDefaultStatusID();
+			$status_id = (int) TBGContext::factory()->TBGProject($p_id)->getDefaultStatusID();
 			
 			$crit = $this->getCriteria();
 			$posted = NOW;

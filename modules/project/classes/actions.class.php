@@ -34,7 +34,7 @@
 			{
 				try
 				{
-					$this->selected_project = TBGFactory::projectLab($project_id);
+					$this->selected_project = TBGContext::factory()->TBGProject($project_id);
 				}
 				catch (Exception $e) {}
 			}
@@ -136,7 +136,7 @@
 			$selected_sprint = null;
 			if ($s_id = $request->getParameter('sprint_id'))
 			{
-				$selected_sprint = TBGFactory::TBGMilestoneLab($s_id);
+				$selected_sprint = TBGContext::factory()->TBGMilestone($s_id);
 			}
 			else
 			{
@@ -162,7 +162,7 @@
 		public function runScrumAddTask(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
-			$issue = TBGFactory::TBGIssueLab($request->getParameter('story_id'));
+			$issue = TBGContext::factory()->TBGIssue($request->getParameter('story_id'));
 			try
 			{
 				if ($issue instanceof TBGIssue)
@@ -204,7 +204,7 @@
 			$milestone = null;
 			if ($m_id = $request->getParameter('sprint_id'))
 			{
-				$milestone = TBGFactory::TBGMilestoneLab($m_id);
+				$milestone = TBGContext::factory()->TBGMilestone($m_id);
 			}
 			else
 			{
@@ -257,7 +257,7 @@
 		public function runScrumSetStoryDetail(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
-			$issue = TBGFactory::TBGIssueLab($request->getParameter('story_id'));
+			$issue = TBGContext::factory()->TBGIssue($request->getParameter('story_id'));
 			if ($issue instanceof TBGIssue)
 			{
 				switch ($request->getParameter('detail'))
@@ -298,12 +298,12 @@
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			try
 			{
-				$issue = TBGFactory::TBGIssueLab($request->getParameter('story_id'));
+				$issue = TBGContext::factory()->TBGIssue($request->getParameter('story_id'));
 				$new_sprint_id = (int) $request->getParameter('sprint_id');
 				$sprint = null;
 				try
 				{
-					$sprint = TBGFactory::TBGMilestoneLab($new_sprint_id);
+					$sprint = TBGContext::factory()->TBGMilestone($new_sprint_id);
 				}
 				catch (Exception $e) {}
 				if ($issue instanceof TBGIssue)
@@ -417,7 +417,7 @@
 
 			try
 			{
-				$project = TBGFactory::projectLab($request->getParameter('project_id'));
+				$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 
@@ -486,19 +486,19 @@
 						switch ($this->key)
 						{
 							case 'issues_per_status':
-								$item = TBGFactory::TBGStatusLab($item_id);
+								$item = TBGContext::factory()->TBGStatus($item_id);
 								break;
 							case 'issues_per_priority':
-								$item = TBGFactory::TBGPriorityLab($item_id);
+								$item = TBGContext::factory()->TBGPriority($item_id);
 								break;
 							case 'issues_per_category':
-								$item = TBGFactory::TBGCategoryLab($item_id);
+								$item = TBGContext::factory()->TBGCategory($item_id);
 								break;
 							case 'issues_per_resolution':
-								$item = TBGFactory::TBGResolutionLab($item_id);
+								$item = TBGContext::factory()->TBGResolution($item_id);
 								break;
 							case 'issues_per_reproducability':
-								$item = TBGFactory::TBGReproducabilityLab($item_id);
+								$item = TBGContext::factory()->TBGReproducability($item_id);
 								break;
 							case 'issues_per_state':
 								$item = ($item_id == TBGIssue::STATE_OPEN) ? $i18n->__('Open') : $i18n->__('Closed');
@@ -736,7 +736,7 @@
 			try
 			{
 				$i18n = TBGContext::getI18n();
-				$issue = TBGFactory::TBGIssueLab($request->getParameter('issue_id'));
+				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 				if ($issue->getProject() != $this->selected_project)
 				{
 					throw new Exception($i18n->__('This issue is not valid for this project'));
@@ -870,7 +870,7 @@
 				$i18n = TBGContext::getI18n();
 				if ($request->hasParameter('milestone_id'))
 				{
-					$milestone = TBGFactory::TBGMilestoneLab($request->getParameter('milestone_id'));
+					$milestone = TBGContext::factory()->TBGMilestone($request->getParameter('milestone_id'));
 					return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('project/milestoneissues', array('milestone' => $milestone))));
 				}
 				else
@@ -893,7 +893,7 @@
 				$i18n = TBGContext::getI18n();
 				if ($request->hasParameter('milestone_id'))
 				{
-					$milestone = TBGFactory::TBGMilestoneLab($request->getParameter('milestone_id'));
+					$milestone = TBGContext::factory()->TBGMilestone($request->getParameter('milestone_id'));
 					$milestone->updateStatus();
 					$details = array('failed' => false);
 					$details['percent'] = $milestone->getPercentComplete();

@@ -196,7 +196,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$users[$row->get(self::ID)] = TBGFactory::userLab($row->get(self::ID));
+					$users[$row->get(self::ID)] = TBGContext::factory()->TBGUser($row->get(self::ID));
 				}
 			}
 

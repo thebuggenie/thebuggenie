@@ -65,7 +65,7 @@
 			{
 				foreach ($res->getNextRow() as $row)
 				{
-					$projects[$row->get(TBGEditionsTable::PROJECT)] = TBGFactory::projectLab($row->get(TBGEditionsTable::PROJECT)); 
+					$projects[$row->get(TBGEditionsTable::PROJECT)] = TBGContext::factory()->TBGProject($row->get(TBGEditionsTable::PROJECT)); 
 				}
 			}
 			return $projects;

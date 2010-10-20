@@ -127,7 +127,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$milestone = TBGFactory::TBGMilestoneLab($row->get(TBGMilestonesTable::ID), $row);
+					$milestone = TBGContext::factory()->TBGMilestone($row->get(TBGMilestonesTable::ID), $row);
 					$milestones[$milestone->getID()] = $milestone;
 				}
 			}
@@ -148,7 +148,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$milestone = TBGFactory::TBGMilestoneLab($row->get(TBGMilestonesTable::ID), $row);
+					$milestone = TBGContext::factory()->TBGMilestone($row->get(TBGMilestonesTable::ID), $row);
 					$milestones[$milestone->getID()] = $milestone;
 				}
 			}
@@ -169,7 +169,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$sprint = TBGFactory::TBGMilestoneLab($row->get(TBGMilestonesTable::ID), $row);
+					$sprint = TBGContext::factory()->TBGMilestone($row->get(TBGMilestonesTable::ID), $row);
 					$sprints[$sprint->getID()] = $sprint;
 				}
 			}
@@ -188,7 +188,7 @@
 		{
 			$m_id = TBGMilestonesTable::getTable()->createNew($name, $type, $project_id);
 			TBGContext::setPermission('b2milestoneaccess', $m_id, 'core', 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
-			return TBGFactory::TBGMilestoneLab($m_id);
+			return TBGContext::factory()->TBGMilestone($m_id);
 		}
 		
 		/**
@@ -356,7 +356,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$theIssue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID));
+						$theIssue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));
 						if ($this->isSprint() && $theIssue->getIssueType()->isTask()) continue;
 						$this->_issues[$theIssue->getID()] = $theIssue;
 						if ($theIssue->getState() == TBGIssue::STATE_CLOSED)
@@ -459,7 +459,7 @@
 			{
 				try
 				{
-					$this->_project = TBGFactory::projectLab($this->_project);
+					$this->_project = TBGContext::factory()->TBGProject($this->_project);
 				}
 				catch (Exception $e)
 				{

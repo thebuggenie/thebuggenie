@@ -39,7 +39,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						self::$_teams[$row->get(TBGTeamsTable::ID)] = TBGFactory::teamLab($row->get(TBGTeamsTable::ID), $row);
+						self::$_teams[$row->get(TBGTeamsTable::ID)] = TBGContext::factory()->TBGTeam($row->get(TBGTeamsTable::ID), $row);
 					}
 				}
 			}
@@ -93,7 +93,7 @@
 			$crit->addInsert(TBGTeamsTable::TEAMNAME, $teamname);
 			$crit->addInsert(TBGTeamsTable::SCOPE, TBGContext::getScope()->getID());
 			$res = B2DB::getTable('TBGTeamsTable')->doInsert($crit);
-			return TBGFactory::teamLab($res->getInsertID());
+			return TBGContext::factory()->TBGTeam($res->getInsertID());
 		}
 		
 		/**
@@ -123,7 +123,7 @@
 				$this->_members = array();
 				foreach (TBGTeamMembersTable::getTable()->getUIDsForTeamID($this->getID()) as $uid)
 				{
-					$this->_members[$uid] = TBGFactory::userLab($uid);
+					$this->_members[$uid] = TBGContext::factory()->TBGUser($uid);
 				}
 			}
 			return $this->_members;
@@ -159,7 +159,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$teams[$row->get(TBGTeamsTable::ID)] = TBGFactory::teamLab($row->get(TBGTeamsTable::ID), $row);
+					$teams[$row->get(TBGTeamsTable::ID)] = TBGContext::factory()->TBGTeam($row->get(TBGTeamsTable::ID), $row);
 				}
 			}
 			return $teams;

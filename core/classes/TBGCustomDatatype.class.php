@@ -68,7 +68,7 @@
 				{
 					foreach ($items as $row_id => $row)
 					{
-						self::$_types[$row->get(TBGCustomFieldsTable::FIELD_KEY)] = TBGFactory::TBGCustomDatatypeLab($row_id, $row);
+						self::$_types[$row->get(TBGCustomFieldsTable::FIELD_KEY)] = TBGContext::factory()->TBGCustomDatatype($row_id, $row);
 					}
 				}
 			}
@@ -116,7 +116,7 @@
 		{
 			$key = strtolower(str_replace(' ', '', $name));
 			$res = B2DB::getTable('TBGCustomFieldsTable')->createNew($name, $key, $type);
-			return TBGFactory::TBGCustomDatatypeLab($res->getInsertID());
+			return TBGContext::factory()->TBGCustomDatatype($res->getInsertID());
 		}
 
 		/**
@@ -163,7 +163,7 @@
 			$row = B2DB::getTable('TBGCustomFieldsTable')->getByKey($key);
 			if ($row)
 			{
-				return TBGFactory::TBGCustomDatatypeLab($row->get(TBGCustomFieldsTable::ID), $row);
+				return TBGContext::factory()->TBGCustomDatatype($row->get(TBGCustomFieldsTable::ID), $row);
 			}
 			return null;
 		}

@@ -49,7 +49,7 @@
 		public static function createNew($name, $icon = 'bug_report')
 		{
 			$res = TBGIssueTypesTable::getTable()->createNew($name, $icon);
-			return TBGFactory::TBGIssuetypeLab($res->getInsertID());
+			return TBGContext::factory()->TBGIssuetype($res->getInsertID());
 		}
 
 		/**
@@ -102,7 +102,7 @@
 				if ($row instanceof B2DBRow)
 				{
 					$this->_itemid = $i_id;
-					$this->_appliesto = ($row->get(TBGIssueTypesTable::APPLIES_TO) != 0) ? TBGFactory::projectLab($row->get(TBGIssueTypesTable::APPLIES_TO)) : null;
+					$this->_appliesto = ($row->get(TBGIssueTypesTable::APPLIES_TO) != 0) ? TBGContext::factory()->TBGProject($row->get(TBGIssueTypesTable::APPLIES_TO)) : null;
 					$this->_itemdata = $row->get(TBGIssueTypesTable::ICON);
 					$this->_description = $row->get(TBGIssueTypesTable::DESCRIPTION);
 					$this->_reportable = (bool) $row->get(TBGIssueTypesTable::IS_REPORTABLE);
@@ -242,7 +242,7 @@
 				$row = TBGIssueTypesTable::getTable()->doSelectOne($crit);
 				if ($row instanceof B2DBRow)
 				{
-					return TBGFactory::TBGIssuetypeLab($row->get(TBGIssueTypesTable::ID), $row);
+					return TBGContext::factory()->TBGIssuetype($row->get(TBGIssueTypesTable::ID), $row);
 				}
 				else
 				{
@@ -310,7 +310,7 @@
 				$res = TBGIssueTypesTable::getTable()->doSelect($crit);
 				while ($row = $res->getNextRow())
 				{
-					$issuetypes[$row->get(TBGIssueTypesTable::ID)] = TBGFactory::TBGIssuetypeLab($res->get(TBGIssueTypesTable::ID), $row);
+					$issuetypes[$row->get(TBGIssueTypesTable::ID)] = TBGContext::factory()->TBGIssuetype($res->get(TBGIssueTypesTable::ID), $row);
 				}
 		
 				self::$_issuetypes[$project_id] = $issuetypes;

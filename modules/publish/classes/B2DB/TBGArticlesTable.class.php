@@ -58,7 +58,7 @@
 				while ($row = $res->getNextRow())
 				{
 					$a_id = $row->get(self::ID);
-					$articles[$a_id] = PublishFactory::articleLab($a_id, $row);
+					$articles[$a_id] = PublishFactory::article($a_id, $row);
 				}
 			}
 

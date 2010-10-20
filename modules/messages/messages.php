@@ -82,7 +82,7 @@
 
 	foreach (TBGContext::getUser()->getTeams() as $tid)
 	{
-		$thisteam = TBGFactory::teamLab($tid);
+		$thisteam = TBGContext::factory()->TBGTeam($tid);
 		$thisteammsgcnt = TBGContext::getModule('messages')->countMessages(4, $tid);
 
 		?>

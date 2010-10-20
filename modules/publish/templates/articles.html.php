@@ -67,7 +67,7 @@
 								{
 									foreach (TBGContext::getUser()->getTeams() as $aTeamID)
 									{
-										$aTeam = TBGFactory::teamLab($aTeamID);
+										$aTeam = TBGContext::factory()->TBGTeam($aTeamID);
 										?><a href="articles.php?article_id=<?php echo $article->getID(); ?>&amp;post_on_billboard=true&amp;billboard=<?php echo $aTeamID ?>"><?php echo __('Post on %teamname% billboard', array('%teamname' => $aTeam->getName())); ?></a><br><?php
 									}
 								}

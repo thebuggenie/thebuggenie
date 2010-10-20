@@ -185,7 +185,7 @@
 			if (self::$_defaultscope === null)
 			{
 				$row = B2DB::getTable('TBGSettingsTable')->getDefaultScope();
-				self::$_defaultscope = TBGFactory::scopeLab($row->get(TBGSettingsTable::VALUE));
+				self::$_defaultscope = TBGContext::factory()->TBGScope($row->get(TBGSettingsTable::VALUE));
 			}
 			return self::$_defaultscope;
 		}
@@ -242,7 +242,7 @@
 
 		public static function getAdminGroup()
 		{
-			return TBGFactory::groupLab((int) self::get('admingroup'));
+			return TBGContext::factory()->TBGGroup((int) self::get('admingroup'));
 		}
 		
 		public static function isRegistrationEnabled()
@@ -349,7 +349,7 @@
 		{
 			try
 			{
-				return TBGFactory::groupLab(self::get('defaultgroup'));
+				return TBGContext::factory()->TBGGroup(self::get('defaultgroup'));
 			}
 			catch (Exception $e)
 			{
@@ -371,7 +371,7 @@
 		{
 			try
 			{
-				return TBGFactory::userstateLab(self::get('onlinestate'));
+				return TBGContext::factory()->TBGUserstate(self::get('onlinestate'));
 			}
 			catch (Exception $e)
 			{
@@ -383,7 +383,7 @@
 		{
 			try
 			{
-				return TBGFactory::userstateLab(self::get('offlinestate'));
+				return TBGContext::factory()->TBGUserstate(self::get('offlinestate'));
 			}
 			catch (Exception $e)
 			{
@@ -400,7 +400,7 @@
 		{
 			try
 			{
-				return TBGFactory::userstateLab(self::get('awaystate'));
+				return TBGContext::factory()->TBGUserstate(self::get('awaystate'));
 			}
 			catch (Exception $e)
 			{

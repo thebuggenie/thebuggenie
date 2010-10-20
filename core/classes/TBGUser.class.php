@@ -273,7 +273,7 @@
 		{
 			if ($row = TBGUsersTable::getTable()->getByUsername($username))
 			{
-				return TBGFactory::userLab($row->get(TBGUsersTable::ID), $row);
+				return TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
 			}
 			return null;
 		}
@@ -453,7 +453,7 @@
 					{
 						throw new Exception('This account has been suspended');
 					}
-					$user = TBGFactory::userLab($row->get(TBGUsersTable::ID), $row);
+					$user = TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
 				}
 				elseif (TBGSettings::isLoginRequired())
 				{
@@ -566,7 +566,7 @@
 	
 			if ($u_id === null) $u_id = $res->getInsertID();
 			
-			$returnUser = TBGFactory::userLab($u_id);
+			$returnUser = TBGContext::factory()->TBGUser($u_id);
 			$event = TBGEvent::createNew('core', 'TBGUser::createNew', $returnUser);
 			$event->trigger();
 			if (!$event->isProcessed())
@@ -622,11 +622,11 @@
 					}
 					if ($row->get(TBGUsersTable::GROUP_ID) != 0)
 					{
-						$this->group = TBGFactory::groupLab($row->get(TBGUsersTable::GROUP_ID), $row);
+						$this->group = TBGContext::factory()->TBGGroup($row->get(TBGUsersTable::GROUP_ID), $row);
 					}
 					if ($row->get(TBGUsersTable::CUSTOMER_ID) != 0)
 					{
-						$this->customer = TBGFactory::customerLab($row->get(TBGUsersTable::CUSTOMER_ID), $row);
+						$this->customer = TBGContext::factory()->TBGCustomer($row->get(TBGUsersTable::CUSTOMER_ID), $row);
 					}
 					$this->authenticated = true;
 					$this->uname = $row->get(TBGUsersTable::UNAME);
@@ -637,7 +637,7 @@
 					$this->showfollowups = ($row->get(TBGUsersTable::SHOWFOLLOWUPS) == 1) ? true : false;
 					$this->avatar = $row->get(TBGUsersTable::AVATAR);
 					$this->_use_gravatar = (bool) $row->get(TBGUsersTable::USE_GRAVATAR);
-					$this->scope = TBGFactory::scopeLab($row->get(TBGUsersTable::SCOPE), $row);
+					$this->scope = TBGContext::factory()->TBGScope($row->get(TBGUsersTable::SCOPE), $row);
 					$this->language = $row->get(TBGUsersTable::LANGUAGE);
 					$this->pwd = $row->get(TBGUsersTable::PASSWD);
 					$this->showassigned = ($row->get(TBGUsersTable::SHOWASSIGNED) == 1) ? true : false;
@@ -760,7 +760,7 @@
 					$res = B2DB::getTable('TBGTeamMembersTable')->doSelect($crit);
 					while ($row = $res->getNextRow())
 					{
-						$this->teams[$row->get(TBGTeamsTable::ID)] = TBGFactory::teamLab($row->get(TBGTeamsTable::ID), $row);
+						$this->teams[$row->get(TBGTeamsTable::ID)] = TBGContext::factory()->TBGTeam($row->get(TBGTeamsTable::ID), $row);
 					}
 				}
 				TBGLogging::log('...done (Populating user teams)');
@@ -818,7 +818,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->userassigned[$row->get(TBGIssuesTable::ID)] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
+						$this->userassigned[$row->get(TBGIssuesTable::ID)] = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
 					}
 					ksort($this->userassigned, SORT_NUMERIC);
 				}
@@ -858,7 +858,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->teamassigned[$team_id][$row->get(TBGIssuesTable::ID)] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
+						$this->teamassigned[$team_id][$row->get(TBGIssuesTable::ID)] = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
 					}
 				}
 				ksort($this->teamassigned[$team_id], SORT_NUMERIC);
@@ -878,7 +878,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_starredissues[$row->get(TBGIssuesTable::ID)] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
+						$this->_starredissues[$row->get(TBGIssuesTable::ID)] = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
 					}
 					ksort($this->_starredissues, SORT_NUMERIC);
 				}
@@ -933,7 +933,7 @@
 				$crit->addInsert(TBGUserIssuesTable::SCOPE, TBGContext::getScope()->getID());
 				
 				B2DB::getTable('TBGUserIssuesTable')->doInsert($crit);
-				$issue = TBGFactory::TBGIssueLab($issue_id);
+				$issue = TBGContext::factory()->TBGIssue($issue_id);
 				$this->_starredissues[$issue->getID()] = $issue;
 				ksort($this->_starredissues);
 				TBGLogging::log('Starred');
@@ -974,7 +974,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_friends[$row->get(TBGBuddiesTable::BID)] = TBGFactory::userLab($row->get(TBGBuddiesTable::BID));
+						$this->_friends[$row->get(TBGBuddiesTable::BID)] = TBGContext::factory()->TBGUser($row->get(TBGBuddiesTable::BID));
 					}
 				}
 			}
@@ -1098,7 +1098,7 @@
 				{
 					$this->state = TBGSettings::get('offlinestate');
 				}
-				$this->state = TBGFactory::userstateLab($this->state);
+				$this->state = TBGContext::factory()->TBGUserstate($this->state);
 			}
 			return $this->state;
 		}
@@ -1262,7 +1262,7 @@
 		{
 			if (!is_object($group))
 			{
-				$group = TBGFactory::groupLab($group);
+				$group = TBGContext::factory()->TBGGroup($group);
 			}
 			$this->group = $group;
 		}
@@ -1537,7 +1537,7 @@
 			if (!$res || $res->count() > 1) return false;
 			$row = $res->getNextRow();
 			
-			return TBGFactory::userLab($row->get(TBGUsersTable::ID), $row);
+			return TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
 		}
 
 		/**
@@ -1556,7 +1556,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$retarr[$row->get(TBGUsersTable::ID)] = TBGFactory::userLab($row->get(TBGUsersTable::ID), $row);
+					$retarr[$row->get(TBGUsersTable::ID)] = TBGContext::factory()->TBGUser($row->get(TBGUsersTable::ID), $row);
 				}
 			}
 			return $retarr;
@@ -1942,7 +1942,7 @@
 				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects));
 				foreach ($project_ids as $project_id)
 				{
-					$this->_associated_projects[$project_id] = TBGFactory::projectLab($project_id);
+					$this->_associated_projects[$project_id] = TBGContext::factory()->TBGProject($project_id);
 				}
 			}
 			

@@ -169,7 +169,7 @@
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name for the issue type')));
 					break;
 				case 'update':
-					if (($issuetype = TBGFactory::TBGIssuetypeLab($request->getParameter('id'))) instanceof TBGIssuetype)
+					if (($issuetype = TBGContext::factory()->TBGIssuetype($request->getParameter('id'))) instanceof TBGIssuetype)
 					{
 						if ($request->getParameter('name'))
 						{
@@ -189,7 +189,7 @@
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid issue type')));
 					break;
 				case 'updatechoices':
-					if (($issuetype = TBGFactory::TBGIssuetypeLab($request->getParameter('id'))) instanceof TBGIssuetype)
+					if (($issuetype = TBGContext::factory()->TBGIssuetype($request->getParameter('id'))) instanceof TBGIssuetype)
 					{
 						$issuetype->clearAvailableFields();
 						foreach ($request->getParameter('field', array()) as $key => $details)
@@ -259,7 +259,7 @@
 						else
 						{
 							$customtype = TBGCustomDatatype::getByKey($request->getParameter('type'));
-							$item = TBGFactory::TBGCustomDatatypeOptionLab($request->getParameter('id'));
+							$item = TBGContext::factory()->TBGCustomDatatypeOption($request->getParameter('id'));
 						}
 						if ($item instanceof TBGDatatypeBase && $item->getItemtype() == $item->getType())
 						{
@@ -374,7 +374,7 @@
 			
 			if ($request->getParameter('find_by'))
 			{
-				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
+				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 				$this->users = TBGUser::findUsers($request->getParameter('find_by'), 10);
 				$this->teams = TBGTeam::findTeams($request->getParameter('find_by'));
 				$this->customers = TBGCustomer::findCustomers($request->getParameter('find_by'));
@@ -398,7 +398,7 @@
 			{
 				try
 				{
-					$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
+					$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 				}
 				catch (Exception $e) {}
 				
@@ -412,13 +412,13 @@
 					switch ($assignee_type)
 					{
 						case 'user':
-							$assignee = TBGFactory::userLab($assignee_id);
+							$assignee = TBGContext::factory()->TBGUser($assignee_id);
 							break;
 						case 'team':
-							$assignee = TBGFactory::teamLab($assignee_id);
+							$assignee = TBGContext::factory()->TBGTeam($assignee_id);
 							break;
 						case 'customer':
-							$assignee = TBGFactory::customerLab($assignee_id);
+							$assignee = TBGContext::factory()->TBGCustomer($assignee_id);
 							break;
 						default:
 							$this->forward403();
@@ -480,7 +480,7 @@
 		{
 			try
 			{
-				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
+				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 			
@@ -496,7 +496,7 @@
 		{
 			try
 			{
-				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
+				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 			
@@ -512,7 +512,7 @@
 		{
 			try
 			{
-				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
+				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 			
@@ -529,7 +529,7 @@
 		{
 			try
 			{
-				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
+				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 			}
 			catch (Exception $e)
 			{
@@ -587,7 +587,7 @@
 		{
 			try
 			{
-				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
+				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 			
@@ -606,10 +606,10 @@
 				switch ($request->getParameter('item_type'))
 				{
 					case 'project':
-						$item = TBGFactory::projectLab($request->getParameter('project_id'));
+						$item = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 						break;
 					case 'edition':
-						$item = TBGFactory::editionLab($request->getParameter('edition_id'));
+						$item = TBGContext::factory()->TBGEdition($request->getParameter('edition_id'));
 						break;
 				}
 			}
@@ -627,10 +627,10 @@
 						switch ($request->getParameter('identifiable_type'))
 						{
 							case TBGIdentifiableClass::TYPE_USER:
-								$identified = TBGFactory::userLab($request->getParameter('value'));
+								$identified = TBGContext::factory()->TBGUser($request->getParameter('value'));
 								break;
 							case TBGIdentifiableClass::TYPE_TEAM:
-								$identified = TBGFactory::teamLab($request->getParameter('value'));
+								$identified = TBGContext::factory()->TBGTeam($request->getParameter('value'));
 								break;
 						}
 						if ($identified instanceof TBGIdentifiableClass)
@@ -667,7 +667,7 @@
 		{
 			try
 			{
-				$this->project = TBGFactory::projectLab($request->getParameter('project_id'));
+				$this->project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 			}
 			catch (Exception $e) {}
 			
@@ -747,8 +747,8 @@
 		{
 			try
 			{
-				$this->theProject = TBGFactory::projectLab($request->getParameter('project_id'));
-				$this->theEdition = TBGFactory::editionLab($request->getParameter('edition_id'));
+				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+				$this->theEdition = TBGContext::factory()->TBGEdition($request->getParameter('edition_id'));
 			}
 			catch (Exception $e) {}
 			
@@ -817,13 +817,13 @@
 				try
 				{
 					$p_id = $request->getParameter('project_id');
-					if ($project = TBGFactory::projectLab($p_id))
+					if ($project = TBGContext::factory()->TBGProject($p_id))
 					{
 						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
 							if ($e_name = $request->getParameter('e_name'))
 							{
-								$project = TBGFactory::projectLab($p_id);
+								$project = TBGContext::factory()->TBGProject($p_id);
 								$edition = $project->addEdition($e_name);
 								return $this->renderJSON(array('title' => $i18n->__('The edition has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('editionbox', array('edition' => $edition))));
 							}
@@ -867,7 +867,7 @@
 					{
 						if (TBGContext::getUser()->hasPermission('b2buildaccess', $b_id))
 						{
-							$build = TBGFactory::buildLab($b_id);
+							$build = TBGContext::factory()->TBGBuild($b_id);
 							switch ($request->getParameter('build_action'))
 							{
 								case 'markdefault':
@@ -963,13 +963,13 @@
 				try
 				{
 					$p_id = $request->getParameter('project_id');
-					if ($project = TBGFactory::projectLab($p_id))
+					if ($project = TBGContext::factory()->TBGProject($p_id))
 					{
 						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
 							if ($b_name = $request->getParameter('build_name'))
 							{
-								if (($e_id = $request->getParameter('edition_id')) && $edition = TBGFactory::editionLab($e_id))
+								if (($e_id = $request->getParameter('edition_id')) && $edition = TBGContext::factory()->TBGEdition($e_id))
 								{
 									$build = TBGBuild::createNew($b_name, null, $e_id, $request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
 								}
@@ -1016,13 +1016,13 @@
 				try
 				{
 					$p_id = $request->getParameter('project_id');
-					if ($project = TBGFactory::projectLab($p_id))
+					if ($project = TBGContext::factory()->TBGProject($p_id))
 					{
 						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
 							if ($c_name = $request->getParameter('c_name'))
 							{
-								$project = TBGFactory::projectLab($p_id);
+								$project = TBGContext::factory()->TBGProject($p_id);
 								$component = $project->addComponent($c_name);
 								return $this->renderJSON(array('title' => $i18n->__('The component has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('componentbox', array('component' => $component))));
 							}
@@ -1063,13 +1063,13 @@
 				try
 				{
 					$p_id = $request->getParameter('project_id');
-					if ($project = TBGFactory::projectLab($p_id))
+					if ($project = TBGContext::factory()->TBGProject($p_id))
 					{
 						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
 							if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
 							{
-								$theProject = TBGFactory::projectLab($p_id);
+								$theProject = TBGContext::factory()->TBGProject($p_id);
 								$theMilestone = $theProject->addMilestone($m_name, $request->getParameter('milestone_type', 1));
 								return $this->renderJSON(array('title' => $i18n->__('The milestone has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'content' => $this->getTemplateHTML('milestonebox', array('milestone' => $theMilestone))));
 							}
@@ -1111,7 +1111,7 @@
 				{
 					if ($m_id = $request->getParameter('milestone_id'))
 					{
-						$theMilestone = TBGFactory::TBGMilestoneLab($m_id);
+						$theMilestone = TBGContext::factory()->TBGMilestone($m_id);
 						if ($theMilestone->hasAccess())
 						{
 							switch ($request->getParameter('milestone_action'))
@@ -1186,7 +1186,7 @@
 			{
 				try
 				{
-					$theEdition   = TBGFactory::editionLab($request->getParameter('edition_id'));
+					$theEdition   = TBGContext::factory()->TBGEdition($request->getParameter('edition_id'));
 					if ($request->getParameter('mode') == 'add')
 					{
 						$theEdition->addComponent($request->getParameter('component_id'));
@@ -1219,7 +1219,7 @@
 			{
 				try
 				{
-					$theComponent = TBGFactory::componentLab($request->getParameter('component_id'));
+					$theComponent = TBGContext::factory()->TBGComponent($request->getParameter('component_id'));
 					if ($request->getParameter('mode') == 'update')
 					{
 						$theComponent->setName($request->getParameter('c_name', ''));
@@ -1251,7 +1251,7 @@
 			{
 				try
 				{
-					$theProject = TBGFactory::projectLab($request->getParameter('project_id'));
+					$theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 					$theProject->delete();
 					$theProject->save();
 					return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The project was deleted')));
@@ -1454,7 +1454,7 @@
 			{
 				try
 				{
-					$group = TBGFactory::groupLab($request->getParameter('group_id'));
+					$group = TBGContext::factory()->TBGGroup($request->getParameter('group_id'));
 				}
 				catch (Exception $e) { }
 				if (!$group instanceof TBGGroup)
@@ -1483,7 +1483,7 @@
 					{
 						try
 						{
-							$old_group = TBGFactory::groupLab($request->getParameter('group_id'));
+							$old_group = TBGContext::factory()->TBGGroup($request->getParameter('group_id'));
 						}
 						catch (Exception $e) { }
 						if (!$old_group instanceof TBGGroup)
@@ -1526,7 +1526,7 @@
 		{
 			try
 			{
-				$group = TBGFactory::groupLab((int) $request->getParameter('group_id'));
+				$group = TBGContext::factory()->TBGGroup((int) $request->getParameter('group_id'));
 				$users = $group->getMembers();
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('configuration/groupuserlist', array('users' => $users))));
 			}
@@ -1543,7 +1543,7 @@
 			{
 				try
 				{
-					$team = TBGFactory::teamLab($request->getParameter('team_id'));
+					$team = TBGContext::factory()->TBGTeam($request->getParameter('team_id'));
 				}
 				catch (Exception $e) { }
 				if (!$team instanceof TBGTeam)
@@ -1572,7 +1572,7 @@
 					{
 						try
 						{
-							$old_team = TBGFactory::teamLab($request->getParameter('team_id'));
+							$old_team = TBGContext::factory()->TBGTeam($request->getParameter('team_id'));
 						}
 						catch (Exception $e) { }
 						if (!$old_team instanceof TBGTeam)
@@ -1619,7 +1619,7 @@
 		{
 			try
 			{
-				$team = TBGFactory::teamLab((int) $request->getParameter('team_id'));
+				$team = TBGContext::factory()->TBGTeam((int) $request->getParameter('team_id'));
 				$users = $team->getMembers();
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('configuration/teamuserlist', array('users' => $users))));
 			}
@@ -1687,12 +1687,12 @@
 
 		public function runUpdateUser(TBGRequest $request)
 		{
-			$user = TBGFactory::userLab($request->getParameter('user_id'));
+			$user = TBGContext::factory()->TBGUser($request->getParameter('user_id'));
 			if ($user instanceof TBGUser)
 			{
 				$user->setRealname($request->getParameter('realname'));
 				$return_options = array();
-				if ($group = TBGFactory::groupLab($request->getParameter('group')))
+				if ($group = TBGContext::factory()->TBGGroup($request->getParameter('group')))
 				{
 					if ($user->getGroupID() != $group->getID())
 					{
@@ -1706,7 +1706,7 @@
 				$user->clearTeams();
 				foreach ($request->getParameter('teams', array()) as $team_id => $team)
 				{
-					if ($team = TBGFactory::teamLab($team_id))
+					if ($team = TBGContext::factory()->TBGTeam($team_id))
 					{
 						$new_teams[] = $team_id;
 						$user->addToTeam($team);
@@ -1731,7 +1731,7 @@
 					foreach ($groups as $group_id)
 					{
 						$return_options['update_groups']['ids'][] = $group_id;
-						$return_options['update_groups']['membercounts'][$group_id] = TBGFactory::groupLab($group_id)->getNumberOfMembers();
+						$return_options['update_groups']['membercounts'][$group_id] = TBGContext::factory()->TBGGroup($group_id)->getNumberOfMembers();
 					}
 				}
 				if ($new_teams != $existing_teams)
@@ -1743,7 +1743,7 @@
 					foreach ($teams_to_update as $team_id)
 					{
 						$return_options['update_teams']['ids'][] = $team_id;
-						$return_options['update_teams']['membercounts'][$team_id] = TBGFactory::teamLab($team_id)->getNumberOfMembers();
+						$return_options['update_teams']['membercounts'][$team_id] = TBGContext::factory()->TBGTeam($team_id)->getNumberOfMembers();
 					}
 				}
 				$return_options['failed'] = false;
@@ -1766,7 +1766,7 @@
 			{
 				if ($edition_id = $request->getParameter('edition_id'))
 				{
-					$edition = TBGFactory::editionLab($edition_id);
+					$edition = TBGContext::factory()->TBGEdition($edition_id);
 					if ($request->isMethod(TBGRequest::POST))
 					{
 						if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
@@ -1816,7 +1816,7 @@
 			{
 				if ($project_id = $request->getParameter('project_id'))
 				{
-					$project = TBGFactory::projectLab($project_id);
+					$project = TBGContext::factory()->TBGProject($project_id);
 					$content = $this->getComponentHTML('configuration/projectconfig', array('project' => $project, 'access_level' => $this->access_level, 'section' => 'hierarchy'));
 					return $this->renderJSON(array('failed' => false, 'content' => $content));
 				}
@@ -1831,9 +1831,14 @@
 			}
 		}
 
-		public function runConfigureWorkflow(TBGRequest $request)
+		public function runConfigureWorkflowSchemes(TBGRequest $request)
 		{
 
+		}
+
+		public function runConfigureWorkflows(TBGRequest $request)
+		{
+			
 		}
 
 		public function getAccessLevel($section, $module)

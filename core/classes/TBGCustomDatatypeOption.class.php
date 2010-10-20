@@ -26,7 +26,7 @@
 				{
 					foreach ($items as $row_id => $row)
 					{
-						self::$_items[$key][$row_id] = TBGFactory::TBGCustomDatatypeOptionLab($row_id, $row);
+						self::$_items[$key][$row_id] = TBGContext::factory()->TBGCustomDatatypeOption($row_id, $row);
 					}
 				}
 			}
@@ -57,7 +57,7 @@
 			}
 			
 			$res = B2DB::getTable('TBGCustomFieldOptionsTable')->createNew($key, $name, $value, $itemdata);
-			return TBGFactory::TBGCustomDatatypeOptionLab($res->getInsertID());
+			return TBGContext::factory()->TBGCustomDatatypeOption($res->getInsertID());
 		}
 
 		/**
@@ -83,7 +83,7 @@
 			$row = B2DB::getTable('TBGCustomFieldOptionsTable')->getByValueAndKey($value, $key);
 			if ($row)
 			{
-				return TBGFactory::TBGCustomDatatypeOptionLab($row->get(TBGCustomFieldOptionsTable::ID), $row);
+				return TBGContext::factory()->TBGCustomDatatypeOption($row->get(TBGCustomFieldOptionsTable::ID), $row);
 			}
 			return null;
 		}

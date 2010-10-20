@@ -96,7 +96,7 @@
 				
 				while ($row = $res->getNextRow())
 				{
-					$aStates[$row->get(TBGUserStateTable::ID)] = TBGFactory::userstateLab($row->get(TBGUserStateTable::ID), $row);
+					$aStates[$row->get(TBGUserStateTable::ID)] = TBGContext::factory()->TBGUserstate($row->get(TBGUserStateTable::ID), $row);
 				}
 				self::$_userstates = $aStates;
 			}

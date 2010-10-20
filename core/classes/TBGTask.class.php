@@ -59,7 +59,7 @@
 			$this->_name = $row->get(TBGIssueTasksTable::TITLE);
 			$this->_assignedto = $row->get(TBGIssueTasksTable::ASSIGNED_TO);
 			$this->_assignedtype = $row->get(TBGIssueTasksTable::ASSIGNED_TYPE);
-			$this->_status = TBGFactory::datatypeLab($row->get(TBGIssueTasksTable::STATUS), TBGDatatype::STATUS);
+			$this->_status = TBGContext::factory()->datatype($row->get(TBGIssueTasksTable::STATUS), TBGDatatype::STATUS);
 			$this->_completed = ($row->get(TBGIssueTasksTable::COMPLETED) == 1) ? true : false;
 			$this->_posted = $row->get(TBGIssueTasksTable::POSTED);
 			$this->_updated = $row->get(TBGIssueTasksTable::UPDATED);
@@ -84,7 +84,7 @@
 		static function createNew($title, $content, $issue_id)
 		{
 			$task_id = B2DB::getTable('TBGIssueTasksTable')->createNew($title, $content, $issue_id);
-			return TBGFactory::taskLab($task_id);
+			return TBGContext::factory()->task($task_id);
 		}
 		
 		public function delete()
@@ -133,11 +133,11 @@
 		{
 			if ($this->_assignedtype == TBGIdentifiableClass::TYPE_USER)
 			{
-				return TBGFactory::userLab($this->_assignedto);
+				return TBGContext::factory()->TBGUser($this->_assignedto);
 			}
 			else
 			{
-				return TBGFactory::teamLab($this->_assignedto);
+				return TBGContext::factory()->TBGTeam($this->_assignedto);
 			}
 		}
 		
@@ -178,13 +178,13 @@
 		
 		public function setAssignee($a_id, $a_type)
 		{
-			TBGFactory::TBGIssueLab($this->_issue)->preserve_relatedUIDs();
+			TBGContext::factory()->TBGIssue($this->_issue)->preserve_relatedUIDs();
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGIssueTasksTable::ASSIGNED_TO, $a_id);
 			$crit->addUpdate(TBGIssueTasksTable::ASSIGNED_TYPE, $a_type);
 			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
 			$this->updateTime();
-			TBGFactory::TBGIssueLab($this->_issue)->updateTime();
+			TBGContext::factory()->TBGIssue($this->_issue)->updateTime();
 			$this->_assignedtype = $a_type;
 			$this->_assignedto = $a_id;
 	
@@ -192,16 +192,16 @@
 	
 			if ($a_type == 1)
 			{
-				$newassignee = TBGFactory::userLab($a_id);
+				$newassignee = TBGContext::factory()->TBGUser($a_id);
 			}
 			else
 			{
-				$newassignee = TBGFactory::teamLab($a_id);
+				$newassignee = TBGContext::factory()->TBGTeam($a_id);
 			}
 	
-			TBGFactory::TBGIssueLab($this->_issue)->addLogEntry(LOG_ENTRY_TASK_ASSIGN_TEAM, '\'$the_title\' assigned to ' . $newassignee->getName());
-			TBGFactory::TBGIssueLab($this->_issue)->preserve_relatedUIDs();
-			TBGFactory::TBGIssueLab($this->_issue)->addSystemComment("Task updated", "Task '$the_title' has been assigned to [b]".$newassignee->getName()."[/b].", TBGContext::getUser()->getUID(), 1);
+			TBGContext::factory()->TBGIssue($this->_issue)->addLogEntry(LOG_ENTRY_TASK_ASSIGN_TEAM, '\'$the_title\' assigned to ' . $newassignee->getName());
+			TBGContext::factory()->TBGIssue($this->_issue)->preserve_relatedUIDs();
+			TBGContext::factory()->TBGIssue($this->_issue)->addSystemComment("Task updated", "Task '$the_title' has been assigned to [b]".$newassignee->getName()."[/b].", TBGContext::getUser()->getUID(), 1);
 		}
 	
 		public function setStatus($sid)
@@ -209,14 +209,14 @@
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGIssueTasksTable::STATUS, $sid);
 			$res = B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
-			$this->_status = TBGFactory::datatypeLab($sid, TBGDatatype::STATUS);
-			TBGFactory::TBGIssueLab($this->_issue)->updateTime();
+			$this->_status = TBGContext::factory()->datatype($sid, TBGDatatype::STATUS);
+			TBGContext::factory()->TBGIssue($this->_issue)->updateTime();
 	
 			$the_title = $this->_name;
 			$status_name = $this->_status->getName();
 	
-			TBGFactory::TBGIssueLab($this->_issue)->addLogEntry(LOG_ENTRY_TASK_STATUS, "Status for '$the_title' is now '$status_name'");
-			TBGFactory::TBGIssueLab($this->_issue)->addSystemComment("Task updated", "Task '$the_title' has been updated. The new status is '$status_name'.", TBGContext::getUser()->getUID(), 1);
+			TBGContext::factory()->TBGIssue($this->_issue)->addLogEntry(LOG_ENTRY_TASK_STATUS, "Status for '$the_title' is now '$status_name'");
+			TBGContext::factory()->TBGIssue($this->_issue)->addSystemComment("Task updated", "Task '$the_title' has been updated. The new status is '$status_name'.", TBGContext::getUser()->getUID(), 1);
 		}
 	
 		public function setCompleted($completed)
@@ -231,15 +231,15 @@
 	
 			if ($completed == 1)
 			{
-				TBGFactory::TBGIssueLab($this->_issue)->addLogEntry(LOG_ENTRY_TASK_COMPLETED, "'$the_title' completed");
-				TBGFactory::TBGIssueLab($this->_issue)->addSystemComment("Task updated", "Task '$the_title' has been marked as completed.", TBGContext::getUser()->getUID(), 1);
+				TBGContext::factory()->TBGIssue($this->_issue)->addLogEntry(LOG_ENTRY_TASK_COMPLETED, "'$the_title' completed");
+				TBGContext::factory()->TBGIssue($this->_issue)->addSystemComment("Task updated", "Task '$the_title' has been marked as completed.", TBGContext::getUser()->getUID(), 1);
 			}
 			else
 			{
-				TBGFactory::TBGIssueLab($this->_issue)->addLogEntry(LOG_ENTRY_TASK_REOPENED, "'$the_title' reopened");
-				TBGFactory::TBGIssueLab($this->_issue)->addSystemComment("Task updated", "Task '$the_title' has been reopened.", TBGContext::getUser()->getUID(), 1);
+				TBGContext::factory()->TBGIssue($this->_issue)->addLogEntry(LOG_ENTRY_TASK_REOPENED, "'$the_title' reopened");
+				TBGContext::factory()->TBGIssue($this->_issue)->addSystemComment("Task updated", "Task '$the_title' has been reopened.", TBGContext::getUser()->getUID(), 1);
 			}
-			TBGFactory::TBGIssueLab($this->_issue)->updateTime();
+			TBGContext::factory()->TBGIssue($this->_issue)->updateTime();
 		}
 
 		public function updateDetails($newTitle, $newContent)
@@ -252,10 +252,10 @@
 			$crit->addUpdate(TBGIssueTasksTable::CONTENT, $newContent);
 			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
 			$this->updateTime();
-			TBGFactory::TBGIssueLab($this->_issue)->updateTime();
+			TBGContext::factory()->TBGIssue($this->_issue)->updateTime();
 	
-			TBGFactory::TBGIssueLab($this->_issue)->addLogEntry(LOG_ENTRY_TASK_UPDATE, "Task details updated");
-			TBGFactory::TBGIssueLab($this->_issue)->addSystemComment("Task updated", "Task title and details has been updated.", TBGContext::getUser()->getUID(), 1);
+			TBGContext::factory()->TBGIssue($this->_issue)->addLogEntry(LOG_ENTRY_TASK_UPDATE, "Task details updated");
+			TBGContext::factory()->TBGIssue($this->_issue)->addSystemComment("Task updated", "Task title and details has been updated.", TBGContext::getUser()->getUID(), 1);
 		}
 
 		public function updateTime()

@@ -65,7 +65,7 @@
 			
 			TBGContext::setPermission("canseeedition", $edition_id, "core", 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
 			
-			$edition = TBGFactory::editionLab($edition_id);
+			$edition = TBGContext::factory()->TBGEdition($edition_id);
 			TBGEvent::createNew('core', 'TBGEdition::createNew', $edition)->trigger();
 
 			return $edition;
@@ -91,7 +91,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$edition = TBGFactory::editionLab($row->get(TBGEditionsTable::ID), $row);
+						$edition = TBGContext::factory()->TBGEdition($row->get(TBGEditionsTable::ID), $row);
 						self::$_editions[$project_id][$edition->getID()] = $edition;
 					}
 				}
@@ -153,7 +153,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_components[$row->get(TBGEditionComponentsTable::COMPONENT)] = TBGFactory::componentLab($row->get(TBGEditionComponentsTable::COMPONENT));
+						$this->_components[$row->get(TBGEditionComponentsTable::COMPONENT)] = TBGContext::factory()->TBGComponent($row->get(TBGEditionComponentsTable::COMPONENT));
 					}
 				}
 			}
@@ -276,7 +276,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_builds[$row->get(TBGBuildsTable::ID)] = TBGFactory::buildLab($row->get(TBGBuildsTable::ID), $row);
+						$this->_builds[$row->get(TBGBuildsTable::ID)] = TBGContext::factory()->TBGBuild($row->get(TBGBuildsTable::ID), $row);
 					}
 				}
 			}
@@ -351,7 +351,7 @@
 			{
 				try
 				{
-					$this->_project = TBGFactory::projectLab($this->_project);
+					$this->_project = TBGContext::factory()->TBGProject($this->_project);
 				}
 				catch (Exception $e)
 				{

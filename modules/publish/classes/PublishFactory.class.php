@@ -14,7 +14,7 @@
 		 * 
 		 * @return TBGWikiArticle
 		 */
-		static function articleLab($a_id, $row = null)
+		static function article($a_id, $row = null)
 		{
 			if ($a_id == 0) throw new Exception('Invalid id');
 			if (!isset(self::$_articles[$a_id]))
@@ -40,7 +40,7 @@
 		 *
 		 * @return TBGWikiArticle
 		 */
-		static function articleNameLab($article_name, $row = null)
+		static function articleName($article_name, $row = null)
 		{
 			if (!isset(self::$_article_names[$article_name]))
 			{

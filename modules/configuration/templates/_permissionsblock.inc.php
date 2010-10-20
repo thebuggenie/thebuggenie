@@ -10,7 +10,7 @@
 						<a href="javascript:void(0);" onclick="<?php if(array_key_exists('details', $permission) && count($permission['details']) > 0): ?>$('<?php echo $base_id; ?>_<?php echo $permission_key; ?>_details').hide();<?php endif; ?>$('<?php echo $base_id; ?>_<?php echo $permission_key; ?>_settings').toggle();" style="float: right;"><?php echo image_tag('cfg_icon_permissions.png'); ?></a>
 					<?php endif; ?>
 				<?php else: ?>
-					<?php $user = TBGFactory::userLab($user_id); ?>
+					<?php $user = TBGContext::factory()->TBGUser($user_id); ?>
 					<div style="float: right;"><?php include_component('configuration/permissionsinfoitem', array('key' => $permission_key, 'target_id' => $current_target_id, 'type' => 'user', 'mode' => $mode, 'item_id' => $user->getID(), 'item_name' => $user->getName(), 'module' => $module, 'access_level' => $access_level)); ?></div>
 				<?php endif; ?>
 				<?php if(array_key_exists('details', $permission) && count($permission['details']) > 0): ?>

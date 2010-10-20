@@ -69,7 +69,7 @@
 
 		public function componentIssueTypeOptions()
 		{
-			$this->issuetype = TBGFactory::TBGIssuetypeLab($this->id);
+			$this->issuetype = TBGContext::factory()->TBGIssuetype($this->id);
 			$this->builtinfields = TBGDatatype::getAvailableFields(true);
 			$this->customtypes = TBGCustomDatatype::getAll();
 			$this->visiblefields = $this->issuetype->getVisibleFields();

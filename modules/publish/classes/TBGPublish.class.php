@@ -266,7 +266,7 @@
 			$articles = array();
 			while ($row = $res->getNextRow())
 			{
-				$articles[] = PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
+				$articles[] = PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
 			}
 			return $articles;
 		}
@@ -289,7 +289,7 @@
 				{
 					try
 					{
-						$article = PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
+						$article = PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
 					}
 					catch (Exception $e) 
 					{
@@ -321,7 +321,7 @@
 				{
 					try
 					{
-						$article = PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
+						$article = PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
 					}
 					catch (Exception $e)
 					{
@@ -343,7 +343,7 @@
 			$article_name = ($type == 'main') ? 'FrontpageArticle' : 'FrontpageLeftmenu';
 			if ($row = TBGArticlesTable::getTable()->getArticleByName($article_name))
 			{
-				return PublishFactory::articleLab($row->get(TBGArticlesTable::ID), $row);
+				return PublishFactory::article($row->get(TBGArticlesTable::ID), $row);
 			}
 			return null;
 		}

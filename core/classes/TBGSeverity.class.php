@@ -19,7 +19,7 @@
 				{
 					foreach ($items as $row_id => $row)
 					{
-						self::$_items[$row_id] = TBGFactory::TBGSeverityLab($row_id, $row);
+						self::$_items[$row_id] = TBGContext::factory()->TBGSeverity($row_id, $row);
 					}
 				}
 			}
@@ -36,7 +36,7 @@
 		public static function createNew($name)
 		{
 			$res = parent::_createNew($name, self::SEVERITY);
-			return TBGFactory::TBGSeverityLab($res->getInsertID());
+			return TBGContext::factory()->TBGSeverity($res->getInsertID());
 		}
 
 		/**

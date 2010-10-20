@@ -19,7 +19,7 @@
 				{
 					foreach ($items as $row_id => $row)
 					{
-						self::$_items[$row_id] = TBGFactory::TBGStatusLab($row_id, $row);
+						self::$_items[$row_id] = TBGContext::factory()->TBGStatus($row_id, $row);
 					}
 				}
 			}
@@ -43,7 +43,7 @@
 			}
 			
 			$res = parent::_createNew($name, self::STATUS, $itemdata);
-			return TBGFactory::TBGStatusLab($res->getInsertID());
+			return TBGContext::factory()->TBGStatus($res->getInsertID());
 		}
 
 		/**

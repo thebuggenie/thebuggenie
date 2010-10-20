@@ -342,7 +342,7 @@
 		{
 			if ($project_row = TBGProjectsTable::getTable()->getByKey(strtolower($key)))
 			{
-				return TBGFactory::projectLab($project_row->get(TBGProjectsTable::ID), $project_row);
+				return TBGContext::factory()->TBGProject($project_row->get(TBGProjectsTable::ID), $project_row);
 			}
 			return null;
 		}
@@ -359,7 +359,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$project = TBGFactory::projectLab($row->get(TBGProjectsTable::ID), $row);
+						$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 						if ($project->hasAccess() && $project->isDeleted() == 0)
 						{
 							self::$_projects[$project->getID()] = $project;
@@ -391,7 +391,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$project = TBGFactory::projectLab($row->get(TBGProjectsTable::ID), $row);
+					$project = TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 					if ($project->hasAccess() && $project->isDeleted() == 0)
 					{
 						return $row->get(TBGProjectsTable::ID);
@@ -426,7 +426,7 @@
 				TBGContext::setPermission("canaddextrainformationtoissues", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canpostseeandeditallcomments", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
 
-				$project = TBGFactory::projectLab($p_id);
+				$project = TBGContext::factory()->TBGProject($p_id);
 				TBGEvent::createNew('core', 'TBGProject::createNew', $project)->trigger();
 
 				return $project;
@@ -443,7 +443,7 @@
 		{
 			if ($row = TBGProjectsTable::getTable()->getByPrefix($prefix))
 			{
-				return TBGFactory::projectLab($row->get(TBGProjectsTable::ID), $row);
+				return TBGContext::factory()->TBGProject($row->get(TBGProjectsTable::ID), $row);
 			}
 			return null;
 		}
@@ -819,7 +819,7 @@
 			{
 				try
 				{
-					$this->_defaultstatus = TBGFactory::TBGStatusLab($this->_defaultstatus);
+					$this->_defaultstatus = TBGContext::factory()->TBGStatus($this->_defaultstatus);
 				}
 				catch (Exception $e)
 				{
@@ -1421,7 +1421,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_unassignedissues[$row->get(TBGIssuesTable::ID)] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID));
+						$this->_unassignedissues[$row->get(TBGIssuesTable::ID)] = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));
 					}
 				}
 			}
@@ -1471,7 +1471,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$milestone = TBGFactory::TBGMilestoneLab($row->get(TBGMilestonesTable::ID), $row);
+						$milestone = TBGContext::factory()->TBGMilestone($row->get(TBGMilestonesTable::ID), $row);
 						if ($milestone->hasAccess())
 						{
 							$this->_visible_milestones[$milestone->getID()] = $milestone;
@@ -1600,7 +1600,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_visible_issuetypes[$row->get(TBGIssueTypesTable::ID)] = TBGFactory::TBGIssuetypeLab($row->get(TBGIssueTypesTable::ID), $row);
+						$this->_visible_issuetypes[$row->get(TBGIssueTypesTable::ID)] = TBGContext::factory()->TBGIssuetype($row->get(TBGIssueTypesTable::ID), $row);
 					}
 				}
 			}
@@ -1924,7 +1924,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$issue = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID));;
+					$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID));;
 					if (!$merged)
 					{
 						$retval[$row->get(TBGIssuesTable::ISSUE_TYPE)]['issues'][] = $issue;
@@ -2199,7 +2199,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_recentissues[] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
+						$this->_recentissues[] = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
 					}
 				}
 			}
@@ -2214,7 +2214,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_recentfeatures[] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
+						$this->_recentfeatures[] = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
 					}
 				}
 			}
@@ -2229,7 +2229,7 @@
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->_recentideas[] = TBGFactory::TBGIssueLab($row->get(TBGIssuesTable::ID), $row);
+						$this->_recentideas[] = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
 					}
 				}
 			}

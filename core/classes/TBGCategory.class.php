@@ -19,7 +19,7 @@
 				{
 					foreach ($items as $row_id => $row)
 					{
-						self::$_items[$row_id] = TBGFactory::TBGCategoryLab($row_id, $row);
+						self::$_items[$row_id] = TBGContext::factory()->TBGCategory($row_id, $row);
 					}
 				}
 			}
@@ -36,7 +36,7 @@
 		public static function createNew($name)
 		{
 			$res = parent::_createNew($name, self::CATEGORY);
-			return TBGFactory::TBGCategoryLab($res->getInsertID());
+			return TBGContext::factory()->TBGCategory($res->getInsertID());
 		}
 
 		/**

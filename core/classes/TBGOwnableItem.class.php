@@ -76,11 +76,11 @@
 				{
 					if ($this->$type_field == TBGIdentifiableClass::TYPE_USER)
 					{
-						$this->$field = TBGFactory::userLab($this->$field);
+						$this->$field = TBGContext::factory()->TBGUser($this->$field);
 					}
 					elseif ($this->$type_field == TBGIdentifiableClass::TYPE_TEAM)
 					{
-						$this->$field = TBGFactory::teamLab($this->$field);
+						$this->$field = TBGContext::factory()->TBGTeam($this->$field);
 					}
 				}
 				catch (Exception $e)

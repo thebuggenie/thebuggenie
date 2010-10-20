@@ -109,7 +109,7 @@
 				$retval = array();
 				while ($row = $res->getNextRow())
 				{
-					$author = ($row->get(self::AUTHOR)) ? TBGFactory::userLab($row->get(self::AUTHOR)) : null;
+					$author = ($row->get(self::AUTHOR)) ? TBGContext::factory()->TBGUser($row->get(self::AUTHOR)) : null;
 					$retval[$row->get(self::REVISION)] = array('old_content' => $row->get(self::OLD_CONTENT), 'new_content' => $row->get(self::NEW_CONTENT), 'date' => $row->get(self::DATE), 'author' => $author);
 				}
 

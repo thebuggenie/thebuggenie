@@ -239,7 +239,7 @@
 				{
 					try
 					{
-						$issue = TBGFactory::TBGIssueLab($comment->getTargetID());
+						$issue = TBGContext::factory()->TBGIssue($comment->getTargetID());
 						$title = $comment->getTitle();
 						$content = $comment->getContent();
 						$to_users = $issue->getRelatedUsers();
