@@ -52,6 +52,10 @@
 			$transitions[] = array('from_step_id' => 1, 'transition_id' => 2);
 			$transitions[] = array('from_step_id' => 1, 'transition_id' => 3);
 			$transitions[] = array('from_step_id' => 1, 'transition_id' => 4);
+			$transitions[] = array('from_step_id' => 2, 'transition_id' => 2);
+			$transitions[] = array('from_step_id' => 2, 'transition_id' => 3);
+			$transitions[] = array('from_step_id' => 2, 'transition_id' => 4);
+			$transitions[] = array('from_step_id' => 8, 'transition_id' => 5);
 
 			foreach ($transitions as $transition)
 			{

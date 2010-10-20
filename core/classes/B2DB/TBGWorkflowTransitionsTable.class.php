@@ -56,6 +56,7 @@
 			$transitions[] = array('name' => 'Confirm issue', 'description' => 'Confirm that the issue is valid', 'to_step_id' => 3, 'template' => null);
 			$transitions[] = array('name' => 'Reject issue', 'description' => 'Reject the issue as invalid', 'to_step_id' => 7, 'template' => null);
 			$transitions[] = array('name' => 'Accept issue', 'description' => 'Accept the issue and assign it to yourself', 'to_step_id' => 4, 'template' => null);
+			$transitions[] = array('name' => 'Reopen issue', 'description' => 'Reopen the issue', 'to_step_id' => 1, 'template' => null);
 
 			foreach ($transitions as $transition)
 			{
