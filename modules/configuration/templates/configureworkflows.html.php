@@ -15,11 +15,17 @@
 							<table>
 								<tr>
 									<td class="workflow_info">
-										<div class="workflow_name"><?php echo $workflow->getName(); ?><?php if ($workflow->isCore()): ?>&nbsp;<span class="builtin"><?php echo __('This workflow is builtin'); ?></span><?php endif; ?></div>
+										<div class="workflow_name"><?php echo $workflow->getName(); ?></div>
 										<div class="workflow_description"><?php echo $workflow->getDescription(); ?></div>
 									</td>
 									<td class="workflow_<?php if (!$workflow->isActive()) echo 'in'; ?>active"><?php echo ($workflow->isActive()) ? __('Active') : __('Inactive'); ?></td>
 									<td class="workflow_steps"><?php echo __('Steps: %number_of_workflow_steps%', array('%number_of_workflow_steps%' => '<span>'.$workflow->getNumberOfSteps().'</span>')); ?></td>
+									<td class="workflow_actions">
+										<?php echo __('Actions: %list%', array('%list%' => '')); ?><br>
+										<a href="#" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this workflow'))); ?></a>
+										<a href="#" class="rounded_box"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this workflow'))); ?></a>
+										<a href="#" class="rounded_box"><?php echo image_tag('icon_workflow_list_steps.png', array('title' => __('Show / edit workflow steps'))); ?></a>
+									</td>
 								</tr>
 							</table>
 						</li>
