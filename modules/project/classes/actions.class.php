@@ -94,6 +94,8 @@
 		 */
 		public function runRoadmap(TBGRequest $request)
 		{
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_roadmap', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+
 			$this->milestones = $this->selected_project->getAllMilestones();
 		}
 
@@ -197,6 +199,8 @@
 		 */
 		public function runScrumShowBurndownImage(TBGRequest $request)
 		{
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			
 			$milestone = null;
 			if ($m_id = $request->getParameter('sprint_id'))
 			{
@@ -215,7 +219,6 @@
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			if ($milestone instanceof TBGMilestone)
 			{
-				$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 				$datasets = array();
 
 				$burndown_data = $milestone->getBurndownData();
