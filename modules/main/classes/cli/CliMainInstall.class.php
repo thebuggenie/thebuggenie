@@ -341,9 +341,13 @@
 					{
 						$this->cliEcho("Skipping .htaccess auto-setup.");
 					}
-					$this->cliEcho("Press ENTER to continue ... ");
-					$this->pressEnterToContinue();
-					$this->cliEcho("\n");
+					
+					if ($this->getProvidedArgument('setup_htaccess') != 'yes')
+					{
+						$this->cliEcho("Press ENTER to continue ... ");
+						$this->pressEnterToContinue();
+						$this->cliEcho("\n");
+					}
 
 					$enable_modules = array();
 
