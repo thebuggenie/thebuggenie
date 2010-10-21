@@ -28,6 +28,15 @@
 						<dl>
 							<dt><?php echo __('Description'); ?></dt>
 							<dd class="description"><?php echo $step->getDescription(); ?></dd>
+							<dt><?php echo __('Connected status'); ?></dt>
+							<dd class="description">
+								<?php if ($step->hasLinkedStatus()): ?>
+									<div class="workflow_step_status" style="background-color: <?php echo $step->getLinkedStatus()->getColor(); ?>;"> </div>
+									<?php echo $step->getLinkedStatus()->getName(); ?>
+								<?php else: ?>
+									<span class="faded_out"><?php echo __('This step is not connected to a specific status'); ?></span>
+								<?php endif; ?>
+							</dd>
 						</dl>
 					</div>
 					<div class="rounded_box lightyellow" id="workflow_browser_step">

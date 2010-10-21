@@ -386,6 +386,7 @@ th.highlighted_column { background-color: #C1C1C1; }
 #workflow_details_transition dt, #workflow_details_step dt { width: 110px; }
 #workflow_details_transition dd, #workflow_details_step dd { width: 290px; }
 #workflow_details_transition dd.description, #workflow_details_step dd.description { font-style: italic; }
+#workflow_details_step dd div.workflow_step_status { line-height: 0; height: 14px; width: 14px; font-size: 1px; float: left; margin-right: 5px; border: 1px solid #AAA; }
 
 #workflow_browser_step { float: right; width: 300px; padding: 5px; text-align: center; }
 #workflow_browser_step .header { font-size: 1.1em; text-align: center; margin-bottom: 5px; }
