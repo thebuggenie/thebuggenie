@@ -34,7 +34,8 @@
 								<?php endif; ?>
 							<?php elseif ($step->getNumberOfIncomingTransitions() == 0): ?>
 								<div class="faded_out"><?php echo __("This step doesn't have any incoming transitions"); ?></div>
-							<?php else: ?>
+							<?php endif; ?>
+							<?php if ($step->getNumberOfIncomingTransitions() > 0): ?>
 								<?php
 
 								$output = array();
