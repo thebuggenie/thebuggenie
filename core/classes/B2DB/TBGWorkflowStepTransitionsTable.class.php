@@ -78,30 +78,57 @@
 			}
 		}
 
-		public function countByStepID($step_id)
+		protected function _countByTypeID($type, $id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(self::FROM_STEP_ID, $step_id);
+			$crit->addWhere((($type == 'step') ? self::FROM_STEP_ID : self::TRANSITION_ID), $id);
 			return $this->doCount($crit);
 		}
 
-		public function getByStepID($step_id)
+		protected function _getByTypeID($type, $id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(self::FROM_STEP_ID, $step_id);
+			$crit->addWhere((($type == 'step') ? self::FROM_STEP_ID : self::TRANSITION_ID), $id);
 
 			$return_array = array();
 			if ($res = $this->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$return_array[$row->get(self::ID)] = TBGContext::factory()->TBGWorkflowTransition($row->get(self::ID), $row);
+					if ($type == 'step')
+					{
+						$return_array[$row->get(self::TRANSITION_ID)] = TBGContext::factory()->TBGWorkflowTransition($row->get(self::TRANSITION_ID), $row);
+					}
+					else
+					{
+						$return_array[$row->get(self::FROM_STEP_ID)] = TBGContext::factory()->TBGWorkflowStep($row->get(self::FROM_STEP_ID), $row);
+					}
 				}
 			}
 
 			return $return_array;
+		}
+
+		public function countByStepID($step_id)
+		{
+			return $this->_countByTypeID('step', $step_id);
+		}
+
+		public function getByStepID($step_id)
+		{
+			return $this->_getByTypeID('step', $step_id);
+		}
+
+		public function countByTransitionID($transition_id)
+		{
+			return $this->_countByTypeID('transition', $transition_id);
+		}
+
+		public function getByTransitionID($transition_id)
+		{
+			return $this->_getByTypeID('transition', $transition_id);
 		}
 
 	}

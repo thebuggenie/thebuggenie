@@ -16,7 +16,7 @@
 		<?php if ($step->getNumberOfOutgoingTransitions() > 0): ?>
 			<?php foreach ($step->getOutgoingTransitions() as $transition): ?>
 				<div class="workflow_step_transition_name">
-					<?php echo $transition->getName(); ?>
+					<?php echo link_tag(make_url('configure_workflow_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())), $transition->getName()); ?>
 					<span class="workflow_step_transition_outgoing_step">&rarr; <?php echo $transition->getOutgoingStep()->getName(); ?></span>
 				</div>
 			<?php endforeach; ?>

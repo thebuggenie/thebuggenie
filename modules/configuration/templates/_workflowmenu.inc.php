@@ -14,6 +14,9 @@
 				<?php if (isset($step)): ?>
 					<li<?php if ($selected_tab == 'step'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $workflow->getID(), 'step_id' => $step->getID())), __('Step: %step_name%', array('%step_name%' => $step->getName()))); ?></li>
 				<?php endif; ?>
+				<?php if (isset($transition)): ?>
+					<li<?php if ($selected_tab == 'transition'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_transition', array('workflow_id' => $workflow->getID(), 'transition_id' => $transition->getID())), __('Transition: %transition_name%', array('%transition_name%' => $transition->getName()))); ?></li>
+				<?php endif; ?>
 			<?php endif; ?>
 		</ul>
 	</div>

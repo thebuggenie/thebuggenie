@@ -26,6 +26,10 @@
 		 */
 		protected $_description = null;
 
+		protected $_incoming_steps = null;
+
+		protected $_num_incoming_steps = null;
+
 		/**
 		 * The outgoing step from this transition
 		 *
@@ -53,7 +57,7 @@
 			$this->_name = $row->get(TBGWorkflowTransitionsTable::NAME);
 			$this->_description = $row->get(TBGWorkflowTransitionsTable::DESCRIPTION);
 			$this->_outgoing_step = TBGContext::factory()->TBGWorkflowStep($row->get(TBGWorkflowTransitionsTable::TO_STEP_ID));
-			$this->_workflow = TBGContext::factory()->TBGWorkflow($row->get(TBGWorkflowStepsTable::WORKFLOW_ID));
+			$this->_workflow = TBGContext::factory()->TBGWorkflow($row->get(TBGWorkflowTransitionsTable::WORKFLOW_ID));
 		}
 
 		/**
@@ -95,6 +99,33 @@
 		public function isCore()
 		{
 			return ($this->getWorkflow()->getID() == 1);
+		}
+
+		protected function _populateIncomingSteps()
+		{
+			if ($this->_incoming_steps === null)
+			{
+				$this->_incoming_steps = TBGWorkflowStepTransitionsTable::getTable()->getByTransitionID($this->getID());
+			}
+		}
+
+		public function getIncomingSteps()
+		{
+			$this->_populateIncomingSteps();
+			return $this->_incoming_steps;
+		}
+
+		public function getNumberOfIncomingSteps()
+		{
+			if ($this->_num_incoming_steps === null && $this->_incoming_steps !== null)
+			{
+				$this->_num_incoming_steps = count($this->_incoming_steps);
+			}
+			elseif ($this->_num_incoming_steps === null)
+			{
+				$this->_num_incoming_steps = TBGWorkflowStepTransitionsTable::getTable()->countByTransitionID($this->getID());
+			}
+			return $this->_num_incoming_steps;
 		}
 
 		/**

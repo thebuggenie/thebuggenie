@@ -1857,6 +1857,7 @@
 		public function runConfigureWorkflowStep(TBGRequest $request)
 		{
 			$this->workflow = null;
+			$this->step = null;
 			try
 			{
 				$this->workflow = TBGContext::factory()->TBGWorkflow($request->getParameter('workflow_id'));
@@ -1865,6 +1866,21 @@
 			catch (Exception $e)
 			{
 				$this->error = TBGContext::getI18n()->__('This workflow / step does not exist');
+			}
+		}
+
+		public function runConfigureWorkflowTransition(TBGRequest $request)
+		{
+			$this->workflow = null;
+			$this->transition = null;
+			try
+			{
+				$this->workflow = TBGContext::factory()->TBGWorkflow($request->getParameter('workflow_id'));
+				$this->transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
+			}
+			catch (Exception $e)
+			{
+				$this->error = TBGContext::getI18n()->__('This workflow / transition does not exist');
 			}
 		}
 

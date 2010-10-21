@@ -20,7 +20,7 @@
 					<div class="rounded_box lightgrey workflow_step_intro">
 						<div class="header"><?php echo __("Editing workflow step %step_name%", array('%step_name%' => $step->getName())); ?></div>
 						<div class="content">
-							<?php echo __('This page shows all the available details for this steps for the selected workflow, as well as transitions to and from this step.'); ?>
+							<?php echo __('This page shows all the available details for this step for the selected workflow, as well as transitions to and from this step.'); ?>
 							<?php echo __('You can add and remove transitions from this page, as well as manage properties for this step.'); ?>
 						</div>
 					</div>
@@ -41,7 +41,7 @@
 								$output = array();
 								foreach ($step->getIncomingTransitions() as $transition)
 								{
-									$output[] = "<div class=\"workflow_browser_step_transition\">{$transition->getName()}</div>";
+									$output[] = '<div class="workflow_browser_step_transition">'.link_tag(make_url('configure_workflow_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())), $transition->getName())."</div>";
 								}
 								$glue = "<div class=\"faded_out\">".__('%a_workflow_step_transition% or %a_workflow_step_transition%', array('%a_workflow_step_transition%' => ''))."</div>";
 								echo join($glue, $output);
@@ -59,7 +59,7 @@
 								$output = array();
 								foreach ($step->getOutgoingTransitions() as $transition)
 								{
-									$output[] = "<div class=\"workflow_browser_step_transition\">{$transition->getName()}</div>";
+									$output[] = '<div class="workflow_browser_step_transition">'.link_tag(make_url('configure_workflow_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())), $transition->getName())."</div>";
 								}
 								$glue = "<div class=\"faded_out\">".__('%a_workflow_step_transition% or %a_workflow_step_transition%', array('%a_workflow_step_transition%' => ''))."</div>";
 								echo join($glue, $output);
