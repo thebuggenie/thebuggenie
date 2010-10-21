@@ -370,6 +370,7 @@ th.highlighted_column { background-color: #C1C1C1; }
 
 #workflow_steps_container { }
 #workflow_steps_container .workflow_steps_intro, #workflow_step_container .workflow_step_intro { margin: 5px 0 5px 0; font-size: 0.9em; }
+.workflow_step_intro .header { font-size: 1.3em; }
 #workflow_steps_list { width: 100%; }
 #workflow_steps_list td, #workflow_steps_list th { font-size: 0.9em; }
 #workflow_steps_list_tbody tr.step td { border-bottom: 1px dotted #AAA; }
@@ -377,6 +378,14 @@ th.highlighted_column { background-color: #C1C1C1; }
 
 .workflow_step_transition_name { font-weight: bold; font-size: 0.9em; font-style: italic; }
 .workflow_step_transition_outgoing_step { margin-left: 5px; font-size: 0.95em; color: #AAA; font-weight: normal; font-style: italic; }
+
+#workflow_details_transition, #workflow_details_step { margin-top: 0; float: left; width: 420px; }
+#workflow_details_transition label, #workflow_details_step label { font-size: 0.9em; }
+#workflow_details_transition li, #workflow_details_step li { margin-bottom: 5px; }
+#workflow_details_transition dl, #workflow_details_step dl { font-size: 0.9em; }
+#workflow_details_transition dt, #workflow_details_step dt { width: 110px; }
+#workflow_details_transition dd, #workflow_details_step dd { width: 290px; }
+#workflow_details_transition dd.description, #workflow_details_step dd.description { font-style: italic; }
 
 #workflow_browser_step { float: right; width: 300px; padding: 5px; text-align: center; }
 #workflow_browser_step .header { font-size: 1.1em; text-align: center; margin-bottom: 5px; }
@@ -518,9 +527,9 @@ img.undo { display: none; }
 
 /* issue left hand list */
 .issue_lefthand { width: 300px; padding: 0; vertical-align: top; }
-dl.viewissue_list { margin: 0; font-size: 11px; padding: 0 0 0 0; position: relative; min-height: 16px; clear: both; }
-dl.viewissue_list dt { width: 85px; font-weight: bold; padding: 3px 2px 2px 2px; clear: both; }
-dl.viewissue_list dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; padding: 3px 5px 1px 2px; min-height: 16px; }
+dl { margin: 0; font-size: 11px; padding: 0 0 0 0; position: relative; min-height: 16px; clear: both; }
+dt { width: 85px; font-weight: bold; padding: 3px 2px 2px 2px; clear: both; }
+dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; padding: 3px 5px 1px 2px; min-height: 16px; }
 
 #viewissue_left_box_top { margin: 0; }
 #viewissue_left_box_bottom { margin: 0; }

@@ -37,6 +37,16 @@
 		 */
 		protected $_outgoing_step = null;
 
+		protected $_template = null;
+
+		public static function getTemplates()
+		{
+			$templates = array('template_1' => 'Template 1', 'template_2' => 'Template 2', 'template_3' => 'Template 3');
+			$event = TBGEvent::createNew('core', 'workflow_templates', null, array(), $templates)->trigger();
+			
+			return $event->getReturnList();
+		}
+
 		public function __construct($id, $row)
 		{
 			if (!is_numeric($id))
@@ -56,6 +66,7 @@
 			$this->_itemid = $row->get(TBGWorkflowTransitionsTable::ID);
 			$this->_name = $row->get(TBGWorkflowTransitionsTable::NAME);
 			$this->_description = $row->get(TBGWorkflowTransitionsTable::DESCRIPTION);
+			$this->_template = $row->get(TBGWorkflowTransitionsTable::TEMPLATE);
 			$this->_outgoing_step = TBGContext::factory()->TBGWorkflowStep($row->get(TBGWorkflowTransitionsTable::TO_STEP_ID));
 			$this->_workflow = TBGContext::factory()->TBGWorkflow($row->get(TBGWorkflowTransitionsTable::WORKFLOW_ID));
 		}
@@ -99,6 +110,22 @@
 		public function isCore()
 		{
 			return ($this->getWorkflow()->getID() == 1);
+		}
+
+		public function getTemplate()
+		{
+			return $this->_template;
+		}
+
+		public function getTemplateName()
+		{
+			$templates = self::getTemplates();
+			return $templates[$this->getTemplate()];
+		}
+
+		public function hasTemplate()
+		{
+			return (bool) ($this->getTemplate() != '');
 		}
 
 		protected function _populateIncomingSteps()

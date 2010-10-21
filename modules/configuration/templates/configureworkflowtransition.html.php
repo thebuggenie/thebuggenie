@@ -18,11 +18,21 @@
 			<div class="content" style="width: 750px;" id="workflow_step_container">
 				<?php if ($transition instanceof TBGWorkflowTransition): ?>
 					<div class="rounded_box lightgrey workflow_step_intro">
-						<div class="header"><?php echo __("Editing workflow transition %transition_name%", array('%transition_name%' => $transition->getName())); ?></div>
+						<div class="header"><?php echo __('Transition "%transition_name%"', array('%transition_name%' => $transition->getName())); ?></div>
 						<div class="content">
 							<?php echo __('This page shows all the available details for this transition for the selected workflow, as well as incoming and outgoing steps from this transition.'); ?>
 							<?php echo __('You can edit all details about the selected transitions from this page.'); ?>
 						</div>
+					</div>
+					<div id="workflow_details_transition">
+						<dl>
+							<dt><?php echo __('Description'); ?></dt>
+							<dd class="description"><?php echo $transition->getDescription(); ?></dd>
+							<dt><?php echo __('Template'); ?></dt>
+							<dd><?php echo ($transition->hasTemplate()) ? $transition->getTemplateName() : __('No template used - transition happens instantly'); ?></dd>
+							<dt><?php echo __('Outgoing step'); ?></dt>
+							<dd><?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $transition->getOutgoingStep()->getWorkflow()->getID(), 'step_id' => $transition->getOutgoingStep()->getID())), $transition->getOutgoingStep()->getName()); ?></dd>
+						</dl>
 					</div>
 					<div class="rounded_box lightyellow" id="workflow_browser_step">
 						<div class="header"><?php echo __('Transition path'); ?></div>

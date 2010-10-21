@@ -18,17 +18,23 @@
 			<div class="content" style="width: 750px;" id="workflow_step_container">
 				<?php if ($step instanceof TBGWorkflowStep): ?>
 					<div class="rounded_box lightgrey workflow_step_intro">
-						<div class="header"><?php echo __("Editing workflow step %step_name%", array('%step_name%' => $step->getName())); ?></div>
+						<div class="header"><?php echo __('Workflow step "%step_name%"', array('%step_name%' => $step->getName())); ?></div>
 						<div class="content">
 							<?php echo __('This page shows all the available details for this step for the selected workflow, as well as transitions to and from this step.'); ?>
 							<?php echo __('You can add and remove transitions from this page, as well as manage properties for this step.'); ?>
 						</div>
 					</div>
+					<div id="workflow_details_step">
+						<dl>
+							<dt><?php echo __('Description'); ?></dt>
+							<dd class="description"><?php echo $step->getDescription(); ?></dd>
+						</dl>
+					</div>
 					<div class="rounded_box lightyellow" id="workflow_browser_step">
 						<div class="header"><?php echo __('Step path'); ?></div>
 						<div class="content">
 							<?php if ($workflow->getFirstStep() === $step): ?>
-								<div class="workflow_browser_step_transition"><?php echo __('Issue is created'); ?></div>
+								<div class="workflow_browser_step_transition"><?php echo __('Issue is created'); ?><br><span class="faded_out"><?php echo __('This is the initial reporting step'); ?></span></div>
 								<?php if ($step->getNumberOfIncomingTransitions() > 0): ?>
 									<div class="faded_out"><?php echo __('%a_workflow_step_transition% or %a_workflow_step_transition%', array('%a_workflow_step_transition%' => '')); ?></div>
 								<?php endif; ?>
