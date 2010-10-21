@@ -245,6 +245,7 @@
 			TBGWorkflowStepsTable::getTable()->loadFixtures($scope_id);
 			TBGWorkflowTransitionsTable::getTable()->loadFixtures($scope_id);
 			TBGWorkflowStepTransitionsTable::getTable()->loadFixtures($scope_id);
+			TBGWorkflowSchemesTable::getTable()->loadFixtures($scope_id);
 		}
 
 		public function save()

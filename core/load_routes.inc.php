@@ -72,6 +72,7 @@
 	$routes[] = array('configure_scopes', '/configure/scopes', 'configuration', 'index', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_SCOPES));
 	$routes[] = array('configure_workflow', '/configure/workflow', 'configuration', 'configureWorkflows', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW));
 	$routes[] = array('configure_workflow_schemes', '/configure/workflow/schemes', 'configuration', 'configureWorkflowSchemes', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW));
+	$routes[] = array('configure_workflow_scheme', '/configure/workflow/scheme/:scheme_id', 'configuration', 'configureWorkflowScheme', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW));
 	$routes[] = array('configure_workflow_steps', '/configure/workflow/:workflow_id/steps', 'configuration', 'configureWorkflowSteps', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW));
 	$routes[] = array('configure_workflow_step', '/configure/workflow/:workflow_id/step/:step_id', 'configuration', 'configureWorkflowStep', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW));
 	$routes[] = array('configure_workflow_transition', '/configure/workflow/:workflow_id/transition/:transition_id', 'configuration', 'configureWorkflowTransition', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_WORKFLOW));

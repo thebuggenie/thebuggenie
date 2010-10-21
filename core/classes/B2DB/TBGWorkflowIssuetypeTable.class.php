@@ -45,4 +45,31 @@
 			parent::_addForeignKeyColumn(self::ISSUETYPE_ID, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
 		}
 
+		public function countByWorkflowSchemeID($workflow_scheme_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::WORKFLOW_SCHEME_ID, $workflow_scheme_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			return $this->doCount($crit);
+		}
+
+		public function getByWorkflowSchemeID($workflow_scheme_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::WORKFLOW_SCHEME_ID, $workflow_scheme_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			$return_array = array();
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$return_array[$row->get(self::ISSUETYPE_ID)] = TBGContext::factory()->TBGWorkflow($row->get(self::WORKFLOW_ID), $row);
+				}
+			}
+
+			return $return_array;
+		}
+
 	}

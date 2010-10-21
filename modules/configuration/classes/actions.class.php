@@ -1833,7 +1833,7 @@
 
 		public function runConfigureWorkflowSchemes(TBGRequest $request)
 		{
-
+			$this->schemes = TBGWorkflowScheme::getAll();
 		}
 
 		public function runConfigureWorkflows(TBGRequest $request)
