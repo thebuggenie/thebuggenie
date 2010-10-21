@@ -28,8 +28,16 @@
 						<dl>
 							<dt><?php echo __('Description'); ?></dt>
 							<dd class="description"><?php echo $step->getDescription(); ?></dd>
+							<dt><?php echo __('State'); ?></dt>
+							<dd>
+								<?php if (!$step->isClosed()): ?>
+									<?php echo ($step->isEditable()) ? __('Open and editable') : __('Open, but not editable'); ?>
+								<?php else: ?>
+									<?php echo ($step->isEditable()) ? __('Closed, but editable') : __('Closed and not editable'); ?>
+								<?php endif; ?>
+							</dd>
 							<dt><?php echo __('Connected status'); ?></dt>
-							<dd class="description">
+							<dd>
 								<?php if ($step->hasLinkedStatus()): ?>
 									<div class="workflow_step_status" style="background-color: <?php echo $step->getLinkedStatus()->getColor(); ?>;"> </div>
 									<?php echo $step->getLinkedStatus()->getName(); ?>
