@@ -376,7 +376,7 @@ th.highlighted_column { background-color: #C1C1C1; }
 #workflow_steps_list_tbody tr.status td { border-bottom: 0; }
 
 .workflow_step_transition_name { font-weight: bold; font-size: 0.9em; font-style: italic; }
-.workflow_step_transition_outgoing_step { margin-left: 5px; font-size: 0.8em; color: #AAA; font-style: italic; }
+.workflow_step_transition_outgoing_step { margin-left: 5px; font-size: 0.95em; color: #AAA; font-weight: normal; font-style: italic; }
 
 #workflow_browser_step { float: right; width: 300px; padding: 5px; text-align: center; }
 #workflow_browser_step .header { font-size: 1.1em; text-align: center; margin-bottom: 5px; }
