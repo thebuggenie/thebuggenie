@@ -2,17 +2,21 @@
 	<div class="project_name<?php if (!$project instanceof TBGProject): ?> faded_out dark<?php endif; ?>">
 		<?php echo image_tag('spinning_32.gif', array('id' => 'project_menustrip_indicator', 'style' => 'display: none;')); ?>
 		<span id="project_menustrip_name">
-			<a href="javascript:void(0);" onclick="$('project_menustrip_change').toggle();" style="float: right; margin-left: 10px;<?php if ($tbg_response->getPage() != 'reportissue' && $show_report_button && count(TBGProject::getAll()) <= 1): ?> display: none;<?php endif; ?>" class="image"><?php echo image_tag('expand.png'); ?></a>
-			<?php if (!$project instanceof TBGProject): ?>
-				<?php echo __('There is no project selected'); ?>
-			<?php else: ?>
-				<?php echo $project->getName(); ?>
+			<?php if (count(TBGProject::getAll())==0): ?>
+				<?php echo __('There is no project available'); ?>			
+			<?php else :?>
+				<a href="javascript:void(0);" onclick="$('project_menustrip_change').toggle();" style="float: right; margin-left: 10px;<?php if ($tbg_response->getPage() != 'reportissue' && $show_report_button && count(TBGProject::getAll()) <= 1): ?> display: none;<?php endif; ?>" class="image"><?php echo image_tag('expand.png'); ?></a>
+				<?php if (!$project instanceof TBGProject): ?>
+					<?php echo __('There is no project selected'); ?>
+				<?php else: ?>
+					<?php echo $project->getName(); ?>
+				<?php endif; ?>
 			<?php endif; ?>
 		</span>
 		<div class="rounded_box white shadowed" id="project_menustrip_change" style="position: absolute; display: none; width: 324px; top: 32px; z-index: 10001;">
 			<div class="dropdown_header"><?php echo __('Select a different project'); ?></div>
 			<div class="dropdown_content">
-				<?php if (count(TBGProject::getAll()) > 1): ?>
+				<?php if (!($project instanceof TBGProject) || count(TBGProject::getAll()) > 1): ?>
 					<?php echo __('Choose a project from the list below'); ?>:<br>
 					<table cellpadding="0" cellspacing="0">
 						<?php foreach (TBGProject::getAll() as $aProject): ?>
