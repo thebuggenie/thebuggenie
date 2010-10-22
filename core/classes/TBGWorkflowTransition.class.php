@@ -47,6 +47,12 @@
 			return $event->getReturnList();
 		}
 
+		public static function createNew($workflow_id, $name, $description, $to_step_id, $template)
+		{
+			$id = TBGWorkflowTransitionsTable::getTable()->createNew($workflow_id, $name, $description, $to_step_id, $template);
+			return TBGContext::factory()->TBGWorkflowTransition($id);
+		}
+
 		public function __construct($id, $row)
 		{
 			if (!is_numeric($id))

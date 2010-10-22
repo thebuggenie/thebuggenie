@@ -186,6 +186,25 @@
 			return $this->_num_outgoing_transitions;
 		}
 
+		public function hasOutgoingTransition(TBGWorkflowTransition $transition)
+		{
+			$transitions = $this->getOutgoingTransitions();
+			return array_key_exists($transition->getID(), $transitions);
+		}
+
+		public function addOutgoingTransition(TBGWorkflowTransition $transition)
+		{
+			TBGWorkflowStepTransitionsTable::getTable()->addNew($this->getID(), $transition->getID(), $this->getWorkflow()->getID());
+			if ($this->_outgoing_transitions !== null)
+			{
+				$this->_outgoing_transitions[$transition->getID()] = $transition;
+			}
+			if ($this->_num_outgoing_transitions !== null)
+			{
+				$this->_num_outgoing_transitions++;
+			}
+		}
+
 		protected function _populateIncomingTransitions()
 		{
 			if ($this->_incoming_transitions === null)

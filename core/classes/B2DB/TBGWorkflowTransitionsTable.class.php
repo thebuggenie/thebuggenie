@@ -85,19 +85,35 @@
 			return $row;
 		}
 
-		public function countByStepID($step_id)
+		public function createNew($workflow_id, $name, $description, $to_step_id, $template, $scope = null)
+		{
+			$scope = ($scope !== null) ? $scope : TBGContext::getScope()->getID();
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::SCOPE, $scope);
+			$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
+			$crit->addInsert(self::NAME, $name);
+			$crit->addInsert(self::DESCRIPTION, $description);
+			$crit->addInsert(self::TO_STEP_ID, $to_step_id);
+			$crit->addInsert(self::TEMPLATE, $template);
+
+			$res = $this->doInsert($crit);
+
+			return $res->getInsertID();
+		}
+
+		protected function _countByTypeID($type, $id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(self::TO_STEP_ID, $step_id);
+			$crit->addWhere((($type == 'step') ? self::TO_STEP_ID : self::WORKFLOW_ID), $id);
 			return $this->doCount($crit);
 		}
 
-		public function getByStepID($step_id)
+		protected function _getByTypeID($type, $id)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(self::TO_STEP_ID, $step_id);
+			$crit->addWhere((($type == 'step') ? self::TO_STEP_ID : self::WORKFLOW_ID), $id);
 
 			$return_array = array();
 			if ($res = $this->doSelect($crit))
@@ -110,5 +126,25 @@
 
 			return $return_array;
 		}
-		
+
+		public function countByStepID($step_id)
+		{
+			return $this->_countByTypeID('step', $step_id);
+		}
+
+		public function getByStepID($step_id)
+		{
+			return $this->_getByTypeID('step', $step_id);
+		}
+
+		public function countByWorkflowID($workflow_id)
+		{
+			return $this->_countByTypeID('workflow', $workflow_id);
+		}
+
+		public function getByWorkflowID($workflow_id)
+		{
+			return $this->_getByTypeID('workflow', $workflow_id);
+		}
+
 	}

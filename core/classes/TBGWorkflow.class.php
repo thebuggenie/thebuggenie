@@ -39,6 +39,8 @@
 
 		protected $_num_steps = null;
 
+		protected $_transitions = null;
+
 		/**
 		 * Return all workflows in the system
 		 *
@@ -121,6 +123,25 @@
 		public function isActive()
 		{
 			return (bool) $this->_is_active;
+		}
+
+		protected function _populateTransitions()
+		{
+			if ($this->_transitions === null)
+			{
+				$this->_transitions = TBGWorkflowTransitionsTable::getTable()->getByWorkflowID($this->getID());
+			}
+		}
+
+		/**
+		 * Get all transitions in this workflow
+		 *
+		 * @return array An array of TBGWorkflowTransition objects
+		 */
+		public function getTransitions()
+		{
+			$this->_populateTransitions();
+			return $this->_transitions;
 		}
 
 		protected function _populateSteps()

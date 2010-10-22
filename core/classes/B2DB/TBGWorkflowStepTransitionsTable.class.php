@@ -131,4 +131,14 @@
 			return $this->_getByTypeID('transition', $transition_id);
 		}
 
+		public function addNew($from_step_id, $transition_id, $workflow_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addInsert(self::FROM_STEP_ID, $from_step_id);
+			$crit->addInsert(self::TRANSITION_ID, $transition_id);
+			$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
+			$this->doInsert($crit);
+		}
+
 	}

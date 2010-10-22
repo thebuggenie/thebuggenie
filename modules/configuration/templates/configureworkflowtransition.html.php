@@ -38,7 +38,7 @@
 						<div class="header"><?php echo __('Transition path'); ?></div>
 						<div class="content">
 							<?php if ($transition->getNumberOfIncomingSteps() == 0): ?>
-								<div class="faded_out"><?php echo __("This step doesn't have any incoming transitions"); ?></div>
+								<div class="faded_out"><?php echo __("This transaction doesn't have any originating step"); ?></div>
 							<?php else: ?>
 								<?php
 

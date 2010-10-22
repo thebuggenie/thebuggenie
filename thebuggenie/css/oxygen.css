@@ -127,6 +127,7 @@ div.image_container.thumb img.image { width: 220px; }
 .faded_out.dark { color: #999; }
 .faded_out.blue { color: #77C; }
 .faded_out a { color: #549D54; }
+.faded_out a.disabled { color: #BABFBA; }
 /* end faded text */
 
 /* autocompleter styling */
@@ -358,11 +359,12 @@ th.highlighted_column { background-color: #C1C1C1; }
 .workflow_list td.workflow_inactive { color: #A88; font-weight: bold; width: 100px; text-align: center; }
 .workflow_list td.workflow_active { color: #390; font-weight: bold; width: 100px; text-align: center; }
 .workflow_list td.workflow_steps { width: 100px; text-align: left; }
+.workflow_list td.workflow_steps span { font-weight: bold; }
 .workflow_list td.workflow_scheme_issuetypes { width: 250px; text-align: center; }
+.workflow_list td.workflow_scheme_issuetypes span { font-weight: bold; }
 .workflow_list td.workflow_actions { width: 130px; font-weight: bold; font-size: 0.9em; text-align: right; }
 .workflow_list td.workflow_actions a { padding: 3px; background-color: #FAFAFA; border: 1px solid #CCC; display: block; float: right; line-height: 0; margin-left: 5px; }
 .workflow_list td.workflow_actions a:hover { background-color: #FCFCFC; border-color: #AAA; }
-.workflow_list td.workflow_steps span { font-weight: bold; }
 .workflow_name { font-weight: bold; }
 .workflow_description, .workflow_name span.builtin { font-weight: normal; font-style: italic; font-size: 0.9em; }
 .workflow_name span.builtin { color: #AAA; }
@@ -376,7 +378,17 @@ th.highlighted_column { background-color: #C1C1C1; }
 #workflow_steps_list { width: 100%; }
 #workflow_steps_list td, #workflow_steps_list th { font-size: 0.9em; }
 #workflow_steps_list_tbody tr.step td { border-bottom: 1px dotted #AAA; }
+#workflow_steps_list_tbody tr.step a.step_name { color: #555; }
+#workflow_steps_list_tbody tr.step a.step_name:hover { color: #777; }
+#workflow_steps_list_tbody tr.step td.workflow_step_actions a { font-size: 0.9em; }
 #workflow_steps_list_tbody tr.status td { border-bottom: 0; }
+#workflow_steps_list_tbody dl { font-size: 0.9em; }
+#workflow_steps_list_tbody dt label.optional span { font-weight: normal; color: #AAA; }
+#workflow_steps_list_tbody dt { width: 150px; text-align: right; padding-right: 5px; }
+#workflow_steps_list_tbody dd { width: 500px; }
+#workflow_steps_list_tbody .add_transition_separation { font-size: 1px; line-height: 0; margin: 10px 20px; border-bottom: 1px dotted #AAA; }
+#workflow_steps_list_tbody input[type="submit"] { font-size: 1.1em; font-weight: bold; }
+#workflow_steps_list_tbody form a { font-weight: bold; }
 
 .workflow_step_transition_name { font-weight: bold; font-size: 0.9em; font-style: italic; }
 .workflow_step_transition_outgoing_step { margin-left: 5px; font-size: 0.95em; color: #AAA; font-weight: normal; font-style: italic; }

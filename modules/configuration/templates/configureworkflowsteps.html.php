@@ -39,9 +39,6 @@
 							<?php endforeach; ?>
 						</tbody>
 					</table>
-					<?php /*foreach ($workflow->getSteps() as $step): ?>
-						$steps[] = array('name' => '<?php echo $step->getName(); ?>', 'description' => '<?php echo $step->getDescription(); ?>', 'status_id' => <?php echo ($step->hasLinkedStatus()) ? $step->getLinkedStatus()->getID() : 'null'; ?>, 'editable' => <?php echo ($step->isEditable()) ? 'true' : 'false'; ?>, 'is_closed' => <?php echo ($step->isClosed()) ? 'true' : 'false'; ?>);<br>
-					<?php endforeach;*/ ?>
 				<?php else: ?>
 					<div class="rounded_box red borderless" id="no_such_workflow_error">
 						<div class="header"><?php echo $error; ?></div>

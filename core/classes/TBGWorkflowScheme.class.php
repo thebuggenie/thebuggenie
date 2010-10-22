@@ -126,6 +126,12 @@
 			return $this->_num_issuetype_workflows;
 		}
 
+		public function hasWorkflowAssociatedWithIssuetype(TBGIssuetype $issuetype)
+		{
+			$this->_populateAssociatedWorkflows();
+			return array_key_exists($issuetype->getID(), $this->_issuetype_workflows);
+		}
+
 		/**
 		 * Get all steps in this workflow
 		 *

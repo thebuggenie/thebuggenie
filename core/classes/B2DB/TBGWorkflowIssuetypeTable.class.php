@@ -45,6 +45,19 @@
 			parent::_addForeignKeyColumn(self::ISSUETYPE_ID, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
 		}
 
+		public function loadFixtures($scope)
+		{
+			foreach (TBGIssuetype::getAll() as $issuetype)
+			{
+				$crit = $this->getCriteria();
+				$crit->addInsert(self::SCOPE, $scope);
+				$crit->addInsert(self::WORKFLOW_ID, 1);
+				$crit->addInsert(self::WORKFLOW_SCHEME_ID, 1);
+				$crit->addInsert(self::ISSUETYPE_ID, $issuetype->getID());
+				$this->doInsert($crit);
+			}
+		}
+
 		public function countByWorkflowSchemeID($workflow_scheme_id)
 		{
 			$crit = $this->getCriteria();

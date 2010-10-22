@@ -1841,6 +1841,20 @@
 			$this->workflows = TBGWorkflow::getAll();
 		}
 
+		public function runConfigureWorkflowScheme(TBGRequest $request)
+		{
+			$this->workflow_scheme = null;
+			try
+			{
+				$this->workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request->getParameter('scheme_id'));
+				$this->issuetypes = TBGIssuetype::getAll();
+			}
+			catch (Exception $e)
+			{
+				$this->error = TBGContext::getI18n()->__('This workflow scheme does not exist');
+			}
+		}
+
 		public function runConfigureWorkflowSteps(TBGRequest $request)
 		{
 			$this->workflow = null;
@@ -1876,10 +1890,48 @@
 			try
 			{
 				$this->workflow = TBGContext::factory()->TBGWorkflow($request->getParameter('workflow_id'));
-				$this->transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
+				if ($request->hasParameter('transition_id'))
+				{
+					$this->transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
+				}
+				elseif ($request->isMethod(TBGRequest::POST) && $request->hasParameter('step_id'))
+				{
+					if ($step->isCore() || $workflow->isCore())
+					{
+						throw new InvalidArgumentException("The default workflow cannot be edited");
+					}
+					$step = TBGContext::factory()->TBGWorkflowStep($request->getParameter('step_id'));
+					if ($request->getParameter('add_transition_type') == 'existing' && $request->hasParameter('existing_transition_id'))
+					{
+						$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('existing_transition_id'));
+					}
+					else
+					{
+						if ($request->getParameter('transition_name') && $request->getParameter('outgoing_step_id') && $request->hasParameter('template'))
+						{
+							$transition = TBGWorkflowTransition::createNew($this->workflow->getID(), $request->getParameter('transition_name'), $request->getParameter('transition_description'), $request->getParameter('outgoing_step_id'), $request->getParameter('template'));
+						}
+						else
+						{
+							throw new InvalidArgumentException(TBGContext::getI18n()->__('Please fill in all required fields'));
+						}
+					}
+					$step->addOutgoingTransition($transition);
+					$this->forward(TBGContext::getRouting()->generate('configure_workflow_transition', array('workflow_id' => $this->workflow->getID(), 'transition_id' => $transition->getID())));
+				}
+				else
+				{
+					throw new InvalidArgumentException('Invalid action');
+				}
+			}
+			catch (InvalidArgumentException $e)
+			{
+				//throw $e;
+				$this->error = $e->getMessage();
 			}
 			catch (Exception $e)
 			{
+				//throw $e;
 				$this->error = TBGContext::getI18n()->__('This workflow / transition does not exist');
 			}
 		}
