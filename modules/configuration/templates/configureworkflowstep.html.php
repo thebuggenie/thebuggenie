@@ -1,8 +1,9 @@
 <?php
 
-	if ($workflow instanceof TBGWorkflow)
+	if ($step instanceof TBGWorkflowStep)
 	{
-		$tbg_response->setTitle(__('Configure workflow "%workflow_name%"', array('%workflow_name%' => $workflow->getName())));
+		$tbg_response->setTitle(__('Configure workflow step "%step_name%"', array('%step_name%' => $step->getName())));
+		$glue = '<div class="faded_out" style="clear: both;">'.__('%a_workflow_step_transition% or %a_workflow_step_transition%', array('%a_workflow_step_transition%' => '')).'</div>';
 	}
 	else
 	{
@@ -64,9 +65,8 @@
 								$output = array();
 								foreach ($step->getIncomingTransitions() as $transition)
 								{
-									$output[] = '<div class="workflow_browser_step_transition">'.link_tag(make_url('configure_workflow_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())), $transition->getName())."</div>";
+									$output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition));
 								}
-								$glue = "<div class=\"faded_out\">".__('%a_workflow_step_transition% or %a_workflow_step_transition%', array('%a_workflow_step_transition%' => ''))."</div>";
 								echo join($glue, $output);
 
 								?>
@@ -82,9 +82,8 @@
 								$output = array();
 								foreach ($step->getOutgoingTransitions() as $transition)
 								{
-									$output[] = '<div class="workflow_browser_step_transition">'.link_tag(make_url('configure_workflow_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())), $transition->getName())."</div>";
+									$output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition));
 								}
-								$glue = "<div class=\"faded_out\">".__('%a_workflow_step_transition% or %a_workflow_step_transition%', array('%a_workflow_step_transition%' => ''))."</div>";
 								echo join($glue, $output);
 
 								?>
