@@ -380,6 +380,8 @@ th.highlighted_column { background-color: #C1C1C1; }
 #workflow_steps_list_tbody tr.step td { border-bottom: 1px dotted #AAA; }
 #workflow_steps_list_tbody tr.step a.step_name { color: #555; }
 #workflow_steps_list_tbody tr.step a.step_name:hover { color: #777; }
+#workflow_steps_list_tbody tr.step a.step_name.faded_out { color: #AAA; }
+#workflow_steps_list_tbody tr.step a.step_name.faded_out:hover { color: #CCC; }
 #workflow_steps_list_tbody tr.step td.workflow_step_actions a { font-size: 0.9em; }
 #workflow_steps_list_tbody tr.status td { border-bottom: 0; }
 #workflow_steps_list_tbody dl { font-size: 0.9em; }
@@ -406,7 +408,8 @@ th.highlighted_column { background-color: #C1C1C1; }
 #workflow_browser_step .header { font-size: 1.1em; text-align: center; margin-bottom: 5px; }
 #workflow_browser_step .content { font-size: 0.9em; text-align: center; }
 .workflow_browser_step_image { line-height: 0; clear: both; }
-.workflow_browser_step_transition { padding: 2px 2px 2px 15px; border: 1px dotted #AAA; background-color: #F8F8F8; }
+.workflow_browser_step_transition { padding: 2px; border: 1px dotted #AAA; background-color: #F8F8F8; }
+.workflow_browser_step_transition.transition { padding-left: 15px; }
 .workflow_browser_step_name { padding: 5px; font-size: 1.1em; font-style: italic; font-weight: normal; }
 /* end workflow styling */
 

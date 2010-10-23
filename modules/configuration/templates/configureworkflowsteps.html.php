@@ -21,7 +21,9 @@
 						<div class="header"><?php echo __('Editing steps for %workflow_name%', array('%workflow_name%' => $workflow->getName())); ?></div>
 						<div class="content">
 							<?php echo __('This page shows all the available steps for the selected workflow, as well as transitions between these steps.'); ?>
-							<?php echo __('You can add and remove steps from this page, as well as manage the transitions between them.'); ?>
+							<?php echo __('You can add and remove steps from this page, as well as manage the transitions between them.'); ?><br>
+							<br>
+							<?php echo __('Steps without any incoming transitions are shown with a faded out tone of color'); ?>
 						</div>
 					</div>
 					<table id="workflow_steps_list" cellpadding="0" cellspacing="0">

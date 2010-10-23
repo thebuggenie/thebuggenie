@@ -101,6 +101,14 @@
 			return $res->getInsertID();
 		}
 
+		protected function _deleteByTypeID($type, $id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere((($type == 'step') ? self::TO_STEP_ID : self::WORKFLOW_ID), $id);
+			return $this->doDelete($crit);
+		}
+
 		protected function _countByTypeID($type, $id)
 		{
 			$crit = $this->getCriteria();

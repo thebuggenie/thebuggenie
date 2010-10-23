@@ -237,4 +237,9 @@
 			return $this->_num_incoming_transitions;
 		}
 
+		public function hasIncomingTransitions()
+		{
+			return (bool) ($this->getNumberOfIncomingTransitions() > 0);
+		}
+
 	}

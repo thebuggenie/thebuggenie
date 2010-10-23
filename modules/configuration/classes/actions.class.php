@@ -1893,6 +1893,15 @@
 				if ($request->hasParameter('transition_id'))
 				{
 					$this->transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
+					if ($request->isMethod(TBGRequest::POST) && $request->getParameter('mode') == 'delete')
+					{
+						if ($request->hasParameter('transition_id'))
+						{
+							$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
+							$transition->delete($request->getParameter('direction'));
+							return $this->renderJSON(array('failed' => false));
+						}
+					}
 				}
 				elseif ($request->isMethod(TBGRequest::POST) && $request->hasParameter('step_id'))
 				{

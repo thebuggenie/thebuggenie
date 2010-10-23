@@ -65,7 +65,7 @@
 								$output = array();
 								foreach ($step->getIncomingTransitions() as $transition)
 								{
-									$output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition));
+									$output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'incoming'));
 								}
 								echo join($glue, $output);
 
@@ -82,7 +82,7 @@
 								$output = array();
 								foreach ($step->getOutgoingTransitions() as $transition)
 								{
-									$output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition));
+									$output[] = get_template_html('configuration/workflowtransition', array('transition' => $transition, 'direction' => 'outgoing'));
 								}
 								echo join($glue, $output);
 

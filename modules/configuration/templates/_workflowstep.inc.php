@@ -1,6 +1,6 @@
 <tr class="step">
 	<td>
-		<?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())), $step->getName(), array('class' => 'step_name')); ?>
+		<?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())), $step->getName(), array('class' => 'step_name'.((!$step->hasIncomingTransitions()) ? ' faded_out' : ''))); ?>
 		<div class="rounded_box shadowed white" id="step_<?php echo $step->getID(); ?>_transition_add" style="width: 720px; position: absolute; padding: 5px; margin: 5px; display: none;">
 			<div class="header"><?php echo __('Add outgoing transition from step "%step_name%"', array('%step_name%' => $step->getName())); ?></div>
 			<div class="content">

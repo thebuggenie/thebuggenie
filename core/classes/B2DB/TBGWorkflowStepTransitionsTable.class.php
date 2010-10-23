@@ -78,6 +78,14 @@
 			}
 		}
 
+		protected function _deleteByTypeID($type, $id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere((($type == 'step') ? self::FROM_STEP_ID : self::TRANSITION_ID), $id);
+			return $this->doDelete($crit);
+		}
+
 		protected function _countByTypeID($type, $id)
 		{
 			$crit = $this->getCriteria();
@@ -139,6 +147,11 @@
 			$crit->addInsert(self::TRANSITION_ID, $transition_id);
 			$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
 			$this->doInsert($crit);
+		}
+
+		public function deleteByTransitionID($transition_id)
+		{
+			$this->_deleteByTypeID('transition', $transition_id);
 		}
 
 	}

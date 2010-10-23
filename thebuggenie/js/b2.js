@@ -45,11 +45,14 @@ function successMessage(title, content)
 	new Effect.SlideUp('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, delay: 10});
 }
 
-function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, clear_div_before_loading, hide_div_while_loading, hide_divs_on_success, show_divs_on_success)
+function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, clear_div_before_loading, hide_div_while_loading, hide_divs_on_success, show_divs_on_success, url_method, params)
 {
+	var params = (params) ? params : '';
+	url_method = (url_method) ? url_method : "get";
 	new Ajax.Request(url, {
 	asynchronous:true,
-	method: "get",
+	method: url_method,
+	parameters: params,
 	evalScripts: true,
 	onLoading: function (transport) {
 		$(indicator).show();
@@ -96,7 +99,11 @@ function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, clear
 			{
 				hide_divs_on_success.each(function(s)
 				{
-					if ($(s)) $(s).hide();
+					if (is_string(s) && $(s))
+					{
+						$(s).hide();
+					}
+					else if (s) s.hide();
 				});
 			}
 			if (show_divs_on_success)
@@ -1011,4 +1018,9 @@ function refreshMilestoneDetails(url, milestone_id)
 	}
 	});
 
+}
+
+function is_string(elm)
+{
+    return typeof elm == 'string';
 }

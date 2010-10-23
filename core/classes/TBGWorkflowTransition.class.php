@@ -171,4 +171,13 @@
 			return $this->_outgoing_step;
 		}
 
+		public function delete($direction)
+		{
+			TBGWorkflowStepTransitionsTable::getTable()->deleteByTransitionID($this->getID());
+			if ($direction == 'incoming')
+			{
+				TBGWorkflowTransitionsTable::getTable()->doDeleteById($this->getID());
+			}
+		}
+
 	}
