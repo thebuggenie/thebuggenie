@@ -38,10 +38,13 @@
 			.features { width: 400px; float: right; margin-left: 10px; }
 			.install_list dd { padding: 2px 0 5px 0; }
 			.install_list dd input[type="text"], .install_list dd input[type="password"], UNUSEDdd select { width: 320px; }
+			.install_list dt { width: 420px; }
+
 			.error { padding: 4px; border: 1px solid #B77; background-color: #FEE; color: #955; margin: 10px 0 10px 0; }
 			.ok { padding: 4px; border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 10px 0 10px 0; }
 			.error:first-line, .ok:first-line { font-weight: bold; }
-
+			
+			.logo_large, .logo_small { color: black; }
 
 			fieldset { border: 1px solid #DDD; margin: 10px 0 10px 0; background-color: #F5F5F5; padding: 0 0 0 8px; }
 			legend { font-weight: bold;  }
@@ -59,7 +62,7 @@
 						    <td style="width: 70px; height: 65px; text-align: center;" align="center" valign="middle">
 						        <img width=48 height=48 SRC="themes/oxygen/logo_48.png" alt="The Bug Genie - Installation">
 						    </td>
-						    <td align="left" valign="middle" style="width: 300px;"><div class="logo_large">The Bug Genie</div><div class="logo_small"><b>Friendly</b> issue tracking</div></td>
+						    <td align="left" valign="middle" style="width: 300px;"><div class="logo_large">The Bug Genie</div><div class="logo_small"><b>Friendly</b> issue tracking and project management</div></td>
 						    <td style="width: auto;">
 						    </td>
 						</tr>
