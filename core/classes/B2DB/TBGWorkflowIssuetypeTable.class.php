@@ -47,7 +47,7 @@
 
 		public function loadFixtures($scope)
 		{
-			foreach (TBGIssuetype::getAll() as $issuetype)
+			foreach (TBGIssuetype::getAll(null, $scope) as $issuetype)
 			{
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::SCOPE, $scope);

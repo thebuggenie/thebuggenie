@@ -284,9 +284,10 @@
 		 * Returns an array of issue types
 		 *
 		 * @param integer $project_id  The id of the project which this issue type applies to 
+		 * @param integer $scope_id  The ID number of the scope to load issue types from
 		 * @return array
 		 */
-		public static function getAll($project_id = 0)
+		public static function getAll($project_id = 0, $scope_id = null)
 		{
 			if (!array_key_exists($project_id, self::$_issuetypes))
 			{
@@ -304,7 +305,16 @@
 				{
 					$crit->addWhere(TBGIssueTypesTable::APPLIES_TO, 0);
 				}
-				$crit->addWhere(TBGIssueTypesTable::SCOPE, TBGContext::getScope()->getID());
+
+				if ($scope_id === null)
+				{
+					$crit->addWhere(TBGIssueTypesTable::SCOPE, TBGContext::getScope()->getID());
+				}
+				else
+				{
+                                        $crit->addWhere(TBGIssueTypesTable::SCOPE, $scope_id);
+				}
+
 				$crit->addOrderBy(TBGIssueTypesTable::ID, B2DBCriteria::SORT_ASC);
 		
 				$res = TBGIssueTypesTable::getTable()->doSelect($crit);
