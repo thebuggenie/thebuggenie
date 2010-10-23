@@ -1,6 +1,19 @@
 <tr class="step">
 	<td>
 		<?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())), $step->getName(), array('class' => 'step_name'.((!$step->hasIncomingTransitions()) ? ' faded_out' : ''))); ?>
+		<div class="rounded_box shadowed white" id="step_<?php echo $step->getID(); ?>_transitions_delete" style="width: 720px; position: absolute; padding: 5px; margin: 5px; display: none;">
+			<div class="header"><?php echo __('Delete all outgoing transition from step "%step_name%"', array('%step_name%' => $step->getName())); ?></div>
+			<div class="content">
+				<?php echo __('Are you sure you want to delete ALL outgoing transitions from this step? This action cannot be reverted.'); ?>
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_delete_step_transitions', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())); ?>">
+					<div style="text-align: right;">
+						<input type="submit" value="<?php echo __('Yes'); ?>" onclick="$('step_<?php echo $step->getID(); ?>_transition_delete_indicator').show();"> :: 
+						<b><?php echo javascript_link_tag(__('No'), array('onclick' => "\$('step_{$step->getID()}_transitions_delete').toggle();")); ?></b>
+						<div style="padding: 10px 0 10px 0; display: none;" id="step_<?php echo $step->getID(); ?>_transition_delete_indicator"><span style="float: right;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
+					</div>
+				</form>
+			</div>
+		</div>
 		<div class="rounded_box shadowed white" id="step_<?php echo $step->getID(); ?>_transition_add" style="width: 720px; position: absolute; padding: 5px; margin: 5px; display: none;">
 			<div class="header"><?php echo __('Add outgoing transition from step "%step_name%"', array('%step_name%' => $step->getName())); ?></div>
 			<div class="content">
@@ -87,10 +100,13 @@
 			<?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())), __('Show step info')); ?>
 		<?php else: ?>
 			<?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $step->getWorkflow()->getID(), 'step_id' => $step->getID())), __('Edit step')); ?> |
-			<?php if ($step->getNumberOfIncomingTransitions()): ?>
+			<?php if ($step->hasIncomingTransitions()): ?>
 				<span class="faded_out"><a href="javascript:void(0);" class="disabled" onclick="failedMessage('<?php echo __('You cannot delete a step with incoming transitions'); ?>', '<?php echo __('To delete a step that has incoming transitions, first remove all incoming transitions'); ?>');"><?php echo __('Delete step'); ?></a></span><br>
+			<?php else: ?>
+				<a href="#"><?php echo __('Delete step'); ?></a><br>
 			<?php endif; ?>
-			<?php echo javascript_link_tag(__('Add transition'), array('onclick' => "$('step_{$step->getID()}_transition_add').toggle()")); ?> | <a href="#"><?php echo __('Delete transitions'); ?></a>
+			<?php echo javascript_link_tag(__('Add transition'), array('onclick' => "$('step_{$step->getID()}_transition_add').toggle()")); ?> |
+			<?php echo javascript_link_tag(__('Delete outgoing transitions'), array('onclick' => "\$('step_{$step->getID()}_transitions_delete').toggle();")); ?>
 		<?php endif; ?>
 	</td>
 </tr>

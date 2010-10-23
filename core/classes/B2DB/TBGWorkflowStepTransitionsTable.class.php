@@ -154,4 +154,9 @@
 			$this->_deleteByTypeID('transition', $transition_id);
 		}
 
+		public function deleteByStepID($step_id)
+		{
+			$this->_deleteByTypeID('step', $step_id);
+		}
+
 	}

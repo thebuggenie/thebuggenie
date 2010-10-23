@@ -205,6 +205,11 @@
 			}
 		}
 
+		public function deleteOutgoingTransitions()
+		{
+			TBGWorkflowStepTransitionsTable::getTable()->deleteByStepID($this->getID());
+		}
+
 		protected function _populateIncomingTransitions()
 		{
 			if ($this->_incoming_transitions === null)
