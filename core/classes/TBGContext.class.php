@@ -28,7 +28,9 @@
 		const PREDEFINED_SEARCH_MY_REPORTED_ISSUES = 5;
 		
 		static protected $_environment = 2;
-		
+
+		static $something = null;
+
 		/**
 		 * The current user
 		 *
@@ -446,6 +448,22 @@
 				TBGSettings::loadSettings();
 				TBGLogging::log("...done");
 
+				TBGLogging::log('Loading i18n strings');
+				if (!$cached_i18n = TBGCache::get('i18n_'.TBGSettings::get('language')))
+				{
+					TBGLogging::log('Loading strings from file');
+					TBGLogging::log(TBGSettings::get('language'));
+					self::$_i18n = new TBGI18n(TBGSettings::get('language'));
+					self::$_i18n->initialize();
+					TBGCache::add('i18n_'.TBGSettings::get('language'), self::$_i18n);
+				}
+				else
+				{
+					TBGLogging::log('Using cached i18n strings');
+					self::$_i18n = $cached_i18n;
+				}
+				TBGLogging::log('...done');
+
 				TBGLogging::log('Loading modules');
 				self::loadModules();
 				TBGLogging::log('...done');
@@ -498,22 +516,6 @@
 				}
 
 				TBGLogging::log('...done');
-				TBGLogging::log('Loading i18n strings');
-				if (!$cached_i18n = TBGCache::get('i18n_'.TBGSettings::get('language')))
-				{
-					TBGLogging::log('Loading strings from file');
-					TBGLogging::log(TBGSettings::get('language'));
-					self::$_i18n = new TBGI18n(TBGSettings::get('language'));
-					self::$_i18n->initialize();
-					TBGCache::add('i18n_'.TBGSettings::get('language'), self::$_i18n);
-				}
-				else
-				{
-					TBGLogging::log('Using cached i18n strings');
-					self::$_i18n = $cached_i18n;
-				}
-				TBGLogging::log('...done');
-
 				TBGLogging::log('Loading last batch of routes', 'routing');
 				if (!($routes = TBGCache::get('routes_2')))
 				{
