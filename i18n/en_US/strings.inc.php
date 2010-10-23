@@ -1524,7 +1524,7 @@
 	$strings['Last updated at %time%, by %user%'] = 'Last updated at %time%, by %user%';
 	$strings['Categories:'] = 'Categories:';
 	$strings['This article is not in any categories'] = 'This article is not in any categories';
-	$strings['Actions available'] = 'Actions available';
+	//$strings['Actions available'] = 'Actions available';
 	$strings['Edit this article'] = 'Edit this article';
 	$strings['Delete this article'] = 'Delete this article';
 	$strings['Really delete this article?'] = 'Really delete this article?';
