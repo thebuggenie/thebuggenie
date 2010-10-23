@@ -204,7 +204,10 @@
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
-				$to_users = (array) $to_users;
+				if (!is_array($to_users))
+				{
+					$to_users = array($to_users);
+				}
 				foreach ($to_users as $user)
 				{
 					if ($user->getID() != TBGContext::getUser()->getUID() || $this->getSetting('notify_issue_change_own', $user->getID()))
@@ -328,7 +331,7 @@
 			if ($this->mailer === null)
 			{
 				$this->mailer = new TBGMailer($this->getMailerType());
-				if ($this->mailer->getType() == TBGMailer::MAIL_TYPE_PHP)
+				if ($this->mailer->getType() == TBGMailer::MAIL_TYPE_B2M)
 				{
 					$this->mailer->setServer($this->getSmtpHost());
 					$this->mailer->setPort($this->getSmtpPort());

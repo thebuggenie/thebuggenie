@@ -1,5 +1,5 @@
 Hi, %user_buddyname%!
-A request was made to reset your password for your user account at %tbg_url%.
+A request was made to reset your password for your user account at %thebuggenie_url%.
 
 To change your password, click the following link:
 %link_to_reset_password%

@@ -162,7 +162,7 @@
 			$header = '';
 			foreach ($headers as $key => $val)
 			{
-				$header .= "{$key}: $val\r\n";
+				$header .= "{$key}: {$val}\r\n";
 			}
 			return $header;
 		}
@@ -244,9 +244,6 @@
 					$this->message_html_decoration_after_replaced = $this->message_html_decoration_after;
 				}
 			}
-			/*var_dump($this->message_plain);
-			var_dump($this->message_html);
-			die();*/
 		}
 
 		protected function _prepareMessages()

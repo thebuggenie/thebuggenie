@@ -266,10 +266,7 @@
 			$this->_read_buffer($fp, 'data');
 
 			/* Standard message parts. */
-			foreach ($email->getHeaders() as $header => $value)
-			{
-				fputs($fp, "{$header}: {$value}");
-			}
+			fputs($fp, $email->getHeadersAsString());
 
 			foreach ($email->getBody(true) as $body_line)
 			{

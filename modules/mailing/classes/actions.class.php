@@ -23,7 +23,7 @@
 							{
 								TBGMailing::getModule()->sendForgottenPasswordEmail($user);
 								TBGContext::setMessage('forgot_success', TBGContext::getI18n()->__('Please use the link in the email you received'));
-								$this->forward(TBGContext::getRouting()->generate('login'));
+								TBGResponse::metaForward(TBGContext::getRouting()->generate('login'));
 							}
 							else
 							{
@@ -44,7 +44,7 @@
 			catch (Exception $e)
 			{
 				TBGContext::setMessage('forgot_error', $e->getMessage());
-				$this->forward(TBGContext::getRouting()->generate('login'));
+				TBGResponse::metaForward(TBGContext::getRouting()->generate('login'));
 			}
 		}
 
@@ -78,7 +78,7 @@
 			{
 				TBGContext::setMessage('module_error', TBGContext::getI18n()->__('Please specify an email address'));
 			}
-			$this->forward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'mailing')));
+			TBGResponse::metaForward(TBGContext::getRouting()->generate('configure_module', array('config_module' => 'mailing')));
 		}
 
 	}
