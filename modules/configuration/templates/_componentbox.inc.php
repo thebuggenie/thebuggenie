@@ -24,20 +24,20 @@
 																					'header' 			=> __('Change / set auto assignee'),
 																					'clear_link_text'	=> __('Set auto assignee by noone'),
 																					'style'				=> array('position' => 'absolute'),
-																					'callback'			=> "setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
+																					'callback'			=> "setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
 																					'base_id'			=> 'comp_'.$component->getID().'_auto_assign',
 																					'absolute'			=> true)); ?>
 					</td>
-					<td style="<?php if (!$component->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="comp_<?php echo $component->getID(); ?>_auto_assign_name">
-						<div style="width: 270px; display: <?php if ($component->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" id="comp_<?php echo $component->getID(); ?>_auto_assign_name">
-							<?php if ($component->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
-								<?php echo include_component('main/userdropdown', array('user' => $component->getOwner())); ?>
-							<?php elseif ($component->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
-								<?php echo include_component('main/teamdropdown', array('team' => $component->getOwner())); ?>
+					<td style="<?php if (!$component->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="comp_<?php echo $component->getID(); ?>_auto_assign_name">
+						<div style="width: 270px; display: <?php if ($component->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" id="comp_<?php echo $component->getID(); ?>_auto_assign_name">
+							<?php if ($component->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
+								<?php echo include_component('main/userdropdown', array('user' => $component->getLeader())); ?>
+							<?php elseif ($component->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+								<?php echo include_component('main/teamdropdown', array('team' => $component->getLeader())); ?>
 							<?php endif; ?>
 						</div>
 					</td>
-					<td style="<?php if ($component->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_comp_<?php echo $component->getID(); ?>_auto_assign">
+					<td style="<?php if ($component->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_comp_<?php echo $component->getID(); ?>_auto_assign">
 						<?php echo __('Noone'); ?>
 					</td>
 					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" onclick="$('comp_<?php echo $component->getID(); ?>_auto_assign_change').toggle();" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>

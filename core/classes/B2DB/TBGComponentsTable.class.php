@@ -27,8 +27,8 @@
 		const VERSION_MINOR = 'components.version_minor';
 		const VERSION_REVISION = 'components.version_revision';
 		const PROJECT = 'components.project';
-		const OWNED_BY = 'components.assigned_to';
-		const OWNED_TYPE = 'components.assigned_type'; // v2 backwards compat
+		const LEAD_BY = 'components.assigned_to';
+		const LEAD_TYPE = 'components.assigned_type'; // v2 backwards compat
 		
 		public static function getTable()
 		{
@@ -44,8 +44,8 @@
 			parent::_addInteger(self::VERSION_REVISION, 5);
 			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addInteger(self::OWNED_BY, 10);
-			parent::_addInteger(self::OWNED_TYPE, 2);
+			parent::_addInteger(self::LEAD_BY, 10);
+			parent::_addInteger(self::LEAD_TYPE, 2);
 		}
 		
 		public function createNew($name, $project_id)

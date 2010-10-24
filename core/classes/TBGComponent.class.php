@@ -69,8 +69,8 @@
 				$this->_version_minor = $row->get(TBGComponentsTable::VERSION_MINOR);
 				$this->_version_revision = $row->get(TBGComponentsTable::VERSION_REVISION);
 				$this->_project = $row->get(TBGComponentsTable::PROJECT);
-				$this->_owner = $row->get(TBGComponentsTable::OWNED_BY);
-				$this->_owner_type = $row->get(TBGComponentsTable::OWNED_TYPE);
+				$this->_leader = $row->get(TBGComponentsTable::LEAD_BY);
+				$this->_leader_type = $row->get(TBGComponentsTable::LEAD_TYPE);
 			}
 		}
 		
@@ -183,8 +183,8 @@
 		public function save()
 		{
 			$crit = TBGComponentsTable::getTable()->getCriteria();
-			$crit->addUpdate(TBGComponentsTable::OWNED_BY, $this->getOwnerID());
-			$crit->addUpdate(TBGComponentsTable::OWNED_TYPE, $this->getOwnerType());
+			$crit->addUpdate(TBGComponentsTable::LEAD_BY, $this->getLeaderID());
+			$crit->addUpdate(TBGComponentsTable::LEAD_TYPE, $this->getLeaderType());
 			$res = TBGComponentsTable::getTable()->doUpdateById($crit, $this->getID());
 		}
 		
