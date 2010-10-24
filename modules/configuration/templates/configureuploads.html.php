@@ -65,14 +65,14 @@
 						<tr>
 							<td><label for="upload_restriction_mode"><?php echo __('Upload restrictions'); ?></label></td>
 							<td>
-								<select name="upload_restriction_mode" id="upload_restriction_mode"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
+								<select name="upload_restriction_mode" id="upload_restriction_mode"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?> onChange="var label = (this.getValue() == 'whitelist') ? '<?php echo __('Allowed extension'); ?>' : '<?php echo __('Denied extension'); ?>'; $('label_upload_extensions_list').update(label); $('label_upload_extensions_list').innerHTML;">
 									<option value="whitelist"<?php if (TBGSettings::getUploadsRestrictionMode() == 'whitelist'): ?> selected<?php endif; ?>><?php echo __('Use a whitelist (only allow the following of extensions)'); ?></option>
 									<option value="blacklist"<?php if (TBGSettings::getUploadsRestrictionMode() == 'blacklist'): ?> selected<?php endif; ?>><?php echo __('Use a blacklist (allow everything except the following extensions)'); ?></option>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<td><label for="upload_extensions_list"><?php echo __('Allowed / denied extensions'); ?></label></td>
+							<td><label id="label_upload_extensions_list" for="upload_extensions_list"><?php if (TBGSettings::getUploadsRestrictionMode() == 'whitelist') echo __('Allowed extensions'); else echo __('Denied extensions'); ?></label></td>
 							<td>
 								<input type="text" name="upload_extensions_list" id="upload_extensions_list" style="width: 250px;" value="<?php echo implode(',', TBGSettings::getUploadsExtensionsList()); ?>"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>
 							</td>
