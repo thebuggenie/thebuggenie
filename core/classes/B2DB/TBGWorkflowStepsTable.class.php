@@ -77,6 +77,36 @@
 			}
 		}
 
+		public function save($name, $description, $status_id, $is_closed, $is_editable, $workflow_id, $step_id = null)
+		{
+			$crit = $this->getCriteria();
+			if ($step_id === null)
+			{
+				$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+				$crit->addInsert(self::NAME, $name);
+				$crit->addInsert(self::DESCRIPTION, $description);
+				$crit->addInsert(self::STATUS_ID, $status_id);
+				$crit->addInsert(self::IS_CLOSED, $is_closed);
+				$crit->addInsert(self::EDITABLE, $is_editable);
+				$res = $this->doInsert($crit);
+				$id = $res->getInsertID();
+			}
+			else
+			{
+				$crit->addUpdate(self::WORKFLOW_ID, $workflow_id);
+				$crit->addUpdate(self::SCOPE, TBGContext::getScope()->getID());
+				$crit->addUpdate(self::NAME, $name);
+				$crit->addUpdate(self::DESCRIPTION, $description);
+				$crit->addUpdate(self::STATUS_ID, $status_id);
+				$crit->addUpdate(self::IS_CLOSED, $is_closed);
+				$crit->addUpdate(self::EDITABLE, $is_editable);
+				$this->doUpdateByID($crit, $step_id);
+				$id = $step_id;
+			}
+			return $id;
+		}
+
 		public function countByWorkflowID($workflow_id)
 		{
 			$crit = $this->getCriteria();

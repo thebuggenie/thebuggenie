@@ -1884,6 +1884,16 @@
 					$this->step->deleteOutgoingTransitions();
 					$this->forward(TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
 				}
+				elseif ($request->isMethod(TBGRequest::POST) && $request->hasParameter('edit'))
+				{
+					$this->step->setName($request->getParameter('name'));
+					$this->step->setDescription($request->getParameter('description'));
+					$this->step->setLinkedStatusID($request->getParameter('status_id'));
+					$this->step->setIsEditable((bool) $request->getParameter('is_editable'));
+					$this->step->setIsClosed((bool) ($request->getParameter('state') == TBGIssue::STATE_CLOSED));
+					$this->step->save();
+					$this->forward(TBGContext::getRouting()->generate('configure_workflow_step', array('workflow_id' => $this->workflow->getID(), 'step_id' => $this->step->getID())));
+				}
 			}
 			catch (Exception $e)
 			{

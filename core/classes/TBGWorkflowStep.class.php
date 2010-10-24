@@ -134,6 +134,11 @@
 			return $this->_linked_status;
 		}
 
+		public function setLinkedStatusID($status_id)
+		{
+			$this->_linked_status = $status_id;
+		}
+
 		/**
 		 * Whether or not this step is linked to a specific status
 		 *
@@ -144,14 +149,34 @@
 			return ($this->getLinkedStatus() instanceof TBGStatus);
 		}
 
+		public function getLinkedStatusID()
+		{
+			return ($this->hasLinkedStatus()) ? $this->getLinkedStatus()->getID() : null;
+		}
+
 		public function isEditable()
 		{
 			return (bool) $this->_is_editable;
 		}
 
+		public function setIsEditable($is_editable = true)
+		{
+			$this->_is_editable = $is_editable;
+		}
+
 		public function isClosed()
 		{
 			return (bool) $this->_is_closed;
+		}
+
+		public function setIsClosed($is_closed = true)
+		{
+			$this->_is_closed = $is_closed;
+		}
+
+		public function save()
+		{
+			TBGWorkflowStepsTable::getTable()->save($this->_name, $this->_description, $this->getLinkedStatusID(), $this->_is_closed, $this->_is_editable, $this->getWorkflow()->getID(), $this->getID());
 		}
 
 		protected function _populateOutgoingTransitions()
