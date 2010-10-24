@@ -624,7 +624,6 @@ function updateComponent(url, cid)
 		parameters: params,
 		onLoading: function (transport) {
 			$('component_'+cid+'_indicator').show();
-			$('component_'+cid+'_icon').hide();
 		},
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
@@ -632,20 +631,17 @@ function updateComponent(url, cid)
 			{
 				failedMessage(json.error);
 				$('component_'+cid+'_indicator').hide();
-				$('component_'+cid+'_icon').show();
 			}
 			else
 			{
 				$('component_'+cid+'_name').update(json.newname);
 				$('component_'+cid+'_indicator').hide();
-				$('component_'+cid+'_icon').show();
 				$('edit_component_' + cid).hide();
 				$('show_component_' + cid).show();
 			}
 		},
 		onFailure: function (transport) {
 			$('component_'+cid+'_indicator').hide();
-			$('component_'+cid+'_icon').show();
 			var json = transport.responseJSON;
 			if (json && (json.failed || json.error))
 			{

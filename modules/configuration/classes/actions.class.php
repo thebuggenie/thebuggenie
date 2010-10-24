@@ -611,6 +611,9 @@
 					case 'edition':
 						$item = TBGContext::factory()->TBGEdition($request->getParameter('edition_id'));
 						break;
+					case 'component':
+						$item = TBGContext::factory()->TBGComponent($request->getParameter('component_id'));
+						break;
 				}
 			}
 			catch (Exception $e) {}

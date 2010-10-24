@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage main
 	 */
-	class TBGComponent extends TBGVersionItem 
+	class TBGComponent extends TBGOwnableItem 
 	{
 		/**
 		 * This components project
@@ -69,6 +69,8 @@
 				$this->_version_minor = $row->get(TBGComponentsTable::VERSION_MINOR);
 				$this->_version_revision = $row->get(TBGComponentsTable::VERSION_REVISION);
 				$this->_project = $row->get(TBGComponentsTable::PROJECT);
+				$this->_owner = $row->get(TBGComponentsTable::OWNED_BY);
+				$this->_owner_type = $row->get(TBGComponentsTable::OWNED_TYPE);
 			}
 		}
 		
@@ -173,6 +175,17 @@
 				$uids[] = $row->get(TBGComponentAssigneesTable::UID);
 			}
 			return $uids;
+		}
+
+		/**
+		 * Save auto assignee
+		 */
+		public function save()
+		{
+			$crit = TBGComponentsTable::getTable()->getCriteria();
+			$crit->addUpdate(TBGComponentsTable::OWNED_BY, $this->getOwnerID());
+			$crit->addUpdate(TBGComponentsTable::OWNED_TYPE, $this->getOwnerType());
+			$res = TBGComponentsTable::getTable()->doUpdateById($crit, $this->getID());
 		}
 		
 	}

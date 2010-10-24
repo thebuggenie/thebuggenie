@@ -12,14 +12,41 @@
 	</td>
 </tr>
 <tr id="edit_component_<?php print $component->getID(); ?>" style="display: none;">
-	<td style="width: 20px; padding: 2px;">
-		<?php echo image_tag('spinning_20.gif', array('id' => 'component_'.$component->getID().'_indicator', 'style' => 'display: none;')); ?>
-		<?php echo image_tag('icon_components.png', array('id' => 'component_'.$component->getID().'_icon')); ?>
-	</td>
-	<td style="width: auto; padding: 0px; position: relative;" colspan="2">
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_update_component', array('component_id' => $component->getID())); ?>" method="post" id="edit_component_<?php echo $component->getID(); ?>_form" onsubmit="updateComponent('<?php echo make_url('configure_update_component', array('component_id' => $component->getID())); ?>', <?php echo $component->getID(); ?>);return false;">
-			<input type="submit" value="<?php echo __('Save'); ?>" style="float: right;">
-			<input type="text" name="c_name" id="c_name_<?php echo $component->getID(); ?>" value="<?php print $component->getName(); ?>" style="width: 260px;">
-		</form>
+	<td colspan="2">
+		<div class="rounded_box white">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_update_component', array('component_id' => $component->getID())); ?>" method="post" id="edit_component_<?php echo $component->getID(); ?>_form" onsubmit="updateComponent('<?php echo make_url('configure_update_component', array('component_id' => $component->getID())); ?>', <?php echo $component->getID(); ?>);return false;"> 
+			<table>
+				<tr><td><label for="cname_<?php print $component->getID(); ?>"><?php echo __('Name'); ?></label></td><td colspan="2"><input type="text" name="c_name" id="c_name_<?php echo $component->getID(); ?>" value="<?php print $component->getName(); ?>" style="width: 260px;"></td></tr>
+				<tr>
+					<td>
+						<b><?php echo __('Auto assign'); ?></b>
+							<?php include_component('main/identifiableselector', array(	'html_id'		=> 'comp_'.$component->getID().'_auto_assign_change',
+																					'header' 			=> __('Change / set auto assignee'),
+																					'clear_link_text'	=> __('Set auto assignee by noone'),
+																					'style'				=> array('position' => 'absolute'),
+																					'callback'			=> "setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
+																					'base_id'			=> 'comp_'.$component->getID().'_auto_assign',
+																					'absolute'			=> true)); ?>
+					</td>
+					<td style="<?php if (!$component->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="comp_<?php echo $component->getID(); ?>_auto_assign_name">
+						<div style="width: 270px; display: <?php if ($component->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" id="comp_<?php echo $component->getID(); ?>_auto_assign_name">
+							<?php if ($component->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
+								<?php echo include_component('main/userdropdown', array('user' => $component->getOwner())); ?>
+							<?php elseif ($component->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM): ?>
+								<?php echo include_component('main/teamdropdown', array('team' => $component->getOwner())); ?>
+							<?php endif; ?>
+						</div>
+					</td>
+					<td style="<?php if ($component->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" class="faded_out" id="no_comp_<?php echo $component->getID(); ?>_auto_assign">
+						<?php echo __('Noone'); ?>
+					</td>
+					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" onclick="$('comp_<?php echo $component->getID(); ?>_auto_assign_change').toggle();" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
+				</tr>
+				<tr><td class="config_explanation" colspan="3"><?php echo __('You can optionally set a user to automatically assign issues filed against this component to. This will not take effect if you are using workflows, and can be overridden when reporting an issue. This setting is independant of the save button below.')?></td></tr>
+			</table>
+			<?php echo image_tag('spinning_20.gif', array('id' => 'component_'.$component->getID().'_indicator', 'style' => 'display: none;')); ?>
+			<input type="submit" value="<?php echo __('Save'); ?>"> <a href="javascript:void(0);" class="image" onclick="$('show_component_<?php print $component->getID(); ?>').show();$('edit_component_<?php print $component->getID(); ?>').hide();"><?php echo __('or cancel'); ?></a>
+			</form>
+		</div>
 	</td>
 </tr>
