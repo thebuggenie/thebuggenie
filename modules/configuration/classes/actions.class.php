@@ -701,6 +701,9 @@
 					if ($request->hasParameter('use_scrum'))
 						$this->project->setUsesScrum((bool) $request->getParameter('use_scrum'));
 					
+					if ($request->hasParameter('affects_hidden'))
+						$this->project->setAffectsHidden((bool) $request->getParameter('affects_hidden'));
+						
 					if ($request->hasParameter('description'))
 						$this->project->setDescription($request->getParameter('description', null, false));
 					

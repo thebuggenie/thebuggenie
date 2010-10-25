@@ -31,6 +31,22 @@
 		<tr>
 			<td class="config_explanation" colspan="2"><?php echo __('If the project uses the scrum method for planning, releases and development, enable it here'); ?></td>
 		</tr>
+		<tr>
+			<td><label for="affects_hidden"><?php echo __('Hide \'affected items\' box in a tab'); ?></label></td>
+			<td>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="affects_hidden" id="affects_hidden" style="width: 70px;">
+						<option value=1<?php if ($project->isAffectsHidden()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$project->isAffectsHidden()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($project->isAffectsHidden()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="config_explanation" colspan="2"><?php echo __('If the list of affected editions, components and releases is not important to you, by selecting Yes here you can hide it in a tab when viewing an issue, so you can spend more time focusing on the issue at hand.'); ?></td>
+		</tr>
 		<?php /*<tr>
 			<td>
 				<label for="time_unit"><?php echo __('Time measuring'); ?></label>

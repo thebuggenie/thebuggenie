@@ -1362,7 +1362,7 @@
 			$crit->addUpdate(TBGProjectsTable::SUMMARY_DISPLAY, $this->_summary_display);
 			$crit->addUpdate(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING, $this->_can_change_wo_working);
 			$crit->addUpdate(TBGProjectsTable::DELETED, $this->_deleted);
-			$crit->addUpdate(TBGProjectsTable::AFFECTS_HIDDEN, $this->_affectshidden);
+			$crit->addUpdate(TBGProjectsTable::HIDDEN_AFFECTS_BOX, $this->_affectshidden);
 			$res = TBGProjectsTable::getTable()->doUpdateById($crit, $this->getID());
 
 			if ($this->_dodelete)
