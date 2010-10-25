@@ -51,6 +51,18 @@
 						<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 						<?php echo link_tag(make_url('search', array('searchfor' => '%%', 'issues_per_page' => 30, 'filters' => array('posted_by' => array('value' => $tbg_user->getID(), 'operator' => '=')))), __("Show a list of all issues I've reported")); ?>
 					</div>
+					<div style="clear: both; margin-top: 3px;">
+						<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+						<?php echo link_tag(make_url('search', array('predefined_search' => '3', 'search' => '1')), __("Show a list of all open issues assigned to me")); ?>
+					</div>
+					<div style="clear: both; margin-top: 3px;">
+						<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+						<?php echo link_tag(make_url('search', array('predefined_search' => '4', 'search' => '1')), __("Show a list of all open issues assigned to my teams")); ?>
+					</div>
+					<div style="clear: both; margin-top: 10px;">
+						<?php echo image_tag('icon_user.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+						<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $tbg_user->getID())); ?>');$('bud_<?php echo $tbg_user->getUsername() . "_" . $rnd_no; ?>').hide();"><?php echo __('Preview my user card'); ?></a>
+					</div>
 				</div>
 			</div>
 			<div style="margin: 10px 0 10px 10px;">

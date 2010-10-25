@@ -475,6 +475,7 @@
 						break;
 				}
 			}
+			$this->rnd_no = rand();
 			$this->getResponse()->setPage('account');
 			$this->getResponse()->setProjectMenuStripHidden();
 		}
