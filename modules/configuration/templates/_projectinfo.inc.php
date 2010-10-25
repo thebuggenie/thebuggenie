@@ -58,6 +58,7 @@
 			<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('lead_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Change project leader'); ?>"><?php echo __('Change / set'); ?></a></td>
 		<?php endif; ?>
 	</tr>
+	<tr><td colspan="3" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('The project lead will automatically be assigned issues if workflows are disabled. This can be overriden by component and edition leads, as well as manually specifing when creating an issue.'); ?></td></tr>
 	<tr class="hover_highlight">
 		<td style="padding: 2px;">
 			<b><?php echo __('QA responsible'); ?></b>

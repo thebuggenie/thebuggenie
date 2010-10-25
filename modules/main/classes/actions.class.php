@@ -848,6 +848,24 @@
 					$issue->setCustomField($customdatatype->getKey(), $this->selected_customdatatype[$customdatatype->getKey()]);
 				}
 			}
+			
+			// FIXME: If we set the issue assignee during report issue, this needs to be set INSTEAD of this
+			if ($this->selected_project->canChangeIssuesWithoutWorkingOnThem())
+			{
+				if (isset($fields_array['component']) && $this->selected_component instanceof TBGComponent && $this->selected_component->hasLeader())
+				{
+					$issue->setAssignee($this->selected_component->getLeader());
+				}
+				elseif (isset($fields_array['edition']) && $this->selected_edition instanceof TBGEdition && $this->selected_edition->hasLeader())
+				{
+					$issue->setAssignee($this->selected_edition->getLeader());
+				}
+				elseif ($this->selected_project->hasLeader())
+				{
+					$issue->setAssignee($this->selected_project->getLeader());
+				}
+			}
+			
 			$issue->save(false, true);
 			if (isset($fields_array['edition']) && $this->selected_edition instanceof TBGEdition) $issue->addAffectedEdition($this->selected_edition);
 			if (isset($fields_array['build']) && $this->selected_build instanceof TBGBuild) $issue->addAffectedBuild($this->selected_build);
