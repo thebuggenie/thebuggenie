@@ -33,7 +33,7 @@
 										case 'reproduction_steps':
 											echo __('You have to enter something in the "%steps_to_reproduce%" field', array('%steps_to_reproduce%' => __('Steps to reproduce')));
 											break;
-										case 'edition':
+										case 'editions':
 											echo __("Please specify a valid edition");
 											break;
 										case 'builds':
