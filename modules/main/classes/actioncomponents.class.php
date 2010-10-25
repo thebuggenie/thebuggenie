@@ -182,5 +182,10 @@
 		{
 			$this->rnd_no = rand();
 		}
+		
+		public function componentIssueaffected()
+		{
+			
+		}
 
 	}

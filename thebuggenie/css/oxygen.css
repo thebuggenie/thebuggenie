@@ -582,8 +582,8 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 
 #title_form { display: inline; font-size: 14px}
 #title_form input[type="text"] { font-size: 15px; margin-right: 5px; width: 500px; }
-.viewissue_description_header, .viewissue_reproduction_steps_header, .viewissue_customfield_header { font-weight: bold; font-size: 14px; padding: 0 0 5px 0; }
-.viewissue_description, .viewissue_reproduction_steps, .viewissue_customfield { font-weight: normal; padding: 0; margin: 0; }
+.viewissue_description_header, .viewissue_affects_header, .viewissue_reproduction_steps_header, .viewissue_customfield_header { font-weight: bold; font-size: 14px; padding: 0 0 5px 0; }
+.viewissue_description, .viewissue_affects, .viewissue_reproduction_steps, .viewissue_customfield { font-weight: normal; padding: 0; margin: 0; }
 
 .header_div { border-bottom: 1px solid #DDD; padding: 3px;  margin-top: 5px; font-weight: bold; }
 .header_div td { font-weight: bold; vertical-align: middle; }

@@ -194,6 +194,20 @@
 					</td>
 					<td valign="top" align="left" style="padding: 5px; height: 100%;" class="issue_main">
 						<?php TBGEvent::createNew('core', 'viewissue_right_top', $issue)->trigger(); ?>
+						<?php if (!$issue->getProject()->isAffectsHidden()): ?>
+						<div id="affects_field" class="hoverable">
+							<div class="rounded_box invisible nohover viewissue_affects" id="affects_header" style="margin: 0;">
+								<div class="viewissue_affects_header">
+									<?php echo __('Affected items'); ?>:
+								</div>
+								<div id="affected_content">
+									<?php include_component('main/issueaffected', array('issue' => $issue)); ?>
+									<br style="clear: both;">
+								</div>
+							</div>
+						</div>
+						<br />
+						<?php endif; ?>
 						<div id="description_field"<?php if (!$issue->isDescriptionVisible()): ?> style="display: none;"<?php endif; ?> class="hoverable">
 							<div class="rounded_box invisible nohover viewissue_description<?php if ($issue->isDescriptionChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="description_header" style="margin: 0;">
 								<div class="viewissue_description_header">
@@ -269,6 +283,16 @@
 			<ul id="viewissue_menu">
 				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('icon_comments.png', array('style' => 'float: left; margin-right: 5px;')) . __('Comments (%count%)', array('%count%' => '<span id="viewissue_comment_count">'.$issue->getCommentCount().'</span>')), array('onclick' => "switchSubmenuTab('tab_comments', 'viewissue_menu');")); ?></li>
 				<li id="tab_attached_information"><?php echo javascript_link_tag(image_tag('icon_attached_information.png', array('style' => 'float: left; margin-right: 5px;')) . __('Attached information (%count%)', array('%count%' => '<span id="viewissue_uploaded_attachments_count">'.(count($issue->getLinks()) + count($issue->getFiles())).'</span>')), array('onclick' => "switchSubmenuTab('tab_attached_information', 'viewissue_menu');")); ?></li>
+				<?php if ($issue->getProject()->isAffectsHidden()): ?>
+				<?php 
+					$editions = $issue->getEditions();
+					$components = $issue->getComponents();
+					$builds = $issue->getBuilds();
+					
+					$count = count($editions) + count($components) + count($builds);				
+				?>
+				<li id="tab_affected"><?php echo javascript_link_tag(image_tag('cfg_icon_projecteditionsbuilds.png', array('style' => 'float: left; margin-right: 5px;')) . __('Affected items (%count%)', array('%count%' => '<span id="viewissue_affects_count">'.$count.'</span>')), array('onclick' => "switchSubmenuTab('tab_affected', 'viewissue_menu');")); ?></li>
+				<?php endif; ?>
 				<li id="tab_related_issues_and_tasks"><?php echo javascript_link_tag(image_tag('icon_related_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Related issues and tasks'), array('onclick' => "switchSubmenuTab('tab_related_issues_and_tasks', 'viewissue_menu');")); ?></li>
 				<li id="tab_duplicate_issues"><?php echo javascript_link_tag(image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __('Duplicate issues (%count%)', array('%count%' => '<span id="viewissue_duplicate_issues_count">'.(count($issue->getDuplicateIssues())).'</span>')), array('onclick' => "switchSubmenuTab('tab_duplicate_issues', 'viewissue_menu');")); ?></li>
 				<?php TBGEvent::createNew('core', 'viewissue_tabs', $issue)->trigger(); ?>
@@ -424,6 +448,12 @@
 					?>
 				</ul>
 			</div>
+			<?php if ($issue->getProject()->isAffectsHidden()): ?>
+			<div id="tab_affected_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
+				<br>
+				<?php include_component('main/issueaffected', array('issue' => $issue)); ?>
+			</div>
+			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'viewissue_tab_panes_back', $issue)->trigger(); ?>
 		</div>
 		<?php TBGEvent::createNew('core', 'viewissue_after_tabs', $issue)->trigger(); ?>

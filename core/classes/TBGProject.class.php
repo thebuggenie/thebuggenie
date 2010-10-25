@@ -316,6 +316,13 @@
 		 * @var array
 		 */
 		protected $_recentactivities = null;
+		
+		/**
+		 * Is the affected things box hidden in a tab in viewissue
+		 * 
+		 * @var boolean
+		 */
+		protected $_affectshidden = 0;
 
 		/**
 		 * Make a project default
@@ -495,6 +502,7 @@
 				$this->_can_change_wo_working	= (bool) $row->get(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING);
 				$this->_summary_display			= $row->get(TBGProjectsTable::SUMMARY_DISPLAY);
 				$this->_deleted					= $row->get(TBGProjectsTable::DELETED);
+				$this->_affectshidden			= $row->get(TBGProjectsTable::HIDDEN_AFFECTS_BOX);
 				TBGEvent::createNew('core', 'TBGProject::__construct', $this)->trigger();
 			}
 			else
@@ -806,6 +814,16 @@
 		public function setVotesEnabled($votes_enabled)
 		{
 			$this->_enablevotes = (bool) $votes_enabled;
+		}
+		
+		/**
+		 * Set whether the affected things box is hidden in a tab or not in viewissue
+		 *
+		 * @param boolean $affects_hidden
+		 */
+		public function setAffectsHidden($affects_hidden)
+		{
+			$this->_affectshidden = (bool) $affects_hidden;
 		}
 		
 		/**
@@ -1344,6 +1362,7 @@
 			$crit->addUpdate(TBGProjectsTable::SUMMARY_DISPLAY, $this->_summary_display);
 			$crit->addUpdate(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING, $this->_can_change_wo_working);
 			$crit->addUpdate(TBGProjectsTable::DELETED, $this->_deleted);
+			$crit->addUpdate(TBGProjectsTable::AFFECTS_HIDDEN, $this->_affectshidden);
 			$res = TBGProjectsTable::getTable()->doUpdateById($crit, $this->getID());
 
 			if ($this->_dodelete)
@@ -1438,6 +1457,16 @@
 			return $this->_unassignedissues;
 		}
 
+		/**
+		 * Returns whether the affected things box is hidden in a tab or not
+		 *
+		 * @return boolean
+		 */
+		public function isAffectsHidden()
+		{
+			return $this->_affectshidden;
+		}
+		
 		/**
 		 * Returns an array with unassigned user stories
 		 *
