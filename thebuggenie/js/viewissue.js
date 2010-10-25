@@ -294,7 +294,7 @@ function updateTimeFieldFromObject(object, values, field)
 
 function updateVisibleFields(visible_fields)
 {
-	available_fields = new Array('description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'editions', 'builds', 'components', 'estimated_time', 'elapsed_time', 'milestone');
+	available_fields = new Array('description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'elapsed_time', 'milestone');
 	available_fields.each(function (key, index) 
 	{
 		if ($(key + '_field'))
