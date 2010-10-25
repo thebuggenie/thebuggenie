@@ -651,22 +651,22 @@
 
 				if (trim($this->title) == '' || $this->title == $this->default_title) $errors['title'] = true; //$i18n->__('You have to specify a title');
 
-				if (isset($fields_array['editions']))
+				if (isset($fields_array['edition']))
 				{
-					if ($edition_id && !in_array($edition_id, array_keys($fields_array['editions']['values'])))
-						$errors['editions'] = true; // $i18n->__('The edition you specified is invalid');
+					if ($edition_id && !in_array($edition_id, array_keys($fields_array['edition']['values'])))
+						$errors['edition'] = true; // $i18n->__('The edition you specified is invalid');
 				}
 
-				if (isset($fields_array['builds']))
+				if (isset($fields_array['build']))
 				{
-					if ($build_id && !in_array($build_id, array_keys($fields_array['builds']['values'])))
-						$errors['builds'] = true; //$i18n->__('The release you specified is invalid');
+					if ($build_id && !in_array($build_id, array_keys($fields_array['build']['values'])))
+						$errors['build'] = true; //$i18n->__('The release you specified is invalid');
 				}
 
 				if (isset($fields_array['component']))
 				{
-					if ($component_id && !in_array($component_id, array_keys($fields_array['component']['components'])))
-						$errors['components'] = true; //$i18n->__('The component you specified is invalid');
+					if ($component_id && !in_array($component_id, array_keys($fields_array['component']['values'])))
+						$errors['component'] = true; //$i18n->__('The component you specified is invalid');
 				}
 
 				if ($category_id = (int) $request->getParameter('category_id'))

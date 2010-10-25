@@ -22,13 +22,13 @@
 					case 'percent_complete':
 						echo __('Percent completed');
 						break;
-					case 'builds':
+					case 'build':
 						echo __('Affected release(s)');
 						break;
-					case 'components':
+					case 'component':
 						echo __('Affected component(s)');
 						break;
-					case 'editions':
+					case 'edition':
 						echo __('Affected edition(s)');
 						break;
 					case 'estimated_time':

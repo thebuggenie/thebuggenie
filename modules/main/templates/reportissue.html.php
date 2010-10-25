@@ -33,13 +33,13 @@
 										case 'reproduction_steps':
 											echo __('You have to enter something in the "%steps_to_reproduce%" field', array('%steps_to_reproduce%' => __('Steps to reproduce')));
 											break;
-										case 'editions':
+										case 'edition':
 											echo __("Please specify a valid edition");
 											break;
-										case 'builds':
+										case 'build':
 											echo __("Please specify a valid version / release");
 											break;
-										case 'components':
+										case 'component':
 											echo __("Please specify a valid component");
 											break;
 										case 'category':
@@ -113,10 +113,10 @@
 										case 'edition':
 											echo __("You don't have access to add edition information");
 											break;
-										case 'builds':
+										case 'build':
 											echo __("You don't have access to enter release information");
 											break;
-										case 'components':
+										case 'component':
 											echo __("You don't have access to enter component information");
 											break;
 										case 'category':
@@ -263,7 +263,7 @@
 						</td>
 					</tr>
 				</table>
-				<table cellpadding="0" cellspacing="0" id="edition_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('editions', $errors)): ?> class="reportissue_error"<?php endif; ?>>
+				<table cellpadding="0" cellspacing="0" id="edition_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('edition', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="edition_id" id="edition_label"><span>* </span><?php echo __('Edition'); ?></label></td>
 						<td class="report_issue_help faded_out dark"><?php echo __("Select which edition of the product you're using"); ?></td>
@@ -279,7 +279,7 @@
 						</td>
 					</tr>
 				</table>
-				<table cellpadding="0" cellspacing="0" id="build_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('builds', $errors)): ?> class="reportissue_error"<?php endif; ?>>
+				<table cellpadding="0" cellspacing="0" id="build_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('build', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="build_id" id="build_label"><span>* </span><?php echo __('Release'); ?></label></td>
 						<td class="report_issue_help faded_out dark"><?php echo __("Select which release you're using"); ?></td>
@@ -295,7 +295,7 @@
 						</td>
 					</tr>
 				</table>
-				<table cellpadding="0" cellspacing="0" id="component_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('components', $errors)): ?> class="reportissue_error"<?php endif; ?>>
+				<table cellpadding="0" cellspacing="0" id="component_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('component', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="component_id" id="component_label"><span>* </span><?php echo __('Component'); ?></label></td>
 						<td class="report_issue_help faded_out dark"><?php echo __("Choose the component affected by this issue"); ?></td>

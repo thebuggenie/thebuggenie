@@ -312,7 +312,7 @@
 				}
 				else
 				{
-                                        $crit->addWhere(TBGIssueTypesTable::SCOPE, $scope_id);
+					$crit->addWhere(TBGIssueTypesTable::SCOPE, $scope_id);
 				}
 
 				$crit->addOrderBy(TBGIssueTypesTable::ID, B2DBCriteria::SORT_ASC);
@@ -326,6 +326,6 @@
 				self::$_issuetypes[$project_id] = $issuetypes;
 			}
 			return self::$_issuetypes[$project_id];
-		}		
+		}
 	}
 	
