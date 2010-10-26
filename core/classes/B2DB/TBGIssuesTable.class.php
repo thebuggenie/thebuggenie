@@ -662,4 +662,29 @@
 			$res = $this->doUpdateById($crit, $issue_id);
 		}
 
+		/**
+		 * Return list of issue reported by an user
+		 *
+		 * @param int $user_id user ID
+		 * @param int $limit number of issues to  retrieve [optional]
+		 * @param B2DBCriteria $sort sort order [optional]
+		 *
+		 * @return B2DBResultset
+		 */
+		
+		public function getIssuesPostedByUser($user_id, $limit=null, $sort=B2DBCriteria::SORT_DESC)
+		{
+			$crit = $this->getCriteria();
+			$crit->addJoin(TBGProjectsTable::getTable(), TBGProjectsTable::ID, self::PROJECT_ID);
+			$crit->addWhere(self::POSTED_BY, $user_id);
+			$crit->addWhere(self::DELETED, 0);
+			$crit->addOrderBy(self::POSTED, $sort);
+			if ($limit !== null)
+			{
+				$crit->setLimit($limit);
+			}
+			
+			return $this->doSelect($crit);
+		}			
+
 	}

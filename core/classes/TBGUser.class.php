@@ -1968,5 +1968,26 @@
 		{
 			return ($this->language != '') ? $this->language : TBGContext::getI18n()->getCurrentLanguage();
 		}
+
+		/**
+		 * Return an array of issues that has changes pending
+		 * 
+		 * @param int $number number of issues to be retrieved
+		 * 
+		 * @return array
+		 */		
+		public function getIssues($number = null)
+		{
+			$res = B2DB::getTable('TBGIssuesTable')->getIssuesPostedByUser($this->getID(), $number);
+			if($res)
+			{
+				return $res->getAllRows();
+			}
+			else
+			{
+				return array();
+			}
+			
+		}
 		
 	}
