@@ -31,7 +31,7 @@
 			}
 			else
 			{
-				throw new Exception("The class $classname doesn't exist");
+				throw new Exception("The class $name doesn't exist");
 			}
 		}
 
