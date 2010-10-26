@@ -756,38 +756,6 @@ function submitNewPassword()
 	Element.show('password_changed_span');
 }
 
-function addFriend(uname, rndno, u_id)
-{
-	new Ajax.Updater('friends_message_' + uname + '_' + rndno, 'ajax_handler.php?addfriend=true', {
-	asynchronous:true,
-	method: "post",
-	parameters: {uid: u_id},
-	onSuccess: function (addFriendSuccess) {
-		new Ajax.Updater('friends_link_' + uname + '_' + rndno, 'ajax_handler.php?getfriendlink=true', {
-		asynchronous:true,
-		method: "get",
-		parameters: {uid: u_id, rnd_no: rndno}
-		});
-	}
-	});
-}
-
-function removeFriend(uname, rndno, u_id)
-{
-	new Ajax.Updater('friends_message_' + uname + '_' + rndno, 'ajax_handler.php?removefriend=true', {
-	asynchronous:true,
-	method: "post",
-	parameters: {uid: u_id},
-	onSuccess: function (addFriendSuccess) {
-		new Ajax.Updater('friends_link_' + uname + '_' + rndno, 'ajax_handler.php?getfriendlink=true', {
-		asynchronous:true,
-		method: "get",
-		parameters: {uid: u_id, rnd_no: rndno}
-		});
-	}
-	});
-}
-
 function getStatistics(url)
 {
 	new Ajax.Request(url, {

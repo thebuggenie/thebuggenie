@@ -47,13 +47,17 @@
 		<?php TBGEvent::createNew('core', 'usercardactions_top', $user)->trigger(); ?>
 		<?php if (TBGUser::isThisGuest() == false): ?>
 			<div id="friends_message_<?php echo $user->getUsername() . '_' . $rnd_no; ?>" style="padding: 2px 0 2px 0; font-size: 0.9em;"></div>
-			<div style="padding: 2px;" id="friends_link_<?php echo $user->getUsername() . '_' . $rnd_no; ?>">
 			<?php if ($user->getID() != TBGContext::getUser()->getUID() && !(TBGContext::getUser()->isFriend($user)) && !$user->isGuest()): ?>
-				<a href="javascript:void(0);" onclick="addFriend('<?php echo $user->getUsername(); ?>', <?php echo $rnd_no; ?>, <?php echo $user->getUID(); ?>);"><?php echo __('Become friends'); ?></a>
-			<?php elseif ($user->getID() != TBGContext::getUser()->getUID() && TBGContext::getUser()->isFriend($user)): ?>
-				<a href="javascript:void(0);" onclick="removeFriend('<?php $user->getUsername(); ?>', <?php echo $rnd_no; ?>, <?php echo $user->getUID(); ?>);"><?php echo __('Don\'t be friends any more'); ?></a>
+				<div id="friends_link_<?php echo $user->getUsername() . '_' . $rnd_no; ?>">
+					<span style="padding: 2px; <?php if ($tbg_user->isFriend($user)): ?> display: none;<?php endif; ?>" id="add_friend_<?php echo $user->getID() . '_' . $rnd_no; ?>">
+						<?php echo javascript_link_tag(__('Become friends'), array('onclick' => "_updateDivWithJSONFeedback('".make_url('toggle_friend', array('mode' => 'add', 'user_id' => $user->getID()))."', null, 'toggle_friend_{$user->getID()}_{$rnd_no}_indicator', null, null, 'add_friend_{$user->getID()}_{$rnd_no}', ['add_friend_{$user->getID()}_{$rnd_no}'], ['remove_friend_{$user->getID()}_{$rnd_no}']);")); ?>
+					</span>
+					<?php echo image_tag('spinning_16.gif', array('id' => "toggle_friend_{$user->getID()}_{$rnd_no}_indicator", 'style' => 'display: none;')); ?>
+					<span style="padding: 2px; <?php if (!$tbg_user->isFriend($user)): ?> display: none;<?php endif; ?>" id="remove_friend_<?php echo $user->getID() . '_' . $rnd_no; ?>">
+						<?php echo javascript_link_tag(__('Remove this friend'), array('onclick' => "_updateDivWithJSONFeedback('".make_url('toggle_friend', array('mode' => 'remove', 'user_id' => $user->getID()))."', null, 'toggle_friend_{$user->getID()}_{$rnd_no}_indicator', null, null, 'remove_friend_{$user->getID()}_{$rnd_no}', ['remove_friend_{$user->getID()}_{$rnd_no}'], ['add_friend_{$user->getID()}_{$rnd_no}']);")); ?>
+					</span>
+				</div>
 			<?php endif; ?>
-			</div>
 		<?php endif; ?>
 		<?php TBGEvent::createNew('core', 'usercardactions_bottom', $user)->trigger(); ?>
 	</div>
