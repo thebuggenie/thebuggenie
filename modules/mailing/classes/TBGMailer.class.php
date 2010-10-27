@@ -160,7 +160,7 @@
 					throw new Exception('Timed out during server conversation');
 				}
 			}
-			flush();
+			//flush();
 			ob_flush();
 			return $ret;
 		}
