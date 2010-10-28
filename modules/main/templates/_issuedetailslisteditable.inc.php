@@ -224,19 +224,6 @@
 		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 	</div>
 </div>
-<dl class="viewissue_list" id="edition_field"<?php if (!($issue->getProject()->isEditionsEnabled() && $issue->isEditionsVisible())): ?> style="display: none;"<?php endif; ?>>
-	<dt><?php echo __('Edition(s)'); ?></dt>
-	<dd>
-		<?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?>
-		<?php if (count($issue->getEditions()) > 0): ?>
-			<ul>
-				<?php foreach ($issue->getEditions() as $edition): ?>
-					<li id="issue_affected_edition_<?php $edition->getID(); ?>_inline"><?php $edition->getName(); ?></li>
-				<?php endforeach; ?>
-			</ul>
-		<?php endif; ?>
-	</dd>
-</dl>
 <dl class="viewissue_list" id="posted_by_field">
 	<dt id="posted_by_header" class="<?php if ($issue->isPostedByChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPostedByMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Posted by'); ?></dt>
 	<dd id="posted_by_content" class="<?php if ($issue->isPostedByChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPostedByMerged()): ?> issue_detail_unmerged<?php endif; ?>">

@@ -184,8 +184,7 @@
 		}
 		
 		public function componentIssueaffected()
-		{
-			
+		{	
 		}
 
 	}

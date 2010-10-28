@@ -626,6 +626,9 @@ ul#uploaded_files { list-style-type: none; padding: 0; margin: 5px 0 0 5px; }
 tr.attached_item td { padding-bottom: 5px; padding-top: 5px; }
 tr.attached_item td { font-size: 0.9em; line-height: 1.3; }
 tr.attached_item td .upload_details { color: #AAA; font-size: 0.9em; }
+
+table.issue_affects td { padding: 3px;}
+#viewissue_left_box_top table.issue_affects th { background: rgb(244, 236, 139); border-bottom-color: #e3dda5; }
 /* end view issue styling */
 
 /* user dashboard styling */

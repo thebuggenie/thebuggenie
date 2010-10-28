@@ -284,10 +284,25 @@
 				<li id="tab_comments" class="selected"><?php echo javascript_link_tag(image_tag('icon_comments.png', array('style' => 'float: left; margin-right: 5px;')) . __('Comments (%count%)', array('%count%' => '<span id="viewissue_comment_count">'.$issue->getCommentCount().'</span>')), array('onclick' => "switchSubmenuTab('tab_comments', 'viewissue_menu');")); ?></li>
 				<li id="tab_attached_information"><?php echo javascript_link_tag(image_tag('icon_attached_information.png', array('style' => 'float: left; margin-right: 5px;')) . __('Attached information (%count%)', array('%count%' => '<span id="viewissue_uploaded_attachments_count">'.(count($issue->getLinks()) + count($issue->getFiles())).'</span>')), array('onclick' => "switchSubmenuTab('tab_attached_information', 'viewissue_menu');")); ?></li>
 				<?php if ($issue->getProject()->isAffectsHidden()): ?>
-				<?php 
-					$editions = $issue->getEditions();
-					$components = $issue->getComponents();
-					$builds = $issue->getBuilds();
+				<?php
+					$editions = array();
+					$components = array();
+					$builds = array();
+					
+					if($issue->getProject()->isEditionsEnabled())
+					{
+						$editions = $issue->getEditions();
+					}
+					
+					if($issue->getProject()->isComponentsEnabled())
+					{
+						$components = $issue->getComponents();
+					}
+
+					if($issue->getProject()->isBuildsEnabled())
+					{
+						$builds = $issue->getBuilds();
+					}
 					
 					$count = count($editions) + count($components) + count($builds);				
 				?>
@@ -450,7 +465,6 @@
 			</div>
 			<?php if ($issue->getProject()->isAffectsHidden()): ?>
 			<div id="tab_affected_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
-				<br>
 				<?php include_component('main/issueaffected', array('issue' => $issue)); ?>
 			</div>
 			<?php endif; ?>
