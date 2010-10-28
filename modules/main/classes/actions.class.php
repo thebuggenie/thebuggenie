@@ -1190,7 +1190,7 @@
 						else
 						{
 							$classname = 'TBG'.ucfirst($parameter_name);
-							$lab_function_name = $classname.'Lab';
+							$lab_function_name = $classname;
 							$set_function_name = 'set'.ucfirst($parameter_name);
 							$is_changed_function_name = 'is'.ucfirst($parameter_name).'Changed';
 						}
