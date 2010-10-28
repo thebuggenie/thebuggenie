@@ -54,7 +54,7 @@ div.image_container.thumb img.image { width: 220px; }
 
 /* Main header area */
 .main_header { background-color: #6A70D6; color: #FFF; }
-#logo_td { height: 46px; padding: 3px 0px 3px 10px; vertical-align: middle; width: 300px; border-bottom: 1px solid #4217B7; }
+#logo_td { padding: 3px 0px 3px 10px; vertical-align: middle; width: 300px; border-bottom: 1px solid #4217B7; }
 #logo_td a.logo { float: left; margin: 5px 10px 0 0; text-decoration: none; border: 0; line-height: 0; }
 #logo_td a.logo:hover { text-decoration: none; border: 0; }
 .logo_large { font-size: 16px; font-weight: bold; color: #FFF; margin: 0; padding: 0; line-height: 1.3; }
