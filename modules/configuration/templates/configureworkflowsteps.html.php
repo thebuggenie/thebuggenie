@@ -23,7 +23,9 @@
 							<?php echo __('This page shows all the available steps for the selected workflow, as well as transitions between these steps.'); ?>
 							<?php echo __('You can add and remove steps from this page, as well as manage the transitions between them.'); ?><br>
 							<br>
-							<?php echo __('Steps without any incoming transitions are shown with a faded out tone of color'); ?>
+							<?php echo __('Steps without any incoming transitions are shown as faded out.'); ?><br>
+							<br>
+							<b><?php echo javascript_link_tag(__('Add a step'), array('onclick' => "\$('add_step_div').toggle();")); ?></b>
 						</div>
 					</div>
 					<table id="workflow_steps_list" cellpadding="0" cellspacing="0">

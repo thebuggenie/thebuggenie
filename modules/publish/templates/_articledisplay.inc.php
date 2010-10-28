@@ -1,5 +1,5 @@
 <?php TBGContext::loadLibrary('publish/publish'); ?>
-<div class="article" style="width: auto; padding: 5px; position: relative;">
+<div class="article">
 	<?php if ($show_title): ?>
 		<div class="header">
 			<?php if ($show_actions): ?>

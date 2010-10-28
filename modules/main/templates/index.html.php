@@ -18,7 +18,7 @@
 
 			?>
 		</td>
-		<td class="main_area">
+		<td class="main_area frontpage">
 			<?php
 			
 				TBGEvent::createNew('core', 'index_right_top')->trigger();
