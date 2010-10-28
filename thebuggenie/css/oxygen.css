@@ -26,8 +26,8 @@ form, p { margin: 0px; padding: 0px; }
 input, select, textarea, button { font-family: 'Droid Sans', sans-serif; font-size: 1em; color: #555; border: 1px solid #BBB; padding: 2px; }
 input, select, textarea { background-color: #FFF; }
 input[type="submit"], button, input[type="file"] { background-color: #E5E5E5; }
-input[type="submit"]:hover { background-color: #F5F5F5; }
-input[type="submit"]:active { background-color: #D5D5D5; }
+input[type="submit"]:hover, button:hover { background-color: #F5F5F5; }
+input[type="submit"]:active , button:active { background-color: #D5D5D5; }
 input[type="image"] { border: 0px; padding: 0px; width: 16px; height: 16px; background-color: transparent; }
 input[disabled], button[disabled], select[disabled] { background-color: #F9F9F9; color: #BBB; }
 
@@ -89,6 +89,8 @@ div.image_container.thumb img.image { width: 220px; }
 .login_boxheader { font-size: 1.4em; font-weight: bold; padding-bottom: 10px; }
 .login_fieldheader { font-weight: bold; }
 .login_fieldtable { margin-left: auto; margin-right: auto; }
+.logindiv input[type='password'] { font-family: sans-serif; } /* IE does not like web fonts on password boxes, and turns it into blankness, so we will use a different font */
+
 /* end login / registration styling */
 
 /* table column containing an image */
@@ -805,7 +807,8 @@ table.issue_affects td { padding: 3px;}
 #find_issues #add_filter_form label {  display: inline-block; min-width: 200px; }
 #find_issues #search_filters label { display: inline-block; min-width: 200px;  }
 #find_issues #add_filter_form { margin-left: 7px; }
-#find_issues #search_button_bottom { font-weight: bold; font-size: 14px; }
+#find_issues #search_button_bottom, #find_issues button { font-weight: bold; font-size: 14px; }
+#find_issues button { font-weight: normal; }
 /* end boxes */
 
 #search_error, #search_message { font-weight: bold;  color: #333; }

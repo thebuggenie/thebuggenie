@@ -96,7 +96,7 @@
 <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 	<tr>
 		<td style="width: 200px;"><label for="project_name"><?php echo __('Project name'); ?></label></td>
-		<td style="width: auto;">
+		<td style="width: 580px;">
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 				<input type="text" name="project_name" id="project_name" value="<?php print $project->getName(); ?>" style="width: 100%;">
 			<?php else: ?>

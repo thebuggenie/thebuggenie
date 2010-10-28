@@ -104,6 +104,9 @@
 		}
 
 		echo "
+		<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">
+		<html>
+		<head>
 		<style>
 		body { background-color: #DFDFDF; font-family: \"Droid Sans\", \"Trebuchet MS\", \"Liberation Sans\", \"Nimbus Sans L\", \"Luxi Sans\", Verdana, sans-serif; font-size: 13px; }
 		h1 { margin: 5px 0 15px 0; font-size: 18px; }
@@ -125,6 +128,13 @@
 		.white .xboxcontent { background: #FFF; border-color: #CCC; }
 		pre { overflow: scroll; padding: 5px; }
 		</style>
+		<!--[if IE]>
+		<style>
+		body { background-color: #DFDFDF; font-family: sans-serif; font-size: 13px; }
+		</style>
+		<![endif]-->
+		</head>
+		<body>
 		<div class=\"rounded_box white\" style=\"margin: 30px auto 0 auto; width: 700px;\">
 			<b class=\"xtop\"><b class=\"xb1\"></b><b class=\"xb2\"></b><b class=\"xb3\"></b><b class=\"xb4\"></b></b>
 			<div class=\"xboxcontent\" style=\"vertical-align: middle; padding: 10px 10px 10px 15px;\">
@@ -237,6 +247,8 @@
 			echo "</div>
 			<b class=\"xbottom\"><b class=\"xb4\"></b><b class=\"xb3\"></b><b class=\"xb2\"></b><b class=\"xb1\"></b></b>
 		</div>
+		</body>
+		</html>
 		";
 		die();
 	}

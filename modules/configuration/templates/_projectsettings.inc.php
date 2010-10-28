@@ -4,7 +4,7 @@
 	<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 		<tr>
 			<td style="width: 200px;"><label for="locked"><?php echo __('Allow issues to be reported'); ?></label></td>
-			<td>
+			<td style="width: 580px;">
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 					<select name="locked" id="locked" style="width: 70px;">
 						<option value=0<?php if (!$project->isLocked()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
