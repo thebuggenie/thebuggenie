@@ -53,6 +53,42 @@
 	}
 	
 	/**
+	 * Returns the URL to a specified image
+	 * 
+	 * @param string $image image source
+	 * @param bool $notheme[optional] whether this is a themed image or a top level path
+	 * 
+	 * @return string
+	 */
+	function image_url($image, $notheme = false, $module = 'core', $relative = true)
+	{
+		if ($notheme)
+		{
+			$params['src'] = $image;
+		}
+		else
+		{
+			if ($module != 'core' && !file_exists(TBGContext::getIncludePath() . 'themes/' . TBGSettings::getThemeName() . "/{$module}/" . $image))
+			{
+				$params['src'] = TBGContext::getTBGPath() . "themes/modules/{$module}/" . TBGSettings::getThemeName() . '/' . $image;
+			}
+			elseif ($module != 'core')
+			{
+				$params['src'] = TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . "/{$module}/" . $image;
+			}
+			else
+			{
+				$params['src'] = TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/' . $image;
+			}
+		}
+		if (!$relative)
+		{
+			$params['src'] = TBGContext::getUrlHost() . $params['src'];
+		}
+		return $params['src'];
+	}
+	
+	/**
 	 * Returns an <a> tag linking to a specified url
 	 * 
 	 * @param string $url link target

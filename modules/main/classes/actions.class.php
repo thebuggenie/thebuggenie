@@ -2482,5 +2482,155 @@
 				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Could not add or remove friend')));
 			}
 		}
+		
+		public function runToggleAffectedConfirmed(TBGRequest $request)
+		{
+			TBGContext::loadLibrary('ui');
+			try
+			{
+				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
+				switch ($request->getParameter('affected_type'))
+				{
+					case 'edition':
+						if (!$issue->getProject()->isEditionsEnabled())
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => __('Editions are disabled')));
+						}
+						
+						$editions = $issue->getEditions();
+						$edition = $editions[$request->getParameter('affected_id')];
+						
+						if ($edition['confirmed'] == true)
+						{
+							$crit = TBGIssueAffectsEditionTable::getTable()->getCriteria();
+							$crit->addUpdate(TBGIssueAffectsEditionTable::CONFIRMED, 0);
+							$crit->addWhere(TBGIssueAffectsEditionTable::ISSUE, $request->getParameter('issue_id'));
+							$res = TBGIssueAffectsEditionTable::getTable()->doUpdate($crit);
+							
+							$message = TBGContext::getI18n()->__('Edition \'%edition%\' is now unconfirmed for this issue', array('%edition%' => $edition['edition']->getName()));
+							$alt = TBGContext::getI18n()->__('No');
+							$src = image_url('action_cancel_small.png');
+							
+							$issue->addSystemComment(TBGContext::getI18n()->__('Affected issue updated'), TBGContext::getI18n()->__('Edition \'%edition%\' is now unconfirmed for this issue', array('%edition%' => $edition['edition']->getName())), TBGContext::getUser()->getID());
+						}
+						else
+						{
+							$crit = TBGIssueAffectsEditionTable::getTable()->getCriteria();
+							$crit->addUpdate(TBGIssueAffectsEditionTable::CONFIRMED, 1);
+							$crit->addWhere(TBGIssueAffectsEditionTable::ISSUE, $request->getParameter('issue_id'));
+							$res = TBGIssueAffectsEditionTable::getTable()->doUpdate($crit);
+							
+							$message = TBGContext::getI18n()->__('Edition \'%edition%\' is now confirmed for this issue', array('%edition%' => $edition['edition']->getName()));
+							$alt = TBGContext::getI18n()->__('Yes');
+							$src = image_url('action_ok_small.png');
+							
+							$issue->addSystemComment(TBGContext::getI18n()->__('Affected issue updated'), TBGContext::getI18n()->__('Edition \'%edition%\' is now confirmed for this issue', array('%edition%' => $edition['edition']->getName())), TBGContext::getUser()->getID());
+						}
+						
+						break;
+					case 'component':
+						if (!$issue->getProject()->isComponentsEnabled())
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => __('Components are disabled')));
+						}
+						
+						$components = $issue->getComponents();
+						$component = $components[$request->getParameter('affected_id')];
+						
+						if ($component['confirmed'] == true)
+						{
+							$crit = TBGIssueAffectsComponentTable::getTable()->getCriteria();
+							$crit->addUpdate(TBGIssueAffectsComponentTable::CONFIRMED, 0);
+							$crit->addWhere(TBGIssueAffectsComponentTable::ISSUE, $request->getParameter('issue_id'));
+							$res = TBGIssueAffectsComponentTable::getTable()->doUpdate($crit);
+							
+							$message = TBGContext::getI18n()->__('Component \'%component%\' is now unconfirmed for this issue', array('%component%' => $component['component']->getName()));
+							$alt = TBGContext::getI18n()->__('No');
+							$src = image_url('action_cancel_small.png');
+							
+							$issue->addSystemComment(TBGContext::getI18n()->__('Affected issue updated'), TBGContext::getI18n()->__('Component \'%component%\' is now unconfirmed for this issue', array('%component%' => $component['component']->getName())), TBGContext::getUser()->getID());
+						}
+						else
+						{
+							$crit = TBGIssueAffectsComponentTable::getTable()->getCriteria();
+							$crit->addUpdate(TBGIssueAffectsComponentTable::CONFIRMED, 1);
+							$crit->addWhere(TBGIssueAffectsComponentTable::ISSUE, $request->getParameter('issue_id'));
+							$res = TBGIssueAffectsComponentTable::getTable()->doUpdate($crit);
+							
+							$message = TBGContext::getI18n()->__('Component \'%component%\' is now confirmed for this issue', array('%component%' => $component['component']->getName()));
+							$alt = TBGContext::getI18n()->__('Yes');
+							$src = image_url('action_ok_small.png');
+							
+							$issue->addSystemComment(TBGContext::getI18n()->__('Affected issue updated'), TBGContext::getI18n()->__('Component \'%component%\' is now confirmed for this issue', array('%component%' => $component['component']->getName())), TBGContext::getUser()->getID());
+						}
+						
+						break;
+					case 'build':
+						if (!$issue->getProject()->isBuildsEnabled())
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => __('Builds are disabled')));
+						}
+						
+						$builds = $issue->getBuilds();
+						$build = $builds[$request->getParameter('affected_id')];
+						
+						if ($build['confirmed'] == true)
+						{
+							$crit = TBGIssueAffectsBuildTable::getTable()->getCriteria();
+							$crit->addUpdate(TBGIssueAffectsBuildTable::CONFIRMED, 0);
+							$crit->addWhere(TBGIssueAffectsBuildTable::ISSUE, $request->getParameter('issue_id'));
+							$res = TBGIssueAffectsBuildTable::getTable()->doUpdate($crit);
+							
+							$message = TBGContext::getI18n()->__('Build \'%build%\' is now unconfirmed for this issue', array('%build%' => $build['build']->getName()));
+							$alt = TBGContext::getI18n()->__('No');
+							$src = image_url('action_cancel_small.png');
+							
+							$issue->addSystemComment(TBGContext::getI18n()->__('Affected issue updated'), TBGContext::getI18n()->__('Build \'%build%\' is now unconfirmed for this issue', array('%build%' => $build['build']->getName())), TBGContext::getUser()->getID());
+						}
+						else
+						{
+							$crit = TBGIssueAffectsBuildTable::getTable()->getCriteria();
+							$crit->addUpdate(TBGIssueAffectsBuildTable::CONFIRMED, 1);
+							$crit->addWhere(TBGIssueAffectsBuildTable::ISSUE, $request->getParameter('issue_id'));
+							$res = TBGIssueAffectsBuildTable::getTable()->doUpdate($crit);
+							
+							$message = TBGContext::getI18n()->__('Build \'%build%\' is now confirmed for this issue', array('%build%' => $build['build']->getName()));
+							$alt = TBGContext::getI18n()->__('Yes');
+							$src = image_url('action_ok_small.png');
+							
+							$issue->addSystemComment(TBGContext::getI18n()->__('Affected issue updated'), TBGContext::getI18n()->__('Build \'%build%\' is now confirmed for this issue', array('%build%' => $build['build']->getName())), TBGContext::getUser()->getID());
+						}
+						
+						break;
+					default:
+						throw new Exception('Internal error');
+						break;
+				}
+				
+				return $this->renderJSON(array('failed' => false, 'message' => $message, 'alt' => $alt, 'src' => $src));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => __('An internal error has occured')));
+			}
+		}
 
-	}
+		public function runChangeAffectedStatus(TBGRequest $request)
+		{
+			
+		}
+		
+		public function runRemoveAffected(TBGRequest $request)
+		{
+			
+		}
+		
+		public function runAddAffected(TBGRequest $request)
+		{
+			
+		}
+}

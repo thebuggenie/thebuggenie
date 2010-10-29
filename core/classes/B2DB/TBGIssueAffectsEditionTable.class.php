@@ -27,6 +27,16 @@
 		const CONFIRMED = 'issueaffectsedition.confirmed';
 		const STATUS = 'issueaffectsedition.status';
 		
+		/**
+		 * Return an instance of TBGIssueAffectsEditionTable
+		 * 
+		 * @return TBGIssueAffectsEditionTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGIssueAffectsEditionTable');
+		}
+		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);

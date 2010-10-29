@@ -658,3 +658,32 @@ function addComment(url, commentcount_span)
 	});
 	return false;
 }
+
+function toggleConfirmed(url, affected)
+{
+	new Ajax.Request(url, {
+		method: 'post',
+		requestHeaders: {Accept: 'application/json'},
+		onLoading: function(transport) {
+			$('affected_' + affected + '_confirmed_icon').hide();
+			$('affected_' + affected + '_confirmed_spinner').show();
+		},
+		onSuccess: function(transport) {
+			var json = transport.responseJSON;
+			successMessage(json.message);
+			
+			$('affected_' + affected + '_confirmed_icon').writeAttribute('alt', json.alt);
+			$('affected_' + affected + '_confirmed_icon').writeAttribute('src', json.src);
+			
+			$('affected_' + affected + '_confirmed_icon').show();
+			$('affected_' + affected + '_confirmed_spinner').hide();
+		},
+		onFailure: function(transport) {
+			var json = transport.responseJSON;
+
+			failedMessage(json.error);
+			$('affected_' + affected + '_confirmed_spinner').hide();
+			$('affected_' + affected + '_confirmed_icon').show();
+		}
+	});
+}

@@ -26,6 +26,16 @@
 		const BUILD = 'issueaffectsbuild.build';
 		const CONFIRMED = 'issueaffectsbuild.confirmed';
 		const STATUS = 'issueaffectsbuild.status';
+
+		/**
+		 * Return an instance of TBGIssueAffectsBuildTable
+		 * 
+		 * @return TBGIssueAffectsBuildTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGIssueAffectsBuildTable');
+		}
 		
 		public function __construct()
 		{

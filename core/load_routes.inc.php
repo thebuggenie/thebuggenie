@@ -128,6 +128,8 @@
 	$routes[] = array('comment_delete', '/comment/delete/:comment_id', 'main', 'deletecomment');
 	$routes[] = array('comment_update', '/comment/update/:comment_id', 'main', 'updatecomment');
 	$routes[] = array('comment_add', '/comment/add/for/project/:project_id/module/:comment_module/item/type/:comment_applies_type/id/:comment_applies_id', 'main', 'addcomment');
+	$routes[] = array('confirm_affected', '/issue/:issue_id/confirm/:affected_type/:affected_id', 'main', 'toggleaffectedconfirmed');
+	
 	
 	foreach ($routes as $route)
 	{
