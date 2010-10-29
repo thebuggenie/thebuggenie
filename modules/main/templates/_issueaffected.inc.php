@@ -1,4 +1,8 @@
-add buttons here
+	<?php if ($issue->canEditIssue()): ?>
+		<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="affected_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="failedMessage('Unimplemented');" value="<?php echo __('Add an item'); ?>"></td></tr></table>
+	<?php else: ?>
+		<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="affected_add_button"><tr><td class="nice_button disabled" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="failedMessage('<?php echo __('You are not allowed to add an item to this list'); ?>');" value="<?php echo __('Add an item'); ?>"></td></tr></table>
+	<?php endif; ?>
 <br><br>
 <?php
 	$editions = array();
