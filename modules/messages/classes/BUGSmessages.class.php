@@ -8,7 +8,6 @@
 		protected function _initialize(TBGI18n $i18n)
 		{
 			$this->setLongName($i18n->__('Messages'));
-			$this->setMenuTitle($i18n->__('Messages'));
 			$this->setConfigTitle($i18n->__('Messages'));
 			$this->setDescription($i18n->__('Enables messaging functionality'));
 		}

@@ -20,7 +20,6 @@
 		protected function _initialize(TBGI18n $i18n)
 		{
 			$this->setLongName($i18n->__('Email communication'));
-			$this->setMenuTitle('');
 			$this->setConfigTitle($i18n->__('Email communication'));
 			$this->setDescription($i18n->__('Enables in- and outgoing email functionality'));
 			$this->setConfigDescription($i18n->__('Set up in- and outgoing email communication from this section'));

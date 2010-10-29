@@ -8,7 +8,6 @@
 		protected function _initialize(TBGI18n $i18n)
 		{
 			$this->setLongName($i18n->__('Calendar'));
-			$this->setMenuTitle($i18n->__('Calendar'));
 			$this->setConfigTitle($i18n->__('Calendar'));
 			$this->setDescription($i18n->__('Enables calendars, todos and meetings'));
 		}

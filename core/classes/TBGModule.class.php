@@ -24,9 +24,7 @@
 		protected $_enabled = false;
 		protected $_longname = '';
 		protected $_showinconfig = false;
-		protected $_showinmenu = false;
 		protected $_shortname = '';
-		protected $_module_menu_title = '';
 		protected $_module_config_title = '';
 		protected $_module_config_description = '';
 		protected $_module_version = '';
@@ -165,7 +163,7 @@
 		}
 
 		public final function isCore()
-		{
+		{return false;
 			return in_array($this->_name, array('publish'));
 		}
 
@@ -181,16 +179,6 @@
 			$crit->addUpdate(TBGModulesTable::ENABLED, 1);
 			B2DB::getTable('TBGModulesTable')->doUpdateById($crit, $this->getID());
 			$this->_enabled = true;
-		}
-		
-		public function showInMenu($val = true)
-		{
-			$this->_showinmenu = $val;
-		}
-		
-		public function hideFromMenu()
-		{
-			$this->showInMenu(false);
 		}
 		
 		final public function uninstall()
@@ -259,16 +247,6 @@
 			return $this->_longname;
 		}
 
-		public function setMenuTitle($title)
-		{
-			$this->_module_menu_title = $title;
-		}
-		
-		public function getMenuTitle()
-		{
-			return $this->_module_menu_title;
-		}
-		
 		public function addAvailablePermission($permission_name, $description, $target = 0)
 		{
 			$this->_availablepermissions[$permission_name] = array('description' => $description, 'target_id' => $target);
@@ -488,17 +466,7 @@
 		}
 		
 		/**
-		 * Returns whether the module is visible in the menu
-		 *
-		 * @return boolean
-		 */
-		public function isVisibleInMenu()
-		{
-			return $this->_showinmenu;
-		}
-		
-		/**
-		 * Returns whether the module is visible in the menu
+		 * Returns whether the module is enabled
 		 *
 		 * @return boolean
 		 */

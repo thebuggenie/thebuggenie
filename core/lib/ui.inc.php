@@ -14,7 +14,9 @@
 	 * 
 	 * @param string $image image source
 	 * @param array $params[optional] html parameters
-	 * @param bool $notheme[optional] whether this is a themed image or a top level path
+	 * @param boolean $notheme[optional] whether this is a themed image or a top level path
+	 * @param string $module whether this is a module image or in the core image set
+	 * @param boolean $relative whether the path is relative or absolute
 	 * 
 	 * @return string
 	 */

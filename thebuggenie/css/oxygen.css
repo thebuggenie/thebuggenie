@@ -158,7 +158,7 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 .tab_menu { padding: 0px; margin: 0px; border: 0px; position: relative; border-bottom: 1px solid #BBB; }
 .tab_menu ul { position: absolute; bottom: -1px; padding: 0px; margin: 0; list-style: none; }
 .tab_menu ul.right { right: 10px; }
-.tab_menu li img { margin-right: 5px; }
+.tab_menu li img { float: left; margin-right: 5px; }
 .tab_menu li a { color: #777; border-bottom: none; border-top: 1px solid #FFF; border-top-right-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px; padding: 3px 6px 5px 6px; display: block; }
 .tab_menu li a:hover { text-decoration: none; border-bottom: none; display: block; }
 .tab_menu li { float: left; display: block; font-size: 0.9em; border: 1px solid #CCC; border-bottom: 1px solid #BBB; background-color: #EBEBEB; margin: 0 0 0 5px; border-top-right-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px; }

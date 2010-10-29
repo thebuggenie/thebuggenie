@@ -34,17 +34,12 @@
 		protected function _initialize(TBGI18n $i18n)
 		{
 			$this->setLongName($i18n->__('Wiki'));
-			$this->setMenuTitle($i18n->__('Wiki'));
 			$this->setConfigTitle($i18n->__('Wiki'));
 			$this->setDescription($i18n->__('Enables Wiki-functionality'));
 			$this->setConfigDescription($i18n->__('Set up the Wiki module from this section'));
 			$this->setHasConfigSettings();
 			if ($this->isEnabled())
 			{
-				if ($this->isWikiTabsEnabled())
-				{
-					$this->showInMenu();
-				}
 				if ($this->getSetting('allow_camelcase_links'))
 				{
 					TBGTextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));
@@ -68,7 +63,7 @@
 			if ($this->isWikiTabsEnabled())
 			{
 				$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
-				$this->addAvailableListener('core', 'project_menustrip_item_links', 'listen_projectMenustripLinks', 'Project menustrip links');
+				$this->addAvailableListener('core', 'menustrip_item_links', 'listen_MenustripLinks', 'Menustrip links');
 			}
 			$this->addAvailableListener('core', 'TBGProject::createNew', 'listen_createNewProject', 'Create basic project wiki page');
 		}
@@ -98,7 +93,7 @@
 			$this->enableListenerSaved('core', 'index_left_middle');
 			$this->enableListenerSaved('core', 'index_right_middle');
 			$this->enableListenerSaved('core', 'project_overview_item_links');
-			$this->enableListenerSaved('core', 'project_menustrip_item_links');
+			$this->enableListenerSaved('core', 'menustrip_item_links');
 			$this->enableListenerSaved('core', 'TBGProject::createNew');
   									  
 			TBGContext::getRouting()->addRoute('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
@@ -183,9 +178,9 @@
 
 		public function getMenuTitle()
 		{
+			$i18n = TBGContext::getI18n();
 			if (($menu_title = $this->getSetting('menu_title')) !== null)
 			{
-				$i18n = TBGContext::getI18n();
 				switch ($menu_title)
 				{
 					case 5: return $i18n->__('Archive');
@@ -196,7 +191,7 @@
 				}
 
 			}
-			return parent::getMenuTitle();
+			return $i18n->__('Wiki');
 		}
 
 		public function getSpacedName($camelcased)
@@ -371,9 +366,17 @@
 			TBGActionComponent::includeTemplate('publish/projectlinks', array('project' => $event->getSubject()));
 		}
 
-		public function listen_projectMenustripLinks(TBGEvent $event)
+		public function listen_MenustripLinks(TBGEvent $event)
 		{
-			TBGActionComponent::includeTemplate('publish/projectmenustriplinks', array('project' => $event->getSubject(), 'selected_tab' => $event->getParameter('selected_tab')));
+			if (TBGContext::isProjectContext())
+			{
+				$url = TBGContext::getRouting()->generate('publish_article', array('article_name' => ucfirst(TBGContext::getCurrentProject()->getKey()).':MainPage'));
+			}
+			else
+			{
+				$url = TBGContext::getRouting()->generate('publish');
+			}
+			TBGActionComponent::includeTemplate('publish/menustriplinks', array('url' => $url, 'selected_tab' => $event->getParameter('selected_tab')));
 		}
 
 		public function listen_createNewProject(TBGEvent $event)

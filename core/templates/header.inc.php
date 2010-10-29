@@ -96,23 +96,19 @@
 								<div class="tab_menu header_menu">
 									<ul>
 										<?php if (!TBGSettings::isSingleProjectTracker()): ?>
-											<li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png', array('style' => 'float: left;')).__('Frontpage')); ?></li>
+											<li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png').__('Frontpage')); ?></li>
 										<?php endif; ?>
 										<?php if (!$tbg_user->isThisGuest()): ?>
-											<li<?php if ($tbg_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png', array('style' => 'float: left;')).__('Dashboard')); ?></li>
+											<li<?php if ($tbg_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png').__('Dashboard')); ?></li>
 										<?php endif; ?>
 										<?php if (TBGContext::isProjectContext() && ($tbg_user->canReportIssues() || $tbg_user->canReportIssues(TBGContext::getCurrentProject()->getID()))): ?>
-											<li<?php if ($tbg_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png', array('style' => 'float: left;')).((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
+											<li<?php if ($tbg_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png').((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
 										<?php endif; ?>
-										<?php foreach (TBGContext::getModules() as $module): ?>
-											<?php if ($module->hasAccess() && $module->isVisibleInMenu() && $module->isEnabled()): ?>
-												<li<?php if ($tbg_response->getPage() == $module->getTabKey()): ?> class="selected"<?php endif; ?>><?php echo link_tag($module->getRoute(), image_tag('tab_' . $module->getName() . '.png', array('style' => 'float: left;'), false, $module->getName()).$module->getMenuTitle()); ?></li>
-											<?php endif; ?>
-										<?php endforeach; ?>
+										<?php TBGEvent::createNew('core', 'menustrip_item_links', null, array('selected_tab' => $tbg_response->getPage()))->trigger(); ?>
 										<?php if ($tbg_user->canAccessConfigurationPage()): ?>
-											<li<?php if ($tbg_response->getPage() == 'config'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure'), image_tag('tab_config.png', array('style' => 'float: left;')).__('Configure')); ?></li>
+											<li<?php if ($tbg_response->getPage() == 'config'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure')); ?></li>
 										<?php endif; ?>
-										<?php /*?><li<?php if ($tbg_response->getPage() == 'about'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('about'), image_tag('tab_about.png', array('style' => 'float: left;')).__('About')); ?></li> */ ?>
+										<?php /*?><li<?php if ($tbg_response->getPage() == 'about'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('about'), image_tag('tab_about.png').__('About')); ?></li> */ ?>
 									</ul>
 									<div class="rounded_box blue" id="header_userinfo">
 										<table style="width: auto;" cellpadding="0" cellspacing="0">
