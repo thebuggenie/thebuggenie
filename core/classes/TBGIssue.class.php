@@ -1190,6 +1190,16 @@
 		}
 		
 		/**
+		 * Return if the user can edit basic parameters
+		 *
+		 * @return boolean
+		 */
+		public function canEditIssue()
+		{
+			return (bool) ($this->_permissionCheck('caneditissue', true));
+		}
+		
+		/**
 		 * Return if the user can edit reproducability
 		 *
 		 * @return boolean
