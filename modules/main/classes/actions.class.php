@@ -2489,6 +2489,13 @@
 			try
 			{
 				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
+				
+				if (!$issue->canEditIssue())
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('failed' => true, 'error' => __('You are not allowed to do this')));
+				}
+				
 				switch ($request->getParameter('affected_type'))
 				{
 					case 'edition':
@@ -2512,7 +2519,7 @@
 							$alt = TBGContext::getI18n()->__('No');
 							$src = image_url('action_cancel_small.png');
 							
-							$issue->addSystemComment(TBGContext::getI18n()->__('Affected issue updated'), TBGContext::getI18n()->__('Edition \'%edition%\' is now unconfirmed for this issue', array('%edition%' => $edition['edition']->getName())), TBGContext::getUser()->getID());
+							$issue->addSystemComment(TBGContext::getI18n()->__('Affected edition updated'), TBGContext::getI18n()->__('Edition \'%edition%\' is now unconfirmed for this issue', array('%edition%' => $edition['edition']->getName())), TBGContext::getUser()->getID());
 						}
 						else
 						{
@@ -2525,7 +2532,7 @@
 							$alt = TBGContext::getI18n()->__('Yes');
 							$src = image_url('action_ok_small.png');
 							
-							$issue->addSystemComment(TBGContext::getI18n()->__('Affected issue updated'), TBGContext::getI18n()->__('Edition \'%edition%\' is now confirmed for this issue', array('%edition%' => $edition['edition']->getName())), TBGContext::getUser()->getID());
+							$issue->addSystemComment(TBGContext::getI18n()->__('Affected edition updated'), TBGContext::getI18n()->__('Edition \'%edition%\' is now confirmed for this issue', array('%edition%' => $edition['edition']->getName())), TBGContext::getUser()->getID());
 						}
 						
 						break;
@@ -2550,7 +2557,7 @@
 							$alt = TBGContext::getI18n()->__('No');
 							$src = image_url('action_cancel_small.png');
 							
-							$issue->addSystemComment(TBGContext::getI18n()->__('Affected issue updated'), TBGContext::getI18n()->__('Component \'%component%\' is now unconfirmed for this issue', array('%component%' => $component['component']->getName())), TBGContext::getUser()->getID());
+							$issue->addSystemComment(TBGContext::getI18n()->__('Affected component updated'), TBGContext::getI18n()->__('Component \'%component%\' is now unconfirmed for this issue', array('%component%' => $component['component']->getName())), TBGContext::getUser()->getID());
 						}
 						else
 						{
@@ -2563,7 +2570,7 @@
 							$alt = TBGContext::getI18n()->__('Yes');
 							$src = image_url('action_ok_small.png');
 							
-							$issue->addSystemComment(TBGContext::getI18n()->__('Affected issue updated'), TBGContext::getI18n()->__('Component \'%component%\' is now confirmed for this issue', array('%component%' => $component['component']->getName())), TBGContext::getUser()->getID());
+							$issue->addSystemComment(TBGContext::getI18n()->__('Affected component updated'), TBGContext::getI18n()->__('Component \'%component%\' is now confirmed for this issue', array('%component%' => $component['component']->getName())), TBGContext::getUser()->getID());
 						}
 						
 						break;
@@ -2571,7 +2578,7 @@
 						if (!$issue->getProject()->isBuildsEnabled())
 						{
 							$this->getResponse()->setHttpStatus(400);
-							return $this->renderJSON(array('failed' => true, 'error' => __('Builds are disabled')));
+							return $this->renderJSON(array('failed' => true, 'error' => __('Releases are disabled')));
 						}
 						
 						$builds = $issue->getBuilds();
@@ -2584,11 +2591,11 @@
 							$crit->addWhere(TBGIssueAffectsBuildTable::ISSUE, $request->getParameter('issue_id'));
 							$res = TBGIssueAffectsBuildTable::getTable()->doUpdate($crit);
 							
-							$message = TBGContext::getI18n()->__('Build \'%build%\' is now unconfirmed for this issue', array('%build%' => $build['build']->getName()));
+							$message = TBGContext::getI18n()->__('Release \'%build%\' is now unconfirmed for this issue', array('%build%' => $build['build']->getName()));
 							$alt = TBGContext::getI18n()->__('No');
 							$src = image_url('action_cancel_small.png');
 							
-							$issue->addSystemComment(TBGContext::getI18n()->__('Affected issue updated'), TBGContext::getI18n()->__('Build \'%build%\' is now unconfirmed for this issue', array('%build%' => $build['build']->getName())), TBGContext::getUser()->getID());
+							$issue->addSystemComment(TBGContext::getI18n()->__('Affected release updated'), TBGContext::getI18n()->__('Release \'%build%\' is now unconfirmed for this issue', array('%build%' => $build['build']->getName())), TBGContext::getUser()->getID());
 						}
 						else
 						{
@@ -2597,11 +2604,11 @@
 							$crit->addWhere(TBGIssueAffectsBuildTable::ISSUE, $request->getParameter('issue_id'));
 							$res = TBGIssueAffectsBuildTable::getTable()->doUpdate($crit);
 							
-							$message = TBGContext::getI18n()->__('Build \'%build%\' is now confirmed for this issue', array('%build%' => $build['build']->getName()));
+							$message = TBGContext::getI18n()->__('Release \'%build%\' is now confirmed for this issue', array('%build%' => $build['build']->getName()));
 							$alt = TBGContext::getI18n()->__('Yes');
 							$src = image_url('action_ok_small.png');
 							
-							$issue->addSystemComment(TBGContext::getI18n()->__('Affected issue updated'), TBGContext::getI18n()->__('Build \'%build%\' is now confirmed for this issue', array('%build%' => $build['build']->getName())), TBGContext::getUser()->getID());
+							$issue->addSystemComment(TBGContext::getI18n()->__('Affected release updated'), TBGContext::getI18n()->__('Release \'%build%\' is now confirmed for this issue', array('%build%' => $build['build']->getName())), TBGContext::getUser()->getID());
 						}
 						
 						break;
@@ -2626,7 +2633,85 @@
 		
 		public function runRemoveAffected(TBGRequest $request)
 		{
-			
+			TBGContext::loadLibrary('ui');
+			try
+			{
+				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
+				
+				if (!$issue->canEditIssue())
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('failed' => true, 'error' => __('You are not allowed to do this')));
+				}
+				
+				switch ($request->getParameter('affected_type'))
+				{
+					case 'edition':
+						if (!$issue->getProject()->isEditionsEnabled())
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => __('Editions are disabled')));
+						}
+						
+						$editions = $issue->getEditions();
+						$edition = $editions[$request->getParameter('affected_id')];
+						
+						$status = TBGIssueAffectsEditionTable::getTable()->deleteByIssueIDandEditionID($issue->getID(), $edition['edition']->getID());
+						if (!$status): throw new Exception('Failed'); endif;
+						
+						$message = TBGContext::getI18n()->__('Edition \'%edition%\' is no longer affected by this issue', array('%edition%' => $edition['edition']->getName()));
+						
+						$issue->addSystemComment(TBGContext::getI18n()->__('Affected edition removed'), TBGContext::getI18n()->__('Edition \'%edition%\' is no longer affected by issue', array('%edition%' => $edition['edition']->getName())), TBGContext::getUser()->getID());
+						
+						break;
+					case 'component':
+						if (!$issue->getProject()->isComponentsEnabled())
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => __('Components are disabled')));
+						}
+						
+						$components = $issue->getComponents();
+						$component = $components[$request->getParameter('affected_id')];
+						
+						$status = TBGIssueAffectsComponentTable::getTable()->deleteByIssueIDandComponentID($issue->getID(), $component['component']->getID());
+						if (!$status): throw new Exception('Failed'); endif;
+						
+						$message = TBGContext::getI18n()->__('Component \'%component%\' is no longer affected by this issue', array('%component%' => $component['component']->getName()));
+						
+						$issue->addSystemComment(TBGContext::getI18n()->__('Affected component removed'), TBGContext::getI18n()->__('Component \'%component%\' is no longer affected by issue', array('%component%' => $component['component']->getName())), TBGContext::getUser()->getID());
+						
+						break;
+					case 'build':
+						if (!$issue->getProject()->isBuildsEnabled())
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => __('Releases are disabled')));
+						}
+						
+						$builds = $issue->getBuilds();
+						$build = $builds[$request->getParameter('affected_id')];
+
+						$status = TBGIssueAffectsBuildTable::getTable()->deleteByIssueIDandBuildID($issue->getID(), $build['build']->getID());
+						if (!$status): throw new Exception('Failed'); endif;
+						
+						$message = TBGContext::getI18n()->__('Release \'%build%\' is no longer affected by this issue', array('%build%' => $build['build']->getName()));
+						
+						$issue->addSystemComment(TBGContext::getI18n()->__('Affected build removed'), TBGContext::getI18n()->__('Build \'%build%\' is no longer affected by issue', array('%build%' => $build['build']->getName())), TBGContext::getUser()->getID());
+					
+						break;
+					default:
+						throw new Exception('Internal error');
+						break;
+				}
+				
+				return $this->renderJSON(array('failed' => false, 'message' => $message));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => __('An internal error has occured')));
+			}
 		}
 		
 		public function runAddAffected(TBGRequest $request)

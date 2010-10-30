@@ -687,3 +687,33 @@ function toggleConfirmed(url, affected)
 		}
 	});
 }
+
+function deleteAffected(url, affected)
+{
+	new Ajax.Request(url, {
+		method: 'post',
+		requestHeaders: {Accept: 'application/json'},
+		onLoading: function(transport) {
+			$('affected_' + affected + '_delete_spinner').show();
+		},
+		onSuccess: function(transport) {
+			var json = transport.responseJSON;
+			successMessage(json.message);
+			
+			$('affected_' + affected + '_delete').remove();
+			$('affected_' + affected).remove();
+			
+			if ($('affected_list').childElements().length == 1)
+			{
+				$('no_affected').show();
+			}
+		},
+		onFailure: function(transport) {
+			var json = transport.responseJSON;
+
+			failedMessage(json.error);
+			$('affected_' + affected + '_delete_spinner').hide();
+		}
+	});
+}
+
