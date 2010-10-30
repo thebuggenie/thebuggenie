@@ -178,7 +178,7 @@
 			$i18n = TBGContext::getI18n();
 			$this->getResponse()->setPage('login');
 			$this->getResponse()->setProjectMenuStripHidden();
-			$this->login_referer = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
+			$this->login_referer = (array_key_exists('HTTP_REFERER', $_SERVER) && isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
 			try
 			{
 				if (TBGContext::getRequest()->getMethod() == TBGRequest::POST)
