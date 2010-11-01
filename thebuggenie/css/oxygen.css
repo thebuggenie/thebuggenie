@@ -61,7 +61,8 @@ div.image_container.thumb img.image { width: 220px; }
 .logo_small { font-size: 10px; font-weight: normal; color: #FFF; line-height: 1.2; }
 
 #header_userinfo { float: right; width: auto; margin: 7px 7px 0 auto; padding: 0 5px 0 5px; }
-.header_username { width: auto; font-size: 1.1em; color: #FFF; padding: 0 25px 0 0; }
+#header_username { width: auto; font-size: 1.1em; color: #FFF; padding: 0 25px 0 0; }
+#header_username a { font-weight: normal; color: #FFF; }
 .header_userlinks { font-size: 0.7em; line-height: 1.1; text-align: right; }
 .submenu_strip.project_context .selected_project_name { font-size: 0.9em; font-weight: bold; color: #555; border-color: #D9D9BB; }
 .submenu_strip .selected_project_name { font-size: 0.9em; font-weight: normal; color: #888; }

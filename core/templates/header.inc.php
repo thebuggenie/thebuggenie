@@ -12,26 +12,13 @@
 		<meta name="keywords" content="thebuggenie friendly issue tracking">
 		<meta name="author" content="thebuggenie.com">
 		<meta http-equiv="Content-Type" content="<?php echo $tbg_response->getContentType(); ?> charset=<?php echo TBGContext::getI18n()->getCharset(); ?>">
-		<?php
-			if (TBGSettings::isUsingCustomFavicon() == '2')
-			{
-				?>
-				<link rel="shortcut icon" href="<?php print TBGSettings::getFaviconURL(); ?>">
-				<?php
-			}
-			elseif (TBGSettings::isUsingCustomFavicon() == '1')
-			{
-				?>
-				<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>favicon.png">
-				<?php
-			}
-			else
-			{
-				?>
-				<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
-				<?php
-			}
-		?>
+		<?php if (TBGSettings::isUsingCustomFavicon() == '2'): ?>
+			<link rel="shortcut icon" href="<?php print TBGSettings::getFaviconURL(); ?>">
+		<?php elseif (TBGSettings::isUsingCustomFavicon() == '1'): ?>
+			<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>favicon.png">
+		<?php else: ?>
+			<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
+		<?php endif; ?>
 		<link rel="shortcut icon" href="<?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png">
 		<link rel="stylesheet" type="text/css" href="<?php print TBGContext::getTBGPath(); ?>css/<?php print TBGSettings::getThemeName(); ?>.css">
 		<?php foreach ($tbg_response->getFeeds() as $feed_url => $feed_title): ?>
@@ -106,6 +93,9 @@
 										<?php if (TBGContext::isProjectContext() && ($tbg_user->canReportIssues() || $tbg_user->canReportIssues(TBGContext::getCurrentProject()->getID()))): ?>
 											<li<?php if ($tbg_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png').((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
 										<?php endif; ?>
+										<?php if (TBGContext::isProjectContext() && $tbg_user->canSearchForIssues()): ?>
+											<li<?php if (in_array($tbg_response->getPage(), array('project_issues', 'viewissue'))): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_search.png').__('Issues')); ?></li>
+										<?php endif; ?>
 										<?php TBGEvent::createNew('core', 'menustrip_item_links', null, array('selected_tab' => $tbg_response->getPage()))->trigger(); ?>
 										<?php if (!TBGContext::isProjectContext() && $tbg_user->canAccessConfigurationPage()): ?>
 											<li<?php if ($tbg_response->getPage() == 'config'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure')); ?></li>
@@ -118,11 +108,12 @@
 												<td style="width: 30px; padding-top: 4px;" valign="middle">
 													<?php echo image_tag($tbg_user->getAvatarURL(true), array('alt' => '[avatar]'), true); ?>
 												</td>
-												<td class="header_username" valign="middle">
+												<td id="header_username" valign="middle">
 													<?php if ($tbg_user->isGuest()): ?>
 														<?php echo __('You are not logged in'); ?>
 													<?php else: ?>
-														<?php echo (TBGContext::getUser()->getRealname() == '') ? TBGContext::getUser()->getBuddyname() : TBGContext::getUser()->getRealname(); ?>
+														<?php $name = (TBGContext::getUser()->getRealname() == '') ? TBGContext::getUser()->getBuddyname() : TBGContext::getUser()->getRealname(); ?>
+														<?php echo link_tag(make_url('dashboard'), $name); ?>
 													<?php endif; ?>
 												</td>
 												<td class="header_userlinks">
