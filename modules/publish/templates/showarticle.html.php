@@ -44,7 +44,7 @@
 						<?php echo get_spaced_name($article_name); ?>
 					<?php endif; ?>
 				</div>
-				<div style="font-size: 14px; margin: 10px 0 15px 2px;">
+				<div class="article_placeholder">
 					<?php echo __('This is a placeholder for an article that has not been created yet. You can create it by clicking %create_this_article% below.', array('%create_this_article%' => '<b>'.__('Create this article').'</b>')); ?>
 				</div>
 			<?php endif; ?>

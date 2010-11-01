@@ -12,19 +12,19 @@
 .toc .publish_toc_6 { margin: 0 0 3px 16px; font-size: 11px; }
 
 .article .article a { border-bottom: 1px dotted #CCC; }
-.article h1 { padding: 3px 3px 3px 0; }
+.article h1 { font-size: 1.4em; padding: 3px 3px 3px 0; }
 .article h1:target { color: #77B; background-color: #F6F6F6; }
 .article h1 a, .article h2 a, .article h3 a { font-size: 12px; }
-.article h2 { padding: 3px 3px 3px 0; }
+.article h2 { font-size: 1.3em; padding: 3px 3px 3px 0; }
 .article h2:target { color: #77B; background-color: #F6F6F6; }
-.article h3 { padding: 3px 3px 3px 0; }
+.article h3 { font-size: 1.2em; padding: 3px 3px 3px 0; }
 .article h3:target { color: #77B; background-color: #F6F6F6; }
-.article h4 { padding: 3px 3px 3px 0; }
+.article h4 { font-size: 1.15em; padding: 3px 3px 3px 0; }
 .article h4:target { color: #77B; background-color: #F6F6F6; }
 .article h4 a, .article h5 a { font-size: 11px; }
-.article h5 { padding: 3px 3px 3px 0; }
+.article h5 { font-size: 1.1em; padding: 3px 3px 3px 0; }
 .article h5:target { color: #77B; background-color: #F6F6F6; }
-.article h6 { padding: 3px 3px 3px 0; }
+.article h6 { font-size: 1.05em; padding: 3px 3px 3px 0; }
 .article h6:target { color: #77B; background-color: #F6F6F6; }
 .article h6 a { font-size: 10px; }
 

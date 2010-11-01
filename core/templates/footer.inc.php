@@ -15,6 +15,9 @@
 									<?php echo image_tag('footer_logo.png', array('alt' => $run_summary, 'title' => $run_summary, 'onclick' => (TBGLogging::isEnabled()) ? "\$('log_messages').toggle();" : '')); ?>
 									<?php echo __('%thebuggenie%, <b>friendly</b> issue tracking since 2002', array('%thebuggenie%' => link_tag(make_url('about'), 'The Bug Genie'))); ?>.
 									<?php echo __('Licensed under the MPL 1.1 only, read it at %link_to_MPL%', array('%link_to_MPL%' => '<a href="http://www.opensource.org/licenses/mozilla1.1.php">opensource.org</a>')); ?>
+									<?php if (TBGContext::isProjectContext() && $tbg_user->canAccessConfigurationPage()): ?>
+										| <b><?php echo link_tag(make_url('configure'), __('Configure The Bug Genie')); ?></b>
+									<?php endif; ?>
 								</td>
 								<?php /*<td style="width: 100px; text-align: center;"><a href="http://validator.w3.org/check?uri=referer" class="image"><img src="<?php echo TBGContext::getTBGPath(); ?>valid-html401.png" alt="Valid HTML 4.01 Transitional" height="31" width="88"></a></td> */ ?>
 							</tr>

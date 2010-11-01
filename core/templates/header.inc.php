@@ -93,19 +93,21 @@
 								<div class="logo_small"><?php echo TBGSettings::get('b2_tagline'); ?></div>
 							</td>
 							<td style="width: auto;">
-								<div class="tab_menu header_menu">
+								<div class="tab_menu header_menu<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>">
 									<ul>
-										<?php if (!TBGSettings::isSingleProjectTracker()): ?>
+										<?php if (!TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
 											<li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png').__('Frontpage')); ?></li>
+										<?php elseif (TBGContext::isProjectContext()): ?>
+											<li<?php if ($tbg_response->getPage() == 'project_dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_dashboard_small.png').__('Project dashboard')); ?></li>
 										<?php endif; ?>
-										<?php if (!$tbg_user->isThisGuest()): ?>
+										<?php if (!$tbg_user->isThisGuest() && !TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
 											<li<?php if ($tbg_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png').__('Dashboard')); ?></li>
 										<?php endif; ?>
 										<?php if (TBGContext::isProjectContext() && ($tbg_user->canReportIssues() || $tbg_user->canReportIssues(TBGContext::getCurrentProject()->getID()))): ?>
 											<li<?php if ($tbg_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png').((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
 										<?php endif; ?>
 										<?php TBGEvent::createNew('core', 'menustrip_item_links', null, array('selected_tab' => $tbg_response->getPage()))->trigger(); ?>
-										<?php if ($tbg_user->canAccessConfigurationPage()): ?>
+										<?php if (!TBGContext::isProjectContext() && $tbg_user->canAccessConfigurationPage()): ?>
 											<li<?php if ($tbg_response->getPage() == 'config'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure')); ?></li>
 										<?php endif; ?>
 										<?php /*?><li<?php if ($tbg_response->getPage() == 'about'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('about'), image_tag('tab_about.png').__('About')); ?></li> */ ?>
@@ -145,14 +147,31 @@
 					<?php /*if ($tbg_response->isProjectMenuStripVisible()): ?>
 						<div id="project_menustrip"><?php include_component('project/menustrip', array('project' => TBGContext::getCurrentProject())); ?></div>
 					<?php elseif ($tbg_user->canSearchForIssues()): */ ?>
-						<div class="submenu_strip">
-							<span class="selected_project_name<?php if (!TBGContext::isProjectContext()) echo " noproject"; ?>">
-								<?php if (TBGContext::isProjectContext()): ?>
-									<?php echo TBGContext::getCurrentProject()->getName(); ?>
-								<?php else: ?>
+						<div class="submenu_strip<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>">
+							<?php if (!TBGContext::isProjectContext()): ?>
+								<span class="selected_project_name">
 									<?php echo __('No project selected'); ?>
-								<?php endif; ?>
-							</span>
+								</span>
+							<?php else: ?>
+								<div class="project_stuff tab_menu">
+									<ul>
+										<li class="project_name nohover"><?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), TBGContext::getCurrentProject()->getName()); ?></li>
+										<?php /*
+										<li<?php if ($tbg_response->getPage() == 'project_planning'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_planning', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Planning')); ?></li>
+										<li<?php if ($tbg_response->getPage() == 'project_files'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_files', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Files')); ?></li>
+										 */ ?>
+										<?php if (TBGContext::getCurrentProject()->usesScrum()): ?>
+											<li<?php if (in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_burndown'))): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_scrum', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Scrum')); ?></li>
+										<?php endif; ?>
+										<li<?php if (in_array($tbg_response->getPage(), array('project_issues', 'viewissue'))): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues')); ?></li>
+										<li<?php if ($tbg_response->getPage() == 'project_roadmap'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_roadmap', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Roadmap')); ?></li>
+										<li<?php if ($tbg_response->getPage() == 'project_team'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_team', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Team')); ?></li>
+										<li<?php if ($tbg_response->getPage() == 'project_statistics'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_statistics', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Statistics')); ?></li>
+										<li<?php if ($tbg_response->getPage() == 'project_timeline'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Timeline')); ?></li>
+										<?php TBGEvent::createNew('core', 'project_menustrip_item_links', TBGContext::getCurrentProject(), array('selected_tab' => $tbg_response->getPage()))->trigger(); ?>
+									</ul>
+								</div>
+							<?php endif; ?>
 							<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'quicksearch' => 'true')) : make_url('search', array('quicksearch' => 'true')); ?>" method="get" name="quicksearchform" style="float: right;">
 								<div style="width: auto; padding: 0; text-align: right; position: relative;">
 									<?php $quicksearch_title = __('Search for anything here'); ?>
