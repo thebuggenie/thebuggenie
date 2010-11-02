@@ -1,0 +1,23 @@
+<?php
+
+	/**
+	 * Exception used for csrf failure
+	 *
+	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
+	 ** @version 3.0
+	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+	 * @package thebuggenie
+	 * @subpackage core
+	 */
+
+	/**
+	 * Exception used for csrf failure
+	 *
+	 * @package thebuggenie
+	 * @subpackage core
+	 */
+	class TBGCSRFFailureException extends Exception
+	{
+		
+	}
+

@@ -484,9 +484,9 @@
 			return false;
 		}
 
-		public function addRoute($key, $url, $function, $params = array())
+		public function addRoute($key, $url, $function, $params = array(), $csrf_enabled = false)
 		{
-			$this->_routes[] = array($key, $url, $this->getName(), $function, $params);
+			$this->_routes[] = array($key, $url, $this->getName(), $function, $params, $csrf_enabled);
 		}
 
 		final public function initialize()
@@ -506,14 +506,7 @@
 			foreach ($this->_routes as $route)
 			{
 				$this->log('adding route ' . $route[0]);
-				if (isset($route[4]) && !empty($route[4]))
-				{
-					TBGContext::getRouting()->addRoute($route[0], $route[1], $route[2], $route[3], $route[4]);
-				}
-				else
-				{
-					TBGContext::getRouting()->addRoute($route[0], $route[1], $route[2], $route[3]);
-				}
+				call_user_func_array(array(TBGContext::getRouting(), 'addRoute'), $route);
 				$this->log('done (adding route ' . $route[0] . ')');
 			}
 		}

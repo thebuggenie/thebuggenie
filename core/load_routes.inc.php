@@ -33,7 +33,7 @@
 	$routes[] = array('downloadfile', '/files/download/:id', 'main', 'getFile', array('mode' => 'download'));
 	$routes[] = array('issue_upload_status', '/upload/get/status/for/issue/:issue_id', 'main', 'getUploadStatus', array('mode' => 'issue'));
 	$routes[] = array('issue_detach_file', '/upload/detach/file/:file_id/from/issue/:issue_id', 'main', 'detachFile', array('mode' => 'issue'));
-	$routes[] = array('issue_attach_link', '/update/attach/link/to/issue/:issue_id', 'main', 'attachLinkToIssue');
+	$routes[] = array('issue_attach_link', '/update/attach/link/to/issue/:issue_id/*', 'main', 'attachLinkToIssue', array(), true);
 	$routes[] = array('issue_vote', '/vote/for/issue/:issue_id/:vote', 'main', 'voteForIssue');
 	$routes[] = array('issue_remove_link', '/upload/remove/link/:link_id/from/issue/:issue_id', 'main', 'removeLinkFromIssue');
 	$routes[] = array('upload_status', '/upload/get/status/for/:mode', 'main', 'getUploadStatus');
@@ -133,12 +133,5 @@
 	
 	foreach ($routes as $route)
 	{
-		if (isset($route[4]) && !empty($route[4]))
-		{
-			TBGContext::getRouting()->addRoute($route[0], $route[1], $route[2], $route[3], $route[4]);
-		}
-		else
-		{
-			TBGContext::getRouting()->addRoute($route[0], $route[1], $route[2], $route[3]);
-		}
+		call_user_func_array(array(TBGContext::getRouting(), 'addRoute'), $route);
 	}

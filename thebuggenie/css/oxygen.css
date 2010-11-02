@@ -811,6 +811,9 @@ table.issue_affects td { padding: 3px;}
 /* search styling */
 /* search boxes */
 #find_issues .main_header { font-weight: bold; font-size: 14px; padding: 5px 0 3px 2px; border-bottom: 1px solid #aaa; color: #333; background-color: transparent; }
+.searchbox_container { margin: 5px 0 5px 0; padding: 3px 10px 3px 10px; font-size: 0.9em; }
+/*.searchbox_container label { font-size: 0.9em; }
+.searchbox_container input[type="text"], .searchbox_container select { font-size: 0.9em; }*/
 #find_issues .main_header .searchterm { font-weight: normal; font-style: italic; }
 #find_issues .main_header .faded_out { font-weight: normal; }
 #find_issues .main_content { font-size: 12px; font-weight: normal; padding: 3px; }
@@ -819,7 +822,7 @@ table.issue_affects td { padding: 3px;}
 #find_issues #search_filters ul { list-style-type: none; margin: 0; padding: 0; }
 #find_issues #search_filters ul li { margin: 0; padding: 0; }
 #find_issues #search_filters {  }
-#find_issues #add_filter_form label {  display: inline-block; min-width: 200px; }
+#find_issues #add_filter_form label { display: inline-block; min-width: 200px; }
 #find_issues #search_filters label { display: inline-block; min-width: 200px;  }
 #find_issues #add_filter_form { margin-left: 7px; }
 #find_issues #search_button_bottom, #find_issues button { font-weight: bold; font-size: 14px; }

@@ -136,7 +136,7 @@
 					<div class="header"><?php echo $search_message; ?></div>
 				</div>
 			<?php endif; ?>
-			<div class="rounded_box iceblue borderless" style="margin: 5px 0 5px 0; padding: 3px 10px 3px 10px; font-size: 14px;">
+			<div class="rounded_box iceblue borderless searchbox_container">
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" id="find_issues_form">
 					<a href="#" onclick="$('search_filters').toggle();$('add_filter_form').toggle();" style="float: right; margin-top: 3px;"><b><?php echo __('More'); ?></b></a>
 					<label for="issues_searchfor"><?php echo __('Search for'); ?></label>
@@ -147,7 +147,7 @@
 					<input type="text" name="filters[text][value]" value="<?php if (array_key_exists('text', $appliedfilters)) echo (array_key_exists('value', $appliedfilters['text'])) ? $appliedfilters['text']['value'] : $appliedfilters['text'][0]['value']; ?>" id="issues_searchfor" style="width: 450px;">
 					<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top" onclick="$('save_search').disable();">
 					<div class="faded_out" style="padding: 2px 0 5px 2px; font-size: 12px;"><p><?php echo __('Leave this input field blank to list all issues based on filters below'); ?></p></div>
-					<div style="<?php if (($show_results && ($issavedsearch || $predefined_search)) || (count($appliedfilters) <= ((int) TBGContext::isProjectContext() + (int) array_key_exists('text', $appliedfilters)))): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
+					<div style="<?php if ($show_results): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
 						<label for="result_template"><?php echo __('Display results as'); ?></label>
 						<select name="template" id="result_template" onchange="if (this.getValue() == 'results_userpain_totalpainthreshold' || this.getValue() == 'results_userpain_singlepainthreshold') { $('template_parameter_div').show();$('template_parameter_label').update(__('User pain threshold')); } else { $('template_parameter_div').hide();$('template_parameter_label').update(__('Template parameter')); }">
 							<?php foreach ($templates as $template_name => $template_description): ?>
@@ -239,7 +239,7 @@
 					</div>
 				</form>
 				<input type="hidden" id="max_filters" name="max_filters" value="<?php echo count($appliedfilters); ?>">
-				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>" method="post" id="add_filter_form"<?php if (($show_results && ($issavedsearch || $predefined_search)) || (count($appliedfilters) <= ((int) TBGContext::isProjectContext() + (int) array_key_exists('text', $appliedfilters)))): ?> style="display: none;"<?php endif; ?> onsubmit="addSearchFilter('<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>');return false;">
+				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>" method="post" id="add_filter_form"<?php if ($show_results): ?> style="display: none;"<?php endif; ?> onsubmit="addSearchFilter('<?php echo (TBGContext::isProjectContext()) ? make_url('project_search_add_filter', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search_add_filter'); ?>');return false;">
 					<label for="add_filter"><?php echo __('Add filter'); ?></label>
 					<select name="filter_name">
 						<?php if (!TBGContext::isProjectContext()): ?>

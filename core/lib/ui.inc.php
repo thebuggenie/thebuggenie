@@ -105,6 +105,16 @@
 	}
 
 	/**
+	 * Returns a csrf_token hidden input tag to use in forms
+	 *
+	 * @return string
+	 */
+	function csrf_tag()
+	{
+		return '<input type="hidden" name="csrf_token" value="' . TBGContext::generateCSRFtoken() . '">';
+	}
+
+	/**
 	 * Return a javascript link tag
 	 *
 	 * @see link_tag()

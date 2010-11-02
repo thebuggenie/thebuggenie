@@ -258,6 +258,7 @@
 			self::$_routing->setCurrentRouteModule($module);
 			self::$_routing->setCurrentRouteAction($action);
 			self::$_routing->setCurrentRouteName('cli');
+			self::$_routing->setCurrentRouteCSRFenabled(false);
 		}
 
 		/**
@@ -1494,6 +1495,41 @@
 			return null;
 		}
 
+		public static function generateCSRFtoken()
+		{
+			if (!array_key_exists('csrf_token', $_SESSION) || $_SESSION['csrf_token'] == '')
+			{
+				$_SESSION['csrf_token'] = str_replace('.', '_', uniqid(rand(), TRUE));
+			}
+			return $_SESSION['csrf_token'];
+		}
+
+		public static function checkCSRFtoken($handle_response = false)
+		{
+			$token = self::generateCSRFtoken();
+			if ($token == self::getRequest()->getParameter('csrf_token')) return true;
+
+			$message = self::getI18n()->__('An authentication error occured when trying to access this resource, please reload your page and try again');
+			/*if ($handle_response)
+			{
+				self::$_response->setHttpStatus(301);
+				if (self::getRequest()->getRequestedFormat() == 'json')
+				{
+					self::$_response->setContentType('application/json');
+					echo json_encode(array('message' => $message));
+				}
+				else
+				{
+					echo $message;
+				}
+			}
+			else
+			{*/
+				throw new TBGCSRFFailureException($message);
+			//}
+			return false;
+		}
+
 		/**
 		 * Loads a function library
 		 * 
@@ -1572,13 +1608,25 @@
 				ob_start();
 				ob_implicit_flush(0);
 
-				TBGLogging::log('Running main pre-execute action');
-				// Running any overridden preExecute() method defined for that module
-				// or the default empty one provided by TBGAction
-				if ($pre_action_retval = $actionObject->preExecute(self::getRequest(), $method))
+				if (self::getRouting()->isCurrentRouteCSRFenabled())
 				{
-					$content = ob_get_clean();
-					TBGLogging::log('preexecute method returned something, skipping further action');
+					// If the csrf check fails, don't proceed
+					if (!self::checkCSRFtoken(true))
+					{
+						return true;
+					}
+				}
+
+				if ($content === null)
+				{
+					TBGLogging::log('Running main pre-execute action');
+					// Running any overridden preExecute() method defined for that module
+					// or the default empty one provided by TBGAction
+					if ($pre_action_retval = $actionObject->preExecute(self::getRequest(), $method))
+					{
+						$content = ob_get_clean();
+						TBGLogging::log('preexecute method returned something, skipping further action');
+					}
 				}
 
 				if ($content === null)
@@ -1782,25 +1830,41 @@
 			}
 			catch (TBGTemplateNotFoundException $e)
 			{
+				B2DB::closeDBLink();
+				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
 				tbg_exception('Template file does not exist for current action', $e);
-				exit();
 			}
 			catch (TBGActionNotFoundException $e)
 			{
+				B2DB::closeDBLink();
+				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
 				tbg_exception('Module action "' . $route['action'] . '" does not exist for module "' . $route['module'] . '"', $e);
-				exit();				
+			}
+			catch (TBGCSRFFailureException $e)
+			{
+				B2DB::closeDBLink();
+				TBGContext::setLoadedAt();
+				self::$_response->setHttpStatus(301);
+				$message = $e->getMessage();
+
+				if (self::getRequest()->getRequestedFormat() == 'json')
+				{
+					self::$_response->setContentType('application/json');
+					$message = json_encode(array('message' => $message));
+				}
+
+				self::$_response->renderHeaders();
+				echo $message;
 			}
 			catch (Exception $e)
 			{
+				B2DB::closeDBLink();
+				TBGContext::setLoadedAt();
 				header("HTTP/1.0 404 Not Found", true, 404);
 				tbg_exception('An error occured', $e);
-				exit();
 			}
-			B2DB::closeDBLink();
-		
-			TBGContext::setLoadedAt();
 		}
 
 		public static function getURLhost()

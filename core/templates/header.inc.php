@@ -154,7 +154,6 @@
 										<?php if (TBGContext::getCurrentProject()->usesScrum()): ?>
 											<li<?php if (in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_burndown'))): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_scrum', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Scrum')); ?></li>
 										<?php endif; ?>
-										<li<?php if (in_array($tbg_response->getPage(), array('project_issues', 'viewissue'))): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Issues')); ?></li>
 										<li<?php if ($tbg_response->getPage() == 'project_roadmap'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_roadmap', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Roadmap')); ?></li>
 										<li<?php if ($tbg_response->getPage() == 'project_team'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_team', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Team')); ?></li>
 										<li<?php if ($tbg_response->getPage() == 'project_statistics'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_statistics', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Statistics')); ?></li>

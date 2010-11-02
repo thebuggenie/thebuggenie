@@ -22,6 +22,7 @@
 		protected $current_route_name = null;
 		protected $current_route_module = null;
 		protected $current_route_action = null;
+		protected $current_route_csrf_enabled = null;
 
 		public function __construct($current_module = null, $current_action = null, $current_name = null)
 		{
@@ -50,7 +51,7 @@
 			return $this->routes;
 		}
 		
-		public function addRoute($name, $route, $module, $action, $params = array())
+		public function addRoute($name, $route, $module, $action, $params = array(), $csrf_enabled = false)
 		{
 			$names = array();
 			$names_hash = array();
@@ -59,7 +60,7 @@
 			if (($route == '') || ($route == '/'))
 			{
 				$regexp = '/^[\/]*$/';
-				$this->routes[$name] = array($route, $regexp, array(), array(), $module, $action, $params);
+				$this->routes[$name] = array($route, $regexp, array(), array(), $module, $action, $params, $csrf_enabled);
 			}
 			else
 			{
@@ -126,7 +127,7 @@
 				}
 				$regexp = '#^'.join('', $parsed).$regexp_suffix.'$#';
 	
-				$this->routes[$name] = array($route, $regexp, $names, $names_hash, $module, $action, $params);
+				$this->routes[$name] = array($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled);
 			}
 		}
 
@@ -163,7 +164,7 @@
 				$out = array();
 				$r = null;
 	
-				list($route, $regexp, $names, $names_hash, $module, $action, $params) = $route;
+				list($route, $regexp, $names, $names_hash, $module, $action, $params, $csrf_enabled) = $route;
 	
 				$break = false;
 				
@@ -241,7 +242,7 @@
 					if ($break)
 					{
 						// we store route name
-						$this->_setCurrentRouteDetails($route_name, $out['module'], $out['action']);
+						$this->_setCurrentRouteDetails($route_name, $out['module'], $out['action'], $csrf_enabled);
 	
 						TBGLogging::log('match route ['.$route_name.'] "'.$route.'"', 'routing');
 	
@@ -273,11 +274,12 @@
 		 * @param string $module Current route module
 		 * @param string $action Current route action
 		 */
-		protected function _setCurrentRouteDetails($name, $module, $action)
+		protected function _setCurrentRouteDetails($name, $module, $action, $csrf_enabled)
 		{
 			$this->current_route_name = $name;
 			$this->current_route_module = $module;
 			$this->current_route_action = $action;
+			$this->current_route_csrf_enabled = $csrf_enabled;
 		}
 
 		/**
@@ -306,14 +308,14 @@
 
 		/**
 		 * Set the current route module
-		 * 
+		 *
 		 * @param string $current_route_module
 		 */
 		public function setCurrentRouteModule($current_route_module)
 		{
 			$this->current_route_module = $current_route_module;
 		}
-		
+
 		/**
 		 * Returns the current route module
 		 *
@@ -326,6 +328,30 @@
 				$this->getRouteFromUrl(TBGContext::getRequest()->getParameter('url', null, false));
 			}
 			return $this->current_route_module;
+		}
+
+		/**
+		 * Set the current route csrf enabled/disabled
+		 *
+		 * @param boolean $current_route_module
+		 */
+		public function setCurrentRouteCSRFenabled($csrf_enabled = true)
+		{
+			$this->current_route_csrf_enabled = $csrf_enabled;
+		}
+
+		/**
+		 * Returns whether the current route has csrf protection enabled
+		 *
+		 * @return boolean
+		 */
+		public function isCurrentRouteCSRFenabled()
+		{
+			if ($this->current_route_csrf_enabled === null)
+			{
+				$this->getRouteFromUrl(TBGContext::getRequest()->getParameter('url', null, false));
+			}
+			return $this->current_route_csrf_enabled;
 		}
 
 		/**
@@ -385,7 +411,7 @@
 				throw new Exception("The route '$name' does not exist");
 			}
 
-			list($url, $regexp, $names, $names_hash, $action, $module, $defaults) = $this->routes[$name];
+			list($url, $regexp, $names, $names_hash, $action, $module, $defaults, $csrf_enabled) = $this->routes[$name];
 			$defaults = array('action' => $action, 'module' => $module);
 			
 			// all params must be given
@@ -398,7 +424,11 @@
 			}
 	
 			$params = self::arrayDeepMerge($defaults, $params);
-	
+			if ($csrf_enabled)
+			{
+				$params['csrf_token'] = TBGContext::generateCSRFtoken();
+			}
+
 			$real_url = preg_replace('/\:([^\/]+)/e', 'urlencode($params["\\1"])', $url);
 	
 			// we add all other params if *
