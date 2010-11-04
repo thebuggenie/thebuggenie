@@ -154,6 +154,19 @@ This will make [[:Category:MaleActors]] a subcategory of [[:Category:Actors]]. T
 Before you can see the content of a category - its subcategories or pages in that category, the category must be created. To create a category, put an article in a category, click the category link at the bottom of the article, and create the page.
 A category page is in essence just any other wiki article, but with the list of subcategories (if any) and pages in that category.
 
+== Redirecting from one page to another ==
+If you want to make one page redirect directly to another page, use the ''#REDIRECT'' keyword, followed by the article to redirect to, like this:
+ #REDIRECT [[PageToRedirectTo]]
+
+The ''#REDIRECT'' must be the first thing on the first line, and must be followed by a space and the article name in the format specified above. This will not work:
+ This is some content
+ #REDIRECT [[AnotherPage]]
+
+Neither will this:
+  #REDIRECT [[AnotherPage]]
+(notice the space in front of ''#REDIRECT'')
+
+
 == Images ==
 You can show uploaded images by using the same notation as for links:
   [[Image:image1.png]]

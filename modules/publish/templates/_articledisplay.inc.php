@@ -19,7 +19,12 @@
 		</div>
 	<?php endif; ?>
 	<?php if ($show_details): ?>
-		<div class="faded_out" style="padding-bottom: 5px;"><?php echo __('Last updated at %time%, by %user%', array('%time%' => tbg_formatTime($article->getPostedDate(), 3), '%user%' => '<b>'.(($article->getAuthor() instanceof TBGIdentifiable) ? $article->getAuthor()->getName() : __('System')).'</b>')); ; ?></div>
+		<div class="faded_out" style="padding-bottom: 5px;">
+			<?php if (isset($redirected_from)): ?>
+				<div class="redirected_from">&rarr; <?php echo __('Redirected from %article_name%', array('%article_name%' => link_tag(make_url('publish_article_edit', array('article_name' => $redirected_from)), $redirected_from))); ?></div>
+			<?php endif; ?>
+			<?php echo __('Last updated at %time%, by %user%', array('%time%' => tbg_formatTime($article->getPostedDate(), 3), '%user%' => '<b>'.(($article->getAuthor() instanceof TBGIdentifiable) ? $article->getAuthor()->getName() : __('System')).'</b>')); ; ?>
+		</div>
 	<?php endif; ?>
 	<div style="padding-bottom: 5px;"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded)); ?></div>
 </div>
