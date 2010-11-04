@@ -202,6 +202,8 @@
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			
 			$milestone = null;
+			$maxEstimation = 0;
+
 			if ($m_id = $request->getParameter('sprint_id'))
 			{
 				$milestone = TBGContext::factory()->TBGMilestone($m_id);
@@ -222,7 +224,7 @@
 				$datasets = array();
 
 				$burndown_data = $milestone->getBurndownData();
-
+				
 				if (count($burndown_data['estimations']['hours']))
 				{
 					foreach ($burndown_data['estimations']['hours'] as $key => $e)
@@ -230,14 +232,15 @@
 						if (array_key_exists($key, $burndown_data['spent_times']['hours']))
 						{
 							$burndown_data['estimations']['hours'][$key] -= $burndown_data['spent_times']['hours'][$key];
+							if ($burndown_data['estimations']['hours'][$key]>$maxEstimation) $maxEstimation = $burndown_data['estimations']['hours'][$key];
 						}
 					}
-					$datasets[] = array('values' => array_values($burndown_data['estimations']['hours']), 'label' => TBGContext::getI18n()->__('Remaining effort'));
+					$datasets[] = array('values' => array_values($burndown_data['estimations']['hours']), 'label' => TBGContext::getI18n()->__('Remaining effort'), 'burndown'=>array('maxEstimation' => $maxEstimation, 'label' => "Burndown Line"));
 					$this->labels = array_keys($burndown_data['estimations']['hours']);
 				}
 				else
 				{
-					$datasets[] = array('values' => array(0), 'label' => TBGContext::getI18n()->__('Remaining effort'));
+					$datasets[] = array('values' => array(0), 'label' => TBGContext::getI18n()->__('Remaining effort'), 'burndown'=>array('maxEstimation' => $maxEstimation, 'label' => "Burndown Line"));
 					$this->labels = array(0);
 				}
 				$this->datasets = $datasets;

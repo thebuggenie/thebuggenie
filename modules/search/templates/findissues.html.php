@@ -1,5 +1,6 @@
 <?php
 
+	$tbg_response->addBreadcrumb(__('Issues'));
 	if ($show_results)
 	{
 		$tbg_response->setTitle($searchtitle);

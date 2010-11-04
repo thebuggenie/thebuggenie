@@ -183,15 +183,14 @@
 			{
 				switch ($menu_title)
 				{
-					case 5: return $i18n->__('Archive');
-					case 3: return $i18n->__('Documentation');
-					case 4: return $i18n->__('Documents');
-					case 2: return $i18n->__('Help');
-					case 1: return $i18n->__('Wiki');
+					case 5: return (TBGContext::isProjectContext()) ? $i18n->__('Project archive') : $i18n->__('Archive') ;
+					case 3: return (TBGContext::isProjectContext()) ? $i18n->__('Project documentation') : $i18n->__('Documentation');
+					case 4: return (TBGContext::isProjectContext()) ? $i18n->__('Project documents') : $i18n->__('Documents');
+					case 2: return (TBGContext::isProjectContext()) ? $i18n->__('Project help') : $i18n->__('Help');
 				}
 
 			}
-			return $i18n->__('Wiki');
+			return (TBGContext::isProjectContext()) ? $i18n->__('Project wiki') : $i18n->__('Wiki');
 		}
 
 		public function getSpacedName($camelcased)
@@ -383,7 +382,8 @@
 		{
 			if (!TBGWikiArticle::getByName(ucfirst($event->getSubject()->getKey()).':MainPage') instanceof TBGWikiArticle)
 			{
-				$article = TBGWikiArticle::createNew(ucfirst($event->getSubject()->getKey()).':MainPage', "[[Category:{$event->getSubject()->getName()}:About]]This is the wiki frontpage for the {$event->getSubject()->getName()} project", true);
+				$project_key = ucfirst($event->getSubject()->getKey());
+				$article = TBGWikiArticle::createNew("{$project_key}:MainPage", "[[Category:{$project_key}:About]]This is the wiki frontpage for the {$event->getSubject()->getName()} project", true);
 			}
 		}
 

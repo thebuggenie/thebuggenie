@@ -1,5 +1,7 @@
 <?php 
 
+	$tbg_response->addBreadcrumb(__('Issues'), make_url('search'));
+	$tbg_response->addBreadcrumb(__('Create new issue'));
 	$tbg_response->setTitle('Report an issue');
 	$tbg_response->addJavascript('reportissue.js');
 	

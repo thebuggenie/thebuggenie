@@ -7,11 +7,11 @@
 			<td style="width: 200px; padding: 5px;"><label for="publish_menu_title"><?php echo __('Menu title'); ?></label></td>
 			<td>
 				<select name="menu_title" id="publish_menu_title" style="width: 250px;"<?php echo ($access_level != configurationActions::ACCESS_FULL) ? ' disabled' : ''; ?>>
-					<option value=5 <?php echo ($module->getSetting('menu_title') == 5) ? ' selected' : ''; ?>><?php echo __('Archive'); ?></option>
-					<option value=3 <?php echo ($module->getSetting('menu_title') == 3) ? ' selected' : ''; ?>><?php echo __('Documentation'); ?></option>
-					<option value=4 <?php echo ($module->getSetting('menu_title') == 4) ? ' selected' : ''; ?>><?php echo __('Documents'); ?></option>
-					<option value=2 <?php echo ($module->getSetting('menu_title') == 2) ? ' selected' : ''; ?>><?php echo __('Help'); ?></option>
-					<option value=1 <?php echo ($module->getSetting('menu_title') == 1 || $module->getSetting('menu_title') == 0) ? ' selected' : ''; ?>><?php echo __('Wiki'); ?></option>
+					<option value=5 <?php echo ($module->getSetting('menu_title') == 5) ? ' selected' : ''; ?>><?php echo __('Project archive / Archive'); ?></option>
+					<option value=3 <?php echo ($module->getSetting('menu_title') == 3) ? ' selected' : ''; ?>><?php echo __('Project documentation / Documentation'); ?></option>
+					<option value=4 <?php echo ($module->getSetting('menu_title') == 4) ? ' selected' : ''; ?>><?php echo __('Project documents / Documents'); ?></option>
+					<option value=2 <?php echo ($module->getSetting('menu_title') == 2) ? ' selected' : ''; ?>><?php echo __('Project help / Help'); ?></option>
+					<option value=1 <?php echo ($module->getSetting('menu_title') == 1 || $module->getSetting('menu_title') == 0) ? ' selected' : ''; ?>><?php echo __('Project wiki / Wiki'); ?></option>
 				</select>
 			</td>
 		</tr>

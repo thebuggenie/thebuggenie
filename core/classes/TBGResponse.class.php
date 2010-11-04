@@ -33,6 +33,13 @@
 		protected $_page = null;
 		
 		/**
+		 * Breadcrumb trail for the current page
+		 * 
+		 * @var array
+		 */
+		protected $_breadcrumb = null;
+		
+		/**
 		 * Current page title
 		 * 
 		 * @var string
@@ -185,6 +192,32 @@
 		{
 			$this->_page = $page;
 		}
+		
+		/**
+		 * Set the breadcrumb trail for the current page
+		 * 
+		 * @param array $breadcrumb 
+		 */
+		public function setBreadcrumb($breadcrumb)
+		{
+			$this->_breadcrumb = $breadcrumb;
+		}
+
+		/**
+		 * Add to the breadcrumb trail for the current page
+		 * 
+		 * @param string $breadcrumb 
+		 * @param string $url[optional]
+		 */
+		public function addBreadcrumb($breadcrumb, $url = null)
+		{
+			if ($this->_breadcrumb === null)
+			{
+				$this->_breadcrumb = array();
+			}
+			
+			$this->_breadcrumb[] = array('title' => $breadcrumb, 'url' => $url);
+		}
 
 		/**
 		 * Set the current title
@@ -224,6 +257,20 @@
 		public function getPage()
 		{
 			return $this->_page;
+		}
+		
+		/**
+		 * Return the breadcrumb trail for the current page
+		 * 
+		 * @return array
+		 */
+		public function getBreadcrumb()
+		{
+			if (!is_array($this->_breadcrumb))
+			{
+				$this->_breadcrumb = array();
+			}
+			return $this->_breadcrumb;
 		}
 		
 		/**

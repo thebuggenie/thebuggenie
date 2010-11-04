@@ -60,7 +60,7 @@ div.image_container.thumb img.image { width: 220px; }
 .logo_large { font-size: 16px; font-weight: bold; color: #FFF; margin: 0; padding: 0; line-height: 1.3; }
 .logo_small { font-size: 10px; font-weight: normal; color: #FFF; line-height: 1.2; }
 
-#header_userinfo { float: right; width: auto; margin: 7px 7px 0 auto; padding: 0 5px 0 5px; }
+#header_userinfo { float: right; width: auto; margin: 7px 7px 0 auto; padding: 0 5px 0 5px; height: 30px; }
 #header_username { width: auto; font-size: 1.1em; color: #FFF; padding: 0 25px 0 0; }
 #header_username a { font-weight: normal; color: #FFF; }
 .header_userlinks { font-size: 0.7em; line-height: 1.1; text-align: right; }
@@ -188,12 +188,11 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 
 /* project menu strip */
 .project_stuff { float: left; position: relative; height: 25px; min-width: 750px; border-color: transparent; }
-.project_stuff ul li.project_name { font-size: 1em; font-weight: bold; background-color: #FAF3B8; height: 23px; float: left; margin-right: 6px; padding-bottom: 0; }
-.project_stuff ul li a { border-color: #FAF3B8; padding-top: 2px; font-size: 0.9em; }
-.project_stuff ul li { border: 1px solid #D9D9BB; border-bottom: 1px #D9D9BB dotted; background-color: #FFFBE2; }
-.project_stuff ul li:hover { border-bottom: transparent; background-color: #FFFBE2; }
-.project_stuff ul li.selected { border-width: 1px; border-style: solid; border-color: #D9D9BB #D9D9BB #FFF #D9D9BB; background-color: #FFF; padding-bottom: 2px; }
-.project_stuff ul li.selected a { padding-bottom: 3px; border-top-color: transparent; }
+.project_stuff ul { list-style-type: none; margin: 0; padding: 0; }
+.project_stuff ul li { height: 23px; float: left; margin: 0 6px 0 0; padding-bottom: 0; }
+.project_stuff ul li.project_name { font-size: 1em; font-weight: bold; padding-top: 1px; }
+.project_stuff ul li.project_name a { color: #555; }
+.project_stuff ul li.breadcrumb { color: #886; font-size: 0.9em; padding-top: 2px; }
 .menu_project_strip .faded_out dark { color: #B0aa64; }
 /* end project menu */
 

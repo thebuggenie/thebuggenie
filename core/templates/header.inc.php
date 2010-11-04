@@ -85,7 +85,7 @@
 										<?php if (!TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
 											<li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png').__('Frontpage')); ?></li>
 										<?php elseif (TBGContext::isProjectContext()): ?>
-											<li<?php if ($tbg_response->getPage() == 'project_dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_dashboard_small.png').__('Project dashboard')); ?></li>
+											<li<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_team', 'project_roadmap', 'project_statistics'))): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_dashboard_small.png').__('Project information')); ?></li>
 										<?php endif; ?>
 										<?php if (!$tbg_user->isThisGuest() && !TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
 											<li<?php if ($tbg_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png').__('Dashboard')); ?></li>
@@ -144,13 +144,21 @@
 									<?php echo __('No project selected'); ?>
 								</span>
 							<?php else: ?>
-								<div class="project_stuff tab_menu">
+								<div class="project_stuff">
 									<ul>
-										<li class="project_name nohover"><?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), TBGContext::getCurrentProject()->getName()); ?></li>
+										<li class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), TBGContext::getCurrentProject()->getName()); ?></li>
+										<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
+											<li class="breadcrumb">&raquo; 
+												<?php if ($breadcrumb['url']): ?>
+													<?php echo link_tag($breadcrumb['url'], $breadcrumb['title']); ?>
+												<?php else: ?>
+													<?php echo $breadcrumb['title']; ?>
+												<?php endif; ?>
+											</li>
+										<?php endforeach; ?>
 										<?php /*
 										<li<?php if ($tbg_response->getPage() == 'project_planning'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_planning', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Planning')); ?></li>
 										<li<?php if ($tbg_response->getPage() == 'project_files'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_files', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Files')); ?></li>
-										 */ ?>
 										<?php if (TBGContext::getCurrentProject()->usesScrum()): ?>
 											<li<?php if (in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_burndown'))): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_scrum', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Scrum')); ?></li>
 										<?php endif; ?>
@@ -159,6 +167,7 @@
 										<li<?php if ($tbg_response->getPage() == 'project_statistics'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_statistics', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Statistics')); ?></li>
 										<li<?php if ($tbg_response->getPage() == 'project_timeline'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Timeline')); ?></li>
 										<?php TBGEvent::createNew('core', 'project_menustrip_item_links', TBGContext::getCurrentProject(), array('selected_tab' => $tbg_response->getPage()))->trigger(); ?>
+										 */ ?>
 									</ul>
 								</div>
 							<?php endif; ?>

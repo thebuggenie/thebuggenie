@@ -1,5 +1,22 @@
 <?php
 
+	$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle());
+	
+	if (!TBGContext::isProjectContext() || strtolower($article_name) != strtolower(TBGContext::getCurrentProject()->getKey() . ':mainpage'))
+	{
+		$items = explode(':', $article_name);
+		$bcpath = array_shift($items);
+		if (strtolower($bcpath) == 'category')
+		{
+			$tbg_response->addBreadcrumb(__('Categories'));
+			$bcpath .= ":".array_shift($items);
+		}
+		foreach ($items as $bc_name)
+		{
+			$bcpath .= ":".$bc_name;
+			$tbg_response->addBreadcrumb($bc_name, make_url('publish_article', array('article_name' => $bcpath)));
+		}
+	}
 	TBGContext::loadLibrary('publish/publish');
 	$tbg_response->setTitle($article_name);
 

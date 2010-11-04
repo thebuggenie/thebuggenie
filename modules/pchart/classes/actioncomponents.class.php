@@ -11,6 +11,12 @@
 			{
 				$DataSet->AddPoint($dataset['values'], "Serie" . $ds_id, array_keys($dataset['values']));
 				$maxvals[] = max($dataset['values']);
+				if (isset($dataset['burndown'])) {
+					$amount = $dataset['burndown']['maxEstimation']/(count($dataset['values'])-1);
+					for ($i=0;$i<count($dataset['values']);$i++)
+						$burndownValues[] = $dataset['burndown']['maxEstimation']-($i*$amount);
+					$DataSet->AddPoint($burndownValues, "Burndown" . $ds_id, $dataset['burndown']['maxEstimation']);
+				}
 			}
 			$DataSet->AddAllSeries();
 			if (isset($this->labels))
@@ -22,9 +28,13 @@
 			{
 				$DataSet->SetAbsciseLabelSerie();
 			}
+
 			foreach ($this->datasets as $ds_id => $dataset)
 			{
 				$DataSet->SetSerieName($dataset['label'], "Serie" . $ds_id);
+				if (isset($dataset['burndown'])) {
+					$DataSet->SetSerieName($dataset['burndown']['label'], "Burndown" . $ds_id);
+				}
 			}
 
 			if (isset($this->values_title))
