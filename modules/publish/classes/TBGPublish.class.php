@@ -382,7 +382,7 @@
 		{
 			if (!TBGWikiArticle::getByName(ucfirst($event->getSubject()->getKey()).':MainPage') instanceof TBGWikiArticle)
 			{
-				$project_key = ucfirst($event->getSubject()->getKey());
+				$project_key = $event->getSubject()->getStrippedProjectName();
 				$article = TBGWikiArticle::createNew("{$project_key}:MainPage", "[[Category:{$project_key}:About]]This is the wiki frontpage for the {$event->getSubject()->getName()} project", true);
 			}
 		}

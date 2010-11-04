@@ -584,6 +584,11 @@
 			return true;
 		}
 
+		public function getStrippedProjectName()
+		{
+			return preg_replace("/[^0-9a-zA-Z]/i", '', $this->getName());
+		}
+
 		/**
 		 * Set the project name
 		 *
@@ -592,7 +597,7 @@
 		public function setName($name)
 		{
 			parent::setName($name);
-			$this->_key = strtolower(preg_replace("/[^0-9a-zA-Z]/i", '', $name));
+			$this->_key = strtolower($this->getStrippedProjectName());
 		}
 		
 		/**
