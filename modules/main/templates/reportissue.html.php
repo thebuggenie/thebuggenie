@@ -1,6 +1,6 @@
 <?php 
 
-	$tbg_response->addBreadcrumb(__('Issues'), make_url('search'));
+	$tbg_response->addBreadcrumb(__('Issues'), make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())));
 	$tbg_response->addBreadcrumb(__('Create new issue'));
 	$tbg_response->setTitle('Report an issue');
 	$tbg_response->addJavascript('reportissue.js');
