@@ -1,6 +1,8 @@
 <?php if ($issue instanceof TBGIssue): ?>
 	<?php
 
+		$tbg_response->addBreadcrumb(__('Issues'), make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())));
+		$tbg_response->addBreadcrumb(__('%issue_type% %issue_no%', array('%issue_type%' => $issue->getIssueType()->getName(), '%issue_no%' => $issue->getFormattedIssueNo(true))), make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		$tbg_response->addJavascript('viewissue.js');
 		$tbg_response->setTitle('['.(($issue->isClosed()) ? strtoupper(__('Closed')) : strtoupper(__('Open'))) .'] ' . $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle());
 	
