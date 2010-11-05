@@ -1944,7 +1944,7 @@
 
 		public function getOpenIssuesForFrontpageSummary($merged = false)
 		{
-			$res = TBGIssuesTable::getTable()->getOpenIssuesByProjectIDAndIssueTypes($this->getID(), array_keys($this->getVisibleIssuetypes()));
+			$res = TBGIssuesTable::getTable()->getOpenIssuesByProjectIDAndIssueTypes($this->getID(), array_keys($this->getVisibleIssuetypes()), TBGIssuesTable::ISSUE_TYPE);
 
 			$retval = array();
 			if (!$merged)
