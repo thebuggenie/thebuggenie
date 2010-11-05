@@ -409,7 +409,7 @@
 			
 			if ($order_by != null)
 			{
-				$crit->addOrderBy(self::ISSUE_TYPE);			
+				$crit->addOrderBy($order_by);			
 			}
 
 			$res = $this->doSelect($crit);
