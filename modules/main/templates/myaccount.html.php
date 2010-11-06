@@ -61,7 +61,7 @@
 					</div>
 					<div style="clear: both; margin-top: 10px;">
 						<?php echo image_tag('icon_user.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-						<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $tbg_user->getID())); ?>');$('bud_<?php echo $tbg_user->getUsername() . "_" . $rnd_no; ?>').hide();"><?php echo __('Preview my user card'); ?></a>
+						<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'usercard', 'user_id' => $tbg_user->getID())); ?>');"><?php echo __('Preview my user card'); ?></a>
 					</div>
 				</div>
 			</div>
