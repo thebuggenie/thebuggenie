@@ -4,47 +4,51 @@
 	{
 
 		/**
-		 * Forgotten password logic
+		 * Forgotten password logic (AJAX call)
 		 *
 		 * @param TBGRequest $request
 		 */
 		public function runForgot(TBGRequest $request)
 		{
+			$i18n = TBGContext::getI18n();
+			
 			try
 			{
-				if (TBGContext::getRequest()->getMethod() == TBGRequest::POST)
+				$username = $request->getParameter('forgot_password_username');
+				if (!empty($username))
 				{
-					$username = TBGContext::getRequest()->getParameter('forgot_password_username');
-					if (!empty($username))
+					if (($user = TBGUser::getByUsername($username)) instanceof TBGUser)
 					{
-						if (($user = TBGUser::getByUsername($username)) instanceof TBGUser)
+						if($user->isActivated() && $user->isEnabled() && !$user->isDeleted())
 						{
 							if ($user->getEmail())
 							{
 								TBGMailing::getModule()->sendForgottenPasswordEmail($user);
-								TBGContext::setMessage('forgot_success', TBGContext::getI18n()->__('Please use the link in the email you received'));
-								$this->forward(TBGContext::getRouting()->generate('login'));
+								return $this->renderJSON(array('message' => $i18n->__('Please use the link in the email you received')));
 							}
 							else
 							{
-								throw new Exception(TBGContext::getI18n()->__('Cannot find an email address for this user'));
+								throw new Exception($i18n->__('Cannot find an email address for this user'));
 							}
 						}
 						else
 						{
-							throw new Exception(TBGContext::getI18n()->__('This username does not exist'));
+							throw new Exception($i18n->__('Forbidden for this username, please contact your administrator'));
 						}
 					}
 					else
 					{
-						throw new Exception(TBGContext::getI18n()->__('Please enter a username'));
+						throw new Exception($i18n->__('This username does not exist'));
 					}
+				}
+				else
+				{
+					throw new Exception($i18n->__('Please enter a username'));
 				}
 			}
 			catch (Exception $e)
 			{
-				TBGContext::setMessage('forgot_error', $e->getMessage());
-				$this->forward(TBGContext::getRouting()->generate('login'));
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
 			}
 		}
 

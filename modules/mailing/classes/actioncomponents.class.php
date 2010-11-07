@@ -9,7 +9,15 @@
 		public function componentForgotPasswordBlock()
 		{
 		}
+		
+		public function componentForgotPasswordPane()
+		{
+		}		
 
+		public function componentForgotPasswordTab()
+		{
+		}			
+		
 		public function componentSettings()
 		{
 		}

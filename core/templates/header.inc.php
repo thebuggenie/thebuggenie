@@ -37,6 +37,9 @@
 		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/prototype.js"></script>
 		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/scriptaculous.js"></script>
 		<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/b2.js"></script>
+		<?php if ($tbg_user->isGuest()): ?>
+			<script type="text/javascript" src="<?php print TBGContext::getTBGPath(); ?>js/login.js"></script>
+		<?php endif; ?>
 		<?php foreach ($tbg_response->getJavascripts() as $javascript): ?>
 			<script type="text/javascript" src="<?php print TBGContext::getTBGPath() . 'js/' . $javascript; ?>"></script>
 		<?php endforeach;?>
@@ -61,7 +64,7 @@
 				<?php echo __('Please wait, loading content'); ?>...
 			</div>
 			<div id="fullpage_backdrop_content"> </div>
-			<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent" onclick="resetFadedBackdrop();"> </div>
+			<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent" <?php if (TBGContext::getRouting()->getCurrentRouteAction() != 'login'): ?>onclick="resetFadedBackdrop();"<?php endif; ?>> </div>
 		</div>
 		<table style="width: 100%; height: 100%; table-layout: fixed; min-width: 1020px;" cellpadding=0 cellspacing=0>
 			<tr>
@@ -118,10 +121,10 @@
 												</td>
 												<td class="header_userlinks">
 													<?php if ($tbg_user->isGuest()): ?>
-														<?php echo link_tag(make_url('login'), __('Login')); ?>
+														<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>');"><?php echo __('Login'); ?></a>
 														<?php if (TBGSettings::isRegistrationAllowed()): ?>
 															<br>
-															<?php echo link_tag(make_url('login'), __('Register')); ?>
+															<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login', 'section' => 'register')); ?>');"><?php echo __('Register'); ?></a>
 														<?php endif; ?>
 													<?php else: ?>
 														<?php echo link_tag(make_url('account'), __('Your account')); ?><br>

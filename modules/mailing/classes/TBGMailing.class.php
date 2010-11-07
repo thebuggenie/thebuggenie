@@ -35,11 +35,13 @@
 			$this->addAvailableListener('core', 'user_registration', 'listen_registerUser', $i18n->__('Email when user registers'));
 			$this->addAvailableListener('core', 'password_reset', 'listen_forgottenPassword', $i18n->__('Email to reset password'));
 			$this->addAvailableListener('core', 'viewissue_top', 'listen_issueTop', $i18n->__('Email when user registers'));
-			$this->addAvailableListener('core', 'login_middle', 'listen_loginMiddle', $i18n->__('Email to reset password'));
+			$this->addAvailableListener('core', 'login_forgot_pane', 'listen_loginPane', $i18n->__('Email to reset password'));
+			$this->addAvailableListener('core', 'login_forgot_tab', 'listen_loginTab', $i18n->__('Email to reset password'));
 			$this->addAvailableListener('core', 'password_reset', 'listen_passwordReset', $i18n->__('Email when password is reset'));
 			$this->addAvailableListener('core', 'TBGIssue::save', 'listen_issueSave', $i18n->__('Email when an issue is updated'));
 			$this->addAvailableListener('core', 'TBGIssue::createNew', 'listen_issueCreate', $i18n->__('Email on new issues'));
 			$this->addAvailableListener('core', 'TBGComment::createNew', 'listen_TBGComment_createNew', $i18n->__('Email when comments are posted'));
+			$this->addAvailableListener('core', 'header_begins', 'listen_headerBegins', $i18n->__('Javascript Mailing'));
 		}
 
 		protected function _addAvailableRoutes()
@@ -53,11 +55,13 @@
 		protected function _install($scope)
 		{
 			$this->enableListenerSaved('core', 'user_registration', $scope);
-			$this->enableListenerSaved('core', 'login_middle', $scope);
+			$this->enableListenerSaved('core', 'login_forgot_tab', $scope);
+			$this->enableListenerSaved('core', 'login_forgot_pane', $scope);
 			$this->enableListenerSaved('core', 'password_reset', $scope);
 			$this->enableListenerSaved('core', 'TBGIssue::save', $scope);
 			$this->enableListenerSaved('core', 'TBGIssue::createNew', $scope);
 			$this->enableListenerSaved('core', 'TBGComment::createNew', $scope);
+			$this->enableListenerSaved('core', 'header_begins', $scope);
 			$this->saveSetting('smtp_host', '');
 			$this->saveSetting('smtp_port', 25);
 			$this->saveSetting('smtp_user', '');
@@ -70,7 +74,7 @@
 		
 		protected function _uninstall()
 		{
-			$this->_uninstall();
+			parent::_uninstall();
 		}
 
 		public function postConfigSettings(TBGRequest $request)
@@ -122,13 +126,21 @@
 			}
 		}
 
-		public function listen_loginMiddle(TBGEvent $event)
+		public function listen_loginPane(TBGEvent $event)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
-				TBGActionComponent::includeComponent('mailing/forgotPasswordBlock');
+				TBGActionComponent::includeComponent('mailing/forgotPasswordPane');
 			}
 		}
+
+		public function listen_loginTab(TBGEvent $event)
+		{
+			if ($this->isOutgoingNotificationsEnabled())
+			{
+				TBGActionComponent::includeComponent('mailing/forgotPasswordTab');
+			}
+		}			
 		
 		public function listen_passwordReset(TBGEvent $event)
 		{
@@ -137,6 +149,14 @@
 				$subject = TBGContext::getI18n()->__('Password reset');
 				$message = $this->createNewTBGMimemailFromTemplate($subject, 'passwordreset', array('password' => $event->getParameter('password')));
 				$this->_sendToUsers($event->getSubject(), $message);
+			}
+		}
+		
+		public function listen_headerBegins(TBGEvent $event)
+		{
+			if ($this->isOutgoingNotificationsEnabled() && TBGContext::getUser()->isGuest())
+			{			
+				TBGContext::getResponse()->addJavascript('forgot.js');
 			}
 		}
 		

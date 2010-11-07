@@ -187,4 +187,13 @@
 		{	
 		}
 
+		public function componentLogin()
+		{	
+				$this->selected_tab = isset($this->section) ? $this->section : 'login';
+		}		
+		
+		public function componentLoginRegister()
+		{	
+		}		
+		
 	}

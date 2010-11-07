@@ -169,47 +169,45 @@
 		}
 		
 		/**
-		 * Login page
+		 * Login (AJAX call)
 		 *  
 		 * @param TBGRequest $request
 		 */
 		public function runLogin(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
-			$this->getResponse()->setPage('login');
-			$this->getResponse()->setProjectMenuStripHidden();
 			$this->login_referer = (array_key_exists('HTTP_REFERER', $_SERVER) && isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
 			try
 			{
-				if (TBGContext::getRequest()->getMethod() == TBGRequest::POST)
+				if ($request->getMethod() == TBGRequest::POST)
 				{
-					if (TBGContext::getRequest()->hasParameter('tbg3_username') && TBGContext::getRequest()->hasParameter('tbg3_password'))
+					if ($request->hasParameter('tbg3_username') && $request->hasParameter('tbg3_password'))
 					{
-						$username = TBGContext::getRequest()->getParameter('tbg3_username');
-						$password = TBGContext::getRequest()->getParameter('tbg3_password');
+						$username = $request->getParameter('tbg3_username');
+						$password = $request->getParameter('tbg3_password');
 						$user = TBGUser::loginCheck($username, $password, true);
 						$this->getResponse()->setCookie('tbg3_username', $username);
 						$this->getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($password));
-						if (TBGContext::getRequest()->hasParameter('return_to')) 
+						if ($request->hasParameter('return_to')) 
 						{
-							$this->forward(TBGContext::getRequest()->getParameter('return_to'));
+							return $this->renderJSON(array('forward' => $request->getParameter('return_to')));
 						}
 						else
 						{
 							if (TBGSettings::get('returnfromlogin') == 'referer')
 							{
-								if (TBGContext::getRequest()->getParameter('tbg3_referer'))
+								if ($request->getParameter('tbg3_referer'))
 								{
-									$this->forward(TBGContext::getRequest()->getParameter('tbg3_referer'));
+									return $this->renderJSON(array('forward' => $request->getParameter('tbg3_referer')));
 								}
 								else
 								{
-									$this->forward(TBGContext::getRouting()->generate('home'));
+									return $this->renderJSON(array('forward' => TBGContext::getRouting()->generate('home')));
 								}
 							}
 							else
 							{
-								$this->forward(TBGContext::getRouting()->generate(TBGSettings::get('returnfromlogin')));
+								return $this->renderJSON(array('forward' => TBGContext::getRouting()->generate(TBGSettings::get('returnfromlogin'))));
 							}
 						}
 					}
@@ -220,67 +218,58 @@
 				}
 				elseif (!TBGContext::getUser()->isAuthenticated() && TBGSettings::get('requirelogin'))
 				{
-					$this->login_error = $i18n->__('You need to log in to access this site');
-					$this->login_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
+					throw new Exception($i18n->__('You need to log in to access this site'));
 				}
 				elseif (!TBGContext::getUser()->isAuthenticated())
 				{
-					$this->login_error = $i18n->__('Please log in');
-					$this->login_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
+					throw new Exception($i18n->__('Please log in'));
 				}
 				elseif (TBGContext::hasMessage('forward'))
 				{
-					$this->login_error = TBGContext::getMessageAndClear('forward');
-					$this->login_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
+					throw new Exception($i18n->__(TBGContext::getMessageAndClear('forward')));
 				}
 			}
 			catch (Exception $e)
 			{
-				$this->login_error = $e->getMessage();
-				$this->login_referer = TBGContext::getRequest()->getParameter('tbg3_referer');
+				return $this->renderJSON(array('failed' => true, "error" => $i18n->__($e->getMessage()), 'referer' => $request->getParameter('tbg3_referer')));
 			}
 		}
 		
 		/**
-		 * Registration logic part 1 - check if username is free
-		 *  
-		 * @param TBGRequest $request
+		 * Registration logic part 1 - check if username is free (AJAX call)
+		 * 
+		 * @param TBGRequest $request The request object
 		 */
 		public function runRegister1(TBGRequest $request)
 		{
-			$this->getResponse()->setPage('login');
+			$i18n = TBGContext::getI18n();
+
 			try
 			{
-				if (TBGContext::getRequest()->getMethod() == TBGRequest::POST)
+				$username = $request->getParameter('desired_username');
+				if (!empty($username))
 				{
-					$username = TBGContext::getRequest()->getParameter('desired_username');
-					if (!empty($username))
+					$exists = TBGUsersTable::getTable()->getByUsername($username);
+					
+					if ($exists)
 					{
-						$exists = TBGUsersTable::getTable()->getByUsername($username);
-						
-						if ($exists)
-						{
-							throw new Exception(TBGContext::getI18n()->__('This username is in use'));
-						}
-						else
-						{
-							TBGContext::setMessage('prereg_success', $username);
-							$this->forward('login');
-
-						}
+						throw new Exception($i18n->__('This username is in use'));
 					}
 					else
 					{
-						throw new Exception(TBGContext::getI18n()->__('Please enter a username'));
+						return $this->renderJSON(array('message' => $username));
 					}
+				}
+				else
+				{
+					throw new Exception($i18n->__('Please enter a username'));
 				}
 			}
 			catch (Exception $e)
 			{
-				TBGContext::setMessage('prereg_error', $e->getMessage());
-				$this->forward('login');
+				return $this->renderJSON(array('failed' => true, 'error' => $i18n->__($e->getMessage())));
 			}
-		}
+		}		
 
 		/**
 		 * Registration logic part 2 - add user data
@@ -289,100 +278,103 @@
 		 */
 		public function runRegister2(TBGRequest $request)
 		{
-			$this->getResponse()->setPage('login');
+			$i18n = TBGContext::getI18n();
+			
 			try
 			{
-				if (TBGContext::getRequest()->getMethod() == TBGRequest::POST)
+				$username = $request->getParameter('username');
+				$buddyname = $request->getParameter('buddyname');
+				$email = $request->getParameter('email_address');
+				$confirmemail = $request->getParameter('email_confirm');
+				$security = $request->getParameter('verification_no');
+				$realname = $request->getParameter('realname');
+				
+				$fields = array();
+				
+				if (!empty($buddyname) && !empty($email) && !empty($confirmemail) && !empty($security))
 				{
-					$username = TBGContext::getRequest()->getParameter('username');
-					$buddyname = TBGContext::getRequest()->getParameter('buddyname');
-					$email = TBGContext::getRequest()->getParameter('email_address');
-					$confirmemail = TBGContext::getRequest()->getParameter('email_confirm');
-					$security = TBGContext::getRequest()->getParameter('verification_no');
-					$realname = TBGContext::getRequest()->getParameter('realname');
-					
-					if (!empty($buddyname) && !empty($email) && !empty($confirmemail) && !empty($security))
+					if ($email != $confirmemail)
 					{
-						if ($email != $confirmemail)
-						{
-							throw new Exception(TBGContext::getI18n()->__('The email address must be valid, and must be typed twice.'));
-						}
+						array_push($fields, 'email_address', 'email_confirm');
+						throw new Exception($i18n->__('The email address must be valid, and must be typed twice.'));
+					}
 
-						if ($security != $_SESSION['activation_number'])
-						{
-							throw new Exception(TBGContext::getI18n()->__('To prevent automatic sign-ups, enter the verification number shown below.'));
-						}
+					if ($security != $_SESSION['activation_number'])
+					{
+						array_push($fields, 'verification_no');
+						throw new Exception($i18n->__('To prevent automatic sign-ups, enter the verification number shown below.'));
+					}
 
-						$email_ok = false;
-						$valid_domain = false;
+					$email_ok = false;
+					$valid_domain = false;
 
-						if ((!(stristr($email, "@") === false)) && (strripos($email, ".") > strripos($email, "@")))
-						{
-							$email_ok = true;
-						}
-						
-						if ($email_ok && TBGSettings::get('limit_registration') != '')
-						{
+					if ((!(stristr($email, "@") === false)) && (strripos($email, ".") > strripos($email, "@")))
+					{
+						$email_ok = true;
+					}
+					
+					if ($email_ok && TBGSettings::get('limit_registration') != '')
+					{
 
-							$allowed_domains = explode(',', TBGSettings::get('limit_registration'));
-							if (count($allowed_domains) > 0)
+						$allowed_domains = explode(',', TBGSettings::get('limit_registration'));
+						if (count($allowed_domains) > 0)
+						{
+							foreach ($allowed_domains as $allowed_domain)
 							{
-								foreach ($allowed_domains as $allowed_domain)
+								$allowed_domain = '@' . trim($allowed_domain);
+								if (strpos($email, $allowed_domain) !== false ) //strpos checks if $to
 								{
-									$allowed_domain = '@' . trim($allowed_domain);
-									if (strpos($email, $allowed_domain) !== false ) //strpos checks if $to
-									{
-										$valid_domain = true;
-										break;
-									}
+									$valid_domain = true;
+									break;
 								}
-							}
-							else
-							{
-								$valid_domain = true;
 							}
 						}
 						else
 						{
 							$valid_domain = true;
 						}
-						
-						if ($valid_domain == false)
-						{
-							throw new Exception(TBGContext::getI18n()->__('Email adresses from this domain can not be used.'));
-						}
-						
-						if($email_ok == false)
-						{
-							throw new Exception(TBGContext::getI18n()->__('The email address must be valid, and must be typed twice.'));
-						}
-						
-						if ($security != $_SESSION['activation_number'])
-						{
-							throw new Exception(TBGContext::getI18n()->__('To prevent automatic sign-ups, enter the verification number shown below.'));
-						}
-
-						$password = TBGUser::createPassword();
-						$user = TBGUser::createNew($username, $realname, $buddyname, TBGContext::getScope()->getID(), false, true, TBGUser::hashPassword($password), $email, true);
-
-						if ($user->isActivated())
-						{
-							TBGContext::setMessage('postreg_password', $password);
-						}
-						TBGContext::setMessage('postreg_success', true);
-						$this->forward('login');
 					}
 					else
 					{
-						throw new Exception(TBGContext::getI18n()->__('You need to fill out all fields correctly.'));
+						$valid_domain = true;
 					}
+					
+					if ($valid_domain == false)
+					{
+						array_push($fields, 'email_address', 'email_confirm');
+						throw new Exception($i18n->__('Email adresses from this domain can not be used.'));
+					}
+					
+					if($email_ok == false)
+					{
+						array_push($fields, 'email_address', 'email_confirm');
+						throw new Exception($i18n->__('The email address must be valid, and must be typed twice.'));
+					}
+					
+					if ($security != $_SESSION['activation_number'])
+					{
+						array_push($fields, 'verification_no');
+						throw new Exception($i18n->__('To prevent automatic sign-ups, enter the verification number shown below.'));
+					}					
+
+					$password = TBGUser::createPassword();
+					$user = TBGUser::createNew($username, $realname, $buddyname, TBGContext::getScope()->getID(), false, true, TBGUser::hashPassword($password), $email, true);
+
+					if ($user->isActivated())
+					{
+						return $this->renderJSON(array('message' => $i18n->__('A password has been autogenerated for you. To log in, use the following password:') . ' <b>' . $password . '</b>'));
+					}
+					return $this->renderJSON(array('message' => $i18n->__('The account has now been registered - check your email inbox for the activation email. Please be patient - this email can take up to two hours to arrive.')));
+				}
+				else
+				{
+					array_push($fields, 'email_address', 'email_confirm', 'buddyname', 'verification_no');
+					throw new Exception($i18n->__('You need to fill out all fields correctly.'));
 				}
 			}
 			catch (Exception $e)
 			{
-				TBGContext::setMessage('prereg_success', $username);
-				TBGContext::setMessage('postreg_error', $e->getMessage());
-				$this->forward('login');
+				return $this->renderJSON(array('failed' => true, 'error' => $i18n->__($e->getMessage()), 'fields' => $fields));
 			}
 		}
 
@@ -2258,6 +2250,11 @@
 							$options['user'] = $user;
 						}
 						break;
+					case 'login':
+						$template_name = 'main/login';
+						$options['section'] = $request->getParameter('section', 'login');
+						$options['mandatory'] = $request->getParameter('mandatory', false);
+						break;
 					case 'close_issue':
 						$template_name = 'main/closeissue';
 						break;
@@ -2717,5 +2714,5 @@
 		public function runAddAffected(TBGRequest $request)
 		{
 			
-		}
+		}		
 }
