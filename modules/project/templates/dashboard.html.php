@@ -81,12 +81,12 @@
 					<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Team'); ?>:</div>
 					<?php if (count($assignees['users']) > 0): ?>
 						<?php foreach ($assignees['users'] as $user_id => $info): ?>
-							<div style="width: auto; display: inline; clear: none; margin: 0 10px 0 0;">
+							<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
 								<?php echo include_component('main/userdropdown', array('user' => $user_id)); ?>
 							</div>
 						<?php endforeach; ?>
 					<?php else: ?>
-						<div class="faded_out" style="font-weight: normal; padding: 8px 0 0 0;"><?php echo __('No users or teams assigned'); ?></div>
+						<div class="faded_out" style="font-weight: run-in; padding: 8px 0 0 0;"><?php echo __('No users or teams assigned'); ?></div>
 					<?php endif; ?>
 				</div>
 			</div>

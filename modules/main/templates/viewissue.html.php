@@ -334,16 +334,14 @@
 									<label for="comment_bodybox"><?php echo __('Comment'); ?></label><br />
 									<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'comment_bodybox', 'height' => '200px', 'width' => '970px', 'value' => ((isset($comment_error) && $comment_error) ? $comment_error_body : ''))); ?>
 									<div id="comment_add_indicator" style="display: none;">
-										<?php echo image_tag('spinning_16.gif', array('class' => 'spinning')); ?>
+										<?php echo image_tag('spinning_20.gif'); ?>
 									</div>
 
-									<div style="margin: 10px 0 10px 0; font-size: 12px;">
+									<div id="comment_add_controls" style="font-size: 12px;" class="comment_controls">
 										<input type="checkbox" name="comment_save_changes" id="comment_save_changes" value="1"<?php if (isset($issue_unsaved) || (isset($comment_error) && $comment_error)): ?> checked<?php endif; ?>>&nbsp;<label for="comment_save_changes"><?php echo __('Save my changes with this comment'); ?></label>
-									</div>
-
-									<div id="comment_add_controls" class="comment_controls">
+										<br><br>
 										<input type="hidden" name="forward_url" value="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>">
-										<?php echo __('%create_comment% or %cancel%', array('%create_comment%' => '<input type="submit" class="comment_addsave" value="'.__('Create comment').'" />', '%cancel%' => '<a href="javascript:void(0)" onClick="$(\'comment_add\').hide();$(\'comment_add_button\').show();">'.__('cancel').'</a>')); ?>
+										<?php echo __('%create_comment% or %cancel%', array('%create_comment%' => '<input type="submit" class="comment_addsave" value="'.__('Create comment').'" />', '%cancel%' => '<a href="javascript:void(0);" onClick="$(\'comment_add\').hide();$(\'comment_add_button\').show();">'.__('cancel').'</a>')); ?>
 									</div>
 								</form>
 							</div>
