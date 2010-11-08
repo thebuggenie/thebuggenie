@@ -86,7 +86,7 @@
 							</div>
 						<?php endforeach; ?>
 					<?php else: ?>
-						<div class="faded_out" style="font-weight: run-in; padding: 8px 0 0 0;"><?php echo __('No users or teams assigned'); ?></div>
+						<div class="faded_out" style="font-weight: normal; padding: 8px 0 0 0;"><?php echo __('No users or teams assigned'); ?></div>
 					<?php endif; ?>
 				</div>
 			</div>
