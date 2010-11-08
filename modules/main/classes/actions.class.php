@@ -2043,7 +2043,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 			$comment = null;
-			$project = TBGContext::factory()->Project($request->getParameter('project_id'));
+			$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 			$project_key = ($project instanceof TBGProject) ? $project->getKey() : false;
 			try
 			{
