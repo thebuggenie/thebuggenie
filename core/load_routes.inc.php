@@ -7,10 +7,12 @@
 	$routes[] = array('dashboard', '/dashboard', 'main', 'dashboard');
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
 	$routes[] = array('login', '/login', 'main', 'login');
+	$routes[] = array('login_section', '/login/section/:section/*', 'main', 'login');
 	$routes[] = array('openid_login', '/login/openid', 'openid', 'login');
 	$routes[] = array('register1', '/register1', 'main', 'register1');
 	$routes[] = array('register2', '/register2', 'main', 'register2');
 	$routes[] = array('activate', '/activate/:user/:key', 'main', 'activate');
+	$routes[] = array('reset_password', '/reset/password/:user/:key', 'main', 'reset');
 	$routes[] = array('logout', '/logout', 'main', 'logout');
 	$routes[] = array('getprojectmenustrip', '/getprojectmenustrip/on/page/:page', 'project', 'getMenustrip');
 	$routes[] = array('hide_infobox', '/hide/infobox/:key', 'main', 'hideInfobox');

@@ -190,6 +190,7 @@
 		public function componentLogin()
 		{	
 				$this->selected_tab = isset($this->section) ? $this->section : 'login';
+				$this->options = $this->getParameterHolder();
 		}		
 		
 		public function componentLoginRegister()

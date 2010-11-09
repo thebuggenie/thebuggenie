@@ -35,13 +35,14 @@
 			$this->addAvailableListener('core', 'user_registration', 'listen_registerUser', $i18n->__('Email when user registers'));
 			$this->addAvailableListener('core', 'password_reset', 'listen_forgottenPassword', $i18n->__('Email to reset password'));
 			$this->addAvailableListener('core', 'viewissue_top', 'listen_issueTop', $i18n->__('Email when user registers'));
-			$this->addAvailableListener('core', 'login_forgot_pane', 'listen_loginPane', $i18n->__('Email to reset password'));
-			$this->addAvailableListener('core', 'login_forgot_tab', 'listen_loginTab', $i18n->__('Email to reset password'));
+			$this->addAvailableListener('core', 'login_form_pane', 'listen_loginPane', $i18n->__('Email to reset password'));
+			$this->addAvailableListener('core', 'login_form_tab', 'listen_loginTab', $i18n->__('Email to reset password'));
 			$this->addAvailableListener('core', 'password_reset', 'listen_passwordReset', $i18n->__('Email when password is reset'));
 			$this->addAvailableListener('core', 'TBGIssue::save', 'listen_issueSave', $i18n->__('Email when an issue is updated'));
 			$this->addAvailableListener('core', 'TBGIssue::createNew', 'listen_issueCreate', $i18n->__('Email on new issues'));
 			$this->addAvailableListener('core', 'TBGComment::createNew', 'listen_TBGComment_createNew', $i18n->__('Email when comments are posted'));
 			$this->addAvailableListener('core', 'header_begins', 'listen_headerBegins', $i18n->__('Javascript Mailing'));
+			$this->addAvailableListener('core', 'login_page_script', 'listen_loginPageScript', $i18n->__('Reset password'));
 		}
 
 		protected function _addAvailableRoutes()
@@ -49,19 +50,21 @@
 			// No, I didn't forget the parameters, but what else would you call
 			// it when it's about retrieving a forgotten password?
 			$this->addRoute('forgot', '/forgot', 'forgot');
+			$this->addRoute('reset', '/reset/:user/:key', 'resetPassword');
 			$this->addRoute('mailing_test_email', '/mailing/test', 'testEmail');
 		}
 		
 		protected function _install($scope)
 		{
 			$this->enableListenerSaved('core', 'user_registration', $scope);
-			$this->enableListenerSaved('core', 'login_forgot_tab', $scope);
-			$this->enableListenerSaved('core', 'login_forgot_pane', $scope);
+			$this->enableListenerSaved('core', 'login_form_tab', $scope);
+			$this->enableListenerSaved('core', 'login_form_pane', $scope);
 			$this->enableListenerSaved('core', 'password_reset', $scope);
 			$this->enableListenerSaved('core', 'TBGIssue::save', $scope);
 			$this->enableListenerSaved('core', 'TBGIssue::createNew', $scope);
 			$this->enableListenerSaved('core', 'TBGComment::createNew', $scope);
 			$this->enableListenerSaved('core', 'header_begins', $scope);
+			$this->enableListenerSaved('core', 'login_page_script', $scope);
 			$this->saveSetting('smtp_host', '');
 			$this->saveSetting('smtp_port', 25);
 			$this->saveSetting('smtp_user', '');
@@ -130,7 +133,7 @@
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
-				TBGActionComponent::includeComponent('mailing/forgotPasswordPane');
+				TBGActionComponent::includeComponent('mailing/forgotPasswordPane', $event->getParameters());
 			}
 		}
 
@@ -138,7 +141,7 @@
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
-				TBGActionComponent::includeComponent('mailing/forgotPasswordTab');
+				TBGActionComponent::includeComponent('mailing/forgotPasswordTab', $event->getParameters());
 			}
 		}			
 		
@@ -160,12 +163,21 @@
 			}
 		}
 		
+		public function listen_loginPageScript(TBGEvent $event)
+		{
+			if ($this->isOutgoingNotificationsEnabled() && TBGContext::getUser()->isGuest())
+			{			
+				$event->setReturnValue(array('section' => 'section', 'id' => 'key', 'user' => 'user', 'reset' => 'reset'));
+			}
+			$event->setProcessed(true);
+		}
+		
 		public function sendforgottenPasswordEmail($user)
 		{
 			if ($this->isOutgoingNotificationsEnabled())
 			{
 				$subject = TBGContext::getI18n()->__('Forgot your password?');
-				$message = $this->createNewTBGMimemailFromTemplate($subject, 'forgottenpassword');
+				$message = $this->createNewTBGMimemailFromTemplate($subject, 'forgottenpassword', array('user' => $user));
 				$this->_sendToUsers($user, $message);
 			}
 		}
@@ -376,6 +388,13 @@
 			$mail->decorateMessageHTML($pre_html_message, $post_html_message);
 			$mail->addReplacementValues(array('%thebuggenie_url%' => TBGContext::getRouting()->generate('home', array(), false)));
 		}
+		
+		protected function _setAdditionalMailValues(TBGMimemail $mail, array $parameters)
+		{
+			$mail->addReplacementValues(array('%password%' => isset($parameters['password']) ? $parameters['password'] : ''));
+			$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? TBGContext::getRouting()->generate('reset', array('user' => $parameters['user']->getUsername(), 'key' => $parameters['user']->getHashPassword()), false) : '' ));
+			$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? TBGContext::getRouting()->generate('activate', array('user' => $parameters['user']->getUsername(), 'key' => $parameters['user']->getHashPassword()), false) : ''));
+		}
 
 		/**
 		 * Create a new TBGMimemail and return it
@@ -395,6 +414,7 @@
 			{
 				$mail = TBGMimemail::createNewFromTemplate($subject, $template, $parameters, $language, $recipients, $charset);
 				$this->_setInitialMailValues($mail);
+				$this->_setAdditionalMailValues($mail, $parameters);
 
 				return $mail;
 			}

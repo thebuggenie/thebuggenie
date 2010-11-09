@@ -357,6 +357,16 @@
 		}
 
 		/**
+		 * Get all parameters from the request
+		 *
+		 * @return array
+		 */		
+		public function getParameters()
+		{
+			return $this->_request_parameters;
+		}
+		
+		/**
 		 * Get a parameter from the request
 		 *
 		 * @param string $key The parameter you want to retrieve

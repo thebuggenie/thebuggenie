@@ -1050,14 +1050,6 @@
 			$this->pwd = self::hashPassword($newpassword);
 		}
 		
-		public function setRandomPassword()
-		{
-			$newPass = tbg_createPassword();
-			$hashnewPass = self::hashPassword($newPass);
-			$this->changePassword($newPass);
-			return $newPass;
-		}
-	
 		/**
 		 * Set the user state to this state 
 		 *
@@ -1187,11 +1179,6 @@
 		public function isEmailPublic()
 		{
 			return !$this->private_email;
-		}
-
-		public function getPasswordHash()
-		{
-			return $this->pwd;
 		}
 		
 		/**

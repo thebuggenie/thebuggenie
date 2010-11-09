@@ -5,11 +5,7 @@
 	 */
 	class mailingActionComponents extends TBGActionComponent
 	{
-		
-		public function componentForgotPasswordBlock()
-		{
-		}
-		
+
 		public function componentForgotPasswordPane()
 		{
 		}		

@@ -3,7 +3,7 @@
 		<div class="tab_menu">
 			<ul id="login_menu">
 				<li id="tab_login"<?php if ($selected_tab == 'login'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_login.png', array('style' => 'float: left;')).__('Login'), array('onclick' => "switchSubmenuTab('tab_login', 'login_menu');")); ?></li>
-				<?php TBGEvent::createNew('core', 'login_forgot_tab')->trigger(); ?>
+				<?php TBGEvent::createNew('core', 'login_form_tab')->trigger(array('selected_tab' => $selected_tab)); ?>
 				<?php if (TBGSettings::get('allowreg') == true): ?>
 					<li id="tab_register"<?php if ($selected_tab == 'register'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_register.png', array('style' => 'float: left;')).__('Register new account'), array('onclick' => "switchSubmenuTab('tab_register', 'login_menu');")); ?></li>
 				<?php endif; ?>
@@ -48,7 +48,7 @@
 					</div>
 				</div>				
 			</div>
-			<?php TBGEvent::createNew('core', 'login_forgot_pane')->trigger(); ?>
+			<?php TBGEvent::createNew('core', 'login_form_pane')->trigger(array_merge(array('selected_tab' => $selected_tab), $options)); ?>
 			<?php if (TBGSettings::get('allowreg') == true): ?>
 				<?php include_template('main/loginregister', array('selected_tab' => $selected_tab)); ?>
 			<?php endif; ?>
