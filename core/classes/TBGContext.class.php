@@ -1509,7 +1509,7 @@
 			$token = self::generateCSRFtoken();
 			if ($token == self::getRequest()->getParameter('csrf_token')) return true;
 
-			$message = self::getI18n()->__('An authentication error occured when trying to access this resource, please reload your page and try again');
+			$message = self::getI18n()->__('An authentication error occured. Please reload your page and try again');
 			/*if ($handle_response)
 			{
 				self::$_response->setHttpStatus(301);

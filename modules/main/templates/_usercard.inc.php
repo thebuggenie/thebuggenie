@@ -1,5 +1,6 @@
 <div class="rounded_box white borderless shadowed backdrop_box large backdrop_detail_content" id="user_details_popup">
 	<div class="backdrop_detail_content rounded_top" style="padding: 10px; text-align: left;">
+		<div class="user_id"><?php echo $user->getID(); ?></div>
 		<div style="padding: 2px; width: 48px; height: 48px; text-align: center; background-color: #FFF; border: 1px solid #DDD; float: left;">
 			<?php echo image_tag($user->getAvatarURL(false), array('alt' => ' ', 'style' => "width: 48px; height: 48px;"), true); ?>
 		</div>
@@ -8,14 +9,14 @@
 			<div class="user_status"><?php echo $user->getState()->getName(); ?></div>
 		</div>
 		<div class="user_details">
-			<?php if(!$user->getLastSeen()): ?>
-				<?php echo '<b>' . __('This user was never connected') . '</b>'; ?>
+			<?php if (!$user->getLastSeen()): ?>
+				<i><?php echo __('This user has not logged in yet'); ?></i>
 			<?php else: ?>
 				<?php echo '<b>' . __('This user was last seen online at %time%', array('%time%' => '</b>' . tbg_formatTime($user->getLastSeen(), 11))); ?> 
 			<?php endif; ?>
 			<br>
-			<?php if(!$user->getLatestActions(1)): ?>
-				<?php echo '<b>' . __('This user has no recent activity') . '</b>'; ?>	
+			<?php if (!$user->getLatestActions(1)): ?>
+				<i><?php echo __('There is no recent activity available for this user'); ?></i>
 			<?php else: ?>
 				<?php foreach ($user->getLatestActions(1) as $action): ?>
 					<?php echo '<b>' . __('Last user activy was at %time%', array('%time%' => '</b>' . tbg_formatTime($action['timestamp'], 11))); ?>
@@ -23,7 +24,7 @@
 			<?php endif; ?>	
 			<br>	
 			<?php if (count($user->getIssues(1))): ?>	
-				<?php echo '<b>' . __('This user has reported</b> %issues% issue%s%', array('%issues%' => count($user->getIssues()), '%s%' => count($user->getIssues()) > 1 ? 's' : '' )); ?>
+				<?php echo '<b>' . __('This user has reported %issues% issue(s)', array('%issues%' => '</b>'.count($user->getIssues()).'<b>')); ?>
 				<br>
 				<b><?php echo __('Last reported issue: '); ?></b>
 					<?php foreach ($user->getIssues(1) as $issue): ?>
@@ -31,7 +32,7 @@
 						<?php echo link_tag(make_url('viewissue', array('project_key' =>$issue->get(TBGProjectsTable::KEY), 'issue_no' => $issue->get(TBGIssuesTable::ID))), $issue->get(TBGIssueTypesTable::NAME) . ' #' . $issue->get(TBGIssuesTable::ISSUE_NO) . ' - '. $issue->get(TBGIssuesTable::TITLE)); ?>
 					<?php endforeach; ?>
 			<?php else: ?>
-				<?php echo '<b>' . __('This user has reported no issue') . '</b>'; ?>
+				<i><?php echo __('This user has not reported any issues yet'); ?></i>
 			<?php endif; ?>			
 			<br>
 			<?php if (count($user->getTeams())): ?>
@@ -42,7 +43,6 @@
 					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>			
-			<?php echo __('User ID: ').$user->getID(); ?>
 		</div>
 		<?php TBGEvent::createNew('core', 'usercardactions_top', $user)->trigger(); ?>
 		<?php if (TBGUser::isThisGuest() == false): ?>

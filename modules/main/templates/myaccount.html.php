@@ -7,15 +7,15 @@
 	<tr>
 		<td id="account_lefthand" class="side_bar">
 			<?php TBGEvent::createNew('core', 'account_left_top')->trigger(); ?>
-			<div class="rounded_box iceblue borderless" style="margin: 10px 0px 10px 10px; padding: 10px; font-size: 14px;">
+			<div class="rounded_box iceblue borderless account_details">
 				<?php echo image_tag($tbg_user->getAvatarURL(false), array('style' => 'float: left; margin-right: 5px;'), true); ?>
-				<strong><?php echo $tbg_user->getRealname(); ?></strong>
-				<br />
-				<span style="font-size: 12px;">
-					(<?php echo $tbg_user->getUsername(); ?>)<br>
+				<div class="user_realname"><?php echo $tbg_user->getRealname(); ?></div>
+				<div class="user_username">
+					(<?php echo $tbg_user->getUsername(); ?>)
+				</div>
+				<div class="user_status">
 					<?php echo '<b>' . __('Status: %status%', array('%status%' => '</b>' . (($tbg_user->getState() instanceof TBGUserstate) ? $tbg_user->getState()->getName() : '<span class="faded_out">' . __('Unknown') . '</span>'))); ?>
-				</span>
-				<br />
+				</div>
 				<div style="font-size: 13px;">
 					<div style="clear: both; margin-top: 15px;">
 						<?php echo image_tag('icon_change_password.png', array('style' => 'float: left; margin-right: 5px;')); ?>

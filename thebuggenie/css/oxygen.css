@@ -77,8 +77,12 @@ div.image_container.thumb img.image { width: 220px; }
 .medium_transparent { filter:alpha(opacity=70); -moz-opacity:.70; opacity:.70; text-align: center; }
 .medium_transparent img { vertical-align: middle; }
 .popup_message { margin: -30px 0 0 -406px; position: fixed; top: 50%; left: 50%; width: 800px; padding: 0; font-size: 14px; color: #000; border-color: #555; cursor: pointer; }
+.dismiss_me { float: right;com text-align: right; font-size: 11px; line-height: 1; padding: 0; margin: 0; }
 .popup_message.failure { z-index: 200001; background-color: #E84545; }
+.popup_message.failure .dismiss_me { color: #822323; }
 .popup_message.success { z-index: 200000; background-color: #45E845; }
+.popup_message.success .dismiss_me { color: #238223; }
+
 /* end slidedowns */
 
 /* main page layout dimensions and details */
@@ -220,8 +224,13 @@ a.shadowed:active { box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); -webkit-box-shad
 /* user popups */
 .user_popup, #user_details_popup { font-size: 12px; }
 .user_popup .user_realname { font-size: 1.2em; font-weight: bold; padding: 0 0 0 7px; width: 240px; float: left; }
-#user_details_popup .user_realname { font-size: 1.5em; font-weight: bold; padding: 4px 0 0 10px; float: left; }
-#user_details_popup .user_username { font-weight: normal; font-size: 0.9em; color: #aaa; font-style: italic; }
+#user_details_popup .user_realname { font-size: 1.5em; font-weight: bold; padding: 4px 0 0 10px; float: left; line-height: 1.2; }
+.account_details { margin: 10px 0px 10px 10px; padding: 10px; font-size: 1em; }
+.account_details .user_realname { font-size: 1.2em; font-weight: bold; line-height: 1.3; padding-bottom: 2px; }
+.account_details .user_username { font-size: 0.9em; line-height: 1.2; }
+.account_details .user_status { font-size: 0.9em; line-height: 1.2; }
+#user_details_popup .user_username { font-weight: normal; font-size: 0.9em; color: #aaa; font-style: italic; line-height: 1.2; }
+#user_details_popup .user_id { float: right; font-size: 26px; font-weight: normal; color: #C4CAE9; }
 .user_popup .user_realname .user_status, #user_details_popup .user_realname .user_status { font-size: 0.8em; font-weight: normal; color: #aaa; }
 .user_popup .user_details, #user_details_popup .user_details { font-size: 1.0em; font-weight: normal; padding: 3px; clear: both; }
 .user_details ul.teamlist { list-style-type: none; }

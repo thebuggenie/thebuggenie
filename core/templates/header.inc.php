@@ -50,12 +50,14 @@
 			<div style="padding: 10px 0 10px 0;">
 				<span style="color: #000; font-weight: bold;" id="thebuggenie_failuremessage_title"></span><br>
 				<span id="thebuggenie_failuremessage_content"></span>
+				<div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
 			</div>
 		</div>
 		<div class="medium_transparent rounded_box shadowed popup_message success" onclick="clearPopupMessages();" style="display: none;" id="thebuggenie_successmessage">
 			<div style="padding: 10px 0 10px 0;">
 				<span style="color: #000; font-weight: bold;" id="thebuggenie_successmessage_title"></span><br>
 				<span id="thebuggenie_successmessage_content"></span>
+				<div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
 			</div>
 		</div>
 		<div id="fullpage_backdrop" style="display: none; background-color: transparent; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; text-align: center;">
