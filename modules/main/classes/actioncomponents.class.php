@@ -195,6 +195,10 @@
 		
 		public function componentLoginRegister()
 		{	
+		}
+		
+		public function componentCaptcha()
+		{	
 		}		
 		
 	}

@@ -2123,7 +2123,6 @@
 			{
 				return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'commentcount' => TBGComment::countComments($request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'))));
 			}
-//			var_dump($comment);die();
 			if ($comment instanceof TBGComment)
 			{
 				$this->forward($request->getParameter('forward_url') . "#comment_{$request->getParameter('comment_applies_type')}_{$request->getParameter('comment_applies_id')}_{$comment->getID()}");
@@ -2724,8 +2723,12 @@
 		{
 			
 		}
-		/*
+		
+		/**
 		 * Reset user password
+		 * 
+		 * @param TBGRequest $request The request object
+		 * 
 		 */
 		public function runReset(TBGRequest $request)
 		{
@@ -2773,5 +2776,37 @@
 			{
 				return $this->renderJSON(array('failed' => true, 'error' => 'An internal error has occured'));
 			}
+		}
+		
+		/**
+		 * Generate captcha picture
+		 * 
+		 * @param TBGRequest $request The request object
+		 * @global array $_SESSION['activation_number'] The session captcha activation number
+		 */			
+		public function runCaptcha(TBGRequest $request)
+		{
+			TBGContext::loadLibrary('ui');
+			
+			if (!function_exists('imagecreatetruecolor'))
+			{
+				return $this->return404();
+			}
+			
+			$this->getResponse()->setContentType('image/png');
+			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
+			$chain = str_split($_SESSION['activation_number'],1);
+			$size = getimagesize(image_url('numbers/0.png', false, 'core', false));
+			$captcha = imagecreatetruecolor($size[0]*sizeof($chain), $size[1]);
+			foreach ($chain as $n => $number)
+			{
+				$pic = imagecreatefrompng(image_url('numbers/' . $number . '.png', false, 'core', false));
+				imagecopymerge($captcha, $pic, $size[0]*$n, 0, 0, 0, imagesx($pic), imagesy($pic), 100);
+				imagedestroy($pic);
+			}
+			imagepng($captcha);
+			imagedestroy($captcha);
+			
+			return true;
 		}
 }

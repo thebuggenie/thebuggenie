@@ -43,9 +43,7 @@
 					</table>
 					<br>
 					
-					<?php
-						$_SESSION['activation_number'] = tbg_printRandomNumber();
-					?>
+					<?php TBGActionComponent::includeComponent('captcha'); ?>
 					
 					<br><b><?php echo __('Enter the above number in this box'); ?></b><br><br>
 					<label class="login_fieldheader" for="verification_no">*&nbsp;<?php echo __('Security check'); ?></label>

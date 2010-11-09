@@ -50,8 +50,6 @@
 		{
 			$rndNo = mt_rand(0,9);
 			$randomNumber .= $rndNo;
-
-			?><?php echo image_tag('/numbers/' . $rndNo . '.png'); ?><?php
 		}
 
 		return $randomNumber;
