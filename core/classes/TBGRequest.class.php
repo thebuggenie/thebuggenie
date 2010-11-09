@@ -363,7 +363,7 @@
 		 */		
 		public function getParameters()
 		{
-			return $this->_request_parameters;
+			return array_diff_key($this->_request_parameters, array('url' => null));;
 		}
 		
 		/**

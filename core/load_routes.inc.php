@@ -12,7 +12,7 @@
 	$routes[] = array('register1', '/register1', 'main', 'register1');
 	$routes[] = array('register2', '/register2', 'main', 'register2');
 	$routes[] = array('activate', '/activate/:user/:key', 'main', 'activate');
-	$routes[] = array('reset_password', '/reset/password/:user/:key', 'main', 'reset');
+	$routes[] = array('reset_password', '/reset/password/:user/:id', 'main', 'reset');
 	$routes[] = array('logout', '/logout', 'main', 'logout');
 	$routes[] = array('getprojectmenustrip', '/getprojectmenustrip/on/page/:page', 'project', 'getMenustrip');
 	$routes[] = array('hide_infobox', '/hide/infobox/:key', 'main', 'hideInfobox');

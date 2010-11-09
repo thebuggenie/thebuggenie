@@ -42,15 +42,12 @@
 			$this->addAvailableListener('core', 'TBGIssue::createNew', 'listen_issueCreate', $i18n->__('Email on new issues'));
 			$this->addAvailableListener('core', 'TBGComment::createNew', 'listen_TBGComment_createNew', $i18n->__('Email when comments are posted'));
 			$this->addAvailableListener('core', 'header_begins', 'listen_headerBegins', $i18n->__('Javascript Mailing'));
-			$this->addAvailableListener('core', 'login_page_script', 'listen_loginPageScript', $i18n->__('Reset password'));
 		}
 
 		protected function _addAvailableRoutes()
 		{
-			// No, I didn't forget the parameters, but what else would you call
-			// it when it's about retrieving a forgotten password?
 			$this->addRoute('forgot', '/forgot', 'forgot');
-			$this->addRoute('reset', '/reset/:user/:key', 'resetPassword');
+			$this->addRoute('reset', '/reset/:user/:id', 'resetPassword');
 			$this->addRoute('mailing_test_email', '/mailing/test', 'testEmail');
 		}
 		
@@ -64,7 +61,6 @@
 			$this->enableListenerSaved('core', 'TBGIssue::createNew', $scope);
 			$this->enableListenerSaved('core', 'TBGComment::createNew', $scope);
 			$this->enableListenerSaved('core', 'header_begins', $scope);
-			$this->enableListenerSaved('core', 'login_page_script', $scope);
 			$this->saveSetting('smtp_host', '');
 			$this->saveSetting('smtp_port', 25);
 			$this->saveSetting('smtp_user', '');
@@ -161,15 +157,6 @@
 			{			
 				TBGContext::getResponse()->addJavascript('forgot.js');
 			}
-		}
-		
-		public function listen_loginPageScript(TBGEvent $event)
-		{
-			if ($this->isOutgoingNotificationsEnabled() && TBGContext::getUser()->isGuest())
-			{			
-				$event->setReturnValue(array('section' => 'section', 'id' => 'key', 'user' => 'user', 'reset' => 'reset'));
-			}
-			$event->setProcessed(true);
 		}
 		
 		public function sendforgottenPasswordEmail($user)
@@ -392,7 +379,7 @@
 		protected function _setAdditionalMailValues(TBGMimemail $mail, array $parameters)
 		{
 			$mail->addReplacementValues(array('%password%' => isset($parameters['password']) ? $parameters['password'] : ''));
-			$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? TBGContext::getRouting()->generate('reset', array('user' => $parameters['user']->getUsername(), 'key' => $parameters['user']->getHashPassword()), false) : '' ));
+			$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? TBGContext::getRouting()->generate('reset', array('user' => $parameters['user']->getUsername(), 'id' => $parameters['user']->getHashPassword()), false) : '' ));
 			$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? TBGContext::getRouting()->generate('activate', array('user' => $parameters['user']->getUsername(), 'key' => $parameters['user']->getHashPassword()), false) : ''));
 		}
 

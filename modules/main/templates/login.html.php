@@ -16,30 +16,5 @@
 	<br><br>
 </div>
 <script>
-
-	<?php
-	 
-		$params = array('key' => 'login', 'mandatory' => true);
-		
-		if(TBGEvent::isAnyoneListening('core', 'login_page_script'))
-		{
-			$event = TBGEvent::createNew('core', 'login_page_script');
-			$event->triggerUntilProcessed();
-
-			$options = ($event->isProcessed()) ? $event->getReturnValue() : null;
-			
-			if (is_array($options))
-			{
-				foreach ($options as $key_opt => $option)
-				{
-					if (isset($$option))
-					{
-						$params = array_merge($params, array($key_opt => $$option));
-					}
-				}	
-			}
-		}
-	?>
-	
-	showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', $params); ?>');
+	showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array_merge(array('key' => 'login', 'mandatory' => true), $options)); ?>');
 </script>

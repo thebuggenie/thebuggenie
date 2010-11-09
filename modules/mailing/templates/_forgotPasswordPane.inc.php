@@ -1,7 +1,7 @@
 <div id="tab_forgot_pane"<?php if ($selected_tab != 'forgot'): ?> style="display: none;<?php endif; ?>">
 	<?php if (isset($reset) && $reset == true): ?>
 	<div class="rounded_box lightgrey" style="vertical-align: middle; padding: 5px;">
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('reset_password', array('user' => $user, 'key' => $id)); ?>" method="post" id="forgot_password_form" onsubmit="resetForgotPassword('<?php echo make_url('reset_password', array('user' => $user, 'key' => $id)); ?>'); return false;">
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('reset_password', array('user' => $user, 'id' => $id)); ?>" method="post" id="forgot_password_form" onsubmit="resetForgotPassword('<?php echo make_url('reset_password', array('user' => $user, 'id' => $id)); ?>'); return false;">
 			<div class="login_boxheader"><?php echo __('Reset password?'); ?></div>
 			<p><?php echo __('If you have forgot your password, enter your email adress here, and we will send you an email with your new password'); ?>.</p><br>
 			<div>

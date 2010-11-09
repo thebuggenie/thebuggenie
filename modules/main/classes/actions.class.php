@@ -230,11 +230,11 @@
 				}
 				elseif ($request->hasParameter('section'))
 				{
-					$this->section = $request->getParameter('section', 'login');
-					foreach ($request->getParameters() as $key => $val)
-					{
-						$this->$key = $val;
-					}
+					$this->options = $request->getParameters();
+				}
+				else 
+				{
+					throw new Exception($i18n->__('An internal error has occured'));
 				}
 			}
 			catch (Exception $e)
@@ -2731,14 +2731,14 @@
 		{
 			$i18n = TBGContext::getI18n();
 			
-			if ($request->hasParameter('user') && $request->hasParameter('key') && $request->hasParameter('forgot_password_mail'))
+			if ($request->hasParameter('user') && $request->hasParameter('id') && $request->hasParameter('forgot_password_mail'))
 			{
 				try
 				{
 					$user = TBGUser::getByUsername($request->getParameter('user'));
 					if ($user instanceof TBGUser)
 					{
-						if ($request->getParameter('key') == $user->getHashPassword())
+						if ($request->getParameter('id') == $user->getHashPassword())
 						{
 							if ($request->getParameter('forgot_password_mail') == $user->getEmail())
 							{
@@ -2769,7 +2769,7 @@
 			}
 			else
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => 'Unkown error'));
+				return $this->renderJSON(array('failed' => true, 'error' => 'An internal error has occured'));
 			}
 		}
 }
