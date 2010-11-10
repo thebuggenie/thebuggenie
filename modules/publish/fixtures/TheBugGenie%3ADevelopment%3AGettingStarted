@@ -21,4 +21,4 @@ You can add functionality to an existing module by modifying it directly. If you
 == Writing a new module for The Bug Genie ==
 This is the recommended way of extending the functionality in The Bug Genie, and this also keeps your functionality compatible between releases. To read more about developing modules for The Bug Genie, see [[TheBugGenie:Development:Modules]]
 
-[[Category:TheBugGenie:Development]]
+[[Category:TheBugGenie:Development]][[Category:TheBugGenie:Development:Howtos]]
