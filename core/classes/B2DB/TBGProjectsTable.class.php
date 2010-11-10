@@ -53,6 +53,7 @@
 		const DELETED = 'projects.deleted';
 		const ALLOW_CHANGING_WITHOUT_WORKING = 'projects.allow_changing_wo_working';
 		const HIDDEN_AFFECTS_BOX = 'projects.hidden_affects_box';
+		const WORKFLOW_SCHEME_ID = 'projects.workflow_scheme_id';
 
 		/**
 		 * Return an instance of this table
@@ -98,6 +99,7 @@
 			parent::_addBoolean(self::LOCKED);
 			parent::_addBoolean(self::PLANNED_RELEASE);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+			parent::_addForeignKeyColumn(self::WORKFLOW_SCHEME_ID, TBGWorkflowSchemesTable::getTable(), TBGWorkflowSchemesTable::ID);
 			parent::_addBoolean(self::DELETED);
 			parent::_addBoolean(self::HIDDEN_AFFECTS_BOX);
 		}
@@ -127,6 +129,7 @@
 			$crit->addInsert(self::NAME, $name);
 			$crit->addInsert(self::KEY, strtolower(str_replace(' ', '', $name)));
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addInsert(self::WORKFLOW_SCHEME_ID, 1);
 			$res = $this->doInsert($crit);
 			return $res->getInsertID();
 		}

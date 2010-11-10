@@ -179,5 +179,10 @@
 				TBGWorkflowTransitionsTable::getTable()->doDeleteById($this->getID());
 			}
 		}
+		
+		public function isAvailableForIssue(TBGIssue $issue)
+		{
+			return true;
+		}
 
 	}

@@ -271,5 +271,17 @@
 		{
 			return (bool) ($this->getNumberOfIncomingTransitions() > 0);
 		}
+		
+		public function getAvailableTransitionsForIssue(TBGIssue $issue)
+		{
+			$return_array = array();
+			foreach ($this->getOutgoingTransitions() as $transition)
+			{
+				if ($transition->isAvailableForIssue($issue))
+					$return_array[] = $transition;
+			}
+			
+			return $return_array;
+		}
 
 	}

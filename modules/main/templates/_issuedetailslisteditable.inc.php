@@ -553,10 +553,13 @@
 <?php endforeach; ?>
 <div style="clear: both; margin-bottom: 5px;"> </div>
 <div id="more_actions" style="display: none;">
-	<div class="rounded_box white shadowed">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="padding: 5px;">
-			<?php if (!$issue->isBeingWorkedOn() || ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $tbg_user->getID())): ?>
+	<div class="rounded_box white shadowed" style="padding: 5px;">
+		<ul class="workflow_actions simple_list">
+			<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
+				<li><?php echo $transition->getName(); ?></li>
+			<?php endforeach; ?>
+		</ul>
+		<?php /*if (!$issue->isBeingWorkedOn() || ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $tbg_user->getID())): ?>
 			<ul>
 				<li><?php echo link_tag(make_url('issue_startworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_start_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __('Start working on this issue')); ?></li>
 			</ul>
@@ -594,7 +597,7 @@
 				<?php endif; ?>
 			</ul>
 		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b> */ ?>
 	</div>
 	<div style="text-align: center; font-size: 14px; width: 200px; margin: 5px auto 0 auto; padding: 5px 0 5px 0; height: 20px;">
 		<a href="javascript:void(0);" onclick="$('more_actions').hide();$('more_actions_div').show();"><?php echo image_tag('action_remove_small.png', array('style' => 'float: left; margin-right: 5px;')); ?><span style="float: left;"><?php echo __('Hide available actions'); ?></span></a>

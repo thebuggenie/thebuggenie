@@ -1681,6 +1681,7 @@
 							throw new TBGTemplateNotFoundException('The template file for the ' . $method . ' action ("'.self::getResponse()->getTemplate().'") does not exist');
 						}
 
+						self::loadLibrary('common');
 						// Present template for current action
 						TBGActionComponent::presentTemplate($templateName, $actionObject->getParameterHolder());
 						$content = ob_get_clean();
@@ -1709,6 +1710,8 @@
 					self::loadLibrary('ui');
 				}
 
+				self::loadLibrary('common');
+				
 				// Render header template if any, and store the output in a variable
 				ob_start();
 				ob_implicit_flush(0);

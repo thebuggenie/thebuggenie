@@ -840,6 +840,16 @@
 			}
 			return $this->_workflow_step;
 		}
+		
+		public function setWorkflowStep(TBGWorkflowStep $step)
+		{
+			$this->_workflow_step = $step;
+		}
+		
+		public function getAvailableWorkflowTransitions()
+		{
+			return $this->getWorkflowStep()->getAvailableTransitionsForIssue($this);
+		}
 
 		/**
 		 * Populates all the custom field values
@@ -4625,6 +4635,7 @@
 			$crit->addUpdate(TBGIssuesTable::DELETED, $this->_deleted);
 			$crit->addUpdate(TBGIssuesTable::BLOCKING, $this->_blocking);
 			$crit->addUpdate(TBGIssuesTable::VOTES, $this->_votes_total);
+			$crit->addUpdate(TBGIssuesTable::WORKFLOW_STEP_ID, (is_object($this->_workflow_step)) ? $this->_workflow_step->getID() : $this->_workflow_step);
 			$crit->addUpdate(TBGIssuesTable::USER_WORKING_ON, (is_object($this->_being_worked_on_by)) ? $this->_being_worked_on_by->getID() : $this->_being_worked_on_by);
 			$crit->addUpdate(TBGIssuesTable::USER_WORKED_ON_SINCE, $this->_being_worked_on_since);
 			$crit->addUpdate(TBGIssuesTable::MILESTONE, (is_object($this->_milestone)) ? $this->_milestone->getID() : $this->_milestone);

@@ -323,6 +323,8 @@
 		 * @var boolean
 		 */
 		protected $_affectshidden = 0;
+		
+		protected $_workflow_scheme = null;
 
 		/**
 		 * Make a project default
@@ -503,6 +505,7 @@
 				$this->_summary_display			= $row->get(TBGProjectsTable::SUMMARY_DISPLAY);
 				$this->_deleted					= $row->get(TBGProjectsTable::DELETED);
 				$this->_affectshidden			= $row->get(TBGProjectsTable::HIDDEN_AFFECTS_BOX);
+				$this->_workflow_scheme			= $row->get(TBGProjectsTable::WORKFLOW_SCHEME_ID);
 				TBGEvent::createNew('core', 'TBGProject::__construct', $this)->trigger();
 			}
 			else
@@ -1368,6 +1371,7 @@
 			$crit->addUpdate(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING, $this->_can_change_wo_working);
 			$crit->addUpdate(TBGProjectsTable::DELETED, $this->_deleted);
 			$crit->addUpdate(TBGProjectsTable::HIDDEN_AFFECTS_BOX, $this->_affectshidden);
+			$crit->addUpdate(TBGProjectsTable::WORKFLOW_SCHEME_ID, ((is_object($this->_workflow_scheme)) ? $this->_workflow_scheme->getID() : $this->_workflow_scheme));
 			$res = TBGProjectsTable::getTable()->doUpdateById($crit, $this->getID());
 
 			if ($this->_dodelete)
@@ -2396,6 +2400,32 @@
 			$this->_recentissues = null;
 			$this->_recentfeatures = null;
 			$this->_recentlogitems = null;
+		}
+		
+		/**
+		 * Return the projects' associated workflow scheme
+		 * 
+		 * @return TBGWorkflowScheme 
+		 */
+		public function getWorkflowScheme()
+		{
+			if (is_numeric($this->_workflow_scheme))
+			{
+				try
+				{
+					$this->_workflow_scheme = TBGContext::factory()->TBGWorkflowScheme((int) $this->_workflow_scheme);
+				}
+				catch (Exception $e)
+				{
+					$this->_workflow_scheme = null;
+				}
+			}
+			return $this->_workflow_scheme;
+		}
+		
+		public function setWorkflowScheme(TBGWorkflowScheme $scheme)
+		{
+			$this->_workflow_scheme = $scheme;
 		}
 
 		/**

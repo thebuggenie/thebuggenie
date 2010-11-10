@@ -698,6 +698,16 @@
 							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("Project prefixes may only contain letters and numbers")));
 					}
 					
+					if ($request->hasParameter('workflow_scheme'))
+					{
+						try
+						{
+							$workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request->getParameter('workflow_scheme'));
+							$this->project->setWorkflowScheme($workflow_scheme);
+						}
+						catch (Exception $e) {}
+					}
+					
 					if ($request->hasParameter('use_scrum'))
 						$this->project->setUsesScrum((bool) $request->getParameter('use_scrum'));
 					

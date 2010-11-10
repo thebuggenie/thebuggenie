@@ -3,7 +3,7 @@
 <?php endif; ?>
 	<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 		<tr>
-			<td style="width: 200px;"><label for="locked"><?php echo __('Allow issues to be reported'); ?></label></td>
+			<td style="width: 300px;"><label for="locked"><?php echo __('Allow issues to be reported'); ?></label></td>
 			<td style="width: 580px;">
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 					<select name="locked" id="locked" style="width: 70px;">
@@ -16,7 +16,24 @@
 			</td>
 		</tr>
 		<tr>
-			<td><label for="use_scrum"><?php echo __('Enable scrum planning'); ?></label></td>
+			<td><label for="workflow_scheme"><?php echo __('Workflow scheme'); ?></label></td>
+			<td>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="workflow_scheme" id="workflow_scheme">
+						<?php foreach (TBGWorkflowScheme::getAll() as $workflow_scheme): ?>
+							<option value=<?php echo $workflow_scheme->getID(); ?><?php if ($project->getWorkflowScheme()->getID() == $workflow_scheme->getID()): ?> selected<?php endif; ?>><?php echo $workflow_scheme->getName(); ?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php else: ?>
+					<?php echo $project->getWorkflowScheme()->getName(); ?>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="config_explanation" colspan="2"><?php echo __('Select the workflow scehem to be used by this project'); ?></td>
+		</tr>
+		<tr>
+			<td><label for="use_scrum"><?php echo __('Enable agile development features'); ?></label></td>
 			<td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 					<select name="use_scrum" id="use_scrum" style="width: 70px;">
@@ -29,7 +46,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="config_explanation" colspan="2"><?php echo __('If the project uses the scrum method for planning, releases and development, enable it here'); ?></td>
+			<td class="config_explanation" colspan="2"><?php echo __('If the project uses an agile method for planning, releases and development, enable it here'); ?></td>
 		</tr>
 		<tr>
 			<td><label for="affects_hidden"><?php echo __('Hide \'affected items\' box in a tab'); ?></label></td>
