@@ -176,21 +176,22 @@
 			}
 		}
 
-		public function getMenuTitle()
+		public function getMenuTitle($project_context = null)
 		{
+			$project_context = ($project_context !== null) ? $project_context : TBGContext::isProjectContext();
 			$i18n = TBGContext::getI18n();
 			if (($menu_title = $this->getSetting('menu_title')) !== null)
 			{
 				switch ($menu_title)
 				{
-					case 5: return (TBGContext::isProjectContext()) ? $i18n->__('Project archive') : $i18n->__('Archive') ;
-					case 3: return (TBGContext::isProjectContext()) ? $i18n->__('Project documentation') : $i18n->__('Documentation');
-					case 4: return (TBGContext::isProjectContext()) ? $i18n->__('Project documents') : $i18n->__('Documents');
-					case 2: return (TBGContext::isProjectContext()) ? $i18n->__('Project help') : $i18n->__('Help');
+					case 5: return ($project_context) ? $i18n->__('Project archive') : $i18n->__('Archive') ;
+					case 3: return ($project_context) ? $i18n->__('Project documentation') : $i18n->__('Documentation');
+					case 4: return ($project_context) ? $i18n->__('Project documents') : $i18n->__('Documents');
+					case 2: return ($project_context) ? $i18n->__('Project help') : $i18n->__('Help');
 				}
 
 			}
-			return (TBGContext::isProjectContext()) ? $i18n->__('Project wiki') : $i18n->__('Wiki');
+			return ($project_context) ? $i18n->__('Project wiki') : $i18n->__('Wiki');
 		}
 
 		public function getSpacedName($camelcased)
@@ -367,15 +368,9 @@
 
 		public function listen_MenustripLinks(TBGEvent $event)
 		{
-			if (TBGContext::isProjectContext())
-			{
-				$url = TBGContext::getRouting()->generate('publish_article', array('article_name' => ucfirst(TBGContext::getCurrentProject()->getKey()).':MainPage'));
-			}
-			else
-			{
-				$url = TBGContext::getRouting()->generate('publish');
-			}
-			TBGActionComponent::includeTemplate('publish/menustriplinks', array('url' => $url, 'selected_tab' => $event->getParameter('selected_tab')));
+			$project_url = (TBGContext::isProjectContext()) ? TBGContext::getRouting()->generate('publish_article', array('article_name' => ucfirst(TBGContext::getCurrentProject()->getKey()).':MainPage')) : null;
+			$url = TBGContext::getRouting()->generate('publish');
+			TBGActionComponent::includeTemplate('publish/menustriplinks', array('url' => $url, 'project_url' => $project_url, 'selected_tab' => $event->getParameter('selected_tab')));
 		}
 
 		public function listen_createNewProject(TBGEvent $event)

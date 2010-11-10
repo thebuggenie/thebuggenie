@@ -48,16 +48,16 @@
 	<body>
 		<div class="medium_transparent rounded_box shadowed popup_message failure" onclick="clearPopupMessages();" style="display: none;" id="thebuggenie_failuremessage">
 			<div style="padding: 10px 0 10px 0;">
+				<div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
 				<span style="color: #000; font-weight: bold;" id="thebuggenie_failuremessage_title"></span><br>
 				<span id="thebuggenie_failuremessage_content"></span>
-				<div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
 			</div>
 		</div>
 		<div class="medium_transparent rounded_box shadowed popup_message success" onclick="clearPopupMessages();" style="display: none;" id="thebuggenie_successmessage">
 			<div style="padding: 10px 0 10px 0;">
+				<div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
 				<span style="color: #000; font-weight: bold;" id="thebuggenie_successmessage_title"></span><br>
 				<span id="thebuggenie_successmessage_content"></span>
-				<div class="dismiss_me"><?php echo __('Click this message to dismiss it'); ?></div>
 			</div>
 		</div>
 		<div id="fullpage_backdrop" style="display: none; background-color: transparent; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; text-align: center;">
@@ -90,7 +90,18 @@
 										<?php if (!TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
 											<li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png').__('Frontpage')); ?></li>
 										<?php elseif (TBGContext::isProjectContext()): ?>
-											<li<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_team', 'project_roadmap', 'project_statistics'))): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_dashboard_small.png').__('Project information')); ?></li>
+											<li<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_timeline', 'project_team', 'project_roadmap', 'project_statistics'))): ?> class="selected"<?php endif; ?>>
+												<div>
+													<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_dashboard_small.png').__('Project information')); ?>
+													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onclick' => "if (!\$('project_information_menu').visible()) { $('project_information_menu').show(); _updateDivWithJSONFeedback('". make_url('project_getmenulinks', array('project_key' => TBGContext::getCurrentProject()->getKey())) ."', 'project_information_menu_links', 'project_information_menu_indicator', null, null, null, null, ['project_information_menu']); } else { \$('project_information_menu').toggle(); }")); ?>
+												</div>
+												<div id="project_information_menu" class="tab_menu_dropdown shadowed" style="display: none;">
+													<span id="project_information_menu_links"></span>
+													<div id="project_information_menu_indicator" style="text-align: center; display: none;">
+														<?php echo image_tag('spinning_16.gif', array('style' => 'margin: 10px;')); ?>
+													</div>
+												</div>
+											</li>
 										<?php endif; ?>
 										<?php if (!$tbg_user->isThisGuest() && !TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
 											<li<?php if ($tbg_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png').__('Dashboard')); ?></li>

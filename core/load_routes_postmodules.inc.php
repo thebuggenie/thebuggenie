@@ -16,6 +16,7 @@
 	$routes[] = array('issue_stopworking', '/:project_key/issue/:issue_id/stopworking/*', 'main', 'issueStopWorking');
 	$routes[] = array('main_find_identifiable', '/find/identifiable/by/*', 'main', 'findIdentifiable');
 	$routes[] = array('toggle_favourite_issue', '/toggle_favourite_issue/:issue_id', 'main', 'toggleFavouriteIssue', array('format' => 'json'));
+	$routes[] = array('project_getmenulinks', '/:project_key/menulinks', 'project', 'menuLinks');
 	$routes[] = array('project_reportissue', '/:project_key/reportissue/*', 'main', 'reportIssue');
 	$routes[] = array('project_planning', '/:project_key/planning', 'project', 'planning');
 	$routes[] = array('project_scrum', '/:project_key/scrum', 'project', 'scrum');

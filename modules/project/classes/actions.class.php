@@ -923,4 +923,9 @@
 
 		}
 
+		public function runMenuLinks(TBGRequest $request)
+		{
+			
+		}
+
 	}
