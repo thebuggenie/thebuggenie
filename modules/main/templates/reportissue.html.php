@@ -635,7 +635,7 @@
 								</div>
 							</li>
 							<li id="reproducability_additional" style="display: none;">
-								<?php echo image_tag('icon_repro.png'); ?>
+								<?php echo image_tag('icon_reproducability.png'); ?>
 								<div id="reproducability_link"<?php if ($selected_reproducability instanceof TBGReproducability): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('reproducability_link').hide();$('reproducability_additional_div').show();"><?php echo __('Set reproducability'); ?></a></div>
 								<div id="reproducability_additional_div"<?php if ($selected_reproducability === null): ?> style="display: none;"<?php endif; ?>>
 									<select name="reproducability_id" id="reproducability_id_additional">

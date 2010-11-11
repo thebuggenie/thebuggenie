@@ -2090,7 +2090,7 @@
 							$issue->save(false);
 						}
 
-						$comment_body = $this->comment . "\n\n" . $request->getParameter('comment_body');
+						$comment_body = $this->comment . "\n\n" . $request->getParameter('comment_body', null, false);
 
 						$comment = TBGComment::createNew($title, $comment_body, TBGContext::getUser()->getID(), $request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'), $request->getParameter('comment_visibility'), 0, false);
 
