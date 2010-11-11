@@ -1811,10 +1811,10 @@
 	$strings['Can access the project statistics page'] = 'Puede acceder a la página de estadísticas del proyecto';
 	$strings['Can access the project timeline page'] = 'Puede acceder a la página de línea de tiempo del proyecto';
 	$strings['Can access project'] = 'Puede acceder a proyectos';
-	$strings['Can manage stories, tasks, sprints and backlog on the scrum planning page'] = 'Puede administrar historias, tareas, sprints y backlog en la planificación de scrum';
-	$strings['Can add new user stories to the backlog on the scrum planning page'] = 'Puede agregar nuevas historias del usuario al backlog en la planificación de scrum';
-	$strings['Can manage the backlog on the scrum planning page'] = 'Puede administrador el backlog de la planificación de scrum';
-	$strings['Can add sprints on the scrum planning page'] = 'Puede agregar sprints en la página de planificación de scrum';
+	$strings['Can manage stories, tasks, sprints and backlog on the sprint planning page'] = 'Puede administrar historias, tareas, sprints y backlog en la planificación de scrum';
+	$strings['Can add new user stories to the backlog on the sprint planning page'] = 'Puede agregar nuevas historias del usuario al backlog en la planificación de scrum';
+	$strings['Can manage the backlog on the sprint planning page'] = 'Puede administrador el backlog de la planificación de scrum';
+	$strings['Can add sprints on the sprint planning page'] = 'Puede agregar sprints en la página de planificación de scrum';
 	$strings['Can manage project'] = 'Puede administrar proyectos';
 	$strings['Can manage project releases and components'] = 'Puede administrar liberaciones y componentes del proyecto';
 	$strings['Can edit project details and settings'] = 'Puede editar detalles y configuraciones del proyecto';
@@ -2155,7 +2155,7 @@
 	$strings['With prefix enabled, issues will be prefixed with the specified text. Ex: If you enable prefix and set "MYPROJ" as the prefix, issues will be named "MYPROJ-1", "MYPROJ-2", and so on. Without prefix enabled, issues will be name #1, #2, and so on.'] = 'Con el prefijo habilitado, los problemas serán precedidos con el texto especificado. Ej: si habilita el prefijo y pone "MIPROY" como prefijo, los problemas serán nombrados "MIPROY-1", "MIPROY-2", y así sucesivamente. Sin el prefijo habilitado, los problemas se llamarán #1, #2, y así sucesivamente.';
 	$strings['Project description'] = 'Descripción del proyecto';
 	$strings['Documentation URL'] = 'URL de la Documentación';
-	$strings['Enable scrum planning'] = 'Habilitar planificacion por scrum';
+	$strings['Enable sprint planning'] = 'Habilitar planificacion por scrum';
 	$strings['If the project uses the scrum method for planning, releases and development, enable it here'] = 'Si en el proyecto se utiliza el método scrum para la planificación, compilaciones y desarrollo, permitalo aquí';
 	$strings['Points only'] = 'Sólo puntos';
 	$strings['Points for issues, hours for tasks'] = 'Puntos para problemas, horas para tareas';

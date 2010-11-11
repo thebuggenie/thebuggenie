@@ -45,7 +45,7 @@
 		protected $_useprefix = false;
 
 		/**
-		 * Whether or not the project uses scrum planning
+		 * Whether or not the project uses sprint planning
 		 *
 		 * @var boolean
 		 */
@@ -535,7 +535,7 @@
 		}
 
 		/**
-		 * Set whether the project uses scrum planning
+		 * Set whether the project uses sprint planning
 		 *
 		 * @param boolean $val
 		 */
@@ -545,7 +545,7 @@
 		}
 
 		/**
-		 * Return whether the project uses scrum planning
+		 * Return whether the project uses sprint planning
 		 *
 		 * @return boolean
 		 */

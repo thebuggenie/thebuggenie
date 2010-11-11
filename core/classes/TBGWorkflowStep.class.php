@@ -283,5 +283,22 @@
 			
 			return $return_array;
 		}
+		
+		public function applyToIssue(TBGIssue $issue)
+		{
+			$issue->setWorkflowStep($this);
+			if ($this->hasLinkedStatus())
+			{
+				$issue->setStatus($this->getLinkedStatusID());
+			}
+			if ($this->isClosed())
+			{
+				$issue->close();
+			}
+			else
+			{
+				$issue->open();
+			}
+		}
 
 	}

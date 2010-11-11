@@ -18,6 +18,7 @@
 	$routes[] = array('toggle_favourite_issue', '/toggle_favourite_issue/:issue_id', 'main', 'toggleFavouriteIssue', array('format' => 'json'));
 	$routes[] = array('project_getmenulinks', '/:project_key/menulinks', 'project', 'menuLinks');
 	$routes[] = array('project_reportissue', '/:project_key/reportissue/*', 'main', 'reportIssue');
+	$routes[] = array('transition_issue', '/:project_key/:issue_id/transition/:transition_id', 'project', 'transitionIssue');
 	$routes[] = array('project_planning', '/:project_key/planning', 'project', 'planning');
 	$routes[] = array('project_scrum', '/:project_key/scrum', 'project', 'scrum');
 	$routes[] = array('project_scrum_sprint_details', '/:project_key/scrum/sprint/details/*', 'project', 'scrumShowDetails');

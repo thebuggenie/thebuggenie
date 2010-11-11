@@ -515,7 +515,21 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 .nice_button.disabled { padding: 0px; color: #FFF; border: 0; position: relative; display: inline; text-align: center; margin-left: 10px; }
 .nice_button.disabled input { border: 0; border-top: 1px solid #F9F9F9; color: #aaa; padding: 3px; font-weight: bold; background-color: #EEE; cursor: pointer; }
 .nice_button.disabled input:active { background-color: #F5F5F5; }
+
+.nice_button.workflow { padding: 0px; color: #FFF; border: 1px solid #E3DDA5; position: relative; display: inline; text-align: center; margin: 0; }
+.nice_button.workflow input { border: 0; border-top: 0; border-left: 1px solid #CDC895; border-bottom: 1px solid #CDC895; color: #6E6E53; padding: 2px 3px; font-weight: normal; background-color: #E3DDA5; cursor: pointer; }
+.nice_button.workflow input:active { background-color: #E9E9B0; }
+.nice_button.workflow input:hover { background-color: #D3CE99; }
+.nice_button.workflow.first, .nice_button.workflow.first input { border-bottom-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; }
+.nice_button.workflow.first input { }
+.nice_button.workflow.last, .nice_button.workflow.last input { border-top-right-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px;  }
 /* end very visible button */
+
+/* workflow actions */
+ul.workflow_actions { margin: -11px -11px 0 0; height: 25px; float: right; }
+ul.workflow_actions li { display: block; float: left; }
+ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
+/* end workflow actions */
 
 /* fullpage (faded out) backdrop styling */
 #fullpage_backdrop ul.duplicate_issues { list-style-type: none; padding: 0; margin: 0; clear: both; }

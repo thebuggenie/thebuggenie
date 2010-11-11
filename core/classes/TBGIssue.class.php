@@ -565,14 +565,18 @@
 			{
 				$i_id = TBGIssuesTable::getTable()->createNewWithTransaction($title, $issuetype, $p_id, $issue_id);
 				
-				$theIssue = TBGContext::factory()->TBGIssue($i_id);
-				$theIssue->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED);
+				$issue = TBGContext::factory()->TBGIssue($i_id);
+				$step = $issue->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($issue->getIssueType())->getFirstStep();
+				$step->applyToIssue($issue);
+				$issue->save(false, true);
+
+				$issue->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED);
 
 				if ($notify)
 				{
-					TBGEvent::createNew('core', 'TBGIssue::createNew', $theIssue)->trigger();
+					TBGEvent::createNew('core', 'TBGIssue::createNew', $issue)->trigger();
 				}
-				return $theIssue;
+				return $issue;
 			}
 			catch (Exception $e)
 			{
@@ -843,7 +847,7 @@
 		
 		public function setWorkflowStep(TBGWorkflowStep $step)
 		{
-			$this->_workflow_step = $step;
+			$this->_addChangedProperty('_workflow_step', $step);
 		}
 		
 		public function getAvailableWorkflowTransitions()

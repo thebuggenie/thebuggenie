@@ -925,7 +925,30 @@
 
 		public function runMenuLinks(TBGRequest $request)
 		{
-			
+		}
+		
+		public function runTransitionIssue(TBGRequest $request)
+		{
+			try
+			{
+				$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
+				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
+				
+				if ($transition->validateFromRequest($request))
+				{
+					$transition->transitionIssueToOutgoingStepFromRequest($issue);
+				}
+				else
+				{
+					TBGContext::setMessage('issue_error', 'transition_error');
+					TBGContext::setMessage('issue_workflow_errors', $transition->getValidationErrors());
+				}
+				$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+			}
+			catch (Exception $e)
+			{
+				return $this->return404();
+			}
 		}
 
 	}

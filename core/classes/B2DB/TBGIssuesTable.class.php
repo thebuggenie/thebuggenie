@@ -297,7 +297,7 @@
 			$issue_no = $row->get('issueno');
 			if ($issue_no < 1) $issue_no = 1;
 			
-			$status_id = (int) TBGContext::factory()->TBGProject($p_id)->getDefaultStatusID();
+			//$status_id = (int) TBGContext::factory()->TBGProject($p_id)->getDefaultStatusID();
 			
 			$crit = $this->getCriteria();
 			$posted = NOW;
@@ -313,7 +313,7 @@
 			$crit->addInsert(self::PROJECT_ID, $p_id);
 			$crit->addInsert(self::ISSUE_TYPE, $issue_type);
 			$crit->addInsert(self::POSTED_BY, TBGContext::getUser()->getUID());
-			$crit->addInsert(self::STATUS, $status_id);
+			//$crit->addInsert(self::STATUS, $status_id);
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			$trans->commitAndEnd();

@@ -138,7 +138,7 @@
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'edition');
 			$crit->addInsert(self::REPORTABLE, true);
-			$crit->addInsert(self::REQUIRED, true);
+			$crit->addInsert(self::REQUIRED, false);
 			$crit->addInsert(self::SCOPE, $scope);
 			$this->doInsert($crit);
 
@@ -146,7 +146,7 @@
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'build');
 			$crit->addInsert(self::REPORTABLE, true);
-			$crit->addInsert(self::REQUIRED, true);
+			$crit->addInsert(self::REQUIRED, false);
 			$crit->addInsert(self::SCOPE, $scope);
 			$this->doInsert($crit);
 

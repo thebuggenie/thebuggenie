@@ -1812,10 +1812,10 @@
 	$strings['Can access the project statistics page'] = 'Can access the project statistics page';
 	$strings['Can access the project timeline page'] = 'Can access the project timeline page';
 	$strings['Can access project'] = 'Can access project';
-	$strings['Can manage stories, tasks, sprints and backlog on the scrum planning page'] = 'Can manage stories, tasks, sprints and backlog on the scrum planning page';
-	$strings['Can add new user stories to the backlog on the scrum planning page'] = 'Can add new user stories to the backlog on the scrum planning page';
-	$strings['Can manage the backlog on the scrum planning page'] = 'Can manage the backlog on the scrum planning page';
-	$strings['Can add sprints on the scrum planning page'] = 'Can add sprints on the scrum planning page';
+	$strings['Can manage stories, tasks, sprints and backlog on the sprint planning page'] = 'Can manage stories, tasks, sprints and backlog on the sprint planning page';
+	$strings['Can add new user stories to the backlog on the sprint planning page'] = 'Can add new user stories to the backlog on the sprint planning page';
+	$strings['Can manage the backlog on the sprint planning page'] = 'Can manage the backlog on the sprint planning page';
+	$strings['Can add sprints on the sprint planning page'] = 'Can add sprints on the sprint planning page';
 	$strings['Can manage project'] = 'Can manage project';
 	$strings['Can manage project releases and components'] = 'Can manage project releases and components';
 	$strings['Can edit project details and settings'] = 'Can edit project details and settings';
@@ -2156,7 +2156,7 @@
 	$strings['With prefix enabled, issues will be prefixed with the specified text. Ex: If you enable prefix and set "MYPROJ" as the prefix, issues will be named "MYPROJ-1", "MYPROJ-2", and so on. Without prefix enabled, issues will be name #1, #2, and so on.'] = 'With prefix enabled, issues will be prefixed with the specified text. Ex: If you enable prefix and set "MYPROJ" as the prefix, issues will be named "MYPROJ-1", "MYPROJ-2", and so on. Without prefix enabled, issues will be name #1, #2, and so on.';
 	$strings['Project description'] = 'Project description';
 	$strings['Documentation URL'] = 'Documentation URL';
-	$strings['Enable scrum planning'] = 'Enable scrum planning';
+	$strings['Enable sprint planning'] = 'Enable sprint planning';
 	$strings['If the project uses the scrum method for planning, releases and development, enable it here'] = 'If the project uses the scrum method for planning, releases and development, enable it here';
 	$strings['Points only'] = 'Points only';
 	$strings['Points for issues, hours for tasks'] = 'Points for issues, hours for tasks';

@@ -93,6 +93,10 @@
 			{
 				$this->issue_saved = true;
 			}
+			elseif (TBGContext::hasMessage('issue_error'))
+			{
+				$this->error = TBGContext::getMessageAndClear('issue_error');
+			}
 			$this->issue = $issue;
 			$event = TBGEvent::createNew('core', 'viewissue', $issue)->trigger();
 			$this->listenViewIssuePostError($event);
@@ -866,9 +870,6 @@
 					$issue->setAssignee($this->selected_project->getLeader());
 				}
 			}
-			
-			$step = $this->selected_project->getWorkflowScheme()->getWorkflowForIssuetype($issue->getIssueType())->getFirstStep();
-			$issue->setWorkflowStep($step);
 			
 			$issue->save(false, true);
 
@@ -2266,6 +2267,11 @@
 						$options = $request->getParameters();
 						$options['section'] = $request->getParameter('section', 'login');
 						$options['mandatory'] = $request->getParameter('mandatory', false);
+						break;
+					case 'workflow_transition':
+						$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
+						$template_name = $transition->getTemplate();
+						$options['transition'] = $transition;
 						break;
 					case 'close_issue':
 						$template_name = 'main/closeissue';

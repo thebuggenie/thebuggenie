@@ -38,10 +38,19 @@
 		protected $_outgoing_step = null;
 
 		protected $_template = null;
+		
+		/**
+		 * The originating request
+		 * 
+		 * @var TBGRequest
+		 */
+		protected $_request = null;
+		
+		protected $_validation_errors = array();
 
 		public static function getTemplates()
 		{
-			$templates = array('template_1' => 'Template 1', 'template_2' => 'Template 2', 'template_3' => 'Template 3');
+			$templates = array('main/updateissueproperties' => 'Set issue properties', 'template_2' => 'Template 2', 'template_3' => 'Template 3');
 			$event = TBGEvent::createNew('core', 'workflow_templates', null, array(), $templates)->trigger();
 			
 			return $event->getReturnList();
@@ -183,6 +192,57 @@
 		public function isAvailableForIssue(TBGIssue $issue)
 		{
 			return true;
+		}
+		
+		public function getProperties()
+		{
+			return ($this->getOutgoingStep()->isClosed()) ? array('resolution', 'status') : array();
+		}
+		
+		public function validateFromRequest(TBGRequest $request)
+		{
+			$this->_request = $request;
+			foreach ($this->getProperties() as $property)
+			{
+				if (!$request->hasParameter('set_' . $property))
+				{
+					$this->_validation_errors[$property] = true;
+				}
+			}
+			
+			return empty($this->_validation_errors);
+		}
+		
+		public function getValidationErrors()
+		{
+			return array_keys($this->_validation_errors);
+		}
+		
+		/**
+		 * Transition an issue to the outgoing step, based on request data if available
+		 * 
+		 * @param TBGIssue $issue
+		 * @param TBGRequest $request 
+		 */
+		public function transitionIssueToOutgoingStepFromRequest(TBGIssue $issue, $request = null)
+		{
+			$request = ($request !== null) ? $request : $this->_request;
+			$this->getOutgoingStep()->applyToIssue($issue);
+			
+			foreach ($this->getProperties() as $property)
+			{
+				switch ($property)
+				{
+					case 'status':
+						$issue->setStatus($request->getParameter("{$property}_id"));
+						break;
+					case 'resolution':
+						$issue->setResolution($request->getParameter("{$property}_id"));
+						break;
+				}
+			}
+			
+			$issue->save();
 		}
 
 	}

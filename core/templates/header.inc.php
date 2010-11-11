@@ -172,18 +172,6 @@
 												<?php endif; ?>
 											</li>
 										<?php endforeach; ?>
-										<?php /*
-										<li<?php if ($tbg_response->getPage() == 'project_planning'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_planning', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Planning')); ?></li>
-										<li<?php if ($tbg_response->getPage() == 'project_files'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_files', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Files')); ?></li>
-										<?php if (TBGContext::getCurrentProject()->usesScrum()): ?>
-											<li<?php if (in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_burndown'))): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_scrum', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Scrum')); ?></li>
-										<?php endif; ?>
-										<li<?php if ($tbg_response->getPage() == 'project_roadmap'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_roadmap', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Roadmap')); ?></li>
-										<li<?php if ($tbg_response->getPage() == 'project_team'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_team', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Team')); ?></li>
-										<li<?php if ($tbg_response->getPage() == 'project_statistics'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_statistics', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Statistics')); ?></li>
-										<li<?php if ($tbg_response->getPage() == 'project_timeline'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Timeline')); ?></li>
-										<?php TBGEvent::createNew('core', 'project_menustrip_item_links', TBGContext::getCurrentProject(), array('selected_tab' => $tbg_response->getPage()))->trigger(); ?>
-										 */ ?>
 									</ul>
 								</div>
 							<?php endif; ?>

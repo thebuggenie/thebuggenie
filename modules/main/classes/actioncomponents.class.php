@@ -144,7 +144,7 @@
 			$this->file_id = $this->file->getID();
 		}
 
-		public function componentCloseissue()
+		public function componentUpdateissueproperties()
 		{
 			$this->setupVariables();
 		}
