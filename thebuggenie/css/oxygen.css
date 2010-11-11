@@ -166,7 +166,8 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 .tab_menu ul.right { right: 10px; }
 .tab_menu li img { float: left; margin-right: 5px; }
 .tab_menu li img.menu_dropdown { float: right; margin: 0 0 0 5px; border: 1px solid transparent; }
-.tab_menu li img.menu_dropdown:hover { background-color: #EAEAF5; border: 1px solid #DDE; cursor: pointer; }
+.tab_menu li:hover img.menu_dropdown { background-color: #EAEAF5; border: 1px solid #DDE; cursor: pointer; }
+.tab_menu li img.menu_dropdown:hover { border-color: #77F; background-color: #F6F6F1; }
 .tab_menu li { color: #777; border-bottom: none; border-top: 1px solid #FFF; border-top-right-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px; padding: 3px 6px 5px 6px; display: block; }
 .tab_menu li:hover { text-decoration: none; border-bottom: none; display: block; }
 .tab_menu li { float: left; display: block; font-size: 0.9em; border: 1px solid #CCC; border-bottom: 1px solid #BBB; background-color: #EBEBEB; margin: 0 0 0 5px; border-top-right-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-left-radius: 5px; -webkit-border-top-right-radius: 5px; }
@@ -180,6 +181,8 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 .tab_menu li a:hover { border-bottom: 0; }
 .tab_menu .tab_menu_dropdown { position: absolute; margin-left: -5px; width: 250px; font-size: 1em; background-color: #B6AFE7; color: #FFF; padding: 5px 0; z-index: 10000; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; -moz-border-radius-bottomleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-left-radius: 5px; -webkit-border-bottom-right-radius: 5px; -webkit-border-top-right-radius: 5px; }
 .tab_menu li.selected .tab_menu_dropdown { background-color: #FFF; color: #333; }
+.tab_menu li.selected:hover img.menu_dropdown { background-color: #F5F5F5; border: 1px solid #CCC; }
+.tab_menu li.selected img.menu_dropdown:hover { background-color: #FAFAFA; border: 1px solid #999; }
 .tab_menu .tab_menu_dropdown a { color: inherit; font-weight: normal; display: block; padding: 3px 5px; background-color: transparent; }
 .tab_menu .tab_menu_dropdown div.header { font-weight: bold; color: inherit; margin: 5px 5px 2px 5px; }
 .tab_menu .tab_menu_dropdown a:hover { background-color: #A29CCE; border: 0; }
