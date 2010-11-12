@@ -124,7 +124,7 @@
 	$strings['Ver: %version_number%'] = 'Ver: %version_number%';
 	$strings['Search for'] = 'Buscar';
 	$strings['Search'] = 'Buscar';
-	$strings['Find'] = 'Encontrar';
+	$strings['Find'] = 'Buscar';
 	$strings['Add this'] = 'Agregar esto';
 	$strings['Administered by:'] = 'Administrado por:';
 	$strings['Email:'] = 'Correo:';
@@ -174,8 +174,8 @@
 	$strings['There are no available editions'] = 'No hay ediciones disponibles';
 	$strings['System'] = 'Sistema'; // the name of the "system" user, which will be displayed in some places
 	$strings['Everyone'] = 'Cualquiera';
-	$strings['Enter any user detail to search for, and press "Find" to look up the user(s).'] = 'Ingrese cualquier detalle de usuario a buscar, y presione "Encontrar" para buscar el/los usuarios.';
-	$strings['Find'] = 'Encontrar';
+	$strings['Enter any user detail to search for, and press "Find" to look up the user(s).'] = 'Ingrese cualquier detalle de usuario a buscar, y presione "Buscar" para buscar el/los usuarios.';
+	$strings['Find'] = 'Buscar';
 	$strings['Scheduled: %date%'] = 'Agendado: %date%';
 	$strings['Closed issues: %number_of_closed% of %number_of_issues% assigned to this milestone'] = 'Problemas cerrados: %number_of_closed% de %number_of_issues% asignados a este punto de control';
 	$strings['View details about this milestone'] = 'Ver detalles acerca de este punto de control';
@@ -339,7 +339,7 @@
 	$strings['From here you can manage all data types available in BUGS, which relates to issues.'] = 'Desde aquí puede gestionar todos los tipos de datos disponibles en BUGS relativos a los problemas.';
 	$strings['Several of these data types have some kind of setting associated with them, which you can set in the corresponding subsection.'] = 'Varios de estos tipos de datos tienen configuraciones asociadas, las que pueden modificarse en su correspondiente subsección.';
 	$strings['From here you can manage common The Bug Genie settings.'] = 'Desde acá puede administrar las opciones comunes The Bug Genie.';
-	$strings['To find out more about what each setting does, please refer to the %tbg_online_help%'] = 'Para encontrar más acerca de lo que cada opción hace, refiérase por favor a %tbg_online_help%';
+	$strings['To find out more about what each setting does, please refer to the %tbg_online_help%'] = 'Para encontrar más acerca de lo que cada opción hace, por favor ingrese a %tbg_online_help%';
 	$strings['Could not find this username. Please type the username of an existing, enabled user.'] = 'No se pudo encontrar este nombre de usuario. Por favor tipee un nombre de usuario existente y habilitado.';
 	$strings['Interface language'] = 'Idioma de la interfaz';
 	$strings['The default language in BUGS 2'] = 'Idioma predeterminado en BUGS 2';
@@ -409,7 +409,7 @@
 	$strings['hidden'] = 'oculto';
 	$strings['Configure milestones'] = 'Configuración de puntos de control';	
 	$strings['From here you can manage milestones for all projects you have access to.'] = 'Desde aquí puede administrar los puntos de control de todos los proyectos a los que tiene acceso.';
-  $strings['If you want to change access permissions for any milestone, you can do that either from the %manage_users% or the %manage_teams_and_groups% page.'] = 'Si quiere cambiar los permisos de acceso a algún punto de control, puede hacerlo desde %manage_users% o en la página %manage_teams_and_groups%.';
+    $strings['If you want to change access permissions for any milestone, you can do that either from the %manage_users% or the %manage_teams_and_groups% page.'] = 'Si quiere cambiar los permisos de acceso a algún punto de control, puede hacerlo desde %manage_users% o en la página %manage_teams_and_groups%.';
 	$strings['The milestone has been added.'] = 'El punto de control ha sido agregado.';
 	$strings['Remember to give other users/groups permission to access this milestone via the admin section to the left'] = 'Recuerde dar permisos a otros usuarios/grupos a este punto de control desde la sección de administración';
 	$strings['Please select which project you want to manage milestones for.'] = 'Por favor seleccione de que proyecto quiere administrar los puntos de control.';
@@ -428,12 +428,12 @@
 	$strings['Installed modules'] = 'Módulos instalados';
 	$strings['Not visible in "My account"'] = 'Oculto en "Mi cuenta"';
 	$strings['Visible in "My account"'] = 'Visible en "Mi cuenta"';
-	$strings['Not visible in the menu bar'] = 'Not visible in the menu bar';
+	$strings['Not visible in the menu bar'] = 'Oculto en la barra de menú';
 	$strings['Visible in the menu bar'] = 'Visible en la barra de menú';
 	$strings['Enabled module sections'] = 'Secciones del módulo habilitadas';
 	$strings['This module has no enabled sections'] = 'Este módulo no tiene secciones habilitadas';
-	$strings['Disabled module sections'] = 'Secciones del módulos deshabilitadas';
-	$strings['This module has no disabled sections'] = 'Este módulo no tiene secciones deshabilitadas';
+	$strings['Disabled module sections'] = 'Secciones del módulos inhabilitadas';
+	$strings['This module has no disabled sections'] = 'Este módulo no tiene secciones inhabilitadas';
 	$strings['Edit settings'] = 'Editar opciones';
 	$strings['Configure available scopes'] = 'Configuración de ámbitos disponibles';
 	$strings['Scopes are individual BUGS 2 environments, fully functional, but invisible to eachother.'] = 'Los ámbitos son entornos individuales en BUGS 2, totalmente funcionales, pero independientes entre sí.';
@@ -443,7 +443,7 @@
 	$strings['DEFAULT SCOPE'] = 'AMBITO POR DEFECTO';
 	$strings['AVAILABLE SCOPES'] = 'AMBITOS DISPONIBLES';
 	$strings['The scope was added.'] = 'El ámbito fue agregado.';
-	$strings['%scope_name% (disabled)'] = '%scope_name% (deshabilitado)';
+	$strings['%scope_name% (disabled)'] = '%scope_name% (inhabilitado)';
 	$strings['SCOPE SETTINGS'] = 'AJUSTES DE AMBITO';
 	$strings['No unique user could be found based on the details in the Scope administrator field. Please try a different name.'] = 'Ningún usuario pudo encontrase en los detalles del campo del administrador del ámbito. Por favor intente con un nombre diferente.';
 	$strings['The shortname cannot be blank, as it must be possible to select by entering it in an URL.'] = 'El nombre corto no puede quedar vacío, debe ser posible seleccionarlo al poner una URL.';
@@ -464,7 +464,7 @@
 	$strings['Scope hostname'] = 'Nombre del ámbito para el servidor';
 	$strings['By filling out this setting, the scope will automatically be triggered when accessing BUGS through this hostname.'] = 'Al completar estas opciones, el ámbito se activará automáticamente cuando acceda a BUGS a través de este nombre.';
 	$strings['Remember that the webserver must be set up to respond to the selected hostname for this to work.'] = 'Recuerde que el nombre del servidor web debe responder al nombre de servidor seleccionado para que funcione.';
-	$strings['Whether or not the scope is enabled. A disabled scope is inaccessible, and it\'s users cannot log in.'] = 'Si el ámbito está disponible o no. Un ámbito deshabilitado es inaccesible, y sus usuarios no podrán entrar.';
+	$strings['Whether or not the scope is enabled. A disabled scope is inaccessible, and it\'s users cannot log in.'] = 'Si el ámbito está disponible o no. Un ámbito inhabilitado es inaccesible, y sus usuarios no podrán entrar.';
 	$strings['Scope description'] = 'Descripción del ámbito';
 	$strings['A short description of the scope, displayed in the left hand list.'] = 'Una descripción breve del ámbito, mostrado a la izquierda.';
 	$strings['Create scope'] = 'Crear ámbito';
@@ -493,7 +493,7 @@
 	$strings['You are a member of this group, and can therefore not remove it. You must change your user settings before you can remove this group.'] = 'Ud. es un miembro de este grupo, y por lo tanto no puede quitarlo. Debe cambiar sus configuración de usuario antes para quitar el grupo.';
 	$strings['This group is the default user group and can not be removed.'] = 'Este grupo es el grupo de usuarios por defecto y no puede borrarse.';
 	$strings['Are you sure you want to remove the "%group_name%" group?'] = '¿Está seguro que quiere borrar el grupo "%group_name%"?';
-	$strings['This action cannot be reversed. Also remember that all users in this group will be disabled until they are moved to another group.'] = 'Esta acción no puede revertirse. Recuerde también que todos los usuarios de este grupo serán deshabilitados hasta que los ponga en otro grupo.';
+	$strings['This action cannot be reversed. Also remember that all users in this group will be disabled until they are moved to another group.'] = 'Esta acción no puede revertirse. Recuerde también que todos los usuarios de este grupo serán inhabilitados hasta que los ponga en otro grupo.';
 	$strings['Are you sure you want to remove the "%team_name%" team?'] = '¿Está seguro que quiere borrar al equipo "%team_name%"?';
 	$strings['This action cannot be reversed. All users in this will be removed from the team.'] = 'Esta acciónno puede ser revertida. Todos los usuarios serán quitados del equipo.';
 	$strings['Available groups'] = 'Grupos disponibles';
@@ -564,13 +564,13 @@
 	$strings['Select a module to install'] = 'Seleccione un módulo a instalar';
 	$strings['There are no new modules to install'] = 'No hay módulos nuevos para instalar';
 	$strings['Module installed'] = 'Módulo instalado';
-	$strings['The module was installed successfully. You can configure the new module from the configuration menu to the left.'] = 'El módulo fue instalado con éxito. Puede configurarlo desde el menu de la izquierda.';
+	$strings['The module was installed successfully. You can configure the new module from the configuration menu to the left.'] = 'El módulo fue instalado con éxito. Puede configurarlo desde el menú de la izquierda.';
 	$strings['Module removed'] = 'Módulo quitado';
 	$strings['The module was removed successfully.'] = 'El módulo fue quitado exitosamente.';
 	$strings['Uninstall'] = 'Desinstalar';
 	$strings['Are you sure you want to remove this module?'] = '¿Está seguro que quiere quitar este módulo?';
 	$strings['File upload settings'] = 'Opciones para subida de archivos';
-	$strings['The charset to use - leave blank to use the charset specified in the language file (currently %charset%)'] = 'The charset to use - leave blank to use the charset specified in the language file (currently %charset%)';
+	$strings['The charset to use - leave blank to use the charset specified in the language file (currently %charset%)'] = 'El conjunto de caracteres a utilizar - déjelo en blanco para utilizar el definido en el archivo de idioma (actualmente %charset%)';
 	$strings['Charset'] = 'Juego de caracteres';
 	$strings['Configure file upload settings'] = 'Configuración de opciones de subida de archivos';
 	$strings['From here you can manage file uploads.'] = 'Desde aquí puede gestionar las subidas de los archivos.';
@@ -596,7 +596,7 @@
 	$strings['Scripts (php, asp, etc.) are never allowed'] = 'Scripts (php, asp, etc.) nunca serán permitidos';
 	$strings['Import data from version 1.9'] = 'Importar datos desde la versión 1.9';
 	$strings['To start importing data from your BUGS 1.9 installation, please enter the connection details below.'] = 'Para empezar a importar datos de una instalación de BUGS 1.9, por favor ingrese los detalles de conexión debajo.';
-	$strings['After pressing "Next", you will be presented with several options related to the import. More information is available in the %tbg_online_help%'] = 'Después de presionar "Siguiente", serán mostradas varias opciones relativas a la importación. Hay más información dispoinble en la %tbg_online_help%';
+	$strings['After pressing "Next", you will be presented with several options related to the import. More information is available in the %tbg_online_help%'] = 'Después de presionar "Siguiente", serán mostradas varias opciones relativas a la importación. Hay más información disponible en la %tbg_online_help%';
 	$strings['Connection settings'] = 'Opciones de la conexión';
 	$strings['Hostname'] = 'Nombre del servidor';
 	$strings['Database name'] = 'Nombre de la base de datos';
@@ -922,7 +922,8 @@
 	$strings['There are no available severities'] = 'No hay gravedades definidas';
 	$strings['Available severities'] = 'Gravedades disponibles';
 	$strings['STEP 1'] = 'PASO 1';
-	$strings['select project, edition and version'] = 'seleccione proyecto, edición y versión';	$strings['Click here to change selection'] = 'Haga clic aquí para cambiar la selección';
+	$strings['select project, edition and version'] = 'seleccione proyecto, edición y versión';
+	$strings['Click here to change selection'] = 'Haga clic aquí para cambiar la selección';
 	$strings['You must select a project, edition and a build to continue'] = 'Debe seleccionar un producto, una edición y una compilación para continuar';
 	$strings['STEP 2'] = 'PASO 2';
 	$strings['select issue type, component, category and severity'] = 'seleccione tipo de problema, componentes, categoría y gravedad';
@@ -1266,7 +1267,7 @@
 	$strings['Please select a project from this list'] = 'Por favor seleccione un proyecto de la lista';
 	$strings['Select issue type'] = 'Seleccione el tipo de problema';
 	$strings['Please select an issue type from this list'] = 'Por favor seleccione un tipo de problema desde esta lista';
-	$strings['Choose %issue_type%'] = 'Es %issue_type%';
+	$strings['Choose %issue_type%'] = 'Es un/a %issue_type%';
 	$strings['More options will appear here as soon as you select a project and an issue type above'] = 'Más opciones aparecerán aquí luego que seleccione un proyecto y el tipo de problema';
 	$strings['Short summary'] = 'Breve resumen';
 	$strings['Checking fields, please wait'] = 'Verificando campos, espere por favor';
@@ -1485,7 +1486,7 @@
 	$strings['%comment_title% on behalf of %user%'] = '%comment_title% en nombre de %user%';
 	$strings['Really delete'] = 'Borrar realmente';
 	$strings['Are you sure you want to delete this comment?'] = '¿Está seguro que quiere borrar este comentario?';
-	$strings['or cancel'] = 'o cancel';
+	$strings['or cancel'] = 'o cancelar';
 	$strings['1 hour'] = '1 hora';
 	$strings['%comment_title% posted by %user%'] = '%comment_title% por %user%';
 	$strings['Comment added!'] = 'Comentario agregado!';
@@ -1512,7 +1513,7 @@
 	$strings['Triaged effect: %text%'] = 'Efecto del triaje: %text%';
 	$strings['Wiki menu'] = 'Menú Wiki';
 	$strings['Article name'] = 'Nombre del artículo';
-  $strings['Enter the name of the article to link to here, along with an (optional) description, and press "%add_link%" to add it to the menu.'] = 'Ingrese el nombre del artículo a enlazar, junto con una descripción (opcional), y presione "%add_link%" para agregarlo al menú.';
+    $strings['Enter the name of the article to link to here, along with an (optional) description, and press "%add_link%" to add it to the menu.'] = 'Ingrese el nombre del artículo a enlazar, junto con una descripción (opcional), y presione "%add_link%" para agregarlo al menú.';
 	$strings['Links to this article'] = 'Enlaces a este artículo';
 	$strings['No other articles links to this article'] = 'No hay enlaces de otros artículos';
 	$strings['Your drafts'] = 'Sus borradores';
@@ -1523,7 +1524,7 @@
 	$strings['Last updated at %time%, by %user%'] = 'Ultima actualización el %time%, por %user%';
 	$strings['Categories:'] = 'Categorías:';
 	$strings['This article is not in any categories'] = 'Este artículo no está en ninguna categoría';
-	$strings['Actions available'] = 'Acciones disponibles';
+	//$strings['Actions available'] = 'Acciones disponibles';
 	$strings['Edit this article'] = 'Editar este artículo';
 	$strings['Delete this article'] = 'Borrar este artículo';
 	$strings['Really delete this article?'] = '¿Está seguro de borrar este artículo?';
@@ -1728,7 +1729,7 @@
 	$strings['If you change this setting, you must make sure to also update the .htaccess file in the root directory to match this setting, otherwise The Bug Genie will not work correctly!'] = 'Si cambia esta opción, debe asegurarse de actualizar también el archivo .htaccess en la carpeta raíz para que coincida, de lo contrarrio The Bug Genie no funcionará correctamente!';
 	$strings['The path from the server url root to the subdirectory for the bug genie, including the trailing slash.'] = 'La ruta desde la URL del servidor a la subcarpeta de The Bug Genie, incluydeno la barra final.';
 	$strings['/thebuggenie/'] = '/thebuggenie/';
-  $strings['This is the language that will be used in The Bug Genie. Depending on other settings, users may change the language displayed to them.'] = 'Este es el idioma que utilizará com predeterminado The Bug Genie. Dependiendo de otras configuraciones, los usuarios pueden cambiar el idioma mostrado.';
+    $strings['This is the language that will be used in The Bug Genie. Depending on other settings, users may change the language displayed to them.'] = 'Este es el idioma que utilizará com predeterminado The Bug Genie. Dependiendo de otras configuraciones, los usuarios pueden cambiar el idioma mostrado.';
 	$strings['What charset to use for the selected language - leave blank to use the charset specified in the language file (currently %charset%)'] = 'Conjunto de caracteres a usar por el idioma seleccionado - si lo deja vacío utilizará el conjunto definido en el archivo de idioma (actualmente %charset%)';
 	$strings['Server timezone'] = 'Zona horaria del servidor';
 	$strings['The timezone used for The Bug Genie'] = 'La zona horaria utilizada por The Bug Genie';
@@ -1743,8 +1744,8 @@
 	$strings['Permissive'] = 'Permisivo';
 	$strings['Restrictive'] = 'Restrictivo';
 	$strings["%restrictive%: With this security policy, users don't automatically get access to projects, modules, etc., but must be granted access specifically."] = "%restrictive%: Con está política de seguridad, los usuarios no pueden acceder automáticamente a los proyectos, módulos, etc., sino que debe tener acceso específicamente.";
-	$strings['%permissive%: This security policy assume you have access to things like projects, pages, etc.'] = '%permissive%: Esta política de seguridad asume que tiene acceso a proyectos, páginas, etc.';
-	$strings["If you're running a public tracker, or a tracker with several projects you probably want to use a restrictive security policy - however, with smaller teams or and simpler projects, permissive security policy will be most efficient."] = "Si está usando un gestor de proyectos público, o un gestor de varios proyectos que probablemente quiera utilizar una política de seguridad restrictiva - sin embargo, con equipos más pequeños o proyectos más simples, la política de seguridad permisiva será más eficiente.";
+	$strings['%permissive%: This security policy assume you have access to things like projects, pages, etc.'] = '%permissive%: Esta política de seguridad asume que se accede a proyectos, páginas, etc. sin restricciones.';
+	$strings["If you're running a public tracker, or a tracker with several projects you probably want to use a restrictive security policy - however, with smaller teams or and simpler projects, permissive security policy will be most efficient."] = "Si está usando un gestor de proyectos público, o un gestor de varios proyectos probablemente querrá utilizar una política de seguridad restrictiva - sin embargo, con equipos más pequeños o proyectos más simples, la política de seguridad permisiva será más eficiente.";
 	$strings['Some permissions, such as configuration access are not affected by this setting, but must always be explicitly defined'] = 'Algunos permisos, como el acceso a la configuración no será afectado por esta opción, pero siempre debe estar definido explícitamente';
 	$strings['New user accounts'] = 'Nuevas cuentas de usuario';
 	$strings['Users can register new accounts'] = 'Los usuarios pueden registrar cuentas nuevas';
@@ -1811,10 +1812,10 @@
 	$strings['Can access the project statistics page'] = 'Puede acceder a la página de estadísticas del proyecto';
 	$strings['Can access the project timeline page'] = 'Puede acceder a la página de línea de tiempo del proyecto';
 	$strings['Can access project'] = 'Puede acceder a proyectos';
-	$strings['Can manage stories, tasks, sprints and backlog on the sprint planning page'] = 'Puede administrar historias, tareas, sprints y backlog en la planificación de scrum';
-	$strings['Can add new user stories to the backlog on the sprint planning page'] = 'Puede agregar nuevas historias del usuario al backlog en la planificación de scrum';
-	$strings['Can manage the backlog on the sprint planning page'] = 'Puede administrador el backlog de la planificación de scrum';
-	$strings['Can add sprints on the sprint planning page'] = 'Puede agregar sprints en la página de planificación de scrum';
+	$strings['Can manage stories, tasks, sprints and backlog on the sprint planning page'] = 'Puede administrar historias, tareas, sprints y backlog en la planificación de sprints';
+	$strings['Can add new user stories to the backlog on the sprint planning page'] = 'Puede agregar nuevas historias del usuario al backlog en la planificación de sprints';
+	$strings['Can manage the backlog on the sprint planning page'] = 'Puede administrador el backlog de la planificación de sprint';
+	$strings['Can add sprints on the sprint planning page'] = 'Puede agregar sprints en la página de planificación de sprint';
 	$strings['Can manage project'] = 'Puede administrar proyectos';
 	$strings['Can manage project releases and components'] = 'Puede administrar liberaciones y componentes del proyecto';
 	$strings['Can edit project details and settings'] = 'Puede editar detalles y configuraciones del proyecto';
@@ -1897,7 +1898,7 @@
 	$strings['These permissions control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions, from the "%general_permissions%" tab.'] = 'Estos permisos controlan que se puede hacer, y a qué páginas puede acceder en The Bug Genie - en proyecto básico específico. Algunos de estos permisos están disponibles como permisos de todo el sitio, desde la pestaña "%general_permissions%".';
   	$strings['Configure uploads &amp; attachments'] = 'Configuración subidas y adjuntos';
 	$strings['Enable uploads'] = 'Habilitar subidas';
-	$strings['If uploads are disabled, users will not be able to attach files to issues or upload documents, images or PDFs in project planning. If you just want to allow one or the other, then enable this setting and use the permissions configuration.'] = 'Si las subida de archivos están deshabilitadas, los usuarios no podrá adjuntar archivos a los problemas, ni documentos, imágenes o PDF en la planificación de proyecto. Si quiere permitirlo, entonces habilite esta opción y use la configuración de permisos.';
+	$strings['If uploads are disabled, users will not be able to attach files to issues or upload documents, images or PDFs in project planning. If you just want to allow one or the other, then enable this setting and use the permissions configuration.'] = 'Si las subida de archivos están inhabilitadas, los usuarios no podrá adjuntar archivos a los problemas, ni documentos, imágenes o PDF en la planificación de proyecto. Si quiere permitirlo, entonces habilite esta opción y use la configuración de permisos.';
 	$strings['Max upload file size'] = 'Tamaño máximo de archivo';
 	$strings['Enter the maximum allowed file size for uploads here. Remember that this value cannot be higher than the current php max_upload_size or post_max_size, both defined in php.ini.'] = 'Escriba el tamaño máximo de archivo permitido para subir. Recuerde que este valor no puede ser más grande que php max_upload_size o post_max_size de php, ambos definidos en php.ini.';
 	$strings['Currently, these values are max_upload_size: %ini_max_upload_size% and post_max_size: %ini_post_max_size%.'] = 'Actualmente, estos son los valores max_upload_size: %ini_max_upload_size% y post_max_size: %ini_post_max_size%.';
@@ -2021,7 +2022,7 @@
 	$strings['Clone this team'] = 'Copiar este equipo';
 	$strings['Cloning team, please wait'] = 'Copiando equipo, espere por favor';
 	$strings['Do you really want to delete this team?'] = '¿Realmente quiere borrar este equipo?';
-	$strings['If you delete this team, then all users in this team will be disabled until moved to a different team'] = 'Si lo borra, todos los usuarios en este equipo estarán deshabilitados hasta que sean movidos a un equipo diferente';
+	$strings['If you delete this team, then all users in this team will be disabled until moved to a different team'] = 'Si lo borra, todos los usuarios en este equipo estarán inhabilitados hasta que sean movidos a un equipo diferente';
 	$strings['Deleting team, please wait'] = 'Borrando equipo, espere por favor';
 	$strings['Users in this team'] = 'Usuarios en este equipo';
 	$strings['This is a list of all modules that are installed on this system'] = 'Esta es una lista de todos los módulos que están instalados en este sistema';
@@ -2032,7 +2033,7 @@
 	$strings['Really disable "%module_name%"?'] = '¿Realmente inhabilita "%module_name%"?';
 	$strings['Disabling this module will prevent users from accessing it or any associated data.'] = 'Deshabilitando este módulo evitará que los usuarios accedan a él o a cualquier dato asociado.';
 	$strings['Really uninstall "%module_name%"?'] = '¿Realmente desinstala "%module_name%"?';
-	$strings['Uninstalling this module will permanently prevent users from accessing it or any associated data. If you just want to prevent access to the module temporarily, disable the module instead.'] = 'Al desinstalar este módulo de manera permanente los usuarios no podrán acceder a él o a cualquier dato asociado. Si solo quiere prevenir el acceso al módulo provisoriamente, deshabilitelo.';
+	$strings['Uninstalling this module will permanently prevent users from accessing it or any associated data. If you just want to prevent access to the module temporarily, disable the module instead.'] = 'Al desinstalar este módulo de manera permanente los usuarios no podrán acceder a él o a cualquier dato asociado. Si solo quiere prevenir el acceso al módulo provisoriamente, inhabilitelo.';
 	$strings['Available permissions'] = 'Permisos disponibles';
 	$strings['Core module'] = 'Módulo del núcleo';
 	$strings['Uninstalled modules'] = 'Módulos sin instalar';
@@ -2155,7 +2156,7 @@
 	$strings['With prefix enabled, issues will be prefixed with the specified text. Ex: If you enable prefix and set "MYPROJ" as the prefix, issues will be named "MYPROJ-1", "MYPROJ-2", and so on. Without prefix enabled, issues will be name #1, #2, and so on.'] = 'Con el prefijo habilitado, los problemas serán precedidos con el texto especificado. Ej: si habilita el prefijo y pone "MIPROY" como prefijo, los problemas serán nombrados "MIPROY-1", "MIPROY-2", y así sucesivamente. Sin el prefijo habilitado, los problemas se llamarán #1, #2, y así sucesivamente.';
 	$strings['Project description'] = 'Descripción del proyecto';
 	$strings['Documentation URL'] = 'URL de la Documentación';
-	$strings['Enable sprint planning'] = 'Habilitar planificacion por scrum';
+	$strings['Enable sprint planning'] = 'Habilitar planificacion de sprints';
 	$strings['If the project uses the scrum method for planning, releases and development, enable it here'] = 'Si en el proyecto se utiliza el método scrum para la planificación, compilaciones y desarrollo, permitalo aquí';
 	$strings['Points only'] = 'Sólo puntos';
 	$strings['Points for issues, hours for tasks'] = 'Puntos para problemas, horas para tareas';
