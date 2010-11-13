@@ -219,7 +219,7 @@
 			}
 			catch (Exception $e)
 			{
-				return 'Error: Invalid project ID';
+				return TBGContext::getI18n()->__('Error: Invalid project ID');
 			}
 			
 			if (preg_match_all($fixes_grep, $commit_msg, $f_issues))
@@ -354,7 +354,7 @@
 							}
 						}
 						
-						$theIssue->addSystemComment('Issue updated from code repository', 'This issue has been updated with the latest changes from the code repository.<source>'.$commit_msg.'</source>', $uid);
+						$theIssue->addSystemComment(TBGContext::getI18n()->__('Issue updated from code repository'), TBGContext::getI18n()->__('This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>', array('commit_msg' => $commit_msg)), $uid);
 
 						foreach ($files as $afile)
 						{

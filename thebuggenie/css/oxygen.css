@@ -2,7 +2,7 @@
 @import url('../fonts/droidsansmono/stylesheet.css');
 
 /* General styles */
-body, td, th { padding: 0px; margin: 0px; font-family: 'Droid Sans', sans-serif; font-style: normal; font-weight: normal; text-align: left; font-size: 13px; line-height: 1.5; color: #555; }
+body, td, th { padding: 0px; margin: 0px; font-family: 'Droid Sans', sans-serif; font-style: normal; font-weight: normal; text-align: left; font-size: 13px; line-height: 1.5; color: #555;}
 html, body { padding: 0px; margin: 0px; height: 100%; }
 body { background-color: #FFF; }
 
@@ -20,6 +20,7 @@ a { color: #00a400; text-decoration: none; }
 a.image:hover { border: 0px; }
 a.issue_closed { text-decoration: line-through; }
 a:hover { border-bottom: 1px dotted #aaa; }
+a:active, a:focus { outline: none; outline-style: none; }
 
 form, p { margin: 0px; padding: 0px; }
 

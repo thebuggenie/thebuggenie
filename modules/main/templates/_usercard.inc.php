@@ -26,7 +26,7 @@
 			<?php if (count($user->getIssues(1))): ?>	
 				<?php echo '<b>' . __('This user has reported %issues% issue(s)', array('%issues%' => '</b>'.count($user->getIssues()).'<b>')); ?>
 				<br>
-				<b><?php echo __('Last reported issue: '); ?></b>
+				<b><?php echo __('Last reported issue:') . ' '; ?></b>
 					<?php foreach ($user->getIssues(1) as $issue): ?>
 						<span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->get(TBGProjectsTable::KEY))), '['.$issue->get(TBGProjectsTable::KEY).']'); ?></span>
 						<?php echo link_tag(make_url('viewissue', array('project_key' =>$issue->get(TBGProjectsTable::KEY), 'issue_no' => $issue->get(TBGIssuesTable::ID))), $issue->get(TBGIssueTypesTable::NAME) . ' #' . $issue->get(TBGIssuesTable::ISSUE_NO) . ' - '. $issue->get(TBGIssuesTable::TITLE)); ?>

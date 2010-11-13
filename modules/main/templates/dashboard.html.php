@@ -143,7 +143,7 @@
 				</li>
 				<li style="clear: both;"> 
 					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
-						<?php echo __("What you've done recently"); ?>
+						<?php echo __('What you\'ve done recently'); ?>
 					</div>
 					<?php if (count($tbg_user->getLatestActions()) > 0): ?>
 						<table cellpadding=0 cellspacing=0 style="margin: 5px;">

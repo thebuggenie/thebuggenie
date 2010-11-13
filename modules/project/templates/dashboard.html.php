@@ -101,71 +101,12 @@
 					</ul>
 				</div>
 				<div id="project_dashboard_menu_panes">
-					<div id="tab_10_recent_issues_pane">
-						<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true)), __('More') . ' &raquo;', array('class' => 'more', 'title' => __('Show more issues'))); ?>
-						<?php if (count($recent_issues) > 0): ?>
-							<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
-							<?php foreach ($recent_issues as $issue): ?>
-								<tr>
-									<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-									<td style="padding-bottom: 15px;">
-										<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<b>' . $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle() . '</b>', array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
-										<span class="faded_out dark" style="font-size: 11px;">
-											<?php echo tbg_formatTime($issue->getPosted(), 20); ?>,
-											<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
-										</span>
-									</td>
-								</tr>
-							<?php endforeach; ?>
-							</table>
-						<?php else: ?>
-							<div class="faded_out dark" style="padding: 5px; font-size: 12px;"><?php echo __('No issues, bugs or defects posted'); ?></div>
-						<?php endif; ?>
-					</div>
-					<div id="tab_5_recent_requests_pane" style="display: none;">
-						<?php echo link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('More') . ' &raquo;', array('class' => 'more', 'title' => __('Show more issues'))); ?>
-						<?php if (count($recent_features) > 0): ?>
-							<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
-							<?php foreach ($recent_features as $issue): ?>
-								<tr>
-									<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-									<td style="padding-bottom: 15px;">
-										<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<b>' . $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle() . '</b>', array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
-										<span class="faded_out dark" style="font-size: 11px;">
-											<?php echo tbg_formatTime($issue->getPosted(), 20); ?>,
-											<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
-										</span>
-									</td>
-								</tr>
-							<?php endforeach; ?>
-							</table>
-						<?php else: ?>
-							<div class="faded_out dark" style="padding: 5px; font-size: 12px;"><?php echo __('No feature requests posted yet'); ?></div>
-						<?php endif; ?>
-					</div>
-					<div id="tab_recent_ideas_pane" style="display: none;">
-						<?php echo link_tag(make_url('project_planning', array('project_key' => $selected_project->getKey())), __('Show project planning page') . ' &raquo;', array('class' => 'more')); ?>
-						<?php if (count($recent_ideas) > 0): ?>
-							<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
-							<?php foreach ($recent_ideas as $issue): ?>
-								<tr>
-									<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_small.png', array('style' => 'margin-top: 3px;')); ?></td>
-									<td style="padding-bottom: 15px; font-size: 13px;">
-										<?php echo __('%issue% (posted by %user%)', array('%issue%' => '<b>' . link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(), array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))) . '</b>', '%user%' => '<b>' . (($issue->getPostedBy() instanceof TBGIdentifiable) ? $issue->getPostedBy()->getName() : __('Unknown user')) . '</b>')); ?><br>
-										<span class="faded_out dark">
-											<?php echo __('%number_of% comments, last updated %time%', array('%number_of%' => $issue->getCommentCount(), '%time%' => tbg_formatTime($issue->getLastUpdatedTime(), 20))); ?>
-										</span>
-									</td>
-								</tr>
-							<?php endforeach; ?>
-							</table>
-						<?php else: ?>
-							<div class="faded_out dark" style="padding: 5px; font-size: 12px;"><?php echo __('No ideas suggested yet'); ?></div>
-						<?php endif; ?>
-					</div>
+					<?php include_component('recentActivities', array('id' => '10_recent_issues', 'issues' => $recent_issues, 'link' => link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true)), __('More') . ' &raquo;', array('class' => 'more', 'title' => __('Show more issues'))), 'empty' => 'No issues, bugs or defects posted yet', 'default_displayed' => true)); ?>
+					<?php include_component('recentActivities', array('id' => '5_recent_requests', 'issues' => $recent_features, 'link' => link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('More') . ' &raquo;', array('class' => 'more', 'title' => __('Show more issues'))), 'empty' => 'No feature requests posted yet')); ?>
+					<?php include_component('recentActivities', array('id' => 'recent_ideas', 'issues' => $recent_ideas, 'link' => link_tag(make_url('project_planning', array('project_key' => $selected_project->getKey())), __('Show project planning page') . ' &raquo;', array('class' => 'more')), 'empty' => 'No ideas suggested yet')); ?>
 					<div id="tab_statistics_pane" style="display: none;">
 						<?php echo link_tag(make_url('project_statistics', array('project_key' => $selected_project->getKey())), __('More statistics') . ' &raquo;', array('class' => 'more', 'title' => __('Show more issues'))); ?>
-						<div class="header_div" style="clear: both;">
+						<div class="header_div">
 							<?php echo __('Open issues by priority'); ?>
 						</div>
 						<table cellpadding=0 cellspacing=0 class="priority_percentage" style="margin: 5px 0 10px 0; width: 100%;">

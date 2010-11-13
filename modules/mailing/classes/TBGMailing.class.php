@@ -186,7 +186,7 @@
 			}
 			else
 			{
-				throw TBGContext::getI18n()->__('The email module is not configured for outgoing emails');
+				throw new Exception(TBGContext::getI18n()->__('The email module is not configured for outgoing emails'));
 			}
 		}
 
@@ -399,6 +399,8 @@
 		{
 			try
 			{
+				//if (file_exists(TBGContext::getRouting()->getCurrentRouteModule() . $module . DIRECTORY_SEPARATOR . $templatefile))
+				//if($basepath . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . $templatefile)
 				$mail = TBGMimemail::createNewFromTemplate($subject, $template, $parameters, $language, $recipients, $charset);
 				$this->_setInitialMailValues($mail);
 				$this->_setAdditionalMailValues($mail, $parameters);

@@ -7,7 +7,7 @@
 ?>
 <div style="text-align: center; margin-bottom: 10px;">
 	<div class="report_issue_header">
-		<?php echo __("What's the issue?"); ?>
+		<?php echo __('What\'s the issue?'); ?>
 	</div>
 	<?php if (!empty($errors) || !(empty($permission_errors))): ?>
 		<div class="rounded_box report_issue_desc red borderless" style="margin-bottom: 5px;">
@@ -267,7 +267,7 @@
 				<table cellpadding="0" cellspacing="0" id="edition_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('edition', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="edition_id" id="edition_label"><span>* </span><?php echo __('Edition'); ?></label></td>
-						<td class="report_issue_help faded_out dark"><?php echo __("Select which edition of the product you're using"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __('Select which edition of the product you\'re using'); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">
@@ -283,7 +283,7 @@
 				<table cellpadding="0" cellspacing="0" id="build_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('build', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
 						<td style="width: 150px;"><label for="build_id" id="build_label"><span>* </span><?php echo __('Release'); ?></label></td>
-						<td class="report_issue_help faded_out dark"><?php echo __("Select which release you're using"); ?></td>
+						<td class="report_issue_help faded_out dark"><?php echo __('Select which release you\'re using'); ?></td>
 					</tr>
 					<tr>
 						<td colspan="2" style="padding-top: 5px;">

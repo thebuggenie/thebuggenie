@@ -43,7 +43,7 @@
 				}
 				else
 				{
-					throw new Exception($i18n->__('Please enter a username'));
+					throw new Exception($i18n->__('Please enter an username'));
 				}
 			}
 			catch (Exception $e)

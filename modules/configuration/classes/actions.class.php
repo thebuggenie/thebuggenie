@@ -343,7 +343,7 @@
 						TBGCustomDatatype::delete($id);
 						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom field was deleted')));
 					}
-					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a custom type key that already exists')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a custom field key that already exists')));
 					break;
 			}
 		}
@@ -1062,7 +1062,7 @@
 					return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The component could not be added').", ".$e->getMessage()));
 				}
 			}
-			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add releases")));
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add components")));
 		}
 
 		/**
@@ -1341,7 +1341,7 @@
 			{
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsblock', array('base_id' => $request->getParameter('base_id'), 'permissions_list' => $request->getParameter('permissions_list'), 'mode' => $request->getParameter('mode'), 'target_id' => $request->getParameter('target_id'), 'user_id' => $request->getParameter('user_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
 			}
-			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify components")));
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify permissions")));
 		}
 
 		public function runSetPermission(TBGRequest $request)
@@ -1380,7 +1380,7 @@
 				}
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsinfoitem', array('key' => $request->getParameter('key'), 'target_id' => $request->getParameter('target_id'), 'type' => $request->getParameter('target_type'), 'mode' => $request->getParameter('template_mode'), 'item_id' => $request->getParameter('item_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
 			}
-			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify components")));
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify permissions")));
 		}
 		
 		/**

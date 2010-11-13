@@ -30,7 +30,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="config_explanation" colspan="2"><?php echo __('Select the workflow scehem to be used by this project'); ?></td>
+			<td class="config_explanation" colspan="2"><?php echo __('Select the workflow scheme to be used by this project'); ?></td>
 		</tr>
 		<tr>
 			<td><label for="use_scrum"><?php echo __('Enable agile development features'); ?></label></td>
@@ -49,7 +49,7 @@
 			<td class="config_explanation" colspan="2"><?php echo __('If the project uses an agile method for planning, releases and development, enable it here'); ?></td>
 		</tr>
 		<tr>
-			<td><label for="affects_hidden"><?php echo __('Hide \'affected items\' box in a tab'); ?></label></td>
+			<td><label for="affects_hidden"><?php echo __("Hide 'affected items' box in a tab"); ?></label></td>
 			<td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
 					<select name="affects_hidden" id="affects_hidden" style="width: 70px;">

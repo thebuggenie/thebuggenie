@@ -39,8 +39,8 @@
 							</tr>
 							<tr>
 								<td style="padding: 3px; font-size: 12px;">
-									<?php echo javascript_link_tag('Unactivated users', array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'unactivated');")); ?> |
-									<?php echo javascript_link_tag('New users', array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'newusers');")); ?>
+									<?php echo javascript_link_tag(__('Unactivated users'), array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'unactivated');")); ?> |
+									<?php echo javascript_link_tag(__('New users'), array('onclick' => "showUsers('".make_url('configure_users_find_user')."', 'newusers');")); ?>
 								</td>
 							</tr>
 							<tr>

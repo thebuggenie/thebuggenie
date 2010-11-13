@@ -170,7 +170,7 @@
 				{
 					$filename = $this->getStringsFilename();
 				}
-				//echo $filename;
+
 				if (file_exists($filename))
 				{
 					$strings = array();
@@ -223,7 +223,6 @@
 
 		public function hasTranslatedTemplate($template, $is_component = false)
 		{
-			$basepath = TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->getCurrentLanguage() . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR;
 			if (strpos($template, '/'))
 			{
 				$templateinfo = explode('/', $template);
@@ -235,9 +234,14 @@
 				$module = TBGContext::getRouting()->getCurrentRouteModule();
 				$templatefile = ($is_component) ? '_' . $template . '.inc.php' : $template . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php';
 			}
-			if (file_exists($basepath . $module . DIRECTORY_SEPARATOR . $templatefile))
+TBGLogging::log('OMG PONIEZ::'.TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $templatefile);
+			if (file_exists(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $templatefile))
 			{
-				return $basepath . $module . DIRECTORY_SEPARATOR . $templatefile;
+				return TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $templatefile;
+			}
+			elseif (file_exists(TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->getCurrentLanguage() . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . $templatefile))
+			{
+				return TBGContext::getIncludePath() . 'i18n' . DIRECTORY_SEPARATOR . $this->getCurrentLanguage() . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . $templatefile;
 			}
 			return false;
 		}
@@ -251,7 +255,7 @@
 			else
 			{
 				$retstring = $text;
-				//TBGLogging::log('The text "' . $text . '" does not exist in list of translated strings.', 'i18n');
+				TBGLogging::log('The text "' . $text . '" does not exist in list of translated strings.', 'i18n');
 				$this->_missing_strings[$text] = true;
 			}
 			if (!empty($replacements))

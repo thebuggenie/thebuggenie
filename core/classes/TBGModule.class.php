@@ -249,7 +249,7 @@
 
 		public function addAvailablePermission($permission_name, $description, $target = 0)
 		{
-			$this->_availablepermissions[$permission_name] = array('description' => $description, 'target_id' => $target);
+			$this->_availablepermissions[$permission_name] = array('description' => TBGContext::getI18n()->__($description), 'target_id' => $target);
 		}
 		
 		public function getAvailablePermissions()
