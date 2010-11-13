@@ -926,7 +926,7 @@
 		public function runMenuLinks(TBGRequest $request)
 		{
 		}
-		
+
 		public function runTransitionIssue(TBGRequest $request)
 		{
 			try

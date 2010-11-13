@@ -218,6 +218,12 @@
 			return array_keys($this->_validation_errors);
 		}
 		
+		public function listenIssueSaveAddComment(TBGEvent $event)
+		{
+			$this->comment_lines = $event->getParameter('comment_lines');
+			$this->comment = $event->getParameter('comment');
+		}
+
 		/**
 		 * Transition an issue to the outgoing step, based on request data if available
 		 * 
@@ -228,6 +234,10 @@
 		{
 			$request = ($request !== null) ? $request : $this->_request;
 			$this->getOutgoingStep()->applyToIssue($issue);
+			$comment_body = $this->comment . "\n\n" . $request->getParameter('comment_body', null, false);
+
+			$comment = TBGComment::createNew($title, $comment_body, TBGContext::getUser()->getID(), $request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'), $request->getParameter('comment_visibility'), 0, false);
+			TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenIssueSaveAddComment'));
 			
 			foreach ($this->getProperties() as $property)
 			{

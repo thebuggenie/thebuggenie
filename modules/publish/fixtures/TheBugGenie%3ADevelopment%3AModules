@@ -84,6 +84,11 @@ To be able to use a module, it needs to be installed. This can be done either vi
 
 When a module is installed, some functions in your module are executed (if the exists) - '''_install()''' and '''_loadFixtures()'''. If your module has database table classes in the ''classes/B2DB'' folder, they will be created after the '''_install()''' function has been called but before the '''_loadFixtures()''' function is called. This means you cannot add data to any custom tables in the '''_install()''' function, but you can do it in the '''_loadFixtures()''' function.
 
+= Using the cli to setup an empty module =
+The Bug Genie CLI has a convenience command to create an empty module skeleton, called via
+ ./tbg_cli create_module MyModule
+
+This command will create all the necessary folders and files to get your module up and running. You can continue from there, adding pages and more.
 
 = Your first module page =
 So, unless you just want to linger in the background and do tasks invisible to the user, you probably want to have a page or something where user can interact with. External modules are treated in a similar way to internal modules - that means they follow the same rules and conventions as the internal modules does when it comes to [[TheBugGenie:Development:Actions|Actions]] and [[TheBugGenie:Development:Actions|Templates]]. However - it differs for external modules in that to be able to access the page, it needs to be added to the routing stack - it needs to have a URL which the user can access.

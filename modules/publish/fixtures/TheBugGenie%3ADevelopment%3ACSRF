@@ -8,6 +8,9 @@ The Bug Genie uses CSRF protection in two ways. One is via CSRF-protection-enabl
 == Usage ==
 '''All techniques described here also applies to plugin developers'''.
 
+=== Retrieving the current CSRF-token ===
+You can retrieve the current users CSRF-token in The Bug Genie by calling the '''TBGContext::generateCSRFtoken()''' function. This function will retrieve the current users token, or generate a token if it's not already been generated.
+
 === CSRF-protected routes ===
 When setting up routes, you have the option to specify CSRF-protection directly on the route. This will automatically include the csrf_token in the URL whenever the '''TBGContext::getRouting()->generate()''' function (in actions) or '''make_url()''' function (in templates) are called. CSRF-protected routes also automatically perform the CSRF check before the associated action is triggered, so you can be safe that the incoming request is legitimate.
 
