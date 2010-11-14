@@ -39,6 +39,8 @@
 			$this->thebuggenie_folder_perm_ok = true;
 			$this->b2db_param_file_ok = true;
 			$this->pdo_ok = true;
+			$this->mysql_ok = true;
+			$this->pgsql_ok = true;
 			if (file_exists(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php'))
 			{
 				$this->b2db_param_file_ok = false;
@@ -59,6 +61,15 @@
 				$this->pdo_ok = false;
 				$this->all_well = false;
 			}
+			if (!extension_loaded('pdo_mysql'))
+			{
+				$this->mysql_ok = false;
+			}
+			if (!extension_loaded('pdo_pgsql'))
+			{
+				$this->pgsql_ok = false;
+			}
+			$this->all_well = $this->all_well & ($this->mysql_ok | $this->pgsql_ok);
 		}
 		
 		/**

@@ -26,7 +26,8 @@
 			.install_progress { font-weight: bold; border: 1px solid #DDD; padding: 7px 4px 7px 4px; font-size: 11px; margin-bottom: 5px; background-color: #FDFDFD; }
 			.install_progress img { float: right; }
 			.prereq_ok { border: 1px solid #aaC6aa; background-color: #CFE8CF; font-size: 11px; }
-			.prereq_fail { border: 1px solid #B76B6B; color: #FFF; background-color: #F38888;  }
+			.prereq_fail { border: 1px solid #B76B6B; color: #FFF; background-color: #F38888; }
+			.prereq_warn { border: 1px solid #FF9900; background-color: #FFFF99; }
 			.installation_box { padding: 3px 10px 10px 10px; width: 950px; margin-left: auto; margin-right: auto; margin-top: 15px; position: relative; font-size: 12px; }
 			.installation_box input[type="submit"] { padding: 5px; font-weight: bold; height: 30px; font-size: 15px; }
 			.donate { border: 1px solid #aaC6aa; background-color: #CFE8CF; }

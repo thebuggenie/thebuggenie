@@ -35,9 +35,27 @@
 	<?php if ($pdo_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP PDO installed and enabled ...</div>
 	<?php endif; ?>
+	<?php if ($mysql_ok): ?>
+		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP PDO MySQL installed and enabled ...</div>
+	<?php endif; ?>
+	<?php if ($pgsql_ok): ?>
+		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP PDO PostgreSQL installed and enabled ...</div>
+	<?php endif; ?>
 	<?php if ($b2db_param_file_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can save database connection details ...</div>
 	<?php endif; ?>
+	<?php if (!$mysql_ok && $pgsql_ok): ?>
+		<div class="installation_prerequisites prereq_warn">
+		<b>PDO MySQL driver not enabled</b><br>
+		You won't be able to install The Bug Genie on a MySQL database.<br/>More information is available at <a href="http://fr.php.net/manual/en/ref.pdo-mysql.php">php.net</a>
+		</div>
+	<?php endif; ?>
+	<?php if ($mysql_ok && !$pgsql_ok): ?>
+		<div class="installation_prerequisites prereq_warn">
+		<b>PDO PostgreSQL driver not enabled</b><br>
+		You won't be able to install The Bug Genie on a PostgreSQL database.<br/>More information is available at <a href="http://fr.php.net/manual/en/ref.pdo-pgsql.php">php.net</a>
+		</div>
+	<?php endif; ?>		
 	<?php if ($all_well): ?>
 		<div style="margin-top: 20px;">
 			Please make sure that you have the following information available:
@@ -76,20 +94,26 @@
 			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>
 			</div>
 		<?php endif; ?>
-		<?php if (!$base_folder_perm_ok): ?>
+		<?php if (!$thebuggenie_folder_perm_ok): ?>
 			<div class="installation_prerequisites prereq_fail">
 			<b>Could not write to The Bug Genie public directory</b><br>
 			The public folder for The Bug Genie should be writable during installation, since we need to store some information in it
 			</div>
 			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath() . 'thebuggenie/', 0, strripos(TBGContext::getIncludePath() . 'thebuggenie/', DIRECTORY_SEPARATOR) + 1)); ?>
+			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>thebuggenie/
 			</div>
 		<?php endif; ?>
 		<?php if (!$pdo_ok): ?>
 			<div class="installation_prerequisites prereq_fail">
 			<b>PDO not enabled</b><br>
-			To install The Bug Genie, PDO must be installed and enabled. More information is available at <a href="http://www.php.net/PDO">php.net</a>
+			To install The Bug Genie, PDO must be installed and enabled.<br/>More information is available at <a href="http://www.php.net/PDO">php.net</a>
+			</div>
+		<?php endif; ?>
+		<?php if (!$mysql_ok && !$pgsql_ok): ?>
+			<div class="installation_prerequisites prereq_fail">
+			<b>No PDO driver enabled</b><br>
+			To install The Bug Genie, a PDO driver (MySQL or PostgreSQL) must be installed and enabled.<br/>More information is available at <a href="http://fr.php.net/manual/en/pdo.drivers.php">php.net</a>
 			</div>
 		<?php endif; ?>
 		<br>
