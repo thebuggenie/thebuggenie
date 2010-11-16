@@ -799,22 +799,23 @@ table.issue_affects td { padding: 3px;}
 .close_micro_popup_link { position: absolute; right: 7px; top: 7px; font-size: 0.9em; }
 
 /* project dashboard */
-#project_dashboard .recent_activities td.latest_action_dates, #timeline .recent_activities td.latest_action_dates { font-weight: bold; padding: 10px 5px 2px 5px; }
-#project_dashboard .timeline_link {  text-align: right; padding: 5px; }
-#project_dashboard td, #timeline td { vertical-align: top; }
-#project_dashboard .recent_activities td { font-size: 12px; }
-#project_dashboard .recent_activities td img, #timeline .recent_activities td img { float: left; margin: 6px 6px 0 5px; }
-#project_dashboard .recent_activities td .time, #timeline .recent_activities td .time { float: left; color: #aaa; }
-#project_dashboard #project_header_container img { float: left; margin: 3px 5px 0 0; }
-#project_dashboard .recent_activities td.latest_action_dates {  }
-#project_dashboard .recent_activities td .time { font-size: 11px; }
-#project_dashboard_menu li.selected a, #project_dashboard_menu li a {  }
-#project_dashboard_menu_panes a.more {  padding: 5px; float: right; font-weight: bold; }
+#timeline td { vertical-align: top; }
+#project_dashboard_menu_panes a.more { padding: 5px; float: right; font-weight: bold; }
 #project_dashboard_menu_panes a.more:hover { border: 0; }
-#project_dashboard #project_name { font-size: 18px; font-weight: bold; margin: 5px 5px 5px 0; }
-#project_dashboard #project_name span { margin: 3px; font-size: 15px; font-weight: normal; display: inline; padding: 3px; color: #aaa; }
-#project_dashboard #project_team {  font-weight: normal; margin: 5px 5px 5px 0; width: 615px; }
-#project_dashboard #project_description { font-size: 14px; font-weight: normal; color: #666; }
+#project_header_container { clear: both; }
+#project_header_container img { float: right; margin: 1px 5px 0 0; }
+#project_name img.logo { float: left; margin: 1px 5px 0 0; }
+#project_name { font-size: 18px; font-weight: bold; margin: 10px 5px 5px 0; line-height: 1; }
+#project_name span { margin: 3px 0 0 0; font-size: 12px; font-weight: normal; display: inline; padding: 3px; color: #aaa; }
+#project_team { font-weight: normal; margin: 0 5px 5px 0; width: 675px; }
+#project_description { font-size: 14px; font-weight: normal; color: #666; }
+.project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 300px; padding: 0 0 50px 10px; }
+.project_information_sidebar .sidebar_links { margin-top: 30px; }
+.project_information_sidebar .sidebar_links a { display: block; padding: 4px; color: #555; border: 1px dotted #DDD; border-right-color: transparent; margin: 0 -1px 0 7px; }
+.project_information_sidebar .sidebar_links a:hover { border: 1px solid transparent; background-color: #F1F1F1; border-right-color: #CCC; }
+.project_information_sidebar .sidebar_links a.selected { border: 1px solid #CCC; border-right-color: #FFF; margin-left: 0; padding: 8px; font-weight: bold; }
+.project_information_sidebar .sidebar_links a.selected:hover { border: 1px solid #CCC; border-right-color: #FFF; background-color: #FFF; }
+.project_information_main { padding: 10px 0 0 15px; }
 /* end dashboard */
 
 /* project timeline */

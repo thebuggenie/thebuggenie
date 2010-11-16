@@ -10,9 +10,10 @@
 	}
 
 ?>
-<table style="width: 100%;" cellpadding="0" cellspacing="0" id="project_dashboard">
+<table style="width: 100%;" cellpadding="0" cellspacing="0">
 	<tr>
-		<td style="width: 320px; padding: 0 5px 0 5px;">
+		<td class="project_information_sidebar">
+			<?php /*
 			<div class="rounded_box lightgrey borderless" style="margin-top: 5px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 				<div class="xboxcontent" style="padding: 0 5px 5px 5px;">
@@ -63,32 +64,40 @@
 					<?php endif; ?>
 				</div>
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+			</div> */ ?>
+			<div id="project_header_container">
+				<div>
+					<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><?php echo javascript_link_tag(image_tag('cfg_icon_projectheader.png'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $selected_project->getID()))."');")); ?><?php endif; ?>
+					<div id="project_name">
+						<?php echo image_tag($selected_project->getIcon(), array('class' => 'logo'), $selected_project->hasIcon()); ?>
+						<?php echo $selected_project->getName(); ?><br>
+						<span><?php echo $selected_project->getKey(); ?></span>
+					</div>
+					<div id="project_description"<?php if (!$selected_project->hasDescription()): ?> class="faded_out dark"<?php endif; ?>>
+						<?php if ($selected_project->hasDescription()): ?>
+							<?php echo tbg_parse_text($selected_project->getDescription()); ?>
+						<?php else: ?>
+							<?php echo __('This project has no description'); ?>
+						<?php endif; ?>
+					</div>
+					<div class="sidebar_links">
+						<?php include_template('project/projectinfolinks'); ?>
+					</div>
+				</div>
 			</div>
 		</td>
-		<td style="width: auto; padding: 5px;">
-			<div style="clear: both; padding: 0 5px 5px 0;" id="project_header_container">
-				<?php echo image_tag($selected_project->getIcon(), array(), $selected_project->hasIcon()); ?>
-				<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><?php echo javascript_link_tag(image_tag('cfg_icon_projectheader.png'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $selected_project->getID()))."');")); ?><?php endif; ?>
-				<div id="project_name"><?php echo $selected_project->getName(); ?> <span><?php echo $selected_project->getKey(); ?></span></div>
-				<div id="project_description"<?php if (!$selected_project->hasDescription()): ?> class="faded_out dark"<?php endif; ?>>
-					<?php if ($selected_project->hasDescription()): ?>
-						<?php echo tbg_parse_text($selected_project->getDescription()); ?>
-					<?php else: ?>
-						<?php echo __('This project has no description'); ?>
-					<?php endif; ?>
-				</div>
-				<div id="project_team">
-					<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Team'); ?>:</div>
-					<?php if (count($assignees['users']) > 0): ?>
-						<?php foreach ($assignees['users'] as $user_id => $info): ?>
-							<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-								<?php echo include_component('main/userdropdown', array('user' => $user_id)); ?>
-							</div>
-						<?php endforeach; ?>
-					<?php else: ?>
-						<div class="faded_out" style="font-weight: normal;"><?php echo __('No users or teams assigned'); ?></div>
-					<?php endif; ?>
-				</div>
+		<td class="project_information_main">
+			<div id="project_team">
+				<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Team'); ?>:</div>
+				<?php if (count($assignees['users']) > 0): ?>
+					<?php foreach ($assignees['users'] as $user_id => $info): ?>
+						<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+							<?php echo include_component('main/userdropdown', array('user' => $user_id)); ?>
+						</div>
+					<?php endforeach; ?>
+				<?php else: ?>
+					<div class="faded_out" style="font-weight: normal;"><?php echo __('No users or teams assigned'); ?></div>
+				<?php endif; ?>
 			</div>
 			<div style="width: 680px; padding-right: 5px;">
 				<?php echo image_tag(make_url('project_statistics_last_30', array('project_key' => $selected_project->getKey())), array('style' => 'float: right; margin-bottom: 15px;'), true); ?>
