@@ -93,13 +93,19 @@
 											<li<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_timeline', 'project_team', 'project_roadmap', 'project_statistics'))): ?> class="selected"<?php endif; ?>>
 												<div>
 													<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_dashboard_small.png').__('Project information')); ?>
-													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onclick' => "if (!\$('project_information_menu').visible()) { $('project_information_menu').show(); _updateDivWithJSONFeedback('". make_url('project_getmenulinks', array('project_key' => TBGContext::getCurrentProject()->getKey())) ."', 'project_information_menu_links', 'project_information_menu_indicator', null, null, null, null, ['project_information_menu']); } else { \$('project_information_menu').toggle(); }")); ?>
+													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
 												</div>
-												<div id="project_information_menu" class="tab_menu_dropdown shadowed" style="display: none;">
-													<span id="project_information_menu_links"></span>
-													<div id="project_information_menu_indicator" style="text-align: center; display: none;">
-														<?php echo image_tag('spinning_16.gif', array('style' => 'margin: 10px;')); ?>
-													</div>
+												<div id="project_information_menu" class="tab_menu_dropdown shadowed">
+													<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Dashboard')); ?>
+													<?php //echo link_tag(make_url('project_planning', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Planning')); ?>
+													<?php //echo link_tag(make_url('project_files', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Files')); ?>
+													<?php if (TBGContext::getCurrentProject()->usesScrum()): ?>
+														<?php echo link_tag(make_url('project_scrum', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Sprint planning')); ?>
+													<?php endif; ?>
+													<?php echo link_tag(make_url('project_roadmap', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Roadmap')); ?>
+													<?php echo link_tag(make_url('project_team', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Team overview')); ?>
+													<?php echo link_tag(make_url('project_statistics', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Statistics')); ?>
+													<?php echo link_tag(make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Timeline')); ?>
 												</div>
 											</li>
 										<?php endif; ?>

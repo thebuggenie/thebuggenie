@@ -2,10 +2,10 @@
 	<div>
 		<?php echo link_tag(((isset($project_url)) ? $project_url : $url), image_tag('tab_publish.png', array(), false, 'publish') . TBGContext::getModule('publish')->getMenuTitle()); ?>
 		<?php if (count(TBGProject::getAll())): ?>
-			<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onclick' => "\$('wiki_dropdown_menu').toggle();")); ?>
+			<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown'))); ?>
 		<?php endif; ?>
 	</div>
-	<div id="wiki_dropdown_menu" class="tab_menu_dropdown shadowed" style="display: none;">
+	<div id="wiki_dropdown_menu" class="tab_menu_dropdown shadowed">
 		<?php if (TBGContext::isProjectContext()): ?>
 			<div class="header"><?php echo __('Currently selected project'); ?></div>
 			<?php echo link_tag($project_url, __('Project wiki frontpage')); ?>
