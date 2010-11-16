@@ -43,7 +43,7 @@
 		}
 		if (!$relative)
 		{
-			$params['src'] = TBGContext::getUrlHost() . $params['src'];
+			$params['src'] = TBGContext::getUrlHost() . TBGContext::getTBGPath() . $params['src'];
 		}
 		if (!isset($params['alt']))
 		{
