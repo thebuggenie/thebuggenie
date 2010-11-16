@@ -5,25 +5,7 @@
 	$tbg_response->setTitle(__('"%project_name%" project team', array('%project_name%' => $selected_project->getName())));
 
 ?>
-<table style="width: 1010px;" cellpadding="0" cellspacing="0" id="statistics">
-	<tr>
-		<td style="width: 300px; padding: 0 5px 0 5px; vertical-align: top;">
-			<div class="rounded_box lightgrey borderless" style="margin-top: 5px; padding: 7px;" id="statistics_menu">
-				<div class="header"><?php echo __('Statistics'); ?></div>
-				<div class="content">
-					<b><?php echo __('Number of issues per:'); ?></b>
-					<ul class="simple_list" style="margin-left: 10px;">
-						<li><a href="javascript:void(0);" onclick="getStatistics('<?php echo make_url('project_statistics_imagesets', array('project_key' => $selected_project->getKey(), 'set' => 'issues_per_state')); ?>');"><?php echo __('%number_of_issues_per% State (open / closed)', array('%number_of_issues_per%' => '')); ?></a></li>
-						<li><a href="javascript:void(0);" onclick="getStatistics('<?php echo make_url('project_statistics_imagesets', array('project_key' => $selected_project->getKey(), 'set' => 'issues_per_category')); ?>');"><?php echo __('%number_of_issues_per% Category', array('%number_of_issues_per%' => '')); ?></a></li>
-						<li><a href="javascript:void(0);" onclick="getStatistics('<?php echo make_url('project_statistics_imagesets', array('project_key' => $selected_project->getKey(), 'set' => 'issues_per_priority')); ?>');"><?php echo __('%number_of_issues_per% Priority level', array('%number_of_issues_per%' => '')); ?></a></li>
-						<li><a href="javascript:void(0);" onclick="getStatistics('<?php echo make_url('project_statistics_imagesets', array('project_key' => $selected_project->getKey(), 'set' => 'issues_per_resolution')); ?>');"><?php echo __('%number_of_issues_per% Resolution', array('%number_of_issues_per%' => '')); ?></a></li>
-						<li><a href="javascript:void(0);" onclick="getStatistics('<?php echo make_url('project_statistics_imagesets', array('project_key' => $selected_project->getKey(), 'set' => 'issues_per_reproducability')); ?>');"><?php echo __('%number_of_issues_per% Reproducability', array('%number_of_issues_per%' => '')); ?></a></li>
-						<li><a href="javascript:void(0);" onclick="getStatistics('<?php echo make_url('project_statistics_imagesets', array('project_key' => $selected_project->getKey(), 'set' => 'issues_per_status')); ?>');"><?php echo __('%number_of_issues_per% Status type', array('%number_of_issues_per%' => '')); ?></a></li>
-					</ul>
-				</div>
-			</div>
-		</td>
-		<td style="width: auto; padding: 5px 5px 0 0; vertical-align: top;">
+			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
 			<div style="display: none;" id="statistics_main">
 				<div style="width: 695px; height: 310px; padding: 0;" id="statistics_main_image_div">
 					<img src="#" id="statistics_main_image" alt="<?php echo __('Loading, please wait'); ?>">

@@ -815,7 +815,9 @@ table.issue_affects td { padding: 3px;}
 .project_information_sidebar .sidebar_links a:hover { border: 1px solid transparent; background-color: #F1F1F1; border-right-color: #CCC; }
 .project_information_sidebar .sidebar_links a.selected { border: 1px solid #CCC; border-right-color: #FFF; margin-left: 0; padding: 8px; font-weight: bold; }
 .project_information_sidebar .sidebar_links a.selected:hover { border: 1px solid #CCC; border-right-color: #FFF; background-color: #FFF; }
-.project_information_main { padding: 10px 0 0 15px; }
+.project_information_sidebar .sidebar_links .simple_list { margin: 0 0 0 25px; padding: 10px; border-top: 1px solid #DDD; background-color: #F1F1F1; }
+.project_information_sidebar .sidebar_links .simple_list li a { border: 0; padding: 3px; margin: 0; }
+.project_information_main { padding: 10px 0 0 15px; vertical-align: top; }
 /* end dashboard */
 
 /* project timeline */

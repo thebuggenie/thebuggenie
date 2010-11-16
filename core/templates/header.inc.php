@@ -96,7 +96,7 @@
 													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
 												</div>
 												<div id="project_information_menu" class="tab_menu_dropdown shadowed">
-													<?php include_template('project/projectinfolinks'); ?>
+													<?php include_template('project/projectinfolinks', array('submenu' => true)); ?>
 												</div>
 											</li>
 										<?php endif; ?>
