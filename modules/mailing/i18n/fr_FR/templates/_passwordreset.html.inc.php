@@ -1,6 +1,7 @@
 <div style="font-family: 'Trebuchet MS', 'Liberation Sans', 'Bitstream Vera Sans', 'Luxi Sans', Verdana, sans-serif; font-size: 11px; color: #646464;">
-	<b>Your new password has been saved</b><br>
-	Hi, %user_buddyname%!<br>A request was made to reset your password for your user account at <a href="%thebuggenie_url%">%thebuggenie_url%</a>.<br>
-	The new password has been saved. Click this link: <a href="%thebuggenie_url%">%thebuggenie_url%</a><br>
-	and log in with the username <b>%user_username%</b> and the password <b>%password%</b>
+	<b>Votre nouveau mot de passe a &eacute;t&eacute; enregistr&eacute;</b><br>
+	Bonjour %user_buddyname%,<br>
+	Une demande a &eacute;t&eacute; faite pour la reg&eacute;n&eacute;ration de votre mot de passe pour votre compte &agrave; <a href="%thebuggenie_url%">%thebuggenie_url%</a>.<br>
+	Le nouveau mot de passe a &eacute;t&eacute; enregistr&eacute;. Cliquez sur ce lien : <a href="%thebuggenie_url%">%thebuggenie_url%</a><br>
+	et connectez-vous avec le nom d'utilisateur <b>%user_username%</b> et le mot de passe <b>%password%</b>
 </div>

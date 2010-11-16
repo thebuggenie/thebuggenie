@@ -1,8 +1,6 @@
-Hi, %user_buddyname%!
-A request was made to reset your password for your user account at %thebuggenie_url%.
+Bonjour %user_buddyname%,
+Une demande a &eacute;t&eacute; faite pour la reg&eacute;n&eacute;ration de votre mot de passe pour votre compte &agrave; %thebuggenie_url%.
 
-To change your password, click the following link:
-%link_to_reset_password%
-(if the above link isn't clickable, copy it and paste it into the address field in your web browser)
+Pour changer votre mot de passe, suivez ce lien : %link_to_reset_password%
 
-(If you didn't request this email, just disregard it. Nothing will be done unless you click the link in this email.)
+Si vous n'avez pas demand&eacute; cet email, alors n'en tenez pas compte. Aucune action ne sera effectu&eacute; sauf si vous activez ce lien.

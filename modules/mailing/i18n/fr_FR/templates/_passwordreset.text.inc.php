@@ -1,5 +1,5 @@
-Hi, %user_buddyname%!
+Bonjour %user_buddyname%,
 
-A request was made to reset your password for your user account at %thebuggenie_url%.
-The new password has been saved. Click this link: %thebuggenie_url%
-and log in with the username %user_username% and the password%password%
+Une demande a &eacute;t&eacute; faite pour la reg&eacute;n&eacute;ration de votre mot de passe pour votre compte &agrave; %thebuggenie_url%.
+Le nouveau mot de passe a &eacute;t&eacute; enregistr&eacute;. Cliquez sur ce lien : %thebuggenie_url%
+et connectez-vous avec le nom d'utilisateur %user_username% et le mot de passe %password%

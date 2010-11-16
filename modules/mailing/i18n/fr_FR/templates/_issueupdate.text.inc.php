@@ -1,11 +1,11 @@
-Hi, %user_buddyname%!
-<?php echo $issue->getIssuetype()->getName(); ?> <?php echo $issue->getFormattedTitle(true); ?> was updated by <?php echo $updated_by->getName(); ?>.
+Bonjour %user_buddyname%,
+<?php echo $issue->getIssuetype()->getName(); ?> <?php echo $issue->getFormattedTitle(true); ?> a &eacute;t&racute; mise &agrave; jour par <?php echo $updated_by->getName(); ?>.
 
-* The following details were changed: *
+* Les informations suivantes ont &eacute;t&eacute; modifi&eacute;es : *
 <?php foreach ($comment_lines as $comment_line): ?>
     <?php echo $comment_line; ?>
 <?php endforeach; ?>
 
 ---
-Show issue: <?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false); ?>
-Show <?php echo $issue->getProject()->getName(); ?> project dashboard: <?php echo make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey()), false); ?>
+Afficher la demande : <?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo()), false); ?>
+Affiche le tableau de bord du projet <?php echo $issue->getProject()->getName(); ?> : <?php echo make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey()), false); ?>

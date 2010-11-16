@@ -1,10 +1,10 @@
-Hi, %user_buddyname%!
-Someone registered the username '%user_username%' with The Bug Genie, here: %thebuggenie_url%.
+Bonjour %user_buddyname%,
+Une personne a enregistr&eacute; le nom d'utilisation '%user_username%' avec The Bug Genie, ici : %thebuggenie_url%.
 
-Before you can use the new account, you need to confirm it, by visiting the following link:
+Avec de pouvoir utiliser le nouveau compte, vous devez le confirmer en allant sur le lien suivant :<br>
 %link_to_activate%
 
-* Your password is: %password%
-and you can log in with this password from the link specified above.
+Votre mot de passe est : %password%
+et vous pouvez vous connecter avec ce mot de passe depuis le lien indiqué ci-dessus.<br>
 
-(This email has been sent upon request to an email address specified by someone. If you did not register this username, or think you've received this email in error, please delete it. We are sorry for the inconvenience.)
+(Cet email a &eacute;t;&eacute; envoy&eacute; sur demande &agrave; l'adresse indiqu&eacute;e par une personne. Si vous n'avez pas enregistr&eacute; ce compte utilisateur, ou pensez avoir re&ccedil;u cet email par erreur, supprimez-le. Veuillez nous excuser pour le d&eacute;rangement)

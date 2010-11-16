@@ -71,7 +71,6 @@
 	$strings['Project wiki frontpage'] = 'Project wiki frontpage';
 	$strings['The are no other projects to choose from'] = 'The are no other projects to choose from';
 	$strings['Scrum'] = 'Scrum';
-	$strings['Register new account'] = 'Register new account';
 	$strings['If you have not already registered, please use the "Register new account" tab.'] = 'If you have not already registered, please use the "Register new account" tab.';
 	$strings['To register, please fill out the information below'] = 'To register, please fill out the information below';
 	$strings['Pages in this category'] = 'Pages in this category';

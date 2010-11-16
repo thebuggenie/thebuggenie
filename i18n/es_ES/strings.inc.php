@@ -1488,3 +1488,4 @@
 	$strings['The following issues are duplicates of this issue:'] = 'The following issues are duplicates of this issue:';
 	$strings['You have specified an issue that can\'t be shown'] = 'You have specified an issue that can\'t be shown';
 	$strings['This could be because you the issue doesn\'t exist, has been deleted or you don\'t have permission to see it'] = 'This could be because you the issue doesn\'t exist, has been deleted or you don\'t have permission to see it';
+	$strings['Register new account'] = 'Register new account';
