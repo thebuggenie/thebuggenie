@@ -104,7 +104,20 @@
 											<li<?php if ($tbg_response->getPage() == 'dashboard'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png').__('Dashboard')); ?></li>
 										<?php endif; ?>
 										<?php if (TBGContext::isProjectContext() && ($tbg_user->canReportIssues() || $tbg_user->canReportIssues(TBGContext::getCurrentProject()->getID()))): ?>
-											<li<?php if ($tbg_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png').((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?></li>
+											<li<?php if ($tbg_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>>
+												<div>
+													<?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png') . ((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?>
+													<?php if (!(isset($_SESSION['rni_step1_set']))): ?>
+															<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+														</div>
+														<div id="project_issue_menu" class="tab_menu_dropdown shadowed">
+														<?php foreach (TBGContext::getCurrentProject()->getIssuetypes() as $issue_type): ?>
+															<?php if (!$issue_type->isReportable()) continue; ?>	
+															<?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'issuetype_id' => $issue_type->getID())), image_tag($issue_type->getIcon() . '_tiny.png' ) . __($issue_type->getName())); ?>
+														<?php endforeach;?>
+													<?php endif; ?> 
+												</div>											
+											</li>
 										<?php endif; ?>
 										<?php if (TBGContext::isProjectContext() && $tbg_user->canSearchForIssues()): ?>
 											<li<?php if (in_array($tbg_response->getPage(), array('project_issues', 'viewissue'))): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_search.png').__('Issues')); ?></li>
