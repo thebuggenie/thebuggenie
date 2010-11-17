@@ -829,9 +829,9 @@ table.issue_affects td { padding: 3px;}
 #timeline .recent_activities td .time { font-size: 12px; }
 #timeline { padding: 5px 0 30px 15px; }
 #timeline .recent_activities, #timeline .recent_activities td {  }
-#timeline .recent_activities td.latest_action_dates { font-size: 14px; }
+#timeline .recent_activities td.latest_action_dates { font-size: 14px; font-weight: bold; padding-bottom: 5px; }
 #timeline .user { font-size: 12px; color: #aaa; }
-.timeline_actions a { font-weight: bold;  }
+.timeline_actions a { font-weight: bold; }
 .timeline_actions .content { padding-top: 5px; }
 #timeline .timeline_inline_details { color: #aaa; font-style: italic; margin: 5px 0 0 7px; padding-left: 5px; border-left: 1px dotted #CCC; font-size: 11px; }
 /* end timeline */
