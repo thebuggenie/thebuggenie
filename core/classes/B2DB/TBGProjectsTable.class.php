@@ -52,7 +52,6 @@
 		const PLANNED_RELEASE = 'projects.planned_release';
 		const DELETED = 'projects.deleted';
 		const ALLOW_CHANGING_WITHOUT_WORKING = 'projects.allow_changing_wo_working';
-		const HIDDEN_AFFECTS_BOX = 'projects.hidden_affects_box';
 		const WORKFLOW_SCHEME_ID = 'projects.workflow_scheme_id';
 
 		/**
@@ -101,7 +100,6 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::WORKFLOW_SCHEME_ID, TBGWorkflowSchemesTable::getTable(), TBGWorkflowSchemesTable::ID);
 			parent::_addBoolean(self::DELETED);
-			parent::_addBoolean(self::HIDDEN_AFFECTS_BOX);
 		}
 		
 		public function clearDefaults()

@@ -317,13 +317,6 @@
 		 */
 		protected $_recentactivities = null;
 		
-		/**
-		 * Is the affected things box hidden in a tab in viewissue
-		 * 
-		 * @var boolean
-		 */
-		protected $_affectshidden = 0;
-		
 		protected $_workflow_scheme = null;
 
 		/**
@@ -504,7 +497,6 @@
 				$this->_can_change_wo_working	= (bool) $row->get(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING);
 				$this->_summary_display			= $row->get(TBGProjectsTable::SUMMARY_DISPLAY);
 				$this->_deleted					= $row->get(TBGProjectsTable::DELETED);
-				$this->_affectshidden			= $row->get(TBGProjectsTable::HIDDEN_AFFECTS_BOX);
 				$this->_workflow_scheme			= $row->get(TBGProjectsTable::WORKFLOW_SCHEME_ID);
 				TBGEvent::createNew('core', 'TBGProject::__construct', $this)->trigger();
 			}
@@ -822,16 +814,6 @@
 		public function setVotesEnabled($votes_enabled)
 		{
 			$this->_enablevotes = (bool) $votes_enabled;
-		}
-		
-		/**
-		 * Set whether the affected things box is hidden in a tab or not in viewissue
-		 *
-		 * @param boolean $affects_hidden
-		 */
-		public function setAffectsHidden($affects_hidden)
-		{
-			$this->_affectshidden = (bool) $affects_hidden;
 		}
 		
 		/**
@@ -1370,7 +1352,6 @@
 			$crit->addUpdate(TBGProjectsTable::SUMMARY_DISPLAY, $this->_summary_display);
 			$crit->addUpdate(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING, $this->_can_change_wo_working);
 			$crit->addUpdate(TBGProjectsTable::DELETED, $this->_deleted);
-			$crit->addUpdate(TBGProjectsTable::HIDDEN_AFFECTS_BOX, $this->_affectshidden);
 			$crit->addUpdate(TBGProjectsTable::WORKFLOW_SCHEME_ID, ((is_object($this->_workflow_scheme)) ? $this->_workflow_scheme->getID() : $this->_workflow_scheme));
 			$res = TBGProjectsTable::getTable()->doUpdateById($crit, $this->getID());
 
@@ -1466,16 +1447,6 @@
 			return $this->_unassignedissues;
 		}
 
-		/**
-		 * Returns whether the affected things box is hidden in a tab or not
-		 *
-		 * @return boolean
-		 */
-		public function isAffectsHidden()
-		{
-			return $this->_affectshidden;
-		}
-		
 		/**
 		 * Returns an array with unassigned user stories
 		 *
