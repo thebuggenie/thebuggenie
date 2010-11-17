@@ -806,7 +806,7 @@
 					$aProject = TBGProject::createNew($p_name);
 					if ($aProject instanceof TBGProject)
 					{
-						return $this->renderJSON(array('title' => $i18n->__('The project has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'content' => $this->getTemplateHTML('projectbox', array('project' => $aProject, 'access_level' => $this->access_level))));
+						return $this->renderJSON(array('title' => $i18n->__('The project has been added'), 'content' => $this->getTemplateHTML('projectbox', array('project' => $aProject, 'access_level' => $this->access_level))));
 					}
 					else
 					{
