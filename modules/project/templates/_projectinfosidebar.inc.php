@@ -1,6 +1,6 @@
 <table style="width: 100%;" cellpadding="0" cellspacing="0">
 	<tr>
-		<td class="project_information_sidebar">
+		<td class="project_information_sidebar" id="project_information_sidebar">
 			<?php /*
 			<div class="rounded_box lightgrey borderless" style="margin-top: 5px;">
 				<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
@@ -54,6 +54,8 @@
 				<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 			</div> */ ?>
 			<div id="project_header_container">
+				<?php echo image_tag('sidebar_collapse.png', array('id' => 'project_sidebar_collapse', 'onclick' => "\$('project_information_sidebar').addClassName('collapsed');$(this).hide();\$('project_sidebar_expand').show();")); ?>
+				<?php echo image_tag('sidebar_expand.png', array('id' => 'project_sidebar_expand', 'style' => 'display: none;', 'onclick' => "\$('project_information_sidebar').removeClassName('collapsed');$(this).hide();\$('project_sidebar_collapse').show();")); ?>
 				<div>
 					<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><?php echo javascript_link_tag(image_tag('cfg_icon_projectheader.png'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $selected_project->getID()))."');")); ?><?php endif; ?>
 					<div id="project_name">

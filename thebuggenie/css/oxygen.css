@@ -752,7 +752,7 @@ table.issue_affects td { padding: 3px;}
 #related_issues_this_issue { font-size: 14px; font-weight: bold; text-align: center; }
 #no_child_issues, #no_parent_issues { text-align: center; }
 #scrum_unassigned #add_story, #scrum_sprints #add_sprint { text-align: right; padding-top: 3px; }
-#scrum_unassigned { width: 440px; padding-right: 5px; }
+#scrum_unassigned { width: 440px; padding: 10px 5px; vertical-align: top; }
 #scrum_unassigned .header_div { border: 0; margin: 0; font-size: 15px; }
 #scrum_unassigned label, #scrum_sprints label { float: left; padding-top: 4px; }
 #scrum_unassigned label, #scrum_unassigned input[type="submit"], #scrum_sprints label, #scrum_sprints input[type="submit"] { font-size: 12px; font-weight: bold; }
@@ -802,14 +802,16 @@ table.issue_affects td { padding: 3px;}
 #timeline td { vertical-align: top; }
 #project_dashboard_menu_panes a.more { padding: 5px; float: right; font-weight: bold; }
 #project_dashboard_menu_panes a.more:hover { border: 0; }
-#project_header_container { clear: both; }
-#project_header_container img { float: right; margin: 1px 5px 0 0; }
+#project_header_container { clear: both; position: relative; }
+#project_header_container img { float: right; margin: 1px 20px 0 0; }
 #project_name img.logo { float: left; margin: 1px 5px 0 0; }
 #project_name { font-size: 18px; font-weight: bold; margin: 10px 5px 5px 0; line-height: 1; }
 #project_name span { margin: 3px 0 0 0; font-size: 12px; font-weight: normal; display: inline; padding: 3px; color: #aaa; }
 #project_team { font-weight: normal; margin: 0 5px 5px 0; width: 675px; }
 #project_description { font-size: 14px; font-weight: normal; color: #666; }
-.project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 300px; padding: 0 0 50px 10px; }
+.project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 300px; padding: 0 0 50px 10px; position: relative; }
+.project_information_sidebar.collapsed { width: 10px; }
+.project_information_sidebar.collapsed .sidebar_links, .project_information_sidebar.collapsed #project_header_container div { display: none; }
 .project_information_sidebar .sidebar_links { margin-top: 30px; }
 .project_information_sidebar .sidebar_links a { display: block; padding: 4px; color: #555; border: 1px dotted #DDD; border-right-color: transparent; margin: 0 -1px 0 7px; }
 .project_information_sidebar .sidebar_links a:hover { border: 1px solid transparent; background-color: #F1F1F1; border-right-color: #CCC; }
@@ -818,6 +820,9 @@ table.issue_affects td { padding: 3px;}
 .project_information_sidebar .sidebar_links .simple_list { margin: 0 0 0 25px; padding: 10px; border-top: 1px solid #DDD; background-color: #F1F1F1; }
 .project_information_sidebar .sidebar_links .simple_list li a { border: 0; padding: 3px; margin: 0; }
 .project_information_main { padding: 10px 0 0 15px; vertical-align: top; }
+#project_sidebar_collapse, #project_sidebar_expand { cursor: pointer; position: absolute; padding: 2px; border: 1px dotted #CCC; border-right-color: #FFF; background-color: #FFF; }
+#project_sidebar_collapse { top: -8px; left: 284px; }
+#project_sidebar_expand { top: 2px; left: -6px; }
 /* end dashboard */
 
 /* project timeline */

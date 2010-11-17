@@ -6,10 +6,9 @@
 	$tbg_response->addJavascript('scrum.js');
 
 ?>
-<?php include_component('main/hideableInfoBox', array('key' => 'project_scrum_info', 'title' => __('Using the Sprint planning page'), 'content' => __('Administer your project backlog from this page.<br><ul><li>Create sprints from the "Add sprint" input area, or use the project "milestone" configuration page to add sprints</li><li>Use the "Add user story" input area to quickly add a user story to the backlog, or the "report issue"-wizard to add detailed user stories.</li><li>Drag user stories from the backlog to a sprint (or between sprints) to assign the user story there</li><li>Click the sprint header to show all stories in that sprint</li><li>Pause the mouse over a user story to show more actions, like opening the user story in a new window or editing it</li><li>Click the little square on the left side of the user story to colorize the story</li><li>To change estimated points for a user story, click the little card icon on the far right of the story</li></ul>'))); ?>
-<table style="width: 100%;" cellpadding="0" cellspacing="0" id="scrum">
-	<tr>
-		<td style="width: auto; padding-right: 5px; padding-left: 5px;" id="scrum_sprints">
+		<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
+		<div id="scrum_sprints">
+			<?php include_component('main/hideableInfoBox', array('key' => 'project_scrum_info', 'title' => __('Using the Sprint planning page'), 'content' => __('Administer your project backlog from this page.<br><ul><li>Create sprints from the "Add sprint" input area, or use the project "milestone" configuration page to add sprints</li><li>Use the "Add user story" input area to quickly add a user story to the backlog, or the "report issue"-wizard to add detailed user stories.</li><li>Drag user stories from the backlog to a sprint (or between sprints) to assign the user story there</li><li>Click the sprint header to show all stories in that sprint</li><li>Pause the mouse over a user story to show more actions, like opening the user story in a new window or editing it</li><li>Click the little square on the left side of the user story to colorize the story</li><li>To change estimated points for a user story, click the little card icon on the far right of the story</li></ul>'))); ?>
 			<div class="header_div">
 				<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
 					<tr>
@@ -120,20 +119,21 @@
 				<span id="scrum_sprint_0_estimated_points" style="display: none;"></span>
 				<span id="scrum_sprint_0_estimated_hours" style="display: none;"></span>
 			</div>
+		</div>
+		<?php if ($tbg_user->canAssignScrumUserStories($selected_project)): ?>
+			<script type="text/javascript">
+				<?php foreach ($selected_project->getSprints() as $sprint): ?>
+				Droppables.add('scrum_sprint_<?php echo $sprint->getID(); ?>', { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { assignStory('<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>', dragged, dropped)}});
+					<?php foreach ($sprint->getIssues() as $issue): ?>
+					new Draggable('scrum_story_<?php echo $issue->getID(); ?>', { revert: true });
+					<?php endforeach; ?>
+				<?php endforeach; ?>
+				<?php foreach ($unassigned_issues as $issue): ?>
+				new Draggable('scrum_story_<?php echo $issue->getID(); ?>', { revert: true });
+				<?php endforeach; ?>
+				Droppables.add('scrum_sprint_0', { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { assignStory('<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>', dragged, dropped)}});
+			</script>
+		<?php endif; ?>
 		</td>
 	</tr>
 </table>
-<?php if ($tbg_user->canAssignScrumUserStories($selected_project)): ?>
-	<script type="text/javascript">
-		<?php foreach ($selected_project->getSprints() as $sprint): ?>
-		Droppables.add('scrum_sprint_<?php echo $sprint->getID(); ?>', { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { assignStory('<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>', dragged, dropped)}});
-			<?php foreach ($sprint->getIssues() as $issue): ?>
-			new Draggable('scrum_story_<?php echo $issue->getID(); ?>', { revert: true });
-			<?php endforeach; ?>
-		<?php endforeach; ?>
-		<?php foreach ($unassigned_issues as $issue): ?>
-		new Draggable('scrum_story_<?php echo $issue->getID(); ?>', { revert: true });
-		<?php endforeach; ?>
-		Droppables.add('scrum_sprint_0', { hoverclass: 'highlighted', onDrop: function (dragged, dropped, event) { assignStory('<?php echo make_url('project_scrum_assign_story', array('project_key' => $selected_project->getKey())); ?>', dragged, dropped)}});
-	</script>
-<?php endif; ?>
