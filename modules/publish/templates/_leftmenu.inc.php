@@ -19,7 +19,7 @@
 			<span class="content faded_out"><?php echo __("No other articles links to this article"); ?></span>
 		<?php endif; ?>
 	</div>
-<?php endif; ?>
+<?php endif; /*?>
 <div style="margin: 10px 0 5px 5px;">
 <div class="header"><?php echo __('Your drafts'); ?></div>
 	<?php if (count($user_drafts) > 0): ?>
@@ -31,5 +31,7 @@
 	<?php else: ?>
 		<span class="faded_out" style="padding-left: 5px; font-size: 12px;"><?php echo __("You don't have any unpublished pages"); ?></span>
 	<?php endif; ?>
-</div>
-<?php include_component('publish/latestArticles'); ?>
+</div> */ ?>
+<?php if (!TBGContext::isProjectContext()): ?>
+	<?php include_component('publish/latestArticles'); ?>
+<?php endif; ?>

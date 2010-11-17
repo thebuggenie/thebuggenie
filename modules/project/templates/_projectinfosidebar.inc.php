@@ -1,3 +1,11 @@
+<?php
+
+	if ($tbg_user->canEditProjectDetails($selected_project))
+	{
+		$tbg_response->addJavascript('config/projects_ajax.js');
+	}
+	
+?>
 <table style="width: 100%;" cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="project_information_sidebar" id="project_information_sidebar">

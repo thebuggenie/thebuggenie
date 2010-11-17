@@ -4,10 +4,6 @@
 	$tbg_response->addBreadcrumb(__('Dashboard'));
 	$tbg_response->setTitle(__('"%project_name%" project dashboard', array('%project_name%' => $selected_project->getName())));
 	$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
-	if ($tbg_user->canEditProjectDetails($selected_project))
-	{
-		$tbg_response->addJavascript('config/projects_ajax.js');
-	}
 
 ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>

@@ -28,6 +28,8 @@
 
 		protected $_incoming_steps = null;
 
+		protected $_actions = null;
+
 		protected $_num_incoming_steps = null;
 
 		/**
@@ -198,6 +200,12 @@
 		{
 			return ($this->getOutgoingStep()->isClosed()) ? array('resolution', 'status') : array();
 		}
+
+		public function getActions()
+		{
+			$this->_populateActions();
+			return $this->_actions;
+		}
 		
 		public function validateFromRequest(TBGRequest $request)
 		{
@@ -220,8 +228,9 @@
 		
 		public function listenIssueSaveAddComment(TBGEvent $event)
 		{
-			$this->comment_lines = $event->getParameter('comment_lines');
-			$this->comment = $event->getParameter('comment');
+			$comment_body = $event->getParameter('comment') . "\n\n" . $this->_request->getParameter('comment_body', null, false);
+
+			$comment = TBGComment::createNew($title, $comment_body, TBGContext::getUser()->getID(), $request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'), $request->getParameter('comment_visibility'), 0, false);
 		}
 
 		/**
@@ -234,10 +243,10 @@
 		{
 			$request = ($request !== null) ? $request : $this->_request;
 			$this->getOutgoingStep()->applyToIssue($issue);
-			$comment_body = $this->comment . "\n\n" . $request->getParameter('comment_body', null, false);
-
-			$comment = TBGComment::createNew($title, $comment_body, TBGContext::getUser()->getID(), $request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'), $request->getParameter('comment_visibility'), 0, false);
-			TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenIssueSaveAddComment'));
+			if ($request->hasParameter('comment_body')) {
+				$this->_request = $request;
+				TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenIssueSaveAddComment'));
+			}
 			
 			foreach ($this->getProperties() as $property)
 			{

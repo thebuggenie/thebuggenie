@@ -109,8 +109,9 @@
 		<head>
 		<style>
 		body { background-color: #DFDFDF; font-family: \"Droid Sans\", \"Trebuchet MS\", \"Liberation Sans\", \"Nimbus Sans L\", \"Luxi Sans\", Verdana, sans-serif; font-size: 13px; }
-		h1 { margin: 5px 0 15px 0; font-size: 18px; }
-		h2 { margin: 15px 0 0 0; font-size: 15px; }
+		h1 { margin: 5px 0 0 0; font-size: 19px; }
+		h2 { margin: 0 0 15px 0; font-size: 16px; }
+		h3 { margin: 15px 0 0 0; font-size: 14px; }
 		.rounded_box {background: transparent; margin:0px;}
 		.rounded_box h4 { margin-bottom: 0px; margin-top: 7px; font-size: 14px; }
 		.xtop, .xbottom {display:block; background:transparent; font-size:1px;}
@@ -138,115 +139,218 @@
 		<div class=\"rounded_box white\" style=\"margin: 30px auto 0 auto; width: 700px;\">
 			<b class=\"xtop\"><b class=\"xb1\"></b><b class=\"xb2\"></b><b class=\"xb3\"></b><b class=\"xb4\"></b></b>
 			<div class=\"xboxcontent\" style=\"vertical-align: middle; padding: 10px 10px 10px 15px;\">
-			<img style=\"float: left; margin-right: 10px;\" src=\"".TBGContext::getTBGPath()."messagebox_warning.png\"><h1>{$title}</h1>";
+			<img style=\"float: left; margin-right: 10px;\" src=\"".TBGContext::getTBGPath()."header.png\"><h1>An error occured in The Bug Genie</h1>";
+			echo "<h2>{$title}</h2>";
+			$report_description = null;
 			if ($exception instanceof Exception)
 			{
 				if ($exception instanceof TBGActionNotFoundException)
 				{
-					echo "<h2>Could not find the specified action</h2>";
+					echo "<h3>Could not find the specified action</h3>";
+					$report_description = "Could not find the specified action";
 				}
 				elseif ($exception instanceof TBGTemplateNotFoundException)
 				{
-					echo "<h2>Could not find the template file for the specified action</h2>";
+					echo "<h3>Could not find the template file for the specified action</h3>";
+					$report_description = "Could not find the template file for the specified action";
 				}
 				elseif ($exception instanceof B2DBException)
 				{
-					echo "<h2>An exception was thrown in the B2DB framework</h2>";
+					echo "<h3>An exception was thrown in the B2DB framework</h3>";
+					$report_description = "An exception was thrown in the B2DB framework";
 				}
 				else
 				{
-					echo "<h2>An unhandled exception occurred:</h2>";
+					echo "<h3>An unhandled exception occurred:</h3>";
+					$report_description = "An unhandled exception occurred";
 				}
-				echo "<i>".$exception->getMessage()."</i><br>
-				<h2>Stack trace:</h2>
-				<ul>";
-				foreach ($exception->getTrace() as $trace_element)
+				$report_description .= "\n" . $exception->getMessage();
+				echo "<i>".$exception->getMessage()."</i><br>";
+				if (class_exists("TBGContext") && TBGContext::isDebugMode())
 				{
-					echo '<li>';
-					if (array_key_exists('class', $trace_element))
+					echo "<h3>Stack trace:</h3>
+					<ul>";
+					foreach ($exception->getTrace() as $trace_element)
 					{
-						echo '<strong>'.$trace_element['class'].$trace_element['type'].$trace_element['function'].'()</strong><br>';
+						echo '<li>';
+						if (array_key_exists('class', $trace_element))
+						{
+							echo '<strong>'.$trace_element['class'].$trace_element['type'].$trace_element['function'].'()</strong><br>';
+						}
+						elseif (array_key_exists('function', $trace_element))
+						{
+							if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
+							echo '<strong>'.$trace_element['function'].'()</strong><br>';
+						}
+						else
+						{
+							echo '<strong>unknown function</strong><br>';
+						}
+						if (array_key_exists('file', $trace_element))
+						{
+							echo '<span style="color: #55F;">'.$trace_element['file'].'</span>, line '.$trace_element['line'];
+						}
+						else
+						{
+							echo '<span style="color: #C95;">unknown file</span>';
+						}
+						echo '</li>';
 					}
-					elseif (array_key_exists('function', $trace_element))
-					{
-						if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
-						echo '<strong>'.$trace_element['function'].'()</strong><br>';
-					}
-					else
-					{
-						echo '<strong>unknown function</strong><br>';
-					}
-					if (array_key_exists('file', $trace_element))
-					{
-						echo '<span style="color: #55F;">'.$trace_element['file'].'</span>, line '.$trace_element['line'];
-					}
-					else
-					{
-						echo '<span style="color: #C95;">unknown file</span>';
-					}	
-					echo '</li>';
+					echo "</ul>";
 				}
-				echo "</ul>";
 			}
 			else
 			{
-				echo '<h2>';
+				echo '<h3>';
 				if ($exception['code'] == 8)
 				{
 					echo 'The following notice has stopped further execution:';
+					$report_description = 'The following notice has stopped further execution: ';
 				}
 				else
 				{
 					echo 'The following error occured:';
+					$report_description = 'The following error occured: ';
 				}
-				echo '</h2>';
+				echo '</h3>';
+				$report_description .= $title;
 				echo "$title</i><br>
-				<h2>Error information:</h2>
+				<h3>Error information:</h3>
 				<ul>
 					<li>";
 					echo '<span style="color: #55F;">'.$exception['file'].'</span>, line '.$exception['line'];
 				echo "</li>
 				</ul>";
-				echo "<h2>Backtrace:</h2>
-				<ol>";
-				foreach (debug_backtrace() as $trace_element)
+				if (class_exists("TBGContext") && TBGContext::isDebugMode())
 				{
-					echo '<li>';
-					if (array_key_exists('class', $trace_element))
+					echo "<h3>Backtrace:</h3>
+					<ol>";
+					foreach (debug_backtrace() as $trace_element)
 					{
-						echo '<strong>'.$trace_element['class'].$trace_element['function'].'()</strong><br>';
+						echo '<li>';
+						if (array_key_exists('class', $trace_element))
+						{
+							echo '<strong>'.$trace_element['class'].$trace_element['type'].$trace_element['function'].'()</strong><br>';
+						}
+						elseif (array_key_exists('function', $trace_element))
+						{
+							if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
+							echo '<strong>'.$trace_element['function'].'()</strong><br>';
+						}
+						else
+						{
+							echo '<strong>unknown function</strong><br>';
+						}
+						if (array_key_exists('file', $trace_element))
+						{
+							echo '<span style="color: #55F;">'.$trace_element['file'].'</span>, line '.$trace_element['line'];
+						}
+						else
+						{
+							echo '<span style="color: #C95;">unknown file</span>';
+						}
+						echo '</li>';
 					}
-					elseif (array_key_exists('function', $trace_element))
-					{
-						if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
-						echo '<strong>'.$trace_element['function'].'()</strong><br>';
-					}
-					else
-					{
-						echo '<strong>unknown function</strong><br>';
-					}
-					if (array_key_exists('file', $trace_element))
-					{
-						echo '<span style="color: #55F;">'.$trace_element['file'].'</span>, line '.$trace_element['line'];
-					}
-					else
-					{
-						echo '<span style="color: #C95;">unknown file</span>';
-					}	
-					echo '</li>';
+					echo "</ol>";
 				}
-				echo "</ol>";
 			}
-			echo "<h2>Log messages:</h2>";
-			foreach (TBGLogging::getEntries() as $entry)
+			if (class_exists("TBGContext") && TBGContext::isDebugMode())
 			{
-				$color = TBGLogging::getCategoryColor($entry['category']);
-				$lname = TBGLogging::getLevelName($entry['level']);
-				echo "<div class=\"log_{$entry['category']}\"><strong>{$lname}</strong> <strong style=\"color: #{$color}\">[{$entry['category']}]</strong> <span style=\"color: #555; font-size: 10px; font-style: italic;\">{$entry['time']}</span>&nbsp;&nbsp;{$entry['message']}</div>";
+				echo "<h3>Log messages:</h3>";
+				foreach (TBGLogging::getEntries() as $entry)
+				{
+					$color = TBGLogging::getCategoryColor($entry['category']);
+					$lname = TBGLogging::getLevelName($entry['level']);
+					echo "<div class=\"log_{$entry['category']}\"><strong>{$lname}</strong> <strong style=\"color: #{$color}\">[{$entry['category']}]</strong> <span style=\"color: #555; font-size: 10px; font-style: italic;\">{$entry['time']}</span>&nbsp;&nbsp;{$entry['message']}</div>";
+				}
 			}
 			echo "</div>
 			<b class=\"xbottom\"><b class=\"xb4\"></b><b class=\"xb3\"></b><b class=\"xb2\"></b><b class=\"xb1\"></b></b>
-		</div>
+		</div>";
+		if (class_exists("TBGContext") && !TBGContext::isDebugMode())
+		{
+			echo "<div style=\"text-align: left; margin: 35px auto 0 auto; width: 700px; font-size: 13px;\">
+				Please report this error in the bug tracker by pressing the button below. It will open in a new window with most of the necessary details pre-filled. No login required.<br><br>
+				<div style=\"text-align: right;\">
+					<b>Thank you for trying this beta version!</b>
+					<form action=\"http://b2.thebuggenie.com/reportissue.php\" target=\"_new\" method=\"get\">
+						<input type=\"hidden\" name=\"rni_step1_product\" value=\"4\">
+						<input type=\"hidden\" name=\"rni_step1_build\" value=\"27\">
+						<input type=\"hidden\" name=\"rni_step2_setissuetype\" value=\"1\">
+						<input type=\"hidden\" name=\"rni_step2_setcategory\" value=\"1\">
+						<input type=\"hidden\" name=\"rni_step3_title\" value=\"".htmlentities($title)."\">
+						<input type=\"hidden\" name=\"rni_step3_description\" value=\"".htmlentities($report_description)."\n\n\">";
+						echo "<input type=\"hidden\" name=\"rni_step3_repro\" value=\"PHP_SAPI: ".PHP_SAPI."\n\n[b]Backtrace[/b]:\n";
+						if ($exception instanceof TBGException)
+						{
+							foreach ($exception->getTrace() as $trace_element)
+							{
+								if (array_key_exists('class', $trace_element))
+								{
+									echo '[b]'.$trace_element['class'].$trace_element['type'].$trace_element['function']."()[/b]\n";
+								}
+								elseif (array_key_exists('function', $trace_element))
+								{
+									if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
+									echo '[b]'.$trace_element['function']."()[/b]\n";
+								}
+								else
+								{
+									echo "[b]unknown function[/b]\n";
+								}
+								if (array_key_exists('file', $trace_element))
+								{
+									echo 'in '.$trace_element['file'].', line '.$trace_element['line'];
+								}
+								else
+								{
+									echo 'in an unknown file';
+								}
+							}
+							echo "\n";
+						}
+						else
+						{
+							foreach (debug_backtrace() as $trace_element)
+							{
+								if (array_key_exists('class', $trace_element))
+								{
+									echo '[b]'.$trace_element['class'].$trace_element['type'].$trace_element['function']."()[/b]\n";
+								}
+								elseif (array_key_exists('function', $trace_element))
+								{
+									if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
+									echo '[b]'.$trace_element['function']."()[/b]\n";
+								}
+								else
+								{
+									echo "[b]unknown function[/b]\n";
+								}
+								if (array_key_exists('file', $trace_element))
+								{
+									echo 'in '.$trace_element['file'].', line '.$trace_element['line'];
+								}
+								else
+								{
+									echo 'in an unknown file';
+								}
+							}
+							echo "\n";
+						}
+						echo "\n\n\">";
+	echo "					<input type=\"submit\" value=\"Submit details for reporting\" style=\"font-size: 16px; font-weight: normal; padding: 5px; margin-top: 10px;\">
+						</form>
+					</div>";
+					echo "<h3 style=\"margin-top: 50px;\">Log messages (may contain useful information, but will not be submitted):</h3>";
+					foreach (TBGLogging::getEntries() as $entry)
+					{
+						$color = TBGLogging::getCategoryColor($entry['category']);
+						$lname = TBGLogging::getLevelName($entry['level']);
+						echo "<div class=\"log_{$entry['category']}\"><strong>{$lname}</strong> <strong style=\"color: #{$color}\">[{$entry['category']}]</strong> <span style=\"color: #555; font-size: 10px; font-style: italic;\">{$entry['time']}</span>&nbsp;&nbsp;{$entry['message']}</div>";
+					}
+		}
+echo "
+			</div>
 		</body>
 		</html>
 		";

@@ -676,7 +676,7 @@
 			
 			if (!$this->project instanceof TBGProject) return $this->return404(TBGContext::getI18n()->__("This project doesn't exist"));
 			
-			if ($request->isAjaxCall())
+			if ($request->isAjaxCall() && $request->isMethod(TBGRequest::POST))
 			{
 				if ($this->access_level == self::ACCESS_FULL)
 				{

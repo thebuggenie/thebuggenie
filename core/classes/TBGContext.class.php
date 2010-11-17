@@ -29,7 +29,7 @@
 		
 		static protected $_environment = 2;
 
-		static $something = null;
+		static protected $debug_mode = false;
 
 		/**
 		 * The current user
@@ -1899,6 +1899,11 @@
 		{
 			$processUser = posix_getpwuid(posix_geteuid());
 			return $processUser['name'];
+		}
+
+		public static function isDebugMode()
+		{
+			return self::$debug_mode;
 		}
 
 	}
