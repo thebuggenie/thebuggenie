@@ -134,6 +134,10 @@
 													<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
 													<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
 													<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Open issues assigned to my teams')); ?>
+													<?php foreach ($tbg_user->getStarredIssues() as $issue): ?>
+														<?php if ($issue->getProject()->getID() != TBGContext::getCurrentProject()->getID()) continue; ?>
+														<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('star_small.png') . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true)); ?>
+													<?php endforeach; ?>
 												<?php else: ?>
 													<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
 													<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
