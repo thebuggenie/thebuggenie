@@ -57,7 +57,7 @@
 				<div>
 					<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><?php echo javascript_link_tag(image_tag('cfg_icon_projectheader.png'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $selected_project->getID()))."');")); ?><?php endif; ?>
 					<div id="project_name">
-						<?php echo image_tag($selected_project->getIcon(), array('class' => 'logo'), $selected_project->hasIcon(), 'core'); ?>
+						<?php echo image_tag($selected_project->getIcon(), array('class' => 'logo'), $selected_project->hasIcon(), 'core', !$selected_project->hasIcon()); ?>
 						<?php echo $selected_project->getName(); ?><br>
 						<span><?php echo $selected_project->getKey(); ?></span>
 					</div>
