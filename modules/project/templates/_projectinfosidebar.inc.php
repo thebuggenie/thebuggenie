@@ -81,6 +81,10 @@
 					<div id="project_no_description"<?php if ($selected_project->hasDescription()): ?> style="display: none;"<?php endif; ?>>
 						<?php echo __('This project has no description'); ?>
 					</div>
+					<?php if ($selected_project->hasDocumentationUrl()): ?>
+					<div id="project_documentation_url">
+						<a href="<?php echo $selected_project->getDocumentationUrl(); ?>" target="_blank"><?php echo __('View documentation'); ?></a>
+					<?php endif; ?>
 					<div class="sidebar_links">
 						<?php include_template('project/projectinfolinks'); ?>
 					</div>
