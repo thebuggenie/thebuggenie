@@ -37,7 +37,7 @@
 	}
 	if ($web_path != '')
 	{
-		echo '<li><a href="'.$link_repo.'" target="_blank">'.__('Source code').'</a></li>';
+		echo '<a href="'.$link_repo.'" target="_blank">'.__('Source code').'</a>';
 	}
 
 ?>

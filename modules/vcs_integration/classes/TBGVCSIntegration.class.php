@@ -41,14 +41,14 @@
 		
 		protected function _install($scope)
 		{
-			$this->enableListenerSaved('core', 'menustrip_item_links');
+			$this->enableListenerSaved('core', 'project_sidebar_links_timeline');
 			$this->enableListenerSaved('core', 'viewissue_tabs');
 			$this->enableListenerSaved('core', 'viewissue_tab_panes_back');
 		}
 		
 		protected function _addAvailableListeners()
 		{
-			$this->addAvailableListener('core', 'menustrip_item_links', 'listen_MenustripLinks', 'Menustrip links');
+			$this->addAvailableListener('core', 'project_sidebar_links_timeline', 'listen_SidebarLinks', 'Project sidebar links');
 			$this->addAvailableListener('core', 'viewissue_tabs', 'listen_viewissue_tab', 'Tab to view commit details when viewing issues');
 			$this->addAvailableListener('core', 'viewissue_tab_panes_back', 'listen_viewissue_panel', 'Commit details shown when viewing issues');
 		}
@@ -118,7 +118,7 @@
 			}
 		}
 		
-		public function listen_MenustripLinks(TBGEvent $event)
+		public function listen_SidebarLinks(TBGEvent $event)
 		{
 			if (TBGContext::isProjectContext())
 			{
