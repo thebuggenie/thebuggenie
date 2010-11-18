@@ -23,8 +23,8 @@ function loginRegister1(url)
 			{
 				$('register1_indicator').hide();
 				$('register1').hide();
-				$('username').value = json.message;
-				$('fieldusername').value = json.message;
+				$('username').value = json.message.unescapeHTML();
+				$('fieldusername').value = json.message.unescapeHTML();
 				$('register2').show();
 			}
 		},
