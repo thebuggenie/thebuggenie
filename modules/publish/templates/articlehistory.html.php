@@ -1,4 +1,10 @@
-<?php TBGContext::loadLibrary('publish/publish'); ?>
+<?php
+
+	include_template('publish/wikibreadcrumbs', array('article_name' => $article_name));
+	TBGContext::loadLibrary('publish/publish');
+	$tbg_response->setTitle(__('%article_name% history', array('%article_name%' => $article_name)));
+
+?>
 <table style="margin-top: 0px; table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 	<tr>
 		<td class="side_bar">
