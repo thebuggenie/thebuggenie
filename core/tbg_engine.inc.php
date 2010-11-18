@@ -306,8 +306,8 @@
 								{
 									echo 'in an unknown file';
 								}
+								echo "\n";
 							}
-							echo "\n";
 						}
 						else
 						{
@@ -334,8 +334,8 @@
 								{
 									echo 'in an unknown file';
 								}
+								echo "\n";
 							}
-							echo "\n";
 						}
 						echo "\n\n\">";
 	echo "					<input type=\"submit\" value=\"Submit details for reporting\" style=\"font-size: 16px; font-weight: normal; padding: 5px; margin-top: 10px;\">
