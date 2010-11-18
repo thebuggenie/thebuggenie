@@ -190,9 +190,22 @@
 					<?php elseif ($tbg_user->canSearchForIssues()): */ ?>
 						<div class="submenu_strip<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>">
 							<?php if (!TBGContext::isProjectContext()): ?>
-								<span class="selected_project_name">
-									<?php echo __('No project selected'); ?>
-								</span>
+								<div class="project_stuff">
+									<ul>
+										<li class="no_project_name">
+											<?php echo __('No project selected'); ?>
+										</li>
+										<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
+											<li class="breadcrumb">&raquo;
+												<?php if ($breadcrumb['url']): ?>
+													<?php echo link_tag($breadcrumb['url'], $breadcrumb['title']); ?>
+												<?php else: ?>
+													<?php echo $breadcrumb['title']; ?>
+												<?php endif; ?>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
 							<?php else: ?>
 								<div class="project_stuff">
 									<ul>

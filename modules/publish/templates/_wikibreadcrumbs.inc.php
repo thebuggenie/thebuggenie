@@ -6,6 +6,10 @@
 		{
 			$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle(), make_url('publish_article', array('article_name' => TBGContext::getCurrentProject()->getStrippedProjectName() . ':MainPage')));
 		}
+		else
+		{
+			$tbg_response->addBreadcrumb(TBGPublish::getModule()->getMenuTitle(), make_url('publish_article', array('article_name' => 'MainPage')));
+		}
 		$items = explode(':', $article_name);
 		$bcpath = array_shift($items);
 		if (strtolower($bcpath) == 'category')
