@@ -686,8 +686,12 @@
 						$this->project->setReleaseDate($release_date);
 					}
 
+					$old_key = $this->project->getKey();
+
 					if ($request->hasParameter('project_name'))
 						$this->project->setName($request->getParameter('project_name'));
+
+					$message = ($old_key != $this->project->getKey()) ? TBGContext::getI18n()->__('%IMPORTANT%: The project key has changed. Remember to replace the current url with the new project key', array('%IMPORTANT%' => '<b>'.TBGContext::getI18n()->__('IMPORTANT').'</b>')) : '';
 					
 					if ($request->hasParameter('use_prefix'))
 						$this->project->setUsePrefix((bool) $request->getParameter('use_prefix'));
@@ -747,7 +751,7 @@
 					$this->project->save();
 					$project_description = new TBGTextParser($this->project->getDescription());
 					$project_description = $project_description->getParsedText();
-					return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Your changes has been saved'), 'message' => '', 'project_key' => $this->project->getKey(), 'project_description' => $project_description));
+					return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Your changes has been saved'), 'message' => $message, 'project_key' => $this->project->getKey(), 'project_description' => $project_description));
 				}
 				return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("You don't have access to save settings")));
 			}
