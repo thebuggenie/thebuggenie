@@ -806,9 +806,10 @@ table.issue_affects td { padding: 3px;}
 #project_header_container img { float: right; margin: 1px 20px 0 0; }
 #project_name img.logo { float: left; margin: 1px 5px 0 0; }
 #project_name { font-size: 18px; font-weight: bold; margin: 10px 5px 5px 0; line-height: 1; }
-#project_name span { margin: 3px 0 0 0; font-size: 12px; font-weight: normal; display: inline; padding: 3px; color: #aaa; }
+#project_key_span { margin: 3px 0 0 0; font-size: 12px; font-weight: normal; display: inline; padding: 3px; color: #aaa; }
 #project_team { font-weight: normal; margin: 0 5px 5px 0; width: 675px; }
-#project_description { font-size: 14px; font-weight: normal; color: #666; }
+#project_description_span { font-size: 14px; font-weight: normal; color: #666; }
+#project_no_description { font-size: 14px; font-weight: normal; color: #AAA; }
 .project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 300px; padding: 0 0 50px 10px; position: relative; }
 .project_information_sidebar.collapsed { width: 10px; }
 .project_information_sidebar.collapsed .sidebar_links, .project_information_sidebar.collapsed #project_header_container div { display: none; }

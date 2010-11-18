@@ -488,7 +488,32 @@ function _submitProjectDetails(url, form)
 				$(form + '_indicator').hide();
 				if ($('project_name_span'))
 				{
-					$('project_name_span').update($('project_name').getValue());
+					$('project_name_span').update($('project_name_input').getValue());
+				}
+				if ($('project_description_span'))
+				{
+					if ($('project_description_input').getValue())
+					{
+						$('project_description_span').update(json.project_description);
+						$('project_no_description').hide();
+					}
+					else
+					{
+						$('project_description_span').update('');
+						$('project_no_description').show();
+					}
+				}
+				if ($('project_key_span'))
+				{
+					$('project_key_span').update(json.project_key);
+				}
+				if ($('use_scrum').getValue() == 1)
+				{
+					$('sidebar_link_scrum').show();
+				}
+				else
+				{
+					$('sidebar_link_scrum').hide();
 				}
 				if ($('enable_editions').getValue() == 1)
 				{

@@ -98,7 +98,7 @@
 		<td style="width: 200px;"><label for="project_name"><?php echo __('Project name'); ?></label></td>
 		<td style="width: 580px;">
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-				<input type="text" name="project_name" id="project_name" value="<?php print $project->getName(); ?>" style="width: 100%;">
+				<input type="text" name="project_name" id="project_name_input" value="<?php print $project->getName(); ?>" style="width: 100%;">
 			<?php else: ?>
 				<?php echo $project->getName(); ?>
 			<?php endif; ?>
@@ -137,7 +137,7 @@
 		<td><label for="description"><?php echo __('Project description'); ?></label></td>
 		<td>
 			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-				<?php include_template('main/textarea', array('area_name' => 'description', 'height' => '75px', 'width' => '100%', 'value' => $project->getDescription(), 'hide_hint' => true)); ?>
+				<?php include_template('main/textarea', array('area_name' => 'description', 'area_id' => 'project_description_input', 'height' => '75px', 'width' => '100%', 'value' => $project->getDescription(), 'hide_hint' => true)); ?>
 			<?php elseif ($project->hasDescription()): ?>
 				<?php echo $project->getDescription(); ?>
 			<?php else: ?>

@@ -68,15 +68,18 @@
 					<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><?php echo javascript_link_tag(image_tag('cfg_icon_projectheader.png'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $selected_project->getID()))."');")); ?><?php endif; ?>
 					<div id="project_name">
 						<?php echo image_tag($selected_project->getIcon(), array('class' => 'logo'), $selected_project->hasIcon(), 'core', !$selected_project->hasIcon()); ?>
-						<?php echo $selected_project->getName(); ?><br>
-						<span><?php echo $selected_project->getKey(); ?></span>
+						<span id="project_name_span"><?php echo $selected_project->getName(); ?></span><br>
+						<span id="project_key_span"><?php echo $selected_project->getKey(); ?></span>
 					</div>
-					<div id="project_description"<?php if (!$selected_project->hasDescription()): ?> class="faded_out dark"<?php endif; ?>>
-						<?php if ($selected_project->hasDescription()): ?>
-							<?php echo tbg_parse_text($selected_project->getDescription()); ?>
-						<?php else: ?>
-							<?php echo __('This project has no description'); ?>
-						<?php endif; ?>
+					<div>
+						<span id="project_description_span">
+							<?php if ($selected_project->hasDescription()): ?>
+								<?php echo tbg_parse_text($selected_project->getDescription()); ?>
+							<?php endif; ?>
+						</span>
+					</div>
+					<div id="project_no_description"<?php if ($selected_project->hasDescription()): ?> style="display: none;"<?php endif; ?>>
+						<?php echo __('This project has no description'); ?>
 					</div>
 					<div class="sidebar_links">
 						<?php include_template('project/projectinfolinks'); ?>
