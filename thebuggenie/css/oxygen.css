@@ -841,7 +841,7 @@ table.issue_affects td { padding: 3px;}
 /* end timeline */
 
 /* project roadmap styling */
-#project_roadmap { width: 990px; margin: 5px; }
+#project_roadmap { max-width: 990px; margin: 5px; }
 .roadmap_milestone { clear: both; padding-bottom: 15px; }
 .milestone_points { color: #888; font-weight: bold; }
 .roadmap_header { padding: 5px; border-bottom: 1px solid #CCC; font-size: 14px; font-weight: bold; margin: 5px 5px 5px 0; }
