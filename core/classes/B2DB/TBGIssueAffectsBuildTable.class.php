@@ -120,4 +120,22 @@
 			}				
 		}
 		
+		public function setIssueAffected($issue_id, $build_id)
+		{
+			if (!$this->getByIssueIDandBuildID($issue_id, $build_id))
+			{
+				$crit = $this->getCriteria();
+				$crit->addInsert(self::ISSUE, $issue_id);
+				$crit->addInsert(self::BUILD, $build_id);
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+				$crit->addInsert(self::STATUS, 20);
+				$this->doInsert($crit);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
 	}

@@ -3185,6 +3185,232 @@
 			return false;
 		}
 		
+			/**
+		 * Remove an affected edition
+		 * 
+		 * @see removeAffectedItem()
+		 * @see removeAffectedBuild()
+		 * @see removeAffectedComponent()
+		 * 
+		 * @param TBGEdition $item The edition to remove
+		 * 
+		 * @return boolean
+		 */
+		public function removeAffectedEdition($item)
+		{
+			if (B2DB::getTable('TBGIssueAffectsEditionTable')->deleteByIssueIDandEditionID($this->getID(), $item->getID()))
+			{
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' removed", array('%item_name%' => $item->getName())));
+				$this->addSystemComment(TBGContext::getI18n()->__('Affected edition removed'), TBGContext::getI18n()->__('Edition \'\'\'%edition%\'\'\' is no longer affected by issue', array('%edition%' => $item->getName())), TBGContext::getUser()->getID());
+				return true;
+			}
+			return false;
+		}
+		
+		/**
+		 * Remove an affected build
+		 *
+		 * @see removeAffectedItem()
+		 * @see removeAffectedEdition()
+		 * @see removeAffectedComponent()
+		 * 
+		 * @param TBGBuild $item The build to remove
+		 * 
+		 * @return boolean
+		 */
+		public function removeAffectedBuild($item)
+		{
+			if (B2DB::getTable('TBGIssueAffectsBuildTable')->deleteByIssueIDandBuildID($this->getID(), $item->getID()))
+			{
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' removed", array('%item_name%' => $item->getName())));
+				$this->addSystemComment(TBGContext::getI18n()->__('Affected build removed'), TBGContext::getI18n()->__('Build \'\'\'%build%\'\'\' is no longer affected by issue', array('%build%' => $item->getName())), TBGContext::getUser()->getID());
+				return true;
+			}
+			return false;
+		}
+		
+		/**
+		 * Remove an affected component
+		 *
+		 * @see removeAffectedItem()
+		 * @see removeAffectedEdition()
+		 * @see removeAffectedBuild()
+		 * 
+		 * @param TBGComponent $item The component to remove
+		 * 
+		 * @return boolean
+		 */
+		public function removeAffectedComponent($item)
+		{
+			if (B2DB::getTable('TBGIssueAffectsComponentTable')->deleteByIssueIDandComponentID($this->getID(), $item->getID()))
+			{
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' removed", array('%item_name%' => $item->getName())));
+				$this->addSystemComment(TBGContext::getI18n()->__('Affected component removed'), TBGContext::getI18n()->__('Component \'\'\'%component%\'\'\' is no longer affected by issue', array('%component%' => $item->getName())), TBGContext::getUser()->getID());
+				return true;
+			}
+			return false;
+		}
+		
+		/**
+		 * Remove an affected edition
+		 * 
+		 * @see confirmAffectedItem()
+		 * @see confirmAffectedBuild()
+		 * @see confirmAffectedComponent()
+		 * 
+		 * @param TBGEdition $item The edition to remove
+		 * @param boolean $confirmed[optional] Whether it's confirmed or not
+		 * 
+		 * @return boolean
+		 */
+		public function confirmAffectedEdition($item, $confirmed = true)
+		{
+			if (B2DB::getTable('TBGIssueAffectsEditionTable')->confirmByIssueIDandEditionID($this->getID(), $item->getID(), $confirmed))
+			{
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
+				if ($confirmed)
+				{
+					$this->addSystemComment(TBGContext::getI18n()->__('Affected edition updated'), TBGContext::getI18n()->__('Edition \'\'\'%edition%\'\'\' is now confirmed for this issue', array('%edition%' => $item->getName())), TBGContext::getUser()->getID());
+				}
+				else
+				{
+					$this->addSystemComment(TBGContext::getI18n()->__('Affected edition updated'), TBGContext::getI18n()->__('Edition \'\'\'%edition%\'\'\' is now unconfirmed for this issue', array('%edition%' => $item->getName())), TBGContext::getUser()->getID());
+				}
+				return true;
+			}
+			return false;
+		}
+		
+		/**
+		 * Remove an affected build
+		 *
+		 * @see confirmAffectedItem()
+		 * @see confirmAffectedEdition()
+		 * @see confirmAffectedComponent()
+		 * 
+		 * @param TBGBuild $item The build to remove
+		 * @param boolean $confirmed[optional] Whether it's confirmed or not
+		 * 
+		 * @return boolean
+		 */
+		public function confirmAffectedBuild($item, $confirmed = true)
+		{
+			if (B2DB::getTable('TBGIssueAffectsBuildTable')->confirmByIssueIDandBuildID($this->getID(), $item->getID(), $confirmed))
+			{
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
+				if ($confirmed)
+				{
+					$this->addSystemComment(TBGContext::getI18n()->__('Affected build updated'), TBGContext::getI18n()->__('Build \'\'\'%build%\'\'\' is now confirmed for this issue', array('%build%' => $item->getName())), TBGContext::getUser()->getID());
+				}
+				else
+				{
+					$this->addSystemComment(TBGContext::getI18n()->__('Affected build updated'), TBGContext::getI18n()->__('Build \'\'\'%build%\'\'\' is now unconfirmed for this issue', array('%build%' => $item->getName())), TBGContext::getUser()->getID());
+				}
+				return true;
+			}
+			return false;
+		}
+		
+		/**
+		 * Remove an affected component
+		 *
+		 * @see confirmAffectedItem()
+		 * @see confirmAffectedEdition()
+		 * @see confirmAffectedBuild()
+		 * 
+		 * @param TBGComponent $item The component to remove
+		 * @param boolean $confirmed[optional] Whether it's confirmed or not
+		 * 
+		 * @return boolean
+		 */
+		public function confirmAffectedComponent($item, $confirmed = true)
+		{
+			if (B2DB::getTable('TBGIssueAffectsComponentTable')->confirmByIssueIDandComponentID($this->getID(), $item->getID(), $confirmed))
+			{
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' confirmed", array('%item_name%' => $item->getName())));
+				
+				if ($confirmed)
+				{
+					$this->addSystemComment(TBGContext::getI18n()->__('Affected component updated'), TBGContext::getI18n()->__('Component \'\'\'%component%\'\'\' is now confirmed for this issue', array('%component%' => $item->getName())), TBGContext::getUser()->getID());
+				}
+				else
+				{
+					$this->addSystemComment(TBGContext::getI18n()->__('Affected component updated'), TBGContext::getI18n()->__('Component \'\'\'%component%\'\'\' is now unconfirmed for this issue', array('%component%' => $item->getName())), TBGContext::getUser()->getID());
+				}
+				return true;
+			}
+			return false;
+		}
+
+		/**
+		 * Set status for affected edition
+		 * 
+		 * @see setAffectedItemStatus()
+		 * @see setAffectedBuildStatus()
+		 * @see setAffectedComponentStatus()
+		 * 
+		 * @param TBGEdition $item The edition to set status for
+		 * @param TBGDatatype $status The status to set
+		 * 
+		 * @return boolean
+		 */
+		public function setAffectedEditionStatus($item, $status)
+		{
+			if (B2DB::getTable('TBGIssueAffectsEditionTable')->setStatusByIssueIDandEditionID($this->getID(), $item->getID(), $status->getID()))
+			{
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
+				$this->addSystemComment(TBGContext::getI18n()->__('Affected edition updated'), TBGContext::getI18n()->__('Edition \'\'\'%edition%\'\'\' is now %status%', array('%edition%' => $item->getName(), '%status%' => $status->getName())), TBGContext::getUser()->getID());
+				return true;
+			}
+			return false;
+		}
+		
+		/**
+		 * Set status for affected build
+		 * 
+		 * @see setAffectedItemStatus()
+		 * @see setAffectedEditionStatus()
+		 * @see setAffectedComponentStatus()
+		 * 
+		 * @param TBGBuild $item The build to set status for
+		 * @param TBGDatatype $status The status to set
+		 * 
+		 * @return boolean
+		 */
+		public function setAffectedBuildStatus($item, $status)
+		{
+			if (B2DB::getTable('TBGIssueAffectsBuildTable')->setStatusByIssueIDandBuildID($this->getID(), $item->getID(), $status->getID()))
+			{
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
+				$this->addSystemComment(TBGContext::getI18n()->__('Affected build updated'), TBGContext::getI18n()->__('Build \'\'\'%build%\'\'\' is now %status%', array('%build%' => $item->getName(), '%status%' => $status->getName())), TBGContext::getUser()->getID());
+				return true;
+			}
+			return false;
+		}
+				
+		/**
+		 * Set status for affected component
+		 * 
+		 * @see setAffectedItemStatus()
+		 * @see setAffectedBuildStatus()
+		 * @see setAffectedEditionStatus()
+		 * 
+		 * @param TBGComponent $item The component to set status for
+		 * @param TBGDatatype $status The status to set
+		 * 
+		 * @return boolean
+		 */
+		public function setAffectedComponentStatus($item, $status)
+		{
+			if (B2DB::getTable('TBGIssueAffectsComponentTable')->setStatusByIssueIDandComponentID($this->getID(), $item->getID(), $status->getID()))
+			{
+				$this->addLogEntry(TBGLogTable::LOG_AFF_DELETE, TBGContext::getI18n()->__("'%item_name%' -> '%status_name%", array('%item_name%' => $item->getName(), '%status_name%' => $status->getName())));
+				$this->addSystemComment(TBGContext::getI18n()->__('Affected component updated'), TBGContext::getI18n()->__('Component \'\'\'%component%\'\'\' is now %status%', array('%component%' => $item->getName(), '%status%' => $status->getName())), TBGContext::getUser()->getID());
+				return true;
+			}
+			return false;
+		}
+		
 		/**
 		 * Adds a task and returns the task id
 		 *

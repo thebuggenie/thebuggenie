@@ -111,4 +111,22 @@
 			}				
 		}
 		
+		public function setIssueAffected($issue_id, $component_id)
+		{
+			if (!$this->getByIssueIDandComponentID($issue_id, $component_id))
+			{
+				$crit = $this->getCriteria();
+				$crit->addInsert(self::ISSUE, $issue_id);
+				$crit->addInsert(self::COMPONENT, $component_id);
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+				$crit->addInsert(self::STATUS, 20);
+				$this->doInsert($crit);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
 	}
