@@ -120,7 +120,7 @@
 		
 		public function confirmByIssueIDandEditionID($issue_id, $edition_id, $confirmed = true)
 		{
-			if (!$this->getByIssueIDandEditionID($issue_id, $edition_id))
+			if (!($res = $this->getByIssueIDandEditionID($issue_id, $edition_id)))
 			{
 				return false;
 			}
@@ -129,20 +129,24 @@
 				$crit = $this->getCriteria();
 				$crit->addUpdate(self::CONFIRMED, $confirmed);
 				$this->doUpdateById($crit, $res->get(self::ID));
+				
+				return true;
 			}				
 		}
 		
 		public function setStatusByIssueIDandEditionID($issue_id, $edition_id, $status_id)
 		{
-			if (!$this->getByIssueIDandEditionID($issue_id, $edition_id))
+			if (!($res = $this->getByIssueIDandEditionID($issue_id, $edition_id)))
 			{
 				return false;
 			}
 			else
 			{
 				$crit = $this->getCriteria();
-				$crit->addUpdate(self::STATUS, $status);
+				$crit->addUpdate(self::STATUS, $status_id);
 				$this->doUpdateById($crit, $res->get(self::ID));
+				
+				return true;
 			}				
 		}
 		

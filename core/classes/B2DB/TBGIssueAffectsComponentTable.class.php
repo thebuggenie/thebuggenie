@@ -63,27 +63,10 @@
 			$res = $this->doSelectOne($crit);
 			return $res;
 		}
-		
-		public function setIssueAffected($issue_id, $component_id)
-		{
-			if (!$this->getByIssueIDandComponentID($issue_id, $component_id))
-			{
-				$crit = $this->getCriteria();
-				$crit->addInsert(self::ISSUE, $issue_id);
-				$crit->addInsert(self::COMPONENT, $component_id);
-				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-				$this->doInsert($crit);
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
 
 		public function deleteByIssueIDandComponentID($issue_id, $component_id)
 		{
-			if (!$this->getByIssueIDandComponentID($issue_id, $component_id))
+			if (!($res = $this->getByIssueIDandComponentID($issue_id, $component_id)))
 			{
 				return false;
 			}
@@ -99,7 +82,7 @@
 		
 		public function confirmByIssueIDandComponentID($issue_id, $component_id, $confirmed = true)
 		{
-			if (!$this->getByIssueIDandComponentID($issue_id, $component_id))
+			if (!($res = $this->getByIssueIDandComponentID($issue_id, $component_id)))
 			{
 				return false;
 			}
@@ -108,20 +91,23 @@
 				$crit = $this->getCriteria();
 				$crit->addUpdate(self::CONFIRMED, $confirmed);
 				$this->doUpdateById($crit, $res->get(self::ID));
+				return true;
 			}				
 		}
 		
 		public function setStatusByIssueIDandComponentID($issue_id, $component_id, $status_id)
 		{
-			if (!$this->getByIssueIDandComponentID($issue_id, $component_id))
+			if (!($res = $this->getByIssueIDandComponentID($issue_id, $component_id)))
 			{
 				return false;
 			}
 			else
 			{
 				$crit = $this->getCriteria();
-				$crit->addUpdate(self::STATUS, $status);
+				$crit->addUpdate(self::STATUS, $status_id);
 				$this->doUpdateById($crit, $res->get(self::ID));
+				
+				return true;
 			}				
 		}
 		
