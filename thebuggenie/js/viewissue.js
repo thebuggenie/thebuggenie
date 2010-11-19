@@ -717,3 +717,37 @@ function deleteAffected(url, affected)
 	});
 }
 
+function statusAffected(url, affected)
+{
+	new Ajax.Request(url, {
+		method: 'post',
+		requestHeaders: {Accept: 'application/json'},
+		onLoading: function(transport) {
+			$('affected_' + affected + '_status_spinning').show();
+		},
+		onSuccess: function(transport) {
+			var json = transport.responseJSON;
+			successMessage(json.message);
+			
+			$('affected_' + affected + '_status_colour').setStyle({
+				backgroundColor: json.colour,
+				fontSize: '1px',
+				width: '20px',
+				height: '15px',
+				marginRight: '2px'
+			});
+			$('affected_' + affected + '_status_name').update(json.name);
+			$('affected_' + affected + '_status_spinning').hide();
+			$('affected_' + affected + '_status_change').hide();
+		},
+		onFailure: function(transport) {
+			var json = transport.responseJSON;
+
+			$('affected_' + affected + '_status_spinning').hide();
+			$('affected_' + affected + '_status_error').update(json.error);
+			$('affected_' + affected + '_status_error').show();
+			Effect.Pulsate($('affected_' + affected + '_status_error'));
+		}
+	});
+}
+

@@ -132,6 +132,7 @@
 	$routes[] = array('comment_add', '/comment/add/for/project/:project_id/module/:comment_module/item/type/:comment_applies_type/id/:comment_applies_id', 'main', 'addcomment');
 	$routes[] = array('confirm_affected', '/issue/:issue_id/confirm/:affected_type/:affected_id', 'main', 'toggleaffectedconfirmed');
 	$routes[] = array('remove_affected', '/issue/:issue_id/remove/:affected_type/:affected_id', 'main', 'removeaffected');
+	$routes[] = array('status_affected', '/issue/:issue_id/set/:affected_type/:affected_id/status/:status_id', 'main', 'statusaffected');
 	$routes[] = array('captcha', '/captcha/*', 'main', 'captcha');
 	
 	foreach ($routes as $route)
