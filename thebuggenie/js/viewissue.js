@@ -700,10 +700,11 @@ function deleteAffected(url, affected)
 			var json = transport.responseJSON;
 			successMessage(json.message);
 			
+			$('viewissue_affects_count').update(json.itemcount);
 			$('affected_' + affected + '_delete').remove();
 			$('affected_' + affected).remove();
 			
-			if ($('affected_list').childElements().length == 1)
+			if (json.itemcount == 0)
 			{
 				$('no_affected').show();
 			}

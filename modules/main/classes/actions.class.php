@@ -2723,7 +2723,28 @@
 						break;
 				}
 				
-				return $this->renderJSON(array('failed' => false, 'message' => $message));
+				$editions = array();
+				$components = array();
+				$builds = array();
+				
+				if($issue->getProject()->isEditionsEnabled())
+				{
+					$editions = $issue->getEditions();
+				}
+				
+				if($issue->getProject()->isComponentsEnabled())
+				{
+					$components = $issue->getComponents();
+				}
+
+				if($issue->getProject()->isBuildsEnabled())
+				{
+					$builds = $issue->getBuilds();
+				}
+				
+				$count = count($editions) + count($components) + count($builds) - 1;
+				
+				return $this->renderJSON(array('failed' => false, 'message' => $message, 'itemcount' => $count));
 			}
 			catch (Exception $e)
 			{
