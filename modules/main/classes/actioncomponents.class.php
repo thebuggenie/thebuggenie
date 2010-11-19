@@ -199,6 +199,13 @@
 		
 		public function componentCaptcha()
 		{	
-		}		
+		}
 		
+		public function componentIssueadditem()
+		{
+			$project = $this->issue->getProject();
+			$this->editions = $project->getEditions();
+			$this->components = $project->getComponents();
+			$this->builds = $project->getBuilds();
+		}
 	}

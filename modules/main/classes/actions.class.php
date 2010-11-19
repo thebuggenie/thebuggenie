@@ -2298,6 +2298,10 @@
 							$options['selected_section'] = $request->getParameter('section', 'general');
 						}
 						break;
+					case 'issue_add_item':
+						$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
+						$template_name = 'main/issueadditem';
+						break;
 				}
 				if ($template_name !== null)
 				{

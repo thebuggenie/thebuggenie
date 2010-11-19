@@ -671,7 +671,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 #attach_file #uploaded_files { table-layout: fixed; width: 100%; background-color: #FFF; }
 #uploader_no_uploaded_files { padding: 5px 0 15px 5px; }
 
-#viewissue_add_relation_div { text-align: left; padding: 10px; }
+#viewissue_add_relation_div, #viewissue_add_item_div { text-align: left; padding: 10px; }
 #viewissue_find_issue_form div { text-align: left; font-size: 12px; margin-top: 10px; }
 #viewissue_find_issue_form input[type="text"] { width: 300px; }
 #viewissue_relation_results table { margin-top: 5px; }

@@ -751,3 +751,8 @@ function statusAffected(url, affected)
 	});
 }
 
+function addAffected(url)
+{
+	failedMessage('Unimplemented');
+}
+

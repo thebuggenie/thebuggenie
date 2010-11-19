@@ -133,6 +133,7 @@
 	$routes[] = array('confirm_affected', '/issue/:issue_id/confirm/:affected_type/:affected_id', 'main', 'toggleaffectedconfirmed');
 	$routes[] = array('remove_affected', '/issue/:issue_id/remove/:affected_type/:affected_id', 'main', 'removeaffected');
 	$routes[] = array('status_affected', '/issue/:issue_id/set/:affected_type/:affected_id/status/:status_id', 'main', 'statusaffected');
+	$routes[] = array('add_affected', '/project/:project_key/issue/:issue_id/add/affected', 'main', 'addaffected');
 	$routes[] = array('captcha', '/captcha/*', 'main', 'captcha');
 	
 	foreach ($routes as $route)
