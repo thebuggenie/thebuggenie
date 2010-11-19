@@ -254,7 +254,8 @@
 					{
 						if (array_key_exists($request->getParameter('type'), $types))
 						{
-							$item = call_user_func(array('TBGFactory', $types[$request->getParameter('type')].'Lab'), $request->getParameter('id'));
+							$labname = $types[$request->getParameter('type')];
+							$item = TBGContext::factory()->$labname($request->getParameter('id'));
 						}
 						else
 						{
