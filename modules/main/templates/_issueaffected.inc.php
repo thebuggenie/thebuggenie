@@ -43,11 +43,12 @@
 			foreach ($issue->getEditions() as $edition):
 				?>
 	<tr id="affected_edition_<?php echo $edition['a_id']; ?>">
-		<td><?php echo image_tag('icon_edition.png', array('alt' => __('Edition'))); ?></td><td style="padding-left: 3px;"><?php if ($issue->canEditIssue()): echo '<a href="javascript:void(0);" onClick="$(\'affected_edition_'.$edition['a_id'].'_delete\').toggle()">'.image_tag('icon_delete.png', array('alt' => __('Delete'))).'</a> '; endif; ?><?php echo $edition['edition']->getName(); ?></td><td style="width: 240px">
+		<td><?php echo image_tag('icon_edition.png', array('alt' => __('Edition'))); ?></td>
+		<td style="padding-left: 3px;" onmouseover="$('affected_edition_<?php echo $edition['a_id']; ?>_delete_icon').show();" onmouseout="$('affected_edition_<?php echo $edition['a_id']; ?>_delete_icon').hide();"><?php if ($issue->canEditIssue()): echo '<a href="javascript:void(0);" onClick="$(\'affected_edition_'.$edition['a_id'].'_delete\').toggle()">'.image_tag('icon_delete.png', array('id' => 'affected_edition_'.$edition['a_id'].'_delete_icon', 'style' => 'display: none;','alt' => __('Delete'))).'</a> '; endif; ?><?php echo $edition['edition']->getName(); ?></td><td style="width: 240px">
 		<table style="table-layout: auto; width: 240px"; cellpadding=0 cellspacing=0 id="status_table">
 			<tr>
 				<td style="width: 24px;"><div style="border: 1px solid #AAA; background-color: <?php echo $edition['status']->getColor(); ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 2px;" id="affected_edition_<?php echo $edition['a_id'] ?>_status_colour">&nbsp;</div></td>
-				<td style="padding-left: 5px;" id="status_content"><?php if ($issue->canEditIssue()): echo image_tag('action_dropdown_small.png', array('onClick' => "$('affected_edition_".$edition['a_id']."_status_change').toggle();")); endif; ?> <span id="affected_edition_<?php echo $edition['a_id'] ?>_status_name"><?php echo $edition['status']->getName(); ?></span>
+				<td style="padding-left: 5px;" id="status_content" onmouseover="$('affected_edition_<?php echo $edition['a_id']; ?>_status_dropdown').show();" onmouseout="$('affected_edition_<?php echo $edition['a_id']; ?>_status_dropdown').hide();"><?php if ($issue->canEditIssue()): echo image_tag('action_dropdown_small.png', array('id' => 'affected_edition_'.$edition['a_id'].'_status_dropdown', 'style' => 'display: none;', 'onClick' => "$('affected_edition_".$edition['a_id']."_status_change').toggle();")); endif; ?> <span id="affected_edition_<?php echo $edition['a_id'] ?>_status_name"><?php echo $edition['status']->getName(); ?></span>
 
 				<div class="rounded_box white shadowed" id="affected_edition_<?php echo $edition['a_id']; ?>_status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
@@ -96,11 +97,12 @@
 			foreach ($issue->getComponents() as $component):
 				?>
 	<tr id="affected_component_<?php echo $component['a_id']; ?>">
-		<td><?php echo image_tag('icon_components.png', array('alt' => __('Component'))); ?></td><td style="padding-left: 3px;"><?php if ($issue->canEditIssue()): echo '<a href="javascript:void(0);" onClick="$(\'affected_component_'.$component['a_id'].'_delete\').toggle()">'.image_tag('icon_delete.png', array('alt' => __('Delete'))).'</a> '; endif; ?><?php echo $component['component']->getName(); ?></td><td style="width: 240px">
+		<td><?php echo image_tag('icon_components.png', array('alt' => __('Component'))); ?></td>
+		<td style="padding-left: 3px;" onmouseover="$('affected_component_<?php echo $component['a_id']; ?>_delete_icon').show();" onmouseout="$('affected_component_<?php echo $component['a_id']; ?>_delete_icon').hide();"><?php if ($issue->canEditIssue()): echo '<a href="javascript:void(0);" onClick="$(\'affected_component_'.$component['a_id'].'_delete\').toggle()">'.image_tag('icon_delete.png', array('id' => 'affected_component_'.$component['a_id'].'_delete_icon', 'style' => 'display: none;','alt' => __('Delete'))).'</a> '; endif; ?><?php echo $component['component']->getName(); ?></td><td style="width: 240px">
 		<table style="table-layout: auto; width: 240px"; cellpadding=0 cellspacing=0 id="status_table">
 			<tr>
 				<td style="width: 24px;"><div style="border: 1px solid #AAA; background-color: <?php echo $component['status']->getColor(); ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 2px;" id="affected_component_<?php echo $component['a_id'] ?>_status_colour">&nbsp;</div></td>
-				<td style="padding-left: 5px;" id="status_content"><?php if ($issue->canEditIssue()): echo image_tag('action_dropdown_small.png', array('onClick' => "$('affected_component_".$component['a_id']."_status_change').toggle();")); endif; ?> <span id="affected_component_<?php echo $component['a_id'] ?>_status_name"><?php echo $component['status']->getName(); ?></span>
+				<td style="padding-left: 5px;" id="status_content" onmouseover="$('affected_component_<?php echo $component['a_id']; ?>_status_dropdown').show();" onmouseout="$('affected_component_<?php echo $component['a_id']; ?>_status_dropdown').hide();"><?php if ($issue->canEditIssue()): echo image_tag('action_dropdown_small.png', array('id' => 'affected_component_'.$component['a_id'].'_status_dropdown', 'style' => 'display: none;', 'onClick' => "$('affected_component_".$component['a_id']."_status_change').toggle();")); endif; ?> <span id="affected_component_<?php echo $component['a_id'] ?>_status_name"><?php echo $component['status']->getName(); ?></span>
 
 				<div class="rounded_box white shadowed" id="affected_component_<?php echo $component['a_id']; ?>_status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
@@ -149,11 +151,12 @@
 			foreach ($issue->getBuilds() as $build):
 				?>
 	<tr id="affected_build_<?php echo $build['a_id']; ?>">
-		<td><?php echo image_tag('icon_build.png', array('alt' => __('Release'))); ?></td><td style="padding-left: 3px;"><?php if ($issue->canEditIssue()): echo '<a href="javascript:void(0);" onClick="$(\'affected_build_'.$build['a_id'].'_delete\').toggle()">'.image_tag('icon_delete.png', array('alt' => __('Delete'))).'</a> '; endif; ?><?php echo $build['build']->getName(); ?></td><td style="width: 240px">
+		<td><?php echo image_tag('icon_build.png', array('alt' => __('Release'))); ?></td>
+		<td style="padding-left: 3px;" onmouseover="$('affected_build_<?php echo $build['a_id']; ?>_delete_icon').show();" onmouseout="$('affected_build_<?php echo $build['a_id']; ?>_delete_icon').hide();"><?php if ($issue->canEditIssue()): echo '<a href="javascript:void(0);" onClick="$(\'affected_build_'.$build['a_id'].'_delete\').toggle()">'.image_tag('icon_delete.png', array('id' => 'affected_build_'.$build['a_id'].'_delete_icon', 'style' => 'display: none;','alt' => __('Delete'))).'</a> '; endif; ?><?php echo $build['build']->getName(); ?></td><td style="width: 240px">
 		<table style="table-layout: auto; width: 240px"; cellpadding=0 cellspacing=0 id="status_table">
 			<tr>
 				<td style="width: 24px;"><div style="border: 1px solid #AAA; background-color: <?php echo $build['status']->getColor(); ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 2px;" id="affected_build_<?php echo $build['a_id'] ?>_status_colour">&nbsp;</div></td>
-				<td style="padding-left: 5px;" id="status_content"><?php if ($issue->canEditIssue()): echo image_tag('action_dropdown_small.png', array('onClick' => "$('affected_build_".$build['a_id']."_status_change').toggle();")); endif; ?> <span id="affected_build_<?php echo $build['a_id'] ?>_status_name"><?php echo $build['status']->getName(); ?></span>
+				<td style="padding-left: 5px;" id="status_content" onmouseover="$('affected_build_<?php echo $build['a_id']; ?>_status_dropdown').show();" onmouseout="$('affected_build_<?php echo $build['a_id']; ?>_status_dropdown').hide();"><?php if ($issue->canEditIssue()): echo image_tag('action_dropdown_small.png', array('id' => 'affected_build_'.$build['a_id'].'_status_dropdown', 'style' => 'display: none;', 'onClick' => "$('affected_build_".$build['a_id']."_status_change').toggle();")); endif; ?> <span id="affected_build_<?php echo $build['a_id'] ?>_status_name"><?php echo $build['status']->getName(); ?></span>
 
 				<div class="rounded_box white shadowed" id="affected_build_<?php echo $build['a_id']; ?>_status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 					<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
