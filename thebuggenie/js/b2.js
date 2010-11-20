@@ -61,7 +61,22 @@ function clearPopupMessages()
 	}
 }
 
-function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, clear_div_before_loading, hide_div_while_loading, hide_divs_on_success, show_divs_on_success, url_method, params)
+/**
+ * Convenience function for running an AJAX call and updating / showing / hiding
+ * divs on json feedback
+ *
+ * @param url The URL to call
+ * @param update_element Id of the element to update (or null if none)
+ * @param indicator The id of an indicator element to show while running the ajax call
+ * @param insertion If update_div is provided, specify insertion to add to bottom/top of the update_element, or null to replace contents
+ * @param clear_update_element_before_loading boolean to say whether or not to clear the update_element before loading or null to ignore
+ * @param hide_element_while_loading Id of an element to hide while the ajax is loading or null to ignore
+ * @param hide_elements_on_success An array of element ids to hide if the request was successful or null to ignore
+ * @param show_elements_on_success An array of element ids to show if the request was successful or null to ignore
+ * @param url_method get or post the url or null to use "get"
+ * @param params Optional parameters to pass with the url or null to ignore
+ */
+function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, clear_update_element_before_loading, hide_element_while_loading, hide_elements_on_success, show_elements_on_success, url_method, params)
 {
 	var params = (params) ? params : '';
 	url_method = (url_method) ? url_method : "get";
@@ -72,13 +87,13 @@ function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, clear
 	evalScripts: true,
 	onLoading: function (transport) {
 		$(indicator).show();
-		if (clear_div_before_loading)
+		if (clear_update_element_before_loading)
 		{
-			$(update_div).update('');
+			$(update_element).update('');
 		}
-		if (hide_div_while_loading && $(hide_div_while_loading))
+		if (hide_element_while_loading && $(hide_element_while_loading))
 		{
-			$(hide_div_while_loading).hide();
+			$(hide_element_while_loading).hide();
 		}
 	},
 	onSuccess: function (transport) {
@@ -91,16 +106,16 @@ function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, clear
 		else
 		{
 			$(indicator).hide();
-			if (update_div != '' && $(update_div))
+			if (update_element != '' && $(update_element))
 			{
 				content = (json) ? json.content : transport.responseText;
 				if (insertion == true)
 				{
-					$(update_div).insert(content, 'after');
+					$(update_element).insert(content, 'after');
 				}
 				else
 				{
-					$(update_div).update(content);
+					$(update_element).update(content);
 				}
 				if (json && json.message)
 				{
@@ -111,9 +126,9 @@ function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, clear
 			{
 				successMessage(json.title, json.content);
 			}
-			if (hide_divs_on_success)
+			if (hide_elements_on_success)
 			{
-				hide_divs_on_success.each(function(s)
+				hide_elements_on_success.each(function(s)
 				{
 					if (is_string(s) && $(s))
 					{
@@ -122,9 +137,9 @@ function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, clear
 					else if (s) s.hide();
 				});
 			}
-			if (show_divs_on_success)
+			if (show_elements_on_success)
 			{
-				show_divs_on_success.each(function(s)
+				show_elements_on_success.each(function(s)
 				{
 					if ($(s)) $(s).show();
 				});
@@ -143,9 +158,9 @@ function _updateDivWithJSONFeedback(url, update_div, indicator, insertion, clear
 		}
 	},
 	onComplete: function (transport) {
-		if (hide_div_while_loading && hide_div_while_loading != hide_div_on_success && $(hide_div_while_loading))
+		if (hide_element_while_loading && hide_element_while_loading != hide_div_on_success && $(hide_element_while_loading))
 		{
-			$(hide_div_while_loading).show();
+			$(hide_element_while_loading).show();
 		}
 	}
 	});
