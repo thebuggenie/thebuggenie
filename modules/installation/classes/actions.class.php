@@ -41,7 +41,7 @@
 			$this->pdo_ok = true;
 			$this->mysql_ok = true;
 			$this->pgsql_ok = true;
-			if (file_exists(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php'))
+			if ((file_exists(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php')) || !is_writable(TBGContext::getIncludePath() . 'core/'))
 			{
 				$this->b2db_param_file_ok = false;
 				$this->all_well = false;

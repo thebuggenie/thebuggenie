@@ -81,7 +81,7 @@
 			</div>
 			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
+			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
 			</div>
 		<?php endif; ?>
 		<?php if (!$base_folder_perm_ok): ?>
@@ -91,7 +91,7 @@
 			</div>
 			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>
+			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>
 			</div>
 		<?php endif; ?>
 		<?php if (!$thebuggenie_folder_perm_ok): ?>
@@ -101,7 +101,7 @@
 			</div>
 			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod 777 <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>thebuggenie/
+			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>thebuggenie/
 			</div>
 		<?php endif; ?>
 		<?php if (!$pdo_ok): ?>
