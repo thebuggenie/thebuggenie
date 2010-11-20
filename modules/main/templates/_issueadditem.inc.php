@@ -32,7 +32,7 @@
 		</select>
 		<?php endif; ?>
 		<input type="submit" style="display: none; margin-top: 10px;" id="item_submit" value="<?php echo __('Add this item'); ?>">
-		<?php echo image_tag('spinning_20.gif', array('id' => 'add_item_indicator', 'style' => 'display: none;')); ?>
+		<?php echo image_tag('spinning_20.gif', array('id' => 'add_affected_spinning', 'style' => 'display: none;')); ?>
 		</form>
 	</div>
 	<div class="backdrop_detail_footer">

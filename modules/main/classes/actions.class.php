@@ -2768,7 +2768,7 @@
 
 						$issue->setAffectedbuildStatus($build['build'], $status);
 						
-						$message = TBGContext::getI18n()->__('Build <b>%build%</b> is now %status%', array('%build%' => $build['build']->getName(), '%status%' => $status->getName()));
+						$message = TBGContext::getI18n()->__('Release <b>%build%</b> is now %status%', array('%build%' => $build['build']->getName(), '%status%' => $status->getName()));
 												
 						break;
 					default:
@@ -2787,7 +2787,94 @@
 			
 		public function runAddAffected(TBGRequest $request)
 		{
-			
+			TBGContext::loadLibrary('ui');
+			try
+			{
+				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
+
+				if (!$issue->canEditIssue())
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You are not allowed to do this')));
+				}
+				
+				switch ($request->getParameter('item_type'))
+				{
+					case 'edition':
+						if (!$issue->getProject()->isEditionsEnabled())
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Editions are disabled')));
+						}
+						
+						$edition = TBGContext::factory()->TBGEdition($request->getParameter('which_item_edition'));
+						
+						$issue->addAffectedEdition($edition);
+						
+						$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is now affected by this issue', array('%edition%' => $edition->getName()));
+												
+						break;
+					case 'component':
+						if (!$issue->getProject()->isComponentsEnabled())
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Components are disabled')));
+						}
+						
+						$component = TBGContext::factory()->TBGComponent($request->getParameter('which_item_component'));
+						
+						$issue->addAffectedComponent($component);
+						
+						$message = TBGContext::getI18n()->__('Component <b>%component%</b> is now affected by this issue', array('%component%' => $component->getName()));
+												
+						break;
+					case 'build':
+						if (!$issue->getProject()->isBuildsEnabled())
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Releases are disabled')));
+						}
+						
+						$build = TBGContext::factory()->TBGBuild($request->getParameter('which_item_build'));
+
+						$issue->addAffectedBuild($build);
+						
+						$message = TBGContext::getI18n()->__('Release <b>%build%</b> is now affected by this issue', array('%build%' => $build->getName()));
+												
+						break;
+					default:
+						throw new Exception('Internal error');
+						break;
+				}
+				
+				$editions = array();
+				$components = array();
+				$builds = array();
+				
+				if($issue->getProject()->isEditionsEnabled())
+				{
+					$editions = $issue->getEditions();
+				}
+				
+				if($issue->getProject()->isComponentsEnabled())
+				{
+					$components = $issue->getComponents();
+				}
+
+				if($issue->getProject()->isBuildsEnabled())
+				{
+					$builds = $issue->getBuilds();
+				}
+				
+				$count = count($editions) + count($components) + count($builds);
+				
+				return $this->renderJSON(array('failed' => false, 'message' => $message, 'itemcount' => $count));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
 		}
 		
 		/**

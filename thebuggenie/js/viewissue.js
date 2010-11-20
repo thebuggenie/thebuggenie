@@ -754,6 +754,35 @@ function statusAffected(url, affected)
 
 function addAffected(url)
 {
-	failedMessage('Unimplemented');
+	params = $('viewissue_add_item_form').serialize();
+	new Ajax.Request(url, {
+		asynchronous:true,
+		method: "post",
+		parameters: params,
+		requestHeaders: {Accept: 'application/json'},
+		onLoading: function(transport) {
+			$('add_affected_spinning').show();
+		},
+		onSuccess: function(transport) {
+			var json = transport.responseJSON;
+			successMessage(json.message);
+
+			$('viewissue_affects_count').update(json.itemcount);
+			
+			if (json.itemcount != 0)
+			{
+				$('no_affected').hide();
+			}
+			
+			$('add_affected_spinning').hide();
+			resetFadedBackdrop();
+		},
+		onFailure: function(transport) {
+			var json = transport.responseJSON;
+
+			$('add_affected_spinning').hide();
+			failedMessage(json.error);
+		}
+	});
 }
 
