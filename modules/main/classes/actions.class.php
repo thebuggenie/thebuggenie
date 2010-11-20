@@ -2810,6 +2810,12 @@
 						
 						$edition = TBGContext::factory()->TBGEdition($request->getParameter('which_item_edition'));
 						
+						if (TBGIssueAffectsEditionTable::getTable()->getByIssueIDandEditionID($issue->getID(), $edition->getID()))
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('%item% is already affected by this issue', array('%item%' => $edition->getName()))));
+						}
+						
 						$edition = $issue->addAffectedEdition($edition);
 
 						$item = $edition;
@@ -2828,6 +2834,12 @@
 						}
 						
 						$component = TBGContext::factory()->TBGComponent($request->getParameter('which_item_component'));
+						
+						if (TBGIssueAffectsComponentTable::getTable()->getByIssueIDandComponentID($issue->getID(), $component->getID()))
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('%item% is already affected by this issue', array('%item%' => $component->getName()))));
+						}
 						
 						$component = $issue->addAffectedComponent($component);
 						
@@ -2848,6 +2860,13 @@
 						
 						$build = TBGContext::factory()->TBGBuild($request->getParameter('which_item_build'));
 
+						
+						if (TBGIssueAffectsBuildTable::getTable()->getByIssueIDandBuildID($issue->getID(), $build->getID()))
+						{
+							$this->getResponse()->setHttpStatus(400);
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('%item% is already affected by this issue', array('%item%' => $build->getName()))));
+						}
+												
 						$build = $issue->addAffectedBuild($build);
 						
 						$item = $build;
