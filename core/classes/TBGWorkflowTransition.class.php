@@ -133,6 +133,19 @@
 		{
 			return $this->_template;
 		}
+		
+		/**
+		 * Set the template to be used
+		 * 
+		 * @param string $template 
+		 */
+		public function setTemplate($template)
+		{
+			if (array_key_exists($template, $this->getTemplates()))
+			{
+				$this->_template = $template;
+			}
+		}
 
 		public function getTemplateName()
 		{
@@ -180,6 +193,21 @@
 		public function getOutgoingStep()
 		{
 			return $this->_outgoing_step;
+		}
+		
+		/**
+		 * Set the outgoing step
+		 * 
+		 * @param TBGWorkflowStep $step A workflow step
+		 */
+		public function setOutgoingStep(TBGWorkflowStep $step)
+		{
+			$this->_outgoing_step = $step;
+		}
+		
+		public function save()
+		{
+			TBGWorkflowTransitionsTable::getTable()->saveByID($this->getName(), $this->getDescription(), $this->getOutgoingStep()->getID(), $this->getTemplate(), $this->getID());
 		}
 
 		public function delete($direction)

@@ -1922,19 +1922,41 @@
 		{
 			$this->workflow = null;
 			$this->transition = null;
+			
 			try
 			{
 				$this->workflow = TBGContext::factory()->TBGWorkflow($request->getParameter('workflow_id'));
 				if ($request->hasParameter('transition_id'))
 				{
 					$this->transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
-					if ($request->isMethod(TBGRequest::POST) && $request->getParameter('mode') == 'delete')
+					if ($request->isMethod(TBGRequest::POST))
 					{
-						if ($request->hasParameter('transition_id'))
+						if ($request->getParameter('mode') == 'delete')
 						{
-							$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
-							$transition->delete($request->getParameter('direction'));
+							$this->transition->delete($request->getParameter('direction'));
 							return $this->renderJSON(array('failed' => false));
+						}
+						elseif ($request->getParameter('transition_name') && $request->getParameter('outgoing_step_id') && $request->hasParameter('template'))
+						{
+							$this->transition->setName($request->getParameter('transition_name'));
+							$this->transition->setDescription($request->getParameter('transition_description'));
+							if ($request->getParameter('template'))
+							{
+								$this->transition->setTemplate($request->getParameter('template'));
+							}
+							else
+							{
+								$this->transition->setTemplate(null);
+							}
+							try
+							{
+								$step = TBGContext::factory()->TBGWorkflowStep($request->getParameter('outgoing_step_id'));
+							}
+							catch (Exception $e) {}
+							$this->transition->setOutgoingStep($step);
+							$this->transition->save();
+							$transition = $this->transition;
+							$redirect_transition = true;
 						}
 					}
 				}
@@ -1948,14 +1970,14 @@
 					if ($request->getParameter('add_transition_type') == 'existing' && $request->hasParameter('existing_transition_id'))
 					{
 						$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('existing_transition_id'));
-						$is_new = false;
+						$redirect_transition = false;
 					}
 					else
 					{
 						if ($request->getParameter('transition_name') && $request->getParameter('outgoing_step_id') && $request->hasParameter('template'))
 						{
 							$transition = TBGWorkflowTransition::createNew($this->workflow->getID(), $request->getParameter('transition_name'), $request->getParameter('transition_description'), $request->getParameter('outgoing_step_id'), $request->getParameter('template'));
-							$is_new = true;
+							$redirect_transition = true;
 						}
 						else
 						{
@@ -1963,14 +1985,6 @@
 						}
 					}
 					$step->addOutgoingTransition($transition);
-					if ($is_new)
-					{
-						$this->forward(TBGContext::getRouting()->generate('configure_workflow_transition', array('workflow_id' => $this->workflow->getID(), 'transition_id' => $transition->getID())));
-					}
-					else
-					{
-						$this->forward(TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
-					}
 				}
 				else
 				{
@@ -1986,6 +2000,14 @@
 			{
 				//throw $e;
 				$this->error = TBGContext::getI18n()->__('This workflow / transition does not exist');
+			}
+			if (isset($redirect_transition) && $redirect_transition)
+			{
+				$this->forward(TBGContext::getRouting()->generate('configure_workflow_transition', array('workflow_id' => $this->workflow->getID(), 'transition_id' => $transition->getID())));
+			}
+			elseif (isset($redirect_transition))
+			{
+				$this->forward(TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
 			}
 		}
 

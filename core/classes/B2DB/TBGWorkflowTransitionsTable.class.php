@@ -154,5 +154,15 @@
 		{
 			return $this->_getByTypeID('workflow', $workflow_id);
 		}
+		
+		public function saveByID($name, $description, $outgoing_step_id, $template, $transition_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addUpdate(self::NAME, $name);
+			$crit->addUpdate(self::DESCRIPTION, $description);
+			$crit->addUpdate(self::TO_STEP_ID, $outgoing_step_id);
+			$crit->addUpdate(self::TEMPLATE, $template);
+			$res = $this->doUpdateById($crit, $transition_id);
+		}
 
 	}
