@@ -131,13 +131,16 @@
 						throw new Exception("Could not find class property {$property_name} in class ".get_class($this).". The class must have all properties from the corresponding B2DB table class available, except scope and id");
 					}
 				}
-				if ($property_type == 'boolean')
+				switch ($property_type)
 				{
-					$this->$property_name = (boolean) $row->get($column['name']);
-				}
-				else
-				{
-					$this->$property_name = $row->get($column['name']);
+					case 'boolean':
+						$this->$property_name = (boolean) $row->get($column['name']);
+						break;
+					case 'integer':
+						$this->$property_name = (integer) $row->get($column['name']);
+						break;
+					default:
+						$this->$property_name = $row->get($column['name']);
 				}
 			}
 		}

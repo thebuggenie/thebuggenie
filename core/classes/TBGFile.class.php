@@ -2,6 +2,8 @@
 
 	class TBGFile extends TBGIdentifiableClass
 	{
+		
+		protected $_b2dbtablename = 'TBGFilesTable';
 
 		protected $_content_type;
 
@@ -42,32 +44,6 @@
 		{
 			$file_id = TBGFilesTable::getTable()->saveFile($real_filename, $original_filename, $content_type, $description, $content);
 			return new TBGFile($file_id);
-		}
-
-		public function __construct($id, $row = null)
-		{
-			if (!is_numeric($id))
-			{
-				throw new Exception('Please specify a file id');
-			}
-			if ($row === null)
-			{
-				$row = TBGFilesTable::getTable()->getByID($id);
-			}
-
-			if (!$row instanceof B2DBRow)
-			{
-				throw new Exception('The specified file id does not exist');
-			}
-
-			$this->_id = $row->get(TBGFilesTable::ID);
-			$this->_content_type = $row->get(TBGFilesTable::CONTENT_TYPE);
-			$this->_uploaded_by = $row->get(TBGFilesTable::UID);
-			$this->_uploaded_at = $row->get(TBGFilesTable::UPLOADED_AT);
-			$this->_real_filename = $row->get(TBGFilesTable::REAL_FILENAME);
-			$this->_original_filename = $row->get(TBGFilesTable::ORIGINAL_FILENAME);
-			$this->_content = ($row->get(TBGFilesTable::CONTENT)) ? $row->get(TBGFilesTable::CONTENT) : null;
-			$this->_description = ($row->get(TBGFilesTable::DESCRIPTION)) ? $row->get(TBGFilesTable::DESCRIPTION) : null;
 		}
 
 		public function getContentType()

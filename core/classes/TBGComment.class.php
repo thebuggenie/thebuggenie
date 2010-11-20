@@ -19,6 +19,8 @@
 	class TBGComment extends TBGIdentifiableClass 
 	{
 		
+		protected $_b2dbtablename = 'TBGCommentsTable';
+		
 		/**
 		 * Issue comment
 		 */
@@ -26,9 +28,9 @@
 		
 		protected $_content;
 		
-		protected $_postedby;
+		protected $_posted_by;
 		
-		protected $_updatedby;
+		protected $_updated_by;
 		
 		protected $_posted;
 
@@ -42,42 +44,14 @@
 		
 		protected $_module;
 		
-		protected $_systemcomment = false;
+		protected $_deleted;
+		
+		protected $_system_comment = false;
 
 		protected $_comment_number = 0;
 
 		protected static $_comment_count = array();
 
-
-		/**
-		 * Class constructor
-		 *
-		 * @param integer $c_id
-		 * @param B2DBRow $res
-		 */
-		public function __construct($c_id, $row = null)
-		{
-			if ($row == null)
-			{
-				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGCommentsTable::SCOPE, TBGContext::getScope()->getID());
-				$row = TBGCommentsTable::getTable()->doSelectById($c_id, $crit);
-			}
-			$this->_id = $row->get(TBGCommentsTable::ID);
-			$this->_name = $row->get(TBGCommentsTable::TITLE);
-			$this->_content = $row->get(TBGCommentsTable::CONTENT);
-			$this->_posted = $row->get(TBGCommentsTable::POSTED);
-			$this->_updated = $row->get(TBGCommentsTable::UPDATED);
-			$this->_postedby = $row->get(TBGCommentsTable::POSTED_BY);
-			$this->_updatedby = $row->get(TBGCommentsTable::UPDATED_BY);
-			$this->_target_id = $row->get(TBGCommentsTable::TARGET_ID);
-			$this->_target_type = $row->get(TBGCommentsTable::TARGET_TYPE);
-			$this->_comment_number = $row->get(TBGCommentsTable::COMMENT_NUMBER);
-			$this->_module = $row->get(TBGCommentsTable::MODULE);
-			$this->_systemcomment = ($row->get(TBGCommentsTable::SYSTEM_COMMENT) == 1) ? true : false;
-			$this->_is_public = ($row->get(TBGCommentsTable::IS_PUBLIC) == 1) ? true : false;
-		}
-		
 		/**
 		 *
 		 * Returns all comments for a given item
@@ -218,7 +192,7 @@
 		public function setUpdatedBy($var)
 		{
 			$this->_updated = NOW;
-			$this->_updatedby = $var;
+			$this->_updated_by = $var;
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGCommentsTable::UPDATED_BY, $var);
 			$crit->addUpdate(TBGCommentsTable::UPDATED, NOW);
@@ -321,7 +295,7 @@
 		 */
 		public function getUpdatedBy()
 		{
-			return TBGContext::factory()->TBGUser($this->_updatedby);
+			return TBGContext::factory()->TBGUser($this->_updated_by);
 		}
 		
 		/**
@@ -331,7 +305,7 @@
 		 */
 		public function getPostedBy()
 		{
-			return TBGContext::factory()->TBGUser($this->_postedby);
+			return TBGContext::factory()->TBGUser($this->_posted_by);
 		}
 
 		/**
@@ -372,7 +346,7 @@
 		
 		public function isSystemComment()
 		{
-			return $this->_systemcomment;
+			return $this->_system_comment;
 		}
 		
 		public function getTargetID()

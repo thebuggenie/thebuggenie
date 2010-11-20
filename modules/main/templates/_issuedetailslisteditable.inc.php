@@ -111,14 +111,6 @@
 		</div>
 	</dd>
 </dl>
-<?php if ($issue->getProject()->isVotesEnabled()): ?>
-	<?php //TODO: Add a vote counter, and a "plus" button? ?>
-	<?php if ($tbg_user->canVoteOnIssuesForProduct($issue->getProject()->getID()) && $tbg_user->canVoteForIssue($issue->getID())): /* ?>
-		<div style="border-bottom: 1px solid #DDD; padding: 3px; font-size: 12px; margin-top: 5px;">
-			<b>VOTE!</b>
-		</div>
-	<?php */ endif; ?>
-<?php endif; ?>
 <div style="clear: both;"> </div>
 <div style="margin: 0;<?php if (!$issue->isUserPainVisible()): ?> display: none;<?php endif; ?>" id="user_pain_field">
 	<dl class="viewissue_list" id="pain_bug_type_field">

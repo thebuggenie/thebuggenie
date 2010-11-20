@@ -19,6 +19,8 @@
 	class TBGWorkflow extends TBGIdentifiableClass
 	{
 
+		protected $_b2dbtablename = 'TBGWorkflowsTable';
+		
 		protected static $_workflows = null;
 
 		/**
@@ -60,28 +62,6 @@
 				}
 			}
 			return self::$_workflows;
-		}
-
-		public function __construct($id, $row)
-		{
-			if (!is_numeric($id))
-			{
-				throw new Exception('Please specify a valid workflow id');
-			}
-			if ($row === null)
-			{
-				$row = TBGWorkflowsTable::getTable()->getByID($id);
-			}
-
-			if (!$row instanceof B2DBRow)
-			{
-				throw new Exception('The specified workflow id does not exist');
-			}
-
-			$this->_id = $row->get(TBGWorkflowsTable::ID);
-			$this->_name = $row->get(TBGWorkflowsTable::NAME);
-			$this->_description = $row->get(TBGWorkflowsTable::DESCRIPTION);
-			$this->_is_active = (bool) $row->get(TBGWorkflowsTable::IS_ACTIVE);
 		}
 
 		/**

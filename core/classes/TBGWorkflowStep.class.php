@@ -19,6 +19,8 @@
 	class TBGWorkflowStep extends TBGIdentifiableClass
 	{
 
+		protected $_b2dbtablename = 'TBGWorkflowStepsTable';
+		
 		/**
 		 * The workflow description
 		 *
@@ -26,11 +28,11 @@
 		 */
 		protected $_description = null;
 
-		protected $_is_editable = null;
+		protected $_editable = null;
 
-		protected $_is_closed = null;
+		protected $_closed = null;
 
-		protected $_linked_status = null;
+		protected $_status_id = null;
 
 		protected $_incoming_transitions = null;
 
@@ -45,31 +47,11 @@
 		 *
 		 * @var TBGWorkflow
 		 */
-		protected $_workflow = null;
+		protected $_workflow_id = null;
 
-		public function __construct($id, $row)
+		public function _construct(B2DBRow $row)
 		{
-			if (!is_numeric($id))
-			{
-				throw new Exception('Please specify a valid workflow step id');
-			}
-			if ($row === null)
-			{
-				$row = TBGWorkflowStepsTable::getTable()->getByID($id);
-			}
-
-			if (!$row instanceof B2DBRow)
-			{
-				throw new Exception('The specified workflow step id does not exist');
-			}
-
-			$this->_id = $row->get(TBGWorkflowStepsTable::ID);
-			$this->_name = $row->get(TBGWorkflowStepsTable::NAME);
-			$this->_description = $row->get(TBGWorkflowStepsTable::DESCRIPTION);
-			$this->_is_editable = (bool) $row->get(TBGWorkflowStepsTable::EDITABLE);
-			$this->_is_closed = (bool) $row->get(TBGWorkflowStepsTable::IS_CLOSED);
-			$this->_workflow = TBGContext::factory()->TBGWorkflow($row->get(TBGWorkflowStepsTable::WORKFLOW_ID));
-			$this->_linked_status = $row->get(TBGWorkflowStepsTable::STATUS_ID);
+			$this->_workflow_id = TBGContext::factory()->TBGWorkflow($this->_workflow_id);
 		}
 
 		/**
@@ -99,7 +81,7 @@
 		 */
 		public function getWorkflow()
 		{
-			return $this->_workflow;
+			return $this->_workflow_id;
 		}
 
 		/**
@@ -120,23 +102,23 @@
 		 */
 		public function getLinkedStatus()
 		{
-			if (is_numeric($this->_linked_status))
+			if (is_numeric($this->_status_id))
 			{
 				try
 				{
-					$this->_linked_status = TBGContext::factory()->TBGStatus($this->_linked_status);
+					$this->_status_id = TBGContext::factory()->TBGStatus($this->_status_id);
 				}
 				catch (Exception $e)
 				{
-					$this->_linked_status = null;
+					$this->_status_id = null;
 				}
 			}
-			return $this->_linked_status;
+			return $this->_status_id;
 		}
 
 		public function setLinkedStatusID($status_id)
 		{
-			$this->_linked_status = $status_id;
+			$this->_status_id = $status_id;
 		}
 
 		/**
@@ -156,27 +138,22 @@
 
 		public function isEditable()
 		{
-			return (bool) $this->_is_editable;
+			return (bool) $this->_editable;
 		}
 
 		public function setIsEditable($is_editable = true)
 		{
-			$this->_is_editable = $is_editable;
+			$this->_editable = $is_editable;
 		}
 
 		public function isClosed()
 		{
-			return (bool) $this->_is_closed;
+			return (bool) $this->_closed;
 		}
 
 		public function setIsClosed($is_closed = true)
 		{
-			$this->_is_closed = $is_closed;
-		}
-
-		public function save()
-		{
-			TBGWorkflowStepsTable::getTable()->save($this->_name, $this->_description, $this->getLinkedStatusID(), $this->_is_closed, $this->_is_editable, $this->getWorkflow()->getID(), $this->getID());
+			$this->_closed = $is_closed;
 		}
 
 		protected function _populateOutgoingTransitions()

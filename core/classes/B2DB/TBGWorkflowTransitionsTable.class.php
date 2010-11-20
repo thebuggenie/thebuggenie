@@ -25,7 +25,7 @@
 		const WORKFLOW_ID = 'workflow_transitions.workflow_id';
 		const NAME = 'workflow_transitions.name';
 		const DESCRIPTION = 'workflow_transitions.description';
-		const TO_STEP_ID = 'workflow_transitions.to_step_id';
+		const OUTGOING_STEP_ID = 'workflow_transitions.outgoing_step_id';
 		const TEMPLATE = 'workflow_transitions.template';
 
 		/**
@@ -45,7 +45,7 @@
 			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
 			parent::_addVarchar(self::NAME, 200);
 			parent::_addText(self::DESCRIPTION, false);
-			parent::_addForeignKeyColumn(self::TO_STEP_ID, TBGWorkflowStepsTable::getTable(), TBGWorkflowStepsTable::ID);
+			parent::_addForeignKeyColumn(self::OUTGOING_STEP_ID, TBGWorkflowStepsTable::getTable(), TBGWorkflowStepsTable::ID);
 			parent::_addVarchar(self::TEMPLATE, 200);
 		}
 
@@ -71,7 +71,7 @@
 				$crit->addInsert(self::SCOPE, $scope);
 				$crit->addInsert(self::NAME, $transition['name']);
 				$crit->addInsert(self::DESCRIPTION, $transition['description']);
-				$crit->addInsert(self::TO_STEP_ID, $transition['to_step_id']);
+				$crit->addInsert(self::OUTGOING_STEP_ID, $transition['to_step_id']);
 				$crit->addInsert(self::TEMPLATE, $transition['template']);
 				$this->doInsert($crit);
 			}
@@ -85,7 +85,7 @@
 			$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
 			$crit->addInsert(self::NAME, $name);
 			$crit->addInsert(self::DESCRIPTION, $description);
-			$crit->addInsert(self::TO_STEP_ID, $to_step_id);
+			$crit->addInsert(self::OUTGOING_STEP_ID, $to_step_id);
 			$crit->addInsert(self::TEMPLATE, $template);
 
 			$res = $this->doInsert($crit);
@@ -97,7 +97,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere((($type == 'step') ? self::TO_STEP_ID : self::WORKFLOW_ID), $id);
+			$crit->addWhere((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
 			return $this->doDelete($crit);
 		}
 
@@ -105,7 +105,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere((($type == 'step') ? self::TO_STEP_ID : self::WORKFLOW_ID), $id);
+			$crit->addWhere((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
 			return $this->doCount($crit);
 		}
 
@@ -113,7 +113,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere((($type == 'step') ? self::TO_STEP_ID : self::WORKFLOW_ID), $id);
+			$crit->addWhere((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
 
 			$return_array = array();
 			if ($res = $this->doSelect($crit))
@@ -152,7 +152,7 @@
 			$crit = $this->getCriteria();
 			$crit->addUpdate(self::NAME, $name);
 			$crit->addUpdate(self::DESCRIPTION, $description);
-			$crit->addUpdate(self::TO_STEP_ID, $outgoing_step_id);
+			$crit->addUpdate(self::OUTGOING_STEP_ID, $outgoing_step_id);
 			$crit->addUpdate(self::TEMPLATE, $template);
 			$res = $this->doUpdateById($crit, $transition_id);
 		}

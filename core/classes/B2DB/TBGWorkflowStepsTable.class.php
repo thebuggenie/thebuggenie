@@ -25,7 +25,7 @@
 		const NAME = 'workflow_steps.name';
 		const STATUS_ID = 'workflow_steps.status_id';
 		const WORKFLOW_ID = 'workflow_steps.workflow_id';
-		const IS_CLOSED = 'workflow_steps.is_closed';
+		const CLOSED = 'workflow_steps.closed';
 		const DESCRIPTION = 'workflow_steps.description';
 		const EDITABLE = 'workflow_steps.editable';
 
@@ -48,7 +48,7 @@
 			parent::_addVarchar(self::NAME, 200);
 			parent::_addText(self::DESCRIPTION, false);
 			parent::_addBoolean(self::EDITABLE);
-			parent::_addBoolean(self::IS_CLOSED);
+			parent::_addBoolean(self::CLOSED);
 		}
 
 		public function loadFixtures($scope)
@@ -71,7 +71,7 @@
 				$crit->addInsert(self::NAME, $step['name']);
 				$crit->addInsert(self::DESCRIPTION, $step['description']);
 				$crit->addInsert(self::STATUS_ID, $step['status_id']);
-				$crit->addInsert(self::IS_CLOSED, $step['is_closed']);
+				$crit->addInsert(self::CLOSED, $step['is_closed']);
 				$crit->addInsert(self::EDITABLE, $step['editable']);
 				$this->doInsert($crit);
 			}
@@ -87,7 +87,7 @@
 				$crit->addInsert(self::NAME, $name);
 				$crit->addInsert(self::DESCRIPTION, $description);
 				$crit->addInsert(self::STATUS_ID, $status_id);
-				$crit->addInsert(self::IS_CLOSED, $is_closed);
+				$crit->addInsert(self::CLOSED, $is_closed);
 				$crit->addInsert(self::EDITABLE, $is_editable);
 				$res = $this->doInsert($crit);
 				$id = $res->getInsertID();
@@ -99,7 +99,7 @@
 				$crit->addUpdate(self::NAME, $name);
 				$crit->addUpdate(self::DESCRIPTION, $description);
 				$crit->addUpdate(self::STATUS_ID, $status_id);
-				$crit->addUpdate(self::IS_CLOSED, $is_closed);
+				$crit->addUpdate(self::CLOSED, $is_closed);
 				$crit->addUpdate(self::EDITABLE, $is_editable);
 				$this->doUpdateByID($crit, $step_id);
 				$id = $step_id;

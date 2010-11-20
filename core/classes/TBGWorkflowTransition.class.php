@@ -19,7 +19,7 @@
 	class TBGWorkflowTransition extends TBGIdentifiableClass
 	{
 
-		protected $_b2dbtable = 'TBGWorkflowTransitionsTable';
+		protected $_b2dbtablename = 'TBGWorkflowTransitionsTable';
 		
 		/**
 		 * The workflow description
@@ -39,7 +39,7 @@
 		 *
 		 * @var TBGWorkflowStep
 		 */
-		protected $_outgoing_step = null;
+		protected $_outgoing_step_id = null;
 
 		protected $_template = null;
 		
@@ -51,6 +51,13 @@
 		protected $_request = null;
 		
 		protected $_validation_errors = array();
+
+		/**
+		 * The associated workflow object
+		 *
+		 * @var TBGWorkflow
+		 */
+		protected $_workflow_id = null;
 
 		public static function getTemplates()
 		{
@@ -66,28 +73,10 @@
 			return TBGContext::factory()->TBGWorkflowTransition($id);
 		}
 
-		public function __construct($id, $row)
+		public function _construct(B2DBRow $row)
 		{
-			if (!is_numeric($id))
-			{
-				throw new Exception('Please specify a valid workflow step id');
-			}
-			if ($row === null)
-			{
-				$row = TBGWorkflowTransitionsTable::getTable()->getByID($id);
-			}
-
-			if (!$row instanceof B2DBRow)
-			{
-				throw new Exception('The specified workflow step transition id does not exist');
-			}
-
-			$this->_id = $row->get(TBGWorkflowTransitionsTable::ID);
-			$this->_name = $row->get(TBGWorkflowTransitionsTable::NAME);
-			$this->_description = $row->get(TBGWorkflowTransitionsTable::DESCRIPTION);
-			$this->_template = $row->get(TBGWorkflowTransitionsTable::TEMPLATE);
-			$this->_outgoing_step = TBGContext::factory()->TBGWorkflowStep($row->get(TBGWorkflowTransitionsTable::TO_STEP_ID));
-			$this->_workflow = TBGContext::factory()->TBGWorkflow($row->get(TBGWorkflowTransitionsTable::WORKFLOW_ID));
+			$this->_outgoing_step_id = TBGContext::factory()->TBGWorkflowStep($this->_outgoing_step_id);
+			$this->_workflow_id = TBGContext::factory()->TBGWorkflow($this->_workflow_id);
 		}
 
 		/**
@@ -117,7 +106,7 @@
 		 */
 		public function getWorkflow()
 		{
-			return $this->_workflow;
+			return $this->_workflow_id;
 		}
 
 		/**
@@ -194,7 +183,7 @@
 		 */
 		public function getOutgoingStep()
 		{
-			return $this->_outgoing_step;
+			return $this->_outgoing_step_id;
 		}
 		
 		/**
@@ -204,7 +193,7 @@
 		 */
 		public function setOutgoingStep(TBGWorkflowStep $step)
 		{
-			$this->_outgoing_step = $step;
+			$this->_outgoing_step_id = $step;
 		}
 		
 		public function delete($direction)

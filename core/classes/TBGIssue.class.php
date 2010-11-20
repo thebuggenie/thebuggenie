@@ -64,13 +64,6 @@
 		protected $_issue_no;
 		
 		/**
-		 * The unique id of the issue, used in the database
-		 *
-		 * @var integer
-		 */
-		protected $_issue_uniqueid;
-		
-		/**
 		 * The issue type
 		 *
 		 * @var TBGDatatype
@@ -870,7 +863,7 @@
 		 */
 		public function getID()
 		{
-			return $this->_issue_uniqueid;
+			return $this->_id;
 		}
 		
 		/**
@@ -2151,8 +2144,8 @@
 		 */
 		public function setAssignee(TBGIdentifiableClass $assignee)
 		{
-			$this->_addChangedProperty('_assignedto', $assignee->getID());
-			$this->_addChangedProperty('_assignedtype', $assignee->getType());
+			$this->_addChangedProperty('_assigned_to', $assignee->getID());
+			$this->_addChangedProperty('_assigned_type', $assignee->getType());
 		}
 		
 		/**
@@ -2160,8 +2153,8 @@
 		 */
 		public function unsetAssignee()
 		{
-			$this->_addChangedProperty('_assignedto', 0);
-			$this->_addChangedProperty('_assignedtype', 0);
+			$this->_addChangedProperty('_assigned_to', 0);
+			$this->_addChangedProperty('_assigned_type', 0);
 		}
 		
 		/**
@@ -2171,27 +2164,27 @@
 		 */
 		public function getOwner()
 		{
-			if (is_numeric($this->_ownedby))
+			if (is_numeric($this->_owner))
 			{
 				try
 				{
-					if ($this->_ownedtype == TBGIdentifiableClass::TYPE_USER)
+					if ($this->_owner_type == TBGIdentifiableClass::TYPE_USER)
 					{
-						$this->_ownedby = TBGContext::factory()->TBGUser($this->_ownedby);
+						$this->_owner = TBGContext::factory()->TBGUser($this->_owner);
 					}
-					elseif ($this->_ownedtype == TBGIdentifiableClass::TYPE_TEAM)
+					elseif ($this->_owner_type == TBGIdentifiableClass::TYPE_TEAM)
 					{
-						$this->_ownedby = TBGContext::factory()->TBGTeam($this->_ownedby);
+						$this->_owner = TBGContext::factory()->TBGTeam($this->_owner);
 					}
 				}
 				catch (Exception $e)
 				{
-					$this->_ownedby = null;
-					$this->_ownedtype = null;
+					$this->_owner = null;
+					$this->_owner_type = null;
 				}
 			}
 	
-			return $this->_ownedby;
+			return $this->_owner;
 		}
 		
 		/**
@@ -2233,8 +2226,8 @@
 		 */
 		public function setOwner(TBGIdentifiableClass $owner)
 		{
-			$this->_addChangedProperty('_ownedby', $owner->getID());
-			$this->_addChangedProperty('_ownedtype', $owner->getType());
+			$this->_addChangedProperty('_owner', $owner->getID());
+			$this->_addChangedProperty('_owner_type', $owner->getType());
 		}
 		
 		/**
@@ -2242,8 +2235,8 @@
 		 */
 		public function unsetOwner()
 		{
-			$this->_addChangedProperty('_ownedby', 0);
-			$this->_addChangedProperty('_ownedtype', 0);
+			$this->_addChangedProperty('_owner', 0);
+			$this->_addChangedProperty('_owner_type', 0);
 		}
 		
 		/**
@@ -2617,7 +2610,7 @@
 		 */
 		public function isOwnedByChanged()
 		{
-			return (bool) ($this->isOwnedTypeChanged() || $this->_isPropertyChanged('_ownedby'));
+			return (bool) ($this->isOwnedTypeChanged() || $this->_isPropertyChanged('_owner'));
 		}
 
 		/**
@@ -2627,7 +2620,7 @@
 		 */
 		public function isOwnedByMerged()
 		{
-			return (bool) ($this->isOwnedTypeMerged() || $this->_isPropertyMerged('_ownedby'));
+			return (bool) ($this->isOwnedTypeMerged() || $this->_isPropertyMerged('_owner'));
 		}
 		
 		/**
@@ -2636,7 +2629,7 @@
 		public function revertOwnedBy()
 		{
 			$this->revertOwnedType();
-			$this->_revertPropertyChange('_ownedby');
+			$this->_revertPropertyChange('_owner');
 		}
 
 		/**
@@ -2646,7 +2639,7 @@
 		 */
 		public function isAssignedToChanged()
 		{
-			return (bool) ($this->isAssignedTypeChanged() || $this->_isPropertyChanged('_assignedto'));
+			return (bool) ($this->isAssignedTypeChanged() || $this->_isPropertyChanged('_assigned_to'));
 		}
 
 		/**
@@ -2656,7 +2649,7 @@
 		 */
 		public function isAssignedToMerged()
 		{
-			return (bool) ($this->isAssignedTypeMerged() || $this->_isPropertyMerged('_assignedto'));
+			return (bool) ($this->isAssignedTypeMerged() || $this->_isPropertyMerged('_assigned_to'));
 		}
 		
 		/**
@@ -2665,7 +2658,7 @@
 		public function revertAssignedTo()
 		{
 			$this->revertAssignedType();
-			$this->_revertPropertyChange('_assignedto');
+			$this->_revertPropertyChange('_assigned_to');
 		}
 
 		/**
@@ -3899,7 +3892,7 @@
 			if (!$this->isClosed()) return false;
 			$crit = new B2DBCriteria();
 			$crit->addSelectionColumn(TBGLogTable::TIME);
-			$crit->addWhere(TBGLogTable::TARGET, $this->_issue_uniqueid);
+			$crit->addWhere(TBGLogTable::TARGET, $this->_id);
 			$crit->addWhere(TBGLogTable::TARGET_TYPE, 1);
 			$crit->addWhere(TBGLogTable::CHANGE_TYPE, 14);
 			$crit->addOrderBy(TBGLogTable::TIME, 'desc');
@@ -3921,7 +3914,7 @@
 			if ($this->isClosed()) return false;
 			$crit = new B2DBCriteria();
 			$crit->addSelectionColumn(TBGLogTable::TIME);
-			$crit->addWhere(TBGLogTable::TARGET, $this->_issue_uniqueid);
+			$crit->addWhere(TBGLogTable::TARGET, $this->_id);
 			$crit->addWhere(TBGLogTable::TARGET_TYPE, 1);
 			$crit->addWhere(TBGLogTable::CHANGE_TYPE, 22);
 			$crit->addOrderBy(TBGLogTable::TIME, 'desc');
@@ -4124,16 +4117,16 @@
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PRIORITY, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The priority has been updated, from '''%previous_priority%''' to '''%new_priority%'''.", array('%previous_priority%' => $old_name, '%new_priority%' => $new_name));
 							break;
-						case '_assignedto':
-						case '_assignedtype':
+						case '_assigned_to':
+						case '_assigned_type':
 							if (!$is_saved_assignee)
 							{
 								if ($value['original_value'] != 0)
 								{
 									$old_identifiable = null;
-									if ($this->getChangedPropertyOriginal('_assignedtype') == TBGIdentifiableClass::TYPE_USER)
+									if ($this->getChangedPropertyOriginal('_assigned_type') == TBGIdentifiableClass::TYPE_USER)
 										$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
-									elseif ($this->getChangedPropertyOriginal('_assignedtype') == TBGIdentifiableClass::TYPE_TEAM)
+									elseif ($this->getChangedPropertyOriginal('_assigned_type') == TBGIdentifiableClass::TYPE_TEAM)
 										$old_identifiable = TBGContext::factory()->TBGTeam($value['original_value']);
 									$old_name = ($old_identifiable instanceof TBGIdentifiableClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 								}
@@ -4171,16 +4164,16 @@
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_USERS, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("Information about the user working on this issue has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
-						case '_ownedby':
-						case '_ownedtype':
+						case '_owner':
+						case '_owner_type':
 							if (!$is_saved_owner)
 							{
 								if ($value['original_value'] != 0)
 								{
 									$old_identifiable = null;
-									if ($this->getChangedPropertyOriginal('_ownedtype') == TBGIdentifiableClass::TYPE_USER)
+									if ($this->getChangedPropertyOriginal('_owner_type') == TBGIdentifiableClass::TYPE_USER)
 										$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
-									elseif ($this->getChangedPropertyOriginal('_ownedtype') == TBGIdentifiableClass::TYPE_TEAM)
+									elseif ($this->getChangedPropertyOriginal('_owner_type') == TBGIdentifiableClass::TYPE_TEAM)
 										$old_identifiable = TBGContext::factory()->TBGTeam($value['original_value']);
 									$old_name = ($old_identifiable instanceof TBGIdentifiableClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 								}

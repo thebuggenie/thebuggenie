@@ -24,7 +24,6 @@
 		const SCOPE = 'comments.scope';
 		const TARGET_ID = 'comments.target_id';
 		const TARGET_TYPE = 'comments.target_type';
-		const TITLE = 'comments.title';
 		const CONTENT = 'comments.content';
 		const IS_PUBLIC = 'comments.is_public';
 		const POSTED_BY = 'comments.posted_by';
@@ -51,7 +50,6 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addInteger(self::TARGET_ID, 10);
 			parent::_addInteger(self::TARGET_TYPE, 3);
-			parent::_addVarchar(self::TITLE, 100);
 			parent::_addText(self::CONTENT, false);
 			parent::_addInteger(self::POSTED, 10);
 			parent::_addInteger(self::UPDATED, 10);

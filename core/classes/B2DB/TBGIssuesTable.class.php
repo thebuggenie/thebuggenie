@@ -65,7 +65,7 @@
 		const LOCKED = 'issues.locked';
 		const WORKFLOW_STEP_ID = 'issues.workflow_step_id';
 		const MILESTONE = 'issues.milestone';
-		const VOTES = 'issues.votes';
+		const VOTES_TOTAL = 'issues.votes_total';
 
 		/**
 		 * Return an instance of this table
@@ -113,7 +113,7 @@
 			parent::_addInteger(self::SPENT_WEEKS, 10);
 			parent::_addInteger(self::SPENT_DAYS, 10);
 			parent::_addInteger(self::SPENT_HOURS, 10);
-			parent::_addInteger(self::VOTES, 10);
+			parent::_addInteger(self::VOTES_TOTAL, 10);
 			parent::_addFloat(self::SPENT_POINTS);
 			parent::_addInteger(self::PERCENT_COMPLETE, 2);
 			parent::_addInteger(self::ASSIGNED_TYPE, 2);
@@ -617,7 +617,7 @@
 						$crit->addOrderBy(self::USER_PAIN, $grouporder);
 						break;
 					case 'votes':
-						$crit->addOrderBy(self::VOTES, $grouporder);
+						$crit->addOrderBy(self::VOTES_TOTAL, $grouporder);
 						break;
 					case 'resolution':
 						$crit->addOrderBy(self::RESOLUTION, $grouporder);
@@ -662,7 +662,7 @@
 		public function saveVotesTotalForIssueID($votes_total, $issue_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addUpdate(self::VOTES, $votes_total);
+			$crit->addUpdate(self::VOTES_TOTAL, $votes_total);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doUpdateById($crit, $issue_id);
 		}
