@@ -3133,12 +3133,13 @@
 		{
 			if ($this->getProject() && $this->getProject()->isBuildsEnabled())
 			{
-				if ($retval = B2DB::getTable('TBGIssueAffectsBuildTable')->setIssueAffected($this->getID(), $build->getID()))
+				$retval = B2DB::getTable('TBGIssueAffectsBuildTable')->setIssueAffected($this->getID(), $build->getID());
+				if ($retval !== false)
 				{
 					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%release_name%' added", array('%release_name%' => $build->getName())));
 					$this->addSystemComment(TBGContext::getI18n()->__("Affected releases"), TBGContext::getI18n()->__('\'\'\'%release_name%\'\'\' is now affected by this issue', array('%release_name%' => $build->getName())), TBGContext::getUser()->getUID());
+					return array('a_id' => $retval, 'build' => $build, 'confirmed' => 0, 'status' => TBGContext::factory()->TBGStatus(20));
 				}
-				return $retval;
 			}
 			return false;
 		}
@@ -3154,12 +3155,13 @@
 		{
 			if ($this->getProject() && $this->getProject()->isEditionsEnabled())
 			{
-				if ($retval = B2DB::getTable('TBGIssueAffectsEditionTable')->setIssueAffected($this->getID(), $edition->getID()))
+				$retval = B2DB::getTable('TBGIssueAffectsEditionTable')->setIssueAffected($this->getID(), $edition->getID());
+				if ($retval !== false)
 				{
 					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%edition_name%' added", array('%edition_name%' => $edition->getName())));
 					$this->addSystemComment(TBGContext::getI18n()->__("Affected editions"), TBGContext::getI18n()->__('\'\'\'%edition_name%\'\'\' is now affected by this issue', array('%edition_name%' => $edition->getName())), TBGContext::getUser()->getUID());
+					return array('a_id' => $retval, 'edition' => $edition, 'confirmed' => 0, 'status' => TBGContext::factory()->TBGStatus(20));
 				}
-				return $retval;
 			}
 			return false;
 		}
@@ -3175,12 +3177,13 @@
 		{
 			if ($this->getProject() && $this->getProject()->isComponentsEnabled())
 			{
-				if ($retval = B2DB::getTable('TBGIssueAffectsComponentTable')->setIssueAffected($this->getID(), $component->getID()))
+				$retval = B2DB::getTable('TBGIssueAffectsComponentTable')->setIssueAffected($this->getID(), $component->getID());
+				if ($retval !== false)
 				{
 					$this->addLogEntry(TBGLogTable::LOG_AFF_ADD, TBGContext::getI18n()->__("'%component_name%' added", array('%component_name%' => $component->getName())));
 					$this->addSystemComment(TBGContext::getI18n()->__("Affected components"), TBGContext::getI18n()->__('\'\'\'%component_name%\'\'\' is now affected by this issue', array('%component_name%' => $component->getName())), TBGContext::getUser()->getUID());
+					return array('a_id' => $retval, 'component' => $component, 'confirmed' => 0, 'status' => TBGContext::factory()->TBGStatus(20));
 				}
-				return $retval;
 			}
 			return false;
 		}

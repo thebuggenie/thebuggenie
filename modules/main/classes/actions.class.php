@@ -2791,6 +2791,7 @@
 			try
 			{
 				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
+				$statuses = TBGStatus::getAll();
 
 				if (!$issue->canEditIssue())
 				{
@@ -2809,9 +2810,14 @@
 						
 						$edition = TBGContext::factory()->TBGEdition($request->getParameter('which_item_edition'));
 						
-						$issue->addAffectedEdition($edition);
+						$edition = $issue->addAffectedEdition($edition);
+
+						$item = $edition;
+						$itemtype = 'edition';
+						$itemtypename = TBGContext::getI18n()->__('Edition');
+						$content = get_template_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
 						
-						$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is now affected by this issue', array('%edition%' => $edition->getName()));
+						$message = TBGContext::getI18n()->__('Edition <b>%edition%</b> is now affected by this issue', array('%edition%' => $edition['edition']->getName()));
 												
 						break;
 					case 'component':
@@ -2823,9 +2829,14 @@
 						
 						$component = TBGContext::factory()->TBGComponent($request->getParameter('which_item_component'));
 						
-						$issue->addAffectedComponent($component);
+						$component = $issue->addAffectedComponent($component);
 						
-						$message = TBGContext::getI18n()->__('Component <b>%component%</b> is now affected by this issue', array('%component%' => $component->getName()));
+						$item = $component;
+						$itemtype = 'component';
+						$itemtypename = TBGContext::getI18n()->__('Component');
+						$content = get_template_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
+						
+						$message = TBGContext::getI18n()->__('Component <b>%component%</b> is now affected by this issue', array('%component%' => $component['component']->getName()));
 												
 						break;
 					case 'build':
@@ -2837,9 +2848,14 @@
 						
 						$build = TBGContext::factory()->TBGBuild($request->getParameter('which_item_build'));
 
-						$issue->addAffectedBuild($build);
+						$build = $issue->addAffectedBuild($build);
 						
-						$message = TBGContext::getI18n()->__('Release <b>%build%</b> is now affected by this issue', array('%build%' => $build->getName()));
+						$item = $build;
+						$itemtype = 'build';
+						$itemtypename = TBGContext::getI18n()->__('Release');
+						$content = get_template_html('main/affecteditem', array('item' => $item, 'itemtype' => $itemtype, 'itemtypename' => $itemtypename, 'issue' => $issue, 'statuses' => $statuses));
+												
+						$message = TBGContext::getI18n()->__('Release <b>%build%</b> is now affected by this issue', array('%build%' => $build['build']->getName()));
 												
 						break;
 					default:
@@ -2868,7 +2884,7 @@
 				
 				$count = count($editions) + count($components) + count($builds);
 				
-				return $this->renderJSON(array('failed' => false, 'message' => $message, 'itemcount' => $count));
+				return $this->renderJSON(array('failed' => false, 'content' => $content, 'message' => $message, 'itemcount' => $count));
 			}
 			catch (Exception $e)
 			{

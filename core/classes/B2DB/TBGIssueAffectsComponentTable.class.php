@@ -120,8 +120,8 @@
 				$crit->addInsert(self::COMPONENT, $component_id);
 				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$crit->addInsert(self::STATUS, 20);
-				$this->doInsert($crit);
-				return true;
+				$ret = $this->doInsert($crit);
+				return $ret->getInsertID();
 			}
 			else
 			{

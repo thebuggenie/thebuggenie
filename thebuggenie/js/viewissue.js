@@ -774,6 +774,8 @@ function addAffected(url)
 				$('no_affected').hide();
 			}
 			
+			$('affected_list').insert({bottom: json.content});
+			
 			$('add_affected_spinning').hide();
 			resetFadedBackdrop();
 		},
