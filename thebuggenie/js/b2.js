@@ -76,9 +76,9 @@ function clearPopupMessages()
  * @param url_method get or post the url or null to use "get"
  * @param params Optional parameters to pass with the url or null to ignore
  */
-function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, clear_update_element_before_loading, hide_element_while_loading, hide_elements_on_success, show_elements_on_success, url_method, params)
+function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, clear_update_element_before_loading, hide_element_while_loading, hide_elements_on_success, show_elements_on_success, url_method, params, onsuccess_callback, onfailure_callback, oncomplete_callback)
 {
-	var params = (params) ? params : '';
+	params = (params) ? params : '';
 	url_method = (url_method) ? url_method : "get";
 	new Ajax.Request(url, {
 	asynchronous:true,
@@ -144,6 +144,10 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 					if ($(s)) $(s).show();
 				});
 			}
+			if (onsuccess_callback)
+			{
+				onsuccess_callback(json);
+			}
 		}
 	},
 	onFailure: function (transport) {
@@ -156,11 +160,19 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 		{
 			failedMessage(transport.responseText);
 		}
+		if (onfailure_callback)
+		{
+			onfailure_callback(json);
+		}
 	},
 	onComplete: function (transport) {
 		if (hide_element_while_loading && hide_element_while_loading != hide_div_on_success && $(hide_element_while_loading))
 		{
 			$(hide_element_while_loading).show();
+		}
+		if (oncomplete_callback)
+		{
+			oncomplete_callback(json);
 		}
 	}
 	});
