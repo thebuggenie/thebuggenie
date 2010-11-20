@@ -27,7 +27,7 @@
 		const ITEMDATA = 'listtypes.itemdata';
 		const APPLIES_TO = 'listtypes.applies_to';
 		const APPLIES_TYPE = 'listtypes.applies_type';
-		const ORDER = 'listtypes.order';
+		const ORDER = 'listtypes.sort_order';
 		
 		protected static $_item_cache = null;
 

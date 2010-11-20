@@ -46,35 +46,6 @@
 		}
 		
 		/**
-		 * Constructor function
-		 *
-		 * @param integer $b_id
-		 * @param TBGProject $project
-		 */
-		public function __construct($c_id, $row = null)
-		{
-			if ($row === null)
-			{
-				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGComponentsTable::SCOPE, TBGContext::getScope()->getID());
-				$row = B2DB::getTable('TBGComponentsTable')->doSelectById($c_id, $crit);
-			}
-			if ($row instanceof B2DBRow)
-			{
-				$this->_name = $row->get(TBGComponentsTable::NAME);
-				$this->_id = $c_id;
-				$this->_isdefault = false;
-				$this->_locked = false;
-				$this->_version_major = $row->get(TBGComponentsTable::VERSION_MAJOR);
-				$this->_version_minor = $row->get(TBGComponentsTable::VERSION_MINOR);
-				$this->_version_revision = $row->get(TBGComponentsTable::VERSION_REVISION);
-				$this->_project = $row->get(TBGComponentsTable::PROJECT);
-				$this->_leader = $row->get(TBGComponentsTable::LEAD_BY);
-				$this->_leader_type = $row->get(TBGComponentsTable::LEAD_TYPE);
-			}
-		}
-		
-		/**
 		 * Returns the project 
 		 *
 		 * @return TBGProject
@@ -177,15 +148,4 @@
 			return $uids;
 		}
 
-		/**
-		 * Save auto assignee
-		 */
-		public function save()
-		{
-			$crit = TBGComponentsTable::getTable()->getCriteria();
-			$crit->addUpdate(TBGComponentsTable::LEAD_BY, $this->getLeaderID());
-			$crit->addUpdate(TBGComponentsTable::LEAD_TYPE, $this->getLeaderType());
-			$res = TBGComponentsTable::getTable()->doUpdateById($crit, $this->getID());
-		}
-		
 	}

@@ -108,7 +108,7 @@
 				$this->_name = $row->get(TBGCustomFieldOptionsTable::NAME);
 				$this->_key = $row->get(TBGCustomFieldOptionsTable::CUSTOMFIELDS_KEY);
 				$this->_value = $row->get(TBGCustomFieldOptionsTable::OPTION_VALUE);
-				$this->_sortorder = (int) $row->get(TBGCustomFieldOptionsTable::SORT_ORDER);
+				$this->_sort_order = (int) $row->get(TBGCustomFieldOptionsTable::SORT_ORDER);
 			}
 			else
 			{
@@ -158,7 +158,7 @@
 		 */
 		public function save()
 		{
-			B2DB::getTable('TBGCustomFieldOptionsTable')->saveById($this->_name, $this->_value, $this->_itemdata, $this->_sortorder, $this->_id);
+			B2DB::getTable('TBGCustomFieldOptionsTable')->saveById($this->_name, $this->_value, $this->_itemdata, $this->_sort_order, $this->_id);
 		}
 
 	}

@@ -41,7 +41,7 @@
 		 * @var integer
 		 * @access protected
 		 */
-		protected $_appliesto = null;
+		protected $_applies_to = null;
 
 		/**
 		 * Sort order of this item
@@ -49,7 +49,7 @@
 		 * @var integer
 		 * @access protected
 		 */
-		protected $_sortorder = null;
+		protected $_sort_order = null;
 
 		public function getName()
 		{
@@ -131,12 +131,12 @@
 
 		public function setOrder($order)
 		{
-			$this->_sortorder = $order;
+			$this->_sort_order = $order;
 		}
 
 		public function getOrder()
 		{
-			return (int) $this->_sortorder;
+			return (int) $this->_sort_order;
 		}
 
 	}

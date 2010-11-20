@@ -32,6 +32,8 @@
 		 * @static integer
 		 */
 		const STATE_CLOSED = 1;
+	
+		protected $_b2dbtablename = 'TBGIssuesTable';
 		
 		/**
 		 * Array of links attached to this issue
@@ -73,7 +75,7 @@
 		 *
 		 * @var TBGDatatype
 		 */
-		protected $_issuetype;
+		protected $_issue_type;
 		
 		/**
 		 * The project which this issue affects
@@ -81,7 +83,7 @@
 		 * @var TBGProject
 		 * @access protected
 		 */
-		protected $_project;
+		protected $_project_id;
 		
 		/**
 		 * The affected editions for this issue
@@ -137,15 +139,8 @@
 		 * 
 		 * @var TBGIdentifiable
 		 */
-		protected $_postedby;
+		protected $_posted_by;
 		
-		/**
-		 * Who owns the issue
-		 * 
-		 * @var TBGIdentifiable
-		 */
-		protected $_ownedby;
-
 		/**
 		 * What kind of bug this is
 		 * 
@@ -175,25 +170,18 @@
 		protected $_user_pain;
 		
 		/**
-		 * Owner type
-		 * 
-		 * @var integer
-		 */
-		protected $_ownedtype;
-		
-		/**
 		 * Whos assigned the issue
 		 * 
 		 * @var TBGIdentifiable
 		 */
-		protected $_assignedto;
+		protected $_assigned_to;
 		
 		/**
 		 * Assignee type
 		 * 
 		 * @var TBGIdentifiable
 		 */
-		protected $_assignedtype;
+		protected $_assigned_type;
 		
 		/**
 		 * The resolution
@@ -256,91 +244,91 @@
 		 * 
 		 * @var integer
 		 */
-		protected $_estimatedmonths;
+		protected $_estimated_months;
 
 		/**
 		 * The estimated time (weeks) to fix this issue
 		 * 
 		 * @var integer
 		 */
-		protected $_estimatedweeks;
+		protected $_estimated_weeks;
 
 		/**
 		 * The estimated time (days) to fix this issue
 		 * 
 		 * @var integer
 		 */
-		protected $_estimateddays;
+		protected $_estimated_days;
 
 		/**
 		 * The estimated time (hours) to fix this issue
 		 * 
 		 * @var integer
 		 */
-		protected $_estimatedhours;
+		protected $_estimated_hours;
 
 		/**
 		 * The estimated time (points) to fix this issue
 		 * 
 		 * @var integer
 		 */
-		protected $_estimatedpoints;
+		protected $_estimated_points;
 
 		/**
 		 * The time spent (months) to fix this issue
 		 * 
 		 * @var integer
 		 */
-		protected $_spentmonths;
+		protected $_spent_months;
 
 		/**
 		 * The time spent (weeks) to fix this issue
 		 * 
 		 * @var integer
 		 */
-		protected $_spentweeks;
+		protected $_spent_weeks;
 
 		/**
 		 * The time spent (days) to fix this issue
 		 * 
 		 * @var integer
 		 */
-		protected $_spentdays;
+		protected $_spent_days;
 
 		/**
 		 * The time spent (hours) to fix this issue
 		 * 
 		 * @var integer
 		 */
-		protected $_spenthours;
+		protected $_spent_hours;
 
 		/**
 		 * The time spent (points) to fix this issue
 		 * 
 		 * @var integer
 		 */
-		protected $_spentpoints;
+		protected $_spent_points;
 		
 		/**
 		 * How far along the issus is
 		 * 
 		 * @var integer
 		 */
-		protected $_percentcompleted;
+		protected $_percent_complete;
 		
 		/**
 		 * Which user is currently working on this issue
 		 * 
 		 * @var TBGUser
 		 */
-		protected $_being_worked_on_by;
+		protected $_being_worked_on_by_user;
 		
 		/**
 		 * When the last user started working on the issue
 		 * 
 		 * @var integer
 		 */
-		protected $_being_worked_on_since;
+		protected $_being_worked_on_by_user_since;
 		
 		/**
 		 * List of tasks for this issue
@@ -396,7 +384,7 @@
 		 * 
 		 * @var TBGIssue
 		 */
-		protected $_duplicateof;
+		protected $_duplicate_of;
 		
 		/**
 		 * The milestone this issue is assigned to
@@ -445,7 +433,7 @@
 		 *
 		 * @var TBGWorkflowStep
 		 */
-		protected $_workflow_step;
+		protected $_workflow_step_id;
 
 		/**
 		 * An array of TBGComment s
@@ -658,79 +646,12 @@
 		}
 		
 		/**
-		 * Construct a new issue
+		 * Class constructor
 		 *
-		 * @param integer $i_id
 		 * @param B2DBRow $row
 		 */
-		public function __construct($i_id, $row = null)
+		public function _construct(B2DBRow $row)
 		{
-			if (!is_numeric($i_id))
-			{
-				throw new Exception('Please specify an issue id');
-			}
-			if ($row === null)
-			{
-				$row = TBGIssuesTable::getTable()->getByID($i_id);
-			}
-	
-			if (!$row instanceof B2DBRow)
-			{
-				throw new Exception('The specified issue id does not exist');
-			}
-			
-			$this->_title 					= $row->get(TBGIssuesTable::TITLE);
-			$this->_project					= $row->get(TBGIssuesTable::PROJECT_ID);
-			$this->_issue_no 				= $row->get(TBGIssuesTable::ISSUE_NO);
-			$this->_issuetype 				= $row->get(TBGIssuesTable::ISSUE_TYPE);
-			$this->_issue_uniqueid 			= $row->get(TBGIssuesTable::ID);
-			$this->_description 			= $row->get(TBGIssuesTable::LONG_DESCRIPTION);
-			$this->_reproduction_steps		= $row->get(TBGIssuesTable::REPRODUCTION);
-			$this->_posted 					= $row->get(TBGIssuesTable::POSTED);
-			$this->_last_updated 			= $row->get(TBGIssuesTable::LAST_UPDATED);
-			$this->_resolution 				= $row->get(TBGIssuesTable::RESOLUTION);
-			$this->_state 					= $row->get(TBGIssuesTable::STATE);
-			$this->_locked 					= $row->get(TBGIssuesTable::LOCKED);
-			$this->_status 					= $row->get(TBGIssuesTable::STATUS);
-			$this->_priority 				= $row->get(TBGIssuesTable::PRIORITY);
-			$this->_severity 				= $row->get(TBGIssuesTable::SEVERITY);
-			$this->_category 				= $row->get(TBGIssuesTable::CATEGORY);
-			$this->_reproducability 		= $row->get(TBGIssuesTable::REPRODUCABILITY);
-			$this->_scrumcolor				= $row->get(TBGIssuesTable::SCRUMCOLOR);
-			$this->_postedby 				= $row->get(TBGIssuesTable::POSTED_BY);
-			$this->_ownedby 				= $row->get(TBGIssuesTable::OWNED_BY);
-			$this->_ownedtype				= $row->get(TBGIssuesTable::OWNED_TYPE);
-			$this->_assignedto	 			= $row->get(TBGIssuesTable::ASSIGNED_TO);
-			$this->_assignedtype			= $row->get(TBGIssuesTable::ASSIGNED_TYPE);
-			$this->_blocking 				= (bool) $row->get(TBGIssuesTable::BLOCKING);
-			$this->_duplicateof 			= $row->get(TBGIssuesTable::DUPLICATE);
-			$this->_estimatedmonths			= $row->get(TBGIssuesTable::ESTIMATED_MONTHS);
-			$this->_estimatedweeks			= $row->get(TBGIssuesTable::ESTIMATED_WEEKS);
-			$this->_estimateddays			= $row->get(TBGIssuesTable::ESTIMATED_DAYS);
-			$this->_estimatedhours			= $row->get(TBGIssuesTable::ESTIMATED_HOURS);
-			$this->_estimatedpoints			= $row->get(TBGIssuesTable::ESTIMATED_POINTS);
-			$this->_spentmonths				= $row->get(TBGIssuesTable::SPENT_MONTHS);
-			$this->_spentweeks				= $row->get(TBGIssuesTable::SPENT_WEEKS);
-			$this->_spentdays				= $row->get(TBGIssuesTable::SPENT_DAYS);
-			$this->_spenthours				= $row->get(TBGIssuesTable::SPENT_HOURS);
-			$this->_spentpoints				= $row->get(TBGIssuesTable::SPENT_POINTS);
-			$this->_percentcompleted 		= $row->get(TBGIssuesTable::PERCENT_COMPLETE);
-			$this->_milestone 				= $row->get(TBGIssuesTable::MILESTONE);
-			$this->_being_worked_on_by		= (int) $row->get(TBGIssuesTable::USER_WORKING_ON);
-			$this->_being_worked_on_since	= (int) $row->get(TBGIssuesTable::USER_WORKED_ON_SINCE);
-			$this->_user_pain				= $row->get(TBGIssuesTable::USER_PAIN);
-			$this->_pain_bug_type			= $row->get(TBGIssuesTable::PAIN_BUG_TYPE);
-			$this->_pain_effect				= $row->get(TBGIssuesTable::PAIN_EFFECT);
-			$this->_pain_likelihood			= $row->get(TBGIssuesTable::PAIN_LIKELIHOOD);
-			$this->_votes_total				= $row->get(TBGIssuesTable::VOTES);
-			$this->_workflow_step			= $row->get(TBGIssuesTable::WORKFLOW_STEP_ID);
-			$this->_deleted 				= (bool) $row->get(TBGIssuesTable::DELETED);
-
-			if ($this->getProject() instanceof TBGProject && $this->getProject()->isDeleted())
-			{
-				throw new Exception("This issue ({$this->getID()}) belongs to a project that has been deleted");
-			}
-
 			$this->_populateCustomfields();
 			$this->_mergeChangedProperties();
 		}
@@ -806,18 +727,18 @@
 		 */
 		public function getProject()
 		{
-			if (is_numeric($this->_project))
+			if (is_numeric($this->_project_id))
 			{
 				try
 				{
-					$this->_project = TBGContext::factory()->TBGProject($this->_project);
+					$this->_project_id = TBGContext::factory()->TBGProject($this->_project_id);
 				}
 				catch (Exception $e) 
 				{
-					$this->_project = null;
+					$this->_project_id = null;
 				}
 			}
-			return $this->_project;
+			return $this->_project_id;
 		}
 		
 		/**
@@ -838,11 +759,11 @@
 		 */
 		public function getWorkflowStep()
 		{
-			if (is_numeric($this->_workflow_step))
+			if (is_numeric($this->_workflow_step_id))
 			{
-				$this->_workflow_step = TBGContext::factory()->TBGWorkflowStep($this->_workflow_step);
+				$this->_workflow_step_id = TBGContext::factory()->TBGWorkflowStep($this->_workflow_step_id);
 			}
-			return $this->_workflow_step;
+			return $this->_workflow_step_id;
 		}
 		
 		public function setWorkflowStep(TBGWorkflowStep $step)
@@ -990,7 +911,7 @@
 		public function setDuplicateOf($d_id)
 		{
 			TBGIssuesTable::getTable()->setDuplicate($this->getID(), $d_id);
-			$this->_duplicateof = $d_id;
+			$this->_duplicate_of = $d_id;
 		}
 		
 		/**
@@ -1008,18 +929,18 @@
 		 */
 		public function getDuplicateOf()
 		{
-			if (is_numeric($this->_duplicateof))
+			if (is_numeric($this->_duplicate_of))
 			{
 				try
 				{
-					$this->_duplicateof = TBGContext::factory()->TBGIssue($this->_duplicateof);
+					$this->_duplicate_of = TBGContext::factory()->TBGIssue($this->_duplicate_of);
 				}
 				catch (Exception $e) 
 				{
-					$this->_duplicateof = null;
+					$this->_duplicate_of = null;
 				}
 			}
-			return $this->_duplicateof;
+			return $this->_duplicate_of;
 		}
 		
 		/**
@@ -1403,18 +1324,18 @@
 		 */
 		public function getIssueType()
 		{
-			if (is_numeric($this->_issuetype))
+			if (is_numeric($this->_issue_type))
 			{
 				try
 				{
-					$this->_issuetype = TBGContext::factory()->TBGIssuetype($this->_issuetype);
+					$this->_issue_type = TBGContext::factory()->TBGIssuetype($this->_issue_type);
 				}
 				catch (Exception $e) 
 				{
-					$this->_issuetype = null;
+					$this->_issue_type = null;
 				}
 			}
-			return $this->_issuetype;
+			return $this->_issue_type;
 		}
 		
 		/**
@@ -2168,27 +2089,27 @@
 		 */
 		public function getAssignee()
 		{
-			if (is_numeric($this->_assignedto))
+			if (is_numeric($this->_assigned_to))
 			{
 				try
 				{
-					if ($this->_assignedtype == TBGIdentifiableClass::TYPE_USER)
+					if ($this->_assigned_type == TBGIdentifiableClass::TYPE_USER)
 					{
-						$this->_assignedto = TBGContext::factory()->TBGUser($this->_assignedto);
+						$this->_assigned_to = TBGContext::factory()->TBGUser($this->_assigned_to);
 					}
-					elseif ($this->_assignedtype == TBGIdentifiableClass::TYPE_TEAM)
+					elseif ($this->_assigned_type == TBGIdentifiableClass::TYPE_TEAM)
 					{
-						$this->_assignedto = TBGContext::factory()->TBGTeam($this->_assignedto);
+						$this->_assigned_to = TBGContext::factory()->TBGTeam($this->_assigned_to);
 					}
 				}
 				catch (Exception $e)
 				{
-					$this->_assignedto = null;
-					$this->_assignedtype = null;
+					$this->_assigned_to = null;
+					$this->_assigned_type = null;
 				}
 			}
 	
-			return $this->_assignedto;
+			return $this->_assigned_to;
 		}
 		
 		/**
@@ -2332,19 +2253,19 @@
 		 */
 		public function getPostedBy()
 		{
-			if (is_numeric($this->_postedby))
+			if (is_numeric($this->_posted_by))
 			{
 				try
 				{
-					$this->_postedby = TBGContext::factory()->TBGUser($this->_postedby);
+					$this->_posted_by = TBGContext::factory()->TBGUser($this->_posted_by);
 				}
 				catch (Exception $e)
 				{
-					$this->_postedby = null;
+					$this->_posted_by = null;
 				}
 			}
 	
-			return $this->_postedby;
+			return $this->_posted_by;
 		}
 		
 		/**
@@ -2385,7 +2306,7 @@
 		 */
 		public function getPercentCompleted()
 		{
-			return (int) $this->_percentcompleted;
+			return (int) $this->_percent_complete;
 		}
 		
 		/**
@@ -2477,7 +2398,7 @@
 		 */
 		public function getEstimatedTime()
 		{
-			return array('months' => (int) $this->_estimatedmonths, 'weeks' => (int) $this->_estimatedweeks, 'days' => (int) $this->_estimateddays, 'hours' => (int) $this->_estimatedhours, 'points' => (int) $this->_estimatedpoints);
+			return array('months' => (int) $this->_estimated_months, 'weeks' => (int) $this->_estimated_weeks, 'days' => (int) $this->_estimated_days, 'hours' => (int) $this->_estimated_hours, 'points' => (int) $this->_estimated_points);
 		}
 		
 		/**
@@ -2487,7 +2408,7 @@
 		 */
 		public function getEstimatedMonths()
 		{
-			return (int) $this->_estimatedmonths;
+			return (int) $this->_estimated_months;
 		}
 
 		/**
@@ -2497,7 +2418,7 @@
 		 */
 		public function getEstimatedWeeks()
 		{
-			return (int) $this->_estimatedweeks;
+			return (int) $this->_estimated_weeks;
 		}
 
 		/**
@@ -2507,7 +2428,7 @@
 		 */
 		public function getEstimatedDays()
 		{
-			return (int) $this->_estimateddays;
+			return (int) $this->_estimated_days;
 		}
 		
 		/**
@@ -2517,7 +2438,7 @@
 		 */
 		public function getEstimatedHours()
 		{
-			return (int) $this->_estimatedhours;
+			return (int) $this->_estimated_hours;
 		}
 		
 		/**
@@ -2527,7 +2448,7 @@
 		 */
 		public function getEstimatedPoints()
 		{
-			return (int) $this->_estimatedpoints;
+			return (int) $this->_estimated_points;
 		}
 		
 		/**
@@ -2754,7 +2675,7 @@
 		 */
 		public function getSpentTime()
 		{
-			return array('months' => (int) $this->_spentmonths, 'weeks' => (int) $this->_spentweeks, 'days' => (int) $this->_spentdays, 'hours' => (int) $this->_spenthours, 'points' => (int) $this->_spentpoints);
+			return array('months' => (int) $this->_spent_months, 'weeks' => (int) $this->_spent_weeks, 'days' => (int) $this->_spent_days, 'hours' => (int) $this->_spent_hours, 'points' => (int) $this->_spent_points);
 		}
 		
 		/**
@@ -2764,7 +2685,7 @@
 		 */
 		public function getSpentMonths()
 		{
-			return (int) $this->_spentmonths;
+			return (int) $this->_spent_months;
 		}
 
 		/**
@@ -2774,7 +2695,7 @@
 		 */
 		public function getSpentWeeks()
 		{
-			return (int) $this->_spentweeks;
+			return (int) $this->_spent_weeks;
 		}
 
 		/**
@@ -2784,7 +2705,7 @@
 		 */
 		public function getSpentDays()
 		{
-			return (int) $this->_spentdays;
+			return (int) $this->_spent_days;
 		}
 		
 		/**
@@ -2794,7 +2715,7 @@
 		 */
 		public function getSpentHours()
 		{
-			return (int) $this->_spenthours;
+			return (int) $this->_spent_hours;
 		}
 		
 		/**
@@ -2804,7 +2725,7 @@
 		 */
 		public function getSpentPoints()
 		{
-			return (int) $this->_spentpoints;
+			return (int) $this->_spent_points;
 		}
 		
 		/**
@@ -2869,21 +2790,21 @@
 			{
 				if ($this->getProject()->getTimeUnit() == TBGProject::TIME_UNIT_HOURS)
 				{
-					$this->_addChangedProperty('_spenthours', $this->_spenthours + (int) $time);
+					$this->_addChangedProperty('_spenthours', $this->_spent_hours + (int) $time);
 				}
 				elseif ($this->getProject()->getTimeUnit() == TBGProject::TIME_UNIT_POINTS)
 				{
-					$this->_addChangedProperty('_spentpoints', $this->_spentpoints + (int) $time);
+					$this->_addChangedProperty('_spentpoints', $this->_spent_points + (int) $time);
 				}
 			}
 			else
 			{
 				$time = $this->_convertFancyStringToTime($time);
-				$this->_addChangedProperty('_spentmonths', $this->_spentmonths + $time['months']);
-				$this->_addChangedProperty('_spentweeks', $this->_spentweeks + $time['weeks']);
-				$this->_addChangedProperty('_spentdays', $this->_spentdays + $time['days']);
-				$this->_addChangedProperty('_spenthours', $this->_spenthours + $time['hours']);
-				$this->_addChangedProperty('_spentpoints', $this->_spentpoints + $time['points']);
+				$this->_addChangedProperty('_spentmonths', $this->_spent_months + $time['months']);
+				$this->_addChangedProperty('_spentweeks', $this->_spent_weeks + $time['weeks']);
+				$this->_addChangedProperty('_spentdays', $this->_spent_days + $time['days']);
+				$this->_addChangedProperty('_spenthours', $this->_spent_hours + $time['hours']);
+				$this->_addChangedProperty('_spentpoints', $this->_spent_points + $time['points']);
 			}
 		}		
 
@@ -2944,7 +2865,7 @@
 		 */
 		public function addSpentMonths($months)
 		{
-			$this->_addChangedProperty('_spentmonths', $this->_spentmonths + $months);
+			$this->_addChangedProperty('_spentmonths', $this->_spent_months + $months);
 		}
 	
 		/**
@@ -2954,7 +2875,7 @@
 		 */
 		public function addSpentWeeks($weeks)
 		{
-			$this->_addChangedProperty('_spentweeks', $this->_spentweeks + $weeks);
+			$this->_addChangedProperty('_spentweeks', $this->_spent_weeks + $weeks);
 		}
 	
 		/**
@@ -2964,7 +2885,7 @@
 		 */
 		public function addSpentDays($days)
 		{
-			$this->_addChangedProperty('_spentdays', $this->_spentdays + $days);
+			$this->_addChangedProperty('_spentdays', $this->_spent_days + $days);
 		}
 	
 		/**
@@ -2974,7 +2895,7 @@
 		 */
 		public function addSpentHours($hours)
 		{
-			$this->_addChangedProperty('_spenthours', $this->_spenthours + $hours);
+			$this->_addChangedProperty('_spenthours', $this->_spent_hours + $hours);
 		}
 	
 		/**
@@ -2984,7 +2905,7 @@
 		 */
 		public function addSpentPoints($points)
 		{
-			$this->_addChangedProperty('_spentpoints', $this->_spentpoints + $points);
+			$this->_addChangedProperty('_spentpoints', $this->_spent_points + $points);
 		}
 		
 		/**
@@ -4069,7 +3990,7 @@
 		 * 
 		 * @return boolean
 		 */
-		public function save($notify = true, $new = false)
+		public function preSave()
 		{
 			$comment_lines = array();
 			$related_issues_to_save = array();
@@ -4512,12 +4433,12 @@
 
 			if ($is_saved_estimated)
 			{
-				B2DB::getTable('TBGIssueEstimates')->saveEstimate($this->getID(), $this->_estimatedmonths, $this->_estimatedweeks, $this->_estimateddays, $this->_estimatedhours, $this->_estimatedpoints);
+				B2DB::getTable('TBGIssueEstimates')->saveEstimate($this->getID(), $this->_estimated_months, $this->_estimated_weeks, $this->_estimated_days, $this->_estimated_hours, $this->_estimated_points);
 			}
 
 			if ($is_saved_spent)
 			{
-				B2DB::getTable('TBGIssueSpentTimes')->saveSpentTime($this->getID(), $this->_spentmonths, $this->_spentweeks, $this->_spentdays, $this->_spenthours, $this->_spentpoints);
+				B2DB::getTable('TBGIssueSpentTimes')->saveSpentTime($this->getID(), $this->_spent_months, $this->_spent_weeks, $this->_spent_days, $this->_spent_hours, $this->_spent_points);
 			}
 
 			if (!$new)
@@ -4525,61 +4446,24 @@
 				$event = TBGEvent::createNew('core', 'TBGIssue::save', $this, array('changed_properties' => $this->_getChangedProperties(), 'comment' => $comment, 'comment_lines' => $comment_lines, 'notify' => $notify, 'updated_by' => TBGContext::getUser()));
 				$event->trigger();
 			}
-
-			$this->_clearChangedProperties();
 			
-			$crit = TBGIssuesTable::getTable()->getCriteria();
-			$crit->addUpdate(TBGIssuesTable::TITLE, $this->_title);
-			$crit->addUpdate(TBGIssuesTable::LAST_UPDATED, $this->_last_updated);
-			$crit->addUpdate(TBGIssuesTable::LONG_DESCRIPTION, $this->_description);
-			$crit->addUpdate(TBGIssuesTable::REPRODUCTION, $this->_reproduction_steps);
-			$crit->addUpdate(TBGIssuesTable::ISSUE_TYPE, (is_object($this->_issuetype)) ? $this->_issuetype->getID() : $this->_issuetype);
-			$crit->addUpdate(TBGIssuesTable::RESOLUTION, (is_object($this->_resolution)) ? $this->_resolution->getID() : $this->_resolution);
-			$crit->addUpdate(TBGIssuesTable::STATE, $this->_state);
-			$crit->addUpdate(TBGIssuesTable::POSTED_BY, (is_object($this->_postedby)) ? $this->_postedby->getID() : $this->_postedby);
-			$crit->addUpdate(TBGIssuesTable::OWNED_BY, (is_object($this->_ownedby)) ? $this->_ownedby->getID() : $this->_ownedby);
-			$crit->addUpdate(TBGIssuesTable::OWNED_TYPE, $this->_ownedtype);
-			$crit->addUpdate(TBGIssuesTable::ASSIGNED_TO, (is_object($this->_assignedto)) ? $this->_assignedto->getID() : $this->_assignedto);
-			$crit->addUpdate(TBGIssuesTable::ASSIGNED_TYPE, $this->_assignedtype);
-			$crit->addUpdate(TBGIssuesTable::STATUS, (is_object($this->_status)) ? $this->_status->getID() : $this->_status);
-			$crit->addUpdate(TBGIssuesTable::PRIORITY, (is_object($this->_priority)) ? $this->_priority->getID() : $this->_priority);
-			$crit->addUpdate(TBGIssuesTable::CATEGORY, (is_object($this->_category)) ? $this->_category->getID() : $this->_category);
-			$crit->addUpdate(TBGIssuesTable::REPRODUCABILITY, (is_object($this->_reproducability)) ? $this->_reproducability->getID() : $this->_reproducability);
-			$crit->addUpdate(TBGIssuesTable::USER_PAIN, $this->_user_pain);
-			$crit->addUpdate(TBGIssuesTable::PAIN_BUG_TYPE, $this->_pain_bug_type);
-			$crit->addUpdate(TBGIssuesTable::PAIN_LIKELIHOOD, $this->_pain_likelihood);
-			$crit->addUpdate(TBGIssuesTable::PAIN_EFFECT, $this->_pain_effect);
-			$crit->addUpdate(TBGIssuesTable::ESTIMATED_MONTHS, $this->_estimatedmonths);
-			$crit->addUpdate(TBGIssuesTable::ESTIMATED_WEEKS, $this->_estimatedweeks);
-			$crit->addUpdate(TBGIssuesTable::ESTIMATED_DAYS, $this->_estimateddays);
-			$crit->addUpdate(TBGIssuesTable::ESTIMATED_HOURS, $this->_estimatedhours);
-			$crit->addUpdate(TBGIssuesTable::ESTIMATED_POINTS, $this->_estimatedpoints);
-			$crit->addUpdate(TBGIssuesTable::SPENT_MONTHS, $this->_spentmonths);
-			$crit->addUpdate(TBGIssuesTable::SPENT_WEEKS, $this->_spentweeks);
-			$crit->addUpdate(TBGIssuesTable::SPENT_DAYS, $this->_spentdays);
-			$crit->addUpdate(TBGIssuesTable::SPENT_HOURS, $this->_spenthours);
-			$crit->addUpdate(TBGIssuesTable::SPENT_POINTS, $this->_spentpoints);
-			$crit->addUpdate(TBGIssuesTable::SCRUMCOLOR, $this->_scrumcolor);
-			$crit->addUpdate(TBGIssuesTable::PERCENT_COMPLETE, $this->_percentcompleted);
-			$crit->addUpdate(TBGIssuesTable::DUPLICATE, (is_object($this->_duplicateof)) ? $this->_duplicateof->getID() : (int) $this->_duplicateof);
-			$crit->addUpdate(TBGIssuesTable::DELETED, $this->_deleted);
-			$crit->addUpdate(TBGIssuesTable::BLOCKING, $this->_blocking);
-			$crit->addUpdate(TBGIssuesTable::VOTES, $this->_votes_total);
-			$crit->addUpdate(TBGIssuesTable::WORKFLOW_STEP_ID, (is_object($this->_workflow_step)) ? $this->_workflow_step->getID() : $this->_workflow_step);
-			$crit->addUpdate(TBGIssuesTable::USER_WORKING_ON, (is_object($this->_being_worked_on_by)) ? $this->_being_worked_on_by->getID() : $this->_being_worked_on_by);
-			$crit->addUpdate(TBGIssuesTable::USER_WORKED_ON_SINCE, $this->_being_worked_on_since);
-			$crit->addUpdate(TBGIssuesTable::MILESTONE, (is_object($this->_milestone)) ? $this->_milestone->getID() : $this->_milestone);
-			$res = TBGIssuesTable::getTable()->doUpdateById($crit, $this->getID());
-
+			$this->related_issues_to_save = $related_issues_to_save;
+			$this->_clearChangedProperties();
+		}
+		
+		public function postSave()
+		{
 			$this->_saveCustomFieldValues();
 			$this->getProject()->clearRecentActivities();
+			$related_issues_to_save = $this->related_issues_to_save;
 			
 			foreach (array_keys($related_issues_to_save) as $i_id)
 			{
 				$related_issue = TBGContext::factory()->TBGIssue($i_id);
 				$related_issue->save();
 			}
-
+			
+			unset($this->related_issues_to_save);
 			return true;
 		}
 		
@@ -4615,19 +4499,19 @@
 		 */
 		public function getUserWorkingOnIssue()
 		{
-			if (is_numeric($this->_being_worked_on_by))
+			if (is_numeric($this->_being_worked_on_by_user))
 			{
 				try
 				{
-					$this->_being_worked_on_by = TBGContext::factory()->TBGUser($this->_being_worked_on_by);
+					$this->_being_worked_on_by_user = TBGContext::factory()->TBGUser($this->_being_worked_on_by_user);
 				}
 				catch (Exception $e)
 				{
-					$this->_being_worked_on_by = null;
+					$this->_being_worked_on_by_user = null;
 				}
 			}
 	
-			return $this->_being_worked_on_by;
+			return $this->_being_worked_on_by_user;
 		}
 		
 		/**
@@ -4638,7 +4522,7 @@
 		public function clearUserWorkingOnIssue()
 		{
 			$this->_addChangedProperty('_being_worked_on_by', null);
-			$this->_being_worked_on_since = null;
+			$this->_being_worked_on_by_user_since = null;
 		}
 		
 		/**
@@ -4649,7 +4533,7 @@
 		public function startWorkingOnIssue($user)
 		{
 			$this->_addChangedProperty('_being_worked_on_by', $user->getID());
-			$this->_being_worked_on_since = NOW;
+			$this->_being_worked_on_by_user_since = NOW;
 		}
 		
 		/**
@@ -4659,7 +4543,7 @@
 		 */
 		public function stopWorkingOnIssue()
 		{
-			$time_spent = NOW - $this->_being_worked_on_since;
+			$time_spent = NOW - $this->_being_worked_on_by_user_since;
 			$user_working_on_it = $this->getUserWorkingOnIssue();
 			$this->clearUserWorkingOnIssue();
 			if ($time_spent > 0)
@@ -4670,9 +4554,9 @@
 				$time_spent = ceil($time_spent / 3600);
 				$hours_spent = $time_spent - ($days_spent * 24);
 				if ($hours_spent < 0) $hours_spent = 0;
-				$this->_addChangedProperty('_spenthours', $this->_spenthours + $hours_spent);
-				$this->_addChangedProperty('_spentdays', $this->_spentdays + $days_spent);
-				$this->_addChangedProperty('_spentweeks', $this->_spentweeks + $weeks_spent);
+				$this->_addChangedProperty('_spenthours', $this->_spent_hours + $hours_spent);
+				$this->_addChangedProperty('_spentdays', $this->_spent_days + $days_spent);
+				$this->_addChangedProperty('_spentweeks', $this->_spent_weeks + $weeks_spent);
 			}
 		}
 		
@@ -4688,7 +4572,7 @@
 		
 		public function getWorkedOnSince()
 		{
-			return $this->_being_worked_on_since;
+			return $this->_being_worked_on_by_user_since;
 		}
 
 		public function getPainBugType()

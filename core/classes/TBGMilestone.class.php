@@ -22,6 +22,8 @@
 		const TYPE_REGULAR = 1;
 		const TYPE_SCRUMSPRINT = 2;
 
+		protected $_b2dbtablename = 'TBGMilestonesTable';
+		
 		/**
 		 * This components project
 		 *
@@ -191,41 +193,6 @@
 			return TBGContext::factory()->TBGMilestone($m_id);
 		}
 		
-		/**
-		 * Constructor function
-		 *
-		 * @param integer $b_id The milestone id
-		 * @param B2DBrow $row[optional] a database row with the necessary information if available
-		 */
-		public function __construct($m_id, $row = null)
-		{
-			if ($row === null)
-			{
-				$crit = new B2DBCriteria();
-				$row = TBGMilestonesTable::getTable()->doSelectById($m_id, $crit);
-			}
-			
-			if ($row instanceof B2DBRow)
-			{
-				$this->_name = $row->get(TBGMilestonesTable::NAME);
-				$this->_id = $row->get(TBGMilestonesTable::ID);
-				$this->_itemtype = $row->get(TBGMilestonesTable::MILESTONE_TYPE);
-				$this->_isvisible = (bool) $row->get(TBGMilestonesTable::VISIBLE);
-				$this->_isscheduled = (bool) $row->get(TBGMilestonesTable::SCHEDULED);
-				$this->_isreached = (bool) $row->get(TBGMilestonesTable::REACHED);
-				$this->_scheduleddate = $row->get(TBGMilestonesTable::SCHEDULED);
-				$this->_isstarting = (bool) $row->get(TBGMilestonesTable::STARTING);
-				$this->_startingdate = $row->get(TBGMilestonesTable::STARTING);
-				$this->_reacheddate = $row->get(TBGMilestonesTable::REACHED);
-				$this->_description = $row->get(TBGMilestonesTable::DESCRIPTION);
-				$this->_project = $row->get(TBGMilestonesTable::PROJECT);
-			}
-			else
-			{
-				throw new Exception('This milestone does not exist');
-			}
-		}
-
 		/**
 		 * @see getName()
 		 * @deprecated
@@ -785,37 +752,6 @@
 			}
 		}
 		
-		/**
-		 * Save changes made to the milestone
-		 */
-		public function save()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGMilestonesTable::NAME, $this->_name);
-			$crit->addUpdate(TBGMilestonesTable::MILESTONE_TYPE, $this->_itemtype);
-			$crit->addUpdate(TBGMilestonesTable::DESCRIPTION, $this->_description);
-			$crit->addUpdate(TBGMilestonesTable::STARTING, $this->_startingdate);
-			if ($this->_isscheduled)
-			{
-				$crit->addUpdate(TBGMilestonesTable::SCHEDULED, $this->_scheduleddate);
-			}
-			else
-			{
-				$crit->addUpdate(TBGMilestonesTable::SCHEDULED, 0);
-				$this->_scheduleddate = 0;
-			}
-			if ($this->_isstarting)
-			{
-				$crit->addUpdate(TBGMilestonesTable::STARTING, $this->_startingdate);
-			}
-			else
-			{
-				$crit->addUpdate(TBGMilestonesTable::STARTING, 0);
-				$this->_startingdate = 0;
-			}
-			$res = TBGMilestonesTable::getTable()->doUpdateById($crit, $this->getID());
-		}
-
 		/**
 		 * Delete this milestone
 		 */

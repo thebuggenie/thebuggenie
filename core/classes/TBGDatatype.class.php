@@ -18,6 +18,7 @@
 	 */
 	abstract class TBGDatatype extends TBGDatatypeBase
 	{
+		protected $_b2dbtablename = 'TBGListTypesTable';
 
 		/**
 		 * Item type status

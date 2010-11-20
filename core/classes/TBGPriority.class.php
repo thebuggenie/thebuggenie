@@ -4,6 +4,8 @@
 	{
 
 		protected static $_items = null;
+		
+		protected $_itemtype = TBGDatatype::PRIORITY;
 
 		/**
 		 * Returns all priorities available
@@ -49,24 +51,5 @@
 			TBGListTypesTable::getTable()->deleteByTypeAndId(self::PRIORITY, $id);
 		}
 
-		/**
-		 * Constructor
-		 * 
-		 * @param integer $item_id The item id
-		 * @param B2DBrow $row [optional] A B2DBrow to use
-		 * @return 
-		 */
-		public function __construct($item_id, $row = null)
-		{
-			try
-			{
-				$this->initialize($item_id, self::PRIORITY, $row);
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-		}
-		
 	}
 

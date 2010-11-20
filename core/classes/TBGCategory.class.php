@@ -4,6 +4,8 @@
 	{
 
 		protected static $_items = null;
+		
+		protected $_itemtype = TBGDatatype::CATEGORY;
 
 		/**
 		 * Returns all categories available
@@ -49,23 +51,4 @@
 			TBGListTypesTable::getTable()->deleteByTypeAndId(self::CATEGORY, $id);
 		}
 
-		/**
-		 * Constructor
-		 * 
-		 * @param integer $item_id The item id
-		 * @param B2DBrow $row [optional] A B2DBrow to use
-		 * @return 
-		 */
-		public function __construct($item_id, $row = null)
-		{
-			try
-			{
-				$this->initialize($item_id, self::CATEGORY, $row);
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-		}
-		
 	}

@@ -176,29 +176,11 @@
 		/**
 		 * Constructor
 		 * 
-		 * @param integer $item_id The item id
 		 * @param B2DBrow $row [optional] A B2DBrow to use
-		 * @return 
 		 */
-		public function __construct($item_id, $row = null)
+		public function _construct(B2DBRow $row)
 		{
-			if ($row === null)
-			{
-				$row = B2DB::getTable('TBGCustomFieldsTable')->doSelectById($item_id);
-			}
-			if ($row instanceof B2DBRow)
-			{
-				$this->_id = $row->get(TBGCustomFieldsTable::ID);
-				$this->_itemtype = $row->get(TBGCustomFieldsTable::FIELD_TYPE);
-				$this->_name = $row->get(TBGCustomFieldsTable::FIELD_NAME);
-				$this->_key = $row->get(TBGCustomFieldsTable::FIELD_KEY);
-				$this->_instructions = $row->get(TBGCustomFieldsTable::FIELD_INSTRUCTIONS);
-				$this->_description = ($row->get(TBGCustomFieldsTable::FIELD_DESCRIPTION) != '') ? $row->get(TBGCustomFieldsTable::FIELD_DESCRIPTION) : $this->_name;
-			}
-			else
-			{
-				throw new Exception('This custom type does not exist');
-			}
+			$this->_description = $this->_description ?: $this->_name;
 		}
 
 		protected function _populateOptions()
@@ -310,16 +292,6 @@
 		public function setName($name)
 		{
 			$this->_name = $name;
-		}
-
-		/**
-		 * Save name, itemdata and value
-		 *
-		 * @return boolean
-		 */
-		public function save()
-		{
-			B2DB::getTable('TBGCustomFieldsTable')->saveById($this->_name, $this->_description, $this->_instructions, $this->_id);
 		}
 
 		/**

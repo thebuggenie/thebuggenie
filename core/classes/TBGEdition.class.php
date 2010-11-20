@@ -102,41 +102,11 @@
 		/**
 		 * Constructor function
 		 *
-		 * @param integer $e_id
-		 * @param TBGProject $project
-		 * @param TBGBuild $build
+		 * @param B2DBRow $row
 		 */
-		public function __construct($e_id, $row = null)
+		public function _construct(B2DBRow $row)
 		{
-			if ($row === null)
-			{
-				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGEditionsTable::SCOPE, TBGContext::getScope()->getID());
-				$row = B2DB::getTable('TBGEditionsTable')->doSelectById($e_id, $crit);
-			}
-			if ($row instanceof B2DBRow)
-			{
-				$this->_id = $e_id;
-				$this->_name = $row->get(TBGEditionsTable::NAME);
-				$this->_isdefault = (bool) $row->get(TBGEditionsTable::IS_DEFAULT);
-				$this->_locked = (bool) $row->get(TBGEditionsTable::LOCKED);
-				$this->_isreleased = (bool) $row->get(TBGEditionsTable::RELEASED);
-				$this->_isplannedreleased = (bool) $row->get(TBGEditionsTable::PLANNED_RELEASED);
-				$this->_release_date = $row->get(TBGEditionsTable::RELEASE_DATE);
-				$this->_description = $row->get(TBGEditionsTable::DESCRIPTION);
-				$this->_owner = $row->get(TBGEditionsTable::OWNED_BY);
-				$this->_owner_type = $row->get(TBGEditionsTable::OWNED_TYPE);
-				$this->_leader = $row->get(TBGEditionsTable::LEAD_BY);
-				$this->_leader_type = $row->get(TBGEditionsTable::LEAD_TYPE);
-				$this->_qa_responsible = $row->get(TBGEditionsTable::QA);
-				$this->_qa_responsible_type = $row->get(TBGEditionsTable::QA_TYPE);
-				$this->_project = $row->get(TBGEditionsTable::PROJECT);
-				TBGEvent::createNew('core', 'TBGEdition::__construct', $this)->trigger();
-			}
-			else
-			{
-				throw new Exception('This edition does not exist');
-			}
+			TBGEvent::createNew('core', 'TBGEdition::__construct', $this)->trigger();
 		}
 		
 		/**
@@ -412,27 +382,6 @@
 		{
 			B2DB::getTable('TBGEditionsTable')->doDeleteById($this->getID());
 			B2DB::getTable('TBGEditionAssigneesTable')->deleteByEditionID($crit);
-		}
-		
-		public function save()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGEditionsTable::DESCRIPTION, $this->_description);
-			$crit->addUpdate(TBGEditionsTable::DOC_URL, $this->_doc_url);
-			$crit->addUpdate(TBGEditionsTable::NAME, $this->_name);
-			$crit->addUpdate(TBGEditionsTable::LOCKED, $this->_locked);
-			$crit->addUpdate(TBGEditionsTable::PLANNED_RELEASED, $this->_isplannedreleased);
-			$crit->addUpdate(TBGEditionsTable::RELEASED, $this->_isreleased);
-			$crit->addUpdate(TBGEditionsTable::RELEASE_DATE, $this->_release_date);
-			$crit->addUpdate(TBGEditionsTable::LEAD_BY, $this->getLeaderID());
-			$crit->addUpdate(TBGEditionsTable::LEAD_TYPE, $this->getLeaderType());
-			$crit->addUpdate(TBGEditionsTable::QA, $this->getQaResponsibleID());
-			$crit->addUpdate(TBGEditionsTable::QA_TYPE, $this->getQaResponsibleType());
-			$crit->addUpdate(TBGEditionsTable::OWNED_BY, $this->getOwnerID());
-			$crit->addUpdate(TBGEditionsTable::OWNED_TYPE, $this->getOwnerType());
-			B2DB::getTable('TBGEditionsTable')->doUpdateById($crit, $this->getID());
-			
-			return true;
 		}
 		
 		/**

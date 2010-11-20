@@ -18,6 +18,9 @@
 	 */
 	class TBGBuild extends TBGVersionItem 
 	{
+		
+		protected $_b2dbtablename = 'TBGBuildsTable';
+		
 		/**
 		 * This builds edition
 		 *
@@ -136,45 +139,24 @@
 		}
 		
 		/**
-		 * Constructor function
+		 * Class constructor
 		 *
-		 * @param integer $b_id
 		 * @param B2DBRow $row
 		 */
-		public function __construct($b_id, $row = null)
+		public function _construct(B2DBRow $row)
 		{
-			if ($row === null)
+			try
 			{
-				$row = B2DB::getTable('TBGBuildsTable')->getById($b_id);
-			}
-			if ($row instanceof B2DBRow)
-			{
-				$this->_name 				= $row->get(TBGBuildsTable::NAME);
-				$this->_id 				= $b_id;
-				$this->_isdefault 			= (bool) $row->get(TBGBuildsTable::IS_DEFAULT);
-				$this->_isreleased 			= (bool) $row->get(TBGBuildsTable::RELEASED);
-				$this->_locked 				= (bool) $row->get(TBGBuildsTable::LOCKED);
-				$this->_release_date 		= $row->get(TBGBuildsTable::RELEASE_DATE);
-				$this->_version_major 		= $row->get(TBGBuildsTable::VERSION_MAJOR);
-				$this->_version_minor 		= $row->get(TBGBuildsTable::VERSION_MINOR);
-				$this->_version_revision 	= $row->get(TBGBuildsTable::VERSION_REVISION);
-				if ($row->get(TBGBuildsTable::EDITION) && is_numeric($row->get(TBGBuildsTable::EDITION)))
+				if ($this->_edition && is_numeric($this->_edition))
 				{
-					try
-					{
-						$this->_edition = TBGContext::factory()->TBGEdition($row->get(TBGBuildsTable::EDITION), $row);
-					}
-					catch (Exception $e) {}
+					$this->_edition = TBGContext::factory()->TBGEdition($row->get(TBGBuildsTable::EDITION), $row);
 				}
-				elseif ($row->get(TBGBuildsTable::PROJECT) && is_numeric($row->get(TBGBuildsTable::PROJECT)))
+				elseif ($this->_project && is_numeric($this->_project))
 				{
-					try
-					{
-						$this->_project = TBGContext::factory()->TBGProject($row->get(TBGBuildsTable::PROJECT), $row);
-					}
-					catch (Exception $e) {}
+					$this->_project = TBGContext::factory()->TBGProject($row->get(TBGBuildsTable::PROJECT), $row);
 				}
 			}
+			catch (Exception $e) {}
 		}
 		
 		/**
@@ -261,33 +243,6 @@
 		{
 			B2DB::getTable('TBGIssueAffectsBuildTable')->deleteByBuildID($this->getID());
 			B2DB::getTable('TBGBuildsTable')->doDeleteById($this->getID());
-		}
-		
-		/**
-		 * Save changes made to this build
-		 */
-		public function save()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGBuildsTable::VERSION_MAJOR, $this->_version_major);
-			$crit->addUpdate(TBGBuildsTable::VERSION_MINOR, $this->_version_minor);
-			$crit->addUpdate(TBGBuildsTable::VERSION_REVISION, $this->_version_revision);
-			$crit->addUpdate(TBGBuildsTable::NAME, $this->_name);
-			$crit->addUpdate(TBGBuildsTable::TIMESTAMP, NOW);
-			$crit->addUpdate(TBGBuildsTable::RELEASE_DATE, $this->_release_date);
-			$crit->addUpdate(TBGBuildsTable::RELEASED, (int) $this->_isreleased);
-			$crit->addUpdate(TBGBuildsTable::LOCKED, (int) $this->_locked);
-			
-			try
-			{
-				$res = B2DB::getTable('TBGBuildsTable')->doUpdateById($crit, $this->getID());
-				return true;
-			}
-			catch (Exception $e)
-			{
-				return false;
-			}
-			
 		}
 		
 		/**

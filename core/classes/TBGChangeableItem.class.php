@@ -21,7 +21,7 @@
 	 */
 
 
-	class TBGChangeableItem extends TBGIdentifiableClass
+	class TBGChangeableItem extends TBGOwnableItem
 	{
 
 		/**

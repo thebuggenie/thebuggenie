@@ -111,7 +111,7 @@
 			$appliedFilters = TBGContext::getModule('search')->getSearchFields();
 	
 			$_SESSION['simplefilters'][] = array("id" => 0, "filter_field" => TBGIssuesTable::TITLE, "value" => '%'.TBGContext::getRequest()->getParameter('searchfor').'%', "operator" => B2DBCriteria::DB_LIKE, "filter_type" => '', "values_from" => '', "value_from_field" => '', "name_from_field" => '', "from_tbl_crit_field" => '', "from_tbl_crit_value" => '');
-			$_SESSION['simplefilters'][] = array("id" => 0, "filter_field" => TBGIssuesTable::LONG_DESCRIPTION, "value" => '%'.TBGContext::getRequest()->getParameter('searchfor').'%', "operator" => B2DBCriteria::DB_LIKE, "filter_type" => '', "values_from" => '', "value_from_field" => '', "name_from_field" => '', "from_tbl_crit_field" => '', "from_tbl_crit_value" => '');
+			$_SESSION['simplefilters'][] = array("id" => 0, "filter_field" => TBGIssuesTable::DESCRIPTION, "value" => '%'.TBGContext::getRequest()->getParameter('searchfor').'%', "operator" => B2DBCriteria::DB_LIKE, "filter_type" => '', "values_from" => '', "value_from_field" => '', "name_from_field" => '', "from_tbl_crit_field" => '', "from_tbl_crit_value" => '');
 			$_SESSION['simplefilters'][] = array("id" => 0, "filter_field" => TBGCommentsTable::CONTENT, "value" => '%'.TBGContext::getRequest()->getParameter('searchfor').'%', "operator" => B2DBCriteria::DB_LIKE, "filter_type" => '', "values_from" => '', "value_from_field" => '', "name_from_field" => '', "from_tbl_crit_field" => '', "from_tbl_crit_value" => '');
 	
 			$searchmatches = TBGContext::getModule('search')->doSearch(0, false, true, false, ((count($_SESSION['simplefilters']) > 0) ? true : false));
