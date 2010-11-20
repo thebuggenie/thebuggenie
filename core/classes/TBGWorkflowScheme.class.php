@@ -69,7 +69,7 @@
 				throw new Exception('The specified workflow scheme id does not exist');
 			}
 
-			$this->_itemid = $row->get(TBGWorkflowSchemesTable::ID);
+			$this->_id = $row->get(TBGWorkflowSchemesTable::ID);
 			$this->_name = $row->get(TBGWorkflowSchemesTable::NAME);
 			$this->_description = $row->get(TBGWorkflowSchemesTable::DESCRIPTION);
 		}

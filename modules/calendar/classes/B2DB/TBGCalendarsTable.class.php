@@ -1,6 +1,6 @@
 <?php
 
-	class TBGCalendarsTable extends B2DBTable 
+	class TBGCalendarsTable extends TBGB2DBTable 
 	{
 		const B2DBNAME = 'calendars';
 		const ID = 'calendars.id';

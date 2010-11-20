@@ -68,44 +68,6 @@
 		const USERSTATE = 'userstate';
 		
 		/**
-		 * Constructor
-		 *
-		 * @param integer $i_id
-		 * @param string $item_type
-		 */
-		protected function initialize($i_id, $item_type, $row = null)
-		{
-			if ($row === null)
-			{
-				$rows = TBGListTypesTable::getTable()->getAllByItemType($item_type);
-				if (array_key_exists($i_id, $rows)) $row = $rows[$i_id];
-			}
-			if ($row === null)
-			{
-				throw new Exception('wwwwaaat??');
-				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGListTypesTable::SCOPE, TBGContext::getScope()->getID());
-				$crit->addWhere(TBGListTypesTable::ITEMTYPE, $item_type);
-				$row = TBGListTypesTable::getTable()->doSelectById($i_id, $crit);
-			}
-			
-			if ($row instanceof B2DBRow)
-			{
-				$this->_itemid = $i_id;
-				$this->_itemtype = $item_type;
-				$this->_appliesto = $row->get(TBGListTypesTable::APPLIES_TO);
-				$this->_itemdata = $row->get(TBGListTypesTable::ITEMDATA);
-				$this->_name = $row->get(TBGListTypesTable::NAME);
-				$this->_sortorder = (int) $row->get(TBGListTypesTable::ORDER);
-			}
-			else
-			{
-				throw new Exception('This data type does not exist');
-			}
-			
-		}
-
-		/**
 		 * Create a new field option and return the row
 		 *
 		 * @param string $name
@@ -131,16 +93,6 @@
 			$types['resolution'] = 'TBGResolution';
 			
 			return $types;
-		}
-		
-		/**
-		 * Save name and itemdata
-		 *
-		 * @return boolean
-		 */
-		public function save()
-		{
-			TBGListTypesTable::getTable()->saveById($this->_name, $this->_itemdata, $this->_sortorder, $this->_itemid);
 		}
 
 		public function isBuiltin()

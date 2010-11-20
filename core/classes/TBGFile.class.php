@@ -60,7 +60,7 @@
 				throw new Exception('The specified file id does not exist');
 			}
 
-			$this->_itemid = $row->get(TBGFilesTable::ID);
+			$this->_id = $row->get(TBGFilesTable::ID);
 			$this->_content_type = $row->get(TBGFilesTable::CONTENT_TYPE);
 			$this->_uploaded_by = $row->get(TBGFilesTable::UID);
 			$this->_uploaded_at = $row->get(TBGFilesTable::UPLOADED_AT);

@@ -15,7 +15,7 @@
 	 * @package thebuggenie
 	 * @subpackage vcs_integration
 	 */
-	class TBGVCSIntegrationTable extends B2DBTable 
+	class TBGVCSIntegrationTable extends TBGB2DBTable 
 	{
 		const B2DBNAME = 'vcsintegration';
 		const ID = 'vcsintegration.id';

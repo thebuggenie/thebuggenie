@@ -63,7 +63,7 @@
 				throw new Exception('The specified workflow step id does not exist');
 			}
 
-			$this->_itemid = $row->get(TBGWorkflowStepsTable::ID);
+			$this->_id = $row->get(TBGWorkflowStepsTable::ID);
 			$this->_name = $row->get(TBGWorkflowStepsTable::NAME);
 			$this->_description = $row->get(TBGWorkflowStepsTable::DESCRIPTION);
 			$this->_is_editable = (bool) $row->get(TBGWorkflowStepsTable::EDITABLE);

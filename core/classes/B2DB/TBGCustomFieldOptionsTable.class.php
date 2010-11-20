@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGCustomFieldOptionsTable extends B2DBTable
+	class TBGCustomFieldOptionsTable extends TBGB2DBTable
 	{
 
 		const B2DBNAME = 'customfieldoptions';

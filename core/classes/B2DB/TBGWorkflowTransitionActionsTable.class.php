@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGWorkflowTransitionActionsTable extends B2DBTable
+	class TBGWorkflowTransitionActionsTable extends TBGB2DBTable
 	{
 
 		const B2DBNAME = 'workflow_transition_actions';

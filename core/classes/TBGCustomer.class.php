@@ -27,7 +27,7 @@
 		 */
 		public function __construct($c_id, $row = null)
 		{
-			$this->_itemid = $c_id;
+			$this->_id = $c_id;
 			if ($row === null)
 			{
 				$row = B2DB::getTable('TBGCustomersTable')->doSelectById($c_id); 
@@ -54,7 +54,7 @@
 		
 		public function getID()
 		{
-			return $this->_itemid;
+			return $this->_id;
 		}
 		
 		/**
@@ -89,7 +89,7 @@
 		public function addMember($uid)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGUsersTable::CUSTOMER_ID, $this->_itemid);
+			$crit->addUpdate(TBGUsersTable::CUSTOMER_ID, $this->_id);
 			TBGUsersTable::getTable()->doUpdateById($crit, $uid);
 		}
 		

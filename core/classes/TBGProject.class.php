@@ -18,15 +18,8 @@
 	 */
 	class TBGProject extends TBGOwnableItem
 	{
-		
-		const TIME_UNIT_HOURS = 0;
-		const TIME_UNIT_HOURS_DAYS = 1;
-		const TIME_UNIT_HOURS_DAYS_WEEKS = 2;
-		const TIME_UNIT_DAYS = 3;
-		const TIME_UNIT_DAYS_WEEKS = 4;
-		const TIME_UNIT_WEEKS = 5;
-		const TIME_UNIT_POINTS = 6;
-		const TIME_UNIT_POINTS_HOURS = 7;
+
+		protected $_b2dbtablename = 'TBGProjectsTable';
 		
 		/**
 		 * The project prefix
@@ -42,21 +35,14 @@
 		 * @var boolean
 		 * @access protected
 		 */
-		protected $_useprefix = false;
+		protected $_use_prefix = false;
 
 		/**
 		 * Whether or not the project uses sprint planning
 		 *
 		 * @var boolean
 		 */
-		protected $_usescrum = false;
-
-		/**
-		 * Hours per day for this project
-		 *
-		 * @var integer
-		 */
-		protected $_hrsprday = 7;
+		protected $_use_scrum = false;
 
 		/**
 		 * Time unit for this project
@@ -66,25 +52,11 @@
 		protected $_timeunit;
 		
 		/**
-		 * Whether or not you can vote for issues for this project
-		 *
-		 * @var boolean
-		 */
-		protected $_enablevotes = null;
-		
-		/**
-		 * Whether or not the project uses tasks for its issues
-		 *
-		 * @var boolean
-		 */
-		protected $_enabletasks = null;
-
-		/**
 		 * Whether or not the project uses builds
 		 *
 		 * @var boolean
 		 */
-		protected $_enablebuilds = null;
+		protected $_enable_builds = null;
 
 		/**
 		 * Edition builds
@@ -98,14 +70,14 @@
 		 *
 		 * @var boolean
 		 */
-		protected $_enableeditions = null;
+		protected $_enable_editions = null;
 		
 		/**
 		 * Whether or not the project uses components
 		 *
 		 * @var boolean
 		 */
-		protected $_enablecomponents = null;
+		protected $_enable_components = null;
 		
 		/**
 		 * Project key
@@ -245,7 +217,7 @@
 		 * 
 		 * @var boolean
 		 */
-		protected $_can_change_wo_working = null;
+		protected $_allow_freelancing = null;
 		
 		/**
 		 * Project list cache
@@ -317,8 +289,8 @@
 		 */
 		protected $_recentactivities = null;
 		
-		protected $_workflow_scheme = null;
-
+		protected $_workflow_scheme_id = null;
+		
 		/**
 		 * Make a project default
 		 * 
@@ -453,57 +425,11 @@
 		/**
 		 * Constructor function
 		 *
-		 * @param integer $id
 		 * @param B2DBRow $row
  		 */
-		public function __construct($id, $row = null)
+		public function _construct(B2DBRow $row)
 		{
-			if (!$row instanceof B2DBRow)
-			{
-				$row = TBGProjectsTable::getTable()->getById($id);
-			}
-			if ($row instanceof B2DBRow)
-			{
-				$this->_name 					= $row->get(TBGProjectsTable::NAME);
-				$this->_key 					= $row->get(TBGProjectsTable::KEY);
-				$this->_prefix 					= $row->get(TBGProjectsTable::PREFIX);
-				$this->_locked 					= (bool) $row->get(TBGProjectsTable::LOCKED);
-				$this->_useprefix 				= (bool) $row->get(TBGProjectsTable::USE_PREFIX);
-				$this->_usescrum 				= (bool) $row->get(TBGProjectsTable::USE_SCRUM);
-				$this->_enablebuilds 			= (bool) $row->get(TBGProjectsTable::ENABLE_BUILDS);
-				$this->_enableeditions 			= (bool) $row->get(TBGProjectsTable::ENABLE_EDITIONS);
-				$this->_enablecomponents 		= (bool) $row->get(TBGProjectsTable::ENABLE_COMPONENTS);
-				$this->_enabletasks 			= (bool) $row->get(TBGProjectsTable::ENABLE_TASKS);
-				$this->_enablevotes 			= (bool) $row->get(TBGProjectsTable::VOTES);
-				$this->_isreleased 				= (bool) $row->get(TBGProjectsTable::RELEASED);
-				$this->_isplannedreleased		= (bool) $row->get(TBGProjectsTable::PLANNED_RELEASE);
-				$this->_isdefault 				= (bool) $row->get(TBGProjectsTable::IS_DEFAULT);
-				$this->_release_date 			= $row->get(TBGProjectsTable::RELEASE_DATE);
-				$this->_itemtype 				= TBGVersionItem::PROJECT;
-				$this->_homepage 				= $row->get(TBGProjectsTable::HOMEPAGE);
-				$this->_description 			= $row->get(TBGProjectsTable::DESCRIPTION);
-				$this->_timeunit 				= ($row->get(TBGProjectsTable::TIME_UNIT)) ? $row->get(TBGProjectsTable::TIME_UNIT) : 5;
-				$this->_itemid 					= $id;
-				$this->_defaultstatus 			= ($row->get(TBGProjectsTable::DEFAULT_STATUS)) ? $row->get(TBGProjectsTable::DEFAULT_STATUS) : null;
-				$this->_doc_url 				= $row->get(TBGProjectsTable::DOC_URL);
-				$this->_owner_type				= $row->get(TBGProjectsTable::OWNED_TYPE);
-				$this->_owner	 				= $row->get(TBGProjectsTable::OWNED_BY);
-				$this->_leader_type				= $row->get(TBGProjectsTable::LEAD_TYPE);
-				$this->_leader 					= $row->get(TBGProjectsTable::LEAD_BY);
-				$this->_qa_responsible_type		= $row->get(TBGProjectsTable::QA_TYPE);
-				$this->_qa_responsible			= $row->get(TBGProjectsTable::QA);
-				$this->_hrsprday 				= $row->get(TBGProjectsTable::HRS_PR_DAY);
-				$this->_show_in_summary			= (bool) $row->get(TBGProjectsTable::SHOW_IN_SUMMARY);
-				$this->_can_change_wo_working	= (bool) $row->get(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING);
-				$this->_summary_display			= $row->get(TBGProjectsTable::SUMMARY_DISPLAY);
-				$this->_deleted					= $row->get(TBGProjectsTable::DELETED);
-				$this->_workflow_scheme			= $row->get(TBGProjectsTable::WORKFLOW_SCHEME_ID);
-				TBGEvent::createNew('core', 'TBGProject::__construct', $this)->trigger();
-			}
-			else
-			{
-				throw new Exception('This project does not exist. It might have been deleted.');
-			}
+			TBGEvent::createNew('core', 'TBGProject::__construct', $this)->trigger();
 		}
 		
 		/**
@@ -533,7 +459,7 @@
 		 */
 		public function setUsesScrum($val = true)
 		{
-			$this->_usescrum = $val;
+			$this->_use_scrum = $val;
 		}
 
 		/**
@@ -543,7 +469,7 @@
 		 */
 		public function usesScrum()
 		{
-			return (bool) $this->_usescrum;
+			return (bool) $this->_use_scrum;
 		}
 		
 		/**
@@ -645,53 +571,6 @@
 			$this->_homepage = $homepage;
 		}
 		
-		
-		/**
-		 * Returns hours per day for this project
-		 *
-		 * @return integer
-		 */
-		public function getHoursPerDay()
-		{
-			if ((int) $this->_hrsprday == 0)
-			{
-				$this->_hrsprday = 7;
-			}
-			return $this->_hrsprday;
-		}
-		
-		/**
-		 * Set the project hours per day
-		 *
-		 * @param integer $hrs_pr_day
-		 */
-		public function setHoursPerDay($hrs_pr_day)
-		{
-			$hrs_pr_day = ($hrs_pr_day > 0) ? (int) $hrs_pr_day : 8; 
-			
-			$this->_hrsprday = $hrs_pr_day;
-		}
-		
-		/**
-		 * Returns the time unit
-		 *
-		 * @return integer
-		 */
-		public function getTimeUnit()
-		{
-			return $this->_timeunit;
-		}
-		
-		/**
-		 * Set the project time unit
-		 *
-		 * @param integer $time_unit
-		 */
-		public function setTimeUnit($time_unit)
-		{
-			$this->_timeunit = (int) $time_unit;
-		}
-		
 		/**
 		 * Returns the description
 		 *
@@ -777,94 +656,13 @@
 		}
 		
 		/**
-		 * Is tasks enabled?
-		 * 
-		 * @return bool
-		 */
-		public function isTasksEnabled()
-		{
-			return $this->_enabletasks;
-		}
-		
-		/**
-		 * Set whether tasks are enabled or not
-		 *
-		 * @param boolean $tasks_enabled
-		 */
-		public function setTasksEnabled($tasks_enabled)
-		{
-			$this->_enabletasks = (bool) $tasks_enabled;
-		}
-		
-		/**
-		 * Is votes enabled?
-		 *
-		 * @return boolean
-		 */
-		public function isVotesEnabled()
-		{
-			return $this->_enablevotes;
-		}
-		
-		/**
-		 * Set whether votes are enabled or not
-		 *
-		 * @param boolean $votes_enabled
-		 */
-		public function setVotesEnabled($votes_enabled)
-		{
-			$this->_enablevotes = (bool) $votes_enabled;
-		}
-		
-		/**
-		 * Returns the default status for new issues
-		 *
-		 * @return TBGDatatype
-		 */
-		public function getDefaultStatus()
-		{
-			if (is_numeric($this->_defaultstatus))
-			{
-				try
-				{
-					$this->_defaultstatus = TBGContext::factory()->TBGStatus($this->_defaultstatus);
-				}
-				catch (Exception $e)
-				{
-					$this->_defaultstatus = nul;
-				}
-			}
-			return $this->_defaultstatus;
-		}
-		
-		/**
-		 * Returns the id for the default status
-		 * 
-		 * @return integer
-		 */
-		public function getDefaultStatusID()
-		{
-			return ($this->getDefaultStatus() instanceof TBGStatus) ? $this->getDefaultStatus()->getID() : null;
-		}
-		
-		/**
-		 * Set the default status
-		 *
-		 * @param integer $status
-		 */
-		public function setDefaultStatus($status)
-		{
-			$this->_defaultstatus = (int) $status;
-		}
-		
-		/**
 		 * Is builds enabled
 		 *
 		 * @return boolean
 		 */
 		public function isBuildsEnabled()
 		{
-			return $this->_enablebuilds;
+			return $this->_enable_builds;
 		}
 
 		/**
@@ -874,7 +672,7 @@
 		 */
 		public function setBuildsEnabled($builds_enabled)
 		{
-			$this->_enablebuilds = (bool) $builds_enabled;
+			$this->_enable_builds = (bool) $builds_enabled;
 		}
 
 		/**
@@ -884,7 +682,7 @@
 		 */
 		public function isEditionsEnabled()
 		{
-			return $this->_enableeditions;
+			return $this->_enable_editions;
 		}
 		
 		/**
@@ -894,7 +692,7 @@
 		 */
 		public function setEditionsEnabled($editions_enabled)
 		{
-			$this->_enableeditions = (bool) $editions_enabled;
+			$this->_enable_editions = (bool) $editions_enabled;
 		}
 		
 		/**
@@ -904,7 +702,7 @@
 		 */
 		public function isComponentsEnabled()
 		{
-			return $this->_enablecomponents;
+			return $this->_enable_components;
 		}
 		
 		/**
@@ -914,7 +712,7 @@
 		 */
 		public function setComponentsEnabled($components_enabled)
 		{
-			$this->_enablecomponents = (bool) $components_enabled;
+			$this->_enable_components = (bool) $components_enabled;
 		}
 		
 		/**
@@ -944,7 +742,7 @@
 		 */
 		public function usePrefix()
 		{
-			return $this->_useprefix;
+			return $this->_use_prefix;
 		}
 		
 		public function doesUsePrefix()
@@ -969,7 +767,7 @@
 		 */
 		public function setUsePrefix($use_prefix)
 		{
-			$this->_useprefix = (bool) $use_prefix;
+			$this->_use_prefix = (bool) $use_prefix;
 		}
 		
 		/**
@@ -1300,7 +1098,7 @@
 		 */
 		public function canChangeIssuesWithoutWorkingOnThem()
 		{
-			return (bool) $this->_can_change_wo_working;
+			return (bool) $this->_allow_freelancing;
 		}
 		
 		/**
@@ -1310,7 +1108,7 @@
 		 */
 		public function setChangeIssuesWithoutWorkingOnThem($val)
 		{
-			$this->_can_change_wo_working = (bool) $val;
+			$this->_allow_freelancing = (bool) $val;
 		}
 		
 		/**
@@ -1318,49 +1116,13 @@
 		 * 
 		 * @return bool
 		 */
-		public function save()
+		public function postSave()
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGProjectsTable::LOCKED, $this->_locked);
-			$crit->addUpdate(TBGProjectsTable::PREFIX, $this->_prefix);
-			$crit->addUpdate(TBGProjectsTable::USE_PREFIX, $this->_useprefix);
-			$crit->addUpdate(TBGProjectsTable::USE_SCRUM, $this->_usescrum);
-			$crit->addUpdate(TBGProjectsTable::ENABLE_BUILDS, $this->_enablebuilds);
-			$crit->addUpdate(TBGProjectsTable::ENABLE_COMPONENTS, $this->_enablecomponents);
-			$crit->addUpdate(TBGProjectsTable::ENABLE_EDITIONS, $this->_enableeditions);
-			$crit->addUpdate(TBGProjectsTable::ENABLE_TASKS, $this->_enabletasks);
-			$crit->addUpdate(TBGProjectsTable::VOTES, $this->_enablevotes);
-			$crit->addUpdate(TBGProjectsTable::NAME, $this->_name);
-			$crit->addUpdate(TBGProjectsTable::KEY, $this->_key);
-			$crit->addUpdate(TBGProjectsTable::RELEASED, $this->_isreleased);
-			$crit->addUpdate(TBGProjectsTable::PLANNED_RELEASE, $this->_isplannedreleased);
-			$crit->addUpdate(TBGProjectsTable::IS_DEFAULT, $this->_isdefault);
-			$crit->addUpdate(TBGProjectsTable::RELEASE_DATE, $this->_release_date);
-			$crit->addUpdate(TBGProjectsTable::HOMEPAGE, $this->_homepage);
-			$crit->addUpdate(TBGProjectsTable::DESCRIPTION, $this->_description);
-			$crit->addUpdate(TBGProjectsTable::TIME_UNIT, $this->_timeunit);
-			$crit->addUpdate(TBGProjectsTable::DEFAULT_STATUS, $this->_defaultstatus);
-			$crit->addUpdate(TBGProjectsTable::DOC_URL, $this->_doc_url);
-			$crit->addUpdate(TBGProjectsTable::OWNED_TYPE, $this->getOwnerType());
-			$crit->addUpdate(TBGProjectsTable::OWNED_BY, $this->getOwnerID());
-			$crit->addUpdate(TBGProjectsTable::LEAD_TYPE, $this->getLeaderType());
-			$crit->addUpdate(TBGProjectsTable::LEAD_BY, $this->getLeaderID());
-			$crit->addUpdate(TBGProjectsTable::QA_TYPE, $this->getQaResponsibleType());
-			$crit->addUpdate(TBGProjectsTable::QA, $this->getQaResponsibleID());
-			$crit->addUpdate(TBGProjectsTable::HRS_PR_DAY, $this->_hrsprday); 
-			$crit->addUpdate(TBGProjectsTable::SHOW_IN_SUMMARY, $this->_show_in_summary);
-			$crit->addUpdate(TBGProjectsTable::SUMMARY_DISPLAY, $this->_summary_display);
-			$crit->addUpdate(TBGProjectsTable::ALLOW_CHANGING_WITHOUT_WORKING, $this->_can_change_wo_working);
-			$crit->addUpdate(TBGProjectsTable::DELETED, $this->_deleted);
-			$crit->addUpdate(TBGProjectsTable::WORKFLOW_SCHEME_ID, ((is_object($this->_workflow_scheme)) ? $this->_workflow_scheme->getID() : $this->_workflow_scheme));
-			$res = TBGProjectsTable::getTable()->doUpdateById($crit, $this->getID());
-
 			if ($this->_dodelete)
 			{
 				TBGIssuesTable::getTable()->markIssuesDeletedByProjectID($this->getID());
 				$this->_dodelete = false;
 			}
-			return true;
 		}
 
 		/**
@@ -2380,23 +2142,23 @@
 		 */
 		public function getWorkflowScheme()
 		{
-			if (is_numeric($this->_workflow_scheme))
+			if (is_numeric($this->_workflow_scheme_id))
 			{
 				try
 				{
-					$this->_workflow_scheme = TBGContext::factory()->TBGWorkflowScheme((int) $this->_workflow_scheme);
+					$this->_workflow_scheme_id = TBGContext::factory()->TBGWorkflowScheme((int) $this->_workflow_scheme_id);
 				}
 				catch (Exception $e)
 				{
-					$this->_workflow_scheme = null;
+					$this->_workflow_scheme_id = null;
 				}
 			}
-			return $this->_workflow_scheme;
+			return $this->_workflow_scheme_id;
 		}
 		
 		public function setWorkflowScheme(TBGWorkflowScheme $scheme)
 		{
-			$this->_workflow_scheme = $scheme;
+			$this->_workflow_scheme_id = $scheme;
 		}
 
 		/**

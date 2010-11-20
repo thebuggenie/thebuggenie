@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGLogTable extends B2DBTable 
+	class TBGLogTable extends TBGB2DBTable 
 	{
 
 		const TYPE_ISSUE = 1;

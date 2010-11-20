@@ -18,7 +18,8 @@
 	 */
 	abstract class TBGModule extends TBGIdentifiableClass 
 	{
-		
+
+		protected $_b2dbtablename = 'TBGModulesTable';
 		protected $_classname = '';
 		protected $_description = '';
 		protected $_enabled = false;
@@ -27,7 +28,7 @@
 		protected $_shortname = '';
 		protected $_module_config_title = '';
 		protected $_module_config_description = '';
-		protected $_module_version = '';
+		protected $_version = '';
 		protected $_availablepermissions = array();
 		protected $_listeners = array();
 		protected $_settings = array();
@@ -92,27 +93,10 @@
 
 		/**
 		 * Class constructor
-		 *
-		 * @param integer $m_id
-		 * @param B2DBRow $row
 		 */
-		final public function __construct($m_id, $row = null)
+		final public function _construct(B2DBRow $row)
 		{
-			if ($row === null)
-			{
-				$row = B2DB::getTable('TBGModulesTable')->doSelectById($m_id);
-			}
-
-			if (!$row instanceof B2DBRow)
-			{
-				throw new Exception('This module does not exist');
-			}
-			$this->_itemid = $m_id;
-			$this->_name = $row->get(TBGModulesTable::MODULE_NAME);
-			$this->_classname = $row->get(TBGModulesTable::CLASSNAME);
-			$this->_enabled = (bool) $row->get(TBGModulesTable::ENABLED);
-			$this->_shortname = $row->get(TBGModulesTable::MODULE_NAME);
-			if ($this->_module_version != $row->get(TBGModulesTable::VERSION))
+			if ($this->_version != $row->get(TBGModulesTable::VERSION))
 			{
 				throw new Exception('This module must be upgraded to the latest version');
 			}
@@ -229,7 +213,7 @@
 		
 		public function getID()
 		{
-			return $this->_itemid;
+			return $this->_id;
 		}
 		
 		public function getName()
@@ -443,7 +427,7 @@
 		
 		public function getVersion()
 		{
-			return $this->_module_version;
+			return $this->_version;
 		}
 		
 		/**

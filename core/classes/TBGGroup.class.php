@@ -18,7 +18,10 @@
 	 */
 	class TBGGroup extends TBGIdentifiableClass 
 	{
+		
 		protected static $_groups = null;
+		
+		protected $_b2dbtablename = 'TBGGroupsTable';
 
 		protected $_members = null;
 
@@ -45,28 +48,6 @@
 			return self::$_groups;
 		}
 		
-		/**
-		 * Class constructor
-		 *
-		 * @param integer $g_id
-		 */
-		public function __construct($g_id, $row = null)
-		{
-			$this->_itemid = $g_id;
-			if ($row === null)
-			{
-				$row = TBGGroupsTable::getTable()->doSelectById($g_id); 
-			}
-			try
-			{
-				$this->_name = $row->get(TBGGroupsTable::GNAME);
-			}
-			catch (Exception $e)
-			{
-				throw new Exception('The group (' . $g_id . ') does not exist: ' . $e->getMessage());
-			}
-		}
-		
 		public function __toString()
 		{
 			return $this->_name;
@@ -81,7 +62,7 @@
 		public static function createNew($groupname, $scope = null)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGGroupsTable::GNAME, $groupname);
+			$crit->addInsert(TBGGroupsTable::NAME, $groupname);
 			if ($scope === null)
 			{
 				$scope = TBGContext::getScope()->getID();
@@ -104,7 +85,7 @@
 		public function addMember($uid)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGUsersTable::GROUP_ID, $this->_itemid);
+			$crit->addUpdate(TBGUsersTable::GROUP_ID, $this->_id);
 			TBGUsersTable::getTable()->doUpdateById($crit, $uid);
 		}
 		

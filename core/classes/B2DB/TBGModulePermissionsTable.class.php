@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGModulePermissionsTable extends B2DBTable 
+	class TBGModulePermissionsTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'modulepermissions';

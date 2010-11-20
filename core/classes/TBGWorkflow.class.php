@@ -78,7 +78,7 @@
 				throw new Exception('The specified workflow id does not exist');
 			}
 
-			$this->_itemid = $row->get(TBGWorkflowsTable::ID);
+			$this->_id = $row->get(TBGWorkflowsTable::ID);
 			$this->_name = $row->get(TBGWorkflowsTable::NAME);
 			$this->_description = $row->get(TBGWorkflowsTable::DESCRIPTION);
 			$this->_is_active = (bool) $row->get(TBGWorkflowsTable::IS_ACTIVE);

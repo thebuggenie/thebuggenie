@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGIssueTypesTable extends B2DBTable 
+	class TBGIssueTypesTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'issuetypes';
@@ -25,10 +25,9 @@
 		const NAME = 'issuetypes.name';
 		const DESCRIPTION = 'issuetypes.description';
 		const APPLIES_TO = 'issuetypes.applies_to';
-		const APPLIES_TYPE = 'issuetypes.applies_type';
-		const ICON = 'issuetypes.icon';
-		const IS_TASK = 'issuetypes.is_task';
-		const IS_REPORTABLE = 'issuetypes.is_reportable';
+		const ICON = 'issuetypes.itemdata';
+		const TASK = 'issuetypes.task';
+		const REPORTABLE = 'issuetypes.reportable';
 		const REDIRECT_AFTER_REPORTING = 'issuetypes.redirect_after_reporting';
 
 		/**
@@ -46,11 +45,10 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 50);
 			parent::_addInteger(self::APPLIES_TO, 10);
-			parent::_addInteger(self::APPLIES_TYPE, 3);
 			parent::_addVarchar(self::ICON, 30, 'bug_report');
 			parent::_addText(self::DESCRIPTION, false);
-			parent::_addBoolean(self::IS_TASK);
-			parent::_addBoolean(self::IS_REPORTABLE, true);
+			parent::_addBoolean(self::TASK);
+			parent::_addBoolean(self::REPORTABLE, true);
 			parent::_addBoolean(self::REDIRECT_AFTER_REPORTING, true);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
@@ -74,7 +72,7 @@
 			$crit->addUpdate(self::ICON, $issuetype->getIcon());
 			$crit->addUpdate(self::DESCRIPTION, $issuetype->getDescription());
 			$crit->addUpdate(self::REDIRECT_AFTER_REPORTING, $issuetype->getRedirectAfterReporting());
-			$crit->addUpdate(self::IS_REPORTABLE, $issuetype->isReportable());
+			$crit->addUpdate(self::REPORTABLE, $issuetype->isReportable());
 
 			$res = $this->doUpdateById($crit, $issuetype->getID());
 		}
@@ -133,8 +131,8 @@
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::NAME, 'Task');
 			$crit->addInsert(self::ICON, 'task');
-			$crit->addInsert(self::IS_TASK, true);
-			$crit->addInsert(self::IS_REPORTABLE, false);
+			$crit->addInsert(self::TASK, true);
+			$crit->addInsert(self::REPORTABLE, false);
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_task_id = $res->getInsertID();
@@ -154,7 +152,7 @@
 			$crit->addInsert(self::NAME, 'Idea');
 			$crit->addInsert(self::ICON, 'idea');
 			$crit->addInsert(self::DESCRIPTION, 'Express yourself - share your ideas with the rest of the team!');
-			$crit->addInsert(self::IS_REPORTABLE, false);
+			$crit->addInsert(self::REPORTABLE, false);
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
 			$issue_type_idea_id = $res->getInsertID();

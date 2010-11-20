@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGVisibleIssueTypesTable extends B2DBTable 
+	class TBGVisibleIssueTypesTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'visible_issue_types';

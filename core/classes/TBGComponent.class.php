@@ -62,7 +62,7 @@
 			if ($row instanceof B2DBRow)
 			{
 				$this->_name = $row->get(TBGComponentsTable::NAME);
-				$this->_itemid = $c_id;
+				$this->_id = $c_id;
 				$this->_isdefault = false;
 				$this->_locked = false;
 				$this->_version_major = $row->get(TBGComponentsTable::VERSION_MAJOR);

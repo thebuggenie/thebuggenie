@@ -112,7 +112,7 @@
 			// Parse each commit individually
 			foreach ($entries->commits as $commit)
 			{
-				$email = $commit->author->email;
+				$email = $commit->author->_email;
 				$author = $commit->author->name;
 				$new_rev = $commit->id;
 				$commit_msg = $commit->message;

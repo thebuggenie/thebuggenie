@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGUserStateTable extends B2DBTable 
+	class TBGUserStateTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'userstate';

@@ -1,6 +1,6 @@
 <?php
 
-	class TBGBillboardPostsTable extends B2DBTable 
+	class TBGBillboardPostsTable extends TBGB2DBTable 
 	{
 		const B2DBNAME = 'billboardposts';
 		const ID = 'billboardposts.id';

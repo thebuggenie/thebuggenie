@@ -19,6 +19,8 @@
 	class TBGWorkflowTransition extends TBGIdentifiableClass
 	{
 
+		protected $_b2dbtable = 'TBGWorkflowTransitionsTable';
+		
 		/**
 		 * The workflow description
 		 *
@@ -57,7 +59,7 @@
 			
 			return $event->getReturnList();
 		}
-
+		
 		public static function createNew($workflow_id, $name, $description, $to_step_id, $template)
 		{
 			$id = TBGWorkflowTransitionsTable::getTable()->createNew($workflow_id, $name, $description, $to_step_id, $template);
@@ -80,7 +82,7 @@
 				throw new Exception('The specified workflow step transition id does not exist');
 			}
 
-			$this->_itemid = $row->get(TBGWorkflowTransitionsTable::ID);
+			$this->_id = $row->get(TBGWorkflowTransitionsTable::ID);
 			$this->_name = $row->get(TBGWorkflowTransitionsTable::NAME);
 			$this->_description = $row->get(TBGWorkflowTransitionsTable::DESCRIPTION);
 			$this->_template = $row->get(TBGWorkflowTransitionsTable::TEMPLATE);
@@ -205,11 +207,6 @@
 			$this->_outgoing_step = $step;
 		}
 		
-		public function save()
-		{
-			TBGWorkflowTransitionsTable::getTable()->saveByID($this->getName(), $this->getDescription(), $this->getOutgoingStep()->getID(), $this->getTemplate(), $this->getID());
-		}
-
 		public function delete($direction)
 		{
 			TBGWorkflowStepTransitionsTable::getTable()->deleteByTransitionID($this->getID());

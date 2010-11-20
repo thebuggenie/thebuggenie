@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGCustomersTable extends B2DBTable 
+	class TBGCustomersTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'customers';

@@ -18,13 +18,7 @@
 	 */
 	class TBGUser extends TBGIdentifiableClass 
 	{
-		/**
-		 * Unique id (uid)
-		 *
-		 * @var integer
-		 * @access protected
-		 */
-		protected $uid = 0;
+		protected $_b2dbtablename = 'TBGUsersTable';
 		
 		/**
 		 * Unique username (login name)
@@ -32,7 +26,7 @@
 		 * @var string
 		 * @access protected
 		 */
-		protected $uname = '';
+		protected $_username = '';
 		
 		/**
 		 * Whether or not the user has authenticated
@@ -47,7 +41,7 @@
 		 * @var string
 		 * @access protected
 		 */
-		protected $pwd = '';
+		protected $_password = '';
 		
 		/**
 		 * The users scope
@@ -55,7 +49,7 @@
 		 * @var TBGScope
 		 * @access protected
 		 */
-		protected $scope = null;
+		protected $_scope = null;
 		
 		/**
 		 * User real name
@@ -63,7 +57,7 @@
 		 * @var string
 		 * @access protected
 		 */
-		protected $realname = '';
+		protected $_realname = '';
 		
 		/**
 		 * User short name (buddyname)
@@ -71,7 +65,7 @@
 		 * @var string
 		 * @access protected
 		 */
-		protected $buddyname = '';
+		protected $_buddyname = '';
 		
 		/**
 		 * User email
@@ -79,7 +73,7 @@
 		 * @var string
 		 * @access protected
 		 */
-		protected $email = '';
+		protected $_email = '';
 		
 		/**
 		 * Is email private?
@@ -87,14 +81,14 @@
 		 * @var boolean
 		 * @access protected
 		 */
-		protected $private_email = true;
+		protected $_private_email = true;
 		
 		/**
 		 * The user state
 		 *
 		 * @var TBGDatatype
 		 */
-		protected $state = null;
+		protected $_userstate = null;
 		
 		/**
 		 * User homepage
@@ -102,14 +96,14 @@
 		 * @var string
 		 * @access protected
 		 */
-		protected $homepage = '';
+		protected $_homepage = '';
 
 		/**
 		 * Users language
 		 *
 		 * @var string
 		 */
-		protected $language = '';
+		protected $_language = '';
 		
 		/**
 		 * Array of team ids where the current user is a member
@@ -126,7 +120,7 @@
 		 * @var string
 		 * @access protected
 		 */
-		protected $avatar = null;
+		protected $_avatar = null;
 		
 		/**
 		 * Whether to use the users gravatar or not
@@ -168,22 +162,6 @@
 		protected $teamassigned = array();
 		
 		/**
-		 * Whether or not to show followups
-		 *
-		 * @var boolean
-		 * @access protected
-		 */
-		protected $showfollowups = true;
-		
-		/**
-		 * Whether or not to show issues assigned to the user / teams
-		 *
-		 * @var boolean
-		 * @access protected
-		 */
-		protected $showassigned = true;
-		
-		/**
 		 * Array of saved searches to show on the frontpage
 		 *
 		 * @var array
@@ -196,14 +174,14 @@
 		 * 
 		 * @var TBGGroup
 		 */
-		protected $group = null;
+		protected $_group_id = null;
 	
 		/**
 		 * The users customer, if any
 		 * 
 		 * @var TBGCustomer
 		 */
-		protected $customer = null;
+		protected $_customer_id = null;
 	
 		/**
 		 * A list of the users associated projects, if any
@@ -217,7 +195,7 @@
 		 *
 		 * @var integer
 		 */
-		protected $lastseen = 0;
+		protected $_lastseen = 0;
 
 		/**
 		 * The timezone this user is in
@@ -225,14 +203,16 @@
 		 * @var integer
 		 */
 		protected $_timezone = null;
+		
+		protected $_quota;
 
 		protected $row = null;
 		protected $_joined = 0;
 		protected $_friends = null;
 		
-		protected $_isenabled = false;
-		protected $_isactivated = false;
-		protected $_isdeleted = false;
+		protected $_enabled = false;
+		protected $_activated = false;
+		protected $_deleted = false;
 		
 		public static function getUsersByVerified($activated)
 		{
@@ -550,11 +530,11 @@
 			$crit->addInsert(TBGUsersTable::EMAIL, $email);
 			if ($pass_is_hash)
 			{
-				$crit->addInsert(TBGUsersTable::PASSWD, $password);
+				$crit->addInsert(TBGUsersTable::PASSWORD, $password);
 			}
 			else
 			{
-				$crit->addInsert(TBGUsersTable::PASSWD, self::hashPassword($password));
+				$crit->addInsert(TBGUsersTable::PASSWORD, self::hashPassword($password));
 			}
 			$crit->addInsert(TBGUsersTable::SCOPE, $scope);
 			$crit->addInsert(TBGUsersTable::ACTIVATED, $activated);
@@ -598,85 +578,46 @@
 		/**
 		 * Class constructor
 		 *
-		 * @param integer $uid
 		 * @param B2DBRow $row
 		 */
-		public function __construct($uid = null, $row = null)
+		public function _construct(B2DBRow $row)
 		{
-			if ($uid !== null)
+			try
 			{
-				if ($row === null)
+				/*if (($row->get(TBGUsersTable::USERSTATE) == TBGSettings::get('offlinestate') || $row->get(TBGUsersTable::USERSTATE) == TBGSettings::get('awaystate')) && !TBGContext::getRequest()->getParameter('setuserstate')) 
+				{ 
+					$this->setState(TBGSettings::get('onlinestate')); 
+				}*/
+				if ($this->_group_id != 0)
 				{
-					$row = TBGUsersTable::getTable()->doSelectById($uid);
+					$this->_group_id = TBGContext::factory()->TBGGroup($row->get(TBGUsersTable::GROUP_ID), $row);
 				}
-				if (!$row instanceof B2DBRow)
+				if ($row->get(TBGUsersTable::CUSTOMER_ID) != 0)
 				{
-					throw new Exception('This user does not exist');
+					$this->_customer_id = TBGContext::factory()->TBGCustomer($row->get(TBGUsersTable::CUSTOMER_ID), $row);
 				}
-				try
-				{
-					$this->uid = $row->get(TBGUsersTable::ID);
-					if (($row->get(TBGUsersTable::STATE) == TBGSettings::get('offlinestate') || $row->get(TBGUsersTable::STATE) == TBGSettings::get('awaystate')) && !TBGContext::getRequest()->getParameter('setuserstate')) 
-					{ 
-						$this->setState(TBGSettings::get('onlinestate')); 
-					}
-					if ($row->get(TBGUsersTable::GROUP_ID) != 0)
-					{
-						$this->group = TBGContext::factory()->TBGGroup($row->get(TBGUsersTable::GROUP_ID), $row);
-					}
-					if ($row->get(TBGUsersTable::CUSTOMER_ID) != 0)
-					{
-						$this->customer = TBGContext::factory()->TBGCustomer($row->get(TBGUsersTable::CUSTOMER_ID), $row);
-					}
-					$this->authenticated = true;
-					$this->uname = $row->get(TBGUsersTable::UNAME);
-					$this->realname = $row->get(TBGUsersTable::REALNAME);
-					$this->buddyname = $row->get(TBGUsersTable::BUDDYNAME);
-					$this->email = $row->get(TBGUsersTable::EMAIL);
-					$this->homepage = $row->get(TBGUsersTable::HOMEPAGE);
-					$this->showfollowups = ($row->get(TBGUsersTable::SHOWFOLLOWUPS) == 1) ? true : false;
-					$this->avatar = $row->get(TBGUsersTable::AVATAR);
-					$this->_use_gravatar = (bool) $row->get(TBGUsersTable::USE_GRAVATAR);
-					$this->scope = TBGContext::factory()->TBGScope($row->get(TBGUsersTable::SCOPE), $row);
-					$this->language = $row->get(TBGUsersTable::LANGUAGE);
-					$this->pwd = $row->get(TBGUsersTable::PASSWD);
-					$this->showassigned = ($row->get(TBGUsersTable::SHOWASSIGNED) == 1) ? true : false;
-					$this->private_email = ($row->get(TBGUsersTable::PRIVATE_EMAIL) == 1) ? true : false;
-					$this->login_error = '';
-					$this->state = $row->get(TBGUsersTable::STATE);
-					$this->lastseen = $row->get(TBGUsersTable::LASTSEEN);
-					$this->_joined = $row->get(TBGUsersTable::JOINED);
-					$this->_isactivated = ($row->get(TBGUsersTable::ACTIVATED) == 1) ? true : false;
-					$this->_isenabled = ($row->get(TBGUsersTable::ENABLED) == 1) ? true : false;
-					$this->_isdeleted = ($row->get(TBGUsersTable::DELETED) == 1) ? true : false;
-					$this->_timezone = (int) TBGSettings::get('timezone', 'core', null, $uid);
-				}
-				catch (Exception $e)
-				{
-					TBGLogging::log("Something went wrong setting up user with id {$uid}: ".$e->getMessage());
-					throw $e;
-				}
-				TBGLogging::log("User with id {$uid} set up successfully");
 			}
-			else
+			catch (Exception $e)
 			{
-				TBGLogging::log('Setting up empty user object', 'main', TBGLogging::LEVEL_WARNING);
+				TBGLogging::log("Something went wrong setting up user with id {$this->getID()}: ".$e->getMessage());
+				throw $e;
 			}
+			TBGLogging::log("User with id {$this->getID()} set up successfully");
 		}
 		
 		public function getName()
 		{
-			return $this->realname;
+			return $this->_realname;
 		}
 		
 		public function getID()
 		{
-			return $this->uid;
+			return $this->_id;
 		}
 		
 		public function getNameWithUsername()
 		{
-			return ($this->buddyname) ? $this->buddyname . ' (' . $this->uname . ')' : $this->uname;
+			return ($this->_buddyname) ? $this->_buddyname . ' (' . $this->_username . ')' : $this->_username;
 		}
 		
 		public function __toString()
@@ -710,14 +651,14 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGUsersTable::LASTSEEN, NOW);
-			$crit->addWhere(TBGUsersTable::ID, $this->uid);
+			$crit->addWhere(TBGUsersTable::ID, $this->_id);
 			TBGUsersTable::getTable()->doUpdate($crit);
-			$this->lastseen = NOW;
+			$this->_lastseen = NOW;
 		}
 		
 		public function getLastSeen()
 		{
-			return $this->lastseen;
+			return $this->_lastseen;
 		}
 		
 		public function getJoinedDate()
@@ -753,7 +694,7 @@
 				$this->teams = array();
 				TBGLogging::log('Populating user teams');
 				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGTeamMembersTable::UID, $this->uid);
+				$crit->addWhere(TBGTeamMembersTable::UID, $this->_id);
 		
 				if (B2DB::getTable('TBGTeamMembersTable')->doCount($crit) > 0)
 				{
@@ -774,7 +715,7 @@
 		 */
 		public function isLoggedIn()
 		{
-			return ($this->uid != 0) ? true : false;
+			return ($this->_id != 0) ? true : false;
 		}
 		
 		/**
@@ -785,23 +726,6 @@
 		public function isGuest()
 		{
 			return (bool) (!$this->isLoggedIn() || ($this->getID() == TBGSettings::getDefaultUserID() && TBGSettings::isDefaultUserGuest()));
-		}
-	
-		/**
-		 * Returns whether the user wants to see the issues flagged
-		 *
-		 * @return boolean
-		 */
-		public function showFollowUps($setting = null)
-		{
-			if ($setting != null)
-			{
-				$crit = new B2DBCriteria();
-				$crit->addUpdate(TBGUsersTable::SHOWFOLLOWUPS, $setting);
-				$res = TBGUsersTable::getTable()->doUpdateById($crit, $this->uid);
-				$this->showfollowups = ($setting == 0) ? false : true;
-			}
-			return $this->showfollowups;
 		}
 	
 		/**
@@ -824,23 +748,6 @@
 				}
 			}
 			return $this->userassigned;
-		}
-	
-		/**
-		 * Returns whether the user wants to see the issues assigned to him/her
-		 *
-		 * @return boolean
-		 */
-		public function showAssigned($setting = null)
-		{
-			if ($setting != null)
-			{
-				$crit = new B2DBCriteria();
-				$crit->addUpdate(TBGUsersTable::SHOWASSIGNED, $setting);
-				$res = TBGUsersTable::getTable()->doUpdateById($crit, $this->uid);
-				$this->showassigned = ($setting == 0) ? false : true;
-			}
-			return $this->showassigned;
 		}
 	
 		/**
@@ -929,7 +836,7 @@
 				TBGLogging::log('Logged in and unstarred, continuing');
 				$crit = new B2DBCriteria();
 				$crit->addInsert(TBGUserIssuesTable::ISSUE, $issue_id);
-				$crit->addInsert(TBGUserIssuesTable::UID, $this->uid);
+				$crit->addInsert(TBGUserIssuesTable::UID, $this->_id);
 				$crit->addInsert(TBGUserIssuesTable::SCOPE, TBGContext::getScope()->getID());
 				
 				B2DB::getTable('TBGUserIssuesTable')->doInsert($crit);
@@ -955,7 +862,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGUserIssuesTable::ISSUE, $issue_id);
-			$crit->addWhere(TBGUserIssuesTable::UID, $this->uid);
+			$crit->addWhere(TBGUserIssuesTable::UID, $this->_id);
 				
 			B2DB::getTable('TBGUserIssuesTable')->doDelete($crit);
 			unset($this->_starredissues[$issue_id]);
@@ -1047,7 +954,7 @@
 		 */
 		public function changePassword($newpassword)
 		{
-			$this->pwd = self::hashPassword($newpassword);
+			$this->_password = self::hashPassword($newpassword);
 		}
 		
 		/**
@@ -1059,11 +966,11 @@
 		public function setState($s_id)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGUsersTable::STATE, $s_id);
-			$crit->addWhere(TBGUsersTable::ID, $this->uid);
+			$crit->addUpdate(TBGUsersTable::USERSTATE, $s_id);
+			$crit->addWhere(TBGUsersTable::ID, $this->_id);
 			
 			TBGUsersTable::getTable()->doUpdate($crit);
-			$this->state = $s_id;
+			$this->_userstate = $s_id;
 		}
 		
 		/**
@@ -1074,45 +981,45 @@
 		public function getState()
 		{
 			$now = NOW;
-			if (($this->lastseen < ($now - (60 * 10))) && ($this->state != TBGSettings::get('offlinestate') && $this->state != TBGSettings::get('awaystate')))
+			if (($this->_lastseen < ($now - (60 * 10))) && ($this->_userstate != TBGSettings::get('offlinestate') && $this->_userstate != TBGSettings::get('awaystate')))
 			{
 				$this->setState(TBGSettings::get('awaystate'));
 			}
-			if ($this->lastseen < ($now - (60 * 30)) && $this->state != TBGSettings::get('offlinestate'))
+			if ($this->_lastseen < ($now - (60 * 30)) && $this->_userstate != TBGSettings::get('offlinestate'))
 			{
 				$this->setState(TBGSettings::get('offlinestate'));
 			}
 			TBGEvent::createNew('core', 'TBGUser::getState', $this)->trigger();
 			
-			if (!$this->state instanceof TBGUserstate)
+			if (!$this->_userstate instanceof TBGUserstate)
 			{
-				if ($this->state == 0)
+				if ($this->_userstate == 0)
 				{
-					$this->state = TBGSettings::get('offlinestate');
+					$this->_userstate = TBGSettings::get('offlinestate');
 				}
-				$this->state = TBGContext::factory()->TBGUserstate($this->state);
+				$this->_userstate = TBGContext::factory()->TBGUserstate($this->_userstate);
 			}
-			return $this->state;
+			return $this->_userstate;
 		}
 		
 		public function isEnabled()
 		{
-			return $this->_isenabled;
+			return $this->_enabled;
 		}
 
 		public function setActivated($val = true)
 		{
-			$this->_isactivated = (boolean) $val;
+			$this->_activated = (boolean) $val;
 		}
 
 		public function isActivated()
 		{
-			return $this->_isactivated;
+			return $this->_activated;
 		}
 		
 		public function isDeleted()
 		{
-			return $this->_isdeleted;
+			return $this->_deleted;
 		}
 		
 		/**
@@ -1147,7 +1054,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate($detail, $value);
-			TBGUsersTable::getTable()->doUpdateById($crit, $this->uid);
+			TBGUsersTable::getTable()->doUpdateById($crit, $this->_id);
 			return true;
 		}
 	
@@ -1158,7 +1065,7 @@
 		 */
 		public function setEmailPrivate($val)
 		{
-			$this->private_email = (bool) $val;
+			$this->_private_email = (bool) $val;
 		}
 		
 		/**
@@ -1168,7 +1075,7 @@
 		 */
 		public function isEmailPrivate()
 		{
-			return $this->private_email;
+			return $this->_private_email;
 		}
 
 		/**
@@ -1178,7 +1085,7 @@
 		 */
 		public function isEmailPublic()
 		{
-			return !$this->private_email;
+			return !$this->_private_email;
 		}
 		
 		/**
@@ -1208,7 +1115,7 @@
 		 */
 		public function getScope()
 		{
-			return $this->scope;
+			return $this->_scope;
 		}
 		
 		/**
@@ -1218,7 +1125,7 @@
 		 */
 		public function getUID()
 		{
-			return $this->uid;
+			return $this->_id;
 		}
 		
 		/**
@@ -1228,7 +1135,7 @@
 		 */
 		public function getGroup()
 		{
-			return $this->group;
+			return $this->_group_id;
 		}
 
 		public function getGroupID()
@@ -1251,7 +1158,7 @@
 			{
 				$group = TBGContext::factory()->TBGGroup($group);
 			}
-			$this->group = $group;
+			$this->_group_id = $group;
 		}
 		
 		/**
@@ -1261,7 +1168,7 @@
 		 */
 		public function getUname()
 		{
-			return $this->uname;
+			return $this->_username;
 		}
 		
 		/**
@@ -1271,7 +1178,7 @@
 		 */
 		public function setUsername($username)
 		{
-			$this->username = $username;
+			$this->_username = $username;
 		}
 
 		public function getUsername()
@@ -1286,7 +1193,7 @@
 		 */
 		public function getHashPassword()
 		{
-			return $this->pwd;
+			return $this->_password;
 		}
 
 		/**
@@ -1320,7 +1227,7 @@
 		 */
 		public function getRealname()
 		{
-			return $this->realname;
+			return $this->_realname;
 		}
 		
 		/**
@@ -1330,7 +1237,7 @@
 		 */
 		public function getBuddyname()
 		{
-			return $this->buddyname;
+			return $this->_buddyname;
 		}
 
 		/**
@@ -1352,7 +1259,7 @@
 		 */
 		public function getEmail()
 		{
-			return $this->email;
+			return $this->_email;
 		}
 		
 		/**
@@ -1362,7 +1269,7 @@
 		 */
 		public function getHomepage()
 		{
-			return $this->homepage;
+			return $this->_homepage;
 		}
 
 		/**
@@ -1372,7 +1279,7 @@
 		 */
 		public function setHomepage($homepage)
 		{
-			$this->homepage = $homepage;
+			$this->_homepage = $homepage;
 		}
 		
 		/**
@@ -1382,7 +1289,7 @@
 		 */
 		public function setAvatar($avatar)
 		{
-			$this->avatar = $avatar;
+			$this->_avatar = $avatar;
 		}
 		
 		/**
@@ -1392,7 +1299,7 @@
 		 */
 		public function getAvatar()
 		{
-			return ($this->avatar != '') ? $this->avatar : 'user';
+			return ($this->_avatar != '') ? $this->_avatar : 'user';
 		}
 		
 		/**
@@ -1448,13 +1355,13 @@
 			if ($email !== null) $crit->addUpdate(TBGUsersTable::EMAIL, $email);
 			if ($uname !== null) $crit->addUpdate(TBGUsersTable::UNAME, $uname);
 			
-			$res = TBGUsersTable::getTable()->doUpdateById($crit, $this->uid);
+			$res = TBGUsersTable::getTable()->doUpdateById($crit, $this->_id);
 			
-			if ($realname !== null) $this->realname = $realname;
-			if ($buddyname !== null) $this->buddyname = $buddyname;
-			if ($homepage !== null) $this->homepage = $homepage;
-			if ($email !== null) $this->email = $email;
-			if ($uname !== null) $this->uname = $uname;
+			if ($realname !== null) $this->_realname = $realname;
+			if ($buddyname !== null) $this->_buddyname = $buddyname;
+			if ($homepage !== null) $this->_homepage = $homepage;
+			if ($email !== null) $this->_email = $email;
+			if ($uname !== null) $this->_username = $uname;
 		}
 
 		/**
@@ -1464,7 +1371,7 @@
 		 */
 		public function setEmail($email)
 		{
-			$this->email = $email;
+			$this->_email = $email;
 		}
 
 		/**
@@ -1474,7 +1381,7 @@
 		 */
 		public function setRealname($realname)
 		{
-			$this->realname = $realname;
+			$this->_realname = $realname;
 		}
 
 		/**
@@ -1484,7 +1391,7 @@
 		 */
 		public function setBuddyname($buddyname)
 		{
-			$this->buddyname = $buddyname;
+			$this->_buddyname = $buddyname;
 		}
 
 		/**
@@ -1499,7 +1406,7 @@
 
 		public function setEnabled($val = true)
 		{
-			$this->_isenabled = $val;
+			$this->_enabled = $val;
 		}
 		
 		public function setValidated($val)
@@ -1507,7 +1414,7 @@
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGUsersTable::ACTIVATED, ($val) ? 1 : 0);
 			TBGUsersTable::getTable()->doUpdateById($crit, $this->getID());
-			$this->_isactivated = $val;
+			$this->_activated = $val;
 		}
 		
 		/**
@@ -1607,28 +1514,9 @@
 		 *
 		 * @return TBGUser The user object
 		 */
-		public function save()
+		public function postSave()
 		{
-			$crit = TBGUsersTable::getTable()->getCriteria();
-			$crit->addUpdate(TBGUsersTable::REALNAME, $this->realname);
-			$crit->addUpdate(TBGUsersTable::BUDDYNAME, $this->buddyname);
-			$crit->addUpdate(TBGUsersTable::UNAME, $this->uname);
-			$crit->addUpdate(TBGUsersTable::GROUP_ID, $this->getGroupID());
-			$crit->addUpdate(TBGUsersTable::AVATAR, $this->avatar);
-			$crit->addUpdate(TBGUsersTable::USE_GRAVATAR, (bool) $this->_use_gravatar);
-			$crit->addUpdate(TBGUsersTable::PRIVATE_EMAIL, (bool) $this->private_email);
-			$crit->addUpdate(TBGUsersTable::PASSWD, $this->pwd);
-			$crit->addUpdate(TBGUsersTable::EMAIL, $this->email);
-			$crit->addUpdate(TBGUsersTable::LANGUAGE, $this->language);
-			$crit->addUpdate(TBGUsersTable::ACTIVATED, $this->_isactivated);
-			$crit->addUpdate(TBGUsersTable::ENABLED, $this->_isenabled);
-			$crit->addUpdate(TBGUsersTable::HOMEPAGE, $this->homepage);
-
-			$res = TBGUsersTable::getTable()->doUpdateById($crit, $this->getID());
-
 			TBGSettings::saveSetting('timezone', $this->_timezone, 'core', null, $this->getID());
-
-			return true;
 		}
 
 		/**
@@ -1948,12 +1836,12 @@
 
 		public function setLanguage($language)
 		{
-			$this->language = $language;
+			$this->_language = $language;
 		}
 
 		public function getLanguage()
 		{
-			return ($this->language != '') ? $this->language : TBGContext::getI18n()->getCurrentLanguage();
+			return ($this->_language != '') ? $this->_language : TBGContext::getI18n()->getCurrentLanguage();
 		}
 
 		/**

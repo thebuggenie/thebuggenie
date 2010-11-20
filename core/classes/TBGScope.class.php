@@ -19,9 +19,11 @@
 	class TBGScope extends TBGIdentifiableClass
 	{
 		
+		protected $_b2dbtablename = 'TBGScopesTable';
+		
 		protected $_description = '';
 		
-		protected $_is_enabled = false;
+		protected $_enabled = false;
 		
 		protected $_shortname = '';
 		
@@ -42,46 +44,9 @@
 			return $scopes;
 		}
 		
-		/**
-		 * Construct a new scope
-		 *
-		 * @param integer $id
-		 * @param B2DBRow $row
-		 */
-		public function __construct($id, $row = null)
-		{
-			try
-			{
-				if ($row === null)
-				{
-					$row = TBGScopesTable::getTable()->doSelectById($id);
-				}
-			}
-			catch (Exception $e)
-			{
-				throw new Exception("There was an error setting up this scope ($id):\n" . $e->getMessage());
-			}
-			
-			if (!$row instanceof B2DBRow)
-			{
-				throw new Exception("This scope ($id) does not exist");
-			}
-			
-			$this->_itemid = $row->get(TBGScopesTable::ID);
-			$this->_description = $row->get(TBGScopesTable::DESCRIPTION);
-			$this->_is_enabled = ($row->get(TBGScopesTable::ENABLED) == 1) ? true : false;
-			$this->_hostname = $row->get(TBGScopesTable::HOSTNAME);
-			$this->_administrator = $row->get(TBGScopesTable::ADMIN);
-		}
-		
-		public function __toString()
-		{
-			return $this->getName();
-		}
-		
 		public function getID()
 		{
-			return $this->_itemid;
+			return $this->_id;
 		}
 		
 		public function getName()
@@ -93,7 +58,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGScopesTable::NAME, $name);
-			TBGScopesTable::getTable()->doUpdateById($crit, $this->_itemid);
+			TBGScopesTable::getTable()->doUpdateById($crit, $this->_id);
 			
 			$this->_name = $name;
 		}
@@ -107,22 +72,22 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGScopesTable::SHORTNAME, $shortname);
-			TBGScopesTable::getTable()->doUpdateById($crit, $this->_itemid);
+			TBGScopesTable::getTable()->doUpdateById($crit, $this->_id);
 			
 			$this->_shortname = $shortname;
 		}
 		
 		public function isEnabled()
 		{
-			return $this->_is_enabled;
+			return $this->_enabled;
 		}
 		
 		public function setEnabled($enabled)
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGScopesTable::ENABLED, $enabled);
-			TBGScopesTable::getTable()->doUpdateById($crit, $this->_itemid);
-			$this->_is_enabled = ($enabled == 1) ? true : false;
+			TBGScopesTable::getTable()->doUpdateById($crit, $this->_id);
+			$this->_enabled = ($enabled == 1) ? true : false;
 		}
 		
 		public function getDescription()
@@ -134,7 +99,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGScopesTable::DESCRIPTION, $description);
-			TBGScopesTable::getTable()->doUpdateById($crit, $this->_itemid);
+			TBGScopesTable::getTable()->doUpdateById($crit, $this->_id);
 			
 			$this->_description = $description;
 		}
@@ -176,11 +141,11 @@
 		{
 			$adminuser = TBGContext::factory()->TBGUser($uid);
 			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGScopesTable::ADMIN, $uid);
-			$res = TBGScopesTable::getTable()->doUpdateById($crit, $this->_itemid);
+			$crit->addUpdate(TBGScopesTable::ADMINISTRATOR, $uid);
+			$res = TBGScopesTable::getTable()->doUpdateById($crit, $this->_id);
 			$this->_administrator = $adminuser;
 			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGGroupsTable::SCOPE, $this->_itemid);
+			$crit->addWhere(TBGGroupsTable::SCOPE, $this->_id);
 			$crit->addOrderBy(TBGScopesTable::ID, B2DBCriteria::SORT_ASC);
 			$adminuser->setGroup(TBGGroupsTable::getTable()->doSelectOne($crit)->get(TBGGroupsTable::ID));
 			foreach ($adminuser->getTeams() as $aTeam)
@@ -249,11 +214,8 @@
 			TBGWorkflowIssuetypeTable::getTable()->loadFixtures($scope_id);
 		}
 
-		public function save()
+		public function postSave()
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGScopesTable::HOSTNAME, $this->_hostname);
-			TBGScopesTable::getTable()->doUpdateById($crit, $this->_itemid);
 			TBGSettings::saveSetting('url_host', $this->_hostname, 'core', $this->getID());
 		}
 		

@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGVotesTable extends B2DBTable 
+	class TBGVotesTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'votes';

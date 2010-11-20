@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGIssueFieldsTable extends B2DBTable 
+	class TBGIssueFieldsTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'issuefields';

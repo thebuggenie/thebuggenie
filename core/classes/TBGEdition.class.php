@@ -116,7 +116,7 @@
 			}
 			if ($row instanceof B2DBRow)
 			{
-				$this->_itemid = $e_id;
+				$this->_id = $e_id;
 				$this->_name = $row->get(TBGEditionsTable::NAME);
 				$this->_isdefault = (bool) $row->get(TBGEditionsTable::IS_DEFAULT);
 				$this->_locked = (bool) $row->get(TBGEditionsTable::LOCKED);

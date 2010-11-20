@@ -1,6 +1,6 @@
 <?php
 
-	class TBGMessagesTable extends B2DBTable 
+	class TBGMessagesTable extends TBGB2DBTable 
 	{
 		const B2DBNAME = 'messages';
 		const ID = 'messages.id';

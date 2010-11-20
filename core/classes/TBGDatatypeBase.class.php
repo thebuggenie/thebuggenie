@@ -51,8 +51,6 @@
 		 */
 		protected $_sortorder = null;
 
-		abstract function __construct($item_id, $row = null);
-		
 		public function getName()
 		{
 			return $this->_name;
@@ -70,7 +68,7 @@
 
 		public function getID()
 		{
-			return $this->_itemid;
+			return $this->_id;
 		}
 
 		/**

@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGBuildsTable extends B2DBTable 
+	class TBGBuildsTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'builds';

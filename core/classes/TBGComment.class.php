@@ -63,7 +63,7 @@
 				$crit->addWhere(TBGCommentsTable::SCOPE, TBGContext::getScope()->getID());
 				$row = TBGCommentsTable::getTable()->doSelectById($c_id, $crit);
 			}
-			$this->_itemid = $row->get(TBGCommentsTable::ID);
+			$this->_id = $row->get(TBGCommentsTable::ID);
 			$this->_name = $row->get(TBGCommentsTable::TITLE);
 			$this->_content = $row->get(TBGCommentsTable::CONTENT);
 			$this->_posted = $row->get(TBGCommentsTable::POSTED);
@@ -311,7 +311,7 @@
 		
 		public function getID()
 		{
-			return $this->_itemid;
+			return $this->_id;
 		}
 		
 		/**

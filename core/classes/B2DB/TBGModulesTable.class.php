@@ -16,13 +16,12 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGModulesTable extends B2DBTable
+	class TBGModulesTable extends TBGB2DBTable
 	{
 		const B2DBNAME = 'modules';
 		const ID = 'modules.id';
-		const MODULE_NAME = 'modules.module_name';
+		const MODULE_NAME = 'modules.name';
 		const MODULE_LONGNAME = 'modules.module_longname';
-		const DESC = 'modules.module_desc';
 		const ENABLED = 'modules.enabled';
 		const VERSION = 'modules.version';
 		const CLASSNAME = 'modules.classname';
@@ -41,7 +40,6 @@
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
-			
 			parent::_addVarchar(self::MODULE_NAME, 50);
 			parent::_addBoolean(self::ENABLED);
 			parent::_addVarchar(self::VERSION, 10);

@@ -1,6 +1,6 @@
 <?php
 
-	class TBGSavedSearchFiltersTable extends B2DBTable
+	class TBGSavedSearchFiltersTable extends TBGB2DBTable
 	{
 		const B2DBNAME = 'savedsearchfilters';
 		const ID = 'savedsearchfilters.id';

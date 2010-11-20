@@ -69,7 +69,7 @@
 					$this->cliEcho("ID: {$issue->id} ", 'yellow');
 					if (strtolower($options['state']) == 'all')
 					{
-						$this->cliEcho(($issue->state == TBGIssue::STATE_OPEN) ? "[open] " : "[closed] ");
+						$this->cliEcho(($issue->_userstate == TBGIssue::STATE_OPEN) ? "[open] " : "[closed] ");
 					}
 					$this->cliEcho($issue->issue_no, 'green', 'bold');
 					$this->cliEcho(" - ");

@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGComponentAssigneesTable extends B2DBTable 
+	class TBGComponentAssigneesTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'componentassignees';

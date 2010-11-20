@@ -45,7 +45,7 @@
 			{
 				$this->_itemdata = $row->get(TBGUserStateTable::COLOR);
 				$this->_name = $row->get(TBGUserStateTable::STATE_NAME);
-				$this->_itemid = $us_id;
+				$this->_id = $us_id;
 				$this->_is_absent = ($row->get(TBGUserStateTable::ABSENT) == 1) ? true : false;
 				$this->_is_online = ($row->get(TBGUserStateTable::ONLINE) == 1) ? true : false;
 				$this->_is_unavailable = ($row->get(TBGUserStateTable::UNAVAILABLE) == 1) ? true : false;

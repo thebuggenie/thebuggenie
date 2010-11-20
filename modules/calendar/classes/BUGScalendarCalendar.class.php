@@ -16,7 +16,7 @@
 			{
 				$id = B2DB::getTable('TBGCalendarsTable')->doSelectById($id);
 			}
-			$this->_itemid = $id->get(TBGCalendarsTable::ID);
+			$this->_id = $id->get(TBGCalendarsTable::ID);
 			$this->_name = $id->get(TBGCalendarsTable::NAME);
 			$this->_itemtype = 0;
 			$this->_user = TBGContext::factory()->TBGUser($id->get(TBGCalendarsTable::UID));
@@ -46,7 +46,7 @@
 		
 		public function getID()
 		{
-			return $this->_itemid;
+			return $this->_id;
 		}
 		
 		public function getName()

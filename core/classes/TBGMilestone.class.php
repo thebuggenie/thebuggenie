@@ -208,7 +208,7 @@
 			if ($row instanceof B2DBRow)
 			{
 				$this->_name = $row->get(TBGMilestonesTable::NAME);
-				$this->_itemid = $row->get(TBGMilestonesTable::ID);
+				$this->_id = $row->get(TBGMilestonesTable::ID);
 				$this->_itemtype = $row->get(TBGMilestonesTable::MILESTONE_TYPE);
 				$this->_isvisible = (bool) $row->get(TBGMilestonesTable::VISIBLE);
 				$this->_isscheduled = (bool) $row->get(TBGMilestonesTable::SCHEDULED);

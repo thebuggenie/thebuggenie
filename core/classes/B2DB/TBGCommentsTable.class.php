@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGCommentsTable extends B2DBTable 
+	class TBGCommentsTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'comments';

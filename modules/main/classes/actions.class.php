@@ -406,7 +406,7 @@
 			$row = TBGUsersTable::getTable()->getByUsername($request->getParameter('user'));
 			if ($row)
 			{
-				if ($row->get(TBGUsersTable::PASSWD) != $request->getParameter('key'))
+				if ($row->get(TBGUsersTable::PASSWORD) != $request->getParameter('key'))
 				{
 					TBGContext::setMessage('account_activate', true);
 					TBGContext::setMessage('activate_failure', true);

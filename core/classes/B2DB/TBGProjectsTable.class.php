@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGProjectsTable extends B2DBTable 
+	class TBGProjectsTable extends TBGB2DBTable 
 	{
 		const B2DBNAME = 'projects';
 		const ID = 'projects.id';
@@ -27,31 +27,22 @@
 		const USE_PREFIX = 'projects.use_prefix';
 		const USE_SCRUM = 'projects.use_scrum';
 		const HOMEPAGE = 'projects.homepage';
-		const OWNED_BY = 'projects.owned_by';
-		const OWNED_TYPE = 'projects.owned_type';
-		const LEAD_BY = 'projects.lead_by';
-		const LEAD_TYPE = 'projects.lead_type';
-		const TIME_UNIT = 'projects.time_unit';
-		const HRS_PR_DAY = 'projects.hrs_pr_day';
+		const OWNER = 'projects.owner';
+		const OWNER_TYPE = 'projects.owner_type';
+		const LEAD_BY = 'projects.leader';
+		const LEAD_TYPE = 'projects.leader_type';
 		const DESCRIPTION = 'projects.description';
 		const DOC_URL = 'projects.doc_url';
-		const ENABLE_TASKS = 'projects.enable_tasks';
-		const IS_DEFAULT = 'projects.is_default';
-		const DEFAULT_STATUS = 'projects.default_status';
 		const ENABLE_BUILDS = 'projects.enable_builds';
 		const ENABLE_EDITIONS = 'projects.enable_editions';
 		const ENABLE_COMPONENTS = 'projects.enable_components';
 		const SHOW_IN_SUMMARY = 'projects.show_in_summary';
 		const SUMMARY_DISPLAY = 'projects.summary_display';
-		const VOTES = 'projects.votes';
-		const QA = 'projects.qa';
-		const QA_TYPE = 'projects.qa_type';
-		const RELEASED = 'projects.released';
-		const RELEASE_DATE = 'projects.release_date';
+		const QA = 'projects.qa_responsible';
+		const QA_TYPE = 'projects.qa_responsible_type';
 		const LOCKED = 'projects.locked';
-		const PLANNED_RELEASE = 'projects.planned_release';
 		const DELETED = 'projects.deleted';
-		const ALLOW_CHANGING_WITHOUT_WORKING = 'projects.allow_changing_wo_working';
+		const ALLOW_CHANGING_WITHOUT_WORKING = 'projects.allow_freelancing';
 		const WORKFLOW_SCHEME_ID = 'projects.workflow_scheme_id';
 
 		/**
@@ -73,30 +64,21 @@
 			parent::_addBoolean(self::USE_PREFIX);
 			parent::_addBoolean(self::USE_SCRUM);
 			parent::_addVarchar(self::HOMEPAGE, 200, '');
-			parent::_addInteger(self::OWNED_BY, 10);
-			parent::_addInteger(self::OWNED_TYPE, 3);
+			parent::_addInteger(self::OWNER, 10);
+			parent::_addInteger(self::OWNER_TYPE, 3);
 			parent::_addInteger(self::LEAD_BY, 10);
 			parent::_addInteger(self::LEAD_TYPE, 3);
-			parent::_addInteger(self::TIME_UNIT, 3);
-			parent::_addInteger(self::HRS_PR_DAY, 2);
 			parent::_addText(self::DESCRIPTION, false);
 			parent::_addVarchar(self::DOC_URL, 200, '');
-			parent::_addBoolean(self::ENABLE_TASKS);
-			parent::_addBoolean(self::IS_DEFAULT);
 			parent::_addBoolean(self::ALLOW_CHANGING_WITHOUT_WORKING);
-			parent::_addForeignKeyColumn(self::DEFAULT_STATUS, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
 			parent::_addBoolean(self::ENABLE_BUILDS);
 			parent::_addBoolean(self::ENABLE_EDITIONS);
 			parent::_addBoolean(self::ENABLE_COMPONENTS);
 			parent::_addBoolean(self::SHOW_IN_SUMMARY, true);
 			parent::_addVarchar(self::SUMMARY_DISPLAY, 15, 'issuetypes');
-			parent::_addBoolean(self::VOTES);
 			parent::_addInteger(self::QA, 10);
 			parent::_addInteger(self::QA_TYPE, 3);
-			parent::_addBoolean(self::RELEASED);
-			parent::_addInteger(self::RELEASE_DATE, 10);
 			parent::_addBoolean(self::LOCKED);
-			parent::_addBoolean(self::PLANNED_RELEASE);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::WORKFLOW_SCHEME_ID, TBGWorkflowSchemesTable::getTable(), TBGWorkflowSchemesTable::ID);
 			parent::_addBoolean(self::DELETED);

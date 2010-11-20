@@ -16,12 +16,12 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGGroupsTable extends B2DBTable 
+	class TBGGroupsTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'groups';
 		const ID = 'groups.id';
-		const GNAME = 'groups.gname';
+		const NAME = 'groups.name';
 		const SCOPE = 'groups.scope';
 
 		/**
@@ -38,7 +38,7 @@
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			
-			parent::_addVarchar(self::GNAME, 50);
+			parent::_addVarchar(self::NAME, 50);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
@@ -47,18 +47,18 @@
 			$i18n = TBGContext::getI18n();
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::GNAME, $i18n->__('Administrators'));
+			$crit->addInsert(self::NAME, $i18n->__('Administrators'));
 			$crit->addInsert(self::SCOPE, $scope);
 			$admin_group_id = $this->doInsert($crit)->getInsertID();
 			TBGSettings::saveSetting('admingroup', $admin_group_id, 'core', $scope);
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::GNAME, $i18n->__('Regular users'));
+			$crit->addInsert(self::NAME, $i18n->__('Regular users'));
 			$crit->addInsert(self::SCOPE, $scope);
 			$users_group_id = $this->doInsert($crit)->getInsertID();
 
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::GNAME, $i18n->__('Guests'));
+			$crit->addInsert(self::NAME, $i18n->__('Guests'));
 			$crit->addInsert(self::SCOPE, $scope);
 			$guest_group_id = $this->doInsert($crit)->getInsertID();
 
@@ -79,7 +79,7 @@
 		public function doesGroupNameExist($group_name)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::GNAME, $group_name);
+			$crit->addWhere(self::NAME, $group_name);
 			
 			return (bool) $this->doCount($crit);
 		}

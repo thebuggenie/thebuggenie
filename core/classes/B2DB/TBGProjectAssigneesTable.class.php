@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGProjectAssigneesTable extends B2DBTable 
+	class TBGProjectAssigneesTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'projectassignees';

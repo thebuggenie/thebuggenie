@@ -1,6 +1,6 @@
 <?php
 
-	class TBGMessageFoldersTable extends B2DBTable 
+	class TBGMessageFoldersTable extends TBGB2DBTable 
 	{
 		const B2DBNAME = 'messagefolders';
 		const ID = 'messagefolders.id';

@@ -150,7 +150,7 @@
 			if ($row instanceof B2DBRow)
 			{
 				$this->_name 				= $row->get(TBGBuildsTable::NAME);
-				$this->_itemid 				= $b_id;
+				$this->_id 				= $b_id;
 				$this->_isdefault 			= (bool) $row->get(TBGBuildsTable::IS_DEFAULT);
 				$this->_isreleased 			= (bool) $row->get(TBGBuildsTable::RELEASED);
 				$this->_locked 				= (bool) $row->get(TBGBuildsTable::LOCKED);

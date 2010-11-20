@@ -270,7 +270,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGArticlesTable::SCOPE, TBGContext::getScope()->getID());
-			$crit->addWhere(TBGArticlesTable::ARTICLE_NAME, 'Category:%', B2DBCriteria::DB_NOT_LIKE);
+			$crit->addWhere(TBGArticlesTable::NAME, 'Category:%', B2DBCriteria::DB_NOT_LIKE);
 			
 			$crit->addOrderBy(TBGArticlesTable::DATE, 'desc');
 			

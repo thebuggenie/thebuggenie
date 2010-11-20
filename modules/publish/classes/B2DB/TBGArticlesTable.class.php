@@ -1,20 +1,14 @@
 <?php
 
-	class TBGArticlesTable extends B2DBTable 
+	class TBGArticlesTable extends TBGB2DBTable 
 	{
 		const B2DBNAME = 'articles';
 		const ID = 'articles.id';
-		const TITLE = 'articles.title';
-		const ARTICLE_NAME = 'articles.article_name';
+		const NAME = 'articles.name';
 		const CONTENT = 'articles.content';
-		const LINK = 'articles.link';
-		const DELETED = 'articles.deleted';
 		const IS_PUBLISHED = 'articles.is_published';
 		const DATE = 'articles.date';
-		const INTRO_TEXT = 'articles.intro_text';
 		const AUTHOR = 'articles.author';
-		const ORDER = 'articles.order';
-		const ICON = 'articles.icon';
 		const SCOPE = 'articles.scope';
 		
 		/**
@@ -30,16 +24,10 @@
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addVarchar(self::TITLE, 255);
-			parent::_addVarchar(self::ARTICLE_NAME, 255);
-			parent::_addText(self::INTRO_TEXT, false);
+			parent::_addVarchar(self::NAME, 255);
 			parent::_addText(self::CONTENT, false);
-			parent::_addText(self::LINK, false);
 			parent::_addBoolean(self::IS_PUBLISHED);
-			parent::_addBoolean(self::DELETED);
 			parent::_addInteger(self::DATE, 10);
-			parent::_addInteger(self::ORDER, 5);
-			parent::_addVarchar(self::ICON, 50, '');
 			parent::_addForeignKeyColumn(self::AUTHOR, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
@@ -48,7 +36,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addOrderBy(self::ARTICLE_NAME);
+			$crit->addOrderBy(self::NAME);
 
 			$res = $this->doSelect($crit);
 			$articles = array();
@@ -68,7 +56,7 @@
 		public function getArticleByName($name)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ARTICLE_NAME, $name);
+			$crit->addWhere(self::NAME, $name);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$row = $this->doSelectOne($crit);
 
@@ -78,7 +66,7 @@
 		public function deleteArticleByName($name)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ARTICLE_NAME, $name);
+			$crit->addWhere(self::NAME, $name);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->setLimit(1);
 			$row = $this->doDelete($crit);
@@ -109,7 +97,7 @@
 		public function doesNameConflictExist($name, $id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ARTICLE_NAME, $name);
+			$crit->addWhere(self::NAME, $name);
 			$crit->addWhere(self::ID, $id, B2DBCriteria::DB_NOT_EQUALS);
 
 			return (bool) ($res = $this->doSelect($crit));
@@ -121,7 +109,7 @@
 			$crit = $this->getCriteria();
 			if ($id == null)
 			{
-				$crit->addInsert(self::ARTICLE_NAME, $name);
+				$crit->addInsert(self::NAME, $name);
 				$crit->addInsert(self::CONTENT, $content);
 				$crit->addInsert(self::IS_PUBLISHED, (bool) $published);
 				$crit->addInsert(self::AUTHOR, $author);
@@ -132,7 +120,7 @@
 			}
 			else
 			{
-				$crit->addUpdate(self::ARTICLE_NAME, $name);
+				$crit->addUpdate(self::NAME, $name);
 				$crit->addUpdate(self::CONTENT, $content);
 				$crit->addUpdate(self::IS_PUBLISHED, (bool) $published);
 				$crit->addUpdate(self::AUTHOR, $author);

@@ -178,7 +178,7 @@
 											}
 											else
 											{
-												$article->save(array(), $request->getParameter('change_reason'));
+												$article->doSave(array(), $request->getParameter('change_reason'));
 												TBGContext::setMessage('publish_article_message', TBGContext::getI18n()->__('The article was saved'));
 												$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $article->getName())));
 											}

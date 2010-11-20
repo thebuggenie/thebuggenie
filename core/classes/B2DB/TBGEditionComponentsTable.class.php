@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGEditionComponentsTable extends B2DBTable 
+	class TBGEditionComponentsTable extends TBGB2DBTable 
 	{
 
 		const B2DBNAME = 'editioncomponents';

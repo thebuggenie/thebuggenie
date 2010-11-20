@@ -23,7 +23,7 @@
 			{
 				$id = B2DB::getTable('TBGCalendarTasksTable')->doSelectById($id);
 			}
-			$this->_itemid = $id->get(TBGCalendarTasksTable::ID);
+			$this->_id = $id->get(TBGCalendarTasksTable::ID);
 			$this->_name = $id->get(TBGCalendarTasksTable::TITLE);
 			$this->_itemtype = $id->get(TBGCalendarTasksTable::ITEMTYPE);
 			$this->_description = $id->get(TBGCalendarTasksTable::DESCRIPTION);
@@ -143,7 +143,7 @@
 		
 		public function getID()
 		{
-			return $this->_itemid;
+			return $this->_id;
 		}
 		
 		public function getName()

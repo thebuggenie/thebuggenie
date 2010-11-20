@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGWorkflowTransitionsTable extends B2DBTable
+	class TBGWorkflowTransitionsTable extends TBGB2DBTable
 	{
 
 		const B2DBNAME = 'workflow_transitions';
@@ -75,14 +75,6 @@
 				$crit->addInsert(self::TEMPLATE, $transition['template']);
 				$this->doInsert($crit);
 			}
-		}
-
-		public function getByID($id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
-			$row = $this->doSelectById($id, $crit, false);
-			return $row;
 		}
 
 		public function createNew($workflow_id, $name, $description, $to_step_id, $template, $scope = null)

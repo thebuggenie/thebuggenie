@@ -2593,21 +2593,8 @@
 				$this->_addChangedProperty('_estimatedmonths', 0);
 				$this->_addChangedProperty('_estimatedweeks', 0);
 				$this->_addChangedProperty('_estimateddays', 0);
-				if ($this->getProject()->getTimeUnit() == TBGProject::TIME_UNIT_HOURS)
-				{
-					$this->_addChangedProperty('_estimatedpoints', 0);
-					$this->_addChangedProperty('_estimatedhours', (int) $time);
-				}
-				elseif ($this->getProject()->getTimeUnit() == TBGProject::TIME_UNIT_POINTS)
-				{
-					$this->_addChangedProperty('_estimatedhours', 0);
-					$this->_addChangedProperty('_estimatedpoints', (int) $time);
-				}
-				else
-				{
-					$this->_addChangedProperty('_estimatedhours', 0);
-					$this->_addChangedProperty('_estimatedpoints', 0);
-				}
+				$this->_addChangedProperty('_estimatedhours', 0);
+				$this->_addChangedProperty('_estimatedpoints', 0);
 			}
 			else
 			{
@@ -4681,15 +4668,6 @@
 				$days_spent = 0;
 				$hours_spent = 0;
 				$time_spent = ceil($time_spent / 3600);
-				if ($time_spent >= $this->getProject()->getHoursPerDay())
-				{
-					$days_spent = 1 + (int) floor($time_spent / 24);
-					if ($days_spent >= 7)
-					{
-						$weeks_spent = floor($days_spent / 7);
-						$days_spent -= ($weeks_spent * 7);
-					}
-				}
 				$hours_spent = $time_spent - ($days_spent * 24);
 				if ($hours_spent < 0) $hours_spent = 0;
 				$this->_addChangedProperty('_spenthours', $this->_spenthours + $hours_spent);

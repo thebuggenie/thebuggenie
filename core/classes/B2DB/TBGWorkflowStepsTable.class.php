@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGWorkflowStepsTable extends B2DBTable
+	class TBGWorkflowStepsTable extends TBGB2DBTable
 	{
 
 		const B2DBNAME = 'workflow_steps';

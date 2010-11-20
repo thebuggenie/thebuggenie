@@ -133,16 +133,6 @@
 		<tr>
 			<td class="config_explanation" colspan="2"><?php echo __('Whether or not developers can change details on an issue without marking themselves as working on the issue'); ?></td>
 		</tr>
-		<?php /* <tr>
-			<td><label for="hrs_pr_day"><?php echo __('Hours per day'); ?></label></td>
-			<td>
-				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-					<input type="text" name="hrs_pr_day" id="hrs_pr_day" style="width: 50px;" value="<?php echo $project->getHoursPerDay(); ?>">
-				<?php else: ?>
-					<?php echo $project->getHoursPerDay(); ?>
-				<?php endif; ?>
-			</td>
-		</tr> */ ?>
 		<tr>
 			<td><label for="released"><?php echo __('Released'); ?></label></td>
 			<td>

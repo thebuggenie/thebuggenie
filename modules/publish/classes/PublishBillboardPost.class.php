@@ -18,7 +18,7 @@
 			{
 				$id = B2DB::getTable('TBGBillboardPostsTable')->doSelectById($id);
 			}
-			$this->_itemid = $id->get(TBGBillboardPostsTable::ID);
+			$this->_id = $id->get(TBGBillboardPostsTable::ID);
 			
 			$this->_name = $id->get(TBGBillboardPostsTable::TITLE);
 			$this->title = $this->_name;
@@ -51,7 +51,7 @@
 		
 		public function delete()
 		{
-			B2DB::getTable('TBGBillboardPostsTable')->doDeleteById($this->_itemid);
+			B2DB::getTable('TBGBillboardPostsTable')->doDeleteById($this->_id);
 		}
 		
 	}

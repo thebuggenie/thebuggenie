@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGWorkflowIssuetypeTable extends B2DBTable
+	class TBGWorkflowIssuetypeTable extends TBGB2DBTable
 	{
 
 		const B2DBNAME = 'workflow_issuetype';

@@ -188,7 +188,7 @@
 			}
 			if ($row instanceof B2DBRow)
 			{
-				$this->_itemid = $row->get(TBGCustomFieldsTable::ID);
+				$this->_id = $row->get(TBGCustomFieldsTable::ID);
 				$this->_itemtype = $row->get(TBGCustomFieldsTable::FIELD_TYPE);
 				$this->_name = $row->get(TBGCustomFieldsTable::FIELD_NAME);
 				$this->_key = $row->get(TBGCustomFieldsTable::FIELD_KEY);
@@ -319,7 +319,7 @@
 		 */
 		public function save()
 		{
-			B2DB::getTable('TBGCustomFieldsTable')->saveById($this->_name, $this->_description, $this->_instructions, $this->_itemid);
+			B2DB::getTable('TBGCustomFieldsTable')->saveById($this->_name, $this->_description, $this->_instructions, $this->_id);
 		}
 
 		/**

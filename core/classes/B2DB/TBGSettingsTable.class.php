@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGSettingsTable extends B2DBTable 
+	class TBGSettingsTable extends TBGB2DBTable 
 	{
 		const B2DBNAME = 'settings';
 		const ID = 'settings.id';

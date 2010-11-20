@@ -18,15 +18,20 @@
 	 */
 	class TBGIssuetype extends TBGDatatype 
 	{
+		
+		protected $_b2dbtablename = 'TBGIssueTypesTable';
+		
 		/**
 		 * If true, is the default issue type when promoting tasks to issues
 		 *
 		 * @var boolean
 		 * @access protected
 		 */
-		protected $_istask;
+		protected $_task;
 		
-		protected $_appliesto;
+		protected $_itemtype = TBGDatatype::ISSUETYPE;
+		
+		protected $_applies_to;
 		
 		protected $_description;
 		
@@ -85,43 +90,6 @@
 			return null;
 		}
 
-		/**
-		 * Constructor function
-		 *
-		 * @param integer $i_id
-		 * @param integer $item_type Must always be ISSUETYPE
-		 */
-		public function __construct($i_id, $row = null)
-		{
-			try
-			{
-				if ($row === null)
-				{
-					$row = TBGIssueTypesTable::getTable()->doSelectById($i_id);
-				}
-				if ($row instanceof B2DBRow)
-				{
-					$this->_itemid = $i_id;
-					$this->_appliesto = ($row->get(TBGIssueTypesTable::APPLIES_TO) != 0) ? TBGContext::factory()->TBGProject($row->get(TBGIssueTypesTable::APPLIES_TO)) : null;
-					$this->_itemdata = $row->get(TBGIssueTypesTable::ICON);
-					$this->_description = $row->get(TBGIssueTypesTable::DESCRIPTION);
-					$this->_reportable = (bool) $row->get(TBGIssueTypesTable::IS_REPORTABLE);
-					$this->_itemtype = TBGDatatype::ISSUETYPE;
-					$this->_name = $row->get(TBGIssueTypesTable::NAME);
-					$this->_istask = ($row->get(TBGIssueTypesTable::ICON) == 'task') ? true : false;
-					$this->_redirect_after_reporting = (bool) $row->get(TBGIssueTypesTable::REDIRECT_AFTER_REPORTING);
-				}
-				else
-				{
-					throw new Exception('This issue type does not exist');
-				}
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
-		}
-
 		protected function _populateVisibleFields()
 		{
 			if ($this->_visiblefields === null)
@@ -156,7 +124,7 @@
 		 */
 		public function isTask()
 		{
-			return (bool) $this->_istask;
+			return (bool) $this->_task;
 		}
 
 		/**
@@ -227,11 +195,6 @@
 			B2DB::getTable('TBGIssueFieldsTable')->addFieldAndDetailsByIssuetypeID($this->getID(), $key, $details);
 		}
 
-		public function save()
-		{
-			TBGIssueTypesTable::getTable()->saveDetails($this);
-		}
-
 		static function getTask()
 		{
 			try
@@ -262,7 +225,7 @@
 		 */
 		public function getAppliesTo()
 		{
-			return $this->_appliesto;
+			return $this->_applies_to;
 		}
 		
 		/**
@@ -272,7 +235,7 @@
 		 */
 		public function appliesToProject()
 		{
-			return ($this->_appliesto == null) ? false : true;
+			return ($this->_applies_to == null) ? false : true;
 		}
 		
 		public static function getAllApplicableToProject($p_id)

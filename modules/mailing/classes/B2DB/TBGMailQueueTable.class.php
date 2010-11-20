@@ -1,6 +1,6 @@
 <?php
 
-	class TBGMailQueueTable extends B2DBTable
+	class TBGMailQueueTable extends TBGB2DBTable
 	{
 		const B2DBNAME = 'mailing_queue';
 		const ID = 'mailing_queue.id';

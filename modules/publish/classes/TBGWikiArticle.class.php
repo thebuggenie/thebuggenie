@@ -3,6 +3,8 @@
 	class TBGWikiArticle extends TBGIdentifiableClass
 	{
 
+		protected $_b2dbtablename = 'TBGArticlesTable';
+		
 		/**
 		 * The article author
 		 *
@@ -15,7 +17,7 @@
 		 *
 		 * @var integer
 		 */
-		protected $_posted_date = null;
+		protected $_date = null;
 
 		/**
 		 * The article name
@@ -23,20 +25,6 @@
 		 * @var string
 		 */
 		protected $_name = null;
-
-		/**
-		 * The article title
-		 * 
-		 * @var string
-		 */
-		protected $_title = null;
-
-		/**
-		 * The article intro
-		 *
-		 * @var string
-		 */
-		protected $_intro_text = null;
 
 		/**
 		 * The old article content, used for history when saving
@@ -100,37 +88,12 @@
 		/**
 		 * Article constructor
 		 *
-		 * @param integer $id
-		 * @param B2DBrow $row[optional]
+		 * @param B2DBrow $row
 		 */
-		public function __construct($id = null, $row = null)
+		public function _construct(B2DBRow $row)
 		{
-			if ($id !== null)
-			{
-				if ($row === null)
-				{
-					$row = TBGArticlesTable::getTable()->doSelectById($id);
-				}
-
-				if ($row instanceof B2DBRow)
-				{
-					$this->_itemid = $row->get(TBGArticlesTable::ID);
-
-					$this->_name = $row->get(TBGArticlesTable::ARTICLE_NAME);
-
-					$this->_title = $row->get(TBGArticlesTable::TITLE);
-					$this->_intro_text = $row->get(TBGArticlesTable::INTRO_TEXT);
-					$this->_content = str_replace("\r\n", "\n", $row->get(TBGArticlesTable::CONTENT));
-					$this->_old_content = $this->_content;
-					$this->_posted_date = $row->get(TBGArticlesTable::DATE);
-					$this->_author = $row->get(TBGArticlesTable::AUTHOR);
-					$this->_is_published = ($row->get(TBGArticlesTable::IS_PUBLISHED) == 1) ? true : false;
-				}
-				else
-				{
-					throw new Exception('This article does not exist');
-				}
-			}
+			$this->_content = str_replace("\r\n", "\n", $this->_content);
+			$this->_old_content = $this->_content;
 		}
 
 		public static function getByName($article_name, $row = null)
@@ -157,7 +120,7 @@
 			$user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
 			$article_id = TBGArticlesTable::getTable()->save($name, $content, $published, $user_id, null, $scope);
 			$article = PublishFactory::article($article_id);
-			$article->save($options);
+			$article->doSave($options);
 			return $article_id;
 		}
 
@@ -363,9 +326,9 @@
 			return $this->_history;
 		}
 
-		public function save($options = array(), $reason = null)
+		public function doSave($options = array(), $reason = null)
 		{
-			if (TBGArticlesTable::getTable()->doesNameConflictExist($this->_name, $this->_itemid))
+			if (TBGArticlesTable::getTable()->doesNameConflictExist($this->_name, $this->_id))
 			{
 				if (!array_key_exists('overwrite', $options) || !$options['overwrite'])
 				{
@@ -378,7 +341,7 @@
 			{
 				TBGArticleHistoryTable::getTable()->addArticleHistory($this->_name, $this->_old_content, $this->_content, $user_id, $reason);
 			}
-			TBGArticlesTable::getTable()->save($this->_name, $this->_content, $this->_is_published, $user_id, $this->_itemid);
+			$this->save();
 
 			$this->_old_content = $this->_content;
 
@@ -406,7 +369,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGArticlesTable::IS_PUBLISHED, 0);
-			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_itemid);
+			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_id);
 			$this->is_published = false;
 		}
 
@@ -414,7 +377,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGArticlesTable::IS_PUBLISHED, 1);
-			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_itemid);
+			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_id);
 			$this->is_published = true;
 		}
 
@@ -422,7 +385,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGArticlesTable::IS_NEWS, 0);
-			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_itemid);
+			$res = TBGArticlesTable::getTable()->doUpdateById($crit, $this->_id);
 			$this->is_news = false;
 		}
 		
@@ -479,7 +442,7 @@
 
 		public function getPostedDate()
 		{
-			return $this->_posted_date;
+			return $this->_date;
 		}
 
 		/**
@@ -528,7 +491,7 @@
 			TBGArticleHistoryTable::getTable()->removeArticleRevisionsSince($this->getName(), $revision);
 			$content = TBGArticleHistoryTable::getTable()->getRevisionContentFromArticleName($this->getName(), $revision);
 			$this->setContent($content['new_content']);
-			$this->save(array('revert' => true));
+			$this->doSave(array('revert' => true));
 		}
 
 		public function setRevision($revision = null)
@@ -537,7 +500,7 @@
 			if (array_key_exists('new_content', $content))
 			{
 				$this->setContent($content['new_content']);
-				$this->_posted_date = $content['date'];
+				$this->_date = $content['date'];
 				$this->_author = $content['author'];
 			}
 			else

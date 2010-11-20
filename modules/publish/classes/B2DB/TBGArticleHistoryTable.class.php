@@ -1,6 +1,6 @@
 <?php
 
-	class TBGArticleHistoryTable extends B2DBTable
+	class TBGArticleHistoryTable extends TBGB2DBTable
 	{
 		const B2DBNAME = 'articlehistory';
 		const ID = 'articlehistory.id';

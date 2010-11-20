@@ -42,7 +42,7 @@
 		 */
 		public function __construct($t_id, $row = null)
 		{
-			$this->_itemid = $t_id;
+			$this->_id = $t_id;
 
 			if ($row === null)
 			{
@@ -106,7 +106,7 @@
 		
 		public function getID()
 		{
-			return $this->_itemid;
+			return $this->_id;
 		}
 		
 		public function isAssigned()
@@ -182,7 +182,7 @@
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGIssueTasksTable::ASSIGNED_TO, $a_id);
 			$crit->addUpdate(TBGIssueTasksTable::ASSIGNED_TYPE, $a_type);
-			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
+			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_id);
 			$this->updateTime();
 			TBGContext::factory()->TBGIssue($this->_issue)->updateTime();
 			$this->_assignedtype = $a_type;
@@ -208,7 +208,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGIssueTasksTable::STATUS, $sid);
-			$res = B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
+			$res = B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_id);
 			$this->_status = TBGContext::factory()->datatype($sid, TBGDatatype::STATUS);
 			TBGContext::factory()->TBGIssue($this->_issue)->updateTime();
 	
@@ -226,7 +226,7 @@
 			
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGIssueTasksTable::COMPLETED, $completed);
-			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
+			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_id);
 			$this->updateTime();
 	
 			if ($completed == 1)
@@ -250,7 +250,7 @@
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGIssueTasksTable::TITLE, $newTitle);
 			$crit->addUpdate(TBGIssueTasksTable::CONTENT, $newContent);
-			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
+			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_id);
 			$this->updateTime();
 			TBGContext::factory()->TBGIssue($this->_issue)->updateTime();
 	
@@ -264,7 +264,7 @@
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGIssueTasksTable::UPDATED, $theTime);
 			$this->_updated = $theTime;
-			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_itemid);
+			B2DB::getTable('TBGIssueTasksTable')->doUpdateById($crit, $this->_id);
 		}
 		
 	}

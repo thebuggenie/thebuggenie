@@ -1,6 +1,6 @@
 <?php
 
-	class TBGCalendarTasksTable extends B2DBTable
+	class TBGCalendarTasksTable extends TBGB2DBTable
 	{
 		const B2DBNAME = 'calendartasks';
 		const ID = 'calendartasks.id';

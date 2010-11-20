@@ -53,7 +53,7 @@
 		 */
 		public function __construct($t_id, $row = null)
 		{
-			$this->_itemid = $t_id;
+			$this->_id = $t_id;
 			if ($row == null)
 			{
 				$crit = new B2DBCriteria();
@@ -105,7 +105,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addInsert(TBGTeamMembersTable::SCOPE, TBGContext::getScope()->getID());
-			$crit->addInsert(TBGTeamMembersTable::TID, $this->_itemid);
+			$crit->addInsert(TBGTeamMembersTable::TID, $this->_id);
 			$crit->addInsert(TBGTeamMembersTable::UID, $user->getID());
 			B2DB::getTable('TBGTeamMembersTable')->doInsert($crit);
 			if ($this->_members === null)
@@ -138,7 +138,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGTeamMembersTable::UID, $uid);
-			$crit->addWhere(TBGTeamMembersTable::TID, $this->_itemid);
+			$crit->addWhere(TBGTeamMembersTable::TID, $this->_id);
 			B2DB::getTable('TBGTeamMembersTable')->doDelete($crit);
 		}
 		

@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGIssuesTable extends B2DBTable 
+	class TBGIssuesTable extends TBGB2DBTable 
 	{
 		const B2DBNAME = 'issues';
 		const ID = 'issues.id';
@@ -221,7 +221,7 @@
 			if ($exclude_tasks)
 			{
 				$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
-				$crit->addWhere(TBGIssueTypesTable::IS_TASK, false);
+				$crit->addWhere(TBGIssueTypesTable::TASK, false);
 			}
 			
 			$crit2 = clone $crit;
