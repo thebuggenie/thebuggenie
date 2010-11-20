@@ -149,6 +149,10 @@
 		
 		protected function _construct(B2DBRow $row) {}
 		
+		protected function _preSave() {}
+		
+		protected function _postSave($is_new) {}
+		
 		final public function __construct($id = null, $row = null)
 		{
 			if ($id !== null)
@@ -209,7 +213,7 @@
 			$is_new = (bool) $this->_id;
 			$res_id = $this->getB2DBTable()->saveObject($this);
 			$this->_id = $res_id;
-			$this->_postSave();
+			$this->_postSave($is_new);
 		}
 
 	}

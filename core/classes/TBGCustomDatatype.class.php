@@ -2,6 +2,8 @@
 
 	class TBGCustomDatatype extends TBGIdentifiableClass
 	{
+		
+		protected $_b2dbtablename = 'TBGCustomDatatypesTable';
 
 		const DROPDOWN_CHOICE_TEXT = 1;
 		const INPUT_TEXT = 2;
@@ -104,21 +106,11 @@
 
 		}
 
-		/**
-		 * Create a new custom field / datatype
-		 *
-		 * @param string $name The datatype description
-		 * @param integer $type[optional] The type of field
-		 *
-		 * @return TBGCustomDatatype
-		 */
-		public static function createNew($name, $type = 1)
+		public function preSave()
 		{
-			$key = strtolower(str_replace(' ', '', $name));
-			$res = B2DB::getTable('TBGCustomFieldsTable')->createNew($name, $key, $type);
-			return TBGContext::factory()->TBGCustomDatatype($res->getInsertID());
+			$this->_key = strtolower(str_replace(' ', '', $name));
 		}
-
+		
 		/**
 		 * Delete a custom type by id
 		 *

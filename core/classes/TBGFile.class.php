@@ -29,23 +29,6 @@
 			return array('image/png', 'image/jpeg', 'image/jpg', 'image/bmp', 'image/gif');
 		}
 
-		/**
-		 * Create a new file and save it
-		 *
-		 * @param <type> $real_filename
-		 * @param <type> $original_filename
-		 * @param <type> $content_type
-		 * @param <type> $description
-		 * @param <type> $content
-		 *
-		 * @return TBGFile
-		 */
-		public static function createNew($real_filename, $original_filename, $content_type, $description = null, $content = null)
-		{
-			$file_id = TBGFilesTable::getTable()->saveFile($real_filename, $original_filename, $content_type, $description, $content);
-			return new TBGFile($file_id);
-		}
-
 		public function getContentType()
 		{
 			return $this->_content_type;

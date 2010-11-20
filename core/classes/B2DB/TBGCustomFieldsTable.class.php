@@ -49,19 +49,6 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
-		public function createNew($name, $key, $fieldtype = 1, $scope = null)
-		{
-			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::FIELD_NAME, $name);
-			$crit->addInsert(self::FIELD_TYPE, $fieldtype);
-			$crit->addInsert(self::FIELD_KEY, $key);
-			$crit->addInsert(self::SCOPE, $scope);
-
-			return $this->doInsert($crit);
-		}
-
 		public function getAll()
 		{
 			$crit = $this->getCriteria();

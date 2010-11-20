@@ -32,34 +32,6 @@
 			$this->_userstatus = $id->get(TBGCalendarTasksTable::STATUS);
 		}
 		
-		/**
-		 * Creates a new calendar event and returns it
-		 *
-		 * @param string $title
-		 * @param int $type
-		 * @param string $description
-		 * @param int $starts
-		 * @param int $ends
-		 * @param int $userstatus
-		 * 
-		 * @return BUGScalendarEvent 
-		 */
-		public static function createNew($title, $type, $description, $starts, $ends, $userstatus, $calendar)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGCalendarTasksTable::DESCRIPTION, $description);
-			$crit->addInsert(TBGCalendarTasksTable::STARTS, $starts);
-			$crit->addInsert(TBGCalendarTasksTable::ENDS, $ends);
-			$crit->addInsert(TBGCalendarTasksTable::ITEMTYPE, $type);
-			$crit->addInsert(TBGCalendarTasksTable::TITLE, $title);
-			$crit->addInsert(TBGCalendarTasksTable::STATUS, $userstatus);
-			$crit->addInsert(TBGCalendarTasksTable::CALENDAR, $calendar);
-			$crit->addInsert(TBGCalendarTasksTable::LOCATION, 0);
-			$crit->addInsert(TBGCalendarTasksTable::SCOPE, TBGContext::getScope()->getID());
-			$res = B2DB::getTable('TBGCalendarTasksTable')->doInsert($crit);
-			return new BUGScalendarEvent($res->getInsertID());
-		}
-		
 		public function isOnDate($period_start, $period_end)
 		{
 			if ($this->getStartDate() > $period_start && $this->getStartDate() < $period_end) return true;
@@ -165,5 +137,3 @@
 		}
 		
 	}
-
-?>

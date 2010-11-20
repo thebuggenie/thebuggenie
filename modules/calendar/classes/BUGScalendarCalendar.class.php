@@ -23,22 +23,6 @@
 			$this->_exclusive = ($id->get(TBGCalendarsTable::EXCLUSIVE) == 1) ? true : false;
 		}
 		
-		/**
-		 * Create a new calendar and return it
-		 *
-		 * @param integer $uid
-		 * @return BUGScalendarCalendar
-		 */
-		public static function createNew($uid)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGCalendarsTable::UID, $uid);
-			$crit->addInsert(TBGCalendarsTable::EXCLUSIVE, false);
-			$row = B2DB::getTable('TBGCalendarsTable')->doInsert($crit);
-			$calendar = new BUGScalendarCalendar($row->getInsertID());
-			return $calendar;
-		}
-		
 		public function __toString()
 		{
 			return $this->_name;
@@ -55,5 +39,3 @@
 		}
 		
 	}
-
-?>

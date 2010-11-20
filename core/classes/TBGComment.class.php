@@ -85,7 +85,7 @@
 			return self::$_comment_count[$target_type][$target_id];
 		}
 		
-		static function createNew($title, $content, $uid, $target_id, $target_type, $module = 'core', $is_public = true, $system_comment = false, $invoke_trigger = true)
+		/*static function createNew($title, $content, $uid, $target_id, $target_type, $module = 'core', $is_public = true, $system_comment = false, $invoke_trigger = true)
 		{
 			$commentTitle = trim($title);
 			$commentContent = trim($content);
@@ -112,14 +112,6 @@
 				{
 					TBGLogTable::getTable()->createNew($target_id, TBGLogTable::TYPE_ISSUE, TBGLogTable::LOG_COMMENT, $comment->getID(), $uid);
 				}
-				/*if ($target_type == 1 && $module == 'core')
-				{
-					try
-					{
-						TBGContext::factory()->TBGIssue((int) $target_id)->updateTime();
-					}
-					catch (Exception $e) {}
-				}*/
 				if ($invoke_trigger)
 				{
 					try
@@ -130,7 +122,7 @@
 				}
 			}
 			return $comment;
-		}
+		}*/
 	
 		static function updateComment($title, $content, $uid, $c_id, $is_public, $module, $target_type, $target_id)
 		{

@@ -53,28 +53,15 @@
 			return $this->_name;
 		}
 		
-		/**
-		 * Creates a group
-		 *
-		 * @param unknown_type $groupname
-		 * @return TBGGroup
-		 */
-		public static function createNew($groupname, $scope = null)
+		public static function postSave($is_new)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGGroupsTable::NAME, $groupname);
-			if ($scope === null)
+			if ($is_new)
 			{
-				$scope = TBGContext::getScope()->getID();
+				if (self::$_groups !== null)
+				{
+					self::$_groups[$group->getID()] = $group;
+				}
 			}
-			$crit->addInsert(TBGGroupsTable::SCOPE, $scope);
-			$res = TBGGroupsTable::getTable()->doInsert($crit);
-			$group = TBGContext::factory()->TBGGroup($res->getInsertID());
-			if (self::$_groups !== null)
-			{
-				self::$_groups[$group->getID()] = $group;
-			}
-			return $group;
 		}
 		
 		/**

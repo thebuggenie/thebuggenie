@@ -57,28 +57,15 @@
 			return $this->_id;
 		}
 		
-		/**
-		 * Creates a customer
-		 *
-		 * @param unknown_type $c_name
-		 * @return TBGCustomer
-		 */
-		public static function createNew($c_name, $scope = null)
+		public function postSave($is_new)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGCustomersTable::NAME, $c_name);
-			if ($scope === null)
+			if ($is_new)
 			{
-				$scope = TBGContext::getScope()->getID();
+				if (self::$_customers !== null)
+				{
+					self::$_customers[$this->getID()] = $this;
+				}
 			}
-			$crit->addInsert(TBGCustomerTable::SCOPE, $scope);
-			$res = B2DB::getTable('TBGCustomersTable')->doInsert($crit);
-			$customer = TBGContext::factory()->TBGCustomer($res->getInsertID());
-			if (self::$_customers !== null)
-			{
-				self::$_customers[$customer->getID()] = $customer;
-			}
-			return $customer;
 		}
 		
 		/**

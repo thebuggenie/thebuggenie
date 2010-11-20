@@ -29,19 +29,6 @@
 		}
 
 		/**
-		 * Create a new resolution
-		 *
-		 * @param string $name The status description
-		 *
-		 * @return TBGResolution
-		 */
-		public static function createNew($name)
-		{
-			$res = parent::_createNew($name, self::CATEGORY);
-			return TBGContext::factory()->TBGCategory($res->getInsertID());
-		}
-
-		/**
 		 * Delete a category id
 		 *
 		 * @param integer $id

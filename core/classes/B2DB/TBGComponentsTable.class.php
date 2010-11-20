@@ -48,17 +48,6 @@
 			parent::_addInteger(self::LEAD_TYPE, 2);
 		}
 		
-		public function createNew($name, $project_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::PROJECT, $project_id);
-			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$res = $this->doInsert($crit);
-			
-			return $res->getInsertID();
-		}
-		
 		public function getByProjectID($project_id)
 		{
 			$crit = $this->getCriteria();

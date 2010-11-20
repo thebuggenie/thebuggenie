@@ -117,28 +117,6 @@
 		}
 		
 		/**
-		 * Create a new build <b>either</b> under a project <b>or</b> under a build and return it
-		 * 
-		 * @param string $name The name of the build
-		 * @param integer $project The ID of the project the build is under
-		 * @param integer $edition The ID of the edition the build is under
-		 * @param integer $ver_mj Major version number
-		 * @param integer $ver_mn Minor version number
-		 * @param integer $ver_rev Version revision
-		 * @param integer $b_id Optional build id
-		 * 
-		 * @return TBGBuild
-		 */
-		public static function createNew($name, $project = null, $edition = null, $ver_mj = 0, $ver_mn = 0, $ver_rev = 1, $b_id = null)
-		{
-			$b_id = B2DB::getTable('TBGBuildsTable')->createNew($name, $project, $edition, $ver_mj, $ver_mn, $ver_rev, $b_id);
-			
-			TBGContext::setPermission("b2buildaccess", $b_id, "core", 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
-			
-			return TBGContext::factory()->TBGBuild($b_id);
-		}
-		
-		/**
 		 * Class constructor
 		 *
 		 * @param B2DBRow $row

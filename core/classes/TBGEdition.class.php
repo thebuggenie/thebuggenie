@@ -50,25 +50,13 @@
 						
 		static protected $_editions = null;
 		
-		/**
-		 * Creates a new TBGEdition
-		 *
-		 * @param string $e_name
-		 * @param int $p_id the project id of the project you are adding the edition to
-		 * @param int $e_id only provided if you want to specify the id
-		 * 
-		 * @return TBGEdition
-		 */
-		public static function createNew($e_name, $p_id, $e_id = null)
+		public function postSave($is_new)
 		{
-			$edition_id = B2DB::getTable('TBGEditionsTable')->createNew($e_name, $p_id, $e_id);
-			
-			TBGContext::setPermission("canseeedition", $edition_id, "core", 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
-			
-			$edition = TBGContext::factory()->TBGEdition($edition_id);
-			TBGEvent::createNew('core', 'TBGEdition::createNew', $edition)->trigger();
-
-			return $edition;
+			if ($is_new)
+			{
+				TBGContext::setPermission("canseeedition", $this->getID(), "core", 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
+				TBGEvent::createNew('core', 'TBGEdition::createNew', $this)->trigger();
+			}
 		}
 
 		/**

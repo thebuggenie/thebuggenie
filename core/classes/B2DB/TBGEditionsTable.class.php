@@ -67,18 +67,4 @@
 			return $res;
 		}
 
-		public function createNew($name, $p_id, $e_id = null)
-		{
-			$crit = $this->getCriteria();
-			if ($e_id !== null)
-			{
-				$crit->addInsert(self::ID, $e_id);
-			}
-			$crit->addInsert(self::PROJECT, $p_id);
-			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$res = $this->doInsert($crit);
-			return $res->getInsertID();
-		}
-
 	}

@@ -25,12 +25,6 @@
 		 */
 		protected $_project;
 		
-		public static function createNew($name, $project_id)
-		{
-			$c_id = B2DB::getTable('TBGComponentsTable')->createNew($name, $project_id);
-			return TBGContext::factory()->TBGComponent($c_id);
-		}
-		
 		public static function getAllByProjectID($project_id)
 		{
 			$retval = array();

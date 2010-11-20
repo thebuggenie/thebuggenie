@@ -74,35 +74,6 @@
 			return $res;
 		}
 
-		public function createNew($name, $project = null, $edition = null, $ver_mj = 0, $ver_mn = 0, $ver_rev = 1, $b_id = null)
-		{
-			$ver_mj = ((int) $ver_mj > 0) ? (int) $ver_mj : 0;
-			$ver_mn = ((int) $ver_mn > 0) ? (int) $ver_mn : 0;
-			$ver_rev = ((int) $ver_rev > 0) ? (int) $ver_rev : 0;
-
-			$crit = $this->getCriteria();
-			if ($b_id !== null)
-			{
-				$crit->addInsert(self::ID, $b_id);
-			}
-			if ($edition !== null)
-			{
-				$crit->addInsert(self::EDITION, $edition);
-			}
-			if ($project !== null)
-			{
-				$crit->addInsert(self::PROJECT, $project);
-			}
-			$crit->addInsert(self::NAME, $name);
-			$crit->addInsert(self::VERSION_MAJOR, $ver_mj);
-			$crit->addInsert(self::VERSION_MINOR, $ver_mn);
-			$crit->addInsert(self::VERSION_REVISION, $ver_rev);
-			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$res = $this->doInsert($crit);
-			
-			return ($b_id !== null) ? $b_id : $res->getInsertID();
-		}
-
 		public function getByID($id)
 		{
 			$crit = $this->getCriteria();
