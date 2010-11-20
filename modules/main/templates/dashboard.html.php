@@ -7,6 +7,7 @@
 	$tbg_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to your teams'));
 
 ?>
+<?php include_component('main/hideableInfoBox', array('key' => 'dashboard_didyouknow', 'title' => __('Did you know?'), 'content' => ('This dashboard page is accessible from anywhere. Click your username in the top right header area at any time to access your dashboard.'))); ?>
 <table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td id="dashboard_lefthand" class="side_bar">
