@@ -292,6 +292,13 @@
 		protected $_workflow_scheme_id = null;
 		
 		/**
+		 * Assigned client
+		 * 
+		 * @var TBGClient
+		 */
+		protected $_client = null;
+		
+		/**
 		 * Make a project default
 		 * 
 		 * @param $p_id integer The id for the default project
@@ -2159,6 +2166,35 @@
 		public function setWorkflowScheme(TBGWorkflowScheme $scheme)
 		{
 			$this->_workflow_scheme_id = $scheme;
+		}
+		
+		/**
+		 * Return the client assigned to the project, or null if there is none
+		 * 
+		 * @return TBGClient
+		 */
+		public function getClient()
+		{
+			if (is_numeric($this->_client))
+			{
+				try
+				{
+					$this->_client = TBGContext::factory()->TBGClient((int) $this->_client);
+				}
+				catch (Exception $e)
+				{
+					$this->_client = null;
+				}
+			}
+			return $this->_client;
+		}
+		
+		/**
+		 * Set the client
+		 */
+		public function setClient(TBGClient $client)
+		{
+			$this->_client = $client;
 		}
 
 		/**

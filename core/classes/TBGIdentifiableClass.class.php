@@ -21,6 +21,7 @@
 		
 		const TYPE_USER = 1;
 		const TYPE_TEAM = 2;
+		const TYPE_CLIENT = 3;
 	
 		/**
 		 * The id for this item, usually identified by a record in the database

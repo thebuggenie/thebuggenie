@@ -1,0 +1,103 @@
+<?php
+
+	/**
+	 * Client members table
+	 *
+	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
+	 ** @version 3.0
+	 * @license http://www.opensource.org/licenses/mozilla1.1.php Mozilla Public License 1.1 (MPL 1.1)
+	 * @package thebuggenie
+	 * @subpackage tables
+	 */
+
+	/**
+	 * Client members table
+	 *
+	 * @package thebuggenie
+	 * @subpackage tables
+	 */
+	class TBGClientMembersTable extends TBGB2DBTable 
+	{
+
+		const B2DBNAME = 'clientmembers';
+		const ID = 'clientmembers.id';
+		const SCOPE = 'clientmembers.scope';
+		const UID = 'clientmembers.uid';
+		const CID = 'clientmembers.Cid';
+		
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGClientMembersTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGClientMembersTable');
+		}
+
+		public function __construct()
+		{
+			parent::__construct(self::B2DBNAME, self::ID);
+			
+			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
+			parent::_addForeignKeyColumn(self::CID, B2DB::getTable('TBGClientsTable'), TBGClientsTable::ID);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+		}
+
+		public function getUIDsForClientID($client_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::TID, $client_id);
+
+			$uids = array();
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$uids[$row->get(self::UID)] = $row->get(self::UID);
+				}
+			}
+
+			return $uids;
+		}
+		
+		public function clearClientsByUserID($user_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::UID, $user_id);
+			$res = $this->doDelete($crit);
+		}
+
+		public function getNumberOfMembersByClientID($client_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::TID, $client_id);
+			$count = $this->doCount($crit);
+
+			return $count;
+		}
+
+		public function cloneClientMemberships($cloned_client_id, $new_client_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::TID, $cloned_client_id);
+			$memberships_to_add = array();
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$memberships_to_add[] = $row->get(self::UID);
+				}
+			}
+
+			foreach ($memberships_to_add as $uid)
+			{
+				$crit = $this->getCriteria();
+				$crit->addInsert(self::UID, $uid);
+				$crit->addInsert(self::TID, $new_client_id);
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+				$this->doInsert($crit);
+			}
+		}
+
+	}

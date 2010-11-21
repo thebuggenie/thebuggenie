@@ -31,6 +31,7 @@
 		const OWNER_TYPE = 'projects.owner_type';
 		const LEAD_BY = 'projects.leader';
 		const LEAD_TYPE = 'projects.leader_type';
+		const CLIENT = 'projects.client';
 		const DESCRIPTION = 'projects.description';
 		const DOC_URL = 'projects.doc_url';
 		const ENABLE_BUILDS = 'projects.enable_builds';
@@ -81,6 +82,7 @@
 			parent::_addBoolean(self::LOCKED);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::WORKFLOW_SCHEME_ID, TBGWorkflowSchemesTable::getTable(), TBGWorkflowSchemesTable::ID);
+			parent::_addForeignKeyColumn(self::CLIENT, TBGClientsTable::getTable(), TBGClientsTable::ID);
 			parent::_addBoolean(self::DELETED);
 		}
 		
