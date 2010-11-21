@@ -1146,16 +1146,6 @@
 		}
 		
 		/**
-		 * Returns the scope of this user
-		 *
-		 * @return TBGScope
-		 */
-		public function getScope()
-		{
-			return $this->_scope;
-		}
-		
-		/**
 		 * Returns the UID of this user
 		 *
 		 * @return integer

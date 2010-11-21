@@ -74,6 +74,10 @@
 		
 		public function getScope()
 		{
+			if (!$this->_scope instanceof TBGScope)
+			{
+				$this->_scope = TBGContext::factory()->TBGScope($this->_scope);
+			}
 			return $this->_scope;
 		}
 		
@@ -135,7 +139,6 @@
 				else
 				{
 					$property = explode('.', $column['name']);
-					if ($property[1] == 'scope') continue;
 					$property_type = $column['type'];
 					$property_name = "_".strtolower($property[1]);
 					if (!property_exists($this, $property_name))
