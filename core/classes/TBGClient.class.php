@@ -25,6 +25,34 @@
 
 		protected $_num_members = null;
 		
+		/**
+		 * Email of client
+		 * 
+		 * @param string
+		 */
+		protected $_email = null;
+		
+		/**
+		 * Telephone number of client
+		 * 
+		 * @param integer
+		 */
+		protected $_telephone = null;
+		
+		/**
+		 * URL for client website
+		 * 
+		 * @param string
+		 */
+		protected $_website = null;
+		
+		/**
+		 * Fax number of client
+		 * 
+		 * @param integer
+		 */
+		protected $_fax = null;
+		
 		protected static $_clients = null;
 		
 		public static function doesClientNameExist($client_name)
@@ -61,6 +89,86 @@
 		public function getType()
 		{
 			return self::TYPE_CLIENT;
+		}
+		
+		/**
+		 * Get the client's website
+		 * 
+		 * @return string
+		 */
+		public function getWebsite()
+		{
+			return $this->_website;
+		}
+		
+		/**
+		 * Get the client's email address
+		 * 
+		 * @return string
+		 */
+		public function getEmail()
+		{
+			return $this->_email;
+		}
+		
+		/**
+		 * Get the client's telephone number
+		 * 
+		 * @return integer
+		 */
+		public function getTelephone()
+		{
+			return $this->_telephone;
+		}
+		
+		/**
+		 * Get the client's fax number
+		 * 
+		 * @return integer
+		 */
+		public function getFax()
+		{
+			return $this->_fax;
+		}
+		
+		/**
+		 * Set the client's website
+		 * 
+		 * @param string
+		 */
+		public function setWebsite($website)
+		{
+			$this->_website = $website;
+		}
+		
+		/**
+		 * Set the client's email address
+		 * 
+		 * @param string
+		 */
+		public function setEmail($email)
+		{
+			$this->_email = $email;
+		}
+		
+		/**
+		 * Set the client's telephone number
+		 * 
+		 * @param integer
+		 */
+		public function setTelephone(int $telephone)
+		{
+			$this->_telephone = $telephone;
+		}
+		
+		/**
+		 * Set the client's fax number
+		 * 
+		 * @param integer
+		 */
+		public function setFax(int $fax)
+		{
+			$this->_fax = $fax;
 		}
 		
 		/**

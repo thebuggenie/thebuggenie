@@ -23,7 +23,7 @@
 		const ID = 'clients.id';
 		const SCOPE = 'clients.scope';
 		const NAME = 'clients.name';
-		const WEBSITE = 'cients.website';
+		const WEBSITE = 'clients.website';
 		const EMAIL = 'clients.email';
 		const TELEPHONE = 'clients.telephone';
 		const FAX = 'clients.fax';
@@ -45,8 +45,8 @@
 			parent::_addVarchar(self::NAME, 50);
 			parent::_addVarchar(self::WEBSITE, 200);
 			parent::_addVarchar(self::EMAIL, 100);
-			parent::_addInteger(self::TELEPHONE, 15);
-			parent::_addInteger(self::FAX, 15);
+			parent::_addInteger(self::TELEPHONE, 15, '', true);
+			parent::_addInteger(self::FAX, 15, '', true);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 

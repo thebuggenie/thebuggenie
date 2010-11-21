@@ -1464,6 +1464,7 @@
 		{
 			$this->groups = TBGGroup::getAll();
 			$this->teams = TBGTeam::getAll();
+			$this->clients = TBGClient::getall();
 		}
 
 		public function runDeleteGroup(TBGRequest $request)

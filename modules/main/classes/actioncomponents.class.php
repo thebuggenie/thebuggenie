@@ -25,6 +25,23 @@
 			TBGLogging::log('done (user dropdown component)');
 		}
 		
+		public function componentClientusers()
+		{
+			try
+			{
+				if (!$this->client instanceof TBGClient)
+				{
+					TBGLogging::log('loading user object in dropdown');
+					$this->client = TBGContext::factory()->TBGClient($this->client);
+					TBGLogging::log('done (loading user object in dropdown)');
+				}
+				$this->clientusers = $this->client->getMembers();
+			}
+			catch (Exception $e) 
+			{
+			}
+		}
+		
 		public function componentTeamdropdown()
 		{
 			TBGLogging::log('team dropdown component');

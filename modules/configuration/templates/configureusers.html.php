@@ -19,6 +19,7 @@
 					<li id="tab_users" class="selected"><?php echo javascript_link_tag(image_tag('cfg_icon_users.png', array('style' => 'float: left; margin-right: 5px;')) . __('Users'), array('onclick' => "switchSubmenuTab('tab_users', 'usersteamsgroups_menu');")); ?></li>
 					<li id="tab_groups"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Groups'), array('onclick' => "switchSubmenuTab('tab_groups', 'usersteamsgroups_menu');")); ?></li>
 					<li id="tab_teams"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Teams'), array('onclick' => "switchSubmenuTab('tab_teams', 'usersteamsgroups_menu');")); ?></li>
+					<li id="tab_clients"><?php echo javascript_link_tag(image_tag('cfg_icon_teamgroups.png', array('style' => 'float: left; margin-right: 5px;')) . __('Clients'), array('onclick' => "switchSubmenuTab('tab_clients', 'usersteamsgroups_menu');")); ?></li>
 				</ul>
 			</div>
 			<div id="usersteamsgroups_menu_panes">
@@ -107,6 +108,29 @@
 					<div id="teamconfig_list">
 						<?php foreach ($teams as $team): ?>
 							<?php include_template('configuration/teambox', array('team' => $team)); ?>
+						<?php endforeach; ?>
+					</div>
+				</div>
+				<div id="tab_clients_pane" style="display: none; padding-top: 0; width: 750px;">
+					<div class="rounded_box yellow borderless" style="margin-top: 5px; padding: 7px;">
+						<form id="create_client_form" action="<?php echo make_url('configure_users_add_client'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="createTeam('<?php echo make_url('configure_users_add_client'); ?>');return false;">
+							<div id="add_client">
+								<label for="client_name"><?php echo __('Create a new client'); ?></label>
+								<input type="text" id="client_name" name="client_name">
+								<input type="submit" value="<?php echo __('Create'); ?>">
+							</div>
+						</form>
+						<?php echo __('You can set other details, such as an email address or telephone number, after creating the client.'); ?>
+					</div>
+					<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="create_client_indicator">
+						<tr>
+							<td style="width: 20px; padding: 2px;"><?php echo image_tag('spinning_20.gif'); ?></td>
+							<td style="padding: 0px; text-align: left;"><?php echo __('Adding client, please wait'); ?>...</td>
+						</tr>
+					</table>
+					<div id="clientconfig_list">
+						<?php foreach ($clients as $client): ?>
+							<?php include_template('configuration/clientbox', array('client' => $client)); ?>
 						<?php endforeach; ?>
 					</div>
 				</div>

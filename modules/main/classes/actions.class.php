@@ -2302,6 +2302,10 @@
 						$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 						$template_name = 'main/issueadditem';
 						break;
+					case 'client_users':
+						$options['client'] = TBGContext::factory()->TBGClient($request->getParameter('client_id'));
+						$template_name = 'main/clientusers';
+						break;
 				}
 				if ($template_name !== null)
 				{

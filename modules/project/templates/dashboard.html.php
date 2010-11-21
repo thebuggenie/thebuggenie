@@ -19,6 +19,16 @@
 					<div class="faded_out" style="font-weight: normal;"><?php echo __('No users or teams assigned'); ?></div>
 				<?php endif; ?>
 			</div>
+			<div id="project_client">
+				<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Client'); ?>:</div>
+				<?php if ($client instanceof TBGClient): ?>
+					<div class="project_client_info rounded_box lightgrey">
+						<?php echo include_template('project/clientinfo', array('client' => $client)); ?>
+					</div>
+				<?php else: ?>
+					<div class="faded_out" style="font-weight: normal;"><?php echo __('No client assigned'); ?></div>
+				<?php endif; ?>
+			</div>
 			<div style="width: 680px; padding-right: 5px;">
 				<?php echo image_tag(make_url('project_statistics_last_30', array('project_key' => $selected_project->getKey())), array('style' => 'float: right; margin-bottom: 15px;'), true); ?>
 				<div style="clear: both; height: 30px;" class="tab_menu">

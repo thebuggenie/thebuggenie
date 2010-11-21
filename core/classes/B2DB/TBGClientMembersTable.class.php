@@ -23,7 +23,7 @@
 		const ID = 'clientmembers.id';
 		const SCOPE = 'clientmembers.scope';
 		const UID = 'clientmembers.uid';
-		const CID = 'clientmembers.Cid';
+		const CID = 'clientmembers.cid';
 		
 		/**
 		 * Return an instance of this table
@@ -47,7 +47,7 @@
 		public function getUIDsForClientID($client_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::TID, $client_id);
+			$crit->addWhere(self::CID, $client_id);
 
 			$uids = array();
 			if ($res = $this->doSelect($crit))
@@ -71,7 +71,7 @@
 		public function getNumberOfMembersByClientID($client_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::TID, $client_id);
+			$crit->addWhere(self::CID, $client_id);
 			$count = $this->doCount($crit);
 
 			return $count;
@@ -80,7 +80,7 @@
 		public function cloneClientMemberships($cloned_client_id, $new_client_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::TID, $cloned_client_id);
+			$crit->addWhere(self::CID, $cloned_client_id);
 			$memberships_to_add = array();
 			if ($res = $this->doSelect($crit))
 			{
@@ -94,7 +94,7 @@
 			{
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::UID, $uid);
-				$crit->addInsert(self::TID, $new_client_id);
+				$crit->addInsert(self::CID, $new_client_id);
 				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 				$this->doInsert($crit);
 			}

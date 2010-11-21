@@ -63,6 +63,7 @@
 			$this->recent_ideas = $this->selected_project->getRecentIdeas();
 			$this->priority_count = $this->selected_project->getPriorityCount();
 			$this->assignees = $this->selected_project->getAssignees();
+			$this->client = $this->selected_project->getClient();
 		}
 
 		/**
