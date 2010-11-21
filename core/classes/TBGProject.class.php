@@ -497,7 +497,7 @@
 		 *
 		 * @return boolean
 		 */
-		public function delete()
+		public function setDeleted()
 		{
 			$this->_deleted = true;
 			$this->_dodelete = true;

@@ -366,10 +366,9 @@
 			$this->_doc_url = $doc_url;
 		}
 
-		public function delete()
+		public function _preDelete()
 		{
-			B2DB::getTable('TBGEditionsTable')->doDeleteById($this->getID());
-			B2DB::getTable('TBGEditionAssigneesTable')->deleteByEditionID($crit);
+			B2DB::getTable('TBGEditionAssigneesTable')->deleteByEditionID($this->getID());
 		}
 		
 		/**

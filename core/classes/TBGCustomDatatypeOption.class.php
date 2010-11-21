@@ -61,16 +61,6 @@
 		}
 
 		/**
-		 * Delete a status id
-		 *
-		 * @param integer $id
-		 */
-		public static function delete($id)
-		{
-			B2DB::getTable('TBGCustomFieldOptionsTable')->doDeleteById($id);
-		}
-
-		/**
 		 * Return a custom data type option by value and key
 		 *
 		 * @param string|integer $value

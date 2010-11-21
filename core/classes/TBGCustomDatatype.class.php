@@ -116,12 +116,11 @@
 		 *
 		 * @param integer $id
 		 */
-		public static function delete($id)
+		public function _preDelete()
 		{
 			$key = B2DB::getTable('TBGCustomFieldsTable')->getKeyFromId($id);
 			TBGIssueCustomFieldsTable::getTable()->doDeleteByFieldId($id);
 			B2DB::getTable('TBGCustomFieldOptionsTable')->doDeleteByFieldKey($key);
-			B2DB::getTable('TBGCustomFieldsTable')->doDeleteById($id);
 		}
 
 		public static function isNameValid($name)

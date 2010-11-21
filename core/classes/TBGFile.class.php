@@ -104,13 +104,12 @@
 			return file_exists($this->getFullpath());
 		}
 
-		public function delete()
+		public function _preDelete()
 		{
 			if ($this->doesFileExistOnDisk())
 			{
 				unlink($this->getFullpath());
 			}
-			TBGFilesTable::getTable()->doDeleteById($this->getID());
 		}
 
 		public function getDescription()

@@ -88,12 +88,11 @@
 			$this->_name = $c_name;
 		}
 		
-		public function delete()
+		public function _preDelete()
 		{
-			$res = B2DB::getTable('TBGCustomersTable')->doDeleteById($this->getID());
-			$crit = new B2DBCriteria();
+			$crit = TBGUsersTable::getTable()->getCriteria();
 			$crit->addWhere(TBGUsersTable::CUSTOMER_ID, $this->getID());
-			$crit->addUpdate(TBGUsersTable::CUSTOMER_ID, 0);
+			$crit->addUpdate(TBGUsersTable::CUSTOMER_ID, null);
 			$res = TBGUsersTable::getTable()->doUpdate($crit);
 		}
 

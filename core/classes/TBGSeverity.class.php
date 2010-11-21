@@ -57,15 +57,4 @@
 			return TBGContext::factory()->TBGSeverity($res->getInsertID());
 		}
 
-		/**
-		 * Delete a severity id
-		 *
-		 * @param integer $id
-		 */
-		public static function delete($id)
-		{
-			TBGListTypesTable::getTable()->deleteByTypeAndId(self::SEVERITY, $id);
-		}
-	
 	}
-

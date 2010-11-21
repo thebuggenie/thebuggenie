@@ -217,10 +217,9 @@
 		/**
 		 * Delete this build
 		 */
-		public function delete()
+		protected function _preDelete()
 		{
 			B2DB::getTable('TBGIssueAffectsBuildTable')->deleteByBuildID($this->getID());
-			B2DB::getTable('TBGBuildsTable')->doDeleteById($this->getID());
 		}
 		
 		/**

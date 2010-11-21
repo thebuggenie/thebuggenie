@@ -40,14 +40,4 @@
 			return self::$_items;
 		}
 
-		/**
-		 * Delete a category id
-		 *
-		 * @param integer $id
-		 */
-		public static function delete($id)
-		{
-			TBGListTypesTable::getTable()->deleteByTypeAndId(self::CATEGORY, $id);
-		}
-
 	}

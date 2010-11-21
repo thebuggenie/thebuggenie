@@ -74,16 +74,6 @@
 		}
 
 		/**
-		 * Delete a status id
-		 *
-		 * @param integer $id
-		 */
-		public static function delete($id)
-		{
-			TBGListTypesTable::getTable()->deleteByTypeAndId(self::STATUS, $id);
-		}
-		
-		/**
 		 * Return the status color
 		 * 
 		 * @return string
@@ -94,4 +84,3 @@
 		}
 
 	}
-

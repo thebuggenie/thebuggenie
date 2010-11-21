@@ -59,15 +59,5 @@
 			return TBGContext::factory()->TBGResolution($res->getInsertID());
 		}
 
-		/**
-		 * Delete a resolution id
-		 *
-		 * @param integer $id
-		 */
-		public static function delete($id)
-		{
-			TBGListTypesTable::getTable()->deleteByTypeAndId(self::RESOLUTION, $id);
-		}
-
 	}
 

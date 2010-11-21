@@ -112,9 +112,8 @@
 			$this->_name = $name;
 		}
 
-		public function delete()
+		public function _preDelete()
 		{
-			B2DB::getTable('TBGComponentsTable')->doDeleteById($this->getID());
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGIssueAffectsComponentTable::COMPONENT, $this->getID());
 			B2DB::getTable('TBGIssueAffectsComponentTable')->doDelete($crit);

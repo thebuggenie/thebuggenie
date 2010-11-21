@@ -755,9 +755,8 @@
 		/**
 		 * Delete this milestone
 		 */
-		public function delete()
+		public function _preDelete()
 		{
-			TBGMilestonesTable::getTable()->doDeleteById($this->getID());
 			TBGIssuesTable::getTable()->clearMilestone($this->getID());
 		}
 		

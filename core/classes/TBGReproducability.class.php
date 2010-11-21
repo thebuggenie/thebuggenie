@@ -57,16 +57,5 @@
 			$res = parent::_createNew($name, self::REPRODUCABILITY);
 			return TBGContext::factory()->TBGReproducability($res->getInsertID());
 		}
-
-		/**
-		 * Delete a reproducability id
-		 *
-		 * @param integer $id
-		 */
-		public static function delete($id)
-		{
-			TBGListTypesTable::getTable()->deleteByTypeAndId(self::REPRODUCABILITY, $id);
-		}
 		
 	}
-

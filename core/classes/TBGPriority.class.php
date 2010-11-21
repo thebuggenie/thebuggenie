@@ -59,15 +59,4 @@
 			return TBGContext::factory()->TBGPriority($res->getInsertID());
 		}
 
-		/**
-		 * Delete a priority id
-		 *
-		 * @param integer $id
-		 */
-		public static function delete($id)
-		{
-			TBGListTypesTable::getTable()->deleteByTypeAndId(self::PRIORITY, $id);
-		}
-
 	}
-

@@ -289,7 +289,7 @@
 						}
 						else
 						{
-							TBGCustomDatatypeOption::delete($request->getParameter('id'));
+							B2DB::getTable('TBGCustomFieldOptionsTable')->doDeleteById($request->getParameter('id'));
 							return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The option was deleted')));
 						}
 					}
@@ -339,9 +339,7 @@
 					$customtype = TBGCustomDatatype::getByKey($request->getParameter('type'));
 					if ($customtype instanceof TBGCustomDatatype)
 					{
-						$id = $customtype->getID();
-						unset($customtype);
-						TBGCustomDatatype::delete($id);
+						$customtype->delete();
 						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom field was deleted')));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a custom field key that already exists')));
@@ -1272,7 +1270,7 @@
 				try
 				{
 					$theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
-					$theProject->delete();
+					$theProject->setDeleted();
 					$theProject->save();
 					return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The project was deleted')));
 				}
