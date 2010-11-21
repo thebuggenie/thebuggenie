@@ -333,6 +333,8 @@
 			$adminuser->setBuddyname('Admin');
 			$adminuser->setGroup($admin_group);
 			$adminuser->setPassword('admin');
+			$adminuser->setActivated();
+			$adminuser->setEnabled();
 			$adminuser->setAvatar('admin');
 			$adminuser->save();
 			
@@ -342,6 +344,8 @@
 			$guestuser->setBuddyname('Guest user');
 			$guestuser->setGroup($guest_group);
 			$guestuser->setPassword('password'); // Settings not active yet
+			$guestuser->setActivated();
+			$guestuser->setEnabled();
 			$guestuser->save();
 
 			TBGSettings::saveSetting('defaultuserid', $guestuser->getID(), 'core', $scope->getID());
@@ -393,7 +397,7 @@
 							{
 								TBGContext::getResponse()->deleteCookie('tbg3_username');
 								TBGContext::getResponse()->deleteCookie('tbg3_password');
-								throw new Exception('No such login');
+								throw new Exception('No such logins');
 								//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 							}
 						}
@@ -417,7 +421,7 @@
 									// Invalid
 									TBGContext::getResponse()->deleteCookie('tbg3_username');
 									TBGContext::getResponse()->deleteCookie('tbg3_password');
-									throw new Exception('No such login');
+									throw new Exception('No such loginss');
 									//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 								}
 								else 
@@ -463,7 +467,7 @@
 				}
 				else
 				{
-					throw new Exception('No such login');
+					throw new Exception('No such loginaa');
 				}
 			}
 			catch (Exception $e)
@@ -718,9 +722,8 @@
 				$crit = new B2DBCriteria();
 				$crit->addWhere(TBGTeamMembersTable::UID, $this->_id);
 		
-				if (B2DB::getTable('TBGTeamMembersTable')->doCount($crit) > 0)
+				if ($res = B2DB::getTable('TBGTeamMembersTable')->doSelect($crit))
 				{
-					$res = B2DB::getTable('TBGTeamMembersTable')->doSelect($crit);
 					while ($row = $res->getNextRow())
 					{
 						$this->teams[$row->get(TBGTeamsTable::ID)] = TBGContext::factory()->TBGTeam($row->get(TBGTeamsTable::ID), $row);

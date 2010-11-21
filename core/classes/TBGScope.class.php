@@ -137,6 +137,7 @@
 		{
 			// Load initial settings
 			TBGSettingsTable::getTable()->loadFixtures($this);
+			TBGSettings::loadSettings();
 			
 			// Load group, users and permissions fixtures
 			TBGGroup::loadFixtures($this);

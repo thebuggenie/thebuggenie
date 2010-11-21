@@ -129,7 +129,6 @@
 			{
 				if (count($this->values) > 0)
 				{
-					//var_dump($this->labels);die();
 					$Test->drawPieLegend($this->width / 3 + $this->width / 3, 40, $DataSet->GetData(), $DataSet->GetDataDescription(), 250, 250, 250);
 				}
 				$title_font_size = 10;
