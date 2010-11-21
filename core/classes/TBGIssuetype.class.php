@@ -321,7 +321,7 @@
 				if ($project_id != 0)
 				{
 					$ctn = $crit->returnCriterion(TBGIssueTypesTable::APPLIES_TO, $project_id);
-					$ctn->addOr(TBGIssueTypesTable::APPLIES_TO, 0);
+					$ctn->addOr(TBGIssueTypesTable::APPLIES_TO, null, B2DBCriteria::DB_IS_NULL);
 					$crit->addWhere($ctn);
 				}
 				else
@@ -350,10 +350,7 @@
 				}
 				else
 				{
-					echo $crit->sql;
-					var_dump($crit);
-					var_dump($res);
-					die();
+					TBGLogging::log('There are no issue types', 'main', TBGLogging::LEVEL_NOTICE);
 				}
 		
 				self::$_issuetypes[$project_id] = $issuetypes;
