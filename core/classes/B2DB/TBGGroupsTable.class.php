@@ -42,29 +42,6 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
-		public function loadFixtures($scope)
-		{
-			$i18n = TBGContext::getI18n();
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, $i18n->__('Administrators'));
-			$crit->addInsert(self::SCOPE, $scope);
-			$admin_group_id = $this->doInsert($crit)->getInsertID();
-			TBGSettings::saveSetting('admingroup', $admin_group_id, 'core', $scope);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, $i18n->__('Regular users'));
-			$crit->addInsert(self::SCOPE, $scope);
-			$users_group_id = $this->doInsert($crit)->getInsertID();
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, $i18n->__('Guests'));
-			$crit->addInsert(self::SCOPE, $scope);
-			$guest_group_id = $this->doInsert($crit)->getInsertID();
-
-			return array($admin_group_id, $users_group_id, $guest_group_id);
-		}
-		
 		public function getAll($scope = null)
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;

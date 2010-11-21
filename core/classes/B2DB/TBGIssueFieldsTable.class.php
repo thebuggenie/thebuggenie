@@ -116,8 +116,10 @@
 			return $res;
 		}
 
-		public function loadFixtures($scope, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id)
+		public function loadFixtures(TBGScope $scope, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id)
 		{
+			$scope = $scope->getID();
+			
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_bug_report_id);
 			$crit->addInsert(self::FIELD_KEY, 'description');

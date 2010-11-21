@@ -233,17 +233,22 @@
 		{
 			try
 			{
+				$transaction = B2DB::startTransaction();
 				TBGLogging::log('Initializing language support');
 				TBGContext::reinitializeI18n('en_US');
 
 				TBGLogging::log('Loading fixtures for default scope');
-				$scope = TBGScope::createNew('The default scope', '');
+				$scope = new TBGScope();
+				$scope->setHostname($request->getParameter('url_host'));
+				$scope->setName('The default scope');
+				$scope->setEnabled(true);
+				TBGContext::setScope($scope);
+				$scope->save();
 				
 				TBGLogging::log('Setting up default users and groups');
 				TBGSettings::saveSetting('language', 'en_US', 'core', 1);
-				$scope->setHostname($request->getParameter('url_host'));
-				$scope->save();
 				TBGSettings::saveSetting('url_subdir', $request->getParameter('url_subdir'), 'core', 1);
+				$transaction->commitAndEnd();
 
 				$this->htaccess_error = false;
 				$this->htaccess_ok = (bool) $request->getParameter('apache_autosetup');

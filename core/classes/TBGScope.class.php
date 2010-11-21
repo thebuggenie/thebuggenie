@@ -44,25 +44,6 @@
 			return $scopes;
 		}
 		
-		public function getID()
-		{
-			return $this->_id;
-		}
-		
-		public function getName()
-		{
-			return $this->_name;
-		}
-		
-		public function setName($name)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGScopesTable::NAME, $name);
-			TBGScopesTable::getTable()->doUpdateById($crit, $this->_id);
-			
-			$this->_name = $name;
-		}
-		
 		public function getShortname()
 		{
 			return $this->_shortname;
@@ -70,10 +51,6 @@
 		
 		public function setShortname($shortname)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGScopesTable::SHORTNAME, $shortname);
-			TBGScopesTable::getTable()->doUpdateById($crit, $this->_id);
-			
 			$this->_shortname = $shortname;
 		}
 		
@@ -84,10 +61,7 @@
 		
 		public function setEnabled($enabled)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGScopesTable::ENABLED, $enabled);
-			TBGScopesTable::getTable()->doUpdateById($crit, $this->_id);
-			$this->_enabled = ($enabled == 1) ? true : false;
+			$this->_enabled = (bool) $enabled;
 		}
 		
 		public function getDescription()
@@ -97,10 +71,6 @@
 		
 		public function setDescription($description)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGScopesTable::DESCRIPTION, $description);
-			TBGScopesTable::getTable()->doUpdateById($crit, $this->_id);
-			
 			$this->_description = $description;
 		}
 		
@@ -112,7 +82,6 @@
 		public function setHostname($hostname)
 		{
 			$hostname = trim($hostname, "/"); 
-			
 			$this->_hostname = $hostname;
 		}
 		
@@ -155,183 +124,43 @@
 			}
 		}
 
-		public static function createNew($scope_name, $hostname)
+		public function _postSave($is_new)
 		{
-			$scope_id = TBGScopesTable::getTable()->createNew($scope_name, $hostname);
-			self::loadFixtures($scope_id);
-			return TBGContext::factory()->TBGScope($scope_id);
-		}
-		
-		public static function loadFixtures($scope_id)
-		{
-			$i18n = TBGContext::getI18n();
-			list ($admin_group_id, $users_group_id, $guest_group_id) = TBGGroupsTable::getTable()->loadFixtures($scope_id);
+			// Load fixtures for this scope if it's a new scope
+			if ($is_new) $this->loadFixtures();
 			
-			$adminuser = TBGUser::createNew('administrator', 'Administrator', 'Admin', $scope_id, true, true);
-			$adminuser->setGroup($admin_group_id);
-
-			if (TBGContext::isInstallmode())
-			{
-				$salt = sha1(time().mt_rand(1000, 10000));
-				$adminuser->changePassword('admin'.$salt); // Settings not active yet
-			}
-			else
-			{
-				$adminuser->changePassword('admin');
-			}
-			$adminuser->setAvatar('admin');
-			$adminuser->save();
-			
-			$guestuser = TBGUser::createNew('guest', 'Guest user', 'Guest user', $scope_id, true, true);
-			$guestuser->setGroup($guest_group_id);
-			if (TBGContext::isInstallmode())
-			{
-				$guestuser->changePassword('password'.$salt); // Settings not active yet
-			}
-			$guestuser->save();
-
-			B2DB::getTable('TBGSettingsTable')->loadFixtures($scope_id);
-			TBGSettings::saveSetting('defaultgroup', $users_group_id, 'core', $scope_id);
-			TBGSettings::saveSetting('defaultuserid', $guestuser->getID(), 'core', $scope_id);
-			
-			if (TBGContext::isInstallmode())
-			{
-				TBGSettings::saveSetting('salt', $salt, 'core', 1);
-			}
-
-			B2DB::getTable('TBGTeamsTable')->loadFixtures($scope_id);
-			B2DB::getTable('TBGPermissionsTable')->loadFixtures($scope_id, $admin_group_id, $guest_group_id);
-
-			B2DB::getTable('TBGUserStateTable')->loadFixtures($scope_id);
-			TBGIssueTypesTable::getTable()->loadFixtures($scope_id);
-			TBGListTypesTable::getTable()->loadFixtures($scope_id);
-			B2DB::getTable('TBGLinksTable')->loadFixtures($scope_id);
-			TBGWorkflowsTable::getTable()->loadFixtures($scope_id);
-			TBGWorkflowStepsTable::getTable()->loadFixtures($scope_id);
-			TBGWorkflowTransitionsTable::getTable()->loadFixtures($scope_id);
-			TBGWorkflowStepTransitionsTable::getTable()->loadFixtures($scope_id);
-			TBGWorkflowSchemesTable::getTable()->loadFixtures($scope_id);
-			TBGWorkflowIssuetypeTable::getTable()->loadFixtures($scope_id);
-		}
-
-		public function postSave()
-		{
+			// Save the hostname to the settings table
 			TBGSettings::saveSetting('url_host', $this->_hostname, 'core', $this->getID());
 		}
 		
-		/**
-		 * Creates a new scope and returns it
-		 *
-		 * @param string $shortname
-		 * @param string $scopename
-		 * @param bool   $enabled
-		 * @param string $description
-		 * 
-		 * @return TBGScope
-		 */
-		public static function createNewOld($scopeShortname, $scopeName, $scopeEnabled, $scopeDescription, $scopeHostname)
+		public function loadFixtures()
 		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGScopesTable::SHORTNAME, $scopeShortname);
-			if (TBGScopesTable::getTable()->doCount($crit) != 0)
-			{
-				throw new Exception('Could not add this scope, since it already exists');
-			}
+			// Load initial settings
+			TBGSettingsTable::getTable()->loadFixtures($this);
 			
-			// Create the new scope and use the return value to create more stuff
-			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGScopesTable::NAME, $scopeName);
-			$crit->addInsert(TBGScopesTable::ENABLED, $scopeEnabled);
-			$crit->addInsert(TBGScopesTable::SHORTNAME, $scopeShortname);
-			$crit->addInsert(TBGScopesTable::HOSTNAME, $scopeHostname);
-			$crit->addInsert(TBGScopesTable::DESCRIPTION, $scopeDescription);
-			$res = TBGScopesTable::getTable()->doInsert($crit);
-			$addedScope = TBGContext::factory()->TBGScope($res->getInsertID());
-			
-			// Create a new 'administrator' user inside the new scope
-			$theAdminUser = TBGUser::createNew('scope' . $scopeShortname . 'administrator', 'Scope ' . $scopeShortname . ' Administrator', 'Scope ' . $scopeShortname . ' Admin', $addedScope->getID(), 1, 1);
-			TBGContext::getUser()->addFriend($theAdminUser->getID());
-			
-			// Create a new 'Superuser' group inside the new scope and set the scope administrator as a member
-			$theAdminGroup = TBGGroup::createNew('Administrators', $addedScope->getID())->getID();
-			$theAdminUser->setGroup($theAdminGroup);
-			$addedScope->setScopeAdmin($theAdminUser->getUID());
-			
-			// Create a new 'guest' user inside the new scope
-			$theGuestUser = TBGUser::createNew('scope' . $scopeShortname . 'guest', "Guest", "Guest", $addedScope->getID(), 1, 1);
-			
-			// Create a new 'Guest' group inside the new scope and set the scope guest user as a member
-			$theGuestGroup = TBGGroup::createNew('Guests', $addedScope->getID())->getID();
-			$theGuestUser->setGroup($theGuestGroup);
-			
-			// Create a new 'Users' group inside the new scope
-			$theUserGroup = TBGGroup::createNew('Users', $addedScope->getID())->getID();
+			// Load group, users and permissions fixtures
+			TBGGroup::loadFixtures($this);
 
-			TBGLogging::log("Installing modules");
-			foreach (TBGContext::getModules() as $module)
-			{
-				TBGLogging::log("Installing " . $module->getName());
-				// Set general user permissions for that module
-				$module->setPermission(0, 0, 0, true, $addedScope->getID());
-				TBGLogging::log("Running " . $module->getClassname() . '::install(' . $addedScope->getID() . ')');
-				call_user_func($module->getClassname() . '::install', $addedScope->getID());
-			}
+			// Load initial teams
+			TBGTeam::loadFixtures($this);
 			
-			// Set general user permissions for that scope
-			TBGContext::setPermission("b2canreportissues", 0, "core", 0, 0, 0, true, $addedScope->getID());
-			TBGContext::setPermission("b2canfindissues", 0, "core", 0, 0, 0, true, $addedScope->getID());
-			TBGContext::setPermission("b2viewconfig", 0, "core", 0, $theAdminGroup, 0, true, $addedScope->getID());
-			TBGContext::setPermission("b2saveconfig", 12, "core", 0, $theAdminGroup, 0, true, $addedScope->getID());
-			TBGContext::setPermission("b2saveconfig", 9, "core", 0, $theAdminGroup, 0, true, $addedScope->getID());
-			TBGContext::setPermission("b2saveconfig", 10, "core", 0, $theAdminGroup, 0, true, $addedScope->getID());
-			TBGContext::setPermission("b2saveconfig", 2, "core", 0, $theAdminGroup, 0, true, $addedScope->getID());
-			TBGContext::setPermission("b2saveconfig", 4, "core", 0, $theAdminGroup, 0, true, $addedScope->getID());
-			TBGContext::setPermission("b2saveconfig", 1, "core", 0, $theAdminGroup, 0, true, $addedScope->getID());
-			TBGContext::setPermission("b2saveconfig", 15, "core", 0, $theAdminGroup, 0, true, $addedScope->getID());
-
-			// Set Guest user restrictions
-			if (TBGContext::isModuleLoaded('calendar'))
-			{
-				TBGContext::getModule('calendar')->setPermission(0, $theGuestGroup, 0, false, $addedScope->getID());
-			}
-			TBGContext::getModule('messages')->setPermission(0, $theGuestGroup, 0, false, $addedScope->getID());
-			TBGContext::setPermission("b2noaccountaccess", 0, "core", 0, $theGuestGroup, 0, false, $addedScope->getID());
-
-			// Load standard settings into the new scope
-			TBGSettings::loadFixtures($addedScope->getID());
-			if ($addedScope->getHostname() != '')
-			{
-				TBGSettings::saveSetting('url_host', $addedScope->getHostname(), 'core', $addedScope->getID());
-			}
-			else
-			{
-				TBGSettings::saveSetting('url_host', TBGSettings::get('url_host'), 'core', $addedScope->getID());
-			}
-			TBGSettings::saveSetting('url_subdir', TBGSettings::get('url_subdir'), 'core', $addedScope->getID());
-			TBGSettings::saveSetting('local_path', TBGSettings::get('local_path'), 'core', $addedScope->getID());
+			// Set up user states, like "available", "away", etc
+			TBGUserstate::loadFixtures($this);
 			
-			// Update scope guest user setting to the new scope guest user
-			$hashPass = TBGUser::hashPassword('password');
-			TBGSettings::saveSetting('defaultpwd', $hashPass, 'core', $addedScope->getID());
-			TBGSettings::saveSetting('defaultuname', 'scope' . $scopeShortname . 'guest', 'core', $addedScope->getID());
-			TBGSettings::saveSetting('defaultgroup', $theUserGroup, 'core', $addedScope->getID());
+			// Set up data types
+			TBGIssuetype::loadFixtures($this);
+			TBGDatatype::loadFixtures($this);
 			
-			$b2_settings['requirelogin'] = 0;
-			$b2_settings['defaultisguest'] = 1;
-			$b2_settings['allowreg'] = 1;
-			$b2_settings['local_path'] = TBGSettings::get('local_path');
-			$b2_settings['language'] = TBGSettings::get('language');
-			$b2_settings['url_subdir'] = TBGSettings::get('url_subdir');
-			foreach ($b2_settings as $b2_settings_name => $b2_settings_val)
-			{
-				$crit = new B2DBCriteria();
-				$crit->addInsert(TBGSettingsTable::MODULE, 'core');
-				$crit->addInsert(TBGSettingsTable::SCOPE, $addedScope->getID());
-				$crit->addInsert(TBGSettingsTable::NAME, $b2_settings_name);
-				$crit->addInsert(TBGSettingsTable::VALUE, $b2_settings_val);
-				B2DB::getTable('TBGSettingsTable')->doInsert($crit);
-			}
+			// Set up workflows
+			TBGWorkflowsTable::getTable()->loadFixtures($this);
+			TBGWorkflowStepsTable::getTable()->loadFixtures($this);
+			TBGWorkflowTransitionsTable::getTable()->loadFixtures($this);
+			TBGWorkflowStepTransitionsTable::getTable()->loadFixtures($this);
+			TBGWorkflowSchemesTable::getTable()->loadFixtures($this);
+			TBGWorkflowIssuetypeTable::getTable()->loadFixtures($this);
 			
-			return $addedScope;
+			// Set up left menu links
+			TBGLinksTable::getTable()->loadFixtures($this);
 		}
+		
 	}

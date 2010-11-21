@@ -7,6 +7,22 @@
 		
 		protected $_itemtype = TBGDatatype::SEVERITY;
 
+		public static function loadFixtures(TBGScope $scope)
+		{
+			$severities = array();
+			$severities['Low'] = '';
+			$severities['Normal'] = '';
+			$severities['Critical'] = '';
+
+			foreach ($severities as $name => $itemdata)
+			{
+				$severity = new TBGSeverity();
+				$severity->setName($name);
+				$severity->setItemdata($itemdata);
+				$severity->save();
+			}
+		}
+		
 		/**
 		 * Returns all severities available
 		 * 

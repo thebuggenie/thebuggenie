@@ -7,6 +7,24 @@
 		
 		protected $_itemtype = TBGDatatype::RESOLUTION;
 
+		public static function loadFixtures(TBGScope $scope)
+		{
+			$resolutions["CAN'T REPRODUCE"] = '';
+			$resolutions["WON'T FIX"] = '';
+			$resolutions["NOT AN ISSUE"] = '';
+			$resolutions["WILL FIX IN NEXT RELEASE"] = '';
+			$resolutions["RESOLVED"] = '';
+			$resolutions["CAN'T FIX"] = '';
+
+			foreach ($resolutions as $name => $itemdata)
+			{
+				$resolution = new TBGResolution();
+				$resolution->setName($name);
+				$resolution->setItemdata($itemdata);
+				$resolution->save();
+			}
+		}
+		
 		/**
 		 * Returns all resolutions available
 		 * 

@@ -192,17 +192,17 @@
 		{
 			?>
 			<tr>
-			<td style="text-align: center;<?php print ($sel_msg_id == $aMessage->get(TBGMessagesTable::ID)) ? " background-color: #F5F5F5;" : ""; ?> width: 28px; padding: 2px; border-bottom: 1px solid #F1F1F1;"><a class="image" href="messages.php?set_read=<?php print ($aMessage->get(TBGMessagesTable::IS_READ) == 0) ? 1 : 0; ?>&amp;the_msg=<?php print $aMessage->get(TBGMessagesTable::ID); ?>"><?php echo image_tag('messages_' . (($aMessage->get(TBGTeamsTable::TEAMNAME) != '') ? "team" : "user") . '_msg_' . (($aMessage->get(TBGMessagesTable::IS_READ) == 0) ? "un" : "") . 'read.png'); ?></a></td>
+			<td style="text-align: center;<?php print ($sel_msg_id == $aMessage->get(TBGMessagesTable::ID)) ? " background-color: #F5F5F5;" : ""; ?> width: 28px; padding: 2px; border-bottom: 1px solid #F1F1F1;"><a class="image" href="messages.php?set_read=<?php print ($aMessage->get(TBGMessagesTable::IS_READ) == 0) ? 1 : 0; ?>&amp;the_msg=<?php print $aMessage->get(TBGMessagesTable::ID); ?>"><?php echo image_tag('messages_' . (($aMessage->get(TBGTeamsTable::NAME) != '') ? "team" : "user") . '_msg_' . (($aMessage->get(TBGMessagesTable::IS_READ) == 0) ? "un" : "") . 'read.png'); ?></a></td>
 			<td style="<?php print ($sel_msg_id == $aMessage->get(TBGMessagesTable::ID)) ? "background-color: #F5F5F5;" : ""; ?>">
 			<a name="msg<?php print $aMessage->get(TBGMessagesTable::ID); ?>"></a>
 			<div style="padding: 2px; border-bottom: 1px solid #F1F1F1;"><a href="messages.php?msg_id=<?php print $aMessage->get(TBGMessagesTable::ID); ?>#msg<?php print $aMessage->get(TBGMessagesTable::ID); ?>"><?php print ($aMessage->get(TBGMessagesTable::IS_READ) == 0) ? "<b>" : ""; print tbg_BBDecode($aMessage->get(TBGMessagesTable::TITLE)); print ($aMessage->get(TBGMessagesTable::IS_READ) == 0) ? "</b>" : ""; ?></a>
 			<div style="font-size: 10px;"><?php
 
-				print ($the_folder != 2) ? "<b>From:&nbsp;</b>" . $aMessage->get(TBGUsersTable::BUDDYNAME, TBGMessagesTable::FROM_USER) : (($aMessage->get(TBGTeamsTable::TEAMNAME) == "") ? "<b>To:&nbsp;</b>" . $aMessage->get(TBGUsersTable::BUDDYNAME, TBGMessagesTable::TO_USER) . "&nbsp;(" . $aMessage->get(TBGUsersTable::UNAME, TBGMessagesTable::TO_USER) . ")" : "");
-				if ($aMessage->get(TBGTeamsTable::TEAMNAME) != '')
+				print ($the_folder != 2) ? "<b>From:&nbsp;</b>" . $aMessage->get(TBGUsersTable::BUDDYNAME, TBGMessagesTable::FROM_USER) : (($aMessage->get(TBGTeamsTable::NAME) == "") ? "<b>To:&nbsp;</b>" . $aMessage->get(TBGUsersTable::BUDDYNAME, TBGMessagesTable::TO_USER) . "&nbsp;(" . $aMessage->get(TBGUsersTable::UNAME, TBGMessagesTable::TO_USER) . ")" : "");
+				if ($aMessage->get(TBGTeamsTable::NAME) != '')
 				{
 					print ($the_folder != 2) ? ",&nbsp;" : "";
-					print "<b>To:&nbsp;</b>" . $aMessage->get(TBGTeamsTable::TEAMNAME);
+					print "<b>To:&nbsp;</b>" . $aMessage->get(TBGTeamsTable::NAME);
 				}
 
 			?>, <?php print tbg_formatTime($aMessage->get(TBGMessagesTable::SENT), 3); ?></div>

@@ -64,6 +64,29 @@
 			}
 		}
 		
+		public static function loadFixtures(TBGScope $scope)
+		{
+			$scope_id = $scope->getID();
+
+			$admin_group = new TBGGroup();
+			$admin_group->setName('Administrators');
+			$admin_group->save();
+			TBGSettings::saveSetting('admingroup', $admin_group->getID(), 'core', $scope_id);
+
+			$user_group = new TBGGroup();
+			$user_group->setName('Regular users');
+			$user_group->save();
+			TBGSettings::saveSetting('defaultgroup', $user_group->getID(), 'core', $scope_id);
+
+			$guest_group = new TBGGroup();
+			$guest_group->setName('Guests');
+			$guest_group->save();
+			
+			// Set up initial users, and their permissions
+			TBGUser::loadFixtures($scope, $admin_group, $user_group, $guest_group);
+			TBGPermissionsTable::getTable()->loadFixtures($scope, $admin_group->getID(), $guest_group->getID());
+		}
+		
 		/**
 		 * Adds a user to the group
 		 *

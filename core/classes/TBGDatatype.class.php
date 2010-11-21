@@ -68,6 +68,16 @@
 		 */
 		const USERSTATE = 'userstate';
 		
+		public static function loadFixtures(TBGScope $scope)
+		{
+			TBGCategory::loadFixtures($scope);
+			TBGPriority::loadFixtures($scope);
+			TBGReproducability::loadFixtures($scope);
+			TBGResolution::loadFixtures($scope);
+			TBGSeverity::loadFixtures($scope);
+			TBGStatus::loadFixtures($scope);
+		}
+		
 		/**
 		 * Create a new field option and return the row
 		 *

@@ -100,8 +100,10 @@
 			$this->doDelete($crit);
 		}
 
-		public function loadFixtures($scope_id, $admin_group_id, $guest_group_id)
+		public function loadFixtures(TBGScope $scope, $admin_group_id, $guest_group_id)
 		{
+			$scope_id = $scope->getID();
+			
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', 'cansaveconfig', 0, $scope_id);
 			$this->setPermission(0, $guest_group_id, 0, false, 'core', 'page_account_access', 0, $scope_id);
 			$this->setPermission(0, 0, 0, false, 'core', 'candoscrumplanning', 0, $scope_id);
@@ -122,8 +124,6 @@
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "caneditissuecustomfields", 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "canaddextrainformationtoissues", 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "canpostseeandeditallcomments", 0, $scope_id);
-
-			
 		}
 
 		public function cloneGroupPermissions($cloned_group_id, $new_group_id)

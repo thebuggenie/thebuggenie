@@ -26,6 +26,16 @@
 		const VALUE = 'settings.value';
 		const UID = 'settings.uid';
 
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGSettingsTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGSettingsTable');
+		}
+		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -102,7 +112,7 @@
 			$this->doDelete($crit);
 		}
 
-		public function loadFixtures($scope)
+		public function loadFixtures(TBGScope $scope)
 		{
 			$i18n = TBGContext::getI18n();
 
@@ -128,10 +138,15 @@
 			$settings['highlight_default_lang'] = 'html4strict';
 			$settings['highlight_default_numbering'] = '3';
 			$settings['highlight_default_interval'] = '10';
+			if (TBGContext::isInstallmode())
+			{
+				$settings['salt'] = sha1(time().mt_rand(1000, 10000));
+			}
 
+			$scope_id = $scope->getID();
 			foreach ($settings as $settings_name => $settings_val)
 			{
-				$this->saveSetting($settings_name, 'core', $settings_val, 0, $scope);
+				$this->saveSetting($settings_name, 'core', $settings_val, 0, $scope_id);
 			}
 		}
 		

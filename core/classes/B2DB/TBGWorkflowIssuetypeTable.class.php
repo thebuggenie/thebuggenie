@@ -45,12 +45,12 @@
 			parent::_addForeignKeyColumn(self::ISSUETYPE_ID, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
 		}
 
-		public function loadFixtures($scope)
+		public function loadFixtures(TBGScope $scope)
 		{
-			foreach (TBGIssuetype::getAll(null, $scope) as $issuetype)
+			foreach (TBGIssuetype::getAll(null, $scope->getID()) as $issuetype)
 			{
 				$crit = $this->getCriteria();
-				$crit->addInsert(self::SCOPE, $scope);
+				$crit->addInsert(self::SCOPE, $scope->getID());
 				$crit->addInsert(self::WORKFLOW_ID, 1);
 				$crit->addInsert(self::WORKFLOW_SCHEME_ID, 1);
 				$crit->addInsert(self::ISSUETYPE_ID, $issuetype->getID());

@@ -324,6 +324,28 @@
 				return $users;
 			}
 		}
+
+		public static function loadFixtures(TBGScope $scope, TBGGroup $admin_group, TBGGroup $user_group, TBGGroup $guest_group)
+		{
+			$adminuser = new TBGUser();
+			$adminuser->setUsername('administrator');
+			$adminuser->setRealname('Administrator');
+			$adminuser->setBuddyname('Admin');
+			$adminuser->setGroup($admin_group);
+			$adminuser->setPassword('admin');
+			$adminuser->setAvatar('admin');
+			$adminuser->save();
+			
+			$guestuser = new TBGUser();
+			$guestuser->setUsername('guest');
+			$guestuser->setRealname('Guest user');
+			$guestuser->setBuddyname('Guest user');
+			$guestuser->setGroup($guest_group);
+			$guestuser->setPassword('password'); // Settings not active yet
+			$guestuser->save();
+
+			TBGSettings::saveSetting('defaultuserid', $guestuser->getID(), 'core', $scope->getID());
+		}
 		
 		/**
 		 * Take a raw password and convert it to the hashed format
@@ -590,7 +612,7 @@
 				}*/
 				if ($this->_group_id != 0)
 				{
-					$this->_group_id = TBGContext::factory()->TBGGroup($row->get(TBGUsersTable::GROUP_ID), $row);
+					$this->_group_id = TBGContext::factory()->TBGGroup($this->_group_id, $row);
 				}
 				if ($row->get(TBGUsersTable::CUSTOMER_ID) != 0)
 				{
@@ -955,6 +977,18 @@
 		public function changePassword($newpassword)
 		{
 			$this->_password = self::hashPassword($newpassword);
+		}
+		
+		/**
+		 * Alias for changePassword
+		 * 
+		 * @param string $newpassword
+		 * 
+		 * @see self::changePassword
+		 */
+		public function setPassword($newpassword)
+		{
+			return $this->changePassword($newpassword);
 		}
 		
 		/**

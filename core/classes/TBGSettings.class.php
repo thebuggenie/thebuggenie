@@ -97,10 +97,6 @@
 				{
 					$scope = $scope->getID();
 				}
-				elseif (TBGContext::isInstallmode())
-				{
-					$scope = 1;
-				}
 				else
 				{
 					throw new Exception('No scope loaded, cannot autoload it');

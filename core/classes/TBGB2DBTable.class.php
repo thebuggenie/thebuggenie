@@ -28,11 +28,11 @@
 		 */
 		public function getByID($id)
 		{
-			if (defined(static::SCOPE))
+			if (defined('static::SCOPE'))
 			{
 				$crit = $this->getCriteria();
 				$crit->addWhere(static::SCOPE, TBGContext::getScope()->getID());
-				$row = $this->doSelectById($id, $crit, false);
+				$row = $this->doSelectById($id, $crit);
 			}
 			else
 			{

@@ -51,7 +51,7 @@
 			parent::_addBoolean(self::CLOSED);
 		}
 
-		public function loadFixtures($scope)
+		public function loadFixtures(TBGScope $scope)
 		{
 			$steps = array();
 			$steps[] = array('name' => 'New', 'description' => 'A new issue, not yet handled', 'status_id' => 20, 'editable' => true, 'is_closed' => false);
@@ -67,7 +67,7 @@
 			{
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::WORKFLOW_ID, 1);
-				$crit->addInsert(self::SCOPE, $scope);
+				$crit->addInsert(self::SCOPE, $scope->getID());
 				$crit->addInsert(self::NAME, $step['name']);
 				$crit->addInsert(self::DESCRIPTION, $step['description']);
 				$crit->addInsert(self::STATUS_ID, $step['status_id']);

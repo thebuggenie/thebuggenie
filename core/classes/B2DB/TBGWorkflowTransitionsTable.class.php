@@ -49,7 +49,7 @@
 			parent::_addVarchar(self::TEMPLATE, 200);
 		}
 
-		public function loadFixtures($scope)
+		public function loadFixtures(TBGScope $scope)
 		{
 			$transitions = array();
 			$transitions[] = array('name' => 'Investigate issue', 'description' => 'Assign the issue to yourself and start investigating it', 'to_step_id' => 2, 'template' => null);
@@ -68,7 +68,7 @@
 			{
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::WORKFLOW_ID, 1);
-				$crit->addInsert(self::SCOPE, $scope);
+				$crit->addInsert(self::SCOPE, $scope->getID());
 				$crit->addInsert(self::NAME, $transition['name']);
 				$crit->addInsert(self::DESCRIPTION, $transition['description']);
 				$crit->addInsert(self::OUTGOING_STEP_ID, $transition['to_step_id']);

@@ -45,7 +45,7 @@
 			parent::_addForeignKeyColumn(self::TRANSITION_ID, TBGWorkflowTransitionsTable::getTable(), TBGWorkflowTransitionsTable::ID);
 		}
 
-		public function loadFixtures($scope)
+		public function loadFixtures(TBGScope $scope)
 		{
 			$transitions = array();
 			$transitions[] = array('from_step_id' => 1, 'transition_id' => 1);
@@ -71,7 +71,7 @@
 			{
 				$crit = $this->getCriteria();
 				$crit->addInsert(self::WORKFLOW_ID, 1);
-				$crit->addInsert(self::SCOPE, $scope);
+				$crit->addInsert(self::SCOPE, $scope->getID());
 				$crit->addInsert(self::FROM_STEP_ID, $transition['from_step_id']);
 				$crit->addInsert(self::TRANSITION_ID, $transition['transition_id']);
 				$this->doInsert($crit);

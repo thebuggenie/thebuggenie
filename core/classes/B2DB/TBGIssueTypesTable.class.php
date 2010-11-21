@@ -65,18 +65,6 @@
 			return $res;
 		}
 
-		public function saveDetails(TBGIssuetype $issuetype)
-		{
-			$crit = $this->getCriteria();
-			$crit->addUpdate(self::NAME, $issuetype->getName());
-			$crit->addUpdate(self::ICON, $issuetype->getIcon());
-			$crit->addUpdate(self::DESCRIPTION, $issuetype->getDescription());
-			$crit->addUpdate(self::REDIRECT_AFTER_REPORTING, $issuetype->getRedirectAfterReporting());
-			$crit->addUpdate(self::REPORTABLE, $issuetype->isReportable());
-
-			$res = $this->doUpdateById($crit, $issuetype->getID());
-		}
-
 		public function getBugReportTypeIDs()
 		{
 			$crit = $this->getCriteria();
@@ -96,69 +84,4 @@
 			return $retarr;
 		}
 
-		public function loadFixtures($scope)
-		{
-			$i18n = TBGContext::getI18n();
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, 'Bug report');
-			$crit->addInsert(self::SCOPE, $scope);
-			$crit->addInsert(self::ICON, 'bug_report');
-			$crit->addInsert(self::DESCRIPTION, 'Have you discovered a bug in the application, or is something not working as expected?');
-			$res = $this->doInsert($crit);
-			$issue_type_bug_report_id = $res->getInsertID();
-			TBGSettings::saveSetting('defaultissuetypefornewissues', $issue_type_bug_report_id, 'core', $scope);
-			TBGSettings::saveSetting('issuetype_bug_report', $issue_type_bug_report_id, 'core', $scope);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, 'Feature request');
-			$crit->addInsert(self::ICON, 'feature_request');
-			$crit->addInsert(self::DESCRIPTION, 'Are you missing some specific feature, or is your favourite part of the application a bit lacking?');
-			$crit->addInsert(self::SCOPE, $scope);
-			$res = $this->doInsert($crit);
-			$issue_type_feature_request_id = $res->getInsertID();
-			TBGSettings::saveSetting('issuetype_feature_request', $issue_type_feature_request_id, 'core', $scope);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, 'Enhancement');
-			$crit->addInsert(self::ICON, 'enhancement');
-			$crit->addInsert(self::DESCRIPTION, 'Have you found something that is working in a way that could be improved?');
-			$crit->addInsert(self::SCOPE, $scope);
-			$res = $this->doInsert($crit);
-			$issue_type_enhancement_id = $res->getInsertID();
-			TBGSettings::saveSetting('issuetype_enhancement', $issue_type_enhancement_id, 'core', $scope);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, 'Task');
-			$crit->addInsert(self::ICON, 'task');
-			$crit->addInsert(self::TASK, true);
-			$crit->addInsert(self::REPORTABLE, false);
-			$crit->addInsert(self::SCOPE, $scope);
-			$res = $this->doInsert($crit);
-			$issue_type_task_id = $res->getInsertID();
-			TBGSettings::saveSetting('issuetype_task', $issue_type_task_id, 'core', $scope);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, 'User story');
-			$crit->addInsert(self::ICON, 'developer_report');
-			$crit->addInsert(self::DESCRIPTION, 'Doing it Scrum-style. Issue type perfectly suited for entering user stories');
-			$crit->addInsert(self::REDIRECT_AFTER_REPORTING, false);
-			$crit->addInsert(self::SCOPE, $scope);
-			$res = $this->doInsert($crit);
-			$issue_type_user_story_id = $res->getInsertID();
-			TBGSettings::saveSetting('issuetype_user_story', $issue_type_user_story_id, 'core', $scope);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::NAME, 'Idea');
-			$crit->addInsert(self::ICON, 'idea');
-			$crit->addInsert(self::DESCRIPTION, 'Express yourself - share your ideas with the rest of the team!');
-			$crit->addInsert(self::REPORTABLE, false);
-			$crit->addInsert(self::SCOPE, $scope);
-			$res = $this->doInsert($crit);
-			$issue_type_idea_id = $res->getInsertID();
-			TBGSettings::saveSetting('issuetype_idea', $issue_type_idea_id, 'core', $scope);
-
-			B2DB::getTable('TBGIssueFieldsTable')->loadFixtures($scope, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id);
-		}
-		
 	}

@@ -7,6 +7,18 @@
 		
 		protected $_itemtype = TBGDatatype::CATEGORY;
 
+		public static function loadFixtures(TBGScope $scope)
+		{
+			$categories = array('General', 'Security', 'User interface');
+			
+			foreach ($categories as $name)
+			{
+				$category = new TBGCategory();
+				$category->setName($name);
+				$category->save();
+			}
+		}
+		
 		/**
 		 * Returns all categories available
 		 * 

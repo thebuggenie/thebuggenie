@@ -92,7 +92,9 @@
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 
-			$trans = B2DB::startTransaction();
+			if (!B2DB::isTransactionActive())
+				$trans = B2DB::startTransaction();
+			
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ITEMTYPE, $itemtype);
 			$crit->addSelectionColumn(self::ORDER, 'sortorder', B2DBCriteria::DB_MAX, '', '+1');
@@ -110,85 +112,11 @@
 			}
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
-			$trans->commitAndEnd();
+			
+			if (isset($trans))
+				$trans->commitAndEnd();
 			
 			return $res;
-		}
-
-		public function loadFixtures($scope)
-		{
-			$_categories = array();
-			$_categories['General category'] = '';
-
-			foreach ($_categories as $name => $itemdata)
-			{
-				$this->createNew($name, TBGDatatype::CATEGORY, $itemdata, $scope);
-			}
-
-			$priorities = array();
-			$priorities['Critical'] = 1;
-			$priorities['Needs to be fixed'] = 2;
-			$priorities['Must fix before next release'] = 3;
-			$priorities['Low'] = 4;
-			$priorities['Normal'] = 5;
-
-			foreach ($priorities as $name => $itemdata)
-			{
-				$this->createNew($name, TBGDatatype::PRIORITY, $itemdata, $scope);
-			}
-
-			$reproducabilities = array();
-			$reproducabilities["Can't reproduce"] = '';
-			$reproducabilities['Rarely'] = '';
-			$reproducabilities['Often'] = '';
-			$reproducabilities['Always'] = '';
-
-			foreach ($reproducabilities as $name => $itemdata)
-			{
-				$this->createNew($name, TBGDatatype::REPRODUCABILITY, $itemdata, $scope);
-			}
-
-			$resolutions = array();
-			$resolutions["CAN'T REPRODUCE"] = '';
-			$resolutions["WON'T FIX"] = '';
-			$resolutions["NOT AN ISSUE"] = '';
-			$resolutions["WILL FIX IN NEXT RELEASE"] = '';
-			$resolutions["RESOLVED"] = '';
-			$resolutions["CAN'T FIX"] = '';
-
-			foreach ($resolutions as $name => $itemdata)
-			{
-				$this->createNew($name, TBGDatatype::RESOLUTION, $itemdata, $scope);
-			}
-
-			$severities = array();
-			$severities['Low'] = '';
-			$severities['Normal'] = '';
-			$severities['Critical'] = '';
-
-			foreach ($severities as $name => $itemdata)
-			{
-				$this->createNew($name, TBGDatatype::SEVERITY, $itemdata, $scope);
-			}
-
-			$statuses = array();
-			$statuses['New'] = '#FFF';
-			$statuses['Investigating'] = '#C2F533';
-			$statuses['Confirmed'] = '#FF55AA';
-			$statuses['Not a bug'] = '#44FC1D';
-			$statuses['Being worked on'] = '#5C5';
-			$statuses['Near completion'] = '#7D3';
-			$statuses['Ready for testing / QA'] = '#55C';
-			$statuses['Testing / QA'] = '#77C';
-			$statuses['Closed'] = '#C2F588';
-			$statuses['Postponed'] = '#FA5';
-			$statuses['Done'] = '#7D3';
-			$statuses['Fixed'] = '#5C5';
-
-			foreach ($statuses as $name => $itemdata)
-			{
-				$this->createNew($name, TBGDatatype::STATUS, $itemdata, $scope);
-			}
 		}
 
 		public function saveById($name, $itemdata, $order, $id)

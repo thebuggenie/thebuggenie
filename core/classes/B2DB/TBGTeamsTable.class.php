@@ -22,7 +22,7 @@
 		const B2DBNAME = 'teams';
 		const ID = 'teams.id';
 		const SCOPE = 'teams.scope';
-		const TEAMNAME = 'teams.teamname';
+		const NAME = 'teams.name';
 
 		/**
 		 * Return an instance of this table
@@ -38,28 +38,8 @@
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			
-			parent::_addVarchar(self::TEAMNAME, 50);
+			parent::_addVarchar(self::NAME, 50);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
-
-		public function loadFixtures($scope_id)
-		{
-			$i18n = TBGContext::getI18n();
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(TBGTeamsTable::TEAMNAME, 'Staff members');
-			$crit->addInsert(TBGTeamsTable::SCOPE, $scope_id);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(TBGTeamsTable::TEAMNAME, 'Developers');
-			$crit->addInsert(TBGTeamsTable::SCOPE, $scope_id);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(TBGTeamsTable::TEAMNAME, 'Team leaders');
-			$crit->addInsert(TBGTeamsTable::SCOPE, $scope_id);
-			$this->doInsert($crit);
 		}
 
 		public function getAll($scope = null)
@@ -76,7 +56,7 @@
 		public function doesTeamNameExist($team_name)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::TEAMNAME, $team_name);
+			$crit->addWhere(self::NAME, $team_name);
 
 			return (bool) $this->doCount($crit);
 		}

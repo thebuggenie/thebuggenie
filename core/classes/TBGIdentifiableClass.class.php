@@ -45,6 +45,8 @@
 		
 		protected $_b2dbtablename;
 		
+		protected $_scope;
+		
 		/**
 		 * Return the items id
 		 * 
@@ -65,6 +67,16 @@
 			$this->_id = $id;
 		}
 
+		public function setScope(TBGScope $scope)
+		{
+			$this->_scope = $scope;
+		}
+		
+		public function getScope()
+		{
+			return $this->_scope;
+		}
+		
 		/**
 		 * Return the items name
 		 * 
@@ -178,27 +190,30 @@
 				}
 				catch (Exception $e)
 				{
-					var_dump($e);
-					die();
 					throw $e;
 				}
 			}
 			else
 			{
+				if (TBGContext::getScope() instanceof TBGScope)
+				{
+					$this->_scope = TBGContext::getScope();
+				}
 				$this->_preInitialize();
 			}
 		}
 		
 		public function getB2DBSaveablePropertyValue($property)
 		{
-			$property_name = "_{$property}";
+			$property = explode('.', $property);
+			$property_name = "_{$property[1]}";
 			if (is_object($this->$property_name))
 			{
 				return $this->$property_name->getID();
 			}
 			elseif (!is_object($this->$property_name))
 			{
-				$this->$property_name;
+				return $this->$property_name;
 			}
 		}
 
@@ -210,7 +225,7 @@
 		final public function save()
 		{
 			$this->_preSave();
-			$is_new = (bool) $this->_id;
+			$is_new = !(bool) $this->_id;
 			$res_id = $this->getB2DBTable()->saveObject($this);
 			$this->_id = $res_id;
 			$this->_postSave($is_new);

@@ -28,7 +28,7 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
-		public function loadFixtures($scope)
+		public function loadFixtures(TBGScope $scope)
 		{
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ARTICLE_ID, 1);

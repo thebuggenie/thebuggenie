@@ -19,6 +19,8 @@
 	class TBGTeam extends TBGIdentifiableClass 
 	{
 		
+		protected $_b2dbtablename = 'TBGTeamsTable';
+		
 		protected $_members = null;
 
 		protected $_num_members = null;
@@ -46,29 +48,27 @@
 			return self::$_teams;
 		}
 		
-		/**
-		 * Class constructor
-		 *
-		 * @param integer $t_id
-		 */
-		public function __construct($t_id, $row = null)
+		public static function loadFixtures(TBGScope $scope)
 		{
-			$this->_id = $t_id;
-			if ($row == null)
-			{
-				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGTeamsTable::SCOPE, TBGContext::getScope()->getID());
-				$row = B2DB::getTable('TBGTeamsTable')->doSelectById($t_id, $crit);
-			}
+			$staff_members = new TBGTeam();
+			$staff_members->setName('Staff members');
+			$staff_members->save();
 			
-			if ($row instanceof B2DBRow)
-			{
-				$this->_name = $row->get(TBGTeamsTable::TEAMNAME);
-			}
-			else
-			{
-				throw new Exception('This team does not exist');
-			}
+			$developers = new TBGTeam();
+			$developers->setName('Developers');
+			$developers->save();
+			
+			$team_leaders = new TBGTeam();
+			$team_leaders->setName('Team leaders');
+			$team_leaders->save();
+			
+			$testers = new TBGTeam();
+			$testers->setName('Testers');
+			$testers->save();
+			
+			$translators = new TBGTeam();
+			$translators->setName('Translators');
+			$translators->save();
 		}
 		
 		public function __toString()
@@ -90,7 +90,7 @@
 		public static function createNew($teamname)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGTeamsTable::TEAMNAME, $teamname);
+			$crit->addInsert(TBGTeamsTable::NAME, $teamname);
 			$crit->addInsert(TBGTeamsTable::SCOPE, TBGContext::getScope()->getID());
 			$res = B2DB::getTable('TBGTeamsTable')->doInsert($crit);
 			return TBGContext::factory()->TBGTeam($res->getInsertID());
@@ -153,7 +153,7 @@
 		public static function findTeams($details)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGTeamsTable::TEAMNAME, "%$details%", B2DBCriteria::DB_LIKE);
+			$crit->addWhere(TBGTeamsTable::NAME, "%$details%", B2DBCriteria::DB_LIKE);
 			$teams = array();
 			if ($res = B2DB::getTable('TBGTeamsTable')->doSelect($crit))
 			{

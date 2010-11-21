@@ -30,6 +30,16 @@
 		const COLOR = 'userstate.color';
 		const ABSENT = 'userstate.absent';
 
+		/**
+		 * Return an instance of this table
+		 *
+		 * @return TBGUserStateTable
+		 */
+		public static function getTable()
+		{
+			return B2DB::getTable('TBGUserStateTable');
+		}
+		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -42,101 +52,6 @@
 			parent::_addBoolean(self::ABSENT);
 			parent::_addVarchar(self::COLOR, 7, '');
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-		}
-
-		public function loadFixtures($scope)
-		{
-			$i18n = TBGContext::getI18n();
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, 'Available');
-			$crit->addInsert(self::SCOPE, $scope);
-			$crit->addInsert(self::UNAVAILABLE, 0);
-			$crit->addInsert(self::BUSY, 0);
-			$crit->addInsert(self::ONLINE, 1);
-			$crit->addInsert(self::MEETING, 0);
-			$crit->addInsert(self::ABSENT, 0);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, 'Offline');
-			$crit->addInsert(self::SCOPE, $scope);
-			$crit->addInsert(self::UNAVAILABLE, 1);
-			$crit->addInsert(self::BUSY, 0);
-			$crit->addInsert(self::ONLINE, 0);
-			$crit->addInsert(self::MEETING, 0);
-			$crit->addInsert(self::ABSENT, 0);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, 'Busy');
-			$crit->addInsert(self::SCOPE, $scope);
-			$crit->addInsert(self::UNAVAILABLE, 0);
-			$crit->addInsert(self::BUSY, 1);
-			$crit->addInsert(self::ONLINE, 1);
-			$crit->addInsert(self::MEETING, 0);
-			$crit->addInsert(self::ABSENT, 0);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, 'Unavailable');
-			$crit->addInsert(self::SCOPE, $scope);
-			$crit->addInsert(self::UNAVAILABLE, 1);
-			$crit->addInsert(self::BUSY, 0);
-			$crit->addInsert(self::ONLINE, 1);
-			$crit->addInsert(self::MEETING, 0);
-			$crit->addInsert(self::ABSENT, 0);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, 'In a meeting');
-			$crit->addInsert(self::SCOPE, $scope);
-			$crit->addInsert(self::UNAVAILABLE, 1);
-			$crit->addInsert(self::BUSY, 1);
-			$crit->addInsert(self::ONLINE, 1);
-			$crit->addInsert(self::MEETING, 1);
-			$crit->addInsert(self::ABSENT, 0);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, 'Coding');
-			$crit->addInsert(self::SCOPE, $scope);
-			$crit->addInsert(self::UNAVAILABLE, 0);
-			$crit->addInsert(self::BUSY, 1);
-			$crit->addInsert(self::ONLINE, 1);
-			$crit->addInsert(self::MEETING, 0);
-			$crit->addInsert(self::ABSENT, 0);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, 'On coffee break');
-			$crit->addInsert(self::SCOPE, $scope);
-			$crit->addInsert(self::UNAVAILABLE, 1);
-			$crit->addInsert(self::BUSY, 1);
-			$crit->addInsert(self::ONLINE, 1);
-			$crit->addInsert(self::MEETING, 0);
-			$crit->addInsert(self::ABSENT, 0);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, 'Away');
-			$crit->addInsert(self::SCOPE, $scope);
-			$crit->addInsert(self::UNAVAILABLE, 1);
-			$crit->addInsert(self::BUSY, 1);
-			$crit->addInsert(self::ONLINE, 1);
-			$crit->addInsert(self::MEETING, 0);
-			$crit->addInsert(self::ABSENT, 1);
-			$this->doInsert($crit);
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::STATE_NAME, 'On vacation');
-			$crit->addInsert(self::SCOPE, $scope);
-			$crit->addInsert(self::UNAVAILABLE, 1);
-			$crit->addInsert(self::BUSY, 1);
-			$crit->addInsert(self::ONLINE, 0);
-			$crit->addInsert(self::MEETING, 0);
-			$crit->addInsert(self::ABSENT, 1);
-			$this->doInsert($crit);
 		}
 		
 	}
