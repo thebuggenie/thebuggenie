@@ -50,25 +50,7 @@
 		
 		public static function loadFixtures(TBGScope $scope)
 		{
-			$staff_members = new TBGClient();
-			$staff_members->setName('Staff members');
-			$staff_members->save();
-			
-			$developers = new TBGClient();
-			$developers->setName('Developers');
-			$developers->save();
-			
-			$client_leaders = new TBGClient();
-			$client_leaders->setName('Client leaders');
-			$client_leaders->save();
-			
-			$testers = new TBGClient();
-			$testers->setName('Testers');
-			$testers->save();
-			
-			$translators = new TBGClient();
-			$translators->setName('Translators');
-			$translators->save();
+
 		}
 		
 		public function __toString()
