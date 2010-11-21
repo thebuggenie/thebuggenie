@@ -19,6 +19,8 @@
 	class TBGWorkflowScheme extends TBGIdentifiableClass
 	{
 
+		protected $_b2dbtablename = 'TBGWorkflowSchemesTable';
+		
 		protected static $_schemes = null;
 
 		protected $_issuetype_workflows = null;
@@ -53,27 +55,6 @@
 			return self::$_schemes;
 		}
 
-		public function __construct($id, $row)
-		{
-			if (!is_numeric($id))
-			{
-				throw new Exception('Please specify a valid workflow scheme id');
-			}
-			if ($row === null)
-			{
-				$row = TBGWorkflowSchemesTable::getTable()->getByID($id);
-			}
-
-			if (!$row instanceof B2DBRow)
-			{
-				throw new Exception('The specified workflow scheme id does not exist');
-			}
-
-			$this->_id = $row->get(TBGWorkflowSchemesTable::ID);
-			$this->_name = $row->get(TBGWorkflowSchemesTable::NAME);
-			$this->_description = $row->get(TBGWorkflowSchemesTable::DESCRIPTION);
-		}
-
 		/**
 		 * Returns the workflows description
 		 *
@@ -83,7 +64,7 @@
 		{
 			return $this->_description;
 		}
-
+		
 		/**
 		 * Set the workflows description
 		 *

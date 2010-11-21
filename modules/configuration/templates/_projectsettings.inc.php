@@ -102,7 +102,7 @@
 		<tr>
 			<td class="config_explanation" colspan="2"><?php echo __('This is how the units you use for estimates and time used are being shown'); ?></td>
 		</tr> */ ?>
-		<tr>
+		<?php /* <tr>
 			<td><label for="defaultstatus"><?php echo __('Default status for new issues'); ?></label></td>
 			<td>
 				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
@@ -116,7 +116,7 @@
 					<?php echo ($project->getDefaultStatus() instanceof TBGStatus) ? $project->getDefaultStatus()->getName() : __('Not determined'); ?>
 				<?php endif; ?>
 			</td>
-		</tr>
+		</tr> */ ?>
 		<tr>
 			<td><label for="allow_changing_without_working"><?php echo __('Allow freelancing'); ?></label></td>
 			<td>

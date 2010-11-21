@@ -723,9 +723,6 @@
 					if ($request->hasParameter('doc_url'))
 						$this->project->setDocumentationURL($request->getParameter('doc_url'));
 					
-					if ($request->hasParameter('defaultstatus'))
-						$this->project->setDefaultStatus($request->getParameter('defaultstatus'));
-					
 					if ($request->hasParameter('planned_release'))
 						$this->project->setPlannedReleased($request->getParameter('planned_release'));
 					

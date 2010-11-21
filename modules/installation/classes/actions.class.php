@@ -36,6 +36,7 @@
 		{
 			$this->all_well = true;
 			$this->base_folder_perm_ok = true;
+			$this->cache_folder_perm_ok = true;
 			$this->thebuggenie_folder_perm_ok = true;
 			$this->b2db_param_file_ok = true;
 			$this->pdo_ok = true;
@@ -49,6 +50,11 @@
 			if (!is_writable(TBGContext::getIncludePath()))
 			{
 				$this->base_folder_perm_ok = false;
+				$this->all_well = false;
+			}
+			if (!is_writable(TBGContext::getIncludePath() . 'core/cache/') || !is_writable(TBGContext::getIncludePath() . 'core/cache/B2DB/'))
+			{
+				$this->cache_folder_perm_ok = false;
 				$this->all_well = false;
 			}
 			if (!is_writable(TBGContext::getIncludePath() . 'thebuggenie/'))

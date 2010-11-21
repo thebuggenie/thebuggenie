@@ -29,6 +29,9 @@
 	<?php if ($base_folder_perm_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can write to The Bug Genie directory ...</div>
 	<?php endif; ?>
+	<?php if ($cache_folder_perm_ok): ?>
+		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can write to The Bug Genie cache directory ...</div>
+	<?php endif; ?>
 	<?php if ($thebuggenie_folder_perm_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can write to The Bug Genie public directory ...</div>
 	<?php endif; ?>
@@ -92,6 +95,16 @@
 			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
 			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>
+			</div>
+		<?php endif; ?>
+		<?php if (!$cache_folder_perm_ok): ?>
+			<div class="installation_prerequisites prereq_fail">
+			<b>Could not write to The Bug Genie cache directory</b><br>
+			The cache folder for The Bug Genie should be writable during installation and normal operations, since we need to store cache files in it
+			</div>
+			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
+			<div class="command_box">
+			chmod a+w -R <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/cache
 			</div>
 		<?php endif; ?>
 		<?php if (!$thebuggenie_folder_perm_ok): ?>
