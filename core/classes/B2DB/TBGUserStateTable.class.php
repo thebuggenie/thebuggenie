@@ -22,13 +22,13 @@
 		const B2DBNAME = 'userstate';
 		const ID = 'userstate.id';
 		const SCOPE = 'userstate.scope';
-		const STATE_NAME = 'userstate.state_name';
-		const UNAVAILABLE = 'userstate.unavailable';
-		const BUSY = 'userstate.busy';
-		const ONLINE = 'userstate.online';
-		const MEETING = 'userstate.meeting';
-		const COLOR = 'userstate.color';
-		const ABSENT = 'userstate.absent';
+		const NAME = 'userstate.name';
+		const UNAVAILABLE = 'userstate.is_unavailable';
+		const BUSY = 'userstate.is_busy';
+		const ONLINE = 'userstate.is_online';
+		const MEETING = 'userstate.is_in_meeting';
+		const COLOR = 'userstate.itemdata';
+		const ABSENT = 'userstate.is_absent';
 
 		/**
 		 * Return an instance of this table
@@ -44,7 +44,7 @@
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			
-			parent::_addVarchar(self::STATE_NAME, 100);
+			parent::_addVarchar(self::NAME, 100);
 			parent::_addBoolean(self::UNAVAILABLE);
 			parent::_addBoolean(self::BUSY);
 			parent::_addBoolean(self::ONLINE);

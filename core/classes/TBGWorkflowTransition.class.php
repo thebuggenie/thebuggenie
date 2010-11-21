@@ -196,13 +196,21 @@
 			$this->_outgoing_step_id = $step;
 		}
 		
-		public function delete($direction)
+		public function deleteTransition($direction)
 		{
-			TBGWorkflowStepTransitionsTable::getTable()->deleteByTransitionID($this->getID());
 			if ($direction == 'incoming')
 			{
-				TBGWorkflowTransitionsTable::getTable()->doDeleteById($this->getID());
+				$this->delete();
 			}
+			else
+			{
+				$this->_preDelete();
+			}
+		}
+		
+		public function _preDelete()
+		{
+			TBGWorkflowStepTransitionsTable::getTable()->deleteByTransitionID($this->getID());
 		}
 		
 		public function isAvailableForIssue(TBGIssue $issue)

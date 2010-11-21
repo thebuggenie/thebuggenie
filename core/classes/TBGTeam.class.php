@@ -142,12 +142,11 @@
 			B2DB::getTable('TBGTeamMembersTable')->doDelete($crit);
 		}
 		
-		public function delete()
+		public function _preDelete()
 		{
-			$res = B2DB::getTable('TBGTeamsTable')->doDeleteById($this->getID());
-			$crit = new B2DBCriteria();
+			$crit = TBGTeamMembersTable::getTable()->getCriteria();
 			$crit->addWhere(TBGTeamMembersTable::TID, $this->getID());
-			$res = B2DB::getTable('TBGTeamMembersTable')->doDelete($crit);
+			$res = TBGTeamMembersTable::getTable()->doDelete($crit);
 		}
 		
 		public static function findTeams($details)

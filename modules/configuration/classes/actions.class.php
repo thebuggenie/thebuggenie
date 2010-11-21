@@ -1931,7 +1931,7 @@
 					{
 						if ($request->getParameter('mode') == 'delete')
 						{
-							$this->transition->delete($request->getParameter('direction'));
+							$this->transition->deleteTransition($request->getParameter('direction'));
 							return $this->renderJSON(array('failed' => false));
 						}
 						elseif ($request->getParameter('transition_name') && $request->getParameter('outgoing_step_id') && $request->hasParameter('template'))

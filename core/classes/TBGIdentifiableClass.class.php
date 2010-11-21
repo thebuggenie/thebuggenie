@@ -43,8 +43,6 @@
 		 */
 		protected $_itemtype;
 		
-		protected $_b2dbtablename;
-		
 		protected $_scope;
 		
 		/**
