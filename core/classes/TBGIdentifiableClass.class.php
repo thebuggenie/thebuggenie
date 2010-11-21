@@ -16,7 +16,7 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	abstract class TBGIdentifiableClass implements TBGIdentifiable, B2DBSaveable
+	abstract class TBGIdentifiableClass extends B2DBSaveable implements TBGIdentifiable
 	{
 		
 		const TYPE_USER = 1;
@@ -105,133 +105,12 @@
 		{
 			return 0;
 		}
-		
-		public function getB2DBTableName()
-		{
-			if (!isset($this->_b2dbtablename))
-			{
-				throw new Exception('You must specify a B2DB table name for class ' . get_class($this));
-			}
-			return $this->_b2dbtablename;
-		}
-		
-		/**
-		 * Return the associated B2DBTable for this class
-		 * 
-		 * @return TBGB2DBTable
-		 */
-		public function getB2DBTable()
-		{
-			$b2dbtablename = $this->getB2DBTableName();
-			return $b2dbtablename::getTable();
-		}
-		
-		protected function _populatePropertiesFromB2DBRow(B2DBRow $row)
-		{
-			$id_column = $this->getB2DBTable()->getIdColumn();
-			foreach ($this->getB2DBTable()->getColumns() as $column)
-			{
-				if ($column['name'] == $id_column) 
-				{
-					$property_name = "_id";
-					$property_type = 'integer';
-				}
-				else
-				{
-					$property = explode('.', $column['name']);
-					$property_type = $column['type'];
-					$property_name = "_".strtolower($property[1]);
-					if (!property_exists($this, $property_name))
-					{
-						throw new Exception("Could not find class property {$property_name} in class ".get_class($this).". The class must have all properties from the corresponding B2DB table class available, except scope and id");
-					}
-				}
-				switch ($property_type)
-				{
-					case 'boolean':
-						$this->$property_name = (boolean) $row->get($column['name']);
-						break;
-					case 'integer':
-						$this->$property_name = (integer) $row->get($column['name']);
-						break;
-					default:
-						$this->$property_name = $row->get($column['name']);
-				}
-			}
-		}
-		
-		protected function _preInitialize() {}
-		
-		protected function _construct(B2DBRow $row) {}
-		
-		protected function _preSave() {}
-		
-		protected function _postSave($is_new) {}
-		
-		final public function __construct($id = null, $row = null)
-		{
-			if ($id !== null)
-			{
-				if (!is_numeric($id))
-				{
-					throw new Exception('Please specify a valid id for object of type ' . get_class($this));
-				}
-				if ($row === null)
-				{
-					$row = $this->getB2DBTable()->getByID($id);
-				}
 
-				if (!$row instanceof B2DBRow)
-				{
-					throw new Exception('The specified id does not exist in table ' . $this->getB2DBTableName());
-				}
-				try
-				{
-					$this->_preInitialize();
-					$this->_populatePropertiesFromB2DBRow($row);
-					$this->_construct($row);
-				}
-				catch (Exception $e)
-				{
-					throw $e;
-				}
-			}
-			else
-			{
-				if (TBGContext::getScope() instanceof TBGScope)
-				{
-					$this->_scope = TBGContext::getScope();
-				}
-				$this->_preInitialize();
-			}
-		}
-		
-		public function getB2DBSaveablePropertyValue($property)
+		protected function _preInitialize()
 		{
-			$property = explode('.', $property);
-			$property_name = "_{$property[1]}";
-			if (is_object($this->$property_name))
+			if (TBGContext::getScope() instanceof TBGScope)
 			{
-				return $this->$property_name->getID();
-			}
-			elseif (!is_object($this->$property_name))
-			{
-				return $this->$property_name;
+				$this->_scope = TBGContext::getScope();
 			}
 		}
-
-		public function getB2DBID()
-		{
-			return $this->getID();
-		}
-
-		final public function save()
-		{
-			$this->_preSave();
-			$is_new = !(bool) $this->_id;
-			$res_id = $this->getB2DBTable()->saveObject($this);
-			$this->_id = $res_id;
-			$this->_postSave($is_new);
-		}
-
 	}
