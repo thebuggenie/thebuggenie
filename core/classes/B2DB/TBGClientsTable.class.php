@@ -45,8 +45,8 @@
 			parent::_addVarchar(self::NAME, 50);
 			parent::_addVarchar(self::WEBSITE, 200);
 			parent::_addVarchar(self::EMAIL, 100);
-			parent::_addInteger(self::TELEPHONE, 15);
-			parent::_addInteger(self::FAX, 15);
+			parent::_addInteger(self::TELEPHONE, 16, null);
+			parent::_addInteger(self::FAX, 16, null);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
