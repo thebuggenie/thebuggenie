@@ -160,8 +160,6 @@
 					throw new Exception(TBGContext::getI18n()->__('Timed out during server conversation'));
 				}
 			}
-			//flush();
-			ob_flush();
 			return $ret;
 		}
 
