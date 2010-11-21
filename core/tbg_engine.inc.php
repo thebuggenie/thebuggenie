@@ -425,6 +425,7 @@ echo "
 		{
 			TBGLogging::log('Adding B2DB classes to autoload path');
 			define ('B2DB_BASEPATH', THEBUGGENIE_PATH . 'core/B2DB/');
+			define ('B2DB_CACHEPATH', THEBUGGENIE_PATH . 'core/cache/B2DB/');
 			TBGContext::addClasspath(THEBUGGENIE_PATH . 'core/B2DB/classes/');
 			TBGLogging::log('...done (Adding B2DB classes to autoload path)');
 

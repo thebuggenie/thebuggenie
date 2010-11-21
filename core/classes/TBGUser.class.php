@@ -614,13 +614,13 @@
 				{ 
 					$this->setState(TBGSettings::get('onlinestate')); 
 				}*/
-				if ($this->_group_id != 0)
+				if (is_numeric($this->_group_id) && $this->_group_id != 0)
 				{
 					$this->_group_id = TBGContext::factory()->TBGGroup($this->_group_id, $row);
 				}
-				if ($row->get(TBGUsersTable::CUSTOMER_ID) != 0)
+				if (is_numeric($this->_customer_id) && $this->_customer_id != 0)
 				{
-					$this->_customer_id = TBGContext::factory()->TBGCustomer($row->get(TBGUsersTable::CUSTOMER_ID), $row);
+					$this->_customer_id = TBGContext::factory()->TBGCustomer($this->_customer_id, $row);
 				}
 			}
 			catch (Exception $e)

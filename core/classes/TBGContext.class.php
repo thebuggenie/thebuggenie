@@ -1816,6 +1816,7 @@
 						}
 						if (self::performAction($route['module'], $route['action']))
 						{
+							B2DB::closeDBLink();
 							return true;
 						}
 					}

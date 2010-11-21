@@ -425,11 +425,6 @@
 			return false;
 		}
 		
-		public function getIntro()
-		{
-			return $this->_intro_text;
-		}
-		
 		public function canRead()
 		{
 			return true;

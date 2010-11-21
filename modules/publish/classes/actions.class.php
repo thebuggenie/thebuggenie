@@ -235,7 +235,6 @@
 			{
 				$this->article_title = $this->article->getTitle();
 				$this->article_content = $this->article->getContent();
-				$this->article_intro = $this->article->getIntro();
 
 				if ($request->isMethod(TBGRequest::POST))
 				{
