@@ -827,7 +827,6 @@
 		protected function _postIssue()
 		{
 			$fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
-			//$issue = TBGIssue::createNew($this->title, $this->issuetype_id, $this->selected_project->getID(), null, false);
 			$issue = new TBGIssue();
 			$issue->setTitle($this->title);
 			$issue->setIssuetype($this->issuetype_id);
@@ -1863,14 +1862,19 @@
 						if ($request->getParameter('mode') == 'issue')
 						{
 							$issue->attachFile($file);
+							$comment = new TBGComment();
+							$comment->setPostedBy(TBGContext::getUser()->getID());
+							$comment->setTargetID($issue->getID());
+							$comment->setTargetType(TBGComment::TYPE_ISSUE);
 							if ($request->getParameter('comment') != '')
 							{
-								TBGComment::createNew('', TBGContext::getI18n()->__('A file was uploaded. %link_to_file% This comment was attached: %comment%', array('%comment%' => "\n\n".$request->getRawParameter('comment'), '%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$request->getParameter('uploader_file_description')}]]")), TBGContext::getUser()->getID(), $issue->getID(), TBGComment::TYPE_ISSUE);
+								$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file% This comment was attached: %comment%', array('%comment%' => "\n\n".$request->getRawParameter('comment'), '%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$request->getParameter('uploader_file_description')}]]")));
 							}
 							else
 							{
-								TBGComment::createNew('', TBGContext::getI18n()->__('A file was uploaded. %link_to_file%', array('%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$request->getParameter('uploader_file_description')}]]")), TBGContext::getUser()->getID(), $issue->getID(), TBGComment::TYPE_ISSUE, 'core', true, true);
+								$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file%', array('%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$request->getParameter('uploader_file_description')}]]")));
 							}
+							$comment->save();
 						}
 						return $this->renderText('ok');
 					}
@@ -2102,8 +2106,15 @@
 						}
 
 						$comment_body = $this->comment . "\n\n" . $request->getParameter('comment_body', null, false);
-
-						$comment = TBGComment::createNew($title, $comment_body, TBGContext::getUser()->getID(), $request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'), $request->getParameter('comment_visibility'), 0, false);
+						$comment = new TBGComment();
+						$comment->setTitle($title);
+						$comment->setContent($comment_body);
+						$comment->setPostedBy(TBGContext::getUser()->getID());
+						$comment->setTargetID($request->getParameter('comment_applies_id'));
+						$comment->setTargetType($request->getParameter('comment_applies_type'));
+						$comment->setModuleName($request->getParameter('comment_module'));
+						$comment->setIsPublic((bool) $request->getParameter('comment_visibility'));
+						$comment->save();
 
 						if ($request->getParameter('comment_applies_type') == 1 && $request->getParameter('comment_module') == 'core')
 						{

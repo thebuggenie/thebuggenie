@@ -350,7 +350,11 @@
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
 			if (($sprint_name = $request->getParameter('sprint_name')) && trim($sprint_name) != '')
 			{
-				$sprint = TBGMilestone::createNew($sprint_name, TBGMilestone::TYPE_SCRUMSPRINT, $this->selected_project->getID());
+				$sprint = new TBGMilestone();
+				$sprint->setName($sprint_name);
+				$sprint->setType(TBGMilestone::TYPE_SCRUMSPRINT);
+				$sprint->setProject($this->selected_project);
+				//TBGMilestone::createNew($sprint_name, TBGMilestone::TYPE_SCRUMSPRINT, $this->selected_project->getID());
 				$sprint->setStarting();
 				$sprint->setStartingDate(mktime(0, 0, 1, $request->getParameter('starting_month'), $request->getParameter('starting_day'), $request->getParameter('starting_year')));
 				$sprint->setScheduled();
@@ -860,7 +864,13 @@
 				TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenUpdateIssueAddMessage'));
 				$issue->save(false);
 				$comment_body = $this->comment . "\n\n" . $request->getParameter('message');
-				$comment = TBGComment::createNew('Issue updated', $comment_body, TBGContext::getUser()->getID(), $issue->getID(), TBGComment::TYPE_ISSUE, 'core', 1, 0, false);
+				$comment = new TBGComment();
+				$comment->setTitle('Issue updated');
+				$comment->setContent($comment_body);
+				$comment->setPostedBy(TBGContext::getUser()->getID());
+				$comment->setTargetID($issue->getID());
+				$comment->setTargetType(TBGComment::TYPE_ISSUE);
+				$comment->save();
 
 				$this->return_values = $return_values;
 			}

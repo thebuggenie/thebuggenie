@@ -550,6 +550,11 @@
 		{
 			$this->_isstarting = $starting;
 		}
+		
+		public function setProject($project)
+		{
+			$this->_project = $project;
+		}
 
 		/**
 		 * Return the year the milestone is starting 

@@ -389,12 +389,13 @@
 					$this->cliEcho("All tables successfully created...\n\n", 'green', 'bold');
 					$this->cliEcho("Setting up initial scope... \n", 'white', 'bold');
 					TBGContext::reinitializeI18n('en_US');
-					$scope = TBGScope::createNew('The default scope', '');
-					TBGSettings::saveSetting('language', 'en_US', 'core', 1);
+					$scope = new TBGScope();
+					$scope->setName('The default scope');
 					$scope->setHostname($url_host);
 					$scope->save();
 					TBGContext::setScope($scope);
-					TBGSettings::saveSetting('url_subdir', $url_subdir, 'core', 1);
+					TBGSettings::saveSetting('language', 'en_US');
+					TBGSettings::saveSetting('url_subdir', $url_subdir);
 					$this->cliEcho("Initial scope setup successfully... \n\n", 'green', 'bold');
 
 					$this->cliEcho("Setting up modules... \n", 'white', 'bold');

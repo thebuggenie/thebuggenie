@@ -85,62 +85,6 @@
 			return self::$_comment_count[$target_type][$target_id];
 		}
 		
-		/*static function createNew($title, $content, $uid, $target_id, $target_type, $module = 'core', $is_public = true, $system_comment = false, $invoke_trigger = true)
-		{
-			$commentTitle = trim($title);
-			$commentContent = trim($content);
-			$comment = null;
-			if ($commentContent != '' && $commentTitle == '') $commentTitle = TBGContext::getI18n()->__('Untitled comment');
-			if ($commentTitle != '' && $commentContent != '')
-			{
-				$crit = new B2DBCriteria();
-				$crit->addInsert(TBGCommentsTable::TARGET_ID, $target_id);
-				$crit->addInsert(TBGCommentsTable::TARGET_TYPE, $target_type);
-				$crit->addInsert(TBGCommentsTable::TITLE, $commentTitle);
-				$crit->addInsert(TBGCommentsTable::CONTENT, $commentContent);
-				$crit->addInsert(TBGCommentsTable::POSTED_BY, $uid);
-				$crit->addInsert(TBGCommentsTable::POSTED, NOW);
-				$crit->addInsert(TBGCommentsTable::UPDATED, NOW);
-				$crit->addInsert(TBGCommentsTable::IS_PUBLIC, (int) $is_public);
-				$crit->addInsert(TBGCommentsTable::SYSTEM_COMMENT, $system_comment);
-				$crit->addInsert(TBGCommentsTable::MODULE, $module);
-				$crit->addInsert(TBGCommentsTable::COMMENT_NUMBER, TBGCommentsTable::getTable()->getNextCommentNumber($target_id, $target_type));
-				$crit->addInsert(TBGCommentsTable::SCOPE, TBGContext::getScope()->getID());
-				$res = TBGCommentsTable::getTable()->doInsert($crit);
-				$comment = new TBGComment($res->getInsertID());
-				if (!$system_comment)
-				{
-					TBGLogTable::getTable()->createNew($target_id, TBGLogTable::TYPE_ISSUE, TBGLogTable::LOG_COMMENT, $comment->getID(), $uid);
-				}
-				if ($invoke_trigger)
-				{
-					try
-					{
-						TBGEvent::createNew('core', 'TBGComment::createNew', $comment)->trigger();
-					}
-					catch (Exception $e) {}
-				}
-			}
-			return $comment;
-		}*/
-	
-		static function updateComment($title, $content, $uid, $c_id, $is_public, $module, $target_type, $target_id)
-		{
-			$commentTitle = trim($title);
-			$commentContent = trim($content);
-			$now = NOW;
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGCommentsTable::TITLE, $commentTitle);
-			$crit->addUpdate(TBGCommentsTable::CONTENT, $commentContent);
-			$crit->addUpdate(TBGCommentsTable::UPDATED, $now);
-			$crit->addUpdate(TBGCommentsTable::UPDATED_BY, $uid);
-			TBGCommentsTable::getTable()->doUpdateById($crit, $c_id);
-			if ($module == 'core' && $target_type == 1)
-			{
-				TBGContext::factory()->TBGIssue($target_id)->updateComment($title, $content, $uid);
-			}
-		}
-		
 		public function setTitle($var)
 		{
 			$this->_name = $var;
