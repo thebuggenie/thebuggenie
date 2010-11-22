@@ -67,12 +67,6 @@
 			return $event->getReturnList();
 		}
 		
-		public static function createNew($workflow_id, $name, $description, $to_step_id, $template)
-		{
-			$id = TBGWorkflowTransitionsTable::getTable()->createNew($workflow_id, $name, $description, $to_step_id, $template);
-			return TBGContext::factory()->TBGWorkflowTransition($id);
-		}
-
 		public function _construct(B2DBRow $row)
 		{
 			$this->_outgoing_step_id = TBGContext::factory()->TBGWorkflowStep($this->_outgoing_step_id);
@@ -107,6 +101,11 @@
 		public function getWorkflow()
 		{
 			return $this->_workflow_id;
+		}
+
+		public function setWorkflow(TBGWorkflow $workflow)
+		{
+			$this->_workflow_id = $workflow;
 		}
 
 		/**

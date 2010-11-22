@@ -1998,8 +1998,28 @@
 					{
 						if ($request->getParameter('transition_name') && $request->getParameter('outgoing_step_id') && $request->hasParameter('template'))
 						{
-							$transition = TBGWorkflowTransition::createNew($this->workflow->getID(), $request->getParameter('transition_name'), $request->getParameter('transition_description'), $request->getParameter('outgoing_step_id'), $request->getParameter('template'));
-							$redirect_transition = true;
+							if (($step = TBGContext::factory()->TBGWorkflowStep((int) $request->getParameter('outgoing_step_id'))) && $step instanceof TBGWorkflowStep)
+							{
+								if (array_key_exists($request->getParameter('template'), TBGWorkflowTransition::getTemplates()))
+								{
+									$transition = new TBGWorkflowTransition();
+									$transition->setWorkflow($this->workflow);
+									$transition->setName($request->getParameter('transition_name'));
+									$transition->setDescription($request->getParameter('transition_description'));
+									$transition->setOutgoingStep($step);
+									$transition->setTemplate($request->getParameter('template'));
+									$transition->save();
+									$redirect_transition = true;
+								}
+								else
+								{
+									throw new InvalidArgumentException(TBGContext::getI18n()->__('Please select a valid template'));
+								}
+							}
+							else
+							{
+								throw new InvalidArgumentException(TBGContext::getI18n()->__('Please select a valid outgoing step'));
+							}
 						}
 						else
 						{
