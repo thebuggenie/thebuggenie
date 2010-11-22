@@ -371,12 +371,6 @@ echo "
 		tbg_msgbox(true, 'THEBUGGENIE_PATH not defined', 'You must define the THEBUGGENIE_PATH constant so we can find the files we need');
 	}
 
-	if (!isset($argc))
-	{
-		session_name("THEBUGGENIE");
-		session_start();
-	}
-
 	/**
 	 * Magic autoload function to make sure classes are autoloaded when used
 	 * 
@@ -385,7 +379,6 @@ echo "
 	function __autoload($classname)
 	{
 		$classes = TBGContext::getClasspaths();
-		
 		if (isset($classes[$classname]))
 		{
 			require $classes[$classname];
@@ -408,6 +401,12 @@ echo "
 		TBGContext::setLoadStart($starttime[1] + $starttime[0]);
 		TBGLogging::log('Initializing B2 framework');
 		TBGLogging::log('PHP_SAPI says "' . PHP_SAPI . '"');
+
+		if (!isset($argc))
+		{
+			session_name("THEBUGGENIE");
+			session_start();
+		}
 
 		// Set the include path
 		TBGContext::setIncludePath(THEBUGGENIE_PATH);
