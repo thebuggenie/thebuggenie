@@ -24,20 +24,9 @@
 		const SCOPE = 'teams.scope';
 		const NAME = 'teams.name';
 
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGTeamsTable
-		 */
-		public static function getTable()
-		{
-			return B2DB::getTable('TBGTeamsTable');
-		}
-		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
-			
 			parent::_addVarchar(self::NAME, 50);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
