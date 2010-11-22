@@ -1,0 +1,8 @@
+== Introduction ==
+B2DB is an advanced database access library and ORM-mapper for PHP 5.3. B2DB supports both PostgreSQL and MySQL, and can potentially support more database engines via its multi-engine PDO-based backend.
+
+B2DB gives you an [[WIKI:Active Record|Active Record]] interface to your database and PHP objects, and abstracts away most of your regular database access functionality.
+
+For more information on how to get started, see the [[:Category:B2DB:Howto|list of howto-articles]].
+
+[[Category:B2DB:About]]

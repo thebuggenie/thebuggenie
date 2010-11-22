@@ -1,0 +1,7 @@
+== List of supported databases ==
+
+B2DB has backends available in the default package for the following databases:
+* !MySQL (via PDO)
+* !PostgreSQL (via PDO)
+
+Other databases may be supported, and there may be additional database backends available from the B2DB website.

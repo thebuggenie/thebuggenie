@@ -1,0 +1,5 @@
+== !MySQL database backend ==
+
+!MySQL is supported via PDO
+
+[[Category:B2DB:Databases]]

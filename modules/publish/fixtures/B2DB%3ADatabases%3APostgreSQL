@@ -1,0 +1,5 @@
+== !PostgreSQL database backend ==
+
+!PostgreSQL is supported via PDO
+
+[[Category:B2DB:Databases]]
