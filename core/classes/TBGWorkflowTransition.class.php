@@ -246,8 +246,13 @@
 		public function listenIssueSaveAddComment(TBGEvent $event)
 		{
 			$comment_body = $event->getParameter('comment') . "\n\n" . $this->_request->getParameter('comment_body', null, false);
-
-			$comment = TBGComment::createNew($title, $comment_body, TBGContext::getUser()->getID(), $request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'), $request->getParameter('comment_visibility'), 0, false);
+			$comment = new TBGComment();
+			$comment->setTitle();
+			$comment->setContent($comment_body);
+			$comment->setPostedBy(TBGContext::getUser()->getID());
+			$comment->setTargetID($event->getSubject()->getID());
+			$comment->setTargetType(TBGComment::TYPE_ISSUE);
+			$comment->save();
 		}
 
 		/**
