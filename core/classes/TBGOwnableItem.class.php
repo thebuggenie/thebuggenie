@@ -29,7 +29,8 @@
 		/**
 		 * The lead for the project
 		 *  
-		 * @var TBGIdentifiable
+		 * @var TBGUser
+		 * @Class TBGUser
 		 */
 		protected $_leader = 0;
 		

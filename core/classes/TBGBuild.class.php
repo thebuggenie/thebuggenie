@@ -25,6 +25,7 @@
 		 * This builds edition
 		 *
 		 * @var TBGEdition
+		 * @Class TBGEdition
 		 */
 		protected $_edition = null;
 
@@ -32,6 +33,7 @@
 		 * This builds project
 		 *
 		 * @var TBGProject
+		 * @Class TBGProject
 		 */
 		protected $_project = null;
 		

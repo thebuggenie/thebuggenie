@@ -22,6 +22,7 @@
 		 * The project
 		 *
 		 * @var TBGProject
+		 * @Class TBGProject
 		 */
 		protected $_project = null;
 		

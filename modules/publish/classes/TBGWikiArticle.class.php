@@ -9,6 +9,7 @@
 		 * The article author
 		 *
 		 * @var TBGUser
+		 * @Class TBGUser
 		 */
 		protected $_author = null;
 

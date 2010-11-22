@@ -76,6 +76,7 @@
 		 *
 		 * @var TBGProject
 		 * @access protected
+		 * @Class TBGProject
 		 */
 		protected $_project_id;
 		
@@ -131,7 +132,8 @@
 		/**
 		 * Who posted the issue
 		 * 
-		 * @var TBGIdentifiable
+		 * @var TBGUser
+		 * @Class TBGUser
 		 */
 		protected $_posted_by;
 		
@@ -181,6 +183,7 @@
 		 * The resolution
 		 * 
 		 * @var TBGResolution
+		 * @Class TBGResolution
 		 */
 		protected $_resolution;
 		
@@ -203,6 +206,7 @@
 		 * The status
 		 * 
 		 * @var TBGStatus
+		 * @Class TBGStatus
 		 */
 		protected $_status;
 		
@@ -210,6 +214,7 @@
 		 * The prioroty
 		 * 
 		 * @var TBGPriority
+		 * @Class TBGPriority
 		 */
 		protected $_priority;
 		
@@ -217,6 +222,7 @@
 		 * The reproducability
 		 * 
 		 * @var TBGReproducability
+		 * @Class TBGReproducability
 		 */
 		protected $_reproducability;
 		
@@ -224,6 +230,7 @@
 		 * The severity
 		 * 
 		 * @var TBGSeverity
+		 * @Class TBGSeverity
 		 */
 		protected $_severity;
 
@@ -315,6 +322,7 @@
 		 * Which user is currently working on this issue
 		 * 
 		 * @var TBGUser
+		 * @Class TBGUser
 		 */
 		protected $_being_worked_on_by_user;
 		
@@ -378,6 +386,7 @@
 		 * The issue this issue is a duplicate of
 		 * 
 		 * @var TBGIssue
+		 * @Class TBGIssue
 		 */
 		protected $_duplicate_of;
 		
@@ -385,6 +394,7 @@
 		 * The milestone this issue is assigned to
 		 * 
 		 * @var TBGMilestone
+		 * @Class TBGMilestone
 		 */
 		protected $_milestone;
 		
@@ -427,6 +437,7 @@
 		 * The issues current step in the associated workflow
 		 *
 		 * @var TBGWorkflowStep
+		 * @Class TBGWorkflowStep
 		 */
 		protected $_workflow_step_id;
 

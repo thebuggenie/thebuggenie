@@ -47,7 +47,6 @@
 		 * The users scope
 		 *
 		 * @var TBGScope
-		 * @access protected
 		 */
 		protected $_scope = null;
 		
@@ -87,6 +86,7 @@
 		 * The user state
 		 *
 		 * @var TBGUserstate
+		 * @Class TBGUserstate
 		 */
 		protected $_userstate = null;
 		
@@ -173,6 +173,7 @@
 		 * The users group 
 		 * 
 		 * @var TBGGroup
+		 * @Class TBGGroup
 		 */
 		protected $_group_id = null;
 	
@@ -180,6 +181,7 @@
 		 * The users customer, if any
 		 * 
 		 * @var TBGCustomer
+		 * @Class TBGCustomer
 		 */
 		protected $_customer_id = null;
 	
@@ -587,26 +589,6 @@
 		 */
 		public function _construct(B2DBRow $row, $foreign_key = null)
 		{
-			try
-			{
-				/*if (($row->get(TBGUsersTable::USERSTATE) == TBGSettings::get('offlinestate') || $row->get(TBGUsersTable::USERSTATE) == TBGSettings::get('awaystate')) && !TBGContext::getRequest()->getParameter('setuserstate')) 
-				{ 
-					$this->setState(TBGSettings::get('onlinestate')); 
-				}*/
-				if (is_numeric($this->_group_id) && $this->_group_id != 0)
-				{
-					$this->_group_id = TBGContext::factory()->TBGGroup($this->_group_id, $row);
-				}
-				if (is_numeric($this->_customer_id) && $this->_customer_id != 0)
-				{
-					$this->_customer_id = TBGContext::factory()->TBGCustomer($this->_customer_id, $row);
-				}
-			}
-			catch (Exception $e)
-			{
-				TBGLogging::log("Something went wrong setting up user with id {$this->getID()}: ".$e->getMessage());
-				throw $e;
-			}
 			TBGLogging::log("User with id {$this->getID()} set up successfully");
 		}
 		

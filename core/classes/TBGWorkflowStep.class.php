@@ -46,6 +46,7 @@
 		 * The associated workflow object
 		 *
 		 * @var TBGWorkflow
+		 * @Class TBGWorkflow
 		 */
 		protected $_workflow_id = null;
 

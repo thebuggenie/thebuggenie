@@ -288,6 +288,7 @@
 		 * Assigned client
 		 * 
 		 * @var TBGClient
+		 * @Class TBGClient
 		 */
 		protected $_client = null;
 		

@@ -28,6 +28,7 @@
 		 * This components project
 		 *
 		 * @var TBGProject
+		 * @Class TBGProject
 		 */
 		protected $_project;
 
