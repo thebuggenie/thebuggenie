@@ -1373,9 +1373,17 @@
 			}
 			catch (Exception $e)
 			{
-				TBGLogging::log("Couldn't find a scope for hostname ".$hostprefix . $_SERVER['HTTP_HOST'], 'main', TBGLogging::LEVEL_FATAL);
-				TBGLogging::log($e->getMessage(), 'main', TBGLogging::LEVEL_FATAL);
-				throw new Exception("Could not load scope. This is usually because the scopes table doesn't have a scope for this hostname");
+				if (self::isCLI())
+				{
+					TBGLogging::log("Couldn't set up default scope.", 'main', TBGLogging::LEVEL_FATAL);
+					throw new Exception("Could not load default scope. Error message was: " . $e->getMessage());
+				}
+				else
+				{
+					TBGLogging::log("Couldn't find a scope for hostname ".$hostprefix . $_SERVER['HTTP_HOST'], 'main', TBGLogging::LEVEL_FATAL);
+					TBGLogging::log($e->getMessage(), 'main', TBGLogging::LEVEL_FATAL);
+					throw new Exception("Could not load scope. This is usually because the scopes table doesn't have a scope for this hostname");
+				}
 			}
 		}
 
