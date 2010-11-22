@@ -2060,5 +2060,68 @@
 		{
 			return (TBGContext::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;
 		}
+		
+		public function runAddClient(TBGRequest $request)
+		{
+			try
+			{
+				$mode = $request->getParameter('mode');
+				if ($client_name = $request->getParameter('client_name'))
+				{
+					if (TBGClient::doesClientNameExist(trim($request->getParameter('client_name'))))
+					{
+						throw new Exception(TBGContext::getI18n()->__("Please enter a client name that doesn't already exist"));
+					}
+					$client = new TBGClient();
+					$client->setName($request->getParameter('client_name'));
+					$client->save();
 
+					$message = TBGContext::getI18n()->__('The client was added');
+					return $this->renderJSON(array('failed' => false, 'message' => $message, 'content' => $this->getTemplateHTML('configuration/clientbox', array('client' => $client))));
+				}
+				else
+				{
+					throw new Exception(TBGContext::getI18n()->__('Please enter a client name'));
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
+
+		public function runDeleteClient(TBGRequest $request)
+		{
+			try
+			{
+				try
+				{
+					$client = TBGContext::factory()->TBGClient($request->getParameter('client_id'));
+				}
+				catch (Exception $e) { }
+				if (!$client instanceof TBGClient)
+				{
+					throw new Exception(TBGContext::getI18n()->__("You cannot delete this client"));
+				}
+				
+				if (TBGProjectsTable::getTable()->getByClientID($client->getID()) !== null)
+				{
+					foreach (TBGProjectsTable::getTable()->getByClientID($client->getID()) as $project)
+					{
+						$project->setClient(0);
+						$project->save();
+					}
+				}
+				
+				$client->delete();
+				return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The client was deleted')));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
+		
 	}

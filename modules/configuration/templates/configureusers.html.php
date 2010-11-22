@@ -113,7 +113,7 @@
 				</div>
 				<div id="tab_clients_pane" style="display: none; padding-top: 0; width: 750px;">
 					<div class="rounded_box yellow borderless" style="margin-top: 5px; padding: 7px;">
-						<form id="create_client_form" action="<?php echo make_url('configure_users_add_client'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="createTeam('<?php echo make_url('configure_users_add_client'); ?>');return false;">
+						<form id="create_client_form" action="<?php echo make_url('configure_users_add_client'); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="createClient('<?php echo make_url('configure_users_add_client'); ?>');return false;">
 							<div id="add_client">
 								<label for="client_name"><?php echo __('Create a new client'); ?></label>
 								<input type="text" id="client_name" name="client_name">

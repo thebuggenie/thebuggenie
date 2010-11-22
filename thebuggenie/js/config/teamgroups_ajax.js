@@ -248,6 +248,104 @@ function showTeamMembers(url, team_id)
 	}
 }
 
+function createClient(url)
+{
+	_postFormWithJSONFeedback(url, 'create_client_form', 'create_client_indicator', '', 'clientconfig_list', true);
+	return true;
+}
+
+function deleteClient(url, client_id)
+{
+	new Ajax.Request(url, {
+		asynchronous: true,
+		method: "post",
+		onLoading: function (transport) {
+			$('delete_client_' + client_id + '_indicator').show();
+		},
+		onSuccess: function (transport) {
+			$('delete_client_' + client_id + '_indicator').hide();
+			$('clientbox_' + client_id).remove();
+			var json = transport.responseJSON;
+			if (json && (!json.failed || json.success) && json.message)
+			{
+				successMessage(json.message);
+			}
+		},
+		onComplete: function (transport) {
+			$('delete_client_' + client_id + '_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && (!json.failed || json.success) && json.message)
+			{
+				successMessage(json.message);
+			}
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+		},
+		onFailure: function (transport) {
+			$('delete_client_' + client_id + '_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+		}
+	});
+}
+
+function showClientMembers(url, client_id)
+{
+	$('client_members_' + client_id + '_container').toggle();
+	if ($('client_members_' + client_id + '_list').innerHTML == '')
+	{
+		new Ajax.Request(url, {
+			asynchronous: true,
+			method: "post",
+			onLoading: function (transport) {
+				$('client_members_' + client_id + '_indicator').show();
+			},
+			onSuccess: function (transport) {
+				$('client_members_' + client_id + '_indicator').hide();
+				var json = transport.responseJSON;
+				if (json && json.content)
+				{
+					$('client_members_' + client_id + '_list').update(json.content);
+				}
+			},
+			onComplete: function (transport) {
+				$('client_members_' + client_id + '_indicator').hide();
+				var json = transport.responseJSON;
+				if (json && (!json.failed || json.success) && json.message)
+				{
+					successMessage(json.message);
+				}
+				if (json && (json.failed || json.error))
+				{
+					failedMessage(json.error);
+				}
+			},
+			onFailure: function (transport) {
+				$('client_members_' + client_id + '_indicator').hide();
+				$('client_members_' + client_id + '_container').hide();
+				var json = transport.responseJSON;
+				if (json && (json.failed || json.error))
+				{
+					failedMessage(json.error);
+				}
+				else
+				{
+					failedMessage(transport.responseText);
+				}
+			}
+		});
+	}
+}
+
 function editUser(url, user_id)
 {
 	var params = Form.serialize('edituser_' + user_id + '_form');

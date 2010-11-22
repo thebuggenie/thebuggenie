@@ -1119,6 +1119,20 @@
 		 * 
 		 * @return bool
 		 */
+		public function preSave()
+		{
+			if ($this->_client == 0)
+			{
+				$this->_client = null;
+			}
+		}
+		
+		
+		/**
+		 * Save changes made to the project
+		 * 
+		 * @return bool
+		 */
 		public function postSave()
 		{
 			if ($this->_dodelete)

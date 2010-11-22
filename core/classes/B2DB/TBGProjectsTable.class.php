@@ -152,6 +152,15 @@
 			return $row;
 		}
 		
+		public function getByClientID($id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::CLIENT, $id);
+			$row = $this->doSelect($crit, false);
+			return $row;
+		}
+		
 		public function getByKey($key)
 		{
 			$crit = $this->getCriteria();

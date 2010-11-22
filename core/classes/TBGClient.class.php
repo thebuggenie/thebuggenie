@@ -195,7 +195,7 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addInsert(TBGClientMembersTable::SCOPE, TBGContext::getScope()->getID());
-			$crit->addInsert(TBGClientMembersTable::TID, $this->_id);
+			$crit->addInsert(TBGClientMembersTable::CID, $this->_id);
 			$crit->addInsert(TBGClientMembersTable::UID, $user->getID());
 			B2DB::getTable('TBGClientMembersTable')->doInsert($crit);
 			if ($this->_members === null)
@@ -228,14 +228,14 @@
 		{
 			$crit = new B2DBCriteria();
 			$crit->addWhere(TBGClientMembersTable::UID, $uid);
-			$crit->addWhere(TBGClientMembersTable::TID, $this->_id);
+			$crit->addWhere(TBGClientMembersTable::CID, $this->_id);
 			B2DB::getTable('TBGClientMembersTable')->doDelete($crit);
 		}
 		
 		public function _preDelete()
 		{
 			$crit = TBGClientMembersTable::getTable()->getCriteria();
-			$crit->addWhere(TBGClientMembersTable::TID, $this->getID());
+			$crit->addWhere(TBGClientMembersTable::CID, $this->getID());
 			$res = TBGClientMembersTable::getTable()->doDelete($crit);
 		}
 		
