@@ -139,8 +139,6 @@
 		 */
 		public function runAbout(TBGRequest $request)
 		{
-			B2DB::getTable('TBGIssueEstimates')->create();
-			B2DB::getTable('TBGIssueSpentTimes')->create();
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('about'));
 			$this->getResponse()->setProjectMenuStripHidden();
 		}
