@@ -163,7 +163,10 @@
 				case 'add':
 					if ($request->getParameter('name'))
 					{
-						$issuetype = TBGIssuetype::createNew($request->getParameter('name'), $request->getParameter('icon'));
+						$issuetype = new TBGIssuetype();
+						$issuetype->setName($request->getParameter('name'));
+						$issuetype->setIcon($request->getParameter('icon'));
+						$issuetype->save();
 						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Issue type created'), 'content' => $this->getComponentHTML('issuetype', array('type' => $issuetype))));
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name for the issue type')));
@@ -312,7 +315,10 @@
 					{
 						if (TBGCustomDatatype::isNameValid($request->getParameter('name')))
 						{
-							$customtype = TBGCustomDatatype::createNew($request->getParameter('name'), $request->getParameter('field_type'));
+							$customtype = new TBGCustomDatatype();
+							$customtype->setName($request->getParameter('name'));
+							$customtype->setType($request->getParameter('field_type'));
+							$customtype->save();
 							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom field was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
 						}
 						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a unique custom field name (key already exists)')));
@@ -802,17 +808,22 @@
 			{
 				if ($p_name = $request->getParameter('p_name'))
 				{
-					$aProject = TBGProject::createNew($p_name);
-					if ($aProject instanceof TBGProject)
+					try
 					{
-						return $this->renderJSON(array('title' => $i18n->__('The project has been added'), 'content' => $this->getTemplateHTML('projectbox', array('project' => $aProject, 'access_level' => $this->access_level))));
+						$project = new TBGProject();
+						$project->setName($p_name);
+						$project->save();
+						return $this->renderJSON(array('title' => $i18n->__('The project has been added'), 'content' => $this->getTemplateHTML('projectbox', array('project' => $project, 'access_level' => $this->access_level))));
 					}
-					else
+					catch (InvalidArgumentException $e)
 					{
 						return $this->renderJSON(array('failed' => true, "error" => $i18n->__('A project with the same key already exists')));
 					}
+					catch (Exception $e)
+					{
+						return $this->renderJSON(array('failed' => true, "error" => $i18n->__('An error occurred: '. $e->getMessage())));
+					}
 				}
-
 				return $this->renderJSON(array('failed' => true, "error" => $i18n->__('Please specify a valid project name')));
 			}
 			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add projects")));

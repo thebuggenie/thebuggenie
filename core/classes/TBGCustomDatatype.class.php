@@ -213,6 +213,11 @@
 			return $this->_itemtype;
 		}
 
+		public function setType($type)
+		{
+			$this->_itemtype = $type;
+		}
+
 		/**
 		 * Return the description for this custom type
 		 *

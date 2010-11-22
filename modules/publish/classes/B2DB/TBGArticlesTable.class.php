@@ -94,11 +94,14 @@
 			return $res;
 		}
 
-		public function doesNameConflictExist($name, $id)
+		public function doesNameConflictExist($name, $id, $scope = null)
 		{
+			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
+
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::NAME, $name);
 			$crit->addWhere(self::ID, $id, B2DBCriteria::DB_NOT_EQUALS);
+			$crit->addWhere(self::SCOPE, $scope);
 
 			return (bool) ($res = $this->doSelect($crit));
 		}

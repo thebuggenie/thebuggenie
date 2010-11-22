@@ -382,30 +382,32 @@
 		 * 
 		 * @return TBGProject
 		 */
-		public static function createNew($name)
+		public function _preSave()
 		{
-			$project = TBGProjectsTable::getTable()->getByKey(strtolower(str_replace(' ', '', $name)));
-			if ($project === null)
+			$project = TBGProjectsTable::getTable()->getByKey($this->getKey());
+			if ($project !== null)
 			{
-				$p_id = TBGProjectsTable::getTable()->createNew($name);
-
-				TBGContext::setPermission("canseeproject", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
-				TBGContext::setPermission("canmanageproject", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
-				TBGContext::setPermission("page_project_allpages_access", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
-				TBGContext::setPermission("canvoteforissues", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
-				TBGContext::setPermission("canlockandeditlockedissues", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
-				TBGContext::setPermission("cancreateandeditissues", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
-				TBGContext::setPermission("caneditissue", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
-				TBGContext::setPermission("caneditissuecustomfields", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
-				TBGContext::setPermission("canaddextrainformationtoissues", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
-				TBGContext::setPermission("canpostseeandeditallcomments", $p_id, "core", TBGContext::getUser()->getID(), 0, 0, true);
-
-				$project = TBGContext::factory()->TBGProject($p_id);
-				TBGEvent::createNew('core', 'TBGProject::createNew', $project)->trigger();
-
-				return $project;
+				throw new InvalidArgumentException("A project with this key already exists");
 			}
-			return null;
+		}
+
+		public function _postSave($is_new)
+		{
+			if ($is_new)
+			{
+				TBGContext::setPermission("canseeproject", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
+				TBGContext::setPermission("canmanageproject", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
+				TBGContext::setPermission("page_project_allpages_access", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
+				TBGContext::setPermission("canvoteforissues", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
+				TBGContext::setPermission("canlockandeditlockedissues", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
+				TBGContext::setPermission("cancreateandeditissues", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
+				TBGContext::setPermission("caneditissue", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
+				TBGContext::setPermission("caneditissuecustomfields", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
+				TBGContext::setPermission("canaddextrainformationtoissues", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
+				TBGContext::setPermission("canpostseeandeditallcomments", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
+
+				TBGEvent::createNew('core', 'TBGProject::createNew', $this)->trigger();
+			}
 		}
 		
 		/**

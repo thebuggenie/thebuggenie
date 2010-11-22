@@ -118,25 +118,24 @@
 		public static function createNew($name, $content, $published, $scope = null, $options = array())
 		{
 			$user_id = (TBGContext::getUser() instanceof TBGUser) ? TBGContext::getUser()->getID() : 0;
-			$article_id = TBGArticlesTable::getTable()->save($name, $content, $published, $user_id, null, $scope);
-			$article = PublishFactory::article($article_id);
+
+			$article = new TBGWikiArticle();
+			$article->setName($name);
+			$article->setContent($content);
+			$article->setAuthor($user_id);
+			$article->setIsPublished($published);
+
+			if ($scope !== null)
+				$article->setScope($scope);
+
 			$article->doSave($options);
-			return $article_id;
+			
+			return $article->getID();
 		}
 
 		public function __toString()
 		{
 			return $this->_content;
-		}
-
-		public function getTitle()
-		{
-			return $this->getName();
-		}
-
-		public function setTitle($title)
-		{
-			$this->_title = $title;
 		}
 
 		public function hasContent()
@@ -157,9 +156,9 @@
 			$this->_populateCategories($parser->getCategories());
 		}
 
-		public function setName($name)
+		public function getTitle()
 		{
-			$this->_name = $name;
+			return $this->getName();
 		}
 
 		public function getLastUpdatedDate()
@@ -328,7 +327,7 @@
 
 		public function doSave($options = array(), $reason = null)
 		{
-			if (TBGArticlesTable::getTable()->doesNameConflictExist($this->_name, $this->_id))
+			if (TBGArticlesTable::getTable()->doesNameConflictExist($this->_name, $this->_id, TBGContext::getScope()->getID()))
 			{
 				if (!array_key_exists('overwrite', $options) || !$options['overwrite'])
 				{
@@ -435,6 +434,11 @@
 			return $this->_is_published;
 		}
 
+		public function setIsPublished($published = true)
+		{
+			$this->_is_published = $published;
+		}
+
 		public function getPostedDate()
 		{
 			return $this->_date;
@@ -459,6 +463,15 @@
 				}
 			}
 			return $this->_author;
+		}
+
+		public function setAuthor($author)
+		{
+			if (is_object($author))
+			{
+				$author = $author->getID();
+			}
+			$this->_author = $author;
 		}
 
 		/**

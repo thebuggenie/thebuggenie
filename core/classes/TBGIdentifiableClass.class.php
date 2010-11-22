@@ -66,8 +66,12 @@
 			$this->_id = $id;
 		}
 
-		public function setScope(TBGScope $scope)
+		public function setScope($scope)
 		{
+			if ($scope instanceof TBGScope)
+			{
+				$scope = $scope->getID();
+			}
 			$this->_scope = $scope;
 		}
 		
