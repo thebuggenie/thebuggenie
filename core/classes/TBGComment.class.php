@@ -38,11 +38,11 @@
 		
 		protected $_target_id;
 		
-		protected $_target_type;
+		protected $_target_type = self::TYPE_ISSUE;
 		
 		protected $_is_public;
 		
-		protected $_module;
+		protected $_module = 'core';
 		
 		protected $_deleted;
 		
@@ -144,51 +144,27 @@
 		public function setTitle($var)
 		{
 			$this->_name = $var;
-			$this->_updated = NOW;
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGCommentsTable::TITLE, $var);
-			$crit->addUpdate(TBGCommentsTable::UPDATED, NOW);
-			TBGCommentsTable::getTable()->doUpdateById($crit, $this->getID());
 		}
 
 		public function setPublic($var)
 		{
-			$this->_updated = NOW;
-			$this->_is_public = ($var == 1) ? true : false;
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGCommentsTable::IS_PUBLIC, (int) $var);
-			$crit->addUpdate(TBGCommentsTable::UPDATED, NOW);
-			TBGCommentsTable::getTable()->doUpdateById($crit, $this->getID());
+			$this->_is_public = (bool) $var;
 		}
 		
 		public function setContent($var)
 		{
 			$this->_content = $var;
-			$this->_updated = NOW;
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGCommentsTable::CONTENT, $var);
-			$crit->addUpdate(TBGCommentsTable::UPDATED, NOW);
-			TBGCommentsTable::getTable()->doUpdateById($crit, $this->getID());
 		}
 
 		public function setIsPublic($var)
 		{
-			$this->_is_public = $var;
-			$this->_updated = NOW;
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGCommentsTable::IS_PUBLIC, $var);
-			$crit->addUpdate(TBGCommentsTable::UPDATED, NOW);
-			TBGCommentsTable::getTable()->doUpdateById($crit, $this->getID());
+			$this->_is_public = (bool) $var;
 		}
 
 		public function setUpdatedBy($var)
 		{
 			$this->_updated = NOW;
 			$this->_updated_by = $var;
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGCommentsTable::UPDATED_BY, $var);
-			$crit->addUpdate(TBGCommentsTable::UPDATED, NOW);
-			TBGCommentsTable::getTable()->doUpdateById($crit, $this->getID());
 		}
 
 		/**
@@ -255,16 +231,6 @@
 			return (bool) ($this->_permissionCheck('candeletecomments') || $this->_permissionCheck('canpostseeandeditallcomments', true));
 		}
 
-		static function deleteComment($c_id)
-		{
-			$now = NOW;
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGCommentsTable::DELETED, 1);
-			$crit->addUpdate(TBGCommentsTable::UPDATED, $now);
-			$crit->addUpdate(TBGCommentsTable::UPDATED_BY, TBGContext::getUser()->getUID());
-			TBGCommentsTable::getTable()->doUpdateById($crit, $c_id);
-		}
-		
 		public function __toString()
 		{
 			return $this->_name;
@@ -311,6 +277,15 @@
 			return ($poster instanceof TBGIdentifiable) ? $poster->getID() : null;
 		}
 
+		public function setPostedBy($var)
+		{
+			if (is_object($var))
+			{
+				$var = $var->getID();
+			}
+			$this->_posted_by = $var;
+		}
+
 		public function getTitle()
 		{
 			return $this->_name;
@@ -345,15 +320,30 @@
 		{
 			return $this->_target_id;
 		}
+
+		public function setTargetID($var)
+		{
+			$this->_target_id = $var;
+		}
 		
 		public function getTargetType()
 		{
 			return $this->_target_type;
 		}
 		
+		public function setTargetType($var)
+		{
+			$this->_target_type = $var;
+		}
+
 		public function getModuleName()
 		{
 			return $this->_module;
+		}
+
+		public function setModuleName($var)
+		{
+			$this->_module = $var;
 		}
 
 		public function getCommentNumber()

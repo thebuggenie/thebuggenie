@@ -1984,7 +1984,8 @@
 				else
 				{
 					unset($comment);
-					TBGComment::deleteComment($request->getParameter('comment_id'));
+					$comment = TBGContext::factory()->TBGComment((int) $request->getParameter('comment_id'));
+					$comment->delete();
 					return $this->renderJSON(array('title' => TBGContext::getI18n()->__('Comment deleted!')));
 				}
 			}

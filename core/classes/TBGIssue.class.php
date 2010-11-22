@@ -761,7 +761,7 @@
 		
 		public function setWorkflowStep(TBGWorkflowStep $step)
 		{
-			$this->_addChangedProperty('_workflow_step', $step);
+			$this->_addChangedProperty('_workflow_step_id', $step->getID());
 		}
 		
 		public function getAvailableWorkflowTransitions()
@@ -3517,13 +3517,18 @@
 		 */
 		public function addSystemComment($title, $text, $uid)
 		{
+			$comment = new TBGComment();
+			$comment->setTitle($title);
+			$comment->setContent($title);
+			$comment->setPostedBy($uid);
+			$comment->setTargetID($this->getID());
+			$comment->setTargetType(TBGComment::TYPE_ISSUE);
 			if (!TBGSettings::isCommentTrailClean())
 			{
-				$comment = TBGComment::createNew($title, $text, $uid, $this->getID(), TBGComment::TYPE_ISSUE, 'core', true, true, false);
-				TBGEvent::createNew('core', 'issue_comment_posted', $this, array('comment' => $comment))->trigger();
-				return $comment;
+				$comment->save();
 			}
-			return false;
+			TBGEvent::createNew('core', 'issue_comment_posted', $this, array('comment' => $comment))->trigger();
+			return $comment;
 		}
 	
 		/**
@@ -3983,7 +3988,7 @@
 		 * 
 		 * @return boolean
 		 */
-		public function preSave()
+		public function _preSave()
 		{
 			$comment_lines = array();
 			$related_issues_to_save = array();
@@ -4419,10 +4424,8 @@
 
 			$comment = TBGContext::getI18n()->__("The issue was updated with the following change(s):%list_of_changes%", array('%list_of_changes%' => "\n* ".join("\n* ", $comment_lines)));
 			
-			if ($notify)
-			{
-				$this->addSystemComment(TBGContext::getI18n()->__('Issue updated'), $comment, TBGContext::getUser()->getUID());
-			}
+			$this->comment = $this->addSystemComment(TBGContext::getI18n()->__('Issue updated'), $comment, TBGContext::getUser()->getUID());
+			$this->comment_lines = $comment_lines;
 
 			if ($is_saved_estimated)
 			{
@@ -4434,29 +4437,33 @@
 				B2DB::getTable('TBGIssueSpentTimes')->saveSpentTime($this->getID(), $this->_spent_months, $this->_spent_weeks, $this->_spent_days, $this->_spent_hours, $this->_spent_points);
 			}
 
-			if (!$new)
-			{
-				$event = TBGEvent::createNew('core', 'TBGIssue::save', $this, array('changed_properties' => $this->_getChangedProperties(), 'comment' => $comment, 'comment_lines' => $comment_lines, 'notify' => $notify, 'updated_by' => TBGContext::getUser()));
-				$event->trigger();
-			}
-			
 			$this->related_issues_to_save = $related_issues_to_save;
 			$this->_clearChangedProperties();
 		}
 		
-		public function postSave()
+		public function _postSave($is_new)
 		{
+			if (!$is_new && isset($this->comment) && isset($this->comment_lines))
+			{
+				$event = TBGEvent::createNew('core', 'TBGIssue::save', $this, array('changed_properties' => $this->_getChangedProperties(), 'comment' => $this->comment, 'comment_lines' => $this->comment_lines, 'updated_by' => TBGContext::getUser()));
+				$event->trigger();
+			}
+
 			$this->_saveCustomFieldValues();
 			$this->getProject()->clearRecentActivities();
-			$related_issues_to_save = $this->related_issues_to_save;
-			
-			foreach (array_keys($related_issues_to_save) as $i_id)
+
+			if (isset($this->related_issues_to_save))
 			{
-				$related_issue = TBGContext::factory()->TBGIssue($i_id);
-				$related_issue->save();
+				$related_issues_to_save = $this->related_issues_to_save;
+
+				foreach (array_keys($related_issues_to_save) as $i_id)
+				{
+					$related_issue = TBGContext::factory()->TBGIssue($i_id);
+					$related_issue->save();
+				}
 			}
 			
-			unset($this->related_issues_to_save);
+			unset($this->related_issues_to_save, $this->comment, $this->comment_lines);
 			return true;
 		}
 		
