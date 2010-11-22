@@ -18,7 +18,7 @@
 	 */
 	class TBGUserstate extends TBGDatatype 
 	{
-		protected $_b2dbtablename = 'TBGUserStateTable';
+		static protected $_b2dbtablename = 'TBGUserStateTable';
 		
 		protected $_is_online = false;
 		protected $_is_unavailable = false;

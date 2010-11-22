@@ -33,7 +33,7 @@
 		 */
 		const STATE_CLOSED = 1;
 	
-		protected $_b2dbtablename = 'TBGIssuesTable';
+		static protected $_b2dbtablename = 'TBGIssuesTable';
 		
 		/**
 		 * Array of links attached to this issue

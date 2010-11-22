@@ -19,7 +19,7 @@
 	class TBGWorkflowStep extends TBGIdentifiableClass
 	{
 
-		protected $_b2dbtablename = 'TBGWorkflowStepsTable';
+		static protected $_b2dbtablename = 'TBGWorkflowStepsTable';
 		
 		/**
 		 * The workflow description

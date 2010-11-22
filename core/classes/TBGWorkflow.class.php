@@ -19,7 +19,7 @@
 	class TBGWorkflow extends TBGIdentifiableClass
 	{
 
-		protected $_b2dbtablename = 'TBGWorkflowsTable';
+		static protected $_b2dbtablename = 'TBGWorkflowsTable';
 		
 		protected static $_workflows = null;
 

@@ -18,7 +18,7 @@
 	 */
 	class TBGUser extends TBGIdentifiableClass 
 	{
-		protected $_b2dbtablename = 'TBGUsersTable';
+		static protected $_b2dbtablename = 'TBGUsersTable';
 		
 		/**
 		 * Unique username (login name)

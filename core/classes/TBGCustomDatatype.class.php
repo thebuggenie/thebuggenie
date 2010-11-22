@@ -3,7 +3,7 @@
 	class TBGCustomDatatype extends TBGIdentifiableClass
 	{
 		
-		protected $_b2dbtablename = 'TBGCustomDatatypesTable';
+		static protected $_b2dbtablename = 'TBGCustomDatatypesTable';
 
 		const DROPDOWN_CHOICE_TEXT = 1;
 		const INPUT_TEXT = 2;

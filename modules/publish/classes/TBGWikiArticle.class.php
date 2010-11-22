@@ -3,7 +3,7 @@
 	class TBGWikiArticle extends TBGIdentifiableClass
 	{
 
-		protected $_b2dbtablename = 'TBGArticlesTable';
+		static protected $_b2dbtablename = 'TBGArticlesTable';
 		
 		/**
 		 * The article author

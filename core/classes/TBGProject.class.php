@@ -19,7 +19,7 @@
 	class TBGProject extends TBGOwnableItem
 	{
 
-		protected $_b2dbtablename = 'TBGProjectsTable';
+		static protected $_b2dbtablename = 'TBGProjectsTable';
 		
 		/**
 		 * The project prefix

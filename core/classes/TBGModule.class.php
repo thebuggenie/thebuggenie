@@ -19,7 +19,7 @@
 	abstract class TBGModule extends TBGIdentifiableClass 
 	{
 
-		protected $_b2dbtablename = 'TBGModulesTable';
+		static protected $_b2dbtablename = 'TBGModulesTable';
 		protected $_classname = '';
 		protected $_description = '';
 		protected $_enabled = false;

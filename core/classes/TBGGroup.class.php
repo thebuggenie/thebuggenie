@@ -21,7 +21,7 @@
 		
 		protected static $_groups = null;
 		
-		protected $_b2dbtablename = 'TBGGroupsTable';
+		static protected $_b2dbtablename = 'TBGGroupsTable';
 
 		protected $_members = null;
 

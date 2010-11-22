@@ -19,7 +19,7 @@
 	class TBGWorkflowTransition extends TBGIdentifiableClass
 	{
 
-		protected $_b2dbtablename = 'TBGWorkflowTransitionsTable';
+		static protected $_b2dbtablename = 'TBGWorkflowTransitionsTable';
 		
 		/**
 		 * The workflow description

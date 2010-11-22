@@ -19,7 +19,7 @@
 	class TBGComment extends TBGIdentifiableClass 
 	{
 		
-		protected $_b2dbtablename = 'TBGCommentsTable';
+		static protected $_b2dbtablename = 'TBGCommentsTable';
 		
 		/**
 		 * Issue comment

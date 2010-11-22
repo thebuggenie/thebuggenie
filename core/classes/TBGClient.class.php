@@ -19,7 +19,7 @@
 	class TBGClient extends TBGIdentifiableClass 
 	{
 		
-		protected $_b2dbtablename = 'TBGClientsTable';
+		static protected $_b2dbtablename = 'TBGClientsTable';
 		
 		protected $_members = null;
 

@@ -19,7 +19,7 @@
 	class TBGTeam extends TBGIdentifiableClass 
 	{
 		
-		protected $_b2dbtablename = 'TBGTeamsTable';
+		static protected $_b2dbtablename = 'TBGTeamsTable';
 		
 		protected $_members = null;
 

@@ -22,7 +22,7 @@
 		const TYPE_REGULAR = 1;
 		const TYPE_SCRUMSPRINT = 2;
 
-		protected $_b2dbtablename = 'TBGMilestonesTable';
+		static protected $_b2dbtablename = 'TBGMilestonesTable';
 		
 		/**
 		 * This components project

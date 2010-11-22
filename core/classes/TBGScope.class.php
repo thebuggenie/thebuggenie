@@ -19,7 +19,7 @@
 	class TBGScope extends TBGIdentifiableClass
 	{
 		
-		protected $_b2dbtablename = 'TBGScopesTable';
+		static protected $_b2dbtablename = 'TBGScopesTable';
 		
 		protected $_description = '';
 		

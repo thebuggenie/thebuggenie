@@ -3,7 +3,7 @@
 	class TBGFile extends TBGIdentifiableClass
 	{
 		
-		protected $_b2dbtablename = 'TBGFilesTable';
+		static protected $_b2dbtablename = 'TBGFilesTable';
 
 		protected $_content_type;
 

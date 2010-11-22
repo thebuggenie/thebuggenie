@@ -19,7 +19,7 @@
 	class TBGBuild extends TBGVersionItem 
 	{
 		
-		protected $_b2dbtablename = 'TBGBuildsTable';
+		static protected $_b2dbtablename = 'TBGBuildsTable';
 		
 		/**
 		 * This builds edition
