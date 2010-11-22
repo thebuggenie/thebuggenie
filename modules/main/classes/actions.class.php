@@ -181,7 +181,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 			$this->login_referer = (array_key_exists('HTTP_REFERER', $_SERVER) && isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
-			$this->options = array();
+			$this->options = $request->getParameters();
 			try
 			{
 				if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
@@ -234,10 +234,6 @@
 					elseif (TBGContext::hasMessage('forward'))
 					{
 						throw new Exception($i18n->__(TBGContext::getMessageAndClear('forward')));
-					}
-					elseif ($request->hasParameter('section'))
-					{
-						$this->options = $request->getParameters();
 					}
 					else 
 					{
