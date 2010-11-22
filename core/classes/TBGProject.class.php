@@ -385,8 +385,8 @@
 		 */
 		public function _preSave($is_new)
 		{
-			$project = TBGProjectsTable::getTable()->getByKey($this->getKey());
-			if ($project !== null)
+			$project = self::getByKey($this->getKey()); // TBGProjectsTable::getTable()->getByKey($this->getKey());
+			if ($project instanceof TBGProject && $project->getID() != $this->getID())
 			{
 				throw new InvalidArgumentException("A project with this key already exists");
 			}
