@@ -348,6 +348,15 @@
 			TBGArticleLinksTable::getTable()->deleteLinksByArticle($this->_name);
 			TBGArticleCategoriesTable::getTable()->deleteCategoriesByArticle($this->_name);
 
+			if (substr($this->getContent(), 0, 10) == "#REDIRECT ")
+			{
+				$content = explode("\n", $this->getContent());
+				preg_match('/(\[\[([^\]]*?)\]\])$/im', substr(array_shift($content), 10), $matches);
+				if (count($matches) == 3)
+				{
+					return;
+				}
+			}
 			list ($links, $categories) = $this->_retrieveLinksAndCategoriesFromContent($options);
 
 			foreach ($links as $link => $occurrences)
