@@ -168,9 +168,13 @@
 			{
 				if ($issue instanceof TBGIssue)
 				{
-					$task = TBGIssue::createNew($request->getParameter('task_name'), TBGIssuetype::getTask()->getID(), $issue->getProjectID());
-					$comment = $issue->addChildIssue($task);
+					$task = new TBGIssue();
+					$task->setTitle($request->getParameter('task_name'));
+					$task->setIssuetype(TBGIssuetype::getTask()->getID());
+					$task->setProject($issue->getProjectID());
 					$task->setMilestone(($issue->getMilestone() instanceof TBGMilestone) ? $issue->getMilestone()->getID() : null);
+					$task->save();
+					$comment = $issue->addChildIssue($task);
 					$mode = $request->getParameter('mode', 'scrum');
 					if ($mode == 'scrum')
 					{

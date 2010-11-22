@@ -112,39 +112,46 @@
 		 */
 		protected function _addChangedProperty($property, $value)
 		{
-			if (property_exists($this, $property))
+			if ($this->_id)
 			{
-				if (is_object($this->$property) && method_exists($this->$property, 'getID')) $this->$property = $this->$property->getID();
-			}
-			else
-			{
-				$this->$property = null;
-			}
-			if ($this->$property != $value)
-			{
-				if (array_key_exists($property, $this->_changed_items))
+				if (property_exists($this, $property))
 				{
-					if ($this->_changed_items[$property]['original_value'] == $value)
-					{
-						$this->_revertPropertyChange($property);
-					}
-					else
-					{
-						$this->_changed_items[$property]['current_value'] = $value;
-						if ($this->_merged)
-						{
-							$_SESSION['changeableitems'][get_class($this)][$this->getID()][$property]['current_value'] = $value;
-						}
-					}
+					if (is_object($this->$property) && method_exists($this->$property, 'getID')) $this->$property = $this->$property->getID();
 				}
 				else
 				{
-					$this->_changed_items[$property] = array('original_value' => $this->$property, 'current_value' => $value);
-					if ($this->_merged)
-					{
-						$_SESSION['changeableitems'][get_class($this)][$this->getID()][$property] = array('original_value' => $this->$property, 'current_value' => $value);
-					}
+					$this->$property = null;
 				}
+				if ($this->$property != $value)
+				{
+					if (array_key_exists($property, $this->_changed_items))
+					{
+						if ($this->_changed_items[$property]['original_value'] == $value)
+						{
+							$this->_revertPropertyChange($property);
+						}
+						else
+						{
+							$this->_changed_items[$property]['current_value'] = $value;
+							if ($this->_merged)
+							{
+								$_SESSION['changeableitems'][get_class($this)][$this->getID()][$property]['current_value'] = $value;
+							}
+						}
+					}
+					else
+					{
+						$this->_changed_items[$property] = array('original_value' => $this->$property, 'current_value' => $value);
+						if ($this->_merged)
+						{
+							$_SESSION['changeableitems'][get_class($this)][$this->getID()][$property] = array('original_value' => $this->$property, 'current_value' => $value);
+						}
+					}
+					$this->$property = $value;
+				}
+			}
+			else
+			{
 				$this->$property = $value;
 			}
 		}

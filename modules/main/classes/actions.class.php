@@ -829,7 +829,11 @@
 		protected function _postIssue()
 		{
 			$fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
-			$issue = TBGIssue::createNew($this->title, $this->issuetype_id, $this->selected_project->getID(), null, false);
+			//$issue = TBGIssue::createNew($this->title, $this->issuetype_id, $this->selected_project->getID(), null, false);
+			$issue = new TBGIssue();
+			$issue->setTitle($this->title);
+			$issue->setIssuetype($this->issuetype_id);
+			$issue->setProject($this->selected_project);
 			if (isset($fields_array['description'])) $issue->setDescription($this->selected_description);
 			if (isset($fields_array['reproduction_steps'])) $issue->setReproductionSteps($this->selected_reproduction_steps);
 			if (isset($fields_array['category']) && $this->selected_category instanceof TBGDatatype) $issue->setCategory($this->selected_category->getID());
@@ -878,7 +882,7 @@
 				}
 			}
 			
-			$issue->save(false, true);
+			$issue->save();
 
 			if (isset($fields_array['edition']) && $this->selected_edition instanceof TBGEdition) $issue->addAffectedEdition($this->selected_edition);
 			if (isset($fields_array['build']) && $this->selected_build instanceof TBGBuild) $issue->addAffectedBuild($this->selected_build);

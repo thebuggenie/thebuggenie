@@ -542,29 +542,8 @@
 		 */
 		public static function createNew($title, $issuetype, $p_id, $issue_id = null, $notify = true)
 		{
-			try
-			{
-				$i_id = TBGIssuesTable::getTable()->createNewWithTransaction($title, $issuetype, $p_id, $issue_id);
-				
-				$issue = TBGContext::factory()->TBGIssue($i_id);
-				$step = $issue->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($issue->getIssueType())->getFirstStep();
-				$step->applyToIssue($issue);
-				$issue->save(false, true);
-
-				$issue->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED);
-
-				if ($notify)
-				{
-					TBGEvent::createNew('core', 'TBGIssue::createNew', $issue)->trigger();
-				}
-				return $issue;
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
 		}
-		
+
 		/**
 		 * Returns a TBGIssue from an issue no
 		 *
@@ -713,6 +692,11 @@
 			return false;
 		}
 		
+		public function setProject($project)
+		{
+			$this->_project_id = $project;
+		}
+
 		/**
 		 * Returns the project for this issue
 		 *
@@ -2381,7 +2365,7 @@
 		 */
 		public function setIssuetype($issuetype_id)
 		{
-			$this->_addChangedProperty('_issuetype', $issuetype_id);
+			$this->_addChangedProperty('_issue_type', $issuetype_id);
 		}
 	
 		/**
@@ -3988,8 +3972,19 @@
 		 * 
 		 * @return boolean
 		 */
-		public function _preSave()
+		public function _preSave($is_new)
 		{
+			if ($is_new)
+			{
+				if (!$this->_issue_no)
+				{
+					$this->_issue_no = TBGIssuesTable::getTable()->getNextIssueNumberForProductID($this->getProject()->getID());
+				}
+				$step = $this->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($this->getIssueType())->getFirstStep();
+				$step->applyToIssue($this);
+				return;
+			}
+
 			$comment_lines = array();
 			$related_issues_to_save = array();
 			$is_saved_estimated = false;
@@ -4239,7 +4234,7 @@
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The milestone has been updated, from '''%previous_milestone%''' to '''%new_milestone%'''.", array('%previous_milestone%' => $old_name, '%new_milestone%' => $new_name));
 							break;
-						case '_issuetype':
+						case '_issue_type':
 							if ($value['original_value'] != 0)
 							{
 								$old_name = ($old_item = TBGContext::factory()->TBGIssuetype($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');
@@ -4461,6 +4456,12 @@
 					$related_issue = TBGContext::factory()->TBGIssue($i_id);
 					$related_issue->save();
 				}
+			}
+
+			if ($is_new)
+			{
+				$this->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED);
+				TBGEvent::createNew('core', 'TBGIssue::createNew', $this)->trigger();
 			}
 			
 			unset($this->related_issues_to_save, $this->comment, $this->comment_lines);

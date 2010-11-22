@@ -382,7 +382,7 @@
 		 * 
 		 * @return TBGProject
 		 */
-		public function _preSave()
+		public function _preSave($is_new)
 		{
 			$project = TBGProjectsTable::getTable()->getByKey($this->getKey());
 			if ($project !== null)

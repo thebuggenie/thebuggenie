@@ -539,7 +539,7 @@
 		{
 		}
 
-		protected function _preSave()
+		protected function _preSave($is_new)
 		{
 			$compare_user = self::getByUsername($this->getUsername());
 			if ($compare_user instanceof TBGUser && $compare_user->getID() && $compare_user->getID() != $this->getID())

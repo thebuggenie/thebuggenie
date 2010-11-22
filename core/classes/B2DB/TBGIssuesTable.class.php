@@ -286,38 +286,14 @@
 			return $res;
 		}
 		
-		public function createNewWithTransaction($title, $issue_type, $p_id, $issue_id = null)
+		public function getNextIssueNumberForProductID($p_id)
 		{
-			$trans = B2DB::startTransaction();
-			
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $p_id);
 			$crit->addSelectionColumn(self::ISSUE_NO, 'issueno', B2DBCriteria::DB_MAX, '', '+1');
 			$row = $this->doSelectOne($crit, 'none');
 			$issue_no = $row->get('issueno');
-			if ($issue_no < 1) $issue_no = 1;
-			
-			//$status_id = (int) TBGContext::factory()->TBGProject($p_id)->getDefaultStatusID();
-			
-			$crit = $this->getCriteria();
-			$posted = NOW;
-			
-			if ($issue_id !== null)
-			{
-				$crit->addInsert(self::ID, $issue_id);
-			}
-			$crit->addInsert(self::ISSUE_NO, (int) $issue_no);
-			$crit->addInsert(self::POSTED, $posted);
-			$crit->addInsert(self::LAST_UPDATED, $posted);
-			$crit->addInsert(self::TITLE, $title);
-			$crit->addInsert(self::PROJECT_ID, $p_id);
-			$crit->addInsert(self::ISSUE_TYPE, $issue_type);
-			$crit->addInsert(self::POSTED_BY, TBGContext::getUser()->getUID());
-			//$crit->addInsert(self::STATUS, $status_id);
-			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$res = $this->doInsert($crit);
-			$trans->commitAndEnd();
-			return ($issue_id === null) ? $res->getInsertID() : $issue_id;
+			return ($issue_no < 1) ? 1 : $issue_no;
 		}
 		
 		public function getByPrefixAndIssueNo($prefix, $issue_no)
