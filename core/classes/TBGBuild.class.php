@@ -156,6 +156,11 @@
 		{
 			return $this->_edition;
 		}
+
+		public function setEdition(TBGEdition $edition)
+		{
+			$this->_edition = $edition;
+		}
 		
 		/**
 		 * Returns the project
@@ -165,6 +170,11 @@
 		public function getProject()
 		{
 			return ($this->_project !== null || !is_object($this->_edition)) ? $this->_project : $this->_edition->getProject();
+		}
+
+		public function setProject(TBGProject $project)
+		{
+			$this->_project = $project;
 		}
 		
 		/**
