@@ -417,24 +417,18 @@
 		}
 
 		/**
-		 * Return this milestones project
-		 * 
+		 * Returns the parent project
+		 *
 		 * @return TBGProject
 		 */
 		public function getProject()
 		{
-			if (is_numeric($this->_project))
-			{
-				try
-				{
-					$this->_project = TBGContext::factory()->TBGProject($this->_project);
-				}
-				catch (Exception $e)
-				{
-					$this->_project = null;
-				}
-			}
-			return $this->_project;
+			return $this->_getPopulatedObjectFromProperty('_project');
+		}
+		
+		public function setProject($project)
+		{
+			$this->_project = $project;
 		}
 		
 		/**

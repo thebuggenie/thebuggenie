@@ -794,7 +794,12 @@
 		public function addEdition($e_name)
 		{
 			$this->_editions = null;
-			return TBGEdition::createNew($e_name, $this->getID());
+			$edition = new TBGEdition();
+			$edition->setName($e_name);
+			$edition->setProject($this);
+			$edition->save();
+			
+			return $edition;
 		}
 		
 		/**
@@ -830,7 +835,12 @@
 		public function addComponent($c_name)
 		{
 			$this->_components = null;
-			return TBGComponent::createNew($c_name, $this->getID());
+			$component = new TBGComponent();
+			$component->setName($c_name);
+			$component->setProject($this);
+			$comonent->save();
+			
+			return $component;
 		}
 		
 		/**
@@ -893,7 +903,13 @@
 		public function addMilestone($m_name, $type)
 		{
 			$this->_milestones = null;
-			return TBGMilestone::createNew($m_name, $type, $this->getID());
+			$milestone = new TBGMilestone();
+			$milestone->setName($m_name);
+			$milestone->setType($type);
+			$milestone->setProject($this);
+			$milestone->save();
+			
+			return $milestone;
 		}
 		
 		/**
@@ -2185,7 +2201,7 @@
 		 */
 		public function getClient()
 		{
-			if (is_numeric($this->_client))
+			/*if (is_numeric($this->_client))
 			{
 				try
 				{
@@ -2196,7 +2212,8 @@
 					$this->_client = null;
 				}
 			}
-			return $this->_client;
+			return $this->_client;*/
+			return $this->_getPopulatedObjectFromProperty('_client');
 		}
 		
 		/**

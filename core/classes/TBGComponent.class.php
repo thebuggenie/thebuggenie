@@ -40,17 +40,18 @@
 		}
 		
 		/**
-		 * Returns the project 
+		 * Returns the parent project
 		 *
 		 * @return TBGProject
 		 */
 		public function getProject()
 		{
-			if (!$this->_project instanceof TBGProject)
-			{
-				$this->_project = TBGContext::factory()->TBGProject($this->_project);
-			}
-			return $this->_project;
+			return $this->_getPopulatedObjectFromProperty('_project');
+		}
+		
+		public function setProject($project)
+		{
+			$this->_project = $project;
 		}
 		
 		public function addAssignee($assignee, $role)
