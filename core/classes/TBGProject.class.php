@@ -356,6 +356,25 @@
 		}
 		
 		/**
+		 * Retrieve all projects by client ID
+		 * 
+		 * @return array
+		 */
+		public static function getAllByClientID($id)
+		{
+			self::_populateProjects();
+			$final = array();
+			foreach (self::$_projects as $project)
+			{
+				if (($project->getClient() instanceof TBGClient) && $project->getClient()->getID() == $id)
+				{
+					$final[] = $project;
+				}
+			}
+			return $final;
+		}
+		
+		/**
 		 * Retrieve the default project
 		 * 
 		 * @return TBGProject

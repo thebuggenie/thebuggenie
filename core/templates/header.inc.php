@@ -146,6 +146,19 @@
 												</div>
 											</li>
 										<?php endif; ?>
+										<?php if (!TBGContext::isProjectContext() && !is_null(TBGClientsTable::getTable()->getAll())): ?>
+											<li<?php if ($tbg_response->getPage() == 'client'): ?> class="selected"<?php endif; ?>>
+												<div>
+													<?php echo link_tag('javascript:void(0)', image_tag('tab_clients.png') . __('Clients')); ?>
+													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+												</div>
+												<div id="client_menu" class="tab_menu_dropdown shadowed">
+													<?php foreach (TBGClient::getAll() as $client): ?>
+														<?php echo link_tag(make_url('client_dashboard', array('client_id' => $client->getID())), image_tag('tab_clients.png' ) . $client->getName()); ?>
+													<?php endforeach;?>
+												</div>											
+											</li>
+										<?php endif; ?>
 										<?php TBGEvent::createNew('core', 'menustrip_item_links', null, array('selected_tab' => $tbg_response->getPage()))->trigger(); ?>
 										<?php if (!TBGContext::isProjectContext() && $tbg_user->canAccessConfigurationPage()): ?>
 											<li<?php if ($tbg_response->getPage() == 'config'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure')); ?></li>

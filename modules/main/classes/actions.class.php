@@ -133,6 +133,18 @@
 		}
 		
 		/**
+		 * Client Dashboard
+		 *  
+		 * @param TBGRequest $request
+		 */
+		public function runClientDashboard(TBGRequest $request)
+		{
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('home'));
+			$this->getResponse()->setProjectMenuStripHidden();
+			$this->client = TBGContext::factory()->TBGClient($request->getParameter('client_id'));
+		}
+		
+		/**
 		 * About page
 		 *  
 		 * @param TBGRequest $request

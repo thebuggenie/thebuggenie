@@ -463,10 +463,14 @@ th.highlighted_column { background-color: #C1C1C1; }
 .side_bar .header { margin: 2px 0 5px 0; padding: 3px 3px 3px 5px; font-weight: bold;  border-bottom: 1px solid #CCC; background-color: transparent; }
 .side_bar .content { padding: 0 0 3px 5px; font-size: 12px; }
 
-/* project list and overview */
+/* project list, client dashboard and overview */
 ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5px 0 5px 0; clear: both; }
-.project_overview { clear: both;  }
-.project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-size: 14px; }
+.client_dashboard, .project_overview { clear: both;  }
+.client_dashboard .header, .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-size: 14px; }
+.client_dashboard { padding: 10px; }
+.dashboard_client_info { margin-bottom: 10px; width: 620px; }
+.dashboard_client_info .dashboard_client_header { font-weight: bold; font-size: 24px; }
+.dashboard_client_info .dashboard_client_viewusers { float: right; }
 /* end project styling */
 
 /* account page tab panes content */
