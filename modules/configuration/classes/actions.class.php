@@ -1757,6 +1757,15 @@
 						$user->addToTeam($team);
 					}
 				}
+				$user->clearClients();
+				foreach ($request->getParameter('clients', array()) as $client_id => $client)
+				{
+					if ($client = TBGContext::factory()->TBGClient($client_id))
+					{
+						$new_clients[] = $client_id;
+						$user->addToClient($client);
+					}
+				}
 				$testuser = TBGUser::getByUsername($request->getParameter('username'));
 				if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
 				{

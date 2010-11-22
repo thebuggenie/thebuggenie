@@ -115,6 +115,15 @@
 		protected $teams = null;
 		
 		/**
+		 * Array of client ids where the current user is a member
+		 *
+		 * @var array
+		 * 
+		 * @access protected
+		 */
+		protected $clients = null;
+				
+		/**
 		 * The users avatar
 		 *
 		 * @var string
@@ -671,6 +680,23 @@
 		}
 		
 		/**
+		 * Checks if the user is a member of the given client
+		 *
+		 * @param integer $clientid
+		 * 
+		 * @return boolean
+		 */
+		public function isMemberOfClient($clientid)
+		{
+			$this->_populateClients();
+			if ($clientid != 0)
+			{
+				return array_key_exists($clientid, $this->clients);
+			}
+			return false;
+		}
+		
+		/**
 		 * Populates team array when needed
 		 *
 		 */
@@ -691,6 +717,30 @@
 					}
 				}
 				TBGLogging::log('...done (Populating user teams)');
+			}
+		}
+		
+		/**
+		 * Populates client array when needed
+		 *
+		 */
+		protected function _populateClients()
+		{
+			if ($this->clients === null)
+			{
+				$this->clients = array();
+				TBGLogging::log('Populating user clients');
+				$crit = new B2DBCriteria();
+				$crit->addWhere(TBGClientMembersTable::UID, $this->_id);
+		
+				if ($res = B2DB::getTable('TBGClientMembersTable')->doSelect($crit))
+				{
+					while ($row = $res->getNextRow())
+					{
+						$this->clients[$row->get(TBGClientsTable::ID)] = TBGContext::factory()->TBGClient($row->get(TBGClientsTable::ID), $row);
+					}
+				}
+				TBGLogging::log('...done (Populating user clients)');
 			}
 		}
 	
@@ -1036,11 +1086,23 @@
 			B2DB::getTable('TBGTeamMembersTable')->clearTeamsByUserID($this->getID());
 		}
 		
+		public function clearClients()
+		{
+			B2DB::getTable('TBGClientMembersTable')->clearClientsByUserID($this->getID());
+		}
+		
 		public function addToTeam(TBGTeam $team)
 		{
 			$team->addMember($this);
 			$this->teams = null;
 			$this->_populateTeams();
+		}
+		
+		public function addToClient(TBGClient $client)
+		{
+			$client->addMember($this);
+			$this->clients = null;
+			$this->_populateClients();
 		}
 		
 		public function getType()

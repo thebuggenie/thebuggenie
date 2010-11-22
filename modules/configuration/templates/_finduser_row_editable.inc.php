@@ -51,6 +51,16 @@
 				</td>
 			</tr>
 			<tr>
+				<td colspan="2"></td>
+				<td style="vertical-align: top; padding-top: 4px;"><label><?php echo __('Member of client(s)'); ?></label></td>
+				<td>
+					<?php foreach (TBGClient::getAll() as $client): ?>
+						<input type="checkbox" name="clients[<?php echo $client->getID(); ?>]" id="client_<?php echo $client->getID(); ?>" value="<?php echo $client->getID(); ?>"<?php if ($user->isMemberOfClient($client->getID())): ?> checked<?php endif; ?>>
+						<label for="client_<?php echo $client->getID(); ?>" style="font-weight: normal;"><?php echo $client->getName(); ?></label><br>
+					<?php endforeach; ?>
+				</td>
+			</tr>
+			<tr>
 				<td colspan="4" style="text-align: right; font-size: 13px; padding-top: 10px;">
 					<div style="padding: 10px 0 10px 0; display: none;" id="edit_user_<?php echo $user->getID(); ?>_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
 					<input type="submit" value="<?php echo __('Update user'); ?>" style="font-size: 13px; font-weight: bold;">
