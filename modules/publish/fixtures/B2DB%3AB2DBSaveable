@@ -1,0 +1,116 @@
+{{TOC}}
+== Introduction ==
+The B2DBSaveable class is the parent class that all saveable objects handled by B2DB inherits from. It implements an active record pattern for accessing your data objects, and provides several convenience functions for accessing, modifying and updating data in your objects and persist them back to the database.
+
+== Typical usage ==
+An example '''User''' class with a related '''Group''' that extends B2DBSaveable is typically used the following way:
+<source lang="php">
+<?php
+
+    $group = new Group();
+    $group->setName('Power users');
+    $group->save();
+    // Save a group in the database
+
+    $user = new User();
+    $user->setUsername('administrator');
+    $user->setGroup($group);
+
+    echo $user->getId();
+    // will echo "", since the object isn't saved yet
+    echo $user->getUsername();
+    // will echo "administrator", as set earlier
+
+    // Save the user object to your database
+    $user->save();
+    
+    echo $user->getId();
+    // echoes 1
+    // Now that the object is saved, it has the id set
+
+    $user2 = new User(1);
+    echo $user2->getUsername();
+    // will echo "administrator", the username saved earlier
+    echo $user2->getGroup()->getName();
+    // will echo "Power users", the group name saved earlier
+
+    $user2->setUsername('guest');
+    $user2->save();
+    // This will update the record in the database with id 1
+
+    $user2->delete();
+    // This will remove the record from the database
+
+</source>
+
+== Object properties ==
+Object property names (for the B2DB accessible properties) in the saveable class should be based on the information in the corresponding table class. All columns defined in the table class are expected to match up to a property with the same name prefixed with an underscore, like this:
+<source lang="php">
+ // in the table class
+ const COLUMN = 'mytablename.mycolumnname';
+
+ // matching object property
+ protected $_mycolumnname;
+</source>
+(For more information about how to setup your table classes, see the [[B2DB:TableClass|table class documentation]])
+
+When a record is retrieved from the database, all columns from the database will populate the corresponding object properties of the instantiated object before it is passed on to the calling code. The same goes for objects that are saved (via '''save()''') - all properties matching columns will be read and saved.
+
+== Populating object properties ==
+When an object is populated with the values from the database, it will overwrite any default values specified for that property before it is passed on to the calling code. This way you can ensure that your object is properly loaded and populated before you start using it. The only exception here is foreign objects, which may not always be completely loaded, depending on where in the object hierarchy the object was populated. B2DB has an accessor method to get around this limitation, which you can read more about in the "Populating object properties based on foreign keys" section.
+
+== Populating object properties based on foreign keys ==
+When a column in the table class is defined as a foreign key to a record in a different table, B2DB will automatically join the information from that table based on the criterias set up in the table class' foreign key definition. If the value referencing a foreign key is set to something different than ''null'', B2DB will instantiate the foreign object. This is done via phpdoc annotations in the parent instantiated objects property.
+
+The property in your parent class should be annotated with an ''@Class'' annotation to tell B2DB which class to instantiate:
+''example '' '''''User.php''''' ''class:''
+<source lang="php">
+<?php
+
+    class User extends B2DBSaveable
+    {
+
+        protected $_id;
+
+        protected $_username;
+
+        /**
+         * @Class Group
+         */
+        protected $_group;
+    }
+
+</source>
+
+In the example above, the ''$_group'' property will be populated with an instantiated ''Group'' object based on the information in the ''group'' column.
+
+=== Retrieving instantiated foreign objects ===
+To avoid invasive SQL queries, B2DB only populates the first level of foreign objects. In the example above, if the Group object populated in the ''$_group'' property had its own foreign object, it would not be instantiated, only populated with the foreign key value. Since you cannot always know whether the object has been instantiated or only partially loaded (with values), B2DB has an accessor method available in any objects extending B2DBSaveable, that you should use to retrieve properties pointing to foreign records:
+ _getPopulatedObjectFromProperty($property)
+
+This function will preload the object for you if it's not already available, so you won't have to worry about it. Here's an example of how to use this function to retrieve the group object from the ''User'' class shown above:
+<source lang="php">
+<?php
+
+    class User extends B2DBSaveable
+    {
+
+        protected $_id;
+
+        protected $_username;
+
+        /**
+         * @Class Group
+         */
+        protected $_group;
+
+        public function getGroup()
+        {
+            return $this->_getPopulatedObjectFromProperty('_group');
+        }
+    }
+
+</source>
+
+
+[[Category:B2DB:Classes]]

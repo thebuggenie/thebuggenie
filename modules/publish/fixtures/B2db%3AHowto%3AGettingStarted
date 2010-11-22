@@ -67,6 +67,9 @@ Coupled with the corresponding table class (explained later), this will let you 
     $user2->save();
     // This will update the record in the database with id 1
 
+    $user2->delete();
+    // This will remove the record from the database
+
 </source>
 
 For more advanced usage scenarios involving your classes (like foreign key properties), see the [[B2DB:B2DBSaveable|B2DBSaveable documentation]].
