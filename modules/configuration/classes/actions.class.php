@@ -1526,7 +1526,9 @@
 					{
 						throw new Exception(TBGContext::getI18n()->__("Please enter a group name that doesn't already exist"));
 					}
-					$group = TBGGroup::createNew($group_name);
+					$group = new TBGGroup();
+					$group->setName($group_name);
+					$group->save();
 					if ($mode == 'clone')
 					{
 						if ($request->getParameter('clone_permissions'))
@@ -1615,7 +1617,9 @@
 					{
 						throw new Exception(TBGContext::getI18n()->__("Please enter a team name that doesn't already exist"));
 					}
-					$team = TBGTeam::createNew($team_name);
+					$team = new TBGTeam();
+					$team->setName($team_name);
+					$team->save();
 					if ($mode == 'clone')
 					{
 						if ($request->getParameter('clone_permissions'))
@@ -1696,7 +1700,14 @@
 			{
 				if ($username = $request->getParameter('username'))
 				{
-					$user = TBGUser::createNew($username, $username, $username, TBGContext::getScope()->getID());
+					$user = new TBGUser();
+					$user->setUsername($username);
+					$user->setRealname($username);
+					$user->setBuddyname($username);
+					$user->setEnabled();
+					$user->setActivated();
+					$user->setPassword(TBGUser::hashPassword(TBGUser::createPassword()));
+					$user->save();
 				}
 				else
 				{

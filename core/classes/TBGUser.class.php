@@ -537,51 +537,30 @@
 		 */
 		public static function createNew($username, $realname, $buddyname, $scope, $activated = false, $enabled = false, $password = 'password', $email = '', $pass_is_hash = false, $u_id = null, $lastseen = null)
 		{
-			if (TBGUsersTable::getTable()->getByUsername($username) instanceof B2DBRow)
+		}
+
+		protected function _preSave()
+		{
+			$compare_user = self::getByUsername($this->getUsername());
+			if ($compare_user instanceof TBGUser && $compare_user->getID() && $compare_user->getID() != $this->getID())
 			{
 				throw new Exception(TBGContext::getI18n()->__('This username already exists'));
 			}
-			$crit = new B2DBCriteria();
-			if ($u_id !== null)
+		}
+
+		protected function _postSave($is_new)
+		{
+			if ($is_new)
 			{
-				$crit->addInsert(TBGUsersTable::ID, $u_id);
+				$event = TBGEvent::createNew('core', 'TBGUser::createNew', $this);
+				$event->trigger();
+				if (!$event->isProcessed())
+				{
+					$this->setEnabled();
+					$this->setActivated();
+					$this->save();
+				}
 			}
-			if ($lastseen !== null)
-			{
-				$crit->addInsert(TBGUsersTable::LASTSEEN, $lastseen);
-			}
-			$crit->addInsert(TBGUsersTable::UNAME, $username);
-			$crit->addInsert(TBGUsersTable::REALNAME, $realname);
-			$crit->addInsert(TBGUsersTable::BUDDYNAME, $buddyname);
-			$crit->addInsert(TBGUsersTable::EMAIL, $email);
-			if ($pass_is_hash)
-			{
-				$crit->addInsert(TBGUsersTable::PASSWORD, $password);
-			}
-			else
-			{
-				$crit->addInsert(TBGUsersTable::PASSWORD, self::hashPassword($password));
-			}
-			$crit->addInsert(TBGUsersTable::SCOPE, $scope);
-			$crit->addInsert(TBGUsersTable::ACTIVATED, $activated);
-			$crit->addInsert(TBGUsersTable::ENABLED, $enabled);
-			$crit->addInsert(TBGUsersTable::JOINED, NOW);
-			$crit->addInsert(TBGUsersTable::AVATAR, 'smiley');
-			$crit->addInsert(TBGUsersTable::GROUP_ID, '2');
-			$res = TBGUsersTable::getTable()->doInsert($crit);
-	
-			if ($u_id === null) $u_id = $res->getInsertID();
-			
-			$returnUser = TBGContext::factory()->TBGUser($u_id);
-			$event = TBGEvent::createNew('core', 'TBGUser::createNew', $returnUser);
-			$event->trigger();
-			if (!$event->isProcessed())
-			{
-				$returnUser->setEnabled();
-				$returnUser->setActivated();
-				$returnUser->save();
-			}
-			return $returnUser;
 		}
 		
 		/**

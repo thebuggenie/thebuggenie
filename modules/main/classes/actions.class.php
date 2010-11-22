@@ -370,7 +370,14 @@
 					}					
 
 					$password = TBGUser::createPassword();
-					$user = TBGUser::createNew($username, $realname, $buddyname, TBGContext::getScope()->getID(), false, true, TBGUser::hashPassword($password), $email, true);
+					$user = new TBGUser();
+					$user->setUsername($username);
+					$user->setRealname($realname);
+					$user->setBuddyname($buddyname);
+					$user->setEnabled();
+					$user->setPassword(TBGUser::hashPassword($password));
+					$user->setEmail($email);
+					$user->save();
 
 					if ($user->isActivated())
 					{
