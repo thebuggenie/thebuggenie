@@ -1,0 +1,109 @@
+{{TOC}}
+== Prerequisites ==
+B2DB is an advanced DBAL for PHP 5.3 and higher. Before you start using B2DB, make sure that:
+* you are familiar with PHP and OOP in PHP 5.3
+* your development environment is set up with PHP >= 5.3.0 and a [[B2DB:Databases:SupportedDatabases|supported database]]
+When you're ready, read on!
+
+== Setting up B2DB ==
+More information about setting up B2DB here
+
+== Your first B2DB class ==
+B2DB will abstract away database access from your classes, so you don't have to worry about it. A regular B2DB class extends the B2DBSaveable class, which is the B2DB class implementing the active record pattern for your classes. When your class extends this B2DB class, your object will inherit methods like '''save()''', '''delete()''' and automatic fetching of data from the database when constructed with an identifier.
+
+Here's an example of a basic B2DB class
+<source lang="php">
+<?php
+
+    class User extends B2DBSaveable
+    {
+
+        protected $_id;
+
+        protected $_username;
+
+        public function setUsername($username)
+        {
+            $this->_username = $username;
+        }
+
+        public function getUsername()
+        {
+            return $this->_username;
+        }
+
+        public function getId()
+        {
+            return $this->_id;
+        }
+    }
+
+</source>
+
+Coupled with the corresponding table class (explained later), this will let you access your database objects like this:
+<source lang="php">
+<?php
+
+    $user = new User();
+    $user->setUsername('administrator');
+
+    echo $user->getId();
+    // will echo "", since the object isn't saved yet
+    echo $user->getUsername();
+    // will echo "administrator", as set earlier
+
+    // Save the user object to your database
+    $user->save();
+    
+    echo $user->getId();
+    // echoes 1
+    // Now that the object is saved, it has the id set
+
+    $user2 = new User(1);
+    echo $user2->getUsername();
+    // will echo "administrator", the username saved earlier
+
+    $user2->setUsername('guest');
+    $user2->save();
+    // This will update the record in the database with id 1
+
+    $user2->delete();
+    // This will remove the record from the database
+
+</source>
+
+For more advanced usage scenarios involving your classes (like foreign key properties), see the [[B2DB:B2DBSaveable|B2DBSaveable documentation]].
+
+== The Table class ==
+To work with the database, B2DB uses a corresponding table class for each of your B2DBSaveable classes. This table class specifies the table name; column names and definitions; special accessor functions, and more. For very simple operations, you won't need to put anything but the table definition here, but for more advanced operations, you will probably want to extend it with your own functionality.
+
+Here's a sample table class for the ''User'' object shown above:
+<source lang="php">
+    class TBGUserTable extends B2DBTable 
+    {
+        const B2DBNAME = 'users';
+        const ID = 'users.id';
+        const USERNAME = 'users.username';
+
+        public function __construct()
+        {
+            parent::__construct(self::B2DBNAME, self::ID);
+            parent::_addVarchar(self::USERNAME, 50);
+        }
+    }
+</source>
+The table class for the '''User''' class extends the B2DBTable class, which is the main class for table classes in B2DB. In addition to extending B2DBTable, the class needs the following elements to work properly:
+* ''const'' '''''B2DBNAME''''': This is the constant that says what table name to use when accessing the database (this table name can be prefixed, based on the B2DB settings)
+* ''const'' '''''ID''''': Doesn't have to be named '''ID''', but this is the constant that is passed to the constructor, which contains the primary key for the database. As all the rest of the B2DB constants used in the class, they consist of a combination of the defined B2DBNAME value, a dot - "." - and the column name. In this case it is "users.id" for a column called "id" in the table called "users".
+* ''const'' '''''<list of properties>''''': Specify your class properties from the User class, with a constant name of your choice, but a column name that has the '''$_''' from the corresponding property removed. In the example the column name from the table constant is "username", which means a property in the User class called '''$_username''' will be automatically populated and saved when the object is being retrieved from or saved to the database.
+* '''Constructor''': The constructor calls the parent constructor with the defined B2DBNAME which sets the base table name, as well as the primary key for this table. In addition, the constructor sets up all table columns in the table, by using one of the available '''parent::_add<Columntype>''' methods:
+*# '''parent::_addVarchar();'''
+*# '''parent::_addInteger();'''
+*# '''parent::_addBoolean();'''
+*# '''parent::_addText();'''
+*# '''parent::_addFloat();'''
+*# '''parent::_addBlob();'''
+*# '''parent::_addForeignKeyColumn();'''
+For more information about column types, see the [[B2DB:TableClass|table class documentation]].
+
+[[Category:B2DB:Howto]]
