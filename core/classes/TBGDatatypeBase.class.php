@@ -106,6 +106,11 @@
 		{
 			return $this->_itemtype;
 		}
+		
+		public function setItemtype($itemtype)
+		{
+			$this->_itemtype = $itemtype;
+		}
 
 		public static function getAvailableFields($builtin_only = false)
 		{

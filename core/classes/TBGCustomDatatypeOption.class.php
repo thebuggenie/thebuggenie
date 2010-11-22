@@ -11,6 +11,8 @@
 		 * @var string|integer
 		 */
 		protected $_value = null;
+		
+		protected $_key = null;
 
 		/**
 		 * Returns all options available for a custom type
@@ -34,33 +36,6 @@
 		}
 
 		/**
-		 * Create a new custom data type option
-		 *
-		 * @param string $name The option description
-		 * @param string $itemdata[optional] The color/icon if any
-		 *
-		 * @return TBGStatus
-		 */
-		public static function createNew($type, $key, $name, $value, $itemdata = null)
-		{
-			if ($type == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_ICON)
-			{
-
-			}
-			elseif (in_array($type, array(TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_COLORED, TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_COLOR)))
-			{
-				$itemdata = ($itemdata === null || trim($itemdata) == '') ? '#FFF' : $itemdata;
-				if (substr($itemdata, 0, 1) != '#')
-				{
-					$itemdata = '#'.$itemdata;
-				}
-			}
-			
-			$res = B2DB::getTable('TBGCustomFieldOptionsTable')->createNew($key, $name, $value, $itemdata);
-			return TBGContext::factory()->TBGCustomDatatypeOption($res->getInsertID());
-		}
-
-		/**
 		 * Return a custom data type option by value and key
 		 *
 		 * @param string|integer $value
@@ -79,31 +54,38 @@
 		}
 		
 		/**
-		 * Constructor
-		 * 
-		 * @param integer $item_id The item id
-		 * @param B2DBrow $row [optional] A B2DBrow to use
-		 * @return 
+		 * Create a new custom data type option
+		 *
+		 * @param string $name The option description
+		 * @param string $itemdata[optional] The color/icon if any
+		 *
+		 * @return TBGStatus
 		 */
-		public function __construct($item_id, $row = null)
+		public function _preSave($type, $key, $name, $value, $itemdata = null)
 		{
-			if ($row === null)
+			if ($this->getItemtype() == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_ICON)
 			{
-				$row = B2DB::getTable('TBGCustomFieldOptionsTable')->doSelectById($item_id);
+
 			}
-			if ($row instanceof B2DBRow)
+			elseif (in_array($this->getItemtype(), array(TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_COLORED, TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_COLOR)))
 			{
-				$this->_id = $row->get(TBGCustomFieldOptionsTable::ID);
-				$this->_itemdata = $row->get(TBGCustomFieldOptionsTable::ITEMDATA);
-				$this->_name = $row->get(TBGCustomFieldOptionsTable::NAME);
-				$this->_key = $row->get(TBGCustomFieldOptionsTable::CUSTOMFIELDS_KEY);
-				$this->_value = $row->get(TBGCustomFieldOptionsTable::OPTION_VALUE);
-				$this->_sort_order = (int) $row->get(TBGCustomFieldOptionsTable::SORT_ORDER);
+				$itemdata = ($this->getItemdata() === null || trim($this->getItemdata()) == '') ? '#FFF' : $this->getItemdata();
+				if (substr($itemdata, 0, 1) != '#')
+				{
+					$itemdata = '#'.$itemdata;
+				}
+				$this->setItemdata($itemdata);
 			}
-			else
-			{
-				throw new Exception('This custom type option does not exist');
-			}
+		}
+
+		public function getKey()
+		{
+			return $this->_key;
+		}
+		
+		public function setKey($key)
+		{
+			$this->_key = $key;
 		}
 		
 		/**

@@ -193,7 +193,13 @@
 
 		public function createNewOption($name, $value, $itemdata = null)
 		{
-			$option = TBGCustomDatatypeOption::createNew($this->_itemtype, $this->_key, $name, $value, $itemdata);
+			$option = new TBGCustomDatatypeOption();
+			$option->setName($name);
+			$option->setItemtype($this->_itemtype);
+			$option->setKey($this->_key);
+			$option->setValue($value);
+			$option->setItemdata($itemdata);
+			$option->save();
 			$this->_options = null;
 			return $option;
 		}
