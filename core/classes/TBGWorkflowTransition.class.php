@@ -67,11 +67,11 @@
 			return $event->getReturnList();
 		}
 		
-		public function _construct(B2DBRow $row)
+		/*public function _construct(B2DBRow $row, $foreign_key = null)
 		{
 			$this->_outgoing_step_id = TBGContext::factory()->TBGWorkflowStep($this->_outgoing_step_id);
 			$this->_workflow_id = TBGContext::factory()->TBGWorkflow($this->_workflow_id);
-		}
+		}*/
 
 		/**
 		 * Returns the workflows description

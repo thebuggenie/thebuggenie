@@ -9,10 +9,10 @@
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
-	
+
 	/**
 	 * Identifiable interface
-	 * 
+	 *
 	 * @package thebuggenie
 	 * @subpackage core
 	 */
@@ -20,50 +20,26 @@
 	{
 		/**
 		 * Returns the id of the item
-		 * 
+		 *
 		 * @return integer
 		 *
 		 */
 		public function getID();
-		
+
 		/**
 		 * Returns the name of the item
-		 * 
+		 *
 		 * @return string
 		 *
 		 */
 		public function getName();
-		
+
 		/**
 		 * Returns the type of object
-		 * 
+		 *
 		 * @return integer
 		 */
 		public function getType();
-		
-	}
-	
-	/**
-	 * Assignable interface
-	 * 
-	 * @package thebuggenie
-	 * @subpackage core
-	 */
-	interface TBGAssignable extends TBGIdentifiable
-	{
-		/**
-		 * Returns the assigned type
-		 * 
-		 * @return integer
-		 */
-		public function getAssignedType();
-		
-		/**
-		 * Returns the assignee
-		 *
-		 * @return TBGIdentifiable
-		 */
-		public function getAssignee();
-		
+
 	}
 	

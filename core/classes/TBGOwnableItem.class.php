@@ -18,6 +18,7 @@
 	 */
 	class TBGOwnableItem extends TBGVersionItem
 	{
+
 		/**
 		 * The lead type for the project, TBGIdentifiableClass::TYPE_USER or TBGIdentifiableClass::TYPE_TEAM
 		 * 

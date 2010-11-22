@@ -49,7 +49,7 @@
 		 */
 		protected $_workflow_id = null;
 
-		public function _construct(B2DBRow $row)
+		public function _construct(B2DBRow $row, $foreign_key = null)
 		{
 			$this->_workflow_id = TBGContext::factory()->TBGWorkflow($this->_workflow_id);
 		}

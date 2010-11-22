@@ -90,7 +90,7 @@
 		 *
 		 * @param B2DBrow $row
 		 */
-		public function _construct(B2DBRow $row)
+		public function _construct(B2DBRow $row, $foreign_key = null)
 		{
 			$this->_content = str_replace("\r\n", "\n", $this->_content);
 			$this->_old_content = $this->_content;

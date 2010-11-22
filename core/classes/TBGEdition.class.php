@@ -92,7 +92,7 @@
 		 *
 		 * @param B2DBRow $row
 		 */
-		public function _construct(B2DBRow $row)
+		public function _construct(B2DBRow $row, $foreign_key = null)
 		{
 			TBGEvent::createNew('core', 'TBGEdition::__construct', $this)->trigger();
 		}

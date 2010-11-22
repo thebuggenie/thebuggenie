@@ -94,7 +94,7 @@
 		/**
 		 * Class constructor
 		 */
-		final public function _construct(B2DBRow $row)
+		final public function _construct(B2DBRow $row, $foreign_key = null)
 		{
 			if ($this->_version != $row->get(TBGModulesTable::VERSION))
 			{

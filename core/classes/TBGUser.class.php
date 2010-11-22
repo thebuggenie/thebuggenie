@@ -585,7 +585,7 @@
 		 *
 		 * @param B2DBRow $row
 		 */
-		public function _construct(B2DBRow $row)
+		public function _construct(B2DBRow $row, $foreign_key = null)
 		{
 			try
 			{

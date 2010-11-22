@@ -67,6 +67,7 @@
 		 * The issue type
 		 *
 		 * @var TBGIssuetype
+		 * @Class TBGIssuetype
 		 */
 		protected $_issue_type;
 		
@@ -194,6 +195,7 @@
 		 * The category
 		 * 
 		 * @var TBGCategory
+		 * @Class TBGCategory
 		 */
 		protected $_category;
 		
@@ -622,7 +624,7 @@
 		 *
 		 * @param B2DBRow $row
 		 */
-		public function _construct(B2DBRow $row)
+		public function _construct(B2DBRow $row, $foreign_key = null)
 		{
 			$this->_populateCustomfields();
 			$this->_mergeChangedProperties();
@@ -906,7 +908,7 @@
 		 */
 		public function getDuplicateOf()
 		{
-			if (is_numeric($this->_duplicate_of))
+			/*if (is_numeric($this->_duplicate_of))
 			{
 				try
 				{
@@ -917,7 +919,8 @@
 					$this->_duplicate_of = null;
 				}
 			}
-			return $this->_duplicate_of;
+			return $this->_duplicate_of;*/
+			return $this->_getPopulatedObjectFromProperty('_duplicate_of');
 		}
 		
 		/**
@@ -1301,7 +1304,7 @@
 		 */
 		public function getIssueType()
 		{
-			if (is_numeric($this->_issue_type))
+			/*if (is_numeric($this->_issue_type))
 			{
 				try
 				{
@@ -1312,7 +1315,8 @@
 					$this->_issue_type = null;
 				}
 			}
-			return $this->_issue_type;
+			return $this->_issue_type;*/
+			return $this->_getPopulatedObjectFromProperty('_issue_type');
 		}
 		
 		/**
@@ -1738,7 +1742,7 @@
 		 */
 		public function getCategory()
 		{
-			if (is_numeric($this->_category))
+			/*if (is_numeric($this->_category))
 			{
 				try
 				{
@@ -1749,7 +1753,9 @@
 					$this->_category = null;
 				}
 			}
-			return $this->_category;
+			return $this->_category;*/
+			//var_dump($this->_category);
+			return $this->_getPopulatedObjectFromProperty('_category');
 		}
 		
 		/**
@@ -1912,7 +1918,7 @@
 		 */
 		public function getMilestone()
 		{
-			if (is_numeric($this->_milestone))
+			/*if (is_numeric($this->_milestone))
 			{
 				try
 				{
@@ -1923,7 +1929,8 @@
 					$this->_milestone = null;
 				}
 			}
-			return $this->_milestone;
+			return $this->_milestone;*/
+			return $this->_getPopulatedObjectFromProperty('_milestone');
 		}
 		
 		/**
