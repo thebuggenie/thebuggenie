@@ -86,7 +86,7 @@
 		/**
 		 * The user state
 		 *
-		 * @var TBGDatatype
+		 * @var TBGUserstate
 		 */
 		protected $_userstate = null;
 		

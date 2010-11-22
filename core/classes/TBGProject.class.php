@@ -101,13 +101,6 @@
 		protected $_homepage = '';
 		
 		/**
-		 * The projects default status
-		 * 
-		 * @var TBGDatatype
-		 */
-		protected $_defaultstatus = 0;
-		
-		/**
 		 * List of milestones + sprints for this project
 		 *
 		 * @var array

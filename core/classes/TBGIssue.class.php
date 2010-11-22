@@ -66,7 +66,7 @@
 		/**
 		 * The issue type
 		 *
-		 * @var TBGDatatype
+		 * @var TBGIssuetype
 		 */
 		protected $_issue_type;
 		
@@ -179,7 +179,7 @@
 		/**
 		 * The resolution
 		 * 
-		 * @var TBGDatatype
+		 * @var TBGResolution
 		 */
 		protected $_resolution;
 		
@@ -193,35 +193,35 @@
 		/**
 		 * The category
 		 * 
-		 * @var TBGDatatype
+		 * @var TBGCategory
 		 */
 		protected $_category;
 		
 		/**
 		 * The status
 		 * 
-		 * @var TBGDatatype
+		 * @var TBGStatus
 		 */
 		protected $_status;
 		
 		/**
 		 * The prioroty
 		 * 
-		 * @var TBGDatatype
+		 * @var TBGPriority
 		 */
 		protected $_priority;
 		
 		/**
 		 * The reproducability
 		 * 
-		 * @var TBGDatatype
+		 * @var TBGReproducability
 		 */
 		protected $_reproducability;
 		
 		/**
 		 * The severity
 		 * 
-		 * @var TBGDatatype
+		 * @var TBGSeverity
 		 */
 		protected $_severity;
 
