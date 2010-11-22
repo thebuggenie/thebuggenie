@@ -156,7 +156,7 @@
 		 * 
 		 * @param integer
 		 */
-		public function setTelephone(int $telephone)
+		public function setTelephone($telephone)
 		{
 			$this->_telephone = $telephone;
 		}
@@ -166,7 +166,7 @@
 		 * 
 		 * @param integer
 		 */
-		public function setFax(int $fax)
+		public function setFax($fax)
 		{
 			$this->_fax = $fax;
 		}

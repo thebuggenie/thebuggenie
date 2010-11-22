@@ -47,7 +47,7 @@
 			$data_config_sections[TBGSettings::CONFIGURATION_SECTION_ISSUETYPES] = array('icon' => 'issuetypes', 'description' => $i18n->__('Issue types'), 'route' => 'configure_issuetypes', 'details' => $i18n->__('Manage issue types and configure issue fields for each issue type here'));
 			$data_config_sections[TBGSettings::CONFIGURATION_SECTION_ISSUEFIELDS] = array('icon' => 'resolutiontypes', 'description' => $i18n->__('Issue fields'), 'route' => 'configure_issuefields', 'details' => $i18n->__('Status types, resolution types, categories, custom fields, etc. are configurable from this section.'));
 			$data_config_sections[TBGSettings::CONFIGURATION_SECTION_WORKFLOW] = array('icon' => 'workflow', 'description' => $i18n->__('Workflow'), 'route' => 'configure_workflow', 'details' => $i18n->__('Set up and edit workflow configuration from this section'));
-			$data_config_sections[TBGSettings::CONFIGURATION_SECTION_USERS] = array('route' => 'configure_users', 'description' => $i18n->__('Users, teams &amp; groups'), 'icon' => 'users', 'details' => $i18n->__('Manage users, user groups and user teams from this section.'));
+			$data_config_sections[TBGSettings::CONFIGURATION_SECTION_USERS] = array('route' => 'configure_users', 'description' => $i18n->__('Users, teams, clients &amp; groups'), 'icon' => 'users', 'details' => $i18n->__('Manage users, user groups, clients and user teams from this section.'));
 			$module_config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => 'configure_modules', 'description' => $i18n->__('Module settings'), 'icon' => 'modules', 'details' => $i18n->__('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
 			foreach (TBGContext::getModules() as $module)
 			{
@@ -2124,4 +2124,62 @@
 			}
 		}
 		
+		public function runGetClientMembers(TBGRequest $request)
+		{
+			try
+			{
+				$client = TBGContext::factory()->TBGClient((int) $request->getParameter('client_id'));
+				$users = $client->getMembers();
+				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('configuration/clientuserlist', array('users' => $users))));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
+		
+		public function runEditClient(TBGRequest $request)
+		{
+			try
+			{
+				try
+				{
+					$client = TBGContext::factory()->TBGClient($request->getParameter('client_id'));
+				}
+				catch (Exception $e) { }
+				if (!$client instanceof TBGClient)
+				{
+					throw new Exception(TBGContext::getI18n()->__("You cannot edit this client"));
+				}
+				
+				if (!is_numeric($request->getParameter('client_telephone')))
+				{
+					throw new Exception(TBGContext::getI18n()->__('Telephone number must be a number'));
+				}
+				
+				if (!is_numeric($request->getParameter('client_fax')))
+				{
+					throw new Exception(TBGContext::getI18n()->__('Fax number must be a number'));
+				}
+				
+				if (TBGClient::doesClientNameExist(trim($request->getParameter('client_name'))) && $request->getParameter('client_name') != $client->getName())
+				{
+					throw new Exception(TBGContext::getI18n()->__("Please enter a client name that doesn't already exist"));
+				}
+				
+				$client->setName($request->getParameter('client_name'));
+				$client->setEmail($request->getParameter('client_email'));
+				$client->setWebsite($request->getParameter('client_website'));
+				$client->setTelephone($request->getParameter('client_telephone'));
+				$client->setFax($request->getParameter('client_fax'));
+				$client->save();
+				return $this->renderJSON(array('success' => true, 'content' => $this->getTemplateHTML('configuration/clientbox', array('client' => $client)), 'message' => TBGContext::getI18n()->__('The client was saved')));
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
+			}
+		}
 	}

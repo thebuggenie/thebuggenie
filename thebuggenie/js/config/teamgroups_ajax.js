@@ -346,6 +346,46 @@ function showClientMembers(url, client_id)
 	}
 }
 
+function editClient(url, client_id)
+{
+	var params = Form.serialize('edit_client_' + client_id + '_form');
+	new Ajax.Request(url, {
+		asynchronous: true,
+		method: "post",
+		parameters: params,
+		onLoading: function (transport) {
+			$('edit_client_' + client_id + '_indicator').show();
+		},
+		onSuccess: function (transport) {
+			$('edit_client_' + client_id + '_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+			else if (json)
+			{
+				$('clientbox_' + client_id).update(json.content);
+				$('edit_client_' + client_id).hide();
+
+				successMessage(json.message);
+			}
+		},
+		onFailure: function (transport) {
+			$('edit_client_' + client_id + '_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+		}
+	});
+}
+
 function editUser(url, user_id)
 {
 	var params = Form.serialize('edituser_' + user_id + '_form');

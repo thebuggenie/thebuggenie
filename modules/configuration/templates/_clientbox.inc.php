@@ -9,15 +9,16 @@
 		<div class="rounded_box white shadowed" style="margin: 5px; display: none;" id="edit_client_<?php echo $client->getID(); ?>">
 			<div class="dropdown_header"><?php echo __('Edit client settings'); ?></div>
 			<div class="dropdown_content">
-				<form id="edit_client_<?php echo $client->getID(); ?>_form" action="<?php echo make_url('configure_users_edit_client', array('client_id' => $client->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="editClient('<?php echo make_url('configure_users_edit_client', array('client_id' => $client->getID())); ?>');return false;">
+				<form id="edit_client_<?php echo $client->getID(); ?>_form" action="<?php echo make_url('configure_users_edit_client', array('client_id' => $client->getID())); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="editClient('<?php echo make_url('configure_users_edit_client', array('client_id' => $client->getID())); ?>', '<?php echo $client->getID(); ?>');return false;">
+				<input type="hidden" name="client_id" value="<?php echo $client->getID(); ?>">
 					<div id="edit_client">
 						<table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
 							<tr>
 								<td style="width: 120px;">
-									<label for="edit_client_<?php echo $client->getID(); ?>_new_name"><?php echo __('Client name'); ?></label>
+									<label for="client_<?php echo $client->getID(); ?>_new_name"><?php echo __('Client name'); ?></label>
 								</td>
 								<td>
-									<input style="width: 580px;" type="text" id="edit_client_<?php echo $client->getID(); ?>_new_name" name="client_name">
+									<input style="width: 580px;" type="text" id="edit_name" name="client_name" value="<?php echo $client->getName(); ?>">
 								</td>
 							</tr>
 							<tr>
@@ -25,7 +26,7 @@
 									<label for="edit_client_<?php echo $client->getID(); ?>_new_email"><?php echo __('Email Address'); ?></label>
 								</td>
 								<td>
-									<input style="width: 580px;" type="text" id="edit_client_<?php echo $client->getID(); ?>_new_email" name="client_email">
+									<input style="width: 580px;" type="text" id="client_email" name="client_email" value="<?php echo $client->getEmail(); ?>">
 								</td>
 							</tr>
 							<tr>
@@ -33,7 +34,7 @@
 									<label for="edit_client_<?php echo $client->getID(); ?>_new_website"><?php echo __('Website'); ?></label>
 								</td>
 								<td>
-									<input style="width: 580px;" type="text" id="edit_client_<?php echo $client->getID(); ?>_new_website" name="client_website">
+									<input style="width: 580px;" type="text" id="client_website" name="client_website" value="<?php echo $client->getWebsite(); ?>">
 								</td>
 							</tr>
 							<tr>
@@ -41,7 +42,7 @@
 									<label for="edit_client_<?php echo $client->getID(); ?>_new_telephone"><?php echo __('Telephone number'); ?></label>
 								</td>
 								<td>
-									<input style="width: 580px;" type="text" id="edit_client_<?php echo $client->getID(); ?>_new_telephone" name="client_telephone">
+									<input style="width: 580px;" type="text" id="client_telephone" name="client_telephone" value="<?php echo $client->getTelephone(); ?>">
 								</td>
 							</tr>
 							<tr>
@@ -49,7 +50,7 @@
 									<label for="edit_client_<?php echo $client->getID(); ?>_new_fax"><?php echo __('Fax number'); ?></label>
 								</td>
 								<td>
-									<input style="width: 580px;" type="text" id="edit_client_<?php echo $client->getID(); ?>_new_fax" name="client_fax">
+									<input style="width: 580px;" type="text" id="client_fax" name="client_fax" value="<?php echo $client->getFax(); ?>">
 								</td>
 							</tr>
 						</table>

@@ -385,6 +385,11 @@
 		 */
 		public function _preSave($is_new)
 		{
+			if ($this->_client == 0)
+			{
+				$this->_client = null;
+			}
+			
 			$project = self::getByKey($this->getKey()); // TBGProjectsTable::getTable()->getByKey($this->getKey());
 			if ($project instanceof TBGProject && $project->getID() != $this->getID())
 			{
@@ -2202,7 +2207,7 @@
 		/**
 		 * Set the client
 		 */
-		public function setClient(TBGClient $client)
+		public function setClient($client)
 		{
 			$this->_client = $client;
 		}
