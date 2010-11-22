@@ -94,6 +94,21 @@
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="submitProjectInfo('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>'); return false;" id="project_info">
 <?php endif; ?>
 <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
+		<tr>
+			<td><label for="client"><?php echo __('Client'); ?></label></td>
+			<td>
+				<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+					<select name="client" id="client" style="width: 100%">
+						<option value="0"<?php if ($project->getClient() == null): ?> selected<?php endif; ?>><?php echo __('No client'); ?></option>
+						<?php foreach (TBGClient::getAll() as $client): ?>
+							<option value=<?php echo $client->getID(); ?><?php if (($project->getClient() instanceof TBGClient) && $project->getClient()->getID() == $client->getID()): ?> selected<?php endif; ?>><?php echo $client->getName(); ?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php else: ?>
+					<?php if ($project->getClient() == null): echo __('No client'); else: echo $project->getClient()->getName(); endif; ?>
+				<?php endif; ?>
+			</td>
+		</tr>
 	<tr>
 		<td style="width: 200px;"><label for="project_name"><?php echo __('Project name'); ?></label></td>
 		<td style="width: 580px;">

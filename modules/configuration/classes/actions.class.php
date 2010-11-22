@@ -707,6 +707,9 @@
 							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("Project prefixes may only contain letters and numbers")));
 					}
 					
+					if ($request->hasParameter('client'))
+						$this->project->setClient(TBGContext::factory()->TBGClient($request->getParameter('client')));
+					
 					if ($request->hasParameter('workflow_scheme'))
 					{
 						try
