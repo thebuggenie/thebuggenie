@@ -165,7 +165,7 @@
 										<?php endif; ?>
 										<?php /*?><li<?php if ($tbg_response->getPage() == 'about'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('about'), image_tag('tab_about.png').__('About')); ?></li> */ ?>
 									</ul>
-									<div class="rounded_box blue" id="header_userinfo">
+									<div class="rounded_box blue tab_menu_container" id="header_userinfo">
 										<table style="width: auto;" cellpadding="0" cellspacing="0">
 											<tr>
 												<td style="width: 30px; padding-top: 4px;" valign="middle">
@@ -180,7 +180,7 @@
 													<?php endif; ?>
 												</td>
 												<td class="header_userlinks">
-													<?php if ($tbg_user->isGuest()): ?>
+													<?php /*if ($tbg_user->isGuest()): ?>
 														<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>');"><?php echo __('Login'); ?></a>
 														<?php if (TBGSettings::isRegistrationAllowed()): ?>
 															<br>
@@ -189,10 +189,23 @@
 													<?php else: ?>
 														<?php echo link_tag(make_url('account'), __('Your account')); ?><br>
 														<?php echo link_tag(make_url('logout'), __('Logout')); ?>
-													<?php endif; ?>
+													<?php endif;*/ ?>
+													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
 												</td>
 											</tr>
 										</table>
+										<div class="rounded_box blue tab_menu_dropdown almost_not_transparent">
+											<?php if ($tbg_user->isGuest()): ?>
+												<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>');"><?php echo __('Login'); ?></a>
+												<?php if (TBGSettings::isRegistrationAllowed()): ?>
+													<br>
+													<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login', 'section' => 'register')); ?>');"><?php echo __('Register'); ?></a>
+												<?php endif; ?>
+											<?php else: ?>
+												<?php echo link_tag(make_url('account'), image_tag('icon_account.png').__('Your account')); ?>
+												<?php echo link_tag(make_url('logout'), image_tag('logout.png').__('Logout')); ?>
+											<?php endif; ?>
+										</div>
 									</div>
 								</div>
 							</td>
