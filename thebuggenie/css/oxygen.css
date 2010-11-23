@@ -492,7 +492,7 @@ a.friend:hover { border-bottom: 1px dotted #0000a4; }
 /* reporting an issue styles */
 .report_button input { float: right; clear: both; }
 .report_button:hover .report_button_hover { display: block; }
-.report_button_hover { display: none; position: relative; width: 200px; background: #5a5; text-align: left; float: right; clear: both; padding: 0; }
+.report_button_hover { display: none; position: absolute; width: 200px; background: #5a5; text-align: left; margin-left: -90px; margin-top: 5px; clear: both; padding: 0; }
 .report_button_hover a { display: block; color: white; padding: 3px 5px 3px 5px; border: 0 !important; }
 .report_button_hover a:hover { background: #9d9; text-decoration: none; }
 .issuetype_list { list-style-type: none; padding: 0; margin: 10px auto 0 auto; width: 1010px; clear: both; }
