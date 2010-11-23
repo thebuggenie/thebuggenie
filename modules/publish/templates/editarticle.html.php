@@ -23,8 +23,8 @@
 					<b><?php echo __('The article has not been saved yet'); ?>&nbsp;&nbsp;</b>[<a href="#edit_article" onclick="$('article_content').focus();"><?php echo __('Continue editing'); ?></a>]
 				</div>
 			<?php endif; ?>
-			<?php if ($preview && $article instanceof TBGWikiArticle): ?>
-				<?php include_component('articledisplay', array('article' => $article, 'show_category_contains' => false, 'show_actions' => false)); ?>
+			<?php if ($article instanceof TBGWikiArticle): ?>
+				<?php include_component('articledisplay', array('article' => $article, 'show_article' => $preview, 'show_category_contains' => false, 'show_actions' => true, 'mode' => 'edit')); ?>
 			<?php endif; ?>
 			<a name="edit_article"></a>
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="post">

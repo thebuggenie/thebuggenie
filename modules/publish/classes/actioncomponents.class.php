@@ -21,6 +21,8 @@
 			$this->show_actions = (isset($this->show_actions)) ? $this->show_actions : true;
 			$this->show_category_contains = (isset($this->show_category_contains)) ? $this->show_category_contains : true;
 			$this->embedded = (isset($this->embedded)) ? $this->embedded : false;
+			$this->show_article = (isset($this->show_article)) ? $this->show_article : true;
+			$this->mode = (isset($this->mode)) ? $this->mode : 'view';
 		}
 
 		public function componentSettings()

@@ -82,6 +82,11 @@
 			}
 		}
 
+		public function runArticlePermissions(TBGRequest $request)
+		{
+			
+		}
+		
 		public function runArticleHistory(TBGRequest $request)
 		{
 			$this->history_action = $request->getParameter('history_action');

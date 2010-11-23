@@ -1,10 +1,14 @@
 <?php TBGContext::loadLibrary('publish/publish'); ?>
 <div class="article">
 	<?php if ($show_title): ?>
-		<div class="header">
+		<div class="header tab_menu">
 			<?php if ($show_actions): ?>
-				<?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), __('History'), array('style' => 'float: right;')); ?>
-				<?php echo link_tag(make_url('publish_article_edit', array('article_name' => $article->getName())), __('Edit'), array('style' => 'float: right; margin-right: 15px;')); ?>
+				<ul class="right">
+					<li<?php if ($mode == 'view'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), __('Show')); ?></li>
+					<li<?php if ($mode == 'edit'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_edit', array('article_name' => $article->getName())), __('Edit')); ?></li>
+					<li><?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), __('History')); ?></li>
+					<li><?php echo link_tag(make_url('publish_article_permissions', array('article_name' => $article->getName())), __('Permissions')); ?></li>
+				</ul>
 			<?php endif; ?>
 			<?php if (TBGContext::isProjectContext()): ?>
 				<?php if ((strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 0) || ($article->isCategory() && strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 9)): ?>
@@ -16,9 +20,12 @@
 			<?php else: ?>
 				<?php echo get_spaced_name($article->getName()); ?>
 			<?php endif; ?>
+			<?php if ($mode == 'edit'): ?>
+				<span class="faded_out"><?php echo __('%article_name% ~ Edit', array('%article_name%' => '')); ?></span>
+			<?php endif; ?>
 		</div>
 	<?php endif; ?>
-	<?php if ($show_details): ?>
+	<?php if ($show_details && $show_article): ?>
 		<div class="faded_out" style="padding-bottom: 5px;">
 			<?php if (isset($redirected_from)): ?>
 				<div class="redirected_from">&rarr; <?php echo __('Redirected from %article_name%', array('%article_name%' => link_tag(make_url('publish_article_edit', array('article_name' => $redirected_from)), $redirected_from))); ?></div>
@@ -26,7 +33,9 @@
 			<?php echo __('Last updated at %time%, by %user%', array('%time%' => tbg_formatTime($article->getPostedDate(), 3), '%user%' => '<b>'.(($article->getAuthor() instanceof TBGIdentifiable) ? $article->getAuthor()->getName() : __('System')).'</b>')); ; ?>
 		</div>
 	<?php endif; ?>
-	<div style="padding-bottom: 5px;"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded)); ?></div>
+	<?php if ($show_article): ?>
+		<div style="padding-bottom: 5px;"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded)); ?></div>
+	<?php endif; ?>
 </div>
 <?php if ($article->isCategory() && !$embedded && $show_category_contains): ?>
 	<div style="margin: 15px 5px 5px 5px;">
@@ -56,7 +65,7 @@
 	</div>
 	<br style="clear: both;">
 <?php endif; ?>
-<?php if (!$embedded): ?>
+<?php if (!$embedded && $show_article): ?>
 	<div class="rounded_box lightgrey borderless" style="margin: 30px 5px 20px 5px;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 1.1em;">

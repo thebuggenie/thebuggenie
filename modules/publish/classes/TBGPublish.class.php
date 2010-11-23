@@ -75,6 +75,7 @@
 			$this->addRoute('publish_article', '/wiki/:article_name', 'showArticle');
 			$this->addRoute('publish_article_revision', '/wiki/:article_name/revision/:revision', 'showArticle');
 			$this->addRoute('publish_article_edit', '/wiki/:article_name/edit', 'editArticle');
+			$this->addRoute('publish_article_permissions', '/wiki/:article_name/permissions', 'articlePermissions');
 			$this->addRoute('publish_article_delete', '/wiki/:article_name/delete', 'deleteArticle');
 			$this->addRoute('publish_article_save', '/wiki/savearticle', 'saveArticle');
 			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'articleHistory', array('history_action' => 'list'));

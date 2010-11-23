@@ -29,7 +29,7 @@
 				</div>
 			<?php endif; ?>
 			<?php if ($article instanceof TBGWikiArticle): ?>
-				<?php include_component('articledisplay', array('article' => $article, 'redirected_from' => $redirected_from)); ?>
+				<?php include_component('articledisplay', array('article' => $article, 'show_article' => true, 'redirected_from' => $redirected_from)); ?>
 			<?php else: ?>
 				<div class="header" style="padding: 5px;">
 					<?php echo link_tag(make_url('publish_article', array('article_name' => 'FrontpageArticle')), __('Front page article'), array('class' => (($article_name == 'FrontpageArticle') ? 'faded_out' : ''), 'style' => 'float: right; margin-right: 15px;')); ?>
