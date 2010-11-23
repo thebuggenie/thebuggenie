@@ -121,21 +121,21 @@
 												</div>
 												<div id="issues_menu" class="tab_menu_dropdown shadowed">
 												<?php if (TBGContext::isProjectContext()): ?>
-													<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Open issues for this project')); ?>
-													<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Closed issues for this project')); ?>
-													<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO, 'search' => true)), image_tag('icon_savedsearch.png') . __('Milestone todo-list for this project')); ?>
-													<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED, 'search' => true)), image_tag('icon_savedsearch.png') . __('Most voted for issues')); ?>
-													<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
-													<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
-													<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Open issues assigned to my teams')); ?>
+													<?php echo link_tag(make_url('project_open_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Open issues for this project')); ?>
+													<?php echo link_tag(make_url('project_closed_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Closed issues for this project')); ?>
+													<?php echo link_tag(make_url('project_milestone_todo_list', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Milestone todo-list for this project')); ?>
+													<?php echo link_tag(make_url('project_most_voted_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Most voted for issues')); ?>
+													<?php echo link_tag(make_url('project_my_reported_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
+													<?php echo link_tag(make_url('project_my_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
+													<?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Open issues assigned to my teams')); ?>
 													<?php foreach ($tbg_user->getStarredIssues() as $issue): ?>
 														<?php if ($issue->getProject()->getID() != TBGContext::getCurrentProject()->getID()) continue; ?>
 														<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('star_small.png') . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true)); ?>
 													<?php endforeach; ?>
 												<?php else: ?>
-													<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
-													<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
-													<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Open issues assigned to my teams')); ?>
+													<?php echo link_tag(make_url('my_reported_issues'), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
+													<?php echo link_tag(make_url('my_assigned_issues'), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
+													<?php echo link_tag(make_url('my_teams_assigned_issues'), image_tag('icon_savedsearch.png') . __('Open issues assigned to my teams')); ?>
 												<?php endif; ?>
 												</div>
 											</li>
@@ -202,9 +202,9 @@
 												<?php echo link_tag(make_url('account'), image_tag('icon_account.png').__('Your account')); ?>
 												<?php echo link_tag(make_url('logout'), image_tag('logout.png').__('Logout')); ?>
 												<div class="header"><?php echo __('Predefined searches'); ?></div>
-												<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
-												<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
-												<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Open issues assigned to my teams')); ?>
+												<?php echo link_tag(make_url('my_reported_issues'), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
+												<?php echo link_tag(make_url('my_assigned_issues'), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
+												<?php echo link_tag(make_url('my_teams_assigned_issues'), image_tag('icon_savedsearch.png') . __('Open issues assigned to my teams')); ?>
 											<?php endif; ?>
 										</div>
 									</div>

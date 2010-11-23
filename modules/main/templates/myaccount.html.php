@@ -54,11 +54,11 @@
 					</div>
 					<div style="clear: both; margin-top: 3px;">
 						<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-						<?php echo link_tag(make_url('search', array('predefined_search' => '3', 'search' => '1')), __("Show a list of all open issues assigned to me")); ?>
+						<?php echo link_tag(make_url('my_assigned_issues'), __("Show a list of all open issues assigned to me")); ?>
 					</div>
 					<div style="clear: both; margin-top: 3px;">
 						<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-						<?php echo link_tag(make_url('search', array('predefined_search' => '4', 'search' => '1')), __("Show a list of all open issues assigned to my teams")); ?>
+						<?php echo link_tag(make_url('my_teams_assigned_issues'), __("Show a list of all open issues assigned to my teams")); ?>
 					</div>
 					<div style="clear: both; margin-top: 10px;">
 						<?php echo image_tag('icon_user.png', array('style' => 'float: left; margin-right: 5px;')); ?>

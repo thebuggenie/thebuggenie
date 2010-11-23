@@ -3,9 +3,9 @@
 	$tbg_response->setTitle('Dashboard');
 	$tbg_response->addBreadcrumb(link_tag(make_url('dashboard'), __('Personal dashboard')));
 	$tbg_response->addJavascript('dashboard.js');
-	$tbg_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me'));
-	$tbg_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to you'));
-	$tbg_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to your teams'));
+	$tbg_response->addFeed(make_url('my_reported_issues', array('format' => 'rss')), __('Issues reported by me'));
+	$tbg_response->addFeed(make_url('my_assigned_issues', array('format' => 'rss')), __('Open issues assigned to you'));
+	$tbg_response->addFeed(make_url('my_teams_assigned_issues', array('format' => 'rss')), __('Open issues assigned to your teams'));
 
 ?>
 <?php include_component('main/hideableInfoBox', array('key' => 'dashboard_didyouknow', 'title' => __('Did you know?'), 'content' => ('This dashboard page is accessible from anywhere. Click your username in the top right header area at any time to access your dashboard.'))); ?>
@@ -23,7 +23,7 @@
 			<ul id="dashboard">
 				<li>
 					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
-						<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+						<?php echo link_tag(make_url('my_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
 						<?php echo __('Open issues assigned to you'); ?>
 					</div>
 					<?php if (count($tbg_user->getUserAssignedIssues()) > 0): ?>
@@ -50,7 +50,7 @@
 				</li>
 				<li>
 					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
-						<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+						<?php echo link_tag(make_url('my_teams_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
 						<?php echo __('Open issues assigned to your teams'); ?>
 					</div>
 					<?php $team_issues_count = 0; ?>
