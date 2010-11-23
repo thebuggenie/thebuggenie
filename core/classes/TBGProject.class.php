@@ -282,7 +282,13 @@
 		 */
 		protected $_recentactivities = null;
 		
-		protected $_workflow_scheme_id = null;
+		/**
+		 * The selected workflow scheme
+		 * 
+		 * @var TBGWorkflowScheme
+		 * @Class TBGWorkflowScheme
+		 */
+		protected $_workflow_scheme_id = 1;
 		
 		/**
 		 * Assigned client
@@ -2203,18 +2209,7 @@
 		 */
 		public function getWorkflowScheme()
 		{
-			if (is_numeric($this->_workflow_scheme_id))
-			{
-				try
-				{
-					$this->_workflow_scheme_id = TBGContext::factory()->TBGWorkflowScheme((int) $this->_workflow_scheme_id);
-				}
-				catch (Exception $e)
-				{
-					$this->_workflow_scheme_id = null;
-				}
-			}
-			return $this->_workflow_scheme_id;
+			return $this->_getPopulatedObjectFromProperty('_workflow_scheme_id');
 		}
 		
 		public function setWorkflowScheme(TBGWorkflowScheme $scheme)
