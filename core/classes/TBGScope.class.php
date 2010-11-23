@@ -59,7 +59,7 @@
 			return $this->_enabled;
 		}
 		
-		public function setEnabled($enabled)
+		public function setEnabled($enabled = true)
 		{
 			$this->_enabled = (bool) $enabled;
 		}

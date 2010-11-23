@@ -45,16 +45,6 @@
 			parent::_addVarchar(self::HOSTNAME, 150, '');
 		}
 
-		public function createNew($scope_name, $hostname)
-		{
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::DESCRIPTION, $scope_name);
-			$crit->addInsert(self::ENABLED, 1);
-			$crit->addInsert(self::HOSTNAME, $hostname);
-			$scope_id = $this->doInsert($crit)->getInsertID();
-			return $scope_id;
-		}
-
 		public function getByHostname($hostname)
 		{
 			$crit = $this->getCriteria();

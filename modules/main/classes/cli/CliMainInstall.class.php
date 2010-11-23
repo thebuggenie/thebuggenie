@@ -392,8 +392,9 @@
 					$scope = new TBGScope();
 					$scope->setName('The default scope');
 					$scope->setHostname($url_host);
-					$scope->save();
+					$scope->setEnabled();
 					TBGContext::setScope($scope);
+					$scope->save();
 					TBGSettings::saveSetting('language', 'en_US');
 					TBGSettings::saveSetting('url_subdir', $url_subdir);
 					$this->cliEcho("Initial scope setup successfully... \n\n", 'green', 'bold');
