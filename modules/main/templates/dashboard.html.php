@@ -1,6 +1,7 @@
 <?php 
 
 	$tbg_response->setTitle('Dashboard');
+	$tbg_response->addBreadcrumb(__('Personal dashboard'));
 	$tbg_response->addJavascript('dashboard.js');
 	$tbg_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true, 'format' => 'rss')), __('Issues reported by me'));
 	$tbg_response->addFeed(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true, 'format' => 'rss')), __('Open issues assigned to you'));

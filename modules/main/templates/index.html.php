@@ -1,6 +1,7 @@
 <?php 
 
 	$tbg_response->setTitle('Frontpage');
+	$tbg_response->addBreadcrumb(__('Frontpage'));
 
 ?>
 <?php if ($tbg_user->getID() == 1 && count(TBGProject::getAll()) == 1): ?>

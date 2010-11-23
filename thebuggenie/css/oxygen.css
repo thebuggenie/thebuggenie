@@ -211,7 +211,7 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 .project_stuff ul { list-style-type: none; margin: 0; padding: 0; }
 .project_stuff ul li { height: 23px; float: left; margin: 0 6px 0 0; padding-bottom: 0; }
 .project_stuff ul li.project_name { font-size: 1em; font-weight: bold; padding-top: 1px; }
-.project_stuff ul li.no_project_name { font-size: 1em; font-weight: normal; padding-top: 1px; color: #888; }
+.project_stuff ul li.no_project_name { font-size: 0.9em; font-weight: normal; padding-top: 2px; color: #888; }
 .project_stuff ul li.project_name a { color: #555; }
 .project_stuff ul li.breadcrumb { color: #886; font-size: 0.9em; padding-top: 2px; }
 .menu_project_strip .faded_out dark { color: #B0aa64; }

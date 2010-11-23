@@ -198,54 +198,50 @@
 							</td>
 						</tr>
 					</table>
-					<?php /*if ($tbg_response->isProjectMenuStripVisible()): ?>
-						<div id="project_menustrip"><?php include_component('project/menustrip', array('project' => TBGContext::getCurrentProject())); ?></div>
-					<?php elseif ($tbg_user->canSearchForIssues()): */ ?>
-						<div class="submenu_strip<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>">
-							<?php if (!TBGContext::isProjectContext()): ?>
-								<div class="project_stuff">
-									<ul>
-										<li class="no_project_name">
-											<?php echo __('No project selected'); ?>
+					<div class="submenu_strip<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>">
+						<?php if (!TBGContext::isProjectContext()): ?>
+							<div class="project_stuff">
+								<ul>
+									<li class="no_project_name">
+										<?php echo 'The Bug Genie'; ?>
+									</li>
+									<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
+										<li class="breadcrumb">&raquo;
+											<?php if ($breadcrumb['url']): ?>
+												<?php echo link_tag($breadcrumb['url'], $breadcrumb['title']); ?>
+											<?php else: ?>
+												<?php echo $breadcrumb['title']; ?>
+											<?php endif; ?>
 										</li>
-										<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
-											<li class="breadcrumb">&raquo;
-												<?php if ($breadcrumb['url']): ?>
-													<?php echo link_tag($breadcrumb['url'], $breadcrumb['title']); ?>
-												<?php else: ?>
-													<?php echo $breadcrumb['title']; ?>
-												<?php endif; ?>
-											</li>
-										<?php endforeach; ?>
-									</ul>
-								</div>
-							<?php else: ?>
-								<div class="project_stuff">
-									<ul>
-										<li class="project_name"><?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), TBGContext::getCurrentProject()->getName()); ?></li>
-										<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
-											<li class="breadcrumb">&raquo; 
-												<?php if ($breadcrumb['url']): ?>
-													<?php echo link_tag($breadcrumb['url'], $breadcrumb['title']); ?>
-												<?php else: ?>
-													<?php echo $breadcrumb['title']; ?>
-												<?php endif; ?>
-											</li>
-										<?php endforeach; ?>
-									</ul>
-								</div>
-							<?php endif; ?>
-							<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'quicksearch' => 'true')) : make_url('search', array('quicksearch' => 'true')); ?>" method="get" name="quicksearchform" style="float: right;">
-								<div style="width: auto; padding: 0; text-align: right; position: relative;">
-									<?php $quicksearch_title = __('Search for anything here'); ?>
-									<input type="text" name="searchfor" id="searchfor" value="<?php echo $quicksearch_title; ?>" style="width: 220px; padding: 1px 1px 1px;" onblur="if ($('searchfor').getValue() == '') { $('searchfor').value = '<?php echo $quicksearch_title; ?>'; $('searchfor').addClassName('faded_out'); }" onfocus="if ($('searchfor').getValue() == '<?php echo $quicksearch_title; ?>') { $('searchfor').clear(); } $('searchfor').removeClassName('faded_out');" class="faded_out"><div id="searchfor_autocomplete_choices" class="autocomplete"></div>
-									<script type="text/javascript">
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						<?php else: ?>
+							<div class="project_stuff">
+								<ul>
+									<li class="project_name"><?php echo __('Selected project: %project_name%', array('%project_name%' => link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), TBGContext::getCurrentProject()->getName()))); ?></li>
+									<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
+										<li class="breadcrumb">&raquo; 
+											<?php if ($breadcrumb['url']): ?>
+												<?php echo link_tag($breadcrumb['url'], $breadcrumb['title']); ?>
+											<?php else: ?>
+												<?php echo $breadcrumb['title']; ?>
+											<?php endif; ?>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						<?php endif; ?>
+						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'quicksearch' => 'true')) : make_url('search', array('quicksearch' => 'true')); ?>" method="get" name="quicksearchform" style="float: right;">
+							<div style="width: auto; padding: 0; text-align: right; position: relative;">
+								<?php $quicksearch_title = __('Search for anything here'); ?>
+								<input type="text" name="searchfor" id="searchfor" value="<?php echo $quicksearch_title; ?>" style="width: 220px; padding: 1px 1px 1px;" onblur="if ($('searchfor').getValue() == '') { $('searchfor').value = '<?php echo $quicksearch_title; ?>'; $('searchfor').addClassName('faded_out'); }" onfocus="if ($('searchfor').getValue() == '<?php echo $quicksearch_title; ?>') { $('searchfor').clear(); } $('searchfor').removeClassName('faded_out');" class="faded_out"><div id="searchfor_autocomplete_choices" class="autocomplete"></div>
+								<script type="text/javascript">
 
-									new Ajax.Autocompleter("searchfor", "searchfor_autocomplete_choices", '<?php echo (TBGContext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>', {paramName: "searchfor", minChars: 2});
+								new Ajax.Autocompleter("searchfor", "searchfor_autocomplete_choices", '<?php echo (TBGContext::isProjectContext()) ? make_url('project_quicksearch', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('quicksearch'); ?>', {paramName: "searchfor", minChars: 2});
 
-									</script>
-									<input type="submit" value="<?php echo TBGContext::getI18n()->__('Find'); ?>" style="padding: 0 2px 0 2px;">
-								</div>
-							</form>
-						</div>
-					<?php //endif; ?>
+								</script>
+								<input type="submit" value="<?php echo TBGContext::getI18n()->__('Find'); ?>" style="padding: 0 2px 0 2px;">
+							</div>
+						</form>
+					</div>

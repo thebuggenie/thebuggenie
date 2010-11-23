@@ -20,6 +20,8 @@
 			
 			$this->getResponse()->setPage('config');
 			$this->getResponse()->setProjectMenuStripHidden();
+			TBGContext::loadLibrary('ui');
+			$this->getResponse()->addBreadcrumb(link_tag(make_url('configure'), TBGContext::getI18n()->__('Configure')));
 			
 		}
 		
