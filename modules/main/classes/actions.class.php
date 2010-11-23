@@ -1819,8 +1819,12 @@
 				{
 					$this->teams = TBGTeam::findTeams($find_identifiable_by);
 				}
+				else
+				{
+					$this->teams = array();
+				}
 			}
-			return $this->renderComponent('identifiableselectorresults', array('users' => $this->users, 'callback' => $request->getParameter('callback')));
+			return $this->renderComponent('identifiableselectorresults', array('users' => $this->users, 'teams' => $this->teams, 'callback' => $request->getParameter('callback')));
 		}
 		
 		/**

@@ -9,7 +9,8 @@
 																		'style'				=> array('position' => 'absolute'),
 																		'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $project->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
 																		'base_id'			=> 'owned_by',
-																		'absolute'			=> true)); ?>
+																		'absolute'			=> true,
+																		'include_teams'		=> true)); ?>
 			<?php endif; ?>
 		</td>
 		<td style="<?php if (!$project->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
@@ -39,7 +40,8 @@
 																		'style'				=> array('position' => 'absolute'),
 																		'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $project->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'lead_by');",
 																		'base_id'			=> 'lead_by',
-																		'absolute'			=> true)); ?>
+																		'absolute'			=> true,
+																		'include_teams'		=> true)); ?>
 			<?php endif; ?>
 		</td>
 		<td style="<?php if (!$project->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="lead_by_name">
@@ -69,7 +71,8 @@
 																		'style'				=> array('position' => 'absolute'),
 																		'callback'		 	=> "setUser('" . make_url('configure_project_set_leadby', array('project_id' => $project->getID(), 'field' => 'qa_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'qa_by');",
 																		'base_id'			=> 'qa_by',
-																		'absolute'			=> true)); ?>
+																		'absolute'			=> true,
+																		'include_teams'		=> true)); ?>
 			<?php endif; ?>
 		</td>
 		<td style="<?php if (!$project->hasQaResponsible()): ?>display: none; <?php endif; ?>padding: 2px;" id="qa_by_name">
