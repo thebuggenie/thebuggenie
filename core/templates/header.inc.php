@@ -196,10 +196,9 @@
 										</table>
 										<div class="rounded_box blue tab_menu_dropdown almost_not_transparent">
 											<?php if ($tbg_user->isGuest()): ?>
-												<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>');"><?php echo __('Login'); ?></a>
+												<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>');"><?php echo image_tag('icon_login.png').__('Login'); ?></a>
 												<?php if (TBGSettings::isRegistrationAllowed()): ?>
-													<br>
-													<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login', 'section' => 'register')); ?>');"><?php echo __('Register'); ?></a>
+													<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login', 'section' => 'register')); ?>');"><?php echo image_tag('icon_register.png').__('Register'); ?></a>
 												<?php endif; ?>
 											<?php else: ?>
 												<div class="header"><?php echo __('You are: %userstate%', array('%userstate%' => '<span class="userstate">'.$tbg_user->getState()->getName().'</span>')); ?></div>
