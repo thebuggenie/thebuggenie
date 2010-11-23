@@ -190,7 +190,9 @@
 														<?php echo link_tag(make_url('account'), __('Your account')); ?><br>
 														<?php echo link_tag(make_url('logout'), __('Logout')); ?>
 													<?php endif;*/ ?>
-													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+													<div class="dropdown_separator">
+														<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+													</div>
 												</td>
 											</tr>
 										</table>
