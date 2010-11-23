@@ -1,6 +1,8 @@
 <?php 
 
-	$tbg_response->setTitle('Client');
+	$tbg_response->setTitle($client->getName() . ' ' . __('dashboard'));
+	$tbg_response->setPage('client');
+	$tbg_response->addBreadcrumb(link_tag(make_url('client_dashboard', array('client_id' => $client->getID())), $client->getName()));
 	
 ?>
 

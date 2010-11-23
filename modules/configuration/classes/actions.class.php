@@ -710,7 +710,16 @@
 					}
 					
 					if ($request->hasParameter('client'))
-						$this->project->setClient(TBGContext::factory()->TBGClient($request->getParameter('client')));
+					{
+						if ($request->getParameter('client') == 0)
+						{
+							$this->project->setClient(null);
+						}
+						else
+						{
+							$this->project->setClient(TBGContext::factory()->TBGClient($request->getParameter('client')));
+						}
+					}
 					
 					if ($request->hasParameter('workflow_scheme'))
 					{
@@ -2116,11 +2125,11 @@
 					throw new Exception(TBGContext::getI18n()->__("You cannot delete this client"));
 				}
 				
-				if (TBGProjectsTable::getTable()->getByClientID($client->getID()) !== null)
+				if (TBGProject::getAllByClientID($client->getID()) !== null)
 				{
-					foreach (TBGProjectsTable::getTable()->getByClientID($client->getID()) as $project)
+					foreach (TBGProject::getAllByClientID($client->getID()) as $project)
 					{
-						$project->setClient(0);
+						$project->setClient(null);
 						$project->save();
 					}
 				}

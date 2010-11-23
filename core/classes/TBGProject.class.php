@@ -2240,14 +2240,7 @@
 		 */
 		public function setClient($client)
 		{
-			if ($client == 0)
-			{
-				$this->_client = null;
-			}
-			else
-			{
-				$this->_client = $client;
-			}
+			$this->_client = $client;
 		}
 
 		/**
