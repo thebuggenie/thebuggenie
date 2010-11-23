@@ -45,11 +45,11 @@
 	$routes[] = array('issue_remove_link', '/upload/remove/link/:link_id/from/issue/:issue_id', 'main', 'removeLinkFromIssue');
 	$routes[] = array('upload_status', '/upload/get/status/for/:mode', 'main', 'getUploadStatus');
 	$routes[] = array('upload', '/upload/:mode', 'main', 'upload');
-	$routes[] = array('account_change_password', '/my_account/change/password/*', 'main', 'accountChangePassword', array(), true);
-	$routes[] = array('account_save_information', '/my_account/save/information/*', 'main', 'myAccount', array('mode' => 'information'), true);
-	$routes[] = array('account_save_settings', '/my_account/save/settings/*', 'main', 'myAccount', array('mode' => 'settings'), true);
-	$routes[] = array('account_save_module_settings', '/my_account/save/module/:target_module/settings/*', 'main', 'myAccount', array('mode' => 'module'), true);
-	$routes[] = array('account', '/my_account/*', 'main', 'myAccount');
+	$routes[] = array('account_change_password', '/account/change/password/*', 'main', 'accountChangePassword', array(), true);
+	$routes[] = array('account_save_information', '/account/save/information/*', 'main', 'myAccount', array('mode' => 'information'), true);
+	$routes[] = array('account_save_settings', '/account/save/settings/*', 'main', 'myAccount', array('mode' => 'settings'), true);
+	$routes[] = array('account_save_module_settings', '/account/save/module/:target_module/settings/*', 'main', 'myAccount', array('mode' => 'module'), true);
+	$routes[] = array('account', '/account/*', 'main', 'myAccount');
 	$routes[] = array('toggle_friend', '/friends/:mode/:user_id', 'main', 'toggleFriend');
 	$routes[] = array('configure', '/configure', 'configuration', 'index', array('section' => 0));
 	$routes[] = array('configure_projects', '/configure/projects', 'configuration', 'configureProjects', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PROJECTS));
