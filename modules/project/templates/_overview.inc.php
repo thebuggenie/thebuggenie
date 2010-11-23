@@ -42,7 +42,17 @@
 						<?php endif; ?>
 						<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
 					</td>
-					<td class="nice_button report_button"><input type="submit" value="<?php echo __('Report an issue'); ?>"></td>
+					<td class="nice_button report_button">
+						<input type="submit" value="<?php echo __('Report an issue'); ?>">
+						<div class="report_button_hover rounded_box green tab_menu_dropdown">
+							<div class="tab_menu_dropdown">
+								<?php foreach ($project->getIssuetypes() as $issue_type): ?>
+									<?php if (!$issue_type->isReportable()) continue; ?>	
+									<?php echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey(), 'issuetype_id' => $issue_type->getID())), image_tag($issue_type->getIcon() . '_tiny.png' ) . __($issue_type->getName())); ?>
+								<?php endforeach;?>
+							</div>
+						</div>
+					</td>
 				</tr>
 			</table>
 		</form>
