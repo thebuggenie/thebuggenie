@@ -50,7 +50,7 @@
 					</div>
 					<div style="clear: both; margin-top: 3px;">
 						<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
-						<?php echo link_tag(make_url('search', array('searchfor' => '%%', 'issues_per_page' => 30, 'filters' => array('posted_by' => array('value' => $tbg_user->getID(), 'operator' => '=')))), __("Show a list of all issues I've reported")); ?>
+						<?php echo link_tag(make_url('my_reported_issues'), __("Show a list of all issues I've reported")); ?>
 					</div>
 					<div style="clear: both; margin-top: 3px;">
 						<?php echo image_tag('tab_search.png', array('style' => 'float: left; margin-right: 5px;')); ?>
