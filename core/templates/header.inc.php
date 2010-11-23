@@ -202,6 +202,7 @@
 													<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login', 'section' => 'register')); ?>');"><?php echo __('Register'); ?></a>
 												<?php endif; ?>
 											<?php else: ?>
+												<div class="header"><?php echo __('You are: %userstate%', array('%userstate%' => '<span class="userstate">'.$tbg_user->getState()->getName().'</span>')); ?></div>
 												<?php echo link_tag(make_url('account'), image_tag('icon_account.png').__('Your account')); ?>
 												<?php echo link_tag(make_url('logout'), image_tag('logout.png').__('Logout')); ?>
 											<?php endif; ?>

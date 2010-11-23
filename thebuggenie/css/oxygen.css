@@ -185,6 +185,7 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 #header_userinfo .tab_menu_dropdown { top: 33px; right: 7px; -webkit-border-top-right-radius: 0; border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; }
 .tab_menu .tab_menu_dropdown a, .tab_menu_container .tab_menu_dropdown a { float: none; }
 #header_userinfo .tab_menu_dropdown a { color: #FFF; font-weight: normal; }
+#header_userinfo .tab_menu_dropdown .userstate { font-weight: normal; }
 .tab_menu_dropdown a img { float: left; margin-right: 5px; }
 .tab_menu li:hover .tab_menu_dropdown, .tab_menu_container:hover .tab_menu_dropdown { display: block; }
 .tab_menu li.selected .tab_menu_dropdown, .tab_menu_container li.selected .tab_menu_dropdown { background-color: #FFF; color: #333; }
