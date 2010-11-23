@@ -20,6 +20,10 @@
 				$bcpath .= ":".array_shift($items);
 			}
 		}
+		elseif (!TBGContext::isProjectContext() && !strtolower($bcpath) != 'mainpage')
+		{
+			$tbg_response->addBreadcrumb($bcpath, make_url('publish_article', array('article_name' => $bcpath)));
+		}
 		foreach ($items as $bc_name)
 		{
 			$bcpath .= ":".$bc_name;
