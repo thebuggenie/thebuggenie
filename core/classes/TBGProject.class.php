@@ -381,6 +381,126 @@
 		}
 		
 		/**
+		 * Retrieve all projects by leader
+		 * 
+		 * @param TBGUser or TBGTeam
+		 * @return array
+		 */
+		public static function getAllByLeader($leader)
+		{
+			self::_populateProjects();
+			$final = array();
+			
+			if (!($leader instanceof TBGUser) && !($leader instanceof TBGTeam))
+			{
+				return false;
+			}
+			
+			if ($leader instanceof TBGUser)
+			{
+				foreach (self::$_projects as $project)
+				{
+					if (($project->getLeaderID() == $leader->getID()) && ($project->getLeaderType() == TBGIdentifiableClass::TYPE_USER))
+					{
+						$final[] = $project;
+					}
+				}
+				return $final;
+			}
+			else
+			{
+				foreach (self::$_projects as $project)
+				{
+					if (($project->getLeaderID() == $leader->getID()) && ($project->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM))
+					{
+						$final[] = $project;
+					}
+				}
+				return $final;
+			}
+		}
+		
+		/**
+		 * Retrieve all projects by owner
+		 * 
+		 * @param TBGUser or TBGTeam
+		 * @return array
+		 */
+		public static function getAllByOwner($owner)
+		{
+			self::_populateProjects();
+			$final = array();
+			
+			if (!($owner instanceof TBGUser) && !($owner instanceof TBGTeam))
+			{
+				return false;
+			}
+			
+			if ($owner instanceof TBGUser)
+			{
+				foreach (self::$_projects as $project)
+				{
+					if (($project->getOwnerID() == $owner->getID()) && ($project->getOwnerType() == TBGIdentifiableClass::TYPE_USER))
+					{
+						$final[] = $project;
+					}
+				}
+				return $final;
+			}
+			else
+			{
+				foreach (self::$_projects as $project)
+				{
+					if (($project->getOwnerID() == $owner->getID()) && ($project->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM))
+					{
+						$final[] = $project;
+					}
+				}
+				return $final;
+			}
+		}
+		
+		/**
+		 * Retrieve all projects by qa
+		 * 
+		 * @param TBGUser or TBGTeam
+		 * @return array
+		 */
+		public static function getAllByQaResponsible($qa)
+		{
+			self::_populateProjects();
+			$final = array();
+			
+			if (!($qa instanceof TBGUser) && !($qa instanceof TBGTeam))
+			{
+				return false;
+			}
+			
+			if ($qa instanceof TBGUser)
+			{
+				foreach (self::$_projects as $project)
+				{
+					if (($project->getQaResponsibleID() == $qa->getID()) && ($project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER))
+					{
+						$final[] = $project;
+					}
+				}
+				return $final;
+			}
+			else
+			{
+				foreach (self::$_projects as $project)
+				{
+					if (($project->getQaResponsibleID() == $qa->getID()) && ($project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM))
+					{
+						$final[] = $project;
+					}
+				}
+				return $final;
+			}
+		}
+				
+		/**
 		 * Retrieve the default project
 		 * 
 		 * @return TBGProject

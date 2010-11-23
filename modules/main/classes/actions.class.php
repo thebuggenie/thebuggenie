@@ -145,6 +145,25 @@
 		}
 		
 		/**
+		 * Team Dashboard
+		 *  
+		 * @param TBGRequest $request
+		 */
+		public function runTeamDashboard(TBGRequest $request)
+		{
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('home'));
+			$this->getResponse()->setProjectMenuStripHidden();
+			$this->team = TBGContext::factory()->TBGTeam($request->getParameter('team_id'));
+			
+			$own = TBGProject::getAllByOwner($this->team);
+			$leader = TBGProject::getAllByLeader($this->team);
+			$qa = TBGProject::getAllByQaResponsible($this->team);
+			
+			$this->projects = array_unique(array_merge($own, $leader, $qa));
+			$this->users = $this->team->getMembers();
+		}
+				
+		/**
 		 * About page
 		 *  
 		 * @param TBGRequest $request

@@ -140,6 +140,19 @@
 												</div>
 											</li>
 										<?php endif; ?>
+										<?php if (!TBGContext::isProjectContext() && !is_null(TBGTeamsTable::getTable()->getAll())): ?>
+											<li<?php if ($tbg_response->getPage() == 'team'): ?> class="selected"<?php endif; ?>>
+												<div>
+													<?php echo link_tag('javascript:void(0)', image_tag('tab_teams.png') . __('Teams')); ?>
+													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+												</div>
+												<div id="team_menu" class="tab_menu_dropdown shadowed">
+													<?php foreach (TBGTeam::getAll() as $team): ?>
+														<?php echo link_tag(make_url('team_dashboard', array('team_id' => $team->getID())), image_tag('tab_teams.png' ) . $team->getName()); ?>
+													<?php endforeach;?>
+												</div>											
+											</li>
+										<?php endif; ?>
 										<?php if (!TBGContext::isProjectContext() && !is_null(TBGClientsTable::getTable()->getAll())): ?>
 											<li<?php if ($tbg_response->getPage() == 'client'): ?> class="selected"<?php endif; ?>>
 												<div>
