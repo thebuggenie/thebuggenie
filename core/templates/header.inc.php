@@ -3,11 +3,7 @@
 <html>
 	<head>
 		<title><?php echo ($tbg_response->hasTitle()) ? strip_tags(TBGSettings::get('b2_name') . ' ~ ' . $tbg_response->getTitle()) : strip_tags(TBGSettings::get('b2_name')); ?></title>
-		<?php
-			
-			TBGEvent::createNew('core', 'header_begins')->trigger();
-				
-		?>
+		<?php TBGEvent::createNew('core', 'header_begins')->trigger(); ?>
 		<meta name="description" content="The bug genie, friendly issue tracking">
 		<meta name="keywords" content="thebuggenie friendly issue tracking">
 		<meta name="author" content="thebuggenie.com">
@@ -106,16 +102,14 @@
 										<?php if (TBGContext::isProjectContext() && ($tbg_user->canReportIssues() || $tbg_user->canReportIssues(TBGContext::getCurrentProject()->getID()))): ?>
 											<li<?php if ($tbg_response->getPage() == 'reportissue'): ?> class="selected"<?php endif; ?>>
 												<div>
-													<?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png') . ((isset($_SESSION['rni_step1_set'])) ? __('Continue reporting') : __('Report an issue'))); ?>
-													<?php if (!(isset($_SESSION['rni_step1_set']))): ?>
-															<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
-														</div>
-														<div id="project_issue_menu" class="tab_menu_dropdown shadowed">
-														<?php foreach (TBGContext::getCurrentProject()->getIssuetypes() as $issue_type): ?>
-															<?php if (!$issue_type->isReportable()) continue; ?>	
-															<?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'issuetype_id' => $issue_type->getID())), image_tag($issue_type->getIcon() . '_tiny.png' ) . __($issue_type->getName())); ?>
-														<?php endforeach;?>
-													<?php endif; ?> 
+													<?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_reportissue.png') . __('Report an issue')); ?>
+													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+													</div>
+													<div id="project_issue_menu" class="tab_menu_dropdown shadowed">
+													<?php foreach (TBGContext::getCurrentProject()->getIssuetypes() as $issue_type): ?>
+														<?php if (!$issue_type->isReportable()) continue; ?>	
+														<?php echo link_tag(make_url('project_reportissue', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'issuetype_id' => $issue_type->getID())), image_tag($issue_type->getIcon() . '_tiny.png' ) . __($issue_type->getName())); ?>
+													<?php endforeach;?>
 												</div>											
 											</li>
 										<?php endif; ?>
@@ -223,7 +217,7 @@
 							<div class="project_stuff">
 								<ul>
 									<li class="no_project_name">
-										<?php echo 'The Bug Genie'; ?>
+										<?php echo TBGSettings::getTBGname(); ?>
 									</li>
 									<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
 										<li class="breadcrumb">&raquo;
@@ -239,7 +233,15 @@
 						<?php else: ?>
 							<div class="project_stuff">
 								<ul>
-									<li class="project_name"><?php echo __('Selected project: %project_name%', array('%project_name%' => link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), TBGContext::getCurrentProject()->getName()))); ?></li>
+									<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
+										<?php if (strtolower(TBGSettings::getTBGname()) != strtolower(TBGContext::getCurrentProject()->getName())): ?>
+											<li class="breadcrumb"><?php echo link_tag(make_url('home'), TBGSettings::getTBGName()); ?> &raquo;</li>
+										<?php endif; ?>
+										<?php break; ?>
+									<?php endforeach; ?>
+									<li class="project_name">
+										<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), TBGContext::getCurrentProject()->getName()); ?>
+									</li>
 									<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
 										<li class="breadcrumb">&raquo; 
 											<?php if ($breadcrumb['url']): ?>
