@@ -2173,16 +2173,6 @@
 					throw new Exception(TBGContext::getI18n()->__("You cannot edit this client"));
 				}
 				
-				if (!is_numeric($request->getParameter('client_telephone')))
-				{
-					throw new Exception(TBGContext::getI18n()->__('Telephone number must be a number'));
-				}
-				
-				if (!is_numeric($request->getParameter('client_fax')))
-				{
-					throw new Exception(TBGContext::getI18n()->__('Fax number must be a number'));
-				}
-				
 				if (TBGClient::doesClientNameExist(trim($request->getParameter('client_name'))) && $request->getParameter('client_name') != $client->getName())
 				{
 					throw new Exception(TBGContext::getI18n()->__("Please enter a client name that doesn't already exist"));
