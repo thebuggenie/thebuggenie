@@ -1953,6 +1953,15 @@
 			return (bool) (file_exists(TBGContext::getIncludePath() . 'thebuggenie/project_icons/' . $this->getKey() . '.png'));
 		}
 		
+		/**
+		 * Whether a client exists for this project
+		 * @return boolean
+		 */
+		public function hasClient()
+		{
+			if ($this->getClient() instanceof TBGClient): return true; else: return false; endif;
+		}
+		
 		public function getIcon()
 		{
 			return ($this->hasIcon()) ? 'project_icons/' . $this->getKey() . '.png' : 'icon_project.png';			

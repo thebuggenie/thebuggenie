@@ -196,7 +196,7 @@
 												</td>
 											</tr>
 										</table>
-										<div class="rounded_box blue tab_menu_dropdown almost_not_transparent">
+										<div class="rounded_box blue tab_menu_dropdown user_menu_dropdown">
 											<?php if ($tbg_user->isGuest()): ?>
 												<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>');"><?php echo image_tag('icon_login.png').__('Login'); ?></a>
 												<?php if (TBGSettings::isRegistrationAllowed()): ?>
@@ -204,8 +204,13 @@
 												<?php endif; ?>
 											<?php else: ?>
 												<div class="header"><?php echo __('You are: %userstate%', array('%userstate%' => '<span class="userstate">'.$tbg_user->getState()->getName().'</span>')); ?></div>
+												<?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png').__('Your dashboard')); ?>	
 												<?php echo link_tag(make_url('account'), image_tag('icon_account.png').__('Your account')); ?>
 												<?php echo link_tag(make_url('logout'), image_tag('logout.png').__('Logout')); ?>
+												<div class="header"><?php echo __('Predefined searches'); ?></div>
+												<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
+												<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
+												<?php echo link_tag(make_url('search', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true)), image_tag('icon_savedsearch.png') . __('Open issues assigned to my teams')); ?>
 											<?php endif; ?>
 										</div>
 									</div>

@@ -177,7 +177,7 @@
 				<div style="margin: 10px 0 0 0; clear: both; height: 25px;">
 					<div style="float: left;">
 						<?php if ($selected_project instanceof TBGProject): ?>
-							<span style="font-size: 14px;"><?php echo __('Reporting an issue for %project_name%', array('%project_name%' => '<b>' . $selected_project->getName() . '</b>'))?></span>
+							<span style="font-size: 14px;"><?php echo __('Reporting an issue for %project_name%', array('%project_name%' => '<b>' . $selected_project->getName() . '</b>'))?><?php if ($selected_project->hasClient()): ?> (<?php echo __('Client: %clientname%', array('%clientname%' => link_tag(make_url('client_dashboard', array('client_id' => $selected_project->getClient()->getID())), $selected_project->getClient()->getName()))); ?>)<?php endif;?></span>
 						<?php endif; ?>
 						<label for="project_id" style="margin-right: 20px;<?php if ($selected_project instanceof TBGProject): ?> display: none;<?php endif; ?>"><?php echo __('Select project'); ?></label>
 						<select name="project_id" id="project_id" style="min-width: 300px; height: 25px;<?php if ($selected_project instanceof TBGProject): ?> display: none;<?php endif; ?>" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');">
