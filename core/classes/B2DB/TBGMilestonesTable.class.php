@@ -24,28 +24,16 @@
 		const SCOPE = 'milestones.scope';
 		const NAME = 'milestones.name';
 		const PROJECT = 'milestones.project';
-		const VISIBLE = 'milestones.visible';
 		const DESCRIPTION = 'milestones.description';
-		const MILESTONE_TYPE = 'milestones.milestone_type';
-		const REACHED = 'milestones.reached';
-		const STARTING = 'milestones.starting';
-		const SCHEDULED = 'milestones.scheduled';
-
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGMilestonesTable
-		 */
-		public static function getTable()
-		{
-			return B2DB::getTable('TBGMilestonesTable');
-		}
+		const MILESTONE_TYPE = 'milestones.itemtype';
+		const REACHED = 'milestones.reacheddate';
+		const STARTING = 'milestones.startingdate';
+		const SCHEDULED = 'milestones.scheduleddate';
 
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 100);
-			parent::_addBoolean(self::VISIBLE, true);
 			parent::_addText(self::DESCRIPTION, false);
 			parent::_addInteger(self::REACHED, 10);
 			parent::_addInteger(self::MILESTONE_TYPE, 2);

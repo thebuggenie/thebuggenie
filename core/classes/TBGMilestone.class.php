@@ -37,7 +37,7 @@
 		 * 
 		 * @var boolean
 		 */
-		protected $_isreached;
+		protected $_reached;
 		
 		/**
 		 * When the milestone was reached
@@ -438,7 +438,7 @@
 		 */
 		public function isReached()
 		{
-			return $this->_isreached;
+			return $this->_reached;
 		}
 		
 		/**
@@ -595,7 +595,7 @@
 		{
 			if ($this->_isscheduled)
 			{
-				if ($this->_isreached == false)
+				if ($this->_reached == false)
 				{
 					if ($this->_scheduleddate < NOW)
 					{
