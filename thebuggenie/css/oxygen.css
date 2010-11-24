@@ -370,6 +370,9 @@ th.highlighted_column { background-color: #C1C1C1; }
 
 .more_than_one_project_warning { color: #C55; }
 
+.tab_content { padding-top: 10px; }
+.tab_header { padding-top: 10px; font-weight: bold; border-bottom: 1px solid #DDD; }
+
 /* permissions configuration styling */
 .config_permissions { font-size: 12px; }
 .config_permissions .faded_out.smaller { font-size: 10px; padding-left: 10px; }
