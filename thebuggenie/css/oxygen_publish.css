@@ -40,7 +40,7 @@
 .article.edit textarea { font-family: "DroidSansMono", monospace; }
 
 .article .header { margin: 0 0 5px 0; padding: 3px; font-weight: bold; font-size: 17px; border-bottom: 1px solid #CCC; }
-.article .header a { font-size: 13px; }
+.article .header a { font-size: 12px; border-bottom: 0; }
 
 .article .details { color: #AAA; padding-bottom: 5px; }
 
