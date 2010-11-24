@@ -206,7 +206,7 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .header_menu .selected, .header_menu li.selected:hover { font-weight: bold; background-color: #FFF; border-bottom: 1px solid #FFF; }
 .header_menu.project_context .selected, .header_menu li.selected:hover { border-bottom: 1px dotted #D9D9BB; }
 .header_menu li { background-color: transparent; border: 0px; margin: 0;  }
-.header_menu li { margin-left: 5px; }
+.header_menu li { margin-left: 2px; }
 .header_menu li:hover { background-color: #A4C0E4; border-color: #396BA7; border-bottom: 1px solid #396BA7; }
 .header_menu .selected, .header_menu li.selected:hover { border: 1px solid #396BA7; border-bottom: 1px solid #FFF; }
 .header_menu li:hover, .header_menu li.selected:hover, .header_menu li.selected { padding: 3px 5px 4px 5px; color: #222;  }
@@ -730,6 +730,7 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard .faded_out.smaller { font-size: 11px; padding-right: 5px; }
 
 #dashboard_lefthand, #dashboard_righthand { font-size: 0.95em; }
+#dashboard_lefthand { width: 250px; }
 #dashboard_lefthand a.friend { color: #00a400; }
 #dashboard_lefthand a.friend:hover { border-bottom: 1px solid #CCC; }
 
