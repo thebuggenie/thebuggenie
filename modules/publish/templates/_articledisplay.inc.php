@@ -37,9 +37,8 @@
 		<div class="content"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded)); ?></div>
 	<?php endif; ?>
 </div>
-<br style="clear: both;">
 <?php if ($article->isCategory() && !$embedded && $show_category_contains): ?>
-	<div style="margin: 15px 5px 5px 5px;">
+	<div style="margin: 15px 5px 5px 5px; clear: both;">
 		<?php if (count($article->getSubCategories()) > 0): ?>
 			<div class="header"><?php echo __('Subcategories'); ?></div>
 			<ul class="category_list">
