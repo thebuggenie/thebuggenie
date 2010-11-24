@@ -41,22 +41,38 @@
 			</tr>
 			<tr>
 				<td style="vertical-align: top; padding-top: 4px;"><label for="homepage_<?php echo $user->getID(); ?>"><?php echo __('Homepage'); ?></label></td>
-				<td style="vertical-align: top;"><input type="text" name="homepage" id="homepage_<?php echo $user->getID(); ?>" style="width: 250px;" value="<?php echo $user->getHomepage(); ?>"></td>
+				<td style="vertical-align: top;" colspan="3"><input type="text" name="homepage" id="homepage_<?php echo $user->getID(); ?>" style="width: 250px;" value="<?php echo $user->getHomepage(); ?>"></td>
+			</tr>
+			<tr>
+				<td style="vertical-align: top; padding-top: 4px; padding-top: 15px;" colspan="4">
+					<input onchange="if($(this).checked) { $('new_password_<?php echo $user->getID(); ?>_1').disable(); $('new_password_<?php echo $user->getID(); ?>_2').disable(); }" type="radio" name="password_action" value="leave" id="password_<?php echo $user->getID(); ?>_leave" checked><label for="password_<?php echo $user->getID(); ?>_leave"><?php echo __("Don't change the password"); ?></label>
+					<input onchange="if($(this).checked) { $('new_password_<?php echo $user->getID(); ?>_1').enable(); $('new_password_<?php echo $user->getID(); ?>_2').enable(); }" type="radio" name="password_action" value="change" id="password_<?php echo $user->getID(); ?>_change"><label for="password_<?php echo $user->getID(); ?>_change"><?php echo __("Input new password"); ?></label>
+					<input onchange="if($(this).checked) { $('new_password_<?php echo $user->getID(); ?>_1').disable(); $('new_password_<?php echo $user->getID(); ?>_2').disable(); }" type="radio" name="password_action" value="random" id="password_<?php echo $user->getID(); ?>_random"><label for="password_<?php echo $user->getID(); ?>_random"><?php echo __("Generate random new password"); ?></label>
+				</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: top; padding-top: 4px;"><label for="new_password_<?php echo $user->getID(); ?>_1"><?php echo __('New password'); ?></label></td>
+				<td style="vertical-align: top;" colspan="3"><input type="password" name="new_password_1" id="new_password_<?php echo $user->getID(); ?>_1" style="width: 250px;" value="" disabled></td>
+			</tr>
+			<tr>
+				<td style="vertical-align: top; padding-top: 4px;"><label for="new_password_<?php echo $user->getID(); ?>_2"><?php echo __('Repeat password'); ?></label></td>
+				<td style="vertical-align: top;" colspan="3"><input type="password" name="new_password_2" id="new_password_<?php echo $user->getID(); ?>_2" style="width: 250px;" value="" disabled></td>
+			</tr>
+			<tr>
 				<td style="vertical-align: top; padding-top: 4px;"><label><?php echo __('Member of team(s)'); ?></label></td>
-				<td>
+				<td colspan="3">
 					<?php foreach (TBGTeam::getAll() as $team): ?>
-						<input type="checkbox" name="teams[<?php echo $team->getID(); ?>]" id="team_<?php echo $team->getID(); ?>" value="<?php echo $team->getID(); ?>"<?php if ($user->isMemberOf($team->getID())): ?> checked<?php endif; ?>>
-						<label for="team_<?php echo $team->getID(); ?>" style="font-weight: normal;"><?php echo $team->getName(); ?></label><br>
+						<input type="checkbox" name="teams[<?php echo $team->getID(); ?>]" id="team_<?php echo $user->getID(); ?>_<?php echo $team->getID(); ?>" value="<?php echo $team->getID(); ?>"<?php if ($user->isMemberOf($team->getID())): ?> checked<?php endif; ?>>
+						<label for="team_<?php echo $user->getID(); ?>_<?php echo $team->getID(); ?>" style="font-weight: normal;"><?php echo $team->getName(); ?></label>&nbsp;&nbsp;
 					<?php endforeach; ?>
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2"></td>
 				<td style="vertical-align: top; padding-top: 4px;"><label><?php echo __('Member of client(s)'); ?></label></td>
-				<td>
+				<td colspan="3">
 					<?php foreach (TBGClient::getAll() as $client): ?>
-						<input type="checkbox" name="clients[<?php echo $client->getID(); ?>]" id="client_<?php echo $client->getID(); ?>" value="<?php echo $client->getID(); ?>"<?php if ($user->isMemberOfClient($client->getID())): ?> checked<?php endif; ?>>
-						<label for="client_<?php echo $client->getID(); ?>" style="font-weight: normal;"><?php echo $client->getName(); ?></label><br>
+						<input type="checkbox" name="clients[<?php echo $client->getID(); ?>]" id="client_<?php echo $user->getID(); ?>_<?php echo $client->getID(); ?>" value="<?php echo $client->getID(); ?>"<?php if ($user->isMemberOfClient($client->getID())): ?> checked<?php endif; ?>>
+						<label for="client_<?php echo $user->getID(); ?>_<?php echo $client->getID(); ?>" style="font-weight: normal;"><?php echo $client->getName(); ?></label>&nbsp;&nbsp;
 					<?php endforeach; ?>
 				</td>
 			</tr>

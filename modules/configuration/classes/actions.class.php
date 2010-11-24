@@ -1746,6 +1746,34 @@
 			$user = TBGContext::factory()->TBGUser($request->getParameter('user_id'));
 			if ($user instanceof TBGUser)
 			{
+				$testuser = TBGUser::getByUsername($request->getParameter('username'));
+				if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
+				{
+					$user->setUsername($request->getParameter('username'));
+				}
+				else
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This username is already taken')));
+				}
+				$password_changed = false;
+				if ($request->getParameter('password_action') == 'change' && $request->getParameter('new_password_1') && $request->getParameter('new_password_2'))
+				{
+					if ($request->getParameter('new_password_1') == $request->getParameter('new_password_2'))
+					{
+						$user->setPassword($request->getParameter('new_password_1'));
+						$password_changed = true;
+					}
+					else
+					{
+						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please enter the new password twice')));
+					}
+				}
+				elseif ($request->getParameter('password_action') == 'random')
+				{
+					$random_password = TBGUser::createPassword();
+					$user->setPassword($random_password);
+					$password_changed = true;
+				}
 				$user->setRealname($request->getParameter('realname'));
 				$return_options = array();
 				if ($group = TBGContext::factory()->TBGGroup($request->getParameter('group')))
@@ -1777,15 +1805,6 @@
 						$user->addToClient($client);
 					}
 				}
-				$testuser = TBGUser::getByUsername($request->getParameter('username'));
-				if (!$testuser instanceof TBGUser || $testuser->getID() == $user->getID())
-				{
-					$user->setUsername($request->getParameter('username'));
-				}
-				else
-				{
-					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('This username is already taken')));
-				}
 				$user->setBuddyname($request->getParameter('nickname'));
 				$user->setActivated((bool) $request->getParameter('activated'));
 				$user->setEmail($request->getParameter('email'));
@@ -1812,8 +1831,17 @@
 					}
 				}
 				$return_options['failed'] = false;
-				$return_options['content'] = $this->getTemplateHTML('configuration/finduser_row', array('user' => $user));
-				$return_options['message'] = TBGContext::getI18n()->__('User updated!');
+				$template_options = array('user' => $user);
+				if (isset($random_password))
+				{
+					$template_options['random_password'] = $random_password;
+				}
+				$return_options['content'] = $this->getTemplateHTML('configuration/finduser_row', $template_options);
+				$return_options['title'] = TBGContext::getI18n()->__('User updated!');
+				if ($password_changed)
+				{
+					$return_options['message'] = TBGContext::getI18n()->__('The password was changed');
+				}
 				return $this->renderJSON($return_options);
 			}
 			$this->getResponse()->setHttpStatus(400);

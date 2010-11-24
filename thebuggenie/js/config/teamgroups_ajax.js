@@ -405,6 +405,9 @@ function editUser(url, user_id)
 			}
 			else if (json)
 			{
+				$('password_' + user_id + '_leave').checked = true;
+				$('new_password_' + user_id + '_1').value = '';
+				$('new_password_' + user_id + '_2').value = '';
 				$('users_results_user_' + user_id).update(json.content);
 				$('users_results_user_' + user_id).show();
 				$('users_results_user_' + user_id + '_edit').hide();
@@ -433,7 +436,7 @@ function editUser(url, user_id)
 						$('team_members_'+team_id+'_list').update('');
 					});
 				}
-				successMessage(json.message);
+				successMessage(json.title, json.message);
 			}
 		},
 		onFailure: function (transport) {
