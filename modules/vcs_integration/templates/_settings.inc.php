@@ -1,4 +1,4 @@
-<p><?php echo __('Use this page to configure the interface between The Bug Genie and your VCS system. Note that further configuration is necessary to use this feature - please refer to the help (<b>LINK NEEDED</b>) for further details on these settings and other necessary configuration.'); ?></p>
+<p><?php echo __('Use this page to configure the interface between The Bug Genie and your VCS system. Note that further configuration is necessary to use this feature - please refer to the %help% for further details on these settings and other necessary configuration.', array('%help%' => link_tag(make_url('publish_article', array('article_name' => 'TheBugGenie:VCSIntegration')), __('help'), array('target' => '_blank')))); ?></p>
 <form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
 <div style="margin-top: 5px; width: 750px; clear: both; height: 30px;" class="tab_menu">
 	<ul id="vcsintegration_settings_menu">
