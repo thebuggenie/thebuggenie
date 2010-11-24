@@ -653,14 +653,25 @@
 				$this->issuetypes = TBGIssuetype::getAll();
 			}
 
-			$this->issuetype_id = $request->getParameter('issuetype_id');
-			if ($this->issuetype_id)
+			if ($request->hasParameter('issuetype'))
 			{
-				try
+				$this->selected_issuetype = TBGIssuetype::getIssuetypeByKeyish($request->getParameter('issuetype'));
+			}
+			if (!$this->selected_issuetype instanceof TBGIssuetype)
+			{
+				$this->issuetype_id = $request->getParameter('issuetype_id');
+				if ($this->issuetype_id)
 				{
-					$this->selected_issuetype = TBGContext::factory()->TBGIssuetype($this->issuetype_id);
+					try
+					{
+						$this->selected_issuetype = TBGContext::factory()->TBGIssuetype($this->issuetype_id);
+					}
+					catch (Exception $e) {}
 				}
-				catch (Exception $e) {}
+			}
+			else
+			{
+				$this->issuetype_id = $this->selected_issuetype->getID();
 			}
 		}
 

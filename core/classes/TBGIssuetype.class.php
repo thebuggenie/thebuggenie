@@ -42,6 +42,8 @@
 		static $_issuetypes = array();
 
 		protected $_visiblefields = null;
+		
+		protected $_key = null;
 
 		public static function loadFixtures(TBGScope $scope)
 		{
@@ -137,7 +139,7 @@
 		{
 			foreach (self::getAll() as $issuetype)
 			{
-				if (str_replace(' ', '', strtolower($issuetype->getName())) == str_replace(' ', '', strtolower($key)))
+				if ($issuetype->getKey() == str_replace(' ', '', strtolower($key)))
 				{
 					return $issuetype;
 				}
@@ -170,6 +172,26 @@
 		{
 			$visiblefields = $this->getVisibleFields();
 			return array_key_exists($key, $visiblefields);
+		}
+		
+		protected function _generateKey()
+		{
+			$this->_key = str_replace(' ', '', strtolower($this->getName()));
+		}
+		
+		public function getKey()
+		{
+			if ($this->_key == null)
+			{
+				$this->_generateKey();
+			}
+			return $this->_key;
+		}
+		
+		public function setName($name)
+		{
+			parent::setName($name);
+			$this->_generateKey();
 		}
 		
 		/**

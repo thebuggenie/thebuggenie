@@ -48,7 +48,7 @@
 							<div class="tab_menu_dropdown">
 								<?php foreach ($project->getIssuetypes() as $issue_type): ?>
 									<?php if (!$issue_type->isReportable()) continue; ?>	
-									<?php echo link_tag(make_url('project_reportissue', array('project_key' => $project->getKey(), 'issuetype_id' => $issue_type->getID())), image_tag($issue_type->getIcon() . '_tiny.png' ) . __($issue_type->getName())); ?>
+									<?php echo link_tag(make_url('project_reportissue_with_issuetype', array('project_key' => $project->getKey(), 'issuetype' => $issue_type->getKey())), image_tag($issue_type->getIcon() . '_tiny.png' ) . __($issue_type->getName())); ?>
 								<?php endforeach;?>
 							</div>
 						</div>
