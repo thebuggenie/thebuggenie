@@ -42,14 +42,18 @@
 .article .header { margin: 0 0 5px 0; padding: 3px; font-weight: bold; font-size: 17px; border-bottom: 1px solid #CCC; }
 .article .header a { font-size: 13px; }
 
+.article .details { color: #AAA; padding-bottom: 5px; }
+
+.article .toc { float: right; margin: -20px 5px 15px 5px; width: 300px; padding: 5px; font-size: 12px; position: relative; }
 .article .toc .header { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 15px; border-bottom: 1px solid #99C; }
 .article .toc .header a { color: #555; font-size: 16px; }
-
 .article .toc .content { display: none; }
 .article .toc .faded_out { font-size: 11px; margin-bottom: 0; display: inherit; }
-.article .toc:hover .content { display: inherit; }
+.article .toc:hover .content { display: block; position: absolute; left: 0; width: 300px; margin-top: -5px; }
 .article .toc:hover .faded_out { display: none; }
 .article .toc a, .article .toc a:hover { border-bottom: 0; }
+
+.article .content { padding-bottom: 5px; clear: both; }
 
 .article table { border: 0; border-collapse: collapse; }
 .article.edit table, .article.edit table td { border: 0; }

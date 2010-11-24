@@ -26,7 +26,7 @@
 		</div>
 	<?php endif; ?>
 	<?php if ($show_details && $show_article): ?>
-		<div class="faded_out" style="padding-bottom: 5px;">
+		<div class="details">
 			<?php if (isset($redirected_from)): ?>
 				<div class="redirected_from">&rarr; <?php echo __('Redirected from %article_name%', array('%article_name%' => link_tag(make_url('publish_article_edit', array('article_name' => $redirected_from)), $redirected_from))); ?></div>
 			<?php endif; ?>
@@ -34,9 +34,10 @@
 		</div>
 	<?php endif; ?>
 	<?php if ($show_article): ?>
-		<div style="padding-bottom: 5px;"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded)); ?></div>
+		<div class="content"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded)); ?></div>
 	<?php endif; ?>
 </div>
+<br style="clear: both;">
 <?php if ($article->isCategory() && !$embedded && $show_category_contains): ?>
 	<div style="margin: 15px 5px 5px 5px;">
 		<?php if (count($article->getSubCategories()) > 0): ?>
