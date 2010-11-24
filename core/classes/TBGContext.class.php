@@ -674,6 +674,7 @@
 			if (self::$_modules === null)
 			{
 				self::$_modules = array();
+				if (self::isInstallmode()) return;
 				$modules = array();
 
 				if ($module_paths = TBGCache::get('module_paths'))
