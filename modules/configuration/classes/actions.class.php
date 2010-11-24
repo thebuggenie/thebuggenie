@@ -1814,6 +1814,7 @@
 				{
 					foreach ($groups as $group_id)
 					{
+						if (!$group_id) continue;
 						$return_options['update_groups']['ids'][] = $group_id;
 						$return_options['update_groups']['membercounts'][$group_id] = TBGContext::factory()->TBGGroup($group_id)->getNumberOfMembers();
 					}
