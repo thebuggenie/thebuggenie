@@ -358,6 +358,7 @@
 					
 					$this->cliEcho("Enable incoming and outgoing email? ", 'white', 'bold') . $this->cliEcho('(yes): ');
 					$enable_modules['mailing'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
+					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
 					$this->cliEcho("Enable communication with version control systems (i.e. svn)? ", 'white', 'bold') . $this->cliEcho('(yes): ');
 					$enable_modules['vcs_integration'] = ($this->getProvidedArgument('enable_all_modules') == 'yes') ? true : $this->askToDecline();
 					if ($this->getProvidedArgument('enable_all_modules') == 'yes') $this->cliEcho("Yes\n", 'yellow', 'bold');
