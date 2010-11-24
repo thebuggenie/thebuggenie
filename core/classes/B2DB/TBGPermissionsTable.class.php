@@ -105,6 +105,7 @@
 			$scope_id = $scope->getID();
 			
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', 'cansaveconfig', 0, $scope_id);
+			$this->setPermission(0, 0, 0, true, 'core', 'page_account_access', 0, $scope_id);
 			$this->setPermission(0, $guest_group_id, 0, false, 'core', 'page_account_access', 0, $scope_id);
 			$this->setPermission(0, 0, 0, false, 'core', 'candoscrumplanning', 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', 'cancreateandeditissues', 0, $scope_id);
@@ -117,6 +118,13 @@
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "canseeproject", 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', 'candoscrumplanning', 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "page_project_allpages_access", 0, $scope_id);
+			$this->setPermission(0, 0, 0, true, 'core', "page_home_access", 0, $scope_id);
+			$this->setPermission(0, 0, 0, true, 'core', "page_about_access", 0, $scope_id);
+			$this->setPermission(0, 0, 0, true, 'core', "page_dashboard_access", 0, $scope_id);
+			$this->setPermission(0, 0, 0, true, 'core', "page_search_access", 0, $scope_id);
+			$this->setPermission(0, $guest_group_id, 0, false, 'core', "page_dashboard_access", 0, $scope_id);
+			$this->setPermission(0, $admin_group_id, 0, true, 'core', "page_teamlist_access", 0, $scope_id);
+			$this->setPermission(0, $admin_group_id, 0, true, 'core', "page_clientlist_access", 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "canvoteforissues", 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "canlockandeditlockedissues", 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "cancreateandeditissues", 0, $scope_id);

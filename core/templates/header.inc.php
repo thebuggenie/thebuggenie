@@ -140,7 +140,7 @@
 												</div>
 											</li>
 										<?php endif; ?>
-										<?php if (!TBGContext::isProjectContext() && !is_null(TBGTeamsTable::getTable()->getAll())): ?>
+										<?php if (!TBGContext::isProjectContext() && $tbg_user->hasPageAccess('teamlist') && !is_null(TBGTeamsTable::getTable()->getAll())): ?>
 											<li<?php if ($tbg_response->getPage() == 'team'): ?> class="selected"<?php endif; ?>>
 												<div>
 													<?php echo link_tag('javascript:void(0)', image_tag('tab_teams.png') . __('Teams')); ?>
@@ -153,7 +153,7 @@
 												</div>											
 											</li>
 										<?php endif; ?>
-										<?php if (!TBGContext::isProjectContext() && !is_null(TBGClientsTable::getTable()->getAll())): ?>
+										<?php if (!TBGContext::isProjectContext() && $tbg_user->hasPageAccess('clientlist') && !is_null(TBGClientsTable::getTable()->getAll())): ?>
 											<li<?php if ($tbg_response->getPage() == 'client'): ?> class="selected"<?php endif; ?>>
 												<div>
 													<?php echo link_tag('javascript:void(0)', image_tag('tab_clients.png') . __('Clients')); ?>

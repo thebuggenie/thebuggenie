@@ -136,7 +136,7 @@
 		 * 
 		 * @var boolean
 		 */
-		protected $_use_gravatar = null;
+		protected $_use_gravatar = true;
 		
 		/**
 		 * The users login error - if any
@@ -1388,33 +1388,6 @@
 		}
 		
 		/**
-		 * Updates user information
-		 *
-		 * @param string $realname
-		 * @param string $buddyname
-		 * @param string $homepage
-		 * @param string $email
-		 */
-		public function updateUserDetails($realname = null, $buddyname = null, $homepage = null, $email = null, $uname = null)
-		{
-			$crit = new B2DBCriteria();
-			
-			if ($realname !== null) $crit->addUpdate(TBGUsersTable::REALNAME, $realname);
-			if ($buddyname !== null) $crit->addUpdate(TBGUsersTable::BUDDYNAME, $buddyname);
-			if ($homepage !== null) $crit->addUpdate(TBGUsersTable::HOMEPAGE, $homepage);
-			if ($email !== null) $crit->addUpdate(TBGUsersTable::EMAIL, $email);
-			if ($uname !== null) $crit->addUpdate(TBGUsersTable::UNAME, $uname);
-			
-			$res = TBGUsersTable::getTable()->doUpdateById($crit, $this->_id);
-			
-			if ($realname !== null) $this->_realname = $realname;
-			if ($buddyname !== null) $this->_buddyname = $buddyname;
-			if ($homepage !== null) $this->_homepage = $homepage;
-			if ($email !== null) $this->_email = $email;
-			if ($uname !== null) $this->_username = $uname;
-		}
-
-		/**
 		 * Set the users email address
 		 *
 		 * @param string $email A valid email address
@@ -1550,7 +1523,7 @@
 		{
 			if ($target_id === null)
 			{
-				return $this->hasPermission("page_{$page}_access", 0, "core", true, true);
+				return $this->hasPermission("page_{$page}_access", 0, "core", true, TBGSettings::isPermissive());
 			}
 			else
 			{
