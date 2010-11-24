@@ -23,13 +23,12 @@ include_component('leftmenu', array('selected_section' => 10));
 		</tr>
 	</table>
 	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
-		<div style="width: 700px; padding: 5px 0 5px 0; margin-top: 45px; border: 0; font-size: 14px;"><b><?php echo __('Create a new project'); ?></b></div>
-		<div class="rounded_box lightgrey" style="width: 690px; padding: 5px; margin-bottom: 20px;">
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="config.php" method="post" id="add_project_form" onsubmit="addProject('<?php echo make_url('configure_projects_add_project'); ?>');return false;">
+		<div class="rounded_box lightgrey" style="width: 690px; padding: 5px; margin: 10px 0;">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" id="add_project_form" onsubmit="addProject('<?php echo make_url('configure_projects_add_project'); ?>');return false;">
 				<input type="hidden" name="add_project" value="true">
 				<table cellpadding=0 cellspacing=0 style="margin: 0; width: 690px; table-layout: auto;">
 					<tr>
-						<td style="width: auto; padding-right: 10px;"><b><?php echo __('Project name'); ?></b></td>
+						<td style="width: auto; padding-right: 10px;"><b><?php echo __('Create a new project'); ?></b></td>
 						<td style="width: 400px; padding: 2px; text-align: right;">
 							<input type="text" style="width: 320px; text-align: left;" name="p_name">
 							<input type="submit" style="width: 60px;" value="<?php echo __('Add'); ?>">
