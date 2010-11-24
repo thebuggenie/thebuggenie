@@ -7,54 +7,6 @@
 
 ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
-			<div id="project_owner">
-				<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Owned by'); ?>:</div>
-				<?php if ($selected_project->hasOwner()): ?>
-					<?php if ($selected_project->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
-						<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-							<?php echo include_component('main/userdropdown', array('user' => $selected_project->getOwner())); ?>
-						</div>
-					<?php else: ?>
-						<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-							<?php echo include_component('main/teamdropdown', array('team' => $selected_project->getOwner())); ?>
-						</div>
-					<?php endif; ?>
-				<?php else: ?>
-					<div class="faded_out" style="font-weight: normal;"><?php echo __('noone'); ?></div>
-				<?php endif; ?>
-			</div>
-			<div id="project_leader">
-				<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Lead by'); ?>:</div>
-				<?php if ($selected_project->hasLeader()): ?>
-					<?php if ($selected_project->getLeaderType() == TBGIdentifiableClass::TYPE_USER): ?>
-						<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-							<?php echo include_component('main/userdropdown', array('user' => $selected_project->getLeader())); ?>
-						</div>
-					<?php else: ?>
-						<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-							<?php echo include_component('main/teamdropdown', array('team' => $selected_project->getLeader())); ?>
-						</div>
-					<?php endif; ?>
-				<?php else: ?>
-					<div class="faded_out" style="font-weight: normal;"><?php echo __('noone'); ?></div>
-				<?php endif; ?>
-			</div>
-			<div id="project_qa">
-				<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('QA responsible'); ?>:</div>
-				<?php if ($selected_project->hasQaResponsible()): ?>
-					<?php if ($selected_project->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER): ?>
-						<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-							<?php echo include_component('main/userdropdown', array('user' => $selected_project->getQaResponsible())); ?>
-						</div>
-					<?php else: ?>
-						<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
-							<?php echo include_component('main/teamdropdown', array('team' => $selected_project->getQaResponsible())); ?>
-						</div>
-					<?php endif; ?>
-				<?php else: ?>
-					<div class="faded_out" style="font-weight: normal;"><?php echo __('noone'); ?></div>
-				<?php endif; ?>
-			</div>
 			<div id="project_team">
 				<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Team'); ?>:</div>
 				<?php if (count($assignees['users']) > 0): ?>

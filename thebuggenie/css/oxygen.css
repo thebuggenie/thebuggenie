@@ -833,11 +833,12 @@ table.issue_affects td img { vertical-align: bottom; }
 #project_dashboard_menu_panes a.more { padding: 5px; float: right; font-weight: bold; }
 #project_dashboard_menu_panes a.more:hover { border: 0; }
 #project_header_container { clear: both; position: relative; }
-#project_header_container img { float: right; margin: 1px 20px 0 0; }
+#project_header_container img.config_link { float: right; margin: 1px 20px 0 0; }
 #project_name img.logo { float: left; margin: 1px 5px 0 0; }
 #project_name { font-size: 18px; font-weight: bold; margin: 10px 5px 5px 0; line-height: 1; }
 #project_key_span { margin: 3px 0 0 0; font-size: 12px; font-weight: normal; display: inline; padding: 3px; color: #aaa; }
-#project_team, #project_client, #project_qa, #project_leader, #project_owner { font-weight: normal; margin: 0 5px 5px 0; width: 675px; }
+#project_team, #project_client { font-weight: normal; margin: 0 5px 5px 0; width: 675px; }
+#project_qa, #project_leader, #project_owner { font-weight: normal; margin: 5px 0; width: 290px; }
 #project_description_span { font-size: 14px; font-weight: normal; color: #666; }
 #project_no_description { font-size: 14px; font-weight: normal; color: #AAA; }
 .project_information_sidebar { vertical-align: top; border-right: 1px solid #CCC; height: 100%; width: 300px; padding: 0 0 50px 10px; position: relative; }
