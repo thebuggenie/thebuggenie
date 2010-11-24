@@ -27,12 +27,10 @@
 		const VERSION_MINOR = 'builds.version_minor';
 		const VERSION_REVISION = 'builds.version_revision';
 		const EDITION = 'builds.edition';
-		const TIMESTAMP = 'builds.timestamp';
 		const RELEASE_DATE = 'builds.release_date';
-		const IS_DEFAULT = 'builds.is_default';
 		const LOCKED = 'builds.locked';
 		const PROJECT = 'builds.project';
-		const RELEASED = 'builds.released';
+		const RELEASED = 'builds.isreleased';
 		
 		public function __construct()
 		{
@@ -41,10 +39,8 @@
 			parent::_addInteger(self::VERSION_MAJOR, 3);
 			parent::_addInteger(self::VERSION_MINOR, 3);
 			parent::_addInteger(self::VERSION_REVISION, 5);
-			parent::_addInteger(self::TIMESTAMP, 10);
 			parent::_addInteger(self::RELEASE_DATE, 10);
 			parent::_addBoolean(self::RELEASED);
-			parent::_addBoolean(self::IS_DEFAULT);
 			parent::_addBoolean(self::LOCKED);
 			parent::_addForeignKeyColumn(self::EDITION, B2DB::getTable('TBGEditionsTable'), TBGEditionsTable::ID);
 			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);

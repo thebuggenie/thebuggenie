@@ -18,6 +18,9 @@
 	 */
 	class TBGEdition extends TBGOwnableItem 
 	{
+		
+		protected static $_b2dbtablename = 'TBGEditionsTable';
+		
 		/**
 		 * The project
 		 *

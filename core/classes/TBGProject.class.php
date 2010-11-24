@@ -983,7 +983,7 @@
 			$component = new TBGComponent();
 			$component->setName($c_name);
 			$component->setProject($this);
-			$comonent->save();
+			$component->save();
 			
 			return $component;
 		}

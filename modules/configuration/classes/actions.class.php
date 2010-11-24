@@ -865,7 +865,7 @@
 							{
 								$project = TBGContext::factory()->TBGProject($p_id);
 								$edition = $project->addEdition($e_name);
-								return $this->renderJSON(array('title' => $i18n->__('The edition has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('editionbox', array('edition' => $edition))));
+								return $this->renderJSON(array('title' => $i18n->__('The edition has been added'), 'html' => $this->getTemplateHTML('editionbox', array('edition' => $edition))));
 							}
 							else
 							{
@@ -1021,7 +1021,7 @@
 									$build->setProject($project);
 								}
 								$build->save();
-								return $this->renderJSON(array('title' => $i18n->__('The release has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('buildbox', array('build' => $build, 'access_level' => $this->access_level))));
+								return $this->renderJSON(array('title' => $i18n->__('The release has been added'), 'html' => $this->getTemplateHTML('buildbox', array('build' => $build, 'access_level' => $this->access_level))));
 							}
 							else
 							{
@@ -1068,7 +1068,7 @@
 							{
 								$project = TBGContext::factory()->TBGProject($p_id);
 								$component = $project->addComponent($c_name);
-								return $this->renderJSON(array('title' => $i18n->__('The component has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'html' => $this->getTemplateHTML('componentbox', array('component' => $component))));
+								return $this->renderJSON(array('title' => $i18n->__('The component has been added'), 'html' => $this->getTemplateHTML('componentbox', array('component' => $component))));
 							}
 							else
 							{
@@ -1115,7 +1115,7 @@
 							{
 								$theProject = TBGContext::factory()->TBGProject($p_id);
 								$theMilestone = $theProject->addMilestone($m_name, $request->getParameter('milestone_type', 1));
-								return $this->renderJSON(array('title' => $i18n->__('The milestone has been added'), 'message' => $i18n->__('Access has been granted to your group. Remember to give other users/groups permission to access it via the admin section to the left, if necessary.'), 'content' => $this->getTemplateHTML('milestonebox', array('milestone' => $theMilestone))));
+								return $this->renderJSON(array('title' => $i18n->__('The milestone has been added'), 'content' => $this->getTemplateHTML('milestonebox', array('milestone' => $theMilestone))));
 							}
 							else
 							{

@@ -25,16 +25,15 @@
 		const NAME = 'editions.name';
 		const DESCRIPTION = 'editions.description';
 		const PROJECT = 'editions.project';
-		const LEAD_BY = 'editions.lead_by';
-		const LEAD_TYPE = 'editions.lead_type';
-		const OWNED_BY = 'editions.owned_by';
-		const OWNED_TYPE = 'editions.owned_type';
+		const LEAD_BY = 'editions.leader';
+		const LEAD_TYPE = 'editions.leader_type';
+		const OWNED_BY = 'editions.owner';
+		const OWNED_TYPE = 'editions.owner_type';
 		const DOC_URL = 'editions.doc_url';
-		const QA = 'editions.qa';
-		const QA_TYPE = 'editions.qa_type';
-		const IS_DEFAULT = 'editions.is_default';
-		const RELEASED = 'editions.released';
-		const PLANNED_RELEASED = 'editions.planned_released';
+		const QA = 'editions.qa_responsible';
+		const QA_TYPE = 'editions.qa_responsible_type';
+		const RELEASED = 'editions.isreleased';
+		const PLANNED_RELEASED = 'editions.isplannedreleased';
 		const RELEASE_DATE = 'editions.release_date';
 		const LOCKED = 'editions.locked';
 		
@@ -50,7 +49,6 @@
 			parent::_addVarchar(self::DOC_URL, 200, '');
 			parent::_addInteger(self::QA, 10);
 			parent::_addInteger(self::QA_TYPE, 3);
-			parent::_addBoolean(self::IS_DEFAULT);
 			parent::_addInteger(self::RELEASE_DATE, 10);
 			parent::_addBoolean(self::RELEASED);
 			parent::_addBoolean(self::PLANNED_RELEASED);

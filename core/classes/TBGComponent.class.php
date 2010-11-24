@@ -18,6 +18,9 @@
 	 */
 	class TBGComponent extends TBGOwnableItem 
 	{
+		
+		protected static $_b2dbtablename = 'TBGComponentsTable';
+		
 		/**
 		 * This components project
 		 *
