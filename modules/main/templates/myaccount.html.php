@@ -1,6 +1,6 @@
 <?php
 
-	$tbg_response->setTitle('My account');
+	$tbg_response->setTitle('Your account details');
 	$tbg_response->addBreadcrumb(link_tag(make_url('account'), __('Account details')));
 	
 ?>

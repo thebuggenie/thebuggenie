@@ -88,7 +88,7 @@
 										<?php elseif (TBGContext::isProjectContext()): ?>
 											<li<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_planning', 'project_scrum', 'project_timeline', 'project_team', 'project_roadmap', 'project_statistics'))): ?> class="selected"<?php endif; ?>>
 												<div>
-													<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_dashboard_small.png').__('Project information')); ?>
+													<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_dashboard_small.png').__('Summary')); ?>
 													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
 												</div>
 												<div id="project_information_menu" class="tab_menu_dropdown shadowed">
@@ -167,9 +167,9 @@
 											</li>
 										<?php endif; ?>
 										<?php TBGEvent::createNew('core', 'menustrip_item_links', null, array('selected_tab' => $tbg_response->getPage()))->trigger(); ?>
-										<?php if (!TBGContext::isProjectContext() && $tbg_user->canAccessConfigurationPage()): ?>
+										<?php /*if (!TBGContext::isProjectContext() && $tbg_user->canAccessConfigurationPage()): ?>
 											<li<?php if ($tbg_response->getPage() == 'config'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure'), image_tag('tab_config.png').__('Configure')); ?></li>
-										<?php endif; ?>
+										<?php endif;*/ ?>
 										<?php /*?><li<?php if ($tbg_response->getPage() == 'about'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('about'), image_tag('tab_about.png').__('About')); ?></li> */ ?>
 									</ul>
 									<div class="rounded_box blue tab_menu_container" id="header_userinfo">
