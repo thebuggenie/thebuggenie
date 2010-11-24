@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# The Bug Genie 2 - VCS Integration
+# SVN HOOK FOR UNIX/LINUX SYSTEMS
+#
+# Please refer to the module documentation for installation instructions
+# At the very least, please modify the paths for the direct PHP call or the
+# wget method, and comment/uncomment as applicable the method of access you
+# will be using. If you are going to use the wget method, please set a passkey
+# in module configuration, and set it here (replacing PASSKEY_HERE below).
+#
+# This hook has been contributed by Philip Kent (lsproc), one of The Bug Genie
+# developers.
+
+REPOS="$1"
+REV="$2"
+
+SVNLOOK=/usr/bin/svnlook
+PHP=/usr/bin/php
+
+COMMIT_MSG=`$SVNLOOK log -r $REV "$REPOS"`
+CHANGED=`$SVNLOOK changed -r $REV "$REPOS"`
+AUTHOR=`$SVNLOOK author -r $REV "$REPOS"`
+URL_COMMIT_MSG=`$PHP -r 'echo urlencode($argv[1]);' "$COMMIT_MSG"`
+
+$PHP /var/www/tbg/modules/vcs_integration/post-commit.php $AUTHOR $REV "$COMMIT_MSG" "$CHANGED"
+
+# if you cannot run the command above either via ssh or locally, try using the url below.
+# remember to set the svn_passkey to something unique on the server, as the url is easily accessible from the outside. 
+#wget --no-check-certificate "http://127.0.0.1/tbg/modules/vcs_integration/post-commit.php?passkey=PASSKEY_HERE&author=${AUTHOR}&rev=${REV}&commit_msg=${URL_COMMIT_MSG}&changed=${CHANGED}" -o /dev/null -O /dev/null
+
