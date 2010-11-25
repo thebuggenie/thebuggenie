@@ -1,7 +1,7 @@
 <?php if ($show_box): ?>
 	<div class="rounded_box iceblue borderless infobox" style="margin: 5px;" id="infobox_<?php echo $key; ?>">
 		<div style="padding: 5px;">
-			<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 0 5px 0 5px;')); ?>
+			<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 5px 5px 0 5px;')); ?>
 			<div>
 				<div class="header"><?php echo $title; ?></div>
 				<div class="content"><?php echo $content; ?></div>

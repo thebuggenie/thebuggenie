@@ -280,3 +280,30 @@
 							</div>
 						</form>
 					</div>
+<?php if (!TBGContext::isDebugMode()): ?>
+	<div class="rounded_box iceblue borderless infobox" style="margin: 5px; display: none;" id="firebug_warning">
+		<div style="padding: 5px;">
+			<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 5px 5px 0 0;')); ?>
+			<div>
+				<div class="header"><?php echo __("Cool - you're using Firebug, too - so do we!"); ?></div>
+				<div class="content">
+					<?php echo __("As you probably know, Firebug has awesome monitoring and profiling features, which in turn means The Bug Genie will probably be a bit slow if you have Firebug enabled with it."); ?>
+					<?php echo __("To learn how to disable Firebug for this site only, see %disabling_Firebug%.", array('%disabling_Firebug%' => link_tag(make_url('publish_article', array('article_name' => 'TheBugGenie:DisablingFirebug')), __('Disabling Firebug')))); ?><br>
+					<br>
+					<?php echo __('As soon as Firebug is disabled for The Bug Genie, this message will go away. Promise.'); ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		Event.observe(window, 'load', function() {
+		  if (window.console && window.console.firebug) {
+			  $('firebug_warning').show();
+		  }
+		  else
+		  {
+			  window.alert('no firebug');
+		  }
+		});			
+	</script>
+<?php endif; ?>					
