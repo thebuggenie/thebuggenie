@@ -31,7 +31,7 @@
 				</td>
 			</tr>
 		</table>
-		<?php if (TBGLogging::isEnabled()): ?>
+		<?php if (TBGLogging::isEnabled() && TBGContext::isDebugMode()): ?>
 			<div id="log_messages" style="display: none;">
 				<div style="font-size: 16px; font-weight: bold; border-bottom: 1px solid #DDD; padding: 4px;">Log messages</div>
 				<div style="height: 470px; overflow: auto;">
