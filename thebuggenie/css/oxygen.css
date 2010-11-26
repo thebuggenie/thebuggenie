@@ -950,3 +950,9 @@ a:hover .issue_title { color: #555; }
 
 /* article styles */
 .article_placeholder { margin: 10px 0 15px 2px; }
+
+/* import */
+.csv_import_data_box { margin: 5px; border: 1px solid #AAA; width: 98%; height: 200px; }
+.csv_import_dry { float: left; }
+.csv_import_go { float: right; }
+#csv_import_control { height: 20px }

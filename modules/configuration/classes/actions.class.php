@@ -2230,4 +2230,10 @@
 				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
 			}
 		}
+		
+		public function runImportCSV(TBGRequest $request)
+		{
+			$content = $this->getTemplateHTML('configuration/importcsv', array('type' => $request->getParameter('type')));
+			return $this->renderJSON(array('failed' => false, 'content' => $content));
+		}
 	}

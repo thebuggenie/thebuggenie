@@ -23,12 +23,12 @@
 						<?php echo __('You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %import instructions% wiki article for further details and instructions.', array('%import instructions%' => __('import instructions'))); ?>
 						<div class="tab_header"><?php echo __('What data would you like to import?'); ?></div>
 						<ul>
-							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('home'); ?>');"><?php echo __('Issues'); ?></a></li>
-							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('home'); ?>');"><?php echo __('Projects'); ?></a></li>
-							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('home'); ?>');"><?php echo __('Users'); ?></a></li>
-							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('home'); ?>');"><?php echo __('Teams'); ?></a></li>
-							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('home'); ?>');"><?php echo __('Clients'); ?></a></li>
-							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('home'); ?>');"><?php echo __('Groups'); ?></a></li>
+							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'issues')); ?>');"><?php echo __('Issues'); ?></a></li>
+							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'projects')); ?>');"><?php echo __('Projects'); ?></a></li>
+							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'users')); ?>');"><?php echo __('Users'); ?></a></li>
+							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'teams')); ?>');"><?php echo __('Teams'); ?></a></li>
+							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'clients')); ?>');"><?php echo __('Clients'); ?></a></li>
+							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'groups')); ?>');"><?php echo __('Groups'); ?></a></li>
 						</ul>
 						<?php echo __('When you select a type, you will be given the opportunity to copy in your CSV file, and import the data.'); ?>
 					</div>
