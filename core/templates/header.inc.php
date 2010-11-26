@@ -86,7 +86,7 @@
 										<?php if (!TBGSettings::isSingleProjectTracker() && !TBGContext::isProjectContext()): ?>
 											<li<?php if ($tbg_response->getPage() == 'home'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('home'), image_tag('tab_index.png').__('Frontpage')); ?></li>
 										<?php elseif (TBGContext::isProjectContext()): ?>
-											<li<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_planning', 'project_scrum', 'project_timeline', 'project_team', 'project_roadmap', 'project_statistics'))): ?> class="selected"<?php endif; ?>>
+											<li<?php if (in_array($tbg_response->getPage(), array('project_dashboard', 'project_planning', 'project_scrum', 'project_scrum_sprint_details', 'project_timeline', 'project_team', 'project_roadmap', 'project_statistics'))): ?> class="selected"<?php endif; ?>>
 												<div>
 													<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_dashboard_small.png').__('Summary')); ?>
 													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
@@ -226,14 +226,23 @@
 						</tr>
 					</table>
 					<div class="submenu_strip<?php if (TBGContext::isProjectContext()): ?> project_context<?php endif; ?>">
-						<?php if (!TBGContext::isProjectContext()): ?>
+						<?php if (TBGContext::isProjectContext()): ?>
 							<div class="project_stuff">
 								<ul>
-									<li class="no_project_name">
-										<?php echo TBGSettings::getTBGname(); ?>
+									<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
+										<?php if (strtolower(TBGSettings::getTBGname()) != strtolower(TBGContext::getCurrentProject()->getName()) || TBGContext::isClientContext()): ?>
+											<li class="breadcrumb"><?php echo link_tag(make_url('home'), TBGSettings::getTBGName()); ?></li>
+											<?php if (TBGContext::isClientContext()): ?>
+												<li class="breadcrumb">&raquo; <?php echo link_tag(make_url('client_dashboard', array('client_id' => TBGContext::getCurrentClient()->getID())), TBGContext::getCurrentClient()->getName()); ?></li>
+											<?php endif; ?>
+										<?php endif; ?>
+										<?php break; ?>
+									<?php endforeach; ?>
+									<li class="project_name">
+										<span>&raquo;</span> <?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), TBGContext::getCurrentProject()->getName()); ?>
 									</li>
 									<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
-										<li class="breadcrumb">&raquo;
+										<li class="breadcrumb">&raquo; 
 											<?php if ($breadcrumb['url']): ?>
 												<?php echo link_tag($breadcrumb['url'], $breadcrumb['title']); ?>
 											<?php else: ?>
@@ -246,17 +255,11 @@
 						<?php else: ?>
 							<div class="project_stuff">
 								<ul>
-									<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
-										<?php if (strtolower(TBGSettings::getTBGname()) != strtolower(TBGContext::getCurrentProject()->getName())): ?>
-											<li class="breadcrumb"><?php echo link_tag(make_url('home'), TBGSettings::getTBGName()); ?> &raquo;</li>
-										<?php endif; ?>
-										<?php break; ?>
-									<?php endforeach; ?>
-									<li class="project_name">
-										<?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), TBGContext::getCurrentProject()->getName()); ?>
+									<li class="no_project_name">
+										<?php echo TBGSettings::getTBGname(); ?>
 									</li>
 									<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
-										<li class="breadcrumb">&raquo; 
+										<li class="breadcrumb">&raquo;
 											<?php if ($breadcrumb['url']): ?>
 												<?php echo link_tag($breadcrumb['url'], $breadcrumb['title']); ?>
 											<?php else: ?>
@@ -280,30 +283,30 @@
 							</div>
 						</form>
 					</div>
-<?php if (!TBGContext::isDebugMode()): ?>
-	<div class="rounded_box iceblue borderless infobox" style="margin: 5px; display: none;" id="firebug_warning">
-		<div style="padding: 5px;">
-			<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 5px 5px 0 0;')); ?>
-			<div>
-				<div class="header"><?php echo __("Cool - you're using Firebug, too - so do we!"); ?></div>
-				<div class="content">
-					<?php echo __("As you probably know, Firebug has awesome monitoring and profiling features, which in turn means The Bug Genie will probably be a bit slow if you have Firebug enabled with it."); ?>
-					<?php echo __("To learn how to disable Firebug for this site only, see %disabling_Firebug%.", array('%disabling_Firebug%' => link_tag(make_url('publish_article', array('article_name' => 'TheBugGenie:DisablingFirebug')), __('Disabling Firebug')))); ?><br>
-					<br>
-					<?php echo __('As soon as Firebug is disabled for The Bug Genie, this message will go away. Promise.'); ?>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script>
-		Event.observe(window, 'load', function() {
-		  if (window.console && window.console.firebug) {
-			  $('firebug_warning').show();
-		  }
-		  else
-		  {
-			  window.alert('no firebug');
-		  }
-		});			
-	</script>
-<?php endif; ?>					
+					<?php if (!TBGContext::isDebugMode()): ?>
+						<div class="rounded_box iceblue borderless infobox" style="margin: 5px; display: none;" id="firebug_warning">
+							<div style="padding: 5px;">
+								<?php echo image_tag('icon_info_big.png', array('style' => 'float: left; margin: 5px 5px 0 0;')); ?>
+								<div>
+									<div class="header"><?php echo __("Cool - you're using Firebug, too - so do we!"); ?></div>
+									<div class="content">
+										<?php echo __("As you probably know, Firebug has awesome monitoring and profiling features, which in turn means The Bug Genie will probably be a bit slow if you have Firebug enabled with it."); ?>
+										<?php echo __("To learn how to disable Firebug for this site only, see %disabling_Firebug%.", array('%disabling_Firebug%' => link_tag(make_url('publish_article', array('article_name' => 'TheBugGenie:DisablingFirebug')), __('Disabling Firebug')))); ?><br>
+										<br>
+										<?php echo __('As soon as Firebug is disabled for The Bug Genie, this message will go away. Promise.'); ?>
+									</div>
+								</div>
+							</div>
+						</div>
+						<script>
+							Event.observe(window, 'load', function() {
+							  if (window.console && window.console.firebug) {
+								  $('firebug_warning').show();
+							  }
+							  else
+							  {
+								  window.alert('no firebug');
+							  }
+							});			
+						</script>
+					<?php endif; ?>					

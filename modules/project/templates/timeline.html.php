@@ -1,7 +1,6 @@
 <?php
 
-	$tbg_response->addBreadcrumb(__('Project information'));
-	$tbg_response->addBreadcrumb(__('Timeline'));
+	$tbg_response->addBreadcrumb(__('Project timeline'));
 	$tbg_response->setTitle(__('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
 	$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
 

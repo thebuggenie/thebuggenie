@@ -576,16 +576,6 @@
 		}
 		
 		/**
-		 * Return whether or not this milestone is visible
-		 * 
-		 * @return boolean
-		 */
-		public function isVisible()
-		{
-			return $this->_isvisible;
-		}
-		
-		/**
 		 * Return this milestones scheduled status, as an array
 		 * 		array('color' => '#code', 'status' => 'description')
 		 * 

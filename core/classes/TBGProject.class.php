@@ -2079,15 +2079,6 @@
 			return (bool) (file_exists(TBGContext::getIncludePath() . 'thebuggenie/project_icons/' . $this->getKey() . '.png'));
 		}
 		
-		/**
-		 * Whether a client exists for this project
-		 * @return boolean
-		 */
-		public function hasClient()
-		{
-			if ($this->getClient() instanceof TBGClient): return true; else: return false; endif;
-		}
-		
 		public function getIcon()
 		{
 			return ($this->hasIcon()) ? 'project_icons/' . $this->getKey() . '.png' : 'icon_project.png';			
@@ -2245,7 +2236,7 @@
 				}
 				foreach ($this->getAllMilestones() as $milestone)
 				{
-					if ($milestone->isVisible() && $milestone->isStarting() && $milestone->isSprint())
+					if ($milestone->isStarting() && $milestone->isSprint())
 					{
 						if ($milestone->getStartingDate() > time()) continue;
 						if (!array_key_exists($milestone->getStartingDate(), $this->_recentactivities))
@@ -2254,7 +2245,7 @@
 						}
 						$this->_recentactivities[$milestone->getStartingDate()][] = array('change_type' => 'sprint_start', 'info' => $milestone->getName());
 					}
-					if ($milestone->isVisible() && $milestone->isScheduled() && $milestone->isReached())
+					if ($milestone->isScheduled() && $milestone->isReached())
 					{
 						if ($milestone->getReachedDate() > time()) continue;
 						if (!array_key_exists($milestone->getReachedDate(), $this->_recentactivities))
@@ -2344,19 +2335,17 @@
 		 */
 		public function getClient()
 		{
-			/*if (is_numeric($this->_client))
-			{
-				try
-				{
-					$this->_client = TBGContext::factory()->TBGClient((int) $this->_client);
-				}
-				catch (Exception $e)
-				{
-					$this->_client = null;
-				}
-			}
-			return $this->_client;*/
 			return $this->_getPopulatedObjectFromProperty('_client');
+		}
+		
+		/**
+		 * Return whether or not this project has a client associated
+		 * 
+		 * @return boolean
+		 */
+		public function hasClient()
+		{
+			return (bool) ($this->getClient() instanceof TBGClient);
 		}
 		
 		/**

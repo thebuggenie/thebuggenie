@@ -139,6 +139,13 @@
 		static protected $_selected_project = null;
 		
 		/**
+		 * The currently selected client, if any
+		 * 
+		 * @var TBGClient
+		 */
+		static protected $_selected_client = null;
+		
+		/**
 		 * Used to determine when the b2 engine started loading
 		 * 
 		 * @var integer
@@ -1425,6 +1432,11 @@
 		public static function setCurrentProject($project)
 		{
 			self::$_selected_project = $project;
+			if (self::$_selected_project->hasClient())
+			{
+				self::setCurrentClient(self::$_selected_project->getClient());
+			}
+			
 		}
 		
 		/**
@@ -1445,6 +1457,36 @@
 		public static function isProjectContext()
 		{
 			return (bool) (self::getCurrentProject() instanceof TBGProject);
+		}
+		
+		/**
+		 * Set the currently selected client
+		 * 
+		 * @param TBGClient $client The client, or null if none
+		 */
+		public static function setCurrentClient($client)
+		{
+			self::$_selected_client = $client;
+		}
+		
+		/**
+		 * Return the currently selected client if any, or null
+		 * 
+		 * @return TBGClient
+		 */
+		public static function getCurrentClient()
+		{
+			return self::$_selected_client;
+		}
+
+		/**
+		 * Return whether current client is set
+		 *
+		 * @return boolean
+		 */
+		public static function isClientContext()
+		{
+			return (bool) (self::getCurrentClient() instanceof TBGClient);
 		}
 		
 		/**

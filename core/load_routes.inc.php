@@ -4,8 +4,8 @@
 	$routes[] = array('home', '/', 'main', 'index');
 	$routes[] = array('attach_link', '/attach/link/to/:target_type/:target_id', 'main', 'attachLink');
 	$routes[] = array('remove_link', '/upload/remove/link/:link_id/from/other/:target_type/:target_id', 'main', 'removeLink');
-	$routes[] = array('client_dashboard', '/client/:client_id', 'main', 'clientdashboard');
-	$routes[] = array('team_dashboard', '/team/:team_id', 'main', 'teamdashboard');	
+	$routes[] = array('client_dashboard', '/clients/:client_id', 'main', 'clientdashboard');
+	$routes[] = array('team_dashboard', '/teams/:team_id', 'main', 'teamdashboard');	
 	$routes[] = array('dashboard', '/dashboard', 'main', 'dashboard');
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
 	$routes[] = array('login', '/login', 'main', 'login');

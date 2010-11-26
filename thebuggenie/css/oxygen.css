@@ -221,6 +221,7 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 .project_stuff ul li { height: 23px; float: left; margin: 0 6px 0 0; padding-bottom: 0; }
 .project_stuff ul li.project_name { font-size: 1em; font-weight: bold; padding-top: 1px; }
 .project_stuff ul li.no_project_name { font-size: 0.9em; font-weight: normal; padding-top: 2px; color: #888; }
+.project_stuff ul li.project_name span { font-weight: normal; font-size: 0.9em; color: #886; }
 .project_stuff ul li.project_name a { color: #555; }
 .project_stuff ul li.breadcrumb { color: #886; font-size: 0.9em; padding-top: 2px; }
 .menu_project_strip .faded_out dark { color: #B0aa64; }
@@ -861,7 +862,7 @@ table.issue_affects td img { vertical-align: bottom; }
 #project_sidebar_collapse, #project_sidebar_expand { cursor: pointer; position: absolute; padding: 2px; border: 1px dotted #CCC; border-right-color: #FFF; background-color: #FFF; }
 #project_sidebar_collapse { top: -8px; left: 284px; }
 #project_sidebar_expand { top: 2px; left: -6px; }
-.project_client_info { margin-left: 50px; margin-bottom: 10px; width: 620px; }
+.project_client_info { margin-bottom: 10px; width: 670px; }
 .project_client_info .project_client_header { font-weight: bold; font-size: 16px; }
 .project_client_info .project_client_viewusers { float: right; }
 .client_users_div { border: 1px solid #BBB; width: 100%; height: 300px; margin-top: 10px; overflow: auto; text-align: left; }

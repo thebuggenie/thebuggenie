@@ -10,7 +10,14 @@
 <?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Dashboard'), (($tbg_response->getPage() == 'project_dashboard') ? array('class' => 'selected first') : array('class' => 'first'))); ?>
 <?php TBGEvent::createNew('core', 'project_sidebar_links_dashboard')->trigger(); ?>
 <?php //echo link_tag(make_url('project_files', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Files')); ?>
-<?php echo link_tag(make_url('project_scrum', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Sprint planning'), (($tbg_response->getPage() == 'project_scrum') ? array_merge($scrum_additional_array, array('class' => 'selected')) : $scrum_additional_array)); ?>
+<?php echo link_tag(make_url('project_scrum', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Sprint planning'), ((in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_details'))) ? array_merge($scrum_additional_array, array('class' => 'selected')) : $scrum_additional_array)); ?>
+<?php if (!isset($submenu) && in_array($tbg_response->getPage(), array('project_scrum', 'project_scrum_sprint_details'))): ?>
+	<ul class="simple_list">
+		<?php foreach ($selected_project->getSprints() as $sprint): ?>
+			<li><?php echo link_tag(make_url('project_scrum_sprint_details', array('project_key' => $selected_project->getKey(), 'sprint_id' => $sprint->getID())), $sprint->getName()); ?></li>
+		<?php endforeach; ?>
+	</ul>
+<?php endif; ?>
 <?php TBGEvent::createNew('core', 'project_sidebar_links_scrum')->trigger(); ?>
 <?php echo link_tag(make_url('project_planning', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Planning'), (($tbg_response->getPage() == 'project_planning') ? array('class' => 'selected') : array())); ?>
 <?php TBGEvent::createNew('core', 'project_sidebar_links_planning')->trigger(); ?>

@@ -1,12 +1,20 @@
 <?php
 
-	$tbg_response->addBreadcrumb(__('Project information'));
-	$tbg_response->addBreadcrumb(__('Dashboard'));
+	$tbg_response->addBreadcrumb(__('Project dashboard'));
 	$tbg_response->setTitle(__('"%project_name%" project dashboard', array('%project_name%' => $selected_project->getName())));
 	$tbg_response->addFeed(make_url('project_timeline', array('project_key' => $selected_project->getKey(), 'format' => 'rss')), __('"%project_name%" project timeline', array('%project_name%' => $selected_project->getName())));
 
 ?>
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
+			<div id="project_client">
+				<?php if ($client instanceof TBGClient): ?>
+					<div class="project_client_info rounded_box lightgrey">
+						<?php echo include_template('project/clientinfo', array('client' => $client)); ?>
+					</div>
+				<?php else: ?>
+					<div class="faded_out" style="font-weight: normal;"><?php echo __('No client assigned'); ?></div>
+				<?php endif; ?>
+			</div>
 			<div id="project_team">
 				<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Team'); ?>:</div>
 				<?php if (count($assignees['users']) > 0): ?>
@@ -17,16 +25,6 @@
 					<?php endforeach; ?>
 				<?php else: ?>
 					<div class="faded_out" style="font-weight: normal;"><?php echo __('No users or teams assigned'); ?></div>
-				<?php endif; ?>
-			</div>
-			<div id="project_client">
-				<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Client'); ?>:</div>
-				<?php if ($client instanceof TBGClient): ?>
-					<div class="project_client_info rounded_box lightgrey">
-						<?php echo include_template('project/clientinfo', array('client' => $client)); ?>
-					</div>
-				<?php else: ?>
-					<div class="faded_out" style="font-weight: normal;"><?php echo __('No client assigned'); ?></div>
 				<?php endif; ?>
 			</div>
 			<div style="width: 680px; padding-right: 5px;">

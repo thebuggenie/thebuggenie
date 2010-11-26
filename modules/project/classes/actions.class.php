@@ -15,6 +15,14 @@
 		 */
 
 		/**
+		 * The currently selected client
+		 * 
+		 * @var TBGClient
+		 * @access protected
+		 * @property $selected_client
+		 */
+
+		/**
 		 * Pre-execute function
 		 *
 		 * @param TBGRequest 	$request
@@ -57,7 +65,7 @@
 		public function runDashboard(TBGRequest $request)
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_dashboard', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
-			$this->recent_activities = $this->selected_project->getRecentImportantActivities(10);
+			//$this->recent_activities = $this->selected_project->getRecentImportantActivities(10);
 			$this->recent_issues = $this->selected_project->getRecentIssues(10);
 			$this->recent_features = $this->selected_project->getRecentFeatures();
 			$this->recent_ideas = $this->selected_project->getRecentIdeas();
