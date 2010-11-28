@@ -85,6 +85,8 @@
 		protected $_history = null;
 
 		protected $_category_name = null;
+		
+		protected $_namespaces = null;
 
 		/**
 		 * Article constructor
@@ -524,6 +526,41 @@
 			else
 			{
 				throw new Exception('No such revision');
+			}
+		}
+		
+		public function getNamespaces()
+		{
+			if ($this->_namespaces === null)
+			{
+				$this->_namespaces = array();
+				$namespaces = explode(':', $this->getName());
+				if (count($namespaces))
+				{
+					array_pop($namespaces);
+					$this->_namespaces = $namespaces;
+				}
+			}
+			return $this->_namespaces;
+		}
+		
+		public function getCombinedNamespaces()
+		{
+			$namespaces = $this->getNamespaces();
+			if (count($namespaces) > 1)
+			{
+				$composite_ns = '';
+				$return_array = array();
+				foreach ($namespaces as $namespace)
+				{
+					$composite_ns .= ($composite_ns != '') ? ":{$namespace}" : $namespace;
+					$return_array[] = $composite_ns;
+				}
+				return $return_array;
+			}
+			else
+			{
+				return $namespaces;
 			}
 		}
 

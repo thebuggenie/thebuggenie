@@ -5,7 +5,9 @@
 			<?php if ($show_actions): ?>
 				<ul class="right">
 					<li<?php if ($mode == 'view'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), __('Show')); ?></li>
-					<li<?php if ($mode == 'edit'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_edit', array('article_name' => $article->getName())), __('Edit')); ?></li>
+					<?php if (TBGContext::getModule('publish')->canUserEditArticle($article->getName())): ?>
+						<li<?php if ($mode == 'edit'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_edit', array('article_name' => $article->getName())), __('Edit')); ?></li>
+					<?php endif; ?>
 					<li><?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), __('History')); ?></li>
 					<li><?php echo link_tag(make_url('publish_article_permissions', array('article_name' => $article->getName())), __('Permissions')); ?></li>
 				</ul>

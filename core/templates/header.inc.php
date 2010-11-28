@@ -229,8 +229,10 @@
 						<?php if (TBGContext::isProjectContext()): ?>
 							<div class="project_stuff">
 								<ul>
+									<?php $tbg_name_printed = false; ?>
 									<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
 										<?php if (strtolower(TBGSettings::getTBGname()) != strtolower(TBGContext::getCurrentProject()->getName()) || TBGContext::isClientContext()): ?>
+											<?php $tbg_name_printed = true; ?>
 											<li class="breadcrumb"><?php echo link_tag(make_url('home'), TBGSettings::getTBGName()); ?></li>
 											<?php if (TBGContext::isClientContext()): ?>
 												<li class="breadcrumb">&raquo; <?php echo link_tag(make_url('client_dashboard', array('client_id' => TBGContext::getCurrentClient()->getID())), TBGContext::getCurrentClient()->getName()); ?></li>
@@ -239,7 +241,7 @@
 										<?php break; ?>
 									<?php endforeach; ?>
 									<li class="project_name">
-										<span>&raquo;</span> <?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), TBGContext::getCurrentProject()->getName()); ?>
+										<?php if ($tbg_name_printed): ?><span>&raquo;</span> <?php endif; ?><?php echo link_tag(make_url('project_dashboard', array('project_key' => TBGContext::getCurrentProject()->getKey())), TBGContext::getCurrentProject()->getName()); ?>
 									</li>
 									<?php foreach ($tbg_response->getBreadcrumb() as $breadcrumb): ?>
 										<li class="breadcrumb">&raquo; 

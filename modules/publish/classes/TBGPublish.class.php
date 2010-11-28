@@ -167,7 +167,7 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
-			$settings = array('allow_camelcase_links', 'menu_title', 'hide_wiki_links');
+			$settings = array('allow_camelcase_links', 'menu_title', 'hide_wiki_links', 'free_edit');
 			foreach ($settings as $setting)
 			{
 				if ($request->hasParameter($setting))
@@ -388,4 +388,51 @@
 			return (TBGContext::isProjectContext()) ? parent::getTabKey() : 'wiki';
 		}
 
+		protected function _checkArticlePermissions($article_name, $permission_name)
+		{
+			$user = TBGContext::getUser();
+			switch ($this->getSetting('free_edit'))
+			{
+				case 1:
+					$permissive = !$user->isGuest();
+					break;
+				case 2:
+					$permissive = true;
+					break;
+				case 0:
+				default:
+					$permissive = false;
+					break;
+			}
+			if ($user->hasPermission($permission_name, $article_name, 'publish', true, $permissive))
+			{
+				return true;
+			}
+			$namespaces = explode(':', $article_name);
+			if (count($namespaces) > 1)
+			{
+				array_pop($namespaces);
+				$composite_ns = '';
+				foreach ($namespaces as $namespace)
+				{
+					$composite_ns .= ($composite_ns != '') ? ":{$namespace}" : $namespace;
+					if ($user->hasPermission($permission_name, $composite_ns, 'publish', true, $permissive))
+					{
+						return true;
+					}
+				}
+			}
+			return $user->hasPermission($permission_name, 0, 'publish', false, $permissive);
+		}
+		
+		public function canUserEditArticle($article_name)
+		{
+			return $this->_checkArticlePermissions($article_name, 'editarticle');
+		}
+		
+		public function canUserDeleteArticle($article_name)
+		{
+			return $this->_checkArticlePermissions($article_name, 'deletearticle');
+		}
+		
 	}

@@ -22,7 +22,7 @@ include_component('leftmenu', array('selected_section' => 10));
 			</td>
 		</tr>
 	</table>
-	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 		<div class="rounded_box lightgrey" style="width: 690px; padding: 5px; margin: 10px 0;">
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" id="add_project_form" onsubmit="addProject('<?php echo make_url('configure_projects_add_project'); ?>');return false;">
 				<input type="hidden" name="add_project" value="true">
@@ -44,7 +44,7 @@ include_component('leftmenu', array('selected_section' => 10));
 			</form>
 		</div>
 	<?php endif; ?>
-	<div style="width: 700px; padding: 5px 0 5px 0; border-bottom: 1px solid #DDD;<?php if ($access_level != configurationActions::ACCESS_FULL): ?> margin-top: 45px;<?php endif; ?> font-size: 14px;"><b><?php echo __('Existing projects'); ?></b></div>
+	<div style="width: 700px; padding: 5px 0 5px 0; border-bottom: 1px solid #DDD;<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> margin-top: 45px;<?php endif; ?> font-size: 14px;"><b><?php echo __('Existing projects'); ?></b></div>
 	<div id="project_table">
 	<?php if (count($allProjects) > 0): ?>
 		<?php foreach ($allProjects as $aProject): ?>

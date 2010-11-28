@@ -1,7 +1,7 @@
 <table style="width: 780px; margin-bottom: 15px;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td style="width: auto; padding-right: 5px; vertical-align: top;">
-			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 				<div class="rounded_box lightgrey" style="margin: 0 0 10px 0; width: 765px; padding: 5px 10px 5px 10px;">
 					<div class="config_header"><b><?php echo __('Assign developers'); ?></b></div>
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_find_assignee', array('project_id' => $project->getID())); ?>" method="post" onsubmit="findDevs('<?php echo make_url('configure_project_find_assignee', array('project_id' => $project->getID())); ?>');return false;" id="find_dev_form">

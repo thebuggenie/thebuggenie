@@ -7,7 +7,7 @@
 	</ul>
 </div>
 <div id="vcsintegration_settings_menu_panes">
-	<div id="tab_general_settings_pane" class="rounded_box borderless mediumgrey<?php if ($access_level == configurationActions::ACCESS_FULL): ?> cut_bottom<?php endif; ?>" style="margin: 10px 0 0 0; width: 700px;<?php if ($access_level == configurationActions::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
+	<div id="tab_general_settings_pane" class="rounded_box borderless mediumgrey<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> cut_bottom<?php endif; ?>" style="margin: 10px 0 0 0; width: 700px;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
 		<div class="header"><?php echo __('General settings'); ?></div>
 		<div class="content" style="padding-bottom: 10px;"><?php echo __('These are the settings that apply to all communications between The Bug Genie and any VCS, regardless of the project.'); ?></div>
 		<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0 id="vcsintegration_settings_table">
@@ -32,7 +32,7 @@
 			</tr>
 		</table>
 	</div>
-	<div id="tab_project_settings_pane" class="rounded_box borderless mediumgrey<?php if ($access_level == configurationActions::ACCESS_FULL): ?> cut_bottom<?php endif; ?>" style="margin: 10px 0 0 0; display: none; width: 700px;<?php if ($access_level == configurationActions::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
+	<div id="tab_project_settings_pane" class="rounded_box borderless mediumgrey<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> cut_bottom<?php endif; ?>" style="margin: 10px 0 0 0; display: none; width: 700px;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
 		<div class="header"><?php echo __('Project settings'); ?></div>
 		<div class="content" style="padding-bottom: 10px;"><?php echo __('These settings apply to each individual project.'); ?></div>
 		<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0 id="vcsintegration_settings_table">
@@ -98,7 +98,7 @@
 		</table>
 	</div>
 </div>
-<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 700px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
 		<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save the settings on both tabs', array('%save%' => __('Save'))); ?></div>
 		<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">

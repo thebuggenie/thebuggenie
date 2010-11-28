@@ -136,13 +136,13 @@
 
 		public function componentProjectConfig_Container()
 		{
-			$this->access_level = (TBGContext::getUser()->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) ? configurationActions::ACCESS_FULL : configurationActions::ACCESS_READ;
+			$this->access_level = (TBGContext::getUser()->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ;
 			$this->section = isset($this->section) ? $this->section : 'info';
 		}
 
 		public function componentProjectConfig()
 		{
-			$this->access_level = (TBGContext::getUser()->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) ? configurationActions::ACCESS_FULL : configurationActions::ACCESS_READ;
+			$this->access_level = (TBGContext::getUser()->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ;
 			$this->statustypes = TBGStatus::getAll();
 			$this->selected_tab = isset($this->section) ? $this->section : 'info';
 		}
@@ -159,7 +159,7 @@
 
 		public function componentProjectEdition()
 		{
-			$this->access_level = (TBGContext::getUser()->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) ? configurationActions::ACCESS_FULL : configurationActions::ACCESS_READ;
+			$this->access_level = (TBGContext::getUser()->canSaveConfiguration(TBGSettings::CONFIGURATION_SECTION_PROJECTS)) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ;
 		}
 
 	}

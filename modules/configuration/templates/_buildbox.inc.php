@@ -13,7 +13,7 @@
 			<?php endif; ?>
 			</div>
 		</td>
-	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 		<td style="width: 250px; text-align: right;">
 			<div style="float: right;">
 			<?php if (!$build->isDefault()): ?>
@@ -37,7 +37,7 @@
 		</td>
 	<?php endif; ?>
 	</tr>
-	<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<tr id="edit_build_<?php print $b_id; ?>" class="selected_green" style="display: none;">
 		<td style="width: 20px; padding: 2px; padding-top: 10px;" valign="top"><?php echo image_tag('icon_edit_build.png'); ?></td>
 		<td style="width: auto; padding: 2px;" colspan="2">

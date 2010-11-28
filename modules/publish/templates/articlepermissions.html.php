@@ -16,7 +16,9 @@
 				<div class="header tab_menu">
 					<ul class="right">
 						<li><?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), __('Show')); ?></li>
-						<li><?php echo link_tag(make_url('publish_article_edit', array('article_name' => $article->getName())), __('Edit')); ?></li>
+						<?php if (TBGContext::getModule('publish')->canUserEditArticle($article->getName())): ?>
+							<li><?php echo link_tag(make_url('publish_article_edit', array('article_name' => $article->getName())), __('Edit')); ?></li>
+						<?php endif; ?>
 						<li><?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), __('History')); ?></li>
 						<li class="selected"><?php echo link_tag(make_url('publish_article_permissions', array('article_name' => $article->getName())), __('Permissions')); ?></li>
 					</ul>
@@ -32,6 +34,21 @@
 					<?php endif; ?>
 					<span class="faded_out"><?php echo __('%article_name% ~ Permissions', array('%article_name%' => '')); ?></span>
 				</div>
+				<form action="">
+					<ul class="simple_list">
+					<?php foreach ($article->getCombinedNamespaces() as $namespace): ?>
+						<li onclick="">
+							<div class="namespace_header">
+								<?php echo __('Specify permissions for the %namespace% namespace', array('%namespace%' => '<span class="namespace">'.$namespace.'</span>')); ?>
+							</div>
+							<?php echo __('Select this option to specify permissions for the above namespace. These permissions will apply for all articles in the mentioned namespace for which article-specific permissions have not been granted.'); ?>
+							<div id="publish_<?php echo $namespace; ?>_permissions">
+								<?php include_component('configuration/permissionsinfo', array('key' => 'editarticle', 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
+							</div>
+						</li>
+					<?php endforeach; ?>
+					</ul>
+				</form>
 			</div>
 		</td>
 	</tr>

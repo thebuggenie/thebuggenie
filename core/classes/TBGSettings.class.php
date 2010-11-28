@@ -19,6 +19,9 @@
 	final class TBGSettings
 	{
 
+		const ACCESS_READ = 1;
+		const ACCESS_FULL = 2;
+		
 		const CONFIGURATION_SECTION_WORKFLOW = 1;
 		const CONFIGURATION_SECTION_USERS = 2;
 		const CONFIGURATION_SECTION_UPLOADS = 3;

@@ -34,14 +34,14 @@
 		<?php include_component('leftmenu', array('selected_section' => TBGSettings::CONFIGURATION_SECTION_UPLOADS)); ?>
 		<td valign="top">
 			<div class="config_header" style="width: 750px;"><?php echo __('Configure uploads &amp; attachments'); ?></div>
-			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_files'); ?>" method="post" onsubmit="submitForm('<?php echo make_url('configure_files'); ?>', 'config_uploads'); return false;" id="config_uploads">
 			<?php endif; ?>
 					<table style="clear: both; width: 700px; margin-top: 5px;" class="padded_table" cellpadding=0 cellspacing=0>
 						<tr>
 							<td style="width: 200px;"><label for="enable_uploads_yes"><?php echo __('Enable uploads'); ?></label></td>
 							<td style="width: auto;">
-								<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+								<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 									<input type="radio" name="enable_uploads" value="1" id="enable_uploads_yes"<?php if (TBGSettings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="enable_uploads_yes"><?php echo __('Yes'); ?></label>&nbsp;&nbsp;
 									<input type="radio" name="enable_uploads" value="0" id="enable_uploads_no"<?php if (!TBGSettings::isUploadsEnabled()): ?> checked<?php endif; ?> onclick="toggleSettings();"><label for="enable_uploads_no"><?php echo __('No'); ?></label>
 								<?php endif; ?>
@@ -105,7 +105,7 @@
 							<td class="config_explanation" colspan="2"><?php echo __("If you're storing files on the filesystem, specify where you want to save the files, here. Default location is the %files% folder in the main folder (not the public folder)", array('%files%' => '<b>files/</b>')); ?></td>
 						</tr>
 					</table>
-			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 					<div class="rounded_box mediumgrey" style="margin: 5px 0px 5px 0px; width: 700px; height: 23px; padding: 5px 10px 5px 10px;">
 						<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "Save" to save your changes in all categories'); ?></div>
 						<input type="submit" id="config_uploads_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">

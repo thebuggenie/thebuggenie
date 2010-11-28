@@ -2,9 +2,7 @@
 
 	class configurationActions extends TBGAction
 	{
-		const ACCESS_READ = 1;
-		const ACCESS_FULL = 2;
-
+		
 		/**
 		 * Pre-execute function
 		 * 
@@ -81,7 +79,7 @@
 		{
 			if (TBGContext::getRequest()->isMethod(TBGRequest::POST))
 			{
-				$this->forward403unless($this->access_level == self::ACCESS_FULL);
+				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 				$settings = array('theme_name', 'user_themes', 'onlinestate', 'offlinestate', 'awaystate', 'singleprojecttracker',
 									'requirelogin', 'allowreg', 'defaultgroup', 'returnfromlogin', 'returnfromlogout', 'permissive',
 									'limit_registration', 'showprojectsoverview', 'showprojectsoverview', 'cleancomments',
@@ -168,7 +166,7 @@
 		 */
 		public function runConfigureIssuetypesAction(TBGRequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 			switch ($request->getParameter('mode'))
 			{
 				case 'add':
@@ -243,7 +241,7 @@
 		public function runConfigureIssuefieldsAction(TBGRequest $request)
 		{
 			$i18n = TBGContext::getI18n();
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 			$types = TBGDatatype::getTypes();
 
 			switch ($request->getParameter('mode'))
@@ -410,7 +408,7 @@
 		{
 			$this->forward403unless($request->isMethod(TBGRequest::POST));
 									
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				try
 				{
@@ -556,7 +554,7 @@
 
 			try
 			{
-				if ($this->access_level == self::ACCESS_FULL)
+				if ($this->access_level == TBGSettings::ACCESS_FULL)
 				{
 					switch ($request->getParameter('frontpage_summary'))
 					{
@@ -638,7 +636,7 @@
 			
 			if ($request->hasParameter('value'))
 			{
-				$this->forward403unless($this->access_level == self::ACCESS_FULL);
+				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 				if ($request->hasParameter('identifiable_type'))
 				{
 					if (in_array($request->getParameter('identifiable_type'), array(TBGIdentifiableClass::TYPE_USER, TBGIdentifiableClass::TYPE_TEAM)))
@@ -694,7 +692,7 @@
 			
 			if ($request->isAjaxCall() && $request->isMethod(TBGRequest::POST))
 			{
-				if ($this->access_level == self::ACCESS_FULL)
+				if ($this->access_level == TBGSettings::ACCESS_FULL)
 				{
 					if ($request->hasParameter('release_month') && $request->hasParameter('release_day') && $request->hasParameter('release_year'))
 					{
@@ -827,7 +825,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				if ($p_name = $request->getParameter('p_name'))
 				{
@@ -861,7 +859,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				try
 				{
@@ -908,7 +906,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				try
 				{
@@ -1007,7 +1005,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				try
 				{
@@ -1064,7 +1062,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				try
 				{
@@ -1111,7 +1109,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				try
 				{
@@ -1158,7 +1156,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				try
 				{
@@ -1235,7 +1233,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				try
 				{
@@ -1268,7 +1266,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				try
 				{
@@ -1300,7 +1298,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				try
 				{
@@ -1324,7 +1322,7 @@
 		 */
 		public function runModuleAction(TBGRequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 			
 			try
 			{
@@ -1374,7 +1372,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/permissionsblock', array('base_id' => $request->getParameter('base_id'), 'permissions_list' => $request->getParameter('permissions_list'), 'mode' => $request->getParameter('mode'), 'target_id' => $request->getParameter('target_id'), 'user_id' => $request->getParameter('user_id'), 'module' => $request->getParameter('target_module'), 'access_level' => $this->access_level))));
 			}
@@ -1385,7 +1383,7 @@
 		{
 			$i18n = TBGContext::getI18n();
 
-			if ($this->access_level == self::ACCESS_FULL)
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
 				$uid = 0;
 				$gid = 0;
@@ -1427,7 +1425,7 @@
 		 */
 		public function runConfigureModule(TBGRequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 			
 			try
 			{
@@ -1438,7 +1436,7 @@
 				}
 				else
 				{
-					if ($request->isMethod(TBGRequest::POST) && $this->access_level == self::ACCESS_FULL)
+					if ($request->isMethod(TBGRequest::POST) && $this->access_level == TBGSettings::ACCESS_FULL)
 					{
 						try
 						{
@@ -1467,14 +1465,14 @@
 
 		public function runConfigurePermissions(TBGRequest $request)
 		{
-			$this->forward403unless($this->access_level == self::ACCESS_FULL);
+			$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 		}
 
 		public function runConfigureUploads(TBGRequest $request)
 		{
 			if ($request->isMethod(TBGRequest::POST))
 			{
-				$this->forward403unless($this->access_level == self::ACCESS_FULL);
+				$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 				if ($request->getParameter('upload_storage') == 'files' && (bool) $request->getParameter('enable_uploads'))
 				{
 					if (!is_writable($request->getParameter('upload_localpath')))
@@ -2116,7 +2114,7 @@
 
 		public function getAccessLevel($section, $module)
 		{
-			return (TBGContext::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;
+			return (TBGContext::getUser()->canSaveConfiguration($section, $module)) ? TBGSettings::ACCESS_FULL : TBGSettings::ACCESS_READ;
 		}
 		
 		public function runAddClient(TBGRequest $request)

@@ -8,7 +8,7 @@
 <?php include_component('leftmenu', array('selected_section' => 12)); ?>
 <td valign="top">
 <div class="config_header" style="width: 750px;"><?php echo __('Configure settings'); ?></div>
-<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_settings'); ?>" method="post" onsubmit="submitForm('<?php echo make_url('configure_settings'); ?>', 'config_settings'); return false;" id="config_settings">
 <?php endif; ?>
 <div style="margin-top: 5px; width: 750px; clear: both; height: 30px;" class="tab_menu">
@@ -27,7 +27,7 @@
 	<div id="tab_reglang_settings_pane" style="display: none;"><?php include_template('reglang', array('access_level' => $access_level, 'languages' => $languages)); ?></div>
 	<div id="tab_user_settings_pane" style="display: none;"><?php include_template('user', array('access_level' => $access_level)); ?></div>
 </div>
-<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<div class="rounded_box mediumgrey" style="margin: 5px 0px 5px 0px; width: 700px; height: 25px; padding: 5px 10px 5px 10px;">
 		<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "Save" to save your changes in all categories'); ?></div>
 		<input type="submit" id="config_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">

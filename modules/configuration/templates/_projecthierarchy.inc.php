@@ -2,7 +2,7 @@
 	<tr>
 		<td style="padding-right: 5px; vertical-align: top;">
 			<div class="config_header"><b><?php echo __('Editions'); ?></b></div>
-			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>" method="post" id="add_edition_form" onsubmit="addEdition('<?php echo make_url('configure_projects_add_edition', array('project_id' => $project->getID())); ?>');return false;" <?php if (!$project->isEditionsEnabled()): ?> style="display: none;"<?php endif; ?>>
 					<div class="rounded_box lightyellow" style="vertical-align: middle; padding: 5px; font-size: 12px;">
 						<input type="submit" value="<?php echo __('Add'); ?>" style="float: right;">
@@ -20,7 +20,7 @@
 		</td>
 		<td style="padding-right: 5px; vertical-align: top;">
 			<div class="config_header"><b><?php echo __('Components'); ?></b></div>
-			<?php if ($access_level == configurationActions::ACCESS_FULL): ?>
+			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>" method="post" id="add_component_form" onsubmit="addComponent('<?php echo make_url('configure_projects_add_component', array('project_id' => $project->getID())); ?>');return false;"<?php if (!$project->isComponentsEnabled()): ?> style="display: none;"<?php endif; ?>>
 					<div class="rounded_box lightyellow" style="vertical-align: middle; padding: 5px; font-size: 12px;">
 						<input type="submit" value="<?php echo __('Add'); ?>" style="float: right;">
