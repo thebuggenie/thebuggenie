@@ -44,7 +44,7 @@
 			parent::__construct(self::B2DBNAME, self::ID);
 			
 			parent::_addVarchar(self::PERMISSION_TYPE, 100);
-			parent::_addVarchar(self::TARGET_ID, 10, 0);
+			parent::_addVarchar(self::TARGET_ID, 200, 0);
 			parent::_addBoolean(self::ALLOWED);
 			parent::_addVarchar(self::MODULE, 50);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);

@@ -34,21 +34,30 @@
 					<?php endif; ?>
 					<span class="faded_out"><?php echo __('%article_name% ~ Permissions', array('%article_name%' => '')); ?></span>
 				</div>
-				<form action="">
-					<ul class="simple_list">
-					<?php foreach ($article->getCombinedNamespaces() as $namespace): ?>
-						<li onclick="">
-							<div class="namespace_header">
+				<ul class="simple_list">
+				<?php foreach ($namespaces as $namespace): ?>
+					<li class="rounded_box <?php if ($namespace == $article->getName()): ?>verylightyellow<?php else: ?>invisible borderless<?php endif; ?>" style="padding: 10px;">
+						<div class="namespace_header">
+							<?php if ($namespace == $article->getName()): ?>
+								<?php echo __('Specify permissions for the article %article_name%', array('%article_name%' => '<span class="namespace">'.$namespace.'</span>')); ?>
+							<?php else: ?>
 								<?php echo __('Specify permissions for the %namespace% namespace', array('%namespace%' => '<span class="namespace">'.$namespace.'</span>')); ?>
-							</div>
-							<?php echo __('Select this option to specify permissions for the above namespace. These permissions will apply for all articles in the mentioned namespace for which article-specific permissions have not been granted.'); ?>
-							<div id="publish_<?php echo $namespace; ?>_permissions">
-								<?php include_component('configuration/permissionsinfo', array('key' => 'editarticle', 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
-							</div>
-						</li>
-					<?php endforeach; ?>
-					</ul>
-				</form>
+							<?php endif; ?>
+						</div>
+						<?php echo __('Select this option to specify permissions for the above namespace. These permissions will apply for all articles in the mentioned namespace for which article-specific permissions have not been granted.'); ?>
+						<div style="text-align: right; padding: 10px;">
+							<button onclick="$('publish_<?php echo $namespace; ?>_editarticle_permissions').toggle();"><?php echo __('Edit write permissions'); ?></button>
+							<button onclick="$('publish_<?php echo $namespace; ?>_deletearticle_permissions').toggle();"><?php echo __('Edit delete permissions'); ?></button>
+						</div>
+						<div id="publish_<?php echo $namespace; ?>_editarticle_permissions" style="padding: 10px; width: 700px; display: none;">
+							<?php include_component('configuration/permissionsinfo', array('key' => 'editarticle', 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
+						</div>
+						<div id="publish_<?php echo $namespace; ?>_deletearticle_permissions" style="padding: 10px; width: 700px; display: none;">
+							<?php include_component('configuration/permissionsinfo', array('key' => 'deletearticle', 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
+						</div>
+					</li>
+				<?php endforeach; ?>
+				</ul>
 			</div>
 		</td>
 	</tr>

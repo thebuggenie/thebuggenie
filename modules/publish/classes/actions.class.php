@@ -84,7 +84,9 @@
 
 		public function runArticlePermissions(TBGRequest $request)
 		{
-			
+			$namespaces = $this->article->getCombinedNamespaces();
+			$namespaces[] = $this->article->getName();
+			$this->namespaces = $namespaces;
 		}
 		
 		public function runArticleHistory(TBGRequest $request)
@@ -140,6 +142,11 @@
 		 */
 		public function runDeleteArticle(TBGRequest $request)
 		{
+			if (!TBGContext::getModule('publish')->canUserDeleteArticle($this->article->getName()))
+			{
+				TBGContext::setMessage('publish_article_error', TBGContext::getI18n()->__('You do not have permission to delete this article'));
+				$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $this->article->getName())));
+			}
 			if ($article_name = $request->getParameter('article_name'))
 			{
 				TBGWikiArticle::deleteByName($article_name);
@@ -155,6 +162,11 @@
 		 */
 		public function runEditArticle(TBGRequest $request)
 		{
+			if (!TBGContext::getModule('publish')->canUserEditArticle($this->article->getName()))
+			{
+				TBGContext::setMessage('publish_article_error', TBGContext::getI18n()->__('You do not have permission to edit this article'));
+				$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $this->article->getName())));
+			}
 			if ($request->isMethod(TBGRequest::POST))
 			{
 				if ($request->hasParameter('new_article_name') && $request->getParameter('new_article_name') != '')

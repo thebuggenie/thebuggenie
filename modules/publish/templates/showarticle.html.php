@@ -49,26 +49,32 @@
 					<?php echo __('This is a placeholder for an article that has not been created yet. You can create it by clicking %create_this_article% below.', array('%create_this_article%' => '<b>'.__('Create this article').'</b>')); ?>
 				</div>
 			<?php endif; ?>
-			<div class="publish_article_actions">
-				<div class="sub_header"><?php echo __('Actions available'); ?></div>
-				<form action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="get" style="float: left; margin-right: 10px;">
-					<input type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Edit this article') : __('Create this article'); ?>">
-				</form>
-				<?php if ($article instanceof TBGWikiArticle): ?>
-					<button onclick="$('delete_article_confirm').toggle();"><?php echo __('Delete this article'); ?></button>
-					<div class="rounded_box" style="margin: 10px 0 5px; width: 720px; display: none;" id="delete_article_confirm">
-						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-						<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
-							<h4><?php echo __('Really delete this article?'); ?></h4>
-							<span class="question_header"><?php echo __('Deleting this article will remove it from the system.'); ?></span><br>
-							<div style="text-align: right;">
-								<?php echo link_tag(make_url('publish_article_delete', array('article_name' => $article_name)), __('Yes')); ?> :: <a href="javascript:void(0)" class="xboxlink" onclick="$('delete_article_confirm').hide();"><?php echo __('No'); ?></a>
+			<?php if (TBGContext::getModule('publish')->canUserEditArticle($article->getName()) || TBGContext::getModule('publish')->canUserDeleteArticle($article->getName())): ?>
+				<div class="publish_article_actions">
+					<div class="sub_header"><?php echo __('Actions available'); ?></div>
+					<?php if (TBGContext::getModule('publish')->canUserEditArticle($article->getName())): ?>
+						<form action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="get" style="float: left; margin-right: 10px;">
+							<input type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Edit this article') : __('Create this article'); ?>">
+						</form>
+					<?php endif; ?>
+					<?php if (TBGContext::getModule('publish')->canUserDeleteArticle($article->getName())): ?>
+						<?php if ($article instanceof TBGWikiArticle): ?>
+							<button onclick="$('delete_article_confirm').toggle();"><?php echo __('Delete this article'); ?></button>
+							<div class="rounded_box" style="margin: 10px 0 5px; width: 720px; display: none;" id="delete_article_confirm">
+								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+								<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 14px;">
+									<h4><?php echo __('Really delete this article?'); ?></h4>
+									<span class="question_header"><?php echo __('Deleting this article will remove it from the system.'); ?></span><br>
+									<div style="text-align: right;">
+										<?php echo link_tag(make_url('publish_article_delete', array('article_name' => $article_name)), __('Yes')); ?> :: <a href="javascript:void(0)" class="xboxlink" onclick="$('delete_article_confirm').hide();"><?php echo __('No'); ?></a>
+									</div>
+								</div>
+								<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 							</div>
-						</div>
-						<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-					</div>
-				<?php endif; ?>
-			</div>
+						<?php endif; ?>
+					<?php endif; ?>
+				</div>
+			<?php endif; ?>
 		</td>
 	</tr>
 </table>

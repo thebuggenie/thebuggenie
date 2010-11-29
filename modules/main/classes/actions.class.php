@@ -141,7 +141,15 @@
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('home'));
 			$this->getResponse()->setProjectMenuStripHidden();
-			$this->client = TBGContext::factory()->TBGClient($request->getParameter('client_id'));
+			$this->client = null;
+			try
+			{
+				$this->client = TBGContext::factory()->TBGClient($request->getParameter('client_id'));
+			}
+			catch (Exception $e)
+			{
+				TBGLogging::log($e->getMessage(), 'core', TBGLogging::LEVEL_WARNING);
+			}
 		}
 		
 		/**
