@@ -234,7 +234,6 @@
 				$module = TBGContext::getRouting()->getCurrentRouteModule();
 				$templatefile = ($is_component) ? '_' . $template . '.inc.php' : $template . '.' . TBGContext::getRequest()->getRequestedFormat() . '.php';
 			}
-TBGLogging::log('OMG PONIEZ::'.TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $templatefile);
 			if (file_exists(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $templatefile))
 			{
 				return TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . 'i18n' . DIRECTORY_SEPARATOR . $this->_language . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $templatefile;
