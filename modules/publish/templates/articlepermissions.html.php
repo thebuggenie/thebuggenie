@@ -36,10 +36,14 @@
 				</div>
 				<ul class="simple_list">
 				<?php foreach ($namespaces as $namespace): ?>
-					<li class="rounded_box <?php if ($namespace == $article->getName()): ?>verylightyellow<?php else: ?>invisible borderless<?php endif; ?>" style="padding: 10px;">
+					<li class="rounded_box <?php if (!(is_numeric($namespace) && $namespace == 0) && $namespace == $article->getName()): ?>verylightyellow<?php else: ?>invisible borderless<?php endif; ?>" style="padding: 10px;">
 						<div class="namespace_header">
-							<?php if ($namespace == $article->getName()): ?>
+							<?php if (is_numeric($namespace) && $namespace == 0): ?>
+								<?php echo __('Specify permissions for entire wiki'); ?>
+							<?php elseif ($namespace == $article->getName()): ?>
 								<?php echo __('Specify permissions for the article %article_name%', array('%article_name%' => '<span class="namespace">'.$namespace.'</span>')); ?>
+							<?php elseif ($namespace == "Category"): ?>
+								<?php echo __('Specify permissions to edit categories'); ?>
 							<?php else: ?>
 								<?php echo __('Specify permissions for the %namespace% namespace', array('%namespace%' => '<span class="namespace">'.$namespace.'</span>')); ?>
 							<?php endif; ?>

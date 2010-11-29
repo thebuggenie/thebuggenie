@@ -132,6 +132,8 @@
 			TBGLinksTable::getTable()->addLink('wiki', 0, 'MainPage', 'Wiki Frontpage', 1, $scope);
 			TBGLinksTable::getTable()->addLink('wiki', 0, 'TheBugGenie:WikiFormatting', 'Formatting help', 2, $scope);
 			TBGLinksTable::getTable()->addLink('wiki', 0, 'Category:Help', 'Help topics', 3, $scope);
+			TBGContext::setPermission('editarticle', 0, 'publish', 0, TBGSettings::getAdminGroup()->getID(), 0, true, $scope);
+			TBGContext::setPermission('deletearticle', 0, 'publish', 0, TBGSettings::getAdminGroup()->getID(), 0, true, $scope);
 		}
 		
 		protected function _uninstall()

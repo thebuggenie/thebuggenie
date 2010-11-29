@@ -86,6 +86,7 @@
 		{
 			$namespaces = $this->article->getCombinedNamespaces();
 			$namespaces[] = $this->article->getName();
+			array_unshift($namespaces, 0);
 			$this->namespaces = $namespaces;
 		}
 		
