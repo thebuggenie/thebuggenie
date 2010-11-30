@@ -8,7 +8,7 @@
 	<tr>
 		<?php
 		
-			include_component('leftmenu', array('selected_section' => 2));
+			include_component('leftmenu', array('selected_section' => 16));
 		
 		?>
 		<td valign="top">
@@ -16,6 +16,7 @@
 			<div style="width: 750px; clear: both; height: 30px;" class="tab_menu">
 				<ul id="import_menu">
 					<li id="tab_csv" class="selected"><?php echo javascript_link_tag(image_tag('icon_csv.png', array('style' => 'float: left; margin-right: 5px;')) . __('CSV'), array('onclick' => "switchSubmenuTab('tab_csv', 'import_menu');")); ?></li>
+					<li id="tab_tbg"><?php echo javascript_link_tag(image_tag('favicon.png', array('style' => 'float: left; margin-right: 5px;')) . __('BUGS 1.x/The Bug Genie 2'), array('onclick' => "switchSubmenuTab('tab_tbg', 'import_menu');")); ?></li>
 				</ul>
 			</div>
 			<div id="import_menu_panes">
@@ -32,6 +33,15 @@
 							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'groups')); ?>');"><?php echo __('Groups'); ?></a></li>
 						</ul>
 						<?php echo __('When you select a type, you will be given the opportunity to copy in your CSV file, and import the data.'); ?>
+					</div>
+				</div>
+				<div id="tab_tbg_pane" style="padding-top: 0; width: 750px; display: none;">
+					<div class="tab_content">
+						<?php echo __('You can import data from previous version of The Bug Genie into your version 3 installation.'); ?>
+						<div class="tab_header"><?php echo __('BUGS 1.x'); ?></div>
+						<?php echo __('Please upgrade to BUGS 1.9, followed by The Bug Genie 2 (an upgrade script is included in the installation package for The Bug Genie 2). After upgrading, then follow the instructions below to upgrade from The Bug Genie 2.'); ?>
+						<div class="tab_header"><?php echo __('The Bug Genie 2'); ?></div>
+						<?php echo __('Please upgrade to The Bug Genie 2.1 if you haven\'t already done so, then follow the instructions on The Bug Genie wiki to upgrade your data. There is not a built in upgrade script.'); ?>
 					</div>
 				</div>
 			</div>

@@ -2245,7 +2245,19 @@
 		
 		public function runDoImportCSV(TBGRequest $request)
 		{
+			try
+			{
+				if ($request->getParameter('csv_data') == '')
+				{
+					throw new Exception(TBGContext::getI18n()->__('No data supplied to import'));
+				}
+			}
+			catch (Exception $e)
+			{
+				$this->getResponse()->setHttpStatus(400);
+				return $this->renderJSON(array('failed' => true, 'errordetail' => $e->getMessage(), 'error' => $e->getMessage()));
+			}
 			$this->getResponse()->setHttpStatus(400);
-			return $this->renderJSON(array('failed' => true, 'error' => 'Unimplemented, but our type is: '.$request->getParameter('type')));
+			return $this->renderJSON(array('failed' => true, 'errordetail' => 'unimplemented', 'error' => 'Unimplemented, but our type is: '.$request->getParameter('type')));
 		}
 	}
