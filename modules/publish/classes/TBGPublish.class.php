@@ -48,14 +48,6 @@
 			}
 		}
 
-		protected function _addAvailablePermissions()
-		{
-			$this->addAvailablePermission('article_management', 'Can create and manage articles');
-			$this->addAvailablePermission('manage_billboard', 'Can delete billboard posts');
-			$this->addAvailablePermission('publish_postonglobalbillboard', 'Can post articles on global billboard');
-			$this->addAvailablePermission('publish_postonteambillboard', 'Can post articles on team billboard');
-		}
-		
 		protected function _addAvailableListeners()
 		{
 			$this->addAvailableListener('core', 'index_left_middle', 'listen_frontpageLeftmenu', 'Frontpage left menu');
