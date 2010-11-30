@@ -2251,13 +2251,95 @@
 				{
 					throw new Exception(TBGContext::getI18n()->__('No data supplied to import'));
 				}
+				
+				// Split data into individual lines
+				$data = str_replace("\r\n", "\n", $request->getParameter('csv_data'));
+				$data = explode("\n", $data);
+				if (count($data) <= 1)
+				{
+					throw new Exception(TBGContext::getI18n()->__('Insufficient data to import'));
+				}
+				$headerrow = $data[0];
+				$headerrow = html_entity_decode($headerrow, ENT_QUOTES);
+				$headerrow = explode(',', $headerrow);
+				$headerrow2 = array();
+				for ($i = 0; $i != count($headerrow); $i++)
+				{
+					$headerrow2[$i] = trim($headerrow[$i], '"');
+				}
+				
+				$errors = array();
+				
+				// inspect for correct rows
+				switch ($request->getParameter('type'))
+				{
+					case 'clients':
+						$namecol = null;
+						$emailcol = null;
+						$telephonecol = null;
+						$faxcol = null;
+						$websitecol = null;
+						
+						for ($i = 0; $i != count($headerrow2); $i++)
+						{
+							if ($headerrow2[$i] == 'name'):
+								$namecol = $i;
+							elseif ($headerrow2[$i] == 'email'):
+								$emailcol = $i;
+							elseif ($headerrow2[$i] == 'telephone'):
+								$telephonecol = $i;
+							elseif ($headerrow2[$i] == 'fax'):
+								$faxcol = $i;
+							elseif ($headerrow2[$i] == 'website'):
+								$websitecol = $i;
+							endif;
+						}
+						
+						$rowlength = count($headerrow2);
+						
+						if ($namecol === null)
+						{
+							$errors[] = TBGContext::getI18n()->__('Required column \'%col%\' not found in header row', array('%col%' => 'name'));
+						}
+						
+						break;
+					default:
+						throw new Exception('Sorry, this type is unimplemented');
+						break;
+				}
+				
+				// Check if rows are long enough
+				for ($i = 1; $i != count($data); $i++)
+				{
+					$activerow = $data[$i];
+					$activerow = html_entity_decode($activerow, ENT_QUOTES);
+					$activerow = explode(',', $activerow);
+					
+					if (count($activerow) != $rowlength)
+					{
+						$errors[] = TBGContext::getI18n()->__('Row %col% does not have the same number of elements as the header row', array('%col%' => $i));
+					}
+				}
+				
+				// Handle errors
+				if (count($errors) != 0)
+				{
+					$errordiv = '<ul>';
+					foreach ($errors as $error)
+					{
+						$errordiv .= '<li>'.$error.'</li>';
+					}
+					$errordiv .= '</ul>';
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('failed' => true, 'errordetail' => $errordiv, 'error' => TBGContext::getI18n()->__('Errors occured while importing, see the error list in the import screen for further details')));
+				}
 			}
 			catch (Exception $e)
 			{
 				$this->getResponse()->setHttpStatus(400);
 				return $this->renderJSON(array('failed' => true, 'errordetail' => $e->getMessage(), 'error' => $e->getMessage()));
 			}
-			$this->getResponse()->setHttpStatus(400);
-			return $this->renderJSON(array('failed' => true, 'errordetail' => 'unimplemented', 'error' => 'Unimplemented, but our type is: '.$request->getParameter('type')));
+			
+			return $this->renderJSON(array('failed' => false, 'message' => 'unimplemented but okay so far'));
 		}
 	}
