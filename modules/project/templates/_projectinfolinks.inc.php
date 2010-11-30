@@ -19,8 +19,8 @@
 	</ul>
 <?php endif; ?>
 <?php TBGEvent::createNew('core', 'project_sidebar_links_scrum')->trigger(); ?>
-<?php echo link_tag(make_url('project_planning', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Planning'), (($tbg_response->getPage() == 'project_planning') ? array('class' => 'selected') : array())); ?>
-<?php TBGEvent::createNew('core', 'project_sidebar_links_planning')->trigger(); ?>
+<?php //echo link_tag(make_url('project_planning', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Planning'), (($tbg_response->getPage() == 'project_planning') ? array('class' => 'selected') : array())); ?>
+<?php //TBGEvent::createNew('core', 'project_sidebar_links_planning')->trigger(); ?>
 <?php echo link_tag(make_url('project_roadmap', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Roadmap'), (($tbg_response->getPage() == 'project_roadmap') ? array('class' => 'selected') : array())); ?>
 <?php TBGEvent::createNew('core', 'project_sidebar_links_roadmap')->trigger(); ?>
 <?php echo link_tag(make_url('project_team', array('project_key' => TBGContext::getCurrentProject()->getKey())), __('Team overview'), (($tbg_response->getPage() == 'project_team') ? array('class' => 'selected') : array())); ?>
