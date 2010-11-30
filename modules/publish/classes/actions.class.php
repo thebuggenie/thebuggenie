@@ -87,7 +87,7 @@
 			$namespaces = $this->article->getCombinedNamespaces();
 			$namespaces[] = $this->article->getName();
 			array_unshift($namespaces, 0);
-			$this->namespaces = $namespaces;
+			$this->namespaces = array_reverse($namespaces);
 		}
 		
 		public function runArticleHistory(TBGRequest $request)
@@ -163,10 +163,11 @@
 		 */
 		public function runEditArticle(TBGRequest $request)
 		{
-			if (!TBGContext::getModule('publish')->canUserEditArticle($this->article->getName()))
+			$article_name = ($this->article instanceof TBGWikiArticle) ? $this->article->getName() : $request->getParameter('article_name');
+			if (!TBGContext::getModule('publish')->canUserEditArticle($article_name))
 			{
 				TBGContext::setMessage('publish_article_error', TBGContext::getI18n()->__('You do not have permission to edit this article'));
-				$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $this->article->getName())));
+				$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $article_name)));
 			}
 			if ($request->isMethod(TBGRequest::POST))
 			{

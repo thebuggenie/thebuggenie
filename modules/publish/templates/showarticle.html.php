@@ -30,6 +30,7 @@
 			<?php endif; ?>
 			<?php if ($article instanceof TBGWikiArticle): ?>
 				<?php include_component('articledisplay', array('article' => $article, 'show_article' => true, 'redirected_from' => $redirected_from)); ?>
+				<?php $article_name = $article->getName(); ?>
 			<?php else: ?>
 				<div class="header" style="padding: 5px;">
 					<?php echo link_tag(make_url('publish_article', array('article_name' => 'FrontpageArticle')), __('Front page article'), array('class' => (($article_name == 'FrontpageArticle') ? 'faded_out' : ''), 'style' => 'float: right; margin-right: 15px;')); ?>
@@ -49,15 +50,15 @@
 					<?php echo __('This is a placeholder for an article that has not been created yet. You can create it by clicking %create_this_article% below.', array('%create_this_article%' => '<b>'.__('Create this article').'</b>')); ?>
 				</div>
 			<?php endif; ?>
-			<?php if (TBGContext::getModule('publish')->canUserEditArticle($article->getName()) || TBGContext::getModule('publish')->canUserDeleteArticle($article->getName())): ?>
+			<?php if (TBGContext::getModule('publish')->canUserEditArticle($article_name) || TBGContext::getModule('publish')->canUserDeleteArticle($article_name)): ?>
 				<div class="publish_article_actions">
 					<div class="sub_header"><?php echo __('Actions available'); ?></div>
-					<?php if (TBGContext::getModule('publish')->canUserEditArticle($article->getName())): ?>
+					<?php if (TBGContext::getModule('publish')->canUserEditArticle($article_name)): ?>
 						<form action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="get" style="float: left; margin-right: 10px;">
 							<input type="submit" value="<?php echo ($article instanceof TBGWikiArticle) ? __('Edit this article') : __('Create this article'); ?>">
 						</form>
 					<?php endif; ?>
-					<?php if (TBGContext::getModule('publish')->canUserDeleteArticle($article->getName())): ?>
+					<?php if (TBGContext::getModule('publish')->canUserDeleteArticle($article_name)): ?>
 						<?php if ($article instanceof TBGWikiArticle): ?>
 							<button onclick="$('delete_article_confirm').toggle();"><?php echo __('Delete this article'); ?></button>
 							<div class="rounded_box" style="margin: 10px 0 5px; width: 720px; display: none;" id="delete_article_confirm">
