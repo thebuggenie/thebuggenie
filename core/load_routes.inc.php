@@ -137,7 +137,8 @@
 	$routes[] = array('configure_install_module', '/configure/modules/install', 'configuration', 'moduleAction', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_MODULES, 'mode' => 'install'));
 	$routes[] = array('configure_module', '/configure/module/:config_module', 'configuration', 'configureModule', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_MODULES));
 	$routes[] = array('configure_get_permissions', '/configure/permissions/:permissions_type/for/:permissions_target_type/:permissions_target', 'configuration', 'getPermissions', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_PERMISSIONS));
-	$routes[] = array('configure_import_csv', '/configure/import/:type/from/csv', 'configuration', 'importCSV');
+	$routes[] = array('configure_import_csv', '/configure/import/:type/from/csv', 'configuration', 'importCSV', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_IMPORT));
+	$routes[] = array('configure_do_import_csv', '/configure/do/import/:type/from/csv/', 'configuration', 'doImportCSV', array('config_module' => 'core', 'section' => TBGSettings::CONFIGURATION_SECTION_IMPORT));
 	$routes[] = array('comment_delete', '/comment/delete/:comment_id', 'main', 'deletecomment');
 	$routes[] = array('comment_update', '/comment/update/:comment_id', 'main', 'updatecomment');
 	$routes[] = array('comment_add', '/comment/add/for/project/:project_id/module/:comment_module/item/type/:comment_applies_type/id/:comment_applies_id', 'main', 'addcomment');

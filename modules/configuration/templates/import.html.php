@@ -1,6 +1,7 @@
 <?php
 
 	$tbg_response->setTitle(__('Import data'));
+	$tbg_response->addJavascript('config/settings.js');
 
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>

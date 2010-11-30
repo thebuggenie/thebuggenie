@@ -2234,4 +2234,10 @@
 			$content = $this->getTemplateHTML('configuration/importcsv', array('type' => $request->getParameter('type')));
 			return $this->renderJSON(array('failed' => false, 'content' => $content));
 		}
+		
+		public function runDoImportCSV(TBGRequest $request)
+		{
+			$this->getResponse()->setHttpStatus(400);
+			return $this->renderJSON(array('failed' => true, 'error' => 'Unimplemented, but our type is: '.$request->getParameter('type')));
+		}
 	}
