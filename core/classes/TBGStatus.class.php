@@ -6,6 +6,8 @@
 		protected static $_items = null;
 		
 		protected $_itemtype = TBGDatatype::STATUS;
+		
+		protected $_key = null;
 
 		public static function loadFixtures(TBGScope $scope)
 		{
@@ -73,6 +75,32 @@
 			return TBGContext::factory()->TBGStatus($res->getInsertID());
 		}
 
+		public static function getStatusByKeyish($key)
+		{
+			foreach (self::getAll() as $status)
+			{
+				if ($status->getKey() == str_replace(array(' ', '/'), array('', ''), strtolower($key)))
+				{
+					return $status;
+				}
+			}
+			return null;
+		}
+		
+		protected function _generateKey()
+		{
+			$this->_key = str_replace(array(' ', '/'), array('', ''), strtolower($this->getName()));
+		}
+		
+		public function getKey()
+		{
+			if ($this->_key == null)
+			{
+				$this->_generateKey();
+			}
+			return $this->_key;
+		}
+		
 		/**
 		 * Return the status color
 		 * 
@@ -81,6 +109,16 @@
 		public function getColor()
 		{
 			return $this->_itemdata;
+		}
+		
+		public function hasLinkedWorkflowStep()
+		{
+			return (bool) B2DB::getTable('TBGWorkflowStepsTable')->countByStatusID($this->getID());
+		}
+		
+		public function canBeDeleted()
+		{
+			return !$this->hasLinkedWorkflowStep();
 		}
 
 	}

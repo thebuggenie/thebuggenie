@@ -1976,13 +1976,21 @@
 			try
 			{
 				$this->workflow = TBGContext::factory()->TBGWorkflow($request->getParameter('workflow_id'));
-				$this->step = TBGContext::factory()->TBGWorkflowStep($request->getParameter('step_id'));
+				if ($request->getParameter('mode') == 'edit' && !$request->hasParameter('step_id'))
+				{
+					$this->step = new TBGWorkflowStep();
+					$this->step->setWorkflow($this->workflow);
+				}
+				else
+				{
+					$this->step = TBGContext::factory()->TBGWorkflowStep($request->getParameter('step_id'));
+				}
 				if ($request->isMethod(TBGRequest::POST) && $request->getParameter('mode') == 'delete_outgoing_transitions')
 				{
 					$this->step->deleteOutgoingTransitions();
 					$this->forward(TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
 				}
-				elseif ($request->isMethod(TBGRequest::POST) && $request->hasParameter('edit'))
+				elseif ($request->isMethod(TBGRequest::POST) && ($request->hasParameter('edit') || $request->getParameter('mode') == 'edit'))
 				{
 					$this->step->setName($request->getParameter('name'));
 					$this->step->setDescription($request->getParameter('description'));

@@ -110,5 +110,10 @@
 		{
 			return true;
 		}
+		
+		public function canBeDeleted()
+		{
+			return true;
+		}
 
 	}

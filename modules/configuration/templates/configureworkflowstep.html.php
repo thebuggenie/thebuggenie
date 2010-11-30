@@ -24,9 +24,11 @@
 							<?php echo __('This page shows all the available details for this step for the selected workflow, as well as transitions to and from this step.'); ?>
 							<?php echo __('You can add and remove transitions from this page, as well as manage properties for this step.'); ?><br>
 							<br>
-							<b><?php echo javascript_link_tag(__('Edit this step'), array('onclick' => "\$('step_details_form').toggle();\$('step_details_info').toggle();")); ?></b>
+							<b><?php echo javascript_link_tag(__('Edit this step'), array('onclick' => "\$('step_details_form').toggle();\$('step_details_info').toggle();")); ?></b><br>
+							<b><?php echo javascript_link_tag(__('Add transition'), array('onclick' => "$('step_{$step->getID()}_transition_add').toggle()")); ?></b>
 						</div>
 					</div>
+					<?php include_template('configuration/workflowaddtransition', array('step' => $step)); ?>
 					<div id="workflow_details_step">
 						<dl id="step_details_info">
 							<dt><?php echo __('Description'); ?></dt>

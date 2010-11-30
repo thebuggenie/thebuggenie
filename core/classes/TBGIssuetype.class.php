@@ -139,7 +139,7 @@
 		{
 			foreach (self::getAll() as $issuetype)
 			{
-				if ($issuetype->getKey() == str_replace(' ', '', strtolower($key)))
+				if ($issuetype->getKey() == str_replace(array(' ', '/'), array('', ''), strtolower($key)))
 				{
 					return $issuetype;
 				}
@@ -176,7 +176,7 @@
 		
 		protected function _generateKey()
 		{
-			$this->_key = str_replace(' ', '', strtolower($this->getName()));
+			$this->_key = str_replace(array(' ', '/'), array('', ''), strtolower($this->getName()));
 		}
 		
 		public function getKey()

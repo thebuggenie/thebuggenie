@@ -77,9 +77,14 @@
 		 */
 		public function getWorkflow()
 		{
-			return $this->_workflow_id;
+			return $this->_getPopulatedObjectFromProperty('_workflow_id');
 		}
 
+		public function setWorkflow(TBGWorkflow $workflow)
+		{
+			$this->_workflow_id = $workflow;
+		}
+		
 		/**
 		 * Whether this is a step in the builtin workflow that cannot be
 		 * edited or removed

@@ -96,12 +96,17 @@
 		
 		public function loadFixturesArticles($scope, $overwrite = true)
 		{
+			TBGCliCommand::cli_echo("Loading default articles\n");
 			$_path_handle = opendir(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR);
 			while ($article_name = readdir($_path_handle))
 			{
 				if (strpos($article_name, '.') === false)
 				{
 					$imported = false;
+					if (TBGContext::isCLI())
+					{
+						TBGCliCommand::cli_echo('Saving '.urldecode($article_name)."\n");
+					}
 					if ($overwrite)
 					{
 						TBGArticlesTable::getTable()->deleteArticleByName(urldecode($article_name));
@@ -115,6 +120,7 @@
 					TBGEvent::createNew('publish', 'fixture_article_loaded', urldecode($article_name), array('imported' => $imported))->trigger();
 				}
 			}
+			TBGCliCommand::cli_echo("... done\n");
 		}
 
 		protected function _loadFixtures($scope)
