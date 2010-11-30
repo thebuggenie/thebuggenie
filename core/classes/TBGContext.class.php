@@ -442,33 +442,44 @@
 				}
 				TBGLogging::log('...done', 'routing');
 				
+				TBGLogging::log("Setting current scope");
+				try
+				{
+					self::setScope();
+					TBGLogging::log("Loading settings");
+					try
+					{
+						TBGSettings::loadSettings();
+					}
+					catch (Exception $e)
+					{
+						if (!self::isCLI())
+						{
+							throw $e;
+						}
+						else
+						{
+							self::$_installmode = true;
+						}
+					}
+					TBGLogging::log("...done");
+				}
+				catch (Exception $e)
+				{
+					if (!self::isInstallmode()) 
+					{
+						throw $e;
+					}
+					TBGLogging::log("Ignoring scope exception since we're in installmode");
+				}
+				TBGLogging::log("...done");
+				
+
 				if (self::$_installmode)
 				{
 					self::$_modules = array();
 					return true;
 				}
-
-				TBGLogging::log("Setting current scope");
-				self::setScope();
-				TBGLogging::log("...done");
-				
-				TBGLogging::log("Loading settings");
-				try
-				{
-					TBGSettings::loadSettings();
-				}
-				catch (Exception $e)
-				{
-					if (!self::isCLI())
-					{
-						throw $e;
-					}
-					else
-					{
-						self::$_installmode = true;
-					}
-				}
-				TBGLogging::log("...done");
 
 				if (!self::isCLI())
 				{
