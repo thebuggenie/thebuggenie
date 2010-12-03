@@ -1385,11 +1385,12 @@
 				return true;
 			}
 	
+			$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http://' : 'https://';
 			try
 			{
+				if (!class_exists('TBGScopesTable')) throw new Exception('B2DB not configured to look for B2DB table classes');
 				if (!self::isCLI())
 				{
-					$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http://' : 'https://';
 					TBGLogging::log("Checking if scope can be set from hostname (".$hostprefix.$_SERVER['HTTP_HOST'].")");
 					$row = TBGScopesTable::getTable()->getByHostname($hostprefix . $_SERVER['HTTP_HOST']);
 				}

@@ -96,7 +96,7 @@
 		
 		public function loadFixturesArticles($scope, $overwrite = true)
 		{
-			TBGCliCommand::cli_echo("Loading default articles\n");
+			if (TBGContext::isCLI()) TBGCliCommand::cli_echo("Loading default articles\n");
 			$_path_handle = opendir(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR);
 			while ($article_name = readdir($_path_handle))
 			{
@@ -120,7 +120,7 @@
 					TBGEvent::createNew('publish', 'fixture_article_loaded', urldecode($article_name), array('imported' => $imported))->trigger();
 				}
 			}
-			TBGCliCommand::cli_echo("... done\n");
+			if (TBGContext::isCLI()) TBGCliCommand::cli_echo("... done\n");
 		}
 
 		protected function _loadFixtures($scope)
