@@ -2311,6 +2311,78 @@
 						}
 						
 						break;
+					case 'projects':
+						$namecol = null;
+						$prefix = null;
+						$scrum = null;
+						$owner = null;
+						$owner_type = null;
+						$lead = null;
+						$lead_type = null;
+						$qa = null;
+						$qa_type = null;
+						$descr = null;
+						$doc_url = null;
+						$freelance = null;
+						$en_builds = null;
+						$en_comps = null;
+						$en_editions = null;
+						$workflow_id = null;
+						$client = null;
+						$show_summary = null;
+						$summary_type = null;
+						
+						for ($i = 0; $i != count($headerrow2); $i++)
+						{
+							if ($headerrow2[$i] == 'name'):
+								$namecol = $i;
+							elseif ($headerrow2[$i] == 'prefix'):
+								$prefix = $i;
+							elseif ($headerrow2[$i] == 'scrum'):
+								$scrum = $i;
+							elseif ($headerrow2[$i] == 'owner'):
+								$owner = $i;
+							elseif ($headerrow2[$i] == 'owner_type'):
+								$owner_type = $i;
+							elseif ($headerrow2[$i] == 'lead'):
+								$lead = $i;
+							elseif ($headerrow2[$i] == 'lead_type'):
+								$lead_type = $i;
+							elseif ($headerrow2[$i] == 'qa'):
+								$qa = $i;
+							elseif ($headerrow2[$i] == 'qa_type'):
+								$qa_type = $i;
+							elseif ($headerrow2[$i] == 'descr'):
+								$descr = $i;
+							elseif ($headerrow2[$i] == 'doc_url'):
+								$doc_url = $i;
+							elseif ($headerrow2[$i] == 'freelance'):
+								$freelance = $i;
+							elseif ($headerrow2[$i] == 'en_builds'):
+								$en_builds = $i;
+							elseif ($headerrow2[$i] == 'en_comps'):
+								$en_comps = $i;
+							elseif ($headerrow2[$i] == 'en_editions'):
+								$en_editions = $i;
+							elseif ($headerrow2[$i] == 'workflow_id'):
+								$workflow_id = $i;
+							elseif ($headerrow2[$i] == 'client'):
+								$client = $i;
+							elseif ($headerrow2[$i] == 'show_summary'):
+								$show_summary = $i;
+							elseif ($headerrow2[$i] == 'summary_type'):
+								$summary_type = $i;
+							endif;
+						}
+						
+						$rowlength = count($headerrow2);
+						
+						if ($namecol === null)
+						{
+							$errors[] = TBGContext::getI18n()->__('Required column \'%col%\' not found in header row', array('%col%' => 'name'));
+						}
+						
+						break;
 					default:
 						throw new Exception('Sorry, this type is unimplemented');
 						break;
@@ -2345,6 +2417,128 @@
 							$errors[] = TBGContext::getI18n()->__('Row %row% column %col% has no value', array('%col%' => $j, '%row%' => $i));
 						}
 					}
+				}
+				
+				// Check if fields are valid
+				switch ($request->getParameter('type'))
+				{
+					case 'projects':
+						for ($i = 1; $i != count($data); $i++)
+						{
+							$activerow = $data[$i];
+							$activerow = html_entity_decode($activerow, ENT_QUOTES);
+							$activerow = explode(',', $activerow);
+							
+							// First off are booleans
+							$boolitems = array($scrum, $freelance, $en_builds, $en_comps, $en_editions, $show_summary);
+							
+							foreach ($boolitems as $boolitem)
+							{
+								if ($boolitem !== null && trim($activerow[$boolitem], '"') != 0 && trim($activerow[$boolitem], '"') != 1)
+								{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1/0)', array('%col%' => $boolitem, '%row%' => $i));
+								}
+							}
+							
+							// Now identifiables
+							$identifiableitems = array(array($qa, $qa_type), array($lead, $lead_type), array($owner, $owner_type));
+							
+							foreach ($identifiableitems as $identifiableitem)
+							{
+								if (($identifiableitem[0] === null || $identifiableitem[1] === null) && !($identifiableitem[0] === null && $identifiableitem[1] === null))
+								{
+										$errors[] = TBGContext::getI18n()->__('Row %row%: Both the type and item ID must be supplied for owner/lead/qa fields', array('%row%' => $i));
+										continue;
+								}
+								
+								if ($identifiableitem[1] !== null && trim($activerow[$identifiableitem[1]], '"') != 1 && trim($activerow[$identifiableitem[1]], '"') != 2)
+								{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)', array('%col%' => $identifiableitem[1], '%row%' => $i));
+								}
+								
+								if ($identifiableitem[0] !== null && !(is_numeric(trim($activerow[$identifiableitem[0]], '"'))))
+								{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $identifiableitem[0], '%row%' => $i));
+								}
+								elseif ($identifiableitem[0] !== null && (is_numeric(trim($activerow[$identifiableitem[0]], '"'))))
+								{
+									// check if they exist
+									switch (trim($activerow[$identifiableitem[1]], '"'))
+									{
+										case 1:
+											try
+											{
+												TBGContext::factory()->TBGUser(trim($activerow[$identifiableitem[0]], '"'));
+											}
+											catch (Exception $e)
+											{
+												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => $identifiableitem[0], '%row%' => $i));
+											}
+											break;
+										case 2:
+											try
+											{
+												TBGContext::factory()->TBGTeam(trim($activerow[$identifiableitem[0]], '"'));
+											}
+											catch (Exception $e)
+											{
+												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: team does not exist', array('%col%' => $identifiableitem[0], '%row%' => $i));
+											}
+											break;
+									}
+								}
+							}
+							
+							// Now check client exists
+							if ($client !== null)
+							{
+								if (!is_numeric(trim($activerow[$client], '"')))
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $client, '%row%' => $i));
+								}
+								else
+								{
+									try
+									{
+										TBGContext::factory()->TBGClient(trim($activerow[$client], '"'));
+									}
+									catch (Exception $e)
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: client does not exist', array('%col%' => $client, '%row%' => $i));
+									}
+								}
+							}
+							
+							// Now check if workflow exists
+							if ($workflow_id !== null)
+							{
+								if (!is_numeric(trim($activerow[$workflow_id], '"')))
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $workflow_id, '%row%' => $i));
+								}
+								else
+								{
+									try
+									{
+										TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$workflow_id], '"'));
+									}
+									catch (Exception $e)
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: workflow scheme does not exist', array('%col%' => $workflow_id, '%row%' => $i));
+									}
+								}
+							}
+							
+							// Finally check if the summary type is valid. At this point, your error list has probably become so big it has eaten up all your available RAM...
+							if ($summary_type !== null)
+							{
+								if (trim($activerow[$summary_type], '"') != 'issuetypes' && trim($activerow[$summary_type], '"') != 'milestones')
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be \'issuetypes\' or \'milestones\')', array('%col%' => $summary_type, '%row%' => $i));
+								}
+							}
+						}
+						break;
 				}
 				
 				// Handle errors
