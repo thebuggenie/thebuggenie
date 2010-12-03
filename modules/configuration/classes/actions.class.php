@@ -2325,7 +2325,25 @@
 					
 					if (count($activerow) != $rowlength)
 					{
-						$errors[] = TBGContext::getI18n()->__('Row %col% does not have the same number of elements as the header row', array('%col%' => $i));
+						$errors[] = TBGContext::getI18n()->__('Row %row% does not have the same number of elements as the header row', array('%row%' => $i));
+					}
+				}
+				
+				reset($data);
+				
+				// Check if fields are empty
+				for ($i = 1; $i != count($data); $i++)
+				{
+					$activerow = $data[$i];
+					$activerow = html_entity_decode($activerow, ENT_QUOTES);
+					$activerow = explode(',', $activerow);
+					
+					for ($j = 0; $j != count($activerow); $j++)
+					{
+						if ($activerow[$j] == '' || $activerow[$j] == '""')
+						{
+							$errors[] = TBGContext::getI18n()->__('Row %row% column %col% has no value', array('%col%' => $j, '%row%' => $i));
+						}
 					}
 				}
 				
@@ -2348,6 +2366,14 @@
 				return $this->renderJSON(array('failed' => true, 'errordetail' => $e->getMessage(), 'error' => $e->getMessage()));
 			}
 			
-			return $this->renderJSON(array('failed' => false, 'message' => 'unimplemented but okay so far'));
+			if ($request->getParameter('csv_dry_run'))
+			{
+				return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Dry-run successful, you can now uncheck the dry-run box and import your data.')));
+			}
+			else
+			{
+				//return $this->renderJSON(array('failed' => false, 'message' => __('Import successfully completed!')));
+				return $this->renderJSON(array('failed' => false, 'message' => 'non-dry unimplemented but otherwise okay'));
+			}
 		}
 	}
