@@ -408,7 +408,7 @@
 							{
 								TBGContext::getResponse()->deleteCookie('tbg3_username');
 								TBGContext::getResponse()->deleteCookie('tbg3_password');
-								throw new Exception('No such logins');
+								throw new Exception('No such login');
 								//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 							}
 						}
@@ -432,7 +432,7 @@
 									// Invalid
 									TBGContext::getResponse()->deleteCookie('tbg3_username');
 									TBGContext::getResponse()->deleteCookie('tbg3_password');
-									throw new Exception('No such loginss');
+									throw new Exception('No such login');
 									//TBGContext::getResponse()->headerRedirect(TBGContext::getRouting()->generate('login'));
 								}
 								else 
@@ -478,7 +478,7 @@
 				}
 				else
 				{
-					throw new Exception('No such loginaa');
+					throw new Exception('No such login');
 				}
 			}
 			catch (Exception $e)

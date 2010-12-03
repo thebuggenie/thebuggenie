@@ -96,6 +96,7 @@
 		
 		public function loadFixturesArticles($scope, $overwrite = true)
 		{
+			return true;
 			if (TBGContext::isCLI()) TBGCliCommand::cli_echo("Loading default articles\n");
 			$_path_handle = opendir(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR);
 			while ($article_name = readdir($_path_handle))

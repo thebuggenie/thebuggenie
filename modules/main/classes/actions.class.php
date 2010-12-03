@@ -218,70 +218,80 @@
 		{
 			$i18n = TBGContext::getI18n();
 			$this->login_referer = (array_key_exists('HTTP_REFERER', $_SERVER) && isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
-			$this->options = $request->getParameters();
+			$options = $request->getParameters();
+			$forward_url = TBGContext::getRouting()->generate('home');
 			try
 			{
-				if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
+				if ($request->getMethod() == TBGRequest::POST)
 				{
-					if ($request->getMethod() == TBGRequest::POST)
+					if ($request->hasParameter('tbg3_username') && $request->hasParameter('tbg3_password'))
 					{
-						if ($request->hasParameter('tbg3_username') && $request->hasParameter('tbg3_password'))
+						$username = $request->getParameter('tbg3_username');
+						$password = $request->getParameter('tbg3_password');
+						$user = TBGUser::loginCheck($username, $password, true);
+						$this->getResponse()->setCookie('tbg3_username', $username);
+						$this->getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($password));
+						if ($request->hasParameter('return_to')) 
 						{
-							$username = $request->getParameter('tbg3_username');
-							$password = $request->getParameter('tbg3_password');
-							$user = TBGUser::loginCheck($username, $password, true);
-							$this->getResponse()->setCookie('tbg3_username', $username);
-							$this->getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($password));
-							if ($request->hasParameter('return_to')) 
-							{
-								return $this->renderJSON(array('forward' => $request->getParameter('return_to')));
-							}
-							else
-							{
-								if (TBGSettings::get('returnfromlogin') == 'referer')
-								{
-									if ($request->getParameter('tbg3_referer'))
-									{
-										return $this->renderJSON(array('forward' => $request->getParameter('tbg3_referer')));
-									}
-									else
-									{
-										return $this->renderJSON(array('forward' => TBGContext::getRouting()->generate('home')));
-									}
-								}
-								else
-								{
-									return $this->renderJSON(array('forward' => TBGContext::getRouting()->generate(TBGSettings::get('returnfromlogin'))));
-								}
-							}
+							$forward_url = $request->getParameter('return_to');
 						}
 						else
 						{
-							throw new Exception($i18n->__('Please enter a username and password'));
+							if (TBGSettings::get('returnfromlogin') == 'referer')
+							{
+								if ($request->getParameter('tbg3_referer'))
+								{
+									$forward_url = $request->getParameter('tbg3_referer');
+								}
+							}
+							else
+							{
+								$forward_url = TBGContext::getRouting()->generate(TBGSettings::get('returnfromlogin'));
+							}
 						}
 					}
-					elseif (!TBGContext::getUser()->isAuthenticated() && TBGSettings::get('requirelogin'))
+					else
 					{
-						throw new Exception($i18n->__('You need to log in to access this site'));
+						throw new Exception($i18n->__('Please enter a username and password'));
 					}
-					elseif (!TBGContext::getUser()->isAuthenticated())
-					{
-						throw new Exception($i18n->__('Please log in'));
-					}
-					elseif (TBGContext::hasMessage('forward'))
-					{
-						throw new Exception($i18n->__(TBGContext::getMessageAndClear('forward')));
-					}
-					else 
-					{
-						throw new Exception($i18n->__('An internal error has occured'));
-					}
+				}
+				elseif (!TBGContext::getUser()->isAuthenticated() && TBGSettings::get('requirelogin'))
+				{
+					throw new Exception($i18n->__('You need to log in to access this site'));
+				}
+				elseif (!TBGContext::getUser()->isAuthenticated())
+				{
+					throw new Exception($i18n->__('Please log in'));
+				}
+				elseif (TBGContext::hasMessage('forward'))
+				{
+					throw new Exception($i18n->__(TBGContext::getMessageAndClear('forward')));
+				}
+				else 
+				{
+					throw new Exception($i18n->__('An internal error has occured'));
 				}
 			}
 			catch (Exception $e)
 			{
-				return $this->renderJSON(array('failed' => true, "error" => $i18n->__($e->getMessage()), 'referer' => $request->getParameter('tbg3_referer')));
+				if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
+				{
+					return $this->renderJSON(array('failed' => true, "error" => $i18n->__($e->getMessage()), 'referer' => $request->getParameter('tbg3_referer')));
+				}
+				else
+				{
+					$options['error'] = $e->getMessage();
+				}
 			}
+			if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
+			{
+				return $this->renderJSON(array('forward' => $forward_url));
+			}
+			elseif ($forward_url !== null)
+			{
+				$this->forward($forward_url);
+			}
+			$this->options = $options;
 		}
 		
 		/**

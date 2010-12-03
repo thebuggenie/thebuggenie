@@ -63,3 +63,8 @@
 		</div>
 	<?php endif; ?>
 </div>
+<?php if (isset($options['error'])): ?>
+	<script type="text/javascript">
+		failedMessage('<?php echo $options['error']; ?>');
+	</script>
+<?php endif; ?>
