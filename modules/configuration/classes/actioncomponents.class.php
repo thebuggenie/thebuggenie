@@ -79,6 +79,11 @@
 		{
 			$this->icons = TBGIssuetype::getIcons();
 		}
+		
+		public function componentIssuetypescheme()
+		{
+			
+		}
 
 		public function componentIssueFields_CustomType()
 		{

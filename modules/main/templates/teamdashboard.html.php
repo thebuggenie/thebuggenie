@@ -1,8 +1,17 @@
 <?php 
 
-	$tbg_response->setTitle($team->getName());
-	$tbg_response->setPage('team');
-	$tbg_response->addBreadcrumb(link_tag(make_url('team_dashboard', array('team_id' => $team->getID())), $team->getName()));
+	$tbg_response->addBreadcrumb(__('Teams'));
+	if ($team instanceof TBGTeam)
+	{
+		$tbg_response->setTitle(__('Team dashboard for %team_name%', array('%team_name%' => $team->getName())));
+		$tbg_response->setPage('team');
+		$tbg_response->addBreadcrumb(link_tag(make_url('team_dashboard', array('team_id' => $team->getID())), $team->getName()));
+	}
+	else
+	{
+		$tbg_response->setTitle(__('Team dashboard'));
+		$tbg_response->addBreadcrumb(__('Team dashboard'));
+	}
 	
 ?>
 

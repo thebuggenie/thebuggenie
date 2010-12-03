@@ -150,6 +150,7 @@
 			
 			// Set up data types
 			TBGIssuetype::loadFixtures($this);
+			TBGIssuetypeScheme::loadFixtures($this);
 			TBGDatatype::loadFixtures($this);
 			
 			// Set up workflows

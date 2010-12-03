@@ -79,6 +79,7 @@
 #article_diff tr:hover { background-color: #EEE; }
 INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { display: inline; text-decoration: line-through; background-color: #D88; }
 
-ul.simple_list li { padding: 5px 0; margin-bottom: 15px; }
-ul.simple_list li div.namespace_header { font-size: 1.2em; font-weight: bold; }
-ul.simple_list li div.namespace_header span.namespace { text-decoration: underline; }
+
+.article ul.simple_list li { padding: 5px 0; margin-bottom: 15px; }
+.article ul.simple_list li div.namespace_header { font-size: 1.2em; font-weight: bold; }
+.article ul.simple_list li div.namespace_header span.namespace { text-decoration: underline; }

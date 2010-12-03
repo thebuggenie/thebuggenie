@@ -156,7 +156,7 @@ div.image_container.thumb img.image { width: 220px; }
 
 /* autocompleter styling */
 div.autocomplete { position: absolute; z-index: 200000; background-color: white; border: 0; padding: 0px; }
-div.autocomplete ul { list-style-type: none; margin: 0px; width: 220px; padding: 0px; border: 0; }
+div.autocomplete ul { list-style-type: none; margin: 0px; width: 320px; padding: 0px; border: 0; }
 div.autocomplete ul li.selected, div.autocomplete ul li.selected:hover { background-color: #DDD; text-align: left; font-weight: normal; border: 0px; color: #333; text-align: left; }
 div.autocomplete ul li.selected:first-line, div.autocomplete ul li.selected:hover:first-line { font-weight: bold; }
 div.autocomplete ul li span { font-size: 11px; }
@@ -369,6 +369,8 @@ th.highlighted_column { background-color: #C1C1C1; }
 #config_modules .header .module_shortname { font-weight: normal; font-size: 0.95em; }
 #config_modules .content { padding-top: 5px; text-align: left; }
 
+#issuetypes_menu_panes .content { padding: 5px; }
+
 .more_than_one_project_warning { color: #C55; }
 
 .tab_content { padding-top: 10px; }
@@ -407,19 +409,20 @@ th.highlighted_column { background-color: #C1C1C1; }
 #project_table .config_header { font-size: 0.9em; }
 
 /* workflow styling */
-.workflow_list li { padding: 3px; font-size: 0.9em; }
-.workflow_list li table td { font-size: inherit; padding: 0; margin: 0; }
-.workflow_list td.workflow_info { width: 400px; }
-.workflow_list td.workflow_info.workflow_scheme { width: 350px; }
-.workflow_list td.workflow_inactive { color: #A88; font-weight: bold; width: 100px; text-align: center; }
-.workflow_list td.workflow_active { color: #390; font-weight: bold; width: 100px; text-align: center; }
-.workflow_list td.workflow_steps { width: 100px; text-align: left; }
-.workflow_list td.workflow_steps span { font-weight: bold; }
-.workflow_list td.workflow_scheme_issuetypes { width: 250px; text-align: center; }
-.workflow_list td.workflow_scheme_issuetypes span { font-weight: bold; }
-.workflow_list td.workflow_actions { width: 130px; font-weight: bold; font-size: 0.9em; text-align: right; }
-.workflow_list td.workflow_actions a { padding: 3px; background-color: #FAFAFA; border: 1px solid #CCC; display: block; float: right; line-height: 0; margin-left: 5px; }
-.workflow_list td.workflow_actions a:hover { background-color: #FCFCFC; border-color: #AAA; }
+.scheme_list li { padding: 3px; font-size: 0.9em; }
+.scheme_list li table td { font-size: inherit; padding: 0; margin: 0; }
+.scheme_list td.workflow_info { width: 400px; }
+.scheme_list td.workflow_info.workflow_scheme { width: 350px; }
+.scheme_list td.workflow_inactive { color: #A88; font-weight: bold; width: 100px; text-align: center; }
+.scheme_list td.workflow_active { color: #390; font-weight: bold; width: 100px; text-align: center; }
+.scheme_list td.workflow_steps { width: 100px; text-align: left; }
+.scheme_list td.workflow_steps span { font-weight: bold; }
+.scheme_list td.workflow_scheme_issuetypes { width: 250px; text-align: center; }
+.scheme_list td.workflow_scheme_issuetypes span { font-weight: bold; }
+.scheme_list td.workflow_actions { width: 130px; font-weight: bold; font-size: 0.9em; text-align: right; }
+.scheme_list td.workflow_actions a { padding: 3px; background-color: #FAFAFA; border: 1px solid #CCC; display: block; float: right; line-height: 0; margin-left: 5px; }
+.scheme_list td.workflow_actions a:hover { background-color: #FCFCFC; border-color: #AAA; }
+.scheme_list.issuetype_scheme_list td.workflow_info { width: 600px; }
 .workflow_name { font-weight: bold; }
 .workflow_description, .workflow_name span.builtin { font-weight: normal; font-style: italic; font-size: 0.9em; }
 .workflow_name span.builtin { color: #AAA; }

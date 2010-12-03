@@ -1,4 +1,4 @@
-<div class="rounded_box <?php if ($type->isReportable()): ?>iceblue<?php else: ?>mediumgrey<?php endif; ?> borderless" style="margin: 5px 0 0 0; font-size: 12px;" id="issuetype_<?php echo $type->getID(); ?>_box">
+<div class="rounded_box mediumgrey borderless" style="margin: 5px 0 0 0; font-size: 12px;" id="issuetype_<?php echo $type->getID(); ?>_box">
 	<?php echo image_tag('spinning_32.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => 'issuetype_' . $type->getID() . '_indicator')); ?>
 	<div class="header"><a href="javascript:void(0);" onclick="showIssuetypeOptions('<?php echo make_url('configure_issuetypes_getoptions', array('id' => $type->getID())); ?>', <?php echo $type->getID(); ?>);" id="issuetype_<?php echo $type->getID(); ?>_name_link"><?php echo $type->getName(); ?></a></div>
 	<a title="<?php echo __('Edit this issue type'); ?>" href="javascript:void(0);" onclick="$('edit_issuetype_<?php echo $type->getID(); ?>_form').toggle();$('issuetype_<?php echo $type->getID(); ?>_info').toggle();" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('icon_edit.png'); ?></a>
@@ -24,7 +24,7 @@
 						<div class="faded_out" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('What kind of issue type this is'); ?>.</div>
 					</td>
 				</tr>
-				<tr>
+				<?php /*<tr>
 					<td style="vertical-align: top; padding-top: 5px;"><label for="issuetype_<?php echo $type->getID(); ?>_reportable"><?php echo __('Reportable'); ?></label></td>
 					<td>
 						<select name="reportable" id="issuetype_<?php echo $type->getID(); ?>_reportable">
@@ -50,7 +50,7 @@
 						</select>
 						<div class="faded_out" style="margin-bottom: 10px; padding: 2px; font-size: 12px;"><?php echo __('Whether to forward the user to the reported issue after it has been reported'); ?>.</div>
 					</td>
-				</tr>
+				</tr>*/ ?>
 			</table>
 			<input type="submit" value="<?php echo __('Update details'); ?>" style="font-weight: bold; font-size: 13px;">
 			<?php echo __('%update_details% or %cancel%', array('%update_details%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'edit_issuetype_' . $type->getID() . '_form\').toggle();$(\'issuetype_' . $type->getID() . '_info\').toggle();"><b>' . __('cancel') . '</b></a>')); ?>

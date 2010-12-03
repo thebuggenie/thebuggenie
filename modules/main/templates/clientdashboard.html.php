@@ -1,5 +1,6 @@
 <?php 
 
+	$tbg_response->addBreadcrumb(__('Clients'));
 	if ($client instanceof TBGClient)
 	{
 		$tbg_response->setTitle(__('Client dashboard for %client_name%', array('%client_name%' => $client->getName())));

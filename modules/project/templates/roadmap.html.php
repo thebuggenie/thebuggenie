@@ -7,7 +7,7 @@
 			<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
 			<div id="project_roadmap">
 				<?php if (count($milestones) == 0): ?>
-					<div style="padding: 15px; color: #AAA; font-size: 12px;"><?php echo __('There are no milestones in this project'); ?></div>
+					<div style="padding: 15px; color: #AAA; font-size: 12px;"><?php echo __('There is no roadmap to be shown for this project, as it does not have any available milestones'); ?></div>
 				<?php else: ?>
 					<?php foreach ($milestones as $milestone): ?>
 						<div class="roadmap_milestone" id="roadmap_milestone_<?php echo $milestone->getID(); ?>">

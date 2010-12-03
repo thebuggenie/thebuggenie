@@ -146,6 +146,7 @@
 		public function runConfigureIssuetypes(TBGRequest $request)
 		{
 			$this->issue_types = TBGIssuetype::getAll();
+			$this->issue_type_schemes = TBGIssuetypeScheme::getAll();
 			$this->icons = TBGIssuetype::getIcons();
 		}
 
@@ -1990,6 +1991,12 @@
 					$this->step->deleteOutgoingTransitions();
 					$this->forward(TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
 				}
+				if ($request->isMethod(TBGRequest::POST) && $request->getParameter('mode') == 'delete' && !$this->step->hasIncomingTransitions())
+				{
+					$this->step->deleteOutgoingTransitions();
+					$this->step->delete();
+					$this->forward(TBGContext::getRouting()->generate('configure_workflow_steps', array('workflow_id' => $this->workflow->getID())));
+				}
 				elseif ($request->isMethod(TBGRequest::POST) && ($request->hasParameter('edit') || $request->getParameter('mode') == 'edit'))
 				{
 					$this->step->setName($request->getParameter('name'));
@@ -2065,7 +2072,7 @@
 					{
 						if ($request->getParameter('transition_name') && $request->getParameter('outgoing_step_id') && $request->hasParameter('template'))
 						{
-							if (($step = TBGContext::factory()->TBGWorkflowStep((int) $request->getParameter('outgoing_step_id'))) && $step instanceof TBGWorkflowStep)
+							if (($outgoing_step = TBGContext::factory()->TBGWorkflowStep((int) $request->getParameter('outgoing_step_id'))) && $step instanceof TBGWorkflowStep)
 							{
 								if (array_key_exists($request->getParameter('template'), TBGWorkflowTransition::getTemplates()))
 								{
@@ -2073,9 +2080,10 @@
 									$transition->setWorkflow($this->workflow);
 									$transition->setName($request->getParameter('transition_name'));
 									$transition->setDescription($request->getParameter('transition_description'));
-									$transition->setOutgoingStep($step);
+									$transition->setOutgoingStep($outgoing_step);
 									$transition->setTemplate($request->getParameter('template'));
 									$transition->save();
+									$step->addOutgoingTransition($transition);
 									$redirect_transition = true;
 								}
 								else
