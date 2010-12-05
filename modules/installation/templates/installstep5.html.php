@@ -12,40 +12,21 @@
 		<fieldset>
 			<legend>Administrator account</legend>
 			<div style="font-size: 12px; margin: 10px 0 10px 0;">
-			An administrator account has been created. To use this account, log in with the following information:<br>
-			<b>Username: </b>administrator<br>
-			<b>Password: </b>admin<br>
-			<br>
-			You should log in and change this password immediately after finalizing the installation.</div>
+				An administrator account has been created. To use this account, log in with the following information:<br>
+				<b>Username: </b>administrator<br>
+				<b>Password: </b>admin<br>
+				<br>
+				You should change this password immediately after finalizing the installation.<br>
+				This can be done from the "Account" page, available from the dropdown-menu in the top-right corner.
+			</div>
 		</fieldset>
-		<form accept-charset="utf-8" action="index.php" method="post" id="tbg_settings">
-			<input type="hidden" name="step" value="5">
-			<input type="hidden" name="sample_data" value="1">
-			<fieldset>
-				<legend>Installing sample data</legend>
-				<?php if (!$sample_data): ?>
-					<dl class="install_list">
-						<dt style="width: 600px;">
-							If you want to try out The Bug Genie without real data, install sample data to play with.<br>
-							This will populate the database with a few projects, issues, articles, etc.
-						</dt>
-						<dd style="text-align: right;">
-							<input type="submit" value="Install sample data" style="width: 180px; margin-right: 10px;">
-						</dd>
-					</dl>
-				<?php else: ?>
-					<div style="font-size: 13px; margin: 10px 0 10px 0;">Installing sample data is not yet implemented</div> 
-				<?php endif; ?>
-			</fieldset>
-		</form>
 	</div>
 	<div class="installation_box">
-		<form accept-charset="utf-8" action="index.php" method="post" id="tbg_settings">
+		<form accept-charset="utf-8" action="index.php" method="post" id="finalize_settings">
 			<input type="hidden" name="step" value="6">
 			<div style="padding-top: 20px; clear: both; text-align: center;">
-				<label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button when you're done, and ready to use The Bug Genie</label>
 				<img src="themes/oxygen/spinning_30.gif" id="next_indicator" style="display: none;">
-				<input type="submit" id="continue_button" onclick="$('continue_button').hide();$('next_indicator').show();" value="Finalize installation">
+				<input type="submit" id="continue_button" style="clear: both; font-size: 17px; margin-top: 10px; padding: 10px; height: 40px;" onclick="$('continue_button').hide();$('next_indicator').show();" value="Finalize installation">
 			</div>
 		</form>
 	</div>

@@ -4,7 +4,7 @@
 		<div class="error"><?php echo nl2br($error); ?></div>
 		<h2>An error occured</h2>
 		An error occured and the installation has been stopped. Please try to fix the error based on the information above, then click back, and try again.<br>
-		If you think this is a bug, please report it in our <a href="http://b2.thebuggenie.com" target="_new">online bug tracker</a>.
+		If you think this is a bug, please report it in our <a href="http://thebuggenie.com" target="_new">online bug tracker</a>.
 	</div>
 <?php else: ?>
 	<div class="donate installation_box">
@@ -14,15 +14,16 @@
 	</div>
 	<div class="installation_box">
 		<h2>Thank you for installing The Bug Genie!</h2>
-		The Bug Genie builds upon the open source <b>B2 framework</b>, and a PHP database layer called <b>B2DB</b>. If you find any bugs or issues, please use our <a href="http://b2.thebuggenie.com" target="_new">issue tracker</a> or send an email to <a href="mailto:support@thebuggenie.com">support@thebuggenie.com</a>.<br>
+		The Bug Genie builds upon its own open source php framework, and an open source PHP database layer called <a href="http://b2db.sf.net" target="_randomrandomrandom"><b>B2DB</b></a>. If you find any bugs or issues, please use our <a href="http://thebuggenie.com" target="_new">issue tracker</a> or send an email to <a href="mailto:support@thebuggenie.com">support@thebuggenie.com</a>.<br>
 		<br>
 		<h3>Help and support</h3>
-		Online documentation is available from <a href="http://www.thebuggenie.com/support.php" target="_new">www.thebuggenie.com</a>. If you need more help, you can use the <a href="http://www.thebuggenie.com/forum" target="_new">forums</a> where there are a lot of helpful people around.<br>
+		Online documentation is available from <a href="http://www.thebuggenie.com/support.php" target="_new">www.thebuggenie.com -> support</a>. If you need more help, you can use the <a href="http://www.thebuggenie.com/forum" target="_new">forums</a> where there are a lot of helpful people around.<br>
 		<b>Commercial email support is available for anyone with a <a target="_new" href="http://www.thebuggenie.com/giving_back.php">support contract</a>.</b> For other inquiries, send an email to <a href="mailto:support@thebuggenie.com">support@thebuggenie.com</a>.
 	</div>
 	<form action="<?php echo make_url('login'); ?>" method="post">
 		<input type="hidden" name="tbg3_username" value="administrator">
 		<input type="hidden" name="tbg3_password" value="admin">
+		<input type="hidden" name="tbg3_referer" value="<?php echo make_url('about'); ?>">
 		<div style="font-size: 15px; text-align: center; padding: 25px;">
 			<input type="submit" value="Now, stop nagging and let me use this thing!" style="padding: 7px; font-weight: normal;">
 		</div>

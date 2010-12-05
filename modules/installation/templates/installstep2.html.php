@@ -62,7 +62,7 @@
 					<select name="db_type" id="db_type">
 					<?php foreach (BaseB2DB::getDBtypes() as $db_type => $db_desc): ?>
 						<?php if (extension_loaded("pdo_{$db_type}")): ?>
-							<option value="<?php echo $db_type; ?>"><?php echo $db_desc; ?></option>
+							<option value="<?php echo $db_type; ?>"<?php if (isset($b2db_dbtype) && $b2db_dbtype == $db_type): ?> selected<?php endif; ?>><?php echo $db_desc; ?></option>
 						<?php endif; ?>
 					<?php endforeach; ?>
 					</select>
@@ -71,17 +71,17 @@
 					<label for="db_hostname">Hostname</label><br>
 					The hostname of the database The Bug Genie should connect to
 				</dt>
-				<dd><input type="text" name="db_hostname" id="db_hostname"></dd>
+				<dd><input type="text" name="db_hostname" id="db_hostname"<?php if (isset($hostname)): ?> value="<?php echo $hostname; ?>"<?php endif; ?>></dd>
 				<dt>
 					<label for="db_hostname">Port number</label><br>
 					The port number for the database The Bug Genie should connect to
 				</dt>
-				<dd><input type="text" name="db_port" id="db_port"></dd>
+				<dd><input type="text" name="db_port" id="db_port"<?php if (isset($port)): ?> value="<?php echo $port; ?>"<?php endif; ?>></dd>
 				<dt>
 					<label for="db_name">Database name</label><br>
 					The database used to store the bug genie tables <i>(must already exist!)</i>
 				</dt>
-				<dd><input type="text" name="db_name" id="db_name" value="thebuggenie"></dd>
+				<dd><input type="text" name="db_name" id="db_name"<?php if (isset($db_name)): ?> value="<?php echo $db_name; ?>"<?php else: ?>value="thebuggenie"<?php endif; ?>></dd>
 			</dl>
 		</fieldset>
 		<div style="padding-top: 20px; clear: both; text-align: center;">

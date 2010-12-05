@@ -243,6 +243,10 @@
 								{
 									$forward_url = $request->getParameter('tbg3_referer');
 								}
+								else
+								{
+									$forward_url = TBGContext::getRouting()->generate('dashboard');
+								}
 							}
 							else
 							{

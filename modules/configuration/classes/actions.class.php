@@ -67,7 +67,25 @@
 		 */
 		public function runImport(TBGRequest $request)
 		{
-
+			if ($request->isMethod(TBGRequest::POST))
+			{
+				if ($request->getParameter('import_sample_data'))
+				{
+					$project = new TBGProject();
+					$project->setName('Sample project 1');
+					$project->setDescription('This is a sample project that is awesome. Try it out!');
+					$project->setHomepage('http://www.google.com');
+					$project->save();
+					
+					$project = new TBGProject();
+					$project->setName('Sample project 2');
+					$project->setDescription('This is the second sample project. Not as awesome as the first one, but still worth a try!');
+					$project->setHomepage('http://www.bing.com');
+					$project->save();
+					
+					$this->imported_data = true;
+				}
+			}
 		}
 		
 		/**

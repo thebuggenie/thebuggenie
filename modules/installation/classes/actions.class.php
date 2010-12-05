@@ -89,7 +89,7 @@
 		public function runInstallStep2(TBGRequest $request)
 		{
 			$this->preloaded = false;
-			$this->selected_connection_detail = 'dsn';
+			$this->selected_connection_detail = 'custom';
 			
 			if (!$this->error)
 			{
@@ -106,6 +106,10 @@
 					$this->username = B2DB::getUname();
 					$this->password = B2DB::getPasswd();
 					$this->dsn = B2DB::getDSN();
+					$this->hostname = B2DB::getHost();
+					$this->port = B2DB::getPort();
+					$this->b2db_dbtype = B2DB::getDBtype();
+					$this->db_name = B2DB::getDBname();
 				}
 			}
 		}

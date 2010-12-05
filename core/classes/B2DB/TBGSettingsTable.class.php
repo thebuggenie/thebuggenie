@@ -121,7 +121,7 @@
 			$settings['requirelogin'] = 0;
 			$settings['defaultisguest'] = 1;
 			$settings['allowreg'] = 1;
-			$settings['returnfromlogin'] = 'dashboard';
+			$settings['returnfromlogin'] = 'referer';
 			$settings['returnfromlogout'] = 'home';
 			$settings['onlinestate'] = 1;
 			$settings['offlinestate'] = 2;
