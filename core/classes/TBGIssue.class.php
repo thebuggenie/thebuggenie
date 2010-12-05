@@ -69,7 +69,7 @@
 		 * @var TBGIssuetype
 		 * @Class TBGIssuetype
 		 */
-		protected $_issue_type;
+		protected $_issuetype;
 		
 		/**
 		 * The project which this issue affects
@@ -1315,19 +1315,19 @@
 		 */
 		public function getIssueType()
 		{
-			/*if (is_numeric($this->_issue_type))
+			/*if (is_numeric($this->_issuetype))
 			{
 				try
 				{
-					$this->_issue_type = TBGContext::factory()->TBGIssuetype($this->_issue_type);
+					$this->_issuetype = TBGContext::factory()->TBGIssuetype($this->_issuetype);
 				}
 				catch (Exception $e) 
 				{
-					$this->_issue_type = null;
+					$this->_issuetype = null;
 				}
 			}
-			return $this->_issue_type;*/
-			return $this->_getPopulatedObjectFromProperty('_issue_type');
+			return $this->_issuetype;*/
+			return $this->_getPopulatedObjectFromProperty('_issuetype');
 		}
 		
 		/**
@@ -2041,11 +2041,11 @@
 				$res = B2DB::getTable('TBGIssueRelationsTable')->addParentIssue($this->getID(), $related_issue->getID());
 				$this->_parent_issues = null;
 				
-				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issue_type% now depends on the solution of %issue_type% %issue_no%', array('%this_issue_type%' => $related_issue->getIssueType()->getName(), '%issue_type%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())));
-				$related_issue->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('This %this_issue_type% now depends on the solution of %issue_type% %issue_no%', array('%this_issue_type%' => $related_issue->getIssueType()->getName(), '%issue_type%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getUID());
+				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())));
+				$related_issue->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 				
-				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issue_type% %issue_no% now depends on the solution of this %this_issue_type%', array('%this_issue_type%' => $this->getIssueType()->getName(), '%issue_type%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())));
-				$comment = $this->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('%issue_type% %issue_no% now depends on the solution of this %this_issue_type%', array('%this_issue_type%' => $this->getIssueType()->getName(), '%issue_type%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getUID());
+				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())));
+				$comment = $this->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 				
 				return ($comment instanceof TBGComment) ? $comment : true;
 			}
@@ -2066,11 +2066,11 @@
 				$res = B2DB::getTable('TBGIssueRelationsTable')->addChildIssue($this->getID(), $related_issue->getID());
 				$this->_child_issues = null;
 				
-				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issue_type% %issue_no% now depends on the solution of this %this_issue_type%', array('%this_issue_type%' => $related_issue->getIssueType()->getName(), '%issue_type%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())));
-				$related_issue->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('%issue_type% %issue_no% now depends on the solution of this %this_issue_type%', array('%this_issue_type%' => $related_issue->getIssueType()->getName(), '%issue_type%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getUID());
+				$related_issue->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())));
+				$related_issue->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('%issuetype% %issue_no% now depends on the solution of this %this_issuetype%', array('%this_issuetype%' => $related_issue->getIssueType()->getName(), '%issuetype%' => $this->getIssueType()->getName(), '%issue_no%' => $this->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 				
-				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issue_type% now depends on the solution of %issue_type% %issue_no%', array('%this_issue_type%' => $this->getIssueType()->getName(), '%issue_type%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())));
-				$comment = $this->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('This %this_issue_type% now depends on the solution of %issue_type% %issue_no%', array('%this_issue_type%' => $this->getIssueType()->getName(), '%issue_type%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getUID());
+				$this->addLogEntry(TBGLogTable::LOG_ISSUE_DEPENDS, TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())));
+				$comment = $this->addSystemComment(TBGContext::getI18n()->__('Dependancy added'), TBGContext::getI18n()->__('This %this_issuetype% now depends on the solution of %issuetype% %issue_no%', array('%this_issuetype%' => $this->getIssueType()->getName(), '%issuetype%' => $related_issue->getIssueType()->getName(), '%issue_no%' => $related_issue->getFormattedIssueNo())), TBGContext::getUser()->getUID());
 				
 				return ($comment instanceof TBGComment) ? $comment : true;
 			}
@@ -2383,7 +2383,7 @@
 		 */
 		public function setIssuetype($issuetype_id)
 		{
-			$this->_addChangedProperty('_issue_type', $issuetype_id);
+			$this->_addChangedProperty('_issuetype', $issuetype_id);
 		}
 	
 		/**
@@ -4252,7 +4252,7 @@
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The milestone has been updated, from '''%previous_milestone%''' to '''%new_milestone%'''.", array('%previous_milestone%' => $old_name, '%new_milestone%' => $new_name));
 							break;
-						case '_issue_type':
+						case '_issuetype':
 							if ($value['original_value'] != 0)
 							{
 								$old_name = ($old_item = TBGContext::factory()->TBGIssuetype($value['original_value'])) ? $old_item->getName() : TBGContext::getI18n()->__('Unknown');

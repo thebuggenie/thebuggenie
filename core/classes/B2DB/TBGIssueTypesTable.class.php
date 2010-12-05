@@ -24,32 +24,16 @@
 		const SCOPE = 'issuetypes.scope';
 		const NAME = 'issuetypes.name';
 		const DESCRIPTION = 'issuetypes.description';
-		const APPLIES_TO = 'issuetypes.applies_to';
 		const ICON = 'issuetypes.itemdata';
 		const TASK = 'issuetypes.task';
-		const REPORTABLE = 'issuetypes.reportable';
-		const REDIRECT_AFTER_REPORTING = 'issuetypes.redirect_after_reporting';
-
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGIssueTypesTable
-		 */
-		public static function getTable()
-		{
-			return B2DB::getTable('TBGIssueTypesTable');
-		}
 		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addVarchar(self::NAME, 50);
-			parent::_addInteger(self::APPLIES_TO, 10);
 			parent::_addVarchar(self::ICON, 30, 'bug_report');
 			parent::_addText(self::DESCRIPTION, false);
 			parent::_addBoolean(self::TASK);
-			parent::_addBoolean(self::REPORTABLE, true);
-			parent::_addBoolean(self::REDIRECT_AFTER_REPORTING, true);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 

@@ -668,7 +668,7 @@
 			}
 			if ($this->selected_project instanceof TBGProject)
 			{
-				$this->issuetypes = TBGIssuetype::getAllApplicableToProject($this->selected_project->getID());
+				$this->issuetypes = $this->selected_project->getIssuetypeScheme()->getIssuetypes();
 			}
 			else
 			{
@@ -982,7 +982,7 @@
 						{
 							return $this->renderJSON(array('failed' => false, 'story_id' => $issue->getID(), 'content' => $this->getComponentHTML('project/scrumcard', array('issue' => $issue))));
 						}
-						if ($this->selected_issuetype->getRedirectAfterReporting())
+						if ($issue->getProject()->getIssuetypeScheme()->isIssuetypeRedirectedAfterReporting($this->selected_issuetype))
 						{
 							$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 303);
 						}
@@ -1280,6 +1280,14 @@
 							}
 							if ($parameter_id == 0 || ($parameter_id !== 0 && $is_valid))
 							{
+								if ($classname == 'TBGIssuetype')
+								{
+									$visible_fields = ($issue->getIssuetype() instanceof TBGIssuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
+								}
+								else
+								{
+									$visible_fields = null;
+								}
 								$issue->$set_function_name($parameter_id);
 								if ($is_pain)
 								{
@@ -1289,7 +1297,7 @@
 								else
 								{
 									if (!$issue->$is_changed_function_name()) return $this->renderJSON(array('changed' => false));
-									return ($parameter_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'field' => array('id' => $parameter_id, 'name' => $parameter->getName())));
+									return ($parameter_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'visible_fields' => $visible_fields, 'field' => array('id' => $parameter_id, 'name' => $parameter->getName())));
 								}
 							}
 						}

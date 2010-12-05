@@ -163,9 +163,20 @@
 		 */
 		public function runConfigureIssuetypes(TBGRequest $request)
 		{
-			$this->issue_types = TBGIssuetype::getAll();
-			$this->issue_type_schemes = TBGIssuetypeScheme::getAll();
-			$this->icons = TBGIssuetype::getIcons();
+			$this->mode = $request->getParameter('mode', 'issuetypes');
+			if ($this->mode == 'issuetypes' || $this->mode == 'scheme')
+			{
+				$this->issue_types = TBGIssuetype::getAll();
+				$this->icons = TBGIssuetype::getIcons();
+			}
+			elseif ($this->mode == 'schemes')
+			{
+				$this->issue_type_schemes = TBGIssuetypeScheme::getAll();
+			}
+			if ($request->hasParameter('scheme_id'))
+			{
+				$this->scheme = TBGContext::factory()->TBGIssuetypeScheme((int) $request->getParameter('scheme_id'));
+			}
 		}
 
 		/**
@@ -173,9 +184,9 @@
 		 *
 		 * @param TBGRequest $request
 		 */
-		public function runConfigureIssuetypesGetOptions(TBGRequest $request)
+		public function runConfigureIssuetypesGetOptionsForScheme(TBGRequest $request)
 		{
-			return $this->renderComponent('issuetypeoptions', array('id' => $request->getParameter('id')));
+			return $this->renderComponent('issuetypeschemeoptions', array('id' => $request->getParameter('id'), 'scheme_id' => $request->getParameter('scheme_id')));
 		}
 
 		/**
@@ -185,6 +196,10 @@
 		 */
 		public function runConfigureIssuetypesAction(TBGRequest $request)
 		{
+			if ($request->hasParameter('scheme_id'))
+			{
+				$this->scheme = TBGContext::factory()->TBGIssuetypeScheme((int) $request->getParameter('scheme_id'));
+			}
 			$this->forward403unless($this->access_level == TBGSettings::ACCESS_FULL);
 			switch ($request->getParameter('mode'))
 			{
@@ -202,15 +217,19 @@
 				case 'update':
 					if (($issuetype = TBGContext::factory()->TBGIssuetype($request->getParameter('id'))) instanceof TBGIssuetype)
 					{
-						if ($request->getParameter('name'))
+						if ($this->scheme instanceof TBGIssuetypeScheme)
+						{
+							$this->scheme->setIssuetypeRedirectedAfterReporting($issuetype, $request->getParameter('redirect_after_reporting'));
+							$this->scheme->setIssuetypeReportable($issuetype, $request->getParameter('reportable'));
+							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The issue type details were updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName()));
+						}
+						elseif ($request->getParameter('name'))
 						{
 							$issuetype->setDescription($request->getParameter('description'));
 							$issuetype->setName($request->getParameter('name'));
 							$issuetype->setIcon($request->getParameter('icon'));
-							$issuetype->setIsReportable($request->getParameter('reportable'));
-							$issuetype->setRedirectAfterReporting($request->getParameter('redirect_after_reporting'));
 							$issuetype->save();
-							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The issue type was updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName(), 'reportable' => $issuetype->isReportable()));
+							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The issue type was updated'), 'description' => $issuetype->getDescription(), 'name' => $issuetype->getName()));
 						}
 						else
 						{
@@ -222,10 +241,10 @@
 				case 'updatechoices':
 					if (($issuetype = TBGContext::factory()->TBGIssuetype($request->getParameter('id'))) instanceof TBGIssuetype)
 					{
-						$issuetype->clearAvailableFields();
+						$this->scheme->clearAvailableFieldsForIssuetype($issuetype);
 						foreach ($request->getParameter('field', array()) as $key => $details)
 						{
-							$issuetype->setFieldAvailable($key, $details);
+							$this->scheme->setFieldAvailableForIssuetype($issuetype, $key, $details);
 						}
 						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Avilable choices updated')));
 					}

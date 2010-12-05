@@ -67,12 +67,13 @@
 			}
 		}
 
-		public function componentIssueTypeOptions()
+		public function componentIssueTypeSchemeOptions()
 		{
 			$this->issuetype = TBGContext::factory()->TBGIssuetype($this->id);
+			$this->scheme = TBGContext::factory()->TBGIssuetypeScheme($this->scheme_id);
 			$this->builtinfields = TBGDatatype::getAvailableFields(true);
 			$this->customtypes = TBGCustomDatatype::getAll();
-			$this->visiblefields = $this->issuetype->getVisibleFields();
+			$this->visiblefields = $this->scheme->getVisibleFieldsForIssuetype($this->issuetype);
 		}
 
 		public function componentIssueType()

@@ -106,9 +106,9 @@
 													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
 													</div>
 													<div id="project_issue_menu" class="tab_menu_dropdown shadowed">
-													<?php foreach (TBGContext::getCurrentProject()->getIssuetypes() as $issue_type): ?>
-														<?php if (!$issue_type->isReportable()) continue; ?>	
-														<?php echo link_tag(make_url('project_reportissue_with_issuetype', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'issuetype' => $issue_type->getKey())), image_tag($issue_type->getIcon() . '_tiny.png' ) . __($issue_type->getName())); ?>
+													<?php foreach (TBGContext::getCurrentProject()->getIssuetypeScheme()->getIssuetypes() as $issuetype): ?>
+														<?php if (!TBGContext::getCurrentProject()->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>
+														<?php echo link_tag(make_url('project_reportissue_with_issuetype', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'issuetype' => $issuetype->getKey())), image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName())); ?>
 													<?php endforeach;?>
 												</div>											
 											</li>

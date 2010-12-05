@@ -1,7 +1,7 @@
 <?php
 
 	/**
-	 * Link table between workflow and issue type
+	 * Link table between issue type scheme and issue type
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 ** @version 3.0
@@ -11,7 +11,7 @@
 	 */
 
 	/**
-	 * Link table between workflow and issue type
+	 * Link table between issue type scheme and issue type
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
@@ -23,20 +23,24 @@
 		const ID = 'issuetype_scheme_link.id';
 		const SCOPE = 'issuetype_scheme_link.scope';
 		const ISSUETYPE_SCHEME_ID = 'issuetype_scheme_link.issuetype_scheme_id';
-		const ISSUETYPE_ID = 'issuetype_scheme_link.issutype_id';
+		const ISSUETYPE_ID = 'issuetype_scheme_link.issuetype_id';
+		const REPORTABLE = 'issuetype_scheme_link.reportable';
+		const REDIRECT_AFTER_REPORTING = 'issuetype_scheme_link.redirect_after_reporting';
 
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
-			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUETYPE_ID, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
+			parent::_addBoolean(self::REPORTABLE, true);
+			parent::_addBoolean(self::REDIRECT_AFTER_REPORTING, true);
+			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 
-		public function getByIssuetypeSchemeID($workflow_scheme_id)
+		public function getByIssuetypeSchemeID($issuetype_scheme_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $workflow_scheme_id);
+			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $issuetype_scheme_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			$return_array = array();
@@ -44,7 +48,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$return_array[$row->get(self::ISSUETYPE_ID)] = TBGContext::factory()->TBGIssuetype($row->get(self::WORKFLOW_ID), $row);
+					$return_array[$row->get(self::ISSUETYPE_ID)] = array('reportable' => (bool) $row->get(self::REPORTABLE), 'redirect' => (bool) $row->get(self::REDIRECT_AFTER_REPORTING), 'issuetype' => TBGContext::factory()->TBGIssuetype($row->get(self::ISSUETYPE_ID), $row));
 				}
 			}
 
@@ -67,6 +71,26 @@
 			$crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
 			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
 			$this->doDelete($crit);
+		}
+		
+		public function setIssuetypeRedirectedAfterReportingForScheme($issuetype_id, $issuetype_scheme_id, $redirected = true)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $issuetype_scheme_id);
+			$crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addUpdate(self::REDIRECT_AFTER_REPORTING, $redirected);
+			$this->doUpdate($crit);
+		}
+		
+		public function setIssuetypeReportableForScheme($issuetype_id, $issuetype_scheme_id, $reportable = true)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $issuetype_scheme_id);
+			$crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addUpdate(self::REPORTABLE, $reportable);
+			$this->doUpdate($crit);
 		}
 
 	}

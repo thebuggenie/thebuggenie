@@ -51,26 +51,6 @@
 		 */
 		protected $_sort_order = null;
 
-		public function getName()
-		{
-			return $this->_name;
-		}
-		
-		/**
-		 * Set the datatype name
-		 *
-		 * @param string $name
-		 */
-		public function setName($name)
-		{
-			$this->_name = $name;
-		}
-
-		public function getID()
-		{
-			return $this->_id;
-		}
-
 		/**
 		 * Returns the itemdata associated with the datatype (if any)
 		 *

@@ -291,6 +291,14 @@
 		protected $_workflow_scheme_id = 1;
 		
 		/**
+		 * The selected workflow scheme
+		 * 
+		 * @var TBGIssuetypeScheme
+		 * @Class TBGIssuetypeScheme
+		 */
+		protected $_issuetype_scheme_id = 1;
+		
+		/**
 		 * Assigned client
 		 * 
 		 * @var TBGClient
@@ -1343,19 +1351,8 @@
 		{
 			if ($this->_issuetypes === null)
 			{
-				$this->_issuetypes = TBGIssuetype::getAllApplicableToProject($this->getID());
+				$this->_issuetypes = $this->getIssuetypeScheme()->getIssuetypes();
 			}
-		}
-		
-		/**
-		 * Returns all issue types available for / applicable to this project
-		 * 
-		 * @return array
-		 */
-		public function getIssuetypes()
-		{
-			$this->_populateIssuetypes();
-			return $this->_issuetypes;
 		}
 
 		/**
@@ -1935,10 +1932,7 @@
 			if (!isset($this->_fieldsarrays[$issue_type][(int) $reportable]))
 			{
 				$retval = array();
-				if (!($res = B2DB::getTable('TBGIssueFieldsTable')->getByProjectIDandIssuetypeID($this->getID(), $issue_type)))
-				{
-					$res = B2DB::getTable('TBGIssueFieldsTable')->getByIssuetypeID($issue_type);
-				}
+				$res = B2DB::getTable('TBGIssueFieldsTable')->getBySchemeIDandIssuetypeID($this->getIssuetypeScheme()->getID(), $issue_type);
 				if ($res)
 				{
 					$builtin_types = TBGDatatype::getAvailableFields(true);
@@ -2326,6 +2320,21 @@
 		public function setWorkflowScheme(TBGWorkflowScheme $scheme)
 		{
 			$this->_workflow_scheme_id = $scheme;
+		}
+		
+		/**
+		 * Return the projects' associated issuetype scheme
+		 * 
+		 * @return TBGIssuetypeScheme
+		 */
+		public function getIssuetypeScheme()
+		{
+			return $this->_getPopulatedObjectFromProperty('_issuetype_scheme_id');
+		}
+		
+		public function setIssuetypeScheme(TBGIssuetypeScheme $scheme)
+		{
+			$this->_issuetype_scheme_id = $scheme;
 		}
 		
 		/**

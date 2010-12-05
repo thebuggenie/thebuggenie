@@ -54,20 +54,16 @@ function updateIssuetype(url, id)
 		{
 			$('edit_issuetype_' + id + '_indicator').hide();
 			$('edit_issuetype_' + id + '_form').hide();
-			$('issuetype_' + id + '_description_span').update(json.description);
-			$('issuetype_' + id + '_name_link').update(json.name);
-			if (json.reportable)
+			if (json.description)
 			{
-				$('issuetype_' + id + '_box').removeClassName('borderless');
-				$('issuetype_' + id + '_box').addClassName('iceblue_borderless');
+				$('issuetype_' + id + '_description_span').update(json.description);
 			}
-			else
+			if (json.name)
 			{
-				$('issuetype_' + id + '_box').addClassName('borderless');
-				$('issuetype_' + id + '_box').removeClassName('iceblue_borderless');
+				$('issuetype_' + id + '_name_link').update(json.name);
+				$('issuetype_' + id + '_info').show();
 			}
-			$('issuetype_' + id + '_info').show();
-			successMessage(json.title, '');
+			successMessage(json.title);
 		}
 	},
 	onFailure: function (transport) {

@@ -602,8 +602,8 @@ ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
 .issue_info.aligned { margin: 10px auto 5px auto; padding: 3px; width: 990px; text-align: center; }
 .issue_info.full_width { margin: 5px 5px 0 5px; padding: 5px; position: relative; }
 .issue_info.full_width img { float: left; margin: 0 10px 0 5px; }
-.issue_info .header { font-size: 1.1em; }
-.issue_info .content, .notfound_error .content { font-weight: normal; font-size: 0.95em; }
+.issue_info .header { font-size: 1.1em; line-height: 1.3; }
+.issue_info .content, .notfound_error .content { font-weight: normal; font-size: 0.95em; line-height: 1; }
 #notfound_error { vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 1.1em; width: 700px; }
 #viewissue_changed { height: 35px; padding: 5px 10px 5px 10px; color: #222; }
 #viewissue_saved { cursor: pointer; }

@@ -191,9 +191,9 @@
 						<label for="issuetype_id" style="margin-right: 20px;"><?php echo __('Select issue type'); ?></label>
 						<select name="issuetype_id" id="issuetype_id" style="min-width: 300px; height: 25px;" onchange="updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');">
 							<option value="0"><?php echo __('Please select an issue type from this list'); ?>...</option>
-							<?php foreach ($issuetypes as $issue_type): ?>
-								<?php if (!$issue_type->isReportable()) continue; ?>
-								<option value="<?php echo $issue_type->getID(); ?>"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_issuetype->getID() == $issue_type->getID()): ?> selected<?php endif; ?>><?php echo $issue_type->getName(); ?></option>
+							<?php foreach ($issuetypes as $issuetype): ?>
+								<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>
+								<option value="<?php echo $issuetype->getID(); ?>"<?php if ($selected_issuetype instanceof TBGIssuetype && $selected_issuetype->getID() == $issuetype->getID()): ?> selected<?php endif; ?>><?php echo $issuetype->getName(); ?></option>
 							<?php endforeach; ?>
 						</select>
 					</div>
@@ -208,13 +208,13 @@
 		<?php if (count($projects) > 0 && count($issuetypes) > 0): ?>
 			<ul class="issuetype_list" id="issuetype_list"<?php if ($selected_issuetype instanceof TBGIssuetype): ?> style="display: none;"<?php endif; ?>>
 			<?php foreach ($issuetypes as $issuetype): ?>
-				<?php if (!$issuetype->isReportable()) continue; ?>
+				<?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>
 				<li class="rounded_box borderless lightgrey">
 					<?php echo image_tag($issuetype->getIcon() . '.png'); ?>
 					<strong style="font-size: 14px;"><?php echo $issuetype->getName(); ?></strong><br>
 					<?php echo $issuetype->getDescription(); ?>
 					<div style="text-align: right; margin-top: 5px;">
-						<a href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');" style="font-size: 13px; font-weight: bold;"><?php echo __('Choose %issue_type%', array('%issue_type%' => strtolower($issuetype->getName()))); ?>&nbsp;&gt;&gt;</a>
+						<a href="javascript:void(0);" onclick="$('issuetype_id').setValue(<?php echo $issuetype->getID(); ?>);updateFields('<?php echo make_url('getreportissuefields'); ?>', '<?php echo make_url('getprojectmenustrip', array('page' => 'reportissue')); ?>');" style="font-size: 13px; font-weight: bold;"><?php echo __('Choose %issuetype%', array('%issuetype%' => strtolower($issuetype->getName()))); ?>&nbsp;&gt;&gt;</a>
 					</div>
 				</li>
 			<?php endforeach; ?>

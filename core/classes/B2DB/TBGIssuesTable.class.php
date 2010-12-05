@@ -28,7 +28,7 @@
 		const PROJECT_ID = 'issues.project_id';
 		const DESCRIPTION = 'issues.description';
 		const REPRODUCTION_STEPS = 'issues.reproduction_steps';
-		const ISSUE_TYPE = 'issues.issue_type';
+		const ISSUE_TYPE = 'issues.issuetype';
 		const RESOLUTION = 'issues.resolution';
 		const STATE = 'issues.state';
 		const POSTED_BY = 'issues.posted_by';
@@ -130,7 +130,7 @@
 
 		public static function getValidSearchFilters()
 		{
-			return array('project_id', 'text', 'state', 'issue_type', 'status', 'resolution', 'category', 'severity', 'priority', 'posted_by', 'assigned_to', 'assigned_type');
+			return array('project_id', 'text', 'state', 'issuetype', 'status', 'resolution', 'category', 'severity', 'priority', 'posted_by', 'assigned_to', 'assigned_type');
 		}
 
 		public function getCountsByProjectID($project_id)
@@ -375,11 +375,11 @@
 			return $res;
 		}
 
-		public function getOpenIssuesByProjectIDAndIssueTypes($project_id, $issue_types, $order_by=null)
+		public function getOpenIssuesByProjectIDAndIssueTypes($project_id, $issuetypes, $order_by=null)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(self::ISSUE_TYPE, $issue_types, B2DBCriteria::DB_IN);
+			$crit->addWhere(self::ISSUE_TYPE, $issuetypes, B2DBCriteria::DB_IN);
 			$crit->addWhere(self::STATE, TBGIssue::STATE_OPEN);
 			$crit->addWhere(self::DELETED, 0);
 			

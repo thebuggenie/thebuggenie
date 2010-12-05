@@ -33,6 +33,23 @@
 			<td class="config_explanation" colspan="2"><?php echo __('Select the workflow scheme to be used by this project'); ?></td>
 		</tr>
 		<tr>
+			<td><label for="issuetype_scheme"><?php echo __('Issuetype scheme'); ?></label></td>
+			<td>
+				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+					<select name="issuetype_scheme" id="issuetype_scheme">
+						<?php foreach (TBGIssuetypeScheme::getAll() as $issuetype_scheme): ?>
+							<option value=<?php echo $issuetype_scheme->getID(); ?><?php if ($project->getIssuetypeScheme()->getID() == $issuetype_scheme->getID()): ?> selected<?php endif; ?>><?php echo $issuetype_scheme->getName(); ?></option>
+						<?php endforeach; ?>
+					</select>
+				<?php else: ?>
+					<?php echo $project->getIssuetypeScheme()->getName(); ?>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="config_explanation" colspan="2"><?php echo __('Select the issuetype scheme to be used by this project'); ?></td>
+		</tr>
+		<tr>
 			<td><label for="use_scrum"><?php echo __('Enable agile development features'); ?></label></td>
 			<td>
 				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>

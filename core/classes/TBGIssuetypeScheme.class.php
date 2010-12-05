@@ -23,8 +23,10 @@
 		
 		protected static $_schemes = null;
 
-		protected $_issuetypes = null;
-
+		protected $_visiblefields = array();
+		
+		protected $_issuetypedetails = null;
+		
 		/**
 		 * The issuetype description
 		 *
@@ -64,6 +66,14 @@
 			foreach (TBGIssuetype::getAll() as $issuetype)
 			{
 				$scheme->setIssuetypeEnabled($issuetype);
+				if ($issuetype->getIcon() == 'developer_report')
+				{
+					$scheme->setIssuetypeRedirectedAfterReporting($issuetype, false);
+				}
+				if (in_array($issuetype->getIcon(), array('task', 'developer_report', 'idea')))
+				{
+					$scheme->setIssuetypeReportable($issuetype, false);
+				}
 			}
 		}
 		
@@ -100,9 +110,9 @@
 
 		protected function _populateAssociatedIssuetypes()
 		{
-			if ($this->_issuetypes === null)
+			if ($this->_issuetypedetails === null)
 			{
-				$this->_issuetypes = TBGIssuetypeSchemeLinkTable::getTable()->getByIssuetypeSchemeID($this->getID());
+				$this->_issuetypedetails = TBGIssuetypeSchemeLinkTable::getTable()->getByIssuetypeSchemeID($this->getID());
 			}
 		}
 		
@@ -119,10 +129,7 @@
 			{
 				TBGIssuetypeSchemeLinkTable::getTable()->unAssociateIssuetypeWithScheme($issuetype->getID(), $this->getID());
 			}
-			if ($this->_issuetypes !== null)
-			{
-				$this->_issuetypes[$issuetype->getID()] = $issuetype;
-			}
+			$this->_issuetypedetails = null;
 		}
 		
 		public function setIssuetypeDisabled(TBGIssuetype $issuetype)
@@ -133,18 +140,79 @@
 		public function isSchemeAssociatedWithIssuetype(TBGIssuetype $issuetype)
 		{
 			$this->_populateAssociatedIssuetypes();
-			return array_key_exists($issuetype->getID(), $this->_issuetypes);
+			return array_key_exists($issuetype->getID(), $this->_issuetypedetails);
+		}
+		
+		public function isIssuetypeReportable(TBGIssuetype $issuetype)
+		{
+			$this->_populateAssociatedIssuetypes();
+			if (!$this->isSchemeAssociatedWithIssuetype($issuetype)) return false;
+			return (bool) $this->_issuetypedetails[$issuetype->getID()]['reportable'];
+		}
+
+		public function isIssuetypeRedirectedAfterReporting(TBGIssuetype $issuetype)
+		{
+			$this->_populateAssociatedIssuetypes();
+			if (!$this->isSchemeAssociatedWithIssuetype($issuetype)) return false;
+			return (bool) $this->_issuetypedetails[$issuetype->getID()]['redirect'];
+		}
+		
+		public function setIssuetypeRedirectedAfterReporting(TBGIssuetype $issuetype, $val = true)
+		{
+			TBGIssuetypeSchemeLinkTable::getTable()->setIssuetypeRedirectedAfterReportingForScheme($issuetype->getID(), $this->getID(), $val);
+			if (array_key_exists($issuetype->getID(), $this->_visiblefields))
+			{
+				$this->_visiblefields[$issuetype->getID()]['redirect'] = $val;
+			}
+		}
+
+		public function setIssuetypeReportable(TBGIssuetype $issuetype, $val = true)
+		{
+			TBGIssuetypeSchemeLinkTable::getTable()->setIssuetypeReportableForScheme($issuetype->getID(), $this->getID(), $val);
+			if (array_key_exists($issuetype->getID(), $this->_visiblefields))
+			{
+				$this->_visiblefields[$issuetype->getID()]['reportable'] = $val;
+			}
 		}
 
 		/**
 		 * Get all steps in this issuetype
 		 *
-		 * @return array An array of TBGIssuetypeStep objects
+		 * @return array An array of TBGIssuetype objects
 		 */
-		public function getIssuetypes(TBGIssuetype $issuetype)
+		public function getIssuetypes()
 		{
 			$this->_populateAssociatedIssuetypes();
-			return $this->_issuetypes;
+			$retarr = array();
+			foreach ($this->_issuetypedetails as $key => $details)
+			{
+				$retarr[$key] = $details['issuetype'];
+			}
+			return $retarr;
 		}
 
+		protected function _populateVisibleFieldsForIssuetype(TBGIssuetype $issuetype)
+		{
+			if (!array_key_exists($issuetype->getID(), $this->_visiblefields))
+			{
+				$this->_visiblefields[$issuetype->getID()] = B2DB::getTable('TBGIssueFieldsTable')->getSchemeVisibleFieldsArrayByIssuetypeID($this->getID(), $issuetype->getID());
+			}
+		}
+
+		public function getVisibleFieldsForIssuetype(TBGIssuetype $issuetype)
+		{
+			$this->_populateVisibleFieldsForIssuetype($issuetype);
+			return $this->_visiblefields[$issuetype->getID()];
+		}
+		
+		public function clearAvailableFieldsForIssuetype(TBGIssuetype $issuetype)
+		{
+			B2DB::getTable('TBGIssueFieldsTable')->deleteBySchemeIDandIssuetypeID($this->getID(), $issuetype->getID());
+		}
+
+		public function setFieldAvailableForIssuetype(TBGIssuetype $issuetype, $key, $details)
+		{
+			B2DB::getTable('TBGIssueFieldsTable')->addFieldAndDetailsBySchemeIDandIssuetypeID($this->getID(), $issuetype->getID(), $key, $details);
+		}
+		
 	}
