@@ -265,6 +265,17 @@
 					break;
 				case 'delete':
 					break;
+				case 'toggletype':
+					if (($issuetype = TBGContext::factory()->TBGIssuetype($request->getParameter('id'))) instanceof TBGIssuetype)
+					{
+						if ($this->scheme instanceof TBGIssuetypeScheme)
+						{
+							$this->scheme->setIssuetypeEnabled($issuetype, ($request->getParameter('state') == 'enable'));
+							return $this->renderJSON(array('failed' => false, 'issuetype_id' => $issuetype->getID()));
+						}
+					}
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid action for this issue type / scheme')));
+					break;
 				default:
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid action for this issue type')));
 			}

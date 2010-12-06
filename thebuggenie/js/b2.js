@@ -87,7 +87,7 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 	evalScripts: true,
 	onLoading: function (transport) {
 		$(indicator).show();
-		if (clear_update_element_before_loading)
+		if (clear_update_element_before_loading && $(update_element))
 		{
 			$(update_element).update('');
 		}
@@ -106,7 +106,7 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 		else
 		{
 			$(indicator).hide();
-			if (update_element != '' && $(update_element))
+			if ($(update_element))
 			{
 				content = (json) ? json.content : transport.responseText;
 				if (insertion == true)
@@ -134,7 +134,7 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 					{
 						$(s).hide();
 					}
-					else if (s) s.hide();
+					else if ($(s)) s.hide();
 				});
 			}
 			if (show_elements_on_success)

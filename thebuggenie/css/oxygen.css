@@ -370,6 +370,8 @@ th.highlighted_column { background-color: #C1C1C1; }
 #config_modules .content { padding-top: 5px; text-align: left; }
 
 #issuetypes_menu_panes .content { padding: 5px; }
+.issuetype_box a.image, .issuetype_box a.image:hover { border: 0; }
+.issuetype_scheme_associate_link { font-weight: normal; font-size: 0.9em; }
 
 .more_than_one_project_warning { color: #C55; }
 
