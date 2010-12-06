@@ -60,8 +60,11 @@ function updateIssuetype(url, id)
 			}
 			if (json.name)
 			{
-				$('issuetype_' + id + '_name_link').update(json.name);
-				$('issuetype_' + id + '_info').show();
+				$('issuetype_' + id + '_name_span').update(json.name);
+				if ($('issuetype_' + id + '_info'))
+				{
+					$('issuetype_' + id + '_info').show();
+				}
 			}
 			successMessage(json.title);
 		}
