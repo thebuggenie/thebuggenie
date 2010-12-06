@@ -115,7 +115,16 @@
 						}
 						else
 						{
-							TBGSettings::saveSetting($setting, TBGContext::getRequest()->getParameter($setting));
+							$value = TBGContext::getRequest()->getParameter($setting);
+							if ($setting == 'highlight_default_interval')
+							{
+								if (!is_numeric($value) || $value < 1)
+								{
+									$this->getResponse()->setHttpStatus(400);
+									return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provde a valid setting for highlighting interval')));
+								}
+							}
+							TBGSettings::saveSetting($setting, $value);
 						}
 					}
 				}
