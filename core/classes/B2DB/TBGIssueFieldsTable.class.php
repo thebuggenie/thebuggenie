@@ -22,8 +22,6 @@
 		const B2DBNAME = 'issuefields';
 		const ID = 'issuefields.id';
 		const SCOPE = 'issuefields.scope';
-		const PROJECT_ID = 'issuefields.project_id';
-		const CATEGORY_ID = 'issuefields.category_id';
 		const ADDITIONAL = 'issuefields.is_additional';
 		const ISSUETYPE_ID = 'issuefields.issuetype_id';
 		const ISSUETYPE_SCHEME_ID = 'issuefields.issuetype_scheme_id';
@@ -38,8 +36,6 @@
 			parent::_addBoolean(self::REQUIRED);
 			parent::_addBoolean(self::REPORTABLE);
 			parent::_addBoolean(self::ADDITIONAL);
-			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
-			parent::_addForeignKeyColumn(self::CATEGORY_ID, TBGListTypesTable::getTable(), TBGListTypesTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUETYPE_ID, TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID);
 			parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
@@ -66,6 +62,28 @@
 			$crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doDelete($crit);
+		}
+		
+		public function copyBySchemeIDs($from_scheme_id, $to_scheme_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $from_scheme_id);
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$crit2 = $this->getCriteria();
+					$crit2->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+					$crit2->addInsert(self::ISSUETYPE_SCHEME_ID, $to_scheme_id);
+					$crit2->addInsert(self::FIELD_KEY, $row->get(self::FIELD_KEY));
+					$crit2->addInsert(self::ADDITIONAL, $row->get(self::ADDITIONAL));
+					$crit2->addInsert(self::ISSUETYPE_ID, $row->get(self::ISSUETYPE_ID));
+					$crit2->addInsert(self::REPORTABLE, $row->get(self::REPORTABLE));
+					$crit2->addInsert(self::REQUIRED, $row->get(self::REQUIRED));
+					$this->doInsert($crit2);
+				}
+			}
 		}
 
 		public function addFieldAndDetailsBySchemeIDandIssuetypeID($scheme_id, $issuetype_id, $key, $details)
