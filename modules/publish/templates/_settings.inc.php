@@ -26,7 +26,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="config_explanation" colspan="2"><?php echo __('Traditionally, %CamelCasing% has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting% wiki article if you are unsure how to use this feature.', array('%CamelCasing%' => link_tag('http://wikipedia.org/wiki/CamelCase', __('CamelCasing'), array('target' => '_blank')), '%wikiformatting%' => link_tag(make_url('publish_article', array('article_name' => 'TheBugGenie:WikiFormatting')), 'WikiFormatting', array('target' => '_blank')))); ?></td>
+			<td class="config_explanation" colspan="2"><?php echo __('Traditionally, %CamelCasing% has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting% wiki article if you are unsure how to use this feature.', array('%CamelCasing%' => link_tag('http://wikipedia.org/wiki/CamelCase', __('CamelCasing'), array('target' => '_blank')), '%wikiformatting%' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting', array('target' => '_blank')))); ?></td>
 		</tr>
 		<tr>
 			<td style="padding: 5px;"><label for="hide_wiki_links_no"><?php echo __('Show "Wiki" links'); ?></label></td>

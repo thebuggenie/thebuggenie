@@ -96,32 +96,61 @@
 		
 		public function loadFixturesArticles($scope, $overwrite = true)
 		{
-			return true;
 			if (TBGContext::isCLI()) TBGCliCommand::cli_echo("Loading default articles\n");
+			$this->loadArticles('', $overwrite);
+			if (TBGContext::isCLI()) TBGCliCommand::cli_echo("... done\n");
+		}
+		
+		public function loadArticles($namespace = '', $overwrite = true)
+		{
+			$scope = TBGContext::getScope()->getID();
 			$_path_handle = opendir(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR);
 			while ($article_name = readdir($_path_handle))
 			{
 				if (strpos($article_name, '.') === false)
 				{
 					$imported = false;
-					if (TBGContext::isCLI())
+					$import = false;
+					if ($namespace)
 					{
-						TBGCliCommand::cli_echo('Saving '.urldecode($article_name)."\n");
+						if (strpos(urldecode($article_name), "{$namespace}:") === 0 || (strpos(urldecode($article_name), "Category:") === 0 && strpos(urldecode($article_name), "{$namespace}:") === 9))
+						{
+							$import = true;
+						}
 					}
-					if ($overwrite)
+					else
 					{
-						TBGArticlesTable::getTable()->deleteArticleByName(urldecode($article_name));
+						if (strpos(urldecode($article_name), "Category:") === 0)
+						{
+							$name_test = substr(urldecode($article_name), 9);
+						}
+						else
+						{
+							$name_test = urldecode($article_name);
+						}
+						if (strpos($name_test, ':') === false) 
+							$import = true;
 					}
-					if (TBGArticlesTable::getTable()->getArticleByName(urldecode($article_name)) === null)
+					if ($import)
 					{
-						$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $article_name);
-						TBGWikiArticle::createNew(urldecode($article_name), $content, true, $scope, array('overwrite' => $overwrite));
-						$imported = true;
+						if (TBGContext::isCLI())
+						{
+							TBGCliCommand::cli_echo('Saving '.urldecode($article_name)."\n");
+						}
+						if ($overwrite)
+						{
+							TBGArticlesTable::getTable()->deleteArticleByName(urldecode($article_name));
+						}
+						if (TBGArticlesTable::getTable()->getArticleByName(urldecode($article_name)) === null)
+						{
+							$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $article_name);
+							TBGWikiArticle::createNew(urldecode($article_name), $content, true, $scope, array('overwrite' => $overwrite));
+							$imported = true;
+						}
+						TBGEvent::createNew('publish', 'fixture_article_loaded', urldecode($article_name), array('imported' => $imported))->trigger();
 					}
-					TBGEvent::createNew('publish', 'fixture_article_loaded', urldecode($article_name), array('imported' => $imported))->trigger();
 				}
 			}
-			if (TBGContext::isCLI()) TBGCliCommand::cli_echo("... done\n");
 		}
 
 		protected function _loadFixtures($scope)
@@ -129,7 +158,7 @@
 			$this->loadFixturesArticles($scope);
 
 			TBGLinksTable::getTable()->addLink('wiki', 0, 'MainPage', 'Wiki Frontpage', 1, $scope);
-			TBGLinksTable::getTable()->addLink('wiki', 0, 'TheBugGenie:WikiFormatting', 'Formatting help', 2, $scope);
+			TBGLinksTable::getTable()->addLink('wiki', 0, 'WikiFormatting', 'Formatting help', 2, $scope);
 			TBGLinksTable::getTable()->addLink('wiki', 0, 'Category:Help', 'Help topics', 3, $scope);
 			TBGContext::setPermission('editarticle', 0, 'publish', 0, TBGSettings::getAdminGroup()->getID(), 0, true, $scope);
 			TBGContext::setPermission('deletearticle', 0, 'publish', 0, TBGSettings::getAdminGroup()->getID(), 0, true, $scope);
@@ -381,6 +410,7 @@
 			{
 				$project_key = $event->getSubject()->getStrippedProjectName();
 				$article = TBGWikiArticle::createNew("{$project_key}:MainPage", "This is the wiki frontpage for {$event->getSubject()->getName()} \n\n[[Category:{$project_key}:About]]", true);
+				$this->loadArticles($project_key);
 			}
 		}
 
