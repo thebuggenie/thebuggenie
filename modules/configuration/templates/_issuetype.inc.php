@@ -1,7 +1,7 @@
 <div class="rounded_box mediumgrey borderless" style="margin: 5px 0 0 0; font-size: 12px;" id="issuetype_<?php echo $type->getID(); ?>_box">
 	<?php echo image_tag('spinning_32.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => 'issuetype_' . $type->getID() . '_indicator')); ?>
 	<div class="header">
-		<a href="javascript:void(0);" onclick="showIssuetypeOptions('<?php echo make_url('configure_issuetypes_getoptions_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>);" id="issuetype_<?php echo $type->getID(); ?>_name_link"><?php echo $type->getName(); ?></a>
+		<?php echo $type->getName(); ?>
 	</div>
 	<?php if (isset($scheme)): ?>
 		<a title="<?php echo __('Show and edit available choices'); ?>" href="javascript:void(0);" onclick="showIssuetypeOptions('<?php echo make_url('configure_issuetypes_getoptions_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>);" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('action_dropdown_small.png'); ?></a>
