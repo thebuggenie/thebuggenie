@@ -185,6 +185,26 @@
 			if ($request->hasParameter('scheme_id'))
 			{
 				$this->scheme = TBGContext::factory()->TBGIssuetypeScheme((int) $request->getParameter('scheme_id'));
+				if ($this->mode == 'copy_scheme')
+				{
+					if ($new_name = $request->getParameter('new_name'))
+					{
+						$new_scheme = new TBGIssuetypeScheme();
+						$new_scheme->setName($new_name);
+						$new_scheme->save();
+						foreach ($this->scheme->getIssuetypes() as $issuetype)
+						{
+							$new_scheme->setIssuetypeEnabled($issuetype);
+							$new_scheme->setIssuetypeRedirectedAfterReporting($issuetype, $this->scheme->isIssuetypeRedirectedAfterReporting($issuetype));
+							$new_scheme->setIssuetypeReportable($issuetype, $this->scheme->isIssuetypeReportable($issuetype));
+						}
+						return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/issuetypescheme', array('scheme' => $new_scheme))));
+					}
+					else
+					{
+						$this->error = TBGContext::getI18n()->__('Please enter a valid name');
+					}
+				}
 			}
 		}
 

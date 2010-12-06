@@ -50,7 +50,7 @@
 					<div class="content">
 						<?php echo __('In this tab you can add/remove/edit issue type schemes. If you add a new issue type on the previous tab, you must associate it with an issue type scheme in this tab to get it to show up for users.'); ?>
 					</div>
-					<ul class="scheme_list issuetype_scheme_list simple_list">
+					<ul class="scheme_list issuetype_scheme_list simple_list" id="issuetype_schemes_list">
 						<?php foreach ($issue_type_schemes as $scheme): ?>
 							<?php include_component('issuetypescheme', array('scheme' => $scheme)); ?>
 						<?php endforeach; ?>

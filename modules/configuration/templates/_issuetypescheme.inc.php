@@ -1,4 +1,4 @@
-<li id="workflow_<?php echo $scheme->getID(); ?>" class="rounded_box lightgrey">
+<li id="workflow_<?php echo $scheme->getID(); ?>" class="rounded_box lightgrey" style="margin-bottom: 5px;">
 	<table>
 		<tr>
 			<td class="workflow_info scheme">
@@ -8,9 +8,22 @@
 			<td class="workflow_actions">
 				<?php echo __('Actions: %list%', array('%list%' => '')); ?><br>
 				<a href="#" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this issue type scheme'))); ?></a>
-				<a href="#" class="rounded_box"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this issue type scheme'))); ?></a>
+				<a href="javascript:void(0);" onclick="$('copy_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this issue type scheme'))); ?></a>
 				<?php echo link_tag(make_url('configure_issuetypes_scheme', array('scheme_id' => $scheme->getID())), image_tag('icon_workflow_scheme_edit.png', array('title' => __('Show / edit issue type associations'))), array('class' => 'rounded_box')); ?></a>
 			</td>
 		</tr>
 	</table>
+</li>
+<li class="rounded_box white shadowed" id="copy_scheme_<?php echo $scheme->getID(); ?>_popup" style="margin-bottom: 5px; padding: 10px; display: none;">
+	<div class="header"><?php echo __('Copy issue type scheme'); ?></div>
+	<div class="content">
+		<?php echo __('Please enter the name of the new issue type scheme'); ?><br>
+		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_copy_scheme', array('scheme_id' => $scheme->getID())); ?>" onsubmit="copyIssuetypeScheme('<?php echo make_url('configure_issuetypes_copy_scheme', array('scheme_id' => $scheme->getID())); ?>', <?php echo $scheme->getID(); ?>);return false;" id="copy_issuetype_scheme_<?php echo $scheme->getID(); ?>_form">
+		<label for="copy_scheme_<?php echo $scheme->getID(); ?>_new_name"><?php echo __('New name'); ?></label>
+		<input type="text" name="new_name" id="copy_scheme_<?php echo $scheme->getID(); ?>_new_name" value="<?php echo __('Copy of %old_name%', array('%old_name%' => addslashes($scheme->getName()))); ?>" style="width: 300px;">
+		<div style="text-align: right;">
+			<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'copy_issuetype_scheme_'.$scheme->getID().'_indicator')); ?>
+			<input type="submit" value="<?php echo __('Copy issue type scheme'); ?>">
+		</div>
+	</div>
 </li>

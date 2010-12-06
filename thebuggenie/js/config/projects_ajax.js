@@ -507,11 +507,11 @@ function _submitProjectDetails(url, form)
 				{
 					$('project_key_span').update(json.project_key);
 				}
-				if ($('use_scrum').getValue() == 1)
+				if ($('sidebar_link_scrum') && $('use_scrum').getValue() == 1)
 				{
 					$('sidebar_link_scrum').show();
 				}
-				else
+				else if ($('sidebar_link_scrum'))
 				{
 					$('sidebar_link_scrum').hide();
 				}

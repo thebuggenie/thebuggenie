@@ -45,16 +45,7 @@
 		const DELETED = 'projects.deleted';
 		const ALLOW_CHANGING_WITHOUT_WORKING = 'projects.allow_freelancing';
 		const WORKFLOW_SCHEME_ID = 'projects.workflow_scheme_id';
-
-		/**
-		 * Return an instance of this table
-		 *
-		 * @return TBGProjectsTable
-		 */
-		public static function getTable()
-		{
-			return B2DB::getTable('TBGProjectsTable');
-		}
+		const ISSUETYPE_SCHEME_ID = 'projects.issuetype_scheme_id';
 
 		public function __construct()
 		{
@@ -82,6 +73,7 @@
 			parent::_addBoolean(self::LOCKED);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 			parent::_addForeignKeyColumn(self::WORKFLOW_SCHEME_ID, TBGWorkflowSchemesTable::getTable(), TBGWorkflowSchemesTable::ID);
+			parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);
 			parent::_addForeignKeyColumn(self::CLIENT, TBGClientsTable::getTable(), TBGClientsTable::ID);
 			parent::_addBoolean(self::DELETED);
 		}

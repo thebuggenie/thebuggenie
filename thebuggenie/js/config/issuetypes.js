@@ -172,11 +172,16 @@ function toggleIssuetypeForScheme(url, issuetype_id, scheme_id, action)
 	var show_element = 'type_toggle_' + issuetype_id + '_' + ((action == 'enable') ? 'disable' : 'enable');
 	if (action == 'enable')
 	{
-		var onsuccess_callback = function (json) { $('issuetype_' + json.issuetype_id + '_box').addClassName("green"); $('issuetype_' + json.issuetype_id + '_box').removeClassName("lightgrey"); };
+		var onsuccess_callback = function (json) {$('issuetype_' + json.issuetype_id + '_box').addClassName("green");$('issuetype_' + json.issuetype_id + '_box').removeClassName("lightgrey");};
 	}
 	else
 	{
-		var onsuccess_callback = function (json) { $('issuetype_' + json.issuetype_id + '_box').removeClassName("green"); $('issuetype_' + json.issuetype_id + '_box').addClassName("lightgrey"); };
+		var onsuccess_callback = function (json) {$('issuetype_' + json.issuetype_id + '_box').removeClassName("green");$('issuetype_' + json.issuetype_id + '_box').addClassName("lightgrey");};
 	}
 	_updateDivWithJSONFeedback(url, null, 'edit_issuetype_' + issuetype_id + '_indicator', null, null, [hide_element], [hide_element], [show_element], 'post', null, onsuccess_callback);
+}
+
+function copyIssuetypeScheme(url, scheme_id)
+{
+	_postFormWithJSONFeedback(url, 'copy_issuetype_scheme_' + scheme_id + '_form', 'copy_issuetype_scheme_' + scheme_id + '_indicator', 'copy_scheme_' + scheme_id + '_popup', 'issuetype_schemes_list', true);
 }
