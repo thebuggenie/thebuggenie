@@ -6,8 +6,7 @@
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
 <tr>
 <?php include_component('leftmenu', array('selected_section' => 12)); ?>
-<td valign="top">
-<div class="config_header" style="width: 750px;"><?php echo __('Configure settings'); ?></div>
+<td valign="top" style="padding-top: 10px;">
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_settings'); ?>" method="post" onsubmit="submitForm('<?php echo make_url('configure_settings'); ?>', 'config_settings'); return false;" id="config_settings">
 <?php endif; ?>

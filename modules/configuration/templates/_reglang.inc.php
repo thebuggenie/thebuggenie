@@ -14,10 +14,13 @@
 	</tr>
 	<tr>
 		<td><label for="charset"><?php echo __('Charset'); ?></label></td>
-		<td><input type="text" name="charset" id="charset" value="<?php echo TBGSettings::getCharset(); ?>" style="width: 150px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>></td>
+		<td>
+			<input type="text" name="charset" id="charset" value="<?php echo TBGSettings::getCharset(); ?>" style="width: 150px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
+			<span class="config_explanation"><?php echo __('Current character set is %charset%', array('%charset%' => '<b>' . TBGContext::getI18n()->getLangCharset() . '</b>')); ?></span>
+		</td>
 	</tr>
 	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('What charset to use for the selected language - leave blank to use the charset specified in the language file (currently %charset%)', array('%charset%' => '<b>' . TBGContext::getI18n()->getLangCharset() . '</b>')); ?></td>
+		<td class="config_explanation" colspan="2"><?php echo __('What charset to use for the selected language - leave blank to use the charset specified in the language file'); ?></td>
 	</tr>
 	<tr>
 		<td><label for="server_timezone"><?php echo __('Server timezone'); ?></label></td>
