@@ -776,6 +776,16 @@
 						catch (Exception $e) {}
 					}
 					
+					if ($request->hasParameter('issuetype_scheme'))
+					{
+						try
+						{
+							$issuetype_scheme = TBGContext::factory()->TBGIssuetypeScheme($request->getParameter('issuetype_scheme'));
+							$this->project->setIssuetypeScheme($issuetype_scheme);
+						}
+						catch (Exception $e) {}
+					}
+					
 					if ($request->hasParameter('use_scrum'))
 						$this->project->setUsesScrum((bool) $request->getParameter('use_scrum'));
 					

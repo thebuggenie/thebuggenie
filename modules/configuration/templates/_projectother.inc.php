@@ -14,7 +14,7 @@
 			<option value="issuelist"<?php if ($project->isIssuelistVisibleInFrontpageSummary()): ?> selected<?php endif; ?>><?php echo __('list of open issues'); ?></option>
 		</select>
 		<div id="checkboxes_issuetypes" style="margin-top: 5px;<?php if (!$project->isIssuetypesVisibleInFrontpageSummary()): ?> display: none;<?php endif;?>">
-			<?php foreach ($project->getIssueTypes() as $issuetype): ?>
+			<?php foreach ($project->getIssuetypeScheme()->getIssueTypes() as $issuetype): ?>
 				<div style="clear: both; font-size: 12px;">
 					<input type="checkbox" name="showissuetype[<?php echo $issuetype->getID(); ?>]" onChange="$('checkboxes_issuelist').select('input#showissuetype_<?php echo $issuetype->getID(); ?>')[0].checked=this.checked;" value="<?php echo $issuetype->getID(); ?>"<?php if ($project->isIssuetypeVisible($issuetype->getID())): ?> checked<?php endif; ?> id="showissuetype_<?php echo $issuetype->getID(); ?>" style="float: left;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
 					<label for="showissuetype_<?php echo $issuetype->getID(); ?>"><?php echo __('Show %issuetype%', array('%issuetype%' => $issuetype->getName())); ?></label>
@@ -22,7 +22,7 @@
 			<?php endforeach; ?>
 		</div>
 		<div id="checkboxes_issuelist" style="margin-top: 5px;<?php if (!$project->isIssuelistVisibleInFrontpageSummary()): ?> display: none;<?php endif;?>">
-			<?php foreach ($project->getIssueTypes() as $issuetype): ?>
+			<?php foreach ($project->getIssuetypeScheme()->getIssueTypes() as $issuetype): ?>
 				<div style="clear: both; font-size: 12px;">
 					<input type="checkbox" name="showissuetype[<?php echo $issuetype->getID(); ?>]" onChange="$('checkboxes_issuetypes').select('input#showissuetype_<?php echo $issuetype->getID(); ?>')[0].checked=this.checked;" value="<?php echo $issuetype->getID(); ?>"<?php if ($project->isIssuetypeVisible($issuetype->getID())): ?> checked<?php endif; ?> id="showissuetype_<?php echo $issuetype->getID(); ?>" style="float: left;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
 					<label for="showissuetype_<?php echo $issuetype->getID(); ?>"><?php echo __('Show %issuetype%', array('%issuetype%' => $issuetype->getName())); ?></label>
