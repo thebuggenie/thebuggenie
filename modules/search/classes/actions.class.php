@@ -110,18 +110,18 @@
 					{
 						case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
 							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
-							$bug_reports_issue_type_ids = TBGIssueTypesTable::getTable()->getBugReportTypeIDs();
-							foreach ($bug_reports_issue_type_ids as $b_id)
+							$bug_reports_issuetype_ids = TBGIssueTypesTable::getTable()->getBugReportTypeIDs();
+							foreach ($bug_reports_issuetype_ids as $b_id)
 							{
-								$this->filters['issue_type'][] = array('operator' => '=', 'value' => $b_id);
+								$this->filters['issuetype'][] = array('operator' => '=', 'value' => $b_id);
 							}
 							break;
 						case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
 							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_CLOSED);
-							$bug_reports_issue_type_ids = TBGIssueTypesTable::getTable()->getBugReportTypeIDs();
-							foreach ($bug_reports_issue_type_ids as $b_id)
+							$bug_reports_issuetype_ids = TBGIssueTypesTable::getTable()->getBugReportTypeIDs();
+							foreach ($bug_reports_issuetype_ids as $b_id)
 							{
-								$this->filters['issue_type'][] = array('operator' => '=', 'value' => $b_id);
+								$this->filters['issuetype'][] = array('operator' => '=', 'value' => $b_id);
 							}
 							break;
 						case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
@@ -157,10 +157,10 @@
 					$this->groupby = 'user_pain';
 					$this->grouporder = 'desc';
 					$ids = TBGIssueTypesTable::getTable()->getBugReportTypeIDs();
-					$this->filters['issue_type'] = array();
+					$this->filters['issuetype'] = array();
 					foreach ($ids as $id)
 					{
-						$this->filters['issue_type'][] = array('operator' => '=', 'value' => $id);
+						$this->filters['issuetype'][] = array('operator' => '=', 'value' => $id);
 					}
 				}
 				elseif ($this->templatename == 'results_votes')

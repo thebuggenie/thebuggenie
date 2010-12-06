@@ -9,7 +9,7 @@
 		<td valign="top">
 			<?php include_template('configuration/workflowmenu', array('selected_tab' => 'workflows')); ?>
 			<div class="content" style="width: 750px;">
-				<ul class="workflow_list simple_list">
+				<ul class="scheme_list workflow_list simple_list">
 					<?php foreach ($workflows as $workflow): ?>
 						<li id="workflow_<?php echo $workflow->getID(); ?>" class="rounded_box lightgrey">
 							<table>

@@ -24,13 +24,13 @@
 			$this->_command_name = 'remote_list_issuefields';
 			$this->_description = "Query a remote server for a list of available issue fields per types";
 			$this->addRequiredArgument('project_key', 'The project to show available issue fields for');
-			$this->addRequiredArgument('issue_type', 'An issue type to show available issue fields for');
+			$this->addRequiredArgument('issuetype', 'An issue type to show available issue fields for');
 			parent::_setup();
 		}
 
 		public function do_execute()
 		{
-			$issuetype = $this->getProvidedArgument('issue_type', null);
+			$issuetype = $this->getProvidedArgument('issuetype', null);
 			$project_key = $this->getProvidedArgument('project_key', null);
 
 			$this->cliEcho('Querying ');

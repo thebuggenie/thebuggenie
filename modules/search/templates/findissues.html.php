@@ -253,7 +253,7 @@
 						<option value="priority"><?php echo __("Priority - how high the issue is prioritised"); ?></option>
 						<option value="severity"><?php echo __("Severity - how serious the issue is"); ?></option>
 						<option value="reproducability"><?php echo __("Reproducability - how often you can reproduce the issue"); ?></option>
-						<option value="issue_type"><?php echo __("Issue type - what kind of issue it is"); ?></option>
+						<option value="issuetype"><?php echo __("Issue type - what kind of issue it is"); ?></option>
 						<?php foreach (TBGCustomDatatype::getAll() as $customdatatype): ?>
 							<option value="<?php echo $customdatatype->getKey(); ?>"><?php echo __($customdatatype->getDescription()); ?></option>
 						<?php endforeach; ?>

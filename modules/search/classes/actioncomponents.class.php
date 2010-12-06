@@ -24,7 +24,7 @@
 			$filters['severity'] = array('description' => $i18n->__('Severity'), 'options' => TBGSeverity::getAll());
 			$filters['reproducability'] = array('description' => $i18n->__('Reproducability'), 'options' => TBGReproducability::getAll());
 			$filters['resolution'] = array('description' => $i18n->__('Resolution'), 'options' => TBGResolution::getAll());
-			$filters['issue_type'] = array('description' => $i18n->__('Issue type'), 'options' => TBGIssuetype::getAll());
+			$filters['issuetype'] = array('description' => $i18n->__('Issue type'), 'options' => TBGIssuetype::getAll());
 			$this->filters = $filters;
 
 		}

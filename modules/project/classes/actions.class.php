@@ -692,7 +692,7 @@
 				$issuetype = TBGIssuetype::getIssuetypeByKeyish($filter_issuetype);
 				if ($issuetype instanceof TBGIssuetype)
 				{
-					$filters['issue_type'] = array('operator' => '=', 'value' => $issuetype->getID());
+					$filters['issuetype'] = array('operator' => '=', 'value' => $issuetype->getID());
 				}
 			}
 
