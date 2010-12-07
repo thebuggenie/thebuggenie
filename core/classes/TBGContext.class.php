@@ -1898,7 +1898,10 @@
 						}
 						if (self::performAction($route['module'], $route['action']))
 						{
-							B2DB::closeDBLink();
+							if (class_exists('B2DB'))
+							{
+								B2DB::closeDBLink();
+							}
 							return true;
 						}
 					}
