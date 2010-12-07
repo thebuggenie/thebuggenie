@@ -13,7 +13,7 @@
 			<?php endif; ?>
 			<a title="<?php echo __('Show / edit available choices'); ?>" href="javascript:void(0);" onclick="showIssuetypeOptions('<?php echo make_url('configure_issuetypes_getoptions_for_scheme', array('id' => $type->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $type->getID(); ?>);" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('action_dropdown_small.png'); ?></a>
 		<?php endif; ?>
-		<?php if (!$scheme->isCore()): ?>
+		<?php if (!isset($scheme) || !$scheme->isCore()): ?>
 			<a title="<?php echo __('Show / edit issue type settings'); ?>" href="javascript:void(0);" onclick="$('edit_issuetype_<?php echo $type->getID(); ?>_form').toggle();$('issuetype_<?php echo $type->getID(); ?>_info').toggle();" class="image" style="float: right; margin-right: 5px;"><?php echo image_tag('icon_edit.png'); ?></a>
 		<?php endif; ?>
 	</div>
@@ -87,12 +87,12 @@
 					</tr>
 				<?php endif; ?>
 			</table>
-			<?php if (!$scheme->isCore()): ?>
+			<?php if (!isset($scheme) || !$scheme->isCore()): ?>
 				<input type="submit" value="<?php echo __('Update details'); ?>" style="font-weight: bold; font-size: 13px;">
 				<?php echo __('%update_details% or %cancel%', array('%update_details%' => '', '%cancel%' => '<a href="javascript:void(0);" onclick="$(\'edit_issuetype_' . $type->getID() . '_form\').toggle();$(\'issuetype_' . $type->getID() . '_info\').toggle();"><b>' . __('cancel') . '</b></a>')); ?>
 			<?php endif; ?>
 		</div>
-	<?php if (!$scheme->isCore()): ?>
+	<?php if (!isset($scheme) || !$scheme->isCore()): ?>
 		</form>
 		<?php echo image_tag('spinning_20.gif', array('style' => 'margin-left: 5px; display: none;', 'id' => 'edit_issuetype_' . $type->getID() . '_indicator')); ?>
 	<?php endif; ?>
