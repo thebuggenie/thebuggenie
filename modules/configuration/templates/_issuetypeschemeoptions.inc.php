@@ -1,4 +1,6 @@
-<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_update_choices_for_scheme', array('id' => $issuetype->getID(), 'scheme_id' => $scheme->getID())); ?>" onsubmit="updateIssuetypeChoices('<?php echo make_url('configure_issuetypes_update_choices_for_scheme', array('id' => $issuetype->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $issuetype->getID(); ?>);return false;" id="update_<?php echo $issuetype->getID(); ?>_choices_form">
+<?php if (!$scheme->isCore()): ?>
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuetypes_update_choices_for_scheme', array('id' => $issuetype->getID(), 'scheme_id' => $scheme->getID())); ?>" onsubmit="updateIssuetypeChoices('<?php echo make_url('configure_issuetypes_update_choices_for_scheme', array('id' => $issuetype->getID(), 'scheme_id' => $scheme->getID())); ?>', <?php echo $issuetype->getID(); ?>);return false;" id="update_<?php echo $issuetype->getID(); ?>_choices_form">
+<?php endif; ?>
 	<div class="rounded_box white borderless" style="margin: 5px; font-size: 12px;">
 		<div class="header_div" style="margin-top: 0;">
 			<?php echo __('Available issue fields'); ?>
@@ -15,19 +17,23 @@
 			</thead>
 			<tbody id="<?php echo $issuetype->getID(); ?>_list">
 				<?php foreach ($builtinfields as $item): ?>
-					<?php include_template('issuetypeschemeoption', array('issuetype' => $issuetype, 'key' => $item, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
+					<?php include_template('issuetypeschemeoption', array('issuetype' => $issuetype, 'scheme' => $scheme, 'key' => $item, 'item' => $item, 'visiblefields' => $visiblefields)); ?>
 				<?php endforeach; ?>
 				<?php if (count($customtypes) > 0): ?>
 					<?php foreach ($customtypes as $key => $item): ?>
-						<?php include_template('issuetypeschemeoption', array('issuetype' => $issuetype, 'key' => $key, 'item' => $item->getDescription(), 'visiblefields' => $visiblefields)); ?>
+						<?php include_template('issuetypeschemeoption', array('issuetype' => $issuetype, 'scheme' => $scheme, 'key' => $key, 'item' => $item->getDescription(), 'visiblefields' => $visiblefields)); ?>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</tbody>
 		</table>
-		<div style="margin: 10px 0 0 0; height: 25px;">
-			<div style="float: left; font-size: 13px; padding-top: 2px; font-weight: bold;"><?php echo __('Click "Save" to save your changes'); ?></div>
-			<input type="submit" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
-			<span id="update_<?php echo $issuetype->getID(); ?>_choices_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
-		</div>
+		<?php if (!$scheme->isCore()): ?>
+			<div style="margin: 10px 0 0 0; height: 25px;">
+				<div style="float: left; font-size: 13px; padding-top: 2px; font-weight: bold;"><?php echo __('Click "Save" to save your changes'); ?></div>
+				<input type="submit" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+				<span id="update_<?php echo $issuetype->getID(); ?>_choices_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+			</div>
+		<?php endif; ?>
 	</div>
-</form>
+<?php if (!$scheme->isCore()): ?>
+	</form>
+<?php endif; ?>

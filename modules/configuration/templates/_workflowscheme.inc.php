@@ -37,15 +37,17 @@
 		</form>
 	</div>
 </li>
-<li class="rounded_box white shadowed" id="delete_scheme_<?php echo $scheme->getID(); ?>_popup" style="margin-bottom: 5px; padding: 10px; display: none;">
-	<div class="header"><?php echo __('Are you sure?'); ?></div>
-	<div class="content">
-		<?php echo __('Please confirm that you want to delete this worfklow scheme.'); ?><br>
-		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_workflow_delete_scheme', array('scheme_id' => $scheme->getID())); ?>" onsubmit="deleteWorkflowScheme('<?php echo make_url('configure_workflow_delete_scheme', array('scheme_id' => $scheme->getID())); ?>', <?php echo $scheme->getID(); ?>);return false;" id="delete_workflow_scheme_<?php echo $scheme->getID(); ?>_form">
-			<div style="text-align: right;">
-				<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'delete_workflow_scheme_'.$scheme->getID().'_indicator')); ?>
-				<input type="submit" value="<?php echo __('Yes, delete it'); ?>"><?php echo __('%delete% or %cancel%', array('%delete%' => '', '%cancel%' => '<b>'.javascript_link_tag(__('cancel'), array('onclick' => "$('delete_scheme_{$scheme->getID()}_popup').toggle();")).'</b>')); ?>
-			</div>
-		</form>
-	</div>
-</li>
+<?php if (!$scheme->isCore() && !$scheme->isInUse()): ?>
+	<li class="rounded_box white shadowed" id="delete_scheme_<?php echo $scheme->getID(); ?>_popup" style="margin-bottom: 5px; padding: 10px; display: none;">
+		<div class="header"><?php echo __('Are you sure?'); ?></div>
+		<div class="content">
+			<?php echo __('Please confirm that you want to delete this worfklow scheme.'); ?><br>
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_workflow_delete_scheme', array('scheme_id' => $scheme->getID())); ?>" onsubmit="deleteWorkflowScheme('<?php echo make_url('configure_workflow_delete_scheme', array('scheme_id' => $scheme->getID())); ?>', <?php echo $scheme->getID(); ?>);return false;" id="delete_workflow_scheme_<?php echo $scheme->getID(); ?>_form">
+				<div style="text-align: right;">
+					<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'delete_workflow_scheme_'.$scheme->getID().'_indicator')); ?>
+					<input type="submit" value="<?php echo __('Yes, delete it'); ?>"><?php echo __('%delete% or %cancel%', array('%delete%' => '', '%cancel%' => '<b>'.javascript_link_tag(__('cancel'), array('onclick' => "$('delete_scheme_{$scheme->getID()}_popup').toggle();")).'</b>')); ?>
+				</div>
+			</form>
+		</div>
+	</li>
+<?php endif; ?>
