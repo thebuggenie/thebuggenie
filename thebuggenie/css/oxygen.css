@@ -420,11 +420,12 @@ th.highlighted_column { background-color: #C1C1C1; }
 .scheme_list td.workflow_steps { width: 100px; text-align: left; }
 .scheme_list td.workflow_steps span { font-weight: bold; }
 .scheme_list td.workflow_scheme_issuetypes { width: 250px; text-align: center; }
-.scheme_list td.workflow_scheme_issuetypes span { font-weight: bold; }
+.scheme_list td.workflow_scheme_projects { width: 200px; text-align: center; font-size: 1em; }
+.scheme_list td.workflow_scheme_issuetypes span, .scheme_list td.workflow_scheme_projects span { font-weight: bold; }
 .scheme_list td.workflow_actions { width: 130px; font-weight: bold; font-size: 0.9em; text-align: right; }
 .scheme_list td.workflow_actions a { padding: 3px; background-color: #FAFAFA; border: 1px solid #CCC; display: block; float: right; line-height: 0; margin-left: 5px; }
 .scheme_list td.workflow_actions a:hover { background-color: #FCFCFC; border-color: #AAA; }
-.scheme_list.issuetype_scheme_list td.workflow_info { width: 600px; }
+.scheme_list.issuetype_scheme_list td.workflow_info { width: 400px; }
 .workflow_name { font-weight: bold; }
 .workflow_description, .workflow_name span.builtin { font-weight: normal; font-style: italic; font-size: 0.9em; }
 .workflow_name span.builtin { color: #AAA; }

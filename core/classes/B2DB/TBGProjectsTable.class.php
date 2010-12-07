@@ -161,4 +161,23 @@
 			$row = $this->doSelectOne($crit, false);
 			return $row;
 		}
+		
+		public function countByIssuetypeSchemeID($scheme_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+			
+			return $this->doCount($crit);
+		}
+		
+		public function countByWorkflowSchemeID($scheme_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::WORKFLOW_SCHEME_ID, $scheme_id);
+			
+			return $this->doCount($crit);
+		}
+		
 	}

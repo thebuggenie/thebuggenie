@@ -178,7 +178,7 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 	});
 }
 
-function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done, update_div, insertion)
+function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done, update_div, insertion)
 {
 	var params = Form.serialize(formname);
 	new Ajax.Request(url, {
@@ -217,7 +217,7 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done,
 			}
 			else if (json)
 			{
-				if (json && json.message)
+				if (json.message)
 				{
 					successMessage(json.message);
 				}
@@ -226,9 +226,20 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done,
 					successMessage(json.title, json.content);
 				}
 			}
-			if ($(hide_div_when_done))
+			if (is_string(hide_divs_when_done) && $(hide_divs_when_done))
 			{
-				$(hide_div_when_done).hide();
+				$(hide_divs_when_done).hide();
+			}
+			else if (hide_divs_when_done) 
+			{
+				hide_divs_when_done.each(function(s)
+				{
+					if (is_string(s) && $(s))
+					{
+						$(s).hide();
+					}
+					else if ($(s)) s.hide();
+				});
 			}
 		}
 	},
@@ -236,7 +247,18 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_div_when_done,
 		$(indicator).hide();
 		if (transport.responseJSON)
 		{
-			failedMessage(transport.responseJSON.error);
+			if (transport.responseJSON.error && transport.responseJSON.message)
+			{
+				failedMessage(transport.responseJSON.message, transport.responseJSON.error);
+			}
+			else if (transport.responseJSON.error)
+			{
+				failedMessage(transport.responseJSON.error);
+			}
+			else if (transport.responseJSON.message)
+			{
+				failedMessage(transport.responseJSON.message);
+			}
 		}
 		else
 		{

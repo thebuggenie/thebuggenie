@@ -57,6 +57,27 @@
 				$this->doInsert($crit);
 			}
 		}
+		
+		public function setWorkflowIDforIssuetypeIDwithSchemeID($workflow_id, $issuetype_id, $scheme_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
+			$crit->addInsert(self::WORKFLOW_SCHEME_ID, $scheme_id);
+			$crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
+			$this->doInsert($crit);
+		}
+
+		public function countSchemesByWorkflowID($workflow_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->setDistinct();
+			$crit->addSelectionColumn(self::WORKFLOW_SCHEME_ID);
+			$crit->addWhere(self::WORKFLOW_ID, $workflow_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			return $this->doCount($crit);
+		}
 
 		public function countByWorkflowSchemeID($workflow_scheme_id)
 		{
@@ -65,6 +86,15 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 
 			return $this->doCount($crit);
+		}
+
+		public function deleteByWorkflowSchemeID($workflow_scheme_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::WORKFLOW_SCHEME_ID, $workflow_scheme_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			return $this->doDelete($crit);
 		}
 
 		public function getByWorkflowSchemeID($workflow_scheme_id)

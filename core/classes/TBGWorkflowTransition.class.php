@@ -178,7 +178,7 @@
 		 */
 		public function getOutgoingStep()
 		{
-			return $this->_outgoing_step_id;
+			return $this->_getPopulatedObjectFromProperty('_outgoing_step_id');
 		}
 		
 		/**
@@ -284,6 +284,14 @@
 			}
 			
 			$issue->save();
+		}
+
+		public function copy(TBGWorkflow $new_workflow)
+		{
+			$new_transition = clone $this;
+			$new_transition->setWorkflow($new_workflow);
+			$new_transition->save();
+			return $new_transition;
 		}
 
 	}

@@ -206,6 +206,11 @@
 						$this->error = TBGContext::getI18n()->__('Please enter a valid name');
 					}
 				}
+				elseif ($this->mode == 'delete_scheme')
+				{
+					$this->scheme->delete();
+					return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The issuetype scheme was deleted')));
+				}
 			}
 		}
 
@@ -2034,27 +2039,88 @@
 		public function runConfigureWorkflowScheme(TBGRequest $request)
 		{
 			$this->workflow_scheme = null;
+			$this->mode = $request->getParameter('mode', 'list');
 			try
 			{
 				$this->workflow_scheme = TBGContext::factory()->TBGWorkflowScheme($request->getParameter('scheme_id'));
 				$this->issuetypes = TBGIssuetype::getAll();
+				if ($this->mode == 'copy_scheme')
+				{
+					if ($new_name = $request->getParameter('new_name'))
+					{
+						$new_scheme = new TBGWorkflowScheme();
+						$new_scheme->setName($new_name);
+						$new_scheme->save();
+						foreach ($this->issuetypes as $issuetype)
+						{
+							if ($this->workflow_scheme->hasWorkflowAssociatedWithIssuetype($issuetype))
+							{
+								$new_scheme->associateIssuetypeWithWorkflow($issuetype, $this->workflow_scheme->getWorkflowForIssuetype($issuetype));
+							}
+						}
+						return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/workflowscheme', array('scheme' => $new_scheme))));
+					}
+					else
+					{
+						$this->error = TBGContext::getI18n()->__('Please enter a valid name');
+					}
+				}
+				elseif ($this->mode == 'delete_scheme')
+				{
+					$this->workflow_scheme->delete();
+					return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The workflow scheme was deleted')));
+				}
 			}
 			catch (Exception $e)
 			{
-				$this->error = TBGContext::getI18n()->__('This workflow scheme does not exist');
+				if ($request->getRequestedFormat() == 'json')
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('success' => false, 'message' => TBGContext::getI18n()->__('An error occured'), 'error' => $e->getMessage()));
+				}
+				else
+				{
+					$this->error = TBGContext::getI18n()->__('This workflow scheme does not exist');
+				}
 			}
 		}
 
 		public function runConfigureWorkflowSteps(TBGRequest $request)
 		{
 			$this->workflow = null;
+			$this->mode = $request->getParameter('mode', 'list');
 			try
 			{
 				$this->workflow = TBGContext::factory()->TBGWorkflow($request->getParameter('workflow_id'));
+				if ($this->mode == 'copy_workflow')
+				{
+					if ($new_name = $request->getParameter('new_name'))
+					{
+						$new_workflow = $this->workflow->copy($new_name);
+						return $this->renderJSON(array('content' => $this->getTemplateHTML('configuration/workflow', array('workflow' => $new_workflow))));
+					}
+					else
+					{
+						$this->error = TBGContext::getI18n()->__('Please enter a valid name');
+					}
+				}
+				elseif ($this->mode == 'delete_workflow')
+				{
+					$this->workflow->delete();
+					return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The workflow was deleted')));
+				}
 			}
 			catch (Exception $e)
 			{
-				$this->error = TBGContext::getI18n()->__('This workflow does not exist');
+				if ($request->getRequestedFormat() == 'json')
+				{
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('success' => false, 'message' => TBGContext::getI18n()->__('An error occured'), 'error' => $e->getMessage()));
+				}
+				else
+				{
+					$this->error = TBGContext::getI18n()->__('This workflow does not exist');
+				}
 			}
 		}
 

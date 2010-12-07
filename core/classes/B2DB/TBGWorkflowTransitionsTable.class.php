@@ -156,5 +156,17 @@
 			$crit->addUpdate(self::TEMPLATE, $template);
 			$res = $this->doUpdateById($crit, $transition_id);
 		}
+		
+		public function reMapByWorkflowID($workflow_id, $mapper_array)
+		{
+			foreach ($mapper_array as $old_step_id => $new_step_id)
+			{
+				$crit = $this->getCriteria();
+				$crit->addUpdate(self::OUTGOING_STEP_ID, $new_step_id);
+				$crit->addWhere(self::OUTGOING_STEP_ID, $old_step_id);
+				$crit->addWhere(self::WORKFLOW_ID, $workflow_id);
+				$this->doUpdate($crit);
+			}
+		}
 
 	}

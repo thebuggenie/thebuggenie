@@ -55,6 +55,14 @@
 			return $return_array;
 		}
 		
+		public function deleteByIssuetypeSchemeID($scheme_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$res = $this->doDelete($crit);
+		}
+
 		public function associateIssuetypeWithScheme($issuetype_id, $scheme_id)
 		{
 			$crit = $this->getCriteria();

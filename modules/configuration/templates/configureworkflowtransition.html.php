@@ -22,8 +22,10 @@
 						<div class="content">
 							<?php echo __('This page shows all the available details for this transition for the selected workflow, as well as incoming and outgoing steps from this transition.'); ?>
 							<?php echo __('You can edit all details about the selected transitions from this page.'); ?><br>
-							<br>
-							<b><?php echo javascript_link_tag(__('Edit this transition'), array('onclick' => "\$('transition_details_form').toggle();\$('transition_details_info').toggle();")); ?></b>
+							<?php if (!$transition->isCore()): ?>
+								<br>
+								<b><?php echo javascript_link_tag(__('Edit this transition'), array('onclick' => "\$('transition_details_form').toggle();\$('transition_details_info').toggle();")); ?></b>
+							<?php endif; ?>
 						</div>
 					</div>
 					<div id="workflow_details_transition">
@@ -35,44 +37,46 @@
 							<dt><?php echo __('Outgoing step'); ?></dt>
 							<dd><?php echo link_tag(make_url('configure_workflow_step', array('workflow_id' => $transition->getOutgoingStep()->getWorkflow()->getID(), 'step_id' => $transition->getOutgoingStep()->getID())), $transition->getOutgoingStep()->getName()); ?></dd>
 						</dl>
-						<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'mode' => 'edit')); ?>" id="transition_details_form" style="display: none;" onsubmit="$('transition_update_indicator').show();$('update_transition_buttons').hide();">
-							<dl>
-								<dt><label for="edit_transition_<?php echo $transition->getID(); ?>_name"><?php echo __('Transition name'); ?></label></dt>
-								<dd>
-									<input type="text" id="edit_transition_<?php echo $transition->getID(); ?>_name" name="transition_name" style="width: 300px;" value="<?php echo $transition->getName(); ?>"><br>
-									<div class="faded_out"><?php echo __('This name will be presented to the user as a link'); ?></div>
-								</dd>
-								<dt><label for="edit_transition_<?php echo $transition->getID(); ?>_description" class="optional"><?php echo __('Description'); ?></label></dt>
-								<dd>
-									<input type="text" id="edit_transition_<?php echo $transition->getID(); ?>_description" name="transition_description" style="width: 300px;" value="<?php echo $transition->getDescription(); ?>">
-									<div class="faded_out"><?php echo __('This optional description will be presented to the user'); ?></div>
-								</dd>
-								<dt><label for="edit_transition_<?php echo $transition->getID(); ?>_outgoing_step_id"><?php echo __('Outgoing step'); ?></label></dt>
-								<dd>
-									<select id="edit_transition_<?php echo $transition->getID(); ?>_outgoing_step_id" name="outgoing_step_id">
-										<?php foreach ($transition->getWorkflow()->getSteps() as $workflow_step): ?>
-											<option value="<?php echo $workflow_step->getID(); ?>"<?php if ($workflow_step->getID() == $transition->getOutgoingStep()->getID()): ?> selected<?php endif; ?>><?php echo $workflow_step->getName(); ?></option>
-										<?php endforeach; ?>
-									</select>
-								</dd>
-								<dt><label for="edit_transition_<?php echo $transition->getID(); ?>_template"><?php echo __('Popup template'); ?></label></dt>
-								<dd>
-									<select id="edit_transition_<?php echo $transition->getID(); ?>_template" name="template">
-										<option value=""<?php if ($transition->getTemplate() == ''): ?> selected<?php endif; ?>><?php echo __('No template used - transition happens instantly'); ?></option>
-										<?php foreach (TBGWorkflowTransition::getTemplates() as $template_key => $template_name): ?>
-											<option value="<?php echo $template_key; ?>"<?php if ($transition->getTemplate() == $template_key): ?> selected<?php endif; ?>><?php echo $template_name; ?></option>
-										<?php endforeach; ?>
-									</select>
-								</dd>
-							</dl>
-							<br style="clear: both;">
-							<div style="text-align: right; clear: both; padding: 10px 0 0 0;" id="update_transition_buttons">
-								<input type="submit" value="<?php echo __('Update transition details'); ?>" name="edit">
-								<?php echo __('%update_transition_details% or %cancel%', array('%update_transition_details%' => '', '%cancel%' => '')); ?>
-								<b><?php echo javascript_link_tag(__('cancel'), array('onclick' => "\$('transition_details_form').toggle();\$('transition_details_info').toggle();")); ?></b>
-							</div>
-							<div style="text-align: right; padding: 10px 0 10px 0; display: none;" id="transition_update_indicator"><span style="float: right;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
-						</form>
+						<?php if (!$transition->isCore()): ?>
+							<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'mode' => 'edit')); ?>" id="transition_details_form" style="display: none;" onsubmit="$('transition_update_indicator').show();$('update_transition_buttons').hide();">
+								<dl>
+									<dt><label for="edit_transition_<?php echo $transition->getID(); ?>_name"><?php echo __('Transition name'); ?></label></dt>
+									<dd>
+										<input type="text" id="edit_transition_<?php echo $transition->getID(); ?>_name" name="transition_name" style="width: 300px;" value="<?php echo $transition->getName(); ?>"><br>
+										<div class="faded_out"><?php echo __('This name will be presented to the user as a link'); ?></div>
+									</dd>
+									<dt><label for="edit_transition_<?php echo $transition->getID(); ?>_description" class="optional"><?php echo __('Description'); ?></label></dt>
+									<dd>
+										<input type="text" id="edit_transition_<?php echo $transition->getID(); ?>_description" name="transition_description" style="width: 300px;" value="<?php echo $transition->getDescription(); ?>">
+										<div class="faded_out"><?php echo __('This optional description will be presented to the user'); ?></div>
+									</dd>
+									<dt><label for="edit_transition_<?php echo $transition->getID(); ?>_outgoing_step_id"><?php echo __('Outgoing step'); ?></label></dt>
+									<dd>
+										<select id="edit_transition_<?php echo $transition->getID(); ?>_outgoing_step_id" name="outgoing_step_id">
+											<?php foreach ($transition->getWorkflow()->getSteps() as $workflow_step): ?>
+												<option value="<?php echo $workflow_step->getID(); ?>"<?php if ($workflow_step->getID() == $transition->getOutgoingStep()->getID()): ?> selected<?php endif; ?>><?php echo $workflow_step->getName(); ?></option>
+											<?php endforeach; ?>
+										</select>
+									</dd>
+									<dt><label for="edit_transition_<?php echo $transition->getID(); ?>_template"><?php echo __('Popup template'); ?></label></dt>
+									<dd>
+										<select id="edit_transition_<?php echo $transition->getID(); ?>_template" name="template">
+											<option value=""<?php if ($transition->getTemplate() == ''): ?> selected<?php endif; ?>><?php echo __('No template used - transition happens instantly'); ?></option>
+											<?php foreach (TBGWorkflowTransition::getTemplates() as $template_key => $template_name): ?>
+												<option value="<?php echo $template_key; ?>"<?php if ($transition->getTemplate() == $template_key): ?> selected<?php endif; ?>><?php echo $template_name; ?></option>
+											<?php endforeach; ?>
+										</select>
+									</dd>
+								</dl>
+								<br style="clear: both;">
+								<div style="text-align: right; clear: both; padding: 10px 0 0 0;" id="update_transition_buttons">
+									<input type="submit" value="<?php echo __('Update transition details'); ?>" name="edit">
+									<?php echo __('%update_transition_details% or %cancel%', array('%update_transition_details%' => '', '%cancel%' => '')); ?>
+									<b><?php echo javascript_link_tag(__('cancel'), array('onclick' => "\$('transition_details_form').toggle();\$('transition_details_info').toggle();")); ?></b>
+								</div>
+								<div style="text-align: right; padding: 10px 0 10px 0; display: none;" id="transition_update_indicator"><span style="float: right;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
+							</form>
+						<?php endif; ?>
 					</div>
 					<div class="rounded_box lightyellow" id="workflow_browser_step">
 						<div class="header"><?php echo __('Transition path'); ?></div>

@@ -7,7 +7,6 @@
 	<br style="clear: both;">
 	<div class="tab_menu" style="margin-top: 20px;">
 		<ul id="workflow_menu">
-			<li<?php if ($selected_tab == 'schemes'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_schemes'), __('Workflow schemes')); ?></li>
 			<li<?php if ($selected_tab == 'workflows'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_workflows'), __('Workflows')); ?></li>
 			<?php if (isset($workflow)): ?>
 				<li<?php if ($selected_tab == 'workflow'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_steps', array('workflow_id' => $workflow->getID())), $workflow->getName()); ?></li>
@@ -18,6 +17,7 @@
 					<li<?php if ($selected_tab == 'transition'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_transition', array('workflow_id' => $workflow->getID(), 'transition_id' => $transition->getID())), __('Transition: %transition_name%', array('%transition_name%' => $transition->getName()))); ?></li>
 				<?php endif; ?>
 			<?php endif; ?>
+			<li<?php if ($selected_tab == 'schemes'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('configure_workflow_schemes'), __('Workflow schemes')); ?></li>
 		</ul>
 	</div>
 </div>

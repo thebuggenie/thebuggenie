@@ -148,6 +148,26 @@
 			$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
 			$this->doInsert($crit);
 		}
+		
+		public function copyByWorkflowIDs($old_workflow_id, $new_workflow_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::WORKFLOW_ID, $old_workflow_id);
+			
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$crit2 = $this->getCriteria();
+					$crit2->addInsert(self::FROM_STEP_ID, $row->get(self::FROM_STEP_ID));
+					$crit2->addInsert(self::SCOPE, $row->get(self::SCOPE));
+					$crit2->addInsert(self::TRANSITION_ID, $row->get(self::TRANSITION_ID));
+					$crit2->addInsert(self::WORKFLOW_ID, $new_workflow_id);
+					$this->doInsert($crit2);
+				}
+			}
+		}
 
 		public function deleteByTransitionID($transition_id)
 		{
@@ -159,4 +179,28 @@
 			$this->_deleteByTypeID('step', $step_id);
 		}
 
+		public function reMapStepIDsByWorkflowID($workflow_id, $mapper_array)
+		{
+			foreach ($mapper_array as $old_step_id => $new_step_id)
+			{
+				$crit = $this->getCriteria();
+				$crit->addUpdate(self::FROM_STEP_ID, $new_step_id);
+				$crit->addWhere(self::FROM_STEP_ID, $old_step_id);
+				$crit->addWhere(self::WORKFLOW_ID, $workflow_id);
+				$this->doUpdate($crit);
+			}
+		}
+		
+		public function reMapTransitionIDsByWorkflowID($workflow_id, $mapper_array)
+		{
+			foreach ($mapper_array as $old_transition_id => $new_transition_id)
+			{
+				$crit = $this->getCriteria();
+				$crit->addUpdate(self::TRANSITION_ID, $new_transition_id);
+				$crit->addWhere(self::TRANSITION_ID, $old_transition_id);
+				$crit->addWhere(self::WORKFLOW_ID, $workflow_id);
+				$this->doUpdate($crit);
+			}
+		}
+		
 	}

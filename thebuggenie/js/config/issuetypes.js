@@ -185,3 +185,8 @@ function copyIssuetypeScheme(url, scheme_id)
 {
 	_postFormWithJSONFeedback(url, 'copy_issuetype_scheme_' + scheme_id + '_form', 'copy_issuetype_scheme_' + scheme_id + '_indicator', 'copy_scheme_' + scheme_id + '_popup', 'issuetype_schemes_list', true);
 }
+
+function deleteIssuetypeScheme(url, scheme_id)
+{
+	_postFormWithJSONFeedback(url, 'delete_issuetype_scheme_' + scheme_id + '_form', 'delete_issuetype_scheme_' + scheme_id + '_indicator', ['delete_scheme_' + scheme_id + '_popup', 'copy_scheme_' + scheme_id + '_popup', 'issuetype_scheme_' + scheme_id], 'issuetype_schemes_list', true);
+}

@@ -26,6 +26,8 @@
 		protected $_issuetype_workflows = null;
 
 		protected $_num_issuetype_workflows = null;
+		
+		protected $_number_of_projects = null;
 
 		/**
 		 * The workflow description
@@ -53,6 +55,11 @@
 				}
 			}
 			return self::$_schemes;
+		}
+		
+		protected function _preDelete()
+		{
+			TBGWorkflowIssuetypeTable::getTable()->deleteByWorkflowSchemeID($this->getID());
 		}
 
 		/**
@@ -112,6 +119,11 @@
 			$this->_populateAssociatedWorkflows();
 			return array_key_exists($issuetype->getID(), $this->_issuetype_workflows);
 		}
+		
+		public function associateIssuetypeWithWorkflow(TBGIssuetype $issuetype, TBGWorkflow $workflow)
+		{
+			TBGWorkflowIssuetypeTable::getTable()->setWorkflowIDforIssuetypeIDwithSchemeID($workflow->getID(), $issuetype->getID(), $this->getID());
+		}
 
 		/**
 		 * Get all steps in this workflow
@@ -131,4 +143,18 @@
 			}
 		}
 
+		public function isInUse()
+		{
+			if ($this->_number_of_projects === null)
+			{
+				$this->_number_of_projects = TBGProjectsTable::getTable()->countByWorkflowSchemeID($this->getID());
+			}
+			return (bool) $this->_number_of_projects;
+		}
+		
+		public function getNumberOfProjects()
+		{
+			return $this->_number_of_projects;
+		}
+		
 	}

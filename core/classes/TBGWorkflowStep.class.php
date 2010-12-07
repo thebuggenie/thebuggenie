@@ -278,5 +278,13 @@
 				$issue->open();
 			}
 		}
+		
+		public function copy(TBGWorkflow $new_workflow)
+		{
+			$new_step = clone $this;
+			$new_step->setWorkflow($new_workflow);
+			$new_step->save();
+			return $new_step;
+		}
 
 	}

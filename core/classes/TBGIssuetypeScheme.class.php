@@ -27,6 +27,8 @@
 		
 		protected $_issuetypedetails = null;
 		
+		protected $_number_of_projects = null;
+		
 		/**
 		 * The issuetype description
 		 *
@@ -190,12 +192,18 @@
 			}
 			return $retarr;
 		}
+		
+		protected function _preDelete()
+		{
+			TBGIssueFieldsTable::getTable()->deleteByIssuetypeSchemeID($this->getID());
+			TBGIssuetypeSchemeLinkTable::getTable()->deleteByIssuetypeSchemeID($this->getID());
+		}
 
 		protected function _populateVisibleFieldsForIssuetype(TBGIssuetype $issuetype)
 		{
 			if (!array_key_exists($issuetype->getID(), $this->_visiblefields))
 			{
-				$this->_visiblefields[$issuetype->getID()] = B2DB::getTable('TBGIssueFieldsTable')->getSchemeVisibleFieldsArrayByIssuetypeID($this->getID(), $issuetype->getID());
+				$this->_visiblefields[$issuetype->getID()] = TBGIssueFieldsTable::getTable()->getSchemeVisibleFieldsArrayByIssuetypeID($this->getID(), $issuetype->getID());
 			}
 		}
 
@@ -207,12 +215,26 @@
 		
 		public function clearAvailableFieldsForIssuetype(TBGIssuetype $issuetype)
 		{
-			B2DB::getTable('TBGIssueFieldsTable')->deleteBySchemeIDandIssuetypeID($this->getID(), $issuetype->getID());
+			TBGIssueFieldsTable::getTable()->deleteBySchemeIDandIssuetypeID($this->getID(), $issuetype->getID());
 		}
 
 		public function setFieldAvailableForIssuetype(TBGIssuetype $issuetype, $key, $details)
 		{
-			B2DB::getTable('TBGIssueFieldsTable')->addFieldAndDetailsBySchemeIDandIssuetypeID($this->getID(), $issuetype->getID(), $key, $details);
+			TBGIssueFieldsTable::getTable()->addFieldAndDetailsBySchemeIDandIssuetypeID($this->getID(), $issuetype->getID(), $key, $details);
+		}
+		
+		public function isInUse()
+		{
+			if ($this->_number_of_projects === null)
+			{
+				$this->_number_of_projects = TBGProjectsTable::getTable()->countByIssuetypeSchemeID($this->getID());
+			}
+			return (bool) $this->_number_of_projects;
+		}
+		
+		public function getNumberOfProjects()
+		{
+			return $this->_number_of_projects;
 		}
 		
 	}

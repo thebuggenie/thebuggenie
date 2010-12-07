@@ -35,13 +35,15 @@
 		 *
 		 * @var boolean
 		 */
-		protected $_is_active = null;
+		protected $_is_active = true;
 
 		protected $_steps = null;
 
 		protected $_num_steps = null;
 
 		protected $_transitions = null;
+		
+		protected $_number_of_schemes = null;
 
 		/**
 		 * Return all workflows in the system
@@ -112,7 +114,7 @@
 				$this->_transitions = TBGWorkflowTransitionsTable::getTable()->getByWorkflowID($this->getID());
 			}
 		}
-
+		
 		/**
 		 * Get all transitions in this workflow
 		 *
@@ -167,4 +169,44 @@
 			return $this->_num_steps;
 		}
 
+		public function isInUse()
+		{
+			if ($this->_number_of_schemes === null)
+			{
+				$this->_number_of_schemes = TBGWorkflowIssuetypeTable::getTable()->countSchemesByWorkflowID($this->getID());
+			}
+			return (bool) $this->_number_of_schemes;
+		}
+		
+		public function getNumberOfSchemes()
+		{
+			return $this->_number_of_schemes;
+		}
+		
+		public function copy($new_name)
+		{
+			$new_workflow = new TBGWorkflow();
+			$new_workflow->setName($new_name);
+			$new_workflow->save();
+			$step_mapper = array();
+			$transition_mapper = array();
+			foreach ($this->getSteps() as $key => $step)
+			{
+				$this->_steps[$key] = $step->copy($new_workflow);
+				$step_mapper[$key] = $this->_steps[$key]->getID();
+			}
+			foreach ($this->getTransitions() as $key => $transition)
+			{
+				$old_id = $transition->getID();
+				$this->_transitions[$key] = $transition->copy($new_workflow);
+				$transition_mapper[$old_id] = $this->_transitions[$key]->getID();
+			}
+			TBGWorkflowStepTransitionsTable::getTable()->copyByWorkflowIDs($this->getID(), $new_workflow->getID());
+			TBGWorkflowStepTransitionsTable::getTable()->reMapStepIDsByWorkflowID($new_workflow->getID(), $step_mapper);
+			TBGWorkflowTransitionsTable::getTable()->reMapByWorkflowID($new_workflow->getID(), $step_mapper);
+			TBGWorkflowStepTransitionsTable::getTable()->reMapTransitionIDsByWorkflowID($new_workflow->getID(), $transition_mapper);
+			
+			return $new_workflow;
+		}
+		
 	}

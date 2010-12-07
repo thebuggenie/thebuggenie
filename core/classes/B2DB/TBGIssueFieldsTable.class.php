@@ -118,6 +118,14 @@
 			$res = $this->doSelect($crit);
 			return $res;
 		}
+		
+		public function deleteByIssuetypeSchemeID($scheme_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$res = $this->doDelete($crit);
+		}
 
 		public function loadFixtures(TBGScope $scope, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id)
 		{
