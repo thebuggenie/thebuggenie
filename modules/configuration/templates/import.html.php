@@ -37,13 +37,11 @@
 					</div>
 				</div>
 				<div id="tab_tbg_pane" style="padding-top: 0; width: 750px; display: none;">
-					<div class="tab_content">
-						<?php echo __('You can import data from previous version of The Bug Genie into your version 3 installation.'); ?>
-						<div class="tab_header"><?php echo __('BUGS 1.x'); ?></div>
-						<?php echo __('Please upgrade to BUGS 1.9, followed by The Bug Genie 2 (an upgrade script is included in the installation package for The Bug Genie 2). After upgrading, then follow the instructions below to upgrade from The Bug Genie 2.'); ?>
-						<div class="tab_header"><?php echo __('The Bug Genie 2'); ?></div>
-						<?php echo __('Please upgrade to The Bug Genie 2.1 if you haven\'t already done so, then follow the instructions on The Bug Genie wiki to upgrade your data. There is not a built in upgrade script.'); ?>
-					</div>
+					<div class="tab_content"><?php echo __('You can import data from previous version of The Bug Genie into your version 3 installation.'); ?></div>
+					<div class="tab_header"><?php echo __('BUGS 1.x'); ?></div>
+					<div class="tab_content"><?php echo __('Please upgrade to BUGS 1.9, followed by The Bug Genie 2 (an upgrade script is included in the installation package for The Bug Genie 2). After upgrading, then follow the instructions below to upgrade from The Bug Genie 2.'); ?></div>
+					<div class="tab_header"><?php echo __('The Bug Genie 2'); ?></div>
+					<div class="tab_content"><?php echo __('Please upgrade to The Bug Genie 2.1 if you haven\'t already done so, then follow the instructions on The Bug Genie wiki to upgrade your data. There is not a built in upgrade script.'); ?></div>
 				</div>
 				<div id="tab_sample_pane" style="padding-top: 0; width: 750px; display: none;">
 					<div class="tab_header"><?php echo __('Importing sample data'); ?></div>
