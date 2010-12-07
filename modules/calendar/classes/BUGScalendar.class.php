@@ -41,6 +41,7 @@
 		 */
 		public function getEvents($startdate, $enddate, $uid = null, $calendar = null, $bypass = false)
 		{
+			return array();
 			if ($uid === null)
 			{
 				$uid = TBGContext::getUser()->getUID();

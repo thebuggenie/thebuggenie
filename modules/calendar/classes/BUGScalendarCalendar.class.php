@@ -10,7 +10,7 @@
 		 *
 		 * @param B2DBRow $id Integer or B2DBRow
 		 */
-		public function __construct($id)
+		public function _construct(B2DBRow $id, $foreign_key = null)
 		{
 			if (!$id instanceof B2DBRow)
 			{
