@@ -192,7 +192,7 @@
 		 * 
 		 * @var integer
 		 */
-		protected $_state;
+		protected $_state = self::STATE_OPEN;
 		
 		/**
 		 * The category
@@ -359,7 +359,7 @@
 		 * 
 		 * @var boolean
 		 */
-		protected $_deleted;
+		protected $_deleted = false;
 		
 		/**
 		 * Whether the issue is blocking the next release
@@ -2291,7 +2291,7 @@
 		 */
 		public function setPostedBy(TBGIdentifiableClass $poster)
 		{
-			$this->_addChangedProperty('_postedby', $poster->getID());
+			$this->_addChangedProperty('_posted_by', $poster->getID());
 		}
 		
 		/**
@@ -3998,6 +3998,8 @@
 				{
 					$this->_issue_no = TBGIssuesTable::getTable()->getNextIssueNumberForProductID($this->getProject()->getID());
 				}
+				$this->_posted = NOW;
+				$this->_last_updated = NOW;
 				$step = $this->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($this->getIssueType())->getFirstStep();
 				$step->applyToIssue($this);
 				return;
@@ -4159,7 +4161,7 @@
 								$is_saved_assignee = true;
 							}
 							break;
-						case '_postedby':
+						case '_posted_by':
 							$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
 							$old_name = ($old_identifiable instanceof TBGIdentifiableClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 							$new_name = $this->getPostedBy()->getName();

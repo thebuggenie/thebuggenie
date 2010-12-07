@@ -557,6 +557,14 @@
 			{
 				throw new Exception(TBGContext::getI18n()->__('This username already exists'));
 			}
+			if (!$this->_realname)
+			{
+				$this->_realname = $this->_username;
+			}
+			if (!$this->_buddyname)
+			{
+				$this->_buddyname = $this->_username;
+			}
 		}
 
 		protected function _postSave($is_new)

@@ -46,7 +46,7 @@
 				<div id="tab_sample_pane" style="padding-top: 0; width: 750px; display: none;">
 					<div class="tab_header"><?php echo __('Importing sample data'); ?></div>
 					<div class="tab_content">
-						<?php echo __('The Bug Genie can load sample data for you, so you can play around without having to use your own data. Press the button below to import sample projects, issues and clients.'); ?>
+						<?php echo __('The Bug Genie can load sample data for you, so you can play around without having to use your own data. Press the button below to import sample projects and issues.'); ?>
 						<form action="<?php echo make_url('configure_import'); ?>" method="post">
 							<input type="hidden" name="import_sample_data" value="1">
 							<div style="text-align: right;">

@@ -71,17 +71,117 @@
 			{
 				if ($request->getParameter('import_sample_data'))
 				{
-					$project = new TBGProject();
-					$project->setName('Sample project 1');
-					$project->setDescription('This is a sample project that is awesome. Try it out!');
-					$project->setHomepage('http://www.google.com');
-					$project->save();
+					$users = array();
 					
-					$project = new TBGProject();
-					$project->setName('Sample project 2');
-					$project->setDescription('This is the second sample project. Not as awesome as the first one, but still worth a try!');
-					$project->setHomepage('http://www.bing.com');
-					$project->save();
+					$user1 = new TBGUser();
+					$user1->setUsername('john');
+					$user1->setActivated();
+					$user1->setEnabled();
+					$user1->save();
+					$users[] = $user1;
+					
+					$user2 = new TBGUser();
+					$user2->setUsername('jane');
+					$user2->setActivated();
+					$user2->setEnabled();
+					$user2->save();
+					$users[] = $user2;
+					
+					$user3 = new TBGUser();
+					$user3->setUsername('jackdaniels');
+					$user3->setActivated();
+					$user3->setEnabled();
+					$user3->save();
+					$users[] = $user3;
+					
+					$project1 = new TBGProject();
+					$project1->setName('Sample project 1');
+					$project1->setOwner($users[rand(0, 2)]);
+					$project1->setLeader($users[rand(0, 2)]);
+					$project1->setQaResponsible($users[rand(0, 2)]);
+					$project1->setDescription('This is a sample project that is awesome. Try it out!');
+					$project1->setHomepage('http://www.google.com');
+					$project1->save();
+					
+					$project2 = new TBGProject();
+					$project2->setName('Sample project 2');
+					$project2->setOwner($users[rand(0, 2)]);
+					$project2->setLeader($users[rand(0, 2)]);
+					$project2->setQaResponsible($users[rand(0, 2)]);
+					$project2->setDescription('This is the second sample project. Not as awesome as the first one, but still worth a try!');
+					$project2->setHomepage('http://www.bing.com');
+					$project2->save();
+
+					foreach (array($project1, $project2) as $project)
+					{
+						for ($cc = 1; $cc <= 5; $cc++)
+						{
+							$milestone = new TBGMilestone();
+							$milestone->setName("Milestone {$cc}");
+							$milestone->setScheduled((bool) rand(0,1));
+							$milestone->setProject($project);
+							$milestone->setType(TBGMilestone::TYPE_REGULAR);
+							if ($milestone->isScheduled())
+							{
+								$milestone->setScheduledDate(NOW + (100000 * (20 * $cc)));
+							}
+							$milestone->save();
+						}
+					}
+					
+					$p1_milestones = $project1->getMilestones();
+					$p2_milestones = $project2->getMilestones();
+					
+					$issues = array();
+					$priorities = TBGPriority::getAll();
+					$categories = TBGCategory::getAll();
+					$severities = TBGSeverity::getAll();
+					$reproducabilities = TBGReproducability::getAll();
+					
+					foreach (array('bugreport', 'featurerequest', 'enhancement', 'idea') as $issuetype)
+					{
+						$issuetype = TBGIssuetype::getIssuetypeByKeyish($issuetype);
+						for ($cc = 1; $cc <= 10; $cc++)
+						{
+							$issue1 = new TBGIssue();
+							$issue1->setProject($project1);
+							$issue1->setPostedBy($users[rand(0, 2)]);
+							$issue1->setTitle("{$issuetype->getName()} {$cc}");
+							$issue1->setIssuetype($issuetype);
+							$issue1->setMilestone($p1_milestones[array_rand($p1_milestones)]);
+							$issue1->setPriority($priorities[array_rand($priorities)]);
+							$issue1->setCategory($categories[array_rand($categories)]);
+							$issue1->setSeverity($severities[array_rand($severities)]);
+							$issue1->setReproducability($reproducabilities[array_rand($reproducabilities)]);
+							$issue1->save();
+							$issues[] = $issue1;
+
+							$issue2 = new TBGIssue();
+							$issue2->setProject($project2);
+							$issue2->setPostedBy($users[rand(0, 2)]);
+							$issue2->setTitle("{$issuetype->getName()} {$cc}");
+							$issue2->setIssuetype($issuetype);
+							$issue2->setMilestone($p2_milestones[array_rand($p2_milestones)]);
+							$issue2->setPriority($priorities[array_rand($priorities)]);
+							$issue2->setCategory($categories[array_rand($categories)]);
+							$issue2->setSeverity($severities[array_rand($severities)]);
+							$issue2->setReproducability($reproducabilities[array_rand($reproducabilities)]);
+							$issue2->save();
+							$issues[] = $issue2;
+						}
+					}
+					
+					$rand_issues_to_close = rand(8, 40);
+					$resolutions = TBGResolution::getAll();
+					
+					for ($cc = 1; $cc <= $rand_issues_to_close; $cc++)
+					{
+						$issue = array_slice($issues, array_rand($issues), 1);
+						$issue = $issue[0];
+						$issue->setResolution($resolutions[array_rand($resolutions)]);
+						$issue->close();
+						$issue->save();
+					}
 					
 					$this->imported_data = true;
 				}

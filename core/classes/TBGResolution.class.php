@@ -4,6 +4,8 @@
 	{
 
 		protected static $_items = null;
+
+		protected $_key = null;
 		
 		protected $_itemtype = TBGDatatype::RESOLUTION;
 
@@ -46,6 +48,18 @@
 			return self::$_items;
 		}
 
+		public static function getResolutionByKeyish($key)
+		{
+			foreach (self::getAll() as $resolution)
+			{
+				if ($resolution->getKey() == str_replace(array(' ', '/', "'"), array('', '', ''), strtolower($key)))
+				{
+					return $resolution;
+				}
+			}
+			return null;
+		}
+
 		/**
 		 * Create a new resolution
 		 *
@@ -59,5 +73,18 @@
 			return TBGContext::factory()->TBGResolution($res->getInsertID());
 		}
 
+		protected function _generateKey()
+		{
+			$this->_key = str_replace(array(' ', '/'), array('', ''), strtolower($this->getName()));
+		}
+		
+		public function getKey()
+		{
+			if ($this->_key == null)
+			{
+				$this->_generateKey();
+			}
+			return $this->_key;
+		}
+		
 	}
-
