@@ -6,7 +6,6 @@
 	else
 	{
 		$theUser = TBGContext::factory()->TBGUser($author);
-		$user = $theUser->getBuddyname() . ' (' . $theUser->getUname() . ')';
 	}
 
 	$web_path = TBGContext::getModule('vcs_integration')->getSetting('web_path_' . $projectId);
@@ -48,7 +47,29 @@
 <div class="rounded_box mediumgrey borderless cut_top cut_bottom">
 	<a href="javascript:void(0);" id="checkin_expand_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').show(); $('checkin_expand_<?php echo $id; ?>').hide(); $('checkin_collapse_<?php echo $id; ?>').show();"><?php echo image_tag('expand.png'); ?></a>
 	<a href="javascript:void(0);" style="display: none;" id="checkin_collapse_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').hide(); $('checkin_expand_<?php echo $id; ?>').show(); $('checkin_collapse_<?php echo $id; ?>').hide();"><?php echo image_tag('collapse.png'); ?></a>
-	<span class="commenttitle"><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision[0].':'.$revision[1])) . '</a> - ' . __('committed on %date% by %user%', array('%date%' => tbg_formatTime($date, 10), '%user%' => $user)); ?></span>
+<?php 
+	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
+	{
+		case 'hgweb':
+			if (isset($theUser))
+			{
+				$user = '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $theUser, 'size' => 'small')).'</div>';
+			}
+			?>
+			<span class="commenttitle"><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision[0].':'.$revision[1])) . '</a> - ' . __('committed on %date% by %user%', array('%date%' => tbg_formatTime($date, 10), '%user%' => $user)); ?></span>
+			<?php
+			break;
+		default:
+			if (isset($theUser))
+			{
+				$user = '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $theUser, 'size' => 'small')).'</div>';
+			}
+			?>
+			<span class="commenttitle"><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision)) . '</a> - ' . __('committed on %date% by %user%', array('%date%' => tbg_formatTime($date, 10), '%user%' => $user)); ?></span>
+			<?php
+			break;
+	}
+?>
 </div>
 <div id="checkin_details_<?php echo $id; ?>" style="display: none;" class="rounded_box borderless cut_bottom cut_top iceblue">
 	<h4><?php echo __('Log entry:'); ?></h4>
