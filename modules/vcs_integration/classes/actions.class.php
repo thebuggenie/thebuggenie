@@ -22,10 +22,10 @@
 			/* Prepare variables */
 			$passkey = TBGContext::getRequest()->getParameter('passkey');
 			$project = urldecode(TBGContext::getRequest()->getParameter('project'));
-			$author = urldecode(TBGContext::getRequest()->getParameter('author'));
+			$author = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('author')), ENT_QUOTES), '"');
 			$new_rev = TBGContext::getRequest()->getParameter('rev');
-			$commit_msg = urldecode(TBGContext::getRequest()->getParameter('commit_msg'));
-			$changed = urldecode(TBGContext::getRequest()->getParameter('changed'));
+			$commit_msg = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('commit_msg')), ENT_QUOTES), '"');
+			$changed = trim(html_entity_decode(urldecode(TBGContext::getRequest()->getParameter('changed')), ENT_QUOTES), '"');
 			
 			if (!TBGContext::getRequest()->hasParameter('oldrev'))
 			{
