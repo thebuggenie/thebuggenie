@@ -192,7 +192,7 @@
 		protected $_summary_display = null;
 		
 		/**
-		 * List of assigned users, teams and customers
+		 * List of assigned users and teams
 		 * 
 		 * @var array
 		 */
@@ -1125,7 +1125,7 @@
 		/**
 		 * Adds an assignee with a given role
 		 * 
-		 * @param TBGIdentifiable $assignee The user, team or customer to add
+		 * @param TBGIdentifiable $assignee The user or team to add
 		 * @param integer $role The role to add
 		 *  
 		 * @return null
@@ -1146,12 +1146,6 @@
 						B2DB::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID());
 					}
 					break;
-				case ($assignee instanceof TBGCustomer):
-					if ($res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndCustomer($this->getID(), $role, $assignee->getID()))
-					{
-						B2DB::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndCustomer($this->getID(), $role, $assignee->getID());
-					}
-					break;
 			}
 		}
 
@@ -1159,7 +1153,7 @@
 		{
 			if ($this->_assignees === null)
 			{
-				$this->_assignees = array('uids' => array(), 'users' => array(), 'customers' => array(), 'teams' => array());
+				$this->_assignees = array('uids' => array(), 'users' => array(), 'teams' => array());
 		
 				if ($res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectID($this->getID()))
 				{
@@ -1170,9 +1164,6 @@
 							case ($row->get(TBGProjectAssigneesTable::UID) != 0):
 								$this->_assignees['users'][$row->get(TBGProjectAssigneesTable::UID)]['projects'][$this->getID()][$row->get(TBGProjectAssigneesTable::TARGET_TYPE)] = true;
 								$this->_assignees['uids'][$row->get(TBGProjectAssigneesTable::UID)] = $row->get(TBGProjectAssigneesTable::UID);
-								break;
-							case ($row->get(TBGProjectAssigneesTable::CID) != 0):
-								$this->_assignees['customers'][$row->get(TBGProjectAssigneesTable::CID)]['projects'][$this->getID()][$row->get(TBGProjectAssigneesTable::TARGET_TYPE)] = true;
 								break;
 							case ($row->get(TBGProjectAssigneesTable::TID) != 0):
 								$this->_assignees['teams'][$row->get(TBGProjectAssigneesTable::TID)]['projects'][$this->getID()][$row->get(TBGProjectAssigneesTable::TARGET_TYPE)] = true;
@@ -1197,9 +1188,6 @@
 									$this->_assignees['users'][$row->get(TBGEditionAssigneesTable::UID)]['editions'][$row->get(TBGEditionAssigneesTable::EDITION_ID)][$row->get(TBGEditionAssigneesTable::TARGET_TYPE)] = true;
 									$this->_assignees['uids'][$row->get(TBGEditionAssigneesTable::UID)] = $row->get(TBGEditionAssigneesTable::UID);
 									break;
-								case ($row->get(TBGEditionAssigneesTable::CID) != 0):
-									$this->_assignees['customers'][$row->get(TBGEditionAssigneesTable::CID)]['editions'][$row->get(TBGEditionAssigneesTable::EDITION_ID)][$row->get(TBGEditionAssigneesTable::TARGET_TYPE)] = true;
-									break;
 								case ($row->get(TBGEditionAssigneesTable::TID) != 0):
 									$this->_assignees['teams'][$row->get(TBGEditionAssigneesTable::TID)]['editions'][$row->get(TBGEditionAssigneesTable::EDITION_ID)][$row->get(TBGEditionAssigneesTable::TARGET_TYPE)] = true;
 									foreach (B2DB::getTable('TBGTeamMembersTable')->getUIDsForTeamID($row->get(TBGEditionAssigneesTable::TID)) as $uid)
@@ -1223,9 +1211,6 @@
 								case ($row->get(TBGComponentAssigneesTable::UID) != 0):
 									$this->_assignees['users'][$row->get(TBGComponentAssigneesTable::UID)]['components'][$row->get(TBGComponentAssigneesTable::COMPONENT_ID)][$row->get(TBGComponentAssigneesTable::TARGET_TYPE)] = true;
 									$this->_assignees['uids'][$row->get(TBGComponentAssigneesTable::UID)] = $row->get(TBGComponentAssigneesTable::UID);
-									break;
-								case ($row->get(TBGComponentAssigneesTable::CID) != 0):
-									$this->_assignees['customers'][$row->get(TBGComponentAssigneesTable::CID)]['components'][$row->get(TBGComponentAssigneesTable::COMPONENT_ID)][$row->get(TBGComponentAssigneesTable::TARGET_TYPE)] = true;
 									break;
 								case ($row->get(TBGComponentAssigneesTable::TID) != 0):
 									$this->_assignees['teams'][$row->get(TBGComponentAssigneesTable::TID)]['components'][$row->get(TBGComponentAssigneesTable::COMPONENT_ID)][$row->get(TBGComponentAssigneesTable::TARGET_TYPE)] = true;

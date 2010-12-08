@@ -23,7 +23,6 @@
 		const ID = 'projectassignees.id';
 		const SCOPE = 'projectassignees.scope';
 		const UID = 'projectassignees.uid';
-		const CID = 'projectassignees.cid';
 		const TID = 'projectassignees.tid';
 		const PROJECT_ID = 'projectassignees.project_id';
 		const TARGET_TYPE = 'projectassignees.target_type';
@@ -32,7 +31,6 @@
 		const TYPE_PROJECTMANAGER = 2;
 		const TYPE_TESTER = 3;
 		const TYPE_DOCUMENTOR = 4;
-		const TYPE_CUSTOMER = 5;
 		
 		public function __construct()
 		{
@@ -41,7 +39,6 @@
 			parent::_addForeignKeyColumn(self::PROJECT_ID, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::TID, B2DB::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
-			parent::_addForeignKeyColumn(self::CID, B2DB::getTable('TBGCustomersTable'), TBGCustomersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
@@ -50,8 +47,7 @@
 			return array(self::TYPE_DEVELOPER => TBGContext::getI18n()->__('Developer'), 
 						self::TYPE_PROJECTMANAGER => TBGContext::getI18n()->__('Project manager'),
 						self::TYPE_DOCUMENTOR => TBGContext::getI18n()->__('Documentation editor'),
-						self::TYPE_TESTER => TBGContext::getI18n()->__('Tester'),
-						self::TYPE_CUSTOMER => TBGContext::getI18n()->__('Customer'));
+						self::TYPE_TESTER => TBGContext::getI18n()->__('Tester'));
 		}
 		
 		public static function getTypeName($type)
@@ -105,27 +101,6 @@
 			$crit->addInsert(self::PROJECT_ID, $project_id);
 			$crit->addInsert(self::TARGET_TYPE, $role);
 			$crit->addInsert(self::TID, $team_id);
-			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$res = $this->doInsert($crit);
-			return $res;
-		}
-		
-		public function getByProjectAndRoleAndCustomer($project_id, $role, $customer_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(self::TARGET_TYPE, $role);
-			$crit->addWhere(self::CID, $customer_id);
-			$res = $this->doSelect($crit);
-			return $res;
-		}
-
-		public function addByProjectAndRoleAndCustomer($project_id, $role, $customer_id)
-		{
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::PROJECT_ID, $project_id);
-			$crit->addInsert(self::TARGET_TYPE, $role);
-			$crit->addInsert(self::CID, $customer_id);
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);
 			return $res;

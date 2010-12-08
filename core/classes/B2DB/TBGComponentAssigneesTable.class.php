@@ -23,7 +23,6 @@
 		const ID = 'componentassignees.id';
 		const SCOPE = 'componentassignees.scope';
 		const UID = 'componentassignees.uid';
-		const CID = 'componentassignees.cid';
 		const TID = 'componentassignees.tid';
 		const COMPONENT_ID = 'componentassignees.component_id';
 		const TARGET_TYPE = 'componentassignees.target_type';
@@ -35,7 +34,6 @@
 			parent::_addForeignKeyColumn(self::COMPONENT_ID, B2DB::getTable('TBGComponentsTable'), TBGComponentsTable::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::TID, B2DB::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
-			parent::_addForeignKeyColumn(self::CID, B2DB::getTable('TBGCustomersTable'), TBGCustomersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		

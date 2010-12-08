@@ -40,7 +40,6 @@
 		const PRIVATE_EMAIL = 'users.private_email';
 		const JOINED = 'users.joined';
 		const GROUP_ID = 'users.group_id';
-		const CUSTOMER_ID = 'users.customer_id';
 		
 		/**
 		 * Return an instance of this table
@@ -74,7 +73,6 @@
 			parent::_addBoolean(self::PRIVATE_EMAIL);
 			parent::_addInteger(self::JOINED, 10);
 			parent::_addForeignKeyColumn(self::GROUP_ID, TBGGroupsTable::getTable(), TBGGroupsTable::ID);
-			parent::_addForeignKeyColumn(self::CUSTOMER_ID, B2DB::getTable('TBGCustomersTable'), TBGCustomersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 

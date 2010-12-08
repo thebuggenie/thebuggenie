@@ -70,9 +70,6 @@
 				case ($assignee instanceof TBGTeam):
 					$crit->addWhere(TBGComponentAssigneesTable::TID, $assignee->getID());
 					break;
-				case ($assignee instanceof TBGCustomer):
-					$crit->addWhere(TBGComponentAssigneesTable::CID, $assignee->getID());
-					break;
 			}
 			$res = B2DB::getTable('TBGComponentAssigneesTable')->doSelectOne($crit);
 			
@@ -86,9 +83,6 @@
 						break;
 					case ($assignee instanceof TBGTeam):
 						$crit->addInsert(TBGComponentAssigneesTable::TID, $assignee->getID());
-						break;
-					case ($assignee instanceof TBGCustomer):
-						$crit->addInsert(TBGComponentAssigneesTable::CID, $assignee->getID());
 						break;
 				}
 				$crit->addInsert(TBGComponentAssigneesTable::COMPONENT_ID, $this->getID());

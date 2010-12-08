@@ -187,14 +187,6 @@
 		protected $_group_id = null;
 	
 		/**
-		 * The users customer, if any
-		 * 
-		 * @var TBGCustomer
-		 * @Class TBGCustomer
-		 */
-		protected $_customer_id = null;
-	
-		/**
 		 * A list of the users associated projects, if any
 		 * 
 		 * @var array

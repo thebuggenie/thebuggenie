@@ -23,7 +23,6 @@
 		const ID = 'editionassignees.id';
 		const SCOPE = 'editionassignees.scope';
 		const UID = 'editionassignees.uid';
-		const CID = 'editionassignees.cid';
 		const TID = 'editionassignees.tid';
 		const EDITION_ID = 'editionassignees.edition_id';
 		const TARGET_TYPE = 'editionassignees.target_type';
@@ -35,7 +34,6 @@
 			parent::_addForeignKeyColumn(self::EDITION_ID, B2DB::getTable('TBGEditionsTable'), TBGEditionsTable::ID);
 			parent::_addForeignKeyColumn(self::UID, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addForeignKeyColumn(self::TID, B2DB::getTable('TBGTeamsTable'), TBGTeamsTable::ID);
-			parent::_addForeignKeyColumn(self::CID, B2DB::getTable('TBGCustomersTable'), TBGCustomersTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
@@ -84,9 +82,6 @@
 				case ($assignee instanceof TBGTeam):
 					$crit->addWhere(self::TID, $assignee->getID());
 					break;
-				case ($assignee instanceof TBGCustomer):
-					$crit->addWhere(self::CID, $assignee->getID());
-					break;
 			}
 			$res = $this->doSelectOne($crit);
 
@@ -100,9 +95,6 @@
 						break;
 					case ($assignee instanceof TBGTeam):
 						$crit->addInsert(self::TID, $assignee->getID());
-						break;
-					case ($assignee instanceof TBGCustomer):
-						$crit->addInsert(self::CID, $assignee->getID());
 						break;
 				}
 				$crit->addInsert(self::EDITION_ID, $edition_id);

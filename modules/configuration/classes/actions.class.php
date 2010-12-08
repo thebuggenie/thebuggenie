@@ -667,7 +667,6 @@
 				$this->theProject = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
 				$this->users = TBGUser::findUsers($request->getParameter('find_by'), 10);
 				$this->teams = TBGTeam::findTeams($request->getParameter('find_by'));
-				$this->customers = TBGCustomer::findCustomers($request->getParameter('find_by'));
 			}
 			else
 			{
@@ -676,7 +675,7 @@
 		}
 		
 		/**
-		 * Adds a user, team or a customer to a project
+		 * Adds a user or team to a project
 		 * 
 		 * @param TBGRequest $request The request object
 		 */
@@ -706,9 +705,6 @@
 							break;
 						case 'team':
 							$assignee = TBGContext::factory()->TBGTeam($assignee_id);
-							break;
-						case 'customer':
-							$assignee = TBGContext::factory()->TBGCustomer($assignee_id);
 							break;
 						default:
 							$this->forward403();

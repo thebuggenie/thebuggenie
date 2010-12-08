@@ -20,7 +20,6 @@
 		const STATUS_CHOICE = 13;
 		const USER_CHOICE = 14;
 		const TEAM_CHOICE = 15;
-		const CUSTOMER_CHOICE = 16;
 		const USER_OR_TEAM_CHOICE = 17;
 		const DROPDOWN_CHOICE_TEXT_COLORED = 18;
 		const DROPDOWN_CHOICE_TEXT_COLOR = 19;
@@ -99,7 +98,6 @@
 			$types[self::STATUS_CHOICE] = $i18n->__('Dropdown list with statuses');
 			$types[self::USER_CHOICE] = $i18n->__('Find and pick a user');
 			$types[self::TEAM_CHOICE] = $i18n->__('Find and pick a team');
-			$types[self::CUSTOMER_CHOICE] = $i18n->__('Find and pick a customer');
 			$types[self::USER_OR_TEAM_CHOICE] = $i18n->__('Find and pick a user or a team');
 
 			return $types;
