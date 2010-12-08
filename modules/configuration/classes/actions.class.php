@@ -2912,8 +2912,57 @@
 			}
 			else
 			{
-				//return $this->renderJSON(array('failed' => false, 'message' => __('Import successfully completed!')));
-				return $this->renderJSON(array('failed' => false, 'message' => 'non-dry unimplemented but otherwise okay'));
+				switch ($request->getParameter('type'))
+				{
+					case 'clients':
+						for ($i = 1; $i != count($data); $i++)
+						{
+							try
+							{
+								$activerow = $data[$i];
+								$activerow = html_entity_decode($activerow, ENT_QUOTES);
+								$activerow = explode(',', $activerow);
+								$client = new TBGClient();
+								$client->setName(trim($activerow[$namecol], '"'));
+								
+								if ($emailcol !== null)
+									$client->setEmail(trim($activerow[$emailcol], '"'));
+									
+								if ($websitecol !== null)
+									$client->setWebsite(trim($activerow[$websitecol], '"'));
+									
+								if ($faxcol !== null)
+									$client->setFax(trim($activerow[$faxcol], '"'));
+								
+								if ($telephonecol !== null)
+									$client->setTelephone(trim($activerow[$telephonecol], '"'));
+									
+								$client->save();
+							}
+							catch (Exception $e)
+							{
+									$errors[] = TBGContext::getI18n()->__('Row %row% failed: %err%', array('%row%' => $i+1, '%err%' => $e->getMessage()));
+							}
+						}
+						break;
+				}
+				
+				// Handle errors
+				if (count($errors) != 0)
+				{
+					$errordiv = '<ul>';
+					foreach ($errors as $error)
+					{
+						$errordiv .= '<li>'.$error.'</li>';
+					}
+					$errordiv .= '</ul>';
+					$this->getResponse()->setHttpStatus(400);
+					return $this->renderJSON(array('failed' => true, 'errordetail' => $errordiv, 'error' => TBGContext::getI18n()->__('Errors occured while importing, see the error list in the import screen for further details')));
+				}
+				else
+				{
+					return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Successfully imported %num% rows!', array('%num%' => count($data)-1))));
+				}
 			}
 		}
 	}
