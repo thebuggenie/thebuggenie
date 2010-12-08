@@ -594,7 +594,7 @@
 			$this->selected_reproducability = null;
 			$this->selected_severity = null;
 			$this->selected_estimated_time = null;
-			$this->selected_elapsed_time = null;
+			$this->selected_spent_time = null;
 			$this->selected_percent_complete = null;
 			$this->selected_pain_bug_type = null;
 			$this->selected_pain_likelihood = null;
@@ -632,7 +632,7 @@
 			$this->selected_build = null;
 			$this->selected_component = null;
 			$this->selected_estimated_time = null;
-			$this->selected_elapsed_time = null;
+			$this->selected_spent_time = null;
 			$this->selected_percent_complete = null;
 			$this->selected_pain_bug_type = null;
 			$this->selected_pain_likelihood = null;
@@ -779,9 +779,9 @@
 					$this->selected_estimated_time = $request->getParameter('estimated_time');
 				}
 
-				if ($request->getParameter('elapsed_time'))
+				if ($request->getParameter('spent_time'))
 				{
-					$this->selected_elapsed_time = $request->getParameter('elapsed_time');
+					$this->selected_spent_time = $request->getParameter('spent_time');
 				}
 
 				if (is_numeric($request->getParameter('percent_complete')))
@@ -905,7 +905,7 @@
 			if (isset($fields_array['severity']) && $this->selected_severity instanceof TBGDatatype) $issue->setSeverity($this->selected_severity->getID());
 			if (isset($fields_array['priority']) && $this->selected_priority instanceof TBGDatatype) $issue->setPriority($this->selected_priority->getID());
 			if (isset($fields_array['estimated_time'])) $issue->setEstimatedTime($this->selected_estimated_time);
-			if (isset($fields_array['elapsed_time'])) $issue->setSpentTime($this->selected_elapsed_time);
+			if (isset($fields_array['spent_time'])) $issue->setSpentTime($this->selected_spent_time);
 			if (isset($fields_array['percent_complete'])) $issue->setPercentCompleted($this->selected_percent_complete);
 			if (isset($fields_array['pain_bug_type'])) $issue->setPainBugType($this->selected_pain_bug_type);
 			if (isset($fields_array['pain_likelihood'])) $issue->setPainLikelihood($this->selected_pain_likelihood);
@@ -968,7 +968,7 @@
 			$this->getResponse()->setPage('reportissue');
 			$this->default_title = $i18n->__('Enter a short, but descriptive summary of the issue here');
 			$this->default_estimated_time = $i18n->__('Enter an estimate here');
-			$this->default_elapsed_time = $i18n->__('Enter time spent here');
+			$this->default_spent_time = $i18n->__('Enter time spent here');
 
 			$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
 
@@ -2306,7 +2306,7 @@
 						$return_array['type'] = 'select_user';
 						break;
 					case 'estimated_time':
-					case 'elapsed_time':
+					case 'spent_time':
 						$return_array['description'] = TBGContext::getI18n()->__('Enter time, such as points, hours, minutes, etc or <none>');
 						$return_array['type'] = 'time';
 						break;

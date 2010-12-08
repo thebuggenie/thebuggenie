@@ -64,7 +64,7 @@
 										case 'estimated_time':
 											echo __("Please enter a valid estimate");
 											break;
-										case 'elapsed_time':
+										case 'spent_time':
 											echo __("Please enter time already spent working on this issue");
 											break;
 										case 'percent_complete':
@@ -141,7 +141,7 @@
 										case 'estimated_time':
 											echo __("You don't have access to estimate the issue");
 											break;
-										case 'elapsed_time':
+										case 'spent_time':
 											echo __("You don't have access to specify time already spent working on the issue");
 											break;
 										case 'percent_complete':
@@ -321,10 +321,10 @@
 						<td style="padding-top: 5px;" class="report_issue_help faded_out dark" colspan="2"><?php echo __('Type in your estimate here. Use keywords such as "points", "hours", "days", "weeks" and "months" to describe your estimate'); ?></td>
 					</tr>
 				</table>
-				<table cellpadding="0" cellspacing="0" id="elapsed_time_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('elapsed_time', $errors)): ?> class="reportissue_error"<?php endif; ?>>
+				<table cellpadding="0" cellspacing="0" id="spent_time_div" style="display: none; margin-top: 15px;"<?php if (array_key_exists('spent_time', $errors)): ?> class="reportissue_error"<?php endif; ?>>
 					<tr>
-						<td style="width: 150px;"><label for="elapsed_time_id" id="elapsed_time_label"><span>* </span><?php echo __('Time spent'); ?></label></td>
-						<td style="text-align: left;"><input type="text" name="elapsed_time" id="elapsed_time_id" style="width: 810px;" <?php if (($selected_elapsed_time !== null && $selected_elapsed_time == $default_elapsed_time) || $selected_elapsed_time === null): ?> class="faded_out"<?php endif; ?> value="<?php echo ($selected_elapsed_time !== null) ? $selected_elapsed_time : $default_elapsed_time; ?>" onblur="if ($('elapsed_time_id').getValue() == '') { $('elapsed_time_id').value = '<?php echo $default_elapsed_time; ?>'; $('elapsed_time_id').addClassName('faded_out'); }" onfocus="if ($('elapsed_time_id').getValue() == '<?php echo $default_elapsed_time; ?>') { $('elapsed_time_id').clear(); } $('elapsed_time_id').removeClassName('faded_out');"></td>
+						<td style="width: 150px;"><label for="spent_time_id" id="spent_time_label"><span>* </span><?php echo __('Time spent'); ?></label></td>
+						<td style="text-align: left;"><input type="text" name="spent_time" id="spent_time_id" style="width: 810px;" <?php if (($selected_spent_time !== null && $selected_spent_time == $default_spent_time) || $selected_spent_time === null): ?> class="faded_out"<?php endif; ?> value="<?php echo ($selected_spent_time !== null) ? $selected_spent_time : $default_spent_time; ?>" onblur="if ($('spent_time_id').getValue() == '') { $('spent_time_id').value = '<?php echo $default_spent_time; ?>'; $('spent_time_id').addClassName('faded_out'); }" onfocus="if ($('spent_time_id').getValue() == '<?php echo $default_spent_time; ?>') { $('spent_time_id').clear(); } $('spent_time_id').removeClassName('faded_out');"></td>
 					</tr>
 					<tr>
 						<td style="padding-top: 5px;" class="report_issue_help faded_out dark" colspan="2"><?php echo __('Enter time spent on this issue here. Use keywords such as "points", "hours", "days", "weeks" and "months" to describe your estimate'); ?></td>
@@ -605,12 +605,12 @@
 									<a href="javascript:void(0);" class="img" onclick="$('estimated_time_link').show();$('estimated_time_additional_div').hide();$('estimated_time_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
 								</div>
 							</li>
-							<li id="elapsed_time_additional" style="display: none;">
+							<li id="spent_time_additional" style="display: none;">
 								<?php echo image_tag('icon_time.png'); ?>
-								<div id="elapsed_time_link"<?php if ($selected_elapsed_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('elapsed_time_link').hide();$('elapsed_time_additional_div').show();"><?php echo __('Estimate time to fix'); ?></a></div>
-								<div id="elapsed_time_additional_div"<?php if ($selected_elapsed_time === null): ?> style="display: none;"<?php endif; ?>>
-									<input name="elapsed_time" id="elapsed_time_id_additional" style="width: 100px;">
-									<a href="javascript:void(0);" class="img" onclick="$('elapsed_time_link').show();$('elapsed_time_additional_div').hide();$('elapsed_time_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
+								<div id="spent_time_link"<?php if ($selected_spent_time != ''): ?> style="display: none;"<?php endif; ?>><a href="javascript:void(0);" onclick="$('spent_time_link').hide();$('spent_time_additional_div').show();"><?php echo __('Estimate time to fix'); ?></a></div>
+								<div id="spent_time_additional_div"<?php if ($selected_spent_time === null): ?> style="display: none;"<?php endif; ?>>
+									<input name="spent_time" id="spent_time_id_additional" style="width: 100px;">
+									<a href="javascript:void(0);" class="img" onclick="$('spent_time_link').show();$('spent_time_additional_div').hide();$('spent_time_id_additional').setValue('');"><?php echo image_tag('undo.png', array('style' => 'float: none; margin-left: 5px;')); ?></a>
 								</div>
 							</li>
 							<li id="percent_complete_additional" style="display: none;">

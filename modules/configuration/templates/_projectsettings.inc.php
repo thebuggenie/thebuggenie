@@ -65,60 +65,6 @@
 		<tr>
 			<td class="config_explanation" colspan="2"><?php echo __('If the project uses an agile method for planning, releases and development, enable it here'); ?></td>
 		</tr>
-		<?php /*<tr>
-			<td>
-				<label for="time_unit"><?php echo __('Time measuring'); ?></label>
-			</td>
-			<td>
-				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-					<select name="time_unit" id="time_unit" style="width: 300px;">
-						<option value=0<?php if ($project->getTimeUnit() == TBGProject::TIME_UNIT_HOURS): ?> selected<?php endif; ?>><?php echo __('Hours only'); ?></option>
-						<option value=1<?php if ($project->getTimeUnit() == TBGProject::TIME_UNIT_HOURS_DAYS): ?> selected<?php endif; ?>><?php echo __('Hours and days'); ?></option>
-						<option value=2<?php if ($project->getTimeUnit() == TBGProject::TIME_UNIT_HOURS_DAYS_WEEKS): ?> selected<?php endif; ?>><?php echo __('Hours, days and weeks'); ?></option>
-						<option value=3<?php if ($project->getTimeUnit() == TBGProject::TIME_UNIT_DAYS): ?> selected<?php endif; ?>><?php echo __('Days only'); ?></option>
-						<option value=4<?php if ($project->getTimeUnit() == TBGProject::TIME_UNIT_DAYS_WEEKS): ?> selected<?php endif; ?>><?php echo __('Days and weeks'); ?></option>
-						<option value=5<?php if ($project->getTimeUnit() == TBGProject::TIME_UNIT_WEEKS): ?> selected<?php endif; ?>><?php echo __('Weeks only'); ?></option>
-						<option value=6<?php if ($project->getTimeUnit() == TBGProject::TIME_UNIT_POINTS): ?> selected<?php endif; ?>><?php echo __('Points only'); ?></option>
-						<option value=7<?php if ($project->getTimeUnit() == TBGProject::TIME_UNIT_POINTS_HOURS): ?> selected<?php endif; ?>><?php echo __('Points for issues, hours for tasks'); ?></option>
-					</select>
-				<?php else: ?>
-					<?php
-
-						switch ($project->getTimeUnit())
-						{
-							case TBGProject::TIME_UNIT_HOURS:
-								echo __('Hours only');
-								break;
-							case TBGProject::TIME_UNIT_HOURS_DAYS:
-								echo __('Hours and days');
-								break;
-							case TBGProject::TIME_UNIT_HOURS_DAYS_WEEKS:
-								echo __('Hours, days and weeks');
-								break;
-							case TBGProject::TIME_UNIT_DAYS:
-								echo __('Days only');
-								break;
-							case TBGProject::TIME_UNIT_DAYS_WEEKS:
-								echo __('Days and weeks');
-								break;
-							case TBGProject::TIME_UNIT_WEEKS:
-								echo __('Weeks only');
-								break;
-							case TBGProject::TIME_UNIT_POINTS:
-								echo __('Points only');
-								break;
-							case TBGProject::TIME_UNIT_POINTS_HOURS:
-								echo __('Points for issues, hours for tasks');
-								break;
-						}
-
-					?>
-				<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="config_explanation" colspan="2"><?php echo __('This is how the units you use for estimates and time used are being shown'); ?></td>
-		</tr> */ ?>
 		<?php /* <tr>
 			<td><label for="defaultstatus"><?php echo __('Default status for new issues'); ?></label></td>
 			<td>

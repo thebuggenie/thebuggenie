@@ -94,7 +94,7 @@
 
 		public static function getAvailableFields($builtin_only = false)
 		{
-			$builtin_types = array('description', 'reproduction_steps', 'status', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'owner', 'assignee', 'edition', 'build', 'component', 'estimated_time', 'elapsed_time', 'milestone', 'user_pain', 'votes');
+			$builtin_types = array('description', 'reproduction_steps', 'status', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'owner', 'assignee', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone', 'user_pain', 'votes');
 			
 			if ($builtin_only) return $builtin_types;
 

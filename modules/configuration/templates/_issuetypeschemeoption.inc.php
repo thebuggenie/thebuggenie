@@ -34,7 +34,7 @@
 					case 'estimated_time':
 						echo __('Estimated time to complete');
 						break;
-					case 'elapsed_time':
+					case 'spent_time':
 						echo __('Time spent working on the issue');
 						break;
 					case 'milestone':

@@ -1172,7 +1172,7 @@
 		 */
 		public function canEditSpentTime()
 		{
-			return (bool) ($this->_permissionCheck('caneditissueelapsed_time') || $this->_permissionCheck('caneditissue', true));
+			return (bool) ($this->_permissionCheck('caneditissuespent_time') || $this->_permissionCheck('caneditissue', true));
 		}
 		
 		/**
@@ -2527,20 +2527,20 @@
 		{
 			if (is_numeric($time))
 			{
-				$this->_addChangedProperty('_estimatedmonths', 0);
-				$this->_addChangedProperty('_estimatedweeks', 0);
-				$this->_addChangedProperty('_estimateddays', 0);
-				$this->_addChangedProperty('_estimatedhours', 0);
-				$this->_addChangedProperty('_estimatedpoints', 0);
+				$this->_addChangedProperty('_estimated_months', 0);
+				$this->_addChangedProperty('_estimated_weeks', 0);
+				$this->_addChangedProperty('_estimated_days', 0);
+				$this->_addChangedProperty('_estimated_hours', 0);
+				$this->_addChangedProperty('_estimated_points', 0);
 			}
 			else
 			{
 				$time = $this->_convertFancyStringToTime($time);
-				$this->_addChangedProperty('_estimatedmonths', $time['months']);
-				$this->_addChangedProperty('_estimatedweeks', $time['weeks']);
-				$this->_addChangedProperty('_estimateddays', $time['days']);
-				$this->_addChangedProperty('_estimatedhours', $time['hours']);
-				$this->_addChangedProperty('_estimatedpoints', $time['points']);
+				$this->_addChangedProperty('_estimated_months', $time['months']);
+				$this->_addChangedProperty('_estimated_weeks', $time['weeks']);
+				$this->_addChangedProperty('_estimated_days', $time['days']);
+				$this->_addChangedProperty('_estimated_hours', $time['hours']);
+				$this->_addChangedProperty('_estimated_points', $time['points']);
 			}
 		}
 		
@@ -2551,7 +2551,7 @@
 		 */
 		public function setEstimatedMonths($months)
 		{
-			$this->_addChangedProperty('_estimatedmonths', $months);
+			$this->_addChangedProperty('_estimated_months', $months);
 		}
 	
 		/**
@@ -2561,7 +2561,7 @@
 		 */
 		public function setEstimatedWeeks($weeks)
 		{
-			$this->_addChangedProperty('_estimatedweeks', $weeks);
+			$this->_addChangedProperty('_estimated_weeks', $weeks);
 		}
 	
 		/**
@@ -2571,7 +2571,7 @@
 		 */
 		public function setEstimatedDays($days)
 		{
-			$this->_addChangedProperty('_estimateddays', $days);
+			$this->_addChangedProperty('_estimated_days', $days);
 		}
 	
 		/**
@@ -2581,7 +2581,7 @@
 		 */
 		public function setEstimatedHours($hours)
 		{
-			$this->_addChangedProperty('_estimatedhours', $hours);
+			$this->_addChangedProperty('_estimated_hours', $hours);
 		}
 	
 		/**
@@ -2591,7 +2591,7 @@
 		 */
 		public function setEstimatedPoints($points)
 		{
-			$this->_addChangedProperty('_estimatedpoints', $points);
+			$this->_addChangedProperty('_estimated_points', $points);
 		}
 		
 		/**
@@ -2601,7 +2601,7 @@
 		 */
 		public function isEstimatedTimeChanged()
 		{
-			return (bool) ($this->isEstimatedMonthsChanged() || $this->isEstimatedWeeksChanged() || $this->isEstimatedDaysChanged() || $this->isEstimatedHoursChanged() || $this->isEstimatedPointsChanged());
+			return (bool) ($this->isEstimated_MonthsChanged() || $this->isEstimated_WeeksChanged() || $this->isEstimated_DaysChanged() || $this->isEstimated_HoursChanged() || $this->isEstimated_PointsChanged());
 		}
 
 		/**
@@ -2611,7 +2611,7 @@
 		 */
 		public function isEstimatedTimeMerged()
 		{
-			return (bool) ($this->isEstimatedMonthsMerged() || $this->isEstimatedWeeksMerged() || $this->isEstimatedDaysMerged() || $this->isEstimatedHoursMerged() || $this->isEstimatedPointsMerged());
+			return (bool) ($this->isEstimated_MonthsMerged() || $this->isEstimated_WeeksMerged() || $this->isEstimated_DaysMerged() || $this->isEstimated_HoursMerged() || $this->isEstimated_PointsMerged());
 		}
 		
 		/**
@@ -2619,11 +2619,11 @@
 		 */
 		public function revertEstimatedTime()
 		{
-			$this->revertEstimatedMonths();
-			$this->revertEstimatedWeeks();
-			$this->revertEstimatedDays();
-			$this->revertEstimatedHours();
-			$this->revertEstimatedPoints();
+			$this->revertEstimated_Months();
+			$this->revertEstimated_Weeks();
+			$this->revertEstimated_Days();
+			$this->revertEstimated_Hours();
+			$this->revertEstimated_Points();
 		}
 	
 		/**
@@ -2765,33 +2765,28 @@
 		{
 			if (is_numeric($time))
 			{
-				$this->_addChangedProperty('_spentmonths', 0);
-				$this->_addChangedProperty('_spentweeks', 0);
-				$this->_addChangedProperty('_spentdays', 0);
-				if ($this->getProject()->getTimeUnit() == TBGProject::TIME_UNIT_HOURS)
+				$this->_addChangedProperty('_spent_months', 0);
+				$this->_addChangedProperty('_spent_weeks', 0);
+				$this->_addChangedProperty('_spent_days', 0);
+				if ($this->getIssueType()->isTask())
 				{
-					$this->_addChangedProperty('_spentpoints', 0);
-					$this->_addChangedProperty('_spenthours', (int) $time);
-				}
-				elseif ($this->getProject()->getTimeUnit() == TBGProject::TIME_UNIT_POINTS)
-				{
-					$this->_addChangedProperty('_spenthours', 0);
-					$this->_addChangedProperty('_spentpoints', (int) $time);
+					$this->_addChangedProperty('_spent_points', 0);
+					$this->_addChangedProperty('_spent_hours', (int) $time);
 				}
 				else
 				{
-					$this->_addChangedProperty('_spenthours', 0);
-					$this->_addChangedProperty('_spentpoints', 0);
+					$this->_addChangedProperty('_spent_hours', 0);
+					$this->_addChangedProperty('_spent_points', (int) $time);
 				}
 			}
 			else
 			{
 				$time = $this->_convertFancyStringToTime($time);
-				$this->_addChangedProperty('_spentmonths', $time['months']);
-				$this->_addChangedProperty('_spentweeks', $time['weeks']);
-				$this->_addChangedProperty('_spentdays', $time['days']);
-				$this->_addChangedProperty('_spenthours', $time['hours']);
-				$this->_addChangedProperty('_spentpoints', $time['points']);
+				$this->_addChangedProperty('_spent_months', $time['months']);
+				$this->_addChangedProperty('_spent_weeks', $time['weeks']);
+				$this->_addChangedProperty('_spent_days', $time['days']);
+				$this->_addChangedProperty('_spent_hours', $time['hours']);
+				$this->_addChangedProperty('_spent_points', $time['points']);
 			}
 		}
 		
@@ -2804,23 +2799,23 @@
 		{
 			if (is_numeric($time))
 			{
-				if ($this->getProject()->getTimeUnit() == TBGProject::TIME_UNIT_HOURS)
+				if ($this->getIssuetype()->isTask())
 				{
-					$this->_addChangedProperty('_spenthours', $this->_spent_hours + (int) $time);
+					$this->_addChangedProperty('_spent_hours', $this->_spent_hours + (int) $time);
 				}
-				elseif ($this->getProject()->getTimeUnit() == TBGProject::TIME_UNIT_POINTS)
+				else
 				{
-					$this->_addChangedProperty('_spentpoints', $this->_spent_points + (int) $time);
+					$this->_addChangedProperty('_spent_points', $this->_spent_points + (int) $time);
 				}
 			}
 			else
 			{
 				$time = $this->_convertFancyStringToTime($time);
-				$this->_addChangedProperty('_spentmonths', $this->_spent_months + $time['months']);
-				$this->_addChangedProperty('_spentweeks', $this->_spent_weeks + $time['weeks']);
-				$this->_addChangedProperty('_spentdays', $this->_spent_days + $time['days']);
-				$this->_addChangedProperty('_spenthours', $this->_spent_hours + $time['hours']);
-				$this->_addChangedProperty('_spentpoints', $this->_spent_points + $time['points']);
+				$this->_addChangedProperty('_spent_months', $this->_spent_months + $time['months']);
+				$this->_addChangedProperty('_spent_weeks', $this->_spent_weeks + $time['weeks']);
+				$this->_addChangedProperty('_spent_days', $this->_spent_days + $time['days']);
+				$this->_addChangedProperty('_spent_hours', $this->_spent_hours + $time['hours']);
+				$this->_addChangedProperty('_spent_points', $this->_spent_points + $time['points']);
 			}
 		}		
 
@@ -2831,7 +2826,7 @@
 		 */
 		public function setSpentMonths($months)
 		{
-			$this->_addChangedProperty('_spentmonths', $months);
+			$this->_addChangedProperty('_spent_months', $months);
 		}
 	
 		/**
@@ -2841,7 +2836,7 @@
 		 */
 		public function setSpentWeeks($weeks)
 		{
-			$this->_addChangedProperty('_spentweeks', $weeks);
+			$this->_addChangedProperty('_spent_weeks', $weeks);
 		}
 	
 		/**
@@ -2851,7 +2846,7 @@
 		 */
 		public function setSpentDays($days)
 		{
-			$this->_addChangedProperty('_spentdays', $days);
+			$this->_addChangedProperty('_spent_days', $days);
 		}
 	
 		/**
@@ -2861,7 +2856,7 @@
 		 */
 		public function setSpentHours($hours)
 		{
-			$this->_addChangedProperty('_spenthours', $hours);
+			$this->_addChangedProperty('_spent_hours', $hours);
 		}
 	
 		/**
@@ -2871,7 +2866,7 @@
 		 */
 		public function setSpentPoints($points)
 		{
-			$this->_addChangedProperty('_spentpoints', $points);
+			$this->_addChangedProperty('_spent_points', $points);
 		}
 
 		/**
@@ -2881,7 +2876,7 @@
 		 */
 		public function addSpentMonths($months)
 		{
-			$this->_addChangedProperty('_spentmonths', $this->_spent_months + $months);
+			$this->_addChangedProperty('_spent_months', $this->_spent_months + $months);
 		}
 	
 		/**
@@ -2891,7 +2886,7 @@
 		 */
 		public function addSpentWeeks($weeks)
 		{
-			$this->_addChangedProperty('_spentweeks', $this->_spent_weeks + $weeks);
+			$this->_addChangedProperty('_spent_weeks', $this->_spent_weeks + $weeks);
 		}
 	
 		/**
@@ -2901,7 +2896,7 @@
 		 */
 		public function addSpentDays($days)
 		{
-			$this->_addChangedProperty('_spentdays', $this->_spent_days + $days);
+			$this->_addChangedProperty('_spent_days', $this->_spent_days + $days);
 		}
 	
 		/**
@@ -2911,7 +2906,7 @@
 		 */
 		public function addSpentHours($hours)
 		{
-			$this->_addChangedProperty('_spenthours', $this->_spent_hours + $hours);
+			$this->_addChangedProperty('_spent_hours', $this->_spent_hours + $hours);
 		}
 	
 		/**
@@ -2921,7 +2916,7 @@
 		 */
 		public function addSpentPoints($points)
 		{
-			$this->_addChangedProperty('_spentpoints', $this->_spent_points + $points);
+			$this->_addChangedProperty('_spent_points', $this->_spent_points + $points);
 		}
 		
 		/**
@@ -2931,7 +2926,7 @@
 		 */
 		public function isSpentTimeChanged()
 		{
-			return (bool) ($this->isSpentMonthsChanged() || $this->isSpentWeeksChanged() || $this->isSpentDaysChanged() || $this->isSpentHoursChanged() || $this->isSpentPointsChanged());
+			return (bool) ($this->isSpent_MonthsChanged() || $this->isSpent_WeeksChanged() || $this->isSpent_DaysChanged() || $this->isSpent_HoursChanged() || $this->isSpent_PointsChanged());
 		}
 
 		/**
@@ -2941,7 +2936,7 @@
 		 */
 		public function isSpentTimeMerged()
 		{
-			return (bool) ($this->isSpentMonthsMerged() || $this->isSpentWeeksMerged() || $this->isSpentDaysMerged() || $this->isSpentHoursMerged() || $this->isSpentPointsMerged());
+			return (bool) ($this->isSpent_MonthsMerged() || $this->isSpent_WeeksMerged() || $this->isSpent_DaysMerged() || $this->isSpent_HoursMerged() || $this->isSpent_PointsMerged());
 		}
 		
 		/**
@@ -2949,11 +2944,11 @@
 		 */
 		public function revertSpentTime()
 		{
-			$this->revertSpentMonths();
-			$this->revertSpentWeeks();
-			$this->revertSpentDays();
-			$this->revertSpentHours();
-			$this->revertSpentPoints();
+			$this->revertSpent_Months();
+			$this->revertSpent_Weeks();
+			$this->revertSpent_Days();
+			$this->revertSpent_Hours();
+			$this->revertSpent_Points();
 		}
 		
 		/**
@@ -4296,18 +4291,18 @@
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_ISSUETYPE, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The issue type has been updated, from '''%previous_type%''' to '''%new_type%'''.", array('%previous_type%' => $old_name, '%new_type%' => $new_name));
 							break;
-						case '_estimatedmonths':
-						case '_estimatedweeks':
-						case '_estimateddays':
-						case '_estimatedhours':
-						case '_estimatedpoints':
+						case '_estimated_months':
+						case '_estimated_weeks':
+						case '_estimated_days':
+						case '_estimated_hours':
+						case '_estimated_points':
 							if (!$is_saved_estimated)
 							{
-								$old_time = array('months' => $this->getChangedPropertyOriginal('_estimatedmonths'),
-													'weeks' => $this->getChangedPropertyOriginal('_estimatedweeks'),
-													'days' => $this->getChangedPropertyOriginal('_estimateddays'),
-													'hours' => $this->getChangedPropertyOriginal('_estimatedhours'),
-													'points' => $this->getChangedPropertyOriginal('_estimatedpoints'));
+								$old_time = array('months' => $this->getChangedPropertyOriginal('_estimated_months'),
+													'weeks' => $this->getChangedPropertyOriginal('_estimated_weeks'),
+													'days' => $this->getChangedPropertyOriginal('_estimated_days'),
+													'hours' => $this->getChangedPropertyOriginal('_estimated_hours'),
+													'points' => $this->getChangedPropertyOriginal('_estimated_points'));
 
 								$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : TBGContext::getI18n()->__('Not estimated');
 								$new_formatted_time = ($this->hasEstimatedTime()) ? $this->getFormattedTime($this->getEstimatedTime()) : TBGContext::getI18n()->__('Not estimated');
@@ -4316,18 +4311,18 @@
 								$is_saved_estimated = true;
 							}
 							break;
-						case '_spentmonths':
-						case '_spentweeks':
-						case '_spentdays':
-						case '_spenthours':
-						case '_spentpoints':
+						case '_spent_months':
+						case '_spent_weeks':
+						case '_spent_days':
+						case '_spent_hours':
+						case '_spent_points':
 							if (!$is_saved_spent)
 							{
-								$old_time = array('months' => $this->getChangedPropertyOriginal('_spentmonths'),
-													'weeks' => $this->getChangedPropertyOriginal('_spentweeks'),
-													'days' => $this->getChangedPropertyOriginal('_spentdays'),
-													'hours' => $this->getChangedPropertyOriginal('_spenthours'),
-													'points' => $this->getChangedPropertyOriginal('_spentpoints'));
+								$old_time = array('months' => $this->getChangedPropertyOriginal('_spent_months'),
+													'weeks' => $this->getChangedPropertyOriginal('_spent_weeks'),
+													'days' => $this->getChangedPropertyOriginal('_spent_days'),
+													'hours' => $this->getChangedPropertyOriginal('_spent_hours'),
+													'points' => $this->getChangedPropertyOriginal('_spent_points'));
 
 								$old_formatted_time = (array_sum($old_time) > 0) ? $this->getFormattedTime($old_time) : TBGContext::getI18n()->__('No time spent');
 								$new_formatted_time = ($this->hasSpentTime()) ? $this->getFormattedTime($this->getSpentTime()) : TBGContext::getI18n()->__('No time spent');
@@ -4603,9 +4598,9 @@
 				$time_spent = ceil($time_spent / 3600);
 				$hours_spent = $time_spent - ($days_spent * 24);
 				if ($hours_spent < 0) $hours_spent = 0;
-				$this->_addChangedProperty('_spenthours', $this->_spent_hours + $hours_spent);
-				$this->_addChangedProperty('_spentdays', $this->_spent_days + $days_spent);
-				$this->_addChangedProperty('_spentweeks', $this->_spent_weeks + $weeks_spent);
+				$this->_addChangedProperty('_spent_hours', $this->_spent_hours + $hours_spent);
+				$this->_addChangedProperty('_spent_days', $this->_spent_days + $days_spent);
+				$this->_addChangedProperty('_spent_weeks', $this->_spent_weeks + $weeks_spent);
 			}
 		}
 		

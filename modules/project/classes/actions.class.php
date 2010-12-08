@@ -837,7 +837,7 @@
 									}
 									break;
 								case 'estimated_time':
-								case 'elapsed_time':
+								case 'spent_time':
 									$set_method = "set".ucfirst(str_replace('_', '', $field_key));
 									$issue->$set_method($field_value);
 									break;

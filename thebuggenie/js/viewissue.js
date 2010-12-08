@@ -294,7 +294,7 @@ function updateTimeFieldFromObject(object, values, field)
 
 function updateVisibleFields(visible_fields)
 {
-	available_fields = new Array('description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'elapsed_time', 'milestone');
+	available_fields = new Array('description', 'user_pain', 'reproduction_steps', 'category', 'resolution', 'priority', 'reproducability', 'percent_complete', 'severity', 'edition', 'build', 'component', 'estimated_time', 'spent_time', 'milestone');
 	available_fields.each(function (key, index) 
 	{
 		if ($(key + '_field'))
@@ -442,7 +442,7 @@ function revertField(url, field)
 			if (Object.isUndefined(json.field) == false)
 			{
 				if (field == 'status' || field == 'issuetype') updateDualFieldFromJSON(json.field, field);
-				else if (field == 'estimated_time' || field == 'elapsed_time') updateTimeFieldFromObject(json.field, json.values, field);
+				else if (field == 'estimated_time' || field == 'spent_time') updateTimeFieldFromObject(json.field, json.values, field);
 				else updateFieldFromObject(json.field, field);
 				if (field == 'issuetype') 
 				{
