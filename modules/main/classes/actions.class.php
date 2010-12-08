@@ -74,6 +74,7 @@
 								}
 								catch (Exception $e)
 								{
+									throw $e;
 									$this->error = $e->getMessage();
 								}
 							}

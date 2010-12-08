@@ -4024,6 +4024,10 @@
 					$this->_posted = NOW;
 					$this->_last_updated = NOW;
 				}
+				if (!$this->_posted_by)
+				{
+					$this->_posted_by = TBGContext::getUser();
+				}
 				$step = $this->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($this->getIssueType())->getFirstStep();
 				$step->applyToIssue($this);
 				return;
@@ -4186,7 +4190,7 @@
 							}
 							break;
 						case '_posted_by':
-							$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
+							$old_identifiable = ($value['original_value']) ? TBGContext::factory()->TBGUser($value['original_value']) : TBGContext::getI18n()->__('Unknown');
 							$old_name = ($old_identifiable instanceof TBGIdentifiableClass) ? $old_identifiable->getName() : TBGContext::getI18n()->__('Unknown');
 							$new_name = $this->getPostedBy()->getName();
 							
