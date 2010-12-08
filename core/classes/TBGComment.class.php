@@ -40,11 +40,11 @@
 		
 		protected $_target_type = self::TYPE_ISSUE;
 		
-		protected $_is_public;
+		protected $_is_public = true;
 		
 		protected $_module = 'core';
 		
-		protected $_deleted;
+		protected $_deleted = false;
 		
 		protected $_system_comment = false;
 
