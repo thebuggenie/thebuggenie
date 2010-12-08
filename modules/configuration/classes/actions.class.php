@@ -2775,6 +2775,18 @@
 							$activerow = html_entity_decode($activerow, ENT_QUOTES);
 							$activerow = explode(',', $activerow);
 							
+							// Check if project exists
+							$key = trim($activerow[$namecol], '"');
+							$key = str_replace(' ', '', $key);
+							$key = strtolower($key);
+							
+							$tmp = TBGProject::getByKey($key);
+							
+							if ($tmp !== null)
+							{
+								$errors[] = TBGContext::getI18n()->__('Row %row%: A project with this name already exists', array('%row%' => $i+1));
+							}
+							
 							// First off are booleans
 							$boolitems = array($scrum, $freelance, $en_builds, $en_comps, $en_editions, $show_summary);
 							
@@ -2938,6 +2950,133 @@
 									$client->setTelephone(trim($activerow[$telephonecol], '"'));
 									
 								$client->save();
+							}
+							catch (Exception $e)
+							{
+									$errors[] = TBGContext::getI18n()->__('Row %row% failed: %err%', array('%row%' => $i+1, '%err%' => $e->getMessage()));
+							}
+						}
+						break;
+					case 'projects':
+						for ($i = 1; $i != count($data); $i++)
+						{
+							try
+							{
+								$activerow = $data[$i];
+								$activerow = html_entity_decode($activerow, ENT_QUOTES);
+								$activerow = explode(',', $activerow);
+								$project = new TBGProject();
+								$project->setName(trim($activerow[$namecol], '"'));
+								
+								if ($prefix !== null)
+								{
+									$project->setPrefix(trim($activerow[$prefix], '"'));
+									$project->setUsePrefix(true);
+								}
+									
+								if ($scrum !== null)
+								{
+									if (trim($activerow[$websitecol], '"') == '1')
+										$project->setUseScrum(true);
+								}
+								
+								if ($owner !== null && $owner_type !== null)
+								{
+									switch (trim($activerow[$owner_type], '"'))
+									{
+										case TBGIdentifiableClass::TYPE_USER:
+											$user = new TBGUser(trim($activerow[$owner], '"'));
+											$project->setOwner($user);
+											break;
+										case TBGIdentifiableClass::TYPE_TEAM:
+											$team = new TBGTeam(trim($activerow[$owner], '"'));
+											$project->setOwner($team);
+											break;
+									}
+								}
+								
+								if ($lead !== null && $lead_type !== null)
+								{
+									switch (trim($activerow[$lead_type], '"'))
+									{
+										case TBGIdentifiableClass::TYPE_USER:
+											$user = new TBGUser(trim($activerow[$lead], '"'));
+											$project->setLeader($user);
+											break;
+										case TBGIdentifiableClass::TYPE_TEAM:
+											$team = new TBGTeam(trim($activerow[$lead], '"'));
+											$project->setLeader($team);
+											break;
+									}
+								}
+								
+								if ($qa !== null && $qa_type !== null)
+								{
+									switch (trim($activerow[$qa_type], '"'))
+									{
+										case TBGIdentifiableClass::TYPE_USER:
+											$user = new TBGUser(trim($activerow[$qa], '"'));
+											$project->setQaResponsible($user);
+											break;
+										case TBGIdentifiableClass::TYPE_TEAM:
+											$team = new TBGTeam(trim($activerow[$qa], '"'));
+											$project->setQaResponsible($team);
+											break;
+									}
+								}
+								
+								if ($descr !== null)
+									$project->setDescription(trim($activerow[$descr], '"'));
+									
+								if ($doc_url !== null)
+									$project->setDocumentationUrl(trim($activerow[$doc_url], '"'));
+									
+								if ($freelance !== null)
+								{
+									if (trim($activerow[$freelance], '"') == '1')
+										$project->setChangeIssuesWithoutWorkingOnThem(true);
+								}
+								
+								if ($en_builds !== null)
+								{
+									if (trim($activerow[$en_builds], '"') == '1')
+										$project->setBuildsEnabled(true);
+								}
+								
+								if ($en_comps !== null)
+								{
+									if (trim($activerow[$en_comps], '"') == '1')
+										$project->setComponentsEnabled(true);
+								}
+								
+								if ($en_editions !== null)
+								{
+									if (trim($activerow[$en_editions], '"') == '1')
+										$project->setEditionsEnabled(true);
+								}
+								
+								if ($workflow_id !== null)
+								{
+									$workflow = TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$workflow_id], '"'));
+									$project->setWorkflowScheme($workflow);
+								}
+								
+								if ($client !== null)
+								{
+									$client_object = TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$client], '"'));
+									$project->setClient($client_object);
+								}
+								
+								if ($show_summary !== null)
+								{
+									if (trim($activerow[$show_summary], '"') == '1')
+										$project->setFrontpageSummaryVisibility(true);
+								}
+								
+								if ($summary_type !== null)
+									$project->setFrontpageSummaryType(trim($activerow[$summary_type], '"'));
+								
+								$project->save();
 							}
 							catch (Exception $e)
 							{
