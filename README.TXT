@@ -1,7 +1,7 @@
-THE BUG GENIE VERSION 3 ALPHA RELEASE 1
+THE BUG GENIE VERSION 3 BETA 4
 -------
 Thank you for downloading this pre-release version. Keep in mind that this is
-PRE-RELEASE software, which means it will contain bugs, unfinished functionality
+BETA software, which means it will contain bugs, unfinished functionality
 and may not perform in the way you expect it to.
 
 Please report issues and feedback from the issue tracker on our website:
