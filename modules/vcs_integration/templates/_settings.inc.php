@@ -48,7 +48,7 @@
 								<tr>
 									<td style="padding: 5px;"><label for="web_type_<?php echo $aProject->getID(); ?>"><?php echo __('Repository browser'); ?></label></td>
 									<td>
-										<select name="web_type_<?php echo $aProject->getID(); ?>" id="web_type_<?php echo $aProject->getID(); ?>">
+										<select name="web_type_<?php echo $aProject->getID(); ?>" id="web_type_<?php echo $aProject->getID(); ?>"onchange="if ($('web_type_<?php echo $aProject->getID(); ?>').getValue() == 'github') { $('web_path_<?php echo $aProject->getID(); ?>').disable();$('web_path_<?php echo $aProject->getID(); ?>').writeAttribute('value', 'http://github.com'); } else { $('web_path_<?php echo $aProject->getID(); ?>').enable(); }">
 											<optgroup label="<?php echo __('Multi-system'); ?>">
 												<option value='viewvc' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'viewvc') ? 'selected' : ''; ?>>CVS/SVN - ViewVC <?php echo __('with project\'s repository set as default'); ?></option>
 												<option value='viewvc_repo' <?php print ($module->getSetting('web_type_' . $aProject->getID()) == 'viewvc_repo') ? 'selected' : ''; ?>>CVS/SVN - ViewVC (<?php echo __('manually specified repository'); ?>)</option>
