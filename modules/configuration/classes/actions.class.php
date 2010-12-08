@@ -532,7 +532,6 @@
 							$item->setName($request->getParameter('name'));
 							$item->setItemdata($request->getParameter('itemdata'));
 							$item->save();
-							//$item = call_user_func(array($types[$request->getParameter('type')], 'createNew'), $request->getParameter('name'), $request->getParameter('itemdata'));
 						}
 						else
 						{
