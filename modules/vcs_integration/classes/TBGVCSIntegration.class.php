@@ -56,7 +56,7 @@
 		protected function _addAvailableRoutes()
 		{
 			$this->addRoute('normalcheckin', '/vcs_integration/report/:project/', 'addCommit');
-			$this->addRoute('githubcheckin', '/vcs_integration/report/:project/github', 'addCommitGithub');
+			$this->addRoute('githubcheckin', '/vcs_integration/report/:project/github/', 'addCommitGithub');
 		}
 
 		protected function _uninstall()
