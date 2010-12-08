@@ -100,7 +100,7 @@
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}
 		
-		public function createNew($target, $target_type, $change_type, $text = null, $uid = 0)
+		public function createNew($target, $target_type, $change_type, $text = null, $uid = 0, $time = null)
 		{
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::TARGET, $target);
@@ -110,7 +110,14 @@
 			{
 				$crit->addInsert(self::TEXT, $text);
 			}
-			$crit->addInsert(self::TIME, NOW);
+			if ($time === null)
+			{
+				$crit->addInsert(self::TIME, NOW);
+			}
+			else
+			{
+				$crit->addInsert(self::TIME, $time);
+			}
 			$crit->addInsert(self::UID, $uid);
 			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doInsert($crit);

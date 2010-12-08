@@ -186,10 +186,10 @@
 				$this->resultcount = count($this->foundissues);
 				if ($this->templatename == 'results_userpain_singlepainthreshold')
 				{
-					usort($this->foundissues, array(searchActions, 'userPainSort'));
+					usort($this->foundissues, array('searchActions', 'userPainSort'));
 				}
 			}
-
+			
 			if ($request->hasParameter('predefined_search'))
 			{
 				switch ((int) $request->getParameter('predefined_search'))

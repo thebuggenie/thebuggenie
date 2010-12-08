@@ -1341,6 +1341,27 @@
 		}
 		
 		/**
+		 * Set the posted time
+		 * 
+		 * @param integer $time 
+		 */
+		public function setPosted($time)
+		{
+			$this->_posted = $time;
+		}
+		
+		/**
+		 * Set the created at time
+		 * 
+		 * @see TBGIssue::setPosted()
+		 * @param integer $time 
+		 */
+		public function setCreatedAt($time)
+		{
+			$this->setPosted($time);
+		}
+		
+		/**
 		 * Returns the issue status
 		 *
 		 * @return TBGDatatype
@@ -2311,7 +2332,7 @@
 		 */
 		public function setPercentCompleted($percentage)
 		{
-			$this->_addChangedProperty('_percentcompleted', (int) $percentage);
+			$this->_addChangedProperty('_percent_complete', (int) $percentage);
 		}
 	
 		/**
@@ -3502,10 +3523,10 @@
 		 * @param string $text The text to log
 		 * @param boolean $system Whether this is a user entry or a system entry
 		 */
-		public function addLogEntry($change_type, $text = null, $system = false)
+		public function addLogEntry($change_type, $text = null, $system = false, $time = null)
 		{
 			$uid = ($system) ? 0 : TBGContext::getUser()->getUID();
-			TBGLogTable::getTable()->createNew($this->getID(), TBGLogTable::TYPE_ISSUE, $change_type, $text, $uid);
+			TBGLogTable::getTable()->createNew($this->getID(), TBGLogTable::TYPE_ISSUE, $change_type, $text, $uid, $time);
 		}
 	
 		/**
@@ -3998,8 +4019,11 @@
 				{
 					$this->_issue_no = TBGIssuesTable::getTable()->getNextIssueNumberForProductID($this->getProject()->getID());
 				}
-				$this->_posted = NOW;
-				$this->_last_updated = NOW;
+				if (!$this->_posted)
+				{
+					$this->_posted = NOW;
+					$this->_last_updated = NOW;
+				}
 				$step = $this->getProject()->getWorkflowScheme()->getWorkflowForIssuetype($this->getIssueType())->getFirstStep();
 				$step->applyToIssue($this);
 				return;
@@ -4208,7 +4232,7 @@
 								$is_saved_owner = true;
 							}
 							break;
-						case '_percentcompleted':
+						case '_percent_complete':
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_PERCENT, $value['original_value'] . '% &rArr; ' . $this->getPercentCompleted() . '%');
 							$comment_lines[] = TBGContext::getI18n()->__("This issue's progression has been updated to %percent_completed% percent completed.", array('%percent_completed%' => $this->getPercentCompleted()));
 							break;
@@ -4480,7 +4504,7 @@
 
 			if ($is_new)
 			{
-				$this->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED);
+				$this->addLogEntry(TBGLogTable::LOG_ISSUE_CREATED, null, false, $this->getPosted());
 				TBGEvent::createNew('core', 'TBGIssue::createNew', $this)->trigger();
 			}
 			
@@ -4662,7 +4686,7 @@
 
 		public function getUserPain($real = false)
 		{
-			return ($real) ? $this->getRealUserPain() : $this->_calculateDatePain();
+			return (int) (($real) ? $this->getRealUserPain() : $this->_calculateDatePain());
 		}
 
 		public function getUserPainDiffText()

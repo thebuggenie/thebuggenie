@@ -578,6 +578,7 @@
 						break;
 					case 'milestone':
 						$crit->addOrderBy(self::MILESTONE, $grouporder);
+						$crit->addOrderBy(self::PERCENT_COMPLETE, 'desc');
 						break;
 					case 'assignee':
 						$crit->addOrderBy(self::ASSIGNED_TYPE);

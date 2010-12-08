@@ -1444,7 +1444,7 @@
 		public static function setCurrentProject($project)
 		{
 			self::$_selected_project = $project;
-			if (self::$_selected_project->hasClient())
+			if (self::$_selected_project instanceof TBGProject && self::$_selected_project->hasClient())
 			{
 				self::setCurrentClient(self::$_selected_project->getClient());
 			}

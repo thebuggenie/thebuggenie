@@ -75,6 +75,8 @@
 					
 					$user1 = new TBGUser();
 					$user1->setUsername('john');
+					$user1->setBuddyname('John');
+					$user1->setRealname('John');
 					$user1->setActivated();
 					$user1->setEnabled();
 					$user1->save();
@@ -82,6 +84,8 @@
 					
 					$user2 = new TBGUser();
 					$user2->setUsername('jane');
+					$user2->setBuddyname('Jane');
+					$user2->setRealname('Jane');
 					$user2->setActivated();
 					$user2->setEnabled();
 					$user2->save();
@@ -89,6 +93,8 @@
 					
 					$user3 = new TBGUser();
 					$user3->setUsername('jackdaniels');
+					$user3->setBuddyname('Jack');
+					$user3->setRealname('Jack Daniels');
 					$user3->setActivated();
 					$user3->setEnabled();
 					$user3->save();
@@ -136,7 +142,11 @@
 					$priorities = TBGPriority::getAll();
 					$categories = TBGCategory::getAll();
 					$severities = TBGSeverity::getAll();
+					$statuses = TBGStatus::getAll();
 					$reproducabilities = TBGReproducability::getAll();
+					$lorem_ipsum = TBGArticlesTable::getTable()->getArticleByName('LoremIpsum');
+					$lorem_ipsum = PublishFactory::article($lorem_ipsum->get(TBGArticlesTable::ID), $lorem_ipsum);
+					$lorem_words = explode(' ', $lorem_ipsum->getContent());
 					
 					foreach (array('bugreport', 'featurerequest', 'enhancement', 'idea') as $issuetype)
 					{
@@ -146,26 +156,108 @@
 							$issue1 = new TBGIssue();
 							$issue1->setProject($project1);
 							$issue1->setPostedBy($users[rand(0, 2)]);
-							$issue1->setTitle("{$issuetype->getName()} {$cc}");
+							$issue1->setPosted(NOW - (86400 * rand(1, 30)));
+							$title_string = '';
+							$description_string = '';
+							$rand_length = rand(4, 15);
+							$ucnext = true;
+							for ($ll = 1; $ll <= $rand_length; $ll++)
+							{
+								$word = str_replace(array(',', '.', "\r", "\n"), array('', '', '', ''), $lorem_words[array_rand($lorem_words)]);
+								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : strtolower($word);
+								$title_string .= $word;
+								$ucnext = false;
+								if ($ll == $rand_length || rand(1, 15) == 5) 
+								{
+									$title_string .= '.';
+									$ucnext = true;
+								}
+								$title_string .= ' ';
+							}
+							$rand_length = rand(40, 500);
+							$ucnext = true;
+							for ($ll = 1; $ll <= $rand_length; $ll++)
+							{
+								$word = str_replace(array(',', '.', "\r", "\n"), array('', '', '', ''), $lorem_words[array_rand($lorem_words)]);
+								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : strtolower($word);
+								$description_string .= $word;
+								$ucnext = false;
+								if ($ll == $rand_length || rand(1, 15) == 5) 
+								{
+									$description_string .= '.';
+									$ucnext = true;
+									$description_string .= ($ll != $rand_length && rand(1, 15) == 8) ? "\n\n" : ' ';
+								}
+								else
+								{
+									$description_string .= ' ';
+								}
+							}
+							$issue1->setTitle(ucfirst($title_string));
+							$issue1->setDescription($description_string);
 							$issue1->setIssuetype($issuetype);
 							$issue1->setMilestone($p1_milestones[array_rand($p1_milestones)]);
 							$issue1->setPriority($priorities[array_rand($priorities)]);
 							$issue1->setCategory($categories[array_rand($categories)]);
 							$issue1->setSeverity($severities[array_rand($severities)]);
 							$issue1->setReproducability($reproducabilities[array_rand($reproducabilities)]);
+							$issue1->setPercentCompleted(rand(0, 100));
+							$issue1->save();
+							$issue1->setStatus($statuses[array_rand($statuses)]);
 							$issue1->save();
 							$issues[] = $issue1;
 
 							$issue2 = new TBGIssue();
 							$issue2->setProject($project2);
 							$issue2->setPostedBy($users[rand(0, 2)]);
-							$issue2->setTitle("{$issuetype->getName()} {$cc}");
+							$issue2->setPosted(NOW - (86400 * rand(1, 30)));
+							$title_string = '';
+							$description_string = '';
+							$rand_length = rand(4, 15);
+							$ucnext = true;
+							for ($ll = 1; $ll <= $rand_length; $ll++)
+							{
+								$word = str_replace(array(',', '.', "\r", "\n"), array('', '', '', ''), $lorem_words[array_rand($lorem_words)]);
+								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : strtolower($word);
+								$title_string .= $word;
+								$ucnext = false;
+								if ($ll == $rand_length || rand(1, 15) == 5) 
+								{
+									$title_string .= '.';
+									$ucnext = true;
+								}
+								$title_string .= ' ';
+							}
+							$rand_length = rand(40, 500);
+							$ucnext = true;
+							for ($ll = 1; $ll <= $rand_length; $ll++)
+							{
+								$word = str_replace(array(',', '.', "\r", "\n"), array('', '', '', ''), $lorem_words[array_rand($lorem_words)]);
+								$word = ($ucnext || (rand(1, 40) == 19)) ? ucfirst($word) : strtolower($word);
+								$description_string .= $word;
+								$ucnext = false;
+								if ($ll == $rand_length || rand(1, 15) == 5) 
+								{
+									$description_string .= '.';
+									$ucnext = true;
+									$description_string .= ($ll != $rand_length && rand(1, 15) == 8) ? "\n\n" : ' ';
+								}
+								else
+								{
+									$description_string .= ' ';
+								}
+							}
+							$issue2->setTitle(ucfirst($title_string));
+							$issue2->setDescription($description_string);
 							$issue2->setIssuetype($issuetype);
 							$issue2->setMilestone($p2_milestones[array_rand($p2_milestones)]);
 							$issue2->setPriority($priorities[array_rand($priorities)]);
 							$issue2->setCategory($categories[array_rand($categories)]);
 							$issue2->setSeverity($severities[array_rand($severities)]);
 							$issue2->setReproducability($reproducabilities[array_rand($reproducabilities)]);
+							$issue2->setPercentCompleted(rand(0, 100));
+							$issue2->save();
+							$issue2->setStatus($statuses[array_rand($statuses)]);
 							$issue2->save();
 							$issues[] = $issue2;
 						}

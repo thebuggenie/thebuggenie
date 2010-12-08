@@ -246,10 +246,6 @@
 							  if (window.console && window.console.firebug) {
 								  $('firebug_warning').show();
 							  }
-							  else
-							  {
-								  window.alert('no firebug');
-							  }
 							});			
 						</script>
 					<?php endif; ?>					

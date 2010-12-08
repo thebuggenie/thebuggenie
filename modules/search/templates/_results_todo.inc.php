@@ -10,8 +10,8 @@
 		<table style="width: 100%;" cellpadding="0" cellspacing="0">
 			<thead>
 				<tr>
+					<th style="text-align: center; width: 60px;"><?php echo __('Progress'); ?></th>
 					<th style="width: auto; padding-left: 2px;"><?php echo __('Title'); ?></th>
-					<th style="text-align: center; width: 70px;"><?php echo __('Progress'); ?></th>
 					<th style="width: auto;"><?php echo __('Description'); ?></th>
 					<th style="width: 170px;"><?php echo __('More info'); ?></th>
 				</tr>
@@ -19,7 +19,6 @@
 			<tbody>
 	<?php endif; ?>
 				<tr class="<?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?>">
-					<td style="padding: 3px;"><?php echo $issue->getTitle(); ?></td>
 					<td style="text-align: center; background-color: <?php
 
 						switch (true)
@@ -45,7 +44,14 @@
 						}
 
 					?>; font-weight: bold;"><?php echo $issue->getPercentCompleted(); ?>%</td>
-					<td style="padding: 3px;"><?php echo ($issue->getDescription() != '') ? $issue->getDescription() : '<span class="faded_out">'.__('No description provided').'</span>'; ?></td>
+					<td style="padding: 3px; font-size: 0.9em;"><?php echo (strlen($issue->getTitle()) > 80) ? substr($issue->getTitle(), 0 , 77) . '...' : $issue->getTitle(); ?></td>
+					<td style="padding: 3px; color: #888;">
+						<?php if ($issue->hasDescription()): ?>
+							<?php echo (strlen($issue->getDescription()) > 150) ? substr($issue->getDescription(), 0 , 147) . '...' : $issue->getDescription(); ?>
+						<?php else: ?>
+							<span class="faded_out"><?php echo __('No description provided'); ?></span>
+						<?php endif; ?>
+					</td>
 					<td class="result_issue"><?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $issue->getFormattedIssueNo(true, true)); ?></td>
 				</tr>
 	<?php if ($cc == count($issues)): ?>

@@ -5,11 +5,14 @@
 		<?php foreach ($issues as $issue): ?>
 			<tr>
 				<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-				<td style="padding-bottom: 15px;">
+				<td>
 					<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<b>' . $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle() . '</b>', array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
-					<span class="faded_out dark" style="font-size: 11px;">
+					<span class="faded_out dark recent_activities_details">
 						<?php echo tbg_formatTime($issue->getPosted(), 20); ?>,
 						<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
+						<?php if ($issue->isClosed()): ?>
+						, <?php echo $issue->getResolution()->getName(); ?>
+						<?php endif; ?>
 					</span>
 				</td>
 			</tr>

@@ -3,7 +3,7 @@
 		<tr>
 			<th style="text-align: center; width: 50px;"><?php echo __('Votes'); ?></th>
 			<th style="width: auto; padding-left: 2px;"><?php echo __('Issue'); ?></th>
-			<th style="width: 150px; padding-right: 2px;"><?php echo __('Status'); ?></th>
+			<th style="width: 200px; padding-right: 2px;"><?php echo __('Status'); ?></th>
 		</tr>
 	</thead>
 	<tbody>

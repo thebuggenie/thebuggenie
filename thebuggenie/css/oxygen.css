@@ -621,7 +621,7 @@ ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
 #vote_up, #vote_down { width: 16px; text-align: center; padding: 2px; }
 .user_pain_calculated { font-size: 11px; font-weight: bold; color: #91a291; }
 .search_results .yellow_borderless .user_pain { color: #B6aC6D; }
-.search_results .user_pain, .search_results .votes {  }
+.search_results .user_pain, .search_results .votes { font-size: 1.6em; }
 .search_results .votes { color: #88C; }
 .search_results .red_borderless .user_pain { color: #B55; }
 .userpain_below_threshold td { border-top: 2px solid #B77; }
@@ -876,14 +876,18 @@ table.issue_affects td img { vertical-align: bottom; }
 /* end dashboard */
 
 /* project timeline */
-#timeline .recent_activities td .time { font-size: 12px; }
+.recent_activities td .time { font-size: 12px; }
 #timeline { padding: 5px 0 30px 15px; }
-#timeline .recent_activities, #timeline .recent_activities td {  }
-#timeline .recent_activities td.latest_action_dates { font-size: 14px; font-weight: bold; padding-bottom: 5px; }
+.recent_activities, .recent_activities td { font-size: 1em; line-height: 1.2; }
+.recent_activities td a { font-size: 0.9em; }
+.recent_activities td.imgtd { padding: 5px 5px 10px 5px; }
+.recent_activities_details { font-size: 0.8em; }
+.recent_activities td { padding-bottom: 10px; }
+.recent_activities td.latest_action_dates { font-size: 1.1em; font-weight: bold; padding-bottom: 5px; }
 #timeline .user { font-size: 12px; color: #aaa; }
 .timeline_actions a { font-weight: bold; }
 .timeline_actions .content { padding-top: 5px; }
-#timeline .timeline_inline_details { color: #aaa; font-style: italic; margin: 5px 0 0 7px; padding-left: 5px; border-left: 1px dotted #CCC; font-size: 11px; }
+.timeline_inline_details { color: #AAA; font-style: italic; margin: 5px 0 0 7px; padding-left: 5px; border-left: 1px dotted #CCC; font-size: 0.9em; }
 /* end timeline */
 
 /* project roadmap styling */
@@ -930,7 +934,7 @@ table.issue_affects td img { vertical-align: bottom; }
 /* search results */
 .search_results { margin: 0 0 5px 0; }
 .search_results th { background-color: #F5F5F5; padding: 3px 3px 3px 0; }
-.search_results td { font-size: 11px; padding: 3px 3px 3px 0; }
+.search_results td { font-size: 12px; padding: 3px 3px 3px 0; }
 .search_results tbody tr:hover { background-color: #F1F1F1; }
 .search_results tbody tr.changed { background-color: #FFFBE2; }
 .search_results tbody tr.changed:hover { background-color: #FFF299; }
