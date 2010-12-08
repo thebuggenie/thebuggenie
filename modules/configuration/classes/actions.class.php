@@ -527,7 +527,12 @@
 					{
 						if (array_key_exists($request->getParameter('type'), $types))
 						{
-							$item = call_user_func(array($types[$request->getParameter('type')], 'createNew'), $request->getParameter('name'), $request->getParameter('itemdata'));
+							$type_name = $types[$request->getParameter('type')];
+							$item = new $type_name();
+							$item->setName($request->getParameter('name'));
+							$item->setItemdata($request->getParameter('itemdata'));
+							$item->save();
+							//$item = call_user_func(array($types[$request->getParameter('type')], 'createNew'), $request->getParameter('name'), $request->getParameter('itemdata'));
 						}
 						else
 						{
