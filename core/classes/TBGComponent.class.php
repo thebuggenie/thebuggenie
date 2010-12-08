@@ -25,8 +25,9 @@
 		 * This components project
 		 *
 		 * @var unknown_type
+		 * @Class TBGProject
 		 */
-		protected $_project;
+		protected $_project = null;
 		
 		public static function getAllByProjectID($project_id)
 		{
