@@ -155,6 +155,21 @@
 			return ($retval !== null) ? $retval : $this->_permissionCheckWithID($key);
 		}
 
+		protected function _preSave($is_new)
+		{
+			if ($is_new)
+			{
+				if (!$this->_posted)
+				{
+					$this->_posted = NOW;
+				}
+				if (!$this->_comment_number)
+				{
+					$this->_comment_number = TBGCommentsTable::getTable()->getNextCommentNumber($this->_target_id, $this->_target_type);
+				}
+			}
+		}
+		
 		/**
 		 * Return if the user can edit this comment
 		 *
