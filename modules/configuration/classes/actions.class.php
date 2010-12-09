@@ -2727,6 +2727,95 @@
 						}
 						
 						break;
+					case 'issues':
+						$title = null;
+						$project = null;
+						$descr = null;
+						$repro = null;
+						$state = null;
+						$status = null;
+						$posted_by = null;
+						$owner = null;
+						$owner_type = null;
+						$assigned = null;
+						$assigned_type = null;
+						$resolution = null;
+						$issue_type = null;
+						$priority = null;
+						$category = null;
+						$severity = null;
+						$reproducibility = null;
+						$votes = null;
+						$percentage = null;
+						$duplicate = null;
+						$blocking = null;
+						$locked = null;
+						$milestone = null;
+						
+						for ($i = 0; $i != count($headerrow2); $i++)
+						{
+							if ($headerrow2[$i] == 'title'):
+								$title = $i;
+							elseif ($headerrow2[$i] == 'project'):
+								$project = $i;
+							elseif ($headerrow2[$i] == 'assigned'):
+								$assigned = $i;
+							elseif ($headerrow2[$i] == 'repro'):
+								$repro = $i;
+							elseif ($headerrow2[$i] == 'state'):
+								$state = $i;
+							elseif ($headerrow2[$i] == 'status'):
+								$status = $i;
+							elseif ($headerrow2[$i] == 'posted_by'):
+								$posted_by = $i;
+							elseif ($headerrow2[$i] == 'owner'):
+								$owner = $i;
+							elseif ($headerrow2[$i] == 'owner_type'):
+								$owner_type = $i;
+							elseif ($headerrow2[$i] == 'assigned'):
+								$assigned = $i;
+							elseif ($headerrow2[$i] == 'assigned_type'):
+								$assigned_type = $i;
+							elseif ($headerrow2[$i] == 'resolution'):
+								$resolution = $i;
+							elseif ($headerrow2[$i] == 'issue_type'):
+								$issue_type = $i;
+							elseif ($headerrow2[$i] == 'priority'):
+								$priority = $i;
+							elseif ($headerrow2[$i] == 'category'):
+								$category = $i;
+							elseif ($headerrow2[$i] == 'severity'):
+								$severity = $i;
+							elseif ($headerrow2[$i] == 'reproducibility'):
+								$reproducibility = $i;
+							elseif ($headerrow2[$i] == 'votes'):
+								$votes = $i;
+							elseif ($headerrow2[$i] == 'percentage'):
+								$percentage = $i;
+							elseif ($headerrow2[$i] == 'duplicate'):
+								$duplicate = $i;
+							elseif ($headerrow2[$i] == 'blocking'):
+								$blocking = $i;
+							elseif ($headerrow2[$i] == 'locked'):
+								$locked = $i;
+							elseif ($headerrow2[$i] == 'milestone'):
+								$milestone = $i;
+							endif;
+						}
+						
+						$rowlength = count($headerrow2);
+						
+						if ($title === null)
+						{
+							$errors[] = TBGContext::getI18n()->__('Required column \'%col%\' not found in header row', array('%col%' => 'title'));
+						}
+						
+						if ($project === null)
+						{
+							$errors[] = TBGContext::getI18n()->__('Required column \'%col%\' not found in header row', array('%col%' => 'project'));
+						}
+						
+						break;
 					default:
 						throw new Exception('Sorry, this type is unimplemented');
 						break;
@@ -2891,6 +2980,116 @@
 								if (trim($activerow[$summary_type], '"') != 'issuetypes' && trim($activerow[$summary_type], '"') != 'milestones')
 								{
 									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be \'issuetypes\' or \'milestones\')', array('%col%' => $summary_type+1, '%row%' => $i+1));
+								}
+							}
+						}
+						break;
+					case 'issues':
+						for ($i = 1; $i != count($data); $i++)
+						{
+							$activerow = $data[$i];
+							$activerow = html_entity_decode($activerow, ENT_QUOTES);
+							$activerow = explode(',', $activerow);
+							
+							// Check if project exists
+							try
+							{
+								TBGContext::factory()->TBGProject($activerow[$project]);
+							}
+							catch (Exception $e)
+							{
+								$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: Project does not exists', array('%col%' => $project+1, '%row%' => $i+1));
+								break;
+							}
+							
+							// First off are booleans
+							$boolitems = array($state, $blocking, $locked);
+							
+							foreach ($boolitems as $boolitem)
+							{
+								if ($boolitem !== null && trim($activerow[$boolitem], '"') != 0 && trim($activerow[$boolitem], '"') != 1)
+								{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1/0)', array('%col%' => $boolitem+1, '%row%' => $i+1));
+								}
+							}
+							
+							// Now numerics
+							$numericitems = array($votes, $percentage);
+							
+							foreach ($numericitems as $numericitem)
+							{
+								if ($numericitem !== null && !(is_numeric(trim($activerow[$numericitem], '"'))))
+								{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $numericitem+1, '%row%' => $i+1));
+								}
+							}
+							
+							// Now identifiables
+							$identifiableitems = array(array($owner, $owner_type), array($assigned, $assigned_type));
+							
+							foreach ($identifiableitems as $identifiableitem)
+							{
+								if (($identifiableitem[0] === null || $identifiableitem[1] === null) && !($identifiableitem[0] === null && $identifiableitem[1] === null))
+								{
+										$errors[] = TBGContext::getI18n()->__('Row %row%: Both the type and item ID must be supplied for owner/lead/qa fields', array('%row%' => $i+1));
+										continue;
+								}
+								
+								if ($identifiableitem[1] !== null && trim($activerow[$identifiableitem[1]], '"') != 1 && trim($activerow[$identifiableitem[1]], '"') != 2)
+								{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)', array('%col%' => $identifiableitem[1]+1, '%row%' => $i+1));
+								}
+								
+								if ($identifiableitem[0] !== null && !(is_numeric(trim($activerow[$identifiableitem[0]], '"'))))
+								{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
+								}
+								elseif ($identifiableitem[0] !== null && (is_numeric(trim($activerow[$identifiableitem[0]], '"'))))
+								{
+									// check if they exist
+									switch (trim($activerow[$identifiableitem[1]], '"'))
+									{
+										case 1:
+											try
+											{
+												TBGContext::factory()->TBGUser(trim($activerow[$identifiableitem[0]], '"'));
+											}
+											catch (Exception $e)
+											{
+												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
+											}
+											break;
+										case 2:
+											try
+											{
+												TBGContext::factory()->TBGTeam(trim($activerow[$identifiableitem[0]], '"'));
+											}
+											catch (Exception $e)
+											{
+												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: team does not exist', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
+											}
+											break;
+									}
+								}
+							}
+							
+							// Now check user exists for postedby
+							if ($posted_by !== null)
+							{
+								if (!is_numeric(trim($activerow[$posted_by], '"')))
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $posted_by+1, '%row%' => $i+1));
+								}
+								else
+								{
+									try
+									{
+										TBGContext::factory()->TBGUser(trim($activerow[$posted_by], '"'));
+									}
+									catch (Exception $e)
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => $posted_by+1, '%row%' => $i+1));
+									}
 								}
 							}
 						}
