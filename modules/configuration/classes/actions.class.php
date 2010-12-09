@@ -2744,7 +2744,7 @@
 						$priority = null;
 						$category = null;
 						$severity = null;
-						$reproducibility = null;
+						$reproducability = null;
 						$votes = null;
 						$percentage = null;
 						$duplicate = null;
@@ -2786,8 +2786,8 @@
 								$category = $i;
 							elseif ($headerrow2[$i] == 'severity'):
 								$severity = $i;
-							elseif ($headerrow2[$i] == 'reproducibility'):
-								$reproducibility = $i;
+							elseif ($headerrow2[$i] == 'reproducability'):
+								$reproducability = $i;
 							elseif ($headerrow2[$i] == 'votes'):
 								$votes = $i;
 							elseif ($headerrow2[$i] == 'percentage'):
@@ -3089,6 +3089,170 @@
 									catch (Exception $e)
 									{
 										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => $posted_by+1, '%row%' => $i+1));
+									}
+								}
+							}
+							
+							// Now check issue exists for duplicate
+							if ($duplicate !== null)
+							{
+								if (!is_numeric(trim($activerow[$duplicate], '"')))
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $duplicate+1, '%row%' => $i+1));
+								}
+								else
+								{
+									try
+									{
+										TBGContext::factory()->TBGIssue(trim($activerow[$duplicate], '"'));
+									}
+									catch (Exception $e)
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: issue to mark this row as a duplicate as does not exist', array('%col%' => $duplicate+1, '%row%' => $i+1));
+									}
+								}
+							}
+							
+							// Now check milestone exists and is valid
+							if ($milestone !== null)
+							{
+								if (!is_numeric(trim($activerow[$milestone], '"')))
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $duplicate+1, '%row%' => $i+1));
+								}
+								else
+								{
+									try
+									{
+										$milestone = TBGContext::factory()->TBGMilestone(trim($activerow[$milestone], '"'));
+										if ($milestone->getProject()->getID() != $activerow[$project])
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: milestone does not apply to the specified project', array('%col%' => $milestone+1, '%row%' => $i+1));
+										}
+									}
+									catch (Exception $e)
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: milestone does not exist', array('%col%' => $milestone+1, '%row%' => $i+1));
+									}
+								}
+							}
+							
+							// status
+							if ($status !== null)
+							{
+								if (!is_numeric(trim($activerow[$status], '"')))
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $status+1, '%row%' => $i+1));
+								}
+								else
+								{
+									try
+									{
+										TBGContext::factory()->TBGStatus(trim($activerow[$status], '"'));
+									}
+									catch (Exception $e)
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: status does not exist', array('%col%' => $status+1, '%row%' => $i+1));
+									}
+								}
+							}
+							
+							// resolution
+							if ($resolution !== null)
+							{
+								if (!is_numeric(trim($activerow[$resolution], '"')))
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $resolution+1, '%row%' => $i+1));
+								}
+								else
+								{
+									try
+									{
+										TBGContext::factory()->TBGResolution(trim($activerow[$resolution], '"'));
+									}
+									catch (Exception $e)
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: resolution does not exist', array('%col%' => $resolution+1, '%row%' => $i+1));
+									}
+								}
+							}
+							
+							// priority
+							if ($priority !== null)
+							{
+								if (!is_numeric(trim($activerow[$priority], '"')))
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $priority+1, '%row%' => $i+1));
+								}
+								else
+								{
+									try
+									{
+										TBGContext::factory()->TBGPriority(trim($activerow[$priority], '"'));
+									}
+									catch (Exception $e)
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: priority does not exist', array('%col%' => $priority+1, '%row%' => $i+1));
+									}
+								}
+							}
+							
+							// category
+							if ($category !== null)
+							{
+								if (!is_numeric(trim($activerow[$category], '"')))
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $category+1, '%row%' => $i+1));
+								}
+								else
+								{
+									try
+									{
+										TBGContext::factory()->TBGCategory(trim($activerow[$category], '"'));
+									}
+									catch (Exception $e)
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: category does not exist', array('%col%' => $category+1, '%row%' => $i+1));
+									}
+								}
+							}
+							
+							// severity
+							if ($severity !== null)
+							{
+								if (!is_numeric(trim($activerow[$severity], '"')))
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $severity+1, '%row%' => $i+1));
+								}
+								else
+								{
+									try
+									{
+										TBGContext::factory()->TBGIssue(trim($activerow[$severity], '"'));
+									}
+									catch (Exception $e)
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: severity does not exist', array('%col%' => $severity+1, '%row%' => $i+1));
+									}
+								}
+							}
+							
+							// reproducability
+							if ($reproducability !== null)
+							{
+								if (!is_numeric(trim($activerow[$reproducability], '"')))
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $reproducability+1, '%row%' => $i+1));
+								}
+								else
+								{
+									try
+									{
+										TBGContext::factory()->TBGIssue(trim($activerow[$reproducability], '"'));
+									}
+									catch (Exception $e)
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: reproducability does not exist', array('%col%' => $reproducability+1, '%row%' => $i+1));
 									}
 								}
 							}
