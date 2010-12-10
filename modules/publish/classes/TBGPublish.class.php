@@ -98,6 +98,9 @@
 		{
 			if (TBGContext::isCLI()) TBGCliCommand::cli_echo("Loading default articles\n");
 			$this->loadArticles('', $overwrite);
+			$this->loadArticles('TheBugGenie', $overwrite);
+			$this->loadArticles('Category', $overwrite);
+			$this->loadArticles('B2DB', $overwrite);
 			if (TBGContext::isCLI()) TBGCliCommand::cli_echo("... done\n");
 		}
 		

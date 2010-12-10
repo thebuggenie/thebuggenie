@@ -44,7 +44,7 @@
 			$this->enableListenerSaved('core', 'project_sidebar_links_timeline');
 			$this->enableListenerSaved('core', 'viewissue_tabs');
 			$this->enableListenerSaved('core', 'viewissue_tab_panes_back');
-			TBGPublish::getModule()->loadArticles('VCSIntegration');
+			TBGPublish::getModule()->loadArticles('VCSIntegration', true);
 		}
 		
 		protected function _addAvailableListeners()
