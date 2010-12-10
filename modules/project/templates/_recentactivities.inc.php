@@ -10,7 +10,7 @@
 					<span class="faded_out dark recent_activities_details">
 						<?php echo tbg_formatTime($issue->getPosted(), 20); ?>,
 						<strong><?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getName() : __('Status not determined'); ?></strong>
-						<?php if ($issue->isClosed()): ?>
+						<?php if ($issue->isClosed() && is_object($issue->getResolution())): ?>
 						, <?php echo $issue->getResolution()->getName(); ?>
 						<?php endif; ?>
 					</span>
