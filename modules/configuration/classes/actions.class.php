@@ -2747,7 +2747,6 @@
 						$reproducability = null;
 						$votes = null;
 						$percentage = null;
-						$duplicate = null;
 						$blocking = null;
 						$locked = null;
 						$milestone = null;
@@ -2792,12 +2791,12 @@
 								$votes = $i;
 							elseif ($headerrow2[$i] == 'percentage'):
 								$percentage = $i;
-							elseif ($headerrow2[$i] == 'duplicate'):
-								$duplicate = $i;
 							elseif ($headerrow2[$i] == 'blocking'):
 								$blocking = $i;
 							elseif ($headerrow2[$i] == 'locked'):
 								$locked = $i;
+							elseif ($headerrow2[$i] == 'type'):
+								$issue_type = $i;
 							elseif ($headerrow2[$i] == 'milestone'):
 								$milestone = $i;
 							endif;
@@ -2813,6 +2812,11 @@
 						if ($project === null)
 						{
 							$errors[] = TBGContext::getI18n()->__('Required column \'%col%\' not found in header row', array('%col%' => 'project'));
+						}
+										
+						if ($issue_type === null)
+						{
+							$errors[] = TBGContext::getI18n()->__('Required column \'%col%\' not found in header row', array('%col%' => 'issue_type'));
 						}
 						
 						break;
@@ -2852,414 +2856,403 @@
 					}
 				}
 				
-				// Check if fields are valid
-				switch ($request->getParameter('type'))
+				if (count($errors) == 0)
 				{
-					case 'projects':
-						for ($i = 1; $i != count($data); $i++)
-						{
-							$activerow = $data[$i];
-							$activerow = html_entity_decode($activerow, ENT_QUOTES);
-							$activerow = explode(',', $activerow);
-							
-							// Check if project exists
-							$key = trim($activerow[$namecol], '"');
-							$key = str_replace(' ', '', $key);
-							$key = strtolower($key);
-							
-							$tmp = TBGProject::getByKey($key);
-							
-							if ($tmp !== null)
+					// Check if fields are valid
+					switch ($request->getParameter('type'))
+					{
+						case 'projects':
+							for ($i = 1; $i != count($data); $i++)
 							{
-								$errors[] = TBGContext::getI18n()->__('Row %row%: A project with this name already exists', array('%row%' => $i+1));
-							}
-							
-							// First off are booleans
-							$boolitems = array($scrum, $freelance, $en_builds, $en_comps, $en_editions, $show_summary);
-							
-							foreach ($boolitems as $boolitem)
-							{
-								if ($boolitem !== null && trim($activerow[$boolitem], '"') != 0 && trim($activerow[$boolitem], '"') != 1)
+								$activerow = $data[$i];
+								$activerow = html_entity_decode($activerow, ENT_QUOTES);
+								$activerow = explode(',', $activerow);
+								
+								// Check if project exists
+								$key = trim($activerow[$namecol], '"');
+								$key = str_replace(' ', '', $key);
+								$key = strtolower($key);
+								
+								$tmp = TBGProject::getByKey($key);
+								
+								if ($tmp !== null)
 								{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1/0)', array('%col%' => $boolitem+1, '%row%' => $i+1));
-								}
-							}
-							
-							// Now identifiables
-							$identifiableitems = array(array($qa, $qa_type), array($lead, $lead_type), array($owner, $owner_type));
-							
-							foreach ($identifiableitems as $identifiableitem)
-							{
-								if (($identifiableitem[0] === null || $identifiableitem[1] === null) && !($identifiableitem[0] === null && $identifiableitem[1] === null))
-								{
-										$errors[] = TBGContext::getI18n()->__('Row %row%: Both the type and item ID must be supplied for owner/lead/qa fields', array('%row%' => $i+1));
-										continue;
+									$errors[] = TBGContext::getI18n()->__('Row %row%: A project with this name already exists', array('%row%' => $i+1));
 								}
 								
-								if ($identifiableitem[1] !== null && trim($activerow[$identifiableitem[1]], '"') != 1 && trim($activerow[$identifiableitem[1]], '"') != 2)
+								// First off are booleans
+								$boolitems = array($scrum, $freelance, $en_builds, $en_comps, $en_editions, $show_summary);
+								
+								foreach ($boolitems as $boolitem)
 								{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)', array('%col%' => $identifiableitem[1]+1, '%row%' => $i+1));
+									if ($boolitem !== null && trim($activerow[$boolitem], '"') != 0 && trim($activerow[$boolitem], '"') != 1)
+									{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1/0)', array('%col%' => $boolitem+1, '%row%' => $i+1));
+									}
 								}
 								
-								if ($identifiableitem[0] !== null && !(is_numeric(trim($activerow[$identifiableitem[0]], '"'))))
-								{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
-								}
-								elseif ($identifiableitem[0] !== null && (is_numeric(trim($activerow[$identifiableitem[0]], '"'))))
-								{
-									// check if they exist
-									switch (trim($activerow[$identifiableitem[1]], '"'))
-									{
-										case 1:
-											try
-											{
-												TBGContext::factory()->TBGUser(trim($activerow[$identifiableitem[0]], '"'));
-											}
-											catch (Exception $e)
-											{
-												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
-											}
-											break;
-										case 2:
-											try
-											{
-												TBGContext::factory()->TBGTeam(trim($activerow[$identifiableitem[0]], '"'));
-											}
-											catch (Exception $e)
-											{
-												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: team does not exist', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
-											}
-											break;
-									}
-								}
-							}
-							
-							// Now check client exists
-							if ($client !== null)
-							{
-								if (!is_numeric(trim($activerow[$client], '"')))
-								{
-									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $client+1, '%row%' => $i+1));
-								}
-								else
-								{
-									try
-									{
-										TBGContext::factory()->TBGClient(trim($activerow[$client], '"'));
-									}
-									catch (Exception $e)
-									{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: client does not exist', array('%col%' => $client+1, '%row%' => $i+1));
-									}
-								}
-							}
-							
-							// Now check if workflow exists
-							if ($workflow_id !== null)
-							{
-								if (!is_numeric(trim($activerow[$workflow_id], '"')))
-								{
-									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $workflow_id+1, '%row%' => $i+1));
-								}
-								else
-								{
-									try
-									{
-										TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$workflow_id], '"'));
-									}
-									catch (Exception $e)
-									{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: workflow scheme does not exist', array('%col%' => $workflow_id+1, '%row%' => $i+1));
-									}
-								}
-							}
-							
-							// Finally check if the summary type is valid. At this point, your error list has probably become so big it has eaten up all your available RAM...
-							if ($summary_type !== null)
-							{
-								if (trim($activerow[$summary_type], '"') != 'issuetypes' && trim($activerow[$summary_type], '"') != 'milestones')
-								{
-									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be \'issuetypes\' or \'milestones\')', array('%col%' => $summary_type+1, '%row%' => $i+1));
-								}
-							}
-						}
-						break;
-					case 'issues':
-						for ($i = 1; $i != count($data); $i++)
-						{
-							$activerow = $data[$i];
-							$activerow = html_entity_decode($activerow, ENT_QUOTES);
-							$activerow = explode(',', $activerow);
-							
-							// Check if project exists
-							try
-							{
-								TBGContext::factory()->TBGProject($activerow[$project]);
-							}
-							catch (Exception $e)
-							{
-								$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: Project does not exists', array('%col%' => $project+1, '%row%' => $i+1));
-								break;
-							}
-							
-							// First off are booleans
-							$boolitems = array($state, $blocking, $locked);
-							
-							foreach ($boolitems as $boolitem)
-							{
-								if ($boolitem !== null && trim($activerow[$boolitem], '"') != 0 && trim($activerow[$boolitem], '"') != 1)
-								{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1/0)', array('%col%' => $boolitem+1, '%row%' => $i+1));
-								}
-							}
-							
-							// Now numerics
-							$numericitems = array($votes, $percentage);
-							
-							foreach ($numericitems as $numericitem)
-							{
-								if ($numericitem !== null && !(is_numeric(trim($activerow[$numericitem], '"'))))
-								{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $numericitem+1, '%row%' => $i+1));
-								}
-							}
-							
-							// Now identifiables
-							$identifiableitems = array(array($owner, $owner_type), array($assigned, $assigned_type));
-							
-							foreach ($identifiableitems as $identifiableitem)
-							{
-								if (($identifiableitem[0] === null || $identifiableitem[1] === null) && !($identifiableitem[0] === null && $identifiableitem[1] === null))
-								{
-										$errors[] = TBGContext::getI18n()->__('Row %row%: Both the type and item ID must be supplied for owner/lead/qa fields', array('%row%' => $i+1));
-										continue;
-								}
+								// Now identifiables
+								$identifiableitems = array(array($qa, $qa_type), array($lead, $lead_type), array($owner, $owner_type));
 								
-								if ($identifiableitem[1] !== null && trim($activerow[$identifiableitem[1]], '"') != 1 && trim($activerow[$identifiableitem[1]], '"') != 2)
+								foreach ($identifiableitems as $identifiableitem)
 								{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)', array('%col%' => $identifiableitem[1]+1, '%row%' => $i+1));
-								}
-								
-								if ($identifiableitem[0] !== null && !(is_numeric(trim($activerow[$identifiableitem[0]], '"'))))
-								{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
-								}
-								elseif ($identifiableitem[0] !== null && (is_numeric(trim($activerow[$identifiableitem[0]], '"'))))
-								{
-									// check if they exist
-									switch (trim($activerow[$identifiableitem[1]], '"'))
+									if (($identifiableitem[0] === null || $identifiableitem[1] === null) && !($identifiableitem[0] === null && $identifiableitem[1] === null))
 									{
-										case 1:
-											try
-											{
-												TBGContext::factory()->TBGUser(trim($activerow[$identifiableitem[0]], '"'));
-											}
-											catch (Exception $e)
-											{
-												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
-											}
-											break;
-										case 2:
-											try
-											{
-												TBGContext::factory()->TBGTeam(trim($activerow[$identifiableitem[0]], '"'));
-											}
-											catch (Exception $e)
-											{
-												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: team does not exist', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
-											}
-											break;
+											$errors[] = TBGContext::getI18n()->__('Row %row%: Both the type and item ID must be supplied for owner/lead/qa fields', array('%row%' => $i+1));
+											continue;
 									}
-								}
-							}
-							
-							// Now check user exists for postedby
-							if ($posted_by !== null)
-							{
-								if (!is_numeric(trim($activerow[$posted_by], '"')))
-								{
-									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $posted_by+1, '%row%' => $i+1));
-								}
-								else
-								{
-									try
+									
+									if ($identifiableitem[1] !== null && trim($activerow[$identifiableitem[1]], '"') != 1 && trim($activerow[$identifiableitem[1]], '"') != 2)
 									{
-										TBGContext::factory()->TBGUser(trim($activerow[$posted_by], '"'));
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)', array('%col%' => $identifiableitem[1]+1, '%row%' => $i+1));
 									}
-									catch (Exception $e)
+									
+									if ($identifiableitem[0] !== null && !(is_numeric(trim($activerow[$identifiableitem[0]], '"'))))
 									{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => $posted_by+1, '%row%' => $i+1));
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
 									}
-								}
-							}
-							
-							// Now check issue exists for duplicate
-							if ($duplicate !== null)
-							{
-								if (!is_numeric(trim($activerow[$duplicate], '"')))
-								{
-									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $duplicate+1, '%row%' => $i+1));
-								}
-								else
-								{
-									try
+									elseif ($identifiableitem[0] !== null && (is_numeric(trim($activerow[$identifiableitem[0]], '"'))))
 									{
-										TBGContext::factory()->TBGIssue(trim($activerow[$duplicate], '"'));
-									}
-									catch (Exception $e)
-									{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: issue to mark this row as a duplicate as does not exist', array('%col%' => $duplicate+1, '%row%' => $i+1));
-									}
-								}
-							}
-							
-							// Now check milestone exists and is valid
-							if ($milestone !== null)
-							{
-								if (!is_numeric(trim($activerow[$milestone], '"')))
-								{
-									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $duplicate+1, '%row%' => $i+1));
-								}
-								else
-								{
-									try
-									{
-										$milestone = TBGContext::factory()->TBGMilestone(trim($activerow[$milestone], '"'));
-										if ($milestone->getProject()->getID() != $activerow[$project])
+										// check if they exist
+										switch (trim($activerow[$identifiableitem[1]], '"'))
 										{
-											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: milestone does not apply to the specified project', array('%col%' => $milestone+1, '%row%' => $i+1));
+											case 1:
+												try
+												{
+													TBGContext::factory()->TBGUser(trim($activerow[$identifiableitem[0]], '"'));
+												}
+												catch (Exception $e)
+												{
+													$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
+												}
+												break;
+											case 2:
+												try
+												{
+													TBGContext::factory()->TBGTeam(trim($activerow[$identifiableitem[0]], '"'));
+												}
+												catch (Exception $e)
+												{
+													$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: team does not exist', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
+												}
+												break;
 										}
 									}
-									catch (Exception $e)
+								}
+								
+								// Now check client exists
+								if ($client !== null)
+								{
+									if (!is_numeric(trim($activerow[$client], '"')))
 									{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: milestone does not exist', array('%col%' => $milestone+1, '%row%' => $i+1));
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $client+1, '%row%' => $i+1));
+									}
+									else
+									{
+										try
+										{
+											TBGContext::factory()->TBGClient(trim($activerow[$client], '"'));
+										}
+										catch (Exception $e)
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: client does not exist', array('%col%' => $client+1, '%row%' => $i+1));
+										}
+									}
+								}
+								
+								// Now check if workflow exists
+								if ($workflow_id !== null)
+								{
+									if (!is_numeric(trim($activerow[$workflow_id], '"')))
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $workflow_id+1, '%row%' => $i+1));
+									}
+									else
+									{
+										try
+										{
+											TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$workflow_id], '"'));
+										}
+										catch (Exception $e)
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: workflow scheme does not exist', array('%col%' => $workflow_id+1, '%row%' => $i+1));
+										}
+									}
+								}
+								
+								// Finally check if the summary type is valid. At this point, your error list has probably become so big it has eaten up all your available RAM...
+								if ($summary_type !== null)
+								{
+									if (trim($activerow[$summary_type], '"') != 'issuetypes' && trim($activerow[$summary_type], '"') != 'milestones')
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be \'issuetypes\' or \'milestones\')', array('%col%' => $summary_type+1, '%row%' => $i+1));
 									}
 								}
 							}
-							
-							// status
-							if ($status !== null)
+							break;
+						case 'issues':
+							for ($i = 1; $i != count($data); $i++)
 							{
-								if (!is_numeric(trim($activerow[$status], '"')))
+								$activerow = $data[$i];
+								$activerow = html_entity_decode($activerow, ENT_QUOTES);
+								$activerow = explode(',', $activerow);
+								
+								// Check if project exists
+								try
 								{
-									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $status+1, '%row%' => $i+1));
+									TBGContext::factory()->TBGProject($activerow[$project]);
 								}
-								else
+								catch (Exception $e)
 								{
-									try
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: Project does not exist', array('%col%' => $project+1, '%row%' => $i+1));
+									break;
+								}
+								
+								// First off are booleans
+								$boolitems = array($state, $blocking, $locked);
+								
+								foreach ($boolitems as $boolitem)
+								{
+									if ($boolitem !== null && trim($activerow[$boolitem], '"') != 0 && trim($activerow[$boolitem], '"') != 1)
 									{
-										TBGContext::factory()->TBGStatus(trim($activerow[$status], '"'));
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1/0)', array('%col%' => $boolitem+1, '%row%' => $i+1));
 									}
-									catch (Exception $e)
+								}
+								
+								// Now numerics
+								$numericitems = array($votes, $percentage);
+								
+								foreach ($numericitems as $numericitem)
+								{
+									if ($numericitem !== null && !(is_numeric(trim($activerow[$numericitem], '"'))))
 									{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: status does not exist', array('%col%' => $status+1, '%row%' => $i+1));
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $numericitem+1, '%row%' => $i+1));
+									}
+								}
+								
+								// Percentage must be 0-100
+								if ($numericitem !== null && ((trim($activerow[$percentage], '"') < 0) || (trim($activerow[$percentage], '"') > 100)))
+								{
+									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: Percentage must be from 0 to 100 inclusive', array('%col%' => $percentage+1, '%row%' => $i+1));
+								}
+									
+								// Now identifiables
+								$identifiableitems = array(array($owner, $owner_type), array($assigned, $assigned_type));
+								
+								foreach ($identifiableitems as $identifiableitem)
+								{
+									if (($identifiableitem[0] === null || $identifiableitem[1] === null) && !($identifiableitem[0] === null && $identifiableitem[1] === null))
+									{
+											$errors[] = TBGContext::getI18n()->__('Row %row%: Both the type and item ID must be supplied for owner/lead/qa fields', array('%row%' => $i+1));
+											continue;
+									}
+									
+									if ($identifiableitem[1] !== null && trim($activerow[$identifiableitem[1]], '"') != 1 && trim($activerow[$identifiableitem[1]], '"') != 2)
+									{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be 1 for a user or 2 for a team)', array('%col%' => $identifiableitem[1]+1, '%row%' => $i+1));
+									}
+									
+									if ($identifiableitem[0] !== null && !(is_numeric(trim($activerow[$identifiableitem[0]], '"'))))
+									{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
+									}
+									elseif ($identifiableitem[0] !== null && (is_numeric(trim($activerow[$identifiableitem[0]], '"'))))
+									{
+										// check if they exist
+										switch (trim($activerow[$identifiableitem[1]], '"'))
+										{
+											case 1:
+												try
+												{
+													TBGContext::factory()->TBGUser(trim($activerow[$identifiableitem[0]], '"'));
+												}
+												catch (Exception $e)
+												{
+													$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
+												}
+												break;
+											case 2:
+												try
+												{
+													TBGContext::factory()->TBGTeam(trim($activerow[$identifiableitem[0]], '"'));
+												}
+												catch (Exception $e)
+												{
+													$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: team does not exist', array('%col%' => $identifiableitem[0]+1, '%row%' => $i+1));
+												}
+												break;
+										}
+									}
+								}
+								
+								// Now check user exists for postedby
+								if ($posted_by !== null)
+								{
+									if (!is_numeric(trim($activerow[$posted_by], '"')))
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $posted_by+1, '%row%' => $i+1));
+									}
+									else
+									{
+										try
+										{
+											TBGContext::factory()->TBGUser(trim($activerow[$posted_by], '"'));
+										}
+										catch (Exception $e)
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: user does not exist', array('%col%' => $posted_by+1, '%row%' => $i+1));
+										}
+									}
+								}
+								
+								// Now check milestone exists and is valid
+								if ($milestone !== null)
+								{
+									if (!is_numeric(trim($activerow[$milestone], '"')))
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $milestone+1, '%row%' => $i+1));
+									}
+									else
+									{
+										try
+										{
+											$milestone = TBGContext::factory()->TBGMilestone(trim($activerow[$milestone], '"'));
+											if ($milestone->getProject()->getID() != $activerow[$project])
+											{
+												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: milestone does not apply to the specified project', array('%col%' => $milestone+1, '%row%' => $i+1));
+											}
+										}
+										catch (Exception $e)
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: milestone does not exist', array('%col%' => $milestone+1, '%row%' => $i+1));
+										}
+									}
+								}
+								
+								// status
+								if ($status !== null)
+								{
+									if (!is_numeric(trim($activerow[$status], '"')))
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $status+1, '%row%' => $i+1));
+									}
+									else
+									{
+										try
+										{
+											TBGContext::factory()->TBGStatus(trim($activerow[$status], '"'));
+										}
+										catch (Exception $e)
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: status does not exist', array('%col%' => $status+1, '%row%' => $i+1));
+										}
+									}
+								}
+								
+								// resolution
+								if ($resolution !== null)
+								{
+									if (!is_numeric(trim($activerow[$resolution], '"')))
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $resolution+1, '%row%' => $i+1));
+									}
+									else
+									{
+										try
+										{
+											TBGContext::factory()->TBGResolution(trim($activerow[$resolution], '"'));
+										}
+										catch (Exception $e)
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: resolution does not exist', array('%col%' => $resolution+1, '%row%' => $i+1));
+										}
+									}
+								}
+								
+								// priority
+								if ($priority !== null)
+								{
+									if (!is_numeric(trim($activerow[$priority], '"')))
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $priority+1, '%row%' => $i+1));
+									}
+									else
+									{
+										try
+										{
+											TBGContext::factory()->TBGPriority(trim($activerow[$priority], '"'));
+										}
+										catch (Exception $e)
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: priority does not exist', array('%col%' => $priority+1, '%row%' => $i+1));
+										}
+									}
+								}
+								
+								// category
+								if ($category !== null)
+								{
+									if (!is_numeric(trim($activerow[$category], '"')))
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $category+1, '%row%' => $i+1));
+									}
+									else
+									{
+										try
+										{
+											TBGContext::factory()->TBGCategory(trim($activerow[$category], '"'));
+										}
+										catch (Exception $e)
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: category does not exist', array('%col%' => $category+1, '%row%' => $i+1));
+										}
+									}
+								}
+								
+								// severity
+								if ($severity !== null)
+								{
+									if (!is_numeric(trim($activerow[$severity], '"')))
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $severity+1, '%row%' => $i+1));
+									}
+									else
+									{
+										try
+										{
+											TBGContext::factory()->TBGSeverity(trim($activerow[$severity], '"'));
+										}
+										catch (Exception $e)
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: severity does not exist', array('%col%' => $severity+1, '%row%' => $i+1));
+										}
+									}
+								}
+								
+								// reproducability
+								if ($reproducability !== null)
+								{
+									if (!is_numeric(trim($activerow[$reproducability], '"')))
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $reproducability+1, '%row%' => $i+1));
+									}
+									else
+									{
+										try
+										{
+											TBGContext::factory()->TBGReproducability(trim($activerow[$reproducability], '"'));
+										}
+										catch (Exception $e)
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: reproducability does not exist', array('%col%' => $reproducability+1, '%row%' => $i+1));
+										}
 									}
 								}
 							}
-							
-							// resolution
-							if ($resolution !== null)
-							{
-								if (!is_numeric(trim($activerow[$resolution], '"')))
-								{
-									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $resolution+1, '%row%' => $i+1));
-								}
-								else
-								{
-									try
-									{
-										TBGContext::factory()->TBGResolution(trim($activerow[$resolution], '"'));
-									}
-									catch (Exception $e)
-									{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: resolution does not exist', array('%col%' => $resolution+1, '%row%' => $i+1));
-									}
-								}
-							}
-							
-							// priority
-							if ($priority !== null)
-							{
-								if (!is_numeric(trim($activerow[$priority], '"')))
-								{
-									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $priority+1, '%row%' => $i+1));
-								}
-								else
-								{
-									try
-									{
-										TBGContext::factory()->TBGPriority(trim($activerow[$priority], '"'));
-									}
-									catch (Exception $e)
-									{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: priority does not exist', array('%col%' => $priority+1, '%row%' => $i+1));
-									}
-								}
-							}
-							
-							// category
-							if ($category !== null)
-							{
-								if (!is_numeric(trim($activerow[$category], '"')))
-								{
-									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $category+1, '%row%' => $i+1));
-								}
-								else
-								{
-									try
-									{
-										TBGContext::factory()->TBGCategory(trim($activerow[$category], '"'));
-									}
-									catch (Exception $e)
-									{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: category does not exist', array('%col%' => $category+1, '%row%' => $i+1));
-									}
-								}
-							}
-							
-							// severity
-							if ($severity !== null)
-							{
-								if (!is_numeric(trim($activerow[$severity], '"')))
-								{
-									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $severity+1, '%row%' => $i+1));
-								}
-								else
-								{
-									try
-									{
-										TBGContext::factory()->TBGIssue(trim($activerow[$severity], '"'));
-									}
-									catch (Exception $e)
-									{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: severity does not exist', array('%col%' => $severity+1, '%row%' => $i+1));
-									}
-								}
-							}
-							
-							// reproducability
-							if ($reproducability !== null)
-							{
-								if (!is_numeric(trim($activerow[$reproducability], '"')))
-								{
-									$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $reproducability+1, '%row%' => $i+1));
-								}
-								else
-								{
-									try
-									{
-										TBGContext::factory()->TBGIssue(trim($activerow[$reproducability], '"'));
-									}
-									catch (Exception $e)
-									{
-										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: reproducability does not exist', array('%col%' => $reproducability+1, '%row%' => $i+1));
-									}
-								}
-							}
-						}
-						break;
+							break;
+					}
 				}
-				
+					
 				// Handle errors
 				if (count($errors) != 0)
 				{
@@ -3278,7 +3271,7 @@
 				$this->getResponse()->setHttpStatus(400);
 				return $this->renderJSON(array('failed' => true, 'errordetail' => $e->getMessage(), 'error' => $e->getMessage()));
 			}
-			
+				
 			if ($request->getParameter('csv_dry_run'))
 			{
 				return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('Dry-run successful, you can now uncheck the dry-run box and import your data.')));
