@@ -21,11 +21,11 @@
 
 		const B2DBNAME = 'customfields';
 		const ID = 'customfields.id';
-		const FIELD_NAME = 'customfields.field_name';
-		const FIELD_DESCRIPTION = 'customfields.field_description';
-		const FIELD_INSTRUCTIONS = 'customfields.field_instructions';
-		const FIELD_KEY = 'customfields.field_key';
-		const FIELD_TYPE = 'customfields.field_type';
+		const FIELD_NAME = 'customfields.name';
+		const FIELD_DESCRIPTION = 'customfields.description';
+		const FIELD_INSTRUCTIONS = 'customfields.instructions';
+		const FIELD_KEY = 'customfields.key';
+		const FIELD_TYPE = 'customfields.itemtype';
 		const SCOPE = 'customfields.scope';
 
 		/**

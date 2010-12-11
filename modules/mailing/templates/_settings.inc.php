@@ -114,21 +114,23 @@
 	</div>
 <?php endif; ?>
 </form>
-<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('mailing_test_email'); ?>" method="post">
-	<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 700px; padding: 5px 5px 30px 5px;">
-		<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
-			<tr>
-				<td style="width: 125px; padding: 5px;"><label for="test_email_to"><?php echo __('Send test email'); ?></label></td>
-				<td style="width: auto;"><input type="text" name="test_email_to" id="test_email_to" value="" style="width: 300px;"<?php echo ($access_level != TBGSettings::ACCESS_FULL) ? ' disabled' : ''; ?>></td>
-			</tr>
-			<tr>
-				<td class="config_explanation" colspan="2" style="font-size: 13px;">
-					<span class="faded_out">
-						<?php echo __('Enter an email address, and click "%send_test_email%" to check if the email module is configured correctly', array('%send_test_email%' => __('Send test email'))); ?>
-					</span>
-				</td>
-			</tr>
-		</table>
-		<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Send test email'); ?>">
-	</div>
-</form>
+<?php if ($module->isEnabled()): ?>
+	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('mailing_test_email'); ?>" method="post">
+		<div class="rounded_box borderless mediumgrey" style="margin: 10px 0 0 0; width: 700px; padding: 5px 5px 30px 5px;">
+			<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
+				<tr>
+					<td style="width: 125px; padding: 5px;"><label for="test_email_to"><?php echo __('Send test email'); ?></label></td>
+					<td style="width: auto;"><input type="text" name="test_email_to" id="test_email_to" value="" style="width: 300px;"<?php echo ($access_level != TBGSettings::ACCESS_FULL) ? ' disabled' : ''; ?>></td>
+				</tr>
+				<tr>
+					<td class="config_explanation" colspan="2" style="font-size: 13px;">
+						<span class="faded_out">
+							<?php echo __('Enter an email address, and click "%send_test_email%" to check if the email module is configured correctly', array('%send_test_email%' => __('Send test email'))); ?>
+						</span>
+					</td>
+				</tr>
+			</table>
+			<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 13px; font-weight: bold;" value="<?php echo __('Send test email'); ?>">
+		</div>
+	</form>
+<?php endif; ?>

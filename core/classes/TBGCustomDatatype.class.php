@@ -1,9 +1,9 @@
 <?php
 
-	class TBGCustomDatatype extends TBGIdentifiableClass
+	class TBGCustomDatatype extends TBGDatatypeBase
 	{
 		
-		static protected $_b2dbtablename = 'TBGCustomDatatypesTable';
+		static protected $_b2dbtablename = 'TBGCustomFieldsTable';
 
 		const DROPDOWN_CHOICE_TEXT = 1;
 		const INPUT_TEXT = 2;
@@ -104,9 +104,16 @@
 
 		}
 
-		public function preSave()
+		public function _preSave($is_new)
 		{
-			$this->_key = strtolower(str_replace(' ', '', $name));
+			$this->_key = strtolower(str_replace(' ', '', $this->getName()));
+			if ($is_new)
+			{
+				if (array_key_exists($this->_key, self::getAll()))
+				{
+					throw new Exception(TBGContext::getI18n()->__('This field key already exists'));
+				}
+			}
 		}
 		
 		/**
@@ -116,8 +123,7 @@
 		 */
 		public function _preDelete()
 		{
-			$key = B2DB::getTable('TBGCustomFieldsTable')->getKeyFromId($id);
-			TBGIssueCustomFieldsTable::getTable()->doDeleteByFieldId($id);
+			$key = B2DB::getTable('TBGCustomFieldsTable')->getKeyFromId($this->getID());
 			B2DB::getTable('TBGCustomFieldOptionsTable')->doDeleteByFieldKey($key);
 		}
 

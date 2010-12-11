@@ -204,7 +204,7 @@
 			if (TBGContext::getUser() instanceof TBGUser)
 			{
 				TBGLogging::log('Setting user logout state');
-				TBGContext::getUser()->setState(TBGSettings::get('offlinestate'));
+				TBGContext::getUser()->setOffline();
 			}
 			TBGContext::logout();
 			$this->forward(TBGContext::getRouting()->generate(TBGSettings::getLogoutReturnRoute()));
@@ -288,6 +288,7 @@
 					$options['error'] = $e->getMessage();
 				}
 			}
+			TBGContext::getUser()->setOnline();
 			if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
 			{
 				return $this->renderJSON(array('forward' => $forward_url));

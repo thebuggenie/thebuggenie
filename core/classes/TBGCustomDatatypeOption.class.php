@@ -3,6 +3,8 @@
 	class TBGCustomDatatypeOption extends TBGDatatypeBase
 	{
 
+		protected static $_b2dbtablename = 'TBGCustomFieldOptionsTable';
+
 		protected static $_items = array();
 
 		/**
@@ -13,6 +15,15 @@
 		protected $_value = null;
 		
 		protected $_key = null;
+		
+		protected $_sort_order = null;
+		
+		/**
+		 *
+		 * @var TBGCustomDatatype
+		 * @Class TBGCustomDatatype
+		 */
+		protected $_customfield_key;
 
 		/**
 		 * Returns all options available for a custom type
@@ -61,7 +72,7 @@
 		 *
 		 * @return TBGStatus
 		 */
-		public function _preSave($type, $key, $name, $value, $itemdata = null)
+		public function _preSave($is_new)
 		{
 			if ($this->getItemtype() == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT_ICON)
 			{
@@ -97,6 +108,11 @@
 		{
 			return $this->_itemdata;
 		}
+		
+		public function canBeDeleted()
+		{
+			return true;
+		}
 
 		/**
 		 * Return the options icon (if applicable)
@@ -123,15 +139,4 @@
 			$this->_value = $value;
 		}
 
-		/**
-		 * Save name, itemdata and value
-		 *
-		 * @return boolean
-		 */
-		public function save()
-		{
-			B2DB::getTable('TBGCustomFieldOptionsTable')->saveById($this->_name, $this->_value, $this->_itemdata, $this->_sort_order, $this->_id);
-		}
-
 	}
-

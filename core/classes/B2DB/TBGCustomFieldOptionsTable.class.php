@@ -21,11 +21,11 @@
 
 		const B2DBNAME = 'customfieldoptions';
 		const ID = 'customfieldoptions.id';
-		const NAME = 'customfieldoptions.cname';
+		const NAME = 'customfieldoptions.name';
 		const ITEMDATA = 'customfieldoptions.itemdata';
-		const OPTION_VALUE = 'customfieldoptions.option_value';
+		const OPTION_VALUE = 'customfieldoptions.value';
 		const SORT_ORDER = 'customfieldoptions.sort_order';
-		const CUSTOMFIELDS_KEY = 'customfieldoptions.customfields_key';
+		const CUSTOMFIELDS_KEY = 'customfieldoptions.customfield_key';
 		const SCOPE = 'customfieldoptions.scope';
 
 		public function __construct()

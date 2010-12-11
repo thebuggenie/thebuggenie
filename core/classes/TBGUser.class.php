@@ -90,6 +90,8 @@
 		 */
 		protected $_userstate = null;
 		
+		protected $_customstate = false;
+		
 		/**
 		 * User homepage
 		 *
@@ -483,10 +485,7 @@
 				if ($user->isAuthenticated())
 				{
 					$user->updateLastSeen();
-					if ($user->getScope() instanceof TBGScope)
-					{
-						$_SESSION['b2_scope'] = $user->getScope()->getID();
-					}
+					$user->save();
 					if (!($user->getGroup() instanceof TBGGroup))
 					{
 						throw new Exception('This user account belongs to a group that does not exist anymore. <br>Please contact the system administrator.');
@@ -645,16 +644,26 @@
 		
 		public function updateLastSeen()
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGUsersTable::LASTSEEN, NOW);
-			$crit->addWhere(TBGUsersTable::ID, $this->_id);
-			TBGUsersTable::getTable()->doUpdate($crit);
 			$this->_lastseen = NOW;
 		}
 		
 		public function getLastSeen()
 		{
 			return $this->_lastseen;
+		}
+		
+		public function setOnline()
+		{
+			$this->_userstate = TBGSettings::getOnlineState();
+			$this->_customstate = false;
+			$this->save();
+		}
+		
+		public function setOffline()
+		{
+			$this->_userstate = TBGSettings::getOfflineState();
+			$this->_customstate = true;
+			$this->save();
 		}
 		
 		public function getJoinedDate()
@@ -1011,14 +1020,24 @@
 		 * @param integer $s_id
 		 * @return nothing
 		 */
-		public function setState($s_id)
+		public function setState(TBGUserstate $state)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGUsersTable::USERSTATE, $s_id);
-			$crit->addWhere(TBGUsersTable::ID, $this->_id);
-			
-			TBGUsersTable::getTable()->doUpdate($crit);
-			$this->_userstate = $s_id;
+			$this->_userstate = $state;
+		}
+		
+		public function isActive()
+		{
+			return (bool) ($this->_lastseen > (NOW - (60 * 10)));
+		}
+		
+		public function isAway()
+		{
+			return (bool) (($this->_lastseen < (NOW - (60 * 10))) && ($this->_lastseen > (NOW - (60 * 30))));
+		}
+		
+		public function isOffline()
+		{
+			return (bool) (($this->_lastseen < (NOW - (60 * 30))));
 		}
 		
 		/**
@@ -1028,26 +1047,17 @@
 		 */
 		public function getState()
 		{
-			$now = NOW;
-			if (($this->_lastseen < ($now - (60 * 10))) && ($this->_userstate != TBGSettings::get('offlinestate') && $this->_userstate != TBGSettings::get('awaystate')))
+			if ($this->_customstate)
 			{
-				$this->setState(TBGSettings::get('awaystate'));
+				return $this->_getPopulatedObjectFromProperty('_userstate');
 			}
-			if ($this->_lastseen < ($now - (60 * 30)) && $this->_userstate != TBGSettings::get('offlinestate'))
-			{
-				$this->setState(TBGSettings::get('offlinestate'));
-			}
-			TBGEvent::createNew('core', 'TBGUser::getState', $this)->trigger();
 			
-			if (!$this->_userstate instanceof TBGUserstate)
-			{
-				if ($this->_userstate == 0)
-				{
-					$this->_userstate = TBGSettings::get('offlinestate');
-				}
-				$this->_userstate = TBGContext::factory()->TBGUserstate($this->_userstate);
-			}
-			return $this->_userstate;
+			if ($this->isActive())
+				return TBGSettings::getOnlineState();
+			elseif ($this->isAway())
+				return TBGSettings::getAwayState();
+			else
+				return TBGSettings::getOfflineState();
 		}
 		
 		public function isEnabled()

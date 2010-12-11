@@ -28,6 +28,7 @@
 		const REALNAME = 'users.realname';
 		const EMAIL = 'users.email';
 		const USERSTATE = 'users.userstate';
+		const CUSTOMSTATE = 'users.customstate';
 		const HOMEPAGE = 'users.homepage';
 		const LANGUAGE = 'users.language';
 		const LASTSEEN = 'users.lastseen';
@@ -61,6 +62,7 @@
 			parent::_addVarchar(self::REALNAME, 100);
 			parent::_addVarchar(self::EMAIL, 200);
 			parent::_addForeignKeyColumn(self::USERSTATE, B2DB::getTable('TBGUserStateTable'), TBGUserStateTable::ID);
+			parent::_addBoolean(self::CUSTOMSTATE);
 			parent::_addVarchar(self::HOMEPAGE, 250, '');
 			parent::_addVarchar(self::LANGUAGE, 100, '');
 			parent::_addInteger(self::LASTSEEN, 10);
