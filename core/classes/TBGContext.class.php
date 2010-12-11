@@ -769,7 +769,7 @@
 					TBGLogging::log('done (setting up module objects)');
 
 					TBGLogging::log('caching module access permissions');
-					TBGModule::cacheAllAccessPermissions();
+					if (!self::isCLI()) TBGModule::cacheAllAccessPermissions();
 					TBGLogging::log('done (caching module access permissions)');
 				}
 
