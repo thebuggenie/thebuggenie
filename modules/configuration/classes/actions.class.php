@@ -3116,8 +3116,8 @@
 									{
 										try
 										{
-											$milestone = TBGContext::factory()->TBGMilestone(trim($activerow[$milestone], '"'));
-											if ($milestone->getProject()->getID() != $activerow[$project])
+											$milestonetmp = TBGContext::factory()->TBGMilestone(trim($activerow[$milestone], '"'));
+											if ($milestonetmp->getProject()->getID() != $activerow[$project])
 											{
 												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: milestone does not apply to the specified project', array('%col%' => $milestone+1, '%row%' => $i+1));
 											}
@@ -3453,6 +3453,105 @@
 									$project->setFrontpageSummaryType(trim($activerow[$summary_type], '"'));
 								
 								$project->save();
+							}
+							catch (Exception $e)
+							{
+								$errors[] = TBGContext::getI18n()->__('Row %row% failed: %err%', array('%row%' => $i+1, '%err%' => $e->getMessage()));
+							}
+						}
+						break;
+					case 'issues':
+						for ($i = 1; $i != count($data); $i++)
+						{
+							try
+							{
+								$activerow = $data[$i];
+								$activerow = html_entity_decode($activerow, ENT_QUOTES);
+								$activerow = explode(',', $activerow);
+								$issue = new TBGIssue();
+								$issue->setTitle(trim($activerow[$title], '"'));
+								$issue->setProject(trim($activerow[$project], '"'));
+								$issue->setIssuetype(trim($activerow[$issue_type], '"'));
+								
+								if ($issue_type !== null)
+									$issue->setIssuetype(trim($activerow[$issue_type], '"'));
+								
+								if ($descr !== null)
+									$issue->setDescription(trim($activerow[$descr], '"'));
+									
+								if ($repro !== null)
+									$issue->setReproduction(trim($activerow[$repro], '"'));
+								
+								if ($state !== null)
+									$issue->setState(trim($activerow[$state], '"'));
+								
+								if ($status !== null)
+									$issue->setStatus(trim($activerow[$status], '"'));
+									
+								if ($posted_by !== null)
+									$issue->setPostedBy(TBGContext::factory()->TBGUser(trim($activerow[$posted_by], '"')));
+								
+								if ($owner !== null && $owner_type !== null)
+								{
+									switch (trim($activerow[$owner_type], '"'))
+									{
+										case TBGIdentifiableClass::TYPE_USER:
+											$user = new TBGUser(trim($activerow[$owner], '"'));
+											$issue->setOwner($user);
+											break;
+										case TBGIdentifiableClass::TYPE_TEAM:
+											$team = new TBGTeam(trim($activerow[$owner], '"'));
+											$issue->setOwner($team);
+											break;
+									}
+								}
+								
+								if ($assigned !== null && $assigned_type !== null)
+								{
+									switch (trim($activerow[$assigned_type], '"'))
+									{
+										case TBGIdentifiableClass::TYPE_USER:
+											$user = new TBGUser(trim($activerow[$assigned], '"'));
+											$issue->setAssignee($user);
+											break;
+										case TBGIdentifiableClass::TYPE_TEAM:
+											$team = new TBGTeam(trim($activerow[$assigned], '"'));
+											$issue->setAssignee($team);
+											break;
+									}
+								}
+								
+								if ($resolution !== null)
+									$issue->setResolution(trim($activerow[$resolution], '"'));
+									
+								if ($priority !== null)
+									$issue->setPriority(trim($activerow[$priority], '"'));
+								
+								if ($category !== null)
+									$issue->setCategory(trim($activerow[$category], '"'));
+								
+								if ($blocking !== null)
+									$issue->setBlocking(trim($activerow[$blocking], '"'));
+									
+								if ($severity !== null)
+									$issue->setSeverity(trim($activerow[$severity], '"'));
+									
+								if ($reproducability !== null)
+									$issue->setReproducability(trim($activerow[$reproducability], '"'));
+									
+								if ($votes !== null)
+									$issue->setVotes(trim($activerow[$votes], '"'));
+								
+								if ($percentage !== null)
+									$issue->setPercentage(trim($activerow[$percentage], '"'));
+									
+								if ($locked !== null)
+									$issue->setLocked(trim($activerow[$locked], '"'));
+								
+								if ($milestone !== null)
+									$issue->setMilestone(trim($activerow[$milestone], '"'));
+								
+								$issue->save();
 							}
 							catch (Exception $e)
 							{

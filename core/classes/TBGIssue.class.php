@@ -1577,6 +1577,16 @@
 		}
 
 		/**
+		 * Set total number of votes
+		 * 
+		 * @param integer
+		 */
+		public function setVotes($votes)
+		{
+			$this->_votes_total = $votes;
+		}
+		
+		/**
 		 * Load user votes
 		 */
 		protected function _setupVotes()
