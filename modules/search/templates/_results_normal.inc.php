@@ -38,7 +38,7 @@
 						<?php if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
 							<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
 						<?php else: ?>
-							<?php echo include_component('main/teamdropdown', array('user' => $issue->getAssignee())); ?>
+							<?php echo include_component('main/teamdropdown', array('team' => $issue->getAssignee())); ?>
 						<?php endif; ?>
 					<?php else: ?>
 						-
