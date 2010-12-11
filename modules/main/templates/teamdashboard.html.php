@@ -43,6 +43,7 @@
 				<?php if (count($users) > 0): ?>
 					<?php foreach ($users as $user): ?>
 						<?php echo include_component('main/userdropdown', array('user' => $user)); ?>
+						<br>
 					<?php endforeach; ?>
 				<?php else: ?>
 					<p class="content faded_out"><?php echo __('This team has no members'); ?>.</p>
