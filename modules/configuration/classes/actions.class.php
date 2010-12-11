@@ -3000,7 +3000,7 @@
 								// Check if project exists
 								try
 								{
-									TBGContext::factory()->TBGProject($activerow[$project]);
+									$prjtmp = TBGContext::factory()->TBGProject($activerow[$project]);
 								}
 								catch (Exception $e)
 								{
@@ -3248,6 +3248,28 @@
 										}
 									}
 								}
+								
+								// type
+								if ($issue_type !== null)
+								{
+									if (!is_numeric(trim($activerow[$issue_type], '"')))
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $issue_type+1, '%row%' => $i+1));
+									}
+									else
+									{
+										try
+										{
+											$typetmp = TBGContext::factory()->TBGIssuetype(trim($activerow[$issue_type], '"'));
+											if (!($prjtmp->getIssuetypeScheme()->isSchemeAssociatedWithIssuetype($typetmp)))
+												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: this project does not support issues of this type (%type%)', array('%type%' => $typetmp->getName(), '%col%' => $issue_type+1, '%row%' => $i+1));
+										}
+										catch (Exception $e)
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: issue type does not exist', array('%col%' => $issue_type+1, '%row%' => $i+1));
+										}
+									}
+								}
 							}
 							break;
 					}
@@ -3434,7 +3456,7 @@
 							}
 							catch (Exception $e)
 							{
-									$errors[] = TBGContext::getI18n()->__('Row %row% failed: %err%', array('%row%' => $i+1, '%err%' => $e->getMessage()));
+								$errors[] = TBGContext::getI18n()->__('Row %row% failed: %err%', array('%row%' => $i+1, '%err%' => $e->getMessage()));
 							}
 						}
 						break;
