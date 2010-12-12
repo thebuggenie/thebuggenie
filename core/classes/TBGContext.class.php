@@ -666,6 +666,19 @@
 			try
 			{
 				self::$_user = ($user === null) ? TBGUser::loginCheck() : $user;
+				if (self::$_user->isAuthenticated())
+				{
+					if (self::$_user->isOffline() || self::$_user->isAway())
+					{
+						self::$_user->setOnline();
+					}
+					self::$_user->updateLastSeen();
+					self::$_user->save();
+					if (!(self::$_user->getGroup() instanceof TBGGroup))
+					{
+						throw new Exception('This user account belongs to a group that does not exist anymore. <br>Please contact the system administrator.');
+					}
+				}
 			}
 			catch (Exception $e)
 			{
@@ -682,6 +695,16 @@
 		public static function getUser()
 		{
 			return self::$_user;
+		}
+		
+		/**
+		 * Set the current user
+		 * 
+		 * @param TBGUser $user 
+		 */
+		public static function setUser(TBGUser $user)
+		{
+			self::$_user = $user;
 		}
 		
 		/**
@@ -758,7 +781,6 @@
 								TBGLogging::log('Cannot load module "' . $module_name . '" as class "' . $classname . '", the class is not defined in the classpaths.', 'modules', TBGLogging::LEVEL_WARNING_RISK);
 								TBGLogging::log('Removing module "' . $module_name . '" as it cannot be loaded', 'modules', TBGLogging::LEVEL_NOTICE);
 								TBGModule::removeModule($moduleRow->get(TBGModulesTable::ID));
-								//throw new Exception('Cannot load module "' . $module_name . '" as class "' . $classname . '", the class is not defined in the classpaths.');
 							}
 						}
 						else
@@ -1229,7 +1251,7 @@
 				self::$_available_permissions['project_pages']['page_project_allpages_access']['details']['page_project_team_access'] = array('description' => $i18n->__('Can access the project team page'));
 				self::$_available_permissions['project_pages']['page_project_allpages_access']['details']['page_project_statistics_access'] = array('description' => $i18n->__('Can access the project statistics page'));
 				self::$_available_permissions['project_pages']['page_project_allpages_access']['details']['page_project_timeline_access'] = array('description' => $i18n->__('Can access the project timeline page'));
-				self::$_available_permissions['project']['canseeproject'] = array('description' => $i18n->__('Can access project'));
+				self::$_available_permissions['project']['canseeproject'] = array('description' => $i18n->__('Can see that project exists'));
 				self::$_available_permissions['project']['candoscrumplanning'] = array('description' => $i18n->__('Can manage stories, tasks, sprints and backlog on the sprint planning page'), 'details' => array());
 				self::$_available_permissions['project']['candoscrumplanning']['details']['canaddscrumuserstories'] = array('description' => $i18n->__('Can add new user stories to the backlog on the sprint planning page'));
 				self::$_available_permissions['project']['candoscrumplanning']['details']['candoscrumplanning_backlog'] = array('description' => $i18n->__('Can manage the backlog on the sprint planning page'));

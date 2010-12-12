@@ -479,23 +479,6 @@
 			{
 				throw $e;
 			}
-	
-			try
-			{
-				if ($user->isAuthenticated())
-				{
-					$user->updateLastSeen();
-					$user->save();
-					if (!($user->getGroup() instanceof TBGGroup))
-					{
-						throw new Exception('This user account belongs to a group that does not exist anymore. <br>Please contact the system administrator.');
-					}
-				}
-			}
-			catch (Exception $e)
-			{
-				throw $e;
-			}
 			
 			return $user;
 	
@@ -639,7 +622,7 @@
 		
 		public function isAuthenticated()
 		{
-			return $this->authenticated;
+			return (bool) ($this->getID() == TBGContext::getUser()->getID());
 		}
 		
 		public function updateLastSeen()
@@ -655,8 +638,7 @@
 		public function setOnline()
 		{
 			$this->_userstate = TBGSettings::getOnlineState();
-			$this->_customstate = false;
-			$this->save();
+			$this->_customstate = !$this->isOffline();
 		}
 		
 		public function setOffline()
@@ -1037,13 +1019,24 @@
 		
 		public function isOffline()
 		{
-			return (bool) (($this->_lastseen < (NOW - (60 * 30))));
+			if ($this->_customstate)
+			{
+				return !$this->getState()->isOnline();
+			}
+			elseif ($this->_lastseen < (NOW - (60 * 30)))
+			{
+				return true;
+			}
+			else
+			{
+				return !$this->getState()->isOnline();
+			}
 		}
 		
 		/**
 		 * Get the current user state
 		 *
-		 * @return TBGDatatype
+		 * @return TBGUserstate
 		 */
 		public function getState()
 		{

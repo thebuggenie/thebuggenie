@@ -196,7 +196,7 @@
 				<?php $milestone_cc = 0; ?>
 				<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
 					<?php foreach ($project->getUpcomingMilestonesAndSprints() as $milestone): ?>
-						<?php if ($milestone->isVisible() && $milestone->isScheduled()): ?>
+						<?php if ($milestone->isScheduled()): ?>
 							<div class="rounded_box <?php if ($milestone->isReached()): ?>green borderless<?php elseif ($milestone->isOverdue()): ?>red borderless<?php else: ?>iceblue borderless<?php endif; ?> milestone_box">
 								<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 								<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">

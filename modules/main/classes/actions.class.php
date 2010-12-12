@@ -232,6 +232,7 @@
 						$user = TBGUser::loginCheck($username, $password, true);
 						$this->getResponse()->setCookie('tbg3_username', $username);
 						$this->getResponse()->setCookie('tbg3_password', TBGUser::hashPassword($password));
+						TBGContext::setUser($user);
 						if ($request->hasParameter('return_to')) 
 						{
 							$forward_url = $request->getParameter('return_to');
@@ -288,7 +289,6 @@
 					$options['error'] = $e->getMessage();
 				}
 			}
-			TBGContext::getUser()->setOnline();
 			if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
 			{
 				return $this->renderJSON(array('forward' => $forward_url));
