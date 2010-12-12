@@ -57,11 +57,11 @@
 	<div class="backdrop_detail_content" id="backdrop_detail_indicator" style="text-align: center; padding: 50px; display: none;">
 		<?php echo image_tag('spinning_32.gif'); ?>
 	</div>
+	<div class="backdrop_detail_footer">
 	<?php if ($mandatory != true): ?>
-		<div class="backdrop_detail_footer">
-			<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Close'); ?></a>
-		</div>
+		<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Close'); ?></a>
 	<?php endif; ?>
+	</div>
 </div>
 <?php if (isset($options['error'])): ?>
 	<script type="text/javascript">

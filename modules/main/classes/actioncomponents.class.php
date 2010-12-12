@@ -205,9 +205,11 @@
 		}
 
 		public function componentLogin()
-		{	
-				$this->selected_tab = isset($this->section) ? $this->section : 'login';
-				$this->options = $this->getParameterHolder();
+		{
+			$this->selected_tab = isset($this->section) ? $this->section : 'login';
+			$this->options = $this->getParameterHolder();
+			if (TBGSettings::isLoginRequired())
+				$this->mandatory = true;
 		}		
 		
 		public function componentLoginRegister()

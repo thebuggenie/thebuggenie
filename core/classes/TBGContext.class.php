@@ -541,7 +541,7 @@
 				catch (Exception $e)
 				{
 					TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
-					if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'login' && self::getRouting()->getCurrentRouteAction() != 'getBackdropPartial'))
+					if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'register1' && self::getRouting()->getCurrentRouteAction() != 'register2' && self::getRouting()->getCurrentRouteAction() != 'activate' && self::getRouting()->getCurrentRouteAction() != 'reset_password' && self::getRouting()->getCurrentRouteAction() != 'captcha' && self::getRouting()->getCurrentRouteAction() != 'login' && self::getRouting()->getCurrentRouteAction() != 'getBackdropPartial'))
 					{
 						self::$_redirect_login = true;
 					}
@@ -1910,7 +1910,7 @@
 					if (self::$_redirect_login)
 					{
 						TBGLogging::log('An error occurred setting up the user object, redirecting to login', 'main', TBGLogging::LEVEL_NOTICE);
-						self::getResponse()->headerRedirect(self::getRouting()->generate('login'), 401);
+						self::getResponse()->headerRedirect(self::getRouting()->generate('login'), 403);
 					}
 					if (is_dir(self::getIncludePath() . 'modules/' . $route['module']))
 					{

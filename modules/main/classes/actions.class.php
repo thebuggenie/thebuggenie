@@ -261,7 +261,7 @@
 						throw new Exception($i18n->__('Please enter a username and password'));
 					}
 				}
-				elseif (!TBGContext::getUser()->isAuthenticated() && TBGSettings::get('requirelogin'))
+				elseif (TBGSettings::isLoginRequired())
 				{
 					throw new Exception($i18n->__('You need to log in to access this site'));
 				}
@@ -295,7 +295,7 @@
 			}
 			elseif ($forward_url !== null)
 			{
-				$this->forward($forward_url);
+				//$this->forward($forward_url);
 			}
 			$this->options = $options;
 		}
