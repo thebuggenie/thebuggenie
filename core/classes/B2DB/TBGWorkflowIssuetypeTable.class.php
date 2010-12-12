@@ -61,11 +61,30 @@
 		public function setWorkflowIDforIssuetypeIDwithSchemeID($workflow_id, $issuetype_id, $scheme_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-			$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
-			$crit->addInsert(self::WORKFLOW_SCHEME_ID, $scheme_id);
-			$crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
-			$this->doInsert($crit);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere(self::WORKFLOW_SCHEME_ID, $scheme_id);
+			$crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
+			if ($res = $this->doSelect($crit))
+			{
+				if ($workflow_id)
+				{
+					$crit->addUpdate(self::WORKFLOW_ID, $workflow_id);
+					$this->doUpdate($crit);
+				}
+				else
+				{
+					$this->doDelete($crit);
+				}
+			}
+			elseif ($workflow_id)
+			{
+				$crit = $this->getCriteria();
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+				$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
+				$crit->addInsert(self::WORKFLOW_SCHEME_ID, $scheme_id);
+				$crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
+				$this->doInsert($crit);
+			}
 		}
 
 		public function countSchemesByWorkflowID($workflow_id)

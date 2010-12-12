@@ -2260,6 +2260,23 @@
 					$this->workflow_scheme->delete();
 					return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('The workflow scheme was deleted')));
 				}
+				elseif ($request->isMethod(TBGRequest::POST))
+				{
+					foreach ($request->getParameter('workflow_id', array()) as $issuetype_id => $workflow_id)
+					{
+						$issuetype = TBGContext::factory()->TBGIssuetype($issuetype_id);
+						if ($workflow_id)
+						{
+							$workflow = TBGContext::factory()->TBGWorkflow($workflow_id);
+							$this->workflow_scheme->associateIssuetypeWithWorkflow($issuetype, $workflow);
+						}
+						else
+						{
+							$this->workflow_scheme->unassociateIssuetype($issuetype);
+						}
+					}
+					return $this->renderJSON(array('success' => true, 'message' => TBGContext::getI18n()->__('Workflow associations were updated')));
+				}
 			}
 			catch (Exception $e)
 			{

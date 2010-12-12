@@ -48,7 +48,9 @@
 			<?php elseif ($mode == 'schemes'): ?>
 				<div id="tab_schemes_pane" style="padding-top: 0; width: 750px;">
 					<div class="content">
-						<?php echo __('In this tab you can add/remove/edit issue type schemes. If you add a new issue type on the previous tab, you must associate it with an issue type scheme in this tab to get it to show up for users.'); ?>
+						<?php echo __('In this tab you can add/remove/edit issue type schemes. If you add a new issue type on the previous tab, you must associate it with an issue type scheme in this tab to get it to show up for users.'); ?><br>
+						<br>
+						<i class="faded_out dark"><?php echo __('Keep in mind that the original issue type scheme is uneditable, so to make any changes, make a copy of the first issue type scheme, or edit one that is not the one shipped with The Bug Genie'); ?></i>
 					</div>
 					<ul class="scheme_list issuetype_scheme_list simple_list" id="issuetype_schemes_list">
 						<?php foreach ($issue_type_schemes as $scheme): ?>

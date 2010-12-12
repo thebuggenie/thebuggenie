@@ -124,6 +124,10 @@
 		{
 			TBGWorkflowIssuetypeTable::getTable()->setWorkflowIDforIssuetypeIDwithSchemeID($workflow->getID(), $issuetype->getID(), $this->getID());
 		}
+		public function unassociateIssuetype(TBGIssuetype $issuetype)
+		{
+			TBGWorkflowIssuetypeTable::getTable()->setWorkflowIDforIssuetypeIDwithSchemeID(null, $issuetype->getID(), $this->getID());
+		}
 
 		/**
 		 * Get all steps in this workflow

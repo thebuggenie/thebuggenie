@@ -24,3 +24,8 @@ function deleteWorkflow(url, workflow_id)
 {
 	_postFormWithJSONFeedback(url, 'delete_workflow_' + workflow_id + '_form', 'delete_workflow_' + workflow_id + '_indicator', ['delete_workflow_' + workflow_id + '_popup', 'copy_workflow_' + workflow_id + '_popup', 'workflow_' + workflow_id], 'workflows_list', true);
 }
+
+function updateWorkflowScheme(url, scheme_id)
+{
+	_postFormWithJSONFeedback(url, 'workflow_scheme_form', 'workflow_scheme_indicator');
+}
