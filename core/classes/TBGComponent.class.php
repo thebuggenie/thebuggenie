@@ -37,10 +37,22 @@
 				while ($row = $res->getNextRow())
 				{
 					$component = TBGContext::factory()->TBGComponent($row->get(TBGComponentsTable::ID), $row);
-					$retval[$component->getID()] = $component;
+					if ($component->hasAccess())
+					{
+						$retval[$component->getID()] = $component;
+					}
 				}
 			}
 			return $retval;
+		}
+		
+		public function _postSave($is_new)
+		{
+			if ($is_new)
+			{
+				TBGContext::setPermission("canseecomponent", $this->getID(), "core", 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
+				TBGEvent::createNew('core', 'TBGComponent::createNew', $this)->trigger();
+			}
 		}
 		
 		/**
@@ -140,4 +152,14 @@
 			return $uids;
 		}
 
+		/**
+		 * Whether or not the current user can access the component
+		 * 
+		 * @return boolean
+		 */
+		public function hasAccess()
+		{
+			return ($this->getProject()->canSeeAllComponents() || TBGContext::getUser()->hasPermission('canseecomponent', $this->getID()));
+		}
+		
 	}

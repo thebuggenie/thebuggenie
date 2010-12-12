@@ -6,8 +6,9 @@
 		</div>
 	</td>
 	<td style="width: auto; padding: 2px;" id="component_<?php echo $component->getID(); ?>_name"><?php print $component->getName(); ?></td>
-	<td style="width: 40px; text-align: right;">
+	<td style="width: 60px; text-align: right;">
 		<a href="javascript:void(0);" class="image" onclick="$('show_component_<?php print $component->getID(); ?>').hide();$('edit_component_<?php print $component->getID(); ?>').show();$('c_name_<?php echo $component->getID(); ?>').focus();" style="font-size: 9px;"><?php echo image_tag('icon_edit.png'); ?></a>
+		<a href="javascript:void(0);" onclick="$('component_<?php echo $component->getID(); ?>_permissions').toggle();" class="image" title="<?php echo __('Set permissions for this component'); ?>" style="margin-right: 5px;"><?php echo image_tag('cfg_icon_permissions.png'); ?></a>
 		<a href="javascript:void(0);" class="image" onclick="$('del_component_<?php print $component->getID(); ?>').toggle();" style="font-size: 9px;"><?php echo image_tag('action_cancel_small.png'); ?></a>
 	</td>
 </tr>
@@ -47,6 +48,17 @@
 			<?php echo image_tag('spinning_20.gif', array('id' => 'component_'.$component->getID().'_indicator', 'style' => 'display: none;')); ?>
 			<input type="submit" value="<?php echo __('Save'); ?>"> <a href="javascript:void(0);" class="image" onclick="$('show_component_<?php print $component->getID(); ?>').show();$('edit_component_<?php print $component->getID(); ?>').hide();"><?php echo __('or cancel'); ?></a>
 			</form>
+		</div>
+	</td>
+</tr>
+<tr id="component_<?php echo $component->getID(); ?>_permissions" style="display: none;">
+	<td colspan="3">
+		<div class="rounded_box white" style="margin: 5px 0 10px 0; padding: 3px; font-size: 12px;">
+			<div class="header"><?php echo __('Permission details for "%itemname%"', array('%itemname%' => $component->getName())); ?></div>
+			<div class="content">
+				<?php echo __('Specify who can access this component.'); ?>
+				<?php include_component('configuration/permissionsinfo', array('key' => 'canseecomponent', 'mode' => 'project_hierarchy', 'target_id' => $component->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+			</div>
 		</div>
 	</td>
 </tr>

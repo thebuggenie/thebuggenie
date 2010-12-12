@@ -550,6 +550,7 @@
 			if ($is_new)
 			{
 				TBGContext::setPermission("canseeproject", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
+				TBGContext::setPermission("canseeprojecthierarchy", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canmanageproject", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("page_project_allpages_access", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
 				TBGContext::setPermission("canvoteforissues", $this->getID(), "core", TBGContext::getUser()->getID(), 0, 0, true);
@@ -2393,6 +2394,21 @@
 				return (bool) ($this->permissionCheck('caneditissue'.$field) || $this->permissionCheck('caneditissue'));
 			}
 			return false;
+		}
+
+		public function canSeeAllEditions()
+		{
+			return (bool) ($this->permissionCheck('canseeprojecthierarchy') || $this->permissionCheck('canseeallprojecteditions'));
+		}
+		
+		public function canSeeAllComponents()
+		{
+			return (bool) ($this->permissionCheck('canseeprojecthierarchy') || $this->permissionCheck('canseeallprojectcomponents'));
+		}
+		
+		public function canSeeAllBuilds()
+		{
+			return (bool) ($this->permissionCheck('canseeprojecthierarchy') || $this->permissionCheck('canseeallprojectbuilds'));
 		}
 		
 	}

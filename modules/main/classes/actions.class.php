@@ -2381,6 +2381,8 @@
 					case 'markasduplicate_issue':
 						$template_name = 'main/markasduplicate';
 						break;
+					case 'permissions':
+						break;
 					case 'project_config':
 						$template_name = 'configuration/projectconfig_container';
 						$project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));

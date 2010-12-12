@@ -54,7 +54,7 @@
 						
 		static protected $_editions = null;
 		
-		public function postSave($is_new)
+		public function _postSave($is_new)
 		{
 			if ($is_new)
 			{
@@ -376,7 +376,7 @@
 		 */
 		public function hasAccess()
 		{
-			return TBGContext::getUser()->hasPermission('canseeedition', $this->getID(), 'core');
+			return ($this->getProject()->canSeeAllEditions() || TBGContext::getUser()->hasPermission('canseeedition', $this->getID()));
 		}
 		
 	}

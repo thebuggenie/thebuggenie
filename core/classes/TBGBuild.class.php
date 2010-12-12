@@ -139,6 +139,15 @@
 			catch (Exception $e) {}
 		}
 		
+		public function _postSave($is_new)
+		{
+			if ($is_new)
+			{
+				TBGContext::setPermission("canseebuild", $this->getID(), "core", 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
+				TBGEvent::createNew('core', 'TBGBuild::createNew', $this)->trigger();
+			}
+		}
+
 		/**
 		 * Returns the name and the version, nicely formatted
 		 * 
@@ -277,7 +286,7 @@
 		 */
 		public function hasAccess()
 		{
-			return TBGContext::getUser()->hasPermission('b2buildaccess', $this->getID(), 'core');
+			return ($this->getProject()->canSeeAllBuilds() || TBGContext::getUser()->hasPermission('canseebuild', $this->getID()));
 		}
 		
 	}

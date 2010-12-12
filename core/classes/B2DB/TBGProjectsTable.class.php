@@ -34,6 +34,7 @@
 		const CLIENT = 'projects.client';
 		const DESCRIPTION = 'projects.description';
 		const DOC_URL = 'projects.doc_url';
+		const RELEASED = 'projects.isreleased';
 		const ENABLE_BUILDS = 'projects.enable_builds';
 		const ENABLE_EDITIONS = 'projects.enable_editions';
 		const ENABLE_COMPONENTS = 'projects.enable_components';
@@ -63,6 +64,7 @@
 			parent::_addText(self::DESCRIPTION, false);
 			parent::_addVarchar(self::DOC_URL, 200, '');
 			parent::_addBoolean(self::ALLOW_CHANGING_WITHOUT_WORKING);
+			parent::_addBoolean(self::RELEASED);
 			parent::_addBoolean(self::ENABLE_BUILDS);
 			parent::_addBoolean(self::ENABLE_EDITIONS);
 			parent::_addBoolean(self::ENABLE_COMPONENTS);

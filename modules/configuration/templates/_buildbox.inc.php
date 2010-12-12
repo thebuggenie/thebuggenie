@@ -16,6 +16,7 @@
 	<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 		<td style="width: 250px; text-align: right;">
 			<div style="float: right;">
+			<a href="javascript:void(0);" onclick="$('build_<?php echo $build->getID(); ?>_permissions').toggle();" class="image" title="<?php echo __('Set permissions for this build'); ?>" style="margin-right: 5px;"><?php echo image_tag('cfg_icon_permissions.png'); ?></a>
 			<?php if (!$build->isDefault()): ?>
 				<a href="javascript:void(0);" onclick="doBuildAction('<?php echo make_url('configure_build_action', array('build_id' => $b_id, 'build_action' => 'markdefault')); ?>', <?php print $b_id; ?>, 'markdefault', 'all');" class="image"><?php echo image_tag('icon_build_default.png', array('onmouseover' => '$(\'build_' . $b_id . '_info\').update(\'' . __('Set this build / release as the initial default when reporting new issues') . '\')', 'onmouseout' => '$(\'build_' . $b_id . '_info\').update(\'&nbsp;\')')); ?></a>
 			<?php endif; ?>
@@ -144,5 +145,16 @@
 			<span style="padding-top: 2px; float: left;"><?php echo __('Please confirm that you really want to delete this build / release'); ?></span>
 		</td>
 	</tr>
+	<tr id="build_<?php echo $build->getID(); ?>_permissions" style="display: none;">
+		<td colspan="3">
+			<div class="rounded_box white" style="margin: 5px 0 10px 0; padding: 3px; font-size: 12px;">
+				<div class="header"><?php echo __('Permission details for "%itemname%"', array('%itemname%' => $build->getName())); ?></div>
+				<div class="content">
+					<?php echo __('Specify who can access this release'); ?>
+					<?php include_component('configuration/permissionsinfo', array('key' => 'canseebuild', 'mode' => 'project_hierarchy', 'target_id' => $build->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
+				</div>
+			</div>
+		</td>
+	</tr>	
 	<?php endif; ?>
 </table>

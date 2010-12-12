@@ -63,16 +63,12 @@
 </tr>
 <tr id="item_<?php echo $item->getID(); ?>_permissions" style="display: none;">
 	<td colspan="3">
-		<div class="rounded_box white" style="margin: 5px 0 10px 0;">
-			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-			<div class="xboxcontent" style="padding: 3px; font-size: 12px;">
-				<div class="header"><?php echo __('Permission details for "%itemname%"', array('%itemname%' => $item->getName())); ?></div>
-				<div class="content">
-					<?php echo __('Specify who can set this value for issues'); ?>.
-					<?php include_component('configuration/permissionsinfo', array('key' => $item->getPermissionsKey(), 'mode' => 'datatype', 'target_id' => $item->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
-				</div>
+		<div class="rounded_box white" style="margin: 5px 0 10px 0; padding: 3px; font-size: 12px;">
+			<div class="header"><?php echo __('Permission details for "%itemname%"', array('%itemname%' => $item->getName())); ?></div>
+			<div class="content">
+				<?php echo __('Specify who can set this value for issues.'); ?>
+				<?php include_component('configuration/permissionsinfo', array('key' => $item->getPermissionsKey(), 'mode' => 'datatype', 'target_id' => $item->getID(), 'module' => 'core', 'access_level' => $access_level)); ?>
 			</div>
-			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>
 	</td>
 </tr>

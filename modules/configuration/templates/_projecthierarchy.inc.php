@@ -44,7 +44,7 @@
 				<table cellpadding=0 cellspacing=0 style="width: 100%; margin-top: 10px;">
 					<tbody id="edition_table">
 					<?php foreach ($project->getEditions() as $edition): ?>
-						<?php include_template('configuration/editionbox', array('theProject' => $project, 'edition' => $edition)); ?>
+						<?php include_template('configuration/editionbox', array('theProject' => $project, 'edition' => $edition, 'access_level' => $access_level)); ?>
 					<?php endforeach; ?>
 					</tbody>
 				</table>
@@ -57,7 +57,7 @@
 				<table cellpadding=0 cellspacing=0 style="width: 100%; margin-top: 10px;">
 					<tbody id="component_table">
 					<?php foreach ($project->getComponents() as $component): ?>
-						<?php include_template('configuration/componentbox', array('component' => $component)); ?>
+						<?php include_template('configuration/componentbox', array('component' => $component, 'access_level' => $access_level)); ?>
 					<?php endforeach; ?>
 					</tbody>
 				</table>

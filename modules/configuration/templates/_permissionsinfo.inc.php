@@ -6,11 +6,11 @@
 	<thead class="light">
 		<tr>
 			<th><?php echo __('Users / groups / teams'); ?></th>
-			<?php if($mode == 'datatype'): ?>
+			<?php if ($mode == 'datatype'): ?>
 				<th style="width: 60px; text-align: center;"><?php echo __('Can set'); ?></th>
 			<?php elseif ($mode == 'general'): ?>
 				<th style="width: 60px; text-align: center;"><?php echo __('Can'); ?></th>
-			<?php elseif (in_array($mode, array('configuration', 'pages', 'project_pages', 'module_permissions', 'user'))): ?>
+			<?php elseif (in_array($mode, array('configuration', 'pages', 'project_pages', 'project_hierarchy', 'module_permissions', 'user'))): ?>
 				<th style="width: 60px; text-align: center;"><?php echo __('Access'); ?></th>
 			<?php else: ?>
 				<th style="width: 60px;">&nbsp;</th>
