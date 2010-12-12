@@ -158,6 +158,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::KEY, $key);
+			$crit->addWhere(self::KEY, '', B2DBCriteria::DB_NOT_EQUALS);
 			$row = $this->doSelectOne($crit, false);
 			return $row;
 		}
