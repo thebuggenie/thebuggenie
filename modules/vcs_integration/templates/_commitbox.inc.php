@@ -45,8 +45,8 @@
 ?>
 
 <div class="rounded_box mediumgrey borderless cut_top cut_bottom">
-	<a href="javascript:void(0);" id="checkin_expand_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').show(); $('checkin_expand_<?php echo $id; ?>').hide(); $('checkin_collapse_<?php echo $id; ?>').show();"><?php echo image_tag('expand.png'); ?></a>
-	<a href="javascript:void(0);" style="display: none;" id="checkin_collapse_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').hide(); $('checkin_expand_<?php echo $id; ?>').show(); $('checkin_collapse_<?php echo $id; ?>').hide();"><?php echo image_tag('collapse.png'); ?></a>
+	<a href="javascript:void(0);" style="float: left; padding-right: 5px;" id="checkin_expand_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').show(); $('checkin_expand_<?php echo $id; ?>').hide(); $('checkin_collapse_<?php echo $id; ?>').show();"><?php echo image_tag('expand.png'); ?></a>
+	<a href="javascript:void(0);" style="display: none; float: left; padding-right: 5px;" id="checkin_collapse_<?php echo $id; ?>" onclick="$('checkin_details_<?php echo $id; ?>').hide(); $('checkin_expand_<?php echo $id; ?>').show(); $('checkin_collapse_<?php echo $id; ?>').hide();"><?php echo image_tag('collapse.png'); ?></a>
 <?php 
 	switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
 	{
@@ -56,7 +56,7 @@
 				$user = '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $theUser, 'size' => 'small')).'</div>';
 			}
 			?>
-			<span class="commenttitle"><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision[0].':'.$revision[1])) . '</a> - ' . __('committed on %date% by %user%', array('%date%' => tbg_formatTime($date, 10), '%user%' => $user)); ?></span>
+			<span class="commenttitle" style="float: left; padding-right: 5px;"><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision[0].':'.$revision[1])) . '</a> - ' . __('committed on %date% by', array('%date%' => tbg_formatTime($date, 10))) . '</span> ' . $user; ?>
 			<?php
 			break;
 		default:
@@ -65,7 +65,7 @@
 				$user = '<div style="display: inline;">'.get_component_html('main/userdropdown', array('user' => $theUser, 'size' => 'small')).'</div>';
 			}
 			?>
-			<span class="commenttitle"><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision)) . '</a> - ' . __('committed on %date% by %user%', array('%date%' => tbg_formatTime($date, 10), '%user%' => $user)); ?></span>
+			<span class="commenttitle" style="float: left; padding-right: 5px;"><a href="<?php echo $link_rev; ?>" target="_new"><?php echo __('Revision %revno%', array('%revno%' => $revision)) . '</a> - ' . __('committed on %date% by', array('%date%' => tbg_formatTime($date, 10))) . '</span> ' . $user; ?>
 			<?php
 			break;
 	}

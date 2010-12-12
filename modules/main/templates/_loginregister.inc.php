@@ -1,5 +1,5 @@
 <div id="tab_register_pane"<?php if ($selected_tab != 'register'): ?> style="display: none;"<?php endif; ?>>
-		<div class="rounded_box lightgrey" style="vertical-align: middle; padding: 10px;" id="register1">
+		<div style="vertical-align: middle; padding: 10px;" id="register1">
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register1'); ?>" method="post" id="register1_form" onsubmit="loginRegister1('<?php echo make_url('register1'); ?>'); return false;">
 				<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
 				<div>
@@ -11,7 +11,7 @@
 				</div>
 			</form>
 		</div>
-		<div class="rounded_box lightgrey" style="vertical-align: middle; padding: 10px; display: none;" id="register2">
+		<div style="vertical-align: middle; padding: 10px; display: none;" id="register2">
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('register2'); ?>" method="post" id="register2_form" onsubmit="loginRegister2('<?php echo make_url('register2'); ?>'); return false;">
 				<input type="hidden" id="username" name="username">
 				<div class="login_boxheader"><?php echo __('Register a new account'); ?></div>
