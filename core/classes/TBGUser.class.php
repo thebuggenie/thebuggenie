@@ -1839,8 +1839,9 @@
 				$projects = B2DB::getTable('TBGProjectAssigneesTable')->getProjectsByUserID($this->getUID());
 				$edition_projects = B2DB::getTable('TBGEditionAssigneesTable')->getProjectsByUserID($this->getUID());
 				$component_projects = B2DB::getTable('TBGComponentAssigneesTable')->getProjectsByUserID($this->getUID());
+				$lo_projects = B2DB::getTable('TBGProjectsTable')->getByUserID($this->getID());
 
-				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects));
+				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects), array_keys($lo_projects));
 				foreach ($project_ids as $project_id)
 				{
 					$this->_associated_projects[$project_id] = TBGContext::factory()->TBGProject($project_id);

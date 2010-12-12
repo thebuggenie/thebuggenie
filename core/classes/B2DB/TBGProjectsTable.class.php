@@ -181,4 +181,27 @@
 			return $this->doCount($crit);
 		}
 		
+		public function getByUserID($user_id)
+		{
+			$crit = $this->getCriteria();
+			$ctn = $crit->returnCriterion(self::LEAD_BY, $user_id);
+			$ctn->addWhere(self::LEAD_TYPE, TBGIdentifiableClass::TYPE_USER);
+			$ctn->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$crit->addWhere($ctn);
+			$ctn = $crit->returnCriterion(self::OWNER, $user_id);
+			$ctn->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$ctn->addWhere(self::OWNER_TYPE, TBGIdentifiableClass::TYPE_USER);
+			$crit->addOr($ctn);
+			
+			$return_array = array();
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$return_array[$row->get(self::ID)] = TBGContext::factory()->TBGProject($row->get(self::ID), $row);
+				}
+			}
+			return $return_array;
+		}
+		
 	}
