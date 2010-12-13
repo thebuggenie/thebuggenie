@@ -668,6 +668,7 @@ dd { float: left; display: block; width: 195px; font-weight: normal; margin: 0; 
 /* end left hand list */
 
 .error_message { color: #E44; font-weight: bold; margin: 10px 5px 5px 0;  }
+#notfound_error { margin-top: 25px; margin-left: auto; margin-right: auto; text-align: center;}
 
 /* changed, merged and unmerged styling */
 #title_content.issue_detail_unmerged { background-color: #E0aC9C; }
