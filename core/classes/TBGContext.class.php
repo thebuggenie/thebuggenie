@@ -547,7 +547,7 @@
 					}
 					else
 					{
-						self::$_user = new TBGUser();
+						self::$_user = self::factory()->TBGUser(TBGSettings::getDefaultUserID());
 					}
 				}
 

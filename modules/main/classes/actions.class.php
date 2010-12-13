@@ -293,9 +293,9 @@
 			{
 				return $this->renderJSON(array('forward' => $forward_url));
 			}
-			elseif ($forward_url !== null)
+			elseif ($forward_url !== null && !(TBGSettings::isLoginRequired()))
 			{
-				//$this->forward($forward_url);
+				$this->forward($forward_url);
 			}
 			$this->options = $options;
 		}
