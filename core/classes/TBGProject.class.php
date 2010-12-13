@@ -1142,7 +1142,7 @@
 					}
 					break;
 				case ($assignee instanceof TBGTeam):
-					if ($res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID()))
+					if (!($res = B2DB::getTable('TBGProjectAssigneesTable')->getByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID())))
 					{
 						B2DB::getTable('TBGProjectAssigneesTable')->addByProjectAndRoleAndTeam($this->getID(), $role, $assignee->getID());
 					}
