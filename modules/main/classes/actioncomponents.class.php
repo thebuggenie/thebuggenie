@@ -70,7 +70,7 @@
 		
 		public function componentIdentifiableselectorresults()
 		{
-			$this->include_teams = (isset($include_teams)) ? $include_teams : false;
+			$this->include_teams = (TBGContext::getRequest()->hasParameter('include_teams')) ? TBGContext::getRequest()->getParameter('include_teams') : false;
 		}
 		
 		public function componentMyfriends()
