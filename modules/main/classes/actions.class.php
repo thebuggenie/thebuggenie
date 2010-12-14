@@ -427,6 +427,7 @@
 					$user->setUsername($username);
 					$user->setRealname($realname);
 					$user->setBuddyname($buddyname);
+					$user->setGroup(2);
 					$user->setEnabled();
 					$user->setPassword($password);
 					$user->setEmail($email);
