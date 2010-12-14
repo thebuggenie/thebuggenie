@@ -428,7 +428,7 @@
 					$user->setRealname($realname);
 					$user->setBuddyname($buddyname);
 					$user->setEnabled();
-					$user->setPassword(TBGUser::hashPassword($password));
+					$user->setPassword($password);
 					$user->setEmail($email);
 					$user->save();
 
