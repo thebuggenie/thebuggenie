@@ -293,7 +293,8 @@
 			{
 				return $this->renderJSON(array('forward' => $forward_url));
 			}
-			elseif ($forward_url !== null && !(TBGSettings::isLoginRequired()))
+
+			elseif ($forward_url !== null && $request->getParameter('redirect') != true)
 			{
 				$this->forward($forward_url);
 			}

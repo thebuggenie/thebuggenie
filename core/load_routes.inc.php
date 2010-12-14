@@ -9,6 +9,7 @@
 	$routes[] = array('dashboard', '/dashboard', 'main', 'dashboard');
 	$routes[] = array('get_javascript', '/js/:js_file', 'main', 'index');
 	$routes[] = array('login', '/login', 'main', 'login');
+	$routes[] = array('login_redirect', '/login/redirected', 'main', 'login', array('redirect' => true));
 	$routes[] = array('login_section', '/login/section/:section/*', 'main', 'login');
 	$routes[] = array('openid_login', '/login/openid', 'openid', 'login');
 	$routes[] = array('register1', '/register1', 'main', 'register1');

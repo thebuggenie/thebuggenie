@@ -208,7 +208,7 @@
 		{
 			$this->selected_tab = isset($this->section) ? $this->section : 'login';
 			$this->options = $this->getParameterHolder();
-			if (TBGSettings::isLoginRequired())
+			if (TBGContext::getRequest()->getParameter('redirect') == true)
 				$this->mandatory = true;
 		}		
 		
