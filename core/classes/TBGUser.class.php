@@ -554,6 +554,9 @@
 					$this->save();
 				}
 			}
+			
+			if ($this->_timezone !== null)
+				TBGSettings::saveSetting('timezone', $this->_timezone, 'core', null, $this->getID());
 		}
 		
 		/**
@@ -1536,22 +1539,16 @@
 		}
 
 		/**
-		 * Save changes made to the user object
-		 *
-		 * @return TBGUser The user object
-		 */
-		public function postSave()
-		{
-			TBGSettings::saveSetting('timezone', $this->_timezone, 'core', null, $this->getID());
-		}
-
-		/**
 		 * Get this users timezone
 		 *
 		 * @return mixed
 		 */
 		public function getTimezone()
 		{
+			if ($this->_timezone == null)
+			{
+				$this->_timezone = TBGSettings::get('timezone', 'core', null, $this->getID());
+			}
 			return $this->_timezone;
 		}
 

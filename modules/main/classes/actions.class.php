@@ -516,7 +516,6 @@
 					case 'settings':
 						TBGContext::getUser()->setUsesGravatar((bool) $request->getParameter('use_gravatar'));
 						TBGContext::getUser()->setTimezone($request->getParameter('timezone'));
-
 						TBGContext::getUser()->save();
 
 						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Profile settings saved'), 'content' => ''));
