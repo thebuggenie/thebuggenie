@@ -2411,4 +2411,9 @@
 			return (bool) ($this->permissionCheck('canseeprojecthierarchy') || $this->permissionCheck('canseeallprojectbuilds'));
 		}
 		
+		public function canSeeAllMilestones()
+		{
+			return (bool) ($this->permissionCheck('canseeprojecthierarchy') || $this->permissionCheck('canseeallprojectmilestones'));
+		}
+		
 	}

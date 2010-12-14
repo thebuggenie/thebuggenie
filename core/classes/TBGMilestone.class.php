@@ -179,19 +179,13 @@
 			return $sprints;
 		}
 
-		/**
-		 * Create a new milestone and return it
-		 * 
-		 * @param string $name The milestone name
-		 * @param integer $project_id The project id
-		 * 
-		 * @return TBGMilestone
-		 */
-		public static function createNew($name, $type, $project_id)
+		public function _postSave($is_new)
 		{
-			$m_id = TBGMilestonesTable::getTable()->createNew($name, $type, $project_id);
-			TBGContext::setPermission('b2milestoneaccess', $m_id, 'core', 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
-			return TBGContext::factory()->TBGMilestone($m_id);
+			if ($is_new)
+			{
+				TBGContext::setPermission("canseemilestone", $this->getID(), "core", 0, TBGContext::getUser()->getGroup()->getID(), 0, true);
+				TBGEvent::createNew('core', 'TBGMilestone::createNew', $this)->trigger();
+			}
 		}
 		
 		/**
@@ -746,13 +740,13 @@
 		}
 		
 		/**
-		 * Whether or not the current user has access to this milestone
+		 * Whether or not the current user can access the milestones
 		 * 
 		 * @return boolean
 		 */
 		public function hasAccess()
 		{
-			return TBGContext::getUser()->hasPermission("b2milestoneaccess", $this->getID(), "core");			
+			return ($this->getProject()->canSeeAllMilestones() || TBGContext::getUser()->hasPermission('canseemilestone', $this->getID()));
 		}
 
 		/**

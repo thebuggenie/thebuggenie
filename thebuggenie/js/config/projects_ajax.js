@@ -678,24 +678,7 @@ function updateComponent(url, cid)
 
 function updateMilestone(url, mid)
 {
-	var params = Form.serialize('edit_milestone_' + mid);
-		new Ajax.Updater('milestone_span_' + mid, url, {
-		asynchronous:true,
-		method: "post",
-		parameters: params,
-		evalScripts: true,
-		onLoading: function (transport) {
-			$('milestone_'+mid+'_indicator').show();
-		},
-		onFailure: function (transport) {
-			$('milestone_'+mid+'_indicator').hide();
-			var json = transport.responseJSON;
-			if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-			}
-		}
-	});
+	_postFormWithJSONFeedback(url, 'edit_milestone_' + mid, 'milestone_span_' + mid);
 }
 
 function deleteMilestone(url, mid)
