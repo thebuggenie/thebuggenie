@@ -1158,7 +1158,7 @@
 							{
 								$project = TBGContext::factory()->TBGProject($p_id);
 								$edition = $project->addEdition($e_name);
-								return $this->renderJSON(array('title' => $i18n->__('The edition has been added'), 'html' => $this->getTemplateHTML('editionbox', array('edition' => $edition))));
+								return $this->renderJSON(array('title' => $i18n->__('The edition has been added'), 'html' => $this->getTemplateHTML('editionbox', array('edition' => $edition, 'access_level' => $this->access_level))));
 							}
 							else
 							{
@@ -1198,15 +1198,11 @@
 				{
 					if ($b_id = $request->getParameter('build_id'))
 					{
-						if (TBGContext::getUser()->hasPermission('b2buildaccess', $b_id))
+						$build = TBGContext::factory()->TBGBuild($b_id);
+						if ($build->hasAccess())
 						{
-							$build = TBGContext::factory()->TBGBuild($b_id);
 							switch ($request->getParameter('build_action'))
 							{
-								case 'markdefault':
-									$build->setDefault();
-									$this->show_mode = 'all';
-									break;
 								case 'delete':
 									$build->delete();
 									return $this->renderJSON(array('deleted' => true, 'message' => $i18n->__('The release was deleted')));
@@ -1314,7 +1310,7 @@
 									$build->setProject($project);
 								}
 								$build->save();
-								return $this->renderJSON(array('title' => $i18n->__('The release has been added'), 'html' => $this->getTemplateHTML('buildbox', array('build' => $build, 'access_level' => $this->access_level))));
+								return $this->renderJSON(array('title' => $i18n->__('The release has been added'), 'html' => "<span id=\"build_list_{$build->getID()}\">".$this->getTemplateHTML('buildbox', array('build' => $build, 'access_level' => $this->access_level)).'</span>'));
 							}
 							else
 							{
@@ -1361,7 +1357,7 @@
 							{
 								$project = TBGContext::factory()->TBGProject($p_id);
 								$component = $project->addComponent($c_name);
-								return $this->renderJSON(array('title' => $i18n->__('The component has been added'), 'html' => $this->getTemplateHTML('componentbox', array('component' => $component))));
+								return $this->renderJSON(array('title' => $i18n->__('The component has been added'), 'html' => $this->getTemplateHTML('componentbox', array('component' => $component, 'access_level' => $this->access_level))));
 							}
 							else
 							{

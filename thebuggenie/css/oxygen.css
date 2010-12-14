@@ -216,7 +216,7 @@ div.dropdown_separator { border-left: 1px dotted #EAEAF5; padding: 0 0 0 4px; ma
 /* end header menu */
 
 /* project menu strip */
-.project_stuff { float: left; position: relative; height: 25px; min-width: 750px; border-color: transparent; }
+.project_stuff { float: left; position: relative; height: 25px; border-color: transparent; }
 .project_stuff ul { list-style-type: none; margin: 0; padding: 0; }
 .project_stuff ul li { height: 23px; float: left; margin: 0 6px 0 0; padding-bottom: 0; }
 .project_stuff ul li.project_name { font-size: 1em; font-weight: bold; padding-top: 1px; }
