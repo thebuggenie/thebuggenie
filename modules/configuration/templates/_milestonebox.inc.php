@@ -46,8 +46,8 @@
 			<tr>
 				<td style="width: 120px;">
 					<select name="is_scheduled" id="sch_date_<?php echo $milestone->getID(); ?>" style="width: 100%;" onchange="if ($('sch_date_<?php echo $milestone->getID(); ?>').getValue() == '1') { $('sch_month_<?php echo $milestone->getID(); ?>').enable(); $('sch_day_<?php echo $milestone->getID(); ?>').enable(); $('sch_year_<?php echo $milestone->getID(); ?>').enable(); } else { $('sch_month_<?php echo $milestone->getID(); ?>').disable(); $('sch_day_<?php echo $milestone->getID(); ?>').disable(); $('sch_year_<?php echo $milestone->getID(); ?>').disable(); } ">
-						<option value=0<?php print ($milestone->isScheduled()) ? "" : " selected"; ?>><?php echo __('No planned release'); ?></option>
-						<option value=1<?php print (!$milestone->isScheduled()) ? "" : " selected"; ?>><?php echo __('Planned release'); ?></option>
+						<option value=0<?php print ($milestone->hasScheduledDate()) ? "" : " selected"; ?>><?php echo __('No planned release'); ?></option>
+						<option value=1<?php print (!$milestone->hasScheduledDate()) ? "" : " selected"; ?>><?php echo __('Planned release'); ?></option>
 					</select>
 				</td>
 				<td style="width: auto;">
@@ -92,14 +92,14 @@
 		</div>
 		<div style="padding: 3px; width: auto; font-size: 13px;"><b><?php echo $milestone->getName(); ?></b></div>
 		<div style="padding: 3px; padding-top: 0px; padding-bottom: 0px; color: #AAA;">
-			<?php if (!$milestone->isScheduled() && !$milestone->isStarting()): ?>
+			<?php if (!$milestone->hasScheduledDate() && !$milestone->hasStartingDate()): ?>
 				<?php echo __('This milestone has no planned schedule'); ?>
-			<?php elseif ($milestone->isScheduled() && $milestone->isStarting()): ?>
-				<?php echo __('This milestone is starting %starting_date% and scheduled for %scheduled_date%', array('%starting_date%' => tbg_formatTime($milestone->getStartingDate(), 5), '%scheduled_date%' => tbg_formatTime($milestone->getScheduledDate(), 5))); ?>
-			<?php elseif ($milestone->isScheduled()): ?>
+			<?php elseif ($milestone->hasScheduledDate() && $milestone->hasStartingDate()): ?>
+				<?php echo __('This milestone is starting on %starting_date% and scheduled for %scheduled_date%', array('%starting_date%' => tbg_formatTime($milestone->getStartingDate(), 5), '%scheduled_date%' => tbg_formatTime($milestone->getScheduledDate(), 5))); ?>
+			<?php elseif ($milestone->hasScheduledDate()): ?>
 				<?php echo __('This milestone is scheduled for %scheduled_date%', array('%scheduled_date%' => tbg_formatTime($milestone->getScheduledDate(), 5))); ?>
-			<?php elseif ($milestone->isStarting()): ?>
-				<?php echo __('This milestone is starting %starting_date%', array('%starting_date%' => tbg_formatTime($milestone->getStartingDate(), 5))); ?>
+			<?php elseif ($milestone->hasStartingDate()): ?>
+				<?php echo __('This milestone is starting on %starting_date%', array('%starting_date%' => tbg_formatTime($milestone->getStartingDate(), 5))); ?>
 			<?php endif;?>
 		</div>
 		<div style="padding: 5px 0 10px 0;"><?php echo $milestone->getDescription(); ?></div>
