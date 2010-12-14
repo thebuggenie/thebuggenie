@@ -131,6 +131,54 @@
 		{
 			$this->forward403unless(!TBGContext::getUser()->isThisGuest() && TBGContext::getUser()->hasPageAccess('dashboard'));
 			$this->getResponse()->setProjectMenuStripHidden();
+			$this->dashboardViews = TBGDashboard::getUserViews();
+		}
+		/**
+		 * Save dashboard configuration (AJAX call)
+		 *  
+		 * @param TBGRequest $request
+		 */
+		public function runDashboardSave(TBGRequest $request)
+		{
+			$i18n = TBGContext::getI18n();
+			$this->login_referer = (array_key_exists('HTTP_REFERER', $_SERVER) && isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : '';
+			$this->options = $request->getParameters();
+			try
+			{
+				if (TBGContext::getRequest()->isAjaxCall() || TBGContext::getRequest()->getRequestedFormat() == 'json')
+				{
+					if ($request->getMethod() == TBGRequest::POST)
+					{
+						if ($request->hasParameter('id'))
+						{
+							$views = array();
+							foreach(explode(';', $request->getParameter('id')) as $view)
+							{
+								array_push($views, array('type' => strrev(strstr(strrev($view), '_', true)), 'id' => strstr($view, '_', true)));
+							}
+							array_pop($views);
+							TBGDashboard::setUserViews(TBGContext::getUser()->getID(), $views);
+							return $this->renderJSON(array('message' => 'Dashboard configuration saved'));
+						}
+						else
+						{
+							throw new Exception($i18n->__('An internal error has occured'));
+						}
+					}
+					else 
+					{
+						throw new Exception($i18n->__('An internal error has occured'));
+					}
+				}
+				else 
+				{
+					throw new Exception($i18n->__('An internal error has occured'));
+				}				
+			}
+			catch (Exception $e)
+			{
+				return $this->renderJSON(array('failed' => true, 'error' => $i18n->__($e->getMessage()), 'referer' => $request->getParameter('tbg3_referer')));
+			}
 		}
 		
 		/**
@@ -2403,6 +2451,9 @@
 					case 'client_users':
 						$options['client'] = TBGContext::factory()->TBGClient($request->getParameter('client_id'));
 						$template_name = 'main/clientusers';
+						break;
+					case 'dashboard_config':
+						$template_name = 'main/dashboardconfig';
 						break;
 				}
 				if ($template_name !== null)

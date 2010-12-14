@@ -2,6 +2,7 @@
 
 	$tbg_response->setTitle('Dashboard');
 	$tbg_response->addBreadcrumb(link_tag(make_url('dashboard'), __('Personal dashboard')));
+	$tbg_response->addBreadcrumb(javascript_link_tag(image_tag('cfg_icon_wizard.png'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config'))."');")));
 	$tbg_response->addJavascript('dashboard.js');
 	$tbg_response->addFeed(make_url('my_reported_issues', array('format' => 'rss')), __('Issues reported by me'));
 	$tbg_response->addFeed(make_url('my_assigned_issues', array('format' => 'rss')), __('Open issues assigned to you'));
@@ -21,150 +22,11 @@
 		<td class="main_area">
 			<?php TBGEvent::createNew('core', 'dashboard_main_top')->trigger(); ?>
 			<ul id="dashboard">
-				<li>
-					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
-						<?php echo link_tag(make_url('my_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
-						<?php echo __('Open issues assigned to you'); ?>
-					</div>
-					<?php if (count($tbg_user->getUserAssignedIssues()) > 0): ?>
-						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
-						<?php foreach ($tbg_user->getUserAssignedIssues() as $theIssue): ?>
-							<tr class="<?php if ($theIssue->getState() == TBGIssue::STATE_CLOSED): ?>issue_closed<?php else: ?>issue_open<?php endif; ?> <?php if ($theIssue->isBlocking()): ?>issue_blocking<?php endif; ?>">
-								<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-								<td>
-									<span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $theIssue->getProject()->getKey())), '['.$theIssue->getProject()->getKey().']'); ?></span>
-									<?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedTitle(true)); ?>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2" class="faded_out" style="padding-bottom: 15px;">
-									<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg_formatTime($theIssue->getLastUpdatedTime(), 12))); ?>
-								</td>
-							</tr>
-						<?php endforeach; ?>
-						</table>
-					<?php else: ?>
-						<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues are assigned to you'); ?></div>
-					<?php endif; ?>
-					<?php TBGEvent::createNew('core', 'dashboard_main_myassignedissues')->trigger(); ?>
+				<?php foreach($dashboardViews as $view): ?>
+				<li style="clear: both;">
+					<?php include_component('dashboardview', array('type' => $view->get(TBGUserDashboardViewsTable::TYPE), 'id' => $view->get(TBGUserDashboardViewsTable::ID), 'view' => $view->get(TBGUserDashboardViewsTable::VIEW), 'rss' => true)); ?>
 				</li>
-				<li>
-					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
-						<?php echo link_tag(make_url('my_teams_assigned_issues', array('format' => 'rss')), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
-						<?php echo __('Open issues assigned to your teams'); ?>
-					</div>
-					<?php $team_issues_count = 0; ?>
-					<?php foreach ($tbg_user->getTeams() as $tid => $theTeam): ?>
-						<?php if (count($tbg_user->getUserTeamAssignedIssues($tid)) > 0): ?>
-							<table cellpadding=0 cellspacing=0 style="margin: 5px;">
-							<?php foreach ($tbg_user->getUserTeamAssignedIssues($tid) as $theIssue): ?>
-								<tr class="<?php if ($theIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($theIssue->isBlocking()) echo ' issue_blocking'; ?>">
-									<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-									<td>
-										<span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $theIssue->getProject()->getKey())), '['.$theIssue->getProject()->getKey().']'); ?></span>
-										<?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedTitle(true)); ?>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2" class="faded_out" style="padding-bottom: 15px;">
-										<?php echo (int) $theIssue->isAssigned();?>
-										<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg_formatTime($theIssue->getLastUpdatedTime(), 12))); ?><br>
-										<?php echo __('Assigned to %assignee%', array('%assignee%' => $theIssue->getAssignee()->getName())); ?>
-									</td>
-								</tr>
-								<?php $team_issues_count++; ?>
-							<?php endforeach; ?>
-							</table>
-						<?php endif; ?>
-					<?php endforeach; ?>
-					<?php if ($team_issues_count == 0): ?>
-						<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues are assigned to any of your teams'); ?></div>
-					<?php endif; ?>
-					<?php TBGEvent::createNew('core', 'dashboard_main_teamassignedissues')->trigger(); ?>
-				</li>
-				<li style="clear: both;"> 
-					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
-						<?php echo __('Issues with pending changes'); ?>
-					</div>
-					<?php if (count($tbg_user->getIssuesPendingChanges()) > 0): ?>
-						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
-						<?php foreach ($tbg_user->getIssuesPendingChanges() as $theIssue): ?>
-							<tr class="<?php if ($theIssue->getState() == TBGIssue::STATE_CLOSED): ?>issue_closed<?php else: ?>issue_open<?php endif; ?> <?php if ($theIssue->isBlocking()): ?>issue_blocking<?php endif; ?>">
-								<td class="imgtd"><?php echo image_tag($theIssue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
-								<td>
-									<span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $theIssue->getProject()->getKey())), '['.$theIssue->getProject()->getKey().']'); ?></span>
-									<?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedTitle(true)); ?>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2" class="faded_out" style="padding-bottom: 15px;">
-									<?php echo __('This issue has %number_of% unsaved change(s)', array('%number_of%' => '<strong>' . $theIssue->getNumberOfUnsavedChanges() . '</strong>')); ?>
-								</td>
-							</tr>
-						<?php endforeach; ?>
-						</table>
-					<?php else: ?>
-						<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('You have no issues with unsaved changes'); ?></div>
-					<?php endif; ?>
-					<?php TBGEvent::createNew('core', 'dashboard_main_pendingissues')->trigger(); ?>
-				</li>
-				<li> 
-					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
-						<?php echo __('Your starred issues'); ?>
-					</div>
-					<?php if (count($tbg_user->getStarredIssues()) > 0): ?>
-						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
-						<?php foreach ($tbg_user->getStarredIssues() as $theIssue): ?>
-							<tr class="<?php if ($theIssue->getState() == TBGIssue::STATE_CLOSED) echo 'issue_closed'; if ($theIssue->isBlocking()) echo ' issue_blocking'; ?>">
-								<td class="imgtd">
-									<?php echo image_tag('spinning_16.gif', array('id' => 'issue_favourite_indicator_'.$theIssue->getID(), 'style' => 'display: none;')); ?>
-									<?php echo image_tag('star_faded_small.png', array('id' => 'issue_favourite_faded_'.$theIssue->getID(), 'style' => 'cursor: pointer; display: none;', 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $theIssue->getID()))."', ".$theIssue->getID().");")); ?>
-									<?php echo image_tag('star_small.png', array('id' => 'issue_favourite_normal_'.$theIssue->getID(), 'style' => 'cursor: pointer;', 'onclick' => "toggleFavourite('".make_url('toggle_favourite_issue', array('issue_id' => $theIssue->getID()))."', ".$theIssue->getID().");")); ?>
-								</td>
-								<td>
-									<span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $theIssue->getProject()->getKey())), '['.$theIssue->getProject()->getKey().']'); ?></span>
-									<?php echo link_tag(make_url('viewissue', array('project_key' => $theIssue->getProject()->getKey(), 'issue_no' => $theIssue->getFormattedIssueNo())), $theIssue->getFormattedTitle(true)); ?>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2" class="faded_out" style="padding-bottom: 15px;">
-									<?php echo __('<strong>%status%</strong>, updated %updated_at%', array('%status%' => (($theIssue->getStatus() instanceof TBGDatatype) ? $theIssue->getStatus()->getName() : __('Status not determined')), '%updated_at%' => tbg_formatTime($theIssue->getLastUpdatedTime(), 12))); ?><br>
-									<?php if ($theIssue->isAssigned()): ?>
-										<?php echo __('Assigned to %assignee%', array('%assignee%' => $theIssue->getAssignee()->getName())); ?>
-									<?php else: ?>
-										<?php echo __('Not assigned to anyone yet'); ?>
-									<?php endif; ?>
-								</td>
-							</tr>
-						<?php endforeach; ?>
-						</table>
-					<?php else: ?>
-						<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __("You haven't starred any issues yet"); ?></div>
-					<?php endif; ?>
-					<?php TBGEvent::createNew('core', 'dashboard_main_mystarredissues')->trigger(); ?>
-				</li>
-				<li style="clear: both;"> 
-					<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
-						<?php echo __('What you\'ve done recently'); ?>
-					</div>
-					<?php if (count($tbg_user->getLatestActions()) > 0): ?>
-						<table cellpadding=0 cellspacing=0 style="margin: 5px;">
-							<?php $prev_date = null; ?>
-							<?php foreach ($tbg_user->getLatestActions() as $action): ?>
-								<?php $date = tbg_formatTime($action['timestamp'], 5); ?>
-								<?php if ($date != $prev_date): ?>
-									<tr>
-										<td class="latest_action_dates" colspan="2"><?php echo $date; ?></td>
-									</tr>
-								<?php endif; ?>
-								<?php include_component('main/logitem', array('log_action' => $action, 'include_project' => true, 'pad_length' => 60)); ?>
-								<?php $prev_date = $date; ?>
-							<?php endforeach; ?>
-						</table>
-					<?php else: ?>
-						<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __("You haven't done anything recently"); ?></div>
-					<?php endif; ?>
-				</li>
+				<?php endforeach; ?>
 			</ul>
 			<?php TBGEvent::createNew('core', 'dashboard_main_bottom')->trigger(); ?>
 		</td>

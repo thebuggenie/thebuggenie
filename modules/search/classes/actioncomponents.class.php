@@ -37,4 +37,17 @@
 		{
 		}
 
+		public function componentResults_view()
+		{
+			$request = new TBGRequest();
+			$request->setParameter('predefined_search', $this->view);
+			$request->setParameter('search', $this->search);
+			
+			$search = TBGContext::factory()->manufacture('searchActions', uniqid(rand(), true));
+			$search->runFindIssues($request);
+			$this->issues = $search->issues;
+			$this->title = $search->searchtitle;
+			$this->parameters = array();
+		}		
+		
 	}
