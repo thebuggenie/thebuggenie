@@ -1,8 +1,10 @@
 <div id="viewissue_left_box_issuetype">
 	<div id="issuetype_header" class="hoverable <?php if ($issue->isIssuetypeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isIssuetypeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-		<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype')); ?>', 'issuetype');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-		<?php echo image_tag('spinning_20.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'issuetype_undo_spinning')); ?>
-		<a href="javascript:void(0);" onclick="$('issuetype_change').toggle();" title="<?php echo __('Click to change issue type'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+		<?php if ($issue->isEditable()): ?>
+			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype')); ?>', 'issuetype');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+			<?php echo image_tag('spinning_20.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'issuetype_undo_spinning')); ?>
+			<a href="javascript:void(0);" onclick="$('issuetype_change').toggle();" title="<?php echo __('Click to change issue type'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+		<?php endif; ?>
 		<table cellpadding=0 cellspacing=0 id="issuetype_table"<?php if (!$issue->getIssueType() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>>
 			<tr>
 				<td style="width: 24px; padding: 2px 0 0 0;"><?php echo image_tag($issue->getIssueType()->getIcon() . '_small.png', array('id' => 'issuetype_image')); ?></td>
@@ -12,27 +14,31 @@
 		<div class="faded_out" id="no_issuetype"<?php if ($issue->getIssueType() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Unknown issue type'); ?></div>
 	</div>
 </div>
-<div id="issuetype_change" class="rounded_box white shadowed" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
-	<div class="dropdown_header"><?php echo __('Set issue type'); ?></div>
-	<div class="dropdown_content">
-		<?php echo __('Select a new issue type'); ?>:<br>
-		<table cellpadding="0" cellspacing="0">
-			<?php foreach ($issuetypes as $issuetype): ?>
-				<tr>
-					<td style="width: 16px;"><?php echo image_tag($issuetype->getIcon() . '_tiny.png'); ?></td>
-					<td style="padding-left: 5px;"><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype', 'issuetype_id' => $issuetype->getID())); ?>', 'issuetype');"><?php echo $issuetype->getName(); ?></a></td>
-				</tr>
-			<?php endforeach; ?>
-		</table>
-		<div id="issuetype_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+<?php if ($issue->isEditable()): ?>
+	<div id="issuetype_change" class="rounded_box white shadowed" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
+		<div class="dropdown_header"><?php echo __('Set issue type'); ?></div>
+		<div class="dropdown_content">
+			<?php echo __('Select a new issue type'); ?>:<br>
+			<table cellpadding="0" cellspacing="0">
+				<?php foreach ($issuetypes as $issuetype): ?>
+					<tr>
+						<td style="width: 16px;"><?php echo image_tag($issuetype->getIcon() . '_tiny.png'); ?></td>
+						<td style="padding-left: 5px;"><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype', 'issuetype_id' => $issuetype->getID())); ?>', 'issuetype');"><?php echo $issuetype->getName(); ?></a></td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+			<div id="issuetype_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+		</div>
+		<div id="issuetype_change_error" class="error_message" style="display: none;"></div>
 	</div>
-	<div id="issuetype_change_error" class="error_message" style="display: none;"></div>
-</div>
+<?php endif; ?>
 <div id="viewissue_left_box_status">
 	<div id="status_header" class="hoverable <?php if ($issue->isStatusChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isStatusMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-		<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status')); ?>', 'status');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-		<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'status_undo_spinning')); ?>
-		<a href="javascript:void(0);" onclick="$('status_change').toggle();" title="<?php echo __('Click to change status'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+		<?php if ($issue->getProject()->canChangeIssuesWithoutWorkingOnThem()): ?>
+			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status')); ?>', 'status');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'status_undo_spinning')); ?>
+			<a href="javascript:void(0);" onclick="$('status_change').toggle();" title="<?php echo __('Click to change status'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+		<?php endif; ?>
 		<table style="table-layout: auto; width: 240px;<?php if (!$issue->getStatus() instanceof TBGDatatype): ?> display: none;<?php endif; ?>" cellpadding=0 cellspacing=0 id="status_table">
 			<tr>
 				<td style="width: 24px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 2px;" id="status_color">&nbsp;</div></td>
@@ -42,36 +48,40 @@
 		<span class="faded_out" id="no_status"<?php if ($issue->getStatus() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Status not determined'); ?></span>
 	</div>
 </div>
-<div class="rounded_box white shadowed" id="status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
-	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-	<div class="xboxcontent" style="padding: 5px;">
-		<div class="dropdown_header"><?php echo __('Set status'); ?></div>
-		<div class="dropdown_content">
-			<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => 0)); ?>', 'status');"><?php echo __('Clear the status'); ?></a><br>
+<?php if ($issue->getProject()->canChangeIssuesWithoutWorkingOnThem()): ?>
+	<div class="rounded_box white shadowed" id="status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
+		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+		<div class="xboxcontent" style="padding: 5px;">
+			<div class="dropdown_header"><?php echo __('Set status'); ?></div>
+			<div class="dropdown_content">
+				<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => 0)); ?>', 'status');"><?php echo __('Clear the status'); ?></a><br>
+			</div>
+			<div class="dropdown_content">
+				<?php echo __('%clear_the_status% or click to select a new status', array('%clear_the_status%' => '')); ?>:<br>
+				<table cellpadding="0" cellspacing="0">
+					<?php foreach ($statuses as $status): ?>
+						<?php if (!$status->canUserSet($tbg_user)) continue; ?>
+						<tr>
+							<td style="width: 16px;"><div style="border: 1px solid #AAA; background-color: <?php echo $status->getColor(); ?>; font-size: 1px; width: 16px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
+							<td style="padding-left: 5px;"><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => $status->getID())); ?>', 'status');"><?php echo $status->getName(); ?></a></td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+				<div id="status_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+			</div>
+			<div id="status_change_error" class="error_message" style="display: none;"></div>
 		</div>
-		<div class="dropdown_content">
-			<?php echo __('%clear_the_status% or click to select a new status', array('%clear_the_status%' => '')); ?>:<br>
-			<table cellpadding="0" cellspacing="0">
-				<?php foreach ($statuses as $status): ?>
-					<?php if (!$status->canUserSet($tbg_user)) continue; ?>
-					<tr>
-						<td style="width: 16px;"><div style="border: 1px solid #AAA; background-color: <?php echo $status->getColor(); ?>; font-size: 1px; width: 16px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
-						<td style="padding-left: 5px;"><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => $status->getID())); ?>', 'status');"><?php echo $status->getName(); ?></a></td>
-					</tr>
-				<?php endforeach; ?>
-			</table>
-			<div id="status_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-		</div>
-		<div id="status_change_error" class="error_message" style="display: none;"></div>
+		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 	</div>
-	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-</div>
+<?php endif; ?>
 <dl class="viewissue_list" id="assigned_to_field">
 	<dt id="assigned_to_header" class="<?php if ($issue->isAssignedToChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isAssignedToMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Assigned to'); ?></dt>
 	<dd id="assigned_to_content" class="<?php if ($issue->isAssignedToChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isAssignedToMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-		<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to')); ?>', 'assigned_to');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-		<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'assigned_to_undo_spinning')); ?>
-		<a href="javascript:void(0);" onclick="$('assigned_to_change').toggle();" title="<?php echo __('Click to change assignee'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+		<?php if ($issue->getProject()->canChangeIssuesWithoutWorkingOnThem()): ?>
+			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to')); ?>', 'assigned_to');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'assigned_to_undo_spinning')); ?>
+			<a href="javascript:void(0);" onclick="$('assigned_to_change').toggle();" title="<?php echo __('Click to change assignee'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+		<?php endif; ?>
 		<div style="width: 170px; display: <?php if ($issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="assigned_to_name">
 			<?php if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
 				<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
@@ -82,18 +92,20 @@
 		<span class="faded_out" id="no_assigned_to"<?php if ($issue->isAssigned()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not assigned to anyone'); ?></span>
 	</dd>
 </dl>
-<?php include_component('identifiableselector', array(	'html_id' 			=> 'assigned_to_change', 
-														'header' 			=> __('Assign this issue'),
-														'callback'		 	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'assigned_to');",
-														'clear_link_text'	=> __('Clear current assignee'),
-														'base_id'			=> 'assigned_to',
-														'include_teams'		=> true,
-														'absolute' => true)); ?>
+<?php if ($issue->getProject()->canChangeIssuesWithoutWorkingOnThem()): ?>
+	<?php include_component('identifiableselector', array(	'html_id' 			=> 'assigned_to_change', 
+															'header' 			=> __('Assign this issue'),
+															'callback'		 	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'assigned_to');",
+															'clear_link_text'	=> __('Clear current assignee'),
+															'base_id'			=> 'assigned_to',
+															'include_teams'		=> true,
+															'absolute' => true)); ?>
+<?php endif; ?>
 <dl class="viewissue_list" id="percent_complete_field"<?php if (!$issue->isPercentCompletedVisible()): ?> style="display: none;"<?php endif; ?>>
 	<dt id="percent_header" class="<?php if ($issue->isPercentCompletedChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPercentCompletedMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Progress'); ?></dt>
 	<dd id="percent_content" class="<?php if ($issue->isPercentCompletedChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPercentCompletedMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 		<div style="width: 210px;">
-			<?php if (!$issue->canEditPercentCompleted()): ?>
+			<?php if ($issue->canEditPercentage() && $issue->isEditable()): ?>
 				<a href="javascript:void(0);" onclick="updatePercent('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent')); ?>', 'percent');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 				<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: right; margin-left: 5px;', 'id' => 'percent_spinning')); ?>
 				<table style="table-layout: fixed; width: 165px;" cellpadding=0 cellspacing=0>

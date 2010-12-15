@@ -44,10 +44,10 @@
 						}
 
 					?>; font-weight: bold;"><?php echo $issue->getPercentCompleted(); ?>%</td>
-					<td style="padding: 3px; font-size: 0.9em;"><?php echo (strlen($issue->getTitle()) > 80) ? substr($issue->getTitle(), 0 , 77) . '...' : $issue->getTitle(); ?></td>
+					<td style="padding: 3px; font-size: 0.9em;"><?php echo (strlen($issue->getTitle()) > 60) ? substr($issue->getTitle(), 0 , 57) . '...' : $issue->getTitle(); ?></td>
 					<td style="padding: 3px; color: #888;">
 						<?php if ($issue->hasDescription()): ?>
-							<?php echo (strlen($issue->getDescription()) > 150) ? substr($issue->getDescription(), 0 , 147) . '...' : $issue->getDescription(); ?>
+							<?php echo (strlen($issue->getDescription()) > 120) ? substr($issue->getDescription(), 0 , 117) . '...' : $issue->getDescription(); ?>
 						<?php else: ?>
 							<span class="faded_out"><?php echo __('No description provided'); ?></span>
 						<?php endif; ?>

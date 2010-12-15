@@ -210,7 +210,7 @@
 		 * 
 		 * @var boolean
 		 */
-		protected $_allow_freelancing = null;
+		protected $_allow_freelancing = false;
 		
 		/**
 		 * Project list cache

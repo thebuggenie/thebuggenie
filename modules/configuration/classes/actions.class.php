@@ -204,6 +204,7 @@
 							$issue1->setPercentCompleted(rand(0, 100));
 							$issue1->save();
 							$issue1->setStatus($statuses[array_rand($statuses)]);
+							if (rand(0, 1)) $issue1->setAssignee($users[array_rand($users)]);
 							$issue1->save();
 							$issues[] = $issue1;
 
@@ -256,6 +257,7 @@
 							$issue2->setSeverity($severities[array_rand($severities)]);
 							$issue2->setReproducability($reproducabilities[array_rand($reproducabilities)]);
 							$issue2->setPercentCompleted(rand(0, 100));
+							if (rand(0, 1)) $issue1->setAssignee($users[array_rand($users)]);
 							$issue2->save();
 							$issue2->setStatus($statuses[array_rand($statuses)]);
 							$issue2->save();
