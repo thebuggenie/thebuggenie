@@ -22,10 +22,12 @@
 		<td class="main_area">
 			<?php TBGEvent::createNew('core', 'dashboard_main_top')->trigger(); ?>
 			<ul id="dashboard">
+				<?php $clearleft = true; ?>
 				<?php foreach($dashboardViews as $view): ?>
-				<li style="clear: both;">
+				<li style="clear: <?php echo ($clearleft) ? 'left' : 'right'; ?>;">
 					<?php include_component('dashboardview', array('type' => $view->get(TBGUserDashboardViewsTable::TYPE), 'id' => $view->get(TBGUserDashboardViewsTable::ID), 'view' => $view->get(TBGUserDashboardViewsTable::VIEW), 'rss' => true)); ?>
 				</li>
+				<?php $clearleft = !$clearleft; ?>
 				<?php endforeach; ?>
 			</ul>
 			<?php TBGEvent::createNew('core', 'dashboard_main_bottom')->trigger(); ?>
@@ -118,3 +120,7 @@
 		</td>
 	</tr>
 </table>
+<script type="text/javascript">
+	Event.observe(window, 'resize', dashboardResize);
+	document.observe('dom:loaded', dashboardResize);
+</script>

@@ -205,7 +205,7 @@
 						$this->templatename = 'results_todo';
 						break;
 					case TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
-						$this->searchtitle = $i18n->__('Most voted issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName()));
+						$this->searchtitle = (TBGContext::isProjectContext()) ? $i18n->__('Most voted issues for %project_name%', array('%project_name%' => TBGContext::getCurrentProject()->getName())) : $i18n->__('Most voted issues');
 						$this->templatename = 'results_votes';
 						break;
 					case TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:

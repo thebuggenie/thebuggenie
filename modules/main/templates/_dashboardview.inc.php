@@ -1,7 +1,7 @@
 <?php switch($type):
 		  case TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH : ?>
 	<?php case TBGDashboard::DASHBOARD_VIEW_SAVED_SEARCH : ?>
-			<?php include_component('search/results_view',  array_merge($parameters, array('search' => true, 'default_message' => 'No issue'))); ?>
+			<?php include_component('search/results_view',  array_merge($parameters, array('search' => true, 'default_message' => __('No issues in this list')))); ?>
 	<?php break; ?>		
 	
 	<?php case TBGDashboard::DASHBOARD_VIEW_LOGGED_ACTION : ?>
