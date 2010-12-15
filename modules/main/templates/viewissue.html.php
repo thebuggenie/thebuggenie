@@ -269,7 +269,7 @@
 						<div id="description_field"<?php if (!$issue->isDescriptionVisible()): ?> style="display: none;"<?php endif; ?> class="hoverable">
 							<div class="rounded_box invisible nohover viewissue_description<?php if ($issue->isDescriptionChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isDescriptionMerged()): ?> issue_detail_unmerged<?php endif; ?>" id="description_header" style="margin: 0;">
 								<div class="viewissue_description_header">
-									<?php if ($issue->canEditDescription()): ?>
+									<?php if ($issue->isEditable() && $issue->canEditDescription()): ?>
 										<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>', 'description');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'description_undo_spinning')); ?>
 										<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'description_edit', 'onclick' => "$('description_change').show(); $('description_name').hide(); $('no_description').hide();", 'title' => __('Click here to edit description'))); ?>
 									<?php endif; ?>
@@ -284,7 +284,7 @@
 									</div>
 									<br style="clear: both;">
 								</div>
-								<?php if ($issue->canEditDescription()): ?>
+								<?php if ($issue->isEditable() && $issue->canEditDescription()): ?>
 								<div id="description_change" style="display: none;">
 									<form id="description_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'description')) ?>', 'description'); return false;">
 										<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'description_form_value', 'height' => '100px', 'width' => '100%', 'value' => ($issue->getDescription()))); ?>
@@ -301,7 +301,7 @@
 						<div id="reproduction_steps_field"<?php if (!$issue->isReproductionStepsVisible()): ?> style="display: none;"<?php endif; ?> class="hoverable">
 							<div id="reproduction_steps_header" class="rounded_box invisible nohover viewissue_reproduction_steps<?php if ($issue->isReproduction_StepsChanged()): ?> issue_detail_changed<?php endif; ?><?php if (!$issue->isReproduction_StepsMerged()): ?> issue_detail_unmerged<?php endif; ?>" style="margin: 0;">
 								<div class="viewissue_reproduction_steps_header">
-									<?php if ($issue->canEditReproductionSteps()): ?>
+									<?php if ($issue->isEditable() && $issue->canEditReproductionSteps()): ?>
 										<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>', 'reproduction_steps');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a> <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'reproduction_steps_undo_spinning')); ?>
 										<?php echo image_tag('icon_edit.png', array('class' => 'dropdown', 'id' => 'reproduction_steps_edit', 'onclick' => "$('reproduction_steps_change').show(); $('reproduction_steps_name').hide(); $('no_reproduction_steps').hide();", 'title' => __('Click here to edit reproduction steps'))); ?>
 									<?php endif; ?>
@@ -316,7 +316,7 @@
 									</div>
 									<br style="clear: both;">
 								</div>
-								<?php if ($issue->canEditReproductionSteps()): ?>
+								<?php if ($issue->isEditable() && $issue->canEditReproductionSteps()): ?>
 								<div id="reproduction_steps_change" style="display: none;">
 									<form id="reproduction_steps_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'reproduction_steps')) ?>', 'reproduction_steps'); return false;">
 										<?php include_template('main/textarea', array('area_name' => 'value', 'area_id' => 'reproduction_steps_form_value', 'height' => '100px', 'width' => '100%', 'value' => ($issue->getReproductionSteps()))); ?>
@@ -411,7 +411,7 @@
 			</div>
 			<div id="tab_attached_information_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
 				<div id="viewissue_attached_information">
-					<?php if ($issue->canAttachLinks() || (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles())): ?>
+					<?php if ($issue->isEditable() && ($issue->canAttachLinks() || (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()))): ?>
 						<?php if ($issue->canAttachLinks()): ?>
 							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_link').show();" value="<?php echo __('Attach a link'); ?>"></td></tr></table>
 						<?php endif; ?>
@@ -454,20 +454,22 @@
 				</div>
 			</div>
 			<div id="tab_related_issues_and_tasks_pane" style="padding-top: 5px; margin: 0 5px 0 5px; display: none;">
-				<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="add_task_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('viewissue_add_task_div').toggle();" value="<?php echo __('Add a task to this issue'); ?>"></td></tr></table>
-				<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="relate_to_existing_issue_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Relate to an existing issue'); ?>"></td></tr></table>
-				<br style="clear: both;">
-				<div class="rounded_box mediumgrey shadowed" id="viewissue_add_task_div" style="margin: 5px 0 5px 0; display: none; position: absolute; font-size: 12px; width: 400px;">
-					<form id="viewissue_add_task_form" action="<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStoryTask('<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>', <?php echo $issue->getID(); ?>, 'issue');return false;">
-						<div>
-							<label for="viewissue_task_name_input"><?php echo __('Add task'); ?>&nbsp;</label>
-							<input type="text" name="task_name" id="viewissue_task_name_input">
-							<input type="submit" value="<?php echo __('Add task'); ?>">
-							<a class="close_micro_popup_link" href="javascript:void(0);" onclick="$('viewissue_add_task_div').toggle();"><?php echo __('Done'); ?></a>
-							<?php echo image_tag('spinning_20.gif', array('id' => 'add_task_indicator', 'style' => 'display: none;')); ?><br>
-						</div>
-					</form>
-				</div>
+				<?php if ($issue->isEditable()): ?>
+					<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="add_task_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('viewissue_add_task_div').toggle();" value="<?php echo __('Add a task to this issue'); ?>"></td></tr></table>
+					<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="relate_to_existing_issue_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');" value="<?php echo __('Relate to an existing issue'); ?>"></td></tr></table>
+					<br style="clear: both;">
+					<div class="rounded_box mediumgrey shadowed" id="viewissue_add_task_div" style="margin: 5px 0 5px 0; display: none; position: absolute; font-size: 12px; width: 400px;">
+						<form id="viewissue_add_task_form" action="<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>" method="post" accept-charset="<?php echo TBGSettings::getCharset(); ?>" onsubmit="addUserStoryTask('<?php echo make_url('project_scrum_story_addtask', array('project_key' => $issue->getProject()->getKey(), 'story_id' => $issue->getID(), 'mode' => 'issue')); ?>', <?php echo $issue->getID(); ?>, 'issue');return false;">
+							<div>
+								<label for="viewissue_task_name_input"><?php echo __('Add task'); ?>&nbsp;</label>
+								<input type="text" name="task_name" id="viewissue_task_name_input">
+								<input type="submit" value="<?php echo __('Add task'); ?>">
+								<a class="close_micro_popup_link" href="javascript:void(0);" onclick="$('viewissue_add_task_div').toggle();"><?php echo __('Done'); ?></a>
+								<?php echo image_tag('spinning_20.gif', array('id' => 'add_task_indicator', 'style' => 'display: none;')); ?><br>
+							</div>
+						</form>
+					</div>
+				<?php endif; ?>
 				<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
 					<tr>
 						<td id="related_parent_issues_inline" style="width: 360px;">
@@ -501,7 +503,6 @@
 				</table>
 			</div>
 			<div id="tab_duplicate_issues_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">
-				<br>
 				<?php $data = $issue->getDuplicateIssues(); ?>
 				<?php if (count($data) != 0): ?>
 				<div class="header"><?php echo __('The following issues are duplicates of this issue:'); ?></div>
@@ -509,12 +510,9 @@
 				<div class="no_items"><?php echo __('This issue has no duplicates'); ?></div>
 				<?php endif; ?>
 				<ul>
-					<?php
-					foreach ($data as $issue)
-					{
-						include_template('main/duplicateissue', array('duplicate_issue' => $issue));
-					}
-					?>
+					<?php foreach ($data as $issue): ?>
+						<?php include_template('main/duplicateissue', array('duplicate_issue' => $issue)); ?>
+					<?php endforeach; ?>
 				</ul>
 			</div>
 			<div id="tab_affected_pane" style="padding-top: 0; margin: 0 5px 0 5px; display: none;">

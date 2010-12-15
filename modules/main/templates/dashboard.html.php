@@ -2,14 +2,14 @@
 
 	$tbg_response->setTitle('Dashboard');
 	$tbg_response->addBreadcrumb(link_tag(make_url('dashboard'), __('Personal dashboard')));
-	$tbg_response->addBreadcrumb(javascript_link_tag(image_tag('cfg_icon_wizard.png'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config'))."');")));
+	//$tbg_response->addBreadcrumb(javascript_link_tag(image_tag('cfg_icon_wizard.png'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config'))."');")));
 	$tbg_response->addJavascript('dashboard.js');
 	$tbg_response->addFeed(make_url('my_reported_issues', array('format' => 'rss')), __('Issues reported by me'));
 	$tbg_response->addFeed(make_url('my_assigned_issues', array('format' => 'rss')), __('Open issues assigned to you'));
 	$tbg_response->addFeed(make_url('my_teams_assigned_issues', array('format' => 'rss')), __('Open issues assigned to your teams'));
 
 ?>
-<?php include_component('main/hideableInfoBox', array('key' => 'dashboard_didyouknow', 'title' => __('Did you know?'), 'content' => ('This dashboard page is accessible from anywhere. Click your username in the top right header area at any time to access your dashboard.'))); ?>
+<?php include_component('main/hideableInfoBox', array('key' => 'dashboard_didyouknow', 'title' => __('This is your personal dashboard'), 'content' => ('This is your personal dashboard page, your starting point in The Bug Genie. This dashboard page will show projects and people you are associated with, as well as any views you need.') . '<br><br><i>' . __('Your dashboard page is accessible from anywhere - click your username in the top right header area at any time to access your dashboard.') . '</i>')); ?>
 <table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td id="dashboard_lefthand" class="side_bar">
@@ -33,6 +33,7 @@
 			<?php TBGEvent::createNew('core', 'dashboard_main_bottom')->trigger(); ?>
 		</td>
 		<td id="dashboard_righthand" class="side_bar">
+			<?php echo javascript_link_tag(image_tag('icon_dashboard_config.png').'<span>'.__('Customize your dashboard').'</span>', array('title' => __('Customize your dashboard'), 'id' => 'customize_dashboard_icon', 'class' => 'image', 'onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config'))."');")); ?>
 			<div class="header" style="margin: 7px 5px 5px 0;"><?php echo __('Your projects'); ?></div>
 			<?php if (count($tbg_user->getAssociatedProjects()) > 0): ?>
 				<ul id="associated_projects">

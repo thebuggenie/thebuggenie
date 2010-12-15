@@ -729,6 +729,9 @@ table.issue_affects td img { vertical-align: bottom; }
 
 /* user dashboard styling */
 #dashboard { list-style-type: none; padding: 0; margin: 0 5px 0 10px; clear: both; }
+#customize_dashboard_icon img, #customize_dashboard_icon span { float: right; margin-right: 10px; }
+#customize_dashboard_icon span { display: none; color: #AAA; font-size: 1.1em; }
+#customize_dashboard_icon:hover span { display: inherit; }
 #dashboard li { font-size: 12px; font-weight: normal; clear: none; margin: 5px 5px 5px 0; text-align: left; float: left; width: 460px; }
 #dashboard li table tr td { font-size: 1em; font-weight: normal; vertical-align: top; }
 #dashboard li table tr.issue_closed td { text-decoration: line-through; color: #aaa; }
@@ -737,10 +740,12 @@ table.issue_affects td img { vertical-align: bottom; }
 #dashboard li.narrow { width: 300px; }
 #dashboard li.wide { width: 700px; }
 #dashboard li .header { margin: 2px 0 5px 0; padding: 3px 3px 3px 0; font-weight: bold;  border-bottom: 1px solid #CCC; background-color: #FFF; }
+#dashboard .dashboard_view_header { font-weight: bold; color: #666; font-size: 1em; padding: 4px; }
+#dashboard .dashboard_view_header img { margin-right: 2px; }
 #dashboard .latest_action_dates{ font-weight: bold;  padding: 5px 0 5px 0; }
 #dashboard .faded_out.smaller { font-size: 11px; padding-right: 5px; }
 
-#dashboard_lefthand, #dashboard_righthand { font-size: 0.95em; }
+#dashboard_lefthand, #dashboard_righthand { font-size: 0.95em; position: relative; }
 #dashboard_lefthand { width: 250px; }
 #dashboard_lefthand a.friend { color: #00a400; }
 #dashboard_lefthand a.friend:hover { border-bottom: 1px solid #CCC; }

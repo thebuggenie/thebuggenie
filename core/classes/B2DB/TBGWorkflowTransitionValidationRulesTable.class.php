@@ -1,7 +1,7 @@
 <?php
 
 	/**
-	 * Workflow transition actions table
+	 * Workflow transition validation rules table
 	 *
 	 * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
 	 ** @version 3.0
@@ -11,37 +11,37 @@
 	 */
 
 	/**
-	 * Workflow transition actions table
+	 * Workflow transition validation rules table
 	 *
 	 * @package thebuggenie
 	 * @subpackage tables
 	 */
-	class TBGWorkflowTransitionActionsTable extends TBGB2DBTable
+	class TBGWorkflowTransitionValidationRulesTable extends TBGB2DBTable
 	{
 
-		const B2DBNAME = 'workflow_transition_actions';
-		const ID = 'workflow_transition_actions.id';
-		const SCOPE = 'workflow_transition_actions.scope';
-		const ACTION_TYPE = 'workflow_transition_actions.action_type';
-		const TRANSITION_ID = 'workflow_transition_actions.transition_id';
-		const TARGET_VALUE = 'workflow_transition_actions.target_value';
+		const B2DBNAME = 'workflow_transition_validation_rules';
+		const ID = 'workflow_transition_validation_rules.id';
+		const SCOPE = 'workflow_transition_validation_rules.scope';
+		const RULE = 'workflow_transition_validation_rules.rule';
+		const TRANSITION_ID = 'workflow_transition_validation_rules.transition_id';
+		const RULE_VALUE = 'workflow_transition_validation_rules.rule_value';
 
 		/**
 		 * Return an instance of this table
 		 *
-		 * @return TBGWorkflowTransitionActionsTable
+		 * @return TBGWorkflowTransitionValidationRulesTable
 		 */
 		public static function getTable()
 		{
-			return B2DB::getTable('TBGWorkflowTransitionActionsTable');
+			return B2DB::getTable('TBGWorkflowTransitionValidationRulesTable');
 		}
 
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
-			parent::_addVarchar(self::ACTION_TYPE, 100);
-			parent::_addVarchar(self::TARGET_VALUE, 200);
+			parent::_addVarchar(self::RULE, 100);
+			parent::_addVarchar(self::RULE_VALUE, 200);
 			parent::_addForeignKeyColumn(self::TRANSITION_ID, TBGWorkflowTransitionsTable::getTable(), TBGWorkflowTransitionsTable::ID);
 		}
 		
@@ -56,7 +56,7 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$actions[$row->get(self::ACTION_TYPE)] = $row->get(self::TARGET_VALUE);
+					$actions[$row->get(self::ID)] = TBGContext::factory()->TBGWorkflowTransitionValidationRule($row->get(self::ID), $row);
 				}
 			}
 			

@@ -19,6 +19,8 @@
 	class TBGWorkflowTransition extends TBGIdentifiableClass
 	{
 
+		const ACTION_ASSIGN_ISSUE_SELF = 'assign_self';
+		
 		static protected $_b2dbtablename = 'TBGWorkflowTransitionsTable';
 		
 		/**
@@ -50,6 +52,8 @@
 		 * @var TBGRequest
 		 */
 		protected $_request = null;
+		
+		protected $_validation_rules = null;
 		
 		protected $_validation_errors = array();
 
@@ -207,9 +211,30 @@
 		{
 			TBGWorkflowStepTransitionsTable::getTable()->deleteByTransitionID($this->getID());
 		}
+
+		protected function _populateValidationRules()
+		{
+			if ($this->_validation_rules === null)
+			{
+				$this->_validation_rules = TBGWorkflowTransitionValidationRulesTable::getTable()->getByTransitionID($this->getID());
+			}
+		}
+		
+		public function getValidationRules()
+		{
+			$this->_populateValidationRules();
+			return $this->_validation_rules;
+		}
 		
 		public function isAvailableForIssue(TBGIssue $issue)
 		{
+			foreach ($this->getValidationRules() as $validation_rule)
+			{
+				if ($validation_rule instanceof TBGWorkflowTransitionValidationRule)
+				{
+					if (!$validation_rule->isValid()) return false;
+				}
+			}
 			return true;
 		}
 		
@@ -218,6 +243,14 @@
 			return ($this->getOutgoingStep()->isClosed()) ? array('resolution', 'status') : array();
 		}
 
+		protected function _populateActions()
+		{
+			if ($this->_actions === null)
+			{
+				$this->_actions = TBGWorkflowTransitionActionsTable::getTable()->getByTransitionID($this->getID());
+			}
+		}
+		
 		public function getActions()
 		{
 			$this->_populateActions();
@@ -279,6 +312,16 @@
 						break;
 					case 'resolution':
 						$issue->setResolution($request->getParameter("{$property}_id"));
+						break;
+				}
+			}
+			
+			foreach ($this->getActions() as $action => $value)
+			{
+				switch ($action)
+				{
+					case self::ACTION_ASSIGN_ISSUE_SELF:
+						$issue->setAssignee(TBGContext::getUser());
 						break;
 				}
 			}

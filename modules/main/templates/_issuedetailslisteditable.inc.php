@@ -128,125 +128,141 @@
 	<dl class="viewissue_list" id="pain_bug_type_field">
 		<dt id="pain_bug_type_header" class="<?php if ($issue->isPainBugTypeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainBugTypeMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Type of bug'); ?></dt>
 		<dd id="pain_bug_type_content" class="<?php if ($issue->isPainBugTypeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainBugTypeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type')); ?>', 'pain_bug_type');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_bug_type_undo_spinning')); ?>
-			<a href="javascript:void(0);" onclick="$('pain_bug_type_change').toggle();" title="<?php echo __('Click to triage type of bug'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+			<?php if ($issue->isEditable()): ?>
+				<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type')); ?>', 'pain_bug_type');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+				<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_bug_type_undo_spinning')); ?>
+				<a href="javascript:void(0);" onclick="$('pain_bug_type_change').toggle();" title="<?php echo __('Click to triage type of bug'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+			<?php endif; ?>
 			<span id="pain_bug_type_name"<?php if (!$issue->hasPainBugType()): ?> style="display: none;"<?php endif; ?>>
 				<?php echo ($issue->hasPainBugType()) ? $issue->getPainBugTypeLabel() : ''; ?>
 			</span>
 			<span class="faded_out" id="no_pain_bug_type"<?php if ($issue->hasPainBugType()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
 		</dd>
 	</dl>
-	<div class="rounded_box white shadowed" id="pain_bug_type_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="padding: 5px;">
-			<div class="dropdown_header"><?php echo __('Triage bug type'); ?></div>
-			<div class="dropdown_content">
-				<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type', 'pain_bug_type_id' => 0)); ?>', 'pain_bug_type');"><?php echo __('Clear bug type'); ?></a><br>
+	<?php if ($issue->isEditable()): ?>
+		<div class="rounded_box white shadowed" id="pain_bug_type_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
+			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+			<div class="xboxcontent" style="padding: 5px;">
+				<div class="dropdown_header"><?php echo __('Triage bug type'); ?></div>
+				<div class="dropdown_content">
+					<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type', 'pain_bug_type_id' => 0)); ?>', 'pain_bug_type');"><?php echo __('Clear bug type'); ?></a><br>
+				</div>
+				<div class="dropdown_content">
+					<?php echo __('%clear_the_bugtype% or click to select a new bug type', array('%clear_the_bugtype%' => '')); ?>:<br>
+					<ul class="choices">
+						<?php foreach (TBGIssue::getPainTypesOrLabel('pain_bug_type') as $choice_id => $choice): ?>
+							<li>
+								<?php //echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type', 'pain_bug_type_id' => $choice_id)); ?>', 'pain_bug_type');"><?php echo $choice; ?></a>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+					<div id="pain_bug_type_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+				</div>
+				<div id="pain_bug_type_change_error" class="error_message" style="display: none;"></div>
 			</div>
-			<div class="dropdown_content">
-				<?php echo __('%clear_the_bugtype% or click to select a new bug type', array('%clear_the_bugtype%' => '')); ?>:<br>
-				<ul class="choices">
-					<?php foreach (TBGIssue::getPainTypesOrLabel('pain_bug_type') as $choice_id => $choice): ?>
-						<li>
-							<?php //echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type', 'pain_bug_type_id' => $choice_id)); ?>', 'pain_bug_type');"><?php echo $choice; ?></a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-				<div id="pain_bug_type_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-			</div>
-			<div id="pain_bug_type_change_error" class="error_message" style="display: none;"></div>
+			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-	</div>
+	<?php endif; ?>
 	<dl class="viewissue_list" id="pain_likelihood_field">
 		<dt id="pain_likelihood_header" class="<?php if ($issue->isPainLikelihoodChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainLikelihoodMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Likelihood'); ?></dt>
 		<dd id="pain_likelihood_content" class="<?php if ($issue->isPainLikelihoodChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainLikelihoodMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood')); ?>', 'pain_likelihood');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_likelihood_undo_spinning')); ?>
-			<a href="javascript:void(0);" onclick="$('pain_likelihood_change').toggle();" title="<?php echo __('Click to triage likelihood'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+			<?php if ($issue->isEditable()): ?>
+				<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood')); ?>', 'pain_likelihood');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+				<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_likelihood_undo_spinning')); ?>
+				<a href="javascript:void(0);" onclick="$('pain_likelihood_change').toggle();" title="<?php echo __('Click to triage likelihood'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+			<?php endif; ?>
 			<span id="pain_likelihood_name"<?php if (!$issue->hasPainLikelihood()): ?> style="display: none;"<?php endif; ?>>
 				<?php echo ($issue->hasPainLikelihood()) ? $issue->getPainLikelihoodLabel() : ''; ?>
 			</span>
 			<span class="faded_out" id="no_pain_likelihood"<?php if ($issue->hasPainLikelihood()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
 		</dd>
 	</dl>
-	<div class="rounded_box white shadowed" id="pain_likelihood_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="padding: 5px;">
-			<div class="dropdown_header"><?php echo __('Triage likelihood'); ?></div>
-			<div class="dropdown_content">
-				<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood', 'pain_likelihood_id' => 0)); ?>', 'pain_likelihood');"><?php echo __('Clear likelihood'); ?></a><br>
+	<?php if ($issue->isEditable()): ?>
+		<div class="rounded_box white shadowed" id="pain_likelihood_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
+			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+			<div class="xboxcontent" style="padding: 5px;">
+				<div class="dropdown_header"><?php echo __('Triage likelihood'); ?></div>
+				<div class="dropdown_content">
+					<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood', 'pain_likelihood_id' => 0)); ?>', 'pain_likelihood');"><?php echo __('Clear likelihood'); ?></a><br>
+				</div>
+				<div class="dropdown_content">
+					<?php echo __('%clear_the_likelihood% or click to select a new likelihood', array('%clear_the_likelihood%' => '')); ?>:<br>
+					<ul class="choices">
+						<?php foreach (TBGIssue::getPainTypesOrLabel('pain_likelihood') as $choice_id => $choice): ?>
+							<li>
+								<?php //echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood', 'pain_likelihood_id' => $choice_id)); ?>', 'pain_likelihood');"><?php echo $choice; ?></a>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+					<div id="pain_likelihood_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+				</div>
+				<div id="pain_likelihood_change_error" class="error_message" style="display: none;"></div>
 			</div>
-			<div class="dropdown_content">
-				<?php echo __('%clear_the_likelihood% or click to select a new likelihood', array('%clear_the_likelihood%' => '')); ?>:<br>
-				<ul class="choices">
-					<?php foreach (TBGIssue::getPainTypesOrLabel('pain_likelihood') as $choice_id => $choice): ?>
-						<li>
-							<?php //echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood', 'pain_likelihood_id' => $choice_id)); ?>', 'pain_likelihood');"><?php echo $choice; ?></a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-				<div id="pain_likelihood_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-			</div>
-			<div id="pain_likelihood_change_error" class="error_message" style="display: none;"></div>
+			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-	</div>
+	<?php endif; ?>
 	<dl class="viewissue_list" id="pain_effect_field">
 		<dt id="pain_effect_header" class="<?php if ($issue->isPainEffectChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainEffectMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Effect'); ?></dt>
 		<dd id="pain_effect_content" class="<?php if ($issue->isPainEffectChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPainEffectMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect')); ?>', 'pain_effect');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_effect_undo_spinning')); ?>
-			<a href="javascript:void(0);" onclick="$('pain_effect_change').toggle();" title="<?php echo __('Click to triage effect'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+			<?php if ($issue->isEditable()): ?>
+				<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect')); ?>', 'pain_effect');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+				<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_effect_undo_spinning')); ?>
+				<a href="javascript:void(0);" onclick="$('pain_effect_change').toggle();" title="<?php echo __('Click to triage effect'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+			<?php endif; ?>
 			<span id="pain_effect_name"<?php if (!$issue->hasPainEffect()): ?> style="display: none;"<?php endif; ?>>
 				<?php echo ($issue->hasPainEffect()) ? $issue->getPainEffectLabel() : ''; ?>
 			</span>
 			<span class="faded_out" id="no_pain_effect"<?php if ($issue->hasPainEffect()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not triaged'); ?></span>
 		</dd>
 	</dl>
-	<div class="rounded_box white shadowed" id="pain_effect_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="padding: 5px;">
-			<div class="dropdown_header"><?php echo __('Triage effect'); ?></div>
-			<div class="dropdown_content">
-				<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect', 'pain_effect_id' => 0)); ?>', 'pain_effect');"><?php echo __('Clear effect'); ?></a><br>
+	<?php if ($issue->isEditable()): ?>
+		<div class="rounded_box white shadowed" id="pain_effect_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
+			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+			<div class="xboxcontent" style="padding: 5px;">
+				<div class="dropdown_header"><?php echo __('Triage effect'); ?></div>
+				<div class="dropdown_content">
+					<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect', 'pain_effect_id' => 0)); ?>', 'pain_effect');"><?php echo __('Clear effect'); ?></a><br>
+				</div>
+				<div class="dropdown_content">
+					<?php echo __('%clear_the_effect% or click to select a new effect', array('%clear_the_effect%' => '')); ?>:<br>
+					<ul class="choices">
+						<?php foreach (TBGIssue::getPainTypesOrLabel('pain_effect') as $choice_id => $choice): ?>
+							<li>
+								<?php //echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect', 'pain_effect_id' => $choice_id)); ?>', 'pain_effect');"><?php echo $choice; ?></a>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+					<div id="pain_effect_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+				</div>
+				<div id="pain_effect_change_error" class="error_message" style="display: none;"></div>
 			</div>
-			<div class="dropdown_content">
-				<?php echo __('%clear_the_effect% or click to select a new effect', array('%clear_the_effect%' => '')); ?>:<br>
-				<ul class="choices">
-					<?php foreach (TBGIssue::getPainTypesOrLabel('pain_effect') as $choice_id => $choice): ?>
-						<li>
-							<?php //echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect', 'pain_effect_id' => $choice_id)); ?>', 'pain_effect');"><?php echo $choice; ?></a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-				<div id="pain_effect_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-			</div>
-			<div id="pain_effect_change_error" class="error_message" style="display: none;"></div>
+			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-	</div>
+	<?php endif; ?>
 </div>
 <dl class="viewissue_list" id="posted_by_field">
 	<dt id="posted_by_header" class="<?php if ($issue->isPostedByChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPostedByMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Posted by'); ?></dt>
 	<dd id="posted_by_content" class="<?php if ($issue->isPostedByChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPostedByMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-		<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'posted_by')); ?>', 'posted_by');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-		<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'posted_by_undo_spinning')); ?>
-		<a href="javascript:void(0);" onclick="$('posted_by_change').toggle();" title="<?php echo __('Click to change owner'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+		<?php if ($issue->isEditable()): ?>
+			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'posted_by')); ?>', 'posted_by');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'posted_by_undo_spinning')); ?>
+			<a href="javascript:void(0);" onclick="$('posted_by_change').toggle();" title="<?php echo __('Click to change owner'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+		<?php endif; ?>
 		<div style="width: 170px; display: inline;" id="posted_by_name">
 			<?php echo include_component('main/userdropdown', array('user' => $issue->getPostedBy())); ?>
 		</div>
 		<span id="no_posted_by" style="display: none;"> </span>
 	</dd>
 </dl>
-<?php include_component('identifiableselector', array(	'html_id' 			=> 'posted_by_change', 
-														'header' 			=> __('Change poster'),
-														'allow_clear'		=> false,
-														'clear_link_text'	=> '',
-														'callback'		 	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'posted_by', 'value' => '%identifiable_value%')) . "', 'posted_by');",
-														'base_id'			=> 'posted_by',
-														'absolute'			=> true)); ?>
+<?php if ($issue->isEditable()): ?>
+	<?php include_component('identifiableselector', array(	'html_id' 			=> 'posted_by_change', 
+															'header' 			=> __('Change poster'),
+															'allow_clear'		=> false,
+															'clear_link_text'	=> '',
+															'callback'		 	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'posted_by', 'value' => '%identifiable_value%')) . "', 'posted_by');",
+															'base_id'			=> 'posted_by',
+															'absolute'			=> true)); ?>
+<?php endif; ?>
 <dl class="viewissue_list" id="owned_by_field">
 	<dt id="owned_by_header" class="<?php if ($issue->isOwnedByChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isOwnedByMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Owned by'); ?></dt>
 	<dd id="owned_by_content" class="<?php if ($issue->isOwnedByChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isOwnedByMerged()): ?> issue_detail_unmerged<?php endif; ?>">
@@ -273,98 +289,108 @@
 <dl class="viewissue_list" id="estimated_time_field"<?php if (!$issue->isEstimatedTimeVisible()): ?> style="display: none;"<?php endif; ?>>
 	<dt id="estimated_time_header" class="<?php if ($issue->isEstimatedTimeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isEstimatedTimeMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Estimated time'); ?></dt>
 	<dd id="estimated_time_content" class="<?php if ($issue->isEstimatedTimeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isEstimatedTimeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-		<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time')); ?>', 'estimated_time');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-		<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'estimated_time_undo_spinning')); ?>
-		<a href="javascript:void(0);" onclick="$('estimated_time_change').toggle();" title="<?php echo __('Click to estimate this issue'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+		<?php if ($issue->isEditable()): ?>
+			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time')); ?>', 'estimated_time');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'estimated_time_undo_spinning')); ?>
+			<a href="javascript:void(0);" onclick="$('estimated_time_change').toggle();" title="<?php echo __('Click to estimate this issue'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+		<?php endif; ?>
 		<span id="estimated_time_name"<?php if (!$issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>>
 			<?php echo $issue->getFormattedTime($issue->getEstimatedTime()); ?>
 		</span>
 		<span class="faded_out" id="no_estimated_time"<?php if ($issue->hasEstimatedTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not estimated'); ?></span>
 	</dd>
 </dl>
-<div class="rounded_box white shadowed" id="estimated_time_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
-	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-	<div class="xboxcontent" style="padding: 5px;">
-		<form id="estimated_time_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="setTimeField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time')); ?>', 'estimated_time');return false;">
-			<div class="dropdown_header"><?php echo __('Estimate this issue'); ?></div>
-			<div class="dropdown_content">
-				<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time', 'value' => 0)); ?>', 'estimated_time');"><?php echo __('Clear current estimate'); ?></a><br>
-			</div>
-			<div class="dropdown_content">
-				<label for="estimated_time_input"><?php echo trim(__('%clear_current_estimate% type a new estimate %or_select_below%', array('%clear_current_estimate%' => '', '%or_select_below%' => ''))); ?>:</label><br>
-				<?php $estimated_time_title = __('Enter your estimate here'); ?>
-				<input type="text" name="estimated_time" id="estimated_time_input" value="<?php echo $estimated_time_title; ?>" style="width: 240px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $estimated_time_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $estimated_time_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
-				<input type="submit" style="width: 60px;" value="<?php echo __('Estimate'); ?>">
-				<div class="faded_out" style="padding: 5px 0 5px 0;"><?php echo __('Enter an estimate in plain text, like "1 week, 2 hours", "3 months and 1 day", or similar'); ?>.</div>
-			</div>
-			<div class="dropdown_content">
-				<label for="estimated_time_months"><?php echo __('or enter an estimate below'); ?>:</label><br>
-				<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedMonths(); ?>" name="estimated_time_months" id="estimated_time_months"><b><?php echo __('%number_of% months', array('%number_of%' => '')); ?></b><br>
-				<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedWeeks(); ?>" name="estimated_time_weeks" id="estimated_time_weeks"><b><?php echo __('%number_of% weeks', array('%number_of%' => '')); ?></b><br>
-				<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedDays(); ?>" name="estimated_time_days" id="estimated_time_days"><b><?php echo __('%number_of% days', array('%number_of%' => '')); ?></b><br>
-				<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedHours(); ?>" name="estimated_time_hours" id="estimated_time_hours"><b><?php echo __('%number_of% hours', array('%number_of%' => '')); ?></b><br>
-				<input type="submit" style="width: 60px; float: right;" value="<?php echo __('Estimate'); ?>">
-				<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedPoints(); ?>" name="estimated_time_points" id="estimated_time_points"><b><?php echo __('%number_of% points', array('%number_of%' => '')); ?></b><br>
-			</div>
-		</form>
-		<div id="estimated_time_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-		<div id="estimated_time_change_error" class="error_message" style="display: none;"></div>
+<?php if ($issue->isEditable()): ?>
+	<div class="rounded_box white shadowed" id="estimated_time_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
+		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+		<div class="xboxcontent" style="padding: 5px;">
+			<form id="estimated_time_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="setTimeField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time')); ?>', 'estimated_time');return false;">
+				<div class="dropdown_header"><?php echo __('Estimate this issue'); ?></div>
+				<div class="dropdown_content">
+					<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time', 'value' => 0)); ?>', 'estimated_time');"><?php echo __('Clear current estimate'); ?></a><br>
+				</div>
+				<div class="dropdown_content">
+					<label for="estimated_time_input"><?php echo trim(__('%clear_current_estimate% type a new estimate %or_select_below%', array('%clear_current_estimate%' => '', '%or_select_below%' => ''))); ?>:</label><br>
+					<?php $estimated_time_title = __('Enter your estimate here'); ?>
+					<input type="text" name="estimated_time" id="estimated_time_input" value="<?php echo $estimated_time_title; ?>" style="width: 240px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $estimated_time_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $estimated_time_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
+					<input type="submit" style="width: 60px;" value="<?php echo __('Estimate'); ?>">
+					<div class="faded_out" style="padding: 5px 0 5px 0;"><?php echo __('Enter an estimate in plain text, like "1 week, 2 hours", "3 months and 1 day", or similar'); ?>.</div>
+				</div>
+				<div class="dropdown_content">
+					<label for="estimated_time_months"><?php echo __('or enter an estimate below'); ?>:</label><br>
+					<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedMonths(); ?>" name="estimated_time_months" id="estimated_time_months"><b><?php echo __('%number_of% months', array('%number_of%' => '')); ?></b><br>
+					<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedWeeks(); ?>" name="estimated_time_weeks" id="estimated_time_weeks"><b><?php echo __('%number_of% weeks', array('%number_of%' => '')); ?></b><br>
+					<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedDays(); ?>" name="estimated_time_days" id="estimated_time_days"><b><?php echo __('%number_of% days', array('%number_of%' => '')); ?></b><br>
+					<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedHours(); ?>" name="estimated_time_hours" id="estimated_time_hours"><b><?php echo __('%number_of% hours', array('%number_of%' => '')); ?></b><br>
+					<input type="submit" style="width: 60px; float: right;" value="<?php echo __('Estimate'); ?>">
+					<input type="text" style="width: 20px;" value="<?php echo $issue->getEstimatedPoints(); ?>" name="estimated_time_points" id="estimated_time_points"><b><?php echo __('%number_of% points', array('%number_of%' => '')); ?></b><br>
+				</div>
+			</form>
+			<div id="estimated_time_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+			<div id="estimated_time_change_error" class="error_message" style="display: none;"></div>
+		</div>
+		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 	</div>
-	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-</div>
+<?php endif; ?>
 <dl class="viewissue_list" id="spent_time_field"<?php if (!$issue->isSpentTimeVisible()): ?> style="display: none;"<?php endif; ?>>
 	<dt id="spent_time_header" class="<?php if ($issue->isSpentTimeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isSpentTimeMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Time spent'); ?></dt>
 	<dd id="spent_time_content" class="<?php if ($issue->isSpentTimeChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isSpentTimeMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-		<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time')); ?>', 'spent_time');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-		<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'spent_time_undo_spinning')); ?>
-		<a href="javascript:void(0);" onclick="$('spent_time_change').toggle();" title="<?php echo __('Click to enter time spent on this issue'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+		<?php if ($issue->isEditable()): ?>
+			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time')); ?>', 'spent_time');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'spent_time_undo_spinning')); ?>
+			<a href="javascript:void(0);" onclick="$('spent_time_change').toggle();" title="<?php echo __('Click to enter time spent on this issue'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+		<?php endif; ?>
 		<span id="spent_time_name"<?php if (!$issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>>
 			<?php echo $issue->getFormattedTime($issue->getSpentTime()); ?>
 		</span>
 		<span class="faded_out" id="no_spent_time"<?php if ($issue->hasSpentTime()): ?> style="display: none;"<?php endif; ?>><?php echo __('No time spent'); ?></span>
 	</dd>
 </dl>
-<div class="rounded_box white shadowed" id="spent_time_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
-	<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-	<div class="xboxcontent" style="padding: 5px;">
-		<form id="spent_time_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="setTimeField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time')); ?>', 'spent_time');return false;">
-			<div class="dropdown_header"><?php echo __('Set time spent on this issue'); ?></div>
-			<div class="dropdown_content">
-				<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time', 'value' => 0)); ?>', 'spent_time');"><?php echo __('Clear time spent on this issue'); ?></a><br>
-			</div>
-			<div class="dropdown_content">
-				<label for="spent_time_input"><?php echo trim(__("%clear_time_spent% enter how much time you've spent %or_select_below%", array('%clear_time_spent%' => '', '%or_select_below%' => ''))); ?>:</label><br>
-				<?php $spent_time_title = __('Enter time spent here'); ?>
-				<input type="text" name="spent_time" id="spent_time_input" value="<?php echo $spent_time_title; ?>" style="width: 180px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $spent_time_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $spent_time_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
-				<input type="submit" style="width: 80px;" value="<?php echo __('Spend time'); ?>"><br>
-				<input type="checkbox" checked="checked" name="spent_time_added_text" value="true" id="spent_time_added_text"><label for="spent_time_added_text"><?php echo __('Add entered time to total time spent') ?></label>
-				<div class="faded_out" style="padding: 5px 0 5px 0;"><?php echo __('Enter time spent as plain text, like "1 day, 2 hours", "12 hours / 2 points", or similar'); ?>.</div>
-			</div>
-			<div class="dropdown_content">
-				<label for="spent_time_months"><?php echo __('or enter time spent below'); ?>:</label><br>
-				<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentMonths(); ?>" name="spent_time_months" id="spent_time_months"><b><?php echo __('%number_of% months', array('%number_of%' => '')); ?></b><br>
-				<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentWeeks(); ?>" name="spent_time_weeks" id="spent_time_weeks"><b><?php echo __('%number_of% weeks', array('%number_of%' => '')); ?></b><br>
-				<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentDays(); ?>" name="spent_time_days" id="spent_time_days"><b><?php echo __('%number_of% days', array('%number_of%' => '')); ?></b><br>
-				<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentHours(); ?>" name="spent_time_hours" id="spent_time_hours"><b><?php echo __('%number_of% hours', array('%number_of%' => '')); ?></b><br>
-				<input type="submit" style="width: 80px; float: right;" value="<?php echo __('Spend time'); ?>">
-				<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentPoints(); ?>" name="spent_time_points" id="spent_time_points"><b><?php echo __('%number_of% points', array('%number_of%' => '')); ?></b><br>
-				<input type="checkbox" name="spent_time_added_input" value="true" id="spent_time_added_input"><label for="spent_time_added_text"><?php echo __('Add entered time to total time spent') ?></label>
-			</div>
-		</form>
-		<div id="spent_time_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-		<div id="spent_time_change_error" class="error_message" style="display: none;"></div>
+<?php if ($issue->isEditable()): ?>
+	<div class="rounded_box white shadowed" id="spent_time_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
+		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+		<div class="xboxcontent" style="padding: 5px;">
+			<form id="spent_time_form" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="" onsubmit="setTimeField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time')); ?>', 'spent_time');return false;">
+				<div class="dropdown_header"><?php echo __('Set time spent on this issue'); ?></div>
+				<div class="dropdown_content">
+					<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'spent_time', 'value' => 0)); ?>', 'spent_time');"><?php echo __('Clear time spent on this issue'); ?></a><br>
+				</div>
+				<div class="dropdown_content">
+					<label for="spent_time_input"><?php echo trim(__("%clear_time_spent% enter how much time you've spent %or_select_below%", array('%clear_time_spent%' => '', '%or_select_below%' => ''))); ?>:</label><br>
+					<?php $spent_time_title = __('Enter time spent here'); ?>
+					<input type="text" name="spent_time" id="spent_time_input" value="<?php echo $spent_time_title; ?>" style="width: 180px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $spent_time_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $spent_time_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
+					<input type="submit" style="width: 80px;" value="<?php echo __('Spend time'); ?>"><br>
+					<input type="checkbox" checked="checked" name="spent_time_added_text" value="true" id="spent_time_added_text"><label for="spent_time_added_text"><?php echo __('Add entered time to total time spent') ?></label>
+					<div class="faded_out" style="padding: 5px 0 5px 0;"><?php echo __('Enter time spent as plain text, like "1 day, 2 hours", "12 hours / 2 points", or similar'); ?>.</div>
+				</div>
+				<div class="dropdown_content">
+					<label for="spent_time_months"><?php echo __('or enter time spent below'); ?>:</label><br>
+					<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentMonths(); ?>" name="spent_time_months" id="spent_time_months"><b><?php echo __('%number_of% months', array('%number_of%' => '')); ?></b><br>
+					<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentWeeks(); ?>" name="spent_time_weeks" id="spent_time_weeks"><b><?php echo __('%number_of% weeks', array('%number_of%' => '')); ?></b><br>
+					<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentDays(); ?>" name="spent_time_days" id="spent_time_days"><b><?php echo __('%number_of% days', array('%number_of%' => '')); ?></b><br>
+					<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentHours(); ?>" name="spent_time_hours" id="spent_time_hours"><b><?php echo __('%number_of% hours', array('%number_of%' => '')); ?></b><br>
+					<input type="submit" style="width: 80px; float: right;" value="<?php echo __('Spend time'); ?>">
+					<input type="text" style="width: 20px;" value="<?php echo $issue->getSpentPoints(); ?>" name="spent_time_points" id="spent_time_points"><b><?php echo __('%number_of% points', array('%number_of%' => '')); ?></b><br>
+					<input type="checkbox" name="spent_time_added_input" value="true" id="spent_time_added_input"><label for="spent_time_added_text"><?php echo __('Add entered time to total time spent') ?></label>
+				</div>
+			</form>
+			<div id="spent_time_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+			<div id="spent_time_change_error" class="error_message" style="display: none;"></div>
+		</div>
+		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 	</div>
-	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-</div>
+<?php endif; ?>
 <?php foreach ($fields_list as $field => $info): ?>
 	<dl class="viewissue_list" id="<?php echo $field; ?>_field"<?php if (!$info['visible']): ?> style="display: none;"<?php endif; ?>>
 		<dt id="<?php echo $field; ?>_header" class="<?php if ($info['changed']): ?>issue_detail_changed<?php endif; ?><?php if (!$info['merged']): ?> issue_detail_unmerged<?php endif; ?>">
 			<?php echo $info['title']; ?>
 		</dt>
 		<dd id="<?php echo $field; ?>_content" class="<?php if ($info['changed']): ?>issue_detail_changed<?php endif; ?><?php if (!$info['merged']): ?> issue_detail_unmerged<?php endif; ?>">
-			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field . '_undo_spinning')); ?>
-			<a href="javascript:void(0);" onclick="$('<?php echo $field; ?>_change').toggle();" title="<?php echo $info['change_tip']; ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+			<?php if ($issue->isEditable()): ?>
+				<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+				<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field . '_undo_spinning')); ?>
+				<a href="javascript:void(0);" onclick="$('<?php echo $field; ?>_change').toggle();" title="<?php echo $info['change_tip']; ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+			<?php endif; ?>
 			<?php if ($info['icon']): ?>
 				<?php echo image_tag($info['icon_name'], array('style' => 'float: left; margin-right: 5px;')); ?>
 			<?php endif; ?>
@@ -373,29 +399,31 @@
 		</dd>
 	</dl>
 	<div style="clear: both;"> </div>
-	<div class="rounded_box white shadowed" id="<?php echo $field; ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="padding: 5px;">
-			<div class="dropdown_header"><?php echo $info['change_header']; ?></div>
-			<div class="dropdown_content">
-				<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => 0)); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+	<?php if ($issue->isEditable()): ?>
+		<div class="rounded_box white shadowed" id="<?php echo $field; ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
+			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+			<div class="xboxcontent" style="padding: 5px;">
+				<div class="dropdown_header"><?php echo $info['change_header']; ?></div>
+				<div class="dropdown_content">
+					<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => 0)); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+				</div>
+				<div class="dropdown_content">
+					<?php echo $info['select']; ?>:<br>
+					<ul class="choices">
+						<?php foreach ($info['choices'] as $choice): ?>
+							<?php if ($choice instanceof TBGDatatypeBase && !$choice->canUserSet($tbg_user)) continue; ?>
+							<li>
+								<?php echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+					<div id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+				</div>
+				<div id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></div>
 			</div>
-			<div class="dropdown_content">
-				<?php echo $info['select']; ?>:<br>
-				<ul class="choices">
-					<?php foreach ($info['choices'] as $choice): ?>
-						<?php if ($choice instanceof TBGDatatypeBase && !$choice->canUserSet($tbg_user)) continue; ?>
-						<li>
-							<?php echo image_tag('icon_' . $field . '.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-				<div id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
-			</div>
-			<div id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></div>
+			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-	</div>
+	<?php endif; ?>
 <?php endforeach; ?>
 <?php foreach ($customfields_list as $field => $info): ?>
 	<?php if ($info['type'] == TBGCustomDatatype::INPUT_TEXTAREA_MAIN): continue; endif; ?>
@@ -404,9 +432,11 @@
 			<?php echo $info['title']; ?>
 		</dt>
 		<dd id="<?php echo $field; ?>_content" class="<?php if ($info['changed']): ?>issue_detail_changed<?php endif; ?><?php if (!$info['merged']): ?> issue_detail_unmerged<?php endif; ?>">
-			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field . '_undo_spinning')); ?>
-			<a href="javascript:void(0);" onclick="$('<?php echo $field; ?>_change').toggle();" title="<?php echo $info['change_tip']; ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+			<?php if ($issue->isEditable()): ?>
+				<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+				<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field . '_undo_spinning')); ?>
+				<a href="javascript:void(0);" onclick="$('<?php echo $field; ?>_change').toggle();" title="<?php echo $info['change_tip']; ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
+			<?php endif; ?>
 			<?php echo image_tag('icon_customdatatype.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 			<?php 
 				switch ($info['type'])
@@ -461,97 +491,99 @@
 		</dd>
 	</dl>
 	<div style="clear: both;"> </div>
-	<div class="rounded_box white shadowed" id="<?php echo $field; ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
-		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
-		<div class="xboxcontent" style="padding: 5px;">
-			<div class="dropdown_header"><?php echo $info['change_header']; ?></div>
-				<?php echo $info['select']; ?>:<br>
-				<?php if (array_key_exists('choices', $info)): ?>
-					<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
-					<ul class="choices">
-						<?php foreach ($info['choices'] as $choice): ?>
-							<?php if (!$choice->canUserSet($tbg_user)) continue; ?>
-							<li>
-								<?php echo image_tag('icon_customdatatype.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getValue())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
-							</li>
-						<?php endforeach; ?>
-					</ul>
-				<?php else:
+	<?php if ($issue->isEditable()): ?>
+		<div class="rounded_box white shadowed" id="<?php echo $field; ?>_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
+			<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
+			<div class="xboxcontent" style="padding: 5px;">
+				<div class="dropdown_header"><?php echo $info['change_header']; ?></div>
+					<?php echo $info['select']; ?>:<br>
+					<?php if (array_key_exists('choices', $info)): ?>
+						<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+						<ul class="choices">
+							<?php foreach ($info['choices'] as $choice): ?>
+								<?php if (!$choice->canUserSet($tbg_user)) continue; ?>
+								<li>
+									<?php echo image_tag('icon_customdatatype.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getValue())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					<?php else:
 
-					switch ($info['type'])
-					{
-						case TBGCustomDatatype::EDITIONS_CHOICE:
-							?>
-								<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
-								<ul class="choices">
-									<?php foreach (TBGEdition::getAllByProjectID($issue->getProject()->getID()) as $choice): ?>
-										<li>
-											<?php echo image_tag('icon_edition.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							<?php
-							break;
-						case TBGCustomDatatype::STATUS_CHOICE:
-							?>
-								<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
-								<ul class="choices">
-									<?php foreach (TBGStatus::getAll($issue->getProject()->getID()) as $choice): ?>
-										<li>
-											<div style="border: 1px solid #AAA; background-color: <?php echo $choice->getColor(); ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 7px; float: left;" id="status_color">&nbsp;</div><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							<?php
-							break;
-						case TBGCustomDatatype::COMPONENTS_CHOICE:
-							?>
-								<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
-								<ul class="choices">
-									<?php foreach (TBGComponent::getAllByProjectID($issue->getProject()->getID()) as $choice): ?>
-										<li>
-											<?php echo image_tag('icon_components.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							<?php
-							break;
-						case TBGCustomDatatype::RELEASES_CHOICE:
-							?>
-								<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
-								<ul class="choices">
-									<?php foreach (TBGBuild::getByProjectID($issue->getProject()->getID()) as $choice): ?>
-										<li>
-											<?php echo image_tag('icon_build.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							<?php
-							break;
-						case TBGCustomDatatype::INPUT_TEXT:
-							?>
-								<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
-								<form id="<?php echo $field; ?>_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)) ?>', '<?php echo $field; ?>', '<?php echo $field; ?>'); return false;">
-									<input type="text" name="<?php echo $field; ?>_value" value="<?php echo $info['name'] ?>" /><?php echo __('%save% or %cancel%', array('%save%' => '<input type="submit" value="'.__('Save').'">', '%cancel%' => '<a href="#" onClick="$(\''.$field.'_change\').hide(); return false;">'.__('cancel').'</a>')); ?>
-								</form>
-							<?php
-							break;
-						case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
-							?>
-								<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
-								<form id="<?php echo $field; ?>_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)) ?>', '<?php echo $field; ?>', '<?php echo $field; ?>'); return false;">
-									<?php include_template('main/textarea', array('area_name' => $field.'_value', 'area_id' => $field.'_value', 'height' => '100px', 'width' => '100%', 'value' => $info['name'])); ?>
-									<br><?php echo __('%save% or %cancel%', array('%save%' => '<input type="submit" value="'.__('Save').'">', '%cancel%' => '<a href="#" onClick="$(\''.$field.'_change\').hide(); return false;">'.__('cancel').'</a>')); ?>
-								</form>
-							<?php
-							break;
-					}
+						switch ($info['type'])
+						{
+							case TBGCustomDatatype::EDITIONS_CHOICE:
+								?>
+									<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+									<ul class="choices">
+										<?php foreach (TBGEdition::getAllByProjectID($issue->getProject()->getID()) as $choice): ?>
+											<li>
+												<?php echo image_tag('icon_edition.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								<?php
+								break;
+							case TBGCustomDatatype::STATUS_CHOICE:
+								?>
+									<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+									<ul class="choices">
+										<?php foreach (TBGStatus::getAll($issue->getProject()->getID()) as $choice): ?>
+											<li>
+												<div style="border: 1px solid #AAA; background-color: <?php echo $choice->getColor(); ?>; font-size: 1px; width: 20px; height: 15px; margin-right: 7px; float: left;" id="status_color">&nbsp;</div><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								<?php
+								break;
+							case TBGCustomDatatype::COMPONENTS_CHOICE:
+								?>
+									<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+									<ul class="choices">
+										<?php foreach (TBGComponent::getAllByProjectID($issue->getProject()->getID()) as $choice): ?>
+											<li>
+												<?php echo image_tag('icon_components.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								<?php
+								break;
+							case TBGCustomDatatype::RELEASES_CHOICE:
+								?>
+									<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+									<ul class="choices">
+										<?php foreach (TBGBuild::getByProjectID($issue->getProject()->getID()) as $choice): ?>
+											<li>
+												<?php echo image_tag('icon_build.png', array('style' => 'float: left; margin-right: 5px;')); ?><a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo $choice->getName(); ?></a>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								<?php
+								break;
+							case TBGCustomDatatype::INPUT_TEXT:
+								?>
+									<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+									<form id="<?php echo $field; ?>_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)) ?>', '<?php echo $field; ?>', '<?php echo $field; ?>'); return false;">
+										<input type="text" name="<?php echo $field; ?>_value" value="<?php echo $info['name'] ?>" /><?php echo __('%save% or %cancel%', array('%save%' => '<input type="submit" value="'.__('Save').'">', '%cancel%' => '<a href="#" onClick="$(\''.$field.'_change\').hide(); return false;">'.__('cancel').'</a>')); ?>
+									</form>
+								<?php
+								break;
+							case TBGCustomDatatype::INPUT_TEXTAREA_SMALL:
+								?>
+									<a href="javascript:void(0);" onclick="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a><br>
+									<form id="<?php echo $field; ?>_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>" method="post" onSubmit="setField('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)) ?>', '<?php echo $field; ?>', '<?php echo $field; ?>'); return false;">
+										<?php include_template('main/textarea', array('area_name' => $field.'_value', 'area_id' => $field.'_value', 'height' => '100px', 'width' => '100%', 'value' => $info['name'])); ?>
+										<br><?php echo __('%save% or %cancel%', array('%save%' => '<input type="submit" value="'.__('Save').'">', '%cancel%' => '<a href="#" onClick="$(\''.$field.'_change\').hide(); return false;">'.__('cancel').'</a>')); ?>
+									</form>
+								<?php
+								break;
+						}
 
-				endif; ?>
-				<div id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+					endif; ?>
+					<div id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
+				</div>
+				<div id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></div>
 			</div>
-			<div id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></div>
+			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 		</div>
-		<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-	</div>
+	<?php endif; ?>
 <?php endforeach; ?>

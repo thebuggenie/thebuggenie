@@ -5,8 +5,8 @@
 	<?php break; ?>		
 	
 	<?php case TBGDashboard::DASHBOARD_VIEW_LOGGED_ACTION : ?>
-		<div class="rounded_box mediumgrey borderless cut_bottom" style="margin-top: 5px; font-weight: bold; font-size: 13px;">
-			<?php echo image_tag('collapse.png', array('id' => 'dashboard_'.$id.'_collapse', 'onclick' => "Effect.toggle('dashboard_{$id}', 'slide'); this.src = (this.src == '" . image_url('collapse.png', false, 'core', false) . "') ? '" . image_url('expand.png', false, 'core', false) . "' : '" . image_url('collapse.png', false, 'core', false) . "'")); ?>
+		<div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
+			<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 			<?php echo __('What you\'ve done recently'); ?>
 		</div>
 		<div id="dashboard_<?php echo $id; ?>">
