@@ -539,6 +539,10 @@
 			{
 				$this->_buddyname = $this->_username;
 			}
+			if (!$this->_group_id)
+			{
+				$this->setGroup(TBGSettings::getDefaultGroup());
+			}
 		}
 
 		protected function _postSave($is_new)
@@ -553,6 +557,9 @@
 					$this->setActivated();
 					$this->save();
 				}
+				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES));
+				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES));
+				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_LOGGED_ACTION, 'id' => 0));
 			}
 			
 			if ($this->_timezone !== null)

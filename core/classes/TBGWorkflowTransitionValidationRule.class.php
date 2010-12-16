@@ -43,6 +43,21 @@
 		 */
 		protected $_workflow_id = null;
 
+		/**
+		 * Return the workflow
+		 *
+		 * @return TBGWorkflow
+		 */
+		public function getWorkflow()
+		{
+			return $this->_getPopulatedObjectFromProperty('_workflow_id');
+		}
+
+		public function setWorkflow(TBGWorkflow $workflow)
+		{
+			$this->_workflow_id = $workflow;
+		}
+
 		public function setTransition(TBGWorkflowTransition $transition)
 		{
 			$this->_transition_id = $transition;
@@ -79,7 +94,7 @@
 			{
 				case self::RULE_MAX_ASSIGNED_ISSUES:
 					$num_issues = (int) $this->getRuleValue();
-					return (bool) (count(TBGContext::getUser()->getIssues()) < $num_issues);
+					return ($num_issues) ? (bool) (count(TBGContext::getUser()->getUserAssignedIssues()) < $num_issues) : true;
 					break;
 			}
 		}

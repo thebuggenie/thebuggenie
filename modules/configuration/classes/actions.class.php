@@ -75,6 +75,7 @@
 					
 					$user1 = new TBGUser();
 					$user1->setUsername('john');
+					$user1->setPassword('john');
 					$user1->setBuddyname('John');
 					$user1->setRealname('John');
 					$user1->setActivated();
@@ -84,6 +85,7 @@
 					
 					$user2 = new TBGUser();
 					$user2->setUsername('jane');
+					$user2->setPassword('jane');
 					$user2->setBuddyname('Jane');
 					$user2->setRealname('Jane');
 					$user2->setActivated();
@@ -93,6 +95,7 @@
 					
 					$user3 = new TBGUser();
 					$user3->setUsername('jackdaniels');
+					$user3->setPassword('jackdaniels');
 					$user3->setBuddyname('Jack');
 					$user3->setRealname('Jack Daniels');
 					$user3->setActivated();
@@ -2390,6 +2393,19 @@
 						{
 							$this->transition->deleteTransition($request->getParameter('direction'));
 							return $this->renderJSON(array('failed' => false));
+						}
+						elseif ($request->getParameter('mode') == 'delete_validation_rule')
+						{
+							$this->rule = TBGContext::factory()->TBGWorkflowTransitionValidationRule($request->getParameter('rule_id'));
+							$this->rule->delete();
+							return $this->renderJSON(array('failed' => false));
+						}
+						elseif ($request->getParameter('mode') == 'update_validation_rule')
+						{
+							$this->rule = TBGContext::factory()->TBGWorkflowTransitionValidationRule($request->getParameter('rule_id'));
+							$this->rule->setRuleValue($request->getParameter('rule_value'));
+							$this->rule->save();
+							return $this->renderJSON(array('failed' => false, 'content' => ($this->rule->getRuleValue()) ? $this->rule->getRuleValue() : TBGContext::getI18n()->__('Unlimited')));
 						}
 						elseif ($request->getParameter('transition_name') && $request->getParameter('outgoing_step_id') && $request->hasParameter('template'))
 						{

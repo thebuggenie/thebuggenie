@@ -178,7 +178,7 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 	});
 }
 
-function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done, update_div, insertion)
+function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done, update_div, insertion, show_divs_when_done)
 {
 	var params = Form.serialize(formname);
 	new Ajax.Request(url, {
@@ -239,6 +239,21 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 						$(s).hide();
 					}
 					else if ($(s)) s.hide();
+				});
+			}
+			if (is_string(show_divs_when_done) && $(show_divs_when_done))
+			{
+				$(show_divs_when_done).show();
+			}
+			else if (show_divs_when_done) 
+			{
+				show_divs_when_done.each(function(s)
+				{
+					if (is_string(s) && $(s))
+					{
+						$(s).show();
+					}
+					else if ($(s)) s.show();
 				});
 			}
 		}

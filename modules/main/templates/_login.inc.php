@@ -68,3 +68,6 @@
 		failedMessage('<?php echo $options['error']; ?>');
 	</script>
 <?php endif; ?>
+<script type="text/javascript">
+	$('tbg3_username').focus();
+</script>

@@ -3,6 +3,7 @@
 	if ($workflow instanceof TBGWorkflow)
 	{
 		$tbg_response->setTitle(__('Configure workflow "%workflow_name%"', array('%workflow_name%' => $workflow->getName())));
+		$tbg_response->addJavascript('config/workflow.js');
 	}
 	else
 	{
@@ -103,6 +104,34 @@
 						</div>
 					</div>
 					<br style="clear: both;">
+					<br style="clear: both;">
+					<div class="tab_menu">
+						<ul id="transition_menu">
+							<li class="selected" id="validation_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('validation_tab', 'transition_menu');"><?php echo __('Pre-transition validation'); ?></a></li>
+							<li id="actions_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('actions_tab', 'transition_menu');"><?php echo __('Post-transition actions'); ?></a></li>
+						</ul>
+					</div>
+					<div id="transition_menu_panes">
+						<div id="validation_tab_menu">
+							<div class="content" style="padding: 5px 0 10px 2px;">
+								<?php echo __('The following validation rules has to be fullfilled for the transition to be available to the user'); ?>
+							</div>
+							<?php if ($transition->hasValidationRules()): ?>
+								<table cellpadding="0" cellspacing="0" style="width: 100%;">
+									<tbody class="hover_highlight">
+									<?php foreach ($transition->getValidationRules() as $rule): ?>
+										<?php include_template('configuration/workflowtransitionvalidationrule', array('rule' => $rule)); ?>
+									<?php endforeach; ?>
+									</tbody>
+								</table>
+							<?php else: ?>
+								<span class="faded_out"><?php echo __('This transition has no validation rules'); ?></span>
+							<?php endif; ?>
+						</div>
+						<div id="actions_tab_menu">
+							
+						</div>
+					</div>
 				<?php else: ?>
 					<div class="rounded_box red borderless" id="no_such_workflow_error">
 						<div class="header"><?php echo $error; ?></div>

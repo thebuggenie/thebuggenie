@@ -1,0 +1,50 @@
+<tr id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>">
+	<?php
+
+		switch ($rule->getRule())
+		{
+			case TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
+				?>
+				<td id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description" style="padding: 2px;">
+					<?php echo __('Current user can have no more than %number% issues already assigned', array('%number%' => '<span id="workflowtransitionvalidationrule_'.$rule->getID().'_value" style="font-weight: bold;">' . (($rule->getRuleValue()) ? (int) $rule->getRuleValue() : __('Unlimited')) . '</span>')); ?>
+				</td>
+				<td id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit" style="display: none; padding: 2px;">
+					<form action="<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>" onsubmit="updateWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_update_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID())); ?>', <?php echo $rule->getID(); ?>);return false;" id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_form">
+						<input type="submit" value="<?php echo __('Update'); ?>" style="float: right;">
+						<label for="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_input"><?php echo __('Current user can have no more than this many issues assigned'); ?></label>
+						<select id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_input" name="rule_value">
+							<?php foreach (range(0, 5) as $option): ?>
+								<option value="<?php echo $option; ?>"<?php if ((int) $rule->getRuleValue() == $option) echo ' selected'; ?>><?php echo ($option == 0) ? __('Unlimited') : $option; ?></option>
+							<?php endforeach; ?>
+						</select>
+						<?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionvalidationrule_' . $rule->getID() . '_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
+					</form>
+				</td>
+				<td style="width: 100px; text-align: right;">
+					<button id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit_button" onclick="$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_cancel_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit').toggle();"><?php echo __('Edit'); ?></button>
+					<button id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_button" onclick="$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete').toggle();"><?php echo __('Delete'); ?></button>
+					<button id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_cancel_button" onclick="$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_cancel_button').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_description').toggle();$('workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_edit').toggle();" style="display: none;"><?php echo __('Cancel'); ?></button>
+				</td>
+				<?php
+				break;
+		}
+
+	?>
+</tr>
+<?php if (true || !$rule->getTransition()->isCore()): ?>
+<tr>
+	<td colspan="2">
+		<div class="rounded_box white shadowed" style="position: absolute; width: 285px; display: none;" id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete">
+			<div class="header"><?php echo __('Confirm delete validation rule'); ?></div>
+			<div class="content">
+				<?php echo __('Do you really want to delete this validation rule?'); ?>
+				<div style="text-align: right;">
+					<?php echo javascript_link_tag(__('Yes'), array('onclick' => "deleteWorkflowTransitionValidationRule('".make_url('configure_workflow_transition_delete_validation_rule', array('workflow_id' => $rule->getWorkflow()->getID(), 'transition_id' => $rule->getTransition()->getID(), 'rule_id' => $rule->getID()))."', {$rule->getID()});")); ?> ::
+					<b><?php echo javascript_link_tag(__('No'), array('onclick' => "\$('workflowtransitionvalidationrule_{$rule->getID()}_delete').toggle();")); ?></b>
+				</div>
+				<div style="padding: 10px 0 10px 0; display: none;" id="workflowtransitionvalidationrule_<?php echo $rule->getID(); ?>_delete_indicator"><span style="float: left;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
+			</div>
+		</div>
+	</td>
+</tr>
+<?php endif; ?>

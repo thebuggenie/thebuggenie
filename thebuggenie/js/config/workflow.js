@@ -29,3 +29,13 @@ function updateWorkflowScheme(url, scheme_id)
 {
 	_postFormWithJSONFeedback(url, 'workflow_scheme_form', 'workflow_scheme_indicator');
 }
+
+function updateWorkflowTransitionValidationRule(url, rule_id)
+{
+	_postFormWithJSONFeedback(url, 'workflowtransitionvalidationrule_' + rule_id + '_form', 'workflowtransitionvalidationrule_' + rule_id + '_indicator', ['workflowtransitionvalidationrule_' + rule_id + '_cancel_button', 'workflowtransitionvalidationrule_' + rule_id + '_edit'], 'workflowtransitionvalidationrule_' + rule_id + '_value', false, ['workflowtransitionvalidationrule_' + rule_id + '_edit_button', 'workflowtransitionvalidationrule_' + rule_id + '_delete_button', 'workflowtransitionvalidationrule_' + rule_id + '_description']);
+}
+
+function deleteWorkflowTransitionValidationRule(url, rule_id)
+{
+	_updateDivWithJSONFeedback(url, null, 'workflowtransitionvalidationrule_' + rule_id + '_delete_indicator', false, false, null, ['workflowtransitionvalidationrule_' + rule_id + '_delete', 'workflowtransitionvalidationrule_' + rule_id], null, 'post');
+}

@@ -49,10 +49,11 @@
 				<?php echo javascript_link_tag(__('Add a view to my dashboard'), array('onclick' => "addDashboardView();")); ?>
 				<?php echo javascript_link_tag(image_tag('action_add_small.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "addDashboardView();")); ?>
 			</li>
-			<li class="rounded_box white" style="margin: 5px 10px; text-align: center;">
-				<?php echo javascript_link_tag(__('Save my dashboard'), array('onclick' => "saveDashboard('" . make_url('dashboard_save') . "');")); ?>
-			</li>
 		</ul>
+		<div style="text-align: right; padding: 10px;">
+			<?php echo __("When you're happy, save your changes"); ?>
+			<button onclick="saveDashboard('<?php echo make_url('dashboard_save'); ?>');" style="float: right; margin-left: 10px;"><?php echo __('Save my dashboard'); ?></button>
+		</div>
 	</div>
 	<div class="backdrop_detail_footer">
 		<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Close'); ?></a>

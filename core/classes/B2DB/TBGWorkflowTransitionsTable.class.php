@@ -84,6 +84,7 @@
 						$rule->setTransition($transition_object);
 						$rule->setRule($validation['rule']);
 						$rule->setRuleValue($validation['value']);
+						$rule->setWorkflow($transition_object->getWorkflow());
 						$rule->save();
 					}
 				}

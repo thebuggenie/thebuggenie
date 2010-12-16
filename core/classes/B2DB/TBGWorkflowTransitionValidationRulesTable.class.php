@@ -24,6 +24,7 @@
 		const SCOPE = 'workflow_transition_validation_rules.scope';
 		const RULE = 'workflow_transition_validation_rules.rule';
 		const TRANSITION_ID = 'workflow_transition_validation_rules.transition_id';
+		const WORKFLOW_ID = 'workflow_transition_validation_rules.workflow_id';
 		const RULE_VALUE = 'workflow_transition_validation_rules.rule_value';
 
 		/**
@@ -43,6 +44,7 @@
 			parent::_addVarchar(self::RULE, 100);
 			parent::_addVarchar(self::RULE_VALUE, 200);
 			parent::_addForeignKeyColumn(self::TRANSITION_ID, TBGWorkflowTransitionsTable::getTable(), TBGWorkflowTransitionsTable::ID);
+			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
 		}
 		
 		public function getByTransitionID($transition_id)

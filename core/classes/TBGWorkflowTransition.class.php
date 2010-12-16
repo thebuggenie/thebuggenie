@@ -225,6 +225,11 @@
 			$this->_populateValidationRules();
 			return $this->_validation_rules;
 		}
+
+		public function hasValidationRules()
+		{
+			return (bool) count($this->getValidationRules());
+		}
 		
 		public function isAvailableForIssue(TBGIssue $issue)
 		{
