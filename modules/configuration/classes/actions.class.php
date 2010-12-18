@@ -1791,6 +1791,11 @@
 		{
 			try
 			{
+				if (!($request->getParameter('group_id') > 3))
+				{
+					throw new Exception(TBGContext::getI18n()->__("You cannot delete the default groups"));
+				}
+				
 				try
 				{
 					$group = TBGContext::factory()->TBGGroup($request->getParameter('group_id'));
