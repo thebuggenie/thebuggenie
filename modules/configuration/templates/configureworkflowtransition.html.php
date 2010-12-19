@@ -175,8 +175,11 @@
 									<select name="action_type" id="workflowtransitionaction_add_type">
 										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE; ?>"><?php echo __('Assign the issue to a user'); ?></option>
 										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF; ?>"><?php echo __('Assign the issue to the current user'); ?></option>
+										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_CLEAR_PRIORITY)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_PRIORITY; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_PRIORITY; ?>"><?php echo __('Clear issue priority'); ?></option>
 										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_PRIORITY; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_PRIORITY; ?>"><?php echo __('Set issue priority'); ?></option>
+										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_CLEAR_REPRODUCABILITY)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_REPRODUCABILITY; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_REPRODUCABILITY; ?>"><?php echo __('Clear issue reproducability'); ?></option>
 										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY; ?>"><?php echo __('Set issue reproducability'); ?></option>
+										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION; ?>"><?php echo __('Clear issue resolution'); ?></option>
 										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION; ?>"><?php echo __('Set issue resolution'); ?></option>
 										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_STATUS; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_STATUS; ?>"><?php echo __('Set issue status'); ?></option>
 									</select>
@@ -189,9 +192,16 @@
 								<?php foreach ($transition->getActions() as $action): ?>
 									<?php include_component('configuration/workflowtransitionaction', array('action' => $action)); ?>
 								<?php endforeach; ?>
+								<?php if ($transition->hasTemplate()): ?>
+									<tr>
+										<td colspan="2"><?php echo __('Add a comment if one is specified'); ?></td>
+									</tr>
+								<?php endif; ?>
 								</tbody>
 							</table>
-							<span class="faded_out" id="no_workflowtransitionactions"<?php if ($transition->hasActions()): ?> style="display: none;"<?php endif; ?>><?php echo __('This transition has no actions'); ?></span>
+							<?php if (!$transition->hasTemplate()): ?>
+								<span class="faded_out" id="no_workflowtransitionactions"<?php if ($transition->hasActions()): ?> style="display: none;"<?php endif; ?>><?php echo __('This transition has no actions'); ?></span>
+							<?php endif; ?>
 						</div>
 					</div>
 				<?php else: ?>

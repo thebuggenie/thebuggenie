@@ -22,9 +22,12 @@
 		const ACTION_ASSIGN_ISSUE_SELF = 'assign_self';
 		const ACTION_ASSIGN_ISSUE = 'assign_user';
 		const ACTION_SET_RESOLUTION = 'set_resolution';
+		const ACTION_CLEAR_RESOLUTION = 'clear_resolution';
 		const ACTION_SET_STATUS = 'set_status';
 		const ACTION_SET_PRIORITY = 'set_priority';
+		const ACTION_CLEAR_PRIORITY = 'clear_priority';
 		const ACTION_SET_REPRODUCABILITY = 'set_reproducability';
+		const ACTION_CLEAR_REPRODUCABILITY = 'clear_reproducability';
 		
 		static protected $_b2dbtablename = 'TBGWorkflowTransitionActionsTable';
 		
@@ -121,17 +124,32 @@
 					else
 						$issue->setStatus($request->getParameter('status_id'));
 					break;
+				case self::ACTION_CLEAR_PRIORITY:
+					$issue->setPriority(null);
+					break;
 				case self::ACTION_SET_PRIORITY:
 					if ($this->getTargetValue())
 						$issue->setPriority(TBGContext::factory()->TBGPriority((int) $this->getTargetValue()));
 					else
 						$issue->setPriority($request->getParameter('priority_id'));
 					break;
+				case self::ACTION_CLEAR_RESOLUTION:
+					$issue->setResolution(null);
+					break;
 				case self::ACTION_SET_RESOLUTION:
 					if ($this->getTargetValue())
 						$issue->setResolution(TBGContext::factory()->TBGResolution((int) $this->getTargetValue()));
 					else
 						$issue->setResolution($request->getParameter('resolution_id'));
+					break;
+				case self::ACTION_CLEAR_REPRODUCABILITY:
+					$issue->setReproducability(null);
+					break;
+				case self::ACTION_SET_REPRODUCABILITY:
+					if ($this->getTargetValue())
+						$issue->setReproducability(TBGContext::factory()->TBGReproducability((int) $this->getTargetValue()));
+					else
+						$issue->setReproducability($request->getParameter('reproducability_id'));
 					break;
 				case self::ACTION_ASSIGN_ISSUE:
 					if ($this->getTargetValue())
