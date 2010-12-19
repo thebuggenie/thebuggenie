@@ -118,7 +118,7 @@
 							<div class="content" style="padding: 5px 0 10px 2px;">
 								<?php echo __('The following validation rules has to be fullfilled for the transition to be available to the user'); ?>
 							</div>
-							<div class="rounded_box lightyellow">
+							<div class="rounded_box lightyellow" style="margin-bottom: 15px;">
 								<form action="<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre')); ?>" onsubmit="addWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre')); ?>', 'pre');return false;" id="workflowtransitionprevalidationrule_add_form">
 									<label for="workflowtransitionprevalidationrule_add_type"><?php echo __('Add pre transition validation rule'); ?></label>
 									<select name="rule" id="workflowtransitionprevalidationrule_add_type">
@@ -142,7 +142,7 @@
 								<div class="content" style="padding: 5px 0 10px 2px;">
 									<?php echo __('The following validation rules will be applied to the input given by the user in the transition view. If the validation fails, the transition will not take place.'); ?>
 								</div>
-								<div class="rounded_box lightyellow">
+								<div class="rounded_box lightyellow" style="margin-bottom: 15px;">
 									<form action="<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post')); ?>" onsubmit="addWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post')); ?>', 'post');return false;" id="workflowtransitionpostvalidationrule_add_form">
 										<label for="workflowtransitionpostvalidationrule_add_type"><?php echo __('Add post transition validation rule'); ?></label>
 										<select name="rule" id="workflowtransitionpostvalidationrule_add_type">
@@ -169,7 +169,7 @@
 							<div class="content" style="padding: 5px 0 10px 2px;">
 								<?php echo __('The following actions will be applied to the issue during this transition.'); ?>
 							</div>
-							<div class="rounded_box lightyellow">
+							<div class="rounded_box lightyellow" style="margin-bottom: 15px;">
 								<form action="<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>" onsubmit="addWorkflowTransitionAction('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>');return false;" id="workflowtransitionaction_add_form">
 									<label for="workflowtransitionaction_add_type"><?php echo __('Add transition action'); ?></label>
 									<select name="action_type" id="workflowtransitionaction_add_type">
