@@ -21,6 +21,7 @@
 		
 		const ACTION_ASSIGN_ISSUE_SELF = 'assign_self';
 		const ACTION_ASSIGN_ISSUE = 'assign_user';
+		const ACTION_CLEAR_ASSIGNEE = 'clear_assignee';
 		const ACTION_SET_RESOLUTION = 'set_resolution';
 		const ACTION_CLEAR_RESOLUTION = 'clear_resolution';
 		const ACTION_SET_STATUS = 'set_status';
@@ -150,6 +151,9 @@
 						$issue->setReproducability(TBGContext::factory()->TBGReproducability((int) $this->getTargetValue()));
 					else
 						$issue->setReproducability($request->getParameter('reproducability_id'));
+					break;
+				case self::ACTION_CLEAR_ASSIGNEE:
+					$issue->unsetAssignee();
 					break;
 				case self::ACTION_ASSIGN_ISSUE:
 					if ($this->getTargetValue())

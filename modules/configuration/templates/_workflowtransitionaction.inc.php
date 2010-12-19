@@ -4,9 +4,23 @@
 		switch ($action->getActionType())
 		{
 			case TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF:
+			case TBGWorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE:
+			case TBGWorkflowTransitionAction::ACTION_CLEAR_PRIORITY:
+			case TBGWorkflowTransitionAction::ACTION_CLEAR_REPRODUCABILITY:
+			case TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION:
 				?>
 				<td id="workflowtransitionaction_<?php echo $action->getID(); ?>_description" style="padding: 2px;">
-					<?php echo __('Assign the issue to the current user'); ?>
+					<?php if ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF): ?>
+						<?php echo __('Assign the issue to the current user'); ?>
+					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE): ?>
+						<?php echo __('Clear issue assignee'); ?>
+					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_CLEAR_PRIORITY): ?>
+						<?php echo __('Clear issue priority'); ?>
+					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_CLEAR_REPRODUCABILITY): ?>
+						<?php echo __('Clear issue reproducability'); ?>
+					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION): ?>
+						<?php echo __('Clear issue resolution'); ?>
+					<?php endif; ?>
 				</td>
 				<?php if (!$rule->getTransition()->isCore()): ?>
 					<td style="width: 100px; text-align: right;">
