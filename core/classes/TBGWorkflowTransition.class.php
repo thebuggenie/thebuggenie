@@ -114,7 +114,7 @@
 		 */
 		public function isCore()
 		{
-			return ($this->getWorkflow()->getID() == 1);
+			return $this->getWorkflow()->isCore();
 		}
 
 		public function getTemplate()

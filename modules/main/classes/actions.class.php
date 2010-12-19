@@ -74,7 +74,6 @@
 								}
 								catch (Exception $e)
 								{
-									throw $e;
 									$this->error = $e->getMessage();
 								}
 							}
@@ -96,7 +95,6 @@
 			}
 			elseif (TBGContext::hasMessage('issue_error'))
 			{
-				throw $e;
 				$this->error = TBGContext::getMessageAndClear('issue_error');
 			}
 			$this->issue = $issue;
