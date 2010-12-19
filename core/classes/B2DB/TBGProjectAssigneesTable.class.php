@@ -122,4 +122,19 @@
 			return $projects;
 		}
 		
+		public function getProjectsByTeamID($team_id)
+		{
+			$projects = array();
+			
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::TID, $team_id);
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$projects[$row->get(self::PROJECT_ID)] = TBGContext::factory()->TBGProject($row->get(self::PROJECT_ID), $row); 
+				}
+			}
+			return $projects;
+		}
 	}

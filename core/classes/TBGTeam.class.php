@@ -27,6 +27,8 @@
 		
 		protected static $_teams = null;
 		
+		protected $_associated_projects = null;
+		
 		public static function doesTeamNameExist($team_name)
 		{
 			return TBGTeamsTable::getTable()->doesTeamNameExist($team_name);
@@ -178,4 +180,28 @@
 			return $this->_num_members;
 		}
 		
+		/**
+		 * Get all the projects a team is associated with
+		 * 
+		 * @return array
+		 */
+		public function getAssociatedProjects()
+		{
+			if ($this->_associated_projects === null)
+			{
+				$this->_associated_projects = array();
+				
+				$projects = B2DB::getTable('TBGProjectAssigneesTable')->getProjectsByTeamID($this->getID());
+				$edition_projects = B2DB::getTable('TBGEditionAssigneesTable')->getProjectsByTeamID($this->getID());
+				$component_projects = B2DB::getTable('TBGComponentAssigneesTable')->getProjectsByTeamID($this->getID());
+
+				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects));
+				foreach ($project_ids as $project_id)
+				{
+					$this->_associated_projects[$project_id] = TBGContext::factory()->TBGProject($project_id);
+				}
+			}
+			
+			return $this->_associated_projects;
+		}
 	}

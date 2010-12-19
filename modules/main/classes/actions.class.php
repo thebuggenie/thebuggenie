@@ -215,8 +215,9 @@
 			$own = TBGProject::getAllByOwner($this->team);
 			$leader = TBGProject::getAllByLeader($this->team);
 			$qa = TBGProject::getAllByQaResponsible($this->team);
+			$proj = $this->team->getAssociatedProjects();
 			
-			$this->projects = array_unique(array_merge($own, $leader, $qa));
+			$this->projects = array_unique(array_merge($proj, $own, $leader, $qa));
 			$this->users = $this->team->getMembers();
 		}
 				
