@@ -21,13 +21,6 @@
 				<tr>
 					<td>
 						<b><?php echo __('Auto assign'); ?></b>
-							<?php include_component('main/identifiableselector', array(	'html_id'		=> 'comp_'.$component->getID().'_auto_assign_change',
-																					'header' 			=> __('Change / set auto assignee'),
-																					'clear_link_text'	=> __('Set auto assignee by noone'),
-																					'style'				=> array('position' => 'absolute'),
-																					'callback'			=> "setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
-																					'base_id'			=> 'comp_'.$component->getID().'_auto_assign',
-																					'absolute'			=> true)); ?>
 					</td>
 					<td style="<?php if (!$component->hasLeader()): ?>display: none; <?php endif; ?>padding: 2px;" id="comp_<?php echo $component->getID(); ?>_auto_assign_name">
 						<div style="width: 270px; display: <?php if ($component->hasLeader()): ?>inline<?php else: ?>none<?php endif; ?>;" id="comp_<?php echo $component->getID(); ?>_auto_assign_name">
@@ -48,6 +41,13 @@
 			<?php echo image_tag('spinning_20.gif', array('id' => 'component_'.$component->getID().'_indicator', 'style' => 'display: none;')); ?>
 			<input type="submit" value="<?php echo __('Save'); ?>"> <a href="javascript:void(0);" class="image" onclick="$('show_component_<?php print $component->getID(); ?>').show();$('edit_component_<?php print $component->getID(); ?>').hide();"><?php echo __('or cancel'); ?></a>
 			</form>
+			<?php include_component('main/identifiableselector', array(	'html_id'		=> 'comp_'.$component->getID().'_auto_assign_change',
+																	'header' 			=> __('Change / set auto assignee'),
+																	'clear_link_text'	=> __('Set auto assignee by noone'),
+																	'style'				=> array('position' => 'absolute'),
+																	'callback'			=> "setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
+																	'base_id'			=> 'comp_'.$component->getID().'_auto_assign',
+																	'absolute'			=> true)); ?>
 		</div>
 	</td>
 </tr>
