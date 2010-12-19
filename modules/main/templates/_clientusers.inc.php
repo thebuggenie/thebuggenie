@@ -7,9 +7,11 @@
 				<?php if (count($clientusers) == 0): ?>
 				<span class="faded_out"><?php echo __('There are no users assigned to this client'); ?></span>
 				<?php else: ?>
+					<ul class="client_users">
 					<?php foreach ($clientusers as $user): ?>
-						<?php echo include_component('main/userdropdown', array('user' => $user)); ?>
+						<li><?php echo include_component('main/userdropdown', array('user' => $user)); ?></li>
 					<?php endforeach; ?>
+					</ul>
 				<?php endif; ?>
 			</div>
 		</div>
