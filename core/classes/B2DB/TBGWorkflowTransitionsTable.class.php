@@ -52,15 +52,20 @@
 		public function loadFixtures(TBGScope $scope)
 		{
 			$transitions = array();
-			$transitions[] = array('name' => 'Investigate issue', 'description' => 'Assign the issue to yourself and start investigating it', 'to_step_id' => 2, 'template' => null, 'validations' => array(array('rule' => TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES, 'value' => 5)), 'actions' => array(array('action' => TBGWorkflowTransition::ACTION_ASSIGN_ISSUE_SELF)));
+			$transitions[] = array('name' => 'Investigate issue', 'description' => 'Assign the issue to yourself and start investigating it', 'to_step_id' => 2, 'template' => null, 'pre_validations' => array(TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES => 5), 'actions' => array(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF => null));
 			$transitions[] = array('name' => 'Confirm issue', 'description' => 'Confirm that the issue is valid', 'to_step_id' => 3, 'template' => null);
-			$transitions[] = array('name' => 'Reject issue', 'description' => 'Reject the issue as invalid', 'to_step_id' => 7, 'template' => 'main/updateissueproperties');
-			$transitions[] = array('name' => 'Accept issue', 'description' => 'Accept the issue and assign it to yourself', 'to_step_id' => 4, 'template' => null, 'validations' => array(array('rule' => TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES, 'value' => 5)), 'actions' => array(array('action' => TBGWorkflowTransition::ACTION_ASSIGN_ISSUE_SELF)));
+			$transitions[] = array('name' => 'Reject issue', 'description' => 'Reject the issue as invalid', 'to_step_id' => 7, 'template' => 'main/updateissueproperties', 'actions' => array(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION => 0));
+			$transitions[] = array('name' => 'Accept issue', 'description' => 'Accept the issue and assign it to yourself', 'to_step_id' => 4, 'template' => null, 'pre_validations' => array(TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES => 5), 'actions' => array(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF => null));
 			$transitions[] = array('name' => 'Reopen issue', 'description' => 'Reopen the issue', 'to_step_id' => 1, 'template' => null);
-			$transitions[] = array('name' => 'Assign issue', 'description' => 'Accept the issue and assign it to someone', 'to_step_id' => 4, 'template' => null);
+			$transitions[] = array('name' => 'Assign issue', 'description' => 'Accept the issue and assign it to someone', 'to_step_id' => 4, 'template' => 'main/updateissueproperties', 'actions' => array(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE => 0));
 			$transitions[] = array('name' => 'Mark ready for testing', 'description' => 'Mark the issue as ready to be tested', 'to_step_id' => 5, 'template' => null);
-			$transitions[] = array('name' => 'Resolve issue', 'description' => 'Resolve the issue', 'to_step_id' => 8, 'template' => 'main/updateissueproperties');
-			$transitions[] = array('name' => 'Test issue solution', 'description' => 'Check whether the solution is valid', 'to_step_id' => 6, 'template' => null, 'actions' => array(array('action' => TBGWorkflowTransition::ACTION_ASSIGN_ISSUE_SELF)));
+			$closed_statuses = array();
+			$closed_statuses[] = TBGStatus::getStatusByKeyish('closed')->getID();
+			$closed_statuses[] = TBGStatus::getStatusByKeyish('postponed')->getID();
+			$closed_statuses[] = TBGStatus::getStatusByKeyish('done')->getID();
+			$closed_statuses[] = TBGStatus::getStatusByKeyish('fixed')->getID();
+			$transitions[] = array('name' => 'Resolve issue', 'description' => 'Resolve the issue', 'to_step_id' => 8, 'template' => 'main/updateissueproperties', 'post_validations' => array(TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID => join(',', $closed_statuses)), 'actions' => array(TBGWorkflowTransitionAction::ACTION_SET_STATUS => 0, TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION => 0));
+			$transitions[] = array('name' => 'Test issue solution', 'description' => 'Check whether the solution is valid', 'to_step_id' => 6, 'template' => null, 'actions' => array(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF => null));
 			$transitions[] = array('name' => 'Accept issue solution', 'description' => 'Mark the issue as resolved', 'to_step_id' => 8, 'template' => 'main/updateissueproperties');
 			$transitions[] = array('name' => 'Reject issue solution', 'description' => 'Reject the proposed solution and mark the issue as in progress', 'to_step_id' => 4, 'template' => null);
 
@@ -75,32 +80,44 @@
 				$crit->addInsert(self::TEMPLATE, $transition['template']);
 				$res = $this->doInsert($crit);
 				$transition_id = $res->getInsertID();
-				if (array_key_exists('validations', $transition) && is_array($transition['validations']))
+				$transition_object = TBGContext::factory()->TBGWorkflowTransition($transition_id);
+				
+				if (array_key_exists('pre_validations', $transition) && is_array($transition['pre_validations']))
 				{
-					$transition_object = TBGContext::factory()->TBGWorkflowTransition($transition_id);
-					foreach ($transition['validations'] as $validation)
+					foreach ($transition['pre_validations'] as $type => $validation)
 					{
 						$rule = new TBGWorkflowTransitionValidationRule();
 						$rule->setTransition($transition_object);
-						$rule->setRule($validation['rule']);
-						$rule->setRuleValue($validation['value']);
+						$rule->setPre();
+						$rule->setRule($type);
+						$rule->setRuleValue($validation);
+						$rule->setWorkflow($transition_object->getWorkflow());
+						$rule->save();
+					}
+				}
+				if (array_key_exists('post_validations', $transition) && is_array($transition['post_validations']))
+				{
+					foreach ($transition['post_validations'] as $type => $validation)
+					{
+						$rule = new TBGWorkflowTransitionValidationRule();
+						$rule->setTransition($transition_object);
+						$rule->setPost();
+						$rule->setRule($type);
+						$rule->setRuleValue($validation);
 						$rule->setWorkflow($transition_object->getWorkflow());
 						$rule->save();
 					}
 				}
 				if (array_key_exists('actions', $transition) && is_array($transition['actions']))
 				{
-					foreach ($transition['actions'] as $action)
+					foreach ($transition['actions'] as $type => $action)
 					{
-						$crit = TBGWorkflowTransitionActionsTable::getTable()->getCriteria();
-						$crit->addInsert(TBGWorkflowTransitionActionsTable::SCOPE, TBGContext::getScope()->getID());
-						$crit->addInsert(TBGWorkflowTransitionActionsTable::ACTION_TYPE, $action['action']);
-						if (array_key_exists('value', $action))
-						{
-							$crit->addInsert(TBGWorkflowTransitionActionsTable::TARGET_VALUE, $action['value']);
-						}
-						$crit->addInsert(TBGWorkflowTransitionActionsTable::TRANSITION_ID, $transition_id);
-						TBGWorkflowTransitionActionsTable::getTable()->doInsert($crit);
+						$action_object = new TBGWorkflowTransitionAction();
+						$action_object->setActionType($type);
+						$action_object->setTransition($transition_object);
+						$action_object->setWorkflow($transition_object->getWorkflow());
+						if (!is_null($action)) $action_object->setTargetValue($action);
+						$action_object->save();
 					}
 				}
 			}

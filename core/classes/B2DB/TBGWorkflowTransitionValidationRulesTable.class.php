@@ -26,6 +26,7 @@
 		const TRANSITION_ID = 'workflow_transition_validation_rules.transition_id';
 		const WORKFLOW_ID = 'workflow_transition_validation_rules.workflow_id';
 		const RULE_VALUE = 'workflow_transition_validation_rules.rule_value';
+		const PRE_OR_POST = 'workflow_transition_validation_rules.pre_or_post';
 
 		/**
 		 * Return an instance of this table
@@ -41,6 +42,7 @@
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
+			parent::_addVarchar(self::PRE_OR_POST, 4);
 			parent::_addVarchar(self::RULE, 100);
 			parent::_addVarchar(self::RULE_VALUE, 200);
 			parent::_addForeignKeyColumn(self::TRANSITION_ID, TBGWorkflowTransitionsTable::getTable(), TBGWorkflowTransitionsTable::ID);
@@ -53,12 +55,12 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::TRANSITION_ID, $transition_id);
 			
-			$actions = array();
+			$actions = array('pre' => array(), 'post' => array());
 			if ($res = $this->doSelect($crit))
 			{
 				while ($row = $res->getNextRow())
 				{
-					$actions[$row->get(self::ID)] = TBGContext::factory()->TBGWorkflowTransitionValidationRule($row->get(self::ID), $row);
+					$actions[$row->get(self::PRE_OR_POST)][$row->get(self::RULE)] = TBGContext::factory()->TBGWorkflowTransitionValidationRule($row->get(self::ID), $row);
 				}
 			}
 			

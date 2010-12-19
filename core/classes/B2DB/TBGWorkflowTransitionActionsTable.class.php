@@ -24,6 +24,7 @@
 		const SCOPE = 'workflow_transition_actions.scope';
 		const ACTION_TYPE = 'workflow_transition_actions.action_type';
 		const TRANSITION_ID = 'workflow_transition_actions.transition_id';
+		const WORKFLOW_ID = 'workflow_transition_actions.workflow_id';
 		const TARGET_VALUE = 'workflow_transition_actions.target_value';
 
 		/**
@@ -43,6 +44,7 @@
 			parent::_addVarchar(self::ACTION_TYPE, 100);
 			parent::_addVarchar(self::TARGET_VALUE, 200);
 			parent::_addForeignKeyColumn(self::TRANSITION_ID, TBGWorkflowTransitionsTable::getTable(), TBGWorkflowTransitionsTable::ID);
+			parent::_addForeignKeyColumn(self::WORKFLOW_ID, TBGWorkflowsTable::getTable(), TBGWorkflowsTable::ID);
 		}
 		
 		public function getByTransitionID($transition_id)
@@ -50,17 +52,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$crit->addWhere(self::TRANSITION_ID, $transition_id);
-			
-			$actions = array();
-			if ($res = $this->doSelect($crit))
-			{
-				while ($row = $res->getNextRow())
-				{
-					$actions[$row->get(self::ACTION_TYPE)] = $row->get(self::TARGET_VALUE);
-				}
-			}
-			
-			return $actions;
+			return $this->doSelect($crit);
 		}
 
 	}

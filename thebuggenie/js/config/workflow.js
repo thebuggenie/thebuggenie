@@ -30,12 +30,32 @@ function updateWorkflowScheme(url, scheme_id)
 	_postFormWithJSONFeedback(url, 'workflow_scheme_form', 'workflow_scheme_indicator');
 }
 
+function addWorkflowTransitionValidationRule(url, mode)
+{
+	_postFormWithJSONFeedback(url, 'workflowtransition' + mode + 'validationrule_add_form', 'workflowtransition' + mode + 'validationrule_add_indicator', ['no_workflowtransition' + mode + 'validationrules', 'add_workflowtransition' + mode + 'validationrule_' + $('workflowtransition' + mode + 'validationrule_add_type').getValue()], 'workflowtransition' + mode + 'validationrules_list', true);
+}
+
 function updateWorkflowTransitionValidationRule(url, rule_id)
 {
 	_postFormWithJSONFeedback(url, 'workflowtransitionvalidationrule_' + rule_id + '_form', 'workflowtransitionvalidationrule_' + rule_id + '_indicator', ['workflowtransitionvalidationrule_' + rule_id + '_cancel_button', 'workflowtransitionvalidationrule_' + rule_id + '_edit'], 'workflowtransitionvalidationrule_' + rule_id + '_value', false, ['workflowtransitionvalidationrule_' + rule_id + '_edit_button', 'workflowtransitionvalidationrule_' + rule_id + '_delete_button', 'workflowtransitionvalidationrule_' + rule_id + '_description']);
 }
 
-function deleteWorkflowTransitionValidationRule(url, rule_id)
+function deleteWorkflowTransitionValidationRule(url, rule_id, type, mode)
 {
-	_updateDivWithJSONFeedback(url, null, 'workflowtransitionvalidationrule_' + rule_id + '_delete_indicator', false, false, null, ['workflowtransitionvalidationrule_' + rule_id + '_delete', 'workflowtransitionvalidationrule_' + rule_id], null, 'post');
+	_updateDivWithJSONFeedback(url, null, 'workflowtransitionvalidationrule_' + rule_id + '_delete_indicator', false, false, null, ['workflowtransitionvalidationrule_' + rule_id + '_delete', 'workflowtransitionvalidationrule_' + rule_id], ['add_workflowtransition' + type + 'validationrule_' + mode], 'post');
+}
+
+function addWorkflowTransitionAction(url)
+{
+	_postFormWithJSONFeedback(url, 'workflowtransitionaction_add_form', 'workflowtransitionaction_add_indicator', ['no_workflowtransitionactions', 'add_workflowtransitionaction_' + $('workflowtransitionaction_add_type').getValue()], 'workflowtransitionactions_list', true);
+}
+
+function updateWorkflowTransitionAction(url, action_id)
+{
+	_postFormWithJSONFeedback(url, 'workflowtransitionaction_' + action_id + '_form', 'workflowtransitionaction_' + action_id + '_indicator', ['workflowtransitionaction_' + action_id + '_cancel_button', 'workflowtransitionaction_' + action_id + '_edit'], 'workflowtransitionaction_' + action_id + '_value', false, ['workflowtransitionaction_' + action_id + '_edit_button', 'workflowtransitionaction_' + action_id + '_delete_button', 'workflowtransitionaction_' + action_id + '_description']);
+}
+
+function deleteWorkflowTransitionAction(url, action_id, type)
+{
+	_updateDivWithJSONFeedback(url, null, 'workflowtransitionaction_' + action_id + '_delete_indicator', false, false, null, ['workflowtransitionaction_' + action_id + '_delete', 'workflowtransitionaction_' + action_id], ['add_workflowtransitionaction_' + type], 'post');
 }

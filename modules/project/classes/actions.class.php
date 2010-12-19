@@ -873,7 +873,7 @@
 				$issue->save(false);
 				$comment_body = $this->comment . "\n\n" . $request->getParameter('message');
 				$comment = new TBGComment();
-				$comment->setTitle('Issue updated');
+				$comment->setTitle('Issue updated!');
 				$comment->setContent($comment_body);
 				$comment->setPostedBy(TBGContext::getUser()->getID());
 				$comment->setTargetID($issue->getID());

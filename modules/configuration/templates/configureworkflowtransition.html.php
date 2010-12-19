@@ -104,32 +104,94 @@
 						</div>
 					</div>
 					<br style="clear: both;">
-					<br style="clear: both;">
-					<div class="tab_menu">
+					<div class="tab_menu" style="margin-top: 35px;">
 						<ul id="transition_menu">
-							<li class="selected" id="validation_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('validation_tab', 'transition_menu');"><?php echo __('Pre-transition validation'); ?></a></li>
+							<li class="selected" id="pre_validation_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('pre_validation_tab', 'transition_menu');"><?php echo __('Pre-transition validation'); ?></a></li>
+							<?php if ($transition->hasTemplate()): ?>
+								<li id="post_validation_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('post_validation_tab', 'transition_menu');"><?php echo __('Post-transition validation'); ?></a></li>
+							<?php endif; ?>
 							<li id="actions_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('actions_tab', 'transition_menu');"><?php echo __('Post-transition actions'); ?></a></li>
 						</ul>
 					</div>
 					<div id="transition_menu_panes">
-						<div id="validation_tab_menu">
+						<div id="pre_validation_tab_pane">
 							<div class="content" style="padding: 5px 0 10px 2px;">
 								<?php echo __('The following validation rules has to be fullfilled for the transition to be available to the user'); ?>
 							</div>
-							<?php if ($transition->hasValidationRules()): ?>
+							<div class="rounded_box lightyellow">
+								<form action="<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre')); ?>" onsubmit="addWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre')); ?>', 'pre');return false;" id="workflowtransitionprevalidationrule_add_form">
+									<label for="workflowtransitionprevalidationrule_add_type"><?php echo __('Add pre transition validation rule'); ?></label>
+									<select name="rule" id="workflowtransitionprevalidationrule_add_type">
+										<option <?php if ($transition->hasPreValidationRule(TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionprevalidationrule_<?php echo TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES; ?>" value="<?php echo TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES; ?>"><?php echo __('Max number of assigned issues'); ?></option>
+									</select>
+									<input type="submit" value="<?php echo __('Add pre transition validation rule'); ?>">
+									<?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionprevalidationrule_add_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
+								</form>
+							</div>
+							<table cellpadding="0" cellspacing="0" style="width: 100%;">
+								<tbody class="hover_highlight" id="workflowtransitionprevalidationrules_list">
+								<?php foreach ($transition->getPreValidationRules() as $rule): ?>
+									<?php include_template('configuration/workflowtransitionvalidationrule', array('rule' => $rule)); ?>
+								<?php endforeach; ?>
+								</tbody>
+							</table>
+							<span class="faded_out" id="no_workflowtransitionprevalidationrules"<?php if ($transition->hasPreValidationRules()): ?> style="display: none;"<?php endif; ?>><?php echo __('This transition has no pre-validation rules'); ?></span>
+						</div>
+						<?php if ($transition->hasTemplate()): ?>
+							<div id="post_validation_tab_pane" style="display: none;">
+								<div class="content" style="padding: 5px 0 10px 2px;">
+									<?php echo __('The following validation rules will be applied to the input given by the user in the transition view. If the validation fails, the transition will not take place.'); ?>
+								</div>
+								<div class="rounded_box lightyellow">
+									<form action="<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post')); ?>" onsubmit="addWorkflowTransitionValidationRule('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post')); ?>', 'post');return false;" id="workflowtransitionpostvalidationrule_add_form">
+										<label for="workflowtransitionpostvalidationrule_add_type"><?php echo __('Add post transition validation rule'); ?></label>
+										<select name="rule" id="workflowtransitionpostvalidationrule_add_type">
+											<option <?php if ($transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionpostvalidationrule_<?php echo TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID; ?>" value="<?php echo TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID; ?>"><?php echo __('Validate specified priority'); ?></option>
+											<option <?php if ($transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionpostvalidationrule_<?php echo TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID; ?>" value="<?php echo TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID; ?>"><?php echo __('Validate specified reproducability'); ?></option>
+											<option <?php if ($transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionpostvalidationrule_<?php echo TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID; ?>" value="<?php echo TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID; ?>"><?php echo __('Validate specified resolution'); ?></option>
+											<option <?php if ($transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionpostvalidationrule_<?php echo TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID; ?>" value="<?php echo TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID; ?>"><?php echo __('Validate specified status'); ?></option>
+										</select>
+										<input type="submit" value="<?php echo __('Add post transition validation rule'); ?>">
+										<?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionpostvalidationrule_add_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
+									</form>
+								</div>
 								<table cellpadding="0" cellspacing="0" style="width: 100%;">
-									<tbody class="hover_highlight">
-									<?php foreach ($transition->getValidationRules() as $rule): ?>
+									<tbody class="hover_highlight" id="workflowtransitionpostvalidationrules_list">
+									<?php foreach ($transition->getPostValidationRules() as $rule): ?>
 										<?php include_template('configuration/workflowtransitionvalidationrule', array('rule' => $rule)); ?>
 									<?php endforeach; ?>
 									</tbody>
 								</table>
-							<?php else: ?>
-								<span class="faded_out"><?php echo __('This transition has no validation rules'); ?></span>
-							<?php endif; ?>
-						</div>
-						<div id="actions_tab_menu">
-							
+								<span class="faded_out" id="no_workflowtransitionpostvalidationrules"<?php if ($transition->hasPostValidationRules()): ?> style="display: none;"<?php endif; ?>><?php echo __('This transition has no post validation rules'); ?></span>
+							</div>
+						<?php endif; ?>
+						<div id="actions_tab_pane" style="display: none;">
+							<div class="content" style="padding: 5px 0 10px 2px;">
+								<?php echo __('The following actions will be applied to the issue during this transition.'); ?>
+							</div>
+							<div class="rounded_box lightyellow">
+								<form action="<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>" onsubmit="addWorkflowTransitionAction('<?php echo make_url('configure_workflow_transition_add_action', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>');return false;" id="workflowtransitionaction_add_form">
+									<label for="workflowtransitionaction_add_type"><?php echo __('Add transition action'); ?></label>
+									<select name="action_type" id="workflowtransitionaction_add_type">
+										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE; ?>"><?php echo __('Assign the issue to a user'); ?></option>
+										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF; ?>"><?php echo __('Assign the issue to the current user'); ?></option>
+										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_PRIORITY; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_PRIORITY; ?>"><?php echo __('Set issue priority'); ?></option>
+										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY; ?>"><?php echo __('Set issue reproducability'); ?></option>
+										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION; ?>"><?php echo __('Set issue resolution'); ?></option>
+										<option <?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS)): ?>style="display: none;"<?php endif; ?> id="add_workflowtransitionaction_<?php echo TBGWorkflowTransitionAction::ACTION_SET_STATUS; ?>" value="<?php echo TBGWorkflowTransitionAction::ACTION_SET_STATUS; ?>"><?php echo __('Set issue status'); ?></option>
+									</select>
+									<input type="submit" value="<?php echo __('Add transition action'); ?>">
+									<?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionaction_add_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
+								</form>
+							</div>
+							<table cellpadding="0" cellspacing="0" style="width: 100%;">
+								<tbody class="hover_highlight" id="workflowtransitionactions_list">
+								<?php foreach ($transition->getActions() as $action): ?>
+									<?php include_component('configuration/workflowtransitionaction', array('action' => $action)); ?>
+								<?php endforeach; ?>
+								</tbody>
+							</table>
+							<span class="faded_out" id="no_workflowtransitionactions"<?php if ($transition->hasActions()): ?> style="display: none;"<?php endif; ?>><?php echo __('This transition has no actions'); ?></span>
 						</div>
 					</div>
 				<?php else: ?>

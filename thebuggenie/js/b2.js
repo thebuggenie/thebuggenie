@@ -126,6 +126,10 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 			{
 				successMessage(json.title, json.content);
 			}
+			else if (json && (json.message))
+			{
+				successMessage(json.message);
+			}
 			if (hide_elements_on_success)
 			{
 				hide_elements_on_success.each(function(s)
@@ -135,6 +139,7 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 						$(s).hide();
 					}
 					else if ($(s)) s.hide();
+					else alert(s);
 				});
 			}
 			if (show_elements_on_success)
@@ -142,6 +147,7 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 				show_elements_on_success.each(function(s)
 				{
 					if ($(s)) $(s).show();
+					else alert(s);
 				});
 			}
 			if (onsuccess_callback)
@@ -239,6 +245,7 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 						$(s).hide();
 					}
 					else if ($(s)) s.hide();
+					else alert(s);
 				});
 			}
 			if (is_string(show_divs_when_done) && $(show_divs_when_done))
@@ -254,6 +261,7 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 						$(s).show();
 					}
 					else if ($(s)) s.show();
+					else alert(s);
 				});
 			}
 		}

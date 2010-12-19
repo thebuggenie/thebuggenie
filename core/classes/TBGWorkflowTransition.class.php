@@ -19,8 +19,6 @@
 	class TBGWorkflowTransition extends TBGIdentifiableClass
 	{
 
-		const ACTION_ASSIGN_ISSUE_SELF = 'assign_self';
-		
 		static protected $_b2dbtablename = 'TBGWorkflowTransitionsTable';
 		
 		/**
@@ -53,7 +51,7 @@
 		 */
 		protected $_request = null;
 		
-		protected $_validation_rules = null;
+		protected $_pre_validation_rules = null;
 		
 		protected $_validation_errors = array();
 
@@ -214,30 +212,67 @@
 
 		protected function _populateValidationRules()
 		{
-			if ($this->_validation_rules === null)
+			if ($this->_pre_validation_rules === null)
 			{
-				$this->_validation_rules = TBGWorkflowTransitionValidationRulesTable::getTable()->getByTransitionID($this->getID());
+				$rules = TBGWorkflowTransitionValidationRulesTable::getTable()->getByTransitionID($this->getID());
+				$this->_pre_validation_rules = $rules['pre'];
+				$this->_post_validation_rules = $rules['post'];
 			}
 		}
 		
-		public function getValidationRules()
+		public function getPreValidationRules()
 		{
 			$this->_populateValidationRules();
-			return $this->_validation_rules;
+			return $this->_pre_validation_rules;
 		}
 
-		public function hasValidationRules()
+		public function hasPreValidationRules()
 		{
-			return (bool) count($this->getValidationRules());
+			return (bool) count($this->getPreValidationRules());
+		}
+		
+		public function hasPreValidationRule($rule)
+		{
+			$rules = $this->getPreValidationRules();
+			return (array_key_exists($rule, $rules));
+		}
+		
+		public function getPreValidationRule($rule)
+		{
+			$rules = $this->getPreValidationRules();
+			return (array_key_exists($rule, $rules)) ? $rules[$rule] : null;
+		}
+		
+		public function getPostValidationRules()
+		{
+			$this->_populateValidationRules();
+			return $this->_post_validation_rules;
+		}
+
+		public function hasPostValidationRules()
+		{
+			return (bool) count($this->getPostValidationRules());
+		}
+		
+		public function hasPostValidationRule($rule)
+		{
+			$rules = $this->getPostValidationRules();
+			return (array_key_exists($rule, $rules));
+		}
+		
+		public function getPostValidationRule($rule)
+		{
+			$rules = $this->getPostValidationRules();
+			return (array_key_exists($rule, $rules)) ? $rules[$rule] : null;
 		}
 		
 		public function isAvailableForIssue(TBGIssue $issue)
 		{
-			foreach ($this->getValidationRules() as $validation_rule)
+			foreach ($this->getPreValidationRules() as $validation_rule)
 			{
 				if ($validation_rule instanceof TBGWorkflowTransitionValidationRule)
 				{
-					if (!$validation_rule->isValid()) return false;
+					if (!$validation_rule->isValid($issue)) return false;
 				}
 			}
 			return true;
@@ -252,7 +287,7 @@
 		{
 			if ($this->_actions === null)
 			{
-				$this->_actions = TBGWorkflowTransitionActionsTable::getTable()->getByTransitionID($this->getID());
+				$this->_actions = TBGWorkflowTransitionAction::getByTransitionID($this->getID());
 			}
 		}
 		
@@ -262,17 +297,32 @@
 			return $this->_actions;
 		}
 		
+		public function hasActions()
+		{
+			return (bool) count($this->getActions());
+		}
+		
+		public function hasAction($action_type)
+		{
+			$actions = $this->getActions();
+			return array_key_exists($action_type, $actions);
+		}
+		
+		public function getAction($action_type)
+		{
+			return (array_key_exists($action_type, $actions)) ? $actions[$action_type] : null;
+		}
+		
 		public function validateFromRequest(TBGRequest $request)
 		{
 			$this->_request = $request;
-			foreach ($this->getProperties() as $property)
+			foreach ($this->getPostValidationRules() as $rule)
 			{
-				if (!$request->hasParameter('set_' . $property))
+				if (!$rule->isValid($request))
 				{
-					$this->_validation_errors[$property] = true;
+					$this->_validation_errors[$rule->getRule()] = true;
 				}
 			}
-			
 			return empty($this->_validation_errors);
 		}
 		
@@ -283,13 +333,8 @@
 		
 		public function listenIssueSaveAddComment(TBGEvent $event)
 		{
-			$comment_body = $event->getParameter('comment') . "\n\n" . $this->_request->getParameter('comment_body', null, false);
-			$comment = new TBGComment();
-			$comment->setTitle();
-			$comment->setContent($comment_body);
-			$comment->setPostedBy(TBGContext::getUser()->getID());
-			$comment->setTargetID($event->getSubject()->getID());
-			$comment->setTargetType(TBGComment::TYPE_ISSUE);
+			$comment = $event->getParameter('comment');
+			$comment->setContent($this->_request->getParameter('comment_body', null, false) . "\n\n" . $comment->getContent());
 			$comment->save();
 		}
 
@@ -308,27 +353,11 @@
 				TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenIssueSaveAddComment'));
 			}
 			
-			foreach ($this->getProperties() as $property)
-			{
-				switch ($property)
-				{
-					case 'status':
-						$issue->setStatus($request->getParameter("{$property}_id"));
-						break;
-					case 'resolution':
-						$issue->setResolution($request->getParameter("{$property}_id"));
-						break;
-				}
-			}
+			if (!empty($this->_validation_errors)) return false;
 			
-			foreach ($this->getActions() as $action => $value)
+			foreach ($this->getActions() as $action)
 			{
-				switch ($action)
-				{
-					case self::ACTION_ASSIGN_ISSUE_SELF:
-						$issue->setAssignee(TBGContext::getUser());
-						break;
-				}
+				$action->perform($issue, $request);
 			}
 			
 			$issue->save();

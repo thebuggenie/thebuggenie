@@ -123,6 +123,22 @@
 
 			$this->fields_list = $fields_list;
 			$this->customfields_list = $customfields_list;
+			if (isset($this->transition) && $this->transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE))
+			{
+				$available_assignees = array();
+				foreach (TBGContext::getUser()->getTeams() as $team)
+				{
+					foreach ($team->getUsers() as $user)
+					{
+						$available_assignees[$user->getID()] = $user->getNameWithUsername();
+					}
+				}
+				foreach (TBGContext::getUser()->getFriends() as $user)
+				{
+					$available_assignees[$user->getID()] = $user->getNameWithUsername();
+				}
+				$this->available_assignees = $available_assignees;
+			}
 		}
 		
 		public function componentIssuedetailslistEditable()

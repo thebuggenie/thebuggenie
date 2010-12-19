@@ -2391,26 +2391,112 @@
 				$this->workflow = TBGContext::factory()->TBGWorkflow($request->getParameter('workflow_id'));
 				if ($request->hasParameter('transition_id'))
 				{
+					$mode = $request->getParameter('mode');
 					$this->transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
 					if ($request->isMethod(TBGRequest::POST))
 					{
-						if ($request->getParameter('mode') == 'delete')
+						if ($mode == 'delete')
 						{
 							$this->transition->deleteTransition($request->getParameter('direction'));
 							return $this->renderJSON(array('failed' => false));
 						}
-						elseif ($request->getParameter('mode') == 'delete_validation_rule')
+						elseif ($mode == 'delete_action')
+						{
+							$this->action = TBGContext::factory()->TBGWorkflowTransitionAction($request->getParameter('action_id'));
+							$this->action->delete();
+							return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('The action has been deleted')));
+						}
+						elseif ($mode == 'new_action')
+						{
+							$action = new TBGWorkflowTransitionAction();
+							$action->setActionType($request->getParameter('action_type'));
+							$action->setTransition($this->transition);
+							$action->setWorkflow($this->workflow);
+							$action->setTargetValue('');
+							$action->save();
+							return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('configuration/workflowtransitionaction', array('action' => $action))));
+						}
+						elseif ($mode == 'update_action')
+						{
+							$this->action = TBGContext::factory()->TBGWorkflowTransitionAction($request->getParameter('action_id'));
+							$this->action->setTargetValue($request->getParameter('target_value'));
+							$this->action->save();
+							$text = null;
+							switch ($this->action->getActionType())
+							{
+								case TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
+									$text = ($this->action->getTargetValue()) ? TBGContext::factory()->TBGUser((int) $this->action->getTargetValue())->getName() : TBGContext::getI18n()->__('User specified during transition');
+									break;
+								case TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION:
+									$text = ($this->action->getTargetValue()) ? TBGContext::factory()->TBGResolution((int) $this->action->getTargetValue())->getName() : TBGContext::getI18n()->__('Resolution specified by user');
+									break;
+								case TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY:
+									$text = ($this->action->getTargetValue()) ? TBGContext::factory()->TBGReproducability((int) $this->action->getTargetValue())->getName() : TBGContext::getI18n()->__('Reproducability specified by user');
+									break;
+								case TBGWorkflowTransitionAction::ACTION_SET_STATUS:
+									$text = ($this->action->getTargetValue()) ? TBGContext::factory()->TBGStatus((int) $this->action->getTargetValue())->getName() : TBGContext::getI18n()->__('Status specified by user');
+									break;
+								case TBGWorkflowTransitionAction::ACTION_SET_PRIORITY:
+									$text = ($this->action->getTargetValue()) ? TBGContext::factory()->TBGPriority((int) $this->action->getTargetValue())->getName() : TBGContext::getI18n()->__('Priority specified by user');
+									break;
+							}
+							return $this->renderJSON(array('failed' => false, 'content' => $text));
+						}
+						elseif ($mode == 'delete_validation_rule')
 						{
 							$this->rule = TBGContext::factory()->TBGWorkflowTransitionValidationRule($request->getParameter('rule_id'));
 							$this->rule->delete();
-							return $this->renderJSON(array('failed' => false));
+							return $this->renderJSON(array('failed' => false, 'message' => TBGContext::getI18n()->__('The validation rule has been deleted')));
 						}
-						elseif ($request->getParameter('mode') == 'update_validation_rule')
+						elseif ($mode == 'new_validation_rule')
+						{
+							$rule = new TBGWorkflowTransitionValidationRule();
+							if ($request->getParameter('postorpre') == 'post')
+							{
+								$exists = (bool) ($this->transition->hasPostValidationRule($request->getParameter('rule')));
+								if (!$exists) $rule->setPost();
+							}
+							elseif ($request->getParameter('postorpre') == 'pre')
+							{
+								$exists = (bool) ($this->transition->hasPreValidationRule($request->getParameter('rule')));
+								if (!$exists) $rule->setPre();
+							}
+							if ($exists)
+							{
+								$this->getResponse()->setHttpStatus(400);
+								return $this->renderJSON(array('failed' => true, 'message' => TBGContext::getI18n()->__('This validation rule already exist')));
+							}
+							$rule->setRule($request->getParameter('rule'));
+							$rule->setRuleValue('');
+							$rule->setTransition($this->transition);
+							$rule->setWorkflow($this->workflow);
+							$rule->save();
+							
+							return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('configuration/workflowtransitionvalidationrule', array('rule' => $rule))));
+						}
+						elseif ($mode == 'update_validation_rule')
 						{
 							$this->rule = TBGContext::factory()->TBGWorkflowTransitionValidationRule($request->getParameter('rule_id'));
-							$this->rule->setRuleValue($request->getParameter('rule_value'));
+							$text = null;
+							switch ($this->rule->getRule())
+							{
+								case TBGWorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES:
+									$this->rule->setRuleValue($request->getParameter('rule_value'));
+									$text = ($this->rule->getRuleValue()) ? $this->rule->getRuleValue() : TBGContext::getI18n()->__('Unlimited');
+									break;
+								case TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID:
+								case TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID:
+								case TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID:
+								case TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID:
+									$this->rule->setRuleValue(join(',', $request->getParameter('rule_value')));
+									$text = ($this->rule->getRuleValue()) ? $this->rule->getRuleValueAsJoinedString() : TBGContext::getI18n()->__('Any valid value');
+									break;
+								//case TBGWorkflowTransitionValidationRule::RULE_:
+								//	$text = ($this->rule->getRuleValue()) ? $this->rule->getRuleValue() : TBGContext::getI18n()->__('Unlimited');
+								//	break;
+							}
 							$this->rule->save();
-							return $this->renderJSON(array('failed' => false, 'content' => ($this->rule->getRuleValue()) ? $this->rule->getRuleValue() : TBGContext::getI18n()->__('Unlimited')));
+							return $this->renderJSON(array('failed' => false, 'content' => $text));
 						}
 						elseif ($request->getParameter('transition_name') && $request->getParameter('outgoing_step_id') && $request->hasParameter('template'))
 						{
@@ -2495,7 +2581,7 @@
 			}
 			catch (Exception $e)
 			{
-				//throw $e;
+				throw $e;
 				$this->error = TBGContext::getI18n()->__('This workflow / transition does not exist');
 			}
 			if (isset($redirect_transition) && $redirect_transition)

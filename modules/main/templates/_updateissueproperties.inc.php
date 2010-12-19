@@ -3,37 +3,89 @@
 	<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 		<div class="backdrop_detail_content">
 			<ul class="simple_list">
-				<?php if (in_array('status', $transition->getProperties())): ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS)): ?>
 					<li>
-						<input type="hidden" name="set_status" id="close_issue_set_status" value="1">
-						<label for="close_issue_set_status"><?php echo __('Status'); ?></label>
-						<select name="status_id">
+						<label for="transition_popup_set_status"><?php echo __('Status'); ?></label>
+						<select name="status_id" id="transition_popup_set_status">
 							<?php foreach ($statuses as $status): ?>
-								<option value="<?php echo $status->getID(); ?>"<?php if ($issue->getStatus() instanceof TBGStatus && $issue->getStatus()->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
+								<?php if (!$transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID) || $transition->getPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID)->isValueValid($status)): ?>
+									<option value="<?php echo $status->getID(); ?>"<?php if ($issue->getStatus() instanceof TBGStatus && $issue->getStatus()->getID() == $status->getID()): ?> selected<?php endif; ?>><?php echo $status->getName(); ?></option>
+								<?php endif; ?>
 							<?php endforeach; ?>
 						</select>
 					</li>
 				<?php endif; ?>
-				<?php if (in_array('resolution', $transition->getProperties())): ?>
-					<li id="close_issue_resolution_div"<?php if (!$issue->isResolutionVisible()): ?> style="display: none;"<?php endif; ?>>
-						<input type="hidden" name="set_resolution" id="close_issue_set_resolution" value="1">
-						<label for="close_issue_set_resolution"><?php echo __('Resolution'); ?></label>
-						<select name="resolution_id">
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY)): ?>
+					<li id="transition_popup_priority_div">
+						<label for="transition_popup_set_priority"><?php echo __('Priority'); ?></label>
+						<select name="priority_id" id="transition_popup_set_priority">
+							<?php foreach ($fields_list['priority']['choices'] as $priority): ?>
+								<?php if (!$transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID) || $transition->getPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_PRIORITY_VALID)->isValueValid($priority)): ?>
+									<option value="<?php echo $priority->getID(); ?>"<?php if ($issue->getPriority() instanceof TBGPriority && $issue->getPriority()->getID() == $priority->getID()): ?> selected<?php endif; ?>><?php echo $priority->getName(); ?></option>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						</select>
+					</li>
+					<?php if (!$issue->isPriorityVisible()): ?>
+						<li id="transition_popup_priority_link" class="faded_out">
+							<?php echo __("Priority isn't visible for this issuetype / product combination"); ?>
+						</li>
+					<?php endif; ?>
+				<?php endif; ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)): ?>
+					<li id="transition_popup_reproducability_div">
+						<label for="transition_popup_set_reproducability"><?php echo __('Reproducability'); ?></label>
+						<select name="reproducability_id" id="transition_popup_set_reproducability">
+							<?php foreach ($fields_list['reproducability']['choices'] as $reproducability): ?>
+								<?php if (!$transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID) || $transition->getPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_REPRODUCABILITY_VALID)->isValueValid($reproducability)): ?>
+									<option value="<?php echo $reproducability->getID(); ?>"<?php if ($issue->getReproducability() instanceof TBGReproducability && $issue->getReproducability()->getID() == $reproducability->getID()): ?> selected<?php endif; ?>><?php echo $reproducability->getName(); ?></option>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						</select>
+					</li>
+					<?php if (!$issue->isReproducabilityVisible()): ?>
+						<li id="transition_popup_reproducability_link" class="faded_out">
+							<?php echo __("Reproducability isn't visible for this issuetype / product combination"); ?>
+						</li>
+					<?php endif; ?>
+				<?php endif; ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION)): ?>
+					<li id="transition_popup_resolution_div">
+						<label for="transition_popup_set_resolution"><?php echo __('Resolution'); ?></label>
+						<select name="resolution_id" id="transition_popup_set_resolution">
 							<?php foreach ($fields_list['resolution']['choices'] as $resolution): ?>
-							<option value="<?php echo $resolution->getID(); ?>"<?php if ($issue->getResolution() instanceof TBGResolution && $issue->getResolution()->getID() == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
+								<?php if (!$transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID) || $transition->getPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_RESOLUTION_VALID)->isValueValid($resolution)): ?>
+									<option value="<?php echo $resolution->getID(); ?>"<?php if ($issue->getResolution() instanceof TBGResolution && $issue->getResolution()->getID() == $resolution->getID()): ?> selected<?php endif; ?>><?php echo $resolution->getName(); ?></option>
+								<?php endif; ?>
 							<?php endforeach; ?>
 						</select>
 					</li>
 					<?php if (!$issue->isResolutionVisible()): ?>
-						<li id="close_issue_resolution_link" class="faded_out">
+						<li id="transition_popup_resolution_link" class="faded_out">
 							<?php echo __("Resolution isn't visible for this issuetype / product combination"); ?>
-							<a href="javascript:void(0);" onclick="$('close_issue_resolution_link').hide();$('close_issue_resolution_div').show();"><?php echo __('Set anyway'); ?></a>
+						</li>
+					<?php endif; ?>
+				<?php endif; ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)): ?>
+					<li id="transition_popup_assignee_div">
+						<label for="transition_popup_set_assignee"><?php echo __('Assignee'); ?></label>
+						<select name="assignee_id" id="transition_popup_set_assignee">
+							<?php foreach ($available_assignees as $assignee): ?>
+								<?php if (!$transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_ASSIGNEE_VALID) || $transition->getPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_ASSIGNEE_VALID)->isValueValid($assignee)): ?>
+									<option value="<?php echo $assignee->getID(); ?>"<?php if ($issue->getAssignee() instanceof TBGUser && $issue->getAssignee()->getID() == $assignee->getID()): ?> selected<?php endif; ?>><?php echo $assignee->getName(); ?></option>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						</select>
+					</li>
+					<?php if (!$issue->isAssigneeVisible()): ?>
+						<li id="transition_popup_assignee_link" class="faded_out">
+							<?php echo __("Assignee isn't visible for this issuetype / product combination"); ?>
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
 				<li style="margin-top: 10px;">
-					<label for="close_comment"><?php echo __('Write a comment if you want it to be added'); ?></label>
-					<textarea name="close_comment" id="close_comment" style="width: 372px; height: 50px;"></textarea>
+					<label for="transition_popup_comment_body"><?php echo __('Write a comment if you want it to be added'); ?></label>
+					<textarea name="comment_body" id="transition_popup_comment_body" style="width: 372px; height: 50px;"></textarea>
 				</li>
 			</ul>
 			<div style="text-align: right; margin-right: 5px;">
