@@ -104,7 +104,7 @@
 						</div>
 					</div>
 					<br style="clear: both;">
-					<div class="tab_menu" style="margin-top: 35px;">
+					<div class="tab_menu" style="margin-top: 55px;">
 						<ul id="transition_menu">
 							<li class="selected" id="pre_validation_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('pre_validation_tab', 'transition_menu');"><?php echo __('Pre-transition validation'); ?></a></li>
 							<?php if ($transition->hasTemplate()): ?>
@@ -113,7 +113,7 @@
 							<li id="actions_tab"><a href="javascript:void(0);" onclick="switchSubmenuTab('actions_tab', 'transition_menu');"><?php echo __('Post-transition actions'); ?></a></li>
 						</ul>
 					</div>
-					<div id="transition_menu_panes">
+					<div id="transition_menu_panes" style="margin-bottom: 100px;">
 						<div id="pre_validation_tab_pane">
 							<div class="content" style="padding: 5px 0 10px 2px;">
 								<?php echo __('The following validation rules has to be fullfilled for the transition to be available to the user'); ?>
