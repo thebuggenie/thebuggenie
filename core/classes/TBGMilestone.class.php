@@ -798,7 +798,7 @@
 		 */
 		public function isStarting()
 		{
-			return $this->$this->hasStartingDate();
+			return $this->hasStartingDate();
 		}
 
 		protected function _populateBurndownData()
