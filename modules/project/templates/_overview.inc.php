@@ -44,7 +44,7 @@
 					</td>
 					<td class="nice_button report_button">
 						<input type="submit" value="<?php echo __('Report an issue'); ?>">
-						<div class="report_button_hover rounded_box green tab_menu_dropdown">
+						<div class="report_button_hover rounded_box green">
 							<div class="tab_menu_dropdown">
 								<?php foreach ($project->getIssuetypeScheme()->getIssuetypes() as $issuetype): ?>
 									<?php if (!$project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>	

@@ -25,7 +25,7 @@
 
 		<table class="client_dashboard_table">
 			<tr>
-				<td class="client_dashboard_projects">
+				<td class="client_dashboard_projects padded">
 					<div class="header">
 						<?php echo __('Projects for %client%', array('%client%' => $client->getName())); ?>
 					</div>
@@ -98,7 +98,7 @@
 						<p class="content faded_out"><?php echo __('There are no projects assigned to this client'); ?>.</p>
 					<?php endif; ?>
 				</td>
-			<td class="client_dashboard_users">
+			<td class="client_dashboard_users padded">
 				<div class="header">
 					<?php echo __('Members of %client%', array('%client%' => $client->getName())); ?>
 				</div>

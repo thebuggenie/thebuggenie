@@ -22,7 +22,7 @@
 	
 	<table class="team_dashboard_table">
 		<tr>
-			<td class="team_dashboard_projects">
+			<td class="team_dashboard_projects padded">
 				<div class="header">
 					<?php echo __('Projects for %team%', array('%team%' => $team->getName())); ?>
 				</div>
@@ -94,7 +94,7 @@
 					<p class="content faded_out"><?php echo __('There are no projects linked to this team'); ?>.</p>
 				<?php endif; ?>
 			</td>
-			<td class="team_dashboard_users">
+			<td class="team_dashboard_users padded">
 				<div class="header">
 					<?php echo __('Members of %team%', array('%team%' => $team->getName())); ?>
 				</div>
