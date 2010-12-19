@@ -500,8 +500,8 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .team_dashboard_table td.padded, .client_dashboard_table td.padded { padding: 10px; padding-top: 0; vertical-align: top; }
 .team_dashboard_table td.team_dashboard_projects, .client_dashboard_table td.client_dashboard_projects { padding-left: 0; }
 .team_dashboard_table td.team_dashboard_users, .client_dashboard_table td.client_dashboard_users { padding-right: 0; width: 350px; }
-ul.client_users { margin: 0; padding: 0; }
-ul.client_users li { list-style-type: none; padding-bottom: 5px; margin: 0;}
+ul.client_users, ul.team_users { margin: 0; padding: 0; }
+ul.client_users li, ul.team_users li { list-style-type: none; padding-bottom: 5px; margin: 0;}
 /* end project styling */
 
 /* account page tab panes content */

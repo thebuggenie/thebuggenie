@@ -99,10 +99,11 @@
 					<?php echo __('Members of %team%', array('%team%' => $team->getName())); ?>
 				</div>
 				<?php if (count($users) > 0): ?>
+					<ul class="team_users">
 					<?php foreach ($users as $user): ?>
-						<?php echo include_component('main/userdropdown', array('user' => $user)); ?>
-						<br>
+						<li><?php echo include_component('main/userdropdown', array('user' => $user)); ?></li>
 					<?php endforeach; ?>
+					</ul>
 				<?php else: ?>
 					<p class="content faded_out"><?php echo __('This team has no members'); ?>.</p>
 				<?php endif; ?>
