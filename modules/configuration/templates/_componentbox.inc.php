@@ -36,7 +36,7 @@
 					</td>
 					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" onclick="$('comp_<?php echo $component->getID(); ?>_auto_assign_change').toggle();" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
 				</tr>
-				<tr><td class="config_explanation" colspan="3"><?php echo __('You can optionally set a user to automatically assign issues filed against this component to. This will not take effect if you are using workflows, and can be overridden when reporting an issue. This setting is independant of the save button below.')?></td></tr>
+				<tr><td class="config_explanation" colspan="3"><?php echo __('You can optionally set a user to automatically assign issues filed against this component to. This setting is independant of the save button below.')?></td></tr>
 			</table>
 			<?php echo image_tag('spinning_20.gif', array('id' => 'component_'.$component->getID().'_indicator', 'style' => 'display: none;')); ?>
 			<input type="submit" value="<?php echo __('Save'); ?>"> <a href="javascript:void(0);" class="image" onclick="$('show_component_<?php print $component->getID(); ?>').show();$('edit_component_<?php print $component->getID(); ?>').hide();"><?php echo __('or cancel'); ?></a>

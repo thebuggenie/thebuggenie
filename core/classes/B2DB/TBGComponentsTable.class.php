@@ -27,6 +27,8 @@
 		const VERSION_MINOR = 'components.version_minor';
 		const VERSION_REVISION = 'components.version_revision';
 		const PROJECT = 'components.project';
+		const LEAD_BY = 'projects.leader';
+		const LEAD_TYPE = 'projects.leader_type';
 		
 		public function __construct()
 		{
@@ -35,6 +37,8 @@
 			parent::_addInteger(self::VERSION_MAJOR, 3);
 			parent::_addInteger(self::VERSION_MINOR, 3);
 			parent::_addInteger(self::VERSION_REVISION, 5);
+			parent::_addInteger(self::LEAD_BY, 10);
+			parent::_addInteger(self::LEAD_TYPE, 3);
 			parent::_addForeignKeyColumn(self::PROJECT, TBGProjectsTable::getTable(), TBGProjectsTable::ID);
 			parent::_addForeignKeyColumn(self::SCOPE, TBGScopesTable::getTable(), TBGScopesTable::ID);
 		}

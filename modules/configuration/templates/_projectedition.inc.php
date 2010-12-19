@@ -71,7 +71,7 @@
 					<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" onclick="$('lead_by_change').toggle();" title="<?php echo __('Switch'); ?>"><?php echo __('Change / set'); ?></a></td>
 				<?php endif; ?>
 			</tr>
-			<tr><td colspan="3" class="description" style="padding-bottom: 10px;"><?php echo __('If workflows are disabled, and no default assignee is set on the component or build the issue is filed against, then the issue will automatically be assigned to the user you set here. This can be overridden when reporting the issue.'); ?></td></tr>
+			<tr><td colspan="3" class="description" style="padding-bottom: 10px;"><?php echo __('If no default assignee is set on the component or project an issue is filed against, then the issue will automatically be assigned to the user you set here. This can be overridden when reporting the issue.'); ?></td></tr>
 			<tr class="hover_highlight">
 				<td style="padding: 2px; width: 100px;">
 					<b><?php echo __('QA responsible'); ?></b>
