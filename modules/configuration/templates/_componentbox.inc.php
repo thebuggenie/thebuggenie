@@ -47,7 +47,8 @@
 																	'style'				=> array('position' => 'absolute'),
 																	'callback'			=> "setUser('" . make_url('configure_component_set_assignedto', array('project_id' => $component->getProject()->getID(), 'component_id' => $component->getID(), 'field' => 'lead_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'comp_".$component->getID()."_auto_assign');",
 																	'base_id'			=> 'comp_'.$component->getID().'_auto_assign',
-																	'absolute'			=> true)); ?>
+																	'absolute'			=> true,
+																	'include_teams'		=> true)); ?>
 		</div>
 	</td>
 </tr>
