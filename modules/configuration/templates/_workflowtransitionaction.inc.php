@@ -9,6 +9,8 @@
 			case TBGWorkflowTransitionAction::ACTION_CLEAR_PERCENT:
 			case TBGWorkflowTransitionAction::ACTION_CLEAR_REPRODUCABILITY:
 			case TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION:
+			case TBGWorkflowTransitionAction::ACTION_USER_START_WORKING:
+			case TBGWorkflowTransitionAction::ACTION_USER_STOP_WORKING:
 				?>
 				<td id="workflowtransitionaction_<?php echo $action->getID(); ?>_description" style="padding: 2px;">
 					<?php if ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF): ?>
@@ -23,6 +25,10 @@
 						<?php echo __('Clear issue reproducability'); ?>
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION): ?>
 						<?php echo __('Clear issue resolution'); ?>
+					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_USER_START_WORKING): ?>
+						<?php echo __('Mark issue as being worked on by the assigned user'); ?>
+					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_USER_STOP_WORKING): ?>
+						<?php echo __('Mark issue as no longer being worked on, and optionally add time spent'); ?>
 					<?php endif; ?>
 				</td>
 				<?php if (!$action->getTransition()->isCore()): ?>

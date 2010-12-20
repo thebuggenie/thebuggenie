@@ -612,6 +612,8 @@ ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
 #notfound_error { vertical-align: middle; padding: 5px; color: #222; font-weight: bold; font-size: 1.1em; width: 700px; }
 #viewissue_changed { height: 35px; padding: 5px 10px 5px 10px; color: #222; }
 #viewissue_saved { cursor: pointer; }
+#viewissue_being_worked_on { height: 33px; }
+#viewissue_being_worked_on .header { padding-top: 7px; }
 /* end issue info boxes */
 
 /* issue extra data (pain and votes) - includes search result styling */

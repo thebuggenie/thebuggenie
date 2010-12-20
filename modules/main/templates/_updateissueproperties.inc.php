@@ -3,7 +3,7 @@
 	<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 		<div class="backdrop_detail_content">
 			<ul class="simple_list">
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS)): ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_STATUS)->hasTargetValue()): ?>
 					<li>
 						<label for="transition_popup_set_status"><?php echo __('Status'); ?></label>
 						<select name="status_id" id="transition_popup_set_status">
@@ -15,7 +15,7 @@
 						</select>
 					</li>
 				<?php endif; ?>
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY)): ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_PRIORITY)->hasTargetValue()): ?>
 					<li id="transition_popup_priority_div">
 						<label for="transition_popup_set_priority"><?php echo __('Priority'); ?></label>
 						<select name="priority_id" id="transition_popup_set_priority">
@@ -32,7 +32,7 @@
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PERCENT)): ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PERCENT) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_PERCENT)->hasTargetValue()): ?>
 					<li id="transition_popup_percent_complete_div">
 						<label for="transition_popup_set_percent_complete"><?php echo __('Percent complete'); ?></label>
 						<select name="percent_complete_id" id="transition_popup_set_percent_complete">
@@ -47,7 +47,7 @@
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)): ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)->hasTargetValue()): ?>
 					<li id="transition_popup_reproducability_div">
 						<label for="transition_popup_set_reproducability"><?php echo __('Reproducability'); ?></label>
 						<select name="reproducability_id" id="transition_popup_set_reproducability">
@@ -64,7 +64,7 @@
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION)): ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION)->hasTargetValue()): ?>
 					<li id="transition_popup_resolution_div">
 						<label for="transition_popup_set_resolution"><?php echo __('Resolution'); ?></label>
 						<select name="resolution_id" id="transition_popup_set_resolution">
@@ -81,7 +81,7 @@
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)): ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
 					<li id="transition_popup_assignee_div">
 						<label for="transition_popup_set_assignee"><?php echo __('Assignee'); ?></label>
 						<select name="assignee_id" id="transition_popup_set_assignee">
@@ -97,6 +97,13 @@
 							<?php echo __("Assignee isn't visible for this issuetype / product combination"); ?>
 						</li>
 					<?php endif; ?>
+				<?php endif; ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_USER_STOP_WORKING)): ?>
+					<li id="transition_popup_stop_working_div">
+						<label for="transition_popup_set_stop_working"><?php echo __('Log time spent'); ?></label>
+						<input type="radio" name="did" id="transition_popup_set_stop_working" value="something"><label for="transition_popup_set_stop_working" style="font-weight: normal;"><?php echo __('Yes'); ?></label>&nbsp;
+						<input type="radio" name="did" id="transition_popup_set_stop_working" value="nothing"><label for="transition_popup_set_stop_working" style="font-weight: normal;"><?php echo __('No'); ?></label>
+					</li>
 				<?php endif; ?>
 				<li style="margin-top: 10px;">
 					<label for="transition_popup_comment_body"><?php echo __('Write a comment if you want it to be added'); ?></label>

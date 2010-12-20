@@ -12,8 +12,6 @@
 	$routes[] = array('unblock', '/:project_key/issue/:issue_id/unblock', 'main', 'markAsNotBlocker');
 	$routes[] = array('issue_setfield', '/:project_key/issue/:issue_id/set/:field/*', 'main', 'issueSetField');
 	$routes[] = array('issue_revertfield', '/:project_key/issue/:issue_id/revert/:field', 'main', 'issueRevertField');
-	$routes[] = array('issue_startworking', '/:project_key/issue/:issue_id/startworking', 'main', 'issueStartWorking');
-	$routes[] = array('issue_stopworking', '/:project_key/issue/:issue_id/stopworking/*', 'main', 'issueStopWorking');
 	$routes[] = array('main_find_identifiable', '/find/identifiable/by/*', 'main', 'findIdentifiable');
 	$routes[] = array('toggle_favourite_issue', '/toggle_favourite_issue/:issue_id', 'main', 'toggleFavouriteIssue', array('format' => 'json'));
 	$routes[] = array('project_getmenulinks', '/:project_key/menulinks', 'project', 'menuLinks');

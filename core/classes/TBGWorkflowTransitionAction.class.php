@@ -31,6 +31,8 @@
 		const ACTION_CLEAR_PERCENT = 'clear_percent';
 		const ACTION_SET_REPRODUCABILITY = 'set_reproducability';
 		const ACTION_CLEAR_REPRODUCABILITY = 'clear_reproducability';
+		const ACTION_USER_START_WORKING = 'user_start_working';
+		const ACTION_USER_STOP_WORKING = 'user_stop_working';
 		
 		static protected $_b2dbtablename = 'TBGWorkflowTransitionActionsTable';
 		
@@ -114,6 +116,11 @@
 			return $this->_target_value;
 		}
 		
+		public function hasTargetValue()
+		{
+			return (bool) $this->_target_value;
+		}
+		
 		public function perform(TBGIssue $issue, $request = null)
 		{
 			switch ($this->_action_type)
@@ -171,6 +178,20 @@
 						$issue->setAssignee(TBGContext::factory()->TBGUser((int) $this->getTargetValue()));
 					else
 						$issue->setAssignee(TBGContext::factory()->TBGUser((int) $request->getParameter('assignee_id')));
+					break;
+				case self::ACTION_USER_START_WORKING:
+					$issue->clearUserWorkingOnIssue();
+					$issue->startWorkingOnIssue($issue->getAssignee());
+					break;
+				case self::ACTION_USER_STOP_WORKING:
+					if ($request->getParameter('did') == 'nothing')
+					{
+						$issue->clearUserWorkingOnIssue();
+					}
+					else
+					{
+						$issue->stopWorkingOnIssue();
+					}
 					break;
 			}
 		}

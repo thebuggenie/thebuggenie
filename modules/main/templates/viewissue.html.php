@@ -45,31 +45,14 @@
 		<div class="content"><?php echo __('Data that has been changed is highlighted in red below. Undo your changes to see the updated information'); ?></div>
 	</div>
 	<?php if ($issue->isBeingWorkedOn()): ?>
-		<?php if ($issue->canEditSpentTime()): ?>
-		<form action="<?php echo make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?>" method="post">
-		<?php endif; ?>
-			<div class="rounded_box yellow borderless issue_info full_width" id="viewissue_being_worked_on">
-				<?php echo image_tag('action_start_working.png'); ?>
-				<?php if ($issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
-					<input type="submit" value="<?php echo __('Done'); ?>">
-					<div class="header"><?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
-					<div class="content">
-						<?php echo __('When you are finished working on this issue, click the %done% button to the right', array('%done%' => '<b>' . __('Done') . '</b>')); ?>
-					</div>
-				<?php else: ?>
-					<input type="submit" value="<?php echo __('Take over'); ?>">
-					<div class="header"><?php echo __('%user% has been working on this issue since %time%', array('%user%' => $issue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
-					<?php if ($issue->canEditSpentTime()): ?>
-						<div class="content">
-							<input type="hidden" name="perform_action" value="grab">
-							<?php echo __('If you want to start working on this issue instead, click the %take_over% button to the right', array('%take_over%' => '<b>' . __('Take over') . '</b>')); ?>
-						</div>
-					<?php endif; ?>
-				<?php endif; ?>
-			</div>
-		<?php if ($issue->canEditSpentTime()): ?>
-		</form>
-		<?php endif; ?>
+		<div class="rounded_box iceblue borderless issue_info full_width" id="viewissue_being_worked_on">
+			<?php echo image_tag('action_start_working.png'); ?>
+			<?php if ($issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
+				<div class="header"><?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
+			<?php else: ?>
+				<div class="header"><?php echo __('%user% has been working on this issue since %time%', array('%user%' => $issue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
+			<?php endif; ?>
+		</div>
 	<?php endif; ?>
 	<div class="rounded_box yellow borderless issue_info full_width" id="viewissue_changed" <?php if (!$issue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
 		<button onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_save_changes').checked = true;$('comment_bodybox').focus();return false;"><?php echo __('Add comment and save changes'); ?></button>

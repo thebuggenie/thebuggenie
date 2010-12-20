@@ -310,6 +310,7 @@
 		
 		public function getAction($action_type)
 		{
+			$actions = $this->getActions();
 			return (array_key_exists($action_type, $actions)) ? $actions[$action_type] : null;
 		}
 		

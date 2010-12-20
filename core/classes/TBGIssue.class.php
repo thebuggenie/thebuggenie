@@ -4206,7 +4206,7 @@
 							$this->addLogEntry(TBGLogTable::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name);
 							$comment_lines[] = TBGContext::getI18n()->__("The issue's poster has been changed, from '''%previous_name%''' to '''%new_name%'''.", array('%previous_name%' => $old_name, '%new_name%' => $new_name));
 							break;
-						case '_being_worked_on_by':
+						case '_being_worked_on_by_user':
 							if ($value['original_value'] != 0)
 							{
 								$old_identifiable = TBGContext::factory()->TBGUser($value['original_value']);
@@ -4579,7 +4579,7 @@
 		 */
 		public function clearUserWorkingOnIssue()
 		{
-			$this->_addChangedProperty('_being_worked_on_by', null);
+			$this->_addChangedProperty('_being_worked_on_by_user', null);
 			$this->_being_worked_on_by_user_since = null;
 		}
 		
@@ -4588,9 +4588,9 @@
 		 * 
 		 * @param TBGUser $user
 		 */
-		public function startWorkingOnIssue($user)
+		public function startWorkingOnIssue(TBGUser $user)
 		{
-			$this->_addChangedProperty('_being_worked_on_by', $user->getID());
+			$this->_addChangedProperty('_being_worked_on_by_user', $user->getID());
 			$this->_being_worked_on_by_user_since = NOW;
 		}
 		
