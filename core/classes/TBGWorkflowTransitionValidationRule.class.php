@@ -230,7 +230,7 @@
 						}
 						elseif ($input instanceof TBGRequest)
 						{
-							if ($input->getParameter("{$fielname_small}_id") == $item)
+							if ($input->getParameter("{$fieldname_small}_id") == $item)
 							{
 								$valid = true;
 								break;

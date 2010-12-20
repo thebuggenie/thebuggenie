@@ -18,7 +18,7 @@
 			<?php include_template('configuration/workflowmenu', array('selected_tab' => 'step', 'workflow' => $workflow, 'step' => $step)); ?>
 			<div class="content" style="width: 750px;" id="workflow_step_container">
 				<?php if ($step instanceof TBGWorkflowStep): ?>
-					<div class="rounded_box lightgrey workflow_step_intro">
+					<div class="rounded_box lightgrey borderless workflow_step_intro">
 						<div class="header"><?php echo __('Workflow step "%step_name%"', array('%step_name%' => $step->getName())); ?></div>
 						<div class="content">
 							<?php echo __('This page shows all the available details for this step for the selected workflow, as well as transitions to and from this step.'); ?>

@@ -93,7 +93,7 @@
 		 * @return boolean
 		 */
 		public function isCore()
-		{
+		{return false;
 			return ($this->getID() == 1);
 		}
 

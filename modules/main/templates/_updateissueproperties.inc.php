@@ -32,6 +32,21 @@
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_PERCENT)): ?>
+					<li id="transition_popup_percent_complete_div">
+						<label for="transition_popup_set_percent_complete"><?php echo __('Percent complete'); ?></label>
+						<select name="percent_complete_id" id="transition_popup_set_percent_complete">
+							<?php foreach (range(0, 100) as $percent_complete): ?>
+								<option value="<?php echo $percent_complete; ?>"<?php if ($issue->getPercentComplete() == $percent_complete): ?> selected<?php endif; ?>><?php echo $percent_complete; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</li>
+					<?php if (!$issue->isPercentCompletedVisible()): ?>
+						<li id="transition_popup_percent_complete_link" class="faded_out">
+							<?php echo __("Percent completed isn't visible for this issuetype / product combination"); ?>
+						</li>
+					<?php endif; ?>
+				<?php endif; ?>
 				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)): ?>
 					<li id="transition_popup_reproducability_div">
 						<label for="transition_popup_set_reproducability"><?php echo __('Reproducability'); ?></label>

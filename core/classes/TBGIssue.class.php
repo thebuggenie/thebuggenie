@@ -966,6 +966,11 @@
 			return ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || $this->getWorkflowStep()->isEditable());
 		}
 		
+		public function isUpdateable()
+		{
+			return ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !$this->getWorkflowStep()->isClosed());
+		}
+		
 		/**
 		 * Set whether the issue is locked
 		 * 
@@ -3552,7 +3557,7 @@
 		{
 			$comment = new TBGComment();
 			$comment->setTitle($title);
-			$comment->setContent($title);
+			$comment->setContent($text);
 			$comment->setPostedBy($uid);
 			$comment->setTargetID($this->getID());
 			$comment->setTargetType(TBGComment::TYPE_ISSUE);

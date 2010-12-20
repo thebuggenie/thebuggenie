@@ -27,6 +27,8 @@
 		const ACTION_SET_STATUS = 'set_status';
 		const ACTION_SET_PRIORITY = 'set_priority';
 		const ACTION_CLEAR_PRIORITY = 'clear_priority';
+		const ACTION_SET_PERCENT = 'set_percent';
+		const ACTION_CLEAR_PERCENT = 'clear_percent';
 		const ACTION_SET_REPRODUCABILITY = 'set_reproducability';
 		const ACTION_CLEAR_REPRODUCABILITY = 'clear_reproducability';
 		
@@ -133,6 +135,15 @@
 						$issue->setPriority(TBGContext::factory()->TBGPriority((int) $this->getTargetValue()));
 					else
 						$issue->setPriority($request->getParameter('priority_id'));
+					break;
+				case self::ACTION_CLEAR_PERCENT:
+					$issue->setPercentCompleted(0);
+					break;
+				case self::ACTION_SET_PERCENT:
+					if ($this->getTargetValue())
+						$issue->setPercentCompleted((int) $this->getTargetValue());
+					else
+						$issue->setPercentCompleted((int) $request->getParameter('priority_id'));
 					break;
 				case self::ACTION_CLEAR_RESOLUTION:
 					$issue->setResolution(null);

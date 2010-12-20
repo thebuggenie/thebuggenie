@@ -75,7 +75,7 @@
 
 		protected function _generateKey()
 		{
-			$this->_key = str_replace(array(' ', '/'), array('', ''), strtolower($this->getName()));
+			$this->_key = str_replace(array(' ', '/', "'"), array('', '', ''), strtolower($this->getName()));
 		}
 		
 		public function getKey()

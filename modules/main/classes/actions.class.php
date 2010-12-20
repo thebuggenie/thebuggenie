@@ -1345,7 +1345,13 @@
 								else
 								{
 									if (!$issue->$is_changed_function_name()) return $this->renderJSON(array('changed' => false));
-									return ($parameter_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'visible_fields' => $visible_fields, 'field' => array('id' => $parameter_id, 'name' => $parameter->getName())));
+									$field = array('id' => $parameter_id, 'name' => $parameter->getName());
+									if ($classname == 'TBGIssuetype')
+									{
+										TBGContext::loadLibrary('ui');
+										$field['src'] = htmlspecialchars(TBGSettings::getURLsubdir() . 'themes/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png');
+									}
+									return ($parameter_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'visible_fields' => $visible_fields, 'field' => $field));
 								}
 							}
 						}

@@ -6,6 +6,7 @@
 			case TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF:
 			case TBGWorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE:
 			case TBGWorkflowTransitionAction::ACTION_CLEAR_PRIORITY:
+			case TBGWorkflowTransitionAction::ACTION_CLEAR_PERCENT:
 			case TBGWorkflowTransitionAction::ACTION_CLEAR_REPRODUCABILITY:
 			case TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION:
 				?>
@@ -16,13 +17,15 @@
 						<?php echo __('Clear issue assignee'); ?>
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_CLEAR_PRIORITY): ?>
 						<?php echo __('Clear issue priority'); ?>
+					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_CLEAR_PERCENT): ?>
+						<?php echo __('Clear issue percent completed'); ?>
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_CLEAR_REPRODUCABILITY): ?>
 						<?php echo __('Clear issue reproducability'); ?>
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_CLEAR_RESOLUTION): ?>
 						<?php echo __('Clear issue resolution'); ?>
 					<?php endif; ?>
 				</td>
-				<?php if (!$rule->getTransition()->isCore()): ?>
+				<?php if (!$action->getTransition()->isCore()): ?>
 					<td style="width: 100px; text-align: right;">
 						<button id="workflowtransitionaction_<?php echo $action->getID(); ?>_delete_button" onclick="$('workflowtransitionaction_<?php echo $action->getID(); ?>_delete').toggle();"><?php echo __('Delete'); ?></button>
 					</td>
@@ -31,6 +34,7 @@
 				break;
 			case TBGWorkflowTransitionAction::ACTION_SET_STATUS:
 			case TBGWorkflowTransitionAction::ACTION_SET_PRIORITY:
+			case TBGWorkflowTransitionAction::ACTION_SET_PERCENT:
 			case TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY:
 			case TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION:
 			case TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE:
@@ -40,6 +44,8 @@
 						<?php echo __('Set status to %status%', array('%status%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGStatus((int) $action->getTargetValue()) : __('Status provided by user')) . '</span>')); ?>
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PRIORITY): ?>
 						<?php echo __('Set priority to %priority%', array('%priority%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGPriority((int) $action->getTargetValue()) : __('Priority provided by user')) . '</span>')); ?>
+					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PERCENT): ?>
+						<?php echo __('Set percent completed to %percentcompleted%', array('%percentcompleted%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? (int) $action->getTargetValue() : __('Percentage provided by user')) . '</span>')); ?>
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION): ?>
 						<?php echo __('Set resolution to %resolution%', array('%resolution%' => '<span id="workflowtransitionaction_'.$action->getID().'_value" style="font-weight: bold;">' . (($action->getTargetValue()) ? TBGContext::factory()->TBGResolution((int) $action->getTargetValue()) : __('Resolution provided by user')) . '</span>')); ?>
 					<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY): ?>
@@ -65,12 +71,30 @@
 									<?php echo __('Assign issue to'); ?>
 								<?php endif; ?>
 							</label>
+							<?php
+
+								if ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_STATUS)
+									$options = TBGStatus::getAll();
+								elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PRIORITY)
+									$options = TBGPriority::getAll();
+								elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PERCENT)
+									$options = range(1, 100);
+								elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION)
+									$options = TBGResolution::getAll();
+								elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)
+									$options = TBGReproducability::getAll();
+								elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)
+									$options = $available_assignees;
+
+							?>
 							<select id="workflowtransitionaction_<?php echo $action->getID(); ?>_input" name="target_value">
 								<option value="0"<?php if ((int) $action->getTargetValue() == 0) echo ' selected'; ?>>
 									<?php if ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_STATUS): ?>
 										<?php echo __('Status provided by user'); ?>
 									<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PRIORITY): ?>
 										<?php echo __('Priority provided by user'); ?>
+									<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PERCENT): ?>
+										<?php echo __('Percentage provided by user'); ?>
 									<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION): ?>
 										<?php echo __('Resolution provided by user'); ?>
 									<?php elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY): ?>
@@ -79,22 +103,14 @@
 										<?php echo __('User specified during transition'); ?>
 									<?php endif; ?>
 								</option>
-								<?php
-
-									if ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_STATUS)
-										$options = TBGStatus::getAll();
-									elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_PRIORITY)
-										$options = TBGPriority::getAll();
-									elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_RESOLUTION)
-										$options = TBGResolution::getAll();
-									elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_SET_REPRODUCABILITY)
-										$options = TBGReproducability::getAll();
-									elseif ($action->getActionType() == TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE)
-										$options = $available_assignees;
-
-								?>
 								<?php foreach ($options as $option): ?>
-									<option value="<?php echo $option->getID(); ?>"<?php if ((int) $action->getTargetValue() == $option->getID()) echo ' selected'; ?>><?php echo $option->getName(); ?></option>
+									<option value="<?php echo $option->getID(); ?>"<?php if ((int) $action->getTargetValue() == $option->getID()) echo ' selected'; ?>>
+										<?php if ($option instanceof TBGIdentifiable): ?>
+											<?php echo $option->getName(); ?>
+										<?php else: ?>
+											<?php echo $option; ?>
+										<?php endif; ?>
+									</option>
 								<?php endforeach; ?>
 							</select>
 							<?php echo image_tag('spinning_16.gif', array('id' => 'workflowtransitionaction_' . $action->getID() . '_indicator', 'style' => 'display: none; margin-left: 5px;')); ?>
