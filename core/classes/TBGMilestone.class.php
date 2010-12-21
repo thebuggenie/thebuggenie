@@ -377,7 +377,7 @@
 		 */
 		public function isScheduled()
 		{
-			return $this->hasScheduledDate();
+			return $this->_isscheduled;
 		}
 		
 		/**
@@ -385,7 +385,7 @@
 		 * 
 		 * @param boolean $scheduled[optional] scheduled or not (default true)
 		 */
-		public function setScheduled($scheduled = true)
+		public function setScheduled($scheduled)
 		{
 			$this->_isscheduled = $scheduled;
 		}
@@ -798,7 +798,7 @@
 		 */
 		public function isStarting()
 		{
-			return $this->hasStartingDate();
+			return $this->_isstarting;
 		}
 
 		protected function _populateBurndownData()

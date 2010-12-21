@@ -678,7 +678,7 @@ function updateComponent(url, cid)
 
 function updateMilestone(url, mid)
 {
-	_postFormWithJSONFeedback(url, 'edit_milestone_' + mid, 'milestone_span_' + mid);
+	_postFormWithJSONFeedback(url, 'edit_milestone_' + mid, 'milestone_' + mid + '_indicator', 'edit_milestone_' + mid, 'milestone_span_' + mid, false, 'show_milestone_' + mid);
 }
 
 function deleteMilestone(url, mid)

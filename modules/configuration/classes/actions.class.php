@@ -1470,6 +1470,11 @@
 												$theMilestone->setScheduledDate($scheduled_date);
 											}
 										}
+										else
+										{
+											$theMilestone->setScheduledDate(0);
+										}
+										
 										if ($theMilestone->isStarting())
 										{
 											if ($request->hasParameter('starting_month') && $request->hasParameter('starting_day') && $request->hasParameter('starting_year'))
@@ -1478,8 +1483,13 @@
 												$theMilestone->setStartingDate($starting_date);
 											}
 										}
+										else
+										{
+											$theMilestone->setScheduledDate(0);
+										}
+										
 										$theMilestone->save();
-										return $this->renderTemplate('milestonebox', array('milestone' => $theMilestone));
+										return $this->renderJSON(array('message' => TBGContext::getI18n()->__('Milestone updated'), 'content' => $this->getTemplateHTML('milestonebox', array('milestone' => $theMilestone))));
 									}
 									else
 									{

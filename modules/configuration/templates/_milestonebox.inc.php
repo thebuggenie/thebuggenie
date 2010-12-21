@@ -19,24 +19,24 @@
 				</td>
 			</tr>
 			<tr>
-				<td style="width: 120px;">
+				<td style="width: 130px;">
 					<select name="is_starting" id="starting_date_<?php echo $milestone->getID(); ?>" style="width: 100%;" onchange="if ($('starting_date_<?php echo $milestone->getID(); ?>').getValue() == '1') { $('starting_month_<?php echo $milestone->getID(); ?>').enable(); $('starting_day_<?php echo $milestone->getID(); ?>').enable(); $('starting_year_<?php echo $milestone->getID(); ?>').enable(); } else { $('starting_month_<?php echo $milestone->getID(); ?>').disable(); $('starting_day_<?php echo $milestone->getID(); ?>').disable(); $('starting_year_<?php echo $milestone->getID(); ?>').disable(); } ">
 						<option value=0<?php print ($milestone->hasStartingDate()) ? "" : " selected"; ?>><?php echo __('No planned start'); ?></option>
 						<option value=1<?php print (!$milestone->hasStartingDate()) ? "" : " selected"; ?>><?php echo __('Planned start'); ?></option>
 					</select>
 				</td>
 				<td style="width: auto;">
-					<select style="width: 85px;" name="starting_month" id="starting_month_<?php echo $milestone->getID(); ?>"<?php if (!$milestone->isStarting()): ?> disabled<?php endif; ?>>
+					<select style="width: 90px;" name="starting_month" id="starting_month_<?php echo $milestone->getID(); ?>"<?php if (!$milestone->hasStartingDate()): ?> disabled<?php endif; ?>>
 					<?php for ($cc = 1;$cc <= 12;$cc++): ?>
 						<option value=<?php echo $cc; ?><?php echo (($milestone->getStartingMonth() == $cc) ? " selected" : ""); ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
 					<?php endfor; ?>
 					</select>
-					<select style="width: 40px;" name="starting_day" id="starting_day_<?php echo $milestone->getID(); ?>"<?php if (!$milestone->isStarting()): ?> disabled<?php endif; ?>>
+					<select style="width: 45px;" name="starting_day" id="starting_day_<?php echo $milestone->getID(); ?>"<?php if (!$milestone->hasStartingDate()): ?> disabled<?php endif; ?>>
 					<?php for ($cc = 1;$cc <= 31;$cc++): ?>
 						<option value=<?php echo $cc; ?><?php echo (($milestone->getStartingDay() == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
 					<?php endfor; ?>
 					</select>
-					<select style="width: 55px;" name="starting_year" id="starting_year_<?php echo $milestone->getID(); ?>"<?php if (!$milestone->isStarting()): ?> disabled<?php endif; ?>>
+					<select style="width: 60px;" name="starting_year" id="starting_year_<?php echo $milestone->getID(); ?>"<?php if (!$milestone->hasStartingDate()): ?> disabled<?php endif; ?>>
 					<?php for ($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
 						<option value=<?php echo $cc; ?><?php echo (($milestone->getStartingYear() == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
 					<?php endfor; ?>
@@ -44,24 +44,24 @@
 				</td>
 			</tr>
 			<tr>
-				<td style="width: 120px;">
+				<td style="width: 130px;">
 					<select name="is_scheduled" id="sch_date_<?php echo $milestone->getID(); ?>" style="width: 100%;" onchange="if ($('sch_date_<?php echo $milestone->getID(); ?>').getValue() == '1') { $('sch_month_<?php echo $milestone->getID(); ?>').enable(); $('sch_day_<?php echo $milestone->getID(); ?>').enable(); $('sch_year_<?php echo $milestone->getID(); ?>').enable(); } else { $('sch_month_<?php echo $milestone->getID(); ?>').disable(); $('sch_day_<?php echo $milestone->getID(); ?>').disable(); $('sch_year_<?php echo $milestone->getID(); ?>').disable(); } ">
 						<option value=0<?php print ($milestone->hasScheduledDate()) ? "" : " selected"; ?>><?php echo __('No planned release'); ?></option>
 						<option value=1<?php print (!$milestone->hasScheduledDate()) ? "" : " selected"; ?>><?php echo __('Planned release'); ?></option>
 					</select>
 				</td>
 				<td style="width: auto;">
-					<select style="width: 85px;" name="sch_month" id="sch_month_<?php echo $milestone->getID(); ?>" <?php print (!$milestone->isScheduled()) ? "disabled" : ""; ?>>
+					<select style="width: 90px;" name="sch_month" id="sch_month_<?php echo $milestone->getID(); ?>" <?php print (!$milestone->hasScheduledDate()) ? "disabled" : ""; ?>>
 					<?php for ($cc = 1;$cc <= 12;$cc++): ?>
 						<option value=<?php echo $cc; ?><?php echo (($milestone->getScheduledMonth() == $cc) ? " selected" : ""); ?>><?php echo tbg_formatTime(mktime(0, 0, 0, $cc, 1), 15); ?></option>
 					<?php endfor; ?>
 					</select>
-					<select style="width: 40px;" name="sch_day" id="sch_day_<?php echo $milestone->getID(); ?>" <?php print (!$milestone->isScheduled()) ? "disabled" : ""; ?>>
+					<select style="width: 45px;" name="sch_day" id="sch_day_<?php echo $milestone->getID(); ?>" <?php print (!$milestone->hasScheduledDate()) ? "disabled" : ""; ?>>
 					<?php for ($cc = 1;$cc <= 31;$cc++): ?>
 						<option value=<?php echo $cc; ?><?php echo (($milestone->getScheduledDay() == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
 					<?php endfor; ?>
 					</select>
-					<select style="width: 55px;" name="sch_year" id="sch_year_<?php echo $milestone->getID(); ?>" <?php print (!$milestone->isScheduled()) ? "disabled" : ""; ?>>
+					<select style="width: 60px;" name="sch_year" id="sch_year_<?php echo $milestone->getID(); ?>" <?php print (!$milestone->hasScheduledDate()) ? "disabled" : ""; ?>>
 					<?php for ($cc = 2000;$cc <= (date("Y") + 5);$cc++): ?>
 						<option value=<?php echo $cc; ?><?php echo (($milestone->getScheduledYear() == $cc) ? " selected" : ""); ?>><?php echo $cc; ?></option>
 					<?php endfor; ?>
