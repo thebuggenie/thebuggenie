@@ -66,6 +66,16 @@
 			return self::$_workflows;
 		}
 
+		public static function loadFixtures(TBGScope $scope)
+		{
+			$workflow = new TBGWorkflow();
+			$workflow->setName("Default workflow");
+			$workflow->setDescription("This is the default workflow. It is used by all projects with no specific workflow selected, and for issue types with no specific workflow specified. This workflow cannot be edited or removed.");
+			$workflow->save();
+			
+			TBGWorkflowStep::loadFixtures($scope, $workflow);
+		}
+		
 		/**
 		 * Returns the workflows description
 		 *
@@ -93,7 +103,7 @@
 		 * @return boolean
 		 */
 		public function isCore()
-		{return false;
+		{
 			return ($this->getID() == 1);
 		}
 

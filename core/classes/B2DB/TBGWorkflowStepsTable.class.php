@@ -55,7 +55,7 @@
 		{
 			$steps = array();
 			$steps[] = array('name' => 'New', 'description' => 'A new issue, not yet handled', 'status_id' => TBGStatus::getStatusByKeyish('new')->getID(), 'editable' => true, 'is_closed' => false);
-			$steps[] = array('name' => 'Investigating', 'description' => 'An issue that is being investigated, looked into or is by other means between new and unconfirmed state', 'status_id' => TBGStatus::getStatusByKeyish('investigating')->getID(), 'editable' => false, 'is_closed' => false);
+			$steps[] = array('name' => 'Investigating', 'description' => 'An issue that is being investigated, looked into or is by other means between new and unconfirmed state', 'status_id' => TBGStatus::getStatusByKeyish('investigating')->getID(), 'editable' => true, 'is_closed' => false);
 			$steps[] = array('name' => 'Confirmed', 'description' => 'An issue that has been confirmed', 'status_id' => TBGStatus::getStatusByKeyish('confirmed')->getID(), 'editable' => false, 'is_closed' => false);
 			$steps[] = array('name' => 'In progress', 'description' => 'An issue that is being adressed', 'status_id' => TBGStatus::getStatusByKeyish('beingworkedon')->getID(), 'editable' => false, 'is_closed' => false);
 			$steps[] = array('name' => 'Ready for testing', 'description' => 'An issue that has been marked fixed and is ready for testing', 'status_id' => TBGStatus::getStatusByKeyish('readyfortesting/qa')->getID(), 'editable' => false, 'is_closed' => false);
@@ -75,36 +75,6 @@
 				$crit->addInsert(self::EDITABLE, $step['editable']);
 				$this->doInsert($crit);
 			}
-		}
-
-		public function save($name, $description, $status_id, $is_closed, $is_editable, $workflow_id, $step_id = null)
-		{
-			$crit = $this->getCriteria();
-			if ($step_id === null)
-			{
-				$crit->addInsert(self::WORKFLOW_ID, $workflow_id);
-				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
-				$crit->addInsert(self::NAME, $name);
-				$crit->addInsert(self::DESCRIPTION, $description);
-				$crit->addInsert(self::STATUS_ID, $status_id);
-				$crit->addInsert(self::CLOSED, $is_closed);
-				$crit->addInsert(self::EDITABLE, $is_editable);
-				$res = $this->doInsert($crit);
-				$id = $res->getInsertID();
-			}
-			else
-			{
-				$crit->addUpdate(self::WORKFLOW_ID, $workflow_id);
-				$crit->addUpdate(self::SCOPE, TBGContext::getScope()->getID());
-				$crit->addUpdate(self::NAME, $name);
-				$crit->addUpdate(self::DESCRIPTION, $description);
-				$crit->addUpdate(self::STATUS_ID, $status_id);
-				$crit->addUpdate(self::CLOSED, $is_closed);
-				$crit->addUpdate(self::EDITABLE, $is_editable);
-				$this->doUpdateByID($crit, $step_id);
-				$id = $step_id;
-			}
-			return $id;
 		}
 
 		public function countByWorkflowID($workflow_id)

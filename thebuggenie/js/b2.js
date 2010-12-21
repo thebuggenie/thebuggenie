@@ -717,7 +717,7 @@ function hideInfobox(url, boxkey)
 		}
 		});
 	}
-	$('infobox_' + boxkey).fade();
+	$('infobox_' + boxkey).fade({duration: 0.3});
 }
 
 function updateProjectMenuStrip(url, project_id)

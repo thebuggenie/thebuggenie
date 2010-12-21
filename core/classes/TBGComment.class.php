@@ -177,7 +177,7 @@
 		 */
 		public function canUserEditComment()
 		{
-			return (bool) ($this->_permissionCheck('caneditcomments') || $this->_permissionCheck('canpostseeandeditallcomments', true));
+			return (bool) ($this->getPostedByID() == TBGContext::getUser()->getID() || $this->_permissionCheck('caneditcomments') || $this->_permissionCheck('canpostseeandeditallcomments', true));
 		}
 
 		/**
@@ -187,7 +187,7 @@
 		 */
 		public function canUserDeleteComment()
 		{
-			return (bool) ($this->_permissionCheck('candeletecomments') || $this->_permissionCheck('canpostseeandeditallcomments', true));
+			return (bool) ($this->getPostedByID() == TBGContext::getUser()->getID() || $this->_permissionCheck('candeletecomments') || $this->_permissionCheck('canpostseeandeditallcomments', true));
 		}
 
 		public function __toString()

@@ -154,10 +154,7 @@
 			TBGDatatype::loadFixtures($this);
 			
 			// Set up workflows
-			TBGWorkflowsTable::getTable()->loadFixtures($this);
-			TBGWorkflowStepsTable::getTable()->loadFixtures($this);
-			TBGWorkflowTransitionsTable::getTable()->loadFixtures($this);
-			TBGWorkflowStepTransitionsTable::getTable()->loadFixtures($this);
+			TBGWorkflow::loadFixtures($this);
 			TBGWorkflowSchemesTable::getTable()->loadFixtures($this);
 			TBGWorkflowIssuetypeTable::getTable()->loadFixtures($this);
 			

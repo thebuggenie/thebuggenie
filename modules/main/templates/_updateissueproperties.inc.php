@@ -1,4 +1,4 @@
-<div class="rounded_box white borderless shadowed backdrop_box small" style="padding: 5px; text-align: left; font-size: 13px;">
+<div class="rounded_box white borderless shadowed backdrop_box mediumsmall issuedetailspopup" style="padding: 5px; text-align: left; font-size: 13px;">
 	<div class="backdrop_detail_header"><?php echo $transition->getDescription(); ?></div>
 	<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post" accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>">
 		<div class="backdrop_detail_content">
@@ -98,16 +98,16 @@
 						</li>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_USER_STOP_WORKING)): ?>
+				<?php if ($transition->hasAction(TBGWorkflowTransitionAction::ACTION_USER_STOP_WORKING) && $issue->isBeingWorkedOn()): ?>
 					<li id="transition_popup_stop_working_div">
 						<label for="transition_popup_set_stop_working"><?php echo __('Log time spent'); ?></label>
-						<input type="radio" name="did" id="transition_popup_set_stop_working" value="something"><label for="transition_popup_set_stop_working" style="font-weight: normal;"><?php echo __('Yes'); ?></label>&nbsp;
-						<input type="radio" name="did" id="transition_popup_set_stop_working" value="nothing"><label for="transition_popup_set_stop_working" style="font-weight: normal;"><?php echo __('No'); ?></label>
+						<input type="radio" name="did" id="transition_popup_set_stop_working" value="something" checked><label for="transition_popup_set_stop_working" class="simple"><?php echo __('Yes'); ?></label>&nbsp;
+						<input type="radio" name="did" id="transition_popup_set_stop_working" value="nothing"><label for="transition_popup_set_stop_working" class="simple"><?php echo __('No'); ?></label>
 					</li>
 				<?php endif; ?>
 				<li style="margin-top: 10px;">
-					<label for="transition_popup_comment_body"><?php echo __('Write a comment if you want it to be added'); ?></label>
-					<textarea name="comment_body" id="transition_popup_comment_body" style="width: 372px; height: 50px;"></textarea>
+					<label for="transition_popup_comment_body"><?php echo __('Write a comment if you want it to be added'); ?></label><br>
+					<textarea name="comment_body" id="transition_popup_comment_body" style="width: 480px; height: 120px;"></textarea>
 				</li>
 			</ul>
 			<div style="text-align: right; margin-right: 5px;">

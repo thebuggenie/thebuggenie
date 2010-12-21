@@ -50,8 +50,8 @@
 
 		protected function _addAvailableListeners()
 		{
-			$this->addAvailableListener('core', 'index_left_middle', 'listen_frontpageLeftmenu', 'Frontpage left menu');
-			$this->addAvailableListener('core', 'index_right_middle', 'listen_frontpageArticle', 'Frontpage article');
+			$this->addAvailableListener('core', 'index_left', 'listen_frontpageLeftmenu', 'Frontpage left menu');
+			$this->addAvailableListener('core', 'index_right_top', 'listen_frontpageArticle', 'Frontpage article');
 			if ($this->isWikiTabsEnabled())
 			{
 				$this->addAvailableListener('core', 'project_overview_item_links', 'listen_projectLinks', 'Project overview links');
@@ -83,8 +83,8 @@
 			TBGContext::setPermission('manage_billboard', 0, 'publish', 0, 1, 0, true, $scope);
 			$this->saveSetting('allow_camelcase_links', 1);
 
-			$this->enableListenerSaved('core', 'index_left_middle');
-			$this->enableListenerSaved('core', 'index_right_middle');
+			$this->enableListenerSaved('core', 'index_left');
+			$this->enableListenerSaved('core', 'index_right_top');
 			$this->enableListenerSaved('core', 'project_overview_item_links');
 			$this->enableListenerSaved('core', 'menustrip_item_links');
 			$this->enableListenerSaved('core', 'TBGProject::createNew');

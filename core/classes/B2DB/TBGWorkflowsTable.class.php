@@ -45,20 +45,6 @@
 			parent::_addBoolean(self::IS_ACTIVE);
 		}
 
-		public function loadFixtures(TBGScope $scope)
-		{
-			$i18n = TBGContext::getI18n();
-
-			$crit = $this->getCriteria();
-			$crit->addInsert(self::ID, 1);
-			$crit->addInsert(self::SCOPE, $scope->getID());
-			$crit->addInsert(self::NAME, "Default workflow");
-			$crit->addInsert(self::DESCRIPTION, "This is the default workflow. It is used by all projects with no specific workflow selected, and for issue types with no specific workflow specified. This workflow cannot be edited or removed.");
-			$crit->addInsert(self::IS_ACTIVE, true);
-			$this->doInsert($crit);
-
-		}
-
 		public function getAll($scope = null)
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;

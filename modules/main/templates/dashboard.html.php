@@ -14,7 +14,7 @@
 	<tr>
 		<td id="dashboard_lefthand" class="side_bar">
 			<?php TBGEvent::createNew('core', 'dashboard_left_top')->trigger(); ?>
-			<div style="margin: 10px 0 10px 10px;">
+			<div style="margin: 0 0 10px 10px;">
 				<?php include_component('main/myfriends'); ?>
 			</div>
 			<?php TBGEvent::createNew('core', 'dashboard_left_bottom')->trigger();?>
@@ -34,7 +34,7 @@
 		</td>
 		<td id="dashboard_righthand" class="side_bar">
 			<?php echo javascript_link_tag(image_tag('icon_dashboard_config.png').'<span>'.__('Customize your dashboard').'</span>', array('title' => __('Customize your dashboard'), 'id' => 'customize_dashboard_icon', 'class' => 'image', 'onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config'))."');")); ?>
-			<div class="header" style="margin: 7px 5px 5px 0;"><?php echo __('Your projects'); ?></div>
+			<div class="header" style="margin: 0 5px 5px 0;"><?php echo __('Your projects'); ?></div>
 			<?php if (count($tbg_user->getAssociatedProjects()) > 0): ?>
 				<ul id="associated_projects">
 					<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>

@@ -19,7 +19,6 @@
 		<div class="commentbody article" id="comment_<?php echo $comment->getID(); ?>_body">
 			<?php echo tbg_parse_text($comment->getContent(), false, null, $options); ?>
 		</div>
-		<br style="clear: both;">
 		<?php if ($comment->canUserEditComment() || $comment->canUserDeleteComment()) : ?>
 			<div class="commenttools">
 				<?php if ($comment->canUserEditComment()): ?><span style="margin-right: 10px;"><a href="javascript:void(0)" onClick="$('comment_view_<?php echo $comment->getID(); ?>').hide();$('comment_edit_<?php echo $comment->getID(); ?>').show();"><?php echo image_tag('icon_edit.png', array('title' => __('Edit'))); ?><?php echo __('Edit'); ?></a></span><?php endif; ?>

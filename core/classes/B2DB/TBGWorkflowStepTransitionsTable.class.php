@@ -45,39 +45,6 @@
 			parent::_addForeignKeyColumn(self::TRANSITION_ID, TBGWorkflowTransitionsTable::getTable(), TBGWorkflowTransitionsTable::ID);
 		}
 
-		public function loadFixtures(TBGScope $scope)
-		{
-			$transitions = array();
-			$transitions[] = array('from_step_id' => 1, 'transition_id' => 1);
-			$transitions[] = array('from_step_id' => 1, 'transition_id' => 2);
-			$transitions[] = array('from_step_id' => 1, 'transition_id' => 3);
-			$transitions[] = array('from_step_id' => 1, 'transition_id' => 4);
-			$transitions[] = array('from_step_id' => 2, 'transition_id' => 2);
-			$transitions[] = array('from_step_id' => 2, 'transition_id' => 3);
-			$transitions[] = array('from_step_id' => 2, 'transition_id' => 4);
-			$transitions[] = array('from_step_id' => 3, 'transition_id' => 4);
-			$transitions[] = array('from_step_id' => 3, 'transition_id' => 6);
-			$transitions[] = array('from_step_id' => 4, 'transition_id' => 3);
-			$transitions[] = array('from_step_id' => 4, 'transition_id' => 7);
-			$transitions[] = array('from_step_id' => 4, 'transition_id' => 8);
-			$transitions[] = array('from_step_id' => 5, 'transition_id' => 9);
-			$transitions[] = array('from_step_id' => 5, 'transition_id' => 8);
-			$transitions[] = array('from_step_id' => 6, 'transition_id' => 10);
-			$transitions[] = array('from_step_id' => 6, 'transition_id' => 11);
-			$transitions[] = array('from_step_id' => 7, 'transition_id' => 5);
-			$transitions[] = array('from_step_id' => 8, 'transition_id' => 5);
-
-			foreach ($transitions as $transition)
-			{
-				$crit = $this->getCriteria();
-				$crit->addInsert(self::WORKFLOW_ID, 1);
-				$crit->addInsert(self::SCOPE, $scope->getID());
-				$crit->addInsert(self::FROM_STEP_ID, $transition['from_step_id']);
-				$crit->addInsert(self::TRANSITION_ID, $transition['transition_id']);
-				$this->doInsert($crit);
-			}
-		}
-
 		protected function _deleteByTypeID($type, $id)
 		{
 			$crit = $this->getCriteria();

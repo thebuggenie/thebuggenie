@@ -18,15 +18,18 @@
 		</div>
 	</form>
 	<div class="dropdown_content">
-		<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), urlencode('%identifiable_value%')), array(1, $tbg_user->getID()), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a><br>
-		<br>
+		<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), urlencode('%identifiable_value%')), array(TBGIdentifiableClass::TYPE_USER, $tbg_user->getID()), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a><br>
 		<?php if (count($tbg_user->getFriends()) == 0): ?>
-			<b class="faded_out"><?php echo __("or - if you had any friends registered - you could've selected one from here"); ?></b>
+			<span class="faded_out"><?php echo __("Your friends will appear here"); ?></span>
 		<?php else: ?>
-			<br>
-			<b><?php echo __('or select a friend below'); ?>:</b><br>
+			<b><?php echo __('%select_yourself% or select a friend below', array('%select_yourself%' => '')); ?>:</b><br>
 			<?php include_component('identifiableselectorresults', array('users' => $tbg_user->getFriends(), 'callback' => $callback)); ?>
 		<?php endif; ?>
+		<br>
+		<br>
+		<?php foreach ($tbg_user->getTeams() as $team): ?>
+			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), urlencode('%identifiable_value%')), array(TBGIdentifiableClass::TYPE_TEAM, $team->getID()), $callback); ?>"><?php echo __('Select %teamname%', array('%teamname%' => $team->getName())); ?> (<?php echo $team->getName(); ?>)</a><br>
+		<?php endforeach; ?>
 	</div>
 	<div id="<?php echo $base_id; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</div>
 	<div id="<?php echo $base_id; ?>_change_error" class="error_message" style="display: none;"></div>

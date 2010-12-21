@@ -77,11 +77,9 @@
 <dl class="viewissue_list" id="assigned_to_field">
 	<dt id="assigned_to_header" class="<?php if ($issue->isAssignedToChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isAssignedToMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Assigned to'); ?></dt>
 	<dd id="assigned_to_content" class="<?php if ($issue->isAssignedToChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isAssignedToMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-		<?php if ($issue->getProject()->canChangeIssuesWithoutWorkingOnThem()): ?>
-			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to')); ?>', 'assigned_to');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
-			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'assigned_to_undo_spinning')); ?>
-			<a href="javascript:void(0);" onclick="$('assigned_to_change').toggle();" title="<?php echo __('Click to change assignee'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
-		<?php endif; ?>
+		<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to')); ?>', 'assigned_to');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+		<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'assigned_to_undo_spinning')); ?>
+		<a href="javascript:void(0);" onclick="$('assigned_to_change').toggle();" title="<?php echo __('Click to change assignee'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
 		<div style="width: 170px; display: <?php if ($issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="assigned_to_name">
 			<?php if ($issue->getAssigneeType() == TBGIdentifiableClass::TYPE_USER): ?>
 				<?php echo include_component('main/userdropdown', array('user' => $issue->getAssignee())); ?>
@@ -92,15 +90,13 @@
 		<span class="faded_out" id="no_assigned_to"<?php if ($issue->isAssigned()): ?> style="display: none;"<?php endif; ?>><?php echo __('Not assigned to anyone'); ?></span>
 	</dd>
 </dl>
-<?php if ($issue->getProject()->canChangeIssuesWithoutWorkingOnThem()): ?>
-	<?php include_component('identifiableselector', array(	'html_id' 			=> 'assigned_to_change', 
-															'header' 			=> __('Assign this issue'),
-															'callback'		 	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'assigned_to');",
-															'clear_link_text'	=> __('Clear current assignee'),
-															'base_id'			=> 'assigned_to',
-															'include_teams'		=> true,
-															'absolute' => true)); ?>
-<?php endif; ?>
+<?php include_component('identifiableselector', array(	'html_id' 			=> 'assigned_to_change', 
+														'header' 			=> __('Assign this issue'),
+														'callback'		 	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'assigned_to');",
+														'clear_link_text'	=> __('Clear current assignee'),
+														'base_id'			=> 'assigned_to',
+														'include_teams'		=> true,
+														'absolute' => true)); ?>
 <dl class="viewissue_list" id="percent_complete_field"<?php if (!$issue->isPercentCompletedVisible()): ?> style="display: none;"<?php endif; ?>>
 	<dt id="percent_header" class="<?php if ($issue->isPercentCompletedChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPercentCompletedMerged()): ?> issue_detail_unmerged<?php endif; ?>"><?php echo __('Progress'); ?></dt>
 	<dd id="percent_content" class="<?php if ($issue->isPercentCompletedChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isPercentCompletedMerged()): ?> issue_detail_unmerged<?php endif; ?>">

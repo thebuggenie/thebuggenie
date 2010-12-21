@@ -25,6 +25,8 @@
 
 		protected $_num_members = null;
 		
+		protected $_ondemand = false;
+		
 		protected static $_teams = null;
 		
 		protected $_associated_projects = null;
@@ -204,4 +206,15 @@
 			
 			return $this->_associated_projects;
 		}
+		
+		public function isOndemand()
+		{
+			return $this->_ondemand;
+		}
+		
+		public function setOndemand($val = true)
+		{
+			$this->_ondemand = $val;
+		}
+		
 	}

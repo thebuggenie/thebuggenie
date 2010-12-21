@@ -115,6 +115,7 @@
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', 'caneditmainmenu', 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', 'caneditissuecustomfieldsown', 0, $scope_id);
 			$this->setPermission(0, 0, 0, true, 'core', 'canpostandeditcomments', 0, $scope_id);
+			$this->setPermission(0, $admin_group_id, 0, true, 'core', 'canpostseeandeditallcomments', 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "canseeproject", 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', 'candoscrumplanning', 0, $scope_id);
 			$this->setPermission(0, $admin_group_id, 0, true, 'core', "page_project_allpages_access", 0, $scope_id);

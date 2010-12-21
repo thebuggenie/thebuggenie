@@ -91,7 +91,7 @@
 			$fields_list['priority'] = array('title' => $i18n->__('Priority'), 'visible' => $this->issue->isPriorityVisible(), 'changed' => $this->issue->isPriorityChanged(), 'merged' => $this->issue->isPriorityMerged(), 'name' => (($this->issue->getPriority() instanceof TBGPriority) ? $this->issue->getPriority()->getName() : ''), 'name_visible' => (bool) ($this->issue->getPriority() instanceof TBGPriority), 'noname_visible' => (bool) (!$this->issue->getPriority() instanceof TBGPriority), 'icon' => false, 'change_tip' => $i18n->__('Click to change priority'), 'change_header' => $i18n->__('Change priority'), 'clear' => $i18n->__('Clear the priority'), 'select' => $i18n->__('%clear_the_priority% or click to select a new priority', array('%clear_the_priority%' => '')));
 			if ($this->issue->isUpdateable()) $fields_list['priority']['choices'] = TBGPriority::getAll();
 			$fields_list['reproducability'] = array('title' => $i18n->__('Reproducability'), 'visible' => $this->issue->isReproducabilityVisible(), 'changed' => $this->issue->isReproducabilityChanged(), 'merged' => $this->issue->isReproducabilityMerged(), 'name' => (($this->issue->getReproducability() instanceof TBGReproducability) ? $this->issue->getReproducability()->getName() : ''), 'name_visible' => (bool) ($this->issue->getReproducability() instanceof TBGReproducability), 'noname_visible' => (bool) (!$this->issue->getReproducability() instanceof TBGReproducability), 'icon' => false, 'change_tip' => $i18n->__('Click to change reproducability'), 'change_header' => $i18n->__('Change reproducability'), 'clear' => $i18n->__('Clear the reproducability'), 'select' => $i18n->__('%clear_the_reproducability% or click to select a new reproducability', array('%clear_the_reproducability%' => '')));
-			if ($this->issue->isUpdateable()) $fields_list['reproducability']['choices'] = TBGReproducability::getAll();
+			if ($this->issue->isEditable()) $fields_list['reproducability']['choices'] = TBGReproducability::getAll();
 			$fields_list['severity'] = array('title' => $i18n->__('Severity'), 'visible' => $this->issue->isSeverityVisible(), 'changed' => $this->issue->isSeverityChanged(), 'merged' => $this->issue->isSeverityMerged(), 'name' => (($this->issue->getSeverity() instanceof TBGSeverity) ? $this->issue->getSeverity()->getName() : ''), 'name_visible' => (bool) ($this->issue->getSeverity() instanceof TBGSeverity), 'noname_visible' => (bool) (!$this->issue->getSeverity() instanceof TBGSeverity), 'icon' => false, 'change_tip' => $i18n->__('Click to change severity'), 'change_header' => $i18n->__('Change severity'), 'clear' => $i18n->__('Clear the severity'), 'select' => $i18n->__('%clear_the_severity% or click to select a new severity', array('%clear_the_severity%' => '')));
 			if ($this->issue->isUpdateable()) $fields_list['severity']['choices'] = TBGSeverity::getAll();
 			$fields_list['milestone'] = array('title' => $i18n->__('Targetted for'), 'visible' => $this->issue->isMilestoneVisible(), 'changed' => $this->issue->isMilestoneChanged(), 'merged' => $this->issue->isMilestoneMerged(), 'name' => (($this->issue->getMilestone() instanceof TBGMilestone) ? $this->issue->getMilestone()->getName() : ''), 'name_visible' => (bool) ($this->issue->getMilestone() instanceof TBGMilestone), 'noname_visible' => (bool) (!$this->issue->getMilestone() instanceof TBGMilestone), 'icon' => true, 'icon_name' => 'icon_milestones.png', 'change_tip' => $i18n->__('Click to change which milestone this issue is targetted for'), 'change_header' => $i18n->__('Set issue target / milestone'), 'clear' => $i18n->__('Set as not targetted'), 'select' => $i18n->__('%set_as_not_targetted% or click to set a new target milestone', array('%set_as_not_targetted%' => '')));
@@ -230,6 +230,12 @@
 		{
 			$this->selected_tab = isset($this->section) ? $this->section : 'login';
 			$this->options = $this->getParameterHolder();
+			try
+			{
+				$this->article = null;
+				$this->article = PublishFactory::articleName('LoginIntro');
+			}
+			catch (Exception $e) {}
 			if (TBGContext::getRequest()->getParameter('redirect') == true)
 				$this->mandatory = true;
 		}		

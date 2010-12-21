@@ -42,6 +42,43 @@
 
 		protected $_num_outgoing_transitions = null;
 
+		public static function loadFixtures(TBGScope $scope, TBGWorkflow $workflow)
+		{
+			$steps = array();
+			$steps['new'] = array('name' => 'New', 'description' => 'A new issue, not yet handled', 'status_id' => TBGStatus::getStatusByKeyish('new')->getID(), 'transitions' => array('investigateissue', 'confirmissue', 'rejectissue', 'acceptissue'), 'editable' => true, 'is_closed' => false);
+			$steps['investigating'] = array('name' => 'Investigating', 'description' => 'An issue that is being investigated, looked into or is by other means between new and unconfirmed state', 'status_id' => TBGStatus::getStatusByKeyish('investigating')->getID(), 'transitions' => array('requestmoreinformation', 'confirmissue', 'rejectissue', 'acceptissue'), 'editable' => true, 'is_closed' => false);
+			$steps['confirmed'] = array('name' => 'Confirmed', 'description' => 'An issue that has been confirmed', 'status_id' => TBGStatus::getStatusByKeyish('confirmed')->getID(), 'transitions' => array('acceptissue', 'assignissue'), 'editable' => false, 'is_closed' => false);
+			$steps['inprogress'] = array('name' => 'In progress', 'description' => 'An issue that is being adressed', 'status_id' => TBGStatus::getStatusByKeyish('beingworkedon')->getID(), 'transitions' => array('rejectissue', 'markreadyfortesting', 'resolveissue'), 'editable' => false, 'is_closed' => false);
+			$steps['readyfortesting'] = array('name' => 'Ready for testing', 'description' => 'An issue that has been marked fixed and is ready for testing', 'status_id' => TBGStatus::getStatusByKeyish('readyfortesting/qa')->getID(), 'transitions' => array('resolveissue', 'testissuesolution'), 'editable' => false, 'is_closed' => false);
+			$steps['testing'] = array('name' => 'Testing', 'description' => 'An issue where the proposed or implemented solution is currently being tested or approved', 'status_id' => TBGStatus::getStatusByKeyish('testing/qa')->getID(), 'transitions' => array('acceptissuesolution', 'rejectissuesolution'), 'editable' => false, 'is_closed' => false);
+			$steps['rejected'] = array('name' => 'Rejected', 'description' => 'A closed issue that has been rejected', 'status_id' => TBGStatus::getStatusByKeyish('notabug')->getID(), 'transitions' => array('reopenissue'), 'editable' => false, 'is_closed' => true);
+			$steps['closed'] = array('name' => 'Closed', 'description' => 'A closed issue', 'status_id' => null, 'transitions' => array('reopenissue'), 'editable' => false, 'is_closed' => true);
+
+			foreach ($steps as $key => $step)
+			{
+				$step_object = new TBGWorkflowStep();
+				$step_object->setWorkflow($workflow);
+				$step_object->setName($step['name']);
+				$step_object->setDescription($step['description']);
+				$step_object->setLinkedStatusID($step['status_id']);
+				$step_object->setIsClosed($step['is_closed']);
+				$step_object->setIsEditable($step['editable']);
+				$step_object->save();
+				$steps[$key]['step'] = $step_object;
+			}
+			
+			$transitions = TBGWorkflowTransition::loadFixtures($scope, $workflow, $steps);
+			
+			foreach ($steps as $step)
+			{
+				foreach ($step['transitions'] as $transition)
+				{
+					$step['step']->addOutgoingTransition($transitions[$transition]);
+				}
+			}
+			
+		}
+
 		/**
 		 * The associated workflow object
 		 *

@@ -11,16 +11,19 @@
 		</div>
 		<div id="login_menu_panes">
 			<div id="tab_login_pane"<?php if ($selected_tab != 'login'): ?> style="display: none;"<?php endif; ?>>
+				<?php if ($article instanceof TBGWikiArticle): ?>
+					<?php include_component('publish/articledisplay', array('article' => $article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
+				<?php endif; ?>
+				<?php /*<h1><?php echo __('Welcome to'); ?> <?php echo(TBGSettings::getTBGname()); ?></h1>
+				<?php echo __('Please fill in your username and password below, and press "Continue" to log in.'); ?>
+				<br>
+				<?php if (TBGSettings::get('allowreg') == true): ?> 
+					<?php echo __('If you have not already registered, please use the "Register new account" tab.'); ?>
+				<?php else: ?>
+					<?php echo __('It is not possible to register new accounts. To register a new account, please contact the administrator.'); ?>
+				<?php endif; ?>
+				<br><br> */ ?>	
 				<div class="logindiv">			
-					<h1><?php echo __('Welcome to'); ?> <?php echo(TBGSettings::getTBGname()); ?></h1>
-					<?php echo __('Please fill in your username and password below, and press "Continue" to log in.'); ?>
-					<br>
-					<?php if (TBGSettings::get('allowreg') == true): ?> 
-						<?php echo __('If you have not already registered, please use the "Register new account" tab.'); ?>
-					<?php else: ?>
-						<?php echo __('It is not possible to register new accounts. To register a new account, please contact the administrator.'); ?>
-					<?php endif; ?>
-					<br><br>	
 					<div class="rounded_box iceblue">
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 						<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
