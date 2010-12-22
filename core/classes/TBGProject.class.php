@@ -42,7 +42,7 @@
 		 *
 		 * @var boolean
 		 */
-		protected $_use_scrum = false;
+		protected $_use_scrum = true;
 
 		/**
 		 * Time unit for this project
