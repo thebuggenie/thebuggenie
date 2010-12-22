@@ -1,6 +1,6 @@
 <div class="rounded_box lightgrey borderless cut_bottom dashboard_view_header" style="margin-top: 5px;">
 	<?php if ($rss == true): ?>
-		<?php echo link_tag(make_url('search', array_merge($parameters, array('search' => true, 'format' => 'rss'))), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+		<?php echo link_tag(make_url('search', array_merge($parameters, array('format' => 'rss'))), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
 	<?php endif; ?>
 		<?php echo image_tag('collapse_small.png', array('id' => 'dashboard_'.$id.'_collapse', 'style' => 'float: left; margin: 3px 5px 0 2px;', 'onclick' => "\$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse_small.png', false, 'core', false) . "') ? '" . image_url('expand_small.png', false, 'core', false) . "' : '" . image_url('collapse_small.png', false, 'core', false) . "'")); ?>
 		<?php //echo image_tag('collapse.png', array('id' => 'dashboard_'.$id.'_collapse', 'onclick' => "$('dashboard_{$id}').toggle(); this.src = (this.src == '" . image_url('collapse.png', false, 'core', false) . "') ? '" . image_url('expand.png', false, 'core', false) . "' : '" . image_url('collapse.png', false, 'core', false) . "'")); ?>

@@ -33,22 +33,21 @@
 		public static function getAvailableUserViews()
 		{
 			$searches = array();
-			$searches[TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH] = array(	TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES => 'Issues reported by me',
-																				TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES => 'Open issues assigned to me',
-																				TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES => 'Open issues assigned to my teams',
-																				TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES => 'Open issues',
-																				TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES => 'Closed issues',
-																				TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED => 'Most voted issues');
-			$searches[TBGDashboard::DASHBOARD_VIEW_LOGGED_ACTION] = array( 0 => 'What you\'ve done recently');
-			$searches[TBGDashboard::DASHBOARD_VIEW_SAVED_SEARCH] = array();
-			$savedsearches = B2DB::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID());
-			foreach ($savedsearches['user'] as $a_savedsearch)
+			$searches[self::DASHBOARD_VIEW_PREDEFINED_SEARCH] = array(	TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES => 'Issues reported by me',
+																		TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES => 'Open issues assigned to me',
+																		TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES => 'Open issues assigned to my teams',
+																		TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES => 'Open issues',
+																		TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES => 'Closed issues',
+																		TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED => 'Most voted issues');
+			$searches[self::DASHBOARD_VIEW_LOGGED_ACTION] = array( 0 => 'What you\'ve done recently');
+			$searches[self::DASHBOARD_VIEW_SAVED_SEARCH] = array();
+			$allsavedsearches = B2DB::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID());
+			foreach ($allsavedsearches as $savedsearches)
 			{
-				$searches[TBGContext::DASHBOARD_VIEW_SAVED_SEARCH][$a_savedsearch->get(TBGSavedSearchesTable::ID)] = $a_savedsearch->get(TBGSavedSearchesTable::NAME);
-			}
-			foreach ($savedsearches['public'] as $a_savedsearch)
-			{
-				$searches[TBGContext::DASHBOARD_VIEW_SAVED_SEARCH][$a_savedsearch->get(TBGSavedSearchesTable::ID)] = $a_savedsearch->get(TBGSavedSearchesTable::NAME);
+				foreach ($savedsearches as $a_savedsearch)
+				{
+					$searches[self::DASHBOARD_VIEW_SAVED_SEARCH][$a_savedsearch->get(TBGSavedSearchesTable::ID)] = $a_savedsearch->get(TBGSavedSearchesTable::NAME);
+				}
 			}
 			
 			return $searches;

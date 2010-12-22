@@ -56,7 +56,9 @@ function swapDashboardView(el1, el2)
 	{ 
 		el2.className = '';
 		el1.ancestors()[0].remove();
-	}	
+	}
+	
+	el1.ancestors()[3].hide();
 }
 
 function addDashboardView()
@@ -85,6 +87,8 @@ function saveDashboard(url)
 		evalScripts: true,
 		parameters: params,
 		onLoading: function (transport) {
+			$('save_dashboard_indicator').show();
+			$('save_dashboard').hide();
 		},
 		onSuccess: function (transport) {
 			var json = transport.responseJSON;
@@ -96,6 +100,8 @@ function saveDashboard(url)
 			{
 				successMessage(json.message);
 			}
+			$('save_dashboard_indicator').hide();
+			$('save_dashboard').show();
 		},
 		onFailure: function (transport) {
 			var json = transport.responseJSON;
@@ -103,6 +109,8 @@ function saveDashboard(url)
 			{
 				failedMessage(json.error);
 			}
+			$('save_dashboard_indicator').hide();
+			$('save_dashboard').show();
 		}
 	});	
 }

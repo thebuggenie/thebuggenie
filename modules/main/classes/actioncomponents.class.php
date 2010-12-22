@@ -258,10 +258,6 @@
 		
 		public function componentDashboardView()
 		{
-			$this->title = isset($this->title) ? $this->title : 'OMG PONIEZ TITLE';
-			$this->view = isset($this->view) ? $this->view : 'OMG PONIEZ VIEW';
-			$this->id = isset($this->id) ? $this->id : 'omgponiezid';
-			$this->type = isset($this->type) ? $this->type : 'issue';
 			$this->parameters = $this->getParameterHolder();
 		}
 		

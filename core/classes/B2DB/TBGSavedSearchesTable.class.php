@@ -39,7 +39,10 @@
 			$ctn = $crit->returnCriterion(self::UID, $user_id);
 			$ctn->addOr(self::UID, 0);
 			$crit->addWhere($ctn);
-			$crit->addWhere(self::APPLIES_TO_PROJECT, $project_id);
+			if ($project_id !== 0 ) 
+			{
+				$crit->addWhere(self::APPLIES_TO_PROJECT, $project_id);	
+			}
 
 			$retarr = array('user' => array(), 'public' => array());
 			

@@ -40,14 +40,23 @@
 		public function componentResults_view()
 		{
 			$request = new TBGRequest();
-			$request->setParameter('predefined_search', $this->view);
+			switch ($this->type)
+			{
+				case TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH :
+					$request->setParameter('predefined_search', $this->view);
+				break;
+				
+				case TBGDashboard::DASHBOARD_VIEW_SAVED_SEARCH :
+					$request->setParameter('saved_search', $this->view);
+				break;
+			}
 			$request->setParameter('search', $this->search);
 			
 			$search = TBGContext::factory()->manufacture('searchActions', uniqid(rand(), true));
 			$search->runFindIssues($request);
 			$this->issues = $search->issues;
 			$this->title = $search->searchtitle;
-			$this->parameters = array();
+			$this->parameters = $request->getParameters();
 		}		
 		
 	}
