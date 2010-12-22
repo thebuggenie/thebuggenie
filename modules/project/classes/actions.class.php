@@ -363,9 +363,7 @@
 				$sprint->setType(TBGMilestone::TYPE_SCRUMSPRINT);
 				$sprint->setProject($this->selected_project);
 				//TBGMilestone::createNew($sprint_name, TBGMilestone::TYPE_SCRUMSPRINT, $this->selected_project->getID());
-				$sprint->setStarting();
 				$sprint->setStartingDate(mktime(0, 0, 1, $request->getParameter('starting_month'), $request->getParameter('starting_day'), $request->getParameter('starting_year')));
-				$sprint->setScheduled();
 				$sprint->setScheduledDate(mktime(23, 59, 59, $request->getParameter('scheduled_month'), $request->getParameter('scheduled_day'), $request->getParameter('scheduled_year')));
 				$sprint->save();
 				return $this->renderJSON(array('failed' => false, 'content' => $this->getTemplateHTML('sprintbox', array('sprint' => $sprint)), 'sprint_id' => $sprint->getID()));
