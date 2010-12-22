@@ -1532,17 +1532,29 @@
 		 * 
 		 * @return boolean
 		 */
-		public function hasPageAccess($page, $target_id = null)
+		public function hasPageAccess($page, $target_id = null, $explicit = true, $permissive = null)
 		{
+			$permissive = (isset($permissive)) ? $permissive : TBGSettings::isPermissive();
 			if ($target_id === null)
 			{
-				return $this->hasPermission("page_{$page}_access", 0, "core", true, TBGSettings::isPermissive());
+				$retval = $this->hasPermission("page_{$page}_access", 0, "core", $explicit, $permissive);
+				return $retval;
 			}
 			else
 			{
-				$retval = $this->hasPermission("page_{$page}_access", $target_id, "core", true, TBGSettings::isPermissive());
-				return ($retval === null) ? $this->hasPermission("page_{$page}_access", 0, "core", true, TBGSettings::isPermissive()) : $retval;
+				$retval = $this->hasPermission("page_{$page}_access", $target_id, "core", true, $permissive);
+				return ($retval === null) ? $this->hasPermission("page_{$page}_access", 0, "core", true, $permissive) : $retval;
 			}
+		}
+		
+		public function hasProjectPageAccess($page, $project_id)
+		{
+			$specific_access = $this->hasPageAccess($page, $project_id, true, false);
+			if (!$specific_access && TBGSettings::isPermissive())
+			{
+				return false;
+			}
+			return (bool) ($specific_access || TBGContext::getUser()->hasPageAccess('project_allpages', $project_id));
 		}
 
 		/**

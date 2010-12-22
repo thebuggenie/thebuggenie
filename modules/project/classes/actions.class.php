@@ -57,6 +57,11 @@
 			}
 		}
 
+		protected function _checkProjectPageAccess($page)
+		{
+			return TBGContext::getUser()->hasProjectPageAccess($page, $this->selected_project->getID());
+		}
+		
 		/**
 		 * The project dashboard
 		 * 
@@ -64,8 +69,7 @@
 		 */
 		public function runDashboard(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_dashboard', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
-			//$this->recent_activities = $this->selected_project->getRecentImportantActivities(10);
+			$this->_checkProjectPageAccess('project_dashboard');
 			$this->recent_issues = $this->selected_project->getRecentIssues(10);
 			$this->recent_features = $this->selected_project->getRecentFeatures();
 			$this->recent_ideas = $this->selected_project->getRecentIdeas();
@@ -81,7 +85,7 @@
 		 */
 		public function runPlanning(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_planning', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_planning'));
 
 			$this->recent_ideas = $this->selected_project->getRecentIdeas();
 
@@ -103,8 +107,7 @@
 		 */
 		public function runRoadmap(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_roadmap', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
-
+			$this->forward403unless($this->_checkProjectPageAccess('project_roadmap'));
 			$this->milestones = $this->selected_project->getAllMilestones();
 		}
 
@@ -115,12 +118,8 @@
 		 */
 		public function runTimeline(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_timeline', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_timeline'));
 			$this->recent_activities = $this->selected_project->getRecentActivities();
-			/*if ($request->getParameter('format') == 'rss')
-			{
-				return $this->renderComponent('project/timelinerss', array('recent_activities' => $this->recent_activities));
-			}*/
 		}
 
 		/**
@@ -130,7 +129,7 @@
 		 */
 		public function runScrum(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			$this->unassigned_issues = $this->selected_project->getUnassignedStories();
 		}
 
@@ -141,7 +140,7 @@
 		 */
 		public function runScrumShowDetails(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			$selected_sprint = null;
 			if ($s_id = $request->getParameter('sprint_id'))
 			{
@@ -170,7 +169,7 @@
 		 */
 		public function runScrumAddTask(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			$issue = TBGContext::factory()->TBGIssue($request->getParameter('story_id'));
 			try
 			{
@@ -212,7 +211,7 @@
 		 */
 		public function runScrumShowBurndownImage(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			
 			$milestone = null;
 			$maxEstimation = 0;
@@ -272,7 +271,7 @@
 		 */
 		public function runScrumSetStoryDetail(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			$issue = TBGContext::factory()->TBGIssue($request->getParameter('story_id'));
 			if ($issue instanceof TBGIssue)
 			{
@@ -311,7 +310,7 @@
 		 */
 		public function runScrumAssignStory(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			try
 			{
 				$issue = TBGContext::factory()->TBGIssue($request->getParameter('story_id'));
@@ -355,14 +354,13 @@
 		 */
 		public function runScrumAddSprint(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_scrum', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
 			if (($sprint_name = $request->getParameter('sprint_name')) && trim($sprint_name) != '')
 			{
 				$sprint = new TBGMilestone();
 				$sprint->setName($sprint_name);
 				$sprint->setType(TBGMilestone::TYPE_SCRUMSPRINT);
 				$sprint->setProject($this->selected_project);
-				//TBGMilestone::createNew($sprint_name, TBGMilestone::TYPE_SCRUMSPRINT, $this->selected_project->getID());
 				$sprint->setStartingDate(mktime(0, 0, 1, $request->getParameter('starting_month'), $request->getParameter('starting_day'), $request->getParameter('starting_year')));
 				$sprint->setScheduledDate(mktime(23, 59, 59, $request->getParameter('scheduled_month'), $request->getParameter('scheduled_day'), $request->getParameter('scheduled_year')));
 				$sprint->save();
@@ -378,7 +376,7 @@
 		 */
 		public function runIssues(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_issues', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_issues'));
 		}
 
 		/**
@@ -388,7 +386,7 @@
 		 */
 		public function runTeam(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_team', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_team'));
 			$this->assignees = $this->selected_project->getAssignees();
 		}
 
@@ -399,12 +397,12 @@
 		 */
 		public function runStatistics(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_statistics', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
 		}
 
 		public function runStatisticsLast30(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_statistics', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
 
 			if (!function_exists('imagecreatetruecolor'))
 			{
@@ -444,7 +442,7 @@
 
 		public function runStatisticsImagesets(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_statistics', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
 			$success = false;
 			if (in_array($request->getParameter('set'), array('issues_per_status', 'issues_per_state', 'issues_per_priority', 'issues_per_category', 'issues_per_resolution', 'issues_per_reproducability')))
 			{
@@ -656,7 +654,7 @@
 
 		public function runStatisticsGetImage(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_statistics', $this->selected_project->getID()) || TBGContext::getUser()->hasPageAccess('project_allpages', $this->selected_project->getID()));
+			$this->forward403unless($this->_checkProjectPageAccess('project_statistics'));
 
 			if (!function_exists('imagecreatetruecolor'))
 			{

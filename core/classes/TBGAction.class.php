@@ -149,6 +149,11 @@
 			}
 		}
 		
+		public function forward403if($condition, $message = null)
+		{
+			$this->forward403unless(!$condition, $message);
+		}
+		
 		/**
 		 * Render a template
 		 * 
