@@ -27,8 +27,8 @@
 		const VERSION_MINOR = 'components.version_minor';
 		const VERSION_REVISION = 'components.version_revision';
 		const PROJECT = 'components.project';
-		const LEAD_BY = 'projects.leader';
-		const LEAD_TYPE = 'projects.leader_type';
+		const LEAD_BY = 'components.leader';
+		const LEAD_TYPE = 'components.leader_type';
 		
 		public function __construct()
 		{
@@ -47,7 +47,7 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::PROJECT, $project_id);
-			$res = $this->doSelect($crit);
+			$res = $this->doSelect($crit, false);
 			return $res;
 		}
 		
