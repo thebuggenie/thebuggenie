@@ -372,6 +372,7 @@ th.highlighted_column { background-color: #C1C1C1; }
 #config_modules .content { padding-top: 5px; text-align: left; }
 
 .projectbox .permission_list ul { width: 670px; }
+#tab_permissions_pane .permission_list ul { width: 780px; }
 .projectbox td { font-size: 0.9em; }
 
 #issuetypes_menu_panes .content { padding: 5px; }

@@ -6,6 +6,7 @@
 		<li id="tab_milestones"<?php if ($selected_tab == 'milestones'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('icon_milestones.png', array('style' => 'float: left;')).__('Milestones'), array('onclick' => "switchSubmenuTab('tab_milestones', 'project_config_menu');")); ?></li>
 		<li id="tab_developers"<?php if ($selected_tab == 'developers'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('cfg_icon_project_devs.png', array('style' => 'float: left;')).__('Team'), array('onclick' => "switchSubmenuTab('tab_developers', 'project_config_menu');")); ?></li>
 		<li id="tab_other"<?php if ($selected_tab == 'other'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('cfg_icon_datatypes.png', array('style' => 'float: left;')).__('Other'), array('onclick' => "switchSubmenuTab('tab_other', 'project_config_menu');")); ?></li>
+		<li id="tab_permissions"<?php if ($selected_tab == 'permissions'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(image_tag('cfg_icon_permissions.png', array('style' => 'float: left;')).__('permissions'), array('onclick' => "switchSubmenuTab('tab_permissions', 'project_config_menu');")); ?></li>
 	</ul>
 </div>
 <div id="project_config_menu_panes">
@@ -27,7 +28,7 @@
 	<div id="tab_other_pane"<?php if ($selected_tab != 'other'): ?> style="display: none;"<?php endif; ?>>
 		<?php include_template('configuration/projectother', array('access_level' => $access_level, 'project' => $project)); ?>
 	</div>
-	<div id="tab_other_pane"<?php if ($selected_tab != 'permissions'): ?> style="display: none;"<?php endif; ?>>
+	<div id="tab_permissions_pane" style="text-align: left;<?php if ($selected_tab != 'permissions'): ?> display: none;<?php endif; ?>" class="permission_list" style="">
 		<?php include_template('configuration/projectpermissions', array('access_level' => $access_level, 'project' => $project)); ?>
 	</div>
 </div>
