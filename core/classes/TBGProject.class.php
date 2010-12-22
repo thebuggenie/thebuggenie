@@ -1363,7 +1363,7 @@
 		 */
 		protected function _populateUnassignedIssues()
 		{
-			if ($this->_unassignedissues == null)
+			if ($this->_unassignedissues === null)
 			{
 				$this->_unassignedissues = array();
 				if ($res = TBGIssuesTable::getTable()->getByProjectIDandNoMilestone($this->getID()))

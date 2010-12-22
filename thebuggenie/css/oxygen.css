@@ -776,7 +776,7 @@ table.issue_affects td img { vertical-align: bottom; }
 #scrum td { vertical-align: top; }
 #scrum ul, #project_dashboard ul, #dashboard_righthand #associated_projects { list-style-type: none; padding: 0; margin: 5px 0 0 0; clear: both;  }
 #scrum ul { padding: 0; }
-#scrum ul li { padding: 0; background-color: #FFF; border: 1px solid #BBB; position: relative; margin: 0;  }
+#scrum ul li { padding: 0; background-color: #FFF; border: 1px solid #BBB; position: relative; margin: 0; clear: both; }
 .moveable { cursor: move; }
 #scrum ul li .header, .infobox .header { font-size: 14px; font-weight: bold; }
 #scrum ul li .content { padding-top: 3px; line-height: 15px;  font-weight: normal; margin-bottom: 12px; }

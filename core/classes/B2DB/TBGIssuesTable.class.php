@@ -334,9 +334,9 @@
 		public function getByProjectIDandNoMilestone($project_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::MILESTONE, 0);
+			$crit->addWhere(self::MILESTONE, null);
 			$crit->addWhere(self::PROJECT_ID, $project_id);
-			$crit->addWhere(self::DELETED, 0);
+			$crit->addWhere(self::DELETED, false);
 			$res = $this->doSelect($crit);
 			return $res;
 		}
@@ -344,7 +344,7 @@
 		public function clearMilestone($milestone_id)
 		{
 			$crit = $this->getCriteria();
-			$crit->addUpdate(self::MILESTONE, 0);
+			$crit->addUpdate(self::MILESTONE, null);
 			$crit->addWhere(self::MILESTONE, $milestone_id);
 			$this->doUpdate($crit);
 		}
