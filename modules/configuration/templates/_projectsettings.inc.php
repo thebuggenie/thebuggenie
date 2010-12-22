@@ -97,6 +97,22 @@
 			<td class="config_explanation" colspan="2"><?php echo __('Whether or not developers can change details on an issue without marking themselves as working on the issue'); ?></td>
 		</tr>
 		<tr>
+			<td><label for="allow_autoassignment"><?php echo __('Enable autoassignment'); ?></label></td>
+			<td>
+				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+					<select name="allow_autoassignment" id="allow_autoassignment">
+						<option value=1<?php if ($project->canAutoassign()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
+						<option value=0<?php if (!$project->canAutoassign()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
+					</select>
+				<?php else: ?>
+					<?php echo ($project->canAutoassign()) ? __('Yes') : __('No'); ?>
+				<?php endif; ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="config_explanation" colspan="2"><?php echo __('You can set issues to be automatically assigned to users depending on the leader set for editions, components and projects. If you wish to use this feature you can turn it on here.'); ?></td>
+		</tr>
+		<tr>
 			<td><label for="released"><?php echo __('Released'); ?></label></td>
 			<td>
 				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>

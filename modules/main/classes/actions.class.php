@@ -978,17 +978,20 @@
 			}
 			
 			// FIXME: If we set the issue assignee during report issue, this needs to be set INSTEAD of this
-			if (isset($fields_array['component']) && $this->selected_component instanceof TBGComponent && $this->selected_component->hasLeader())
+			if ($this->selected_project->canAutoassign())
 			{
-				$issue->setAssignee($this->selected_component->getLeader());
-			}
-			elseif (isset($fields_array['edition']) && $this->selected_edition instanceof TBGEdition && $this->selected_edition->hasLeader())
-			{
-				$issue->setAssignee($this->selected_edition->getLeader());
-			}
-			elseif ($this->selected_project->hasLeader())
-			{
-				$issue->setAssignee($this->selected_project->getLeader());
+				if (isset($fields_array['component']) && $this->selected_component instanceof TBGComponent && $this->selected_component->hasLeader())
+				{
+					$issue->setAssignee($this->selected_component->getLeader());
+				}
+				elseif (isset($fields_array['edition']) && $this->selected_edition instanceof TBGEdition && $this->selected_edition->hasLeader())
+				{
+					$issue->setAssignee($this->selected_edition->getLeader());
+				}
+				elseif ($this->selected_project->hasLeader())
+				{
+					$issue->setAssignee($this->selected_project->getLeader());
+				}
 			}
 			
 			$issue->save();

@@ -1061,6 +1061,9 @@
 					
 					if ($request->hasParameter('allow_changing_without_working'))
 						$this->project->setChangeIssuesWithoutWorkingOnThem((bool) $request->getParameter('allow_changing_without_working'));
+
+					if ($request->hasParameter('allow_autoassignment'))
+						$this->project->setAutoassign((bool) $request->getParameter('allow_autoassignment'));
 					
 					$this->project->save();
 					$project_description = new TBGTextParser($this->project->getDescription());

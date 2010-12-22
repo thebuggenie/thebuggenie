@@ -47,7 +47,8 @@
 		const ALLOW_CHANGING_WITHOUT_WORKING = 'projects.allow_freelancing';
 		const WORKFLOW_SCHEME_ID = 'projects.workflow_scheme_id';
 		const ISSUETYPE_SCHEME_ID = 'projects.issuetype_scheme_id';
-
+		const AUTOASSIGN = 'projects.autoassign';
+		
 		public function __construct()
 		{
 			parent::__construct(self::B2DBNAME, self::ID);
@@ -78,6 +79,7 @@
 			parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, TBGIssuetypeSchemesTable::getTable(), TBGIssuetypeSchemesTable::ID);
 			parent::_addForeignKeyColumn(self::CLIENT, TBGClientsTable::getTable(), TBGClientsTable::ID);
 			parent::_addBoolean(self::DELETED);
+			parent::_addBoolean(self::AUTOASSIGN);
 		}
 		
 		public function clearDefaults()

@@ -307,6 +307,13 @@
 		protected $_client = null;
 		
 		/**
+		 * Autoassignment
+		 * 
+		 * @var boolean
+		 */
+		protected $_autoassign = null;
+		
+		/**
 		 * Make a project default
 		 * 
 		 * @param $p_id integer The id for the default project
@@ -647,7 +654,17 @@
 				$this->_prefix = $prefix;
 				return true;
 			}
-		}	
+		}
+		
+		/**
+		 * Set autoassign setting
+		 *
+		 * @param boolean $autoassign
+		 */
+		public function setAutoassign($autoassign)
+		{
+			$this->_autoassign = $autoassign;
+		}
 		
 		/**
 		 * Mark the project as deleted
@@ -2416,4 +2433,8 @@
 			return (bool) ($this->permissionCheck('canseeprojecthierarchy') || $this->permissionCheck('canseeallprojectmilestones'));
 		}
 		
+		public function canAutoassign()
+		{
+			return (bool) ($this->_autoassign);
+		}
 	}
