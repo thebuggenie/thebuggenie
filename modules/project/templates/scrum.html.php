@@ -5,9 +5,9 @@
 	$tbg_response->addJavascript('scrum.js');
 
 ?>
-		<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project)); ?>
+		<?php include_template('project/projectinfosidebar', array('selected_project' => $selected_project, 'table_id' => 'scrum')); ?>
 		<?php include_component('main/hideableInfoBox', array('key' => 'project_scrum_info', 'title' => __('Using the Sprint planning page'), 'content' => __('Administer your project backlog from this page.<br><ul><li>Create sprints from the "Add sprint" input area, or use the project "milestone" configuration page to add sprints</li><li>Use the "Add user story" input area to quickly add a user story to the backlog, or the "report issue"-wizard to add detailed user stories.</li><li>Drag user stories from the backlog to a sprint (or between sprints) to assign the user story there</li><li>Click the sprint header to show all stories in that sprint</li><li>Pause the mouse over a user story to show more actions, like opening the user story in a new window or editing it</li><li>Click the little square on the left side of the user story to colorize the story</li><li>To change estimated points for a user story, click the little card icon on the far right of the story</li></ul>'))); ?>
-		<div id="scrum_sprints">
+		<div id="scrum_sprints" class="scrum_container">
 			<div class="header_div">
 				<table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
 					<tr>
@@ -77,7 +77,7 @@
 				<?php include_template('sprintbox', array('sprint' => $sprint)); ?>
 			<?php endforeach; ?>
 		</td>
-		<td id="scrum_unassigned">
+		<td id="scrum_unassigned" class="scrum_container">
 			<div class="rounded_box lightgrey borderless" style="margin-top: 5px; padding: 7px;" id="scrum_sprint_0">
 				<div class="header_div"><?php echo __('Unassigned items / project backlog'); ?></div>
 				<?php if ($tbg_user->canAddScrumUserStories($selected_project)): ?>

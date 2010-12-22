@@ -851,6 +851,8 @@ table.issue_affects td img { vertical-align: bottom; }
 .infobox .close_me label { padding-top: 3px;  }
 .infobox .close_me input[type="submit"] { font-weight: bold;  margin-left: 5px; }
 .infobox .content { padding: 0; font-size: 0.95em; text-align: left; font-weight: normal; margin: 0; }
+#scrum .infobox .content ul { list-style-type: disc; margin-left: 30px; }
+#scrum .infobox .content li { background-color: transparent; border: 0; }
 /* end infobox */
 
 /* add task popup */
