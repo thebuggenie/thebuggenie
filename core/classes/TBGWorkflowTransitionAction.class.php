@@ -184,7 +184,7 @@
 					$issue->startWorkingOnIssue($issue->getAssignee());
 					break;
 				case self::ACTION_USER_STOP_WORKING:
-					if ($request->getParameter('did') == 'nothing')
+					if ($request->getParameter('did', 'nothing') == 'nothing')
 					{
 						$issue->clearUserWorkingOnIssue();
 					}

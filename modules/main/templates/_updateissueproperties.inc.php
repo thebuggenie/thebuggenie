@@ -27,7 +27,7 @@
 						</select>
 					</li>
 					<?php if (!$issue->isPriorityVisible()): ?>
-						<li id="transition_popup_priority_link" class="faded_out">
+						<li class="faded_out">
 							<?php echo __("Priority isn't visible for this issuetype / product combination"); ?>
 						</li>
 					<?php endif; ?>
@@ -42,7 +42,7 @@
 						</select>
 					</li>
 					<?php if (!$issue->isPercentCompletedVisible()): ?>
-						<li id="transition_popup_percent_complete_link" class="faded_out">
+						<li class="faded_out">
 							<?php echo __("Percent completed isn't visible for this issuetype / product combination"); ?>
 						</li>
 					<?php endif; ?>
@@ -59,7 +59,7 @@
 						</select>
 					</li>
 					<?php if (!$issue->isReproducabilityVisible()): ?>
-						<li id="transition_popup_reproducability_link" class="faded_out">
+						<li class="faded_out">
 							<?php echo __("Reproducability isn't visible for this issuetype / product combination"); ?>
 						</li>
 					<?php endif; ?>
@@ -76,7 +76,7 @@
 						</select>
 					</li>
 					<?php if (!$issue->isResolutionVisible()): ?>
-						<li id="transition_popup_resolution_link" class="faded_out">
+						<li class="faded_out">
 							<?php echo __("Resolution isn't visible for this issuetype / product combination"); ?>
 						</li>
 					<?php endif; ?>
@@ -93,7 +93,7 @@
 						</select>
 					</li>
 					<?php if (!$issue->isAssigneeVisible()): ?>
-						<li id="transition_popup_assignee_link" class="faded_out">
+						<li class="faded_out">
 							<?php echo __("Assignee isn't visible for this issuetype / product combination"); ?>
 						</li>
 					<?php endif; ?>
@@ -102,7 +102,7 @@
 					<li id="transition_popup_stop_working_div">
 						<label for="transition_popup_set_stop_working"><?php echo __('Log time spent'); ?></label>
 						<input type="radio" name="did" id="transition_popup_set_stop_working" value="something" checked><label for="transition_popup_set_stop_working" class="simple"><?php echo __('Yes'); ?></label>&nbsp;
-						<input type="radio" name="did" id="transition_popup_set_stop_working" value="nothing"><label for="transition_popup_set_stop_working" class="simple"><?php echo __('No'); ?></label>
+						<input type="radio" name="did" id="transition_popup_set_stop_working_no_log" value="nothing"><label for="transition_popup_set_stop_working_no_log" class="simple"><?php echo __('No'); ?></label>
 					</li>
 				<?php endif; ?>
 				<li style="margin-top: 10px;">
