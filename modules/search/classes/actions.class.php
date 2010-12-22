@@ -16,7 +16,7 @@
 		 */
 		public function preExecute(TBGRequest $request, $action)
 		{
-			$this->forward403unless(TBGContext::getUser()->hasPageAccess('search'));
+			$this->forward403unless(TBGContext::getUser()->hasPageAccess('search') && TBGContext::getUser()->canSearchForIssues());
 			if ($request->hasParameter('project_key'))
 			{
 				if (($project = TBGProject::getByKey($request->getParameter('project_key'))) instanceof TBGProject)
