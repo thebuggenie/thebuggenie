@@ -12,7 +12,7 @@
 				$DataSet->AddPoint($dataset['values'], "Serie" . $ds_id, array_keys($dataset['values']));
 				$maxvals[] = max($dataset['values']);
 				if (isset($dataset['burndown'])) {
-					$amount = $dataset['burndown']['maxEstimation']/(count($dataset['values'])-1);
+					$amount = (count($dataset['values']) > 1) ? $dataset['burndown']['maxEstimation']/(count($dataset['values'])-1) : 0;
 					for ($i=0;$i<count($dataset['values']);$i++)
 						$burndownValues[] = $dataset['burndown']['maxEstimation']-($i*$amount);
 					$DataSet->AddPoint($burndownValues, "Burndown" . $ds_id, $dataset['burndown']['maxEstimation']);

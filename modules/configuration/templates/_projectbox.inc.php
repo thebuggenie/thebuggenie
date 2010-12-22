@@ -1,5 +1,5 @@
 <?php TBGContext::loadLibrary('ui'); ?>
-<div class="rounded_box round_canhover lightgrey" style="margin: 10px 0px 10px 0px; width: 690px;" id="project_box_<?php echo $project->getID();?>">
+<div class="rounded_box round_canhover lightgrey projectbox" style="margin: 10px 0px 10px 0px; width: 690px;" id="project_box_<?php echo $project->getID();?>">
 	<div style="padding: 3px; font-size: 14px;">
 		<strong><?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), $project->getName()); ?></strong>&nbsp;(<?php echo $project->getKey(); ?>)
 		<?php if ($project->usePrefix()): ?>
@@ -39,6 +39,9 @@
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 				<div style="float: right;"><span style="margin-right: 10px;"><a href="javascript:void(0)" onClick="$('project_delete_confirm_<?php echo($project->getID()); ?>').show();"><?php echo image_tag('icon_delete.png', array('title' => __('Delete project'), 'style' => 'float: left; margin-right: 5px;')) . __('Delete');?></a></span></div>
 			<?php endif; ?>
+			<div style="float: right;">
+				<span style="margin-right: 10px;"><?php echo javascript_link_tag(image_tag('cfg_icon_permissions.png', array('title' => (($access_level == TBGSettings::ACCESS_FULL) ? __('Edit project permissions') : __('Show project permissions')), 'style' => 'float: left; margin-right: 5px;')) . (($access_level == TBGSettings::ACCESS_FULL) ? __('Edit project permissions') : __('Show project permissions')), array('onclick' => "$('project_{$project->getID()}_permissions').toggle();", 'style' => 'font-size: 12px;')); ?></span>
+			</div>
 			<br style="clear: both;">
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 				<div id="project_delete_confirm_<?php echo($project->getID()); ?>" style="display: none; padding: 0 10px 5px 10px; margin-top: 5px;" class="rounded_box white shadowed">
@@ -72,6 +75,23 @@
 		</td>
 	</tr>
 	</table>
+	<div class="rounded_box white shadowed config_permissions" id="project_<?php echo $project->getID(); ?>_permissions" style="display: none;">
+		<div class="content">
+			<p><?php echo __('These permissions control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions in the %permissions_configuration% page.', array('%permissions_configuration%' => '<b>'.link_tag(make_url('configure_permissions'), __('permissions configuration')).'</b>')); ?></p>
+		</div>
+		<div class="permission_list">
+			<ul>
+				<li>
+					<a href="javascript:void(0);" onclick="$('project_permission_details_<?php echo $project->getID(); ?>').toggle();"><?php echo image_tag('icon_project_permissions.png', array('style' => 'float: right;')); ?><?php echo $project->getName(); ?> <span class="faded_out smaller"><?php echo $project->getKey(); ?></span></a>
+					<ul style="display: none;" id="project_permission_details_<?php echo $project->getID(); ?>">
+						<?php include_template('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_project_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('project'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'user_id' => $tbg_user->getID(), 'access_level' => $access_level)); ?>
+						<?php include_template('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_page_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('project_pages'), 'mode' => 'project_pages', 'target_id' => $project->getID(), 'module' => 'core', 'user_id' => $tbg_user->getID(), 'access_level' => $access_level)); ?>
+						<?php include_template('configuration/permissionsblock', array('base_id' => 0 . 'project_' . $project->getID() . '_issue_permissions', 'permissions_list' => TBGContext::getAvailablePermissions('issues'), 'mode' => 'general', 'target_id' => $project->getID(), 'module' => 'core', 'user_id' => $tbg_user->getID(), 'access_level' => $access_level)); ?>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
 </div>
 <?php if (TBGContext::getRequest()->isAjaxCall()): ?>
 	<script type="text/javascript">new Effect.Pulsate('project_box_<?php echo $project->getID(); ?>');</script>

@@ -15,7 +15,7 @@
 		<div class="sprint_points"><?php echo __('%hours% hrs / %points% pts', array('%points%' => '<span id="scrum_sprint_'.$sprint->getID().'_estimated_points">' . $sprint->getPointsEstimated() . '</span>', '%hours%' => '<span id="scrum_sprint_'.$sprint->getID().'_estimated_hours">' . $sprint->getHoursEstimated() . '</span>')); ?></div>
 	</div>
 	<div id="scrum_sprint_<?php echo $sprint->getID(); ?>_container" style="display: none;">
-		<ul id="scrum_sprint_<?php echo $sprint->getID(); ?>_list">
+		<ul id="scrum_sprint_<?php echo $sprint->getID(); ?>_list" class="scrum_container">
 			<?php foreach ($sprint->getIssues() as $issue): ?>
 				<?php include_component('scrumcard', array('issue' => $issue)); ?>
 			<?php endforeach; ?>

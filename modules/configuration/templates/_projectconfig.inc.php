@@ -27,4 +27,7 @@
 	<div id="tab_other_pane"<?php if ($selected_tab != 'other'): ?> style="display: none;"<?php endif; ?>>
 		<?php include_template('configuration/projectother', array('access_level' => $access_level, 'project' => $project)); ?>
 	</div>
+	<div id="tab_other_pane"<?php if ($selected_tab != 'permissions'): ?> style="display: none;"<?php endif; ?>>
+		<?php include_template('configuration/projectpermissions', array('access_level' => $access_level, 'project' => $project)); ?>
+	</div>
 </div>

@@ -107,7 +107,7 @@
 						</tr>
 					</table>
 				<?php endif; ?>
-				<ul id="scrum_sprint_0_list">
+				<ul id="scrum_sprint_0_list" class="scrum_container">
 					<?php foreach ($unassigned_issues as $issue): ?>
 						<?php include_component('scrumcard', array('issue' => $issue)); ?>
 					<?php endforeach; ?>
