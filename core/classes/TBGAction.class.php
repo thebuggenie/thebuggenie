@@ -145,7 +145,7 @@
 				$message = ($message === null) ? TBGContext::getI18n()->__("You don't have access to this page") : $message;
 				TBGContext::setMessage('forward', $message);
 
-				$this->forward(TBGContext::getRouting()->generate('login'), 403);
+				$this->forward(TBGContext::getRouting()->generate('login_redirect'), 403);
 			}
 		}
 		
