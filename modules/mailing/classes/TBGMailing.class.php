@@ -228,7 +228,7 @@
 				}
 				foreach ($to_users as $user)
 				{
-					if ($user->getID() != TBGContext::getUser()->getUID() || $this->getSetting('notify_issue_change_own', $user->getID()))
+					if ($user->getID() != TBGContext::getUser()->getID() || $this->getSetting('notify_issue_change_own', $user->getID()))
 					{
 						if ($user instanceof TBGUser && $user->isEnabled() && $user->isActivated() && !$user->isDeleted() && !$user->isGuest())
 						{

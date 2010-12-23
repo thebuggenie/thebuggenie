@@ -39,7 +39,7 @@
 		{
 			$start_date = mktime((int) TBGContext::getRequest()->getParameter('start_at_hour'), (int) TBGContext::getRequest()->getParameter('start_at_minute'), 0, (int) TBGContext::getRequest()->getParameter('start_month'), (int) TBGContext::getRequest()->getParameter('start_day'), (int) TBGContext::getRequest()->getParameter('start_year'));
 			$end_date = mktime((int) TBGContext::getRequest()->getParameter('end_at_hour'), (int) TBGContext::getRequest()->getParameter('end_at_minute'), 0, (int) TBGContext::getRequest()->getParameter('end_month'), (int) TBGContext::getRequest()->getParameter('end_day'), (int) TBGContext::getRequest()->getParameter('end_year'));
-			$theEvent = BUGScalendarEvent::createNew(TBGContext::getRequest()->getParameter('title'), (int) TBGContext::getRequest()->getParameter('event_type'), TBGContext::getRequest()->getParameter('description'), $start_date, $end_date, (int) TBGContext::getRequest()->getParameter('status'), (int) TBGContext::getModule('calendar')->getSetting('calendar', TBGContext::getUser()->getUID()));
+			$theEvent = BUGScalendarEvent::createNew(TBGContext::getRequest()->getParameter('title'), (int) TBGContext::getRequest()->getParameter('event_type'), TBGContext::getRequest()->getParameter('description'), $start_date, $end_date, (int) TBGContext::getRequest()->getParameter('status'), (int) TBGContext::getModule('calendar')->getSetting('calendar', TBGContext::getUser()->getID()));
 
 			?>
 			<div style="padding: 10px; text-align: center;"><b><?php echo __('The event has been saved in your calendar.'); ?></b>&nbsp;<?php echo __('What do you want to do next?'); ?><br>

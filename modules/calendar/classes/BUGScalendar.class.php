@@ -44,7 +44,7 @@
 			return array();
 			if ($uid === null)
 			{
-				$uid = TBGContext::getUser()->getUID();
+				$uid = TBGContext::getUser()->getID();
 			}
 			if ($calendar == null)
 			{
@@ -105,15 +105,15 @@
 			if ($module != $this->getName()) return;
 			if (TBGContext::getRequest()->getParameter('weekstart'))
 			{
-				TBGContext::getModule('calendar')->saveSetting('weekstart', TBGContext::getRequest()->getParameter('weekstart'), TBGContext::getUser()->getUID());
+				TBGContext::getModule('calendar')->saveSetting('weekstart', TBGContext::getRequest()->getParameter('weekstart'), TBGContext::getUser()->getID());
 			}
 			if (TBGContext::getRequest()->getParameter('calendarstartup'))
 			{
-				TBGContext::getModule('calendar')->saveSetting('calendarstartup', TBGContext::getRequest()->getParameter('calendarstartup'), TBGContext::getUser()->getUID());
+				TBGContext::getModule('calendar')->saveSetting('calendarstartup', TBGContext::getRequest()->getParameter('calendarstartup'), TBGContext::getUser()->getID());
 			}
 			if (TBGContext::getRequest()->getParameter('hideweekends'))
 			{
-				TBGContext::getModule('calendar')->saveSetting('hideweekends', TBGContext::getRequest()->getParameter('hideweekends'), TBGContext::getUser()->getUID());
+				TBGContext::getModule('calendar')->saveSetting('hideweekends', TBGContext::getRequest()->getParameter('hideweekends'), TBGContext::getUser()->getID());
 			}
 			?>
 			<table style="table-layout: fixed; width: 100%; background-color: #F1F1F1; margin-top: 15px; border: 1px solid #DDD;" cellpadding=0 cellspacing=0>
@@ -128,25 +128,25 @@
 			<tr>
 			<td style="width: 150px;"><b><?php echo TBGContext::getI18n()->__('Week starts on'); ?></b></td>
 			<td style="width: 300px;"><select name="weekstart" style="width: 100%;">
-			<option value=1 <?php if (TBGContext::getModule('calendar')->getSetting('weekstart', TBGContext::getUser()->getUID()) == 1) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Monday'); ?></option>
-			<option value=0 <?php if (TBGContext::getModule('calendar')->getSetting('weekstart', TBGContext::getUser()->getUID()) == 0) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Sunday'); ?></option>
+			<option value=1 <?php if (TBGContext::getModule('calendar')->getSetting('weekstart', TBGContext::getUser()->getID()) == 1) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Monday'); ?></option>
+			<option value=0 <?php if (TBGContext::getModule('calendar')->getSetting('weekstart', TBGContext::getUser()->getID()) == 0) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Sunday'); ?></option>
 			</select>
 			</td>
 			</tr>
 			<tr>
 			<td style="width: 150px;"><b><?php echo TBGContext::getI18n()->__('Show only workdays'); ?></b></td>
 			<td style="width: 300px;"><select name="hideweekends" style="width: 100%;">
-			<option value=1 <?php if (TBGContext::getModule('calendar')->getSetting('hideweekends', TBGContext::getUser()->getUID()) == 1) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Yes, only show workdays'); ?></option>
-			<option value=0 <?php if (TBGContext::getModule('calendar')->getSetting('hideweekends', TBGContext::getUser()->getUID()) == 0) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('No, show the whole week in week overview'); ?></option>
+			<option value=1 <?php if (TBGContext::getModule('calendar')->getSetting('hideweekends', TBGContext::getUser()->getID()) == 1) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Yes, only show workdays'); ?></option>
+			<option value=0 <?php if (TBGContext::getModule('calendar')->getSetting('hideweekends', TBGContext::getUser()->getID()) == 0) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('No, show the whole week in week overview'); ?></option>
 			</select>
 			</td>
 			</tr>
 			<tr>
 			<td style="width: 150px;"><b><?php echo TBGContext::getI18n()->__('Calendar display'); ?></b></td>
 			<td style="width: 300px;"><select name="calendarstartup" style="width: 100%;">
-			<option value="month" <?php if (TBGContext::getModule('calendar')->getSetting('calendarstartup', TBGContext::getUser()->getUID()) == "month") echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Show the current month'); ?></option>
-			<option value="week" <?php if (TBGContext::getModule('calendar')->getSetting('calendarstartup', TBGContext::getUser()->getUID()) == "week") echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Show current week'); ?></option>
-			<option value="day" <?php if (TBGContext::getModule('calendar')->getSetting('calendarstartup', TBGContext::getUser()->getUID()) == "day") echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Show todays overview'); ?></option>
+			<option value="month" <?php if (TBGContext::getModule('calendar')->getSetting('calendarstartup', TBGContext::getUser()->getID()) == "month") echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Show the current month'); ?></option>
+			<option value="week" <?php if (TBGContext::getModule('calendar')->getSetting('calendarstartup', TBGContext::getUser()->getID()) == "week") echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Show current week'); ?></option>
+			<option value="day" <?php if (TBGContext::getModule('calendar')->getSetting('calendarstartup', TBGContext::getUser()->getID()) == "day") echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Show todays overview'); ?></option>
 			</select>
 			</td>
 			</tr>
@@ -179,7 +179,7 @@
 		
 		public function listen_indexLeftTop(TBGEvent $event)
 		{
-			if (TBGContext::getUser()->getUID() != 0)
+			if (TBGContext::getUser()->getID() != 0)
 			{
 				?>
 				<table class="b2_section_miniframe" cellpadding=0 cellspacing=0>
@@ -304,8 +304,8 @@
 			$given_day = mktime(0, 0, 0, $month, $day, $year);
 
 			//echo $day . ',' . $month . ',' . $year;
-			$week_offset = TBGContext::getModule('calendar')->getSetting('weekstart', TBGContext::getUser()->getUID());
-			$hideweekend = TBGContext::getModule('calendar')->getSetting('hideweekends', TBGContext::getUser()->getUID());
+			$week_offset = TBGContext::getModule('calendar')->getSetting('weekstart', TBGContext::getUser()->getID());
+			$hideweekend = TBGContext::getModule('calendar')->getSetting('hideweekends', TBGContext::getUser()->getID());
 			$weekday = date('w', $given_day) - $week_offset;
 			if ($weekday < 0) $weekday = 6;
 
@@ -385,7 +385,7 @@
 			/**
 			 * Original code by Keith Devens (keithdevens.com)
 			 */
-			$week_offset = TBGContext::getModule('calendar')->getSetting('weekstart', TBGContext::getUser()->getUID());
+			$week_offset = TBGContext::getModule('calendar')->getSetting('weekstart', TBGContext::getUser()->getID());
 			$first_of_month = mktime(0, 0, 0, $month, 1, $year);
 			$last_of_month = mktime(23, 59, 59, $month, date('t', $first_of_month), $year);
 			

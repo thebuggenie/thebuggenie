@@ -1,4 +1,4 @@
-<?php if (!$user instanceof TBGUser || $user->getUID() == 0): ?>
+<?php if (!$user instanceof TBGUser || $user->getID() == 0): ?>
 	<span class="faded_out"><?php echo __('No such user'); ?></span>
 <?php else: ?>
 	<?php $avatar_dimensions = (!isset($size) || $size == 'small') ? 16 : 22; ?>

@@ -326,7 +326,7 @@
 			}
 			if ($all == null)
 			{
-				$uid = ($uid === null) ? TBGContext::getUser()->getUID() : $uid;
+				$uid = ($uid === null) ? TBGContext::getUser()->getID() : $uid;
 				$tid = ($tid === null) ? TBGContext::getUser()->getTeams() : $tid;
 				if (!TBGContext::getUser()->getGroup() instanceof TBGGroup) return false;
 				$gid = ($gid === null) ? TBGContext::getUser()->getGroup()->getID() : $gid;

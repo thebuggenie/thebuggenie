@@ -56,7 +56,7 @@
 		public function saveFile($real_filename, $original_filename, $content_type, $description = null, $content = null)
 		{
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::UID, TBGContext::getUser()->getUID());
+			$crit->addInsert(self::UID, TBGContext::getUser()->getID());
 			$crit->addInsert(self::REAL_FILENAME, $real_filename);
 			$crit->addInsert(self::UPLOADED_AT, NOW);
 			$crit->addInsert(self::ORIGINAL_FILENAME, $original_filename);

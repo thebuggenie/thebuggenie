@@ -88,7 +88,7 @@
 		}
 		try
 		{
-			$the_msg = TBGContext::getModule('messages')->getMessages("details", TBGContext::getUser()->getUID(), $the_folder, $the_msg);
+			$the_msg = TBGContext::getModule('messages')->getMessages("details", TBGContext::getUser()->getID(), $the_folder, $the_msg);
 			
 			if (count($the_msg) > 0)
 			{
@@ -114,8 +114,8 @@
 		TBGContext::getModule('messages')->setRead(TBGContext::getRequest()->getParameter('the_msg'), TBGContext::getRequest()->getParameter('set_read'));
 	}
 
-	$messages_viewmode = TBGContext::getModule('messages')->getSetting('viewmode', TBGContext::getUser()->getUID()); // tbg_module_loadSetting("messages", "viewmode", TBGContext::getUser()->getUID());
+	$messages_viewmode = TBGContext::getModule('messages')->getSetting('viewmode', TBGContext::getUser()->getID()); // tbg_module_loadSetting("messages", "viewmode", TBGContext::getUser()->getID());
 	if ($messages_viewmode == '') $messages_viewmode = TBGContext::getModule('messages')->getSetting('viewmode');
-	$message_folders = TBGContext::getModule('messages')->getFolders(TBGContext::getUser()->getUID());
+	$message_folders = TBGContext::getModule('messages')->getFolders(TBGContext::getUser()->getID());
 
 ?>

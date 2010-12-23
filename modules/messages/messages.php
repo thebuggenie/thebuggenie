@@ -185,7 +185,7 @@
 <table cellpadding=0 cellspacing=0 style="width: 100%;">
 <?php
 
-	$all_messages = ($the_team == "") ? TBGContext::getModule('messages')->getMessages("details", TBGContext::getUser()->getUID(), $the_folder) : TBGContext::getModule('messages')->getMessages("details", TBGContext::getUser()->getUID(), $the_folder, 0, $the_team);
+	$all_messages = ($the_team == "") ? TBGContext::getModule('messages')->getMessages("details", TBGContext::getUser()->getID(), $the_folder) : TBGContext::getModule('messages')->getMessages("details", TBGContext::getUser()->getID(), $the_folder, 0, $the_team);
 	if (count($all_messages) > 0)
 	{
 		foreach ($all_messages as $aMessage)

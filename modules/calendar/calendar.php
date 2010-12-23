@@ -108,7 +108,7 @@
 	<div id="calendar_full_container">
 	<?php 
 	
-	switch (TBGContext::getModule('calendar')->getSetting('calendarstartup', TBGContext::getUser()->getUID()))
+	switch (TBGContext::getModule('calendar')->getSetting('calendarstartup', TBGContext::getUser()->getID()))
 	{
 		case 'week':
 			echo TBGContext::getModule('calendar')->html_week(date('d'), $month, $year);

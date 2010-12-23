@@ -45,7 +45,7 @@
 						case 2:
 							$crit = new B2DBCriteria();
 							$crit->setFromTable(B2DB::getTable('TBGMessagesTable'));
-							$crit->addJoin(B2DB::getTable('TBGBuddiesTable'), TBGBuddiesTable::ID, TBGMessagesTable::FROM_USER, array(array(TBGBuddiesTable::UID, TBGContext::getUser()->getUID())));
+							$crit->addJoin(B2DB::getTable('TBGBuddiesTable'), TBGBuddiesTable::ID, TBGMessagesTable::FROM_USER, array(array(TBGBuddiesTable::UID, TBGContext::getUser()->getID())));
 
 							if ($_SESSION['messages_filter'] != '')
 							{
@@ -84,7 +84,7 @@
 								{
 									$crit = new B2DBCriteria();
 									$crit->setFromTable(B2DB::getTable('TBGMessagesTable'));
-									$crit->addJoin(B2DB::getTable('TBGBuddiesTable'), TBGBuddiesTable::ID, TBGMessagesTable::FROM_USER, array(array(TBGBuddiesTable::UID, TBGContext::getUser()->getUID())));
+									$crit->addJoin(B2DB::getTable('TBGBuddiesTable'), TBGBuddiesTable::ID, TBGMessagesTable::FROM_USER, array(array(TBGBuddiesTable::UID, TBGContext::getUser()->getID())));
 									
 									if ($_SESSION['messages_filter'] != '')
 									{
@@ -132,7 +132,7 @@
 						default:
 							$crit = new B2DBCriteria();
 							$crit->setFromTable(B2DB::getTable('TBGMessagesTable'));
-							$crit->addJoin(B2DB::getTable('TBGBuddiesTable'), TBGBuddiesTable::ID, TBGMessagesTable::FROM_USER, array(array(TBGBuddiesTable::UID, TBGContext::getUser()->getUID())));
+							$crit->addJoin(B2DB::getTable('TBGBuddiesTable'), TBGBuddiesTable::ID, TBGMessagesTable::FROM_USER, array(array(TBGBuddiesTable::UID, TBGContext::getUser()->getID())));
 							$crit->addWhere(TBGMessagesTable::TO_USER, $uid);
 							$crit->addWhere(TBGMessagesTable::FOLDER, $folder);
 							$crit->addWhere(TBGMessagesTable::DELETED, 0);
@@ -195,7 +195,7 @@
 		public function addFolder($folder_name)
 		{
 			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGMessageFoldersTable::UID, TBGContext::getUser()->getUID());
+			$crit->addInsert(TBGMessageFoldersTable::UID, TBGContext::getUser()->getID());
 			$crit->addInsert(TBGMessageFoldersTable::FOLDERNAME, $folder_name);
 			$res = B2DB::getTable('TBGMessageFoldersTable')->doInsert($crit);
 	
@@ -207,7 +207,7 @@
 			if (!$force)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGMessageFoldersTable::UID, TBGContext::getUser()->getUID());
+				$crit->addWhere(TBGMessageFoldersTable::UID, TBGContext::getUser()->getID());
 				$crit->addWhere(TBGMessageFoldersTable::ID, $folder_id);
 				$res = B2DB::getTable('TBGMessageFoldersTable')->doDelete($crit);
 			}
@@ -222,7 +222,7 @@
 			if (!$force)
 			{
 				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGMessagesTable::TO_USER, TBGContext::getUser()->getUID());
+				$crit->addWhere(TBGMessagesTable::TO_USER, TBGContext::getUser()->getID());
 				$crit->addWhere(TBGMessagesTable::ID, $msg_id);
 				$res = B2DB::getTable('TBGMessagesTable')->doDelete($crit);
 			}
@@ -237,7 +237,7 @@
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGMessagesTable::IS_READ, $read);
 			$crit->addWhere(TBGMessagesTable::ID, $msg_id);
-			$crit->addWhere(TBGMessagesTable::TO_USER, TBGContext::getUser()->getUID());
+			$crit->addWhere(TBGMessagesTable::TO_USER, TBGContext::getUser()->getID());
 			B2DB::getTable('TBGMessagesTable')->doUpdate($crit);
 		}
 	
@@ -246,7 +246,7 @@
 			$crit = new B2DBCriteria();
 			$crit->addUpdate(TBGMessagesTable::FOLDER, $to_folder);
 			$crit->addWhere(TBGMessagesTable::ID, $msg_id);
-			$crit->addWhere(TBGMessagesTable::TO_USER, TBGContext::getUser()->getUID());
+			$crit->addWhere(TBGMessagesTable::TO_USER, TBGContext::getUser()->getID());
 			B2DB::getTable('TBGMessagesTable')->doUpdate($crit);
 		}
 	
@@ -255,7 +255,7 @@
 			$now = NOW;
 	
 			$crit = new B2DBCriteria();
-			$crit->addInsert(TBGMessagesTable::FROM_USER, TBGContext::getUser()->getUID());
+			$crit->addInsert(TBGMessagesTable::FROM_USER, TBGContext::getUser()->getID());
 			$crit->addInsert(TBGMessagesTable::TITLE, $title);
 			$crit->addInsert(TBGMessagesTable::BODY, $content);
 			$crit->addInsert(TBGMessagesTable::SENT, $now);
@@ -286,7 +286,7 @@
 			$crit->setDistinct();
 			$crit->addWhere(TBGMessagesTable::FOLDER, (int) $folder_id);
 			$crit->addWhere(TBGMessagesTable::DELETED, 0);
-			$crit->addWhere(TBGMessagesTable::TO_USER, (int) TBGContext::getUser()->getUID());
+			$crit->addWhere(TBGMessagesTable::TO_USER, (int) TBGContext::getUser()->getID());
 			if ($tid !== null)
 			{
 				$crit->addWhere(TBGMessagesTable::TO_TEAM, $tid);
@@ -358,7 +358,7 @@
 			/*if ($module != $this->getName()) return;
 			if (TBGContext::getRequest()->getParameter('viewmode'))
 			{
-				TBGContext::getModule('messages')->saveSetting('viewmode', TBGContext::getRequest()->getParameter('viewmode'), TBGContext::getUser()->getUID());
+				TBGContext::getModule('messages')->saveSetting('viewmode', TBGContext::getRequest()->getParameter('viewmode'), TBGContext::getUser()->getID());
 			}
 			?>
 			<table style="table-layout: fixed; width: 100%; background-color: #F1F1F1; margin-top: 15px; border: 1px solid #DDD;" cellpadding=0 cellspacing=0>
@@ -373,8 +373,8 @@
 			<tr>
 			<td style="width: 200px;"><b><?php echo TBGContext::getI18n()->__('Message center layout'); ?></b></td>
 			<td style="width: 200px;"><select name="viewmode" style="width: 100%;">
-			<option value=1 <?php if (TBGSettings::get('viewmode', 'messages', null, TBGContext::getUser()->getUID()) == 1) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Standard layout'); ?></option>
-			<option value=2 <?php if (TBGSettings::get('viewmode', 'messages', null, TBGContext::getUser()->getUID()) == 2) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Wide layout'); ?></option>
+			<option value=1 <?php if (TBGSettings::get('viewmode', 'messages', null, TBGContext::getUser()->getID()) == 1) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Standard layout'); ?></option>
+			<option value=2 <?php if (TBGSettings::get('viewmode', 'messages', null, TBGContext::getUser()->getID()) == 2) echo ' selected'; ?>><?php echo TBGContext::getI18n()->__('Wide layout'); ?></option>
 			</select>
 			</td>
 			</tr>

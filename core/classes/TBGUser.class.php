@@ -723,7 +723,7 @@
 			if ($this->userassigned === null)
 			{
 				$this->userassigned = array();
-				if ($res = TBGIssuesTable::getTable()->getOpenIssuesByUserAssigned($this->getUID()))
+				if ($res = TBGIssuesTable::getTable()->getOpenIssuesByUserAssigned($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -766,7 +766,7 @@
 			if ($this->_starredissues === null)
 			{
 				$this->_starredissues = array();
-				if ($res = B2DB::getTable('TBGUserIssuesTable')->getUserStarredIssues($this->getUID()))
+				if ($res = B2DB::getTable('TBGUserIssuesTable')->getUserStarredIssues($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -810,7 +810,7 @@
 		public function addStarredIssue($issue_id)
 		{
 			$this->_populateStarredIssues();
-			TBGLogging::log("Starring issue with id {$issue_id} for user with id " . $this->getUID());
+			TBGLogging::log("Starring issue with id {$issue_id} for user with id " . $this->getID());
 			if ($this->isLoggedIn() == true && $this->isGuest() == false)
 			{
 				if (array_key_exists($issue_id, $this->_starredissues))
@@ -965,16 +965,31 @@
 			$this->_userstate = $state;
 		}
 		
+		/**
+		 * Whether this user is currently active on the site
+		 * 
+		 * @return boolean
+		 */
 		public function isActive()
 		{
 			return (bool) ($this->_lastseen > (NOW - (60 * 10)));
 		}
 		
+		/**
+		 * Whether this user is currently inactive (but not logged out) on the site
+		 * 
+		 * @return boolean
+		 */
 		public function isAway()
 		{
 			return (bool) (($this->_lastseen < (NOW - (60 * 10))) && ($this->_lastseen > (NOW - (60 * 30))));
 		}
 		
+		/**
+		 * Whether this user is currently offline (timed out or explicitly logged out)
+		 * 
+		 * @return boolean
+		 */
 		public function isOffline()
 		{
 			if ($this->_customstate)
@@ -1011,21 +1026,41 @@
 				return TBGSettings::getOfflineState();
 		}
 		
+		/**
+		 * Whether this user is enabled or not
+		 * 
+		 * @return boolean
+		 */
 		public function isEnabled()
 		{
 			return $this->_enabled;
 		}
 
+		/**
+		 * Set whether this user is activated or not
+		 * 
+		 * @param boolean $val[optional] 
+		 */
 		public function setActivated($val = true)
 		{
 			$this->_activated = (boolean) $val;
 		}
 
+		/**
+		 * Whether this user is activated or not
+		 * 
+		 * @return boolean
+		 */
 		public function isActivated()
 		{
 			return $this->_activated;
 		}
 		
+		/**
+		 * Whether this user is deleted or not
+		 * 
+		 * @return boolean
+		 */
 		public function isDeleted()
 		{
 			return $this->_deleted;
@@ -1042,43 +1077,54 @@
 			return $this->teams;
 		}
 		
+		/**
+		 * Clear this users teams
+		 */
 		public function clearTeams()
 		{
 			B2DB::getTable('TBGTeamMembersTable')->clearTeamsByUserID($this->getID());
 		}
 		
+		/**
+		 * Clear this users clients
+		 */
 		public function clearClients()
 		{
 			B2DB::getTable('TBGClientMembersTable')->clearClientsByUserID($this->getID());
 		}
 		
+		/**
+		 * Add this user to a team
+		 * 
+		 * @param TBGTeam $team 
+		 */
 		public function addToTeam(TBGTeam $team)
 		{
 			$team->addMember($this);
 			$this->teams = null;
-			$this->_populateTeams();
 		}
-		
+
+		/**
+		 * Add this user to a client
+		 * 
+		 * @param TBGClient $client 
+		 */
 		public function addToClient(TBGClient $client)
 		{
 			$client->addMember($this);
 			$this->clients = null;
-			$this->_populateClients();
 		}
-		
+
+		/**
+		 * Return the identifiable type
+		 * 
+		 * @return integer
+		 */
 		public function getType()
 		{
-			return self::TYPE_USER;
+			return TBGIdentifiableClass::TYPE_USER;
 		}
 		
-		private function _setUserDetail($detail, $value)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate($detail, $value);
-			TBGUsersTable::getTable()->doUpdateById($crit, $this->_id);
-			return true;
-		}
-	
 		/**
 		 * Set whether or not the email address is hidden for normal users
 		 *
@@ -1110,36 +1156,6 @@
 		}
 		
 		/**
-		 * Sets the login error to something
-		 *
-		 * @param string $login_error
-		 */
-		public function setLoginError($login_error)
-		{
-			$this->login_error = $login_error;
-		}
-		
-		/**
-		 * Returns the current users login error
-		 *
-		 * @return string
-		 */
-		public function getLoginError()
-		{
-			return $this->login_error;
-		}
-		
-		/**
-		 * Returns the UID of this user
-		 *
-		 * @return integer
-		 */
-		public function getUID()
-		{
-			return $this->_id;
-		}
-		
-		/**
 		 * Returns the user group
 		 *
 		 * @return TBGGroup
@@ -1149,6 +1165,11 @@
 			return $this->_group_id;
 		}
 
+		/**
+		 * Return this users group ID if any
+		 * 
+		 * @return integer
+		 */
 		public function getGroupID()
 		{
 			if (is_object($this->getGroup()))
@@ -1769,7 +1790,7 @@
 		 */
 		public function getLatestActions($number = 10)
 		{
-			if ($items = TBGLogTable::getTable()->getByUserID($this->getUID(), $number))
+			if ($items = TBGLogTable::getTable()->getByUserID($this->getID(), $number))
 			{
 				return $items;
 			}
@@ -1800,9 +1821,9 @@
 			{
 				$this->_associated_projects = array();
 				
-				$projects = B2DB::getTable('TBGProjectAssigneesTable')->getProjectsByUserID($this->getUID());
-				$edition_projects = B2DB::getTable('TBGEditionAssigneesTable')->getProjectsByUserID($this->getUID());
-				$component_projects = B2DB::getTable('TBGComponentAssigneesTable')->getProjectsByUserID($this->getUID());
+				$projects = B2DB::getTable('TBGProjectAssigneesTable')->getProjectsByUserID($this->getID());
+				$edition_projects = B2DB::getTable('TBGEditionAssigneesTable')->getProjectsByUserID($this->getID());
+				$component_projects = B2DB::getTable('TBGComponentAssigneesTable')->getProjectsByUserID($this->getID());
 				$lo_projects = B2DB::getTable('TBGProjectsTable')->getByUserID($this->getID());
 
 				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects), array_keys($lo_projects));
