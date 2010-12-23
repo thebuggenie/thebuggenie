@@ -110,7 +110,7 @@
 									<?php endif; ?>
 								</option>
 								<?php foreach ($options as $option): ?>
-									<option value="<?php echo $option->getID(); ?>"<?php if ((int) $action->getTargetValue() == $option->getID()) echo ' selected'; ?>>
+									<option value="<?php echo ($option instanceof TBGIdentifiable) ? $option->getID() : $option; ?>"<?php if (($option instanceof TBGIdentifiable && (int) $action->getTargetValue() == $option->getID()) || (!$option instanceof TBGIdentifiable && (int) $action->getTargetValue() == $option)) echo ' selected'; ?>>
 										<?php if ($option instanceof TBGIdentifiable): ?>
 											<?php echo $option->getName(); ?>
 										<?php else: ?>
