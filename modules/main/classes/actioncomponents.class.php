@@ -217,6 +217,18 @@
 			}
 		}
 
+	public function componentCommentitem()
+		{
+			if ($this->comment->getTargetType() == 1)
+			{
+				try
+				{
+					$this->issue = TBGContext::factory()->TBGIssue($this->comment->getTargetID());
+				}
+				catch (Exception $e) {}
+			}
+		}		
+		
 		public function componentUsercard()
 		{
 			$this->rnd_no = rand();

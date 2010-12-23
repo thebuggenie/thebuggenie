@@ -2280,7 +2280,7 @@
 			}
 			if ($request->isAjaxCall())
 			{
-				return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'commentcount' => TBGComment::countComments($request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type'), $request->getParameter('comment_module'))));
+				return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'commentcount' => TBGComment::countComments($request->getParameter('comment_applies_id'), $request->getParameter('comment_applies_type')/*, $request->getParameter('comment_module')*/)));
 			}
 			if ($comment instanceof TBGComment)
 			{

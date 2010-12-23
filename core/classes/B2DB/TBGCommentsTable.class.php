@@ -63,13 +63,16 @@
 			parent::_addForeignKeyColumn(self::POSTED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
 		}
 
-		public function getComments($target_id, $target_type)
+		public function getComments($target_id, $target_type, $sort_order = B2DBCriteria::SORT_ASC)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::TARGET_ID, $target_id);
+			if($target_id != 0) 
+			{
+				$crit->addWhere(self::TARGET_ID, $target_id);		
+			}
 			$crit->addWhere(self::TARGET_TYPE, $target_type);
 			$crit->addWhere(self::DELETED, 0);
-			$crit->addOrderBy(self::POSTED, 'asc');
+			$crit->addOrderBy(self::POSTED, $sort_order);
 			$res = $this->doSelect($crit);
 			return $res;
 		}
@@ -77,7 +80,10 @@
 		public function countComments($target_id, $target_type)
 		{
 			$crit = $this->getCriteria();
-			$crit->addWhere(self::TARGET_ID, $target_id);
+			if($target_id != 0) 
+			{
+				$crit->addWhere(self::TARGET_ID, $target_id);		
+			}
 			$crit->addWhere(self::TARGET_TYPE, $target_type);
 			$crit->addWhere(self::DELETED, 0);
 			$res = $this->doCount($crit);
@@ -102,6 +108,6 @@
 			$crit->addWhere(TBGIssuesTable::PROJECT_ID, $project_id);
 			
 			return $this->doSelect($crit);
-		}
+		}		
 
 	}

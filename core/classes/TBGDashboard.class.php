@@ -24,6 +24,7 @@
 		const DASHBOARD_VIEW_PREDEFINED_SEARCH = 1;
 		const DASHBOARD_VIEW_SAVED_SEARCH = 2;
 		const DASHBOARD_VIEW_LOGGED_ACTION = 3;
+		const DASHBOARD_VIEW_LAST_COMMENTS = 4;
 		
 		public static function getUserViews()
 		{
@@ -40,6 +41,10 @@
 																		TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES => 'Closed issues',
 																		TBGContext::PREDEFINED_SEARCH_PROJECT_MOST_VOTED => 'Most voted issues');
 			$searches[self::DASHBOARD_VIEW_LOGGED_ACTION] = array( 0 => 'What you\'ve done recently');
+			if (TBGContext::getUser()->canViewComments())
+			{
+				$searches[self::DASHBOARD_VIEW_LAST_COMMENTS] = array( 0 => 'Recent comments');	
+			}
 			$searches[self::DASHBOARD_VIEW_SAVED_SEARCH] = array();
 			$allsavedsearches = B2DB::getTable('TBGSavedSearchesTable')->getAllSavedSearchesByUserIDAndPossiblyProjectID(TBGContext::getUser()->getID());
 			foreach ($allsavedsearches as $savedsearches)

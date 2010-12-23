@@ -57,10 +57,10 @@
 		 * Returns all comments for a given item
 		 *
 		 */
-		static function getComments($target_id, $target_type, $module = 'core', $from_when = null)
+		static function getComments($target_id, $target_type/*, $module = 'core', $from_when = null*/, $sort_order = B2DBCriteria::SORT_ASC)
 		{
 			$retval = array();
-			if ($res = TBGCommentsTable::getTable()->getComments($target_id, $target_type))
+			if ($res = TBGCommentsTable::getTable()->getComments($target_id, $target_type, $sort_order))
 			{
 				while ($row = $res->getNextRow())
 				{
@@ -72,7 +72,7 @@
 			return $retval;
 		}
 		
-		static function countComments($target_id, $target_type, $module = 'core')
+		static function countComments($target_id, $target_type/*, $module = 'core'*/)
 		{
 			if (!array_key_exists($target_type, self::$_comment_count))
 			{
@@ -309,5 +309,5 @@
 		{
 			return (int) $this->_comment_number;
 		}
-		
+				
 	}
