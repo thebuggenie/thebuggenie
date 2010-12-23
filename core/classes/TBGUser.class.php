@@ -18,13 +18,13 @@
 	 */
 	class TBGUser extends TBGIdentifiableClass 
 	{
+		
 		static protected $_b2dbtablename = 'TBGUsersTable';
 		
 		/**
 		 * Unique username (login name)
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $_username = '';
 		
@@ -39,7 +39,6 @@
 		 * Hashed password
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $_password = '';
 		
@@ -54,7 +53,6 @@
 		 * User real name
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $_realname = '';
 		
@@ -62,7 +60,6 @@
 		 * User short name (buddyname)
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $_buddyname = '';
 		
@@ -70,7 +67,6 @@
 		 * User email
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $_email = '';
 		
@@ -90,13 +86,17 @@
 		 */
 		protected $_userstate = null;
 		
+		/**
+		 * Whether the user has a custom userstate set
+		 * 
+		 * @var boolean
+		 */
 		protected $_customstate = false;
 		
 		/**
 		 * User homepage
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $_homepage = '';
 
@@ -120,8 +120,6 @@
 		 * Array of client ids where the current user is a member
 		 *
 		 * @var array
-		 * 
-		 * @access protected
 		 */
 		protected $clients = null;
 				
@@ -129,7 +127,6 @@
 		 * The users avatar
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $_avatar = null;
 		
@@ -144,7 +141,6 @@
 		 * The users login error - if any
 		 *
 		 * @var string
-		 * @access protected
 		 */
 		protected $login_error = '';
 		
@@ -152,7 +148,6 @@
 		 * Array of issues to follow up
 		 *
 		 * @var array
-		 * @access protected
 		 */
 		protected $_starredissues = null;
 		
@@ -160,7 +155,6 @@
 		 * Array of issues assigned to the user
 		 *
 		 * @var array
-		 * @access protected
 		 */
 		protected $userassigned = null;
 		
@@ -168,7 +162,6 @@
 		 * Array of issues assigned to the users team(s)
 		 *
 		 * @var array
-		 * @access protected
 		 */
 		protected $teamassigned = array();
 		
@@ -176,7 +169,6 @@
 		 * Array of saved searches to show on the frontpage
 		 *
 		 * @var array
-		 * @access protected
 		 */
 		protected $indexsearches = array();
 		
@@ -208,45 +200,49 @@
 		 * @var integer
 		 */
 		protected $_timezone = null;
-		
+
+		/**
+		 * This users upload quota (MB)
+		 * 
+		 * @var integer 
+		 */
 		protected $_quota;
 
-		protected $row = null;
+		/**
+		 * When this user joined
+		 * 
+		 * @var integer
+		 */
 		protected $_joined = 0;
+		
+		/**
+		 * This users friends
+		 * 
+		 * @var array An array of TBGUser objects
+		 */
 		protected $_friends = null;
 		
+		/**
+		 * Whether the user is enabled
+		 * 
+		 * @var boolean
+		 */
 		protected $_enabled = false;
+		
+		/**
+		 * Whether the user is activated
+		 * 
+		 * @var boolean
+		 */
 		protected $_activated = false;
+		
+		/**
+		 * Whether the user is deleted
+		 * 
+		 * @var boolean
+		 */
 		protected $_deleted = false;
 		
-		public static function getUsersByVerified($activated)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGUsersTable::ACTIVATED, ($activated) ? 1 : 0);
-			$res = TBGUsersTable::getTable()->doSelect($crit);
-			
-			$users = array();
-			while ($row = $res->getNextRow())
-			{
-				$users[] = array('id' => $row->get(TBGUsersTable::ID));
-			}
-			return $users;
-		}
-
-		public static function getUsersByEnabled($enabled)
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGUsersTable::ENABLED, ($enabled) ? 1 : 0);
-			$res = TBGUsersTable::getTable()->doSelect($crit);
-			
-			$users = array();
-			while ($row = $res->getNextRow())
-			{
-				$users[] = array('id' => $row->get(TBGUsersTable::ID));
-			}
-			return $users;
-		}
-
 		/**
 		 * Retrieve a user by username
 		 *
@@ -263,73 +259,14 @@
 			return null;
 		}
 		
-		public static function getUsers($details, $noScope = false, $unique = false)
-		{
-			$users = array();
-			$crit = new B2DBCriteria();
-			if (strlen($details) > 1)
-			{
-				if (stristr($details, "@"))
-				{
-					$crit->addWhere(TBGUsersTable::EMAIL, "%$details%", B2DBCriteria::DB_LIKE);
-				}
-				else
-				{
-					$crit->addWhere(TBGUsersTable::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				}
-		
-				if ($noScope == false)
-				{
-					$crit->addWhere(TBGUsersTable::SCOPE, TBGContext::getScope()->getID());
-				}
-			}
-			else
-			{
-				$crit->addWhere(TBGUsersTable::UNAME, "$details%", B2DBCriteria::DB_LIKE);
-			}
-	
-			$res = TBGUsersTable::getTable()->doSelect($crit);
-	
-			if ($res->count() == 0 && strlen($details) > 1)
-			{
-				$crit = new B2DBCriteria();
-				$ctn = $crit->returnCriterion(TBGUsersTable::UNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$ctn->addOr(TBGUsersTable::BUDDYNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$ctn->addOr(TBGUsersTable::REALNAME, "%$details%", B2DBCriteria::DB_LIKE);
-				$crit->addWhere($ctn);
-				if ($noScope == false)
-				{
-					$crit->addWhere(TBGUsersTable::SCOPE, TBGContext::getScope()->getID());
-				}
-				$res = TBGUsersTable::getTable()->doSelect($crit);
-			}
-	
-			if ($res->count() == 0)
-			{
-				return false;
-			}
-			elseif ($res->count() == 1)
-			{
-				while ($row = $res->getNextRow())
-				{
-					$users[] = array('id' => $row->get(TBGUsersTable::ID));
-				}
-				return $users;
-			}
-			elseif ($unique == true)
-			{
-				return false;
-			}
-			else
-			{
-				while ($row = $res->getNextRow())
-				{
-					$users[] = array('id' => $row->get(TBGUsersTable::ID));
-				}
-				return $users;
-			}
-		}
-
+		/**
+		 * Load user fixtures for a specified scope
+		 * 
+		 * @param TBGScope $scope
+		 * @param TBGGroup $admin_group
+		 * @param TBGGroup $user_group
+		 * @param TBGGroup $guest_group 
+		 */
 		public static function loadFixtures(TBGScope $scope, TBGGroup $admin_group, TBGGroup $user_group, TBGGroup $guest_group)
 		{
 			$adminuser = new TBGUser();
@@ -507,23 +444,13 @@
 			}
 			return $pass;
 		}
-		
-		/**
-		 * Creates a new user and returns it
-		 *
-		 * @param string $username
-		 * @param string $realname
-		 * @param string $buddyname
-		 * @param integer $scope
-		 * @param boolean $activated
-		 * @param boolean $enabled
-		 * 
-		 * @return TBGUser
-		 */
-		public static function createNew($username, $realname, $buddyname, $scope, $activated = false, $enabled = false, $password = 'password', $email = '', $pass_is_hash = false, $u_id = null, $lastseen = null)
-		{
-		}
 
+		/**
+		 * Pre-save function to check for conflicting usernames and to make
+		 * sure some properties are set
+		 * 
+		 * @param boolean $is_new Whether this is a new user object
+		 */
 		protected function _preSave($is_new)
 		{
 			$compare_user = self::getByUsername($this->getUsername());
@@ -545,18 +472,32 @@
 			}
 		}
 
+		/**
+		 * Performs post-save actions on user objects
+		 * 
+		 * This includes firing off events for modules to listen to (e.g. so 
+		 * activation emails can be sent out), and setting up a default 
+		 * dashboard for the new user.
+		 * 
+		 * @param boolean $is_new Whether this is a new object or not (automatically passed to the function from B2DB)
+		 */
 		protected function _postSave($is_new)
 		{
 			if ($is_new)
 			{
 				$event = TBGEvent::createNew('core', 'TBGUser::createNew', $this);
 				$event->trigger();
+				
+				// If the event isn't processed we automatically enable the user
+				// since we can be sure no activation email has been sent out
 				if (!$event->isProcessed())
 				{
 					$this->setEnabled();
 					$this->setActivated();
 					$this->save();
 				}
+				
+				// Set up a default dashboard for the user
 				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES));
 				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_PREDEFINED_SEARCH, 'id' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES));
 				TBGUserDashboardViewsTable::getTable()->addView($this->getID(), array('type' => TBGDashboard::DASHBOARD_VIEW_LOGGED_ACTION, 'id' => 0));
@@ -593,16 +534,31 @@
 			TBGLogging::log("User with id {$this->getID()} set up successfully");
 		}
 		
+		/**
+		 * Retrieve the users real name
+		 * 
+		 * @return string
+		 */
 		public function getName()
 		{
 			return $this->_realname;
 		}
 		
+		/**
+		 * Retrieve the users id
+		 * 
+		 * @return integer
+		 */
 		public function getID()
 		{
 			return $this->_id;
 		}
 		
+		/**
+		 * Retrieve this users realname and username combined 
+		 * 
+		 * @return string "Real Name (username)"
+		 */
 		public function getNameWithUsername()
 		{
 			return ($this->_buddyname) ? $this->_buddyname . ' (' . $this->_username . ')' : $this->_username;
@@ -612,45 +568,47 @@
 		{
 			return $this->getNameWithUsername();
 		}
-		
+
 		/**
-		 * Checks whether the user has a login error or not
-		 *
+		 * Whether this user is authenticated or just an authenticated guest
+		 * 
 		 * @return boolean
 		 */
-		public function hasLoginError()
-		{
-			if ($this->login_error != '' && $this->login_error != 'guest')
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		
 		public function isAuthenticated()
 		{
 			return (bool) ($this->getID() == TBGContext::getUser()->getID());
 		}
 		
+		/**
+		 * Set users "last seen" property to NOW
+		 */
 		public function updateLastSeen()
 		{
 			$this->_lastseen = NOW;
 		}
 		
+		/**
+		 * Return timestamp for when this user was last online
+		 * 
+		 * @return integer
+		 */
 		public function getLastSeen()
 		{
 			return $this->_lastseen;
 		}
 		
+		/**
+		 * Marks this user with the Online user state
+		 */
 		public function setOnline()
 		{
 			$this->_userstate = TBGSettings::getOnlineState();
 			$this->_customstate = !$this->isOffline();
 		}
-		
+
+		/**
+		 * Marks this user with the Offline user state
+		 */
 		public function setOffline()
 		{
 			$this->_userstate = TBGSettings::getOfflineState();
@@ -658,48 +616,18 @@
 			$this->save();
 		}
 		
+		/**
+		 * Retrieve the timestamp for when this user joined
+		 * 
+		 * @return integer
+		 */
 		public function getJoinedDate()
 		{
 			return $this->_joined;
 		}
 		
 		/**
-		 * Checks if the user is a member of the given team
-		 *
-		 * @param integer $teamid
-		 * 
-		 * @return boolean
-		 */
-		public function isMemberOf($teamid)
-		{
-			$this->_populateTeams();
-			if ($teamid != 0)
-			{
-				return array_key_exists($teamid, $this->teams);
-			}
-			return false;
-		}
-		
-		/**
-		 * Checks if the user is a member of the given client
-		 *
-		 * @param integer $clientid
-		 * 
-		 * @return boolean
-		 */
-		public function isMemberOfClient($clientid)
-		{
-			$this->_populateClients();
-			if ($clientid != 0)
-			{
-				return array_key_exists($clientid, $this->clients);
-			}
-			return false;
-		}
-		
-		/**
 		 * Populates team array when needed
-		 *
 		 */
 		protected function _populateTeams()
 		{
@@ -707,10 +635,7 @@
 			{
 				$this->teams = array();
 				TBGLogging::log('Populating user teams');
-				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGTeamMembersTable::UID, $this->_id);
-		
-				if ($res = B2DB::getTable('TBGTeamMembersTable')->doSelect($crit))
+				if ($res = TBGTeamMembersTable::getTable()->getTeamIDsForUserID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -719,6 +644,19 @@
 				}
 				TBGLogging::log('...done (Populating user teams)');
 			}
+		}
+		
+		/**
+		 * Checks if the user is a member of the given team
+		 *
+		 * @param TBGTeam $team
+		 * 
+		 * @return boolean
+		 */
+		public function isMemberOfTeam(TBGTeam $team)
+		{
+			$this->_populateTeams();
+			return array_key_exists($team->getID(), $this->teams);
 		}
 		
 		/**
@@ -731,10 +669,7 @@
 			{
 				$this->clients = array();
 				TBGLogging::log('Populating user clients');
-				$crit = new B2DBCriteria();
-				$crit->addWhere(TBGClientMembersTable::UID, $this->_id);
-		
-				if ($res = B2DB::getTable('TBGClientMembersTable')->doSelect($crit))
+				if ($res = TBGClientMembersTable::getTable()->getClientIDsForUserID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
@@ -745,6 +680,19 @@
 			}
 		}
 	
+		/**
+		 * Checks if the user is a member of the given client
+		 *
+		 * @param TBGClient $client
+		 * 
+		 * @return boolean
+		 */
+		public function isMemberOfClient(TBGClient $client)
+		{
+			$this->_populateClients();
+			return array_key_exists($client->getID(), $this->clients);
+		}
+		
 		/**
 		 * Checks whether or not the user is logged in
 		 *

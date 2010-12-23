@@ -99,5 +99,12 @@
 				$this->doInsert($crit);
 			}
 		}
+		
+		public function getTeamIDsForUserID($user_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::UID, $user_id);
+			return $this->doSelect($crit);
+		}
 
 	}
