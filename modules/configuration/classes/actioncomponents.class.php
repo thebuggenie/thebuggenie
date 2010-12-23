@@ -173,7 +173,7 @@
 			$available_assignees = array();
 			foreach (TBGContext::getUser()->getTeams() as $team)
 			{
-				foreach ($team->getUsers() as $user)
+				foreach ($team->getMembers() as $user)
 				{
 					$available_assignees[$user->getID()] = $user->getNameWithUsername();
 				}

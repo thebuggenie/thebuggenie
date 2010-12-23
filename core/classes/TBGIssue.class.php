@@ -3435,7 +3435,14 @@
 			// or add the owning user if a user owns the issue
 			if ($this->getOwnerType() == TBGIdentifiableClass::TYPE_TEAM)
 			{
-				$uids = array_merge($uids, $this->getOwner()->getMemberIDs());
+				// Get team member IDs
+				$member_ids = array();
+				foreach ($this->getOwner()->getMembers() as $member)
+				{
+					$member_ids[] = $member->getID();
+				}
+				
+				$uids = array_merge($uids, $member_ids);
 			}
 			elseif ($this->getOwnerType() == TBGIdentifiableClass::TYPE_USER)
 			{
@@ -3449,7 +3456,14 @@
 			// or add the assigned user if a user is assigned to the issue
 			if ($this->getAssigneeType() == TBGIdentifiableClass::TYPE_TEAM)
 			{
-				$uids = array_merge($uids, $this->getAssignee()->getMemberIDs());
+				// Get team member IDs
+				$member_ids = array();
+				foreach ($this->getAssignee()->getMembers() as $member)
+				{
+					$member_ids[] = $member->getID();
+				}
+				
+				$uids = array_merge($uids, $member_ids);
 			}
 			elseif ($this->getAssigneeType() == TBGIdentifiableClass::TYPE_USER)
 			{
@@ -3463,7 +3477,14 @@
 			// or add the user who leads the project, if valid
 			if ($this->getProject()->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM)
 			{
-				$uids = array_merge($uids, $this->getProject()->getLeadBy()->getMembers());
+				// Get team member IDs
+				$member_ids = array();
+				foreach ($this->getOwner()->getLeader() as $member)
+				{
+					$member_ids[] = $member->getID();
+				}
+				
+				$uids = array_merge($uids, $member_ids);
 			}
 			elseif ($this->getProject()->getLeaderType() == TBGIdentifiableClass::TYPE_USER)
 			{
@@ -3473,7 +3494,14 @@
 			// Same for QA
 			if ($this->getProject()->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM)
 			{
-				$uids = array_merge($uids, $this->getProject()->getQaResponsible()->getMembers());
+				// Get team member IDs
+				$member_ids = array();
+				foreach ($this->getOwner()->getQaRespnsible() as $member)
+				{
+					$member_ids[] = $member->getID();
+				}
+				
+				$uids = array_merge($uids, $member_ids);
 			}
 			elseif ($this->getProject()->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER)
 			{
@@ -3485,7 +3513,14 @@
 			{
 				if ($edition_list['edition']->getLeaderType() == TBGIdentifiableClass::TYPE_TEAM)
 				{
-					$uids = array_merge($uids, $edition_list['edition']->getLeader()->getMembers());
+					// Get team member IDs
+					$member_ids = array();
+					foreach ($edition_list['edition']->getLeader()->getMembers() as $member)
+					{
+						$member_ids[] = $member->getID();
+					}
+					
+					$uids = array_merge($uids, $member_ids);
 				}
 				elseif ($edition_list['edition']->getLeaderType() == TBGIdentifiableClass::TYPE_USER)
 				{
@@ -3494,7 +3529,14 @@
 				
 				if ($edition_list['edition']->getQaResponsibleType() == TBGIdentifiableClass::TYPE_TEAM)
 				{
-					$uids = array_merge($uids, $edition_list['edition']->getQAgetQaResponsible());
+					// Get team member IDs
+					$member_ids = array();
+					foreach ($edition_list['edition']->getQaResponsible()->getMembers() as $member)
+					{
+						$member_ids[] = $member->getID();
+					}
+					
+					$uids = array_merge($uids, $member_ids);
 				}
 				elseif ($edition_list['edition']->getQaResponsibleType() == TBGIdentifiableClass::TYPE_USER)
 				{
