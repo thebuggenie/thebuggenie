@@ -581,7 +581,8 @@
 					{
 						if (array_key_exists($request->getParameter('type'), $types))
 						{
-							call_user_func(array($types[$request->getParameter('type')], 'delete'), (int) $request->getParameter('id'));
+							$classname = 'TBG'.ucfirst($request->getParameter('type'));
+							$item = TBGContext::factory()->$classname($request->getParameter('id'))->delete();
 							return $this->renderJSON(array('failed' => false, 'title' => $i18n->__('The option was deleted')));
 						}
 						else
