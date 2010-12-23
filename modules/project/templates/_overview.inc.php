@@ -30,7 +30,7 @@
 		<form action="<?php echo make_url('project_reportissue', array('project_key' => $project->getKey())); ?>" method="get" style="clear: none; display: inline; width: 160px;">
 			<table border="0" cellpadding="0" cellspacing="0" style="float: right;">
 				<tr>
-					<td style="font-weight: normal;">
+					<td style="font-weight: normal; vertical-align: top; padding-top: 2px;">
 						<?php /*if ($tbg_user->hasPageAccess('project_dashboard', $project->getID()) || $tbg_user->hasPageAccess('project_allpages', $project->getID())): ?>
 							<?php echo link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), __('Overview')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
 						<?php endif;*/ ?>
