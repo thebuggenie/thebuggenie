@@ -1184,23 +1184,14 @@
 			return null;
 		}
 		
-		public function setGroup($group)
-		{
-			if (!is_object($group))
-			{
-				$group = TBGContext::factory()->TBGGroup($group);
-			}
-			$this->_group_id = $group;
-		}
-		
 		/**
-		 * Returns the login name (username)
-		 *
-		 * @return string
+		 * Set this users group
+		 * 
+		 * @param TBGGroup $group 
 		 */
-		public function getUname()
+		public function setGroup(TBGGroup $group)
 		{
-			return $this->_username;
+			$this->_group_id = $group;
 		}
 		
 		/**
@@ -1213,9 +1204,14 @@
 			$this->_username = $username;
 		}
 
+		/**
+		 * Return this users' username
+		 * 
+		 * @return string
+		 */
 		public function getUsername()
 		{
-			return $this->getUname();
+			return $this->_username;
 		}
 		
 		/**
@@ -1409,16 +1405,23 @@
 			$this->_use_gravatar = (bool) $val;
 		}
 
+		/**
+		 * Set whether this user is enabled or not
+		 * 
+		 * @param boolean $val[optional]
+		 */
 		public function setEnabled($val = true)
 		{
 			$this->_enabled = $val;
 		}
 		
-		public function setValidated($val)
+		/**
+		 * Set whether this user is validated or not
+		 * 
+		 * @param boolean $val[optional]
+		 */
+		public function setValidated($val = true)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addUpdate(TBGUsersTable::ACTIVATED, ($val) ? 1 : 0);
-			TBGUsersTable::getTable()->doUpdateById($crit, $this->getID());
 			$this->_activated = $val;
 		}
 		
@@ -1516,6 +1519,14 @@
 			}
 		}
 		
+		/**
+		 * Check whether the user can access the specified project page
+		 * 
+		 * @param string $page The page key
+		 * @param integer $project_id
+		 * 
+		 * @return boolean 
+		 */
 		public function hasProjectPageAccess($page, $project_id)
 		{
 			$specific_access = $this->hasPageAccess($page, $project_id, true, false);

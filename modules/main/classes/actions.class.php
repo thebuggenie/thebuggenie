@@ -476,7 +476,7 @@
 					$user->setUsername($username);
 					$user->setRealname($realname);
 					$user->setBuddyname($buddyname);
-					$user->setGroup(2);
+					$user->setGroup(TBGSettings::getDefaultGroup());
 					$user->setEnabled();
 					$user->setPassword($password);
 					$user->setEmail($email);
@@ -520,7 +520,8 @@
 				else
 				{
 					$user = new TBGUser($row->get(TBGUsersTable::ID), $row);
-					$user->setValidated(1);
+					$user->setValidated(true);
+					$user->save();
 					TBGContext::setMessage('account_activate', true);
 					TBGContext::setMessage('activate_success', true);
 				}
