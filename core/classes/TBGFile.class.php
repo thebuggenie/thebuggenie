@@ -18,6 +18,8 @@
 		protected $_content;
 
 		protected $_description;
+		
+		protected $_uid;
 
 		public static function getByIssueID($issue_id)
 		{
