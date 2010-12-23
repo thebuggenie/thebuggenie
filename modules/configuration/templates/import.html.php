@@ -23,7 +23,7 @@
 			<div id="import_menu_panes">
 				<div id="tab_csv_pane" style="padding-top: 0; width: 750px;">
 					<div class="tab_content">
-						<?php echo __('You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %import instructions% wiki article for further details and instructions.', array('%import instructions%' => __('import instructions'))); ?>
+						<?php echo __('You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %CSVImport% wiki article for further details and instructions.', array('%CSVImport%' => link_tag(make_url('publish_article', array('article_name' => 'CSVImport')), __('CSVImport'), array('target' => '_blank')))); ?>
 						<div class="tab_header"><?php echo __('What data would you like to import?'); ?></div>
 						<ul>
 							<li><a href="javascript:void(0);" onClick="showFadedBackdrop('<?php echo make_url('configure_import_csv', array('type' => 'issues')); ?>');"><?php echo __('Issues'); ?></a></li>

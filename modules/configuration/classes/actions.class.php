@@ -2811,6 +2811,9 @@
 						$client = null;
 						$show_summary = null;
 						$summary_type = null;
+						$issuetype_scheme = null;
+						$allow_reporting = null;
+						$autoassign = null;
 						
 						for ($i = 0; $i != count($headerrow2); $i++)
 						{
@@ -2852,6 +2855,12 @@
 								$show_summary = $i;
 							elseif ($headerrow2[$i] == 'summary_type'):
 								$summary_type = $i;
+							elseif ($headerrow2[$i] == 'issuetype_scheme'):
+								$issuetype_scheme = $i;
+							elseif ($headerrow2[$i] == 'allow_reporting'):
+								$allow_reporting = $i;
+							elseif ($headerrow2[$i] == 'autoassign'):
+								$autoassign = $i;
 							endif;
 						}
 						
@@ -3017,7 +3026,7 @@
 								}
 								
 								// First off are booleans
-								$boolitems = array($scrum, $freelance, $en_builds, $en_comps, $en_editions, $show_summary);
+								$boolitems = array($scrum, $allow_reporting, $autoassign, $freelance, $en_builds, $en_comps, $en_editions, $show_summary);
 								
 								foreach ($boolitems as $boolitem)
 								{
@@ -3112,6 +3121,26 @@
 										catch (Exception $e)
 										{
 											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: workflow scheme does not exist', array('%col%' => $workflow_id+1, '%row%' => $i+1));
+										}
+									}
+								}
+								
+								// Now check if issuetype scheme
+								if ($issuetype_scheme !== null)
+								{
+									if (!is_numeric(trim($activerow[$issuetype_scheme], '"')))
+									{
+										$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: invalid value (must be a number)', array('%col%' => $issuetype_scheme+1, '%row%' => $i+1));
+									}
+									else
+									{
+										try
+										{
+											TBGContext::factory()->TBGIssuetypeScheme(trim($activerow[$issuetype_scheme], '"'));
+										}
+										catch (Exception $e)
+										{
+											$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: issuetype scheme does not exist', array('%col%' => $issuetype_scheme+1, '%row%' => $i+1));
 										}
 									}
 								}
@@ -3587,7 +3616,16 @@
 								
 								if ($summary_type !== null)
 									$project->setFrontpageSummaryType(trim($activerow[$summary_type], '"'));
-								
+
+								if ($issuetype_scheme !== null)
+									$project->setIssuetypeScheme(TBGContext::factory()->TBGIssuetypeScheme(trim($activerow[$issuetype_scheme], '"')));
+									
+								if ($allow_reporting !== null)
+									$project->setLocked(trim($activerow[$allow_reporting], '"'));
+							
+								if ($autoassign !== null)
+									$project->setAutoassign(trim($activerow[$autoassign], '"'));
+									
 								$project->save();
 							}
 							catch (Exception $e)
