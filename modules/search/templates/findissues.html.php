@@ -282,8 +282,8 @@
 							else
 							{
 								/* Produce get parameters for query */
-								$get = str_replace($_SERVER['REDIRECT_URL'], '', $_SERVER['REQUEST_URI']);
-								echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'csv')).$get.'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'rss')).$get.'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
+								preg_match('/(?<=\/issues&).+$/i', $_SERVER['QUERY_STRING'], $get);
+								echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'csv')).'?'.$get[0].'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'rss')).'?'.$get[0].'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
 							}
 						?>
 					</div>

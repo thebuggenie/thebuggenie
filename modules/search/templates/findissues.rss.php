@@ -3,10 +3,16 @@
 	<channel>
 		<title><?php echo TBGSettings::getTBGname() . ' ~ '. $searchtitle; ?></title>
 		<link><?php echo make_url('home', array(), false); ?></link>
-		<description> </description>
-		<language><?php echo TBGContext::getI18n()->getCurrentLanguage(); ?></language>
+		<description><?php echo strip_tags(TBGSettings::getTBGtagline()); ?></description>
+		<language><?php echo (strtolower(str_replace('_', '-', TBGContext::getI18n()->getCurrentLanguage()))); ?></language>
 		<image>
-			<url><?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png</url>
+		<?php if (TBGSettings::isUsingCustomHeaderIcon() == '2'): ?>
+			<url><?php echo TBGSettings::getHeaderIconURL(); ?></url>
+		<?php elseif (TBGSettings::isUsingCustomHeaderIcon() == '1'): ?>
+			<url><?php echo TBGContext::getUrlHost().TBGContext::getTBGPath().'header.png'; ?></url>
+		<?php else: ?>
+			<url><?php echo image_url('logo_24.png', false, null, true); ?></url>
+		<?php endif; ?>
 			<title><?php echo TBGSettings::getTBGname() . ' ~ '. $searchtitle; ?></title>
 			<link><?php echo make_url('home', array(), false); ?></link>
 		</image>
@@ -15,8 +21,12 @@
 		
 		<item>
 			<title><?php echo $issue->getFormattedIssueNo(true) . ' - ' . strip_tags($issue->getTitle()); ?></title>
+			<?php if ($issue->getDescription() == ''): ?>
+			<description><?php echo __('Nothing entered.'); ?></description>
+			<?php else: ?>
 			<description><?php echo strip_tags($issue->getDescription()); ?></description>
-			<pubdate><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?></pubdate>
+			<?php endif; ?>
+			<pubDate><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?></pubDate>
 			<link><?php echo make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey()), false); ?></link>
 			<guid><?php echo make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey()), false); ?></guid>
 		</item>
