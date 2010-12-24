@@ -117,8 +117,6 @@ When the tables mention the 'column name', this is what should be in the first r
 |-
 | blocking || No || Does the issue block the next release || 1 for yes, 0 for no
 |-
-| locked || No || Can the issue be edited || 1 for yes, 0 for no
-|-
 | milestone || No || ID number of milestone || none
 |}
 

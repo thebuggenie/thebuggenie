@@ -2893,7 +2893,6 @@
 						$votes = null;
 						$percentage = null;
 						$blocking = null;
-						$locked = null;
 						$milestone = null;
 						
 						for ($i = 0; $i != count($headerrow2); $i++)
@@ -2938,8 +2937,6 @@
 								$percentage = $i;
 							elseif ($headerrow2[$i] == 'blocking'):
 								$blocking = $i;
-							elseif ($headerrow2[$i] == 'locked'):
-								$locked = $i;
 							elseif ($headerrow2[$i] == 'type'):
 								$issue_type = $i;
 							elseif ($headerrow2[$i] == 'milestone'):
@@ -3174,7 +3171,7 @@
 								}
 								
 								// First off are booleans
-								$boolitems = array($state, $blocking, $locked);
+								$boolitems = array($state, $blocking);
 								
 								foreach ($boolitems as $boolitem)
 								{
@@ -3718,9 +3715,6 @@
 								
 								if ($percentage !== null)
 									$issue->setPercentage(trim($activerow[$percentage], '"'));
-									
-								if ($locked !== null)
-									$issue->setLocked(trim($activerow[$locked], '"'));
 								
 								if ($milestone !== null)
 									$issue->setMilestone(trim($activerow[$milestone], '"'));
