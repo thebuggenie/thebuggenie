@@ -47,16 +47,25 @@
 	<?php if ($b2db_param_file_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can save database connection details ...</div>
 	<?php endif; ?>
+	<?php if ($gd_ok): ?>
+		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP GD library installed and enabled ...</div>
+	<?php endif; ?>	
 	<?php if (!$mysql_ok && $pgsql_ok): ?>
 		<div class="installation_prerequisites prereq_warn">
 		<b>PDO MySQL driver not enabled</b><br>
-		You won't be able to install The Bug Genie on a MySQL database.<br/>More information is available at <a href="http://fr.php.net/manual/en/ref.pdo-mysql.php">php.net</a>
+		You won't be able to install The Bug Genie on a MySQL database.<br/>More information is available at <a href="http://fr.php.net/manual/en/ref.pdo-mysql.php" target="_blank">php.net</a>
 		</div>
 	<?php endif; ?>
 	<?php if ($mysql_ok && !$pgsql_ok): ?>
 		<div class="installation_prerequisites prereq_warn">
 		<b>PDO PostgreSQL driver not enabled</b><br>
-		You won't be able to install The Bug Genie on a PostgreSQL database.<br/>More information is available at <a href="http://fr.php.net/manual/en/ref.pdo-pgsql.php">php.net</a>
+		You won't be able to install The Bug Genie on a PostgreSQL database.<br/>More information is available at <a href="http://fr.php.net/manual/en/ref.pdo-pgsql.php" target="_blank">php.net</a>
+		</div>
+	<?php endif; ?>
+	<?php if (!$gd_ok): ?>
+		<div class="installation_prerequisites prereq_warn">
+		<b>PHP GD library not enabled</b><br>
+		You won't be able to display graphs statistics and some other images.<br/>More information is available at <a href="http://fr.php.net/manual/en/book.image.php" target="_blank">php.net</a>
 		</div>
 	<?php endif; ?>		
 	<?php if ($all_well): ?>
