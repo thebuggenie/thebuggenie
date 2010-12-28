@@ -1317,7 +1317,7 @@
 	$strings['Please provide a valid name for the issue type'] = 'Por favor de un nombre válido al tipo de problema';
 	$strings['The issue type was updated'] = 'El tipo de problema fue actualizado';
 	$strings['Please provide a valid issue type'] = 'Por favor asigne un tipo de problema válido';
-	$strings['Avilable choices updated'] = 'Opciones disponibles actualizadas';
+	$strings['Available choices updated'] = 'Opciones disponibles actualizadas';
 	$strings['Not implemented yet'] = 'Aún sin implementar';
 	$strings['Please provide a valid action for this issue type'] = 'Por favor asigne una acción válida para este tipo de problema';
 	$strings['The option was added'] = 'La opción fue agregada';

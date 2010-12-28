@@ -1,6 +1,6 @@
 <?php 
 
-	$tbg_response->setTitle('Frontpage');
+	$tbg_response->setTitle(__('Frontpage'));
 	$tbg_response->addBreadcrumb(link_tag(make_url('home'), __('Frontpage')));
 
 ?>

@@ -1,7 +1,7 @@
 <?php if ($mode == 'configuration'): ?>
 	<?php echo tbg_parse_text(__('Configuration access is always "Restrictive", regardless of the system settings.')); ?> 
 <?php endif; ?>
-<?php echo tbg_parse_text(__('Please see [[ConfigurePermissions]] for more information about how permissions work in general.')); ?><br>
+<?php echo tbg_parse_text(__('Please see [[ConfigurePermissions]] for more information about how permissions work in general.', array(), true)); ?><br>
 <table cellpadding="0" cellspacing="0" style="width: 100%; margin-top: 10px;">
 	<thead class="light">
 		<tr>

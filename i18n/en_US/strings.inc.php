@@ -1273,7 +1273,7 @@
 	$strings['Configure workflow "%workflow_name%"'] = 'Configure workflow "%workflow_name%"';
 	$strings['This page shows all the available steps for the selected workflow, as well as transitions between these steps.'] = 'This page shows all the available steps for the selected workflow, as well as transitions between these steps.';
 	$strings['Configure workflow schemes'] = 'Configure workflow schemes';
-	$strings['Issue types with associated workflows: %number_of_associated_workflows%'] = 'Issue types with associated workflows: %number_of_associated_workflows%';
+	$strings['Issue types with associated workflows: %number_of_associated_issuetypes%'] = 'Issue types with associated workflows: %number_of_associated_issuetypes%';
 	$strings['Delete this workflow scheme'] = 'Delete this workflow scheme';
 	$strings['Create a copy of this workflow scheme'] = 'Create a copy of this workflow scheme';
 	$strings['Show / edit issue type associations'] = 'Show / edit issue type associations';
@@ -1317,7 +1317,7 @@
 	$strings['Please provide a valid name for the issue type'] = 'Please provide a valid name for the issue type';
 	$strings['The issue type was updated'] = 'The issue type was updated';
 	$strings['Please provide a valid issue type'] = 'Please provide a valid issue type';
-	$strings['Avilable choices updated'] = 'Avilable choices updated';
+	$strings['Available choices updated'] = 'Available choices updated';
 	$strings['Not implemented yet'] = 'Not implemented yet';
 	$strings['Please provide a valid action for this issue type'] = 'Please provide a valid action for this issue type';
 	$strings['The option was added'] = 'The option was added';

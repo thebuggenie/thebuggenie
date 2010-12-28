@@ -56,7 +56,7 @@
 						</table>
 					</div>
 				<div style="text-align: right;">
-					<input type="submit" id="edit_client_<?php echo $client->getID(); ?>_save_button" style="padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>"> <?php echo javascript_link_tag(__('or Cancel'), array('onclick' => '$(\'edit_client_'.$client->getID().'\').toggle();')); ?>
+					<input type="submit" id="edit_client_<?php echo $client->getID(); ?>_save_button" style="padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>"> <?php echo javascript_link_tag(__('or cancel'), array('onclick' => '$(\'edit_client_'.$client->getID().'\').toggle();')); ?>
 				</div>
 				</form>
 				<table cellpadding=0 cellspacing=0 style="display: none; margin-left: 5px; width: 300px;" id="edit_client_<?php echo $client->getID(); ?>_indicator">

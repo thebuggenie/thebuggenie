@@ -6,7 +6,7 @@
 		<ul id="views_list" style="float: left; margin: 0; padding: 0; list-style: none;" class="sortable">
 		<?php foreach ($dashboardViews as $view): ?>
 			<li id="view_<?php echo $view->get(TBGUserDashboardViewsTable::VIEW); ?>" class="rounded_box mediumgrey" style="margin: 5px 10px; float: left; width: 30em; cursor: move; text-align: left;">
-				<span id="<?php echo $view->get(TBGUserDashboardViewsTable::VIEW); ?>_<?php echo $view->get(TBGUserDashboardViewsTable::TYPE); ?>"><?php echo $views[$view->get(TBGUserDashboardViewsTable::TYPE)][$view->get(TBGUserDashboardViewsTable::VIEW)]; ?></span>
+				<span id="<?php echo $view->get(TBGUserDashboardViewsTable::VIEW); ?>_<?php echo $view->get(TBGUserDashboardViewsTable::TYPE); ?>"><?php echo __($views[$view->get(TBGUserDashboardViewsTable::TYPE)][$view->get(TBGUserDashboardViewsTable::VIEW)]); ?></span>
 				<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "this.ancestors()[0].childElements()[3].toggle(); this.ancestors()[0].className = this.ancestors()[0].childElements()[3].visible() ? 'rounded_box verylightyellow' : 'rounded_box mediumgrey';")); ?>
 				<?php echo javascript_link_tag(image_tag('action_remove_small.png', array('class' => 'menu_dropdown', 'style' => 'float: right; margin-left: 5px;')), array('onclick' => "this.ancestors()[0].remove();  Sortable.create('views');")); ?>
 				<table style="display: none; width: 100%; cursor: default;">
@@ -15,7 +15,7 @@
 							<?php if ($id_view == $view->get(TBGUserDashboardViewsTable::VIEW)) continue; ?>
 							<tr class="hover_highlight">
 								<td style="padding-left: 12px;" onclick="swapDashboardView(this.childElements()[0], this.ancestors()[3].childElements()[0]);">
-									<span id="<?php echo $id_view; ?>_<?php echo $id_type; ?>"><?php echo $a_view; ?></span>
+									<span id="<?php echo $id_view; ?>_<?php echo $id_type; ?>"><?php echo __($a_view); ?></span>
 								</td>
 							</tr>
 						<?php endforeach; ?>
@@ -35,7 +35,7 @@
 						<?php foreach ($view_type as $id_view => $a_view): ?>
 							<tr class="hover_highlight">
 								<td style="padding-left: 12px;" onclick="swapDashboardView(this.childElements()[0], this.ancestors()[3].childElements()[0]);">
-									<span id="<?php echo $id_view; ?>_<?php echo $id_type; ?>"><?php echo $a_view; ?></span>
+									<span id="<?php echo $id_view; ?>_<?php echo $id_type; ?>"><?php echo __($a_view); ?></span>
 								</td>
 							</tr>
 						<?php endforeach; ?>

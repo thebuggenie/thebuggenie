@@ -478,7 +478,7 @@
 						{
 							$this->scheme->setFieldAvailableForIssuetype($issuetype, $key, $details);
 						}
-						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Avilable choices updated')));
+						return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('Available choices updated')));
 					}
 					else
 					{

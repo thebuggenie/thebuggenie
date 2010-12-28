@@ -12,9 +12,9 @@
 	 *
 	 * @return string
 	 */
-	function __($text, $replacements = array())
+	function __($text, $replacements = array(), $html_decode = false)
 	{
-		return TBGContext::getI18n()->__($text, $replacements);
+		return TBGContext::getI18n()->__($text, $replacements, $html_decode);
 	}
 
 	/**

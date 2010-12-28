@@ -58,7 +58,7 @@
 				<td class="config_explanation" colspan="2"><?php echo __('This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration'); ?></td>
 			</tr>
 		</table>
-		<table style="width: 680px; margin-top: 10px;<?php if ($module->getSetting('mail_type') != TBGMailer::MAIL_TYPE_B2M): ?> display: none;<?php endif; ?>" class="padded_table" cellpadding=0 cellspacing=0 id="mail_type_b2m_info">
+		<table style="width: 680px; margin-top: 10px;<?php if ($module->getSetting('mail_type') == TBGMailer::MAIL_TYPE_PHP): ?> display: none;<?php endif; ?>" class="padded_table" cellpadding=0 cellspacing=0 id="mail_type_b2m_info">
 			<tr>
 				<td style="width: 200px; padding: 5px;"><label for="smtp_host"><?php echo __('SMTP server address'); ?></label></td>
 				<td style="width: auto;"><input type="text" name="smtp_host" id="smtp_host" value="<?php echo $module->getSetting('smtp_host'); ?>" style="width: 100%;"<?php echo ($access_level != TBGSettings::ACCESS_FULL) ? ' disabled' : ''; ?>></td>

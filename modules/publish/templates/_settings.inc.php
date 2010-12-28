@@ -36,7 +36,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="config_explanation" colspan="2"><?php echo __('Setting this to "%yes%" will hide all "Wiki" tabs and links', array('%yes%' => __('Yes'))); ?></td>
+			<td class="config_explanation" colspan="2"><?php echo __('Setting this to "%no%" will hide all "Wiki" tabs and links', array('%no%' => __('No'))); ?></td>
 		</tr>
 		<tr>
 			<td style="padding: 5px;"><label for="hide_wiki_links_no"><?php echo __('Wiki permissions'); ?></label></td>

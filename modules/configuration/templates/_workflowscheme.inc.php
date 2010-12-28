@@ -17,7 +17,7 @@
 						<a href="javascript:void(0);" onclick="$('delete_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_delete.png', array('title' => __('Delete this issue type scheme'))); ?></a>
 					<?php endif; ?>
 				<?php endif; ?>
-				<a href="javascript:void(0);" onclick="$('copy_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this issue type scheme'))); ?></a>
+				<a href="javascript:void(0);" onclick="$('copy_scheme_<?php echo $scheme->getID(); ?>_popup').toggle();" class="rounded_box"><?php echo image_tag('icon_copy.png', array('title' => __('Create a copy of this workflow scheme'))); ?></a>
 				<?php echo link_tag(make_url('configure_workflow_scheme', array('scheme_id' => $scheme->getID())), image_tag('icon_workflow_scheme_edit.png', array('title' => __('Show / edit issue type associations'))), array('class' => 'rounded_box')); ?></a>
 			</td>
 		</tr>

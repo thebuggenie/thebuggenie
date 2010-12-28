@@ -53,19 +53,19 @@
 						<tr>
 							<td><label for="upload_max_file_size"><?php echo __('Max upload file size'); ?></label></td>
 							<td>
-								<input type="text" name="upload_max_file_size" id="upload_max_file_size" style="width: 50px;" value="<?php echo TBGSettings::getUploadsMaxSize(); ?>"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>&nbsp;MB
+								<input type="text" name="upload_max_file_size" id="upload_max_file_size" style="width: 50px;" value="<?php echo TBGSettings::getUploadsMaxSize(); ?>"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?>>&nbsp;<?php echo __('MB'); ?>
 							</td>
 						</tr>
 						<tr>
 							<td class="config_explanation" colspan="2">
 								<?php echo __('Enter the maximum allowed file size for uploads here. Remember that this value cannot be higher than the current php max_upload_size or post_max_size, both defined in php.ini.'); ?> 
-								<u><?php echo __('Currently, these values are max_upload_size: %ini_max_upload_size% and post_max_size: %ini_post_max_size%.', array('%ini_max_upload_size%' => '<b>'.(int) ini_get('upload_max_filesize').'MB</b>', '%ini_post_max_size%' => '<b>'.(int) ini_get('post_max_size').'MB</b>')); ?></u>
+								<u><?php echo __('Currently, these values are max_upload_size: %ini_max_upload_size% and post_max_size: %ini_post_max_size%.', array('%ini_max_upload_size%' => '<b>' . (int) ini_get('upload_max_filesize') . __('MB') . '</b>', '%ini_post_max_size%' => '<b>' . (int) ini_get('post_max_size') . __('MB') . '</b>')); ?></u>
 							</td>
 						</tr>
 						<tr>
 							<td><label for="upload_restriction_mode"><?php echo __('Upload restrictions'); ?></label></td>
 							<td>
-								<select name="upload_restriction_mode" id="upload_restriction_mode"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?> onChange="var label = (this.getValue() == 'whitelist') ? '<?php echo __('Allowed extension'); ?>' : '<?php echo __('Denied extension'); ?>'; $('label_upload_extensions_list').update(label); $('label_upload_extensions_list').innerHTML;">
+								<select name="upload_restriction_mode" id="upload_restriction_mode"<?php if (!TBGSettings::isUploadsEnabled()): ?> disabled<?php endif; ?> onChange="var label = (this.getValue() == 'whitelist') ? '<?php echo __('Allowed extensions'); ?>' : '<?php echo __('Denied extensions'); ?>'; $('label_upload_extensions_list').update(label); $('label_upload_extensions_list').innerHTML;">
 									<option value="whitelist"<?php if (TBGSettings::getUploadsRestrictionMode() == 'whitelist'): ?> selected<?php endif; ?>><?php echo __('Use a whitelist (only allow the following of extensions)'); ?></option>
 									<option value="blacklist"<?php if (TBGSettings::getUploadsRestrictionMode() == 'blacklist'): ?> selected<?php endif; ?>><?php echo __('Use a blacklist (allow everything except the following extensions)'); ?></option>
 								</select>

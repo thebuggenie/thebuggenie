@@ -45,7 +45,7 @@
 						<?php echo image_tag('gravatar.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 						<?php echo link_tag('http://en.gravatar.com/emails/', __('Change my profile picture / avatar'), array('target' => '_blank')); ?>
 						<p class="faded_out" style="font-size: 11px; padding-top: 3px;">
-							<?php echo __('This will open up gravatar.com, which will let you change your avatar in The Bug Genie, and other webpages that uses Gravatar.'); ?>&nbsp;<?php echo link_tag('http://en.gravatar.com/', __('Read more ...')); ?>
+							<?php echo __('This will open up gravatar.com, which will let you change your avatar in The Bug Genie, and other webpages that uses Gravatar.'); ?>&nbsp;<?php echo link_tag('http://en.gravatar.com/', __('Read more ...'), array('target' => '_blank')); ?>
 						</p>
 					</div>
 					<div style="clear: both; margin-top: 3px;">

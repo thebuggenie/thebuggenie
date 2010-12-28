@@ -5,7 +5,7 @@
 	<div class="backdrop_detail_content" id="backdrop_detail_content">
 		<div style="padding: 5px;">
 			<div class="header">
-				<?php echo __('Importing %type%', array('%type%' => $type)); ?>
+				<?php echo __('Importing %type%', array('%type%' => __($type))); ?>
 			</div>
 			<p><?php echo __('Please paste your CSV file into the box below and press Import to import your data. By default a dry-run will be used so any errors in your data can be found and fixed before importing proper. To turn off the dry-run mode, uncheck the box below.'); ?></p>
 			<?php if ($type == 'issues'): ?>

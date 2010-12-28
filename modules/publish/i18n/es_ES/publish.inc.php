@@ -68,7 +68,7 @@
 	$strings['Project help / Help'] = 'Project help / Help';
 	$strings['Project wiki / Wiki'] = 'Project wiki / Wiki';
 	$strings['Show "Wiki" links'] = 'Show "Wiki" links';
-	$strings['Setting this to "%yes%" will hide all "Wiki" tabs and links'] = 'Setting this to "%yes%" will hide all "Wiki" tabs and links';
+	$strings['Setting this to "%no%" will hide all "Wiki" tabs and links'] = 'Setting this to "%no%" will hide all "Wiki" tabs and links';
 	$strings['Project wiki'] = 'Project wiki';
 	$strings['Currently selected project'] = 'Currently selected project';
 	$strings['Project wiki frontpage'] = 'Project wiki frontpage';

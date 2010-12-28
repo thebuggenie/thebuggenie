@@ -245,7 +245,7 @@
 			return false;
 		}
 
-		public function __($text, $replacements = array())
+		public function __($text, $replacements = array(), $html_decode = false)
 		{
 			if (isset($this->_strings[$text]))
 			{
@@ -265,6 +265,9 @@
         			$tmp[$key] = $value;
     				$retstring = str_replace(array_keys($tmp), array_values($tmp), $retstring);
 				}
+			}
+			if ($html_decode) {
+				$retstring = utf8_encode(html_entity_decode($retstring));
 			}
 			return $retstring;
 		}

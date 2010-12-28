@@ -1,6 +1,6 @@
 <?php 
 
-	$tbg_response->setTitle('Dashboard');
+	$tbg_response->setTitle(__('Dashboard'));
 	$tbg_response->addBreadcrumb(link_tag(make_url('dashboard'), __('Personal dashboard')));
 	//$tbg_response->addBreadcrumb(javascript_link_tag(image_tag('cfg_icon_wizard.png'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config'))."');")));
 	$tbg_response->addJavascript('dashboard.js');
@@ -21,15 +21,19 @@
 		</td>
 		<td class="main_area">
 			<?php TBGEvent::createNew('core', 'dashboard_main_top')->trigger(); ?>
-			<ul id="dashboard">
-				<?php $clearleft = true; ?>
-				<?php foreach($dashboardViews as $view): ?>
-				<li style="clear: <?php echo ($clearleft) ? 'left' : 'right'; ?>;">
-					<?php include_component('dashboardview', array('type' => $view->get(TBGUserDashboardViewsTable::TYPE), 'id' => $view->get(TBGUserDashboardViewsTable::ID), 'view' => $view->get(TBGUserDashboardViewsTable::VIEW), 'rss' => true)); ?>
-				</li>
-				<?php $clearleft = !$clearleft; ?>
-				<?php endforeach; ?>
-			</ul>
+			<?php if (empty($dashboardViews)) :?>
+				<p class="content faded_out"><?php echo __('This dashboard doesn\'t contain any view. To add views in this dashboard, press the icon in the top right'); ?>.</p>
+			<?php else: ?>
+				<ul id="dashboard">
+					<?php $clearleft = true; ?>
+					<?php foreach($dashboardViews as $view): ?>
+					<li style="clear: <?php echo ($clearleft) ? 'left' : 'right'; ?>;">
+						<?php include_component('dashboardview', array('type' => $view->get(TBGUserDashboardViewsTable::TYPE), 'id' => $view->get(TBGUserDashboardViewsTable::ID), 'view' => $view->get(TBGUserDashboardViewsTable::VIEW), 'rss' => true)); ?>
+					</li>
+					<?php $clearleft = !$clearleft; ?>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
 			<?php TBGEvent::createNew('core', 'dashboard_main_bottom')->trigger(); ?>
 		</td>
 		<td id="dashboard_righthand" class="side_bar">

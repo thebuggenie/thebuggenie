@@ -413,8 +413,8 @@
 			$this->getResponse()->setDecoration(TBGResponse::DECORATE_NONE);
 			$datasets = array();
 			$issues = $this->selected_project->getLast30Counts();
-			$datasets[] = array('values' => $issues['open'], 'label' => TBGContext::getI18n()->__('Open issues'));
-			$datasets[] = array('values' => $issues['closed'], 'label' => TBGContext::getI18n()->__('Issues closed'));
+			$datasets[] = array('values' => $issues['open'], 'label' => TBGContext::getI18n()->__('Open issues'), array(), true);
+			$datasets[] = array('values' => $issues['closed'], 'label' => TBGContext::getI18n()->__('Issues closed'), array(), true);
 			$this->datasets = $datasets;
 			$this->labels = array(30,'','','','',25,'','','','',20,'','','','',15,'','','','',10,'','','','',5,'','','','',0);
 		}
@@ -517,12 +517,12 @@
 								$item = TBGContext::factory()->TBGReproducability($item_id);
 								break;
 							case 'issues_per_state':
-								$item = ($item_id == TBGIssue::STATE_OPEN) ? $i18n->__('Open') : $i18n->__('Closed');
+								$item = ($item_id == TBGIssue::STATE_OPEN) ? $i18n->__('Open', array(), true) : $i18n->__('Closed', array(), true);
 								break;
 						}
 						if ($this->key != 'issues_per_state')
 						{
-							$labels[] = ($item instanceof TBGIdentifiableClass) ? $item->getName() : $i18n->__('Unknown');
+							$labels[] = ($item instanceof TBGIdentifiableClass) ? html_entity_decode($item->getName()) : $i18n->__('Unknown', array(), true);
 						}
 						else
 						{
@@ -531,7 +531,7 @@
 					}
 					else
 					{
-						$labels[] = $i18n->__('Not determined');
+						$labels[] = $i18n->__('Not determined', array(), true);
 					}
 					$values[] = $value;
 				}
@@ -647,6 +647,7 @@
 				default:
 					throw new Exception(__("unknown key '%key%'", array('%key%' => $this->key)));
 			}
+			$this->title = html_entity_decode($this->title);
 			list ($values, $labels) = $this->_calculateImageDetails($counts);
 			$this->values = $values;
 			$this->labels = $labels;
