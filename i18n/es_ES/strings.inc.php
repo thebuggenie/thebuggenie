@@ -10,7 +10,7 @@
 	$strings['No such login'] = 'Sin acceso';
 	$strings['No such user'] = 'Usuario inexistente';
 	$strings['Become friends'] = 'Hacerse amigo';
-	$strings['Licensed under the MPL 1.1 only, read it at %link_to_MPL%'] = 'Licenciado bajo la licencia MPL 1.1 solamente, infórmese en %link_to_MPL%';
+	$strings['Licensed under the MPL 1.1 only, read it at %link_to_MPL%'] = 'Licenciado solo bajo la licencia MPL 1.1, infórmese en %link_to_MPL%';
 	$strings['Frontpage'] = 'Portada';
 	$strings['Report an issue'] = 'Informar un problema';
 	$strings['Continue reporting'] = 'Continuar informando';
@@ -156,7 +156,7 @@
 	$strings['%num_milliseconds% ms'] = '%num_milliseconds% ms';
 	$strings['Page load time: %load_time%, with %num_queries% queries. Scope ID: %scope_id%.'] = 'Página cargada en: %load_time%, con %num_queries% consultas. Scope ID: %scope_id%.';
 	$strings['Issues reported by me'] = 'Problemas informados por mi';
-	$strings['Download feed'] = 'Descargar feed';
+	$strings['Download feed'] = 'Suscribirse al canal';
 	$strings['No issues are assigned to any of your teams'] = 'No hay problemas asignados a ninguno de sus equipos';
 	$strings['Issues with pending changes'] = 'Problemas con cambios pendientes';
 	$strings['You have no issues with unsaved changes'] = 'No tiene problemas con cambios sin guardar';
@@ -177,7 +177,7 @@
 	$strings['Please select a project from this list'] = 'Por favor seleccione un proyecto de la lista';
 	$strings['Select issue type'] = 'Seleccione el tipo de problema';
 	$strings['Please select an issue type from this list'] = 'Por favor seleccione un tipo de problema desde esta lista';
-	$strings['Choose %issue_type%'] = 'Es un/a %issue_type%';
+	$strings['Choose %issue_type%'] = 'Es %issue_type%';
 	$strings['More options will appear here as soon as you select a project and an issue type above'] = 'Más opciones aparecerán aquí luego que seleccione un proyecto y el tipo de problema';
 	$strings['Short summary'] = 'Breve resumen';
 	$strings['Checking fields, please wait'] = 'Verificando campos, espere por favor';
@@ -198,18 +198,18 @@
 	$strings['Enter time spent on this issue here. Use keywords such as "points", "hours", "days", "weeks" and "months" to describe your estimate'] = 'Ingrese el tiempo consumido en este problema. Utilice las palabras claves "points", "hours", "days", "weeks" y "months" para describir la estimación';
 	$strings['Pct. completed'] = '% completado';
 	$strings['Triaging: Bug type'] = 'Triaje: Tipo de error';
-	$strings['Crash: Bug causes crash or data loss / asserts in the debug release'] = 'Crash: El error causa un fallo o pérdida de datos / confirmar en la liberación de depuración';
+	$strings['Crash: Bug causes crash or data loss / asserts in the debug release'] = 'Accidente: El error causa un fallo o pérdida de datos / confirma en la liberación de depuración';
 	$strings['Major usability: Impairs usability in key scenarios'] = 'Usabilidad Mayor: La facilidad de uso no es la adecuada en los escenarios claves';
 	$strings['Minor usability: Impairs usability in secondary scenarios'] = 'Usabilidad Menor: La facilidad de uso no es buena en los escenarios secundarios';
 	$strings['Balancing: Enables degenerate usage strategies that harm the experience'] = 'Equilibrio: Permite usos inadecuados que dañan la experiencia';
-	$strings['Visual and Sound Polish: Aesthetic issues'] = 'Visual y Parece Chino: Cuestiones estéticas';
-	$strings['Localization'] = 'Localización';
+	$strings['Visual and Sound Polish: Aesthetic issues'] = 'Parece Chino: Cuestiones estéticas';
+	$strings['Localization'] = 'Regionalización';
 	$strings['Documentation: A documentation issue'] = 'Documentación: problema en la documentación';
-	$strings['Blocking further progress on the daily build'] = 'Bloque el avance en la construcción diaria';
+	$strings['Blocking further progress on the daily build'] = 'Bloquea el avance en la construcción diaria';
 	$strings['A User would return the product / cannot RTM / the team would hold the release for this bug'] = 'Un usuario puede devolver el producto / no se puede RTM / el equipo tiene que mantener la liberación para este error';
 	$strings['A User would likely not purchase the product / will show up in review / clearly a noticeable issue'] = 'Un usuario no puede comprar el producto / se mostrará en la revisión / claramente es un problema notable';
-	$strings['A Pain â€“ users won\'t like this once they notice it / a moderate number of users won\'t buy'] = 'A Pain – users won\'t like this once they notice it / a moderate number of users won\'t buy';
-	$strings['Nuisance â€“ not a big deal but noticeable / extremely unlikely to affect sales'] = 'Nuisance – not a big deal but noticeable / extremely unlikely to affect sales';
+	$strings['A Pain â€“ users won\'t like this once they notice it / a moderate number of users won\'t buy'] = 'Pena – A los usuarios no les gusta esto / una cantidad moderada de usuarios puede no comprar';
+	$strings['Nuisance â€“ not a big deal but noticeable / extremely unlikely to affect sales'] = 'Molestia – no es un gran problema pero se nota / muy poco probable que afecte las ventas';
 	$strings['Will affect all users'] = 'Afectará a todos los usuarios';
 	$strings['Will affect most users'] = 'Afectará a la mayoría de los usuarios';
 	$strings['Will affect average number of users'] = 'Afectará un número medio de usuarios';
@@ -334,7 +334,7 @@
 	$strings['Click here to edit this field'] = 'Haga clic aquí para editar este campo';
 	$strings['Comments (%count%)'] = 'Comentarios (%count%)';
 	$strings['Attached information (%count%)'] = 'Información adjunta (%count%)';
-	$strings['Related issues and tasks'] = 'Problemas relacionados y tareas';
+	$strings['Related issues and tasks'] = 'Problemas y tareas relacionadas';
 	$strings['Duplicate issues (%count%)'] = 'Problemas duplicados (%count%)';
 	$strings['Add new comment'] = 'Agregar un comentario nuevo';
 	$strings['Create a comment'] = 'Crear un comentario';
@@ -413,7 +413,7 @@
 	$strings['Show a list of all issues I\'ve reported'] = 'Mostrar una lista de todos los problemas que informé';
 	$strings['Profile information'] = 'Información del perfil';
 	$strings['Edit your profile details here, including additional information.'] = 'Aquí, edite su perfil, incluyendo información adicional.';
-	$strings['Required fields are marked with a little star.'] = 'Los campos obligatorios están marcados con una estrellita.';
+	$strings['Required fields are marked with a little star.'] = 'Los campos obligatorios están marcados con una asterisco.';
 	$strings['"Friendly" name / nickname'] = 'nombre "Descriptivo" / apodo';
 	$strings['This is the name used across the site for your profile.'] = 'Este es el nombre que se usa en todo el sitio para su perfil.';
 	$strings['Full name'] = 'Nombre completo';
@@ -425,7 +425,7 @@
 	$strings['Click "%save%" to save your account information'] = 'Haga clic "%save%" para guardar su información';
 	$strings['Use Gravatar avatar'] = 'Utilizar avatar de Gravatar';
 	$strings['The Bug Genie can use your <a href="http://www.gravatar.com" target="_blank">Gravatar</a> profile picture, if you have one. If you don\'t have one but still want to use Gravatar for profile pictures, The Bug Genie will use a Gravatar <a href="http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/" target="_blank">auto-generated image unique for your email address</a>.'] = 'The Bug Genie puede usar su imagen de perfil de <a href="http://www.gravatar.com" target="_blank">Gravatar</a>, si posee una. Si no tiene pero aún quiere usar imágenes de perfil de Gravatar, The Bug Genie utilizará una <a href="http://blog.gravatar.com/2008/04/22/identicons-monsterids-and-wavatars-oh-my/" target="_blank"> imagen única autogenerada de su dirección de correo</a>.';
-	$strings['Get one now!'] = 'Obtener una ya!';
+	$strings['Get one now!'] = 'Obtenga uno ya!';
 	$strings['Don\'t have a Gravatar yet? %link_to_get_one_now%'] = 'Aún no posee un Gravatar? %link_to_get_one_now%';
 	$strings['Current timezone'] = 'Huso horario actual';
 	$strings['This setting is used to display issues, comments and more in your local timezone.'] = 'Esta configuración es usada para mostrar problemas, comentarios y más en su huso horario.';
@@ -689,7 +689,7 @@
 	$strings['Yes, behave as tracker for a single project'] = 'Sí, se comporta como un seguimiento de proyecto único';
 	$strings['No, use regular index page'] = 'No, utilice la página de inicio común';
 	$strings['In single project tracker mode, The Bug Genie will display the homepage for the first project as the main page instead of the regular index page'] = 'En el modo de seguimiento de proyecto único, The Bug Genie mostrará la página inicial para el primer proyecto en lugar de la página de inicio común';
-	$strings['More than one project exists. When in "single project" mode, accessing other projects than the first will become harder.'] = 'Existe más de un proyecto. Cuando está en modo "proyecto único", al acceder a otros proyectos que no sea el primero, será más difícil.';
+	$strings['More than one project exists. When in "single project" mode, accessing other projects than the first will become harder.'] = 'Existe más de un proyecto. Cuando está en modo "proyecto único", acceder a otros proyectos que no sean el primero, será más difícil.';
 	$strings['The selected theme used. Depending on other settings, users might be able to use another theme for their account.'] = 'El tema seleccionado usado. Dependiendo de la configuración, los usuarios pueden usar otros temas en sus cuentas.';
 	$strings['To keep the comment trail clean in issues, you can select not to post system comments when an issue is updated.'] = 'Para mantener el hilo de los comentarios claros en los problemas, puede seleccionar que no se publiquen comentarios del sistema cuando un problema es actualizado.';
 	$strings['The issue log will always be updated regardless of this setting.'] = 'El registro de problema siempre estará actualizado independientemente de este ajuste.';
@@ -839,7 +839,7 @@
 	$strings['Delete this user group'] = 'Borrar este grupo de usuarios';
 	$strings['Clone this user group'] = 'Copiar este grupo de usuarios';
 	$strings['List users in this group'] = 'Listar usuarios de este grupo';
-	$strings['%number_of% member(s)'] = '%number_of% miembros(s)';
+	$strings['%number_of% member(s)'] = '%number_of% miembro(s)';
 	$strings['Please specify what parts of this group you want to clone'] = 'Por favor defina que partes de este grupo quiere copiar';
 	$strings['New group name'] = 'Nuevo nombre de grupo';
 	$strings['Clone permissions from the old group for the new group'] = 'Copiar permisos del viejo grupo al nuevo';
@@ -868,7 +868,7 @@
 	$strings['This is a list of all modules that are installed on this system'] = 'Esta es una lista de todos los módulos que están instalados en este sistema';
 	$strings['Configure module'] = 'Configurar módulo';
 	$strings['Edit permissions'] = 'Editar permisos';
-	$strings['Disable module'] = 'Deshablitar módulo';
+	$strings['Disable module'] = 'Inhabilitar módulo';
 	$strings['Uninstall module'] = 'Desinstalar módulo';
 	$strings['Really disable "%module_name%"?'] = '¿Realmente inhabilita "%module_name%"?';
 	$strings['Disabling this module will prevent users from accessing it or any associated data.'] = 'Inhabilitando este módulo evitará que los usuarios accedan a él o a cualquier dato asociado.';
@@ -1096,7 +1096,7 @@
 	$strings['Open issues for %project_name%'] = 'Problemas abiertos de %project_name%';
 	$strings['Closed issues for %project_name%'] = 'Problemas cerrados de %project_name%';
 	$strings['Milestone todo-list for %project_name%'] = 'Lista de pendientes para el Punto de control de %project_name%';
-	$strings['Open issues assigned to me'] = 'Problemas abiertos asignados a mí';
+	$strings['Open issues assigned to me'] = 'Problemas abiertos que tengo asignados';
 	$strings['Open issues assigned to my teams'] = 'Problemas abiertos asignados a mis equipos';
 	$strings['Predefined searches'] = 'Búsquedas predefinidas';
 	$strings['Open issues for this project'] = 'Problemas abiertos para este proyecto';
@@ -1106,7 +1106,7 @@
 	$strings['You don\'t have any saved searches for this project'] = 'No posee ninguna búsqueda guardada para este proyecto';
 	$strings['Public saved searches for this project'] = 'Búsquedas públicas guardadas para este proyecto';
 	$strings['Issues containing'] = 'Problemas que contengan';
-	$strings['Issues not containing'] = 'Problemas que no contengan';
+	$strings['Issues not containing'] = 'Problemas que no incluyan';
 	$strings['Leave this input field blank to list all issues based on filters below'] = 'Deje este campo en blanco para listar todos los problemas utilizando el filtro de abajo';
 	$strings['Display results as'] = 'Mostrar resultados como';
 	$strings['Template parameter'] = 'Parámetros de plantilla';
@@ -1149,7 +1149,7 @@
 	$strings['Click this message to dismiss it'] = 'Haga clic en este mensaje para descartarlo';
 	$strings['You are not logged in'] = 'No ha ingresado';
 	$strings['No project selected'] = 'No hay proyecto seleccionado';
-	$strings['%thebuggenie%, <b>friendly</b> issue tracking since 2002'] = '%thebuggenie%, Seguimiento de problemas <b>amigable</b> desde 2002';
+	$strings['%thebuggenie%, <b>friendly</b> issue tracking since 2002'] = '%thebuggenie%, Seguimiento de problemas <b>amistoso</b> desde 2002';
 	$strings['Only using The Bug Genie to track issues for one project?'] = '¿Sólo usa The Bug Genie para seguimiento de problemas de un proyecto?';
 	$strings['Configure &ndash;&gt; Settings'] = 'Configurar &ndash;&gt; Opciones';
 	$strings['It looks likes you\'re only using The Bug Genie to track issues for one project. If you don\'t want to use this homepage, you can set The Bug Genie to <i>single project tracker mode</i>, which will automatically forward the frontpage to the project overview page.<br><br><i>Single project tracker mode</i> can be enabled from %configure_settings%.'] = 'Parece que sólo usa The Bug Genie para seguir problemas de un proyecto. Si no quiere utilizar esta página de inicio, puede establecer a The Bug Genie en <i>modo de seguimiento de proyecto único</i>, lo cual llevará automáticamente al resumen del proyecto.<br><br><i>El modo de seguimiento de proyecto único</i> puede ser habilitado desde %configure_settings%.';
@@ -1322,10 +1322,10 @@
 	$strings['Please provide a valid action for this issue type'] = 'Por favor asigne una acción válida para este tipo de problema';
 	$strings['The option was added'] = 'La opción fue agregada';
 	$strings['Please provide a valid name'] = 'Por favor asigne un nombre válido';
-	$strings['The option was updated'] = 'La opción fue acttualizada';
-	$strings['Please provide a valid id'] = 'Por favor asigne un id válido';
+	$strings['The option was updated'] = 'La opción fue actualizada';
+	$strings['Please provide a valid id'] = 'Por favor asigne un identificador válido';
 	$strings['The option was deleted'] = 'La opción fue borrada';
-	$strings['Invalid id or type'] = 'Tipo o id no válido';
+	$strings['Invalid id or type'] = 'Tipo o identificador no válido';
 	$strings['The custom field was added'] = 'El campo personalizado fue agregado';
 	$strings['You need to provide a unique custom field name (key already exists)'] = 'Es necesario asignar un nombre único al campo personalizado (ese nombre ya existe)';
 	$strings['The custom field was updated'] = 'El campo personalizado fue actualizado';
@@ -1463,8 +1463,8 @@
 	$strings['Vote added'] = 'Voto agregado';
 	$strings['Targetted for'] = 'Previsto para';
 	$strings['Version %thebuggenie_version%'] = 'Versión %thebuggenie_version%';
-	$strings['The Bug Genie is an issue tracking system with a strong focus on being friendly &ndash; both for regular users and power users'] = 'The Bug Genie es un sisteme de seguimiento de problemas con un fuerte enfoque en ser amistoso &ndash; tanto usuarios comunes como exigentes';
-	$strings['The Bug Genie follows an open development model, and is released under an open source software license called the MPL (Mozilla Public License). This license gives you the freedom to pick up the sourcecode for The Bug Genie and work with it any way you need.'] = 'The Bug Genie estña bajo el modelo de desarrollo abierto, y es liberado bajo la licencia de software abierto llamada MPL (Mozilla Public License). Esta licencia le da la libertad de elegir el código fuente de The Bug Genie y trabajar con él de acuerdo a sus necesidades.';
+	$strings['The Bug Genie is an issue tracking system with a strong focus on being friendly &ndash; both for regular users and power users'] = 'The Bug Genie es un sistema de seguimiento de problemas con un fuerte enfoque en la simplicidad &ndash; tanto para usuarios comunes como exigentes';
+	$strings['The Bug Genie follows an open development model, and is released under an open source software license called the MPL (Mozilla Public License). This license gives you the freedom to pick up the sourcecode for The Bug Genie and work with it any way you need.'] = 'The Bug Genie está bajo el modelo de desarrollo abierto, y es liberado bajo la licencia de software abierto llamada MPL (Mozilla Public License). Esta licencia le da la libertad de elegir el código fuente de The Bug Genie y trabajar con él de acuerdo a sus necesidades.';
 	$strings['Extend, develop and change The Bug Genie in any way you want, and do whatever you want with the new piece of software (The only thing you cannot do is call your software The Bug Genie). Please do send us your modifications for inclusion in The Bug Genie.'] = 'Amplíe, desarrolle y modifique The Bug Genie de la manera que quiera, y haga lo que desee con la nueva pieza de software (Lo único que no puede hacer es llamar a su software The Bug Genie). Por favor envíenos sus modificaciones para incluirlas en The Bug Genie.';
 	$strings['Enjoy using The Bug Genie!'] = 'Disfrute utilizando The Bug Genie!';
 	$strings['The Bug Genie uses icons from the %link_to_iconset%'] = 'The Bug Genie utiliza íconos de %link_to_iconset%';
@@ -1488,3 +1488,251 @@
 	$strings['You have specified an issue that can\'t be shown'] = 'Ha especificado un problema que no puede mostrarse';
 	$strings['This could be because you the issue doesn\'t exist, has been deleted or you don\'t have permission to see it'] = 'Esto puede ser porque el problema no existe, ha sido borrado o no tiene permisos para verlos';
   $strings['Register new account'] = 'Registrar nueva cuenta';
+
+// Missing strings from en_US but use i18n   
+        $strings['Oh noes! There are no projects!'] = 'Oh no! No hay proyectos!'; 
+        $strings['It doesn\'t look like you have had the chance to add any projects yet. If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can import some sample data before adding your own projects.'] = 'Parece que no ha tenido la oportunidad de agregar ningun proyecto. Si quiere jugar un poco con The Bug Genie antes de comenzar con sus propios proyectos, puede imporat algunso datos de ejemplo antes de comenzar con sus proyectos.'; 
+        $strings['Configure –> Import'] = 'Configurar –> Importar'; 
+        $strings['Sample data can be imported from %configure_import%.'] = 'Datos de ejemplos pueden set importados desde %configure_import%.'; 
+        $strings['VCS Integration'] = 'Integración VCS'; 
+        $strings['Allows details from source code checkins to be displayed in The Bug Genie'] = 'Permite detalles del código fuente copnfirmado que sean mostrados en The Bug Genie'; 
+        $strings['Configure repository settings for source code integration'] = 'Configurar opciones del repositorio para la integración del código fuente'; 
+        $strings['Wiki'] = 'Wiki'; 
+        $strings['Enables Wiki-functionality'] = 'Habilita funcionalidad Wiki'; 
+        $strings['Set up the Wiki module from this section'] = 'Configure el módulo wiki desde esta sección'; 
+        $strings['Choose %issuetype%'] = 'Elija %issuetype%'; 
+        $strings['A Pain – users won\'t like this once they notice it / a moderate number of users won\'t buy'] = 'Pena – A los usuarios no les gusta esto / una cantidad moderada de usuarios puede no comprar'; 
+        $strings['Nuisance – not a big deal but noticeable / extremely unlikely to affect sales'] = 'Molestia – no es un gran problema pero se nota / muy poco probable que afecte las ventas'; 
+        $strings['Summary'] = 'Resumen'; 
+        $strings['Sprint planning'] = 'Planeamiento del Sprint'; 
+        $strings['Team overview'] = 'Resumen del Equipo'; 
+        $strings['Project wiki'] = 'Wiki del proyecto'; 
+        $strings['Currently selected project'] = 'Proyecto seleccionado'; 
+        $strings['Project wiki frontpage'] = 'Portada wiki del proyecto'; 
+        $strings['Global content'] = 'Contenido global'; 
+        $strings['You are: %userstate%'] = 'Está: %userstate%'; 
+        $strings['Your dashboard'] = 'Su panel de control';      
+        
+        $strings['Personal dashboard'] = 'Panel Personal'; 
+        $strings['This is your personal dashboard'] = 'Este es su panel personal'; 
+        $strings['Your dashboard can be configured and personalized. To configure what views to show on this dashboard, click the "Customize dashboard"-icon to the far right, below this box.'] = 'Su panel de control puede ser configurado y personalizado. Para definir que vistas mostrar en este panel, haga clic en el icono "Personalizar Panel de control" para hacerlo, debajo de este bloque.'; 
+        $strings['Your dashboard page is accessible from anywhere - click your username in the top right header area at any time to access your dashboard.'] = 'Su página de panel de control es accesible desde cualquier posición - haga clic en su nombre de usuario, en la cabecera arriba a la derecha en cualquier momento para acceder a su panel.'; 
+        $strings['No issues in this list'] = 'No hay problemas en esta lista'; 
+        $strings['Target milestone changed: %text%'] = 'Punto de control cambiado: %text%'; 
+        $strings['Customize your dashboard'] = 'Personalizar el panel'; 
+        $strings['Project wikis'] = 'Wikis de proyectos'; 
+        $strings['There are no public saved searches'] = 'No hay búsquedas públicas registradas'; 
+        $strings['View documentation'] = 'Ver documentación'; 
+        $strings['Owned by'] = 'Propiedad de'; 
+        $strings['Show user details'] = 'Mostrar detalles del usuario'; 
+        $strings['noone'] = 'ninguno'; 
+        $strings['No client assigned'] = 'Sin clientes asignados'; 
+        $strings['No feature requests posted yet'] = 'No hay funcionalidades solicitadas aún'; 
+        $strings['Assignee changed: %text%'] = 'Asignación cambiada: %text%'; 
+        $strings['Percent completed: %text%'] = 'Porcentaje completado: %text%'; 
+        $strings['Recent comments'] = 'Comentarios recientes'; 
+        
+        $strings['Project roadmap'] = 'Hoja de ruta del proyecto'; 
+        $strings['In progress'] = 'En curso'; 
+        $strings['%num_closed% stories (%closed_points% pts) closed of %num_assigned% (%assigned_points% pts) assigned'] = '%num_closed% historias (%closed_points% pts) cerradas de %num_assigned% (%assigned_points% pts) asignadas'; 
+        $strings['Show issues'] = 'Mostrar problemas'; 
+        $strings['Update (regenerate) milestone details'] = 'Actualizar (regenerar) detalles del punto de control'; 
+        $strings['Milestone details have changed. To see the updated list of issues, click the "Show issues" icon'] = 'Los detalles del punto de control han cambiado. Para ver la lista de problemas actualizada, haga clic en el icono "Mostrar problemas"'; 
+        $strings['Ok'] = 'Ok'; 
+        $strings['%pts% points'] = '%pts% puntos'; 
+        $strings['Project team'] = 'Equipo del proyecto'; 
+        $strings['Project statistics'] = 'Estadísticas del proyecto'; 
+        $strings['Project timeline'] = 'Línea de tiempo del proyecto'; 
+        $strings['%num_closed% story (%closed_points% pts) closed of %num_assigned% (%assigned_points% pts) assigned'] = '%num_closed% historias (%closed_points% pts) cerradas de %num_assigned% (%assigned_points% pts) asignadas';         
+        $strings['To edit any of the details in this issue, move your mouse over that detail and press the icon that appears. Changes you make will stay unsaved until you either press the "Guardar" button that appears when you change the issue, or until you log out (the changes are then lost).'] = 'Para editar alguno de los detalles de este problema, mueva el mouse sobre el detalle y presione el icono que aparece. Los cambios permanecerán sin guardar hasta que presione el botón "Guardar" que aparece cuando cambia un problema, o hasta que salga (En este caso los cambios se perderán).'; 
+        $strings['%issuetype% %issue_no%'] = '%issuetype% %issue_no%'; 
+        $strings['Your friends will appear here'] = 'Sus amigos aparecerán aquí'; 
+        $strings['Affected items (%count%)'] = 'Items afectados (%count%)'; 
+        $strings['Comment posted by %user%'] = 'Comentario publicado por %user%'; 
+        $strings['This task must be closed before the issue relation is solved'] = 'Esta tarea debe ser cerrada antes que el problema relacionado sea resuelto'; 
+        $strings['Add an item'] = 'Agregar un ítem'; 
+        
+        $strings['Wiki menu'] = 'Menú Wiki'; 
+        $strings['Links to this article'] = 'Enlaces a este artículo'; 
+        $strings['No other articles links to this article'] = 'Sin otros enlaces a este artículo'; 
+        $strings['Show'] = 'Mostrar'; 
+        $strings['History'] = 'Historia'; 
+        $strings['Last updated at %time%, by %user%'] = 'Ultima actualización %time%, por %user%'; 
+        $strings['Categories:'] = 'Categorías:'; 
+        $strings['Edit this article'] = 'Editar este artículo'; 
+        $strings['Delete this article'] = 'Borrar este artículo'; 
+        $strings['Really delete this article?'] = '¿Realmente borra este artículo?'; 
+        $strings['Deleting this article will remove it from the system.'] = 'Borrar este artículo lo quitará del sistema.'; 
+        $strings['Editing %article_name%'] = 'Editando %article_name%'; 
+        $strings['%article_name% ~ Edit'] = '%article_name% ~ Editar'; 
+        $strings['This is the name you use when you link to this article'] = 'Este es el nombre que usará cuando haga un vínculo a este artículo'; 
+        $strings['Article content'] = 'Contenido del artículo'; 
+        $strings['For help and tips on how to format your article, see %wiki_formatting%'] = 'Para ayuda y consejos sobre como dar formato a su artículo, vea %wiki_formatting%'; 
+        $strings['Change reason'] = 'Motivo del cambio'; 
+        $strings['Enter a short reason summarizing your changes (max. 255 characters)'] = 'Ingrese un breve resumen justificando los cambios (max. 255 caracteres)'; 
+        $strings['Preview changes'] = 'Vista previa de los cambios'; 
+        
+        $strings['%article_name% history'] = '%article_name% historia'; 
+        $strings['%article_name% ~ History'] = '%article_name% ~ Historia'; 
+        $strings['Updated'] = 'Actualizado'; 
+        $strings['Author'] = 'Autor';
+        $strings['Recently edited pages'] = 'Páginas editadas recientemente'; 
+        $strings['Show wiki'] = 'Mostrar wiki'; 
+        $strings['Front page article'] = 'Artículo de portada'; 
+        $strings['Create this article'] = 'Crear este artículo'; 
+        $strings['This is a placeholder for an article that has not been created yet. You can create it by clicking %create_this_article% below.'] = 'Esta es la unicación para el un artículo que no ha sido creado aún. Puede crearlo haciedo clic en %create_this_article%.';
+        $strings['Create article'] = 'Crear artículo'; 
+        $strings['Preview article'] = 'Vista previa del artículo';         
+        $strings['You have to provide a reason for the changes'] = 'Tiene que dar un motivo para los cambios'; 
+        $strings['This is a preview of the article'] = 'Esta es una vista previa del artículo'; 
+        $strings['The article has not been saved yet'] = 'El artículo no ha sido guardado aún'; 
+        $strings['Continue editing'] = 'Continuar editando';         
+        $strings['System'] = 'Sistema';
+        $strings['Initital import'] = 'Importación inicial';
+        $strings['This article is not in any categories'] = 'Este artículo no está en ninguna categoría'; 
+        $strings['%article_name% permissions'] = 'permisos %article_name%'; 
+        $strings['%article_name% ~ Permissions'] = '%article_name% ~ Permisos'; 
+        $strings['Specify permissions for the article %article_name%'] = 'Especificar los permisos para el artículo %article_name%'; 
+        $strings['Select this option to specify permissions for this article.'] = 'Seleccione esta opción para definir los permisos para este artículo.'; 
+        $strings['Edit write permissions'] = 'Editar permisos de escritura'; 
+        $strings['Edit delete permissions'] = 'Editar permisos para borrar'; 
+        $strings['Specify permissions for entire wiki'] = 'Definir permisos globales para wiki'; 
+        $strings['Select this option to specify permissions for the entire wiki.'] = 'Seleccione esta opción para definir los permisos para todo wiki.';        
+
+        $strings['Basic information'] = 'Información básica'; 
+        $strings['This is the basic settings for the wiki'] = 'Esta es la configuración básica para la wiki'; 
+        $strings['Menu title'] = 'Título del menú'; 
+        $strings['Project archive / Archive'] = 'Archivo del proyecto / Archivo'; 
+        $strings['Project documentation / Documentation'] = 'Documentación del Proyecto / Documentación'; 
+        $strings['Project documents / Documents'] = 'Documentos del proyecto / Documentos'; 
+        $strings['Project help / Help'] = 'Ayuda del proyecto / Ayuda'; 
+        $strings['Project wiki / Wiki'] = 'Wiki del proyecto / Wiki'; 
+        $strings['Specify here if you want to show a different menu title than "Wiki" in the header menu'] = 'Defina aqui si quiere mostrar un título de menú distinto a "Wiki" en la cabecera del menú'; 
+        $strings['Allow "CamelCased" links'] = 'Permitir enlaces "CamelCased"'; 
+        $strings['CamelCasing'] = 'CamelCasing'; 
+        $strings['Traditionally, %CamelCasing% has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting% wiki article if you are unsure how to use this feature.'] = 'Tradicionalmente, %CamelCasing% ha sido utilizado para crear enlaces entre documentos en la Wiki. Si quiere mantenerlo, hágalo aquí. Asegúrese de haber leido el artículo %wikiformatting% si no está seguro de esta característica.'; 
+        $strings['Show "Wiki" links'] = 'Mostrar enlaces "Wiki"'; 
+        $strings['Setting this to "%yes%" will hide all "Wiki" tabs and links'] = 'Poniendo esto en "%yes%" ocultará todas las pestañas y enlaces "Wiki"';
+        $strings['Wiki permissions'] = 'Permisos Wiki'; 
+        $strings['Open for everyone with access to add / remove content'] = 'Permitir a cada uno con acceso a agregar / quitar contenido';
+        $strings['Only registered users can add / remove content'] = 'Solo los usuarios registrados puede agregar / quitar contenido';
+        $strings['Set wiki permissions manually'] = 'Establecer manualmente los permisos de wiki'; 
+        $strings['Specify how you want to control access to wiki editing functionality'] = 'Defina como quiere controlar el acceso a la edición de la funcionalidad wiki'; 
+        $strings['Click "%save%" to save wiki settings'] = 'Haga clic en "%save%" para guardar las opciones'; 
+        
+        $strings['Import data'] = 'Importar datos'; 
+        $strings['Import data from CSV files and other sources.'] = 'Importar datos desde archivos CSV y otras fuentes.'; 
+        $strings['Users, teams, clients & groups'] = 'Usuarios, equipos, clientes y grupos';
+        
+        $strings['Manage users, user groups, clients and user teams from this section.'] = 'Gestione usuarios, grupos de usuarios, clientes y equipos desde esta sección.'; 
+        $strings['Clients'] = 'Clientes'; 
+        $strings['Create a new client'] = 'Crear un nuevo cliente'; 
+        $strings['You can set other details, such as an email address or telephone number, after creating the client.'] = 'Puede establecer otros detalles, como la dirección de correo electrónico o número de teléfonos, luego de crear al cliente.'; 
+        $strings['Adding client, please wait'] = 'Agregando cliente, espere por favor'; 
+        
+        $strings['Current character set is %charset%'] = 'El conjunto de caracteres actual es %charset%'; 
+        $strings['What charset to use for the selected language - leave blank to use the charset specified in the language file'] = 'Que conjunto de caracteres va a utilizar para el idioma seleccionado - dejándolo en blanco se utilizara el definido en el archivo de idioma'; 
+        
+        $strings['Can see list of teams in header menu'] = 'Puede ver la lista de equipos en el menú superior'; 
+        $strings['Can see list of clients in header menu'] = 'Puede ver la lista de clientes en menú superior'; 
+        $strings['Can see that project exists'] = 'Puede ver si el proyecto existe'; 
+        $strings['Can see complete project hierarchy'] = 'Puede ver la jerarquía completa del proyecto'; 
+        $strings['Can see all editions'] = 'Puede ver todas las ediciones'; 
+        $strings['Can see all components'] = 'Puede ver todos los componentes'; 
+        $strings['Can see all release'] = 'Puede ver todas las liberaciones'; 
+        $strings['Can see all milestones'] = 'Puede ver todos los puntos de control'; 
+
+        $strings['CSV'] = 'CSV'; 
+        $strings['BUGS 1.x/The Bug Genie 2'] = 'BUGS 1.x/The Bug Genie 2'; 
+        $strings['Sample data'] = 'Datos de ejemplos'; 
+        $strings['import instructions'] = 'las instrucciones para importar'; 
+        $strings['You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %import instructions% wiki article for further details and instructions.'] = 'Puede importar datos desde un archivo CSV copiado en el casilla de tecto de The Bug Genie, exportado desde otras fuentes. Por favor vea %import instructions% del artículo en wiki para mayor detalle.'; 
+        $strings['What data would you like to import?'] = '¿Qué datos le gustaria importar?'; 
+        $strings['When you select a type, you will be given the opportunity to copy in your CSV file, and import the data.'] = 'Cuando selecciona un tipo, está dando la oportunidad para copiar su archivo CSV e importar los datos.';
+        $strings['You can import data from previous version of The Bug Genie into your version 3 installation.'] = 'Puede importar datos de versiones anteriores de The Bug Genie en su instalación de la versión 3.'; 
+        $strings['BUGS 1.x'] = 'BUGS 1.x'; 
+        $strings['Please upgrade to BUGS 1.9, followed by The Bug Genie 2 (an upgrade script is included in the installation package for The Bug Genie 2). After upgrading, then follow the instructions below to upgrade from The Bug Genie 2.'] = 'Por favor actualice a BUGS 1.9, seguido de The Bug Genie 2 (un script de actualización está incluido en el paquete de instalación de The Bug Genie 2). Luego de actualizar, siga las instrucciones que están a continuación para actualizar desde The Bug Genie 2.'; 
+        $strings['The Bug Genie 2'] = 'The Bug Genie 2'; 
+        $strings['Please upgrade to The Bug Genie 2.1 if you haven\'t already done so, then follow the instructions on The Bug Genie wiki to upgrade your data. There is not a built in upgrade script.'] = 'Por favor actuialice a The Bug Genie 2.1, si todavía no lo hizo, luego siga las instrucciones del wiki de The Bug Genie para actualizar sus datos. No hay un script de actualización disponible.'; 
+        $strings['Importing sample data'] = 'Importando datos de ejemplo'; 
+        $strings['The Bug Genie can load sample data for you, so you can play around without having to use your own data. Press the button below to import sample projects and issues.'] = 'The Bug Genie puede cargar datos de ejemplos por usted, entonces puede utilizarlos sin alterar los suyos. Presione el siguiente botón para importar los proyectos de ejemplo y sus problemas.';       
+        $strings['Import sample data'] = 'Importar datos de ejemplo';         
+        
+        $strings['Edit project permissions'] = 'Editar permisos del proyecto'; 
+        $strings['permissions configuration'] = 'configuración de permisos'; 
+        $strings['These permissions control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions in the %permissions_configuration% page.'] = 'Estos permisos controlan lo que se puede hacer, y a que páginas se pueden acceder en The Bug Genie - dentro de un proyecto específico. Algunos de estos permisos también están disponibles como permisos globales en la página %permissions_configuration%.';         
+        
+        $strings['Available issue types'] = 'Tipos de problemas disponibles'; 
+        $strings['Issue type schemes'] = 'Esquemas para tipos de problemas'; 
+        $strings['In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to ssociate it to an issue type scheme on the %issue_type_schemes% tab to get it to show up for users.'] = 'En esta pestaña puede agregar/quitar/editar que tipos de problemas están disponibles para cada esquema. Si agrega un nuevo tipo de problema en esta página, recuerde asociarlo a un esquema en la pestaña %issue_type_schemes% para que lo vean los usuarios.'; 
+        $strings['Show / edit issue type settings'] = 'Mostrar/ editar las opciones de los tipos de problemas';
+        $strings['Select what kind of issue type this is'] = 'Seleccione que tipo de problema es'; 
+        
+        $strings['In this tab you can add/remove/edit issue type schemes. If you add a new issue type on the previous tab, you must associate it with an issue type scheme in this tab to get it to show up for users.'] = 'En esta pestaña se puede agregar/quitar/editar esquemas de tipos de problemas. Si agregó un nuevo tipo de problema en la pestaña anterior, debe asociarlo con un esquema para que los usuarios lo vean.'; 
+        $strings['Keep in mind that the original issue type scheme is uneditable, so to make any changes, make a copy of the first issue type scheme, or edit one that is not the one shipped with The Bug Genie'] = 'Recuerde que el esquema original no es editable, por lo tanto para hacer cualquier cambio, haga una copia del primer esquema, o edite que no es distribuido con The Bug Genie'; 
+        $strings['In use by %number_of_associated_projects% project(s)'] = 'En uso por %number_of_associated_projects% proyecto(s)'; 
+        $strings['Create a copy of this issue type scheme'] = 'Crear una copia de este esquema de tipos de problema'; 
+        $strings['Copy issue type scheme'] = 'Copiar el esquema de tipos de problema'; 
+        $strings['Please enter the name of the new issue type scheme'] = 'Por favor ingrese el nombre del nuevo esquema de tipos de problema'; 
+        $strings['New name'] = 'Nuevo nombre'; 
+        $strings['Copy of %old_name%'] = 'Copiar de %old_name%'; 
+        
+        $strings['In this tab you can edit issue type associations for this issue type scheme. Enable/disable available issue types, and set options such as reportable issue types and reportable/visible/required issue details.'] = 'En esta pestaña puede editar la asociación para el tipo de problema y el esquema. Habilitar/inhabilitar los tipos de problemas disponibles, y establecer las opciones para tipos de problemas notificables/visible/obligatorio.'; 
+        $strings['Show / edit available choices'] = 'Mostrar / editar opciones disponibles'; 
+        $strings['The user is redirected to the reported issue after it has been reported'] = 'El usuario es redirigido al problema informado después que lo notificó'; 
+        $strings['Users cannot report new issues with this issue type, but may choose it when editing an issue'] = 'Los usuarios no pueden informar nuevos problemas para este tipo, pero pueden elegirlo cuando editan un problema'; 
+        $strings['A blank "%report_issue%" page with a link to the reported issue at the top will be shown after the issue is reported'] = 'Una página en blanco de "%report_issue%" con un enlace los problemas informados será mostrado arriba después que se notifique';         
+        
+        $strings['Show workflow details'] = 'Mostrar detalles del flujo de trabajo'; 
+        $strings['Copy workflow'] = 'Copiar flujo de trabajo'; 
+        $strings['Please enter the name of the new workflow'] = 'Por favor ingrese el nombre del nuevo flujo de trabajo'; 
+        $strings['Issue types with associated workflows: %number_of_associated_issuetypes%'] = 'Tipos de problemas con flujos de trabajo asociado: %number_of_associated_issuetypes%'; 
+        $strings['Copy worfklow scheme'] = 'Copiar el esquema de flujo de trabajo'; 
+        $strings['Please enter the name of the new worfklow scheme'] = 'Por favor ingrese el nombre del nuevo esquema de flujo de trabajo';         
+        
+        $strings['Enable module'] = 'Habilitar módulo'; 
+        $strings['Really enable "%module_name%"?'] = '¿Realmente habilita "%module_name%"?'; 
+        $strings['Enabling this module will give users access to it and all associated data.'] = 'Habilitando este modulo otorgará acceso a los usuarios y todos sus datos asociados.'; 
+        
+        $strings['Team dashboard for %team_name%'] = 'Panel de control para el equipo %team_name%'; 
+        $strings['Projects for %team%'] = 'Proyectos para %team%'; 
+        $strings['There are no projects linked to this team'] = 'No hay proyectos vinculados a este equipo'; 
+        $strings['Members of %team%'] = 'Miembros de %team%'; 
+        $strings['This team has no members'] = 'Este equipo no tiene miembros'; 
+        $strings['Don\'t show this again'] = 'No mostrar de nuevo'; 
+        $strings['Updating, please wait'] = 'Actualizando, espere por favor'; 
+
+        $strings['This user has not logged in yet'] = 'Este usuario no ha ingresado todavía'; 
+        $strings['Remove this friend'] = 'Quitar este amigo'; 
+        $strings['No issues, bugs or defects posted yet'] = 'Sin problemas, errores o defectos publicados aún'; 
+        $strings['Critical'] = 'Critica'; 
+        $strings['Needs to be fixed'] = 'Necesita ser corregido'; 
+        $strings['Must fix before next release'] = 'Debe resolverse antes de la próxima liberación'; 
+        $strings['Low'] = 'Baja'; 
+        $strings['Normal'] = 'Normal'; 
+
+        $strings['Users, teams, clients & groups'] = 'Usuarios, equipos, clientes y grupos';
+        $strings['Project sprint planning'] = 'Planeamento de sprint del proyecto'; 
+        $strings['Using the Sprint planning page'] = 'Uso de la página de planeamiento de Sprint';
+        $strings['Sprints overview'] = 'Resumen de Sprints'; 
+        $strings['Add new sprint'] = 'Agregar nuevo sprint'; 
+        $strings['Add sprint'] = 'Agregar sprint'; 
+        $strings['Sprint starts'] = 'inicio de Sprint'; 
+        $strings['Sprint ends'] = 'fin de Sprint'; 
+        $strings['Adding sprint, please wait'] = 'Agregando spront, espere por favor';
+        $strings['No sprints have been defined for this project'] = 'No se han definido sprints para este proyecto'; 
+        $strings['Unassigned items / project backlog'] = 'Itmes sin asignar / backlog del proyecto'; 
+        $strings['Create a user story'] = 'Crear una nueva historia de usuario'; 
+        $strings['Adding user story, please wait'] = 'Agregando historia de usuario, espere por favor'; 
+        $strings['Reassigning, please wait'] = 'Reasignando, espere por favor'; 
+        $strings['There are no items in the project backlog'] = 'No hay items en el backlog del proyecto';
+                 
+        $strings['%num_closed% issue(s) closed of %num_assigned% assigned'] = '%num_closed% problema(s) cerrado(s) de %num_assigned% asignados'; 
+        $strings['%milestone_name% (will be released: %date%)'] = '%milestone_name% (será liberado: %date%)';      
+        
+        $strings['No recent activity registered for this project.'] = 'No hay actividad reciente registrada para este proyecto.'; 
+        $strings['As soon as something important happens it will appear here.'] = 'Tan pronto suceda algo importante aparecerá aquí.';
+        
+        $strings['Most voted issues for %project_name%'] = 'Problema más votado para %project_name%';
+        $strings['RSS feed'] = 'Canal RSS';      
+// End missing strings        
