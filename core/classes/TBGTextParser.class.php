@@ -791,12 +791,13 @@
 			$text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
 			// Thanks to Mike Smith (scgtrp) for the above regexp
 
-			$text = htmlentities($text, ENT_NOQUOTES, TBGContext::getI18n()->getCharset());
-			$text = str_replace('&lt;u&gt;', '<u>', $text);
-			$text = str_replace('&lt;/u&gt;', '</u>', $text);
-			$text = str_replace('&lt;strike&gt;', '<strike>', $text);
-			$text = str_replace('&lt;/strike&gt;', '</strike>', $text);
-			$text = str_replace('&lt;br&gt;', '<br>', $text);
+			$text = tbg_decodeUTF8($text, true);
+			$text = preg_replace('/&lt;((\/)?u|(\/)?strike|br)&gt;/ism', '<\\1>' ,$text);
+			//$text = str_replace('&lt;u&gt;', '<u>', $text);
+			//$text = str_replace('&lt;/u&gt;', '</u>', $text);
+			//$text = str_replace('&lt;strike&gt;', '<strike>', $text);
+			//$text = str_replace('&lt;/strike&gt;', '</strike>', $text);
+			//$text = str_replace('&lt;br&gt;', '<br>', $text);
 			
 			$lines = explode("\n", $text);
 			foreach ($lines as $line)

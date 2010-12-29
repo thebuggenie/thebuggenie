@@ -247,3 +247,45 @@
 		return $text;
 	}
 
+	/**
+	 * Returns an ISO-8859-1 encoded string if UTF-8 encoded and current charset not UTF-8
+	 *
+	 * @param string $str the encode string
+	 * @param boolean $htmlentities [optional] whether to convert applicable characters to HTML entities
+	 * 
+	 * @return string
+	 */
+	function tbg_decodeUTF8($str, $htmlentities = false)
+	{
+		if (tbg_isUTF8($str) && !stristr(TBGContext::getI18n()->getCharset(), 'UTF-8'))
+		{
+			$str = utf8_decode($str);
+		}
+		
+		if ($htmlentities)
+		{
+			$str = htmlentities($str, ENT_NOQUOTES, TBGContext::getI18n()->getCharset());
+		}
+		return $str;
+	}
+	
+	/**
+	 * Determine if a string is UTF-8 encoded
+	 * @filesource http://www.php.net/manual/en/function.mb-detect-encoding.php#68607
+	 *
+	 * @param string $str the string
+	 * 
+	 * @return boolean
+	 */	
+	function tbg_isUTF8($str)
+	{
+        return preg_match('%(?:
+        [\xC2-\xDF][\x80-\xBF]
+        |\xE0[\xA0-\xBF][\x80-\xBF]
+        |[\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}
+        |\xED[\x80-\x9F][\x80-\xBF]
+        |\xF0[\x90-\xBF][\x80-\xBF]{2}
+        |[\xF1-\xF3][\x80-\xBF]{3}
+        |\xF4[\x80-\x8F][\x80-\xBF]{2}
+        )+%xs', $str);
+	}

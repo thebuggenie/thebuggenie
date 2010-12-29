@@ -183,7 +183,7 @@
 														<?php echo __('You are not logged in'); ?>
 													<?php else: ?>
 														<?php $name = (TBGContext::getUser()->getRealname() == '') ? TBGContext::getUser()->getBuddyname() : TBGContext::getUser()->getRealname(); ?>
-														<?php echo link_tag(make_url('dashboard'), $name); ?>
+														<?php echo link_tag(make_url('dashboard'), tbg_decodeUTF8($name)); ?>
 													<?php endif; ?>
 												</td>
 												<td class="header_userlinks">
