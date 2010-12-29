@@ -89,7 +89,7 @@
 		<td><label for="returnfromlogout"><?php echo __('Redirect after logout'); ?></label></td>
 		<td>
 			<select name="returnfromlogout" id="returnfromlogout" style="width: 300px;"<?php if ($access_level != TBGSettings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-				<?php $return_routes = array('home' => __('Frontpage'), 'account' => __('Account details')); ?>
+				<?php $return_routes = array('home' => __('Frontpage')); ?>
 				<?php $return_routes = TBGEvent::createNew('core', 'setting_returnfromlogout', null, array(), $return_routes)->trigger()->getReturnList(); ?>
 				<?php foreach ($return_routes as $route => $description): ?> 
 					<option value="<?php echo $route; ?>"<?php if (TBGSettings::getLogoutReturnRoute() == $route): ?> selected<?php endif; ?>><?php echo $description; ?></option>
