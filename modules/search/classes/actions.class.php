@@ -279,7 +279,7 @@
 				}
 				$this->forward(TBGContext::getRouting()->generate($route, $params));
 			}
-			elseif ($this->show_results)
+			else //if ($this->show_results) // generate error when using export after loading issues from the 'Show details'-link in project dashboard
 			{
 				$this->doSearch($request);
 				$this->issues = $this->foundissues;

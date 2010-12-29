@@ -282,8 +282,11 @@
 							else
 							{
 								/* Produce get parameters for query */
-								preg_match('/(?<=\/issues&).+$/i', $_SERVER['QUERY_STRING'], $get);
-								echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'csv')).'?'.$get[0].'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'rss')).'?'.$get[0].'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
+								preg_match('/((?<=\/)issues).+$/i', $_SERVER['QUERY_STRING'], $get);
+								if (isset($get[0])) // prevent unhandled error
+								{
+									echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'csv')).'/'.$get[0].'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('search', array('format' => 'rss')).'?'.$get[0].'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
+								}
 							}
 						?>
 					</div>
