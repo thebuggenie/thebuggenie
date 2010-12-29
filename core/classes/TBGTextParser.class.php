@@ -778,6 +778,8 @@
 		
 		protected function _parseText($options = array())
 		{
+			TBGContext::loadLibrary('common');
+			
 			self::$current_parser = $this;
 			$this->list_level_types = array();
 			$this->list_level = 0;

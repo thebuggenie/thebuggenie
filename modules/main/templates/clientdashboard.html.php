@@ -116,7 +116,7 @@
 				<div class="header">
 					<?php echo __('Members of %client%', array('%client%' => $client->getName())); ?>
 				</div>
-				<?php if (count($client->getNumberOfMembers()) > 0): ?>
+				<?php if ($client->getNumberOfMembers() > 0): ?>
 					<ul class="client_users">
 					<?php foreach ($client->getMembers() as $user): ?>
 						<li><?php echo include_component('main/userdropdown', array('user' => $user)); ?></li>
