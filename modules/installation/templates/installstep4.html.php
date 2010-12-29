@@ -29,8 +29,7 @@
 			All settings were stored. Default data and settings loaded successfully
 		</div>
 		<h2 style="margin-top: 10px;">Enabling functionality</h2>
-		The Bug Genie consists of the B2 framework, and a set of modules. Some modules are used for "core" functionality, such as searching, email notifications, and messaging - while
-		others provide extra functionality such as VCS (version control system) integration, articles, billboards and calendar.<br>
+		The Bug Genie consists of the B2 framework, and a set of modules. These provide extra functionality such as VCS (version control system) integration and email communication.<br>
 		<br>
 		Please select which modules to enable here, before pressing "Continue":<br>
 		<i>(You can always enable / disable this functionality from the configuration center after the installation is completed)</i>
