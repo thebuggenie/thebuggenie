@@ -496,10 +496,10 @@ ul.project_list li { margin: 0px; font-size: 11px; font-weight: bold; padding: 5
 .team_dashboard, .project_overview { clear: both;  }
 .team_dashboard .header, .project_overview .header { padding: 5px; margin-bottom: 8px; border-bottom: 1px solid #DDD; font-size: 14px; }
 .team_dashboard { padding: 10px; }
-.dashboard_client_info { margin-bottom: 10px; width: 620px; }
+.dashboard_client_info { margin-bottom: 10px; width: 100%; }
 .dashboard_client_info .dashboard_client_header { font-weight: bold; font-size: 24px; }
 .dashboard_client_info .dashboard_client_viewusers { float: right; }
-.dashboard_team_info { margin-bottom: 10px; width: 620px; }
+.dashboard_team_info { margin-bottom: 10px; width: 100%; }
 .dashboard_team_info .dashboard_team_header { font-weight: bold; font-size: 24px; }
 .dashboard_team_info .dashboard_team_viewusers { float: right; }
 .team_dashboard_table, .client_dashboard_table { width: 100%; }
