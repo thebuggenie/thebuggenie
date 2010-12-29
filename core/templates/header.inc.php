@@ -205,7 +205,7 @@
 										</table>
 										<div class="rounded_box blue tab_menu_dropdown user_menu_dropdown shadowed">
 											<?php if ($tbg_user->isGuest()): ?>
-												<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>');"><?php echo image_tag('icon_login.png').__('Login'); ?></a>
+												<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>')"><?php echo image_tag('icon_login.png').__('Login'); ?></a>
 												<?php if (TBGSettings::isRegistrationAllowed()): ?>
 													<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login', 'section' => 'register')); ?>');"><?php echo image_tag('icon_register.png').__('Register'); ?></a>
 												<?php endif; ?>

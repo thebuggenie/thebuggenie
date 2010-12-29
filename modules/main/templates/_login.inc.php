@@ -11,6 +11,16 @@
 		</div>
 		<div id="login_menu_panes">
 			<div id="tab_login_pane"<?php if ($selected_tab != 'login'): ?> style="display: none;"<?php endif; ?>>
+				<script>
+					if (document.location.href.search('<?php echo make_url('login_redirect'); ?>'))
+					{
+						$('tbg3_referer').setValue('<?php echo make_url('dashboard'); ?>');
+					}
+					else
+					{
+						$('tbg3_referer').setValue(document.location.href);
+					}
+				</script>
 				<?php if ($article instanceof TBGWikiArticle): ?>
 					<?php include_component('publish/articledisplay', array('article' => $article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true)); ?>
 				<?php endif; ?>
@@ -28,7 +38,7 @@
 						<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 						<div class="xboxcontent" style="vertical-align: middle; padding: 5px;">
 							<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="login_form" onsubmit="loginUser('<?php echo make_url('login'); ?>'); return false;">
-								<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="<?php $login_referer; ?>" />
+								<input type="hidden" id="tbg3_referer" name="tbg3_referer" value="" />
 								<div class="login_boxheader"><?php echo __('Log in to an existing account'); ?></div>
 								<div>
 									<table border="0" class="login_fieldtable">
