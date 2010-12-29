@@ -1781,6 +1781,12 @@
 						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("The upload path isn't writable")));
 					}
 				}
+				
+				if (!is_numeric($request->getParameter('upload_max_file_size')))
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("The maximum file size must be a number")));
+				}
+				
 				$settings = array('enable_uploads', 'upload_restriction_mode', 'upload_extensions_list', 'upload_max_file_size', 'upload_storage', 'upload_localpath');
 
 				foreach ($settings as $setting)
