@@ -72,27 +72,38 @@
 		switch ($format)
 		{
 			case 1:
-				return strftime("%H:%M - %a %b %d, %Y", $tstamp);
+				$tstring = strftime("%H:%M - %a %b %d, %Y", $tstamp);
+				break;
 			case 2:
-				return strftime("%H:%M - %a %d.m, %Y", $tstamp);
+				$tstring = strftime("%H:%M - %a %d.m, %Y", $tstamp);
+				break;
 			case 3:
-				return strftime("%a %b %d %H:%M", $tstamp);
+				$tstring = strftime("%a %b %d %H:%M", $tstamp);
+				break;
 			case 4:
-				return strftime("%b %d %H:%M", $tstamp);
+				$tstring = strftime("%b %d %H:%M", $tstamp);
+				break;
 			case 5:
-				return strftime("%B %d, %Y", $tstamp);
+				$tstring = strftime("%B %d, %Y", $tstamp);
+				break;
 			case 6:
-				return strftime("%B %d, %Y (%H:%M)", $tstamp);
+				$tstring = strftime("%B %d, %Y (%H:%M)", $tstamp);
+				break;
 			case 7:
-				return strftime("%A %d %B, %Y (%H:%M)", $tstamp);
+				$tstring = strftime("%A %d %B, %Y (%H:%M)", $tstamp);
+				break;
 			case 8:
-				return strftime("%b %d, %Y %H:%M", $tstamp);
+				$tstring = strftime("%b %d, %Y %H:%M", $tstamp);
+				break;
 			case 9:
-				return strftime("%b %d, %Y (%H:%M)", $tstamp);
+				$tstring = strftime("%b %d, %Y (%H:%M)", $tstamp);
+				break;
 			case 10:
-				return strftime("%b %d, %Y - %H:%M", $tstamp);
+				$tstring = strftime("%b %d, %Y - %H:%M", $tstamp);
+				break;
 			case 11:
-				return strftime("%b %d, %Y (%H:%M)", $tstamp);
+				$tstring = strftime("%b %d, %Y (%H:%M)", $tstamp);
+				break;
 			case 12:
 				$tstring = '';
 				if (date('dmY', $tstamp) == date('dmY'))
@@ -112,7 +123,7 @@
 					$tstring .= strftime("%b %d, ", $tstamp);
 				}
 				$tstring .= strftime('%H:%M', $tstamp);
-				return $tstring;
+				break;
 			case 13:
 				$tstring = '';
 				if (date('dmY', $tstamp) == date('dmY'))
@@ -132,7 +143,7 @@
 					$tstring .= strftime("%b %d, ", $tstamp);
 				}
 				$tstring .= strftime('%H:%M', $tstamp);
-				return $tstring;
+				break;
 			case 14:
 				$tstring = '';
 				if (date('dmY', $tstamp) == date('dmY'))
@@ -151,25 +162,24 @@
 				{
 					$tstring .= strftime("%b %d", $tstamp);
 				}
-				return $tstring;
+				break;
 			case 15:
 				$tstring = strftime('%B', $tstamp);
-				return $tstring;
+				break;
 			case 16:
 				$tstring = strftime('%b %d', $tstamp);
-				return $tstring;
+				break;
 			case 17:
 				$tstring = strftime('%a', $tstamp);
-				return $tstring;
+				break;
 			case 18:
 				$old = date_default_timezone_get();
 				date_default_timezone_set('UTC');
-				$date = date('G\h i\m', $tstamp);
+				$tstring = date('G\h i\m', $tstamp);
 				date_default_timezone_set($old);
-				return $date;
+				break;
 			case 19:
 				$tstring = strftime('%H:%M', $tstamp);
-				return $tstring;
 				break;
 			case 20:
 				$tstring = '';
@@ -189,16 +199,16 @@
 				{
 					$tstring .= strftime("%b %d, %Y", $tstamp);
 				}
-				return $tstring;
+				break;
 			case 21:
-				$time = strftime("%a, %d %b %Y %H:%M:%S GMT", $tstamp);
-				if (TBGContext::getUser()->getTimezone() > 0) $time .= '+';
-				if (TBGContext::getUser()->getTimezone() < 0) $time .= '-';
-				if (TBGContext::getUser()->getTimezone() != 0) $time .= TBGContext::getUser()->getTimezone();
-				return $time;
+				$tstring = strftime("%a, %d %b %Y %H:%M:%S GMT", $tstamp);
+				if (TBGContext::getUser()->getTimezone() > 0) $tstring .= '+';
+				if (TBGContext::getUser()->getTimezone() < 0) $tstring .= '-';
+				if (TBGContext::getUser()->getTimezone() != 0) $tstring .= TBGContext::getUser()->getTimezone();
 				break;
 			case 22:
-				return strftime("%b %d, %Y", $tstamp);
+				$tstring = strftime("%b %d, %Y", $tstamp);
+				break;
 			case 23:
 				$tstring = '';
 				if (date('dmY', $tstamp) == date('dmY'))
@@ -217,10 +227,11 @@
 				{
 					$tstring .= strftime("%b %d, %Y", $tstamp);
 				}
-				return $tstring;
+				break;
 			default:
 				return $tstamp;
 		}
+		return htmlentities($tstring);
 	}
 
 	function tbg_parse_text($text, $toc = false, $article_id = null, $options = array())

@@ -267,7 +267,7 @@
 				}
 			}
 			if ($html_decode) {
-				$retstring = utf8_encode(html_entity_decode($retstring));
+				$retstring = html_entity_decode($retstring);
 			}
 			return $retstring;
 		}
