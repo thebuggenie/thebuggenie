@@ -19,13 +19,16 @@
 		</div>
 		<div class="feature">
 			<h4 style="padding-top: 0; margin-top: 0;">UPGRADING FROM A PREVIOUS VERSION?</h4>
-			If you are upgrading from version 2.x, use the "Import data from version 2"-wizard, available from the Configuration page after installation. Upgrading from version 1 is not supported.
+			If you are upgrading from version 2.x, please see the instructions on the Import page, available in the Configuration centre. Users of BUGS 1.x will need to upgrade to The Bug Genie 2.1 first.
 		</div>
 	</div>
 	<h2 style="margin-top: 0px;">Welcome to The Bug Genie</h2>
 	<p>
 	Before we can start the installation, we need to check a few things. Please look through the list of prerequisites below, 
 	and take the necessary steps to correct any errors that may have been highlighted.</p>
+	<?php if ($php_ok): ?>
+		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP version (<?php echo $php_ver; ?>) meets requirements ...</div>
+	<?php endif; ?>
 	<?php if ($base_folder_perm_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can write to The Bug Genie directory ...</div>
 	<?php endif; ?>
@@ -50,22 +53,28 @@
 	<?php if ($gd_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP GD library installed and enabled ...</div>
 	<?php endif; ?>	
+	<?php if (!$php_ok): ?>
+		<div class="installation_prerequisites prereq_warn">
+		<b>PHP interpreter version is too old</b><br>
+		The Bug Genie 3 requires PHP 5.3.0 or later. You have version <?php echo $php_ver; ?>.<br/>Grab the latest release from your usual sources or from <a href="http://php.net/downloads.php" target="_blank">php.net</a>
+		</div>
+	<?php endif; ?>
 	<?php if (!$mysql_ok && $pgsql_ok): ?>
 		<div class="installation_prerequisites prereq_warn">
 		<b>PDO MySQL driver not enabled</b><br>
-		You won't be able to install The Bug Genie on a MySQL database.<br/>More information is available at <a href="http://fr.php.net/manual/en/ref.pdo-mysql.php" target="_blank">php.net</a>
+		You won't be able to install The Bug Genie on a MySQL database.<br/>More information is available at <a href="http://php.net/manual/en/ref.pdo-mysql.php" target="_blank">php.net</a>
 		</div>
 	<?php endif; ?>
 	<?php if ($mysql_ok && !$pgsql_ok): ?>
 		<div class="installation_prerequisites prereq_warn">
 		<b>PDO PostgreSQL driver not enabled</b><br>
-		You won't be able to install The Bug Genie on a PostgreSQL database.<br/>More information is available at <a href="http://fr.php.net/manual/en/ref.pdo-pgsql.php" target="_blank">php.net</a>
+		You won't be able to install The Bug Genie on a PostgreSQL database.<br/>More information is available at <a href="http://php.net/manual/en/ref.pdo-pgsql.php" target="_blank">php.net</a>
 		</div>
 	<?php endif; ?>
 	<?php if (!$gd_ok): ?>
 		<div class="installation_prerequisites prereq_warn">
 		<b>PHP GD library not enabled</b><br>
-		You won't be able to display graphs statistics and some other images.<br/>More information is available at <a href="http://fr.php.net/manual/en/book.image.php" target="_blank">php.net</a>
+		You won't be able to display graphs statistics and some other images.<br/>More information is available at <a href="http://php.net/manual/en/book.image.php" target="_blank">php.net</a>
 		</div>
 	<?php endif; ?>		
 	<?php if ($all_well): ?>

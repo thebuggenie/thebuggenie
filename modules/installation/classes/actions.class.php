@@ -43,6 +43,14 @@
 			$this->mysql_ok = true;
 			$this->pgsql_ok = true;
 			$this->gd_ok = true;
+			$this->php_ok = true;
+			$this->php_ver = PHP_VERSION;
+			
+			if (version_compare($this->php_ver, '5.3.0', 'lt'))
+			{
+				$this->php_ok = false;
+				$this->all_well = false;
+			}
 			if ((file_exists(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php')) || !is_writable(TBGContext::getIncludePath() . 'core/'))
 			{
 				$this->b2db_param_file_ok = false;
