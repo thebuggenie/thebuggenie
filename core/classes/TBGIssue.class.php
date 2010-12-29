@@ -3603,6 +3603,7 @@
 			$comment->setPostedBy($uid);
 			$comment->setTargetID($this->getID());
 			$comment->setTargetType(TBGComment::TYPE_ISSUE);
+			$comment->setSystemeComment();
 			if (!TBGSettings::isCommentTrailClean())
 			{
 				$comment->save();

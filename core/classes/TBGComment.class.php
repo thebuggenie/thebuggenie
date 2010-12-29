@@ -294,6 +294,11 @@
 		{
 			$this->_target_type = $var;
 		}
+		
+		public function setSystemeComment()
+		{
+			$this->_system_comment = true;
+		}
 
 		public function getModuleName()
 		{
