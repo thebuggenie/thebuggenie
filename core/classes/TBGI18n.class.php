@@ -27,6 +27,8 @@
 		
 		protected $_charset = 'utf-8';
 		
+		protected $_datetime_formats = array();
+		
 		public function __construct($language)
 		{
 			if (!file_exists($this->getStringsFilename($language)))
@@ -271,5 +273,93 @@
 			}
 			return $retstring;
 		}
+		
+		/** 
+		 * Set local date and time formats
+		 * 
+		 * @param $formats array list of applicable formats for this local
+		 * 
+		 */
+		public function setDateTimeFormats($formats)
+		{
+			if(is_array($formats))
+			{
+				$this->_datetime_formats = $formats;
+			}
+		}
+		
+		/** 
+		 * Return localized date and time format
+		 * @see http://php.net/manual/en/function.date.php
+		 * 
+		 * @param $id integer ID of format
+		 * 
+		 * @return string
+		 * 
+		 */
+		public function getDateTimeFormat($id)
+		{
+			if(array_key_exists($id, $this->_datetime_formats))
+			{
+				 return $this->_datetime_formats[$id];
+			}
+			switch ($id)
+			{
+				case 1 : // 14:45 - Thu Dec 30, 2010
+					$format = '%H:%M - %a %b %d, %Y';
+					break;
+				case 2 : // 14:45 - Thu 30.m, 2010
+					$format = '%H:%M - %a %d.m, %Y';
+					break;
+				case 3 : // Thu Dec 30 14:45
+					$format = '%a %b %d %H:%M';
+					break;
+				case 4 : // Dec 30 14:45
+					$format = '%b %d %H:%M';
+					break;
+				case 5 : // December 30, 2010
+					$format = '%B %d, %Y';
+					break;
+				case 6 : // December 30, 2010 (14:45)
+					$format = '%B %d, %Y (%H:%M)';
+					break;
+				case 7 : // Thursday 30 December, 2010 (14:45)
+					$format = '%A %d %B, %Y (%H:%M)';
+					break;
+				case 8 : // Dec 30, 2010 14:45
+					$format = '%b %d, %Y %H:%M';
+					break;
+				case 9 : // Dec 30, 2010 - 14:45
+					$format = '%b %d, %Y - %H:%M';
+					break;
+				case 10 : // Dec 30, 2010 (14:45)
+					$format = '%b %d, %Y (%H:%M)';
+					break;
+				case 11 : // December
+					$format = '%B';
+					break;
+				case 12 : // Dec 30
+					$format = '%b %d';
+					break;
+				case 13 : // Thu
+					$format = '%a';
+					break;
+				case 14 : // 14:45
+					$format = '%H:%M';
+					break;
+				case 15 : // Dec 30, 2010
+					$format = '%b %d, %Y';
+					break;
+				case 16 : // 14h 45m
+					$format = '%Gh %im';
+					break;
+				case 17 : // Thu, 30 December 2010 14:45:45 GMT
+					$format = '%a, %d %b %Y %H:%M:%S GMT';
+					break;
+				default : // local server setting
+					$format = '%c';
+			}
+			return $format;
+		}		
 		
 	}

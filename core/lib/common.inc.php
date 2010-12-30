@@ -72,37 +72,37 @@
 		switch ($format)
 		{
 			case 1:
-				$tstring = strftime("%H:%M - %a %b %d, %Y", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(1), $tstamp);
 				break;
 			case 2:
-				$tstring = strftime("%H:%M - %a %d.m, %Y", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(2), $tstamp);
 				break;
 			case 3:
-				$tstring = strftime("%a %b %d %H:%M", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(3), $tstamp);
 				break;
 			case 4:
-				$tstring = strftime("%b %d %H:%M", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(4), $tstamp);
 				break;
 			case 5:
-				$tstring = strftime("%B %d, %Y", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(5), $tstamp);
 				break;
 			case 6:
-				$tstring = strftime("%B %d, %Y (%H:%M)", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(6), $tstamp);
 				break;
 			case 7:
-				$tstring = strftime("%A %d %B, %Y (%H:%M)", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(7), $tstamp);
 				break;
 			case 8:
-				$tstring = strftime("%b %d, %Y %H:%M", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(8), $tstamp);
 				break;
 			case 9:
-				$tstring = strftime("%b %d, %Y (%H:%M)", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(9), $tstamp);
 				break;
 			case 10:
-				$tstring = strftime("%b %d, %Y - %H:%M", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(10), $tstamp);
 				break;
 			case 11:
-				$tstring = strftime("%b %d, %Y (%H:%M)", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(9), $tstamp);
 				break;
 			case 12:
 				$tstring = '';
@@ -120,9 +120,9 @@
 				}
 				else
 				{
-					$tstring .= strftime("%b %d, ", $tstamp);
+					$tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(12) . ', ', $tstamp);
 				}
-				$tstring .= strftime('%H:%M', $tstamp);
+				$tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(14), $tstamp);
 				break;
 			case 13:
 				$tstring = '';
@@ -140,9 +140,9 @@
 				}
 				else
 				{
-					$tstring .= strftime("%b %d, ", $tstamp);
+					$tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(12) . ', ', $tstamp);
 				}
-				$tstring .= strftime('%H:%M', $tstamp);
+				$tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(14), $tstamp);
 				break;
 			case 14:
 				$tstring = '';
@@ -160,26 +160,26 @@
 				}
 				else
 				{
-					$tstring .= strftime("%b %d", $tstamp);
+					$tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(12), $tstamp);
 				}
 				break;
 			case 15:
-				$tstring = strftime('%B', $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(11), $tstamp);
 				break;
 			case 16:
-				$tstring = strftime('%b %d', $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(12), $tstamp);
 				break;
 			case 17:
-				$tstring = strftime('%a', $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(13), $tstamp);
 				break;
 			case 18:
 				$old = date_default_timezone_get();
 				date_default_timezone_set('UTC');
-				$tstring = date('G\h i\m', $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(16), $tstamp);
 				date_default_timezone_set($old);
 				break;
 			case 19:
-				$tstring = strftime('%H:%M', $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(14), $tstamp);
 				break;
 			case 20:
 				$tstring = '';
@@ -197,17 +197,17 @@
 				}
 				else
 				{
-					$tstring .= strftime("%b %d, %Y", $tstamp);
+					$tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(15), $tstamp);
 				}
 				break;
 			case 21:
-				$tstring = strftime("%a, %d %b %Y %H:%M:%S GMT", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(17), $tstamp);
 				if (TBGContext::getUser()->getTimezone() > 0) $tstring .= '+';
 				if (TBGContext::getUser()->getTimezone() < 0) $tstring .= '-';
 				if (TBGContext::getUser()->getTimezone() != 0) $tstring .= TBGContext::getUser()->getTimezone();
 				break;
 			case 22:
-				$tstring = strftime("%b %d, %Y", $tstamp);
+				$tstring = strftime(TBGContext::getI18n()->getDateTimeFormat(15), $tstamp);
 				break;
 			case 23:
 				$tstring = '';
@@ -225,7 +225,7 @@
 				}
 				else
 				{
-					$tstring .= strftime("%b %d, %Y", $tstamp);
+					$tstring .= strftime(TBGContext::getI18n()->getDateTimeFormat(15), $tstamp);
 				}
 				break;
 			default:
