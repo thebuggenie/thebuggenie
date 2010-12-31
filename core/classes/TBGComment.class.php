@@ -295,9 +295,9 @@
 			$this->_target_type = $var;
 		}
 		
-		public function setSystemeComment()
+		public function setSystemComment($val = true)
 		{
-			$this->_system_comment = true;
+			$this->_system_comment = $val;
 		}
 
 		public function getModuleName()

@@ -420,6 +420,7 @@
 		{
 			$comment = $event->getParameter('comment');
 			$comment->setContent($this->_request->getParameter('comment_body', null, false) . "\n\n" . $comment->getContent());
+			$comment->setSystemComment(false);
 			$comment->save();
 		}
 
