@@ -221,7 +221,14 @@
 
 		public function moveIssueToMatchingWorkflowStep(TBGIssue $issue)
 		{
-			if ($issue->getWorkflowStep()->hasLinkedStatus() && $issue->getStatus()->getID() != $issue->getWorkflowStep()->getLinkedStatusID())
+			$change_step = false;
+			
+			if ($issue->isStatusChanged() || $issue->isResolutionChanged())
+			{
+				$change_step = true;
+			}
+			
+			if ($change_step)
 			{
 				foreach ($this->getSteps() as $step)
 				{
@@ -245,6 +252,11 @@
 									$step->applyToIssue($issue);
 									return true;
 								}
+							}
+							else
+							{
+								$step->applyToIssue($issue);
+								return true;
 							}
 						}
 					}
