@@ -218,5 +218,39 @@
 			
 			return $new_workflow;
 		}
+
+		public function moveIssueToMatchingWorkflowStep(TBGIssue $issue)
+		{
+			if ($issue->getWorkflowStep()->hasLinkedStatus() && $issue->getStatus()->getID() != $issue->getWorkflowStep()->getLinkedStatusID())
+			{
+				foreach ($this->getSteps() as $step)
+				{
+					if ($step->hasLinkedStatus() && $step->getLinkedStatusID() == $issue->getStatus()->getID())
+					{
+						$step->applyToIssue($issue);
+						return true;
+					}
+				}
+				foreach ($this->getSteps() as $step)
+				{
+					if (!$step->hasLinkedStatus())
+					{
+						foreach ($step->getIncomingTransitions() as $transition)
+						{
+							if ($transition->hasPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID))
+							{
+								$rule = $transition->getPostValidationRule(TBGWorkflowTransitionValidationRule::RULE_STATUS_VALID);
+								if ($rule->isValid($issue->getStatus()))
+								{
+									$step->applyToIssue($issue);
+									return true;
+								}
+							}
+						}
+					}
+				}
+				throw new TBGWorkflowException('Cannot find valid workflow step');
+			}
+		}
 		
 	}

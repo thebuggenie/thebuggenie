@@ -22,24 +22,6 @@
 	<div class="rounded_box red borderless issue_info aligned" id="viewissue_unsaved"<?php if (!isset($issue_unsaved)): ?> style="display: none;"<?php endif; ?>>
 		<div class="header"><?php echo __('Could not save your changes'); ?></div>
 	</div>
-	<?php if (isset($error) && $error): ?>
-		<div class="rounded_box red borderless issue_info aligned" id="viewissue_error">
-			<?php if ($error == 'transition_error'): ?>
-				<div class="header"><?php echo __('There was an error trying to move this issue to the next step in the workflow'); ?></div>
-				<div class="content" style="text-align: left;">
-					<?php echo __('The following fields had invalid values: %list%', array('%list%' => '')); ?><br>
-					<ul>
-						<?php foreach (TBGContext::getMessageAndClear('issue_workflow_errors') as $error_field): ?>
-							<li><?php echo ucfirst($error_field); ?></li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
-			<?php else: ?>
-				<div class="header"><?php echo __('There was an error trying to save changes to this issue'); ?></div>
-				<div class="content"><?php echo $error; ?></div>
-			<?php endif; ?>
-		</div>
-	<?php endif; ?>
 	<div class="rounded_box red borderless issue_info full_width" id="viewissue_merge_errors"<?php if (!$issue->hasMergeErrors()): ?> style="display: none;"<?php endif; ?>>
 		<div class="header"><?php echo __('This issue has been changed since you started editing it'); ?></div>
 		<div class="content"><?php echo __('Data that has been changed is highlighted in red below. Undo your changes to see the updated information'); ?></div>
@@ -65,6 +47,30 @@
 			</div>
 		</form>
 	</div>
+	<?php if (isset($error) && $error): ?>
+		<div class="rounded_box red borderless issue_info aligned" id="viewissue_error">
+			<?php if ($error == 'transition_error'): ?>
+				<div class="header"><?php echo __('There was an error trying to move this issue to the next step in the workflow'); ?></div>
+				<div class="content" style="text-align: left;">
+					<?php echo __('The following fields had invalid values: %list%', array('%list%' => '')); ?><br>
+					<ul>
+						<?php foreach (TBGContext::getMessageAndClear('issue_workflow_errors') as $error_field): ?>
+							<li><?php echo ucfirst($error_field); ?></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			<?php else: ?>
+				<div class="header"><?php echo __('There was an error trying to save changes to this issue'); ?></div>
+				<div class="content">
+					<?php if (isset($workflow_error) && $workflow_error): ?>
+						<?php echo __('No workflow step matches this issue after changes are saved. Please either use the workflow action buttons, or make sure your changes are valid within the current project workflow for this issue type.'); ?>
+					<?php else: ?>
+						<?php echo $error; ?>
+					<?php endif; ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
 	<?php if (isset($issue_saved)): ?>
 		<div class="rounded_box green borderless issue_info aligned" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
 			<?php echo __('Your changes has been saved'); ?>

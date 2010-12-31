@@ -2328,6 +2328,11 @@
 			$this->_workflow_scheme_id = $scheme;
 		}
 		
+		public function hasWorkflowScheme()
+		{
+			return (bool) ($this->getWorkflowScheme() instanceof TBGWorkflowScheme);
+		}
+		
 		/**
 		 * Return the projects' associated issuetype scheme
 		 * 

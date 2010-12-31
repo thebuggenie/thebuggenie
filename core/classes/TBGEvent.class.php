@@ -310,4 +310,28 @@
 			return $this->_return_list;
 		}
 
+		/**
+		 * Return a specific event return value
+		 *
+		 * @param mixed $key
+		 *
+		 * @return mixed The value
+		 */
+		public function getReturnListValue($key)
+		{
+			return (is_array($this->_return_list) && array_key_exists($key, $this->_return_list)) ? $this->_return_list[$key] : null;
+		}
+
+		/**
+		 * Check if a specific event return value is set
+		 *
+		 * @param mixed $key
+		 *
+		 * @return mixed Whether the value is set
+		 */
+		public function hasReturnListValue($key)
+		{
+			return (bool) (is_array($this->_return_list) && array_key_exists($key, $this->_return_list));
+		}
+
 	}
