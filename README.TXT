@@ -1,8 +1,6 @@
-THE BUG GENIE VERSION 3 BETA 4
+THE BUG GENIE VERSION 3 RELEASE CANDIDATE 2
 -------
-Thank you for downloading this pre-release version. Keep in mind that this is
-BETA software, which means it will contain bugs, unfinished functionality
-and may not perform in the way you expect it to.
+Thank you for downloading this release candidate.
 
 Please report issues and feedback from the issue tracker on our website:
 http://www.thebuggenie.com

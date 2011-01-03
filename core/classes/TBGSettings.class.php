@@ -49,8 +49,8 @@
 				self::$_settings = array();
 				self::$_ver_mj = 3;
 				self::$_ver_mn = 0;
-				self::$_ver_rev = '0 beta 4';
-				self::$_ver_name = 'Rush hour';
+				self::$_ver_rev = '0 RC2';
+				self::$_ver_name = 'Cable select';
 				if (self::$_settings = TBGCache::get('settings'))
 				{
 					TBGLogging::log('Using cached settings');
