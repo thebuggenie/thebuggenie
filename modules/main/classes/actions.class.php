@@ -1228,6 +1228,16 @@
 								}
 								if ($identified instanceof TBGIdentifiableClass)
 								{
+									if ((bool) $request->getParameter('teamup', false))
+									{
+										$team = new TBGTeam();
+										$team->setName($identified->getBuddyname() . ' & ' . TBGContext::getUser()->getBuddyname());
+										$team->setOndemand(true);
+										$team->save();
+										$team->addMember($identified);
+										$team->addMember(TBGContext::getUser());
+										$identified = $team;
+									}
 									if ($request->getParameter('field') == 'owned_by') $issue->setOwner($identified);
 									elseif ($request->getParameter('field') == 'assigned_to') $issue->setAssignee($identified);
 								}
@@ -1929,7 +1939,8 @@
 					$this->teams = array();
 				}
 			}
-			return $this->renderComponent('identifiableselectorresults', array('users' => $this->users, 'teams' => $this->teams, 'callback' => $request->getParameter('callback')));
+			$teamup_callback = $request->getParameter('teamup_callback');
+			return $this->renderComponent('identifiableselectorresults', array('users' => $this->users, 'teams' => $this->teams, 'callback' => $request->getParameter('callback'), 'teamup_callback' => $teamup_callback));
 		}
 		
 		/**

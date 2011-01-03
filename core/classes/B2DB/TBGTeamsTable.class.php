@@ -38,6 +38,7 @@
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::SCOPE, $scope);
+			$crit->addWhere(self::ONDEMAND, false);
 			
 			$res = $this->doSelect($crit);
 			

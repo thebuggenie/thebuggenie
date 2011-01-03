@@ -65,6 +65,8 @@
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $user_id);
+			$crit->addJoin(TBGTeamsTable::getTable(), TBGTeamsTable::ID, self::TID);
+			$crit->addWhere(TBGTeamsTable::ONDEMAND, $ondemand);
 			$res = $this->doDelete($crit);
 		}
 
@@ -100,11 +102,11 @@
 			}
 		}
 		
-		public function getTeamIDsForUserID($user_id)
+		public function getTeamIDsForUserID($user_id, $ondemand = false)
 		{
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $user_id);
 			return $this->doSelect($crit);
 		}
-
+		
 	}

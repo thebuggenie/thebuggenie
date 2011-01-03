@@ -1,7 +1,14 @@
 <b><?php echo __('Users found'); ?></b><br>
 <?php if (count($users) > 0): ?>
 	<?php foreach ($users as $user): ?>
-		<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), urlencode('%identifiable_value%')), array(TBGIdentifiableClass::TYPE_USER, $user->getID()), $callback); ?>"><?php echo $user->getNameWithUsername(); ?></a><br>
+		<?php if (isset($teamup_callback)): ?>
+			<i><?php echo $user->getNameWithUsername(); ?></i><br>
+			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), urlencode('%identifiable_value%')), array(TBGIdentifiableClass::TYPE_USER, $user->getID()), $callback); ?>"><b><?php echo __('Select this user'); ?></b></a>
+			<?php echo __('%select_this_user% or %team_up_and_select%', array('%select_this_user%' => '', '%team_up_and_select%' => '')); ?>
+			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), urlencode('%identifiable_value%')), array(TBGIdentifiableClass::TYPE_USER, $user->getID()), $teamup_callback); ?>"><b><?php echo __('Team up and select'); ?></b></a><br>
+		<?php else: ?>
+			<a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_type%'), urlencode('%identifiable_value%')), array(TBGIdentifiableClass::TYPE_USER, $user->getID()), $callback); ?>"><?php echo $user->getNameWithUsername(); ?></a><br>
+		<?php endif; ?>
 	<?php endforeach; ?>
 <?php else: ?>
 	<span class="faded_out"><?php echo __("Couldn't find any users"); ?></span><br>

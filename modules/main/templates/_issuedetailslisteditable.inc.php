@@ -34,7 +34,7 @@
 <?php endif; ?>
 <div id="viewissue_left_box_status">
 	<div id="status_header" class="hoverable <?php if ($issue->isStatusChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isStatusMerged()): ?> issue_detail_unmerged<?php endif; ?>">
-		<?php if ($issue->getProject()->canChangeIssuesWithoutWorkingOnThem()): ?>
+		<?php if ($issue->getProject()->canChangeIssuesWithoutWorkingOnThem() && $issue->isEditable()): ?>
 			<a href="javascript:void(0);" onclick="revertField('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status')); ?>', 'status');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
 			<?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'status_undo_spinning')); ?>
 			<a href="javascript:void(0);" onclick="$('status_change').toggle();" title="<?php echo __('Click to change status'); ?>"><?php echo image_tag('action_dropdown_small.png', array('class' => 'dropdown')); ?></a>
@@ -48,7 +48,7 @@
 		<span class="faded_out" id="no_status"<?php if ($issue->getStatus() instanceof TBGDatatype): ?> style="display: none;"<?php endif; ?>><?php echo __('Status not determined'); ?></span>
 	</div>
 </div>
-<?php if ($issue->getProject()->canChangeIssuesWithoutWorkingOnThem()): ?>
+<?php if ($issue->getProject()->canChangeIssuesWithoutWorkingOnThem() && $issue->isEditable()): ?>
 	<div class="rounded_box white shadowed" id="status_change" style="display: none; width: 280px; position: absolute; z-index: 10001; margin: 5px 0 5px 0;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 5px;">
@@ -93,6 +93,7 @@
 <?php include_component('identifiableselector', array(	'html_id' 			=> 'assigned_to_change', 
 														'header' 			=> __('Assign this issue'),
 														'callback'		 	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'assigned_to');",
+														'teamup_callback' 	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%', 'teamup' => true)) . "', 'assigned_to');",
 														'clear_link_text'	=> __('Clear current assignee'),
 														'base_id'			=> 'assigned_to',
 														'include_teams'		=> true,
@@ -278,6 +279,7 @@
 <?php include_component('identifiableselector', array(	'html_id' 			=> 'owned_by_change', 
 														'header' 			=> __('Change issue owner'),
 														'callback'		 	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%')) . "', 'owned_by');",
+														'teamup_callback'	=> "setField('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by', 'identifiable_type' => '%identifiable_type%', 'value' => '%identifiable_value%', 'teamup' => true)) . "', 'owned_by');",
 														'clear_link_text'	=> __('Clear current owner'),
 														'base_id'			=> 'owned_by',
 														'include_teams'		=> true,

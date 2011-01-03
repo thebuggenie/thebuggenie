@@ -963,12 +963,12 @@
 		
 		public function isEditable()
 		{
-			return ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || $this->getWorkflowStep()->isEditable());
+			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || $this->getWorkflowStep()->isEditable()));
 		}
 		
 		public function isUpdateable()
 		{
-			return ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !$this->getWorkflowStep()->isClosed());
+			return ($this->isOpen() && ($this->getProject()->canChangeIssuesWithoutWorkingOnThem() || !$this->getWorkflowStep()->isClosed()));
 		}
 		
 		/**

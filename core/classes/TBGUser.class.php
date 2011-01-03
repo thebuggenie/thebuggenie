@@ -633,13 +633,21 @@
 		{
 			if ($this->teams === null)
 			{
-				$this->teams = array();
+				$this->teams = array('assigned' => array(), 'ondemand' => array());
 				TBGLogging::log('Populating user teams');
 				if ($res = TBGTeamMembersTable::getTable()->getTeamIDsForUserID($this->getID()))
 				{
 					while ($row = $res->getNextRow())
 					{
-						$this->teams[$row->get(TBGTeamsTable::ID)] = TBGContext::factory()->TBGTeam($row->get(TBGTeamsTable::ID), $row);
+						$team = TBGContext::factory()->TBGTeam($row->get(TBGTeamsTable::ID), $row);
+						if ($team->isOndemand())
+						{
+							$this->teams['ondemand'][$team->getID()] = $team;
+						}
+						else
+						{
+							$this->teams['assigned'][$team->getID()] = $team;
+						}
 					}
 				}
 				TBGLogging::log('...done (Populating user teams)');
@@ -656,7 +664,7 @@
 		public function isMemberOfTeam(TBGTeam $team)
 		{
 			$this->_populateTeams();
-			return array_key_exists($team->getID(), $this->teams);
+			return (array_key_exists($team->getID(), $this->teams['assigned']) || array_key_exists($team->getID(), $this->teams['ondemand']));
 		}
 		
 		/**
@@ -1074,7 +1082,18 @@
 		public function getTeams()
 		{
 			$this->_populateTeams();
-			return $this->teams;
+			return $this->teams['assigned'];
+		}
+		
+		/**
+		 * Returns an array of teams which the current user is a member of
+		 *
+		 * @return array
+		 */
+		public function getOndemandTeams()
+		{
+			$this->_populateTeams();
+			return $this->teams['ondemand'];
 		}
 		
 		/**

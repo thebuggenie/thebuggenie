@@ -9,6 +9,9 @@
 		<div class="dropdown_content">
 			<label for="<?php echo $base_id; ?>_input"><?php echo __('Find a user'); ?>:</label><br>
 			<?php $text_title = __('Enter a name here'); ?>
+			<?php if (isset($teamup_callback)): ?>
+				<input type="hidden" name="teamup_callback" value="<?php echo $teamup_callback; ?>">
+			<?php endif; ?>
 			<input type="hidden" name="callback" value="<?php echo $callback; ?>">
 			<input type="hidden" name="include_teams" value="<?php echo (int) $include_teams; ?>">
 			<input type="text" name="find_identifiable_by" id="<?php echo $base_id; ?>_input" value="<?php echo $text_title; ?>" style="width: 240px; padding: 1px 1px 1px;" onblur="if (this.getValue() == '') { this.value = '<?php echo $text_title; ?>'; this.addClassName('faded_out'); }" onfocus="if (this.getValue() == '<?php echo $text_title; ?>') { this.clear(); } this.removeClassName('faded_out');" class="faded_out">
