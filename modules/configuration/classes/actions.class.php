@@ -1595,7 +1595,10 @@
 					}
 					elseif ($request->getParameter('mode') == 'delete')
 					{
+						$project = $theComponent->getProject();
 						$theComponent->delete();
+						$count = count(TBGComponent::getAllByProjectID($project->getID()));
+						return $this->renderJSON(array('failed' => false, 'deleted' => true, 'itemcount' => $count, 'message' => TBGContext::getI18n()->__('Component deleted')));
 					}
 				}
 				catch (Exception $e)

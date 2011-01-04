@@ -331,6 +331,48 @@ function deleteBuild(url, bid)
 	});
 }
 
+function deleteComponent(url, cid)
+{
+	new Ajax.Request(url, {
+		asynchronous:true,
+		method: "post",
+		evalScripts: true,
+		requestHeaders: {Accept: 'application/json'},
+		onLoading: function (transport) {
+			$('component_'+cid+'_delete_indicator').show();
+		},
+		onSuccess: function (transport) {
+			var json = transport.responseJSON;
+			if (!json.deleted)
+			{
+				$('component_'+cid+'_delete_indicator').hide();
+				$('del_component_'+cid).hide();
+				failedMessage(json.error);
+			}
+			else
+			{
+				$('show_component_'+cid).remove();
+				$('edit_component_'+cid).remove();
+				$('component_'+cid+'_permissions').remove();
+				if (json.itemcount == 0)
+				{
+					$('no_components').show();
+				}
+				successMessage(json.message);
+			}
+		},
+		onFailure: function (transport) {
+			$('component_'+cid+'_delete_indicator').hide();
+			$('del_component_'+cid).hide();
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+		}
+	});
+}
+
 function switchEditionTab(select_tab)
 {
 	$('edition_settings').hide();
