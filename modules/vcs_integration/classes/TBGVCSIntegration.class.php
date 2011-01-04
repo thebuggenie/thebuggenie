@@ -233,7 +233,7 @@
 					// Now handle changed files
 					foreach ($entries[0] as $file)
 					{
-						$changed .= 'U'.$file."\n";
+						$changed .= 'M'.$file."\n";
 					}
 					
 					// Now handle new files
@@ -258,7 +258,7 @@
 				{
 					$action = substr($aline, 0, 1);
 
-					if ($action == "A" || $action == "U" || $action == "D")
+					if ($action == "A" || $action == "U" || $action == "D" || $action == "M")
 					{
 						$theline = trim(substr($aline, 1));
 						$files[] = array($action, $theline);

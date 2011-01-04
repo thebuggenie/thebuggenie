@@ -84,6 +84,7 @@
 	{
 		echo '<tr>';
 		$action = $file[1];
+		if ($action == 'M'): $action = 'U'; endif;
 		echo '<td class="imgtd">' . image_tag('icon_action_' . $action . '.png', null, false, 'vcs_integration') . '</td>';
 		switch (TBGContext::getModule('vcs_integration')->getSetting('web_type_' . $projectId))
 		{
@@ -136,7 +137,7 @@
 		}
 
 		echo '<td><a href="' . $link_file . '" target="_new"><b>' . $file[0] . '</b></a></td>';
-		if ($action == "U")
+		if ($action == "U" || $action == "M")
 		{
 			if (substr($file[0], -1) == '/' || substr($file[0], -1) == '\\')
 			{

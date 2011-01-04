@@ -2,6 +2,8 @@
 = VCS Integration =
 The Bug Genie includes the VCS Integration module, which allows you to link your projects in The Bug Genie to a source code repository. This allows your commits to update issues, as well as access the repository viewer from The Bug Genie. However, before you can start, you need to set up the module - both globally and for each project using the module.
 
+Please note that the git hook does not support the web access method (explained later), only the direct access method. In addition, a Mercurial hook is available, though it is not included due to license restrictions. Please refer to The Bug Genie website to obtain it.
+
 = Setting up =
 === Global settings ===
 There are two methods for VCS hooks (the code that interfaces between your source code repository and The Bug Genie) to communicate with your installation. The methods are '''direct access''' and '''http access'''.

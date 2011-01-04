@@ -1,0 +1,18 @@
+#!/bin/sh
+
+projectid=1
+tbg_cli_path=/home/...
+
+# fetch GIT commit data for TheBugGenie VCS integration
+# usage: ./tbg-post-receive <oldhash> <newhash>
+
+newhash=$2
+oldhash=$1
+
+changedfiles=`git diff-tree --name-status -r $newhash --no-commit-id`
+name=`git log ^$oldhash $newhash --pretty=format:"%an <%ae>"`
+log=`git log ^$oldhash $newhash --pretty=format:"%s %b"`
+time=`git log ^$oldhash $newhash --pretty=format:"%ct"`
+
+cd $tbg_cli_path
+./tbg_cli vcs_integration:report_commit $projectid "$name" $newhash "$log" "$changedfiles" $oldhash $time
