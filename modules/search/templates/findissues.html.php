@@ -266,13 +266,14 @@
 			<?php if ($show_results): ?>
 				<div class="main_header">
 					<?php echo $searchtitle; ?>
-					&nbsp;&nbsp;<span class="faded_out"><?php echo __('%number_of% issue(s)', array('%number_of%' => $resultcount)); ?></span>
+					&nbsp;&nbsp;<span class="faded_out"><?php echo __('%number_of% issue(s)', array('%number_of%' => intval($resultcount))); ?></span>
 					<div class="search_export_links">
 						<?php
 							if (TBGContext::getRequest()->hasParameter('quicksearch'))
 							{
 								$searchfor = TBGContext::getRequest()->getParameter('searchfor');
-								echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'quicksearch' => 'true', 'format' => 'csv')).'?searchfor='.$searchfor.'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'quicksearch' => 'true', 'format' => 'rss')).'?searchfor='.$searchfor.'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
+								$project_key = (TBGContext::getCurrentProject() instanceof TBGProject) ? TBGContext::getCurrentProject()->getKey() : 0; 
+								echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('project_issues', array('project_key' => $project_key, 'quicksearch' => 'true', 'format' => 'csv')).'?searchfor='.$searchfor.'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('project_issues', array('project_key' => $project_key, 'quicksearch' => 'true', 'format' => 'rss')).'?searchfor='.$searchfor.'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
 							}
 							elseif (TBGContext::getRequest()->hasParameter('predefined_search'))
 							{
