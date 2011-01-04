@@ -135,9 +135,21 @@
 		public function runDashboard(TBGRequest $request)
 		{
 			$this->forward403unless(!TBGContext::getUser()->isThisGuest() && TBGContext::getUser()->hasPageAccess('dashboard'));
-			$this->getResponse()->setProjectMenuStripHidden();
+			if (!TBGSettings::isSingleProjectTracker())
+			{
+				$this->getResponse()->setProjectMenuStripHidden();
+			}
+			else
+			{
+				if (($projects = TBGProject::getAll()) && $project = array_shift($projects))
+				{
+					$this->getResponse()->setProjectMenuStripHidden(false);
+					TBGContext::setCurrentProject($project);
+				}
+			}
 			$this->dashboardViews = TBGDashboard::getUserViews();
 		}
+		
 		/**
 		 * Save dashboard configuration (AJAX call)
 		 *  

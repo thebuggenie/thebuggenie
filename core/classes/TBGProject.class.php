@@ -1995,6 +1995,10 @@
 										unset($retval[$key]['values']);
 									}
 								}
+								if (array_key_exists($key, $retval) && array_key_exists('values', $retval[$key]))
+								{
+									asort($retval[$key]['values'], SORT_STRING);
+								}
 							}
 							elseif ($key == 'status' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::EDITIONS_LIST, TBGCustomDatatype::STATUS_CHOICE)))
 							{
@@ -2013,6 +2017,10 @@
 									{
 										unset($retval[$key]['values']);
 									}
+								}
+								if (array_key_exists($key, $retval) && array_key_exists('values', $retval[$key]))
+								{
+									asort($retval[$key]['values'], SORT_STRING);
 								}
 							}
 							elseif ($key == 'component' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::COMPONENTS_LIST, TBGCustomDatatype::COMPONENTS_CHOICE)))
@@ -2033,6 +2041,10 @@
 									{
 										unset($retval[$key]['values']);
 									}
+								}
+								if (array_key_exists($key, $retval) && array_key_exists('values', $retval[$key]))
+								{
+									asort($retval[$key]['values'], SORT_STRING);
 								}
 							}
 							elseif ($key == 'build' || array_key_exists('custom', $return_details) && $return_details['custom'] && in_array($return_details['custom_type'], array(TBGCustomDatatype::RELEASES_LIST, TBGCustomDatatype::RELEASES_CHOICE)))

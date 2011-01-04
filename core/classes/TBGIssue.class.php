@@ -1929,7 +1929,7 @@
 		public function getCustomField($key)
 		{
 			$var_name = "_customfield{$key}";
-			if (!is_null($this->$var_name))
+			if (property_exists($this, $var_name) && !is_null($this->$var_name))
 			{
 				$datatype = TBGCustomDatatype::getByKey($key);
 				if ($datatype->hasCustomOptions())
