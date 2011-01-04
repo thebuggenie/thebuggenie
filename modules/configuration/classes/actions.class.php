@@ -306,23 +306,30 @@
 				{
 					if (TBGContext::getRequest()->getParameter($setting) !== null)
 					{
-						if ($setting == 'b2_name' || $setting == 'b2_tagline')
+						$value = TBGContext::getRequest()->getParameter($setting);
+						switch ($setting)
 						{
-							TBGSettings::saveSetting($setting, TBGContext::getRequest()->getParameter($setting, null, false));
-						}
-						else
-						{
-							$value = TBGContext::getRequest()->getParameter($setting);
-							if ($setting == 'highlight_default_interval')
-							{
+							case 'b2_name':
+							case 'b2_tagline':
+								$value = TBGContext::getRequest()->getParameter($setting, null, false);
+								break;
+							case  'highlight_default_interval':
 								if (!is_numeric($value) || $value < 1)
 								{
 									$this->getResponse()->setHttpStatus(400);
-									return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provde a valid setting for highlighting interval')));
+									return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid setting for highlighting interval')));
 								}
-							}
-							TBGSettings::saveSetting($setting, $value);
+								break;
+							case 'charset' :
+								// list of supported character sets based on PHP doc : http://www.php.net/manual/en/function.htmlentities.php
+								if (!preg_match('/^((ISO-?8859-1)|(ISO-?8859-15)|(UTF-8)|((cp|ibm)?866)|((cp|Windows-|win-)+1251)|((cp|Windows-)+1252)|(KOI8-?RU?)|(BIG5)|(950)|(GB2312)|(936)|(BIG5-HKSCS)|(S(hift_)?JIS)|(932)|(EUC-?JP))$/i', $value))
+								{
+										$this->getResponse()->setHttpStatus(400);
+										return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid charset')));
+								}
+								break;
 						}
+						TBGSettings::saveSetting($setting, $value);
 					}
 				}
 				return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('All settings saved')));
