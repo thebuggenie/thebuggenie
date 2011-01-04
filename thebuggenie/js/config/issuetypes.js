@@ -83,6 +83,43 @@ function updateIssuetype(url, id)
 	});
 }
 
+function deleteIssuetype(url, id)
+{
+	new Ajax.Request(url, {
+	asynchronous:true,
+	method: "post",
+	evalScripts: true,
+	onLoading: function (transport) {
+		$('delete_issuetype_' + id + '_indicator').show();
+	},
+	onSuccess: function (transport) {
+		var json = transport.responseJSON;
+		if (json.failed)
+		{
+			failedMessage(json.error);
+			$('delete_issuetype_' + id + '_indicator').hide();
+		}
+		else
+		{
+			$('delete_issuetype_' + id + '_indicator').hide();
+			$('issuetype_' + id + '_box').remove();
+			successMessage(json.message);
+		}
+	},
+	onFailure: function (transport) {
+		$('edit_issuetype_' + id + '_indicator').hide();
+		if (transport.responseJSON)
+		{
+			failedMessage(transport.responseJSON.error);
+		}
+		else
+		{
+			failedMessage(transport.responseText);
+		}
+	}
+	});
+}
+
 function updateIssuetypeChoices(url, id)
 {
 	var params = Form.serialize('update_' + id + '_choices_form');
