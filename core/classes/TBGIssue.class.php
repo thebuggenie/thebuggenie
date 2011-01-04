@@ -3479,7 +3479,7 @@
 			{
 				// Get team member IDs
 				$member_ids = array();
-				foreach ($this->getOwner()->getLeader() as $member)
+				foreach ($this->getProject()->getLeader() as $member)
 				{
 					$member_ids[] = $member->getID();
 				}
@@ -3496,7 +3496,7 @@
 			{
 				// Get team member IDs
 				$member_ids = array();
-				foreach ($this->getOwner()->getQaRespnsible() as $member)
+				foreach ($this->getProject()->getQaResponsible() as $member)
 				{
 					$member_ids[] = $member->getID();
 				}
