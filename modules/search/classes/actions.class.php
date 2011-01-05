@@ -111,19 +111,9 @@
 					{
 						case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
 							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
-							$bug_reports_issuetype_ids = TBGIssueTypesTable::getTable()->getBugReportTypeIDs();
-							foreach ($bug_reports_issuetype_ids as $b_id)
-							{
-								$this->filters['issuetype'][] = array('operator' => '=', 'value' => $b_id);
-							}
 							break;
 						case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
 							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_CLOSED);
-							$bug_reports_issuetype_ids = TBGIssueTypesTable::getTable()->getBugReportTypeIDs();
-							foreach ($bug_reports_issuetype_ids as $b_id)
-							{
-								$this->filters['issuetype'][] = array('operator' => '=', 'value' => $b_id);
-							}
 							break;
 						case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
 							$this->groupby = 'milestone';
