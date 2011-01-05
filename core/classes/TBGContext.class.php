@@ -647,7 +647,7 @@
 			
 			while ($theme = readdir($theme_path_handle))
 			{
-				if (strstr($theme, '.') == '') 
+				if (strstr($theme, '.') == '' && $theme != 'modules') 
 				{ 
 					$themes[] = $theme; 
 				}
