@@ -517,7 +517,7 @@
 			}
 			if ($theIssue instanceof TBGIssue)
 			{
-				$output = link_tag(make_url('viewissue', array('issue_no' => $theIssue->getIssueNo(true), 'project_key' => $theIssue->getProject()->getKey())), $theIssue->getFormattedTitle(), array('class' => $classname));
+				$output = link_tag(make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo(false), 'project_key' => $theIssue->getProject()->getKey())), $theIssue->getFormattedTitle(), array('class' => $classname));
 			}
 			else
 			{
