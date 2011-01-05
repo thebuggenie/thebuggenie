@@ -50,7 +50,7 @@
 			$module_config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => 'configure_modules', 'description' => $i18n->__('Module settings'), 'icon' => 'modules', 'details' => $i18n->__('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
 			foreach (TBGContext::getModules() as $module)
 			{
-				if ($module->hasAccess() && $module->hasConfigSettings())
+				if ($module->hasAccess() && $module->hasConfigSettings() && $module->isEnabled())
 				{
 					$module_config_sections[TBGSettings::CONFIGURATION_SECTION_MODULES][] = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => $module->getConfigTitle(), 'icon' => $module->getName(), 'details' => $module->getConfigDescription(), 'module' => $module->getName());
 				}
@@ -1750,7 +1750,11 @@
 			try
 			{
 				$module = TBGContext::getModule($request->getParameter('config_module'));
-				if (!$module->hasConfigSettings())
+				if (!$module->isEnabled())
+				{
+					throw new Exception('disabled');
+				}
+				elseif (!$module->hasConfigSettings())
 				{
 					throw new Exception('module not configurable');
 				}
