@@ -36,7 +36,7 @@
 						<?php if (!$issue->getIssueType()->isTask()): ?>
 							<tr class="hover_highlight">
 								<td style="padding: 3px 0 3px 3px;"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('title' => $issue->getIssueType()->getName())); ?></td>
-								<td style="padding: 3px 3px 3px 5px; font-weight: bold; font-size: 13px;"><?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getIssueNo(), 'project_key' => $issue->getProject()->getKey())), $issue->getFormattedTitle()); ?></td>
+								<td style="padding: 3px 3px 3px 5px; font-weight: bold; font-size: 13px;"><?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(false), 'project_key' => $issue->getProject()->getKey())), $issue->getFormattedTitle()); ?></td>
 								<td class="estimates" <?php if (!$issue->getEstimatedPoints()): ?> class="faded_out"<?php endif; ?> id="scrum_story_<?php echo $issue->getID(); ?>_points"><?php echo $issue->getEstimatedPoints(); ?></td>
 								<td class="estimates faded_out">-</td>
 								<td style="padding: 3px;">
