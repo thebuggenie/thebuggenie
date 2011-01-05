@@ -561,6 +561,10 @@
 				switch ($request->getParameter('mode'))
 				{
 					case 'information':
+						if (!$request->getParameter('buddyname') || !$request->getParameter('email'))
+						{
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please fill out all the required fields')));
+						}
 						TBGContext::getUser()->setBuddyname($request->getParameter('buddyname'));
 						TBGContext::getUser()->setRealname($request->getParameter('realname'));
 						TBGContext::getUser()->setHomepage($request->getParameter('homepage'));
