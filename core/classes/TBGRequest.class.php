@@ -131,7 +131,17 @@
 								{
 									TBGLogging::log('Upload complete and ok, storing upload status and returning filename '.$new_filename);
 									$content_type = TBGContext::getMimeType($files_dir.$new_filename);
-									$file = TBGFile::createNew($new_filename, basename($thefile['name']), $content_type, $this->getParameter($key.'_description'), ((TBGSettings::getUploadStorage() == 'database') ? file_get_contents($files_dir.$new_filename) : null));
+									$file = new TBGFile();
+									$file->setRealFilename($new_filename);
+									$file->setOriginalFilename(basename($thefile['name']));
+									$file->setContentType($content_type);
+									$file->setDescription($this->getParameter($key.'_description'));
+									if (TBGSettings::getUploadStorage() == 'database')
+									{
+										$file->setContent(file_get_contents($files_dir.$new_filename));
+									}
+									$file->save();
+									//$file = TBGFile::createNew($new_filename, basename($thefile['name']), $content_type, $this->getParameter($key.'_description'), ((TBGSettings::getUploadStorage() == 'database') ? file_get_contents($files_dir.$new_filename) : null));
 									$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')] = array(
 										'id'       => $this->getParameter('APC_UPLOAD_PROGRESS'),
 										'finished' => true,
