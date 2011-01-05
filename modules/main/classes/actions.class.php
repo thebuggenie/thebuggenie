@@ -339,10 +339,6 @@
 				{
 					throw new Exception($i18n->__(TBGContext::getMessageAndClear('forward')));
 				}
-				else 
-				{
-					throw new Exception($i18n->__('An internal error has occured'));
-				}
 			}
 			catch (Exception $e)
 			{
