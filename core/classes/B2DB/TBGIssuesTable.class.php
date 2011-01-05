@@ -90,7 +90,7 @@
 			parent::_addForeignKeyColumn(self::POSTED_BY, TBGUsersTable::getTable(), TBGUsersTable::ID);
 			parent::_addInteger(self::OWNER, 10);
 			parent::_addInteger(self::OWNER_TYPE, 2);
-			parent::_addFloat(self::USER_PAIN, 1);
+			parent::_addFloat(self::USER_PAIN, 3);
 			parent::_addInteger(self::PAIN_BUG_TYPE, 3);
 			parent::_addInteger(self::PAIN_EFFECT, 3);
 			parent::_addInteger(self::PAIN_LIKELIHOOD, 3);
