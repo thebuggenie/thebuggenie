@@ -11,8 +11,8 @@
 		</div>
 		<div id="login_menu_panes">
 			<div id="tab_login_pane"<?php if ($selected_tab != 'login'): ?> style="display: none;"<?php endif; ?>>
-				<script>
-					if (document.location.href.search('<?php echo make_url('login_redirect'); ?>'))
+				<script language="text/javascript">
+					if (document.location.href.search('<?php echo make_url('login_redirect'); ?>') != -1)
 					{
 						$('tbg3_referer').setValue('<?php echo make_url('dashboard'); ?>');
 					}
