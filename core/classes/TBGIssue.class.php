@@ -616,13 +616,13 @@
 					try
 					{
 						$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
-						if (!$issue->hasAccess()) continue;
+						if (!$issue->hasAccess() || $issue->getProject()->isDeleted()) continue;
 						$issues[] = $issue;
 					}
 					catch (Exception $e) {}
 				}
 			}
-			return array($issues, $count);
+			return array($issues, count($issues));
 		}
 
 		public static function findIssuesByText($text)
