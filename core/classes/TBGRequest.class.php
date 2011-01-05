@@ -71,7 +71,7 @@
 							if ($extension == '')
 							{
 								TBGLogging::log('OOps, could not determine upload filetype', 'main', TBGLogging::LEVEL_WARNING_RISK);
-								throw new Exception(TBGContext::getI18n()->__('Could not determine filetype'));
+								//throw new Exception(TBGContext::getI18n()->__('Could not determine filetype'));
 							}
 							else
 							{
@@ -110,11 +110,11 @@
 										throw new Exception(TBGContext::getI18n()->__('This filetype is not allowed'));
 									}
 								}
-								if (in_array(strtolower(trim($extension)), array('php', 'asp')))
+								/*if (in_array(strtolower(trim($extension)), array('php', 'asp')))
 								{
 									TBGLogging::log('Upload extension is php or asp');
 									throw new Exception(TBGContext::getI18n()->__('This filetype is not allowed'));
-								}
+								}*/
 							}
 							if (is_uploaded_file($thefile['tmp_name']))
 							{
