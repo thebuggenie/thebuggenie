@@ -208,8 +208,8 @@
 	$strings['Blocking further progress on the daily build'] = 'Bloquea el avance en la construcción diaria';
 	$strings['A User would return the product / cannot RTM / the team would hold the release for this bug'] = 'Un usuario puede devolver el producto / no se puede RTM / el equipo tiene que mantener la liberación para este error';
 	$strings['A User would likely not purchase the product / will show up in review / clearly a noticeable issue'] = 'Un usuario no puede comprar el producto / se mostrará en la revisión / claramente es un problema notable';
-	$strings['A Pain â€“ users won\'t like this once they notice it / a moderate number of users won\'t buy'] = 'Pena – A los usuarios no les gusta esto / una cantidad moderada de usuarios puede no comprar';
-	$strings['Nuisance â€“ not a big deal but noticeable / extremely unlikely to affect sales'] = 'Molestia – no es un gran problema pero se nota / muy poco probable que afecte las ventas';
+	$strings['A Pain – users won\'t like this once they notice it / a moderate number of users won\'t buy'] = 'Pena – A los usuarios no les gusta esto / una cantidad moderada de usuarios puede no comprar';
+	$strings['Nuisance – not a big deal but noticeable / extremely unlikely to affect sales'] = 'Molestia – no es un gran problema pero se nota / muy poco probable que afecte las ventas';
 	$strings['Will affect all users'] = 'Afectará a todos los usuarios';
 	$strings['Will affect most users'] = 'Afectará a la mayoría de los usuarios';
 	$strings['Will affect average number of users'] = 'Afectará un número medio de usuarios';
@@ -1149,7 +1149,7 @@
 	$strings['Click this message to dismiss it'] = 'Haga clic en este mensaje para descartarlo';
 	$strings['You are not logged in'] = 'No ha ingresado';
 	$strings['No project selected'] = 'No hay proyecto seleccionado';
-	$strings['%thebuggenie%, <b>friendly</b> issue tracking since 2002'] = '%thebuggenie%, Seguimiento de problemas <b>amistoso</b> desde 2002';
+	$strings['%thebuggenie%, <b>friendly</b> issue tracking since 2002'] = '%thebuggenie%, Seguimiento de problemas <b>simple</b> desde 2002';
 	$strings['Only using The Bug Genie to track issues for one project?'] = '¿Sólo usa The Bug Genie para seguimiento de problemas de un proyecto?';
 	$strings['Configure &ndash;&gt; Settings'] = 'Configurar &ndash;&gt; Opciones';
 	$strings['It looks likes you\'re only using The Bug Genie to track issues for one project. If you don\'t want to use this homepage, you can set The Bug Genie to <i>single project tracker mode</i>, which will automatically forward the frontpage to the project overview page.<br><br><i>Single project tracker mode</i> can be enabled from %configure_settings%.'] = 'Parece que sólo usa The Bug Genie para seguir problemas de un proyecto. Si no quiere utilizar esta página de inicio, puede establecer a The Bug Genie en <i>modo de seguimiento de proyecto único</i>, lo cual llevará automáticamente al resumen del proyecto.<br><br><i>El modo de seguimiento de proyecto único</i> puede ser habilitado desde %configure_settings%.';
@@ -1491,7 +1491,7 @@
 
 // Missing strings from en_US but use i18n   
         $strings['Oh noes! There are no projects!'] = 'Oh no! No hay proyectos!'; 
-        $strings['It doesn\'t look like you have had the chance to add any projects yet. If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can import some sample data before adding your own projects.'] = 'Parece que no ha tenido la oportunidad de agregar ningun proyecto. Si quiere jugar un poco con The Bug Genie antes de comenzar con sus propios proyectos, puede imporat algunso datos de ejemplo antes de comenzar con sus proyectos.'; 
+        $strings['It doesn\'t look like you have had the chance to add any projects yet. If you want to play around a bit with The Bug Genie before you start using it for your own projects, you can import some sample data before adding your own projects.'] = 'Parece que no ha tenido la oportunidad de agregar ningun proyecto. Si quiere jugar un poco con The Bug Genie antes de comenzar con sus propios proyectos, puede importar algunos datos de ejemplo antes de comenzar con sus proyectos.'; 
         $strings['Configure –> Import'] = 'Configurar –> Importar'; 
         $strings['Sample data can be imported from %configure_import%.'] = 'Datos de ejemplos pueden set importados desde %configure_import%.'; 
         $strings['VCS Integration'] = 'Integración VCS'; 
@@ -1501,8 +1501,6 @@
         $strings['Enables Wiki-functionality'] = 'Habilita funcionalidad Wiki'; 
         $strings['Set up the Wiki module from this section'] = 'Configure el módulo wiki desde esta sección'; 
         $strings['Choose %issuetype%'] = 'Elija %issuetype%'; 
-        $strings['A Pain – users won\'t like this once they notice it / a moderate number of users won\'t buy'] = 'Pena – A los usuarios no les gusta esto / una cantidad moderada de usuarios puede no comprar'; 
-        $strings['Nuisance – not a big deal but noticeable / extremely unlikely to affect sales'] = 'Molestia – no es un gran problema pero se nota / muy poco probable que afecte las ventas'; 
         $strings['Summary'] = 'Resumen'; 
         $strings['Sprint planning'] = 'Planeamiento del Sprint'; 
         $strings['Team overview'] = 'Resumen del Equipo'; 
@@ -1517,6 +1515,14 @@
         $strings['This is your personal dashboard'] = 'Este es su panel personal'; 
         $strings['Your dashboard can be configured and personalized. To configure what views to show on this dashboard, click the "Customize dashboard"-icon to the far right, below this box.'] = 'Su panel de control puede ser configurado y personalizado. Para definir que vistas mostrar en este panel, haga clic en el icono "Personalizar Panel de control" para hacerlo, debajo de este bloque.'; 
         $strings['Your dashboard page is accessible from anywhere - click your username in the top right header area at any time to access your dashboard.'] = 'Su página de panel de control es accesible desde cualquier posición - haga clic en su nombre de usuario, en la cabecera arriba a la derecha en cualquier momento para acceder a su panel.'; 
+		$strings['Customize your dashboard'] = 'Personalizar su panel de control';
+		$strings['Configure my personal dashboard'] = 'Personalizar mi panel de control';
+		$strings['Save my dashboard'] = 'Guardar mi panel de control';
+		$strings['Add a view to my dashboard'] = 'Agregar una vista a mi panel';
+		$strings['When you\'re happy, save your changes'] = 'Cuando esté conforme, guarde los cambios';
+		$strings['...Select a view...'] = '...Seleccione una vista...';
+		$strings['Unknown user said'] = 'Usuario desconocido dijo';
+
         $strings['No issues in this list'] = 'No hay problemas en esta lista'; 
         $strings['Target milestone changed: %text%'] = 'Punto de control cambiado: %text%'; 
         $strings['Customize your dashboard'] = 'Personalizar el panel'; 
@@ -1622,7 +1628,7 @@
         
         $strings['Import data'] = 'Importar datos'; 
         $strings['Import data from CSV files and other sources.'] = 'Importar datos desde archivos CSV y otras fuentes.'; 
-        $strings['Users, teams, clients & groups'] = 'Usuarios, equipos, clientes y grupos';
+        $strings['Users, teams, clients &amp; groups'] = 'Usuarios, equipos, clientes y grupos';
         
         $strings['Manage users, user groups, clients and user teams from this section.'] = 'Gestione usuarios, grupos de usuarios, clientes y equipos desde esta sección.'; 
         $strings['Clients'] = 'Clientes'; 
@@ -1648,7 +1654,7 @@
         $strings['import instructions'] = 'las instrucciones para importar'; 
         $strings['You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %import instructions% wiki article for further details and instructions.'] = 'Puede importar datos desde un archivo CSV copiado en el casilla de tecto de The Bug Genie, exportado desde otras fuentes. Por favor vea %import instructions% del artículo en wiki para mayor detalle.'; 
         $strings['What data would you like to import?'] = '¿Qué datos le gustaria importar?'; 
-        $strings['When you select a type, you will be given the opportunity to copy in your CSV file, and import the data.'] = 'Cuando selecciona un tipo, está dando la oportunidad para copiar su archivo CSV e importar los datos.';
+        $strings['When you select a type, you will be given the opportunity to copy in your CSV file, and import the data.'] = 'Cuando seleccione un tipo, podrá copiar su archivo CSV e importar los datos.';
         $strings['You can import data from previous version of The Bug Genie into your version 3 installation.'] = 'Puede importar datos de versiones anteriores de The Bug Genie en su instalación de la versión 3.'; 
         $strings['BUGS 1.x'] = 'BUGS 1.x'; 
         $strings['Please upgrade to BUGS 1.9, followed by The Bug Genie 2 (an upgrade script is included in the installation package for The Bug Genie 2). After upgrading, then follow the instructions below to upgrade from The Bug Genie 2.'] = 'Por favor actualice a BUGS 1.9, seguido de The Bug Genie 2 (un script de actualización está incluido en el paquete de instalación de The Bug Genie 2). Luego de actualizar, siga las instrucciones que están a continuación para actualizar desde The Bug Genie 2.'; 
@@ -1657,7 +1663,11 @@
         $strings['Importing sample data'] = 'Importando datos de ejemplo'; 
         $strings['The Bug Genie can load sample data for you, so you can play around without having to use your own data. Press the button below to import sample projects and issues.'] = 'The Bug Genie puede cargar datos de ejemplos por usted, entonces puede utilizarlos sin alterar los suyos. Presione el siguiente botón para importar los proyectos de ejemplo y sus problemas.';       
         $strings['Import sample data'] = 'Importar datos de ejemplo';         
-        
+        $strings['Import content from CSV'] = 'Importar contenido del archivo CSV';
+		$strings['Import'] = 'Importar';
+		$strings['Please paste your CSV file into the box below and press Import to import your data. By default a dry-run will be used so any errors in your data can be found and fixed before importing proper. To turn off the dry-run mode, uncheck the box below.'] = 'Por favor pegue el contenido del archivo CSV en el cuadro inferior y presione Importar para importar los datos. Por defecto el modo prueba será usado, por lo tanto cualquier error en sus datos puede ser corregido antes de la importación. Para apagar el modo prueba desmarque la casilla.';
+		$strings['When importing issues, The Bug Genie will ignore the reportable and required properties of issue fields. However you can not set custom fields for issues via this import mechanism.'] = 'Cuando importe problemas, The Bug Genie ignorará las propiedades notificable y obligatorio de los campos del problema. Sin embargo no puede establecer campos personalizados para los problemas importados por este método.';
+		$strings['Test the import (dry-run)'] = 'Probar la importación';
         $strings['Edit project permissions'] = 'Editar permisos del proyecto'; 
         $strings['permissions configuration'] = 'configuración de permisos'; 
         $strings['These permissions control what you can do, and which pages you can access in The Bug Genie - on a project-specific basis. Some of these permissions are also available as site-wide permissions in the %permissions_configuration% page.'] = 'Estos permisos controlan lo que se puede hacer, y a que páginas se pueden acceder en The Bug Genie - dentro de un proyecto específico. Algunos de estos permisos también están disponibles como permisos globales en la página %permissions_configuration%.';         
@@ -1720,6 +1730,7 @@
         $strings['Sprint starts'] = 'inicio de Sprint'; 
         $strings['Sprint ends'] = 'fin de Sprint'; 
         $strings['Adding sprint, please wait'] = 'Agregando spront, espere por favor';
+		$strings['Sprints are created as milestones for this project, which can be edited in the project configuration.']='Cada sprint es creado como un punto de control de este proyecto, el cual puede ser editado en la configuración del proyecto.';
         $strings['No sprints have been defined for this project'] = 'No se han definido sprints para este proyecto'; 
         $strings['Unassigned items / project backlog'] = 'Itmes sin asignar / backlog del proyecto'; 
         $strings['Create a user story'] = 'Crear una nueva historia de usuario'; 
@@ -1727,12 +1738,17 @@
         $strings['Reassigning, please wait'] = 'Reasignando, espere por favor'; 
         $strings['There are no items in the project backlog'] = 'No hay items en el backlog del proyecto';
                  
-        $strings['%num_closed% issue(s) closed of %num_assigned% assigned'] = '%num_closed% problema(s) cerrado(s) de %num_assigned% asignados'; 
+        $strings['%num_closed% issue(s) closed of %num_assigned% assigned'] = '%num_closed% problema(s) cerrado(s) de %num_assigned% asignados';
+        $strings['%milestone_name% (reached: %date%)'] = '%milestone_name% (alcanzado: %date%)';  
         $strings['%milestone_name% (will be released: %date%)'] = '%milestone_name% (será liberado: %date%)';      
         
         $strings['No recent activity registered for this project.'] = 'No hay actividad reciente registrada para este proyecto.'; 
         $strings['As soon as something important happens it will appear here.'] = 'Tan pronto suceda algo importante aparecerá aquí.';
         
         $strings['Most voted issues for %project_name%'] = 'Problema más votado para %project_name%';
-        $strings['RSS feed'] = 'Canal RSS';      
+        $strings['All open issues'] = 'Todos los problemas abiertos'; 
+        $strings['All closed issues'] = 'Todos los problemas cerrados'; 
+        $strings['Most voted issues'] = 'Problemas más votados';         
+        $strings['RSS feed'] = 'Canal RSS';
+              
 // End missing strings        

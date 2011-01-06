@@ -77,13 +77,13 @@
 	$strings['Email when password is reset'] = 'Correo cuando se restablece la contraseña';
 	$strings['Timeout in seconds (default is 30)'] = 'Tiempo de espera en segundos (30 por defecto)';
 
-	$strings['Email communication'] = 'Email communication';
-	$strings['Enables in- and outgoing email functionality'] = 'Enables in- and outgoing email functionality';
-	$strings['Set up in- and outgoing email communication from this section'] = 'Set up in- and outgoing email communication from this section';
-	$strings['Notifications'] = 'Notifications';
-	$strings['Email when an issue is updated'] = 'Email when an issue is updated';
-	$strings['Javascript Mailing'] = 'Javascript Mailing';
-	$strings['The email module is not configured for outgoing emails'] = 'The email module is not configured for outgoing emails';
+	$strings['Email communication'] = 'Comunicación por correo';
+	$strings['Enables in- and outgoing email functionality'] = 'Habilita la funcionalidad de correo entrante/saliente';
+	$strings['Set up in- and outgoing email communication from this section'] = 'Defina la comunicación para correo entrante y saliente desde esta sección';
+	$strings['Notifications'] = 'Notificaciones';
+	$strings['Email when an issue is updated'] = 'Correo cuando un problema es actualizado';
+	$strings['Javascript Mailing'] = 'Correo Javascript';
+	$strings['The email module is not configured for outgoing emails'] = 'El módulo de correo no está configurado para correo saliente';
 	$strings['Forgot password'] = 'Olvido de contraseña';
 	$strings['Forgot password?'] = '¿Olvidó su contraseña?';
 	$strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'] = 'If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password';
@@ -91,10 +91,11 @@
 	$strings['To register, please fill out the information below.'] = 'To register, please fill out the information below.';
 	$strings['Cannot find an email address for this user'] = 'Cannot find an email address for this user';
 	$strings['Forbidden for this username, please contact your administrator'] = 'Forbidden for this username, please contact your administrator';
-	$strings['Please enter an username'] = 'Please enter an username';
+	$strings['Please provide a valid setting for SMTP server address'] = 'Por favor defina un valor para la dirección del servidor de correo SMTP';
+	$strings['Please enter an username'] = 'Ingrese un nombre de usuario por favor';
 	$strings['The email was successfully accepted for delivery'] = 'The email was successfully accepted for delivery';
-	$strings['The email was not sent'] = 'The email was not sent';
-	$strings['Please specify an email address'] = 'Please specify an email address';
+	$strings['The email was not sent'] = 'El correo no fue enviado';
+	$strings['Please specify an email address'] = 'Por favor establezca una dirección de correo';
 	$strings['You need to add at least one recipient'] = 'Es necesario agregar al menos un receptor';
 	$strings['You need to add a sender name and address'] = 'You need to add a sender name and address';
 	$strings['Timed out during server conversation'] = 'Timed out during server conversation';
