@@ -152,7 +152,7 @@
 	$strings['Logged in as %name%'] = 'Registrado como %name%';
 	$strings['Logout'] = 'Salir';
 	$strings['Please wait, loading content'] = 'Por favor espere, cargando contenido';
-	$strings['Search for anything here'] = 'Encuentre lo que quiera desde aquí';
+	$strings['Search for anything here'] = 'Encuentre lo que desee desde aquí';
 	$strings['%num_milliseconds% ms'] = '%num_milliseconds% ms';
 	$strings['Page load time: %load_time%, with %num_queries% queries. Scope ID: %scope_id%.'] = 'Página cargada en: %load_time%, con %num_queries% consultas. Scope ID: %scope_id%.';
 	$strings['Issues reported by me'] = 'Problemas informados por mi';
@@ -1586,7 +1586,7 @@
         $strings['Show wiki'] = 'Mostrar wiki'; 
         $strings['Front page article'] = 'Artículo de portada'; 
         $strings['Create this article'] = 'Crear este artículo'; 
-        $strings['This is a placeholder for an article that has not been created yet. You can create it by clicking %create_this_article% below.'] = 'Esta es la unicación para el un artículo que no ha sido creado aún. Puede crearlo haciedo clic en %create_this_article%.';
+        $strings['This is a placeholder for an article that has not been created yet. You can create it by clicking %create_this_article% below.'] = 'Esta es la ubicación para el un artículo que no ha sido creado aún. Puede crearlo haciendo clic en %create_this_article%.';
         $strings['Create article'] = 'Crear artículo'; 
         $strings['Preview article'] = 'Vista previa del artículo';         
         $strings['You have to provide a reason for the changes'] = 'Tiene que dar un motivo para los cambios'; 
@@ -1729,8 +1729,8 @@
         $strings['Add sprint'] = 'Agregar sprint'; 
         $strings['Sprint starts'] = 'inicio de Sprint'; 
         $strings['Sprint ends'] = 'fin de Sprint'; 
-        $strings['Adding sprint, please wait'] = 'Agregando spront, espere por favor';
-		$strings['Sprints are created as milestones for this project, which can be edited in the project configuration.']='Cada sprint es creado como un punto de control de este proyecto, el cual puede ser editado en la configuración del proyecto.';
+        $strings['Adding sprint, please wait'] = 'Agregando sprint, espere por favor';
+		    $strings['Sprints are created as milestones for this project, which can be edited in the project configuration.']='Cada sprint es creado como un punto de control de este proyecto, el cual puede ser editado en la configuración del proyecto.';
         $strings['No sprints have been defined for this project'] = 'No se han definido sprints para este proyecto'; 
         $strings['Unassigned items / project backlog'] = 'Itmes sin asignar / backlog del proyecto'; 
         $strings['Create a user story'] = 'Crear una nueva historia de usuario'; 
@@ -1750,5 +1750,54 @@
         $strings['All closed issues'] = 'Todos los problemas cerrados'; 
         $strings['Most voted issues'] = 'Problemas más votados';         
         $strings['RSS feed'] = 'Canal RSS';
-              
+        
+         $strings['Sprint burndown graph -'] = 'Gráfico de burn down -';
+         $strings['Show sprint overview and details'] = 'Muestra resumen y detalles del sprint';
+         $strings['Remaining effort'] = 'Esfuerzo restante';
+         $strings['This story doesn\'t have any tasks'] = 'Esta historia no tiene ninguna tarea';
+         $strings['New story estimate'] = 'Nueva estimación de historia';
+         $strings['New task estimate'] = 'Nueva estimación de tarea';
+
+
+         $strings['Burndown Line'] = 'Línea burn down';
+         $strings['Starting %start_date%'] = 'Inicio %start_date%';
+         $strings['Click to show assigned stories for this sprint'] = 'Haga clic para mostrar las historias asignadas para este sprint';
+         $strings['%hours% hrs / %points% pts'] = '%hours% hrs / %points% pts'; 
+         $strings['Pick a color for this user story'] = 'Seleccione un color para esta historia de usuario'; 
+         $strings['Selecting a color makes the story easily recognizable'] = 'Al seleccionar un color en la historia la hace más identificable'; 
+         $strings['Change estimate'] = 'Cambiar estimación'; 
+         $strings['%points%pt(s)'] = '%points%pt(s)'; 
+         $strings['%set% or %cancel%'] = '%set% o %cancel%'; 
+         $strings['Open in new window'] = 'Abrir en nueva ventana'; 
+         $strings['Add a task to this user story'] = 'Agregar una tarea a esta historia'; 
+         $strings['Show tasks for this user story'] = 'Mostrar tareas de esta historia'; 
+         $strings['%hours% hr(s)'] = '%hours% h(s)'; 
+         $strings['No user stories assigned to this sprint'] = 'Sin historias de usuario asignadas a este sprint';
+         $strings['%sprint_name% overview'] = 'Resumen %sprint_name%'; 
+         $strings['"%project_name%" sprint overview'] = 'Resumen del sprint "%project_name%"';   
+          
+         $strings['starts'] = 'inicio';
+         $strings['ends'] = 'fin';
+         $strings['Estimated hours'] = 'Horas estimadas';
+         $strings['Date'] = 'Día';
+         $strings['Points'] = 'Puntos';
+         $strings['Total estimated effort'] = 'Esfuerzo estimado';
+         $strings['Current effort'] = 'Esfuerzo real';
+         $strings['Total remaining effort'] = 'Esfuerzo restante';
+         $strings['Comment posted on behalf of %user%'] = 'Comentario publicado por %user%'; 
+         $strings['This issue must be closed before the issue relation is solved'] = 'Este problema debe ser cerrado antes que el problema vinculado';
+         $strings['Assigned to %user%'] = 'Asignado a %user%';  
+         
+         $strings['Resolve the issue'] = 'Resolución del problema';
+         $strings['Resolution isn\'t visible for this issuetype / product combination'] = 'La resolución no está visible para esta combinación de tipo de problema/producto';               
+         $strings['Log time spent'] = 'Registrar tiempo transcurrido';
+         $strings['Resolve issue'] = 'Resolver el problema';
+         $strings['%milestone_name% (started %start_date% - ends %end_date%)'] = '%milestone_name% (comenzó %start_date% - finalizó %end_date%)'; 
+         $strings['This relation is solved because the issue has been closed'] = 'Esta relación está resuelta porque el problema ha sido cerrado';   
+         $strings['Estimation changed: %text%'] = 'Cambio en estimación: %text%';
+         $strings['There are no uninstalled modules available'] = 'No hay módulos disponibles desinstalados';
+        
+         $strings['In this tab you can add/remove/edit what issue types are available to issue type schemes. If you add a new issue type on this page, remember to associate it to an issue type scheme on the %issue_type_schemes% tab to get it to show up for users.'] = 'En esta pestaña puede agregar/editar/quitar los tipos de problemas disponibles para el esquema de tipos de problemas. Si agrega un nuevo tipo de problema en esta página, recuerde asociarlo a un esquema de tipos de problemas en la pestaña %issue_type_schemes% para dejarlo disponible a los usuarios.'; 
+         $strings['Delete issue type'] = 'Borrar tipo de problema';
+         $strings['Issue type deleted'] = 'Tipo de problema borrado';
 // End missing strings        
