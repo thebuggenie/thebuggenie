@@ -84,7 +84,7 @@
 			<td><label for="allow_changing_without_working"><?php echo __('Allow freelancing'); ?></label></td>
 			<td>
 				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-					<select name="allow_changing_without_working" id="allow_changing_without_working">
+					<select name="allow_changing_without_working" id="allow_changing_without_working" style="width: 70px;">
 						<option value=1<?php if ($project->canChangeIssuesWithoutWorkingOnThem()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
 						<option value=0<?php if (!$project->canChangeIssuesWithoutWorkingOnThem()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
 					</select>
@@ -100,7 +100,7 @@
 			<td><label for="allow_autoassignment"><?php echo __('Enable autoassignment'); ?></label></td>
 			<td>
 				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-					<select name="allow_autoassignment" id="allow_autoassignment">
+					<select name="allow_autoassignment" id="allow_autoassignment" style="width: 70px;">
 						<option value=1<?php if ($project->canAutoassign()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
 						<option value=0<?php if (!$project->canAutoassign()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
 					</select>

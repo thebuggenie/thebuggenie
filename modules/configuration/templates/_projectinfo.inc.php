@@ -1,6 +1,6 @@
 <table style="width: 790px;" cellpadding=0 cellspacing=0>
 	<tr class="hover_highlight">
-		<td style="padding: 2px; width: 200px;">
+		<td style="padding: 4px; width: 200px;">
 			<b><?php echo __('Project owner'); ?></b>
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 				<?php include_component('main/identifiableselector', array(	'html_id'		=> 'owned_by_change',
@@ -13,7 +13,7 @@
 																		'include_teams'		=> true)); ?>
 			<?php endif; ?>
 		</td>
-		<td style="<?php if (!$project->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px;" id="owned_by_name">
+		<td style="<?php if (!$project->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px; width: 580px;" id="owned_by_name">
 			<div style="width: 270px; display: <?php if ($project->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" id="owned_by_name">
 				<?php if ($project->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
 					<?php echo include_component('main/userdropdown', array('user' => $project->getOwner())); ?>
@@ -31,7 +31,7 @@
 	</tr>
 	<tr><td colspan="3" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('The project owner has total control over this project and can edit information, settings, and anything about it'); ?></td></tr>
 	<tr class="hover_highlight">
-		<td style="padding: 2px;">
+		<td style="padding: 4px;">
 			<b><?php echo __('Lead by'); ?></b>
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 				<?php include_component('main/identifiableselector', array(	'html_id'		=> 'lead_by_change',
@@ -62,7 +62,7 @@
 	</tr>
 	<tr><td colspan="3" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('The project lead will automatically be assigned issues. This can be overriden by component and edition leads, as well as manually specifing when creating an issue.'); ?></td></tr>
 	<tr class="hover_highlight">
-		<td style="padding: 2px;">
+		<td style="padding: 4px;">
 			<b><?php echo __('QA responsible'); ?></b>
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 				<?php include_component('main/identifiableselector', array(	'html_id'		=> 'qa_by_change',
@@ -97,21 +97,6 @@
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="submitProjectInfo('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>'); return false;" id="project_info">
 <?php endif; ?>
 <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
-		<tr>
-			<td><label for="client"><?php echo __('Client'); ?></label></td>
-			<td>
-				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-					<select name="client" id="client" style="width: 100%">
-						<option value="0"<?php if ($project->getClient() == null): ?> selected<?php endif; ?>><?php echo __('No client'); ?></option>
-						<?php foreach (TBGClient::getAll() as $client): ?>
-							<option value=<?php echo $client->getID(); ?><?php if (($project->getClient() instanceof TBGClient) && $project->getClient()->getID() == $client->getID()): ?> selected<?php endif; ?>><?php echo $client->getName(); ?></option>
-						<?php endforeach; ?>
-					</select>
-				<?php else: ?>
-					<?php if ($project->getClient() == null): echo __('No client'); else: echo $project->getClient()->getName(); endif; ?>
-				<?php endif; ?>
-			</td>
-		</tr>
 	<tr>
 		<td style="width: 200px;"><label for="project_name"><?php echo __('Project name'); ?></label></td>
 		<td style="width: 580px;">
@@ -122,7 +107,21 @@
 			<?php endif; ?>
 		</td>
 	</tr>
-	<?php TBGEvent::createNew('core', 'configuration/projectinfo', $project)->trigger(); ?>
+	<tr>
+		<td><label for="client"><?php echo __('Client'); ?></label></td>
+		<td>
+			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+				<select name="client" id="client" style="width: 100%">
+					<option value="0"<?php if ($project->getClient() == null): ?> selected<?php endif; ?>><?php echo __('No client'); ?></option>
+					<?php foreach (TBGClient::getAll() as $client): ?>
+						<option value=<?php echo $client->getID(); ?><?php if (($project->getClient() instanceof TBGClient) && $project->getClient()->getID() == $client->getID()): ?> selected<?php endif; ?>><?php echo $client->getName(); ?></option>
+					<?php endforeach; ?>
+				</select>
+			<?php else: ?>
+				<?php if ($project->getClient() == null): echo __('No client'); else: echo $project->getClient()->getName(); endif; ?>
+			<?php endif; ?>
+		</td>
+	</tr>
 	<tr>
 		<td><label for="use_prefix"><?php echo __('Use prefix'); ?></label></td>
 		<td>
@@ -187,6 +186,7 @@
 			<?php endif; ?>
 		</td>
 	</tr>
+	<?php TBGEvent::createNew('core', 'configuration/projectinfo', $project)->trigger(); ?>
 <?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 	<tr>
 		<td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
