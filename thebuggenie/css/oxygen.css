@@ -103,7 +103,7 @@ div.image_container.thumb img.image { width: 220px; }
 
 /* login and registration page styling */
 #tab_login_pane { text-align: left; }
-#tab_login_pane .article { margin-left: 140px; }
+#tab_login_pane .article { margin-left: 140px; width: 500px; }
 .logindiv { margin-left: auto; margin-right: auto; text-align: center; border: 0px; padding: 10px; width: auto; width: 500px; }
 .login_boxheader { font-size: 1.4em; font-weight: bold; padding-bottom: 10px; }
 .login_fieldheader { font-weight: bold; }
