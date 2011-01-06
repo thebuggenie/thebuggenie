@@ -31,6 +31,8 @@
 			<?php echo image_tag('action_start_working.png'); ?>
 			<?php if ($issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
 				<div class="header"><?php echo __('You have been working on this issue since %time%', array('%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
+			<?php elseif ($issue->getAssignee() instanceof TBGTeam): ?>
+				<div class="header"><?php echo __('%teamname% has been working on this issue since %time%', array('%teamname%' => $issue->getAssignee()->getName(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
 			<?php else: ?>
 				<div class="header"><?php echo __('%user% has been working on this issue since %time%', array('%user%' => $issue->getUserWorkingOnIssue()->getNameWithUsername(), '%time%' => tbg_formatTime($issue->getWorkedOnSince(), 6))); ?></div>
 			<?php endif; ?>

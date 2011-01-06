@@ -5,7 +5,7 @@ function toggleFavourite(url, issue_id)
 	$('issue_favourite_faded').hide();
 	new Ajax.Request(url, {
 		method: 'post',
-		parameters: { issue_id: issue_id },
+		parameters: {issue_id: issue_id},
 		requestHeaders: {Accept: 'application/json'},
 		onSuccess: function(transport) {
 			var json = transport.responseJSON;
@@ -250,7 +250,7 @@ function updateDualFieldFromJSON(dualfield, field)
 	else
 	{
 		$(field + '_content').update(dualfield.name);
-		if (field == 'status') $('status_color').setStyle({ backgroundColor: dualfield.color});
+		if (field == 'status') $('status_color').setStyle({backgroundColor: dualfield.color});
 		else if (field == 'issuetype') $('issuetype_image').src = dualfield.src;
 		$('no_' + field).hide();
 		$(field + '_table').show();
@@ -788,3 +788,26 @@ function addAffected(url)
 	});
 }
 
+function updateWorkflowAssignee(url, assignee_id, assignee_type)
+{
+	$('popup_no_assigned_to').hide();
+	$('popup_assigned_to_name').show();
+	_updateDivWithJSONFeedback(url, 'popup_assigned_to_name', 'popup_assigned_to_name_indicator');
+	$('popup_assigned_to_id').setValue(assignee_id);
+	$('popup_assigned_to_type').setValue(assignee_type);
+	$('popup_assigned_to_teamup').setValue(0);
+	$('popup_assigned_to_teamup_info').hide();
+	$('popup_assigned_to_change').hide();
+}
+
+function updateWorkflowAssigneeTeamup(url, assignee_id, assignee_type)
+{
+	$('popup_no_assigned_to').hide();
+	$('popup_assigned_to_name').show();
+	_updateDivWithJSONFeedback(url, 'popup_assigned_to_name', 'popup_assigned_to_name_indicator');
+	$('popup_assigned_to_id').setValue(assignee_id);
+	$('popup_assigned_to_type').setValue(assignee_type);
+	$('popup_assigned_to_teamup').setValue(1);
+	$('popup_assigned_to_teamup_info').show();
+	$('popup_assigned_to_change').hide();
+}

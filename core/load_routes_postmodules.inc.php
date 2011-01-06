@@ -10,6 +10,7 @@
 	$routes[] = array('openissue', '/:project_key/issue/:issue_id/open', 'main', 'reopenIssue');
 	$routes[] = array('block', '/:project_key/issue/:issue_id/block', 'main', 'markAsBlocker');
 	$routes[] = array('unblock', '/:project_key/issue/:issue_id/unblock', 'main', 'markAsNotBlocker');
+	$routes[] = array('issue_gettempfieldvalue', '/:project_key/issue/:issue_id/get/temp/value/for/:field/*', 'main', 'issueGetTempFieldValue');
 	$routes[] = array('issue_setfield', '/:project_key/issue/:issue_id/set/:field/*', 'main', 'issueSetField');
 	$routes[] = array('issue_revertfield', '/:project_key/issue/:issue_id/revert/:field', 'main', 'issueRevertField');
 	$routes[] = array('main_find_identifiable', '/find/identifiable/by/*', 'main', 'findIdentifiable');

@@ -175,13 +175,45 @@
 					break;
 				case self::ACTION_ASSIGN_ISSUE:
 					if ($this->getTargetValue())
+					{
 						$issue->setAssignee(TBGContext::factory()->TBGUser((int) $this->getTargetValue()));
+					}
 					else
-						$issue->setAssignee(TBGContext::factory()->TBGUser((int) $request->getParameter('assignee_id')));
+					{
+						$assignee = null;
+						switch ($request->getParameter('assignee_type'))
+						{
+							case TBGIdentifiableClass::TYPE_USER:
+								$assignee = TBGContext::factory()->TBGUser($request->getParameter('assignee_id'));
+								break;
+							case TBGIdentifiableClass::TYPE_TEAM:
+								$assignee = TBGContext::factory()->TBGTeam($request->getParameter('assignee_id'));
+								break;
+						}
+						if ((bool) $request->getParameter('assignee_teamup', false))
+						{
+							$team = new TBGTeam();
+							$team->setName($assignee->getBuddyname() . ' & ' . TBGContext::getUser()->getBuddyname());
+							$team->setOndemand(true);
+							$team->save();
+							$team->addMember($assignee);
+							$team->addMember(TBGContext::getUser());
+							$assignee = $team;
+						}
+						$issue->setAssignee($assignee);
+					}
 					break;
 				case self::ACTION_USER_START_WORKING:
 					$issue->clearUserWorkingOnIssue();
-					$issue->startWorkingOnIssue($issue->getAssignee());
+					if ($issue->getAssignee() instanceof TBGTeam && $issue->getAssignee()->isOndemand())
+					{
+						$members = $issue->getAssignee()->getMembers();
+						$issue->startWorkingOnIssue(array_shift($members));
+					}
+					else
+					{
+						$issue->startWorkingOnIssue($issue->getAssignee());
+					}
 					break;
 				case self::ACTION_USER_STOP_WORKING:
 					if ($request->getParameter('did', 'nothing') == 'nothing')

@@ -3871,7 +3871,7 @@
 		{
 			return (bool) ($this->isFieldVisible('resolution') || $this->getResolution() instanceof TBGDatatype);
 		} 
-
+		
 		/**
 		 * Return whether or not the "editions" field is visible
 		 * 

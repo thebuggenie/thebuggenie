@@ -3188,4 +3188,26 @@
 			
 			return true;
 		}
+		
+		public function runIssueGetTempFieldValue(TBGRequest $request)
+		{
+			switch ($request->getParameter('field'))
+			{
+				case 'assigned_to':
+					if ($request->getParameter('identifiable_type') == TBGIdentifiableClass::TYPE_USER)
+					{
+						$identifiable = TBGContext::factory()->TBGUser($request->getParameter('value'));
+						$content = $this->getComponentHTML('main/userdropdown', array('user' => $identifiable));
+					}
+					elseif ($request->getParameter('identifiable_type') == TBGIdentifiableClass::TYPE_TEAM)
+					{
+						$identifiable = TBGContext::factory()->TBGTeam($request->getParameter('value'));
+						$content = $this->getComponentHTML('main/teamdropdown', array('team' => $identifiable));
+					}
+					
+					return $this->renderJSON(array('failed' => false, 'content' => $content));
+					break;
+			}
+		}
+		
 }
