@@ -35,6 +35,8 @@
 		const DESCRIPTION = 'projects.description';
 		const DOC_URL = 'projects.doc_url';
 		const RELEASED = 'projects.isreleased';
+		const PLANNED_RELEASED = 'projects.isplannedreleased';
+		const RELEASE_DATE = 'projects.release_date';
 		const ENABLE_BUILDS = 'projects.enable_builds';
 		const ENABLE_EDITIONS = 'projects.enable_editions';
 		const ENABLE_COMPONENTS = 'projects.enable_components';
@@ -66,6 +68,8 @@
 			parent::_addVarchar(self::DOC_URL, 200, '');
 			parent::_addBoolean(self::ALLOW_CHANGING_WITHOUT_WORKING);
 			parent::_addBoolean(self::RELEASED);
+			parent::_addBoolean(self::PLANNED_RELEASED);
+			parent::_addInteger(self::RELEASE_DATE, 10);
 			parent::_addBoolean(self::ENABLE_BUILDS);
 			parent::_addBoolean(self::ENABLE_EDITIONS);
 			parent::_addBoolean(self::ENABLE_COMPONENTS);
