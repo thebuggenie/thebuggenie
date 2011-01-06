@@ -1,4 +1,17 @@
 <?php include_template('installation/header'); ?>
+<?php 
+
+if (stristr(PHP_OS, 'WIN'))
+{
+	$dirname = str_replace("\\", "/", dirname($_SERVER['PHP_SELF'])); /* Windows adds a \ to the URL which we don't want */
+}
+
+if ($dirname != '/')
+{
+	$dirname = $dirname . '/';
+}
+
+?>
 <script type="text/javascript">
 
 	function updateURLPreview()
@@ -28,7 +41,7 @@
 		{
 			$('continue_button').hide();
 			$('continue_error').show();
-			$('continue_error').update('The complete url <i><b>cannot end with two forward slashes</b></i>. If BUGS is located directly under the server, end the server url <i><b>without</b></i> a forward slash, and put <i><b>a single forward slash</b></i> as the directory url.');
+			$('continue_error').update('The complete url <i><b>cannot end with two forward slashes</b></i>. If The Bug Genie is located directly under the server, end the server url <i><b>without</b></i> a forward slash, and put <i><b>a single forward slash</b></i> as the directory url.');
 		}
 	}
 
@@ -100,9 +113,9 @@
 					<dt style="width: 500px;">
 						<label for="url_subdir">Url subdirectory</label> <span class="faded_out">The Bug Genie subdirectory part of the url</span>
 					</dt><br>
-					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_subdir" id="url_subdir" value="<?php echo (dirname($_SERVER['PHP_SELF']) != '/') ? dirname($_SERVER['PHP_SELF']) . '/' : dirname($_SERVER['PHP_SELF']); ?>"></dd>
+					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_subdir" id="url_subdir" value="<?php echo $dirname; ?>"></dd>
 					<dt style="width: 500px;"><b>According to the information above,</b> The Bug Genie will be accessible at</dt><br>
-					<dd id="url_preview">http://<?php echo $_SERVER['SERVER_NAME'] . ((dirname($_SERVER['PHP_SELF']) != '/') ? dirname($_SERVER['PHP_SELF']) . '/' : dirname($_SERVER['PHP_SELF'])); ?></dd>
+					<dd id="url_preview">http://<?php echo $_SERVER['SERVER_NAME'] . $dirname; ?></dd>
 					<dt style="width: 500px;">
 						<label for="apache_autosetup_yes">Set up my .htaccess file automatically</label> <span class="faded_out">Check this if you're using an Apache web server</span>
 					</dt><br>
