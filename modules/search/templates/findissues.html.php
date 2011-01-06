@@ -278,7 +278,9 @@
 							elseif (TBGContext::getRequest()->hasParameter('predefined_search'))
 							{
 								$searchno = TBGContext::getRequest()->getParameter('predefined_search');
-								echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => $searchno, 'search' => '1', 'format' => 'csv')).'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey(), 'predefined_search' => $searchno, 'search' => '1', 'format' => 'rss')).'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
+								$project_key = (TBGContext::getCurrentProject() instanceof TBGProject) ? TBGContext::getCurrentProject()->getKey() : 0; 
+								$url = (TBGContext::getCurrentProject() instanceof TBGProject) ? 'project_issues' : 'search';
+								echo __('Export results as:').'&nbsp;&nbsp;<a href="'.make_url($url, array('project_key' => $project_key, 'predefined_search' => $searchno, 'search' => '1', 'format' => 'csv')).'"> '.image_tag('icon_csv.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;CSV</a>&nbsp;&nbsp;<a href="'.make_url($url, array('project_key' => $project_key, 'predefined_search' => $searchno, 'search' => '1', 'format' => 'rss')).'"> '.image_tag('icon_rss.png', array('class' => 'image', 'style' => 'vertical-align: top')).'&nbsp;RSS</a>';
 							}
 							else
 							{
