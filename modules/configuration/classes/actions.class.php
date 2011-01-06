@@ -321,11 +321,11 @@
 								}
 								break;
 							case 'charset' :
-								// list of supported character sets based on PHP doc : http://www.php.net/manual/en/function.htmlentities.php
-								if ($value && !preg_match('/^((ISO-?8859-1)|(ISO-?8859-15)|(UTF-8)|((cp|ibm)?866)|((cp|Windows-|win-)+1251)|((cp|Windows-)+1252)|(KOI8-?RU?)|(BIG5)|(950)|(GB2312)|(936)|(BIG5-HKSCS)|(S(hift_)?JIS)|(932)|(EUC-?JP))$/i', $value))
+								TBGContext::loadLibrary('common');
+								if ($value && !tbg_check_syntax($value, "CHARSET"))
 								{
 										$this->getResponse()->setHttpStatus(400);
-										return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid charset')));
+										return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid setting for charset')));
 								}
 								break;
 						}
