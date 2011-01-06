@@ -12,7 +12,10 @@
 		public function preExecute(TBGRequest $request, $action)
 		{
 			// forward 403 if you're not allowed here
-			$this->forward403unless(TBGContext::getUser()->canAccessConfigurationPage());
+			if ($request->isAjaxCall() == false) // for avoiding empty error when an user disables himself its own permissions
+			{
+				$this->forward403unless(TBGContext::getUser()->canAccessConfigurationPage());
+			}
 			
 			$this->access_level = $this->getAccessLevel($request->getParameter('section'), 'core');
 			
