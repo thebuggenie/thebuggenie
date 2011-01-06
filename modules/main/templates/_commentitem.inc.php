@@ -5,7 +5,7 @@
 			<?php if (isset($include_time) && $include_time == true): ?><span class="time"><?php echo tbg_formatTime($comment->getPosted(), 19); ?></span>&nbsp;<?php endif; ?>
 			<?php if (isset($include_project) && $include_project == true): ?><span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), '['.$issue->getProject()->getKey().']'); ?></span><?php endif; ?>
 			<?php 
-				$issue_title = $issue->getFormattedTitle(true);
+				$issue_title = tbg_decodeUTF8($issue->getFormattedTitle(true));
 				if (isset($pad_length))
 				{
 					$issue_title = tbg_truncateText($issue_title, $pad_length);
@@ -22,9 +22,7 @@
 			</span>
 			<?php
 				echo '<div class="timeline_inline_details">';
-				$max_lenght = 300;
-				$content = (strlen($comment->getContent()) > $max_lenght) ? substr($comment->getContent(), 0, $max_lenght) . '...' : $comment->getContent();
-				echo nl2br($content);
+				echo nl2br(tbg_truncateText(tbg_decodeUTF8($comment->getContent()), 300));
 				echo '</div>';
 			?>
 		</td>

@@ -2,14 +2,13 @@
 
 	$tbg_response->setTitle(__('Dashboard'));
 	$tbg_response->addBreadcrumb(link_tag(make_url('dashboard'), __('Personal dashboard')));
-	//$tbg_response->addBreadcrumb(javascript_link_tag(image_tag('cfg_icon_wizard.png'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'dashboard_config'))."');")));
 	$tbg_response->addJavascript('dashboard.js');
 	$tbg_response->addFeed(make_url('my_reported_issues', array('format' => 'rss')), __('Issues reported by me'));
 	$tbg_response->addFeed(make_url('my_assigned_issues', array('format' => 'rss')), __('Open issues assigned to you'));
 	$tbg_response->addFeed(make_url('my_teams_assigned_issues', array('format' => 'rss')), __('Open issues assigned to your teams'));
 
 ?>
-<?php include_component('main/hideableInfoBox', array('key' => 'dashboard_didyouknow', 'title' => __('This is your personal dashboard'), 'content' => ('This is your personal dashboard page - your starting point when logging in to The Bug Genie. This dashboard page will show projects and people you are associated with, as well as interesting views.') . '<br>' . __('Your dashboard can be configured and personalized. To configure what views to show on this dashboard, click the "Customize dashboard"-icon to the far right, below this box.') . '<br><br><i>' . __('Your dashboard page is accessible from anywhere - click your username in the top right header area at any time to access your dashboard.') . '</i>')); ?>
+<?php include_component('main/hideableInfoBox', array('key' => 'dashboard_didyouknow', 'title' => __('This is your personal dashboard'), 'content' => __('This is your personal dashboard page - your starting point when logging in to The Bug Genie. This dashboard page will show projects and people you are associated with, as well as interesting views.') . '<br>' . __('Your dashboard can be configured and personalized. To configure what views to show on this dashboard, click the "Customize dashboard"-icon to the far right, below this box.') . '<br><br><i>' . __('Your dashboard page is accessible from anywhere - click your username in the top right header area at any time to access your dashboard.') . '</i>')); ?>
 <table style="margin: 0 0 20px 0; table-layout: fixed; width: 100%; height: 100%;" cellpadding=0 cellspacing=0>
 	<tr>
 		<td id="dashboard_lefthand" class="side_bar">
@@ -22,7 +21,7 @@
 		<td class="main_area">
 			<?php TBGEvent::createNew('core', 'dashboard_main_top')->trigger(); ?>
 			<?php if (empty($dashboardViews)) :?>
-				<p class="content faded_out"><?php echo __('This dashboard doesn\'t contain any view. To add views in this dashboard, press the icon in the top right'); ?>.</p>
+				<p class="content faded_out"><?php echo __('This dashboard doesn\'t contain any view. To add views in this dashboard, press the "Customize dashboard"-icon to the far right.'); ?>.</p>
 			<?php else: ?>
 				<ul id="dashboard">
 					<?php $clearleft = true; ?>

@@ -6,7 +6,7 @@
 			<?php if (isset($include_project) && $include_project == true): ?><span class="faded_out smaller"><?php echo link_tag(make_url('project_dashboard', array('project_key' => $issue->getProject()->getKey())), '['.$issue->getProject()->getKey().']'); ?></span><?php endif; ?>
 			<?php 
 
-				$issue_title = $issue->getFormattedTitle(true);
+				$issue_title = tbg_decodeUTF8($issue->getFormattedTitle(true));
 				if (isset($pad_length))
 				{
 					$issue_title = tbg_truncateText($issue_title, $pad_length);
@@ -48,8 +48,7 @@
 					case TBGLogTable::LOG_COMMENT:
 						$comment = TBGContext::factory()->TBGComment((int) $log_action['text']);
 						echo '<div class="timeline_inline_details">';
-						$comment = (strlen($comment->getContent()) > 300) ? substr($comment->getContent(), 300) . '...' : $comment->getContent();
-						echo nl2br($comment);
+						echo nl2br(tbg_truncateText(tbg_decodeUTF8($comment->getContent()), 300));
 						echo '</div>';
 						break;
 					case TBGLogTable::LOG_ISSUE_CLOSE:

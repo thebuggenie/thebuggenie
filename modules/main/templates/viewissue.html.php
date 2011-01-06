@@ -4,7 +4,7 @@
 		$tbg_response->addBreadcrumb(__('Issues'), make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())));
 		$tbg_response->addBreadcrumb($issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true), make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
 		$tbg_response->addJavascript('viewissue.js');
-		$tbg_response->setTitle('['.(($issue->isClosed()) ? strtoupper(__('Closed')) : strtoupper(__('Open'))) .'] ' . $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle());
+		$tbg_response->setTitle('['.(($issue->isClosed()) ? strtoupper(__('Closed')) : strtoupper(__('Open'))) .'] ' . $issue->getFormattedIssueNo(true) . ' - ' . tbg_decodeUTF8($issue->getTitle()));
 	
 	?>
 	<?php TBGEvent::createNew('core', 'viewissue_top', $issue)->trigger(); ?>
@@ -140,7 +140,7 @@
 								<span id="title_content" class="<?php if ($issue->isTitleChanged()): ?>issue_detail_changed<?php endif; ?><?php if (!$issue->isTitleMerged()): ?> issue_detail_unmerged<?php endif; ?>">
 									<span class="faded_out" id="no_title" <?php if ($issue->getTitle() != ''):?> style="display: none;" <?php endif; ?>><?php echo __('Nothing entered.'); ?></span>
 									<span id="title_name" style="font-weight: bold;">
-										<?php echo $issue->getTitle(); ?>
+										<?php echo tbg_decodeUTF8($issue->getTitle()); ?>
 									</span>
 								</span>
 							</span>

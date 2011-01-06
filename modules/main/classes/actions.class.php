@@ -175,7 +175,7 @@
 							}
 							array_pop($views);
 							TBGDashboard::setUserViews(TBGContext::getUser()->getID(), $views);
-							return $this->renderJSON(array('message' => 'Dashboard configuration saved'));
+							return $this->renderJSON(array('message' => $i18n->__('Dashboard configuration saved')));
 						}
 						else
 						{
@@ -406,6 +406,7 @@
 		 */
 		public function runRegister2(TBGRequest $request)
 		{
+			TBGContext::loadLibrary('common');
 			$i18n = TBGContext::getI18n();
 			
 			try
@@ -436,7 +437,7 @@
 					$email_ok = false;
 					$valid_domain = false;
 
-					if ((!(stristr($email, "@") === false)) && (strripos($email, ".") > strripos($email, "@")))
+					if (tbg_check_syntax($email, "EMAIL"))
 					{
 						$email_ok = true;
 					}
@@ -444,8 +445,13 @@
 					if ($email_ok && TBGSettings::get('limit_registration') != '')
 					{
 
-						$allowed_domains = explode(',', TBGSettings::get('limit_registration'));
-						if (count($allowed_domains) > 0)
+						$allowed_domains = preg_replace('/[[:space:]]*,[[:space:]]*/' ,'|', TBGSettings::get('limit_registration'));					
+						if (preg_match('/@(' . $allowed_domains . ')$/i', $email) == false)
+						{							
+							array_push($fields, 'email_address', 'email_confirm');					
+							throw new Exception($i18n->__('Email adresses from this domain can not be used.'));
+						}
+						/*if (count($allowed_domains) > 0)
 						{
 							foreach ($allowed_domains as $allowed_domain)
 							{
@@ -456,22 +462,18 @@
 									break;
 								}
 							}
+							
 						}
 						else
 						{
 							$valid_domain = true;
-						}
+						}*/
 					}
-					else
+					/*if ($valid_domain == false)
 					{
-						$valid_domain = true;
-					}
-					
-					if ($valid_domain == false)
-					{
-						array_push($fields, 'email_address', 'email_confirm');
+						array_push($fields, 'email_address', 'email_confirm');					
 						throw new Exception($i18n->__('Email adresses from this domain can not be used.'));
-					}
+					}*/
 					
 					if($email_ok == false)
 					{
