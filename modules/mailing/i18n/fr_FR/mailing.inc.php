@@ -26,7 +26,7 @@
 	$strings['Email when password is reset'] = 'Envoyer un email quand le mot de passe est r&eacute;initialis&eacute;';
 	$strings['SMTP server timeout'] = 'Temporisation SMTP';
 	$strings['Please use the link in the email you received'] = 'Veuillez utiliser le lien pr&eacute;sent dans l\'email que vous avez re&ccedil;u';
-	$strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'] =	'Si vous avez oublier votre mot de passe, saisir votre nom d\'utilisateur ici et nous vous enverrons un email qui vous permettra de change votre mot de passe';
+	$strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'] =	'Si vous avez oubli&eacute; votre mot de passe, saisir votre nom d\'utilisateur ici et nous vous enverrons un email qui vous permettra de change votre mot de passe';
 	$strings['Notify me when someone adds me as their friend'] = 'Notifiez-moi quand quelqu\'un m\'ajoute &agrave; ses amis';
 	$strings['Notify me when an issue I posted gets updated'] = 'Notifiez-moi quand une demande que j\'ai post&eacute;e est mise &agrave; jour';
 	$strings['Send me a notification email when I update an issue'] = 'Envoyez-moi un email de notification quand je mets &agrave; jour une demande';
@@ -62,7 +62,7 @@
 	$strings['The email module is not configured for outgoing emails'] = 'Le module email n\'est pas configur&eacute; pour envoyer des emails';
 	$strings['Forgot password'] = 'Mot de passe oubli&eacute;';
 	$strings['Forgot password?'] = 'Mot de passe oubli&eacute; ?';
-	$strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'] = 'Si vous avez oublier votre mot de passe, saisir votre adresse email ici et nous vous enverrons un email qui vous permettra de change votre mot de passe';
+	$strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'] = 'Si vous avez oubli&eacute; votre mot de passe, saisir votre adresse email ici et nous vous enverrons un email qui vous permettra de change votre mot de passe';
 	$strings['Send email'] = 'Envoyer un email';
 	$strings['To register, please fill out the information below.'] = 'Pour s\'enregistrer, veuillez compl&eacute;ter les informations ci-dessous.';
 	$strings['Cannot find an email address for this user'] = 'Impossible de trouver une adresse email pour cet utilisateur';
