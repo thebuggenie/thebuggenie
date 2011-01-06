@@ -115,3 +115,5 @@
 	$strings['Username / password not accepted on server: %rv%'] = 'Username / password not accepted on server: %rv%';
 	$strings["You are not allowed to send emails through this server. \nThe error was: %rv%"] = "You are not allowed to send emails through this server. \nThe error was: %rv%";
 	$strings["Did not receive a confirmation message from the mail server.. \nHowever, we received: %rv%"] = "Did not receive a confirmation message from the mail server.. \nHowever, we received: %rv%";
+	$strings['You are not allowed to send emails through this server. The error was: %rv%']='You are not allowed to send emails through this server. The error was: %rv%';
+	$strings['Did not receive a confirmation message from the mail server.. However, we received: %rv%']='Did not receive a confirmation message from the mail server.. However, we received: %rv%';
