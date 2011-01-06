@@ -1939,8 +1939,12 @@
 						$this->$var_name = TBGCustomDatatypeOption::getByValueAndKey($this->$var_name, $key);
 					}
 				}
+				return $this->$var_name;
 			}
-			return $this->$var_name;
+			else
+			{
+				return null;
+			}
 		}
 
 		/**
