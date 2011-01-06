@@ -65,7 +65,7 @@
 			$this->saveSetting('smtp_port', 25);
 			$this->saveSetting('smtp_user', '');
 			$this->saveSetting('smtp_pwd', '');
-			$this->saveSetting('headcharset', 'utf-8');
+			$this->saveSetting('headcharset', TBGContext::getI18n()->getLangCharset());
 			$this->saveSetting('from_name', 'The Bug Genie Automailer');
 			$this->saveSetting('from_addr', '');
 			$this->saveSetting('ehlo', 1);
@@ -78,13 +78,51 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
+			TBGContext::loadLibrary('common');
 			$settings = array('smtp_host', 'smtp_port', 'smtp_user', 'timeout', 'mail_type', 'enable_outgoing_notifications',
 								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo', 'use_queue');
 			foreach ($settings as $setting)
 			{
 				if ($request->getParameter($setting) !== null)
 				{
-					$this->saveSetting($setting, $request->getParameter($setting));
+					$value = $request->getParameter($setting);
+					$dns_regex = '(\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b|(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))';
+					$mail_regex = '(?:[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@';
+					switch($setting)
+					{
+						case 'smtp_host':
+							if (!tbg_check_syntax($value, "MAILSERVER"))
+							{
+								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server address'));
+							}
+							break;
+						case 'from_addr':
+							if (!tbg_check_syntax($value, "EMAIL"))
+							{						
+								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for email "from"-address'));
+							}
+							break;
+						case 'timeout' :
+							if (!is_numeric($value) || $value < 0)
+							{
+								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server timeout'));
+							}							
+							break;
+						case 'smtp_port' :
+							if (!is_numeric($value) || $value < 1)
+							{
+								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server port'));
+							}							
+							break;							
+						case 'headcharset' :
+							// list of supported character sets based on PHP doc : http://www.php.net/manual/en/function.htmlentities.php
+							if (!tbg_check_syntax($value, "CHARSET"))
+							{
+									throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for email header charset'));
+							}							
+							break;							
+					}
+					$this->saveSetting($setting, $value);
 				}
 			}
 		}

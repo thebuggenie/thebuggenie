@@ -289,3 +289,44 @@
         |\xF4[\x80-\x8F][\x80-\xBF]{2}
         )+%xs', $str);
 	}
+
+	/**
+	 * Determine if a string valid regarding a specific syntax (email address, DNS name, IP...)
+	 *
+	 * @param string $str the string to be checked
+	 * @param string $format the referal syntax 
+	 * @param boolean $exact_match [option] set if the string must only contain this syntax (default=true)
+	 * @param boolean $case_sensitive [option] set if the match is case sensitive (default=false)
+	 * 
+	 * @return boolean
+	 */		
+	function tbg_check_syntax($str, $format, $exact_match=true, $case_sensitive = false)
+	{
+		// based on RFC 2822
+		$ip_regex = '\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b';
+		$dns_regex = '(' . $ip_regex . '|(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))';
+		$addr_regex = '(?:[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@' . $dns_regex;
+		$serv_regex = '(ssl:\/\/)?(' . $dns_regex . ')';
+		// list of supported character sets based on PHP doc : http://www.php.net/manual/en/function.htmlentities.php
+		$charset_regex = '((ISO-?8859-1)|(ISO-?8859-15)|(UTF-8)|((cp|ibm)?866)|((cp|Windows-|win-)+1251)|((cp|Windows-)+1252)|(KOI8-?RU?)|(BIG5)|(950)|(GB2312)|(936)|(BIG5-HKSCS)|(S(hift_)?JIS)|(932)|(EUC-?JP))';
+		
+		switch ($format)
+		{
+			case "IP":
+				$regex = $ip_regex;
+				break;
+			case "DNSNAME":
+				$regex = $dns_regex;
+				break;
+			case "EMAIL":
+				$regex = $addr_regex;
+				break;
+			case "MAILSERVER":
+				$regex = $serv_regex;
+				break;
+			case "CHARSET":
+				$regex = $charset_regex;
+				break;		
+		}
+		return preg_match("/" . ($exact_match ? '^' : '') . $regex . ($exact_match ? '$' : '') . "/" . ($case_sensitive ? '' : 'i'), $str);
+	}
