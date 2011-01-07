@@ -3,10 +3,16 @@
 	<channel>
 		<title><?php echo TBGSettings::getTBGname() . ' ~ '. __('%project_name% project timeline', array('%project_name%' => TBGContext::getCurrentProject()->getName())); ?></title>
 		<link><?php echo make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey()), false); ?></link>
-		<description> </description>
-		<language><?php echo TBGContext::getI18n()->getCurrentLanguage(); ?></language>
+		<description><?php echo strip_tags(TBGSettings::getTBGtagline()); ?></description>
+		<language><?php echo (strtolower(str_replace('_', '-', TBGContext::getI18n()->getCurrentLanguage()))); ?></language>
 		<image>
-			<url><?php print TBGContext::getTBGPath(); ?>themes/<?php print TBGSettings::getThemeName(); ?>/favicon.png</url>
+		<?php if (TBGSettings::isUsingCustomHeaderIcon() == '2'): ?>
+			<url><?php echo TBGSettings::getHeaderIconURL(); ?></url>
+		<?php elseif (TBGSettings::isUsingCustomHeaderIcon() == '1'): ?>
+			<url><?php echo TBGContext::getUrlHost().TBGContext::getTBGPath().'header.png'; ?></url>
+		<?php else: ?>
+			<url><?php echo image_url('logo_24.png', false, null, false); ?></url>
+		<?php endif; ?>
 			<title><?php echo TBGSettings::getTBGname() . ' ~ '. __('%project_name% project timeline', array('%project_name%' => TBGContext::getCurrentProject()->getName())); ?></title>
 			<link><?php echo make_url('project_timeline', array('project_key' => TBGContext::getCurrentProject()->getKey()), false); ?></link>
 		</image>
@@ -15,7 +21,7 @@
 <?php if (array_key_exists('target_type', $activity) && $activity['target_type'] == 1 && ($issue = TBGContext::factory()->TBGIssue($activity['target'])) && $issue instanceof TBGIssue): ?>
 
 		<item>
-			<title><?php
+			<title><![CDATA[<?php
 
 					switch ($activity['change_type'])
 					{
@@ -80,11 +86,11 @@
 							break;
 					}
 
-				?>: <?php echo $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(); ?></title>
-			<description><?php echo strip_tags($issue->getDescription()); ?></description>
-			<pubdate><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?></pubdate>
+				?>: <?php echo $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle(); ?>]]></title>
+			<description><![CDATA[<?php echo strip_tags($issue->getDescription()); ?>]]></description>
+			<pubDate><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?></pubDate>
 			<link><?php echo make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey()), false); ?></link>
-			<guid><?php echo make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(), 'project_key' => $issue->getProject()->getKey()), false); ?></guid>
+			<guid isPermaLink="false"><?php echo sha1($timestamp); ?></guid>
 		</item>
 		
 <?php endif; ?>

@@ -11,7 +11,7 @@
 		<?php elseif (TBGSettings::isUsingCustomHeaderIcon() == '1'): ?>
 			<url><?php echo TBGContext::getUrlHost().TBGContext::getTBGPath().'header.png'; ?></url>
 		<?php else: ?>
-			<url><?php echo image_url('logo_24.png', false, null, true); ?></url>
+			<url><?php echo image_url('logo_24.png', false, null, false); ?></url>
 		<?php endif; ?>
 			<title><?php echo TBGSettings::getTBGname() . ' ~ '. $searchtitle; ?></title>
 			<link><?php echo make_url('home', array(), false); ?></link>
