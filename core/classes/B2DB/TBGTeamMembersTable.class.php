@@ -66,7 +66,7 @@
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $user_id);
 			$crit->addJoin(TBGTeamsTable::getTable(), TBGTeamsTable::ID, self::TID);
-			$crit->addWhere(TBGTeamsTable::ONDEMAND, $ondemand);
+			//$crit->addWhere(TBGTeamsTable::ONDEMAND, $ondemand);
 			$res = $this->doDelete($crit);
 		}
 
