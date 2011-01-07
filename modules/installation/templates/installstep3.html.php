@@ -1,9 +1,11 @@
 <?php include_template('installation/header'); ?>
 <?php 
 
+$dirname = dirname($_SERVER['PHP_SELF']);
+
 if (stristr(PHP_OS, 'WIN'))
 {
-	$dirname = str_replace("\\", "/", dirname($_SERVER['PHP_SELF'])); /* Windows adds a \ to the URL which we don't want */
+	$dirname = str_replace("\\", "/", $dirname); /* Windows adds a \ to the URL which we don't want */
 }
 
 if ($dirname != '/')
