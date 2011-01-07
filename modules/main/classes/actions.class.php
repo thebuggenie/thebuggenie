@@ -1075,7 +1075,7 @@
 			}
 			if ($request->getParameter('return_format') == 'scrum')
 			{
-				return $this->renderJSON(array('failed' => true, 'error' => join(', ', $errors)));
+				return $this->renderJSON(array('failed' => true, 'error' => __('You have to specify a title')));
 			}
 			$this->errors = $errors;
 			$this->permission_errors = $permission_errors;
