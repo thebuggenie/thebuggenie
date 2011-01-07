@@ -1004,7 +1004,17 @@
 					$old_key = $this->project->getKey();
 
 					if ($request->hasParameter('project_name'))
-						$this->project->setName($request->getParameter('project_name'));
+					{
+						if (trim($request->getParameter('project_name')) == '')
+						{
+							return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please specify a valid project name')));
+						}
+						else
+						{
+							$this->project->setName($request->getParameter('project_name'));
+						}
+					}
+						
 
 					$message = ($old_key != $this->project->getKey()) ? TBGContext::getI18n()->__('%IMPORTANT%: The project key has changed. Remember to replace the current url with the new project key', array('%IMPORTANT%' => '<b>'.TBGContext::getI18n()->__('IMPORTANT').'</b>')) : '';
 					
