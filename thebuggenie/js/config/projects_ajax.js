@@ -475,7 +475,7 @@ function addComponent(url)
 			if (json.failed)
 			{
 				failedMessage(json.error);
-				$('project_add_indicator').hide();
+				$('component_add_indicator').hide();
 			}
 			else
 			{
