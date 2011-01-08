@@ -1684,7 +1684,7 @@
 	$strings['CSVImport'] = 'CSVImport';
 	$strings['Clients'] = 'Clients';
 	$strings['BUGS 1.x'] = 'BUGS 1.x';
-	$strings['The Bug Genie 2'];
+	$strings['The Bug Genie 2'] = 'The Bug Genie 2';
 	$strings['Edit project permissions'] = 'Editer les permissions du projer';
 	$strings['Manage releases'] = 'G&eacute;rer les livraisons';
 	$strings['Available issue types'] = 'Types de demandes disponibles';
