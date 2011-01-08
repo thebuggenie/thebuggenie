@@ -789,7 +789,7 @@ ul.scrum_container li .story_title { font-size: 12px; font-weight: bold; padding
 ul.scrum_container li .story_color { float: left; width: 13px; height: 19px; font-size: 1px; font-weight: normal; padding: 0; border-right: 1px solid #BBB; margin-right: 3px; }
 ul.scrum_container li:hover .story_color { border-bottom: 1px solid #BBB; }
 ul.scrum_container li .story_color_selector { position: absolute; top: 0px; left: 0px; width: 385px; height: 50px; z-index: 999; border: 1px solid #BBB; padding: 1px; background-color: #FFF; }
-.story_estimation_div, .scrum_sprint_details_actions .quickaddtask { position: absolute; top: 0px; right: 0px; width: 381px; z-index: 999; text-align: right;  margin: 1px; }
+.story_estimation_div, .scrum_sprint_details_actions .quickaddtask { position: absolute; top: 0px; right: 10px; width: 300px; z-index: 999; text-align: left;  margin: 1px; }
 .scrum_sprint_details_actions a:hover { border: 0; }
 .story_estimation_div .header { float: left; padding-top: 3px; font-weight: bold; }
 .story_estimation_div a { font-weight: bold; }
@@ -862,6 +862,7 @@ ul.scrum_container li .actions label { float: left; font-weight: bold; margin: 0
 
 /* add task popup */
 .close_micro_popup_link { position: absolute; right: 7px; top: 7px; font-size: 0.9em; }
+div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 
 /* project dashboard */
 #timeline td { vertical-align: top; }
