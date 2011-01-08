@@ -373,6 +373,47 @@ function deleteComponent(url, cid)
 	});
 }
 
+function deleteEdition(url, eid)
+{
+	new Ajax.Request(url, {
+		asynchronous:true,
+		method: "post",
+		evalScripts: true,
+		requestHeaders: {Accept: 'application/json'},
+		onLoading: function (transport) {
+			$('edition_'+eid+'_delete_indicator').show();
+		},
+		onSuccess: function (transport) {
+			var json = transport.responseJSON;
+			if (!json.deleted)
+			{
+				$('edition_'+eid+'_delete_indicator').hide();
+				$('del_edition_'+eid).hide();
+				failedMessage(json.error);
+			}
+			else
+			{
+				$('edition_box_'+eid).remove();
+				$('edition_'+eid+'_permissions').remove();
+				if (json.itemcount == 0)
+				{
+					$('no_editions').show();
+				}
+				successMessage(json.message);
+			}
+		},
+		onFailure: function (transport) {
+			$('edition_'+eid+'_delete_indicator').hide();
+			$('del_edition_'+eid).hide();
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+		}
+	});
+}
+
 function switchEditionTab(select_tab)
 {
 	$('edition_settings').hide();

@@ -1976,6 +1976,28 @@
 				return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage()));
 			}
 		}
+		
+		public function runDeleteEdition(TBGRequest $request)
+		{
+			if ($this->access_level == TBGSettings::ACCESS_FULL)
+			{
+				try
+				{
+					$theEdition = TBGContext::factory()->TBGEdition($request->getParameter('edition_id'));
+					
+					$project = $theEdition->getProject();
+					$theEdition->delete();
+					$count = count(TBGEdition::getAllByProjectID($project->getID()));
+					return $this->renderJSON(array('failed' => false, 'deleted' => true, 'itemcount' => $count, 'message' => TBGContext::getI18n()->__('Edition deleted')));
+				}
+				catch (Exception $e)
+				{
+					return $this->renderJSON(array('failed' => true, "error" => TBGContext::getI18n()->__('Could not delete this edition').", ".$e->getMessage()));
+				}
+			}
+			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to modify edition")));
+		
+		}
 
 		public function runDeleteTeam(TBGRequest $request)
 		{

@@ -6,7 +6,7 @@
 		<a href="javascript:void(0);" onclick="$('edition_<?php echo $edition->getID(); ?>_permissions').toggle();" class="image" title="<?php echo __('Set permissions for this edition'); ?>" style="margin-right: 5px;"><?php echo image_tag('cfg_icon_permissions.png'); ?></a>
 		<?php echo javascript_link_tag(image_tag('action_cancel_small.png'), array('class' => 'image', 'onclick' => "\$('del_edition_{$edition->getID()}').toggle();")); ?>
 		<div id="del_edition_<?php echo $edition->getID(); ?>" style="display: none; position: absolute; width: 200px; padding: 10px; border: 1px solid #DDD; background-color: #FFF;"><b><?php echo __('Please confirm'); ?></b><br><?php echo __('Do you really want to delete this edition?'); ?><br>
-			<div style="text-align: right; padding-top: 5px;"><a href="javascript:void(0);" onclick="deleteEdition(<?php print $edition->getID(); ?>);"><?php echo __('Yes'); ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void(0);" onclick="Effect.Fade('del_edition_<?php echo $edition->getID(); ?>', { duration: 0.5 });"><b><?php echo __('No'); ?></b></a></div>
+			<div style="text-align: right; padding-top: 5px;"><?php echo image_tag('spinning_16.gif', array('id' => 'edition_'.$edition->getID().'_delete_indicator', 'style' => 'margin-right: 5px; display: none;')); ?> <a href="javascript:void(0);" onclick="deleteEdition('<?php echo make_url('configure_delete_edition', array('edition_id' => $edition->getID())); ?>', <?php print $edition->getID(); ?>);return false;"><?php echo __('Yes'); ?></a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void(0);" onclick="Effect.Fade('del_edition_<?php echo $edition->getID(); ?>', { duration: 0.5 });"><b><?php echo __('No'); ?></b></a></div>
 		</div>
 	</td>
 </tr>
