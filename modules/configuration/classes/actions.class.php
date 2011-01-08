@@ -1151,7 +1151,7 @@
 
 			if ($this->access_level == TBGSettings::ACCESS_FULL)
 			{
-				if ($p_name = $request->getParameter('p_name'))
+				if (($p_name = $request->getParameter('p_name')) && trim($p_name) != '')
 				{
 					try
 					{
@@ -1192,9 +1192,13 @@
 					{
 						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
-							if ($e_name = $request->getParameter('e_name'))
+							if (($e_name = $request->getParameter('e_name')) && trim($e_name) != '')
 							{
 								$project = TBGContext::factory()->TBGProject($p_id);
+								if (in_array($e_name, $project->getEditions()))
+								{
+									throw new Exception($i18n->__('This edition already exists for this project'));
+								}
 								$edition = $project->addEdition($e_name);
 								return $this->renderJSON(array('title' => $i18n->__('The edition has been added'), 'html' => $this->getTemplateHTML('editionbox', array('edition' => $edition, 'access_level' => $this->access_level))));
 							}
@@ -1272,8 +1276,12 @@
 									$this->show_mode = 'one';
 									break;
 								case 'update':
-									if ($b_name = $request->getParameter('build_name'))
+									if (($b_name = $request->getParameter('build_name')) && trim($b_name) != '')
 									{
+										if (in_array($b_name, $build->getProject()->getBuilds()))
+										{
+											throw new Exception($i18n->__('This build already exists for this project'));
+										}
 										$build->setName($b_name);
 										$build->setVersionMajor($request->getParameter('ver_mj'));
 										$build->setVersionMinor($request->getParameter('ver_mn'));
@@ -1334,8 +1342,12 @@
 					{
 						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
-							if ($b_name = $request->getParameter('build_name'))
+							if (($b_name = $request->getParameter('build_name')) && trim($b_name) != '')
 							{
+								if (in_array($b_name, $project->getBuilds()))
+								{
+									throw new Exception($i18n->__('This build already exists for this project'));
+								}
 								$build = new TBGBuild();
 								$build->setName($b_name);
 								$build->setVersion($request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
@@ -1391,9 +1403,13 @@
 					{
 						if (TBGContext::getUser()->canManageProjectReleases($project))
 						{
-							if ($c_name = $request->getParameter('c_name'))
+							if (($c_name = $request->getParameter('c_name')) && trim($c_name) != '')
 							{
 								$project = TBGContext::factory()->TBGProject($p_id);
+								if (in_array($c_name, $project->getComponents()))
+								{
+									throw new Exception($i18n->__('This component already exists for this project'));
+								}
 								$component = $project->addComponent($c_name);
 								return $this->renderJSON(array('title' => $i18n->__('The component has been added'), 'html' => $this->getTemplateHTML('componentbox', array('component' => $component, 'access_level' => $this->access_level))));
 							}
@@ -1441,6 +1457,10 @@
 							if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
 							{
 								$theProject = TBGContext::factory()->TBGProject($p_id);
+								if (in_array($m_name, $theProject->getAllMilestones()))
+								{
+									throw new Exception($i18n->__('This milestone already exists for this project'));
+								}
 								$theMilestone = $theProject->addMilestone($m_name, $request->getParameter('milestone_type', 1));
 								return $this->renderJSON(array('title' => $i18n->__('The milestone has been added'), 'content' => $this->getTemplateHTML('milestonebox', array('milestone' => $theMilestone))));
 							}
@@ -1490,6 +1510,10 @@
 								case 'update':
 									if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
 									{
+										if (in_array($m_name, $theMilestone->getProject()->getAllMilestones()))
+										{
+											throw new Exception($i18n->__('This milestone already exists for this project'));
+										}
 										$theMilestone->setName($m_name);
 										$theMilestone->setScheduled((bool) $request->getParameter('is_scheduled'));
 										$theMilestone->setStarting((bool) $request->getParameter('is_starting'));
@@ -1603,8 +1627,23 @@
 					$theComponent = TBGContext::factory()->TBGComponent($request->getParameter('component_id'));
 					if ($request->getParameter('mode') == 'update')
 					{
-						$theComponent->setName($request->getParameter('c_name', ''));
-						return $this->renderJSON(array('failed' => false, 'newname' => $theComponent->getName()));
+						if (($c_name = $request->getParameter('c_name')) && trim($c_name) != '')
+						{
+							if($c_name == $theComponent->getName())
+							{
+								return $this->renderJSON(array('failed' => false, 'newname' => $c_name));
+							}
+							if (in_array($c_name, $theComponent->getProject()->getComponents()))
+							{
+								throw new Exception($i18n->__('This component already exists for this project'));
+							}
+							$theComponent->setName($c_name);
+							return $this->renderJSON(array('failed' => false, 'newname' => $theComponent->getName()));
+						}
+						else
+						{
+							throw new Exception($i18n->__('You need to specify a name for this component'));
+						}
 					}
 					elseif ($request->getParameter('mode') == 'delete')
 					{
@@ -2221,8 +2260,23 @@
 							$release_date = mktime(0, 0, 1, $request->getParameter('release_month'), $request->getParameter('release_day'), $request->getParameter('release_year'));
 							$edition->setReleaseDate($release_date);
 						}
-
-						$edition->setName($request->getParameter('edition_name'));
+						
+						if (($e_name = $request->getParameter('edition_name')) && trim($e_name) != '')
+						{
+							if ($e_name != $edition->getName())
+							{
+								if (in_array($e_name, $edition->getProject()->getEditions()))
+								{
+									throw new Exception(TBGContext::getI18n()->__('This edition already exists for this project'));
+								}
+								$edition->setName($e_name);
+							}
+						}
+						else
+						{
+							throw new Exception(TBGContext::getI18n()->__('You need to specify a name for this edition'));
+						}
+							
 						$edition->setDescription($request->getParameter('description', null, false));
 						$edition->setDocumentationURL($request->getParameter('doc_url'));
 						$edition->setPlannedReleased($request->getParameter('planned_release'));

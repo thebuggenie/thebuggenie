@@ -192,9 +192,11 @@
 		 * @see getName()
 		 * @deprecated
 		 */
-		public function __toString()
+		public function __toString() // required for few functions such in_array()
 		{
-			throw new Exception("Don't print the object, use the getName() function instead");
+			// magic methods cannot throw exception
+			//throw new Exception("Don't print the object, use the getName() function instead");
+			return $this->getName();
 		}
 		
 		/**
