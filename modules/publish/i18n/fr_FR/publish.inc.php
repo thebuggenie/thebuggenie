@@ -92,3 +92,5 @@
 	$strings['Select this option to specify permissions for the entire wiki.'] = 'S&eacute;lectionner cette option pour sp&eacute;cifier les permissions pour tout le wiki.'; 
 	$strings['Edit write permissions'] = 'Editer les permissions d\'&eacute;criture';
 	$strings['Edit delete permissions'] = 'Editer les permissions de suppression';
+	$strings['Table of contents'] = 'Table des mati&egrave;res';
+	$strings['Move your mouse here to toggle the table of contents'] = 'D&eacute;placez votre souris ici pour afficher la table des mati&egrave;res';	
