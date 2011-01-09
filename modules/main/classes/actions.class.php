@@ -2269,7 +2269,14 @@
 							$issue->save(false);
 						}
 
-						$comment_body = $this->comment . "\n\n" . $request->getParameter('comment_body', null, false);
+						if (empty($this->comment) == false) // prevent empty lines when only user comment
+						{
+							$comment_body = $this->comment . "\n\n" . $request->getParameter('comment_body', null, false);
+						}
+						else
+						{
+							$comment_body = $request->getParameter('comment_body', null, false);
+						}
 						$comment = new TBGComment();
 						$comment->setTitle($title);
 						$comment->setContent($comment_body);
