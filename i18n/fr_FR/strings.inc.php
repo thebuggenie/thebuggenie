@@ -1758,3 +1758,7 @@
 	$strings['You need to specify a name for this edition'] = 'Vous devez sp&eacute;cifier un nom pour cette &eacute;dition';
 	$strings['This build already exists for this project'] = 'Cette livraison existe d&eacute;j&agrave; pour ce projet';
 	$strings['You need to specify a name for this component'] = 'Vous devez sp&eacute;cifier un nom pour ce composant';	
+	$strings['Edition deleted'] = 'Edition supprim&eacute;e';
+	$strings['Could not delete this edition'] = 'Impossible de supprimer cette &eacute;dition';
+	$strings['You don\'t have access to modify edition'] = 'Vous n\'avez pas acc&egrave;s &agrave; la modification des &eacute;dition';
+	$strings['No issues recenty commented'] = 'Pas de demande comment&eacute;e r&eacute;cemment';
