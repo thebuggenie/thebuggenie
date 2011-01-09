@@ -37,7 +37,7 @@
 		</div>
 		<div id="dashboard_<?php echo $id; ?>">
 		<?php $issues = TBGIssue::findIssues(array('state' => array('operator' => '=', 'value' => TBGIssue::STATE_OPEN))); ?>
-		<?php if ($issues[1] > 0 && TBGComment::countComments(0, TBGComment::TYPE_ISSUE)): ?>
+		<?php if ($issues[1] > 0 && TBGComment::countComments(0, TBGComment::TYPE_ISSUE) > 0): ?>
 			<?php $comments = TBGComment::getComments(0, TBGComment::TYPE_ISSUE, B2DBCriteria::SORT_DESC); ?>
 			<table cellpadding=0 cellspacing=0 style="margin: 5px;">
 				<?php $prev_date = null; ?>
@@ -55,9 +55,14 @@
 					<?php $prev_date = $date; ?>
 					<?php if ($count++ == 10) break; // limit to 10 last comments ?>
 				<?php endforeach; ?>
+				<?php if ($count == 1): ?>
+					<tr>
+						<td><div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues recenty commented'); ?></div></td>
+					</tr>
+				<?php endif; ?>
 			</table>
 		<?php else: ?>
-			<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __("No commented issue recently"); ?></div>
+			<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues recenty commented'); ?></div>
 		<?php endif; ?>
 		</div>
 	<?php break; ?>
