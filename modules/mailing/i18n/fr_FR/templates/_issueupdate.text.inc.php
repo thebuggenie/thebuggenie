@@ -1,5 +1,5 @@
 Bonjour %user_buddyname%,
-<?php echo $issue->getIssuetype()->getName(); ?> <?php echo $issue->getFormattedTitle(true); ?> a &eacute;t&racute; mise &agrave; jour par <?php echo $updated_by->getName(); ?>.
+<?php echo $issue->getIssuetype()->getName(); ?> <?php echo $issue->getFormattedTitle(true); ?> a &eacute;t&eacute; mise &agrave; jour par <?php echo $updated_by->getName(); ?>.
 
 * Les informations suivantes ont &eacute;t&eacute; modifi&eacute;es : *
 <?php foreach ($comment_lines as $comment_line): ?>

@@ -1,6 +1,6 @@
 <div style="font-family: 'Trebuchet MS', 'Liberation Sans', 'Bitstream Vera Sans', 'Luxi Sans', Verdana, sans-serif; font-size: 11px; color: #333;">
 	Bonjour %user_buddyname%,<br>
-	<?php echo $issue->getIssuetype()->getName(); ?> <?php echo $issue->getFormattedTitle(true); ?> a &eacute;t&racute; mise &agrave; jour par <?php echo $updated_by->getName(); ?>.<br>
+	<?php echo $issue->getIssuetype()->getName(); ?> <?php echo $issue->getFormattedTitle(true); ?> a &eacute;t&eacute; mise &agrave; jour par <?php echo $updated_by->getName(); ?>.<br>
 	<br>
 	<b>Les informations suivantes ont &eacute;t&eacute; modifi&eacute;es :</b><br>
 	<ul>
