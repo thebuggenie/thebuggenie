@@ -1761,4 +1761,4 @@
 	$strings['Edition deleted'] = 'Edition supprim&eacute;e';
 	$strings['Could not delete this edition'] = 'Impossible de supprimer cette &eacute;dition';
 	$strings['You don\'t have access to modify edition'] = 'Vous n\'avez pas acc&egrave;s &agrave; la modification des &eacute;dition';
-	$strings['No issues recenty commented'] = 'Pas de demande comment&eacute;e r&eacute;cemment';
+	$strings['No issues recently commented'] = 'Pas de demande comment&eacute;e r&eacute;cemment';

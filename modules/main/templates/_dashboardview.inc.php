@@ -57,12 +57,12 @@
 				<?php endforeach; ?>
 				<?php if ($count == 1): ?>
 					<tr>
-						<td><div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues recenty commented'); ?></div></td>
+						<td><div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues recently commented'); ?></div></td>
 					</tr>
 				<?php endif; ?>
 			</table>
 		<?php else: ?>
-			<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues recenty commented'); ?></div>
+			<div class="faded_out" style="padding: 5px 5px 15px 5px;"><?php echo __('No issues recently commented'); ?></div>
 		<?php endif; ?>
 		</div>
 	<?php break; ?>

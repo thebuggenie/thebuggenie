@@ -1757,4 +1757,4 @@
 	$strings['Edition deleted'] = 'Edition deleted';
 	$strings['Could not delete this edition'] = 'Could not delete this edition';
 	$strings['You don\'t have access to modify edition'] = 'You don\'t have access to modify edition';
-	$strings['No issues recenty commented'] = 'No issues recenty commented';
+	$strings['No issues recently commented'] = 'No issues recently commented';
