@@ -98,7 +98,7 @@
 
 	$strings['Forgot password'] = 'Olvido de contraseña';
 	$strings['Forgot password?'] = '¿Olvidó su contraseña?';
-
+	$strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your password'] = 'Si olvidó su contraseña, ingrese aquí su nombre de usuario y le enviaremos un correo que le permitirá cambiar la contraseña';
 	$strings['Send email'] = 'Enviar correo';
 	$strings['To register, please fill out the information below.'] = 'Para registrarse, complete la información inferior por favor.';
 	$strings['Cannot find an email address for this user'] = 'No se puede encontrar una dirección de correo para este usuario';
