@@ -757,7 +757,7 @@
 					case 'edition':
 						foreach ($this->theProject->getEditions() as $e_id => $edition)
 						{
-							if ($e_id = $target_info[1])
+							if ($e_id == $target_info[1])
 							{
 								$edition->addAssignee($assignee, $assignee_role);
 								break;
@@ -767,7 +767,7 @@
 					case 'component':
 						foreach ($this->theProject->getComponents() as $c_id => $component)
 						{
-							if ($c_id = $target_info[1])
+							if ($c_id == $target_info[1])
 							{
 								$component->addAssignee($assignee, $assignee_role);
 								break;

@@ -61,7 +61,7 @@
 					<?php if (count($assignees['teams']) == 0): ?>
 						<div style="padding: 5px; color: #AAA; font-size: 12px;"><?php echo __('There are no teams assigned to this project'); ?></div>
 					<?php else: ?>
-						<div class="header_div" style="margin-top: 0; padding-top: 5px;"><?php echo __('Assigned users'); ?></div>
+						<div class="header_div" style="margin-top: 0; padding-top: 5px;"><?php echo __('Assigned teams'); ?></div>
 						<table cellpadding=0 cellspacing=0 width="100%">
 							<?php foreach ($assignees['teams'] as $c_id => $assigns): ?>
 								<tr>
