@@ -582,6 +582,25 @@
 				<div id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></div>
 			</div>
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
-		</div>
 	<?php endif; ?>
 <?php endforeach; ?>
+<div style="clear: both; margin-bottom: 5px;"> </div>
+<div id="more_actions" style="display: none;">
+	<div class="rounded_box white shadowed">
+		<div style="padding: 5px;">
+    <ul>
+    	<?php if ($issue->isBlocking()): ?>
+    	<li><?php echo link_tag(make_url('unblock', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_unblock.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark as not blocking the next release")); ?></li>
+    	<?php else: ?>
+    	<li><?php echo link_tag(make_url('block', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_block.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark as blocking the next release")); ?></li>
+    	<?php endif; ?>
+    </ul> 
+		</div>
+	</div>
+	<div style="text-align: center; font-size: 14px; width: 200px; margin: 5px auto 0 auto; padding: 5px 0 5px 0; height: 20px;">
+		<a href="javascript:void(0);" onclick="$('more_actions').hide();$('more_actions_div').show();"><?php echo image_tag('action_remove_small.png', array('style' => 'float: left; margin-right: 5px;')); ?><span style="float: left;"><?php echo __('Hide further actions'); ?></span></a>
+	</div>
+</div>
+<div style="text-align: center; font-size: 14px; width: 200px; margin: 5px auto 0 auto; padding: 5px 0 5px 0; height: 20px;" id="more_actions_div">
+	<a href="javascript:void(0);" onclick="$('more_actions').show();$('more_actions_div').hide();"><?php echo image_tag('action_add_small_faded.png', array('style' => 'float: left; margin-right: 5px;')); ?><span style="float: left; font-weight: bold;"><?php echo __('Show further actions'); ?></span></a>
+</div>
