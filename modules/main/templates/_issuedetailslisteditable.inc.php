@@ -592,6 +592,7 @@
 			<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
 	<?php endif; ?>
 <?php endforeach; ?>
+<?php if (TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic')): ?>
 <div style="clear: both; margin-bottom: 5px;"> </div>
 <div id="more_actions" style="display: none;">
 	<div class="rounded_box white shadowed">
@@ -602,7 +603,15 @@
     	<?php else: ?>
     	<li><?php echo link_tag(make_url('block', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_block.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark as blocking the next release")); ?></li>
     	<?php endif; ?>
-    </ul> 
+    	<?php if (TBGContext::getUser()->hasPermission('candeleteissues')): ?>
+    	<li><a href="javascript:void(0)" onClick="$('delete_issue').toggle();"><?php echo image_tag('icon_delete.png', array('style' => 'float: left; margin-right: 5px;')) . __("Permanently delete this issue"); ?></a></li>
+      <?php endif; ?>
+    </ul>
+    <div class="rounded_box borderless red" style="display: none;" id="delete_issue"> 
+      <b><?php echo __('Permanently delete this issue'); ?></b>
+      <p><?php echo __('Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'); ?></p>
+      <?php echo link_tag(make_url('deleteissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), __('Yes')); ?> | <a href="javascript:void(0)" onClick="$('delete_issue').hide();"><?php echo __('No'); ?></a>
+		</div>
 		</div>
 	</div>
 	<div style="text-align: center; font-size: 14px; width: 200px; margin: 5px auto 0 auto; padding: 5px 0 5px 0; height: 20px;">
@@ -612,3 +621,4 @@
 <div style="text-align: center; font-size: 14px; width: 200px; margin: 5px auto 0 auto; padding: 5px 0 5px 0; height: 20px;" id="more_actions_div">
 	<a href="javascript:void(0);" onclick="$('more_actions').show();$('more_actions_div').hide();"><?php echo image_tag('action_add_small_faded.png', array('style' => 'float: left; margin-right: 5px;')); ?><span style="float: left; font-weight: bold;"><?php echo __('Show further actions'); ?></span></a>
 </div>
+<?php endif; ?>

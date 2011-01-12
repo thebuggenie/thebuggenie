@@ -8,6 +8,7 @@
 	$routes[] = array('markasduplicate', '/:project_key/issue/:issue_id/markasduplicate', 'main', 'markAsDuplicate');
 	$routes[] = array('notduplicate', '/:project_key/issue/:issue_id/notduplicate', 'main', 'markAsNotDuplicate');
 	$routes[] = array('openissue', '/:project_key/issue/:issue_id/open', 'main', 'reopenIssue');
+	$routes[] = array('deleteissue', '/:project_key/issue/:issue_id/delete', 'main', 'deleteIssue');
 	$routes[] = array('block', '/:project_key/issue/:issue_id/block', 'main', 'markAsBlocker');
 	$routes[] = array('unblock', '/:project_key/issue/:issue_id/unblock', 'main', 'markAsNotBlocker');
 	$routes[] = array('issue_gettempfieldvalue', '/:project_key/issue/:issue_id/get/temp/value/for/:field/*', 'main', 'issueGetTempFieldValue');

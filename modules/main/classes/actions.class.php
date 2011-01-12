@@ -51,7 +51,7 @@
 			}
 			TBGLogging::log('done (Loading issue)');
 			//$this->getResponse()->setPage('viewissue');
-			if ($issue instanceof TBGIssue && !$issue->hasAccess())
+			if ($issue instanceof TBGIssue && (!$issue->hasAccess() || $issue->isDeleted()))
 			{
 				$issue = null;
 			}
@@ -1889,6 +1889,8 @@
 		 */
 		public function runMarkAsNotBlocker(TBGRequest $request)
 		{
+			$this->forward403unless(TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'));
+
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
 				try
@@ -1918,6 +1920,8 @@
 		 */
 		public function runMarkAsBlocker(TBGRequest $request)
 		{
+			$this->forward403unless(TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'));
+						
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
 				try
@@ -1935,6 +1939,37 @@
 			}
 
 			$issue->setBlocking();
+			$issue->save();
+			
+			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+		}
+		
+		/**
+		 * Delete an issue
+		 * 
+		 * @param TBGRequest $request
+		 */
+		public function runDeleteIssue(TBGRequest $request)
+		{
+			$this->forward403unless(TBGContext::getUser()->hasPermission('candeleteissues'));
+
+			if ($issue_id = $request->getParameter('issue_id'))
+			{
+				try
+				{
+					$issue = TBGContext::factory()->TBGIssue($issue_id);
+				}
+				catch (Exception $e)
+				{
+					return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+				}
+			}
+			else
+			{
+				return $this->return404(TBGContext::getI18n()->__('This issue does not exist'));
+			}
+
+			$issue->deleteIssue();
 			$issue->save();
 			
 			$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
