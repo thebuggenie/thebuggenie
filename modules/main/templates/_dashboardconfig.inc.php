@@ -57,7 +57,7 @@
 		<span id="save_dashboard_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
 	</div>
 	<div class="backdrop_detail_footer">
-		<a href="javascript:void(0);" onclick="resetFadedBackdrop();"><?php echo __('Close'); ?></a>
+		<?php echo link_tag('dashboard', __('Close and reload')); ?>
 	</div>
 </div>
 <script>Sortable.create('views_list', {constraint: ''});</script>

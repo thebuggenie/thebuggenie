@@ -2498,6 +2498,7 @@
 						break;
 					case 'dashboard_config':
 						$template_name = 'main/dashboardconfig';
+						$options['mandatory'] = true;
 						break;
 				}
 				if ($template_name !== null)
