@@ -19,7 +19,7 @@
 <?php foreach ($recent_activities as $timestamp => $activities): ?>
 <?php foreach ($activities as $activity): ?>
 <?php if (array_key_exists('target_type', $activity) && $activity['target_type'] == 1 && ($issue = TBGContext::factory()->TBGIssue($activity['target'])) && $issue instanceof TBGIssue): ?>
-
+<?php if ($issue->isDeleted()): continue; endif; ?>
 		<item>
 			<title><![CDATA[<?php
 

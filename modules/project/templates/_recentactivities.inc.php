@@ -3,6 +3,7 @@
 	<?php if (count($issues) > 0): ?>
 		<table cellpadding=0 cellspacing=0 class="recent_activities" style="margin-top: 5px;">
 		<?php foreach ($issues as $issue): ?>
+			<?php if ($issue->isDeleted()): continue; endif; ?>
 			<tr>
 				<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 				<td>

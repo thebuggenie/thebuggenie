@@ -1,4 +1,4 @@
-<?php if (isset($issue) && $issue instanceof TBGIssue): ?>
+<?php if (isset($issue) && $issue instanceof TBGIssue && !($issue->isDeleted())): ?>
 	<tr>
 		<td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
 		<td style="padding-bottom: <?php if (isset($extra_padding) && $extra_padding == true): ?>10<?php else: ?>5<?php endif; ?>px;">
