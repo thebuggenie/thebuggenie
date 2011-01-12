@@ -1224,7 +1224,7 @@
 	$strings['Steps without any incoming transitions are shown as faded out.'] = 'Los pasos sin transiciones de entrada se muestran como desvanecidos.';
 	$strings['Add a step'] = 'Agregar un paso';
 	$strings['Step name'] = 'Nombre del paso';
-	$strings['Connected status'] = 'Estado conectado';
+	$strings['Connected status'] = 'Estado vinculado';
 	$strings['Outgoing transitions'] = 'Transiciones de salida';
 	$strings['Delete all outgoing transition from step "%step_name%"'] = 'Borrar todas las transiciones de salida del paso "%step_name%"';
 	$strings['Are you sure you want to delete ALL outgoing transitions from this step? This action cannot be reverted.'] = '¿Seguro que quiere borrar TODAS las transiciones de salida de este paso? Esta acción no puede revertirse.';
@@ -1463,7 +1463,7 @@
 	$strings['The following fields had invalid values: %list%'] = 'Los siguientes campos tienen valores no válidos: %list%';
 	$strings['There was an error trying to save changes to this issue'] = 'Hubo un error al intentar guardar los cambios de este problema';
 	$strings['This issue has been changed since you started editing it'] = 'Este problema ha sido modificado desde que empezó a editarlo';
-	$strings['%user% has been working on this issue since %time%'] = '%user% ha estado trabajando en este problema hace %time%';
+	$strings['%user% has been working on this issue since %time%'] = '%user% ha estado trabajando en este problema desde %time%';
 	$strings['Take over this issue'] = 'Tomar el control de este problema';
 	$strings['This issue is a duplicate of issue %link_to_duplicate_issue%'] = 'Este problema es un duplicado de %link_to_duplicate_issue%';
 	$strings['For more information you should visit the issue mentioned above, as this issue is not likely to be updated'] = 'Para más información debería ver el problema mencionado arriba, porque este problema no será actualizado';
@@ -1475,17 +1475,17 @@
 	$strings['The following issues are duplicates of this issue:'] = 'Los siguientes problemas están como duplicados de este problema:';
 	$strings['You have specified an issue that can\'t be shown'] = 'Ha especificado un problema que no puede mostrarse';
 	$strings['This could be because you the issue doesn\'t exist, has been deleted or you don\'t have permission to see it'] = 'Esto puede ser porque el problema no existe, ha sido borrado o no tiene permisos para verlos';
-    $strings['Register new account'] = 'Registrar nueva cuenta';
+  $strings['Register new account'] = 'Registrar nueva cuenta';
 	$strings['Comment posted by %user%'] = 'Comentario publicado por %user%'; 
 	$strings['Owned by'] = 'Propiedad de'; 
-  	$strings['noone'] = 'ninguno'; 
-  	$strings['Users, teams, clients &amp; groups'] = 'Usuarios, equipos, clientes y grupos';
+	$strings['noone'] = 'ninguno'; 
+	$strings['Users, teams, clients &amp; groups'] = 'Usuarios, equipos, clientes y grupos';
 	$strings['Manage users, user groups, clients and user teams from this section.'] = 'Gestione usuarios, grupos de usuarios, clientes y equipos desde esta sección.'; 
-  	$strings['What charset to use for the selected language - leave blank to use the charset specified in the language file'] = 'Que conjunto de caracteres va a utilizar para el idioma seleccionado - dejándolo en blanco se utilizara el definido en el archivo de idioma'; 
+	$strings['What charset to use for the selected language - leave blank to use the charset specified in the language file'] = 'Que conjunto de caracteres va a utilizar para el idioma seleccionado - dejándolo en blanco se utilizara el definido en el archivo de idioma'; 
 	$strings['Current character set is %charset%'] = 'El conjunto de caracteres actual es %charset%'; 
 	$strings['Edit all user-specific permissions from this page - global, group and team permissions are handled from the [[TBG:configure_permissions|permissions configuration page]]. The Bug Genie permissions are thoroughly explained in [[TheBugGenie:ConfigurePermissions]] in the wiki - look it up if you\'re ever stuck.'] = 'Edite todos los permisos de usuario desde esta página - permisos globales, por grupo y por equipo son gestionados en [[TBG:configure_permissions|página de configuración de permisos]]. El sistema de permisos está explicado en [[TheBugGenie:ConfigurePermissions]] en el wiki - consúltelo cada vez que lo necesite.';
 	$strings['MB'] = 'MB';
-    $strings['No client assigned'] = 'Sin clientes asignados'; 
+  $strings['No client assigned'] = 'Sin clientes asignados'; 
 	$strings['Allowed extension'] = 'Extensión permitida';
 	$strings['The project lead will automatically be assigned issues if workflows are disabled. This can be overriden by component and edition leads, as well as manually specifing when creating an issue.'] = 'El líder de proyecto será asignado automáticamente al problema si el flujo de trabajo está inhabilitado. Esto puede ser redefinido por componente y edición, como así también manualmente cuando se crea un problema.';
 	$strings['These icons may be freely distributed under the %link_to_LGLP%'] = 'Estos íconos pueden ser distribuidos libremente bajo %link_to_LGLP%';
@@ -1502,15 +1502,15 @@
 	$strings['Team overview'] = 'Resumen del Equipo'; 
 	$strings['Project team'] = 'Equipo del proyecto'; 
 	$strings['Don\'t show this again'] = 'No mostrar de nuevo'; 
-  	$strings['Sprints overview'] = 'Resumen de Sprints'; 
-  	$strings['Add new sprint'] = 'Agregar nuevo sprint'; 
+	$strings['Sprints overview'] = 'Resumen de Sprints'; 
+	$strings['Add new sprint'] = 'Agregar nuevo sprint'; 
 	$strings['Unassigned items / project backlog'] = 'Itmes sin asignar / backlog del proyecto'; 
 	$strings['Create a user story'] = 'Crear una nueva historia de usuario'; 
 	$strings['There are no items in the project backlog'] = 'No hay items en el backlog del proyecto';
 	$strings['Adding user story, please wait'] = 'Agregando historia de usuario, espere por favor'; 
 	$strings['Reassigning, please wait'] = 'Reasignando, espere por favor'; 
-  	$strings['Add sprint'] = 'Agregar sprint'; 
-  	$strings['Sprint starts'] = 'inicio de Sprint'; 
+	$strings['Add sprint'] = 'Agregar sprint'; 
+	$strings['Sprint starts'] = 'inicio de Sprint'; 
 	$strings['Sprint ends'] = 'fin de Sprint'; 
 	$strings['Show sprint overview and details'] = 'Muestra resumen y detalles del sprint';
 	$strings['Change estimate'] = 'Cambiar estimación'; 
@@ -1530,11 +1530,11 @@
 	$strings['Can see list of teams in header menu'] = 'Puede ver la lista de equipos en el menú superior'; 
 	$strings['Can see list of clients in header menu'] = 'Puede ver la lista de clientes en menú superior'; 
 	$strings['Import data'] = 'Importar datos'; 
-	$strings['Sample data'] = 'Datos de ejemplos'; 
-	$strings['You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %import instructions% wiki article for further details and instructions.'] = 'Puede importar datos desde un archivo CSV copiado en el casilla de tecto de The Bug Genie, exportado desde otras fuentes. Por favor vea %import instructions% del artículo en wiki para mayor detalle.'; 
+	$strings['Sample data'] = 'Datos de ejemplos';
+	$strings['You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %CSVImport% wiki article for further details and instructions.'] = 'Puede importar datos desde un archivo CSV copiado en el casilla de tecto de The Bug Genie, exportado desde otras fuentes. Por favor vea %CSVImport% del artículo en wiki para mayor detalle.'; 
 	$strings['What data would you like to import?'] = '¿Qué datos le gustaria importar?'; 
 	$strings['When you select a type, you will be given the opportunity to copy in your CSV file, and import the data.'] = 'Cuando seleccione un tipo, podrá copiar su archivo CSV e importar los datos.';
-  	$strings['Import content from CSV'] = 'Importar contenido del archivo CSV';
+  $strings['Import content from CSV'] = 'Importar contenido del archivo CSV';
 	$strings['Importing %type%'] = 'Importando %type%';
 	$strings['issues'] = 'problemas';
 	$strings['projects'] = 'proyectos';
@@ -1544,7 +1544,7 @@
 	$strings['Please wait, this may take a few minutes'] = 'Por favor espere, esto puede llevar algunos minutos';
 	$strings['There was an error importing your data:'] = 'Hubo un error al importar los datos:';
 	$strings['Import'] = 'Importar';
-  	$strings['Test the import (dry-run)'] = 'Probar la importación';
+  $strings['Test the import (dry-run)'] = 'Probar la importación';
 	$strings['You can import data from previous version of The Bug Genie into your version 3 installation.'] = 'Puede importar datos de versiones anteriores de The Bug Genie en su instalación de la versión 3.'; 
 	$strings['Please upgrade to BUGS 1.9, followed by The Bug Genie 2 (an upgrade script is included in the installation package for The Bug Genie 2). After upgrading, then follow the instructions below to upgrade from The Bug Genie 2.'] = 'Por favor actualice a BUGS 1.9, seguido de The Bug Genie 2 (un script de actualización está incluido en el paquete de instalación de The Bug Genie 2). Luego de actualizar, siga las instrucciones que están a continuación para actualizar desde The Bug Genie 2.'; 
 	$strings['Please upgrade to The Bug Genie 2.1 if you haven\'t already done so, then follow the instructions on The Bug Genie wiki to upgrade your data. There is not a built in upgrade script.'] = 'Por favor actualice a The Bug Genie 2.1, si todavía no lo hizo, luego siga las instrucciones del wiki de The Bug Genie para actualizar sus datos. No hay un script de actualización disponible.'; 
@@ -1556,9 +1556,9 @@
 	$strings['Projects for %client%'] = 'Proyectos para %client%'; 
 	$strings['Projects for %team%'] = 'Proyectos para %team%'; 
 	$strings['There are no projects linked to this team'] = 'No hay proyectos vinculados a este equipo'; 
-  	$strings['This team has no members'] = 'Este equipo no tiene miembros'; 
+  $strings['This team has no members'] = 'Este equipo no tiene miembros'; 
 	$strings['Team dashboard for %team_name%'] = 'Panel de control para el equipo %team_name%'; 
-  	$strings['Members of %team%'] = 'Miembros de %team%'; 
+  $strings['Members of %team%'] = 'Miembros de %team%'; 
 	$strings['Team dashboard'] = 'Panel de control para el equipo'; 
 	$strings['Scheduled for %scheduled_date%'] = 'Agendado para %scheduled_date%';
 	$strings['%num_closed% story (%closed_points% pts) closed of %num_assigned% (%assigned_points% pts) assigned'] = '%num_closed% historia (%closed_points% pts) cerrada de %num_assigned% (%assigned_points% pts) asignadas';         
@@ -1578,11 +1578,11 @@
 	$strings['This dashboard doesn\'t contain any view. To add views in this dashboard, press the "Customize dashboard"-icon to the far right.'] = 'Este panel no posee ninguna vista. Para agregar vistas, presione el icono "Personalizar panel de control" a la derecha.';
 	$strings['Members of %client%'] = 'Integrantes de %client%';
 	$strings['Website:'] = 'Sitio web:';
-	$strings['none'] = 'nada';
+	$strings['none'] = 'vacío';
 	$strings['Email address:'] = 'Dirección de correo:';
 	$strings['Telephone:'] = 'Teléfono:';
 	$strings['Fax:'] = 'Fax:';
-  	$strings['Show user details'] = 'Mostrar detalles del usuario'; 
+ 	$strings['Show user details'] = 'Mostrar detalles del usuario'; 
 	$strings['This user has not logged in yet'] = 'Este usuario no ha ingresado todavía'; 
 	$strings['Online'] = 'En línea';
 	$strings['There is no recent activity available for this user'] = 'No hay actividad reciente disponible para este usuario';
@@ -1672,7 +1672,7 @@
 	$strings['Other items - such as workflow steps - may depend on this item to exist. Remove the dependant item or unlink it from this item to continue.'] = 'Otros items - como los pasos del flujo de trabajo - pueden depender de este item. Borre el item dependiente o desvinculelo de este item para continuar.';
 	$strings['Specify who can set this value for issues.'] = 'Establece quien puede definir este valor para los problemas.';
 	$strings['CSV'] = 'CSV'; 
-  	$strings['BUGS 1.x/The Bug Genie 2'] = 'BUGS 1.x/The Bug Genie 2'; 
+	$strings['BUGS 1.x/The Bug Genie 2'] = 'BUGS 1.x/The Bug Genie 2'; 
 	$strings['CSVImport'] = 'Importación CSV';
 	$strings['Clients'] = 'Clientes'; 
 	$strings['BUGS 1.x'] = 'BUGS 1.x'; 
@@ -1701,7 +1701,7 @@
 	$strings['Show workflow details'] = 'Mostrar detalles del flujo de trabajo'; 
 	$strings['Copy workflow'] = 'Copiar flujo de trabajo'; 
 	$strings['Please enter the name of the new workflow'] = 'Por favor ingrese el nombre del nuevo flujo de trabajo'; 
-    $strings['Adding client, please wait'] = 'Agregando cliente, espere por favor'; 
+  $strings['Adding client, please wait'] = 'Agregando cliente, espere por favor'; 
 	$strings['There are no uninstalled modules available'] = 'No hay módulos disponibles desinstalados';
 	$strings['Issue updated'] = 'Problema actualizado';
 	$strings["The owner has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "El propietario ha sido modificado, de '''%previous_name%''' a '''%new_name%'''."; 
@@ -1757,7 +1757,7 @@
 	$strings['Edition deleted'] = 'Edición borrada';
 	$strings['Could not delete this edition'] = 'No se pudo borrar esta edición';
 	$strings['You don\'t have access to modify edition'] = 'No tiene acceso a modificar la edición';
-	$strings['No issues recenty commented'] = 'No hay problemas recientemente comentados';
+	$strings['No issues recently commented'] = 'No hay problemas recientemente comentados';
 
 	//TODO: Revisar hasta el final
 
@@ -1778,7 +1778,7 @@
 	$strings['There are no public saved searches'] = 'No hay búsquedas públicas registradas'; 
 	$strings['No feature requests posted yet'] = 'No hay funcionalidades solicitadas aún'; 
 
-  	$strings['...Select a view...'] = '...Seleccione una vista...';
+ 	$strings['...Select a view...'] = '...Seleccione una vista...';
 
 	$strings['Date'] = 'Día';
 	$strings['Points'] = 'Puntos';
@@ -1926,3 +1926,30 @@
 	$strings['The client waas added'] = 'El cliente fue agregado';
 	$strings['If you want to start working on this issue instead, click the %take_over% button to the right'] = 'Si quiere empezar a trabajar en este problema, haga clic en el botón %take_over%';
 	$strings['Can manage project releases and components'] = 'Puede administrar liberaciones y componentes del proyecto';
+  $strings['Show step info'] = 'Ver información del paso';
+  $strings['Transition: %transition_name%'] = 'Transición: %transition_name%'; 
+  $strings['Transition "%transition_name%"'] = 'Transición "%transition_name%"'; 
+  $strings['This page shows all the available details for this transition for the selected workflow, as well as incoming and outgoing steps from this transition.'] = 'Esta página muestra todos los detalles disponibles para esta transición del flujo de trabajo seleccionado, tanto las entradas como las salidas a esta transición.'; 
+  $strings['You can edit all details about the selected transitions from this page.'] = 'Puede editar todos los detalles de la transición seleccionada desde esta página.'; 
+  $strings['Template'] = 'Plantilla'; 
+  $strings['No template used - transition happens instantly'] = 'Sin usar plantilla - las transiciones suceden automáticamente'; 
+  $strings['Transition path'] = 'Camino de la transición'; 
+  $strings['Pre-transition validation'] = 'Validación previa a la transición'; 
+  $strings['Post-transition actions'] = 'Acción posterior a la transición'; 
+  $strings['The following validation rules has to be fullfilled for the transition to be available to the user'] = 'Las siguientes reglas de validación tienen que respetarse para que la transición esté disponible para el usuario'; 
+  $strings['Current user can have no more than %number% issues already assigned'] = 'El usuario actual no puede tener más de %number% problemas asignados'; 
+  $strings['This transition has no pre-validation rules'] = 'Esta transición no tiene reglas previas'; 
+  $strings['The following actions will be applied to the issue during this transition.'] = 'Las siguientes acciones serán aplicadas a los problemas durante esta transición.'; 
+  $strings['Assign the issue to the current user'] = 'Asignar el problema al usuario actual'; 
+  $strings['This transition has no actions'] = 'Esta transición no posee acciones';   
+  $strings['Step: %step_name%'] = 'Paso: %step_name%'; 
+  $strings['Workflow step "%step_name%"'] = 'Paso "%step_name%" del flujo de trabajo';
+  $strings['Open, but not editable'] = 'Abierto, pero no editable';  
+  $strings['Closed and not editable'] = 'Cerrado y no editable';
+  $strings['This step is not connected to a specific status'] = 'Este paso no está vinculado a ningún estado específico';
+  $strings['Delete this user client'] = 'Borrar este cliente usuario'; 
+  $strings['Edit this user client'] = 'Editar este cliente usuario'; 
+  $strings['List users in this client'] = 'Listar los usuarios en este cliente';
+   
+  $strings['Allowed extensions'] = 'Extensiones permitidas';   
+       
