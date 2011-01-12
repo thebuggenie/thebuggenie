@@ -109,6 +109,7 @@ div.image_container.thumb img.image { width: 220px; }
 .login_fieldheader { font-weight: bold; }
 .login_fieldtable { margin-left: auto; margin-right: auto; }
 .logindiv input[type='password'] { font-family: sans-serif; } /* IE does not like web fonts on password boxes, and turns it into blankness, so we will use a different font */
+.loggedindiv { margin: 10px; text-align: center; font-weight: bold; }
 
 /* end login / registration styling */
 
