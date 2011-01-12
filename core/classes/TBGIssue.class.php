@@ -1030,9 +1030,9 @@
 				if ($this->getUserWorkingOnIssue()->getID() == TBGContext::getUser()->getID())
 					return true;
 					
-				return false;
+				//return false;
 			}
-			return true;
+			return (bool) ($this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
 		}
 		
 		/**
@@ -1043,6 +1043,26 @@
 		public function canEditTitle()
 		{
 			return (bool) ($this->_permissionCheck('caneditissuetitle') || $this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
+		}
+
+		/**
+		 * Return if the user can edit description
+		 *
+		 * @return boolean
+		 */
+		public function canEditIssuetype()
+		{
+			return (bool) ($this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
+		}
+
+		/**
+		 * Return if the user can edit description
+		 *
+		 * @return boolean
+		 */
+		public function canEditUserPain()
+		{
+			return (bool) ($this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
 		}
 
 		/**
