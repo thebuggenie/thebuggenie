@@ -1,7 +1,4 @@
 <?php
-
-	$strings['Save'] = 'Guardar';
-	$strings['No such user'] = 'Usuario inexistente';
 	$strings['Project settings'] = 'Configuración del proyecto';
 	$strings['General settings'] = 'Ajustes generales';
 	$strings['Use this page to configure the interface between The Bug Genie and your VCS system. Note that further configuration is necessary to use this feature - please refer to the help (<b>LINK NEEDED</b>) for further details on these settings and other necessary configuration.'] = 'Utilice esta página para configurar la interface entre The Bug Genie y su sistema VCS. Tenga en cuenta que más configuración es necesaria para usar esta característica - por favor consulte la ayuda (<b>FALTA ENLACE</b>) para más detalle sobre estos ajustes y la configuracion necesaria.';
@@ -15,7 +12,6 @@
 	$strings['These settings apply to each individual project.'] = 'Estas configuraciones se aplican a cada proyecto individual.';
 	$strings['Repository browser'] = 'Navegador de repositorio';
 	$strings['Multi-system'] = 'Multi-sistema';
-	$strings['with project\'s repository set as default'] = 'con el repositorio del proyecto definido por defecto';
 	$strings['manually specified repository'] = 'repositorio definido manualmente';
 	$strings['using MultiViews'] = 'utilizando MultiViews';
 	$strings['A number of different VCS systems and source code browsers are available. Please select the one you use.'] = 'Un número de sistemas diferentes VCS y navegadores de código fuente está disponible. Por favor, seleccione el que usa.';
@@ -24,10 +20,12 @@
 	$strings['Repository name'] = 'Nombre del repositorio';
 	$strings['The name of the repository in use, so the correct one can be chosen for viewing commit details. This is not required under certain conditions, see help for details.'] = 'El nombre del repositorio en uso, por lo que debe elegir la correcta para ver detalles. Esto no es necesario en determinadas condiciones, consulte la ayuda para más detalles.';
 	$strings['Click "%save%" to save the settings on both tabs'] = 'Haga clic  en "%save%" para guardar lass configuraciones de ambas pestañas';
-// NEW UNTRANSLATED STRINGS START HERE !!!
-	$strings['VCS Integration'] = 'VCS Integration';
-	$strings['Allows details from source code checkins to be displayed in The Bug Genie'] = 'Allows details from source code checkins to be displayed in The Bug Genie';
-	$strings['Configure repository settings for source code integration'] = 'Configure repository settings for source code integration';
-	$strings['Error: Invalid project ID'] = 'Error: Invalid project ID';
-	$strings['Issue updated from code repository'] = 'Issue updated from code repository';
-	$strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = 'This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>';
+	$strings['No such user'] = 'Usuario inexistente';
+	$strings['Save'] = 'Guardar';
+	$strings['VCS Integration'] = 'Integración VCS';
+	$strings['Allows details from source code checkins to be displayed in The Bug Genie'] = 'Permite detalles del código fuente confirmado que sean mostrados en The Bug Genie'; 
+	$strings['Configure repository settings for source code integration'] = 'Configurar opciones del repositorio para la integración del código fuente'; 
+	$strings['with project\'s repository set as default'] = 'con el repositorio del proyecto definido por defecto';
+	$strings['Error: Invalid project ID'] = 'Error: ID de proyecto no válido';
+	$strings['Issue updated from code repository'] = 'Problema actualizado por código desde el repositorio';
+	$strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = 'Este problema ha sido actualizado con los últimos cambios desde el repositorio.<source>%commit_msg%</source>';
