@@ -1378,7 +1378,17 @@
 								else
 								{
 									if (!$issue->$is_changed_function_name()) return $this->renderJSON(array('changed' => false));
-									$field = array('id' => $parameter_id, 'name' => $parameter->getName());
+									
+									if (isset($parameter))
+									{
+										$name = $parameter->getName();
+									}
+									else
+									{
+										$name = null;
+									}
+									
+									$field = array('id' => $parameter_id, 'name' => $name);
 									if ($classname == 'TBGIssuetype')
 									{
 										TBGContext::loadLibrary('ui');
