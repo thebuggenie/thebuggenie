@@ -1548,12 +1548,15 @@
 		 */
 		public function hasProjectPageAccess($page, $project_id)
 		{
-			$specific_access = $this->hasPageAccess($page, $project_id, true, false);
-			if (!$specific_access && TBGSettings::isPermissive())
+			$specific_access = $this->hasPageAccess($page, $project_id, true, TBGSettings::isPermissive());
+			if ((bool) $specific_access === false)
 			{
+				/* If we are forbidden access to this specific page, don't continue */
 				return false;
 			}
-			return (bool) ($specific_access || TBGContext::getUser()->hasPageAccess('project_allpages', $project_id));
+			
+			$general_access = $this->hasPageAccess('project_allpages', $project_id, true, TBGSettings::isPermissive());
+			return (bool) ($general_access);
 		}
 
 		/**
