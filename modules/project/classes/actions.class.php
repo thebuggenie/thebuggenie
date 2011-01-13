@@ -957,6 +957,10 @@
 			{
 				$transition = TBGContext::factory()->TBGWorkflowTransition($request->getParameter('transition_id'));
 				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
+				if (!$issue->isWorkflowTransitionsAvailable())
+				{
+					throw new Exception(TBGContext::getI18n()->__('You are not allowed to perform any workflow transitions on this issue'));
+				}
 				
 				if ($transition->validateFromRequest($request))
 				{
