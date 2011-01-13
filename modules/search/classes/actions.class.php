@@ -111,9 +111,11 @@
 					{
 						case TBGContext::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
 							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
+							$this->groupby = 'issuetype';
 							break;
 						case TBGContext::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
 							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_CLOSED);
+							$this->groupby = 'issuetype';
 							break;
 						case TBGContext::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
 							$this->groupby = 'milestone';
@@ -125,11 +127,13 @@
 							break;
 						case TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
 							$this->filters['posted_by'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
+							$this->groupby = 'issuetype';
 							break;
 						case TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
 							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
 							$this->filters['assigned_type'] = array('operator' => '=', 'value' => TBGIdentifiableClass::TYPE_USER);
 							$this->filters['assigned_to'] = array('operator' => '=', 'value' => TBGContext::getUser()->getID());
+							$this->groupby = 'issuetype';
 							break;
 						case TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
 							$this->filters['state'] = array('operator' => '=', 'value' => TBGIssue::STATE_OPEN);
@@ -138,6 +142,7 @@
 							{
 								$this->filters['assigned_to'][] = array('operator' => '=', 'value' => $team_id);
 							}
+							$this->groupby = 'issuetype';
 							break;
 					}
 				}
