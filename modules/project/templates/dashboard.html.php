@@ -17,10 +17,15 @@
 			</div>
 			<div id="project_team">
 				<div style="font-weight: bold; float: left; margin: 0 10px 0 0;"><?php echo __('Team'); ?>:</div>
-				<?php if (count($assignees['users']) > 0): ?>
+				<?php if ((count($assignees['users']) > 0) || (count($assignees['teams']) > 0)): ?>
 					<?php foreach ($assignees['users'] as $user_id => $info): ?>
 						<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
 							<?php echo include_component('main/userdropdown', array('user' => $user_id)); ?>
+						</div>
+					<?php endforeach; ?>
+					<?php foreach ($assignees['teams'] as $team_id => $info): ?>
+						<div style="width: auto; display: table-cell; clear: none; padding: 0 10px 0 0; ">
+							<?php echo include_component('main/teamdropdown', array('team' => $team_id)); ?>
 						</div>
 					<?php endforeach; ?>
 				<?php else: ?>
