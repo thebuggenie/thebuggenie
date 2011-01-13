@@ -100,7 +100,7 @@
 			<b>Could not write the SQL settings file</b><br>
 			The file that contains the SQL settings already exists, but is not writable
 			</div>
-			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
+			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
 			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
 			</div>
@@ -110,7 +110,7 @@
 			<b>Could not write to The Bug Genie directory</b><br>
 			The main folder for The Bug Genie should be writable during installation, since we need to store some information in it
 			</div>
-			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
+			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
 			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>
 			</div>
@@ -120,7 +120,7 @@
 			<b>Could not write to The Bug Genie cache directory</b><br>
 			The cache folder for The Bug Genie should be writable during installation and normal operations, since we need to store cache files in it
 			</div>
-			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
+			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
 			chmod a+w -R <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/cache
 			</div>
@@ -130,7 +130,7 @@
 			<b>Could not write to The Bug Genie public directory</b><br>
 			The public folder for The Bug Genie should be writable during installation, since we need to store some information in it
 			</div>
-			<b>If you're installing this on a linux server,</b> running this command should fix it:<br>
+			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
 			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>thebuggenie/
 			</div>
