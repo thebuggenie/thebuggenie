@@ -1804,6 +1804,8 @@
 		 */
 		public function runMarkAsDuplicate(TBGRequest $request)
 		{
+			$this->forward403unless(TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'));
+			
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
 				try
@@ -1859,6 +1861,8 @@
 		 */
 		public function runMarkAsNotDuplicate(TBGRequest $request)
 		{
+			$this->forward403unless(TBGContext::getUser()->hasPermission('caneditissue') || TBGContext::getUser()->hasPermission('caneditissuebasic'));
+			
 			if ($issue_id = $request->getParameter('issue_id'))
 			{
 				try
