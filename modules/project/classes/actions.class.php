@@ -175,6 +175,7 @@
 			{
 				if ($issue instanceof TBGIssue)
 				{
+					$this->forward403unless($issue->canAddRelatedIssues());
 					$task = new TBGIssue();
 					$task->setTitle($request->getParameter('task_name'));
 					$task->setIssuetype(TBGIssuetype::getTask()->getID());
@@ -283,6 +284,7 @@
 						return $this->renderJSON(array('failed' => false));
 						break;
 					case 'estimates':
+						$this->forward403unless($issue->canEditEstimatedTime());
 						if ($request->hasParameter('estimated_points'))
 						{
 							$issue->setEstimatedPoints((int) $request->getParameter('estimated_points'));
@@ -314,7 +316,7 @@
 		 */
 		public function runScrumAssignStory(TBGRequest $request)
 		{
-			$this->forward403unless($this->_checkProjectPageAccess('project_scrum'));
+			$this->forward403unless($this->_checkProjectPageAccess('project_scrum') && TBGContext::getUser()->canAssignScrumUserStories($this->selected_project));
 			try
 			{
 				$issue = TBGContext::factory()->TBGIssue($request->getParameter('story_id'));
