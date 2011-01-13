@@ -109,7 +109,7 @@
 				<?php endif; ?>
 				<li style="margin-top: 10px;">
 					<label for="transition_popup_comment_body"><?php echo __('Write a comment if you want it to be added'); ?></label><br>
-					<textarea name="comment_body" id="transition_popup_comment_body" style="width: 480px; height: 120px;"></textarea>
+					<?php include_template('main/textarea', array('area_name' => 'comment_body', 'area_id' => 'transition_popup_comment_body', 'height' => '120px', 'width' => '480px', 'value' => '')); ?>
 				</li>
 			</ul>
 			<div style="text-align: right; margin-right: 5px;">
