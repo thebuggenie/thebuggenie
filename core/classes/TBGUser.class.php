@@ -541,7 +541,7 @@
 		 */
 		public function getName()
 		{
-			return $this->_realname;
+			return ($this->_buddyname) ? $this->_buddyname : (($this->_realname) ? $this->_realname : $this->_username);
 		}
 		
 		/**
