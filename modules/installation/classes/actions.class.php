@@ -256,7 +256,6 @@
 		{
 			try
 			{
-				$transaction = B2DB::startTransaction();
 				TBGLogging::log('Initializing language support');
 				TBGContext::reinitializeI18n('en_US');
 
@@ -271,7 +270,6 @@
 				TBGLogging::log('Setting up default users and groups');
 				TBGSettings::saveSetting('language', 'en_US', 'core', 1);
 				TBGSettings::saveSetting('url_subdir', $request->getParameter('url_subdir'), 'core', 1);
-				$transaction->commitAndEnd();
 
 				$this->htaccess_error = false;
 				$this->htaccess_ok = (bool) $request->getParameter('apache_autosetup');

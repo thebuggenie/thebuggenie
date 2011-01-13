@@ -104,7 +104,7 @@
 				$merged_methodname = "isCustomfield{$key}Merged";
 				$customfields_list[$key] = array('type' => $customdatatype->getType(),
 												'title' => $i18n->__($customdatatype->getDescription()),
-												'visible' => $this->issue->isFieldVisible($customdatatype->getKey()),
+												'visible' => $this->issue->isFieldVisible($key),
 												'changed' => $this->issue->$changed_methodname(),
 												'merged' => $this->issue->$merged_methodname(),
 												'change_tip' => $i18n->__($customdatatype->getInstructions()),
@@ -126,7 +126,7 @@
 					$customfields_list[$key]['noname_visible'] = (bool) ($this->issue->getCustomField($key) == '');
 				}
 			}
-
+			
 			$this->fields_list = $fields_list;
 			$this->customfields_list = $customfields_list;
 			if (isset($this->transition) && $this->transition->hasAction(TBGWorkflowTransitionAction::ACTION_ASSIGN_ISSUE))

@@ -92,9 +92,6 @@
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
 
-			if (!B2DB::isTransactionActive())
-				$trans = B2DB::startTransaction();
-			
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::ITEMTYPE, $itemtype);
 			$crit->addSelectionColumn(self::ORDER, 'sortorder', B2DBCriteria::DB_MAX, '', '+1');
@@ -112,9 +109,6 @@
 			}
 			$crit->addInsert(self::SCOPE, $scope);
 			$res = $this->doInsert($crit);
-			
-			if (isset($trans))
-				$trans->commitAndEnd();
 			
 			return $res;
 		}

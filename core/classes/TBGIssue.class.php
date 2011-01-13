@@ -163,7 +163,7 @@
 		 * 
 		 * @var float
 		 */
-		protected $_user_pain;
+		protected $_user_pain = 0.00;
 		
 		/**
 		 * Whos assigned the issue
@@ -785,7 +785,10 @@
 					
 					if ($datatype->hasCustomOptions())
 					{
-						$this->$var_name = $row->get(TBGCustomFieldOptionsTable::OPTION_VALUE);
+						if ($optionrow = TBGCustomFieldOptionsTable::getTable()->doSelectById($row->get(TBGIssueCustomFieldsTable::OPTION_VALUE)))
+						{
+							$this->$var_name = $optionrow->get(TBGCustomFieldOptionsTable::OPTION_VALUE);
+						}
 					}
 					else
 					{
@@ -3831,7 +3834,7 @@
 		 * 
 		 * @return boolean
 		 */
-		protected function isFieldVisible($fieldname)
+		public function isFieldVisible($fieldname)
 		{
 			$fields_array = $this->getProject()->getVisibleFieldsArray($this->getIssueType()->getID());
 			return array_key_exists($fieldname, $fields_array);
