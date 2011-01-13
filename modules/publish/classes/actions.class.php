@@ -273,6 +273,11 @@
 			}
 			else
 			{
+				if ($request->hasParameter('new_article_content'))
+				{
+					$this->article_content = $request->getRawParameter('new_article_content');
+				}
+					
 				TBGContext::loadLibrary('publish');
 				$this->article_title = str_replace(array(':', '_'), array(' ', ' '), get_spaced_name($this->article_name));
 			}
