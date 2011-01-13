@@ -964,6 +964,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .search_results th { background-color: #F5F5F5; padding: 3px 3px 3px 0; }
 .search_results td { font-size: 12px; padding: 3px 3px 3px 0; }
 .search_results tbody tr:hover { background-color: #F1F1F1; }
+.search_results tbody tr.closed td { color: #777; text-decoration: line-through; }
 .search_results tbody tr.changed { background-color: #FFFBE2; }
 .search_results tbody tr.changed:hover { background-color: #FFF299; }
 .search_results tbody tr.blocking { background-color: #FCC; }
