@@ -1177,17 +1177,26 @@
 			}
 
 			TBGContext::loadLibrary('common');
+			
+			if (!$issue instanceof TBGIssue) return false;
+			
 			switch ($request->getParameter('field'))
 			{
 				case 'description':
+					if (!$issue->canEditDescription()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					
 					$issue->setDescription($request->getRawParameter('value'));
 					return $this->renderJSON(array('changed' => $issue->isDescriptionChanged(), 'field' => array('id' => (int) ($issue->getDescription() != ''), 'name' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))), 'description' => tbg_parse_text($issue->getDescription(), false, null, array('issue' => $issue))));
 					break;
 				case 'reproduction_steps':
+					if (!$issue->canEditReproductionSteps()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					
 					$issue->setReproductionSteps($request->getRawParameter('value'));
 					return $this->renderJSON(array('changed' => $issue->isReproductionStepsChanged(), 'field' => array('id' => (int) ($issue->getReproductionSteps() != ''), 'name' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue))), 'reproduction_steps' => tbg_parse_text($issue->getReproductionSteps(), false, null, array('issue' => $issue))));
 					break;
 				case 'title':
+					if (!$issue->canEditTitle()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					
 					if ($request->getParameter('value') == '')
 					{
 						return $this->renderJSON(array('changed' => false, 'failed' => true, 'error' => TBGContext::getI18n()->__('You have to provide a title')));
@@ -1199,10 +1208,14 @@
 					}
 					break;
 				case 'percent':
+					if (!$issue->canEditPercentage()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					
 					$issue->setPercentCompleted($request->getParameter('percent'));
 					return $this->renderJSON(array('changed' => $issue->isPercentCompletedChanged(), 'percent' => $issue->getPercentCompleted()));
 					break;
 				case 'estimated_time':
+					if (!$issue->canEditEstimatedTime()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					
 					if ($request->getParameter('estimated_time') != TBGContext::getI18n()->__('Enter your estimate here') && $request->getParameter('estimated_time'))
 					{
 						$issue->setEstimatedTime($request->getParameter('estimated_time'));
@@ -1224,6 +1237,10 @@
 				case 'owned_by':
 				case 'posted_by':
 				case 'assigned_to':
+					if ($request->getParameter('field') == 'owned_by' && !$issue->canEditOwnedBy()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request->getParameter('field') == 'posted_by' && !$issue->canEditPostedBy()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request->getParameter('field') == 'assigned_to' && !$issue->canEditAssignedTo()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					
 					if ($request->hasParameter('value'))
 					{
 						if ($request->hasParameter('identifiable_type'))
@@ -1278,6 +1295,8 @@
 					}
 					break;
 				case 'spent_time':
+					if (!$issue->canEditSpentTime()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					
 					if ($request->getParameter('spent_time') != TBGContext::getI18n()->__('Enter time spent here') && $request->getParameter('spent_time'))
 					{
 						$function = ($request->hasParameter('spent_time_added_text')) ? 'addSpentTime' : 'setSpentTime';
@@ -1319,6 +1338,16 @@
 				case 'pain_bug_type':
 				case 'pain_likelihood':
 				case 'pain_effect':
+					if ($request->getParameter('field') == 'category' && !$issue->canEditCategory()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request->getParameter('field') == 'resolution' && !$issue->canEditResolution()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request->getParameter('field') == 'severity' && !$issue->canEditSeverity()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request->getParameter('field') == 'reproducability' && !$issue->canEditReproducability()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request->getParameter('field') == 'priority' && !$issue->canEditPriority()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request->getParameter('field') == 'milestone' && !$issue->canEditMilestone()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request->getParameter('field') == 'issuetype' && !$issue->canEditIssuetype()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif ($request->getParameter('field') == 'status' && !$issue->canEditStatus()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					elseif (in_array($request->getParameter('field'), array('pain_bug_type', 'pain_likelihood', 'pain_effect')) && !$issue->canEditUserPain()) return $this->renderJSON(array('changed' => false, 'error' => TBGContext::getI18n()->__('You do not have permission to perform this action')));
+					
 					try
 					{
 						$parameter_name = strtolower($request->getParameter('field'));
