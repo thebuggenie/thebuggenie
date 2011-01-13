@@ -2,6 +2,7 @@
 
 	$tbg_response->setTitle(__('Manage projects'));
 	$tbg_response->addJavascript('config/projects_ajax.js');
+	$tbg_response->addJavascript('config/permissions.js');
 	
 ?>
 <table style="table-layout: fixed; width: 100%" cellpadding=0 cellspacing=0>
