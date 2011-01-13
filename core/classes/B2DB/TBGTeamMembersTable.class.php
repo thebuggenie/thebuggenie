@@ -63,11 +63,28 @@
 		
 		public function clearTeamsByUserID($user_id)
 		{
+			$team_ids = array();
+			
 			$crit = $this->getCriteria();
 			$crit->addWhere(self::UID, $user_id);
 			$crit->addJoin(TBGTeamsTable::getTable(), TBGTeamsTable::ID, self::TID);
-			//$crit->addWhere(TBGTeamsTable::ONDEMAND, $ondemand);
-			$res = $this->doDelete($crit);
+			$crit->addWhere(TBGTeamsTable::ONDEMAND, false);
+			
+			if ($res = $this->doSelect($crit))
+			{
+				while ($row = $res->getNextRow())
+				{
+					$team_ids[$row->get(self::TID)] = true;
+				}
+			}
+			
+			if (!empty($team_ids))
+			{
+				$crit = $this->getCriteria();
+				$crit->addWhere(self::UID, $user_id);
+				$crit->addWhere(self::TID, array_keys($team_ids), B2DBCriteria::DB_IN);
+				$res = $this->doDelete($crit);
+			}
 		}
 
 		public function getNumberOfMembersByTeamID($team_id)
