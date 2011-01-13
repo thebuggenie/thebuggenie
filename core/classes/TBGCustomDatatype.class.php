@@ -88,17 +88,17 @@
 			$types[self::INPUT_TEXTAREA_MAIN] = $i18n->__('Textarea in issue main area');
 			$types[self::INPUT_TEXTAREA_SMALL] = $i18n->__('Textarea (small) in issue details list');
 			$types[self::RADIO_CHOICE] = $i18n->__('Radio choices');
-			$types[self::CHECKBOX_CHOICES] = $i18n->__('Checkbox choices');
-			$types[self::RELEASES_LIST] = $i18n->__('Add one or more releases from the list of available releases');
+			// $types[self::CHECKBOX_CHOICES] = $i18n->__('Checkbox choices');
+			// $types[self::RELEASES_LIST] = $i18n->__('Add one or more releases from the list of available releases');
 			$types[self::RELEASES_CHOICE] = $i18n->__('Select a release from the list of available releases');
-			$types[self::COMPONENTS_LIST] = $i18n->__('Add one or more components from the list of available components');
+			// $types[self::COMPONENTS_LIST] = $i18n->__('Add one or more components from the list of available components');
 			$types[self::COMPONENTS_CHOICE] = $i18n->__('Select a component from the list of available components');
-			$types[self::EDITIONS_LIST] = $i18n->__('Add one or more editions from the list of available editions');
+			// $types[self::EDITIONS_LIST] = $i18n->__('Add one or more editions from the list of available editions');
 			$types[self::EDITIONS_CHOICE] = $i18n->__('Select a edition from the list of available editions');
 			$types[self::STATUS_CHOICE] = $i18n->__('Dropdown list with statuses');
-			$types[self::USER_CHOICE] = $i18n->__('Find and pick a user');
-			$types[self::TEAM_CHOICE] = $i18n->__('Find and pick a team');
-			$types[self::USER_OR_TEAM_CHOICE] = $i18n->__('Find and pick a user or a team');
+			// $types[self::USER_CHOICE] = $i18n->__('Find and pick a user');
+			// $types[self::TEAM_CHOICE] = $i18n->__('Find and pick a team');
+			// $types[self::USER_OR_TEAM_CHOICE] = $i18n->__('Find and pick a user or a team');
 
 			return $types;
 

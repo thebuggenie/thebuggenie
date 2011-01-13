@@ -40,7 +40,8 @@
 				<div id="project_dashboard_menu_panes">
 					<?php include_component('recentactivities', array('id' => '10_recent_issues', 'issues' => $recent_issues, 'link' => link_tag(make_url('project_open_issues', array('project_key' => $selected_project->getKey())), __('More') . ' &raquo;', array('class' => 'more', 'title' => __('Show more issues'))), 'empty' => 'No issues, bugs or defects posted yet', 'default_displayed' => true)); ?>
 					<?php include_component('recentactivities', array('id' => '5_recent_requests', 'issues' => $recent_features, 'link' => link_tag(make_url('project_issues', array('project_key' => $selected_project->getKey())), __('More') . ' &raquo;', array('class' => 'more', 'title' => __('Show more issues'))), 'empty' => 'No feature requests posted yet')); ?>
-					<?php include_component('recentactivities', array('id' => 'recent_ideas', 'issues' => $recent_ideas, 'link' => link_tag(make_url('project_planning', array('project_key' => $selected_project->getKey())), __('Show project planning page') . ' &raquo;', array('class' => 'more')), 'empty' => 'No ideas suggested yet')); ?>
+					<?php /* include_component('recentactivities', array('id' => 'recent_ideas', 'issues' => $recent_ideas, 'link' => link_tag(make_url('project_planning', array('project_key' => $selected_project->getKey())), __('Show project planning page') . ' &raquo;', array('class' => 'more')), 'empty' => 'No ideas suggested yet')); */ ?>
+					<?php include_component('recentactivities', array('id' => 'recent_ideas', 'issues' => $recent_ideas, 'link' => null, 'empty' => 'No ideas suggested yet')); ?>
 					<div id="tab_statistics_pane" style="display: none;">
 						<?php echo link_tag(make_url('project_statistics', array('project_key' => $selected_project->getKey())), __('More statistics') . ' &raquo;', array('class' => 'more', 'title' => __('Show more issues'))); ?>
 						<div class="header_div">

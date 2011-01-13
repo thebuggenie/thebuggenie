@@ -771,8 +771,8 @@
 									</div>
 								</li>
 							<?php endforeach; ?>
-							<li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_out dark"><?php echo __('Set assignee'); ?></a></li>
-							<li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_out dark"><?php echo __('Set owner'); ?></a></li>
+							<!-- <li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_out dark"><?php echo __('Set assignee'); ?></a></li>
+							<li><?php echo image_tag('icon_team.png'); ?><a href="#" class="faded_out dark"><?php echo __('Set owner'); ?></a></li> -->
 							<?php
 		
 								TBGEvent::createNew('core', 'reportissue.listfields')->trigger();
