@@ -78,14 +78,14 @@
 						</tr>
 						<tr>
 							<td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 0; font-weight: bold; font-size: 12px;" colspan="2"><?php echo __('Current effort'); ?></td>
-							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_estimated_points"><?php echo $total_spent_points; ?></td>
-							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_estimated_hours"><?php echo $total_spent_hours; ?></td>
+							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_spent_points"><?php echo $total_spent_points; ?></td>
+							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 0; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_spent_hours"><?php echo $total_spent_hours; ?></td>
 							<td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 0; font-weight: bold; font-size: 12px;" colspan="2">&nbsp;</td>
 						</tr>
 						<tr>
 							<td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-weight: bold; font-size: 12px;" colspan="2"><?php echo __('Total remaining effort'); ?></td>
-							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_estimated_points"><?php echo $total_estimated_points - $total_spent_points; ?></td>
-							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_estimated_hours"><?php echo $total_estimated_hours - $total_spent_hours; ?></td>
+							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_remaining_points"><?php echo $total_estimated_points - $total_spent_points; ?></td>
+							<td style="width: 50px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-size: 13px; font-weight: bold; text-align: center; padding: 5px;" id="scrum_sprint_<?php echo $selected_sprint->getID(); ?>_remaining_hours"><?php echo $total_estimated_hours - $total_spent_hours; ?></td>
 							<td style="padding: 5px; border-top: 1px dotted #AAA; border-bottom: 1px dotted #AAA; font-weight: bold; font-size: 12px;" colspan="2">&nbsp;</td>
 						</tr>
 					</table>

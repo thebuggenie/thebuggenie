@@ -184,7 +184,9 @@ function setStoryEstimates(url, story_id)
 				}
 			}
 			$('scrum_sprint_' + json.sprint_id + '_estimated_points').update(json.new_estimated_points);
+			$('scrum_sprint_' + json.sprint_id + '_remaining_points').update(json.new_remaining_points);
 			$('scrum_sprint_' + json.sprint_id + '_estimated_hours').update(json.new_estimated_hours);
+			$('scrum_sprint_' + json.sprint_id + '_remaining_hours').update(json.new_remaining_hours);
 		}
 	},
 	onFailure: function (transport) {
