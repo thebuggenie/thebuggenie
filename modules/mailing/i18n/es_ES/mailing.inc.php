@@ -66,8 +66,7 @@
 	$strings['Use custom settings'] = 'Usar configuración personal';
 	$strings['This setting determines whether The Bug Genie uses the built-in php email function, or a custom configuration'] = 'Esta opción determina si The Bug Genie utiliza funciones de correo propias de php, o una configuración personalizada';
 
-
-
+ 
 	$strings['%number_of% seconds'] = '%number_of% segundos';
 	$strings['Connection information for the outgoing email server'] = 'Información de la conexión del servidor para el correo saliente';
 	$strings['Microsoft Exchange server'] = 'Servidor Microsoft Exchange';
@@ -119,3 +118,5 @@
 	$strings['Did not receive a confirmation message from the mail server.. However, we received: %rv%']='No se recibió un mensaje de confirmación desde el servidor de correo. \nDe todas maneras, recibimos: %rv%';
 	$strings['The character encoding used in outgoing emails'] = 'La codificación de los caracteres usada en los correos salientes';
 	$strings['This is the name and email address email notifications from The Bug Genie will be sent from'] = 'Este es el nombre y dirección de correo que The Bug Genie utilizará';
+  $strings['Don\'t use sendmail \'-f\''] = 'No utilizar sendmail \'-f\''; 
+  $strings['Don\'t use the \'-f\' sendmail parameter (some systems may not allow it)'] = 'No utiliza el parámetro \'-f\' de sendmail (algunos sistemas no lo permiten)';

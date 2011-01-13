@@ -922,7 +922,7 @@
 	$strings['Enable releases'] = 'Habilitar compilaciones';
 	$strings['If this project has regular new main- or test-releases, you should enable releases'] = 'Si este proyecto tiene nuevas distribuciones o distribuciones de prueba, debe activar la liberación';
 	$strings['Use editions'] = 'Usar ediciones';
-	$strings['If the project has more than one edition which differ in features or capabilities, you should enable editions'] = 'Si el proyecto tiene más de una edición la que difiere en características o capacidadees, debe activar ediciones';
+	$strings['If the project has more than one edition which differ in features or capabilities, you should enable editions'] = 'Si el proyecto tiene más de una edición la que difiere en características o capacidades, debe activar el uso de ediciones';
 	$strings['Use components'] = 'Usar componentes';
 	$strings['If the project consists of several easily identifiable sub-parts, you should enable components'] = 'Si el proyecto consiste en varias partes fácilmente identificables, debe activar componentes';
 	$strings['New users'] = 'Nuevos usuarios';
@@ -1361,7 +1361,7 @@
 	$strings['The module "%module_name%" was installed successfully'] = 'El módulo "%module_name%" se instaló exitosamente';
 	$strings['There was an error install the module %module_name%'] = 'Ocurrió un error al instalar el módulo %module_name%';
 	$strings['The module "%module_name%" was uninstalled successfully'] = 'El módulo "%module_name%" fue desinstalado exitosamente';
-	$strings['This module (%module_name%) does not exist'] = 'Este modulo (%module_name%) no existe';
+	$strings['This module (%module_name%) does not exist'] = 'Este módulo (%module_name%) no existe';
 	$strings['You don\'t have access to modify permissions'] = 'No tiene acceso para modificaar permisos';
 	$strings['Settings saved successfully'] = 'Las opciones se guardaron exitosamente';
 	$strings['The module "%module_name%" is not configurable'] = 'El módulo "%module_name%" no es configurable';
@@ -1475,7 +1475,7 @@
 	$strings['The following issues are duplicates of this issue:'] = 'Los siguientes problemas están como duplicados de este problema:';
 	$strings['You have specified an issue that can\'t be shown'] = 'Ha especificado un problema que no puede mostrarse';
 	$strings['This could be because you the issue doesn\'t exist, has been deleted or you don\'t have permission to see it'] = 'Esto puede ser porque el problema no existe, ha sido borrado o no tiene permisos para verlos';
-  $strings['Register new account'] = 'Registrar nueva cuenta';
+	$strings['Register new account'] = 'Registrar nueva cuenta';
 	$strings['Comment posted by %user%'] = 'Comentario publicado por %user%'; 
 	$strings['Owned by'] = 'Propiedad de'; 
 	$strings['noone'] = 'ninguno'; 
@@ -1485,7 +1485,7 @@
 	$strings['Current character set is %charset%'] = 'El conjunto de caracteres actual es %charset%'; 
 	$strings['Edit all user-specific permissions from this page - global, group and team permissions are handled from the [[TBG:configure_permissions|permissions configuration page]]. The Bug Genie permissions are thoroughly explained in [[TheBugGenie:ConfigurePermissions]] in the wiki - look it up if you\'re ever stuck.'] = 'Edite todos los permisos de usuario desde esta página - permisos globales, por grupo y por equipo son gestionados en [[TBG:configure_permissions|página de configuración de permisos]]. El sistema de permisos está explicado en [[TheBugGenie:ConfigurePermissions]] en el wiki - consúltelo cada vez que lo necesite.';
 	$strings['MB'] = 'MB';
-  $strings['No client assigned'] = 'Sin clientes asignados'; 
+	$strings['No client assigned'] = 'Sin clientes asignados'; 
 	$strings['Allowed extension'] = 'Extensión permitida';
 	$strings['The project lead will automatically be assigned issues if workflows are disabled. This can be overriden by component and edition leads, as well as manually specifing when creating an issue.'] = 'El líder de proyecto será asignado automáticamente al problema si el flujo de trabajo está inhabilitado. Esto puede ser redefinido por componente y edición, como así también manualmente cuando se crea un problema.';
 	$strings['These icons may be freely distributed under the %link_to_LGLP%'] = 'Estos íconos pueden ser distribuidos libremente bajo %link_to_LGLP%';
@@ -1534,7 +1534,7 @@
 	$strings['You can import data from a CSV file copied into a text box in The Bug Genie, exported from other sources. Please see the %CSVImport% wiki article for further details and instructions.'] = 'Puede importar datos desde un archivo CSV copiado en el casilla de tecto de The Bug Genie, exportado desde otras fuentes. Por favor vea %CSVImport% del artículo en wiki para mayor detalle.'; 
 	$strings['What data would you like to import?'] = '¿Qué datos le gustaria importar?'; 
 	$strings['When you select a type, you will be given the opportunity to copy in your CSV file, and import the data.'] = 'Cuando seleccione un tipo, podrá copiar su archivo CSV e importar los datos.';
-  $strings['Import content from CSV'] = 'Importar contenido del archivo CSV';
+	$strings['Import content from CSV'] = 'Importar contenido del archivo CSV';
 	$strings['Importing %type%'] = 'Importando %type%';
 	$strings['issues'] = 'problemas';
 	$strings['projects'] = 'proyectos';
@@ -1544,7 +1544,7 @@
 	$strings['Please wait, this may take a few minutes'] = 'Por favor espere, esto puede llevar algunos minutos';
 	$strings['There was an error importing your data:'] = 'Hubo un error al importar los datos:';
 	$strings['Import'] = 'Importar';
-  $strings['Test the import (dry-run)'] = 'Probar la importación';
+	$strings['Test the import (dry-run)'] = 'Probar la importación';
 	$strings['You can import data from previous version of The Bug Genie into your version 3 installation.'] = 'Puede importar datos de versiones anteriores de The Bug Genie en su instalación de la versión 3.'; 
 	$strings['Please upgrade to BUGS 1.9, followed by The Bug Genie 2 (an upgrade script is included in the installation package for The Bug Genie 2). After upgrading, then follow the instructions below to upgrade from The Bug Genie 2.'] = 'Por favor actualice a BUGS 1.9, seguido de The Bug Genie 2 (un script de actualización está incluido en el paquete de instalación de The Bug Genie 2). Luego de actualizar, siga las instrucciones que están a continuación para actualizar desde The Bug Genie 2.'; 
 	$strings['Please upgrade to The Bug Genie 2.1 if you haven\'t already done so, then follow the instructions on The Bug Genie wiki to upgrade your data. There is not a built in upgrade script.'] = 'Por favor actualice a The Bug Genie 2.1, si todavía no lo hizo, luego siga las instrucciones del wiki de The Bug Genie para actualizar sus datos. No hay un script de actualización disponible.'; 
@@ -1701,7 +1701,7 @@
 	$strings['Show workflow details'] = 'Mostrar detalles del flujo de trabajo'; 
 	$strings['Copy workflow'] = 'Copiar flujo de trabajo'; 
 	$strings['Please enter the name of the new workflow'] = 'Por favor ingrese el nombre del nuevo flujo de trabajo'; 
-  $strings['Adding client, please wait'] = 'Agregando cliente, espere por favor'; 
+	$strings['Adding client, please wait'] = 'Agregando cliente, espere por favor'; 
 	$strings['There are no uninstalled modules available'] = 'No hay módulos disponibles desinstalados';
 	$strings['Issue updated'] = 'Problema actualizado';
 	$strings["The owner has been changed, from '''%previous_name%''' to '''%new_name%'''."] = "El propietario ha sido modificado, de '''%previous_name%''' a '''%new_name%'''."; 
@@ -1783,15 +1783,19 @@
 	$strings['Date'] = 'Día';
 	$strings['Points'] = 'Puntos';
 
-	$strings['To edit any of the details in this issue, move your mouse over that detail and press the icon that appears. Changes you make will stay unsaved until you either press the "Save" button that appears when you change the issue, or until you log out (the changes are then lost).'] = 'Para editar alguno de los detalles de este problema, mueva el mouse sobre el detalle y presione el icono que aparece. Los cambios permanecerán sin guardar hasta que presione el botón "Guardar" que aparece cuando cambia un problema, o hasta que salga (En este caso los cambios se perderán).'; 
 	$strings['This task must be closed before the issue relation is solved'] = 'Esta tarea debe ser cerrada antes que el problema relacionado sea resuelto'; 
+
+  $strings['Select %teamname%'] = 'Seleccione %teamname%'; 
+  $strings['Mark as blocking the next release'] = 'Marcar como bloqueo para la próxima liberación'; 
+  $strings['Hide further actions'] = 'Ocultar más acciones'; 
+  $strings['Show further actions'] = 'Mostrar más acciones'; 
   
 	$strings['Denied extension'] = 'Extensión denegada';
   
   
   $strings['Enable module'] = 'Habilitar módulo'; 
   $strings['Really enable "%module_name%"?'] = '¿Realmente habilita "%module_name%"?'; 
-  $strings['Enabling this module will give users access to it and all associated data.'] = 'Habilitando este modulo otorgará acceso a los usuarios y todos sus datos asociados.'; 
+  $strings['Enabling this module will give users access to it and all associated data.'] = 'Habilitando este módulo otorgará acceso a los usuarios y a todos sus datos asociados.'; 
   
   $strings['Critical'] = 'Critica'; 
   $strings['Needs to be fixed'] = 'Necesita ser corregido'; 
@@ -1932,7 +1936,10 @@
   $strings['Only registered users can add / remove content'] = 'Solo los usuarios registrados puede agregar / quitar contenido';
   $strings['Set wiki permissions manually'] = 'Establecer manualmente los permisos de wiki'; 
   $strings['Specify how you want to control access to wiki editing functionality'] = 'Defina como quiere controlar el acceso a la edición de la funcionalidad wiki'; 
-  $strings['Click "%save%" to save wiki settings'] = 'Haga clic en "%save%" para guardar las opciones'; 
+  $strings['Click "%save%" to save wiki settings'] = 'Haga clic en "%save%" para guardar las opciones';
+  $strings['Project wiki'] = 'Wiki del proyecto'; 
+  $strings['Currently selected project'] = 'Proyecto seleccionado'; 
+  $strings['Project wiki frontpage'] = 'Portada wiki del proyecto';  
   $strings['Wiki'] = 'Wiki'; 
   $strings['Enables Wiki-functionality'] = 'Habilita funcionalidad wiki'; 
   $strings['Set up the Wiki module from this section'] = 'Configure el módulo Wiki en esta sección'; 
@@ -1940,3 +1947,18 @@
   $strings['Links to this article'] = 'Enlaces a este artículo'; 
   $strings['History'] = 'Historia'; 
   $strings['Global content'] = 'Contenido General'; 
+	$strings['Table of contents'] = 'Tabla de contenidos';
+	$strings['Move your mouse here to toggle the table of contents'] = 'Mueva el mouse aquí para cambiar la tabla de contenidos';	
+  $strings['No other articles links to this article'] = 'No hay enlaces a este artículo'; 
+  
+  $strings['The client was added'] = 'El cliente fue agregado';
+  $strings['View users'] = 'Ver usuarios'; 
+  $strings['View client dashboard'] = 'Ver panel del cliente';
+  $strings['Project editions'] = 'Ediciones del proyecto'; 
+  $strings['Edit details'] = 'Editar detalles'; 
+  $strings['Click a user to view more details, such as view his/her user card.'] = 'Haga clic sobre un usuario para ver más detalle, como por ejemplo su tarjeta de usuario';
+  
+  $strings['Code checkins (%count%)'] = 'Código confirmado (%count%)'; 
+  $strings['There are no code checkins for this issue'] = 'No hay código confirmado para este problema';
+  $strings['Permanently delete this issue'] = 'Borrar definitivamente este problema'; 
+  $strings['Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'] = '¿Desea borrar este problema? Permanecerá en la base de datos, pero no será accesible a través de The Bug Genie.'; 

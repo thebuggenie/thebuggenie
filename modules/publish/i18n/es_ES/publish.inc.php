@@ -66,7 +66,7 @@
 	$strings['Project wiki / Wiki'] = 'Wiki del proyecto / Wiki'; 
 	$strings['Show "Wiki" links'] = 'Mostrar enlaces "Wiki"'; 
 	$strings['Setting this to "%no%" will hide all "Wiki" tabs and links'] = 'Poniendo esto en "%no%" ocultará todas las pestañas y enlaces "Wiki"';
-	$strings['Project wiki'] = 'Wiki dek proyecto';
+	$strings['Project wiki'] = 'Wiki del proyecto';
 	$strings['Currently selected project'] = 'Proyecto seleccionado'; 
 	$strings['Project wiki frontpage'] = 'Portada wiki del proyecto'; 
 	$strings['The are no other projects to choose from'] = 'No hay otros proyectos para seleccionar';
@@ -78,5 +78,4 @@
 	$strings['No other articles links to this article'] = 'Sin otros enlaces a este artículo'; 
 	$strings['Table of contents'] = 'Tabla de contenidos';
 	$strings['Move your mouse here to toggle the table of contents'] = 'Mueva el mouse aquí para cambiar la tabla de contenidos';	
-
 ?>

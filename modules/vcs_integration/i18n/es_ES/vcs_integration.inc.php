@@ -1,7 +1,7 @@
 <?php
 	$strings['Project settings'] = 'Configuración del proyecto';
 	$strings['General settings'] = 'Ajustes generales';
-	$strings['Use this page to configure the interface between The Bug Genie and your VCS system. Note that further configuration is necessary to use this feature - please refer to the help (<b>LINK NEEDED</b>) for further details on these settings and other necessary configuration.'] = 'Utilice esta página para configurar la interface entre The Bug Genie y su sistema VCS. Tenga en cuenta que más configuración es necesaria para usar esta característica - por favor consulte la ayuda (<b>FALTA ENLACE</b>) para más detalle sobre estos ajustes y la configuracion necesaria.';
+  $strings['Use this page to configure the interface between The Bug Genie and your VCS system. Note that further configuration is necessary to use this feature - please refer to the %help% for further details on these settings and other necessary configuration.'] = 'Utilice esta página para configurar la interface entre The Bug Genie y su sistema VCS. Tenga en cuenta que más configuración es necesaria para usar esta característica - por favor consulte %help% para más detalle sobre estos ajustes y la configuracion necesaria.';
 	$strings['These are the settings that apply to all communications between The Bug Genie and any VCS, regardless of the project.'] = 'Estos son los ajustes que se aplican a todas las comunicaciones entre The Bug Genie y cualquier VCS, independientemente del proyecto.';
 	$strings['Access method'] = 'Método de acceso';
 	$strings['Use the HTTP access method'] = 'Usar el médtodo de acceso HTTP';
@@ -29,3 +29,5 @@
 	$strings['Error: Invalid project ID'] = 'Error: ID de proyecto no válido';
 	$strings['Issue updated from code repository'] = 'Problema actualizado por código desde el repositorio';
 	$strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = 'Este problema ha sido actualizado con los últimos cambios desde el repositorio.<source>%commit_msg%</source>';
+  $strings['help'] = 'ayuda'; 
+   
