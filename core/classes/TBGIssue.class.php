@@ -1035,6 +1035,11 @@
 			return (bool) ($this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
 		}
 		
+		public function isWorkflowTransitionsAvailable()
+		{
+			return (bool) $this->_permissionCheck('caneditissue', true);
+		}
+		
 		/**
 		 * Return if the user can edit title
 		 *

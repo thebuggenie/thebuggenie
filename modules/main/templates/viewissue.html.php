@@ -199,62 +199,64 @@
 						<?php TBGEvent::createNew('core', 'viewissue_left_bottom', $issue)->trigger(); ?>
 					</td>
 					<td valign="top" align="left" style="padding: 5px; height: 100%;" class="issue_main">
-						<div id="workflow_actions">
-							<ul class="workflow_actions simple_list">
-								<?php $cc = 1; $num_transitions = count($issue->getAvailableWorkflowTransitions()); ?>
-								<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
-									<li class="nice_button workflow<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>">
-										<?php if ($transition->hasTemplate()): ?>
-											<input type="button" value="<?php echo $transition->getName(); ?>" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'workflow_transition', 'transition_id' => $transition->getID(), 'issue_id' => $issue->getID())); ?>');">
-										<?php else: ?>
-											<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post">
-												<input type="submit" value="<?php echo $transition->getName(); ?>">
-											</form>
-										<?php endif; ?>
-									</li>
-									<?php $cc++; ?>
-								<?php endforeach; ?>
-							</ul>
-							<?php /*if (!$issue->isBeingWorkedOn() || ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $tbg_user->getID())): ?>
-									<ul>
-										<li><?php echo link_tag(make_url('issue_startworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_start_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __('Start working on this issue')); ?></li>
-									</ul>
-									<?php elseif ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $tbg_user->getID()): ?>
-									<ul>
-										<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_start_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __('Take over this issue')); ?></li>
-									</ul>
-									<?php elseif ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
-										<div class="box_header"><?php echo __('You are working on this issue'); ?></div>
+						<?php if ($issue->isWorkflowTransitionsAvailable()): ?>
+							<div id="workflow_actions">
+								<ul class="workflow_actions simple_list">
+									<?php $cc = 1; $num_transitions = count($issue->getAvailableWorkflowTransitions()); ?>
+									<?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
+										<li class="nice_button workflow<?php if ($cc == 1): ?> first<?php endif; if ($cc == $num_transitions): ?> last<?php endif; ?>">
+											<?php if ($transition->hasTemplate()): ?>
+												<input type="button" value="<?php echo $transition->getName(); ?>" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'workflow_transition', 'transition_id' => $transition->getID(), 'issue_id' => $issue->getID())); ?>');">
+											<?php else: ?>
+												<form action="<?php echo make_url('transition_issue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'transition_id' => $transition->getID())); ?>" method="post">
+													<input type="submit" value="<?php echo $transition->getName(); ?>">
+												</form>
+											<?php endif; ?>
+										</li>
+										<?php $cc++; ?>
+									<?php endforeach; ?>
+								</ul>
+								<?php /*if (!$issue->isBeingWorkedOn() || ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $tbg_user->getID())): ?>
 										<ul>
-											<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_stop_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __("I'm done working on it, add time spent")); ?></li>
-											<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'did' => 'nothing')), image_tag('action_stop_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __("I'm done working on it, don't add time spent")); ?></li>
+											<li><?php echo link_tag(make_url('issue_startworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_start_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __('Start working on this issue')); ?></li>
 										</ul>
-									<?php endif; ?>
-									<ul>
-										<?php if (!$issue->isDuplicate()): ?>
-											<li><a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'markasduplicate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Mark this issue as a duplicate of another'); ?></a></li>
-										<?php else: ?>
-											<li><a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'markasduplicate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Change the issue this is a duplicate of'); ?></a></li>
-											<li><?php echo link_tag(make_url('notduplicate', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __("Unmark this issue as a duplicate")); ?></li>
+										<?php elseif ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() != $tbg_user->getID()): ?>
+										<ul>
+											<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_start_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __('Take over this issue')); ?></li>
+										</ul>
+										<?php elseif ($issue->isBeingWorkedOn() && $issue->getUserWorkingOnIssue()->getID() == $tbg_user->getID()): ?>
+											<div class="box_header"><?php echo __('You are working on this issue'); ?></div>
+											<ul>
+												<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())), image_tag('action_stop_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __("I'm done working on it, add time spent")); ?></li>
+												<li><?php echo link_tag(make_url('issue_stopworking', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'did' => 'nothing')), image_tag('action_stop_working_small.png', array('style' => 'float: left; margin-right: 5px;')) . __("I'm done working on it, don't add time spent")); ?></li>
+											</ul>
 										<?php endif; ?>
-									</ul>
-									<ul>
-										<?php if ($issue->isBlocking()): ?>
-											<li><?php echo link_tag(make_url('unblock', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_unblock.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark this issue as not blocking the next release")); ?></li>
-										<?php else: ?>
-											<li><?php echo link_tag(make_url('block', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_block.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark this issue as blocking the next release")); ?></li>
-										<?php endif; ?>
-									</ul>
-									<ul>
-										<?php if ($issue->isOpen()): ?>
-											<li><a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'close_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_close.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Close this issue'); ?></a></li>
-										<?php else: ?>
-											<li><?php echo link_tag(make_url('openissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('action_reopen.png', array('style' => 'float: left; margin-right: 5px;')) . __("Reopen this issue")); ?></li>
-										<?php endif; ?>
-									</ul>
-								</div>
-								<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b> */ ?>
-						</div>
+										<ul>
+											<?php if (!$issue->isDuplicate()): ?>
+												<li><a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'markasduplicate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Mark this issue as a duplicate of another'); ?></a></li>
+											<?php else: ?>
+												<li><a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'markasduplicate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Change the issue this is a duplicate of'); ?></a></li>
+												<li><?php echo link_tag(make_url('notduplicate', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_duplicate_issues.png', array('style' => 'float: left; margin-right: 5px;')) . __("Unmark this issue as a duplicate")); ?></li>
+											<?php endif; ?>
+										</ul>
+										<ul>
+											<?php if ($issue->isBlocking()): ?>
+												<li><?php echo link_tag(make_url('unblock', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_unblock.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark this issue as not blocking the next release")); ?></li>
+											<?php else: ?>
+												<li><?php echo link_tag(make_url('block', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('icon_block.png', array('style' => 'float: left; margin-right: 5px;')) . __("Mark this issue as blocking the next release")); ?></li>
+											<?php endif; ?>
+										</ul>
+										<ul>
+											<?php if ($issue->isOpen()): ?>
+												<li><a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'close_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo image_tag('action_close.png', array('style' => 'float: left; margin-right: 5px;')); ?><?php echo __('Close this issue'); ?></a></li>
+											<?php else: ?>
+												<li><?php echo link_tag(make_url('openissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getId())), image_tag('action_reopen.png', array('style' => 'float: left; margin-right: 5px;')) . __("Reopen this issue")); ?></li>
+											<?php endif; ?>
+										</ul>
+									</div>
+									<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b> */ ?>
+							</div>
+						<?php endif; ?>
 						<br style="clear: both;">
 						<?php TBGEvent::createNew('core', 'viewissue_right_top', $issue)->trigger(); ?>
 						<div id="description_field"<?php if (!$issue->isDescriptionVisible()): ?> style="display: none;"<?php endif; ?> class="hoverable">
