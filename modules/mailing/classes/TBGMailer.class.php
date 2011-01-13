@@ -30,6 +30,7 @@
 
 		protected $username = '';
 		protected $password = '';
+		protected $no_dash_f = false;
 		protected $ehlo = false;
 
 		public function __construct($type)
@@ -40,6 +41,11 @@
 		public function setServer($server)
 		{
 			$this->server = $server;
+		}
+		
+		public function setNoDashF($val = true)
+		{
+			$this->no_dash_f = (bool) $val;
 		}
 
 		public function getServer()
@@ -122,7 +128,14 @@
 		{
 			$boundary = md5(date('U'));
 
-			$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(), '-f'.$email->getFromAddress());
+			if (!$this->no_dash_f)
+			{
+				$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString(), '-f'.$email->getFromAddress());
+			}
+			else
+			{
+				$retval = mail($email->getRecipientAddressesAsString(), $email->getSubject(), $email->getBodyAsString(), $email->getHeadersAsString());
+			}
 			if ($retval)
 			{
 				TBGLogging::log("Sending email to {$email->getRecipients()} accepted for delivery OK");

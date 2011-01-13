@@ -80,7 +80,7 @@
 		{
 			TBGContext::loadLibrary('common');
 			$settings = array('smtp_host', 'smtp_port', 'smtp_user', 'timeout', 'mail_type', 'enable_outgoing_notifications',
-								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo', 'use_queue');
+								'smtp_pwd', 'headcharset', 'from_name', 'from_addr', 'ehlo', 'use_queue', 'no_dash_f');
 			foreach ($settings as $setting)
 			{
 				if ($request->getParameter($setting) !== null)
@@ -91,7 +91,7 @@
 					switch($setting)
 					{
 						case 'smtp_host':
-							if (!tbg_check_syntax($value, "MAILSERVER"))
+							if ($request->getParameter('mail_type') == TBGMailer::MAIL_TYPE_B2M && !tbg_check_syntax($value, "MAILSERVER"))
 							{
 								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server address'));
 							}
@@ -102,25 +102,28 @@
 								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for email "from"-address'));
 							}
 							break;
-						case 'timeout' :
-							if (!is_numeric($value) || $value < 0)
+						case 'timeout':
+							if ($request->getParameter('mail_type') == TBGMailer::MAIL_TYPE_B2M && !is_numeric($value) || $value < 0)
 							{
 								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server timeout'));
-							}							
+							}
 							break;
-						case 'smtp_port' :
-							if (!is_numeric($value) || $value < 1)
+						case 'smtp_port':
+							if ($request->getParameter('mail_type') == TBGMailer::MAIL_TYPE_B2M && !is_numeric($value) || $value < 1)
 							{
 								throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for SMTP server port'));
 							}							
 							break;							
-						case 'headcharset' :
+						case 'headcharset':
 							// list of supported character sets based on PHP doc : http://www.php.net/manual/en/function.htmlentities.php
 							if (!tbg_check_syntax($value, "CHARSET"))
 							{
 									throw new Exception(TBGContext::getI18n()->__('Please provide a valid setting for email header charset'));
 							}							
-							break;							
+							break;	
+						case 'no_dash_f':
+							$value = (int) $request->getParameter($setting, 0);
+							break;
 					}
 					$this->saveSetting($setting, $value);
 				}
@@ -393,6 +396,10 @@
 					$this->mailer->setPort($this->getSmtpPort());
 					$this->mailer->setUsername($this->getSmtpUsername());
 					$this->mailer->setPassword($this->getSmtpPassword());
+				}
+				else
+				{
+					$this->mailer->setNoDashF((bool) $this->getSetting('no_dash_f'));
 				}
 			}
 
