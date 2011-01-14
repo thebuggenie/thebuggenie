@@ -1758,3 +1758,5 @@
 	$strings['Could not delete this edition'] = 'Could not delete this edition';
 	$strings['You don\'t have access to modify edition'] = 'You don\'t have access to modify edition';
 	$strings['No issues recently commented'] = 'No issues recently commented';
+	$strings['You\'re not allowed to change your password.'] = 'You\'re not allowed to change your password.';
+	$strings['Please contact your administrator to change it.'] = 'Please contact your administrator to change it.';

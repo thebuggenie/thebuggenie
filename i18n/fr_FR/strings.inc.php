@@ -39,7 +39,7 @@
 	$strings['Default user group'] = 'Groupe d\'utilisateur par d&eacute;faut';
 	$strings['New users will automatically be added to this group'] = 'Les nouveaux utilisateurs seront automatiquement ajout&eacute;s &agrave; ce groupe';
 	$strings['Frontpage'] = 'Accueil';
-	$strings['Do you really want to delete this milestone?'] = 'Etes-vous s&ucirc;r de supprimer ce jalon ?';
+	$strings['Do you really want to delete this milestone?'] = 'Etes-vous s&ucirc;r de vouloir supprimer ce jalon ?';
 	$strings['This milestone has no planned schedule'] = 'Ce jalon n\'a pas de date planifi&eacute;e';
 	$strings['visible'] = 'visible';
 	$strings['hidden'] = 'masqu&eacute;';
@@ -1762,3 +1762,5 @@
 	$strings['Could not delete this edition'] = 'Impossible de supprimer cette &eacute;dition';
 	$strings['You don\'t have access to modify edition'] = 'Vous n\'avez pas acc&egrave;s &agrave; la modification des &eacute;dition';
 	$strings['No issues recently commented'] = 'Pas de demande comment&eacute;e r&eacute;cemment';
+	$strings['You\'re not allowed to change your password.'] = 'Vous n\'&ecirc;tes pas autoris&eacute; &agrave; changer votre mot de passe.';
+	$strings['Please contact your administrator to change it.'] = 'Veuillez contacter votre administrateur pour changer votre mot de passe.';

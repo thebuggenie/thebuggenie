@@ -624,6 +624,10 @@
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('account'));
 			if ($request->isMethod(TBGRequest::POST))
 			{
+				if (TBGContext::getUser()->canChangePassword() == false)
+				{
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You\'re not allowed to change your password.')));
+				}
 				if (!$request->hasParameter('current_password') || !$request->getParameter('current_password'))
 				{
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please enter your current password')));

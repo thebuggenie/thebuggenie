@@ -22,6 +22,7 @@
 						<?php echo image_tag('icon_change_password.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 						<a href="javascript:void(0);" onclick="$('change_password_form').toggle();"><?php echo __('Change my password'); ?></a>
 					</div>
+					<?php if ($tbg_user->canChangePassword()): ?>
 					<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('account_change_password'); ?>" onsubmit="changePassword('<?php echo make_url('account_change_password'); ?>'); return false;" method="post" id="change_password_form" style="display: none;">
 						<div class="rounded_box white shadowed" style="position: absolute; padding: 5px 10px 5px 10px; font-size: 13px; width: 300px;" id="change_password_div">
 							<b><?php echo __('Changing your password'); ?></b><br>
@@ -41,6 +42,18 @@
 								</div>
 						</div>
 					</form>
+					<?php else: ?>
+					<div class="rounded_box white shadowed" style="position: absolute; padding: 5px 10px 5px 10px; font-size: 13px; width: 300px; display: none;" id="change_password_form">
+							<b><?php echo __('Changing your password'); ?></b>
+							<div style="font-size: 13px; margin-bottom: 10px;">
+								<?php echo __('You\'re not allowed to change your password.'); ?>
+								<br><?php echo __('Please contact your administrator to change it.'); ?>
+							</div>
+							<div class="smaller" style="text-align: right; margin: 10px 2px 5px 0; height: 23px;">
+								<div style="float: right; padding: 3px;"><?php echo __('%cancel%', array('%cancel%' => '<a href="javascript:void(0);" onclick="$(\'change_password_form\').hide();"><b>' . __('cancel') . '</b></a>')); ?></div>
+							</div>
+					</div>
+					<?php endif; ?>
 					<div style="<?php if (!$tbg_user->usesGravatar()): ?>display: none; <?php endif; ?>clear: both; margin: 3px 0 15px 0;" id="gravatar_change">
 						<?php echo image_tag('gravatar.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 						<?php echo link_tag('http://en.gravatar.com/emails/', __('Change my profile picture / avatar'), array('target' => '_blank')); ?>

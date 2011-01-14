@@ -1814,6 +1814,18 @@
 		}
 
 		/**
+		 * Return if the user can change its own password
+		 *
+		 * @param TBGProject $project
+		 *
+		 * @return boolean
+		 */
+		public function canChangePassword()
+		{
+			return (bool) ($this->hasPermission('canchangepassword'));
+		}
+		
+		/**
 		 * Return a list of the users latest log items
 		 * 
 		 * @param integer $number Limit to a number of changes
