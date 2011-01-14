@@ -778,9 +778,9 @@
 			{
 				$fields_array = $this->selected_project->getReportableFieldsArray($this->issuetype_id);
 
-				$this->title = $request->getParameter('title');
-				$this->selected_description = $request->getParameter('description', null, false);
-				$this->selected_reproduction_steps = $request->getParameter('reproduction_steps', null, false);
+				$this->title = $request->getRawParameter('title');
+				$this->selected_description = $request->getRawParameter('description', null, false);
+				$this->selected_reproduction_steps = $request->getRawParameter('reproduction_steps', null, false);
 
 				if ($edition_id = (int) $request->getParameter('edition_id'))
 				{
@@ -1031,7 +1031,6 @@
 		 */
 		public function runReportIssue(TBGRequest $request)
 		{
-			$this->forward403unless(TBGContext::getUser()->canReportIssues(TBGContext::getCurrentProject()));
 			$i18n = TBGContext::getI18n();
 			$this->_setupReportIssueProperties();
 			$errors = array();
@@ -1042,6 +1041,7 @@
 			$this->default_spent_time = $i18n->__('Enter time spent here');
 
 			$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
+			$this->forward403unless(TBGContext::getUser()->canReportIssues(TBGContext::getCurrentProject()));
 
 			if ($request->isMethod(TBGRequest::POST))
 			{
