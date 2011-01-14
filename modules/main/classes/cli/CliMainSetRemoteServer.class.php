@@ -43,12 +43,21 @@
 				$this->cliEcho('To avoid being asked for a password, please enter the password for the remote user ');
 				$this->cliEcho($this->getProvidedArgument('username'), 'white', 'bold');
 				$this->cliEcho(" (a hash of the password will be stored).\nIf you don't want to store this, simply press enter:\n");
-				$this->cliEcho("Enter the password: ", 'white', 'bold');
+				$this->cliEcho("Enter the password for the {$this->getProvidedArgument('username')} user: ", 'white', 'bold');
 				$password = $this->_getCliInput();
-				if ($password != '')
+				$this->cliEcho("Please enter the remote security key: ", 'white', 'bold');
+				$salt = $this->_getCliInput();
+				if ($password != '' && $salt != '')
 				{
-					file_put_contents(TBGContext::getIncludePath() . '.remote_password_hash', TBGUser::hashPassword($password));
-					$this->cliEcho("Password hash saved.\n", 'white', 'bold');
+					file_put_contents(TBGContext::getIncludePath() . '.remote_password_hash', TBGUser::hashPassword($password, $salt));
+					$this->cliEcho("Authentication details saved.\n", 'white', 'bold');
+				}
+				else
+				{
+					$this->cliEcho("\n");
+					$this->cliEcho("Please provide both password and security key.\n");
+					$this->cliEcho("If you haven't received the security key, please contact the remote server administrator.\n\n");
+					$this->cliEcho("Password hash not saved.\n", 'white', 'bold');
 				}
 			}
 		}

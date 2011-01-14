@@ -300,9 +300,10 @@
 		 * 
 		 * @return hashed password
 		 */
-		public static function hashPassword($password)
+		public static function hashPassword($password, $salt = null)
 		{
-			return sha1($password.TBGSettings::getPasswordSalt());
+			$salt = ($salt !== null) ? $salt : TBGSettings::getPasswordSalt();
+			return sha1($password.$salt);
 		}
 		
 		/**
