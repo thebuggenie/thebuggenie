@@ -1629,15 +1629,19 @@
 		 * @param integer $product_id[optional] A product id
 		 * @return boolean
 		 */
-		public function canReportIssues($product_id = null)
+		public function canReportIssues($project_id = null)
 		{
 			$retval = null;
-			if ($product_id !== null)
+			if ($project_id !== null)
 			{
-				$retval = $this->hasPermission('cancreateissues', $product_id, 'core', true, null);
-				$retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateandeditissues', $product_id, 'core', true, null);
+				$project_id = ($project_id instanceof TBGProject) ? $project_id->getID() : $project_id;
+				$retval = $this->hasPermission('cancreateissues', $project_id, 'core', true, null);
+				$retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateandeditissues', $project_id, 'core', true, null);
 			}
-			return ($retval !== null) ? $retval : (bool) ($this->hasPermission('cancreateissues') || $this->hasPermission('cancreateandeditissues'));
+			$retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateissues', 0, 'core', true, null);
+			$retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateandeditissues', 0, 'core', true, null);
+			
+			return ($retval !== null) ? $retval : TBGSettings::isPermissive();
 		}
 
 		/**

@@ -42,17 +42,19 @@
 						<?php endif; ?>
 						<?php TBGEvent::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
 					</td>
-					<td class="nice_button report_button">
-						<input type="submit" value="<?php echo __('Report an issue'); ?>">
-						<div class="report_button_hover rounded_box green">
-							<div class="tab_menu_dropdown">
-								<?php foreach ($project->getIssuetypeScheme()->getIssuetypes() as $issuetype): ?>
-									<?php if (!$project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>	
-									<?php echo link_tag(make_url('project_reportissue_with_issuetype', array('project_key' => $project->getKey(), 'issuetype' => $issuetype->getKey())), image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName())); ?>
-								<?php endforeach;?>
+					<?php if ($tbg_user->canReportIssues($project)): ?>
+						<td class="nice_button report_button">
+							<input type="submit" value="<?php echo __('Report an issue'); ?>">
+							<div class="report_button_hover rounded_box green">
+								<div class="tab_menu_dropdown">
+									<?php foreach ($project->getIssuetypeScheme()->getIssuetypes() as $issuetype): ?>
+										<?php if (!$project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>	
+										<?php echo link_tag(make_url('project_reportissue_with_issuetype', array('project_key' => $project->getKey(), 'issuetype' => $issuetype->getKey())), image_tag($issuetype->getIcon() . '_tiny.png' ) . __($issuetype->getName())); ?>
+									<?php endforeach;?>
+								</div>
 							</div>
-						</div>
-					</td>
+						</td>
+					<?php endif; ?>
 				</tr>
 			</table>
 		</form>

@@ -1031,6 +1031,7 @@
 		 */
 		public function runReportIssue(TBGRequest $request)
 		{
+			$this->forward403unless(TBGContext::getUser()->canReportIssues(TBGContext::getCurrentProject()));
 			$i18n = TBGContext::getI18n();
 			$this->_setupReportIssueProperties();
 			$errors = array();
