@@ -799,7 +799,9 @@
 					$this->selected_component = TBGContext::factory()->TBGComponent($component_id);
 				}
 
-				if (trim($this->title) == '' || $this->title == $this->default_title) $errors['title'] = true; //$i18n->__('You have to specify a title');
+				if (trim($this->title) == '' || $this->title == $this->default_title) $errors['title'] = true;
+				if (isset($fields_array['description']) && $fields_array['description']['required'] && trim($this->selected_description) == '') $errors['description'] = true;
+				if (isset($fields_array['reproduction_steps']) && $fields_array['reproduction_steps']['required'] && trim($this->selected_reproduction_steps) == '') $errors['reproduction_steps'] = true;
 
 				if (isset($fields_array['edition']))
 				{
