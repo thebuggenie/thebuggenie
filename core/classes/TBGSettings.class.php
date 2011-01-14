@@ -34,10 +34,10 @@
 		const CONFIGURATION_SECTION_MODULES = 15;
 		const CONFIGURATION_SECTION_IMPORT = 16;
 
-		static protected $_ver_mj = null;
-		static protected $_ver_mn = null;
-		static protected $_ver_rev = null;
-		static protected $_ver_name = null;
+		static protected $_ver_mj = 3;
+		static protected $_ver_mn = 0;
+		static protected $_ver_rev = '0 RC3';
+		static protected $_ver_name = "Querquedule";
 		static protected $_defaultscope = null;
 		static protected $_settings = null;
 	
@@ -47,10 +47,6 @@
 			{
 				TBGLogging::log('Loading all settings');
 				self::$_settings = array();
-				self::$_ver_mj = 3;
-				self::$_ver_mn = 0;
-				self::$_ver_rev = '0 RC2';
-				self::$_ver_name = 'Cable select';
 				if (self::$_settings = TBGCache::get('settings'))
 				{
 					TBGLogging::log('Using cached settings');
