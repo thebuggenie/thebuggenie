@@ -14,9 +14,10 @@
 			$resolutions["CAN'T REPRODUCE"] = '';
 			$resolutions["WON'T FIX"] = '';
 			$resolutions["NOT AN ISSUE"] = '';
-			$resolutions["WILL FIX IN NEXT RELEASE"] = '';
+			$resolutions["POSTPONED"] = '';
 			$resolutions["RESOLVED"] = '';
 			$resolutions["CAN'T FIX"] = '';
+			$resolutions["DUPLICATE"] = '';
 
 			foreach ($resolutions as $name => $itemdata)
 			{

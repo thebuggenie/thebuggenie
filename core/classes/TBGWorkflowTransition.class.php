@@ -78,10 +78,12 @@
 			$rejected_resolutions[] = TBGResolution::getResolutionByKeyish('wontfix')->getID();
 			$rejected_resolutions[] = TBGResolution::getResolutionByKeyish('cantfix')->getID();
 			$rejected_resolutions[] = TBGResolution::getResolutionByKeyish('cantreproduce')->getID();
+			$rejected_resolutions[] = TBGResolution::getResolutionByKeyish('duplicate')->getID();
 			$resolved_resolutions = array();
 			$resolved_resolutions[] = TBGResolution::getResolutionByKeyish('resolved')->getID();
 			$resolved_resolutions[] = TBGResolution::getResolutionByKeyish('wontfix')->getID();
-			$resolved_resolutions[] = TBGResolution::getResolutionByKeyish('willfixinnextrelease')->getID();
+			$resolved_resolutions[] = TBGResolution::getResolutionByKeyish('postponed')->getID();
+			$resolved_resolutions[] = TBGResolution::getResolutionByKeyish('duplicate')->getID();
 			$closed_statuses = array();
 			$closed_statuses[] = TBGStatus::getStatusByKeyish('closed')->getID();
 			$closed_statuses[] = TBGStatus::getStatusByKeyish('postponed')->getID();
