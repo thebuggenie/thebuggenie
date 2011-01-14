@@ -1634,6 +1634,8 @@
 			$retval = null;
 			if ($project_id !== null)
 			{
+				if (is_numeric($project_id)) $project_id = TBGContext::factory()->TBGProject($project_id);
+				if ($project_id->isLocked()) return false;
 				$project_id = ($project_id instanceof TBGProject) ? $project_id->getID() : $project_id;
 				$retval = $this->hasPermission('cancreateissues', $project_id, 'core', true, null);
 				$retval = ($retval !== null) ? $retval : $this->hasPermission('cancreateandeditissues', $project_id, 'core', true, null);
