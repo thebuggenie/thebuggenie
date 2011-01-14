@@ -1007,11 +1007,12 @@
 		protected function _permissionCheck($key, $exclusive = false)
 		{
 			$retval = null;
-			if ($this->getPostedByID() == TBGContext::getUser()->getID() && !$exclusive)
+			//if (TBGContext::getUser()->isGuest()) return false;
+			if ($this->isInvolved() && !$exclusive)
 			{
 				$retval = $this->getProject()->permissionCheck($key.'own', true);
 			}
-			return ($retval !== null) ? $retval : $this->getProject()->permissionCheck($key);
+			return ($retval !== null) ? $retval : $this->getProject()->permissionCheck($key, !$this->isInvolved());
 		}
 
 		/**
@@ -1035,12 +1036,18 @@
 					
 				//return false;
 			}
-			return (bool) ($this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
+			return (bool) ($this->_permissionCheck('caneditissuebasic') || ($this->isInvolved() && $this->_permissionCheck('cancreateandeditissues')) || $this->_permissionCheck('caneditissue', true));
 		}
 		
 		public function isWorkflowTransitionsAvailable()
 		{
 			return (bool) $this->_permissionCheck('caneditissue', true);
+		}
+
+		public function isInvolved()
+		{
+			$user_id = TBGContext::getUser()->getID();
+			return (bool) ($this->getPostedByID() == $user_id || ($this->isAssigned() && $this->getAssignee()->getID() == $user_id && $this->getAssignee()->getType() == TBGIdentifiableClass::TYPE_USER) || ($this->isOwned() && $this->getOwner()->getID() == $user_id && $this->getOwner()->getType() == TBGIdentifiableClass::TYPE_USER));
 		}
 		
 		/**
@@ -1050,7 +1057,7 @@
 		 */
 		public function canEditTitle()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuetitle') || $this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
+			return (bool) ($this->_permissionCheck('caneditissuetitle') || $this->_permissionCheck('caneditissuebasic') || ($this->isInvolved() && $this->_permissionCheck('cancreateandeditissues')) || $this->_permissionCheck('caneditissue', true));
 		}
 
 		/**
@@ -1060,7 +1067,7 @@
 		 */
 		public function canEditIssuetype()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
+			return (bool) ($this->_permissionCheck('caneditissuebasic') || ($this->isInvolved() && $this->_permissionCheck('cancreateandeditissues')) || $this->_permissionCheck('caneditissue', true));
 		}
 
 		/**
@@ -1070,7 +1077,7 @@
 		 */
 		public function canEditUserPain()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
+			return (bool) ($this->_permissionCheck('caneditissuebasic') || ($this->isInvolved() && $this->_permissionCheck('cancreateandeditissues')) || $this->_permissionCheck('caneditissue', true));
 		}
 
 		/**
@@ -1080,7 +1087,7 @@
 		 */
 		public function canEditDescription()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuedescription') || $this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
+			return (bool) ($this->_permissionCheck('caneditissuedescription') || $this->_permissionCheck('caneditissuebasic') || ($this->isInvolved() && $this->_permissionCheck('cancreateandeditissues')) || $this->_permissionCheck('caneditissue', true));
 		}
 
 		/**
@@ -1090,7 +1097,7 @@
 		 */
 		public function canEditReproductionSteps()
 		{
-			return (bool) ($this->_permissionCheck('caneditissuereproduction_steps') || $this->_permissionCheck('caneditissuebasic') || $this->_permissionCheck('cancreateandeditissues') || $this->_permissionCheck('caneditissue', true));
+			return (bool) ($this->_permissionCheck('caneditissuereproduction_steps') || $this->_permissionCheck('caneditissuebasic') || ($this->isInvolved() && $this->_permissionCheck('cancreateandeditissues')) || $this->_permissionCheck('caneditissue', true));
 		}
 
 		/**
