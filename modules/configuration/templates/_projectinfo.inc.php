@@ -60,7 +60,7 @@
 			<td style="padding: 2px; width: 100px; font-size: 0.9em; text-align: right;"><a href="javascript:void(0);" class="image" onclick="Effect.toggle('lead_by_change', 'appear', { duration: 0.5 }); return false;" title="<?php echo __('Change project leader'); ?>"><?php echo __('Change / set'); ?></a></td>
 		<?php endif; ?>
 	</tr>
-	<tr><td colspan="3" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('The project lead will automatically be assigned issues. This can be overriden by component and edition leads, as well as manually specifing when creating an issue.'); ?></td></tr>
+<?php /*	<tr><td colspan="3" class="config_explanation" style="padding-bottom: 10px;"><?php echo __('The project lead will automatically be assigned issues. This can be overriden by component and edition leads, as well as manually specifing when creating an issue.'); ?></td></tr> */ ?>
 	<tr class="hover_highlight">
 		<td style="padding: 4px;">
 			<b><?php echo __('QA responsible'); ?></b>
@@ -136,7 +136,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><label for="prefix"><?php echo __('Project prefix'); ?></label></td>
+		<td><label for="prefix"><?php echo __('Issue prefix'); ?></label></td>
 		<td>
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 				<input type="text" name="prefix" id="prefix" value="<?php print $project->getPrefix(); ?>" style="width: 70px;"<?php if (!$project->usePrefix()): ?> disabled<?php endif; ?>>
@@ -145,10 +145,8 @@
 			<?php else: ?>
 				<span class="faded_out"><?php echo __('No prefix set'); ?></span>
 			<?php endif; ?>
+			<div style="float: right; margin-right: 5px;" class="faded_out"><?php echo __('See %about_issue_prefix% for an explanation about issue prefixes', array('%about_issue_prefix%' => link_tag(make_url('publish_article', array('article_name' => 'AboutIssuePrefixes')), __('about issue prefixes'), array('target' => '_new')))); ?></div>
 		</td>
-	</tr>
-	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('With prefix enabled, issues will be prefixed with the specified text. Ex: If you enable prefix and set "MYPROJ" as the prefix, issues will be named "MYPROJ-1", "MYPROJ-2", and so on. Without prefix enabled, issues will be name #1, #2, and so on.'); ?></td>
 	</tr>
 	<tr>
 		<td><label for="description"><?php echo __('Project description'); ?></label></td>

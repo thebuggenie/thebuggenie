@@ -594,11 +594,11 @@ ul.workflow_actions li form { display: inline; margin: 0; padding: 0; }
 
 #fullpage_backdrop_content { position: relative; }
 
-.backdrop_box { background: #396BA7 !important; position: absolute; top: 87px; left: 50%; z-index: 100001; clear: both; padding: 0 !important; }
+.backdrop_box { background: #396BA7 !important; position: absolute; top: 37px; left: 50%; z-index: 100001; clear: both; padding: 0 !important; }
 .backdrop_box.small { width: 400px; margin: 0 -200px 0 -200px; }
 .backdrop_box.mediumsmall { width: 500px; margin: 0 -250px 0 -250px; }
 .backdrop_box.medium { width: 600px; margin: 0 -300px 0 -300px; }
-.backdrop_box.large { width: 800px; margin: 0 -400px 0 -400px; }
+.backdrop_box.large { width: 800px; margin: 0 -400px 200px -400px; }
 .backdrop_detail_header { font-weight: bold; font-size: 14px; color: #FFF; padding: 5px; }
 .backdrop_detail_content { font-weight: normal; font-size: 12px; padding: 5px; background: white; }
 .backdrop_detail_content .tab_menu { margin-top: 30px; margin-bottom: 10px; font-size: 1.1em; }

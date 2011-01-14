@@ -30,9 +30,6 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="config_explanation" colspan="2"><?php echo __('Select the workflow scheme to be used by this project'); ?></td>
-		</tr>
-		<tr>
 			<td><label for="issuetype_scheme"><?php echo __('Issuetype scheme'); ?></label></td>
 			<td>
 				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
@@ -47,9 +44,6 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="config_explanation" colspan="2"><?php echo __('Select the issuetype scheme to be used by this project'); ?></td>
-		</tr>
-		<tr>
 			<td><label for="use_scrum"><?php echo __('Enable agile development features'); ?></label></td>
 			<td>
 				<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
@@ -61,9 +55,6 @@
 					<?php echo ($project->usesScrum()) ? __('Yes') : __('No'); ?>
 				<?php endif; ?>
 			</td>
-		</tr>
-		<tr>
-			<td class="config_explanation" colspan="2"><?php echo __('If the project uses an agile method for planning, releases and development, enable it here'); ?></td>
 		</tr>
 		<?php /* <tr>
 			<td><label for="defaultstatus"><?php echo __('Default status for new issues'); ?></label></td>
