@@ -2871,7 +2871,7 @@
 				$headerrow2 = array();
 				for ($i = 0; $i != count($headerrow); $i++)
 				{
-					$headerrow2[$i] = trim($headerrow[$i], '"');
+					$headerrow2[$i] = trim($headerrow[$i], '" ');
 				}
 				
 				$errors = array();
@@ -3129,7 +3129,7 @@
 								$activerow = explode(',', $activerow);
 								
 								// Check if project exists
-								$key = trim($activerow[$namecol], '"');
+								$key = trim($activerow[$namecol], '" ');
 								$key = str_replace(' ', '', $key);
 								$key = strtolower($key);
 								
@@ -3179,7 +3179,7 @@
 											case 1:
 												try
 												{
-													TBGContext::factory()->TBGUser(trim($activerow[$identifiableitem[0]], '"'));
+													TBGContext::factory()->TBGUser(trim($activerow[$identifiableitem[0]], '" '));
 												}
 												catch (Exception $e)
 												{
@@ -3189,7 +3189,7 @@
 											case 2:
 												try
 												{
-													TBGContext::factory()->TBGTeam(trim($activerow[$identifiableitem[0]], '"'));
+													TBGContext::factory()->TBGTeam(trim($activerow[$identifiableitem[0]], '" '));
 												}
 												catch (Exception $e)
 												{
@@ -3211,7 +3211,7 @@
 									{
 										try
 										{
-											TBGContext::factory()->TBGClient(trim($activerow[$client], '"'));
+											TBGContext::factory()->TBGClient(trim($activerow[$client], '" '));
 										}
 										catch (Exception $e)
 										{
@@ -3231,7 +3231,7 @@
 									{
 										try
 										{
-											TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$workflow_id], '"'));
+											TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$workflow_id], '" '));
 										}
 										catch (Exception $e)
 										{
@@ -3251,7 +3251,7 @@
 									{
 										try
 										{
-											TBGContext::factory()->TBGIssuetypeScheme(trim($activerow[$issuetype_scheme], '"'));
+											TBGContext::factory()->TBGIssuetypeScheme(trim($activerow[$issuetype_scheme], '" '));
 										}
 										catch (Exception $e)
 										{
@@ -3344,7 +3344,7 @@
 											case 1:
 												try
 												{
-													TBGContext::factory()->TBGUser(trim($activerow[$identifiableitem[0]], '"'));
+													TBGContext::factory()->TBGUser(trim($activerow[$identifiableitem[0]], '" '));
 												}
 												catch (Exception $e)
 												{
@@ -3354,7 +3354,7 @@
 											case 2:
 												try
 												{
-													TBGContext::factory()->TBGTeam(trim($activerow[$identifiableitem[0]], '"'));
+													TBGContext::factory()->TBGTeam(trim($activerow[$identifiableitem[0]], '" '));
 												}
 												catch (Exception $e)
 												{
@@ -3376,7 +3376,7 @@
 									{
 										try
 										{
-											TBGContext::factory()->TBGUser(trim($activerow[$posted_by], '"'));
+											TBGContext::factory()->TBGUser(trim($activerow[$posted_by], '" '));
 										}
 										catch (Exception $e)
 										{
@@ -3396,7 +3396,7 @@
 									{
 										try
 										{
-											$milestonetmp = TBGContext::factory()->TBGMilestone(trim($activerow[$milestone], '"'));
+											$milestonetmp = TBGContext::factory()->TBGMilestone(trim($activerow[$milestone], '" '));
 											if ($milestonetmp->getProject()->getID() != $activerow[$project])
 											{
 												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: milestone does not apply to the specified project', array('%col%' => $milestone+1, '%row%' => $i+1));
@@ -3420,7 +3420,7 @@
 									{
 										try
 										{
-											TBGContext::factory()->TBGStatus(trim($activerow[$status], '"'));
+											TBGContext::factory()->TBGStatus(trim($activerow[$status], '" '));
 										}
 										catch (Exception $e)
 										{
@@ -3440,7 +3440,7 @@
 									{
 										try
 										{
-											TBGContext::factory()->TBGResolution(trim($activerow[$resolution], '"'));
+											TBGContext::factory()->TBGResolution(trim($activerow[$resolution], '" '));
 										}
 										catch (Exception $e)
 										{
@@ -3460,7 +3460,7 @@
 									{
 										try
 										{
-											TBGContext::factory()->TBGPriority(trim($activerow[$priority], '"'));
+											TBGContext::factory()->TBGPriority(trim($activerow[$priority], '" '));
 										}
 										catch (Exception $e)
 										{
@@ -3480,7 +3480,7 @@
 									{
 										try
 										{
-											TBGContext::factory()->TBGCategory(trim($activerow[$category], '"'));
+											TBGContext::factory()->TBGCategory(trim($activerow[$category], '" '));
 										}
 										catch (Exception $e)
 										{
@@ -3500,7 +3500,7 @@
 									{
 										try
 										{
-											TBGContext::factory()->TBGSeverity(trim($activerow[$severity], '"'));
+											TBGContext::factory()->TBGSeverity(trim($activerow[$severity], '" '));
 										}
 										catch (Exception $e)
 										{
@@ -3520,7 +3520,7 @@
 									{
 										try
 										{
-											TBGContext::factory()->TBGReproducability(trim($activerow[$reproducability], '"'));
+											TBGContext::factory()->TBGReproducability(trim($activerow[$reproducability], '" '));
 										}
 										catch (Exception $e)
 										{
@@ -3540,7 +3540,7 @@
 									{
 										try
 										{
-											$typetmp = TBGContext::factory()->TBGIssuetype(trim($activerow[$issue_type], '"'));
+											$typetmp = TBGContext::factory()->TBGIssuetype(trim($activerow[$issue_type], '" '));
 											if (!($prjtmp->getIssuetypeScheme()->isSchemeAssociatedWithIssuetype($typetmp)))
 												$errors[] = TBGContext::getI18n()->__('Row %row% column %col%: this project does not support issues of this type (%type%)', array('%type%' => $typetmp->getName(), '%col%' => $issue_type+1, '%row%' => $i+1));
 										}
@@ -3591,19 +3591,19 @@
 								$activerow = html_entity_decode($activerow, ENT_QUOTES);
 								$activerow = explode(',', $activerow);
 								$client = new TBGClient();
-								$client->setName(trim($activerow[$namecol], '"'));
+								$client->setName(trim($activerow[$namecol], '" '));
 								
 								if ($emailcol !== null)
-									$client->setEmail(trim($activerow[$emailcol], '"'));
+									$client->setEmail(trim($activerow[$emailcol], '" '));
 									
 								if ($websitecol !== null)
-									$client->setWebsite(trim($activerow[$websitecol], '"'));
+									$client->setWebsite(trim($activerow[$websitecol], '" '));
 									
 								if ($faxcol !== null)
-									$client->setFax(trim($activerow[$faxcol], '"'));
+									$client->setFax(trim($activerow[$faxcol], '" '));
 								
 								if ($telephonecol !== null)
-									$client->setTelephone(trim($activerow[$telephonecol], '"'));
+									$client->setTelephone(trim($activerow[$telephonecol], '" '));
 									
 								$client->save();
 							}
@@ -3622,11 +3622,11 @@
 								$activerow = html_entity_decode($activerow, ENT_QUOTES);
 								$activerow = explode(',', $activerow);
 								$project = new TBGProject();
-								$project->setName(trim($activerow[$namecol], '"'));
+								$project->setName(trim($activerow[$namecol], '" '));
 								
 								if ($prefix !== null)
 								{
-									$project->setPrefix(trim($activerow[$prefix], '"'));
+									$project->setPrefix(trim($activerow[$prefix], '" '));
 									$project->setUsePrefix(true);
 								}
 									
@@ -3641,11 +3641,11 @@
 									switch (trim($activerow[$owner_type], '"'))
 									{
 										case TBGIdentifiableClass::TYPE_USER:
-											$user = new TBGUser(trim($activerow[$owner], '"'));
+											$user = new TBGUser(trim($activerow[$owner], '" '));
 											$project->setOwner($user);
 											break;
 										case TBGIdentifiableClass::TYPE_TEAM:
-											$team = new TBGTeam(trim($activerow[$owner], '"'));
+											$team = new TBGTeam(trim($activerow[$owner], '" '));
 											$project->setOwner($team);
 											break;
 									}
@@ -3656,11 +3656,11 @@
 									switch (trim($activerow[$lead_type], '"'))
 									{
 										case TBGIdentifiableClass::TYPE_USER:
-											$user = new TBGUser(trim($activerow[$lead], '"'));
+											$user = new TBGUser(trim($activerow[$lead], '" '));
 											$project->setLeader($user);
 											break;
 										case TBGIdentifiableClass::TYPE_TEAM:
-											$team = new TBGTeam(trim($activerow[$lead], '"'));
+											$team = new TBGTeam(trim($activerow[$lead], '" '));
 											$project->setLeader($team);
 											break;
 									}
@@ -3671,21 +3671,21 @@
 									switch (trim($activerow[$qa_type], '"'))
 									{
 										case TBGIdentifiableClass::TYPE_USER:
-											$user = new TBGUser(trim($activerow[$qa], '"'));
+											$user = new TBGUser(trim($activerow[$qa], '" '));
 											$project->setQaResponsible($user);
 											break;
 										case TBGIdentifiableClass::TYPE_TEAM:
-											$team = new TBGTeam(trim($activerow[$qa], '"'));
+											$team = new TBGTeam(trim($activerow[$qa], '" '));
 											$project->setQaResponsible($team);
 											break;
 									}
 								}
 								
 								if ($descr !== null)
-									$project->setDescription(trim($activerow[$descr], '"'));
+									$project->setDescription(trim($activerow[$descr], '" '));
 									
 								if ($doc_url !== null)
-									$project->setDocumentationUrl(trim($activerow[$doc_url], '"'));
+									$project->setDocumentationUrl(trim($activerow[$doc_url], '" '));
 									
 								if ($freelance !== null)
 								{
@@ -3713,13 +3713,13 @@
 								
 								if ($workflow_id !== null)
 								{
-									$workflow = TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$workflow_id], '"'));
+									$workflow = TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$workflow_id], '" '));
 									$project->setWorkflowScheme($workflow);
 								}
 								
 								if ($client !== null)
 								{
-									$client_object = TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$client], '"'));
+									$client_object = TBGContext::factory()->TBGWorkflowScheme(trim($activerow[$client], '" '));
 									$project->setClient($client_object);
 								}
 								
@@ -3730,16 +3730,16 @@
 								}
 								
 								if ($summary_type !== null)
-									$project->setFrontpageSummaryType(trim($activerow[$summary_type], '"'));
+									$project->setFrontpageSummaryType(trim($activerow[$summary_type], '" '));
 
 								if ($issuetype_scheme !== null)
 									$project->setIssuetypeScheme(TBGContext::factory()->TBGIssuetypeScheme(trim($activerow[$issuetype_scheme], '"')));
 									
 								if ($allow_reporting !== null)
-									$project->setLocked(trim($activerow[$allow_reporting], '"'));
+									$project->setLocked(trim($activerow[$allow_reporting], '" '));
 							
 								if ($autoassign !== null)
-									$project->setAutoassign(trim($activerow[$autoassign], '"'));
+									$project->setAutoassign(trim($activerow[$autoassign], '" '));
 									
 								$project->save();
 							}
@@ -3758,24 +3758,24 @@
 								$activerow = html_entity_decode($activerow, ENT_QUOTES);
 								$activerow = explode(',', $activerow);
 								$issue = new TBGIssue();
-								$issue->setTitle(trim($activerow[$title], '"'));
-								$issue->setProject(trim($activerow[$project], '"'));
-								$issue->setIssuetype(trim($activerow[$issue_type], '"'));
+								$issue->setTitle(trim($activerow[$title], '" '));
+								$issue->setProject(trim($activerow[$project], '" '));
+								$issue->setIssuetype(trim($activerow[$issue_type], '" '));
 								
 								if ($issue_type !== null)
-									$issue->setIssuetype(trim($activerow[$issue_type], '"'));
+									$issue->setIssuetype(trim($activerow[$issue_type], '" '));
 								
 								if ($descr !== null)
-									$issue->setDescription(trim($activerow[$descr], '"'));
+									$issue->setDescription(trim($activerow[$descr], '" '));
 									
 								if ($repro !== null)
-									$issue->setReproduction(trim($activerow[$repro], '"'));
+									$issue->setReproduction(trim($activerow[$repro], '" '));
 								
 								if ($state !== null)
-									$issue->setState(trim($activerow[$state], '"'));
+									$issue->setState(trim($activerow[$state], '" '));
 								
 								if ($status !== null)
-									$issue->setStatus(trim($activerow[$status], '"'));
+									$issue->setStatus(trim($activerow[$status], '" '));
 									
 								if ($posted_by !== null)
 									$issue->setPostedBy(TBGContext::factory()->TBGUser(trim($activerow[$posted_by], '"')));
@@ -3785,11 +3785,11 @@
 									switch (trim($activerow[$owner_type], '"'))
 									{
 										case TBGIdentifiableClass::TYPE_USER:
-											$user = new TBGUser(trim($activerow[$owner], '"'));
+											$user = new TBGUser(trim($activerow[$owner], '" '));
 											$issue->setOwner($user);
 											break;
 										case TBGIdentifiableClass::TYPE_TEAM:
-											$team = new TBGTeam(trim($activerow[$owner], '"'));
+											$team = new TBGTeam(trim($activerow[$owner], '" '));
 											$issue->setOwner($team);
 											break;
 									}
@@ -3800,42 +3800,42 @@
 									switch (trim($activerow[$assigned_type], '"'))
 									{
 										case TBGIdentifiableClass::TYPE_USER:
-											$user = new TBGUser(trim($activerow[$assigned], '"'));
+											$user = new TBGUser(trim($activerow[$assigned], '" '));
 											$issue->setAssignee($user);
 											break;
 										case TBGIdentifiableClass::TYPE_TEAM:
-											$team = new TBGTeam(trim($activerow[$assigned], '"'));
+											$team = new TBGTeam(trim($activerow[$assigned], '" '));
 											$issue->setAssignee($team);
 											break;
 									}
 								}
 								
 								if ($resolution !== null)
-									$issue->setResolution(trim($activerow[$resolution], '"'));
+									$issue->setResolution(trim($activerow[$resolution], '" '));
 									
 								if ($priority !== null)
-									$issue->setPriority(trim($activerow[$priority], '"'));
+									$issue->setPriority(trim($activerow[$priority], '" '));
 								
 								if ($category !== null)
-									$issue->setCategory(trim($activerow[$category], '"'));
+									$issue->setCategory(trim($activerow[$category], '" '));
 								
 								if ($blocking !== null)
-									$issue->setBlocking(trim($activerow[$blocking], '"'));
+									$issue->setBlocking(trim($activerow[$blocking], '" '));
 									
 								if ($severity !== null)
-									$issue->setSeverity(trim($activerow[$severity], '"'));
+									$issue->setSeverity(trim($activerow[$severity], '" '));
 									
 								if ($reproducability !== null)
-									$issue->setReproducability(trim($activerow[$reproducability], '"'));
+									$issue->setReproducability(trim($activerow[$reproducability], '" '));
 									
 								if ($votes !== null)
-									$issue->setVotes(trim($activerow[$votes], '"'));
+									$issue->setVotes(trim($activerow[$votes], '" '));
 								
 								if ($percentage !== null)
-									$issue->setPercentage(trim($activerow[$percentage], '"'));
+									$issue->setPercentage(trim($activerow[$percentage], '" '));
 								
 								if ($milestone !== null)
-									$issue->setMilestone(trim($activerow[$milestone], '"'));
+									$issue->setMilestone(trim($activerow[$milestone], '" '));
 								
 								$issue->save();
 							}
