@@ -143,10 +143,10 @@
 			$this->addMainMenuLink('http://www.thebuggenie.com', 'The Bug Genie homepage', 1, $scope_id);
 			$this->addMainMenuLink('http://www.thebuggenie.com/forum', 'The Bug Genie forums', 2, $scope_id);
 			$this->addMainMenuLink(null, null, 3, $scope_id);
-			$this->addMainMenuLink('http://www.thebuggenie.com/b2', 'Online issue tracker', 4, $scope_id);
+			$this->addMainMenuLink('http://thebuggenie.com/thebuggenie', 'Online issue tracker', 4, $scope_id);
 			$this->addMainMenuLink('', "''This is the issue tracker for The Bug Genie''", 5, $scope_id);
 			$this->addMainMenuLink(null, null, 6, $scope_id);
-			$this->addMainMenuLink('http://www.thebuggenie.com/blog', 'The Bug Genie team blog', 7, $scope_id);
+			$this->addMainMenuLink('http://thebuggenie.wordpress.com/', 'The Bug Genie team blog', 7, $scope_id);
 			$this->addMainMenuLink('', "''Stay up to date on the latest development''", 8, $scope_id);
 		}
 		
