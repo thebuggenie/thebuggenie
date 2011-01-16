@@ -1278,7 +1278,7 @@
 								case 'update':
 									if (($b_name = $request->getParameter('build_name')) && trim($b_name) != '')
 									{
-										if (in_array($b_name, $build->getProject()->getBuilds()))
+										if (in_array($b_name, $build->getProject()->getBuilds()) && !($b_name == $build->getName()))
 										{
 											throw new Exception($i18n->__('This build already exists for this project'));
 										}
