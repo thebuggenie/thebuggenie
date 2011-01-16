@@ -167,6 +167,7 @@
 			$crit = $this->getCriteria();
 			$crit->addSelectionColumn(self::ID, 'column_count', B2DBCriteria::DB_COUNT);
 			$crit->addSelectionColumn($column);
+			$crit->addWhere(self::PROJECT_ID, $project_id);
 			$crit->addGroupBy($column);
 
 			$crit2 = clone $crit;
