@@ -41,6 +41,7 @@
 			<?php if (count($tbg_user->getAssociatedProjects()) > 0): ?>
 				<ul id="associated_projects">
 					<?php foreach ($tbg_user->getAssociatedProjects() as $project): ?>
+						<?php if ($project->isDeleted()): continue; endif; ?>
 						<li style="text-align: right;">
 							<div class="rounded_box white cut_bottom" style="border-bottom: 0;">
 								<div class="project_name">
