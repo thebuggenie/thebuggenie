@@ -185,6 +185,7 @@
 		<tr>
 			<td style="<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> width: 395px; padding-right: 10px;<?php endif; ?> vertical-align: top;">
 				<div style="width: 385px; padding: 3px; font-size: 12px; background-color: #FFF; border-bottom: 1px solid #DDD;"><b><?php echo __('Components for this edition'); ?></b></div>
+				<div style="overflow: auto; height: 300px; overflow-x: hidden;">
 				<table cellpadding=0 cellspacing=0 style="width: 100%;" id="edition_components">
 				<?php foreach ($edition->getProject()->getComponents() as $aComponent): ?>
 					<tr id="edition_component_<?php echo $aComponent->getID(); ?>"<?php if (!$edition->hasComponent($aComponent)): ?> style="display: none;"<?php endif; ?>>
@@ -199,10 +200,12 @@
 					<td style="padding: 3px; color: #AAA;" colspan=3><?php echo __('This edition has no components'); ?></td>
 				</tr>
 				</table>
+				</div>
 			</td>
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 			<td style="width: 380px; vertical-align: top; padding-left: 10px;">
 				<div style="width: 370px; padding: 3px; font-size: 12px; background-color: #FFF; border-bottom: 1px solid #DDD;"><b><?php echo __('Add an existing component'); ?></b></div>
+				<div style="overflow: auto; height: 300px; overflow-x: hidden;">
 				<table cellpadding=0 cellspacing=0 style="width: 100%;" id="edition_components">
 				<?php foreach ($edition->getProject()->getComponents() as $aComponent): ?>
 					<tr id="project_component_<?php echo $aComponent->getID(); ?>"<?php if ($edition->hasComponent($aComponent)): ?> style="display: none;"<?php endif; ?>>
@@ -219,6 +222,7 @@
 					</tr>
 				<?php endif; ?>
 				</table>
+				</div>
 			</td>
 		<?php endif; ?>
 		</tr>

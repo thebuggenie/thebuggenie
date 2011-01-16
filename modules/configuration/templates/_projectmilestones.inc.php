@@ -28,7 +28,7 @@
 				</form>
 			<?php endif; ?>
 			<p class="faded_out" id="no_milestones" style="padding: 5px;<?php if (count($milestones) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no milestones'); ?></p>
-			<div id="milestone_list" style="width: 780px; margin-left: 5px;">
+			<div id="milestone_list" style="width: 780px; margin-left: 5px; height: 300px; overflow: auto;">
 				<?php foreach ($milestones as $milestone): ?>
 					<?php include_template('configuration/milestonebox', array('milestone' => $milestone)); ?>
 				<?php endforeach; ?>

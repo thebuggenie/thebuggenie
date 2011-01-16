@@ -41,6 +41,7 @@
 		<td style="width: auto; padding-right: 5px; vertical-align: top;">
 			<div id="project_editions"<?php if (!$project->isEditionsEnabled()): ?> style="display: none;"<?php endif; ?>>
 				<div class="faded_out" id="no_editions" style="padding: 5px;<?php if (count($project->getEditions()) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no editions'); ?></div>
+				<div style="height: 100px; overflow: auto;">
 				<table cellpadding=0 cellspacing=0 style="width: 100%; margin-top: 10px;">
 					<tbody id="edition_table">
 					<?php foreach ($project->getEditions() as $edition): ?>
@@ -48,12 +49,14 @@
 					<?php endforeach; ?>
 					</tbody>
 				</table>
+				</div>
 			</div>
 			<div style="padding: 2px 5px 5px 5px;<?php if ($project->isEditionsEnabled()): ?> display: none;<?php endif; ?>" id="project_editions_disabled" class="faded_out"><?php echo __('This project does not use editions'); ?>.<br><?php echo __('Editions can be enabled in project settings'); ?>.</div>
 		</td>
 		<td style="width: 375px; padding-right: 5px; vertical-align: top;">
 			<div id="project_components"<?php if (!$project->isComponentsEnabled()): ?> style="display: none;"<?php endif; ?>>
 				<div class="faded_out" id="no_components" style="padding: 5px;<?php if (count($project->getComponents()) > 0): ?> display: none;<?php endif; ?>"><?php echo __('There are no components'); ?></div>
+				<div style="height: 100px; overflow: auto;">
 				<table cellpadding=0 cellspacing=0 style="width: 100%; margin-top: 10px;">
 					<tbody id="component_table">
 					<?php foreach ($project->getComponents() as $component): ?>
@@ -61,6 +64,7 @@
 					<?php endforeach; ?>
 					</tbody>
 				</table>
+				</div>
 			</div>
 			<div style="padding: 2px 5px 5px 5px;<?php if ($project->isComponentsEnabled()): ?> display: none;<?php endif; ?>" id="project_components_disabled" class="faded_out"><?php echo __('This project does not use components'); ?>.<br><?php echo __('Components can be enabled in project settings'); ?>.</div>
 		</td>

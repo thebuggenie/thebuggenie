@@ -23,12 +23,12 @@
 			</tr>
 		</table>
 	</form>
-	<span id="build_table">
+	<div id="build_table" style="overflow: auto; <?php echo ($parent instanceof TBGProject) ? 'height: 100px;' : 'height: 300px';?>">
 	<?php foreach ($parent->getBuilds() as $build): ?>
 		<span id="build_list_<?php echo $build->getID(); ?>">
 			<?php include_template('configuration/buildbox', array('build' => $build, 'access_level' => $access_level)); ?>
 		</span>
 	<?php endforeach; ?>
-	</span>
+	</div>
 	<div id="no_builds" style="padding: 5px;<?php if (count($parent->getBuilds()) > 0): ?> display: none;<?php endif; ?>" class="faded_out"><?php echo __('There are no releases'); ?></div>
 </div>
