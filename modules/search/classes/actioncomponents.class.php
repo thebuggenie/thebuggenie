@@ -7,8 +7,23 @@
 		{
 			$this->currentpage = ceil($this->offset / $this->ipp) + 1;
 			$this->pagecount = ceil($this->resultcount / $this->ipp);
-			$this->filters = serialize($this->filters);
-			$this->route = (TBGContext::isProjectContext()) ? TBGContext::getRouting()->generate('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : TBGContext::getRouting()->generate('search_paginated');
+			$filters = array();
+			foreach ($this->filters as $key => $filter)
+			{
+				if (is_array($filter))
+				{
+					foreach ($filter as $subkey => $subfilter)
+					{
+						$filters[] = "filters[{$key}][{$subkey}]=".urlencode($subfilter);
+					}
+				}
+				else
+				{
+					$filters[] = "filters[{$key}]=".urlencode($filter);
+				}
+			}
+			$route = (TBGContext::isProjectContext()) ? TBGContext::getRouting()->generate('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : TBGContext::getRouting()->generate('search_paginated');
+			$this->route = $route . '?' . join('&', $filters);
 		}
 
 		public function componentFilter()

@@ -772,8 +772,8 @@ function setPermission(url, field)
 
 function searchPage(url, offset)
 {
-	var params = Form.serialize('find_issues_form');
-	params += '&offset=' + offset;
+	//var params = Form.serialize('find_issues_form');
+	var params = '&offset=' + offset;
 	new Ajax.Updater('search_results', url, {
 	asynchronous: true,
 	method: "post",
