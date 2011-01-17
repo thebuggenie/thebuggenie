@@ -117,27 +117,18 @@
 											<li<?php if (in_array($tbg_response->getPage(), array('project_issues', 'viewissue'))): ?> class="selected"<?php endif; ?>>
 												<div>
 													<?php echo link_tag(make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('tab_search.png').__('Issues')); ?>
-													<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+													<?php if (TBGContext::isProjectContext()): ?>
+														<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
+													<?php endif; ?>
 												</div>
-												<div id="issues_menu" class="tab_menu_dropdown shadowed">
 												<?php if (TBGContext::isProjectContext()): ?>
-													<?php echo link_tag(make_url('project_open_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Open issues for this project')); ?>
-													<?php echo link_tag(make_url('project_closed_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Closed issues for this project')); ?>
-													<?php echo link_tag(make_url('project_milestone_todo_list', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Milestone todo-list for this project')); ?>
-													<?php echo link_tag(make_url('project_most_voted_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Most voted for issues')); ?>
-													<?php echo link_tag(make_url('project_my_reported_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
-													<?php echo link_tag(make_url('project_my_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
-													<?php echo link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Open issues assigned to my teams')); ?>
-													<?php foreach ($tbg_user->getStarredIssues() as $issue): ?>
-														<?php if ($issue->getProject()->getID() != TBGContext::getCurrentProject()->getID()) continue; ?>
-														<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), image_tag('star_small.png') . $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true)); ?>
-													<?php endforeach; ?>
-												<?php else: ?>
-													<?php echo link_tag(make_url('my_reported_issues'), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
-													<?php echo link_tag(make_url('my_assigned_issues'), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
-													<?php echo link_tag(make_url('my_teams_assigned_issues'), image_tag('icon_savedsearch.png') . __('Open issues assigned to my teams')); ?>
+													<div id="issues_menu" class="tab_menu_dropdown shadowed">
+														<?php echo link_tag(make_url('project_open_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Open issues for this project')); ?>
+														<?php echo link_tag(make_url('project_closed_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Closed issues for this project')); ?>
+														<?php echo link_tag(make_url('project_milestone_todo_list', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Milestone todo-list for this project')); ?>
+														<?php echo link_tag(make_url('project_most_voted_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())), image_tag('icon_savedsearch.png') . __('Most voted for issues')); ?>
+													</div>
 												<?php endif; ?>
-												</div>
 											</li>
 										<?php endif; ?>
 										<?php if (!TBGContext::isProjectContext() && $tbg_user->hasPageAccess('teamlist') && !is_null(TBGTeamsTable::getTable()->getAll())): ?>
@@ -214,10 +205,23 @@
 												<?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png').__('Your dashboard')); ?>	
 												<?php echo link_tag(make_url('account'), image_tag('icon_account.png').__('Your account')); ?>
 												<?php echo link_tag(make_url('logout'), image_tag('logout.png').__('Logout')); ?>
-												<div class="header"><?php echo __('Predefined searches'); ?></div>
+												<div class="header"><?php echo __('Your issues'); ?></div>
 												<?php echo link_tag(make_url('my_reported_issues'), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
 												<?php echo link_tag(make_url('my_assigned_issues'), image_tag('icon_savedsearch.png') . __('Open issues assigned to me')); ?>
 												<?php echo link_tag(make_url('my_teams_assigned_issues'), image_tag('icon_savedsearch.png') . __('Open issues assigned to my teams')); ?>
+												<?php foreach ($tbg_user->getStarredIssues() as $issue): ?>
+													<?php if (!TBGContext::isProjectContext() || $issue->getProject()->getID() != TBGContext::getCurrentProject()->getID()) continue; ?>
+													<?php
+													
+														$link_text = image_tag('star_small.png');
+														if ($issue->isBlocking()) $link_text .= image_tag('icon_important.png', array('style' => 'margin-right: 5px;', 'title' => __('This issue is blocking the next release')));
+														$link_text .= $issue->getIssueType()->getName() . ' ' . $issue->getFormattedIssueNo(true) . '<br>';
+														$link_text .= (strlen($issue->getTitle()) > 43) ? substr($issue->getTitle(), 0, 40) . '...' : $issue->getTitle();
+														$classes = ($issue->isClosed()) ? 'issue_closed' : '';
+													
+													?>
+													<?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), $link_text, array('class' => $classes)); ?>
+												<?php endforeach; ?>
 											<?php endif; ?>
 										</div>
 									</div>
