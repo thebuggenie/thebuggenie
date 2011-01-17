@@ -264,7 +264,7 @@
 		
 		if ($htmlentities)
 		{
-			$str = htmlentities($str, ENT_NOQUOTES, TBGContext::getI18n()->getCharset());
+			$str = htmlentities($str, ENT_NOQUOTES+ENT_IGNORE, TBGContext::getI18n()->getCharset());
 		}
 		return $str;
 	}
