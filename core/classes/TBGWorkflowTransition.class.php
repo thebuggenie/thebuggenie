@@ -436,7 +436,7 @@
 		{
 			$request = ($request !== null) ? $request : $this->_request;
 			$this->getOutgoingStep()->applyToIssue($issue);
-			if ($request->hasParameter('comment_body')) {
+			if ($request->hasParameter('comment_body') && trim($request->getParameter('comment_body') != '')) {
 				$this->_request = $request;
 				TBGEvent::listen('core', 'TBGIssue::save', array($this, 'listenIssueSaveAddComment'));
 			}

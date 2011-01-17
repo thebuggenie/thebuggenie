@@ -117,9 +117,13 @@
 						<td style="width: auto;">
 							<select name="issuetype" id="build_<?php echo $b_id; ?>_issuetype">
 								<option value="" selected><?php echo __('All issue types'); ?></option>
-								<?php foreach (TBGIssuetype::getAll($build->getProject()->getID()) as $anIssuetype): ?>
-									<option value=<?php echo $anIssuetype->getID(); ?>><?php echo $anIssuetype->getName(); ?></option>
-								<?php endforeach; ?>
+								<?php if ($build->getProject() instanceof TBGProject): ?>
+									<?php foreach (TBGIssuetype::getAll($build->getProject()->getID()) as $anIssuetype): ?>
+										<option value=<?php echo $anIssuetype->getID(); ?>><?php echo $anIssuetype->getName(); ?></option>
+									<?php endforeach; ?>
+								<?php else: ?>
+									<?php TBGLogging::log('Build ' . $build->getID() . ' does not belong to a project!', 'main', TBGLogging::LEVEL_WARNING_RISK); ?>
+								<?php endif; ?>
 							</select>
 						</td>
 					</tr>

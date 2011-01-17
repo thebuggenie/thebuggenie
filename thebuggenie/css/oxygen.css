@@ -188,6 +188,7 @@ div.autocomplete ul li:first-line { font-weight: bold; }
 .tab_menu .tab_menu_dropdown, .tab_menu_container .tab_menu_dropdown { display: none; position: absolute; top: 26px; margin-left: -5px; width: 250px; font-size: 1em; background-color: #A4C0E4; color: #FFF; padding: 5px 0; z-index: 10000; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; -moz-border-radius-bottomleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-left-radius: 5px; -webkit-border-bottom-right-radius: 5px; -webkit-border-top-right-radius: 5px; }
 #header_userinfo .tab_menu_dropdown { top: 33px; right: 7px; -webkit-border-top-right-radius: 0; border-top-right-radius: 0; -moz-border-radius-topright: 0; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; }
 .user_menu_dropdown { background: #396ba7 !important; }
+.user_menu_dropdown a { font-size: 12px; }
 .tab_menu .tab_menu_dropdown a, .tab_menu_container .tab_menu_dropdown a { float: none; }
 #header_userinfo .tab_menu_dropdown a { color: #FFF; font-weight: normal; }
 #header_userinfo .tab_menu_dropdown .userstate { font-weight: normal; }
