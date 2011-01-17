@@ -72,7 +72,7 @@
 					</tr>
 				</table>
 			<?php endif; ?>
-			<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><div class="faded_out" style="margin-top: 10px;"><?php echo __("Sprints are created as milestones for this project, which can be edited in the project configuration."); ?></div><?php endif; ?>
+			<?php if ($tbg_user->canEditProjectDetails($selected_project)): ?><div class="faded_out" style="margin-top: 10px;"><?php echo __("Sprints are created as milestones for this project, which can be edited in the %project_configuration%.", array('%project_configuration%' => javascript_link_tag(__('project configuration'), array('onclick' => "showFadedBackdrop('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'section' => 'milestones', 'project_id' => $selected_project->getID()))."');")))); ?></div><?php endif; ?>
 			<div class="faded_out" style="margin-top: 10px; font-size: 13px;<?php if (count($selected_project->getSprints()) > 0): ?> display: none;<?php endif; ?>" id="no_sprints"><?php echo __('No sprints have been defined for this project'); ?></div>
 			<?php foreach ($selected_project->getSprints() as $sprint): ?>
 				<?php include_template('sprintbox', array('sprint' => $sprint)); ?>
