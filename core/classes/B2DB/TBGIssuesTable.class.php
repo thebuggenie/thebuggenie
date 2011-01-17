@@ -565,6 +565,10 @@
 					}
 				}
 			}
+			
+			$crit2 = clone $crit;
+			$count = $this->doCount($crit2);
+			var_dump($count);
 
 			if ($groupby !== null)
 			{
@@ -609,8 +613,6 @@
 				}
 			}
 
-			$crit2 = clone $crit;
-			$count = $this->doCount($crit2);
 
 			if ($results_per_page != 0)
 			{
