@@ -139,7 +139,7 @@
 			<?php endif; ?>
 			<div class="rounded_box iceblue borderless searchbox_container">
 				<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo (TBGContext::isProjectContext()) ? make_url('project_issues', array('project_key' => TBGContext::getCurrentProject()->getKey())) : make_url('search'); ?>" method="get" id="find_issues_form">
-					<a href="#" onclick="$('search_filters').toggle();$('add_filter_form').toggle();" style="float: right; margin-top: 3px;"><b><?php echo __('More'); ?></b></a>
+					<a href="#" onclick="$('search_filters').toggle();$('add_filter_form').toggle();" style="float: right; margin-top: 3px;"><b><?php echo __('Toggle more filters'); ?></b></a>
 					<label for="issues_searchfor"><?php echo __('Search for'); ?></label>
 					<select name="filters[text][operator]">
 						<option value="="<?php if (array_key_exists('text', $appliedfilters) && ((array_key_exists('operator', $appliedfilters['text']) && $appliedfilters['text']['operator'] == '=') || (!array_key_exists('operator', $appliedfilters['text']) && $appliedfilters['text'][0]['operator'] == '='))): ?> selected<?php endif; ?>><?php echo __('Issues containing'); ?></option>
@@ -266,7 +266,7 @@
 			<?php if ($show_results): ?>
 				<div class="main_header">
 					<?php echo $searchtitle; ?>
-					&nbsp;&nbsp;<span class="faded_out"><?php echo __('%number_of% issue(s)', array('%number_of%' => intval($resultcount))); ?></span>
+					&nbsp;&nbsp;<span class="faded_out"><?php echo __('%number_of% issue(s)', array('%number_of%' => (int) $resultcount)); ?></span>
 					<div class="search_export_links">
 						<?php
 							if (TBGContext::getRequest()->hasParameter('quicksearch'))
