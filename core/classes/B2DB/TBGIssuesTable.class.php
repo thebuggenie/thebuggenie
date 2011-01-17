@@ -568,7 +568,6 @@
 			
 			$crit2 = clone $crit;
 			$count = $this->doCount($crit2);
-			var_dump($count);
 
 			if ($groupby !== null)
 			{
