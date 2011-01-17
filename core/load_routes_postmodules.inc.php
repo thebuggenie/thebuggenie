@@ -1,19 +1,17 @@
 <?php
 
-	$routes[] = array('viewissue', '/:project_key/issue/:issue_no', 'main', 'viewIssue');
-	$routes[] = array('viewissue_find_issue', '/:project_key/issue/:issue_id/find/:type', 'main', 'findIssue', array('format' => 'json'));
-	$routes[] = array('viewissue_relate_issues', '/:project_key/issue/:issue_id/relate', 'main', 'relateIssues', array('format' => 'json'));
-	$routes[] = array('saveissue', '/:project_key/issue/:issue_no', 'main', 'viewIssue');
-	$routes[] = array('closeissue', '/:project_key/issue/:issue_id/close', 'main', 'closeIssue');
-	$routes[] = array('markasduplicate', '/:project_key/issue/:issue_id/markasduplicate', 'main', 'markAsDuplicate');
-	$routes[] = array('notduplicate', '/:project_key/issue/:issue_id/notduplicate', 'main', 'markAsNotDuplicate');
-	$routes[] = array('openissue', '/:project_key/issue/:issue_id/open', 'main', 'reopenIssue');
-	$routes[] = array('deleteissue', '/:project_key/issue/:issue_id/delete', 'main', 'deleteIssue');
-	$routes[] = array('block', '/:project_key/issue/:issue_id/block', 'main', 'markAsBlocker');
-	$routes[] = array('unblock', '/:project_key/issue/:issue_id/unblock', 'main', 'markAsNotBlocker');
-	$routes[] = array('issue_gettempfieldvalue', '/:project_key/issue/:issue_id/get/temp/value/for/:field/*', 'main', 'issueGetTempFieldValue');
-	$routes[] = array('issue_setfield', '/:project_key/issue/:issue_id/set/:field/*', 'main', 'issueSetField');
-	$routes[] = array('issue_revertfield', '/:project_key/issue/:issue_id/revert/:field', 'main', 'issueRevertField');
+	$routes[] = array('viewissue_find_issue', '/:project_key/issues/:issue_id/find/:type', 'main', 'findIssue', array('format' => 'json'));
+	$routes[] = array('viewissue_relate_issues', '/:project_key/issues/:issue_id/relate', 'main', 'relateIssues', array('format' => 'json'));
+	$routes[] = array('closeissue', '/:project_key/issues/:issue_id/close', 'main', 'closeIssue');
+	$routes[] = array('markasduplicate', '/:project_key/issues/:issue_id/markasduplicate', 'main', 'markAsDuplicate');
+	$routes[] = array('notduplicate', '/:project_key/issues/:issue_id/notduplicate', 'main', 'markAsNotDuplicate');
+	$routes[] = array('openissue', '/:project_key/issues/:issue_id/open', 'main', 'reopenIssue');
+	$routes[] = array('deleteissue', '/:project_key/issues/:issue_id/delete', 'main', 'deleteIssue');
+	$routes[] = array('block', '/:project_key/issues/:issue_id/block', 'main', 'markAsBlocker');
+	$routes[] = array('unblock', '/:project_key/issues/:issue_id/unblock', 'main', 'markAsNotBlocker');
+	$routes[] = array('issue_gettempfieldvalue', '/:project_key/issues/:issue_id/get/temp/value/for/:field/*', 'main', 'issueGetTempFieldValue');
+	$routes[] = array('issue_setfield', '/:project_key/issues/:issue_id/set/:field/*', 'main', 'issueSetField');
+	$routes[] = array('issue_revertfield', '/:project_key/issues/:issue_id/revert/:field', 'main', 'issueRevertField');
 	$routes[] = array('main_find_identifiable', '/find/identifiable/by/*', 'main', 'findIdentifiable');
 	$routes[] = array('toggle_favourite_issue', '/toggle_favourite_issue/:issue_id', 'main', 'toggleFavouriteIssue', array('format' => 'json'));
 	$routes[] = array('project_getmenulinks', '/:project_key/menulinks', 'project', 'menuLinks');
@@ -40,6 +38,7 @@
 	$routes[] = array('project_my_reported_issues', '/:project_key/issues/my', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_REPORTED_ISSUES, 'search' => true));
 	$routes[] = array('project_my_assigned_issues', '/:project_key/issues/my/assigned', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES, 'search' => true));
 	$routes[] = array('project_my_teams_assigned_issues', '/:project_key/issues/my/assigned/teams', 'search', 'findIssues', array('predefined_search' => TBGContext::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES, 'search' => true));
+	$routes[] = array('viewissue', '/:project_key/issues/:issue_no', 'main', 'viewIssue');
 	$routes[] = array('project_issues', '/:project_key/issues/*', 'search', 'findIssues');
 	$routes[] = array('project_findthis', '/:project_key/issues/find/:searchfor/*', 'search', 'findIssues');
 	$routes[] = array('project_quicksearch', '/:project_key/quicksearch/*', 'search', 'quickSearch');

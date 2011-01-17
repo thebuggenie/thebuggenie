@@ -40,7 +40,7 @@
 	<?php endif; ?>
 	<div class="rounded_box iceblue borderless issue_info full_width" id="viewissue_changed" <?php if (!$issue->hasUnsavedChanges()): ?>style="display: none;"<?php endif; ?>>
 		<button onclick="$('comment_add_button').hide(); $('comment_add').show();$('comment_save_changes').checked = true;$('comment_bodybox').focus();return false;"><?php echo __('Add comment and save changes'); ?></button>
-		<form action="<?php echo make_url('saveissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>" method="post">
+		<form action="<?php echo make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())); ?>" method="post">
 			<input type="submit" value="<?php echo __('Save changes'); ?>">
 			<div class="header"><?php echo __('You have unsaved changes'); ?></div>
 			<div class="content">

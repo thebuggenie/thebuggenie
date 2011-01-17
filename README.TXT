@@ -1,9 +1,9 @@
-THE BUG GENIE VERSION 3 RELEASE CANDIDATE 2
+THE BUG GENIE VERSION 3
 -------
-Thank you for downloading this release candidate.
+Thank you for downloading The Bug Genie
 
 Please report issues and feedback from the issue tracker on our website:
-http://www.thebuggenie.com
+http://thebuggenie.com/thebuggenie
 
 
 * INSTALLATION *
@@ -29,5 +29,5 @@ To install:
 * REPORTING ISSUES *
 
 If you find any issues, please report them in the issue tracker on our website:
-http://www.thebuggenie.com
+http://thebuggenie.com/thebuggenie
 
