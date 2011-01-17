@@ -1510,9 +1510,14 @@
 								case 'update':
 									if (($m_name = $request->getParameter('name')) && trim($m_name) != '')
 									{
-										if (in_array($m_name, $theMilestone->getProject()->getAllMilestones()))
+										if ($m_name != $theMilestone->getName())
 										{
-											throw new Exception($i18n->__('This milestone already exists for this project'));
+											$check_milestones = $theMilestone->getProject()->getAllMilestones();
+											unset($check_milestones[$theMilestone->getID()]);
+											if (in_array($m_name, $check_milestones))
+											{
+												throw new Exception($i18n->__('This milestone already exists for this project'));
+											}
 										}
 										$theMilestone->setName($m_name);
 										$theMilestone->setScheduled((bool) $request->getParameter('is_scheduled'));

@@ -1,6 +1,6 @@
 <div id="milestone_span_<?php echo $milestone->getID(); ?>" style="margin-bottom: 10px;">
 	<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'update')); ?>" method="post" id="edit_milestone_<?php echo $milestone->getID(); ?>" style="display: none;" onsubmit="updateMilestone('<?php echo make_url('configure_project_milestone_action', array('project_id' => $milestone->getProject()->getID(), 'milestone_id' => $milestone->getID(), 'milestone_action' => 'update')); ?>', <?php echo $milestone->getID(); ?>);return false;">
-		<table style="width: 100%;" cellpadding=0 cellspacing=0>
+		<table style="width: 750px;" cellpadding=0 cellspacing=0>
 			<tr>
 				<td style="width: 100px;"><label for="milestone_name_<?php echo $milestone->getID(); ?>"><?php echo __('Name:'); ?></label></td>
 				<td style="width: auto;"><input type="text" style="width: 100%;" value="<?php echo $milestone->getName(); ?>" name="name" id="milestone_name_<?php echo $milestone->getID(); ?>"></td>
@@ -75,7 +75,7 @@
 			</tr>
 		</table>
 	</form>
-	<table id="milestone_<?php echo $milestone->getID(); ?>_indicator" style="display: none; width: 100%;" cellpadding=0 cellspacing=0>
+	<table id="milestone_<?php echo $milestone->getID(); ?>_indicator" style="display: none; width: 750px;" cellpadding=0 cellspacing=0>
 		<tr>
 			<td colspan="3" style="text-align: right; height: 30px; padding: 3px; font-size: 12px; color: #AAA;">
 				<span style="float: right;"><?php echo __('Please wait'); ?>...</span>
