@@ -178,16 +178,6 @@
 													<?php endif; ?>
 												</td>
 												<td class="header_userlinks">
-													<?php /*if ($tbg_user->isGuest()): ?>
-														<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login')); ?>');"><?php echo __('Login'); ?></a>
-														<?php if (TBGSettings::isRegistrationAllowed()): ?>
-															<br>
-															<a href="javascript:void(0);" onclick="showFadedBackdrop('<?php echo make_url('get_partial_for_backdrop', array('key' => 'login', 'section' => 'register')); ?>');"><?php echo __('Register'); ?></a>
-														<?php endif; ?>
-													<?php else: ?>
-														<?php echo link_tag(make_url('account'), __('Your account')); ?><br>
-														<?php echo link_tag(make_url('logout'), __('Logout')); ?>
-													<?php endif;*/ ?>
 													<div class="dropdown_separator">
 														<?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown')), array('onmouseover' => "")); ?>
 													</div>
@@ -204,6 +194,7 @@
 												<div class="header"><?php echo __('You are: %userstate%', array('%userstate%' => '<span class="userstate">'.$tbg_user->getState()->getName().'</span>')); ?></div>
 												<?php echo link_tag(make_url('dashboard'), image_tag('icon_dashboard_small.png').__('Your dashboard')); ?>	
 												<?php echo link_tag(make_url('account'), image_tag('icon_account.png').__('Your account')); ?>
+												<?php echo link_tag(make_url('publish_article', array('article_name' => 'Category:Help')), image_tag('help.png').__('Help')); ?>
 												<?php echo link_tag(make_url('logout'), image_tag('logout.png').__('Logout')); ?>
 												<div class="header"><?php echo __('Your issues'); ?></div>
 												<?php echo link_tag(make_url('my_reported_issues'), image_tag('icon_savedsearch.png') . __('Issues reported by me')); ?>
