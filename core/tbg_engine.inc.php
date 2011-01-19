@@ -273,31 +273,31 @@
 				Please report this error in the bug tracker by pressing the button below. It will open in a new window with most of the necessary details pre-filled. No login required.<br><br>
 				<div style=\"text-align: right;\">
 					<b>Thank you for helping us improve The Bug Genie!</b>
-					<form action=\"http://thebuggenie.com/thebuggenie/thebuggenie3/issues/new/bugreport\" target=\"_new\" method=\"get\">
+					<form action=\"http://thebuggenie.com/thebuggenie/thebuggenie3/issues/new/bugreport\" target=\"_new\" method=\"post\">
 						<input type=\"hidden\" name=\"category_id\" value=\"34\">
 						<input type=\"hidden\" name=\"title\" value=\"".htmlentities($title)."\">
 						<input type=\"hidden\" name=\"description\" value=\"".htmlentities($report_description)."\n\n\">";
-						echo "<input type=\"hidden\" name=\"reproduction_steps\" value=\"PHP_SAPI: ".PHP_SAPI."\n\n[b]Backtrace[/b]:\n";
+						echo "<input type=\"hidden\" name=\"reproduction_steps\" value=\"PHP_SAPI: ".PHP_SAPI."\n\n'''Backtrace''':<br>";
 						if ($exception instanceof TBGException)
 						{
 							foreach ($exception->getTrace() as $trace_element)
 							{
 								if (array_key_exists('class', $trace_element))
 								{
-									echo '[b]'.$trace_element['class'].$trace_element['type'].$trace_element['function']."()[/b]\n";
+									echo "'''{$trace_element['class']}{$trace_element['type']}{$trace_element['function']}()'''\n";
 								}
 								elseif (array_key_exists('function', $trace_element))
 								{
 									if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
-									echo '[b]'.$trace_element['function']."()[/b]\n";
+									echo "'''{$trace_element['function']}()'''\n";
 								}
 								else
 								{
-									echo "[b]unknown function[/b]\n";
+									echo "'''unknown function'''\n";
 								}
 								if (array_key_exists('file', $trace_element))
 								{
-									echo 'in '.$trace_element['file'].', line '.$trace_element['line'];
+									echo 'in '.str_replace(THEBUGGENIE_PATH, '<installpath>/', $trace_element['file']).', line '.$trace_element['line'];
 								}
 								else
 								{
@@ -312,20 +312,20 @@
 							{
 								if (array_key_exists('class', $trace_element))
 								{
-									echo '[b]'.$trace_element['class'].$trace_element['type'].$trace_element['function']."()[/b]\n";
+									echo "'''{$trace_element['class']}{$trace_element['type']}{$trace_element['function']}()'''\n";
 								}
 								elseif (array_key_exists('function', $trace_element))
 								{
 									if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
-									echo '[b]'.$trace_element['function']."()[/b]\n";
+									echo "'''{$trace_element['function']}()'''\n";
 								}
 								else
 								{
-									echo "[b]unknown function[/b]\n";
+									echo "'''unknown function'''\n";
 								}
 								if (array_key_exists('file', $trace_element))
 								{
-									echo 'in '.$trace_element['file'].', line '.$trace_element['line'];
+									echo 'in '.str_replace(THEBUGGENIE_PATH, '<installpath>/', $trace_element['file']).', line '.$trace_element['line'];
 								}
 								else
 								{
