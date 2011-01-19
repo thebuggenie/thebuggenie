@@ -272,15 +272,12 @@
 			echo "<div style=\"text-align: left; margin: 35px auto 0 auto; width: 700px; font-size: 13px;\">
 				Please report this error in the bug tracker by pressing the button below. It will open in a new window with most of the necessary details pre-filled. No login required.<br><br>
 				<div style=\"text-align: right;\">
-					<b>Thank you for trying this beta version!</b>
-					<form action=\"http://b2.thebuggenie.com/reportissue.php\" target=\"_new\" method=\"get\">
-						<input type=\"hidden\" name=\"rni_step1_product\" value=\"4\">
-						<input type=\"hidden\" name=\"rni_step1_build\" value=\"27\">
-						<input type=\"hidden\" name=\"rni_step2_setissuetype\" value=\"1\">
-						<input type=\"hidden\" name=\"rni_step2_setcategory\" value=\"1\">
-						<input type=\"hidden\" name=\"rni_step3_title\" value=\"".htmlentities($title)."\">
-						<input type=\"hidden\" name=\"rni_step3_description\" value=\"".htmlentities($report_description)."\n\n\">";
-						echo "<input type=\"hidden\" name=\"rni_step3_repro\" value=\"PHP_SAPI: ".PHP_SAPI."\n\n[b]Backtrace[/b]:\n";
+					<b>Thank you for helping us improve The Bug Genie!</b>
+					<form action=\"http://thebuggenie.com/thebuggenie/thebuggenie3/issues/new/bugreport\" target=\"_new\" method=\"get\">
+						<input type=\"hidden\" name=\"category_id\" value=\"34\">
+						<input type=\"hidden\" name=\"title\" value=\"".htmlentities($title)."\">
+						<input type=\"hidden\" name=\"description\" value=\"".htmlentities($report_description)."\n\n\">";
+						echo "<input type=\"hidden\" name=\"reproduction_steps\" value=\"PHP_SAPI: ".PHP_SAPI."\n\n[b]Backtrace[/b]:\n";
 						if ($exception instanceof TBGException)
 						{
 							foreach ($exception->getTrace() as $trace_element)
