@@ -36,7 +36,6 @@
 			$this->cliEcho("\nWelcome to the \"The Bug Genie\" installation wizard!\n", 'white', 'bold');
 			$this->cliEcho("This wizard will take you through the installation of The Bug Genie.\nRemember that you can also install The Bug Genie from your web-browser.\n");
 			$this->cliEcho("Simply point your web-browser to the The Bug Genie subdirectory on your web server,\nand the installation will start.\n\n");
-			$this->cliEcho("Remember that this is a pre-release version!\nDo not use this version for production!\n\n", 'white', 'bold');
 			$this->cliEcho("Press ENTER to continue with the installation: ");
 			$this->pressEnterToContinue();
 			
@@ -438,8 +437,7 @@
 						$this->cliEcho("The installation was completed successfully!\n", 'green', 'bold');
 						$this->cliEcho("\nTo use The Bug Genie, access " . $url_host . $url_subdir . "index.php with a web-browser.\n");
 						$this->cliEcho("The default username is ") . $this->cliEcho('Administrator') . $this->cliEcho(' and the password is ') . $this->cliEcho('admin');
-						$this->cliEcho("\n\nThank you for trying this The Bug Genie test release!\n");
-						$this->cliEcho("\nFor support, please visit ") . $this->cliEcho('http://www.thebuggenie.com/', 'blue', 'underline');
+						$this->cliEcho("\n\nFor support, please visit ") . $this->cliEcho('http://www.thebuggenie.com/', 'blue', 'underline');
 						$this->cliEcho("\n");
 					}
 					catch (Exception $e)
