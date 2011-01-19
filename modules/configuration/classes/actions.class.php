@@ -1346,12 +1346,19 @@
 							{
 								if (in_array($b_name, $project->getBuilds()))
 								{
-									throw new Exception($i18n->__('This build already exists for this project'));
+									throw new Exception($i18n->__('This release already exists for this project'));
 								}
+								if (($e_id = $request->getParameter('edition_id')) && $edition = TBGContext::factory()->TBGEdition($e_id))
+								{
+									if (in_array($b_name, $edition->getBuilds()))
+									{
+										throw new Exception($i18n->__('This release already exists for this edition'));
+									}
+								}								
 								$build = new TBGBuild();
 								$build->setName($b_name);
 								$build->setVersion($request->getParameter('ver_mj', 0), $request->getParameter('ver_mn', 0), $request->getParameter('ver_rev', 0));
-								if (($e_id = $request->getParameter('edition_id')) && $edition = TBGContext::factory()->TBGEdition($e_id))
+								if (isset($edition))
 								{
 									$build->setEdition($edition);
 								}
@@ -1379,7 +1386,7 @@
 				}
 				catch (Exception $e)
 				{
-					return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The build could not be added').", ".$e->getMessage()));
+					return $this->renderJSON(array('failed' => true, "error" => $i18n->__('The release could not be added').", ".$e->getMessage()));
 				}
 			}
 			return $this->renderJSON(array('failed' => true, "error" => $i18n->__("You don't have access to add releases")));
