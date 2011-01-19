@@ -58,7 +58,7 @@
 			<div class="header"><?php echo __('Pages in this category'); ?></div>
 			<ul class="category_list">
 				<?php foreach ($article->getCategoryArticles() as $categoryarticle): ?>
-					<li><?php echo link_tag(make_url('publish_article', array('article_name' => $categoryarticle->getName())), $categoryarticle->getName()); ?></li>
+					<li><?php echo link_tag(make_url('publish_article', array('article_name' => $categoryarticle->getName())), $categoryarticle->getSpacedName()); ?></li>
 				<?php endforeach; ?>
 			</ul>
 		<?php else: ?>

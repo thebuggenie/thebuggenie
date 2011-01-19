@@ -18,7 +18,7 @@
 		<?php if (!$user_id): ?>
 			<?php echo tbg_parse_text(__("Edit all global, group and team permissions from this page - user-specific permissions are handled from the [[TBG:configure_users|user configuration page]]. The Bug Genie permissions are thoroughly explained in [[ConfigurePermissions]] in the wiki - look it up if you're ever stuck.", array(), true)); ?>
 		<?php else: ?>
-			<?php echo tbg_parse_text(__("Edit all user-specific permissions from this page - global, group and team permissions are handled from the [[TBG:configure_permissions|permissions configuration page]]. The Bug Genie permissions are thoroughly explained in [[TheBugGenie:ConfigurePermissions]] in the wiki - look it up if you're ever stuck.", array(), true)); ?>
+			<?php echo tbg_parse_text(__("Edit all user-specific permissions from this page - global, group and team permissions are handled from the [[TBG:configure_permissions|permissions configuration page]]. The Bug Genie permissions are thoroughly explained in [[ConfigurePermissions]] in the wiki - look it up if you're ever stuck.", array(), true)); ?>
 		<?php endif; ?>
 	</div>
 </div>

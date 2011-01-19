@@ -45,4 +45,4 @@ The Bug Genie comes with a predefined set of issue types available out of the bo
 === Adding custom fields ===
 If the standard issue fields aren't enough for your needs, you can add custom ones from [[TBG:configure_issuefields|Configure -> issue fields]]. These fields are treated just as other issue fields in the system, and are available for searches and issue type customization. There are several types of custom fields to choose from, such as radio buttons, input areas, list of users, secondary status fields, dates, and more.
 
-[[Category:Help]][[Category:HowTo]]
+[[Category:Help]][[Category:Help:Howto]]

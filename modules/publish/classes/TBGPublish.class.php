@@ -120,7 +120,11 @@
 					}
 					else
 					{
-						if (strpos(urldecode($article_name), "Category:") === 0)
+						if (strpos(urldecode($article_name), "Category:Help:") === 0)
+						{
+							$name_test = substr(urldecode($article_name), 14);
+						}
+						elseif (strpos(urldecode($article_name), "Category:") === 0)
 						{
 							$name_test = substr(urldecode($article_name), 9);
 						}

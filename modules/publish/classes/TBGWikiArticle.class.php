@@ -296,6 +296,11 @@
 			return $this->_is_category;
 		}
 
+		public function getSpacedName()
+		{
+			return preg_replace('/(?<=[a-z])(?=[A-Z])/',' ', $this->getName());
+		}
+
 		public function getCategoryName()
 		{
 			if ($this->_category_name === null)

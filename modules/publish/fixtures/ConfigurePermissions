@@ -29,4 +29,4 @@ Every datatype (status, priority, category, etc) also have their own permissions
 * If a user has read or write access to any of the configuration pages, they will automatically see the "''Configure''" link in the menu. If they don't have access to any configuration page, this link will be hidden.
 * The permissions setting dialog will always show if a setting is permissive or restrictive by default, by showing a faded out "''Denied''" or faded out "''Allowed''" icon.
 
-[[Category:Help]][[Category:HowTo]]
+[[Category:Help]][[Category:Help:Howto]]
