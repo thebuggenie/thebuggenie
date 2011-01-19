@@ -112,6 +112,9 @@
 		h1 { margin: 5px 0 0 0; font-size: 19px; }
 		h2 { margin: 0 0 15px 0; font-size: 16px; }
 		h3 { margin: 15px 0 0 0; font-size: 14px; }
+		input[type=\"text\"], input[type=\"password\"] { float: left; margin-right: 15px; }
+		label { float: left; font-weight: bold; margin-right: 5px; display: block; width: 150px; }
+		label span { font-weight: normal; color: #888; }
 		.rounded_box {background: transparent; margin:0px;}
 		.rounded_box h4 { margin-bottom: 0px; margin-top: 7px; font-size: 14px; }
 		.xtop, .xbottom {display:block; background:transparent; font-size:1px;}
@@ -270,73 +273,89 @@
 		if (class_exists("TBGContext") && !TBGContext::isDebugMode())
 		{
 			echo "<div style=\"text-align: left; margin: 35px auto 0 auto; width: 700px; font-size: 13px;\">
-				Please report this error in the bug tracker by pressing the button below. It will open in a new window with most of the necessary details pre-filled. No login required.<br><br>
-				<div style=\"text-align: right;\">
-					<b>Thank you for helping us improve The Bug Genie!</b>
-					<form action=\"http://thebuggenie.com/thebuggenie/thebuggenie3/issues/new/bugreport\" target=\"_new\" method=\"post\">
-						<input type=\"hidden\" name=\"category_id\" value=\"34\">
-						<input type=\"hidden\" name=\"title\" value=\"".htmlentities($title)."\">
-						<input type=\"hidden\" name=\"description\" value=\"".htmlentities($report_description)."\n\n\">";
-						echo "<input type=\"hidden\" name=\"reproduction_steps\" value=\"PHP_SAPI: ".PHP_SAPI."\n\n'''Backtrace''':<br>";
-						if ($exception instanceof TBGException)
-						{
-							foreach ($exception->getTrace() as $trace_element)
+				<div class=\"rounded_box white\" style=\"margin-bottom: 10px; text-align: right; color: #111;\">
+					<b class=\"xtop\"><b class=\"xb1\"></b><b class=\"xb2\"></b><b class=\"xb3\"></b><b class=\"xb4\"></b></b>
+					<div class=\"xboxcontent\">
+						<div style=\"text-align: left;\">
+							<h2 style=\"padding-top: 10px; margin-bottom: 5px;\">Reporting this issue</h2>
+							Please report this error in the bug tracker by pressing the button below. This will file an automatic bug report and open it in a new window.<br><br>
+							No login is required - but if you have a username and password entering it below will post the issue with your username, allowing you to follow its progress.
+						</div>
+						<br>
+						<form action=\"http://thebuggenie.com/thebuggenie/thebuggenie3/issues/new/bugreport\" target=\"_new\" method=\"post\">
+							<label for=\"username\">Username <span>(optional)</span></label>
+							<input type=\"text\" name=\"tbg3_username\" id=\"username\">
+							<br style=\"clear: both;\">
+							<label for=\"password\">Password <span>(optional)</span></label>
+							<input type=\"password\" name=\"tbg3_password\" id=\"password\">
+							<br>
+							<input type=\"hidden\" name=\"category_id\" value=\"34\">
+							<input type=\"hidden\" name=\"title\" value=\"".htmlentities($title)."\">
+							<input type=\"hidden\" name=\"description\" value=\"".htmlentities($report_description)."\n\n\">";
+							echo "<input type=\"hidden\" name=\"reproduction_steps\" value=\"PHP_SAPI: ".PHP_SAPI."\n\n'''Backtrace''':<br>";
+							if ($exception instanceof TBGException)
 							{
-								if (array_key_exists('class', $trace_element))
+								foreach ($exception->getTrace() as $trace_element)
 								{
-									echo "'''{$trace_element['class']}{$trace_element['type']}{$trace_element['function']}()'''\n";
+									if (array_key_exists('class', $trace_element))
+									{
+										echo "'''{$trace_element['class']}{$trace_element['type']}{$trace_element['function']}()'''\n";
+									}
+									elseif (array_key_exists('function', $trace_element))
+									{
+										if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
+										echo "'''{$trace_element['function']}()'''\n";
+									}
+									else
+									{
+										echo "'''unknown function'''\n";
+									}
+									if (array_key_exists('file', $trace_element))
+									{
+										echo 'in '.str_replace(THEBUGGENIE_PATH, '<installpath>/', $trace_element['file']).', line '.$trace_element['line'];
+									}
+									else
+									{
+										echo 'in an unknown file';
+									}
+									echo "\n";
 								}
-								elseif (array_key_exists('function', $trace_element))
-								{
-									if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
-									echo "'''{$trace_element['function']}()'''\n";
-								}
-								else
-								{
-									echo "'''unknown function'''\n";
-								}
-								if (array_key_exists('file', $trace_element))
-								{
-									echo 'in '.str_replace(THEBUGGENIE_PATH, '<installpath>/', $trace_element['file']).', line '.$trace_element['line'];
-								}
-								else
-								{
-									echo 'in an unknown file';
-								}
-								echo "\n";
 							}
-						}
-						else
-						{
-							foreach (debug_backtrace() as $trace_element)
+							else
 							{
-								if (array_key_exists('class', $trace_element))
+								foreach (debug_backtrace() as $trace_element)
 								{
-									echo "'''{$trace_element['class']}{$trace_element['type']}{$trace_element['function']}()'''\n";
+									if (array_key_exists('class', $trace_element))
+									{
+										echo "'''{$trace_element['class']}{$trace_element['type']}{$trace_element['function']}()'''\n";
+									}
+									elseif (array_key_exists('function', $trace_element))
+									{
+										if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
+										echo "'''{$trace_element['function']}()'''\n";
+									}
+									else
+									{
+										echo "'''unknown function'''\n";
+									}
+									if (array_key_exists('file', $trace_element))
+									{
+										echo 'in '.str_replace(THEBUGGENIE_PATH, '<installpath>/', $trace_element['file']).', line '.$trace_element['line'];
+									}
+									else
+									{
+										echo 'in an unknown file';
+									}
+									echo "\n";
 								}
-								elseif (array_key_exists('function', $trace_element))
-								{
-									if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
-									echo "'''{$trace_element['function']}()'''\n";
-								}
-								else
-								{
-									echo "'''unknown function'''\n";
-								}
-								if (array_key_exists('file', $trace_element))
-								{
-									echo 'in '.str_replace(THEBUGGENIE_PATH, '<installpath>/', $trace_element['file']).', line '.$trace_element['line'];
-								}
-								else
-								{
-									echo 'in an unknown file';
-								}
-								echo "\n";
 							}
-						}
-						echo "\n\n\">";
-	echo "					<input type=\"submit\" value=\"Submit details for reporting\" style=\"font-size: 16px; font-weight: normal; padding: 5px; margin-top: 10px;\">
-						</form>
+							echo "\n\n\">";
+		echo "					
+								<input type=\"submit\" value=\"Submit details for reporting\" style=\"font-size: 16px; font-weight: normal; padding: 5px; margin: 10px 0;\">
+								<div style=\"font-size: 15px; font-weight: bold; padding: 0 5px 10px 0;\">Thank you for helping us improve The Bug Genie!</div>
+							</form>
+						</div>
+						<b class=\"xbottom\"><b class=\"xb4\"></b><b class=\"xb3\"></b><b class=\"xb2\"></b><b class=\"xb1\"></b></b>
 					</div>";
 					echo "<h3 style=\"margin-top: 50px;\">Log messages (may contain useful information, but will not be submitted):</h3>";
 					foreach (TBGLogging::getEntries() as $entry)

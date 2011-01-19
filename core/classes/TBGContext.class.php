@@ -29,7 +29,7 @@
 		
 		static protected $_environment = 2;
 
-		static protected $debug_mode = true;
+		static protected $debug_mode = false;
 
 		/**
 		 * The current user
@@ -666,7 +666,7 @@
 		{
 			try
 			{
-				self::$_user = ($user === null) ? TBGUser::loginCheck() : $user;
+				self::$_user = ($user === null) ? TBGUser::loginCheck(self::getRequest()->getParameter('tbg3_username'), self::getRequest()->getParameter('tbg3_password')) : $user;
 				if (self::$_user->isAuthenticated())
 				{
 					if (self::$_user->isOffline() || self::$_user->isAway())
