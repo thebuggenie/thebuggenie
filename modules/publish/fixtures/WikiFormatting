@@ -168,8 +168,20 @@ Neither will this:
 
 
 == Images ==
-You can show uploaded images by using the same notation as for links:
-  [[Image:image1.png]]
+You can show uploaded images by using the same notation as for links, using the Image namespace:
+ [[Image:image1.png]]
+
+The Image: namespaced link accepts several parameters, separated by a pipe (|), and the right-most parameter is always the description. This means that if you want to specify any parameters, you must always put a description as the last parameter:
+ [[Image:image1.png|Description here]]
+ [[Image:image1.png|thumb|Description here]]
+
+Images are shown full-size by default, but you usually probably want to show a thumbnail of the image instead. To do this, use the "thumb" parameter:
+ [[Image:image1.png|thumb|Image description]]
+
+Images float right by default, but this can also be specified as a parameter, by specifying "left" as a parameter on the Image tag:
+ [[Image:image1.png|This image floats right]]
+ [[Image:image1.png|right|This image also floats right]]
+ [[Image:image1.png|left|This image floats left]]
 
 == Completely unparsed text ==
 If you have some text that you don't want to be automatically parsed at all, put them inside <nowiki></nowiki> tags:
