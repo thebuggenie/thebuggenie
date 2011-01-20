@@ -147,62 +147,7 @@ function removeLinkFromIssue(url, link_id)
 
 function detachFileFromIssue(url, file_id)
 {
-	new Ajax.Request(url, {
-		method: 'post',
-		requestHeaders: {Accept: 'application/json'},
-		onLoading: function() {
-			$('viewissue_files_'+ file_id + '_remove_link').hide();
-			$('viewissue_files_'+ file_id + '_remove_indicator').show();
-			$('uploaded_files_'+ file_id + '_remove_link').hide();
-			$('uploaded_files_'+ file_id + '_remove_indicator').show();
-		},
-		onSuccess: function(transport) {
-			var json = transport.responseJSON;
-			if (json && json.failed == false)
-			{
-				$('viewissue_files_' + file_id).remove();
-				$('uploaded_files_' + file_id).remove();
-				$('viewissue_files_' + file_id + '_remove_confirm').remove();
-				$('uploaded_files_' + file_id + '_remove_confirm').remove();
-				successMessage(json.message);
-				if (json.attachmentcount == 0)
-				{
-					$('viewissue_no_uploaded_files').show();
-				}
-				$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
-			}
-			else
-			{
-				if (json && (json.failed || json.error))
-				{
-					failedMessage(json.error);
-				}
-				else
-				{
-					failedMessage(transport.responseText);
-				}
-				$('viewissue_files_'+ file_id + '_remove_link').show();
-				$('viewissue_files_'+ file_id + '_remove_indicator').hide();
-				$('uploaded_files_'+ file_id + '_remove_link').show();
-				$('uploaded_files_'+ file_id + '_remove_indicator').hide();
-			}
-		},
-		onFailure: function(transport) {
-			$('viewissue_files_'+ file_id + '_remove_link').show();
-			$('viewissue_files_'+ file_id + '_remove_indicator').hide();
-			$('uploaded_files_'+ file_id + '_remove_link').show();
-			$('uploaded_files_'+ file_id + '_remove_indicator').hide();
-			var json = transport.responseJSON;
-			if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-			}
-			else
-			{
-				failedMessage(transport.responseText);
-			}
-		}
-	});
+	_detachFile(url, file_id, 'viewissue_files_');
 }
 
 function updatePercent(url, mode)

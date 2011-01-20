@@ -83,3 +83,9 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 .article ul.simple_list li { padding: 5px 0; margin-bottom: 15px; }
 .article ul.simple_list li div.namespace_header { font-size: 1.2em; font-weight: bold; }
 .article ul.simple_list li div.namespace_header span.namespace { text-decoration: underline; }
+
+.article .article .article_attachments td a { border: 0; }
+.article .article .article_attachments .remove_container td { border: 0; }
+.article .article .article_attachments .remove_container:hover { background-color: transparent; }
+
+#article_attach_file_button td { padding: 0; border: 0; }

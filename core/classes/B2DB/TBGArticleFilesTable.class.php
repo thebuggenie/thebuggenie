@@ -66,9 +66,16 @@
 			{
 				while ($row = $res->getNextRow())
 				{
-					$file = TBGContext::factory()->TBGFile($row->get(TBGFilesTable::ID), $row);
-					$file->setUploadedAt($row->get(self::ATTACHED_AT));
-					$ret_arr[$row->get(TBGFilesTable::ID)] = $file;
+					try
+					{
+						$file = TBGContext::factory()->TBGFile($row->get(TBGFilesTable::ID), $row);
+						$file->setUploadedAt($row->get(self::ATTACHED_AT));
+						$ret_arr[$row->get(TBGFilesTable::ID)] = $file;
+					}
+					catch (Exception $e)
+					{
+						$this->doDeleteById($row->get(self::ID));
+					}
 				}
 			}
 			

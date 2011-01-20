@@ -377,11 +377,13 @@ echo "
 	{
 		if ($code == 2 && strpos(basename($file), 'Services_Yadis_') !== false) return;
 		if (error_reporting() == E_USER_ERROR) return;
-		tbg_exception($error, array('code' => $code, 'file' => $file, 'line' => $line_number));
+		throw new Exception($error, $code);
+		//tbg_exception($error, array('code' => $code, 'file' => $file, 'line' => $line_number));
 	}
 	
 	set_error_handler('tbg_error_handler');
-
+	set_exception_handler('tbg_exception');
+	
 	if (!defined('THEBUGGENIE_PATH'))
 	{
 		tbg_msgbox(true, 'THEBUGGENIE_PATH not defined', 'You must define the THEBUGGENIE_PATH constant so we can find the files we need');

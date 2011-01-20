@@ -1084,3 +1084,72 @@ function dashboardResize()
 		item.setStyle({width: element_width + 'px'});
 	});
 }
+
+function detachFileFromArticle(url, file_id, article_name)
+{
+	_detachFile(url, file_id, 'article_' + article_name + '_files_');
+}
+
+function _detachFile(url, file_id, base_id)
+{
+	new Ajax.Request(url, {
+		method: 'post',
+		requestHeaders: {Accept: 'application/json'},
+		onLoading: function() {
+			$(base_id + file_id + '_remove_link').hide();
+			$(base_id + file_id + '_remove_indicator').show();
+			$('uploaded_files_'+ file_id + '_remove_link').hide();
+			$('uploaded_files_'+ file_id + '_remove_indicator').show();
+		},
+		onSuccess: function(transport) {
+			var json = transport.responseJSON;
+			if (json && json.failed == false)
+			{
+				$(base_id + file_id).remove();
+				$('uploaded_files_' + file_id).remove();
+				$(base_id + file_id + '_remove_confirm').remove();
+				$('uploaded_files_' + file_id + '_remove_confirm').remove();
+				successMessage(json.message);
+				if (json.attachmentcount == 0)
+				{
+					if ($('viewissue_no_uploaded_files'))
+						$('viewissue_no_uploaded_files').show();
+				}
+				if ($('viewissue_uploaded_attachments_count'))
+				{
+					$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
+				}
+			}
+			else
+			{
+				if (json && (json.failed || json.error))
+				{
+					failedMessage(json.error);
+				}
+				else
+				{
+					failedMessage(transport.responseText);
+				}
+				$(base_id + file_id + '_remove_link').show();
+				$(base_id + file_id + '_remove_indicator').hide();
+				$('uploaded_files_'+ file_id + '_remove_link').show();
+				$('uploaded_files_'+ file_id + '_remove_indicator').hide();
+			}
+		},
+		onFailure: function(transport) {
+			$(base_id + file_id + '_remove_link').show();
+			$(base_id + file_id + '_remove_indicator').hide();
+			$('uploaded_files_'+ file_id + '_remove_link').show();
+			$('uploaded_files_'+ file_id + '_remove_indicator').hide();
+			var json = transport.responseJSON;
+			if (json && (json.failed || json.error))
+			{
+				failedMessage(json.error);
+			}
+			else
+			{
+				failedMessage(transport.responseText);
+			}
+		}
+	});
+}

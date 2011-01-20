@@ -406,12 +406,12 @@
 				<div id="viewissue_attached_information">
 					<?php if ($issue->isEditable() && ($issue->canAttachLinks() || (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()))): ?>
 						<?php if ($issue->canAttachLinks()): ?>
-							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_link').show();" value="<?php echo __('Attach a link'); ?>"></td></tr></table>
+							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="attach_link_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_link').show();" value="<?php echo __('Attach a link'); ?>"></td></tr></table>
 						<?php endif; ?>
 						<?php if (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
-							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="comment_add_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_file').show();" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
+							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="attach_file_button"><tr><td class="nice_button" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="$('attach_file').show();" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
 						<?php else: ?>
-							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="comment_add_button"><tr><td class="nice_button disabled" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="failedMessage('<?php echo __('File uploads are not enabled'); ?>');" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
+							<table border="0" cellpadding="0" cellspacing="0" style="margin: 5px; float: left;" id="attach_file_button"><tr><td class="nice_button disabled" style="font-size: 13px; margin-left: 0;"><input type="button" onclick="failedMessage('<?php echo __('File uploads are not enabled'); ?>');" value="<?php echo __('Attach a file'); ?>"></td></tr></table>
 						<?php endif; ?>
 						<br style="clear: both;">
 					<?php endif; ?>

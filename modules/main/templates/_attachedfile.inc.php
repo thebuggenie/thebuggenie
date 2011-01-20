@@ -28,14 +28,18 @@
 		<?php endif; ?>
 	</tr>
 	<?php if ($can_remove): ?>
-		<tr id="<?php echo $base_id . '_' . $file_id; ?>_remove_confirm" style="display: none;">
+		<tr id="<?php echo $base_id . '_' . $file_id; ?>_remove_confirm" style="display: none;" class="remove_container">
 			<td colspan="3">
 				<div class="rounded_box lightgrey" style="position: relative; clear: both; left: auto; top: auto; margin-bottom: 10px; width: auto;">
 					<div class="header_div" style="margin-top: 0;"><?php echo __('Do you really want to detach this file?'); ?></div>
 					<div class="content" style="padding: 3px;">
-						<?php echo __('If this file is only attached to this issue, the file will also be deleted. Are you sure you want to do this?'); ?>
+						<?php echo __('If you detach this file, it will be deleted. This action cannot be undone. Are you sure you want to remove this file?'); ?>
 						<div style="text-align: right; font-size: 12px;">
-							<?php echo javascript_link_tag(__('Yes'), array('onclick' => "$('{$base_id}_{$file_id}_remove_confirm').toggle();detachFileFromIssue('".make_url('issue_detach_file', array('issue_id' => $issue->getID(), 'file_id' => $file_id))."', ".$file_id.");")); ?> ::
+							<?php if ($mode == 'issue'): ?>
+								<?php echo javascript_link_tag(__('Yes'), array('onclick' => "$('{$base_id}_{$file_id}_remove_confirm').toggle();detachFileFromIssue('".make_url('issue_detach_file', array('issue_id' => $issue->getID(), 'file_id' => $file_id))."', ".$file_id.");")); ?> ::
+							<?php elseif ($mode == 'article'): ?>
+								<?php echo javascript_link_tag(__('Yes'), array('onclick' => "$('{$base_id}_{$file_id}_remove_confirm').toggle();detachFileFromArticle('".make_url('article_detach_file', array('article_name' => $article->getName(), 'file_id' => $file_id))."', ".$file_id.", '".strtolower($article->getName())."');")); ?> ::
+							<?php endif; ?>
 							<?php echo javascript_link_tag('<b>'.__('No').'</b>', array('onclick' => "$('{$base_id}_{$file_id}_remove_confirm').toggle();")); ?>
 						</div>
 					</div>

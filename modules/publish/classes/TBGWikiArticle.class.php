@@ -641,7 +641,7 @@
 		 */
 		public function removeFile(TBGFile $file)
 		{
-			TBGWikiArticleFilesTable::getTable()->removeByArticleIDandFileID($this->getID(), $file->getID());
+			TBGArticleFilesTable::getTable()->removeByArticleIDandFileID($this->getID(), $file->getID());
 			if (is_array($this->_files) && array_key_exists($file->getID(), $this->_files))
 			{
 				unset($this->_files[$file->getID()]);

@@ -45,6 +45,7 @@
 	$routes[] = array('issue_upload_status', '/upload/get/status/for/issue/:issue_id', 'main', 'getUploadStatus', array('mode' => 'issue'));
 	$routes[] = array('article_upload_status', '/upload/get/status/for/article/:article_name', 'main', 'getUploadStatus', array('mode' => 'article'));
 	$routes[] = array('issue_detach_file', '/upload/detach/file/:file_id/from/issue/:issue_id', 'main', 'detachFile', array('mode' => 'issue'));
+	$routes[] = array('article_detach_file', '/upload/detach/file/:file_id/from/article/:article_name', 'main', 'detachFile', array('mode' => 'article'));
 	$routes[] = array('issue_attach_link', '/update/attach/link/to/issue/:issue_id/*', 'main', 'attachLinkToIssue', array(), true);
 	$routes[] = array('issue_vote', '/vote/for/issue/:issue_id/:vote', 'main', 'voteForIssue');
 	$routes[] = array('issue_remove_link', '/upload/remove/link/:link_id/from/issue/:issue_id', 'main', 'removeLinkFromIssue');
