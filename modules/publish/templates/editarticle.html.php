@@ -47,7 +47,7 @@
 				<div style="margin: 5px 10px 5px 5px;">
 					<textarea id="article_content" name="new_article_content" style="width: 100%; margin: 0; font-size: 12px; height: 350px;"><?php echo htmlspecialchars($article_content); ?></textarea>
 				</div>
-				<div class="faded_out dark" style="padding: 5px; font-size: 13px;"><?php echo __('For help and tips on how to format your article, see %wiki_formatting%', array('%wiki_formatting%' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting', array('target' => '_random_'.rand(1, 10000))))); ?></div>
+				<div class="faded_out dark" style="padding: 5px; font-size: 13px;"><?php echo __('For help and tips on how to format your article, see %wiki_formatting%', array('%wiki_formatting%' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting', array('target' => '_random_'.rand(1, 10000), 'tabindex' => '-1')))); ?></div>
 				<label for="change_reason" style="margin-left: 5px; clear: both;"><?php echo __('Change reason'); ?></label><br>
 				<div style="margin: 5px 15px 5px 5px;">
 					<input type="text" name="change_reason" id="change_reason" style="width: 100%;" maxlength="255" value="<?php echo $change_reason; ?>"><br>

@@ -41,7 +41,7 @@
 				}
 			
 			?><br>
-			<?php echo __('See more formatting tips in %wiki_formatting%.', array('%wiki_formatting%' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting', array('target' => '_new')))); ?>
+			<?php echo __('See more formatting tips in %wiki_formatting%.', array('%wiki_formatting%' => link_tag(make_url('publish_article', array('article_name' => 'WikiFormatting')), 'WikiFormatting', array('target' => '_new', 'tabindex' => '-1')))); ?>
 		</p>
 	</div>
 <?php endif; ?>
