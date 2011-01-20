@@ -39,6 +39,7 @@
 			$this->cache_folder_perm_ok = true;
 			$this->thebuggenie_folder_perm_ok = true;
 			$this->b2db_param_file_ok = true;
+			$this->b2db_param_folder_ok = true;
 			$this->pdo_ok = true;
 			$this->mysql_ok = true;
 			$this->pgsql_ok = true;
@@ -51,11 +52,16 @@
 				$this->php_ok = false;
 				$this->all_well = false;
 			}
-			if ((file_exists(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php')) || !is_writable(TBGContext::getIncludePath() . 'core/'))
+			if (file_exists(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php'))
 			{
 				$this->b2db_param_file_ok = false;
 				$this->all_well = false;
 			}
+			if (!file_exists(TBGContext::getIncludePath() . 'core/b2db_bootstrap.inc.php') && !is_writable(TBGContext::getIncludePath() . 'core/'))
+			{
+				$this->b2db_param_folder_ok = false;
+				$this->all_well = false;
+			}			
 			if (!is_writable(TBGContext::getIncludePath()))
 			{
 				$this->base_folder_perm_ok = false;

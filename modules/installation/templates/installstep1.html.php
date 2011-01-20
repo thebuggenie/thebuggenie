@@ -105,6 +105,17 @@
 			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
 			</div>
 		<?php endif; ?>
+		<?php if (!$b2db_param_folder_ok): ?>
+			<div class="installation_prerequisites prereq_fail">
+			<b>Could not write the SQL settings file</b><br>
+			The folder that contains the SQL settings is not writable
+			</div>
+			<b>If you're installing this on a Linux server,</b> running those commands should fix it:<br>
+			<div class="command_box">
+			touch <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php<br>			
+			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>core/b2db_bootstrap.inc.php
+			</div>
+		<?php endif; ?>		
 		<?php if (!$base_folder_perm_ok): ?>
 			<div class="installation_prerequisites prereq_fail">
 			<b>Could not write to The Bug Genie directory</b><br>
