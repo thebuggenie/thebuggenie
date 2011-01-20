@@ -327,68 +327,77 @@
 					$options = explode('|', $title);
 					$filename = $href;
 					$issuemode = (bool) (isset($this->options['issue']) && $this->options['issue'] instanceof TBGIssue);
+					$articlemode = (bool) (isset($this->options['article']) && $this->options['article'] instanceof TBGWikiArticle);
 					//var_dump($this->options);die();
+					$file = null;
+					$file_link = $filename;
+					$caption = $filename;
+					
 					if ($issuemode)
 					{
 						$file = $this->options['issue']->getFileByFilename($filename);
-						//var_dump($file);die();
+					}
+					elseif ($articlemode)
+					{
+						$file = $this->options['article']->getFileByFilename($filename);
 					}
 					if ($file instanceof TBGFile)
 					{
 						$caption = (!empty($options)) ? array_pop($options) : $file->getDescription();
 						$caption = ($caption != '') ? $caption : $file->getOriginalFilename();
 						$file_link = make_url('showfile', array('id' => $file->getID()));
-						if ($file->isImage() && (strtolower($namespace) == 'image' || $issuemode) && TBGSettings::isCommentImagePreviewEnabled())
+					}
+
+					if ((($file instanceof TBGFile && $file->isImage()) || $articlemode) && (strtolower($namespace) == 'image' || $issuemode) && TBGSettings::isCommentImagePreviewEnabled())
+					{
+						$divclasses = array('image_container');
+						$style_dimensions = '';
+						foreach ($options as $option)
 						{
-							$divclasses = array('image_container');
-							$style_dimensions = '';
-							foreach ($options as $option)
+							$optionlen = strlen($option);
+							if (substr($option, $optionlen - 2) == 'px')
 							{
-								$optionlen = strlen($option);
-								if (substr($option, $optionlen - 2) == 'px')
+								if (is_numeric($option[0]))
 								{
-									if (is_numeric($option[0]))
-									{
-										$style_dimensions = ' width: '.$option[0].';';
-										break;
-									}
-									else
-									{
-										$style_dimensions = ' height: '.substr($option[0], 1).';';
-										break;
-									}
+									$style_dimensions = ' width: '.$option[0].';';
+									break;
+								}
+								else
+								{
+									$style_dimensions = ' height: '.substr($option[0], 1).';';
+									break;
 								}
 							}
-							if (in_array('thumb', $options))
-							{
-								$divclasses[] = 'thumb';
-							}
-							if (in_array('left', $options))
-							{
-								$divclasses[] = 'icleft';
-							}
-							if (in_array('right', $options))
-							{
-								$divclasses[] = 'icright';
-							}
-							$retval = '<div class="'.join(' ', $divclasses).'"';
-							if ($issuemode)
-							{
-								$retval .= ' style="float: left; clear: left;"';
-							}
-							$retval .= '>';
-							$retval .= image_tag($file_link, array('alt' => $caption, 'title' => $caption, 'style' => $style_dimensions, 'class' => 'image'), true);
-							if ($caption != '')
-							{
-								$retval .= '<br>'.tbg_parse_text($caption);
-							}
-							$retval .= link_tag($file_link, image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('title' => __('Open image in new window')));
-							$retval .= '</div>';
 						}
-						else
+						if (in_array('thumb', $options))
 						{
-							$retval = link_tag($file_link, $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('title' => __('Open file in new window')));
+							$divclasses[] = 'thumb';
 						}
+						if (in_array('left', $options))
+						{
+							$divclasses[] = 'icleft';
+						}
+						if (in_array('right', $options))
+						{
+							$divclasses[] = 'icright';
+						}
+						$retval = '<div class="'.join(' ', $divclasses).'"';
+						if ($issuemode)
+						{
+							$retval .= ' style="float: left; clear: left;"';
+						}
+						$retval .= '>';
+						$retval .= image_tag($file_link, array('alt' => $caption, 'title' => $caption, 'style' => $style_dimensions, 'class' => 'image'), true);
+						if ($caption != '')
+						{
+							$retval .= '<br>'.tbg_parse_text($caption);
+						}
+						$retval .= link_tag($file_link, image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('title' => __('Open image in new window')));
+						$retval .= '</div>';
+					}
+					else
+					{
+						$retval = link_tag($file_link, $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('title' => __('Open file in new window')));
 					}
 				}
 				return $retval;

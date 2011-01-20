@@ -255,6 +255,9 @@
             if (!self::CanGetUploadStatus() || $ret['finished'])
 			{
 				TBGLogging::log('upload either finished or we cant track it');
+//				$ret['finished'] = true;
+//				$ret['percent'] = 100;
+//				$ret['complete'] = 100;
                 return $ret;
 			}
 

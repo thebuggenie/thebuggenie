@@ -10,6 +10,7 @@
 					<?php endif; ?>
 					<li><?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), __('History')); ?></li>
 					<li><?php echo link_tag(make_url('publish_article_permissions', array('article_name' => $article->getName())), __('Permissions')); ?></li>
+					<li><?php echo link_tag(make_url('publish_article_attachments', array('article_name' => $article->getName())), __('Attachments')); ?></li>
 				</ul>
 			<?php endif; ?>
 			<?php if (TBGContext::isProjectContext()): ?>
@@ -36,10 +37,11 @@
 		</div>
 	<?php endif; ?>
 	<?php if ($show_article): ?>
-		<div class="content"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded)); ?></div>
+		<div class="content"><?php echo tbg_parse_text($article->getContent(), true, $article->getID(), array('embedded' => $embedded, 'article' => $article)); ?></div>
 	<?php endif; ?>
 </div>
 <?php if ($article->isCategory() && !$embedded && $show_category_contains): ?>
+	<br style="clear: both;">
 	<div style="margin: 15px 5px 5px 5px; clear: both;">
 		<?php if (count($article->getSubCategories()) > 0): ?>
 			<div class="header"><?php echo __('Subcategories'); ?></div>
@@ -68,6 +70,7 @@
 	<br style="clear: both;">
 <?php endif; ?>
 <?php if (!$embedded && $show_article): ?>
+	<br style="clear: both;">
 	<div class="rounded_box lightgrey borderless" style="margin: 30px 5px 20px 5px;">
 		<b class="xtop"><b class="xb1"></b><b class="xb2"></b><b class="xb3"></b><b class="xb4"></b></b>
 		<div class="xboxcontent" style="padding: 3px 10px 3px 10px; font-size: 1.1em;">

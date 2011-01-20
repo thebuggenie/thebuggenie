@@ -38,10 +38,12 @@
 	$routes[] = array('list_fieldvalues', '/list/fieldvalues/for/field/:field_key/:format/*', 'main', 'listFieldvalues');
 	$routes[] = array('wsdl', '/thebuggenie.wsdl', 'soap', 'getWSDL');
 	$routes[] = array('get_partial_for_backdrop', '/get/partials/:key/*', 'main', 'getBackdropPartial');
-	$routes[] = array('issue_upload', '/upload/:issue_id', 'main', 'upload', array('mode' => 'issue'));
+	$routes[] = array('issue_upload', '/upload/to/issue/:issue_id', 'main', 'upload', array('mode' => 'issue'));
+	$routes[] = array('article_upload', '/upload/to/article/:article_name', 'main', 'upload', array('mode' => 'article'));
 	$routes[] = array('showfile', '/files/show/:id', 'main', 'getFile', array('mode' => 'show'));
 	$routes[] = array('downloadfile', '/files/download/:id', 'main', 'getFile', array('mode' => 'download'));
 	$routes[] = array('issue_upload_status', '/upload/get/status/for/issue/:issue_id', 'main', 'getUploadStatus', array('mode' => 'issue'));
+	$routes[] = array('article_upload_status', '/upload/get/status/for/article/:article_name', 'main', 'getUploadStatus', array('mode' => 'article'));
 	$routes[] = array('issue_detach_file', '/upload/detach/file/:file_id/from/issue/:issue_id', 'main', 'detachFile', array('mode' => 'issue'));
 	$routes[] = array('issue_attach_link', '/update/attach/link/to/issue/:issue_id/*', 'main', 'attachLinkToIssue', array(), true);
 	$routes[] = array('issue_vote', '/vote/for/issue/:issue_id/:vote', 'main', 'voteForIssue');

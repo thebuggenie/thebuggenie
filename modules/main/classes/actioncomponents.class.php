@@ -171,6 +171,15 @@
 					$this->poller_url = make_url('issue_upload_status', array('issue_id' => $this->issue->getID()));
 					$this->existing_files = $this->issue->getFiles();
 					break;
+				case 'article':
+					$this->form_action = make_url('article_upload', array('article_name' => $this->article->getName()));
+					$this->poller_url = make_url('article_upload_status', array('article_name' => $this->article->getName()));
+					$this->existing_files = $this->article->getFiles();
+					break;
+				default:
+					// @todo: dispatch a TBGEvent that allows us to retrieve the
+					// necessary variables from anyone catching it
+					break;
 			}
 		}
 
@@ -179,6 +188,10 @@
 			if ($this->mode == 'issue' && !isset($this->issue))
 			{
 				$this->issue = TBGContext::factory()->TBGIssue($this->issue_id);
+			}
+			elseif ($this->mode == 'article' && !isset($this->article))
+			{
+				$this->article = TBGWikiArticle::getByName($this->article_name);
 			}
 			$this->file_id = $this->file->getID();
 		}
@@ -217,7 +230,7 @@
 			}
 		}
 
-	public function componentCommentitem()
+		public function componentCommentitem()
 		{
 			if ($this->comment->getTargetType() == 1)
 			{

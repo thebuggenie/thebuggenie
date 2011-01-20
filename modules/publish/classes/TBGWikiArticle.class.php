@@ -62,6 +62,13 @@
 		protected $_categories = null;
 
 		/**
+		 * Array of files attached to this article
+		 *
+		 * @var array
+		 */
+		protected $_files = null;
+		
+		/**
 		 * A list of subcategories for this category
 		 *
 		 * @var array
@@ -570,5 +577,86 @@
 			}
 		}
 
-	}
+		/**
+		 * Populate the files array
+		 */
+		protected function _populateFiles()
+		{
+			if ($this->_files === null)
+			{
+				$this->_files = TBGFile::getByArticleID($this->getID());
+			}
+		}
 
+		/**
+		 * Return an array with all files attached to this issue
+		 * 
+		 * @return array
+		 */
+		public function getFiles()
+		{
+			$this->_populateFiles();
+			return $this->_files;
+		}
+
+		/**
+		 * Return a file by the filename if it is attached to this issue
+		 * 
+		 * @param string $filename The original filename to match against
+		 *
+		 * @return TBGFile
+		 */
+		public function getFileByFilename($filename)
+		{
+			foreach ($this->getFiles() as $file_id => $file)
+			{
+				if (strtolower($filename) == strtolower($file->getOriginalFilename()))
+				{
+					return $file;
+				}
+			}
+			return null;
+		}
+
+		/**
+		 * Attach a file to the issue
+		 * 
+		 * @param TBGFile $file The file to attach
+		 */
+		public function attachFile(TBGFile $file)
+		{
+			TBGArticleFilesTable::getTable()->addByArticleIDandFileID($this->getID(), $file->getID());
+			if ($this->_files !== null)
+			{
+				$this->_files[$file->getID()] = $file;
+			}
+		}
+		
+		/**
+		 * Remove a file
+		 * 
+		 * @param TBGFile $file The file to be removed
+		 * 
+		 * @return boolean
+		 */
+		public function removeFile(TBGFile $file)
+		{
+			TBGWikiArticleFilesTable::getTable()->removeByArticleIDandFileID($this->getID(), $file->getID());
+			if (is_array($this->_files) && array_key_exists($file->getID(), $this->_files))
+			{
+				unset($this->_files[$file->getID()]);
+			}
+			$file->delete();
+		}
+		
+		public function canDelete()
+		{
+			return TBGContext::getModule('publish')->canUserDeleteArticle($this->getName());
+		}
+		
+		public function canEdit()
+		{
+			return TBGContext::getModule('publish')->canUserEditArticle($this->getName());
+		}
+		
+	}

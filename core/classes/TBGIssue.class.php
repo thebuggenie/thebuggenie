@@ -3740,7 +3740,7 @@
 		 */
 		public function removeFile(TBGFile $file)
 		{
-			TBGFilesTable::getTable()->removeByIssueIDandFileID($this->getID(), $file->getID());
+			TBGIssueFilesTable::getTable()->removeByIssueIDandFileID($this->getID(), $file->getID());
 			if (is_array($this->_files) && array_key_exists($file->getID(), $this->_files))
 			{
 				unset($this->_files[$file->getID()]);

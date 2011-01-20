@@ -82,6 +82,11 @@
 			}
 		}
 
+		public function runArticleAttachments(TBGRequest $request)
+		{
+			
+		}
+		
 		public function runArticlePermissions(TBGRequest $request)
 		{
 			$namespaces = $this->article->getCombinedNamespaces();

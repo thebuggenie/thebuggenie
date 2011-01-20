@@ -58,6 +58,7 @@
 				$this->addAvailableListener('core', 'menustrip_item_links', 'listen_MenustripLinks', 'Menustrip links');
 			}
 			$this->addAvailableListener('core', 'TBGProject::createNew', 'listen_createNewProject', 'Create basic project wiki page');
+			$this->addAvailableListener('core', 'upload', 'listen_upload', 'File is uploaded');
 		}
 
 		protected function _addAvailableRoutes()
@@ -68,6 +69,7 @@
 			$this->addRoute('publish_article_revision', '/wiki/:article_name/revision/:revision', 'showArticle');
 			$this->addRoute('publish_article_edit', '/wiki/:article_name/edit', 'editArticle');
 			$this->addRoute('publish_article_permissions', '/wiki/:article_name/permissions', 'articlePermissions');
+			$this->addRoute('publish_article_attachments', '/wiki/:article_name/attachments', 'articleAttachments');
 			$this->addRoute('publish_article_delete', '/wiki/:article_name/delete', 'deleteArticle');
 			$this->addRoute('publish_article_save', '/wiki/savearticle', 'saveArticle');
 			$this->addRoute('publish_article_history', '/wiki/:article_name/history', 'articleHistory', array('history_action' => 'list'));

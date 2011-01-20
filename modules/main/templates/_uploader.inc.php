@@ -3,6 +3,8 @@
 		<div class="backdrop_detail_header">
 			<?php if ($mode == 'issue'): ?>
 				<?php echo __('Attach one or more file(s) to this issue'); ?>
+			<?php elseif ($mode == 'article'): ?>
+				<?php echo __('Attach one or more file(s) to this article'); ?>
 			<?php endif; ?>
 		</div>
 		<div class="backdrop_detail_content">
@@ -42,7 +44,11 @@
 					<tbody id="uploaded_files">
 						<?php if ($mode == 'issue'): ?>
 							<?php foreach ($existing_files as $file_id => $file): ?>
-								<?php include_template('attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file, 'file_id' => $file_id)); ?>
+								<?php include_template('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file, 'file_id' => $file_id)); ?>
+							<?php endforeach; ?>
+						<?php elseif ($mode == 'article'): ?>
+							<?php foreach ($existing_files as $file_id => $file): ?>
+								<?php include_template('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'article', 'article' => $article, 'file' => $file, 'file_id' => $file_id)); ?>
 							<?php endforeach; ?>
 						<?php endif; ?>
 					</tbody>
@@ -164,6 +170,9 @@
 						$('viewissue_no_uploaded_files').hide();
 						$('viewissue_uploaded_files').insert({bottom: json.content_inline});
 						$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
+					<?php elseif ($mode == 'article'): ?>
+						$('article_<?php echo strtolower($article->getName()); ?>_no_files').hide();
+						$('article_<?php echo strtolower($article->getName()); ?>_files').insert({bottom: json.content_inline});
 					<?php endif; ?>
 					this.error = false;
 					successMessage('File attached successfully');

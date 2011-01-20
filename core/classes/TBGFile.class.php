@@ -26,6 +26,11 @@
 			return TBGIssueFilesTable::getTable()->getByIssueID($issue_id);
 		}
 
+		public static function getByArticleID($article_id)
+		{
+			return TBGArticleFilesTable::getTable()->getByArticleID($article_id);
+		}
+
 		public static function getImageContentTypes()
 		{
 			return array('image/png', 'image/jpeg', 'image/jpg', 'image/bmp', 'image/gif');

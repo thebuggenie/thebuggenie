@@ -2067,6 +2067,14 @@
 				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 				$status['attachmentcount'] = count($issue->getFiles()) + count($issue->getLinks());
 			}
+			elseif (array_key_exists('file_id', $status) && $request->getParameter('mode') == 'article')
+			{
+				$file = TBGContext::factory()->TBGFile($status['file_id']);
+				$status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_'.strtolower(urldecode($request->getParameter('article_name'))).'_files', 'mode' => 'article', 'article_name' => $request->getParameter('article_name'), 'file' => $file));
+				$status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_'.strtolower(urldecode($request->getParameter('article_name'))).'_files', 'mode' => 'article', 'article_name' => $request->getParameter('article_name'), 'file' => $file));
+				$article = TBGWikiArticle::getByName($request->getParameter('article_name'));
+				$status['attachmentcount'] = count($article->getFiles());
+			}
 			
 			return $this->renderJSON($status);
 		}
@@ -2086,6 +2094,11 @@
 				$issue = TBGContext::factory()->TBGIssue($request->getParameter('issue_id'));
 				$canupload = (bool) ($issue instanceof TBGIssue && $issue->hasAccess() && $issue->canAttachFiles());
 			}
+			elseif ($request->getParameter('mode') == 'article')
+			{
+				$article = TBGWikiArticle::getByName($request->getParameter('article_name'));
+				$canupload = (bool) ($article instanceof TBGWikiArticle && $article->canEdit());
+			}
 			else
 			{
 				$event = TBGEvent::createNew('core', 'upload', $request->getParameter('mode'));
@@ -2098,32 +2111,32 @@
 			{
 				try
 				{
-					if (isset($issue))
-					{
-						$file = TBGContext::getRequest()->handleUpload('uploader_file', $issue);
-					}
-					else
-					{
-						$file = TBGContext::getRequest()->handleUpload('uploader_file');
-					}
+					$file = TBGContext::getRequest()->handleUpload('uploader_file');
 					if ($file instanceof TBGFile)
 					{
-						if ($request->getParameter('mode') == 'issue')
+						switch ($request->getParameter('mode'))
 						{
-							$issue->attachFile($file);
-							$comment = new TBGComment();
-							$comment->setPostedBy(TBGContext::getUser()->getID());
-							$comment->setTargetID($issue->getID());
-							$comment->setTargetType(TBGComment::TYPE_ISSUE);
-							if ($request->getParameter('comment') != '')
-							{
-								$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file% This comment was attached: %comment%', array('%comment%' => "\n\n".$request->getRawParameter('comment'), '%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$request->getParameter('uploader_file_description')}]]")));
-							}
-							else
-							{
-								$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file%', array('%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$request->getParameter('uploader_file_description')}]]")));
-							}
-							$comment->save();
+							case 'issue':
+								if (!$issue instanceof TBGIssue) break;
+								$issue->attachFile($file);
+								$comment = new TBGComment();
+								$comment->setPostedBy(TBGContext::getUser()->getID());
+								$comment->setTargetID($issue->getID());
+								$comment->setTargetType(TBGComment::TYPE_ISSUE);
+								if ($request->getParameter('comment') != '')
+								{
+									$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file% This comment was attached: %comment%', array('%comment%' => "\n\n".$request->getRawParameter('comment'), '%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$request->getParameter('uploader_file_description')}]]")));
+								}
+								else
+								{
+									$comment->setContent(TBGContext::getI18n()->__('A file was uploaded. %link_to_file%', array('%link_to_file%' => "[[File:{$file->getOriginalFilename()}|thumb|{$request->getParameter('uploader_file_description')}]]")));
+								}
+								$comment->save();
+								break;
+							case 'article':
+								if (!$article instanceof TBGWikiArticle) break;
+								$article->attachFile($file);
+								break;
 						}
 						return $this->renderText('ok');
 					}

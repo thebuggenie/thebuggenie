@@ -21,6 +21,7 @@
 						<?php endif; ?>
 						<li class="selected"><?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), __('History')); ?></li>
 						<li><?php echo link_tag(make_url('publish_article_permissions', array('article_name' => $article->getName())), __('Permissions')); ?></li>
+						<li><?php echo link_tag(make_url('publish_article_attachments', array('article_name' => $article->getName())), __('Attachments')); ?></li>
 					</ul>
 					<?php if (TBGContext::isProjectContext()): ?>
 						<?php if ((strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 0) || ($article->isCategory() && strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 9)): ?>
