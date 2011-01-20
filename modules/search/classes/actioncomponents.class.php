@@ -14,7 +14,17 @@
 				{
 					foreach ($filter as $subkey => $subfilter)
 					{
-						$filters[] = "filters[{$key}][{$subkey}]=".urlencode($subfilter);
+						if (is_array($subfilter))
+						{
+							foreach ($subfilter as $subsubkey => $subsubfilter)
+							{
+								$filters[] = "filters[{$key}][{$subkey}][{$subsubkey}]=".urlencode($subsubfilter);
+							}
+						}
+						else
+						{
+							$filters[] = "filters[{$key}][{$subkey}]=".urlencode($subfilter);
+						}
 					}
 				}
 				else
