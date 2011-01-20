@@ -2228,6 +2228,10 @@
 		{
 			$this->_addChangedProperty('_assigned_to', $assignee->getID());
 			$this->_addChangedProperty('_assigned_type', $assignee->getType());
+			if ($assignee->getType() == TBGIdentifiableClass::TYPE_USER)
+			{
+				$this->startWorkingOnIssue($assignee);
+			}
 		}
 		
 		/**
