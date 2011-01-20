@@ -7,7 +7,7 @@
 		{
 			$this->currentpage = ceil($this->offset / $this->ipp) + 1;
 			$this->pagecount = ceil($this->resultcount / $this->ipp);
-			$filters = array();
+			$parameters = array();
 			foreach ($this->filters as $key => $filter)
 			{
 				if (is_array($filter))
@@ -18,22 +18,28 @@
 						{
 							foreach ($subfilter as $subsubkey => $subsubfilter)
 							{
-								$filters[] = "filters[{$key}][{$subkey}][{$subsubkey}]=".urlencode($subsubfilter);
+								$parameters[] = "filters[{$key}][{$subkey}][{$subsubkey}]=".urlencode($subsubfilter);
 							}
 						}
 						else
 						{
-							$filters[] = "filters[{$key}][{$subkey}]=".urlencode($subfilter);
+							$parameters[] = "filters[{$key}][{$subkey}]=".urlencode($subfilter);
 						}
 					}
 				}
 				else
 				{
-					$filters[] = "filters[{$key}]=".urlencode($filter);
+					$parameters[] = "filters[{$key}]=".urlencode($filter);
 				}
 			}
+			$parameters[] = 'result_template='.$this->templatename;
+			$parameters[] = 'template_parameter='.$this->template_parameter;
+			$parameters[] = 'searchterm='.$this->searchterm;
+			$parameters[] = 'groupby='.$this->groupby;
+			$parameters[] = 'grouporder='.$this->grouporder;
+			$parameters[] = 'issues_per_page='.$this->ipp;
 			$route = (TBGContext::isProjectContext()) ? TBGContext::getRouting()->generate('project_search_paginated', array('project_key' => TBGContext::getCurrentProject()->getKey())) : TBGContext::getRouting()->generate('search_paginated');
-			$this->route = $route . '?' . join('&', $filters);
+			$this->route = $route . '?' . join('&', $parameters);
 		}
 
 		public function componentFilter()

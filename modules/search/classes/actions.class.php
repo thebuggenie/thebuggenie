@@ -388,6 +388,42 @@
 							$groupby_description = $i18n->__('Unknown');
 						}
 						break;
+					case 'edition':
+						if ($issue->getEditions())
+						{
+							$groupby_id = $issue->getFirstAffectedEdition()->getID();
+							$groupby_description = $issue->getFirstAffectedEdition()->getName();
+						}
+						else
+						{
+							$groupby_id = 0;
+							$groupby_description = $i18n->__('None');
+						}
+						break;
+					case 'build':
+						if ($issue->getBuilds())
+						{
+							$groupby_id = $issue->getFirstAffectedBuild()->getID();
+							$groupby_description = $issue->getFirstAffectedBuild()->getName();
+						}
+						else
+						{
+							$groupby_id = 0;
+							$groupby_description = $i18n->__('None');
+						}
+						break;
+					case 'component':
+						if ($issue->getComponents())
+						{
+							$groupby_id = $issue->getFirstAffectedComponent()->getID();
+							$groupby_description = $issue->getFirstAffectedComponent()->getName();
+						}
+						else
+						{
+							$groupby_id = 0;
+							$groupby_description = $i18n->__('None');
+						}
+						break;
 					case 'priority':
 						if ($issue->getPriority() instanceof TBGPriority)
 						{

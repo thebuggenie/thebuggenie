@@ -717,18 +717,7 @@
 		 */
 		public function getProject()
 		{
-			if (is_numeric($this->_project_id))
-			{
-				try
-				{
-					$this->_project_id = TBGContext::factory()->TBGProject($this->_project_id);
-				}
-				catch (Exception $e) 
-				{
-					$this->_project_id = null;
-				}
-			}
-			return $this->_project_id;
+			return $this->_getPopulatedObjectFromProperty('_project_id');
 		}
 		
 		/**
@@ -1413,18 +1402,7 @@
 		 */
 		public function getStatus()
 		{
-			if (is_numeric($this->_status))
-			{
-				try
-				{
-					$this->_status = TBGContext::factory()->TBGStatus($this->_status);
-				}
-				catch (Exception $e)
-				{
-					$this->_status = null;
-				}
-			}
-			return $this->_status;
+			return $this->_getPopulatedObjectFromProperty('_status');
 		}
 	
 		/**
@@ -1438,6 +1416,32 @@
 			return $this->_editions;
 		}
 		
+		public function isEditionAffected(TBGEdition $edition)
+		{
+			$editions = $this->getEditions();
+			if (count($editions))
+			{
+				foreach ($editions as $info)
+				{
+					if ($info['edition']->getID() == $edition->getID())
+						return true;
+				}
+			}
+			return false;
+		}
+		
+		public function getFirstAffectedEdition()
+		{
+			$editions = $this->getEditions();
+			if (count($editions))
+			{
+				foreach ($editions as $info)
+				{
+					return $info['edition'];
+				}
+			}
+		}
+		
 		/**
 		 * Returns the builds for this issue
 		 *
@@ -1449,6 +1453,32 @@
 			return $this->_builds;
 		}
 	
+		public function isBuildAffected(TBGBuild $build)
+		{
+			$builds = $this->getBuilds();
+			if (count($builds))
+			{
+				foreach ($builds as $info)
+				{
+					if ($info['build']->getID() == $build->getID())
+						return true;
+				}
+			}
+			return false;
+		}
+		
+		public function getFirstAffectedBuild()
+		{
+			$builds = $this->getBuilds();
+			if (count($builds))
+			{
+				foreach ($builds as $info)
+				{
+					return $info['build'];
+				}
+			}
+		}
+		
 		/**
 		 * Returns the components for this issue
 		 *
@@ -1458,6 +1488,32 @@
 		{
 			$this->_populateAffected();
 			return $this->_components;
+		}
+		
+		public function isComponentAffected(TBGComponent $component)
+		{
+			$components = $this->getComponents();
+			if (count($components))
+			{
+				foreach ($components as $info)
+				{
+					if ($info['component']->getID() == $component->getID())
+						return true;
+				}
+			}
+			return false;
+		}
+		
+		public function getFirstAffectedComponent()
+		{
+			$components = $this->getComponents();
+			if (count($components))
+			{
+				foreach ($components as $info)
+				{
+					return $info['component'];
+				}
+			}
 		}
 		
 		/**
@@ -2405,18 +2461,7 @@
 		 */
 		public function getResolution()
 		{
-			if (is_numeric($this->_resolution))
-			{
-				try
-				{
-					$this->_resolution = TBGContext::factory()->TBGResolution($this->_resolution);
-				}
-				catch (Exception $e)
-				{
-					$this->_resolution = null;
-				}
-			}
-			return $this->_resolution;
+			return $this->_getPopulatedObjectFromProperty('_resolution');
 		}
 		
 		/**
@@ -2436,18 +2481,7 @@
 		 */
 		public function getSeverity()
 		{
-			if (is_numeric($this->_severity))
-			{
-				try
-				{
-					$this->_severity = TBGContext::factory()->TBGSeverity($this->_severity);
-				}
-				catch (Exception $e)
-				{
-					$this->_severity = null;
-				}
-			}
-			return $this->_severity;
+			return $this->_getPopulatedObjectFromProperty('_severity');
 		}
 
 		/**

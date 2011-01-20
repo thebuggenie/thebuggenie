@@ -566,66 +566,101 @@
 				}
 			}
 			
+			$crit->addSelectionColumn(self::ID);
+			$crit->setDistinct();
+			
+			if ($offset != 0)
+				$crit->setOffset($offset);
+			
 			$crit2 = clone $crit;
 			$count = $this->doCount($crit2);
-
-			if ($groupby !== null)
+			
+			if ($count > 0)
 			{
-				$grouporder = ($grouporder !== null) ? (($grouporder == 'asc') ? B2DBCriteria::SORT_ASC : B2DBCriteria::SORT_DESC) : B2DBCriteria::SORT_ASC;
-				switch ($groupby)
+				if ($results_per_page != 0)
+					$crit->setLimit($results_per_page);
+
+				if ($offset != 0)
+					$crit->setOffset($offset);
+
+				if ($groupby !== null)
 				{
-					case 'category':
-						$crit->addOrderBy(TBGListTypesTable::CATEGORY, $grouporder);
-						break;
-					case 'status':
-						$crit->addOrderBy(self::STATUS, $grouporder);
-						break;
-					case 'milestone':
-						$crit->addOrderBy(self::MILESTONE, $grouporder);
-						$crit->addOrderBy(self::PERCENT_COMPLETE, 'desc');
-						break;
-					case 'assignee':
-						$crit->addOrderBy(self::ASSIGNED_TYPE);
-						$crit->addOrderBy(self::ASSIGNED_TO, $grouporder);
-						break;
-					case 'state':
-						$crit->addOrderBy(self::STATE, $grouporder);
-						break;
-					case 'severity':
-						$crit->addOrderBy(self::SEVERITY, $grouporder);
-						break;
-					case 'user_pain':
-						$crit->addOrderBy(self::USER_PAIN, $grouporder);
-						break;
-					case 'votes':
-						$crit->addOrderBy(self::VOTES_TOTAL, $grouporder);
-						break;
-					case 'resolution':
-						$crit->addOrderBy(self::RESOLUTION, $grouporder);
-						break;
-					case 'priority':
-						$crit->addOrderBy(self::PRIORITY, $grouporder);
-						break;
-					case 'issuetype':
-						$crit->addOrderBy(self::ISSUE_TYPE, $grouporder);
-						break;
+					$grouporder = ($grouporder !== null) ? (($grouporder == 'asc') ? B2DBCriteria::SORT_ASC : B2DBCriteria::SORT_DESC) : B2DBCriteria::SORT_ASC;
+					switch ($groupby)
+					{
+						case 'category':
+							$crit->addOrderBy(TBGListTypesTable::CATEGORY, $grouporder);
+							break;
+						case 'status':
+							$crit->addOrderBy(self::STATUS, $grouporder);
+							break;
+						case 'milestone':
+							$crit->addOrderBy(self::MILESTONE, $grouporder);
+							$crit->addOrderBy(self::PERCENT_COMPLETE, 'desc');
+							break;
+						case 'assignee':
+							$crit->addOrderBy(self::ASSIGNED_TYPE);
+							$crit->addOrderBy(self::ASSIGNED_TO, $grouporder);
+							break;
+						case 'state':
+							$crit->addOrderBy(self::STATE, $grouporder);
+							break;
+						case 'severity':
+							$crit->addOrderBy(self::SEVERITY, $grouporder);
+							break;
+						case 'user_pain':
+							$crit->addOrderBy(self::USER_PAIN, $grouporder);
+							break;
+						case 'votes':
+							$crit->addOrderBy(self::VOTES_TOTAL, $grouporder);
+							break;
+						case 'resolution':
+							$crit->addOrderBy(self::RESOLUTION, $grouporder);
+							break;
+						case 'priority':
+							$crit->addOrderBy(self::PRIORITY, $grouporder);
+							break;
+						case 'issuetype':
+							$crit->addOrderBy(self::ISSUE_TYPE, $grouporder);
+							break;
+						case 'edition':
+							$crit->addJoin(TBGIssueAffectsEditionTable::getTable(), TBGIssueAffectsEditionTable::ISSUE, self::ID);
+							$crit->addJoin(TBGEditionsTable::getTable(), TBGEditionsTable::ID, TBGIssueAffectsEditionTable::EDITION, array(), B2DBCriteria::DB_LEFT_JOIN, TBGIssueAffectsEditionTable::getTable());
+							$crit->addOrderBy(TBGEditionsTable::NAME, $grouporder);
+							break;
+						case 'build':
+							$crit->addJoin(TBGIssueAffectsBuildTable::getTable(), TBGIssueAffectsBuildTable::ISSUE, self::ID);
+							$crit->addJoin(TBGBuildsTable::getTable(), TBGBuildsTable::ID, TBGIssueAffectsBuildTable::BUILD, array(), B2DBCriteria::DB_LEFT_JOIN, TBGIssueAffectsBuildTable::getTable());
+							$crit->addOrderBy(TBGBuildsTable::NAME, $grouporder);
+							break;
+						case 'component':
+							$crit->addJoin(TBGIssueAffectsComponentTable::getTable(), TBGIssueAffectsComponentTable::ISSUE, self::ID);
+							$crit->addJoin(TBGComponentsTable::getTable(), TBGComponentsTable::ID, TBGIssueAffectsComponentTable::COMPONENT, array(), B2DBCriteria::DB_LEFT_JOIN, TBGIssueAffectsComponentTable::getTable());
+							$crit->addOrderBy(TBGComponentsTable::NAME, $grouporder);
+							break;
+					}
 				}
+
+				$res = $this->doSelect($crit, 'none');
+				$ids = array();
+
+				while ($row = $res->getNextRow())
+				{
+					$ids[] = $row->get(self::ID);
+				}
+				
+				$crit2 = $this->getCriteria();
+				$crit2->addWhere(self::ID, $ids, B2DBCriteria::DB_IN);
+				$crit2->addOrderBy(self::ID, $ids);
+				
+				$res = $this->doSelect($crit2);
+				
+				return array($res, $count);
 			}
-
-
-			if ($results_per_page != 0)
+			else
 			{
-				$crit->setLimit($results_per_page);
+				return array(null, 0);
 			}
-
-			if ($offset != 0)
-			{
-				$crit->setOffset($offset);
-			}
-
-			$res = $this->doSelect($crit);
-
-			return array($res, $count);
 
 		}
 		
