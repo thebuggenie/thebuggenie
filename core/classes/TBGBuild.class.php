@@ -286,7 +286,7 @@
 		 */
 		public function hasAccess()
 		{
-			return ($this->getProject()->canSeeAllBuilds() || TBGContext::getUser()->hasPermission('canseebuild', $this->getID()));
+			return (($this->getProject() instanceof TBGProject && $this->getProject()->canSeeAllBuilds()) || TBGContext::getUser()->hasPermission('canseebuild', $this->getID()));
 		}
 		
 	}
