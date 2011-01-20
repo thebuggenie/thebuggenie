@@ -1,8 +1,5 @@
 {{TOC}}
-This article will try to explain how to write pages in The Bug Genie wiki.
-
-= Wiki formatting =
-The wiki module uses a formatting technique called "Wiki formatting", most commonly known from Wikipedia (!MediaWiki).
+The Bug Genie uses a formatting technique called "Wiki formatting", most commonly known from Wikipedia (!MediaWiki).
 The Bug Genie wiki tries to stay as close to the !MediaWiki syntax as possible, so if you're familiar with that syntax you should feel right at home.
 
 Wiki formatting is well explained in the [http://en.wikipedia.org/wiki/Help:Wikitext_examples Wikipedia help article], but can be easily summarized as a simple method of formatting your text by placing certain characters.
