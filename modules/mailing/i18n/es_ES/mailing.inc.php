@@ -32,8 +32,8 @@
 	$strings['Mail notification'] = 'Notificación por correo';
 	$strings['Email when user registers'] = 'Correo cuando un usuario registra';
 	$strings['Email to reset password'] = 'Correo al limpiar la contraseña';
-	$strings['Email on issue update'] = 'Correo al actualizar un problema';
-	$strings['Email on new issues'] = 'Correo cuando haya nuevos problemas';
+	$strings['Email on issue update'] = 'Correo al actualizar una petición';
+	$strings['Email on new issues'] = 'Correo cuando haya nuevas peticiones';
 	$strings['Email when comments are posted'] = 'Correo cuando los comentarios son publicados';
 	$strings['"My account" settings'] = 'Configuración de "Mi cuenta"';
 	$strings['"My account" drop-down settings'] = 'Opciones para el menú "Mi cuenta"';
@@ -44,9 +44,9 @@
 	$strings['Please use the link in the email you received'] = 'Por favor, utilice el enlace en la dirección de correo electrónico que ha recibido';
 	$strings['If you have forgot your password, enter your username here, and we will send you an email that will allow you to change your username'] = 'Si ha olvidado su contraseña, introduzca su nombre de usuario aquí, y le enviaremos un mensaje de correo electrónico que le permitirá cambiar su contraseña';
 	$strings['Notify me when someone adds me as their friend'] = 'Avisarme cuando alguien me agrega como amigo';
-	$strings['Notify me when an issue I posted gets updated'] = 'Avisarme cuando un problema que publique es actualizado';
-	$strings['Send me a notification email when I update an issue'] = 'Enviarme un correo cuando actualice un problema';
-	$strings['Notify me when someone comments on an issue I posted'] = 'Avisarme cuando alguien comenta un problema que publiqué';
+	$strings['Notify me when an issue I posted gets updated'] = 'Avisarme cuando una petición que publiqué sea actualizada';
+	$strings['Send me a notification email when I update an issue'] = 'Enviarme un correo cuando actualice una petición';
+	$strings['Notify me when someone comments on an issue I posted'] = 'Avisarme cuando alguien comenta una petición que publiqué';
 	$strings['Outgoing settings'] = 'Configuración saliente';
 	$strings['Incoming settings'] = 'Configuración entrante';
 	$strings['Outgoing emails'] = 'Correos salientes';
@@ -84,13 +84,13 @@
 	$strings['Save'] = 'Guardar';
 	$strings['Username'] = 'Nombre de usuario';
 	$strings['Password'] = 'Contraseña';
-	$strings['Issues'] = 'Problemas';
+	$strings['Issues'] = 'Peticiones';
 	$strings['General'] = 'General';
 	$strings['Email communication'] = 'Comunicación por correo';
 	$strings['Enables in- and outgoing email functionality'] = 'Habilita la funcionalidad de correo entrante/saliente';
 	$strings['Set up in- and outgoing email communication from this section'] = 'Defina la comunicación para correo entrante y saliente desde esta sección';
 	$strings['Notifications'] = 'Notificaciones';
-	$strings['Email when an issue is updated'] = 'Correo cuando un problema es actualizado';
+	$strings['Email when an issue is updated'] = 'Correo cuando una peticion es actualizada';
 	$strings['Javascript Mailing'] = 'Correo Javascript';
 	$strings['The email module is not configured for outgoing emails'] = 'El módulo de correo no está configurado para correo saliente';
 

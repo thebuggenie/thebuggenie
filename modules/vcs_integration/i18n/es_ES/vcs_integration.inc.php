@@ -27,7 +27,7 @@
 	$strings['Configure repository settings for source code integration'] = 'Configurar opciones del repositorio para la integración del código fuente'; 
 	$strings['with project\'s repository set as default'] = 'con el repositorio del proyecto definido por defecto';
 	$strings['Error: Invalid project ID'] = 'Error: ID de proyecto no válido';
-	$strings['Issue updated from code repository'] = 'Problema actualizado por código desde el repositorio';
-	$strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = 'Este problema ha sido actualizado con los últimos cambios desde el repositorio.<source>%commit_msg%</source>';
+	$strings['Issue updated from code repository'] = 'Petición actualizada por código desde el repositorio';
+	$strings['This issue has been updated with the latest changes from the code repository.<source>%commit_msg%</source>'] = 'Esta petición ha sido actualizada con los últimos cambios desde el repositorio.<source>%commit_msg%</source>';
   $strings['help'] = 'ayuda'; 
    

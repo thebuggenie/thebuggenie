@@ -78,4 +78,73 @@
 	$strings['No other articles links to this article'] = 'Sin otros enlaces a este artículo'; 
 	$strings['Table of contents'] = 'Tabla de contenidos';
 	$strings['Move your mouse here to toggle the table of contents'] = 'Mueva el mouse aquí para cambiar la tabla de contenidos';	
+	$strings['Attachments'] = 'Adjuntos';
+	$strings['Show'] = 'Mostrar'; 
+	$strings['Last updated at %time%, by %user%'] = 'Ultima actualización %time%, por %user%'; 
+	$strings['Categories:'] = 'Categorías:'; 
+	$strings['Edit this article'] = 'Editar este artículo'; 
+	$strings['Delete this article'] = 'Borrar este artículo'; 
+	$strings['Really delete this article?'] = '¿Realmente borra este artículo?'; 
+	$strings['Deleting this article will remove it from the system.'] = 'Borrar este artículo lo quitará del sistema.'; 
+	$strings['Editing %article_name%'] = 'Editando %article_name%'; 
+	$strings['%article_name% ~ Edit'] = '%article_name% ~ Editar'; 
+	$strings['This is the name you use when you link to this article'] = 'Este es el nombre que usará cuando haga un vínculo a este artículo'; 
+	$strings['Article content'] = 'Contenido del artículo'; 
+	$strings['For help and tips on how to format your article, see %wiki_formatting%'] = 'Para ayuda y consejos sobre como dar formato a su artículo, vea %wiki_formatting%'; 
+	$strings['Change reason'] = 'Motivo del cambio'; 
+	$strings['Enter a short reason summarizing your changes (max. 255 characters)'] = 'Ingrese un breve resumen justificando los cambios (max. 255 caracteres)'; 
+	$strings['Preview changes'] = 'Vista previa de los cambios'; 
+	$strings['Wiki permissions'] = 'Permisos Wiki'; 
+	$strings['Front page article'] = 'Artículo de portada'; 
+	$strings['Create this article'] = 'Crear este artículo'; 
+  
+  $strings['%article_name% history'] = '%article_name% historia'; 
+  $strings['%article_name% ~ History'] = '%article_name% ~ Historia'; 
+  $strings['Updated'] = 'Actualizado'; 
+  $strings['Author'] = 'Autor';
+  $strings['Recently edited pages'] = 'Páginas editadas recientemente'; 
+
+  $strings['This is a placeholder for an article that has not been created yet. You can create it by clicking %create_this_article% below.'] = 'Esta es la ubicación para un artículo que no ha sido creado aún. Puede crearlo haciendo clic en %create_this_article%.';
+  $strings['Create article'] = 'Crear artículo'; 
+  $strings['Preview article'] = 'Vista previa del artículo';         
+  $strings['You have to provide a reason for the changes'] = 'Tiene que dar un motivo para los cambios'; 
+  $strings['This is a preview of the article'] = 'Esta es una vista previa del artículo'; 
+  $strings['The article has not been saved yet'] = 'El artículo no ha sido guardado aún'; 
+  $strings['Continue editing'] = 'Continuar editando';         
+  $strings['System'] = 'Sistema';
+  $strings['Initital import'] = 'Importación inicial';
+  $strings['This article is not in any categories'] = 'Este artículo no está en ninguna categoría'; 
+  $strings['%article_name% permissions'] = 'permisos %article_name%'; 
+  $strings['%article_name% ~ Permissions'] = '%article_name% ~ Permisos'; 
+  $strings['Specify permissions for the article %article_name%'] = 'Especificar los permisos para el artículo %article_name%'; 
+  $strings['Select this option to specify permissions for this article.'] = 'Seleccione esta opción para definir los permisos para este artículo.'; 
+  $strings['Edit write permissions'] = 'Editar permisos de escritura'; 
+  $strings['Edit delete permissions'] = 'Editar permisos para borrar'; 
+  $strings['Specify permissions for entire wiki'] = 'Definir permisos globales para wiki'; 
+  $strings['Select this option to specify permissions for the entire wiki.'] = 'Seleccione esta opción para definir los permisos para todo wiki.';        
+
+  $strings['Basic information'] = 'Información básica'; 
+  $strings['This is the basic settings for the wiki'] = 'Esta es la configuración básica para la wiki'; 
+  $strings['Menu title'] = 'Título del menú'; 
+
+  $strings['Specify here if you want to show a different menu title than "Wiki" in the header menu'] = 'Defina aqui si quiere mostrar un título de menú distinto a "Wiki" en la cabecera del menú'; 
+  $strings['Allow "CamelCased" links'] = 'Permitir enlaces "CamelCased"'; 
+  $strings['CamelCasing'] = 'CamelCasing'; 
+  $strings['Traditionally, %CamelCasing% has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting% wiki article if you are unsure how to use this feature.'] = 'Tradicionalmente, %CamelCasing% ha sido utilizado para crear enlaces entre documentos en la Wiki. Si quiere mantenerlo, hágalo aquí. Asegúrese de haber leido el artículo %wikiformatting% si no está seguro de esta característica.'; 
+  $strings['Open for everyone with access to add / remove content'] = 'Permitir a cada uno con acceso a agregar / quitar contenido';
+  $strings['Only registered users can add / remove content'] = 'Solo los usuarios registrados puede agregar / quitar contenido';
+  $strings['Set wiki permissions manually'] = 'Establecer manualmente los permisos de wiki'; 
+  $strings['Specify how you want to control access to wiki editing functionality'] = 'Defina como quiere controlar el acceso a la edición de la funcionalidad wiki'; 
+  $strings['Click "%save%" to save wiki settings'] = 'Haga clic en "%save%" para guardar las opciones';
+  $strings['Wiki'] = 'Wiki'; 
+  $strings['Enables Wiki-functionality'] = 'Habilita funcionalidad wiki'; 
+  $strings['Set up the Wiki module from this section'] = 'Configure el módulo Wiki en esta sección'; 
+  $strings['Wiki menu'] = 'Menú Wiki'; 
+  $strings['Links to this article'] = 'Enlaces a este artículo'; 
+  $strings['History'] = 'Historia'; 
+  $strings['Global content'] = 'Contenido General'; 
+	$strings['Table of contents'] = 'Tabla de contenidos';
+	$strings['Move your mouse here to toggle the table of contents'] = 'Mueva el mouse aquí para cambiar la tabla de contenidos';	
+  $strings['No other articles links to this article'] = 'No hay enlaces a este artículo'; 
+  
 ?>
