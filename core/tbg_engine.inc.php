@@ -318,7 +318,7 @@
 									{
 										echo 'in an unknown file';
 									}
-									echo "\n";
+									echo "<br>";
 								}
 							}
 							else
@@ -346,7 +346,7 @@
 									{
 										echo 'in an unknown file';
 									}
-									echo "\n";
+									echo "<br>";
 								}
 							}
 							echo "\n\n\">";
