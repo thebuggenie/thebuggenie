@@ -214,6 +214,7 @@
 			}
 			catch (Exception $e)
 			{
+				return $this->return404(TBGContext::getI18n()->__('This client does not exist'));
 				TBGLogging::log($e->getMessage(), 'core', TBGLogging::LEVEL_WARNING);
 			}
 		}
@@ -227,15 +228,24 @@
 		{
 			$this->forward403unless(TBGContext::getUser()->hasPageAccess('home'));
 			$this->getResponse()->setProjectMenuStripHidden();
-			$this->team = TBGContext::factory()->TBGTeam($request->getParameter('team_id'));
-			
-			$own = TBGProject::getAllByOwner($this->team);
-			$leader = TBGProject::getAllByLeader($this->team);
-			$qa = TBGProject::getAllByQaResponsible($this->team);
-			$proj = $this->team->getAssociatedProjects();
-			
-			$this->projects = array_unique(array_merge($proj, $own, $leader, $qa));
-			$this->users = $this->team->getMembers();
+
+			try
+			{
+				$this->team = TBGContext::factory()->TBGTeam($request->getParameter('team_id'));
+				
+				$own = TBGProject::getAllByOwner($this->team);
+				$leader = TBGProject::getAllByLeader($this->team);
+				$qa = TBGProject::getAllByQaResponsible($this->team);
+				$proj = $this->team->getAssociatedProjects();
+				
+				$this->projects = array_unique(array_merge($proj, $own, $leader, $qa));
+				$this->users = $this->team->getMembers();
+			}
+			catch (Exception $e)
+			{
+				return $this->return404(TBGContext::getI18n()->__('This client does not exist'));
+				TBGLogging::log($e->getMessage(), 'core', TBGLogging::LEVEL_WARNING);
+			}
 		}
 				
 		/**
