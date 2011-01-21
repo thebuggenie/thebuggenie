@@ -64,7 +64,7 @@
 								<div style="text-align: right; clear: both; padding: 10px 0 0 0;" id="update_step_buttons">
 									<input type="submit" value="<?php echo __('Update step details'); ?>" name="edit">
 									<?php echo __('%update_step_details% or %cancel%', array('%update_step_details%' => '', '%cancel%' => '')); ?>
-									<b><?php echo javascript_link_tag(__('cancel'), array('onclick' => "\$('step_details_form').toggle();\$('step_details_info').toggle();")); ?></b>
+									<b><?php echo javascript_link_tag(__('cancel'), array('onclick' => "\$('add_step_div').toggle();")); ?></b>
 								</div>
 								<div style="text-align: right; padding: 10px 0 10px 0; display: none;" id="step_update_indicator"><span style="float: right;"><?php echo image_tag('spinning_16.gif'); ?></span>&nbsp;<?php echo __('Please wait'); ?></div>
 							</form>
