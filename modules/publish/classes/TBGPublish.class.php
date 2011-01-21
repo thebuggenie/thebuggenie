@@ -244,7 +244,8 @@
 		public function getArticleLinkTag($matches)
 		{
 			$article_name = $matches[0];
-			TBGTextParser::getCurrentParser()->addInternalLinkOccurrence($article_name);
+			if (TBGTextParser::getCurrentParser() instanceof TBGTextParser)
+				TBGTextParser::getCurrentParser()->addInternalLinkOccurrence($article_name);
 			$article_name = $this->getSpacedName($matches[0]);
 			if (!TBGContext::isCLI())
 			{
