@@ -2,7 +2,7 @@
 
 	TBGContext::loadLibrary('ui');
 
-	if (TBGContext::getUser()->isGuest()):
+	if (TBGContext::getUser()->isGuest() || TBGContext::getRequest()->hasParameter('redirect')):
 ?>
 
 <script>

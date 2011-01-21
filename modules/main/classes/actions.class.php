@@ -356,7 +356,7 @@
 				return $this->renderJSON(array('forward' => $forward_url));
 			}
 
-			elseif ($forward_url !== null && $request->getParameter('redirect') != true)
+			elseif ($forward_url !== null && $request->getParameter('continue') != true)
 			{
 				$this->forward($forward_url);
 			}
