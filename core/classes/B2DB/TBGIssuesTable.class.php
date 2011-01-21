@@ -621,7 +621,8 @@
 							$crit->addOrderBy(self::PRIORITY, $grouporder);
 							break;
 						case 'issuetype':
-							$crit->addOrderBy(self::ISSUE_TYPE, $grouporder);
+							$crit->addJoin(TBGIssueTypesTable::getTable(), TBGIssueTypesTable::ID, self::ISSUE_TYPE);
+							$crit->addOrderBy(TBGIssueTypesTable::NAME, $grouporder);
 							break;
 						case 'edition':
 							$crit->addJoin(TBGIssueAffectsEditionTable::getTable(), TBGIssueAffectsEditionTable::ISSUE, self::ID);
@@ -640,6 +641,8 @@
 							break;
 					}
 				}
+				
+				$crit->addOrderBy(self::LAST_UPDATED, 'asc');
 
 				$res = $this->doSelect($crit, 'none');
 				$ids = array();
@@ -648,6 +651,8 @@
 				{
 					$ids[] = $row->get(self::ID);
 				}
+				
+				$ids = array_reverse($ids);
 				
 				$crit2 = $this->getCriteria();
 				$crit2->addWhere(self::ID, $ids, B2DBCriteria::DB_IN);
