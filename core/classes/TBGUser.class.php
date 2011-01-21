@@ -1822,7 +1822,7 @@
 		 */
 		public function canChangePassword()
 		{
-			return (bool) ($this->hasPermission('canchangepassword'));
+			return (bool) ($this->hasPermission('canchangepassword', 0, 'core', true, $this->hasPermission('page_account_access', 0, 'core', true)));
 		}
 		
 		/**
