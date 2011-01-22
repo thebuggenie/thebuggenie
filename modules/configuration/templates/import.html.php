@@ -50,9 +50,10 @@
 						<form action="<?php echo make_url('configure_import'); ?>" method="post">
 							<input type="hidden" name="import_sample_data" value="1">
 							<div style="text-align: right;">
-								<input type="submit" value="<?php echo __('Import sample data'); ?>" style="font-weight: bold; font-size: 1em; padding: 4px;">
+								<input type="submit" onClick="$('import_sample_button').hide();$('import_sample_indicator').show();" id="import_sample_button" value="<?php echo __('Import sample data'); ?>" style="font-weight: bold; font-size: 1em; padding: 4px;">
 							</div>
 						</form>
+						<?php echo image_tag('spinning_20.gif', array('id' => 'import_sample_indicator', 'style' => 'float: right; display: none')); ?>
 					</div>
 				</div>
 			</div>
