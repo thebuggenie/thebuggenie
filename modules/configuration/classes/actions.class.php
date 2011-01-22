@@ -76,53 +76,73 @@
 				{
 					$users = array();
 					
-					$user1 = new TBGUser();
-					$user1->setUsername('john');
-					$user1->setPassword('john');
-					$user1->setBuddyname('John');
-					$user1->setRealname('John');
-					$user1->setActivated();
-					$user1->setEnabled();
-					$user1->save();
-					$users[] = $user1;
+					try
+					{
+						$user1 = new TBGUser();
+						$user1->setUsername('john');
+						$user1->setPassword('john');
+						$user1->setBuddyname('John');
+						$user1->setRealname('John');
+						$user1->setActivated();
+						$user1->setEnabled();
+						$user1->save();
+						$users[] = $user1;
+					}
+					catch (exception $e) {}
+
+					try
+					{					
+						$user2 = new TBGUser();
+						$user2->setUsername('jane');
+						$user2->setPassword('jane');
+						$user2->setBuddyname('Jane');
+						$user2->setRealname('Jane');
+						$user2->setActivated();
+						$user2->setEnabled();
+						$user2->save();
+						$users[] = $user2;
+					}
+					catch (exception $e) {}
+
+					try
+					{					
+						$user3 = new TBGUser();
+						$user3->setUsername('jackdaniels');
+						$user3->setPassword('jackdaniels');
+						$user3->setBuddyname('Jack');
+						$user3->setRealname('Jack Daniels');
+						$user3->setActivated();
+						$user3->setEnabled();
+						$user3->save();
+						$users[] = $user3;
+					}
+					catch (exception $e) {}
 					
-					$user2 = new TBGUser();
-					$user2->setUsername('jane');
-					$user2->setPassword('jane');
-					$user2->setBuddyname('Jane');
-					$user2->setRealname('Jane');
-					$user2->setActivated();
-					$user2->setEnabled();
-					$user2->save();
-					$users[] = $user2;
+					try
+					{
+						$project1 = new TBGProject();
+						$project1->setName('Sample project 1');
+						$project1->setOwner($users[rand(0, 2)]);
+						$project1->setLeader($users[rand(0, 2)]);
+						$project1->setQaResponsible($users[rand(0, 2)]);
+						$project1->setDescription('This is a sample project that is awesome. Try it out!');
+						$project1->setHomepage('http://www.google.com');
+						$project1->save();
+					}
+					catch (exception $e) {}
 					
-					$user3 = new TBGUser();
-					$user3->setUsername('jackdaniels');
-					$user3->setPassword('jackdaniels');
-					$user3->setBuddyname('Jack');
-					$user3->setRealname('Jack Daniels');
-					$user3->setActivated();
-					$user3->setEnabled();
-					$user3->save();
-					$users[] = $user3;
-					
-					$project1 = new TBGProject();
-					$project1->setName('Sample project 1');
-					$project1->setOwner($users[rand(0, 2)]);
-					$project1->setLeader($users[rand(0, 2)]);
-					$project1->setQaResponsible($users[rand(0, 2)]);
-					$project1->setDescription('This is a sample project that is awesome. Try it out!');
-					$project1->setHomepage('http://www.google.com');
-					$project1->save();
-					
-					$project2 = new TBGProject();
-					$project2->setName('Sample project 2');
-					$project2->setOwner($users[rand(0, 2)]);
-					$project2->setLeader($users[rand(0, 2)]);
-					$project2->setQaResponsible($users[rand(0, 2)]);
-					$project2->setDescription('This is the second sample project. Not as awesome as the first one, but still worth a try!');
-					$project2->setHomepage('http://www.bing.com');
-					$project2->save();
+					try
+					{
+						$project2 = new TBGProject();
+						$project2->setName('Sample project 2');
+						$project2->setOwner($users[rand(0, 2)]);
+						$project2->setLeader($users[rand(0, 2)]);
+						$project2->setQaResponsible($users[rand(0, 2)]);
+						$project2->setDescription('This is the second sample project. Not as awesome as the first one, but still worth a try!');
+						$project2->setHomepage('http://www.bing.com');
+						$project2->save();
+					}
+					catch (exception $e) {}
 
 					foreach (array($project1, $project2) as $project)
 					{
