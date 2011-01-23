@@ -1057,8 +1057,9 @@
 			$this->default_spent_time = $i18n->__('Enter time spent here');
 
 			$this->_loadSelectedProjectAndIssueTypeFromRequestForReportIssueAction($request);
+			
 			$this->forward403unless(TBGContext::getUser()->canReportIssues(TBGContext::getCurrentProject()));
-
+			
 			if ($request->isMethod(TBGRequest::POST))
 			{
 				if ($this->_postIssueValidation($request, $errors, $permission_errors))

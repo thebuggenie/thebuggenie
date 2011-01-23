@@ -4,6 +4,24 @@
 	$tbg_response->setTitle('Report an issue');
 	$tbg_response->addJavascript('reportissue.js');
 	
+	if (TBGContext::getCurrentProject()->isLocked() == true)
+	{
+	   ?>
+      <div class="rounded_box red borderless" id="notfound_error">
+      		<div class="viewissue_info_header"><?php echo __("Reporting disabled"); ?></div>
+      		<div class="viewissue_info_content">
+      			<?php if (isset($message) && $message): ?>
+      				<?php echo $message; ?>
+      			<?php else: ?>
+      				<?php echo __("The administrator has disabled reporting issues for this project"); ?>
+      			<?php endif; ?>
+      		</div>
+      	</div>
+      	<b class="xbottom"><b class="xb4"></b><b class="xb3"></b><b class="xb2"></b><b class="xb1"></b></b>
+      </div>
+    <?php
+    return;
+  }
 ?>
 <div style="text-align: center; margin-bottom: 10px;">
 	<div class="report_issue_header">
