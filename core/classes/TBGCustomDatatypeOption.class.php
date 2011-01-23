@@ -14,14 +14,12 @@
 		 */
 		protected $_value = null;
 		
-		protected $_key = null;
-		
 		protected $_sort_order = null;
 		
 		/**
+		 * Custom field key value
 		 *
-		 * @var TBGCustomDatatype
-		 * @Class TBGCustomDatatype
+		 * @var string
 		 */
 		protected $_customfield_key;
 
@@ -91,12 +89,12 @@
 
 		public function getKey()
 		{
-			return $this->_key;
+			return $this->_customfield_key;
 		}
 		
 		public function setKey($key)
 		{
-			$this->_key = $key;
+			$this->_customfield_key = $key;
 		}
 		
 		/**

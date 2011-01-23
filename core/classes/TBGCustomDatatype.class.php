@@ -200,7 +200,7 @@
 			$option = new TBGCustomDatatypeOption();
 			$option->setName($name);
 			$option->setItemtype($this->_itemtype);
-			$option->setKey($this->_key);
+			$option->setKey($this->getKey());
 			$option->setValue($value);
 			$option->setItemdata($itemdata);
 			$option->save();
