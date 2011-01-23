@@ -62,6 +62,14 @@
 			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
 			$res = $this->doDelete($crit);
 		}
+		
+		public function deleteByIssuetypeID($type_id)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::ISSUETYPE_ID, $type_id);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+			$res = $this->doDelete($crit);
+		}
 
 		public function associateIssuetypeWithScheme($issuetype_id, $scheme_id)
 		{

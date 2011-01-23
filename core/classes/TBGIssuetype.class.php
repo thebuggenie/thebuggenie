@@ -250,5 +250,10 @@
 			}
 			return self::$_issuetypes;
 		}
+		
+		public function _preDelete()
+		{
+			B2DB::getTable('TBGIssuetypeSchemeLinkTable')->deleteByIssuetypeID($this->getID());
+		}
 	}
 	
