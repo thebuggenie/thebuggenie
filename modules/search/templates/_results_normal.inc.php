@@ -4,10 +4,10 @@
 		<?php echo '</tbody></table>'; ?>
 	<?php endif; ?>
 	<?php if ($showheader): ?>
-		<h3 style="margin-top: 20px;"><?php echo $groupby_description; ?></h3>
+		<h5><?php echo $groupby_description; ?></h5>
 	<?php endif; ?>
 	<?php if ($showtablestart): ?>
-		<table style="width: 100%;" cellpadding="0" cellspacing="0">
+		<table style="width: 100%;" cellpadding="0" cellspacing="0" class="results_container">
 			<thead>
 				<tr>
 					<?php if (!TBGContext::isProjectContext()): ?>
@@ -48,8 +48,8 @@
 					<?php if ($issue->getStatus() instanceof TBGDatatype): ?>
 						<table style="table-layout: auto; width: auto;" cellpadding=0 cellspacing=0>
 							<tr>
-								<td style="width: 16px; height: 16px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 15px; height: 15px; margin-right: 2px;">&nbsp;</div></td>
-								<td style="padding-left: 0px;"><?php echo $issue->getStatus()->getName(); ?></td>
+								<td style="width: 12px; height: 12px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($issue->getStatus() instanceof TBGDatatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 11px; height: 11px; margin-right: 2px;">&nbsp;</div></td>
+								<td style="padding-left: 0px; font-size: 1em;"><?php echo $issue->getStatus()->getName(); ?></td>
 							</tr>
 						</table>
 					<?php else: ?>
@@ -59,7 +59,7 @@
 				<td<?php if (!$issue->getResolution() instanceof TBGResolution): ?> class="faded_out"<?php endif; ?>>
 					<?php echo ($issue->getResolution() instanceof TBGResolution) ? strtoupper($issue->getResolution()->getName()) : '-'; ?>
 				</td>
-				<td class="smaller"><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
+				<td class="smaller" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
 			</tr>
 	<?php if ($cc == count($issues)): ?>
 			</tbody>

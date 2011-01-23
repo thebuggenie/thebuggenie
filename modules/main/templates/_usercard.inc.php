@@ -9,6 +9,12 @@
 			<div class="user_status"><?php echo $user->getState()->getName(); ?></div>
 		</div>
 		<div class="user_details">
+			<?php if (!$user->getJoinedDate()): ?>
+				<i><?php echo __('This user has been a member for a while'); ?></i>
+			<?php else: ?>
+				<?php echo '<b>' . __('This user has been a member since %date%', array('%date%' => '</b>' . tbg_formatTime($user->getJoinedDate(), 11))); ?> 
+			<?php endif; ?>
+			<br>
 			<?php if (!$user->getLastSeen()): ?>
 				<i><?php echo __('This user has not logged in yet'); ?></i>
 			<?php else: ?>

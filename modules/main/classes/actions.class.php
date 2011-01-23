@@ -636,7 +636,7 @@
 			{
 				if (TBGContext::getUser()->canChangePassword() == false)
 				{
-					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You\'re not allowed to change your password.')));
+					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__("You're not allowed to change your password.")));
 				}
 				if (!$request->hasParameter('current_password') || !$request->getParameter('current_password'))
 				{

@@ -963,8 +963,10 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 
 /* search results */
 .search_results { margin: 0 0 5px 0; }
-.search_results th { background-color: #F5F5F5; padding: 3px 3px 3px 0; }
-.search_results td { font-size: 12px; padding: 3px 3px 3px 0; }
+.search_results h5 { margin: 0; padding-left: 5px; border-bottom: 0; background-color: #F5F5F5; }
+.search_results table.results_container { margin-bottom: 15px; }
+.search_results th { background-color: #F5F5F5; padding: 3px 3px 3px 0; font-size: 11px; }
+.search_results td { font-size: 11px; padding: 3px 3px 3px 0; }
 .search_results tbody tr:hover { background-color: #F1F1F1; }
 .search_results tbody tr.closed td { color: #777; text-decoration: line-through; }
 .search_results tbody tr.changed { background-color: #FFFBE2; }
