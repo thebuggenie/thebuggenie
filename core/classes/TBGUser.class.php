@@ -1870,9 +1870,24 @@
 				$lo_projects = B2DB::getTable('TBGProjectsTable')->getByUserID($this->getID());
 
 				$project_ids = array_merge(array_keys($projects), array_keys($edition_projects), array_keys($component_projects), array_keys($lo_projects));
+
+				foreach ($this->getTeams() as $team)
+				{
+					$projects_team = B2DB::getTable('TBGProjectAssigneesTable')->getProjectsByTeamID($team->getID());
+					$edition_projects_team = B2DB::getTable('TBGEditionAssigneesTable')->getProjectsByTeamID($team->getID());
+					$component_projects_team = B2DB::getTable('TBGComponentAssigneesTable')->getProjectsByTeamID($team->getID());
+					$project_ids = array_merge(array_keys($projects_team), array_keys($edition_projects_team), array_keys($component_projects_team), $project_ids);	
+				}
+				
+				$project_ids = array_unique($project_ids);
+				
 				foreach ($project_ids as $project_id)
 				{
-					$this->_associated_projects[$project_id] = TBGContext::factory()->TBGProject($project_id);
+					try
+					{
+						$this->_associated_projects[$project_id] = TBGContext::factory()->TBGProject($project_id);
+					}
+					catch (Exception $e) { }
 				}
 			}
 			
