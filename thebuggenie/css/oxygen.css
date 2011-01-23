@@ -935,6 +935,7 @@ div.quickaddtask .close_micro_popup_link { position: static; float: right; }
 .roadmap_issue .issue_status { display: inline; width: 20px; float: left; }
 .roadmap_issue .issue_points { display: inline; color: #aaa; font-size: 11px; margin-left: 10px; }
 .roadmap_issue.issue_closed { text-decoration: line-through; }
+.roadmap_issue.blocking .issue_title { font-weight: bold; color: red; }
 /* end roadmap */
 
 /* search styling */
