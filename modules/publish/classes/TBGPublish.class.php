@@ -106,27 +106,29 @@
 		public function loadArticles($namespace = '', $overwrite = true)
 		{
 			$scope = TBGContext::getScope()->getID();
+			$namespace = strtolower($namespace);
 			$_path_handle = opendir(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR);
-			while ($article_name = readdir($_path_handle))
+			while ($original_article_name = readdir($_path_handle))
 			{
-				if (strpos($article_name, '.') === false)
+				if (strpos($original_article_name, '.') === false)
 				{
+					$article_name = strtolower($original_article_name);
 					$imported = false;
 					$import = false;
 					if ($namespace)
 					{
-						if (strpos(urldecode($article_name), "{$namespace}:") === 0 || (strpos(urldecode($article_name), "Category:") === 0 && strpos(urldecode($article_name), "{$namespace}:") === 9))
+						if (strpos(urldecode($article_name), "{$namespace}:") === 0 || (strpos(urldecode($article_name), "category:") === 0 && strpos(urldecode($article_name), "{$namespace}:") === 9))
 						{
 							$import = true;
 						}
 					}
 					else
 					{
-						if (strpos(urldecode($article_name), "Category:Help:") === 0)
+						if (strpos(urldecode($article_name), "category:help:") === 0)
 						{
 							$name_test = substr(urldecode($article_name), 14);
 						}
-						elseif (strpos(urldecode($article_name), "Category:") === 0)
+						elseif (strpos(urldecode($article_name), "category:") === 0)
 						{
 							$name_test = substr(urldecode($article_name), 9);
 						}
@@ -141,19 +143,19 @@
 					{
 						if (TBGContext::isCLI())
 						{
-							TBGCliCommand::cli_echo('Saving '.urldecode($article_name)."\n");
+							TBGCliCommand::cli_echo('Saving '.urldecode($original_article_name)."\n");
 						}
 						if ($overwrite)
 						{
-							TBGArticlesTable::getTable()->deleteArticleByName(urldecode($article_name));
+							TBGArticlesTable::getTable()->deleteArticleByName(urldecode($original_article_name));
 						}
-						if (TBGArticlesTable::getTable()->getArticleByName(urldecode($article_name)) === null)
+						if (TBGArticlesTable::getTable()->getArticleByName(urldecode($original_article_name)) === null)
 						{
-							$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $article_name);
-							TBGWikiArticle::createNew(urldecode($article_name), $content, true, $scope, array('overwrite' => $overwrite));
+							$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $original_article_name);
+							TBGWikiArticle::createNew(urldecode($original_article_name), $content, true, $scope, array('overwrite' => $overwrite));
 							$imported = true;
 						}
-						TBGEvent::createNew('publish', 'fixture_article_loaded', urldecode($article_name), array('imported' => $imported))->trigger();
+						TBGEvent::createNew('publish', 'fixture_article_loaded', urldecode($original_article_name), array('imported' => $imported))->trigger();
 					}
 				}
 			}
