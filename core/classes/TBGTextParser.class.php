@@ -530,7 +530,7 @@
 			}
 			else
 			{
-				$output = htmlspecialchars('no issue'.$matches[1]);
+				$output = htmlspecialchars($matches[1]);
 			}
 			return $output;
 		}
@@ -716,7 +716,9 @@
 			{
 				$issue_strings[] = $issuetype->getName();
 			}
-			$issue_string = str_replace(' ', '\s{1,1}', join('|', $issue_strings));
+			$issue_string = join('|', $issue_strings);
+			$issue_string = html_entity_decode($issue_string, ENT_QUOTES);
+			$issue_string = str_replace(array(' ', "'"), array('\s{1,1}', "\'"), $issue_string);
 			TBGLogging::log('issue string '.$issue_string);
 			$char_regexes[] = array('#(?<!\!)(('.$issue_string.')\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, '_parse_issuelink'));
 			$char_regexes[] = array('/(\:\(|\:-\(|\:\)|\:-\)|8\)|8-\)|B\)|B-\)|\:-\/|\:-D|\:-P|\(\!\)|\(\?\))/i', array($this, '_getsmiley'));
