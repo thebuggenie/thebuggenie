@@ -2,7 +2,9 @@
 	<span class="faded_out"><?php echo __('No such user'); ?></span>
 <?php else: ?>
 	<?php $avatar_dimensions = (!isset($size) || $size == 'small') ? 16 : 22; ?>
-	<a href="javascript:void(0);" onclick="$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').toggle();" class="image"><?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'style' => "width: {$avatar_dimensions}px; height: {$avatar_dimensions}px; float: left; margin-right: 5px;"), true); ?></a>
+	<?php if ($show_avatar): ?>
+		<a href="javascript:void(0);" onclick="$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').toggle();" class="image"><?php echo image_tag($user->getAvatarURL(), array('alt' => ' ', 'style' => "width: {$avatar_dimensions}px; height: {$avatar_dimensions}px; float: left; margin-right: 5px;"), true); ?></a>
+	<?php endif; ?>
 	<a href="javascript:void(0);" onclick="$('bud_<?php echo $user->getUsername() . "_" . $rnd_no; ?>').toggle();" style="font-weight: normal;"<?php if ($tbg_user->isFriend($user)): ?> class="friend"<?php endif; ?>><?php echo $user->getBuddyname(); ?></a>
 	<div id="bud_<?php echo $user->getUsername() . '_' . $rnd_no; ?>" style="z-index: 100; width: 300px; display: none; position: absolute;" class="rounded_box white shadowed user_popup">
 		<div style="padding: 3px;">

@@ -22,6 +22,7 @@
 			catch (Exception $e) 
 			{ 
 			}
+			$this->show_avatar = (isset($this->show_avatar)) ? $this->show_avatar : true;
 			TBGLogging::log('done (user dropdown component)');
 		}
 		
