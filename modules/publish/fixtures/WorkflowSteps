@@ -5,7 +5,7 @@ A workflow consists of several steps, together defining the possible states an i
 * (optionally) The issue status ("Fixed", "In progress", "Testing", etc)
 
 == Changing issue workflow step ==
-An issue can only enter a new step via a [[WorkflowTransition|transition]], which often defines other properties that needs to be set in order for the issue to progress to the defined step. For the issue to progress, a transition from the current step to any other step in the workflow needs to be defined in the workflow itself.
+An issue can only enter a new step via a [[WorkflowTransition|transition]] (either instantly or via a [[WorkflowTransitionView|transition view]]), which often defines other properties that needs to be set in order for the issue to progress to the defined step. For the issue to progress, a transition from the current step to any other step in the workflow needs to be defined in the workflow itself.
 
 An example of this is such as when an issue is in the initial step (often linked with the status "New"), a transition can take it to the "Confirmed" step (often linked with the corresponding "Confirmed" status). During this transition, a user or developer may be asked to provide additional details to validate the transition. How transitions work are explained in more detail in the [[WorkflowTransitions|transitions]] documentation.
 
