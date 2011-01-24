@@ -1,0 +1,17 @@
+== Workflow transitions explained ==
+A transition is when an issue moves from one step to another in the workflow associated with that project/issue type combination. The workflow transition is what triggers email notifications, changes status, resolution, issue state, and more. Without a transition happening, changes to an issue state will not be consistent with the data associated with that workflow step. The transition being performed is essential for the workflow to function properly.
+
+== Transition details ==
+When a transition is defined, it can have pre-/post-validators, and post-transition actions associated with it.
+
+=== Pre-validators ===
+A pre-validator is a set of rules that must apply to an issue for the transition to be available. For example, you can set a "maximum number of assigned issues", which means that for that transition to be available to the developer, he can not have more than the specified number of issues assigned. These pre-validation rules are shown in the workflow configuration view after selecting a transaction.
+
+=== Post-validators ===
+The post-validators validates input from the user, and makes sure it passes a valid set of allowed values. For example (in the default workflow), issues that are moving from the "In progress" step to the "Resolved" step will have to have the status set to one of the following: "Done", "Fixed" or "Closed". These validation rules are also integrated with the transition view, so it is not possible to modify the issue property to a value that is not allowed in the transitions' post-validation rule set.
+
+=== Post-transition actions ===
+A post-transition action is an action that defines what will be done with the issue after the transaction validation is complete. This can be everything from applying a user-specified priority/resolution, to marking an issue as being worked on by a user (for automated time tracking), changing the percent complete field (to give a good visual indicator of how complete an issue is) or changing the user assigned to an issue. Post-transition actions occur at the very end of the transition, right before the issues step is changed to the outgoing step of the transition.
+
+=== Pre- vs. post-validators ===
+There is a fundamental difference between pre- and post-validators. Whereas the post-validators validate user input, such as a status provided in the [[WorkflowTransitionView|transition view]], the pre-validators is what decides whether the user will even be able to trigger the transition view or transition. A pre-validation rule keeps the transition from being '''available''' under certain conditions, whereas the post-validation rules keeps the issue from '''having its properties set to invalid values'''.

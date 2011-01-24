@@ -1,0 +1,8 @@
+== Introduction ==
+The workflow transition view is a popup presented to the user / developer so he or she can specify additional properties to be applied to the issue during its transition to the outgoing transition step. This popup can have items such as choosing whether time spent on the issue should be automatically logged, what resolution to pick for an issue, and more.
+
+== Properties ==
+The list of properties shown in the transition view is defined by the post-transition actions specified on the transition. For example, if the transition doesn't specify that it will set the resolution to the resolution given by the user, no dropdown for selecting a resolution will be shown. Also, if the resolution field isn't defined as visible for that project / issue type combination, a message will be displayed to the user, so he/she can choose not to specify that particular field.
+
+== Instant transitions ==
+A transition doesn't have to specify a view for when it is being applied to an issue. A transition without an associated transition view will be applied instantly.

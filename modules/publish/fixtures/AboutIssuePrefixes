@@ -1,0 +1,7 @@
+== Prefixes explained ==
+A project can specify a prefix that will be used for all issues created against it. This prefix will then be used in issue numbers, links and descriptions. Because all issues in The Bug Genie are counted against specific projects (this means you can have an issue #1 for "Project 1" and an issue #1 for Project 2), prefixes can be an easy way to quickly distinguish between issues from different projects simply by looking at their issue number.
+
+== Example ==
+Say you have two projects, "Awesome product" and "Crappy product", and you want to use a prefix on issues created against "Crappy product" so you can easily find them in your list of issues. To do this, open up project configuration for "Crappy product" (either by clicking the "edit project" link on the frontpage, project dashboard or on the [[TBG:configure_projects|Configure projects]] page), and select "Yes" for "Enable prefix". Then - in the box below - specify a prefix that will be used (e.g. "CRAP").
+
+Now all issues for this project uses the prefix specified. Issue #1 will be called "CRAP-1", issue #2 "CRAP-2", etc. This is also backwards-compatible, so you can change it any time you want, and it will be valid for all your issues in that project.
