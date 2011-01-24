@@ -106,7 +106,7 @@
 
 		public function _preSave($is_new)
 		{
-			$this->_key = strtolower(str_replace(' ', '', $this->getName()));
+			$this->_key = strtolower(str_replace(' ', '', preg_replace('/[^a-z0-9]/sx', '', $this->getName())));
 			if ($is_new)
 			{
 				if (array_key_exists($this->_key, self::getAll()))
