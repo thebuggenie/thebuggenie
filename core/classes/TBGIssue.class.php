@@ -625,9 +625,18 @@
 			return array($issues, $count);
 		}
 
-		public static function findIssuesByText($text)
+		public static function findIssuesByText($text, $project = null)
 		{
-			return self::findIssues(array('text' => array('value' => $text, 'operator' => '=')));
+			$issue = self::getIssueFromLink($text);
+			if ($issue instanceof TBGIssue)
+				return array(array($issue), 1);
+			
+			$filters = array('text' => array('value' => $text, 'operator' => '='));
+			if ($project instanceof TBGProject)
+			{
+				$filters['project_id'] = array('value' => $project->getID(), 'operator' => '=');
+			}
+			return self::findIssues($filters);
 		}
 		
 		/**

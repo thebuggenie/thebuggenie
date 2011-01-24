@@ -292,7 +292,7 @@
 							<input type=\"hidden\" name=\"category_id\" value=\"34\">
 							<input type=\"hidden\" name=\"title\" value=\"".htmlentities($title)."\">
 							<input type=\"hidden\" name=\"description\" value=\"".htmlentities($report_description)."\n\n\">";
-							echo "<input type=\"hidden\" name=\"reproduction_steps\" value=\"PHP_SAPI: ".PHP_SAPI."\n\n'''Backtrace''':<br>";
+							echo "<input type=\"hidden\" name=\"reproduction_steps\" value=\"PHP_SAPI: ".PHP_SAPI."<br>PHP_VERSION: ".PHP_VERSION."\n\n'''Backtrace''':<br>";
 							if ($exception instanceof TBGException)
 							{
 								foreach ($exception->getTrace() as $trace_element)

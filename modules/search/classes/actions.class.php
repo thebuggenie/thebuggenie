@@ -31,6 +31,11 @@
 			{
 				TBGContext::getResponse()->setProjectMenuStripHidden();
 			}
+			$filters = $request->getParameter('filters', array());
+			if (array_key_exists('text', $filters) && array_key_exists('value', $filters['text']))
+			{
+				$this->searchterm = $filters['text']['value'];
+			}
 		}
 
 		/**
@@ -40,7 +45,6 @@
 		 */		
 		public function runQuickSearch(TBGRequest $request)
 		{
-			$this->searchterm = $request->getParameter('searchfor');
 			$results = array();
 
 			if ($this->searchterm != '')
@@ -60,7 +64,6 @@
 
 		protected function _getSearchDetailsFromRequest(TBGRequest $request)
 		{
-			$this->searchterm = $request->getParameter('searchfor', false);
 			$this->ipp = $request->getParameter('issues_per_page', 30);
 			$this->offset = $request->getParameter('offset', 0);
 			$this->filters = $request->getParameter('filters', array());
@@ -100,6 +103,7 @@
 			$i18n = TBGContext::getI18n();
 			if ($this->searchterm)
 			{
+				//var_dump('fu');die();
 				preg_replace_callback('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, 'extractIssues'), $this->searchterm);
 			}
 

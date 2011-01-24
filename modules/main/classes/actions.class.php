@@ -13,6 +13,19 @@
 		 * @property TBGProject $selected_project
 		 */
 
+		public function preExecute(TBGRequest $request, $action)
+		{
+			if ($project_key = $request->getParameter('project_key'))
+			{
+				try
+				{
+					$this->selected_project = TBGProject::getByKey($project_key);
+					TBGContext::setCurrentProject($this->selected_project);
+				}
+				catch (Exception $e) {}
+			}
+		}
+		
 		/**
 		 * View an issue
 		 * 
@@ -22,24 +35,13 @@
 		{
 			//TBGEvent::listen('core', 'viewissue', array($this, 'listenViewIssuePostError'));
 			TBGLogging::log('Loading issue');
-			$selected_project = null;
 			
-			if ($project_key = $request->getParameter('project_key'))
-			{
-				try
-				{
-					$selected_project = TBGProject::getByKey($project_key);
-					TBGContext::setCurrentProject($selected_project);
-					$this->selected_project = $selected_project;
-				}
-				catch (Exception $e) {}
-			}
 			if ($issue_no = TBGContext::getRequest()->getParameter('issue_no'))
 			{
 				$issue = TBGIssue::getIssueFromLink($issue_no);
 				if ($issue instanceof TBGIssue)
 				{
-					if (!$selected_project instanceof TBGProject || $issue->getProjectID() != $selected_project->getID())
+					if (!$this->selected_project instanceof TBGProject || $issue->getProjectID() != $this->selected_project->getID())
 					{
 						$issue = null;
 					}
@@ -1106,23 +1108,12 @@
 		 */
 		public function runReportIssueGetFields(TBGRequest $request)
 		{
-			if ($project_id = $request->getParameter('project_id'))
+			if (!$this->selected_project instanceof TBGProject)
 			{
-				try
-				{
-					$selected_project = TBGContext::factory()->TBGProject($project_id);
-				}
-				catch (Exception $e)
-				{
-					return $this->renderText('fail');
-				}
-			}
-			else
-			{
-				return $this->renderText('no project');
+				return $this->renderText('invalid project');
 			}
 			
-			$fields_array = $selected_project->getReportableFieldsArray($request->getParameter('issuetype_id'));
+			$fields_array = $this->selected_project->getReportableFieldsArray($request->getParameter('issuetype_id'));
 			$available_fields = TBGDatatypeBase::getAvailableFields();
 			$available_fields[] = 'pain_bug_type';
 			$available_fields[] = 'pain_likelihood';
@@ -2532,16 +2523,12 @@
 					case 'milestone':
 						$return_array['description'] = TBGContext::getI18n()->__('Select from available project milestones');
 						$return_array['type'] = 'choice';
-						if ($request->hasParameter('project_key'))
+						if ($this->selected_project instanceof TBGProject)
 						{
-							$selected_project = TBGProject::getByKey($request->getParameter('project_key'));
-							if ($selected_project instanceof TBGProject)
+							$milestones = $this->selected_project->getAllMilestones();
+							foreach ($milestones as $milestone)
 							{
-								$milestones = $selected_project->getAllMilestones();
-								foreach ($milestones as $milestone)
-								{
-									$return_array['choices'][$milestone->getID()] = $milestone->getName();
-								}
+								$return_array['choices'][$milestone->getID()] = $milestone->getName();
 							}
 						}
 						break;
@@ -2664,7 +2651,7 @@
 
 			$searchfor = $request->getParameter('searchfor');
 
-			if (strlen(trim($searchfor)) < 3 && !is_numeric($searchfor))
+			if (strlen(trim($searchfor)) < 3 && !is_numeric($searchfor) && substr($searchfor, 0, 1) != '#')
 			{
 				$status = 400;
 				$message = TBGContext::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor%', array('searchfor' => $searchfor));
@@ -2675,8 +2662,8 @@
 			{
 				return $this->renderJSON(array('failed' => true, 'error' => $message));
 			}
-
-			list ($issues, $count) = TBGIssue::findIssuesByText($searchfor);
+			
+			list ($issues, $count) = TBGIssue::findIssuesByText($searchfor, $this->selected_project);
 			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('main/find'.$request->getParameter('type').'issues', array('issue' => $issue, 'issues' => $issues, 'count' => $count))));
 		}
 		
@@ -2716,7 +2703,7 @@
 				return $this->renderJSON(array('failed' => true, 'error' => $message));
 			}
 
-			list ($issues, $count) = TBGIssue::findIssuesByText($searchfor);
+			list ($issues, $count) = TBGIssue::findIssuesByText($searchfor, $this->selected_project);
 			return $this->renderJSON(array('failed' => false, 'content' => $this->getComponentHTML('main/findduplicateissues', array('issue' => $issue, 'issues' => $issues, 'count' => $count))));
 		}
 
