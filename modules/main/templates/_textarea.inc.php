@@ -20,7 +20,7 @@
 						echo htmlspecialchars(__("If you have certain text you don't want to be formatted, enclose it in <nowiki></nowiki> tags: \"'''formatted''' text <nowiki>'''non-formatted''' text</nowiki>."));
 						break;
 					case 5:
-						echo htmlspecialchars(__('Code samples are best presented in <source></source> tags. The Bug Genie uses %geshi% for syntax highlighting with support for over 100 languages!', array('%geshi%' => link_tag('http://qbnz.com/highlighter/', 'GeSHi'))));
+						echo htmlspecialchars(__('Code samples are best presented in <source></source> tags.')) . ' ' . __('The Bug Genie uses %geshi% for syntax highlighting with support for over 100 languages!', array('%geshi%' => link_tag('http://qbnz.com/highlighter/', 'GeSHi')));
 						echo "(<source lang=\"php\"><?php echo \"fu\"; ?></source>)";
 						break;
 					case 6:
