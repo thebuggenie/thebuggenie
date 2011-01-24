@@ -52,6 +52,8 @@
 .article .toc:hover .content { display: block; position: absolute; left: 0; width: 300px; margin-top: -5px; }
 .article .toc:hover .faded_out { display: none; }
 .article .toc a, .article .toc a:hover { border-bottom: 0; }
+.article .textarea_hint .header { font-size: 1.2em; color: #999; border: 0; }
+.article .textarea_hint { color: #999; font-size: 1.1em; }
 
 .article .content { padding-bottom: 5px; clear: both; }
 
