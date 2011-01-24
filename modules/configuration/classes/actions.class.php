@@ -1200,7 +1200,7 @@
 									throw new Exception($i18n->__('This edition already exists for this project'));
 								}
 								$edition = $project->addEdition($e_name);
-								return $this->renderJSON(array('title' => $i18n->__('The edition has been added'), 'html' => $this->getTemplateHTML('editionbox', array('edition' => $edition, 'access_level' => $this->access_level))));
+								return $this->renderJSON(array(/*'title' => $i18n->__('The edition has been added'), */'html' => $this->getTemplateHTML('editionbox', array('edition' => $edition, 'access_level' => $this->access_level))));
 							}
 							else
 							{
@@ -1367,7 +1367,7 @@
 									$build->setProject($project);
 								}
 								$build->save();
-								return $this->renderJSON(array('title' => $i18n->__('The release has been added'), 'html' => "<span id=\"build_list_{$build->getID()}\">".$this->getTemplateHTML('buildbox', array('build' => $build, 'access_level' => $this->access_level)).'</span>'));
+								return $this->renderJSON(array(/*'title' => $i18n->__('The release has been added'), */'html' => "<span id=\"build_list_{$build->getID()}\">".$this->getTemplateHTML('buildbox', array('build' => $build, 'access_level' => $this->access_level)).'</span>'));
 							}
 							else
 							{
@@ -1418,7 +1418,7 @@
 									throw new Exception($i18n->__('This component already exists for this project'));
 								}
 								$component = $project->addComponent($c_name);
-								return $this->renderJSON(array('title' => $i18n->__('The component has been added'), 'html' => $this->getTemplateHTML('componentbox', array('component' => $component, 'access_level' => $this->access_level))));
+								return $this->renderJSON(array(/*'title' => $i18n->__('The component has been added'), */'html' => $this->getTemplateHTML('componentbox', array('component' => $component, 'access_level' => $this->access_level))));
 							}
 							else
 							{

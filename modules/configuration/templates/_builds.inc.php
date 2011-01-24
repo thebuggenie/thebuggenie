@@ -23,7 +23,7 @@
 			</tr>
 		</table>
 	</form>
-	<div id="build_table" style="overflow: auto; <?php echo ($parent instanceof TBGProject) ? 'height: 100px;' : 'height: 300px';?>">
+	<div id="build_table" style="overflow: auto; height: 300px;">
 	<?php foreach ($parent->getBuilds() as $build): ?>
 		<span id="build_list_<?php echo $build->getID(); ?>">
 			<?php include_template('configuration/buildbox', array('build' => $build, 'access_level' => $access_level)); ?>

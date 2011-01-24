@@ -26,23 +26,26 @@ function successMessage(title, content)
 {
 	$('thebuggenie_successmessage_title').update(title);
 	$('thebuggenie_successmessage_content').update(content);
-	if ($('thebuggenie_failuremessage').visible())
+	if (title || content)
 	{
-		var failed_queue = Effect.Queues.get('failedmessage');
-		failed_queue.each(function(effect) {effect.cancel();});
-		new Effect.Fade('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'failedmessage', limit: 2}, duration: 0.2});
+		if ($('thebuggenie_failuremessage').visible())
+		{
+			var failed_queue = Effect.Queues.get('failedmessage');
+			failed_queue.each(function(effect) {effect.cancel();});
+			new Effect.Fade('thebuggenie_failuremessage', {queue: {position: 'end', scope: 'failedmessage', limit: 2}, duration: 0.2});
+		}
+		if ($('thebuggenie_successmessage').visible())
+		{
+			var success_queue = Effect.Queues.get('successmessage');
+			success_queue.each(function(effect) {effect.cancel();});
+			new Effect.Pulsate('thebuggenie_successmessage');
+		}
+		else
+		{
+			new Effect.Appear('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, duration: 0.2});
+		}
+		new Effect.Fade('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, delay: 10, duration: 0.2});
 	}
-	if ($('thebuggenie_successmessage').visible())
-	{
-		var success_queue = Effect.Queues.get('successmessage');
-		success_queue.each(function(effect) {effect.cancel();});
-		new Effect.Pulsate('thebuggenie_successmessage');
-	}
-	else
-	{
-		new Effect.Appear('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, duration: 0.2});
-	}
-	new Effect.Fade('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, delay: 10, duration: 0.2});
 }
 
 function clearPopupMessages()
