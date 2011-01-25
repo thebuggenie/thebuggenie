@@ -1923,16 +1923,17 @@
 		 */		
 		public function getIssues($number = null)
 		{
-			$res = B2DB::getTable('TBGIssuesTable')->getIssuesPostedByUser($this->getID(), $number);
-			if($res)
+			$retval = array();
+			if ($res = B2DB::getTable('TBGIssuesTable')->getIssuesPostedByUser($this->getID(), $number))
 			{
-				return $res->getAllRows();
-			}
-			else
-			{
-				return array();
+				while ($row = $res->getNextRow())
+				{
+					$issue = TBGContext::factory()->TBGIssue($row->get(TBGIssuesTable::ID), $row);
+					$retval[$issue->getID()] = $issue;
+				}
 			}
 			
+			return $retval;
 		}
 		
 	}

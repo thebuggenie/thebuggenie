@@ -32,6 +32,7 @@
 				TBGContext::getResponse()->setProjectMenuStripHidden();
 			}
 			$filters = $request->getParameter('filters', array());
+			$this->searchterm = null;
 			if (array_key_exists('text', $filters) && array_key_exists('value', $filters['text']))
 			{
 				$this->searchterm = $filters['text']['value'];

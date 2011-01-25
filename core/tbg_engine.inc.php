@@ -173,6 +173,7 @@
 				{
 					echo "<h3>Stack trace:</h3>
 					<ul>";
+					//echo '<pre>';var_dump($exception->getTrace());die();
 					foreach ($exception->getTrace() as $trace_element)
 					{
 						echo '<li>';
@@ -182,8 +183,8 @@
 						}
 						elseif (array_key_exists('function', $trace_element))
 						{
-							if (in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception'))) continue;
-							echo '<strong>'.$trace_element['function'].'()</strong><br>';
+							if (!in_array($trace_element['function'], array('tbg_error_handler', 'tbg_exception')))
+								echo '<strong>'.$trace_element['function'].'()</strong><br>';
 						}
 						else
 						{
@@ -375,7 +376,6 @@ echo "
 	
 	function tbg_error_handler($code, $error, $file, $line_number)
 	{
-		if ($code == 2 && strpos(basename($file), 'Services_Yadis_') !== false) return;
 		if (error_reporting() == E_USER_ERROR) return;
 		throw new Exception($error, $code);
 		//tbg_exception($error, array('code' => $code, 'file' => $file, 'line' => $line_number));
