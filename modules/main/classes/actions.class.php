@@ -15,15 +15,16 @@
 
 		public function preExecute(TBGRequest $request, $action)
 		{
-			if ($project_key = $request->getParameter('project_key'))
+			try
 			{
-				try
-				{
+				if ($project_key = $request->getParameter('project_key'))
 					$this->selected_project = TBGProject::getByKey($project_key);
-					TBGContext::setCurrentProject($this->selected_project);
-				}
-				catch (Exception $e) {}
+				elseif ($project_id = (int) $request->getParameter('project_id'))
+					$this->selected_project = TBGContext::factory()->TBGProject($project_id);
+				
+				TBGContext::setCurrentProject($this->selected_project);
 			}
+			catch (Exception $e) {}
 		}
 		
 		/**
