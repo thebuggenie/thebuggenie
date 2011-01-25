@@ -1,32 +1,7 @@
 <?php TBGContext::loadLibrary('publish/publish'); ?>
 <div class="article">
 	<?php if ($show_title): ?>
-		<div class="header tab_menu">
-			<?php if ($show_actions): ?>
-				<ul class="right">
-					<li<?php if ($mode == 'view'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), __('Show')); ?></li>
-					<?php if (TBGContext::getModule('publish')->canUserEditArticle($article->getName())): ?>
-						<li<?php if ($mode == 'edit'): ?> class="selected"<?php endif; ?>><?php echo link_tag(make_url('publish_article_edit', array('article_name' => $article->getName())), __('Edit')); ?></li>
-					<?php endif; ?>
-					<li><?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), __('History')); ?></li>
-					<li><?php echo link_tag(make_url('publish_article_permissions', array('article_name' => $article->getName())), __('Permissions')); ?></li>
-					<li><?php echo link_tag(make_url('publish_article_attachments', array('article_name' => $article->getName())), __('Attachments')); ?></li>
-				</ul>
-			<?php endif; ?>
-			<?php if (TBGContext::isProjectContext()): ?>
-				<?php if ((strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 0) || ($article->isCategory() && strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 9)): ?>
-					<?php $project_article_name = substr($article->getName(), ($article->isCategory() * 9) + strlen(TBGContext::getCurrentProject()->getKey())+1); ?>
-					<?php if ($article->isCategory()): ?><span class="faded_out blue">Category:</span><?php endif; ?><span class="faded_out dark"><?php echo ucfirst(TBGContext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
-				<?php endif; ?>
-			<?php elseif (substr($article->getName(), 0, 9) == 'Category:'): ?>
-				<span class="faded_out blue">Category:</span><?php echo get_spaced_name(substr($article->getName(), 9)); ?>
-			<?php else: ?>
-				<?php echo get_spaced_name($article->getName()); ?>
-			<?php endif; ?>
-			<?php if ($mode == 'edit'): ?>
-				<span class="faded_out"><?php echo __('%article_name% ~ Edit', array('%article_name%' => '')); ?></span>
-			<?php endif; ?>
-		</div>
+		<?php include_template('publish/header', array('article_name' => $article->getName(), 'show_actions' => $show_actions, 'mode' => $mode)); ?>
 	<?php endif; ?>
 	<?php if ($show_details && $show_article): ?>
 		<div class="details">

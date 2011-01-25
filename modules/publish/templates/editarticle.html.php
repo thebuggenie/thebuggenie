@@ -25,6 +25,8 @@
 			<?php endif; ?>
 			<?php if ($article instanceof TBGWikiArticle): ?>
 				<?php include_component('articledisplay', array('article' => $article, 'show_article' => $preview, 'show_category_contains' => false, 'show_actions' => true, 'mode' => 'edit')); ?>
+			<?php else: ?>
+				<?php include_template('publish/header', array('article_name' => $article_name, 'show_actions' => true, 'mode' => 'edit')); ?>
 			<?php endif; ?>
 			<a name="edit_article"></a>
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="post">

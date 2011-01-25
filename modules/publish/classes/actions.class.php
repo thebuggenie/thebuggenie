@@ -89,55 +89,66 @@
 		
 		public function runArticlePermissions(TBGRequest $request)
 		{
-			$namespaces = $this->article->getCombinedNamespaces();
-			$namespaces[] = $this->article->getName();
-			array_unshift($namespaces, 0);
-			$this->namespaces = array_reverse($namespaces);
+			if ($this->article instanceof TBGWikiArticle)
+			{
+				$namespaces = $this->article->getCombinedNamespaces();
+				$namespaces[] = $this->article->getName();
+				array_unshift($namespaces, 0);
+				$this->namespaces = array_reverse($namespaces);
+			}
 		}
 		
 		public function runArticleHistory(TBGRequest $request)
 		{
 			$this->history_action = $request->getParameter('history_action');
-			$this->history = $this->article->getHistory();
-			$this->revision_count = count($this->history);
-
-			switch ($this->history_action)
+			if ($this->article instanceof TBGWikiArticle)
 			{
-				case 'list':
-					break;
-				case 'diff':
-					$from_revision = $request->getParameter('from_revision');
-					$to_revision = $request->getParameter('to_revision');
+				$this->history = $this->article->getHistory();
+				$this->revision_count = count($this->history);
 
-					if (!$from_revision || !$to_revision)
-					{
-						$this->error = TBGContext::getI18n()->__('Please specify a from- and to-revision to compare');
-					}
-					else
-					{
-						list ($content, $diff) = $this->article->compareRevisions($from_revision, $to_revision);
-						
-						$this->from_revision = $from_revision;
-						$this->from_revision_author = $content[$from_revision]['author'];
-						$this->from_revision_date = $content[$from_revision]['date'];
-						$this->to_revision = $to_revision;
-						$this->to_revision_author = $content[$to_revision]['author'];
-						$this->to_revision_date = $content[$to_revision]['date'];
+				switch ($this->history_action)
+				{
+					case 'list':
+						break;
+					case 'diff':
+						$from_revision = $request->getParameter('from_revision');
+						$to_revision = $request->getParameter('to_revision');
 
-						$this->diff = explode("\n", $diff);
-					}
-					break;
-				case 'revert':
-					$revision = $request->getParameter('revision');
-					if ($revision)
-					{
-						$this->article->restoreRevision($revision);
-						$this->forward(TBGContext::getRouting()->generate('publish_article_history', array('article_name' => $this->article->getName())));
-					}
-					else
-					{
-						$this->forward(TBGContext::getRouting()->generate('publish_article_history', array('article_name' => $this->article->getName())));
-					}
+						if (!$from_revision || !$to_revision)
+						{
+							$this->error = TBGContext::getI18n()->__('Please specify a from- and to-revision to compare');
+						}
+						else
+						{
+							list ($content, $diff) = $this->article->compareRevisions($from_revision, $to_revision);
+
+							$this->from_revision = $from_revision;
+							$this->from_revision_author = $content[$from_revision]['author'];
+							$this->from_revision_date = $content[$from_revision]['date'];
+							$this->to_revision = $to_revision;
+							$this->to_revision_author = $content[$to_revision]['author'];
+							$this->to_revision_date = $content[$to_revision]['date'];
+
+							$this->diff = explode("\n", $diff);
+						}
+						break;
+					case 'revert':
+						if (!TBGContext::getModule('publish')->canUserEditArticle($article_name))
+						{
+							TBGContext::setMessage('publish_article_error', TBGContext::getI18n()->__('You do not have permission to edit this article'));
+							$this->forward(TBGContext::getRouting()->generate('publish_article_history', array('article_name' => $article_name)));
+						}
+						$revision = $request->getParameter('revision');
+						if ($revision)
+						{
+							$this->article->restoreRevision($revision);
+							$this->forward(TBGContext::getRouting()->generate('publish_article_history', array('article_name' => $this->article->getName())));
+						}
+						else
+						{
+							$this->forward(TBGContext::getRouting()->generate('publish_article_history', array('article_name' => $this->article->getName())));
+						}
+				}
 			}
 		}
 

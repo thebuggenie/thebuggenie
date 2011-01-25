@@ -32,22 +32,9 @@
 				<?php include_component('articledisplay', array('article' => $article, 'show_article' => true, 'redirected_from' => $redirected_from)); ?>
 				<?php $article_name = $article->getName(); ?>
 			<?php else: ?>
-				<div class="header" style="padding: 5px;">
-					<?php echo link_tag(make_url('publish_article', array('article_name' => 'FrontpageArticle')), __('Front page article'), array('class' => (($article_name == 'FrontpageArticle') ? 'faded_out' : ''), 'style' => 'float: right; margin-right: 15px;')); ?>
-					<?php if (TBGContext::isProjectContext()): ?>
-						<?php if ((strpos($article_name, ucfirst(TBGContext::getCurrentProject()->getKey())) == 0) || ((substr($article_name, 0, 8) == 'Category') && strpos($article_name, ucfirst(TBGContext::getCurrentProject()->getKey())) == 9)): ?>
-							<?php $project_article_name = substr($article_name, ((substr($article_name, 0, 8) == 'Category') * 9) + strlen(TBGContext::getCurrentProject()->getKey())+1); ?>
-							<?php if (substr($article_name, 0, 8) == 'Category'): ?><span class="faded_out blue">Category:</span><?php endif; ?><span class="faded_out dark"><?php echo ucfirst(TBGContext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
-						<?php endif; ?>
-					<?php elseif (substr($article_name, 0, 9) == 'Category:'): ?>
-						<?php $display_article_name = substr($article_name, 9); ?>
-						<span class="faded_out blue">Category:</span><?php echo get_spaced_name($display_article_name); ?>
-					<?php else: ?>
-						<?php echo get_spaced_name($article_name); ?>
-					<?php endif; ?>
-				</div>
-				<div class="article_placeholder">
-					<?php echo __('This is a placeholder for an article that has not been created yet. You can create it by clicking %create_this_article% below.', array('%create_this_article%' => '<b>'.__('Create this article').'</b>')); ?>
+				<div class="article">
+					<?php include_template('publish/header', array('article_name' => $article_name, 'show_actions' => true, 'mode' => 'view')); ?>
+					<?php include_template('publish/placeholder', array('article_name' => $article_name)); ?>
 				</div>
 			<?php endif; ?>
 			<?php if (TBGContext::getModule('publish')->canUserEditArticle($article_name) || TBGContext::getModule('publish')->canUserDeleteArticle($article_name)): ?>

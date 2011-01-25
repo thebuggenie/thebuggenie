@@ -13,64 +13,53 @@
 		<td class="main_area article">
 			<a name="top"></a>
 			<div class="article" style="width: auto; padding: 5px; position: relative;">
-				<div class="header tab_menu">
-					<ul class="right">
-						<li><?php echo link_tag(make_url('publish_article', array('article_name' => $article->getName())), __('Show')); ?></li>
-						<?php if (TBGContext::getModule('publish')->canUserEditArticle($article->getName())): ?>
-							<li><?php echo link_tag(make_url('publish_article_edit', array('article_name' => $article->getName())), __('Edit')); ?></li>
-						<?php endif; ?>
-						<li><?php echo link_tag(make_url('publish_article_history', array('article_name' => $article->getName())), __('History')); ?></li>
-						<li class="selected"><?php echo link_tag(make_url('publish_article_permissions', array('article_name' => $article->getName())), __('Permissions')); ?></li>
-						<li><?php echo link_tag(make_url('publish_article_attachments', array('article_name' => $article->getName())), __('Attachments')); ?></li>
-					</ul>
-					<?php if (TBGContext::isProjectContext()): ?>
-						<?php if ((strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 0) || ($article->isCategory() && strpos($article->getName(), ucfirst(TBGContext::getCurrentProject()->getKey())) == 9)): ?>
-							<?php $project_article_name = substr($article->getName(), ($article->isCategory() * 9) + strlen(TBGContext::getCurrentProject()->getKey())+1); ?>
-							<?php if ($article->isCategory()): ?><span class="faded_out blue">Category:</span><?php endif; ?><span class="faded_out dark"><?php echo ucfirst(TBGContext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
-						<?php endif; ?>
-					<?php elseif (substr($article->getName(), 0, 9) == 'Category:'): ?>
-						<span class="faded_out blue">Category:</span><?php echo get_spaced_name(substr($article->getName(), 9)); ?>
+				<?php include_template('publish/header', array('article_name' => $article_name, 'show_actions' => true, 'mode' => 'permissions')); ?>
+				<?php if ($article instanceof TBGWikiArticle): ?>
+					<?php if (TBGContext::getModule('publish')->canUserEditArticle($article_name)): ?>
+						<ul class="simple_list">
+						<?php foreach ($namespaces as $namespace): ?>
+							<li class="rounded_box <?php if (!(is_numeric($namespace) && $namespace == 0) && $namespace == $article->getName()): ?>verylightyellow<?php else: ?>invisible borderless<?php endif; ?>" style="padding: 10px;">
+								<div class="namespace_header">
+									<?php if (is_numeric($namespace) && $namespace == 0): ?>
+										<?php echo __('Specify permissions for entire wiki'); ?>
+									<?php elseif ($namespace == $article->getName()): ?>
+										<?php echo __('Specify permissions for the article %article_name%', array('%article_name%' => '<span class="namespace">'.$namespace.'</span>')); ?>
+									<?php elseif ($namespace == "Category"): ?>
+										<?php echo __('Specify permissions to edit categories'); ?>
+									<?php else: ?>
+										<?php echo __('Specify permissions for the %namespace% namespace', array('%namespace%' => '<span class="namespace">'.$namespace.'</span>')); ?>
+									<?php endif; ?>
+								</div>
+								<?php if (is_numeric($namespace) && $namespace == 0): ?>
+									<?php echo __('Select this option to specify permissions for the entire wiki.'); ?>
+								<?php elseif ($namespace == $article->getName()): ?>
+									<?php echo __('Select this option to specify permissions for this article.'); ?>
+								<?php elseif ($namespace == "Category"): ?>
+									<?php echo __('Select this option to specify permissions for who can create and edit categories.'); ?>
+								<?php else: ?>
+									<?php echo __('Specify permissions for the %namespace% namespace. These permissions will apply for all articles in the mentioned namespace for which article-specific permissions, or child-namespace permissions have not been granted.', array('%namespace%' => '<i>'.$namespace.'</i>')); ?>
+								<?php endif; ?>
+								<div style="text-align: right; padding: 10px;">
+									<button onclick="$('publish_<?php echo $namespace; ?>_editarticle_permissions').toggle();"><?php echo __('Edit write permissions'); ?></button>
+									<button onclick="$('publish_<?php echo $namespace; ?>_deletearticle_permissions').toggle();"><?php echo __('Edit delete permissions'); ?></button>
+								</div>
+								<div id="publish_<?php echo $namespace; ?>_editarticle_permissions" style="padding: 10px; width: 700px; display: none;">
+									<?php include_component('configuration/permissionsinfo', array('key' => 'editarticle', 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
+								</div>
+								<div id="publish_<?php echo $namespace; ?>_deletearticle_permissions" style="padding: 10px; width: 700px; display: none;">
+									<?php include_component('configuration/permissionsinfo', array('key' => 'deletearticle', 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
+								</div>
+							</li>
+						<?php endforeach; ?>
+						</ul>
 					<?php else: ?>
-						<?php echo get_spaced_name($article->getName()); ?>
+						<div class="rounded_box red borderless" style="margin: 0 5px 5px 5px; padding: 7px; font-size: 14px; color: #FFF;">
+							<?php echo __('You do not have access to edit permissions for this article'); ?>
+						</div>
 					<?php endif; ?>
-					<span class="faded_out"><?php echo __('%article_name% ~ Permissions', array('%article_name%' => '')); ?></span>
-				</div>
-				<ul class="simple_list">
-				<?php foreach ($namespaces as $namespace): ?>
-					<li class="rounded_box <?php if (!(is_numeric($namespace) && $namespace == 0) && $namespace == $article->getName()): ?>verylightyellow<?php else: ?>invisible borderless<?php endif; ?>" style="padding: 10px;">
-						<div class="namespace_header">
-							<?php if (is_numeric($namespace) && $namespace == 0): ?>
-								<?php echo __('Specify permissions for entire wiki'); ?>
-							<?php elseif ($namespace == $article->getName()): ?>
-								<?php echo __('Specify permissions for the article %article_name%', array('%article_name%' => '<span class="namespace">'.$namespace.'</span>')); ?>
-							<?php elseif ($namespace == "Category"): ?>
-								<?php echo __('Specify permissions to edit categories'); ?>
-							<?php else: ?>
-								<?php echo __('Specify permissions for the %namespace% namespace', array('%namespace%' => '<span class="namespace">'.$namespace.'</span>')); ?>
-							<?php endif; ?>
-						</div>
-						<?php if (is_numeric($namespace) && $namespace == 0): ?>
-							<?php echo __('Select this option to specify permissions for the entire wiki.'); ?>
-						<?php elseif ($namespace == $article->getName()): ?>
-							<?php echo __('Select this option to specify permissions for this article.'); ?>
-						<?php elseif ($namespace == "Category"): ?>
-							<?php echo __('Select this option to specify permissions for who can create and edit categories.'); ?>
-						<?php else: ?>
-							<?php echo __('Specify permissions for the %namespace% namespace. These permissions will apply for all articles in the mentioned namespace for which article-specific permissions, or child-namespace permissions have not been granted.', array('%namespace%' => '<i>'.$namespace.'</i>')); ?>
-						<?php endif; ?>
-						<div style="text-align: right; padding: 10px;">
-							<button onclick="$('publish_<?php echo $namespace; ?>_editarticle_permissions').toggle();"><?php echo __('Edit write permissions'); ?></button>
-							<button onclick="$('publish_<?php echo $namespace; ?>_deletearticle_permissions').toggle();"><?php echo __('Edit delete permissions'); ?></button>
-						</div>
-						<div id="publish_<?php echo $namespace; ?>_editarticle_permissions" style="padding: 10px; width: 700px; display: none;">
-							<?php include_component('configuration/permissionsinfo', array('key' => 'editarticle', 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
-						</div>
-						<div id="publish_<?php echo $namespace; ?>_deletearticle_permissions" style="padding: 10px; width: 700px; display: none;">
-							<?php include_component('configuration/permissionsinfo', array('key' => 'deletearticle', 'mode' => 'module_permissions', 'target_id' => $namespace, 'module' => 'publish', 'access_level' => TBGSettings::ACCESS_FULL)); ?>
-						</div>
-					</li>
-				<?php endforeach; ?>
-				</ul>
+				<?php else: ?>
+					<?php include_template('publish/placeholder', array('article_name' => $article_name, 'nocreate' => true)); ?>
+				<?php endif; ?>
 			</div>
 		</td>
 	</tr>
