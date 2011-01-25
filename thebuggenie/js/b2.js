@@ -46,6 +46,12 @@ function successMessage(title, content)
 		}
 		new Effect.Fade('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, delay: 10, duration: 0.2});
 	}
+	else if ($('thebuggenie_successmessage').visible())
+	{
+		var success_queue = Effect.Queues.get('successmessage');
+		success_queue.each(function(effect) {effect.cancel();});
+		new Effect.Fade('thebuggenie_successmessage', {queue: {position: 'end', scope: 'successmessage', limit: 2}, duration: 0.2});
+	}
 }
 
 function clearPopupMessages()
