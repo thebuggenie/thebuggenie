@@ -35,13 +35,6 @@
 		protected $_options = null;
 
 		/**
-		 * The custom types key
-		 *
-		 * @var string
-		 */
-		protected $_key = null;
-
-		/**
 		 * The custom types description
 		 *
 		 * @var string

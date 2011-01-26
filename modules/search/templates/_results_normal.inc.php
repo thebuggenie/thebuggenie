@@ -1,8 +1,16 @@
+<?php $current_count = 0; ?>
 <?php foreach ($issues as $issue): ?>
 	<?php list ($showtablestart, $showheader, $prevgroup_id, $groupby_description) = searchActions::resultGrouping($issue, $groupby, $cc, $prevgroup_id); ?>
 	<?php if (($showtablestart || $showheader) && $cc > 1): ?>
+		<tr>
+			<td colspan="<?php if (!TBGContext::isProjectContext()): ?>9<?php else: ?>8<?php endif; ?>" class="results_summary">
+				<?php echo __('Total number of issues in this group: %number%', array('%number%' => "<b>{$current_count}</b>")); ?>
+			</td>
+		</tr>
+		<?php $current_count = 0; ?>
 		<?php echo '</tbody></table>'; ?>
 	<?php endif; ?>
+	<?php $current_count++; ?>
 	<?php if ($showheader): ?>
 		<h5><?php echo $groupby_description; ?></h5>
 	<?php endif; ?>
@@ -19,11 +27,12 @@
 					<th><?php echo __('Status'); ?></th>
 					<th><?php echo __('Resolution'); ?></th>
 					<th><?php echo __('Last updated'); ?></th>
+					<th style="width: 20px; padding-bottom: 0; text-align: center;"><?php echo image_tag('icon_comments.png'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
 	<?php endif; ?>
-			<tr class="<?php if ($issue->isClosed()): ?> closed<?php endif; ?><?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?>">
+				<tr class="<?php if ($issue->isClosed()): ?> closed<?php endif; ?><?php if ($issue->hasUnsavedChanges()): ?> changed<?php endif; ?><?php if ($issue->isBlocking()): ?> blocking<?php endif; ?> priority_<?php echo ($issue->getPriority() instanceof TBGPriority) ? $issue->getPriority()->getValue() : 0; ?>">
 				<?php if (!TBGContext::isProjectContext()): ?>
 				<td style="padding-left: 5px;"><?php echo link_tag(make_url('project_issues', array('project_key' => $issue->getProject()->getKey())), $issue->getProject()->getName()); ?></td>
 				<?php endif; ?>
@@ -60,8 +69,16 @@
 					<?php echo ($issue->getResolution() instanceof TBGResolution) ? strtoupper($issue->getResolution()->getName()) : '-'; ?>
 				</td>
 				<td class="smaller" title="<?php echo tbg_formatTime($issue->getLastUpdatedTime(), 21); ?>"><?php echo tbg_formatTime($issue->getLastUpdatedTime(), 20); ?></td>
+				<td class="smaller" style="text-align: center;">
+					<?php echo $issue->getCommentCount(); ?>
+				</td>
 			</tr>
 	<?php if ($cc == count($issues)): ?>
+			<tr>
+				<td colspan="<?php if (!TBGContext::isProjectContext()): ?>9<?php else: ?>8<?php endif; ?>">
+					<?php echo __('Total number of issues in this group: %number%', array('%number%' => "<b>{$current_count}</b>")); ?>
+				</td>
+			</tr>
 			</tbody>
 		</table>
 	<?php endif; ?>

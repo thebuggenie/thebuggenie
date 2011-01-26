@@ -7,8 +7,6 @@
 		
 		protected $_itemtype = TBGDatatype::STATUS;
 		
-		protected $_key = null;
-
 		public static function loadFixtures(TBGScope $scope)
 		{
 			$statuses = array();
@@ -85,20 +83,6 @@
 				}
 			}
 			return null;
-		}
-		
-		protected function _generateKey()
-		{
-			$this->_key = str_replace(array(' ', '/'), array('', ''), strtolower($this->getName()));
-		}
-		
-		public function getKey()
-		{
-			if ($this->_key == null)
-			{
-				$this->_generateKey();
-			}
-			return $this->_key;
 		}
 		
 		/**

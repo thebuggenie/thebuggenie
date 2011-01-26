@@ -68,6 +68,8 @@
 		 */
 		const USERSTATE = 'userstate';
 		
+		protected $_key = null;
+
 		public static function loadFixtures(TBGScope $scope)
 		{
 			TBGCategory::loadFixtures($scope);
@@ -116,4 +118,16 @@
 			return true;
 		}
 
+		protected function _generateKey()
+		{
+			if ($this->_key === null)
+				$this->_key = preg_replace("/[^0-9a-zA-Z]/i", '', strtolower($this->getName()));
+		}
+		
+		public function getKey()
+		{
+			$this->_generateKey();
+			return $this->_key;
+		}
+		
 	}

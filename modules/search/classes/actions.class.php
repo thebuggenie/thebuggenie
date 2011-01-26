@@ -104,7 +104,6 @@
 			$i18n = TBGContext::getI18n();
 			if ($this->searchterm)
 			{
-				//var_dump('fu');die();
 				preg_replace_callback('#(?<!\!)((bug|issue|ticket|story)\s\#?(([A-Z0-9]+\-)?\d+))#i', array($this, 'extractIssues'), $this->searchterm);
 			}
 
