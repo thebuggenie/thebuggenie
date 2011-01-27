@@ -1,7 +1,7 @@
 <?php TBGContext::loadLibrary('publish/publish'); ?>
 <div class="article">
 	<?php if ($show_title): ?>
-		<?php include_template('publish/header', array('article_name' => $article->getName(), 'show_actions' => $show_actions, 'mode' => $mode)); ?>
+		<?php include_template('publish/header', array('article_name' => $article->getName(), 'article' => $article, 'show_actions' => $show_actions, 'mode' => $mode)); ?>
 	<?php endif; ?>
 	<?php if ($show_details && $show_article): ?>
 		<div class="details">

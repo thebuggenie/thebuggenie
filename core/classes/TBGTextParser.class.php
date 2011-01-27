@@ -377,6 +377,10 @@
 						{
 							$divclasses[] = 'icleft';
 						}
+						if (in_array('center', $options))
+						{
+							$divclasses[] = 'iccenter';
+						}
 						if (in_array('right', $options))
 						{
 							$divclasses[] = 'icright';

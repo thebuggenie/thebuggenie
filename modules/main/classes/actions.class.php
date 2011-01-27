@@ -2173,7 +2173,7 @@
 						break;
 					case 'article':
 						if (!$article instanceof TBGWikiArticle) break;
-						$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $article->getName())));
+						$this->forward(TBGContext::getRouting()->generate('publish_article_attachments', array('article_name' => $article->getName())));
 						break;
 				}
 			}

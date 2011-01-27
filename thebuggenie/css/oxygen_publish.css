@@ -91,3 +91,7 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 .article .article .article_attachments .remove_container:hover { background-color: transparent; }
 
 #article_attach_file_button td { padding: 0; border: 0; }
+
+.article .icleft { float: left; }
+.article .icright { float: right; }
+.article .iccenter { clear: both; display: inline-block; margin: 10px auto; float: none; }

@@ -1,3 +1,4 @@
+<?php $article = (isset($article)) ? $article : null; ?>
 <div class="header tab_menu">
 	<?php if ($show_actions): ?>
 		<ul class="right">
@@ -14,8 +15,8 @@
 	<?php endif; ?>
 	<?php if (TBGContext::isProjectContext()): ?>
 		<?php if ((strpos($article_name, ucfirst(TBGContext::getCurrentProject()->getKey())) == 0) || ($article instanceof TBGWikiArticle && $article->isCategory() && strpos($article_name, ucfirst(TBGContext::getCurrentProject()->getKey())) == 9)): ?>
-			<?php $project_article_name = substr($article_name, ($article->isCategory() * 9) + strlen(TBGContext::getCurrentProject()->getKey())+1); ?>
-			<?php if ($article->isCategory()): ?><span class="faded_out blue">Category:</span><?php endif; ?><span class="faded_out dark"><?php echo ucfirst(TBGContext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
+			<?php $project_article_name = substr($article_name, (($article instanceof TBGWikiArticle && $article->isCategory()) * 9) + strlen(TBGContext::getCurrentProject()->getKey())+1); ?>
+			<?php if ($article instanceof TBGWikiArticle && $article->isCategory()): ?><span class="faded_out blue">Category:</span><?php endif; ?><span class="faded_out dark"><?php echo ucfirst(TBGContext::getCurrentProject()->getKey()); ?>:</span><?php echo get_spaced_name($project_article_name); ?>
 		<?php endif; ?>
 	<?php elseif (substr($article_name, 0, 9) == 'Category:'): ?>
 		<span class="faded_out blue">Category:</span><?php echo get_spaced_name(substr($article_name, 9)); ?>
