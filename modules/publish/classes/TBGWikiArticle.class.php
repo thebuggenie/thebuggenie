@@ -105,6 +105,11 @@
 			$this->_content = str_replace("\r\n", "\n", $this->_content);
 			$this->_old_content = $this->_content;
 		}
+		
+		protected function _preSave($is_new)
+		{
+			$this->_date = NOW;
+		}
 
 		public static function getByName($article_name, $row = null)
 		{
