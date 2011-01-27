@@ -1,3 +1,4 @@
+<?php $apc_enabled = TBGRequest::CanGetUploadStatus(); ?>
 <div id="attach_file" style="display: none;">
 	<div class="rounded_box white borderless shadowed backdrop_box medium">
 		<div class="backdrop_detail_header">
@@ -9,7 +10,7 @@
 		</div>
 		<div class="backdrop_detail_content">
 			<div id="upload_forms">
-				<form method="post" action="<?php echo $form_action; ?>" enctype="multipart/form-data" id="uploader_upload_form" style="margin: 10px 0 0 5px; display: none;">
+				<form method="post" action="<?php echo $form_action; ?>" enctype="multipart/form-data" id="uploader_upload_form" style="margin: 10px 0 0 5px;<?php if ($apc_enabled): ?> display: none;<?php endif; ?>">
 					<input type="hidden" name ="MAX_FILE_SIZE" value="<?php echo TBGSettings::getUploadsMaxSize(true); ?>">
 					<input type="hidden" name="APC_UPLOAD_PROGRESS" value="" />
 					<div>
@@ -65,151 +66,153 @@
 	</div>
 	<div style="background-color: #000; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; z-index: 100000;" class="semi_transparent" onclick="$('attach_file').hide();"> </div>
 </div>
-<script type="text/javascript">
+<?php if ($apc_enabled): ?>
+	<script type="text/javascript">
 
-	var FileUploader = Class.create({
+		var FileUploader = Class.create({
 
-		ID_KEY         : 'APC_UPLOAD_PROGRESS',
-		pollerUrl      : '<?php echo $poller_url; ?>',
-		poller         : null,
-		error          : false,
-		form           : null, // HTML form element
-		status         : null, // element where the upload status is displayed
-		idElement      : null, // element that holds the APC upload ID
-		iframe         : null, // iframe we create that form will submit to
+			ID_KEY         : 'APC_UPLOAD_PROGRESS',
+			pollerUrl      : '<?php echo $poller_url; ?>',
+			poller         : null,
+			error          : false,
+			form           : null, // HTML form element
+			status         : null, // element where the upload status is displayed
+			idElement      : null, // element that holds the APC upload ID
+			iframe         : null, // iframe we create that form will submit to
 
-		initialize : function()
-		{
-			// initialize the form and observe the submit element
-			this.form = $('uploader_upload_form').clone(true);
-			this.form.id = this.form.id+this.generateId();
-			$('upload_forms').appendChild(this.form);
-			this.form.show();
-			this.form.observe('submit', this._onFormSubmit.bindAsEventListener(this));
-
-			// create a hidden iframe
-			this.iframe = new Element('iframe', { name : '_upload_frame_'+this.generateId() }).hide();
-
-			// make the form submit to the hidden iframe
-			this.form.appendChild(this.iframe);
-			this.form.target = this.iframe.name;
-
-			// initialize the APC ID element so we can write a value to it later
-			this.idElement = this.form.getInputs(null, this.ID_KEY)[0];
-
-			// initialize the status container
-			this.status = $('uploader_upload_indicator').clone(true);
-			$('uploader_upload_indicators').appendChild(this.status);
-
-		},
-
-		generateId : function()
-		{
-			var now = new Date();
-			return now.getTime();
-		},
-
-		delay : function(seconds)
-		{
-			var ms   = seconds * 1000;
-			var then = new Date().getTime();
-			var now  = then;
-
-			while ((now - then) < ms)
-				now = new Date().getTime();
-		},
-
-		_onFormSubmit : function(e)
-		{
-			this.form.hide();
-			var id = this.generateId();
-			this.form.action = this.form.action+'&upload_id='+id;
-			this.status.show();
-
-			this.idElement.value = id;
-			this.poller = new PeriodicalExecuter(this._monitorUpload.bind(this), 2);
-			this._monitorUpload();
-			Event.stopObserving(this.form, 'submit');
-			if (!this.error)
+			initialize : function()
 			{
-				new FileUploader();
-			}
-		},
+				// initialize the form and observe the submit element
+				this.form = $('uploader_upload_form').clone(true);
+				this.form.id = this.form.id+this.generateId();
+				$('upload_forms').appendChild(this.form);
+				this.form.show();
+				this.form.observe('submit', this._onFormSubmit.bindAsEventListener(this));
 
-		_monitorUpload : function()
-		{
-			var options = {
-				parameters : 'upload_id=' + this.idElement.value,
-				onLoading  : this._onMonitorLoading.bind(this),
-				onSuccess  : this._onMonitorSuccess.bind(this),
-				evalScripts: true,
-				onFailure  : this._onMonitorFailure.bind(this)
-			};
+				// create a hidden iframe
+				this.iframe = new Element('iframe', { name : '_upload_frame_'+this.generateId() }).hide();
 
-			new Ajax.Request(this.pollerUrl+'&upload_id='+this.idElement.value, options);
-		},
+				// make the form submit to the hidden iframe
+				this.form.appendChild(this.iframe);
+				this.form.target = this.iframe.name;
 
-		_onMonitorLoading : function()
-		{
-			this.form.hide();
-		},
+				// initialize the APC ID element so we can write a value to it later
+				this.idElement = this.form.getInputs(null, this.ID_KEY)[0];
 
-		_onMonitorSuccess : function(transport)
-		{
-			var json = transport.responseJSON;
+				// initialize the status container
+				this.status = $('uploader_upload_indicator').clone(true);
+				$('uploader_upload_indicators').appendChild(this.status);
 
-			if (json.finished)
+			},
+
+			generateId : function()
 			{
-				this.poller.stop();
-				if (json.file_id)
+				var now = new Date();
+				return now.getTime();
+			},
+
+			delay : function(seconds)
+			{
+				var ms   = seconds * 1000;
+				var then = new Date().getTime();
+				var now  = then;
+
+				while ((now - then) < ms)
+					now = new Date().getTime();
+			},
+
+			_onFormSubmit : function(e)
+			{
+				this.form.hide();
+				var id = this.generateId();
+				this.form.action = this.form.action+'&upload_id='+id;
+				this.status.show();
+
+				this.idElement.value = id;
+				this.poller = new PeriodicalExecuter(this._monitorUpload.bind(this), 2);
+				this._monitorUpload();
+				Event.stopObserving(this.form, 'submit');
+				if (!this.error)
 				{
-					this.status.remove();
-					this.form.remove();
-					$('uploader_no_uploaded_files').hide();
-					$('uploaded_files').insert({bottom: json.content_uploader});
-					<?php if ($mode == 'issue'): ?>
-						$('viewissue_no_uploaded_files').hide();
-						$('viewissue_uploaded_files').insert({bottom: json.content_inline});
-						$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
-					<?php elseif ($mode == 'article'): ?>
-						$('article_<?php echo strtolower($article->getName()); ?>_no_files').hide();
-						$('article_<?php echo strtolower($article->getName()); ?>_files').insert({bottom: json.content_inline});
-					<?php endif; ?>
-					this.error = false;
-					successMessage('File attached successfully');
+					new FileUploader();
 				}
-				else if (json.error)
+			},
+
+			_monitorUpload : function()
+			{
+				var options = {
+					parameters : 'upload_id=' + this.idElement.value,
+					onLoading  : this._onMonitorLoading.bind(this),
+					onSuccess  : this._onMonitorSuccess.bind(this),
+					evalScripts: true,
+					onFailure  : this._onMonitorFailure.bind(this)
+				};
+
+				new Ajax.Request(this.pollerUrl+'&upload_id='+this.idElement.value, options);
+			},
+
+			_onMonitorLoading : function()
+			{
+				this.form.hide();
+			},
+
+			_onMonitorSuccess : function(transport)
+			{
+				var json = transport.responseJSON;
+
+				if (json.finished)
 				{
-					this.form.observe('submit', this._onFormSubmit.bindAsEventListener(this));
-					this.status.hide();
-					this.form.hide();
-					this.error = true;
+					this.poller.stop();
+					if (json.file_id)
+					{
+						this.status.remove();
+						this.form.remove();
+						$('uploader_no_uploaded_files').hide();
+						$('uploaded_files').insert({bottom: json.content_uploader});
+						<?php if ($mode == 'issue'): ?>
+							$('viewissue_no_uploaded_files').hide();
+							$('viewissue_uploaded_files').insert({bottom: json.content_inline});
+							$('viewissue_uploaded_attachments_count').update(json.attachmentcount);
+						<?php elseif ($mode == 'article'): ?>
+							$('article_<?php echo strtolower($article->getName()); ?>_no_files').hide();
+							$('article_<?php echo strtolower($article->getName()); ?>_files').insert({bottom: json.content_inline});
+						<?php endif; ?>
+						this.error = false;
+						successMessage('File attached successfully');
+					}
+					else if (json.error)
+					{
+						this.form.observe('submit', this._onFormSubmit.bindAsEventListener(this));
+						this.status.hide();
+						this.form.hide();
+						this.error = true;
+						failedMessage(json.error);
+					}
+				}
+			},
+
+			_onMonitorFailure : function(transport)
+			{
+				var json = transport.responseJSON;
+
+				this.status.hide();
+				this.form.hide();
+				this.poller.stop();
+				if (json && (json.failed || json.error))
+				{
 					failedMessage(json.error);
 				}
+				else
+				{
+					failedMessage(transport.responseText);
+				}
 			}
-		},
 
-		_onMonitorFailure : function(transport)
-		{
-			var json = transport.responseJSON;
+		});
 
-			this.status.hide();
-			this.form.hide();
-			this.poller.stop();
-			if (json && (json.failed || json.error))
-			{
-				failedMessage(json.error);
-			}
-			else
-			{
-				failedMessage(transport.responseText);
-			}
-		}
+		Event.observe(window, 'load', function() {
+			new FileUploader();
+		});
 
-	});
-
-	Event.observe(window, 'load', function() {
-		new FileUploader();
-	});
-
-</script>
+	</script>
+<?php endif; ?>

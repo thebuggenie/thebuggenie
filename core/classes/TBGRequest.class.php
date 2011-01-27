@@ -42,7 +42,8 @@
 		 */
 		public function handleUpload($key)
 		{
-            if (!array_key_exists($this->getParameter('APC_UPLOAD_PROGRESS'), $_SESSION['__upload_status'])) {
+			$apc_exists = self::CanGetUploadStatus();
+            if ($apc_exists && !array_key_exists($this->getParameter('APC_UPLOAD_PROGRESS'), $_SESSION['__upload_status'])) {
                 $_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')] = array(
                     'id'       => $this->getParameter('APC_UPLOAD_PROGRESS'),
                     'finished' => false,
@@ -142,14 +143,17 @@
 									}
 									$file->save();
 									//$file = TBGFile::createNew($new_filename, basename($thefile['name']), $content_type, $this->getParameter($key.'_description'), ((TBGSettings::getUploadStorage() == 'database') ? file_get_contents($files_dir.$new_filename) : null));
-									$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')] = array(
-										'id'       => $this->getParameter('APC_UPLOAD_PROGRESS'),
-										'finished' => true,
-										'percent'  => 100,
-										'total'    => 0,
-										'complete' => 0,
-										'file_id'  => $file->getID()
-									);
+									if ($apc_exists)
+									{
+										$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')] = array(
+											'id'       => $this->getParameter('APC_UPLOAD_PROGRESS'),
+											'finished' => true,
+											'percent'  => 100,
+											'total'    => 0,
+											'complete' => 0,
+											'file_id'  => $file->getID()
+										);
+									}
 									return $file;
 								}
 							}
@@ -194,9 +198,12 @@
 			catch (Exception $e)
 			{
 				TBGLogging::log('Upload exception: '.$e->getMessage());
-				$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')]['error'] = $e->getMessage();
-				$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')]['finished'] = true;
-				$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')]['percent'] = 100;
+				if ($apc_exists)
+				{
+					$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')]['error'] = $e->getMessage();
+					$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')]['finished'] = true;
+					$_SESSION['__upload_status'][$this->getParameter('APC_UPLOAD_PROGRESS')]['percent'] = 100;
+				}
 				throw $e;
 			}
 		}

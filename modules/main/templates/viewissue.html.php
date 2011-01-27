@@ -78,6 +78,11 @@
 			<?php echo __('Your changes has been saved'); ?>
 		</div>
 	<?php endif; ?>
+	<?php if (isset($issue_file_uploaded)): ?>
+		<div class="rounded_box green borderless issue_info aligned" id="viewissue_saved" onclick="$(this).fade({duration: 0.5});">
+			<?php echo __('The file was attached to this issue'); ?>
+		</div>
+	<?php endif; ?>
 	<?php if ($issue->isBlocking()): ?>
 		<div class="rounded_box red borderless issue_info aligned" id="blocking_div">
 			<?php echo __('This issue is blocking the next release'); ?>

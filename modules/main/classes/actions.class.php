@@ -59,6 +59,7 @@
 				$issue = null;
 			}
 			$message = TBGContext::getMessageAndClear('issue_saved');
+			$uploaded = TBGContext::getMessageAndClear('issue_file_uploaded');
 			
 			if ($request->isMethod(TBGRequest::POST) && $issue instanceof TBGIssue && $request->hasParameter('issue_action'))
 			{
@@ -101,6 +102,10 @@
 			elseif ($message == true)
 			{
 				$this->issue_saved = true;
+			}
+			elseif ($uploaded == true)
+			{
+				$this->issue_file_uploaded = true;
 			}
 			elseif (TBGContext::hasMessage('issue_error'))
 			{
@@ -2084,7 +2089,8 @@
 
 		public function runUpload(TBGRequest $request)
 		{
-			if (!$request->getParameter('APC_UPLOAD_PROGRESS'))
+			$apc_exists = TBGRequest::CanGetUploadStatus();
+			if ($apc_exists && !$request->getParameter('APC_UPLOAD_PROGRESS'))
 			{
 				$request->setParameter('APC_UPLOAD_PROGRESS', $request->getParameter('upload_id'));
 			}
@@ -2141,7 +2147,8 @@
 								$article->attachFile($file);
 								break;
 						}
-						return $this->renderText('ok');
+						if ($apc_exists)
+							return $this->renderText('ok');
 					}
 					$this->error = TBGContext::getI18n()->__('An unhandled error occured with the upload');
 				}
@@ -2155,6 +2162,20 @@
 			{
 				$this->getResponse()->setHttpStatus(401);
 				$this->error = TBGContext::getI18n()->__('You are not allowed to attach files here');
+			}
+			if (!$apc_exists)
+			{
+				switch ($request->getParameter('mode'))
+				{
+					case 'issue':
+						if (!$issue instanceof TBGIssue) break;
+						$this->forward(TBGContext::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+						break;
+					case 'article':
+						if (!$article instanceof TBGWikiArticle) break;
+						$this->forward(TBGContext::getRouting()->generate('publish_article', array('article_name' => $article->getName())));
+						break;
+				}
 			}
 			TBGLogging::log('marking upload ' . $request->getParameter('APC_UPLOAD_PROGRESS') . ' as completed with error ' . $this->error);
 			$request->markUploadAsFinishedWithError($request->getParameter('APC_UPLOAD_PROGRESS'), $this->error);
