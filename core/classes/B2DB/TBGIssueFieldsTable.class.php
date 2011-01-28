@@ -315,6 +315,13 @@
 
 			$crit = $this->getCriteria();
 			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
+			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_feature_request_id);
+			$crit->addInsert(self::FIELD_KEY, 'votes');
+			$crit->addInsert(self::SCOPE, $scope);
+			$this->doInsert($crit);
+
+			$crit = $this->getCriteria();
+			$crit->addInsert(self::ISSUETYPE_SCHEME_ID, 1);
 			$crit->addInsert(self::ISSUETYPE_ID, $issue_type_enhancement_id);
 			$crit->addInsert(self::FIELD_KEY, 'description');
 			$crit->addInsert(self::REPORTABLE, true);

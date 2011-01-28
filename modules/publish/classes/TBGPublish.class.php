@@ -152,7 +152,7 @@
 						if (TBGArticlesTable::getTable()->getArticleByName(urldecode($original_article_name)) === null)
 						{
 							$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $original_article_name);
-							TBGWikiArticle::createNew(urldecode($original_article_name), $content, true, $scope, array('overwrite' => $overwrite));
+							TBGWikiArticle::createNew(urldecode($original_article_name), $content, true, $scope, array('overwrite' => $overwrite, 'noauthor' => true));
 							$imported = true;
 						}
 						TBGEvent::createNew('publish', 'fixture_article_loaded', urldecode($original_article_name), array('imported' => $imported))->trigger();

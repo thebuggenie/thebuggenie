@@ -1,0 +1,13 @@
+= Description =
+An issue type scheme is the scheme that specifies - per issue type - which issue fields are:
+* available for reporting via the "main" reporting view
+* available for reporting via the "additional information" pane at the bottom
+* required for reporting
+* available on the "view issue" page
+
+All issue types have their own settings for which fields are available / required on both the reporting page and on the issue overview page. These settings are deeply integrated in The Bug Genie, and always respected.
+
+On the [[CreatingIssues|Report an issue]] page, fields will be displayed and marked as required based on the settings specified in the issue type scheme in use by the selected project. These settings are also used to determine which fields are displayed on the "View issue" page.
+
+= Custom fields =
+Because the DefaultIssuetypeScheme is not editable, you have to create a copy of it and modify that copy to be able to display any CustomFields, as they would not be available by default. Which issuetype scheme a project uses is available in the project configuration popup.

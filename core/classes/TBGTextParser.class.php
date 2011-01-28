@@ -650,8 +650,7 @@
 				foreach ($cols as $col)
 				{
 					if (!$first) $output .= "</td><td>";
-					$output .= htmlspecialchars($col);
-					$output .= '<br>';
+					$output .= $col;
 					$first = false;
 				}
 			}

@@ -1,0 +1,27 @@
+= Overview =
+The default workflow is used for issue types that does not have a workflow set in the workflow scheme associated with the current project. The default workflow is also used in the default workflow scheme setup.<br>
+This is an overview of the default workflow setup with its steps and transitions:
+
+{|
+! Step !! Connected status !! State !! Outgoing transitions !! Notes
+|-
+| '''New''' || ''New'' || Open and editable || Investigate issue → Investigating<br>Confirm issue → Confirmed<br>Reject issue → Rejected<br>Accept issue → In progress<br>Resolve issue → Closed || This is the default, initial step all issues start in
+|-
+| '''Investigating''' || ''Investigating'' || Open and editable || Request more information → New<br>Confirm issue → Confirmed<br>Reject issue → Rejected<br>Accept issue → In progress || 
+|-
+| '''Confirmed''' || ''Confirmed'' || Open but not editable || Accept issue → In progress <br>Assign issue → In progress <br>Resolve issue → Closed || 
+|-
+| '''In progress''' || ''Being worked on'' || Open but not editable || Reject issue → Rejected <br>Mark ready for testing → Ready for testing <br>Resolve issue → Closed || 
+|-
+| '''Ready for testing''' || ''Ready for testing / QA'' || Open but not editable || Resolve issue → Closed <br>Test issue solution → Testing || 
+|-
+| '''Testing''' || ''Testing / QA'' || Open but not editable || Accept issue solution → Closed <br>Reject issue solution → In progress || 
+|-
+| '''Rejected''' || ''Not a bug'' || Closed and not editable || Reopen issue → New || 
+|-
+| '''Closed''' || - || Closed and not editable || Reopen issue → New || This workflow step is not linked directly to a status
+|}
+
+Some things to note about the default workflow:
+* It is not possible to directly move an issue from new to closed - it has to either be accepted or assigned first. You can however move it directly to rejected if it is invalid or duplicate
+* The ''Closed'' step is not linked to a status, but has two valid statuses - '''Closed''' and '''Postponed'''

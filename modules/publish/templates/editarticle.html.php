@@ -29,7 +29,7 @@
 				<?php include_template('publish/header', array('article_name' => $article_name, 'show_actions' => true, 'mode' => 'edit')); ?>
 			<?php endif; ?>
 			<a name="edit_article"></a>
-			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="post">
+			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('publish_article_edit', array('article_name' => $article_name)); ?>" method="post" id="edit_article_form" onsubmit="Event.stopObserving(window, 'beforeunload');">
 				<input type="hidden" name="preview" value="0" id="article_preview">
 				<input type="hidden" name="article_id" value="<?php echo ($article instanceof TBGWikiArticle) ? $article->getID() : 0; ?>">
 				<input type="hidden" name="last_modified" value="<?php echo ($article instanceof TBGWikiArticle) ? $article->getPostedDate() : 0; ?>">
@@ -64,6 +64,20 @@
 				</div>
 				<br style="clear: both;">
 			</form>
+			<input type="hidden" id="article_serialized" value="">
 		</td>
 	</tr>
 </table>
+<script type="text/javascript">
+document.observe('dom:loaded', function() {
+	$('article_serialized').value = $('article_content').serialize();
+});
+	
+Event.observe(window, 'beforeunload', function(event) {
+	if ($('article_content').serialize() != $F('article_serialized'))
+	{
+		event.stop();
+	}
+});
+	
+</script>

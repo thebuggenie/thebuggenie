@@ -137,8 +137,12 @@
 			$article = new TBGWikiArticle();
 			$article->setName($name);
 			$article->setContent($content);
-			$article->setAuthor($user_id);
 			$article->setIsPublished($published);
+			
+			if (!isset($options['noauthor']))
+				$article->setAuthor($user_id);
+			else
+				$article->setAuthor(0);
 
 			if ($scope !== null)
 				$article->setScope($scope);

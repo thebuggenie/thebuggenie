@@ -1,0 +1,11 @@
+{{TOC}}
+= Introduction =
+Creating issues in The Bug Genie requires one or more existing projects, as all issues are filed against projects.
+
+= How to start creating an issue =
+When a project has been created, an issue can be filed by either using the "Report an issue" tab inside the project space, or by using the "Report an issue" button on the frontpage, if the project is visible there. Both methods will let you pick an issue type directly via a dropdown menu. If you don't specify an issue type (by clicking directly on the "Report an issue" links, you can specify as the first step on the reporting page.
+
+= Specifying issue details =
+When you report an issue, you have to specify the details you want to be saved with the issue when it is reported. By default these details include items such as a descriptive title, a longer description about the issue and a reproduction step list. The available and required fields you have to fill out vary depending on the type of issue you are reporting and the associated IssuetypeScheme. The only field that will always be available (and required) is the descriptive title.
+
+[[Category:Help]] [[Category:Help:Howto]]
