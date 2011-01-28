@@ -28,10 +28,10 @@
 	 */
 	function tbg_truncateText($text, $length, $add_dots = true)
 	{
-		if (strlen($text) > $length)
+		if (mb_strlen($text) > $length)
 		{
 			$string = wordwrap($text, $length - 3);
-			$text = substr($string, 0, strpos($string, "\n"));
+			$text = mb_substr($string, 0, mb_strpos($string, "\n"));
 			if ($add_dots) $text .= '...';
 		}
 		return $text;
