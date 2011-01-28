@@ -12,6 +12,7 @@ This is an overview of the required / visible properties per issue type.
 * ''Additional'': Whether this is shown in the "additional fields" area, or in the main view when reporting an issue
 * ''Visible'': Whether this field is visible on the "view issue" page
 == Bug report ==
+* '''Redirects to the reported issue''': Yes
 {|
 ! Field !! Visible !! Reportable !! Additional !! Required
 |-
@@ -54,6 +55,7 @@ This is an overview of the required / visible properties per issue type.
 | Votes || - || - || - || -
 |}
 == Feature request, Enhancement & Idea ==
+* '''Redirects to the reported issue''': Yes
 {|
 ! Field !! Visible !! Reportable !! Additional !! Required
 |-
@@ -96,6 +98,7 @@ This is an overview of the required / visible properties per issue type.
 | Votes || Yes || - || - || -
 |}
 == Task ==
+* '''Redirects to the reported issue''': No, loads a new & empty reporting form with a link to the saved issue at the top
 {|
 ! Field !! Visible !! Reportable !! Additional !! Required
 |-
@@ -138,6 +141,7 @@ This is an overview of the required / visible properties per issue type.
 | Votes || Yes || - || - || -
 |}
 == User story ==
+* '''Redirects to the reported issue''': No, loads a new & empty reporting form with a link to the saved issue at the top
 {|
 ! Field !! Visible !! Reportable !! Additional !! Required
 |-
