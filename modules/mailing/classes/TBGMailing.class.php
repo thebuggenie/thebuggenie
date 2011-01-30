@@ -47,7 +47,7 @@
 		protected function _addAvailableRoutes()
 		{
 			$this->addRoute('forgot', '/forgot', 'forgot');
-			$this->addRoute('reset', '/reset/:user/:id', 'resetPassword');
+			$this->addRoute('reset', '/reset/:user/:reset_hash', 'resetPassword', array('continue' => true));
 			$this->addRoute('mailing_test_email', '/mailing/test', 'testEmail');
 		}
 		

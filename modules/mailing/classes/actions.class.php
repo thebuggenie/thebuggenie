@@ -59,10 +59,10 @@
 		 */
 		public function runResetPassword(TBGRequest $request)
 		{
-			$user = TBGUser::getByUsername($request->getParameter('user'));
-			$id = $request->getParameter('id');
-			$this->forward403unless($user instanceof TBGUser && $id == $user->getHashPassword(), 'Invalid password reset request');
-			$this->forward(TBGContext::getRouting()->generate('login_section', array('section' => 'forgot', 'user' => $user->getUsername(), 'id' => $id, 'reset' => true)));
+			$this->user = TBGUser::getByUsername($request->getParameter('user'));
+			$this->username = $request->getParameter('user');
+			$this->id = $request->getParameter('reset_hash');
+			$this->forward403unless($this->user instanceof TBGUser && $this->id == $this->user->getHashPassword(), 'Invalid password reset request');
 		}
 		
 		/**

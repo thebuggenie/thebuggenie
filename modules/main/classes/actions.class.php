@@ -3284,7 +3284,7 @@
 					}
 					else
 					{
-						throw new Exception('Invalid user');	
+						throw new Exception('User not specified');	
 					}
 				}
 				catch (Exception $e)
