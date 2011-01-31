@@ -286,6 +286,10 @@
 					$this->imported_data = true;
 				}
 			}
+
+			$project1 = TBGProject::getByKey('sampleproject1');
+			$project2 = TBGProject::getByKey('sampleproject2');
+			$this->canimport = (!$project1 instanceof TBGProject && !$project2 instanceof TBGProject);
 		}
 		
 		/**
