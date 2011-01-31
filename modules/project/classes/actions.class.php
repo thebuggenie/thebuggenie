@@ -69,7 +69,7 @@
 		 */
 		public function runDashboard(TBGRequest $request)
 		{
-			$this->_checkProjectPageAccess('project_dashboard');
+			$this->forward403unless($this->_checkProjectPageAccess('project_dashboard'));
 			$this->recent_issues = $this->selected_project->getRecentIssues(10);
 			$this->recent_features = $this->selected_project->getRecentFeatures();
 			$this->recent_ideas = $this->selected_project->getRecentIdeas();
