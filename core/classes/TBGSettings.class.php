@@ -36,8 +36,8 @@
 
 		static protected $_ver_mj = 3;
 		static protected $_ver_mn = 0;
-		static protected $_ver_rev = '0 RC4';
-		static protected $_ver_name = "Skilled toothbrush";
+		static protected $_ver_rev = '0';
+		static protected $_ver_name = "";
 		static protected $_defaultscope = null;
 		static protected $_settings = null;
 	
