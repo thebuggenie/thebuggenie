@@ -14,6 +14,6 @@
 		<td style="padding: 5px;" colspan="2" id="server_path_warning"><b><?php echo __('Important') ?>: </b><?php echo __('If you change this setting, you must make sure to also update the .htaccess file in the root directory to match this setting, otherwise The Bug Genie will not work correctly!'); ?></td>
 	</tr>
 	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('The path from the server url root to the subdirectory for the bug genie, including the trailing slash.'); ?><br>(ex: <i><?php echo __('/thebuggenie/'); ?></i>)</td>
+		<td class="config_explanation" colspan="2"><?php echo __('The path from the server url root to the subdirectory for the bug genie, including the trailing slash.'); ?><br>(ex: <i>/thebuggenie/</i>)</td>
 	</tr>
 </table>

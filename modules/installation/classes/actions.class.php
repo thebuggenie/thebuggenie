@@ -72,7 +72,7 @@
 				$this->cache_folder_perm_ok = false;
 				$this->all_well = false;
 			}
-			if (!is_writable(TBGContext::getIncludePath() . 'thebuggenie/'))
+			if (!is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/'))
 			{
 				$this->thebuggenie_folder_perm_ok = false;
 				$this->all_well = false;
@@ -282,15 +282,15 @@
 
 				if ($request->getParameter('apache_autosetup'))
 				{
-					if (!is_writable(TBGContext::getIncludePath() . 'thebuggenie/') || (file_exists(TBGContext::getIncludePath() . 'thebuggenie/.htaccess') && !is_writable(TBGContext::getIncludePath() . 'thebuggenie/.htaccess')))
+					if (!is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/') || (file_exists(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/.htaccess') && !is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/.htaccess')))
 					{
 						$this->htaccess_error = 'Permission denied when trying to save the [main folder]/thebuggenie/.htaccess';
 					}
 					else
 					{
-						$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $request->getParameter('url_subdir'), file_get_contents(TBGContext::getIncludePath() . 'thebuggenie/htaccess.template'));
-						file_put_contents(TBGContext::getIncludePath() . 'thebuggenie/.htaccess', $content);
-						if (file_get_contents(TBGContext::getIncludePath() . 'thebuggenie/.htaccess') != $content)
+						$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $request->getParameter('url_subdir'), file_get_contents(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/htaccess.template'));
+						file_put_contents(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/.htaccess', $content);
+						if (file_get_contents(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/.htaccess') != $content)
 						{
 							$this->htaccess_error = true;
 						}

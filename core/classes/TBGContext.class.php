@@ -643,7 +643,7 @@
 		 */
 		public static function getThemes()
 		{
-			$theme_path_handle = opendir(self::getIncludePath() . 'thebuggenie/themes/');
+			$theme_path_handle = opendir(self::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR);
 			$themes = array();
 			
 			while ($theme = readdir($theme_path_handle))

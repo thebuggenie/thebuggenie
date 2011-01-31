@@ -2088,7 +2088,7 @@
 		
 		public function hasIcon()
 		{
-			return (bool) (file_exists(TBGContext::getIncludePath() . 'thebuggenie/project_icons/' . $this->getKey() . '.png'));
+			return (bool) (file_exists(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . DIRECTORY_SEPARATOR . 'project_icons' . DIRECTORY_SEPARATOR . $this->getKey() . '.png'));
 		}
 		
 		public function getIcon()

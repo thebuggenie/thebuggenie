@@ -143,7 +143,7 @@
 			</div>
 			<b>If you're installing this on a Linux server,</b> running this command should fix it:<br>
 			<div class="command_box">
-			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)); ?>thebuggenie/
+			chmod a+w <?php echo str_ireplace('\\', '/', substr(TBGContext::getIncludePath(), 0, strripos(TBGContext::getIncludePath(), DIRECTORY_SEPARATOR) + 1)) . THEBUGGENIE_PUBLIC_PATH; ?>/
 			</div>
 		<?php endif; ?>
 		<?php if (!$pdo_ok): ?>

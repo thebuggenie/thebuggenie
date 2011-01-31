@@ -24,7 +24,7 @@
 			<?php foreach (TBGContext::getModules() as $module): ?>
 				<?php if ($module->hasAccess()): ?>
 					<?php $css_name = "css/" . TBGSettings::getThemeName() . "_" . $module->getName() . ".css"; ?>
-					<?php if (file_exists(TBGContext::getIncludePath() . 'thebuggenie' . DIRECTORY_SEPARATOR . $css_name)): ?>
+					<?php if (file_exists(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . DIRECTORY_SEPARATOR . $css_name)): ?>
 						<link rel="stylesheet" type="text/css" href="<?php echo TBGContext::getTBGPath() . $css_name; ?>">
 					<?php endif; ?>
 				<?php endif; ?>
