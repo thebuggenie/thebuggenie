@@ -145,7 +145,7 @@
 						<option value="="<?php if (array_key_exists('text', $appliedfilters) && ((array_key_exists('operator', $appliedfilters['text']) && $appliedfilters['text']['operator'] == '=') || (!array_key_exists('operator', $appliedfilters['text']) && $appliedfilters['text'][0]['operator'] == '='))): ?> selected<?php endif; ?>><?php echo __('Issues containing'); ?></option>
 						<option value="!="<?php if (array_key_exists('text', $appliedfilters) && ((array_key_exists('operator', $appliedfilters['text']) && $appliedfilters['text']['operator'] == '!=') || (!array_key_exists('operator', $appliedfilters['text']) && $appliedfilters['text'][0]['operator'] == '!='))): ?> selected<?php endif; ?>><?php echo __('Issues not containing'); ?></option>
 					</select>
-					<input type="text" name="filters[text][value]" value="<?php if (array_key_exists('text', $appliedfilters)) echo (array_key_exists('value', $appliedfilters['text'])) ? $appliedfilters['text']['value'] : $appliedfilters['text'][0]['value']; ?>" id="issues_searchfor" style="width: 450px;">
+					<input type="text" name="filters[text][value]" value="<?php echo $searchterm; ?>" id="issues_searchfor" style="width: 450px;">
 					<input type="submit" value="<?php echo __('Search'); ?>" id="search_button_top" onclick="$('save_search').disable();">
 					<div class="faded_out" style="padding: 2px 0 5px 2px; font-size: 12px;"><p><?php echo __('Leave this input field blank to list all issues based on filters below'); ?></p></div>
 					<div style="<?php if ($show_results): ?>display: none; <?php endif; ?>padding: 5px;" id="search_filters">
