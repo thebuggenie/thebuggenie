@@ -424,7 +424,7 @@
 		protected function _setAdditionalMailValues(TBGMimemail $mail, array $parameters)
 		{
 			$mail->addReplacementValues(array('%password%' => isset($parameters['password']) ? $parameters['password'] : ''));
-			$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? TBGContext::getRouting()->generate('reset', array('user' => $parameters['user']->getUsername(), 'id' => $parameters['user']->getHashPassword()), false) : '' ));
+			$mail->addReplacementValues(array('%link_to_reset_password%' => isset($parameters['user']) ? TBGContext::getRouting()->generate('reset', array('user' => $parameters['user']->getUsername(), 'reset_hash' => $parameters['user']->getHashPassword(), 'id' => $parameters['user']->getHashPassword()), false) : '' ));
 			$mail->addReplacementValues(array('%link_to_activate%' => isset($parameters['user']) ? TBGContext::getRouting()->generate('activate', array('user' => $parameters['user']->getUsername(), 'key' => $parameters['user']->getHashPassword()), false) : ''));
 		}
 
