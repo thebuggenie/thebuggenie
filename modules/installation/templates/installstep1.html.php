@@ -29,6 +29,9 @@
 	<?php if ($php_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP version (<?php echo $php_ver; ?>) meets requirements ...</div>
 	<?php endif; ?>
+	<?php if ($docblock_ok): ?>
+		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>PHP docblocks are readable ...</div>
+	<?php endif; ?>
 	<?php if ($base_folder_perm_ok): ?>
 		<div class="install_progress prereq_ok" style="width: 500px; margin-top: 10px;"><?php echo image_tag('themes/oxygen/action_ok.png', array(), true); ?>Can write to The Bug Genie directory ...</div>
 	<?php endif; ?>
@@ -57,6 +60,12 @@
 		<div class="installation_prerequisites prereq_warn">
 		<b>PHP interpreter version is too old</b><br>
 		The Bug Genie 3 requires PHP 5.3.0 or later. You have version <?php echo $php_ver; ?>.<br/>Grab the latest release from your usual sources or from <a href="http://php.net/downloads.php" target="_blank">php.net</a>
+		</div>
+	<?php endif; ?>
+	<?php if (!$docblock_ok): ?>
+		<div class="installation_prerequisites prereq_warn">
+		<b>PHP docblocks are not readable</b><br>
+		The Bug Genie 3 requires that PHP docblocks are readable. You may be running a PHP accellerator that removes docblocks from PHP code files as an optimization technique. Please refer to the accellerator documentation for how to disable this feature, or disable the accellerator.</a>
 		</div>
 	<?php endif; ?>
 	<?php if (!$mysql_ok && $pgsql_ok): ?>

@@ -4,6 +4,11 @@
 	{
 		
 		/**
+		 * Sample docblock used to test docblock retrieval
+		 */
+		protected $_sampleproperty;
+		
+		/**
 		 * Runs the installation action
 		 * 
 		 * @param TBGRequest $request The request object
@@ -34,7 +39,7 @@
 		 */
 		public function runInstallStep1(TBGRequest $request)
 		{
-			$this->all_well = true;
+			$this->all_well = false;
 			$this->base_folder_perm_ok = true;
 			$this->cache_folder_perm_ok = true;
 			$this->thebuggenie_folder_perm_ok = true;
@@ -45,6 +50,7 @@
 			$this->pgsql_ok = true;
 			$this->gd_ok = true;
 			$this->php_ok = true;
+			$this->docblock_ok = false;
 			$this->php_ver = PHP_VERSION;
 			
 			if (version_compare($this->php_ver, '5.3.0', 'lt'))
@@ -93,7 +99,16 @@
 			if (!extension_loaded('gd'))
 			{
 				$this->gd_ok = false;
-			}			
+			}
+			
+			$reflection = new ReflectionProperty(get_class($this), '_sampleproperty');
+			$docblock = $reflection->getDocComment();
+			if ($docblock)
+			{
+				$this->docblock_ok = true;
+				$this->all_well = true;
+			}
+			
 			$this->all_well = $this->all_well & ($this->mysql_ok | $this->pgsql_ok);
 		}
 		
