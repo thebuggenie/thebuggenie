@@ -1,3 +1,4 @@
+<?php $user_id = isset($user_id) ? $user_id : null; ?>
 <?php if (count($permissions_list) > 0): ?>
 	<?php foreach ($permissions_list as $permission_key => $permission): ?>
 		<?php if (is_numeric($permission_key)): ?>
