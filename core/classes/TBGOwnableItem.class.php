@@ -145,6 +145,8 @@
 			
 			$this->$field = $identifiable;
 			$this->$type_field = $identifiable->getType();
+			
+			$this->applyInitialPermissionSet($identifiable, $field);
 		}
 		
 		protected function _unsetIdentifiable($field)
@@ -327,6 +329,34 @@
 		public function hasQaResponsible()
 		{
 			return $this->_hasIdentifiable('_qa_responsible');
+		}
+		
+		public function applyInitialPermissionSet(TBGIdentifiable $identifiable, $type)
+		{
+			$permission_set = TBGContext::getProjectAssigneeDefaultPermissionSet($this, $type);
+			$uid = ($identifiable->getType() == TBGIdentifiableClass::TYPE_USER) ? $identifiable->getID() : null;
+			$tid = ($identifiable->getType() == TBGIdentifiableClass::TYPE_TEAM) ? $identifiable->getID() : null;
+			
+			foreach ($permission_set as $permission)
+			{
+				TBGContext::setPermission($permission, $this->getID(), 'core', $uid, null, $tid, true);
+			}
+			
+			if (!$this instanceof TBGProject)
+			{
+				$extrapermissions = array();
+				$extrapermissions[] = 'page_project_allpages_access';
+				$extrapermissions[] = 'canseeproject';
+				$extrapermissions[] = 'canseeprojecthierarchy';
+				$extrapermissions[] = 'cancreateandeditissues';
+				$extrapermissions[] = 'canpostandeditcomments';
+				
+				$project_id = $this->getProject()->getID();
+				foreach ($extrapermissions as $permission)
+				{
+					TBGContext::setPermission($permission, $project_id, 'core', $uid, null, $tid, true);
+				}
+			}
 		}
 		
 	}

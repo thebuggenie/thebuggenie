@@ -232,7 +232,7 @@
 			{
 				foreach ($this->getSteps() as $step)
 				{
-					if ($step->hasLinkedStatus() && $step->getLinkedStatusID() == $issue->getStatus()->getID())
+					if ($step->hasLinkedStatus() && $issue->getStatus() instanceof TBGStatus && $step->getLinkedStatusID() == $issue->getStatus()->getID())
 					{
 						$step->applyToIssue($issue);
 						return true;

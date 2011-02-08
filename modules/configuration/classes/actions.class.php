@@ -631,15 +631,19 @@
 				case 'add':
 					if ($request->getParameter('name') != '')
 					{
-						if (TBGCustomDatatype::isNameValid($request->getParameter('name')))
+						try
 						{
 							$customtype = new TBGCustomDatatype();
 							$customtype->setName($request->getParameter('name'));
+							$customtype->setItemdata($request->getParameter('label'));
 							$customtype->setType($request->getParameter('field_type'));
 							$customtype->save();
 							return $this->renderJSON(array('failed' => false, 'title' => TBGContext::getI18n()->__('The custom field was added'), 'content' => $this->getComponentHTML('issuefields_customtype', array('type_key' => $customtype->getKey(), 'type' => $customtype))));
 						}
-						return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('You need to provide a unique custom field name (key already exists)')));
+						catch (Exception $e)
+						{
+							return $this->renderJSON(array('failed' => true, 'error' => $e->getMessage() /*TBGContext::getI18n()->__('You need to provide a unique custom field name (key already exists)')*/));
+						}
 					}
 					return $this->renderJSON(array('failed' => true, 'error' => TBGContext::getI18n()->__('Please provide a valid name')));
 					break;

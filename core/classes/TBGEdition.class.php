@@ -327,7 +327,10 @@
 		 */
 		public function addAssignee(TBGIdentifiableClass $assignee, $role)
 		{
-			return B2DB::getTable('TBGEditionAssigneesTable')->addAssigneeToEdition($this->getID(), $assignee, $role);
+			$retval = TBGEditionAssigneesTable::getTable()->addAssigneeToEdition($this->getID(), $assignee, $role);
+			$this->applyInitialPermissionSet($assignee, $role);
+			
+			return $retval;
 		}
 
 		public function getAssignees()

@@ -26,15 +26,23 @@
 				<?php echo __('Enter a name for the field (same as ex. "%resolution_types%" above), then click %add%', array('%resolution_types%' => __('Resolution types'), '%add%' => '<b>' . __('Add') . '</b>')); ?>
 			</div>
 			<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_add_customtype'); ?>" onsubmit="addIssuefieldCustom('<?php echo make_url('configure_issuefields_add_customtype'); ?>');return false;" id="add_custom_type_form">
-				<label for="new_custom_field_name"><?php echo __('Field name'); ?></label>
-				<input type="text" name="name" id="new_custom_field_name" style="width: 200px;">
+				<label for="new_custom_field_name" style="width: 100px; display: block; float: left;"><?php echo __('Custom type'); ?></label>
 				<select id="new_custom_field_type" name="field_type" style="width: 375px;">
 					<?php foreach (TBGCustomDatatype::getFieldTypes() as $type => $description): ?>
 						<option value="<?php echo $type; ?>"<?php if ($type == TBGCustomDatatype::INPUT_TEXTAREA_MAIN || $type == TBGCustomDatatype::DROPDOWN_CHOICE_TEXT || $type == TBGCustomDatatype::INPUT_TEXT || $type == TBGCustomDatatype::RADIO_CHOICE || $type == TBGCustomDatatype::INPUT_TEXTAREA_SMALL || $type == TBGCustomDatatype::EDITIONS_CHOICE || $type == TBGCustomDatatype::COMPONENTS_CHOICE || $type == TBGCustomDatatype::RELEASES_CHOICE || $type == TBGCustomDatatype::STATUS_CHOICE): ?> selected<?php else: ?> disabled<?php endif; ?>><?php echo $description; ?></option>
 					<?php endforeach; ?>
 				</select>
-				<input type="submit" value="<?php echo __('Add'); ?>" style="font-weight: bold;" id="add_custom_type_button">
-				<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'add_custom_type_indicator')); ?>
+				<br style="clear: both;">
+				<label for="new_custom_field_name" style="width: 100px; display: block; float: left;"><?php echo __('Field name'); ?></label>
+				<input type="text" name="name" id="new_custom_field_name" style="width: 200px;">
+				<br style="clear: both;">
+				<label for="new_custom_field_label" style="width: 100px; display: block; float: left;"><?php echo __('Field label'); ?></label>
+				<input type="text" name="label" id="new_custom_field_label" style="width: 300px;">&nbsp;&nbsp;<span class="faded_out">(<?php echo __('The label is shown to the user in issue view'); ?>)</span>
+				<br style="clear: both;">
+				<div style="text-align: right; padding: 5px;">
+					<input type="submit" value="<?php echo __('Add custom field'); ?>" style="font-weight: normal; font-size: 14px;" id="add_custom_type_button">
+					<?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'add_custom_type_indicator')); ?>
+				</div>
 			</form>
 		</div>
 		<div id="custom_types_list">

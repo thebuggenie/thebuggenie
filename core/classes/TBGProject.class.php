@@ -1165,6 +1165,7 @@
 					}
 					break;
 			}
+			$this->applyInitialPermissionSet($assignee, $role);
 		}
 
 		protected function _populateAssignees()

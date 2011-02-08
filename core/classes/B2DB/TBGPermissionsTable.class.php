@@ -79,9 +79,9 @@
 		public function setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope)
 		{
 			$crit = $this->getCriteria();
-			$crit->addInsert(self::UID, $uid);
-			$crit->addInsert(self::GID, $gid);
-			$crit->addInsert(self::TID, $tid);
+			$crit->addInsert(self::UID, (int) $uid);
+			$crit->addInsert(self::GID, (int) $gid);
+			$crit->addInsert(self::TID, (int) $tid);
 			$crit->addInsert(self::ALLOWED, $allowed);
 			$crit->addInsert(self::MODULE, $module);
 			$crit->addInsert(self::PERMISSION_TYPE, $permission_type);

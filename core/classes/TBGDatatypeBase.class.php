@@ -51,6 +51,8 @@
 		 */
 		protected $_sort_order = null;
 
+		protected $_key = null;
+
 		/**
 		 * Returns the itemdata associated with the datatype (if any)
 		 *
@@ -122,6 +124,23 @@
 		public function getOrder()
 		{
 			return (int) $this->_sort_order;
+		}
+
+		protected function _generateKey()
+		{
+			if ($this->_key === null)
+				$this->_key = preg_replace("/[^0-9a-zA-Z]/i", '', strtolower($this->getName()));
+		}
+		
+		public function getKey()
+		{
+			$this->_generateKey();
+			return $this->_key;
+		}		
+
+		public function setKey($key)
+		{
+			$this->_key = $key;
 		}
 
 	}

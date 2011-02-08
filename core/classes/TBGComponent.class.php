@@ -72,46 +72,10 @@
 		
 		public function addAssignee($assignee, $role)
 		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGComponentAssigneesTable::COMPONENT_ID, $this->getID());
-			$crit->addWhere(TBGComponentAssigneesTable::TARGET_TYPE, $role);
-			switch (true)
-			{
-				case ($assignee instanceof TBGUser):
-					$crit->addWhere(TBGComponentAssigneesTable::UID, $assignee->getID());
-					break;
-				case ($assignee instanceof TBGTeam):
-					$crit->addWhere(TBGComponentAssigneesTable::TID, $assignee->getID());
-					break;
-			}
-			$res = B2DB::getTable('TBGComponentAssigneesTable')->doSelectOne($crit);
+			$retval = TBGComponentAssigneesTable::getTable()->addAssigneeToComponent($this->getID(), $assignee, $role);
+			$this->applyInitialPermissionSet($assignee, $role);
 			
-			if (!$res instanceof B2DBRow)
-			{
-				$crit = new B2DBCriteria();
-				switch (true)
-				{
-					case ($assignee instanceof TBGUser):
-						$crit->addInsert(TBGComponentAssigneesTable::UID, $assignee->getID());
-						break;
-					case ($assignee instanceof TBGTeam):
-						$crit->addInsert(TBGComponentAssigneesTable::TID, $assignee->getID());
-						break;
-				}
-				$crit->addInsert(TBGComponentAssigneesTable::COMPONENT_ID, $this->getID());
-				$crit->addInsert(TBGComponentAssigneesTable::TARGET_TYPE, $role);
-				$crit->addInsert(TBGComponentAssigneesTable::SCOPE, TBGContext::getScope()->getID());
-				try
-				{
-					$res = B2DB::getTable('TBGComponentAssigneesTable')->doInsert($crit);
-				}
-				catch (Exception $e)
-				{
-					throw $e;
-				}
-				return true;
-			}
-			return false;
+			return $retval;
 		}
 		
 		public function setName($name)

@@ -76,4 +76,49 @@
 			}
 			return $projects;
 		}
+		
+		public function addAssigneeToComponent($component_id, $assignee, $role)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::COMPONENT_ID, $component_id);
+			$crit->addWhere(self::TARGET_TYPE, $role);
+			switch (true)
+			{
+				case ($assignee instanceof TBGUser):
+					$crit->addWhere(self::UID, $assignee->getID());
+					break;
+				case ($assignee instanceof TBGTeam):
+					$crit->addWhere(self::TID, $assignee->getID());
+					break;
+			}
+			$res = $this->doSelectOne($crit);
+			
+			if (!$res instanceof B2DBRow)
+			{
+				$crit = $this->getCriteria();
+				switch (true)
+				{
+					case ($assignee instanceof TBGUser):
+						$crit->addInsert(self::UID, $assignee->getID());
+						break;
+					case ($assignee instanceof TBGTeam):
+						$crit->addInsert(self::TID, $assignee->getID());
+						break;
+				}
+				$crit->addInsert(self::COMPONENT_ID, $component_id);
+				$crit->addInsert(self::TARGET_TYPE, $role);
+				$crit->addInsert(self::SCOPE, TBGContext::getScope()->getID());
+				try
+				{
+					$res = $this->doInsert($crit);
+				}
+				catch (Exception $e)
+				{
+					throw $e;
+				}
+				return true;
+			}
+			return false;
+		}
+		
 	}

@@ -99,9 +99,9 @@
 
 		public function _preSave($is_new)
 		{
-			$this->_key = strtolower(str_replace(' ', '', preg_replace('/[^a-z0-9]/sx', '', $this->getName())));
 			if ($is_new)
 			{
+				$this->_generateKey();
 				if (array_key_exists($this->_key, self::getAll()))
 				{
 					throw new Exception(TBGContext::getI18n()->__('This field key already exists'));
@@ -118,20 +118,6 @@
 		{
 			$key = B2DB::getTable('TBGCustomFieldsTable')->getKeyFromId($this->getID());
 			B2DB::getTable('TBGCustomFieldOptionsTable')->doDeleteByFieldKey($key);
-		}
-
-		public static function isNameValid($name)
-		{
-			$key = strtolower(str_replace(' ', '', $name));
-			$builtin_types = TBGDatatypeBase::getAvailableFields(true);
-			if (!in_array($key, $builtin_types))
-			{
-				return !(bool) TBGCustomFieldsTable::getTable()->countByKey($key);
-			}
-			else
-			{
-				return false;
-			}
 		}
 
 		public static function doesKeyExist($key)

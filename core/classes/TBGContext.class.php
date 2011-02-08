@@ -1042,7 +1042,7 @@
 		 * @param integer $uid The user id for which the permission is valid, 0 for none
 		 * @param integer $gid The group id for which the permission is valid, 0 for none
 		 * @param integer $tid The team id for which the permission is valid, 0 for none
-		 * @param boolean allowed Allowed or not
+		 * @param boolean $allowed Allowed or not
 		 * @param integer $scope[optional] A specified scope if not the default
 		 */
 		public static function setPermission($permission_type, $target_id, $module, $uid, $gid, $tid, $allowed, $scope = null)
@@ -1050,7 +1050,7 @@
 			if ($scope === null) $scope = self::getScope()->getID();
 			
 			self::removePermission($permission_type, $target_id, $module, $uid, $gid, $tid, false, $scope);
-			B2DB::getTable('TBGPermissionsTable')->setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope);
+			TBGPermissionsTable::getTable()->setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope);
 			
 			self::cacheAllPermissions();
 		}
@@ -1385,6 +1385,69 @@
 			{
 				return array();
 			}
+		}
+		
+		public static function getProjectAssigneeDefaultPermissionSet($ownable, $type)
+		{
+			$return_values = array();
+			if ($ownable instanceof TBGProject)
+			{
+				$return_values[] = 'page_project_allpages_access';
+				$return_values[] = 'canseeproject';
+				$return_values[] = 'canseeprojecthierarchy';
+				$return_values[] = 'cancreateandeditissues';
+				$return_values[] = 'canpostandeditcomments';
+			}
+			elseif ($ownable instanceof TBGEdition)
+			{
+				$return_values[] = 'canseeedition';
+			}
+			elseif ($ownable instanceof TBGComponent)
+			{
+				$return_values[] = 'canseecomponent';
+			}
+			
+			switch ($type)
+			{
+				case '_leader':
+					$return_values[] = 'canmanageproject';
+					$return_values[] = 'candoscrumplanning';
+					break;
+				case '_owner':
+					$return_values[] = 'canmanageproject';
+					$return_values[] = 'candoscrumplanning';
+					break;
+				case '_qa_responsible':
+					$return_values[] = 'candoscrumplanning';
+					$return_values[] = 'caneditissue';
+					$return_values[] = 'caneditissuecustomfields';
+					$return_values[] = 'canaddextrainformationtoissues';
+					break;
+				case TBGProjectAssigneesTable::TYPE_DEVELOPER:
+					$return_values[] = 'candoscrumplanning';
+					$return_values[] = 'caneditissue';
+					$return_values[] = 'caneditissuecustomfields';
+					$return_values[] = 'canaddextrainformationtoissues';
+					break;
+				case TBGProjectAssigneesTable::TYPE_PROJECTMANAGER:
+					$return_values[] = 'candoscrumplanning';
+					$return_values[] = 'caneditissue';
+					$return_values[] = 'caneditissuecustomfields';
+					$return_values[] = 'canaddextrainformationtoissues';
+					break;
+				case TBGProjectAssigneesTable::TYPE_TESTER:
+					$return_values[] = 'caneditissue';
+					$return_values[] = 'caneditissuecustomfields';
+					$return_values[] = 'canaddextrainformationtoissues';
+					break;
+				case TBGProjectAssigneesTable::TYPE_DOCUMENTOR:
+					$return_values[] = 'caneditissue';
+					$return_values[] = 'caneditissuecustomfields';
+					$return_values[] = 'canaddextrainformationtoissues';
+					break;
+			}
+			
+			return $return_values;
 		}
 		
 		/**
