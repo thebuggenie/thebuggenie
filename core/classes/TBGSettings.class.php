@@ -41,19 +41,24 @@
 		static protected $_defaultscope = null;
 		static protected $_settings = null;
 	
+		public static function forceSettingsReload()
+		{
+			self::$_settings = null;
+		}
+		
 		public static function loadSettings()
 		{
 			if (self::$_settings === null)
 			{
 				TBGLogging::log('Loading all settings');
 				self::$_settings = array();
-				if (self::$_settings = TBGCache::get('settings'))
+				if (!TBGContext::isInstallmode() && self::$_settings = TBGCache::get('settings'))
 				{
 					TBGLogging::log('Using cached settings');
 				}
 				else
 				{
-					TBGLogging::log('Settings not cached. Retrieving from database');
+					TBGLogging::log('Settings not cached or install mode enabled. Retrieving from database');
 					if ($res = B2DB::getTable('TBGSettingsTable')->getSettingsForEnabledScope(TBGContext::getScope()->getID()))
 					{
 						$cc = 0;
@@ -124,11 +129,11 @@
 			}
 			if ($scope instanceof TBGScope)
 			{
-				throw new Exception('Oops!');
+				$scope = $scope->getID();
 			}
 			if (!TBGContext::getScope() instanceof TBGScope)
 			{
-				throw new Exception('BUGS 2 is not installed correctly');
+				throw new Exception('The Bug Genie is not installed correctly');
 			}
 			if ($scope != TBGContext::getScope()->getID() && $scope !== null)
 			{
@@ -388,7 +393,8 @@
 		
 		public static function getPasswordSalt()
 		{
-			return self::get('salt', 'core', 1);
+			$salt = self::get('salt');
+			return $salt;
 		}
 		
 		public static function getAwayState()

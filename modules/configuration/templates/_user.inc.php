@@ -12,7 +12,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="config_explanation" colspan="2"><?php echo __('This is the key used for remote cli access'); ?></td>
+		<td class="config_explanation" colspan="2"><?php echo __('Whenever the "remote security key" is needed, this is the key'); ?></td>
 	</tr>
 	<tr>
 		<td><label for="requirelogin"><?php echo __('Anonymous access'); ?></label></td>

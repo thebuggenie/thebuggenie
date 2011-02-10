@@ -138,10 +138,7 @@
 			$settings['highlight_default_lang'] = 'html4strict';
 			$settings['highlight_default_numbering'] = '3';
 			$settings['highlight_default_interval'] = '10';
-			if (TBGContext::isInstallmode())
-			{
-				$settings['salt'] = sha1(time().mt_rand(1000, 10000));
-			}
+			$settings['salt'] = sha1(time().mt_rand(1000, 10000));
 
 			$scope_id = $scope->getID();
 			foreach ($settings as $settings_name => $settings_val)

@@ -33,6 +33,15 @@
 
 		public function do_execute()
 		{
+			if (file_exists(THEBUGGENIE_PATH . 'installed'))
+			{
+				$this->cliEcho("The Bug Genie seems to already be installed.\n", 'red', 'bold');
+				$this->cliEcho('Please remove the file ');
+				$this->cliEcho(THEBUGGENIE_PATH.'installed', 'white', 'bold');
+				$this->cliEcho(' and try again.');
+				$this->cliEcho("\n");
+				return;
+			}
 			$this->cliEcho("\nWelcome to the \"The Bug Genie\" installation wizard!\n", 'white', 'bold');
 			$this->cliEcho("This wizard will take you through the installation of The Bug Genie.\nRemember that you can also install The Bug Genie from your web-browser.\n");
 			$this->cliEcho("Simply point your web-browser to the The Bug Genie subdirectory on your web server,\nand the installation will start.\n\n");
@@ -426,8 +435,12 @@
 							$this->cliEcho("with the following line inside:\n");
 							$this->cliEcho('3.0, installed ' . date('d.m.Y H:i'), 'blue', 'bold');
 							$this->cliEcho("\n");
+							$this->cliEcho("This can be done by running the following command when installation has finished:\n");
+							$this->cliEcho('echo "3.0, installed ' . date('d.m.Y H:i').'" > '.THEBUGGENIE_PATH.'installed', 'white', 'bold');
+							$this->cliEcho("\n");
 							$this->cliEcho("Press ENTER to continue ... ");
 							$this->pressEnterToContinue();
+							$this->cliEcho("\n");
 							$this->cliEcho("\n");
 						}
 						else

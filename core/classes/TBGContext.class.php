@@ -1473,6 +1473,7 @@
 			{
 				TBGLogging::log("Setting scope from function parameter");
 				self::$_scope = $scope;
+				TBGSettings::forceSettingsReload();
 				TBGLogging::log("...done (Setting scope from function parameter)");
 				return true;
 			}
@@ -1496,6 +1497,7 @@
 					TBGLogging::log("Setting scope from hostname");
 					$theScope = TBGContext::factory()->TBGScope($row->get(TBGScopesTable::ID), $row);
 					self::$_scope = $theScope;
+					TBGSettings::forceSettingsReload();
 					TBGLogging::log("...done (Setting scope from hostname)");
 					return true;
 				}
