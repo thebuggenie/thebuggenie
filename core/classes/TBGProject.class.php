@@ -693,6 +693,7 @@
 		{
 			parent::setName($name);
 			$this->_key = strtolower($this->getStrippedProjectName());
+			if ($this->_key == '') $this->_key = 'project'.$this->getID();
 		}
 		
 		/**
