@@ -238,7 +238,7 @@
 			if (!$this->preformat) $output .= "<pre>";
 			$this->preformat = true;
 
-			$output .= htmlspecialchars($matches[1]);
+			$output .= $matches[1];
 
 			return $output."\n";
 		}
