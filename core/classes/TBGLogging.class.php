@@ -24,7 +24,7 @@
 		const LEVEL_WARNING_RISK = 15;
 		const LEVEL_FATAL = 20;
 		
-		protected static $_logging_enabled = true;
+		protected static $_logging_enabled = false;
 		
 		protected static $_logfile;
 		

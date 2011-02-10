@@ -358,12 +358,15 @@
 						</div>
 						<b class=\"xbottom\"><b class=\"xb4\"></b><b class=\"xb3\"></b><b class=\"xb2\"></b><b class=\"xb1\"></b></b>
 					</div>";
-					echo "<h3 style=\"margin-top: 50px;\">Log messages (may contain useful information, but will not be submitted):</h3>";
-					foreach (TBGLogging::getEntries() as $entry)
+					if (TBGLogging::isEnabled())
 					{
-						$color = TBGLogging::getCategoryColor($entry['category']);
-						$lname = TBGLogging::getLevelName($entry['level']);
-						echo "<div class=\"log_{$entry['category']}\"><strong>{$lname}</strong> <strong style=\"color: #{$color}\">[{$entry['category']}]</strong> <span style=\"color: #555; font-size: 10px; font-style: italic;\">{$entry['time']}</span>&nbsp;&nbsp;{$entry['message']}</div>";
+						echo "<h3 style=\"margin-top: 50px;\">Log messages (may contain useful information, but will not be submitted):</h3>";
+						foreach (TBGLogging::getEntries() as $entry)
+						{
+							$color = TBGLogging::getCategoryColor($entry['category']);
+							$lname = TBGLogging::getLevelName($entry['level']);
+							echo "<div class=\"log_{$entry['category']}\"><strong>{$lname}</strong> <strong style=\"color: #{$color}\">[{$entry['category']}]</strong> <span style=\"color: #555; font-size: 10px; font-style: italic;\">{$entry['time']}</span>&nbsp;&nbsp;{$entry['message']}</div>";
+						}
 					}
 		}
 echo "
@@ -376,7 +379,6 @@ echo "
 	
 	function tbg_error_handler($code, $error, $file, $line_number)
 	{
-		if (error_reporting() == E_USER_ERROR) return;
 		throw new Exception($error, $code);
 		//tbg_exception($error, array('code' => $code, 'file' => $file, 'line' => $line_number));
 	}
