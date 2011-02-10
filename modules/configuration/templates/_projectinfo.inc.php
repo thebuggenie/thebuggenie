@@ -1,6 +1,6 @@
-<table style="width: 790px;" cellpadding=0 cellspacing=0>
+<table style="table-layout: fixed; width: 790px;" cellpadding=0 cellspacing=0>
 	<tr class="hover_highlight">
-		<td style="padding: 4px; width: 200px;">
+		<td style="padding: 4px; width: 192px;">
 			<b><?php echo __('Project owner'); ?></b>
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
 				<?php include_component('main/identifiableselector', array(	'html_id'		=> 'owned_by_change',
@@ -13,7 +13,7 @@
 																		'include_teams'		=> true)); ?>
 			<?php endif; ?>
 		</td>
-		<td style="<?php if (!$project->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px; width: 580px;" id="owned_by_name">
+		<td style="<?php if (!$project->hasOwner()): ?>display: none; <?php endif; ?>padding: 2px; width: 470px;" id="owned_by_name">
 			<div style="width: 270px; display: <?php if ($project->hasOwner()): ?>inline<?php else: ?>none<?php endif; ?>;" id="owned_by_name">
 				<?php if ($project->getOwnerType() == TBGIdentifiableClass::TYPE_USER): ?>
 					<?php echo include_component('main/userdropdown', array('user' => $project->getOwner())); ?>
@@ -101,10 +101,23 @@
 		<td style="width: 200px;"><label for="project_name"><?php echo __('Project name'); ?></label></td>
 		<td style="width: 580px;">
 			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-				<input type="text" name="project_name" id="project_name_input" value="<?php print $project->getName(); ?>" style="width: 100%;">
+				<input type="text" name="project_name" id="project_name_input" onblur="updateProjectPrefix('<?php echo make_url('configure_project_get_updated_key', array('project_id' => $project->getID())); ?>', <?php echo $project->getID(); ?>);" value="<?php print $project->getName(); ?>" style="width: 100%;">
 			<?php else: ?>
 				<?php echo $project->getName(); ?>
 			<?php endif; ?>
+		</td>
+	</tr>
+	<tr>
+	<tr>
+		<td style="width: 200px;"><label for="project_name"><?php echo __('Project key'); ?></label></td>
+		<td style="width: 580px; position: relative;">
+			<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+				<div id="project_key_indicator" class="semi_transparent" style="position: absolute; height: 23px; background-color: #FFF; width: 210px; text-align: center; display: none;"><?php echo image_tag('spinning_16.gif'); ?></div>
+				<input type="text" name="project_key" id="project_key_input" value="<?php print $project->getKey(); ?>" style="width: 200px;">
+			<?php else: ?>
+				<?php echo $project->getKey(); ?>
+			<?php endif; ?>
+			<div style="float: right; margin-right: 5px;" class="faded_out"><?php echo __('This is a part of all urls referring to this project'); ?></div>
 		</td>
 	</tr>
 	<tr>

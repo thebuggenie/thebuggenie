@@ -945,3 +945,8 @@ function backToEditProject(url, project_id)
 {
 	_updateDivWithJSONFeedback(url, 'backdrop_detail_content', 'backdrop_detail_indicator', false);
 }
+
+function updateProjectPrefix(url, project_id)
+{
+	_postFormWithJSONFeedback(url, 'project_info', 'project_key_indicator', null, '', null, null, 'project_key_input');
+}

@@ -1026,6 +1026,9 @@
 
 					$message = ($old_key != $this->project->getKey()) ? TBGContext::getI18n()->__('%IMPORTANT%: The project key has changed. Remember to replace the current url with the new project key', array('%IMPORTANT%' => '<b>'.TBGContext::getI18n()->__('IMPORTANT').'</b>')) : '';
 					
+					if ($request->hasParameter('project_key'))
+						$this->project->setKey($request->getParameter('project_key'));
+					
 					if ($request->hasParameter('use_prefix'))
 						$this->project->setUsePrefix((bool) $request->getParameter('use_prefix'));
 					
@@ -3885,4 +3888,19 @@
 				}
 			}
 		}
+		
+		public function runGetUpdatedProjectKey(TBGRequest $request)
+		{
+			try
+			{
+				$this->project = TBGContext::factory()->TBGProject($request->getParameter('project_id'));
+			}
+			catch (Exception $e) {}
+			
+			if (!$this->project instanceof TBGProject) return $this->return404(TBGContext::getI18n()->__("This project doesn't exist"));
+			$this->project->setName($request->getParameter('project_name'));
+			
+			return $this->renderJSON(array('content' => $this->project->getKey()));
+		}
+		
 	}

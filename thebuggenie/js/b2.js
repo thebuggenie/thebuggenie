@@ -191,7 +191,7 @@ function _updateDivWithJSONFeedback(url, update_element, indicator, insertion, c
 	});
 }
 
-function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done, update_div, insertion, show_divs_when_done)
+function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done, update_div, insertion, show_divs_when_done, update_form_elm)
 {
 	var params = Form.serialize(formname);
 	new Ajax.Request(url, {
@@ -223,6 +223,15 @@ function _postFormWithJSONFeedback(url, formname, indicator, hide_divs_when_done
 				{
 					$(update_div).update(content);
 				}
+				if (json && json.message)
+				{
+					successMessage(json.message);
+				}
+			}
+			if (update_form_elm != '' && $(update_form_elm))
+			{
+				content = (json) ? json.content : transport.responseText;
+				$(update_form_elm).setValue(content);
 				if (json && json.message)
 				{
 					successMessage(json.message);

@@ -706,6 +706,11 @@
 			return $this->_key;
 		}
 		
+		public function setKey($key)
+		{
+			$this->_key = $key;
+		}
+		
 		/**
 		 * Returns homepage
 		 *
