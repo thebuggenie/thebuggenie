@@ -5,7 +5,7 @@
 	</ul>
 </div>
 <div id="publish_settings_menu_panes">
-	<div id="publish_tab_settings_pane" style="margin: 10px 0 0 0; width: 740px; display: none;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
+	<div id="publish_tab_settings_pane" style="margin: 10px 0 0 0; width: 740px;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
 			<table style="width: 680px;" class="padded_table" cellpadding=0 cellspacing=0>
 				<tr>
@@ -61,14 +61,14 @@
 				</tr>
 			</table>
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-			<div class="rounded_box iceblue borderless" style="margin: 0 0 5px 0; width: 700px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
+			<div class="rounded_box iceblue borderless" style="margin: 0 0 5px 0; width: 740px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
 				<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save%" to save wiki settings', array('%save%' => __('Save'))); ?></div>
 				<input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
 			</div>
 		<?php endif; ?>
 		</form>
 	</div>
-	<div id="publish_tab_import_pane" style="margin: 10px 0 0 0; width: 740px;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
+	<div id="publish_tab_import_pane" style="margin: 10px 0 0 0; width: 740px; display: none;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
 			<input type="hidden" name="import_articles" value="1">
 			<p>
@@ -93,7 +93,7 @@
 			<?php endforeach; ?>
 			</ul>
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
-			<div class="rounded_box iceblue borderless" style="margin: 0 0 5px 0; width: 700px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
+			<div class="rounded_box iceblue borderless" style="margin: 0 0 5px 0; width: 740px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
 				<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%import_articles%" to import the selected articles', array('%import_articles%' => __('Import articles'))); ?></div>
 				<input type="submit" id="submit_import_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Import articles'); ?>">
 			</div>
