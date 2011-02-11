@@ -1,4 +1,4 @@
-<div class="rounded_box white borderless shadowed backdrop_box large">
+<div class="rounded_box white borderless shadowed backdrop_box large" id="project_config_popup_main_container">
 	<div class="backdrop_detail_header">
 		<?php echo __('Configure project'); ?>
 	</div>

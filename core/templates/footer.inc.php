@@ -49,5 +49,25 @@
 		<?php /*foreach (TBGContext::getI18n()->getMissingStrings() as $text => $t): ?>
 			<?php echo '$strings[\'' . str_replace("'", "\'", $text) . '\'] = \'' . str_replace("'", "\'", $text) . "';\n"; ?>
 		<?php endforeach; */?>
+		<script type="text/javascript">
+			var containerResize = function ()
+			{
+				if ($('fullpage_backdrop').visible())
+				{
+					var docheight = document.viewport.getHeight();
+					var backdropheight = $('backdrop_detail_content').getHeight();
+					if (backdropheight > (docheight - 100))
+					{
+						$('backdrop_detail_content').setStyle({height: docheight - 100 + 'px', overflow: 'scroll'});
+					}
+					else
+					{
+						$('backdrop_detail_content').setStyle({height: 'auto', overflow: ''});
+					}
+				}
+			}
+
+			Event.observe(window, 'resize', containerResize);
+		</script>		
 	</body>
 </html>
