@@ -71,28 +71,34 @@
 	<div id="publish_tab_import_pane" style="margin: 10px 0 0 0; width: 740px; display: none;<?php if ($access_level == TBGSettings::ACCESS_FULL): ?> border-bottom: 0;<?php endif; ?>">
 		<form accept-charset="<?php echo TBGContext::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_module', array('config_module' => $module->getName())); ?>" enctype="multipart/form-data" method="post">
 			<input type="hidden" name="import_articles" value="1">
-			<p>
-				<?php echo __('Please select which articles to import, from the list of available articles below'); ?>
+			<div class="rounded_box lightgrey borderless" style="margin-bottom: 5px;">
+				<label for="select_article_categories"><?php echo __('Show articles in category'); ?>: </label>
+				<select id="select_article_categories" onchange="$('import_articles_list').childElements().each(function (elm) { if ($('select_article_categories').getValue() == '' || elm.hasClassName('article_category_' + $('select_article_categories').getValue())) { elm.show(); var chkval = true; } else { elm.hide(); } elm.select('input[type=checkbox]').each(function (chkbx) { chkbx.enabled = chkval; }); })">
+					<option value="" selected><?php echo __('All categories'); ?></option>
+					<?php foreach ($categories as $category_key => $category_name): ?>
+						<option value="<?php echo $category_key; ?>"><?php echo $category_name; ?></option>
+					<?php endforeach; ?>
+				</select>
+				<br style="clear: both;">
+				<input type="checkbox" id="import_articles_select_all" onchange="$('import_articles_list').childElements().each(function (elm) { elm.select('input[type=checkbox]').each(function (chkbx) { chkbx.checked = $('import_articles_select_all').checked; }); })">&nbsp;<?php echo __('Toggle selection on visible articles'); ?>
+			</div>
+			<p class="faded_out" style="margin-bottom: 5px;">
+				<?php echo __('Please select which articles to import, from the list of available articles below. When you are finished, click the %import_articles% button at the bottom', array('%import_articles%' => __('Import articles'))); ?>
 			</p>
-			<label for="select_article_categories"><?php echo __('Show articles in category'); ?>: </label>
-			<select id="select_article_categories" onchange="$('import_articles_list').childElements().each(function (elm) { if ($('select_article_categories').getValue() == '' || elm.hasClassName('article_category_' + $('select_article_categories').getValue())) { elm.show(); var chkval = true; } else { elm.hide(); var chkval = false; } elm.select('input[type=checkbox]').each(function (chkbx) { chkbx.checked = chkval; chkbx.enabled = chkval; }); })">
-				<option value="" selected><?php echo __('All categories'); ?></option>
-				<?php foreach ($categories as $category_key => $category_name): ?>
-					<option value="<?php echo $category_key; ?>"><?php echo $category_name; ?></option>
-				<?php endforeach; ?>
-			</select>
 			<ul class="simple_list" id="import_articles_list">
 			<?php foreach ($articles as $article_name => $details): ?>
 				<li class="article_category_<?php echo $details['category']; ?>">
-					<input type="checkbox" value="1" name="import_article[<?php echo $article_name; ?>]" id="import_article_<?php echo strtolower($article_name); ?>">&nbsp;
+					<input type="checkbox" value="1" name="import_article[<?php echo $article_name; ?>]" id="import_article_<?php echo strtolower($article_name); ?>"<?php if (!$details['exists']) echo ' selected'; ?>>&nbsp;
 					<label for="import_article_<?php echo strtolower($article_name); ?>"><?php echo urldecode($article_name); ?></label>
 					<?php if ($details['exists']): ?>
+						&nbsp;<?php echo link_tag(make_url('publish_article', array('article_name' => $article_name)), __('Open existing article in new window'), array('style' => 'font-size: 0.8em;', 'target' => "_{$article_name}")); ?>
 						<div class="faded_out"><?php echo __('Importing this article will overwrite an existing article in the database'); ?></div>
 					<?php endif; ?>
 				</li>
 			<?php endforeach; ?>
 			</ul>
 		<?php if ($access_level == TBGSettings::ACCESS_FULL): ?>
+			<br style="clear: both;">
 			<div class="rounded_box iceblue borderless" style="margin: 0 0 5px 0; width: 740px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
 				<div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%import_articles%" to import the selected articles', array('%import_articles%' => __('Import articles'))); ?></div>
 				<input type="submit" id="submit_import_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Import articles'); ?>">
