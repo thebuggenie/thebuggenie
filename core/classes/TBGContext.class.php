@@ -30,6 +30,8 @@
 		static protected $_environment = 2;
 
 		static protected $debug_mode = true;
+		
+		static protected $_partials_visited = array();
 
 		/**
 		 * The current user
@@ -1750,6 +1752,18 @@
 			}
 		}
 		
+		public static function visitPartial($template_name)
+		{
+			if (!array_key_exists($template_name, self::$_partials_visited))
+			{
+				self::$_partials_visited[$template_name] = array('time' => 0, 'count' => 1);
+			}
+			else
+			{
+				self::$_partials_visited[$template_name]['count']++;
+			}
+		}
+		
 		/**
 		 * Performs an action
 		 * 
@@ -1904,12 +1918,11 @@
 				$load_time = self::getLoadtime();
 				if (class_exists('B2DB'))
 				{
-					$run_summary = self::getI18n()->__('Page load time: %load_time%, with %num_queries% queries. Scope ID: %scope_id%.', array('%load_time%' => ($load_time >= 1) ? self::getI18n()->__('%num_seconds% seconds', array('%num_seconds%' => round($load_time, 2))) : self::getI18n()->__('%num_milliseconds% ms', array('%num_milliseconds%' => round($load_time * 1000, 1))), '%num_queries%' => B2DB::getSQLHits(), '%scope_id%' => (self::getScope() instanceof TBGScope) ? self::getScope()->getID() : self::getI18n()->__('unknown')));
+					$tbg_summary['db_queries'] = B2DB::getSQLHits();
 				}
-				else
-				{
-					$run_summary = self::getI18n()->__('Page load time: %load_time%.', array('%load_time%' => ($load_time >= 1) ? self::getI18n()->__('%num_seconds% seconds', array('%num_seconds%' => round($load_time, 2))) : self::getI18n()->__('%num_milliseconds% ms', array('%num_milliseconds%' => round($load_time * 1000, 1)))));
-				}
+				$tbg_summary['load_time'] = ($load_time >= 1) ? round($load_time, 2) . ' seconds' : round($load_time * 1000, 1) . 'ms';
+				$tbg_summary['scope_id'] = self::getScope() instanceof TBGScope ? self::getScope()->getID() : 'unknown';
+				self::ping();
 
 				// Render footer template if any, and store the output in a variable
 				if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateFooter())

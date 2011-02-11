@@ -24,13 +24,15 @@
 		const LEVEL_WARNING_RISK = 15;
 		const LEVEL_FATAL = 20;
 		
-		protected static $_logging_enabled = false;
+		protected static $_logging_enabled = true;
 		
 		protected static $_logfile;
 		
 		protected static $_logonajaxcalls = true;
 		
 		protected static $_entries = array();
+		
+		protected static $_categorized_entries = array();
 
 		protected static $_loglevel = 1;
 
@@ -55,6 +57,7 @@
 				$time_msg = (($load_time = TBGContext::getLoadtime()) >= 1) ? round($load_time, 2) . ' seconds' : round(($load_time * 1000), 3) . ' ms';
 				
 				self::$_entries[] = array('category' => $category, 'time' => $time_msg, 'message' => $message, 'level' => $level);
+				self::$_categorized_entries[$category][] = array('time' => $time_msg, 'message' => $message, 'level' => $level);
 			}
 		}
 

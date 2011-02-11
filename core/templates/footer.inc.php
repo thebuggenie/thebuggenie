@@ -1,9 +1,4 @@
-				<?php
-					
-					TBGEvent::createNew('core', 'footer_begin')->trigger();
-					TBGContext::ping();
-				
-				?>
+				<?php TBGEvent::createNew('core', 'footer_begin')->trigger(); ?>
 				</td>
 			</tr>
 			<tr>
@@ -12,7 +7,7 @@
 						<table cellpadding=0 cellspacing=0 style="table-layout: auto; margin: 0 auto 0 auto;">
 							<tr>
 								<td style="width: auto;">
-									<?php echo image_tag('footer_logo.png', array('alt' => $run_summary, 'title' => $run_summary, 'onclick' => (TBGLogging::isEnabled()) ? "\$('log_messages').toggle();" : '')); ?>
+									<?php echo image_tag('footer_logo.png'); ?>
 									<?php echo __('%thebuggenie%, <b>friendly</b> issue tracking since 2002', array('%thebuggenie%' => link_tag(make_url('about'), 'The Bug Genie'))); ?>.
 									<?php echo __('Licensed under the MPL 1.1 only, read it at %link_to_MPL%', array('%link_to_MPL%' => '<a href="http://www.opensource.org/licenses/mozilla1.1.php">opensource.org</a>')); ?>
 									<?php if ($tbg_user->canAccessConfigurationPage()): ?>
@@ -22,12 +17,40 @@
 								<?php /*<td style="width: 100px; text-align: center;"><a href="http://validator.w3.org/check?uri=referer" class="image"><img src="<?php echo TBGContext::getTBGPath(); ?>valid-html401.png" alt="Valid HTML 4.01 Transitional" height="31" width="88"></a></td> */ ?>
 							</tr>
 						</table>
+						<div style="border-top: 1px dotted #CCC;">
+							<table style="width: 100%; border: 0;" cellpadding="0" cellspacing="0">
+								<tr>
+									<td style="width: 400px; cursor: pointer; padding: 3px; font-size: 11px; font-family: Ubuntu;">
+										<?php echo image_tag('debug_route.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+										<b>Current route: </b>[<i><?php echo TBGContext::getRouting()->getCurrentRouteName(); ?></i>] <?php echo TBGContext::getRouting()->getCurrentRouteModule(); ?> / <?php echo TBGContext::getRouting()->getCurrentRouteAction() ?>
+									</td>
+									<td style="width: 100px; cursor: pointer; padding: 3px; font-size: 11px; font-family: Ubuntu;">
+										<?php echo image_tag('debug_time.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+										<?php echo $tbg_summary['load_time']; ?>
+									</td>
+									<td style="width: 80px; cursor: pointer; padding: 3px; font-size: 11px; font-family: Ubuntu;">
+										<?php echo image_tag('debug_scope.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+										<b>Scope: </b><?php echo $tbg_summary['scope_id']; ?>
+									</td>
+									<td style="width: 150px; cursor: pointer; padding: 3px; font-size: 11px; font-family: Ubuntu;">
+										<?php echo image_tag('debug_database.png', array('style' => 'float: left; margin-right: 5px;')); ?>
+										<?php if (array_key_exists('db_queries', $tbg_summary)): ?>
+											<b><?php echo $tbg_summary['db_queries']; ?></b> database queries
+										<?php else: ?>
+											<span class="faded_out">No database queries</span>
+										<?php endif; ?>
+									</td>
+									<td style="padding: 3px; font-size: 11px; font-family: Ubuntu; text-align: right;">
+										<span onclick="$('log_messages').toggle();" style="cursor: pointer;">
+											Toggle log messages
+											<?php echo image_tag('debug_log.png', array('style' => 'float: right; margin-left: 5px; cursor: pointer;')); ?>
+										</span>
+									</td>
+								</tr>
+							</table>
+						</div>
 					</div>
-					<?php
-				
-					TBGEvent::createNew('core', 'footer_end')->trigger();
-				
-					?>
+					<?php TBGEvent::createNew('core', 'footer_end')->trigger(); ?>
 				</td>
 			</tr>
 		</table>
@@ -43,7 +66,6 @@
 					<div class="log_<?php echo $entry['category']; ?>"><strong><?php echo strtoupper(TBGLogging::getLevelName($entry['level'])); ?></strong> <strong style="color: #<?php echo $color; ?>">[<?php echo $entry['category']; ?>]</strong> <span style="color: #555; font-size: 10px; font-style: italic;"><?php echo $entry['time']; ?></span>&nbsp;&nbsp;<?php echo $entry['message']; ?></div>
 				<?php endforeach; ?>
 				</div>
-				<div style="border-top: 1px solid #BBB; padding-top: 5px; font-size: 13px; font-weight: bold;"><?php echo $run_summary; ?></div>
 			</div>
 		<?php endif; ?>
 		<?php /*foreach (TBGContext::getI18n()->getMissingStrings() as $text => $t): ?>

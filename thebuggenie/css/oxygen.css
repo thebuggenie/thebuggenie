@@ -98,7 +98,7 @@ div.image_container.thumb img.image { width: 220px; }
 .footer_bar { height: 35px; vertical-align: bottom; }
 .footer_container { background-color: #F5F5F5; width: 100%; border-top: 1px solid #DDD; text-align: center; margin-top: 10px; }
 .footer_container img { float: left; margin: 0 5px 0 0; }
-.footer_container td { font-size: 0.9em; line-height: 1.2; padding: 5px; }
+.footer_container td { font-size: 0.9em; line-height: 1.2; padding: 5px; text-shadow: 1px 1px 0px #FFF; }
 /* footer section */
 
 /* login and registration page styling */
