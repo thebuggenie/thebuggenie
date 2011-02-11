@@ -27,7 +27,30 @@
 
 		public function componentSettings()
 		{
-			
+			$articles = array();
+			$categories = array();
+			$_path_handle = opendir(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR);
+			while ($article_name = readdir($_path_handle))
+			{
+				if (strpos($article_name, '.') === false)
+				{
+					if (strpos($article_name, '%3A') !== false)
+					{
+						$article_elements = explode('%3A', $article_name);
+						$category = array_shift($article_elements);
+						$categories[strtolower($category)] = $category;
+					}
+					else
+					{
+						$category = '';
+					}
+					
+					$articles[$article_name] = array('exists' => TBGWikiArticle::doesArticleExist(urldecode($article_name)), 'category' => strtolower($category));
+				}
+			}
+			ksort($articles, SORT_STRING);
+			$this->articles = $articles;
+			$this->categories = $categories;
 		}
 
 		public function componentLeftmenu()

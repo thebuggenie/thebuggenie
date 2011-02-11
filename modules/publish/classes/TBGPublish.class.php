@@ -205,12 +205,27 @@
 
 		public function postConfigSettings(TBGRequest $request)
 		{
-			$settings = array('allow_camelcase_links', 'menu_title', 'hide_wiki_links', 'free_edit');
-			foreach ($settings as $setting)
+			if ($request->hasParameter('import_articles'))
 			{
-				if ($request->hasParameter($setting))
+				$cc = 0;
+				foreach ($request->getParameter('import_article') as $article_name => $import)
 				{
-					$this->saveSetting($setting, $request->getParameter($setting));
+					$cc++;
+					TBGArticlesTable::getTable()->deleteArticleByName(urldecode($article_name));
+					$content = file_get_contents(TBGContext::getIncludePath() . 'modules' . DIRECTORY_SEPARATOR . 'publish' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $article_name);
+					TBGWikiArticle::createNew(urldecode($article_name), $content, true, null, array('overwrite' => true, 'noauthor' => true));
+				}
+				TBGContext::setMessage('module_message', TBGContext::getI18n()->__('%number_of_articles% articles imported successfully', array('%number_of_articles%' => $cc)));
+			}
+			else
+			{
+				$settings = array('allow_camelcase_links', 'menu_title', 'hide_wiki_links', 'free_edit');
+				foreach ($settings as $setting)
+				{
+					if ($request->hasParameter($setting))
+					{
+						$this->saveSetting($setting, $request->getParameter($setting));
+					}
 				}
 			}
 		}

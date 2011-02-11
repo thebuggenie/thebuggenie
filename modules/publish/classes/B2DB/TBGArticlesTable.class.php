@@ -63,6 +63,15 @@
 			return $row;
 		}
 
+		public function doesArticleExist($name)
+		{
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::NAME, $name);
+			$crit->addWhere(self::SCOPE, TBGContext::getScope()->getID());
+
+			return (bool) $this->doCount($crit);
+		}
+
 		public function deleteArticleByName($name)
 		{
 			$crit = $this->getCriteria();

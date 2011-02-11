@@ -1840,7 +1840,10 @@
 						try
 						{
 							$module->postConfigSettings($request);
-							TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Settings saved successfully'));
+							if (!TBGContext::hasMessage('module_message'))
+							{
+								TBGContext::setMessage('module_message', TBGContext::getI18n()->__('Settings saved successfully'));
+							}
 						}
 						catch (Exception $e)
 						{

@@ -124,6 +124,11 @@
 			return null;
 		}
 
+		public static function doesArticleExist($article_name)
+		{
+			return TBGArticlesTable::getTable()->doesArticleExist($article_name);
+		}
+
 		public static function deleteByName($article_name)
 		{
 			TBGArticlesTable::getTable()->deleteArticleByName($article_name);
