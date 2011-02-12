@@ -21,7 +21,7 @@
 			{
 				if (($project = TBGProject::getByKey($request->getParameter('project_key'))) instanceof TBGProject)
 				{
-					$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_allpages', $project->getID()));
+					$this->forward403unless(TBGContext::getUser()->hasPageAccess('project_issues', $project->getID()));
 					TBGContext::getResponse()->setPage('project_issues');
 					TBGContext::setCurrentProject($project);
 					$this->getResponse()->setProjectMenuStripHidden(false);
