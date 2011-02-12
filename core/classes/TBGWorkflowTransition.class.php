@@ -65,7 +65,7 @@
 
 		public static function getTemplates()
 		{
-			$templates = array('main/updateissueproperties' => 'Set issue properties', 'template_2' => 'Template 2', 'template_3' => 'Template 3');
+			$templates = array('main/updateissueproperties' => 'Set issue properties or add comment');
 			$event = TBGEvent::createNew('core', 'workflow_templates', null, array(), $templates)->trigger();
 			
 			return $event->getReturnList();
