@@ -630,7 +630,6 @@
 				$cols = explode(' !! ', $matches[1]);
 				foreach ($cols as $col)
 				{
-					$col = htmlspecialchars($col);
 					$output .= "<th>{$col}</th>";
 				}
 			}
