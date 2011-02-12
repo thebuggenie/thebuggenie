@@ -484,7 +484,8 @@ th.highlighted_column { background-color: #C1C1C1; }
 
 /* end config styling */
 
-#log_messages { filter:alpha(opacity=90); -moz-opacity:0.9; -khtml-opacity: 0.9; opacity: 0.9; position: absolute; top: 10px; width: 990px; padding: 5px; border: 1px solid #DDD; background-color: #F5F5F5; height: 525px; left: 10px; color: #000; }
+#log_messages, #log_timing, #log_sql { filter:alpha(opacity=90); -moz-opacity:0.9; -khtml-opacity: 0.9; opacity: 0.9; position: fixed; top: 10px; width: 98%; margin: 5px auto; padding: 5px; border: 1px solid #DDD; background-color: #F5F5F5; height: 540px; left: 10px; color: #000; font-size: 12px; }
+#log_messages div.log, #log_timing div.log, #log_sql div.log { height: 500px; overflow: auto; font-size: 12px; }
 
 /* sidebar formatting */
 .side_bar .header { margin: 2px 0 5px 0; padding: 3px 3px 3px 5px; font-weight: bold;  border-bottom: 1px solid #CCC; background-color: transparent; }

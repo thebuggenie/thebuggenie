@@ -105,6 +105,12 @@
 		 */
 		public static function includeComponent($template, $params = array())
 		{
+			$debug = TBGContext::isDebugMode();
+			if ($debug)
+			{
+				$time = explode(' ', microtime());
+				$pretime = $time[1] + $time[0];
+			}
 			list ($template_name, $actionClass, $actionToRunName) = self::_doesComponentExist($template);
 
 			foreach ($params as $key => $val)
@@ -113,6 +119,12 @@
 			}
 			$actionClass->$actionToRunName();
 			self::presentTemplate($template_name, $actionClass->getParameterHolder());
+			if ($debug)
+			{
+				$time = explode(' ', microtime());
+				$posttime = $time[1] + $time[0];
+				TBGContext::visitPartial($template, $posttime - $pretime);
+			}
 		}
 
 		/**
@@ -123,8 +135,20 @@
 		 */
 		public static function includeTemplate($template, $params = array())
 		{
+			$debug = TBGContext::isDebugMode();
+			if ($debug)
+			{
+				$time = explode(' ', microtime());
+				$pretime = $time[1] + $time[0];
+			}
 			$template_name = self::getFinalTemplateName($template);
 			self::presentTemplate($template_name, $params);
+			if ($debug)
+			{
+				$time = explode(' ', microtime());
+				$posttime = $time[1] + $time[0];
+				TBGContext::visitPartial($template, $posttime - $pretime);
+			}
 		}
 
 		/**

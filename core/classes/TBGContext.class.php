@@ -29,7 +29,7 @@
 		
 		static protected $_environment = 2;
 
-		static protected $debug_mode = true;
+		static protected $debug_mode = false;
 		
 		static protected $_partials_visited = array();
 
@@ -1752,16 +1752,23 @@
 			}
 		}
 		
-		public static function visitPartial($template_name)
+		public static function visitPartial($template_name, $time)
 		{
+			if (!self::$debug_mode) return;
 			if (!array_key_exists($template_name, self::$_partials_visited))
 			{
-				self::$_partials_visited[$template_name] = array('time' => 0, 'count' => 1);
+				self::$_partials_visited[$template_name] = array('time' => $time, 'count' => 1);
 			}
 			else
 			{
 				self::$_partials_visited[$template_name]['count']++;
+				self::$_partials_visited[$template_name]['time'] += $time;
 			}
+		}
+		
+		public static function getVisitedPartials()
+		{
+			return self::$_partials_visited;
 		}
 		
 		/**
@@ -1807,6 +1814,11 @@
 					}
 				}
 
+				if (self::$debug_mode)
+				{
+					$time = explode(' ', microtime());
+					$pretime = $time[1] + $time[0];
+				}
 				if ($content === null)
 				{
 					TBGLogging::log('Running main pre-execute action');
@@ -1816,6 +1828,7 @@
 					{
 						$content = ob_get_clean();
 						TBGLogging::log('preexecute method returned something, skipping further action');
+						if (self::$debug_mode) $visited_templatename = "{$actionObject}::preExecute()";
 					}
 				}
 
@@ -1834,7 +1847,19 @@
 
 					// Running main route action
 					TBGLogging::log('Running route action '.$actionToRunName.'()');
-					if (self::getResponse()->getHttpStatus() == 200 && ($action_retval = $actionObject->$actionToRunName(self::getRequest())))
+					if (self::$debug_mode)
+					{
+						$time = explode(' ', microtime());
+						$action_pretime = $time[1] + $time[0];
+					}
+					$action_retval = $actionObject->$actionToRunName(self::getRequest());
+					if (self::$debug_mode)
+					{
+						$time = explode(' ', microtime());
+						$action_posttime = $time[1] + $time[0];
+						TBGContext::visitPartial("{$actionClassName}::{$actionToRunName}", $action_posttime - $action_pretime);					
+					}
+					if (self::getResponse()->getHttpStatus() == 200 && $action_retval)
 					{
 						// If the action returns *any* output, we're done, and collect the
 						// output to a variable to be outputted in context later
@@ -1878,6 +1903,12 @@
 						TBGLogging::log('...completed');
 					}
 				}
+				elseif (self::$debug_mode)
+				{
+					$time = explode(' ', microtime());
+					$posttime = $time[1] + $time[0];
+					TBGContext::visitPartial($visited_templatename, $posttime - $pretime);					
+				}
 
 				if (!isset($tbg_response))
 				{
@@ -1919,6 +1950,7 @@
 				if (class_exists('B2DB'))
 				{
 					$tbg_summary['db_queries'] = B2DB::getSQLHits();
+					$tbg_summary['db_timing'] = B2DB::getSQLTiming();
 				}
 				$tbg_summary['load_time'] = ($load_time >= 1) ? round($load_time, 2) . ' seconds' : round($load_time * 1000, 1) . 'ms';
 				$tbg_summary['scope_id'] = self::getScope() instanceof TBGScope ? self::getScope()->getID() : 'unknown';
