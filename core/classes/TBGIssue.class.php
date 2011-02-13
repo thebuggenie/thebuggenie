@@ -3634,7 +3634,7 @@
 			// Add all users relevant for all affected components
 			foreach ($this->getComponents() as $component_list)
 			{
-				$uids = array_merge($uids, $component_list['component']->getAssigneeIDs());
+				$uids = array_merge($uids, $component_list['component']->getAssignees());
 			}
 			
 			// Add the user who posted the issue
