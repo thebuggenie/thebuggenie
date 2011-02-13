@@ -57,6 +57,7 @@
 .article .textarea_hint { color: #999; font-size: 1.1em; }
 
 .article .content { padding-bottom: 5px; clear: both; }
+.frontpage .article .content .toc { margin-top: 0; }
 
 .article table { border: 0; border-collapse: collapse; }
 .article.edit table, .article.edit table td { border: 0; }
