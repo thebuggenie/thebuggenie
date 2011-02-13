@@ -363,7 +363,7 @@
 		 */
 		public function doDecorateHeader()
 		{
-			return ($this->_decoration == 1 || $this->_decoration == 3) ? true : false;
+			return ($this->_decoration == self::DECORATE_HEADER || $this->_decoration == self::DECORATE_BOTH || ($this->_decoration == self::DECORATE_CUSTOM && $this->_decor_header)) ? true : false;
 		}
 		
 		/**
@@ -372,7 +372,7 @@
 		 */
 		public function doDecorateFooter()
 		{
-			return ($this->_decoration == 2 || $this->_decoration == 3) ? true : false;
+			return ($this->_decoration == self::DECORATE_FOOTER || $this->_decoration == self::DECORATE_BOTH || ($this->_decoration == self::DECORATE_CUSTOM && $this->_decor_footer)) ? true : false;
 		}
 		
 		/**

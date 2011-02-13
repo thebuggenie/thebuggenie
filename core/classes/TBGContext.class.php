@@ -1939,6 +1939,10 @@
 				if (!self::getRequest()->isAjaxCall() && self::getResponse()->doDecorateHeader())
 				{
 					TBGLogging::log('decorating with header');
+					if (!file_exists(self::getResponse()->getHeaderDecoration()))
+					{
+						throw new TBGTemplateNotFoundException('Can not find header decoration: '. self::getResponse()->getHeaderDecoration());
+					}
 					require self::getResponse()->getHeaderDecoration();
 					$decoration_header = ob_get_clean();
 				}
