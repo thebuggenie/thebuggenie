@@ -42,8 +42,8 @@
 	$strings['Today'] = 'Hoy';
 	$strings['Yesterday'] = 'Ayer';
 	$strings['Tomorrow'] = 'Mañana';
-	$strings['Open'] = 'Abierto';
-	$strings['Closed'] = 'Cerrado';
+	$strings['Open'] = 'Abierta';
+	$strings['Closed'] = 'Cerrada';
 	$strings['Issue type'] = 'Tipo de petición';
 	$strings['Not determined'] = 'Indeterminado';
 	$strings['Category'] = 'Categoría';
@@ -233,7 +233,7 @@
 	$strings['Team'] = 'Equipo';
 	$strings['Timeline'] = 'Línea de tiempo';
 	$strings['Editing issues'] = 'Edición de peticiones';
-	$strings['To edit any of the details in this issue, move your mouse over that detail and press the icon that appears. Changes you make will stay unsaved until you either press the "Save" button that appears when you change the issue, or until you log out (the changes are then lost).'] = 'Para modificar cualquiera de los detalles en este pedido, mueva el ratón sobre ese detalle y pulse el icono que aparece. Los cambios que realice no quedarán guardados hasta que usted presione el botón "Guardar" que aparece al cambiar el pedido, o hasta que finalice la sesión (los cambios se perderan).';
+	$strings['To edit any of the details in this issue, move your mouse over that detail and press the icon that appears. Changes you make will stay unsaved until you either press the "%save%" button that appears when you change the issue, or until you log out (the changes are then lost).'] = 'Para modificar cualquiera de los detalles en este pedido, mueva el ratón sobre ese detalle y pulse el icono que aparece. Los cambios que realice no quedarán guardados hasta que usted presione el botón "%save%" que aparece al cambiar el pedido, o hasta que finalice la sesión (los cambios se perderan).';
 	$strings['Please wait while updating issue type'] = 'Por favor espere mientras se actualiza el tipo de petición';
 	$strings['Could not save your changes'] = 'No se pudieron guardar sus cambios';
 	$strings['Data that has been changed is highlighted in red below. Undo your changes to see the updated information'] = 'Los datos que han sido cambiados están marcados debajo en rojo. Deshaga los cambios para ver la información actualizada';
@@ -1049,7 +1049,7 @@
 	$strings['Number of issues'] = 'Número de peticiones';
 	$strings['# days ago'] = 'hace # días';
 	$strings['Number of issues per:'] = 'Cantidad de peticiones por:';
-	$strings['%number_of_issues_per% State (open / closed)'] = '%number_of_issues_per% Estado (abierto / cerrado)';
+	$strings['%number_of_issues_per% State (open / closed)'] = '%number_of_issues_per% Estado (abierta / cerrada)';
 	$strings['%number_of_issues_per% Category'] = '%number_of_issues_per% Categoría';
 	$strings['%number_of_issues_per% Priority level'] = '%number_of_issues_per% Nivel de prioridad';
 	$strings['%number_of_issues_per% Resolution'] = '%number_of_issues_per% Resolución';
@@ -1111,7 +1111,7 @@
 	$strings['No grouping'] = 'Sin agrupar';
 	$strings['Milestone'] = 'Punto de control';
 	$strings['Who\'s assigned'] = 'Quién está asignado';
-	$strings['State (open or closed)'] = 'Situación (abierto o cerrado)';
+	$strings['State (open or closed)'] = 'Situación (abierta o cerrada)';
 	$strings['Version'] = 'Versión';
 	$strings['Ascending'] = 'Ascendente';
 	$strings['Descending'] = 'Descendente';
@@ -1247,7 +1247,7 @@
 	$strings['This page shows all the available details for this step for the selected workflow, as well as transitions to and from this step.'] = 'Esta página muestra todos los detalles disponibles para este paso del flujo de trabajo seleccionado, como sus transiciones entrantes y salientes.';
 	$strings['You can add and remove transitions from this page, as well as manage properties for this step.'] = 'Puede agregar o quitar transiciones desde esta página, como también gestionar las propiedades de este paso.';
 	$strings['Edit this step'] = 'Editar este paso';
-	$strings['Open and editable'] = 'Abierto y editable';
+	$strings['Open and editable'] = 'Abierta y editable';
 	$strings['Editable'] = 'Editable';
 	$strings['Not editable'] = 'No se puede editar';
 	$strings['Not connected to a status'] = 'Sin conexión a un estado';
@@ -1265,7 +1265,7 @@
 	$strings['Configure workflow schemes'] = 'Configurar esquemas de flujo de trabajo';
 	$strings['Issue types with associated workflows: %number_of_associated_workflows%'] = 'Tipos de petición asociados al flujo de trabajo %number_of_associated_workflows%';
 	$strings['Delete this workflow scheme'] = 'Borrar este esquema de flujo de trabajo';
-	$strings['Create a copy of this workflow scheme'] = 'Creaar una copia de este esquema de flujo de trabajo';
+	$strings['Create a copy of this workflow scheme'] = 'Crear una copia de este esquema de flujo de trabajo';
 	$strings['Show / edit issue type associations'] = 'Mostrar / editar asociaciones de tipos de petición';
 	$strings['Error details:'] = 'Detalle del error:';
 	$strings['Show a list of all open issues assigned to me'] = 'Mostrar una lista de todos las peticiones abiertas asignadas a mí';
@@ -1504,7 +1504,7 @@
 	$strings['Don\'t show this again'] = 'No mostrar de nuevo'; 
 	$strings['Sprints overview'] = 'Resumen de Sprints'; 
 	$strings['Add new sprint'] = 'Agregar nuevo sprint'; 
-	$strings['Unassigned items / project backlog'] = 'Itmes sin asignar / backlog del proyecto'; 
+	$strings['Unassigned items / project backlog'] = 'Items sin asignar / backlog del proyecto'; 
 	$strings['Create a user story'] = 'Crear una nueva historia de usuario'; 
 	$strings['There are no items in the project backlog'] = 'No hay items en el backlog del proyecto';
 	$strings['Adding user story, please wait'] = 'Agregando historia de usuario, espere por favor'; 
@@ -1689,7 +1689,7 @@
 	$strings['Keep in mind that the original issue type scheme is uneditable, so to make any changes, make a copy of the first issue type scheme, or edit one that is not the one shipped with The Bug Genie'] = 'Recuerde que el esquema original no es editable, por lo tanto para hacer cualquier cambio, haga una copia del primer esquema, o edite que no es distribuido con The Bug Genie'; 
 	$strings['In use by %number_of_associated_projects% project(s)'] = 'En uso por %number_of_associated_projects% proyecto(s)'; 
 	$strings['Create a copy of this issue type scheme'] = 'Crear una copia de este esquema de tipos de petición'; 
-	$strings['Copy issue type scheme'] = 'Copiar el esquema de tipos de petición'; 
+	$strings['Copy issue type scheme'] = 'Copia del esquema de tipos de petición'; 
 	$strings['Please enter the name of the new issue type scheme'] = 'Por favor ingrese el nombre del nuevo esquema de tipos de petición'; 
 	$strings['New name'] = 'Nuevo nombre'; 
 	$strings['Copy of %old_name%'] = 'Copiar de %old_name%'; 
@@ -1915,3 +1915,21 @@
   $strings['Show team dashboard'] = 'Mostrar panel de control del equipo';   
   
   $strings['Please specify something to search for'] = 'Por favor especifique algo para buscar';
+  $strings['Close and reload'] = 'Cerrar y volver a cargar';
+
+  $strings["Total number of issues in this group: %number%"]  = "Cantidad total de peticiones en este grupo: %number%";
+
+  $strings['Attach one or more file(s) to this issue'] = 'Adjuntar uno o más archivos a este pedido'; 
+  $strings['Select a file'] = 'Seleccione un archivo'; 
+  $strings['Files bigger than %max_filesize% can not be attached. Please check that the file you are attaching is not bigger than this.'] = 'Los archivos más grandes que %max_filesize% no pueden ser adjuntados. Verifique que el archivo no sea más grande que esto.'; 
+  $strings['Describe the file'] = 'Describa el contenido del archivo'; 
+  $strings['Enter a few words about the file, so people can understand what it is/does'] = 'Escriba unas pocas palabras acerca del contenido del archivo, para que el resto de las personas pueda entender que es o que hace'; 
+  $strings['If you want to add a comment with the file, enter the comment here, and it will automatically be added to the issue with the file'] = 'Si quiere agregar un comentario con el archivo, ingrese aqui el comentario, y será agregado automáticamente a la petición con el archivo'; 
+  $strings['Upload and attach'] = 'Subir y adjuntar'; 
+  $strings['Press the %upload_and_attach% button to upload and attach the file'] = 'Presione el botón %upload_and_attach% para cargar el archivo'; 
+  $strings['Uploading file, please wait'] = 'Subiendo archivo, por favor espere'; 
+  $strings['Files already attached'] = 'Archivos ya adjuntados'; 
+  $strings['You haven\'t uploaded any files right now (not including already attached files)'] = 'Ahora no ha adjuntado ningún archivo (no se incluyen los ya adjuntados)'; 
+  $strings['Click %done% when you have uploaded the files you want to attach'] = 'Haga clic en %done% cuando haya subido el archivo a adjuntar'; 
+  $strings['%select_yourself% or select a friend below'] = '%select_yourself% o seleccione un amigo'; 
+  $strings['Related issues and tasks (%count%)'] = 'Pedidos y/o tareas relacionadas (%count%)';
