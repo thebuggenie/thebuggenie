@@ -2,7 +2,8 @@
 <?php
 
 	// Set the path to The Bug Genie top folder
-	define ('THEBUGGENIE_PATH', realpath(getcwd() . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
+	defined('THEBUGGENIE_PATH') || define ('THEBUGGENIE_PATH', realpath(getcwd() . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
+	defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DIRECTORY_SEPARATOR);
 
 	try
 	{

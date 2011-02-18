@@ -78,7 +78,7 @@
 				$this->cache_folder_perm_ok = false;
 				$this->all_well = false;
 			}
-			if (!is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/'))
+			if (!is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/'))
 			{
 				$this->thebuggenie_folder_perm_ok = false;
 				$this->all_well = false;
@@ -240,7 +240,7 @@
 				}
 				
 				// Add table classes to classpath 
-				$tables_path = THEBUGGENIE_PATH . 'core/classes/B2DB/';
+				$tables_path = THEBUGGENIE_CORE_PATH . 'classes/B2DB/';
 				TBGContext::addClasspath($tables_path);
 				$tables_path_handle = opendir($tables_path);
 				$tables_created = array();
@@ -297,15 +297,15 @@
 
 				if ($request->getParameter('apache_autosetup'))
 				{
-					if (!is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/') || (file_exists(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/.htaccess') && !is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/.htaccess')))
+					if (!is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/') || (file_exists(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess') && !is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess')))
 					{
 						$this->htaccess_error = 'Permission denied when trying to save the [main folder]/thebuggenie/.htaccess';
 					}
 					else
 					{
-						$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $request->getParameter('url_subdir'), file_get_contents(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/htaccess.template'));
-						file_put_contents(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/.htaccess', $content);
-						if (file_get_contents(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . '/.htaccess') != $content)
+						$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $request->getParameter('url_subdir'), file_get_contents(THEBUGGENIE_CORE_PATH . '/templates/htaccess.template'));
+						file_put_contents(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess', $content);
+						if (file_get_contents(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess') != $content)
 						{
 							$this->htaccess_error = true;
 						}

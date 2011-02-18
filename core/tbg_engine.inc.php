@@ -403,7 +403,7 @@ echo "
 		{
 			require $classes[$classname];
 		}
-	}	
+	}
 
 	// Start loading The Bug Genie
 	try
@@ -412,10 +412,10 @@ echo "
 		date_default_timezone_set('Europe/London');
 		
 		// Load the context class, which controls most of things
-		require THEBUGGENIE_PATH . 'core/classes/TBGContext.class.php';
+		require THEBUGGENIE_CORE_PATH . 'classes/TBGContext.class.php';
 
 		// Load the logging class so we can log stuff
-		require THEBUGGENIE_PATH . 'core/classes/TBGLogging.class.php';
+		require THEBUGGENIE_CORE_PATH . 'classes/TBGLogging.class.php';
 
 		// Set the start time
 		TBGContext::setLoadStart($starttime[1] + $starttime[0]);
@@ -432,10 +432,10 @@ echo "
 		TBGContext::setIncludePath(THEBUGGENIE_PATH);
 
 		// Add classpath so we can find the TBG* classes
-		TBGContext::addClasspath(THEBUGGENIE_PATH . 'core/classes/');
+		TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes/');
 
 		// Load the logging class so we can log stuff
-		require THEBUGGENIE_PATH . 'core/classes/TBGCache.class.php';
+		require THEBUGGENIE_CORE_PATH . 'classes/TBGCache.class.php';
 
 		TBGLogging::log((TBGCache::isEnabled()) ? 'Cache is enabled' : 'Cache is not enabled');
 		
@@ -443,14 +443,14 @@ echo "
 		try
 		{
 			TBGLogging::log('Adding B2DB classes to autoload path');
-			define ('B2DB_BASEPATH', THEBUGGENIE_PATH . 'core/B2DB/');
-			define ('B2DB_CACHEPATH', THEBUGGENIE_PATH . 'core/cache/B2DB/');
-			TBGContext::addClasspath(THEBUGGENIE_PATH . 'core/B2DB/classes/');
+			define ('B2DB_BASEPATH', THEBUGGENIE_CORE_PATH . 'B2DB/');
+			define ('B2DB_CACHEPATH', THEBUGGENIE_CORE_PATH . 'cache/B2DB/');
+			TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'B2DB/classes/');
 			TBGLogging::log('...done (Adding B2DB classes to autoload path)');
 
 			TBGLogging::log('Initializing B2DB');
 			if (!isset($argc)) BaseB2DB::setHTMLException(true);
-			BaseB2DB::initialize(THEBUGGENIE_PATH . 'core/b2db_bootstrap.inc.php');
+			BaseB2DB::initialize(THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php');
 			$engine_path = BaseB2DB::getEngineClassPath();
 			if ($engine_path !== null)
 			{
@@ -469,7 +469,7 @@ echo "
 				B2DB::doConnect();
 				TBGLogging::log('...done (Database connection details found, connecting)');
 				TBGLogging::log('Adding core table classpath to autoload path');
-				TBGContext::addClasspath(THEBUGGENIE_PATH . 'core/classes/B2DB/');
+				TBGContext::addClasspath(THEBUGGENIE_CORE_PATH . 'classes/B2DB/');
 			}
 			
 		}
@@ -484,8 +484,8 @@ echo "
 		TBGContext::initialize();
 		TBGLogging::log('...done');
 		
-		//require THEBUGGENIE_PATH . 'core/common_functions.inc.php';
-		require THEBUGGENIE_PATH . 'core/geshi/geshi.php';
+		//require THEBUGGENIE_CORE_PATH . 'common_functions.inc.php';
+		require THEBUGGENIE_CORE_PATH . 'geshi/geshi.php';
 		
 		TBGLogging::log('B2 framework loaded');
 	}

@@ -329,7 +329,7 @@
 						}
 						else
 						{
-							$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $url_subdir, file_get_contents(TBGContext::getIncludePath() . 'thebuggenie/htaccess.template'));
+							$content = str_replace('###PUT URL SUBDIRECTORY HERE###', $url_subdir, file_get_contents(THEBUGGENIE_CORE_PATH . 'templates/htaccess.template'));
 							file_put_contents(TBGContext::getIncludePath() . 'thebuggenie/.htaccess', $content);
 							if (file_get_contents(TBGContext::getIncludePath() . 'thebuggenie/.htaccess') != $content)
 							{
@@ -381,7 +381,7 @@
 
 					$this->cliEcho("\n");
 					$this->cliEcho("Creating tables ...\n", 'white', 'bold');
-					$tables_path = THEBUGGENIE_PATH . 'core/classes/B2DB/';
+					$tables_path = THEBUGGENIE_CORE_PATH . 'classes/B2DB/';
 					TBGContext::addClasspath($tables_path);
 					$tables_path_handle = opendir($tables_path);
 					$tables_created = array();

@@ -1,10 +1,10 @@
 <?php
 
 require THEBUGGENIE_PATH . 'tests/core/classes/B2DB.class.php';
-require THEBUGGENIE_PATH . 'core/classes/generics.class.php';
-require THEBUGGENIE_PATH . 'core/classes/TBGIdentifiableClass.class.php';
-require THEBUGGENIE_PATH . 'core/classes/TBGVersionItem.class.php';
-require THEBUGGENIE_PATH . 'core/classes/TBGBuild.class.php';
+require THEBUGGENIE_CORE_PATH . 'classes/generics.class.php';
+require THEBUGGENIE_CORE_PATH . 'classes/TBGIdentifiableClass.class.php';
+require THEBUGGENIE_CORE_PATH . 'classes/TBGVersionItem.class.php';
+require THEBUGGENIE_CORE_PATH . 'classes/TBGBuild.class.php';
 
 class TBGBuildsTable
 {

@@ -256,27 +256,6 @@
 			return $this->_listeners;
 		}
 		
-		public static function cacheAllAccessPermissions()
-		{
-			$crit = new B2DBCriteria();
-			$crit->addWhere(TBGModulePermissionsTable::SCOPE, TBGContext::getScope()->getID());
-			
-			$resultset = B2DB::getTable('TBGModulePermissionsTable')->doSelect($crit);
-
-			if ($resultset)
-			{
-				while ($row = $resultset->getNextRow())
-				{
-					self::cacheAccessPermission($row->get(TBGModulePermissionsTable::MODULE_NAME), $row->get(TBGModulePermissionsTable::UID), $row->get(TBGModulePermissionsTable::GID), $row->get(TBGModulePermissionsTable::TID), 0, (bool) $row->get(TBGModulePermissionsTable::ALLOWED));
-				}
-			}
-		}
-
-		public static function cacheAccessPermission($module_name, $uid, $gid, $tid, $all, $allowed)
-		{
-			self::$_permissions[$module_name][] = array('uid' => $uid, 'gid' => $gid, 'tid' => $tid, 'all' => $all, 'allowed' => $allowed); 
-		}
-
 		public function setPermission($uid, $gid, $tid, $allowed, $scope = null)
 		{
 			$scope = ($scope === null) ? TBGContext::getScope()->getID() : $scope;
@@ -288,89 +267,6 @@
 			}
 		}
 		
-		public static function rebuildAccessPermissionCache()
-		{
-			self::$_permissions = array();
-			self::cacheAllAccessPermissions();
-		}
-		
-		public static function getAccessPermissionList()
-		{
-			if (self::$_permissions === null)
-			{
-				self::rebuildAccessPermissionCache();
-			}
-			return self::$_permissions;
-		}
-		
-		public function hasAccess($uid = null, $gid = null, $tid = null, $all = null, $debug = false)
-		{
-			if (TBGContext::isCLI()) return true;
-
-			return true;
-
-			// TODO: module access permissions have not been implemented yet
-			$permissions = self::getAccessPermissionList();
-			if (!array_key_exists($this->getName(), $permissions))
-			{
-				throw new Exception('This modules access permission has not been cached. Something is wrong.');
-			}
-			$debug = false;
-			if ($debug) TBGLogging::log($this->_name);
-			if ($debug)
-			{
-				foreach ($permissions[$this->getName()] as $aPerm)
-				{
-					TBGLogging::log($aPerm);
-				}
-			}
-			if ($all == null)
-			{
-				$uid = ($uid === null) ? TBGContext::getUser()->getID() : $uid;
-				$tid = ($tid === null) ? TBGContext::getUser()->getTeams() : $tid;
-				if (!TBGContext::getUser()->getGroup() instanceof TBGGroup) return false;
-				$gid = ($gid === null) ? TBGContext::getUser()->getGroup()->getID() : $gid;
-				
-				foreach ($permissions[$this->getName()] as $aPerm)
-				{
-					if ($aPerm['uid'] == $uid && $uid != 0)
-					{
-						if ($debug) echo 'returning from uid';
-						return $aPerm['allowed'];
-					}
-				}
-				
-				foreach ($permissions[$this->getName()] as $aPerm)
-				{
-					if ($aPerm['tid'] == $tid && $tid != 0)
-					{
-						if ($debug) echo 'returning from uid';
-						return $aPerm['allowed'];
-					}
-				}
-				
-				foreach ($permissions[$this->getName()] as $aPerm)
-				{
-					if ($aPerm['gid'] == $gid && $gid != 0)
-					{
-						if ($debug) echo 'returning from uid';
-						return $aPerm['allowed'];
-					}
-				}
-				
-			}
-			
-			foreach ($permissions[$this->getName()] as $aPerm)
-			{
-				if (($aPerm['uid'] + $aPerm['gid'] + $aPerm['tid']) == 0)
-				{
-					return $aPerm['allowed'];
-				}
-			}
-			
-			return false;
-		}
-				
 		static function loadModuleListeners($module_names)
 		{
 			if ($res = B2DB::getTable('TBGEnabledModuleListenersTable')->getAll($module_names))
@@ -378,7 +274,7 @@
 				while ($row = $res->getNextRow())
 				{
 					$module = TBGContext::getModule($row->get(TBGEnabledModuleListenersTable::MODULE_NAME));
-					if ($module->hasAccess() && $module->isEnabled())
+					if ($module->isEnabled())
 					{
 						$module->enableListener($row->get(TBGEnabledModuleListenersTable::MODULE), $row->get(TBGEnabledModuleListenersTable::IDENTIFIER));
 					}
@@ -481,8 +377,11 @@
 			{
 				$this->_addAvailablePermissions();
 				$this->_addAvailableListeners();
-				$this->_addAvailableRoutes();
-				$this->_loadRoutes();
+				if (!TBGCache::isEnabled() || !TBGCache::get('routes_2'))
+				{
+					$this->_addAvailableRoutes();
+					$this->_loadRoutes();
+				}
 			}
 		}
 

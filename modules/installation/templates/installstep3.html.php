@@ -133,7 +133,7 @@ if ($dirname != '/')
 				<b style="font-size: 14px;">IMPORTANT: </b><br>
 				The installation routine will try to set up the initial .htaccess file for you. <b>If that fails for some reason</b>:
 				<ul style="font-size: 11px;">
-					<li>Rename or copy the <i>thebuggenie/htaccess.template</i> file to <i>thebuggenie/.htaccess</i></li>
+					<li>Rename or copy the <i>core/templates/htaccess.template</i> file to <i>thebuggenie/.htaccess</i></li>
 					<li>Open up the <i>.htaccess</i> file, and change the <u>RewriteBase</u> path to be identical to the <u>URL subdirectory</u>.
 				</ul>
 			</div>

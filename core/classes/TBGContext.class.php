@@ -29,7 +29,7 @@
 		
 		static protected $_environment = 2;
 
-		static protected $debug_mode = false;
+		static protected $debug_mode = true;
 		
 		static protected $_partials_visited = array();
 
@@ -46,13 +46,6 @@
 		 * @var array
 		 */
 		static protected $_modules = null;
-		
-		/**
-		 * List of module permissions
-		 * 
-		 * @var array
-		 */
-		static protected $_modulepermissions = array();
 		
 		/**
 		 * List of permissions
@@ -432,11 +425,20 @@
 				}
 
 				TBGLogging::log('Loading first batch of routes', 'routing');
-				if (!($routes_1 = TBGCache::get('routes_1')))
+				if (!($routes_1 = TBGCache::get(TBGCache::KEY_PREMODULES_ROUTES_CACHE)))
 				{
-					TBGLogging::log('generating routes', 'routing');
-					require THEBUGGENIE_PATH . 'core/load_routes.inc.php';
-					TBGCache::add('routes_1', self::getRouting()->getRoutes());
+					if (!($routes_1 = TBGCache::fileGet(TBGCache::KEY_PREMODULES_ROUTES_CACHE)))
+					{
+						TBGLogging::log('generating routes', 'routing');
+						require THEBUGGENIE_CORE_PATH . 'load_routes.inc.php';
+						TBGCache::fileAdd(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
+					}
+					else
+					{
+						TBGLogging::log('using disk cached routes', 'routing');
+						self::getRouting()->setRoutes($routes_1);
+					}
+					TBGCache::add(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
 				}
 				else
 				{
@@ -556,15 +558,24 @@
 
 				TBGLogging::log('...done');
 				TBGLogging::log('Loading last batch of routes', 'routing');
-				if (!($routes = TBGCache::get('routes_2')))
+				if (!($routes = TBGCache::get(TBGCache::KEY_POSTMODULES_ROUTES_CACHE)))
 				{
-					TBGLogging::log('generating routes', 'routing');
-					require THEBUGGENIE_PATH . 'core/load_routes_postmodules.inc.php';
-					TBGCache::add('routes_2', self::getRouting()->getRoutes());
+					if (!($routes = TBGCache::fileGet(TBGCache::KEY_POSTMODULES_ROUTES_CACHE)))
+					{
+						TBGLogging::log('generating postmodule routes', 'routing');
+						require THEBUGGENIE_CORE_PATH . 'load_routes_postmodules.inc.php';
+						TBGCache::fileAdd(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
+					}
+					else
+					{
+						TBGLogging::log('using disk cached postmodule routes', 'routing');
+						self::getRouting()->setRoutes($routes);
+					}
+					TBGCache::add(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
 				}
 				else
 				{
-					TBGLogging::log('loading routes from cache', 'routing');
+					TBGLogging::log('loading postmodule routes from cache', 'routing');
 					self::getRouting()->setRoutes($routes);
 				}
 				TBGLogging::log('...done', 'routing');
@@ -645,7 +656,7 @@
 		 */
 		public static function getThemes()
 		{
-			$theme_path_handle = opendir(self::getIncludePath() . THEBUGGENIE_PUBLIC_PATH . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR);
+			$theme_path_handle = opendir(self::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . DIRECTORY_SEPARATOR . 'themes' . DIRECTORY_SEPARATOR);
 			$themes = array();
 			
 			while ($theme = readdir($theme_path_handle))
@@ -792,10 +803,6 @@
 						}
 					}
 					TBGLogging::log('done (setting up module objects)');
-
-					TBGLogging::log('caching module access permissions');
-					if (!self::isCLI()) TBGModule::cacheAllAccessPermissions();
-					TBGLogging::log('done (caching module access permissions)');
 				}
 
 				TBGLogging::log('initializing modules');
@@ -970,27 +977,35 @@
 			}
 			else
 			{
-				TBGLogging::log('starting to cache access permissions');
-				if ($res = B2DB::getTable('TBGPermissionsTable')->getAll())
+				if (!$permissions = TBGCache::fileGet(TBGCache::KEY_PERMISSIONS_CACHE))
 				{
-					while ($row = $res->getNextRow())
+					TBGLogging::log('starting to cache access permissions');
+					if ($res = B2DB::getTable('TBGPermissionsTable')->getAll())
 					{
-						if (!array_key_exists($row->get(TBGPermissionsTable::MODULE), self::$_permissions))
+						while ($row = $res->getNextRow())
 						{
-							self::$_permissions[$row->get(TBGPermissionsTable::MODULE)] = array();
+							if (!array_key_exists($row->get(TBGPermissionsTable::MODULE), self::$_permissions))
+							{
+								self::$_permissions[$row->get(TBGPermissionsTable::MODULE)] = array();
+							}
+							if (!array_key_exists($row->get(TBGPermissionsTable::PERMISSION_TYPE), self::$_permissions[$row->get(TBGPermissionsTable::MODULE)]))
+							{
+								self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)] = array();
+							}
+							if (!array_key_exists($row->get(TBGPermissionsTable::TARGET_ID), self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)]))
+							{
+								self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)][$row->get(TBGPermissionsTable::TARGET_ID)] = array();
+							}
+							self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)][$row->get(TBGPermissionsTable::TARGET_ID)][] = array('uid' => $row->get(TBGPermissionsTable::UID), 'gid' => $row->get(TBGPermissionsTable::GID), 'tid' => $row->get(TBGPermissionsTable::TID), 'allowed' => (bool) $row->get(TBGPermissionsTable::ALLOWED));
 						}
-						if (!array_key_exists($row->get(TBGPermissionsTable::PERMISSION_TYPE), self::$_permissions[$row->get(TBGPermissionsTable::MODULE)]))
-						{
-							self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)] = array();
-						}
-						if (!array_key_exists($row->get(TBGPermissionsTable::TARGET_ID), self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)]))
-						{
-							self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)][$row->get(TBGPermissionsTable::TARGET_ID)] = array();
-						}
-						self::$_permissions[$row->get(TBGPermissionsTable::MODULE)][$row->get(TBGPermissionsTable::PERMISSION_TYPE)][$row->get(TBGPermissionsTable::TARGET_ID)][] = array('uid' => $row->get(TBGPermissionsTable::UID), 'gid' => $row->get(TBGPermissionsTable::GID), 'tid' => $row->get(TBGPermissionsTable::TID), 'allowed' => (bool) $row->get(TBGPermissionsTable::ALLOWED));
 					}
+					TBGLogging::log('done (starting to cache access permissions)');
+					TBGCache::fileAdd(TBGCache::KEY_PERMISSIONS_CACHE, self::$_permissions);
 				}
-				TBGLogging::log('done (starting to cache access permissions)');
+				else
+				{
+					self::$_permissions = $permissions;
+				}
 				TBGCache::add('permissions', self::$_permissions);
 			}
 		}

@@ -64,11 +64,20 @@
 	 */
 	function tbg_formatTime($tstamp, $format = 0, $skiptimestamp = 0)
 	{
-		if (TBGSettings::getUserTimezone() !== null && $skiptimestamp == 0)
-		{
-			$tstamp += -(TBGSettings::getGMToffset() * 60 * 60);
-			$tstamp += (TBGSettings::getUserTimezone() * 60 * 60);
-		}
+		//if (TBGSettings::getUserTimezone() !== null && $skiptimestamp == 0)
+		//{
+			if (TBGSettings::getGMToffset() > 0)
+				$tstamp -= (TBGSettings::getGMToffset() * 60 * 60);
+			elseif (TBGSettings::getGMToffset() < 0)
+				$tstamp += (TBGSettings::getGMToffset() * 60 * 60);
+
+			if (TBGSettings::getUserTimezone() > 0)
+				$tstamp += (TBGSettings::getUserTimezone() * 60 * 60);
+			elseif (TBGSettings::getUserTimezone() < 0)
+				$tstamp -= (TBGSettings::getUserTimezone() * 60 * 60);
+
+		//}
+			
 		switch ($format)
 		{
 			case 1:

@@ -1,10 +1,10 @@
-== Thank you for installing The Bug Genie! ==
+== Thank you for installing this release of The Bug Genie! ==
 
-We want to make your development environment a lot easier and manageable. You get:<br>
-Project management, issue tracking, source code control, fully editable wiki for all your documentation needs, and more.
+The Bug Genie makes development a lot easier and manageable. With The Bug Genie you get:<br>
+[[http://thebuggenie.com/features.php#project_management|Project management]], [[http://thebuggenie.com/features.php#issue_tracking|powerful issue tracking]] with advanced [[http://thebuggenie.com/features.php#custom_workflow|workflow support]], [[http://thebuggenie.com/features.php#vcs_integration|source code control]], [[http://thebuggenie.com/features.php#wiki|full-fledged wiki]] for all your documentation needs, and more.
 
-Please take a few moments setting up your new issue tracker, by clicking the [[TBG:configure|Configure]] menu option in the footer.<br>
-From this page you can configure The Bug Genie the way you want.
+Please take a few moments setting up your new issue tracker, by clicking the '''[[TBG:configure|Configure The Bug Genie]]''' link at the very bottom of this page.<br>
+All configuration takes place from this configuration center, and you can always access it by clicking the link in the footer.
 
 For more information on getting started, have a look at [[GettingStarted]], [[Configuration]] and [[CreatingIssues]].
 

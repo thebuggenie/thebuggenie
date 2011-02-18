@@ -128,9 +128,6 @@
 		{
 			// Load fixtures for this scope if it's a new scope
 			if ($is_new) $this->loadFixtures();
-			
-			// Save the hostname to the settings table
-			TBGSettings::saveSetting('url_host', $this->_hostname, 'core', $this->getID());
 		}
 		
 		public function loadFixtures()

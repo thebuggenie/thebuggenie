@@ -16,8 +16,8 @@
 				<br>
 				Either fix the problem above (if any details are mentioned), <b>click "Back"</b> and try again - or follow these simple steps:
 				<ul style="font-size: 11px;">
-					<li>Rename or copy the <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_PATH; ?>/htaccess.template</i> file to <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_PATH; ?>/.htaccess</i></li>
-					<li>Open up the <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_PATH; ?>/.htaccess</i> file, and change the <u>RewriteBase</u> path to be identical to the <u>URL subdirectory</u>.
+					<li>Rename or copy the <i>[main folder]/<?php echo THEBUGGENIE_CORE_PATH; ?>templates/htaccess.template</i> file to <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/.htaccess</i></li>
+					<li>Open up the <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/.htaccess</i> file, and change the <u>RewriteBase</u> path to be identical to the <u>URL subdirectory</u>.
 				</ul>
 			</div>
 		<?php elseif ($htaccess_ok): ?>
