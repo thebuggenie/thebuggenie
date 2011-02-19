@@ -2,7 +2,7 @@
 	<table style="table-layout: fixed; width: 100%;" cellpadding=0 cellspacing=0>
 		<tr>
 			<td style="width: 20px;"><div style="border: 1px solid #AAA; background-color: <?php echo ($related_issue->getStatus() instanceof TBGStatus) ? $related_issue->getStatus()->getColor() : '#FFF'; ?>; font-size: 1px; width: 13px; height: 13px;" title="<?php echo ($related_issue->getStatus() instanceof TBGStatus) ? $related_issue->getStatus()->getName() : ''; ?>">&nbsp;</div></td>
-			<td style="padding: 1px; width: auto;" valign="middle"><?php echo link_tag(make_url('viewissue', array('issue_no' => $related_issue->getIssueNo(), 'project_key' => $related_issue->getProject()->getKey())), (($related_issue->getIssueType()->isTask() ? $related_issue->getTitle() : $related_issue->getFormattedTitle()))); ?></td>
+			<td style="padding: 1px; width: auto;" valign="middle"><?php echo link_tag(make_url('viewissue', array('issue_no' => $related_issue->getFormattedIssueNo(), 'project_key' => $related_issue->getProject()->getKey())), (($related_issue->getIssueType()->isTask() ? $related_issue->getTitle() : $related_issue->getFormattedTitle()))); ?></td>
 			<td style="padding: 1px; width: 20px;" valign="middle">
 				<?php if ($related_issue->getState() == TBGIssue::STATE_CLOSED): ?>
 					<?php echo image_tag('action_ok_small.png', array('title' => ($related_issue->getIssuetype()->isTask()) ? __('This relation is solved because the task has been closed') : __('This relation is solved because the issue has been closed'))); ?>
