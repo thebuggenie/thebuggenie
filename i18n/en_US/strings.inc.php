@@ -233,7 +233,7 @@
 	$strings['Team']='Team';
 	$strings['Timeline']='Timeline';
 	$strings['Editing issues']='Editing issues';
-	$strings['To edit any of the details in this issue, move your mouse over that detail and press the icon that appears. Changes you make will stay unsaved until you either press the "Save" button that appears when you change the issue, or until you log out (the changes are then lost).']='To edit any of the details in this issue, move your mouse over that detail and press the icon that appears. Changes you make will stay unsaved until you either press the "Save" button that appears when you change the issue, or until you log out (the changes are then lost).';
+	$strings['To edit any of the details in this issue, move your mouse over that detail and press the icon that appears. Changes you make will stay unsaved until you either press the "%save%" button that appears when you change the issue, or until you log out (the changes are then lost).']='To edit any of the details in this issue, move your mouse over that detail and press the icon that appears. Changes you make will stay unsaved until you either press the "%save%" button that appears when you change the issue, or until you log out (the changes are then lost).';
 	$strings['Please wait while updating issue type']='Please wait while updating issue type';
 	$strings['Could not save your changes']='Could not save your changes';
 	$strings['Data that has been changed is highlighted in red below. Undo your changes to see the updated information']='Data that has been changed is highlighted in red below. Undo your changes to see the updated information';

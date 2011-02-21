@@ -11,7 +11,7 @@
 	<?php if (TBGSettings::isUploadsEnabled() && $issue->canAttachFiles()): ?>
 		<?php include_component('main/uploader', array('issue' => $issue, 'mode' => 'issue')); ?>
 	<?php endif; ?>
-	<?php include_component('main/hideableInfoBox', array('key' => 'viewissue_helpbox', 'title' => __('Editing issues'), 'content' => __('To edit any of the details in this issue, move your mouse over that detail and press the icon that appears. Changes you make will stay unsaved until you either press the "'.__('Save').'" button that appears when you change the issue, or until you log out (the changes are then lost).'))); ?>
+	<?php include_component('main/hideableInfoBox', array('key' => 'viewissue_helpbox', 'title' => __('Editing issues'), 'content' => __('To edit any of the details in this issue, move your mouse over that detail and press the icon that appears. Changes you make will stay unsaved until you either press the "%save%" button that appears when you change the issue, or until you log out (the changes are then lost).', array('%save%' => __('Save'))))); ?>
 	<div id="issuetype_indicator_fullpage" style="background-color: transparent; width: 100%; height: 100%; position: absolute; top: 0; left: 0; margin: 0; padding: 0; text-align: center; display: none;">
 		<div style="position: absolute; top: 45%; left: 40%; z-index: 100001; color: #FFF; font-size: 15px; font-weight: bold;">
 			<?php echo image_tag('spinning_32.gif'); ?><br>
