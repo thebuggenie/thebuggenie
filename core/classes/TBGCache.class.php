@@ -18,7 +18,13 @@
 	 */
 	class TBGCache
 	{
+		
+		const KEY_PREMODULES_ROUTES_CACHE = '_routes';
+		const KEY_POSTMODULES_ROUTES_CACHE = '_routes_postmodules';
+		const KEY_PERMISSIONS_CACHE = '_permissions';
+		
 		protected static $_enabled = false;
+		protected static $_filecache_enabled = false;
 		
 		public static function get($key)
 		{
@@ -44,6 +50,33 @@
 		{
 			if (!self::isEnabled()) return null;
 			apc_delete($key);
+		}
+		
+		public static function fileGet($key)
+		{
+			if (!self::$_filecache_enabled) return null;
+			$filename = THEBUGGENIE_PATH . 'core' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . $key . '.cache';
+			if (!file_exists($filename))
+			{
+				return null;
+			}
+			
+			$value = unserialize(file_get_contents($filename));
+			return $value;
+		}
+		
+		public static function fileAdd($key, $value)
+		{
+			if (!self::$_filecache_enabled) return null;
+			$filename = THEBUGGENIE_PATH . 'core' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . $key . '.cache';
+			file_put_contents($filename, serialize(self::$_permissions));
+		}
+		
+		public static function fileDelete($key)
+		{
+			if (!self::$_filecache_enabled) return null;
+			$filename = THEBUGGENIE_PATH . 'core' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . $key . '.cache';
+			unlink($filename);
 		}
 		
 		public static function isEnabled()
