@@ -2161,6 +2161,7 @@
 					$user->setEnabled();
 					$user->setActivated();
 					$user->setPassword(TBGUser::hashPassword(TBGUser::createPassword()));
+					$user->setJoined();
 					$user->save();
 				}
 				else

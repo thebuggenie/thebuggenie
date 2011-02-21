@@ -514,6 +514,7 @@
 					$user->setEnabled();
 					$user->setPassword($password);
 					$user->setEmail($email);
+					$user->setJoined();
 					$user->save();
 
 					if ($user->isActivated())

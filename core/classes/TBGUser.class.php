@@ -1446,6 +1446,20 @@
 		}
 		
 		/**
+		 * Set the user's joined date
+		 * 
+		 * @param integer $val[optional]
+		 */
+		public function setJoined($val = null)
+		{
+			if ($val === null)
+			{
+				$val = time();
+			}
+			$this->_joined = $val;
+		}
+		
+		/**
 		 * Find one user based on details
 		 * 
 		 * @param string $details Any user detail (email, username, realname or buddyname)
