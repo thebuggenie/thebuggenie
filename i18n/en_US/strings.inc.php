@@ -321,7 +321,7 @@
 	$strings['Click to enter time spent on this issue']='Click to enter time spent on this issue';
 	$strings['No time spent']='No time spent';
 	$strings['Clear time spent on this issue']='Clear time spent on this issue';
-	$strings['%clear_time_spent% enter how much time you\'ve spent %or_select_below%']='%clear_time_spent% enter how much time you\'ve spent %or_select_below%';
+	$strings["%clear_time_spent% enter how much time you've spent %or_select_below%"]="%clear_time_spent% enter how much time you've spent %or_select_below%";
 	$strings['Spend time']='Spend time';
 	$strings['Add entered time to total time spent']='Add entered time to total time spent';
 	$strings['Enter time spent as plain text, like "1 day, 2 hours", "12 hours / 2 points", or similar']='Enter time spent as plain text, like "1 day, 2 hours", "12 hours / 2 points", or similar';
@@ -333,7 +333,7 @@
 	$strings['Click here to edit this field']='Click here to edit this field';
 	$strings['Comments (%count%)']='Comments (%count%)';
 	$strings['Attached information (%count%)']='Attached information (%count%)';
-	$strings['Related issues and tasks']='Related issues and tasks';
+	$strings['Related issues and tasks (%count%)']='Related issues and tasks (%count%)';
 	$strings['Duplicate issues (%count%)']='Duplicate issues (%count%)';
 	$strings['Add new comment']='Add new comment';
 	$strings['Create a comment']='Create a comment';
