@@ -321,7 +321,7 @@
 	$strings['Click to enter time spent on this issue'] = 'Haga clic para para indicar el tiempo dedicado a esta petición';
 	$strings['No time spent'] = 'Sin dedicar';
 	$strings['Clear time spent on this issue'] = 'Limpiar el tiempo dedicado en esta petición';
-	$strings['%clear_time_spent% enter how much time you\'ve spent %or_select_below%'] = '%clear_time_spent% ingrese cuanto tiempo dedicó %or_select_below%';
+	$strings["%clear_time_spent% enter how much time you've spent %or_select_below%"] = '%clear_time_spent% ingrese cuanto tiempo dedicó %or_select_below%';
 	$strings['Spend time'] = 'Tiempo dedicado';
 	$strings['Add entered time to total time spent'] = 'Añadir tiempo al tiempo total dedicado';
 	$strings['Enter time spent as plain text, like "1 day, 2 hours", "12 hours / 2 points", or similar'] = 'Ingrese el tiempo dedicado solo con texto, como "1 day, 2 hours", "12 hours / 2 points", o similar';
@@ -338,7 +338,7 @@
 	$strings['Add new comment'] = 'Agregar un comentario nuevo';
 	$strings['Create a comment'] = 'Crear un comentario';
 	$strings['optional'] = 'opcional';
-	$strings['whether to hide this comment for "regular users"'] = 'si oculta este comentario a los "usuarios comunes"';
+	$strings['whether to hide this comment for "regular users"'] = 'se oculta este comentario a los "usuarios comunes"';
 	$strings['Visible for all users'] = 'Visible para todos los usuarios';
 	$strings['Visible for me, developers and administrators only'] = 'Visible solo para mí, desarrolladores y administradores';
 	$strings['Save my changes with this comment'] = 'Guardar mis cambios con este comentario';
@@ -475,7 +475,7 @@
 	$strings['Can access project'] = 'Puede acceder a proyectos';
 	$strings['Can manage stories, tasks, sprints and backlog on the sprint planning page'] = 'Puede administrar historias, tareas, sprints y backlog en la planificación de sprints';
 	$strings['Can manage project'] = 'Puede administrar proyectos';
-	$strings['Can manage the backlog on the sprint planning page'] = 'Puede administrador el backlog de la planificación de sprint';
+	$strings['Can manage project releases and components'] = 'Puede administrar versiones y componenetes del proyecto';
 	$strings['Can edit project details and settings'] = 'Puede editar detalles y configuraciones del proyecto';
 	$strings['Can see this edition'] = 'Puede ver esta edición';
 	$strings['Can see this component'] = 'Puede ver este componente';
@@ -727,7 +727,7 @@
 	$strings['User state when online'] = 'Estado del usuario cuando está en línea';
 	$strings['User state when inactive'] = 'Estado del usuario cuando está inactivo';
 	$strings['User state when offline'] = 'Estado del usuario cuando está fuera de línea';
-	$strings['Click "Save" to save your changes in all categories'] = 'Haga clic en "Guardar" para guardar los cambios en todas las categorías';
+	$strings['Click "%save%" to save your changes in all categories'] = 'Haga clic en "%save%" para guardar los cambios en todas las categorías';
 	$strings['Configure permissions'] = 'Configuración de permisos';
 	$strings['Icon legend:'] = 'Referencia del icono:';
 	$strings['Show more detailed permissions for this permission group'] = 'Mostrar mayor detalle de permisos para este grupo de permisos';
@@ -895,7 +895,7 @@
 	$strings['Time spent working on the issue'] = 'Tiempo de trabajo dedicado en el pedido';
 	$strings['Targetted for milestone'] = 'Objetivo para el punto de control';
 	$strings['Triaging: User pain'] = 'Triaje: Sufrimento del usuario';
-	$strings['Click "Save" to save your changes'] = 'Haga clic en "Guardar" para guardar los cambios';
+	$strings['Click "%save%" to save your changes'] = 'Haga clic en "%save%" para guardar los cambios';
 	$strings['Other'] = 'Otros';
 	$strings['Project owner'] = 'Propietario del proyecto';
 	$strings['Change / set owner'] = 'Cambiar / definir propietario';
@@ -1189,7 +1189,7 @@
 	$strings['Change / set'] = 'Cambiar / definir';
 	$strings['Change project leader'] = 'Cambia líder de proyectos';
 	$strings['Change Qa responsible'] = 'Cambia responsable de QA';
-	$strings['When you are done, click "Save" to save your changes'] = 'Cuando haya terminado, haga clic en "Guardar" para almacenar sus cambios';
+	$strings['When you are done, click "%save%" to save your changes'] = 'Cuando haya terminado, haga clic en "%save%" para almacenar sus cambios';
 	$strings['Workflow scheme'] = 'Esquema de flujo de trabajo';
 	$strings['Select the workflow scheme to be used by this project'] = 'Seleccione el esquema del flujo de trabajo que será utilizado por este proyecto';
 	$strings['Enable agile development features'] = 'Habilita funcionalidades de desarrollo ágil';
@@ -1486,8 +1486,8 @@
 	$strings['Edit all user-specific permissions from this page - global, group and team permissions are handled from the [[TBG:configure_permissions|permissions configuration page]]. The Bug Genie permissions are thoroughly explained in [[ConfigurePermissions]] in the wiki - look it up if you\'re ever stuck.'] = 'Edite todos los permisos de usuario desde esta página - permisos globales, por grupo y por equipo son gestionados en [[TBG:configure_permissions|página de configuración de permisos]]. El sistema de permisos está explicado en [[ConfigurePermissions]] en el wiki - consúltelo cada vez que lo necesite.';
 	$strings['MB'] = 'MB';
 	$strings['No client assigned'] = 'Sin clientes asignados'; 
-	$strings['Allowed extension'] = 'Extensión permitida';
-	$strings['The project lead will automatically be assigned issues if workflows are disabled. This can be overriden by component and edition leads, as well as manually specifing when creating an issue.'] = 'El líder de proyecto será asignado automáticamente a la petición si el flujo de trabajo está inhabilitado. Esto puede ser redefinido por componente y edición, como así también manualmente cuando se crea un pedido.';
+	$strings['Allowed extensions'] = 'Extensiones permitidas';
+	$strings['The project lead will automatically be assigned issues. This can be overriden by component and edition leads, as well as manually specifing when creating an issue.'] = 'El líder de proyecto será asignado automáticamente a la petición. Esto puede ser redefinido por componente y edición, como así también manualmente cuando se crea un pedido.';
 	$strings['These icons may be freely distributed under the %link_to_LGLP%'] = 'Estos íconos pueden ser distribuidos libremente bajo %link_to_LGLP%';
 	$strings['Your dashboard'] = 'Su panel de control';      
 	$strings['Recent comments'] = 'Comentarios recientes'; 
@@ -1556,9 +1556,9 @@
 	$strings['Projects for %client%'] = 'Proyectos para %client%'; 
 	$strings['Projects for %team%'] = 'Proyectos para %team%'; 
 	$strings['There are no projects linked to this team'] = 'No hay proyectos vinculados a este equipo'; 
-  $strings['This team has no members'] = 'Este equipo no tiene miembros'; 
+	$strings['This team has no members'] = 'Este equipo no tiene miembros'; 
 	$strings['Team dashboard for %team_name%'] = 'Panel de control para el equipo %team_name%'; 
-  $strings['Members of %team%'] = 'Miembros de %team%'; 
+	$strings['Members of %team%'] = 'Miembros de %team%'; 
 	$strings['Team dashboard'] = 'Panel de control para el equipo'; 
 	$strings['Scheduled for %scheduled_date%'] = 'Agendado para %scheduled_date%';
 	$strings['%num_closed% story (%closed_points% pts) closed of %num_assigned% (%assigned_points% pts) assigned'] = '%num_closed% historia (%closed_points% pts) cerrada de %num_assigned% (%assigned_points% pts) asignadas';         
@@ -1817,9 +1817,9 @@
   $strings['All closed issues'] = 'Todas las peticiones cerradas'; 
   $strings['RSS feed'] = 'Canal RSS';
   
-  $strings['Sprint burndown graph'] = 'Gráfico de burn down';
+  $strings['Sprint burndown graph'] = 'Gráfico de burndown';
     
-  $strings['Burndown Line'] = 'Línea burndown';
+  $strings['Burndown Line'] = 'Línea Ideal';
   $strings['Starting %start_date%'] = 'Inicio %start_date%';
   $strings['Click to show assigned stories for this sprint'] = 'Haga clic para mostrar las historias asignadas para este sprint';
   $strings['%hours% hrs / %points% pts'] = '%hours% hrs / %points% pts'; 
@@ -1838,7 +1838,7 @@
   
 	$strings['Resolve the issue'] = 'Resolución del pedido';
 	$strings['Resolution isn\'t visible for this issuetype / product combination'] = 'La resolución no está visible para esta combinación de tipo de petición/producto';               
-	$strings['Resolve issue'] = 'Resolver el pedido';
+	$strings['Resolve issue'] = 'Solucionar el pedido';
 	$strings['%milestone_name% (started %start_date% - ends %end_date%)'] = '%milestone_name% (comenzó %start_date% - finalizó %end_date%)'; 
 	$strings['This relation is solved because the issue has been closed'] = 'Esta relación está resuelta porque la petición ha sido cerrada';   
 	$strings['Estimation changed: %text%'] = 'Cambio en estimación: %text%';
@@ -1932,4 +1932,4 @@
   $strings['You haven\'t uploaded any files right now (not including already attached files)'] = 'Ahora no ha adjuntado ningún archivo (no se incluyen los ya adjuntados)'; 
   $strings['Click %done% when you have uploaded the files you want to attach'] = 'Haga clic en %done% cuando haya subido el archivo a adjuntar'; 
   $strings['%select_yourself% or select a friend below'] = '%select_yourself% o seleccione un amigo'; 
-  $strings['Related issues and tasks (%count%)'] = 'Pedidos y/o tareas relacionadas (%count%)';
+  $strings['Related issues and tasks (%count%)'] = 'Pedidos/tareas relacionadas (%count%)';
