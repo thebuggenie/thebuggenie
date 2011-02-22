@@ -305,7 +305,7 @@
 				$settings = array('theme_name', 'user_themes', 'onlinestate', 'offlinestate', 'awaystate', 'singleprojecttracker',
 									'requirelogin', 'allowreg', 'defaultgroup', 'returnfromlogin', 'returnfromlogout', 'permissive',
 									'limit_registration', 'showprojectsoverview', 'showprojectsoverview', 'cleancomments',
-									'b2_name', 'b2_tagline', 'url_subdir', 'local_path', 'charset', 'language', 'server_timezone',
+									'b2_name', 'b2_tagline', 'charset', 'language', 'server_timezone',
 									'highlight_default_lang', 'highlight_default_interval', 'highlight_default_numbering', 'icon_header',
 									'icon_fav', 'icon_header_url', 'icon_fav_url', 'previewcommentimages');
 				

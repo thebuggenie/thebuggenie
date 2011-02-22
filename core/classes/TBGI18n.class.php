@@ -29,6 +29,28 @@
 		
 		protected $_datetime_formats = array();
 		
+		public static function setup()
+		{
+			if (TBGContext::isCLI())
+				return null;
+
+			$language = TBGSettings::getLanguage();
+			TBGLogging::log('Loading i18n strings');
+			if (!$_i18n = TBGCache::get("i18n_{$language}"))
+			{
+				TBGLogging::log("Loading strings from file ({$language})");
+				$_i18n = new TBGI18n($language);
+				$_i18n->initialize();
+				TBGCache::add("i18n_{$language}", $_i18n);
+			}
+			else
+			{
+				TBGLogging::log('Using cached i18n strings');
+			}
+			TBGLogging::log('...done');
+			return $_i18n;
+		}
+
 		public function __construct($language)
 		{
 			if (!file_exists($this->getStringsFilename($language)))

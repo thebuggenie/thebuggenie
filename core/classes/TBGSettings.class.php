@@ -35,9 +35,9 @@
 		const CONFIGURATION_SECTION_IMPORT = 16;
 
 		static protected $_ver_mj = 3;
-		static protected $_ver_mn = 0;
-		static protected $_ver_rev = '1';
-		static protected $_ver_name = "Lonesome Vegetable";
+		static protected $_ver_mn = 1;
+		static protected $_ver_rev = '0';
+		static protected $_ver_name = "Kittens!";
 		static protected $_defaultscope = null;
 		static protected $_settings = null;
 	
@@ -48,6 +48,7 @@
 		
 		public static function loadSettings()
 		{
+			TBGLogging::log("Loading settings");
 			if (self::$_settings === null)
 			{
 				TBGLogging::log('Loading all settings');
@@ -70,18 +71,19 @@
 						if ($cc == 0)
 						{
 							TBGLogging::log('There were no settings stored in the database!', 'main', TBGLogging::LEVEL_FATAL);
-							throw new Exception('Could not retrieve settings from database');
+							throw new TBGSettingsException('Could not retrieve settings from database');
 						}
 					}
 					else
 					{
 						TBGLogging::log('Settings could not be retrieved from the database!', 'main', TBGLogging::LEVEL_FATAL);
-						throw new Exception('Could not retrieve settings from database');
+						throw new TBGSettingsException('Could not retrieve settings from database');
 					}
 					TBGLogging::log('Retrieved');
 					TBGCache::add('settings', self::$_settings);
 				}
 			}
+			TBGLogging::log("...done");
 		}
 
 		public static function deleteModuleSettings($module_name)
@@ -412,11 +414,6 @@
 		public static function getURLhost()
 		{
 			return TBGContext::getScope()->getHostname();
-		}
-		
-		public static function getURLsubdir()
-		{
-			return self::get('url_subdir');
 		}
 		
 		public static function getLocalPath()

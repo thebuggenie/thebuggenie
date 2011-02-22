@@ -24,7 +24,6 @@
 			$this->_command_name = 'install';
 			$this->_description = "Run the installation routine";
 			$this->addOptionalArgument('accept_license', 'Set to "yes" to auto-accept license');
-			$this->addOptionalArgument('url_host', 'Specify URL host');
 			$this->addOptionalArgument('url_subdir', 'Specify URL subdirectory');
 			$this->addOptionalArgument('use_existing_db_info', 'Set to "yes" to use existing db information if available');
 			$this->addOptionalArgument('enable_all_modules', 'Set to "yes" to install all modules');
@@ -241,32 +240,13 @@
 						$this->cliEcho("The Bug Genie uses a technique called \"url rewriting\" - which allows for pretty\nURLs such as ") . $this->cliEcho('/issue/1', 'white', 'bold') . $this->cliEcho(' instead of ') . $this->cliEcho("viewissue.php?issue_id=1\n", 'white', 'bold');
 						$this->cliEcho("Make sure you have read the URL_REWRITE document located in the root\nfolder, or at http://www.thebuggenie.com before you continue\n");
 
-						if (!($this->hasProvidedArgument('url_subdir') && $this->hasProvidedArgument('url_host')))
+						if (!$this->hasProvidedArgument('url_subdir'))
 						{
 							$this->cliEcho("Press ENTER to continue ... ");
 							$this->pressEnterToContinue();
 						}
 						$this->cliEcho("\n");
 						
-						$this->cliEcho("Web server root URL\n", 'white', 'bold');
-						$this->cliEcho("This is the root of the Web server where The Bug Genie will be running\nex: http://bugs.mycompany.com\n");
-						if ($this->hasProvidedArgument('url_host'))
-						{
-							$this->cliEcho('Web server root URL: ', 'white', 'bold');
-							$url_host = $this->getProvidedArgument('url_host');
-							$this->cliEcho($url_host, 'yellow', 'bold');
-							$this->cliEcho("\n");
-						}
-						else
-						{
-							$this->cliEcho('Enter the web URL ');
-							$this->cliEcho('without', 'white', 'bold');
-							$this->cliEcho(" any ending slashes\n\n");
-							$this->cliEcho('Web server root URL: ', 'white', 'bold');
-							$url_host = $this->getInput();
-						}
-						$this->cliEcho("\n");
-
 						$this->cliEcho("The Bug Genie subdir\n", 'white', 'bold');
 						$this->cliEcho("This is the sub-path of the Web server where The Bug Genie will be located.\n");
 						if ($this->hasProvidedArgument('url_subdir'))
@@ -279,15 +259,15 @@
 						else
 						{
 							$this->cliEcho('Start and end this with a forward slash', 'white', 'bold');
-							$this->cliEcho(". (ex: \"/thebuggenie/\")\nIf The Bug Genie is running at root, just type \"/\" (without the quotes)\n\n");
+							$this->cliEcho(". (ex: \"/thebuggenie/\")\nIf The Bug Genie is running at the root directory, just type \"/\" (without the quotes)\n\n");
 							$this->cliEcho('The Bug Genie subdir: ', 'white', 'bold');
 							$url_subdir = $this->getInput();
 						}
 						$this->cliEcho("\n");
 
 						$this->cliEcho("The Bug Genie will now be accessible at\n");
-						$this->cliEcho($url_host . $url_subdir, 'white', 'bold');
-						if ($this->hasProvidedArgument('url_subdir') && $this->hasProvidedArgument('url_host'))
+						$this->cliEcho("http://example.com" . $url_subdir, 'white', 'bold');
+						if ($this->hasProvidedArgument('url_subdir'))
 						{
 							$this->cliEcho("\n");
 							$this->cliEcho("Using existing values", 'yellow', 'bold');
@@ -405,7 +385,6 @@
 					TBGContext::setScope($scope);
 					$scope->save();
 					TBGSettings::saveSetting('language', 'en_US');
-					TBGSettings::saveSetting('url_subdir', $url_subdir);
 					$this->cliEcho("Initial scope setup successfully... \n\n", 'green', 'bold');
 
 					$this->cliEcho("Setting up modules... \n", 'white', 'bold');
@@ -448,7 +427,7 @@
 							file_put_contents(TBGContext::getIncludePath() . 'installed', '3.0, installed ' . date('d.m.Y H:i'));
 						}
 						$this->cliEcho("The installation was completed successfully!\n", 'green', 'bold');
-						$this->cliEcho("\nTo use The Bug Genie, access " . $url_host . $url_subdir . "index.php with a web-browser.\n");
+						$this->cliEcho("\nTo use The Bug Genie, access http://example.com" . $url_subdir . "index.php with a web-browser.\n");
 						$this->cliEcho("The default username is ") . $this->cliEcho('Administrator') . $this->cliEcho(' and the password is ') . $this->cliEcho('admin');
 						$this->cliEcho("\n\nFor support, please visit ") . $this->cliEcho('http://www.thebuggenie.com/', 'blue', 'underline');
 						$this->cliEcho("\n");

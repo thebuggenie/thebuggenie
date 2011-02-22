@@ -29,7 +29,7 @@
 											<?php echo image_tag('debug_time.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 											<?php echo $tbg_summary['load_time']; ?>
 										</td>
-										<td style="width: 80px; padding: 3px; font-size: 11px; font-family: Ubuntu;">
+										<td style="width: 80px; padding: 3px; font-size: 11px; font-family: Ubuntu;" title="Generated hostname: <?php echo TBGContext::getScope()->getHostname(); ?>">
 											<?php echo image_tag('debug_scope.png', array('style' => 'float: left; margin-right: 5px;')); ?>
 											<b>Scope: </b><?php echo $tbg_summary['scope_id']; ?>
 										</td>

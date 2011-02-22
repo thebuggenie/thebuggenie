@@ -1367,7 +1367,7 @@
 			}
 			else
 			{
-				$url = TBGSettings::getURLsubdir() . 'avatars/' . $this->getAvatar();
+				$url = TBGContext::getTBGPath() . 'avatars/' . $this->getAvatar();
 				if ($small) $url .= '_small';
 				$url .= '.png';
 			}

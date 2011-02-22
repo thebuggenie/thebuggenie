@@ -394,9 +394,9 @@
 		public static function checkInstallMode()
 		{
 			if (!is_readable(THEBUGGENIE_PATH . 'installed'))
-			{
 				self::$_installmode = true;
-			}
+			elseif (!class_exists('B2DB'))
+				throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
 		}
 
 		/**
@@ -408,184 +408,123 @@
 		{
 			try
 			{
-				TBGLogging::log('Loading request');
 				self::$_request = new TBGRequest();
+				self::$_response = new TBGResponse();
 				self::$_factory = new TBGFactory();
-				TBGLogging::log('...done');
-				if (!self::isCLI())
-				{
-					TBGLogging::log('Loading response');
-					self::$_response = new TBGResponse();
-					TBGLogging::log('...done');
-				}
+				
 				self::checkInstallMode();
-				if (!self::$_installmode && !class_exists('B2DB'))
-				{
-					throw new Exception("The Bug Genie seems installed, but B2DB isn't configured. This usually indicates an error with the installation. Try removing the file ".THEBUGGENIE_PATH."installed and try again.");
-				}
+				self::loadPreModuleRoutes();
+				self::setScope();
+				self::$_i18n = TBGI18n::setup();
 
-				TBGLogging::log('Loading first batch of routes', 'routing');
-				if (!($routes_1 = TBGCache::get(TBGCache::KEY_PREMODULES_ROUTES_CACHE)))
+				if (!self::$_installmode)
 				{
-					if (!($routes_1 = TBGCache::fileGet(TBGCache::KEY_PREMODULES_ROUTES_CACHE)))
-					{
-						TBGLogging::log('generating routes', 'routing');
-						require THEBUGGENIE_CORE_PATH . 'load_routes.inc.php';
-						TBGCache::fileAdd(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
-					}
-					else
-					{
-						TBGLogging::log('using disk cached routes', 'routing');
-						self::getRouting()->setRoutes($routes_1);
-					}
-					TBGCache::add(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
+					self::loadModules();
+					self::initializeUser();
+					self::loadPostModuleRoutes();
 				}
 				else
-				{
-					TBGLogging::log('loading routes from cache', 'routing');
-					self::getRouting()->setRoutes($routes_1);
-				}
-				TBGLogging::log('...done', 'routing');
-				
-				TBGLogging::log("Setting current scope");
-				try
-				{
-					self::setScope();
-					TBGLogging::log("Loading settings");
-					try
-					{
-						TBGSettings::loadSettings();
-					}
-					catch (Exception $e)
-					{
-						if (!self::isCLI())
-						{
-							throw $e;
-						}
-						else
-						{
-							self::$_installmode = true;
-						}
-					}
-					TBGLogging::log("...done");
-				}
-				catch (Exception $e)
-				{
-					if (!self::isInstallmode()) 
-					{
-						throw $e;
-					}
-					TBGLogging::log("Ignoring scope exception since we're in installmode");
-				}
-				TBGLogging::log("...done");
-				
-
-				if (self::$_installmode)
-				{
 					self::$_modules = array();
-					return true;
-				}
-
-				if (!self::isCLI())
-				{
-					TBGLogging::log('Loading i18n strings');
-					if (!$cached_i18n = TBGCache::get('i18n_'.TBGSettings::get('language')))
-					{
-						TBGLogging::log('Loading strings from file');
-						TBGLogging::log(TBGSettings::get('language'));
-						self::$_i18n = new TBGI18n(TBGSettings::get('language'));
-						self::$_i18n->initialize();
-						TBGCache::add('i18n_'.TBGSettings::get('language'), self::$_i18n);
-					}
-					else
-					{
-						TBGLogging::log('Using cached i18n strings');
-						self::$_i18n = $cached_i18n;
-					}
-					TBGLogging::log('...done');
-				}
-
-				TBGLogging::log('Loading modules');
-				self::loadModules();
-				TBGLogging::log('...done');
-
-				TBGLogging::log('Loading user');
-				try
-				{
-					TBGLogging::log('is this logout?');
-					if (self::getRequest()->getParameter('logout'))
-					{
-						TBGLogging::log('yes');
-						TBGEvent::createNew('core', 'pre_logout')->trigger();
-						self::logout();
-						TBGEvent::createNew('core', 'post_logout')->trigger();
-					}
-					else
-					{
-						TBGLogging::log('no');
-						TBGLogging::log('sets up user object');
-						$event = TBGEvent::createNew('core', 'pre_login');
-						$event->trigger();
-
-						if ($event->isProcessed())
-						{
-							self::loadUser($event->getReturnValue());
-						}
-						else
-						{
-							self::loadUser();
-						}
-						TBGEvent::createNew('core', 'post_login', self::getUser())->trigger();
-
-						TBGLogging::log('loaded');
-						TBGLogging::log('caches permissions');
-						self::cacheAllPermissions();
-						TBGLogging::log('...cached');
-					}
-				}
-				catch (Exception $e)
-				{
-					TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
-					if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'register1' && self::getRouting()->getCurrentRouteAction() != 'register2' && self::getRouting()->getCurrentRouteAction() != 'activate' && self::getRouting()->getCurrentRouteAction() != 'reset_password' && self::getRouting()->getCurrentRouteAction() != 'captcha' && self::getRouting()->getCurrentRouteAction() != 'login' && self::getRouting()->getCurrentRouteAction() != 'getBackdropPartial'))
-					{
-						self::$_redirect_login = true;
-					}
-					else
-					{
-						self::$_user = self::factory()->TBGUser(TBGSettings::getDefaultUserID());
-					}
-				}
-
-				TBGLogging::log('...done');
-				TBGLogging::log('Loading last batch of routes', 'routing');
-				if (!($routes = TBGCache::get(TBGCache::KEY_POSTMODULES_ROUTES_CACHE)))
-				{
-					if (!($routes = TBGCache::fileGet(TBGCache::KEY_POSTMODULES_ROUTES_CACHE)))
-					{
-						TBGLogging::log('generating postmodule routes', 'routing');
-						require THEBUGGENIE_CORE_PATH . 'load_routes_postmodules.inc.php';
-						TBGCache::fileAdd(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
-					}
-					else
-					{
-						TBGLogging::log('using disk cached postmodule routes', 'routing');
-						self::getRouting()->setRoutes($routes);
-					}
-					TBGCache::add(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
-				}
-				else
-				{
-					TBGLogging::log('loading postmodule routes from cache', 'routing');
-					self::getRouting()->setRoutes($routes);
-				}
-				TBGLogging::log('...done', 'routing');
-
+				
 				TBGLogging::log('...done initializing');
 			}
 			catch (Exception $e)
 			{
-				throw $e;
+				if (!self::isCLI() && !self::isInstallmode())
+					throw $e;
 			}
+		}
+
+		protected static function initializeUser()
+		{
+			TBGLogging::log('Loading user');
+			try
+			{
+				TBGLogging::log('is this logout?');
+				if (self::getRequest()->getParameter('logout'))
+				{
+					TBGLogging::log('yes');
+					self::logout();
+				}
+				else
+				{
+					TBGLogging::log('no');
+					TBGLogging::log('sets up user object');
+					$event = TBGEvent::createNew('core', 'pre_login');
+					$event->trigger();
+
+					if ($event->isProcessed())
+						self::loadUser($event->getReturnValue());
+					else
+						self::loadUser();
+
+					TBGEvent::createNew('core', 'post_login', self::getUser())->trigger();
+
+					TBGLogging::log('loaded');
+					self::cacheAllPermissions();
+				}
+			}
+			catch (Exception $e)
+			{
+				TBGLogging::log("Something happened while setting up user: ". $e->getMessage(), 'main', TBGLogging::LEVEL_WARNING);
+				if (!self::isCLI() && (self::getRouting()->getCurrentRouteModule() != 'main' || self::getRouting()->getCurrentRouteAction() != 'register1' && self::getRouting()->getCurrentRouteAction() != 'register2' && self::getRouting()->getCurrentRouteAction() != 'activate' && self::getRouting()->getCurrentRouteAction() != 'reset_password' && self::getRouting()->getCurrentRouteAction() != 'captcha' && self::getRouting()->getCurrentRouteAction() != 'login' && self::getRouting()->getCurrentRouteAction() != 'getBackdropPartial'))
+					self::$_redirect_login = true;
+				else
+					self::$_user = self::factory()->TBGUser(TBGSettings::getDefaultUserID());
+			}
+			TBGLogging::log('...done');
+		}
+
+		protected static function loadPreModuleRoutes()
+		{
+			TBGLogging::log('Loading first batch of routes', 'routing');
+			if (!($routes_1 = TBGCache::get(TBGCache::KEY_PREMODULES_ROUTES_CACHE)))
+			{
+				if (!($routes_1 = TBGCache::fileGet(TBGCache::KEY_PREMODULES_ROUTES_CACHE)))
+				{
+					TBGLogging::log('generating routes', 'routing');
+					require THEBUGGENIE_CORE_PATH . 'load_routes.inc.php';
+					TBGCache::fileAdd(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
+				}
+				else
+				{
+					TBGLogging::log('using disk cached routes', 'routing');
+					self::getRouting()->setRoutes($routes_1);
+				}
+				TBGCache::add(TBGCache::KEY_PREMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
+			}
+			else
+			{
+				TBGLogging::log('loading routes from cache', 'routing');
+				self::getRouting()->setRoutes($routes_1);
+			}
+			TBGLogging::log('...done', 'routing');
+		}
+
+		protected static function loadPostModuleRoutes()
+		{
+			TBGLogging::log('Loading last batch of routes', 'routing');
+			if (!($routes = TBGCache::get(TBGCache::KEY_POSTMODULES_ROUTES_CACHE)))
+			{
+				if (!($routes = TBGCache::fileGet(TBGCache::KEY_POSTMODULES_ROUTES_CACHE)))
+				{
+					TBGLogging::log('generating postmodule routes', 'routing');
+					require THEBUGGENIE_CORE_PATH . 'load_routes_postmodules.inc.php';
+					TBGCache::fileAdd(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
+				}
+				else
+				{
+					TBGLogging::log('using disk cached postmodule routes', 'routing');
+					self::getRouting()->setRoutes($routes);
+				}
+				TBGCache::add(TBGCache::KEY_POSTMODULES_ROUTES_CACHE, self::getRouting()->getRoutes());
+			}
+			else
+			{
+				TBGLogging::log('loading postmodule routes from cache', 'routing');
+				self::getRouting()->setRoutes($routes);
+			}
+			TBGLogging::log('...done', 'routing');
 		}
 
 		/**
@@ -726,6 +665,7 @@
 		 */
 		public static function loadModules()
 		{
+			TBGLogging::log('Loading modules');
 			if (self::$_modules === null)
 			{
 				self::$_modules = array();
@@ -824,6 +764,7 @@
 			{
 				TBGLogging::log('Modules already loaded', 'core', TBGLogging::LEVEL_FATAL);
 			}
+			TBGLogging::log('...done');
 		}
 		
 		/**
@@ -968,6 +909,7 @@
 		 */
 		public static function cacheAllPermissions()
 		{
+			TBGLogging::log('caches permissions');
 			self::$_permissions = array();
 			
 			if ($permissions = TBGCache::get('permissions'))
@@ -1008,6 +950,7 @@
 				}
 				TBGCache::add('permissions', self::$_permissions);
 			}
+			TBGLogging::log('...cached');
 		}
 
 		public static function deleteModulePermissions($module_name)
@@ -1472,11 +1415,13 @@
 		 */
 		public static function logout()
 		{
+			TBGEvent::createNew('core', 'pre_logout')->trigger();
 			self::getResponse()->deleteCookie('tbg3_username');
 			self::getResponse()->deleteCookie('tbg3_password');
 			self::getResponse()->deleteCookie('THEBUGGENIE');
 			session_regenerate_id(true);
 			session_destroy();
+			TBGEvent::createNew('core', 'post_logout')->trigger();
 		}
 
 		/**
@@ -1486,40 +1431,47 @@
 		 */
 		public static function setScope($scope = null)
 		{
+			TBGLogging::log("Setting current scope");
 			if ($scope !== null)
 			{
 				TBGLogging::log("Setting scope from function parameter");
 				self::$_scope = $scope;
 				TBGSettings::forceSettingsReload();
+				TBGSettings::loadSettings();
 				TBGLogging::log("...done (Setting scope from function parameter)");
 				return true;
 			}
 	
-			$hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http://' : 'https://';
+			$row = null;
 			try
 			{
-				if (!class_exists('TBGScopesTable')) throw new Exception('B2DB not configured to look for B2DB table classes');
 				if (!self::isCLI())
 				{
-					TBGLogging::log("Checking if scope can be set from hostname (".$hostprefix.$_SERVER['HTTP_HOST'].")");
-					$row = TBGScopesTable::getTable()->getByHostname($hostprefix . $_SERVER['HTTP_HOST']);
+					TBGLogging::log("Checking if scope can be set from hostname (".$_SERVER['HTTP_HOST'].")");
+					$row = TBGScopesTable::getTable()->getByHostname($_SERVER['HTTP_HOST']);
 				}
-				else
+
+				if (!$row)
 				{
+					TBGLogging::log("Using default scope.");
 					$row = TBGScopesTable::getTable()->getDefault();
 				}
-				if ($row instanceof B2DBRow)
+				
+				if (!$row instanceof B2DBRow)
 				{
-					TBGLogging::log("It could");
-					TBGLogging::log("Setting scope from hostname");
-					$theScope = TBGContext::factory()->TBGScope($row->get(TBGScopesTable::ID), $row);
-					self::$_scope = $theScope;
-					TBGSettings::forceSettingsReload();
-					TBGLogging::log("...done (Setting scope from hostname)");
-					return true;
+					TBGLogging::log("It couldn't", 'main', TBGLogging::LEVEL_WARNING);
+					if (!self::isInstallmode())
+						throw new Exception("The Bug Genie isn't set up to work with this server name.");
+					else
+						return;
 				}
-				TBGLogging::log("It couldn't", 'main', TBGLogging::LEVEL_WARNING);
-				throw new Exception("The Bug Genie isn't set up to work with this server name.");
+				
+				TBGLogging::log("Setting scope from hostname");
+				self::$_scope = TBGContext::factory()->TBGScope($row->get(TBGScopesTable::ID), $row);
+				TBGSettings::forceSettingsReload();
+				TBGSettings::loadSettings();
+				TBGLogging::log("...done (Setting scope from hostname)");
+				return true;
 			}
 			catch (Exception $e)
 			{
@@ -1528,11 +1480,15 @@
 					TBGLogging::log("Couldn't set up default scope.", 'main', TBGLogging::LEVEL_FATAL);
 					throw new Exception("Could not load default scope. Error message was: " . $e->getMessage());
 				}
-				else
+				elseif (!self::isInstallmode())
 				{
-					TBGLogging::log("Couldn't find a scope for hostname ".$hostprefix . $_SERVER['HTTP_HOST'], 'main', TBGLogging::LEVEL_FATAL);
+					TBGLogging::log("Couldn't find a scope for hostname {$_SERVER['HTTP_HOST']}", 'main', TBGLogging::LEVEL_FATAL);
 					TBGLogging::log($e->getMessage(), 'main', TBGLogging::LEVEL_FATAL);
 					throw new Exception("Could not load scope. This is usually because the scopes table doesn't have a scope for this hostname");
+				}
+				else
+				{
+					TBGLogging::log("Couldn't find a scope for hostname {$_SERVER['HTTP_HOST']}, but we're in installmode so continuing anyway");
 				}
 			}
 		}

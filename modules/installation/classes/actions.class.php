@@ -282,7 +282,7 @@
 
 				TBGLogging::log('Loading fixtures for default scope');
 				$scope = new TBGScope();
-				$scope->setHostname($request->getParameter('url_host'));
+				$scope->setHostname('*');
 				$scope->setName('The default scope');
 				$scope->setEnabled(true);
 				TBGContext::setScope($scope);
@@ -290,7 +290,6 @@
 				
 				TBGLogging::log('Setting up default users and groups');
 				TBGSettings::saveSetting('language', 'en_US', 'core', 1);
-				TBGSettings::saveSetting('url_subdir', $request->getParameter('url_subdir'), 'core', 1);
 
 				$this->htaccess_error = false;
 				$this->htaccess_ok = (bool) $request->getParameter('apache_autosetup');
@@ -299,7 +298,7 @@
 				{
 					if (!is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/') || (file_exists(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess') && !is_writable(TBGContext::getIncludePath() . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess')))
 					{
-						$this->htaccess_error = 'Permission denied when trying to save the [main folder]/thebuggenie/.htaccess';
+						$this->htaccess_error = 'Permission denied when trying to save the [main folder]/' . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess';
 					}
 					else
 					{

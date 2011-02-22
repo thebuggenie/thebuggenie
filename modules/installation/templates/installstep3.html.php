@@ -18,32 +18,32 @@ if ($dirname != '/')
 
 	function updateURLPreview()
 	{
-		if ($('url_host').value.empty() || $('url_subdir').value.empty())
+		if ($('url_subdir').value.empty())
 		{
 			$('continue_button').hide();
 			$('continue_error').show();
-			$('continue_error').update('You need to fill out both server and directory url.<br />If The Bug Genie is located directly under the server, end the server url <i>without</i> a forward slash, and put a single forward slash in the directory url.');
+			$('continue_error').update('You need to fill the subdirectory url.<br />If The Bug Genie is located directly under the server, put a single forward slash in the subdirectory url.');
 		}
-		else if($F($('tbg_settings')['url_host']).endsWith('/') == true || ($F($('tbg_settings')['url_subdir']).endsWith('/') == false || $F($('tbg_settings')['url_subdir']).startsWith('/') == false))
+		else if(($F($('tbg_settings')['url_subdir']).endsWith('/') == false || $F($('tbg_settings')['url_subdir']).startsWith('/') == false))
 		{
 			$('continue_button').hide();
 			$('continue_error').show();
-			$('continue_error').update('The server url <i>cannot end with a forward slash</i>, and the directory url <i>must start and end with a forward slash</i>');
+			$('continue_error').update('The subdirectory url <i>must start and end with a forward slash</i>');
 		}
 		else 
 		{ 
 			$('continue_button').show();
 			$('continue_error').hide();
-			$('url_preview').update($('url_host').value + $('url_subdir').value);
+			$('url_preview').update($('url_subdir').value);
 		}
 		
-		var new_url = $('url_host').value + $('url_subdir').value;
+		var new_url = $('url_subdir').value;
 		
 		if (new_url.endsWith('//'))
 		{
 			$('continue_button').hide();
 			$('continue_error').show();
-			$('continue_error').update('The complete url <i><b>cannot end with two forward slashes</b></i>. If The Bug Genie is located directly under the server, end the server url <i><b>without</b></i> a forward slash, and put <i><b>a single forward slash</b></i> as the directory url.');
+			$('continue_error').update('The complete url <i><b>cannot end with two forward slashes</b></i>. If The Bug Genie is located directly under the server, put <i><b>a single forward slash</b></i> as the directory url.');
 		}
 	}
 
@@ -109,22 +109,18 @@ if ($dirname != '/')
 				<legend>The Bug Genie URL information</legend>
 				<dl class="install_list">
 					<dt style="width: 500px;">
-						<label for="url_host">Server host</label> <span class="faded_out">The url of the server The Bug Genie is hosted on <b>without the trailing slash</b></span>
-					</dt><br>
-					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_host" id="url_host" value="http://<?php echo $_SERVER['SERVER_NAME']; ?>"></dd>
+						<label for="apache_autosetup_yes">Set up my .htaccess file automatically</label> <span class="faded_out">Check this if you're using an Apache web server</span>
+					</dt>
+					<dd>
+						<input type="radio" name="apache_autosetup" id="apache_autosetup_yes" value="1" checked><label for="apache_autosetup_yes">Yes</label>&nbsp;
+						<input type="radio" name="apache_autosetup" id="apache_autosetup_no" value="0"><label for="apache_autosetup_no">No</label>
+					</dd>
 					<dt style="width: 500px;">
 						<label for="url_subdir">Url subdirectory</label> <span class="faded_out">The Bug Genie subdirectory part of the url</span>
 					</dt><br>
 					<dd><input onblur="updateURLPreview();" onkeyup="updateURLPreview();" type="text" name="url_subdir" id="url_subdir" value="<?php echo $dirname; ?>"></dd>
 					<dt style="width: 500px;"><b>According to the information above,</b> The Bug Genie will be accessible at</dt><br>
-					<dd id="url_preview">http://<?php echo $_SERVER['SERVER_NAME'] . $dirname; ?></dd>
-					<dt style="width: 500px;">
-						<label for="apache_autosetup_yes">Set up my .htaccess file automatically</label> <span class="faded_out">Check this if you're using an Apache web server</span>
-					</dt><br>
-					<dd>
-						<input type="radio" name="apache_autosetup" id="apache_autosetup_yes" value="1" checked><label for="apachec_autosetup_yes">Yes</label>&nbsp;
-						<input type="radio" name="apache_autosetup" id="apache_autosetup_no" value="0"><label for="apachec_autosetup_no">No</label>
-					</dd>
+					<dd id="url_preview"><?php echo (array_key_exists('HTTPS', $_SERVER)) ? 'https' : 'http'; ?>://<?php echo $_SERVER['SERVER_NAME'] . $dirname; ?></dd>
 				</dl>
 			</fieldset>
 			<div class="error" id="continue_error" style="display: none;"> </div>

@@ -4,22 +4,22 @@
 		<div class="feature">
 			Even if you haven't used The Bug Genie before, you will soon notice that it comes <b>packed</b> with features, such as:
 			<ul>
-				<li>Great user management through permissions, groups and teams</li>
-				<li>Highly configurable and easy to use search, with grouping capabilities</li>
-				<li>Integrated wiki for all your documentation, news and article needs</li>
-				<li>SVN integration</li>
-				<li>Great messaging functionality</li>
+				<li>Great user management with groups, teams and clients</li>
+				<li>Full ACL support with multilevel access control</li>
+				<li>Highly configurable and easy to use search</li>
+				<li>Wiki integrated throughout the entire system</li>
+				<li>Source code integration - SVN, GIT, Mercurial ++</li>
 				<li>Issue tasks and issue dependancies</li>
 				<li>Project dashboard, with detailed breakdowns and statistics</li>
 				<li>Automated roadmap generation</li>
-				<li>Voting system</li>
-				<li>Extensible module based framework</li>
+				<li>Extensions: MVC framework with module support</li>
+				<li>Voting! Comments! Logs! Avatars! Kittens!</li>
 			</ul>
 			For more information, refer to <a href="http://doc.thebuggenie.com" target="_blank">The Bug Genie online manual</a>.<br>
 		</div>
 		<div class="feature">
 			<h4 style="padding-top: 0; margin-top: 0;">UPGRADING FROM A PREVIOUS VERSION?</h4>
-			If you are upgrading from version 2.x, please see the instructions on the Import page, available in the Configuration centre. Users of BUGS 1.x will need to upgrade to The Bug Genie 2.1 first.
+			If you are upgrading from version 2.x, please see the instructions on the Import page, available in the Configuration centre. Users of The Bug Genie 1.x will need to upgrade to The Bug Genie 2.1 first.
 		</div>
 	</div>
 	<h2 style="margin-top: 0px;">Welcome to The Bug Genie</h2>

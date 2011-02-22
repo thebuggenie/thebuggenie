@@ -1437,7 +1437,7 @@
 									if ($classname == 'TBGIssuetype')
 									{
 										TBGContext::loadLibrary('ui');
-										$field['src'] = htmlspecialchars(TBGSettings::getURLsubdir() . 'themes/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png');
+										$field['src'] = htmlspecialchars(TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png');
 									}
 									return ($parameter_id == 0) ? $this->renderJSON(array('changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('changed' => true, 'visible_fields' => $visible_fields, 'field' => $field));
 								}
@@ -1638,7 +1638,7 @@
 					break;
 				case 'issuetype':
 					$issue->revertIssuetype();
-					$field = ($issue->getIssuetype() instanceof TBGIssuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(TBGSettings::getURLsubdir() . 'themes/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
+					$field = ($issue->getIssuetype() instanceof TBGIssuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(TBGContext::getTBGPath() . 'themes/' . TBGSettings::getThemeName() . '/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
 					$visible_fields = ($issue->getIssuetype() instanceof TBGIssuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
 					return $this->renderJSON(array('ok' => true, 'field' => $field, 'visible_fields' => $visible_fields));
 					break;

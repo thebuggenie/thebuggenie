@@ -4,7 +4,7 @@
 		<div class="error"><?php echo nl2br($error); ?></div>
 		<h2>An error occured</h2>
 		<div style="font-size: 13px;">An error occured and the installation has been stopped. Please try to fix the error based on the information above, then click back, and try again.<br>
-		If you think this is a bug, please report it in our <a href="http://b2.thebuggenie.com" target="_new">online bug tracker</a>.</div>
+		If you think this is a bug, please report it in our <a href="http://thebuggenie.com/thebuggenie" target="_new">online bug tracker</a>.</div>
 	<?php else: ?>
 		<?php if ($htaccess_error !== false): ?>
 			<div class="error">
@@ -17,7 +17,7 @@
 				Either fix the problem above (if any details are mentioned), <b>click "Back"</b> and try again - or follow these simple steps:
 				<ul style="font-size: 11px;">
 					<li>Rename or copy the <i>[main folder]/<?php echo THEBUGGENIE_CORE_PATH; ?>templates/htaccess.template</i> file to <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/.htaccess</i></li>
-					<li>Open up the <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/.htaccess</i> file, and change the <u>RewriteBase</u> path to be identical to the <u>URL subdirectory</u>.
+					<li>Open up the <i>[main folder]/<?php echo THEBUGGENIE_PUBLIC_FOLDER_NAME; ?>/.htaccess</i> file, and change the <u>RewriteBase</u> path to be identical to the <u>URL subdirectory</u></li>
 				</ul>
 			</div>
 		<?php elseif ($htaccess_ok): ?>

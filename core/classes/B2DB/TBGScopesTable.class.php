@@ -55,7 +55,9 @@
 
 		public function getDefault()
 		{
-			$row = $this->doSelectByID(1);
+			$crit = $this->getCriteria();
+			$crit->addWhere(self::HOSTNAME, "*");
+			$row = $this->doSelectOne($crit);
 			return $row;
 		}
 
