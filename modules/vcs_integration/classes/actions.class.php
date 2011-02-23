@@ -79,7 +79,7 @@
 			exit;
 		}
 		
-		public function runAddGithubCommit(TBGRequest $request)
+		public function runAddCommitGithub(TBGRequest $request)
 		{
 			if (!(TBGContext::getModule('vcs_integration')->isUsingHTTPMethod()))
 			{
