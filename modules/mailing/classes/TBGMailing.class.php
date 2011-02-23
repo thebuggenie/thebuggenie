@@ -284,7 +284,7 @@
 							}
 							catch (Exception $e)
 							{
-								$this->log('There was an error when trying to send email to ' . join('/', $message->getRecipients()) . ":\n" . $e->getMessage(), TBGLogging::LEVEL_NOTICE);
+								$this->log("There was an error when trying to send email to some recipients:\n" . $e->getMessage(), TBGLogging::LEVEL_NOTICE);
 							}
 						}
 					}
